@@ -2107,14 +2107,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventVtableSlot24CopyPayloadBuffer
-// ghidra_proto void __thiscall HandleTurnEventVtableSlot24CopyPayloadBuffer(void)
-// FUNCTION: IMPERIALISM 0x00415ce0
-undefined4 HandleTurnEventVtableSlot24CopyPayloadBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name TradeControl::GetCityDialogValueDword10
 // ghidra_proto int __fastcall GetCityDialogValueDword10(CityDialogController * pDialog)
 // FUNCTION: IMPERIALISM 0x00415d50
@@ -3335,14 +3327,6 @@ undefined4 InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(void)
 // ghidra_proto void __thiscall DeleteObjectIfNonNullViaVslot04(void)
 // FUNCTION: IMPERIALISM 0x004798b0
 undefined4 DeleteObjectIfNonNullViaVslot04(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeObjectVtableMethod24
-// ghidra_proto void __cdecl InvokeObjectVtableMethod24(void)
-// FUNCTION: IMPERIALISM 0x004798d0
-undefined4 InvokeObjectVtableMethod24(void)
 {
   return 0;
 }

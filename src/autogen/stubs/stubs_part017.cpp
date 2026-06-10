@@ -795,14 +795,6 @@ undefined4 ResizePointerArrayCapacityByRequestedCount(void)
   return 0;
 }
 
-// ghidra_name ScoreCoastalTileForContextAndCityStateAffinity
-// ghidra_proto void __cdecl ScoreCoastalTileForContextAndCityStateAffinity(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x0055ff70
-undefined4 ScoreCoastalTileForContextAndCityStateAffinity(void)
-{
-  return 0;
-}
-
 // ghidra_name AdvanceSpiralSearchStateAndStepHexCoordinates
 // ghidra_proto void __cdecl AdvanceSpiralSearchStateAndStepHexCoordinates(void)
 // FUNCTION: IMPERIALISM 0x00560470
@@ -915,14 +907,6 @@ undefined4 HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(void)
   return 0;
 }
 
-// ghidra_name TPortZone::CreateTPortZone
-// ghidra_proto TPortZone * __cdecl CreateTPortZone(void)
-// FUNCTION: IMPERIALISM 0x005615e0
-undefined4 CreateTPortZone(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyTPortZone
 // ghidra_proto void __cdecl DestroyTPortZone(void)
 // FUNCTION: IMPERIALISM 0x005616c0
@@ -935,14 +919,6 @@ undefined4 DestroyTPortZone(void)
 // ghidra_proto void __cdecl ResetTPortZoneToSentinelVtableAndReleaseResources(void)
 // FUNCTION: IMPERIALISM 0x005616f0
 undefined4 ResetTPortZoneToSentinelVtableAndReleaseResources(void)
-{
-  return 0;
-}
-
-// ghidra_name TPortZone::GetTPortZoneClassNamePointer
-// ghidra_proto void * __cdecl GetTPortZoneClassNamePointer(void)
-// FUNCTION: IMPERIALISM 0x005617d0
-undefined4 GetTPortZoneClassNamePointer(void)
 {
   return 0;
 }

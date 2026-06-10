@@ -22,9 +22,19 @@ void __stdcall NoOpTurnEventStateVtableSlot10(int unused);
 undefined4 thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void);
 undefined4 thunk_StepHexTileIndexByDirectionWithWrapRules(void);
 undefined4 thunk_FindPortZoneByTile(void);
-undefined4 thunk_ScoreCoastalTileForContextAndCityStateAffinity(void);
+int ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, int contextZone, int contextCityState);
 undefined4 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(void);
 undefined4 thunk_StepHexRowColByDirectionWithWrapRules(void);
+undefined4 CreateObject_606ff2(void);
+
+namespace {
+
+void DeleteUnlinkedZone(TZone* zone) {
+  delete zone;
+}
+
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x0055e6e0
 void* TZone::GetRuntimeClass() {
   return &g_pClassDescTZone;
@@ -67,6 +77,8 @@ TZone::TZone()
   }
 }
 
+TZone::~TZone() {}
+
 void TZone::HandleTurnEventVtableSlot08(int arg1) {
   (void)arg1;
 }
@@ -100,11 +112,37 @@ void TZone::RemoveZoneFromGlobalListAndRelease() {
   }
   next1c = 0;
   prev18 = 0;
+  DeleteUnlinkedZone(this);
 }
 
-void TZone::InvokeObjectVtableMethod24() {}
+// FUNCTION: IMPERIALISM 0x004798d0
+void TZone::InvokeObjectVtableMethod24() {
+  HandleTurnEventVtableSlot24CopyPayloadBuffer();
+}
 
-void TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {}
+// FUNCTION: IMPERIALISM 0x00415ce0
+void TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
+  void* sourceCursor = this;
+  void* classDesc = GetRuntimeClass();
+  unsigned int payloadSize = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(classDesc) + 4);
+  GetRuntimeClass();
+  unsigned int* destCursor = reinterpret_cast<unsigned int*>(CreateObject_606ff2());
+  unsigned int dwordCount = payloadSize >> 2;
+  unsigned int byteRemainder = payloadSize & 3;
+  unsigned int dwordIndex;
+  for (dwordIndex = dwordCount; dwordIndex != 0; dwordIndex = dwordIndex - 1) {
+    *destCursor = *reinterpret_cast<unsigned int*>(sourceCursor);
+    sourceCursor = reinterpret_cast<unsigned char*>(sourceCursor) + 4;
+    destCursor = destCursor + 1;
+  }
+  unsigned char* destByteCursor = reinterpret_cast<unsigned char*>(destCursor);
+  unsigned char* sourceByteCursor = reinterpret_cast<unsigned char*>(sourceCursor);
+  for (; byteRemainder != 0; byteRemainder = byteRemainder - 1) {
+    *destByteCursor = *sourceByteCursor;
+    sourceByteCursor = sourceByteCursor + 1;
+    destByteCursor = destByteCursor + 1;
+  }
+}
 
 void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {
   (void)arg1;
@@ -211,7 +249,7 @@ short TZone::GetActiveNationSlotTile() {
 
 // FUNCTION: IMPERIALISM 0x00560150
 short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCityState) {
-  int tileCandidate = 0;
+  unsigned int tileCandidate = 0;
   char* mapTileBase =
       reinterpret_cast<char*>(*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc));
   TMapOrderContext* mapOrderContext = static_cast<TMapOrderContext*>(g_pActiveMapOrderContext);
@@ -231,9 +269,8 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
       }
       if (zoneForTile == this) {
         int neighborDir = 0;
-        bool foundNeighborCityState = false;
         do {
-          short neighborTile = reinterpret_cast<short(__cdecl*)(int, int)>(
+          short neighborTile = reinterpret_cast<short(__cdecl*)(unsigned int, int)>(
               thunk_StepHexTileIndexByDirectionWithWrapRules)(tileCandidate, neighborDir);
           if (neighborTile != -1) {
             char* neighborRecord = mapTileBase + neighborTile * 0x24;
@@ -245,14 +282,13 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
                                   cityStateLink * 0xa8;
               }
               if (cityStateRecord == contextCityState) {
-                foundNeighborCityState = true;
                 break;
               }
             }
           }
           neighborDir = neighborDir + 1;
         } while (neighborDir < 6);
-        if (foundNeighborCityState) {
+        if (neighborDir < 6) {
           break;
         }
       }
@@ -269,8 +305,8 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
 
   short bestTile = static_cast<short>(tileCandidate);
   int bestTileIndex = static_cast<int>(bestTile);
-  int bestScore = reinterpret_cast<int(__cdecl*)(int, int)>(thunk_ScoreCoastalTileForContextAndCityStateAffinity)(
-      bestTileIndex, reinterpret_cast<int>(this));
+  int bestScore = ScoreCoastalTileForContextAndCityStateAffinity(
+      bestTileIndex, reinterpret_cast<int>(this), contextCityState);
 
   int spiralRow = bestTileIndex / 0x6c;
   int spiralCol = bestTileIndex % 0x6c;
@@ -301,14 +337,14 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
       } else {
         spiralTileIndex = spiralCol + spiralRow * 0x6c;
       }
-      int candidateScore = reinterpret_cast<int(__cdecl*)(int, int)>(
-          thunk_ScoreCoastalTileForContextAndCityStateAffinity)(spiralTileIndex, reinterpret_cast<int>(this));
+      int candidateScore = ScoreCoastalTileForContextAndCityStateAffinity(
+          spiralTileIndex, reinterpret_cast<int>(this), contextCityState);
       if (bestScore < candidateScore) {
         bestScore = candidateScore;
         if (((spiralRow < 0) || (0x3b < spiralRow)) || ((spiralCol < 0) || (0x6b < spiralCol))) {
           tileCandidate = 0xffffffff;
         } else {
-          tileCandidate = spiralCol + spiralRow * 0x6c;
+          tileCandidate = static_cast<unsigned int>(spiralCol + spiralRow * 0x6c);
         }
       }
     }
@@ -347,44 +383,44 @@ void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int
     return;
   }
   SetMapTileStateByteAndNotifyObserver(field20, -0x10);
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 5);
+  field20 = reinterpret_cast<short(__cdecl*)(short, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 5);
   SetMapTileStateByteAndNotifyObserver(field20, -0x12);
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 0);
+  field20 = reinterpret_cast<short(__cdecl*)(short, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 0);
   SetMapTileStateByteAndNotifyObserver(field20, -0x14);
 }
 
 // FUNCTION: IMPERIALISM 0x00560580
 void TZone::SetMapOrderUiFlag(int flag) {
-  void* uiObserver = g_pUiRuntimeContext != 0
-                         ? *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf0)
-                         : 0;
-  char* tileRecord =
+  void** uiObserverSlot = g_pUiRuntimeContext != 0
+                              ? reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf0)
+                              : 0;
+  char* tileStateByte =
       reinterpret_cast<char*>(*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc) +
                                 0x16 + field20 * 0x24);
-  if (uiObserver == 0) {
-    return;
+  if (((static_cast<unsigned char>(flag != 0) != static_cast<unsigned char>(*tileStateByte < 0 ? 1 : 0)) &&
+       (uiObserverSlot != 0)) &&
+      (*uiObserverSlot != 0)) {
+    void* uiObserver = *uiObserverSlot;
+    char sign = static_cast<char>((-(static_cast<int>(flag != 0)) & 2) - 1);
+    if (QueryPortZoneCapability() != 0) {
+      SetMapTileStateByteAndNotifyObserver(field20, static_cast<int>(sign) * 0xe);
+      reinterpret_cast<void(__fastcall*)(void*, int)>(
+          *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, field20);
+      return;
+    }
+    int magnitude = static_cast<int>(sign);
+    SetMapTileStateByteAndNotifyObserver(field20, magnitude << 4);
+    reinterpret_cast<void(__fastcall*)(void*, int)>(
+        *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, field20);
+    field20 = reinterpret_cast<short(__cdecl*)(short, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(
+        field20, 5);
+    SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x12);
+    reinterpret_cast<void(__fastcall*)(void*, int)>(
+        *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, field20);
+    field20 = reinterpret_cast<short(__cdecl*)(short, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(
+        field20, 0);
+    SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x14);
+    reinterpret_cast<void(__fastcall*)(void*, int)>(
+        *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, field20);
   }
-  if (static_cast<unsigned char>(flag != 0 ? 1 : 0) ==
-      static_cast<unsigned char>(tileRecord[0] < 0 ? 1 : 0)) {
-    return;
-  }
-  char sign = static_cast<char>(flag != 0 ? 2 : -1);
-  if (QueryPortZoneCapability() != 0) {
-    SetMapTileStateByteAndNotifyObserver(field20, static_cast<int>(sign) * 0xe);
-    reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-        *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, 0, field20);
-    return;
-  }
-  int magnitude = static_cast<int>(sign);
-  SetMapTileStateByteAndNotifyObserver(field20, magnitude << 4);
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, 0, field20);
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 5);
-  SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x12);
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, 0, field20);
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 0);
-  SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x14);
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, 0, field20);
 }

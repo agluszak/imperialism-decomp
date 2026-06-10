@@ -59,6 +59,7 @@ public:
   CString displayName;    // EH member; ctor initializes via empty shared-string ref
 
   TZone();
+  virtual ~TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
 
   // 0x0055fc40 — Ghidra labeled InputState::; dispatches through TZone vtable 0x50/0x58.

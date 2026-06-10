@@ -15,7 +15,7 @@
 
 extern "C" {
 extern void* g_pMapActionContextListHead;
-char g_pClassDescTPortZone = 0;
+extern char g_pClassDescTPortZone;
 }
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
@@ -51,9 +51,8 @@ void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
     void** observerSlot =
         reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf0);
     if (*observerSlot != 0) {
-      reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-          *reinterpret_cast<int*>(*reinterpret_cast<int*>(*observerSlot) + 0x1d8))(*observerSlot,
-                                                                                    0, tileIndex);
+      reinterpret_cast<void(__fastcall*)(void*, int)>(
+          *reinterpret_cast<int*>(*reinterpret_cast<int*>(*observerSlot) + 0x1d8))(*observerSlot, tileIndex);
     }
   }
 }

@@ -1,6 +1,16 @@
 # Worklog
 
 - **Timestamp:** 2026-06-10
+- **Command:** Port `ScoreCoastalTileForContextAndCityStateAffinity` (`0x55ff70`); `TPortZone::CreateTPortZone`/`GetRuntimeClass`; `TZone::~TZone` + `DeleteUnlinkedZone` tail in `RemoveZoneFromGlobalListAndRelease`; fix `SetMapOrderUiFlag`/`SetMapActionContext` observer + step-tile shapes; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just vtable-gate` → `just compare-canaries`
+- **Score Delta:** `0x562880` **missing → 31.11%** (scalar dtor pairs); `0x55ff70` **43.77%**; `0x560150` **34.84%**; `0x55fb60` **30.48%**; `0x560580` **21.43%**; `0x55ec60` **84%**; `0x5615e0` **17.65%**; `0x415ce0`/`0x4798d0` unchanged; vtable-gate pass; canaries 7/8.
+- **Description:** Score function returns EBX heuristic (base `0x1388`, ±`0x64`/`0xa`, port-zone `−1`); 3-arg cdecl matches stack `ESP+0x1c` city-state slot. `SetMapOrderUiFlag` uses combined guard + `(-(flag!=0)&2)-1` sign; uiObserver notify via `__fastcall(void*,int)` bridge. Next: shape `CreateTPortZone` EH frame, slot `0x08` (`0x485e90`), raise scalar dtor/RemoveZone tail without inlining `delete`.
+
+- **Timestamp:** 2026-06-10
+- **Command:** TZone shared vtable slots `0x20`/`0x24`: port `InvokeObjectVtableMethod24` (`0x4798d0`) + `HandleTurnEventVtableSlot24CopyPayloadBuffer` (`0x415ce0`); shape `FindBestCoastalTile` loop; attempted scalar-dtor via `delete this` in `RemoveZoneFromGlobalListAndRelease` (reverted — score 89%→25%); `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just vtable-gate` → `just compare-canaries`
+- **Score Delta:** `0x415ce0` **41%** (new pair); `0x4798d0` **50%** (new pair); `0x560150` **~31%**; `0x55ec60` **89%**; `0x562880` still missing (SYNTHETIC scalar dtor not emitted); `0x55fb60`/`0x560580` unchanged ~29%/20%.
+- **Description:** Shared slot `0x24` body uses `GetRuntimeClass()` twice + `CreateObject_606ff2` memcpy loop. Slot `0x20` forwards to slot `0x24` virtual. Scalar dtor still needs a real `delete`/dtor user without corrupting `RemoveZoneFromGlobalListAndRelease` shape. Next: slot `0x08` (`0x485e90` TControl dispatch), `SetMapOrderUiFlag` uiObserver `+0x1d8` facade, promote `ScoreCoastalTile` (`0x55ff70`).
+
+- **Timestamp:** 2026-06-10
 - **Command:** Port `TZone::FindBestCoastalTileForContextAndCityStateByHeuristic` (`0x560150`) from Ghidra autogen (coastal-tile scan + spiral search); `just build` → `just compare` → `just compare-canaries`
 - **Score Delta:** `0x560150` **0.9% → 31.75%**; `0x55fb60` **29.13%**; `0x560580` **20.10%**; canaries 7/8 (unchanged).
 - **Description:** Replaced stub with full neighborhood scan and spiral fallback using `thunk_FindPortZoneByTile`, `thunk_ScoreCoastalTileForContextAndCityStateAffinity`, `thunk_AdvanceSpiralSearchStateAndStepHexCoordinates`, `thunk_StepHexRowColByDirectionWithWrapRules`. Remaining shape work: score-return convention, spiral ECX fastcall tail, and dependent callers.
