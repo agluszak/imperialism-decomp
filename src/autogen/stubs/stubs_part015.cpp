@@ -491,22 +491,6 @@ undefined4 BuildHexAreaTileIndexList(void)
   return 0;
 }
 
-// ghidra_name ComputeHexNeighborTileIndices
-// ghidra_proto void __cdecl ComputeHexNeighborTileIndices(short nTileIndex, short * pnNeighborTiles, char fWrapHorizontally)
-// FUNCTION: IMPERIALISM 0x00512b50
-undefined4 ComputeHexNeighborTileIndices(void)
-{
-  return 0;
-}
-
-// ghidra_name GetWrappedHexNeighborTileIndexByDirection
-// ghidra_proto void __cdecl GetWrappedHexNeighborTileIndexByDirection(void)
-// FUNCTION: IMPERIALISM 0x00512cc0
-undefined4 GetWrappedHexNeighborTileIndexByDirection(void)
-{
-  return 0;
-}
-
 // ghidra_name GetHexDirectionBetweenTiles
 // ghidra_proto short __cdecl GetHexDirectionBetweenTiles(short nFromTileIndex, short nToTileIndex)
 // FUNCTION: IMPERIALISM 0x00512dd0

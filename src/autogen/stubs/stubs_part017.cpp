@@ -1187,14 +1187,6 @@ undefined4 GetMapActionContextByTileIndex(void)
   return 0;
 }
 
-// ghidra_name FindFirstPortZoneContextByNation
-// ghidra_proto void __cdecl FindFirstPortZoneContextByNation(void)
-// FUNCTION: IMPERIALISM 0x00563540
-undefined4 FindFirstPortZoneContextByNation(void)
-{
-  return 0;
-}
-
 // ghidra_name EnsurePortZoneForTile
 // ghidra_proto void __stdcall EnsurePortZoneForTile(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x005635e0

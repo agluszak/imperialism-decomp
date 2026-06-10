@@ -35,7 +35,7 @@ public:
   virtual void dummy27() = 0;
   virtual void dummy28() = 0;
   virtual void dummy29() = 0;
-  virtual void AppendWordSlot78(const void* data) = 0;                 // slot 78
+  virtual void AppendBytesSlot78(const void* data, int sizeBytes) = 0; // slot 78
   virtual void AppendBytesSlot7C(const void* data, int sizeBytes) = 0; // slot 7C
   virtual void dummy31() = 0;
   virtual void dummy32() = 0;

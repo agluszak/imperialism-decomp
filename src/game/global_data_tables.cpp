@@ -53,11 +53,22 @@ short g_DAT_006966d0_Value_006966D0[16] = {0};
 // as garrison strength in TGreatPower slot 0x11 (0x004d87e0).
 short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
 
+short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
+short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
+
 // Navy/order composite score tables (0x550b60 / SumNavyOrderPriority family).
 short g_Resolve_Map_Order_LookupTable_00698108[9 * 64] = {0};
 short g_Calculate_Mission_Order_LookupTable_0069810C[9 * 64] = {0};
 short g_Task_Force_Order_LookupTable_00698110[0x24 * 32] = {0};
 short g_Navy_Order_Priority_LookupTable_00698118[9 * 64] = {0};
+
+// Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
+float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
+double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
+double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.0;
+double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.0;
+double g_Recompute_Nation_Order_LookupTable_0065AA08 = 0.0;
+unsigned short g_Recompute_Nation_Order_LookupTable_00697870[0x10] = {0};
 
 // Random-roll scaling constants for TAutoGreatPower::AssignNeedSlotFromSourceSlot19C
 // (0x004e7680): 1/255 and 32767.

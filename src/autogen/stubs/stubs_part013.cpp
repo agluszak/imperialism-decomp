@@ -2299,14 +2299,6 @@ undefined4 DestroyNationStateOwnedRegionListAndRelease(void)
   return 0;
 }
 
-// ghidra_name TCountry::DeserializeRecruitScenarioAndInstantiateOrders
-// ghidra_proto void __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int arg1)
-// FUNCTION: IMPERIALISM 0x004d6bf0
-undefined4 DeserializeRecruitScenarioAndInstantiateOrders(void)
-{
-  return 0;
-}
-
 // ghidra_name TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60
 // ghidra_proto void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(void * pMessage)
 // FUNCTION: IMPERIALISM 0x004d6e60

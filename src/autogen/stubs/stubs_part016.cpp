@@ -1299,22 +1299,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053e690(void)
   return 0;
 }
 
-// ghidra_name ComputeDefendProvinceMissionCrossNationSupportVectorScore
-// ghidra_proto void __cdecl ComputeDefendProvinceMissionCrossNationSupportVectorScore(void)
-// FUNCTION: IMPERIALISM 0x0053e6e0
-undefined4 ComputeDefendProvinceMissionCrossNationSupportVectorScore(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeDefendProvinceMissionLocalSupportVectorScore
-// ghidra_proto void __cdecl ComputeDefendProvinceMissionLocalSupportVectorScore(int arg1)
-// FUNCTION: IMPERIALISM 0x0053ea70
-undefined4 ComputeDefendProvinceMissionLocalSupportVectorScore(void)
-{
-  return 0;
-}
-
 // ghidra_name TDefendProvinceMission::CleanupDefendProvinceMissionAndReleaseChildContext
 // ghidra_proto void __thiscall CleanupDefendProvinceMissionAndReleaseChildContext(void)
 // FUNCTION: IMPERIALISM 0x0053ebe0

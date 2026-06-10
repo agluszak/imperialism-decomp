@@ -1,4 +1,5 @@
 address|name|prototype
+0x004d6bf0|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders|void __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int streamState)
 0x0058af60|thunk_DestructTViewBaseState_0058AF60|void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar)
 0x005885f0|thunk_DestructTViewBaseState_005885F0|void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar)
 0x004041e7|thunk_DestructTViewBaseState_0058ABD0|void __fastcall thunk_DestructTViewBaseState_0058ABD0(TView* amountBar)

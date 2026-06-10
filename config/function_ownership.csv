@@ -243,6 +243,7 @@ address|target_cpp|ownership|note
 4d6750|src/game/noop_slots.cpp|manual|marker_sync
 4d6770|src/game/noop_slots.cpp|manual|marker_sync
 4d6790|src/game/noop_slots.cpp|manual|marker_sync
+4d6bf0|src/game/TGreatPower_scenario.cpp|manual|marker_sync
 4d71b0|src/game/TGreatPower.cpp|manual|marker_sync
 4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
 4d7ae0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -537,6 +538,8 @@ address|target_cpp|ownership|note
 500220|src/game/noop_slots.cpp|manual|marker_sync
 5033e0|src/game/noop_slots.cpp|manual|marker_sync
 503400|src/game/noop_slots.cpp|manual|marker_sync
+512b50|src/game/hex_map_helpers.cpp|manual|marker_sync
+512cc0|src/game/hex_map_helpers.cpp|manual|marker_sync
 515de0|src/game/noop_slots.cpp|manual|marker_sync
 515e00|src/game/TMapOrderContext.cpp|manual|marker_sync
 517c30|src/game/TGlobalMapState.cpp|manual|marker_sync
@@ -598,6 +601,8 @@ address|target_cpp|ownership|note
 53aa70|src/game/noop_slots.cpp|manual|marker_sync
 53c1b0|src/game/noop_slots.cpp|manual|marker_sync
 53d6f0|src/game/noop_slots.cpp|manual|marker_sync
+53e6e0|src/game/mission_helpers.cpp|manual|marker_sync
+53ea70|src/game/mission_helpers.cpp|manual|marker_sync
 53f140|src/game/noop_slots.cpp|manual|marker_sync
 53f240|src/game/noop_slots.cpp|manual|marker_sync
 53faa0|src/game/noop_slots.cpp|manual|marker_sync
@@ -683,6 +688,7 @@ address|target_cpp|ownership|note
 562880|src/game/TZone.cpp|manual|marker_sync
 562d90|src/game/TMapOrderContext.cpp|manual|marker_sync
 5634a0|src/game/TMapOrderContext.cpp|manual|marker_sync
+563540|src/game/map_zone_helpers.cpp|manual|marker_sync
 569d50|src/game/noop_slots.cpp|manual|marker_sync
 56e370|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e640|src/game/TTwoPicSlider.cpp|manual|marker_sync
@@ -967,7 +973,7 @@ address|target_cpp|ownership|note
 5c2df0|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c2f50|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c3190|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
-5c3490|src/game/TGreatPower.cpp|manual|marker_sync
+5c3490|src/game/TStationedUnitNode.cpp|manual|marker_sync
 5d7190|src/game/noop_slots.cpp|manual|marker_sync
 5dbd10|src/game/noop_slots.cpp|manual|marker_sync
 5dee80|src/game/noop_slots.cpp|manual|marker_sync

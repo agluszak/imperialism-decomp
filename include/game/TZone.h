@@ -70,6 +70,8 @@ public:
   void HandleKeyDown(int key_id);
 };
 
+TZone* FindFirstPortZoneContextByNation(short nationSlot);
+
 // Nation-sized map-action context embedded in TMapOrderContext::contextArray (stride 0x48).
 struct TMapNationActionContext {
   char storage[0x48];

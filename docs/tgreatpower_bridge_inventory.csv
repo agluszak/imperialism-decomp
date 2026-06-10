@@ -1,14 +1,39 @@
-bridge_name,line,blocked_by_class,recovery_method,facade_rows
-MinisterSkillFloat,89,TMinister,skill table lookup,
-QueueObject_WritePackedIntAtSlot38,589,TIndexAndRankList,AddEntrySlot38,VCall_QueueObject_WritePackedIntAtSlot38
-Queue_ApplyMessageSlot14,999,TPtrList,ResetSlot14,VCall_Queue_ApplyMessageSlot14
-Queue_GetCountSlot48,1003,TPtrList,GetCountSlot48,VCall_Queue_RefreshSlot48
-Queue_ReadIndexSlot4C,1007,TPtrList,GetTrackedEntrySlot4C,VCall_Queue_ReadIndexSlot4C
-AllocateMilitaryUnitOrderObject,REMOVED,TMilitaryUnitOrderState,new TMilitaryUnitOrderState(),
-InitializeMilitaryRecruitOrder,REMOVED,TMilitaryUnitOrderState,InitializeRecruitOrderState,
-ComputeDefendProvinceMissionLocalSupportScore,924,TGlobalMapState/TZone,static score method,
-ComputeNavyOrderScoreForExactSourceNation,944,TGlobalMapState,navy score helper,
-CreateMissionObjectByKindAndNodeContext,976,TMission,factory ctor,
-thunk_ConstructTForeignMinister,REMOVED,TForeignMinister,new TForeignMinister(),
-thunk_ConstructTDefenseMinisterBaseState,REMOVED,TDefenseMinister,new TDefenseMinister(),
-thunk_WrapperFor_thunk_ConstructTMinister_At004be840,REMOVED,TCityInteriorMinister,new TCityInteriorMinister(),
+bridge_name,line,blocked_by_class,recovery_method,facade_rows,priority,status
+MinisterSkillFloat,89,TMinister,skill table lookup,,P3,pending
+QueueObject_WritePackedIntAtSlot38,589,TIndexAndRankList,AddEntrySlot38,VCall_QueueObject_WritePackedIntAtSlot38,P2,done
+Queue_ApplyMessageSlot14,828,TPtrList,ResetSlot14(void* message),VCall_Queue_ApplyMessageSlot14,P1,done
+Queue_GetCountSlot48,833,TPtrList,GetCountSlot48(),VCall_Queue_RefreshSlot48,P1,done
+Queue_ReadIndexSlot4C,837,TPtrList,GetTrackedEntrySlot4C(int),VCall_Queue_ReadIndexSlot4C,P1,done
+GetCityBuildingProductionValueBySlot,737,TCity,GetBuildingProductionValueBySlot,,P1,done
+FindFirstPortZoneContextByNation,762,TZone,map_zone_helpers,,P1,done
+GetWrappedHexNeighborTileIndexByDirection,1671,TGlobalMapState,hex_map_helpers,,P1,done
+thunk_DeserializeRecruitScenarioAndInstantiateOrders,1190,TGreatPower,TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders,,P2,done
+TStationedUnitNode,2013,TStationedUnitNode,extract class + GetUnitMovementClassId,,P1,done
+MilitaryUnitEntryView,4796,TMilitaryUnit,typed list node,,P1,done
+AllocateMilitaryUnitOrderObject,REMOVED,TMilitaryUnitOrderState,new TMilitaryUnitOrderState(),,done,done
+InitializeMilitaryRecruitOrder,REMOVED,TMilitaryUnitOrderState,InitializeRecruitOrderState,,done,done
+ComputeDefendProvinceMissionLocalSupportScore,752,TGlobalMapState/TZone,mission_helpers.cpp,,P2,done
+ComputeDefendProvinceMissionCrossNationSupportScore,721,TGlobalMapState/TZone,mission_helpers.cpp,,P2,done
+ComputeNavyOrderScoreForExactSourceNation,772,TGlobalMapState,navy score helper,,P2,pending
+CreateMissionObjectByKindAndNodeContext,804,TMission,thunk wrapper in mission_helpers.h,,P2,deferred
+thunk_ConstructTForeignMinister,REMOVED,TForeignMinister,new TForeignMinister(),,done,done
+thunk_ConstructTDefenseMinister,REMOVED,TDefenseMinister,new TDefenseMinister(),,done,done
+thunk_WrapperFor_thunk_ConstructTMinister,REMOVED,TCityInteriorMinister,new TCityInteriorMinister(),,done,done
+ReadGlobalPointer,274,diplomacy_globals,g_p* typed globals,,P3,done
+ReadGlobalPointerArray,278,diplomacy_globals,g_apNationStates,,P3,done
+ReadNationStateSlot,288,diplomacy_globals,g_apNationStates[slot],,P3,done
+ReadTerrainDescriptorSlot,296,diplomacy_globals,g_apTerrainTypeDescriptorTable,,P3,done
+Stream_ReadAtSlot3C,395,TStreamView,direct ReadAt3C in minister/map paths,,P3,partial
+Stream_WriteRawAtSlot78,1426,TStreamView,WriteRaw78,,P3,pending
+List_ResetSlot14,415,TPtrList,direct ResetSlot14,,P3,partial
+List_GetCountSlot28,419,TPtrList,GetCountOrReleaseSlot28,,P3,partial
+List_GetIntByOrdinalSlot24,424,TPtrList,GetIntByOrdinalSlot24,,P3,partial
+List_GetCountSlot48,428,TPtrList,GetCountSlot48,,P3,partial
+List_GetTrackedEntrySlot4C,432,TPtrList,GetTrackedEntrySlot4C,,P3,partial
+Message_AppendBytesSlot78,819,TMessageObject,direct AppendBytesSlot78,,P3,partial
+Message_WriteEntrySlotB4,823,TMessageObject,WriteEntrySlotB4,,P3,pending
+TTrackedObjectListEntryView,210,TPtrList,TTrackedObjectListEntry.h,,P3,done
+TProposalQueueCountView,205,TQueueObject,GetEntryCount(),,P3,done
+TMarkerReceiverView,2026,TMarkerReceiver,TMarkerReceiverView.h,,P3,done
+TPortZoneRefitView,2092,TZone,use TZone port fields,,P3,done
+CallEligibilityThunkWithManager,5826,TDiplomacyTurnStateManager,IsNationSlotEligibleForEventProcessing,,P3,pending

@@ -5,6 +5,7 @@
 #include "game/TAdmiral.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
+#include "game/TZone.h"
 #include "game/TDiplomacyTurnStateManager.h"
 
 #include "decomp_types.h"
@@ -13,7 +14,6 @@ extern "C" void* g_pActiveMapOrderContext;
 extern "C" void* g_apMinorNationCapabilityObjects[];
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 thunk_FindFirstPortZoneContextByNation(void);
 undefined4 thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(void);
 undefined4 thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void);
 undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void);
@@ -63,9 +63,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Navy primary/secondary order (serializedStatusFlags[0] == '2').
   if (this->serializedStatusFlags[0] == 0x32) {
     short zoneIndex = CityOrderActiveZoneIndex();
-    void* portZone = reinterpret_cast<void*(__fastcall*)(void*, int, int, int)>(
-        thunk_FindFirstPortZoneContextByNation)(g_pActiveMapOrderContext, nationSlot, nationSlot,
-                                                0);
+    void* portZone = FindFirstPortZoneContextByNation(nationSlot);
     reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
         thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(zoneIndex, portZone, nationSlot, 0);
 

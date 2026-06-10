@@ -8,6 +8,7 @@
 #include "game/CIterator.h"
 #include "game/TTownMarker.h"
 #include "game/TUiRuntimeContext.h"
+#include "game/UiRuntimeContext.h"
 #include "game/TCity.h"
 #include "game/TMinister.h"
 #include "game/TForeignMinister.h"
@@ -16,6 +17,10 @@
 #include "game/TMilitaryUnitOrderState.h"
 #include "game/TIndexAndRankList.h"
 #include "game/TGlobalMapState.h"
+#include "game/TStationedUnitNode.h"
+#include "game/TMilitaryUnit.h"
+#include "game/hex_map_helpers.h"
+#include "game/TZone.h"
 // Manual decompilation file.
 // Seeded from ghidra autogen and normalized into compile-safe wrappers.
 
@@ -106,16 +111,11 @@ undefined4 BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 undefined4 AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
 undefined4 ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
 undefined4 InitializeCivWorkOrderState(void);
-undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void);
 undefined4 thunk_GetShortAtOffset14OrInvalid(void);
 undefined4 thunk_ContainsPointerArrayEntryMatchingByteKey(void);
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
-undefined4 thunk_GetWrappedHexNeighborTileIndexByDirection(void);
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 undefined4 thunk_GetInt32Field30(void);
-undefined4 thunk_ComputeDefendProvinceMissionLocalSupportVectorScore(void);
-undefined4 thunk_ComputeDefendProvinceMissionCrossNationSupportVectorScore(void);
-undefined4 thunk_FindFirstPortZoneContextByNation(void);
 undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation(void);
 undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter(void);
 undefined4 thunk_AssignStringSharedRefAndReturnThis(void);
@@ -158,7 +158,6 @@ undefined4 thunk_InitializeCityModel(void);
 undefined4 thunk_InitializeCityProductionState(void);
 undefined4 WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void);
 
-undefined4 thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089(void);
 undefined4 thunk_ConstructFrogCityMarker(void);
 undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void);
 undefined4 thunk_GetActiveNationId(void);
@@ -176,13 +175,11 @@ unsigned int __cdecl GetTGreatPowerClassNamePointer(void) {
 }
 
 undefined4 thunk_InitializeCivUnitOrderObject(void);
-undefined4 thunk_GetCityBuildingProductionValueBySlot(void);
 undefined4 thunk_SetGlobalRegionDevelopmentStageByte(void);
 undefined4 thunk_DispatchCityRedrawInvalidateEvent(void);
 undefined4 GenerateThreadLocalRandom15(void);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
-undefined4 thunk_GetUnitMovementClassId(void); // 0x00407e64 -> 0x005c3490
 undefined4 thunk_DispatchJoinEmpireModeEventPacket24_27(void);
 undefined4 thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void);
 undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void);
@@ -201,17 +198,9 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/TZone.h"
 #include "game/TCivWorkOrderState.h"
 #include "game/TAdmiral.h"
-
-struct TProposalQueueCountView {
-  unsigned char pad00[8];
-  short count;
-};
-
-struct TTrackedObjectListEntryView {
-  void* object;
-  unsigned short pad04;
-  short regionIndex;
-};
+#include "game/TMarkerReceiverView.h"
+#include "game/TTrackedObjectListEntry.h"
+#include "game/mission_helpers.h"
 
 #include "game/TMessageObject.h"
 #include "game/TQueueObject.h"
@@ -271,39 +260,8 @@ enum {
   kTGreatPowerOffset_actionMetricByQuarter = offsetof(TGreatPower, actionMetricByQuarter),
 };
 
-static __inline void* ReadGlobalPointer(unsigned int address) {
-  return *reinterpret_cast<void**>(address);
-}
-
-static __inline void** ReadGlobalPointerArray(unsigned int address) {
-  return reinterpret_cast<void**>(address);
-}
-
-static __inline void* ReadGlobalPointerArraySlot(unsigned int address, int index) {
-  return ReadGlobalPointerArray(address)[index];
-}
-
-// Major-nation state slots hold TGreatPower(-derived) objects; secondary slots
-// hold TMinor objects; the terrain table holds TTerrainDescriptor objects.
-static __inline TGreatPower* ReadNationStateSlot(int nationSlot) {
-  return g_apNationStates[nationSlot];
-}
-
-static __inline TMinor* ReadSecondaryNationStateSlot(int nationSlot) {
-  return g_apSecondaryNationStateSlots[nationSlot];
-}
-
-static __inline TTerrainDescriptor* ReadTerrainDescriptorSlot(int nationSlot) {
-  return reinterpret_cast<TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[nationSlot]);
-}
-
-static __inline TGlobalMapState* ReadGlobalMapStateScoreView(void) {
-  return g_pGlobalMapState;
-}
-
-static __inline TLocalizationRuntime* ReadLocalizationRuntimeView(void) {
-  return g_pLocalizationTable;
-}
+extern "C" void* g_pNationInteractionStateManager;
+extern "C" UiRuntimeContext* g_pUiRuntimeContext;
 
 static __inline TTerrainStateRecordView*
 GlobalMapState_GetTerrainRecord(const TGlobalMapState* globalMapState, int regionIndex) {
@@ -405,7 +363,7 @@ static __inline char Stream_ReadByteAtSlotB0(void* stream, void* outByte) {
 }
 
 static __inline short ProposalQueue_GetCount(void* queue) {
-  return static_cast<const TProposalQueueCountView*>(queue)->count;
+  return static_cast<short>(static_cast<TQueueObject*>(queue)->GetEntryCount());
 }
 
 static __inline short* ProposalQueue_GetEntryAt1Based(void* queue, int queueIndex) {
@@ -429,8 +387,8 @@ static __inline int List_GetCountSlot48(void* list) {
   return static_cast<TPtrList*>(list)->GetCountSlot48();
 }
 
-static __inline TTrackedObjectListEntryView* List_GetTrackedEntrySlot4C(void* list, int ordinal) {
-  return static_cast<TTrackedObjectListEntryView*>(
+static __inline TTrackedObjectListEntry* List_GetTrackedEntrySlot4C(void* list, int ordinal) {
+  return static_cast<TTrackedObjectListEntry*>(
       static_cast<TPtrList*>(list)->GetTrackedEntrySlot4C(ordinal));
 }
 
@@ -542,7 +500,7 @@ static __inline int DecodeTerrainNationSlot(short encodedNationSlot, void* terra
 
 static __inline int ResolveTerrainNationSlotFromTarget(int targetNationSlot) {
   void* terrainDescriptor =
-      ReadGlobalPointerArraySlot(kAddrTerrainTypeDescriptorTable, targetNationSlot);
+      g_apTerrainTypeDescriptorTable[targetNationSlot];
   short encodedNationSlot = TerrainDescriptor_GetEncodedNationSlot(terrainDescriptor);
   return DecodeTerrainNationSlot(encodedNationSlot, terrainDescriptor);
 }
@@ -653,7 +611,7 @@ static __inline void* AllocateBattleListOwnerWithLinkedSentinel(void) {
 }
 
 static __inline bool IsQuarterlyLocalizationGateOpen(void) {
-  TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationTable = g_pLocalizationTable;
   if (localizationTable == 0) {
     return false;
   }
@@ -734,11 +692,6 @@ static __inline void SecondaryState_CallSlot4C(TMinor* secondaryState, int sourc
   secondaryState->VTableSlot4C_Provisional(sourceNation, modeValue);
 }
 
-static __inline int GetCityBuildingProductionValueBySlot(void* cityRecord, int slot) {
-  return static_cast<TCity*>(cityRecord)
-      ->GetBuildingProductionValueBySlot(static_cast<short>(slot));
-}
-
 static __inline void SetGlobalRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   reinterpret_cast<void(__cdecl*)(short, unsigned char)>(thunk_SetGlobalRegionDevelopmentStageByte)(
       regionId, stage);
@@ -749,21 +702,6 @@ static __inline void DispatchCityRedrawInvalidateEvent(short regionId) {
 }
 
 // TEMP: preamble bridge cluster — map-action score wrappers (retire to TGlobalMapState/TZone).
-static __inline float ComputeDefendProvinceMissionLocalSupportScore(int nodeContext) {
-  return reinterpret_cast<float(__cdecl*)(int)>(
-      thunk_ComputeDefendProvinceMissionLocalSupportVectorScore)(nodeContext);
-}
-
-static __inline float ComputeDefendProvinceMissionCrossNationSupportScore(int nodeContext) {
-  return reinterpret_cast<float(__cdecl*)(int)>(
-      thunk_ComputeDefendProvinceMissionCrossNationSupportVectorScore)(nodeContext);
-}
-
-static __inline TZone* FindFirstPortZoneContextByNation(short nationSlot) {
-  return reinterpret_cast<TZone*(__cdecl*)(short)>(thunk_FindFirstPortZoneContextByNation)(
-      nationSlot);
-}
-
 static __inline void* ReallocateBufferWithAllocatorTracking(void* buffer, int sizeBytes) {
   return reinterpret_cast<void*(__cdecl*)(void*, int)>(ReallocateHeapBlockWithAllocatorTracking)(
       buffer, sizeBytes);
@@ -801,42 +739,21 @@ static __inline short GetShortAtOffset14OrInvalidValue(void) {
   return reinterpret_cast<short(__cdecl*)(void)>(thunk_GetShortAtOffset14OrInvalid)();
 }
 
-static __inline void* CreateMissionObjectByKindAndNodeContext(int sourceNation, int missionKind,
-                                                              int arg2, int arg3, int arg4) {
-  return reinterpret_cast<void*(__cdecl*)(int, int, int, int, int)>(
-      thunk_CreateMissionObjectByKindAndNodeContext)(sourceNation, missionKind, arg2, arg3, arg4);
-}
-
 static __inline void TemporarilyClearAndRestoreUiInvalidationFlag(const char* path, int line) {
   reinterpret_cast<void(__cdecl*)(const char*, int)>(
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(path, line);
 }
 
 static __inline void Message_AppendWordSlot78(void* message, const void* data) {
-  reinterpret_cast<TMessageObject*>(message)->AppendWordSlot78(data);
+  reinterpret_cast<TMessageObject*>(message)->AppendBytesSlot78(data, 2);
 }
 
 static __inline void Message_AppendBytesSlot78(void* message, const void* data, int sizeBytes) {
-  reinterpret_cast<TMessageObject*>(message)->AppendBytesSlot7C(data, sizeBytes);
+  reinterpret_cast<TMessageObject*>(message)->AppendBytesSlot78(data, sizeBytes);
 }
 
 static __inline void Message_WriteEntrySlotB4(void* message, int value, int flags) {
   reinterpret_cast<TMessageObject*>(message)->WriteEntrySlotB4(value, flags);
-}
-
-// TEMP: bridge until TPtrList stream/iteration slots are called directly.
-static __inline void Queue_ApplyMessageSlot14(void* queue, void* message) {
-  static_cast<TPtrList*>(queue)->ResetSlot14();
-  (void)message;
-}
-
-static __inline int Queue_GetCountSlot48(void* queue) {
-  return static_cast<TPtrList*>(queue)->GetCountSlot48();
-}
-
-static __inline int Queue_ReadIndexSlot4C(void* queue, int mode, int index) {
-  (void)mode;
-  return reinterpret_cast<int>(static_cast<TPtrList*>(queue)->GetTrackedEntrySlot4C(index));
 }
 
 static __inline void* List_GetNodeByOrdinalSlot2C(void* list, int mode, int ordinal) {
@@ -978,7 +895,7 @@ void TGreatPower::CommitCityRecruitmentOrderDelta(void) {
   CString sharedRefA;
   CString sharedRefB;
 
-  TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localization = g_pLocalizationTable;
   if (localization != 0) {
     localization->GetString(static_cast<short>((ctx->specialistMode == 0) ? 0x2718 : 0x2717),
                             ctx->entryId, &sharedRefB);
@@ -1040,7 +957,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
   reinterpret_cast<void(__fastcall*)(int, int)>(
       thunk_InitializeNationStateIdentityAndOwnedRegionList)(reinterpret_cast<int>(this), arg1);
 
-  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0) {
     int runtimeIndex = localizationRuntime->runtimeSubsystemIndex;
     this->treasuryValue10 = ReadGlobalIntStep(kAddrNationRuntimeSubsystemCache, runtimeIndex);
@@ -1187,53 +1104,52 @@ void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
 
 // FUNCTION: IMPERIALISM 0x004d92e0
 void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      thunk_DeserializeRecruitScenarioAndInstantiateOrders_At00409089)(this, 0, arg1);
+  this->DeserializeRecruitScenarioAndInstantiateOrders(arg1);
 
-  void* stream = reinterpret_cast<void*>(arg1);
-  Stream_ReadAtSlot3C(stream, &this->diplomacyEligibilityA0, 1);
-  Stream_ReadAtSlot3C(stream, &this->diplomacyCounterA2, 2);
-  Stream_ReadAtSlot3C(stream, &this->tradeCapacity, 2);
-  Stream_ReadAtSlot3C(stream, &this->needCapA6, 2);
-  Stream_ReadAtSlot3C(stream, &this->needsOverCapFlag, 2);
+  TStreamView* stream = reinterpret_cast<TStreamView*>(arg1);
+  stream->ReadAt3C(&this->diplomacyEligibilityA0, 1);
+  stream->ReadAt3C(&this->diplomacyCounterA2, 2);
+  stream->ReadAt3C(&this->tradeCapacity, 2);
+  stream->ReadAt3C(&this->needCapA6, 2);
+  stream->ReadAt3C(&this->needsOverCapFlag, 2);
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) < 0x3E) {
-    Stream_ReadAtSlot3C(stream, &this->grantTotalCost, 2);
+    stream->ReadAt3C(&this->grantTotalCost, 2);
   } else {
-    Stream_ReadAtSlot3C(stream, &this->grantTotalCost, 4);
+    stream->ReadAt3C(&this->grantTotalCost, 4);
   }
-  Stream_ReadAtSlot3C(stream, &this->diplomacyCounterB0, 2);
-  Stream_ReadAtSlot3C(stream, this->diplomacyPolicyByNation, 0x2E);
+  stream->ReadAt3C(&this->diplomacyCounterB0, 2);
+  stream->ReadAt3C(this->diplomacyPolicyByNation, 0x2E);
   SwapShortArrayBytes(this->diplomacyPolicyByNation, kNationSlotCount);
-  Stream_ReadAtSlot3C(stream, this->diplomacyGrantByNation, 0x2E);
+  stream->ReadAt3C(this->diplomacyGrantByNation, 0x2E);
   SwapShortArrayBytes(this->diplomacyGrantByNation, kNationSlotCount);
-  Stream_ReadAtSlot3C(stream, this->needCurrentByType, 0x2E);
+  stream->ReadAt3C(this->needCurrentByType, 0x2E);
   SwapShortArrayBytes(this->needCurrentByType, kNationSlotCount);
-  Stream_ReadAtSlot3C(stream, this->needTargetByType, 0x2E);
+  stream->ReadAt3C(this->needTargetByType, 0x2E);
   SwapShortArrayBytes(this->needTargetByType, kNationSlotCount);
-  Stream_ReadAtSlot3C(stream, this->relationDeltaCurrent, 0x2E);
+  stream->ReadAt3C(this->relationDeltaCurrent, 0x2E);
   SwapShortArrayBytes(this->relationDeltaCurrent, kNationSlotCount);
-  Stream_ReadAtSlot3C(stream, this->relationDeltaSnapshot, 0x2E);
+  stream->ReadAt3C(this->relationDeltaSnapshot, 0x2E);
   SwapShortArrayBytes(this->relationDeltaSnapshot, kNationSlotCount);
-  Stream_ReadAtSlot3C(stream, this->diplomacyState1c6, 0x2E);
+  stream->ReadAt3C(this->diplomacyState1c6, 0x2E);
   SwapShortArrayBytes(this->diplomacyState1c6, kNationSlotCount);
 
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x16) {
-    Stream_ReadAtSlot3C(stream, this->diplomacyState1f4, 0x2E);
+    stream->ReadAt3C(this->diplomacyState1f4, 0x2E);
     SwapShortArrayBytes(this->diplomacyState1f4, kNationSlotCount);
   }
 
-  Stream_ReadAtSlot3C(stream, this->diplomacyState222, 0x2E);
+  stream->ReadAt3C(this->diplomacyState222, 0x2E);
   SwapShortArrayBytes(this->diplomacyState222, kNationSlotCount);
-  Stream_ReadAtSlot3C(stream, this->diplomacyState250, 0x2E);
+  stream->ReadAt3C(this->diplomacyState250, 0x2E);
   SwapShortArrayBytes(this->diplomacyState250, kNationSlotCount);
 
-  Stream_ReadAtSlot3C(stream, &this->budgetPoolBase, 4);
-  Stream_ReadAtSlot3C(stream, &this->budgetPoolDelta, 4);
-  Stream_ReadAtSlot3C(stream, this->aidAllocationMatrix, 0x5C0);
+  stream->ReadAt3C(&this->budgetPoolBase, 4);
+  stream->ReadAt3C(&this->budgetPoolDelta, 4);
+  stream->ReadAt3C(this->aidAllocationMatrix, 0x5C0);
   ReverseDwordArrayBytes(this->aidAllocationMatrix, 0x170);
 
-  Stream_ReadAtSlot3C(stream, this->serializedStatusFlags, 0x0D);
-  Stream_ReadAtSlot3C(stream, this->field8d6, 0x1A);
+  stream->ReadAt3C(this->serializedStatusFlags, 0x0D);
+  stream->ReadAt3C(this->field8d6, 0x1A);
   SwapShortArrayBytes(this->field8d6, 0x0D);
 
   this->turnEventQueue->Call18();
@@ -1667,12 +1583,6 @@ char TGreatPower::HasTrackedOrderOfType7(void) {
 
 // --- Slots 0x35/0x37/0x50/0x51/0x55-0x57 ---
 
-// Wrapped-hex neighbor lookup (0x00512cc0, __cdecl(short regionId, short direction)).
-static __inline short GetWrappedHexNeighborTileIndexByDirection(short regionId, short direction) {
-  return static_cast<short>(reinterpret_cast<int(__cdecl*)(short, short)>(
-      thunk_GetWrappedHexNeighborTileIndexByDirection)(regionId, direction));
-}
-
 // FUNCTION: IMPERIALISM 0x004dbac0
 #pragma optimize("y", on)
 void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId) {
@@ -1823,35 +1733,35 @@ unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
   switch (orderKind) {
   case 0:
   case 1: {
-    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 0);
+    int production = this->relationManager->GetBuildingProductionValueBySlot( 0);
     return production + production;
   }
   case 2: {
-    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 4);
+    int production = this->relationManager->GetBuildingProductionValueBySlot( 4);
     return production + production;
   }
   case 3:
   case 4:
-    return GetCityBuildingProductionValueBySlot(this->relationManager, 2);
+    return this->relationManager->GetBuildingProductionValueBySlot( 2);
   case 6: {
-    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 6);
+    int production = this->relationManager->GetBuildingProductionValueBySlot( 6);
     return production + production;
   }
   case 8: {
-    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 1);
+    int production = this->relationManager->GetBuildingProductionValueBySlot( 1);
     return production + production;
   }
   case 9:
   case 10: {
-    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 5);
+    int production = this->relationManager->GetBuildingProductionValueBySlot( 5);
     return production + production;
   }
   case 0xb: {
-    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 3);
+    int production = this->relationManager->GetBuildingProductionValueBySlot( 3);
     return production + production;
   }
   case 0xc: {
-    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 0xb);
+    int production = this->relationManager->GetBuildingProductionValueBySlot( 0xb);
     return production + production;
   }
   case 7: {
@@ -2008,24 +1918,6 @@ void TGreatPower::NotifyWarResetSlot290(void) {}
 
 // --- Slots 0x0d/0x10/0x11/0x17/0x3a and the stationed-unit chain ---
 
-// Stationed military unit chain node (region records link them at +0x98, next at
-// +0x14; unit type id short at +4, as in MilitaryUnitEntryView).
-struct TStationedUnitNode {
-  unsigned char pad00[4];
-  short unitTypeId04;
-  unsigned char pad06[0x14 - 0x06];
-  TStationedUnitNode* next14;
-
-  short GetUnitMovementClassId();
-};
-
-// FUNCTION: IMPERIALISM 0x005c3490
-#pragma optimize("y", on)
-short TStationedUnitNode::GetUnitMovementClassId() {
-  return g_awTacticalUnitCategoryCodeBySlot[this->unitTypeId04];
-}
-#pragma optimize("", on)
-
 static __inline bool IsRecruitQuarterTickGate(short tickRaw) {
   int tick = static_cast<int>(tickRaw);
   int quarterIndex = (tick + ((tick >> 0x1f) & 3)) >> 2;
@@ -2056,34 +1948,38 @@ void TGreatPower::QueueRecruitOrdersForUndergarrisonedRegions(void) {
   if (!IsRecruitQuarterTickGate(tickRaw)) {
     return;
   }
+
   int garrisonThreshold = 3;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
     garrisonThreshold = 4;
   }
+
   int regionCount = this->ownedRegionList->GetCountOrReleaseSlot28();
   int ordinal = 1;
   if (ordinal > regionCount) {
     return;
   }
   do {
-    int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(ordinal);
-    int garrisonCount = 0;
-    TStationedUnitNode* unit;
-    if (static_cast<short>(regionId) < 0 || static_cast<short>(regionId) >= 0x180) {
-      unit = 0;
+    short regionId = static_cast<short>(this->ownedRegionList->GetIntByOrdinalSlot24(ordinal));
+    short garrisonCount = 0;
+    TStationedUnitNode* unitChain;
+    if ((regionId < 0) || (0x17f < regionId)) {
+      unitChain = 0;
     } else {
-      unit = static_cast<TStationedUnitNode*>(
-          g_pGlobalMapState->cityScoreTable[static_cast<short>(regionId)].stationedUnitChain98);
+      unitChain = *reinterpret_cast<TStationedUnitNode**>(
+          reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + 0x98 +
+          static_cast<int>(regionId) * 0xa8);
     }
-    for (; unit != 0; unit = unit->next14) {
-      if (reinterpret_cast<short(__fastcall*)(void*)>(thunk_GetUnitMovementClassId)(unit) == 0) {
-        ++garrisonCount;
+    for (; unitChain != 0; unitChain = unitChain->next14) {
+      if (unitChain->GetUnitMovementClassId() == 0) {
+        garrisonCount = static_cast<short>(garrisonCount + 1);
       }
     }
-    if (static_cast<short>(garrisonCount) < garrisonThreshold) {
-      this->CreateMilitaryRecruitOrderForNode(regionId);
+    if (garrisonCount < static_cast<short>(garrisonThreshold)) {
+      this->CreateMilitaryRecruitOrderForNode(static_cast<int>(regionId));
     }
-    ++ordinal;
+    ordinal = ordinal + 1;
+    regionCount = this->ownedRegionList->GetCountOrReleaseSlot28();
   } while (ordinal <= regionCount);
 }
 #pragma optimize("", on)
@@ -2099,29 +1995,7 @@ char TGreatPower::IsEncodedNationSlotMinus200Equal(int nationCode) {
 }
 #pragma optimize("", on)
 
-// View of the receiver handed to slot 0x3a/0x3b: slot 0x44 adopts the new marker.
-struct TMarkerReceiverView {
-  virtual void r00() = 0;
-  virtual void r01() = 0;
-  virtual void r02() = 0;
-  virtual void r03() = 0;
-  virtual void r04() = 0;
-  virtual void r05() = 0;
-  virtual void r06() = 0;
-  virtual void r07() = 0;
-  virtual void r08() = 0;
-  virtual void r09() = 0;
-  virtual void r10() = 0;
-  virtual void r11() = 0;
-  virtual void r12() = 0;
-  virtual void r13() = 0;
-  virtual void r14() = 0;
-  virtual void r15() = 0;
-  virtual void r16() = 0;
-  virtual void AdoptMarkerSlot44(void* marker) = 0;
-};
-
-// FUNCTION: IMPERIALISM 0x004dfa20
+// --- Scenario seeding / Frog City / influence-map family (slots 0x0c/0x0f/0x34/0x39/
 #pragma optimize("y", on)
 void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   TTownMarker* marker = new TTownMarker();
@@ -2164,15 +2038,6 @@ static __inline TMapOrderContext* ActiveMapOrderContext(void) {
   return static_cast<TMapOrderContext*>(g_pActiveMapOrderContext);
 }
 
-// Port-zone refit view used by the scenario seeding body (0x004d71b0): order array
-// pointer at +0x28, refit state at +0x2c, activation flag at +0x30.
-struct TPortZoneRefitView {
-  unsigned char pad00[0x28];
-  void** orderArray28;
-  unsigned int refitState2c;
-  unsigned int activationFlag30;
-};
-
 // Slot 0x0c / 0x3b store the home region index as a 4-byte block over
 // ownerNationSlot/pad_8a (the original field is an int).
 static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
@@ -2182,7 +2047,7 @@ static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
 // FUNCTION: IMPERIALISM 0x004d71b0
 #pragma optimize("y", on)
 void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
-  TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localization = g_pLocalizationTable;
   if (localization->stateFlag114 > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
         g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex);
@@ -2196,32 +2061,32 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnitOrderState* order = new TMilitaryUnitOrderState();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+        if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         order = new TMilitaryUnitOrderState();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+        if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         order = new TMilitaryUnitOrderState();
         order->InitializeRecruitOrderState(7, regionId, this->nationSlot);
-        if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+        if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 ==
                 0 &&
-            ReadLocalizationRuntimeView()->runtimeSubsystemIndex == 4) {
+            g_pLocalizationTable->runtimeSubsystemIndex == 4) {
           order = new TMilitaryUnitOrderState();
           order->InitializeRecruitOrderState(6, regionId, this->nationSlot);
-          if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+          if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
           order = new TMilitaryUnitOrderState();
           order->InitializeRecruitOrderState(5, regionId, this->nationSlot);
-          if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex < 2) {
+          if (g_pLocalizationTable->runtimeSubsystemIndex < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
           TGreatPower* nation = g_apNationStates[this->nationSlot];
@@ -2234,36 +2099,36 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         if (this->nationSlot < 7) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
           if (nation->diplomacyEligibilityA0 != 0 &&
-              ReadLocalizationRuntimeView()->runtimeSubsystemIndex == 0) {
+              g_pLocalizationTable->runtimeSubsystemIndex == 0) {
             TCity* relationMgr = (nation != 0) ? nation->relationManager : 0;
-            TPortZoneRefitView* portZone = static_cast<TPortZoneRefitView*>(
+            TZone* portZone = static_cast<TZone*>(
                 ActiveMapOrderContext()->FindPortZoneBySelectedTile(relationMgr));
-            if (portZone->refitState2c == 0) {
+            if (portZone->portZoneEntryCount2c == 0) {
               void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                  ReallocateHeapBlockWithAllocatorTracking)(portZone->orderArray28, 8);
+                  ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 8);
               if (grownArray == 0) {
-                portZone->orderArray28 =
-                    static_cast<void**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                        ReallocateHeapBlockWithAllocatorTracking)(portZone->orderArray28, 4));
-                portZone->refitState2c = 1;
+                portZone->portZoneEntries28 = static_cast<int*>(
+                    reinterpret_cast<void*(__cdecl*)(void*, int)>(
+                        ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 4));
+                portZone->portZoneEntryCount2c = 1;
               } else {
-                portZone->orderArray28 = static_cast<void**>(grownArray);
-                portZone->refitState2c = 2;
+                portZone->portZoneEntries28 = static_cast<int*>(grownArray);
+                portZone->portZoneEntryCount2c = 2;
               }
             }
-            if (portZone->activationFlag30 == 0) {
-              portZone->activationFlag30 = 1;
+            if (portZone->portZoneActiveEntryCount30 == 0) {
+              portZone->portZoneActiveEntryCount30 = 1;
             }
             reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
-                thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(3, *portZone->orderArray28,
-                                                                      this->nationSlot, 0);
+                thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(
+                3, reinterpret_cast<void*>(portZone->portZoneEntries28[0]), this->nationSlot, 0);
           }
         }
       }
       this->CreateMilitaryRecruitOrderForNode(regionId);
       this->CreateMilitaryRecruitOrderForNode(regionId);
       this->CreateMilitaryRecruitOrderForNode(regionId);
-      if (ReadLocalizationRuntimeView()->runtimeSubsystemIndex > 2) {
+      if (g_pLocalizationTable->runtimeSubsystemIndex > 2) {
         this->CreateMilitaryRecruitOrderForNode(regionId);
         if (this->nationSlot >= 7) {
           TMilitaryUnitOrderState* lateOrder = new TMilitaryUnitOrderState();
@@ -2309,7 +2174,7 @@ void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         CString typeName;
         CString composedName;
         short unitType = unit->unitTypeId04;
-        TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+        TLocalizationRuntime* localization = g_pLocalizationTable;
         short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
         localization->FormatOrdinalString(*nameOrdinalCounter, &ordinalText);
         localization->GetString(0x2717, unitType, &typeName);
@@ -2328,7 +2193,7 @@ void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
       } else {
         CString flavorBase;
         CString flavorName;
-        ReadLocalizationRuntimeView()->GetString(0x2744, 0, &flavorBase);
+        g_pLocalizationTable->GetString(0x2744, 0, &flavorBase);
         do {
           reinterpret_cast<void(__cdecl*)(void*, int)>(thunk_GenerateMappedFlavorTextByTableSlot)(
               &flavorName, this->nationSlot);
@@ -2426,7 +2291,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   if (this->diplomacyEligibilityA0 == 0) {
     presetLevel = 2;
   } else {
-    presetLevel = ReadLocalizationRuntimeView()->runtimeSubsystemIndex;
+    presetLevel = g_pLocalizationTable->runtimeSubsystemIndex;
   }
   const short* presetRow = g_Rebuild_Primary_Nation_Value_00653570[presetLevel];
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
@@ -2450,7 +2315,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   } else {
     notifySink->NotifyProductionPresetSlot2C(4, 2, 1);
   }
-  TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localization = g_pLocalizationTable;
   if (this->diplomacyEligibilityA0 == 0 || localization->runtimeSubsystemIndex < 2 ||
       localization->stateFlag114 != 0) {
     if (this->ShouldDispatchImmediatelySlot28_Provisional() == 0 ||
@@ -2466,7 +2331,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
 // FUNCTION: IMPERIALISM 0x004dfae0
 #pragma optimize("y", on)
 void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
-  TLocalizationRuntime* localization = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localization = g_pLocalizationTable;
   int homeRegionIndex = -1;
   if (localization->stateFlag114 == 0) {
     homeRegionIndex = this->interiorMinister->GetHomeCityRecordIndexSlotC0();
@@ -2632,7 +2497,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
     return;
   }
 
-  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
@@ -2672,7 +2537,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
       relationManager->Refresh80();
 
-      void* nationInteractionState = ReadGlobalPointer(kAddrNationInteractionStateManagerPtr);
+      void* nationInteractionState = g_pNationInteractionStateManager;
       if (nationInteractionState != 0) {
         interactionScore =
             static_cast<TNationInteractionStateManager*>(nationInteractionState)->QueryInt4C();
@@ -2698,7 +2563,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 
 // FUNCTION: IMPERIALISM 0x004db380
 void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
-  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
     localeIndex = localizationRuntime->runtimeSubsystemIndex;
@@ -2816,7 +2681,7 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
   // TEMP: 0x004dbbb0 (BuildCityInfluenceLevelMap) is still an autogen stub; call it
   // through the generic thunk declaration until it is ported as a real member.
   char* influenceByRegion = reinterpret_cast<char*>(BuildCityInfluenceLevelMap());
-  TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
+  TGlobalMapState* globalMapState = g_pGlobalMapState;
   int regionIndex = 0;
 
   for (int i = 0; i < kNationSlotCount; ++i) {
@@ -2879,20 +2744,20 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 
 // FUNCTION: IMPERIALISM 0x004dbf00
 void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
-  void* regionList = this->ownedRegionList;
+  TPtrList* regionList = this->ownedRegionList;
   if (regionList == 0) {
     return;
   }
 
-  int totalRegions = List_GetCountSlot28(regionList);
+  int totalRegions = regionList->GetCountOrReleaseSlot28();
   int regionOrdinal = 1;
   while (regionOrdinal <= totalRegions) {
-    short regionId = static_cast<short>(List_GetIntByOrdinalSlot24(regionList, regionOrdinal));
+    short regionId = static_cast<short>(regionList->GetIntByOrdinalSlot24(regionOrdinal));
     unsigned char pendingStage = 0;
     unsigned char needsRedraw = 0;
 
-    TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
-    TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+    TGlobalMapState* globalMapState = g_pGlobalMapState;
+    TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
     if (globalMapState != 0 && localizationRuntime != 0 && globalMapState->cityScoreTable != 0 &&
         globalMapState->terrainStateTable != 0) {
       TGlobalMapCityScoreRecord* cityTable =
@@ -2941,7 +2806,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
           if ((turnDelta & 1U) == 0) {
             int sum01 = resourceSums[0] + resourceSums[1];
             if (sum01 != 0) {
-              int prod = GetCityBuildingProductionValueBySlot(cityRecord, 1);
+              int prod = this->relationManager->GetBuildingProductionValueBySlot( 1);
               int limit = (static_cast<int>(*stage1CounterA) +
                            ((static_cast<int>(*stage1CounterA) >> 0x1f) & 3U)) >>
                           2;
@@ -2954,7 +2819,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
             }
 
             if (resourceSums[2] != 0) {
-              int prod = GetCityBuildingProductionValueBySlot(cityRecord, 5);
+              int prod = this->relationManager->GetBuildingProductionValueBySlot( 5);
               int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
               if (static_cast<int>(*stage1CounterB) < prodLimit &&
                   static_cast<int>(*stage1CounterB) < resourceSums[2] / 2) {
@@ -2965,7 +2830,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
             }
 
             if (resourceSums[3] != 0) {
-              int prod = GetCityBuildingProductionValueBySlot(cityRecord, 3);
+              int prod = this->relationManager->GetBuildingProductionValueBySlot( 3);
               int prodLimit = (prod + ((prod >> 0x1f) & 3U)) >> 2;
               if (static_cast<int>(*stage1CounterC) < prodLimit &&
                   static_cast<int>(*stage1CounterC) < resourceSums[3] / 2) {
@@ -2976,7 +2841,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
             }
 
             TCityOrderCapabilityState* orderCapabilityState = CityOrderCapabilityState();
-            int capabilityScore = GetCityBuildingProductionValueBySlot(cityRecord, 7);
+            int capabilityScore = this->relationManager->GetBuildingProductionValueBySlot( 7);
             if (capabilityScore != 0 && orderCapabilityState != 0 &&
                 orderCapabilityState->hasProductionOrder193 != 0) {
               if (static_cast<int>(*stage1CounterD) < capabilityScore / 2) {
@@ -3053,8 +2918,8 @@ char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
 char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
   if (mode == 0) {
     int nodeContext = this->GetHomeRegionCityRecordIndex();
-    float localScore = ComputeDefendProvinceMissionLocalSupportScore(nodeContext);
-    float crossNationScore = ComputeDefendProvinceMissionCrossNationSupportScore(nodeContext);
+    float localScore = ComputeDefendProvinceMissionLocalSupportVectorScore(nodeContext);
+    float crossNationScore = ComputeDefendProvinceMissionCrossNationSupportVectorScore(nodeContext);
     if (localScore < crossNationScore) {
       return 0;
     }
@@ -3332,7 +3197,7 @@ void TGreatPower::SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(
   this->colonyBoycottFlags[targetNationSlot] = boycottFlag;
 
   for (int secondarySlot = kMajorNationCount; secondarySlot < kNationSlotCount; ++secondarySlot) {
-    TMinor* secondaryState = ReadSecondaryNationStateSlot(secondarySlot);
+    TMinor* secondaryState = g_apSecondaryNationStateSlots[secondarySlot];
     char hasNationFlag = SecondaryState_HasNationFlag5C(secondaryState, this->nationSlot);
     if (hasNationFlag != 0) {
       SecondaryState_SetPolicyValue48(secondaryState, targetNationSlot, policyValue);
@@ -3422,9 +3287,10 @@ void TGreatPower::CallSlotA5_Provisional(void) {
     return;
   }
 
-  int remaining = List_GetCountSlot48(trackedList);
+  int remaining = trackedList->GetCountSlot48();
   while (remaining > 0) {
-    TTrackedObjectListEntryView* entry = List_GetTrackedEntrySlot4C(trackedList, remaining);
+    TTrackedObjectListEntry* entry = static_cast<TTrackedObjectListEntry*>(
+        trackedList->GetTrackedEntrySlot4C(remaining));
     Object_CallSlot30NoArgs(entry);
     ReleaseObjectAtSlot1C(entry);
     --remaining;
@@ -3534,7 +3400,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
             selectedNation =
                 IndexAndRankList_GetShortValueByOrdinal1Based(relationshipList, listIndex);
             --listIndex;
-            TGreatPower* candidateState = ReadNationStateSlot(selectedNation);
+            TGreatPower* candidateState = g_apNationStates[selectedNation];
             if (candidateState != 0 && NationState_IsBusyA0(candidateState) != 0) {
               selectedNation = static_cast<short>(-1);
             }
@@ -3545,7 +3411,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
         }
 
         if (selectedNation >= 0) {
-          TGreatPower* selectedNationState = ReadNationStateSlot(selectedNation);
+          TGreatPower* selectedNationState = g_apNationStates[selectedNation];
           if (selectedNationState != 0) {
             NationState_AssignNeedSlotFromSource(selectedNationState, needSlot, this->nationSlot);
           }
@@ -3571,7 +3437,7 @@ void TGreatPower::AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void) {
       }
     }
 
-    TGreatPower* fallbackNationState = ReadNationStateSlot(fallbackNationSlot);
+    TGreatPower* fallbackNationState = g_apNationStates[fallbackNationSlot];
     if (fallbackNationState != 0) {
       NationState_AssignNeedSlotFromSource(fallbackNationState, kNeedSlotFallback,
                                            this->nationSlot);
@@ -3705,7 +3571,7 @@ char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int ar
                                                                 int arg4) {
   if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(arg4)) != 0) {
     TUiRuntimeContext* uiRuntimeContext =
-        static_cast<TUiRuntimeContext*>(ReadGlobalPointer(kAddrUiRuntimeContextPtr));
+        reinterpret_cast<TUiRuntimeContext*>(g_pUiRuntimeContext);
     uiRuntimeContext->DispatchDecisionSlot98(this->nationSlot, arg2, arg3, arg4);
     return 1;
   }
@@ -3848,7 +3714,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
     break;
 
   case 3: {
-    TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
+    TLocalizationRuntime* localizationTable = g_pLocalizationTable;
     if (localizationTable != 0 && localizationTable->mode == 6) {
       this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetClass, 4, -1);
     }
@@ -3861,7 +3727,7 @@ bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int
     }
 
     void* terrainDescriptor =
-        ReadGlobalPointerArraySlot(kAddrTerrainTypeDescriptorTable, targetClass);
+        g_apTerrainTypeDescriptorTable[targetClass];
     if (terrainDescriptor != 0) {
       short encodedNationSlot = TerrainDescriptor_GetEncodedNationSlot(terrainDescriptor);
       if (encodedNationSlot > 199) {
@@ -3989,7 +3855,7 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
 
       if (shouldDispatchAlert) {
         SharedRefPairScope sharedRefs;
-        TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+        TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
         if (localizationRuntime != 0) {
           localizationRuntime->GetString(0x2753, 0, &sharedRefs.first);
           localizationRuntime->GetString(0x2753, 0, &sharedRefs.second);
@@ -4015,7 +3881,7 @@ void TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1) {
   }
 
   void* terrainDescriptor =
-      ReadGlobalPointerArraySlot(kAddrTerrainTypeDescriptorTable, targetNation);
+      g_apTerrainTypeDescriptorTable[targetNation];
   TerrainDescriptor_CallSlot38(terrainDescriptor, grantValue);
 
   this->grantTotalCost -= grantValue;
@@ -4078,7 +3944,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
   for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(nationSlot) != 0 &&
         nationSlot != this->nationSlot && nationSlot != arg1) {
-      TerrainDescriptor_SetResetLevel(ReadTerrainDescriptorSlot(nationSlot), this->nationSlot,
+      TerrainDescriptor_SetResetLevel(reinterpret_cast<TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[nationSlot]), this->nationSlot,
                                       kResetDiplomacyLevel);
     }
   }
@@ -4149,7 +4015,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
                                                                   kDipFlagRelation, 0);
       g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, nationSlot,
                                                            kDipFlagPolicy);
-      TGreatPower* nationState = ReadNationStateSlot(nationSlot);
+      TGreatPower* nationState = g_apNationStates[nationSlot];
       if (NationState_IsBusyA0(nationState) == 0) {
         NationState_NotifyAction131(nationState, this->nationSlot);
       }
@@ -4160,7 +4026,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
 
   int secondarySlot;
   for (secondarySlot = kMajorNationCount; secondarySlot < kNationSlotCount; ++secondarySlot) {
-    TMinor* secondaryState = ReadSecondaryNationStateSlot(secondarySlot);
+    TMinor* secondaryState = g_apSecondaryNationStateSlots[secondarySlot];
     bool directReset = true;
     short encodedOwnerNation = secondaryState->ownerNationSlot0e;
     if (encodedOwnerNation >= 200) {
@@ -4178,7 +4044,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
     this->ResetDiplomacyLevelForNationSlot12_Provisional(secondarySlot, kResetDiplomacyLevel);
     this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(secondarySlot, kResetPolicyCode);
 
-    if (ReadTerrainDescriptorSlot(secondarySlot) != 0) {
+    if (reinterpret_cast<TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[secondarySlot]) != 0) {
       SecondaryState_ResetDiplomacyLevel(secondaryState, this->nationSlot, kResetDiplomacyLevel);
     }
   }
@@ -4187,7 +4053,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
       thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists)();
   ApplyJoinEmpireMode0GlobalDiplomacyResetImpl(g_pGlobalMapState, this->nationSlot);
 
-  TLocalizationRuntime* localizationTable = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationTable = g_pLocalizationTable;
   if (localizationTable != 0 && localizationTable->redrawEnabled != 0) {
     reinterpret_cast<void(__cdecl*)(void)>(thunk_DispatchTaggedGameStateEvent1F20)();
   }
@@ -4514,7 +4380,7 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
 
   case 5: {
     reinterpret_cast<TerrainDescriptorVtbl*>(
-        ReadTerrainDescriptorSlot(static_cast<int>(proposal->targetNationSlot)))
+        reinterpret_cast<TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[static_cast<int>(proposal->targetNationSlot)]))
         ->SetDiplomacyStandingSlot4c(this->nationSlot, 1);
     if (g_pInterNationEventQueueManager != 0) {
       g_pInterNationEventQueueManager
@@ -4533,7 +4399,7 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
       reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(static_cast<int>(proposal->targetNationSlot)) !=
           0) {
     reinterpret_cast<NationStateVtbl*>(
-        ReadNationStateSlot(static_cast<int>(proposal->targetNationSlot)))
+        g_apNationStates[static_cast<int>(proposal->targetNationSlot)])
         ->NotifyActionSlot94(this->nationSlot, proposal->proposalCode);
   }
 }
@@ -4569,7 +4435,7 @@ void TGreatPower::QueueInterNationEventForProposalCode12D_130(unsigned short pro
   void* diplomacyManager = g_pDiplomacyTurnStateManager;
   if (diplomacyManager != 0 &&
       g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(targetNation) != 0) {
-    TGreatPower* nationState = ReadNationStateSlot(targetNation);
+    TGreatPower* nationState = g_apNationStates[targetNation];
     if (nationState != 0) {
       NationState_NotifyActionCode(nationState, this->nationSlot, -proposalCode);
     }
@@ -4615,7 +4481,7 @@ void TGreatPower::ResetNationDiplomacyProposalQueue(void) {
 
 // FUNCTION: IMPERIALISM 0x004df5c0
 void TGreatPower::DispatchTurnEvent2103WithNationFromRecord(void) {
-  void* uiRuntimeContext = ReadGlobalPointer(kAddrUiRuntimeContextPtr);
+  void* uiRuntimeContext = g_pUiRuntimeContext;
   if (uiRuntimeContext == 0) {
     return;
   }
@@ -4638,7 +4504,7 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
     proposalIndex = 1;
     queueIndex = 1;
     void* diplomacyManager = g_pDiplomacyTurnStateManager;
-    void* uiRuntimeContext = ReadGlobalPointer(kAddrUiRuntimeContextPtr);
+    void* uiRuntimeContext = g_pUiRuntimeContext;
 
     do {
       short* proposalEntry = ProposalQueue_GetEntryAt1Based(proposalQueue, queueIndex);
@@ -4782,7 +4648,7 @@ double TGreatPower::ComputeMinisterSkillFloatSlot8C(void) {
 int TGreatPower::GetCityBuildingProductionViaRelationManagerSlot8D(short buildingSlot) {
   if (this->relationManager != 0) {
     return static_cast<short>(
-        GetCityBuildingProductionValueBySlot(this->relationManager, buildingSlot));
+        this->relationManager->GetBuildingProductionValueBySlot( buildingSlot));
   }
   return 0;
 }
@@ -4791,18 +4657,11 @@ int TGreatPower::GetCityBuildingProductionViaRelationManagerSlot8D(short buildin
 
 // --- Relative military/naval power score family (vtable slots 0x8e-0x9e) ---
 
-// View of a military unit list entry (unit type id short at +4 indexes the
-// g_Classify_Nation_Military_LookupTable_00695CD4 power-weight records).
-struct MilitaryUnitEntryView {
-  short pad00[2];
-  short unitTypeId04;
-};
-
 static __inline int SumMilitaryUnitPowerWeights(TPtrList* unitList) {
   int powerSum = 0;
   CIterator unitIter(unitList);
-  for (MilitaryUnitEntryView* unit = static_cast<MilitaryUnitEntryView*>(unitIter.Reset());
-       unitIter.More(); unit = static_cast<MilitaryUnitEntryView*>(unitIter.Advance())) {
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
     powerSum += g_Classify_Nation_Military_LookupTable_00695CD4[unit->unitTypeId04][0];
   }
   return powerSum;
@@ -5312,7 +5171,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
 bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
   char result = 0;
   TUiRuntimeContext* uiRuntimeContext =
-      static_cast<TUiRuntimeContext*>(ReadGlobalPointer(kAddrUiRuntimeContextPtr));
+      reinterpret_cast<TUiRuntimeContext*>(g_pUiRuntimeContext);
 
   result = g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, arg2);
 
@@ -5325,7 +5184,7 @@ bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
   } else {
     result = uiRuntimeContext->RequestDecisionSlot94(this->nationSlot, arg1, arg2, 0x0B);
     if (result != 0) {
-      TMinor* secondaryNationState = ReadSecondaryNationStateSlot(arg1);
+      TMinor* secondaryNationState = g_apSecondaryNationStateSlots[arg1];
       if (secondaryNationState != 0) {
         short stateValue = DecodeSecondaryNationOwnerSlot(secondaryNationState);
         if (stateValue != this->nationSlot) {
@@ -5339,9 +5198,9 @@ bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
 
 // FUNCTION: IMPERIALISM 0x004e22b0
 void TGreatPower::AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void) {
-  void* ownedRegionList = this->ownedRegionList;
-  List_ResetSlot14(ownedRegionList);
-  int ownedRegionCount = List_GetCountSlot28(ownedRegionList);
+  TPtrList* ownedRegionList = this->ownedRegionList;
+  ownedRegionList->ResetSlot14();
+  int ownedRegionCount = ownedRegionList->GetCountOrReleaseSlot28();
 
   unsigned char pressureGate = this->serializedStatusFlags[6];
   unsigned char nationGate = this->expansionEventGate;
@@ -5397,10 +5256,11 @@ void TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNat
 
 // FUNCTION: IMPERIALISM 0x004e2500
 void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass) {
-  TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
-  void* filteredList = this->trackedObjectList;
-  for (int index = List_GetCountSlot48(filteredList); index != 0; --index) {
-    TTrackedObjectListEntryView* entry = List_GetTrackedEntrySlot4C(filteredList, index);
+  TGlobalMapState* globalMapState = g_pGlobalMapState;
+  TPtrList* filteredList = this->trackedObjectList;
+  for (int index = filteredList->GetCountSlot48(); index != 0; --index) {
+    TTrackedObjectListEntry* entry = static_cast<TTrackedObjectListEntry*>(
+        filteredList->GetTrackedEntrySlot4C(index));
     if (entry == 0 || globalMapState == 0 || globalMapState->terrainStateTable == 0) {
       continue;
     }
@@ -5413,11 +5273,11 @@ void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerC
     }
   }
 
-  void* unassignedList = this->militaryUnitList44;
-  for (int unassignedIndex = List_GetCountSlot48(unassignedList); unassignedIndex != 0;
+  TPtrList* unassignedList = this->militaryUnitList44;
+  for (int unassignedIndex = unassignedList->GetCountSlot48(); unassignedIndex != 0;
        --unassignedIndex) {
-    TTrackedObjectListEntryView* entry =
-        List_GetTrackedEntrySlot4C(unassignedList, unassignedIndex);
+    TTrackedObjectListEntry* entry = static_cast<TTrackedObjectListEntry*>(
+        unassignedList->GetTrackedEntrySlot4C(unassignedIndex));
     if (entry != 0 && entry->regionIndex == -1) {
       ReleaseObjectAtSlot1C(entry->object);
     }
@@ -5482,7 +5342,7 @@ void TGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short payload, 
   };
 
   short turnTick = 0;
-  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0) {
     turnTick = localizationRuntime->GetTurnTickSlot3C();
   }
@@ -5512,7 +5372,7 @@ void TGreatPower::DispatchNationDiplomacySlotActionByMode(int targetNationSlot, 
 // FUNCTION: IMPERIALISM 0x004d7b20
 #pragma optimize("y", on)
 void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
-  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0 && localizationRuntime->redrawEnabled == 1) {
     reinterpret_cast<void(__cdecl*)(void)>(thunk_DispatchJoinEmpireModeEventPacket24_27)();
   }
@@ -5592,7 +5452,7 @@ void TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targe
     return;
   }
 
-  TMinor* secondaryNationState = ReadSecondaryNationStateSlot(sourceNationSlot);
+  TMinor* secondaryNationState = g_apSecondaryNationStateSlots[sourceNationSlot];
   if (secondaryNationState == 0) {
     return;
   }
@@ -5619,7 +5479,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 
   short activeTurn = 0;
-  TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
+  TLocalizationRuntime* localizationRuntime = g_pLocalizationTable;
   if (localizationRuntime != 0) {
     activeTurn = static_cast<short>(LocalizationRuntime_GetTurnTick(localizationRuntime) - 1);
   }
@@ -5652,12 +5512,12 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
 void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
   this->InitializeGreatPowerMinisterRosterAndScenarioState(arg1);
 
-  void* stream = reinterpret_cast<void*>(arg1);
-  Stream_ReadAtSlot3C(stream, this->actionMetricByQuarter, 0x0C);
+  TStreamView* stream = reinterpret_cast<TStreamView*>(arg1);
+  stream->ReadAt3C(this->actionMetricByQuarter, 0x0C);
   SwapShortArrayBytes(this->actionMetricByQuarter, 6);
 
-  Stream_ReadAtSlot3C(stream, this->mapNodeStateFlags, 0x180);
-  Stream_ReadAtSlot3C(stream, this->portZoneStateFlags, 0x70);
+  stream->ReadAt3C(this->mapNodeStateFlags, 0x180);
+  stream->ReadAt3C(this->portZoneStateFlags, 0x70);
 
   TPtrList* missionQueue = this->missionQueue;
   if (missionQueue->GetCountSlot48() != 0) {
@@ -5666,10 +5526,10 @@ void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
   missionQueue->Call18(arg1);
 
   int missionContext = 0;
-  Stream_ReadAtSlot3C(stream, &missionContext, 4);
+  stream->ReadAt3C(&missionContext, 4);
   for (int queueIndex = 1; queueIndex < 0x71; ++queueIndex) {
     missionContext = 0;
-    char hasMission = Stream_ReadByteAtSlotB0(stream, &missionContext);
+    char hasMission = stream->ReadByteB0(&missionContext);
     if (hasMission != 0) {
       missionQueue->AddTail30(reinterpret_cast<void*>(missionContext));
     }
@@ -5681,30 +5541,43 @@ void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e73f0
+#pragma optimize("y", on)
 void TGreatPower::WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* pMessage) {
-  // TEMP: 0x004d9c70 (HandleCityDialogHintClusterUpdate) is still an autogen stub;
-  // call it through the generic thunk declaration until it is ported.
   reinterpret_cast<void(__cdecl*)(void*)>(HandleCityDialogHintClusterUpdate)(pMessage);
 
-  for (int i = 0; i < 6; ++i) {
-    short value = this->actionMetricByQuarter[i];
-    Message_AppendBytesSlot78(pMessage, &value, 2);
-  }
+  TMessageObject* message = reinterpret_cast<TMessageObject*>(pMessage);
+  short* quarterMetric = this->actionMetricByQuarter;
+  int remaining = 6;
+  do {
+    short value = *quarterMetric;
+    unsigned char* bytes = reinterpret_cast<unsigned char*>(&value);
+    unsigned char tmp = bytes[0];
+    bytes[0] = bytes[1];
+    bytes[1] = tmp;
+    message->AppendBytesSlot78(&value, 2);
+    ++quarterMetric;
+    --remaining;
+  } while (remaining != 0);
 
-  Message_AppendBytesSlot78(pMessage, this->mapNodeStateFlags, 0x180);
-  Message_AppendBytesSlot78(pMessage, this->portZoneStateFlags, 0x70);
+  message->AppendBytesSlot78(this->mapNodeStateFlags, 0x180);
+  message->AppendBytesSlot78(this->portZoneStateFlags, 0x70);
 
-  void* missionQueue = this->missionQueue;
-  Queue_ApplyMessageSlot14(missionQueue, pMessage);
-  int missionQueueCount = Queue_GetCountSlot48(missionQueue);
+  TPtrList* missionQueue = this->missionQueue;
+  missionQueue->ResetSlot14(pMessage);
+  int missionQueueCount = missionQueue->GetCountSlot48();
 
   int zeroWord = 0;
-  Message_AppendBytesSlot78(pMessage, &zeroWord, 4);
-  for (int j = 1; j <= missionQueueCount; ++j) {
-    int value = Queue_ReadIndexSlot4C(missionQueue, 0, j);
-    Message_WriteEntrySlotB4(pMessage, value, 0);
+  message->AppendBytesSlot78(&zeroWord, 4);
+  int index = 1;
+  if (index <= missionQueueCount) {
+    do {
+      int value = reinterpret_cast<int>(missionQueue->GetTrackedEntrySlot4C(index));
+      message->WriteEntrySlotB4(value, 0);
+      ++index;
+    } while (index <= missionQueueCount);
   }
 }
+#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e7630
 void TGreatPower::WrapperFor_TGreatPower_VtblSlot32_At004e7630(int arg1, int arg2, int arg3) {
@@ -5953,7 +5826,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     return 100.0f / (float)relationValue;
   }
   case 5: {
-    TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
+    TGlobalMapState* globalMapState = g_pGlobalMapState;
     if (globalMapState == 0) {
       return kOne;
     }
@@ -6260,7 +6133,7 @@ void TGreatPower::ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int
 
 // FUNCTION: IMPERIALISM 0x0055f140
 unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
-  TGlobalMapState* globalMapState = ReadGlobalMapStateScoreView();
+  TGlobalMapState* globalMapState = g_pGlobalMapState;
   if (globalMapState == 0 || globalMapState->cityScoreTable == 0) {
     return 0;
   }

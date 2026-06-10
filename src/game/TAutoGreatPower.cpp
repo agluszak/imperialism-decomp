@@ -11,6 +11,7 @@
 #include "game/TCity.h"
 #include "game/TTrackedObject.h"
 #include "game/diplomacy_globals.h"
+#include "game/TZone.h"
 #include <new>
 
 #if defined(_MSC_VER)
@@ -21,14 +22,8 @@ undefined4 thunk_GetResourceDescriptorWeightWord0ByType(void);
 undefined4 thunk_DispatchTaggedGameStateEvent1F20(void); // 0x00406efb -> 0x0054a340
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 undefined4 GenerateThreadLocalRandom15(void);
-undefined4 thunk_FindFirstPortZoneContextByNation(void);
 undefined4 thunk_GetShortAtOffset14OrInvalid(void);
 
-// Same call shapes as the TGreatPower.cpp helpers: the port-zone lookup loads the
-// context vector; the follow-up read consumes its +0x14 short.
-static __inline void FindFirstPortZoneContextByNation(short nationSlot) {
-  reinterpret_cast<void*(__fastcall*)(int)>(thunk_FindFirstPortZoneContextByNation)(nationSlot);
-}
 static __inline short GetShortAtOffset14OrInvalidValue(void) {
   return reinterpret_cast<short(__cdecl*)(void)>(thunk_GetShortAtOffset14OrInvalid)();
 }
@@ -43,10 +38,7 @@ static const unsigned int kAddrClassDescTAutoGreatPower = 0x00653F90;
 static const int kAidAllocationRowCount = 0x10;
 static const int kAidAllocationColumnCount = 0x17;
 
-struct TProposalQueueCountView {
-  unsigned char pad00[8];
-  int count;
-};
+#include "game/TQueueObject.h"
 
 class TMinisterProposalReplayView {
 public:
@@ -85,7 +77,7 @@ public:
 };
 
 static __inline int ProposalQueue_ReadCount(void* queue) {
-  return static_cast<TProposalQueueCountView*>(queue)->count;
+  return static_cast<TQueueObject*>(queue)->GetEntryCount();
 }
 
 // FUNCTION: IMPERIALISM 0x004e6b30
@@ -393,14 +385,7 @@ extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
-// Port-zone refit view (same layout as the TGreatPower.cpp helper): order array at
-// +0x28, refit state at +0x2c, activation flag at +0x30.
-struct TPortZoneRefitView {
-  unsigned char pad00[0x28];
-  void** orderArray28;
-  unsigned int refitState2c;
-  unsigned int activationFlag30;
-};
+// Port-zone refit fields live on TZone (+0x28..+0x30).
 
 // FUNCTION: IMPERIALISM 0x004e8040
 char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
@@ -487,26 +472,24 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
       ++ordinal;
     } while (ordinal <= regionList->GetCountOrReleaseSlot28());
   }
-  TPortZoneRefitView* portZone = reinterpret_cast<TPortZoneRefitView*>(
-      reinterpret_cast<void*(__fastcall*)(int)>(thunk_FindFirstPortZoneContextByNation)(
-          targetNation));
-  if (portZone->refitState2c == 0) {
+  TZone* portZone = FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+  if (portZone->portZoneEntryCount2c == 0) {
     void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(portZone->orderArray28, 8);
+        ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 8);
     if (grownArray == 0) {
-      portZone->orderArray28 =
-          static_cast<void**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-              ReallocateHeapBlockWithAllocatorTracking)(portZone->orderArray28, 4));
-      portZone->refitState2c = 1;
+      portZone->portZoneEntries28 = static_cast<int*>(
+          reinterpret_cast<void*(__cdecl*)(void*, int)>(
+              ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 4));
+      portZone->portZoneEntryCount2c = 1;
     } else {
-      portZone->orderArray28 = static_cast<void**>(grownArray);
-      portZone->refitState2c = 2;
+      portZone->portZoneEntries28 = static_cast<int*>(grownArray);
+      portZone->portZoneEntryCount2c = 2;
     }
   }
-  if (portZone->activationFlag30 == 0) {
-    portZone->activationFlag30 = 1;
+  if (portZone->portZoneActiveEntryCount30 == 0) {
+    portZone->portZoneActiveEntryCount30 = 1;
   }
-  void* firstOrder = *portZone->orderArray28;
+  void* firstOrder = reinterpret_cast<void*>(portZone->portZoneEntries28[0]);
   short portZoneId = GetShortAtOffset14OrInvalidValue();
   this->portZoneStateFlags[portZoneId] = 1;
   this->QueueMapActionMissionFromCandidateAndMarkState(3, -1, reinterpret_cast<int>(firstOrder),

@@ -456,6 +456,7 @@ public:
   static void* CreateTGreatPowerInstance(void);
   static void* GetTGreatPowerClassNamePointer(void);
   void InitializeGreatPowerMinisterRosterAndScenarioState(int arg1);
+  void DeserializeRecruitScenarioAndInstantiateOrders(int streamState);
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void IsNationResourceNeedCurrentSumExceedingCapA6(void);
   void QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3, int arg4);

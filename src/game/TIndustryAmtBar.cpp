@@ -13,6 +13,7 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 #include "game/TGreatPower.h"
+#include "game/TCity.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_widget_thunks.h"
 #include "game/quickdraw_guards.h"
@@ -54,8 +55,8 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   }
 
   selectedMetricRecord = cityState->tradeCommodityRecordPtrs[summaryTagIndex];
-  int productionValue = (int)reinterpret_cast<int(__fastcall*)(void*, short)>(
-      thunk_GetCityBuildingProductionValueBySlot)(cityState, selectedMetricRecord->buildingSlot);
+  int productionValue = reinterpret_cast<TCity*>(cityState)->GetBuildingProductionValueBySlot(
+      selectedMetricRecord->buildingSlot);
 
   short stepValue = selectedMetricRecord->QueryStepValue();
   short productionCap = (short)productionValue;

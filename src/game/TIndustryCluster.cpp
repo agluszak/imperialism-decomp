@@ -4,6 +4,7 @@
 #include "game/TUberCluster.h"
 #include "game/TView.h"
 #include "game/TGreatPower.h"
+#include "game/TCity.h"
 #include "game/trade_quickdraw.h"
 #include "game/ui_widget_thunks.h"
 #include "game/win_rect.h"
@@ -75,9 +76,9 @@ void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControl
   TradeCommodityMetricRecord* selectedMetricRecord = reinterpret_cast<TradeCommodityMetricRecord*>(
       *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + (int)tagIndex * 4 + 0xe4));
   this->selectedMetricControl = reinterpret_cast<TAmtBar*>(selectedMetricRecord);
-  this->selectedMetricValue = (short)reinterpret_cast<int(__fastcall*)(void*, short)>(
-      thunk_GetCityBuildingProductionValueBySlot)(
-      cityState, *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52));
+  this->selectedMetricValue = static_cast<short>(reinterpret_cast<TCity*>(cityState)
+                                                    ->GetBuildingProductionValueBySlot(
+      *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52)));
 
   this->InitializeTradeMoveAndBarControls(styleSeed);
   this->NotifyControlSelectionChange(reinterpret_cast<void*>(*reinterpret_cast<short*>(
