@@ -2251,30 +2251,6 @@ undefined4 FindOneBasedNodeIndexByValueInLinkedList(void)
   return 0;
 }
 
-// ghidra_name InitializeLinkedListCursorFromOwnerHead
-// ghidra_proto void __cdecl InitializeLinkedListCursorFromOwnerHead(void)
-// FUNCTION: IMPERIALISM 0x00487ef0
-undefined4 InitializeLinkedListCursorFromOwnerHead(void)
-{
-  return 0;
-}
-
-// ghidra_name LinkedListCursorHasCurrent
-// ghidra_proto bool __cdecl LinkedListCursorHasCurrent(void)
-// FUNCTION: IMPERIALISM 0x00487f20
-undefined4 LinkedListCursorHasCurrent(void)
-{
-  return 0;
-}
-
-// ghidra_name AdvanceLinkedListCursor
-// ghidra_proto void __cdecl AdvanceLinkedListCursor(void)
-// FUNCTION: IMPERIALISM 0x00487f40
-undefined4 AdvanceLinkedListCursor(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fb0
 // ghidra_proto void __cdecl ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fb0(void)
 // FUNCTION: IMPERIALISM 0x00487fb0

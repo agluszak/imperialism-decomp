@@ -9,7 +9,8 @@ class NationCityTradeState;
 class TQueueObject;
 class TRelationManager;
 
-#define TGREATPOWER_VTABLE_SLOT(n) virtual void VTableIndex##n##_Provisional(void) {}
+#define TGREATPOWER_VTABLE_SLOT(n)                                                                 \
+  virtual void VTableIndex##n##_Provisional(void) {}
 
 // VTABLE: IMPERIALISM 0x00653938
 class TGreatPower {
@@ -30,7 +31,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(13);
   virtual void AddToNationMetricAtField10(int amount); // slot 0x0e
   TGREATPOWER_VTABLE_SLOT(15);
-  virtual int GetNodeContextSlot10_Provisional(void) { return 0; }
+  virtual int GetNodeContextSlot10_Provisional(void) {
+    return 0;
+  }
   TGREATPOWER_VTABLE_SLOT(17);
   virtual void ResetDiplomacyLevelForNationSlot12_Provisional(int nationSlot, int resetLevel);
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
@@ -38,7 +41,7 @@ public:
   virtual void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode);
   virtual void ApplyJoinEmpireMode0GlobalDiplomacyReset(int targetNationSlot); // slot 0x14
   virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);     // slot 0x15
-  virtual CString* GetIdentitySharedString1Slot58(void);                        // slot 0x16
+  virtual CString* GetIdentitySharedString1Slot58(void);                       // slot 0x16
   TGREATPOWER_VTABLE_SLOT(23);
   TGREATPOWER_VTABLE_SLOT(24);
   TGREATPOWER_VTABLE_SLOT(25);
@@ -48,8 +51,8 @@ public:
   virtual short GetDiplomacyCounterA2(void);                                  // slot 0x1d
   // index 0x1e / vtable+0x078. Evidence: 0x004dd1b0 and 0x004dd270 call this
   // for each nation while recomputing diplomacy need baselines; returns AX.
-  virtual short QueryNationMetricBySlot78(short metricSlot);            // slot 0x78
-  virtual short QueryNationMetricBySlot7C(short metricSlot);          // slot 0x7c
+  virtual short QueryNationMetricBySlot78(short metricSlot); // slot 0x78
+  virtual short QueryNationMetricBySlot7C(short metricSlot); // slot 0x7c
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
   virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -91,7 +94,7 @@ public:
   TGREATPOWER_VTABLE_SLOT(64);
   virtual void ApplyDiplomacyState222ToRelationManagerAndClear(void);      // slot 0x41
   virtual void ApplyRelationDeltaToRelationManagerAndUpdateState1f4(void); // slot 0x42
-  virtual void VTableIndex67_Provisional(void) {}                        // slot 0x43
+  virtual void VTableIndex67_Provisional(void) {}                          // slot 0x43
   TGREATPOWER_VTABLE_SLOT(68);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
   virtual bool IsNeedTargetEqualCurrent(short needIndex);                          // slot 0x46
@@ -100,13 +103,14 @@ public:
   TGREATPOWER_VTABLE_SLOT(73);
   virtual short TryDecayRelationNeedScores9AndB(void);           // slot 0x4a
   virtual short TryDecayRelationNeedScores9And8(void);           // slot 0x4b
-  virtual void VTableIndex76_Provisional(void) {}              // slot 0x4c
-  virtual void VTableIndex77_Provisional(void) {}              // slot 0x4d
-  virtual void VTableIndex78_Provisional(void) {}              // slot 0x4e
+  virtual void VTableIndex76_Provisional(void) {}                // slot 0x4c
+  virtual void VTableIndex77_Provisional(void) {}                // slot 0x4d
+  virtual void VTableIndex78_Provisional(void) {}                // slot 0x4e
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
   TGREATPOWER_VTABLE_SLOT(80);
   TGREATPOWER_VTABLE_SLOT(81);
-  TGREATPOWER_VTABLE_SLOT(82);
+  // slot 0x52 — 0x004e1c20 dispatches it on the target nation with mode 0/1.
+  virtual char CompareMissionScoreVariantsByMode(int mode);
   TGREATPOWER_VTABLE_SLOT(83);
   TGREATPOWER_VTABLE_SLOT(84);
   TGREATPOWER_VTABLE_SLOT(85);
@@ -128,8 +132,8 @@ public:
   virtual void SetRelationManagerFieldB6AndRefresh(short targetSlot, short value);   // slot 0x63
   virtual void AddToRelationManagerFieldB6AndRefresh(short targetSlot, short value); // slot 0x64
   TGREATPOWER_VTABLE_SLOT(101);
-  virtual void DecrementDiplomacyCounterA2Slot66(int delta); // slot 0x66
-  virtual void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) {} // slot 0x19c
+  virtual void DecrementDiplomacyCounterA2Slot66(int delta);                          // slot 0x66
+  virtual void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) {}     // slot 0x19c
   virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
@@ -140,20 +144,23 @@ public:
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
   TGREATPOWER_VTABLE_SLOT(111);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
-                                                             int payload); // slot 0x70
-  virtual void ClearDiplomacyState1c6Block(void);                                     // index 113
+                                                             int payload);           // slot 0x70
+  virtual void ClearDiplomacyState1c6Block(void);                                    // index 113
   virtual void BeginTurnDiplomacyPrePassSlot1c8() {}                                 // index 114
-  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);       // index 115
-  virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2);     // index 116
-  virtual void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2);   // index 117
-  virtual void RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation) {} // index 118
-  virtual bool CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
-                                                     unsigned short proposedGrantEntry); // index 119
-  virtual void ApplyTurnDiplomacyStateSlot1e0() {}                                   // index 120
+  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);     // index 115
+  virtual void ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2); // index 116
+  virtual void SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
+  virtual void RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation) {
+  } // index 118
+  virtual bool
+  CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
+                                        unsigned short proposedGrantEntry);            // index 119
+  virtual void ApplyTurnDiplomacyStateSlot1e0() {}                                     // index 120
   virtual void DecrementNeedLevelByNationStep(short nationSlot);                       // index 121
   virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // index 123
-  virtual void QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex); // index 124
+  virtual void
+  QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex); // index 124
   TGREATPOWER_VTABLE_SLOT(125);
   TGREATPOWER_VTABLE_SLOT(126);
   TGREATPOWER_VTABLE_SLOT(127);
@@ -165,7 +172,8 @@ public:
   // with one target-nation argument; return value ignored.
   virtual void VTableSlot84_Provisional(int targetNation) {}
   virtual void NotifyAllianceSlot214(int targetNation) {} // index 133
-  TGREATPOWER_VTABLE_SLOT(134);
+  // slot 0x86 — body 0x004e0500; navy order priority weights summed for this nation.
+  virtual int SumNavyOrderPriorityForNationSlot86(void);
   virtual int CountMapActionContextNodesWithNationBit(void);                         // slot 0x87
   virtual double ComputeMinisterSkillFloatSlot88(void);                              // slot 0x88
   virtual double ComputeMinisterSkillFloatSlot89(void);                              // slot 0x89
@@ -173,33 +181,53 @@ public:
   virtual double ComputeMinisterSkillFloatSlot8B(void);                              // slot 0x8b
   virtual double ComputeMinisterSkillFloatSlot8C(void);                              // slot 0x8c
   virtual int GetCityBuildingProductionViaRelationManagerSlot8D(short buildingSlot); // slot 0x8d
-  TGREATPOWER_VTABLE_SLOT(142);
-  TGREATPOWER_VTABLE_SLOT(143);
-  TGREATPOWER_VTABLE_SLOT(144);
-  TGREATPOWER_VTABLE_SLOT(145);
-  TGREATPOWER_VTABLE_SLOT(146);
-  TGREATPOWER_VTABLE_SLOT(147);
-  TGREATPOWER_VTABLE_SLOT(148);
-  TGREATPOWER_VTABLE_SLOT(149);
-  TGREATPOWER_VTABLE_SLOT(150);
-  TGREATPOWER_VTABLE_SLOT(151);
-  TGREATPOWER_VTABLE_SLOT(152);
-  TGREATPOWER_VTABLE_SLOT(153);
-  TGREATPOWER_VTABLE_SLOT(154);
-  TGREATPOWER_VTABLE_SLOT(155);
-  TGREATPOWER_VTABLE_SLOT(156);
+  // Relative military/naval power score family (bodies 0x004e07b0..0x004e1c20).
+  // slot 0x8e — min(production-capped army commit budget, metric 0x10, armyPower/2).
+  virtual int ComputeArmyCommitBudgetSlot8E(void);
+  // slot 0x8f — army strength score: armyPower + commit budget + min(prod(3), power/4).
+  virtual float GetScoreFactorSlot23C(void);
+  // slot 0x90 — navy strength score from ship production, navy order priority and fleet power.
+  virtual float GetScoreFactorSlot240(void);
+  virtual float ComputeArmyScoreRatioVsNation(int targetNation);         // slot 0x91
+  virtual float ComputeArmyScoreStandingRatioVsNation(int targetNation); // slot 0x92
+  virtual float ComputeNavyScoreRatioVsNation(int targetNation);         // slot 0x93
+  virtual float ComputeNavyScoreStandingRatioVsNation(int targetNation); // slot 0x94
+  virtual float ComputeArmyScoreRatioVsNationWithSecondary(int targetNation,
+                                                           int secondarySlot); // slot 0x95
+  virtual float ComputeArmyScoreStandingRatioVsNationPair(int targetNation,
+                                                          int partnerNation); // slot 0x96
+  virtual float ComputeNavyScoreRatioVsNationWithSecondary(int targetNation,
+                                                           int secondarySlot); // slot 0x97
+  virtual float ComputeNavyScoreStandingRatioVsNationPair(int targetNation,
+                                                          int partnerNation); // slot 0x98
+  virtual float ComputeArmyScoreRatioForNationPair(int nationA, int nationB,
+                                                   char swapRoles); // slot 0x99
+  virtual float ComputeArmyScoreStandingRatioForNationPair(int nationA, int nationB,
+                                                           char swapRoles); // slot 0x9a
+  virtual float ComputeNavyScoreRatioForNationPair(int nationA, int nationB,
+                                                   char swapRoles); // slot 0x9b
+  virtual float ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
+                                                           char swapRoles); // slot 0x9c
   TGREATPOWER_VTABLE_SLOT(157);
-  TGREATPOWER_VTABLE_SLOT(158);
-  virtual int CheckTransitionSlot27C(int targetNation, int sourceNation) { return 0; } // slot 0x27c
-  virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation,
-                                            int mode) { return 0; } // slot 0x280
+  // slot 0x9e — joins a war against targetNation when minister skill beats the war
+  // threshold; propagates relation code 4 to tier-2 partners and queues event 0x1c.
+  virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
+  virtual int CheckTransitionSlot27C(int targetNation, int sourceNation) {
+    return 0;
+  } // slot 0x27c
+  virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
+    return 0;
+  } // slot 0x280
   // index 0xa1 / vtable+0x284. Evidence: 0x004df010 calls this on `this`
   // with (nationSlot, 2, targetNation); entry 0x00406fe1 thunks to 0x004e27f0.
   virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNation,
-                                                                    int relationCode,
-                                                                    int mode);
+                                                                    int relationCode, int mode);
   TGREATPOWER_VTABLE_SLOT(162);
-  TGREATPOWER_VTABLE_SLOT(163);
+  // slot 0xa3 — body 0x004e1f40 (not yet ported); war-commitment threshold consumed by
+  // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
+  virtual float ComputeWarThresholdSlotA3_Provisional(int targetNation) {
+    return 0.0f;
+  }
   virtual void NotifyWarResetSlot290() {} // slot 0x290
   virtual void CallSlotA5_Provisional(void) {}
   TGREATPOWER_VTABLE_SLOT(166);
@@ -227,7 +255,9 @@ public:
   int treasuryValue10;
   short needLevelByNation[0x17];
   short field42;
-  TListObject* pad_44_ptr;
+  // 0x44 — military unit list; entries carry a unit-type short at +4 indexing
+  // g_Classify_Nation_Military_LookupTable_00695CD4 power weights.
+  TListObject* militaryUnitList44;
   unsigned char pad_48[0x88 - 0x48];
   short ownerNationSlot;
   unsigned char pad_8a[0x90 - 0x8a];
@@ -362,7 +392,6 @@ public:
   void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot, int policyCode);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
-  char CompareMissionScoreVariantsByMode(int mode);
   void BuildGreatPowerMapContextTriggeredNationEventMessages(void);
   void BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void);
   void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int policyCode,
@@ -375,8 +404,6 @@ public:
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   void SetNationResourceNeedCurrentByType(int needType, int currentValue);
   void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
-  float GetScoreFactorSlot23C(void);
-  float GetScoreFactorSlot240(void);
   int GetMultiplierSlot21C(void);
   void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex, short rowIndex);
   int SumAidAllocationMatrixColumnForTarget(short targetNationId);

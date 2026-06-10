@@ -10,6 +10,9 @@ class TGreatPower;
 class TMinor;
 
 extern TMinor* g_apTerrainTypeDescriptorTable[23];
+// 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
+// (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
+extern TMinor* g_apSecondaryNationStateSlots[36];
 extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
 extern void* g_pLocalizationTable;

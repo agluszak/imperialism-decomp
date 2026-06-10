@@ -16,8 +16,11 @@ public:
   virtual void Release1C() = 0;
   virtual void VTableSlot20_Provisional() = 0;
   virtual int GetIntByOrdinalSlot24(int ordinal) = 0;
-  virtual void ReleaseSlot24() = 0; // overload for slot 24
-  virtual int GetCountSlot28() = 0;
+  // Slot 0x28. Region lists return their entry count here (0x004dbf00 and 0x00517c30
+  // both consume EAX as a count); other call sites use it as a release hook and
+  // ignore the return value.
+  virtual int GetCountOrReleaseSlot28() = 0;
+  virtual int GetCountSlot28() = 0; // NOTE: emits offset 0x2c (decl index 11)
   virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal) = 0;
   virtual void* GetEntrySlot2C(int index) = 0; // slot 2C overload
   virtual void AddTail30(void* item) = 0;

@@ -1083,14 +1083,6 @@ undefined4 ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void)
   return 0;
 }
 
-// ghidra_name IsNationCodeLinkedInNationGraph
-// ghidra_proto bool __cdecl IsNationCodeLinkedInNationGraph(void)
-// FUNCTION: IMPERIALISM 0x00517c30
-undefined4 IsNationCodeLinkedInNationGraph(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00517d40
 // ghidra_proto uint __thiscall OrphanDeadLeaf_NoRefs_00517d40(void)
 // FUNCTION: IMPERIALISM 0x00517d40

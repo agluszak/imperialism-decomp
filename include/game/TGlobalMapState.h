@@ -18,12 +18,15 @@ struct TTerrainStateRecordView {
 };
 
 struct TGlobalMapCityScoreRecord {
-  unsigned char pad00[2];
+  signed char ownerNationCode00; // 0x00 — owning nation code (0x00517c30 compares it)
+  unsigned char pad01;
   unsigned char developmentStage;
   unsigned char pad03;
   short ownerNationSlot;
   short lastTurnTick;
-  unsigned char pad08[0x3A - 0x08];
+  signed char adjacentRegionCount08; // 0x08 — entries used in adjacentRegionIds0A
+  unsigned char pad09;
+  short adjacentRegionIds0A[0x18]; // 0x0a..0x3a — neighboring region record ids
   signed char linkedRegionCount;
   unsigned char pad3B[0x42 - 0x3B];
   short linkedRegionIds[0x21];
@@ -98,6 +101,11 @@ public:
   TGlobalMapCityScoreRecord* cityScoreTable;
   unsigned char pad14[4];
   int cityScoreTotal;
+
+  // True when any region owned by nationA has a neighboring region owned by nationB.
+  // Walks g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList90 against the
+  // 0xa8-stride region records in cityScoreTable.
+  char AreNationsBorderLinked(int nationA, int nationB);
 
   class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
     return reinterpret_cast<struct GlobalMapTileRecord*>(terrainStateTable)[tileIndex]

@@ -2923,14 +2923,6 @@ undefined4 SumNavyOrderPriorityForNation(void)
   return 0;
 }
 
-// ghidra_name ComputeNavyOrderIndustryCostWeightSumForNation
-// ghidra_proto int __fastcall ComputeNavyOrderIndustryCostWeightSumForNation(void * pNationCtx)
-// FUNCTION: IMPERIALISM 0x004e0500
-undefined4 ComputeNavyOrderIndustryCostWeightSumForNation(void)
-{
-  return 0;
-}
-
 // ghidra_name SumNationRuntimeFiveBucketValue44
 // ghidra_proto void __cdecl SumNationRuntimeFiveBucketValue44(void)
 // FUNCTION: IMPERIALISM 0x004e06d0
@@ -2947,138 +2939,10 @@ undefined4 ComputeNationRuntimeAdvisoryMetricCase6(void)
   return 0;
 }
 
-// ghidra_name IterateLinkedListCursorEntries_004e07b0
-// ghidra_proto int __cdecl IterateLinkedListCursorEntries_004e07b0(void)
-// FUNCTION: IMPERIALISM 0x004e07b0
-undefined4 IterateLinkedListCursorEntries_004e07b0(void)
-{
-  return 0;
-}
-
-// ghidra_name IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890
-// ghidra_proto float __cdecl IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(void)
-// FUNCTION: IMPERIALISM 0x004e0890
-undefined4 IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeCityOrderCapabilityAggregateScore
-// ghidra_proto float __cdecl ComputeCityOrderCapabilityAggregateScore(void)
-// FUNCTION: IMPERIALISM 0x004e09a0
-undefined4 ComputeCityOrderCapabilityAggregateScore(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C6_I54_004e0b20
-// ghidra_proto float __cdecl OrphanCallChain_C6_I54_004e0b20(void)
-// FUNCTION: IMPERIALISM 0x004e0b20
-undefined4 OrphanCallChain_C6_I54_004e0b20(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryHandlerCase00Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase00Metric(void)
-// FUNCTION: IMPERIALISM 0x004e0c10
-undefined4 ComputeAdvisoryHandlerCase00Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryHandlerCase01Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase01Metric(void)
-// FUNCTION: IMPERIALISM 0x004e0d80
-undefined4 ComputeAdvisoryHandlerCase01Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryHandlerCase02Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase02Metric(void)
-// FUNCTION: IMPERIALISM 0x004e0e70
-undefined4 ComputeAdvisoryHandlerCase02Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers
-// ghidra_proto void __cdecl ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers(void)
-// FUNCTION: IMPERIALISM 0x004e0fe0
-undefined4 ComputeAdvisoryMetric23CNormalizedBySelectionAndPeers(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryMatrixRatio23CByTargetSlot
-// ghidra_proto void __cdecl ComputeAdvisoryMatrixRatio23CByTargetSlot(void)
-// FUNCTION: IMPERIALISM 0x004e1170
-undefined4 ComputeAdvisoryMatrixRatio23CByTargetSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryMetric240NormalizedBySelectionAndPeers
-// ghidra_proto void __cdecl ComputeAdvisoryMetric240NormalizedBySelectionAndPeers(void)
-// FUNCTION: IMPERIALISM 0x004e1300
-undefined4 ComputeAdvisoryMetric240NormalizedBySelectionAndPeers(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryMatrixRatio240ByTargetSlot
-// ghidra_proto void __cdecl ComputeAdvisoryMatrixRatio240ByTargetSlot(void)
-// FUNCTION: IMPERIALISM 0x004e1490
-undefined4 ComputeAdvisoryMatrixRatio240ByTargetSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryHandlerCase07Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase07Metric(void)
-// FUNCTION: IMPERIALISM 0x004e1620
-undefined4 ComputeAdvisoryHandlerCase07Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryHandlerCase08Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase08Metric(void)
-// FUNCTION: IMPERIALISM 0x004e1750
-undefined4 ComputeAdvisoryHandlerCase08Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryHandlerCase09Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase09Metric(void)
-// FUNCTION: IMPERIALISM 0x004e1910
-undefined4 ComputeAdvisoryHandlerCase09Metric(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAdvisoryHandlerCase10Metric
-// ghidra_proto void __cdecl ComputeAdvisoryHandlerCase10Metric(void)
-// FUNCTION: IMPERIALISM 0x004e1a40
-undefined4 ComputeAdvisoryHandlerCase10Metric(void)
-{
-  return 0;
-}
-
 // ghidra_name ReturnFalseNoOpAdvisoryHandler
 // ghidra_proto bool __stdcall ReturnFalseNoOpAdvisoryHandler(void)
 // FUNCTION: IMPERIALISM 0x004e1c00
 undefined4 ReturnFalseNoOpAdvisoryHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name TryValidateProposalAndQueueInterNationEvent1C
-// ghidra_proto void __cdecl TryValidateProposalAndQueueInterNationEvent1C(void)
-// FUNCTION: IMPERIALISM 0x004e1c20
-undefined4 TryValidateProposalAndQueueInterNationEvent1C(void)
 {
   return 0;
 }

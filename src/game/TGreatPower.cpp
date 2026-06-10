@@ -20,6 +20,9 @@
 #include "game/TGreatPower.h"
 #include "game/TGlobalMapState.h"
 #include "game/TDiplomacyTurnStateManager.h"
+#include "game/CIterator.h"
+#include "game/TInterNationEventQueueManager.h"
+#include "game/trade_quickdraw.h"
 #include <stddef.h>
 #include <new>
 
@@ -37,6 +40,15 @@ extern float g_DAT_006533b0_Value_006533B0[];
 extern float g_DAT_006533d0_Value_006533D0[];
 extern float g_DAT_006533e8_Value_006533E8[];
 extern float g_DAT_Value_00653408[];
+// Float constants for the relative-power-score family (slots 0x8e-0x9e).
+extern float g_Compute_Advisory_Handler_LookupTable_00653700; // 0.0f
+extern float g_Compute_Advisory_Handler_LookupTable_00653714; // -0.25f
+extern float g_Iterate_Linked_List_Value_00653718;            // 0.25f
+extern float g_Compute_City_Order_Value_0065371C;             // 0.5f
+extern float g_Compute_Advisory_Handler_LookupTable_00653720; // -90.0f
+extern float g_Compute_Advisory_Peer_LookupTable_00653724;    // -0.5f
+// Per-unit-type military power weights (0xe-byte records, weight short at +0).
+extern short g_Classify_Nation_Military_LookupTable_00695CD4[][7];
 extern void* g_pMapActionContextListHead;
 }
 
@@ -223,6 +235,8 @@ struct TUnitOrderOwnerManagerView {
 
 extern "C" void* g_apNationStates[];
 extern "C" void* g_apTerrainTypeDescriptorTable[];
+extern "C" void* g_apSecondaryNationStateSlots[];
+extern "C" void* g_pInterNationEventQueueManager;
 
 struct TObArrayModeView {
   void* vftable;
@@ -513,7 +527,8 @@ static __inline void List_ResetSlot14(void* list) {
 }
 
 static __inline int List_GetCountSlot28(void* list) {
-  return static_cast<TListObject*>(list)->GetCountSlot28();
+  // Original callers (e.g. 0x004dbf00) read the count through vtable offset 0x28.
+  return static_cast<TListObject*>(list)->GetCountOrReleaseSlot28();
 }
 
 static __inline int List_GetIntByOrdinalSlot24(void* list, int ordinal) {
@@ -623,8 +638,7 @@ static __inline void Object_CallSlot8CNoArgs(void* obj) {
 
 static __inline void SecondaryState_ResetDiplomacyLevel(void* secondaryState, int sourceNation,
                                                         int resetLevel) {
-  static_cast<TMinor*>(secondaryState)
-      ->SetDiplomacyStandingSlot48(sourceNation, resetLevel);
+  static_cast<TMinor*>(secondaryState)->SetDiplomacyStandingSlot48(sourceNation, resetLevel);
 }
 
 static __inline char GlobalMapState_CallMetricC4(void* globalMapState, int regionIndex,
@@ -886,14 +900,12 @@ static __inline char SecondaryState_HasNationFlag5C(void* secondaryState, int na
 
 static __inline void SecondaryState_SetPolicyValue48(void* secondaryState, int targetNationSlot,
                                                      int policyValue) {
-  static_cast<TMinor*>(secondaryState)
-      ->SetDiplomacyStandingSlot48(targetNationSlot, policyValue);
+  static_cast<TMinor*>(secondaryState)->SetDiplomacyStandingSlot48(targetNationSlot, policyValue);
 }
 
 static __inline void SecondaryState_CallSlot4C(void* secondaryState, int sourceNation,
                                                int modeValue) {
-  static_cast<TMinor*>(secondaryState)
-      ->VTableSlot4C_Provisional(sourceNation, modeValue);
+  static_cast<TMinor*>(secondaryState)->VTableSlot4C_Provisional(sourceNation, modeValue);
 }
 
 static __inline int GetCityBuildingProductionValueBySlot(void* cityRecord, int slot) {
@@ -1002,7 +1014,7 @@ static __inline void* List_GetNodeByOrdinalSlot2C(void* list, int mode, int ordi
 }
 
 static __inline void List_ReleaseSlot24(void* list) {
-  reinterpret_cast<TListObject*>(list)->ReleaseSlot24();
+  reinterpret_cast<TListObject*>(list)->GetCountOrReleaseSlot28();
 }
 
 // FUNCTION: IMPERIALISM 0x00401172
@@ -1187,8 +1199,8 @@ void TGreatPower::BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void
 #pragma optimize("agsy", on)
 #endif
 void TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int nationSlot,
-                                                                      int policyCode,
-                                                                      int targetNation) {
+                                                                       int policyCode,
+                                                                       int targetNation) {
   QueueWarTransitionAndNotifyThirdPartyIfNeeded(nationSlot, policyCode, targetNation);
 }
 #if defined(_MSC_VER)
@@ -1295,44 +1307,15 @@ void TGreatPower::thunk_RebuildNationResourceYieldCountersAndDevelopmentTargets_
 
 // FUNCTION: IMPERIALISM 0x004d89f0
 TGreatPower::TGreatPower()
-    : identitySharedString0(),
-      identitySharedString1(),
-      nationSlot(0),
-      encodedNationSlot(0),
-      treasuryValue10(0),
-      field42(0),
-      pad_44_ptr(0),
-      ownerNationSlot(0),
-      ownedRegionList(0),
-      foreignMinister(0),
-      interiorMinister(0),
-      defenseMinister(0),
-      diplomacyEligibilityA0(0),
-      diplomacyCounterA2(0),
-      tradeCapacity(0),
-      needCapA6(0),
-      needsOverCapFlag(0),
-      grantTotalCost(0),
-      diplomacyCounterB0(0),
-      budgetPoolBase(0),
-      budgetPoolDelta(0),
-      turnEventQueue(0),
-      proposalQueue(0),
-      relationManager(0),
-      townMarkerList(0),
-      trackedObjectList(0),
-      scenarioInitFlag(0),
-      diplomacyBudgetBase(0),
-      escalationCounter(0),
-      pendingCommitmentCost(0),
-      pressureCounter(0),
-      field900(0),
-      turnSummaryQueue(0),
-      missionNodeQueue(0),
-      field910(0),
-      aidAllocationTotal(0),
-      pendingAidTotal(0),
-      missionQueue(0) {
+    : identitySharedString0(), identitySharedString1(), nationSlot(0), encodedNationSlot(0),
+      treasuryValue10(0), field42(0), militaryUnitList44(0), ownerNationSlot(0), ownedRegionList(0),
+      foreignMinister(0), interiorMinister(0), defenseMinister(0), diplomacyEligibilityA0(0),
+      diplomacyCounterA2(0), tradeCapacity(0), needCapA6(0), needsOverCapFlag(0), grantTotalCost(0),
+      diplomacyCounterB0(0), budgetPoolBase(0), budgetPoolDelta(0), turnEventQueue(0),
+      proposalQueue(0), relationManager(0), townMarkerList(0), trackedObjectList(0),
+      scenarioInitFlag(0), diplomacyBudgetBase(0), escalationCounter(0), pendingCommitmentCost(0),
+      pressureCounter(0), field900(0), turnSummaryQueue(0), missionNodeQueue(0), field910(0),
+      aidAllocationTotal(0), pendingAidTotal(0), missionQueue(0) {
   int localeIndex = 0;
   if (g_pLocalizationTable != 0) {
     localeIndex =
@@ -1404,7 +1387,7 @@ static void ReleaseOwnedGreatPowerMemberPointers(TGreatPower* self) {
   ReleaseAndClear58(&self->trackedObjectList);
   ReleaseAndClear24(&self->turnSummaryQueue);
   ReleaseAndClear58(&self->missionNodeQueue);
-  ReleaseAndClear58(&self->pad_44_ptr);
+  ReleaseAndClear58(&self->militaryUnitList44);
   if (self->ownedRegionList != 0) {
     self->ownedRegionList->Call38();
     self->ownedRegionList = 0;
@@ -1675,10 +1658,10 @@ void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
     }
     *missionNodeSlot = 0;
   }
-  if (this->pad_44_ptr != 0) {
-    this->pad_44_ptr->Call58();
+  if (this->militaryUnitList44 != 0) {
+    this->militaryUnitList44->Call58();
   }
-  this->pad_44_ptr = 0;
+  this->militaryUnitList44 = 0;
   if (this->ownedRegionList != 0) {
     this->ownedRegionList->Call38();
     this->ownedRegionList = 0;
@@ -2248,7 +2231,8 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
     return;
   }
 
-  int drainAmount = (0xC7 - static_cast<int>(pressureView->pressureValue8f4) * treasuryValue10) / 200;
+  int drainAmount =
+      (0xC7 - static_cast<int>(pressureView->pressureValue8f4) * treasuryValue10) / 200;
   pressureView->pendingDrain900 = drainAmount;
   this->treasuryValue10 = treasuryValue10 - drainAmount;
 }
@@ -3401,8 +3385,9 @@ void TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
         int majorNation = 0;
         while (majorNation < 7) {
           if (majorNation != this->nationSlot) {
-            short relationValue = g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c
-                                                          [majorNation * 0x17 + targetIndex];
+            short relationValue =
+                g_pDiplomacyTurnStateManager
+                    ->relationStandingScoreMatrix79c[majorNation * 0x17 + targetIndex];
             if (relationValue > kInfluenceAlertThreshold) {
               shouldDispatchAlert = true;
               break;
@@ -3883,7 +3868,8 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
           reinterpret_cast<DiplomacyManagerVtbl*>(
               ReadGlobalPointer(kAddrDiplomacyTurnStateManagerPtr))
                   ->HasPolicyWithNationSlot44(this->nationSlot, nationSlot) == 0) {
-        this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(nationSlot, 2, static_cast<int>(proposal->targetNationSlot));
+        this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(
+            nationSlot, 2, static_cast<int>(proposal->targetNationSlot));
       }
     }
     break;
@@ -4068,7 +4054,8 @@ void TGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
                                                                         checkNation) != 0 &&
                 g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot,
                                                                         checkNation) == 0) {
-              this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(checkNation, 0x132, targetNation);
+              this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(checkNation, 0x132,
+                                                                         targetNation);
             }
             ++checkNation;
           } while (checkNation < kMajorNationCount);
@@ -4173,6 +4160,41 @@ struct TDiplomacyManagerAdvisoryVtbl {
   virtual char HasPolicySlot44(int sourceNation, int targetNation) = 0;
 };
 
+// View of a navy primary-order list node (global list head at 0x005505c0).
+struct NavyPrimaryOrderNodeView {
+  unsigned char pad00[4];
+  short resourceType04;
+  unsigned char pad06[0x14 - 0x06];
+  short ownerNationSlot14;
+  unsigned char pad16[0x24 - 0x16];
+  NavyPrimaryOrderNodeView* next24;
+};
+
+undefined4 thunk_GetNavyPrimaryOrderListHead(void);
+undefined4 thunk_GetIndustryActionCostWeightByResourceType(void);
+
+static __inline NavyPrimaryOrderNodeView* GetNavyPrimaryOrderListHeadFast(void) {
+  return reinterpret_cast<NavyPrimaryOrderNodeView*(__cdecl*)(void)>(
+      thunk_GetNavyPrimaryOrderListHead)();
+}
+
+static __inline short GetIndustryActionCostWeightByResourceTypeFast(short resourceType) {
+  return reinterpret_cast<short(__cdecl*)(short)>(thunk_GetIndustryActionCostWeightByResourceType)(
+      resourceType);
+}
+
+// FUNCTION: IMPERIALISM 0x004e0500
+int TGreatPower::SumNavyOrderPriorityForNationSlot86(void) {
+  int prioritySum = 0;
+  for (NavyPrimaryOrderNodeView* node = GetNavyPrimaryOrderListHeadFast(); node != 0;
+       node = node->next24) {
+    if (node->ownerNationSlot14 == this->nationSlot) {
+      prioritySum += GetIndustryActionCostWeightByResourceTypeFast(node->resourceType04);
+    }
+  }
+  return prioritySum;
+}
+
 // FUNCTION: IMPERIALISM 0x004e0550
 int TGreatPower::CountMapActionContextNodesWithNationBit(void) {
   int count = 0;
@@ -4226,6 +4248,455 @@ int TGreatPower::GetCityBuildingProductionViaRelationManagerSlot8D(short buildin
   }
   return 0;
 }
+
+#pragma optimize("y", on) // omit frame pointer, as in the original bodies
+
+// --- Relative military/naval power score family (vtable slots 0x8e-0x9e) ---
+
+// View of a military unit list entry (unit type id short at +4 indexes the
+// g_Classify_Nation_Military_LookupTable_00695CD4 power-weight records).
+struct MilitaryUnitEntryView {
+  short pad00[2];
+  short unitTypeId04;
+};
+
+static __inline int SumMilitaryUnitPowerWeights(TListObject* unitList) {
+  int powerSum = 0;
+  CIterator unitIter(unitList);
+  for (MilitaryUnitEntryView* unit = static_cast<MilitaryUnitEntryView*>(unitIter.Reset());
+       unitIter.More(); unit = static_cast<MilitaryUnitEntryView*>(unitIter.Advance())) {
+    powerSum += g_Classify_Nation_Military_LookupTable_00695CD4[unit->unitTypeId04][0];
+  }
+  return powerSum;
+}
+
+// Sum GetScoreFactorSlot23C over targetNation's allied major nations; the alliance
+// count is re-queried every iteration, as in the original loops.
+static __inline float SumAlliedArmyScoreFactors(int targetNation) {
+  float allySum = 0.0f;
+  int allyIndex = 0;
+  if (g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation) > 0) {
+    do {
+      int allyNation =
+          g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, targetNation);
+      allySum = allySum +
+                static_cast<TGreatPower*>(g_apNationStates[allyNation])->GetScoreFactorSlot23C();
+      ++allyIndex;
+    } while (allyIndex <
+             g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation));
+  }
+  return allySum;
+}
+
+static __inline float SumAlliedNavyScoreFactors(int targetNation) {
+  float allySum = 0.0f;
+  int allyIndex = 0;
+  if (g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation) > 0) {
+    do {
+      int allyNation =
+          g_pDiplomacyTurnStateManager->GetNthAlliedMajorNationSlot90(allyIndex, targetNation);
+      allySum = allySum +
+                static_cast<TGreatPower*>(g_apNationStates[allyNation])->GetScoreFactorSlot240();
+      ++allyIndex;
+    } while (allyIndex <
+             g_pDiplomacyTurnStateManager->CountMajorAllianceRelationsSlot8c(targetNation));
+  }
+  return allySum;
+}
+
+static __inline short* GetRelationStandingRowForNation(short nationSlot) {
+  return &g_pDiplomacyTurnStateManager
+              ->relationStandingScoreMatrix79c[nationSlot * kNationSlotCount];
+}
+
+// turn tick / 4, clamped to 0x3c — the "elapsed years" term of the standing ratios.
+static __inline int GetClampedQuarterYearTerm(void) {
+  TLocalizationRuntime* localization = static_cast<TLocalizationRuntime*>(g_pLocalizationTable);
+  int yearTerm = static_cast<short>(localization->quarterGateTick2c / 4);
+  if (yearTerm >= 0x3c) {
+    yearTerm = 0x3c;
+  }
+  return yearTerm;
+}
+
+// FUNCTION: IMPERIALISM 0x004e07b0
+int TGreatPower::ComputeArmyCommitBudgetSlot8E(void) {
+  if (this->relationManager == 0) {
+    return 0;
+  }
+  CityTradeScenarioDescriptor* scenario = GetCityState()->scenarioTradeDescriptor;
+  short scenarioCap = scenario->valueAt1C;
+  short productionCap = scenario->productionSlots->valueAt4;
+  if (scenarioCap < productionCap) {
+    productionCap = scenarioCap;
+  }
+  int budget = productionCap;
+  short metricCap = this->QueryNationMetricBySlot78(0x10);
+  if (static_cast<int>(metricCap) <= budget) {
+    budget = metricCap;
+  }
+  int armyPower = SumMilitaryUnitPowerWeights(this->militaryUnitList44);
+  if (armyPower / 2 <= budget) {
+    budget = armyPower / 2;
+  }
+  return budget;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0890
+float TGreatPower::GetScoreFactorSlot23C(void) {
+  int armyPower = SumMilitaryUnitPowerWeights(this->militaryUnitList44);
+  float armyPowerF = static_cast<float>(armyPower);
+  float commitBudgetF = static_cast<float>(this->ComputeArmyCommitBudgetSlot8E());
+  int production = this->GetCityBuildingProductionViaRelationManagerSlot8D(3);
+  int poweredCap = static_cast<int>(armyPowerF * g_Iterate_Linked_List_Value_00653718);
+  int productionTerm = static_cast<int>(static_cast<float>(production));
+  if (productionTerm >= poweredCap) {
+    productionTerm = poweredCap;
+  }
+  return armyPowerF + commitBudgetF + static_cast<float>(productionTerm);
+}
+
+// FUNCTION: IMPERIALISM 0x004e09a0
+float TGreatPower::GetScoreFactorSlot240(void) {
+  unsigned char* capabilityState = reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState);
+  int shipProduction;
+  if (capabilityState[0x1a8] != 0) {
+    shipProduction = this->GetCityBuildingProductionViaRelationManagerSlot8D(2);
+  } else if (capabilityState[0x1a5] != 0) {
+    shipProduction = (this->GetCityBuildingProductionViaRelationManagerSlot8D(4) +
+                      this->GetCityBuildingProductionViaRelationManagerSlot8D(2)) /
+                     2;
+  } else {
+    shipProduction = this->GetCityBuildingProductionViaRelationManagerSlot8D(4);
+  }
+  float shipProductionF = static_cast<float>(shipProduction);
+  float navyPriorityF = static_cast<float>(this->SumNavyOrderPriorityForNationSlot86());
+  int navyPriorityInt = static_cast<int>(navyPriorityF);
+  int productionTerm = static_cast<int>(shipProductionF);
+  if (productionTerm >= navyPriorityInt) {
+    productionTerm = navyPriorityInt;
+  }
+  float productionTermF = static_cast<float>(productionTerm);
+  int fleetPower = SumMilitaryUnitPowerWeights(this->militaryUnitList44);
+  int priorityCap = static_cast<int>(navyPriorityF * g_Compute_City_Order_Value_0065371C);
+  if (priorityCap >= fleetPower) {
+    priorityCap = fleetPower;
+  }
+  return static_cast<float>(priorityCap) + navyPriorityF + productionTermF;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0b20
+float TGreatPower::ComputeArmyScoreRatioVsNation(int targetNation) {
+  float selfScore = this->GetScoreFactorSlot23C();
+  float targetScore =
+      static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+  float allySum = SumAlliedArmyScoreFactors(targetNation);
+  float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
+  if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
+    return selfScore;
+  }
+  return selfScore / denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0c10
+float TGreatPower::ComputeArmyScoreStandingRatioVsNation(int targetNation) {
+  float selfScore = this->GetScoreFactorSlot23C();
+  float targetScore =
+      static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+  float allySum = SumAlliedArmyScoreFactors(targetNation);
+  int yearTerm = GetClampedQuarterYearTerm();
+  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float denominator = (static_cast<float>(standingRow[static_cast<short>(targetNation)]) -
+                       allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
+                      targetScore;
+  float numerator =
+      (static_cast<float>(yearTerm) + selfScore) - g_Compute_Advisory_Handler_LookupTable_00653720;
+  if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
+    return numerator;
+  }
+  return numerator / denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0d80
+float TGreatPower::ComputeNavyScoreRatioVsNation(int targetNation) {
+  float selfScore = this->GetScoreFactorSlot240();
+  float targetScore =
+      static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+  float allySum = SumAlliedNavyScoreFactors(targetNation);
+  float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
+  if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
+    return selfScore;
+  }
+  return selfScore / denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0e70
+float TGreatPower::ComputeNavyScoreStandingRatioVsNation(int targetNation) {
+  float selfScore = this->GetScoreFactorSlot240();
+  float targetScore =
+      static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+  float allySum = SumAlliedNavyScoreFactors(targetNation);
+  int yearTerm = GetClampedQuarterYearTerm();
+  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float denominator = (static_cast<float>(standingRow[static_cast<short>(targetNation)]) -
+                       allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
+                      targetScore;
+  float numerator =
+      (static_cast<float>(yearTerm) + selfScore) - g_Compute_Advisory_Handler_LookupTable_00653720;
+  if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
+    return numerator;
+  }
+  return numerator / denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0fe0
+float TGreatPower::ComputeArmyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
+  float selfScore = this->GetScoreFactorSlot23C();
+  int secondaryPower = SumMilitaryUnitPowerWeights(
+      static_cast<TMinor*>(g_apSecondaryNationStateSlots[secondarySlot])->militaryUnitList44);
+  float combinedScore = static_cast<float>(secondaryPower) + selfScore;
+  char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
+  float targetScore;
+  if (borderLinked != 0) {
+    targetScore =
+        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+  } else {
+    targetScore =
+        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+  }
+  float allySum = SumAlliedArmyScoreFactors(targetNation);
+  float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
+  if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
+    return combinedScore;
+  }
+  return combinedScore / denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1170
+float TGreatPower::ComputeArmyScoreStandingRatioVsNationPair(int targetNation, int partnerNation) {
+  float selfScore = this->GetScoreFactorSlot23C();
+  char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, partnerNation);
+  float targetScore;
+  if (borderLinked != 0) {
+    targetScore =
+        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+  } else {
+    targetScore =
+        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+  }
+  float allySum = SumAlliedArmyScoreFactors(targetNation);
+  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float denominator = (static_cast<float>(standingRow[static_cast<short>(targetNation)]) -
+                       allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
+                      targetScore;
+  if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
+    return static_cast<float>(standingRow[static_cast<short>(partnerNation)]) + selfScore;
+  }
+  return (static_cast<float>(standingRow[static_cast<short>(partnerNation)]) + selfScore) /
+         denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1300
+float TGreatPower::ComputeNavyScoreRatioVsNationWithSecondary(int targetNation, int secondarySlot) {
+  float selfScore = this->GetScoreFactorSlot240();
+  int secondaryPower = SumMilitaryUnitPowerWeights(
+      static_cast<TMinor*>(g_apSecondaryNationStateSlots[secondarySlot])->militaryUnitList44);
+  float combinedScore = static_cast<float>(secondaryPower) + selfScore;
+  char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, secondarySlot);
+  float targetScore;
+  if (borderLinked != 0) {
+    targetScore =
+        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+  } else {
+    targetScore =
+        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+  }
+  float allySum = SumAlliedNavyScoreFactors(targetNation);
+  float denominator = targetScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
+  if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
+    return combinedScore;
+  }
+  return combinedScore / denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1490
+float TGreatPower::ComputeNavyScoreStandingRatioVsNationPair(int targetNation, int partnerNation) {
+  float selfScore = this->GetScoreFactorSlot240();
+  char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(targetNation, partnerNation);
+  float targetScore;
+  if (borderLinked != 0) {
+    targetScore =
+        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot23C();
+  } else {
+    targetScore =
+        static_cast<TGreatPower*>(g_apNationStates[targetNation])->GetScoreFactorSlot240();
+  }
+  float allySum = SumAlliedNavyScoreFactors(targetNation);
+  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float denominator = (static_cast<float>(standingRow[static_cast<short>(targetNation)]) -
+                       allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
+                      targetScore;
+  if (denominator == g_Compute_Advisory_Handler_LookupTable_00653700) {
+    return static_cast<float>(standingRow[static_cast<short>(partnerNation)]) + selfScore;
+  }
+  return (static_cast<float>(standingRow[static_cast<short>(partnerNation)]) + selfScore) /
+         denominator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1620
+float TGreatPower::ComputeArmyScoreRatioForNationPair(int nationA, int nationB, char swapRoles) {
+  int opponentNation = nationA;
+  int partnerNation = nationB;
+  if (swapRoles != 0) {
+    opponentNation = nationB;
+    partnerNation = nationA;
+  }
+  float selfScore = this->GetScoreFactorSlot23C();
+  float opponentScore =
+      static_cast<TGreatPower*>(g_apNationStates[opponentNation])->GetScoreFactorSlot23C();
+  float partnerScore =
+      static_cast<TGreatPower*>(g_apNationStates[partnerNation])->GetScoreFactorSlot23C();
+  float allySum = SumAlliedArmyScoreFactors(opponentNation);
+  float denominator = opponentScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
+  float numerator;
+  if (swapRoles == 0) {
+    numerator = selfScore - partnerScore * g_Compute_Advisory_Peer_LookupTable_00653724;
+  } else {
+    numerator = selfScore - partnerScore * g_Compute_Advisory_Handler_LookupTable_00653714;
+  }
+  if (denominator != g_Compute_Advisory_Handler_LookupTable_00653700) {
+    numerator = numerator / denominator;
+  }
+  return numerator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1750
+float TGreatPower::ComputeArmyScoreStandingRatioForNationPair(int nationA, int nationB,
+                                                              char swapRoles) {
+  int opponentNation = nationA;
+  int partnerNation = nationB;
+  if (swapRoles != 0) {
+    opponentNation = nationB;
+    partnerNation = nationA;
+  }
+  float selfScore = this->GetScoreFactorSlot23C();
+  float opponentScore =
+      static_cast<TGreatPower*>(g_apNationStates[opponentNation])->GetScoreFactorSlot23C();
+  float partnerScore =
+      static_cast<TGreatPower*>(g_apNationStates[partnerNation])->GetScoreFactorSlot23C();
+  float allySum = SumAlliedArmyScoreFactors(opponentNation);
+  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float denominator = (static_cast<float>(standingRow[static_cast<short>(opponentNation)]) -
+                       allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
+                      opponentScore;
+  float numerator;
+  if (swapRoles == 0) {
+    numerator = (static_cast<float>(standingRow[static_cast<short>(partnerNation)]) -
+                 partnerScore * g_Compute_Advisory_Peer_LookupTable_00653724) +
+                selfScore;
+  } else {
+    numerator = (static_cast<float>(standingRow[static_cast<short>(partnerNation)]) -
+                 partnerScore * g_Compute_Advisory_Handler_LookupTable_00653714) +
+                selfScore;
+  }
+  if (denominator != g_Compute_Advisory_Handler_LookupTable_00653700) {
+    numerator = numerator / denominator;
+  }
+  return numerator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1910
+float TGreatPower::ComputeNavyScoreRatioForNationPair(int nationA, int nationB, char swapRoles) {
+  int opponentNation = nationA;
+  int partnerNation = nationB;
+  if (swapRoles != 0) {
+    opponentNation = nationB;
+    partnerNation = nationA;
+  }
+  float selfScore = this->GetScoreFactorSlot240();
+  float opponentScore =
+      static_cast<TGreatPower*>(g_apNationStates[opponentNation])->GetScoreFactorSlot240();
+  float partnerScore =
+      static_cast<TGreatPower*>(g_apNationStates[partnerNation])->GetScoreFactorSlot240();
+  float allySum = SumAlliedNavyScoreFactors(opponentNation);
+  float denominator = opponentScore - allySum * g_Compute_Advisory_Handler_LookupTable_00653714;
+  float numerator;
+  if (swapRoles == 0) {
+    numerator = selfScore - partnerScore * g_Compute_Advisory_Peer_LookupTable_00653724;
+  } else {
+    numerator = selfScore - partnerScore * g_Compute_Advisory_Handler_LookupTable_00653714;
+  }
+  if (denominator != g_Compute_Advisory_Handler_LookupTable_00653700) {
+    numerator = numerator / denominator;
+  }
+  return numerator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1a40
+float TGreatPower::ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
+                                                              char swapRoles) {
+  int opponentNation = nationA;
+  int partnerNation = nationB;
+  if (swapRoles != 0) {
+    opponentNation = nationB;
+    partnerNation = nationA;
+  }
+  float selfScore = this->GetScoreFactorSlot240();
+  float opponentScore =
+      static_cast<TGreatPower*>(g_apNationStates[opponentNation])->GetScoreFactorSlot240();
+  float partnerScore =
+      static_cast<TGreatPower*>(g_apNationStates[partnerNation])->GetScoreFactorSlot240();
+  float allySum = SumAlliedNavyScoreFactors(opponentNation);
+  short* standingRow = GetRelationStandingRowForNation(this->nationSlot);
+  float denominator = (static_cast<float>(standingRow[static_cast<short>(opponentNation)]) -
+                       allySum * g_Compute_Advisory_Handler_LookupTable_00653714) +
+                      opponentScore;
+  float numerator;
+  if (swapRoles == 0) {
+    numerator = (static_cast<float>(standingRow[static_cast<short>(partnerNation)]) -
+                 partnerScore * g_Compute_Advisory_Peer_LookupTable_00653724) +
+                selfScore;
+  } else {
+    numerator = (static_cast<float>(standingRow[static_cast<short>(partnerNation)]) -
+                 partnerScore * g_Compute_Advisory_Handler_LookupTable_00653714) +
+                selfScore;
+  }
+  if (denominator != g_Compute_Advisory_Handler_LookupTable_00653700) {
+    numerator = numerator / denominator;
+  }
+  return numerator;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1c20
+char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
+  // Result intentionally ignored in the original; keep the call for its side effects.
+  g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, targetNation);
+  char joinsWar = 0;
+  TGreatPower* targetState = static_cast<TGreatPower*>(g_apNationStates[targetNation]);
+  if (targetState->CompareMissionScoreVariantsByMode(0) == 0 &&
+      targetState->CompareMissionScoreVariantsByMode(1) == 0) {
+    float warThreshold = this->ComputeWarThresholdSlotA3_Provisional(targetNation);
+    if (this->ComputeMinisterSkillFloatSlot8C() < warThreshold) {
+      joinsWar = 1;
+      for (int otherNation = 0; otherNation < 7; ++otherNation) {
+        if (IsNationSlotEligibleForEventProcessingFast(otherNation) != 0 &&
+            g_pDiplomacyTurnStateManager->GetRelationTierSlot70(this->nationSlot, otherNation) ==
+                2 &&
+            g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(otherNation, targetNation) !=
+                0) {
+          g_pDiplomacyTurnStateManager->ApplyRelationCode4Slot7c(this->nationSlot, otherNation, 1);
+        }
+      }
+    }
+  }
+  if (joinsWar != 0) {
+    static_cast<TInterNationEventQueueManager*>(g_pInterNationEventQueueManager)
+        ->QueueInterNationEventRecordDeduped(0x1c, targetNation, this->nationSlot, 0);
+  }
+  return joinsWar;
+}
+
+#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e1d50
 bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
@@ -4337,7 +4808,7 @@ void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerC
     }
   }
 
-  void* unassignedList = this->pad_44_ptr;
+  void* unassignedList = this->militaryUnitList44;
   for (int unassignedIndex = List_GetCountSlot48(unassignedList); unassignedIndex != 0;
        --unassignedIndex) {
     TTrackedObjectListEntryView* entry =
@@ -4363,7 +4834,7 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
   TLocalizationRuntime* localizationRuntime = ReadLocalizationRuntimeView();
   if (localizationRuntime != 0 && reinterpret_cast<int*>(localizationRuntime)[0x11] == 1) {
     reinterpret_cast<void(__cdecl*)(int, int, int)>(0x0054c5a0)(this->nationSlot, targetNationSlot,
-                                                                 mode);
+                                                                mode);
   }
 
   if (mode == 1) {
@@ -4419,8 +4890,7 @@ void TGreatPower::ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int target
   ApplyJoinEmpireModeForTargetNation(targetNationSlot, mode);
 
   if (targetNationSlot >= 0 && targetNationSlot < kNationSlotCount) {
-    TGreatPower* targetNation =
-        static_cast<TGreatPower*>(g_apNationStates[targetNationSlot]);
+    TGreatPower* targetNation = static_cast<TGreatPower*>(g_apNationStates[targetNationSlot]);
     if (targetNation != 0 && targetNation->field8d1 < 3) {
       targetNation->SetNationPendingActionStateAndPayload(9, this->nationSlot);
     }
@@ -5299,14 +5769,6 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
                                                                                       0);
   reinterpret_cast<TCivWorkOrderState*>(orderObject)
       ->InitializeCivWorkOrderState(workOrderType, ownerNationSlot, static_cast<int>(cityOwnerTag));
-}
-
-float TGreatPower::GetScoreFactorSlot23C(void) {
-  return 0.0f;
-}
-
-float TGreatPower::GetScoreFactorSlot240(void) {
-  return 0.0f;
 }
 
 int TGreatPower::GetMultiplierSlot21C(void) {

@@ -96,7 +96,8 @@ struct CityTradeProductionSlots {
 struct CityTradeScenarioDescriptor {
   char pad_00[0x14];
   CityTradeProductionSlots* productionSlots;
-  char pad_18[6];
+  char pad_18[4];
+  short valueAt1C; // army commit cap (min'ed against productionSlots->valueAt4 in 0x004e07b0)
   short extraAt1E;
 };
 

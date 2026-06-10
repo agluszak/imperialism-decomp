@@ -25,6 +25,20 @@ float g_DAT_006533d0_Value_006533D0[8] = {0};
 float g_DAT_006533e8_Value_006533E8[8] = {0};
 float g_DAT_Value_00653408[8] = {0};
 
+// Float constants used by the TGreatPower relative-power-score family
+// (vtable slots 0x8e-0x9e, bodies 0x004e07b0..0x004e1c20). Values in the
+// original image: 0.0f, -0.25f, 0.25f, 0.5f, -90.0f, -0.5f.
+float g_Compute_Advisory_Handler_LookupTable_00653700 = 0.0f;
+float g_Compute_Advisory_Handler_LookupTable_00653714 = -0.25f;
+float g_Iterate_Linked_List_Value_00653718 = 0.25f;
+float g_Compute_City_Order_Value_0065371C = 0.5f;
+float g_Compute_Advisory_Handler_LookupTable_00653720 = -90.0f;
+float g_Compute_Advisory_Peer_LookupTable_00653724 = -0.5f;
+
+// Per-unit-type military power weights (0xe-byte records, weight short at +0).
+// Summed over militaryUnitList44 entries by the slot 0x8e-0x9c score family.
+short g_Classify_Nation_Military_LookupTable_00695CD4[64][7] = {0};
+
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 void* g_pMapActionContextListHead = 0;
