@@ -155,50 +155,10 @@ undefined4 CreateTAutoGreatPowerInstance(void)
   return 0;
 }
 
-// ghidra_name TAutoGreatPower::DestructTAutoGreatPowerAndMaybeFree
-// ghidra_proto void * __thiscall DestructTAutoGreatPowerAndMaybeFree(byte freeSelfFlag)
-// FUNCTION: IMPERIALISM 0x004e6b80
-undefined4 DestructTAutoGreatPowerAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e6bb0
-// ghidra_proto void __cdecl WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e6bb0(void)
-// FUNCTION: IMPERIALISM 0x004e6bb0
-undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e6bb0(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeNationMinisterSubsystemsByPolicyIds
 // ghidra_proto void __cdecl InitializeNationMinisterSubsystemsByPolicyIds(void)
 // FUNCTION: IMPERIALISM 0x004e6c20
 undefined4 InitializeNationMinisterSubsystemsByPolicyIds(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_TGreatPower_VtblSlot07_At004e7230
-// ghidra_proto void __cdecl WrapperFor_TGreatPower_VtblSlot07_At004e7230(void)
-// FUNCTION: IMPERIALISM 0x004e7230
-undefined4 WrapperFor_TGreatPower_VtblSlot07_At004e7230(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_DispatchTaggedGameStateEvent1F20_At004e7510
-// ghidra_proto void __cdecl WrapperFor_thunk_DispatchTaggedGameStateEvent1F20_At004e7510(void)
-// FUNCTION: IMPERIALISM 0x004e7510
-undefined4 WrapperFor_thunk_DispatchTaggedGameStateEvent1F20_At004e7510(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I13_004e7550
-// ghidra_proto void __cdecl OrphanCallChain_C2_I13_004e7550(void)
-// FUNCTION: IMPERIALISM 0x004e7550
-undefined4 OrphanCallChain_C2_I13_004e7550(void)
 {
   return 0;
 }
@@ -215,14 +175,6 @@ undefined4 OrphanLeaf_NoCall_Ins07_004e7590(void)
 // ghidra_proto void __cdecl OrphanCallChain_C4_I28_004e75c0(void)
 // FUNCTION: IMPERIALISM 0x004e75c0
 undefined4 OrphanCallChain_C4_I28_004e75c0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GenerateThreadLocalRandom15_At004e7680
-// ghidra_proto void __cdecl WrapperFor_GenerateThreadLocalRandom15_At004e7680(void)
-// FUNCTION: IMPERIALISM 0x004e7680
-undefined4 WrapperFor_GenerateThreadLocalRandom15_At004e7680(void)
 {
   return 0;
 }
@@ -247,14 +199,6 @@ undefined4 OrphanCallChain_C4_I46_004e7a50(void)
 // ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins07_004e7af0(void)
 // FUNCTION: IMPERIALISM 0x004e7af0
 undefined4 OrphanLeaf_NoCall_Ins07_004e7af0(void)
-{
-  return 0;
-}
-
-// ghidra_name TAutoGreatPower::ExecuteAdvisoryCaseActionType1ForEligibleNations
-// ghidra_proto void __thiscall ExecuteAdvisoryCaseActionType1ForEligibleNations(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x004e7cc0
-undefined4 ExecuteAdvisoryCaseActionType1ForEligibleNations(void)
 {
   return 0;
 }

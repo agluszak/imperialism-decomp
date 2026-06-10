@@ -59,8 +59,8 @@ public:
 
   CString identitySharedString0;
   CString identitySharedString1;
-  unsigned char pad0c[0x0e - 0x0c];
-  short ownerNationSlot0e; // 0x0e — terrain owner; -1 unowned
+  short fallbackNationSlot0c; // 0x0c — owner used when ownerNationSlot0e tag < 100
+  short ownerNationSlot0e;    // 0x0e — terrain owner tag; -1 unowned; 100/200-biased
   unsigned char pad10[0x44 - 0x10];
   // 0x44 — military unit list (same offset/record shape as TGreatPower::militaryUnitList44;
   // summed against g_Classify_Nation_Military_LookupTable_00695CD4 in 0x004e0fe0/0x004e1300).

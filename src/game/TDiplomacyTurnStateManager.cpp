@@ -890,10 +890,10 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
       reinterpret_cast<TLocalizationRuntime*>(g_pLocalizationTable)->GetTurnTickSlot3C();
 
   if (HasFlag84ForNationSlot84(sourceNationSlot) != 0) {
-    g_apNationStates[source]->NotifyRelationCodeSlot2A8(target, relationCode);
+    g_apNationStates[source]->DispatchNationDiplomacySlotActionByMode(target, relationCode);
   }
   if (HasFlag84ForNationSlot84(targetNationSlot) != 0) {
-    g_apNationStates[target]->NotifyRelationCodeSlot2A8(source, relationCode);
+    g_apNationStates[target]->DispatchNationDiplomacySlotActionByMode(source, relationCode);
   }
 
   switch (newRelationCode) {

@@ -35,7 +35,8 @@ public:
   virtual int GetCountSlot48() = 0;
   // Slot 0x4c: 1-based get-by-ordinal (concrete body 0x004886f0, FindIndex->data).
   virtual void* GetTrackedEntrySlot4C(int ordinal = 0) = 0;
-  virtual void TPtrListSlot50_Provisional() = 0;
+  // Slot 0x50: remove the entry at 1-based ordinal (0x004e7230 pops entries with it).
+  virtual void RemoveEntryAtSlot50(int ordinal) = 0;
   // Slot 0x54: pop-and-release every entry (concrete body 0x00488750).
   virtual void Call54() = 0;
   // Slot 0x58: Call54 then Release1C on self (concrete body 0x004887b0).

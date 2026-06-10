@@ -4,7 +4,8 @@ public:
   virtual void dummy0() = 0;
   virtual void dummy1() = 0;
   virtual void dummy2() = 0;
-  virtual void dummy3() = 0;
+  // slot 0x0C — detach notification (invoked while draining autoTrackedListB60, 0x004e7230).
+  virtual void NotifyDetachSlot0C() = 0;
   virtual void dummy4() = 0;
   virtual void dummy5() = 0;
   virtual void dummy6() = 0;

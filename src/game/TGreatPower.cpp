@@ -137,7 +137,6 @@ undefined4 thunk_CreateAndSendTurnEvent13_NationAndNineDwords(void);
 undefined4 thunk_ComputeGlobalMapActionContextNodeValueAverage(void);
 undefined4 GetTGreatPowerClassNamePointer(void);
 void* ReplyToDiplomacyOffers(void);
-void TGreatPower_VtblSlot07(void);
 float ComputeMapActionContextCompositeScoreForNation(void);
 void OrphanCallChain_C2_I21_004e2b00(void);
 undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void);
@@ -1101,7 +1100,7 @@ void TGreatPower::thunk_InitializeGreatPowerMinisterRosterAndScenarioState(int a
 }
 
 // FUNCTION: IMPERIALISM 0x0040389b
-void thunk_DispatchTurnEvent11F8WithNoPayload_At0040389b(void) {
+void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
   DispatchTurnEvent11F8WithNoPayload();
 }
 
@@ -1172,11 +1171,6 @@ void TGreatPower::thunk_QueueInterNationEventType0FForNationPairContext_At00405a
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
-
-// FUNCTION: IMPERIALISM 0x00405de4
-void TGreatPower::TGreatPower_VtblSlot07(void) {
-  this->ReleaseOwnedGreatPowerObjectsAndDeleteSelf();
-}
 
 static __inline int CallSumNavyOrderPriorityForNationAndNodeType(void* nationObj, int arg);
 

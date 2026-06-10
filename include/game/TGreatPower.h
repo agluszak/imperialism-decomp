@@ -24,7 +24,9 @@ public:
   TGREATPOWER_VTABLE_SLOT(04);
   TGREATPOWER_VTABLE_SLOT(05);
   TGREATPOWER_VTABLE_SLOT(06);
-  virtual void TGreatPower_VtblSlot07(void);
+  // slot 0x07 — body 0x004d9160: releases every owned member object then `delete this`.
+  // TAutoGreatPower overrides it (0x004e7230) to drain autoTrackedListB60 first.
+  virtual void ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void);
   TGREATPOWER_VTABLE_SLOT(08);
   TGREATPOWER_VTABLE_SLOT(09);
   // slot 0x0a — body 0x004da500: writes core scalars (0x0e/0x10/0x88/0x8c) then the
@@ -304,8 +306,12 @@ public:
   TGREATPOWER_VTABLE_SLOT(167);
   virtual void CallSlotA8_Provisional(int targetNation);
   virtual void CallSlotA9_Provisional(int targetNation);
-  TGREATPOWER_VTABLE_SLOT(170);
-  virtual void NotifyRelationCodeSlot2A8(int targetNation, int relationCode) {} // slot 0x2a8
+  // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
+  // slot 0xa8, etc.). TDiplomacyTurnStateManager notifies relation-code changes here.
+  virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
+  // slot 0x2ac — base body is the 0x0040389b thunk: dispatch turn event 0x11f8 with no
+  // payload. TAutoGreatPower overrides it (0x004e7510) with the 'lost' game-state event.
+  virtual void DispatchTurnEvent11F8NoPayloadSlot2AC(void);
   // slot 0xac — body 0x004e06d0: sums the accumulated value (+0x44) of city
   // commodity records 8..0xc.
   virtual int SumCommodityRecordAccumulatedValues(void);
@@ -317,7 +323,9 @@ public:
   // slot 0x32 to enqueue land/navy/civ orders.
   virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
   TGREATPOWER_VTABLE_SLOT(177);
-  TGREATPOWER_VTABLE_SLOT(178);
+  // slot 0x2c8 — escalation hook invoked by TAutoGreatPower::AssignNeedSlotFromSourceSlot19C
+  // (0x004e7680) when the random relation-score check passes.
+  virtual void EscalateNeedSlot2C8_Provisional(int needSlot) {}
   virtual void CallSlotB3_Provisional(void) {}
 
   CString identitySharedString0;
@@ -465,7 +473,6 @@ public:
   TGreatPower();
   TGreatPower(int arg1, int arg2);
 
-  void ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void);
   static void* CreateTGreatPowerInstance(void);
   static void* GetTGreatPowerClassNamePointer(void);
   void InitializeGreatPowerMinisterRosterAndScenarioState(int arg1);
@@ -475,7 +482,6 @@ public:
   void AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
   void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot, int policyCode);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
-  void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);
   void BuildGreatPowerMapContextTriggeredNationEventMessages(void);
   void BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void);
   void QueueWarTransitionAndNotifyThirdPartyIfNeeded(int targetNationSlot, int policyCode,

@@ -53,6 +53,11 @@ short g_DAT_006966d0_Value_006966D0[16] = {0};
 // as garrison strength in TGreatPower slot 0x11 (0x004d87e0).
 short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
 
+// Random-roll scaling constants for TAutoGreatPower::AssignNeedSlotFromSourceSlot19C
+// (0x004e7680): 1/255 and 32767.
+double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
+double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
+
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's fieldB6 block by TGreatPower slot 0x39 (0x004df810).
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
