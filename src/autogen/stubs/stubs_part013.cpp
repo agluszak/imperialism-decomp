@@ -2635,14 +2635,6 @@ undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void)
   return 0;
 }
 
-// ghidra_name RemoveRegionIdAndRunTrackedObjectCleanup
-// ghidra_proto void __thiscall RemoveRegionIdAndRunTrackedObjectCleanup(void)
-// FUNCTION: IMPERIALISM 0x004e2270
-undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetNationDiplomacySlotsAndMarkRelatedNations
 // ghidra_proto void __thiscall ResetNationDiplomacySlotsAndMarkRelatedNations(void)
 // FUNCTION: IMPERIALISM 0x004e25c0

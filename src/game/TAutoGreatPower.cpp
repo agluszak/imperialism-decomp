@@ -1,10 +1,14 @@
 #include "decomp_types.h"
 #include "game/TAutoGreatPower.h"
+#include "game/CIterator.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/TGlobalMapState.h"
 #include "game/TListObject.h"
 #include "game/TLocalizationRuntime.h"
+#include "game/TMinister.h"
 #include "game/TMinor.h"
+#include "game/TPtrList.h"
+#include "game/TRelationManager.h"
 #include "game/TTrackedObject.h"
 #include "game/diplomacy_globals.h"
 #include <new>
@@ -17,6 +21,17 @@ undefined4 thunk_GetResourceDescriptorWeightWord0ByType(void);
 undefined4 thunk_DispatchTaggedGameStateEvent1F20(void); // 0x00406efb -> 0x0054a340
 undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 undefined4 GenerateThreadLocalRandom15(void);
+undefined4 thunk_FindFirstPortZoneContextByNation(void);
+undefined4 thunk_GetShortAtOffset14OrInvalid(void);
+
+// Same call shapes as the TGreatPower.cpp helpers: the port-zone lookup loads the
+// context vector; the follow-up read consumes its +0x14 short.
+static __inline void FindFirstPortZoneContextByNation(short nationSlot) {
+  reinterpret_cast<void*(__fastcall*)(int)>(thunk_FindFirstPortZoneContextByNation)(nationSlot);
+}
+static __inline short GetShortAtOffset14OrInvalidValue(void) {
+  return reinterpret_cast<short(__cdecl*)(void)>(thunk_GetShortAtOffset14OrInvalid)();
+}
 
 extern "C" {
 extern double g_DAT_00653fc0_Value_00653FC0; // 1/255
@@ -169,6 +184,207 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNa
     this->SetDiplomacyState1c6ClampedToCounterA4(5, static_cast<short>(assignAmount));
   }
 }
+
+// FUNCTION: IMPERIALISM 0x004ea1c0
+void TAutoGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) {
+  CIterator missionCursor(this->missionQueue);
+  TTrackedObject* mission = static_cast<TTrackedObject*>(missionCursor.Reset());
+  while (missionCursor.More() != 0) {
+    if (mission->MatchesMissionKeySlot4C(3, regionId, 0) != 0) {
+      CPtrList* listState = &reinterpret_cast<TPtrList*>(this->missionQueue)->listState;
+      CPtrListNode* node = listState->Find(mission, 0);
+      if (node != 0) {
+        listState->RemoveAt(node);
+      }
+      mission->Release1C();
+      break;
+    }
+    mission = static_cast<TTrackedObject*>(missionCursor.Advance());
+  }
+  this->mapNodeStateFlags[regionId] = 0;
+  TGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(regionId);
+}
+
+// FUNCTION: IMPERIALISM 0x004e79d0
+char TAutoGreatPower::DispatchOrQueueDiplomacyRequestSlot88_Provisional(int targetNation, int arg2,
+                                                                        int arg3, int slotIndex) {
+  if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(
+          static_cast<short>(slotIndex)) != 0) {
+    this->foreignMinister->DispatchProposalSlot98(targetNation, arg2, arg3, slotIndex);
+    return 0;
+  }
+  this->AppendTrackedSlotEntry(1, targetNation, 0, static_cast<short>(slotIndex), 0);
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004e7590
+void TAutoGreatPower::VTableIndex56_Provisional(void) {
+  if (this->relationManager != 0) {
+    this->interiorMinister->Call54();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e7a50
+void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
+  if (this->relationManager != 0) {
+    this->relationManager->RecomputeOrderStateSlot9C();
+    short* pendingMetric = this->actionMetricByQuarter;
+    for (short needSlot = 7; needSlot < 0x0d; ++needSlot) {
+      short pending = *pendingMetric;
+      if (pending > 0) {
+        short current = this->QueryNationMetricBySlot78(needSlot);
+        short remaining;
+        if (current < pending) {
+          remaining = 0;
+        } else {
+          remaining = static_cast<short>(current - pending);
+        }
+        this->SetRelationManagerFieldB6AndRefresh(needSlot, remaining);
+      }
+      *pendingMetric = 0;
+      ++pendingMetric;
+    }
+    TGreatPower::ClearDiplomacyState1c6Block();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e7af0
+void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
+  if (this->relationManager != 0) {
+    this->foreignMinister->Call58();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e9f10
+char TAutoGreatPower::VTableSlot20C_Provisional(void) {
+  char anyActive = 0;
+  int candidate = 0;
+  TGreatPower** nationCursor = g_apNationStates;
+  do {
+    if (*nationCursor == 0) {
+      this->candidateNationFlags[candidate] = 0;
+    } else if (this->candidateNationFlags[candidate] != 0) {
+      anyActive = 1;
+    }
+    ++nationCursor;
+    ++candidate;
+  } while (nationCursor < g_apNationStates + 7);
+  candidate = 7;
+  TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
+  do {
+    if (this->candidateNationFlags[candidate] != 0) {
+      if ((*minorCursor)->ownedRegionList90->GetCountOrReleaseSlot28() == 0) {
+        this->candidateNationFlags[candidate] = 0;
+        if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, candidate) !=
+            0) {
+          g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, candidate, 4);
+        }
+      } else {
+        anyActive = 1;
+      }
+    }
+    ++minorCursor;
+    ++candidate;
+  } while (minorCursor < g_apNationAuxRuntimeStateSlots + 16);
+  return anyActive;
+}
+
+// FUNCTION: IMPERIALISM 0x004e9ff0
+void TAutoGreatPower::VTableSlot84_Provisional(int targetNation) {
+  if (this->VTableSlot20C_Provisional() != 0) {
+    int nation = 0;
+    TMinor** descriptorCursor = g_apTerrainTypeDescriptorTable;
+    do {
+      if (*descriptorCursor != 0 && nation != static_cast<short>(this->nationSlot)) {
+        if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+                nation, static_cast<short>(this->nationSlot)) == 0) {
+          this->NotifyAllianceSlot214(nation);
+        }
+      }
+      ++descriptorCursor;
+      ++nation;
+    } while (descriptorCursor < g_apTerrainTypeDescriptorTable + 0x17);
+  }
+  this->candidateNationFlags[targetNation] = 1;
+  if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90->GetCountOrReleaseSlot28() >
+        0) {
+      short ownerTag;
+      if (g_apTerrainTypeDescriptorTable[targetNation] == 0 ||
+          (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->ownerNationSlot0e,
+           ownerTag < 100) ||
+          199 < ownerTag) {
+        FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+        short portZoneId = GetShortAtOffset14OrInvalidValue();
+        this->portZoneStateFlags[portZoneId] = 1;
+      }
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004ea0e0
+void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
+  this->candidateNationFlags[targetNation] = 0;
+  if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90->GetCountOrReleaseSlot28() >
+        0) {
+      FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+      short portZoneId = GetShortAtOffset14OrInvalidValue();
+      this->portZoneStateFlags[portZoneId] = 0;
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e7ec0
+int TAutoGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
+  char hasPolicy = 0;
+  if (static_cast<char>(mode) == 0) {
+    if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, sourceNation) !=
+        0) {
+      hasPolicy = 1;
+    }
+  } else {
+    if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, targetNation) !=
+        0) {
+      hasPolicy = 1;
+    }
+  }
+  if (hasPolicy == 0) {
+    char borderLinked = g_pGlobalMapState->AreNationsBorderLinked(
+        sourceNation, static_cast<int>(static_cast<short>(this->nationSlot)));
+    float ratioScore;
+    float standingScore;
+    if (borderLinked != 0) {
+      ratioScore = this->ComputeArmyScoreRatioForNationPair(sourceNation, targetNation,
+                                                            static_cast<char>(mode));
+      standingScore = this->ComputeArmyScoreStandingRatioForNationPair(sourceNation, targetNation,
+                                                                       static_cast<char>(mode));
+    } else {
+      ratioScore = this->ComputeNavyScoreRatioForNationPair(sourceNation, targetNation,
+                                                            static_cast<char>(mode));
+      standingScore = this->ComputeNavyScoreStandingRatioForNationPair(sourceNation, targetNation,
+                                                                       static_cast<char>(mode));
+    }
+    float combinedScore = standingScore + ratioScore;
+    if (this->ComputeMinisterSkillFloatSlot88() <= combinedScore) {
+      if (static_cast<char>(mode) == 0) {
+        this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(sourceNation, 2, targetNation);
+        return 1;
+      }
+      this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(targetNation, 2, sourceNation);
+      return 1;
+    }
+    if (static_cast<char>(mode) == 0) {
+      g_pDiplomacyTurnStateManager->ApplyRelationCode4Slot7c(this->nationSlot, targetNation, 1);
+    } else {
+      g_pDiplomacyTurnStateManager->ApplyRelationCode4Slot7c(this->nationSlot, sourceNation, 0);
+    }
+  }
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x004e6b10
+void TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e7cc0
 int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) {

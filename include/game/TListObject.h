@@ -26,7 +26,8 @@ public:
   virtual int GetCountOrReleaseSlot28() = 0;
   virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal) = 0;
   virtual void AddTail30(void* item) = 0;
-  virtual void VTableSlot34_Provisional() = 0;
+  // Slot 0x34: remove a value entry (0x004e2270 passes the region id).
+  virtual void RemoveIntSlot34(int value) = 0;
   virtual void Call38() = 0;
   virtual void VTableSlot3C_Provisional() = 0;
   virtual void VTableSlot40_Provisional() = 0;

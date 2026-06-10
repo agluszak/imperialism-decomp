@@ -37,6 +37,15 @@ public:
   virtual void dummy30() = 0;
   virtual void dummy31() = 0;
   virtual void Refresh80() = 0; // slot 80
+  virtual void dummy33() = 0;
+  virtual void dummy34() = 0;
+  virtual void dummy35() = 0;
+  virtual void dummy36() = 0;
+  virtual void dummy37() = 0;
+  virtual void dummy38() = 0;
+  // slot 0x9c — order-state recompute fired before the collapse production reset
+  // (TAutoGreatPower::ClearDiplomacyState1c6Block override, 0x004e7a50).
+  virtual void RecomputeOrderStateSlot9C() = 0;
 
   unsigned char pad04[0xAC - 4];
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)

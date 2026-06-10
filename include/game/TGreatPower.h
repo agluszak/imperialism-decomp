@@ -62,7 +62,10 @@ public:
   virtual CString* GetIdentitySharedString1Slot58(void);                       // slot 0x16
   // slot 0x17 — body 0x004d7d20: encodedNationSlot - 200 == nationCode.
   virtual char IsEncodedNationSlotMinus200Equal(int nationCode);
-  TGREATPOWER_VTABLE_SLOT(24);
+  // slot 0x18 — body 0x004e2270: drop regionId from ownedRegionList then fire the
+  // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
+  // matching mission from missionQueue and clear mapNodeStateFlags.
+  virtual void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId);
   TGREATPOWER_VTABLE_SLOT(25);
   TGREATPOWER_VTABLE_SLOT(26);
   TGREATPOWER_VTABLE_SLOT(27);
@@ -78,7 +81,16 @@ public:
                                                               int multiplier);
   virtual bool
   IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot); // slot 0x21
-  TGREATPOWER_VTABLE_SLOT(34);
+  // slot 0x22 — TAutoGreatPower override 0x004e79d0 either forwards to the foreign
+  // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
+  virtual char DispatchOrQueueDiplomacyRequestSlot88_Provisional(int targetNation, int arg2,
+                                                                 int arg3, int slotIndex) {
+    (void)targetNation;
+    (void)arg2;
+    (void)arg3;
+    (void)slotIndex;
+    return 0;
+  }
   TGREATPOWER_VTABLE_SLOT(35);
   TGREATPOWER_VTABLE_SLOT(36);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode); // slot 0x94
@@ -241,7 +253,11 @@ public:
   // slot 0x82 — body 0x004e2880: ranks this nation's summed building production against
   // the mean/stddev across all eligible nations; returns tier 0..4.
   virtual int ClassifyNationProductionTierVsPeers(void);
-  TGREATPOWER_VTABLE_SLOT(131);
+  // slot 0x20c — base is a no-op; TAutoGreatPower override 0x004e9f10 prunes
+  // candidateNationFlags and reports whether any candidate remains active.
+  virtual char VTableSlot20C_Provisional(void) {
+    return 0;
+  }
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
   virtual void VTableSlot84_Provisional(int targetNation); // body 0x004e0420
@@ -302,7 +318,10 @@ public:
   virtual float ComputeWarThresholdSlotA3_Provisional(int targetNation);
   virtual void NotifyWarResetSlot290(); // slot 0x290 — body 0x004e2190
   virtual void CallSlotA5_Provisional(void);
-  TGREATPOWER_VTABLE_SLOT(166);
+  // slot 0x298 — fired by RemoveRegionIdAndRunTrackedObjectCleanup (0x004e2270).
+  virtual void NotifyRegionEventSlot298_Provisional(int regionId) {
+    (void)regionId;
+  }
   TGREATPOWER_VTABLE_SLOT(167);
   virtual void CallSlotA8_Provisional(int targetNation);
   virtual void CallSlotA9_Provisional(int targetNation);
@@ -317,7 +336,8 @@ public:
   virtual int SumCommodityRecordAccumulatedValues(void);
   TGREATPOWER_VTABLE_SLOT(173);
   TGREATPOWER_VTABLE_SLOT(174);
-  TGREATPOWER_VTABLE_SLOT(175);
+  // slot 0x2bc — body 0x004db380; TAutoGreatPower stubs it out (0x004e6b10).
+  virtual void UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
   // index 0xb0 / vtable+0x2c0. Dispatches a queued turn-order action via the active
   // map order context (body 0x004e2b00, RET 0xc -> three short args). Called from
   // slot 0x32 to enqueue land/navy/civ orders.
@@ -433,6 +453,8 @@ public:
                                                    char isReplayBypass);
   void
   thunk_AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet_At00404246(void);
+  // (thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c retired: slot 0x18 is a
+  // real virtual now.)
   void thunk_ResetDiplomacyNeedScoresAndClearAidAllocationMatrix_At004048f4(void);
   void* ReplyToDiplomacyOffers(void);
   char thunk_TryDispatchNationActionViaUiContextOrFallback_At00404ce1(int arg1, int arg2, int arg3,
@@ -444,7 +466,6 @@ public:
   void thunk_RunSlot4CThenSortTrackedOrders_At004016d1(void);
   char thunk_ReturnZeroSlot9D_At00405826(int targetNation);
   void thunk_VTableSlot84_At00405a9c(int targetNation);
-  void thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c(void);
   void thunk_ClearFieldBlock1c6_At00406c49(void);
   void thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e(void);
   void BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void);
@@ -522,7 +543,6 @@ public:
   void DispatchTurnEvent2103WithNationFromRecord(void);
   void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode);
   void AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void);
-  void UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
   void WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* pMessage);
   void QueueDiplomacyProposalCodeWithAllianceGuards(int arg1, int arg2);
   void WrapperFor_TGreatPower_VtblSlot32_At004e7630(int arg1, int arg2, int arg3);

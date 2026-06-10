@@ -15,4 +15,12 @@ public:
   virtual void dummy10() = 0;
   virtual void dummy11() = 0;
   virtual void Call30() = 0; // slot 30
+  virtual void dummy13() = 0;
+  virtual void dummy14() = 0;
+  virtual void dummy15() = 0;
+  virtual void dummy16() = 0;
+  virtual void dummy17() = 0;
+  virtual void dummy18() = 0;
+  // slot 0x4C — mission-key match (kind 3 + region id, 0x004ea1c0).
+  virtual char MatchesMissionKeySlot4C(int kind, int key, int mode) = 0;
 };

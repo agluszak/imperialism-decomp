@@ -33,8 +33,8 @@ public:
   virtual void dummy18() = 0;
   virtual void Call4C() = 0;
   virtual void dummy20() = 0;
-  virtual void dummy21() = 0;
-  virtual void dummy22() = 0;
+  virtual void Call54() = 0; // slot 0x54 (TAutoGreatPower 0x004e7590 tail-calls it)
+  virtual void Call58() = 0; // slot 0x58 (TAutoGreatPower 0x004e7af0 tail-calls it)
   virtual void dummy23() = 0;
   virtual void dummy24() = 0;
   virtual void dummy25() = 0;
@@ -50,7 +50,8 @@ public:
   virtual void Call8C() = 0; // slot 8C
   virtual void Call90() = 0;
   virtual void Call94() = 0;
-  virtual void dummy38() = 0;
+  // slot 0x98 — foreign-minister proposal dispatch (TAutoGreatPower 0x004e79d0).
+  virtual void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) = 0;
   virtual void dummy39() = 0;
   virtual void dummy40() = 0;
   virtual void dummy41() = 0;

@@ -139,7 +139,6 @@ undefined4 GetTGreatPowerClassNamePointer(void);
 void* ReplyToDiplomacyOffers(void);
 float ComputeMapActionContextCompositeScoreForNation(void);
 void OrphanCallChain_C2_I21_004e2b00(void);
-undefined4 RemoveRegionIdAndRunTrackedObjectCleanup(void);
 undefined4 ResetNationDiplomacySlotsAndMarkRelatedNations(void);
 undefined4 thunk_QueueNationPairWarTransition(void);
 void BuildGreatPowerRelationshipDeltaSummaryAndDispatchMessage(void);
@@ -1184,9 +1183,10 @@ void TGreatPower::thunk_OrphanCallChain_C2_I21_004e2b00_At00406a46(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00406b2c
-void TGreatPower::thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c(void) {
-  RemoveRegionIdAndRunTrackedObjectCleanup();
+// FUNCTION: IMPERIALISM 0x004e2270
+void TGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) {
+  this->ownedRegionList->RemoveIntSlot34(regionId);
+  this->NotifyRegionEventSlot298_Provisional(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x00406c49
