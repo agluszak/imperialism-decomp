@@ -5,6 +5,8 @@
 #include "game/Point32.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_globals.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/win_rect.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
@@ -78,7 +80,6 @@ undefined4 thunk_ReleaseHashIndexedRecordByHandle(void);
 undefined4 CreateClipStateRegionWrapperObject(void);
 undefined4 CombineTwoRegionsIntoDestinationAndUpdateBox(void);
 undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject);
-undefined4 ResetQuickDrawStrokeState(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 DrawFrameRectOrUpdateClipRegion(void);
 undefined4 SetQuickDrawTextOriginWithContextOffset(void);
@@ -87,9 +88,6 @@ undefined4 AppendPointerToGlobalVectorAsStatus(void);
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
 undefined4 thunk_ForwardCityDialogParamToChildSlot48(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
-
-extern int g_pPrimaryRenderSurfaceContext;
-extern int g_pActiveQuickDrawSurfaceContext;
 
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
@@ -149,8 +147,8 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
       reinterpret_cast<int*>(const_cast<RECT*>(presentRect)));
 
   if (legendSurfaceModeAt524 != 0) {
-    int savedTransparentColor = *reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 0x2c);
-    int savedQuickDrawColor = *reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 0x28);
+    int savedTransparentColor = g_pActiveQuickDrawSurfaceContext->transparentBlitColor;
+    int savedQuickDrawColor = g_pActiveQuickDrawSurfaceContext->quickDrawColor;
 
     int* previousSurface = 0;
     int contextFlags = 0;
@@ -208,13 +206,13 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
     legendSurfaceModeAt524 = 0;
   }
 
-  if (g_pPrimaryRenderSurfaceContext + 4 != g_pActiveQuickDrawSurfaceContext + 4) {
+  if (g_pPrimaryRenderSurfaceContext->GetBlitSurface() !=
+      g_pActiveQuickDrawSurfaceContext->GetBlitSurface()) {
     RECT blitRect;
     CopyRect(&blitRect, presentRect);
-    reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(
-        reinterpret_cast<void*>(g_pPrimaryRenderSurfaceContext + 4),
-        reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &blitRect, &blitRect, 0, 0);
+    BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
+                          &blitRect, 0);
   }
 
   SetQuickDrawFillColor(0xffffff);
@@ -265,13 +263,14 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int acti
       int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
       reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
       reinterpret_cast<DiplomacyMaskBufferRun*>(maskCursor)
-          ->BlitMonochromeMaskBytePatternToSurface(g_pActiveQuickDrawSurfaceContext + 4,
+          ->BlitMonochromeMaskBytePatternToSurface(reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
                                                    paletteIndex, maskState, 1);
 
       int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
       reinterpret_cast<void(__cdecl*)(void*, unsigned int, int)>(
           thunk_AppendPackedColorDwordToMaskBuffers)(
-          packedColorCursor, *reinterpret_cast<unsigned int*>(g_pActiveQuickDrawSurfaceContext + 4),
+          packedColorCursor,
+          reinterpret_cast<unsigned int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
           packedColor);
 
       nationIndex = static_cast<short>(nationIndex + 1);
@@ -289,10 +288,9 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int acti
         previousSurface, contextFlags);
   }
 
-  reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-      BlitRectWithOptionalTransparency)(
-      reinterpret_cast<void*>(g_pPrimaryRenderSurfaceContext + 4),
-      reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &blitRect, &blitRect, 0, 0);
+  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
+                        &blitRect, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004f66c0
@@ -405,14 +403,15 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
         int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode + 200);
         reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
         reinterpret_cast<DiplomacyMaskBufferRun*>(maskCursor)
-            ->BlitMonochromeMaskBytePatternToSurface(g_pActiveQuickDrawSurfaceContext + 4,
+            ->BlitMonochromeMaskBytePatternToSurface(reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
                                                      paletteIndex, maskState, 1);
 
         int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
         reinterpret_cast<void(__cdecl*)(void*, unsigned int, int)>(
             thunk_AppendPackedColorDwordToMaskBuffers)(
             packedColorCursor,
-            *reinterpret_cast<unsigned int*>(g_pActiveQuickDrawSurfaceContext + 4), packedColor);
+            reinterpret_cast<unsigned int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
+            packedColor);
       }
       terrainIndex++;
       terrainDescriptors++;
@@ -430,17 +429,16 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
         previousSurface, contextFlags);
   }
 
-  reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-      BlitRectWithOptionalTransparency)(
-      reinterpret_cast<void*>(g_pPrimaryRenderSurfaceContext + 4),
-      reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &blitRect, &blitRect, 0, 0);
+  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
+                        &blitRect, 0);
   (void)presentRect;
 }
 
 // FUNCTION: IMPERIALISM 0x004f6bd0
 void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex,
                                                                         int bmpId) {
-  int* surfaceCtx = reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 4);
+  TQuickDrawBlitSurface* surfaceCtx = g_pActiveQuickDrawSurfaceContext->GetBlitSurface();
   DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
       reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
   int bmpHandle = g_pModuleLibraryCacheState->LoadBmpResourceById(bmpId);
@@ -457,9 +455,9 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
       surfaceHeight = -surfaceHeight;
     }
     int row = maskRun->topAt08;
-    int rowStride = *reinterpret_cast<short*>(reinterpret_cast<char*>(surfaceCtx) + 4);
+    int rowStride = *reinterpret_cast<short*>(&surfaceCtx->hdcOrBitmapHandle);
     unsigned char* destCursor = reinterpret_cast<unsigned char*>(
-        ((surfaceHeight - row) - 1) * rowStride + *surfaceCtx + maskRun->leftAt04);
+        ((surfaceHeight - row) - 1) * rowStride + surfaceCtx->field00 + maskRun->leftAt04);
     int destRowAdvance = (maskRun->leftAt04 - maskRun->rightAt0c) - rowStride;
     unsigned char* srcCursor = *reinterpret_cast<unsigned char**>(bmpHandle + 0xc);
 
@@ -507,7 +505,7 @@ void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short ma
   int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
-  packedRun->AppendPackedColorDword(*surfaceCtx, packedColor);
+  packedRun->AppendPackedColorDword(reinterpret_cast<int>(surfaceCtx), packedColor);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7040
@@ -700,7 +698,7 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Poin
 
 // FUNCTION: IMPERIALISM 0x004f71a0
 void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
-  reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+  ResetQuickDrawStrokeState();
   reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
 
   char* self = reinterpret_cast<char*>(this);
@@ -728,7 +726,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
       destRect.right = iconRect->right;
       destRect.bottom = iconRect->bottom;
 
-      int surfaceObject = *reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 0x20);
+      int surfaceObject = g_pActiveQuickDrawSurfaceContext->flipDescriptor;
       if (surfaceObject != 0) {
         int surfaceHeight =
             *reinterpret_cast<int*>(*reinterpret_cast<int*>(surfaceObject + 0x10) + 8);
@@ -740,11 +738,9 @@ void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
 
       int strategicMapSurface =
           *reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrStrategicMapViewSystem) + 0x6b8);
-      reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-          BlitRectWithOptionalTransparency)(
-          reinterpret_cast<void*>(strategicMapSurface + 4),
-          reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &srcRect, &destRect, 0x24,
-          0);
+      BlitQuickDrawSurfaces(
+          reinterpret_cast<TQuickDrawSurfaceContext*>(strategicMapSurface)->GetBlitSurface(),
+          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &destRect, 0x24);
 
       destRect.left = iconRect->left - 1;
       destRect.top = iconRect->top - 1;
@@ -800,14 +796,14 @@ void TDiplomacyMapViewLayout::BuildTurnEventMonochromeMaskBuffers(int maskIndex,
   reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
   DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
       reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
-  maskRun->BlitMonochromeMaskBytePatternToSurface(g_pActiveQuickDrawSurfaceContext + 4,
+  maskRun->BlitMonochromeMaskBytePatternToSurface(reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
                                                   paletteIndex, maskState, 1);
 
   int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
       reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
-  packedRun->AppendPackedColorDword(*reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 4),
-                                    packedColor);
+  packedRun->AppendPackedColorDword(
+      reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), packedColor);
 }
 
 // FUNCTION: IMPERIALISM 0x00409205

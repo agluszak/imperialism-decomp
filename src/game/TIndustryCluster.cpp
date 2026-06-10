@@ -36,32 +36,6 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00588950
-void TradeMoveControlState::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
-  int requestedValue = *requestedValuePtr;
-  int baseValue = 0;
-  if (barStepsRaw < 1 || (barRangeRaw / ((int)barStepsRaw << 1) <= *requestedValuePtr)) {
-    baseValue = requestedValue;
-  }
-
-  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this);
-  int appliedValue = moveControl->ApplyMoveClamp(baseValue, (short)requestedValue);
-  void* owner = ownerContext;
-  if (((short)appliedValue == 0) && requestedValue != 0) {
-    TAmtBar* fallbackControl = reinterpret_cast<TAmtBar*>(
-        reinterpret_cast<TView*>(owner)->ResolveControlByTag(kControlTagMove));
-    if (fallbackControl == 0) {
-      fallbackControl = reinterpret_cast<TAmtBar*>(
-          reinterpret_cast<TView*>(owner)->ResolveControlByTag(kControlTagSell));
-    }
-    if (fallbackControl != 0 && fallbackControl->QueryValue() == 0) {
-      appliedValue = 1;
-    }
-  }
-
-  reinterpret_cast<TUberCluster*>(owner)->ApplyMoveValue(appliedValue);
-}
-
 // FUNCTION: IMPERIALISM 0x00588a30
 TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
   TIndustryCluster* cluster =

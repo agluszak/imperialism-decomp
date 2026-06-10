@@ -19,6 +19,7 @@ public:
   void InvokeSlot1A8NoArg();
 
   virtual int ApplyMoveClamp(int baseValue, int requestedValue);
+  void ClampAndApplyTradeMoveValue(int* requestedValuePtr);
   virtual void SetBarMetric(int value, int range);
   virtual void InvokeSlot1A8();
   virtual void SetBarMetricRatio(int value);

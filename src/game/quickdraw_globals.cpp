@@ -7,6 +7,15 @@ extern "C" int __stdcall CombineRgn(void* hrgnDest, void* hrgnSrc1, void* hrgnSr
 #pragma optimize("y", on)
 #endif
 
+// GLOBAL: IMPERIALISM 0x64b8f0
+int g_Reset_Quick_Draw_Value_0064B8F0 = 0;
+// GLOBAL: IMPERIALISM 0x64b8f4
+int g_Reset_Quick_Draw_Value_0064B8F4 = 0;
+// GLOBAL: IMPERIALISM 0x64b8f8
+short g_Reset_Quick_Draw_WordState_0064B8F8 = 0;
+// GLOBAL: IMPERIALISM 0x6a1d10
+short g_Reset_Quick_Draw_State_006A1D10 = 0;
+
 // GLOBAL: IMPERIALISM 0x6a1d08
 int g_nQuickDrawStrokeStylePrimary = 0;
 // GLOBAL: IMPERIALISM 0x6a1d0c
@@ -19,14 +28,22 @@ int g_pGlobalClipRegionHandleObject = 0;
 int g_Quick_Draw_Color_State_006950FC = 0;
 // GLOBAL: IMPERIALISM 0x6a1d52
 int g_uQuickDrawCurrentColor = 0;
-// GLOBAL: IMPERIALISM 0x6a1d60
-int g_pActiveQuickDrawSurfaceContext = 0;
 
 // FUNCTION: IMPERIALISM 0x00495000
 void SetQuickDrawFillColor(int fillColor) {
   g_Quick_Draw_Color_State_006950FC = fillColor;
-  *reinterpret_cast<int*>(g_pActiveQuickDrawSurfaceContext + 0x28) = fillColor;
+  if (g_pActiveQuickDrawSurfaceContext != 0) {
+    g_pActiveQuickDrawSurfaceContext->quickDrawColor = fillColor;
+  }
   g_uQuickDrawCurrentColor = fillColor;
+}
+
+// FUNCTION: IMPERIALISM 0x004953a0
+void ResetQuickDrawStrokeState() {
+  g_nQuickDrawStrokeStylePrimary = g_Reset_Quick_Draw_Value_0064B8F0;
+  g_nQuickDrawStrokeStyleSecondary = g_Reset_Quick_Draw_Value_0064B8F4;
+  g_Reset_Quick_Draw_State_006A1D10 = g_Reset_Quick_Draw_WordState_0064B8F8;
+  g_bQuickDrawStrokePairDirty = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00495310
@@ -38,12 +55,12 @@ void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short style
 
 // FUNCTION: IMPERIALISM 0x00495a30
 void SnapshotHitRegionToClipCache(int* clipDescriptor) {
-  int clipObject = g_pGlobalClipRegionHandleObject;
-  int regionSlot = *clipDescriptor + 0x14;
-  if (regionSlot == 0) {
-    CombineRgn(*reinterpret_cast<void**>(clipObject + 4), 0, 0, 5);
+  void** clipRegionHandle =
+      reinterpret_cast<void**>(g_pGlobalClipRegionHandleObject + 4);
+  int descriptorHead = *clipDescriptor;
+  if (descriptorHead + 0x14 == 0) {
+    CombineRgn(*clipRegionHandle, 0, 0, 5);
     return;
   }
-  CombineRgn(*reinterpret_cast<void**>(clipObject + 4), *reinterpret_cast<void**>(regionSlot + 4),
-             0, 5);
+  CombineRgn(*clipRegionHandle, *reinterpret_cast<void**>(descriptorHead + 0x18), 0, 5);
 }

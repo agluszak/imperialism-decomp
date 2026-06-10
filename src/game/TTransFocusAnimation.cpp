@@ -42,16 +42,13 @@ public:
   void RenderFocusAnimationFrameWithScopedQuickDraw();
 };
 
+#include "game/TQuickDrawSurfaceContext.h"
+#include "game/quickdraw_globals.h"
+
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
-undefined4 ResetQuickDrawStrokeState(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
-undefined4 BlitRectWithOptionalTransparency(void);
-void __cdecl SnapshotHitRegionToClipCache(int* clipDescriptor);
-
-// GLOBAL: IMPERIALISM 0x006a30a8
-int g_pPrimaryRenderSurfaceContext = 0;
 
 // FUNCTION: IMPERIALISM 0x004a05c0
 void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() {
@@ -71,12 +68,12 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
 
   reinterpret_cast<void(__cdecl*)(int*)>(thunk_ApplyRectClipRegionToGlobalClipState)(
       &destinationRect.left);
-  reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+  ResetQuickDrawStrokeState();
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(0);
 
   int(__stdcall * offsetRect)(RECT*, int, int) = OffsetRect;
-  int primaryFlipDescriptor = *reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext + 0x20);
+  int primaryFlipDescriptor = g_pPrimaryRenderSurfaceContext->flipDescriptor;
   if (primaryFlipDescriptor != 0) {
     int primaryFlipHeight =
         *reinterpret_cast<int*>(*reinterpret_cast<int*>(primaryFlipDescriptor + 0x10) + 8);
@@ -98,10 +95,10 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
                (transientFlipHeight - destinationRect.top) - destinationRect.bottom);
   }
 
-  reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-      BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(g_pPrimaryRenderSurfaceContext + 4),
-                                        reinterpret_cast<void*>(transientContext + 4), &sourceRect,
-                                        &destinationRect, 0, 0);
+  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                        reinterpret_cast<TQuickDrawSurfaceContext*>(transientContext)
+                            ->GetBlitSurface(),
+                        &sourceRect, &destinationRect, 0);
   reinterpret_cast<void(__cdecl*)(int)>(SnapshotHitRegionToClipCache)(surface.surfaceWrapper);
 }
 

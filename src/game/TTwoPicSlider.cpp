@@ -5,6 +5,8 @@
 #include "game/generated/vcall_facades.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_globals.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/win_rect.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
@@ -14,7 +16,6 @@
 #pragma optimize("y", on)
 #endif
 
-undefined4 ResetQuickDrawStrokeState(void);
 undefined4 BlitRectWithOptionalTransparency(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
@@ -23,8 +24,6 @@ undefined4 SetQuickDrawColorAndSyncGlobals(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 undefined4 WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0(void);
-
-extern int g_pActiveQuickDrawSurfaceContext;
 
 namespace {
 const unsigned int kAddrLocalizationTable = 0x006A20F8;
@@ -71,7 +70,7 @@ void TTwoPicSlider::DrawTwoPicSliderSplitOverlayAndCenteredStatusText() {
     blitRect.top = blitRect.bottom - splitPosition;
     blitRect.right = slider->field34;
 
-    reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+    ResetQuickDrawStrokeState();
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
         BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->lowerSurface + 4),
                                           reinterpret_cast<void*>(slider->compositeSurface + 4),
@@ -91,7 +90,7 @@ void TTwoPicSlider::DrawTwoPicSliderSplitOverlayAndCenteredStatusText() {
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
         BlitRectWithOptionalTransparency)(
         reinterpret_cast<void*>(slider->compositeSurface + 4),
-        reinterpret_cast<void*>(g_pActiveQuickDrawSurfaceContext + 4), &blitRect, &blitRect, 0, 0);
+        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect, 0, 0);
 
     if (slider->splitPosition < 0x0c) {
       CString statusText;

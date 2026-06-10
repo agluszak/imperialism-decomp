@@ -2139,14 +2139,6 @@ undefined4 SetQuickDrawStyleWord_1D4E_AndMarkDirty(void)
   return 0;
 }
 
-// ghidra_name ResetQuickDrawStrokeState
-// ghidra_proto void __cdecl ResetQuickDrawStrokeState(void)
-// FUNCTION: IMPERIALISM 0x004953a0
-undefined4 ResetQuickDrawStrokeState(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderUiBitmapOnRuntimeSurfaceContext_Impl
 // ghidra_proto void __cdecl RenderUiBitmapOnRuntimeSurfaceContext_Impl(void)
 // FUNCTION: IMPERIALISM 0x004953e0

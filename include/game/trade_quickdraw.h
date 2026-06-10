@@ -5,18 +5,17 @@
 #include "game/TControl.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/TQuickDrawSurfaceContext.h"
+#include "game/quickdraw_globals.h"
 #include "game/ui_widget_thunks.h"
 
 undefined4 ApplyHitRegionToClipState(void);
-void SnapshotHitRegionToClipCache(int* clipDescriptor);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
-undefined4 ResetQuickDrawStrokeState(void);
 undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
-undefined4 BlitRectWithOptionalTransparency(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 
 static __inline void SetQuickDrawTextOrigin(short x, short y) {
@@ -40,6 +39,14 @@ static __inline void ApplyRectClipRegion(int* rectBuffer) {
 // SetQuickDrawFillColor(int) is the real global at 0x495000, declared in
 // quickdraw_guards.h (included above).
 
+static __inline int ReadIntAt(unsigned int address) {
+  return *reinterpret_cast<int*>(address);
+}
+
+static __inline void* ReadPointerAt(unsigned int address) {
+  return *reinterpret_cast<void**>(address);
+}
+
 typedef void* hwnd_t;
 
 const int kControlTagMove = 0x6d6f7665;
@@ -58,16 +65,6 @@ const int kSummaryTagRail = 0x7261696c;
 const int kSummaryTagIart = 0x74726169;
 const unsigned int kAddrClassDescTAmtBar = 0x00662f80;
 const unsigned int kAddrClassDescTAmtBarCluster = 0x00662f50;
-const unsigned int kAddrActiveQuickDrawSurfaceContext = 0x006A1D60;
-const unsigned int kAddrPrimaryRenderSurfaceContext = 0x006A30A8;
-
-static __inline int ReadIntAt(unsigned int address) {
-  return *reinterpret_cast<int*>(address);
-}
-
-static __inline void* ReadPointerAt(unsigned int address) {
-  return *reinterpret_cast<void**>(address);
-}
 
 extern const int kTradeSellPropagationTags[17];
 extern const int kControlTagBar;
@@ -109,7 +106,6 @@ struct TradeMoveControlState {
   int barStepsRaw;
   int barRangeRaw;
 
-  void ClampAndApplyTradeMoveValue(int* requestedValuePtr);
 };
 
 struct TradeAmountBarLayout {

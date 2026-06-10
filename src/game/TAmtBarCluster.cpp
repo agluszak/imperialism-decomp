@@ -201,11 +201,5 @@ void TAmtBarCluster::HandleTradeMoveStepCommand(int commandId, void* eventArg, i
   this->ApplyMoveValue(moveValue - 1);
 }
 
-// FUNCTION: IMPERIALISM 0x00586e50
-short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg) {
-  (void)unusedArg;
-  return value;
-}
-
 // FUNCTION: IMPERIALISM 0x00586ff0
 void __cdecl OrphanRetStub_00586ff0(void) {}

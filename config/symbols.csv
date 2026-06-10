@@ -9095,7 +9095,7 @@ address|name|size|type|prototype
 586d10|TAmtBarCluster::`scalar deleting destructor'|30|function|void * __thiscall `scalar deleting destructor'(unsigned int)
 586d40|thunk_DestructTViewBaseState|5|function|void __thiscall thunk_DestructTViewBaseState(void)
 586d60|TAmtBarCluster::InitializeTradeMoveAndBarControls|168|function|void __thiscall InitializeTradeMoveAndBarControls(void)
-586e50|TAmtBarCluster::OrphanLeaf_NoCall_Ins02_00586e50|8|function|short __stdcall OrphanLeaf_NoCall_Ins02_00586e50(short value, int unusedArg)
+586e50|TAmtBar::ApplyMoveClamp|8|function|int __thiscall ApplyMoveClamp(int baseValue, int requestedValue)
 586e70|TUberCluster::HandleTradeMoveControlAdjustment|244|function|void __thiscall HandleTradeMoveControlAdjustment(EArrowSplitCommandId nEventClass, PanelEventPayload * pEventPayload, int nEventFlags)
 586ff0|TAmtBarCluster::OrphanRetStub_00586ff0|3|function|void __cdecl OrphanRetStub_00586ff0(void)
 587010|TTradeCluster::CreateTradeSellControlPanel|83|function|TTradeCluster * __cdecl CreateTradeSellControlPanel(void)

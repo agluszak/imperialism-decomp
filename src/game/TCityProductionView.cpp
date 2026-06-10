@@ -7,6 +7,8 @@
 #include "game/generated/vcall_facades.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_globals.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/win_rect.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
@@ -39,7 +41,6 @@ extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_00696228[12] = {0};
 
-undefined4 ResetQuickDrawStrokeState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
 
@@ -51,8 +52,6 @@ struct RuntimeLocalTime {
 
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 undefined4 ConvertEpochSecondsToLocalTmWithDstAdjust(void);
-
-extern int g_pPrimaryRenderSurfaceContext;
 
 // FUNCTION: IMPERIALISM 0x004bc9b0
 void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryClip(
@@ -128,7 +127,7 @@ void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh()
     }
   }
 
-  reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+  ResetQuickDrawStrokeState();
   g_pUiRuntimeContext->ApplyLegendSplitSlot34(1);
   reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
       originX, sVar2);

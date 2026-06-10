@@ -22,8 +22,6 @@ undefined4 thunk_DestroyScopedMapQuickDrawContext(void);
 undefined4 thunk_SetMapInteractionMode(void);
 undefined4 thunk_RefreshMapOrderEntryPanel(void);
 
-extern "C" int __stdcall OffsetRect(void* rect, int dx, int dy);
-
 namespace {
 
 #define kAddrTEventClassVtable 0x00649770
@@ -142,7 +140,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   reinterpret_cast<void(__cdecl*)(int, int, int)>(IntersectRectWrapper)(
       reinterpret_cast<int>(&clipRect.left), reinterpret_cast<int>(intersectScratch),
       reinterpret_cast<int>(intersectPair));
-  OffsetRect(&clipRect, field2c, field30);
+  OffsetRect(reinterpret_cast<RECT*>(&clipRect), field2c, field30);
 
   char scopedContextStorage[24];
   reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(

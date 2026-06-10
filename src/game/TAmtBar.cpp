@@ -1,13 +1,18 @@
 #include <new>
 
 #include "game/TAmtBar.h"
+#include "game/TUberCluster.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
 #include "game/ui_widget_thunks.h"
+#include "game/TUberCluster.h"
 #include "game/win_rect.h"
 
 #pragma optimize("y", on)
+
+undefined4 ftol(void);
 
 extern "C" char g_pClassDescTAmtBar = 0;
 
@@ -95,11 +100,9 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   contentRect.right = contentBounds[2];
   contentRect.bottom = contentBounds[3];
 
-  reinterpret_cast<void(__cdecl*)(void*, void*, RECT*, RECT*, int, int)>(
-      BlitRectWithOptionalTransparency)(
-      reinterpret_cast<void*>(ReadIntAt(kAddrPrimaryRenderSurfaceContext) + 4),
-      reinterpret_cast<void*>(ReadIntAt(kAddrActiveQuickDrawSurfaceContext) + 4), &panelRect,
-      &contentRect, 0, 0);
+  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &panelRect,
+                        &contentRect, 0);
 
   if (barRange > 0) {
     SetQuickDrawTextOrigin(0, 1);
@@ -107,7 +110,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
     SetQuickDrawStylePair(1, 7);
     guideValue = stepOrCurrentValue < barRange ? stepOrCurrentValue : barRange;
     DrawCenteredGuideLine((short)(guideValue - 1), 1);
-    reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+    ResetQuickDrawStrokeState();
   }
 
   fillOrigin = guideValue > 0 ? (short)(guideValue + 1) : 0;
@@ -116,22 +119,55 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   SetQuickDrawStylePair(1, 1);
   DrawCenteredGuideLine(controlWidth, 4);
   SetQuickDrawTextOrigin(stepOrCurrentValue, 0);
-  reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+  ResetQuickDrawStrokeState();
   DrawCenteredGuideLine((short)(stepOrCurrentValue - 1), controlHeight);
-  reinterpret_cast<void(__cdecl*)(int)>(SnapshotHitRegionToClipCache)(0);
+  int clipDescriptorHead = 0;
+  SnapshotHitRegionToClipCache(&clipDescriptorHead);
 }
 
+// FUNCTION: IMPERIALISM 0x00586e50
 int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
-  if (baseValue != 0) {
-    return baseValue;
-  }
-  return requestedValue;
+  (void)requestedValue;
+  return (int)(short)baseValue;
 }
 
 void TAmtBar::SetBarMetric(int value, int range) {
-  stepOrCurrentValue = (short)value;
-  rangeOrMaxValue = (short)range;
-  RefreshControl();
+  UpdateBarValuesAndRefresh(static_cast<short>(value), static_cast<short>(range));
+}
+
+// FUNCTION: IMPERIALISM 0x00588950
+void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
+  int baseValue;
+  if (auxValueA < 1 ||
+      static_cast<int>(field34) / (static_cast<int>(auxValueA) << 1) <= *requestedValuePtr) {
+    int fildRequested = *requestedValuePtr;
+    int fildField34 = static_cast<int>(field34);
+    int fildAux = static_cast<int>(auxValueA);
+    double ratio = static_cast<double>(fildRequested) /
+                     (static_cast<double>(fildField34) * static_cast<double>(fildAux));
+    ratio = ratio - *reinterpret_cast<double*>(0x006631a0);
+    volatile double ftolOperand = ratio;
+    (void)ftolOperand;
+    baseValue = reinterpret_cast<int(__cdecl*)(void)>(::ftol)();
+  } else {
+    baseValue = 0;
+  }
+
+  int appliedValue = ApplyMoveClamp(baseValue, *requestedValuePtr);
+  TView* owner = OwnerPanel();
+  if (((short)appliedValue == 0) && *requestedValuePtr != 0) {
+    TAmtBar* fallbackControl =
+        reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagMove));
+    if (fallbackControl == 0) {
+      fallbackControl =
+          reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagSell));
+    }
+    if (fallbackControl != 0 && fallbackControl->QueryValue() == 0) {
+      appliedValue = 1;
+    }
+  }
+
+  reinterpret_cast<TUberCluster*>(owner)->ApplyMoveValue(appliedValue);
 }
 
 void TAmtBar::InvokeSlot1A8() {}

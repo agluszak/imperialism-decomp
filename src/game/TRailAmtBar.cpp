@@ -111,14 +111,14 @@ void TRailAmtBar::DrawAmt() {
         ApplyQuickDrawStyleFromRuntime(0);
         SetQuickDrawStylePair(1, 4);
         DrawCenteredGuideLine((short)(styleValueAt60 - 1), 1);
-        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+        ResetQuickDrawStrokeState();
       }
 
       short overlayOffsetX = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62);
       short overlayOffsetY = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
       SetQuickDrawTextOrigin(overlayOffsetX, 0);
       SetQuickDrawFillColor(0);
-      reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+      ResetQuickDrawStrokeState();
       DrawCenteredGuideLine(overlayOffsetX, (short)(overlayOffsetY - 2));
 
       reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();

@@ -19,7 +19,6 @@
 #include <new>
 
 undefined4 ApplyHitRegionToClipState(void);
-undefined4 ResetQuickDrawStrokeState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(void);
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void);
@@ -143,10 +142,10 @@ void TTraderAmtBar::DrawAmt() {
         ApplyQuickDrawStyleFromRuntime(styleValueAt66);
         SetQuickDrawStylePair(1, 5);
         DrawCenteredGuideLine((short)(styleValueAt60 - 1), 0);
-        reinterpret_cast<void(__cdecl*)()>(ResetQuickDrawStrokeState)();
+        ResetQuickDrawStrokeState();
       }
 
-      reinterpret_cast<void(__cdecl*)()>(SnapshotHitRegionToClipCache)();
+      SnapshotHitRegionToClipCache(0);
       TAmtBar* owner = reinterpret_cast<TAmtBar*>(reinterpret_cast<TView*>(control)->OwnerPanel());
       if (owner != 0) {
         owner->InvokeSlot13C();
@@ -177,12 +176,12 @@ void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
   dstRect.right = 0x40;
   dstRect.bottom = 0x42;
 
-  int strategicMapViewSystem = (int)ReadPointerAt(kAddrStrategicMapViewSystem);
-  int activeQuickDrawSurfaceContext = (int)ReadPointerAt(kAddrActiveQuickDrawSurfaceContext);
-  reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, unsigned char, void*)>(
-      BlitRectWithOptionalTransparency)(
-      reinterpret_cast<void*>(*reinterpret_cast<int*>(strategicMapViewSystem + 0x66c) + 4),
-      reinterpret_cast<void*>(activeQuickDrawSurfaceContext + 4), &srcRect, &dstRect, 0x24, 0);
+  int strategicMapViewSystem = ReadIntAt(kAddrStrategicMapViewSystem);
+  TQuickDrawSurfaceContext* hintSource = reinterpret_cast<TQuickDrawSurfaceContext*>(
+      *reinterpret_cast<int*>(strategicMapViewSystem + 0x66c));
+  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
+                        0x24);
 
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
 }
