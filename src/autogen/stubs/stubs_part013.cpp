@@ -2603,14 +2603,6 @@ undefined4 OrphanCallChain_C6_I98_004dcaa0(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I42_004dd7f0
-// ghidra_proto uint __cdecl OrphanCallChain_C1_I42_004dd7f0(void)
-// FUNCTION: IMPERIALISM 0x004dd7f0
-undefined4 OrphanCallChain_C1_I42_004dd7f0(void)
-{
-  return 0;
-}
-
 // ghidra_name GetCityProductionValueTimesTwoCallbackA
 // ghidra_proto int __cdecl GetCityProductionValueTimesTwoCallbackA(void)
 // FUNCTION: IMPERIALISM 0x004dd810
@@ -2683,46 +2675,6 @@ undefined4 AddShortDeltaToNationCounterAtOffset198(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C2_I33_004ddd90
-// ghidra_proto void __cdecl OrphanCallChain_C2_I33_004ddd90(void)
-// FUNCTION: IMPERIALISM 0x004ddd90
-undefined4 OrphanCallChain_C2_I33_004ddd90(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I19_004ddeb0
-// ghidra_proto void __cdecl OrphanCallChain_C1_I19_004ddeb0(void)
-// FUNCTION: IMPERIALISM 0x004ddeb0
-undefined4 OrphanCallChain_C1_I19_004ddeb0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins09_004de7e0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins09_004de7e0(void)
-// FUNCTION: IMPERIALISM 0x004de7e0
-undefined4 OrphanLeaf_NoCall_Ins09_004de7e0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I52_004df4b0
-// ghidra_proto int __cdecl OrphanCallChain_C1_I52_004df4b0(void)
-// FUNCTION: IMPERIALISM 0x004df4b0
-undefined4 OrphanCallChain_C1_I52_004df4b0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins03_004df5a0
-// ghidra_proto void __cdecl OrphanLeaf_NoCall_Ins03_004df5a0(void)
-// FUNCTION: IMPERIALISM 0x004df5a0
-undefined4 OrphanLeaf_NoCall_Ins03_004df5a0(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildPrimaryNationStateForSlot_Impl
 // ghidra_proto void __cdecl RebuildPrimaryNationStateForSlot_Impl(void)
 // FUNCTION: IMPERIALISM 0x004df810
@@ -2755,30 +2707,6 @@ undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
   return 0;
 }
 
-// ghidra_name IterateLinkedListCursorEntries_004e0220
-// ghidra_proto void __cdecl IterateLinkedListCursorEntries_004e0220(void)
-// FUNCTION: IMPERIALISM 0x004e0220
-undefined4 IterateLinkedListCursorEntries_004e0220(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpDiplomacyTargetTransitionCallback
-// ghidra_proto void __cdecl NoOpDiplomacyTargetTransitionCallback(void)
-// FUNCTION: IMPERIALISM 0x004e0420
-undefined4 NoOpDiplomacyTargetTransitionCallback(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpNationDiplomacyCallback
-// ghidra_proto void __cdecl NoOpNationDiplomacyCallback(void)
-// FUNCTION: IMPERIALISM 0x004e0440
-undefined4 NoOpNationDiplomacyCallback(void)
-{
-  return 0;
-}
-
 // ghidra_name SumNavyOrderPriorityForNationAndNodeType
 // ghidra_proto int __cdecl SumNavyOrderPriorityForNationAndNodeType(void)
 // FUNCTION: IMPERIALISM 0x004e0460
@@ -2795,14 +2723,6 @@ undefined4 SumNavyOrderPriorityForNation(void)
   return 0;
 }
 
-// ghidra_name SumNationRuntimeFiveBucketValue44
-// ghidra_proto void __cdecl SumNationRuntimeFiveBucketValue44(void)
-// FUNCTION: IMPERIALISM 0x004e06d0
-undefined4 SumNationRuntimeFiveBucketValue44(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeNationRuntimeAdvisoryMetricCase6
 // ghidra_proto void __cdecl ComputeNationRuntimeAdvisoryMetricCase6(void)
 // FUNCTION: IMPERIALISM 0x004e0770
@@ -2811,34 +2731,10 @@ undefined4 ComputeNationRuntimeAdvisoryMetricCase6(void)
   return 0;
 }
 
-// ghidra_name ReturnFalseNoOpAdvisoryHandler
-// ghidra_proto bool __stdcall ReturnFalseNoOpAdvisoryHandler(void)
-// FUNCTION: IMPERIALISM 0x004e1c00
-undefined4 ReturnFalseNoOpAdvisoryHandler(void)
-{
-  return 0;
-}
-
 // ghidra_name ExecuteAdvisoryPromptAndApplyActionType2OrFallback
 // ghidra_proto bool __thiscall ExecuteAdvisoryPromptAndApplyActionType2OrFallback(int arg1, int arg2, int arg3)
 // FUNCTION: IMPERIALISM 0x004e1e40
 undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpAdvisoryHandlerReturn
-// ghidra_proto void __cdecl NoOpAdvisoryHandlerReturn(void)
-// FUNCTION: IMPERIALISM 0x004e1f20
-undefined4 NoOpAdvisoryHandlerReturn(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpDiplomacyWarTransitionCallback
-// ghidra_proto void __cdecl NoOpDiplomacyWarTransitionCallback(void)
-// FUNCTION: IMPERIALISM 0x004e2190
-undefined4 NoOpDiplomacyWarTransitionCallback(void)
 {
   return 0;
 }

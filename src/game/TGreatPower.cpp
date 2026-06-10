@@ -100,8 +100,6 @@ undefined4 QueueInterNationEventIntoNationBucket(void);
 undefined4 AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
 undefined4 ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
 undefined4 InitializeCivWorkOrderState(void);
-undefined4 ReturnFalseNoOpAdvisoryHandler(void);
-undefined4 NoOpDiplomacyTargetTransitionCallback(void);
 undefined4 thunk_QueueInterNationEventType0FWithBitmaskMerge(void);
 undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void);
 undefined4 thunk_GetShortAtOffset14OrInvalid(void);
@@ -920,8 +918,8 @@ static __inline void SecondaryState_CallSlot4C(void* secondaryState, int sourceN
 }
 
 static __inline int GetCityBuildingProductionValueBySlot(void* cityRecord, int slot) {
-  return reinterpret_cast<int(__cdecl*)(void*, int)>(thunk_GetCityBuildingProductionValueBySlot)(
-      cityRecord, slot);
+  return static_cast<TRelationManager*>(cityRecord)->GetBuildingProductionValueBySlot(
+      static_cast<short>(slot));
 }
 
 static __inline void SetGlobalRegionDevelopmentStageByte(short regionId, unsigned char stage) {
@@ -1147,13 +1145,13 @@ char TGreatPower::thunk_TryDispatchNationActionViaUiContextOrFallback_At00404ce1
 #endif
 
 // FUNCTION: IMPERIALISM 0x00405826
-bool __stdcall thunk_ReturnFalseNoOpAdvisoryHandler_At00405826(void) {
-  return ReturnFalseNoOpAdvisoryHandler() != 0;
+char TGreatPower::thunk_ReturnZeroSlot9D_At00405826(int targetNation) {
+  return this->TGreatPower::ReturnZeroSlot9D(targetNation);
 }
 
 // FUNCTION: IMPERIALISM 0x00405a9c
-void thunk_NoOpDiplomacyTargetTransitionCallback_At00405a9c(void) {
-  NoOpDiplomacyTargetTransitionCallback();
+void TGreatPower::thunk_VTableSlot84_At00405a9c(int targetNation) {
+  this->TGreatPower::VTableSlot84_Provisional(targetNation);
 }
 
 // FUNCTION: IMPERIALISM 0x00405ac9
@@ -2294,7 +2292,7 @@ void TGreatPower::SortTrackedOrdersByTypePriority(void) {
 // FUNCTION: IMPERIALISM 0x004e03a0
 #pragma optimize("y", on)
 void TGreatPower::RunSlot4CThenSortTrackedOrders(void) {
-  this->VTableIndex76_Provisional();
+  this->DispatchTrackedOrderSlot2CCallbacks();
   this->SortTrackedOrdersByTypePriority();
 }
 #pragma optimize("", on)
@@ -2304,6 +2302,229 @@ void TGreatPower::RunSlot4CThenSortTrackedOrders(void) {
 void TGreatPower::ResetField900FromNeedCapA6(void) {
   this->field900 = this->needCapA6 / 5;
 }
+#pragma optimize("", on)
+
+// --- Slots 0x4c/0x65/0x6c/0x6f/0x78/0x7d/0x7f/0xac and trivial tail slots ---
+
+// FUNCTION: IMPERIALISM 0x004e0220
+#pragma optimize("y", on)
+void TGreatPower::DispatchTrackedOrderSlot2CCallbacks(void) {
+  CIterator orderIter(this->trackedObjectList);
+  for (TUnitOrderState* order = static_cast<TUnitOrderState*>(orderIter.Reset()); orderIter.More();
+       order = static_cast<TUnitOrderState*>(orderIter.Advance())) {
+    order->DispatchSlot2C();
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dd7f0
+#pragma optimize("y", on)
+unsigned int TGreatPower::ComputeProductionMetricForOrderKind(short orderKind) {
+  switch (orderKind) {
+  case 0:
+  case 1:
+    {
+    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 0);
+    return production + production;
+  }
+  case 2:
+    {
+    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 4);
+    return production + production;
+  }
+  case 3:
+  case 4:
+    return GetCityBuildingProductionValueBySlot(this->relationManager, 2);
+  case 6:
+    {
+    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 6);
+    return production + production;
+  }
+  case 8:
+    {
+    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 1);
+    return production + production;
+  }
+  case 9:
+  case 10:
+    {
+    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 5);
+    return production + production;
+  }
+  case 0xb:
+    {
+    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 3);
+    return production + production;
+  }
+  case 0xc:
+    {
+    int production = GetCityBuildingProductionValueBySlot(this->relationManager, 0xb);
+    return production + production;
+  }
+  case 7: {
+    unsigned char* summary = static_cast<unsigned char*>(
+        static_cast<TRelationManager*>(this->relationManager)->GetCitySummaryRecordSlot74());
+    unsigned char* relationManager = reinterpret_cast<unsigned char*>(this->relationManager);
+    short available = static_cast<short>(
+        ((((*reinterpret_cast<short*>(summary + 0x28) + *reinterpret_cast<short*>(summary + 0x24) +
+            *reinterpret_cast<short*>(summary + 0x22)) -
+           *reinterpret_cast<short*>(relationManager + 0xc4)) -
+          *reinterpret_cast<short*>(relationManager + 0xde)) -
+         *reinterpret_cast<short*>(relationManager + 0xd8)) -
+        *reinterpret_cast<short*>(relationManager + 0xda));
+    if (available >= 0) {
+      return static_cast<unsigned short>(available);
+    }
+    return 0;
+  }
+  case 5:
+  case 0xd:
+  case 0xe:
+  case 0xf:
+  case 0x10:
+    return 0;
+  default:
+    return orderKind;
+  }
+}
+#pragma optimize("", on)
+
+// Packed entry layout shared by the diplomacyTrackedSlots queues (slots 0x6c/0x6f).
+struct TrackedSlotEntryPacket {
+  short kind;
+  short targetNation;
+  short value;
+  short eligibility;
+  int payload;
+};
+
+// FUNCTION: IMPERIALISM 0x004ddd90
+#pragma optimize("y", on)
+void TGreatPower::AppendTrackedSlotEntry(short kind, int targetNation, short value,
+                                         short slotIndex, int payload) {
+  TrackedSlotEntryPacket packet;
+  packet.payload = payload;
+  packet.kind = kind;
+  packet.targetNation = static_cast<short>(targetNation);
+  packet.value = value;
+  if (kind == 1 ||
+      (kind == 0 && g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(targetNation) == 0)) {
+    packet.eligibility = 1;
+  } else {
+    packet.eligibility = 0;
+  }
+  this->diplomacyTrackedSlots[slotIndex]->WritePackedIntSlot38(reinterpret_cast<int*>(&packet));
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004ddeb0
+#pragma optimize("y", on)
+void TGreatPower::ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
+                                             short* outValue, short* outTargetNation,
+                                             int* outPayload) {
+  TrackedSlotEntryPacket* entry = static_cast<TrackedSlotEntryPacket*>(
+      this->diplomacyTrackedSlots[slotIndex]->GetEntryAt1BasedSlot2C(ordinal));
+  *outKind = entry->kind;
+  *outTargetNation = entry->targetNation;
+  *outValue = entry->value;
+  *outPayload = entry->payload;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004de7e0
+#pragma optimize("y", on)
+void TGreatPower::ApplyTurnDiplomacyStateSlot1e0(void) {
+  if (this->relationManager != 0 && this->foreignMinister != 0) {
+    this->foreignMinister->Call80();
+  }
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004df4b0
+#pragma optimize("y", on)
+char TGreatPower::IsEventCodeAllowedForRelationTier(short eventCode, int targetNation) {
+  char allowed = 0;
+  short relationTier =
+      g_pDiplomacyTurnStateManager->GetRelationTierSlot70(this->nationSlot, targetNation);
+  switch (relationTier) {
+  case 2:
+    if (eventCode != 0x130 && eventCode != 0x12f && eventCode != 0x12e) {
+      return 1;
+    }
+    break;
+  case 3:
+    if (eventCode != 0x130 && eventCode != 0x12f) {
+      return 1;
+    }
+    break;
+  case 4:
+    if (eventCode != 0x130) {
+      return 1;
+    }
+    break;
+  case 6:
+    if (eventCode == 0x130) {
+      allowed = 1;
+    }
+    break;
+  }
+  return allowed;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004df5a0
+#pragma optimize("y", on)
+void TGreatPower::ReleaseProposalQueueSlot7F(void) {
+  this->proposalQueue->Release1C();
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e06d0
+#pragma optimize("y", on)
+int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
+  NationCityTradeState* cityState = this->GetCityState();
+  int total = 0;
+  if (cityState != 0) {
+    total = cityState->tradeCommodityRecordPtrs[11]->accumulatedValue44 +
+            cityState->tradeCommodityRecordPtrs[12]->accumulatedValue44 +
+            cityState->tradeCommodityRecordPtrs[9]->accumulatedValue44 +
+            cityState->tradeCommodityRecordPtrs[10]->accumulatedValue44 +
+            cityState->tradeCommodityRecordPtrs[8]->accumulatedValue44;
+  }
+  return total;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e0420
+#pragma optimize("y", on)
+void TGreatPower::VTableSlot84_Provisional(int targetNation) {
+  (void)targetNation;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e0440
+#pragma optimize("y", on)
+void TGreatPower::NotifyAllianceSlot214(int targetNation) {
+  (void)targetNation;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e1c00
+#pragma optimize("y", on)
+char TGreatPower::ReturnZeroSlot9D(int targetNation) {
+  (void)targetNation;
+  return 0;
+}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e1f20
+#pragma optimize("y", on)
+void TGreatPower::NoOpSlotA2(void) {}
+#pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004e2190
+#pragma optimize("y", on)
+void TGreatPower::NotifyWarResetSlot290(void) {}
 #pragma optimize("", on)
 
 // Updates Great Power pressure/escalation state and propagates summary messages when thresholds
@@ -3533,7 +3754,7 @@ char TGreatPower::TryDispatchNationActionViaUiContextOrFallback(int arg1, int ar
     return 1;
   }
 
-  this->DispatchFallbackActionSlot6C_Provisional(1, arg1, 0, arg4, 0);
+  this->AppendTrackedSlotEntry(1, arg1, 0, static_cast<short>(arg4), 0);
   return 0;
 }
 

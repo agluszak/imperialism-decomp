@@ -43,7 +43,7 @@ public:
   virtual void dummy29() = 0;
   virtual void dummy30() = 0;
   virtual void dummy31() = 0;
-  virtual void dummy32() = 0;
+  virtual void Call80() = 0; // slot 80 (TGreatPower slot 0x78 body 0x004de7e0 forwards here)
   virtual void dummy33() = 0;
   virtual void dummy34() = 0;
   virtual void Call8C() = 0; // slot 8C

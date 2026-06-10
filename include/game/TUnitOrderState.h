@@ -34,6 +34,8 @@ public:
   virtual void VTableSlot10(int pOwnerContext) {
     (void)pOwnerContext;
   } // slot 10 at 0x28
+  // Slot 0x2c — per-order dispatch hook invoked by TGreatPower slot 0x4c (0x004e0220).
+  virtual void DispatchSlot2C() {}
 
   short orderType;        // 0x04
   short field_6;          // 0x06 (init 0xffff)

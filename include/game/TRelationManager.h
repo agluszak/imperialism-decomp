@@ -31,12 +31,21 @@ public:
   virtual void dummy26() = 0;
   virtual void dummy27() = 0;
   virtual void dummy28() = 0;
-  virtual void dummy29() = 0;
+  // slot 0x74 — returns the city production-summary record (shorts at +0x22/+0x24/
+  // +0x28 summed by TGreatPower slot 0x65, body 0x004dd7f0).
+  virtual void* GetCitySummaryRecordSlot74() = 0;
   virtual void dummy30() = 0;
   virtual void dummy31() = 0;
   virtual void Refresh80() = 0; // slot 80
 
-  unsigned char pad04[0xB6 - 4];
+  unsigned char pad04[0xAC - 4];
+  class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
+  unsigned char pad_b0[0xB6 - 0xB0];
   // 0xB6..0xE4; fieldB6[0x15]/[0x16] occupy 0xE0/0xE2 (relationNeedSlotE0/E2).
   short fieldB6[0x17];
+  unsigned char pad_e4[0x1DC - 0xE4];
+  // 0x1DC — 23-entry per-city production order table (0x004b4dc0).
+  short productionOrderTable1dc[0x17];
+
+  int GetBuildingProductionValueBySlot(short buildingSlot);
 };

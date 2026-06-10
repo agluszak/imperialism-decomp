@@ -2659,14 +2659,6 @@ undefined4 ToggleCityPowerPlantUpgradeOrder(void)
   return 0;
 }
 
-// ghidra_name GetCityBuildingProductionValueBySlot
-// ghidra_proto int __thiscall GetCityBuildingProductionValueBySlot(short nBuildingSlotId)
-// FUNCTION: IMPERIALISM 0x004b4dc0
-undefined4 GetCityBuildingProductionValueBySlot(void)
-{
-  return 0;
-}
-
 // ghidra_name TProductionOrder::GetTProductionOrderClassNamePointer
 // ghidra_proto void * __cdecl GetTProductionOrderClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x004b4ee0

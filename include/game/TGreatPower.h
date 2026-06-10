@@ -122,7 +122,8 @@ public:
   TGREATPOWER_VTABLE_SLOT(73);
   virtual short TryDecayRelationNeedScores9AndB(void);           // slot 0x4a
   virtual short TryDecayRelationNeedScores9And8(void);           // slot 0x4b
-  virtual void VTableIndex76_Provisional(void) {}                // slot 0x4c
+  // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
+  virtual void DispatchTrackedOrderSlot2CCallbacks(void); // slot 0x4c
   virtual void VTableIndex77_Provisional(void) {}                // slot 0x4d
   virtual void VTableIndex78_Provisional(void) {}                // slot 0x4e
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
@@ -158,18 +159,27 @@ public:
   TGREATPOWER_VTABLE_SLOT(98);
   virtual void SetRelationManagerFieldB6AndRefresh(short targetSlot, short value);   // slot 0x63
   virtual void AddToRelationManagerFieldB6AndRefresh(short targetSlot, short value); // slot 0x64
-  TGREATPOWER_VTABLE_SLOT(101);
+  // slot 0x65 — body 0x004dd7f0: per-order-kind production metric (city building
+  // production doubled per kind; kind 7 sums the city summary record minus four
+  // relation-manager counters, clamped at 0).
+  virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta);                          // slot 0x66
   virtual void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) {}     // slot 0x19c
   virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
   TGREATPOWER_VTABLE_SLOT(107);
-  virtual void DispatchFallbackActionSlot6C_Provisional(int mode, int actionArg, int payload,
-                                                        int targetNation, int flags) {}
+  // slot 0x6c — body 0x004ddd90: packs {kind, targetNation, value, eligibility,
+  // payload} and appends it to diplomacyTrackedSlots[slotIndex] via [vt+0x38];
+  // eligibility = kind==1, or kind==0 and manager slot 0x84 reports no flag.
+  virtual void AppendTrackedSlotEntry(short kind, int targetNation, short value, short slotIndex,
+                                      int payload);
   virtual short GetTrackedSlotEntryCountLow(short targetSlot);     // slot 0x6d
   virtual char AnyTrackedSlotEntryHasZeroField4(short targetSlot); // slot 0x6e
-  TGREATPOWER_VTABLE_SLOT(111);
+  // slot 0x6f — body 0x004ddeb0: unpacks tracked-slot entry fields (+0/+2/+4/+8).
+  virtual void ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
+                                          short* outValue, short* outTargetNation,
+                                          int* outPayload);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
                                                              int payload);           // slot 0x70
   virtual void ClearDiplomacyState1c6Block(void);                                    // index 113
@@ -182,23 +192,26 @@ public:
   virtual bool
   CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
                                         unsigned short proposedGrantEntry);            // index 119
-  virtual void ApplyTurnDiplomacyStateSlot1e0() {}                                     // index 120
+  virtual void ApplyTurnDiplomacyStateSlot1e0(); // index 120 — body 0x004de7e0
   virtual void DecrementNeedLevelByNationStep(short nationSlot);                       // index 121
   virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // index 123
   virtual void
   QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex); // index 124
-  TGREATPOWER_VTABLE_SLOT(125);
+  // slot 0x7d — body 0x004df4b0: whether eventCode may target the nation given the
+  // current relation tier (tiers 2..6 progressively restrict 0x12e-0x130).
+  virtual char IsEventCodeAllowedForRelationTier(short eventCode, int targetNation);
   TGREATPOWER_VTABLE_SLOT(126);
-  TGREATPOWER_VTABLE_SLOT(127);
+  // slot 0x7f — body 0x004df5a0: releases the proposal queue (slot 0x1c).
+  virtual void ReleaseProposalQueueSlot7F(void);
   TGREATPOWER_VTABLE_SLOT(128);
   TGREATPOWER_VTABLE_SLOT(129);
   TGREATPOWER_VTABLE_SLOT(130);
   TGREATPOWER_VTABLE_SLOT(131);
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
-  virtual void VTableSlot84_Provisional(int targetNation) {}
-  virtual void NotifyAllianceSlot214(int targetNation) {} // index 133
+  virtual void VTableSlot84_Provisional(int targetNation); // body 0x004e0420
+  virtual void NotifyAllianceSlot214(int targetNation); // index 133 — body 0x004e0440
   // slot 0x86 — body 0x004e0500; navy order priority weights summed for this nation.
   virtual int SumNavyOrderPriorityForNationSlot86(void);
   virtual int CountMapActionContextNodesWithNationBit(void);                         // slot 0x87
@@ -235,7 +248,7 @@ public:
                                                    char swapRoles); // slot 0x9b
   virtual float ComputeNavyScoreStandingRatioForNationPair(int nationA, int nationB,
                                                            char swapRoles); // slot 0x9c
-  TGREATPOWER_VTABLE_SLOT(157);
+  virtual char ReturnZeroSlot9D(int targetNation); // body 0x004e1c00
   // slot 0x9e — joins a war against targetNation when minister skill beats the war
   // threshold; propagates relation code 4 to tier-2 partners and queues event 0x1c.
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
@@ -249,11 +262,11 @@ public:
   // with (nationSlot, 2, targetNation); entry 0x00406fe1 thunks to 0x004e27f0.
   virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNation,
                                                                     int relationCode, int mode);
-  TGREATPOWER_VTABLE_SLOT(162);
+  virtual void NoOpSlotA2(void); // body 0x004e1f20
   // slot 0xa3 — body 0x004e1f40 (not yet ported); war-commitment threshold consumed by
   // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
   virtual float ComputeWarThresholdSlotA3_Provisional(int targetNation);
-  virtual void NotifyWarResetSlot290() {} // slot 0x290
+  virtual void NotifyWarResetSlot290(); // slot 0x290 — body 0x004e2190
   virtual void CallSlotA5_Provisional(void);
   TGREATPOWER_VTABLE_SLOT(166);
   TGREATPOWER_VTABLE_SLOT(167);
@@ -261,7 +274,9 @@ public:
   virtual void CallSlotA9_Provisional(int targetNation);
   TGREATPOWER_VTABLE_SLOT(170);
   virtual void NotifyRelationCodeSlot2A8(int targetNation, int relationCode) {} // slot 0x2a8
-  TGREATPOWER_VTABLE_SLOT(172);
+  // slot 0xac — body 0x004e06d0: sums the accumulated value (+0x44) of city
+  // commodity records 8..0xc.
+  virtual int SumCommodityRecordAccumulatedValues(void);
   TGREATPOWER_VTABLE_SLOT(173);
   TGREATPOWER_VTABLE_SLOT(174);
   TGREATPOWER_VTABLE_SLOT(175);
@@ -383,6 +398,8 @@ public:
   float thunk_ComputeMapActionContextCompositeScoreForNation(int arg1);
   void thunk_OrphanCallChain_C2_I21_004e2b00_At00406a46(void);
   void thunk_RunSlot4CThenSortTrackedOrders_At004016d1(void);
+  char thunk_ReturnZeroSlot9D_At00405826(int targetNation);
+  void thunk_VTableSlot84_At00405a9c(int targetNation);
   void thunk_RemoveRegionIdAndRunTrackedObjectCleanup_At00406b2c(void);
   void thunk_ClearFieldBlock1c6_At00406c49(void);
   void thunk_ResetNationDiplomacySlotsAndMarkRelatedNations_At00406c9e(void);
