@@ -2,19 +2,19 @@
 
 #include "decomp_types.h"
 #include "game/TUberCluster.h"
+#include "game/TCivToolbar.h"
 
 #include <new>
 
 extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
 
+#include "game/TView.h"
+
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 thunk_DestructEngineerDialogBaseState(void);
-undefined4 thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
-undefined4 thunk_CycleMapInteractionSelectionAfterHandledClick(void);
+undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
-
 struct TShipyardCluster;
 
 namespace {
@@ -84,13 +84,13 @@ static __inline void SetMapContextActionMode(int mode) {
       mapContextActionManager, 0, mode);
 }
 
-static __inline void CycleMapInteractionSelectionAfterHandledClick() {
+static __inline void InvokeActiveCivToolbarCycleMapInteractionSelection() {
   int* uiRuntime = QueryUiRuntimeContextPtr();
   if (uiRuntime == 0) {
     return;
   }
-  reinterpret_cast<void(__fastcall*)(void*)>(thunk_CycleMapInteractionSelectionAfterHandledClick)(
-      reinterpret_cast<void*>(uiRuntime[0x3c]));
+  reinterpret_cast<TCivToolbar*>(uiRuntime[0x3c])
+      ->CycleMapInteractionSelectionAfterHandledClick();
 }
 
 static __inline void SetArmyPayloadRatioOrModeSelection(ArmyCommandPayload* payload, int value) {
@@ -131,7 +131,7 @@ ArmyToolbarState* __fastcall DestructTArmyToolbarAndMaybeFree(ArmyToolbarState* 
                                                               int unusedEdx,
                                                               unsigned char freeSelfFlag) {
   (void)unusedEdx;
-  thunk_DestructEngineerDialogBaseState();
+  reinterpret_cast<TView*>(toolbar)->~TView();
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull((undefined4)toolbar);
   }
@@ -161,7 +161,7 @@ void __stdcall HandleMapContextActionArmyRatioAndModeCommands(int commandId,
   if (controlTag == kTagArmyModeGarrison) {
     unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
     if ((ctrlState & 0x8000) != 0) {
-      thunk_OpenSuperArmyRosterPageAndActivateProvinceSelection();
+      OpenSuperArmyRosterPageAndActivateProvinceSelection();
       return;
     }
 
@@ -180,18 +180,18 @@ void __stdcall HandleMapContextActionArmyRatioAndModeCommands(int commandId,
 
   if (controlTag == kTagArmyModeDefend) {
     SetMapContextActionMode(2);
-    CycleMapInteractionSelectionAfterHandledClick();
+    InvokeActiveCivToolbarCycleMapInteractionSelection();
     return;
   }
 
   if (controlTag == kTagArmyModeLater) {
     SetMapContextActionMode(3);
-    CycleMapInteractionSelectionAfterHandledClick();
+    InvokeActiveCivToolbarCycleMapInteractionSelection();
     return;
   }
 
   if (controlTag == kTagArmyModeDone) {
     SetMapContextActionMode(4);
-    CycleMapInteractionSelectionAfterHandledClick();
+    InvokeActiveCivToolbarCycleMapInteractionSelection();
   }
 }

@@ -8,17 +8,6 @@ extern "C" {
 char g_pClassDescTSortedPtrList = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00407da6
-void __fastcall thunk_ResetPtrListAndShrinkCapacity(TSortedPtrList* self) {
-  self->ResetPtrListAndShrinkCapacity();
-}
-
-// FUNCTION: IMPERIALISM 0x00409868
-void* __fastcall thunk_GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int unusedEdx,
-                                                      int oneBasedIndex) {
-  return GetPtrListEntryByOneBasedIndex(self, unusedEdx, oneBasedIndex);
-}
-
 // FUNCTION: IMPERIALISM TODO
 TSortedPtrList::TSortedPtrList() : TIndexAndRankList() {}
 

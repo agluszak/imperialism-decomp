@@ -63,7 +63,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Navy primary/secondary order (serializedStatusFlags[0] == '2').
   if (this->serializedStatusFlags[0] == 0x32) {
     short zoneIndex = CityOrderActiveZoneIndex();
-    void* portZone = FindFirstPortZoneContextByNation(nationSlot);
+    void* portZone = TZone::FindFirstPortZoneContextByNation(nationSlot);
     reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
         thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(zoneIndex, portZone, nationSlot, 0);
 
@@ -115,7 +115,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
       int spawnTile = reinterpret_cast<int(__fastcall*)(void*, int, int, int)>(
           thunk_FindReachableRecruitSpawnTileWithVisitedReset)(
           g_pGlobalMapState, this->ownerNationSlot, 0, nationSlot);
-      civOrder->thunk_InitializeCivWorkOrderState(7, spawnTile, nationSlot);
+      civOrder->InitializeCivWorkOrderState(7, spawnTile, nationSlot);
       this->SetNationPendingActionStateAndPayload(2, -1);
     }
   }

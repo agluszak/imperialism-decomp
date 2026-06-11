@@ -28,9 +28,6 @@ public:
   unsigned char pad_04[0x44];
   unsigned char field69_0x48;
 
-  void thunk_DestructTCapacityOrderAndMaybeFree(void);
-  void thunk_CreateTCapacityOrderInstance(void* pTargetOrder);
-  static void* __cdecl thunk_GetTCapacityOrderClassNamePointer(void);
   void CreateTCapacityOrderInstance(void* pTargetOrder);
   static void* __cdecl GetTCapacityOrderClassNamePointer(void);
   TCapacityOrder* ConstructTCapacityOrderBaseState(unsigned char freeSelfFlag);
@@ -47,21 +44,6 @@ static __inline void WriteShort(void* base, int offset, short value) {
 
 static __inline short ReadShort(void* base, int offset) {
   return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset);
-}
-
-// FUNCTION: IMPERIALISM 0x00401c0d
-void TCapacityOrder::thunk_DestructTCapacityOrderAndMaybeFree(void) {
-  this->DestructTCapacityOrderAndMaybeFree();
-}
-
-// FUNCTION: IMPERIALISM 0x00404093
-void TCapacityOrder::thunk_CreateTCapacityOrderInstance(void* pTargetOrder) {
-  this->CreateTCapacityOrderInstance(pTargetOrder);
-}
-
-// FUNCTION: IMPERIALISM 0x00405ab5
-void* __cdecl TCapacityOrder::thunk_GetTCapacityOrderClassNamePointer(void) {
-  return GetTCapacityOrderClassNamePointer();
 }
 
 // FUNCTION: IMPERIALISM 0x004b8b80
@@ -122,7 +104,7 @@ void* __cdecl TCapacityOrder::GetTCapacityOrderClassNamePointer(void) {
 
 // FUNCTION: IMPERIALISM 0x004b8d00
 TCapacityOrder* TCapacityOrder::ConstructTCapacityOrderBaseState(unsigned char freeSelfFlag) {
-  this->thunk_DestructTCapacityOrderAndMaybeFree();
+  this->DestructTCapacityOrderAndMaybeFree();
   if ((freeSelfFlag & 1) != 0) {
     FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this)));
   }

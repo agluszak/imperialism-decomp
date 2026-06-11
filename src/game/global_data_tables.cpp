@@ -69,6 +69,7 @@ double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.0;
 double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.0;
 double g_Recompute_Nation_Order_LookupTable_0065AA08 = 0.0;
 unsigned short g_Recompute_Nation_Order_LookupTable_00697870[0x10] = {0};
+unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {0};
 
 // Random-roll scaling constants for TAutoGreatPower::AssignNeedSlotFromSourceSlot19C
 // (0x004e7680): 1/255 and 32767.

@@ -427,22 +427,6 @@ undefined4 ValidateMissionTerrainCoverageAndRefreshTargetContext(void)
   return 0;
 }
 
-// ghidra_name ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter
-// ghidra_proto void __cdecl ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x005389f0
-undefined4 ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
-// ghidra_proto void __cdecl ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation(int arg1, int arg2)
-// FUNCTION: IMPERIALISM 0x00538bf0
-undefined4 ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeNavyOrderDistributionSimilarityScoreForMissionNation
 // ghidra_proto float __thiscall ComputeNavyOrderDistributionSimilarityScoreForMissionNation(void)
 // FUNCTION: IMPERIALISM 0x00538dd0

@@ -147,6 +147,10 @@ public:
   // 0xa8-stride region records in cityScoreTable.
   char AreNationsBorderLinked(int nationA, int nationB);
 
+  static void ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
+                                            char wrapHorizontally);
+  static short GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction);
+
   class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
     return reinterpret_cast<struct GlobalMapTileRecord*>(terrainStateTable)[tileIndex]
         .firstCivilianOrder;

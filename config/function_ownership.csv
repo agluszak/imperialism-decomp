@@ -538,8 +538,8 @@ address|target_cpp|ownership|note
 500220|src/game/noop_slots.cpp|manual|marker_sync
 5033e0|src/game/noop_slots.cpp|manual|marker_sync
 503400|src/game/noop_slots.cpp|manual|marker_sync
-512b50|src/game/hex_map_helpers.cpp|manual|marker_sync
-512cc0|src/game/hex_map_helpers.cpp|manual|marker_sync
+512b50|src/game/TGlobalMapState.cpp|manual|marker_sync
+512cc0|src/game/TGlobalMapState.cpp|manual|marker_sync
 515de0|src/game/noop_slots.cpp|manual|marker_sync
 515e00|src/game/TMapOrderContext.cpp|manual|marker_sync
 517c30|src/game/TGlobalMapState.cpp|manual|marker_sync
@@ -593,6 +593,8 @@ address|target_cpp|ownership|note
 5356f0|src/game/noop_slots.cpp|manual|marker_sync
 535790|src/game/noop_slots.cpp|manual|marker_sync
 5357b0|src/game/noop_slots.cpp|manual|marker_sync
+5389f0|src/game/TNavyMission.cpp|manual|marker_sync
+538bf0|src/game/TNavyMission.cpp|manual|marker_sync
 539920|src/game/noop_slots.cpp|manual|marker_sync
 539940|src/game/noop_slots.cpp|manual|marker_sync
 53a390|src/game/noop_slots.cpp|manual|marker_sync
@@ -601,8 +603,8 @@ address|target_cpp|ownership|note
 53aa70|src/game/noop_slots.cpp|manual|marker_sync
 53c1b0|src/game/noop_slots.cpp|manual|marker_sync
 53d6f0|src/game/noop_slots.cpp|manual|marker_sync
-53e6e0|src/game/mission_helpers.cpp|manual|marker_sync
-53ea70|src/game/mission_helpers.cpp|manual|marker_sync
+53e6e0|src/game/TDefendProvinceMission.cpp|manual|marker_sync
+53ea70|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 53f140|src/game/noop_slots.cpp|manual|marker_sync
 53f240|src/game/noop_slots.cpp|manual|marker_sync
 53faa0|src/game/noop_slots.cpp|manual|marker_sync
@@ -688,7 +690,7 @@ address|target_cpp|ownership|note
 562880|src/game/TZone.cpp|manual|marker_sync
 562d90|src/game/TMapOrderContext.cpp|manual|marker_sync
 5634a0|src/game/TMapOrderContext.cpp|manual|marker_sync
-563540|src/game/map_zone_helpers.cpp|manual|marker_sync
+563540|src/game/TZone.cpp|manual|marker_sync
 569d50|src/game/noop_slots.cpp|manual|marker_sync
 56e370|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e640|src/game/TTwoPicSlider.cpp|manual|marker_sync
@@ -872,7 +874,7 @@ address|target_cpp|ownership|note
 58beb0|src/game/TArmyPlacard.cpp|manual|marker_sync
 58bed0|src/game/TArmyPlacard.cpp|manual|marker_sync
 58bf00|src/game/TArmyPlacard.cpp|manual|marker_sync
-58bfe0|src/game/TPlacard.cpp|manual|marker_sync
+58bfe0|src/game/TArmyPlacard.cpp|manual|marker_sync
 58c1e0|src/game/TNumberedArrowButton.cpp|manual|marker_sync
 58c280|src/game/TNumberedArrowButton.cpp|manual|marker_sync
 58c2a0|src/game/TNumberedArrowButton.cpp|manual|marker_sync

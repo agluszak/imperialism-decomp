@@ -25,6 +25,4 @@ public:
   }
 
   void InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId);
-  void thunk_InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
-                                         int nOrderOwnerNationId);
 };

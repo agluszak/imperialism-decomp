@@ -2,26 +2,55 @@
 #include "game/TCivilianOrderState.h"
 #include "game/TSelectedCivilianOrderState.h"
 
-undefined4 thunk_IsCivilianOrderInIdleSelectionState(void);
-undefined4 thunk_SetActiveCivilianSelection(void);
-undefined4 thunk_QueueImmediateCivilianCommandAndCycleSelection(void);
-undefined4 thunk_ShowDisbandCivilianConfirmationDialog(void);
+undefined4 IsCivilianOrderInIdleSelectionState(void);
+undefined4 SetActiveCivilianSelection(void);
+undefined4 QueueImmediateCivilianCommandAndCycleSelection(void);
+undefined4 ShowDisbandCivilianConfirmationDialog(void);
+
+namespace {
+
+void InvokeSetActiveCivilianSelection(TSelectedCivilianOrderState* self,
+                                      TCivilianOrderState* entryContext,
+                                      int refreshCommandPanel) {
+  typedef void (*SetActiveCivilianSelectionDispatch)(TSelectedCivilianOrderState*,
+                                                   TCivilianOrderState*, int);
+  SetActiveCivilianSelectionDispatch dispatch =
+      reinterpret_cast<SetActiveCivilianSelectionDispatch>(SetActiveCivilianSelection);
+  dispatch(self, entryContext, refreshCommandPanel);
+}
+
+void InvokeQueueImmediateCivilianCommand(TSelectedCivilianOrderState* self, int commandType) {
+  typedef void (*QueueCommandDispatch)(TSelectedCivilianOrderState*, int);
+  QueueCommandDispatch dispatch =
+      reinterpret_cast<QueueCommandDispatch>(QueueImmediateCivilianCommandAndCycleSelection);
+  dispatch(self, commandType);
+}
+
+void InvokeShowDisbandCivilianConfirmationDialog(TSelectedCivilianOrderState* self) {
+  typedef void (*ShowDisbandDispatch)(TSelectedCivilianOrderState*);
+  ShowDisbandDispatch dispatch =
+      reinterpret_cast<ShowDisbandDispatch>(ShowDisbandCivilianConfirmationDialog);
+  dispatch(self);
+}
+
+} // namespace
 
 int TCivilianOrderState::IsInIdleSelectionState() {
-  return reinterpret_cast<int(__fastcall*)(void*)>(thunk_IsCivilianOrderInIdleSelectionState)(this);
+  typedef int (*IdleSelectionProbe)(TCivilianOrderState*);
+  IdleSelectionProbe probe =
+      reinterpret_cast<IdleSelectionProbe>(IsCivilianOrderInIdleSelectionState);
+  return probe(this);
 }
 
 void TSelectedCivilianOrderState::SetActiveCivilianSelection(TCivilianOrderState* entryContext,
                                                              int refreshCommandPanel) {
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_SetActiveCivilianSelection)(
-      this, 0, entryContext, refreshCommandPanel);
+  InvokeSetActiveCivilianSelection(this, entryContext, refreshCommandPanel);
 }
 
 void TSelectedCivilianOrderState::QueueImmediateCivilianCommandAndCycleSelection(int commandType) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(
-      thunk_QueueImmediateCivilianCommandAndCycleSelection)(this, 0, commandType);
+  InvokeQueueImmediateCivilianCommand(this, commandType);
 }
 
 void TSelectedCivilianOrderState::ShowDisbandCivilianConfirmationDialog() {
-  reinterpret_cast<void(__fastcall*)(void*)>(thunk_ShowDisbandCivilianConfirmationDialog)(this);
+  InvokeShowDisbandCivilianConfirmationDialog(this);
 }

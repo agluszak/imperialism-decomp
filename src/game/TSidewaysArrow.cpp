@@ -6,16 +6,14 @@
 
 extern "C" char g_pClassDescTSidewaysArrow = 0;
 
-undefined4 thunk_DispatchPictureResourceCommand(void);
 undefined4 GetTickCountDiv16(void);
 
 // FUNCTION: IMPERIALISM 0x00583bd0
 void TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8,
                                                                void* argC, void* dispatchArg,
                                                                void* arg14) {
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
-      thunk_DispatchPictureResourceCommand)(
-      this, 0, reinterpret_cast<void*>(repeatState), arg8, argC, arg14);
+  reinterpret_cast<TControl*>(this)->DispatchPictureResourceCommand(
+      reinterpret_cast<void*>(repeatState), arg8, argC, arg14);
 
   if (repeatState == 2) {
     return;

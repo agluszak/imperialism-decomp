@@ -1,5 +1,7 @@
 #include "game/TZone.h"
 
+#include "game/CObject.h"
+#include "game/CRuntimeClass.h"
 #include "game/MfcRuntime.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapOrderContext.h"
@@ -499,4 +501,55 @@ void TZone::SetMapOrderUiFlag(int flag) {
     reinterpret_cast<void(__fastcall*)(void*, int)>(
         *reinterpret_cast<int*>(*reinterpret_cast<int*>(uiObserver) + 0x1d8))(uiObserver, field20);
   }
+}
+
+namespace {
+
+int ZoneIsPortKind(TZone* node) {
+  return reinterpret_cast<CObject*>(node)->IsKindOf(
+      reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone));
+}
+
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x00563540
+TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
+  TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
+  if (esi != 0) {
+    do {
+      if (ZoneIsPortKind(esi) != 0) {
+        break;
+      }
+      esi = esi->prev18;
+    } while (esi != 0);
+  }
+
+  TZone* eax = esi;
+  if (eax == 0) {
+    return 0;
+  }
+
+  do {
+    int tileIndex = static_cast<int>(static_cast<short>(eax->field48));
+    tileIndex = tileIndex + tileIndex * 8;
+    char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
+    short ownerTag = static_cast<short>(
+        static_cast<signed char>(terrainTable[tileIndex * 4 + 3]));
+    if (ownerTag == nationSlot) {
+      return eax;
+    }
+
+    esi = eax->prev18;
+    if (esi != 0) {
+      do {
+        if (ZoneIsPortKind(esi) != 0) {
+          break;
+        }
+        esi = esi->prev18;
+      } while (esi != 0);
+    }
+    eax = esi;
+  } while (eax != 0);
+
+  return 0;
 }

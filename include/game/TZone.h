@@ -68,9 +68,9 @@ public:
 
   // 0x0055fc40 — Ghidra labeled InputState::; dispatches through TZone vtable 0x50/0x58.
   void HandleKeyDown(int key_id);
-};
 
-TZone* FindFirstPortZoneContextByNation(short nationSlot);
+  static TZone* FindFirstPortZoneContextByNation(short nationSlot);
+};
 
 // Nation-sized map-action context embedded in TMapOrderContext::contextArray (stride 0x48).
 struct TMapNationActionContext {

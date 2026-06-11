@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_DispatchLocalizedUiMessageWithTemplateA13A0
-// ghidra_proto void __cdecl thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void)
-// FUNCTION: IMPERIALISM 0x004096b0
-undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry
-// ghidra_proto void __thiscall thunk_ConstructUiClickablePictureResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x00409980
-undefined4 thunk_ConstructUiClickablePictureResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_InitializeCivUnitOrderObject
-// ghidra_proto void __cdecl thunk_InitializeCivUnitOrderObject(void)
-// FUNCTION: IMPERIALISM 0x00409985
-undefined4 thunk_InitializeCivUnitOrderObject(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetGlobalQuickDrawOrigin
-// ghidra_proto void __cdecl thunk_SetGlobalQuickDrawOrigin(short originX, short originY)
-// FUNCTION: IMPERIALISM 0x00409a11
-undefined4 thunk_SetGlobalQuickDrawOrigin(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004125d0
 // ghidra_proto void __cdecl WrapperFor_ftol_At004125d0(void)
 // FUNCTION: IMPERIALISM 0x004125d0

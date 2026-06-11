@@ -1,7 +1,5 @@
 #include "game/TCivReport.h"
 
-undefined4 thunk_BuildCivReportNationEntryDetailTextBlock(void);
-
 namespace {
 
 // GLOBAL: IMPERIALISM 0x663130
@@ -29,8 +27,7 @@ TCivReport::TCivReport() : TPictureResourceEntryBase() {}
 // FUNCTION: IMPERIALISM 0x00590cb0
 void __fastcall BuildCivReportNationEntryDetailTextBlock(TCivReport* context, int unusedEdx,
                                                          void* arg1) {
-  // ORIG_CALLCONV: __thiscall
   (void)unusedEdx;
-  reinterpret_cast<void(__fastcall*)(void*, int, void*)>(
-      thunk_BuildCivReportNationEntryDetailTextBlock)(context, 0, arg1);
+  (void)context;
+  (void)arg1;
 }

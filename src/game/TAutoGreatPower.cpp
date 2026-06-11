@@ -306,7 +306,7 @@ void TAutoGreatPower::VTableSlot84_Provisional(int targetNation) {
           (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->ownerNationSlot0e,
            ownerTag < 100) ||
           199 < ownerTag) {
-        FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+        TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
         short portZoneId = GetShortAtOffset14OrInvalidValue();
         this->portZoneStateFlags[portZoneId] = 1;
       }
@@ -320,7 +320,7 @@ void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90->GetCountOrReleaseSlot28() >
         0) {
-      FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+      TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
       short portZoneId = GetShortAtOffset14OrInvalidValue();
       this->portZoneStateFlags[portZoneId] = 0;
     }
@@ -472,7 +472,7 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
       ++ordinal;
     } while (ordinal <= regionList->GetCountOrReleaseSlot28());
   }
-  TZone* portZone = FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+  TZone* portZone = TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
   if (portZone->portZoneEntryCount2c == 0) {
     void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
         ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 8);

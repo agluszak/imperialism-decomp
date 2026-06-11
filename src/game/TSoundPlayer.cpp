@@ -28,13 +28,10 @@ struct SoundPlayerState {
   char pad_80[4];
 };
 
-class RuntimeBridge {
-public:
-  static __inline void ConstructUiResourceEntryBaseHeaderDefaults(void* self) {
-    reinterpret_cast<void(__fastcall*)(void*)>(::thunk_InitializeUiResourceEntryBaseHeaderDefaults)(
-        self);
-  }
-};
+static __inline void ConstructUiResourceEntryBaseHeaderDefaults(void* self) {
+  reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeUiResourceEntryBaseHeaderDefaults)(
+      self, 0);
+}
 
 } // namespace
 
@@ -44,7 +41,7 @@ void __fastcall DestructTSoundPlayerBaseState(SoundPlayerState* player);
 SoundPlayerState* __cdecl CreateTSoundPlayerInstance(void) {
   SoundPlayerState* player = reinterpret_cast<SoundPlayerState*>(AllocateWithFallbackHandler(0x84));
   if (player != 0) {
-    RuntimeBridge::ConstructUiResourceEntryBaseHeaderDefaults(player);
+    ConstructUiResourceEntryBaseHeaderDefaults(player);
     player->vftable = reinterpret_cast<void*>(&g_vtblTSoundPlayer);
     player->runtimePeerAt6c = 0;
     player->runtimePeerAt70 = 0;
@@ -63,7 +60,7 @@ void* __cdecl GetTSoundPlayerClassNamePointer(void) {
 
 // FUNCTION: IMPERIALISM 0x00593370
 SoundPlayerState* __fastcall ConstructTSoundPlayerBaseState(SoundPlayerState* player) {
-  RuntimeBridge::ConstructUiResourceEntryBaseHeaderDefaults(player);
+  ConstructUiResourceEntryBaseHeaderDefaults(player);
   player->vftable = reinterpret_cast<void*>(&g_vtblTSoundPlayer);
   player->runtimePeerAt6c = 0;
   player->runtimePeerAt70 = 0;

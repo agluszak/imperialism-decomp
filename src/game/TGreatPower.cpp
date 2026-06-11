@@ -1,4 +1,5 @@
-#include "game/TStreamView.h"
+#include "game/TStream.h"
+#include "game/TNavyMission.h"
 #include "game/TStream.h"
 #include "game/TTerrainDescriptor.h"
 #include "game/TMinor.h"
@@ -19,7 +20,8 @@
 #include "game/TGlobalMapState.h"
 #include "game/TStationedUnitNode.h"
 #include "game/TMilitaryUnit.h"
-#include "game/hex_map_helpers.h"
+#include "game/TDefendProvinceMission.h"
+#include "game/TMission.h"
 #include "game/TZone.h"
 // Manual decompilation file.
 // Seeded from ghidra autogen and normalized into compile-safe wrappers.
@@ -200,7 +202,6 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/TAdmiral.h"
 #include "game/TMarkerReceiverView.h"
 #include "game/TTrackedObjectListEntry.h"
-#include "game/mission_helpers.h"
 
 #include "game/TMessageObject.h"
 #include "game/TQueueObject.h"
@@ -344,22 +345,6 @@ template <typename T> static __inline void ReleaseAndClear58(T** slot) {
     (*slot)->Call58();
     *slot = 0;
   }
-}
-
-static __inline void Stream_ReadRawAtSlot00(void* stream, void* outBuf, int sizeBytes) {
-  static_cast<TStreamView*>(stream)->ReadRaw00(outBuf, sizeBytes);
-}
-
-static __inline void Stream_ReadAtSlot3C(void* stream, void* outBuf, int sizeBytes) {
-  static_cast<TStreamView*>(stream)->ReadAt3C(outBuf, sizeBytes);
-}
-
-static __inline int Stream_ReadIntAtSlot40(void* stream) {
-  return static_cast<TStreamView*>(stream)->ReadInt40();
-}
-
-static __inline char Stream_ReadByteAtSlotB0(void* stream, void* outByte) {
-  return static_cast<TStreamView*>(stream)->ReadByteB0(outByte);
 }
 
 static __inline short ProposalQueue_GetCount(void* queue) {
@@ -708,15 +693,13 @@ static __inline void* ReallocateBufferWithAllocatorTracking(void* buffer, int si
 }
 
 static __inline float ComputeNavyOrderScoreForExactSourceNation(int sourceNation, int nodeContext) {
-  return reinterpret_cast<float(__cdecl*)(int, int)>(
-      thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation)(sourceNation,
-                                                                             nodeContext);
+  return TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(sourceNation,
+                                                                                   nodeContext);
 }
 
 static __inline float ComputeNavyOrderScoreWithDiplomacyFilter(int sourceNation, int nodeContext) {
-  return reinterpret_cast<float(__cdecl*)(int, int)>(
-      thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter)(sourceNation,
-                                                                            nodeContext);
+  return TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(sourceNation,
+                                                                                  nodeContext);
 }
 
 static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
@@ -1106,50 +1089,50 @@ void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
 void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   this->DeserializeRecruitScenarioAndInstantiateOrders(arg1);
 
-  TStreamView* stream = reinterpret_cast<TStreamView*>(arg1);
-  stream->ReadAt3C(&this->diplomacyEligibilityA0, 1);
-  stream->ReadAt3C(&this->diplomacyCounterA2, 2);
-  stream->ReadAt3C(&this->tradeCapacity, 2);
-  stream->ReadAt3C(&this->needCapA6, 2);
-  stream->ReadAt3C(&this->needsOverCapFlag, 2);
+  TStream* stream = reinterpret_cast<TStream*>(arg1);
+  stream->ReadBytes(&this->diplomacyEligibilityA0, 1);
+  stream->ReadBytes(&this->diplomacyCounterA2, 2);
+  stream->ReadBytes(&this->tradeCapacity, 2);
+  stream->ReadBytes(&this->needCapA6, 2);
+  stream->ReadBytes(&this->needsOverCapFlag, 2);
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) < 0x3E) {
-    stream->ReadAt3C(&this->grantTotalCost, 2);
+    stream->ReadBytes(&this->grantTotalCost, 2);
   } else {
-    stream->ReadAt3C(&this->grantTotalCost, 4);
+    stream->ReadBytes(&this->grantTotalCost, 4);
   }
-  stream->ReadAt3C(&this->diplomacyCounterB0, 2);
-  stream->ReadAt3C(this->diplomacyPolicyByNation, 0x2E);
+  stream->ReadBytes(&this->diplomacyCounterB0, 2);
+  stream->ReadBytes(this->diplomacyPolicyByNation, 0x2E);
   SwapShortArrayBytes(this->diplomacyPolicyByNation, kNationSlotCount);
-  stream->ReadAt3C(this->diplomacyGrantByNation, 0x2E);
+  stream->ReadBytes(this->diplomacyGrantByNation, 0x2E);
   SwapShortArrayBytes(this->diplomacyGrantByNation, kNationSlotCount);
-  stream->ReadAt3C(this->needCurrentByType, 0x2E);
+  stream->ReadBytes(this->needCurrentByType, 0x2E);
   SwapShortArrayBytes(this->needCurrentByType, kNationSlotCount);
-  stream->ReadAt3C(this->needTargetByType, 0x2E);
+  stream->ReadBytes(this->needTargetByType, 0x2E);
   SwapShortArrayBytes(this->needTargetByType, kNationSlotCount);
-  stream->ReadAt3C(this->relationDeltaCurrent, 0x2E);
+  stream->ReadBytes(this->relationDeltaCurrent, 0x2E);
   SwapShortArrayBytes(this->relationDeltaCurrent, kNationSlotCount);
-  stream->ReadAt3C(this->relationDeltaSnapshot, 0x2E);
+  stream->ReadBytes(this->relationDeltaSnapshot, 0x2E);
   SwapShortArrayBytes(this->relationDeltaSnapshot, kNationSlotCount);
-  stream->ReadAt3C(this->diplomacyState1c6, 0x2E);
+  stream->ReadBytes(this->diplomacyState1c6, 0x2E);
   SwapShortArrayBytes(this->diplomacyState1c6, kNationSlotCount);
 
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x16) {
-    stream->ReadAt3C(this->diplomacyState1f4, 0x2E);
+    stream->ReadBytes(this->diplomacyState1f4, 0x2E);
     SwapShortArrayBytes(this->diplomacyState1f4, kNationSlotCount);
   }
 
-  stream->ReadAt3C(this->diplomacyState222, 0x2E);
+  stream->ReadBytes(this->diplomacyState222, 0x2E);
   SwapShortArrayBytes(this->diplomacyState222, kNationSlotCount);
-  stream->ReadAt3C(this->diplomacyState250, 0x2E);
+  stream->ReadBytes(this->diplomacyState250, 0x2E);
   SwapShortArrayBytes(this->diplomacyState250, kNationSlotCount);
 
-  stream->ReadAt3C(&this->budgetPoolBase, 4);
-  stream->ReadAt3C(&this->budgetPoolDelta, 4);
-  stream->ReadAt3C(this->aidAllocationMatrix, 0x5C0);
+  stream->ReadBytes(&this->budgetPoolBase, 4);
+  stream->ReadBytes(&this->budgetPoolDelta, 4);
+  stream->ReadBytes(this->aidAllocationMatrix, 0x5C0);
   ReverseDwordArrayBytes(this->aidAllocationMatrix, 0x170);
 
-  stream->ReadAt3C(this->serializedStatusFlags, 0x0D);
-  stream->ReadAt3C(this->field8d6, 0x1A);
+  stream->ReadBytes(this->serializedStatusFlags, 0x0D);
+  stream->ReadBytes(this->field8d6, 0x1A);
   SwapShortArrayBytes(this->field8d6, 0x0D);
 
   this->turnEventQueue->Call18();
@@ -1176,7 +1159,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
       ReleaseAndClear1C(&this->relationManager);
     }
   } else {
-    int ministerMask = Stream_ReadIntAtSlot40(stream);
+    int ministerMask = static_cast<TStream*>(stream)->ReadInteger();
 
     if ((ministerMask & 1) == 0) {
       ReleaseAndClear1C(&this->foreignMinister);
@@ -1241,7 +1224,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   static_cast<TPtrList*>(townMarkerList)->Call18();
 
   int townCount = 0;
-  Stream_ReadAtSlot3C(stream, &townCount, 4);
+  static_cast<TStream*>(stream)->ReadBytes(&townCount, 4);
 
   if (townCount > 0) {
     int townOrdinal = 1;
@@ -1270,7 +1253,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   static_cast<TPtrList*>(trackedObjectList)->Call18();
 
   int unusedOrderCount = 0;
-  Stream_ReadAtSlot3C(stream, &unusedOrderCount, 4);
+  static_cast<TStream*>(stream)->ReadBytes(&unusedOrderCount, 4);
 
   int orderOrdinal = 1;
   while (orderOrdinal < 5) {
@@ -1279,30 +1262,30 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
       reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeCivUnitOrderObject)(
           civOrderObj, 0);
       static_cast<TCivWorkOrderState*>(civOrderObj)
-          ->thunk_InitializeCivWorkOrderState(0, -1, this->nationSlot);
+          ->InitializeCivWorkOrderState(0, -1, this->nationSlot);
       static_cast<TPtrList*>(civOrderObj)->Call18();
     }
     ++orderOrdinal;
   }
 
-  Stream_ReadRawAtSlot00(stream, &this->diplomacyBudgetBase, 4);
-  Stream_ReadRawAtSlot00(stream, &this->escalationCounter, 1);
-  Stream_ReadRawAtSlot00(stream, &this->pendingCommitmentCost, 4);
-  Stream_ReadRawAtSlot00(stream, &this->pressureCounter, 1);
-  Stream_ReadRawAtSlot00(stream, &this->field900, 4);
-  Stream_ReadRawAtSlot00(stream, &this->field904, 1);
+  static_cast<TStream*>(stream)->ReadBytes(&this->diplomacyBudgetBase, 4);
+  static_cast<TStream*>(stream)->ReadBytes(&this->escalationCounter, 1);
+  static_cast<TStream*>(stream)->ReadBytes(&this->pendingCommitmentCost, 4);
+  static_cast<TStream*>(stream)->ReadBytes(&this->pressureCounter, 1);
+  static_cast<TStream*>(stream)->ReadBytes(&this->field900, 4);
+  static_cast<TStream*>(stream)->ReadBytes(&this->field904, 1);
 
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x0E) {
     void* missionNodeQueue = this->missionNodeQueue;
     static_cast<TPtrList*>(missionNodeQueue)->Call18(arg1);
 
     int nodeCount = 0;
-    Stream_ReadRawAtSlot00(stream, &nodeCount, 4);
+    static_cast<TStream*>(stream)->ReadBytes(&nodeCount, 4);
     if (nodeCount > 0) {
       int nodeOrdinal = 1;
       while (nodeOrdinal <= nodeCount) {
         unsigned char hasNode = 0;
-        char markerOk = Stream_ReadByteAtSlotB0(stream, &hasNode);
+        char markerOk = static_cast<TStream*>(stream)->ReadByte(&hasNode);
         if (markerOk != 0) {
           static_cast<TPtrList*>(missionNodeQueue)->AddTail30(0);
         }
@@ -1312,14 +1295,14 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
   }
 
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x25) {
-    Stream_ReadRawAtSlot00(stream, &this->field910, 4);
-    Stream_ReadRawAtSlot00(stream, &this->aidAllocationTotal, 4);
+    static_cast<TStream*>(stream)->ReadBytes(&this->field910, 4);
+    static_cast<TStream*>(stream)->ReadBytes(&this->aidAllocationTotal, 4);
   }
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x2F) {
-    Stream_ReadRawAtSlot00(stream, this->colonyBoycottFlags, kNationSlotCount);
+    static_cast<TStream*>(stream)->ReadBytes(this->colonyBoycottFlags, kNationSlotCount);
   }
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x34) {
-    Stream_ReadRawAtSlot00(stream, &this->pendingAidTotal, 4);
+    static_cast<TStream*>(stream)->ReadBytes(&this->pendingAidTotal, 4);
   }
 }
 
@@ -1339,18 +1322,6 @@ static __inline unsigned char CityOrderCapabilityByte277(short nationSlot) {
   return CityOrderCapabilityState()->orderCapRows277[nationSlot].flag;
 }
 
-static __inline void Stream_WriteRawAtSlot78(void* stream, void* data, int sizeBytes) {
-  static_cast<TStreamView*>(stream)->WriteRaw78(data, sizeBytes);
-}
-
-static __inline void Stream_WriteCountAtSlot88(void* stream, int count) {
-  static_cast<TStreamView*>(stream)->WriteCount88(count);
-}
-
-static __inline short Stream_ReadShortAtSlot4C(void* stream) {
-  return static_cast<TStreamView*>(stream)->ReadShort4C();
-}
-
 // Tracked-order list serialization hooks (list-level [vt+0x14](stream) write and
 // [vt+0x18](stream) reset/read; Call18 takes the stream pointer as its int arg).
 static __inline void List_WriteToStreamSlot14(void* list, void* stream) {
@@ -1363,15 +1334,16 @@ static __inline void List_ReadFromStreamSlot18(void* list, void* stream) {
 
 // FUNCTION: IMPERIALISM 0x004da500
 #pragma optimize("y", on)
-void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* stream) {
-  Stream_WriteRawAtSlot78(stream, &this->encodedNationSlot, 2);
-  Stream_WriteRawAtSlot78(stream, &this->treasuryValue10, 4);
-  Stream_WriteRawAtSlot78(stream, &this->ownerNationSlot, 4);
-  Stream_WriteRawAtSlot78(stream, &this->serializedField8c, 4);
+void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* streamState) {
+  TStream* stream = static_cast<TStream*>(streamState);
+  stream->WriteBytesSlot78(&this->encodedNationSlot, 2);
+  stream->WriteBytesSlot78(&this->treasuryValue10, 4);
+  stream->WriteBytesSlot78(&this->ownerNationSlot, 4);
+  stream->WriteBytesSlot78(&this->serializedField8c, 4);
 
-  List_WriteToStreamSlot14(this->trackedObjectList, stream);
+  List_WriteToStreamSlot14(this->trackedObjectList, streamState);
   int orderCount = List_GetCountSlot48(this->trackedObjectList);
-  Stream_WriteCountAtSlot88(stream, orderCount);
+  stream->WriteCountSlot88(orderCount);
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
     TUnitOrderState* order = reinterpret_cast<TUnitOrderState*>(
         List_GetTrackedEntrySlot4C(this->trackedObjectList, ordinal));
@@ -1382,19 +1354,20 @@ void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* stream) {
 
 // FUNCTION: IMPERIALISM 0x004da3e0
 #pragma optimize("y", on)
-void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg) {
+void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* streamState, int unusedArg) {
   (void)unusedArg;
-  Stream_ReadAtSlot3C(stream, &this->encodedNationSlot, 2);
-  Stream_ReadAtSlot3C(stream, &this->treasuryValue10, 4);
-  Stream_ReadAtSlot3C(stream, &this->ownerNationSlot, 4);
-  Stream_ReadAtSlot3C(stream, &this->serializedField8c, 4);
+  TStream* stream = static_cast<TStream*>(streamState);
+  stream->ReadBytes(&this->encodedNationSlot, 2);
+  stream->ReadBytes(&this->treasuryValue10, 4);
+  stream->ReadBytes(&this->ownerNationSlot, 4);
+  stream->ReadBytes(&this->serializedField8c, 4);
 
   if (List_GetCountSlot48(this->trackedObjectList) != 0) {
     static_cast<TPtrList*>(this->trackedObjectList)->Call54();
   }
-  List_ReadFromStreamSlot18(this->trackedObjectList, stream);
+  List_ReadFromStreamSlot18(this->trackedObjectList, streamState);
 
-  int orderCount = Stream_ReadShortAtSlot4C(stream);
+  int orderCount = stream->ReadShort();
   for (; orderCount > 0; --orderCount) {
     TCivWorkOrderState* civOrder = new TCivWorkOrderState();
     civOrder->InitializeCivWorkOrderState(0, -1, this->nationSlot);
@@ -1593,7 +1566,8 @@ void TGreatPower::MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short 
     char adjacencyBits = g_pGlobalMapState->terrainStateTable[regionId].adjacencyBits06;
     for (short direction = 0; direction < 6; ++direction) {
       if ((adjacencyBits & (1 << direction)) != 0) {
-        short neighbor = GetWrappedHexNeighborTileIndexByDirection(regionId, direction);
+        short neighbor =
+            TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(regionId, direction);
         if (static_cast<short>(g_pGlobalMapState->terrainStateTable[neighbor].ownerNationTag04) ==
                 this->nationSlot &&
             regionMap[neighbor] == 0) {
@@ -2918,14 +2892,14 @@ char TGreatPower::AnyNeedCurrentExceedsTargetWhenCapMismatch(void) {
 char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
   if (mode == 0) {
     int nodeContext = this->GetHomeRegionCityRecordIndex();
-    float localScore = ComputeDefendProvinceMissionLocalSupportVectorScore(nodeContext);
-    float crossNationScore = ComputeDefendProvinceMissionCrossNationSupportVectorScore(nodeContext);
+    float localScore = TDefendProvinceMission::ComputeLocalSupportVectorScore(nodeContext);
+    float crossNationScore = TDefendProvinceMission::ComputeCrossNationSupportVectorScore(nodeContext);
     if (localScore < crossNationScore) {
       return 0;
     }
     return 1;
   } else {
-    TZone* portZoneContext = FindFirstPortZoneContextByNation(this->nationSlot);
+    TZone* portZoneContext = TZone::FindFirstPortZoneContextByNation(this->nationSlot);
 
     if (portZoneContext->portZoneEntryCount2c <= 0) {
       void* resizedEntries =
@@ -5512,12 +5486,12 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
 void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
   this->InitializeGreatPowerMinisterRosterAndScenarioState(arg1);
 
-  TStreamView* stream = reinterpret_cast<TStreamView*>(arg1);
-  stream->ReadAt3C(this->actionMetricByQuarter, 0x0C);
+  TStream* stream = reinterpret_cast<TStream*>(arg1);
+  stream->ReadBytes(this->actionMetricByQuarter, 0x0C);
   SwapShortArrayBytes(this->actionMetricByQuarter, 6);
 
-  stream->ReadAt3C(this->mapNodeStateFlags, 0x180);
-  stream->ReadAt3C(this->portZoneStateFlags, 0x70);
+  stream->ReadBytes(this->mapNodeStateFlags, 0x180);
+  stream->ReadBytes(this->portZoneStateFlags, 0x70);
 
   TPtrList* missionQueue = this->missionQueue;
   if (missionQueue->GetCountSlot48() != 0) {
@@ -5526,10 +5500,10 @@ void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
   missionQueue->Call18(arg1);
 
   int missionContext = 0;
-  stream->ReadAt3C(&missionContext, 4);
+  stream->ReadBytes(&missionContext, 4);
   for (int queueIndex = 1; queueIndex < 0x71; ++queueIndex) {
     missionContext = 0;
-    char hasMission = stream->ReadByteB0(&missionContext);
+    char hasMission = stream->ReadByte(&missionContext);
     if (hasMission != 0) {
       missionQueue->AddTail30(reinterpret_cast<void*>(missionContext));
     }
@@ -5668,7 +5642,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
   }
 
   void* missionObj =
-      CreateMissionObjectByKindAndNodeContext(this->nationSlot, missionKind, arg2, arg3, arg4);
+      TMission::CreateByKindAndNodeContext(this->nationSlot, missionKind, arg2, arg3, arg4);
   if (missionObj == 0) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag(kUCountryAutoCppPath, kAssertLineQueueMapAction);

@@ -34,6 +34,15 @@ void TControl::InvalidateCityDialogRectRegion(struct RECT* rect, int flag) {
                                                                                               flag);
 }
 
+// TEMP: stub body until 0x0048e850 is ported onto TControl.
+void TControl::DispatchPictureResourceCommand(void* eventType, void* eventSender, void* eventDataA,
+                                              void* eventDataB) {
+  (void)eventType;
+  (void)eventSender;
+  (void)eventDataA;
+  (void)eventDataB;
+}
+
 // Dummy methods
 void TControl::vmethod_0104() {}
 void TControl::SwitchTab(int arg1, int arg2, int arg3) {}

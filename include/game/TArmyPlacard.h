@@ -13,4 +13,5 @@ public:
 
   void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bc20();
   void RenderArmyPlacardWithShadow();
+  void RenderRightAlignedNumericOverlayWithShadow();
 };

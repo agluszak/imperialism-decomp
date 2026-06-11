@@ -1,8 +1,10 @@
 #include "game/TTextList.h"
+#include "game/CString.h"
 #include "game/TControl.h"
 #include "game/generated/vcall_facades.h"
 #include "game/TTextList_Virtuals.h"
 #include "game/UiRuntimeContext.h"
+#include "game/trade_quickdraw.h"
 #include "game/win_rect.h"
 
 #if defined(_MSC_VER)
@@ -15,13 +17,10 @@ char g_vtblTTextList = 0;
 }
 
 undefined4 thunk_MapUiThemeCodeToStyleFlags(void);
-undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 undefined4 thunk_FillRectWithQuickDrawBrushAndContextOffset(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
-undefined4 SetQuickDrawColorAndSyncGlobals(void);
-undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
-
+undefined4 SetQuickDrawColorAndSyncGlobals(void);
 // FUNCTION: IMPERIALISM 0x0057ab70
 TTextList* TTextList::CreateTTextListInstance() {
   return new TTextList();
@@ -36,13 +35,14 @@ void* TTextList::GetTTextListClassNamePointer() {
 void TTextList::RenderTextListRowsWithSelectionHighlight() {
   int styleFlags1 = 0;
   int styleFlags2 = 0;
-  reinterpret_cast<void(__cdecl*)(int, int*)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6C,
-                                                                                &styleFlags1);
-  reinterpret_cast<void(__cdecl*)(int, int*)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6A,
-                                                                                &styleFlags2);
+  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6C,
+                                                                                reinterpret_cast<int>(
+                                                                                    &styleFlags1));
+  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6A,
+                                                                                reinterpret_cast<int>(
+                                                                                    &styleFlags2));
 
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(
-      ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0, 0x0e, 0x2b6c);
+  reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
 
   short currentY = 0;
   if (itemHeight + currentY < field38) {
@@ -66,23 +66,20 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
             &rect);
       }
 
-      int textWidth = 0;
-      reinterpret_cast<int(__cdecl*)(CString*, int*)>(
-          thunk_MeasureTextExtentWithCachedQuickDrawStyle)(&tempString, &textWidth);
-
+      short textWidth = static_cast<short>(
+          reinterpret_cast<int(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
       short textX = static_cast<short>(field34 / 2) - static_cast<short>(textWidth / 2);
+      int* tempStringRef = reinterpret_cast<int*>(&tempString);
 
       reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(styleFlags2);
-      reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
-          textX + 1, currentY + 12);
-      reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-          &tempString, 0);
+      SetQuickDrawTextOrigin(static_cast<short>(textX + 1), static_cast<short>(currentY + 12));
+      reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
+          tempStringRef);
 
       reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawColorAndSyncGlobals)(styleFlags1);
-      reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(
-          textX, currentY + 11);
-      reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
-          &tempString, 0);
+      SetQuickDrawTextOrigin(textX, static_cast<short>(currentY + 11));
+      reinterpret_cast<void(__cdecl*)(int*)>(thunk_DrawTextWithCachedQuickDrawStyleState)(
+          tempStringRef);
 
       currentY += itemHeight;
       idx++;

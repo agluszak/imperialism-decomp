@@ -16,4 +16,5 @@ public:
   void RefreshCivilianStackButtonsForTile(short tileIndex);
   void HandleCivilianMapCommandPanelAction(int eventClass, TPanelEventPayload* eventPayload,
                                            int eventFlags);
+  void CycleMapInteractionSelectionAfterHandledClick();
 };

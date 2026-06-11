@@ -71,6 +71,4 @@ public:
 
   void RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                          short nOrderOwnerNationId, short arg3);
-  void thunk_RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
-                                               short nOrderOwnerNationId, short arg3);
 };

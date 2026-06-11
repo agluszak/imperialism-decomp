@@ -1,6 +1,5 @@
 #include "game/TGreatPower.h"
 #include "game/TStream.h"
-#include "game/TStreamView.h"
 #include "game/TMilitaryUnitOrderState.h"
 #include "game/diplomacy_globals.h"
 
@@ -18,25 +17,24 @@ static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
 // FUNCTION: IMPERIALISM 0x004d6bf0
 void TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(int streamState) {
   TStream* stream = reinterpret_cast<TStream*>(streamState);
-  TStreamView* streamView = reinterpret_cast<TStreamView*>(streamState);
-  stream->dummy_slot_70();
-  stream->dummy_slot_70();
+  stream->streamSlot70();
+  stream->streamSlot70();
 
   CString* nationNameSource = reinterpret_cast<CString*>(
       reinterpret_cast<char*>(g_pLocalizationTable) + this->nationSlot * 4 + 0x7c);
   this->identitySharedString1.AssignFromPtr(*nationNameSource);
-  streamView->ReadAt3C(&this->identitySharedString0, 4);
+  stream->ReadBytes(&this->identitySharedString0, 4);
 
-  streamView->ReadAt3C(&this->nationSlot, 2);
-  streamView->ReadAt3C(&this->encodedNationSlot, 2);
-  streamView->ReadAt3C(this->unitNameOrdinalByType, 0x3c);
+  stream->ReadBytes(&this->nationSlot, 2);
+  stream->ReadBytes(&this->encodedNationSlot, 2);
+  stream->ReadBytes(this->unitNameOrdinalByType, 0x3c);
   SwapAdjacentBytesInShortArray(this->unitNameOrdinalByType, 0x1e);
 
-  streamView->ReadAt3C(&this->unitNameCounter84, 2);
-  streamView->ReadAt3C(&this->treasuryValue10, 4);
-  streamView->ReadAt3C(&this->ownerNationSlot, 4);
-  streamView->ReadAt3C(&this->serializedField8c, 4);
-  streamView->ReadAt3C(this->needLevelByNation, 0x2e);
+  stream->ReadBytes(&this->unitNameCounter84, 2);
+  stream->ReadBytes(&this->treasuryValue10, 4);
+  stream->ReadBytes(&this->ownerNationSlot, 4);
+  stream->ReadBytes(&this->serializedField8c, 4);
+  stream->ReadBytes(this->needLevelByNation, 0x2e);
   SwapAdjacentBytesInShortArray(this->needLevelByNation, 0x17);
 
   if (this->militaryUnitList44->GetCountSlot48() != 0) {
@@ -45,7 +43,7 @@ void TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(int streamState
   this->militaryUnitList44->Call18(streamState);
 
   int recruitCount = 0;
-  streamView->ReadAt3C(&recruitCount, 4);
+  stream->ReadBytes(&recruitCount, 4);
   int recruitIndex = 1;
   if (recruitCount > 0) {
     do {
@@ -65,12 +63,12 @@ void TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(int streamState
   }
   this->ownedRegionList->VTableSlot20();
   int regionDeserializeCount = 0;
-  streamView->ReadAt3C(&regionDeserializeCount, 4);
+  stream->ReadBytes(&regionDeserializeCount, 4);
   int regionIndex = 1;
   if (regionDeserializeCount > 0) {
     do {
       int entryValue = 0;
-      streamView->ReadAt3C(&entryValue, 4);
+      stream->ReadBytes(&entryValue, 4);
       this->ownedRegionList->ResetSlot14(stream);
       regionIndex = regionIndex + 1;
     } while (regionIndex <= regionDeserializeCount);

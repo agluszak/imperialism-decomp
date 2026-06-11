@@ -5,17 +5,18 @@ Queue_ApplyMessageSlot14,828,TPtrList,ResetSlot14(void* message),VCall_Queue_App
 Queue_GetCountSlot48,833,TPtrList,GetCountSlot48(),VCall_Queue_RefreshSlot48,P1,done
 Queue_ReadIndexSlot4C,837,TPtrList,GetTrackedEntrySlot4C(int),VCall_Queue_ReadIndexSlot4C,P1,done
 GetCityBuildingProductionValueBySlot,737,TCity,GetBuildingProductionValueBySlot,,P1,done
-FindFirstPortZoneContextByNation,762,TZone,map_zone_helpers,,P1,done
-GetWrappedHexNeighborTileIndexByDirection,1671,TGlobalMapState,hex_map_helpers,,P1,done
+FindFirstPortZoneContextByNation,762,TZone,TZone.cpp static,,P1,done
+GetWrappedHexNeighborTileIndexByDirection,1671,TGlobalMapState,TGlobalMapState.cpp static,,P1,done
 thunk_DeserializeRecruitScenarioAndInstantiateOrders,1190,TGreatPower,TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders,,P2,done
 TStationedUnitNode,2013,TStationedUnitNode,extract class + GetUnitMovementClassId,,P1,done
 MilitaryUnitEntryView,4796,TMilitaryUnit,typed list node,,P1,done
 AllocateMilitaryUnitOrderObject,REMOVED,TMilitaryUnitOrderState,new TMilitaryUnitOrderState(),,done,done
 InitializeMilitaryRecruitOrder,REMOVED,TMilitaryUnitOrderState,InitializeRecruitOrderState,,done,done
-ComputeDefendProvinceMissionLocalSupportScore,752,TGlobalMapState/TZone,mission_helpers.cpp,,P2,done
-ComputeDefendProvinceMissionCrossNationSupportScore,721,TGlobalMapState/TZone,mission_helpers.cpp,,P2,done
-ComputeNavyOrderScoreForExactSourceNation,772,TGlobalMapState,navy score helper,,P2,pending
-CreateMissionObjectByKindAndNodeContext,804,TMission,thunk wrapper in mission_helpers.h,,P2,deferred
+ComputeDefendProvinceMissionLocalSupportScore,752,TDefendProvinceMission,TDefendProvinceMission.cpp,,P2,done
+ComputeDefendProvinceMissionCrossNationSupportScore,721,TDefendProvinceMission,TDefendProvinceMission.cpp,,P2,done
+ComputeNavyOrderScoreForExactSourceNation,772,TNavyMission,TNavyMission.cpp,,P2,done
+ComputeNavyOrderScoreWithDiplomacyFilter,721,TNavyMission,TNavyMission.cpp,,P2,done
+CreateMissionObjectByKindAndNodeContext,804,TMission,TMission.cpp thunk forward,,P2,deferred
 thunk_ConstructTForeignMinister,REMOVED,TForeignMinister,new TForeignMinister(),,done,done
 thunk_ConstructTDefenseMinister,REMOVED,TDefenseMinister,new TDefenseMinister(),,done,done
 thunk_WrapperFor_thunk_ConstructTMinister,REMOVED,TCityInteriorMinister,new TCityInteriorMinister(),,done,done

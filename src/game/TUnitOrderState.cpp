@@ -24,10 +24,11 @@ struct TUnitOrderOwnerManagerView {
 };
 
 // FUNCTION: IMPERIALISM 0x00402eeb
-void TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
-                                                              short nOrderOwnerNationId,
-                                                              short arg3) {
-  this->RegisterUnitOrderWithOwnerManager(nOrderType, pOwnerContext, nOrderOwnerNationId, arg3);
+void __fastcall thunk_RegisterUnitOrderWithOwnerManager(TUnitOrderState* order, int unusedEdx,
+                                                        short nOrderType, int pOwnerContext,
+                                                        short nOrderOwnerNationId, short arg3) {
+  (void)unusedEdx;
+  order->RegisterUnitOrderWithOwnerManager(nOrderType, pOwnerContext, nOrderOwnerNationId, arg3);
 }
 
 // Original is FPO (frame-pointer omitted); force /Oy to match the esp-relative

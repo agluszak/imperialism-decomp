@@ -22,8 +22,8 @@ char g_pClassDescTFileStream = 0;
 // reporter with the source path and line.
 static __inline void FailNilPointer(int line) {
   GAME_FAIL_NIL_POINTER();
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\McAppStream.cpp", line);
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+      "D:\\Ambit\\McAppStream.cpp", line);
 }
 
 // The backing pointer references a wrapper object whose +4 field holds the

@@ -25,6 +25,3 @@ ASSERT_SIZE(TSortedPtrList, 0x18);
 
 void* __fastcall GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int unusedEdx,
                                                 int oneBasedIndex);
-void __fastcall thunk_ResetPtrListAndShrinkCapacity(TSortedPtrList* self);
-void* __fastcall thunk_GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int unusedEdx,
-                                                      int oneBasedIndex);

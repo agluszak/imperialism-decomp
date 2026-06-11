@@ -7,7 +7,6 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 thunk_DestructEngineerDialogBaseState(void);
 
 namespace {
 

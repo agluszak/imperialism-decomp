@@ -18,6 +18,8 @@ public:
 
   TControl();
   void InvalidateCityDialogRectRegion(struct RECT* rect, int flag);
+  void DispatchPictureResourceCommand(void* eventType, void* eventSender, void* eventDataA,
+                                      void* eventDataB);
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
   void WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
       int* cursorPoint, int hitArg);

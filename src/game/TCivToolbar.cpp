@@ -19,12 +19,12 @@ undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 #define GAME_ASSERT(cond, line)                                                                    \
   if (!(cond)) {                                                                                   \
     GAME_FAIL_NIL_POINTER();                                                                       \
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(                                            \
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp",   \
-                                                            line);                                 \
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(                                           \
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(                                         \
+        "D:\\Ambit\\Cross\\USmallViews.cpp", line);                                                \
   }
 
-undefined4 thunk_ShowCivilianLedgerDialogAndSelectUnit(void);
+undefined4 ShowCivilianLedgerDialogAndSelectUnit(void);
 
 namespace {
 
@@ -218,7 +218,7 @@ void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass,
       if (controlTag == kTagGarrison) {
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
-          thunk_ShowCivilianLedgerDialogAndSelectUnit();
+          ShowCivilianLedgerDialogAndSelectUnit();
           this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
           return;
         }
@@ -231,4 +231,14 @@ void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass,
     }
   }
   this->DispatchPanelControlEvent(eventClass, eventPayload, eventFlags);
+}
+
+undefined4 CycleMapInteractionSelectionAfterHandledClick(void);
+
+void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick() {
+  typedef void (*CycleMapInteractionDispatch)(TCivToolbar*);
+  CycleMapInteractionDispatch dispatch =
+      reinterpret_cast<CycleMapInteractionDispatch>(
+          ::CycleMapInteractionSelectionAfterHandledClick);
+  dispatch(this);
 }
