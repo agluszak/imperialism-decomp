@@ -20,6 +20,10 @@ extern int g_McAppUiDrawGate_006A1AF8;
 // Gate checked before the invalidation-flag assert/log call in the child-detach path.
 extern int g_McAppUiFlag_006A1AE0;
 
+// Further invalidation-flag assert gates (McAppUI.cpp lines 1914 / 1922).
+extern int g_McAppUiFlag_006A1AFC;
+extern int g_McAppUiFlag_006A1B00;
+
 // Source-file path string ("D:\\Ambit\\McAppUI.cpp") passed with a line number to the
 // UI invalidation-flag assert/log helper.
 extern char g_szMcAppUiSourcePath_006950B0[];

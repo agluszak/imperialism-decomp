@@ -16,6 +16,10 @@
 extern "C" int __stdcall ValidateRect(void* hWnd, const struct RECT* rect);
 extern "C" int __stdcall Rectangle(void* hdc, int left, int top, int right, int bottom);
 extern "C" __declspec(dllimport) int __stdcall PtInRect(const struct RECT* rect, Point32 pt);
+extern "C" __declspec(dllimport) int __stdcall UnionRect(struct RECT* dest, const struct RECT* src1,
+                                                         const struct RECT* src2);
+extern "C" __declspec(dllimport) int __stdcall InvalidateRect(void* hWnd, const struct RECT* rect,
+                                                              int erase);
 
 // Generic thunk/hook decls kept in repo form (rule 9): typed function-pointer casts at
 // the callsite rather than changing the thunk declaration signature.
@@ -258,7 +262,27 @@ void TView::CaptureLayoutF0(int* buffer, int modeFlag) {
     reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(0, 0);
   }
 }
-void TView::CaptureLayout(int* buffer, int modeFlag) {}
+// Update the cached position (field34/field38) to buffer's point. When modeFlag is set,
+// capture the control rect before and after the move and invalidate their union.
+// FUNCTION: IMPERIALISM 0x0048b3f0
+void TView::CaptureLayout(int* buffer, int modeFlag) {
+  if (modeFlag != 0) {
+    RECT oldRect;
+    vmethod_0087(reinterpret_cast<int*>(&oldRect));
+    field34 = buffer[0];
+    field38 = buffer[1];
+    RECT newRect;
+    vmethod_0087(reinterpret_cast<int*>(&newRect));
+    RECT unionRect;
+    UnionRect(&unionRect, &newRect, &oldRect);
+    if (g_McAppUiActiveFlag_006950AC != 0) {
+      InvalidateRect(nativeWindow50->hwnd, &unionRect, 0);
+    }
+  } else {
+    field34 = buffer[0];
+    field38 = buffer[1];
+  }
+}
 char TView::Refresh() {
   return 0;
 }
@@ -363,7 +387,7 @@ int* TView::GetCachedPosPoint(int* outPoint) {
   outPoint[1] = posY;
   return outPoint;
 }
-void TView::vmethod_0087() {}
+void TView::vmethod_0087(int* rectOut) {}
 
 // Build a rect from the slot-0x56 cached position (top-left) plus the cached size held
 // in field34/field38.
@@ -488,8 +512,23 @@ void TView::DrawRectangleInCurrentUiContext(int* rect) {
   int context = NoOpQuickDrawContextSelectionHook();
   Rectangle(*reinterpret_cast<void**>(context + 4), rect[0], rect[1], rect[2], rect[3]);
 }
-void TView::vmethod_0101() {}
-void TView::vmethod_0102() {}
+// FUNCTION: IMPERIALISM 0x0048c7a0
+void TView::AssertMcAppUiLine1914() {
+  if (g_McAppUiFlag_006A1AFC == 0) {
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+        g_szMcAppUiSourcePath_006950B0, 0x77a);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0048c7d0
+void TView::AssertMcAppUiLine1922() {
+  if (g_McAppUiFlag_006A1B00 == 0) {
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+        g_szMcAppUiSourcePath_006950B0, 0x782);
+  }
+  int rect[4];
+  vmethod_0087(rect);
+}
 // Translate a point out of this view's local space and forward it to the owner's
 // matching slot (recurses up the owner chain).
 // FUNCTION: IMPERIALISM 0x0048bac0

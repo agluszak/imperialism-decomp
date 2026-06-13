@@ -122,7 +122,7 @@ public:
   virtual void AddControlPosToPoint(int x, int y, int* outPoint);
   virtual void OffsetRectByCachedPos(struct RECT* inRect, struct RECT* outRect);
   virtual int* GetCachedPosPoint(int* outPoint);
-  virtual void vmethod_0087();
+  virtual void vmethod_0087(int* rectOut);
   virtual struct RECT BuildRectFromSlot158();
   virtual void vmethod_0089();
   virtual void ApplyBounds(int* boundsBuffer, int modeFlag);
@@ -136,8 +136,8 @@ public:
   virtual void vmethod_0098(int arg);
   virtual void vmethod_0099(int arg1, int arg2);
   virtual void DrawRectangleInCurrentUiContext(int* rect);
-  virtual void vmethod_0101();
-  virtual void vmethod_0102();
+  virtual void AssertMcAppUiLine1914();
+  virtual void AssertMcAppUiLine1922();
   virtual void SubtractPosAndDispatchToOwnerSlot19C(int* point);
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ (formerly declared here
   // as vmethod_0104..0110, SwitchTab, GetBoolSlot1BC) belong to the sibling branches

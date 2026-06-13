@@ -17,6 +17,8 @@ extern "C" {
 int g_McAppUiActiveFlag_006950AC = 0;
 int g_McAppUiDrawGate_006A1AF8 = 0;
 int g_McAppUiFlag_006A1AE0 = 0;
+int g_McAppUiFlag_006A1AFC = 0;
+int g_McAppUiFlag_006A1B00 = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a

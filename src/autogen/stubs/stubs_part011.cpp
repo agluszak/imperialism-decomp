@@ -123,22 +123,6 @@ undefined4 DispatchUiMouseEventToChildrenOrSelf_Impl(void)
   return 0;
 }
 
-// ghidra_name TControl::AssertMcAppUILine1914
-// ghidra_proto undefined AssertMcAppUILine1914()
-// FUNCTION: IMPERIALISM 0x0048c7a0
-undefined4 AssertMcAppUILine1914(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::AssertMcAppUILine1922
-// ghidra_proto undefined AssertMcAppUILine1922()
-// FUNCTION: IMPERIALISM 0x0048c7d0
-undefined4 AssertMcAppUILine1922(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::DispatchVfuncA0ToLinkedChildListSlot44
 // ghidra_proto undefined DispatchVfuncA0ToLinkedChildListSlot44()
 // FUNCTION: IMPERIALISM 0x0048c890

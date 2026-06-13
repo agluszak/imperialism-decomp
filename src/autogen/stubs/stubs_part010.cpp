@@ -3371,14 +3371,6 @@ undefined4 WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0(void)
   return 0;
 }
 
-// ghidra_name TControl::UpdateControlPositionAndInvalidateUnionRect
-// ghidra_proto undefined UpdateControlPositionAndInvalidateUnionRect()
-// FUNCTION: IMPERIALISM 0x0048b3f0
-undefined4 UpdateControlPositionAndInvalidateUnionRect(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::InvalidateOffsetRegionUsingChildClipRect
 // ghidra_proto undefined InvalidateOffsetRegionUsingChildClipRect()
 // FUNCTION: IMPERIALISM 0x0048b4b0
