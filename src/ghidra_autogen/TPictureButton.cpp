@@ -28,27 +28,27 @@
    Returns:
    - this pointer. */
 
-undefined4 * __fastcall TPictureButton::TPictureButton(undefined4 *param_1)
+TView * __fastcall TPictureButton::TPictureButton(TView *param_1)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState();
-  param_1[0x18] = 1;
-  *(undefined1 *)(param_1 + 0x19) = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
-  param_1[0x1c] = 0;
-  param_1[0x1d] = 0;
-  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
-  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1[1].vftable = (void *)0x1;
+  *(undefined1 *)&param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
+  param_1[1].field10 = 0;
+  param_1[1].field14 = 0;
+  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
+  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  param_1[0x22] = 0;
-  param_1[0x23] = 0;
-  *(undefined2 *)(param_1 + 0x21) = 0xffff;
-  *param_1 = &PTR_LAB_0064a930;
-  param_1[0x18] = 10;
-  *(ushort *)(param_1 + 0x20) = uVar1;
+  param_1[1].ownerOffsetY = 0;
+  param_1[1].field2c = 0;
+  *(undefined2 *)&param_1[1].ownerOffsetX = 0xffff;
+  param_1->vftable = &PTR_LAB_0064a930;
+  param_1[1].vftable = (void *)0xa;
+  *(ushort *)&param_1[1].ownerContext = uVar1;
   return param_1;
 }
 

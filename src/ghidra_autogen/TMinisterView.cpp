@@ -7,10 +7,10 @@
 // GHIDRA_NAME TMinisterView::CreateTMinisterViewInstance
 // GHIDRA_PROTO undefined CreateTMinisterViewInstance()
 
-undefined4 * TMinisterView::CreateTMinisterViewInstance(void)
+TView * TMinisterView::CreateTMinisterViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,17 +20,17 @@ undefined4 * TMinisterView::CreateTMinisterViewInstance(void)
   puStack_8 = &LAB_00632a0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_00655100;
-    puVar1[0x18] = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_00655100;
+    this[1].vftable = (void *)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C40
@@ -47,12 +47,12 @@ undefined ** TMinisterView::GetTMinisterViewClassNamePointer(void)
 // GHIDRA_NAME TMinisterView::ConstructTMinisterViewBaseState
 // GHIDRA_PROTO undefined ConstructTMinisterViewBaseState()
 
-undefined4 * __fastcall TMinisterView::ConstructTMinisterViewBaseState(undefined4 *param_1)
+TView * __fastcall TMinisterView::ConstructTMinisterViewBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_00655100;
-  param_1[0x18] = 0;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_00655100;
+  param_1[1].vftable = (void *)0x0;
   return param_1;
 }
 
@@ -60,11 +60,10 @@ undefined4 * __fastcall TMinisterView::ConstructTMinisterViewBaseState(undefined
 // GHIDRA_NAME TMinisterView::DestructTMinisterViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTMinisterViewAndMaybeFree()
 
-undefined4 __thiscall
-TMinisterView::DestructTMinisterViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TMinisterView::DestructTMinisterViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

@@ -7,10 +7,10 @@
 // GHIDRA_NAME TIndustryAmtBar::CreateTIndustryAmtBarInstance
 // GHIDRA_PROTO undefined CreateTIndustryAmtBarInstance()
 
-undefined4 * TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
+TView * TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,20 +20,20 @@ undefined4 * TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
   puStack_8 = &LAB_0063795a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x6c);
+  this = (TView *)AllocateWithFallbackHandler(0x6c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *(undefined2 *)(puVar1 + 0x18) = 0;
-    *(undefined2 *)((int)puVar1 + 0x62) = 0;
-    *(undefined2 *)(puVar1 + 0x19) = 0;
-    *(undefined2 *)((int)puVar1 + 0x66) = 0;
-    *puVar1 = &PTR_LAB_00666110;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    *(undefined2 *)&this[1].vftable = 0;
+    *(undefined2 *)((int)&this[1].vftable + 2) = 0;
+    *(undefined2 *)&this[1].field04 = 0;
+    *(undefined2 *)((int)&this[1].field04 + 2) = 0;
+    this->vftable = &PTR_LAB_00666110;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005891B0
@@ -50,15 +50,15 @@ undefined ** TIndustryAmtBar::GetTIndustryAmtBarClassNamePointer(void)
 // GHIDRA_NAME TIndustryAmtBar::ConstructBaseState
 // GHIDRA_PROTO undefined ConstructBaseState()
 
-undefined4 * __fastcall TIndustryAmtBar::ConstructBaseState(undefined4 *param_1)
+TView * __fastcall TIndustryAmtBar::ConstructBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_00666110;
-  *(undefined2 *)(param_1 + 0x18) = 0;
-  *(undefined2 *)((int)param_1 + 0x62) = 0;
-  *(undefined2 *)(param_1 + 0x19) = 0;
-  *(undefined2 *)((int)param_1 + 0x66) = 0;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_00666110;
+  *(undefined2 *)&param_1[1].vftable = 0;
+  *(undefined2 *)((int)&param_1[1].vftable + 2) = 0;
+  *(undefined2 *)&param_1[1].field04 = 0;
+  *(undefined2 *)((int)&param_1[1].field04 + 2) = 0;
   return param_1;
 }
 
@@ -66,10 +66,10 @@ undefined4 * __fastcall TIndustryAmtBar::ConstructBaseState(undefined4 *param_1)
 // GHIDRA_NAME TIndustryAmtBar::DestructAndMaybeFree
 // GHIDRA_PROTO undefined DestructAndMaybeFree()
 
-undefined4 __thiscall TIndustryAmtBar::DestructAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TIndustryAmtBar::DestructAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState();
+  TView::thunk_DestructTViewBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

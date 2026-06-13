@@ -94,10 +94,10 @@ undefined4 * __fastcall TAmtBarCluster::ConstructTradeMoveControlPanelBasic(unde
 // GHIDRA_NAME TAmtBarCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-undefined4 __thiscall TAmtBarCluster::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TView * __thiscall TAmtBarCluster::_scalar_deleting_destructor_(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState();
+  TView::thunk_DestructTViewBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

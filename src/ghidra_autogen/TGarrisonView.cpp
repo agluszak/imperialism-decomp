@@ -61,11 +61,10 @@ undefined4 * __fastcall TGarrisonView::ConstructTGarrisonViewBaseState(undefined
 // GHIDRA_NAME TGarrisonView::DestructTGarrisonViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTGarrisonViewAndMaybeFree()
 
-undefined4 __thiscall
-TGarrisonView::DestructTGarrisonViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TGarrisonView::DestructTGarrisonViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

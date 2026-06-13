@@ -102,6 +102,12 @@ struct CityDialogController {
     int extendedField8C;
 };
 
+typedef struct CString CString, *PCString;
+
+struct CString {
+    int data_ptr;
+};
+
 typedef struct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct, *PIMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct;
 
 struct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct {
@@ -246,6 +252,15 @@ typedef struct TDeluxeText TDeluxeText, *PTDeluxeText;
 struct TDeluxeText { // PlaceHolder Class Structure
 };
 
+typedef struct TEventHandler TEventHandler, *PTEventHandler;
+
+struct TEventHandler {
+    void *vftable;
+    int field04;
+    undefined4 padding_08_to_0b;
+    int field0c;
+};
+
 typedef struct THQButton THQButton, *PTHQButton;
 
 struct THQButton { // PlaceHolder Class Structure
@@ -343,7 +358,34 @@ struct TUnitOrder { // PlaceHolder Class Structure
 
 typedef struct TView TView, *PTView;
 
-struct TView { // PlaceHolder Class Structure
+struct TView {
+    void *vftable;
+    int field04; // TEventHandler
+    undefined4 padding_08_to_0b; // TEventHandler
+    int field0c; // TEventHandler
+    int field10;
+    int field14;
+    int field18;
+    int controlTag;
+    struct TView *ownerContext;
+    int ownerOffsetX;
+    int ownerOffsetY;
+    int field2c;
+    int field30;
+    int field34;
+    int field38;
+    int field3c;
+    undefined4 padding_40_to_43;
+    int field44;
+    int field48;
+    byte flag4c;
+    byte flag4d;
+    short field4e;
+    int field50;
+    short field54;
+    short padding_56_to_57;
+    struct CString sharedStringRef;
+    int field5c;
 };
 
 typedef struct TViewMgr TViewMgr, *PTViewMgr;

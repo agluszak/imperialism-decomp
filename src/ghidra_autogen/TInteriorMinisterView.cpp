@@ -119,10 +119,10 @@ TInteriorMinisterView::DispatchEngineerDialogCommandTagsByEventCode
 // GHIDRA_NAME TInteriorMinisterView::CreateTInteriorMinisterViewInstance
 // GHIDRA_PROTO undefined CreateTInteriorMinisterViewInstance()
 
-undefined4 * TInteriorMinisterView::CreateTInteriorMinisterViewInstance(void)
+TView * TInteriorMinisterView::CreateTInteriorMinisterViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -132,17 +132,17 @@ undefined4 * TInteriorMinisterView::CreateTInteriorMinisterViewInstance(void)
   puStack_8 = &LAB_00632a8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    puVar1[0x18] = 0;
-    *puVar1 = &PTR_LAB_00655720;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].vftable = (void *)0x0;
+    this->vftable = &PTR_LAB_00655720;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3670
@@ -159,13 +159,12 @@ undefined ** TInteriorMinisterView::GetTInteriorMinisterViewClassNamePointer(voi
 // GHIDRA_NAME TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState
 // GHIDRA_PROTO undefined ConstructTInteriorMinisterViewBaseState()
 
-undefined4 * __fastcall
-TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(undefined4 *param_1)
+TView * __fastcall TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  param_1[0x18] = 0;
-  *param_1 = &PTR_LAB_00655720;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1[1].vftable = (void *)0x0;
+  param_1->vftable = &PTR_LAB_00655720;
   return param_1;
 }
 
@@ -173,11 +172,11 @@ TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(undefined4 *param
 // GHIDRA_NAME TInteriorMinisterView::DestructTInteriorMinisterViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTInteriorMinisterViewAndMaybeFree()
 
-undefined4 __thiscall
-TInteriorMinisterView::DestructTInteriorMinisterViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall
+TInteriorMinisterView::DestructTInteriorMinisterViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

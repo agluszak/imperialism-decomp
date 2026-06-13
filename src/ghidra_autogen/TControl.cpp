@@ -169,23 +169,23 @@ TControl::thunk_DispatchPictureResourceCommand
 // GHIDRA_NAME TControl::thunk_ConstructUiCommandTagResourceEntryBase
 // GHIDRA_PROTO undefined thunk_ConstructUiCommandTagResourceEntryBase()
 
-undefined4 * __fastcall TControl::thunk_ConstructUiCommandTagResourceEntryBase(undefined4 *param_1)
+TView * __fastcall TControl::thunk_ConstructUiCommandTagResourceEntryBase(TView *param_1)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState();
-  param_1[0x18] = 1;
-  *(undefined1 *)(param_1 + 0x19) = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
-  param_1[0x1c] = 0;
-  param_1[0x1d] = 0;
-  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
-  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1[1].vftable = (void *)0x1;
+  *(undefined1 *)&param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
+  param_1[1].field10 = 0;
+  param_1[1].field14 = 0;
+  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
+  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  *param_1 = &_vftable_;
-  *(ushort *)(param_1 + 0x20) = uVar1;
+  param_1->vftable = &_vftable_;
+  *(ushort *)&param_1[1].ownerContext = uVar1;
   return param_1;
 }
 
@@ -2240,12 +2240,12 @@ void TControl::CtrlSlot99_NoOp_Impl(void)
 /* Constructs base turn-event UI entry object (vtable PTR_LAB_00649C60) with default fields and
    label storage for dispatcher-created event packets. */
 
-undefined4 * __fastcall TControl::ConstructTurnEventUiEntryBase(undefined4 *param_1)
+TView * __fastcall TControl::ConstructTurnEventUiEntryBase(TView *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
   int local_14;
-  undefined4 *local_10;
+  TView *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -2255,21 +2255,21 @@ undefined4 * __fastcall TControl::ConstructTurnEventUiEntryBase(undefined4 *para
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = param_1;
-  TView::thunk_ConstructTViewBaseState();
+  TView::thunk_ConstructTViewBaseState(param_1);
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  param_1[0x19] = 0;
-  param_1[0x1a] = 0;
+  param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
   local_4._0_1_ = 1;
-  *param_1 = &PTR_LAB_00649c60;
-  *(undefined2 *)(param_1 + 0x18) = 0xffff;
+  param_1->vftable = &PTR_LAB_00649c60;
+  *(undefined2 *)&param_1[1].vftable = 0xffff;
   TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
   local_4._0_1_ = 2;
-  AssignFromPtr(param_1 + 0x1b,&local_14);
+  AssignFromPtr(&param_1[1].field0c,&local_14);
   local_4 = CONCAT31(local_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  *(undefined2 *)(param_1 + 0x1c) = 1;
-  param_1[1] = 0;
+  *(undefined2 *)&param_1[1].field10 = 1;
+  param_1->field04 = 0;
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -2301,7 +2301,7 @@ undefined4 * __fastcall TControl::ConstructTurnEventUiEntryBase(undefined4 *para
    Returns:
    - this pointer. */
 
-undefined4 * __fastcall TControl::ConstructUiWindowResourceEntryBase(undefined4 *param_1)
+TView * __fastcall TControl::ConstructUiWindowResourceEntryBase(TView *param_1)
 
 {
   int iVar1;
@@ -2317,11 +2317,11 @@ undefined4 * __fastcall TControl::ConstructUiWindowResourceEntryBase(undefined4 
   puStack_8 = &LAB_0062ede3;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructTViewBaseState();
+  TView::thunk_ConstructTViewBaseState(param_1);
   local_4 = 0;
   TDialogBehavior::ConstructTDialogBehaviorBaseState();
-  param_1[0x26] = 0;
-  *param_1 = &PTR_LAB_00649e58;
+  param_1[1].field38 = 0;
+  param_1->vftable = &PTR_LAB_00649e58;
   iVar1 = (int)DAT_006a1a44;
   local_4 = CONCAT31(local_4._1_3_,1);
   piVar4 = DAT_006a1a50;
@@ -2354,8 +2354,8 @@ undefined4 * __fastcall TControl::ConstructUiWindowResourceEntryBase(undefined4 
   DAT_006a1a48 = piVar2;
   DAT_006a1a44 = piVar4;
   thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
-  param_1[0x1f] = param_1;
-  param_1[0x19] = param_1;
+  param_1[1].controlTag = (int)param_1;
+  param_1[1].field04 = (int)param_1;
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -2364,11 +2364,11 @@ undefined4 * __fastcall TControl::ConstructUiWindowResourceEntryBase(undefined4 
 // GHIDRA_NAME TControl::CreateTControlInstance
 // GHIDRA_PROTO undefined CreateTControlInstance()
 
-undefined4 * TControl::CreateTControlInstance(void)
+TView * TControl::CreateTControlInstance(void)
 
 {
   ushort uVar1;
-  undefined4 *puVar2;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -2378,26 +2378,26 @@ undefined4 * TControl::CreateTControlInstance(void)
   puStack_8 = &LAB_0062ee6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    puVar2[0x18] = 1;
-    *(undefined1 *)(puVar2 + 0x19) = 0;
-    puVar2[0x1a] = 0;
-    puVar2[0x1b] = 0;
-    puVar2[0x1c] = 0;
-    puVar2[0x1d] = 0;
-    puVar2[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar2[0x1f] = g_nUiResourceEntryDefaultParam1;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].vftable = (void *)0x1;
+    *(undefined1 *)&this[1].field04 = 0;
+    this[1].padding_08_to_0b = 0;
+    this[1].field0c = 0;
+    this[1].field10 = 0;
+    this[1].field14 = 0;
+    this[1].field18 = g_nUiResourceEntryDefaultParam0;
+    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    *puVar2 = &_vftable_;
-    *(ushort *)(puVar2 + 0x20) = uVar1;
+    this->vftable = &_vftable_;
+    *(ushort *)&this[1].ownerContext = uVar1;
     *unaff_FS_OFFSET = local_c;
-    return puVar2;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048E500
@@ -2421,23 +2421,23 @@ undefined ** TControl::GetTControlClassNamePointer(void)
    (e.g., map/load/quit/join/name/auto/curs/plat), indicating generic command-tag resource behavior.
     */
 
-undefined4 * __fastcall TControl::TControl(undefined4 *param_1)
+TView * __fastcall TControl::TControl(TView *param_1)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState();
-  param_1[0x18] = 1;
-  *(undefined1 *)(param_1 + 0x19) = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
-  param_1[0x1c] = 0;
-  param_1[0x1d] = 0;
-  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
-  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1[1].vftable = (void *)0x1;
+  *(undefined1 *)&param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
+  param_1[1].field10 = 0;
+  param_1[1].field14 = 0;
+  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
+  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  *param_1 = &_vftable_;
-  *(ushort *)(param_1 + 0x20) = uVar1;
+  param_1->vftable = &_vftable_;
+  *(ushort *)&param_1[1].ownerContext = uVar1;
   return param_1;
 }
 
@@ -2657,7 +2657,7 @@ void TControl::NoOpUiViewSlotHandler(void)
 /* Window-entry constructor over ConstructUiResourceEntryBase.
    Links node into global tracked-window list and installs vtable PTR_LAB_0064b340. */
 
-undefined4 * __fastcall TControl::ConstructUiWindowResourceEntryType4B340(undefined4 *param_1)
+TView * __fastcall TControl::ConstructUiWindowResourceEntryType4B340(TView *param_1)
 
 {
   int iVar1;
@@ -2673,11 +2673,11 @@ undefined4 * __fastcall TControl::ConstructUiWindowResourceEntryType4B340(undefi
   puStack_8 = &LAB_0062f333;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructTViewBaseState();
+  TView::thunk_ConstructTViewBaseState(param_1);
   local_4 = 0;
   TDialogBehavior::ConstructTDialogBehaviorBaseState();
-  param_1[0x26] = 0;
-  *param_1 = &PTR_LAB_00649e58;
+  param_1[1].field38 = 0;
+  param_1->vftable = &PTR_LAB_00649e58;
   iVar1 = (int)DAT_006a1a44;
   local_4 = CONCAT31(local_4._1_3_,1);
   piVar4 = DAT_006a1a50;
@@ -2710,9 +2710,9 @@ undefined4 * __fastcall TControl::ConstructUiWindowResourceEntryType4B340(undefi
   DAT_006a1a48 = piVar2;
   DAT_006a1a44 = piVar4;
   thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
-  param_1[0x1f] = param_1;
-  param_1[0x19] = param_1;
-  *param_1 = &PTR_LAB_0064b340;
+  param_1[1].controlTag = (int)param_1;
+  param_1[1].field04 = (int)param_1;
+  param_1->vftable = &PTR_LAB_0064b340;
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }

@@ -7,11 +7,11 @@
 // GHIDRA_NAME TCluster::CreateTClusterInstance
 // GHIDRA_PROTO undefined CreateTClusterInstance()
 
-undefined4 * TCluster::CreateTClusterInstance(void)
+TView * TCluster::CreateTClusterInstance(void)
 
 {
   ushort uVar1;
-  undefined4 *puVar2;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,28 +21,28 @@ undefined4 * TCluster::CreateTClusterInstance(void)
   puStack_8 = &LAB_0062f28a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TView *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    puVar2[0x18] = 1;
-    *(undefined1 *)(puVar2 + 0x19) = 0;
-    puVar2[0x1a] = 0;
-    puVar2[0x1b] = 0;
-    puVar2[0x1c] = 0;
-    puVar2[0x1d] = 0;
-    puVar2[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar2[0x1f] = g_nUiResourceEntryDefaultParam1;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].vftable = (void *)0x1;
+    *(undefined1 *)&this[1].field04 = 0;
+    this[1].padding_08_to_0b = 0;
+    this[1].field0c = 0;
+    this[1].field10 = 0;
+    this[1].field14 = 0;
+    this[1].field18 = g_nUiResourceEntryDefaultParam0;
+    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    *puVar2 = &PTR_LAB_0064b0c0;
-    puVar2[0x21] = 0x20202020;
-    *(ushort *)(puVar2 + 0x20) = uVar1;
-    puVar2[0x18] = 5;
+    this->vftable = &PTR_LAB_0064b0c0;
+    this[1].ownerOffsetX = 0x20202020;
+    *(ushort *)&this[1].ownerContext = uVar1;
+    this[1].vftable = (void *)0x5;
     *unaff_FS_OFFSET = local_c;
-    return puVar2;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004913E0
@@ -59,25 +59,25 @@ undefined ** TCluster::GetTClusterClassNamePointer(void)
 // GHIDRA_NAME TCluster::ConstructUiResourceEntryType4B0C0
 // GHIDRA_PROTO undefined ConstructUiResourceEntryType4B0C0()
 
-undefined4 * __fastcall TCluster::ConstructUiResourceEntryType4B0C0(undefined4 *param_1)
+TView * __fastcall TCluster::ConstructUiResourceEntryType4B0C0(TView *param_1)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState();
-  param_1[0x18] = 1;
-  *(undefined1 *)(param_1 + 0x19) = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
-  param_1[0x1c] = 0;
-  param_1[0x1d] = 0;
-  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
-  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1[1].vftable = (void *)0x1;
+  *(undefined1 *)&param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
+  param_1[1].field10 = 0;
+  param_1[1].field14 = 0;
+  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
+  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  *param_1 = &PTR_LAB_0064b0c0;
-  param_1[0x21] = 0x20202020;
-  *(ushort *)(param_1 + 0x20) = uVar1;
-  param_1[0x18] = 5;
+  param_1->vftable = &PTR_LAB_0064b0c0;
+  param_1[1].ownerOffsetX = 0x20202020;
+  *(ushort *)&param_1[1].ownerContext = uVar1;
+  param_1[1].vftable = (void *)0x5;
   return param_1;
 }
 

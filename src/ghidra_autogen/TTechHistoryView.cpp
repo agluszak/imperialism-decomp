@@ -7,11 +7,11 @@
 // GHIDRA_NAME TTechHistoryView::CreateTTechHistoryViewInstance
 // GHIDRA_PROTO undefined CreateTTechHistoryViewInstance()
 
-undefined4 * TTechHistoryView::CreateTTechHistoryViewInstance(void)
+TView * TTechHistoryView::CreateTTechHistoryViewInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,16 +21,16 @@ undefined4 * TTechHistoryView::CreateTTechHistoryViewInstance(void)
   puStack_8 = &LAB_00638b2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_00645ab0;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_00645ab0;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B22A0
@@ -184,11 +184,11 @@ void __fastcall TTechHistoryView::ConstructTTechHistoryViewBaseState(int *param_
 // GHIDRA_NAME TTechHistoryView::DestructTTechHistoryViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTTechHistoryViewAndMaybeFree()
 
-undefined4 * TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
+TView * TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -198,18 +198,18 @@ undefined4 * TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
   puStack_8 = &LAB_00638b82;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &PTR_LAB_0064be28;
+    this->vftable = &PTR_LAB_0064be28;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    *puVar1 = &PTR_LAB_0066b380;
-    puVar2 = puVar1;
+    this->vftable = &PTR_LAB_0066b380;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 

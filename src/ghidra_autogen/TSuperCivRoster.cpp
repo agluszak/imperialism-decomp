@@ -28,7 +28,7 @@ void * __thiscall
 TSuperCivRoster::DestroyCivilianLedgerDialog(TSuperCivRoster *this,byte bFreeMemory)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
   if ((bFreeMemory & 1) != 0) {
     FreeHeapBufferIfNotNull(this);
   }

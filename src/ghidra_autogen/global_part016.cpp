@@ -2323,11 +2323,11 @@ void OrphanRetStub_005b2860(void)
 // GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At005b3300
 // GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At005b3300()
 
-undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At005b3300(void)
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At005b3300(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -2337,30 +2337,30 @@ undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At005b3300(void)
   puStack_8 = &LAB_00638c52;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &PTR_LAB_0064be28;
+    this->vftable = &PTR_LAB_0064be28;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    *puVar1 = &PTR_LAB_0066bb90;
-    puVar2 = puVar1;
+    this->vftable = &PTR_LAB_0066bb90;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B3AE0
 // GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At005b3ae0
 // GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At005b3ae0()
 
-undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At005b3ae0(void)
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At005b3ae0(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -2370,19 +2370,19 @@ undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At005b3ae0(void)
   puStack_8 = &LAB_00638ca2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &PTR_LAB_0064be28;
+    this->vftable = &PTR_LAB_0064be28;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    *puVar1 = &PTR_LAB_0066bd88;
-    puVar2 = puVar1;
+    this->vftable = &PTR_LAB_0066bd88;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4BD0
@@ -4745,7 +4745,7 @@ Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0
 
 {
   undefined2 uVar1;
-  undefined4 *puVar2;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -4755,19 +4755,19 @@ Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0
   puStack_8 = &LAB_0063985a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (puVar2 == (undefined4 *)0x0) {
-    puVar2 = (undefined4 *)0x0;
+  if (this == (TView *)0x0) {
+    this = (TView *)0x0;
   }
   else {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar2 = &PTR_LAB_0066e958;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0066e958;
   }
   uVar1 = *(undefined2 *)(param_1 + 0x10);
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_1 + 8,5,5,0);
-  *(undefined2 *)(puVar2 + 0x18) = uVar1;
+  *(undefined2 *)&this[1].vftable = uVar1;
   *unaff_FS_OFFSET = local_c;
   return;
 }

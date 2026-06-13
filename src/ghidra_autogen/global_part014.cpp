@@ -3946,11 +3946,11 @@ void __thiscall DispatchByEntryTypeToVslots1D0_1D4(int *param_1,int param_2)
 
 /* Allocator wrapper for ConstructUiResourceEntryType419D8 (size 0x70). */
 
-undefined4 * CreateUiPlanetListResourceEntry(void)
+TView * CreateUiPlanetListResourceEntry(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -3960,17 +3960,17 @@ undefined4 * CreateUiPlanetListResourceEntry(void)
   puStack_8 = &LAB_00636a8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x70);
+  this = (TView *)AllocateWithFallbackHandler(0x70);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_006419d8;
-    puVar1[0x19] = 0xffffffff;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_006419d8;
+    this[1].field04 = -1;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578A80
@@ -9654,9 +9654,9 @@ void WrapperFor_ftol_At00583880(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583DB0
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9667,24 +9667,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F90
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9695,24 +9695,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584140
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9723,24 +9723,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584300
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9751,24 +9751,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584D10
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9779,24 +9779,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584E80
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9807,24 +9807,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586070
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9835,24 +9835,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005863E0
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9863,24 +9863,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586690
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9891,24 +9891,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005869A0
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9919,24 +9919,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586D40
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9947,24 +9947,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00587110
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -9975,24 +9975,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005885F0
 // GHIDRA_NAME thunk_DestructTViewBaseState_005885F0
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState_005885F0()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState_005885F0(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState_005885F0(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState_005885F0(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10003,24 +10003,24 @@ void __fastcall TView::thunk_DestructTViewBaseState_005885F0(undefined4 *param_1
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588B50
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10031,24 +10031,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589240
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10059,24 +10059,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589790
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10087,24 +10087,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A000
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10115,24 +10115,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A5F0
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10143,24 +10143,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058ABD0
 // GHIDRA_NAME thunk_DestructTViewBaseState
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10171,24 +10171,24 @@ void __fastcall TView::thunk_DestructTViewBaseState(undefined4 *param_1)
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AF60
 // GHIDRA_NAME thunk_DestructTViewBaseState_0058AF60
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState_0058AF60()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState_0058AF60(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState_0058AF60(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState_0058AF60(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -10199,15 +10199,15 @@ void __fastcall TView::thunk_DestructTViewBaseState_0058AF60(undefined4 *param_1
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

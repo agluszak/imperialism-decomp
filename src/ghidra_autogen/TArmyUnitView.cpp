@@ -7,11 +7,11 @@
 // GHIDRA_NAME TArmyUnitView::CreateTArmyUnitViewInstance
 // GHIDRA_PROTO undefined CreateTArmyUnitViewInstance()
 
-undefined4 * TArmyUnitView::CreateTArmyUnitViewInstance(void)
+TView * TArmyUnitView::CreateTArmyUnitViewInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,16 +21,16 @@ undefined4 * TArmyUnitView::CreateTArmyUnitViewInstance(void)
   puStack_8 = &LAB_0063040a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_0064d100;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0064d100;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A94C0
@@ -47,11 +47,11 @@ undefined ** TArmyUnitView::GetTArmyUnitViewClassNamePointer(void)
 // GHIDRA_NAME TArmyUnitView::ConstructTArmyUnitViewBaseState
 // GHIDRA_PROTO undefined ConstructTArmyUnitViewBaseState()
 
-undefined4 * __fastcall TArmyUnitView::ConstructTArmyUnitViewBaseState(undefined4 *param_1)
+TView * __fastcall TArmyUnitView::ConstructTArmyUnitViewBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_0064d100;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_0064d100;
   return param_1;
 }
 
@@ -59,11 +59,10 @@ undefined4 * __fastcall TArmyUnitView::ConstructTArmyUnitViewBaseState(undefined
 // GHIDRA_NAME TArmyUnitView::DestructTArmyUnitViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTArmyUnitViewAndMaybeFree()
 
-undefined4 __thiscall
-TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

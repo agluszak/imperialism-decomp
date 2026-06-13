@@ -589,12 +589,12 @@ undefined ** TBuildingExpansionView::thunk_GetBuildingExpansionViewClassName(voi
 // GHIDRA_NAME thunk_ConstructUiPlanetListResourceEntry
 // GHIDRA_PROTO undefined thunk_ConstructUiPlanetListResourceEntry()
 
-undefined4 * __fastcall thunk_ConstructUiPlanetListResourceEntry(undefined4 *param_1)
+TView * __fastcall thunk_ConstructUiPlanetListResourceEntry(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_006419d8;
-  param_1[0x19] = 0xffffffff;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_006419d8;
+  param_1[1].field04 = -1;
   return param_1;
 }
 
@@ -1881,14 +1881,14 @@ undefined4 __fastcall thunk_GetMissionOrderBudgetByMode(int param_1)
 // GHIDRA_NAME thunk_ConstructEngineerDialog
 // GHIDRA_PROTO undefined thunk_ConstructEngineerDialog()
 
-undefined4 * __fastcall thunk_ConstructEngineerDialog(undefined4 *param_1)
+TView * __fastcall thunk_ConstructEngineerDialog(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_thunk_GetEngineerDialogClassName_00652d60;
-  param_1[0x18] = 0;
-  param_1[0x19] = 0;
-  param_1[0x1a] = 0;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_thunk_GetEngineerDialogClassName_00652d60;
+  param_1[1].vftable = (void *)0x0;
+  param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
   return param_1;
 }
 
@@ -2316,9 +2316,9 @@ TCivToolbar::thunk_GetTileUnitEntryByOwner(TCivToolbar *this,short nTileIndex,sh
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E65
 // GHIDRA_NAME thunk_DestructTViewBaseState_005885F0
-// GHIDRA_PROTO undefined thunk_DestructTViewBaseState_005885F0()
+// GHIDRA_PROTO void __thiscall thunk_DestructTViewBaseState_005885F0(void)
 
-void __fastcall TView::thunk_DestructTViewBaseState_005885F0(undefined4 *param_1)
+void __thiscall TView::thunk_DestructTViewBaseState_005885F0(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2329,15 +2329,15 @@ void __fastcall TView::thunk_DestructTViewBaseState_005885F0(undefined4 *param_1
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -7609,7 +7609,7 @@ void __thiscall thunk_InitializeUiWindowTraversalState(undefined4 *param_1,char 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004040E8
 // GHIDRA_NAME thunk_CopyCityDialogStateFromSource
-// GHIDRA_PROTO void __thiscall thunk_CopyCityDialogStateFromSource(CityDialogController * pSource)
+// GHIDRA_PROTO void __thiscall thunk_CopyCityDialogStateFromSource(TView * pSource)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void thunk_CopyCityDialogStateFromSource(CityDialogController *this, CityDialogController *pSource)
 // GHIDRA_COMMENT_END
@@ -7617,8 +7617,7 @@ void __thiscall thunk_InitializeUiWindowTraversalState(undefined4 *param_1,char 
 /* Setting prototype: void thunk_CopyCityDialogStateFromSource(CityDialogController *this,
    CityDialogController *pSource) */
 
-void __thiscall
-TView::thunk_CopyCityDialogStateFromSource(TView *this,CityDialogController *pSource)
+void __thiscall TView::thunk_CopyCityDialogStateFromSource(TView *this,TView *pSource)
 
 {
   int iVar1;
@@ -7627,28 +7626,27 @@ TView::thunk_CopyCityDialogStateFromSource(TView *this,CityDialogController *pSo
   undefined4 uVar4;
   int *piVar5;
   
-  *(undefined4 *)(this + 4) = *(undefined4 *)&pSource->flagByte4;
-  *(int *)(this + 8) = pSource->field_08;
-  *(int *)(this + 0x1c) = pSource->field_1C;
-  *(int *)(this + 0xc) = pSource->valueDwordC;
-  *(undefined4 *)(this + 0x20) = 0;
-  iVar1 = pSource->field_50;
-  *(undefined4 *)(this + 0x44) = 0;
-  *(int *)(this + 0x50) = iVar1;
-  *(undefined4 *)(this + 0x48) = 0;
-  *(int *)(this + 0x3c) = pSource->field_3C;
-  *(short *)(this + 0x54) = pSource->resourceShortId54;
-  *(int *)(this + 0x24) = pSource->field_24;
-  *(int *)(this + 0x28) = pSource->field_28;
-  *(int *)(this + 0x2c) = pSource->field_2C;
-  *(int *)(this + 0x30) = pSource->field_30;
-  *(int *)(this + 0x34) = pSource->field_34;
-  *(int *)(this + 0x38) = pSource->field_38;
-  this[0x4c] = (TView)pSource->flagByte4C;
-  this[0x4d] = (TView)pSource->flagByte4D;
-  if ((pSource->pChildDialogList != (void *)0x0) &&
-     (piVar5 = *(int **)((int)pSource->pChildDialogList + 4), piVar5 != (int *)0x0)) {
-    pcVar2 = *(code **)(*(int *)this + 0x170);
+  this->field04 = pSource->field04;
+  this->padding_08_to_0b = pSource->padding_08_to_0b;
+  this->controlTag = pSource->controlTag;
+  this->field0c = pSource->field0c;
+  this->ownerContext = (TView *)0x0;
+  iVar1 = pSource->field50;
+  this->field44 = 0;
+  this->field50 = iVar1;
+  this->field48 = 0;
+  this->field3c = pSource->field3c;
+  this->field54 = pSource->field54;
+  this->ownerOffsetX = pSource->ownerOffsetX;
+  this->ownerOffsetY = pSource->ownerOffsetY;
+  this->field2c = pSource->field2c;
+  this->field30 = pSource->field30;
+  this->field34 = pSource->field34;
+  this->field38 = pSource->field38;
+  this->flag4c = pSource->flag4c;
+  this->flag4d = pSource->flag4d;
+  if ((pSource->field44 != 0) && (piVar5 = *(int **)(pSource->field44 + 4), piVar5 != (int *)0x0)) {
+    pcVar2 = *(code **)((int)this->vftable + 0x170);
     do {
       piVar3 = (int *)*piVar5;
       uVar4 = (**(code **)(*(int *)piVar5[2] + 0x20))();
@@ -7814,25 +7812,25 @@ void __thiscall TControl::thunk_DetachActiveCityProductionChildIfMatches(int par
 // GHIDRA_NAME thunk_ConstructUiResourceEntryType4B0C0
 // GHIDRA_PROTO undefined thunk_ConstructUiResourceEntryType4B0C0()
 
-undefined4 * __fastcall TCluster::thunk_ConstructUiResourceEntryType4B0C0(undefined4 *param_1)
+TView * __fastcall TCluster::thunk_ConstructUiResourceEntryType4B0C0(TView *param_1)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState();
-  param_1[0x18] = 1;
-  *(undefined1 *)(param_1 + 0x19) = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
-  param_1[0x1c] = 0;
-  param_1[0x1d] = 0;
-  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
-  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1[1].vftable = (void *)0x1;
+  *(undefined1 *)&param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
+  param_1[1].field10 = 0;
+  param_1[1].field14 = 0;
+  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
+  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  *param_1 = &PTR_LAB_0064b0c0;
-  param_1[0x21] = 0x20202020;
-  *(ushort *)(param_1 + 0x20) = uVar1;
-  param_1[0x18] = 5;
+  param_1->vftable = &PTR_LAB_0064b0c0;
+  param_1[1].ownerOffsetX = 0x20202020;
+  *(ushort *)&param_1[1].ownerContext = uVar1;
+  param_1[1].vftable = (void *)0x5;
   return param_1;
 }
 

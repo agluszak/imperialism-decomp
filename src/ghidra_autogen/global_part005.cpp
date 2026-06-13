@@ -3931,12 +3931,12 @@ void __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0048b860(int *param_
 // GHIDRA_NAME CloneEngineerDialogStateToNewInstance
 // GHIDRA_PROTO undefined CloneEngineerDialogStateToNewInstance()
 
-TView * __fastcall CloneEngineerDialogStateToNewInstance(CityDialogController *param_1)
+TView * __fastcall CloneEngineerDialogStateToNewInstance(TView *param_1)
 
 {
   TView *this;
   
-  this = (TView *)(**(code **)((int)param_1->pVtable + 0x24))();
+  this = (TView *)(**(code **)((int)param_1->vftable + 0x24))();
   TView::thunk_CopyCityDialogStateFromSource(this,param_1);
   return this;
 }
@@ -4064,11 +4064,11 @@ void __thiscall PropagateUiResourceContextRecursive(int param_1,undefined4 param
 // GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60
 // GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60()
 
-undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60(void)
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -4078,16 +4078,16 @@ undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60(void)
   puStack_8 = &LAB_0062ecba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_00649a68;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_00649a68;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CAD0
@@ -5135,7 +5135,7 @@ CloneCityDialogExtendedStateToNewInstance(CityDialogController *pSource)
   CityDialogController *this;
   
   this = (CityDialogController *)(**(code **)((int)pSource->pVtable + 0x24))();
-  TView::thunk_CopyCityDialogStateFromSource((TView *)this,pSource);
+  TView::thunk_CopyCityDialogStateFromSource((TView *)this,(TView *)pSource);
   this->extendedField60 = pSource->extendedField60;
   this->extendedFlag64 = pSource->extendedFlag64;
   this->extendedField68 = pSource->extendedField68;
@@ -5161,7 +5161,7 @@ CloneCityDialogExtendedStateToNewInstance(CityDialogController *pSource)
 // GHIDRA_NAME CopyExtendedCityDialogControllerState
 // GHIDRA_PROTO undefined CopyExtendedCityDialogControllerState()
 
-void __thiscall CopyExtendedCityDialogControllerState(TView *param_1,CityDialogController *param_2)
+void __thiscall CopyExtendedCityDialogControllerState(TView *param_1,TView *param_2)
 
 {
   int iVar1;
@@ -5176,15 +5176,15 @@ void __thiscall CopyExtendedCityDialogControllerState(TView *param_1,CityDialogC
   puStack_8 = &LAB_0062f07b;
   *unaff_FS_OFFSET = &local_c;
   TView::thunk_CopyCityDialogStateFromSource(param_1,param_2);
-  *(int *)(param_1 + 0x60) = param_2->extendedField60;
-  param_1[100] = (TView)param_2->extendedFlag64;
-  *(int *)(param_1 + 0x68) = param_2->extendedField68;
-  *(int *)(param_1 + 0x6c) = param_2->extendedField6C;
-  *(int *)(param_1 + 0x70) = param_2->extendedField70;
-  *(int *)(param_1 + 0x74) = param_2->extendedField74;
-  *(int *)(param_1 + 0x78) = param_2->extendedField78;
-  *(int *)(param_1 + 0x7c) = param_2->extendedField7C;
-  *(short *)(param_1 + 0x80) = param_2->extendedShort80;
+  param_1[1].vftable = param_2[1].vftable;
+  *(char *)&param_1[1].field04 = (char)param_2[1].field04;
+  param_1[1].padding_08_to_0b = param_2[1].padding_08_to_0b;
+  param_1[1].field0c = param_2[1].field0c;
+  param_1[1].field10 = param_2[1].field10;
+  param_1[1].field14 = param_2[1].field14;
+  param_1[1].field18 = param_2[1].field18;
+  param_1[1].controlTag = param_2[1].controlTag;
+  *(undefined2 *)&param_1[1].ownerContext = *(undefined2 *)&param_2[1].ownerContext;
   iVar1 = AllocateWithFallbackHandler(4);
   local_4 = 0;
   if (iVar1 == 0) {
@@ -5193,9 +5193,9 @@ void __thiscall CopyExtendedCityDialogControllerState(TView *param_1,CityDialogC
   else {
     this = (void *)InitializeSharedStringRefFromEmpty();
   }
-  *(void **)(param_1 + 0x84) = this;
+  param_1[1].ownerOffsetX = (int)this;
   local_4 = 0xffffffff;
-  AssignFromPtr(this,*(int **)&param_2->extendedResourceShort84);
+  AssignFromPtr(this,(int *)param_2[1].ownerOffsetX);
   *unaff_FS_OFFSET = local_c;
   return;
 }

@@ -65,20 +65,19 @@ undefined ** TShipLine::GetTShipLineClassNamePointer(void)
 void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,undefined4 param_3)
 
 {
-  undefined4 *puVar1;
-  undefined4 **ppuVar2;
-  int *piVar3;
-  int iVar4;
+  TView *this;
+  int *piVar1;
+  int iVar2;
   undefined4 extraout_ECX;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 **ppuStack_54;
+  TView *pTStack_54;
   undefined4 *puStack_50;
-  undefined4 **ppuStack_4c;
+  TView **ppTStack_4c;
   int iStack_48;
   undefined1 *puStack_44;
   undefined4 uStack_40;
   int iStack_3c;
-  undefined4 *local_24;
+  TView *local_24;
   undefined4 local_20;
   undefined4 local_1c;
   undefined4 local_18;
@@ -95,66 +94,66 @@ void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,u
   local_1c = *(undefined4 *)(param_2 + 0x84);
   iStack_3c = 0x68;
   uStack_40 = 0x565133;
-  ppuVar2 = (undefined4 **)AllocateWithFallbackHandler();
+  this = (TView *)AllocateWithFallbackHandler();
   local_4 = 0;
-  if (ppuVar2 == (undefined4 **)0x0) {
-    ppuVar2 = (undefined4 **)0x0;
+  if (this == (TView *)0x0) {
+    this = (TView *)0x0;
   }
   else {
     iStack_3c = 0x56514d;
-    local_24 = ppuVar2;
-    TView::thunk_ConstructTViewBaseState();
-    *ppuVar2 = &PTR_LAB_0065ce28;
+    local_24 = this;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0065ce28;
   }
-  local_24 = *(undefined4 **)(param_1 + 0x10);
-  puVar1 = *(undefined4 **)(param_1 + 0x18);
+  local_24 = *(TView **)(param_1 + 0x10);
+  iVar2 = *(int *)(param_1 + 0x18);
   iStack_3c = 0;
   uStack_40 = 5;
   iStack_48 = param_1 + 8;
   puStack_44 = (undefined1 *)0x5;
-  ppuStack_4c = (undefined4 **)param_3;
+  ppTStack_4c = (TView **)param_3;
   puStack_50 = (undefined4 *)param_2;
-  ppuStack_54 = (undefined4 **)0x0;
+  pTStack_54 = (TView *)0x0;
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
   iStack_3c = 0x94;
-  ppuVar2[0x18] = local_24;
-  ppuVar2[0x19] = puVar1;
+  this[1].vftable = local_24;
+  this[1].field04 = iVar2;
   uStack_40 = 0x565199;
-  piVar3 = (int *)AllocateWithFallbackHandler();
+  piVar1 = (int *)AllocateWithFallbackHandler();
   local_4 = 1;
-  if (piVar3 == (int *)0x0) {
-    piVar3 = (int *)0x0;
+  if (piVar1 == (int *)0x0) {
+    piVar1 = (int *)0x0;
   }
   else {
     iStack_3c = 0x5651b5;
     TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *piVar3 = (int)&PTR_LAB_0064cec0;
-    piVar3[0x22] = 0;
-    piVar3[0x24] = 0;
-    piVar3[0x23] = 0;
-    *(undefined1 *)(piVar3 + 0x21) = 0;
+    *piVar1 = (int)&PTR_LAB_0064cec0;
+    piVar1[0x22] = 0;
+    piVar1[0x24] = 0;
+    piVar1[0x23] = 0;
+    *(undefined1 *)(piVar1 + 0x21) = 0;
   }
   local_4 = 0xffffffff;
-  local_24 = (undefined4 *)0x50;
+  local_24 = (TView *)0x50;
   local_20 = 0x2d;
   iStack_3c = (int)*(short *)(&DAT_006985e8 + *(short *)(*(int *)(param_1 + 0x10) + 4) * 2);
   uStack_40 = local_1c;
   puStack_44 = (undefined1 *)0x5;
-  ppuStack_4c = &local_24;
+  ppTStack_4c = &local_24;
   iStack_48 = 5;
   puStack_50 = &local_14;
   local_14 = 0;
   local_10 = (undefined1 *)0x0;
-  ppuStack_54 = ppuVar2;
+  pTStack_54 = this;
   TArmyCheckBox::ConstructTArmyCheckBoxBaseState();
-  piVar3[7] = 0x63686563;
-  piVar3[0x18] = 4;
+  piVar1[7] = 0x63686563;
+  piVar1[0x18] = 4;
   iStack_3c = 0;
   uStack_40 = CONCAT31((int3)((uint)extraout_ECX >> 8),
                        *(undefined1 *)(*(int *)(param_1 + 0x14) + 0xc));
   puStack_44 = (undefined1 *)0x565245;
-  (**(code **)(*piVar3 + 0x1c8))();
+  (**(code **)(*piVar1 + 0x1c8))();
   puStack_44 = (undefined1 *)0x56524e;
   InitializeSharedStringRefFromEmpty();
   puStack_44 = (undefined1 *)0x88;
@@ -163,31 +162,31 @@ void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,u
   local_4 = AllocateWithFallbackHandler();
   uStack_c._0_1_ = 3;
   if (local_4 == 0) {
-    iVar4 = 0;
+    iVar2 = 0;
   }
   else {
     puStack_44 = (undefined1 *)0x565277;
-    iVar4 = TClickZone::thunk_ConstructUiCommandTagResourceEntry();
+    iVar2 = TClickZone::thunk_ConstructUiCommandTagResourceEntry();
   }
   puStack_44 = (undefined1 *)0x0;
   iStack_48 = 4;
   puStack_50 = &local_1c;
-  ppuStack_4c = (undefined4 **)0x4;
-  ppuStack_54 = &local_24;
+  ppTStack_4c = (TView **)0x4;
+  pTStack_54 = (TView *)&local_24;
   uStack_c = CONCAT31(uStack_c._1_3_,2);
   local_1c = 0x80;
   local_18 = 0x18;
-  local_24 = (undefined4 *)0x40;
+  local_24 = (TView *)0x40;
   local_20 = 0;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,ppuVar2);
-  *(undefined4 *)(iVar4 + 0x1c) = 0x6e616d65;
+  thunk_InitializeUiResourceEntryFrameAndParent(0,this);
+  *(undefined4 *)(iVar2 + 0x1c) = 0x6e616d65;
   puStack_44 = &stack0xffffffd0;
   iStack_48 = 4;
-  ppuStack_4c = (undefined4 **)0x2746;
+  ppTStack_4c = (TView **)0x2746;
   puStack_50 = (undefined4 *)0x5652d7;
   (**(code **)(*g_pLocalizationTable + 0x84))();
-  local_10 = (undefined1 *)&ppuStack_54;
-  puStack_50 = (undefined4 *)iVar4;
+  local_10 = (undefined1 *)&pTStack_54;
+  puStack_50 = (undefined4 *)iVar2;
   thunk_AssignStringSharedRefAndReturnThis(&iStack_3c);
   InitializeAndRunMainRoutine();
   local_18 = 0xffffffff;
@@ -201,10 +200,10 @@ void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,u
 // GHIDRA_NAME TShipLine::DestructTShipLineAndMaybeFree
 // GHIDRA_PROTO undefined DestructTShipLineAndMaybeFree()
 
-undefined4 __thiscall TShipLine::DestructTShipLineAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TShipLine::DestructTShipLineAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

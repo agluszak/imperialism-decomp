@@ -7,10 +7,10 @@
 // GHIDRA_NAME TOrderView::CreateTOrderViewInstance
 // GHIDRA_PROTO undefined CreateTOrderViewInstance()
 
-undefined4 * TOrderView::CreateTOrderViewInstance(void)
+TView * TOrderView::CreateTOrderViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,17 +20,17 @@ undefined4 * TOrderView::CreateTOrderViewInstance(void)
   puStack_8 = &LAB_006337aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_00657eb0;
-    puVar1[0x18] = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_00657eb0;
+    this[1].vftable = (void *)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506A60
@@ -47,12 +47,12 @@ undefined ** TOrderView::GetTOrderViewClassNamePointer(void)
 // GHIDRA_NAME TOrderView::ConstructTOrderViewBaseState
 // GHIDRA_PROTO undefined ConstructTOrderViewBaseState()
 
-undefined4 * __fastcall TOrderView::ConstructTOrderViewBaseState(undefined4 *param_1)
+TView * __fastcall TOrderView::ConstructTOrderViewBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_00657eb0;
-  param_1[0x18] = 0;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_00657eb0;
+  param_1[1].vftable = (void *)0x0;
   return param_1;
 }
 
@@ -60,10 +60,10 @@ undefined4 * __fastcall TOrderView::ConstructTOrderViewBaseState(undefined4 *par
 // GHIDRA_NAME TOrderView::DestructTOrderViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTOrderViewAndMaybeFree()
 
-undefined4 __thiscall TOrderView::DestructTOrderViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TOrderView::DestructTOrderViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

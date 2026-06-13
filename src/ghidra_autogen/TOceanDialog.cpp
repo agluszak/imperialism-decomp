@@ -70,11 +70,10 @@ undefined4 * __fastcall TOceanDialog::ConstructTOceanDialogBaseState(undefined4 
 // GHIDRA_NAME TOceanDialog::DestructTOceanDialogAndMaybeFree
 // GHIDRA_PROTO undefined DestructTOceanDialogAndMaybeFree()
 
-undefined4 __thiscall
-TOceanDialog::DestructTOceanDialogAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TOceanDialog::DestructTOceanDialogAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

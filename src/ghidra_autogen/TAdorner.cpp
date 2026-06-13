@@ -49,11 +49,11 @@ undefined ** TAdorner::GetTAdornerClassNamePointer(void)
 // GHIDRA_NAME TAdorner::ConstructTAdornerBaseState
 // GHIDRA_PROTO undefined ConstructTAdornerBaseState()
 
-undefined4 * TAdorner::ConstructTAdornerBaseState(void)
+TView * TAdorner::ConstructTAdornerBaseState(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 uVar2;
+  TView *this;
+  undefined4 uVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -63,18 +63,18 @@ undefined4 * TAdorner::ConstructTAdornerBaseState(void)
   puStack_8 = &LAB_0062fcd2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
+  this = (TView *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &PTR_LAB_0064be28;
-    uVar2 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
+    this->vftable = &PTR_LAB_0064be28;
+    uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 

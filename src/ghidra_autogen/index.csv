@@ -2560,10 +2560,10 @@ address|name|prototype|file|status
 406ba9|TView::thunk_NoOpUiLifecycleHook|undefined thunk_NoOpUiLifecycleHook()|TView.cpp|ok
 48a840|TView::CreateTViewInstance|undefined CreateTViewInstance()|TView.cpp|ok
 48a8c0|TView::GetTViewClassNamePointer|undefined GetTViewClassNamePointer()|TView.cpp|ok
-48a8e0|TView::ConstructTViewBaseState|undefined ConstructTViewBaseState()|TView.cpp|ok
+48a8e0|TView::ConstructTViewBaseState|void __thiscall ConstructTViewBaseState(void)|TView.cpp|ok
 48a9a0|TView::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TView.cpp|ok
-48a9d0|TView::DestructTViewBaseState|undefined DestructTViewBaseState()|TView.cpp|ok
-48bef0|TView::CopyCityDialogStateFromSource|void __thiscall CopyCityDialogStateFromSource(CityDialogController * pSource)|TView.cpp|ok
+48a9d0|TView::DestructTViewBaseState|void __thiscall DestructTViewBaseState(void)|TView.cpp|ok
+48bef0|TView::CopyCityDialogStateFromSource|void __thiscall CopyCityDialogStateFromSource(TView * pSource)|TView.cpp|ok
 401064|TViewMgr::TViewMgr_VtblSlot022|undefined TViewMgr_VtblSlot022()|TViewMgr.cpp|ok
 4011a9|TViewMgr::TViewMgr_VtblSlot055|undefined TViewMgr_VtblSlot055()|TViewMgr.cpp|ok
 401244|TViewMgr::TViewMgr_VtblSlot045|undefined TViewMgr_VtblSlot045()|TViewMgr.cpp|ok
@@ -2733,7 +2733,7 @@ address|name|prototype|file|status
 401d11|thunk_ConstructTradeMoveStepControlPanel|undefined thunk_ConstructTradeMoveStepControlPanel()|global_part001.cpp|ok
 401db1|thunk_SetMapOrderType3Or4AndQueue|void __thiscall thunk_SetMapOrderType3Or4AndQueue(char fUseType4)|global_part001.cpp|ok
 401e47|thunk_GetTileUnitEntryByOwner|int * __thiscall thunk_GetTileUnitEntryByOwner(short nTileIndex, short nOwnerNationId)|global_part001.cpp|ok
-401e65|thunk_DestructTViewBaseState_005885F0|undefined thunk_DestructTViewBaseState_005885F0()|global_part001.cpp|ok
+401e65|thunk_DestructTViewBaseState_005885F0|void __thiscall thunk_DestructTViewBaseState_005885F0(void)|global_part001.cpp|ok
 401e6f|thunk_NumericEntryMethod_00401e6f|undefined thunk_NumericEntryMethod_00401e6f()|global_part001.cpp|ok
 401e7e|thunk_LoadUiStringResourceByGroupAndIndex|undefined thunk_LoadUiStringResourceByGroupAndIndex()|global_part001.cpp|ok
 401eb0|thunk_GetNavyMissionClassName|undefined thunk_GetNavyMissionClassName()|global_part001.cpp|ok
@@ -2870,7 +2870,7 @@ address|name|prototype|file|status
 40400c|thunk_QueueTacticalEventPacket232A|undefined thunk_QueueTacticalEventPacket232A()|global_part001.cpp|ok
 40408e|thunk_ContainsPointerArrayEntryMatchingByteKey|undefined thunk_ContainsPointerArrayEntryMatchingByteKey()|global_part001.cpp|ok
 4040c0|thunk_InitializeUiWindowTraversalState|undefined thunk_InitializeUiWindowTraversalState()|global_part001.cpp|ok
-4040e8|thunk_CopyCityDialogStateFromSource|void __thiscall thunk_CopyCityDialogStateFromSource(CityDialogController * pSource)|global_part001.cpp|ok
+4040e8|thunk_CopyCityDialogStateFromSource|void __thiscall thunk_CopyCityDialogStateFromSource(TView * pSource)|global_part001.cpp|ok
 4041bf|thunk_HandleDoneCommandAndReinitializeGameFlow5E0|undefined thunk_HandleDoneCommandAndReinitializeGameFlow5E0()|global_part001.cpp|ok
 404200|thunk_SetPictureResourceIdWithHandleReset|undefined thunk_SetPictureResourceIdWithHandleReset()|global_part001.cpp|ok
 40421e|thunk_ResetPictureResourceEntry|void __thiscall thunk_ResetPictureResourceEntry(void)|global_part001.cpp|ok
@@ -2995,7 +2995,7 @@ address|name|prototype|file|status
 405bb4|thunk_InvokeStrategicMapViewMethod6C|undefined thunk_InvokeStrategicMapViewMethod6C()|global_part002.cpp|ok
 405c40|thunk_ClearUiResourceContext|undefined thunk_ClearUiResourceContext()|global_part002.cpp|ok
 405c59|thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer|undefined thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer()|global_part002.cpp|ok
-405c72|thunk_DestructEngineerDialogBaseState|undefined thunk_DestructEngineerDialogBaseState()|global_part002.cpp|ok
+405c72|thunk_DestructEngineerDialogBaseState|void __thiscall thunk_DestructEngineerDialogBaseState(void)|global_part002.cpp|ok
 405cef|thunk_ZeroUiResourceContextStyleBytes|undefined thunk_ZeroUiResourceContextStyleBytes()|global_part002.cpp|ok
 405d3a|thunk_GetBlockadePortMissionClassName|undefined thunk_GetBlockadePortMissionClassName()|global_part002.cpp|ok
 405d71|thunk_SetUiResourceStateFlags|undefined thunk_SetUiResourceStateFlags()|global_part002.cpp|ok
@@ -3032,7 +3032,7 @@ address|name|prototype|file|status
 406438|thunk_RefreshUniversityAdvancedStatus|undefined thunk_RefreshUniversityAdvancedStatus()|global_part002.cpp|ok
 4064ba|thunk_HandleTurnEventDialogFactorySlot70|undefined thunk_HandleTurnEventDialogFactorySlot70()|global_part002.cpp|ok
 4064dd|thunk_InitializeTurnOrderNavigationDialogByViewportSize|undefined thunk_InitializeTurnOrderNavigationDialogByViewportSize()|global_part002.cpp|ok
-4064e2|thunk_ConstructTViewBaseState|undefined thunk_ConstructTViewBaseState()|global_part002.cpp|ok
+4064e2|thunk_ConstructTViewBaseState|void __thiscall thunk_ConstructTViewBaseState(void)|global_part002.cpp|ok
 406514|thunk_HandleTurnEventVtableSlot2CInitializeHotKeyDialog|undefined thunk_HandleTurnEventVtableSlot2CInitializeHotKeyDialog()|global_part002.cpp|ok
 406546|thunk_FillRectWithQuickDrawBrushAndContextOffset|undefined thunk_FillRectWithQuickDrawBrushAndContextOffset()|global_part002.cpp|ok
 406555|thunk_QueueCivilianWorkOrderWithCostCheck|bool __thiscall thunk_QueueCivilianWorkOrderWithCostCheck(short nTileIndex)|global_part002.cpp|ok
@@ -6163,25 +6163,25 @@ address|name|prototype|file|status
 583700|HandleTurnInstruction_Coun_SetCountrySlotState|undefined HandleTurnInstruction_Coun_SetCountrySlotState()|global_part014.cpp|ok
 5837c0|WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0|undefined WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0()|global_part014.cpp|ok
 583880|WrapperFor_ftol_At00583880|undefined WrapperFor_ftol_At00583880()|global_part014.cpp|ok
-583db0|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-583f90|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-584140|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-584300|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-584d10|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-584e80|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-586070|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-5863e0|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-586690|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-5869a0|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-586d40|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-587110|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
+583db0|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+583f90|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+584140|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+584300|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+584d10|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+584e80|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+586070|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+5863e0|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+586690|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+5869a0|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+586d40|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+587110|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
 5885f0|thunk_DestructTViewBaseState_005885F0|void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar)|global_part014.cpp|ok
-588b50|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-589240|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-589790|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-58a000|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-58a5f0|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
-58abd0|thunk_DestructTViewBaseState|undefined thunk_DestructTViewBaseState()|global_part014.cpp|ok
+588b50|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+589240|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+589790|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+58a000|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+58a5f0|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
+58abd0|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
 58af60|thunk_DestructTViewBaseState_0058AF60|void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar)|global_part014.cpp|ok
 58c330|?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z|undefined ?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z()|global_part015.cpp|ok
 58c360|?OrphanCallChain_C2_I23_0058c360@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z|undefined ?OrphanCallChain_C2_I23_0058c360@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z()|global_part015.cpp|ok

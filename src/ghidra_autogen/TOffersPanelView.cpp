@@ -17,14 +17,14 @@ undefined ** TOffersPanelView::GetTOffersPanelViewClassNamePointer(void)
 // GHIDRA_NAME TOffersPanelView::ConstructTOffersPanelViewBaseState
 // GHIDRA_PROTO undefined ConstructTOffersPanelViewBaseState()
 
-undefined4 * __fastcall TOffersPanelView::ConstructTOffersPanelViewBaseState(undefined4 *param_1)
+TView * __fastcall TOffersPanelView::ConstructTOffersPanelViewBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_00655fb0;
-  param_1[0x18] = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_00655fb0;
+  param_1[1].vftable = (void *)0x0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
   return param_1;
 }
 
@@ -32,11 +32,11 @@ undefined4 * __fastcall TOffersPanelView::ConstructTOffersPanelViewBaseState(und
 // GHIDRA_NAME TOffersPanelView::DestructTOffersPanelViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTOffersPanelViewAndMaybeFree()
 
-undefined4 __thiscall
-TOffersPanelView::DestructTOffersPanelViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall
+TOffersPanelView::DestructTOffersPanelViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

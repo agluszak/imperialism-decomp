@@ -485,23 +485,22 @@ undefined ** TacticalBattleView::GetTacticalBattleViewClassNamePointer(void)
 // GHIDRA_NAME TacticalBattleView::ConstructTacticalBattleViewBaseState
 // GHIDRA_PROTO undefined ConstructTacticalBattleViewBaseState()
 
-undefined4 * __fastcall
-TacticalBattleView::ConstructTacticalBattleViewBaseState(undefined4 *param_1)
+TView * __fastcall TacticalBattleView::ConstructTacticalBattleViewBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_0066a380;
-  param_1[0x18] = 0;
-  param_1[0x19] = 0;
-  *(undefined2 *)(param_1 + 0x1e) = 0;
-  param_1[0x34] = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
-  param_1[0x1c] = 0;
-  param_1[0x1d] = 0;
-  param_1[0x2f] = 0;
-  *(undefined1 *)(param_1 + 0x26) = 1;
-  param_1[0x29] = 0xffffffff;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_0066a380;
+  param_1[1].vftable = (void *)0x0;
+  param_1[1].field04 = 0;
+  *(undefined2 *)&param_1[1].field18 = 0;
+  param_1[2].field10 = 0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
+  param_1[1].field10 = 0;
+  param_1[1].field14 = 0;
+  param_1[1].field5c = 0;
+  *(undefined1 *)&param_1[1].field38 = 1;
+  param_1[1].field44 = -1;
   return param_1;
 }
 
@@ -509,11 +508,11 @@ TacticalBattleView::ConstructTacticalBattleViewBaseState(undefined4 *param_1)
 // GHIDRA_NAME TacticalBattleView::DestructTacticalBattleViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTacticalBattleViewAndMaybeFree()
 
-undefined4 __thiscall
-TacticalBattleView::DestructTacticalBattleViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall
+TacticalBattleView::DestructTacticalBattleViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

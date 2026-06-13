@@ -17,11 +17,11 @@ undefined ** TTechCheater::GetTTechCheaterClassNamePointer(void)
 // GHIDRA_NAME TTechCheater::ConstructTTechCheaterBaseState
 // GHIDRA_PROTO undefined ConstructTTechCheaterBaseState()
 
-undefined4 * TTechCheater::ConstructTTechCheaterBaseState(void)
+TView * TTechCheater::ConstructTTechCheaterBaseState(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -31,27 +31,26 @@ undefined4 * TTechCheater::ConstructTTechCheaterBaseState(void)
   puStack_8 = &LAB_00630dca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_0064f050;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0064f050;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A20
 // GHIDRA_NAME TTechCheater::DestructTTechCheaterAndMaybeFree
 // GHIDRA_PROTO undefined DestructTTechCheaterAndMaybeFree()
 
-undefined4 __thiscall
-TTechCheater::DestructTTechCheaterAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TTechCheater::DestructTTechCheaterAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

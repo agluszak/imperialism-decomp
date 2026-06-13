@@ -51,7 +51,7 @@ void __thiscall
 TTechItemLine::ConstructTTechItemLineBaseState(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -61,11 +61,11 @@ TTechItemLine::ConstructTTechItemLineBaseState(int param_1,undefined4 param_2,un
   puStack_8 = &LAB_006389da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
+  this = (TView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_0066af08;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0066af08;
   }
   local_4 = 0xffffffff;
   TTechItemView::ConstructTTechItemViewBaseState
@@ -79,11 +79,10 @@ TTechItemLine::ConstructTTechItemLineBaseState(int param_1,undefined4 param_2,un
 // GHIDRA_NAME TTechItemLine::DestructTTechItemLineAndMaybeFree
 // GHIDRA_PROTO undefined DestructTTechItemLineAndMaybeFree()
 
-undefined4 __thiscall
-TTechItemLine::DestructTTechItemLineAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TTechItemLine::DestructTTechItemLineAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

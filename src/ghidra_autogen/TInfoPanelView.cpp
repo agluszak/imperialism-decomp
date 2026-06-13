@@ -7,10 +7,10 @@
 // GHIDRA_NAME TInfoPanelView::CreateTInfoPanelViewInstance
 // GHIDRA_PROTO undefined CreateTInfoPanelViewInstance()
 
-undefined4 * TInfoPanelView::CreateTInfoPanelViewInstance(void)
+TView * TInfoPanelView::CreateTInfoPanelViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,17 +20,17 @@ undefined4 * TInfoPanelView::CreateTInfoPanelViewInstance(void)
   puStack_8 = &LAB_00632f2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x70);
+  this = (TView *)AllocateWithFallbackHandler(0x70);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    puVar1[0x18] = 0;
-    *puVar1 = &PTR_LAB_0063fe60;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].vftable = (void *)0x0;
+    this->vftable = &PTR_LAB_0063fe60;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F9FF0

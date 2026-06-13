@@ -692,23 +692,22 @@ void __thiscall OrphanCallChain_C2_I51_00491790(int param_1,int param_2)
 // GHIDRA_NAME WrapperFor_CopyCityDialogStateFromSource_At004918a0
 // GHIDRA_PROTO undefined WrapperFor_CopyCityDialogStateFromSource_At004918a0()
 
-TView * __fastcall
-WrapperFor_CopyCityDialogStateFromSource_At004918a0(CityDialogController *param_1)
+TView * __fastcall WrapperFor_CopyCityDialogStateFromSource_At004918a0(TView *param_1)
 
 {
   TView *this;
   
-  this = (TView *)(**(code **)((int)param_1->pVtable + 0x24))();
+  this = (TView *)(**(code **)((int)param_1->vftable + 0x24))();
   TView::thunk_CopyCityDialogStateFromSource(this,param_1);
-  *(int *)(this + 0x60) = param_1->extendedField60;
-  this[100] = (TView)param_1->extendedFlag64;
-  *(int *)(this + 0x68) = param_1->extendedField68;
-  *(int *)(this + 0x6c) = param_1->extendedField6C;
-  *(int *)(this + 0x70) = param_1->extendedField70;
-  *(int *)(this + 0x74) = param_1->extendedField74;
-  *(int *)(this + 0x78) = param_1->extendedField78;
-  *(int *)(this + 0x7c) = param_1->extendedField7C;
-  *(short *)(this + 0x80) = param_1->extendedShort80;
+  this[1].vftable = param_1[1].vftable;
+  *(char *)&this[1].field04 = (char)param_1[1].field04;
+  this[1].padding_08_to_0b = param_1[1].padding_08_to_0b;
+  this[1].field0c = param_1[1].field0c;
+  this[1].field10 = param_1[1].field10;
+  this[1].field14 = param_1[1].field14;
+  this[1].field18 = param_1[1].field18;
+  this[1].controlTag = param_1[1].controlTag;
+  *(undefined2 *)&this[1].ownerContext = *(undefined2 *)&param_1[1].ownerContext;
   return this;
 }
 

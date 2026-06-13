@@ -45,11 +45,11 @@ undefined ** TRadio::GetTRadioClassNamePointer(void)
 // GHIDRA_NAME TRadio::ConstructTRadioBaseState
 // GHIDRA_PROTO undefined ConstructTRadioBaseState()
 
-undefined4 * TRadio::ConstructTRadioBaseState(void)
+TView * TRadio::ConstructTRadioBaseState(void)
 
 {
   ushort uVar1;
-  undefined4 *puVar2;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -59,30 +59,30 @@ undefined4 * TRadio::ConstructTRadioBaseState(void)
   puStack_8 = &LAB_0062ef7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (TView *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    puVar2[0x18] = 1;
-    *(undefined1 *)(puVar2 + 0x19) = 0;
-    puVar2[0x1a] = 0;
-    puVar2[0x1b] = 0;
-    puVar2[0x1c] = 0;
-    puVar2[0x1d] = 0;
-    puVar2[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar2[0x1f] = g_nUiResourceEntryDefaultParam1;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].vftable = (void *)0x1;
+    *(undefined1 *)&this[1].field04 = 0;
+    this[1].padding_08_to_0b = 0;
+    this[1].field0c = 0;
+    this[1].field10 = 0;
+    this[1].field14 = 0;
+    this[1].field18 = g_nUiResourceEntryDefaultParam0;
+    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    *(undefined2 *)(puVar2 + 0x21) = 0xffff;
-    puVar2[0x22] = 0;
-    *(ushort *)(puVar2 + 0x20) = uVar1;
-    puVar2[0x23] = 0;
-    *puVar2 = &PTR_LAB_0064a930;
-    puVar2[0x18] = 10;
+    *(undefined2 *)&this[1].ownerOffsetX = 0xffff;
+    this[1].ownerOffsetY = 0;
+    *(ushort *)&this[1].ownerContext = uVar1;
+    this[1].field2c = 0;
+    this->vftable = &PTR_LAB_0064a930;
+    this[1].vftable = (void *)0xa;
     *unaff_FS_OFFSET = local_c;
-    return puVar2;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F080

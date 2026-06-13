@@ -60,11 +60,11 @@ TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState(undefined4 *param_1)
 // GHIDRA_NAME TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree
 // GHIDRA_PROTO undefined DestructTUnitToolbarClusterAndMaybeFree()
 
-undefined4 __thiscall
-TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall
+TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState();
+  TView::thunk_DestructTViewBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

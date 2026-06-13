@@ -81,6 +81,14 @@ ghidra-vtable-dump class vtable *args:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
   uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
 
+apply-source-datatypes *args:
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  uv run python -m tools.ghidra.apply_source_datatypes {{args}}
+
+apply-tview-datatype:
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  uv run python -m tools.ghidra.apply_source_datatypes --classes CString,TEventHandler,TView
+
 regen-stubs:
   uv run python -m tools.stubgen \
     --name-overrides "{{name_overrides}}" \

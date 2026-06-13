@@ -187,11 +187,10 @@ TMiniArmyLine::ConstructTMiniArmyLineBaseState(int param_1,undefined4 param_2,un
 // GHIDRA_NAME TMiniArmyLine::DestructTMiniArmyLineAndMaybeFree
 // GHIDRA_PROTO undefined DestructTMiniArmyLineAndMaybeFree()
 
-undefined4 __thiscall
-TMiniArmyLine::DestructTMiniArmyLineAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TMiniArmyLine::DestructTMiniArmyLineAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

@@ -7,14 +7,14 @@
 // GHIDRA_NAME TFloatWindow::CreateTFloatWindowInstance
 // GHIDRA_PROTO undefined CreateTFloatWindowInstance()
 
-undefined4 * TFloatWindow::CreateTFloatWindowInstance(void)
+TView * TFloatWindow::CreateTFloatWindowInstance(void)
 
 {
   int iVar1;
   int *piVar2;
-  undefined4 *puVar3;
-  int iVar4;
-  int *piVar5;
+  TView *this;
+  int iVar3;
+  int *piVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -24,54 +24,54 @@ undefined4 * TFloatWindow::CreateTFloatWindowInstance(void)
   puStack_8 = &LAB_0062f30d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TView *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (puVar3 == (undefined4 *)0x0) {
+  if (this == (TView *)0x0) {
     *unaff_FS_OFFSET = local_c;
-    return (undefined4 *)0x0;
+    return (TView *)0x0;
   }
-  TView::thunk_ConstructTViewBaseState();
+  TView::thunk_ConstructTViewBaseState(this);
   local_4._0_1_ = 1;
   TDialogBehavior::ConstructTDialogBehaviorBaseState();
-  puVar3[0x26] = 0;
-  *puVar3 = &PTR_LAB_00649e58;
+  this[1].field38 = 0;
+  this->vftable = &PTR_LAB_00649e58;
   iVar1 = (int)DAT_006a1a44;
   local_4 = CONCAT31(local_4._1_3_,2);
-  piVar5 = DAT_006a1a50;
+  piVar4 = DAT_006a1a50;
   if (DAT_006a1a50 == (int *)0x0) {
-    iVar4 = AllocateAndLinkBlockHead(&DAT_006a1a54,DAT_006a1a58,0xc);
-    piVar5 = DAT_006a1a50;
-    piVar2 = (int *)(iVar4 + -8 + DAT_006a1a58 * 0xc);
-    iVar4 = DAT_006a1a58;
+    iVar3 = AllocateAndLinkBlockHead(&DAT_006a1a54,DAT_006a1a58,0xc);
+    piVar4 = DAT_006a1a50;
+    piVar2 = (int *)(iVar3 + -8 + DAT_006a1a58 * 0xc);
+    iVar3 = DAT_006a1a58;
     if (-1 < DAT_006a1a58 + -1) {
       do {
-        piVar5 = piVar2;
-        *piVar5 = (int)DAT_006a1a50;
-        iVar4 = iVar4 + -1;
-        DAT_006a1a50 = piVar5;
-        piVar2 = piVar5 + -3;
-      } while (iVar4 != 0);
+        piVar4 = piVar2;
+        *piVar4 = (int)DAT_006a1a50;
+        iVar3 = iVar3 + -1;
+        DAT_006a1a50 = piVar4;
+        piVar2 = piVar4 + -3;
+      } while (iVar3 != 0);
     }
   }
-  DAT_006a1a50 = (int *)*piVar5;
-  piVar5[1] = 0;
-  *piVar5 = iVar1;
+  DAT_006a1a50 = (int *)*piVar4;
+  piVar4[1] = 0;
+  *piVar4 = iVar1;
   DAT_006a1a4c = DAT_006a1a4c + 1;
-  piVar5[2] = 0;
-  piVar5[2] = (int)puVar3;
-  piVar2 = piVar5;
+  piVar4[2] = 0;
+  piVar4[2] = (int)this;
+  piVar2 = piVar4;
   if (DAT_006a1a44 != (int *)0x0) {
-    *(int **)((int)DAT_006a1a44 + 4) = piVar5;
+    *(int **)((int)DAT_006a1a44 + 4) = piVar4;
     piVar2 = DAT_006a1a48;
   }
   DAT_006a1a48 = piVar2;
-  DAT_006a1a44 = piVar5;
+  DAT_006a1a44 = piVar4;
   thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
-  puVar3[0x1f] = puVar3;
-  puVar3[0x19] = puVar3;
-  *puVar3 = &PTR_LAB_0064b340;
+  this[1].controlTag = (int)this;
+  this[1].field04 = (int)this;
+  this->vftable = &PTR_LAB_0064b340;
   *unaff_FS_OFFSET = local_c;
-  return puVar3;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491F90

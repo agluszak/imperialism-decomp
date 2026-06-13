@@ -70,11 +70,10 @@ undefined4 * __fastcall TMiniMapView::ConstructTMiniMapViewBaseState(undefined4 
 // GHIDRA_NAME TMiniMapView::DestructTMiniMapViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTMiniMapViewAndMaybeFree()
 
-undefined4 __thiscall
-TMiniMapView::DestructTMiniMapViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TMiniMapView::DestructTMiniMapViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

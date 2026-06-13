@@ -60,11 +60,11 @@ TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(undefined4 *param_1)
 // GHIDRA_NAME TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree
 // GHIDRA_PROTO undefined DestructTTradePolicyClusterAndMaybeFree()
 
-undefined4 __thiscall
-TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall
+TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState();
+  TView::thunk_DestructTViewBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

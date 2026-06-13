@@ -54,7 +54,7 @@ TTradeBidNationLine::ConstructTTradeBidNationLineBaseState
 {
   undefined2 uVar1;
   undefined2 uVar2;
-  undefined4 *puVar3;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -64,22 +64,22 @@ TTradeBidNationLine::ConstructTTradeBidNationLineBaseState
   puStack_8 = &LAB_0063944a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (puVar3 == (undefined4 *)0x0) {
-    puVar3 = (undefined4 *)0x0;
+  if (this == (TView *)0x0) {
+    this = (TView *)0x0;
   }
   else {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar3 = &PTR_LAB_0066e530;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0066e530;
   }
   uVar1 = *(undefined2 *)(param_1 + 0x10);
   uVar2 = *(undefined2 *)(param_1 + 0x12);
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent
             (*(undefined4 *)(param_2 + 0x40),param_2,param_3,param_1 + 8,5,5,0);
-  *(undefined2 *)((int)puVar3 + 0x62) = uVar2;
-  *(undefined2 *)(puVar3 + 0x18) = uVar1;
+  *(undefined2 *)((int)&this[1].vftable + 2) = uVar2;
+  *(undefined2 *)&this[1].vftable = uVar1;
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -88,11 +88,11 @@ TTradeBidNationLine::ConstructTTradeBidNationLineBaseState
 // GHIDRA_NAME TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree
 // GHIDRA_PROTO undefined DestructTTradeBidNationLineAndMaybeFree()
 
-undefined4 __thiscall
-TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall
+TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

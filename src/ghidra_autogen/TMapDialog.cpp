@@ -188,10 +188,10 @@ int * __fastcall TMapDialog::ConstructTMapDialogBaseState(int *param_1)
 // GHIDRA_NAME TMapDialog::DestructTMapDialogAndMaybeFree
 // GHIDRA_PROTO undefined DestructTMapDialogAndMaybeFree()
 
-undefined4 __thiscall TMapDialog::DestructTMapDialogAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TMapDialog::DestructTMapDialogAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

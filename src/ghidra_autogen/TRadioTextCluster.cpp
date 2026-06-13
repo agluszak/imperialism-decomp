@@ -436,11 +436,11 @@ undefined ** TRadioTextCluster::GetTRadioTextClusterClassNamePointer(void)
 // GHIDRA_NAME TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree
 // GHIDRA_PROTO undefined DestructTRadioTextClusterAndMaybeFree()
 
-undefined4 __thiscall
-TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall
+TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

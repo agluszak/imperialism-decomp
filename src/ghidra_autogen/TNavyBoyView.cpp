@@ -171,11 +171,11 @@ void __fastcall TNavyBoyView::ConstructTNavyBoyViewBaseState(int param_1)
 // GHIDRA_NAME TNavyBoyView::DestructTNavyBoyViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTNavyBoyViewAndMaybeFree()
 
-undefined4 * TNavyBoyView::DestructTNavyBoyViewAndMaybeFree(void)
+TView * TNavyBoyView::DestructTNavyBoyViewAndMaybeFree(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -185,15 +185,15 @@ undefined4 * TNavyBoyView::DestructTNavyBoyViewAndMaybeFree(void)
   puStack_8 = &LAB_00630a3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_0064e3e8;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0064e3e8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 

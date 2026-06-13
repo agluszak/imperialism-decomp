@@ -1,5 +1,6 @@
 category|datatype|kind|header
 /|/CityDialogController|structure|root_types.h
+/|/CString|structure|root_types.h
 /|/IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct|structure|root_types.h
 /|/IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryUnion|union|root_types.h
 /|/InputState|structure|root_types.h
@@ -19,6 +20,7 @@ category|datatype|kind|header
 /|/TControlSeaZoneMission|structure|root_types.h
 /|/TCountry|structure|root_types.h
 /|/TDeluxeText|structure|root_types.h
+/|/TEventHandler|structure|root_types.h
 /|/THQButton|structure|root_types.h
 /|/TIndexAndRankList|structure|root_types.h
 /|/TMacViewMgr|structure|root_types.h

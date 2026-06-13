@@ -57,7 +57,7 @@ TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState
   int iVar3;
   char cVar4;
   short sVar5;
-  undefined4 *puVar6;
+  TView *this;
   undefined4 unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
@@ -68,27 +68,27 @@ TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState
   puStack_8 = &LAB_0063935a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar6 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (puVar6 == (undefined4 *)0x0) {
-    puVar6 = (undefined4 *)0x0;
+  if (this == (TView *)0x0) {
+    this = (TView *)0x0;
   }
   else {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar6 = &PTR_LAB_0066e2f8;
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0066e2f8;
   }
   uVar1 = *(undefined2 *)(param_1 + 0x10);
   uVar2 = *(undefined2 *)(param_1 + 0x12);
   local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent
             (*(undefined4 *)(param_2 + 0x40),param_2,param_3,param_1 + 8,5,5,0);
-  *(undefined2 *)((int)puVar6 + 0x62) = uVar2;
-  *(undefined2 *)(puVar6 + 0x18) = uVar1;
+  *(undefined2 *)((int)&this[1].vftable + 2) = uVar2;
+  *(undefined2 *)&this[1].vftable = uVar1;
   iVar3 = *(int *)g_pNationInteractionStateManager;
   sVar5 = UiRuntimeContext::GetActiveNationId();
   cVar4 = (**(code **)(iVar3 + 0x78))((int)*(short *)(param_1 + 0x10),(int)sVar5);
   if (cVar4 != '\0') {
-    LoadUiStringByGroupAndIndexToControlObject(0x2740,3,puVar6);
+    LoadUiStringByGroupAndIndexToControlObject(0x2740,3,this);
   }
   *unaff_FS_OFFSET = unaff_EBX;
   return;
@@ -98,11 +98,11 @@ TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState
 // GHIDRA_NAME TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree
 // GHIDRA_PROTO undefined DestructTTradeOfferNationLineAndMaybeFree()
 
-undefined4 __thiscall
-TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall
+TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

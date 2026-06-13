@@ -1710,10 +1710,10 @@ undefined4 * __fastcall TCivToolbar::ConstructTCivToolbarBaseState(undefined4 *p
 // GHIDRA_NAME TCivToolbar::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-undefined4 __thiscall TCivToolbar::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TView * __thiscall TCivToolbar::_scalar_deleting_destructor_(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }
@@ -2382,9 +2382,9 @@ bool __thiscall TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
   int iVar5;
   int *piVar6;
   code *pcVar7;
-  int *piVar8;
-  int iVar9;
-  code *pcVar10;
+  TView *this;
+  int iVar8;
+  code *pcVar9;
   undefined4 *unaff_FS_OFFSET;
   int *in_stack_00000014;
   code *local_5c;
@@ -2410,38 +2410,38 @@ bool __thiscall TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
   }
   thunk_BuildUiTextStyleDescriptor();
   if ((short)local_5c == 0) {
-    iVar9 = *g_pUiViewManager;
+    iVar8 = *g_pUiViewManager;
   }
   else {
     (**(code **)(*g_pUiViewManager + 0x30))();
-    iVar9 = *g_pUiViewManager;
+    iVar8 = *g_pUiViewManager;
   }
-  piVar4 = (int *)(**(code **)(iVar9 + 0x28))();
+  piVar4 = (int *)(**(code **)(iVar8 + 0x28))();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  iVar9 = *piVar4;
-  (**(code **)(iVar9 + 0x1a0))();
-  iVar5 = (**(code **)(iVar9 + 0x1b8))();
+  iVar8 = *piVar4;
+  (**(code **)(iVar8 + 0x1a0))();
+  iVar5 = (**(code **)(iVar8 + 0x1b8))();
   if (iVar5 != 0) {
     *(undefined4 *)(iVar5 + 0x14) = 0x6f6b6179;
   }
   (**(code **)(*param_1 + 0x44))();
-  (**(code **)(iVar9 + 0xf0))();
-  pcVar1 = *(code **)(iVar9 + 0x94);
+  (**(code **)(iVar8 + 0xf0))();
+  pcVar1 = *(code **)(iVar8 + 0x94);
   piVar6 = (int *)(*pcVar1)();
-  iVar9 = *piVar6;
+  iVar8 = *piVar6;
   piStack_8 = piVar6;
-  (**(code **)(iVar9 + 0xc))();
+  (**(code **)(iVar8 + 0xc))();
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  (**(code **)(iVar9 + 0x1c8))();
+  (**(code **)(iVar8 + 0x1c8))();
   piVar6 = (int *)(*pcVar1)();
-  iVar9 = *piVar6;
-  (**(code **)(iVar9 + 0xc))();
+  iVar8 = *piVar6;
+  (**(code **)(iVar8 + 0xc))();
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
@@ -2449,59 +2449,59 @@ bool __thiscall TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
   sVar2 = UiRuntimeContext::GetActiveNationId();
   if ((sVar2 < 0) || (sVar2 = UiRuntimeContext::GetActiveNationId(), 6 < sVar2)) {
     sVar2 = 0;
-    (**(code **)(iVar9 + 0xa4))();
+    (**(code **)(iVar8 + 0xa4))();
   }
   else {
     sVar2 = 0;
     UiRuntimeContext::GetActiveNationId();
-    (**(code **)(iVar9 + 0x1c8))();
+    (**(code **)(iVar8 + 0x1c8))();
   }
   piVar6 = (int *)(*pcVar1)();
-  iVar9 = *piVar6;
-  (**(code **)(iVar9 + 0xc))();
+  iVar8 = *piVar6;
+  (**(code **)(iVar8 + 0xc))();
   pcVar7 = (code *)(iStack_1c + 0x252a);
-  (**(code **)(iVar9 + 0x1c8))(pcVar7,0);
+  (**(code **)(iVar8 + 0x1c8))(pcVar7,0);
   piVar6 = (int *)(*pcVar1)(0x72657761);
-  iVar9 = *piVar6;
-  (**(code **)(iVar9 + 0xc))();
+  iVar8 = *piVar6;
+  (**(code **)(iVar8 + 0xc))();
   iVar5 = 0;
-  (**(code **)(iVar9 + 0x1c8))();
+  (**(code **)(iVar8 + 0x1c8))();
   piVar6 = (int *)(*pcVar1)(0x696e666f);
-  iVar9 = *piVar6;
-  (**(code **)(iVar9 + 0xc))();
-  (**(code **)(iVar9 + 500))(uStack_40,local_3c);
-  (**(code **)(iVar9 + 0x1e4))(&stack0xffffff68,0);
+  iVar8 = *piVar6;
+  (**(code **)(iVar8 + 0xc))();
+  (**(code **)(iVar8 + 500))(uStack_40,local_3c);
+  (**(code **)(iVar8 + 0x1e4))(&stack0xffffff68,0);
   sVar3 = TTEView::DestructTTEViewAndMaybeFree();
-  pcVar10 = pcVar1;
+  pcVar9 = pcVar1;
   if (piVar6[0xe] < (int)sVar3) {
-    (**(code **)(iVar9 + 300))(&stack0xffffff6c);
-    (**(code **)(iVar9 + 0x168))(&stack0xffffff68,0);
+    (**(code **)(iVar8 + 300))(&stack0xffffff6c);
+    (**(code **)(iVar8 + 0x168))(&stack0xffffff68,0);
     if (piVar6[0xe] < (int)sVar3) {
-      piVar8 = (int *)AllocateWithFallbackHandler(0x68);
-      if (piVar8 == (int *)0x0) {
-        piVar8 = (int *)0x0;
-        pcVar10 = pcVar7;
+      this = (TView *)AllocateWithFallbackHandler(0x68);
+      if (this == (TView *)0x0) {
+        this = (TView *)0x0;
+        pcVar9 = pcVar7;
       }
       else {
-        TView::thunk_ConstructTViewBaseState();
-        *piVar8 = (int)&PTR_LAB_006417e0;
-        pcVar10 = pcVar7;
+        TView::thunk_ConstructTViewBaseState(this);
+        this->vftable = &PTR_LAB_006417e0;
+        pcVar9 = pcVar7;
       }
       TScrollView::ConstructTScrollViewBaseState(uStack_48,piVar6 + 9,piVar6 + 0xd);
-      (**(code **)(*piVar8 + 0xdc))(0);
+      (**(code **)((int)this->vftable + 0xdc))(0);
       (**(code **)(iVar5 + 0x174))(piVar6);
-      (**(code **)(*piVar8 + 0x170))(piVar6,0);
+      (**(code **)((int)this->vftable + 0x170))(piVar6,0);
       (*local_5c)(&stack0xffffff5c,0);
-      piVar8[0x18] = (int)piVar6;
+      this[1].vftable = piVar6;
       SyncBoundedValueAndToggleControlStates();
     }
   }
   if ((char)uStack_40 != '\0') {
-    piVar6 = (int *)(*pcVar10)(0x636e636c);
-    iVar9 = *piVar6;
-    (**(code **)(iVar9 + 0xc))();
-    (**(code **)(iVar9 + 0xa4))(1,1);
-    (**(code **)(iVar9 + 0xa8))(1,0);
+    piVar6 = (int *)(*pcVar9)(0x636e636c);
+    iVar8 = *piVar6;
+    (**(code **)(iVar8 + 0xc))();
+    (**(code **)(iVar8 + 0xa4))(1,1);
+    (**(code **)(iVar8 + 0xa8))(1,0);
   }
   if (*(int *)(g_pLocalizationTable + 0x44) != 0) {
     uStack_40._0_1_ = *(char *)((int)g_pGameFlowState + 0x68);
@@ -2511,10 +2511,10 @@ bool __thiscall TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
     (**(code **)(*g_pSfxPlaybackSystem + 0xb8))
               (*(undefined2 *)(&stack0xffffff7c + iStack_58 * 2),0,1);
   }
-  iVar9 = *piVar4;
-  iVar5 = (**(code **)(iVar9 + 0x1ac))();
-  (**(code **)(iVar9 + 0xa0))();
-  (**(code **)(iVar9 + 0x1c))();
+  iVar8 = *piVar4;
+  iVar5 = (**(code **)(iVar8 + 0x1ac))();
+  (**(code **)(iVar8 + 0xa0))();
+  (**(code **)(iVar8 + 0x1c))();
   if (*(int *)(g_pLocalizationTable + 0x44) != 0) {
     *(char *)((int)g_pGameFlowState + 0x68) = (char)uStack_40;
   }

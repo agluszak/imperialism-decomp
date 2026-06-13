@@ -59,11 +59,10 @@ undefined4 * __fastcall TDipDlgCluster::ConstructTDipDlgClusterBaseState(undefin
 // GHIDRA_NAME TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree
 // GHIDRA_PROTO undefined DestructTDipDlgClusterAndMaybeFree()
 
-undefined4 __thiscall
-TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState();
+  TView::thunk_DestructTViewBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

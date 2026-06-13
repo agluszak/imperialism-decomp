@@ -65,13 +65,13 @@ _ConstructTArmyToolbarBaseState__YIPAUArmyToolbarState___Z_imperialismsrcgameTAr
 // GHIDRA_NAME TArmyToolbar::?DestructTArmyToolbarAndMaybeFree@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@HE@Z
 // GHIDRA_PROTO undefined ?DestructTArmyToolbarAndMaybeFree@@YIPAUArmyToolbarState@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@PAU12@HE@Z()
 
-undefined4 __thiscall
+TView * __thiscall
 TArmyToolbar::
 _DestructTArmyToolbarAndMaybeFree__YIPAUArmyToolbarState___Z_imperialismsrcgameTArmyToolbar_cpp126722299__PAU12_HE_Z
-          (undefined4 param_1,byte param_2)
+          (TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

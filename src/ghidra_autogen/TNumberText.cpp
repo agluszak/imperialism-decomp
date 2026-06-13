@@ -7,12 +7,11 @@
 // GHIDRA_NAME TNumberText::CreateTNumberTextInstance
 // GHIDRA_PROTO undefined CreateTNumberTextInstance()
 
-undefined4 * TNumberText::CreateTNumberTextInstance(void)
+TView * TNumberText::CreateTNumberTextInstance(void)
 
 {
-  undefined4 *puVar1;
-  int iVar2;
-  undefined4 uVar3;
+  TView *this;
+  int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -22,47 +21,47 @@ undefined4 * TNumberText::CreateTNumberTextInstance(void)
   puStack_8 = &LAB_0062f22d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (TView *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *(undefined1 *)(puVar1 + 0x19) = 0;
-    puVar1[0x18] = 1;
-    puVar1[0x1a] = 0;
-    puVar1[0x1b] = 0;
-    puVar1[0x1c] = 0;
-    puVar1[0x1d] = 0;
-    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    *(undefined1 *)&this[1].field04 = 0;
+    this[1].vftable = (void *)0x1;
+    this[1].padding_08_to_0b = 0;
+    this[1].field0c = 0;
+    this[1].field10 = 0;
+    this[1].field14 = 0;
+    this[1].field18 = g_nUiResourceEntryDefaultParam0;
+    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4._0_1_ = 1;
-    puVar1[0x21] = 0;
-    puVar1[0x22] = 0xffffffff;
-    puVar1[0x23] = 0;
-    *(undefined2 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &TStaticText::_vftable_;
-    puVar1[0x18] = 0xd;
-    iVar2 = AllocateWithFallbackHandler(4);
+    this[1].ownerOffsetX = 0;
+    this[1].ownerOffsetY = -1;
+    this[1].field2c = 0;
+    *(undefined2 *)&this[1].field30 = 0;
+    this->vftable = &TStaticText::_vftable_;
+    this[1].vftable = (void *)0xd;
+    iVar1 = AllocateWithFallbackHandler(4);
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (iVar2 == 0) {
-      uVar3 = 0;
+    if (iVar1 == 0) {
+      iVar1 = 0;
     }
     else {
-      uVar3 = InitializeSharedStringRefFromEmpty();
+      iVar1 = InitializeSharedStringRefFromEmpty();
     }
-    puVar1[0x21] = uVar3;
-    puVar1[0x25] = 0;
-    puVar1[0x26] = 0;
-    *(undefined2 *)(puVar1 + 0x27) = 0xff;
-    puVar1[0x18] = 6;
-    *(undefined1 *)((int)puVar1 + 0x4d) = 0;
-    puVar1[0x28] = 0;
-    *puVar1 = &PTR_thunk_NumericEntryMethod_00406d0c_0063e8b0;
+    this[1].ownerOffsetX = iVar1;
+    this[1].field34 = 0;
+    this[1].field38 = 0;
+    *(undefined2 *)&this[1].field3c = 0xff;
+    this[1].vftable = (void *)0x6;
+    this->flag4d = 0;
+    this[1].padding_40_to_43 = 0;
+    this->vftable = &PTR_thunk_NumericEntryMethod_00406d0c_0063e8b0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491040

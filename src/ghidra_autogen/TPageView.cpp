@@ -48,10 +48,10 @@ TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0(undefined4 *param_1
 // GHIDRA_NAME TPageView::CreateTPageViewInstance
 // GHIDRA_PROTO undefined CreateTPageViewInstance()
 
-undefined4 * TPageView::CreateTPageViewInstance(void)
+TView * TPageView::CreateTPageViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -61,20 +61,20 @@ undefined4 * TPageView::CreateTPageViewInstance(void)
   puStack_8 = &LAB_0063623a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  this = (TView *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_0065e270;
-    puVar1[0x1f] = 0;
-    puVar1[0x20] = 0;
-    *(undefined2 *)((int)puVar1 + 0x62) = 0xffff;
-    *(undefined2 *)(puVar1 + 0x19) = 1;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_0065e270;
+    this[1].controlTag = 0;
+    this[1].ownerContext = (TView *)0x0;
+    *(undefined2 *)((int)&this[1].vftable + 2) = 0xffff;
+    *(undefined2 *)&this[1].field04 = 1;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F9A0
@@ -91,15 +91,15 @@ undefined ** TPageView::GetTPageViewClassNamePointer(void)
 // GHIDRA_NAME TPageView::ConstructTPageViewBaseState
 // GHIDRA_PROTO undefined ConstructTPageViewBaseState()
 
-undefined4 * __fastcall TPageView::ConstructTPageViewBaseState(undefined4 *param_1)
+TView * __fastcall TPageView::ConstructTPageViewBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_0065e270;
-  param_1[0x1f] = 0;
-  param_1[0x20] = 0;
-  *(undefined2 *)((int)param_1 + 0x62) = 0xffff;
-  *(undefined2 *)(param_1 + 0x19) = 1;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_0065e270;
+  param_1[1].controlTag = 0;
+  param_1[1].ownerContext = (TView *)0x0;
+  *(undefined2 *)((int)&param_1[1].vftable + 2) = 0xffff;
+  *(undefined2 *)&param_1[1].field04 = 1;
   return param_1;
 }
 
@@ -107,10 +107,10 @@ undefined4 * __fastcall TPageView::ConstructTPageViewBaseState(undefined4 *param
 // GHIDRA_NAME TPageView::DestructTPageViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTPageViewAndMaybeFree()
 
-undefined4 __thiscall TPageView::DestructTPageViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TPageView::DestructTPageViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

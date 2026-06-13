@@ -7,10 +7,10 @@
 // GHIDRA_NAME TTradeBookView::CreateTTradeBookViewInstance
 // GHIDRA_PROTO undefined CreateTTradeBookViewInstance()
 
-undefined4 * TTradeBookView::CreateTTradeBookViewInstance(void)
+TView * TTradeBookView::CreateTTradeBookViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,18 +20,18 @@ undefined4 * TTradeBookView::CreateTTradeBookViewInstance(void)
   puStack_8 = &LAB_006394aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x78);
+  this = (TView *)AllocateWithFallbackHandler(0x78);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_00640b50;
-    puVar1[0x18] = 0;
-    puVar1[0x19] = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_00640b50;
+    this[1].vftable = (void *)0x0;
+    this[1].field04 = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDED0

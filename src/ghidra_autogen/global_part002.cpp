@@ -296,11 +296,10 @@ void thunk_UpdateUiResourceContextMetricWord27(undefined2 param_1)
 // GHIDRA_NAME thunk_ConstructUiTextResourceEntryBase
 // GHIDRA_PROTO undefined thunk_ConstructUiTextResourceEntryBase()
 
-undefined4 * __fastcall TStaticText::thunk_ConstructUiTextResourceEntryBase(undefined4 *param_1)
+TView * __fastcall TStaticText::thunk_ConstructUiTextResourceEntryBase(TView *param_1)
 
 {
   int iVar1;
-  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -310,32 +309,32 @@ undefined4 * __fastcall TStaticText::thunk_ConstructUiTextResourceEntryBase(unde
   puStack_8 = &LAB_0062f023;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructTViewBaseState();
-  param_1[0x18] = 1;
-  *(undefined1 *)(param_1 + 0x19) = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
-  param_1[0x1c] = 0;
-  param_1[0x1d] = 0;
-  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
-  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
-  *(ushort *)(param_1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1[1].vftable = (void *)0x1;
+  *(undefined1 *)&param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
+  param_1[1].field10 = 0;
+  param_1[1].field14 = 0;
+  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
+  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
+  *(ushort *)&param_1[1].ownerContext = g_wUiResourceEntryDefaultParam2;
   uStack_4 = 0;
-  param_1[0x21] = 0;
-  param_1[0x22] = 0xffffffff;
-  param_1[0x23] = 0;
-  *(undefined2 *)(param_1 + 0x24) = 0;
-  *param_1 = &_vftable_;
-  param_1[0x18] = 0xd;
+  param_1[1].ownerOffsetX = 0;
+  param_1[1].ownerOffsetY = -1;
+  param_1[1].field2c = 0;
+  *(undefined2 *)&param_1[1].field30 = 0;
+  param_1->vftable = &_vftable_;
+  param_1[1].vftable = (void *)0xd;
   iVar1 = AllocateWithFallbackHandler(4);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   if (iVar1 == 0) {
-    uVar2 = 0;
+    iVar1 = 0;
   }
   else {
-    uVar2 = InitializeSharedStringRefFromEmpty();
+    iVar1 = InitializeSharedStringRefFromEmpty();
   }
-  param_1[0x21] = uVar2;
+  param_1[1].ownerOffsetX = iVar1;
   *unaff_FS_OFFSET = uStack_c;
   return param_1;
 }
@@ -680,7 +679,7 @@ LAB_005dfe2e:
 // GHIDRA_NAME thunk_ConstructUiWindowResourceEntryType4B340
 // GHIDRA_PROTO undefined thunk_ConstructUiWindowResourceEntryType4B340()
 
-undefined4 * __fastcall TControl::thunk_ConstructUiWindowResourceEntryType4B340(undefined4 *param_1)
+TView * __fastcall TControl::thunk_ConstructUiWindowResourceEntryType4B340(TView *param_1)
 
 {
   int iVar1;
@@ -696,11 +695,11 @@ undefined4 * __fastcall TControl::thunk_ConstructUiWindowResourceEntryType4B340(
   puStack_8 = &LAB_0062f333;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructTViewBaseState();
+  TView::thunk_ConstructTViewBaseState(param_1);
   uStack_4 = 0;
   TDialogBehavior::ConstructTDialogBehaviorBaseState();
-  param_1[0x26] = 0;
-  *param_1 = &PTR_LAB_00649e58;
+  param_1[1].field38 = 0;
+  param_1->vftable = &PTR_LAB_00649e58;
   iVar1 = (int)DAT_006a1a44;
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   piVar4 = DAT_006a1a50;
@@ -733,9 +732,9 @@ undefined4 * __fastcall TControl::thunk_ConstructUiWindowResourceEntryType4B340(
   DAT_006a1a48 = piVar2;
   DAT_006a1a44 = piVar4;
   thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
-  param_1[0x1f] = param_1;
-  param_1[0x19] = param_1;
-  *param_1 = &PTR_LAB_0064b340;
+  param_1[1].controlTag = (int)param_1;
+  param_1[1].field04 = (int)param_1;
+  param_1->vftable = &PTR_LAB_0064b340;
   *unaff_FS_OFFSET = uStack_c;
   return param_1;
 }
@@ -2975,9 +2974,9 @@ void thunk_HandleTurnEventVtableSlot24CopyPayloadBuffer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405C72
 // GHIDRA_NAME thunk_DestructEngineerDialogBaseState
-// GHIDRA_PROTO undefined thunk_DestructEngineerDialogBaseState()
+// GHIDRA_PROTO void __thiscall thunk_DestructEngineerDialogBaseState(void)
 
-void __fastcall TView::thunk_DestructEngineerDialogBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_DestructEngineerDialogBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2988,15 +2987,15 @@ void __fastcall TView::thunk_DestructEngineerDialogBaseState(undefined4 *param_1
   puStack_8 = &LAB_0062ec23;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   uStack_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = uStack_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -6338,9 +6337,9 @@ void TToolBarCluster::thunk_InitializeTurnOrderNavigationDialogByViewportSize(vo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004064E2
 // GHIDRA_NAME thunk_ConstructTViewBaseState
-// GHIDRA_PROTO undefined thunk_ConstructTViewBaseState()
+// GHIDRA_PROTO void __thiscall thunk_ConstructTViewBaseState(void)
 
-undefined4 * __fastcall TView::thunk_ConstructTViewBaseState(undefined4 *param_1)
+void __thiscall TView::thunk_ConstructTViewBaseState(TView *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -6351,28 +6350,28 @@ undefined4 * __fastcall TView::thunk_ConstructTViewBaseState(undefined4 *param_1
   puStack_8 = &LAB_0062ebf8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  param_1[3] = 0;
-  param_1[4] = 0x7fffffff;
-  param_1[5] = 0;
-  param_1[6] = 0;
-  *param_1 = &TEventHandler::_vftable_;
-  param_1[8] = 0;
-  param_1[0xb] = 0;
-  param_1[0xc] = 0;
+  this->field0c = 0;
+  this->field10 = 0x7fffffff;
+  this->field14 = 0;
+  this->field18 = 0;
+  this->vftable = &TEventHandler::_vftable_;
+  this->ownerContext = (TView *)0x0;
+  this->field2c = 0;
+  this->field30 = 0;
   uStack_4 = 0;
-  param_1[0xf] = 0;
-  param_1[0x11] = 0;
-  param_1[0x12] = 0;
-  *(undefined1 *)(param_1 + 0x13) = 1;
-  *(undefined1 *)((int)param_1 + 0x4d) = 1;
-  *(undefined2 *)((int)param_1 + 0x4e) = 0xffff;
-  param_1[0x14] = 0;
-  *(undefined2 *)(param_1 + 0x15) = 1;
+  this->field3c = 0;
+  this->field44 = 0;
+  this->field48 = 0;
+  this->flag4c = 1;
+  this->flag4d = 1;
+  this->field4e = -1;
+  this->field50 = 0;
+  this->field54 = 1;
   InitializeSharedStringRefFromEmpty();
-  param_1[0x17] = 0;
-  *param_1 = &_vftable_;
+  this->field5c = 0;
+  this->vftable = &_vftable_;
   *unaff_FS_OFFSET = uStack_c;
-  return param_1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406514
@@ -8719,12 +8718,12 @@ LAB_00564364:
 // GHIDRA_NAME thunk_ConstructTurnEventUiEntryBase
 // GHIDRA_PROTO undefined thunk_ConstructTurnEventUiEntryBase()
 
-undefined4 * __fastcall TControl::thunk_ConstructTurnEventUiEntryBase(undefined4 *param_1)
+TView * __fastcall TControl::thunk_ConstructTurnEventUiEntryBase(TView *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
   int iStack_14;
-  undefined4 *puStack_10;
+  TView *pTStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -8733,22 +8732,22 @@ undefined4 * __fastcall TControl::thunk_ConstructTurnEventUiEntryBase(undefined4
   puStack_8 = &LAB_0062ed5b;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puStack_10 = param_1;
-  TView::thunk_ConstructTViewBaseState();
+  pTStack_10 = param_1;
+  TView::thunk_ConstructTViewBaseState(param_1);
   uStack_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  param_1[0x19] = 0;
-  param_1[0x1a] = 0;
+  param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
   uStack_4._0_1_ = 1;
-  *param_1 = &PTR_LAB_00649c60;
-  *(undefined2 *)(param_1 + 0x18) = 0xffff;
+  param_1->vftable = &PTR_LAB_00649c60;
+  *(undefined2 *)&param_1[1].vftable = 0xffff;
   TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
   uStack_4._0_1_ = 2;
-  AssignFromPtr(param_1 + 0x1b,&iStack_14);
+  AssignFromPtr(&param_1[1].field0c,&iStack_14);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  *(undefined2 *)(param_1 + 0x1c) = 1;
-  param_1[1] = 0;
+  *(undefined2 *)&param_1[1].field10 = 1;
+  param_1->field04 = 0;
   *unaff_FS_OFFSET = uStack_c;
   return param_1;
 }
@@ -9516,7 +9515,7 @@ LAB_0055b160:
 // GHIDRA_NAME thunk_ConstructUiWindowResourceEntryBase
 // GHIDRA_PROTO undefined thunk_ConstructUiWindowResourceEntryBase()
 
-undefined4 * __fastcall TControl::thunk_ConstructUiWindowResourceEntryBase(undefined4 *param_1)
+TView * __fastcall TControl::thunk_ConstructUiWindowResourceEntryBase(TView *param_1)
 
 {
   int iVar1;
@@ -9532,11 +9531,11 @@ undefined4 * __fastcall TControl::thunk_ConstructUiWindowResourceEntryBase(undef
   puStack_8 = &LAB_0062ede3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructTViewBaseState();
+  TView::thunk_ConstructTViewBaseState(param_1);
   uStack_4 = 0;
   TDialogBehavior::ConstructTDialogBehaviorBaseState();
-  param_1[0x26] = 0;
-  *param_1 = &PTR_LAB_00649e58;
+  param_1[1].field38 = 0;
+  param_1->vftable = &PTR_LAB_00649e58;
   iVar1 = (int)DAT_006a1a44;
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   piVar4 = DAT_006a1a50;
@@ -9569,8 +9568,8 @@ undefined4 * __fastcall TControl::thunk_ConstructUiWindowResourceEntryBase(undef
   DAT_006a1a48 = piVar2;
   DAT_006a1a44 = piVar4;
   thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
-  param_1[0x1f] = param_1;
-  param_1[0x19] = param_1;
+  param_1[1].controlTag = (int)param_1;
+  param_1[1].field04 = (int)param_1;
   *unaff_FS_OFFSET = uStack_c;
   return param_1;
 }

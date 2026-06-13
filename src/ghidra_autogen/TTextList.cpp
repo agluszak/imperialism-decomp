@@ -7,10 +7,10 @@
 // GHIDRA_NAME TTextList::CreateTTextListInstance
 // GHIDRA_PROTO undefined CreateTTextListInstance()
 
-undefined4 * TTextList::CreateTTextListInstance(void)
+TView * TTextList::CreateTTextListInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,20 +20,21 @@ undefined4 * TTextList::CreateTTextListInstance(void)
   puStack_8 = &LAB_00636bda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1070);
+  this = (TView *)AllocateWithFallbackHandler(0x1070);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &g_vtblTTextList;
-    *(undefined2 *)(puVar1 + 0x41b) = 0x10;
-    puVar1[0x418] = 0;
-    puVar1[0x419] = 0;
-    puVar1[0x41a] = 0xffffffff;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &g_vtblTTextList;
+    this[0x2b].flag4c = 0x10;
+    this[0x2b].flag4d = 0;
+    this[0x2b].padding_40_to_43 = 0;
+    this[0x2b].field44 = 0;
+    this[0x2b].field48 = -1;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AC30

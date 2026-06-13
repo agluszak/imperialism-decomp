@@ -2100,11 +2100,11 @@ void __fastcall RefreshCityDialogSummaryValues(int *param_1)
 // GHIDRA_NAME AllocateUiResourceEntryWithInvalidateGuard_004bcf40
 // GHIDRA_PROTO undefined AllocateUiResourceEntryWithInvalidateGuard_004bcf40()
 
-undefined4 * AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
+TView * AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -2114,30 +2114,30 @@ undefined4 * AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
   puStack_8 = &LAB_006310d2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &PTR_LAB_0064be28;
+    this->vftable = &PTR_LAB_0064be28;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    *puVar1 = &PTR_LAB_0064fe78;
-    puVar2 = puVar1;
+    this->vftable = &PTR_LAB_0064fe78;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD300
 // GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At004bd300
 // GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At004bd300()
 
-undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At004bd300(void)
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At004bd300(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -2147,16 +2147,16 @@ undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At004bd300(void)
   puStack_8 = &LAB_006310fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_00650078;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_00650078;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD3E0
@@ -2284,11 +2284,11 @@ void __fastcall CommitCityDialogMinisterValues(int *param_1)
 // GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0
 // GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0()
 
-undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0(void)
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TView *this;
+  TView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -2298,16 +2298,16 @@ undefined4 * Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0(void)
   puStack_8 = &LAB_0063113a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
+  this = (TView *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_00650270;
-    puVar2 = puVar1;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_00650270;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD880
@@ -11736,10 +11736,10 @@ void HandleArmoryViewCloseAndMaybePostCommand23F8(void)
 // GHIDRA_NAME CreateEngineerDialog
 // GHIDRA_PROTO undefined CreateEngineerDialog()
 
-undefined4 * CreateEngineerDialog(void)
+TView * CreateEngineerDialog(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -11749,33 +11749,33 @@ undefined4 * CreateEngineerDialog(void)
   puStack_8 = &LAB_00631a8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x6c);
+  this = (TView *)AllocateWithFallbackHandler(0x6c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_thunk_GetEngineerDialogClassName_00652d60;
-    puVar1[0x18] = 0;
-    puVar1[0x19] = 0;
-    puVar1[0x1a] = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_thunk_GetEngineerDialogClassName_00652d60;
+    this[1].vftable = (void *)0x0;
+    this[1].field04 = 0;
+    this[1].padding_08_to_0b = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0560
 // GHIDRA_NAME ConstructEngineerDialog
 // GHIDRA_PROTO undefined ConstructEngineerDialog()
 
-undefined4 * __fastcall ConstructEngineerDialog(undefined4 *param_1)
+TView * __fastcall ConstructEngineerDialog(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_thunk_GetEngineerDialogClassName_00652d60;
-  param_1[0x18] = 0;
-  param_1[0x19] = 0;
-  param_1[0x1a] = 0;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_thunk_GetEngineerDialogClassName_00652d60;
+  param_1[1].vftable = (void *)0x0;
+  param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
   return param_1;
 }
 

@@ -75,13 +75,13 @@ TScroller::ConstructTScrollerBaseState
 // GHIDRA_NAME TScroller::DestructTScrollerAndMaybeFree
 // GHIDRA_PROTO undefined DestructTScrollerAndMaybeFree()
 
-undefined4 * TScroller::DestructTScrollerAndMaybeFree(void)
+TView * TScroller::DestructTScrollerAndMaybeFree(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   int local_14;
-  undefined4 *local_10;
+  TView *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -90,29 +90,29 @@ undefined4 * TScroller::DestructTScrollerAndMaybeFree(void)
   puStack_8 = &LAB_0062ed25;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x74);
+  this = (TView *)AllocateWithFallbackHandler(0x74);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    local_10 = puVar1;
-    TView::thunk_ConstructTViewBaseState();
+  if (this != (TView *)0x0) {
+    local_10 = this;
+    TView::thunk_ConstructTViewBaseState(this);
     local_4._0_1_ = 1;
     InitializeSharedStringRefFromEmpty();
-    puVar1[0x19] = 0;
-    puVar1[0x1a] = 0;
+    this[1].field04 = 0;
+    this[1].padding_08_to_0b = 0;
     local_4._0_1_ = 2;
-    *puVar1 = &PTR_LAB_00649c60;
-    *(undefined2 *)(puVar1 + 0x18) = 0xffff;
+    this->vftable = &PTR_LAB_00649c60;
+    *(undefined2 *)&this[1].vftable = 0xffff;
     TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
     local_4._0_1_ = 3;
-    AssignFromPtr(puVar1 + 0x1b,&local_14);
+    AssignFromPtr(&this[1].field0c,&local_14);
     local_4 = CONCAT31(local_4._1_3_,2);
     ReleaseSharedStringRefIfNotEmpty();
-    *(undefined2 *)(puVar1 + 0x1c) = 1;
-    puVar1[1] = 0;
+    *(undefined2 *)&this[1].field10 = 1;
+    this->field04 = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 

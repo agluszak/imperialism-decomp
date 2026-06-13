@@ -7,12 +7,11 @@
 // GHIDRA_NAME TEditText::CreateTEditTextInstance
 // GHIDRA_PROTO undefined CreateTEditTextInstance()
 
-undefined4 * TEditText::CreateTEditTextInstance(void)
+TView * TEditText::CreateTEditTextInstance(void)
 
 {
-  undefined4 *puVar1;
-  int iVar2;
-  undefined4 uVar3;
+  TView *this;
+  int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -22,46 +21,46 @@ undefined4 * TEditText::CreateTEditTextInstance(void)
   puStack_8 = &LAB_0062f13d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TView *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *(undefined1 *)(puVar1 + 0x19) = 0;
-    puVar1[0x18] = 1;
-    puVar1[0x1a] = 0;
-    puVar1[0x1b] = 0;
-    puVar1[0x1c] = 0;
-    puVar1[0x1d] = 0;
-    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
-    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    *(undefined1 *)&this[1].field04 = 0;
+    this[1].vftable = (void *)0x1;
+    this[1].padding_08_to_0b = 0;
+    this[1].field0c = 0;
+    this[1].field10 = 0;
+    this[1].field14 = 0;
+    this[1].field18 = g_nUiResourceEntryDefaultParam0;
+    this[1].controlTag = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4._0_1_ = 1;
-    puVar1[0x21] = 0;
-    puVar1[0x22] = 0xffffffff;
-    puVar1[0x23] = 0;
-    *(undefined2 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &TStaticText::_vftable_;
-    puVar1[0x18] = 0xd;
-    iVar2 = AllocateWithFallbackHandler(4);
+    this[1].ownerOffsetX = 0;
+    this[1].ownerOffsetY = -1;
+    this[1].field2c = 0;
+    *(undefined2 *)&this[1].field30 = 0;
+    this->vftable = &TStaticText::_vftable_;
+    this[1].vftable = (void *)0xd;
+    iVar1 = AllocateWithFallbackHandler(4);
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (iVar2 == 0) {
-      uVar3 = 0;
+    if (iVar1 == 0) {
+      iVar1 = 0;
     }
     else {
-      uVar3 = InitializeSharedStringRefFromEmpty();
+      iVar1 = InitializeSharedStringRefFromEmpty();
     }
-    puVar1[0x21] = uVar3;
-    puVar1[0x25] = 0;
-    puVar1[0x26] = 0;
-    *(undefined2 *)(puVar1 + 0x27) = 0xff;
-    *puVar1 = &PTR_LAB_0064ad90;
-    puVar1[0x18] = 6;
-    *(undefined1 *)((int)puVar1 + 0x4d) = 0;
+    this[1].ownerOffsetX = iVar1;
+    this[1].field34 = 0;
+    this[1].field38 = 0;
+    *(undefined2 *)&this[1].field3c = 0xff;
+    this->vftable = &PTR_LAB_0064ad90;
+    this[1].vftable = (void *)0x6;
+    this->flag4d = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490380
@@ -84,11 +83,10 @@ undefined ** TEditText::GetTEditTextClassNamePointer(void)
 /* Base constructor for numeric text widgets. Initializes shared style/state fields and allocates an
    auxiliary 4-byte state block before derived numeric vtable install. */
 
-undefined4 * __fastcall TEditText::ConstructUiNumericTextEntryBase(undefined4 *param_1)
+TView * __fastcall TEditText::ConstructUiNumericTextEntryBase(TView *param_1)
 
 {
   int iVar1;
-  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -98,38 +96,38 @@ undefined4 * __fastcall TEditText::ConstructUiNumericTextEntryBase(undefined4 *p
   puStack_8 = &LAB_0062f163;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructTViewBaseState();
-  param_1[0x18] = 1;
-  *(undefined1 *)(param_1 + 0x19) = 0;
-  param_1[0x1a] = 0;
-  param_1[0x1b] = 0;
-  param_1[0x1c] = 0;
-  param_1[0x1d] = 0;
-  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
-  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
-  *(ushort *)(param_1 + 0x20) = g_wUiResourceEntryDefaultParam2;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1[1].vftable = (void *)0x1;
+  *(undefined1 *)&param_1[1].field04 = 0;
+  param_1[1].padding_08_to_0b = 0;
+  param_1[1].field0c = 0;
+  param_1[1].field10 = 0;
+  param_1[1].field14 = 0;
+  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
+  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
+  *(ushort *)&param_1[1].ownerContext = g_wUiResourceEntryDefaultParam2;
   local_4 = 0;
-  param_1[0x21] = 0;
-  param_1[0x22] = 0xffffffff;
-  param_1[0x23] = 0;
-  *(undefined2 *)(param_1 + 0x24) = 0;
-  *param_1 = &TStaticText::_vftable_;
-  param_1[0x18] = 0xd;
+  param_1[1].ownerOffsetX = 0;
+  param_1[1].ownerOffsetY = -1;
+  param_1[1].field2c = 0;
+  *(undefined2 *)&param_1[1].field30 = 0;
+  param_1->vftable = &TStaticText::_vftable_;
+  param_1[1].vftable = (void *)0xd;
   iVar1 = AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,1);
   if (iVar1 == 0) {
-    uVar2 = 0;
+    iVar1 = 0;
   }
   else {
-    uVar2 = InitializeSharedStringRefFromEmpty();
+    iVar1 = InitializeSharedStringRefFromEmpty();
   }
-  param_1[0x21] = uVar2;
-  param_1[0x25] = 0;
-  param_1[0x26] = 0;
-  *(undefined2 *)(param_1 + 0x27) = 0xff;
-  *param_1 = &PTR_LAB_0064ad90;
-  param_1[0x18] = 6;
-  *(undefined1 *)((int)param_1 + 0x4d) = 0;
+  param_1[1].ownerOffsetX = iVar1;
+  param_1[1].field34 = 0;
+  param_1[1].field38 = 0;
+  *(undefined2 *)&param_1[1].field3c = 0xff;
+  param_1->vftable = &PTR_LAB_0064ad90;
+  param_1[1].vftable = (void *)0x6;
+  param_1->flag4d = 0;
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }

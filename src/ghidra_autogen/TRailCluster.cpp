@@ -62,10 +62,10 @@ undefined4 * __fastcall TRailCluster::TRailCluster(undefined4 *param_1)
 // GHIDRA_NAME TRailCluster::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-undefined4 __thiscall TRailCluster::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TView * __thiscall TRailCluster::_scalar_deleting_destructor_(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState();
+  TView::thunk_DestructTViewBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

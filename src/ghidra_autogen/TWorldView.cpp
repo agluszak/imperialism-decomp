@@ -93,10 +93,10 @@ TWorldView::InitializeStrategicMapTileIconStateCache(TWorldView *this,void *pMap
 // GHIDRA_NAME TWorldView::CreateTWorldViewInstance
 // GHIDRA_PROTO undefined CreateTWorldViewInstance()
 
-undefined4 * TWorldView::CreateTWorldViewInstance(void)
+TView * TWorldView::CreateTWorldViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TView *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -106,21 +106,21 @@ undefined4 * TWorldView::CreateTWorldViewInstance(void)
   puStack_8 = &LAB_006381ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x7c);
+  this = (TView *)AllocateWithFallbackHandler(0x7c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TView::thunk_ConstructTViewBaseState();
-    *puVar1 = &PTR_LAB_00668cb0;
-    *(undefined2 *)(puVar1 + 0x1b) = 0;
-    *(undefined2 *)((int)puVar1 + 0x6e) = 0;
-    *(undefined2 *)(puVar1 + 0x1a) = 0;
-    *(undefined2 *)((int)puVar1 + 0x6a) = 0;
-    *(undefined2 *)((int)puVar1 + 0x7a) = 0xffff;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = &PTR_LAB_00668cb0;
+    *(undefined2 *)&this[1].field0c = 0;
+    *(undefined2 *)((int)&this[1].field0c + 2) = 0;
+    *(undefined2 *)&this[1].padding_08_to_0b = 0;
+    *(undefined2 *)((int)&this[1].padding_08_to_0b + 2) = 0;
+    *(undefined2 *)((int)&this[1].field18 + 2) = 0xffff;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TView *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594FE0
@@ -137,16 +137,16 @@ undefined ** TWorldView::GetTWorldViewClassNamePointer(void)
 // GHIDRA_NAME TWorldView::ConstructTWorldViewBaseState
 // GHIDRA_PROTO undefined ConstructTWorldViewBaseState()
 
-undefined4 * __fastcall TWorldView::ConstructTWorldViewBaseState(undefined4 *param_1)
+TView * __fastcall TWorldView::ConstructTWorldViewBaseState(TView *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState();
-  *param_1 = &PTR_LAB_00668cb0;
-  *(undefined2 *)(param_1 + 0x1b) = 0;
-  *(undefined2 *)((int)param_1 + 0x6e) = 0;
-  *(undefined2 *)(param_1 + 0x1a) = 0;
-  *(undefined2 *)((int)param_1 + 0x6a) = 0;
-  *(undefined2 *)((int)param_1 + 0x7a) = 0xffff;
+  TView::thunk_ConstructTViewBaseState(param_1);
+  param_1->vftable = &PTR_LAB_00668cb0;
+  *(undefined2 *)&param_1[1].field0c = 0;
+  *(undefined2 *)((int)&param_1[1].field0c + 2) = 0;
+  *(undefined2 *)&param_1[1].padding_08_to_0b = 0;
+  *(undefined2 *)((int)&param_1[1].padding_08_to_0b + 2) = 0;
+  *(undefined2 *)((int)&param_1[1].field18 + 2) = 0xffff;
   return param_1;
 }
 
@@ -154,10 +154,10 @@ undefined4 * __fastcall TWorldView::ConstructTWorldViewBaseState(undefined4 *par
 // GHIDRA_NAME TWorldView::DestructTWorldViewAndMaybeFree
 // GHIDRA_PROTO undefined DestructTWorldViewAndMaybeFree()
 
-undefined4 __thiscall TWorldView::DestructTWorldViewAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TWorldView::DestructTWorldViewAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }

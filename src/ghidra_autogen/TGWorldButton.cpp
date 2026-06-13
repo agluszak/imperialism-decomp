@@ -60,11 +60,10 @@ undefined4 * __fastcall TGWorldButton::ConstructTGWorldButtonBaseState(undefined
 // GHIDRA_NAME TGWorldButton::DestructTGWorldButtonAndMaybeFree
 // GHIDRA_PROTO undefined DestructTGWorldButtonAndMaybeFree()
 
-undefined4 __thiscall
-TGWorldButton::DestructTGWorldButtonAndMaybeFree(undefined4 param_1,byte param_2)
+TView * __thiscall TGWorldButton::DestructTGWorldButtonAndMaybeFree(TView *param_1,byte param_2)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState();
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
   if ((param_2 & 1) != 0) {
     FreeHeapBufferIfNotNull(param_1);
   }
