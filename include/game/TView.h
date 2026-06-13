@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 #include "game/TEventHandler.h"
 #include "game/CString.h"
+#include "game/TViewNativeWindow.h"
 
 // VTABLE: IMPERIALISM 0x649858
 class TView : public TEventHandler {
@@ -25,7 +26,7 @@ public:
   unsigned char flag4c;
   unsigned char flag4d;
   unsigned short field4e;
-  int field50;
+  TViewNativeWindow* nativeWindow50; // 0x50 — host window (HWND at +0x1c)
   unsigned short field54;
   unsigned char padding_56_to_57[0x02];
   CString sharedStringRef;
@@ -64,13 +65,13 @@ public:
   virtual void vmethod_0030();
   virtual void vmethod_0031();
   virtual void vmethod_0032();
-  virtual void vmethod_0033();
+  virtual void vmethod_0033(int arg);
   virtual void vmethod_0034();
   virtual void vmethod_0035();
   virtual void vmethod_0036();
   virtual class TControl* ResolveControlByTag(unsigned int controlTag);
-  virtual void vmethod_0038();
-  virtual void vmethod_0039();
+  virtual void SwitchActiveChildAndNotify(class TView* child);
+  virtual void DispatchSlot9CToLinkedChildren();
   virtual void CallVoidSlotA0();
   virtual void SetEnabled(int enabledState, int refreshFlag);
   virtual void SetState(int state, int refreshFlag);
@@ -80,12 +81,12 @@ public:
   virtual void vmethod_0046();
   virtual int QuerySelectedIndexSlotBC();
   virtual void vmethod_0048();
-  virtual void vmethod_0049();
-  virtual void vmethod_0050();
-  virtual void vmethod_0051();
-  virtual void vmethod_0052();
+  virtual void ForwardMapViewVirtualC4IfPresent(int param);
+  virtual void ValidateControlRectIfWindowActive(struct RECT* rect);
+  virtual char EvaluateControlInputGate();
+  virtual char HasRenderableParentAndContent();
   virtual void vmethod_0053();
-  virtual void vmethod_0054();
+  virtual void DispatchControlEventToChildrenAndSelf(int eventArg);
   virtual void vmethod_0055(unsigned int styleSeed = 0);
   virtual void vmethod_0056();
   virtual void RefreshControl();
@@ -97,14 +98,14 @@ public:
   virtual void PostRenderSlotFC();
   virtual void vmethod_0064();
   virtual void vmethod_0065();
-  virtual void vmethod_0066();
+  virtual void EnsureField48Buffer();
   virtual void vmethod_0067();
   virtual void ApplyRectSlot110(int* rectBuffer);
   virtual void UpdateAfterBitmapChange(int unknownFlag);
   virtual void vmethod_0070();
   virtual void vmethod_0071();
   virtual void vmethod_0072(int arg1, int arg2, int arg3, int arg4);
-  virtual void vmethod_0073();
+  virtual void vmethod_0073(int arg1, int arg2);
   virtual void QueryContentBounds(int* boundsBuffer);
   virtual void QueryBounds(int* boundsBuffer);
   virtual void vmethod_0076();
@@ -115,23 +116,23 @@ public:
   virtual void vmethod_0081();
   virtual void vmethod_0082();
   virtual void vmethod_0083();
-  virtual void vmethod_0084();
-  virtual void vmethod_0085();
-  virtual void vmethod_0086();
+  virtual void AddControlPosToPoint(int x, int y, int* outPoint);
+  virtual void OffsetRectByCachedPos(struct RECT* inRect, struct RECT* outRect);
+  virtual void GetCachedPosPoint(int* outPoint);
   virtual void vmethod_0087();
   virtual void vmethod_0088();
   virtual void vmethod_0089();
   virtual void ApplyBounds(int* boundsBuffer, int modeFlag);
   virtual char vmethod_0091(void* arg1);
-  virtual void vmethod_0092();
-  virtual void vmethod_0093();
+  virtual void vmethod_0092(class TView* child, int flag);
+  virtual void vmethod_0093(class TView* child);
   virtual void vmethod_0094();
   virtual void vmethod_0095();
-  virtual void vmethod_0096();
-  virtual void vmethod_0097();
-  virtual void vmethod_0098();
-  virtual void vmethod_0099();
-  virtual void vmethod_0100();
+  virtual void vmethod_0096(int arg);
+  virtual void vmethod_0097(int arg);
+  virtual void vmethod_0098(int arg);
+  virtual void vmethod_0099(int arg1, int arg2);
+  virtual void DrawRectangleInCurrentUiContext(int* rect);
   virtual void vmethod_0101();
   virtual void vmethod_0102();
   virtual void vmethod_0103();

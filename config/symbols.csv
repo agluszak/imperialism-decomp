@@ -9048,6 +9048,8 @@ address|name|size|type|prototype
 672eac|TIndexAndRankList::'vftable'||global|
 672eec|CPtrList::'vftable'||global|
 69430c|g_szDecimalFormat||global|
+6950ac|g_McAppUiActiveFlag_006950AC||global|
+6950b0|g_szMcAppUiSourcePath_006950B0||global|
 6950fc|g_Quick_Draw_Color_State_006950FC||global|
 695b50|g_industryActionCostWeightResCode09||global|
 695b70|g_industryActionCostWeightResCode08||global|
@@ -9083,6 +9085,7 @@ address|name|size|type|prototype
 6a141c|g_pUiResourceHead||global|
 6a1420|g_pUiResourceContext||global|
 6a18e0|g_pApplicationUiRootController||global|
+6a1af8|g_McAppUiDrawGate_006A1AF8||global|
 6a1c98|g_pReusableQuickDrawSurfaceListHead||global|
 6a1d08|g_nQuickDrawStrokeStylePrimary||global|
 6a1d0c|g_nQuickDrawStrokeStyleSecondary||global|

@@ -4,7 +4,7 @@
 #include "decomp_types.h"
 
 // ghidra_name IsWindowEnabled
-// ghidra_proto int __cdecl IsWindowEnabled(void)
+// ghidra_proto undefined IsWindowEnabled()
 // FUNCTION: IMPERIALISM 0x00607520
 undefined4 IsWindowEnabled(void)
 {
@@ -12,7 +12,7 @@ undefined4 IsWindowEnabled(void)
 }
 
 // ghidra_name SetFocus
-// ghidra_proto void __cdecl SetFocus(void)
+// ghidra_proto undefined SetFocus()
 // FUNCTION: IMPERIALISM 0x00607562
 undefined4 SetFocus(void)
 {
@@ -20,7 +20,7 @@ undefined4 SetFocus(void)
 }
 
 // ghidra_name CWnd::AttachControlSite_607673
-// ghidra_proto void __thiscall AttachControlSite_607673(void)
+// ghidra_proto undefined AttachControlSite_607673()
 // FUNCTION: IMPERIALISM 0x00607673
 undefined4 AttachControlSite_607673(void)
 {
@@ -28,7 +28,7 @@ undefined4 AttachControlSite_607673(void)
 }
 
 // ghidra_name thunk_RegisterCommctrlDragListMessage
-// ghidra_proto void __cdecl thunk_RegisterCommctrlDragListMessage(void)
+// ghidra_proto undefined thunk_RegisterCommctrlDragListMessage()
 // FUNCTION: IMPERIALISM 0x006076b8
 undefined4 thunk_RegisterCommctrlDragListMessage(void)
 {
@@ -36,7 +36,7 @@ undefined4 thunk_RegisterCommctrlDragListMessage(void)
 }
 
 // ghidra_name RegisterCommctrlDragListMessage
-// ghidra_proto void __cdecl RegisterCommctrlDragListMessage(void)
+// ghidra_proto undefined RegisterCommctrlDragListMessage()
 // FUNCTION: IMPERIALISM 0x006076bd
 undefined4 RegisterCommctrlDragListMessage(void)
 {
@@ -44,7 +44,7 @@ undefined4 RegisterCommctrlDragListMessage(void)
 }
 
 // ghidra_name WrapperFor_E361_At006076ce
-// ghidra_proto void __cdecl WrapperFor_E361_At006076ce(void)
+// ghidra_proto undefined WrapperFor_E361_At006076ce()
 // FUNCTION: IMPERIALISM 0x006076ce
 undefined4 WrapperFor_E361_At006076ce(void)
 {
@@ -52,7 +52,7 @@ undefined4 WrapperFor_E361_At006076ce(void)
 }
 
 // ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
-// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5()
 // FUNCTION: IMPERIALISM 0x006076d3
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 {
@@ -60,7 +60,7 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 }
 
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
+// ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5()
 // FUNCTION: IMPERIALISM 0x006076e5
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
 {
@@ -76,7 +76,7 @@ undefined4 CWnd(void)
 }
 
 // ghidra_name WrapperFor_E367_At0060770c
-// ghidra_proto void __cdecl WrapperFor_E367_At0060770c(void)
+// ghidra_proto undefined WrapperFor_E367_At0060770c()
 // FUNCTION: IMPERIALISM 0x0060770c
 undefined4 WrapperFor_E367_At0060770c(void)
 {
@@ -84,7 +84,7 @@ undefined4 WrapperFor_E367_At0060770c(void)
 }
 
 // ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
-// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()
 // FUNCTION: IMPERIALISM 0x00607711
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 {
@@ -92,7 +92,7 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 }
 
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
+// ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()
 // FUNCTION: IMPERIALISM 0x00607723
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 {
@@ -108,7 +108,7 @@ undefined4 CWnd_00607744(void)
 }
 
 // ghidra_name WrapperFor_E372_At0060774a
-// ghidra_proto void __cdecl WrapperFor_E372_At0060774a(void)
+// ghidra_proto undefined WrapperFor_E372_At0060774a()
 // FUNCTION: IMPERIALISM 0x0060774a
 undefined4 WrapperFor_E372_At0060774a(void)
 {
@@ -116,7 +116,7 @@ undefined4 WrapperFor_E372_At0060774a(void)
 }
 
 // ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761
-// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
+// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761()
 // FUNCTION: IMPERIALISM 0x0060774f
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
 {
@@ -124,7 +124,7 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
 }
 
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
+// ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761()
 // FUNCTION: IMPERIALISM 0x00607761
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
 {
@@ -140,7 +140,7 @@ undefined4 CWnd_00607782(void)
 }
 
 // ghidra_name WrapperFor_E377_At00607788
-// ghidra_proto void __cdecl WrapperFor_E377_At00607788(void)
+// ghidra_proto undefined WrapperFor_E377_At00607788()
 // FUNCTION: IMPERIALISM 0x00607788
 undefined4 WrapperFor_E377_At00607788(void)
 {
@@ -148,7 +148,7 @@ undefined4 WrapperFor_E377_At00607788(void)
 }
 
 // ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f
-// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
+// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f()
 // FUNCTION: IMPERIALISM 0x0060778d
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
 {
@@ -156,7 +156,7 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
 }
 
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
+// ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f()
 // FUNCTION: IMPERIALISM 0x0060779f
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
 {
@@ -172,7 +172,7 @@ undefined4 CWnd_006077C0(void)
 }
 
 // ghidra_name ConstructObjectVtable00670b4cBase
-// ghidra_proto void * __fastcall ConstructObjectVtable00670b4cBase(void * pThis)
+// ghidra_proto undefined ConstructObjectVtable00670b4cBase()
 // FUNCTION: IMPERIALISM 0x006077c6
 undefined4 ConstructObjectVtable00670b4cBase(void)
 {
@@ -180,7 +180,7 @@ undefined4 ConstructObjectVtable00670b4cBase(void)
 }
 
 // ghidra_name CDocTemplate::ConstructObjectVtable00670b4cWithArg
-// ghidra_proto void * __thiscall ConstructObjectVtable00670b4cWithArg(void * pInit)
+// ghidra_proto undefined ConstructObjectVtable00670b4cWithArg()
 // FUNCTION: IMPERIALISM 0x0060780c
 undefined4 ConstructObjectVtable00670b4cWithArg(void)
 {
@@ -188,7 +188,7 @@ undefined4 ConstructObjectVtable00670b4cWithArg(void)
 }
 
 // ghidra_name TTransFocusAnimation::WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840
-// ghidra_proto void __thiscall WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840()
 // FUNCTION: IMPERIALISM 0x00607840
 undefined4 WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840(void)
 {
@@ -196,7 +196,7 @@ undefined4 WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840(void)
 }
 
 // ghidra_name TTransFocusAnimation::AfxModifyStyle
-// ghidra_proto void __thiscall AfxModifyStyle(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined AfxModifyStyle()
 // FUNCTION: IMPERIALISM 0x0060785a
 undefined4 AfxModifyStyle(void)
 {
@@ -204,7 +204,7 @@ undefined4 AfxModifyStyle(void)
 }
 
 // ghidra_name TTransFocusAnimation::ModifyStyleEx_6078a9
-// ghidra_proto void __thiscall ModifyStyleEx_6078a9(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined ModifyStyleEx_6078a9()
 // FUNCTION: IMPERIALISM 0x006078a9
 undefined4 ModifyStyleEx_6078a9(void)
 {
@@ -212,7 +212,7 @@ undefined4 ModifyStyleEx_6078a9(void)
 }
 
 // ghidra_name AfxCallWndProc
-// ghidra_proto void __thiscall AfxCallWndProc(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined AfxCallWndProc()
 // FUNCTION: IMPERIALISM 0x006078c3
 undefined4 AfxCallWndProc(void)
 {
@@ -220,7 +220,7 @@ undefined4 AfxCallWndProc(void)
 }
 
 // ghidra_name AfxPreInitDialog
-// ghidra_proto void __cdecl AfxPreInitDialog(int arg1, int arg2, int arg3)
+// ghidra_proto undefined AfxPreInitDialog()
 // FUNCTION: IMPERIALISM 0x006079b3
 undefined4 AfxPreInitDialog(void)
 {
@@ -228,7 +228,7 @@ undefined4 AfxPreInitDialog(void)
 }
 
 // ghidra_name AfxPostInitDialog
-// ghidra_proto void __cdecl AfxPostInitDialog(void)
+// ghidra_proto undefined AfxPostInitDialog()
 // FUNCTION: IMPERIALISM 0x006079d6
 undefined4 AfxPostInitDialog(void)
 {
@@ -236,7 +236,7 @@ undefined4 AfxPostInitDialog(void)
 }
 
 // ghidra_name GetCurrentMessage
-// ghidra_proto int __cdecl GetCurrentMessage(void)
+// ghidra_proto undefined GetCurrentMessage()
 // FUNCTION: IMPERIALISM 0x00607a4f
 undefined4 GetCurrentMessage(void)
 {
@@ -244,7 +244,7 @@ undefined4 GetCurrentMessage(void)
 }
 
 // ghidra_name CWnd::Default
-// ghidra_proto void __thiscall Default(void)
+// ghidra_proto undefined Default()
 // FUNCTION: IMPERIALISM 0x00607a84
 undefined4 Default(void)
 {
@@ -252,7 +252,7 @@ undefined4 Default(void)
 }
 
 // ghidra_name DeleteTempMap_607aab
-// ghidra_proto void * __cdecl DeleteTempMap_607aab(void)
+// ghidra_proto undefined DeleteTempMap_607aab()
 // FUNCTION: IMPERIALISM 0x00607aab
 undefined4 DeleteTempMap_607aab(void)
 {
@@ -260,7 +260,7 @@ undefined4 DeleteTempMap_607aab(void)
 }
 
 // ghidra_name afxMapHWND
-// ghidra_proto void * __cdecl afxMapHWND(void)
+// ghidra_proto undefined afxMapHWND()
 // FUNCTION: IMPERIALISM 0x00607abf
 undefined4 afxMapHWND(void)
 {
@@ -268,7 +268,7 @@ undefined4 afxMapHWND(void)
 }
 
 // ghidra_name FromHandle
-// ghidra_proto void * __cdecl FromHandle(void)
+// ghidra_proto undefined FromHandle()
 // FUNCTION: IMPERIALISM 0x00607b2f
 undefined4 FromHandle(void)
 {
@@ -276,7 +276,7 @@ undefined4 FromHandle(void)
 }
 
 // ghidra_name FromHandlePermanent_607b57
-// ghidra_proto int __cdecl FromHandlePermanent_607b57(void)
+// ghidra_proto undefined FromHandlePermanent_607b57()
 // FUNCTION: IMPERIALISM 0x00607b57
 undefined4 FromHandlePermanent_607b57(void)
 {
@@ -284,7 +284,7 @@ undefined4 FromHandlePermanent_607b57(void)
 }
 
 // ghidra_name AttachWindowHandleToCWndAndSite
-// ghidra_proto bool __thiscall AttachWindowHandleToCWndAndSite(void)
+// ghidra_proto undefined AttachWindowHandleToCWndAndSite()
 // FUNCTION: IMPERIALISM 0x00607b73
 undefined4 AttachWindowHandleToCWndAndSite(void)
 {
@@ -292,7 +292,7 @@ undefined4 AttachWindowHandleToCWndAndSite(void)
 }
 
 // ghidra_name DetachWindowHandleFromMap
-// ghidra_proto void __cdecl DetachWindowHandleFromMap(void)
+// ghidra_proto undefined DetachWindowHandleFromMap()
 // FUNCTION: IMPERIALISM 0x00607bac
 undefined4 DetachWindowHandleFromMap(void)
 {
@@ -300,7 +300,7 @@ undefined4 DetachWindowHandleFromMap(void)
 }
 
 // ghidra_name AfxWndProc
-// ghidra_proto void __cdecl AfxWndProc(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined AfxWndProc()
 // FUNCTION: IMPERIALISM 0x00607bdb
 undefined4 AfxWndProc(void)
 {
@@ -308,7 +308,7 @@ undefined4 AfxWndProc(void)
 }
 
 // ghidra_name GetAfxSubclassWndProcEntry
-// ghidra_proto void * __cdecl GetAfxSubclassWndProcEntry(void)
+// ghidra_proto undefined GetAfxSubclassWndProcEntry()
 // FUNCTION: IMPERIALISM 0x00607c0a
 undefined4 GetAfxSubclassWndProcEntry(void)
 {
@@ -316,7 +316,7 @@ undefined4 GetAfxSubclassWndProcEntry(void)
 }
 
 // ghidra_name AfxActivationWndProc
-// ghidra_proto void __thiscall AfxActivationWndProc(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined AfxActivationWndProc()
 // FUNCTION: IMPERIALISM 0x00607c10
 undefined4 AfxActivationWndProc(void)
 {
@@ -324,7 +324,7 @@ undefined4 AfxActivationWndProc(void)
 }
 
 // ghidra_name AfxHandleActivate
-// ghidra_proto void __cdecl AfxHandleActivate(int arg1, int arg2, int arg3)
+// ghidra_proto undefined AfxHandleActivate()
 // FUNCTION: IMPERIALISM 0x00607d5d
 undefined4 AfxHandleActivate(void)
 {
@@ -332,7 +332,7 @@ undefined4 AfxHandleActivate(void)
 }
 
 // ghidra_name AfxHandleSetCursor
-// ghidra_proto int __cdecl AfxHandleSetCursor(void)
+// ghidra_proto undefined AfxHandleSetCursor()
 // FUNCTION: IMPERIALISM 0x00607dbe
 undefined4 AfxHandleSetCursor(void)
 {
@@ -340,7 +340,7 @@ undefined4 AfxHandleSetCursor(void)
 }
 
 // ghidra_name AfxGrayBackgroundWndProc
-// ghidra_proto void __cdecl AfxGrayBackgroundWndProc(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined AfxGrayBackgroundWndProc()
 // FUNCTION: IMPERIALISM 0x00607e36
 undefined4 AfxGrayBackgroundWndProc(void)
 {
@@ -348,7 +348,7 @@ undefined4 AfxGrayBackgroundWndProc(void)
 }
 
 // ghidra_name AfxCbtFilterHook
-// ghidra_proto int __cdecl AfxCbtFilterHook(int arg1, int arg2, int arg3)
+// ghidra_proto undefined AfxCbtFilterHook()
 // FUNCTION: IMPERIALISM 0x00607eb2
 undefined4 AfxCbtFilterHook(void)
 {
@@ -356,7 +356,7 @@ undefined4 AfxCbtFilterHook(void)
 }
 
 // ghidra_name AfxHookWindowCreate
-// ghidra_proto void __cdecl AfxHookWindowCreate(void)
+// ghidra_proto undefined AfxHookWindowCreate()
 // FUNCTION: IMPERIALISM 0x00608040
 undefined4 AfxHookWindowCreate(void)
 {
@@ -364,7 +364,7 @@ undefined4 AfxHookWindowCreate(void)
 }
 
 // ghidra_name AfxUnhookWindowCreate
-// ghidra_proto int __cdecl AfxUnhookWindowCreate(void)
+// ghidra_proto undefined AfxUnhookWindowCreate()
 // FUNCTION: IMPERIALISM 0x0060808c
 undefined4 AfxUnhookWindowCreate(void)
 {
@@ -372,7 +372,7 @@ undefined4 AfxUnhookWindowCreate(void)
 }
 
 // ghidra_name CreateEx
-// ghidra_proto void * __cdecl CreateEx(void)
+// ghidra_proto undefined CreateEx()
 // FUNCTION: IMPERIALISM 0x006080ce
 undefined4 CreateEx(void)
 {
@@ -380,7 +380,7 @@ undefined4 CreateEx(void)
 }
 
 // ghidra_name CreateEx_608115
-// ghidra_proto void * __cdecl CreateEx_608115(void)
+// ghidra_proto undefined CreateEx_608115()
 // FUNCTION: IMPERIALISM 0x00608115
 undefined4 CreateEx_608115(void)
 {
@@ -388,7 +388,7 @@ undefined4 CreateEx_608115(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::PreCreateWindow
-// ghidra_proto int __cdecl PreCreateWindow(void)
+// ghidra_proto undefined PreCreateWindow()
 // FUNCTION: IMPERIALISM 0x006081d9
 undefined4 PreCreateWindow(void)
 {
@@ -396,7 +396,7 @@ undefined4 PreCreateWindow(void)
 }
 
 // ghidra_name CreateChildWindowFromRect
-// ghidra_proto void * __cdecl CreateChildWindowFromRect(void)
+// ghidra_proto undefined CreateChildWindowFromRect()
 // FUNCTION: IMPERIALISM 0x0060820b
 undefined4 CreateChildWindowFromRect(void)
 {
@@ -404,7 +404,7 @@ undefined4 CreateChildWindowFromRect(void)
 }
 
 // ghidra_name OnDestroy_6082d3
-// ghidra_proto void __thiscall OnDestroy_6082d3(void)
+// ghidra_proto undefined OnDestroy_6082d3()
 // FUNCTION: IMPERIALISM 0x006082d3
 undefined4 OnDestroy_6082d3(void)
 {
@@ -412,7 +412,7 @@ undefined4 OnDestroy_6082d3(void)
 }
 
 // ghidra_name OnNcDestroy_6082f1
-// ghidra_proto void __cdecl OnNcDestroy_6082f1(void)
+// ghidra_proto undefined OnNcDestroy_6082f1()
 // FUNCTION: IMPERIALISM 0x006082f1
 undefined4 OnNcDestroy_6082f1(void)
 {
@@ -420,7 +420,7 @@ undefined4 OnNcDestroy_6082f1(void)
 }
 
 // ghidra_name TMacViewMgr_Slot06_Target
-// ghidra_proto void __fastcall TMacViewMgr_Slot06_Target(void)
+// ghidra_proto undefined TMacViewMgr_Slot06_Target()
 // FUNCTION: IMPERIALISM 0x00608409
 undefined4 TMacViewMgr_Slot06_Target(void)
 {
@@ -428,15 +428,15 @@ undefined4 TMacViewMgr_Slot06_Target(void)
 }
 
 // ghidra_name DestroyWindow
-// ghidra_proto void __thiscall DestroyWindow(void)
+// ghidra_proto undefined DestroyWindow()
 // FUNCTION: IMPERIALISM 0x0060841a
 undefined4 DestroyWindow(void)
 {
   return 0;
 }
 
-// ghidra_name TTooltipRelayWindowState::DispatchWindowMessageToPrevProcOrDefault
-// ghidra_proto void __thiscall DispatchWindowMessageToPrevProcOrDefault(uint messageCode, int wParam, int lParam)
+// ghidra_name DispatchWindowMessageToPrevProcOrDefault
+// ghidra_proto undefined DispatchWindowMessageToPrevProcOrDefault()
 // FUNCTION: IMPERIALISM 0x00608467
 undefined4 DispatchWindowMessageToPrevProcOrDefault(void)
 {
@@ -444,7 +444,7 @@ undefined4 DispatchWindowMessageToPrevProcOrDefault(void)
 }
 
 // ghidra_name TMacViewMgr_Slot34_Target
-// ghidra_proto int __fastcall TMacViewMgr_Slot34_Target(void)
+// ghidra_proto undefined TMacViewMgr_Slot34_Target()
 // FUNCTION: IMPERIALISM 0x006084ae
 undefined4 TMacViewMgr_Slot34_Target(void)
 {
@@ -452,7 +452,7 @@ undefined4 TMacViewMgr_Slot34_Target(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::PreTranslateMessage_6084b2
-// ghidra_proto void * __cdecl PreTranslateMessage_6084b2(void)
+// ghidra_proto undefined PreTranslateMessage_6084b2()
 // FUNCTION: IMPERIALISM 0x006084b2
 undefined4 PreTranslateMessage_6084b2(void)
 {
@@ -460,15 +460,15 @@ undefined4 PreTranslateMessage_6084b2(void)
 }
 
 // ghidra_name CancelToolTips
-// ghidra_proto void __cdecl CancelToolTips(void)
+// ghidra_proto undefined CancelToolTips()
 // FUNCTION: IMPERIALISM 0x006084d1
 undefined4 CancelToolTips(void)
 {
   return 0;
 }
 
-// ghidra_name TTooltipRelayWindowState::OnToolHitTest
-// ghidra_proto uint __thiscall OnToolHitTest(TMacViewMgr * thisObj)
+// ghidra_name OnToolHitTest
+// ghidra_proto undefined OnToolHitTest()
 // FUNCTION: IMPERIALISM 0x0060852e
 undefined4 OnToolHitTest(void)
 {
@@ -476,7 +476,7 @@ undefined4 OnToolHitTest(void)
 }
 
 // ghidra_name GetWindowPlacementFromThisHwnd
-// ghidra_proto void __thiscall GetWindowPlacementFromThisHwnd(void * pPlacement)
+// ghidra_proto undefined GetWindowPlacementFromThisHwnd()
 // FUNCTION: IMPERIALISM 0x00608657
 undefined4 GetWindowPlacementFromThisHwnd(void)
 {
@@ -484,7 +484,7 @@ undefined4 GetWindowPlacementFromThisHwnd(void)
 }
 
 // ghidra_name SetWindowPlacementFromThisHwnd
-// ghidra_proto void __thiscall SetWindowPlacementFromThisHwnd(void * pPlacement)
+// ghidra_proto undefined SetWindowPlacementFromThisHwnd()
 // FUNCTION: IMPERIALISM 0x0060866e
 undefined4 SetWindowPlacementFromThisHwnd(void)
 {
@@ -492,7 +492,7 @@ undefined4 SetWindowPlacementFromThisHwnd(void)
 }
 
 // ghidra_name DispatchParentNotifyOrRouteByHwnd
-// ghidra_proto void __thiscall DispatchParentNotifyOrRouteByHwnd(void)
+// ghidra_proto undefined DispatchParentNotifyOrRouteByHwnd()
 // FUNCTION: IMPERIALISM 0x00608685
 undefined4 DispatchParentNotifyOrRouteByHwnd(void)
 {
@@ -500,7 +500,7 @@ undefined4 DispatchParentNotifyOrRouteByHwnd(void)
 }
 
 // ghidra_name OnCompareItem
-// ghidra_proto void __stdcall OnCompareItem(int arg1, int arg2)
+// ghidra_proto undefined OnCompareItem()
 // FUNCTION: IMPERIALISM 0x006086c2
 undefined4 OnCompareItem(void)
 {
@@ -508,7 +508,7 @@ undefined4 OnCompareItem(void)
 }
 
 // ghidra_name InvokeOnWndMsgOrFallbackHandler
-// ghidra_proto int __cdecl InvokeOnWndMsgOrFallbackHandler(void)
+// ghidra_proto undefined InvokeOnWndMsgOrFallbackHandler()
 // FUNCTION: IMPERIALISM 0x0060870c
 undefined4 InvokeOnWndMsgOrFallbackHandler(void)
 {
@@ -516,7 +516,7 @@ undefined4 InvokeOnWndMsgOrFallbackHandler(void)
 }
 
 // ghidra_name InvokeOnWndMsgOrFallbackHandlerAlt
-// ghidra_proto int __cdecl InvokeOnWndMsgOrFallbackHandlerAlt(void)
+// ghidra_proto undefined InvokeOnWndMsgOrFallbackHandlerAlt()
 // FUNCTION: IMPERIALISM 0x00608737
 undefined4 InvokeOnWndMsgOrFallbackHandlerAlt(void)
 {
@@ -524,7 +524,7 @@ undefined4 InvokeOnWndMsgOrFallbackHandlerAlt(void)
 }
 
 // ghidra_name TrackPopupMenu
-// ghidra_proto void __thiscall TrackPopupMenu(void)
+// ghidra_proto undefined TrackPopupMenu()
 // FUNCTION: IMPERIALISM 0x00608762
 undefined4 TrackPopupMenu(void)
 {
@@ -532,7 +532,7 @@ undefined4 TrackPopupMenu(void)
 }
 
 // ghidra_name DispatchMenuOrControlNotifyOrFallback
-// ghidra_proto void __thiscall DispatchMenuOrControlNotifyOrFallback(int arg1, int arg2)
+// ghidra_proto undefined DispatchMenuOrControlNotifyOrFallback()
 // FUNCTION: IMPERIALISM 0x006087b6
 undefined4 DispatchMenuOrControlNotifyOrFallback(void)
 {
@@ -540,7 +540,7 @@ undefined4 DispatchMenuOrControlNotifyOrFallback(void)
 }
 
 // ghidra_name FindMenuTargetByCommandIdRecursive
-// ghidra_proto int __cdecl FindMenuTargetByCommandIdRecursive(int arg1, int arg2)
+// ghidra_proto undefined FindMenuTargetByCommandIdRecursive()
 // FUNCTION: IMPERIALISM 0x0060882f
 undefined4 FindMenuTargetByCommandIdRecursive(void)
 {
@@ -548,7 +548,7 @@ undefined4 FindMenuTargetByCommandIdRecursive(void)
 }
 
 // ghidra_name AfxRegisterClass
-// ghidra_proto int __cdecl AfxRegisterClass(void)
+// ghidra_proto undefined AfxRegisterClass()
 // FUNCTION: IMPERIALISM 0x00608892
 undefined4 AfxRegisterClass(void)
 {
@@ -556,7 +556,7 @@ undefined4 AfxRegisterClass(void)
 }
 
 // ghidra_name AfxRegisterWndClass
-// ghidra_proto void __stdcall AfxRegisterWndClass(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined AfxRegisterWndClass()
 // FUNCTION: IMPERIALISM 0x0060893b
 undefined4 AfxRegisterWndClass(void)
 {
@@ -564,7 +564,7 @@ undefined4 AfxRegisterWndClass(void)
 }
 
 // ghidra_name OnNTCtlColor
-// ghidra_proto void __cdecl OnNTCtlColor(void)
+// ghidra_proto undefined OnNTCtlColor()
 // FUNCTION: IMPERIALISM 0x006089ef
 undefined4 OnNTCtlColor(void)
 {
@@ -572,7 +572,7 @@ undefined4 OnNTCtlColor(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::RunWinHelpAfterCancelModeBroadcast
-// ghidra_proto void __cdecl RunWinHelpAfterCancelModeBroadcast(void)
+// ghidra_proto undefined RunWinHelpAfterCancelModeBroadcast()
 // FUNCTION: IMPERIALISM 0x00608a2b
 undefined4 RunWinHelpAfterCancelModeBroadcast(void)
 {
@@ -580,7 +580,7 @@ undefined4 RunWinHelpAfterCancelModeBroadcast(void)
 }
 
 // ghidra_name WindowProc
-// ghidra_proto int __thiscall WindowProc(void)
+// ghidra_proto undefined WindowProc()
 // FUNCTION: IMPERIALISM 0x00608b66
 undefined4 WindowProc(void)
 {
@@ -588,7 +588,7 @@ undefined4 WindowProc(void)
 }
 
 // ghidra_name OnWndMsg
-// ghidra_proto int __cdecl OnWndMsg(void)
+// ghidra_proto undefined OnWndMsg()
 // FUNCTION: IMPERIALISM 0x00608ba8
 undefined4 OnWndMsg(void)
 {
@@ -596,7 +596,7 @@ undefined4 OnWndMsg(void)
 }
 
 // ghidra_name CTestCmdUI
-// ghidra_proto void * __fastcall CTestCmdUI(void)
+// ghidra_proto undefined CTestCmdUI()
 // FUNCTION: IMPERIALISM 0x0060911a
 undefined4 CTestCmdUI(void)
 {
@@ -604,15 +604,15 @@ undefined4 CTestCmdUI(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::OnCommand
-// ghidra_proto int __thiscall OnCommand(int arg1, int arg2)
+// ghidra_proto undefined OnCommand()
 // FUNCTION: IMPERIALISM 0x0060914d
 undefined4 OnCommand(void)
 {
   return 0;
 }
 
-// ghidra_name TTooltipRelayWindowState::OnNotify
-// ghidra_proto int __thiscall OnNotify(uint messageCode)
+// ghidra_name OnNotify
+// ghidra_proto undefined OnNotify()
 // FUNCTION: IMPERIALISM 0x006091d9
 undefined4 OnNotify(void)
 {
@@ -620,7 +620,7 @@ undefined4 OnNotify(void)
 }
 
 // ghidra_name GetParentFrame
-// ghidra_proto int * __fastcall GetParentFrame(void)
+// ghidra_proto undefined GetParentFrame()
 // FUNCTION: IMPERIALISM 0x00609253
 undefined4 GetParentFrame(void)
 {
@@ -628,7 +628,7 @@ undefined4 GetParentFrame(void)
 }
 
 // ghidra_name GetTopLevelParent
-// ghidra_proto void * __cdecl GetTopLevelParent(void)
+// ghidra_proto undefined GetTopLevelParent()
 // FUNCTION: IMPERIALISM 0x006092dc
 undefined4 GetTopLevelParent(void)
 {
@@ -636,7 +636,7 @@ undefined4 GetTopLevelParent(void)
 }
 
 // ghidra_name GetParentOwner
-// ghidra_proto void __fastcall GetParentOwner(void)
+// ghidra_proto undefined GetParentOwner()
 // FUNCTION: IMPERIALISM 0x0060933b
 undefined4 GetParentOwner(void)
 {
@@ -644,7 +644,7 @@ undefined4 GetParentOwner(void)
 }
 
 // ghidra_name GetTopLevelFrame
-// ghidra_proto int * __fastcall GetTopLevelFrame(void)
+// ghidra_proto undefined GetTopLevelFrame()
 // FUNCTION: IMPERIALISM 0x006093f3
 undefined4 GetTopLevelFrame(void)
 {
@@ -652,7 +652,7 @@ undefined4 GetTopLevelFrame(void)
 }
 
 // ghidra_name GetDescendantWindow
-// ghidra_proto int __cdecl GetDescendantWindow(int arg1, int arg2, int arg3)
+// ghidra_proto undefined GetDescendantWindow()
 // FUNCTION: IMPERIALISM 0x006094d7
 undefined4 GetDescendantWindow(void)
 {
@@ -660,7 +660,7 @@ undefined4 GetDescendantWindow(void)
 }
 
 // ghidra_name SendMessageToDescendants
-// ghidra_proto void __stdcall SendMessageToDescendants(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// ghidra_proto undefined SendMessageToDescendants()
 // FUNCTION: IMPERIALISM 0x00609550
 undefined4 SendMessageToDescendants(void)
 {
@@ -668,7 +668,7 @@ undefined4 SendMessageToDescendants(void)
 }
 
 // ghidra_name TMacViewMgr_Slot28_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot28_Target(void)
+// ghidra_proto undefined TMacViewMgr_Slot28_Target()
 // FUNCTION: IMPERIALISM 0x006095cd
 undefined4 TMacViewMgr_Slot28_Target(void)
 {
@@ -676,7 +676,7 @@ undefined4 TMacViewMgr_Slot28_Target(void)
 }
 
 // ghidra_name SetScrollPos
-// ghidra_proto void __cdecl SetScrollPos(void)
+// ghidra_proto undefined SetScrollPos()
 // FUNCTION: IMPERIALISM 0x006095d2
 undefined4 SetScrollPos(void)
 {
@@ -684,7 +684,7 @@ undefined4 SetScrollPos(void)
 }
 
 // ghidra_name TArmyTacUnit::SetScrollRange
-// ghidra_proto void __thiscall SetScrollRange(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined SetScrollRange()
 // FUNCTION: IMPERIALISM 0x0060962a
 undefined4 SetScrollRange(void)
 {
@@ -692,7 +692,7 @@ undefined4 SetScrollRange(void)
 }
 
 // ghidra_name GetScrollRange
-// ghidra_proto void __thiscall GetScrollRange(void)
+// ghidra_proto undefined GetScrollRange()
 // FUNCTION: IMPERIALISM 0x0060965d
 undefined4 GetScrollRange(void)
 {
@@ -700,7 +700,7 @@ undefined4 GetScrollRange(void)
 }
 
 // ghidra_name TArmyTacUnit::EnableScrollBarCtrl
-// ghidra_proto void __thiscall EnableScrollBarCtrl(int arg1, int arg2)
+// ghidra_proto undefined EnableScrollBarCtrl()
 // FUNCTION: IMPERIALISM 0x0060968d
 undefined4 EnableScrollBarCtrl(void)
 {
@@ -708,7 +708,7 @@ undefined4 EnableScrollBarCtrl(void)
 }
 
 // ghidra_name SetScrollInfo
-// ghidra_proto void __cdecl SetScrollInfo(void)
+// ghidra_proto undefined SetScrollInfo()
 // FUNCTION: IMPERIALISM 0x006096d0
 undefined4 SetScrollInfo(void)
 {
@@ -716,7 +716,7 @@ undefined4 SetScrollInfo(void)
 }
 
 // ghidra_name GetScrollInfo
-// ghidra_proto int __thiscall GetScrollInfo(void)
+// ghidra_proto undefined GetScrollInfo()
 // FUNCTION: IMPERIALISM 0x0060971d
 undefined4 GetScrollInfo(void)
 {
@@ -724,7 +724,7 @@ undefined4 GetScrollInfo(void)
 }
 
 // ghidra_name GetScrollLimit
-// ghidra_proto int __cdecl GetScrollLimit(void)
+// ghidra_proto undefined GetScrollLimit()
 // FUNCTION: IMPERIALISM 0x0060976a
 undefined4 GetScrollLimit(void)
 {
@@ -732,7 +732,7 @@ undefined4 GetScrollLimit(void)
 }
 
 // ghidra_name TArmyTacUnit::ScrollWindow
-// ghidra_proto void __thiscall ScrollWindow(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined ScrollWindow()
 // FUNCTION: IMPERIALISM 0x006097ae
 undefined4 ScrollWindow(void)
 {
@@ -740,7 +740,7 @@ undefined4 ScrollWindow(void)
 }
 
 // ghidra_name TMacViewMgr::RepositionBars
-// ghidra_proto void __thiscall RepositionBars(void)
+// ghidra_proto undefined RepositionBars()
 // FUNCTION: IMPERIALISM 0x0060986b
 undefined4 RepositionBars(void)
 {
@@ -748,7 +748,7 @@ undefined4 RepositionBars(void)
 }
 
 // ghidra_name AfxRepositionWindow
-// ghidra_proto void __cdecl AfxRepositionWindow(int arg1, int arg2, int arg3)
+// ghidra_proto undefined AfxRepositionWindow()
 // FUNCTION: IMPERIALISM 0x006099a5
 undefined4 AfxRepositionWindow(void)
 {
@@ -756,7 +756,7 @@ undefined4 AfxRepositionWindow(void)
 }
 
 // ghidra_name CalcWindowRect
-// ghidra_proto void __cdecl CalcWindowRect(int arg1, int arg2)
+// ghidra_proto undefined CalcWindowRect()
 // FUNCTION: IMPERIALISM 0x00609a3f
 undefined4 CalcWindowRect(void)
 {
@@ -764,7 +764,7 @@ undefined4 CalcWindowRect(void)
 }
 
 // ghidra_name HandleFloatingSysCommand
-// ghidra_proto void __thiscall HandleFloatingSysCommand(int arg1, int arg2)
+// ghidra_proto undefined HandleFloatingSysCommand()
 // FUNCTION: IMPERIALISM 0x00609a6a
 undefined4 HandleFloatingSysCommand(void)
 {
@@ -772,7 +772,7 @@ undefined4 HandleFloatingSysCommand(void)
 }
 
 // ghidra_name WalkPreTranslateTree
-// ghidra_proto int __cdecl WalkPreTranslateTree(int arg1, int arg2)
+// ghidra_proto undefined WalkPreTranslateTree()
 // FUNCTION: IMPERIALISM 0x00609b24
 undefined4 WalkPreTranslateTree(void)
 {
@@ -780,7 +780,7 @@ undefined4 WalkPreTranslateTree(void)
 }
 
 // ghidra_name SendChildNotifyLastMsg
-// ghidra_proto int __cdecl SendChildNotifyLastMsg(void)
+// ghidra_proto undefined SendChildNotifyLastMsg()
 // FUNCTION: IMPERIALISM 0x00609b66
 undefined4 SendChildNotifyLastMsg(void)
 {
@@ -788,15 +788,15 @@ undefined4 SendChildNotifyLastMsg(void)
 }
 
 // ghidra_name ReflectLastMsg
-// ghidra_proto int __cdecl ReflectLastMsg(void)
+// ghidra_proto undefined ReflectLastMsg()
 // FUNCTION: IMPERIALISM 0x00609b93
 undefined4 ReflectLastMsg(void)
 {
   return 0;
 }
 
-// ghidra_name TTooltipRelayWindowState::DispatchReflectedControlMessageOrFallback
-// ghidra_proto uint __thiscall DispatchReflectedControlMessageOrFallback(uint messageCode, int wParam, int lParam, void * pResult)
+// ghidra_name DispatchReflectedControlMessageOrFallback
+// ghidra_proto undefined DispatchReflectedControlMessageOrFallback()
 // FUNCTION: IMPERIALISM 0x00609c37
 undefined4 DispatchReflectedControlMessageOrFallback(void)
 {
@@ -804,7 +804,7 @@ undefined4 DispatchReflectedControlMessageOrFallback(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::ReflectChildNotify
-// ghidra_proto uint __thiscall ReflectChildNotify(uint messageCode, int wParam, int lParam, void * pResult)
+// ghidra_proto undefined ReflectChildNotify()
 // FUNCTION: IMPERIALISM 0x00609c92
 undefined4 ReflectChildNotify(void)
 {
@@ -812,7 +812,7 @@ undefined4 ReflectChildNotify(void)
 }
 
 // ghidra_name OnHelpInfo
-// ghidra_proto void __fastcall OnHelpInfo(void)
+// ghidra_proto undefined OnHelpInfo()
 // FUNCTION: IMPERIALISM 0x00609f56
 undefined4 OnHelpInfo(void)
 {
@@ -820,7 +820,7 @@ undefined4 OnHelpInfo(void)
 }
 
 // ghidra_name OnDragList
-// ghidra_proto int __cdecl OnDragList(void)
+// ghidra_proto undefined OnDragList()
 // FUNCTION: IMPERIALISM 0x0060a007
 undefined4 OnDragList(void)
 {
@@ -828,7 +828,7 @@ undefined4 OnDragList(void)
 }
 
 // ghidra_name InvokeOnWndMsgIfPresentElseFallback
-// ghidra_proto void __thiscall InvokeOnWndMsgIfPresentElseFallback(void)
+// ghidra_proto undefined InvokeOnWndMsgIfPresentElseFallback()
 // FUNCTION: IMPERIALISM 0x0060a031
 undefined4 InvokeOnWndMsgIfPresentElseFallback(void)
 {
@@ -836,7 +836,7 @@ undefined4 InvokeOnWndMsgIfPresentElseFallback(void)
 }
 
 // ghidra_name InvokeOnWndMsgIfPresentElseFallbackAlt
-// ghidra_proto void __thiscall InvokeOnWndMsgIfPresentElseFallbackAlt(void)
+// ghidra_proto undefined InvokeOnWndMsgIfPresentElseFallbackAlt()
 // FUNCTION: IMPERIALISM 0x0060a052
 undefined4 InvokeOnWndMsgIfPresentElseFallbackAlt(void)
 {
@@ -844,7 +844,7 @@ undefined4 InvokeOnWndMsgIfPresentElseFallbackAlt(void)
 }
 
 // ghidra_name OnEnterIdle
-// ghidra_proto void __fastcall OnEnterIdle(void)
+// ghidra_proto undefined OnEnterIdle()
 // FUNCTION: IMPERIALISM 0x0060a073
 undefined4 OnEnterIdle(void)
 {
@@ -852,7 +852,7 @@ undefined4 OnEnterIdle(void)
 }
 
 // ghidra_name OnCtlColor
-// ghidra_proto int __cdecl OnCtlColor(void)
+// ghidra_proto undefined OnCtlColor()
 // FUNCTION: IMPERIALISM 0x0060a0bd
 undefined4 OnCtlColor(void)
 {
@@ -860,7 +860,7 @@ undefined4 OnCtlColor(void)
 }
 
 // ghidra_name OnGrayCtlColor
-// ghidra_proto int __cdecl OnGrayCtlColor(void)
+// ghidra_proto undefined OnGrayCtlColor()
 // FUNCTION: IMPERIALISM 0x0060a0e4
 undefined4 OnGrayCtlColor(void)
 {
@@ -868,7 +868,7 @@ undefined4 OnGrayCtlColor(void)
 }
 
 // ghidra_name GrayCtlColor
-// ghidra_proto void __stdcall GrayCtlColor(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined GrayCtlColor()
 // FUNCTION: IMPERIALISM 0x0060a147
 undefined4 GrayCtlColor(void)
 {
@@ -876,7 +876,7 @@ undefined4 GrayCtlColor(void)
 }
 
 // ghidra_name UpdateData
-// ghidra_proto bool __thiscall UpdateData(int bSaveAndValidate)
+// ghidra_proto undefined UpdateData()
 // FUNCTION: IMPERIALISM 0x0060a1c4
 undefined4 UpdateData(void)
 {
@@ -884,7 +884,7 @@ undefined4 UpdateData(void)
 }
 
 // ghidra_name CDataExchange
-// ghidra_proto void __thiscall CDataExchange(void * pDlgWnd, int bSaveAndValidate)
+// ghidra_proto undefined CDataExchange()
 // FUNCTION: IMPERIALISM 0x0060a267
 undefined4 CDataExchange(void)
 {
@@ -892,7 +892,7 @@ undefined4 CDataExchange(void)
 }
 
 // ghidra_name CenterWindow
-// ghidra_proto void __thiscall CenterWindow(void)
+// ghidra_proto undefined CenterWindow()
 // FUNCTION: IMPERIALISM 0x0060a27d
 undefined4 CenterWindow(void)
 {
@@ -900,7 +900,7 @@ undefined4 CenterWindow(void)
 }
 
 // ghidra_name TMacViewMgr_Slot45_Target
-// ghidra_proto int __cdecl TMacViewMgr_Slot45_Target(void)
+// ghidra_proto undefined TMacViewMgr_Slot45_Target()
 // FUNCTION: IMPERIALISM 0x0060a3f7
 undefined4 TMacViewMgr_Slot45_Target(void)
 {
@@ -908,7 +908,7 @@ undefined4 TMacViewMgr_Slot45_Target(void)
 }
 
 // ghidra_name ExecuteDlgInit
-// ghidra_proto int __thiscall ExecuteDlgInit(char * pszResourceName)
+// ghidra_proto undefined ExecuteDlgInit()
 // FUNCTION: IMPERIALISM 0x0060a3fb
 undefined4 ExecuteDlgInit(void)
 {
@@ -916,7 +916,7 @@ undefined4 ExecuteDlgInit(void)
 }
 
 // ghidra_name ExecuteDlgInit_60a44b
-// ghidra_proto int __thiscall ExecuteDlgInit_60a44b(void * pDlgInitData)
+// ghidra_proto undefined ExecuteDlgInit_60a44b()
 // FUNCTION: IMPERIALISM 0x0060a44b
 undefined4 ExecuteDlgInit_60a44b(void)
 {
@@ -924,7 +924,7 @@ undefined4 ExecuteDlgInit_60a44b(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::UpdateDialogControls
-// ghidra_proto void __thiscall UpdateDialogControls(int arg1, int arg2)
+// ghidra_proto undefined UpdateDialogControls()
 // FUNCTION: IMPERIALISM 0x0060a4d5
 undefined4 UpdateDialogControls(void)
 {
@@ -932,7 +932,7 @@ undefined4 UpdateDialogControls(void)
 }
 
 // ghidra_name PreTranslateInput
-// ghidra_proto bool __cdecl PreTranslateInput(void * pMsg)
+// ghidra_proto undefined PreTranslateInput()
 // FUNCTION: IMPERIALISM 0x0060a5da
 undefined4 PreTranslateInput(void)
 {
@@ -940,7 +940,7 @@ undefined4 PreTranslateInput(void)
 }
 
 // ghidra_name TMovieView::RunModalLoop
-// ghidra_proto int __thiscall RunModalLoop(void)
+// ghidra_proto undefined RunModalLoop()
 // FUNCTION: IMPERIALISM 0x0060a60a
 undefined4 RunModalLoop(void)
 {
@@ -948,7 +948,7 @@ undefined4 RunModalLoop(void)
 }
 
 // ghidra_name TMacViewMgr_Slot30_Target
-// ghidra_proto uint __fastcall TMacViewMgr_Slot30_Target(void)
+// ghidra_proto undefined TMacViewMgr_Slot30_Target()
 // FUNCTION: IMPERIALISM 0x0060a769
 undefined4 TMacViewMgr_Slot30_Target(void)
 {
@@ -956,7 +956,7 @@ undefined4 TMacViewMgr_Slot30_Target(void)
 }
 
 // ghidra_name TMacViewMgr_Slot31_Target
-// ghidra_proto void __thiscall TMacViewMgr_Slot31_Target(void)
+// ghidra_proto undefined TMacViewMgr_Slot31_Target()
 // FUNCTION: IMPERIALISM 0x0060a770
 undefined4 TMacViewMgr_Slot31_Target(void)
 {
@@ -964,7 +964,7 @@ undefined4 TMacViewMgr_Slot31_Target(void)
 }
 
 // ghidra_name AfxEndDeferRegisterClass
-// ghidra_proto int __cdecl AfxEndDeferRegisterClass(int arg1)
+// ghidra_proto undefined AfxEndDeferRegisterClass()
 // FUNCTION: IMPERIALISM 0x0060a794
 undefined4 AfxEndDeferRegisterClass(void)
 {
@@ -972,7 +972,7 @@ undefined4 AfxEndDeferRegisterClass(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot046
-// ghidra_proto int __cdecl TMacViewMgr_VtblSlot046(void)
+// ghidra_proto undefined TMacViewMgr_VtblSlot046()
 // FUNCTION: IMPERIALISM 0x0060a912
 undefined4 TMacViewMgr_VtblSlot046(void)
 {
@@ -980,7 +980,7 @@ undefined4 TMacViewMgr_VtblSlot046(void)
 }
 
 // ghidra_name IsTracking
-// ghidra_proto int __cdecl IsTracking(void)
+// ghidra_proto undefined IsTracking()
 // FUNCTION: IMPERIALISM 0x0060a916
 undefined4 IsTracking(void)
 {
@@ -988,7 +988,7 @@ undefined4 IsTracking(void)
 }
 
 // ghidra_name SubclassCtl3d
-// ghidra_proto bool __thiscall SubclassCtl3d(int nControlType)
+// ghidra_proto undefined SubclassCtl3d()
 // FUNCTION: IMPERIALISM 0x0060a935
 undefined4 SubclassCtl3d(void)
 {
@@ -996,7 +996,7 @@ undefined4 SubclassCtl3d(void)
 }
 
 // ghidra_name SubclassDlg3d
-// ghidra_proto bool __thiscall SubclassDlg3d(void * pMap)
+// ghidra_proto undefined SubclassDlg3d()
 // FUNCTION: IMPERIALISM 0x0060a97f
 undefined4 SubclassDlg3d(void)
 {
@@ -1004,7 +1004,7 @@ undefined4 SubclassDlg3d(void)
 }
 
 // ghidra_name SubclassWindow
-// ghidra_proto int __thiscall SubclassWindow(void)
+// ghidra_proto undefined SubclassWindow()
 // FUNCTION: IMPERIALISM 0x0060a9c4
 undefined4 SubclassWindow(void)
 {
@@ -1012,7 +1012,7 @@ undefined4 SubclassWindow(void)
 }
 
 // ghidra_name UnsubclassWindow
-// ghidra_proto void __fastcall UnsubclassWindow(void)
+// ghidra_proto undefined UnsubclassWindow()
 // FUNCTION: IMPERIALISM 0x0060aa6e
 undefined4 UnsubclassWindow(void)
 {
@@ -1020,7 +1020,7 @@ undefined4 UnsubclassWindow(void)
 }
 
 // ghidra_name ConstructSerializedDataExceptionBase
-// ghidra_proto void __fastcall ConstructSerializedDataExceptionBase(void * exceptionObject)
+// ghidra_proto undefined ConstructSerializedDataExceptionBase()
 // FUNCTION: IMPERIALISM 0x0060aa96
 undefined4 ConstructSerializedDataExceptionBase(void)
 {
@@ -1028,7 +1028,7 @@ undefined4 ConstructSerializedDataExceptionBase(void)
 }
 
 // ghidra_name Delete
-// ghidra_proto void __cdecl Delete(void)
+// ghidra_proto undefined Delete()
 // FUNCTION: IMPERIALISM 0x0060aab8
 undefined4 Delete(void)
 {
@@ -1036,7 +1036,7 @@ undefined4 Delete(void)
 }
 
 // ghidra_name ReportError
-// ghidra_proto void __thiscall ReportError(void)
+// ghidra_proto undefined ReportError()
 // FUNCTION: IMPERIALISM 0x0060aaeb
 undefined4 ReportError(void)
 {
@@ -1044,7 +1044,7 @@ undefined4 ReportError(void)
 }
 
 // ghidra_name AFX_EXCEPTION_LINK
-// ghidra_proto int * __fastcall AFX_EXCEPTION_LINK(void)
+// ghidra_proto undefined AFX_EXCEPTION_LINK()
 // FUNCTION: IMPERIALISM 0x0060ab40
 undefined4 AFX_EXCEPTION_LINK(void)
 {
@@ -1052,7 +1052,7 @@ undefined4 AFX_EXCEPTION_LINK(void)
 }
 
 // ghidra_name AfxGetExceptionContext
-// ghidra_proto void * __cdecl AfxGetExceptionContext(void)
+// ghidra_proto undefined AfxGetExceptionContext()
 // FUNCTION: IMPERIALISM 0x0060ab56
 undefined4 AfxGetExceptionContext(void)
 {
@@ -1060,7 +1060,7 @@ undefined4 AfxGetExceptionContext(void)
 }
 
 // ghidra_name AfxTryCleanup
-// ghidra_proto void __cdecl AfxTryCleanup(void)
+// ghidra_proto undefined AfxTryCleanup()
 // FUNCTION: IMPERIALISM 0x0060ab7e
 undefined4 AfxTryCleanup(void)
 {
@@ -1068,7 +1068,7 @@ undefined4 AfxTryCleanup(void)
 }
 
 // ghidra_name CFileException::ConstructCFileException
-// ghidra_proto void * __thiscall ConstructCFileException(void)
+// ghidra_proto undefined ConstructCFileException()
 // FUNCTION: IMPERIALISM 0x0060abac
 undefined4 ConstructCFileException(void)
 {
@@ -1076,7 +1076,7 @@ undefined4 ConstructCFileException(void)
 }
 
 // ghidra_name CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec
-// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0060abec(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0060abec()
 // FUNCTION: IMPERIALISM 0x0060abec
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0060abec(void)
 {
@@ -1084,7 +1084,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0060abec(void)
 }
 
 // ghidra_name ConstructAndOpenCFileWithFlagsOrThrow
-// ghidra_proto void * __thiscall ConstructAndOpenCFileWithFlagsOrThrow(byte * filePath, uint openFlags)
+// ghidra_proto undefined ConstructAndOpenCFileWithFlagsOrThrow()
 // FUNCTION: IMPERIALISM 0x0060ac4c
 undefined4 ConstructAndOpenCFileWithFlagsOrThrow(void)
 {
@@ -1092,7 +1092,7 @@ undefined4 ConstructAndOpenCFileWithFlagsOrThrow(void)
 }
 
 // ghidra_name CFileException::DestructCFileException
-// ghidra_proto void __thiscall DestructCFileException(void)
+// ghidra_proto undefined DestructCFileException()
 // FUNCTION: IMPERIALISM 0x0060acf6
 undefined4 DestructCFileException(void)
 {
@@ -1100,7 +1100,7 @@ undefined4 DestructCFileException(void)
 }
 
 // ghidra_name Duplicate
-// ghidra_proto void * __thiscall Duplicate(void)
+// ghidra_proto undefined Duplicate()
 // FUNCTION: IMPERIALISM 0x0060ad44
 undefined4 Duplicate(void)
 {
@@ -1108,7 +1108,7 @@ undefined4 Duplicate(void)
 }
 
 // ghidra_name OpenFileHandleWithMfcFlags
-// ghidra_proto bool __thiscall OpenFileHandleWithMfcFlags(char * filePath, uint openFlags, void * optionalErrorContext)
+// ghidra_proto undefined OpenFileHandleWithMfcFlags()
 // FUNCTION: IMPERIALISM 0x0060add5
 undefined4 OpenFileHandleWithMfcFlags(void)
 {
@@ -1116,7 +1116,7 @@ undefined4 OpenFileHandleWithMfcFlags(void)
 }
 
 // ghidra_name WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060aefd
-// ghidra_proto uint __thiscall WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060aefd(void)
+// ghidra_proto undefined WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060aefd()
 // FUNCTION: IMPERIALISM 0x0060aefd
 undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060aefd(void)
 {
@@ -1124,7 +1124,7 @@ undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060aefd(void)
 }
 
 // ghidra_name WriteBufferToFileHandleOrThrow
-// ghidra_proto void __thiscall WriteBufferToFileHandleOrThrow(void * pBuffer, uint byteCount)
+// ghidra_proto undefined WriteBufferToFileHandleOrThrow()
 // FUNCTION: IMPERIALISM 0x0060af37
 undefined4 WriteBufferToFileHandleOrThrow(void)
 {
@@ -1132,7 +1132,7 @@ undefined4 WriteBufferToFileHandleOrThrow(void)
 }
 
 // ghidra_name WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060af82
-// ghidra_proto uint __thiscall WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060af82(void)
+// ghidra_proto undefined WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060af82()
 // FUNCTION: IMPERIALISM 0x0060af82
 undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060af82(void)
 {
@@ -1140,7 +1140,7 @@ undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060af82(void)
 }
 
 // ghidra_name WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afb1
-// ghidra_proto uint __fastcall WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afb1(void)
+// ghidra_proto undefined WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afb1()
 // FUNCTION: IMPERIALISM 0x0060afb1
 undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afb1(void)
 {
@@ -1148,7 +1148,7 @@ undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afb1(void)
 }
 
 // ghidra_name WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afda
-// ghidra_proto void __fastcall WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afda(void)
+// ghidra_proto undefined WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afda()
 // FUNCTION: IMPERIALISM 0x0060afda
 undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afda(void)
 {
@@ -1156,7 +1156,7 @@ undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060afda(void)
 }
 
 // ghidra_name CloseFileHandleAndThrowMfcExceptionOnError
-// ghidra_proto void __fastcall CloseFileHandleAndThrowMfcExceptionOnError(void * pFileState)
+// ghidra_proto undefined CloseFileHandleAndThrowMfcExceptionOnError()
 // FUNCTION: IMPERIALISM 0x0060affb
 undefined4 CloseFileHandleAndThrowMfcExceptionOnError(void)
 {
@@ -1164,7 +1164,7 @@ undefined4 CloseFileHandleAndThrowMfcExceptionOnError(void)
 }
 
 // ghidra_name Abort
-// ghidra_proto void __cdecl Abort(void)
+// ghidra_proto undefined Abort()
 // FUNCTION: IMPERIALISM 0x0060b03c
 undefined4 Abort(void)
 {
@@ -1172,7 +1172,7 @@ undefined4 Abort(void)
 }
 
 // ghidra_name WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b05c
-// ghidra_proto void __thiscall WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b05c(void)
+// ghidra_proto undefined WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b05c()
 // FUNCTION: IMPERIALISM 0x0060b05c
 undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b05c(void)
 {
@@ -1180,7 +1180,7 @@ undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b05c(void)
 }
 
 // ghidra_name WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b085
-// ghidra_proto void __thiscall WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b085(void)
+// ghidra_proto undefined WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b085()
 // FUNCTION: IMPERIALISM 0x0060b085
 undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b085(void)
 {
@@ -1188,7 +1188,7 @@ undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b085(void)
 }
 
 // ghidra_name WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b10a
-// ghidra_proto void __cdecl WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b10a(int arg1, int arg2)
+// ghidra_proto undefined WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b10a()
 // FUNCTION: IMPERIALISM 0x0060b10a
 undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b10a(void)
 {
@@ -1196,7 +1196,7 @@ undefined4 WrapperFor_ThrowMfcCFileExceptionFromWin32Error_At0060b10a(void)
 }
 
 // ghidra_name DeleteFileOrReportLastError
-// ghidra_proto void __cdecl DeleteFileOrReportLastError(void)
+// ghidra_proto undefined DeleteFileOrReportLastError()
 // FUNCTION: IMPERIALISM 0x0060b12c
 undefined4 DeleteFileOrReportLastError(void)
 {
@@ -1204,7 +1204,7 @@ undefined4 DeleteFileOrReportLastError(void)
 }
 
 // ghidra_name AfxStringFromCLSID
-// ghidra_proto void * __cdecl AfxStringFromCLSID(int arg1, int arg2)
+// ghidra_proto undefined AfxStringFromCLSID()
 // FUNCTION: IMPERIALISM 0x0060b266
 undefined4 AfxStringFromCLSID(void)
 {
@@ -1212,7 +1212,7 @@ undefined4 AfxStringFromCLSID(void)
 }
 
 // ghidra_name AfxGetInProcServer
-// ghidra_proto bool __cdecl AfxGetInProcServer(int arg1, int arg2)
+// ghidra_proto undefined AfxGetInProcServer()
 // FUNCTION: IMPERIALISM 0x0060b2d5
 undefined4 AfxGetInProcServer(void)
 {
@@ -1220,7 +1220,7 @@ undefined4 AfxGetInProcServer(void)
 }
 
 // ghidra_name AfxResolveShortcut
-// ghidra_proto int __cdecl AfxResolveShortcut(void)
+// ghidra_proto undefined AfxResolveShortcut()
 // FUNCTION: IMPERIALISM 0x0060b381
 undefined4 AfxResolveShortcut(void)
 {
@@ -1228,7 +1228,7 @@ undefined4 AfxResolveShortcut(void)
 }
 
 // ghidra_name AfxFullPath
-// ghidra_proto bool __cdecl AfxFullPath(char * normalizedPathOut, char * inputPath)
+// ghidra_proto undefined AfxFullPath()
 // FUNCTION: IMPERIALISM 0x0060b4cb
 undefined4 AfxFullPath(void)
 {
@@ -1236,7 +1236,7 @@ undefined4 AfxFullPath(void)
 }
 
 // ghidra_name AfxGetRoot
-// ghidra_proto void __cdecl AfxGetRoot(char * inputPath)
+// ghidra_proto undefined AfxGetRoot()
 // FUNCTION: IMPERIALISM 0x0060b5a4
 undefined4 AfxGetRoot(void)
 {
@@ -1244,7 +1244,7 @@ undefined4 AfxGetRoot(void)
 }
 
 // ghidra_name AfxComparePath
-// ghidra_proto int __cdecl AfxComparePath(int arg1, int arg2)
+// ghidra_proto undefined AfxComparePath()
 // FUNCTION: IMPERIALISM 0x0060b66a
 undefined4 AfxComparePath(void)
 {
@@ -1252,7 +1252,7 @@ undefined4 AfxComparePath(void)
 }
 
 // ghidra_name AfxGetFileTitle
-// ghidra_proto int __cdecl AfxGetFileTitle(char * sourcePath, char * outBuffer, uint outChars)
+// ghidra_proto undefined AfxGetFileTitle()
 // FUNCTION: IMPERIALISM 0x0060b72d
 undefined4 AfxGetFileTitle(void)
 {
@@ -1260,7 +1260,7 @@ undefined4 AfxGetFileTitle(void)
 }
 
 // ghidra_name AfxGetModuleShortFileName
-// ghidra_proto void __cdecl AfxGetModuleShortFileName(int arg1, int arg2)
+// ghidra_proto undefined AfxGetModuleShortFileName()
 // FUNCTION: IMPERIALISM 0x0060b783
 undefined4 AfxGetModuleShortFileName(void)
 {
@@ -1268,7 +1268,7 @@ undefined4 AfxGetModuleShortFileName(void)
 }
 
 // ghidra_name GetFileName_60b7dd
-// ghidra_proto int __cdecl GetFileName_60b7dd(void)
+// ghidra_proto undefined GetFileName_60b7dd()
 // FUNCTION: IMPERIALISM 0x0060b7dd
 undefined4 GetFileName_60b7dd(void)
 {
@@ -1276,7 +1276,7 @@ undefined4 GetFileName_60b7dd(void)
 }
 
 // ghidra_name GetFileTitle_60b85f
-// ghidra_proto int __cdecl GetFileTitle_60b85f(void)
+// ghidra_proto undefined GetFileTitle_60b85f()
 // FUNCTION: IMPERIALISM 0x0060b85f
 undefined4 GetFileTitle_60b85f(void)
 {
@@ -1284,7 +1284,7 @@ undefined4 GetFileTitle_60b85f(void)
 }
 
 // ghidra_name TToolBarCluster::GetFilePath
-// ghidra_proto void * __thiscall GetFilePath(void)
+// ghidra_proto undefined GetFilePath()
 // FUNCTION: IMPERIALISM 0x0060b8e1
 undefined4 GetFilePath(void)
 {
@@ -1292,7 +1292,7 @@ undefined4 GetFilePath(void)
 }
 
 // ghidra_name CDocTemplate::GetStatus
-// ghidra_proto bool __thiscall GetStatus(void * pStatus)
+// ghidra_proto undefined GetStatus()
 // FUNCTION: IMPERIALISM 0x0060b910
 undefined4 GetStatus(void)
 {
@@ -1300,7 +1300,7 @@ undefined4 GetStatus(void)
 }
 
 // ghidra_name GetStatus_60b9ea
-// ghidra_proto int __cdecl GetStatus_60b9ea(int arg1, int arg2)
+// ghidra_proto undefined GetStatus_60b9ea()
 // FUNCTION: IMPERIALISM 0x0060b9ea
 undefined4 GetStatus_60b9ea(void)
 {
@@ -1308,7 +1308,7 @@ undefined4 GetStatus_60b9ea(void)
 }
 
 // ghidra_name AfxTimeToFileTime
-// ghidra_proto void __cdecl AfxTimeToFileTime(void * dateFields, void * outFileTime)
+// ghidra_proto undefined AfxTimeToFileTime()
 // FUNCTION: IMPERIALISM 0x0060ba9c
 undefined4 AfxTimeToFileTime(void)
 {
@@ -1316,7 +1316,7 @@ undefined4 AfxTimeToFileTime(void)
 }
 
 // ghidra_name SetStatus
-// ghidra_proto void __cdecl SetStatus(char * filePath, void * metadata)
+// ghidra_proto undefined SetStatus()
 // FUNCTION: IMPERIALISM 0x0060bb4b
 undefined4 SetStatus(void)
 {
@@ -1324,7 +1324,7 @@ undefined4 SetStatus(void)
 }
 
 // ghidra_name ThrowOsError
-// ghidra_proto void __cdecl ThrowOsError(int win32Error, uint fileNameContext)
+// ghidra_proto undefined ThrowOsError()
 // FUNCTION: IMPERIALISM 0x0060bc98
 undefined4 ThrowOsError(void)
 {
@@ -1332,7 +1332,7 @@ undefined4 ThrowOsError(void)
 }
 
 // ghidra_name GetErrorMessage
-// ghidra_proto int __cdecl GetErrorMessage(void)
+// ghidra_proto undefined GetErrorMessage()
 // FUNCTION: IMPERIALISM 0x0060bcdd
 undefined4 GetErrorMessage(void)
 {
@@ -1340,7 +1340,7 @@ undefined4 GetErrorMessage(void)
 }
 
 // ghidra_name AfxThrowFileException
-// ghidra_proto void __cdecl AfxThrowFileException(int causeCode, int osError, uint fileNameContext)
+// ghidra_proto undefined AfxThrowFileException()
 // FUNCTION: IMPERIALISM 0x0060bd7d
 undefined4 AfxThrowFileException(void)
 {
@@ -1348,7 +1348,7 @@ undefined4 AfxThrowFileException(void)
 }
 
 // ghidra_name OsErrorToException
-// ghidra_proto int __cdecl OsErrorToException(uint win32Error)
+// ghidra_proto undefined OsErrorToException()
 // FUNCTION: IMPERIALISM 0x0060be52
 undefined4 OsErrorToException(void)
 {
@@ -1356,7 +1356,7 @@ undefined4 OsErrorToException(void)
 }
 
 // ghidra_name TakeAndClearPointerSlot
-// ghidra_proto void * __fastcall TakeAndClearPointerSlot(void * * pSlot)
+// ghidra_proto undefined TakeAndClearPointerSlot()
 // FUNCTION: IMPERIALISM 0x0060c1ba
 undefined4 TakeAndClearPointerSlot(void)
 {
@@ -1364,7 +1364,7 @@ undefined4 TakeAndClearPointerSlot(void)
 }
 
 // ghidra_name GetFont_60c367
-// ghidra_proto void * __cdecl GetFont_60c367(void)
+// ghidra_proto undefined GetFont_60c367()
 // FUNCTION: IMPERIALISM 0x0060c367
 undefined4 GetFont_60c367(void)
 {
@@ -1372,7 +1372,7 @@ undefined4 GetFont_60c367(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0060c7df
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0060c7df(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0060c7df()
 // FUNCTION: IMPERIALISM 0x0060c7df
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0060c7df(void)
 {
@@ -1380,7 +1380,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0060c7df(void)
 }
 
 // ghidra_name RemoveSharedStringEntryAndShiftLeft
-// ghidra_proto void __thiscall RemoveSharedStringEntryAndShiftLeft(int index)
+// ghidra_proto undefined RemoveSharedStringEntryAndShiftLeft()
 // FUNCTION: IMPERIALISM 0x0060c900
 undefined4 RemoveSharedStringEntryAndShiftLeft(void)
 {
@@ -1388,7 +1388,7 @@ undefined4 RemoveSharedStringEntryAndShiftLeft(void)
 }
 
 // ghidra_name LoadStringA
-// ghidra_proto bool __cdecl LoadStringA(uint stringResourceId)
+// ghidra_proto undefined LoadStringA()
 // FUNCTION: IMPERIALISM 0x0060ce85
 undefined4 LoadStringA(void)
 {
@@ -1396,7 +1396,7 @@ undefined4 LoadStringA(void)
 }
 
 // ghidra_name AfxLoadString
-// ghidra_proto void __cdecl AfxLoadString(uint resourceId, char * outBuffer, int maxChars)
+// ghidra_proto undefined AfxLoadString()
 // FUNCTION: IMPERIALISM 0x0060cf09
 undefined4 AfxLoadString(void)
 {
@@ -1404,7 +1404,7 @@ undefined4 AfxLoadString(void)
 }
 
 // ghidra_name AfxExtractSubString
-// ghidra_proto bool __cdecl AfxExtractSubString(void * destination, char * source, int fieldIndex, char delimiter)
+// ghidra_proto undefined AfxExtractSubString()
 // FUNCTION: IMPERIALISM 0x0060cf30
 undefined4 AfxExtractSubString(void)
 {
@@ -1412,7 +1412,7 @@ undefined4 AfxExtractSubString(void)
 }
 
 // ghidra_name DeleteTempMap_60d044
-// ghidra_proto int __cdecl DeleteTempMap_60d044(void)
+// ghidra_proto undefined DeleteTempMap_60d044()
 // FUNCTION: IMPERIALISM 0x0060d044
 undefined4 DeleteTempMap_60d044(void)
 {
@@ -1420,7 +1420,7 @@ undefined4 DeleteTempMap_60d044(void)
 }
 
 // ghidra_name afxMapHIMAGELIST_60d058
-// ghidra_proto int __cdecl afxMapHIMAGELIST_60d058(void)
+// ghidra_proto undefined afxMapHIMAGELIST_60d058()
 // FUNCTION: IMPERIALISM 0x0060d058
 undefined4 afxMapHIMAGELIST_60d058(void)
 {
@@ -1428,7 +1428,7 @@ undefined4 afxMapHIMAGELIST_60d058(void)
 }
 
 // ghidra_name FromHandle_60d0c8
-// ghidra_proto int __cdecl FromHandle_60d0c8(void)
+// ghidra_proto undefined FromHandle_60d0c8()
 // FUNCTION: IMPERIALISM 0x0060d0c8
 undefined4 FromHandle_60d0c8(void)
 {
@@ -1436,7 +1436,7 @@ undefined4 FromHandle_60d0c8(void)
 }
 
 // ghidra_name LookupCMenuByHandleNoCreate
-// ghidra_proto int __cdecl LookupCMenuByHandleNoCreate(void)
+// ghidra_proto undefined LookupCMenuByHandleNoCreate()
 // FUNCTION: IMPERIALISM 0x0060d0de
 undefined4 LookupCMenuByHandleNoCreate(void)
 {
@@ -1444,7 +1444,7 @@ undefined4 LookupCMenuByHandleNoCreate(void)
 }
 
 // ghidra_name IncrementAfxModuleThreadStateTempMapLockDepth
-// ghidra_proto void __cdecl IncrementAfxModuleThreadStateTempMapLockDepth(void)
+// ghidra_proto undefined IncrementAfxModuleThreadStateTempMapLockDepth()
 // FUNCTION: IMPERIALISM 0x0060d16d
 undefined4 IncrementAfxModuleThreadStateTempMapLockDepth(void)
 {
@@ -1452,7 +1452,7 @@ undefined4 IncrementAfxModuleThreadStateTempMapLockDepth(void)
 }
 
 // ghidra_name AfxUnlockTempMaps
-// ghidra_proto bool __cdecl AfxUnlockTempMaps(int deleteTemps)
+// ghidra_proto undefined AfxUnlockTempMaps()
 // FUNCTION: IMPERIALISM 0x0060d176
 undefined4 AfxUnlockTempMaps(void)
 {
@@ -1460,7 +1460,7 @@ undefined4 AfxUnlockTempMaps(void)
 }
 
 // ghidra_name CHandleMap
-// ghidra_proto void * __cdecl CHandleMap(void)
+// ghidra_proto undefined CHandleMap()
 // FUNCTION: IMPERIALISM 0x0060d264
 undefined4 CHandleMap(void)
 {
@@ -1468,7 +1468,7 @@ undefined4 CHandleMap(void)
 }
 
 // ghidra_name FromHandle_60d2c0
-// ghidra_proto int __cdecl FromHandle_60d2c0(void)
+// ghidra_proto undefined FromHandle_60d2c0()
 // FUNCTION: IMPERIALISM 0x0060d2c0
 undefined4 FromHandle_60d2c0(void)
 {
@@ -1476,7 +1476,7 @@ undefined4 FromHandle_60d2c0(void)
 }
 
 // ghidra_name AfxWinMain
-// ghidra_proto void __thiscall AfxWinMain(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined AfxWinMain()
 // FUNCTION: IMPERIALISM 0x0060d3fc
 undefined4 AfxWinMain(void)
 {
@@ -1484,7 +1484,7 @@ undefined4 AfxWinMain(void)
 }
 
 // ghidra_name CSingleDocTemplate
-// ghidra_proto void __thiscall CSingleDocTemplate(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined CSingleDocTemplate()
 // FUNCTION: IMPERIALISM 0x006106bd
 undefined4 CSingleDocTemplate(void)
 {
@@ -1492,7 +1492,7 @@ undefined4 CSingleDocTemplate(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At006106e5
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006106e5(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At006106e5()
 // FUNCTION: IMPERIALISM 0x006106e5
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006106e5(void)
 {
@@ -1500,7 +1500,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006106e5(void)
 }
 
 // ghidra_name InitVtable0067074cAndMapTileHint_0061499c
-// ghidra_proto void __fastcall InitVtable0067074cAndMapTileHint_0061499c(void)
+// ghidra_proto undefined InitVtable0067074cAndMapTileHint_0061499c()
 // FUNCTION: IMPERIALISM 0x00610701
 undefined4 InitVtable0067074cAndMapTileHint_0061499c(void)
 {
@@ -1508,7 +1508,7 @@ undefined4 InitVtable0067074cAndMapTileHint_0061499c(void)
 }
 
 // ghidra_name WrapperFor_SetObjectField24Value_At00610728
-// ghidra_proto void __cdecl WrapperFor_SetObjectField24Value_At00610728(void)
+// ghidra_proto undefined WrapperFor_SetObjectField24Value_At00610728()
 // FUNCTION: IMPERIALISM 0x00610728
 undefined4 WrapperFor_SetObjectField24Value_At00610728(void)
 {
@@ -1516,7 +1516,7 @@ undefined4 WrapperFor_SetObjectField24Value_At00610728(void)
 }
 
 // ghidra_name ResetField24ArgAndThisField100
-// ghidra_proto void __cdecl ResetField24ArgAndThisField100(void)
+// ghidra_proto undefined ResetField24ArgAndThisField100()
 // FUNCTION: IMPERIALISM 0x0061073e
 undefined4 ResetField24ArgAndThisField100(void)
 {
@@ -1524,7 +1524,7 @@ undefined4 ResetField24ArgAndThisField100(void)
 }
 
 // ghidra_name OpenDocumentFile
-// ghidra_proto int * __cdecl OpenDocumentFile(void)
+// ghidra_proto undefined OpenDocumentFile()
 // FUNCTION: IMPERIALISM 0x00610752
 undefined4 OpenDocumentFile(void)
 {
@@ -1532,7 +1532,7 @@ undefined4 OpenDocumentFile(void)
 }
 
 // ghidra_name SetDefaultTitle
-// ghidra_proto void __cdecl SetDefaultTitle(void)
+// ghidra_proto undefined SetDefaultTitle()
 // FUNCTION: IMPERIALISM 0x006108fe
 undefined4 SetDefaultTitle(void)
 {
@@ -1540,7 +1540,7 @@ undefined4 SetDefaultTitle(void)
 }
 
 // ghidra_name GetCDocumentMessageMap
-// ghidra_proto void * __thiscall GetCDocumentMessageMap(void)
+// ghidra_proto undefined GetCDocumentMessageMap()
 // FUNCTION: IMPERIALISM 0x00610965
 undefined4 GetCDocumentMessageMap(void)
 {
@@ -1548,7 +1548,7 @@ undefined4 GetCDocumentMessageMap(void)
 }
 
 // ghidra_name CDocument::CDocument
-// ghidra_proto void * __thiscall CDocument(void)
+// ghidra_proto undefined CDocument()
 // FUNCTION: IMPERIALISM 0x0061096b
 undefined4 CDocument(void)
 {
@@ -1556,7 +1556,7 @@ undefined4 CDocument(void)
 }
 
 // ghidra_name CDocument::DestructCDocumentBaseState
-// ghidra_proto void __thiscall DestructCDocumentBaseState(void)
+// ghidra_proto undefined DestructCDocumentBaseState()
 // FUNCTION: IMPERIALISM 0x006109eb
 undefined4 DestructCDocumentBaseState(void)
 {
@@ -1564,7 +1564,7 @@ undefined4 DestructCDocumentBaseState(void)
 }
 
 // ghidra_name DispatchViaVtableSlot84FromSlot06
-// ghidra_proto void * __thiscall DispatchViaVtableSlot84FromSlot06(void)
+// ghidra_proto undefined DispatchViaVtableSlot84FromSlot06()
 // FUNCTION: IMPERIALISM 0x00610a57
 undefined4 DispatchViaVtableSlot84FromSlot06(void)
 {
@@ -1572,7 +1572,7 @@ undefined4 DispatchViaVtableSlot84FromSlot06(void)
 }
 
 // ghidra_name WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80
-// ghidra_proto void __cdecl WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80(void)
+// ghidra_proto undefined WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80()
 // FUNCTION: IMPERIALISM 0x00610a80
 undefined4 WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80(void)
 {
@@ -1580,7 +1580,7 @@ undefined4 WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80(void)
 }
 
 // ghidra_name DispatchVirtual84OrA8_ByControlState
-// ghidra_proto void __fastcall DispatchVirtual84OrA8_ByControlState(void)
+// ghidra_proto undefined DispatchVirtual84OrA8_ByControlState()
 // FUNCTION: IMPERIALISM 0x00610a9e
 undefined4 DispatchVirtual84OrA8_ByControlState(void)
 {
@@ -1588,7 +1588,7 @@ undefined4 DispatchVirtual84OrA8_ByControlState(void)
 }
 
 // ghidra_name CDocument::RenumberAndActivateVisibleDocumentFrames
-// ghidra_proto void __thiscall RenumberAndActivateVisibleDocumentFrames(void)
+// ghidra_proto undefined RenumberAndActivateVisibleDocumentFrames()
 // FUNCTION: IMPERIALISM 0x00610aba
 undefined4 RenumberAndActivateVisibleDocumentFrames(void)
 {
@@ -1596,7 +1596,7 @@ undefined4 RenumberAndActivateVisibleDocumentFrames(void)
 }
 
 // ghidra_name InvokeVslot84IfVslot98ReturnsNonZero
-// ghidra_proto void __fastcall InvokeVslot84IfVslot98ReturnsNonZero(void)
+// ghidra_proto undefined InvokeVslot84IfVslot98ReturnsNonZero()
 // FUNCTION: IMPERIALISM 0x00610c87
 undefined4 InvokeVslot84IfVslot98ReturnsNonZero(void)
 {
@@ -1604,7 +1604,7 @@ undefined4 InvokeVslot84IfVslot98ReturnsNonZero(void)
 }
 
 // ghidra_name CDocument::DoSaveDocumentWithPromptAndReplace
-// ghidra_proto bool __thiscall DoSaveDocumentWithPromptAndReplace(char * pathName, int replaceCurrent)
+// ghidra_proto undefined DoSaveDocumentWithPromptAndReplace()
 // FUNCTION: IMPERIALISM 0x00610ce5
 undefined4 DoSaveDocumentWithPromptAndReplace(void)
 {
@@ -1612,7 +1612,7 @@ undefined4 DoSaveDocumentWithPromptAndReplace(void)
 }
 
 // ghidra_name CDocument::SaveModified
-// ghidra_proto bool __thiscall SaveModified(void)
+// ghidra_proto undefined SaveModified()
 // FUNCTION: IMPERIALISM 0x00610e6f
 undefined4 SaveModified(void)
 {
@@ -1620,7 +1620,7 @@ undefined4 SaveModified(void)
 }
 
 // ghidra_name ReturnZeroStub_00610f84
-// ghidra_proto int __cdecl ReturnZeroStub_00610f84(void)
+// ghidra_proto undefined ReturnZeroStub_00610f84()
 // FUNCTION: IMPERIALISM 0x00610f84
 undefined4 ReturnZeroStub_00610f84(void)
 {
@@ -1628,7 +1628,7 @@ undefined4 ReturnZeroStub_00610f84(void)
 }
 
 // ghidra_name ReturnZeroStub_00610f87
-// ghidra_proto int __cdecl ReturnZeroStub_00610f87(void)
+// ghidra_proto undefined ReturnZeroStub_00610f87()
 // FUNCTION: IMPERIALISM 0x00610f87
 undefined4 ReturnZeroStub_00610f87(void)
 {
@@ -1636,7 +1636,7 @@ undefined4 ReturnZeroStub_00610f87(void)
 }
 
 // ghidra_name CDocument::ReportSaveLoadException
-// ghidra_proto void __thiscall ReportSaveLoadException(char * pathName, void * pException, int isSaving, uint defaultPromptId)
+// ghidra_proto undefined ReportSaveLoadException()
 // FUNCTION: IMPERIALISM 0x00610f8a
 undefined4 ReportSaveLoadException(void)
 {
@@ -1644,7 +1644,7 @@ undefined4 ReportSaveLoadException(void)
 }
 
 // ghidra_name CopyFilePreserveTimesAndSecurity
-// ghidra_proto bool __thiscall CopyFilePreserveTimesAndSecurity(char * sourcePath, char * targetPath, uint openFlags)
+// ghidra_proto undefined CopyFilePreserveTimesAndSecurity()
 // FUNCTION: IMPERIALISM 0x006110fa
 undefined4 CopyFilePreserveTimesAndSecurity(void)
 {
@@ -1652,7 +1652,7 @@ undefined4 CopyFilePreserveTimesAndSecurity(void)
 }
 
 // ghidra_name Abort_6112c1
-// ghidra_proto void __fastcall Abort_6112c1(void)
+// ghidra_proto undefined Abort_6112c1()
 // FUNCTION: IMPERIALISM 0x006112c1
 undefined4 Abort_6112c1(void)
 {
@@ -1660,7 +1660,7 @@ undefined4 Abort_6112c1(void)
 }
 
 // ghidra_name CloseFileAndDeleteOnFailureThenThrow
-// ghidra_proto void __cdecl CloseFileAndDeleteOnFailureThenThrow(void)
+// ghidra_proto undefined CloseFileAndDeleteOnFailureThenThrow()
 // FUNCTION: IMPERIALISM 0x006112da
 undefined4 CloseFileAndDeleteOnFailureThenThrow(void)
 {
@@ -1668,7 +1668,7 @@ undefined4 CloseFileAndDeleteOnFailureThenThrow(void)
 }
 
 // ghidra_name CDocument::GetFile
-// ghidra_proto void * __thiscall GetFile(char * pathName, uint openFlags, void * pError)
+// ghidra_proto undefined GetFile()
 // FUNCTION: IMPERIALISM 0x00611334
 undefined4 GetFile(void)
 {
@@ -1676,7 +1676,7 @@ undefined4 GetFile(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At006113aa
-// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006113aa(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At006113aa()
 // FUNCTION: IMPERIALISM 0x006113aa
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006113aa(void)
 {
@@ -1684,7 +1684,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006113aa(void)
 }
 
 // ghidra_name CFileException::DestructFileExceptionAndReleaseMessageString
-// ghidra_proto void __thiscall DestructFileExceptionAndReleaseMessageString(void)
+// ghidra_proto undefined DestructFileExceptionAndReleaseMessageString()
 // FUNCTION: IMPERIALISM 0x006113c6
 undefined4 DestructFileExceptionAndReleaseMessageString(void)
 {
@@ -1692,7 +1692,7 @@ undefined4 DestructFileExceptionAndReleaseMessageString(void)
 }
 
 // ghidra_name CDocument::ReleaseFileObjectCloseOrAbort
-// ghidra_proto void __thiscall ReleaseFileObjectCloseOrAbort(void * pFile, int abortFlag)
+// ghidra_proto undefined ReleaseFileObjectCloseOrAbort()
 // FUNCTION: IMPERIALISM 0x006113f7
 undefined4 ReleaseFileObjectCloseOrAbort(void)
 {
@@ -1700,7 +1700,7 @@ undefined4 ReleaseFileObjectCloseOrAbort(void)
 }
 
 // ghidra_name CDocument::OnOpenDocument
-// ghidra_proto bool __thiscall OnOpenDocument(void)
+// ghidra_proto undefined OnOpenDocument()
 // FUNCTION: IMPERIALISM 0x00611443
 undefined4 OnOpenDocument(void)
 {
@@ -1708,7 +1708,7 @@ undefined4 OnOpenDocument(void)
 }
 
 // ghidra_name CDocument::OnSaveDocument
-// ghidra_proto bool __thiscall OnSaveDocument(void)
+// ghidra_proto undefined OnSaveDocument()
 // FUNCTION: IMPERIALISM 0x0061160e
 undefined4 OnSaveDocument(void)
 {
@@ -1716,7 +1716,7 @@ undefined4 OnSaveDocument(void)
 }
 
 // ghidra_name WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed
-// ghidra_proto void __stdcall WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed()
 // FUNCTION: IMPERIALISM 0x006118ed
 undefined4 WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed(void)
 {
@@ -1724,7 +1724,7 @@ undefined4 WrapperFor_DispatchCommandToAfxMessageMapChain_At006118ed(void)
 }
 
 // ghidra_name WriteVariableLengthPrefixedByteBuffer
-// ghidra_proto void __cdecl WriteVariableLengthPrefixedByteBuffer(int arg1, int arg2)
+// ghidra_proto undefined WriteVariableLengthPrefixedByteBuffer()
 // FUNCTION: IMPERIALISM 0x00611930
 undefined4 WriteVariableLengthPrefixedByteBuffer(void)
 {
@@ -1732,7 +1732,7 @@ undefined4 WriteVariableLengthPrefixedByteBuffer(void)
 }
 
 // ghidra_name SerializeElements
-// ghidra_proto void __cdecl SerializeElements(void)
+// ghidra_proto undefined SerializeElements()
 // FUNCTION: IMPERIALISM 0x00611a9e
 undefined4 SerializeElements(void)
 {
@@ -1740,7 +1740,7 @@ undefined4 SerializeElements(void)
 }
 
 // ghidra_name FindThreadHandleMapEntryBySerializedName
-// ghidra_proto void * __stdcall FindThreadHandleMapEntryBySerializedName(void * archiveState, uint * outSerializedKey)
+// ghidra_proto undefined FindThreadHandleMapEntryBySerializedName()
 // FUNCTION: IMPERIALISM 0x00611aec
 undefined4 FindThreadHandleMapEntryBySerializedName(void)
 {
@@ -1748,7 +1748,7 @@ undefined4 FindThreadHandleMapEntryBySerializedName(void)
 }
 
 // ghidra_name CDocument::CArchive
-// ghidra_proto void __thiscall CArchive(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined CArchive()
 // FUNCTION: IMPERIALISM 0x00611bb4
 undefined4 CArchive(void)
 {
@@ -1756,7 +1756,7 @@ undefined4 CArchive(void)
 }
 
 // ghidra_name CDocument::ReleaseSerializedArchiveBufferState
-// ghidra_proto void __thiscall ReleaseSerializedArchiveBufferState(void)
+// ghidra_proto undefined ReleaseSerializedArchiveBufferState()
 // FUNCTION: IMPERIALISM 0x00611c90
 undefined4 ReleaseSerializedArchiveBufferState(void)
 {
@@ -1764,7 +1764,7 @@ undefined4 ReleaseSerializedArchiveBufferState(void)
 }
 
 // ghidra_name Abort_611cd6
-// ghidra_proto void __thiscall Abort_611cd6(void)
+// ghidra_proto undefined Abort_611cd6()
 // FUNCTION: IMPERIALISM 0x00611cd6
 undefined4 Abort_611cd6(void)
 {
@@ -1772,7 +1772,7 @@ undefined4 Abort_611cd6(void)
 }
 
 // ghidra_name Flush
-// ghidra_proto void __fastcall Flush(void * streamState)
+// ghidra_proto undefined Flush()
 // FUNCTION: IMPERIALISM 0x00611ec4
 undefined4 Flush(void)
 {
@@ -1780,7 +1780,7 @@ undefined4 Flush(void)
 }
 
 // ghidra_name ReadString
-// ghidra_proto int __cdecl ReadString(void)
+// ghidra_proto undefined ReadString()
 // FUNCTION: IMPERIALISM 0x0061207b
 undefined4 ReadString(void)
 {
@@ -1788,7 +1788,7 @@ undefined4 ReadString(void)
 }
 
 // ghidra_name TToolBarCluster::ReadString_612132
-// ghidra_proto bool __thiscall ReadString_612132(void * pSharedString)
+// ghidra_proto undefined ReadString_612132()
 // FUNCTION: IMPERIALISM 0x00612132
 undefined4 ReadString_612132(void)
 {
@@ -1796,7 +1796,7 @@ undefined4 ReadString_612132(void)
 }
 
 // ghidra_name NodeScanner::ReadClass
-// ghidra_proto void * __thiscall ReadClass(void * expectedNode, uint * outLookupKey, uint * outRawToken)
+// ghidra_proto undefined ReadClass()
 // FUNCTION: IMPERIALISM 0x0061249e
 undefined4 ReadClass(void)
 {
@@ -1804,7 +1804,7 @@ undefined4 ReadClass(void)
 }
 
 // ghidra_name ScalarDeleteCDC
-// ghidra_proto int __thiscall ScalarDeleteCDC(void)
+// ghidra_proto undefined ScalarDeleteCDC()
 // FUNCTION: IMPERIALISM 0x00612696
 undefined4 ScalarDeleteCDC(void)
 {
@@ -1812,7 +1812,7 @@ undefined4 ScalarDeleteCDC(void)
 }
 
 // ghidra_name DeleteTempMap_6126b2
-// ghidra_proto void * __cdecl DeleteTempMap_6126b2(void)
+// ghidra_proto undefined DeleteTempMap_6126b2()
 // FUNCTION: IMPERIALISM 0x006126b2
 undefined4 DeleteTempMap_6126b2(void)
 {
@@ -1820,7 +1820,7 @@ undefined4 DeleteTempMap_6126b2(void)
 }
 
 // ghidra_name afxMapHDC
-// ghidra_proto void * __cdecl afxMapHDC(void)
+// ghidra_proto undefined afxMapHDC()
 // FUNCTION: IMPERIALISM 0x006126c6
 undefined4 afxMapHDC(void)
 {
@@ -1828,7 +1828,7 @@ undefined4 afxMapHDC(void)
 }
 
 // ghidra_name FromHandle_612736
-// ghidra_proto void __cdecl FromHandle_612736(void)
+// ghidra_proto undefined FromHandle_612736()
 // FUNCTION: IMPERIALISM 0x00612736
 undefined4 FromHandle_612736(void)
 {
@@ -1836,7 +1836,7 @@ undefined4 FromHandle_612736(void)
 }
 
 // ghidra_name CDocTemplate::StartDocAFromContextWithDocName
-// ghidra_proto void __thiscall StartDocAFromContextWithDocName(char * pDocName)
+// ghidra_proto undefined StartDocAFromContextWithDocName()
 // FUNCTION: IMPERIALISM 0x00612828
 undefined4 StartDocAFromContextWithDocName(void)
 {
@@ -1844,7 +1844,7 @@ undefined4 StartDocAFromContextWithDocName(void)
 }
 
 // ghidra_name SaveDcStateForWindowAndBackupHdc_00612860
-// ghidra_proto int __fastcall SaveDcStateForWindowAndBackupHdc_00612860(int context)
+// ghidra_proto undefined SaveDcStateForWindowAndBackupHdc_00612860()
 // FUNCTION: IMPERIALISM 0x00612860
 undefined4 SaveDcStateForWindowAndBackupHdc_00612860(void)
 {
@@ -1852,7 +1852,7 @@ undefined4 SaveDcStateForWindowAndBackupHdc_00612860(void)
 }
 
 // ghidra_name thunk_CallDcCallbackIfPrimaryHdcDiffers
-// ghidra_proto int __cdecl thunk_CallDcCallbackIfPrimaryHdcDiffers(void)
+// ghidra_proto undefined thunk_CallDcCallbackIfPrimaryHdcDiffers()
 // FUNCTION: IMPERIALISM 0x00612878
 undefined4 thunk_CallDcCallbackIfPrimaryHdcDiffers(void)
 {
@@ -1860,7 +1860,7 @@ undefined4 thunk_CallDcCallbackIfPrimaryHdcDiffers(void)
 }
 
 // ghidra_name CallDcCallbackIfPrimaryHdcDiffers
-// ghidra_proto int __cdecl CallDcCallbackIfPrimaryHdcDiffers(void)
+// ghidra_proto undefined CallDcCallbackIfPrimaryHdcDiffers()
 // FUNCTION: IMPERIALISM 0x0061287e
 undefined4 CallDcCallbackIfPrimaryHdcDiffers(void)
 {
@@ -1868,7 +1868,7 @@ undefined4 CallDcCallbackIfPrimaryHdcDiffers(void)
 }
 
 // ghidra_name SelectObject
-// ghidra_proto void __thiscall SelectObject(void)
+// ghidra_proto undefined SelectObject()
 // FUNCTION: IMPERIALISM 0x00612931
 undefined4 SelectObject(void)
 {
@@ -1876,7 +1876,7 @@ undefined4 SelectObject(void)
 }
 
 // ghidra_name SelectObject_612984
-// ghidra_proto void __thiscall SelectObject_612984(void)
+// ghidra_proto undefined SelectObject_612984()
 // FUNCTION: IMPERIALISM 0x00612984
 undefined4 SelectObject_612984(void)
 {
@@ -1884,7 +1884,7 @@ undefined4 SelectObject_612984(void)
 }
 
 // ghidra_name TTEView::SelectObject_6129d7
-// ghidra_proto void __thiscall SelectObject_6129d7(void)
+// ghidra_proto undefined SelectObject_6129d7()
 // FUNCTION: IMPERIALISM 0x006129d7
 undefined4 SelectObject_6129d7(void)
 {
@@ -1892,7 +1892,7 @@ undefined4 SelectObject_6129d7(void)
 }
 
 // ghidra_name thunk_DispatchHandleMapLookupWithReadPtrProbe
-// ghidra_proto void __cdecl thunk_DispatchHandleMapLookupWithReadPtrProbe(void)
+// ghidra_proto undefined thunk_DispatchHandleMapLookupWithReadPtrProbe()
 // FUNCTION: IMPERIALISM 0x00612a78
 undefined4 thunk_DispatchHandleMapLookupWithReadPtrProbe(void)
 {
@@ -1900,7 +1900,7 @@ undefined4 thunk_DispatchHandleMapLookupWithReadPtrProbe(void)
 }
 
 // ghidra_name TOceanDialog::SelectPaletteThenLookupHandleMapEntryWithCreate
-// ghidra_proto void __thiscall SelectPaletteThenLookupHandleMapEntryWithCreate(void * palette, int forceBackground)
+// ghidra_proto undefined SelectPaletteThenLookupHandleMapEntryWithCreate()
 // FUNCTION: IMPERIALISM 0x00612a88
 undefined4 SelectPaletteThenLookupHandleMapEntryWithCreate(void)
 {
@@ -1908,7 +1908,7 @@ undefined4 SelectPaletteThenLookupHandleMapEntryWithCreate(void)
 }
 
 // ghidra_name SetBkModeOnPrimaryAndSecondaryDc
-// ghidra_proto void __cdecl SetBkModeOnPrimaryAndSecondaryDc(void)
+// ghidra_proto undefined SetBkModeOnPrimaryAndSecondaryDc()
 // FUNCTION: IMPERIALISM 0x00612ad2
 undefined4 SetBkModeOnPrimaryAndSecondaryDc(void)
 {
@@ -1916,7 +1916,7 @@ undefined4 SetBkModeOnPrimaryAndSecondaryDc(void)
 }
 
 // ghidra_name SetMapMode
-// ghidra_proto void __thiscall SetMapMode(int arg1)
+// ghidra_proto undefined SetMapMode()
 // FUNCTION: IMPERIALISM 0x00612bea
 undefined4 SetMapMode(void)
 {
@@ -1924,7 +1924,7 @@ undefined4 SetMapMode(void)
 }
 
 // ghidra_name GetClipBoxFromThisHdcField
-// ghidra_proto void __thiscall GetClipBoxFromThisHdcField(void * pOutRect)
+// ghidra_proto undefined GetClipBoxFromThisHdcField()
 // FUNCTION: IMPERIALISM 0x00612e9a
 undefined4 GetClipBoxFromThisHdcField(void)
 {
@@ -1932,23 +1932,15 @@ undefined4 GetClipBoxFromThisHdcField(void)
 }
 
 // ghidra_name TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc
-// ghidra_proto int __thiscall SelectClipRegionOnPrimaryAndSecondaryDc(void)
+// ghidra_proto undefined SelectClipRegionOnPrimaryAndSecondaryDc()
 // FUNCTION: IMPERIALISM 0x00612eaa
 undefined4 SelectClipRegionOnPrimaryAndSecondaryDc(void)
 {
   return 0;
 }
 
-// ghidra_name LineTo
-// ghidra_proto int __thiscall LineTo(int x, int y)
-// FUNCTION: IMPERIALISM 0x006130ec
-undefined4 LineTo(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_SetMapperFlags_At006131cb
-// ghidra_proto uint __thiscall WrapperFor_SetMapperFlags_At006131cb(void)
+// ghidra_proto undefined WrapperFor_SetMapperFlags_At006131cb()
 // FUNCTION: IMPERIALISM 0x006131cb
 undefined4 WrapperFor_SetMapperFlags_At006131cb(void)
 {
@@ -1956,23 +1948,15 @@ undefined4 WrapperFor_SetMapperFlags_At006131cb(void)
 }
 
 // ghidra_name AfxEnumMetaFileProc
-// ghidra_proto int __cdecl AfxEnumMetaFileProc(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined AfxEnumMetaFileProc()
 // FUNCTION: IMPERIALISM 0x00613452
 undefined4 AfxEnumMetaFileProc(void)
 {
   return 0;
 }
 
-// ghidra_name PlayMetaFile
-// ghidra_proto int __thiscall PlayMetaFile(void * hMetaFile)
-// FUNCTION: IMPERIALISM 0x00613686
-undefined4 PlayMetaFile(void)
-{
-  return 0;
-}
-
 // ghidra_name CWindowDC
-// ghidra_proto void * __cdecl CWindowDC(void)
+// ghidra_proto undefined CWindowDC()
 // FUNCTION: IMPERIALISM 0x00613845
 undefined4 CWindowDC(void)
 {
@@ -1980,7 +1964,7 @@ undefined4 CWindowDC(void)
 }
 
 // ghidra_name DestroyWindowDcAndMaybeFree
-// ghidra_proto void __cdecl DestroyWindowDcAndMaybeFree(void)
+// ghidra_proto undefined DestroyWindowDcAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x0061389b
 undefined4 DestroyWindowDcAndMaybeFree(void)
 {
@@ -1988,7 +1972,7 @@ undefined4 DestroyWindowDcAndMaybeFree(void)
 }
 
 // ghidra_name DestroyCWindowDCAndReleaseHandle
-// ghidra_proto void __cdecl DestroyCWindowDCAndReleaseHandle(void)
+// ghidra_proto undefined DestroyCWindowDCAndReleaseHandle()
 // FUNCTION: IMPERIALISM 0x006138b7
 undefined4 DestroyCWindowDCAndReleaseHandle(void)
 {
@@ -1996,7 +1980,7 @@ undefined4 DestroyCWindowDCAndReleaseHandle(void)
 }
 
 // ghidra_name CPaintDC
-// ghidra_proto void * __cdecl CPaintDC(void)
+// ghidra_proto undefined CPaintDC()
 // FUNCTION: IMPERIALISM 0x006138f9
 undefined4 CPaintDC(void)
 {
@@ -2004,7 +1988,7 @@ undefined4 CPaintDC(void)
 }
 
 // ghidra_name DeleteTempMap_6139b2
-// ghidra_proto void __cdecl DeleteTempMap_6139b2(void)
+// ghidra_proto undefined DeleteTempMap_6139b2()
 // FUNCTION: IMPERIALISM 0x006139b2
 undefined4 DeleteTempMap_6139b2(void)
 {
@@ -2012,7 +1996,7 @@ undefined4 DeleteTempMap_6139b2(void)
 }
 
 // ghidra_name afxMapHIMAGELIST_6139c6
-// ghidra_proto void * __cdecl afxMapHIMAGELIST_6139c6(void)
+// ghidra_proto undefined afxMapHIMAGELIST_6139c6()
 // FUNCTION: IMPERIALISM 0x006139c6
 undefined4 afxMapHIMAGELIST_6139c6(void)
 {
@@ -2020,7 +2004,7 @@ undefined4 afxMapHIMAGELIST_6139c6(void)
 }
 
 // ghidra_name FromHandle_613a36
-// ghidra_proto void __cdecl FromHandle_613a36(void)
+// ghidra_proto undefined FromHandle_613a36()
 // FUNCTION: IMPERIALISM 0x00613a36
 undefined4 FromHandle_613a36(void)
 {
@@ -2028,7 +2012,7 @@ undefined4 FromHandle_613a36(void)
 }
 
 // ghidra_name CBrush::AttachRegionHandleToClipStateAndRegister
-// ghidra_proto bool __thiscall AttachRegionHandleToClipStateAndRegister(void)
+// ghidra_proto undefined AttachRegionHandleToClipStateAndRegister()
 // FUNCTION: IMPERIALISM 0x00613a4c
 undefined4 AttachRegionHandleToClipStateAndRegister(void)
 {
@@ -2036,7 +2020,7 @@ undefined4 AttachRegionHandleToClipStateAndRegister(void)
 }
 
 // ghidra_name DetachRegionHandleFromClipStateAndUnregister
-// ghidra_proto void __cdecl DetachRegionHandleFromClipStateAndUnregister(void)
+// ghidra_proto undefined DetachRegionHandleFromClipStateAndUnregister()
 // FUNCTION: IMPERIALISM 0x00613a79
 undefined4 DetachRegionHandleFromClipStateAndUnregister(void)
 {
@@ -2044,7 +2028,7 @@ undefined4 DetachRegionHandleFromClipStateAndUnregister(void)
 }
 
 // ghidra_name DeleteObject
-// ghidra_proto int __fastcall DeleteObject(void)
+// ghidra_proto undefined DeleteObject()
 // FUNCTION: IMPERIALISM 0x00613aa3
 undefined4 DeleteObject(void)
 {
@@ -2052,7 +2036,7 @@ undefined4 DeleteObject(void)
 }
 
 // ghidra_name CPen_613b09
-// ghidra_proto int * __cdecl CPen_613b09(void)
+// ghidra_proto undefined CPen_613b09()
 // FUNCTION: IMPERIALISM 0x00613b09
 undefined4 CPen_613b09(void)
 {
@@ -2060,7 +2044,7 @@ undefined4 CPen_613b09(void)
 }
 
 // ghidra_name CBrush_613ba9
-// ghidra_proto int * __cdecl CBrush_613ba9(void)
+// ghidra_proto undefined CBrush_613ba9()
 // FUNCTION: IMPERIALISM 0x00613ba9
 undefined4 CBrush_613ba9(void)
 {
@@ -2068,7 +2052,7 @@ undefined4 CBrush_613ba9(void)
 }
 
 // ghidra_name CBrush_613bf6
-// ghidra_proto int * __cdecl CBrush_613bf6(void)
+// ghidra_proto undefined CBrush_613bf6()
 // FUNCTION: IMPERIALISM 0x00613bf6
 undefined4 CBrush_613bf6(void)
 {
@@ -2076,7 +2060,7 @@ undefined4 CBrush_613bf6(void)
 }
 
 // ghidra_name AfxThrowResourceException
-// ghidra_proto void __cdecl AfxThrowResourceException(void)
+// ghidra_proto undefined AfxThrowResourceException()
 // FUNCTION: IMPERIALISM 0x00613c75
 undefined4 AfxThrowResourceException(void)
 {
@@ -2084,7 +2068,7 @@ undefined4 AfxThrowResourceException(void)
 }
 
 // ghidra_name AfxThrowUserException
-// ghidra_proto void __cdecl AfxThrowUserException(void)
+// ghidra_proto undefined AfxThrowUserException()
 // FUNCTION: IMPERIALISM 0x00613c90
 undefined4 AfxThrowUserException(void)
 {
@@ -2092,7 +2076,7 @@ undefined4 AfxThrowUserException(void)
 }
 
 // ghidra_name CView
-// ghidra_proto void * __fastcall CView(void * pThis)
+// ghidra_proto undefined CView()
 // FUNCTION: IMPERIALISM 0x00613cb1
 undefined4 CView(void)
 {
@@ -2100,7 +2084,7 @@ undefined4 CView(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00613cc7
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00613cc7(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00613cc7()
 // FUNCTION: IMPERIALISM 0x00613cc7
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00613cc7(void)
 {
@@ -2108,7 +2092,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00613cc7(void)
 }
 
 // ghidra_name PreCreateWindow_613d23
-// ghidra_proto int __cdecl PreCreateWindow_613d23(int arg1)
+// ghidra_proto undefined PreCreateWindow_613d23()
 // FUNCTION: IMPERIALISM 0x00613d23
 undefined4 PreCreateWindow_613d23(void)
 {
@@ -2116,7 +2100,7 @@ undefined4 PreCreateWindow_613d23(void)
 }
 
 // ghidra_name OnCreate_613d76
-// ghidra_proto int __thiscall OnCreate_613d76(void * pCreateContext)
+// ghidra_proto undefined OnCreate_613d76()
 // FUNCTION: IMPERIALISM 0x00613d76
 undefined4 OnCreate_613d76(void)
 {
@@ -2124,7 +2108,7 @@ undefined4 OnCreate_613d76(void)
 }
 
 // ghidra_name OnDestroy_613da6
-// ghidra_proto void __fastcall OnDestroy_613da6(void)
+// ghidra_proto undefined OnDestroy_613da6()
 // FUNCTION: IMPERIALISM 0x00613da6
 undefined4 OnDestroy_613da6(void)
 {
@@ -2132,7 +2116,7 @@ undefined4 OnDestroy_613da6(void)
 }
 
 // ghidra_name DeleteObjectViaVirtualDtorIfNonNull_00613dd5
-// ghidra_proto void __fastcall DeleteObjectViaVirtualDtorIfNonNull_00613dd5(int * obj)
+// ghidra_proto undefined DeleteObjectViaVirtualDtorIfNonNull_00613dd5()
 // FUNCTION: IMPERIALISM 0x00613dd5
 undefined4 DeleteObjectViaVirtualDtorIfNonNull_00613dd5(void)
 {
@@ -2140,7 +2124,7 @@ undefined4 DeleteObjectViaVirtualDtorIfNonNull_00613dd5(void)
 }
 
 // ghidra_name AdjustWindowRectForClientAndScrollStyles
-// ghidra_proto void __cdecl AdjustWindowRectForClientAndScrollStyles(int arg1, int arg2)
+// ghidra_proto undefined AdjustWindowRectForClientAndScrollStyles()
 // FUNCTION: IMPERIALISM 0x00613de1
 undefined4 AdjustWindowRectForClientAndScrollStyles(void)
 {
@@ -2148,7 +2132,7 @@ undefined4 AdjustWindowRectForClientAndScrollStyles(void)
 }
 
 // ghidra_name thunk_NoOpVirtualStub_00613e44
-// ghidra_proto void __cdecl thunk_NoOpVirtualStub_00613e44(void)
+// ghidra_proto undefined thunk_NoOpVirtualStub_00613e44()
 // FUNCTION: IMPERIALISM 0x00613e36
 undefined4 thunk_NoOpVirtualStub_00613e44(void)
 {
@@ -2156,7 +2140,7 @@ undefined4 thunk_NoOpVirtualStub_00613e44(void)
 }
 
 // ghidra_name NoOpVirtualStub_00613e44
-// ghidra_proto void __cdecl NoOpVirtualStub_00613e44(void)
+// ghidra_proto undefined NoOpVirtualStub_00613e44()
 // FUNCTION: IMPERIALISM 0x00613e44
 undefined4 NoOpVirtualStub_00613e44(void)
 {
@@ -2164,7 +2148,7 @@ undefined4 NoOpVirtualStub_00613e44(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00613e49
-// ghidra_proto int __thiscall WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00613e49(void)
+// ghidra_proto undefined WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00613e49()
 // FUNCTION: IMPERIALISM 0x00613e49
 undefined4 WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00613e49(void)
 {
@@ -2172,7 +2156,7 @@ undefined4 WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00613e49(void)
 }
 
 // ghidra_name InvokeVslotF4WithZeroArgs
-// ghidra_proto void __fastcall InvokeVslotF4WithZeroArgs(void)
+// ghidra_proto undefined InvokeVslotF4WithZeroArgs()
 // FUNCTION: IMPERIALISM 0x00613f04
 undefined4 InvokeVslotF4WithZeroArgs(void)
 {
@@ -2180,7 +2164,7 @@ undefined4 InvokeVslotF4WithZeroArgs(void)
 }
 
 // ghidra_name InvalidateWindowRectFromHandleField1C
-// ghidra_proto void __cdecl InvalidateWindowRectFromHandleField1C(void)
+// ghidra_proto undefined InvalidateWindowRectFromHandleField1C()
 // FUNCTION: IMPERIALISM 0x00613f12
 undefined4 InvalidateWindowRectFromHandleField1C(void)
 {
@@ -2188,7 +2172,7 @@ undefined4 InvalidateWindowRectFromHandleField1C(void)
 }
 
 // ghidra_name DispatchVirtualSlotF8_WithArg
-// ghidra_proto void __thiscall DispatchVirtualSlotF8_WithArg(void)
+// ghidra_proto undefined DispatchVirtualSlotF8_WithArg()
 // FUNCTION: IMPERIALISM 0x00613f22
 undefined4 DispatchVirtualSlotF8_WithArg(void)
 {
@@ -2196,7 +2180,7 @@ undefined4 DispatchVirtualSlotF8_WithArg(void)
 }
 
 // ghidra_name OnActivateView
-// ghidra_proto void __cdecl OnActivateView(void)
+// ghidra_proto undefined OnActivateView()
 // FUNCTION: IMPERIALISM 0x00613f39
 undefined4 OnActivateView(void)
 {
@@ -2204,7 +2188,7 @@ undefined4 OnActivateView(void)
 }
 
 // ghidra_name OnMouseActivate
-// ghidra_proto int __fastcall OnMouseActivate(void)
+// ghidra_proto undefined OnMouseActivate()
 // FUNCTION: IMPERIALISM 0x00613f5a
 undefined4 OnMouseActivate(void)
 {
@@ -2212,7 +2196,7 @@ undefined4 OnMouseActivate(void)
 }
 
 // ghidra_name OnEndPrintPreview
-// ghidra_proto void __thiscall OnEndPrintPreview(void)
+// ghidra_proto undefined OnEndPrintPreview()
 // FUNCTION: IMPERIALISM 0x0061419f
 undefined4 OnEndPrintPreview(void)
 {
@@ -2220,7 +2204,7 @@ undefined4 OnEndPrintPreview(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At006142c0
-// ghidra_proto int __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006142c0(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At006142c0()
 // FUNCTION: IMPERIALISM 0x006142c0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006142c0(void)
 {
@@ -2228,7 +2212,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006142c0(void)
 }
 
 // ghidra_name AfxCustomLogFont
-// ghidra_proto void __cdecl AfxCustomLogFont(int arg1, int arg2)
+// ghidra_proto undefined AfxCustomLogFont()
 // FUNCTION: IMPERIALISM 0x00614331
 undefined4 AfxCustomLogFont(void)
 {
@@ -2236,7 +2220,7 @@ undefined4 AfxCustomLogFont(void)
 }
 
 // ghidra_name AfxIsComboBoxControl
-// ghidra_proto void __stdcall AfxIsComboBoxControl(int arg1, int arg2)
+// ghidra_proto undefined AfxIsComboBoxControl()
 // FUNCTION: IMPERIALISM 0x006143a9
 undefined4 AfxIsComboBoxControl(void)
 {
@@ -2244,7 +2228,7 @@ undefined4 AfxIsComboBoxControl(void)
 }
 
 // ghidra_name AfxCompareClassName
-// ghidra_proto bool __cdecl AfxCompareClassName(int arg1, int arg2)
+// ghidra_proto undefined AfxCompareClassName()
 // FUNCTION: IMPERIALISM 0x006143f3
 undefined4 AfxCompareClassName(void)
 {
@@ -2252,7 +2236,7 @@ undefined4 AfxCompareClassName(void)
 }
 
 // ghidra_name AfxChildWindowFromPoint
-// ghidra_proto void * __cdecl AfxChildWindowFromPoint(int arg1, int arg2, int arg3)
+// ghidra_proto undefined AfxChildWindowFromPoint()
 // FUNCTION: IMPERIALISM 0x0061441e
 undefined4 AfxChildWindowFromPoint(void)
 {
@@ -2260,7 +2244,7 @@ undefined4 AfxChildWindowFromPoint(void)
 }
 
 // ghidra_name AfxSetWindowText
-// ghidra_proto void __cdecl AfxSetWindowText(int arg1, int arg2)
+// ghidra_proto undefined AfxSetWindowText()
 // FUNCTION: IMPERIALISM 0x00614493
 undefined4 AfxSetWindowText(void)
 {
@@ -2268,7 +2252,7 @@ undefined4 AfxSetWindowText(void)
 }
 
 // ghidra_name AfxDeleteObject
-// ghidra_proto void __cdecl AfxDeleteObject(int arg1)
+// ghidra_proto undefined AfxDeleteObject()
 // FUNCTION: IMPERIALISM 0x006144eb
 undefined4 AfxDeleteObject(void)
 {
@@ -2276,7 +2260,7 @@ undefined4 AfxDeleteObject(void)
 }
 
 // ghidra_name AfxCancelModes
-// ghidra_proto void __cdecl AfxCancelModes(int arg1)
+// ghidra_proto undefined AfxCancelModes()
 // FUNCTION: IMPERIALISM 0x00614504
 undefined4 AfxCancelModes(void)
 {
@@ -2284,7 +2268,7 @@ undefined4 AfxCancelModes(void)
 }
 
 // ghidra_name AfxGlobalFree
-// ghidra_proto void __cdecl AfxGlobalFree(int arg1)
+// ghidra_proto undefined AfxGlobalFree()
 // FUNCTION: IMPERIALISM 0x0061457b
 undefined4 AfxGlobalFree(void)
 {
@@ -2292,7 +2276,7 @@ undefined4 AfxGlobalFree(void)
 }
 
 // ghidra_name EnsureMfcModuleThreadBufferCapacity
-// ghidra_proto int __cdecl EnsureMfcModuleThreadBufferCapacity(void)
+// ghidra_proto undefined EnsureMfcModuleThreadBufferCapacity()
 // FUNCTION: IMPERIALISM 0x006145b1
 undefined4 EnsureMfcModuleThreadBufferCapacity(void)
 {
@@ -2300,7 +2284,7 @@ undefined4 EnsureMfcModuleThreadBufferCapacity(void)
 }
 
 // ghidra_name thunk_ReturnOneStub_006145f5
-// ghidra_proto int __cdecl thunk_ReturnOneStub_006145f5(void)
+// ghidra_proto undefined thunk_ReturnOneStub_006145f5()
 // FUNCTION: IMPERIALISM 0x006145e3
 undefined4 thunk_ReturnOneStub_006145f5(void)
 {
@@ -2308,7 +2292,7 @@ undefined4 thunk_ReturnOneStub_006145f5(void)
 }
 
 // ghidra_name ReturnOneStub_006145f5
-// ghidra_proto int __cdecl ReturnOneStub_006145f5(void)
+// ghidra_proto undefined ReturnOneStub_006145f5()
 // FUNCTION: IMPERIALISM 0x006145f5
 undefined4 ReturnOneStub_006145f5(void)
 {
@@ -2316,7 +2300,7 @@ undefined4 ReturnOneStub_006145f5(void)
 }
 
 // ghidra_name WrapperFor_ThrowMfcResourceException_At006145fa
-// ghidra_proto int __cdecl WrapperFor_ThrowMfcResourceException_At006145fa(void)
+// ghidra_proto undefined WrapperFor_ThrowMfcResourceException_At006145fa()
 // FUNCTION: IMPERIALISM 0x006145fa
 undefined4 WrapperFor_ThrowMfcResourceException_At006145fa(void)
 {
@@ -2324,7 +2308,7 @@ undefined4 WrapperFor_ThrowMfcResourceException_At006145fa(void)
 }
 
 // ghidra_name CDocTemplate::OpenDocumentFile_614603
-// ghidra_proto int * __thiscall OpenDocumentFile_614603(void)
+// ghidra_proto undefined OpenDocumentFile_614603()
 // FUNCTION: IMPERIALISM 0x00614603
 undefined4 OpenDocumentFile_614603(void)
 {
@@ -2332,7 +2316,7 @@ undefined4 OpenDocumentFile_614603(void)
 }
 
 // ghidra_name CDocTemplate
-// ghidra_proto int * __cdecl CDocTemplate(void)
+// ghidra_proto undefined CDocTemplate()
 // FUNCTION: IMPERIALISM 0x00614790
 undefined4 CDocTemplate(void)
 {
@@ -2340,7 +2324,7 @@ undefined4 CDocTemplate(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00614893
-// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00614893(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00614893()
 // FUNCTION: IMPERIALISM 0x00614893
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00614893(void)
 {
@@ -2348,7 +2332,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00614893(void)
 }
 
 // ghidra_name LoadTemplate
-// ghidra_proto void __fastcall LoadTemplate(void)
+// ghidra_proto undefined LoadTemplate()
 // FUNCTION: IMPERIALISM 0x006148af
 undefined4 LoadTemplate(void)
 {
@@ -2356,7 +2340,7 @@ undefined4 LoadTemplate(void)
 }
 
 // ghidra_name DestructMenuOwnerAndReleaseCaptionString
-// ghidra_proto void __thiscall DestructMenuOwnerAndReleaseCaptionString(void)
+// ghidra_proto undefined DestructMenuOwnerAndReleaseCaptionString()
 // FUNCTION: IMPERIALISM 0x0061499c
 undefined4 DestructMenuOwnerAndReleaseCaptionString(void)
 {
@@ -2364,7 +2348,7 @@ undefined4 DestructMenuOwnerAndReleaseCaptionString(void)
 }
 
 // ghidra_name WrapperFor_ExtractDelimitedFieldToSharedBuffer_At00614a04
-// ghidra_proto bool __cdecl WrapperFor_ExtractDelimitedFieldToSharedBuffer_At00614a04(void * destination, char * source, int fieldIndex, char delimiter)
+// ghidra_proto undefined WrapperFor_ExtractDelimitedFieldToSharedBuffer_At00614a04()
 // FUNCTION: IMPERIALISM 0x00614a04
 undefined4 WrapperFor_ExtractDelimitedFieldToSharedBuffer_At00614a04(void)
 {
@@ -2372,7 +2356,7 @@ undefined4 WrapperFor_ExtractDelimitedFieldToSharedBuffer_At00614a04(void)
 }
 
 // ghidra_name SetObjectField24Value
-// ghidra_proto void __cdecl SetObjectField24Value(void)
+// ghidra_proto undefined SetObjectField24Value()
 // FUNCTION: IMPERIALISM 0x00614a19
 undefined4 SetObjectField24Value(void)
 {
@@ -2380,7 +2364,7 @@ undefined4 SetObjectField24Value(void)
 }
 
 // ghidra_name ClearObjectField24Value
-// ghidra_proto void __cdecl ClearObjectField24Value(void)
+// ghidra_proto undefined ClearObjectField24Value()
 // FUNCTION: IMPERIALISM 0x00614a23
 undefined4 ClearObjectField24Value(void)
 {
@@ -2388,7 +2372,7 @@ undefined4 ClearObjectField24Value(void)
 }
 
 // ghidra_name CreateNewDocument
-// ghidra_proto int __cdecl CreateNewDocument(void)
+// ghidra_proto undefined CreateNewDocument()
 // FUNCTION: IMPERIALISM 0x00614aeb
 undefined4 CreateNewDocument(void)
 {
@@ -2396,7 +2380,7 @@ undefined4 CreateNewDocument(void)
 }
 
 // ghidra_name WrapperFor_InitialUpdateFrame_At00614bef
-// ghidra_proto void __cdecl WrapperFor_InitialUpdateFrame_At00614bef(void)
+// ghidra_proto undefined WrapperFor_InitialUpdateFrame_At00614bef()
 // FUNCTION: IMPERIALISM 0x00614bef
 undefined4 WrapperFor_InitialUpdateFrame_At00614bef(void)
 {
@@ -2404,7 +2388,7 @@ undefined4 WrapperFor_InitialUpdateFrame_At00614bef(void)
 }
 
 // ghidra_name OnIdle_614c76
-// ghidra_proto void __fastcall OnIdle_614c76(void)
+// ghidra_proto undefined OnIdle_614c76()
 // FUNCTION: IMPERIALISM 0x00614c76
 undefined4 OnIdle_614c76(void)
 {
@@ -2412,7 +2396,7 @@ undefined4 OnIdle_614c76(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9
-// ghidra_proto void __thiscall WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9(void)
+// ghidra_proto undefined WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9()
 // FUNCTION: IMPERIALISM 0x00614ca9
 undefined4 WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9(void)
 {
@@ -2420,7 +2404,7 @@ undefined4 WrapperFor_ReturnNodeIfPresentInLinkedListByNextPointer_At00614ca9(vo
 }
 
 // ghidra_name AfxGetMouseScrollLines
-// ghidra_proto int __cdecl AfxGetMouseScrollLines(int arg1)
+// ghidra_proto undefined AfxGetMouseScrollLines()
 // FUNCTION: IMPERIALISM 0x00614cfa
 undefined4 AfxGetMouseScrollLines(void)
 {
@@ -2428,7 +2412,7 @@ undefined4 AfxGetMouseScrollLines(void)
 }
 
 // ghidra_name CScrollView
-// ghidra_proto void * __fastcall CScrollView(void * pThis)
+// ghidra_proto undefined CScrollView()
 // FUNCTION: IMPERIALISM 0x00614e71
 undefined4 CScrollView(void)
 {
@@ -2436,7 +2420,7 @@ undefined4 CScrollView(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00614e98
-// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00614e98(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00614e98()
 // FUNCTION: IMPERIALISM 0x00614e98
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00614e98(void)
 {
@@ -2444,7 +2428,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00614e98(void)
 }
 
 // ghidra_name DestructCViewAndResetVtable_0067358c
-// ghidra_proto void __thiscall DestructCViewAndResetVtable_0067358c(void)
+// ghidra_proto undefined DestructCViewAndResetVtable_0067358c()
 // FUNCTION: IMPERIALISM 0x00614eb4
 undefined4 DestructCViewAndResetVtable_0067358c(void)
 {
@@ -2452,7 +2436,7 @@ undefined4 DestructCViewAndResetVtable_0067358c(void)
 }
 
 // ghidra_name TCViewOwnedBufferRegistryState_00648560::OnPrepareDC_614ebf
-// ghidra_proto void __thiscall OnPrepareDC_614ebf(TMacViewMgr * thisObj, pointer pDc, pointer drawInfo)
+// ghidra_proto undefined OnPrepareDC_614ebf()
 // FUNCTION: IMPERIALISM 0x00614ebf
 undefined4 OnPrepareDC_614ebf(void)
 {
@@ -2460,7 +2444,7 @@ undefined4 OnPrepareDC_614ebf(void)
 }
 
 // ghidra_name TArmyTacUnit::SetScaleToFitSize
-// ghidra_proto void __thiscall SetScaleToFitSize(TMacViewMgr * thisObj, int extentX, int extentY)
+// ghidra_proto undefined SetScaleToFitSize()
 // FUNCTION: IMPERIALISM 0x00614f95
 undefined4 SetScaleToFitSize(void)
 {
@@ -2468,7 +2452,7 @@ undefined4 SetScaleToFitSize(void)
 }
 
 // ghidra_name TArmyTacUnit::SetScrollSizes
-// ghidra_proto void __thiscall SetScrollSizes(TMacViewMgr * thisObj, int mapMode, int * sizeTotal, int * sizePage, int * sizeLine)
+// ghidra_proto undefined SetScrollSizes()
 // FUNCTION: IMPERIALISM 0x00615020
 undefined4 SetScrollSizes(void)
 {
@@ -2476,7 +2460,7 @@ undefined4 SetScrollSizes(void)
 }
 
 // ghidra_name TControl::GetScrollPosition
-// ghidra_proto void __thiscall GetScrollPosition(TMacViewMgr * thisObj, int * outPt)
+// ghidra_proto undefined GetScrollPosition()
 // FUNCTION: IMPERIALISM 0x00615152
 undefined4 GetScrollPosition(void)
 {
@@ -2484,7 +2468,7 @@ undefined4 GetScrollPosition(void)
 }
 
 // ghidra_name TArmyTacUnit::ScrollToPosition
-// ghidra_proto void __thiscall ScrollToPosition(TMacViewMgr * thisObj, int * ptLogical)
+// ghidra_proto undefined ScrollToPosition()
 // FUNCTION: IMPERIALISM 0x006151d6
 undefined4 ScrollToPosition(void)
 {
@@ -2492,7 +2476,7 @@ undefined4 ScrollToPosition(void)
 }
 
 // ghidra_name TControl::GetDeviceScrollPosition
-// ghidra_proto void __thiscall GetDeviceScrollPosition(TMacViewMgr * thisObj, int * outPtDevice)
+// ghidra_proto undefined GetDeviceScrollPosition()
 // FUNCTION: IMPERIALISM 0x00615277
 undefined4 GetDeviceScrollPosition(void)
 {
@@ -2500,7 +2484,7 @@ undefined4 GetDeviceScrollPosition(void)
 }
 
 // ghidra_name TArmyTacUnit::ScrollToDevicePosition
-// ghidra_proto void __thiscall ScrollToDevicePosition(TMacViewMgr * thisObj, int xPos, int yPos)
+// ghidra_proto undefined ScrollToDevicePosition()
 // FUNCTION: IMPERIALISM 0x00615329
 undefined4 ScrollToDevicePosition(void)
 {
@@ -2508,7 +2492,7 @@ undefined4 ScrollToDevicePosition(void)
 }
 
 // ghidra_name FillOutsideRect
-// ghidra_proto void __thiscall FillOutsideRect(TMacViewMgr * thisObj, pointer paintStruct, pointer viewObj)
+// ghidra_proto undefined FillOutsideRect()
 // FUNCTION: IMPERIALISM 0x0061537b
 undefined4 FillOutsideRect(void)
 {
@@ -2516,7 +2500,7 @@ undefined4 FillOutsideRect(void)
 }
 
 // ghidra_name TControl::ResizeParentToFit
-// ghidra_proto void __thiscall ResizeParentToFit(TMacViewMgr * thisObj, int shrinkOnly)
+// ghidra_proto undefined ResizeParentToFit()
 // FUNCTION: IMPERIALISM 0x006153fe
 undefined4 ResizeParentToFit(void)
 {
@@ -2524,7 +2508,7 @@ undefined4 ResizeParentToFit(void)
 }
 
 // ghidra_name TNewGameCommand::OnSize
-// ghidra_proto void __thiscall OnSize(TMacViewMgr * thisObj)
+// ghidra_proto undefined OnSize()
 // FUNCTION: IMPERIALISM 0x00615517
 undefined4 OnSize(void)
 {
@@ -2532,7 +2516,7 @@ undefined4 OnSize(void)
 }
 
 // ghidra_name CenterOnPoint
-// ghidra_proto void __thiscall CenterOnPoint(TMacViewMgr * thisObj, int xCenter, int yCenter)
+// ghidra_proto undefined CenterOnPoint()
 // FUNCTION: IMPERIALISM 0x0061553f
 undefined4 CenterOnPoint(void)
 {
@@ -2540,7 +2524,7 @@ undefined4 CenterOnPoint(void)
 }
 
 // ghidra_name TArmyTacUnit::GetScrollBarSizes
-// ghidra_proto void __thiscall GetScrollBarSizes(TMacViewMgr * thisObj, int * outSize)
+// ghidra_proto undefined GetScrollBarSizes()
 // FUNCTION: IMPERIALISM 0x006155ed
 undefined4 GetScrollBarSizes(void)
 {
@@ -2548,7 +2532,7 @@ undefined4 GetScrollBarSizes(void)
 }
 
 // ghidra_name TArmyTacUnit::GetTrueClientSize
-// ghidra_proto int __thiscall GetTrueClientSize(TMacViewMgr * thisObj, int * outClientSize, int * outScrollBarSize)
+// ghidra_proto undefined GetTrueClientSize()
 // FUNCTION: IMPERIALISM 0x00615647
 undefined4 GetTrueClientSize(void)
 {
@@ -2556,7 +2540,7 @@ undefined4 GetTrueClientSize(void)
 }
 
 // ghidra_name TArmyTacUnit::GetScrollBarState
-// ghidra_proto void __thiscall GetScrollBarState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+// ghidra_proto undefined GetScrollBarState()
 // FUNCTION: IMPERIALISM 0x006156bc
 undefined4 GetScrollBarState(void)
 {
@@ -2564,7 +2548,7 @@ undefined4 GetScrollBarState(void)
 }
 
 // ghidra_name TArmyTacUnit::UpdateBars
-// ghidra_proto void __thiscall UpdateBars(TMacViewMgr * thisObj)
+// ghidra_proto undefined UpdateBars()
 // FUNCTION: IMPERIALISM 0x00615778
 undefined4 UpdateBars(void)
 {
@@ -2572,7 +2556,7 @@ undefined4 UpdateBars(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::CalcWindowRect_6158ee
-// ghidra_proto void __thiscall CalcWindowRect_6158ee(TMacViewMgr * thisObj, pointer rect, int adjustType)
+// ghidra_proto undefined CalcWindowRect_6158ee()
 // FUNCTION: IMPERIALISM 0x006158ee
 undefined4 CalcWindowRect_6158ee(void)
 {
@@ -2580,7 +2564,7 @@ undefined4 CalcWindowRect_6158ee(void)
 }
 
 // ghidra_name OnHScroll
-// ghidra_proto void __thiscall OnHScroll(TMacViewMgr * thisObj, int scrollCode, int scrollPos, int routeFlag)
+// ghidra_proto undefined OnHScroll()
 // FUNCTION: IMPERIALISM 0x00615975
 undefined4 OnHScroll(void)
 {
@@ -2588,7 +2572,7 @@ undefined4 OnHScroll(void)
 }
 
 // ghidra_name OnVScroll
-// ghidra_proto void __thiscall OnVScroll(TMacViewMgr * thisObj, int scrollCode, int scrollPos, int routeFlag)
+// ghidra_proto undefined OnVScroll()
 // FUNCTION: IMPERIALISM 0x006159b9
 undefined4 OnVScroll(void)
 {
@@ -2596,7 +2580,7 @@ undefined4 OnVScroll(void)
 }
 
 // ghidra_name CScrollView::DoMouseWheel
-// ghidra_proto void __thiscall DoMouseWheel(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined DoMouseWheel()
 // FUNCTION: IMPERIALISM 0x00615a34
 undefined4 DoMouseWheel(void)
 {
@@ -2604,7 +2588,7 @@ undefined4 DoMouseWheel(void)
 }
 
 // ghidra_name OnScroll
-// ghidra_proto int __thiscall OnScroll(void)
+// ghidra_proto undefined OnScroll()
 // FUNCTION: IMPERIALISM 0x00615b58
 undefined4 OnScroll(void)
 {
@@ -2612,7 +2596,7 @@ undefined4 OnScroll(void)
 }
 
 // ghidra_name GetErrorMessage_615d2b
-// ghidra_proto int __cdecl GetErrorMessage_615d2b(void)
+// ghidra_proto undefined GetErrorMessage_615d2b()
 // FUNCTION: IMPERIALISM 0x00615d2b
 undefined4 GetErrorMessage_615d2b(void)
 {
@@ -2620,7 +2604,7 @@ undefined4 GetErrorMessage_615d2b(void)
 }
 
 // ghidra_name AfxThrowArchiveException
-// ghidra_proto void __stdcall AfxThrowArchiveException(int errorCode, void * context)
+// ghidra_proto undefined AfxThrowArchiveException()
 // FUNCTION: IMPERIALISM 0x00615dcb
 undefined4 AfxThrowArchiveException(void)
 {
@@ -2628,7 +2612,7 @@ undefined4 AfxThrowArchiveException(void)
 }
 
 // ghidra_name OnFileNew
-// ghidra_proto void __fastcall OnFileNew(void)
+// ghidra_proto undefined OnFileNew()
 // FUNCTION: IMPERIALISM 0x0061842f
 undefined4 OnFileNew(void)
 {
@@ -2636,7 +2620,7 @@ undefined4 OnFileNew(void)
 }
 
 // ghidra_name CWinApp::DoMessageBox
-// ghidra_proto int __thiscall DoMessageBox(void * pContext, char * pMessage, uint uType, int nHelpContext)
+// ghidra_proto undefined DoMessageBox()
 // FUNCTION: IMPERIALISM 0x0061852a
 undefined4 DoMessageBox(void)
 {
@@ -2644,7 +2628,7 @@ undefined4 DoMessageBox(void)
 }
 
 // ghidra_name WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-// ghidra_proto void * __cdecl WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(int arg1, int arg2, int arg3)
+// ghidra_proto undefined WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4()
 // FUNCTION: IMPERIALISM 0x006185e4
 undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(void)
 {
@@ -2652,7 +2636,7 @@ undefined4 WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(void)
 }
 
 // ghidra_name FormatResourceStringAndDispatchViaThreadState
-// ghidra_proto int __cdecl FormatResourceStringAndDispatchViaThreadState(void)
+// ghidra_proto undefined FormatResourceStringAndDispatchViaThreadState()
 // FUNCTION: IMPERIALISM 0x00618605
 undefined4 FormatResourceStringAndDispatchViaThreadState(void)
 {
@@ -2660,7 +2644,7 @@ undefined4 FormatResourceStringAndDispatchViaThreadState(void)
 }
 
 // ghidra_name CallField80VirtualSlot28OrReturnTrue_006186a4
-// ghidra_proto int __fastcall CallField80VirtualSlot28OrReturnTrue_006186a4(int context)
+// ghidra_proto undefined CallField80VirtualSlot28OrReturnTrue_006186a4()
 // FUNCTION: IMPERIALISM 0x006186a4
 undefined4 CallField80VirtualSlot28OrReturnTrue_006186a4(void)
 {
@@ -2668,7 +2652,7 @@ undefined4 CallField80VirtualSlot28OrReturnTrue_006186a4(void)
 }
 
 // ghidra_name DispatchNestedVirtualSlot24_FromField80
-// ghidra_proto void __thiscall DispatchNestedVirtualSlot24_FromField80(void)
+// ghidra_proto undefined DispatchNestedVirtualSlot24_FromField80()
 // FUNCTION: IMPERIALISM 0x006186f2
 undefined4 DispatchNestedVirtualSlot24_FromField80(void)
 {
@@ -2676,7 +2660,7 @@ undefined4 DispatchNestedVirtualSlot24_FromField80(void)
 }
 
 // ghidra_name CWinApp::CloseAllDocuments_618704
-// ghidra_proto void __thiscall CloseAllDocuments_618704(void)
+// ghidra_proto undefined CloseAllDocuments_618704()
 // FUNCTION: IMPERIALISM 0x00618704
 undefined4 CloseAllDocuments_618704(void)
 {
@@ -2684,7 +2668,7 @@ undefined4 CloseAllDocuments_618704(void)
 }
 
 // ghidra_name CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
-// ghidra_proto int __thiscall CallField80VirtualSlot38OrReturnFalse_0061873c(int arg1)
+// ghidra_proto undefined CallField80VirtualSlot38OrReturnFalse_0061873c()
 // FUNCTION: IMPERIALISM 0x0061873c
 undefined4 CallField80VirtualSlot38OrReturnFalse_0061873c(void)
 {
@@ -2692,7 +2676,7 @@ undefined4 CallField80VirtualSlot38OrReturnFalse_0061873c(void)
 }
 
 // ghidra_name thunk_NoOpVirtualStub_00618753
-// ghidra_proto void __cdecl thunk_NoOpVirtualStub_00618753(void)
+// ghidra_proto undefined thunk_NoOpVirtualStub_00618753()
 // FUNCTION: IMPERIALISM 0x0061874f
 undefined4 thunk_NoOpVirtualStub_00618753(void)
 {
@@ -2700,7 +2684,7 @@ undefined4 thunk_NoOpVirtualStub_00618753(void)
 }
 
 // ghidra_name AddDocTemplate
-// ghidra_proto void __cdecl AddDocTemplate(void)
+// ghidra_proto undefined AddDocTemplate()
 // FUNCTION: IMPERIALISM 0x0061878f
 undefined4 AddDocTemplate(void)
 {
@@ -2708,7 +2692,7 @@ undefined4 AddDocTemplate(void)
 }
 
 // ghidra_name PrepareCtrl
-// ghidra_proto void __thiscall PrepareCtrl(void)
+// ghidra_proto undefined PrepareCtrl()
 // FUNCTION: IMPERIALISM 0x006189dc
 undefined4 PrepareCtrl(void)
 {
@@ -2716,7 +2700,7 @@ undefined4 PrepareCtrl(void)
 }
 
 // ghidra_name Fail
-// ghidra_proto void __cdecl Fail(void)
+// ghidra_proto undefined Fail()
 // FUNCTION: IMPERIALISM 0x00618a0b
 undefined4 Fail(void)
 {
@@ -2724,7 +2708,7 @@ undefined4 Fail(void)
 }
 
 // ghidra_name DDX_Text
-// ghidra_proto void __stdcall DDX_Text(void * pDX, int nIDC, byte * pValue)
+// ghidra_proto undefined DDX_Text()
 // FUNCTION: IMPERIALISM 0x00618a40
 undefined4 DDX_Text(void)
 {
@@ -2732,7 +2716,7 @@ undefined4 DDX_Text(void)
 }
 
 // ghidra_name AfxSimpleScanf
-// ghidra_proto int __cdecl AfxSimpleScanf(int arg1, int arg2, int arg3)
+// ghidra_proto undefined AfxSimpleScanf()
 // FUNCTION: IMPERIALISM 0x00618b21
 undefined4 AfxSimpleScanf(void)
 {
@@ -2740,7 +2724,7 @@ undefined4 AfxSimpleScanf(void)
 }
 
 // ghidra_name DDX_Text_618bc6
-// ghidra_proto void __stdcall DDX_Text_618bc6(void * pDX, int nIDC, short * pValue)
+// ghidra_proto undefined DDX_Text_618bc6()
 // FUNCTION: IMPERIALISM 0x00618bc6
 undefined4 DDX_Text_618bc6(void)
 {
@@ -2748,7 +2732,7 @@ undefined4 DDX_Text_618bc6(void)
 }
 
 // ghidra_name DDX_Text_618c01
-// ghidra_proto void __cdecl DDX_Text_618c01(void)
+// ghidra_proto undefined DDX_Text_618c01()
 // FUNCTION: IMPERIALISM 0x00618c01
 undefined4 DDX_Text_618c01(void)
 {
@@ -2756,7 +2740,7 @@ undefined4 DDX_Text_618c01(void)
 }
 
 // ghidra_name DDX_Text_618c30
-// ghidra_proto void __stdcall DDX_Text_618c30(void * pDX, int nIDC, uint * pValue)
+// ghidra_proto undefined DDX_Text_618c30()
 // FUNCTION: IMPERIALISM 0x00618c30
 undefined4 DDX_Text_618c30(void)
 {
@@ -2764,7 +2748,7 @@ undefined4 DDX_Text_618c30(void)
 }
 
 // ghidra_name DDX_Text_618c5f
-// ghidra_proto void __stdcall DDX_Text_618c5f(void * pDX, int nIDC, int * pValue)
+// ghidra_proto undefined DDX_Text_618c5f()
 // FUNCTION: IMPERIALISM 0x00618c5f
 undefined4 DDX_Text_618c5f(void)
 {
@@ -2772,7 +2756,7 @@ undefined4 DDX_Text_618c5f(void)
 }
 
 // ghidra_name DDX_Text_618c8e
-// ghidra_proto void __stdcall DDX_Text_618c8e(void * pDX, int nIDC, uint * pValue)
+// ghidra_proto undefined DDX_Text_618c8e()
 // FUNCTION: IMPERIALISM 0x00618c8e
 undefined4 DDX_Text_618c8e(void)
 {
@@ -2780,7 +2764,7 @@ undefined4 DDX_Text_618c8e(void)
 }
 
 // ghidra_name DDX_Text_618cbd
-// ghidra_proto void __stdcall DDX_Text_618cbd(void * pDX, int nIDC, void * pValue)
+// ghidra_proto undefined DDX_Text_618cbd()
 // FUNCTION: IMPERIALISM 0x00618cbd
 undefined4 DDX_Text_618cbd(void)
 {
@@ -2788,7 +2772,7 @@ undefined4 DDX_Text_618cbd(void)
 }
 
 // ghidra_name DDX_Check
-// ghidra_proto void * __cdecl DDX_Check(void)
+// ghidra_proto undefined DDX_Check()
 // FUNCTION: IMPERIALISM 0x00618d0f
 undefined4 DDX_Check(void)
 {
@@ -2796,7 +2780,7 @@ undefined4 DDX_Check(void)
 }
 
 // ghidra_name DDX_Radio
-// ghidra_proto int __cdecl DDX_Radio(void)
+// ghidra_proto undefined DDX_Radio()
 // FUNCTION: IMPERIALISM 0x00618d61
 undefined4 DDX_Radio(void)
 {
@@ -2804,7 +2788,7 @@ undefined4 DDX_Radio(void)
 }
 
 // ghidra_name SelectListBoxStringExactIfPresent
-// ghidra_proto void __cdecl SelectListBoxStringExactIfPresent(void)
+// ghidra_proto undefined SelectListBoxStringExactIfPresent()
 // FUNCTION: IMPERIALISM 0x00618ea6
 undefined4 SelectListBoxStringExactIfPresent(void)
 {
@@ -2812,7 +2796,7 @@ undefined4 SelectListBoxStringExactIfPresent(void)
 }
 
 // ghidra_name DDX_CBString
-// ghidra_proto void __cdecl DDX_CBString(void)
+// ghidra_proto undefined DDX_CBString()
 // FUNCTION: IMPERIALISM 0x00618ec3
 undefined4 DDX_CBString(void)
 {
@@ -2820,7 +2804,7 @@ undefined4 DDX_CBString(void)
 }
 
 // ghidra_name DDX_CBStringExact
-// ghidra_proto void __cdecl DDX_CBStringExact(void)
+// ghidra_proto undefined DDX_CBStringExact()
 // FUNCTION: IMPERIALISM 0x00618f43
 undefined4 DDX_CBStringExact(void)
 {
@@ -2828,7 +2812,7 @@ undefined4 DDX_CBStringExact(void)
 }
 
 // ghidra_name GetOrSetListBoxCurrentSelection
-// ghidra_proto void * __cdecl GetOrSetListBoxCurrentSelection(void)
+// ghidra_proto undefined GetOrSetListBoxCurrentSelection()
 // FUNCTION: IMPERIALISM 0x00618f94
 undefined4 GetOrSetListBoxCurrentSelection(void)
 {
@@ -2836,7 +2820,7 @@ undefined4 GetOrSetListBoxCurrentSelection(void)
 }
 
 // ghidra_name GetOrSetComboBoxCurrentSelection
-// ghidra_proto void __cdecl GetOrSetComboBoxCurrentSelection(void)
+// ghidra_proto undefined GetOrSetComboBoxCurrentSelection()
 // FUNCTION: IMPERIALISM 0x00618fd6
 undefined4 GetOrSetComboBoxCurrentSelection(void)
 {
@@ -2844,7 +2828,7 @@ undefined4 GetOrSetComboBoxCurrentSelection(void)
 }
 
 // ghidra_name DDV_MinMaxByte
-// ghidra_proto void __thiscall DDV_MinMaxByte(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined DDV_MinMaxByte()
 // FUNCTION: IMPERIALISM 0x00619053
 undefined4 DDV_MinMaxByte(void)
 {
@@ -2852,7 +2836,7 @@ undefined4 DDV_MinMaxByte(void)
 }
 
 // ghidra_name FailMinMaxWithFormat
-// ghidra_proto void __thiscall FailMinMaxWithFormat(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined FailMinMaxWithFormat()
 // FUNCTION: IMPERIALISM 0x00619083
 undefined4 FailMinMaxWithFormat(void)
 {
@@ -2860,7 +2844,7 @@ undefined4 FailMinMaxWithFormat(void)
 }
 
 // ghidra_name DDV_MinMaxShort
-// ghidra_proto void __thiscall DDV_MinMaxShort(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined DDV_MinMaxShort()
 // FUNCTION: IMPERIALISM 0x00619116
 undefined4 DDV_MinMaxShort(void)
 {
@@ -2868,7 +2852,7 @@ undefined4 DDV_MinMaxShort(void)
 }
 
 // ghidra_name WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149
-// ghidra_proto void __thiscall WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149()
 // FUNCTION: IMPERIALISM 0x00619149
 undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149(void)
 {
@@ -2876,7 +2860,7 @@ undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At00619149(void)
 }
 
 // ghidra_name WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175
-// ghidra_proto void __thiscall WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175()
 // FUNCTION: IMPERIALISM 0x00619175
 undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175(void)
 {
@@ -2884,7 +2868,7 @@ undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At00619175(void)
 }
 
 // ghidra_name WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1
-// ghidra_proto void __thiscall WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1()
 // FUNCTION: IMPERIALISM 0x006191a1
 undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1(void)
 {
@@ -2892,7 +2876,7 @@ undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At006191a1(void)
 }
 
 // ghidra_name WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd
-// ghidra_proto void __thiscall WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd(int arg1, int arg2, int arg3, int arg4, int arg5)
+// ghidra_proto undefined WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd()
 // FUNCTION: IMPERIALISM 0x006191cd
 undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd(void)
 {
@@ -2900,7 +2884,7 @@ undefined4 WrapperFor_FormatDualValuePromptAndSelectInputText_At006191cd(void)
 }
 
 // ghidra_name DDV_MaxChars
-// ghidra_proto bool __cdecl DDV_MaxChars(void)
+// ghidra_proto undefined DDV_MaxChars()
 // FUNCTION: IMPERIALISM 0x006191f9
 undefined4 DDV_MaxChars(void)
 {
@@ -2908,7 +2892,7 @@ undefined4 DDV_MaxChars(void)
 }
 
 // ghidra_name DDX_Control
-// ghidra_proto void __cdecl DDX_Control(void)
+// ghidra_proto undefined DDX_Control()
 // FUNCTION: IMPERIALISM 0x006192a1
 undefined4 DDX_Control(void)
 {
@@ -2916,7 +2900,7 @@ undefined4 DDX_Control(void)
 }
 
 // ghidra_name AfxFailMaxChars
-// ghidra_proto void __cdecl AfxFailMaxChars(void)
+// ghidra_proto undefined AfxFailMaxChars()
 // FUNCTION: IMPERIALISM 0x006192ed
 undefined4 AfxFailMaxChars(void)
 {
@@ -2924,7 +2908,7 @@ undefined4 AfxFailMaxChars(void)
 }
 
 // ghidra_name AfxFailRadio
-// ghidra_proto void __cdecl AfxFailRadio(void)
+// ghidra_proto undefined AfxFailRadio()
 // FUNCTION: IMPERIALISM 0x00619365
 undefined4 AfxFailRadio(void)
 {
@@ -2932,7 +2916,7 @@ undefined4 AfxFailRadio(void)
 }
 
 // ghidra_name OnHelp
-// ghidra_proto void __fastcall OnHelp(void)
+// ghidra_proto undefined OnHelp()
 // FUNCTION: IMPERIALISM 0x006193c5
 undefined4 OnHelp(void)
 {
@@ -2940,23 +2924,15 @@ undefined4 OnHelp(void)
 }
 
 // ghidra_name OnHelp_619467
-// ghidra_proto void __fastcall OnHelp_619467(void)
+// ghidra_proto undefined OnHelp_619467()
 // FUNCTION: IMPERIALISM 0x00619467
 undefined4 OnHelp_619467(void)
 {
   return 0;
 }
 
-// ghidra_name TMacViewMgr_OnCommand_ID_E143_E147
-// ghidra_proto void __cdecl TMacViewMgr_OnCommand_ID_E143_E147(void)
-// FUNCTION: IMPERIALISM 0x006194b1
-undefined4 TMacViewMgr_OnCommand_ID_E143_E147(void)
-{
-  return 0;
-}
-
 // ghidra_name OnContextHelp
-// ghidra_proto void __fastcall OnContextHelp(void)
+// ghidra_proto undefined OnContextHelp()
 // FUNCTION: IMPERIALISM 0x00619539
 undefined4 OnContextHelp(void)
 {
@@ -2964,7 +2940,7 @@ undefined4 OnContextHelp(void)
 }
 
 // ghidra_name ProcessHelpMsg
-// ghidra_proto int __thiscall ProcessHelpMsg(void)
+// ghidra_proto undefined ProcessHelpMsg()
 // FUNCTION: IMPERIALISM 0x006197f7
 undefined4 ProcessHelpMsg(void)
 {
@@ -2972,7 +2948,7 @@ undefined4 ProcessHelpMsg(void)
 }
 
 // ghidra_name MapClientArea
-// ghidra_proto int __cdecl MapClientArea(int arg1, int arg2, int arg3)
+// ghidra_proto undefined MapClientArea()
 // FUNCTION: IMPERIALISM 0x006199fd
 undefined4 MapClientArea(void)
 {
@@ -2980,7 +2956,7 @@ undefined4 MapClientArea(void)
 }
 
 // ghidra_name CFileException::CMemFile
-// ghidra_proto void * __thiscall CMemFile(void)
+// ghidra_proto undefined CMemFile()
 // FUNCTION: IMPERIALISM 0x00619aac
 undefined4 CMemFile(void)
 {
@@ -2988,7 +2964,7 @@ undefined4 CMemFile(void)
 }
 
 // ghidra_name CFileException::CMemFile_619af8
-// ghidra_proto void * __thiscall CMemFile_619af8(void)
+// ghidra_proto undefined CMemFile_619af8()
 // FUNCTION: IMPERIALISM 0x00619af8
 undefined4 CMemFile_619af8(void)
 {
@@ -2996,7 +2972,7 @@ undefined4 CMemFile_619af8(void)
 }
 
 // ghidra_name DestructCMemFileLikeStateWithCloseIfOpen
-// ghidra_proto void __cdecl DestructCMemFileLikeStateWithCloseIfOpen(void)
+// ghidra_proto undefined DestructCMemFileLikeStateWithCloseIfOpen()
 // FUNCTION: IMPERIALISM 0x00619b71
 undefined4 DestructCMemFileLikeStateWithCloseIfOpen(void)
 {
@@ -3004,7 +2980,7 @@ undefined4 DestructCMemFileLikeStateWithCloseIfOpen(void)
 }
 
 // ghidra_name WrapperFor_AllocateWithGlobalNewMode_At00619bbd
-// ghidra_proto void * __cdecl WrapperFor_AllocateWithGlobalNewMode_At00619bbd(uint size)
+// ghidra_proto undefined WrapperFor_AllocateWithGlobalNewMode_At00619bbd()
 // FUNCTION: IMPERIALISM 0x00619bbd
 undefined4 WrapperFor_AllocateWithGlobalNewMode_At00619bbd(void)
 {
@@ -3012,7 +2988,7 @@ undefined4 WrapperFor_AllocateWithGlobalNewMode_At00619bbd(void)
 }
 
 // ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca
-// ghidra_proto void * __cdecl WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca(void)
+// ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca()
 // FUNCTION: IMPERIALISM 0x00619bca
 undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca(void)
 {
@@ -3020,7 +2996,7 @@ undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01
-// ghidra_proto void __cdecl WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01()
 // FUNCTION: IMPERIALISM 0x00619c01
 undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(void)
 {
@@ -3028,7 +3004,7 @@ undefined4 WrapperFor_FreeHeapBlockWithAllocatorTracking_At00619c01(void)
 }
 
 // ghidra_name SetWriteCursorWithCapacityClamp_00619c6b
-// ghidra_proto void __thiscall SetWriteCursorWithCapacityClamp_00619c6b(uint arg1)
+// ghidra_proto undefined SetWriteCursorWithCapacityClamp_00619c6b()
 // FUNCTION: IMPERIALISM 0x00619c6b
 undefined4 SetWriteCursorWithCapacityClamp_00619c6b(void)
 {
@@ -3036,7 +3012,7 @@ undefined4 SetWriteCursorWithCapacityClamp_00619c6b(void)
 }
 
 // ghidra_name CopyIntoStreamBufferFromSourceWithClamp_00619ca0
-// ghidra_proto int __thiscall CopyIntoStreamBufferFromSourceWithClamp_00619ca0(void)
+// ghidra_proto undefined CopyIntoStreamBufferFromSourceWithClamp_00619ca0()
 // FUNCTION: IMPERIALISM 0x00619ca0
 undefined4 CopyIntoStreamBufferFromSourceWithClamp_00619ca0(void)
 {
@@ -3044,7 +3020,7 @@ undefined4 CopyIntoStreamBufferFromSourceWithClamp_00619ca0(void)
 }
 
 // ghidra_name thunk_NoOpVirtualStub_00619cca
-// ghidra_proto void __cdecl thunk_NoOpVirtualStub_00619cca(void)
+// ghidra_proto undefined thunk_NoOpVirtualStub_00619cca()
 // FUNCTION: IMPERIALISM 0x00619ca6
 undefined4 thunk_NoOpVirtualStub_00619cca(void)
 {
@@ -3052,7 +3028,7 @@ undefined4 thunk_NoOpVirtualStub_00619cca(void)
 }
 
 // ghidra_name NoOpVirtualStub_00619cca
-// ghidra_proto void __cdecl NoOpVirtualStub_00619cca(void)
+// ghidra_proto undefined NoOpVirtualStub_00619cca()
 // FUNCTION: IMPERIALISM 0x00619cca
 undefined4 NoOpVirtualStub_00619cca(void)
 {
@@ -3060,7 +3036,7 @@ undefined4 NoOpVirtualStub_00619cca(void)
 }
 
 // ghidra_name AppendToStreamBufferWithGrowth_00619ccf
-// ghidra_proto void __thiscall AppendToStreamBufferWithGrowth_00619ccf(void * arg1, int arg2)
+// ghidra_proto undefined AppendToStreamBufferWithGrowth_00619ccf()
 // FUNCTION: IMPERIALISM 0x00619ccf
 undefined4 AppendToStreamBufferWithGrowth_00619ccf(void)
 {
@@ -3068,7 +3044,7 @@ undefined4 AppendToStreamBufferWithGrowth_00619ccf(void)
 }
 
 // ghidra_name Seek_619d11
-// ghidra_proto int __thiscall Seek_619d11(void)
+// ghidra_proto undefined Seek_619d11()
 // FUNCTION: IMPERIALISM 0x00619d11
 undefined4 Seek_619d11(void)
 {
@@ -3076,7 +3052,7 @@ undefined4 Seek_619d11(void)
 }
 
 // ghidra_name DispatchVirtualSlot54_NoArgs
-// ghidra_proto void __fastcall DispatchVirtualSlot54_NoArgs(void)
+// ghidra_proto undefined DispatchVirtualSlot54_NoArgs()
 // FUNCTION: IMPERIALISM 0x00619d82
 undefined4 DispatchVirtualSlot54_NoArgs(void)
 {
@@ -3084,7 +3060,7 @@ undefined4 DispatchVirtualSlot54_NoArgs(void)
 }
 
 // ghidra_name WrapperFor_AfxThrowNotSupportedException_At00619d87
-// ghidra_proto void __cdecl WrapperFor_AfxThrowNotSupportedException_At00619d87(void)
+// ghidra_proto undefined WrapperFor_AfxThrowNotSupportedException_At00619d87()
 // FUNCTION: IMPERIALISM 0x00619d87
 undefined4 WrapperFor_AfxThrowNotSupportedException_At00619d87(void)
 {
@@ -3092,7 +3068,7 @@ undefined4 WrapperFor_AfxThrowNotSupportedException_At00619d87(void)
 }
 
 // ghidra_name WrapperFor_AfxThrowNotSupportedException_At00619d8f
-// ghidra_proto void __cdecl WrapperFor_AfxThrowNotSupportedException_At00619d8f(void)
+// ghidra_proto undefined WrapperFor_AfxThrowNotSupportedException_At00619d8f()
 // FUNCTION: IMPERIALISM 0x00619d8f
 undefined4 WrapperFor_AfxThrowNotSupportedException_At00619d8f(void)
 {
@@ -3100,7 +3076,7 @@ undefined4 WrapperFor_AfxThrowNotSupportedException_At00619d8f(void)
 }
 
 // ghidra_name WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97
-// ghidra_proto int __cdecl WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97(void)
+// ghidra_proto undefined WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97()
 // FUNCTION: IMPERIALISM 0x00619d97
 undefined4 WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619d97(void)
 {
@@ -3108,7 +3084,7 @@ undefined4 WrapperFor_WrapperFor_RaiseMfcSehExceptionWithArgs_At005ff454_At00619
 }
 
 // ghidra_name OnInitDialog_619e4e
-// ghidra_proto byte __cdecl OnInitDialog_619e4e(void)
+// ghidra_proto undefined OnInitDialog_619e4e()
 // FUNCTION: IMPERIALISM 0x00619e4e
 undefined4 OnInitDialog_619e4e(void)
 {
@@ -3116,7 +3092,7 @@ undefined4 OnInitDialog_619e4e(void)
 }
 
 // ghidra_name SendMessage199Minus1AndRefreshSelection
-// ghidra_proto void __cdecl SendMessage199Minus1AndRefreshSelection(void)
+// ghidra_proto undefined SendMessage199Minus1AndRefreshSelection()
 // FUNCTION: IMPERIALISM 0x00619f0e
 undefined4 SendMessage199Minus1AndRefreshSelection(void)
 {
@@ -3124,7 +3100,7 @@ undefined4 SendMessage199Minus1AndRefreshSelection(void)
 }
 
 // ghidra_name WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62
-// ghidra_proto void __cdecl WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62(void)
+// ghidra_proto undefined WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62()
 // FUNCTION: IMPERIALISM 0x00619f62
 undefined4 WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62(void)
 {
@@ -3132,7 +3108,7 @@ undefined4 WrapperFor_WrapperFor_GetOrCreateCWndFromHandle_At00607111_At00619f62
 }
 
 // ghidra_name SendMessage199AndFinalizeSelection
-// ghidra_proto void __cdecl SendMessage199AndFinalizeSelection(void)
+// ghidra_proto undefined SendMessage199AndFinalizeSelection()
 // FUNCTION: IMPERIALISM 0x00619f92
 undefined4 SendMessage199AndFinalizeSelection(void)
 {
@@ -3140,7 +3116,7 @@ undefined4 SendMessage199AndFinalizeSelection(void)
 }
 
 // ghidra_name FlushPendingOrAppendDocTemplate
-// ghidra_proto void __cdecl FlushPendingOrAppendDocTemplate(void)
+// ghidra_proto undefined FlushPendingOrAppendDocTemplate()
 // FUNCTION: IMPERIALISM 0x00619faa
 undefined4 FlushPendingOrAppendDocTemplate(void)
 {
@@ -3148,7 +3124,7 @@ undefined4 FlushPendingOrAppendDocTemplate(void)
 }
 
 // ghidra_name AreAllLinkedRecordsSlot80ChecksTrue_0061a027
-// ghidra_proto int __fastcall AreAllLinkedRecordsSlot80ChecksTrue_0061a027(int list_owner)
+// ghidra_proto undefined AreAllLinkedRecordsSlot80ChecksTrue_0061a027()
 // FUNCTION: IMPERIALISM 0x0061a027
 undefined4 AreAllLinkedRecordsSlot80ChecksTrue_0061a027(void)
 {
@@ -3156,7 +3132,7 @@ undefined4 AreAllLinkedRecordsSlot80ChecksTrue_0061a027(void)
 }
 
 // ghidra_name DispatchVslot84ForLinkedNodeChain
-// ghidra_proto void __cdecl DispatchVslot84ForLinkedNodeChain(void)
+// ghidra_proto undefined DispatchVslot84ForLinkedNodeChain()
 // FUNCTION: IMPERIALISM 0x0061a04d
 undefined4 DispatchVslot84ForLinkedNodeChain(void)
 {
@@ -3164,7 +3140,7 @@ undefined4 DispatchVslot84ForLinkedNodeChain(void)
 }
 
 // ghidra_name DoPromptFileName_61a06a
-// ghidra_proto bool __cdecl DoPromptFileName_61a06a(void)
+// ghidra_proto undefined DoPromptFileName_61a06a()
 // FUNCTION: IMPERIALISM 0x0061a06a
 undefined4 DoPromptFileName_61a06a(void)
 {
@@ -3172,7 +3148,7 @@ undefined4 DoPromptFileName_61a06a(void)
 }
 
 // ghidra_name OnDDECommand
-// ghidra_proto int __cdecl OnDDECommand(void)
+// ghidra_proto undefined OnDDECommand()
 // FUNCTION: IMPERIALISM 0x0061a2ef
 undefined4 OnDDECommand(void)
 {
@@ -3180,7 +3156,7 @@ undefined4 OnDDECommand(void)
 }
 
 // ghidra_name OnFileNew_61a8dd
-// ghidra_proto void __cdecl OnFileNew_61a8dd(void)
+// ghidra_proto undefined OnFileNew_61a8dd()
 // FUNCTION: IMPERIALISM 0x0061a8dd
 undefined4 OnFileNew_61a8dd(void)
 {
@@ -3188,7 +3164,7 @@ undefined4 OnFileNew_61a8dd(void)
 }
 
 // ghidra_name DestructCDialogAndResetVtable_006732dc
-// ghidra_proto void __thiscall DestructCDialogAndResetVtable_006732dc(void)
+// ghidra_proto undefined DestructCDialogAndResetVtable_006732dc()
 // FUNCTION: IMPERIALISM 0x0061a982
 undefined4 DestructCDialogAndResetVtable_006732dc(void)
 {
@@ -3196,7 +3172,7 @@ undefined4 DestructCDialogAndResetVtable_006732dc(void)
 }
 
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0061a98d
-// ghidra_proto void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0061a98d(void)
+// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0061a98d()
 // FUNCTION: IMPERIALISM 0x0061a98d
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0061a98d(void)
 {
@@ -3204,7 +3180,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0061a98d(void)
 }
 
 // ghidra_name AfxFormatStrings
-// ghidra_proto void __cdecl AfxFormatStrings(void * outString, uint resourceId, void * argArray, int argCount)
+// ghidra_proto undefined AfxFormatStrings()
 // FUNCTION: IMPERIALISM 0x0061aa0e
 undefined4 AfxFormatStrings(void)
 {
@@ -3212,7 +3188,7 @@ undefined4 AfxFormatStrings(void)
 }
 
 // ghidra_name AfxFormatStrings_61aa48
-// ghidra_proto void __thiscall AfxFormatStrings_61aa48(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined AfxFormatStrings_61aa48()
 // FUNCTION: IMPERIALISM 0x0061aa48
 undefined4 AfxFormatStrings_61aa48(void)
 {
@@ -3220,7 +3196,7 @@ undefined4 AfxFormatStrings_61aa48(void)
 }
 
 // ghidra_name AfxFormatString1
-// ghidra_proto void __cdecl AfxFormatString1(void * outString, uint resourceId, void * arg1)
+// ghidra_proto undefined AfxFormatString1()
 // FUNCTION: IMPERIALISM 0x0061ab47
 undefined4 AfxFormatString1(void)
 {
@@ -3228,7 +3204,7 @@ undefined4 AfxFormatString1(void)
 }
 
 // ghidra_name AfxFormatString2
-// ghidra_proto void __cdecl AfxFormatString2(int arg1, int arg2)
+// ghidra_proto undefined AfxFormatString2()
 // FUNCTION: IMPERIALISM 0x0061ab5e
 undefined4 AfxFormatString2(void)
 {
@@ -3236,7 +3212,7 @@ undefined4 AfxFormatString2(void)
 }
 
 // ghidra_name thunk_ResetMouseWheelTrackingGlobals
-// ghidra_proto void __cdecl thunk_ResetMouseWheelTrackingGlobals(void)
+// ghidra_proto undefined thunk_ResetMouseWheelTrackingGlobals()
 // FUNCTION: IMPERIALISM 0x0061c559
 undefined4 thunk_ResetMouseWheelTrackingGlobals(void)
 {
@@ -3244,7 +3220,7 @@ undefined4 thunk_ResetMouseWheelTrackingGlobals(void)
 }
 
 // ghidra_name ResetMouseWheelTrackingGlobals
-// ghidra_proto void __cdecl ResetMouseWheelTrackingGlobals(void)
+// ghidra_proto undefined ResetMouseWheelTrackingGlobals()
 // FUNCTION: IMPERIALISM 0x0061c55e
 undefined4 ResetMouseWheelTrackingGlobals(void)
 {
@@ -3252,7 +3228,7 @@ undefined4 ResetMouseWheelTrackingGlobals(void)
 }
 
 // ghidra_name thunk_RegisterMouseWheelRollMessageForLegacyWindows
-// ghidra_proto void __cdecl thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
+// ghidra_proto undefined thunk_RegisterMouseWheelRollMessageForLegacyWindows()
 // FUNCTION: IMPERIALISM 0x0061c57c
 undefined4 thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
 {
@@ -3260,7 +3236,7 @@ undefined4 thunk_RegisterMouseWheelRollMessageForLegacyWindows(void)
 }
 
 // ghidra_name RegisterMouseWheelRollMessageForLegacyWindows
-// ghidra_proto void __cdecl RegisterMouseWheelRollMessageForLegacyWindows(void)
+// ghidra_proto undefined RegisterMouseWheelRollMessageForLegacyWindows()
 // FUNCTION: IMPERIALISM 0x0061c581
 undefined4 RegisterMouseWheelRollMessageForLegacyWindows(void)
 {
@@ -3268,7 +3244,7 @@ undefined4 RegisterMouseWheelRollMessageForLegacyWindows(void)
 }
 
 // ghidra_name TMacViewMgr::CFrameWnd
-// ghidra_proto TMacViewMgr * __thiscall CFrameWnd(TMacViewMgr * thisObj)
+// ghidra_proto undefined CFrameWnd()
 // FUNCTION: IMPERIALISM 0x0061c5dc
 undefined4 CFrameWnd(void)
 {
@@ -3276,7 +3252,7 @@ undefined4 CFrameWnd(void)
 }
 
 // ghidra_name TMacViewMgr::DestroyTMacViewMgrBase
-// ghidra_proto void __thiscall DestroyTMacViewMgrBase(TMacViewMgr * thisObj)
+// ghidra_proto undefined DestroyTMacViewMgrBase()
 // FUNCTION: IMPERIALISM 0x0061c6be
 undefined4 DestroyTMacViewMgrBase(void)
 {
@@ -3284,7 +3260,7 @@ undefined4 DestroyTMacViewMgrBase(void)
 }
 
 // ghidra_name AddFrameWnd
-// ghidra_proto void __fastcall AddFrameWnd(void)
+// ghidra_proto undefined AddFrameWnd()
 // FUNCTION: IMPERIALISM 0x0061c725
 undefined4 AddFrameWnd(void)
 {
@@ -3292,7 +3268,7 @@ undefined4 AddFrameWnd(void)
 }
 
 // ghidra_name RemoveFrameWnd
-// ghidra_proto void __cdecl RemoveFrameWnd(void)
+// ghidra_proto undefined RemoveFrameWnd()
 // FUNCTION: IMPERIALISM 0x0061c749
 undefined4 RemoveFrameWnd(void)
 {
@@ -3300,7 +3276,7 @@ undefined4 RemoveFrameWnd(void)
 }
 
 // ghidra_name TMacViewMgr::LoadAccelTable
-// ghidra_proto bool __thiscall LoadAccelTable(void)
+// ghidra_proto undefined LoadAccelTable()
 // FUNCTION: IMPERIALISM 0x0061c76d
 undefined4 LoadAccelTable(void)
 {
@@ -3308,7 +3284,7 @@ undefined4 LoadAccelTable(void)
 }
 
 // ghidra_name TMacViewMgr::ResolveField12ValueFromActiveChildSlotB0
-// ghidra_proto int __fastcall ResolveField12ValueFromActiveChildSlotB0(void)
+// ghidra_proto undefined ResolveField12ValueFromActiveChildSlotB0()
 // FUNCTION: IMPERIALISM 0x0061c793
 undefined4 ResolveField12ValueFromActiveChildSlotB0(void)
 {
@@ -3316,7 +3292,7 @@ undefined4 ResolveField12ValueFromActiveChildSlotB0(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot038
-// ghidra_proto int __thiscall TMacViewMgr_VtblSlot038(void)
+// ghidra_proto undefined TMacViewMgr_VtblSlot038()
 // FUNCTION: IMPERIALISM 0x0061c7b7
 undefined4 TMacViewMgr_VtblSlot038(void)
 {
@@ -3324,7 +3300,7 @@ undefined4 TMacViewMgr_VtblSlot038(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot043
-// ghidra_proto void __fastcall TMacViewMgr_VtblSlot043(void)
+// ghidra_proto undefined TMacViewMgr_VtblSlot043()
 // FUNCTION: IMPERIALISM 0x0061c82e
 undefined4 TMacViewMgr_VtblSlot043(void)
 {
@@ -3332,7 +3308,7 @@ undefined4 TMacViewMgr_VtblSlot043(void)
 }
 
 // ghidra_name OnPaletteChanged
-// ghidra_proto void __thiscall OnPaletteChanged(TMacViewMgr * thisObj, int payload)
+// ghidra_proto undefined OnPaletteChanged()
 // FUNCTION: IMPERIALISM 0x0061c83a
 undefined4 OnPaletteChanged(void)
 {
@@ -3340,7 +3316,7 @@ undefined4 OnPaletteChanged(void)
 }
 
 // ghidra_name OnQueryNewPalette
-// ghidra_proto int __thiscall OnQueryNewPalette(TMacViewMgr * thisObj)
+// ghidra_proto undefined OnQueryNewPalette()
 // FUNCTION: IMPERIALISM 0x0061c856
 undefined4 OnQueryNewPalette(void)
 {
@@ -3348,7 +3324,7 @@ undefined4 OnQueryNewPalette(void)
 }
 
 // ghidra_name TMacViewMgr::ReleaseCaptureAndPostMouseRepeatMessages_0061c877
-// ghidra_proto void __fastcall ReleaseCaptureAndPostMouseRepeatMessages_0061c877(int context)
+// ghidra_proto undefined ReleaseCaptureAndPostMouseRepeatMessages_0061c877()
 // FUNCTION: IMPERIALISM 0x0061c877
 undefined4 ReleaseCaptureAndPostMouseRepeatMessages_0061c877(void)
 {
@@ -3356,7 +3332,7 @@ undefined4 ReleaseCaptureAndPostMouseRepeatMessages_0061c877(void)
 }
 
 // ghidra_name OnSetCursor
-// ghidra_proto int __thiscall OnSetCursor(TMacViewMgr * thisObj)
+// ghidra_proto undefined OnSetCursor()
 // FUNCTION: IMPERIALISM 0x0061c8e2
 undefined4 OnSetCursor(void)
 {
@@ -3364,7 +3340,7 @@ undefined4 OnSetCursor(void)
 }
 
 // ghidra_name DispatchCommandUsingStoredFrameIds
-// ghidra_proto int __thiscall DispatchCommandUsingStoredFrameIds(TMacViewMgr * thisObj, int unusedArg, int command)
+// ghidra_proto undefined DispatchCommandUsingStoredFrameIds()
 // FUNCTION: IMPERIALISM 0x0061c90c
 undefined4 DispatchCommandUsingStoredFrameIds(void)
 {
@@ -3372,7 +3348,7 @@ undefined4 DispatchCommandUsingStoredFrameIds(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot032
-// ghidra_proto int __thiscall TMacViewMgr_VtblSlot032(void)
+// ghidra_proto undefined TMacViewMgr_VtblSlot032()
 // FUNCTION: IMPERIALISM 0x0061c976
 undefined4 TMacViewMgr_VtblSlot032(void)
 {
@@ -3380,7 +3356,7 @@ undefined4 TMacViewMgr_VtblSlot032(void)
 }
 
 // ghidra_name AfxIsDescendant
-// ghidra_proto int __cdecl AfxIsDescendant(int arg1, int arg2)
+// ghidra_proto undefined AfxIsDescendant()
 // FUNCTION: IMPERIALISM 0x0061c9ed
 undefined4 AfxIsDescendant(void)
 {
@@ -3388,15 +3364,15 @@ undefined4 AfxIsDescendant(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot036
-// ghidra_proto int __fastcall TMacViewMgr_VtblSlot036(void)
+// ghidra_proto undefined TMacViewMgr_VtblSlot036()
 // FUNCTION: IMPERIALISM 0x0061ca0d
 undefined4 TMacViewMgr_VtblSlot036(void)
 {
   return 0;
 }
 
-// ghidra_name TMacViewMgr::EndModalState
-// ghidra_proto void __thiscall EndModalState(TMacViewMgr * thisObj)
+// ghidra_name EndModalState
+// ghidra_proto undefined EndModalState()
 // FUNCTION: IMPERIALISM 0x0061cb3a
 undefined4 EndModalState(void)
 {
@@ -3404,7 +3380,7 @@ undefined4 EndModalState(void)
 }
 
 // ghidra_name ShowOwnedWindows
-// ghidra_proto void __cdecl ShowOwnedWindows(void)
+// ghidra_proto undefined ShowOwnedWindows()
 // FUNCTION: IMPERIALISM 0x0061cba9
 undefined4 ShowOwnedWindows(void)
 {
@@ -3412,7 +3388,7 @@ undefined4 ShowOwnedWindows(void)
 }
 
 // ghidra_name TacticalBattleView::OnEnable
-// ghidra_proto void __thiscall OnEnable(void)
+// ghidra_proto undefined OnEnable()
 // FUNCTION: IMPERIALISM 0x0061cc4b
 undefined4 OnEnable(void)
 {
@@ -3420,7 +3396,7 @@ undefined4 OnEnable(void)
 }
 
 // ghidra_name NotifyFloatingWindows
-// ghidra_proto void __cdecl NotifyFloatingWindows(void)
+// ghidra_proto undefined NotifyFloatingWindows()
 // FUNCTION: IMPERIALISM 0x0061cd09
 undefined4 NotifyFloatingWindows(void)
 {
@@ -3428,7 +3404,7 @@ undefined4 NotifyFloatingWindows(void)
 }
 
 // ghidra_name TMacViewMgr::PreCreateWindow_61cdb3
-// ghidra_proto bool __thiscall PreCreateWindow_61cdb3(void * pCreateStruct)
+// ghidra_proto undefined PreCreateWindow_61cdb3()
 // FUNCTION: IMPERIALISM 0x0061cdb3
 undefined4 PreCreateWindow_61cdb3(void)
 {
@@ -3436,7 +3412,7 @@ undefined4 PreCreateWindow_61cdb3(void)
 }
 
 // ghidra_name CreateWindowWithOptionalMenuResource
-// ghidra_proto bool __thiscall CreateWindowWithOptionalMenuResource(void * windowClass, void * windowName, void * windowStyle, void * windowRect, void * parentWindow, int menuResourceId, char * menuResourceName, void * exStyle, void * createContext)
+// ghidra_proto undefined CreateWindowWithOptionalMenuResource()
 // FUNCTION: IMPERIALISM 0x0061ce0b
 undefined4 CreateWindowWithOptionalMenuResource(void)
 {
@@ -3444,7 +3420,7 @@ undefined4 CreateWindowWithOptionalMenuResource(void)
 }
 
 // ghidra_name CreateView
-// ghidra_proto void * __cdecl CreateView(void)
+// ghidra_proto undefined CreateView()
 // FUNCTION: IMPERIALISM 0x0061cea3
 undefined4 CreateView(void)
 {
@@ -3452,7 +3428,7 @@ undefined4 CreateView(void)
 }
 
 // ghidra_name TMacViewMgr::WrapperFor_CreateView_At0061cf1b
-// ghidra_proto void * __cdecl WrapperFor_CreateView_At0061cf1b(void)
+// ghidra_proto undefined WrapperFor_CreateView_At0061cf1b()
 // FUNCTION: IMPERIALISM 0x0061cf1b
 undefined4 WrapperFor_CreateView_At0061cf1b(void)
 {
@@ -3460,7 +3436,7 @@ undefined4 WrapperFor_CreateView_At0061cf1b(void)
 }
 
 // ghidra_name WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d
-// ghidra_proto void __stdcall WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(int arg1, int arg2)
+// ghidra_proto undefined WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d()
 // FUNCTION: IMPERIALISM 0x0061cf3d
 undefined4 WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(void)
 {
@@ -3468,7 +3444,7 @@ undefined4 WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(void)
 }
 
 // ghidra_name OnCreateHelper
-// ghidra_proto void __stdcall OnCreateHelper(int arg1, int arg2)
+// ghidra_proto undefined OnCreateHelper()
 // FUNCTION: IMPERIALISM 0x0061cf4c
 undefined4 OnCreateHelper(void)
 {
@@ -3476,7 +3452,7 @@ undefined4 OnCreateHelper(void)
 }
 
 // ghidra_name TMacViewMgr::LoadFrame
-// ghidra_proto bool __thiscall LoadFrame(uint resourceId, uint defaultStyle, void * pParentWnd, void * pCreateContext)
+// ghidra_proto undefined LoadFrame()
 // FUNCTION: IMPERIALISM 0x0061d01e
 undefined4 LoadFrame(void)
 {
@@ -3484,7 +3460,7 @@ undefined4 LoadFrame(void)
 }
 
 // ghidra_name TMacViewMgr::SetWindowMenuFromParamOrActiveChildOrFallback
-// ghidra_proto void __cdecl SetWindowMenuFromParamOrActiveChildOrFallback(int arg1)
+// ghidra_proto undefined SetWindowMenuFromParamOrActiveChildOrFallback()
 // FUNCTION: IMPERIALISM 0x0061d109
 undefined4 SetWindowMenuFromParamOrActiveChildOrFallback(void)
 {
@@ -3492,7 +3468,7 @@ undefined4 SetWindowMenuFromParamOrActiveChildOrFallback(void)
 }
 
 // ghidra_name OnDestroy_61d30e
-// ghidra_proto void __fastcall OnDestroy_61d30e(void)
+// ghidra_proto undefined OnDestroy_61d30e()
 // FUNCTION: IMPERIALISM 0x0061d30e
 undefined4 OnDestroy_61d30e(void)
 {
@@ -3500,7 +3476,7 @@ undefined4 OnDestroy_61d30e(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot005
-// ghidra_proto int __thiscall TMacViewMgr_VtblSlot005(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined TMacViewMgr_VtblSlot005()
 // FUNCTION: IMPERIALISM 0x0061d37e
 undefined4 TMacViewMgr_VtblSlot005(void)
 {
@@ -3508,7 +3484,7 @@ undefined4 TMacViewMgr_VtblSlot005(void)
 }
 
 // ghidra_name OnActivate
-// ghidra_proto void __thiscall OnActivate(void)
+// ghidra_proto undefined OnActivate()
 // FUNCTION: IMPERIALISM 0x0061d4b8
 undefined4 OnActivate(void)
 {
@@ -3516,7 +3492,7 @@ undefined4 OnActivate(void)
 }
 
 // ghidra_name OnNcActivate
-// ghidra_proto int __cdecl OnNcActivate(void)
+// ghidra_proto undefined OnNcActivate()
 // FUNCTION: IMPERIALISM 0x0061d58c
 undefined4 OnNcActivate(void)
 {
@@ -3524,7 +3500,7 @@ undefined4 OnNcActivate(void)
 }
 
 // ghidra_name OnSysCommand
-// ghidra_proto void __thiscall OnSysCommand(void)
+// ghidra_proto undefined OnSysCommand()
 // FUNCTION: IMPERIALISM 0x0061d5c3
 undefined4 OnSysCommand(void)
 {
@@ -3532,7 +3508,7 @@ undefined4 OnSysCommand(void)
 }
 
 // ghidra_name OnQueryEndSession
-// ghidra_proto void * __cdecl OnQueryEndSession(void)
+// ghidra_proto undefined OnQueryEndSession()
 // FUNCTION: IMPERIALISM 0x0061d6d5
 undefined4 OnQueryEndSession(void)
 {
@@ -3540,7 +3516,7 @@ undefined4 OnQueryEndSession(void)
 }
 
 // ghidra_name OnDDEInitiate
-// ghidra_proto int __cdecl OnDDEInitiate(void)
+// ghidra_proto undefined OnDDEInitiate()
 // FUNCTION: IMPERIALISM 0x0061d72a
 undefined4 OnDDEInitiate(void)
 {
@@ -3548,7 +3524,7 @@ undefined4 OnDDEInitiate(void)
 }
 
 // ghidra_name OnDDEExecute
-// ghidra_proto int __thiscall OnDDEExecute(void)
+// ghidra_proto undefined OnDDEExecute()
 // FUNCTION: IMPERIALISM 0x0061d7e5
 undefined4 OnDDEExecute(void)
 {
@@ -3556,7 +3532,7 @@ undefined4 OnDDEExecute(void)
 }
 
 // ghidra_name GetObjectValueAtOffset98
-// ghidra_proto int __fastcall GetObjectValueAtOffset98(void)
+// ghidra_proto undefined GetObjectValueAtOffset98()
 // FUNCTION: IMPERIALISM 0x0061d89b
 undefined4 GetObjectValueAtOffset98(void)
 {
@@ -3564,7 +3540,7 @@ undefined4 GetObjectValueAtOffset98(void)
 }
 
 // ghidra_name TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917
-// ghidra_proto uint __thiscall WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
+// ghidra_proto undefined WrapperFor_GetObjectValueAtOffset98_At0061d917()
 // FUNCTION: IMPERIALISM 0x0061d917
 undefined4 WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
 {
@@ -3572,7 +3548,7 @@ undefined4 WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
 }
 
 // ghidra_name OnMenuSelect
-// ghidra_proto void __thiscall OnMenuSelect(void)
+// ghidra_proto undefined OnMenuSelect()
 // FUNCTION: IMPERIALISM 0x0061db87
 undefined4 OnMenuSelect(void)
 {
@@ -3580,7 +3556,7 @@ undefined4 OnMenuSelect(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot051
-// ghidra_proto void __thiscall TMacViewMgr_VtblSlot051(uint stringResourceId)
+// ghidra_proto undefined TMacViewMgr_VtblSlot051()
 // FUNCTION: IMPERIALISM 0x0061dc76
 undefined4 TMacViewMgr_VtblSlot051(void)
 {
@@ -3588,7 +3564,7 @@ undefined4 TMacViewMgr_VtblSlot051(void)
 }
 
 // ghidra_name TMacViewMgr::WrapperFor_GetDescendantWindow_At0061ddb2
-// ghidra_proto void __thiscall WrapperFor_GetDescendantWindow_At0061ddb2(void)
+// ghidra_proto undefined WrapperFor_GetDescendantWindow_At0061ddb2()
 // FUNCTION: IMPERIALISM 0x0061ddb2
 undefined4 WrapperFor_GetDescendantWindow_At0061ddb2(void)
 {
@@ -3596,7 +3572,7 @@ undefined4 WrapperFor_GetDescendantWindow_At0061ddb2(void)
 }
 
 // ghidra_name CFrameWnd::OnEnterIdle_61ddc2
-// ghidra_proto void __thiscall OnEnterIdle_61ddc2(void)
+// ghidra_proto undefined OnEnterIdle_61ddc2()
 // FUNCTION: IMPERIALISM 0x0061ddc2
 undefined4 OnEnterIdle_61ddc2(void)
 {
@@ -3604,7 +3580,7 @@ undefined4 OnEnterIdle_61ddc2(void)
 }
 
 // ghidra_name CFrameWnd::SetMessageText
-// ghidra_proto void __thiscall SetMessageText(void)
+// ghidra_proto undefined SetMessageText()
 // FUNCTION: IMPERIALISM 0x0061de0a
 undefined4 SetMessageText(void)
 {
@@ -3612,7 +3588,7 @@ undefined4 SetMessageText(void)
 }
 
 // ghidra_name OnToolTipText
-// ghidra_proto void __cdecl OnToolTipText(void)
+// ghidra_proto undefined OnToolTipText()
 // FUNCTION: IMPERIALISM 0x0061df4c
 undefined4 OnToolTipText(void)
 {
@@ -3620,7 +3596,7 @@ undefined4 OnToolTipText(void)
 }
 
 // ghidra_name TMacViewMgr::OnSetPreviewMode
-// ghidra_proto void __cdecl OnSetPreviewMode(int arg1, int arg2)
+// ghidra_proto undefined OnSetPreviewMode()
 // FUNCTION: IMPERIALISM 0x0061e1fe
 undefined4 OnSetPreviewMode(void)
 {
@@ -3628,7 +3604,7 @@ undefined4 OnSetPreviewMode(void)
 }
 
 // ghidra_name OnIdleUpdateCmdUI
-// ghidra_proto void __fastcall OnIdleUpdateCmdUI(void)
+// ghidra_proto undefined OnIdleUpdateCmdUI()
 // FUNCTION: IMPERIALISM 0x0061e42d
 undefined4 OnIdleUpdateCmdUI(void)
 {
@@ -3636,7 +3612,7 @@ undefined4 OnIdleUpdateCmdUI(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot050
-// ghidra_proto void * __thiscall TMacViewMgr_VtblSlot050(void)
+// ghidra_proto undefined TMacViewMgr_VtblSlot050()
 // FUNCTION: IMPERIALISM 0x0061e49c
 undefined4 TMacViewMgr_VtblSlot050(void)
 {
@@ -3644,7 +3620,7 @@ undefined4 TMacViewMgr_VtblSlot050(void)
 }
 
 // ghidra_name OnSize_61e606
-// ghidra_proto void __thiscall OnSize_61e606(TMacViewMgr * thisObj, int code)
+// ghidra_proto undefined OnSize_61e606()
 // FUNCTION: IMPERIALISM 0x0061e606
 undefined4 OnSize_61e606(void)
 {
@@ -3652,7 +3628,7 @@ undefined4 OnSize_61e606(void)
 }
 
 // ghidra_name OnRegisteredMouseWheel
-// ghidra_proto void __stdcall OnRegisteredMouseWheel(int arg1, int arg2)
+// ghidra_proto undefined OnRegisteredMouseWheel()
 // FUNCTION: IMPERIALISM 0x0061e63b
 undefined4 OnRegisteredMouseWheel(void)
 {
@@ -3660,7 +3636,7 @@ undefined4 OnRegisteredMouseWheel(void)
 }
 
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot053
-// ghidra_proto void __thiscall TMacViewMgr_VtblSlot053(int showCommand)
+// ghidra_proto undefined TMacViewMgr_VtblSlot053()
 // FUNCTION: IMPERIALISM 0x0061e6e3
 undefined4 TMacViewMgr_VtblSlot053(void)
 {
@@ -3668,7 +3644,7 @@ undefined4 TMacViewMgr_VtblSlot053(void)
 }
 
 // ghidra_name GetDockingFrame
-// ghidra_proto int __cdecl GetDockingFrame(void)
+// ghidra_proto undefined GetDockingFrame()
 // FUNCTION: IMPERIALISM 0x0061e762
 undefined4 GetDockingFrame(void)
 {
@@ -3676,7 +3652,7 @@ undefined4 GetDockingFrame(void)
 }
 
 // ghidra_name CreateStaticClassControl
-// ghidra_proto int __thiscall CreateStaticClassControl(char * pszCaption, uint dwStyle, void * pRect, void * pParentWnd, uint nControlId)
+// ghidra_proto undefined CreateStaticClassControl()
 // FUNCTION: IMPERIALISM 0x0061e79d
 undefined4 CreateStaticClassControl(void)
 {
@@ -3684,7 +3660,7 @@ undefined4 CreateStaticClassControl(void)
 }
 
 // ghidra_name ~CHotKeyCtrl
-// ghidra_proto void __cdecl ~CHotKeyCtrl(void)
+// ghidra_proto undefined ~CHotKeyCtrl()
 // FUNCTION: IMPERIALISM 0x0061e7bf
 undefined4 CHotKeyCtrl_0061E7BF(void)
 {
@@ -3692,7 +3668,7 @@ undefined4 CHotKeyCtrl_0061E7BF(void)
 }
 
 // ghidra_name CreateButtonClassControl
-// ghidra_proto int __thiscall CreateButtonClassControl(char * pszCaption, uint dwStyle, void * pRect, void * pParentWnd, uint nControlId)
+// ghidra_proto undefined CreateButtonClassControl()
 // FUNCTION: IMPERIALISM 0x0061e7f7
 undefined4 CreateButtonClassControl(void)
 {
@@ -3700,7 +3676,7 @@ undefined4 CreateButtonClassControl(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c
-// ghidra_proto uint __thiscall WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c(uint messageCode, int wParam, int lParam, void * pResult)
+// ghidra_proto undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c()
 // FUNCTION: IMPERIALISM 0x0061e87c
 undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c(void)
 {
@@ -3708,7 +3684,7 @@ undefined4 WrapperFor_DispatchReflectedControlMessageOrFallback_At0061e87c(void)
 }
 
 // ghidra_name Dtor_CListBox_FID_61e8cb
-// ghidra_proto void __thiscall Dtor_CListBox_FID_61e8cb(void)
+// ghidra_proto undefined Dtor_CListBox_FID_61e8cb()
 // FUNCTION: IMPERIALISM 0x0061e8cb
 undefined4 Dtor_CListBox_FID_61e8cb(void)
 {
@@ -3716,7 +3692,7 @@ undefined4 Dtor_CListBox_FID_61e8cb(void)
 }
 
 // ghidra_name WrapperFor_Default_At0061e911
-// ghidra_proto void __thiscall WrapperFor_Default_At0061e911(void)
+// ghidra_proto undefined WrapperFor_Default_At0061e911()
 // FUNCTION: IMPERIALISM 0x0061e911
 undefined4 WrapperFor_Default_At0061e911(void)
 {
@@ -3724,7 +3700,7 @@ undefined4 WrapperFor_Default_At0061e911(void)
 }
 
 // ghidra_name WrapperFor_Default_At0061e919
-// ghidra_proto void __thiscall WrapperFor_Default_At0061e919(void)
+// ghidra_proto undefined WrapperFor_Default_At0061e919()
 // FUNCTION: IMPERIALISM 0x0061e919
 undefined4 WrapperFor_Default_At0061e919(void)
 {
@@ -3732,7 +3708,7 @@ undefined4 WrapperFor_Default_At0061e919(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::OnChildNotify_61e921
-// ghidra_proto uint __thiscall OnChildNotify_61e921(uint message, uint wParam, int lParam, void * pResult)
+// ghidra_proto undefined OnChildNotify_61e921()
 // FUNCTION: IMPERIALISM 0x0061e921
 undefined4 OnChildNotify_61e921(void)
 {
@@ -3740,7 +3716,7 @@ undefined4 OnChildNotify_61e921(void)
 }
 
 // ghidra_name GetText_61e9ba
-// ghidra_proto void __thiscall GetText_61e9ba(void)
+// ghidra_proto undefined GetText_61e9ba()
 // FUNCTION: IMPERIALISM 0x0061e9ba
 undefined4 GetText_61e9ba(void)
 {
@@ -3748,7 +3724,7 @@ undefined4 GetText_61e9ba(void)
 }
 
 // ghidra_name Dtor_CHeaderCtrl_FID_61ea56
-// ghidra_proto void __thiscall Dtor_CHeaderCtrl_FID_61ea56(void)
+// ghidra_proto undefined Dtor_CHeaderCtrl_FID_61ea56()
 // FUNCTION: IMPERIALISM 0x0061ea56
 undefined4 Dtor_CHeaderCtrl_FID_61ea56(void)
 {
@@ -3756,7 +3732,7 @@ undefined4 Dtor_CHeaderCtrl_FID_61ea56(void)
 }
 
 // ghidra_name TTooltipRelayWindowState::OnChildNotify_61ea9c
-// ghidra_proto uint __thiscall OnChildNotify_61ea9c(uint message, uint wParam, int lParam, void * pResult)
+// ghidra_proto undefined OnChildNotify_61ea9c()
 // FUNCTION: IMPERIALISM 0x0061ea9c
 undefined4 OnChildNotify_61ea9c(void)
 {
@@ -3764,7 +3740,7 @@ undefined4 OnChildNotify_61ea9c(void)
 }
 
 // ghidra_name InvokeDialogCreateVslot5CWithTemplate45
-// ghidra_proto void __thiscall InvokeDialogCreateVslot5CWithTemplate45(int arg1, int arg2, int arg3, int arg4)
+// ghidra_proto undefined InvokeDialogCreateVslot5CWithTemplate45()
 // FUNCTION: IMPERIALISM 0x0061eb46
 undefined4 InvokeDialogCreateVslot5CWithTemplate45(void)
 {
@@ -3772,7 +3748,7 @@ undefined4 InvokeDialogCreateVslot5CWithTemplate45(void)
 }
 
 // ghidra_name Dtor_CHeaderCtrl_FID_61eb67
-// ghidra_proto void __thiscall Dtor_CHeaderCtrl_FID_61eb67(void)
+// ghidra_proto undefined Dtor_CHeaderCtrl_FID_61eb67()
 // FUNCTION: IMPERIALISM 0x0061eb67
 undefined4 Dtor_CHeaderCtrl_FID_61eb67(void)
 {
@@ -3780,7 +3756,7 @@ undefined4 Dtor_CHeaderCtrl_FID_61eb67(void)
 }
 
 // ghidra_name Dtor_CHeaderCtrl_FID_61ebc0
-// ghidra_proto void __thiscall Dtor_CHeaderCtrl_FID_61ebc0(void)
+// ghidra_proto undefined Dtor_CHeaderCtrl_FID_61ebc0()
 // FUNCTION: IMPERIALISM 0x0061ebc0
 undefined4 Dtor_CHeaderCtrl_FID_61ebc0(void)
 {
@@ -3788,7 +3764,7 @@ undefined4 Dtor_CHeaderCtrl_FID_61ebc0(void)
 }
 
 // ghidra_name WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8
-// ghidra_proto void __cdecl WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
+// ghidra_proto undefined WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8()
 // FUNCTION: IMPERIALISM 0x0061ebf8
 undefined4 WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
 {
@@ -3796,7 +3772,7 @@ undefined4 WrapperFor_NoOpVirtualStub_0061ec02_At0061ebf8(void)
 }
 
 // ghidra_name thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03
-// ghidra_proto void __cdecl thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
+// ghidra_proto undefined thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03()
 // FUNCTION: IMPERIALISM 0x0061ebfd
 undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 {
@@ -3804,7 +3780,7 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 }
 
 // ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03
-// ghidra_proto void __cdecl WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
+// ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03()
 // FUNCTION: IMPERIALISM 0x0061ec03
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 {
@@ -3812,17 +3788,9 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0061ec03(void)
 }
 
 // ghidra_name WrapperFor_AfxDeleteObject_At0061ec0f
-// ghidra_proto void __cdecl WrapperFor_AfxDeleteObject_At0061ec0f(void)
+// ghidra_proto undefined WrapperFor_AfxDeleteObject_At0061ec0f()
 // FUNCTION: IMPERIALISM 0x0061ec0f
 undefined4 WrapperFor_AfxDeleteObject_At0061ec0f(void)
-{
-  return 0;
-}
-
-// ghidra_name FillSolidRect
-// ghidra_proto void __thiscall FillSolidRect(void * pRect, uint rgbColor)
-// FUNCTION: IMPERIALISM 0x0061f0fa
-undefined4 FillSolidRect(void)
 {
   return 0;
 }

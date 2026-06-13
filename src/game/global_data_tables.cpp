@@ -12,6 +12,12 @@
 
 extern "C" {
 
+// McAppUI.cpp module globals referenced by TView/TControl widget code. See
+// include/game/mcappui_globals.h.
+int g_McAppUiActiveFlag_006950AC = 0;
+int g_McAppUiDrawGate_006A1AF8 = 0;
+char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
+
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
 float g_DAT_Value_00653308[8] = {0};

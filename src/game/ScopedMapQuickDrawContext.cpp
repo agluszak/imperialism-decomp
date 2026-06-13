@@ -24,7 +24,7 @@ void* g_pScopedMapQuickDrawViewContext = 0;
 // FUNCTION: IMPERIALISM 0x00494700
 ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(void* renderTargetArg)
     : clientDc(renderTargetArg != 0
-                   ? reinterpret_cast<void*>(reinterpret_cast<TView*>(renderTargetArg)->field50)
+                   ? reinterpret_cast<void*>(reinterpret_cast<TView*>(renderTargetArg)->nativeWindow50)
                    : 0),
       renderTarget(reinterpret_cast<TView*>(renderTargetArg)) {
   if (renderTarget != 0) {
@@ -38,11 +38,10 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(void* renderTargetArg)
     g_pScopedMapQuickDrawDcHandleObject = this;
   } else {
     TView* viewContext = this->renderTarget;
-    if (viewContext->field50 == 0) {
+    if (viewContext->nativeWindow50 == 0) {
       g_pScopedMapQuickDrawDcHandleObject = 0;
     } else {
-      GetDC(*reinterpret_cast<hwnd_t*>(reinterpret_cast<char*>(reinterpret_cast<void*>(viewContext->field50)) +
-            0x1c));
+      GetDC(viewContext->nativeWindow50->hwnd);
       reinterpret_cast<void(__cdecl*)()>(FromHandle_612736)();
     }
   }
@@ -53,8 +52,7 @@ ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext() {
   if (this == 0) {
     TView* viewContext = this->renderTarget;
     ReleaseDC(
-        *reinterpret_cast<hwnd_t*>(
-            reinterpret_cast<char*>(reinterpret_cast<void*>(viewContext->field50)) + 0x1c),
+        viewContext->nativeWindow50->hwnd,
         *reinterpret_cast<hdc_t*>(reinterpret_cast<char*>(g_pScopedMapQuickDrawDcHandleObject) + 4));
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;
