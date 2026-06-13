@@ -139,14 +139,6 @@ undefined4 PropagateUiResourceContextRecursive(void)
   return 0;
 }
 
-// ghidra_name TControl::CtrlSlot94_GetWordField54_Impl
-// ghidra_proto undefined CtrlSlot94_GetWordField54_Impl()
-// FUNCTION: IMPERIALISM 0x0048c970
-undefined4 CtrlSlot94_GetWordField54_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60
 // ghidra_proto undefined Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60()
 // FUNCTION: IMPERIALISM 0x0048ca60

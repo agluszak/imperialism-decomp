@@ -91,9 +91,9 @@ public:
   virtual void vmethod_0053();
   virtual void DispatchControlEventToChildrenAndSelf(int eventArg);
   virtual void vmethod_0055(unsigned int styleSeed = 0);
-  virtual void vmethod_0056();
+  virtual void NoOpUiCallback();
   virtual void RefreshControl();
-  virtual void vmethod_0058();
+  virtual class TView* QueryOwnerContextPanel();
   virtual int IsActionable();
   virtual void CaptureLayoutF0(int* buffer, int modeFlag);
   virtual void CaptureLayout(int* buffer, int modeFlag);
@@ -129,7 +129,7 @@ public:
   virtual char PointInBoundsAndActionable(Point32* point);
   virtual void vmethod_0092(class TView* child, int flag);
   virtual void vmethod_0093(class TView* child);
-  virtual void vmethod_0094();
+  virtual unsigned short GetField54();
   virtual char TestPointInBounds(Point32* point);
   virtual void vmethod_0096(int arg);
   virtual void vmethod_0097(int arg);

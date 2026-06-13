@@ -3283,14 +3283,6 @@ undefined4 InitializeUiResourceEntryFrameAndParent(void)
   return 0;
 }
 
-// ghidra_name TControl::NoOpUiCallback
-// ghidra_proto undefined NoOpUiCallback()
-// FUNCTION: IMPERIALISM 0x0048abc0
-undefined4 NoOpUiCallback(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityDialogModalState_00649A50::RunNationInfoModalAndReturnNonCancel_Impl
 // ghidra_proto undefined RunNationInfoModalAndReturnNonCancel_Impl()
 // FUNCTION: IMPERIALISM 0x0048abe0
@@ -3343,14 +3335,6 @@ undefined4 CloseCityDialogChildrenAndReleaseSelf(void)
 // ghidra_proto undefined GetCityDialogValueViaChildSlot58()
 // FUNCTION: IMPERIALISM 0x0048b180
 undefined4 GetCityDialogValueViaChildSlot58(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::QueryChildMapViewSlot58OrZero
-// ghidra_proto undefined QueryChildMapViewSlot58OrZero()
-// FUNCTION: IMPERIALISM 0x0048b1a0
-undefined4 QueryChildMapViewSlot58OrZero(void)
 {
   return 0;
 }

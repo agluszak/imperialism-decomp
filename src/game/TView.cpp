@@ -237,9 +237,17 @@ void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
 void TView::vmethod_0055(unsigned int styleSeed) {
   (void)styleSeed;
 }
-void TView::vmethod_0056() {}
+// FUNCTION: IMPERIALISM 0x0048abc0
+void TView::NoOpUiCallback() {}
 void TView::RefreshControl() {}
-void TView::vmethod_0058() {}
+// Forward to the owner context's panel query (slot 0x16), or 0 if no owner.
+// FUNCTION: IMPERIALISM 0x0048b1a0
+TView* TView::QueryOwnerContextPanel() {
+  if (ownerContext == 0) {
+    return 0;
+  }
+  return ownerContext->OwnerPanel();
+}
 // FUNCTION: IMPERIALISM 0x0048b200
 int TView::IsActionable() {
   if (g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0 &&
@@ -482,7 +490,10 @@ tail:
   }
   child->ownerContext = 0;
 }
-void TView::vmethod_0094() {}
+// FUNCTION: IMPERIALISM 0x0048c970
+unsigned short TView::GetField54() {
+  return field54;
+}
 // True (3) iff the point falls inside this view's content bounds.
 // FUNCTION: IMPERIALISM 0x0048c990
 char TView::TestPointInBounds(Point32* point) {

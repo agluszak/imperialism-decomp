@@ -150,8 +150,10 @@ address|target_cpp|ownership|note
 48aaf0|src/game/TView.cpp|manual|marker_sync
 48ab70|src/game/noop_slots.cpp|manual|marker_sync
 48ab90|src/game/TView.cpp|manual|marker_sync
+48abc0|src/game/TView.cpp|manual|marker_sync
 48ae60|src/game/TView.cpp|manual|marker_sync
 48af80|src/game/TView.cpp|manual|marker_sync
+48b1a0|src/game/TView.cpp|manual|marker_sync
 48b200|src/game/TView.cpp|manual|marker_sync
 48b250|src/game/TView.cpp|manual|marker_sync
 48b3f0|src/game/TView.cpp|manual|marker_sync
@@ -174,6 +176,7 @@ address|target_cpp|ownership|note
 48c7a0|src/game/TView.cpp|manual|marker_sync
 48c7d0|src/game/TView.cpp|manual|marker_sync
 48c820|src/game/TView.cpp|manual|marker_sync
+48c970|src/game/TView.cpp|manual|marker_sync
 48c990|src/game/TView.cpp|manual|marker_sync
 48c9e0|src/game/TView.cpp|manual|marker_sync
 48ca00|src/game/TView.cpp|manual|marker_sync
