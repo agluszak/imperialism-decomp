@@ -386,14 +386,13 @@ void TView::ApplyBounds(int* boundsBuffer, int modeFlag) {}
 
 // True (3) iff this view is actionable and the point falls inside its content bounds.
 // FUNCTION: IMPERIALISM 0x0048c6d0
-char TView::PointInBoundsAndActionable(void* point) {
+char TView::PointInBoundsAndActionable(Point32* point) {
   RECT bounds;
   QueryContentBounds(reinterpret_cast<int*>(&bounds));
   if (IsActionable() != 0) {
-    int* pt = reinterpret_cast<int*>(point);
     Point32 p;
-    p.x = pt[0];
-    p.y = pt[1];
+    p.x = point->x;
+    p.y = point->y;
     if (PtInRect(&bounds, p) != 0) {
       return 1;
     }
@@ -462,12 +461,12 @@ tail:
 void TView::vmethod_0094() {}
 // True (3) iff the point falls inside this view's content bounds.
 // FUNCTION: IMPERIALISM 0x0048c990
-char TView::TestPointInBounds(int* point) {
+char TView::TestPointInBounds(Point32* point) {
   RECT bounds;
   QueryContentBounds(reinterpret_cast<int*>(&bounds));
   Point32 p;
-  p.x = point[0];
-  p.y = point[1];
+  p.x = point->x;
+  p.y = point->y;
   return -(PtInRect(&bounds, p) != 0) & 3;
 }
 // FUNCTION: IMPERIALISM 0x0048c9e0

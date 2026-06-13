@@ -31,7 +31,7 @@ void TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, 
     repeatDeadlineTick = (int)tick + 10;
   }
 
-  if (this->PointInBoundsAndActionable(dispatchArg) == '\0') {
+  if (this->PointInBoundsAndActionable(reinterpret_cast<Point32*>(dispatchArg)) == '\0') {
     return;
   }
 

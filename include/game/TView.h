@@ -126,11 +126,11 @@ public:
   virtual struct RECT BuildRectFromSlot158();
   virtual void vmethod_0089();
   virtual void ApplyBounds(int* boundsBuffer, int modeFlag);
-  virtual char PointInBoundsAndActionable(void* point);
+  virtual char PointInBoundsAndActionable(Point32* point);
   virtual void vmethod_0092(class TView* child, int flag);
   virtual void vmethod_0093(class TView* child);
   virtual void vmethod_0094();
-  virtual char TestPointInBounds(int* point);
+  virtual char TestPointInBounds(Point32* point);
   virtual void vmethod_0096(int arg);
   virtual void vmethod_0097(int arg);
   virtual void vmethod_0098(int arg);
