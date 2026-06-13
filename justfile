@@ -89,6 +89,13 @@ apply-tview-datatype:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
   uv run python -m tools.ghidra.apply_source_datatypes --classes CString,TEventHandler,TView
 
+w32dasm-report:
+  uv run python -m tools.w32dasm.parse_alf
+  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+  uv run python -m tools.w32dasm.compare_alf_ghidra
+  uv run python -m tools.w32dasm.inspect_wpj
+  uv run python -m tools.w32dasm.rank_report
+
 regen-stubs:
   uv run python -m tools.stubgen \
     --name-overrides "{{name_overrides}}" \
