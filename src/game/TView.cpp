@@ -226,7 +226,14 @@ void TView::vmethod_0055(unsigned int styleSeed) {
 void TView::vmethod_0056() {}
 void TView::RefreshControl() {}
 void TView::vmethod_0058() {}
+// FUNCTION: IMPERIALISM 0x0048b200
 int TView::IsActionable() {
+  if (g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0 &&
+      ownerContext != 0) {
+    if (ownerContext->IsActionable() != 0) {
+      return 1;
+    }
+  }
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x0048b250

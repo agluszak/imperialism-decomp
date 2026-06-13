@@ -3371,14 +3371,6 @@ undefined4 SetControlActiveFlagAndRefreshIfChanged(void)
   return 0;
 }
 
-// ghidra_name TControl::CanProcessMapViewSlotECUnderWindowState
-// ghidra_proto undefined CanProcessMapViewSlotECUnderWindowState()
-// FUNCTION: IMPERIALISM 0x0048b200
-undefined4 CanProcessMapViewSlotECUnderWindowState(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0
 // ghidra_proto undefined WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0()
 // FUNCTION: IMPERIALISM 0x0048b2d0

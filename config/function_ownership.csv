@@ -151,6 +151,7 @@ address|target_cpp|ownership|note
 48ab90|src/game/TView.cpp|manual|marker_sync
 48ae60|src/game/TView.cpp|manual|marker_sync
 48af80|src/game/TView.cpp|manual|marker_sync
+48b200|src/game/TView.cpp|manual|marker_sync
 48b250|src/game/TView.cpp|manual|marker_sync
 48b690|src/game/TView.cpp|manual|marker_sync
 48b810|src/game/TView.cpp|manual|marker_sync
