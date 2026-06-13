@@ -3171,14 +3171,6 @@ undefined4 DetachActiveCityProductionChildIfMatches(void)
   return 0;
 }
 
-// ghidra_name TControl::SetUiResourceOwner
-// ghidra_proto undefined SetUiResourceOwner()
-// FUNCTION: IMPERIALISM 0x0048a4d0
-undefined4 SetUiResourceOwner(void)
-{
-  return 0;
-}
-
 // ghidra_name TradeControl::IsCurrentActiveCityProductionView
 // ghidra_proto undefined IsCurrentActiveCityProductionView()
 // FUNCTION: IMPERIALISM 0x0048a500
@@ -3423,22 +3415,6 @@ undefined4 ResetUiInputCaptureState(void)
 // ghidra_proto undefined SetGlobalUiSelectionIfChangedAndNotify()
 // FUNCTION: IMPERIALISM 0x0048b770
 undefined4 SetGlobalUiSelectionIfChangedAndNotify(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0
-// ghidra_proto undefined WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0()
-// FUNCTION: IMPERIALISM 0x0048b7b0
-undefined4 WrapperFor_GetOrCreateHandleMapObjectByHandle_At0048b7b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl
-// ghidra_proto undefined CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl()
-// FUNCTION: IMPERIALISM 0x0048b7e0
-undefined4 CtrlSlot65_ReleaseScopedMapQuickDrawDcHandle_Impl(void)
 {
   return 0;
 }

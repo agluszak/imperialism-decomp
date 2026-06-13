@@ -69,7 +69,7 @@ public:
   virtual void vmethod_0033(int arg);
   virtual void vmethod_0034();
   virtual void vmethod_0035();
-  virtual void vmethod_0036();
+  virtual void SetUiResourceOwner(int owner);
   virtual class TControl* ResolveControlByTag(unsigned int controlTag);
   virtual void SwitchActiveChildAndNotify(class TView* child);
   virtual void DispatchSlot9CToLinkedChildren();
@@ -97,8 +97,8 @@ public:
   virtual void CaptureLayout(int* buffer, int modeFlag);
   virtual char Refresh();
   virtual void PostRenderSlotFC();
-  virtual void vmethod_0064();
-  virtual void vmethod_0065();
+  virtual void BindMapQuickDrawDc(int arg);
+  virtual void ReleaseMapQuickDrawDc(int arg);
   virtual void EnsureField48Buffer();
   virtual void vmethod_0067();
   virtual void ApplyRectSlot110(int* rectBuffer);
@@ -136,7 +136,7 @@ public:
   virtual void DrawRectangleInCurrentUiContext(int* rect);
   virtual void vmethod_0101();
   virtual void vmethod_0102();
-  virtual void vmethod_0103();
+  virtual void SubtractPosAndDispatchToOwnerSlot19C(int* point);
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ (formerly declared here
   // as vmethod_0104..0110, SwitchTab, GetBoolSlot1BC) belong to the sibling branches
   // (TControl, TCivDescription, TAmtBar, ...) that each introduce their own virtuals

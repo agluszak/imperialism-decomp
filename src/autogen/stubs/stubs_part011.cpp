@@ -35,14 +35,6 @@ undefined4 OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl(void)
   return 0;
 }
 
-// ghidra_name TControl::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl
-// ghidra_proto undefined CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl()
-// FUNCTION: IMPERIALISM 0x0048bac0
-undefined4 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::OffsetRectByControlPosition_Impl
 // ghidra_proto undefined OffsetRectByControlPosition_Impl()
 // FUNCTION: IMPERIALISM 0x0048bb00

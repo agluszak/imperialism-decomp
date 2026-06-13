@@ -22,6 +22,8 @@ undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 undefined4 NoOpQuickDrawContextSelectionHook(void);
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
+undefined4 BindScopedMapQuickDrawDcHandle(void);
+undefined4 ReleaseScopedMapQuickDrawDcHandle(void);
 
 // TView::childList44 is an MFC CPtrList of child-control TView* pointers (node->data).
 
@@ -100,7 +102,14 @@ void TView::vmethod_0032() {}
 void TView::vmethod_0033(int arg) {}
 void TView::vmethod_0034() {}
 void TView::vmethod_0035() {}
-void TView::vmethod_0036() {}
+// Link this view to a resource-owner object and set the owner's back-pointer to this.
+// FUNCTION: IMPERIALISM 0x0048a4d0
+void TView::SetUiResourceOwner(int owner) {
+  if (owner != 0) {
+    field18 = owner;
+    *reinterpret_cast<int*>(owner + 8) = reinterpret_cast<int>(this);
+  }
+}
 class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
   return 0;
 }
@@ -253,8 +262,15 @@ char TView::Refresh() {
   return 0;
 }
 void TView::PostRenderSlotFC() {}
-void TView::vmethod_0064() {}
-void TView::vmethod_0065() {}
+// FUNCTION: IMPERIALISM 0x0048b7b0
+void TView::BindMapQuickDrawDc(int arg) {
+  reinterpret_cast<void(__cdecl*)(TView*, int)>(BindScopedMapQuickDrawDcHandle)(this, arg);
+}
+
+// FUNCTION: IMPERIALISM 0x0048b7e0
+void TView::ReleaseMapQuickDrawDc(int arg) {
+  reinterpret_cast<void(__cdecl*)(TView*, int)>(ReleaseScopedMapQuickDrawDcHandle)(this, arg);
+}
 // Lazily allocate the 8-byte auxiliary buffer stored at field48 (freed in the dtor).
 // FUNCTION: IMPERIALISM 0x0048b810
 void TView::EnsureField48Buffer() {
@@ -408,7 +424,15 @@ void TView::DrawRectangleInCurrentUiContext(int* rect) {
 }
 void TView::vmethod_0101() {}
 void TView::vmethod_0102() {}
-void TView::vmethod_0103() {}
+// Translate a point out of this view's local space and forward it to the owner's
+// matching slot (recurses up the owner chain).
+// FUNCTION: IMPERIALISM 0x0048bac0
+void TView::SubtractPosAndDispatchToOwnerSlot19C(int* point) {
+  int offY = ownerOffsetY;
+  point[0] = point[0] - ownerOffsetX;
+  point[1] = point[1] - offY;
+  ownerContext->SubtractPosAndDispatchToOwnerSlot19C(point);
+}
 
 // KNOWN LINKER ARTIFACT: 0x004064e2 is `jmp TView::TView`.
 // FUNCTION: IMPERIALISM 0x004064e2
