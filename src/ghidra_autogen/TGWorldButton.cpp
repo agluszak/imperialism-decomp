@@ -3,66 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TGWorldButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040402A
-// GHIDRA_NAME TGWorldButton::TGWorldButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TGWorldButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGWorldButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGWorldButtonClassNamePointer */
-
-void * __cdecl TGWorldButton::TGWorldButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTGWorldButtonClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404089
-// GHIDRA_NAME TGWorldButton::TGWorldButton_VtblSlot068
-// GHIDRA_PROTO void __cdecl TGWorldButton_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_BlitRectWithOptionalTransparency_At00572270
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Helper_Uses_BlitRectWithOptionalTransparency_At00572270 */
-
-void __cdecl TGWorldButton::TGWorldButton_VtblSlot068(void)
-
-{
-  Helper_Uses_BlitRectWithOptionalTransparency_At00572270();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405CF4
-// GHIDRA_NAME TGWorldButton::TGWorldButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TGWorldButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTGWorldButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTGWorldButtonAndMaybeFree */
-
-void * __thiscall TGWorldButton::TGWorldButton_VtblSlot001(TGWorldButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTGWorldButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00572080
 // GHIDRA_NAME TGWorldButton::CreateTGWorldButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTGWorldButtonInstance(void)
+// GHIDRA_PROTO undefined CreateTGWorldButtonInstance()
 
-void * __cdecl TGWorldButton::CreateTGWorldButtonInstance(void)
+undefined4 * TGWorldButton::CreateTGWorldButtonInstance(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -72,59 +20,54 @@ void * __cdecl TGWorldButton::CreateTGWorldButtonInstance(void)
   puStack_8 = &LAB_006364aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTGWorldButton;
-    *(undefined2 *)&this->field_0x84 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_0065ff60;
+    *(undefined2 *)(puVar1 + 0x21) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572110
 // GHIDRA_NAME TGWorldButton::GetTGWorldButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTGWorldButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TGWorldButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTGWorldButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TGWorldButton. */
-
-void * __cdecl TGWorldButton::GetTGWorldButtonClassNamePointer(void)
+undefined ** TGWorldButton::GetTGWorldButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTGWorldButton;
+  return &PTR_s_TGWorldButton_0065e640;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572130
 // GHIDRA_NAME TGWorldButton::ConstructTGWorldButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTGWorldButtonBaseState(void)
+// GHIDRA_PROTO undefined ConstructTGWorldButtonBaseState()
 
-void * __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(TGWorldButton *this)
+undefined4 * __fastcall TGWorldButton::ConstructTGWorldButtonBaseState(undefined4 *param_1)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase(&this->base);
-  (this->base).base.pVtable = &g_vtblTGWorldButton;
-  *(undefined2 *)&(this->base).field_0x84 = 0;
-  return this;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  *param_1 = &PTR_LAB_0065ff60;
+  *(undefined2 *)(param_1 + 0x21) = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572160
 // GHIDRA_NAME TGWorldButton::DestructTGWorldButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTGWorldButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTGWorldButtonAndMaybeFree()
 
-void * __thiscall
-TGWorldButton::DestructTGWorldButtonAndMaybeFree(TGWorldButton *this,byte freeSelfFlag)
+undefined4 __thiscall
+TGWorldButton::DestructTGWorldButtonAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -5,18 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565400
 // GHIDRA_NAME TShipView::CreateTShipViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTShipViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TShipView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTShipViewInstance()
 
-/* [ClassQuad] create inferred for TShipView; alloc factory pattern. */
-
-void * __cdecl TShipView::CreateTShipViewInstance(void)
+undefined4 * TShipView::CreateTShipViewInstance(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -26,30 +21,25 @@ void * __cdecl TShipView::CreateTShipViewInstance(void)
   puStack_8 = &LAB_0063599a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTShipLine;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_0065ce28;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565470
 // GHIDRA_NAME TShipView::GetTShipViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTShipViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TShipView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTShipViewClassNamePointer()
 
-/* Returns class descriptor pointer for TShipView. */
-
-void * __cdecl TShipView::GetTShipViewClassNamePointer(void)
+undefined ** TShipView::GetTShipViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTShipView;
+  return &PTR_s_TShipView_0065c880;
 }
 

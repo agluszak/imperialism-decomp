@@ -3,56 +3,13 @@
 // Program: Imperialism.exe
 // Bucket: TMultiMessagePicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401A6E
-// GHIDRA_NAME TMultiMessagePicture::thunk_scalar_deleting_destructor_00401A6E
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00401A6E(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TMultiMessagePicture::thunk_scalar_deleting_destructor_00401A6E
-          (TMultiMessagePicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407996
-// GHIDRA_NAME TMultiMessagePicture::thunk_GetTMultiMessagePictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMultiMessagePictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMultiMessagePictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMultiMessagePictureClassNamePointer */
-
-void * __cdecl TMultiMessagePicture::thunk_GetTMultiMessagePictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMultiMessagePictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0054ECA0
 // GHIDRA_NAME TMultiMessagePicture::GetTMultiMessagePictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMultiMessagePictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMultiMessagePicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMultiMessagePictureClassNamePointer()
 
-/* Returns class descriptor pointer for TMultiMessagePicture. */
-
-void * __cdecl TMultiMessagePicture::GetTMultiMessagePictureClassNamePointer(void)
+undefined ** TMultiMessagePicture::GetTMultiMessagePictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTMultiMessagePicture;
+  return &PTR_s_TMultiMessagePicture_0065c1c8;
 }
 

@@ -3,104 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TNavyToolbarCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004041B0
-// GHIDRA_NAME TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TNavyToolbarCluster_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNavyToolbarClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNavyToolbarClusterClassNamePointer */
-
-void * __cdecl TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNavyToolbarClusterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004073EC
-// GHIDRA_NAME TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TNavyToolbarCluster_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTNavyToolbarClusterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTNavyToolbarClusterAndMaybeFree */
-
-void * __thiscall
-TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot001(TNavyToolbarCluster *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTNavyToolbarClusterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408BDE
-// GHIDRA_NAME TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot015
-// GHIDRA_PROTO void __thiscall TNavyToolbarCluster_VtblSlot015(int arg1, int arg2, int arg3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleMapOrderPanelCommandTagsAndSelectionCycling
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleMapOrderPanelCommandTagsAndSelectionCycling */
-
-void __thiscall
-TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot015
-          (TNavyToolbarCluster *this,int arg1,int arg2,int arg3)
-
-{
-  HandleMapOrderPanelCommandTagsAndSelectionCycling(this,arg1,arg2,arg3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409499
-// GHIDRA_NAME TNavyToolbarCluster::thunk_ConstructTNavyToolbarClusterBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTNavyToolbarClusterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTNavyToolbarClusterBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTNavyToolbarClusterBaseState */
-
-void * __thiscall
-TNavyToolbarCluster::thunk_ConstructTNavyToolbarClusterBaseState(TNavyToolbarCluster *this)
-
-{
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  (this->base).pVtable = &g_vtblTNavyToolbarCluster;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040986D
-// GHIDRA_NAME TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot114
-// GHIDRA_PROTO void __cdecl TNavyToolbarCluster_VtblSlot114(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel */
-
-void __cdecl TNavyToolbarCluster::TNavyToolbarCluster_VtblSlot114(void)
-
-{
-  UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00569430
 // GHIDRA_NAME TNavyToolbarCluster::CreateTNavyToolbarClusterInstance
-// GHIDRA_PROTO void * __cdecl CreateTNavyToolbarClusterInstance(void)
+// GHIDRA_PROTO undefined CreateTNavyToolbarClusterInstance()
 
-void * __cdecl TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
+undefined4 * TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -110,143 +21,128 @@ void * __cdecl TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
   puStack_8 = &LAB_00635b9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->field0_0x0 = &g_vtblTNavyToolbarCluster;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState();
+    *puVar1 = &PTR_LAB_0065d6e0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005694B0
 // GHIDRA_NAME TNavyToolbarCluster::GetTNavyToolbarClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNavyToolbarClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNavyToolbarCluster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNavyToolbarClusterClassNamePointer()
 
-/* Returns class descriptor pointer for TNavyToolbarCluster. */
-
-void * __cdecl TNavyToolbarCluster::GetTNavyToolbarClusterClassNamePointer(void)
+undefined ** TNavyToolbarCluster::GetTNavyToolbarClusterClassNamePointer(void)
 
 {
-  return &g_pClassDescTNavyToolbarCluster;
+  return &PTR_s_TNavyToolbarCluster_0065c8f8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005694D0
 // GHIDRA_NAME TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTNavyToolbarClusterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTNavyToolbarClusterBaseState()
 
-void * __thiscall
-TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(TNavyToolbarCluster *this)
+undefined4 * __fastcall
+TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(undefined4 *param_1)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  (this->base).pVtable = &g_vtblTNavyToolbarCluster;
-  return this;
+  TUberCluster::ConstructTUberClusterBaseState();
+  *param_1 = &PTR_LAB_0065d6e0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569500
 // GHIDRA_NAME TNavyToolbarCluster::DestructTNavyToolbarClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTNavyToolbarClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTNavyToolbarClusterAndMaybeFree()
 
-void * __thiscall
-TNavyToolbarCluster::DestructTNavyToolbarClusterAndMaybeFree
-          (TNavyToolbarCluster *this,byte freeSelfFlag)
+undefined4 __thiscall
+TNavyToolbarCluster::DestructTNavyToolbarClusterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569550
 // GHIDRA_NAME TNavyToolbarCluster::HandleMapOrderPanelCommandTagsAndSelectionCycling
-// GHIDRA_PROTO void __thiscall HandleMapOrderPanelCommandTagsAndSelectionCycling(int arg1, int arg2, int arg3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles map-order panel command tags (owner/defend/done/next/bomb), updates task-force selection modes, cycles current map interaction selection, then forwards panel event dispatch.
-// GHIDRA_COMMENT_END
-
-/* Handles map-order panel command tags (owner/defend/done/next/bomb), updates task-force selection
-   modes, cycles current map interaction selection, then forwards panel event dispatch. */
+// GHIDRA_PROTO undefined HandleMapOrderPanelCommandTagsAndSelectionCycling()
 
 void __thiscall
 TNavyToolbarCluster::HandleMapOrderPanelCommandTagsAndSelectionCycling
-          (TNavyToolbarCluster *this,int arg1,int arg2,int arg3)
+          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
 
 {
-  uint uVar1;
-  int iVar2;
-  ushort uVar3;
-  int *piVar4;
-  void *pvVar5;
-  TCivToolbar *this_00;
+  int iVar1;
+  ushort uVar2;
+  int *piVar3;
+  void *pvVar4;
+  TCivToolbar *this;
+  uint uVar5;
   
-  if (arg1 == 0xc) {
-    if (*(int *)(arg2 + 0x1c) + 0x9e988dd0U < 3) {
-      piVar4 = (int *)(**(code **)((int)(this->base).pVtable + 0x58))();
-      piVar4 = (int *)(**(code **)(*piVar4 + 0x94))(0x6d61696e);
-      (**(code **)(*piVar4 + 0xc))();
-      pvVar5 = thunk_GetActiveMapOrderEntry(piVar4);
-      if (pvVar5 != (void *)0x0) {
-        thunk_SetTaskForceOwnerPointer();
+  if (param_2 == 0xc) {
+    uVar5 = *(int *)((int)param_3 + 0x1c) + 0x9e988dd0;
+    if (uVar5 < 3) {
+      piVar3 = (int *)(**(code **)(*(int *)param_1 + 0x58))();
+      piVar3 = (int *)(**(code **)(*piVar3 + 0x94))(0x6d61696e);
+      (**(code **)(*piVar3 + 0xc))();
+      pvVar4 = thunk_GetActiveMapOrderEntry(piVar3);
+      if (pvVar4 != (void *)0x0) {
+        SetTaskForceOwnerPointer(uVar5);
       }
     }
     goto LAB_00569662;
   }
-  if (arg1 != 10) goto LAB_00569662;
-  uVar1 = *(uint *)(arg2 + 0x1c);
-  if (uVar1 < 0x64666e65) {
-    if (uVar1 != 0x64666e64) {
-      if (uVar1 == 0x626f6d62) {
-        uVar3 = GetAsyncKeyState(0x11);
-        if ((uVar3 & 0x8000) == 0) {
-          iVar2 = *(int *)g_pUiRuntimeContext;
-          pvVar5 = thunk_GetActiveMapOrderEntry(*(void **)((int)g_pUiRuntimeContext + 0xf0));
-          (**(code **)(iVar2 + 0xf0))(pvVar5);
+  if (param_2 != 10) goto LAB_00569662;
+  uVar5 = *(uint *)((int)param_3 + 0x1c);
+  if (uVar5 < 0x64666e65) {
+    if (uVar5 != 0x64666e64) {
+      if (uVar5 == 0x626f6d62) {
+        uVar2 = GetAsyncKeyState(0x11);
+        if ((uVar2 & 0x8000) == 0) {
+          iVar1 = *g_pUiRuntimeContext;
+          pvVar4 = thunk_GetActiveMapOrderEntry((void *)g_pUiRuntimeContext[0x3c]);
+          (**(code **)(iVar1 + 0xf0))(pvVar4);
         }
         else {
-          thunk_RunMapOrderPageSelectionDialogAndApplyResult();
+          RunMapOrderPageSelectionDialogAndApplyResult();
         }
       }
       goto LAB_00569662;
     }
 LAB_00569626:
-    pvVar5 = thunk_GetActiveMapOrderEntry(*(void **)((int)g_pUiRuntimeContext + 0xf0));
-    if (pvVar5 != (void *)0x0) {
-      thunk_ApplyTaskForceSelectionModeForCurrentNationOrders();
+    pvVar4 = thunk_GetActiveMapOrderEntry((void *)g_pUiRuntimeContext[0x3c]);
+    if (pvVar4 != (void *)0x0) {
+      ApplyTaskForceSelectionModeForCurrentNationOrders(*(int *)((int)param_3 + 0x1c) == 0x646f6e65)
+      ;
     }
-    this_00 = *(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0);
+    this = (TCivToolbar *)g_pUiRuntimeContext[0x3c];
   }
   else {
-    if (uVar1 == 0x646f6e65) goto LAB_00569626;
-    if (uVar1 != 0x6e657874) goto LAB_00569662;
-    this_00 = *(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0);
+    if (uVar5 == 0x646f6e65) goto LAB_00569626;
+    if (uVar5 != 0x6e657874) goto LAB_00569662;
+    this = (TCivToolbar *)g_pUiRuntimeContext[0x3c];
   }
-  TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this_00);
+  TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this);
 LAB_00569662:
-  TMapEditCluster::thunk_DispatchPanelControlEvent(&this->base,arg1,(PanelEventPayload *)arg2,arg3);
+  TMapEditCluster::thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005696D0
 // GHIDRA_NAME TNavyToolbarCluster::OrphanVtableAssignStub_005696d0
-// GHIDRA_PROTO void __thiscall OrphanVtableAssignStub_005696d0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Orphan no-xref vtable-assignment stub from orphan triage lane.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OrphanVtableAssignStub_005696d0()
 
-/* Orphan no-xref vtable-assignment stub from orphan triage lane. */
-
-void __thiscall TNavyToolbarCluster::OrphanVtableAssignStub_005696d0(TNavyToolbarCluster *this)
+undefined1 TNavyToolbarCluster::OrphanVtableAssignStub_005696d0(void)
 
 {
-  return;
+  return 1;
 }
 

@@ -3,94 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TShipFractionCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004014AB
-// GHIDRA_NAME TShipFractionCluster::thunk_scalar_deleting_destructor_004014AB
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004014AB(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TShipFractionCluster::thunk_scalar_deleting_destructor_004014AB
-          (TShipFractionCluster *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405AA1
-// GHIDRA_NAME TShipFractionCluster::thunk_ConstructTShipFractionClusterBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTShipFractionClusterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeShipFractionClusterCapabilityControl. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for InitializeShipFractionClusterCapabilityControl. [FID:thunk_target_sync] */
-
-void __thiscall
-TShipFractionCluster::thunk_ConstructTShipFractionClusterBaseState(TShipFractionCluster *this)
-
-{
-  ConstructTShipFractionClusterBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406F73
-// GHIDRA_NAME TShipFractionCluster::thunk_GetTShipFractionClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipFractionClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTShipFractionClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTShipFractionClusterClassNamePointer */
-
-void * __cdecl TShipFractionCluster::thunk_GetTShipFractionClusterClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTShipFractionClusterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040820B
-// GHIDRA_NAME TShipFractionCluster::thunk_DestructTShipFractionClusterAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTShipFractionClusterAndMaybeFree(uint splitCommandId, void * payloadArg, int payloadArg2, int payloadArg3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_ArmyNavyHint_00568eb0 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Cluster_ArmyNavyHint_00568eb0 [FID:thunk_target_sync] */
-
-void __thiscall
-TShipFractionCluster::thunk_DestructTShipFractionClusterAndMaybeFree
-          (TShipFractionCluster *this,uint splitCommandId,void *payloadArg,int payloadArg2,
-          int payloadArg3)
-
-{
-  DestructTShipFractionClusterAndMaybeFree(this,splitCommandId,payloadArg,payloadArg2,payloadArg3);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00568CD0
 // GHIDRA_NAME TShipFractionCluster::CreateTShipFractionClusterInstance
-// GHIDRA_PROTO void * __cdecl CreateTShipFractionClusterInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TShipFractionCluster; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTShipFractionClusterInstance()
 
-/* [ClassQuad] create inferred for TShipFractionCluster; alloc factory pattern. */
-
-void * __cdecl TShipFractionCluster::CreateTShipFractionClusterInstance(void)
+undefined4 * TShipFractionCluster::CreateTShipFractionClusterInstance(void)
 
 {
-  TCluster *this;
-  TCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -100,124 +21,113 @@ void * __cdecl TShipFractionCluster::CreateTShipFractionClusterInstance(void)
   puStack_8 = &LAB_00635b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  pTVar1 = (TCluster *)0x0;
-  if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    this->field0_0x0 = &PTR_thunk_GetTShipFractionClusterClassNamePointer_00642f88;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
+    *puVar1 = &PTR_LAB_00642f88;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568D50
 // GHIDRA_NAME TShipFractionCluster::GetTShipFractionClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTShipFractionClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TShipFractionCluster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTShipFractionClusterClassNamePointer()
 
-/* Returns class descriptor pointer for TShipFractionCluster. */
-
-void * __cdecl TShipFractionCluster::GetTShipFractionClusterClassNamePointer(void)
+undefined ** TShipFractionCluster::GetTShipFractionClusterClassNamePointer(void)
 
 {
-  return &g_pClassDescTShipFractionCluster;
+  return &PTR_s_TShipFractionCluster_0065c8c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568D70
 // GHIDRA_NAME TShipFractionCluster::ConstructTShipFractionClusterBaseState
-// GHIDRA_PROTO void __thiscall ConstructTShipFractionClusterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initialize ship-fraction capability control and localized status text.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTShipFractionClusterBaseState()
 
-/* Initialize ship-fraction capability control and localized status text. */
-
-void __thiscall
-TShipFractionCluster::ConstructTShipFractionClusterBaseState(TShipFractionCluster *this)
+void __fastcall TShipFractionCluster::ConstructTShipFractionClusterBaseState(int *param_1)
 
 {
   int iVar1;
-  int *piVar2;
-  int extraout_EAX;
-  void *pvVar3;
+  short sVar2;
+  int *piVar3;
+  int iVar4;
   
-  thunk_NoOpUiLifecycleHook();
-  pvVar3 = this->pVtable;
-  piVar2 = (int *)(**(code **)((int)pvVar3 + 0x58))();
-  piVar2 = (int *)(**(code **)(*piVar2 + 0x94))();
-  iVar1 = *piVar2;
-  this->field131_0x8c = piVar2;
+  TView::thunk_NoOpUiLifecycleHook();
+  iVar4 = *param_1;
+  piVar3 = (int *)(**(code **)(iVar4 + 0x58))();
+  piVar3 = (int *)(**(code **)(*piVar3 + 0x94))();
+  iVar1 = *piVar3;
+  param_1[0x23] = (int)piVar3;
   (**(code **)(iVar1 + 0xc))();
-  piVar2 = (int *)(**(code **)((int)pvVar3 + 0x94))();
-  iVar1 = *piVar2;
+  piVar3 = (int *)(**(code **)(iVar4 + 0x94))();
+  iVar1 = *piVar3;
   (**(code **)(iVar1 + 0xc))();
-  thunk_GetEnabledIndustryCapabilitySlotByClass();
-  if ((short)extraout_EAX == 0) {
-    (**(code **)((int)pvVar3 + 0xa4))();
+  sVar2 = GetEnabledIndustryCapabilitySlotByClass();
+  if (sVar2 == 0) {
+    (**(code **)(iVar4 + 0xa4))();
     TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-              ((TToolBarCluster *)&stack0xffffffcc);
-    TToolBarCluster::InitializeAndRunMainRoutine();
+              (PTR_g_szEmptyString_0065c830);
+    InitializeAndRunMainRoutine();
   }
   else {
     (**(code **)(iVar1 + 0x1c8))();
-    (**(code **)((int)pvVar3 + 0xa4))();
-    thunk_LoadUiStringByGroupAndIndexToGlobalControlTagAndApply
-              (0x2716,extraout_EAX + 1,(int)this->field25_0x1c);
+    (**(code **)(iVar4 + 0xa4))();
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2716);
   }
-  pvVar3 = (void *)(*(code *)0x73686970)();
-  this->field132_0x90 = pvVar3;
-  *(undefined2 *)&this->field130_0x88 = 1;
-  TToolBarCluster::thunk_UpdateIndustryCapabilityControlStateAndValue((TToolBarCluster *)this,0,-1);
+  iVar4 = (*(code *)0x73686970)();
+  param_1[0x24] = iVar4;
+  *(undefined2 *)(param_1 + 0x22) = 1;
+  TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue(0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568EB0
 // GHIDRA_NAME TShipFractionCluster::DestructTShipFractionClusterAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTShipFractionClusterAndMaybeFree(uint splitCommandId, void * payloadArg, int payloadArg2, int payloadArg3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Enum] Handles EArrowSplitCommandId::LEFT(0x64) / RIGHT(0x65) for ship-fraction selector updates; forwards non-arrow commands.
-// GHIDRA_COMMENT_END
-
-/* [Enum] Handles EArrowSplitCommandId::LEFT(0x64) / RIGHT(0x65) for ship-fraction selector updates;
-   forwards non-arrow commands. */
+// GHIDRA_PROTO undefined DestructTShipFractionClusterAndMaybeFree()
 
 void __thiscall
 TShipFractionCluster::DestructTShipFractionClusterAndMaybeFree
-          (TShipFractionCluster *this,uint splitCommandId,void *payloadArg,int payloadArg2,
-          int payloadArg3)
+          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
 
 {
   int iVar1;
   int iVar2;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar3;
+  undefined4 uVar4;
   
-  if (splitCommandId == 100) {
-    if ((short)this->field133_0x94 < (short)this->field130_0x88) {
-      iVar2 = this->field133_0x94 + 1;
-      iVar1 = *(int *)this->field132_0x90;
-      this->field133_0x94 = (ushort)iVar2;
+  if (param_2 == 100) {
+    if ((short)*(ushort *)(param_1 + 0x94) < *(short *)(param_1 + 0x88)) {
+      iVar2 = *(ushort *)(param_1 + 0x94) + 1;
+      iVar1 = **(int **)(param_1 + 0x90);
+      *(short *)(param_1 + 0x94) = (short)iVar2;
       (**(code **)(iVar1 + 0x1c4))(iVar2,1);
+      uVar4 = 1;
+      uVar3 = extraout_var;
 LAB_00568f19:
-      thunk_SetTaskForceOrderSelectionByNationClassAndFlag();
-      NotifyTaskForceSelectionListenerByWord62(this->field131_0x8c);
+      SetTaskForceOrderSelectionByNationClassAndFlag
+                (CONCAT22(uVar3,*(short *)(param_1 + 0x1c) + -0x7330),uVar4);
+      NotifyTaskForceSelectionListenerByWord62();
       return;
     }
   }
-  else if (splitCommandId == 0x65) {
-    if (0 < (short)this->field133_0x94) {
-      iVar2 = this->field133_0x94 - 1;
-      iVar1 = *(int *)this->field132_0x90;
-      this->field133_0x94 = (ushort)iVar2;
+  else if (param_2 == 0x65) {
+    if (0 < (short)*(ushort *)(param_1 + 0x94)) {
+      iVar2 = *(ushort *)(param_1 + 0x94) - 1;
+      iVar1 = **(int **)(param_1 + 0x90);
+      *(short *)(param_1 + 0x94) = (short)iVar2;
       (**(code **)(iVar1 + 0x1c4))(iVar2,1);
+      uVar4 = 0;
+      uVar3 = extraout_var_00;
       goto LAB_00568f19;
     }
   }
   else {
-    TMapEditCluster::thunk_DispatchPanelControlEvent
-              ((TMapEditCluster *)this,splitCommandId,payloadArg,payloadArg2);
+    TMapEditCluster::thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
   }
   return;
 }

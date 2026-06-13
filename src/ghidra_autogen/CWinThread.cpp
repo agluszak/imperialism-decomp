@@ -5,97 +5,84 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0062246C
 // GHIDRA_NAME CWinThread::CWinApp
-// GHIDRA_PROTO void * __thiscall CWinApp(byte * threadName)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructs thread object, binds to module/thread TLS state, records current thread handle/id. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CWinApp()
 
-/* Constructs thread object, binds to module/thread TLS state, records current thread handle/id.
-   [FID:FID_single_match_phase1_nodebug] */
-
-void * __thiscall CWinThread::CWinApp(CWinThread *this,byte *threadName)
+undefined4 * CWinThread::CWinApp(void)
 
 {
   undefined4 uVar1;
-  byte *pbVar2;
-  void *pvVar3;
-  int iVar4;
-  HANDLE pvVar5;
-  DWORD DVar6;
-  CWinThread *this_00;
+  int iVar2;
+  int iVar3;
+  HANDLE pvVar4;
+  DWORD DVar5;
+  undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  *(CWinThread **)(unaff_EBP + -0x10) = this_00;
-  CWinThread(this_00);
-  *(undefined ***)this_00 = &PTR_LAB_0066fdfc;
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  CWinThread();
+  *extraout_ECX = &PTR_LAB_0066fdfc;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (*(int *)(unaff_EBP + 8) == 0) {
-    *(undefined4 *)(this_00 + 0x78) = 0;
+    extraout_ECX[0x1e] = 0;
   }
   else {
-    pbVar2 = AllocateAnsiStringCopyWithGlobalNewMode(*(byte **)(unaff_EBP + 8));
-    *(byte **)(this_00 + 0x78) = pbVar2;
+    uVar1 = AllocateAnsiStringCopyWithGlobalNewMode(*(undefined4 *)(unaff_EBP + 8));
+    extraout_ECX[0x1e] = uVar1;
   }
-  pvVar3 = AfxGetModuleState();
-  iVar4 = TMacViewMgr::GetData((TMacViewMgr *)((int)pvVar3 + 0x1070));
-  *(CWinThread **)(iVar4 + 4) = this_00;
-  pvVar5 = GetCurrentThread();
-  *(HANDLE *)(this_00 + 0x28) = pvVar5;
-  DVar6 = GetCurrentThreadId();
+  iVar2 = AfxGetModuleState();
+  iVar3 = TMacViewMgr::GetData(CreateObject);
+  *(undefined4 **)(iVar3 + 4) = extraout_ECX;
+  pvVar4 = GetCurrentThread();
+  extraout_ECX[10] = pvVar4;
+  DVar5 = GetCurrentThreadId();
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
-  *(DWORD *)(this_00 + 0x2c) = DVar6;
-  *(CWinThread **)((int)pvVar3 + 4) = this_00;
-  *(undefined4 *)(this_00 + 0x68) = 0;
-  *(undefined4 *)(this_00 + 0x8c) = 0;
-  *(undefined4 *)(this_00 + 0x90) = 0;
-  *(undefined4 *)(this_00 + 0x7c) = 0;
-  *(undefined4 *)(this_00 + 0x88) = 0;
-  *(undefined4 *)(this_00 + 0xa8) = 0;
-  *(undefined4 *)(this_00 + 0x80) = 0;
-  *(undefined2 *)(this_00 + 0xb2) = 0;
-  *(undefined2 *)(this_00 + 0xb0) = 0;
-  *(undefined4 *)(this_00 + 0x70) = 0;
-  *(undefined4 *)(this_00 + 0xac) = 0;
-  *(undefined4 *)(this_00 + 0xa0) = 0;
-  *(undefined4 *)(this_00 + 0xa4) = 0;
-  *(undefined4 *)(this_00 + 0x94) = 0;
-  *(undefined4 *)(this_00 + 0x98) = 0;
-  *(undefined4 *)(this_00 + 0xb4) = 0;
-  *(undefined4 *)(this_00 + 0xbc) = 0;
-  *(undefined4 *)(this_00 + 0x84) = 0;
-  *(undefined4 *)(this_00 + 0xb8) = 0x200;
+  extraout_ECX[0xb] = DVar5;
+  *(undefined4 **)(iVar2 + 4) = extraout_ECX;
+  extraout_ECX[0x1a] = 0;
+  extraout_ECX[0x23] = 0;
+  extraout_ECX[0x24] = 0;
+  extraout_ECX[0x1f] = 0;
+  extraout_ECX[0x22] = 0;
+  extraout_ECX[0x2a] = 0;
+  extraout_ECX[0x20] = 0;
+  *(undefined2 *)((int)extraout_ECX + 0xb2) = 0;
+  *(undefined2 *)(extraout_ECX + 0x2c) = 0;
+  extraout_ECX[0x1c] = 0;
+  extraout_ECX[0x2b] = 0;
+  extraout_ECX[0x28] = 0;
+  extraout_ECX[0x29] = 0;
+  extraout_ECX[0x25] = 0;
+  extraout_ECX[0x26] = 0;
+  extraout_ECX[0x2d] = 0;
+  extraout_ECX[0x2f] = 0;
+  extraout_ECX[0x21] = 0;
+  extraout_ECX[0x2e] = 0x200;
   *unaff_FS_OFFSET = uVar1;
-  return this_00;
+  return extraout_ECX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622B58
 // GHIDRA_NAME CWinThread::CWinThread
-// GHIDRA_PROTO void * __thiscall CWinThread(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Wrapper constructor that installs vtable 0x006704cc and delegates to CommonConstruct. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CWinThread()
 
-/* Wrapper constructor that installs vtable 0x006704cc and delegates to CommonConstruct.
-   [FID:FID_single_match_phase1_nodebug] */
-
-void * __thiscall CWinThread::CWinThread(CWinThread *this)
+undefined4 * CWinThread::CWinThread(void)
 
 {
-  undefined4 *pThis;
+  undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = pThis;
-  CCmdTarget(pThis);
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  CCmdTarget();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  *pThis = &PTR_LAB_006704cc;
-  pThis[0x13] = 0;
-  pThis[0x14] = 0;
-  CommonConstruct();
+  *extraout_ECX = &PTR_LAB_006704cc;
+  extraout_ECX[0x13] = 0;
+  extraout_ECX[0x14] = 0;
+  FUN_00622b95();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return pThis;
+  return extraout_ECX;
 }
 

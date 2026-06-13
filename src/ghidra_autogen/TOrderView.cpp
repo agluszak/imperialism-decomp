@@ -3,105 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TOrderView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401E06
-// GHIDRA_NAME TOrderView::thunk_RefreshOrderViewSupplyAndUseControlValues_At00401e06
-// GHIDRA_PROTO void __thiscall thunk_RefreshOrderViewSupplyAndUseControlValues_At00401e06(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshOrderViewSupplyAndUseControlValues
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshOrderViewSupplyAndUseControlValues */
-
-void __thiscall
-TOrderView::thunk_RefreshOrderViewSupplyAndUseControlValues_At00401e06(TOrderView *this)
-
-{
-  TControl::RefreshOrderViewSupplyAndUseControlValues((TControl *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401E38
-// GHIDRA_NAME TOrderView::thunk_PopulateDialogControlsFromSelectedProductionEntry_At00401e38
-// GHIDRA_PROTO void __thiscall thunk_PopulateDialogControlsFromSelectedProductionEntry_At00401e38(void * ownerContext, int selectionIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateDialogControlsFromSelectedProductionEntry
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to PopulateDialogControlsFromSelectedProductionEntry */
-
-void __thiscall
-TOrderView::thunk_PopulateDialogControlsFromSelectedProductionEntry_At00401e38
-          (TOrderView *this,void *ownerContext,int selectionIndex)
-
-{
-  TControl::PopulateDialogControlsFromSelectedProductionEntry
-            ((TControl *)this,ownerContext,selectionIndex);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004054D4
-// GHIDRA_NAME TOrderView::thunk_GetTOrderViewClassNamePointer_At004054d4
-// GHIDRA_PROTO void * __cdecl thunk_GetTOrderViewClassNamePointer_At004054d4(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTOrderViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTOrderViewClassNamePointer */
-
-void * __cdecl TOrderView::thunk_GetTOrderViewClassNamePointer_At004054d4(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTOrderViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004073CE
-// GHIDRA_NAME TOrderView::thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240 */
-
-void __cdecl
-TOrderView::thunk_WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240_At004073ce
-          (void)
-
-{
-  WrapperFor_thunk_ForwardEngineerDialogCommandToChildSlot40_At00507240();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004078AB
-// GHIDRA_NAME TOrderView::thunk_DestructTOrderViewAndMaybeFree_At004078ab
-// GHIDRA_PROTO void * __thiscall thunk_DestructTOrderViewAndMaybeFree_At004078ab(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTOrderViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTOrderViewAndMaybeFree */
-
-void * __thiscall
-TOrderView::thunk_DestructTOrderViewAndMaybeFree_At004078ab(TOrderView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTOrderViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005069D0
 // GHIDRA_NAME TOrderView::CreateTOrderViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTOrderViewInstance(void)
+// GHIDRA_PROTO undefined CreateTOrderViewInstance()
 
-void * __cdecl TOrderView::CreateTOrderViewInstance(void)
+undefined4 * TOrderView::CreateTOrderViewInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -111,58 +20,53 @@ void * __cdecl TOrderView::CreateTOrderViewInstance(void)
   puStack_8 = &LAB_006337aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTOrderView;
-    this[1].pVtable = (void *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00657eb0;
+    puVar1[0x18] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506A60
 // GHIDRA_NAME TOrderView::GetTOrderViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTOrderViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TOrderView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTOrderViewClassNamePointer()
 
-/* Returns class descriptor pointer for TOrderView. */
-
-void * __cdecl TOrderView::GetTOrderViewClassNamePointer(void)
+undefined ** TOrderView::GetTOrderViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTOrderView;
+  return &PTR_s_TOrderView_006579a0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506A80
 // GHIDRA_NAME TOrderView::ConstructTOrderViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTOrderViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTOrderViewBaseState()
 
-void * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *this)
+undefined4 * __fastcall TOrderView::ConstructTOrderViewBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTOrderView;
-  this->field60 = (void *)0x0;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_00657eb0;
+  param_1[0x18] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506AB0
 // GHIDRA_NAME TOrderView::DestructTOrderViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTOrderViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTOrderViewAndMaybeFree()
 
-void * __thiscall TOrderView::DestructTOrderViewAndMaybeFree(TOrderView *this,byte freeSelfFlag)
+undefined4 __thiscall TOrderView::DestructTOrderViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

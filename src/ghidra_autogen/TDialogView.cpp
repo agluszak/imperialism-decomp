@@ -5,48 +5,39 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D790
 // GHIDRA_NAME TDialogView::GetTDialogViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDialogViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDialogView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDialogViewClassNamePointer()
 
-/* Returns class descriptor pointer for TDialogView. */
-
-void * __cdecl TDialogView::GetTDialogViewClassNamePointer(void)
+undefined ** TDialogView::GetTDialogViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTDialogView;
+  return &PTR_s_TDialogView_0064bda8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D880
 // GHIDRA_NAME TDialogView::ConstructTDialogViewBaseState
-// GHIDRA_PROTO void __stdcall ConstructTDialogViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_SetGlobalUiInvalidationFlagAndReturnPrevious; instructions=7, call_insns=2, internal_calls=2, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_SetGlobalUiInvalidationFlagAndReturnPrevious;
-   instructions=7, call_insns=2, internal_calls=2, unique_internal=1 */
+// GHIDRA_PROTO undefined ConstructTDialogViewBaseState()
 
 void TDialogView::ConstructTDialogViewBaseState(void)
 
 {
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
-  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D8B0
 // GHIDRA_NAME TDialogView::DestructTDialogViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDialogViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDialogViewAndMaybeFree()
 
-void * __thiscall TDialogView::DestructTDialogViewAndMaybeFree(TDialogView *this,byte freeSelfFlag)
+undefined4 __thiscall TDialogView::DestructTDialogViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

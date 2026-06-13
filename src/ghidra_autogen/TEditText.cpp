@@ -3,114 +3,16 @@
 // Program: Imperialism.exe
 // Bucket: TEditText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004071C6
-// GHIDRA_NAME TEditText::TEditText_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TEditText_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTEditTextClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTEditTextClassNamePointer */
-
-void * __cdecl TEditText::TEditText_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTEditTextClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407B35
-// GHIDRA_NAME TEditText::TEditText_thunk_scalar_deleting_destructor
-// GHIDRA_PROTO void * __thiscall TEditText_thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TEditText::TEditText_thunk_scalar_deleting_destructor(TEditText *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040913D
-// GHIDRA_NAME TEditText::thunk_ConstructUiNumericTextEntryBase
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiNumericTextEntryBase(void)
-
-void __thiscall TEditText::thunk_ConstructUiNumericTextEntryBase(TEditText *this)
-
-{
-  void *pvVar1;
-  int *piVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f163;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_ConstructTViewBaseState((TView *)this);
-  (this->base).field1_0x60 = 1;
-  (this->base).field2_0x64 = 0;
-  (this->base).field6_0x68 = 0;
-  (this->base).field7_0x6c = 0;
-  (this->base).field8_0x70 = 0;
-  (this->base).field9_0x74 = 0;
-  (this->base).field10_0x78 = g_nUiResourceEntryDefaultParam0;
-  (this->base).field11_0x7c = g_nUiResourceEntryDefaultParam1;
-  (this->base).field12_0x80 = g_wUiResourceEntryDefaultParam2;
-  uStack_4 = 0;
-  (this->base).field84 = (int *)0x0;
-  (this->base).field16_0x88 = (void *)0xffffffff;
-  (this->base).field17_0x8c = 0;
-  (this->base).field18_0x90 = 0;
-  (this->base).base.pVtable = &g_vtblTStaticText;
-  (this->base).field1_0x60 = 0xd;
-  pvVar1 = AllocateWithFallbackHandler();
-  uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  if (pvVar1 == (void *)0x0) {
-    piVar2 = (int *)0x0;
-  }
-  else {
-    piVar2 = InitializeSharedStringRefFromEmpty();
-  }
-  (this->base).field84 = piVar2;
-  this->dwField_94 = (int *)0x0;
-  this->dwField_98 = (int *)0x0;
-  this->field5_0x9c = 0xff;
-  (this->base).base.pVtable = &g_vtblTEditText;
-  (this->base).field1_0x60 = 6;
-  (this->base).base.renderEnableFlag4d = 0;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00490210
 // GHIDRA_NAME TEditText::CreateTEditTextInstance
-// GHIDRA_PROTO void * __cdecl CreateTEditTextInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TEditText; alloc factory pattern.
-// GHIDRA_COMMENT [InheritanceEvidence] TEditText derives from TStaticText (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTEditTextInstance()
 
-/* [ClassQuad] create inferred for TEditText; alloc factory pattern.
-   [InheritanceEvidence] TEditText derives from TStaticText (decomp_vtbl_seq_ctor, medium) */
-
-void * __cdecl TEditText::CreateTEditTextInstance(void)
+undefined4 * TEditText::CreateTEditTextInstance(void)
 
 {
-  TView *this;
-  void *pvVar1;
-  int *piVar2;
+  undefined4 *puVar1;
+  int iVar2;
+  undefined4 uVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -120,80 +22,73 @@ void * __cdecl TEditText::CreateTEditTextInstance(void)
   puStack_8 = &LAB_0062f13d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this[1].field1_0x4 = 0;
-    this[1].pVtable = (void *)0x1;
-    this[1].field3_0x8 = 0;
-    this[1].dialogValueDwordC = 0;
-    this[1].dialogValueDword10 = 0;
-    this[1].viewStateDword14 = 0;
-    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
-    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)&this[1].pChildMapView20 = g_wUiResourceEntryDefaultParam2;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *(undefined1 *)(puVar1 + 0x19) = 0;
+    puVar1[0x18] = 1;
+    puVar1[0x1a] = 0;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
     local_4._0_1_ = 1;
-    this[1].field10_0x24 = 0;
-    this[1].field11_0x28 = -1;
-    this[1].cachedPosX2c = 0;
-    *(undefined2 *)&this[1].cachedPosY30 = 0;
-    this->pVtable = &g_vtblTStaticText;
-    this[1].pVtable = (void *)0xd;
-    pvVar1 = AllocateWithFallbackHandler();
+    puVar1[0x21] = 0;
+    puVar1[0x22] = 0xffffffff;
+    puVar1[0x23] = 0;
+    *(undefined2 *)(puVar1 + 0x24) = 0;
+    *puVar1 = &TStaticText::_vftable_;
+    puVar1[0x18] = 0xd;
+    iVar2 = AllocateWithFallbackHandler(4);
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (pvVar1 == (void *)0x0) {
-      piVar2 = (int *)0x0;
+    if (iVar2 == 0) {
+      uVar3 = 0;
     }
     else {
-      piVar2 = InitializeSharedStringRefFromEmpty();
+      uVar3 = InitializeSharedStringRefFromEmpty();
     }
-    this[1].field10_0x24 = (int)piVar2;
-    this[1].field14_0x34 = 0;
-    this[1].field15_0x38 = 0;
-    *(undefined2 *)&this[1].viewFlags3c = 0xff;
-    this->pVtable = &g_vtblTEditText;
-    this[1].pVtable = (void *)0x6;
-    this->renderEnableFlag4d = 0;
+    puVar1[0x21] = uVar3;
+    puVar1[0x25] = 0;
+    puVar1[0x26] = 0;
+    *(undefined2 *)(puVar1 + 0x27) = 0xff;
+    *puVar1 = &PTR_LAB_0064ad90;
+    puVar1[0x18] = 6;
+    *(undefined1 *)((int)puVar1 + 0x4d) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00490380
 // GHIDRA_NAME TEditText::GetTEditTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTEditTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TEditText.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTEditTextClassNamePointer()
 
-/* Returns class descriptor pointer for TEditText. */
-
-void * __cdecl TEditText::GetTEditTextClassNamePointer(void)
+undefined ** TEditText::GetTEditTextClassNamePointer(void)
 
 {
-  return &g_pClassDescTEditText;
+  return &PTR_s_TEditText_00649690;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004903A0
 // GHIDRA_NAME TEditText::ConstructUiNumericTextEntryBase
-// GHIDRA_PROTO void __thiscall ConstructUiNumericTextEntryBase(void)
+// GHIDRA_PROTO undefined ConstructUiNumericTextEntryBase()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for numeric text widgets. Initializes shared style/state fields and allocates an auxiliary 4-byte state block before derived numeric vtable install.
-// GHIDRA_COMMENT [InheritanceEvidence] TEditText derives from TStaticText (decomp_vtbl_seq_ctor, medium)
 // GHIDRA_COMMENT_END
 
 /* Base constructor for numeric text widgets. Initializes shared style/state fields and allocates an
-   auxiliary 4-byte state block before derived numeric vtable install.
-   [InheritanceEvidence] TEditText derives from TStaticText (decomp_vtbl_seq_ctor, medium) */
+   auxiliary 4-byte state block before derived numeric vtable install. */
 
-void __thiscall TEditText::ConstructUiNumericTextEntryBase(TEditText *this)
+undefined4 * __fastcall TEditText::ConstructUiNumericTextEntryBase(undefined4 *param_1)
 
 {
-  void *pvVar1;
-  int *piVar2;
+  int iVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -203,39 +98,39 @@ void __thiscall TEditText::ConstructUiNumericTextEntryBase(TEditText *this)
   puStack_8 = &LAB_0062f163;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructTViewBaseState((TView *)this);
-  (this->base).field1_0x60 = 1;
-  (this->base).field2_0x64 = 0;
-  (this->base).field6_0x68 = 0;
-  (this->base).field7_0x6c = 0;
-  (this->base).field8_0x70 = 0;
-  (this->base).field9_0x74 = 0;
-  (this->base).field10_0x78 = g_nUiResourceEntryDefaultParam0;
-  (this->base).field11_0x7c = g_nUiResourceEntryDefaultParam1;
-  (this->base).field12_0x80 = g_wUiResourceEntryDefaultParam2;
+  TView::thunk_ConstructTViewBaseState();
+  param_1[0x18] = 1;
+  *(undefined1 *)(param_1 + 0x19) = 0;
+  param_1[0x1a] = 0;
+  param_1[0x1b] = 0;
+  param_1[0x1c] = 0;
+  param_1[0x1d] = 0;
+  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
+  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
+  *(ushort *)(param_1 + 0x20) = g_wUiResourceEntryDefaultParam2;
   local_4 = 0;
-  (this->base).field84 = (int *)0x0;
-  (this->base).field16_0x88 = (void *)0xffffffff;
-  (this->base).field17_0x8c = 0;
-  (this->base).field18_0x90 = 0;
-  (this->base).base.pVtable = &g_vtblTStaticText;
-  (this->base).field1_0x60 = 0xd;
-  pvVar1 = AllocateWithFallbackHandler();
+  param_1[0x21] = 0;
+  param_1[0x22] = 0xffffffff;
+  param_1[0x23] = 0;
+  *(undefined2 *)(param_1 + 0x24) = 0;
+  *param_1 = &TStaticText::_vftable_;
+  param_1[0x18] = 0xd;
+  iVar1 = AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,1);
-  if (pvVar1 == (void *)0x0) {
-    piVar2 = (int *)0x0;
+  if (iVar1 == 0) {
+    uVar2 = 0;
   }
   else {
-    piVar2 = InitializeSharedStringRefFromEmpty();
+    uVar2 = InitializeSharedStringRefFromEmpty();
   }
-  (this->base).field84 = piVar2;
-  this->dwField_94 = (int *)0x0;
-  this->dwField_98 = (int *)0x0;
-  this->field5_0x9c = 0xff;
-  (this->base).base.pVtable = &g_vtblTEditText;
-  (this->base).field1_0x60 = 6;
-  (this->base).base.renderEnableFlag4d = 0;
+  param_1[0x21] = uVar2;
+  param_1[0x25] = 0;
+  param_1[0x26] = 0;
+  *(undefined2 *)(param_1 + 0x27) = 0xff;
+  *param_1 = &PTR_LAB_0064ad90;
+  param_1[0x18] = 6;
+  *(undefined1 *)((int)param_1 + 0x4d) = 0;
   *unaff_FS_OFFSET = local_c;
-  return;
+  return param_1;
 }
 

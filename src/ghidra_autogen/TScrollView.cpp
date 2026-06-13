@@ -3,73 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TScrollView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004034D1
-// GHIDRA_NAME TScrollView::thunk_DestructTScrollViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTScrollViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeScrollViewAndAttachScrollBarChild. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to InitializeScrollViewAndAttachScrollBarChild. [FID:thunk_target_sync] */
-
-void __thiscall TScrollView::thunk_DestructTScrollViewAndMaybeFree(TScrollView *this)
-
-{
-  DestructTScrollViewAndMaybeFree(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407E6E
-// GHIDRA_NAME TScrollView::thunk_scalar_deleting_destructor_00407E6E
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407E6E(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TScrollView::thunk_scalar_deleting_destructor_00407E6E(TScrollView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408B75
-// GHIDRA_NAME TScrollView::thunk_GetTScrollViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTScrollViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTScrollViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTScrollViewClassNamePointer */
-
-void * __cdecl TScrollView::thunk_GetTScrollViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTScrollViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00573C20
 // GHIDRA_NAME TScrollView::CreateTScrollViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTScrollViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TScrollView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTScrollViewInstance()
 
-/* [ClassQuad] create inferred for TScrollView; alloc factory pattern. */
-
-void * __cdecl TScrollView::CreateTScrollViewInstance(void)
+undefined4 * TScrollView::CreateTScrollViewInstance(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -79,66 +21,51 @@ void * __cdecl TScrollView::CreateTScrollViewInstance(void)
   puStack_8 = &LAB_0063663a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &PTR_thunk_GetTScrollViewClassNamePointer_006417e0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_006417e0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573C90
 // GHIDRA_NAME TScrollView::GetTScrollViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTScrollViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TScrollView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTScrollViewClassNamePointer()
 
-/* Returns class descriptor pointer for TScrollView. */
-
-void * __cdecl TScrollView::GetTScrollViewClassNamePointer(void)
+undefined ** TScrollView::GetTScrollViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTScrollView;
+  return &PTR_s_TScrollView_00661448;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573CB0
 // GHIDRA_NAME TScrollView::ConstructTScrollViewBaseState
-// GHIDRA_PROTO void __thiscall ConstructTScrollViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_InitializeUiResourceEntryFrameAndParent; instructions=12, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTScrollViewBaseState()
 
-/* [WrapperShape] small wrapper around thunk_InitializeUiResourceEntryFrameAndParent;
-   instructions=12, call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall TScrollView::ConstructTScrollViewBaseState(TScrollView *this)
+void TScrollView::ConstructTScrollViewBaseState
+               (undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  thunk_InitializeUiResourceEntryFrameAndParent();
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_1,param_2,param_3,5,5,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573CE0
 // GHIDRA_NAME TScrollView::DestructTScrollViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTScrollViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes scroll view state and creates/attaches embedded scroll-bar child control.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTScrollViewAndMaybeFree()
 
-/* Initializes scroll view state and creates/attaches embedded scroll-bar child control. */
-
-void __thiscall TScrollView::DestructTScrollViewAndMaybeFree(TScrollView *this)
+void __thiscall TScrollView::DestructTScrollViewAndMaybeFree(int *param_1,undefined4 param_2)
 
 {
-  void *pvVar1;
-  TControl *this_00;
+  int iVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_10;
+  int aiStack_18 [3];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -147,23 +74,25 @@ void __thiscall TScrollView::DestructTScrollViewAndMaybeFree(TScrollView *this)
   puStack_8 = &LAB_0063665a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_NoOpUiLifecycleHook();
-  pvVar1 = (void *)(**(code **)((int)this->pVtable + 0x94))(0x7363726f);
-  this->field63_0x60 = pvVar1;
-  this_00 = AllocateWithFallbackHandler();
+  TView::thunk_NoOpUiLifecycleHook(param_2);
+  iVar1 = (**(code **)(*param_1 + 0x94))(0x7363726f);
+  param_1[0x18] = iVar1;
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   puStack_8 = (undefined1 *)0x0;
-  if (this_00 == (TControl *)0x0) {
-    this_00 = (TControl *)0x0;
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
-    (this_00->base).pVtable = &PTR_thunk_GetTScrollBarViewClassNamePointer_006614c8;
-    this_00->field90 = (byte *)0x0;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar2 = &PTR_LAB_006614c8;
+    puVar2[0x24] = 0;
   }
+  aiStack_18[0] = param_1[0xd] + -0x19;
   puStack_8 = (undefined1 *)0xffffffff;
-  TScrollBarView::thunk_ConstructTScrollBarViewBaseState((TScrollBarView *)this_00);
-  this->field64_0x64 = this_00;
-  *unaff_FS_OFFSET = uStack_10;
+  aiStack_18[1] = 0;
+  TScrollBarView::ConstructTScrollBarViewBaseState(param_1,aiStack_18,&stack0xffffffe0);
+  param_1[0x19] = (int)puVar2;
+  *unaff_FS_OFFSET = aiStack_18[2];
   return;
 }
 

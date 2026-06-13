@@ -3,58 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TGameScorePicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004023BF
-// GHIDRA_NAME TGameScorePicture::thunk_GetTGameScorePictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGameScorePictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGameScorePictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGameScorePictureClassNamePointer */
-
-void * __cdecl TGameScorePicture::thunk_GetTGameScorePictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTGameScorePictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040786A
-// GHIDRA_NAME TGameScorePicture::thunk_scalar_deleting_destructor_0040786A
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040786A(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TGameScorePicture::thunk_scalar_deleting_destructor_0040786A
-          (TGameScorePicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B000
 // GHIDRA_NAME TGameScorePicture::CreateTGameScorePictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTGameScorePictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TGameScorePicture; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTGameScorePictureInstance()
 
-/* [ClassQuad] create inferred for TGameScorePicture; alloc factory pattern. */
-
-void * __cdecl TGameScorePicture::CreateTGameScorePictureInstance(void)
+undefined4 * TGameScorePicture::CreateTGameScorePictureInstance(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -64,30 +21,25 @@ void * __cdecl TGameScorePicture::CreateTGameScorePictureInstance(void)
   puStack_8 = &LAB_00636c1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    this->field0_0x0 = &PTR_thunk_GetTGameScorePictureClassNamePointer_00644970;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    *puVar1 = &PTR_LAB_00644970;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B080
 // GHIDRA_NAME TGameScorePicture::GetTGameScorePictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTGameScorePictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TGameScorePicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTGameScorePictureClassNamePointer()
 
-/* Returns class descriptor pointer for TGameScorePicture. */
-
-void * __cdecl TGameScorePicture::GetTGameScorePictureClassNamePointer(void)
+undefined ** TGameScorePicture::GetTGameScorePictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTGameScorePicture;
+  return &PTR_s_TGameScorePicture_00661a70;
 }
 

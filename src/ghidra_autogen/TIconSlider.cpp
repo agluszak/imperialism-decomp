@@ -3,173 +3,28 @@
 // Program: Imperialism.exe
 // Bucket: TIconSlider.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040333C
-// GHIDRA_NAME TIconSlider::TIconSlider_VtblSlot117
-// GHIDRA_PROTO void __cdecl TIconSlider_VtblSlot117(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanTiny_SetWordEcxOffset_96_00506590
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanTiny_SetWordEcxOffset_96_00506590 */
-
-void __cdecl TIconSlider::TIconSlider_VtblSlot117(void)
-
-{
-  OrphanTiny_SetWordEcxOffset_96_00506590();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004043B8
-// GHIDRA_NAME TIconSlider::TIconSlider_VtblSlot070
-// GHIDRA_PROTO void __thiscall TIconSlider_VtblSlot070(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-/* Single-JMP thunk to WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0 */
-
-void __thiscall
-TIconSlider::TIconSlider_VtblSlot070(TIconSlider *this,int arg1,int arg2,int arg3,int arg4)
-
-{
-  WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0(this,arg1,arg2,arg3,arg4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040490D
-// GHIDRA_NAME TIconSlider::TIconSlider_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TIconSlider_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTIconSliderAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-/* Single-JMP thunk to DestructTIconSliderAndMaybeFree */
-
-void * __thiscall TIconSlider::TIconSlider_VtblSlot001(TIconSlider *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTIconSliderAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040621C
-// GHIDRA_NAME TIconSlider::TIconSlider_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TIconSlider_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTIconSliderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTIconSliderClassNamePointer */
-
-void * __cdecl TIconSlider::TIconSlider_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTIconSliderClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406F0A
-// GHIDRA_NAME TIconSlider::TIconSlider_VtblSlot120
-// GHIDRA_PROTO void __cdecl TIconSlider_VtblSlot120(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to
-   Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0 */
-
-void __cdecl TIconSlider::TIconSlider_VtblSlot120(void)
-
-{
-  Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407A3B
-// GHIDRA_NAME TIconSlider::TIconSlider_VtblSlot068
-// GHIDRA_PROTO void __thiscall TIconSlider_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_TIconBar_VtblSlot68_At00506690
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-/* WARNING: Struct "TIconBar": ignoring multiple overlapping fields */
-/* Single-JMP thunk to WrapperFor_TIconBar_VtblSlot68_At00506690 */
-
-void __thiscall TIconSlider::TIconSlider_VtblSlot068(TIconSlider *this)
-
-{
-  TIconBar::WrapperFor_TIconBar_VtblSlot68_At00506690((TIconBar *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004083E1
-// GHIDRA_NAME TIconSlider::TIconSlider_VtblSlot104
-// GHIDRA_PROTO void __cdecl TIconSlider_VtblSlot104(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateIconBarOffsetAndRecomputeClipRegion
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdateIconBarOffsetAndRecomputeClipRegion */
-
-void __cdecl TIconSlider::TIconSlider_VtblSlot104(void)
-
-{
-  UpdateIconBarOffsetAndRecomputeClipRegion();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408BE3
-// GHIDRA_NAME TIconSlider::TIconSlider_VtblSlot055
-// GHIDRA_PROTO void __cdecl TIconSlider_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480 */
-
-void __cdecl TIconSlider::TIconSlider_VtblSlot055(void)
-
-{
-  Helper_Uses_WrapperFor_AllocateWithFallbackHandler_At004a1130_At00506480();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0047E930
 // GHIDRA_NAME TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchHandleMapLookupWithReadPtrProbe; instructions=12, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-/* [WrapperShape] small wrapper around thunk_DispatchHandleMapLookupWithReadPtrProbe;
-   instructions=12, call_insns=2, internal_calls=1, unique_internal=1 */
+// GHIDRA_PROTO undefined WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930()
 
 void __thiscall
 TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-          (TIconSlider *this,int arg1,int arg2)
+          (undefined4 param_1,int param_2,undefined4 param_3)
 
 {
-  thunk_DispatchHandleMapLookupWithReadPtrProbe();
-  RealizePalette(*(HDC *)(arg1 + 4));
+  thunk_DispatchHandleMapLookupWithReadPtrProbe(param_1,param_3);
+  RealizePalette(*(HDC *)(param_2 + 4));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005062D0
 // GHIDRA_NAME TIconSlider::CreateTIconSliderInstance
-// GHIDRA_PROTO void * __cdecl CreateTIconSliderInstance(void)
+// GHIDRA_PROTO undefined CreateTIconSliderInstance()
 
-void * __cdecl TIconSlider::CreateTIconSliderInstance(void)
+undefined4 * TIconSlider::CreateTIconSliderInstance(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -179,115 +34,96 @@ void * __cdecl TIconSlider::CreateTIconSliderInstance(void)
   puStack_8 = &LAB_0063378a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xbc);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)&this[1].field_0x13 = 0;
-    this->field0_0x0 = &g_vtblTIconSlider;
-    *(undefined2 *)&this[1].field_0xb = 0;
-    *(undefined4 *)&this[1].field_0xf = 0;
-    *(undefined4 *)&this[1].field_0x17 = 0;
-    *(undefined2 *)&this[1].field_0x23 = 0;
-    *(undefined2 *)&this[1].field_0x25 = 0;
-    *(undefined4 *)&this[1].field_0x1b = 0;
-    *(undefined4 *)&this[1].field_0x1f = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    puVar1[0x29] = 0;
+    *puVar1 = &PTR_LAB_00657c60;
+    *(undefined2 *)(puVar1 + 0x27) = 0;
+    puVar1[0x28] = 0;
+    puVar1[0x2a] = 0;
+    *(undefined2 *)(puVar1 + 0x2d) = 0;
+    *(undefined2 *)((int)puVar1 + 0xb6) = 0;
+    puVar1[0x2b] = 0;
+    puVar1[0x2c] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005063A0
 // GHIDRA_NAME TIconSlider::GetTIconSliderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTIconSliderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TIconSlider.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTIconSliderClassNamePointer()
 
-/* Returns class descriptor pointer for TIconSlider. */
-
-void * __cdecl TIconSlider::GetTIconSliderClassNamePointer(void)
+undefined ** TIconSlider::GetTIconSliderClassNamePointer(void)
 
 {
-  return &g_pClassDescTIconSlider;
+  return &PTR_s_TIconSlider_00657988;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005063C0
 // GHIDRA_NAME TIconSlider::ConstructTIconSliderBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTIconSliderBaseState(void)
+// GHIDRA_PROTO undefined ConstructTIconSliderBaseState()
 
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-
-void * __thiscall TIconSlider::ConstructTIconSliderBaseState(TIconSlider *this)
+undefined4 * __fastcall TIconSlider::ConstructTIconSliderBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  *(undefined4 *)&(this->field132_0x90).field_0x14 = 0;
-  *(undefined2 *)&(this->field132_0x90).field_0xc = 0;
-  *(undefined4 *)&(this->field132_0x90).field_0x10 = 0;
-  *(undefined4 *)&(this->field132_0x90).field_0x18 = 0;
-  *(undefined2 *)&(this->field132_0x90).field_0x24 = 0;
-  *(undefined2 *)&(this->field132_0x90).field_0x26 = 0;
-  this->field0_0x0 = &g_vtblTIconSlider;
-  *(undefined4 *)&(this->field132_0x90).field_0x1c = 0;
-  *(undefined4 *)&(this->field132_0x90).field_0x20 = 0;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  param_1[0x29] = 0;
+  *(undefined2 *)(param_1 + 0x27) = 0;
+  param_1[0x28] = 0;
+  param_1[0x2a] = 0;
+  *(undefined2 *)(param_1 + 0x2d) = 0;
+  *(undefined2 *)((int)param_1 + 0xb6) = 0;
+  *param_1 = &PTR_LAB_00657c60;
+  param_1[0x2b] = 0;
+  param_1[0x2c] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506430
 // GHIDRA_NAME TIconSlider::DestructTIconSliderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTIconSliderAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTIconSliderAndMaybeFree()
 
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-
-void * __thiscall TIconSlider::DestructTIconSliderAndMaybeFree(TIconSlider *this,byte freeSelfFlag)
+undefined4 __thiscall TIconSlider::DestructTIconSliderAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005065F0
 // GHIDRA_NAME TIconSlider::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchUiMouseMoveToChildren; instructions=47, call_insns=4, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0()
 
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-/* [WrapperShape] small wrapper around thunk_DispatchUiMouseMoveToChildren; instructions=47,
-   call_insns=4, internal_calls=1, unique_internal=1 */
-
-void __thiscall
+undefined4 __thiscall
 TIconSlider::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0
-          (TIconSlider *this,int arg1,int arg2,int arg3,int arg4)
+          (int *param_1,int *param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  void *pvVar1;
+  int iVar1;
   char cVar2;
   int iVar3;
-  int iVar4;
   
-  pvVar1 = this->field0_0x0;
-  cVar2 = (**(code **)((int)pvVar1 + 0x1dc))(arg1);
+  iVar1 = *param_1;
+  cVar2 = (**(code **)(iVar1 + 0x1dc))(param_2);
   if (cVar2 != '\0') {
-    TControl::thunk_DispatchUiMouseMoveToChildren((TControl *)this,arg1,arg1,arg2,arg3);
-    return;
+    TControl::thunk_DispatchUiMouseMoveToChildren(param_2,param_2,param_3,param_4);
+    return 1;
   }
-  iVar4 = (int)*(short *)&(this->field132_0x90).field_0x26;
-  iVar3 = *(int *)arg1;
-  if (iVar4 < *(int *)arg1) {
-    iVar3 = iVar4;
+  iVar3 = *param_2;
+  if ((int)*(short *)((int)param_1 + 0xb6) < *param_2) {
+    iVar3 = (int)*(short *)((int)param_1 + 0xb6);
   }
-  *(short *)&(this->field132_0x90).field_0xc =
-       (short)iVar3 / *(short *)&(this->field132_0x90).field_0x8;
-  (**(code **)((int)pvVar1 + 0xe4))();
-  (**(code **)(*(int *)this->pField20 + 0x40))(0x6c,this,0);
-  return;
+  *(short *)(param_1 + 0x27) = (short)iVar3 / (short)param_1[0x26];
+  (**(code **)(iVar1 + 0xe4))();
+  (**(code **)(*(int *)param_1[8] + 0x40))(0x6c,param_1,0);
+  return 1;
 }
 

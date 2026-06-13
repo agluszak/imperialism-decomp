@@ -3,57 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTradeOfferNationView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401C94
-// GHIDRA_NAME TTradeOfferNationView::thunk_ConstructTTradeOfferNationViewBaseState_At00401c94
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTradeOfferNationViewBaseState_At00401c94(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeOfferNationViewBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTTradeOfferNationViewBaseState */
-
-void __thiscall
-TTradeOfferNationView::thunk_ConstructTTradeOfferNationViewBaseState_At00401c94
-          (TTradeOfferNationView *this)
-
-{
-  ConstructTTradeOfferNationViewBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402720
-// GHIDRA_NAME TTradeOfferNationView::thunk_GetTTradeOfferNationViewClassNamePointer_At00402720
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeOfferNationViewClassNamePointer_At00402720(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradeOfferNationViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradeOfferNationViewClassNamePointer */
-
-void * __cdecl
-TTradeOfferNationView::thunk_GetTTradeOfferNationViewClassNamePointer_At00402720(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradeOfferNationViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD1F0
 // GHIDRA_NAME TTradeOfferNationView::CreateTTradeOfferNationViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradeOfferNationViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTradeOfferNationView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTradeOfferNationViewInstance()
 
-/* [ClassQuad] create inferred for TTradeOfferNationView; alloc factory pattern. */
-
-void * __cdecl TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
+undefined4 * TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -63,55 +21,41 @@ void * __cdecl TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
   puStack_8 = &LAB_0063937a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTTradeOfferNationLine;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_0066e2f8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD260
 // GHIDRA_NAME TTradeOfferNationView::GetTTradeOfferNationViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradeOfferNationViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradeOfferNationView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradeOfferNationViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTradeOfferNationView. */
-
-void * __cdecl TTradeOfferNationView::GetTTradeOfferNationViewClassNamePointer(void)
+undefined ** TTradeOfferNationView::GetTTradeOfferNationViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradeOfferNationView;
+  return &PTR_s_TTradeOfferNationView_0066dc18;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD2D0
 // GHIDRA_NAME TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTradeOfferNationViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders trade-offer nation view rows, bars, and localized labels for current offer state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTradeOfferNationViewBaseState()
 
-/* Renders trade-offer nation view rows, bars, and localized labels for current offer state. */
-
-void __thiscall
-TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(TTradeOfferNationView *this)
+void __fastcall TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(int param_1)
 
 {
-  word wVar1;
-  int iVar2;
-  short sVar3;
-  int *dst_ref_ptr;
-  int *piVar4;
-  int iVar5;
-  THQButton *this_00;
+  int iVar1;
+  short sVar2;
+  int *piVar3;
+  int iVar4;
   char *unaff_ESI;
-  int iVar6;
+  int iVar5;
   undefined4 *unaff_FS_OFFSET;
   RECT local_40;
   RECT local_30;
@@ -133,49 +77,50 @@ TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(TTradeOfferNation
   local_4._0_1_ = 2;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 3;
-  wVar1 = g_pNationInteractionStateManager->nationRows17[this->field93_0x60].matrixA23
-          [this->field94_0x62];
-  thunk_AssignNormalizedCredentialTokenToIndexedSlot();
+  sVar2 = *(short *)((int)g_pNationInteractionStateManager +
+                    (*(short *)(param_1 + 0x60) * 0x50 + (int)*(short *)(param_1 + 0x62)) * 2 + 0x1c
+                    );
+  piVar3 = (int *)AssignNormalizedCredentialTokenToIndexedSlot();
   local_4._0_1_ = 4;
-  AssignFromPtr(&local_40.top,dst_ref_ptr);
+  AssignFromPtr(&local_40.top,piVar3);
   local_4 = CONCAT31(local_4._1_3_,3);
   ReleaseSharedStringRefIfNotEmpty();
-  if (wVar1 == 1) {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  if (sVar2 == 1) {
+    (**(code **)(*g_pLocalizationTable + 0x84))();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
   else {
     FormatStringWithVarArgsToSharedRef();
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    (**(code **)(*g_pLocalizationTable + 0x84))();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0,8);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  piVar4 = (int *)(**(code **)(g_pNationInteractionStateManager->vftable + 0x80))();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  piVar3 = (int *)(**(code **)(*(int *)g_pNationInteractionStateManager + 0x80))();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  iVar2 = *piVar4;
-  iVar6 = 1;
+  iVar1 = *piVar3;
+  iVar5 = 1;
   do {
-    iVar5 = (**(code **)(iVar2 + 0x28))();
-    if (iVar5 < iVar6) break;
-    sVar3 = (**(code **)(iVar2 + 0x24))();
-    local_30.left = (LONG)(short)(sVar3 << 5);
+    iVar4 = (**(code **)(iVar1 + 0x28))();
+    if (iVar4 < iVar5) break;
+    sVar2 = (**(code **)(iVar1 + 0x24))();
+    local_30.left = (LONG)(short)(sVar2 << 5);
     local_30.right = local_30.left + 0x20;
-    local_40.left = (LONG)(short)((short)(iVar6 << 5) + -0x20);
+    local_40.left = (LONG)(short)((short)(iVar5 << 5) + -0x20);
     local_40.right = local_40.left + 0x20;
     local_30.top = 0;
     local_30.bottom = 0x18;
     local_40.top = 0xc;
     local_40.bottom = 0x24;
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x680) + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_30,&local_40,0x24,
+              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x680) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_30,&local_40,0x24,
                (astruct_19 *)0x0);
-    iVar6 = iVar6 + 1;
-  } while (iVar6 < 8);
-  TCivDescription::SetQuickDrawStrokeColor();
-  (**(code **)(iVar2 + 0x38))();
+    iVar5 = iVar5 + 1;
+  } while (iVar5 < 8);
+  SetQuickDrawStrokeColor();
+  (**(code **)(iVar1 + 0x38))();
   iStack_18._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();
   iStack_18._0_1_ = 1;

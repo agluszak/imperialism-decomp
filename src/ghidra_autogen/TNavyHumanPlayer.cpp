@@ -3,123 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TNavyHumanPlayer.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401AE6
-// GHIDRA_NAME TNavyHumanPlayer::thunk_DestructTNavyHumanPlayerAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNavyHumanPlayerAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTNavyHumanPlayerAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTNavyHumanPlayerAndMaybeFree */
-
-void * __thiscall
-TNavyHumanPlayer::thunk_DestructTNavyHumanPlayerAndMaybeFree
-          (TNavyHumanPlayer *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTNavyHumanPlayerAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403E72
-// GHIDRA_NAME TNavyHumanPlayer::thunk_CreateTNavyHumanPlayerInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTNavyHumanPlayerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTNavyHumanPlayerRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTNavyHumanPlayerRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TNavyHumanPlayer::thunk_CreateTNavyHumanPlayerInstance(TNavyHumanPlayer *this)
-
-{
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408F62
-// GHIDRA_NAME TNavyHumanPlayer::thunk_ConstructTNavyHumanPlayerBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTNavyHumanPlayerBaseState(int commandArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DispatchNavyHumanPlayerCommandToFirstReadyUnit [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DispatchNavyHumanPlayerCommandToFirstReadyUnit [FID:thunk_target_sync] */
-
-void __thiscall
-TNavyHumanPlayer::thunk_ConstructTNavyHumanPlayerBaseState(TNavyHumanPlayer *this,int commandArg)
-
-{
-  ConstructTNavyHumanPlayerBaseState(this,commandArg);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040979B
-// GHIDRA_NAME TNavyHumanPlayer::thunk_GetTNavyHumanPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNavyHumanPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNavyHumanPlayerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNavyHumanPlayerClassNamePointer */
-
-void * __cdecl TNavyHumanPlayer::thunk_GetTNavyHumanPlayerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNavyHumanPlayerClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EF50
 // GHIDRA_NAME TNavyHumanPlayer::CreateTNavyHumanPlayerInstance
-// GHIDRA_PROTO void * __thiscall CreateTNavyHumanPlayerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TNavyHumanPlayer runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTNavyHumanPlayerInstance()
 
-/* Returns TNavyHumanPlayer runtime class descriptor pointer. */
-
-void * __thiscall TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(TNavyHumanPlayer *this)
+void __fastcall TNavyHumanPlayer::CreateTNavyHumanPlayerInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EF70
 // GHIDRA_NAME TNavyHumanPlayer::GetTNavyHumanPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNavyHumanPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNavyHumanPlayer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNavyHumanPlayerClassNamePointer()
 
-/* Returns class descriptor pointer for TNavyHumanPlayer. */
-
-void * __cdecl TNavyHumanPlayer::GetTNavyHumanPlayerClassNamePointer(void)
+undefined ** TNavyHumanPlayer::GetTNavyHumanPlayerClassNamePointer(void)
 
 {
-  return &g_pClassDescTNavyHumanPlayer;
+  return &PTR_s_TNavyHumanPlayer_006694b8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059EFC0
 // GHIDRA_NAME TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState
-// GHIDRA_PROTO void __thiscall ConstructTNavyHumanPlayerBaseState(int commandArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Finds the first ready naval unit and dispatches command payload through navy command handler.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTNavyHumanPlayerBaseState()
 
-/* Finds the first ready naval unit and dispatches command payload through navy command handler. */
-
-void __thiscall
-TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(TNavyHumanPlayer *this,int commandArg)
+void __thiscall TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(int param_1,undefined4 param_2)
 
 {
   int iVar1;
@@ -128,32 +37,32 @@ TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState(TNavyHumanPlayer *this,int 
   
   iVar3 = 1;
   do {
-    iVar1 = (**(code **)(*(int *)this->pField04 + 0x4c))(iVar3);
+    iVar1 = (**(code **)(**(int **)(param_1 + 4) + 0x4c))(iVar3);
     iVar3 = iVar3 + 1;
     if (*(int *)(iVar1 + 8) == -2) break;
-    iVar2 = (**(code **)(*(int *)this->pField04 + 0x48))();
+    iVar2 = (**(code **)(**(int **)(param_1 + 4) + 0x48))();
   } while (iVar3 <= iVar2);
-  iVar2 = (**(code **)(*(int *)this->pField04 + 0x48))();
+  iVar2 = (**(code **)(**(int **)(param_1 + 4) + 0x48))();
   if (iVar2 < iVar3) {
-    this->field10_0x10 = 1;
+    *(undefined1 *)(param_1 + 0x10) = 1;
     return;
   }
-  (**(code **)(*(int *)this->pField14 + 0x30))(iVar1,commandArg);
+  (**(code **)(**(int **)(param_1 + 0x14) + 0x30))(iVar1,param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F070
 // GHIDRA_NAME TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTNavyHumanPlayerAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTNavyHumanPlayerAndMaybeFree()
 
-void * __thiscall
-TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree(TNavyHumanPlayer *this,byte freeSelfFlag)
+undefined4 __thiscall
+TNavyHumanPlayer::DestructTNavyHumanPlayerAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TNavyAutoPlayer::thunk_CreateTNavyAutoPlayerInstance((TNavyAutoPlayer *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TNavyAutoPlayer::CreateTNavyAutoPlayerInstance();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

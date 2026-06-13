@@ -3,63 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TDealList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004040A7
-// GHIDRA_NAME TDealList::thunk_GetTDealListClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDealListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDealListClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDealListClassNamePointer */
-
-void * __cdecl TDealList::thunk_GetTDealListClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDealListClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004098C7
-// GHIDRA_NAME TDealList::thunk_DestructTDealListAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDealListAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDealListAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDealListAndMaybeFree */
-
-void * __thiscall TDealList::thunk_DestructTDealListAndMaybeFree(TDealList *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDealListAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7A90
 // GHIDRA_NAME TDealList::InitializeNationInteractionStateManagerDefaults
-// GHIDRA_PROTO void __thiscall InitializeNationInteractionStateManagerDefaults(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes 0x11 per-nation interaction rows, each with 0x17 pairwise slots and backing CObArray buckets.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeNationInteractionStateManagerDefaults()
 
-/* Initializes 0x11 per-nation interaction rows, each with 0x17 pairwise slots and backing CObArray
-   buckets. */
-
-void __thiscall TDealList::InitializeNationInteractionStateManagerDefaults(TDealList *this)
+void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int param_1)
 
 {
-  ushort uVar1;
-  TIndexAndRankList *this_00;
+  undefined2 uVar1;
+  TIndexAndRankList *this;
   undefined2 *puVar2;
   int iVar3;
-  TIndexAndRankList **ppTVar4;
+  undefined4 *puVar4;
   undefined2 *puVar5;
   undefined4 *unaff_FS_OFFSET;
-  ushort *local_18;
+  undefined2 *local_18;
   int local_14;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -68,9 +26,9 @@ void __thiscall TDealList::InitializeNationInteractionStateManagerDefaults(TDeal
   puStack_8 = &LAB_0063907a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_18 = &g_Nation_Interaction_Manager_WordState_0069A910;
-  ppTVar4 = &this->field2706_0xaa8;
-  puVar5 = (undefined2 *)((int)&this->field0c + 2);
+  local_18 = &DAT_0069a910;
+  puVar4 = (undefined4 *)(param_1 + 0xaa8);
+  puVar5 = (undefined2 *)(param_1 + 0xe);
   local_14 = 0x11;
   do {
     local_4 = 0xffffffff;
@@ -83,17 +41,17 @@ void __thiscall TDealList::InitializeNationInteractionStateManagerDefaults(TDeal
     puVar5[-3] = uVar1;
     puVar5[-2] = uVar1;
     puVar5[6] = puVar5[-3];
-    this_00 = AllocateWithFallbackHandler();
+    this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
     local_4 = 0;
-    if (this_00 == (TIndexAndRankList *)0x0) {
-      this_00 = (TIndexAndRankList *)0x0;
+    if (this == (TIndexAndRankList *)0x0) {
+      this = (TIndexAndRankList *)0x0;
     }
     else {
-      TIndexAndRankList::CPtrArray(this_00);
-      this_00->pVtable = &g_vtblTDealList;
+      TIndexAndRankList::CPtrArray(this);
+      *(undefined ***)this = &PTR_LAB_0066da38;
     }
-    *(undefined2 *)&this_00->field_0x14 = 0x10;
-    *ppTVar4 = this_00;
+    *(undefined2 *)(this + 0x14) = 0x10;
+    *puVar4 = this;
     puVar2 = puVar5 + 0x35;
     iVar3 = 0x17;
     do {
@@ -103,7 +61,7 @@ void __thiscall TDealList::InitializeNationInteractionStateManagerDefaults(TDeal
       puVar2 = puVar2 + 1;
       iVar3 = iVar3 + -1;
     } while (iVar3 != 0);
-    ppTVar4 = ppTVar4 + 1;
+    puVar4 = puVar4 + 1;
     local_18 = local_18 + 1;
     puVar5 = puVar5 + 0x50;
     local_14 = local_14 + -1;
@@ -114,9 +72,9 @@ void __thiscall TDealList::InitializeNationInteractionStateManagerDefaults(TDeal
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA130
 // GHIDRA_NAME TDealList::CreateTDealListInstance
-// GHIDRA_PROTO void * __cdecl CreateTDealListInstance(void)
+// GHIDRA_PROTO undefined CreateTDealListInstance()
 
-void * __cdecl TDealList::CreateTDealListInstance(void)
+TIndexAndRankList * TDealList::CreateTDealListInstance(void)
 
 {
   TIndexAndRankList *this;
@@ -130,12 +88,12 @@ void * __cdecl TDealList::CreateTDealListInstance(void)
   puStack_8 = &LAB_0063909a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
     TIndexAndRankList::CPtrArray(this);
-    this->pVtable = &g_vtblTDealList;
+    *(undefined ***)this = &PTR_LAB_0066da38;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -144,44 +102,37 @@ void * __cdecl TDealList::CreateTDealListInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1A0
 // GHIDRA_NAME TDealList::GetTDealListClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDealListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDealList.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDealListClassNamePointer()
 
-/* Returns class descriptor pointer for TDealList. */
-
-void * __cdecl TDealList::GetTDealListClassNamePointer(void)
+undefined ** TDealList::GetTDealListClassNamePointer(void)
 
 {
-  return &g_pClassDescTDealList;
+  return &PTR_s_TDealList_0066d888;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1C0
 // GHIDRA_NAME TDealList::ConstructTDealListBaseState
-// GHIDRA_PROTO void * __fastcall ConstructTDealListBaseState(TDealList * pThis)
+// GHIDRA_PROTO undefined ConstructTDealListBaseState()
 
-void * __fastcall TDealList::ConstructTDealListBaseState(TDealList *pThis)
+TIndexAndRankList * __fastcall TDealList::ConstructTDealListBaseState(TIndexAndRankList *param_1)
 
 {
-  TIndexAndRankList::CPtrArray((TIndexAndRankList *)pThis);
-  pThis->pField00 = &g_vtblTDealList;
-  return pThis;
+  TIndexAndRankList::CPtrArray(param_1);
+  *(undefined ***)param_1 = &PTR_LAB_0066da38;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1F0
 // GHIDRA_NAME TDealList::DestructTDealListAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDealListAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDealListAndMaybeFree()
 
-void * __thiscall TDealList::DestructTDealListAndMaybeFree(TDealList *this,byte freeSelfFlag)
+undefined4 __thiscall TDealList::DestructTDealListAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TIndexAndRankList *unaff_ESI;
-  
-  CObArray::thunk_DestructCObArray(unaff_ESI);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  CObArray::thunk_DestructCObArray();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -3,104 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TAutomatedPlayDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040236F
-// GHIDRA_NAME TAutomatedPlayDialog::thunk_scalar_deleting_destructor_0040236F
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040236F(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TAutomatedPlayDialog::thunk_scalar_deleting_destructor_0040236F
-          (TAutomatedPlayDialog *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004046AB
-// GHIDRA_NAME TAutomatedPlayDialog::thunk_ConstructTAutomatedPlayDialogBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTAutomatedPlayDialogBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_DispatchHint_005b46c0 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Cluster_DispatchHint_005b46c0 [FID:thunk_target_sync] */
-
-void __thiscall
-TAutomatedPlayDialog::thunk_ConstructTAutomatedPlayDialogBaseState(TAutomatedPlayDialog *this)
-
-{
-  ConstructTAutomatedPlayDialogBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040823D
-// GHIDRA_NAME TAutomatedPlayDialog::thunk_GetTAutomatedPlayDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTAutomatedPlayDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTAutomatedPlayDialogClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTAutomatedPlayDialogClassNamePointer */
-
-void * __cdecl TAutomatedPlayDialog::thunk_GetTAutomatedPlayDialogClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTAutomatedPlayDialogClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B46A0
 // GHIDRA_NAME TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTAutomatedPlayDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TAutomatedPlayDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTAutomatedPlayDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TAutomatedPlayDialog. */
-
-void * __cdecl TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer(void)
+undefined ** TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTAutomatedPlayDialog;
+  return &PTR_s_TAutomatedPlayDialog_0066b2c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B46C0
 // GHIDRA_NAME TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState
-// GHIDRA_PROTO void __thiscall ConstructTAutomatedPlayDialogBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchVfuncA0ToLinkedChildListSlot44; instructions=30, call_insns=5, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTAutomatedPlayDialogBaseState()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* [WrapperShape] small wrapper around thunk_DispatchVfuncA0ToLinkedChildListSlot44;
-   instructions=30, call_insns=5, internal_calls=1, unique_internal=1 */
 
-void __thiscall
-TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState(TAutomatedPlayDialog *this)
+void __fastcall TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState(int *param_1)
 
 {
   int *piVar1;
   
-  piVar1 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x6e756d20);
+  piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x6e756d20);
   if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x34e);
   }
-  g_wTurnFlowCooldownCounter = (**(code **)(*piVar1 + 0x1e8))();
-  _g_Advance_Turn_Machine_State_00698B10 = *(undefined2 *)((int)g_pLocalizationTable + 8);
-  if (0 < (short)g_wTurnFlowCooldownCounter) {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x44))();
+  DAT_006a43c4 = (**(code **)(*piVar1 + 0x1e8))();
+  _DAT_00698b10 = (undefined2)g_pLocalizationTable[2];
+  if (0 < DAT_006a43c4) {
+    (**(code **)(*g_pLocalizationTable + 0x44))();
   }
-  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
+  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44();
   return;
 }
 

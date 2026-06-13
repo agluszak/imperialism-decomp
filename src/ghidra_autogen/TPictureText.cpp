@@ -3,51 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TPictureText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403C33
-// GHIDRA_NAME TPictureText::TPictureText_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TPictureText_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTPictureTextAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTPictureTextAndMaybeFree */
-
-void * __thiscall TPictureText::TPictureText_VtblSlot001(TPictureText *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTPictureTextAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040585D
-// GHIDRA_NAME TPictureText::TPictureText_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TPictureText_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPictureTextClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPictureTextClassNamePointer */
-
-void * __cdecl TPictureText::TPictureText_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPictureTextClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5260
 // GHIDRA_NAME TPictureText::CreateTPictureTextInstance
-// GHIDRA_PROTO void * __cdecl CreateTPictureTextInstance(void)
+// GHIDRA_PROTO undefined CreateTPictureTextInstance()
 
-void * __cdecl TPictureText::CreateTPictureTextInstance(void)
+undefined4 * TPictureText::CreateTPictureTextInstance(void)
 
 {
-  TStaticText *this;
-  TStaticText *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -57,62 +21,52 @@ void * __cdecl TPictureText::CreateTPictureTextInstance(void)
   puStack_8 = &LAB_00638e2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TStaticText *)0x0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTPictureText;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+    *puVar1 = &PTR_LAB_0066c990;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B52E0
 // GHIDRA_NAME TPictureText::GetTPictureTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPictureTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPictureText.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPictureTextClassNamePointer()
 
-/* Returns class descriptor pointer for TPictureText. */
-
-void * __cdecl TPictureText::GetTPictureTextClassNamePointer(void)
+undefined ** TPictureText::GetTPictureTextClassNamePointer(void)
 
 {
-  return &g_pClassDescTPictureText;
+  return &PTR_s_TPictureText_0066c3d8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5300
 // GHIDRA_NAME TPictureText::ConstructTPictureTextBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTPictureTextBaseState(void)
+// GHIDRA_PROTO undefined ConstructTPictureTextBaseState()
 
-void * __thiscall TPictureText::ConstructTPictureTextBaseState(TPictureText *this)
+undefined4 * __fastcall TPictureText::ConstructTPictureTextBaseState(undefined4 *param_1)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  this->field0_0x0 = &g_vtblTPictureText;
-  return this;
+  TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  *param_1 = &PTR_LAB_0066c990;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5330
 // GHIDRA_NAME TPictureText::DestructTPictureTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPictureTextAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TPictureText derives from TStaticText (dtor_calls_base_dtor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTPictureTextAndMaybeFree()
 
-/* [InheritanceEvidence] TPictureText derives from TStaticText (dtor_calls_base_dtor, medium) */
-
-void * __thiscall
-TPictureText::DestructTPictureTextAndMaybeFree(TPictureText *this,byte freeSelfFlag)
+undefined4 __thiscall
+TPictureText::DestructTPictureTextAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TStaticText::DestructTStaticTextCore((TStaticText *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TStaticText::~TStaticText();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -3,84 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TMiniCivLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401361
-// GHIDRA_NAME TMiniCivLine::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004ac320_At00401361
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004ac320_At00401361(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At004ac320
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At004ac320 */
-
-void __cdecl
-TMiniCivLine::thunk_WrapperFor_HandleCityDialogToggleCommandOrForward_At004ac320_At00401361(void)
-
-{
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At004ac320();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401FC8
-// GHIDRA_NAME TMiniCivLine::thunk_DestructTMiniCivViewAndMaybeFree_At00401fc8
-// GHIDRA_PROTO void __thiscall thunk_DestructTMiniCivViewAndMaybeFree_At00401fc8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTMiniCivViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTMiniCivViewAndMaybeFree */
-
-void __thiscall TMiniCivLine::thunk_DestructTMiniCivViewAndMaybeFree_At00401fc8(TMiniCivLine *this)
-
-{
-  TMiniCivView::DestructTMiniCivViewAndMaybeFree((TMiniCivView *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040471E
-// GHIDRA_NAME TMiniCivLine::thunk_OrphanRetStub_004ab800_At0040471e
-// GHIDRA_PROTO void __cdecl thunk_OrphanRetStub_004ab800_At0040471e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanRetStub_004ab800
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanRetStub_004ab800 */
-
-void __cdecl TMiniCivLine::thunk_OrphanRetStub_004ab800_At0040471e(void)
-
-{
-  OrphanRetStub_004ab800();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004050B0
-// GHIDRA_NAME TMiniCivLine::thunk_DestructTMiniCivLineAndMaybeFree_At004050b0
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMiniCivLineAndMaybeFree_At004050b0(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTMiniCivLineAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTMiniCivLineAndMaybeFree */
-
-void * __thiscall
-TMiniCivLine::thunk_DestructTMiniCivLineAndMaybeFree_At004050b0
-          (TMiniCivLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTMiniCivLineAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB670
 // GHIDRA_NAME TMiniCivLine::CreateTMiniCivLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTMiniCivLineInstance(void)
+// GHIDRA_PROTO undefined CreateTMiniCivLineInstance()
 
-void * __cdecl TMiniCivLine::CreateTMiniCivLineInstance(void)
+undefined4 * TMiniCivLine::CreateTMiniCivLineInstance(void)
 
 {
-  TLineData *pThis;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -90,43 +21,37 @@ void * __cdecl TMiniCivLine::CreateTMiniCivLineInstance(void)
   puStack_8 = &LAB_0063065a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (pThis != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(pThis);
-    pThis->field0_0x0 = &g_vtblTSuperCivRoster;
-    pTVar1 = pThis;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TLineData::ConstructTLineDataBaseState();
+    *puVar1 = &PTR_LAB_0064d990;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB6E0
 // GHIDRA_NAME TMiniCivLine::GetTMiniCivLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMiniCivLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMiniCivLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMiniCivLineClassNamePointer()
 
-/* Returns class descriptor pointer for TMiniCivLine. */
-
-void * __cdecl TMiniCivLine::GetTMiniCivLineClassNamePointer(void)
+undefined ** TMiniCivLine::GetTMiniCivLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTMiniCivLine;
+  return &PTR_s_TMiniCivLine_0064cbe0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB740
 // GHIDRA_NAME TMiniCivLine::ConstructTMiniCivLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTMiniCivLineBaseState(int arg1)
+// GHIDRA_PROTO undefined ConstructTMiniCivLineBaseState()
 
-void * __thiscall TMiniCivLine::ConstructTMiniCivLineBaseState(TMiniCivLine *this,int arg1)
+void __thiscall
+TMiniCivLine::ConstructTMiniCivLineBaseState(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  TMiniCivView *this_00;
-  void *extraout_EAX;
-  TMiniCivView *this_01;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -136,34 +61,33 @@ void * __thiscall TMiniCivLine::ConstructTMiniCivLineBaseState(TMiniCivLine *thi
   puStack_8 = &LAB_00630682;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
-  this_01 = (TMiniCivView *)0x0;
-  if (this_00 != (TMiniCivView *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this_00);
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
     local_4 = CONCAT31(local_4._1_3_,1);
     InitializeSharedStringRefFromEmpty();
-    ((TView *)&this_00->pVtable)->pVtable = &g_vtblTMiniCivLine;
-    this_01 = this_00;
+    *puVar1 = &PTR_LAB_0064d9d0;
   }
   local_4 = 0xffffffff;
-  TMiniCivView::ConstructTMiniCivViewLocalizedLineText(this_01,(void *)arg1);
+  TMiniCivView::ConstructTMiniCivViewBaseState
+            (param_2,param_3,param_1 + 8,*(undefined4 *)(param_1 + 0x10));
   *unaff_FS_OFFSET = local_c;
-  return extraout_EAX;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB820
 // GHIDRA_NAME TMiniCivLine::DestructTMiniCivLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTMiniCivLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTMiniCivLineAndMaybeFree()
 
-void * __thiscall
-TMiniCivLine::DestructTMiniCivLineAndMaybeFree(TMiniCivLine *this,byte freeSelfFlag)
+undefined4 __thiscall
+TMiniCivLine::DestructTMiniCivLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTMiniCivLineAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

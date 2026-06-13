@@ -5,44 +5,31 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491AD0
 // GHIDRA_NAME TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl
-// GHIDRA_PROTO void __thiscall InitializeTurnEventDialogFactoryRegistry_Impl(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_00491ad0 with single named caller InitializeTurnEventDialogFactoryRegistry@0x00479480
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeTurnEventDialogFactoryRegistry_Impl()
 
-/* [ThunkBridge] promoted from thunk_FUN_00491ad0 with single named caller
-   InitializeTurnEventDialogFactoryRegistry@0x00479480 */
-
-void __thiscall
+void __fastcall
 TTurnEventDialogFactoryRegistryState_0064B328::InitializeTurnEventDialogFactoryRegistry_Impl
-          (TTurnEventDialogFactoryRegistryState_0064B328 *this)
+          (undefined4 *param_1)
 
 {
-  this->field1_0x4 = &PTR_GetCObjectRuntimeClass_TurnEventDialogFactoryRegistryState_0064B328;
-  this->field4_0x10 = 0;
-  this->field5_0x14 = 0;
-  this->field3_0xc = 0;
-  this->field2_0x8 = (undefined4 *)0x0;
-  this->field6_0x18 = 0;
-  this->field7_0x1c = 10;
-  this->pVtable = &PTR_thunk_GetTObjectClassNamePointer_0064b2e8;
+  param_1[1] = &PTR_GetCObjectRuntimeClass_0064b328;
+  param_1[4] = 0;
+  param_1[5] = 0;
+  param_1[3] = 0;
+  param_1[2] = 0;
+  param_1[6] = 0;
+  param_1[7] = 10;
+  *param_1 = &PTR_LAB_0064b2e8;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491B40
 // GHIDRA_NAME TTurnEventDialogFactoryRegistryState_0064B328::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40
-// GHIDRA_PROTO void __thiscall DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [RuntimePtrWrapper] Turn-event dialog factory registry chain teardown for runtime ptr 0064B328.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40()
 
-/* [RuntimePtrWrapper] Turn-event dialog factory registry chain teardown for runtime ptr 0064B328.
-    */
-
-void __thiscall
+void __fastcall
 TTurnEventDialogFactoryRegistryState_0064B328::
-DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40
-          (TTurnEventDialogFactoryRegistryState_0064B328 *this)
+DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40(undefined4 *param_1)
 
 {
   undefined4 *puVar1;
@@ -54,40 +41,33 @@ DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40
   puStack_8 = &LAB_0062f2e0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->field1_0x4 = &PTR_GetCObjectRuntimeClass_TurnEventDialogFactoryRegistryState_0064B328;
-  puVar1 = this->field2_0x8;
+  param_1[1] = &PTR_GetCObjectRuntimeClass_0064b328;
+  puVar1 = (undefined4 *)param_1[2];
   local_4 = 1;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  this->field4_0x10 = 0;
-  this->field5_0x14 = 0;
-  this->field3_0xc = 0;
-  this->field2_0x8 = (undefined4 *)0x0;
+  param_1[4] = 0;
+  param_1[5] = 0;
+  param_1[3] = 0;
+  param_1[2] = 0;
   FreeDataChain();
-  this->field6_0x18 = 0;
-  this->field1_0x4 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[6] = 0;
+  param_1[1] = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004929B0
 // GHIDRA_NAME TTurnEventDialogFactoryRegistryState_0064B328::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0
-// GHIDRA_PROTO void __thiscall DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [RuntimePtrWrapper] Turn-event dialog factory registry chain teardown for runtime ptr 0064B328.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0()
 
-/* [RuntimePtrWrapper] Turn-event dialog factory registry chain teardown for runtime ptr 0064B328.
-    */
-
-void __thiscall
+void __fastcall
 TTurnEventDialogFactoryRegistryState_0064B328::
-DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0
-          (TTurnEventDialogFactoryRegistryState_0064B328 *this)
+DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(undefined4 *param_1)
 
 {
-  undefined **ppuVar1;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -96,18 +76,18 @@ DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0
   puStack_8 = &LAB_0062f3b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_TurnEventDialogFactoryRegistryState_0064B328;
-  ppuVar1 = this->field1_0x4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_0064b328;
+  puVar1 = (undefined4 *)param_1[1];
   local_4 = 0;
-  for (; ppuVar1 != (undefined **)0x0; ppuVar1 = (undefined **)*ppuVar1) {
+  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  this->field3_0xc = 0;
-  this->field4_0x10 = 0;
-  this->field2_0x8 = (undefined4 *)0x0;
-  this->field1_0x4 = (undefined **)0x0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[1] = 0;
   FreeDataChain();
-  this->field5_0x14 = 0;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

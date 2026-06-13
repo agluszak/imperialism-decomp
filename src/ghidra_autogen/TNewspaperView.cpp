@@ -5,18 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055D160
 // GHIDRA_NAME TNewspaperView::CreateTNewspaperView
-// GHIDRA_PROTO TNewspaperView * __cdecl CreateTNewspaperView(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and constructs a TNewspaperView picture resource entry object.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTNewspaperView()
 
-/* Allocates and constructs a TNewspaperView picture resource entry object. */
-
-TNewspaperView * __cdecl TNewspaperView::CreateTNewspaperView(void)
+undefined4 * TNewspaperView::CreateTNewspaperView(void)
 
 {
-  TNewspaperView *pTVar1;
-  TNewspaperView *pTVar2;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -26,30 +21,25 @@ TNewspaperView * __cdecl TNewspaperView::CreateTNewspaperView(void)
   puStack_8 = &LAB_0063551a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pTVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  pTVar2 = (TNewspaperView *)0x0;
-  if (pTVar1 != (TNewspaperView *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    pTVar1->pVtable = &PTR_thunk_GetTNewspaperViewClassNamePointer_00641390;
-    pTVar2 = pTVar1;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00641390;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar2;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055D1E0
 // GHIDRA_NAME TNewspaperView::GetTNewspaperViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNewspaperViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNewspaperView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNewspaperViewClassNamePointer()
 
-/* Returns class descriptor pointer for TNewspaperView. */
-
-void * __cdecl TNewspaperView::GetTNewspaperViewClassNamePointer(void)
+undefined ** TNewspaperView::GetTNewspaperViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTNewspaperView;
+  return &PTR_s_TNewspaperView_0065c548;
 }
 

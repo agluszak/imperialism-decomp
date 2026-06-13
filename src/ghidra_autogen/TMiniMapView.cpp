@@ -3,66 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TMiniMapView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401E74
-// GHIDRA_NAME TMiniMapView::TMiniMapView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TMiniMapView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMiniMapViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMiniMapViewClassNamePointer */
-
-void * __cdecl TMiniMapView::TMiniMapView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMiniMapViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403869
-// GHIDRA_NAME TMiniMapView::TMiniMapView_VtblSlot068
-// GHIDRA_PROTO void __cdecl TMiniMapView_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RecomputeAndRenderStrategicMapViewportOverlay
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RecomputeAndRenderStrategicMapViewportOverlay */
-
-void __cdecl TMiniMapView::TMiniMapView_VtblSlot068(void)
-
-{
-  RecomputeAndRenderStrategicMapViewportOverlay();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407B67
-// GHIDRA_NAME TMiniMapView::TMiniMapView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TMiniMapView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTMiniMapViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTMiniMapViewAndMaybeFree */
-
-void * __thiscall TMiniMapView::TMiniMapView_VtblSlot001(TMiniMapView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTMiniMapViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A290
 // GHIDRA_NAME TMiniMapView::CreateTMiniMapViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTMiniMapViewInstance(void)
+// GHIDRA_PROTO undefined CreateTMiniMapViewInstance()
 
-void * __cdecl TMiniMapView::CreateTMiniMapViewInstance(void)
+undefined4 * TMiniMapView::CreateTMiniMapViewInstance(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -72,69 +20,64 @@ void * __cdecl TMiniMapView::CreateTMiniMapViewInstance(void)
   puStack_8 = &LAB_0063850a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTMiniMapView;
-    this->field90 = (byte *)0x0;
-    this->pField94 = (void *)0x0;
-    *(undefined4 *)&this->field_0x88 = 0;
-    *(undefined4 *)&this->field_0x8c = 0;
-    this->pField98 = (void *)(int)g_wMiniMapViewHalfWidth;
-    *(undefined4 *)&this->field_0x9c = 8;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_00669170;
+    puVar1[0x24] = 0;
+    puVar1[0x25] = 0;
+    puVar1[0x22] = 0;
+    puVar1[0x23] = 0;
+    puVar1[0x26] = (int)DAT_006a460c;
+    puVar1[0x27] = 8;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A360
 // GHIDRA_NAME TMiniMapView::GetTMiniMapViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMiniMapViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMiniMapView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMiniMapViewClassNamePointer()
 
-/* Returns class descriptor pointer for TMiniMapView. */
-
-void * __cdecl TMiniMapView::GetTMiniMapViewClassNamePointer(void)
+undefined ** TMiniMapView::GetTMiniMapViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTMiniMapView;
+  return &PTR_s_TMiniMapView_00668c58;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A380
 // GHIDRA_NAME TMiniMapView::ConstructTMiniMapViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTMiniMapViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTMiniMapViewBaseState()
 
-void * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapView *this)
+undefined4 * __fastcall TMiniMapView::ConstructTMiniMapViewBaseState(undefined4 *param_1)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  this->field0_0x0 = &g_vtblTMiniMapView;
-  this->field90 = 0;
-  this->field94 = 0;
-  this->field88 = 0;
-  this->field8c = 0;
-  this->field98 = (int)g_wMiniMapViewHalfWidth;
-  *(undefined4 *)&this->field9c = 8;
-  return this;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  *param_1 = &PTR_LAB_00669170;
+  param_1[0x24] = 0;
+  param_1[0x25] = 0;
+  param_1[0x22] = 0;
+  param_1[0x23] = 0;
+  param_1[0x26] = (int)DAT_006a460c;
+  param_1[0x27] = 8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A3F0
 // GHIDRA_NAME TMiniMapView::DestructTMiniMapViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTMiniMapViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTMiniMapViewAndMaybeFree()
 
-void * __thiscall
-TMiniMapView::DestructTMiniMapViewAndMaybeFree(TMiniMapView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TMiniMapView::DestructTMiniMapViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

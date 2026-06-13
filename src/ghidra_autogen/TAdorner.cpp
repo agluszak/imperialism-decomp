@@ -3,86 +3,16 @@
 // Program: Imperialism.exe
 // Bucket: TAdorner.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004049F8
-// GHIDRA_NAME TAdorner::thunk_GetTDialogViewClassNamePointer_At004049f8
-// GHIDRA_PROTO void * __cdecl thunk_GetTDialogViewClassNamePointer_At004049f8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDialogViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDialogViewClassNamePointer */
-
-void * __cdecl TAdorner::thunk_GetTDialogViewClassNamePointer_At004049f8(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TDialogView::GetTDialogViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405B46
-// GHIDRA_NAME TAdorner::thunk_DestructTDialogViewAndMaybeFree_At00405b46
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDialogViewAndMaybeFree_At00405b46(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDialogViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDialogViewAndMaybeFree */
-
-void * __thiscall
-TAdorner::thunk_DestructTDialogViewAndMaybeFree_At00405b46(TAdorner *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TDialogView::DestructTDialogViewAndMaybeFree((TDialogView *)this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406424
-// GHIDRA_NAME TAdorner::thunk_ConstructTDialogViewBaseState_At00406424
-// GHIDRA_PROTO void __stdcall thunk_ConstructTDialogViewBaseState_At00406424(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTDialogViewBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTDialogViewBaseState */
-
-void TAdorner::thunk_ConstructTDialogViewBaseState_At00406424(void)
-
-{
-  TDialogView::ConstructTDialogViewBaseState();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040748C
-// GHIDRA_NAME TAdorner::thunk_GetTAdornerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTAdornerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTAdornerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTAdornerClassNamePointer */
-
-void * __cdecl TAdorner::thunk_GetTAdornerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTAdornerClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D650
 // GHIDRA_NAME TAdorner::CreateTAdornerInstance
-// GHIDRA_PROTO void * __cdecl CreateTAdornerInstance(void)
+// GHIDRA_PROTO undefined CreateTAdornerInstance()
 
-void * __cdecl TAdorner::CreateTAdornerInstance(void)
+undefined4 * TAdorner::CreateTAdornerInstance(void)
 
 {
   undefined4 *puVar1;
-  undefined4 *puVar2;
+  undefined4 uVar2;
+  undefined4 *puVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -92,42 +22,38 @@ void * __cdecl TAdorner::CreateTAdornerInstance(void)
   puStack_8 = &LAB_0062fca2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
-  puVar2 = (undefined4 *)0x0;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xc);
+  puVar3 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     local_4 = 1;
-    *puVar1 = &PTR_thunk_GetTAdornerClassNamePointer_0064bdd0;
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
-    puVar2 = puVar1;
+    *puVar1 = &PTR_LAB_0064bdd0;
+    uVar2 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
+    puVar3 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return puVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D6D0
 // GHIDRA_NAME TAdorner::GetTAdornerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTAdornerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TAdorner.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTAdornerClassNamePointer()
 
-/* Returns class descriptor pointer for TAdorner. */
-
-void * __cdecl TAdorner::GetTAdornerClassNamePointer(void)
+undefined ** TAdorner::GetTAdornerClassNamePointer(void)
 
 {
-  return &g_pClassDescTAdorner;
+  return &PTR_s_TAdorner_0064bd90;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D6F0
 // GHIDRA_NAME TAdorner::ConstructTAdornerBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTAdornerBaseState(void)
+// GHIDRA_PROTO undefined ConstructTAdornerBaseState()
 
-void * __cdecl TAdorner::ConstructTAdornerBaseState(void)
+undefined4 * TAdorner::ConstructTAdornerBaseState(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -137,18 +63,18 @@ void * __cdecl TAdorner::ConstructTAdornerBaseState(void)
   puStack_8 = &LAB_0062fcd2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->pVtable = &g_vtblTAdorner;
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
+    *puVar1 = &PTR_LAB_0064be28;
+    uVar2 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 

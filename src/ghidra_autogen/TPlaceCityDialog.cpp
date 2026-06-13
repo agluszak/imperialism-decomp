@@ -3,113 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TPlaceCityDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402194
-// GHIDRA_NAME TPlaceCityDialog::thunk_ConstructTPlaceCityDialogBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTPlaceCityDialogBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTPlaceCityDialogBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTPlaceCityDialogBaseState */
-
-void * __thiscall TPlaceCityDialog::thunk_ConstructTPlaceCityDialogBaseState(TPlaceCityDialog *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTPlaceCityDialog;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402757
-// GHIDRA_NAME TPlaceCityDialog::TPlaceCityDialog_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TPlaceCityDialog_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPlaceCityDialogClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPlaceCityDialogClassNamePointer */
-
-void * __cdecl TPlaceCityDialog::TPlaceCityDialog_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPlaceCityDialogClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004068AC
-// GHIDRA_NAME TPlaceCityDialog::TPlaceCityDialog_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TPlaceCityDialog_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTPlaceCityDialogAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTPlaceCityDialogAndMaybeFree */
-
-void * __thiscall
-TPlaceCityDialog::TPlaceCityDialog_VtblSlot001(TPlaceCityDialog *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTPlaceCityDialogAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407B8A
-// GHIDRA_NAME TPlaceCityDialog::TPlaceCityDialog_VtblSlot068
-// GHIDRA_PROTO void __thiscall TPlaceCityDialog_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40 */
-
-void __thiscall TPlaceCityDialog::TPlaceCityDialog_VtblSlot068(TPlaceCityDialog *this)
-
-{
-  THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40((THQButton *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408EA9
-// GHIDRA_NAME TPlaceCityDialog::TPlaceCityDialog_VtblSlot040
-// GHIDRA_PROTO void __thiscall TPlaceCityDialog_VtblSlot040(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44 */
-
-void __thiscall TPlaceCityDialog::TPlaceCityDialog_VtblSlot040(TPlaceCityDialog *this)
-
-{
-  TControl::thunk_thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004098E5
-// GHIDRA_NAME TPlaceCityDialog::TPlaceCityDialog_VtblSlot115
-// GHIDRA_PROTO void __thiscall TPlaceCityDialog_VtblSlot115(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BuildCityViewResourceRows
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BuildCityViewResourceRows */
-
-void __thiscall TPlaceCityDialog::TPlaceCityDialog_VtblSlot115(TPlaceCityDialog *this,int arg1)
-
-{
-  TNumberedItem::BuildCityViewResourceRows((TNumberedItem *)this,arg1);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1760
 // GHIDRA_NAME TPlaceCityDialog::CreateTPlaceCityDialogInstance
-// GHIDRA_PROTO void * __cdecl CreateTPlaceCityDialogInstance(void)
+// GHIDRA_PROTO undefined CreateTPlaceCityDialogInstance()
 
-void * __cdecl TPlaceCityDialog::CreateTPlaceCityDialogInstance(void)
+undefined4 * TPlaceCityDialog::CreateTPlaceCityDialogInstance(void)
 
 {
   undefined4 *puVar1;
@@ -123,12 +21,12 @@ void * __cdecl TPlaceCityDialog::CreateTPlaceCityDialogInstance(void)
   puStack_8 = &LAB_00631b6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTPlaceCityDialog;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00652f58;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -137,43 +35,38 @@ void * __cdecl TPlaceCityDialog::CreateTPlaceCityDialogInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D17E0
 // GHIDRA_NAME TPlaceCityDialog::GetTPlaceCityDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPlaceCityDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPlaceCityDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPlaceCityDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TPlaceCityDialog. */
-
-void * __cdecl TPlaceCityDialog::GetTPlaceCityDialogClassNamePointer(void)
+undefined ** TPlaceCityDialog::GetTPlaceCityDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTPlaceCityDialog;
+  return &PTR_s_TPlaceCityDialog_00651368;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1800
 // GHIDRA_NAME TPlaceCityDialog::ConstructTPlaceCityDialogBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTPlaceCityDialogBaseState(void)
+// GHIDRA_PROTO undefined ConstructTPlaceCityDialogBaseState()
 
-void * __thiscall TPlaceCityDialog::ConstructTPlaceCityDialogBaseState(TPlaceCityDialog *this)
+undefined4 * __fastcall TPlaceCityDialog::ConstructTPlaceCityDialogBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTPlaceCityDialog;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_00652f58;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1830
 // GHIDRA_NAME TPlaceCityDialog::DestructTPlaceCityDialogAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPlaceCityDialogAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTPlaceCityDialogAndMaybeFree()
 
-void * __thiscall
-TPlaceCityDialog::DestructTPlaceCityDialogAndMaybeFree(TPlaceCityDialog *this,byte freeSelfFlag)
+undefined4 __thiscall
+TPlaceCityDialog::DestructTPlaceCityDialogAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

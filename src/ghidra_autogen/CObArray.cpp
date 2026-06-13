@@ -5,20 +5,22 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004883C0
 // GHIDRA_NAME CObArray::thunk_DestructCObArray
-// GHIDRA_PROTO void __cdecl thunk_DestructCObArray(TIndexAndRankList * pThis)
+// GHIDRA_PROTO undefined thunk_DestructCObArray()
 
-void __cdecl CObArray::thunk_DestructCObArray(TIndexAndRankList *pThis)
+void CObArray::thunk_DestructCObArray(void)
 
 {
+  undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &g_vtblTIndexAndRankList;
+  *extraout_ECX = &TIndexAndRankList::_vftable_;
+  uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
@@ -26,7 +28,7 @@ void __cdecl CObArray::thunk_DestructCObArray(TIndexAndRankList *pThis)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601BDD
 // GHIDRA_NAME CObArray::DestructCObArray
-// GHIDRA_PROTO void __cdecl DestructCObArray(TIndexAndRankList * pThis)
+// GHIDRA_PROTO undefined DestructCObArray()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT CObArray base destructor logic.
 // GHIDRA_COMMENT - resets vtable to CObArray,
@@ -41,18 +43,20 @@ void __cdecl CObArray::thunk_DestructCObArray(TIndexAndRankList *pThis)
    - restores base vtable pointer.
    Used by multiple deleting-destructor thunks across UI/game object classes. */
 
-void __cdecl CObArray::DestructCObArray(TIndexAndRankList *pThis)
+void CObArray::DestructCObArray(void)
 
 {
+  undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &g_vtblTIndexAndRankList;
+  *extraout_ECX = &TIndexAndRankList::_vftable_;
+  uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;

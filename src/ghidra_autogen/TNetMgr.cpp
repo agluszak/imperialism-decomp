@@ -3,341 +3,115 @@
 // Program: Imperialism.exe
 // Bucket: TNetMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004015F5
-// GHIDRA_NAME TNetMgr::thunk_GetNthIntFromLinkedValueList
-// GHIDRA_PROTO void __thiscall thunk_GetNthIntFromLinkedValueList(int arg1)
-
-void __thiscall TNetMgr::thunk_GetNthIntFromLinkedValueList(TNetMgr *this,int arg1)
-
-{
-  GetNthIntFromLinkedValueList(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004016EA
-// GHIDRA_NAME TNetMgr::thunk_RemoveIntFromLinkedValueListByValue
-// GHIDRA_PROTO void __thiscall thunk_RemoveIntFromLinkedValueListByValue(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RemoveIntFromLinkedValueListByValue
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RemoveIntFromLinkedValueListByValue */
-
-void __thiscall TNetMgr::thunk_RemoveIntFromLinkedValueListByValue(TNetMgr *this,int arg1)
-
-{
-  RemoveIntFromLinkedValueListByValue(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401CAD
-// GHIDRA_NAME TNetMgr::thunk_GetTNetMgrClassNamePointer_At00401cad
-// GHIDRA_PROTO void * __cdecl thunk_GetTNetMgrClassNamePointer_At00401cad(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNetMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNetMgrClassNamePointer */
-
-void * __cdecl TNetMgr::thunk_GetTNetMgrClassNamePointer_At00401cad(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNetMgrClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401D20
-// GHIDRA_NAME TNetMgr::thunk_DestructTNetMgrAndMaybeFree_At00401d20
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNetMgrAndMaybeFree_At00401d20(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTNetMgrAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTNetMgrAndMaybeFree */
-
-void * __thiscall
-TNetMgr::thunk_DestructTNetMgrAndMaybeFree_At00401d20(TNetMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTNetMgrAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401DC5
-// GHIDRA_NAME TNetMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a60_At00401dc5
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a60_At00401dc5(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005e4a60 */
-
-void __cdecl TNetMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a60_At00401dc5(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At005e4a60();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401DF2
-// GHIDRA_NAME TNetMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004829f0
-// GHIDRA_PROTO void * __thiscall thunk_WrapperFor_FreeHeapBufferIfNotNull_At004829f0(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkIsland] JMP thunk into deleting-destructor wrapper.
-// GHIDRA_COMMENT_END
-
-/* [ThunkIsland] JMP thunk into deleting-destructor wrapper. */
-
-void * __thiscall
-TNetMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004829f0(TNetMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TCViewOwnedBufferChainState_00648578::WrapperFor_FreeHeapBufferIfNotNull_At004829f0
-                     ((TCViewOwnedBufferChainState_00648578 *)this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403341
-// GHIDRA_NAME TNetMgr::thunk_AddIntToLinkedValueList
-// GHIDRA_PROTO void __thiscall thunk_AddIntToLinkedValueList(int arg1)
-
-void __thiscall TNetMgr::thunk_AddIntToLinkedValueList(TNetMgr *this,int arg1)
-
-{
-  AddIntToLinkedValueList(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404F89
-// GHIDRA_NAME TNetMgr::thunk_DebugDumpLinkedValueList
-// GHIDRA_PROTO void __thiscall thunk_DebugDumpLinkedValueList(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DebugDumpLinkedValueList
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DebugDumpLinkedValueList */
-
-void __thiscall TNetMgr::thunk_DebugDumpLinkedValueList(TNetMgr *this)
-
-{
-  DebugDumpLinkedValueList(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004059D4
-// GHIDRA_NAME TNetMgr::thunk_SerializeLinkedValueListWithArchiveFlags
-// GHIDRA_PROTO void __thiscall thunk_SerializeLinkedValueListWithArchiveFlags(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SerializeLinkedValueListWithArchiveFlags
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SerializeLinkedValueListWithArchiveFlags */
-
-void __thiscall TNetMgr::thunk_SerializeLinkedValueListWithArchiveFlags(TNetMgr *this,int arg1)
-
-{
-  SerializeLinkedValueListWithArchiveFlags(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406884
-// GHIDRA_NAME TNetMgr::thunk_DestroyLinkedValueListAndFreeSelf
-// GHIDRA_PROTO void __thiscall thunk_DestroyLinkedValueListAndFreeSelf(void)
-
-void __thiscall TNetMgr::thunk_DestroyLinkedValueListAndFreeSelf(TNetMgr *this)
-
-{
-  DestroyLinkedValueListAndFreeSelf(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406CB2
-// GHIDRA_NAME TNetMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a30_At00406cb2
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a30_At00406cb2(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005e4a30 */
-
-void __cdecl TNetMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At005e4a30_At00406cb2(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At005e4a30();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407A27
-// GHIDRA_NAME TNetMgr::thunk_AddIntToLinkedValueListAlt
-// GHIDRA_PROTO void __thiscall thunk_AddIntToLinkedValueListAlt(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AddIntToLinkedValueListAlt
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AddIntToLinkedValueListAlt */
-
-void __thiscall TNetMgr::thunk_AddIntToLinkedValueListAlt(TNetMgr *this,int arg1)
-
-{
-  AddIntToLinkedValueListAlt(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004093C2
-// GHIDRA_NAME TNetMgr::thunk_RemoveNthIntFromLinkedValueList
-// GHIDRA_PROTO void __thiscall thunk_RemoveNthIntFromLinkedValueList(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RemoveNthIntFromLinkedValueList
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RemoveNthIntFromLinkedValueList */
-
-void __thiscall TNetMgr::thunk_RemoveNthIntFromLinkedValueList(TNetMgr *this,int arg1)
-
-{
-  RemoveNthIntFromLinkedValueList(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040976E
-// GHIDRA_NAME TNetMgr::thunk_ClearLinkedValueList
-// GHIDRA_PROTO void __thiscall thunk_ClearLinkedValueList(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ClearLinkedValueList
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ClearLinkedValueList */
-
-void __thiscall TNetMgr::thunk_ClearLinkedValueList(TNetMgr *this)
-
-{
-  ClearLinkedValueList(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049AEF0
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive
-// GHIDRA_PROTO void __thiscall SerializeNodeMapEntries_Key16Value32_WithArchive(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Archive read/write routine for node-map style entries using 16-bit key + 32-bit value and block-head allocation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SerializeNodeMapEntries_Key16Value32_WithArchive()
 
-/* Archive read/write routine for node-map style entries using 16-bit key + 32-bit value and
-   block-head allocation. */
-
-void __thiscall TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(TNetMgr *this,int arg1)
+void __thiscall TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(int param_1,int param_2)
 
 {
-  void *pvVar1;
-  int *piVar2;
-  undefined4 *puVar3;
-  uint uVar4;
-  int iVar5;
+  undefined4 *puVar1;
+  int iVar2;
+  uint uVar3;
+  int iVar4;
+  uint uVar5;
   uint uVar6;
-  void *pvVar7;
-  uint unaff_EDI;
-  int local_18;
+  undefined4 local_18;
   undefined4 local_14;
-  void *local_10;
+  int local_10;
   undefined4 local_c;
-  int local_8;
+  undefined4 local_8;
   uint local_4;
   
-  if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-    for (local_10 = ReadCount(); local_10 != (void *)0x0; local_10 = (void *)((int)local_10 + -1)) {
-      if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-        ReadBytesFromSerializedBuffer((TNetMgr *)arg1,&local_14,2);
+  if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+    for (local_10 = FUN_0061202e(); local_10 != 0; local_10 = local_10 + -1) {
+      if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(&local_14,2);
       }
       else {
-        WriteBytesToSerializedBuffer((TNetMgr *)arg1,&local_14,2);
+        WriteBytesToSerializedBuffer(&local_14,2);
       }
-      if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-        ReadBytesFromSerializedBuffer((TNetMgr *)arg1,&local_18,4);
+      if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(&local_18,4);
       }
       else {
-        WriteBytesToSerializedBuffer((TNetMgr *)arg1,&local_18,4);
+        WriteBytesToSerializedBuffer(&local_18,4);
       }
-      pvVar7 = this->pField08;
+      uVar6 = *(uint *)(param_1 + 8);
       local_8 = local_18;
       local_c = local_14;
-      uVar6 = ((uint)(int)(short)local_14 >> 4) % (uint)pvVar7;
-      pvVar1 = this->pField04;
-      if (pvVar1 != (void *)0x0) {
-        for (piVar2 = *(int **)((int)pvVar1 + uVar6 * 4); piVar2 != (int *)0x0;
-            piVar2 = (int *)*piVar2) {
-          if ((short)piVar2[2] == (short)local_14) goto LAB_0049b033;
+      uVar5 = ((uint)(int)(short)local_14 >> 4) % uVar6;
+      iVar4 = *(int *)(param_1 + 4);
+      if (iVar4 != 0) {
+        for (puVar1 = *(undefined4 **)(iVar4 + uVar5 * 4); puVar1 != (undefined4 *)0x0;
+            puVar1 = (undefined4 *)*puVar1) {
+          if (*(short *)(puVar1 + 2) == (short)local_14) goto LAB_0049b033;
         }
       }
-      piVar2 = (int *)0x0;
+      puVar1 = (undefined4 *)0x0;
 LAB_0049b033:
-      local_4 = uVar6;
-      if (piVar2 == (int *)0x0) {
-        if (pvVar1 == (void *)0x0) {
-          puVar3 = AllocateWithFallbackHandler();
-          this->pField04 = puVar3;
-          for (uVar4 = (uint)pvVar7 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
-            *puVar3 = 0;
-            puVar3 = puVar3 + 1;
+      local_4 = uVar5;
+      if (puVar1 == (undefined4 *)0x0) {
+        if (iVar4 == 0) {
+          puVar1 = (undefined4 *)AllocateWithFallbackHandler(uVar6 * 4);
+          *(undefined4 **)(param_1 + 4) = puVar1;
+          for (uVar3 = uVar6 & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
+            *puVar1 = 0;
+            puVar1 = puVar1 + 1;
           }
-          for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
-            *(undefined1 *)puVar3 = 0;
-            puVar3 = (undefined4 *)((int)puVar3 + 1);
+          for (iVar4 = 0; iVar4 != 0; iVar4 = iVar4 + -1) {
+            *(undefined1 *)puVar1 = 0;
+            puVar1 = (undefined4 *)((int)puVar1 + 1);
           }
-          this->pField08 = pvVar7;
+          *(uint *)(param_1 + 8) = uVar6;
         }
-        if (this->field10 == (int *)0x0) {
-          pvVar7 = AllocateAndLinkBlockHead();
-          iVar5 = this->field18;
-          piVar2 = (int *)(iVar5 * 0x10 + -0xc + (int)pvVar7);
-          if (-1 < iVar5 + -1) {
+        if (*(int *)(param_1 + 0x10) == 0) {
+          iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0x10);
+          iVar4 = *(int *)(param_1 + 0x18);
+          puVar1 = (undefined4 *)(iVar4 * 0x10 + -0xc + iVar2);
+          if (-1 < iVar4 + -1) {
             do {
-              *piVar2 = (int)this->field10;
-              this->field10 = piVar2;
-              piVar2 = piVar2 + -4;
-              iVar5 = iVar5 + -1;
-            } while (iVar5 != 0);
+              *puVar1 = *(undefined4 *)(param_1 + 0x10);
+              *(undefined4 **)(param_1 + 0x10) = puVar1;
+              puVar1 = puVar1 + -4;
+              iVar4 = iVar4 + -1;
+            } while (iVar4 != 0);
           }
         }
-        piVar2 = this->field10;
-        this->field10 = (int *)*piVar2;
-        this->field0c = (void *)((int)this->field0c + 1);
-        *(undefined2 *)(piVar2 + 2) = 0;
-        piVar2[3] = 0;
-        piVar2[1] = uVar6;
-        *(undefined2 *)(piVar2 + 2) = (undefined2)local_c;
-        *piVar2 = *(int *)(uVar6 * 4 + (int)this->pField04);
-        *(int **)(uVar6 * 4 + (int)this->pField04) = piVar2;
+        puVar1 = *(undefined4 **)(param_1 + 0x10);
+        *(undefined4 *)(param_1 + 0x10) = *puVar1;
+        *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
+        *(undefined2 *)(puVar1 + 2) = 0;
+        puVar1[3] = 0;
+        puVar1[1] = uVar5;
+        *(undefined2 *)(puVar1 + 2) = (undefined2)local_c;
+        *puVar1 = *(undefined4 *)(uVar5 * 4 + *(int *)(param_1 + 4));
+        *(undefined4 **)(uVar5 * 4 + *(int *)(param_1 + 4)) = puVar1;
       }
-      piVar2[3] = local_8;
+      puVar1[3] = local_8;
     }
   }
   else {
-    WriteCount((TNetMgr *)arg1,this->field0c,unaff_EDI);
-    if ((this->field0c != (void *)0x0) && (pvVar7 = (void *)0x0, this->pField08 != (void *)0x0)) {
+    WriteCount(*(undefined4 *)(param_1 + 0xc));
+    if ((*(int *)(param_1 + 0xc) != 0) && (uVar6 = 0, *(int *)(param_1 + 8) != 0)) {
       do {
-        for (puVar3 = *(undefined4 **)((int)this->pField04 + (int)pvVar7 * 4);
-            puVar3 != (undefined4 *)0x0; puVar3 = (undefined4 *)*puVar3) {
-          if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-            ReadBytesFromSerializedBuffer((TNetMgr *)arg1,puVar3 + 2,2);
+        for (puVar1 = *(undefined4 **)(*(int *)(param_1 + 4) + uVar6 * 4);
+            puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+          if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+            CArchive::ReadBytesFromSerializedBuffer(puVar1 + 2,2);
           }
           else {
-            WriteBytesToSerializedBuffer((TNetMgr *)arg1,puVar3 + 2,2);
+            WriteBytesToSerializedBuffer(puVar1 + 2,2);
           }
-          if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-            ReadBytesFromSerializedBuffer((TNetMgr *)arg1,puVar3 + 3,4);
+          if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+            CArchive::ReadBytesFromSerializedBuffer(puVar1 + 3,4);
           }
           else {
-            WriteBytesToSerializedBuffer((TNetMgr *)arg1,puVar3 + 3,4);
+            WriteBytesToSerializedBuffer(puVar1 + 3,4);
           }
         }
-        pvVar7 = (void *)((int)pvVar7 + 1);
-      } while (pvVar7 < this->pField08);
+        uVar6 = uVar6 + 1;
+      } while (uVar6 < *(uint *)(param_1 + 8));
       return;
     }
   }
@@ -346,121 +120,113 @@ LAB_0049b033:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049B330
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO void __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Archive read/write routine for node-map style entries using 32-bit key + 32-bit value and block-head allocation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SerializeNodeMapEntries_Key32Value32_WithArchive()
 
-/* Archive read/write routine for node-map style entries using 32-bit key + 32-bit value and
-   block-head allocation. */
-
-void __thiscall TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(TNetMgr *this,int arg1)
+void __thiscall TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(int param_1,int param_2)
 
 {
-  void *pvVar1;
-  int *piVar2;
-  undefined4 *puVar3;
-  uint uVar4;
-  int iVar5;
+  undefined4 *puVar1;
+  int iVar2;
+  uint uVar3;
+  int iVar4;
+  uint uVar5;
   uint uVar6;
-  void *pvVar7;
-  uint unaff_EDI;
-  int local_18;
+  undefined4 local_18;
   uint local_14;
-  void *local_10;
+  int local_10;
   uint local_c;
-  int local_8;
+  undefined4 local_8;
   uint local_4;
   
-  if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-    for (local_10 = ReadCount(); local_10 != (void *)0x0; local_10 = (void *)((int)local_10 + -1)) {
-      if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-        ReadBytesFromSerializedBuffer((TNetMgr *)arg1,&local_14,4);
+  if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+    for (local_10 = FUN_0061202e(); local_10 != 0; local_10 = local_10 + -1) {
+      if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(&local_14,4);
       }
       else {
-        WriteBytesToSerializedBuffer((TNetMgr *)arg1,&local_14,4);
+        WriteBytesToSerializedBuffer(&local_14,4);
       }
-      if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-        ReadBytesFromSerializedBuffer((TNetMgr *)arg1,&local_18,4);
+      if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(&local_18,4);
       }
       else {
-        WriteBytesToSerializedBuffer((TNetMgr *)arg1,&local_18,4);
+        WriteBytesToSerializedBuffer(&local_18,4);
       }
-      pvVar7 = this->pField08;
+      uVar6 = *(uint *)(param_1 + 8);
       local_8 = local_18;
-      uVar6 = (local_14 >> 4) % (uint)pvVar7;
+      uVar5 = (local_14 >> 4) % uVar6;
       local_c = local_14;
-      pvVar1 = this->pField04;
-      if (pvVar1 != (void *)0x0) {
-        for (piVar2 = *(int **)((int)pvVar1 + uVar6 * 4); piVar2 != (int *)0x0;
-            piVar2 = (int *)*piVar2) {
-          if (piVar2[2] == local_14) goto LAB_0049b471;
+      iVar4 = *(int *)(param_1 + 4);
+      if (iVar4 != 0) {
+        for (puVar1 = *(undefined4 **)(iVar4 + uVar5 * 4); puVar1 != (undefined4 *)0x0;
+            puVar1 = (undefined4 *)*puVar1) {
+          if (puVar1[2] == local_14) goto LAB_0049b471;
         }
       }
-      piVar2 = (int *)0x0;
+      puVar1 = (undefined4 *)0x0;
 LAB_0049b471:
-      local_4 = uVar6;
-      if (piVar2 == (int *)0x0) {
-        if (pvVar1 == (void *)0x0) {
-          puVar3 = AllocateWithFallbackHandler();
-          this->pField04 = puVar3;
-          for (uVar4 = (uint)pvVar7 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
-            *puVar3 = 0;
-            puVar3 = puVar3 + 1;
+      local_4 = uVar5;
+      if (puVar1 == (undefined4 *)0x0) {
+        if (iVar4 == 0) {
+          puVar1 = (undefined4 *)AllocateWithFallbackHandler(uVar6 * 4);
+          *(undefined4 **)(param_1 + 4) = puVar1;
+          for (uVar3 = uVar6 & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
+            *puVar1 = 0;
+            puVar1 = puVar1 + 1;
           }
-          for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
-            *(undefined1 *)puVar3 = 0;
-            puVar3 = (undefined4 *)((int)puVar3 + 1);
+          for (iVar4 = 0; iVar4 != 0; iVar4 = iVar4 + -1) {
+            *(undefined1 *)puVar1 = 0;
+            puVar1 = (undefined4 *)((int)puVar1 + 1);
           }
-          this->pField08 = pvVar7;
+          *(uint *)(param_1 + 8) = uVar6;
         }
-        if (this->field10 == (int *)0x0) {
-          pvVar7 = AllocateAndLinkBlockHead();
-          iVar5 = this->field18;
-          piVar2 = (int *)(iVar5 * 0x10 + -0xc + (int)pvVar7);
-          if (-1 < iVar5 + -1) {
+        if (*(int *)(param_1 + 0x10) == 0) {
+          iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0x10);
+          iVar4 = *(int *)(param_1 + 0x18);
+          puVar1 = (undefined4 *)(iVar4 * 0x10 + -0xc + iVar2);
+          if (-1 < iVar4 + -1) {
             do {
-              *piVar2 = (int)this->field10;
-              this->field10 = piVar2;
-              piVar2 = piVar2 + -4;
-              iVar5 = iVar5 + -1;
-            } while (iVar5 != 0);
+              *puVar1 = *(undefined4 *)(param_1 + 0x10);
+              *(undefined4 **)(param_1 + 0x10) = puVar1;
+              puVar1 = puVar1 + -4;
+              iVar4 = iVar4 + -1;
+            } while (iVar4 != 0);
           }
         }
-        piVar2 = this->field10;
-        this->field10 = (int *)*piVar2;
-        this->field0c = (void *)((int)this->field0c + 1);
-        piVar2[2] = 0;
-        piVar2[3] = 0;
-        piVar2[1] = uVar6;
-        piVar2[2] = local_c;
-        *piVar2 = *(int *)(uVar6 * 4 + (int)this->pField04);
-        *(int **)(uVar6 * 4 + (int)this->pField04) = piVar2;
+        puVar1 = *(undefined4 **)(param_1 + 0x10);
+        *(undefined4 *)(param_1 + 0x10) = *puVar1;
+        *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
+        puVar1[2] = 0;
+        puVar1[3] = 0;
+        puVar1[1] = uVar5;
+        puVar1[2] = local_c;
+        *puVar1 = *(undefined4 *)(uVar5 * 4 + *(int *)(param_1 + 4));
+        *(undefined4 **)(uVar5 * 4 + *(int *)(param_1 + 4)) = puVar1;
       }
-      piVar2[3] = local_8;
+      puVar1[3] = local_8;
     }
   }
   else {
-    WriteCount((TNetMgr *)arg1,this->field0c,unaff_EDI);
-    if ((this->field0c != (void *)0x0) && (pvVar7 = (void *)0x0, this->pField08 != (void *)0x0)) {
+    WriteCount(*(undefined4 *)(param_1 + 0xc));
+    if ((*(int *)(param_1 + 0xc) != 0) && (uVar6 = 0, *(int *)(param_1 + 8) != 0)) {
       do {
-        for (puVar3 = *(undefined4 **)((int)this->pField04 + (int)pvVar7 * 4);
-            puVar3 != (undefined4 *)0x0; puVar3 = (undefined4 *)*puVar3) {
-          if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-            ReadBytesFromSerializedBuffer((TNetMgr *)arg1,puVar3 + 2,4);
+        for (puVar1 = *(undefined4 **)(*(int *)(param_1 + 4) + uVar6 * 4);
+            puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+          if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+            CArchive::ReadBytesFromSerializedBuffer(puVar1 + 2,4);
           }
           else {
-            WriteBytesToSerializedBuffer((TNetMgr *)arg1,puVar3 + 2,4);
+            WriteBytesToSerializedBuffer(puVar1 + 2,4);
           }
-          if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-            ReadBytesFromSerializedBuffer((TNetMgr *)arg1,puVar3 + 3,4);
+          if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+            CArchive::ReadBytesFromSerializedBuffer(puVar1 + 3,4);
           }
           else {
-            WriteBytesToSerializedBuffer((TNetMgr *)arg1,puVar3 + 3,4);
+            WriteBytesToSerializedBuffer(puVar1 + 3,4);
           }
         }
-        pvVar7 = (void *)((int)pvVar7 + 1);
-      } while (pvVar7 < this->pField08);
+        uVar6 = uVar6 + 1;
+      } while (uVar6 < *(uint *)(param_1 + 8));
       return;
     }
   }
@@ -469,73 +235,73 @@ LAB_0049b471:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C65D0
 // GHIDRA_NAME TNetMgr::SerializeLinkedValueListWithArchiveFlags
-// GHIDRA_PROTO void __thiscall SerializeLinkedValueListWithArchiveFlags(int arg1)
+// GHIDRA_PROTO undefined SerializeLinkedValueListWithArchiveFlags()
 
-void __thiscall TNetMgr::SerializeLinkedValueListWithArchiveFlags(TNetMgr *this,int arg1)
+void __thiscall TNetMgr::SerializeLinkedValueListWithArchiveFlags(int param_1,int param_2)
 
 {
-  void *pvVar1;
-  int this_00;
+  undefined4 uVar1;
   int iVar2;
-  void *pvVar3;
-  void *pvVar4;
-  int *piVar5;
-  int iVar6;
-  uint unaff_EDI;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  undefined4 *puVar6;
+  int iVar7;
+  int *piVar8;
   
-  this_00 = arg1;
-  if ((~*(uint *)(arg1 + 0x14) & 1) == 0) {
-    for (pvVar3 = ReadCount(); pvVar3 != (void *)0x0; pvVar3 = (void *)((int)pvVar3 + -1)) {
-      if ((~*(uint *)(this_00 + 0x14) & 1) == 0) {
-        ReadBytesFromSerializedBuffer((TNetMgr *)this_00,&arg1,4);
+  iVar2 = param_2;
+  if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
+    for (iVar4 = FUN_0061202e(); iVar4 != 0; iVar4 = iVar4 + -1) {
+      if ((~*(uint *)(iVar2 + 0x14) & 1) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(&param_2,4);
       }
       else {
-        WriteBytesToSerializedBuffer((TNetMgr *)this_00,&arg1,4);
+        WriteBytesToSerializedBuffer(&param_2,4);
       }
-      iVar2 = arg1;
-      pvVar1 = this->pField08;
-      if (this->field10 == (int *)0x0) {
-        pvVar4 = AllocateAndLinkBlockHead();
-        iVar6 = this->field18;
-        piVar5 = (int *)((int)pvVar4 + iVar6 * 0xc + -8);
-        if (-1 < iVar6 + -1) {
+      iVar3 = param_2;
+      uVar1 = *(undefined4 *)(param_1 + 8);
+      if (*(int *)(param_1 + 0x10) == 0) {
+        iVar5 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
+        iVar7 = *(int *)(param_1 + 0x18);
+        puVar6 = (undefined4 *)(iVar5 + -8 + iVar7 * 0xc);
+        if (-1 < iVar7 + -1) {
           do {
-            *piVar5 = (int)this->field10;
-            this->field10 = piVar5;
-            piVar5 = piVar5 + -3;
-            iVar6 = iVar6 + -1;
-          } while (iVar6 != 0);
+            *puVar6 = *(undefined4 *)(param_1 + 0x10);
+            *(undefined4 **)(param_1 + 0x10) = puVar6;
+            puVar6 = puVar6 + -3;
+            iVar7 = iVar7 + -1;
+          } while (iVar7 != 0);
         }
       }
-      piVar5 = this->field10;
-      this->field10 = (int *)*piVar5;
-      piVar5[1] = (int)pvVar1;
-      *piVar5 = 0;
-      this->field0c = (void *)((int)this->field0c + 1);
-      piVar5[2] = 0;
-      piVar5[2] = iVar2;
-      if (this->pField08 == (undefined4 *)0x0) {
-        this->pField04 = piVar5;
+      puVar6 = *(undefined4 **)(param_1 + 0x10);
+      *(undefined4 *)(param_1 + 0x10) = *puVar6;
+      puVar6[1] = uVar1;
+      *puVar6 = 0;
+      *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
+      puVar6[2] = 0;
+      puVar6[2] = iVar3;
+      if (*(undefined4 **)(param_1 + 8) == (undefined4 *)0x0) {
+        *(undefined4 **)(param_1 + 4) = puVar6;
       }
       else {
-        *(int **)this->pField08 = piVar5;
+        **(undefined4 **)(param_1 + 8) = puVar6;
       }
-      this->pField08 = piVar5;
+      *(undefined4 **)(param_1 + 8) = puVar6;
     }
   }
   else {
-    WriteCount((TNetMgr *)arg1,this->field0c,unaff_EDI);
-    piVar5 = this->pField04;
-    if (piVar5 != (int *)0x0) {
+    WriteCount(*(undefined4 *)(param_1 + 0xc));
+    piVar8 = *(int **)(param_1 + 4);
+    if (piVar8 != (int *)0x0) {
       do {
-        if ((~*(uint *)(this_00 + 0x14) & 1) == 0) {
-          ReadBytesFromSerializedBuffer((TNetMgr *)this_00,piVar5 + 2,4);
+        if ((~*(uint *)(iVar2 + 0x14) & 1) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(piVar8 + 2,4);
         }
         else {
-          WriteBytesToSerializedBuffer((TNetMgr *)this_00,piVar5 + 2,4);
+          WriteBytesToSerializedBuffer(piVar8 + 2,4);
         }
-        piVar5 = (int *)*piVar5;
-      } while (piVar5 != (int *)0x0);
+        piVar8 = (int *)*piVar8;
+      } while (piVar8 != (int *)0x0);
       return;
     }
   }
@@ -544,233 +310,227 @@ void __thiscall TNetMgr::SerializeLinkedValueListWithArchiveFlags(TNetMgr *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6740
 // GHIDRA_NAME TNetMgr::AddIntToLinkedValueList
-// GHIDRA_PROTO void __thiscall AddIntToLinkedValueList(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Appends integer value to linked value list (1-based indexed access model used by companion getters).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined AddIntToLinkedValueList()
 
-/* Appends integer value to linked value list (1-based indexed access model used by companion
-   getters). */
-
-void __thiscall TNetMgr::AddIntToLinkedValueList(TNetMgr *this,int arg1)
+void __thiscall TNetMgr::AddIntToLinkedValueList(int param_1,undefined4 param_2)
 
 {
-  void *pvVar1;
-  void *pvVar2;
-  int *piVar3;
+  undefined4 uVar1;
+  int iVar2;
+  undefined4 *puVar3;
   int iVar4;
   
-  pvVar1 = this->pField08;
-  if (this->field10 == (int *)0x0) {
-    pvVar2 = AllocateAndLinkBlockHead();
-    iVar4 = this->field18;
-    piVar3 = (int *)((int)pvVar2 + iVar4 * 0xc + -8);
+  uVar1 = *(undefined4 *)(param_1 + 8);
+  if (*(int *)(param_1 + 0x10) == 0) {
+    iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
+    iVar4 = *(int *)(param_1 + 0x18);
+    puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
     if (-1 < iVar4 + -1) {
       do {
-        *piVar3 = (int)this->field10;
-        this->field10 = piVar3;
-        piVar3 = piVar3 + -3;
+        *puVar3 = *(undefined4 *)(param_1 + 0x10);
+        *(undefined4 **)(param_1 + 0x10) = puVar3;
+        puVar3 = puVar3 + -3;
         iVar4 = iVar4 + -1;
       } while (iVar4 != 0);
     }
   }
-  piVar3 = this->field10;
-  this->field10 = (int *)*piVar3;
-  piVar3[1] = (int)pvVar1;
-  *piVar3 = 0;
-  this->field0c = (void *)((int)this->field0c + 1);
-  piVar3[2] = 0;
-  piVar3[2] = arg1;
-  if (this->pField08 == (undefined4 *)0x0) {
-    this->pField04 = piVar3;
-    this->pField08 = piVar3;
+  puVar3 = *(undefined4 **)(param_1 + 0x10);
+  *(undefined4 *)(param_1 + 0x10) = *puVar3;
+  puVar3[1] = uVar1;
+  *puVar3 = 0;
+  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
+  puVar3[2] = 0;
+  puVar3[2] = param_2;
+  if (*(undefined4 **)(param_1 + 8) == (undefined4 *)0x0) {
+    *(undefined4 **)(param_1 + 4) = puVar3;
+    *(undefined4 **)(param_1 + 8) = puVar3;
     return;
   }
-  *(int **)this->pField08 = piVar3;
-  this->pField08 = piVar3;
+  **(undefined4 **)(param_1 + 8) = puVar3;
+  *(undefined4 **)(param_1 + 8) = puVar3;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C67E0
 // GHIDRA_NAME TNetMgr::AddIntToLinkedValueListAlt
-// GHIDRA_PROTO void __thiscall AddIntToLinkedValueListAlt(int arg1)
+// GHIDRA_PROTO undefined AddIntToLinkedValueListAlt()
 
-void __thiscall TNetMgr::AddIntToLinkedValueListAlt(TNetMgr *this,int arg1)
+void __thiscall TNetMgr::AddIntToLinkedValueListAlt(int param_1,undefined4 param_2)
 
 {
-  void *pvVar1;
-  void *pvVar2;
-  int *piVar3;
+  undefined4 uVar1;
+  int iVar2;
+  undefined4 *puVar3;
   int iVar4;
   
-  pvVar1 = this->pField08;
-  if (this->field10 == (int *)0x0) {
-    pvVar2 = AllocateAndLinkBlockHead();
-    iVar4 = this->field18;
-    piVar3 = (int *)((int)pvVar2 + iVar4 * 0xc + -8);
+  uVar1 = *(undefined4 *)(param_1 + 8);
+  if (*(int *)(param_1 + 0x10) == 0) {
+    iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
+    iVar4 = *(int *)(param_1 + 0x18);
+    puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
     if (-1 < iVar4 + -1) {
       do {
-        *piVar3 = (int)this->field10;
-        this->field10 = piVar3;
-        piVar3 = piVar3 + -3;
+        *puVar3 = *(undefined4 *)(param_1 + 0x10);
+        *(undefined4 **)(param_1 + 0x10) = puVar3;
+        puVar3 = puVar3 + -3;
         iVar4 = iVar4 + -1;
       } while (iVar4 != 0);
     }
   }
-  piVar3 = this->field10;
-  this->field10 = (int *)*piVar3;
-  piVar3[1] = (int)pvVar1;
-  *piVar3 = 0;
-  this->field0c = (void *)((int)this->field0c + 1);
-  piVar3[2] = 0;
-  piVar3[2] = arg1;
-  if (this->pField08 == (undefined4 *)0x0) {
-    this->pField04 = piVar3;
-    this->pField08 = piVar3;
+  puVar3 = *(undefined4 **)(param_1 + 0x10);
+  *(undefined4 *)(param_1 + 0x10) = *puVar3;
+  puVar3[1] = uVar1;
+  *puVar3 = 0;
+  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
+  puVar3[2] = 0;
+  puVar3[2] = param_2;
+  if (*(undefined4 **)(param_1 + 8) == (undefined4 *)0x0) {
+    *(undefined4 **)(param_1 + 4) = puVar3;
+    *(undefined4 **)(param_1 + 8) = puVar3;
     return;
   }
-  *(int **)this->pField08 = piVar3;
-  this->pField08 = piVar3;
+  **(undefined4 **)(param_1 + 8) = puVar3;
+  *(undefined4 **)(param_1 + 8) = puVar3;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6880
 // GHIDRA_NAME TNetMgr::GetNthIntFromLinkedValueList
-// GHIDRA_PROTO void __thiscall GetNthIntFromLinkedValueList(int arg1)
+// GHIDRA_PROTO undefined GetNthIntFromLinkedValueList()
 
-void __thiscall TNetMgr::GetNthIntFromLinkedValueList(TNetMgr *this,int arg1)
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+undefined4 __thiscall TNetMgr::GetNthIntFromLinkedValueList(int param_1,int param_2)
 
 {
-  int iVar1;
+  undefined4 *puVar1;
   
-  iVar1 = arg1 + -1;
-  if (iVar1 < (int)this->field0c) {
-    for (; iVar1 != 0; iVar1 = iVar1 + -1) {
-    }
-    return;
+  param_2 = param_2 + -1;
+  if (*(int *)(param_1 + 0xc) <= param_2) {
+    return _DAT_00000008;
   }
-  return;
+  puVar1 = *(undefined4 **)(param_1 + 4);
+  for (; param_2 != 0; param_2 = param_2 + -1) {
+    puVar1 = (undefined4 *)*puVar1;
+  }
+  return puVar1[2];
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C68E0
 // GHIDRA_NAME TNetMgr::RemoveNthIntFromLinkedValueList
-// GHIDRA_PROTO void __thiscall RemoveNthIntFromLinkedValueList(int arg1)
+// GHIDRA_PROTO undefined RemoveNthIntFromLinkedValueList()
 
-void __thiscall TNetMgr::RemoveNthIntFromLinkedValueList(TNetMgr *this,int arg1)
+void __thiscall TNetMgr::RemoveNthIntFromLinkedValueList(int param_1,int param_2)
 
 {
   undefined4 *puVar1;
   int *piVar2;
-  void *pvVar3;
-  int iVar4;
+  int iVar3;
   
-  iVar4 = arg1 + -1;
-  if (iVar4 < (int)this->field0c) {
-    piVar2 = this->pField04;
-    for (; iVar4 != 0; iVar4 = iVar4 + -1) {
+  param_2 = param_2 + -1;
+  if (param_2 < *(int *)(param_1 + 0xc)) {
+    piVar2 = *(int **)(param_1 + 4);
+    for (; param_2 != 0; param_2 = param_2 + -1) {
       piVar2 = (int *)*piVar2;
     }
   }
   else {
     piVar2 = (int *)0x0;
   }
-  if (piVar2 == this->pField04) {
-    this->pField04 = (void *)*piVar2;
+  if (piVar2 == *(int **)(param_1 + 4)) {
+    *(int *)(param_1 + 4) = *piVar2;
   }
   else {
     *(int *)piVar2[1] = *piVar2;
   }
-  if (piVar2 == this->pField08) {
-    this->pField08 = (void *)piVar2[1];
+  if (piVar2 == *(int **)(param_1 + 8)) {
+    *(int *)(param_1 + 8) = piVar2[1];
   }
   else {
     *(int *)(*piVar2 + 4) = piVar2[1];
   }
-  *piVar2 = (int)this->field10;
-  this->field10 = piVar2;
-  pvVar3 = (void *)((int)this->field0c + -1);
-  this->field0c = pvVar3;
-  if (pvVar3 == (void *)0x0) {
-    for (puVar1 = this->pField04; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  *piVar2 = *(int *)(param_1 + 0x10);
+  *(int **)(param_1 + 0x10) = piVar2;
+  iVar3 = *(int *)(param_1 + 0xc) + -1;
+  *(int *)(param_1 + 0xc) = iVar3;
+  if (iVar3 == 0) {
+    for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
+        puVar1 = (undefined4 *)*puVar1) {
     }
-    this->field0c = (void *)0x0;
-    this->field10 = (int *)0x0;
-    this->pField08 = (void *)0x0;
-    this->pField04 = (void *)0x0;
+    *(undefined4 *)(param_1 + 0xc) = 0;
+    *(undefined4 *)(param_1 + 0x10) = 0;
+    *(undefined4 *)(param_1 + 8) = 0;
+    *(undefined4 *)(param_1 + 4) = 0;
     FreeDataChain();
-    this->field14 = 0;
+    *(undefined4 *)(param_1 + 0x14) = 0;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C69A0
 // GHIDRA_NAME TNetMgr::ClearLinkedValueList
-// GHIDRA_PROTO void __thiscall ClearLinkedValueList(void)
+// GHIDRA_PROTO undefined ClearLinkedValueList()
 
-void __thiscall TNetMgr::ClearLinkedValueList(TNetMgr *this)
+void __fastcall TNetMgr::ClearLinkedValueList(int param_1)
 
 {
   undefined4 *puVar1;
   
-  for (puVar1 = this->pField04; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
+      puVar1 = (undefined4 *)*puVar1) {
   }
-  this->field0c = (void *)0x0;
-  this->field10 = (int *)0x0;
-  this->pField08 = (void *)0x0;
-  this->pField04 = (void *)0x0;
+  *(undefined4 *)(param_1 + 0xc) = 0;
+  *(undefined4 *)(param_1 + 0x10) = 0;
+  *(undefined4 *)(param_1 + 8) = 0;
+  *(undefined4 *)(param_1 + 4) = 0;
   FreeDataChain();
-  this->field14 = 0;
+  *(undefined4 *)(param_1 + 0x14) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C69E0
 // GHIDRA_NAME TNetMgr::RemoveIntFromLinkedValueListByValue
-// GHIDRA_PROTO void __thiscall RemoveIntFromLinkedValueListByValue(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Removes first entry whose value equals param_2 from linked value list; maintains freelist and empties block chain when count reaches zero.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RemoveIntFromLinkedValueListByValue()
 
-/* Removes first entry whose value equals param_2 from linked value list; maintains freelist and
-   empties block chain when count reaches zero. */
-
-void __thiscall TNetMgr::RemoveIntFromLinkedValueListByValue(TNetMgr *this,int arg1)
+void __thiscall TNetMgr::RemoveIntFromLinkedValueListByValue(int param_1,int param_2)
 
 {
   undefined4 *puVar1;
   int *piVar2;
-  void *pvVar3;
+  int iVar3;
   
-  for (piVar2 = this->pField04; piVar2 != (int *)0x0; piVar2 = (int *)*piVar2) {
-    if (piVar2[2] == arg1) goto LAB_004c6a00;
+  for (piVar2 = *(int **)(param_1 + 4); piVar2 != (int *)0x0; piVar2 = (int *)*piVar2) {
+    if (piVar2[2] == param_2) goto LAB_004c6a00;
   }
   piVar2 = (int *)0x0;
 LAB_004c6a00:
   if (piVar2 != (int *)0x0) {
-    if (piVar2 == this->pField04) {
-      this->pField04 = (void *)*piVar2;
+    if (piVar2 == *(int **)(param_1 + 4)) {
+      *(int *)(param_1 + 4) = *piVar2;
     }
     else {
       *(int *)piVar2[1] = *piVar2;
     }
-    if (piVar2 == this->pField08) {
-      this->pField08 = (void *)piVar2[1];
+    if (piVar2 == *(int **)(param_1 + 8)) {
+      *(int *)(param_1 + 8) = piVar2[1];
     }
     else {
       *(int *)(*piVar2 + 4) = piVar2[1];
     }
-    *piVar2 = (int)this->field10;
-    this->field10 = piVar2;
-    pvVar3 = (void *)((int)this->field0c + -1);
-    this->field0c = pvVar3;
-    if (pvVar3 == (void *)0x0) {
-      for (puVar1 = this->pField04; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+    *piVar2 = *(int *)(param_1 + 0x10);
+    *(int **)(param_1 + 0x10) = piVar2;
+    iVar3 = *(int *)(param_1 + 0xc) + -1;
+    *(int *)(param_1 + 0xc) = iVar3;
+    if (iVar3 == 0) {
+      for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
+          puVar1 = (undefined4 *)*puVar1) {
       }
-      this->field0c = (void *)0x0;
-      this->field10 = (int *)0x0;
-      this->pField08 = (void *)0x0;
-      this->pField04 = (void *)0x0;
+      *(undefined4 *)(param_1 + 0xc) = 0;
+      *(undefined4 *)(param_1 + 0x10) = 0;
+      *(undefined4 *)(param_1 + 8) = 0;
+      *(undefined4 *)(param_1 + 4) = 0;
       FreeDataChain();
-      this->field14 = 0;
+      *(undefined4 *)(param_1 + 0x14) = 0;
     }
   }
   return;
@@ -778,64 +538,59 @@ LAB_004c6a00:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6B60
 // GHIDRA_NAME TNetMgr::DebugDumpLinkedValueList
-// GHIDRA_PROTO void __thiscall DebugDumpLinkedValueList(void)
+// GHIDRA_PROTO undefined DebugDumpLinkedValueList()
 
-void __thiscall TNetMgr::DebugDumpLinkedValueList(TNetMgr *this)
+void __fastcall TNetMgr::DebugDumpLinkedValueList(int *param_1)
 
 {
   code *pcVar1;
-  TInteriorMinister *pTVar2;
-  void *this_00;
+  undefined4 uVar2;
   int iVar3;
-  TInteriorMinister *in_stack_00000004;
+  code *pcVar4;
+  undefined *puVar5;
   
-  TInteriorMinister::operator<<(in_stack_00000004);
+  FUN_00621089(&DAT_00695880);
   iVar3 = 1;
-  if (0 < (int)this->field0c) {
-    pcVar1 = (code *)this->field0_0x0[9];
+  if (0 < param_1[3]) {
+    pcVar1 = *(code **)(*param_1 + 0x24);
     do {
-      (*pcVar1)(iVar3,&g_Build_Civ_Report_LookupTable_00695880);
-      pTVar2 = (TInteriorMinister *)::operator<<(in_stack_00000004);
-      this_00 = (void *)TInteriorMinister::operator<<(pTVar2);
-      pTVar2 = (TInteriorMinister *)::operator<<(this_00);
-      TInteriorMinister::operator<<(pTVar2);
+      puVar5 = &DAT_00695880;
+      uVar2 = (*pcVar1)(iVar3,&DAT_00695880);
+      pcVar4 = g_Build_Map_Order_LookupTable_00695794;
+      FUN_00621206(iVar3);
+      FUN_00621089(pcVar4);
+      FUN_006211a6(uVar2);
+      FUN_00621089(puVar5);
       iVar3 = iVar3 + 1;
-    } while (iVar3 <= (int)this->field0c);
+    } while (iVar3 <= param_1[3]);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6BF0
 // GHIDRA_NAME TNetMgr::DestroyLinkedValueListAndFreeSelf
-// GHIDRA_PROTO void __thiscall DestroyLinkedValueListAndFreeSelf(void)
+// GHIDRA_PROTO undefined DestroyLinkedValueListAndFreeSelf()
 
-void __thiscall TNetMgr::DestroyLinkedValueListAndFreeSelf(TNetMgr *this)
+void __fastcall TNetMgr::DestroyLinkedValueListAndFreeSelf(int *param_1)
 
 {
-  undefined **ppuVar1;
+  int iVar1;
   
-  ppuVar1 = this->field0_0x0;
-  (*(code *)ppuVar1[0xc])();
-  if (this != (TNetMgr *)0x0) {
-    (*(code *)ppuVar1[1])(1);
+  iVar1 = *param_1;
+  (**(code **)(iVar1 + 0x30))();
+  if (param_1 != (int *)0x0) {
+    (**(code **)(iVar1 + 4))(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E3310
 // GHIDRA_NAME TNetMgr::CreateTNetMgrInstance
-// GHIDRA_PROTO TNetMgr * __cdecl CreateTNetMgrInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around InitializeSharedStringRefFromEmpty; instructions=23, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTNetMgrInstance()
 
-/* [WrapperShape] small wrapper around InitializeSharedStringRefFromEmpty; instructions=23,
-   call_insns=1, internal_calls=1, unique_internal=1 */
-
-TNetMgr * __cdecl TNetMgr::CreateTNetMgrInstance(void)
+undefined4 * __fastcall TNetMgr::CreateTNetMgrInstance(undefined4 *param_1)
 
 {
-  TNetMgr *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -844,26 +599,21 @@ TNetMgr * __cdecl TNetMgr::CreateTNetMgrInstance(void)
   puStack_8 = &LAB_0063a9d8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  in_ECX->pField04 = (void *)0x0;
-  in_ECX->pField08 = (void *)0x0;
-  in_ECX->field0_0x0 = &PTR_thunk_AppendRuntimeSelectionRecordEntry_0066f9c0;
+  param_1[1] = 0;
+  param_1[2] = 0;
+  *param_1 = &PTR_LAB_0066f9c0;
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  in_ECX->field0_0x0 = &PTR_CreateRuntimeSelectionRecordEntryIfTagNotReserved_0066f9f0;
+  *param_1 = &PTR_LAB_0066f9f0;
   *unaff_FS_OFFSET = local_c;
-  return in_ECX;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E33C0
 // GHIDRA_NAME TNetMgr::GetTNetMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNetMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNetMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNetMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TNetMgr. */
-
-void * __cdecl TNetMgr::GetTNetMgrClassNamePointer(void)
+char * TNetMgr::GetTNetMgrClassNamePointer(void)
 
 {
   return &g_pClassDescTNetMgr;
@@ -871,169 +621,143 @@ void * __cdecl TNetMgr::GetTNetMgrClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E33E0
 // GHIDRA_NAME TNetMgr::ConstructGlobalTurnEventQueueManager
-// GHIDRA_PROTO void __thiscall ConstructGlobalTurnEventQueueManager(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Tiny constructor that assigns vtable for global turn-event queue manager object stored via DAT_006a6014.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructGlobalTurnEventQueueManager()
 
-/* Tiny constructor that assigns vtable for global turn-event queue manager object stored via
-   DAT_006a6014. */
-
-void __thiscall TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr *this)
+void __fastcall TNetMgr::ConstructGlobalTurnEventQueueManager(undefined4 *param_1)
 
 {
-  this->field0_0x0 = &g_vtblTNetMgr;
+  *param_1 = &PTR_LAB_0066fa20;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E3400
 // GHIDRA_NAME TNetMgr::DestructTNetMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTNetMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTNetMgrAndMaybeFree()
 
-void * __thiscall TNetMgr::DestructTNetMgrAndMaybeFree(TNetMgr *this,byte freeSelfFlag)
+undefined4 __thiscall TNetMgr::DestructTNetMgrAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  thunk_InitializeRuntimeClassVtablePointer_0066FEC4_Secondary_At00403be3();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  InitializeRuntimeClassVtablePointer_0066FEC4_Secondary();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D27
 // GHIDRA_NAME TNetMgr::WriteWordToSerializedBuffer
-// GHIDRA_PROTO void * __thiscall WriteWordToSerializedBuffer(ushort value)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Writes 16-bit value to serialized buffer cursor at this+0x24, flushing/realigning through stream helper when space is exhausted.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WriteWordToSerializedBuffer()
 
-/* Writes 16-bit value to serialized buffer cursor at this+0x24, flushing/realigning through stream
-   helper when space is exhausted. */
-
-void * __thiscall TNetMgr::WriteWordToSerializedBuffer(TNetMgr *this,ushort value)
+int __thiscall TNetMgr::WriteWordToSerializedBuffer(int param_1,undefined2 param_2)
 
 {
-  if (this->field10_0x28 < (undefined **)((int)this->pField24 + 2U)) {
-    Flush(this);
+  if (*(uint *)(param_1 + 0x28) < *(int *)(param_1 + 0x24) + 2U) {
+    Flush();
   }
-  *(ushort *)this->pField24 = value;
-  this->pField24 = (void *)((int)this->pField24 + 2);
-  return this;
+  **(undefined2 **)(param_1 + 0x24) = param_2;
+  *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + 2;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D4E
 // GHIDRA_NAME TNetMgr::WriteDwordToSerializedBuffer
-// GHIDRA_PROTO void * __thiscall WriteDwordToSerializedBuffer(uint value)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Writes 32-bit value to serialized buffer cursor at this+0x24, flushing/realigning through stream helper when space is exhausted.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WriteDwordToSerializedBuffer()
 
-/* Writes 32-bit value to serialized buffer cursor at this+0x24, flushing/realigning through stream
-   helper when space is exhausted. */
-
-void * __thiscall TNetMgr::WriteDwordToSerializedBuffer(TNetMgr *this,uint value)
+int __thiscall TNetMgr::WriteDwordToSerializedBuffer(int param_1,undefined4 param_2)
 
 {
-  if (this->field10_0x28 < (undefined **)((int)this->pField24 + 4U)) {
-    Flush(this);
+  if (*(uint *)(param_1 + 0x28) < *(int *)(param_1 + 0x24) + 4U) {
+    Flush();
   }
-  *(uint *)this->pField24 = value;
-  this->pField24 = (void *)((int)this->pField24 + 4);
-  return this;
+  **(undefined4 **)(param_1 + 0x24) = param_2;
+  *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + 4;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060339A
 // GHIDRA_NAME TNetMgr::CMapPtrToPtr_ctor
-// GHIDRA_PROTO void __thiscall CMapPtrToPtr_ctor(int nBlockSize)
+// GHIDRA_PROTO undefined CMapPtrToPtr_ctor()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructor naming normalization; preserves analysis label CMapPtrToPtr
+// GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
+// GHIDRA_COMMENT  public: __thiscall CMap<void *,void *,void *,void *>::CMap<void *,void *,void *,void *>(int)
+// GHIDRA_COMMENT  public: __thiscall CMap<class ATL::CStringT<wchar_t,class StrTraitMFC<wchar_t,class ATL::ChTraitsOS<wchar_t> > >,wchar_t const *,void *,void *>::CMap<class ATL::CStringT<wchar_t,class StrTraitMFC<wchar_t,class ATL::ChTraitsOS<wchar_t> > >,wchar_t const *,void *,void *>(int)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release
 // GHIDRA_COMMENT_END
 
-/* Constructor naming normalization; preserves analysis label CMapPtrToPtr */
+/* Library Function - Multiple Matches With Same Base Name
+    public: __thiscall CMap<void *,void *,void *,void *>::CMap<void *,void *,void *,void *>(int)
+    public: __thiscall CMap<class ATL::CStringT<wchar_t,class StrTraitMFC<wchar_t,class
+   ATL::ChTraitsOS<wchar_t> > >,wchar_t const *,void *,void *>::CMap<class
+   ATL::CStringT<wchar_t,class StrTraitMFC<wchar_t,class ATL::ChTraitsOS<wchar_t> > >,wchar_t const
+   *,void *,void *>(int)
+   
+   Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release */
 
-void __thiscall TNetMgr::CMapPtrToPtr_ctor(TNetMgr *this,int nBlockSize)
+void __thiscall TNetMgr::CMapPtrToPtr_ctor(undefined4 *param_1,undefined4 param_2)
 
 {
-  this->pField04 = (void *)0x0;
-  this->field0c = (void *)0x0;
-  this->field10 = (int *)0x0;
-  this->field14 = 0;
-  this->field0_0x0 = &PTR_LAB_006730ec;
-  this->pField08 = (void *)0x11;
-  this->field18 = nBlockSize;
+  param_1[1] = 0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[5] = 0;
+  *param_1 = &PTR_LAB_006730ec;
+  param_1[2] = 0x11;
+  param_1[6] = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006033DD
 // GHIDRA_NAME TNetMgr::InitHashTable
-// GHIDRA_PROTO void __thiscall InitHashTable(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Reallocates hash bucket array for handle map and clears all bucket heads. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitHashTable()
 
-/* Reallocates hash bucket array for handle map and clears all bucket heads.
-   [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall TNetMgr::InitHashTable(TNetMgr *this,int arg1,int arg2)
+void __thiscall TNetMgr::InitHashTable(int param_1,int param_2,int param_3)
 
 {
-  CDocTemplate *pThis;
+  void *_Dst;
   
-  if (this->pField04 != (void *)0x0) {
-    FreeHeapBufferIfNotNull();
-    this->pField04 = (void *)0x0;
+  if (*(int *)(param_1 + 4) != 0) {
+    FreeHeapBufferIfNotNull(*(int *)(param_1 + 4));
+    *(undefined4 *)(param_1 + 4) = 0;
   }
-  if (arg2 != 0) {
-    pThis = AllocateWithFallbackHandler();
-    this->pField04 = pThis;
-    CDocTemplate::memset(pThis,0,arg1 << 2);
+  if (param_3 != 0) {
+    _Dst = (void *)AllocateWithFallbackHandler(param_2 << 2);
+    *(void **)(param_1 + 4) = _Dst;
+    CDocTemplate::memset(_Dst,0,param_2 << 2);
   }
-  this->pField08 = (void *)arg1;
+  *(int *)(param_1 + 8) = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060356B
 // GHIDRA_NAME TNetMgr::GetOrCreateHandleMapEntryValueByKey
-// GHIDRA_PROTO int * __thiscall GetOrCreateHandleMapEntryValueByKey(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Finds or creates handle-map entry for key and returns pointer to entry value storage.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetOrCreateHandleMapEntryValueByKey()
 
-/* Finds or creates handle-map entry for key and returns pointer to entry value storage. */
-
-int * __thiscall TNetMgr::GetOrCreateHandleMapEntryValueByKey(TNetMgr *this)
+undefined4 * __thiscall TNetMgr::GetOrCreateHandleMapEntryValueByKey(int param_1,int param_2)
 
 {
   int iVar1;
-  undefined4 *extraout_EAX;
   undefined4 *puVar2;
-  int in_stack_00000004;
   
-  iVar1 = in_stack_00000004;
-  GetAssocAt(in_stack_00000004,(int)&stack0x00000004);
-  puVar2 = extraout_EAX;
-  if (extraout_EAX == (undefined4 *)0x0) {
-    if (this->pField04 == (void *)0x0) {
-      InitHashTable(this,(int)this->pField08,1);
+  iVar1 = param_2;
+  puVar2 = (undefined4 *)GetAssocAt(param_2,&param_2);
+  if (puVar2 == (undefined4 *)0x0) {
+    if (*(int *)(param_1 + 4) == 0) {
+      InitHashTable(*(undefined4 *)(param_1 + 8),1);
     }
-    puVar2 = NewAssoc();
+    puVar2 = (undefined4 *)NewAssoc();
     puVar2[1] = iVar1;
-    *puVar2 = *(undefined4 *)((int)this->pField04 + in_stack_00000004 * 4);
-    *(undefined4 **)((int)this->pField04 + in_stack_00000004 * 4) = puVar2;
+    *puVar2 = *(undefined4 *)(*(int *)(param_1 + 4) + param_2 * 4);
+    *(undefined4 **)(*(int *)(param_1 + 4) + param_2 * 4) = puVar2;
   }
   return puVar2 + 2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606FBA
 // GHIDRA_NAME TNetMgr::GetCObjectRuntimeClass
-// GHIDRA_PROTO void * __thiscall GetCObjectRuntimeClass(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [MfcRuntimeClass] Returns CRuntimeClass descriptor pointer for CObject.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetCObjectRuntimeClass()
 
-/* [MfcRuntimeClass] Returns CRuntimeClass descriptor pointer for CObject. */
-
-void * __thiscall TNetMgr::GetCObjectRuntimeClass(TNetMgr *this)
+undefined ** TNetMgr::GetCObjectRuntimeClass(void)
 
 {
   return &PTR_s_CObject_006706e0;
@@ -1041,143 +765,46 @@ void * __thiscall TNetMgr::GetCObjectRuntimeClass(TNetMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611D18
 // GHIDRA_NAME TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount
-// GHIDRA_PROTO void __thiscall FlushSerializedArchiveBufferAndResetStreamCount(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Flushes/rebases serialized archive buffer cursor to backing stream and resets buffered stream-count field.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined FlushSerializedArchiveBufferAndResetStreamCount()
 
-/* Flushes/rebases serialized archive buffer cursor to backing stream and resets buffered
-   stream-count field. */
-
-void __thiscall TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount(TNetMgr *this)
+void __fastcall TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount(int param_1)
 
 {
-  Flush(this);
-  this->field8_0x20 = (int *)0x0;
+  Flush();
+  *(undefined4 *)(param_1 + 0x20) = 0;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00611D26
-// GHIDRA_NAME TNetMgr::ReadBytesFromSerializedBuffer
-// GHIDRA_PROTO int __thiscall ReadBytesFromSerializedBuffer(void * destination, uint requestedCount)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Copies requested byte count from serialized buffer into destination, combining buffered data with direct stream reads when necessary.
-// GHIDRA_COMMENT_END
-
-/* Copies requested byte count from serialized buffer into destination, combining buffered data with
-   direct stream reads when necessary. */
-
-int __thiscall
-TNetMgr::ReadBytesFromSerializedBuffer(TNetMgr *this,void *destination,uint requestedCount)
-
-{
-  int iVar1;
-  int iVar2;
-  void *arg2;
-  uint uVar3;
-  uint uVar4;
-  void *local_c;
-  uint local_8;
-  
-  if (requestedCount == 0) {
-    iVar1 = 0;
-  }
-  else {
-    uVar3 = (int)this->field10_0x28 - (int)this->pField24;
-    if (requestedCount < uVar3) {
-      uVar3 = requestedCount;
-    }
-    CopyMemoryPossiblyOverlapping((int)destination,(int)this->pField24,uVar3);
-    this->pField24 = (void *)((int)this->pField24 + uVar3);
-    destination = (void *)((int)destination + uVar3);
-    uVar3 = requestedCount - uVar3;
-    if (uVar3 != 0) {
-      iVar1 = uVar3 - uVar3 % this->field7_0x1c;
-      local_c = (void *)0x0;
-      local_8 = iVar1;
-      do {
-        iVar2 = (**(code **)(*this->field8_0x20 + 0x3c))(destination,local_8);
-        destination = (void *)((int)destination + iVar2);
-        local_c = (void *)((int)local_c + iVar2);
-        local_8 = local_8 - iVar2;
-        if (iVar2 == 0) break;
-      } while (local_8 != 0);
-      uVar3 = uVar3 - (int)local_c;
-      if (local_c == (void *)iVar1) {
-        uVar4 = 0;
-        if (this->pField08 == (void *)0x0) {
-          local_8 = uVar3;
-          if (uVar3 <= this->field7_0x1c) {
-            local_8 = this->field7_0x1c;
-          }
-          local_c = this->field11_0x2c;
-          do {
-            iVar1 = (**(code **)(*this->field8_0x20 + 0x3c))(local_c,local_8);
-            local_c = (void *)((int)local_c + iVar1);
-            local_8 = local_8 - iVar1;
-            uVar4 = uVar4 + iVar1;
-            if ((iVar1 == 0) || (local_8 == 0)) break;
-          } while (uVar4 < uVar3);
-          arg2 = this->field11_0x2c;
-          this->pField24 = arg2;
-          this->field10_0x28 = (undefined **)(uVar4 + (int)arg2);
-        }
-        else {
-          (**(code **)(*this->field8_0x20 + 0x58))
-                    (0,this->field7_0x1c,&this->field11_0x2c,&this->field10_0x28);
-          arg2 = this->field11_0x2c;
-          this->pField24 = arg2;
-        }
-        uVar4 = (int)this->field10_0x28 - (int)arg2;
-        if (uVar3 < uVar4) {
-          uVar4 = uVar3;
-        }
-        CopyMemoryPossiblyOverlapping((int)destination,(int)arg2,uVar4);
-        this->pField24 = (void *)((int)this->pField24 + uVar4);
-        uVar3 = uVar3 - uVar4;
-      }
-    }
-    iVar1 = requestedCount - uVar3;
-  }
-  return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611E34
 // GHIDRA_NAME TNetMgr::WriteBytesToSerializedBuffer
-// GHIDRA_PROTO void __thiscall WriteBytesToSerializedBuffer(void * source, uint byteCount)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Writes arbitrary byte span to serialized buffer/stream, combining buffered writes with direct stream writes for larger chunks.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WriteBytesToSerializedBuffer()
 
-/* Writes arbitrary byte span to serialized buffer/stream, combining buffered writes with direct
-   stream writes for larger chunks. */
-
-void __thiscall TNetMgr::WriteBytesToSerializedBuffer(TNetMgr *this,void *source,uint byteCount)
+void __thiscall TNetMgr::WriteBytesToSerializedBuffer(int param_1,int param_2,uint param_3)
 
 {
   uint uVar1;
-  uint arg3;
   int iVar2;
   
-  if (byteCount != 0) {
-    arg3 = (int)this->field10_0x28 - (int)this->pField24;
-    if (byteCount < arg3) {
-      arg3 = byteCount;
+  if (param_3 != 0) {
+    uVar1 = *(int *)(param_1 + 0x28) - *(int *)(param_1 + 0x24);
+    if (param_3 < uVar1) {
+      uVar1 = param_3;
     }
-    CopyMemoryPossiblyOverlapping((int)this->pField24,(int)source,arg3);
-    this->pField24 = (void *)((int)this->pField24 + arg3);
-    uVar1 = byteCount - arg3;
-    if (uVar1 != 0) {
-      Flush(this);
-      iVar2 = uVar1 - uVar1 % this->field7_0x1c;
-      (**(code **)(*this->field8_0x20 + 0x40))((int)source + arg3,iVar2);
-      if (this->pField08 != (void *)0x0) {
-        (**(code **)(*this->field8_0x20 + 0x58))
-                  (1,this->field7_0x1c,&this->field11_0x2c,&this->field10_0x28);
-        this->pField24 = this->field11_0x2c;
+    CopyMemoryPossiblyOverlapping(*(int *)(param_1 + 0x24),param_2,uVar1);
+    *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + uVar1;
+    param_3 = param_3 - uVar1;
+    if (param_3 != 0) {
+      Flush();
+      iVar2 = param_3 - param_3 % *(uint *)(param_1 + 0x1c);
+      (**(code **)(**(int **)(param_1 + 0x20) + 0x40))(param_2 + uVar1,iVar2);
+      if (*(int *)(param_1 + 8) != 0) {
+        (**(code **)(**(int **)(param_1 + 0x20) + 0x58))
+                  (1,*(undefined4 *)(param_1 + 0x1c),(undefined4 *)(param_1 + 0x2c),param_1 + 0x28);
+        *(undefined4 *)(param_1 + 0x24) = *(undefined4 *)(param_1 + 0x2c);
       }
-      CopyMemoryPossiblyOverlapping((int)this->pField24,(int)source + arg3 + iVar2,uVar1 - iVar2);
-      this->pField24 = (void *)((int)this->pField24 + (uVar1 - iVar2));
+      CopyMemoryPossiblyOverlapping
+                (*(undefined4 *)(param_1 + 0x24),param_2 + uVar1 + iVar2,param_3 - iVar2);
+      *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + (param_3 - iVar2);
     }
   }
   return;
@@ -1185,154 +812,128 @@ void __thiscall TNetMgr::WriteBytesToSerializedBuffer(TNetMgr *this,void *source
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612000
 // GHIDRA_NAME TNetMgr::WriteCount
-// GHIDRA_PROTO void __thiscall WriteCount(void * pArchive, uint value)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Serialize uint using 16-bit fast-path; writes 0xFFFF escape then dword for large values. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WriteCount()
 
-/* Serialize uint using 16-bit fast-path; writes 0xFFFF escape then dword for large values.
-   [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall TNetMgr::WriteCount(TNetMgr *this,void *pArchive,uint value)
+void TNetMgr::WriteCount(uint param_1)
 
 {
-  if (pArchive < (void *)0xffff) {
-    WriteWordToSerializedBuffer(this,(ushort)pArchive);
+  if (param_1 < 0xffff) {
+    WriteWordToSerializedBuffer(param_1);
   }
   else {
-    WriteWordToSerializedBuffer(this,0xffff);
-    WriteDwordToSerializedBuffer(this,(uint)pArchive);
+    WriteWordToSerializedBuffer(0xffff);
+    WriteDwordToSerializedBuffer(param_1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006121E1
 // GHIDRA_NAME TNetMgr::WriteObject
-// GHIDRA_PROTO void __thiscall WriteObject(void * objectRef)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Serializes polymorphic object reference via handle-map table, emitting class token/payload on first encounter and compact reference id on repeats. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WriteObject()
 
-/* Serializes polymorphic object reference via handle-map table, emitting class token/payload on
-   first encounter and compact reference id on repeats. [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall TNetMgr::WriteObject(TNetMgr *this,void *objectRef)
+void __thiscall TNetMgr::WriteObject(int param_1,int *param_2)
 
 {
   undefined4 *puVar1;
   uint *puVar2;
-  void *objectRef_00;
-  int *piVar3;
-  uint value;
+  undefined4 uVar3;
+  undefined4 *puVar4;
+  uint uVar5;
   
-  MapObject(this,(void *)0x0);
-  if (objectRef == (void *)0x0) {
-    value = 0;
+  MapObject(0);
+  if (param_2 == (int *)0x0) {
+    uVar5 = 0;
   }
   else {
-    puVar2 = (uint *)GetOrCreateHandleMapEntryValueByKey(this[1].pField04);
-    value = *puVar2;
-    if (value == 0) {
-      puVar1 = *(undefined4 **)objectRef;
-      objectRef_00 = (void *)(*(code *)*puVar1)();
-      WriteClass(this,objectRef_00);
-      CheckCount(this);
-      piVar3 = GetOrCreateHandleMapEntryValueByKey(this[1].pField04);
-      *piVar3 = (int)this[1].field0_0x0;
-      this[1].field0_0x0 = (undefined **)((int)this[1].field0_0x0 + 1);
-      (*(code *)puVar1[2])(this);
+    puVar2 = (uint *)GetOrCreateHandleMapEntryValueByKey(param_2);
+    uVar5 = *puVar2;
+    if (uVar5 == 0) {
+      puVar1 = (undefined4 *)*param_2;
+      uVar3 = (*(code *)*puVar1)();
+      WriteClass(uVar3);
+      CheckCount();
+      puVar4 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(param_2);
+      *puVar4 = *(undefined4 *)(param_1 + 0x30);
+      *(int *)(param_1 + 0x30) = *(int *)(param_1 + 0x30) + 1;
+      (*(code *)puVar1[2])(param_1);
       return;
     }
-    if (0x7ffe < value) {
-      WriteWordToSerializedBuffer(this,0x7fff);
-      WriteDwordToSerializedBuffer(this,value);
+    if (0x7ffe < uVar5) {
+      WriteWordToSerializedBuffer(0x7fff);
+      WriteDwordToSerializedBuffer(uVar5);
       return;
     }
   }
-  WriteWordToSerializedBuffer(this,(ushort)value);
+  WriteWordToSerializedBuffer(uVar5);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612315
 // GHIDRA_NAME TNetMgr::MapObject
-// GHIDRA_PROTO void __thiscall MapObject(void * referenceNode)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes reference storage (CObArray or CMap path by mode flag) and registers serialized reference entry with ordinal tracking. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined MapObject()
 
-/* Initializes reference storage (CObArray or CMap path by mode flag) and registers serialized
-   reference entry with ordinal tracking. [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall TNetMgr::MapObject(TNetMgr *this,void *referenceNode)
+void TNetMgr::MapObject(void)
 
 {
-  void *insertValue;
-  TNetMgr *pTVar1;
-  TNetMgr *extraout_EAX;
-  int *piVar2;
-  TIndexAndRankList *this_00;
-  int extraout_EAX_00;
-  int iVar3;
-  void *stateContext;
-  int extraout_EDX;
-  int extraout_EDX_00;
-  int arg1;
+  undefined4 uVar1;
+  int iVar2;
+  undefined4 uVar3;
+  undefined4 *puVar4;
+  TIndexAndRankList *this;
+  int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  if ((~(byte)*(undefined4 *)((int)stateContext + 0x14) & 1) == 0) {
-    if (*(int *)((int)stateContext + 0x34) == 0) {
-      this_00 = AllocateWithFallbackHandler();
-      *(TIndexAndRankList **)(unaff_EBP + -0x10) = this_00;
+  if ((~(byte)*(undefined4 *)(extraout_ECX + 0x14) & 1) == 0) {
+    if (*(int *)(extraout_ECX + 0x34) == 0) {
+      this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x14);
+      *(TIndexAndRankList **)(unaff_EBP + -0x10) = this;
       *(undefined4 *)(unaff_EBP + -4) = 1;
-      if (this_00 == (TIndexAndRankList *)0x0) {
-        iVar3 = 0;
-        arg1 = extraout_EDX;
+      if (this == (TIndexAndRankList *)0x0) {
+        uVar3 = 0;
       }
       else {
-        TIndexAndRankList::CPtrArray(this_00);
-        iVar3 = extraout_EAX_00;
-        arg1 = extraout_EDX_00;
+        uVar3 = TIndexAndRankList::CPtrArray(this);
       }
+      uVar1 = *(undefined4 *)(extraout_ECX + 0x3c);
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      *(int *)((int)stateContext + 0x34) = iVar3;
-      SetSize(iVar3,arg1,1);
-      **(undefined4 **)(*(int *)((int)stateContext + 0x34) + 4) = 0;
-      *(undefined4 *)((int)stateContext + 0x30) = 1;
+      *(undefined4 *)(extraout_ECX + 0x34) = uVar3;
+      SetSize(1,uVar1);
+      **(undefined4 **)(*(int *)(extraout_ECX + 0x34) + 4) = 0;
+      *(undefined4 *)(extraout_ECX + 0x30) = 1;
     }
     if (*(int *)(unaff_EBP + 8) != 0) {
-      CheckCount(stateContext);
-      iVar3 = *(int *)((int)stateContext + 0x30);
-      insertValue = *(void **)(unaff_EBP + 8);
-      *(int *)((int)stateContext + 0x30) = iVar3 + 1;
-      InsertAt(*(void **)((int)stateContext + 0x34),iVar3,insertValue,1);
+      CheckCount();
+      iVar2 = *(int *)(extraout_ECX + 0x30);
+      uVar3 = *(undefined4 *)(unaff_EBP + 8);
+      *(int *)(extraout_ECX + 0x30) = iVar2 + 1;
+      InsertAt(iVar2,uVar3,1);
     }
   }
   else {
-    if (*(int *)((int)stateContext + 0x34) == 0) {
-      pTVar1 = AllocateWithFallbackHandler();
-      *(TNetMgr **)(unaff_EBP + -0x10) = pTVar1;
+    if (*(int *)(extraout_ECX + 0x34) == 0) {
+      iVar2 = AllocateWithFallbackHandler(0x1c);
+      *(int *)(unaff_EBP + -0x10) = iVar2;
       *(undefined4 *)(unaff_EBP + -4) = 0;
-      if (pTVar1 == (TNetMgr *)0x0) {
-        pTVar1 = (TNetMgr *)0x0;
+      if (iVar2 == 0) {
+        uVar3 = 0;
       }
       else {
-        CMapPtrToPtr_ctor(pTVar1,*(int *)((int)stateContext + 0x3c));
-        pTVar1 = extraout_EAX;
+        uVar3 = CMapPtrToPtr_ctor(*(undefined4 *)(extraout_ECX + 0x3c));
       }
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      *(TNetMgr **)((int)stateContext + 0x34) = pTVar1;
-      InitHashTable(pTVar1,*(int *)((int)stateContext + 0x40),1);
-      piVar2 = GetOrCreateHandleMapEntryValueByKey(*(TNetMgr **)((int)stateContext + 0x34));
-      *piVar2 = 0;
-      *(undefined4 *)((int)stateContext + 0x30) = 1;
+      *(undefined4 *)(extraout_ECX + 0x34) = uVar3;
+      InitHashTable(*(undefined4 *)(extraout_ECX + 0x40),1);
+      puVar4 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(0);
+      *puVar4 = 0;
+      *(undefined4 *)(extraout_ECX + 0x30) = 1;
     }
     if (*(int *)(unaff_EBP + 8) != 0) {
-      CheckCount(stateContext);
-      piVar2 = GetOrCreateHandleMapEntryValueByKey(*(TNetMgr **)((int)stateContext + 0x34));
-      *piVar2 = *(int *)((int)stateContext + 0x30);
-      *(int *)((int)stateContext + 0x30) = *(int *)((int)stateContext + 0x30) + 1;
+      CheckCount();
+      puVar4 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(*(undefined4 *)(unaff_EBP + 8));
+      *puVar4 = *(undefined4 *)(extraout_ECX + 0x30);
+      *(int *)(extraout_ECX + 0x30) = *(int *)(extraout_ECX + 0x30) + 1;
     }
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -1341,41 +942,35 @@ void __thiscall TNetMgr::MapObject(TNetMgr *this,void *referenceNode)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061240D
 // GHIDRA_NAME TNetMgr::WriteClass
-// GHIDRA_PROTO void __thiscall WriteClass(void * objectRef)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Serializes object reference token using handle-map index encoding, including first-time class metadata path for unmapped objects. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WriteClass()
 
-/* Serializes object reference token using handle-map index encoding, including first-time class
-   metadata path for unmapped objects. [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall TNetMgr::WriteClass(TNetMgr *this,void *objectRef)
+void __thiscall TNetMgr::WriteClass(int param_1,int param_2)
 
 {
   uint uVar1;
   uint *puVar2;
-  int *piVar3;
+  undefined4 *puVar3;
   
-  if (*(int *)((int)objectRef + 8) == 0xffff) {
+  if (*(int *)(param_2 + 8) == 0xffff) {
     AfxThrowNotSupportedException();
   }
-  MapObject(this,(void *)0x0);
-  puVar2 = (uint *)GetOrCreateHandleMapEntryValueByKey(this[1].pField04);
+  MapObject(0);
+  puVar2 = (uint *)GetOrCreateHandleMapEntryValueByKey(param_2);
   uVar1 = *puVar2;
   if (uVar1 == 0) {
-    WriteWordToSerializedBuffer(this,0xffff);
-    Store(objectRef);
-    CheckCount(this);
-    piVar3 = GetOrCreateHandleMapEntryValueByKey(this[1].pField04);
-    *piVar3 = (int)this[1].field0_0x0;
-    this[1].field0_0x0 = (undefined **)((int)this[1].field0_0x0 + 1);
+    WriteWordToSerializedBuffer(0xffff);
+    Store(param_1);
+    CheckCount();
+    puVar3 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(param_2);
+    *puVar3 = *(undefined4 *)(param_1 + 0x30);
+    *(int *)(param_1 + 0x30) = *(int *)(param_1 + 0x30) + 1;
   }
   else if (uVar1 < 0x7fff) {
-    WriteWordToSerializedBuffer(this,(ushort)uVar1 | 0x8000);
+    WriteWordToSerializedBuffer(uVar1 | 0x8000);
   }
   else {
-    WriteWordToSerializedBuffer(this,0x7fff);
-    WriteDwordToSerializedBuffer(this,uVar1 | 0x80000000);
+    WriteWordToSerializedBuffer(0x7fff);
+    WriteDwordToSerializedBuffer(uVar1 | 0x80000000);
   }
   return;
 }

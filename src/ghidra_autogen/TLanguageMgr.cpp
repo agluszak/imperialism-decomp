@@ -3,71 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TLanguageMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401B81
-// GHIDRA_NAME TLanguageMgr::thunk_WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20_At00401b81
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20_At00401b81(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20 */
-
-void __cdecl
-TLanguageMgr::
-thunk_WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20_At00401b81(void)
-
-{
-  WrapperFor_thunk_FreeNestedPointerTableRowsAndResetDimensions_At00507e20();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402A4A
-// GHIDRA_NAME TLanguageMgr::thunk_GetTLanguageMgrClassNamePointer_At00402a4a
-// GHIDRA_PROTO void * __cdecl thunk_GetTLanguageMgrClassNamePointer_At00402a4a(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTLanguageMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTLanguageMgrClassNamePointer */
-
-void * __cdecl TLanguageMgr::thunk_GetTLanguageMgrClassNamePointer_At00402a4a(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTLanguageMgrClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004075CC
-// GHIDRA_NAME TLanguageMgr::thunk_DestructTLanguageMgrAndMaybeFree_At004075cc
-// GHIDRA_PROTO void * __thiscall thunk_DestructTLanguageMgrAndMaybeFree_At004075cc(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTLanguageMgrAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTLanguageMgrAndMaybeFree */
-
-void * __thiscall
-TLanguageMgr::thunk_DestructTLanguageMgrAndMaybeFree_At004075cc
-          (TLanguageMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTLanguageMgrAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00507BC0
 // GHIDRA_NAME TLanguageMgr::CreateTLanguageMgrInstance
-// GHIDRA_PROTO void * __cdecl CreateTLanguageMgrInstance(void)
+// GHIDRA_PROTO undefined CreateTLanguageMgrInstance()
 
-void * __cdecl TLanguageMgr::CreateTLanguageMgrInstance(void)
+undefined4 __fastcall TLanguageMgr::CreateTLanguageMgrInstance(undefined4 param_1)
 
 {
-  TLanguageMgr *this;
-  void *pvVar1;
+  int iVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -77,90 +21,85 @@ void * __cdecl TLanguageMgr::CreateTLanguageMgrInstance(void)
   puStack_8 = &LAB_0063384a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  iVar1 = AllocateWithFallbackHandler(0x34,param_1);
   local_4 = 0;
-  if (this != (TLanguageMgr *)0x0) {
-    pvVar1 = ConstructTLanguageMgrBaseState(this);
+  if (iVar1 != 0) {
+    uVar2 = ConstructTLanguageMgrBaseState(iVar1);
     *unaff_FS_OFFSET = local_c;
-    return pvVar1;
+    return uVar2;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507C40
 // GHIDRA_NAME TLanguageMgr::GetTLanguageMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTLanguageMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TLanguageMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTLanguageMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TLanguageMgr. */
-
-void * __cdecl TLanguageMgr::GetTLanguageMgrClassNamePointer(void)
+undefined ** TLanguageMgr::GetTLanguageMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTLanguageMgr;
+  return &PTR_s_TLanguageMgr_00658560;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507C60
 // GHIDRA_NAME TLanguageMgr::ConstructTLanguageMgrBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTLanguageMgrBaseState(void)
+// GHIDRA_PROTO undefined ConstructTLanguageMgrBaseState()
 
-void * __thiscall TLanguageMgr::ConstructTLanguageMgrBaseState(TLanguageMgr *this)
+undefined4 * __fastcall TLanguageMgr::ConstructTLanguageMgrBaseState(undefined4 *param_1)
 
 {
-  int *unaff_FS_OFFSET;
+  undefined4 *unaff_FS_OFFSET;
   int local_14;
-  TLanguageMgr *local_10;
-  int local_c;
+  undefined4 *local_10;
+  undefined4 local_c;
   undefined1 *puStack_8;
-  void *local_4;
+  undefined4 local_4;
   
   puStack_8 = &LAB_0063388e;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&local_c;
-  this->field0_0x0 = &g_vtblRefCountedObjectBase;
-  local_4 = (void *)0x0;
-  local_10 = this;
+  *unaff_FS_OFFSET = &local_c;
+  *param_1 = &RefCountedObjectBase::_vftable_;
+  local_4 = 0;
+  local_10 = param_1;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 2;
-  this->field0_0x0 = &g_vtblTLanguageMgr;
-  this->field10 = 0;
-  this->field08 = 0;
-  this->field1c = 0;
-  this->field20 = 0;
-  this->field18_0x24 = 0;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&local_14);
+  *param_1 = &PTR_LAB_006585a8;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[7] = 0;
+  param_1[8] = 0;
+  *(undefined1 *)(param_1 + 9) = 0;
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(s_news_tab_00696d04);
   local_4._0_1_ = 3;
-  AssignFromPtr(&this->pField2c,&local_14);
+  AssignFromPtr(param_1 + 0xb,&local_14);
   local_4._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&local_14);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(s_news_tex_00696cf8);
   local_4._0_1_ = 4;
-  AssignFromPtr(&this->pField28,&local_14);
-  local_4 = (void *)CONCAT31(local_4._1_3_,2);
+  AssignFromPtr(param_1 + 10,&local_14);
+  local_4 = CONCAT31(local_4._1_3_,2);
   ReleaseSharedStringRefIfNotEmpty();
-  this->field19_0x25 = 0x20;
-  this->field30 = 6;
+  *(undefined1 *)((int)param_1 + 0x25) = 0x20;
+  param_1[0xc] = 6;
   *unaff_FS_OFFSET = local_c;
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507D80
 // GHIDRA_NAME TLanguageMgr::DestructTLanguageMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTLanguageMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTLanguageMgrAndMaybeFree()
 
-void * __thiscall
-TLanguageMgr::DestructTLanguageMgrAndMaybeFree(TLanguageMgr *this,byte freeSelfFlag)
+undefined4 __thiscall
+TLanguageMgr::DestructTLanguageMgrAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

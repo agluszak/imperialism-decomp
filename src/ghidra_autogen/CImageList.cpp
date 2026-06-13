@@ -5,28 +5,20 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6AA4
 // GHIDRA_NAME CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4
-// GHIDRA_PROTO bool __thiscall WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around GetOrCreateHandleMapEntryValueByKey; instructions=21, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around GetOrCreateHandleMapEntryValueByKey; instructions=21,
-   call_insns=2, internal_calls=1, unique_internal=1 */
+// GHIDRA_PROTO undefined WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4()
 
 bool __thiscall
-CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(CImageList *this)
+CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4(int param_1,int param_2)
 
 {
-  TNetMgr *this_00;
   int *piVar1;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 != 0) {
-    this_00 = afxMapHIMAGELIST();
-    this->field4_0x4 = in_stack_00000004;
-    piVar1 = TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00);
-    *piVar1 = (int)this;
+  if (param_2 != 0) {
+    afxMapHIMAGELIST(1);
+    *(int *)(param_1 + 4) = param_2;
+    piVar1 = (int *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(param_2);
+    *piVar1 = param_1;
   }
-  return in_stack_00000004 != 0;
+  return param_2 != 0;
 }
 

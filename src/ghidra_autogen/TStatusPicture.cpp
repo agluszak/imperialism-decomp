@@ -3,115 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TStatusPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401D39
-// GHIDRA_NAME TStatusPicture::TStatusPicture_VtblSlot055
-// GHIDRA_PROTO void __thiscall TStatusPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeNationRecipientSelectionDialogAndScores
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeNationRecipientSelectionDialogAndScores */
-
-void __thiscall TStatusPicture::TStatusPicture_VtblSlot055(TStatusPicture *this)
-
-{
-  InitializeNationRecipientSelectionDialogAndScores(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004049FD
-// GHIDRA_NAME TStatusPicture::TStatusPicture_thunk_scalar_deleting_destructor
-// GHIDRA_PROTO void * __thiscall TStatusPicture_thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TStatusPicture::TStatusPicture_thunk_scalar_deleting_destructor
-          (TStatusPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004080DA
-// GHIDRA_NAME TStatusPicture::thunk_CreateTStatusPictureInstance
-// GHIDRA_PROTO void * __cdecl thunk_CreateTStatusPictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateTStatusPictureInstance
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateTStatusPictureInstance */
-
-void * __cdecl TStatusPicture::thunk_CreateTStatusPictureInstance(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = CreateTStatusPictureInstance();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408602
-// GHIDRA_NAME TStatusPicture::TStatusPicture_VtblSlot068
-// GHIDRA_PROTO void __cdecl TStatusPicture_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderLocalizedHeaderAndSevenLineTerrainSummary
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderLocalizedHeaderAndSevenLineTerrainSummary */
-
-void __cdecl TStatusPicture::TStatusPicture_VtblSlot068(void)
-
-{
-  RenderLocalizedHeaderAndSevenLineTerrainSummary();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408FD5
-// GHIDRA_NAME TStatusPicture::TStatusPicture_VtblSlot015
-// GHIDRA_PROTO void __thiscall TStatusPicture_VtblSlot015(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTStatusPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTStatusPictureAndMaybeFree */
-
-void __thiscall TStatusPicture::TStatusPicture_VtblSlot015(TStatusPicture *this,int arg1,int arg2)
-
-{
-  DestructTStatusPictureAndMaybeFree(this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040981D
-// GHIDRA_NAME TStatusPicture::TStatusPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TStatusPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTStatusPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTStatusPictureClassNamePointer */
-
-void * __cdecl TStatusPicture::TStatusPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTStatusPictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00593E80
 // GHIDRA_NAME TStatusPicture::CreateTStatusPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTStatusPictureInstance(void)
+// GHIDRA_PROTO undefined CreateTStatusPictureInstance()
 
-void * __cdecl TStatusPicture::CreateTStatusPictureInstance(void)
+undefined4 * TStatusPicture::CreateTStatusPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -125,12 +21,12 @@ void * __cdecl TStatusPicture::CreateTStatusPictureInstance(void)
   puStack_8 = &LAB_0063818a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xc0);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTStatusPicture;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00642268;
     puVar1[0x24] = 0xffffffff;
     puVar2 = puVar1;
   }
@@ -140,47 +36,38 @@ void * __cdecl TStatusPicture::CreateTStatusPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593F00
 // GHIDRA_NAME TStatusPicture::GetTStatusPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTStatusPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TStatusPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTStatusPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TStatusPicture. */
-
-void * __cdecl TStatusPicture::GetTStatusPictureClassNamePointer(void)
+undefined ** TStatusPicture::GetTStatusPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTStatusPicture;
+  return &PTR_s_TStatusPicture_00668b90;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593F20
 // GHIDRA_NAME TStatusPicture::InitializeNationRecipientSelectionDialogAndScores
-// GHIDRA_PROTO void __thiscall InitializeNationRecipientSelectionDialogAndScores(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds recipient selection dialog entries for eligible nations, initializes localized controls/tabs, computes per-nation score values from diplomacy state, and binds cursor panel resources.
-// GHIDRA_COMMENT_END
-
-/* Builds recipient selection dialog entries for eligible nations, initializes localized
-   controls/tabs, computes per-nation score values from diplomacy state, and binds cursor panel
-   resources. */
+// GHIDRA_PROTO undefined InitializeNationRecipientSelectionDialogAndScores()
 
 void __thiscall
-TStatusPicture::InitializeNationRecipientSelectionDialogAndScores(TStatusPicture *this)
+TStatusPicture::InitializeNationRecipientSelectionDialogAndScores(int *param_1,undefined4 param_2)
 
 {
   code *pcVar1;
-  char extraout_AL;
-  char extraout_AL_00;
-  void *pvVar2;
-  int extraout_EAX;
-  int *piVar3;
-  int iVar4;
-  code *unaff_EBP;
-  int iVar5;
+  char cVar2;
+  int iVar3;
+  undefined4 uVar4;
+  int *piVar5;
   int iVar6;
-  short *psVar7;
-  void **ppvVar8;
+  code *unaff_EBP;
+  int iVar7;
+  int iVar8;
+  int *piVar9;
+  int iVar10;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  int local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
@@ -189,226 +76,225 @@ TStatusPicture::InitializeNationRecipientSelectionDialogAndScores(TStatusPicture
   puStack_8 = &LAB_006381aa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_NoOpUiLifecycleHook();
-  iVar5 = 0;
-  iVar4 = 0x70696330;
+  TView::thunk_NoOpUiLifecycleHook(param_2);
+  iVar7 = 0;
+  iVar6 = 0x70696330;
+  iVar10 = 0x50;
   do {
-    thunk_IsNationSlotEligibleForEventProcessing(iVar5);
-    if (extraout_AL != '\0') {
-      pvVar2 = AllocateWithFallbackHandler();
-      iVar6 = 0;
+    cVar2 = thunk_IsNationSlotEligibleForEventProcessing(iVar7);
+    if (cVar2 != '\0') {
+      iVar3 = AllocateWithFallbackHandler(0x90);
+      iVar8 = 0;
       local_4 = 0;
-      if (pvVar2 != (void *)0x0) {
-        thunk_ConstructPictureResourceEntryBase();
-        iVar6 = extraout_EAX;
+      if (iVar3 != 0) {
+        iVar8 = thunk_TPictureButton::TPictureButton();
       }
       local_4 = 0xffffffff;
-      thunk_InitializePictureEntryBaseAndRefresh();
-      *(int *)(iVar6 + 0x1c) = iVar4;
-      iVar4 = iVar4 + 1;
+      local_1c = 0x23;
+      local_18 = 0x34;
+      local_14 = 0x71;
+      local_10 = iVar10;
+      InitializePictureEntryBaseAndRefresh(param_1,&local_14,&local_1c,5,5,iVar7 + 0x10d7);
+      *(int *)(iVar8 + 0x1c) = iVar6;
+      iVar10 = iVar10 + 0x37;
+      iVar6 = iVar6 + 1;
     }
-    iVar5 = iVar5 + 1;
-  } while (iVar5 < 7);
-  iVar5 = 0;
-  iVar4 = this->field0_0x0;
-  pcVar1 = *(code **)(iVar4 + 0x94);
+    iVar7 = iVar7 + 1;
+  } while (iVar7 < 7);
+  iVar7 = 0;
+  iVar6 = *param_1;
+  pcVar1 = *(code **)(iVar6 + 0x94);
   do {
-    pvVar2 = (void *)(*pcVar1)(iVar5 + 0x74616230);
-    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2757,iVar5 + 9,pvVar2);
-    iVar5 = iVar5 + 1;
-  } while (iVar5 < 10);
-  InitializeMainRoutineContextAndRun();
-  pvVar2 = (void *)(*pcVar1)(0x656e6420);
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0xd,pvVar2);
-  pvVar2 = (void *)(*pcVar1)(0x71756572);
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,3,pvVar2);
-  this->field90 = 0;
-  (**(code **)(iVar4 + 0xe4))();
-  thunk_RecomputeNationComparativePowerMetrics(g_pDiplomacyTurnStateManager);
+    uVar4 = (*pcVar1)(iVar7 + 0x74616230);
+    LoadUiStringByGroupAndIndexToControlObject(0x2757,iVar7 + 9,uVar4);
+    iVar7 = iVar7 + 1;
+  } while (iVar7 < 10);
+  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00668b88,0x6d61696e);
+  uVar4 = (*pcVar1)(0x656e6420);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730,0xd,uVar4);
+  uVar4 = (*pcVar1)(0x71756572);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730,3,uVar4);
+  param_1[0x24] = 0;
+  (**(code **)(iVar6 + 0xe4))();
+  RecomputeNationComparativePowerMetrics();
   local_4 = 0;
-  iVar4 = 0;
-  psVar7 = &this->field164_0xb0;
-  ppvVar8 = &this->pField94;
+  iVar6 = 0;
+  piVar9 = param_1 + 0x2c;
+  param_1 = param_1 + 0x25;
   do {
-    thunk_IsNationSlotEligibleForEventProcessing(iVar4);
-    if (extraout_AL_00 == '\0') {
-      *psVar7 = -1;
+    cVar2 = thunk_IsNationSlotEligibleForEventProcessing(iVar6);
+    if (cVar2 == '\0') {
+      *(undefined2 *)piVar9 = 0xffff;
     }
     else {
-      iVar5 = 0;
-      piVar3 = (int *)(&g_pDiplomacyTurnStateManager->field_0x1824 + local_4);
-      iVar6 = 4;
+      iVar7 = 0;
+      piVar5 = (int *)(g_pDiplomacyTurnStateManager + 0x1824 + local_4);
+      iVar10 = 4;
       do {
-        iVar5 = iVar5 + *piVar3;
-        piVar3 = piVar3 + 1;
-        iVar6 = iVar6 + -1;
-      } while (iVar6 != 0);
-      *ppvVar8 = (void *)(((short)iVar5 * 400) / 400);
-      *psVar7 = (short)iVar4;
+        iVar7 = iVar7 + *piVar5;
+        piVar5 = piVar5 + 1;
+        iVar10 = iVar10 + -1;
+      } while (iVar10 != 0);
+      *param_1 = ((short)iVar7 * 400) / 400;
+      *(short *)piVar9 = (short)iVar6;
     }
-    ppvVar8 = ppvVar8 + 1;
-    psVar7 = psVar7 + 1;
+    param_1 = param_1 + 1;
+    piVar9 = (int *)((int)piVar9 + 2);
     local_4 = local_4 + 0x10;
-    iVar4 = iVar4 + 1;
+    iVar6 = iVar6 + 1;
   } while (local_4 < 0x70);
-  SortSevenEntriesAndUpdatePictureWidgets(this);
-  g_pCursorControlPanel = (void *)(*unaff_EBP)(0x63757273);
-  (**(code **)(*(int *)g_pCursorControlPanel + 0xc))();
-  (**(code **)(*(int *)g_pCursorControlPanel + 0x204))(0x2b6c,0x2b67);
+  SortSevenEntriesAndUpdatePictureWidgets();
+  g_pCursorControlPanel = (int *)(*unaff_EBP)(0x63757273);
+  (**(code **)(*g_pCursorControlPanel + 0xc))();
+  (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6c,0x2b67);
   *unaff_FS_OFFSET = pcVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005942F0
 // GHIDRA_NAME TStatusPicture::DestructTStatusPictureAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTStatusPictureAndMaybeFree(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles status-picture nation tab selection input (including shift-modified behavior), validates nation eligibility, recomputes comparative power metrics, and activates pending event type.
-// GHIDRA_COMMENT_END
-
-/* Handles status-picture nation tab selection input (including shift-modified behavior), validates
-   nation eligibility, recomputes comparative power metrics, and activates pending event type. */
+// GHIDRA_PROTO undefined DestructTStatusPictureAndMaybeFree()
 
 void __thiscall
-TStatusPicture::DestructTStatusPictureAndMaybeFree(TStatusPicture *this,int arg1,int arg2)
+TStatusPicture::DestructTStatusPictureAndMaybeFree
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
-  char extraout_AL;
-  ushort uVar1;
-  int *piVar2;
-  int iVar3;
+  char cVar1;
+  ushort uVar2;
+  int *piVar3;
   int iVar4;
   int iVar5;
-  undefined2 *puVar6;
-  int iVar7;
-  void **ppvVar8;
+  int iVar6;
+  undefined2 *puVar7;
+  int iVar8;
+  undefined4 uVar9;
   
-  if (((arg1 == 10) && (0x7461622f < *(uint *)(arg2 + 0x1c))) &&
-     (*(uint *)(arg2 + 0x1c) < 0x7461623a)) {
-    iVar7 = (int)(short)(*(short *)(arg2 + 0x1c) + -0x6230);
-    if (iVar7 != this->field90) {
-      iVar5 = this->field0_0x0;
-      piVar2 = (int *)(**(code **)(iVar5 + 0x94))(this->field90 + 0x74616230);
-      iVar3 = *piVar2;
-      (**(code **)(iVar3 + 0xc))();
-      (**(code **)(iVar3 + 0xa4))(0,1);
-      iVar3 = this->field0_0x0;
-      (**(code **)(iVar3 + 0xc))();
-      (**(code **)(iVar3 + 0xa4))(1);
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
-      iRam00000091 = iVar7;
-      (**(code **)(iVar5 + 0xe4))();
-      if (iVar7 == 0) {
-        thunk_RecomputeNationComparativePowerMetrics(g_pDiplomacyTurnStateManager);
-        iVar7 = 0;
-        iVar5 = 0;
-        puVar6 = (undefined2 *)0xb1;
-        ppvVar8 = &this->pField94;
+  if (((param_2 == 10) && (0x7461622f < *(uint *)(param_3 + 0x1c))) &&
+     (*(uint *)(param_3 + 0x1c) < 0x7461623a)) {
+    iVar8 = (int)(short)(*(short *)(param_3 + 0x1c) + -0x6230);
+    if (iVar8 != param_1[0x24]) {
+      iVar6 = *param_1;
+      piVar3 = (int *)(**(code **)(iVar6 + 0x94))(param_1[0x24] + 0x74616230);
+      iVar4 = *piVar3;
+      (**(code **)(iVar4 + 0xc))();
+      (**(code **)(iVar4 + 0xa4))(0,1);
+      iVar4 = *param_1;
+      (**(code **)(iVar4 + 0xc))();
+      (**(code **)(iVar4 + 0xa4))(1);
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
+      iRam00000091 = iVar8;
+      (**(code **)(iVar6 + 0xe4))();
+      if (iVar8 == 0) {
+        RecomputeNationComparativePowerMetrics();
+        iVar8 = 0;
+        iVar6 = 0;
+        puVar7 = (undefined2 *)0xb1;
+        param_1 = param_1 + 0x25;
         do {
-          thunk_IsNationSlotEligibleForEventProcessing(iVar7);
-          if (extraout_AL == '\0') {
-            *puVar6 = 0xffff;
+          cVar1 = thunk_IsNationSlotEligibleForEventProcessing(iVar8);
+          if (cVar1 == '\0') {
+            *puVar7 = 0xffff;
           }
           else {
-            iVar3 = 0;
-            piVar2 = (int *)(&g_pDiplomacyTurnStateManager->field_0x1824 + iVar5);
-            iVar4 = 4;
+            iVar4 = 0;
+            piVar3 = (int *)(g_pDiplomacyTurnStateManager + 0x1824 + iVar6);
+            iVar5 = 4;
             do {
-              iVar3 = iVar3 + *piVar2;
-              piVar2 = piVar2 + 1;
-              iVar4 = iVar4 + -1;
-            } while (iVar4 != 0);
-            *ppvVar8 = (void *)(((short)iVar3 * 400) / 400);
-            *puVar6 = (short)iVar7;
+              iVar4 = iVar4 + *piVar3;
+              piVar3 = piVar3 + 1;
+              iVar5 = iVar5 + -1;
+            } while (iVar5 != 0);
+            *param_1 = ((short)iVar4 * 400) / 400;
+            *puVar7 = (short)iVar8;
           }
-          ppvVar8 = ppvVar8 + 1;
-          puVar6 = puVar6 + 1;
-          iVar5 = iVar5 + 0x10;
-          iVar7 = iVar7 + 1;
-        } while (iVar5 < 0x70);
-        SortSevenEntriesAndUpdatePictureWidgets(this);
+          param_1 = param_1 + 1;
+          puVar7 = puVar7 + 1;
+          iVar6 = iVar6 + 0x10;
+          iVar8 = iVar8 + 1;
+        } while (iVar6 < 0x70);
+        SortSevenEntriesAndUpdatePictureWidgets();
       }
       else {
-        thunk_RecomputeNationComparisonValuesAndNormalizeScale();
+        RecomputeNationComparisonValuesAndNormalizeScale();
       }
     }
-    if ((((*(int *)(arg2 + 0x1c) == 0x74616231) &&
-         (uVar1 = GetAsyncKeyState(0x10), (uVar1 & 0x8000) != 0)) ||
-        ((*(int *)(arg2 + 0x1c) == 0x74616232 &&
-         (uVar1 = GetAsyncKeyState(0x10), (uVar1 & 0x8000) != 0)))) ||
-       ((*(int *)(arg2 + 0x1c) == 0x74616233 &&
-        (uVar1 = GetAsyncKeyState(0x10), (uVar1 & 0x8000) != 0)))) {
-      thunk_SelectAndActivatePendingEventTypeOffsetFrom1A0B();
+    if ((*(int *)(param_3 + 0x1c) == 0x74616231) &&
+       (uVar2 = GetAsyncKeyState(0x10), (uVar2 & 0x8000) != 0)) {
+      uVar9 = 2;
     }
+    else if ((*(int *)(param_3 + 0x1c) == 0x74616232) &&
+            (uVar2 = GetAsyncKeyState(0x10), (uVar2 & 0x8000) != 0)) {
+      uVar9 = 0;
+    }
+    else {
+      if ((*(int *)(param_3 + 0x1c) != 0x74616233) ||
+         (uVar2 = GetAsyncKeyState(0x10), (uVar2 & 0x8000) == 0)) goto LAB_00594498;
+      uVar9 = 1;
+    }
+    SelectAndActivatePendingEventTypeOffsetFrom1A0B(uVar9);
   }
-  thunk_HandleCityDialogToggleCommandOrForward();
+LAB_00594498:
+  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594C00
 // GHIDRA_NAME TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets
-// GHIDRA_PROTO void __thiscall SortSevenEntriesAndUpdatePictureWidgets(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sort seven entries by weight/value and update picture widgets with resulting resource IDs.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SortSevenEntriesAndUpdatePictureWidgets()
 
-/* Sort seven entries by weight/value and update picture widgets with resulting resource IDs. */
-
-void __thiscall TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(TStatusPicture *this)
+void __fastcall TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets(int *param_1)
 
 {
-  short sVar1;
-  void *pvVar2;
-  int iVar3;
-  bool bVar4;
-  void **ppvVar5;
+  int iVar1;
+  bool bVar2;
+  int *piVar3;
+  int *piVar4;
+  int iVar5;
   int *piVar6;
-  void **ppvVar7;
-  short *psVar8;
-  int iVar9;
-  short *psVar10;
+  int *piVar7;
   int local_c;
   int local_8;
   
   local_8 = 1;
-  ppvVar7 = &this->pField94;
-  psVar10 = &this->field164_0xb0;
+  piVar6 = param_1 + 0x25;
+  piVar7 = param_1 + 0x2c;
   do {
     if (local_8 < 7) {
       local_c = 7 - local_8;
-      ppvVar5 = ppvVar7;
-      psVar8 = psVar10;
+      piVar3 = piVar6;
+      piVar4 = piVar7;
       do {
-        psVar8 = psVar8 + 1;
-        ppvVar5 = ppvVar5 + 1;
-        if ((*psVar8 != -1) && ((sVar1 = *psVar10, sVar1 == -1 || ((int)*ppvVar7 < (int)*ppvVar5))))
-        {
-          *psVar10 = *psVar8;
-          *psVar8 = sVar1;
-          pvVar2 = *ppvVar7;
-          *ppvVar7 = *ppvVar5;
-          *ppvVar5 = pvVar2;
+        piVar4 = (int *)((int)piVar4 + 2);
+        piVar3 = piVar3 + 1;
+        if ((*(short *)piVar4 != -1) &&
+           ((iVar5 = *piVar7, (short)iVar5 == -1 || (*piVar6 < *piVar3)))) {
+          *(short *)piVar7 = *(short *)piVar4;
+          *(short *)piVar4 = (short)iVar5;
+          iVar5 = *piVar6;
+          *piVar6 = *piVar3;
+          *piVar3 = iVar5;
         }
         local_c = local_c + -1;
       } while (local_c != 0);
     }
-    psVar10 = psVar10 + 1;
-    ppvVar7 = ppvVar7 + 1;
-    bVar4 = local_8 < 6;
+    piVar7 = (int *)((int)piVar7 + 2);
+    piVar6 = piVar6 + 1;
+    bVar2 = local_8 < 6;
     local_8 = local_8 + 1;
-  } while (bVar4);
-  iVar9 = 0;
-  psVar10 = &this->field164_0xb0;
+  } while (bVar2);
+  iVar5 = 0;
+  piVar6 = param_1 + 0x2c;
   do {
-    if (*psVar10 != -1) {
-      piVar6 = (int *)(**(code **)(this->field0_0x0 + 0x94))(iVar9 + 0x70696330);
-      iVar3 = *piVar6;
-      (**(code **)(iVar3 + 0xc))();
-      (**(code **)(iVar3 + 0x1c8))(*psVar10 + 0x10d7,1);
+    if ((short)*piVar6 != -1) {
+      piVar7 = (int *)(**(code **)(*param_1 + 0x94))(iVar5 + 0x70696330);
+      iVar1 = *piVar7;
+      (**(code **)(iVar1 + 0xc))();
+      (**(code **)(iVar1 + 0x1c8))((short)*piVar6 + 0x10d7,1);
     }
-    iVar9 = iVar9 + 1;
-    psVar10 = psVar10 + 1;
-  } while (iVar9 < 7);
+    iVar5 = iVar5 + 1;
+    piVar6 = (int *)((int)piVar6 + 2);
+  } while (iVar5 < 7);
   return;
 }
 

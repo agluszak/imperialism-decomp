@@ -3,67 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TArrowsControl.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004015B9
-// GHIDRA_NAME TArrowsControl::TArrowsControl_VtblSlot104
-// GHIDRA_PROTO void __thiscall TArrowsControl_VtblSlot104(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleSplitArrowAutoRepeatTickAndDispatch_Offset90 */
-
-void __thiscall
-TArrowsControl::TArrowsControl_VtblSlot104
-          (TArrowsControl *this,int nEventType,void *pEventSender,void *pEventDataA,
-          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
-
-{
-  HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
-            (this,nEventType,pEventSender,pEventDataA,pHitPayload,pRepeatArg);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004033EB
-// GHIDRA_NAME TArrowsControl::TArrowsControl_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TArrowsControl_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTArrowsControlAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTArrowsControlAndMaybeFree */
-
-void * __thiscall TArrowsControl::TArrowsControl_VtblSlot001(TArrowsControl *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTArrowsControlAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409471
-// GHIDRA_NAME TArrowsControl::TArrowsControl_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TArrowsControl_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTArrowsControlClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTArrowsControlClassNamePointer */
-
-void * __cdecl TArrowsControl::TArrowsControl_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTArrowsControlClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005838B0
 // GHIDRA_NAME TArrowsControl::CreateTArrowsControlInstance
-// GHIDRA_PROTO void * __cdecl CreateTArrowsControlInstance(void)
+// GHIDRA_PROTO undefined CreateTArrowsControlInstance()
 
-void * __cdecl TArrowsControl::CreateTArrowsControlInstance(void)
+undefined4 * TArrowsControl::CreateTArrowsControlInstance(void)
 
 {
   undefined4 *puVar1;
@@ -76,99 +20,86 @@ void * __cdecl TArrowsControl::CreateTArrowsControlInstance(void)
   puStack_8 = &LAB_0063752a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTArrowsControl;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00663318;
     puVar1[0x24] = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583950
 // GHIDRA_NAME TArrowsControl::GetTArrowsControlClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArrowsControlClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArrowsControl.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArrowsControlClassNamePointer()
 
-/* Returns class descriptor pointer for TArrowsControl. */
-
-void * __cdecl TArrowsControl::GetTArrowsControlClassNamePointer(void)
+undefined ** TArrowsControl::GetTArrowsControlClassNamePointer(void)
 
 {
-  return &g_pClassDescTArrowsControl;
+  return &PTR_s_TArrowsControl_00662db8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583970
 // GHIDRA_NAME TArrowsControl::ConstructTArrowsControlBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTArrowsControlBaseState(void)
+// GHIDRA_PROTO undefined ConstructTArrowsControlBaseState()
 
-void * __thiscall TArrowsControl::ConstructTArrowsControlBaseState(TArrowsControl *this)
+undefined4 * __fastcall TArrowsControl::ConstructTArrowsControlBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTArrowsControl;
-  this->field90 = 0;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_00663318;
+  param_1[0x24] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005839A0
 // GHIDRA_NAME TArrowsControl::DestructTArrowsControlAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTArrowsControlAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTArrowsControlAndMaybeFree()
 
-void * __thiscall
-TArrowsControl::DestructTArrowsControlAndMaybeFree(TArrowsControl *this,byte freeSelfFlag)
+undefined4 __thiscall
+TArrowsControl::DestructTArrowsControlAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005839F0
 // GHIDRA_NAME TArrowsControl::HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
-// GHIDRA_PROTO void __thiscall HandleSplitArrowAutoRepeatTickAndDispatch_Offset90(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Enum] Auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x90 timer state).
-// GHIDRA_COMMENT_END
-
-/* [Enum] Auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x90 timer
-   state). */
+// GHIDRA_PROTO undefined HandleSplitArrowAutoRepeatTickAndDispatch_Offset90()
 
 void __thiscall
 TArrowsControl::HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
-          (TArrowsControl *this,int nEventType,void *pEventSender,void *pEventDataA,
-          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,int param_5)
 
 {
-  undefined **ppuVar1;
-  char cVar2;
-  uint extraout_EAX;
-  int extraout_EAX_00;
+  char cVar1;
+  uint uVar2;
+  int iVar3;
   
-  if (nEventType != 2) {
-    thunk_GetTickCountDiv16();
-    if (this->field90 + 5U <= extraout_EAX) {
-      thunk_GetTickCountDiv16();
-      this->field90 = extraout_EAX_00;
-      if (nEventType == 0) {
-        this->field90 = extraout_EAX_00 + 10;
+  if (param_2 != 2) {
+    uVar2 = thunk_GetTickCountDiv16();
+    if (param_1[0x24] + 5U <= uVar2) {
+      iVar3 = thunk_GetTickCountDiv16();
+      param_1[0x24] = iVar3;
+      if (param_2 == 0) {
+        param_1[0x24] = iVar3 + 10;
       }
-      ppuVar1 = this->field0_0x0;
-      cVar2 = (*(code *)ppuVar1[0x5b])(pHitPayload);
-      if (cVar2 != '\0') {
-        if ((int)pHitPayload->axisCoord4 <= this->field38 / 2) {
-          (*(code *)ppuVar1[0x10])(100);
+      iVar3 = *param_1;
+      cVar1 = (**(code **)(iVar3 + 0x16c))(param_5);
+      if (cVar1 != '\0') {
+        if (*(int *)(param_5 + 4) <= param_1[0xe] / 2) {
+          (**(code **)(iVar3 + 0x40))(100);
           return;
         }
-        (*(code *)ppuVar1[0x10])(0x65,this,0);
+        (**(code **)(iVar3 + 0x40))(0x65,param_1,0);
       }
     }
   }

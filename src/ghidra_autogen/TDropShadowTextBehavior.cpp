@@ -3,52 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TDropShadowTextBehavior.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004074FA
-// GHIDRA_NAME TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TDropShadowTextBehavior_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDropShadowTextBehaviorAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDropShadowTextBehaviorAndMaybeFree */
-
-void * __thiscall
-TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot001
-          (TDropShadowTextBehavior *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDropShadowTextBehaviorAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408AFD
-// GHIDRA_NAME TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TDropShadowTextBehavior_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDropShadowTextBehaviorClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDropShadowTextBehaviorClassNamePointer */
-
-void * __cdecl TDropShadowTextBehavior::TDropShadowTextBehavior_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDropShadowTextBehaviorClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0FE0
 // GHIDRA_NAME TDropShadowTextBehavior::CreateTDropShadowTextBehaviorInstance
-// GHIDRA_PROTO void * __cdecl CreateTDropShadowTextBehaviorInstance(void)
+// GHIDRA_PROTO undefined CreateTDropShadowTextBehaviorInstance()
 
-void * __cdecl TDropShadowTextBehavior::CreateTDropShadowTextBehaviorInstance(void)
+undefined4 * TDropShadowTextBehavior::CreateTDropShadowTextBehaviorInstance(void)
 
 {
-  TBehavior *pThis;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,67 +20,62 @@ void * __cdecl TDropShadowTextBehavior::CreateTDropShadowTextBehaviorInstance(vo
   puStack_8 = &LAB_00630cda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  if (pThis != (TBehavior *)0x0) {
-    TBehavior::ConstructTBehaviorBaseState(pThis);
-    *(undefined1 *)&pThis[1].field04 = 0;
-    *(undefined1 *)((int)&pThis[1].field04 + 1) = 0;
-    *(undefined1 *)((int)&pThis[1].field04 + 2) = 0;
-    *(undefined1 *)((int)&pThis[1].field04 + 3) = 0;
-    *(undefined ***)pThis = &g_vtblTDropShadowTextBehavior;
+  if (puVar1 != (undefined4 *)0x0) {
+    TBehavior::ConstructTBehaviorBaseState();
+    *(undefined1 *)(puVar1 + 4) = 0;
+    *(undefined1 *)((int)puVar1 + 0x11) = 0;
+    *(undefined1 *)((int)puVar1 + 0x12) = 0;
+    *(undefined1 *)((int)puVar1 + 0x13) = 0;
+    *puVar1 = &PTR_LAB_0064eb60;
     *unaff_FS_OFFSET = local_c;
-    return pThis;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1080
 // GHIDRA_NAME TDropShadowTextBehavior::GetTDropShadowTextBehaviorClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDropShadowTextBehaviorClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDropShadowTextBehavior.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDropShadowTextBehaviorClassNamePointer()
 
-/* Returns class descriptor pointer for TDropShadowTextBehavior. */
-
-void * __cdecl TDropShadowTextBehavior::GetTDropShadowTextBehaviorClassNamePointer(void)
+undefined ** TDropShadowTextBehavior::GetTDropShadowTextBehaviorClassNamePointer(void)
 
 {
-  return &g_pClassDescTDropShadowTextBehavior;
+  return &PTR_s_TDropShadowTextBehavior_0064ea78;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B10A0
 // GHIDRA_NAME TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTDropShadowTextBehaviorBaseState(void)
+// GHIDRA_PROTO undefined ConstructTDropShadowTextBehaviorBaseState()
 
-void * __thiscall
-TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState(TDropShadowTextBehavior *this)
+undefined4 * __fastcall
+TDropShadowTextBehavior::ConstructTDropShadowTextBehaviorBaseState(undefined4 *param_1)
 
 {
-  TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
-  this->field7_0x10 = 0;
-  this->field8_0x11 = 0;
-  this->field9_0x12 = 0;
-  this->field10_0x13 = 0;
-  this->field0_0x0 = &g_vtblTDropShadowTextBehavior;
-  return this;
+  TBehavior::ConstructTBehaviorBaseState();
+  *(undefined1 *)(param_1 + 4) = 0;
+  *(undefined1 *)((int)param_1 + 0x11) = 0;
+  *(undefined1 *)((int)param_1 + 0x12) = 0;
+  *(undefined1 *)((int)param_1 + 0x13) = 0;
+  *param_1 = &PTR_LAB_0064eb60;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B10D0
 // GHIDRA_NAME TDropShadowTextBehavior::DestructTDropShadowTextBehaviorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDropShadowTextBehaviorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDropShadowTextBehaviorAndMaybeFree()
 
-void * __thiscall
+undefined4 __thiscall
 TDropShadowTextBehavior::DestructTDropShadowTextBehaviorAndMaybeFree
-          (TDropShadowTextBehavior *this,byte freeSelfFlag)
+          (undefined4 param_1,byte param_2)
 
 {
   DestructTDropShadowTextBehaviorAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

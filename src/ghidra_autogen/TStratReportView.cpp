@@ -3,56 +3,18 @@
 // Program: Imperialism.exe
 // Bucket: TStratReportView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403FD0
-// GHIDRA_NAME TStratReportView::TStratReportView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TStratReportView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTStratReportViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTStratReportViewAndMaybeFree */
-
-void * __thiscall
-TStratReportView::TStratReportView_VtblSlot001(TStratReportView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = _DestructTStratReportViewAndMaybeFree__YIPAUStratReportViewState___Z__imperialism_src_game_TStratReportView_cpp126722299__PAU12_HE_Z
-                     (this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407B5D
-// GHIDRA_NAME TStratReportView::thunk_GetTStratReportViewClassNamePointer_At00407b5d
-// GHIDRA_PROTO void * __cdecl thunk_GetTStratReportViewClassNamePointer_At00407b5d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTStratReportViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTStratReportViewClassNamePointer */
-
-void * __cdecl TStratReportView::thunk_GetTStratReportViewClassNamePointer_At00407b5d(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTStratReportViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E330
-// GHIDRA_NAME TStratReportView::?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:\imperialism\src\game\TStratReportView.cpp126722299@@XZ
-// GHIDRA_PROTO void * __cdecl ?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:\imperialism\src\game\TStratReportView.cpp126722299@@XZ(void)
+// GHIDRA_NAME TStratReportView::?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@XZ
+// GHIDRA_PROTO undefined ?CreateTStratReportViewInstance@@YAPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@XZ()
 
-void * __cdecl
+undefined4 *
 TStratReportView::
-_CreateTStratReportViewInstance__YAPAUStratReportViewState___Z__imperialism_src_game_TStratReportView_cpp126722299__XZ
+_CreateTStratReportViewInstance__YAPAUStratReportViewState___Z_imperialismsrcgameTStratReportView_cpp126722299__XZ
           (void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -62,62 +24,40 @@ _CreateTStratReportViewInstance__YAPAUStratReportViewState___Z__imperialism_src_
   puStack_8 = &LAB_00637d8a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTStratReportView;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00667d08;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E3A0
 // GHIDRA_NAME TStratReportView::GetTStratReportViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTStratReportViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TStratReportView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTStratReportViewClassNamePointer()
 
-/* Returns class descriptor pointer for TStratReportView. */
-
-void * __cdecl TStratReportView::GetTStratReportViewClassNamePointer(void)
+undefined ** TStratReportView::GetTStratReportViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTStratReportView;
+  return &PTR_s_TStratReportView_006630e8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E3C0
-// GHIDRA_NAME TStratReportView::?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:\imperialism\src\game\TStratReportView.cpp126722299@@PAU12@@Z
-// GHIDRA_PROTO void * __thiscall ?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:\imperialism\src\game\TStratReportView.cpp126722299@@PAU12@@Z(void)
+// GHIDRA_NAME TStratReportView::?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z
+// GHIDRA_PROTO undefined ?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z()
 
-void * __thiscall
+undefined4 * __fastcall
 TStratReportView::
-_ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z__imperialism_src_game_TStratReportView_cpp126722299__PAU12__Z
-          (TStratReportView *this)
+_ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z_imperialismsrcgameTStratReportView_cpp126722299__PAU12__Z
+          (undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTStratReportView;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0058E3F0
-// GHIDRA_NAME TStratReportView::?DestructTStratReportViewAndMaybeFree@@YIPAUStratReportViewState@?%Z:\imperialism\src\game\TStratReportView.cpp126722299@@PAU12@HE@Z
-// GHIDRA_PROTO void * __thiscall ?DestructTStratReportViewAndMaybeFree@@YIPAUStratReportViewState@?%Z:\imperialism\src\game\TStratReportView.cpp126722299@@PAU12@HE@Z(byte freeSelfFlag)
-
-void * __thiscall
-TStratReportView::
-_DestructTStratReportViewAndMaybeFree__YIPAUStratReportViewState___Z__imperialism_src_game_TStratReportView_cpp126722299__PAU12_HE_Z
-          (TStratReportView *this,byte freeSelfFlag)
-
-{
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_00667d08;
+  return param_1;
 }
 

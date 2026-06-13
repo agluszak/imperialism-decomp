@@ -3,66 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TUnitsView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402DE2
-// GHIDRA_NAME TUnitsView::TUnitsView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TUnitsView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTUnitsViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTUnitsViewAndMaybeFree */
-
-void * __thiscall TUnitsView::TUnitsView_VtblSlot001(TUnitsView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTUnitsViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004075EF
-// GHIDRA_NAME TUnitsView::TUnitsView_VtblSlot117
-// GHIDRA_PROTO void __cdecl TUnitsView_VtblSlot117(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RebuildIconPictureEntriesFromSelectableTextOptions
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RebuildIconPictureEntriesFromSelectableTextOptions */
-
-void __cdecl TUnitsView::TUnitsView_VtblSlot117(void)
-
-{
-  RebuildIconPictureEntriesFromSelectableTextOptions();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407C66
-// GHIDRA_NAME TUnitsView::TUnitsView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TUnitsView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTUnitsViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTUnitsViewClassNamePointer */
-
-void * __cdecl TUnitsView::TUnitsView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTUnitsViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7F10
 // GHIDRA_NAME TUnitsView::CreateTUnitsViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTUnitsViewInstance(void)
+// GHIDRA_PROTO undefined CreateTUnitsViewInstance()
 
-void * __cdecl TUnitsView::CreateTUnitsViewInstance(void)
+undefined4 * TUnitsView::CreateTUnitsViewInstance(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -72,58 +20,53 @@ void * __cdecl TUnitsView::CreateTUnitsViewInstance(void)
   puStack_8 = &LAB_0063162a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
-    this->field0_0x0 = &g_vtblTUnitsView;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    puVar1[0x25] = 0;
+    *puVar1 = &PTR_LAB_006518e8;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7FB0
 // GHIDRA_NAME TUnitsView::GetTUnitsViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTUnitsViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TUnitsView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTUnitsViewClassNamePointer()
 
-/* Returns class descriptor pointer for TUnitsView. */
-
-void * __cdecl TUnitsView::GetTUnitsViewClassNamePointer(void)
+undefined ** TUnitsView::GetTUnitsViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTUnitsView;
+  return &PTR_s_TUnitsView_00651260;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7FD0
 // GHIDRA_NAME TUnitsView::ConstructTUnitsViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTUnitsViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTUnitsViewBaseState()
 
-void * __thiscall TUnitsView::ConstructTUnitsViewBaseState(TUnitsView *this)
+undefined4 * __fastcall TUnitsView::ConstructTUnitsViewBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field94 = 0;
-  this->field0_0x0 = &g_vtblTUnitsView;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  param_1[0x25] = 0;
+  *param_1 = &PTR_LAB_006518e8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C8000
 // GHIDRA_NAME TUnitsView::DestructTUnitsViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTUnitsViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTUnitsViewAndMaybeFree()
 
-void * __thiscall TUnitsView::DestructTUnitsViewAndMaybeFree(TUnitsView *this,byte freeSelfFlag)
+undefined4 __thiscall TUnitsView::DestructTUnitsViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

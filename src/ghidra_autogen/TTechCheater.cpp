@@ -3,105 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TTechCheater.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401249
-// GHIDRA_NAME TTechCheater::thunk_scalar_deleting_destructor
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTechCheater::thunk_scalar_deleting_destructor(TTechCheater *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403D37
-// GHIDRA_NAME TTechCheater::thunk_GetTGPCheaterClassNamePointer_At00403d37
-// GHIDRA_PROTO void * __cdecl thunk_GetTGPCheaterClassNamePointer_At00403d37(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGPCheaterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGPCheaterClassNamePointer */
-
-void * __cdecl TTechCheater::thunk_GetTGPCheaterClassNamePointer_At00403d37(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TGPCheater::GetTGPCheaterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405727
-// GHIDRA_NAME TTechCheater::thunk_GetTTechCheaterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTechCheaterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTechCheaterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTechCheaterClassNamePointer */
-
-void * __cdecl TTechCheater::thunk_GetTTechCheaterClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTechCheaterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405D6C
-// GHIDRA_NAME TTechCheater::thunk_DestructTTechCheaterAndMaybeFree_At00405d6c
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTechCheaterAndMaybeFree_At00405d6c(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTechCheaterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTechCheaterAndMaybeFree */
-
-void * __thiscall
-TTechCheater::thunk_DestructTTechCheaterAndMaybeFree_At00405d6c
-          (TTechCheater *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTechCheaterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1940
 // GHIDRA_NAME TTechCheater::GetTTechCheaterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTechCheaterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTechCheater.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTechCheaterClassNamePointer()
 
-/* Returns class descriptor pointer for TTechCheater. */
-
-void * __cdecl TTechCheater::GetTTechCheaterClassNamePointer(void)
+undefined ** TTechCheater::GetTTechCheaterClassNamePointer(void)
 
 {
-  return &g_pClassDescTTechCheater;
+  return &PTR_s_TTechCheater_0064ebf8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B19B0
 // GHIDRA_NAME TTechCheater::ConstructTTechCheaterBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTTechCheaterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTechCheaterBaseState()
 
-void * __cdecl TTechCheater::ConstructTTechCheaterBaseState(void)
+undefined4 * TTechCheater::ConstructTTechCheaterBaseState(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -111,30 +31,30 @@ void * __cdecl TTechCheater::ConstructTTechCheaterBaseState(void)
   puStack_8 = &LAB_00630dca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTTechCheater;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_0064f050;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A20
 // GHIDRA_NAME TTechCheater::DestructTTechCheaterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTechCheaterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTechCheaterAndMaybeFree()
 
-void * __thiscall
-TTechCheater::DestructTTechCheaterAndMaybeFree(TTechCheater *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTechCheater::DestructTTechCheaterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

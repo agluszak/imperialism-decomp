@@ -3,55 +3,13 @@
 // Program: Imperialism.exe
 // Bucket: TTransportView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404EA8
-// GHIDRA_NAME TTransportView::thunk_GetTTransportViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTransportViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTransportViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTransportViewClassNamePointer */
-
-void * __cdecl TTransportView::thunk_GetTTransportViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTransportViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004081C5
-// GHIDRA_NAME TTransportView::thunk_scalar_deleting_destructor_004081C5
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004081C5(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTransportView::thunk_scalar_deleting_destructor_004081C5(TTransportView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD3C0
 // GHIDRA_NAME TTransportView::GetTTransportViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTransportViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTransportView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTransportViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTransportView. */
-
-void * __cdecl TTransportView::GetTTransportViewClassNamePointer(void)
+undefined ** TTransportView::GetTTransportViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTransportView;
+  return &PTR_s_TTransportView_0064fb90;
 }
 

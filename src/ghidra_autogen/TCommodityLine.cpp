@@ -3,71 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TCommodityLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402C48
-// GHIDRA_NAME TCommodityLine::thunk_DestructTCommodityLineAndMaybeFree_At00402c48
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCommodityLineAndMaybeFree_At00402c48(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCommodityLineAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCommodityLineAndMaybeFree */
-
-void * __thiscall
-TCommodityLine::thunk_DestructTCommodityLineAndMaybeFree_At00402c48
-          (TCommodityLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTCommodityLineAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405407
-// GHIDRA_NAME TCommodityLine::thunk_ConstructTCommodityLineBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTCommodityLineBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTCommodityLineBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTCommodityLineBaseState */
-
-void * __thiscall TCommodityLine::thunk_ConstructTCommodityLineBaseState(TCommodityLine *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ConstructTCommodityLineBaseState(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409AA2
-// GHIDRA_NAME TCommodityLine::thunk_GetTCommodityLineClassNamePointer_At00409aa2
-// GHIDRA_PROTO void * __cdecl thunk_GetTCommodityLineClassNamePointer_At00409aa2(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCommodityLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCommodityLineClassNamePointer */
-
-void * __cdecl TCommodityLine::thunk_GetTCommodityLineClassNamePointer_At00409aa2(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCommodityLineClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1430
 // GHIDRA_NAME TCommodityLine::CreateTCommodityLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTCommodityLineInstance(void)
+// GHIDRA_PROTO undefined CreateTCommodityLineInstance()
 
-void * __cdecl TCommodityLine::CreateTCommodityLineInstance(void)
+undefined4 * TCommodityLine::CreateTCommodityLineInstance(void)
 
 {
-  TLineData *pThis;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -77,57 +21,52 @@ void * __cdecl TCommodityLine::CreateTCommodityLineInstance(void)
   puStack_8 = &LAB_006397aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (pThis != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(pThis);
-    pThis->field0_0x0 = &g_vtblTCommodityLine;
-    pTVar1 = pThis;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TLineData::ConstructTLineDataBaseState();
+    *puVar1 = &PTR_LAB_0066e278;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C14A0
 // GHIDRA_NAME TCommodityLine::GetTCommodityLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCommodityLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCommodityLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCommodityLineClassNamePointer()
 
-/* Returns class descriptor pointer for TCommodityLine. */
-
-void * __cdecl TCommodityLine::GetTCommodityLineClassNamePointer(void)
+undefined ** TCommodityLine::GetTCommodityLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTCommodityLine;
+  return &PTR_s_TCommodityLine_0066dcc0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C14C0
 // GHIDRA_NAME TCommodityLine::ConstructTCommodityLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTCommodityLineBaseState(void)
+// GHIDRA_PROTO undefined ConstructTCommodityLineBaseState()
 
-void * __thiscall TCommodityLine::ConstructTCommodityLineBaseState(TCommodityLine *this)
+undefined4 * __fastcall TCommodityLine::ConstructTCommodityLineBaseState(undefined4 *param_1)
 
 {
-  TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  this->field0_0x0 = &g_vtblTCommodityLine;
-  return this;
+  TLineData::ConstructTLineDataBaseState();
+  *param_1 = &PTR_LAB_0066e278;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C14F0
 // GHIDRA_NAME TCommodityLine::DestructTCommodityLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCommodityLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTCommodityLineAndMaybeFree()
 
-void * __thiscall
-TCommodityLine::DestructTCommodityLineAndMaybeFree(TCommodityLine *this,byte freeSelfFlag)
+undefined4 __thiscall
+TCommodityLine::DestructTCommodityLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTCommodityLineAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

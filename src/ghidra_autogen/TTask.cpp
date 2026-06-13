@@ -3,175 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TTask.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402C9D
-// GHIDRA_NAME TTask::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At005adc90 */
-
-void __thiscall
-TTask::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(TTask *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040311B
-// GHIDRA_NAME TTask::thunk_CreateTTaskInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTTaskInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to BuildTaskOverlayTerrainLabelFromTemplate. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* WARNING: Type propagation algorithm not settling */
-/* Thunk forwarding to BuildTaskOverlayTerrainLabelFromTemplate. [FID:thunk_target_sync] */
-
-void __thiscall TTask::thunk_CreateTTaskInstance(TTask *this)
-
-{
-  code *pcVar1;
-  int iVar2;
-  int *piVar3;
-  TLoadSavePicture *this_00;
-  int *unaff_FS_OFFSET;
-  int unaff_retaddr;
-  int iVar4;
-  int aiStack_38 [3];
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006388b0;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  aiStack_38[2] = 0x61636f61;
-  pcVar1 = *(code **)((int)this->pVtable + 0x94);
-  aiStack_38[1] = 0x5ad78d;
-  piVar3 = (int *)(*pcVar1)();
-  iVar4 = *piVar3;
-  aiStack_38[1] = 0x5ad796;
-  (**(code **)(iVar4 + 0xc))();
-  aiStack_38[1] = 1;
-  aiStack_38[0] = unaff_retaddr + 0xea6;
-  (**(code **)(iVar4 + 0x1c8))();
-  piVar3 = (int *)(*pcVar1)();
-  iVar4 = *piVar3;
-  (**(code **)(iVar4 + 0xc))();
-  (**(code **)(iVar4 + 0x1c8))(puStack_8 + 0xea6);
-  InitializeSharedStringRefFromEmpty();
-  InitializeSharedStringRefFromEmpty();
-  InitializeSharedStringRefFromEmpty();
-  InitializeSharedStringRefFromEmpty();
-  if (iStack_c == 0) {
-    iVar4 = 0xd;
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x273d,0xd,aiStack_38 + 2);
-  }
-  else {
-    iVar4 = 0xc;
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x273d,0xc,aiStack_38 + 2);
-  }
-  FormatOverlayTerrainLabelText();
-  thunk_AssignSharedStringFromIndexedA8EntryNameField();
-  scanBracketExpressions(g_pLocalizationTable,aiStack_38 + 1,(char *)0x64636f61);
-  piVar3 = (int *)(*pcVar1)(0x696e666f);
-  iVar2 = *piVar3;
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1f0))(aiStack_38);
-  (**(code **)(iVar2 + 0x1e0))(0,0xc,0x2b6a);
-  (**(code **)(iVar2 + 0x1f8))(1);
-  this_00 = (TLoadSavePicture *)(*pcVar1)(0x706d6170);
-  iVar2 = this_00->field0_0x0;
-  (**(code **)(iVar2 + 0xc))();
-  TLoadSavePicture::thunk_RasterizeHexNeighborTerrainPaletteMap(this_00,0);
-  *(int *)&this_00->field_0x64 = aiStack_38[2];
-  (**(code **)(iVar2 + 0xe4))();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = iVar4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404F5C
-// GHIDRA_NAME TTask::thunk_GetTTaskClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTaskClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTaskClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTaskClassNamePointer */
-
-void * __cdecl TTask::thunk_GetTTaskClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTaskClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406041
-// GHIDRA_NAME TTask::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At005adc50 */
-
-void __thiscall
-TTask::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(TTask *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407AC7
-// GHIDRA_NAME TTask::thunk_DestructTTaskAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTaskAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTTaskRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTTaskRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TTask::thunk_DestructTTaskAndMaybeFree(TTask *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD760
 // GHIDRA_NAME TTask::CreateTTaskInstance
-// GHIDRA_PROTO void __thiscall CreateTTaskInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds task overlay label text using terrain/name token expansion and bracket parsing.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTaskInstance()
 
 /* WARNING: Type propagation algorithm not settling */
-/* Builds task overlay label text using terrain/name token expansion and bracket parsing. */
 
-void __thiscall TTask::CreateTTaskInstance(TTask *this)
+void __fastcall TTask::CreateTTaskInstance(int *param_1)
 
 {
   code *pcVar1;
   int iVar2;
   int *piVar3;
-  TLoadSavePicture *this_00;
   int *unaff_FS_OFFSET;
   int unaff_retaddr;
   int iVar4;
+  undefined4 uStack_40;
+  char *pcStack_3c;
   int aiStack_38 [3];
+  undefined4 uStack_14;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -181,7 +31,7 @@ void __thiscall TTask::CreateTTaskInstance(TTask *this)
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   aiStack_38[2] = 0x61636f61;
-  pcVar1 = *(code **)((int)this->pVtable + 0x94);
+  pcVar1 = *(code **)(*param_1 + 0x94);
   aiStack_38[1] = 0x5ad78d;
   piVar3 = (int *)(*pcVar1)();
   iVar4 = *piVar3;
@@ -189,10 +39,15 @@ void __thiscall TTask::CreateTTaskInstance(TTask *this)
   (**(code **)(iVar4 + 0xc))();
   aiStack_38[1] = 1;
   aiStack_38[0] = unaff_retaddr + 0xea6;
+  pcStack_3c = (char *)0x5ad7ab;
   (**(code **)(iVar4 + 0x1c8))();
+  pcStack_3c = (char *)0x64636f61;
+  uStack_40 = 0x5ad7b4;
   piVar3 = (int *)(*pcVar1)();
   iVar4 = *piVar3;
+  uStack_40 = 0x5ad7bd;
   (**(code **)(iVar4 + 0xc))();
+  uStack_40 = 1;
   (**(code **)(iVar4 + 0x1c8))(puStack_8 + 0xea6);
   InitializeSharedStringRefFromEmpty();
   InitializeSharedStringRefFromEmpty();
@@ -200,26 +55,26 @@ void __thiscall TTask::CreateTTaskInstance(TTask *this)
   InitializeSharedStringRefFromEmpty();
   if (iStack_c == 0) {
     iVar4 = 0xd;
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x273d,0xd,aiStack_38 + 2);
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x273d,0xd,aiStack_38 + 2);
   }
   else {
     iVar4 = 0xc;
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x273d,0xc,aiStack_38 + 2);
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x273d,0xc,aiStack_38 + 2);
   }
-  FormatOverlayTerrainLabelText();
-  thunk_AssignSharedStringFromIndexedA8EntryNameField();
-  scanBracketExpressions(g_pLocalizationTable,aiStack_38 + 1,(char *)0x64636f61);
+  FormatOverlayTerrainLabelText(&uStack_40);
+  thunk_AssignSharedStringFromIndexedA8EntryNameField(uStack_14,aiStack_38);
+  scanBracketExpressions(g_pLocalizationTable,aiStack_38 + 1,pcStack_3c);
   piVar3 = (int *)(*pcVar1)(0x696e666f);
   iVar2 = *piVar3;
   (**(code **)(iVar2 + 0xc))();
   (**(code **)(iVar2 + 0x1f0))(aiStack_38);
   (**(code **)(iVar2 + 0x1e0))(0,0xc,0x2b6a);
   (**(code **)(iVar2 + 0x1f8))(1);
-  this_00 = (TLoadSavePicture *)(*pcVar1)(0x706d6170);
-  iVar2 = this_00->field0_0x0;
+  piVar3 = (int *)(*pcVar1)(0x706d6170);
+  iVar2 = *piVar3;
   (**(code **)(iVar2 + 0xc))();
-  TLoadSavePicture::thunk_RasterizeHexNeighborTerrainPaletteMap(this_00,0);
-  *(int *)&this_00->field_0x64 = aiStack_38[2];
+  TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(0);
+  piVar3[0x19] = aiStack_38[2];
   (**(code **)(iVar2 + 0xe4))();
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
@@ -231,98 +86,68 @@ void __thiscall TTask::CreateTTaskInstance(TTask *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADB70
 // GHIDRA_NAME TTask::GetTTaskClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTaskClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTask.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTaskClassNamePointer()
 
-/* Returns class descriptor pointer for TTask. */
-
-void * __cdecl TTask::GetTTaskClassNamePointer(void)
+undefined ** TTask::GetTTaskClassNamePointer(void)
 
 {
-  return &g_pClassDescTTask;
+  return &PTR_s_TTask_0066a8b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADBB0
 // GHIDRA_NAME TTask::ConstructTTaskBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTaskBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTaskBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TTask::ConstructTTaskBaseState(TTask *this)
+undefined4 __thiscall TTask::ConstructTTaskBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTTaskAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTTaskAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADBE0
 // GHIDRA_NAME TTask::DestructTTaskAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTaskAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TTask runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTaskAndMaybeFree()
 
-/* Returns TTask runtime class descriptor pointer. */
-
-void * __thiscall TTask::DestructTTaskAndMaybeFree(TTask *this)
+void __fastcall TTask::DestructTTaskAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADC50
 // GHIDRA_NAME TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At005adc50()
 
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
-
-void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(TTask *this,void *pMessage)
+void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot14_At005adc50(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
-  (*pcVar1)(&this->field1_0x4,2);
-  (*pcVar1)(&this->field3_0x6,2);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  (*pcVar1)(param_1 + 4,2);
+  (*pcVar1)(param_1 + 6,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADC90
 // GHIDRA_NAME TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At005adc90()
 
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
-
-void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(TTask *this,void *pMessage)
+void __thiscall TTask::WrapperFor_HandleCityDialogNoOpSlot18_At005adc90(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x3c);
-  (*pcVar1)(&this->field1_0x4,2);
-  (*pcVar1)(&this->field3_0x6,2);
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x3c);
+  (*pcVar1)(param_1 + 4,2);
+  (*pcVar1)(param_1 + 6,2);
   return;
 }
 

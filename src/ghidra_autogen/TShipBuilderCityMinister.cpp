@@ -3,97 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TShipBuilderCityMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040182A
-// GHIDRA_NAME TShipBuilderCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5d90_At0040182a
-// GHIDRA_PROTO void __fastcall thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5d90_At0040182a(TShipBuilderCityMinister * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConfigureCityInteriorMinisterPriorityPreset_004c5d90
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TShipBuilderCityMinister": ignoring multiple overlapping fields */
-/* Single-JMP thunk to ConfigureCityInteriorMinisterPriorityPreset_004c5d90 */
-
-void __fastcall
-TShipBuilderCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c5d90_At0040182a
-          (TShipBuilderCityMinister *pThis)
-
-{
-  ConfigureCityInteriorMinisterPriorityPreset_004c5d90(pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401C44
-// GHIDRA_NAME TShipBuilderCityMinister::thunk_GetTShipBuilderCityMinisterClassNamePointer_At00401c44
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipBuilderCityMinisterClassNamePointer_At00401c44(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTShipBuilderCityMinisterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTShipBuilderCityMinisterClassNamePointer */
-
-void * __cdecl
-TShipBuilderCityMinister::thunk_GetTShipBuilderCityMinisterClassNamePointer_At00401c44(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTShipBuilderCityMinisterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040470A
-// GHIDRA_NAME TShipBuilderCityMinister::thunk_DestructTShipBuilderCityMinisterAndMaybeFree_At0040470a
-// GHIDRA_PROTO void * __thiscall thunk_DestructTShipBuilderCityMinisterAndMaybeFree_At0040470a(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTShipBuilderCityMinisterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TShipBuilderCityMinister": ignoring multiple overlapping fields */
-/* Single-JMP thunk to DestructTShipBuilderCityMinisterAndMaybeFree */
-
-void * __thiscall
-TShipBuilderCityMinister::thunk_DestructTShipBuilderCityMinisterAndMaybeFree_At0040470a
-          (TShipBuilderCityMinister *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTShipBuilderCityMinisterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408D05
-// GHIDRA_NAME TShipBuilderCityMinister::thunk_ConstructTShipBuilderCityMinisterBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTShipBuilderCityMinisterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTShipBuilderCityMinisterBaseState
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TShipBuilderCityMinister": ignoring multiple overlapping fields */
-/* Single-JMP thunk to ConstructTShipBuilderCityMinisterBaseState */
-
-void * __thiscall
-TShipBuilderCityMinister::thunk_ConstructTShipBuilderCityMinisterBaseState
-          (TShipBuilderCityMinister *this)
-
-{
-  TMinister::thunk_ConstructTMinister(&this->base);
-  (this->base).field390_0x18c = 0;
-  (this->base).field16_0x14 = 1;
-  (this->base).field17_0x16 = 1;
-  (this->base).pVtable = &g_vtblTShipBuilderCityMinister;
-  (this->base).field9_0xc = 2;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5C00
 // GHIDRA_NAME TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance
-// GHIDRA_PROTO void * __cdecl CreateTShipBuilderCityMinisterInstance(void)
+// GHIDRA_PROTO undefined CreateTShipBuilderCityMinisterInstance()
 
-void * __cdecl TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(void)
+undefined4 * TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(void)
 
 {
-  TMinister *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -103,71 +20,62 @@ void * __cdecl TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(
   puStack_8 = &LAB_006314ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c4);
   local_4 = 0;
-  if (this != (TMinister *)0x0) {
-    TMinister::thunk_ConstructTMinister(this);
-    this->field390_0x18c = 0;
-    this->field16_0x14 = 1;
-    this->field17_0x16 = 1;
-    this->pVtable = &g_vtblTShipBuilderCityMinister;
-    this->field9_0xc = 2;
+  if (puVar1 != (undefined4 *)0x0) {
+    TMinister::ConstructTMinister();
+    puVar1[99] = 0;
+    *(undefined2 *)(puVar1 + 5) = 1;
+    *(undefined2 *)((int)puVar1 + 0x16) = 1;
+    *puVar1 = &PTR_LAB_00650bd0;
+    *(undefined2 *)(puVar1 + 3) = 2;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5CC0
 // GHIDRA_NAME TShipBuilderCityMinister::GetTShipBuilderCityMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTShipBuilderCityMinisterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TShipBuilderCityMinister.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTShipBuilderCityMinisterClassNamePointer()
 
-/* Returns class descriptor pointer for TShipBuilderCityMinister. */
-
-void * __cdecl TShipBuilderCityMinister::GetTShipBuilderCityMinisterClassNamePointer(void)
+undefined ** TShipBuilderCityMinister::GetTShipBuilderCityMinisterClassNamePointer(void)
 
 {
-  return &g_pClassDescTShipBuilderCityMinister;
+  return &PTR_s_TShipBuilderCityMinister_006506f8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5CE0
 // GHIDRA_NAME TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTShipBuilderCityMinisterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTShipBuilderCityMinisterBaseState()
 
-/* WARNING: Struct "TShipBuilderCityMinister": ignoring multiple overlapping fields */
-
-void * __thiscall
-TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(TShipBuilderCityMinister *this)
+undefined4 * __fastcall
+TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(undefined4 *param_1)
 
 {
-  TMinister::thunk_ConstructTMinister(&this->base);
-  (this->base).field390_0x18c = 0;
-  (this->base).field16_0x14 = 1;
-  (this->base).field17_0x16 = 1;
-  (this->base).pVtable = &g_vtblTShipBuilderCityMinister;
-  (this->base).field9_0xc = 2;
-  return this;
+  TMinister::ConstructTMinister();
+  param_1[99] = 0;
+  *(undefined2 *)(param_1 + 5) = 1;
+  *(undefined2 *)((int)param_1 + 0x16) = 1;
+  *param_1 = &PTR_LAB_00650bd0;
+  *(undefined2 *)(param_1 + 3) = 2;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5D20
 // GHIDRA_NAME TShipBuilderCityMinister::DestructTShipBuilderCityMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTShipBuilderCityMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTShipBuilderCityMinisterAndMaybeFree()
 
-/* WARNING: Struct "TShipBuilderCityMinister": ignoring multiple overlapping fields */
-
-void * __thiscall
+undefined4 __thiscall
 TShipBuilderCityMinister::DestructTShipBuilderCityMinisterAndMaybeFree
-          (TShipBuilderCityMinister *this,byte freeSelfFlag)
+          (undefined4 param_1,byte param_2)
 
 {
   DestructTShipBuilderCityMinisterAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

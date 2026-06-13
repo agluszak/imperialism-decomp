@@ -3,82 +3,13 @@
 // Program: Imperialism.exe
 // Bucket: TWarningView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004013E3
-// GHIDRA_NAME TWarningView::TWarningView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TWarningView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTWarningViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTWarningViewAndMaybeFree */
-
-void * __thiscall TWarningView::TWarningView_VtblSlot001(TWarningView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = _DestructTWarningViewAndMaybeFree__YIPAUWarningViewState___Z__imperialism_src_game_TWarningView_cpp14012305__PAU12_HE_Z
-                     (this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040365C
-// GHIDRA_NAME TWarningView::TWarningView_VtblSlot015
-// GHIDRA_PROTO void __cdecl TWarningView_VtblSlot015(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00592980
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00592980 */
-
-void __cdecl TWarningView::TWarningView_VtblSlot015(int arg1,int arg2)
-
-{
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At00592980(arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040407A
-// GHIDRA_NAME TWarningView::TWarningView_VtblSlot055
-// GHIDRA_PROTO void __thiscall TWarningView_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeWarningViewMinisterOrdersPrompt
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeWarningViewMinisterOrdersPrompt */
-
-void __thiscall TWarningView::TWarningView_VtblSlot055(TWarningView *this)
-
-{
-  TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt((TToolBarCluster *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004092B9
-// GHIDRA_NAME TWarningView::TWarningView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TWarningView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTWarningViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTWarningViewClassNamePointer */
-
-void * __cdecl TWarningView::TWarningView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTWarningViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00592860
-// GHIDRA_NAME TWarningView::?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:\imperialism\src\game\TWarningView.cpp14012305@@XZ
-// GHIDRA_PROTO void * __cdecl ?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:\imperialism\src\game\TWarningView.cpp14012305@@XZ(void)
+// GHIDRA_NAME TWarningView::?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@XZ
+// GHIDRA_PROTO undefined ?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@XZ()
 
-void * __cdecl
+undefined4 *
 TWarningView::
-_CreateTWarningViewInstance__YAPAUWarningViewState___Z__imperialism_src_game_TWarningView_cpp14012305__XZ
+_CreateTWarningViewInstance__YAPAUWarningViewState___Z_imperialismsrcgameTWarningView_cpp14012305__XZ
           (void)
 
 {
@@ -93,12 +24,12 @@ _CreateTWarningViewInstance__YAPAUWarningViewState___Z__imperialism_src_game_TWa
   puStack_8 = &LAB_006380fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTWarningView;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_006687b8;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -107,48 +38,40 @@ _CreateTWarningViewInstance__YAPAUWarningViewState___Z__imperialism_src_game_TWa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005928E0
 // GHIDRA_NAME TWarningView::GetTWarningViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTWarningViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TWarningView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTWarningViewClassNamePointer()
 
-/* Returns class descriptor pointer for TWarningView. */
-
-void * __cdecl TWarningView::GetTWarningViewClassNamePointer(void)
+undefined ** TWarningView::GetTWarningViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTWarningView;
+  return &PTR_s_TWarningView_00663178;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592900
-// GHIDRA_NAME TWarningView::?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:\imperialism\src\game\TWarningView.cpp14012305@@PAU12@@Z
-// GHIDRA_PROTO void * __thiscall ?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:\imperialism\src\game\TWarningView.cpp14012305@@PAU12@@Z(void)
+// GHIDRA_NAME TWarningView::?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@PAU12@@Z
+// GHIDRA_PROTO undefined ?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@PAU12@@Z()
 
-void * __thiscall
+undefined4 * __fastcall
 TWarningView::
-_ConstructTWarningViewBaseState__YIPAUWarningViewState___Z__imperialism_src_game_TWarningView_cpp14012305__PAU12__Z
-          (TWarningView *this)
+_ConstructTWarningViewBaseState__YIPAUWarningViewState___Z_imperialismsrcgameTWarningView_cpp14012305__PAU12__Z
+          (undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTWarningView;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_006687b8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592930
-// GHIDRA_NAME TWarningView::?DestructTWarningViewAndMaybeFree@@YIPAUWarningViewState@?%Z:\imperialism\src\game\TWarningView.cpp14012305@@PAU12@HE@Z
-// GHIDRA_PROTO void * __thiscall ?DestructTWarningViewAndMaybeFree@@YIPAUWarningViewState@?%Z:\imperialism\src\game\TWarningView.cpp14012305@@PAU12@HE@Z(byte freeSelfFlag)
+// GHIDRA_NAME TWarningView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall
-TWarningView::
-_DestructTWarningViewAndMaybeFree__YIPAUWarningViewState___Z__imperialism_src_game_TWarningView_cpp14012305__PAU12_HE_Z
-          (TWarningView *this,byte freeSelfFlag)
+undefined4 __thiscall TWarningView::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

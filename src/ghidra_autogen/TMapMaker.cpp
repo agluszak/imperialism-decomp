@@ -3,482 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TMapMaker.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004010E1
-// GHIDRA_NAME TMapMaker::thunk_PropagateRouteNodeMarkersFromDeferredNodes
-// GHIDRA_PROTO void __fastcall thunk_PropagateRouteNodeMarkersFromDeferredNodes(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PropagateRouteNodeMarkersFromDeferredNodes
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to PropagateRouteNodeMarkersFromDeferredNodes */
-
-void __fastcall TMapMaker::thunk_PropagateRouteNodeMarkersFromDeferredNodes(void)
-
-{
-  PropagateRouteNodeMarkersFromDeferredNodes();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004017E4
-// GHIDRA_NAME TMapMaker::thunk_RebuildCoarseCellNeighborTransitionState
-// GHIDRA_PROTO void __cdecl thunk_RebuildCoarseCellNeighborTransitionState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RebuildCoarseCellNeighborTransitionState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RebuildCoarseCellNeighborTransitionState */
-
-void __cdecl TMapMaker::thunk_RebuildCoarseCellNeighborTransitionState(void)
-
-{
-  RebuildCoarseCellNeighborTransitionState();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401AC8
-// GHIDRA_NAME TMapMaker::thunk_RestoreFinePatternBandFromNeighborCell
-// GHIDRA_PROTO void __thiscall thunk_RestoreFinePatternBandFromNeighborCell(void)
-
-void __thiscall TMapMaker::thunk_RestoreFinePatternBandFromNeighborCell(TMapMaker *this)
-
-{
-  RestoreFinePatternBandFromNeighborCell(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401FEB
-// GHIDRA_NAME TMapMaker::thunk_TryPlaceType1CoarseCellWithAdjacencyRules
-// GHIDRA_PROTO int __thiscall thunk_TryPlaceType1CoarseCellWithAdjacencyRules(void)
-
-int __thiscall TMapMaker::thunk_TryPlaceType1CoarseCellWithAdjacencyRules(TMapMaker *this)
-
-{
-  int iVar1;
-  
-  iVar1 = TryPlaceType1CoarseCellWithAdjacencyRules(this);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402158
-// GHIDRA_NAME TMapMaker::thunk_DeleteTMapMaker_At00402158
-// GHIDRA_PROTO void * __thiscall thunk_DeleteTMapMaker_At00402158(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeleteTMapMaker
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeleteTMapMaker */
-
-void * __thiscall TMapMaker::thunk_DeleteTMapMaker_At00402158(TMapMaker *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DeleteTMapMaker(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040272F
-// GHIDRA_NAME TMapMaker::thunk_BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands
-// GHIDRA_PROTO void __fastcall thunk_BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands */
-
-void __fastcall TMapMaker::thunk_BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands(void)
-
-{
-  BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402B2B
-// GHIDRA_NAME TMapMaker::thunk_PickRandomType3SeedAndAttemptExpansion
-// GHIDRA_PROTO uint __fastcall thunk_PickRandomType3SeedAndAttemptExpansion(void)
-
-uint __fastcall TMapMaker::thunk_PickRandomType3SeedAndAttemptExpansion(void)
-
-{
-  uint uVar1;
-  
-  uVar1 = PickRandomType3SeedAndAttemptExpansion();
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403003
-// GHIDRA_NAME TMapMaker::thunk_CopyFinePatternFromNeighborCellByMode
-// GHIDRA_PROTO void __thiscall thunk_CopyFinePatternFromNeighborCellByMode(void)
-
-void __thiscall TMapMaker::thunk_CopyFinePatternFromNeighborCellByMode(TMapMaker *this)
-
-{
-  CopyFinePatternFromNeighborCellByMode(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004031DE
-// GHIDRA_NAME TMapMaker::thunk_ExpandCoarseRegionNodeWithNeighborChecks
-// GHIDRA_PROTO int __thiscall thunk_ExpandCoarseRegionNodeWithNeighborChecks(void)
-
-int __thiscall TMapMaker::thunk_ExpandCoarseRegionNodeWithNeighborChecks(TMapMaker *this)
-
-{
-  int iVar1;
-  
-  iVar1 = ExpandCoarseRegionNodeWithNeighborChecks(this);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004032F1
-// GHIDRA_NAME TMapMaker::thunk_GenerateCoarseAndFineRegionSeedMap
-// GHIDRA_PROTO void __fastcall thunk_GenerateCoarseAndFineRegionSeedMap(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GenerateCoarseAndFineRegionSeedMap
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GenerateCoarseAndFineRegionSeedMap */
-
-void __fastcall TMapMaker::thunk_GenerateCoarseAndFineRegionSeedMap(void)
-
-{
-  GenerateCoarseAndFineRegionSeedMap();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403396
-// GHIDRA_NAME TMapMaker::thunk_SmoothCityRegionOwnershipByNeighborSampling
-// GHIDRA_PROTO void __thiscall thunk_SmoothCityRegionOwnershipByNeighborSampling(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SmoothCityRegionOwnershipByNeighborSampling
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SmoothCityRegionOwnershipByNeighborSampling */
-
-void __thiscall TMapMaker::thunk_SmoothCityRegionOwnershipByNeighborSampling(TMapMaker *this)
-
-{
-  SmoothCityRegionOwnershipByNeighborSampling(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403C92
-// GHIDRA_NAME TMapMaker::thunk_TryAssignCellTypeWithDirectionalConstraints
-// GHIDRA_PROTO uint __thiscall thunk_TryAssignCellTypeWithDirectionalConstraints(void)
-
-uint __thiscall TMapMaker::thunk_TryAssignCellTypeWithDirectionalConstraints(TMapMaker *this)
-
-{
-  uint uVar1;
-  
-  uVar1 = TryAssignCellTypeWithDirectionalConstraints(this);
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404FDE
-// GHIDRA_NAME TMapMaker::thunk_NormalizeRouteNodeMarkerValuesAndReportChanges
-// GHIDRA_PROTO int __fastcall thunk_NormalizeRouteNodeMarkerValuesAndReportChanges(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to NormalizeRouteNodeMarkerValuesAndReportChanges
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to NormalizeRouteNodeMarkerValuesAndReportChanges */
-
-int __fastcall TMapMaker::thunk_NormalizeRouteNodeMarkerValuesAndReportChanges(void)
-
-{
-  int iVar1;
-  
-  iVar1 = NormalizeRouteNodeMarkerValuesAndReportChanges();
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004056FF
-// GHIDRA_NAME TMapMaker::thunk_InitializeRegionGenerationStateAndSeedCoarseGrid
-// GHIDRA_PROTO void __fastcall thunk_InitializeRegionGenerationStateAndSeedCoarseGrid(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeRegionGenerationStateAndSeedCoarseGrid
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeRegionGenerationStateAndSeedCoarseGrid */
-
-void __fastcall TMapMaker::thunk_InitializeRegionGenerationStateAndSeedCoarseGrid(void)
-
-{
-  InitializeRegionGenerationStateAndSeedCoarseGrid();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405A42
-// GHIDRA_NAME TMapMaker::thunk_MergeCoarseRegionSetsAcrossNeighbors
-// GHIDRA_PROTO uint __thiscall thunk_MergeCoarseRegionSetsAcrossNeighbors(void)
-
-uint __thiscall TMapMaker::thunk_MergeCoarseRegionSetsAcrossNeighbors(TMapMaker *this)
-
-{
-  uint uVar1;
-  
-  uVar1 = MergeCoarseRegionSetsAcrossNeighbors(this);
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F06
-// GHIDRA_NAME TMapMaker::thunk_GetNeighborIndexOnCoarseGrid27x15
-// GHIDRA_PROTO int __cdecl thunk_GetNeighborIndexOnCoarseGrid27x15(int coarseIndex, int directionIndex)
-
-int __cdecl TMapMaker::thunk_GetNeighborIndexOnCoarseGrid27x15(int coarseIndex,int directionIndex)
-
-{
-  int iVar1;
-  
-  iVar1 = GetNeighborIndexOnCoarseGrid27x15(coarseIndex,directionIndex);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004060E6
-// GHIDRA_NAME TMapMaker::thunk_MarkRouteNodePendingAndActivateUnvisitedNeighbors
-// GHIDRA_PROTO void __cdecl thunk_MarkRouteNodePendingAndActivateUnvisitedNeighbors(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to MarkRouteNodePendingAndActivateUnvisitedNeighbors
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to MarkRouteNodePendingAndActivateUnvisitedNeighbors */
-
-void __cdecl TMapMaker::thunk_MarkRouteNodePendingAndActivateUnvisitedNeighbors(void)
-
-{
-  MarkRouteNodePendingAndActivateUnvisitedNeighbors();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406320
-// GHIDRA_NAME TMapMaker::thunk_ResolveRegionTileSubtypeCodeForTileIndex
-// GHIDRA_PROTO short __thiscall thunk_ResolveRegionTileSubtypeCodeForTileIndex(short tileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Thunk] Direct JMP thunk to ResolveRegionTileSubtypeCodeForTileIndex.
-// GHIDRA_COMMENT_END
-
-/* [Thunk] Direct JMP thunk to ResolveRegionTileSubtypeCodeForTileIndex. */
-
-short __thiscall
-TMapMaker::thunk_ResolveRegionTileSubtypeCodeForTileIndex(TMapMaker *this,short tileIndex)
-
-{
-  undefined1 *puVar1;
-  char cVar2;
-  short sVar3;
-  
-  puVar1 = (undefined1 *)(this->field0c + tileIndex * 0x24);
-  switch(*puVar1) {
-  case 0:
-    cVar2 = puVar1[0x11];
-    if (cVar2 == '\0') {
-      return 2;
-    }
-    if (cVar2 == '\x05') {
-      return 4;
-    }
-    if (cVar2 == '\x14') {
-      return 3;
-    }
-    return (-(ushort)((puVar1[0x1c] & 2) != 0) & 0xd) + 1;
-  case 1:
-    cVar2 = puVar1[0x13];
-    if (cVar2 == -1) {
-      return 0xd;
-    }
-    break;
-  case 2:
-    return (puVar1[0x11] != '\x01') + 7;
-  case 3:
-    return 9;
-  case 4:
-    return 10;
-  default:
-    return 0;
-  case 6:
-    cVar2 = puVar1[0x13];
-    if (cVar2 == -1) {
-      sVar3 = (tileIndex / 0x6c + (tileIndex >> 0xf)) -
-              (short)((longlong)(int)tileIndex * 0x4bda12f7 >> 0x3f);
-      if ((0xe < sVar3) && (sVar3 < 0x2e)) {
-        return 0xb;
-      }
-      return 0xc;
-    }
-    break;
-  case 7:
-    return (puVar1[0x11] != '\x11') + 5;
-  }
-  return (short)cVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004065E6
-// GHIDRA_NAME TMapMaker::thunk_TryPlaceType3CoarseCellWithAdjacencyRules
-// GHIDRA_PROTO int __thiscall thunk_TryPlaceType3CoarseCellWithAdjacencyRules(void)
-
-int __thiscall TMapMaker::thunk_TryPlaceType3CoarseCellWithAdjacencyRules(TMapMaker *this)
-
-{
-  int iVar1;
-  
-  iVar1 = TryPlaceType3CoarseCellWithAdjacencyRules(this);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406672
-// GHIDRA_NAME TMapMaker::thunk_SpreadType6CellsWithSecondaryNeighborPass
-// GHIDRA_PROTO int __thiscall thunk_SpreadType6CellsWithSecondaryNeighborPass(void)
-
-int __thiscall TMapMaker::thunk_SpreadType6CellsWithSecondaryNeighborPass(TMapMaker *this)
-
-{
-  int iVar1;
-  
-  iVar1 = SpreadType6CellsWithSecondaryNeighborPass(this);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406B72
-// GHIDRA_NAME TMapMaker::thunk_GetTMapMakerClassNamePointer_At00406b72
-// GHIDRA_PROTO void * __cdecl thunk_GetTMapMakerClassNamePointer_At00406b72(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMapMakerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMapMakerClassNamePointer */
-
-void * __cdecl TMapMaker::thunk_GetTMapMakerClassNamePointer_At00406b72(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMapMakerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406E1F
-// GHIDRA_NAME TMapMaker::thunk_TMapMaker_GenerateRandomCoarseGridCoord27x15
-// GHIDRA_PROTO void __thiscall thunk_TMapMaker_GenerateRandomCoarseGridCoord27x15(uint * pOutX, uint * pOutY)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:stale_thunk]
-// GHIDRA_COMMENT_END
-
-/* [FID:stale_thunk] */
-
-void __thiscall
-TMapMaker::thunk_TMapMaker_GenerateRandomCoarseGridCoord27x15
-          (TMapMaker *this,uint *pOutX,uint *pOutY)
-
-{
-  TMapMaker_GenerateRandomCoarseGridCoord27x15(this,pOutX,pOutY);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406EA6
-// GHIDRA_NAME TMapMaker::thunk_BuildFineGridRegionOverlayFromCoarseState
-// GHIDRA_PROTO void __fastcall thunk_BuildFineGridRegionOverlayFromCoarseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BuildFineGridRegionOverlayFromCoarseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BuildFineGridRegionOverlayFromCoarseState */
-
-void __fastcall TMapMaker::thunk_BuildFineGridRegionOverlayFromCoarseState(void)
-
-{
-  BuildFineGridRegionOverlayFromCoarseState();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040781A
-// GHIDRA_NAME TMapMaker::thunk_ValidateCoarseRegionMergeConsistency
-// GHIDRA_PROTO bool __cdecl thunk_ValidateCoarseRegionMergeConsistency(void)
-
-bool __cdecl TMapMaker::thunk_ValidateCoarseRegionMergeConsistency(void)
-
-{
-  bool bVar1;
-  int in_ECX;
-  int in_EDX;
-  int in_stack_00000004;
-  
-  bVar1 = ValidateCoarseRegionMergeConsistency(in_ECX,in_EDX,in_stack_00000004);
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407DA1
-// GHIDRA_NAME TMapMaker::thunk_ReindexType5CellsAndRebuildRegionOverlays
-// GHIDRA_PROTO void __thiscall thunk_ReindexType5CellsAndRebuildRegionOverlays(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReindexType5CellsAndRebuildRegionOverlays
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReindexType5CellsAndRebuildRegionOverlays */
-
-void __thiscall TMapMaker::thunk_ReindexType5CellsAndRebuildRegionOverlays(TMapMaker *this)
-
-{
-  TSpaceCommand::ReindexType5CellsAndRebuildRegionOverlays((TSpaceCommand *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407DFB
-// GHIDRA_NAME TMapMaker::thunk_SpreadType6CellsAcrossCoarseRowSegments
-// GHIDRA_PROTO int __thiscall thunk_SpreadType6CellsAcrossCoarseRowSegments(void)
-
-int __thiscall TMapMaker::thunk_SpreadType6CellsAcrossCoarseRowSegments(TMapMaker *this)
-
-{
-  int iVar1;
-  
-  iVar1 = SpreadType6CellsAcrossCoarseRowSegments(this);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004092CD
-// GHIDRA_NAME TMapMaker::thunk_DeleteObjectIfNonNullViaVslot04
-// GHIDRA_PROTO void __thiscall thunk_DeleteObjectIfNonNullViaVslot04(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeleteObjectIfNonNullViaVslot04.
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeleteObjectIfNonNullViaVslot04. */
-
-void __thiscall TMapMaker::thunk_DeleteObjectIfNonNullViaVslot04(TMapMaker *this)
-
-{
-  if (this != (TMapMaker *)0x0) {
-    (*(code *)this->field0_0x0[1])(1);
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00511A70
 // GHIDRA_NAME TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng
-// GHIDRA_PROTO void __thiscall TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Mapgen pass: enforces subtype-3/4 assignments per region class using RNG fallback and subtype recomputation
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng()
 
-/* Mapgen pass: enforces subtype-3/4 assignments per region class using RNG fallback and subtype
-   recomputation */
-
-void __thiscall
-TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(TMapMaker *this)
+void __fastcall TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(int param_1)
 
 {
   short *psVar1;
   char cVar2;
-  bool bVar3;
-  short sVar4;
-  char *pcVar5;
-  short *psVar6;
-  int iVar7;
-  short *psVar8;
-  int iVar9;
+  short sVar3;
+  bool bVar4;
+  undefined1 uVar5;
+  char *pcVar6;
+  short *psVar7;
+  int iVar8;
+  short *psVar9;
   int iVar10;
   int iVar11;
+  int iVar12;
+  int iVar13;
   int local_38;
   short *local_34;
   short local_30 [4];
@@ -486,137 +30,143 @@ TMapMaker::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng(TMapMake
   
   local_38 = 0;
   do {
-    pcVar5 = this->field10;
-    iVar10 = 0;
-    iVar7 = 0x180;
+    pcVar6 = *(char **)(param_1 + 0x10);
+    iVar11 = 0;
+    iVar8 = 0x180;
     do {
-      if (*pcVar5 == local_38) {
-        iVar10 = iVar10 + pcVar5[0x3a];
+      if (*pcVar6 == local_38) {
+        iVar11 = iVar11 + pcVar6[0x3a];
       }
-      pcVar5 = pcVar5 + 0xa8;
-      iVar7 = iVar7 + -1;
-    } while (iVar7 != 0);
-    psVar6 = AllocateWithFallbackHandler();
-    iVar7 = 0;
-    local_34 = psVar6;
+      pcVar6 = pcVar6 + 0xa8;
+      iVar8 = iVar8 + -1;
+    } while (iVar8 != 0);
+    psVar7 = (short *)AllocateWithFallbackHandler(iVar11 * 2);
+    iVar8 = 0;
+    local_34 = psVar7;
     do {
-      pcVar5 = this->field10;
-      if ((pcVar5[iVar7] == local_38) && (iVar9 = 0, '\0' < pcVar5[iVar7 + 0x3a])) {
-        iVar11 = iVar7 + 0x42;
+      iVar13 = *(int *)(param_1 + 0x10);
+      if ((*(char *)(iVar8 + iVar13) == local_38) &&
+         (iVar10 = 0, '\0' < *(char *)(iVar8 + 0x3a + iVar13))) {
+        iVar12 = iVar8 + 0x42;
         do {
-          psVar8 = (short *)(pcVar5 + iVar11);
-          iVar11 = iVar11 + 2;
-          *local_34 = *psVar8;
+          psVar9 = (short *)(iVar12 + iVar13);
+          iVar12 = iVar12 + 2;
+          *local_34 = *psVar9;
           local_34 = local_34 + 1;
-          pcVar5 = this->field10;
-          iVar9 = iVar9 + 1;
-        } while (iVar9 < pcVar5[iVar7 + 0x3a]);
+          iVar13 = *(int *)(param_1 + 0x10);
+          iVar10 = iVar10 + 1;
+        } while (iVar10 < *(char *)(iVar8 + 0x3a + iVar13));
       }
-      iVar7 = iVar7 + 0xa8;
-    } while (iVar7 < 0xfc00);
-    psVar8 = local_30;
-    for (iVar7 = 0xb; iVar7 != 0; iVar7 = iVar7 + -1) {
-      psVar8[0] = 0;
-      psVar8[1] = 0;
-      psVar8 = psVar8 + 2;
+      iVar8 = iVar8 + 0xa8;
+    } while (iVar8 < 0xfc00);
+    psVar9 = local_30;
+    for (iVar8 = 0xb; iVar8 != 0; iVar8 = iVar8 + -1) {
+      psVar9[0] = 0;
+      psVar9[1] = 0;
+      psVar9 = psVar9 + 2;
     }
-    *psVar8 = 0;
-    psVar8 = psVar6;
-    iVar7 = iVar10;
-    if (0 < iVar10) {
+    *psVar9 = 0;
+    psVar9 = psVar7;
+    iVar8 = iVar11;
+    if (0 < iVar11) {
       do {
-        iVar9 = 2;
-        pcVar5 = (char *)(this->field0c + 0x11 + *psVar8 * 0x24);
+        iVar13 = 2;
+        pcVar6 = (char *)(*(int *)(param_1 + 0xc) + 0x11 + *psVar9 * 0x24);
         do {
-          if (*pcVar5 != -1) {
-            local_30[(short)*pcVar5] = local_30[(short)*pcVar5] + 1;
+          if (*pcVar6 != -1) {
+            local_30[(short)*pcVar6] = local_30[(short)*pcVar6] + 1;
           }
-          pcVar5 = pcVar5 + 1;
-          iVar9 = iVar9 + -1;
-        } while (iVar9 != 0);
-        iVar7 = iVar7 + -1;
-        psVar8 = psVar8 + 1;
-      } while (iVar7 != 0);
+          pcVar6 = pcVar6 + 1;
+          iVar13 = iVar13 + -1;
+        } while (iVar13 != 0);
+        iVar8 = iVar8 + -1;
+        psVar9 = psVar9 + 1;
+      } while (iVar8 != 0);
     }
     if (local_30[3] == 0) {
-      iVar7 = this->field0c;
-      iVar9 = -1;
-      bVar3 = false;
-      psVar8 = psVar6 + -1;
+      iVar8 = *(int *)(param_1 + 0xc);
+      iVar13 = -1;
+      bVar4 = false;
+      psVar9 = psVar7 + -1;
       do {
-        psVar1 = psVar8 + 1;
-        psVar8 = psVar8 + 1;
-        iVar9 = iVar9 + 1;
-        cVar2 = *(char *)(iVar7 + 0x13 + *psVar1 * 0x24);
-        iVar11 = iVar7 + *psVar1 * 0x24;
-        if (((cVar2 == '\t') && (*(char *)(iVar11 + 0x11) == -1)) ||
-           ((cVar2 == '\b' && (*(char *)(iVar11 + 0x11) == -1)))) {
-          bVar3 = true;
+        psVar1 = psVar9 + 1;
+        psVar9 = psVar9 + 1;
+        iVar13 = iVar13 + 1;
+        cVar2 = *(char *)(iVar8 + 0x13 + *psVar1 * 0x24);
+        iVar10 = iVar8 + *psVar1 * 0x24;
+        if (((cVar2 == '\t') && (*(char *)(iVar10 + 0x11) == -1)) ||
+           ((cVar2 == '\b' && (*(char *)(iVar10 + 0x11) == -1)))) {
+          bVar4 = true;
         }
-      } while ((iVar9 < iVar10 + -1) && (!bVar3));
-      if (bVar3) {
-        *(undefined1 *)(iVar7 + 0x11 + psVar6[iVar9] * 0x24) = 3;
+      } while ((iVar13 < iVar11 + -1) && (!bVar4));
+      if (bVar4) {
+        iVar10 = psVar7[iVar13] * 9;
+        *(undefined1 *)(iVar8 + 0x11 + psVar7[iVar13] * 0x24) = 3;
       }
       else {
         do {
           do {
-            g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-            iVar9 = (int)((longlong)(ulonglong)(g_uMapGenerationRngState >> 0xc & 0x7fff) %
-                         (longlong)iVar10);
-            cVar2 = *(char *)(this->field0c + 0x13 + psVar6[iVar9] * 0x24);
+            DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+            iVar13 = (int)((longlong)(ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % (longlong)iVar11);
+            cVar2 = *(char *)(*(int *)(param_1 + 0xc) + 0x13 + psVar7[iVar13] * 0x24);
           } while (cVar2 == '\b');
         } while (cVar2 == '\t');
-        *(undefined1 *)(this->field0c + 0x13 + psVar6[iVar9] * 0x24) = 8;
-        *(undefined1 *)(this->field0c + 0x11 + psVar6[iVar9] * 0x24) = 3;
+        *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x13 + psVar7[iVar13] * 0x24) = 8;
+        iVar10 = *(int *)(param_1 + 0xc);
+        *(undefined1 *)(iVar10 + 0x11 + psVar7[iVar13] * 0x24) = 3;
       }
-      *(undefined1 *)(this->field0c + 0x12 + psVar6[iVar9] * 0x24) = 0xff;
-      sVar4 = thunk_ResolveRegionTileSubtypeCodeForTileIndex(this,psVar6[iVar9]);
-      *(char *)(this->field0c + 0x13 + psVar6[iVar9] * 0x24) = (char)sVar4;
+      *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x12 + psVar7[iVar13] * 0x24) = 0xff;
+      uVar5 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex
+                        (CONCAT22((short)((uint)iVar10 >> 0x10),psVar7[iVar13]));
+      *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x13 + psVar7[iVar13] * 0x24) = uVar5;
     }
     if (local_28 == 0) {
-      iVar7 = this->field0c;
-      iVar9 = -1;
-      bVar3 = false;
-      psVar8 = psVar6 + -1;
+      iVar8 = *(int *)(param_1 + 0xc);
+      iVar13 = -1;
+      bVar4 = false;
+      psVar9 = psVar7 + -1;
       do {
-        psVar1 = psVar8 + 1;
-        psVar8 = psVar8 + 1;
-        iVar9 = iVar9 + 1;
-        cVar2 = *(char *)(iVar7 + 0x13 + *psVar1 * 0x24);
-        iVar11 = iVar7 + *psVar1 * 0x24;
-        if (((cVar2 == '\t') && (*(char *)(iVar11 + 0x11) == -1)) ||
-           ((cVar2 == '\b' && (*(char *)(iVar11 + 0x11) == -1)))) {
-          bVar3 = true;
+        psVar1 = psVar9 + 1;
+        psVar9 = psVar9 + 1;
+        iVar13 = iVar13 + 1;
+        cVar2 = *(char *)(iVar8 + 0x13 + *psVar1 * 0x24);
+        iVar10 = iVar8 + *psVar1 * 0x24;
+        if (((cVar2 == '\t') && (*(char *)(iVar10 + 0x11) == -1)) ||
+           ((cVar2 == '\b' && (*(char *)(iVar10 + 0x11) == -1)))) {
+          bVar4 = true;
         }
-      } while ((iVar9 < iVar10 + -1) && (!bVar3));
-      if (bVar3) {
+      } while ((iVar13 < iVar11 + -1) && (!bVar4));
+      if (bVar4) {
+        iVar11 = (int)psVar7[iVar13];
         if (cVar2 == '\t') {
-          *(undefined1 *)(iVar7 + 0x11 + psVar6[iVar9] * 0x24) = 4;
-          *(undefined1 *)(this->field0c + 0x12 + psVar6[iVar9] * 0x24) = 0xff;
-          sVar4 = thunk_ResolveRegionTileSubtypeCodeForTileIndex(this,psVar6[iVar9]);
-          *(char *)(this->field0c + 0x13 + psVar6[iVar9] * 0x24) = (char)sVar4;
+          *(undefined1 *)(iVar8 + 0x11 + iVar11 * 0x24) = 4;
+          *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x12 + psVar7[iVar13] * 0x24) = 0xff;
+          uVar5 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex
+                            (CONCAT22((short)((uint)(iVar11 * 9) >> 0x10),psVar7[iVar13]));
+          *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x13 + psVar7[iVar13] * 0x24) = uVar5;
           goto LAB_00511d8b;
         }
-        *(undefined1 *)(iVar7 + 0x11 + psVar6[iVar9] * 0x24) = 4;
+        *(undefined1 *)(iVar8 + 0x11 + iVar11 * 0x24) = 4;
       }
       else {
         do {
           do {
-            g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-            iVar9 = (int)((longlong)(ulonglong)(g_uMapGenerationRngState >> 0xc & 0x7fff) %
-                         (longlong)iVar10);
-            cVar2 = *(char *)(this->field0c + 0x13 + psVar6[iVar9] * 0x24);
+            DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+            iVar13 = (int)((longlong)(ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % (longlong)iVar11);
+            cVar2 = *(char *)(*(int *)(param_1 + 0xc) + 0x13 + psVar7[iVar13] * 0x24);
           } while (cVar2 == '\b');
         } while (cVar2 == '\t');
-        *(undefined1 *)(this->field0c + 0x13 + psVar6[iVar9] * 0x24) = 8;
-        *(undefined1 *)(this->field0c + 0x11 + psVar6[iVar9] * 0x24) = 4;
+        *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x13 + psVar7[iVar13] * 0x24) = 8;
+        *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x11 + psVar7[iVar13] * 0x24) = 4;
       }
-      *(undefined1 *)(this->field0c + 0x12 + psVar6[iVar9] * 0x24) = 0xff;
-      sVar4 = thunk_ResolveRegionTileSubtypeCodeForTileIndex(this,psVar6[iVar9]);
-      *(char *)(this->field0c + 0x13 + psVar6[iVar9] * 0x24) = (char)sVar4;
+      sVar3 = psVar7[iVar13];
+      *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x12 + sVar3 * 0x24) = 0xff;
+      uVar5 = TMapMgr::ResolveRegionTileSubtypeCodeForTileIndex
+                        (CONCAT22(sVar3 >> 0xf,psVar7[iVar13]));
+      *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x13 + psVar7[iVar13] * 0x24) = uVar5;
     }
 LAB_00511d8b:
-    FreeHeapBufferIfNotNull();
+    FreeHeapBufferIfNotNull(psVar7);
     local_38 = local_38 + 1;
     if (6 < local_38) {
       return;
@@ -626,357 +176,335 @@ LAB_00511d8b:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00511F30
 // GHIDRA_NAME TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
-// GHIDRA_PROTO bool __thiscall TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short nTerrainTypeA, short nTerrainTypeB)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds claimed region-class mask for terrain type A and returns whether terrain type B can reach any claimed class
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask()
 
-/* Builds claimed region-class mask for terrain type A and returns whether terrain type B can reach
-   any claimed class */
-
-bool __thiscall
+uint __thiscall
 TMapMaker::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask
-          (TMapMaker *this,short nTerrainTypeA,short nTerrainTypeB)
+          (int param_1,short param_2,short param_3)
 
 {
-  void *pvVar1;
-  int *piVar2;
-  char cVar3;
+  char cVar1;
+  int iVar2;
+  int iVar3;
   int iVar4;
-  int iVar5;
-  int iVar6;
+  uint uVar5;
+  undefined3 uVar6;
   int iVar7;
   int iVar8;
   
-  iVar6 = (int)nTerrainTypeA;
-  iVar7 = 1;
-  iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x28))();
-  if (0 < iVar4) {
+  iVar7 = (int)param_2;
+  iVar8 = 1;
+  iVar2 = (**(code **)(**(int **)((&g_apTerrainTypeDescriptorTable)[iVar7] + 0x90) + 0x28))();
+  if (0 < iVar2) {
     do {
-      iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x24))
-                        (iVar7);
-      iVar7 = iVar7 + 1;
-      pvVar1 = g_apTerrainTypeDescriptorTable[iVar6];
-      (&stack0xffffffe4)[this->field10[iVar4 * 0xa8 + 0xa3]] = 1;
-      iVar4 = (**(code **)(**(int **)((int)pvVar1 + 0x90) + 0x28))();
-    } while (iVar7 <= iVar4);
+      iVar3 = (**(code **)(**(int **)((&g_apTerrainTypeDescriptorTable)[iVar7] + 0x90) + 0x24))
+                        (iVar8);
+      iVar8 = iVar8 + 1;
+      iVar2 = (&g_apTerrainTypeDescriptorTable)[iVar7];
+      (&stack0xffffffe4)[*(char *)(*(int *)(param_1 + 0x10) + 0xa3 + iVar3 * 0xa8)] = 1;
+      iVar2 = (**(code **)(**(int **)(iVar2 + 0x90) + 0x28))();
+    } while (iVar8 <= iVar2);
   }
-  iVar4 = 0;
+  iVar2 = 0;
   do {
-    piVar2 = *(int **)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c);
-    if ((piVar2 != (int *)0x0) && (cVar3 = (**(code **)(*piVar2 + 0x5c))(iVar6), cVar3 != '\0')) {
-      iVar8 = 1;
-      iVar7 = (**(code **)(**(int **)(*(int *)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c) +
-                                     0x90) + 0x28))();
-      if (0 < iVar7) {
-        do {
-          iVar5 = (**(code **)(**(int **)(*(int *)((int)g_apTerrainTypeDescriptorTable +
-                                                  iVar4 + 0x1c) + 0x90) + 0x24))(iVar8);
-          iVar8 = iVar8 + 1;
-          iVar7 = *(int *)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c);
-          (&stack0xffffffe4)[this->field10[iVar5 * 0xa8 + 0xa3]] = 1;
-          iVar7 = (**(code **)(**(int **)(iVar7 + 0x90) + 0x28))();
-        } while (iVar8 <= iVar7);
+    if (*(int **)((int)&g_apNationAuxRuntimeStateSlots + iVar2) != (int *)0x0) {
+      cVar1 = (**(code **)(**(int **)((int)&g_apNationAuxRuntimeStateSlots + iVar2) + 0x5c))(iVar7);
+      if (cVar1 != '\0') {
+        iVar3 = 1;
+        iVar8 = (**(code **)(**(int **)(*(int *)((int)&g_apNationAuxRuntimeStateSlots + iVar2) +
+                                       0x90) + 0x28))();
+        if (0 < iVar8) {
+          do {
+            iVar4 = (**(code **)(**(int **)(*(int *)((int)&g_apMinorNationCapabilityObjects + iVar2)
+                                           + 0x90) + 0x24))(iVar3);
+            iVar3 = iVar3 + 1;
+            iVar8 = *(int *)((int)&g_apNationAuxRuntimeStateSlots + iVar2);
+            (&stack0xffffffe4)[*(char *)(*(int *)(param_1 + 0x10) + 0xa3 + iVar4 * 0xa8)] = 1;
+            iVar8 = (**(code **)(**(int **)(iVar8 + 0x90) + 0x28))();
+          } while (iVar3 <= iVar8);
+        }
       }
     }
-    iVar4 = iVar4 + 4;
-  } while (iVar4 < 0x40);
-  iVar6 = (int)nTerrainTypeB;
+    iVar2 = iVar2 + 4;
+  } while (iVar2 < 0x40);
+  iVar2 = (int)param_3;
   iVar7 = 1;
-  iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x28))();
-  if (0 < iVar4) {
+  uVar5 = (**(code **)(**(int **)((&g_apTerrainTypeDescriptorTable)[iVar2] + 0x90) + 0x28))();
+  if (0 < (int)uVar5) {
     do {
-      iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x24))
+      iVar8 = (**(code **)(**(int **)((&g_apTerrainTypeDescriptorTable)[iVar2] + 0x90) + 0x24))
                         (iVar7);
-      if ((&stack0xffffffe4)[this->field10[iVar4 * 0xa8 + 0xa3]] != '\0') {
-        return true;
+      uVar6 = (undefined3)((uint)(iVar8 * 0x15) >> 8);
+      if ((&stack0xffffffe4)[*(char *)(*(int *)(param_1 + 0x10) + 0xa3 + iVar8 * 0xa8)] != '\0') {
+LAB_0051212a:
+        return CONCAT31(uVar6,1);
       }
       iVar7 = iVar7 + 1;
-      iVar4 = (**(code **)(**(int **)((int)g_apTerrainTypeDescriptorTable[iVar6] + 0x90) + 0x28))();
-    } while (iVar7 <= iVar4);
+      uVar5 = (**(code **)(**(int **)((&g_apTerrainTypeDescriptorTable)[iVar2] + 0x90) + 0x28))();
+    } while (iVar7 <= (int)uVar5);
   }
-  iVar4 = 0;
+  iVar7 = 0;
   do {
-    piVar2 = *(int **)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c);
-    if ((piVar2 != (int *)0x0) && (cVar3 = (**(code **)(*piVar2 + 0x5c))(iVar6), cVar3 != '\0')) {
-      iVar8 = 1;
-      iVar7 = (**(code **)(**(int **)(*(int *)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c) +
-                                     0x90) + 0x28))();
-      if (0 < iVar7) {
-        do {
-          iVar7 = (**(code **)(**(int **)(*(int *)((int)g_apTerrainTypeDescriptorTable +
-                                                  iVar4 + 0x1c) + 0x90) + 0x24))(iVar8);
-          if ((&stack0xffffffe4)[this->field10[iVar7 * 0xa8 + 0xa3]] != '\0') {
-            return true;
-          }
-          iVar8 = iVar8 + 1;
-          iVar7 = (**(code **)(**(int **)(*(int *)((int)g_apSecondaryNationStateSlots + iVar4 + 0x1c
-                                                  ) + 0x90) + 0x28))();
-        } while (iVar8 <= iVar7);
+    if (*(int **)((int)&g_apNationAuxRuntimeStateSlots + iVar7) != (int *)0x0) {
+      uVar5 = (**(code **)(**(int **)((int)&g_apNationAuxRuntimeStateSlots + iVar7) + 0x5c))(iVar2);
+      if ((char)uVar5 != '\0') {
+        iVar8 = 1;
+        uVar5 = (**(code **)(**(int **)(*(int *)((int)&g_apNationAuxRuntimeStateSlots + iVar7) +
+                                       0x90) + 0x28))();
+        if (0 < (int)uVar5) {
+          do {
+            iVar3 = (**(code **)(**(int **)(*(int *)((int)&g_apMinorNationCapabilityObjects + iVar7)
+                                           + 0x90) + 0x24))(iVar8);
+            uVar6 = (undefined3)((uint)(iVar3 * 0x15) >> 8);
+            if ((&stack0xffffffe4)[*(char *)(*(int *)(param_1 + 0x10) + 0xa3 + iVar3 * 0xa8)] !=
+                '\0') goto LAB_0051212a;
+            iVar8 = iVar8 + 1;
+            uVar5 = (**(code **)(**(int **)(*(int *)((int)&g_apNationAuxRuntimeStateSlots + iVar7) +
+                                           0x90) + 0x28))();
+          } while (iVar8 <= (int)uVar5);
+        }
       }
     }
-    iVar4 = iVar4 + 4;
-  } while (iVar4 < 0x40);
-  return false;
+    iVar7 = iVar7 + 4;
+    if (0x3f < iVar7) {
+      return uVar5 & 0xffffff00;
+    }
+  } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525950
 // GHIDRA_NAME TMapMaker::GetTMapMakerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMapMakerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMapMaker.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMapMakerClassNamePointer()
 
-/* Returns class descriptor pointer for TMapMaker. */
-
-void * __cdecl TMapMaker::GetTMapMakerClassNamePointer(void)
+undefined ** TMapMaker::GetTMapMakerClassNamePointer(void)
 
 {
-  return &g_pClassDescTMapMaker;
+  return &PTR_s_TMapMaker_006598a8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525970
 // GHIDRA_NAME TMapMaker::ConstructTMapMaker
-// GHIDRA_PROTO void __fastcall ConstructTMapMaker(TMapMaker * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes TMapMaker object state and assigns its class vtable root.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTMapMaker()
 
-/* Initializes TMapMaker object state and assigns its class vtable root. */
-
-void __fastcall TMapMaker::ConstructTMapMaker(TMapMaker *pThis)
+void __fastcall TMapMaker::ConstructTMapMaker(undefined4 *param_1)
 
 {
-  pThis->field08 = (char *)0x0;
-  pThis->field0_0x0 = &g_vtblTMapMaker;
+  param_1[2] = 0;
+  *param_1 = &PTR_LAB_006598f8;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00525990
 // GHIDRA_NAME TMapMaker::DeleteTMapMaker
-// GHIDRA_PROTO void * __thiscall DeleteTMapMaker(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Deleting-destructor wrapper for TMapMaker (optional free when low bit in flag is set).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DeleteTMapMaker()
 
-/* Deleting-destructor wrapper for TMapMaker (optional free when low bit in flag is set). */
-
-void * __thiscall TMapMaker::DeleteTMapMaker(TMapMaker *this,byte freeSelfFlag)
+undefined4 __thiscall TMapMaker::DeleteTMapMaker(undefined4 param_1,byte param_2)
 
 {
-  thunk_DestructTMapMaker(this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTMapMaker();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005259C0
 // GHIDRA_NAME TMapMaker::DestructTMapMaker
-// GHIDRA_PROTO void __fastcall DestructTMapMaker(TMapMaker * pThis)
+// GHIDRA_PROTO undefined DestructTMapMaker()
 
-void __fastcall TMapMaker::DestructTMapMaker(TMapMaker *pThis)
+void __fastcall TMapMaker::DestructTMapMaker(undefined4 *param_1)
 
 {
-  pThis->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00526BA0
 // GHIDRA_NAME TMapMaker::TMapMaker_GenerateRandomCoarseGridCoord27x15
-// GHIDRA_PROTO void __thiscall TMapMaker_GenerateRandomCoarseGridCoord27x15(uint * pOutX, uint * pOutY)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [MapGenRng] Emits random coarse-grid (x,y) coordinate in 27x15 bounds using mapgen RNG state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined TMapMaker_GenerateRandomCoarseGridCoord27x15()
 
-/* [MapGenRng] Emits random coarse-grid (x,y) coordinate in 27x15 bounds using mapgen RNG state. */
-
-void __thiscall
-TMapMaker::TMapMaker_GenerateRandomCoarseGridCoord27x15(TMapMaker *this,uint *pOutX,uint *pOutY)
+void TMapMaker::TMapMaker_GenerateRandomCoarseGridCoord27x15(uint *param_1,uint *param_2)
 
 {
-  g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-  *pOutX = (g_uMapGenerationRngState >> 0xc & 0x7fff) % 0x1b;
-  g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-  *pOutY = (g_uMapGenerationRngState >> 0xc & 0x7fff) % 0xf;
+  DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+  *param_1 = (DAT_006a38e8 >> 0xc & 0x7fff) % 0x1b;
+  DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+  *param_2 = (DAT_006a38e8 >> 0xc & 0x7fff) % 0xf;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527040
 // GHIDRA_NAME TMapMaker::ExpandCoarseRegionNodeWithNeighborChecks
-// GHIDRA_PROTO int __thiscall ExpandCoarseRegionNodeWithNeighborChecks(void)
+// GHIDRA_PROTO undefined ExpandCoarseRegionNodeWithNeighborChecks()
 
-int __thiscall TMapMaker::ExpandCoarseRegionNodeWithNeighborChecks(TMapMaker *this)
+int __thiscall
+TMapMaker::ExpandCoarseRegionNodeWithNeighborChecks
+          (int *param_1,int param_2,int param_3,int param_4)
 
 {
-  undefined **ppuVar1;
-  code *pcVar2;
-  int iVar3;
-  char cVar4;
+  code *pcVar1;
+  int iVar2;
+  char cVar3;
+  short sVar4;
   short sVar5;
-  short sVar6;
-  int iVar7;
-  int *piVar8;
-  undefined4 uVar9;
+  int iVar6;
+  int *piVar7;
+  undefined4 uVar8;
+  int iVar9;
   int iVar10;
   int iVar11;
   int iVar12;
-  char cStack00000004;
-  int in_stack_00000008;
-  int in_stack_0000000c;
-  int iVar13;
   int iStack_34;
   int iStack_2c;
-  char acStack_28 [8];
+  char acStack_28 [4];
+  int local_24;
   int aiStack_20 [7];
   int iStack_4;
   
-  if ((((in_stack_00000008 != 0) && (0 < _cStack00000004 / 0x1b)) && (_cStack00000004 / 0x1b < 0xe))
-     && (*(char *)((int)&this->field10 + _cStack00000004) == -1)) {
-    if (in_stack_0000000c < 7) {
-      cVar4 = (*(code *)this->field0_0x0[0xd])();
-      if (cVar4 == '\0') {
+  local_24 = param_3;
+  if ((((param_3 != 0) && (0 < param_2 / 0x1b)) && (param_2 / 0x1b < 0xe)) &&
+     (*(char *)((int)param_1 + param_2 + 0x10) == -1)) {
+    if (param_4 < 7) {
+      cVar3 = (**(code **)(*param_1 + 0x34))();
+      if (cVar3 == '\0') {
         return 0;
       }
     }
     else {
-      cVar4 = (*(code *)this->field0_0x0[0x10])();
-      if (cVar4 == '\0') {
+      cVar3 = (**(code **)(*param_1 + 0x40))(param_2,param_4);
+      if (cVar3 == '\0') {
         return 0;
       }
     }
-    ppuVar1 = this->field0_0x0;
-    iVar11 = in_stack_00000008 + -1;
-    *(char *)((int)&this->field10 + _cStack00000004) = (char)in_stack_0000000c;
-    pcVar2 = (code *)ppuVar1[0x1d];
-    iVar13 = 6;
-    iVar10 = 0;
+    iVar12 = *param_1;
+    iVar10 = param_3 + -1;
+    *(char *)((int)param_1 + param_2 + 0x10) = (char)param_4;
+    pcVar1 = *(code **)(iVar12 + 0x74);
+    iVar12 = 6;
+    iVar9 = 0;
     do {
-      iVar7 = (*pcVar2)();
-      if ((iVar7 == -1) || (iVar10 == in_stack_00000008)) {
-        acStack_28[iVar10] = '\x01';
-        iVar13 = iVar13 + -1;
+      iVar6 = (*pcVar1)(param_2,iVar9);
+      if ((iVar6 == -1) || (iVar9 == param_3)) {
+        acStack_28[iVar9] = '\x01';
+        iVar12 = iVar12 + -1;
       }
       else {
-        acStack_28[iVar10] = '\0';
+        acStack_28[iVar9] = '\0';
       }
-      iVar10 = iVar10 + 1;
-      iVar7 = _cStack00000004;
-    } while (iVar10 < 6);
-    for (; (iVar11 != 0 && (iVar13 != 0)); iVar13 = iVar13 + -1) {
-      iVar10 = 0;
+      iVar9 = iVar9 + 1;
+      iVar6 = param_2;
+    } while (iVar9 < 6);
+    for (; (iVar10 != 0 && (iVar12 != 0)); iVar12 = iVar12 + -1) {
+      iVar9 = 0;
       iStack_34 = 0;
-      piVar8 = aiStack_20;
+      piVar7 = aiStack_20;
       do {
-        if (acStack_28[iVar10] == '\0') {
-          sVar5 = (*pcVar2)(iVar7,iVar10);
-          iVar12 = 0;
-          *piVar8 = (-(uint)(iVar10 != in_stack_00000008) & 8) + 2;
+        if (acStack_28[iVar9] == '\0') {
+          sVar4 = (*pcVar1)(iVar6,iVar9);
+          iVar11 = 0;
+          *piVar7 = (-(uint)(iVar9 != param_3) & 8) + 2;
           do {
-            sVar6 = (*pcVar2)((int)sVar5,iVar12);
-            if ((sVar6 != -1) && (*(char *)((int)&this->field10 + (int)sVar6) == cStack00000004)) {
-              *piVar8 = *piVar8 + 10;
+            sVar5 = (*pcVar1)((int)sVar4,iVar11);
+            if ((sVar5 != -1) && (*(char *)((int)param_1 + sVar5 + 0x10) == (char)param_2)) {
+              *piVar7 = *piVar7 + 10;
             }
-            iVar12 = iVar12 + 1;
-            iVar7 = iStack_4;
-          } while (iVar12 < 6);
+            iVar11 = iVar11 + 1;
+            iVar6 = iStack_4;
+          } while (iVar11 < 6);
         }
         else {
-          *piVar8 = 0;
+          *piVar7 = 0;
         }
-        iVar12 = *piVar8;
-        piVar8 = piVar8 + 1;
-        iStack_34 = iStack_34 + iVar12;
-        iVar10 = iVar10 + 1;
-      } while (iVar10 < 6);
-      iVar7 = 0;
-      g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-      iVar10 = (int)((longlong)(ulonglong)(g_uMapGenerationRngState >> 0xc & 0x7fff) %
-                    (longlong)iStack_34);
-      if (aiStack_20[0] < iVar10) {
-        piVar8 = aiStack_20;
+        iVar11 = *piVar7;
+        piVar7 = piVar7 + 1;
+        iStack_34 = iStack_34 + iVar11;
+        iVar9 = iVar9 + 1;
+      } while (iVar9 < 6);
+      iVar6 = 0;
+      DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+      iVar9 = (int)((longlong)(ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % (longlong)iStack_34);
+      if (aiStack_20[0] < iVar9) {
+        piVar7 = aiStack_20;
         do {
-          iVar12 = *piVar8;
-          iVar3 = piVar8[1];
-          piVar8 = piVar8 + 1;
-          iVar7 = iVar7 + 1;
-          *piVar8 = iVar3 + iVar12;
-        } while (iVar3 + iVar12 < iVar10);
+          iVar11 = *piVar7;
+          iVar2 = piVar7[1];
+          piVar7 = piVar7 + 1;
+          iVar6 = iVar6 + 1;
+          *piVar7 = iVar2 + iVar11;
+        } while (iVar2 + iVar11 < iVar9);
       }
-      uVar9 = (*pcVar2)(iStack_4,iVar7,iVar11,_cStack00000004,iVar7);
-      iVar10 = (*(code *)this->field0_0x0[0xc])(uVar9);
-      iVar11 = iVar11 - iVar10;
-      acStack_28[iVar7] = '\x01';
-      iVar7 = iStack_4;
+      uVar8 = (*pcVar1)(iStack_4,iVar6,iVar10,param_2,iVar6);
+      iVar9 = (**(code **)(*param_1 + 0x30))(uVar8);
+      iVar10 = iVar10 - iVar9;
+      acStack_28[iVar6] = '\x01';
+      iVar6 = iStack_4;
     }
-    return iStack_2c - iVar11;
+    return iStack_2c - iVar10;
   }
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527300
 // GHIDRA_NAME TMapMaker::MergeCoarseRegionSetsAcrossNeighbors
-// GHIDRA_PROTO uint __thiscall MergeCoarseRegionSetsAcrossNeighbors(void)
+// GHIDRA_PROTO undefined MergeCoarseRegionSetsAcrossNeighbors()
 
-uint __thiscall TMapMaker::MergeCoarseRegionSetsAcrossNeighbors(TMapMaker *this)
+uint __thiscall
+TMapMaker::MergeCoarseRegionSetsAcrossNeighbors(int *param_1,undefined4 param_2,int param_3)
 
 {
   code *pcVar1;
-  void *pvVar2;
+  uint uVar2;
   int iVar3;
-  void *pvVar4;
+  uint uVar4;
   int iVar5;
   int *piVar6;
-  undefined4 in_stack_00000004;
-  int in_stack_00000008;
   int local_8;
   
   local_8 = 0;
-  pcVar1 = (code *)this->field0_0x0[0x1d];
+  pcVar1 = *(code **)(*param_1 + 0x74);
   do {
-    iVar3 = (*pcVar1)(in_stack_00000004,local_8);
+    iVar3 = (*pcVar1)(param_2,local_8);
     if (iVar3 == -1) {
-      pvVar4 = (void *)0xffffffff;
+      uVar4 = 0xffffffff;
     }
     else {
-      pvVar4 = (void *)CONCAT31((int3)((uint)iVar3 >> 8),
-                                *(undefined1 *)((int)&this->field10 + iVar3));
+      uVar4 = CONCAT31((int3)((uint)iVar3 >> 8),*(undefined1 *)(iVar3 + 0x10 + (int)param_1));
     }
-    if (((char)pvVar4 != -1) && (iVar3 = (int)(char)pvVar4, iVar3 != in_stack_00000008)) {
-      pvVar4 = (&this->pField200)[in_stack_00000008];
-      pvVar2 = (&this->pField200)[iVar3];
-      if (pvVar4 == (void *)0xffffffff) {
+    if (((char)uVar4 != -1) && (iVar3 = (int)(char)uVar4, iVar3 != param_3)) {
+      uVar4 = param_1[param_3 + 0x80];
+      uVar2 = param_1[iVar3 + 0x80];
+      if (uVar4 == 0xffffffff) {
 LAB_005273b0:
-        if (pvVar2 == (void *)0xffffffff) {
-          if (pvVar4 != (void *)0xffffffff) goto LAB_0052743c;
-          pvVar4 = this->field1fc;
-          this->field1fc = (void *)((int)pvVar4 + 1);
-          *(int *)(&this->field_0x1b4 + (int)pvVar4 * 0xc) = in_stack_00000008;
-          *(int *)(&this->field_0x1ac + (int)this->field1fc * 0xc) = iVar3;
-          (&this->pField200)[in_stack_00000008] = this->field1fc;
-          pvVar4 = this->field1fc;
-          (&this->pField200)[iVar3] = pvVar4;
+        if (uVar2 == 0xffffffff) {
+          if (uVar4 != 0xffffffff) goto LAB_0052743c;
+          iVar5 = param_1[0x7f];
+          param_1[0x7f] = iVar5 + 1;
+          param_1[(iVar5 + 1) * 3 + 0x6a] = param_3;
+          param_1[param_1[0x7f] * 3 + 0x6b] = iVar3;
+          param_1[param_3 + 0x80] = param_1[0x7f];
+          uVar4 = param_1[0x7f];
+          param_1[iVar3 + 0x80] = uVar4;
         }
         else {
-          pvVar4 = (void *)0x0;
-          if (*(int *)(&this->field_0x1a8 + (int)pvVar2 * 0xc) != -1) {
-            piVar6 = (int *)(&this->field_0x1a8 + (int)pvVar2 * 0xc);
+          uVar4 = 0;
+          if (param_1[uVar2 * 3 + 0x6a] != -1) {
+            piVar6 = param_1 + uVar2 * 3 + 0x6a;
             do {
-              if (2 < (int)pvVar4) break;
+              if (2 < (int)uVar4) break;
               piVar6 = piVar6 + 1;
-              pvVar4 = (void *)((int)pvVar4 + 1);
+              uVar4 = uVar4 + 1;
             } while (*piVar6 != -1);
           }
-          if (pvVar4 == (void *)0x3) goto LAB_0052745a;
-          pvVar4 = (void *)((int)pvVar4 + (int)pvVar2 * 3);
-          *(int *)(&this->field_0x1a8 + (int)pvVar4 * 4) = in_stack_00000008;
-          (&this->pField200)[in_stack_00000008] = pvVar2;
+          if (uVar4 == 3) goto LAB_0052745a;
+          uVar4 = uVar4 + uVar2 * 3;
+          param_1[uVar4 + 0x6a] = param_3;
+          param_1[param_3 + 0x80] = uVar2;
         }
       }
-      else if (pvVar2 == (void *)0xffffffff) {
+      else if (uVar2 == 0xffffffff) {
         iVar5 = 0;
-        if (*(int *)(&this->field_0x1a8 + (int)pvVar4 * 0xc) != -1) {
-          piVar6 = (int *)(&this->field_0x1a8 + (int)pvVar4 * 0xc);
+        if (param_1[uVar4 * 3 + 0x6a] != -1) {
+          piVar6 = param_1 + uVar4 * 3 + 0x6a;
           do {
             if (2 < iVar5) break;
             piVar6 = piVar6 + 1;
@@ -984,30 +512,32 @@ LAB_005273b0:
           } while (*piVar6 != -1);
         }
         if (iVar5 == 3) goto LAB_0052745a;
-        *(int *)(&this->field_0x1a8 + (iVar5 + (int)pvVar4 * 3) * 4) = iVar3;
-        (&this->pField200)[iVar3] = pvVar4;
+        param_1[iVar5 + uVar4 * 3 + 0x6a] = iVar3;
+        param_1[iVar3 + 0x80] = uVar4;
       }
       else {
-        if (pvVar4 == (void *)0xffffffff) goto LAB_005273b0;
+        if (uVar4 == 0xffffffff) goto LAB_005273b0;
 LAB_0052743c:
-        if (pvVar4 != pvVar2) {
+        if (uVar4 != uVar2) {
 LAB_0052745a:
-          return (uint)pvVar4 & 0xffffff00;
+          return uVar4 & 0xffffff00;
         }
       }
     }
     local_8 = local_8 + 1;
     if (5 < local_8) {
-      return CONCAT31((int3)((uint)pvVar4 >> 8),1);
+      return CONCAT31((int3)(uVar4 >> 8),1);
     }
   } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00527ED0
 // GHIDRA_NAME TMapMaker::TryAssignCellTypeWithDirectionalConstraints
-// GHIDRA_PROTO uint __thiscall TryAssignCellTypeWithDirectionalConstraints(void)
+// GHIDRA_PROTO undefined TryAssignCellTypeWithDirectionalConstraints()
 
-uint __thiscall TMapMaker::TryAssignCellTypeWithDirectionalConstraints(TMapMaker *this)
+uint __thiscall
+TMapMaker::TryAssignCellTypeWithDirectionalConstraints
+          (int *param_1,int param_2,int param_3,int param_4,int param_5,char param_6)
 
 {
   undefined4 uVar1;
@@ -1019,35 +549,30 @@ uint __thiscall TMapMaker::TryAssignCellTypeWithDirectionalConstraints(TMapMaker
   int iVar7;
   int iVar8;
   int unaff_EDI;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  char cStack0000000c;
-  int in_stack_00000010;
-  char in_stack_00000014;
   
-  iVar3 = in_stack_00000004 * 0x24;
-  pcVar5 = this->field08 + iVar3;
+  iVar3 = param_2 * 0x24;
+  pcVar5 = (char *)(param_1[2] + iVar3);
   sVar2 = (short)*pcVar5;
   uVar4 = CONCAT22((short)((uint)iVar3 >> 0x10),sVar2);
-  if (((pcVar5[2] != '\0') || ((sVar2 == 3 && (in_stack_00000010 != 0)))) ||
-     ((sVar2 == 2 && (in_stack_00000014 == '\0')))) goto LAB_00528081;
+  if (((pcVar5[2] != '\0') || ((sVar2 == 3 && (param_5 != 0)))) ||
+     ((sVar2 == 2 && (param_6 == '\0')))) goto LAB_00528081;
   if (sVar2 == 5) {
-    if (4 < in_stack_00000010) {
-      pcVar5[2] = cStack0000000c + '\x10';
+    if (4 < param_5) {
+      pcVar5[2] = (char)param_4 + '\x10';
       return CONCAT31((int3)(uVar4 >> 8),1);
     }
     goto LAB_00528081;
   }
-  iVar8 = in_stack_00000008;
-  if (_cStack0000000c < 6) {
-    iVar7 = _cStack0000000c + 3;
-    if (5 < _cStack0000000c + 3) {
-      iVar7 = _cStack0000000c + -3;
+  iVar8 = param_3;
+  if (param_4 < 6) {
+    iVar7 = param_4 + 3;
+    if (5 < param_4 + 3) {
+      iVar7 = param_4 + -3;
     }
     do {
-      _cStack0000000c = iVar7;
-      g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-      iVar7 = in_stack_00000008 - (g_uMapGenerationRngState >> 0xc & 0x7fff) % 3;
+      param_4 = iVar7;
+      DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+      iVar7 = param_3 - (DAT_006a38e8 >> 0xc & 0x7fff) % 3;
       iVar8 = iVar7 + 1;
       if (iVar8 < 6) {
         if (iVar8 < 0) {
@@ -1057,18 +582,18 @@ uint __thiscall TMapMaker::TryAssignCellTypeWithDirectionalConstraints(TMapMaker
       else {
         iVar8 = iVar7 + -5;
       }
-      iVar7 = _cStack0000000c;
-    } while (*(int *)(&g_Try_Assign_Cell_Value_00697568 + (_cStack0000000c + iVar8 * 6) * 4) == 0);
+      iVar7 = param_4;
+    } while (*(int *)(&DAT_00697568 + (param_4 + iVar8 * 6) * 4) == 0);
   }
-  if ((in_stack_00000004 / 0x6c & 1U) == 0) {
-    iVar7 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar8 * 4);
+  if ((param_2 / 0x6c & 1U) == 0) {
+    iVar7 = *(int *)(&DAT_00697450 + iVar8 * 4);
   }
   else {
-    iVar7 = (&g_Smooth_City_Region_LookupTable_00697480)[iVar8];
+    iVar7 = (&DAT_00697480)[iVar8];
   }
-  iVar7 = in_stack_00000004 % 0x6c + iVar7;
-  iVar6 = in_stack_00000004 / 0x6c + (&g_Smooth_City_Region_LookupTable_00697468)[iVar8];
-  if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
+  iVar7 = param_2 % 0x6c + iVar7;
+  iVar6 = param_2 / 0x6c + (&DAT_00697468)[iVar8];
+  if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
     if (iVar7 < 0) {
       iVar7 = iVar7 + 0x6c;
     }
@@ -1084,15 +609,14 @@ LAB_0052809e:
 LAB_0052801a:
     iVar7 = -1;
   }
-  uVar4 = (*(code *)this->field0_0x0[0x18])
-                    (iVar7,in_stack_00000008,iVar8,in_stack_00000010 + 1,sVar2 == 2);
+  uVar4 = (**(code **)(*param_1 + 0x60))(iVar7,param_3,iVar8,param_5 + 1,sVar2 == 2);
   if ((char)uVar4 != '\0') {
     if (iVar3 == 0) {
-      this->field08[unaff_EDI + 2] = (char)(iVar8 + 10);
+      *(char *)(unaff_EDI + 2 + param_1[2]) = (char)(iVar8 + 10);
       return CONCAT31((int3)((uint)(iVar8 + 10) >> 8),1);
     }
-    uVar1 = *(undefined4 *)(&g_Try_Assign_Cell_Value_00697568 + (_cStack0000000c + iVar8 * 6) * 4);
-    this->field08[unaff_EDI + 2] = (char)uVar1;
+    uVar1 = *(undefined4 *)(&DAT_00697568 + (param_4 + iVar8 * 6) * 4);
+    *(char *)(unaff_EDI + 2 + param_1[2]) = (char)uVar1;
     return CONCAT31((int3)((uint)uVar1 >> 8),1);
   }
 LAB_00528081:
@@ -1101,221 +625,220 @@ LAB_00528081:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528140
 // GHIDRA_NAME TMapMaker::TryPlaceType1CoarseCellWithAdjacencyRules
-// GHIDRA_PROTO int __thiscall TryPlaceType1CoarseCellWithAdjacencyRules(void)
+// GHIDRA_PROTO undefined TryPlaceType1CoarseCellWithAdjacencyRules()
 
-int __thiscall TMapMaker::TryPlaceType1CoarseCellWithAdjacencyRules(TMapMaker *this)
+int __thiscall
+TMapMaker::TryPlaceType1CoarseCellWithAdjacencyRules
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
-  char *pcVar1;
-  uint uVar2;
+  uint uVar1;
+  int iVar2;
   int iVar3;
   int iVar4;
   int iVar5;
   int iVar6;
   int iVar7;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  char in_stack_0000000c;
   
-  iVar3 = in_stack_00000008;
-  pcVar1 = this->field08;
-  iVar7 = in_stack_00000004 * 0x24;
-  if (pcVar1[iVar7] != '\0') {
+  iVar2 = param_3;
+  iVar6 = param_1[2];
+  iVar7 = param_2 * 0x24;
+  if (*(char *)(iVar6 + iVar7) != '\0') {
     return 0;
   }
-  uVar2 = in_stack_00000004 / 0x6c;
-  iVar6 = 0;
+  uVar1 = param_2 / 0x6c;
+  iVar5 = 0;
   do {
-    if ((uVar2 & 1) == 0) {
-      iVar4 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar6);
+    if ((uVar1 & 1) == 0) {
+      iVar3 = *(int *)(&DAT_00697450 + iVar5);
     }
     else {
-      iVar4 = *(int *)((int)&g_Smooth_City_Region_LookupTable_00697480 + iVar6);
+      iVar3 = *(int *)((int)&DAT_00697480 + iVar5);
     }
-    iVar4 = in_stack_00000004 % 0x6c + iVar4;
-    iVar5 = uVar2 + *(int *)((int)&g_Smooth_City_Region_LookupTable_00697468 + iVar6);
-    if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
-      if (iVar4 < 0) {
-        iVar4 = iVar4 + 0x6c;
-      }
-      else if (0x6b < iVar4) {
-        iVar4 = iVar4 + -0x6c;
-      }
-LAB_00528314:
-      if ((iVar5 < 0) || (0x3b < iVar5)) goto LAB_005281d9;
-      iVar4 = iVar4 + iVar5 * 0x6c;
-    }
-    else {
-      if ((-1 < iVar4) && (iVar4 < 0x6c)) goto LAB_00528314;
-LAB_005281d9:
-      iVar4 = -1;
-    }
-    if (pcVar1[iVar4 * 0x24] == '\x06') {
-      return 0;
-    }
-    iVar6 = iVar6 + 4;
-  } while (iVar6 < 0x18);
-  pcVar1[iVar7] = '\x01';
-  if (in_stack_0000000c == '\0') {
-    this->field08[iVar7 + 0x13] = '\r';
-  }
-  else {
-    this->field08[iVar7 + 0x13] = '\x0f';
-  }
-  in_stack_00000008 = in_stack_00000008 + -1;
-  iVar7 = 0;
-  do {
-    if ((uVar2 & 1) == 0) {
-      iVar6 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar7);
-    }
-    else {
-      iVar6 = *(int *)((int)&g_Smooth_City_Region_LookupTable_00697480 + iVar7);
-    }
-    iVar6 = in_stack_00000004 % 0x6c + iVar6;
-    iVar4 = uVar2 + *(int *)((int)&g_Smooth_City_Region_LookupTable_00697468 + iVar7);
-    if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
-      if (iVar6 < 0) {
-        iVar6 = iVar6 + 0x6c;
-      }
-      else if (0x6b < iVar6) {
-        iVar6 = iVar6 + -0x6c;
-      }
-LAB_00528281:
-      if ((iVar4 < 0) || (0x3b < iVar4)) goto LAB_00528295;
-      iVar6 = iVar6 + iVar4 * 0x6c;
-    }
-    else {
-      if ((-1 < iVar6) && (iVar6 < 0x6c)) goto LAB_00528281;
-LAB_00528295:
-      iVar6 = -1;
-    }
-    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-    if (((g_uMapGenerationRngState >> 0xc & 0x7fff) % 100 < 0x46) && (in_stack_00000008 != 0)) {
-      iVar6 = (*(code *)this->field0_0x0[0x16])(iVar6,1);
-      in_stack_00000008 = in_stack_00000008 - iVar6;
-    }
-    iVar7 = iVar7 + 4;
-    if (0x17 < iVar7) {
-      return iVar3 - in_stack_00000008;
-    }
-  } while( true );
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005283C0
-// GHIDRA_NAME TMapMaker::TryPlaceType3CoarseCellWithAdjacencyRules
-// GHIDRA_PROTO int __thiscall TryPlaceType3CoarseCellWithAdjacencyRules(void)
-
-int __thiscall TMapMaker::TryPlaceType3CoarseCellWithAdjacencyRules(TMapMaker *this)
-
-{
-  char *pcVar1;
-  uint uVar2;
-  int iVar3;
-  ushort uVar4;
-  int iVar5;
-  int iVar6;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  int in_stack_0000000c;
-  
-  if ((in_stack_00000004 < 0) || (0x1950 < in_stack_00000004)) {
-    return 0;
-  }
-  pcVar1 = this->field08;
-  if (pcVar1[in_stack_00000004 * 0x24] != '\0') {
-    return 0;
-  }
-  uVar2 = in_stack_00000004 / 0x6c;
-  iVar6 = 0;
-  do {
-    if ((uVar2 & 1) == 0) {
-      iVar3 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar6);
-    }
-    else {
-      iVar3 = *(int *)((int)&g_Smooth_City_Region_LookupTable_00697480 + iVar6);
-    }
-    iVar3 = in_stack_00000004 % 0x6c + iVar3;
-    iVar5 = uVar2 + *(int *)((int)&g_Smooth_City_Region_LookupTable_00697468 + iVar6);
-    if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
+    iVar3 = param_2 % 0x6c + iVar3;
+    iVar4 = uVar1 + *(int *)((int)&DAT_00697468 + iVar5);
+    if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
       if (iVar3 < 0) {
         iVar3 = iVar3 + 0x6c;
       }
       else if (0x6b < iVar3) {
         iVar3 = iVar3 + -0x6c;
       }
-LAB_005285b6:
-      if ((iVar5 < 0) || (0x3b < iVar5)) goto LAB_00528455;
-      iVar3 = iVar3 + iVar5 * 0x6c;
+LAB_00528314:
+      if ((iVar4 < 0) || (0x3b < iVar4)) goto LAB_005281d9;
+      iVar3 = iVar3 + iVar4 * 0x6c;
     }
     else {
-      if ((-1 < iVar3) && (iVar3 < 0x6c)) goto LAB_005285b6;
-LAB_00528455:
+      if ((-1 < iVar3) && (iVar3 < 0x6c)) goto LAB_00528314;
+LAB_005281d9:
       iVar3 = -1;
     }
-    if (pcVar1[iVar3 * 0x24] == '\x05') {
+    if (*(char *)(iVar6 + iVar3 * 0x24) == '\x06') {
+      return 0;
+    }
+    iVar5 = iVar5 + 4;
+  } while (iVar5 < 0x18);
+  *(undefined1 *)(iVar6 + iVar7) = 1;
+  if ((char)param_4 == '\0') {
+    *(undefined1 *)(param_1[2] + 0x13 + iVar7) = 0xd;
+  }
+  else {
+    *(undefined1 *)(param_1[2] + 0x13 + iVar7) = 0xf;
+  }
+  param_3 = param_3 + -1;
+  iVar6 = 0;
+  do {
+    if ((uVar1 & 1) == 0) {
+      iVar7 = *(int *)(&DAT_00697450 + iVar6);
+    }
+    else {
+      iVar7 = *(int *)((int)&DAT_00697480 + iVar6);
+    }
+    iVar7 = param_2 % 0x6c + iVar7;
+    iVar5 = uVar1 + *(int *)((int)&DAT_00697468 + iVar6);
+    if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+      if (iVar7 < 0) {
+        iVar7 = iVar7 + 0x6c;
+      }
+      else if (0x6b < iVar7) {
+        iVar7 = iVar7 + -0x6c;
+      }
+LAB_00528281:
+      if ((iVar5 < 0) || (0x3b < iVar5)) goto LAB_00528295;
+      iVar7 = iVar7 + iVar5 * 0x6c;
+    }
+    else {
+      if ((-1 < iVar7) && (iVar7 < 0x6c)) goto LAB_00528281;
+LAB_00528295:
+      iVar7 = -1;
+    }
+    DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+    if (((DAT_006a38e8 >> 0xc & 0x7fff) % 100 < 0x46) && (param_3 != 0)) {
+      iVar7 = (**(code **)(*param_1 + 0x58))(iVar7,1,param_4);
+      param_3 = param_3 - iVar7;
+    }
+    iVar6 = iVar6 + 4;
+    if (0x17 < iVar6) {
+      return iVar2 - param_3;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005283C0
+// GHIDRA_NAME TMapMaker::TryPlaceType3CoarseCellWithAdjacencyRules
+// GHIDRA_PROTO undefined TryPlaceType3CoarseCellWithAdjacencyRules()
+
+int __thiscall
+TMapMaker::TryPlaceType3CoarseCellWithAdjacencyRules
+          (int *param_1,int param_2,int param_3,int param_4)
+
+{
+  uint uVar1;
+  int iVar2;
+  ushort uVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  
+  if ((param_2 < 0) || (0x1950 < param_2)) {
+    return 0;
+  }
+  iVar5 = param_1[2];
+  if (*(char *)(iVar5 + param_2 * 0x24) != '\0') {
+    return 0;
+  }
+  uVar1 = param_2 / 0x6c;
+  iVar6 = 0;
+  do {
+    if ((uVar1 & 1) == 0) {
+      iVar2 = *(int *)(&DAT_00697450 + iVar6);
+    }
+    else {
+      iVar2 = *(int *)((int)&DAT_00697480 + iVar6);
+    }
+    iVar2 = param_2 % 0x6c + iVar2;
+    iVar4 = uVar1 + *(int *)((int)&DAT_00697468 + iVar6);
+    if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+      if (iVar2 < 0) {
+        iVar2 = iVar2 + 0x6c;
+      }
+      else if (0x6b < iVar2) {
+        iVar2 = iVar2 + -0x6c;
+      }
+LAB_005285b6:
+      if ((iVar4 < 0) || (0x3b < iVar4)) goto LAB_00528455;
+      iVar2 = iVar2 + iVar4 * 0x6c;
+    }
+    else {
+      if ((-1 < iVar2) && (iVar2 < 0x6c)) goto LAB_005285b6;
+LAB_00528455:
+      iVar2 = -1;
+    }
+    if (*(char *)(iVar5 + iVar2 * 0x24) == '\x05') {
       return 0;
     }
     iVar6 = iVar6 + 4;
   } while (iVar6 < 0x18);
   iVar6 = 1;
-  pcVar1[in_stack_00000004 * 0x24] = '\x03';
-  if ((in_stack_0000000c == 1) || (in_stack_0000000c == 4)) {
-    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-    uVar4 = (ushort)((ulonglong)(g_uMapGenerationRngState >> 0xc & 0x7fff) % 100);
-    if (0x27 < uVar4) {
-      if (uVar4 < 0x46) goto LAB_005284f1;
-      if (in_stack_0000000c != 5) goto LAB_0052850a;
-      in_stack_0000000c = 0;
+  *(undefined1 *)(iVar5 + param_2 * 0x24) = 3;
+  iVar5 = param_4;
+  if ((param_4 == 1) || (param_4 == 4)) {
+    DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+    uVar3 = (ushort)((ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % 100);
+    if (0x27 < uVar3) {
+      if (uVar3 < 0x46) goto LAB_005284f1;
+      if (param_4 != 5) goto LAB_0052850a;
+      iVar5 = 0;
     }
   }
   else {
-    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-    uVar4 = (ushort)((ulonglong)(g_uMapGenerationRngState >> 0xc & 0x7fff) % 100);
-    if (0x3b < uVar4) {
-      if (uVar4 < 0x50) {
+    DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+    uVar3 = (ushort)((ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % 100);
+    if (0x3b < uVar3) {
+      if (uVar3 < 0x50) {
 LAB_005284f1:
-        if (in_stack_0000000c == 0) {
-          in_stack_0000000c = 5;
+        if (param_4 == 0) {
+          iVar5 = 5;
         }
         else {
-          in_stack_0000000c = in_stack_0000000c + -1;
+          iVar5 = param_4 + -1;
         }
       }
-      else if (in_stack_0000000c == 5) {
-        in_stack_0000000c = 0;
+      else if (param_4 == 5) {
+        iVar5 = 0;
       }
       else {
 LAB_0052850a:
-        in_stack_0000000c = in_stack_0000000c + 1;
+        iVar5 = param_4 + 1;
       }
     }
   }
-  if ((uVar2 & 1) == 0) {
-    iVar3 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + in_stack_0000000c * 4);
+  if ((uVar1 & 1) == 0) {
+    iVar2 = *(int *)(&DAT_00697450 + iVar5 * 4);
   }
   else {
-    iVar3 = (&g_Smooth_City_Region_LookupTable_00697480)[in_stack_0000000c];
+    iVar2 = (&DAT_00697480)[iVar5];
   }
-  iVar3 = in_stack_00000004 % 0x6c + iVar3;
-  iVar5 = uVar2 + (&g_Smooth_City_Region_LookupTable_00697468)[in_stack_0000000c];
-  if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
-    if (iVar3 < 0) {
-      iVar3 = iVar3 + 0x6c;
+  iVar2 = param_2 % 0x6c + iVar2;
+  iVar5 = uVar1 + (&DAT_00697468)[iVar5];
+  if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
+    if (iVar2 < 0) {
+      iVar2 = iVar2 + 0x6c;
     }
-    else if (0x6b < iVar3) {
-      iVar3 = iVar3 + -0x6c;
+    else if (0x6b < iVar2) {
+      iVar2 = iVar2 + -0x6c;
     }
 LAB_0052855d:
     if ((-1 < iVar5) && (iVar5 < 0x3c)) {
-      iVar3 = iVar3 + iVar5 * 0x6c;
+      iVar2 = iVar2 + iVar5 * 0x6c;
       goto LAB_00528574;
     }
   }
-  else if ((-1 < iVar3) && (iVar3 < 0x6c)) goto LAB_0052855d;
-  iVar3 = -1;
+  else if ((-1 < iVar2) && (iVar2 < 0x6c)) goto LAB_0052855d;
+  iVar2 = -1;
 LAB_00528574:
-  if ((in_stack_00000008 != 1) && (-1 < iVar3)) {
-    iVar6 = (*(code *)this->field0_0x0[0x12])(iVar3,in_stack_00000008 + -1);
+  if ((param_3 != 1) && (-1 < iVar2)) {
+    iVar6 = (**(code **)(*param_1 + 0x48))(iVar2,param_3 + -1,param_4);
     iVar6 = iVar6 + 1;
   }
   return iVar6;
@@ -1323,9 +846,10 @@ LAB_00528574:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528780
 // GHIDRA_NAME TMapMaker::SpreadType6CellsAcrossCoarseRowSegments
-// GHIDRA_PROTO int __thiscall SpreadType6CellsAcrossCoarseRowSegments(void)
+// GHIDRA_PROTO undefined SpreadType6CellsAcrossCoarseRowSegments()
 
-int __thiscall TMapMaker::SpreadType6CellsAcrossCoarseRowSegments(TMapMaker *this)
+int __thiscall
+TMapMaker::SpreadType6CellsAcrossCoarseRowSegments(int param_1,int param_2,int param_3)
 
 {
   char cVar1;
@@ -1334,14 +858,12 @@ int __thiscall TMapMaker::SpreadType6CellsAcrossCoarseRowSegments(TMapMaker *thi
   uint uVar4;
   int iVar5;
   int iVar6;
-  int in_stack_00000004;
-  int in_stack_00000008;
-  int local_4;
+  int iStack_4;
   
-  iVar5 = in_stack_00000004;
+  iVar5 = param_2;
   iVar6 = 0;
-  in_stack_00000004 = 0;
-  pcVar2 = this->field08 + iVar5 * 0xf30;
+  param_2 = 0;
+  pcVar2 = (char *)(*(int *)(param_1 + 8) + iVar5 * 0xf30);
   cVar1 = *pcVar2;
   for (iVar5 = 0; (cVar1 != '\x05' && (iVar5 < 0x6c)); iVar5 = iVar5 + 1) {
     cVar1 = pcVar2[0x24];
@@ -1350,8 +872,8 @@ int __thiscall TMapMaker::SpreadType6CellsAcrossCoarseRowSegments(TMapMaker *thi
   if (iVar5 == 0x6c) {
     return 0;
   }
-  local_4 = 0x6b;
-  uVar4 = g_uMapGenerationRngState;
+  iStack_4 = 0x6b;
+  uVar4 = DAT_006a38e8;
   do {
     iVar5 = iVar5 + 1;
     pcVar3 = pcVar2 + 0x24;
@@ -1363,12 +885,12 @@ int __thiscall TMapMaker::SpreadType6CellsAcrossCoarseRowSegments(TMapMaker *thi
     }
     if (iVar6 == 1) {
       if ((*pcVar3 == '\0') &&
-         (uVar4 = uVar4 * 0x15a4e35 + 1, g_uMapGenerationRngState = uVar4,
-         (int)((uVar4 >> 0xc & 0x7fff) % 100) < in_stack_00000008)) {
+         (uVar4 = uVar4 * 0x15a4e35 + 1, DAT_006a38e8 = uVar4,
+         (int)((uVar4 >> 0xc & 0x7fff) % 100) < param_3)) {
         *pcVar3 = '\x06';
-        in_stack_00000004 = in_stack_00000004 + 1;
+        param_2 = param_2 + 1;
         pcVar2[0x37] = '\f';
-        uVar4 = g_uMapGenerationRngState;
+        uVar4 = DAT_006a38e8;
       }
       else {
         cVar1 = *pcVar3;
@@ -1382,19 +904,20 @@ joined_r0x00528843:
       cVar1 = *pcVar3;
       goto joined_r0x00528843;
     }
-    local_4 = local_4 + -1;
+    iStack_4 = iStack_4 + -1;
     pcVar2 = pcVar3;
-    if (local_4 == 0) {
-      return in_stack_00000004;
+    if (iStack_4 == 0) {
+      return param_2;
     }
   } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005288A0
 // GHIDRA_NAME TMapMaker::SpreadType6CellsWithSecondaryNeighborPass
-// GHIDRA_PROTO int __thiscall SpreadType6CellsWithSecondaryNeighborPass(void)
+// GHIDRA_PROTO undefined SpreadType6CellsWithSecondaryNeighborPass()
 
-int __thiscall TMapMaker::SpreadType6CellsWithSecondaryNeighborPass(TMapMaker *this)
+int __thiscall
+TMapMaker::SpreadType6CellsWithSecondaryNeighborPass(int param_1,int param_2,int param_3)
 
 {
   char cVar1;
@@ -1405,14 +928,12 @@ int __thiscall TMapMaker::SpreadType6CellsWithSecondaryNeighborPass(TMapMaker *t
   char *pcVar6;
   int iVar7;
   int iVar8;
-  int in_stack_00000004;
-  int in_stack_00000008;
   int local_14;
   int local_10;
   int local_4;
   
   local_14 = 0;
-  pcVar5 = this->field08 + in_stack_00000004 * 0xf30;
+  pcVar5 = (char *)(*(int *)(param_1 + 8) + param_2 * 0xf30);
   iVar2 = 0;
   cVar1 = *pcVar5;
   for (local_10 = 0; (cVar1 != '\x05' && (local_10 < 0x6c)); local_10 = local_10 + 1) {
@@ -1423,7 +944,7 @@ int __thiscall TMapMaker::SpreadType6CellsWithSecondaryNeighborPass(TMapMaker *t
     return 0;
   }
   local_4 = 0x6b;
-  uVar4 = g_uMapGenerationRngState;
+  uVar4 = DAT_006a38e8;
   do {
     local_10 = local_10 + 1;
     pcVar6 = pcVar5 + 0x24;
@@ -1435,18 +956,18 @@ int __thiscall TMapMaker::SpreadType6CellsWithSecondaryNeighborPass(TMapMaker *t
     }
     if (local_14 == 1) {
       if ((*pcVar6 == '\0') &&
-         (uVar4 = uVar4 * 0x15a4e35 + 1, g_uMapGenerationRngState = uVar4,
-         (int)((uVar4 >> 0xc & 0x7fff) % 100) < in_stack_00000008)) {
-        iVar7 = local_10 + in_stack_00000004 * 0x6c;
+         (uVar4 = uVar4 * 0x15a4e35 + 1, DAT_006a38e8 = uVar4,
+         (int)((uVar4 >> 0xc & 0x7fff) % 100) < param_3)) {
+        iVar7 = local_10 + param_2 * 0x6c;
         *pcVar6 = '\x06';
         pcVar5[0x37] = '\v';
-        iVar8 = g_Build_City_Region_Value_00697494;
+        iVar8 = DAT_00697494;
         if ((iVar7 / 0x6c & 1U) == 0) {
-          iVar8 = g_Build_City_Region_Value_00697464;
+          iVar8 = DAT_00697464;
         }
         iVar8 = iVar7 % 0x6c + iVar8;
-        iVar3 = iVar7 / 0x6c + g_Build_City_Region_Value_0069747C;
-        if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
+        iVar3 = iVar7 / 0x6c + DAT_0069747c;
+        if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
           if (iVar8 < 0) {
             iVar8 = iVar8 + 0x6c;
           }
@@ -1463,21 +984,21 @@ LAB_005289d4:
           iVar8 = -1;
         }
         iVar3 = iVar2 + 1;
-        if ((this->field08[iVar8 * 0x24] == '\0') &&
-           (g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1,
-           (int)((g_uMapGenerationRngState >> 0xc & 0x7fff) % 100) < in_stack_00000008)) {
-          this->field08[iVar8 * 0x24] = '\x06';
+        if ((*(char *)(*(int *)(param_1 + 8) + iVar8 * 0x24) == '\0') &&
+           (DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1,
+           (int)((DAT_006a38e8 >> 0xc & 0x7fff) % 100) < param_3)) {
+          *(undefined1 *)(*(int *)(param_1 + 8) + iVar8 * 0x24) = 6;
           pcVar5[0x37] = '\v';
           iVar3 = iVar2 + 2;
         }
         iVar2 = iVar3;
-        iVar8 = g_Spread_Type6_Cells_Value_0069748C;
+        iVar8 = DAT_0069748c;
         if ((iVar7 / 0x6c & 1U) == 0) {
-          iVar8 = g_Spread_Type6_Cells_Value_0069745C;
+          iVar8 = DAT_0069745c;
         }
         iVar8 = iVar7 % 0x6c + iVar8;
-        iVar7 = iVar7 / 0x6c + g_Spread_Type6_Cells_Value_00697474;
-        if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
+        iVar7 = iVar7 / 0x6c + DAT_00697474;
+        if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
           if (iVar8 < 0) {
             iVar8 = iVar8 + 0x6c;
           }
@@ -1493,15 +1014,14 @@ LAB_00528a8a:
 LAB_00528a9e:
           iVar8 = -1;
         }
-        uVar4 = g_uMapGenerationRngState;
-        if ((this->field08[iVar8 * 0x24] == '\0') &&
-           (g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1,
-           uVar4 = g_uMapGenerationRngState,
-           (int)((g_uMapGenerationRngState >> 0xc & 0x7fff) % 100) < in_stack_00000008)) {
-          this->field08[iVar8 * 0x24] = '\x06';
+        uVar4 = DAT_006a38e8;
+        if ((*(char *)(*(int *)(param_1 + 8) + iVar8 * 0x24) == '\0') &&
+           (DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1, uVar4 = DAT_006a38e8,
+           (int)((DAT_006a38e8 >> 0xc & 0x7fff) % 100) < param_3)) {
+          *(undefined1 *)(*(int *)(param_1 + 8) + iVar8 * 0x24) = 6;
           pcVar5[0x37] = '\v';
           iVar2 = iVar2 + 1;
-          uVar4 = g_uMapGenerationRngState;
+          uVar4 = DAT_006a38e8;
         }
       }
       else if (*pcVar6 == '\x05') {
@@ -1521,9 +1041,9 @@ LAB_00528a9e:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00528E50
 // GHIDRA_NAME TMapMaker::SmoothCityRegionOwnershipByNeighborSampling
-// GHIDRA_PROTO void __thiscall SmoothCityRegionOwnershipByNeighborSampling(void)
+// GHIDRA_PROTO undefined SmoothCityRegionOwnershipByNeighborSampling()
 
-void __thiscall TMapMaker::SmoothCityRegionOwnershipByNeighborSampling(TMapMaker *this)
+void __fastcall TMapMaker::SmoothCityRegionOwnershipByNeighborSampling(int param_1)
 
 {
   char cVar1;
@@ -1534,8 +1054,8 @@ void __thiscall TMapMaker::SmoothCityRegionOwnershipByNeighborSampling(TMapMaker
   int iVar6;
   int iVar7;
   int *piVar8;
-  char *pcVar9;
-  char *pcVar10;
+  undefined4 *puVar9;
+  undefined4 *puVar10;
   int local_1c;
   int local_18;
   int local_c;
@@ -1546,18 +1066,18 @@ void __thiscall TMapMaker::SmoothCityRegionOwnershipByNeighborSampling(TMapMaker
     iVar7 = 0;
     sVar3 = 0;
     local_c = -1;
-    piVar8 = &g_Smooth_City_Region_LookupTable_00697468;
+    piVar8 = &DAT_00697468;
     uVar2 = local_1c / 0x6c;
     do {
       if ((uVar2 & 1) == 0) {
-        iVar5 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar7 * 4);
+        iVar5 = *(int *)(&DAT_00697450 + iVar7 * 4);
       }
       else {
-        iVar5 = (&g_Smooth_City_Region_LookupTable_00697480)[iVar7];
+        iVar5 = (&DAT_00697480)[iVar7];
       }
       iVar5 = local_1c % 0x6c + iVar5;
       iVar6 = uVar2 + *piVar8;
-      if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
+      if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
         if (iVar5 < 0) {
           iVar5 = iVar5 + 0x6c;
         }
@@ -1573,8 +1093,8 @@ LAB_005291dd:
 LAB_00528ef7:
         iVar5 = -1;
       }
-      cVar1 = this->field08[iVar5 * 0x24 + 4];
-      if (cVar1 == this->field08[local_18 + 4]) {
+      cVar1 = *(char *)(*(int *)(param_1 + 8) + 4 + iVar5 * 0x24);
+      if (cVar1 == *(char *)(local_18 + 4 + *(int *)(param_1 + 8))) {
         sVar3 = sVar3 + 1;
       }
       else if (cVar1 != -1) {
@@ -1585,21 +1105,20 @@ LAB_00528ef7:
     } while ((int)piVar8 < 0x697480);
     if ((((sVar3 == 0) ||
          ((sVar3 == 1 &&
-          (g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1,
-          (g_uMapGenerationRngState >> 0xc & 1) != 0)))) ||
+          (DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1, (DAT_006a38e8 >> 0xc & 1) != 0)))) ||
         ((sVar3 == 2 &&
-         (g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1,
-         (g_uMapGenerationRngState >> 0xc & 4) == 0)))) && ((short)local_c != -1)) {
+         (DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1, (DAT_006a38e8 >> 0xc & 4) == 0)))) &&
+       ((short)local_c != -1)) {
       iVar7 = (int)(short)local_c;
       if ((uVar2 & 1) == 0) {
-        iVar5 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar7 * 4);
+        iVar5 = *(int *)(&DAT_00697450 + iVar7 * 4);
       }
       else {
-        iVar5 = (&g_Smooth_City_Region_LookupTable_00697480)[iVar7];
+        iVar5 = (&DAT_00697480)[iVar7];
       }
       iVar5 = local_1c % 0x6c + iVar5;
-      iVar7 = uVar2 + (&g_Smooth_City_Region_LookupTable_00697468)[iVar7];
-      if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
+      iVar7 = uVar2 + (&DAT_00697468)[iVar7];
+      if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
         if (iVar5 < 0) {
           iVar5 = iVar5 + 0x6c;
         }
@@ -1615,12 +1134,12 @@ LAB_00528fd5:
 LAB_00528fe9:
         iVar5 = -1;
       }
-      pcVar9 = this->field08 + iVar5 * 0x24;
-      pcVar10 = this->field08 + local_18;
+      puVar9 = (undefined4 *)(*(int *)(param_1 + 8) + iVar5 * 0x24);
+      puVar10 = (undefined4 *)(local_18 + *(int *)(param_1 + 8));
       for (iVar7 = 9; iVar7 != 0; iVar7 = iVar7 + -1) {
-        *(undefined4 *)pcVar10 = *(undefined4 *)pcVar9;
-        pcVar9 = pcVar9 + 4;
-        pcVar10 = pcVar10 + 4;
+        *puVar10 = *puVar9;
+        puVar9 = puVar9 + 1;
+        puVar10 = puVar10 + 1;
       }
     }
     local_18 = local_18 + 0x24;
@@ -1634,14 +1153,14 @@ LAB_00528fe9:
     iVar7 = 0;
     do {
       if ((uVar2 & 1) == 0) {
-        iVar5 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar7);
+        iVar5 = *(int *)(&DAT_00697450 + iVar7);
       }
       else {
-        iVar5 = *(int *)((int)&g_Smooth_City_Region_LookupTable_00697480 + iVar7);
+        iVar5 = *(int *)((int)&DAT_00697480 + iVar7);
       }
       iVar5 = local_1c % 0x6c + iVar5;
-      iVar6 = uVar2 + *(int *)((int)&g_Smooth_City_Region_LookupTable_00697468 + iVar7);
-      if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
+      iVar6 = uVar2 + *(int *)((int)&DAT_00697468 + iVar7);
+      if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
         if (iVar5 < 0) {
           iVar5 = iVar5 + 0x6c;
         }
@@ -1657,23 +1176,24 @@ LAB_005290bf:
 LAB_005290d3:
         iVar5 = -1;
       }
-      if (this->field08[iVar5 * 0x24 + 4] == this->field08[local_18 + 4]) {
+      if (*(char *)(*(int *)(param_1 + 8) + 4 + iVar5 * 0x24) ==
+          *(char *)(local_18 + 4 + *(int *)(param_1 + 8))) {
         bVar4 = true;
       }
       iVar7 = iVar7 + 4;
     } while (iVar7 < 0x18);
     if (!bVar4) {
-      g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-      iVar7 = (int)(short)((ulonglong)(g_uMapGenerationRngState >> 0xc & 0x7fff) % 6);
+      DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+      iVar7 = (int)(short)((ulonglong)(DAT_006a38e8 >> 0xc & 0x7fff) % 6);
       if ((uVar2 & 1) == 0) {
-        iVar5 = *(int *)(&g_Smooth_City_Region_LookupTable_00697450 + iVar7 * 4);
+        iVar5 = *(int *)(&DAT_00697450 + iVar7 * 4);
       }
       else {
-        iVar5 = (&g_Smooth_City_Region_LookupTable_00697480)[iVar7];
+        iVar5 = (&DAT_00697480)[iVar7];
       }
       iVar5 = local_1c % 0x6c + iVar5;
-      iVar7 = uVar2 + (&g_Smooth_City_Region_LookupTable_00697468)[iVar7];
-      if (*(char *)((int)g_pGlobalMapState + 0x20) == '\0') {
+      iVar7 = uVar2 + (&DAT_00697468)[iVar7];
+      if (*(char *)(g_pGlobalMapState + 0x20) == '\0') {
         if (iVar5 < 0) {
           iVar5 = iVar5 + 0x6c;
         }
@@ -1689,12 +1209,12 @@ LAB_00529173:
 LAB_00529187:
         iVar5 = -1;
       }
-      pcVar9 = this->field08 + iVar5 * 0x24;
-      pcVar10 = this->field08 + local_18;
+      puVar9 = (undefined4 *)(*(int *)(param_1 + 8) + iVar5 * 0x24);
+      puVar10 = (undefined4 *)(local_18 + *(int *)(param_1 + 8));
       for (iVar7 = 9; iVar7 != 0; iVar7 = iVar7 + -1) {
-        *(undefined4 *)pcVar10 = *(undefined4 *)pcVar9;
-        pcVar9 = pcVar9 + 4;
-        pcVar10 = pcVar10 + 4;
+        *puVar10 = *puVar9;
+        puVar9 = puVar9 + 1;
+        puVar10 = puVar10 + 1;
       }
     }
     local_18 = local_18 + 0x24;
@@ -1707,24 +1227,23 @@ LAB_00529187:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005296A0
 // GHIDRA_NAME TMapMaker::CopyFinePatternFromNeighborCellByMode
-// GHIDRA_PROTO void __thiscall CopyFinePatternFromNeighborCellByMode(void)
+// GHIDRA_PROTO undefined CopyFinePatternFromNeighborCellByMode()
 
-void __thiscall TMapMaker::CopyFinePatternFromNeighborCellByMode(TMapMaker *this)
+void __thiscall
+TMapMaker::CopyFinePatternFromNeighborCellByMode
+          (int *param_1,undefined4 param_2,undefined4 param_3,short param_4,short param_5)
 
 {
   undefined4 *puVar1;
   int iVar2;
   undefined4 *puVar3;
   undefined4 *puVar4;
-  short in_stack_00000004;
-  short in_stack_0000000c;
-  short in_stack_00000010;
   
-  puVar1 = (undefined4 *)(*(code *)this->field0_0x0[0x21])();
+  puVar1 = (undefined4 *)(**(code **)(*param_1 + 0x84))(param_2);
   puVar3 = puVar1 + -0x3c3;
-  if (in_stack_0000000c == in_stack_00000004) {
-    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-    if ((g_uMapGenerationRngState >> 0xc & 1) != 0) {
+  if (param_4 == (short)param_2) {
+    DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+    if ((DAT_006a38e8 >> 0xc & 1) != 0) {
       puVar3 = puVar1;
       puVar4 = puVar1 + -0x3ba;
       for (iVar2 = 9; iVar2 != 0; iVar2 = iVar2 + -1) {
@@ -1732,8 +1251,8 @@ void __thiscall TMapMaker::CopyFinePatternFromNeighborCellByMode(TMapMaker *this
         puVar3 = puVar3 + 1;
         puVar4 = puVar4 + 1;
       }
-      g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-      if ((g_uMapGenerationRngState >> 0xc & 3) != 0) goto LAB_0052977b;
+      DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+      if ((DAT_006a38e8 >> 0xc & 3) != 0) goto LAB_0052977b;
       puVar4 = puVar1 + -0x786;
       goto LAB_00529772;
     }
@@ -1748,8 +1267,8 @@ void __thiscall TMapMaker::CopyFinePatternFromNeighborCellByMode(TMapMaker *this
       puVar3 = puVar3 + 1;
       puVar4 = puVar4 + 1;
     }
-    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-    if ((g_uMapGenerationRngState >> 0xc & 1) == 0) goto LAB_0052977b;
+    DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+    if ((DAT_006a38e8 >> 0xc & 1) == 0) goto LAB_0052977b;
     puVar3 = puVar1;
     puVar4 = puVar1 + -0x3d5;
     for (iVar2 = 9; iVar2 != 0; iVar2 = iVar2 + -1) {
@@ -1757,8 +1276,8 @@ void __thiscall TMapMaker::CopyFinePatternFromNeighborCellByMode(TMapMaker *this
       puVar3 = puVar3 + 1;
       puVar4 = puVar4 + 1;
     }
-    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-    if ((g_uMapGenerationRngState >> 0xc & 1) == 0) goto LAB_0052977b;
+    DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+    if ((DAT_006a38e8 >> 0xc & 1) == 0) goto LAB_0052977b;
     puVar4 = puVar1 + -0x798;
 LAB_00529772:
     iVar2 = 9;
@@ -1770,7 +1289,7 @@ LAB_00529772:
     puVar4 = puVar4 + 1;
   }
 LAB_0052977b:
-  if (in_stack_00000010 != in_stack_00000004) {
+  if (param_5 != (short)param_2) {
     puVar3 = puVar1 + -0x3ba;
     puVar1 = puVar1 + 0x1b;
     for (iVar2 = 9; iVar2 != 0; iVar2 = iVar2 + -1) {
@@ -1784,48 +1303,46 @@ LAB_0052977b:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005297E0
 // GHIDRA_NAME TMapMaker::RestoreFinePatternBandFromNeighborCell
-// GHIDRA_PROTO void __thiscall RestoreFinePatternBandFromNeighborCell(void)
+// GHIDRA_PROTO undefined RestoreFinePatternBandFromNeighborCell()
 
-void __thiscall TMapMaker::RestoreFinePatternBandFromNeighborCell(TMapMaker *this)
+void __thiscall TMapMaker::RestoreFinePatternBandFromNeighborCell(int *param_1,undefined4 param_2)
 
 {
-  undefined **ppuVar1;
-  undefined4 uVar2;
-  undefined4 *puVar3;
-  int iVar4;
+  undefined4 uVar1;
+  undefined4 *puVar2;
+  int iVar3;
   short unaff_SI;
+  undefined4 *puVar4;
   undefined4 *puVar5;
   undefined4 *puVar6;
-  undefined4 *puVar7;
-  short in_stack_00000004;
   
-  ppuVar1 = this->field0_0x0;
-  uVar2 = (*(code *)ppuVar1[0x1d])();
-  puVar3 = (undefined4 *)(*(code *)ppuVar1[0x21])(uVar2);
-  puVar6 = puVar3 + -0x3cc;
-  if (in_stack_00000004 == unaff_SI) {
-    for (iVar4 = 9; iVar4 != 0; iVar4 = iVar4 + -1) {
-      *puVar3 = *puVar6;
-      puVar6 = puVar6 + 1;
-      puVar3 = puVar3 + 1;
+  iVar3 = *param_1;
+  uVar1 = (**(code **)(iVar3 + 0x74))(param_2,2);
+  puVar2 = (undefined4 *)(**(code **)(iVar3 + 0x84))(uVar1);
+  puVar5 = puVar2 + -0x3cc;
+  if ((short)param_2 == unaff_SI) {
+    for (iVar3 = 9; iVar3 != 0; iVar3 = iVar3 + -1) {
+      *puVar2 = *puVar5;
+      puVar5 = puVar5 + 1;
+      puVar2 = puVar2 + 1;
     }
     return;
   }
   if (unaff_SI != 1) {
-    puVar5 = puVar6;
-    puVar7 = puVar3 + -9;
-    for (iVar4 = 9; iVar4 != 0; iVar4 = iVar4 + -1) {
-      *puVar7 = *puVar5;
-      puVar5 = puVar5 + 1;
-      puVar7 = puVar7 + 1;
+    puVar4 = puVar5;
+    puVar6 = puVar2 + -9;
+    for (iVar3 = 9; iVar3 != 0; iVar3 = iVar3 + -1) {
+      *puVar6 = *puVar4;
+      puVar4 = puVar4 + 1;
+      puVar6 = puVar6 + 1;
     }
-    g_uMapGenerationRngState = g_uMapGenerationRngState * 0x15a4e35 + 1;
-    if ((g_uMapGenerationRngState >> 0xc & 0x7fff) == 0) {
-      puVar3 = puVar3 + -0x12;
-      for (iVar4 = 9; iVar4 != 0; iVar4 = iVar4 + -1) {
-        *puVar3 = *puVar6;
-        puVar6 = puVar6 + 1;
-        puVar3 = puVar3 + 1;
+    DAT_006a38e8 = DAT_006a38e8 * 0x15a4e35 + 1;
+    if ((DAT_006a38e8 >> 0xc & 0x7fff) == 0) {
+      puVar2 = puVar2 + -0x12;
+      for (iVar3 = 9; iVar3 != 0; iVar3 = iVar3 + -1) {
+        *puVar2 = *puVar5;
+        puVar5 = puVar5 + 1;
+        puVar2 = puVar2 + 1;
       }
     }
   }
@@ -1834,24 +1351,18 @@ void __thiscall TMapMaker::RestoreFinePatternBandFromNeighborCell(TMapMaker *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005298A0
 // GHIDRA_NAME TMapMaker::GetFineGridCellBasePointerFromCoarseIndex
-// GHIDRA_PROTO void * __thiscall GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Converts coarse-grid index (27x15) into fine-grid cell block base pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetFineGridCellBasePointerFromCoarseIndex()
 
-/* Converts coarse-grid index (27x15) into fine-grid cell block base pointer. */
-
-void * __thiscall
-TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(TMapMaker *this,int coarseIndex)
+int __thiscall TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int param_1,int param_2)
 
 {
-  char *pcVar1;
+  int iVar1;
   
-  pcVar1 = this->field08 +
-           ((int)(short)(coarseIndex % 0x1b) + (short)(coarseIndex / 0x1b) * 0x6c) * 0x90;
-  if ((coarseIndex / 0x1b & 1U) != 0) {
-    pcVar1 = pcVar1 + -0x48;
+  iVar1 = ((int)(short)(param_2 % 0x1b) + (short)(param_2 / 0x1b) * 0x6c) * 0x90 +
+          *(int *)(param_1 + 8);
+  if ((param_2 / 0x1b & 1U) != 0) {
+    iVar1 = iVar1 + -0x48;
   }
-  return pcVar1;
+  return iVar1;
 }
 

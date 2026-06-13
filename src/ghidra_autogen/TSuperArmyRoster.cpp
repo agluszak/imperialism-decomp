@@ -3,124 +3,35 @@
 // Program: Imperialism.exe
 // Bucket: TSuperArmyRoster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401EEC
-// GHIDRA_NAME TSuperArmyRoster::thunk_GetTSuperArmyRosterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTSuperArmyRosterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSuperArmyRosterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSuperArmyRosterClassNamePointer */
-
-void * __cdecl TSuperArmyRoster::thunk_GetTSuperArmyRosterClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSuperArmyRosterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405817
-// GHIDRA_NAME TSuperArmyRoster::thunk_DestructTSuperArmyRosterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTSuperArmyRosterAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTSuperArmyRosterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTSuperArmyRosterAndMaybeFree */
-
-void * __thiscall
-TSuperArmyRoster::thunk_DestructTSuperArmyRosterAndMaybeFree
-          (TSuperArmyRoster *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTSuperArmyRosterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406E0B
-// GHIDRA_NAME TSuperArmyRoster::thunk_scalar_deleting_destructor_00406E0B
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00406E0B(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TSuperArmyRoster::thunk_scalar_deleting_destructor_00406E0B
-          (TSuperArmyRoster *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408DA0
-// GHIDRA_NAME TSuperArmyRoster::thunk_ConstructTSuperArmyRosterBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTSuperArmyRosterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for PopulateSuperArmyRosterByNationAndUpdateNavigation. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for PopulateSuperArmyRosterByNationAndUpdateNavigation. [FID:thunk_target_sync] */
-
-void * __thiscall TSuperArmyRoster::thunk_ConstructTSuperArmyRosterBaseState(TSuperArmyRoster *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ConstructTSuperArmyRosterBaseState(this);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA520
 // GHIDRA_NAME TSuperArmyRoster::GetTSuperArmyRosterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSuperArmyRosterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSuperArmyRoster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSuperArmyRosterClassNamePointer()
 
-/* Returns class descriptor pointer for TSuperArmyRoster. */
-
-void * __cdecl TSuperArmyRoster::GetTSuperArmyRosterClassNamePointer(void)
+undefined ** TSuperArmyRoster::GetTSuperArmyRosterClassNamePointer(void)
 
 {
-  return &g_pClassDescTSuperArmyRoster;
+  return &PTR_s_TSuperArmyRoster_0064cb80;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA540
 // GHIDRA_NAME TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTSuperArmyRosterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Populates super-army roster lines for selected nation/movement class and refreshes page navigation state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTSuperArmyRosterBaseState()
 
-/* Populates super-army roster lines for selected nation/movement class and refreshes page
-   navigation state. */
-
-void * __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArmyRoster *this)
+void __thiscall
+TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
+          (int *param_1,int param_2,undefined4 param_3,int param_4)
 
 {
   code *pcVar1;
-  int *pController;
-  short extraout_AX;
-  short extraout_AX_00;
-  TTextLine *this_00;
-  void *this_01;
-  TLineData *pThis;
-  void *extraout_EAX;
-  int pageDelta;
-  int iVar2;
+  short sVar2;
   short sVar3;
+  int iVar4;
+  undefined4 uVar5;
+  undefined4 *puVar6;
   undefined4 *unaff_FS_OFFSET;
-  int iStack00000004;
-  int iStack_14;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 uStack_14;
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -130,63 +41,65 @@ void * __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArm
   puStack_8 = &LAB_006304e4;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  this->field1c = 0x70616765;
-  TControl::thunk_InitializeRosterPageLineCollectionsAndBounds_At00406f8c((TControl *)this);
-  thunk_GetActiveNationId();
-  iStack00000004 = 0;
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_4,5,5,0);
+  param_1[7] = 0x70616765;
+  TControl::InitializeRosterPageLineCollectionsAndBounds(0);
+  sVar2 = UiRuntimeContext::GetActiveNationId();
+  param_2 = 0;
   do {
-    thunk_GetTileNormalizedMovementClassId();
-    if (extraout_AX_00 == extraout_AX) {
-      sVar3 = (short)iStack00000004;
+    sVar3 = thunk_GetTileNormalizedMovementClassId(param_2);
+    if (sVar3 == sVar2) {
+      sVar3 = (short)param_2;
       if ((sVar3 < 0) || (0x17f < sVar3)) {
-        iVar2 = 0;
+        iVar4 = 0;
       }
       else {
-        iVar2 = *(int *)(*(int *)((int)g_pGlobalMapState + 0x10) + 0x98 + sVar3 * 0xa8);
+        iVar4 = *(int *)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + sVar3 * 0xa8);
       }
-      if (iVar2 != 0) {
+      if (iVar4 != 0) {
         InitializeSharedStringRefFromEmpty();
         local_4 = 0;
         InitializeSharedStringRefFromEmpty();
         local_4._0_1_ = 1;
-        this_00 = AllocateWithFallbackHandler();
+        iVar4 = AllocateWithFallbackHandler(0x20);
         local_4._0_1_ = 2;
-        if (this_00 == (TTextLine *)0x0) {
-          this_01 = (void *)0x0;
+        if (iVar4 == 0) {
+          uVar5 = 0;
         }
         else {
-          this_01 = TTextLine::ConstructTTextLineBaseState(this_00);
+          uVar5 = TTextLine::ConstructTTextLineBaseState();
         }
         local_4 = CONCAT31(local_4._1_3_,1);
-        WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390();
-        thunk_AssignSharedStringFromIndexedA8EntryNameField();
-        AssignFromPtr(&stack0x00000008,(int *)&stack0x0000000c);
-        WrapperFor_StringShared_AssignFromPtr_At00570420(this_01,(int *)&stack0x00000008);
-        pcVar1 = *(code **)(this->field0_0x0 + 0x1a0);
-        (*pcVar1)(this_01);
+        local_1c = 0xec;
+        local_18 = 0x12;
+        WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&local_1c,0xffffffff,0);
+        thunk_AssignSharedStringFromIndexedA8EntryNameField(param_2,&param_4);
+        AssignFromPtr(&param_3,&param_4);
+        WrapperFor_StringShared_AssignFromPtr_At00570420(&param_3);
+        pcVar1 = *(code **)(*param_1 + 0x1a0);
+        (*pcVar1)(uVar5);
         if ((sVar3 < 0) || (0x17f < sVar3)) {
-          iVar2 = 0;
+          iVar4 = 0;
         }
         else {
-          iVar2 = *(int *)(*(int *)((int)g_pGlobalMapState + 0x10) + 0x98 + sVar3 * 0xa8);
+          iVar4 = *(int *)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + sVar3 * 0xa8);
         }
-        for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x14)) {
-          pThis = AllocateWithFallbackHandler();
+        for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x14)) {
+          puVar6 = (undefined4 *)AllocateWithFallbackHandler(0x14);
           local_4._0_1_ = 3;
-          if (pThis == (TLineData *)0x0) {
-            pThis = (TLineData *)0x0;
+          if (puVar6 == (undefined4 *)0x0) {
+            puVar6 = (undefined4 *)0x0;
           }
           else {
-            TLineData::ConstructTLineDataBaseState(pThis);
-            pThis->field0_0x0 = &PTR_thunk_GetTMiniArmyLineClassNamePointer_0064d510;
+            TLineData::ConstructTLineDataBaseState();
+            *puVar6 = &PTR_LAB_0064d510;
           }
           local_4 = CONCAT31(local_4._1_3_,1);
-          iStack_14 = 0xec;
+          uStack_14 = 0xec;
           uStack_10 = 0x12;
-          TLineData::thunk_SetLineDataRowAndBounds(pThis,0,0,&iStack_14);
-          pThis->field10 = iVar2;
-          (*pcVar1)(pThis);
+          TLineData::SetLineDataRowAndBounds(0,0,&uStack_14);
+          puVar6[4] = iVar4;
+          (*pcVar1)(puVar6);
         }
         local_4 = local_4 & 0xffffff00;
         ReleaseSharedStringRefIfNotEmpty();
@@ -194,31 +107,30 @@ void * __thiscall TSuperArmyRoster::ConstructTSuperArmyRosterBaseState(TSuperArm
         ReleaseSharedStringRefIfNotEmpty();
       }
     }
-    iStack00000004 = iStack00000004 + 1;
-  } while (iStack00000004 < 0x180);
-  iVar2 = this->field0_0x0;
-  this->field64 = 2;
-  (**(code **)(iVar2 + 0x1ac))();
-  (**(code **)(iVar2 + 0x1b0))(1);
-  pController = this->pField20;
-  (**(code **)(*pController + 0xc))();
-  thunk_UpdatePagedListNavigationButtonState(pController,pageDelta);
+    param_2 = param_2 + 1;
+  } while (param_2 < 0x180);
+  iVar4 = *param_1;
+  *(undefined2 *)(param_1 + 0x19) = 2;
+  (**(code **)(iVar4 + 0x1ac))();
+  (**(code **)(iVar4 + 0x1b0))(1);
+  (**(code **)(*(int *)param_1[8] + 0xc))();
+  UpdatePagedListNavigationButtonState((int)*(short *)((int)param_1 + 0x62));
   *unaff_FS_OFFSET = uStack_10;
-  return extraout_EAX;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA840
 // GHIDRA_NAME TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTSuperArmyRosterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTSuperArmyRosterAndMaybeFree()
 
-void * __thiscall
-TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree(TSuperArmyRoster *this,byte freeSelfFlag)
+undefined4 __thiscall
+TSuperArmyRoster::DestructTSuperArmyRosterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  thunk_ResetObjectToCObjectSentinelVtable_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  ResetObjectToCObjectSentinelVtable_Impl();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

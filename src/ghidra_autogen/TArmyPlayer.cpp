@@ -3,72 +3,19 @@
 // Program: Imperialism.exe
 // Bucket: TArmyPlayer.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403751
-// GHIDRA_NAME TArmyPlayer::thunk_GetTArmyPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTArmyPlayerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTArmyPlayerClassNamePointer */
-
-void * __cdecl TArmyPlayer::thunk_GetTArmyPlayerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTArmyPlayerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406F2D
-// GHIDRA_NAME TArmyPlayer::thunk_DestructTArmyPlayerAndMaybeFree_At00406f2d
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyPlayerAndMaybeFree_At00406f2d(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTArmyPlayerAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTArmyPlayerAndMaybeFree */
-
-void * __thiscall
-TArmyPlayer::thunk_DestructTArmyPlayerAndMaybeFree_At00406f2d(TArmyPlayer *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTArmyPlayerAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004087F1
-// GHIDRA_NAME TArmyPlayer::thunk_CreateTArmyPlayerInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTArmyPlayerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to ConstructArmyPlayerBaseState. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk to ConstructArmyPlayerBaseState. [FID:thunk_target_sync] */
-
-void __thiscall TArmyPlayer::thunk_CreateTArmyPlayerInstance(TArmyPlayer *this)
-
-{
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0B20
 // GHIDRA_NAME TArmyPlayer::InitializeUiTransientObjectRegistry
-// GHIDRA_PROTO void __thiscall InitializeUiTransientObjectRegistry(sdword initLimit)
+// GHIDRA_PROTO undefined InitializeUiTransientObjectRegistry()
 
-void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(TArmyPlayer *this,sdword initLimit)
+void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(int param_1,undefined4 param_2)
 
 {
   undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_1c;
   undefined4 local_18;
-  int local_14;
-  int local_10;
+  undefined4 local_14;
+  undefined4 local_10;
   undefined4 uStack_c;
   undefined4 *puStack_8;
   undefined4 uStack_4;
@@ -77,40 +24,35 @@ void __thiscall TArmyPlayer::InitializeUiTransientObjectRegistry(TArmyPlayer *th
   puStack_8 = (undefined4 *)&LAB_0062fee2;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializePacketHeaderFields_Tag20202020();
+  InitializePacketHeaderFields_Tag20202020(0);
   local_1c = 0;
-  this->field10 = initLimit;
-  local_10 = g_Ui_Transient_Object_Value_006A222C;
-  local_14 = g_Ui_Transient_Object_Value_006A2228;
+  *(undefined4 *)(param_1 + 0x10) = param_2;
+  local_10 = DAT_006a222c;
+  local_14 = DAT_006a2228;
   local_18 = 0;
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->pField20,8,&local_1c);
-  puVar1 = AllocateWithFallbackHandler();
+  (**(code **)(*DAT_006a2158 + 0x2c))(param_1 + 0x20,8,&local_1c);
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
-    *puVar1 = &g_vtblRefCountedObjectBase;
+    *puVar1 = &RefCountedObjectBase::_vftable_;
     local_10 = 1;
     puStack_8 = puVar1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
-    *puVar1 = &g_vtblTArmyBattle;
+    TGreatPower::CPtrList(10);
+    *puVar1 = &TList::_vftable_;
   }
-  this->pField24 = puVar1;
-  this->field25_0x28 = 0;
+  *(undefined4 **)(param_1 + 0x24) = puVar1;
+  *(undefined4 *)(param_1 + 0x28) = 0;
   *unaff_FS_OFFSET = local_18;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC540
 // GHIDRA_NAME TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass
-// GHIDRA_PROTO void __thiscall BuildTileIndexListsForSelectedTerrainClass(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Build tile index lists for the selected terrain class and associated value buffers.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined BuildTileIndexListsForSelectedTerrainClass()
 
-/* Build tile index lists for the selected terrain class and associated value buffers. */
-
-void __thiscall TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass(TArmyPlayer *this)
+void __fastcall TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass(int *param_1)
 
 {
   char cVar1;
@@ -149,10 +91,10 @@ void __thiscall TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass(TArmyPla
   puStack_8 = &LAB_00632766;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  (**(code **)(**(int **)(this->field04 + 0x44) + 0x48))();
+  (**(code **)(**(int **)(param_1[1] + 0x44) + 0x48))();
   iVar16 = 0;
-  sVar3 = *(short *)(this->field04 + 0xc);
-  piVar5 = AllocateWithFallbackHandler();
+  sVar3 = *(short *)(param_1[1] + 0xc);
+  piVar5 = (int *)AllocateWithFallbackHandler(0x1c);
   if (piVar5 == (int *)0x0) {
     piVar5 = (int *)0x0;
   }
@@ -163,61 +105,64 @@ void __thiscall TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass(TArmyPla
     piVar5[1] = 0;
     piVar5[5] = 0;
     piVar5[6] = 10;
-    *piVar5 = (int)&PTR_GetCObjectRuntimeClass_LinkedValueCollectionState_00650A08;
+    *piVar5 = (int)&PTR_GetCObjectRuntimeClass_00650a08;
   }
   do {
-    if ((int)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + (short)iVar16 * 0x24) ==
-        (int)sVar3) {
+    if ((int)*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 4 + (short)iVar16 * 0x24) == (int)sVar3)
+    {
       (**(code **)(*piVar5 + 0x14))(iVar16);
     }
     iVar16 = iVar16 + 1;
   } while (iVar16 < 0x1950);
-  psVar6 = (short *)(*(code *)this->field0_0x0[0x15])(piVar5);
-  piVar5 = *(int **)(this->field04 + 0x44);
-  piVar7 = AllocateWithFallbackHandler();
+  psVar6 = (short *)(**(code **)(*param_1 + 0x54))(piVar5);
+  piVar5 = *(int **)(param_1[1] + 0x44);
+  piVar7 = (int *)AllocateWithFallbackHandler(0x20);
   if (piVar7 == (int *)0x0) {
     piVar7 = (int *)0x0;
   }
   else {
-    *piVar7 = (int)&g_vtblRefCountedObjectBase;
+    *piVar7 = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x1;
-    TGreatPower::CPtrList((TGreatPower *)(piVar7 + 1));
-    *piVar7 = (int)&g_vtblTArmyBattle;
+    TGreatPower::CPtrList(10);
+    *piVar7 = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
   if (piVar7 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UDefenseMinister__00696860,0x12f);
   }
-  piStack_3c = AllocateWithFallbackHandler();
+  piStack_3c = (int *)AllocateWithFallbackHandler(0x20);
   if (piStack_3c == (int *)0x0) {
     piStack_3c = (int *)0x0;
   }
   else {
-    *piStack_3c = (int)&g_vtblRefCountedObjectBase;
+    *piStack_3c = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x3;
-    TGreatPower::CPtrList((TGreatPower *)(piStack_3c + 1));
-    *piStack_3c = (int)&g_vtblTArmyBattle;
+    TGreatPower::CPtrList(10);
+    *piStack_3c = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
   if (piStack_3c == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UDefenseMinister__00696860,0x130);
   }
-  piStack_34 = AllocateWithFallbackHandler();
+  piStack_34 = (int *)AllocateWithFallbackHandler(0x20);
   if (piStack_34 == (int *)0x0) {
     piStack_34 = (int *)0x0;
   }
   else {
-    *piStack_34 = (int)&g_vtblRefCountedObjectBase;
+    *piStack_34 = (int)&RefCountedObjectBase::_vftable_;
     puStack_8 = (undefined1 *)0x5;
-    TGreatPower::CPtrList((TGreatPower *)(piStack_34 + 1));
-    *piStack_34 = (int)&g_vtblTArmyBattle;
+    TGreatPower::CPtrList(10);
+    *piStack_34 = (int)&TList::_vftable_;
   }
   puStack_8 = (undefined1 *)0xffffffff;
   if (piStack_34 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UDefenseMinister__00696860,0x131);
   }
   iVar16 = 1;
   if (0 < iStack_24) {
@@ -268,10 +213,11 @@ void __thiscall TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass(TArmyPla
   }
   pcVar15 = (code *)(iVar8 / 2 + -2);
   if (0 < (int)pcVar15) {
-    pcVar10 = AllocateWithFallbackHandler();
+    pcVar10 = (code *)AllocateWithFallbackHandler((int)pcVar15 * 2);
     if (pcVar10 == (code *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UDefenseMinister__00696860,0x15e);
     }
     iVar8 = 0;
     if (0 < (int)pcVar15) {
@@ -347,7 +293,7 @@ void __thiscall TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass(TArmyPla
   if (piStack_34 != (int *)0x0) {
     (**(code **)(*piStack_34 + 0x1c))();
   }
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(psVar6);
   if (unaff_EBX != (int *)0x0) {
     (**(code **)(*unaff_EBX + 0x38))();
   }
@@ -357,46 +303,36 @@ void __thiscall TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass(TArmyPla
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B170
 // GHIDRA_NAME TArmyPlayer::CreateTArmyPlayerInstance
-// GHIDRA_PROTO void __thiscall CreateTArmyPlayerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes ArmyPlayer base state/vtable root.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTArmyPlayerInstance()
 
-/* Initializes ArmyPlayer base state/vtable root. */
-
-void __thiscall TArmyPlayer::CreateTArmyPlayerInstance(TArmyPlayer *this)
+void __fastcall TArmyPlayer::CreateTArmyPlayerInstance(undefined4 *param_1)
 
 {
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B190
 // GHIDRA_NAME TArmyPlayer::GetTArmyPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmyPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmyPlayer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmyPlayerClassNamePointer()
 
-/* Returns class descriptor pointer for TArmyPlayer. */
-
-void * __cdecl TArmyPlayer::GetTArmyPlayerClassNamePointer(void)
+undefined ** TArmyPlayer::GetTArmyPlayerClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmyPlayer;
+  return &PTR_s_TArmyPlayer_00669488;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059B390
 // GHIDRA_NAME TArmyPlayer::DestructTArmyPlayerAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTArmyPlayerAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTArmyPlayerAndMaybeFree()
 
-void * __thiscall TArmyPlayer::DestructTArmyPlayerAndMaybeFree(TArmyPlayer *this,byte freeSelfFlag)
+undefined4 __thiscall TArmyPlayer::DestructTArmyPlayerAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTArmyPlayerAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -5,38 +5,27 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575300
 // GHIDRA_NAME THighScoresPicture::GetTHighScoresPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTHighScoresPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for THighScoresPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTHighScoresPictureClassNamePointer()
 
-/* Returns class descriptor pointer for THighScoresPicture. */
-
-void * __cdecl THighScoresPicture::GetTHighScoresPictureClassNamePointer(void)
+undefined ** THighScoresPicture::GetTHighScoresPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTHighScoresPicture;
+  return &PTR_s_THighScoresPicture_00661968;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575320
 // GHIDRA_NAME THighScoresPicture::ConstructTHighScoresPictureBaseState
-// GHIDRA_PROTO void __thiscall ConstructTHighScoresPictureBaseState(int dataPath)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes high-scores picture state, resets audio cue pools, and loads score rows from file stream.
-// GHIDRA_COMMENT_END
-
-/* Initializes high-scores picture state, resets audio cue pools, and loads score rows from file
-   stream. */
+// GHIDRA_PROTO undefined ConstructTHighScoresPictureBaseState()
 
 void __thiscall
-THighScoresPicture::ConstructTHighScoresPictureBaseState(THighScoresPicture *this,int dataPath)
+THighScoresPicture::ConstructTHighScoresPictureBaseState(int param_1,undefined4 param_2)
 
 {
-  int arg4;
-  uint uVar1;
+  int iVar1;
   int iVar2;
-  int *piVar3;
-  undefined1 *arg1;
+  int iVar3;
+  undefined4 *puVar4;
+  int iVar5;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -46,38 +35,38 @@ THighScoresPicture::ConstructTHighScoresPictureBaseState(THighScoresPicture *thi
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636778;
   *unaff_FS_OFFSET = &local_c;
-  thunk_NoOpUiLifecycleHook();
+  TView::thunk_NoOpUiLifecycleHook(param_2);
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   thunk_ResetDualAudioCuePools();
-  thunk_PushCueToDualAudioCuePools();
+  thunk_PushCueToDualAudioCuePools(0xb);
   thunk_SelectAndScheduleRandomAudioCue();
-  AssignScoresDatPathToSharedString(&dataPath);
-  OpenBufferedStreamWithMode40();
-  if (arg4 == 0) {
-    piVar3 = &this->field130_0x94;
-    for (iVar2 = 10; iVar2 != 0; iVar2 = iVar2 + -1) {
-      *piVar3 = 0;
-      piVar3 = piVar3 + 1;
+  AssignScoresDatPathToSharedString(&param_2);
+  iVar1 = OpenBufferedStreamWithMode40(param_2,&DAT_00698720);
+  if (iVar1 == 0) {
+    puVar4 = (undefined4 *)(param_1 + 0x94);
+    for (iVar1 = 10; iVar1 != 0; iVar1 = iVar1 + -1) {
+      *puVar4 = 0;
+      puVar4 = puVar4 + 1;
     }
   }
   else {
-    arg1 = &this->field167_0xbc;
-    piVar3 = &this->field130_0x94;
-    iVar2 = 10;
+    iVar5 = param_1 + 0xbc;
+    puVar4 = (undefined4 *)(param_1 + 0x94);
+    iVar3 = 10;
     do {
-      uVar1 = ReadBufferedStreamLocked((int)piVar3,4,1,arg4);
-      if (uVar1 == 0) {
-        *piVar3 = 0;
+      iVar2 = ReadBufferedStreamLocked(puVar4,4,1,iVar1);
+      if (iVar2 == 0) {
+        *puVar4 = 0;
       }
       else {
-        ReadBufferedStreamLocked((int)arg1,0x20,1,arg4);
+        ReadBufferedStreamLocked(iVar5,0x20,1,iVar1);
       }
-      piVar3 = piVar3 + 1;
-      arg1 = arg1 + 0x20;
-      iVar2 = iVar2 + -1;
-    } while (iVar2 != 0);
-    CloseBufferedStreamAndReleaseResources(arg4);
+      puVar4 = puVar4 + 1;
+      iVar5 = iVar5 + 0x20;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+    CloseBufferedStreamAndReleaseResources(iVar1);
   }
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
@@ -87,88 +76,80 @@ THighScoresPicture::ConstructTHighScoresPictureBaseState(THighScoresPicture *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575460
 // GHIDRA_NAME THighScoresPicture::DestructTHighScoresPictureAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTHighScoresPictureAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] THighScoresPicture renderer for top rows: rank index, localized name line, and numeric value columns.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTHighScoresPictureAndMaybeFree()
 
-/* [ClassLane] THighScoresPicture renderer for top rows: rank index, localized name line, and
-   numeric value columns. */
-
-void __thiscall THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(THighScoresPicture *this)
+void __thiscall
+THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(int param_1,undefined4 param_2)
 
 {
-  THQButton *this_00;
-  THQButton *this_01;
-  THQButton *this_02;
-  int *piVar1;
-  int iVar2;
-  short originY;
-  int *unaff_FS_OFFSET;
-  short originY_00;
-  int local_20;
-  int local_1c;
-  undefined1 *local_18;
+  int iVar1;
+  int *piVar2;
+  int iVar3;
+  int iVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_20;
+  undefined4 local_1c;
+  int local_18;
   int local_14 [2];
-  int local_c;
+  undefined4 local_c;
   undefined1 *puStack_8;
-  void *local_4;
+  uint local_4;
   
-  local_4 = (void *)0xffffffff;
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_006367a8;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&local_c;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  *unaff_FS_OFFSET = &local_c;
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
   local_1c = 0;
   local_20 = 0;
   InitializeSharedStringRefFromEmpty();
-  iVar2 = 0;
-  local_4 = (void *)0x0;
+  iVar3 = 0;
+  local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  local_4 = (void *)CONCAT31(local_4._1_3_,1);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_1c);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b67,(int)&local_20);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  piVar1 = &this->field130_0x94;
-  local_18 = &this->field167_0xbc;
-  originY = 100;
+  local_4 = CONCAT31(local_4._1_3_,1);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_1c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b67,&local_20);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0x18,0x2b68);
+  piVar2 = (int *)(param_1 + 0x94);
+  local_18 = param_1 + 0xbc;
+  iVar4 = 100;
   do {
-    if (*piVar1 < 1) break;
-    iVar2 = iVar2 + 1;
-    FormatStringWithVarArgsToSharedRef();
-    AssignStringSharedFromCStr();
+    if (*piVar2 < 1) break;
+    iVar3 = iVar3 + 1;
+    FormatStringWithVarArgsToSharedRef(&param_2,&g_szDecimalFormat,iVar3);
+    AssignStringSharedFromCStr(&DAT_00698ab4);
     SetQuickDrawColorAndSyncGlobals(local_20);
-    originY_00 = originY + 1;
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x97,originY_00);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+    iVar1 = iVar4 + 1;
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x97,iVar1);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&param_2);
     SetQuickDrawColorAndSyncGlobals(local_1c);
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x96,originY);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0x00000004);
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)local_14);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x96,iVar4);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&param_2);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(local_18);
     local_4._0_1_ = 2;
-    AssignFromPtr(&stack0x00000004,local_14);
-    local_4 = (void *)CONCAT31(local_4._1_3_,1);
+    AssignFromPtr(&param_2,local_14);
+    local_4 = CONCAT31(local_4._1_3_,1);
     ReleaseSharedStringRefIfNotEmpty();
     SetQuickDrawColorAndSyncGlobals(local_20);
-    thunk_SetQuickDrawTextOriginWithContextOffset(0xbf,originY_00);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0xbf,iVar1);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&param_2);
     SetQuickDrawColorAndSyncGlobals(local_1c);
-    thunk_SetQuickDrawTextOriginWithContextOffset(0xbe,originY);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0x00000004);
-    FormatStringWithVarArgsToSharedRef();
+    thunk_SetQuickDrawTextOriginWithContextOffset(0xbe,iVar4);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&param_2);
+    FormatStringWithVarArgsToSharedRef(&param_2,&g_szDecimalFormat,*piVar2);
     SetQuickDrawColorAndSyncGlobals(local_20);
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x1af,originY_00);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x1af,iVar1);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&param_2);
     SetQuickDrawColorAndSyncGlobals(local_1c);
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x1ae,originY);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0x00000004);
-    originY = originY + 0x20;
-    piVar1 = piVar1 + 1;
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x1ae,iVar4);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&param_2);
+    iVar4 = iVar4 + 0x20;
+    piVar2 = piVar2 + 1;
     local_18 = local_18 + 0x20;
-  } while (iVar2 < 10);
-  local_4 = (void *)((uint)local_4 & 0xffffff00);
+  } while (iVar3 < 10);
+  local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  local_4 = (void *)0xffffffff;
+  local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_c;
   return;

@@ -3,187 +3,83 @@
 // Program: Imperialism.exe
 // Bucket: TPowerPlantOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403080
-// GHIDRA_NAME TPowerPlantOrder::thunk_GetTPowerPlantOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPowerPlantOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPowerPlantOrderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPowerPlantOrderClassNamePointer */
-
-void * __cdecl TPowerPlantOrder::thunk_GetTPowerPlantOrderClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPowerPlantOrderClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004035A8
-// GHIDRA_NAME TPowerPlantOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0 */
-
-void __thiscall
-TPowerPlantOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
-          (TPowerPlantOrder *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407162
-// GHIDRA_NAME TPowerPlantOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40 */
-
-void __thiscall
-TPowerPlantOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
-          (TPowerPlantOrder *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004087B0
-// GHIDRA_NAME TPowerPlantOrder::thunk_DestructTPowerPlantOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPowerPlantOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTPowerPlantOrderRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTPowerPlantOrderRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall
-TPowerPlantOrder::thunk_DestructTPowerPlantOrderAndMaybeFree(TPowerPlantOrder *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7A20
 // GHIDRA_NAME TPowerPlantOrder::GetTPowerPlantOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPowerPlantOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPowerPlantOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPowerPlantOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TPowerPlantOrder. */
-
-void * __cdecl TPowerPlantOrder::GetTPowerPlantOrderClassNamePointer(void)
+undefined ** TPowerPlantOrder::GetTPowerPlantOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTPowerPlantOrder;
+  return &PTR_s_TPowerPlantOrder_0064f3e0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7A60
 // GHIDRA_NAME TPowerPlantOrder::ConstructTPowerPlantOrderBaseState
-// GHIDRA_PROTO void __thiscall ConstructTPowerPlantOrderBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTPowerPlantOrderBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(TPowerPlantOrder *this)
+undefined4 __thiscall
+TPowerPlantOrder::ConstructTPowerPlantOrderBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTPowerPlantOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTPowerPlantOrderAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7A90
 // GHIDRA_NAME TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPowerPlantOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TPowerPlantOrder runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTPowerPlantOrderAndMaybeFree()
 
-/* Returns TPowerPlantOrder runtime class descriptor pointer. */
-
-void * __thiscall TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(TPowerPlantOrder *this)
+void __fastcall TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7CC0
 // GHIDRA_NAME TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0()
 
 void __thiscall
-TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0
-          (TPowerPlantOrder *this,void *pMessage)
+TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
-  (*pcVar1)(&this->field60_0x48,2);
-  (*pcVar1)(&this->field1_0x4,2);
-  (*pcVar1)(&this->field58_0x40,2);
-  (*pcVar1)(&this->field60_0x48,2);
-  (*pcVar1)(&this->field13_0x10,0x2e);
-  (*pcVar1)(&this->field59_0x44,4);
-  (*pcVar1)(&this->field61_0x4c,2);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  (*pcVar1)(param_1 + 0x48,2);
+  (*pcVar1)(param_1 + 4,2);
+  (*pcVar1)(param_1 + 0x40,2);
+  (*pcVar1)(param_1 + 0x48,2);
+  (*pcVar1)(param_1 + 0x10,0x2e);
+  (*pcVar1)(param_1 + 0x44,4);
+  (*pcVar1)(param_1 + 0x4c,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7D40
 // GHIDRA_NAME TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40()
 
 void __thiscall
-TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40
-          (TPowerPlantOrder *this,void *pMessage)
+TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x3c);
-  (*pcVar1)(&this->field60_0x48,2);
-  (*pcVar1)(&this->field1_0x4,2);
-  (*pcVar1)(&this->field58_0x40,2);
-  (*pcVar1)(&this->field60_0x48,2);
-  (*pcVar1)(&this->field13_0x10,0x2e);
-  (*pcVar1)(&this->field59_0x44,4);
-  (*pcVar1)(&this->field61_0x4c,2);
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x3c);
+  (*pcVar1)(param_1 + 0x48,2);
+  (*pcVar1)(param_1 + 4,2);
+  (*pcVar1)(param_1 + 0x40,2);
+  (*pcVar1)(param_1 + 0x48,2);
+  (*pcVar1)(param_1 + 0x10,0x2e);
+  (*pcVar1)(param_1 + 0x44,4);
+  (*pcVar1)(param_1 + 0x4c,2);
   return;
 }
 

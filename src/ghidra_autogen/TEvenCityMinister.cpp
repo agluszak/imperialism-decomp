@@ -3,95 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TEvenCityMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040129E
-// GHIDRA_NAME TEvenCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c6090_At0040129e
-// GHIDRA_PROTO void __fastcall thunk_ConfigureCityInteriorMinisterPriorityPreset_004c6090_At0040129e(TEvenCityMinister * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConfigureCityInteriorMinisterPriorityPreset_004c6090
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TEvenCityMinister": ignoring multiple overlapping fields */
-/* Single-JMP thunk to ConfigureCityInteriorMinisterPriorityPreset_004c6090 */
-
-void __fastcall
-TEvenCityMinister::thunk_ConfigureCityInteriorMinisterPriorityPreset_004c6090_At0040129e
-          (TEvenCityMinister *pThis)
-
-{
-  ConfigureCityInteriorMinisterPriorityPreset_004c6090(pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004012BC
-// GHIDRA_NAME TEvenCityMinister::thunk_GetTEvenCityMinisterClassNamePointer_At004012bc
-// GHIDRA_PROTO void * __cdecl thunk_GetTEvenCityMinisterClassNamePointer_At004012bc(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTEvenCityMinisterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTEvenCityMinisterClassNamePointer */
-
-void * __cdecl TEvenCityMinister::thunk_GetTEvenCityMinisterClassNamePointer_At004012bc(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTEvenCityMinisterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004026E9
-// GHIDRA_NAME TEvenCityMinister::thunk_ConstructTEvenCityMinisterBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTEvenCityMinisterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTEvenCityMinisterBaseState
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TEvenCityMinister": ignoring multiple overlapping fields */
-/* Single-JMP thunk to ConstructTEvenCityMinisterBaseState */
-
-void * __thiscall
-TEvenCityMinister::thunk_ConstructTEvenCityMinisterBaseState(TEvenCityMinister *this)
-
-{
-  TMinister::thunk_ConstructTMinister(&this->base);
-  (this->base).field390_0x18c = 0;
-  (this->base).field16_0x14 = 1;
-  (this->base).field17_0x16 = 1;
-  (this->base).pVtable = &g_vtblTEvenCityMinister;
-  (this->base).field9_0xc = 3;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004030D0
-// GHIDRA_NAME TEvenCityMinister::thunk_DestructTEvenCityMinisterAndMaybeFree_At004030d0
-// GHIDRA_PROTO void * __thiscall thunk_DestructTEvenCityMinisterAndMaybeFree_At004030d0(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTEvenCityMinisterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TEvenCityMinister": ignoring multiple overlapping fields */
-/* Single-JMP thunk to DestructTEvenCityMinisterAndMaybeFree */
-
-void * __thiscall
-TEvenCityMinister::thunk_DestructTEvenCityMinisterAndMaybeFree_At004030d0
-          (TEvenCityMinister *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTEvenCityMinisterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5F00
 // GHIDRA_NAME TEvenCityMinister::CreateTEvenCityMinisterInstance
-// GHIDRA_PROTO void * __cdecl CreateTEvenCityMinisterInstance(void)
+// GHIDRA_PROTO undefined CreateTEvenCityMinisterInstance()
 
-void * __cdecl TEvenCityMinister::CreateTEvenCityMinisterInstance(void)
+undefined4 * TEvenCityMinister::CreateTEvenCityMinisterInstance(void)
 
 {
-  TMinister *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -101,69 +20,60 @@ void * __cdecl TEvenCityMinister::CreateTEvenCityMinisterInstance(void)
   puStack_8 = &LAB_006314ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c4);
   local_4 = 0;
-  if (this != (TMinister *)0x0) {
-    TMinister::thunk_ConstructTMinister(this);
-    this->field390_0x18c = 0;
-    this->field16_0x14 = 1;
-    this->field17_0x16 = 1;
-    this->pVtable = &g_vtblTEvenCityMinister;
-    this->field9_0xc = 3;
+  if (puVar1 != (undefined4 *)0x0) {
+    TMinister::ConstructTMinister();
+    puVar1[99] = 0;
+    *(undefined2 *)(puVar1 + 5) = 1;
+    *(undefined2 *)((int)puVar1 + 0x16) = 1;
+    *puVar1 = &PTR_LAB_00650d30;
+    *(undefined2 *)(puVar1 + 3) = 3;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5FC0
 // GHIDRA_NAME TEvenCityMinister::GetTEvenCityMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTEvenCityMinisterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TEvenCityMinister.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTEvenCityMinisterClassNamePointer()
 
-/* Returns class descriptor pointer for TEvenCityMinister. */
-
-void * __cdecl TEvenCityMinister::GetTEvenCityMinisterClassNamePointer(void)
+undefined ** TEvenCityMinister::GetTEvenCityMinisterClassNamePointer(void)
 
 {
-  return &g_pClassDescTEvenCityMinister;
+  return &PTR_s_TEvenCityMinister_00650710;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5FE0
 // GHIDRA_NAME TEvenCityMinister::ConstructTEvenCityMinisterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTEvenCityMinisterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTEvenCityMinisterBaseState()
 
-/* WARNING: Struct "TEvenCityMinister": ignoring multiple overlapping fields */
-
-void * __thiscall TEvenCityMinister::ConstructTEvenCityMinisterBaseState(TEvenCityMinister *this)
+undefined4 * __fastcall TEvenCityMinister::ConstructTEvenCityMinisterBaseState(undefined4 *param_1)
 
 {
-  TMinister::thunk_ConstructTMinister(&this->base);
-  (this->base).field390_0x18c = 0;
-  (this->base).field16_0x14 = 1;
-  (this->base).field17_0x16 = 1;
-  (this->base).pVtable = &g_vtblTEvenCityMinister;
-  (this->base).field9_0xc = 3;
-  return this;
+  TMinister::ConstructTMinister();
+  param_1[99] = 0;
+  *(undefined2 *)(param_1 + 5) = 1;
+  *(undefined2 *)((int)param_1 + 0x16) = 1;
+  *param_1 = &PTR_LAB_00650d30;
+  *(undefined2 *)(param_1 + 3) = 3;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6020
 // GHIDRA_NAME TEvenCityMinister::DestructTEvenCityMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTEvenCityMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTEvenCityMinisterAndMaybeFree()
 
-/* WARNING: Struct "TEvenCityMinister": ignoring multiple overlapping fields */
-
-void * __thiscall
-TEvenCityMinister::DestructTEvenCityMinisterAndMaybeFree(TEvenCityMinister *this,byte freeSelfFlag)
+undefined4 __thiscall
+TEvenCityMinister::DestructTEvenCityMinisterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTEvenCityMinisterAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

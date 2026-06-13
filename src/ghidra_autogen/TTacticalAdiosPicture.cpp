@@ -3,72 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalAdiosPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402A5E
-// GHIDRA_NAME TTacticalAdiosPicture::thunk_scalar_deleting_destructor_00402A5E
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402A5E(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTacticalAdiosPicture::thunk_scalar_deleting_destructor_00402A5E
-          (TTacticalAdiosPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402B17
-// GHIDRA_NAME TTacticalAdiosPicture::thunk_GetTTacticalAdiosPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTacticalAdiosPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTacticalAdiosPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTacticalAdiosPictureClassNamePointer */
-
-void * __cdecl TTacticalAdiosPicture::thunk_GetTTacticalAdiosPictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTacticalAdiosPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404B47
-// GHIDRA_NAME TTacticalAdiosPicture::thunk_ConstructTTacticalAdiosPictureBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTacticalAdiosPictureBaseState(int labelSeed)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeTacticalAdiosPictureLocalizedLabels [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeTacticalAdiosPictureLocalizedLabels [FID:thunk_target_sync] */
-
-void __thiscall
-TTacticalAdiosPicture::thunk_ConstructTTacticalAdiosPictureBaseState
-          (TTacticalAdiosPicture *this,int labelSeed)
-
-{
-  ConstructTTacticalAdiosPictureBaseState(this,labelSeed);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD430
 // GHIDRA_NAME TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTTacticalAdiosPictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTacticalAdiosPicture; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTacticalAdiosPictureInstance()
 
-/* [ClassQuad] create inferred for TTacticalAdiosPicture; alloc factory pattern. */
-
-void * __cdecl TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance(void)
+undefined4 * TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -82,12 +21,12 @@ void * __cdecl TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance(void)
   puStack_8 = &LAB_0063885a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTTacticalAdiosPictureClassNamePointer_00645428;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00645428;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -96,31 +35,20 @@ void * __cdecl TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD4B0
 // GHIDRA_NAME TTacticalAdiosPicture::GetTTacticalAdiosPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTacticalAdiosPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTacticalAdiosPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTacticalAdiosPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TTacticalAdiosPicture. */
-
-void * __cdecl TTacticalAdiosPicture::GetTTacticalAdiosPictureClassNamePointer(void)
+undefined ** TTacticalAdiosPicture::GetTTacticalAdiosPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTTacticalAdiosPicture;
+  return &PTR_s_TTacticalAdiosPicture_0066a2f8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD4D0
 // GHIDRA_NAME TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTacticalAdiosPictureBaseState(int labelSeed)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes tactical-adios picture controls and localized label strings.
-// GHIDRA_COMMENT_END
-
-/* Initializes tactical-adios picture controls and localized label strings. */
+// GHIDRA_PROTO undefined ConstructTTacticalAdiosPictureBaseState()
 
 void __thiscall
-TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState
-          (TTacticalAdiosPicture *this,int labelSeed)
+TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState(int *param_1,undefined4 param_2)
 
 {
   code *pcVar1;
@@ -130,31 +58,74 @@ TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState
   undefined4 uStack_5c;
   undefined4 uStack_58;
   undefined4 uStack_54;
+  undefined1 *puStack_50;
+  undefined4 uStack_4c;
+  undefined4 uStack_48;
+  undefined1 *puStack_44;
+  undefined4 uStack_40;
+  undefined1 *puStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  undefined1 *puStack_30;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
   undefined1 auStack_10 [10];
   undefined1 local_6;
   undefined1 local_5;
   undefined1 local_4;
   undefined1 local_3;
   
-  thunk_NoOpUiLifecycleHook();
+  uStack_28 = param_2;
+  uStack_2c = 0x5ad4e3;
+  TView::thunk_NoOpUiLifecycleHook();
+  uStack_28 = 0x7469746c;
   local_6 = 0;
-  pcVar1 = *(code **)((int)this->pVtable + 0x94);
+  pcVar1 = *(code **)(*param_1 + 0x94);
   local_5 = 0;
   local_4 = 0;
   local_3 = 0;
+  uStack_2c = 0x5ad508;
   piVar3 = (int *)(*pcVar1)();
   iVar2 = *piVar3;
+  uStack_2c = 0x5ad511;
   (**(code **)(iVar2 + 0xc))();
-  thunk_InitializeUiTextStyleDescriptor((int)auStack_10,0,0xe,0x2b6b,1);
+  uStack_2c = 1;
+  puStack_30 = (undefined1 *)0x2b6b;
+  uStack_34 = 0xe;
+  puStack_3c = auStack_10;
+  uStack_38 = 0;
+  uStack_40 = 0x5ad526;
+  thunk_InitializeUiTextStyleDescriptor();
+  puStack_30 = auStack_10;
+  uStack_2c = 0;
+  uStack_34 = 0x5ad538;
   (**(code **)(iVar2 + 0x1b4))();
+  uStack_34 = 0;
+  uStack_38 = 1;
+  puStack_3c = (undefined1 *)0x5ad544;
   (**(code **)(iVar2 + 0x1c4))();
+  puStack_3c = (undefined1 *)0x6c6f6361;
+  uStack_40 = 0x5ad54d;
   piVar3 = (int *)(*pcVar1)();
   iVar2 = *piVar3;
+  uStack_40 = 0x5ad556;
   (**(code **)(iVar2 + 0xc))();
+  uStack_40 = 1;
+  puStack_44 = (undefined1 *)0x2b6b;
+  uStack_48 = 0xc;
+  puStack_50 = &stack0xffffffdc;
+  uStack_4c = 2;
   uStack_54 = 0x5ad56b;
-  thunk_InitializeUiTextStyleDescriptor((int)&stack0xffffffdc,2,0xc,0x2b6b,1);
+  thunk_InitializeUiTextStyleDescriptor();
+  puStack_44 = &stack0xffffffdc;
+  uStack_40 = 0;
+  uStack_48 = 0x5ad57d;
   (**(code **)(iVar2 + 0x1b4))();
+  uStack_48 = 0;
+  uStack_4c = 1;
+  puStack_50 = (undefined1 *)0x5ad589;
   (**(code **)(iVar2 + 0x1c4))();
+  puStack_50 = (undefined1 *)0x696e666f;
   uStack_54 = 0x5ad592;
   piVar3 = (int *)(*pcVar1)();
   iVar2 = *piVar3;
@@ -165,8 +136,8 @@ TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState
   uStack_5c = 0;
   (**(code **)(iVar2 + 0x1e0))();
   (**(code **)(iVar2 + 0x1c4))(1,0);
-  pcVar1 = *(code **)((int)this->pVtable + 0x58);
-  iVar2 = *(int *)g_pUiRuntimeContext;
+  pcVar1 = *(code **)(*param_1 + 0x58);
+  iVar2 = *g_pUiRuntimeContext;
   uVar4 = (*pcVar1)(&uStack_54);
   (**(code **)(iVar2 + 0x44))(uVar4);
   piVar3 = (int *)(*pcVar1)();

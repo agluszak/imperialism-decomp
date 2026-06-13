@@ -3,130 +3,47 @@
 // Program: Imperialism.exe
 // Bucket: TIndexAndRankList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004069F1
-// GHIDRA_NAME TIndexAndRankList::thunk_DestructTIndexAndRankList
-// GHIDRA_PROTO void __cdecl thunk_DestructTIndexAndRankList(TIndexAndRankList * pThis)
-
-void __cdecl TIndexAndRankList::thunk_DestructTIndexAndRankList(TIndexAndRankList *pThis)
-
-{
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &g_vtblTIndexAndRankList;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull();
-  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040830A
-// GHIDRA_NAME TIndexAndRankList::thunk_InitializeInterNationEventQueueManager
-// GHIDRA_PROTO void __thiscall thunk_InitializeInterNationEventQueueManager(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeInterNationEventQueueManager
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeInterNationEventQueueManager */
-
-void __thiscall
-TIndexAndRankList::thunk_InitializeInterNationEventQueueManager(TIndexAndRankList *this)
-
-{
-  TIndexAndRankList *pTVar1;
-  int iVar2;
-  int *piVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  puStack_8 = &LAB_006354f4;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  piVar3 = &this->fieldef4;
-  iVar2 = 7;
-  do {
-    uStack_4 = 0xffffffff;
-    pTVar1 = AllocateWithFallbackHandler();
-    uStack_4 = 0;
-    if (pTVar1 == (TIndexAndRankList *)0x0) {
-      pTVar1 = (TIndexAndRankList *)0x0;
-    }
-    else {
-      CPtrArray(pTVar1);
-      pTVar1->pVtable = &PTR_thunk_GetTPtrListClassNamePointer_00649068;
-    }
-    piVar3[-8] = (int)pTVar1;
-    *(undefined2 *)&pTVar1->field_0x14 = 0x24;
-    *piVar3 = 0;
-    piVar3 = piVar3 + 1;
-    iVar2 = iVar2 + -1;
-    uStack_4 = 0xffffffff;
-  } while (iVar2 != 0);
-  this->field08 = 0;
-  pTVar1 = AllocateWithFallbackHandler();
-  uStack_4 = 1;
-  if (pTVar1 == (TIndexAndRankList *)0x0) {
-    pTVar1 = (TIndexAndRankList *)0x0;
-  }
-  else {
-    CPtrArray(pTVar1);
-    pTVar1->pVtable = &PTR_thunk_GetTPtrListClassNamePointer_00649068;
-  }
-  this->pFieldef0 = pTVar1;
-  *(undefined2 *)&pTVar1->field_0x14 = 0x10;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00534850
 // GHIDRA_NAME TIndexAndRankList::GetTIndexAndRankListClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTIndexAndRankListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TIndexAndRankList.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTIndexAndRankListClassNamePointer()
 
-/* Returns class descriptor pointer for TIndexAndRankList. */
-
-void * __cdecl TIndexAndRankList::GetTIndexAndRankListClassNamePointer(void)
+undefined ** TIndexAndRankList::GetTIndexAndRankListClassNamePointer(void)
 
 {
-  return &g_pClassDescTIndexAndRankList;
+  return &PTR_s_TIndexAndRankList_00659b58;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534870
 // GHIDRA_NAME TIndexAndRankList::ConstructTIndexAndRankList
-// GHIDRA_PROTO void __thiscall ConstructTIndexAndRankList(void)
+// GHIDRA_PROTO undefined ConstructTIndexAndRankList()
 
-void __thiscall TIndexAndRankList::ConstructTIndexAndRankList(TIndexAndRankList *this)
+TIndexAndRankList * __fastcall
+TIndexAndRankList::ConstructTIndexAndRankList(TIndexAndRankList *param_1)
 
 {
-  CPtrArray(this);
-  this->pVtable = &PTR_thunk_GetTIndexAndRankListClassNamePointer_00659c58;
-  return;
+  CPtrArray(param_1);
+  *(undefined ***)param_1 = &PTR_LAB_00659c58;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005348D0
 // GHIDRA_NAME TIndexAndRankList::DestructTIndexAndRankList
-// GHIDRA_PROTO void __cdecl DestructTIndexAndRankList(TIndexAndRankList * pThis)
+// GHIDRA_PROTO undefined DestructTIndexAndRankList()
 
-void __cdecl TIndexAndRankList::DestructTIndexAndRankList(TIndexAndRankList *pThis)
+void TIndexAndRankList::DestructTIndexAndRankList(void)
 
 {
+  undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &g_vtblTIndexAndRankList;
+  *extraout_ECX = &_vftable_;
+  uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
@@ -134,20 +51,14 @@ void __cdecl TIndexAndRankList::DestructTIndexAndRankList(TIndexAndRankList *pTh
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055B710
 // GHIDRA_NAME TIndexAndRankList::InitializeInterNationEventQueueManager
-// GHIDRA_PROTO void __thiscall InitializeInterNationEventQueueManager(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT State-machine campaign: queue manager init links to dispatch table 0x00649068 (slot02 target path).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeInterNationEventQueueManager()
 
-/* State-machine campaign: queue manager init links to dispatch table 0x00649068 (slot02 target
-   path). */
-
-void __thiscall TIndexAndRankList::InitializeInterNationEventQueueManager(TIndexAndRankList *this)
+void __fastcall TIndexAndRankList::InitializeInterNationEventQueueManager(int param_1)
 
 {
   TIndexAndRankList *pTVar1;
   int iVar2;
-  int *piVar3;
+  undefined4 *puVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -156,76 +67,80 @@ void __thiscall TIndexAndRankList::InitializeInterNationEventQueueManager(TIndex
   puStack_8 = &LAB_006354f4;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  piVar3 = &this->fieldef4;
+  puVar3 = (undefined4 *)(param_1 + 0xef4);
   iVar2 = 7;
   do {
     local_4 = 0xffffffff;
-    pTVar1 = AllocateWithFallbackHandler();
+    pTVar1 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
     local_4 = 0;
     if (pTVar1 == (TIndexAndRankList *)0x0) {
       pTVar1 = (TIndexAndRankList *)0x0;
     }
     else {
       CPtrArray(pTVar1);
-      pTVar1->pVtable = &PTR_thunk_GetTPtrListClassNamePointer_00649068;
+      *(undefined ***)pTVar1 = &TSortedPtrList::_vftable_;
     }
-    piVar3[-8] = (int)pTVar1;
-    *(undefined2 *)&pTVar1->field_0x14 = 0x24;
-    *piVar3 = 0;
-    piVar3 = piVar3 + 1;
+    puVar3[-8] = pTVar1;
+    *(undefined2 *)(pTVar1 + 0x14) = 0x24;
+    *puVar3 = 0;
+    puVar3 = puVar3 + 1;
     iVar2 = iVar2 + -1;
     local_4 = 0xffffffff;
   } while (iVar2 != 0);
-  this->field08 = 0;
-  pTVar1 = AllocateWithFallbackHandler();
+  *(undefined4 *)(param_1 + 8) = 0;
+  pTVar1 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
   local_4 = 1;
   if (pTVar1 == (TIndexAndRankList *)0x0) {
     pTVar1 = (TIndexAndRankList *)0x0;
   }
   else {
     CPtrArray(pTVar1);
-    pTVar1->pVtable = &PTR_thunk_GetTPtrListClassNamePointer_00649068;
+    *(undefined ***)pTVar1 = &TSortedPtrList::_vftable_;
   }
-  this->pFieldef0 = pTVar1;
-  *(undefined2 *)&pTVar1->field_0x14 = 0x10;
+  *(TIndexAndRankList **)(param_1 + 0xef0) = pTVar1;
+  *(undefined2 *)(pTVar1 + 0x14) = 0x10;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601BAA
 // GHIDRA_NAME TIndexAndRankList::CPtrArray
-// GHIDRA_PROTO void __thiscall CPtrArray(void)
+// GHIDRA_PROTO undefined __thiscall CPtrArray(void)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructor naming normalization [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  public: __thiscall CObArray::CObArray(void)
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release, Visual Studio 2010 Release
 // GHIDRA_COMMENT_END
 
-/* Constructor naming normalization [FID:FID_single_match_phase1_nodebug] */
+/* Library Function - Single Match
+    public: __thiscall CObArray::CObArray(void)
+   
+   Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release, Visual Studio 2010 Release */
 
 void __thiscall TIndexAndRankList::CPtrArray(TIndexAndRankList *this)
 
 {
-  this->pVtable = &g_vtblTIndexAndRankList;
-  this->field04 = 0;
-  this->field10 = 0;
-  this->field0c = 0;
-  this->field08 = 0;
+  *(undefined ***)this = &_vftable_;
+  *(undefined4 *)(this + 4) = 0;
+  *(undefined4 *)(this + 0x10) = 0;
+  *(undefined4 *)(this + 0xc) = 0;
+  *(undefined4 *)(this + 8) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601BC1
-// GHIDRA_NAME TIndexAndRankList::DestructCObArrayAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructCObArrayAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TIndexAndRankList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall
-TIndexAndRankList::DestructCObArrayAndMaybeFree(TIndexAndRankList *this,byte freeSelfFlag)
+undefined4 __thiscall
+TIndexAndRankList::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
-  TIndexAndRankList *unaff_ESI;
-  
-  CObArray::DestructCObArray(unaff_ESI);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  CObArray::DestructCObArray();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

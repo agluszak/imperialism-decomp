@@ -3,146 +3,57 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalBattle.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402068
-// GHIDRA_NAME TTacticalBattle::LaDeploy
-// GHIDRA_PROTO void * __cdecl LaDeploy(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT macos_vtable_slot=0;class=TTacticalBattle;confidence=low;current=thunk_GetTTacticalBattleClassNamePointer_At00402068
-// GHIDRA_COMMENT_END
-
-/* macos_vtable_slot=0;class=TTacticalBattle;confidence=low;current=thunk_GetTTacticalBattleClassNamePointer_At00402068
-    */
-
-void * __cdecl TTacticalBattle::LaDeploy(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTacticalBattleClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403E36
-// GHIDRA_NAME TTacticalBattle::thunk_ConstructTTacticalBattleBaseState
-// GHIDRA_PROTO void __fastcall thunk_ConstructTTacticalBattleBaseState(TTacticalBattle * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTTacticalBattleBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTTacticalBattleBaseState */
-
-void __fastcall TTacticalBattle::thunk_ConstructTTacticalBattleBaseState(TTacticalBattle *pThis)
-
-{
-  *(undefined ***)pThis = &g_vtblTTacticalBattle;
-  pThis->field04 = 0;
-  pThis->field08 = 0;
-  pThis->field24 = 0;
-  pThis->field1c = 0;
-  pThis->field34 = 0;
-  pThis->field74 = 0;
-  pThis->field20 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004042B9
-// GHIDRA_NAME TTacticalBattle::thunk_CreateTTacticalBattleInstance_At004042b9
-// GHIDRA_PROTO void __thiscall thunk_CreateTTacticalBattleInstance_At004042b9(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateTTacticalBattleInstance
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateTTacticalBattleInstance */
-
-void __thiscall
-TTacticalBattle::thunk_CreateTTacticalBattleInstance_At004042b9(TTacticalBattle *this)
-
-{
-  CreateTTacticalBattleInstance(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004068B6
-// GHIDRA_NAME TTacticalBattle::thunk_DestructTTacticalBattleAndMaybeFree_At004068b6
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTacticalBattleAndMaybeFree_At004068b6(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTacticalBattleAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTacticalBattleAndMaybeFree */
-
-void * __thiscall
-TTacticalBattle::thunk_DestructTTacticalBattleAndMaybeFree_At004068b6
-          (TTacticalBattle *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTacticalBattleAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F730
 // GHIDRA_NAME TTacticalBattle::CreateTTacticalBattleInstance
-// GHIDRA_PROTO void __thiscall CreateTTacticalBattleInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sets tactical battle ready/active flag.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTacticalBattleInstance()
 
-/* Sets tactical battle ready/active flag. */
-
-void __thiscall TTacticalBattle::CreateTTacticalBattleInstance(TTacticalBattle *this)
+void __fastcall TTacticalBattle::CreateTTacticalBattleInstance(int param_1)
 
 {
-  this->field44 = 1;
+  *(undefined4 *)(param_1 + 0x44) = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F750
 // GHIDRA_NAME TTacticalBattle::GetTTacticalBattleClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTacticalBattleClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTacticalBattle.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTacticalBattleClassNamePointer()
 
-/* Returns class descriptor pointer for TTacticalBattle. */
-
-void * __cdecl TTacticalBattle::GetTTacticalBattleClassNamePointer(void)
+undefined ** TTacticalBattle::GetTTacticalBattleClassNamePointer(void)
 
 {
-  return &g_pClassDescTTacticalBattle;
+  return &PTR_s_TTacticalBattle_00669e00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F770
 // GHIDRA_NAME TTacticalBattle::ConstructTTacticalBattleBaseState
-// GHIDRA_PROTO void __fastcall ConstructTTacticalBattleBaseState(TTacticalBattle * pThis)
+// GHIDRA_PROTO undefined ConstructTTacticalBattleBaseState()
 
-void __fastcall TTacticalBattle::ConstructTTacticalBattleBaseState(TTacticalBattle *pThis)
+void __fastcall TTacticalBattle::ConstructTTacticalBattleBaseState(undefined4 *param_1)
 
 {
-  *(undefined ***)pThis = &g_vtblTTacticalBattle;
-  pThis->field04 = 0;
-  pThis->field08 = 0;
-  pThis->field24 = 0;
-  pThis->field1c = 0;
-  pThis->field34 = 0;
-  pThis->field74 = 0;
-  pThis->field20 = 0;
+  *param_1 = &PTR_LAB_0066a088;
+  param_1[1] = 0;
+  param_1[2] = 0;
+  param_1[9] = 0;
+  param_1[7] = 0;
+  param_1[0xd] = 0;
+  param_1[0x1d] = 0;
+  param_1[8] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F7A0
 // GHIDRA_NAME TTacticalBattle::DestructTTacticalBattleAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTacticalBattleAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTacticalBattleAndMaybeFree()
 
-void * __thiscall
-TTacticalBattle::DestructTTacticalBattleAndMaybeFree(TTacticalBattle *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTacticalBattle::DestructTTacticalBattleAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTTacticalBattleAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

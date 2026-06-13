@@ -3,123 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TTradePanelView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402900
-// GHIDRA_NAME TTradePanelView::thunk_scalar_deleting_destructor_00402900
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402900(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTradePanelView::thunk_scalar_deleting_destructor_00402900(TTradePanelView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403279
-// GHIDRA_NAME TTradePanelView::thunk_DestructTTradePanelViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTTradePanelViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to RenderTradePanelViewHeaderAndOptionRows [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk to RenderTradePanelViewHeaderAndOptionRows [FID:thunk_target_sync] */
-
-void __thiscall TTradePanelView::thunk_DestructTTradePanelViewAndMaybeFree(TTradePanelView *this)
-
-{
-  DestructTTradePanelViewAndMaybeFree(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004046C9
-// GHIDRA_NAME TTradePanelView::thunk_BuildDiplomacyTradePolicyRowsFromTraTagBase
-// GHIDRA_PROTO void __thiscall thunk_BuildDiplomacyTradePolicyRowsFromTraTagBase(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BuildDiplomacyTradePolicyRowsFromTraTagBase
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BuildDiplomacyTradePolicyRowsFromTraTagBase */
-
-void __thiscall
-TTradePanelView::thunk_BuildDiplomacyTradePolicyRowsFromTraTagBase(TTradePanelView *this)
-
-{
-  TToolBarCluster::BuildDiplomacyTradePolicyRowsFromTraTagBase((TToolBarCluster *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004052A9
-// GHIDRA_NAME TTradePanelView::thunk_GetTTradePanelViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradePanelViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradePanelViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradePanelViewClassNamePointer */
-
-void * __cdecl TTradePanelView::thunk_GetTTradePanelViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradePanelViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405ADD
-// GHIDRA_NAME TTradePanelView::thunk_HandleDiplomacyTradePolicyTagSelection
-// GHIDRA_PROTO void __thiscall thunk_HandleDiplomacyTradePolicyTagSelection(int commandId, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleDiplomacyTradePolicyTagSelection
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleDiplomacyTradePolicyTagSelection */
-
-void __thiscall
-TTradePanelView::thunk_HandleDiplomacyTradePolicyTagSelection
-          (TTradePanelView *this,int commandId,PanelEventPayload *pPanelEvent)
-
-{
-  HandleDiplomacyTradePolicyTagSelection(this,commandId,pPanelEvent);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040752C
-// GHIDRA_NAME TTradePanelView::thunk_EnterDiplomacyTradePolicySelectionMode
-// GHIDRA_PROTO void __thiscall thunk_EnterDiplomacyTradePolicySelectionMode(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to EnterDiplomacyTradePolicySelectionMode
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to EnterDiplomacyTradePolicySelectionMode */
-
-void __thiscall TTradePanelView::thunk_EnterDiplomacyTradePolicySelectionMode(TTradePanelView *this)
-
-{
-  TToolBarCluster::EnterDiplomacyTradePolicySelectionMode((TToolBarCluster *)this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F86D0
 // GHIDRA_NAME TTradePanelView::CreateTTradePanelViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradePanelViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTradePanelView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTradePanelViewInstance()
 
-/* [ClassQuad] create inferred for TTradePanelView; alloc factory pattern. */
-
-void * __cdecl TTradePanelView::CreateTTradePanelViewInstance(void)
+undefined4 * TTradePanelView::CreateTTradePanelViewInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -129,60 +20,49 @@ void * __cdecl TTradePanelView::CreateTTradePanelViewInstance(void)
   puStack_8 = &LAB_00632e0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this[1].pVtable = (void *)0x0;
-    this->pVtable = &PTR_thunk_GetTTradePanelViewClassNamePointer_0063fc68;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    puVar1[0x18] = 0;
+    *puVar1 = &PTR_LAB_0063fc68;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8760
 // GHIDRA_NAME TTradePanelView::GetTTradePanelViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradePanelViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradePanelView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradePanelViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTradePanelView. */
-
-void * __cdecl TTradePanelView::GetTTradePanelViewClassNamePointer(void)
+undefined ** TTradePanelView::GetTTradePanelViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradePanelView;
+  return &PTR_s_TTradePanelView_00654fa8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8940
 // GHIDRA_NAME TTradePanelView::DestructTTradePanelViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTTradePanelViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] Renders trade-panel header and option rows with localized text, measured alignment, and themed color/shadow styling.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTradePanelViewAndMaybeFree()
 
-/* [ClassLane] Renders trade-panel header and option rows with localized text, measured alignment,
-   and themed color/shadow styling. */
-
-void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanelView *this)
+void __fastcall TTradePanelView::DestructTTradePanelViewAndMaybeFree(int param_1)
 
 {
   short sVar1;
-  short extraout_AX;
-  THQButton *this_00;
-  THQButton *this_01;
-  THQButton *this_02;
-  int unaff_EBX;
-  int unaff_EBP;
+  undefined4 unaff_EBX;
   int iVar2;
-  short sVar3;
-  short sVar4;
+  int iVar3;
+  undefined1 *puVar4;
   undefined4 unaff_EDI;
   undefined1 *puVar5;
+  undefined1 *puVar6;
   undefined4 *unaff_FS_OFFSET;
+  undefined1 *puStack_6c;
+  undefined4 uStack_68;
+  undefined4 uStack_64;
+  undefined1 **ppuStack_60;
   int local_4c;
   undefined1 *local_48;
   undefined1 local_44;
@@ -192,7 +72,10 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
   short asStack_40 [2];
   undefined1 *local_3c;
   short local_34 [10];
-  short local_20 [8];
+  short local_20 [4];
+  undefined4 local_18;
+  undefined2 local_14;
+  undefined2 local_12;
   uint local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -202,16 +85,21 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
   puStack_8 = &LAB_00632e50;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
+  ppuStack_60 = (undefined1 **)0x4f8967;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
+  ppuStack_60 = (undefined1 **)0x4f8978;
   InitializeSharedStringRefFromEmpty();
-  sVar4 = this->field33_0x28;
-  puVar5 = (undefined1 *)CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar4);
-  sVar1 = this->field30_0x24;
+  puVar5 = (undefined1 *)CONCAT22((short)((uint)unaff_EDI >> 0x10),*(undefined2 *)(param_1 + 0x28));
+  sVar1 = *(short *)(param_1 + 0x24);
+  iVar2 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
+  ppuStack_60 = (undefined1 **)0x2b68;
   local_34[1] = 0x184;
   local_34[3] = 0x184;
   local_34[5] = 0x184;
-  local_4._0_1_ = 1;
+  uStack_64 = 0xe;
+  uStack_68 = 0;
+  local_4 = CONCAT31(local_4._1_3_,1);
   local_44 = 0;
   local_43 = 0;
   local_42 = 0;
@@ -221,10 +109,9 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
   local_20[1] = 0x83;
   local_20[2] = 0xb6;
   local_20[3] = 0xea;
-  local_20[4] = 0x11d;
-  local_20[5] = 0x14c;
-  local_20[6] = 0xd5;
-  local_20[7] = 0x1b5;
+  local_18 = 0x14c011d;
+  local_14 = 0xd5;
+  local_12 = 0x1b5;
   local_10 = CONCAT22(local_10._2_2_,0x212);
   local_34[0] = 0x1b7;
   local_34[2] = 0x1b7;
@@ -232,98 +119,127 @@ void __thiscall TTradePanelView::DestructTTradePanelViewAndMaybeFree(TTradePanel
   local_34[6] = 0x1ce;
   local_34[7] = 0x1ce;
   local_34[8] = 0x1ce;
+  puStack_6c = (undefined1 *)0x4f8a3a;
   local_3c = puVar5;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,(int)&local_44);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_48);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  sVar4 = -sVar4;
-  SetQuickDrawColorAndSyncGlobals(unaff_EBP);
-  thunk_SetQuickDrawTextOriginWithContextOffset(-sVar1 + 0x49,sVar4 + 0x170);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa8);
-  SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-  thunk_SetQuickDrawTextOriginWithContextOffset(-sVar1 + 0x48,sVar4 + 0x16f);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  iVar2 = 0;
+  ppuStack_60 = (undefined1 **)&local_44;
+  uStack_64 = 0x2b6b;
+  uStack_68 = 0x4f8a4c;
+  thunk_MapUiThemeCodeToStyleFlags();
+  ppuStack_60 = &local_48;
+  uStack_64 = 0x2b68;
+  uStack_68 = 0x4f8a5e;
+  thunk_MapUiThemeCodeToStyleFlags();
+  ppuStack_60 = (undefined1 **)&local_4c;
+  uStack_64 = 0x2a;
+  uStack_68 = 0x2733;
+  puStack_6c = (undefined1 *)0x4f8a7b;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  puVar4 = (undefined1 *)(-(int)puVar5 + 0x16f);
+  iVar3 = -iVar2;
+  SetQuickDrawColorAndSyncGlobals();
+  puStack_6c = (undefined1 *)(-(int)puVar5 + 0x170);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x49);
+  puStack_6c = &stack0xffffffa8;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawColorAndSyncGlobals();
+  puStack_6c = puVar4;
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x48);
+  puStack_6c = &stack0xffffffa8;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  puStack_6c = (undefined1 *)0x2b68;
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
+  iVar3 = 0;
   do {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,iVar2 + 0x2b);
-    sVar3 = asStack_40[iVar2] - (short)puVar5;
-    sVar4 = local_34[iVar2 + 4];
-    SetQuickDrawColorAndSyncGlobals(unaff_EBP);
-    thunk_SetQuickDrawTextOriginWithContextOffset((sVar4 - sVar1) + 1,sVar3 + 1);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa8);
-    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(sVar4 - sVar1,sVar3);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
-    iVar2 = iVar2 + 1;
+    puStack_6c = &stack0xffffffa8;
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,iVar3 + 0x2b);
+    puVar4 = (undefined1 *)CONCAT22((short)((uint)puVar4 >> 0x10),asStack_40[iVar3] - (short)puVar5)
+    ;
+    puVar6 = (undefined1 *)CONCAT22((short)((uint)puVar5 >> 0x10),local_34[iVar3 + 4] - sVar1);
+    SetQuickDrawColorAndSyncGlobals();
+    puStack_6c = puVar4 + 1;
+    thunk_SetQuickDrawTextOriginWithContextOffset(puVar6 + 1);
+    puStack_6c = &stack0xffffffa8;
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    SetQuickDrawColorAndSyncGlobals();
+    puStack_6c = puVar4;
+    thunk_SetQuickDrawTextOriginWithContextOffset(puVar6);
+    puStack_6c = &stack0xffffffa8;
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    iVar3 = iVar3 + 1;
     puVar5 = local_48;
-  } while (iVar2 < 6);
+  } while (iVar3 < 6);
   local_4c = 6;
-  iVar2 = 0;
+  iVar3 = 0;
   do {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,local_4c + 0x2b);
-    sVar3 = *(short *)((int)local_34 + iVar2) - (short)local_48;
-    thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    sVar4 = (*(short *)((int)local_20 + iVar2) - extraout_AX / 2) - sVar1;
-    SetQuickDrawColorAndSyncGlobals(unaff_EBP);
-    thunk_SetQuickDrawTextOriginWithContextOffset(sVar4 + 1,sVar3 + 1);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
-    SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-    thunk_SetQuickDrawTextOriginWithContextOffset(sVar4,sVar3);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa8);
-    iVar2 = iVar2 + 2;
+    puStack_6c = &stack0xffffffa8;
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,local_4c + 0x2b);
+    puStack_6c = &stack0xffffffa8;
+    puVar6 = (undefined1 *)
+             CONCAT22((short)((uint)puVar6 >> 0x10),
+                      *(short *)((int)local_34 + iVar3) - (short)local_48);
+    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+    puVar4 = (undefined1 *)
+             (CONCAT22((short)((uint)puVar4 >> 0x10),*(short *)((int)local_20 + iVar3) - sVar1 / 2)
+             - iVar2);
+    SetQuickDrawColorAndSyncGlobals();
+    puStack_6c = puVar6 + 1;
+    thunk_SetQuickDrawTextOriginWithContextOffset(puVar4 + 1);
+    puStack_6c = &stack0xffffffa8;
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    SetQuickDrawColorAndSyncGlobals();
+    puStack_6c = puVar6;
+    thunk_SetQuickDrawTextOriginWithContextOffset(puVar4);
+    puStack_6c = &stack0xffffffa8;
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    iVar3 = iVar3 + 2;
     local_4c = local_4c + 1;
-  } while (iVar2 < 6);
-  local_48 = &stack0xffffff94;
-  SetQuickDrawFillColor(0);
+  } while (iVar3 < 6);
+  local_48 = (undefined1 *)&puStack_6c;
+  puStack_6c = (undefined1 *)0x0;
+  SetQuickDrawFillColor();
   local_10 = local_10 & 0xffffff00;
+  puStack_6c = (undefined1 *)0x4f8c4d;
   ReleaseSharedStringRefIfNotEmpty();
   local_10 = 0xffffffff;
+  puStack_6c = (undefined1 *)0x4f8c5e;
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = local_20._8_4_;
+  *unaff_FS_OFFSET = local_18;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F8DD0
 // GHIDRA_NAME TTradePanelView::HandleDiplomacyTradePolicyTagSelection
-// GHIDRA_PROTO void __thiscall HandleDiplomacyTradePolicyTagSelection(int commandId, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Selects trade-policy action and amount index from policy tag command.\nWrites this+0xC0 = selected policy index.\nAction mapping by selected value: 300 -> action 11, <96 -> action 9, else -> action 10; tag "link" -> action 12.
-// GHIDRA_COMMENT_END
-
-/* Selects trade-policy action and amount index from policy tag command.\nWrites this+0xC0 =
-   selected policy index.\nAction mapping by selected value: 300 -> action 11, <96 -> action 9, else
-   -> action 10; tag "link" -> action 12. */
+// GHIDRA_PROTO undefined HandleDiplomacyTradePolicyTagSelection()
 
 void __thiscall
 TTradePanelView::HandleDiplomacyTradePolicyTagSelection
-          (TTradePanelView *this,int commandId,PanelEventPayload *pPanelEvent)
+          (int param_1,int param_2,int param_3,undefined4 param_4)
 
 {
   int iVar1;
   
-  if (commandId == 0xc) {
-    if (pPanelEvent->controlTag1c != 0x6c696e6b) {
-      iVar1 = pPanelEvent->controlTag1c + 0x8b8d9e9f;
-      *(short *)((int)this->field60 + 0xc0) = (short)iVar1;
-      if ((&g_awDiplomacyTradePolicyIconValueTable)[iVar1] == 300) {
-        *(undefined4 *)((int)this->field60 + 0xbc) = 0xb;
-        TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+  if (param_2 == 0xc) {
+    if (*(int *)(param_3 + 0x1c) != 0x6c696e6b) {
+      iVar1 = *(int *)(param_3 + 0x1c) + -0x74726161;
+      *(short *)(*(int *)(param_1 + 0x60) + 0xc0) = (short)iVar1;
+      if ((&DAT_00696950)[iVar1] == 300) {
+        *(undefined4 *)(*(int *)(param_1 + 0x60) + 0xbc) = 0xb;
+        thunk_ForwardEngineerDialogCommandToChildSlot40(0xc,param_3,param_4);
         return;
       }
-      if ((short)(&g_awDiplomacyTradePolicyIconValueTable)[iVar1] < 0x60) {
-        *(undefined4 *)((int)this->field60 + 0xbc) = 9;
-        TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+      if ((short)(&DAT_00696950)[iVar1] < 0x60) {
+        *(undefined4 *)(*(int *)(param_1 + 0x60) + 0xbc) = 9;
+        thunk_ForwardEngineerDialogCommandToChildSlot40(0xc,param_3,param_4);
         return;
       }
-      *(undefined4 *)((int)this->field60 + 0xbc) = 10;
-      TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+      *(undefined4 *)(*(int *)(param_1 + 0x60) + 0xbc) = 10;
+      thunk_ForwardEngineerDialogCommandToChildSlot40(0xc,param_3,param_4);
       return;
     }
-    *(undefined4 *)((int)this->field60 + 0xbc) = 0xc;
+    *(undefined4 *)(*(int *)(param_1 + 0x60) + 0xbc) = 0xc;
   }
-  TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+  thunk_ForwardEngineerDialogCommandToChildSlot40(param_2,param_3,param_4);
   return;
 }
 

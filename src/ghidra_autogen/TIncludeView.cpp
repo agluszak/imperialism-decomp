@@ -3,89 +3,28 @@
 // Program: Imperialism.exe
 // Bucket: TIncludeView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404593
-// GHIDRA_NAME TIncludeView::thunk_DispatchTurnEventPacketThroughDialogFactory_At00404593
-// GHIDRA_PROTO void __fastcall thunk_DispatchTurnEventPacketThroughDialogFactory_At00404593(STurnEventFactoryPacket * pEventPacket)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DispatchTurnEventPacketThroughDialogFactory
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DispatchTurnEventPacketThroughDialogFactory */
-
-void __fastcall
-TIncludeView::thunk_DispatchTurnEventPacketThroughDialogFactory_At00404593
-          (STurnEventFactoryPacket *pEventPacket)
-
-{
-  DispatchTurnEventPacketThroughDialogFactory(pEventPacket);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407A04
-// GHIDRA_NAME TIncludeView::thunk_GetTIncludeViewClassNamePointer_At00407a04
-// GHIDRA_PROTO void * __cdecl thunk_GetTIncludeViewClassNamePointer_At00407a04(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTIncludeViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTIncludeViewClassNamePointer */
-
-void * __cdecl TIncludeView::thunk_GetTIncludeViewClassNamePointer_At00407a04(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTIncludeViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409570
-// GHIDRA_NAME TIncludeView::thunk_DestructTIncludeViewAndMaybeFree_At00409570
-// GHIDRA_PROTO void * __thiscall thunk_DestructTIncludeViewAndMaybeFree_At00409570(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTIncludeViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTIncludeViewAndMaybeFree */
-
-void * __thiscall
-TIncludeView::thunk_DestructTIncludeViewAndMaybeFree_At00409570
-          (TIncludeView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTIncludeViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CD50
 // GHIDRA_NAME TIncludeView::GetTIncludeViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTIncludeViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TIncludeView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTIncludeViewClassNamePointer()
 
-/* Returns class descriptor pointer for TIncludeView. */
-
-void * __cdecl TIncludeView::GetTIncludeViewClassNamePointer(void)
+undefined ** TIncludeView::GetTIncludeViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTIncludeView;
+  return &PTR_s_TIncludeView_006495d0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CE40
 // GHIDRA_NAME TIncludeView::DestructTIncludeViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTIncludeViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTIncludeViewAndMaybeFree()
 
-void * __thiscall
-TIncludeView::DestructTIncludeViewAndMaybeFree(TIncludeView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TIncludeView::DestructTIncludeViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTIncludeViewAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

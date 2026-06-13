@@ -3,97 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TFoodProcessingOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405B32
-// GHIDRA_NAME TFoodProcessingOrder::thunk_DestructTFoodProcessingOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTFoodProcessingOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTFoodProcessingOrderRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTFoodProcessingOrderRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall
-TFoodProcessingOrder::thunk_DestructTFoodProcessingOrderAndMaybeFree(TFoodProcessingOrder *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040644C
-// GHIDRA_NAME TFoodProcessingOrder::thunk_GetTFoodProcessingOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTFoodProcessingOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTFoodProcessingOrderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTFoodProcessingOrderClassNamePointer */
-
-void * __cdecl TFoodProcessingOrder::thunk_GetTFoodProcessingOrderClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTFoodProcessingOrderClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7DF0
 // GHIDRA_NAME TFoodProcessingOrder::GetTFoodProcessingOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTFoodProcessingOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TFoodProcessingOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTFoodProcessingOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TFoodProcessingOrder. */
-
-void * __cdecl TFoodProcessingOrder::GetTFoodProcessingOrderClassNamePointer(void)
+undefined ** TFoodProcessingOrder::GetTFoodProcessingOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTFoodProcessingOrder;
+  return &PTR_s_TFoodProcessingOrder_0064f3f8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E30
 // GHIDRA_NAME TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState
-// GHIDRA_PROTO void __thiscall ConstructTFoodProcessingOrderBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTFoodProcessingOrderBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall
-TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState(TFoodProcessingOrder *this)
+undefined4 __thiscall
+TFoodProcessingOrder::ConstructTFoodProcessingOrderBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTFoodProcessingOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTFoodProcessingOrderAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7E60
 // GHIDRA_NAME TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTFoodProcessingOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TFoodProcessingOrder runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTFoodProcessingOrderAndMaybeFree()
 
-/* Returns TFoodProcessingOrder runtime class descriptor pointer. */
-
-void * __thiscall
-TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(TFoodProcessingOrder *this)
+void __fastcall TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

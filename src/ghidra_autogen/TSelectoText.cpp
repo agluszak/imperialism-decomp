@@ -3,70 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TSelectoText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402662
-// GHIDRA_NAME TSelectoText::thunk_CreateTSelectoTextInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTSelectoTextInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* [FID:thunk_target_sync] */
-
-void __thiscall TSelectoText::thunk_CreateTSelectoTextInstance(TSelectoText *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  puStack_8 = &LAB_0062f0ab;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblTStaticText;
-  uStack_4 = 0;
-  if (this->field126_0x84 != (void *)0x0) {
-    ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull();
-  }
-  this->pVtable = &g_vtblTView;
-  uStack_4 = 2;
-  if (this->field65_0x44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field65_0x44 + 4))(1);
-  }
-  FreeHeapBufferIfNotNull();
-  uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406A5F
-// GHIDRA_NAME TSelectoText::thunk_GetTSelectoTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTSelectoTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSelectoTextClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSelectoTextClassNamePointer */
-
-void * __cdecl TSelectoText::thunk_GetTSelectoTextClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSelectoTextClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B720
 // GHIDRA_NAME TSelectoText::CreateTSelectoTextInstance
-// GHIDRA_PROTO void __thiscall CreateTSelectoTextInstance(void)
+// GHIDRA_PROTO undefined CreateTSelectoTextInstance()
 
-void __thiscall TSelectoText::CreateTSelectoTextInstance(TSelectoText *this)
+void __fastcall TSelectoText::CreateTSelectoTextInstance(undefined4 *param_1)
 
 {
+  int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -75,37 +19,33 @@ void __thiscall TSelectoText::CreateTSelectoTextInstance(TSelectoText *this)
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblTStaticText;
+  *param_1 = &TStaticText::_vftable_;
+  iVar1 = param_1[0x21];
   uStack_4 = 0;
-  if (this->field126_0x84 != (void *)0x0) {
+  if (iVar1 != 0) {
     ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull();
+    FreeHeapBufferIfNotNull(iVar1);
   }
-  this->pVtable = &g_vtblTView;
+  *param_1 = &TView::_vftable_;
   uStack_4 = 2;
-  if (this->field65_0x44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field65_0x44 + 4))(1);
+  if ((int *)param_1[0x11] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0x11] + 4))(1);
   }
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(param_1[0x12]);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B740
 // GHIDRA_NAME TSelectoText::GetTSelectoTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSelectoTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSelectoText.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSelectoTextClassNamePointer()
 
-/* Returns class descriptor pointer for TSelectoText. */
-
-void * __cdecl TSelectoText::GetTSelectoTextClassNamePointer(void)
+undefined ** TSelectoText::GetTSelectoTextClassNamePointer(void)
 
 {
-  return &g_pClassDescTSelectoText;
+  return &PTR_s_TSelectoText_00661a88;
 }
 

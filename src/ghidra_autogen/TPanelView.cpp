@@ -3,73 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TPanelView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004063B6
-// GHIDRA_NAME TPanelView::thunk_GetTPanelViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPanelViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPanelViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPanelViewClassNamePointer */
-
-void * __cdecl TPanelView::thunk_GetTPanelViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPanelViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406F0F
-// GHIDRA_NAME TPanelView::thunk_scalar_deleting_destructor_00406F0F
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00406F0F(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TPanelView::thunk_scalar_deleting_destructor_00406F0F(TPanelView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F79C0
 // GHIDRA_NAME TPanelView::GetTPanelViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPanelViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPanelView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPanelViewClassNamePointer()
 
-/* Returns class descriptor pointer for TPanelView. */
-
-void * __cdecl TPanelView::GetTPanelViewClassNamePointer(void)
+undefined ** TPanelView::GetTPanelViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTPanelView;
+  return &PTR_s_TPanelView_00654f60;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F79E0
 // GHIDRA_NAME TPanelView::ConstructTPanelViewBaseState
-// GHIDRA_PROTO void __thiscall ConstructTPanelViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=9, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTPanelViewBaseState()
 
-/* [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=9, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TPanelView::ConstructTPanelViewBaseState(TPanelView *this)
+void __thiscall TPanelView::ConstructTPanelViewBaseState(int param_1,undefined4 param_2)
 
 {
-  thunk_NoOpUiLifecycleHook();
-  this->field90_0x60 = this->field29_0x20;
+  TView::thunk_NoOpUiLifecycleHook(param_2);
+  *(undefined4 *)(param_1 + 0x60) = *(undefined4 *)(param_1 + 0x20);
   return;
 }
 

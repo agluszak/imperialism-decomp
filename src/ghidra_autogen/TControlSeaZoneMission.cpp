@@ -3,173 +3,29 @@
 // Program: Imperialism.exe
 // Bucket: TControlSeaZoneMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004011C2
-// GHIDRA_NAME TControlSeaZoneMission::thunk_PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-// GHIDRA_PROTO void __thiscall thunk_PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure */
-
-void __thiscall
-TControlSeaZoneMission::thunk_PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-          (TControlSeaZoneMission *this)
-
-{
-  PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401CFD
-// GHIDRA_NAME TControlSeaZoneMission::thunk_ReturnFalseForControlSeaZoneMissionCapabilityFlagB_At00401cfd
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForControlSeaZoneMissionCapabilityFlagB_At00401cfd(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForControlSeaZoneMissionCapabilityFlagB
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForControlSeaZoneMissionCapabilityFlagB */
-
-bool TControlSeaZoneMission::thunk_ReturnFalseForControlSeaZoneMissionCapabilityFlagB_At00401cfd
-               (void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForControlSeaZoneMissionCapabilityFlagB();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004027BB
-// GHIDRA_NAME TControlSeaZoneMission::thunk_ResolveAndQueuePortZoneMapOrder_At004027bb
-// GHIDRA_PROTO void __cdecl thunk_ResolveAndQueuePortZoneMapOrder_At004027bb(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ResolveAndQueuePortZoneMapOrder
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ResolveAndQueuePortZoneMapOrder */
-
-void __cdecl TControlSeaZoneMission::thunk_ResolveAndQueuePortZoneMapOrder_At004027bb(int arg1)
-
-{
-  ResolveAndQueuePortZoneMapOrder(arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402E2D
-// GHIDRA_NAME TControlSeaZoneMission::thunk_GetTControlSeaZoneMissionClassNamePointer_At00402e2d
-// GHIDRA_PROTO void * __cdecl thunk_GetTControlSeaZoneMissionClassNamePointer_At00402e2d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTControlSeaZoneMissionClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTControlSeaZoneMissionClassNamePointer */
-
-void * __cdecl
-TControlSeaZoneMission::thunk_GetTControlSeaZoneMissionClassNamePointer_At00402e2d(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTControlSeaZoneMissionClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004030A3
-// GHIDRA_NAME TControlSeaZoneMission::thunk_DestroyTControlSeaZoneMission_At004030a3
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTControlSeaZoneMission_At004030a3(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTControlSeaZoneMission
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTControlSeaZoneMission */
-
-void * __thiscall
-TControlSeaZoneMission::thunk_DestroyTControlSeaZoneMission_At004030a3(TControlSeaZoneMission *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestroyTControlSeaZoneMission(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407F68
-// GHIDRA_NAME TControlSeaZoneMission::thunk_HandleControlSeaZoneMissionActionType0Or3ForTargetPort_At00407f68
-// GHIDRA_PROTO bool __thiscall thunk_HandleControlSeaZoneMissionActionType0Or3ForTargetPort_At00407f68(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleControlSeaZoneMissionActionType0Or3ForTargetPort
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleControlSeaZoneMissionActionType0Or3ForTargetPort */
-
-bool __thiscall
-TControlSeaZoneMission::thunk_HandleControlSeaZoneMissionActionType0Or3ForTargetPort_At00407f68
-          (TControlSeaZoneMission *this)
-
-{
-  bool bVar1;
-  
-  bVar1 = HandleControlSeaZoneMissionActionType0Or3ForTargetPort(this);
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040967E
-// GHIDRA_NAME TControlSeaZoneMission::thunk_ReturnTrueForControlSeaZoneMissionCapabilityFlagA_At0040967e
-// GHIDRA_PROTO bool __stdcall thunk_ReturnTrueForControlSeaZoneMissionCapabilityFlagA_At0040967e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnTrueForControlSeaZoneMissionCapabilityFlagA
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnTrueForControlSeaZoneMissionCapabilityFlagA */
-
-bool TControlSeaZoneMission::thunk_ReturnTrueForControlSeaZoneMissionCapabilityFlagA_At0040967e
-               (void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnTrueForControlSeaZoneMissionCapabilityFlagA();
-  return bVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005355F0
 // GHIDRA_NAME TControlSeaZoneMission::DestroyTControlSeaZoneMission
-// GHIDRA_PROTO void * __thiscall DestroyTControlSeaZoneMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Scalar deleting destructor pattern: reset vtable via class-specific helper, then free self if deleteFlag bit0 is set.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestroyTControlSeaZoneMission()
 
-/* Scalar deleting destructor pattern: reset vtable via class-specific helper, then free self if
-   deleteFlag bit0 is set. */
-
-void * __thiscall
-TControlSeaZoneMission::DestroyTControlSeaZoneMission(TControlSeaZoneMission *this)
+undefined4 __thiscall
+TControlSeaZoneMission::DestroyTControlSeaZoneMission(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_ResetTControlSeaZoneMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  ResetTControlSeaZoneMissionToSentinelVtable();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005386C0
 // GHIDRA_NAME TControlSeaZoneMission::CreateTControlSeaZoneMission
-// GHIDRA_PROTO void * __stdcall CreateTControlSeaZoneMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0x3C mission object, runs ConstructTMission, then installs g_vtblTControlSeaZoneMission.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTControlSeaZoneMission()
 
-/* Allocates 0x3C mission object, runs ConstructTMission, then installs
-   g_vtblTControlSeaZoneMission. */
-
-void * TControlSeaZoneMission::CreateTControlSeaZoneMission(void)
+undefined4 * TControlSeaZoneMission::CreateTControlSeaZoneMission(void)
 
 {
-  TMission *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -179,166 +35,136 @@ void * TControlSeaZoneMission::CreateTControlSeaZoneMission(void)
   puStack_8 = &LAB_0063434a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x3c);
   local_4 = 0;
-  if (this != (TMission *)0x0) {
-    TMission::thunk_ConstructTMission(this);
-    this->field14_0x14 = 0;
-    this->field15_0x18 = (undefined4 *)0x0;
-    this->field16_0x1c = (void *)0x0;
-    this->field17_0x20 = (void *)0x0;
-    this->field18_0x24 = 0;
-    this->field19_0x28 = 0;
-    this->field20_0x2c = (void *)0x0;
-    this->field21_0x30 = (void *)0x0;
-    this->field22_0x34 = (undefined *)0x0;
-    this->field23_0x38 = 0;
-    this->pVtable = &g_vtblTControlSeaZoneMission;
+  if (puVar1 != (undefined4 *)0x0) {
+    TMission::ConstructTMission();
+    puVar1[5] = 0;
+    puVar1[6] = 0;
+    puVar1[7] = 0;
+    puVar1[8] = 0;
+    puVar1[9] = 0;
+    puVar1[10] = 0;
+    puVar1[0xb] = 0;
+    puVar1[0xc] = 0;
+    puVar1[0xd] = 0;
+    puVar1[0xe] = 0;
+    *puVar1 = &PTR_LAB_0065a740;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00538780
 // GHIDRA_NAME TControlSeaZoneMission::GetTControlSeaZoneMissionClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTControlSeaZoneMissionClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TControlSeaZoneMission.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTControlSeaZoneMissionClassNamePointer()
 
-/* Returns class descriptor pointer for TControlSeaZoneMission. */
-
-void * __cdecl TControlSeaZoneMission::GetTControlSeaZoneMissionClassNamePointer(void)
+undefined ** TControlSeaZoneMission::GetTControlSeaZoneMissionClassNamePointer(void)
 
 {
-  return &g_pClassDescTControlSeaZoneMission;
+  return &PTR_s_TControlSeaZoneMission_006979b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005393A0
 // GHIDRA_NAME TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-// GHIDRA_PROTO void __thiscall PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds ControlSeaZone mission category weights from allied navy primary-order distribution for mission target context.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* Builds ControlSeaZone mission category weights from allied navy primary-order distribution for
-   mission target context. */
 
-void __thiscall
+void __fastcall
 TControlSeaZoneMission::PopulateControlSeaZoneMissionResourceWeightsFromAlliedNavyPressure
-          (TControlSeaZoneMission *this)
+          (int param_1)
 
 {
-  short sVar1;
-  ushort uVar2;
+  undefined2 uVar1;
+  float fVar2;
   float fVar3;
   float fVar4;
-  float fVar5;
-  char cVar6;
-  short extraout_AX;
-  void *ecxArg;
-  uint uVar7;
+  char cVar5;
+  short sVar6;
+  int iVar7;
   float *pfVar8;
-  ushort *puVar9;
+  short *psVar9;
   int iVar10;
-  void **ppvVar11;
-  int arg1;
-  int arg1_00;
   float local_10 [4];
   
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
-  iVar10 = this->field14;
-  sVar1 = this->field04;
+  iVar10 = *(int *)(param_1 + 0x14);
+  uVar1 = *(undefined2 *)(param_1 + 4);
   local_10[3] = 0.0;
-  for (ecxArg = thunk_GetNavyPrimaryOrderListHead(); ecxArg != (void *)0x0;
-      ecxArg = *(void **)((int)ecxArg + 0x24)) {
-    if ((*(int *)((int)ecxArg + 8) == iVar10) &&
-       (cVar6 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x44))
-                          (sVar1,*(undefined2 *)((int)ecxArg + 0x14)), cVar6 != '\0')) {
-      thunk_GetNavyOrderNormalizationBaseByNationType();
-      fVar3 = (float)((int)*(short *)((int)ecxArg + 0x1c) / (int)extraout_AX);
-      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory
-                        ((int)ecxArg,(int)*(short *)((int)ecxArg + 0x1c) % (int)extraout_AX);
-      local_10[0] = (float)(int)(short)uVar7 * fVar3 + local_10[0];
-      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory
-                        ((int)ecxArg,(int)(short)uVar7);
-      local_10[1] = (float)(int)(short)uVar7 * fVar3 + local_10[1];
-      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory((int)ecxArg,arg1);
-      local_10[2] = (float)(int)(short)uVar7 * fVar3 + local_10[2];
-      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory((int)ecxArg,arg1_00);
-      local_10[3] = (float)(int)(short)uVar7 + local_10[3];
+  for (iVar7 = thunk_GetNavyPrimaryOrderListHead(); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
+    if ((*(int *)(iVar7 + 8) == iVar10) &&
+       (cVar5 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x44))
+                          (uVar1,*(undefined2 *)(iVar7 + 0x14)), cVar5 != '\0')) {
+      sVar6 = GetNavyOrderNormalizationBaseByNationType();
+      fVar2 = (float)((int)*(short *)(iVar7 + 0x1c) / (int)sVar6);
+      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(0);
+      local_10[0] = (float)(int)sVar6 * fVar2 + local_10[0];
+      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(1);
+      local_10[1] = (float)(int)sVar6 * fVar2 + local_10[1];
+      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(2);
+      local_10[2] = (float)(int)sVar6 * fVar2 + local_10[2];
+      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(3);
+      local_10[3] = (float)(int)sVar6 + local_10[3];
     }
   }
   pfVar8 = local_10;
   iVar10 = 4;
-  fVar3 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  fVar2 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   do {
-    fVar3 = fVar3 + *pfVar8;
+    fVar2 = fVar2 + *pfVar8;
     pfVar8 = pfVar8 + 1;
     iVar10 = iVar10 + -1;
   } while (iVar10 != 0);
-  fVar4 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  if (fVar3 != (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    puVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
+  fVar3 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  if (fVar2 != (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    psVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
     pfVar8 = local_10;
     do {
-      fVar5 = *pfVar8 / fVar3 -
-              (float)(int)(short)*puVar9 * (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
-      if (fVar5 <= (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-        fVar5 = -fVar5;
+      fVar4 = *pfVar8 / fVar2 -
+              (float)(int)*psVar9 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
+      if (fVar4 <= (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+        fVar4 = -fVar4;
       }
-      fVar4 = fVar4 + fVar5;
-      puVar9 = puVar9 + 1;
+      fVar3 = fVar3 + fVar4;
+      psVar9 = psVar9 + 1;
       pfVar8 = pfVar8 + 1;
-    } while ((int)puVar9 < 0x697960);
-    fVar4 = fVar3 * ((float)_g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                    fVar4 * (float)_g_Recompute_Nation_Order_LookupTable_0065AA00);
+    } while ((int)psVar9 < 0x697960);
+    fVar3 = fVar2 * ((float)g_Recompute_Nation_Order_LookupTable_0065AA08 -
+                    fVar3 * (float)g_Recompute_Nation_Order_LookupTable_0065AA00);
   }
-  fVar3 = fVar4 * _g_Populate_Beachhead_Mission_Value_0065A8FC;
-  if (fVar4 * _g_Populate_Beachhead_Mission_Value_0065A8FC ==
-      (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    fVar3 = _g_Populate_Beachhead_Mission_Value_0065AA24;
+  fVar2 = fVar3 * _DAT_0065a8fc;
+  if (fVar3 * _DAT_0065a8fc == (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    fVar2 = _DAT_0065aa24;
   }
-  puVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-  ppvVar11 = &this->pField2c;
+  psVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
+  pfVar8 = (float *)(param_1 + 0x2c);
   do {
-    uVar2 = *puVar9;
-    puVar9 = puVar9 + 1;
-    *ppvVar11 = (void *)((float)(int)(short)uVar2 * fVar3 *
-                        (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8);
-    ppvVar11 = ppvVar11 + 1;
-  } while ((int)puVar9 < 0x697960);
+    sVar6 = *psVar9;
+    psVar9 = psVar9 + 1;
+    *pfVar8 = (float)(int)sVar6 * fVar2 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    pfVar8 = pfVar8 + 1;
+  } while ((int)psVar9 < 0x697960);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00539600
 // GHIDRA_NAME TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
-// GHIDRA_PROTO bool __thiscall HandleControlSeaZoneMissionActionType0Or3ForTargetPort(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Action gate: returns true only for action types 0/3 matching this mission target context id (+0x14).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined HandleControlSeaZoneMissionActionType0Or3ForTargetPort()
 
-/* Action gate: returns true only for action types 0/3 matching this mission target context id
-   (+0x14). */
-
-bool __thiscall
+undefined4 __thiscall
 TControlSeaZoneMission::HandleControlSeaZoneMissionActionType0Or3ForTargetPort
-          (TControlSeaZoneMission *this)
+          (int param_1,int param_2,undefined4 param_3,int param_4)
 
 {
-  int in_stack_00000004;
-  int in_stack_0000000c;
-  
-  if (((in_stack_00000004 == 0) || (in_stack_00000004 == 3)) && (in_stack_0000000c == this->field14)
-     ) {
-    return true;
+  if (((param_2 == 0) || (param_2 == 3)) && (param_4 == *(int *)(param_1 + 0x14))) {
+    return 1;
   }
-  return false;
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005536C0
@@ -355,30 +181,27 @@ TControlSeaZoneMission::SetMapOrderType6AndQueue(TControlSeaZoneMission *this,in
 
 {
   int *piVar1;
-  undefined4 *puVar2;
+  int iVar2;
   TControlSeaZoneMission *pTVar3;
   TControlSeaZoneMission *pTVar4;
   int iVar5;
   int *piVar6;
-  void *pvVar7;
-  int iVar8;
+  int iVar7;
+  undefined4 uVar8;
   short sVar9;
   
-  *(int *)&this->field_0xc = nOrderTarget;
-  *(undefined4 *)&this->field_0x8 = 6;
-  this->field14 = 0;
-  piVar6 = *(int **)&this->field_0x10;
+  *(int *)(this + 0xc) = nOrderTarget;
+  *(undefined4 *)(this + 8) = 6;
+  *(undefined4 *)(this + 0x14) = 0;
+  piVar6 = *(int **)(this + 0x10);
   while (piVar6 != (int *)0x0) {
     if ((char)piVar6[3] == '\0') {
       *(undefined4 *)(*piVar6 + 0xc) = 0;
-      *(short *)(&this->field_0x1e +
-                *(short *)(&g_Task_Force_Order_LookupTable_00698120 + *(short *)(*piVar6 + 4) * 0x24
-                          ) * 2) =
-           *(short *)(&this->field_0x1e +
-                     *(short *)(&g_Task_Force_Order_LookupTable_00698120 +
-                               *(short *)(*piVar6 + 4) * 0x24) * 2) + -1;
-      if (piVar6 == *(int **)&this->field_0x10) {
-        *(int *)&this->field_0x10 = piVar6[1];
+      *(short *)(this + *(short *)(&DAT_00698120 + *(short *)(*piVar6 + 4) * 0x24) * 2 + 0x1e) =
+           *(short *)(this + *(short *)(&DAT_00698120 + *(short *)(*piVar6 + 4) * 0x24) * 2 + 0x1e)
+           + -1;
+      if (piVar6 == *(int **)(this + 0x10)) {
+        *(int *)(this + 0x10) = piVar6[1];
       }
       piVar1 = (int *)piVar6[1];
       if (piVar1 != (int *)0x0) {
@@ -387,25 +210,25 @@ TControlSeaZoneMission::SetMapOrderType6AndQueue(TControlSeaZoneMission *this,in
       if (piVar6[2] != 0) {
         *(int *)(piVar6[2] + 4) = piVar6[1];
       }
-      FreeHeapBufferIfNotNull();
+      FreeHeapBufferIfNotNull(piVar6);
       piVar6 = piVar1;
     }
     else {
       piVar6 = (int *)piVar6[1];
     }
   }
-  puVar2 = *(undefined4 **)&this->field_0x10;
-  this->field14 = 0;
-  for (; puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)puVar2[1]) {
-    iVar8 = ObjectPool::thunk_SelectPreferredMapOrderEntryByPriorityRules
-                      ((ObjectPool *)*puVar2,this->field14,0);
-    this->field14 = iVar8;
+  iVar2 = *(int *)(this + 0x10);
+  *(undefined4 *)(this + 0x14) = 0;
+  for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
+    uVar8 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(this + 0x14),0);
+    *(undefined4 *)(this + 0x14) = uVar8;
   }
-  iVar8 = *(int *)this;
-  (**(code **)(iVar8 + 0xc))();
-  pvVar7 = g_pNavyOrderManager;
-  pTVar3 = *(TControlSeaZoneMission **)((int)g_pNavyOrderManager + 4);
-  for (pTVar4 = pTVar3; pTVar4 != (TControlSeaZoneMission *)0x0; pTVar4 = pTVar4->pField2c) {
+  iVar2 = *(int *)this;
+  (**(code **)(iVar2 + 0xc))();
+  iVar7 = g_pNavyOrderManager;
+  pTVar3 = *(TControlSeaZoneMission **)(g_pNavyOrderManager + 4);
+  for (pTVar4 = pTVar3; pTVar4 != (TControlSeaZoneMission *)0x0;
+      pTVar4 = *(TControlSeaZoneMission **)(pTVar4 + 0x2c)) {
     if (pTVar4 == this) goto LAB_005537d2;
   }
   if (this == (TControlSeaZoneMission *)0x0) {
@@ -413,28 +236,28 @@ TControlSeaZoneMission::SetMapOrderType6AndQueue(TControlSeaZoneMission *this,in
   }
   else {
     sVar9 = 0;
-    for (iVar5 = *(int *)&this->field_0x10; iVar5 != 0; iVar5 = *(int *)(iVar5 + 4)) {
+    for (iVar5 = *(int *)(this + 0x10); iVar5 != 0; iVar5 = *(int *)(iVar5 + 4)) {
       sVar9 = sVar9 + 1;
     }
   }
   if (sVar9 < 1) {
-    (**(code **)(iVar8 + 0x1c))();
+    (**(code **)(iVar2 + 0x1c))();
     return;
   }
-  if (*(int *)&this->field_0x28 != 0) {
-    *(void **)(*(int *)&this->field_0x28 + 0x2c) = this->pField2c;
+  if (*(int *)(this + 0x28) != 0) {
+    *(undefined4 *)(*(int *)(this + 0x28) + 0x2c) = *(undefined4 *)(this + 0x2c);
   }
-  if (this->pField2c != (void *)0x0) {
-    *(undefined4 *)((int)this->pField2c + 0x28) = *(undefined4 *)&this->field_0x28;
+  if (*(int *)(this + 0x2c) != 0) {
+    *(undefined4 *)(*(int *)(this + 0x2c) + 0x28) = *(undefined4 *)(this + 0x28);
   }
-  *(undefined4 *)&this->field_0x28 = 0;
-  this->pField2c = pTVar3;
+  *(undefined4 *)(this + 0x28) = 0;
+  *(TControlSeaZoneMission **)(this + 0x2c) = pTVar3;
   if (pTVar3 != (TControlSeaZoneMission *)0x0) {
-    *(TControlSeaZoneMission **)&pTVar3->field_0x28 = this;
+    *(TControlSeaZoneMission **)(pTVar3 + 0x28) = this;
   }
-  *(TControlSeaZoneMission **)((int)pvVar7 + 4) = this;
+  *(TControlSeaZoneMission **)(iVar7 + 4) = this;
 LAB_005537d2:
-  thunk_FinalizeQueuedMapOrderEntry((int)this);
+  thunk_FinalizeQueuedMapOrderEntry((int *)this);
   return;
 }
 

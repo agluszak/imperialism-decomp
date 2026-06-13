@@ -3,87 +3,33 @@
 // Program: Imperialism.exe
 // Bucket: TNumberedItem.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004017A8
-// GHIDRA_NAME TNumberedItem::TNumberedItem_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TNumberedItem_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTNumberedItemAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTNumberedItemAndMaybeFree */
-
-void * __thiscall TNumberedItem::TNumberedItem_VtblSlot001(TNumberedItem *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTNumberedItemAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408D4B
-// GHIDRA_NAME TNumberedItem::TNumberedItem_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TNumberedItem_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNumberedItemClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNumberedItemClassNamePointer */
-
-void * __cdecl TNumberedItem::TNumberedItem_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNumberedItemClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004094B7
-// GHIDRA_NAME TNumberedItem::TNumberedItem_VtblSlot068
-// GHIDRA_PROTO void __cdecl TNumberedItem_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderIndexedSpriteCellWithFormattedValue
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderIndexedSpriteCellWithFormattedValue */
-
-void __cdecl TNumberedItem::TNumberedItem_VtblSlot068(void)
-
-{
-  RenderIndexedSpriteCellWithFormattedValue();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1880
 // GHIDRA_NAME TNumberedItem::BuildCityViewResourceRows
-// GHIDRA_PROTO void __thiscall BuildCityViewResourceRows(int arg1)
+// GHIDRA_PROTO undefined BuildCityViewResourceRows()
 
-void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int arg1)
+void __thiscall TNumberedItem::BuildCityViewResourceRows(int *param_1,int *param_2)
 
 {
-  undefined **ppuVar1;
-  int iVar2;
-  ushort uVar3;
-  short *psVar4;
-  int *piVar5;
+  ushort uVar1;
+  short *psVar2;
+  int *piVar3;
+  short sVar4;
+  int iVar5;
   short sVar6;
-  int iVar7;
-  short sVar8;
-  short sVar9;
-  TNumberedItem *pTVar10;
+  short sVar7;
   code *unaff_EDI;
+  int iVar8;
   int *unaff_FS_OFFSET;
-  TNumberedItem **ppTStack_c4;
+  short **ppsStack_c4;
   undefined4 uStack_c0;
   char *input_str;
-  LONG *pLVar11;
-  TNumberedItem *pTStack_78;
+  LONG *pLVar9;
+  short *psStack_78;
   tagRECT tStack_4c;
   tagRECT tStack_3c;
   undefined1 local_22;
   undefined1 local_21;
-  uint local_20;
+  undefined4 local_20;
   int iStack_14;
   int iStack_c;
   undefined1 *puStack_8;
@@ -96,155 +42,155 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(TNumberedItem *this,int
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  sVar8 = 0;
+  sVar6 = 0;
   local_4 = CONCAT31(local_4._1_3_,1);
-  iVar7 = *(int *)arg1;
+  iVar5 = *param_2;
   local_22 = 0;
   local_21 = 0;
-  local_20 = local_20 & 0xffff0000;
-  *(int *)&(this->base).field141_0x90 = arg1;
-  (**(code **)(iVar7 + 0x30))();
-  tStack_4c.bottom = arg1 + 0x1e;
-  iVar7 = 0x17;
-  psVar4 = (short *)tStack_4c.bottom;
+  local_20 = (uint)local_20._2_2_ << 0x10;
+  param_1[0x24] = (int)param_2;
+  (**(code **)(iVar5 + 0x30))();
+  tStack_4c.bottom = (int)param_2 + 0x1e;
+  iVar5 = 0x17;
+  psVar2 = (short *)tStack_4c.bottom;
   do {
-    if (*psVar4 != 0) {
-      sVar8 = sVar8 + 1;
+    if (*psVar2 != 0) {
+      sVar6 = sVar6 + 1;
     }
-    psVar4 = psVar4 + 1;
-    iVar7 = iVar7 + -1;
-  } while (iVar7 != 0);
-  ppuVar1 = (this->base).field0_0x0;
-  iVar7 = *(int *)&(this->base).field_0x34;
-  piVar5 = (int *)(*(code *)ppuVar1[0x16])();
-  if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    pTStack_78 = (TNumberedItem *)0x4d1934;
+    psVar2 = psVar2 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  iVar5 = *param_1;
+  iVar8 = param_1[0xd];
+  piVar3 = (int *)(**(code **)(iVar5 + 0x58))();
+  if (piVar3 == (int *)0x0) {
+    psStack_78 = (short *)0x4d1934;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  tStack_3c.left = *piVar5;
+  tStack_3c.left = *piVar3;
   (**(code **)(tStack_3c.left + 300))();
-  iVar7 = (int)(short)(((short)((sVar8 * 0x2c) / (iVar7 + -0x20)) + 1) * 0x20);
-  iStack_14 = iStack_14 + iVar7;
+  iVar8 = (int)(short)(((short)((sVar6 * 0x2c) / (iVar8 + -0x20)) + 1) * 0x20);
+  iStack_14 = iStack_14 + iVar8;
   (**(code **)(tStack_4c.bottom + 0x168))();
-  pTStack_78 = (TNumberedItem *)0x4d1986;
-  (*(code *)ppuVar1[0x4b])();
-  pTStack_78 = (TNumberedItem *)0x1;
-  local_20 = local_20 + iVar7;
-  (*(code *)ppuVar1[0x5a])();
-  piVar5 = (int *)(*(code *)ppuVar1[0x25])();
-  if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
+  psStack_78 = (short *)0x4d1986;
+  (**(code **)(iVar5 + 300))();
+  psStack_78 = (short *)0x1;
+  local_20 = local_20 + iVar8;
+  (**(code **)(iVar5 + 0x168))();
+  piVar3 = (int *)(**(code **)(iVar5 + 0x94))();
+  if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  iVar2 = *piVar5;
-  pLVar11 = &tStack_3c.top;
-  (**(code **)(iVar2 + 300))();
-  OffsetRect(&tStack_3c,0,iVar7);
-  (**(code **)(iVar2 + 0x168))();
-  piVar5 = (int *)(*unaff_EDI)();
-  if (piVar5 != (int *)0x0) {
-    iVar2 = *piVar5;
-    (**(code **)(iVar2 + 300))();
-    OffsetRect(&tStack_4c,0,iVar7);
-    input_str = (char *)0x1;
-    (**(code **)(iVar2 + 0x168))();
-    sVar8 = *(short *)&(this->base).field_0x34;
-    iVar7 = 0;
-    pTVar10 = pTStack_78;
-    do {
-      if (*(short *)&(pTVar10->base).field0_0x0 != 0) {
-        sVar8 = sVar8 + 0x2c;
-        if (*(int *)&(this->base).field_0x34 + -0x10 < (int)sVar8) {
-          sVar8 = 0x10;
-        }
-        pTStack_78 = AllocateWithFallbackHandler();
-        tStack_3c.left._0_1_ = 2;
-        if (pTStack_78 != (TNumberedItem *)0x0) {
-          ConstructTNumberedItemBaseState(pTStack_78);
-        }
-        tStack_3c.left = CONCAT31(tStack_3c.left._1_3_,1);
-        WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850();
+  iVar5 = *piVar3;
+  pLVar9 = &tStack_3c.top;
+  (**(code **)(iVar5 + 300))();
+  OffsetRect(&tStack_3c,0,iVar8);
+  (**(code **)(iVar5 + 0x168))();
+  piVar3 = (int *)(*unaff_EDI)();
+  if (piVar3 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  iVar5 = *piVar3;
+  (**(code **)(iVar5 + 300))();
+  OffsetRect(&tStack_4c,0,iVar8);
+  input_str = (char *)0x1;
+  (**(code **)(iVar5 + 0x168))();
+  sVar6 = (short)param_1[0xd];
+  iVar5 = 0;
+  psVar2 = psStack_78;
+  do {
+    if (*psVar2 != 0) {
+      sVar6 = sVar6 + 0x2c;
+      if (param_1[0xd] + -0x10 < (int)sVar6) {
+        sVar6 = 0x10;
       }
-      iVar7 = iVar7 + 1;
-      pTVar10 = (TNumberedItem *)((int)&(pTVar10->base).field0_0x0 + 2);
-    } while ((short)iVar7 < 0x17);
-    iVar7 = CONCAT22((short)((uint)iVar7 >> 0x10),*(short *)(tStack_3c.right + 0x42));
-    sVar6 = *(short *)(tStack_3c.right + 0x46) + *(short *)(tStack_3c.right + 0x44);
-    sVar8 = *(short *)(tStack_3c.right + 0x40);
-    sVar9 = *(short *)(tStack_3c.right + 0x42) + sVar6 + sVar8;
-    tStack_3c.right = iVar7;
-    if (0 < sVar9) {
-      pTStack_78 = (TNumberedItem *)(int)sVar9;
-      iVar7 = 0;
-      do {
-        uVar3 = (ushort)(iVar7 >> 0x1f);
-        sVar9 = (((ushort)iVar7 ^ uVar3) - uVar3 & 3 ^ uVar3) - uVar3;
-        if (sVar9 == 1) {
-          if ((short)tStack_3c.right != 0) {
-            tStack_3c.right = tStack_3c.right + -1;
-          }
-        }
-        else if (sVar9 == 3) {
-          if (sVar6 != 0) {
-            sVar6 = sVar6 + -1;
-          }
-        }
-        else if (sVar8 != 0) {
-          sVar8 = sVar8 + -1;
-        }
-        iVar7 = iVar7 + 1;
-        pTStack_78 = (TNumberedItem *)((int)&pTStack_78[-1].fieldae + 1);
-      } while (pTStack_78 != (TNumberedItem *)0x0);
+      psStack_78 = (short *)AllocateWithFallbackHandler();
+      tStack_3c.left._0_1_ = 2;
+      if (psStack_78 != (short *)0x0) {
+        ConstructTNumberedItemBaseState();
+      }
+      tStack_3c.left = CONCAT31(tStack_3c.left._1_3_,1);
+      WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850();
     }
-    InitializeSharedStringRefFromEmpty();
-    tStack_3c.left._0_1_ = 3;
-    InitializeSharedStringRefFromEmpty();
-    tStack_3c.left = CONCAT31(tStack_3c.left._1_3_,4);
-    FormatStringWithVarArgsToSharedRef();
-    FormatStringWithVarArgsToSharedRef();
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-    uStack_c0 = 0x4d1c13;
-    scanBracketExpressions(g_pLocalizationTable,&stack0xffffff70,input_str);
-    piVar5 = (int *)(*(code *)0x636e636c)();
-    iVar7 = *piVar5;
-    (**(code **)(iVar7 + 0x1c8))();
-    ppTStack_c4 = &pTStack_78;
-    uStack_c0 = 0;
-    thunk_BuildUiTextStyleDescriptor();
-    uStack_c0 = 0x4d1c5b;
-    (**(code **)(iVar7 + 0x1b4))();
-    uStack_c0 = 0x7469746c;
-    ppTStack_c4 = (TNumberedItem **)0x4d1c64;
-    piVar5 = (int *)(*(code *)0x636e636c)();
-    iVar7 = *piVar5;
-    ppTStack_c4 = (TNumberedItem **)0x4d1c6d;
-    (**(code **)(iVar7 + 0xc))();
-    ppTStack_c4 = (TNumberedItem **)0x2b6a;
-    thunk_BuildUiTextStyleDescriptor();
-    ppTStack_c4 = (TNumberedItem **)0x0;
-    (**(code **)(iVar7 + 0x1b4))(&stack0xffffff7c);
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x273f,7,&stack0xffffff48);
-    (**(code **)(iVar7 + 0x1c8))(&ppTStack_c4,1);
-    ReleaseSharedStringRefIfNotEmpty();
-    ReleaseSharedStringRefIfNotEmpty();
-    ReleaseSharedStringRefIfNotEmpty();
-    ReleaseSharedStringRefIfNotEmpty();
-    *unaff_FS_OFFSET = (int)pLVar11;
-    return;
+    iVar5 = iVar5 + 1;
+    psVar2 = psVar2 + 1;
+  } while ((short)iVar5 < 0x17);
+  iVar5 = CONCAT22((short)((uint)iVar5 >> 0x10),*(short *)(tStack_3c.right + 0x42));
+  sVar4 = *(short *)(tStack_3c.right + 0x46) + *(short *)(tStack_3c.right + 0x44);
+  sVar6 = *(short *)(tStack_3c.right + 0x40);
+  sVar7 = *(short *)(tStack_3c.right + 0x42) + sVar4 + sVar6;
+  tStack_3c.right = iVar5;
+  if (0 < sVar7) {
+    psStack_78 = (short *)(int)sVar7;
+    iVar5 = 0;
+    do {
+      uVar1 = (ushort)(iVar5 >> 0x1f);
+      sVar7 = (((ushort)iVar5 ^ uVar1) - uVar1 & 3 ^ uVar1) - uVar1;
+      if (sVar7 == 1) {
+        if ((short)tStack_3c.right != 0) {
+          tStack_3c.right = tStack_3c.right + -1;
+        }
+      }
+      else if (sVar7 == 3) {
+        if (sVar4 != 0) {
+          sVar4 = sVar4 + -1;
+        }
+      }
+      else if (sVar6 != 0) {
+        sVar6 = sVar6 + -1;
+      }
+      iVar5 = iVar5 + 1;
+      psStack_78 = (short *)((int)psStack_78 + -1);
+    } while (psStack_78 != (short *)0x0);
   }
-                    /* WARNING: Subroutine does not return */
-  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  InitializeSharedStringRefFromEmpty();
+  tStack_3c.left._0_1_ = 3;
+  InitializeSharedStringRefFromEmpty();
+  tStack_3c.left = CONCAT31(tStack_3c.left._1_3_,4);
+  FormatStringWithVarArgsToSharedRef();
+  FormatStringWithVarArgsToSharedRef();
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  uStack_c0 = 0x4d1c13;
+  scanBracketExpressions(g_pLocalizationTable,&stack0xffffff70,input_str);
+  piVar3 = (int *)(*(code *)0x636e636c)();
+  iVar5 = *piVar3;
+  (**(code **)(iVar5 + 0x1c8))();
+  ppsStack_c4 = &psStack_78;
+  uStack_c0 = 0;
+  thunk_BuildUiTextStyleDescriptor();
+  uStack_c0 = 0x4d1c5b;
+  (**(code **)(iVar5 + 0x1b4))();
+  uStack_c0 = 0x7469746c;
+  ppsStack_c4 = (short **)0x4d1c64;
+  piVar3 = (int *)(*(code *)0x636e636c)();
+  iVar5 = *piVar3;
+  ppsStack_c4 = (short **)0x4d1c6d;
+  (**(code **)(iVar5 + 0xc))();
+  ppsStack_c4 = (short **)0x2b6a;
+  thunk_BuildUiTextStyleDescriptor(&stack0xffffff7c,0,0xe);
+  ppsStack_c4 = (short **)0x0;
+  (**(code **)(iVar5 + 0x1b4))(&stack0xffffff7c);
+  (**(code **)(*g_pLocalizationTable + 0x84))(0x273f,7,&stack0xffffff48);
+  (**(code **)(iVar5 + 0x1c8))(&ppsStack_c4,1);
+  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = (int)pLVar9;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507700
 // GHIDRA_NAME TNumberedItem::CreateTNumberedItemInstance
-// GHIDRA_PROTO void * __cdecl CreateTNumberedItemInstance(void)
+// GHIDRA_PROTO undefined CreateTNumberedItemInstance()
 
-void * __cdecl TNumberedItem::CreateTNumberedItemInstance(void)
+undefined4 * TNumberedItem::CreateTNumberedItemInstance(void)
 
 {
-  TMegaPicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -254,61 +200,56 @@ void * __cdecl TNumberedItem::CreateTNumberedItemInstance(void)
   puStack_8 = &LAB_0063380a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb0);
   local_4 = 0;
-  if (this != (TMegaPicture *)0x0) {
-    TMegaPicture::ConstructTMegaPictureBaseState(this);
-    this->field0_0x0 = &g_vtblTNumberedItem;
-    *(undefined2 *)&this[1].field_0x12 = 0;
-    *(undefined2 *)&this[1].field_0x14 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TMegaPicture::ConstructTMegaPictureBaseState();
+    *puVar1 = &PTR_LAB_006582f0;
+    *(undefined2 *)(puVar1 + 0x2b) = 0;
+    *(undefined2 *)((int)puVar1 + 0xae) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005077A0
 // GHIDRA_NAME TNumberedItem::GetTNumberedItemClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNumberedItemClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNumberedItem.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNumberedItemClassNamePointer()
 
-/* Returns class descriptor pointer for TNumberedItem. */
-
-void * __cdecl TNumberedItem::GetTNumberedItemClassNamePointer(void)
+undefined ** TNumberedItem::GetTNumberedItemClassNamePointer(void)
 
 {
-  return &g_pClassDescTNumberedItem;
+  return &PTR_s_TNumberedItem_006579d0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005077C0
 // GHIDRA_NAME TNumberedItem::ConstructTNumberedItemBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTNumberedItemBaseState(void)
+// GHIDRA_PROTO undefined ConstructTNumberedItemBaseState()
 
-void * __thiscall TNumberedItem::ConstructTNumberedItemBaseState(TNumberedItem *this)
+undefined4 * __fastcall TNumberedItem::ConstructTNumberedItemBaseState(undefined4 *param_1)
 
 {
-  TMegaPicture::ConstructTMegaPictureBaseState(&this->base);
-  (this->base).field0_0x0 = &g_vtblTNumberedItem;
-  this->fieldac = 0;
-  this->fieldae = 0;
-  return this;
+  TMegaPicture::ConstructTMegaPictureBaseState();
+  *param_1 = &PTR_LAB_006582f0;
+  *(undefined2 *)(param_1 + 0x2b) = 0;
+  *(undefined2 *)((int)param_1 + 0xae) = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507800
 // GHIDRA_NAME TNumberedItem::DestructTNumberedItemAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTNumberedItemAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTNumberedItemAndMaybeFree()
 
-void * __thiscall
-TNumberedItem::DestructTNumberedItemAndMaybeFree(TNumberedItem *this,byte freeSelfFlag)
+undefined4 __thiscall
+TNumberedItem::DestructTNumberedItemAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

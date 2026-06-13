@@ -5,16 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CE500
 // GHIDRA_NAME TBuildingExpansionView::GetTBuildingExpansionViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBuildingExpansionViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBuildingExpansionView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBuildingExpansionViewClassNamePointer()
 
-/* Returns class descriptor pointer for TBuildingExpansionView. */
-
-void * __cdecl TBuildingExpansionView::GetTBuildingExpansionViewClassNamePointer(void)
+undefined ** TBuildingExpansionView::GetTBuildingExpansionViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTBuildingExpansionView;
+  return &PTR_s_TBuildingExpansionView_00651320;
 }
 

@@ -3,215 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TNewGameCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401B5E
-// GHIDRA_NAME TNewGameCommand::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004135f0_At00401b5e
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004135f0_At00401b5e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004135f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004135f0 */
-
-void __cdecl TNewGameCommand::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004135f0_At00401b5e(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At004135f0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401F0A
-// GHIDRA_NAME TNewGameCommand::thunk_OrphanCallChain_C1_I04_0049e4e0_At00401f0a
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C1_I04_0049e4e0_At00401f0a(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C1_I04_0049e4e0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanCallChain_C1_I04_0049e4e0 */
-
-void __cdecl TNewGameCommand::thunk_OrphanCallChain_C1_I04_0049e4e0_At00401f0a(void)
-
-{
-  OrphanCallChain_C1_I04_0049e4e0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402DD8
-// GHIDRA_NAME TNewGameCommand::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At0049e280_At00402dd8
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At0049e280_At00402dd8(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At0049e280 */
-
-void __thiscall
-TNewGameCommand::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At0049e280_At00402dd8
-          (TNewGameCommand *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At0049e280(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403DF0
-// GHIDRA_NAME TNewGameCommand::thunk_CreateTNewGameCommandInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTNewGameCommandInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to ConstructNewGameCommandBaseState. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk to ConstructNewGameCommandBaseState. [FID:thunk_target_sync] */
-
-void __thiscall TNewGameCommand::thunk_CreateTNewGameCommandInstance(TNewGameCommand *this)
-
-{
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403E7C
-// GHIDRA_NAME TNewGameCommand::thunk_OrphanCallChain_C1_I11_0049e4b0_At00403e7c
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C1_I11_0049e4b0_At00403e7c(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C1_I11_0049e4b0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanCallChain_C1_I11_0049e4b0 */
-
-void __cdecl TNewGameCommand::thunk_OrphanCallChain_C1_I11_0049e4b0_At00403e7c(void)
-
-{
-  OrphanCallChain_C1_I11_0049e4b0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404A52
-// GHIDRA_NAME TNewGameCommand::thunk_ReleaseGlobalUiSystemsAndGameFlowState_At00404a52
-// GHIDRA_PROTO void __cdecl thunk_ReleaseGlobalUiSystemsAndGameFlowState_At00404a52(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReleaseGlobalUiSystemsAndGameFlowState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReleaseGlobalUiSystemsAndGameFlowState */
-
-void __cdecl TNewGameCommand::thunk_ReleaseGlobalUiSystemsAndGameFlowState_At00404a52(void)
-
-{
-  ReleaseGlobalUiSystemsAndGameFlowState();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406285
-// GHIDRA_NAME TNewGameCommand::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0_At00406285
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0_At00406285(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0 */
-
-void __cdecl
-TNewGameCommand::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0_At00406285(void)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At0049e2f0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004082E2
-// GHIDRA_NAME TNewGameCommand::thunk_GetTNewGameCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNewGameCommandClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNewGameCommandClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNewGameCommandClassNamePointer */
-
-void * __cdecl TNewGameCommand::thunk_GetTNewGameCommandClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNewGameCommandClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408373
-// GHIDRA_NAME TNewGameCommand::thunk_HandleTurnEventViewportEdgeAutoScroll_At00408373
-// GHIDRA_PROTO void __thiscall thunk_HandleTurnEventViewportEdgeAutoScroll_At00408373(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleTurnEventViewportEdgeAutoScroll
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleTurnEventViewportEdgeAutoScroll */
-
-void __thiscall
-TNewGameCommand::thunk_HandleTurnEventViewportEdgeAutoScroll_At00408373
-          (TNewGameCommand *this,int arg1,int arg2)
-
-{
-  HandleTurnEventViewportEdgeAutoScroll(this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408B34
-// GHIDRA_NAME TNewGameCommand::thunk_GetTAmbitApplicationClassNamePointer_At00408b34
-// GHIDRA_PROTO void * __cdecl thunk_GetTAmbitApplicationClassNamePointer_At00408b34(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTAmbitApplicationClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTAmbitApplicationClassNamePointer */
-
-void * __cdecl TNewGameCommand::thunk_GetTAmbitApplicationClassNamePointer_At00408b34(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TAmbitApplication::GetTAmbitApplicationClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DE00
 // GHIDRA_NAME TNewGameCommand::CreateTNewGameCommandInstance
-// GHIDRA_PROTO void __thiscall CreateTNewGameCommandInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes NewGameCommand base state/vtable root.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTNewGameCommandInstance()
 
-/* Initializes NewGameCommand base state/vtable root. */
-
-void __thiscall TNewGameCommand::CreateTNewGameCommandInstance(TNewGameCommand *this)
+void __fastcall TNewGameCommand::CreateTNewGameCommandInstance(undefined4 *param_1)
 
 {
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DE20
 // GHIDRA_NAME TNewGameCommand::GetTNewGameCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNewGameCommandClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNewGameCommand.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNewGameCommandClassNamePointer()
 
-/* Returns class descriptor pointer for TNewGameCommand. */
-
-void * __cdecl TNewGameCommand::GetTNewGameCommandClassNamePointer(void)
+undefined ** TNewGameCommand::GetTNewGameCommandClassNamePointer(void)
 
 {
-  return &g_pClassDescTNewGameCommand;
+  return &PTR_s_TNewGameCommand_0064c0a0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DE40
 // GHIDRA_NAME TNewGameCommand::ConstructTNewGameCommandBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTNewGameCommandBaseState(void)
+// GHIDRA_PROTO undefined ConstructTNewGameCommandBaseState()
 
-void * __cdecl TNewGameCommand::ConstructTNewGameCommandBaseState(void)
+undefined4 * TNewGameCommand::ConstructTNewGameCommandBaseState(void)
 
 {
-  TApplicationUiRootControllerState_00648CA8 *this;
-  TApplicationUiRootControllerState_00648CA8 *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -221,45 +42,39 @@ void * __cdecl TNewGameCommand::ConstructTNewGameCommandBaseState(void)
   puStack_8 = &LAB_0062fd1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x54);
   local_4 = 0;
-  pTVar1 = (TApplicationUiRootControllerState_00648CA8 *)0x0;
-  if (this != (TApplicationUiRootControllerState_00648CA8 *)0x0) {
-    TApplicationUiRootControllerState_00648CA8::thunk_ConstructGlobalUiRootControllerState(this);
-    this->pVtable = &g_vtblTNewGameCommand;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TApplicationUiRootControllerState_00648CA8::thunk_ConstructGlobalUiRootControllerState();
+    *puVar1 = &PTR_LAB_0063e398;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E280
 // GHIDRA_NAME TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At0049e280(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At0049e280()
 
 void __thiscall
-TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
-          (TNewGameCommand *this,void *pMessage)
+TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280(int param_1,int *param_2)
 
 {
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  if (g_Advance_Turn_Machine_State_00695278 < 0x2a) {
-    (**(code **)(*(int *)pMessage + 0x3c))(&this->pField50,2);
-    this->pField50 = (void *)((int)&PTR_thunk_DispatchUiCommand19ToParent_00657570 + 3);
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  if (DAT_00695278 < 0x2a) {
+    (**(code **)(*param_2 + 0x3c))((undefined4 *)(param_1 + 0x50),2);
+    *(undefined4 *)(param_1 + 0x50) = 0x657573;
     return;
   }
-  (**(code **)(*(int *)pMessage + 0x3c))(&this->pField50,4);
+  (**(code **)(*param_2 + 0x3c))(param_1 + 0x50,4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E320
 // GHIDRA_NAME TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
-// GHIDRA_PROTO void __thiscall HandleTurnEventViewportEdgeAutoScroll(int arg1, int arg2)
+// GHIDRA_PROTO undefined HandleTurnEventViewportEdgeAutoScroll()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Mouse-move handler that applies edge autoscroll only for selected turn-event states; otherwise forwards to base handler.
 // GHIDRA_COMMENT_END
@@ -268,51 +83,48 @@ TNewGameCommand::WrapperFor_HandleCityDialogNoOpSlot18_At0049e280
    forwards to base handler. */
 
 void __thiscall
-TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(TNewGameCommand *this,int arg1,int arg2)
+TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll
+          (int param_1,int param_2,int param_3,undefined4 param_4)
 
 {
   short sVar1;
   int iVar2;
   int iVar3;
-  int extraout_EAX;
-  int extraout_EAX_00;
-  int extraout_EAX_01;
   byte bVar4;
   int local_8;
   int local_4;
   
-  InvokeAfxThreadAndCallSecondaryRefresh();
-  if (((extraout_EAX == 0) && (this->pField48 != (void *)0x0)) &&
-     ((sVar1 = *(short *)((int)g_pUiRuntimeContext + 4), sVar1 == 0x7dd ||
+  iVar3 = InvokeAfxThreadAndCallSecondaryRefresh();
+  if (((iVar3 == 0) && (*(int *)(param_1 + 0x48) != 0)) &&
+     ((sVar1 = *(short *)(g_pUiRuntimeContext + 4), sVar1 == 0x7dd ||
       ((((sVar1 == 0x3b8 || (sVar1 == 0xed8)) || (sVar1 == 0xf3c)) || (sVar1 == 0x3c0)))))) {
-    InvokeAfxThreadAndCallSecondaryRefresh();
-    if (extraout_EAX_00 == 0) {
-      local_8 = arg1;
-      local_4 = arg2;
-      (**(code **)(**(int **)((int)g_pDisplayManager + 4) + 0x144))(&local_8);
+    iVar3 = InvokeAfxThreadAndCallSecondaryRefresh();
+    if (iVar3 == 0) {
+      local_8 = param_2;
+      local_4 = param_3;
+      (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x144))(&local_8);
       if ((-200 < local_8) && (-200 < local_4)) {
-        iVar2 = *(int *)(*(int *)((int)g_pDisplayManager + 4) + 0x34);
-        if ((local_8 < iVar2 + 200) &&
-           (iVar3 = *(int *)(*(int *)((int)g_pDisplayManager + 4) + 0x38), local_4 < iVar3 + 200)) {
+        iVar3 = *(int *)(*(int *)(DAT_006a2158 + 4) + 0x34);
+        if ((local_8 < iVar3 + 200) &&
+           (iVar2 = *(int *)(*(int *)(DAT_006a2158 + 4) + 0x38), local_4 < iVar2 + 200)) {
           bVar4 = 0;
           if (local_8 < 5) {
             bVar4 = 8;
           }
-          else if (iVar2 + -4 <= local_8) {
+          else if (iVar3 + -4 <= local_8) {
             bVar4 = 4;
           }
           if (local_4 < 5) {
             bVar4 = bVar4 | 1;
           }
-          else if (iVar3 + -4 <= local_4) {
+          else if (iVar2 + -4 <= local_4) {
             bVar4 = bVar4 | 2;
           }
           if (bVar4 != 0) {
-            thunk_GetTickCountDiv16();
-            if ((extraout_EAX_01 < g_nViewportEdgeAutoScrollTickGate) ||
-               (g_nViewportEdgeAutoScrollTickGate + 3 < extraout_EAX_01)) {
-              g_nViewportEdgeAutoScrollTickGate = extraout_EAX_01;
-              (**(code **)(*(int *)this->pField48 + 0x1d0))(bVar4);
+            iVar3 = thunk_GetTickCountDiv16();
+            if ((iVar3 < DAT_006a21c0) || (DAT_006a21c0 + 3 < iVar3)) {
+              DAT_006a21c0 = iVar3;
+              (**(code **)(**(int **)(param_1 + 0x48) + 0x1d0))(bVar4);
               return;
             }
           }
@@ -320,89 +132,67 @@ TNewGameCommand::HandleTurnEventViewportEdgeAutoScroll(TNewGameCommand *this,int
       }
     }
   }
-  HandleTurnEventViewportEdgeAutoScroll_Impl();
+  HandleTurnEventViewportEdgeAutoScroll_Impl(param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F70
 // GHIDRA_NAME TNewGameCommand::InitializeBasicCityOrderContext
-// GHIDRA_PROTO void __thiscall InitializeBasicCityOrderContext(int arg1, int arg2)
+// GHIDRA_PROTO undefined InitializeBasicCityOrderContext()
 
 void __thiscall
-TNewGameCommand::InitializeBasicCityOrderContext(TNewGameCommand *this,int arg1,int arg2)
+TNewGameCommand::InitializeBasicCityOrderContext(int param_1,int param_2,undefined2 param_3)
 
 {
   int iVar1;
-  int *piVar2;
+  undefined4 *puVar2;
   
-  this->field08 = arg1;
-  this->field0c = *(int *)(arg1 + 0x1d8);
-  *(undefined2 *)&this->pField48 = (undefined2)arg2;
-  *(undefined2 *)&this->field04 = 0;
-  piVar2 = &this->field10;
+  *(int *)(param_1 + 8) = param_2;
+  *(undefined4 *)(param_1 + 0xc) = *(undefined4 *)(param_2 + 0x1d8);
+  *(undefined2 *)(param_1 + 0x48) = param_3;
+  *(undefined2 *)(param_1 + 4) = 0;
+  puVar2 = (undefined4 *)(param_1 + 0x10);
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *piVar2 = 0;
-    piVar2 = piVar2 + 1;
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
   }
-  *(undefined2 *)piVar2 = 0;
-  this->field44 = (HGLOBAL)0x0;
-  *(undefined2 *)&this->field40 = 0;
-  this->field38_0x3e = 0;
+  *(undefined2 *)puVar2 = 0;
+  *(undefined4 *)(param_1 + 0x44) = 0;
+  *(undefined2 *)(param_1 + 0x40) = 0;
+  *(undefined2 *)(param_1 + 0x3e) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006054AA
 // GHIDRA_NAME TNewGameCommand::OnOK_6054aa
-// GHIDRA_PROTO void __fastcall OnOK_6054aa(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  OnOK
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: msvc500 phase1 nodebug [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OnOK_6054aa()
 
-/* Library Function - Single Match
-    OnOK
-   
-   Library: msvc500 phase1 nodebug [FID:FID_single_match_phase1_nodebug] */
-
-void __fastcall TNewGameCommand::OnOK_6054aa(void)
+void TNewGameCommand::OnOK_6054aa(void)
 
 {
-  bool bVar1;
-  undefined3 extraout_var;
-  void *in_ECX;
-  INT_PTR unaff_ESI;
+  int iVar1;
   
-  bVar1 = UpdateData(in_ECX,1);
-  if (CONCAT31(extraout_var,bVar1) != 0) {
-    EndDialog((HWND)0x1,unaff_ESI);
+  iVar1 = UpdateData(1);
+  if (iVar1 != 0) {
+    FUN_0060531e(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615517
 // GHIDRA_NAME TNewGameCommand::OnSize
-// GHIDRA_PROTO void __thiscall OnSize(TMacViewMgr * thisObj)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Runs fallback size handling, then updates scroll layout via scale-to-fit extents or full recalculation. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OnSize()
 
-/* Runs fallback size handling, then updates scroll layout via scale-to-fit extents or full
-   recalculation. [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall TNewGameCommand::OnSize(TNewGameCommand *this,TMacViewMgr *thisObj)
+void __fastcall TNewGameCommand::OnSize(int param_1)
 
 {
-  TMacViewMgr *unaff_ESI;
-  
-  CWnd::Default((CWnd *)this);
-  if (this->field40 == (LPCSTR)0xffffffff) {
-    TArmyTacUnit::SetScaleToFitSize
-              ((TArmyTacUnit *)this,this->field44,(int)this->pField48,(int)unaff_ESI);
+  CWnd::Default();
+  if (*(int *)(param_1 + 0x40) == -1) {
+    TArmyTacUnit::SetScaleToFitSize(*(undefined4 *)(param_1 + 0x44),*(undefined4 *)(param_1 + 0x48))
+    ;
   }
   else {
-    TArmyTacUnit::UpdateBars((TArmyTacUnit *)this,unaff_ESI);
+    TArmyTacUnit::UpdateBars();
   }
   return;
 }

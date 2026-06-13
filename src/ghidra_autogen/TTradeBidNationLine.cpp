@@ -3,108 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTradeBidNationLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040115E
-// GHIDRA_NAME TTradeBidNationLine::thunk_GetTTradeBidNationViewClassNamePointer_At0040115e
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeBidNationViewClassNamePointer_At0040115e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradeBidNationViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradeBidNationViewClassNamePointer */
-
-void * __cdecl TTradeBidNationLine::thunk_GetTTradeBidNationViewClassNamePointer_At0040115e(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TTradeBidNationView::GetTTradeBidNationViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403AE4
-// GHIDRA_NAME TTradeBidNationLine::thunk_ConstructTTradeBidNationLineBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTTradeBidNationLineBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeBidNationLineBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTTradeBidNationLineBaseState */
-
-void * __thiscall
-TTradeBidNationLine::thunk_ConstructTTradeBidNationLineBaseState(TTradeBidNationLine *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ConstructTTradeBidNationLineBaseState(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004044FD
-// GHIDRA_NAME TTradeBidNationLine::thunk_ConstructTTradeBidNationViewBaseState_At004044fd
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTradeBidNationViewBaseState_At004044fd(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeBidNationViewBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTTradeBidNationViewBaseState */
-
-void __thiscall
-TTradeBidNationLine::thunk_ConstructTTradeBidNationViewBaseState_At004044fd
-          (TTradeBidNationLine *this)
-
-{
-  TTradeBidNationView::ConstructTTradeBidNationViewBaseState((TTradeBidNationView *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406CBC
-// GHIDRA_NAME TTradeBidNationLine::thunk_GetTTradeBidNationLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeBidNationLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradeBidNationLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradeBidNationLineClassNamePointer */
-
-void * __cdecl TTradeBidNationLine::thunk_GetTTradeBidNationLineClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradeBidNationLineClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040746E
-// GHIDRA_NAME TTradeBidNationLine::thunk_DestructTTradeBidNationLineAndMaybeFree_At0040746e
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTradeBidNationLineAndMaybeFree_At0040746e(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTradeBidNationLineAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTradeBidNationLineAndMaybeFree */
-
-void * __thiscall
-TTradeBidNationLine::thunk_DestructTTradeBidNationLineAndMaybeFree_At0040746e
-          (TTradeBidNationLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTradeBidNationLineAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD950
 // GHIDRA_NAME TTradeBidNationLine::CreateTTradeBidNationLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradeBidNationLineInstance(void)
+// GHIDRA_PROTO undefined CreateTTradeBidNationLineInstance()
 
-void * __cdecl TTradeBidNationLine::CreateTTradeBidNationLineInstance(void)
+undefined4 * TTradeBidNationLine::CreateTTradeBidNationLineInstance(void)
 
 {
-  TLineData *pThis;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -114,45 +21,40 @@ void * __cdecl TTradeBidNationLine::CreateTTradeBidNationLineInstance(void)
   puStack_8 = &LAB_0063942a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (pThis != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(pThis);
-    pThis->field0_0x0 = &PTR_thunk_GetTTradeBidNationLineClassNamePointer_0066e4f0;
-    pTVar1 = pThis;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TLineData::ConstructTLineDataBaseState();
+    *puVar1 = &PTR_LAB_0066e4f0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD9C0
 // GHIDRA_NAME TTradeBidNationLine::GetTTradeBidNationLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradeBidNationLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradeBidNationLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradeBidNationLineClassNamePointer()
 
-/* Returns class descriptor pointer for TTradeBidNationLine. */
-
-void * __cdecl TTradeBidNationLine::GetTTradeBidNationLineClassNamePointer(void)
+undefined ** TTradeBidNationLine::GetTTradeBidNationLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradeBidNationLine;
+  return &PTR_s_TTradeBidNationLine_0066dc48;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDA20
 // GHIDRA_NAME TTradeBidNationLine::ConstructTTradeBidNationLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTradeBidNationLineBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTradeBidNationLineBaseState()
 
-void * __thiscall
-TTradeBidNationLine::ConstructTTradeBidNationLineBaseState(TTradeBidNationLine *this)
+void __thiscall
+TTradeBidNationLine::ConstructTTradeBidNationLineBaseState
+          (int param_1,int param_2,undefined4 param_3)
 
 {
-  short sVar1;
+  undefined2 uVar1;
   undefined2 uVar2;
-  TView *this_00;
-  void *extraout_EAX;
+  undefined4 *puVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -162,38 +64,38 @@ TTradeBidNationLine::ConstructTTradeBidNationLineBaseState(TTradeBidNationLine *
   puStack_8 = &LAB_0063944a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = AllocateWithFallbackHandler();
+  puVar3 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (this_00 == (TView *)0x0) {
-    this_00 = (TView *)0x0;
+  if (puVar3 == (undefined4 *)0x0) {
+    puVar3 = (undefined4 *)0x0;
   }
   else {
-    TView::thunk_ConstructTViewBaseState(this_00);
-    this_00->pVtable = &g_vtblTTradeBidNationLine;
+    TView::thunk_ConstructTViewBaseState();
+    *puVar3 = &PTR_LAB_0066e530;
   }
-  sVar1 = this->field10;
-  uVar2 = this->field14_0x12;
+  uVar1 = *(undefined2 *)(param_1 + 0x10);
+  uVar2 = *(undefined2 *)(param_1 + 0x12);
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  *(undefined2 *)((int)&this_00[1].pVtable + 2) = uVar2;
-  *(short *)&this_00[1].pVtable = sVar1;
+  thunk_InitializeUiResourceEntryFrameAndParent
+            (*(undefined4 *)(param_2 + 0x40),param_2,param_3,param_1 + 8,5,5,0);
+  *(undefined2 *)((int)puVar3 + 0x62) = uVar2;
+  *(undefined2 *)(puVar3 + 0x18) = uVar1;
   *unaff_FS_OFFSET = local_c;
-  return extraout_EAX;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDAF0
 // GHIDRA_NAME TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTradeBidNationLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTradeBidNationLineAndMaybeFree()
 
-void * __thiscall
-TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree
-          (TTradeBidNationLine *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTradeBidNationLine::DestructTTradeBidNationLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

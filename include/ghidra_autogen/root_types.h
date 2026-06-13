@@ -12,7 +12,6 @@ typedef unsigned char    byte;
 typedef unsigned int    dword;
 typedef pointer32 ImageBaseOffset32;
 
-typedef int    sdword;
 typedef unsigned char    uchar;
 typedef unsigned int    uint;
 typedef unsigned long    ulong;
@@ -103,16 +102,6 @@ struct CityDialogController {
     int extendedField8C;
 };
 
-typedef struct CivilianMapInteractionManager CivilianMapInteractionManager, *PCivilianMapInteractionManager;
-
-struct CivilianMapInteractionManager { // PlaceHolder Class Structure
-};
-
-typedef struct Family_ArmoryViewCore_Root Family_ArmoryViewCore_Root, *PFamily_ArmoryViewCore_Root;
-
-struct Family_ArmoryViewCore_Root { // PlaceHolder Class Structure
-};
-
 typedef struct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct, *PIMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct;
 
 struct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct {
@@ -127,171 +116,14 @@ union IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryUnion {
     struct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct IMAGE_RESOURCE_DIRECTORY_ENTRY_DirectoryStruct;
 };
 
-typedef struct PanelEventPayload PanelEventPayload, *PPanelEventPayload;
+typedef struct InputState InputState, *PInputState;
 
-typedef enum EControlTagFourCC {
-    CONTROL_TAG_TAG_ENOD=1685024357,
-    CONTROL_TAG_TAG_TXEN=1852143732,
-    CONTROL_TAG_TAG_YAKO=1869308281
-} EControlTagFourCC;
-
-struct PanelEventPayload {
-    undefined field0_0x0;
-    undefined field1_0x1;
-    undefined field2_0x2;
-    undefined field3_0x3;
-    undefined field4_0x4;
-    undefined field5_0x5;
-    undefined field6_0x6;
-    undefined field7_0x7;
-    undefined field8_0x8;
-    undefined field9_0x9;
-    undefined field10_0xa;
-    undefined field11_0xb;
-    undefined field12_0xc;
-    undefined field13_0xd;
-    undefined field14_0xe;
-    undefined field15_0xf;
-    undefined field16_0x10;
-    undefined field17_0x11;
-    undefined field18_0x12;
-    undefined field19_0x13;
-    undefined field20_0x14;
-    undefined field21_0x15;
-    undefined field22_0x16;
-    undefined field23_0x17;
-    undefined field24_0x18;
-    undefined field25_0x19;
-    undefined field26_0x1a;
-    undefined field27_0x1b;
-    enum EControlTagFourCC controlTag1c; // manual
-    void *pOwner20; // manual
-    undefined field30_0x24;
-    undefined field31_0x25;
-    undefined field32_0x26;
-    undefined field33_0x27;
-    undefined field34_0x28;
-    undefined field35_0x29;
-    undefined field36_0x2a;
-    undefined field37_0x2b;
-    undefined field38_0x2c;
-    undefined field39_0x2d;
-    undefined field40_0x2e;
-    undefined field41_0x2f;
-    undefined field42_0x30;
-    undefined field43_0x31;
-    undefined field44_0x32;
-    undefined field45_0x33;
-    undefined field46_0x34;
-    undefined field47_0x35;
-    undefined field48_0x36;
-    undefined field49_0x37;
-    undefined field50_0x38;
-    undefined field51_0x39;
-    undefined field52_0x3a;
-    undefined field53_0x3b;
-    undefined field54_0x3c;
-    undefined field55_0x3d;
-    undefined field56_0x3e;
-    undefined field57_0x3f;
-    undefined field58_0x40;
-    undefined field59_0x41;
-    undefined field60_0x42;
-    undefined field61_0x43;
-    undefined field62_0x44;
-    undefined field63_0x45;
-    undefined field64_0x46;
-    undefined field65_0x47;
-    undefined field66_0x48;
-    undefined field67_0x49;
-    undefined field68_0x4a;
-    undefined field69_0x4b;
-    undefined field70_0x4c;
-    undefined field71_0x4d;
-    undefined field72_0x4e;
-    undefined field73_0x4f;
-    undefined field74_0x50;
-    undefined field75_0x51;
-    undefined field76_0x52;
-    undefined field77_0x53;
-    undefined field78_0x54;
-    undefined field79_0x55;
-    undefined field80_0x56;
-    undefined field81_0x57;
-    undefined field82_0x58;
-    undefined field83_0x59;
-    undefined field84_0x5a;
-    undefined field85_0x5b;
-    undefined field86_0x5c;
-    undefined field87_0x5d;
-    undefined field88_0x5e;
-    undefined field89_0x5f;
-    undefined field90_0x60;
-    undefined field91_0x61;
-    undefined field92_0x62;
-    undefined field93_0x63;
-    undefined field94_0x64;
-    undefined field95_0x65;
-    undefined field96_0x66;
-    undefined field97_0x67;
-    undefined field98_0x68;
-    undefined field99_0x69;
-    undefined field100_0x6a;
-    undefined field101_0x6b;
-    undefined field102_0x6c;
-    undefined field103_0x6d;
-    undefined field104_0x6e;
-    undefined field105_0x6f;
-    undefined field106_0x70;
-    undefined field107_0x71;
-    undefined field108_0x72;
-    undefined field109_0x73;
-    undefined field110_0x74;
-    undefined field111_0x75;
-    undefined field112_0x76;
-    undefined field113_0x77;
-    undefined field114_0x78;
-    undefined field115_0x79;
-    undefined field116_0x7a;
-    undefined field117_0x7b;
-    undefined field118_0x7c;
-    undefined field119_0x7d;
-    undefined field120_0x7e;
-    undefined field121_0x7f;
-    undefined field122_0x80;
-    undefined field123_0x81;
-    undefined field124_0x82;
-    undefined field125_0x83;
-    undefined field126_0x84;
-    undefined field127_0x85;
-    undefined field128_0x86;
-    undefined field129_0x87;
-    undefined field130_0x88;
-    undefined field131_0x89;
-    undefined field132_0x8a;
-    undefined field133_0x8b;
-    undefined field134_0x8c;
-    undefined field135_0x8d;
-    undefined field136_0x8e;
-    undefined field137_0x8f;
-    undefined field138_0x90;
-    undefined field139_0x91;
-    undefined field140_0x92;
-    undefined field141_0x93;
-    undefined field142_0x94;
-    undefined field143_0x95;
-    undefined field144_0x96;
-    undefined field145_0x97;
-    undefined field146_0x98;
-    undefined field147_0x99;
-    undefined field148_0x9a;
-    undefined field149_0x9b;
-    void *pSelectionPayload9c; // manual
+struct InputState { // PlaceHolder Class Structure
 };
 
-typedef struct SecondaryNationState SecondaryNationState, *PSecondaryNationState;
+typedef struct ObjectPool ObjectPool, *PObjectPool;
 
-struct SecondaryNationState { // PlaceHolder Class Structure
+struct ObjectPool { // PlaceHolder Class Structure
 };
 
 typedef struct TacticalBattleController TacticalBattleController, *PTacticalBattleController;
@@ -347,10 +179,180 @@ struct TacticalBattleUnit {
     int flagsOrMode;
 };
 
+typedef struct TacticalBattleView TacticalBattleView, *PTacticalBattleView;
+
+struct TacticalBattleView { // PlaceHolder Class Structure
+};
+
 typedef struct TacticalHexCoord TacticalHexCoord, *PTacticalHexCoord;
 
 struct TacticalHexCoord {
     uint row;
     int doubleColumn;
+};
+
+typedef struct TArmyStackList TArmyStackList, *PTArmyStackList;
+
+struct TArmyStackList { // PlaceHolder Class Structure
+};
+
+typedef struct TBuildingConstructionView TBuildingConstructionView, *PTBuildingConstructionView;
+
+struct TBuildingConstructionView { // PlaceHolder Class Structure
+};
+
+typedef struct TCityProductionView TCityProductionView, *PTCityProductionView;
+
+struct TCityProductionView { // PlaceHolder Class Structure
+};
+
+typedef struct TCityTask TCityTask, *PTCityTask;
+
+struct TCityTask { // PlaceHolder Class Structure
+};
+
+typedef struct TCivDescription TCivDescription, *PTCivDescription;
+
+struct TCivDescription { // PlaceHolder Class Structure
+};
+
+typedef struct TCivToolbar TCivToolbar, *PTCivToolbar;
+
+struct TCivToolbar { // PlaceHolder Class Structure
+};
+
+typedef struct TCivWorkOrderState TCivWorkOrderState, *PTCivWorkOrderState;
+
+struct TCivWorkOrderState { // PlaceHolder Class Structure
+};
+
+typedef struct TControl TControl, *PTControl;
+
+struct TControl { // PlaceHolder Class Structure
+};
+
+typedef struct TControlSeaZoneMission TControlSeaZoneMission, *PTControlSeaZoneMission;
+
+struct TControlSeaZoneMission { // PlaceHolder Class Structure
+};
+
+typedef struct TCountry TCountry, *PTCountry;
+
+struct TCountry { // PlaceHolder Class Structure
+};
+
+typedef struct TDeluxeText TDeluxeText, *PTDeluxeText;
+
+struct TDeluxeText { // PlaceHolder Class Structure
+};
+
+typedef struct THQButton THQButton, *PTHQButton;
+
+struct THQButton { // PlaceHolder Class Structure
+};
+
+typedef struct TIndexAndRankList TIndexAndRankList, *PTIndexAndRankList;
+
+struct TIndexAndRankList { // PlaceHolder Class Structure
+};
+
+typedef struct TMacViewMgr TMacViewMgr, *PTMacViewMgr;
+
+struct TMacViewMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TMapEditCluster TMapEditCluster, *PTMapEditCluster;
+
+struct TMapEditCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TMapEditView TMapEditView, *PTMapEditView;
+
+struct TMapEditView { // PlaceHolder Class Structure
+};
+
+typedef struct TMapMgr TMapMgr, *PTMapMgr;
+
+struct TMapMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TNavyBattle TNavyBattle, *PTNavyBattle;
+
+struct TNavyBattle { // PlaceHolder Class Structure
+};
+
+typedef struct TObject TObject, *PTObject;
+
+struct TObject { // PlaceHolder Class Structure
+};
+
+typedef struct TScatteredShipsMission TScatteredShipsMission, *PTScatteredShipsMission;
+
+struct TScatteredShipsMission { // PlaceHolder Class Structure
+};
+
+typedef struct TShipyardView TShipyardView, *PTShipyardView;
+
+struct TShipyardView { // PlaceHolder Class Structure
+};
+
+typedef struct TSimMgr TSimMgr, *PTSimMgr;
+
+struct TSimMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TSpecialQuitPicture TSpecialQuitPicture, *PTSpecialQuitPicture;
+
+struct TSpecialQuitPicture { // PlaceHolder Class Structure
+};
+
+typedef struct TSuperCivRoster TSuperCivRoster, *PTSuperCivRoster;
+
+struct TSuperCivRoster { // PlaceHolder Class Structure
+};
+
+typedef struct TToolBarCluster TToolBarCluster, *PTToolBarCluster;
+
+struct TToolBarCluster { // PlaceHolder Class Structure
+};
+
+typedef struct TTradeBookView TTradeBookView, *PTTradeBookView;
+
+struct TTradeBookView { // PlaceHolder Class Structure
+};
+
+typedef struct TTransFocusAnimation TTransFocusAnimation, *PTTransFocusAnimation;
+
+struct TTransFocusAnimation { // PlaceHolder Class Structure
+};
+
+typedef struct TTwoPicSlider TTwoPicSlider, *PTTwoPicSlider;
+
+struct TTwoPicSlider { // PlaceHolder Class Structure
+};
+
+typedef struct TUnit TUnit, *PTUnit;
+
+struct TUnit { // PlaceHolder Class Structure
+};
+
+typedef struct TUnitOrder TUnitOrder, *PTUnitOrder;
+
+struct TUnitOrder { // PlaceHolder Class Structure
+};
+
+typedef struct TView TView, *PTView;
+
+struct TView { // PlaceHolder Class Structure
+};
+
+typedef struct TViewMgr TViewMgr, *PTViewMgr;
+
+struct TViewMgr { // PlaceHolder Class Structure
+};
+
+typedef struct TWorldView TWorldView, *PTWorldView;
+
+struct TWorldView { // PlaceHolder Class Structure
 };
 

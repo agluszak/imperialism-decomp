@@ -3,54 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TProvinceDesirabilityList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405C18
-// GHIDRA_NAME TProvinceDesirabilityList::thunk_GetTProvinceDesirabilityListClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTProvinceDesirabilityListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTProvinceDesirabilityListClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTProvinceDesirabilityListClassNamePointer */
-
-void * __cdecl TProvinceDesirabilityList::thunk_GetTProvinceDesirabilityListClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTProvinceDesirabilityListClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405EB1
-// GHIDRA_NAME TProvinceDesirabilityList::thunk_DestructTProvinceDesirabilityListAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTProvinceDesirabilityListAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTProvinceDesirabilityListAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTProvinceDesirabilityListAndMaybeFree */
-
-void * __thiscall
-TProvinceDesirabilityList::thunk_DestructTProvinceDesirabilityListAndMaybeFree
-          (TProvinceDesirabilityList *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTProvinceDesirabilityListAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6500
 // GHIDRA_NAME TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance
-// GHIDRA_PROTO void * __cdecl CreateTProvinceDesirabilityListInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TProvinceDesirabilityList; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTProvinceDesirabilityListInstance()
 
-/* [ClassQuad] create inferred for TProvinceDesirabilityList; alloc factory pattern. */
-
-void * __cdecl TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance(void)
+TIndexAndRankList * TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance(void)
 
 {
   TIndexAndRankList *this;
@@ -64,12 +21,12 @@ void * __cdecl TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstanc
   puStack_8 = &LAB_00631d2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
     TIndexAndRankList::CPtrArray(this);
-    this->pVtable = &PTR_thunk_GetTProvinceDesirabilityListClassNamePointer_00653810;
+    *(undefined ***)this = &_vftable_;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -78,34 +35,26 @@ void * __cdecl TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstanc
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6570
 // GHIDRA_NAME TProvinceDesirabilityList::GetTProvinceDesirabilityListClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTProvinceDesirabilityListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TProvinceDesirabilityList.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTProvinceDesirabilityListClassNamePointer()
 
-/* Returns class descriptor pointer for TProvinceDesirabilityList. */
-
-void * __cdecl TProvinceDesirabilityList::GetTProvinceDesirabilityListClassNamePointer(void)
+char * TProvinceDesirabilityList::GetTProvinceDesirabilityListClassNamePointer(void)
 
 {
-  return &g_pClassDescTProvinceDesirabilityList;
+  return "\x04gi";
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D65C0
-// GHIDRA_NAME TProvinceDesirabilityList::DestructTProvinceDesirabilityListAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTProvinceDesirabilityListAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TProvinceDesirabilityList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall
-TProvinceDesirabilityList::DestructTProvinceDesirabilityListAndMaybeFree
-          (TProvinceDesirabilityList *this,byte freeSelfFlag)
+undefined4 __thiscall
+TProvinceDesirabilityList::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
-  TIndexAndRankList *unaff_ESI;
-  
-  CObArray::thunk_DestructCObArray(unaff_ESI);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  CObArray::thunk_DestructCObArray();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

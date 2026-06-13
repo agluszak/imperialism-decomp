@@ -3,95 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TCityInteriorMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040461A
-// GHIDRA_NAME TCityInteriorMinister::thunk_DestructTCityInteriorMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCityInteriorMinisterAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTCityInteriorMinister [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTCityInteriorMinister [FID:thunk_target_sync] */
-
-void * __thiscall
-TCityInteriorMinister::thunk_DestructTCityInteriorMinisterAndMaybeFree
-          (TCityInteriorMinister *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTCityInteriorMinisterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406D5C
-// GHIDRA_NAME TCityInteriorMinister::thunk_CreateTCityInteriorMinisterInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTCityInteriorMinisterInstance(int slotIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ClearCityInteriorMinisterSlotByIndex [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ClearCityInteriorMinisterSlotByIndex [FID:thunk_target_sync] */
-
-void __thiscall
-TCityInteriorMinister::thunk_CreateTCityInteriorMinisterInstance
-          (TCityInteriorMinister *this,int slotIndex)
-
-{
-  CreateTCityInteriorMinisterInstance(this,slotIndex);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE7F0
 // GHIDRA_NAME TCityInteriorMinister::CreateTCityInteriorMinisterInstance
-// GHIDRA_PROTO void __thiscall CreateTCityInteriorMinisterInstance(int slotIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Clears city-interior-minister slot value for given index.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCityInteriorMinisterInstance()
 
-/* Clears city-interior-minister slot value for given index. */
-
-void __thiscall
-TCityInteriorMinister::CreateTCityInteriorMinisterInstance
-          (TCityInteriorMinister *this,int slotIndex)
+void __thiscall TCityInteriorMinister::CreateTCityInteriorMinisterInstance(int param_1,int param_2)
 
 {
-  *(undefined2 *)((int)&this[1].pVtable + slotIndex * 2) = 0;
+  *(undefined2 *)(param_1 + 0x158 + param_2 * 2) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE820
 // GHIDRA_NAME TCityInteriorMinister::GetTCityInteriorMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCityInteriorMinisterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCityInteriorMinister.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCityInteriorMinisterClassNamePointer()
 
-/* Returns class descriptor pointer for TCityInteriorMinister. */
-
-void * __cdecl TCityInteriorMinister::GetTCityInteriorMinisterClassNamePointer(void)
+undefined ** TCityInteriorMinister::GetTCityInteriorMinisterClassNamePointer(void)
 
 {
-  return &g_pClassDescTCityInteriorMinister;
+  return &PTR_s_TCityInteriorMinister_006506c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE880
 // GHIDRA_NAME TCityInteriorMinister::DestructTCityInteriorMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCityInteriorMinisterAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] dtor inferred for TCityInteriorMinister; free-if-owned pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTCityInteriorMinisterAndMaybeFree()
 
-/* [ClassQuad] dtor inferred for TCityInteriorMinister; free-if-owned pattern. */
-
-void * __thiscall
-TCityInteriorMinister::DestructTCityInteriorMinisterAndMaybeFree
-          (TCityInteriorMinister *this,byte freeSelfFlag)
+undefined4 __thiscall
+TCityInteriorMinister::DestructTCityInteriorMinisterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestroyTCityInteriorMinister_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

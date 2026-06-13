@@ -1,26 +1,13 @@
 {
-  "category_count": 18,
+  "category_count": 5,
   "generated_header_files": [
     "DOS.h",
     "Demangler.h",
     "PE.h",
     "all_types.h",
     "auto_structs.h",
-    "imperialism.h",
-    "imperialism/Classes.h",
-    "imperialism/Enums.h",
-    "imperialism/MapGen.h",
-    "imperialism/String.h",
-    "imperialism/Structs.h",
-    "imperialism/TurnEvent.h",
-    "imperialism/TurnInstruction.h",
-    "imperialism/UMapper.h",
-    "imperialism/classes.h",
-    "imperialism/runtime.h",
-    "imperialism/types.h",
-    "imperialism/ui.h",
     "root_types.h"
   ],
   "program": "Imperialism.exe",
-  "type_count": 624
+  "type_count": 120
 }

@@ -5,16 +5,25 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0540
 // GHIDRA_NAME TEngineerDialog::GetTEngineerDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTEngineerDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TEngineerDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTEngineerDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TEngineerDialog. */
-
-void * __cdecl TEngineerDialog::GetTEngineerDialogClassNamePointer(void)
+undefined ** TEngineerDialog::GetTEngineerDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTEngineerDialog;
+  return &PTR_s_TEngineerDialog_00651350;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D0590
+// GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall TEngineerDialog::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
 }
 

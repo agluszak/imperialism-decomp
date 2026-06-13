@@ -3,56 +3,28 @@
 // Program: Imperialism.exe
 // Bucket: TNextDiplomationCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040999E
-// GHIDRA_NAME TNextDiplomationCommand::thunk_GetTNextDiplomationCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNextDiplomationCommandClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNextDiplomationCommandClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNextDiplomationCommandClassNamePointer */
-
-void * __cdecl TNextDiplomationCommand::thunk_GetTNextDiplomationCommandClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNextDiplomationCommandClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2910
 // GHIDRA_NAME TNextDiplomationCommand::GetTNextDiplomationCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNextDiplomationCommandClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNextDiplomationCommand.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNextDiplomationCommandClassNamePointer()
 
-/* Returns class descriptor pointer for TNextDiplomationCommand. */
-
-void * __cdecl TNextDiplomationCommand::GetTNextDiplomationCommandClassNamePointer(void)
+undefined ** TNextDiplomationCommand::GetTNextDiplomationCommandClassNamePointer(void)
 
 {
-  return &g_pClassDescTNextDiplomationCommand;
+  return &PTR_s_TNextDiplomationCommand_00654ce8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2970
 // GHIDRA_NAME TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree
-// GHIDRA_PROTO void __cdecl DestructTNextDiplomationCommandAndMaybeFree(byte * pPair)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Swaps the first two bytes in next-diplomacy-command pair payload.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTNextDiplomationCommandAndMaybeFree()
 
-/* Swaps the first two bytes in next-diplomacy-command pair payload. */
-
-void __cdecl TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree(byte *pPair)
+void TNextDiplomationCommand::DestructTNextDiplomationCommandAndMaybeFree(undefined1 *param_1)
 
 {
-  byte bVar1;
+  undefined1 uVar1;
   
-  bVar1 = *pPair;
-  *pPair = pPair[1];
-  pPair[1] = bVar1;
+  uVar1 = *param_1;
+  *param_1 = param_1[1];
+  param_1[1] = uVar1;
   return;
 }
 

@@ -3,93 +3,28 @@
 // Program: Imperialism.exe
 // Bucket: TMadnessButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402AB8
-// GHIDRA_NAME TMadnessButton::thunk_DestructTMadnessButtonAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTMadnessButtonAndMaybeFree(byte arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Direct thunk [FID:thunk_target_sync] */
-
-void __thiscall
-TMadnessButton::thunk_DestructTMadnessButtonAndMaybeFree(TMadnessButton *this,byte arg1)
-
-{
-  DestructTMadnessButtonAndMaybeFree(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406299
-// GHIDRA_NAME TMadnessButton::thunk_scalar_deleting_destructor_00406299
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00406299(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TMadnessButton::thunk_scalar_deleting_destructor_00406299(TMadnessButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004066FE
-// GHIDRA_NAME TMadnessButton::thunk_GetTMadnessButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMadnessButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMadnessButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMadnessButtonClassNamePointer */
-
-void * __cdecl TMadnessButton::thunk_GetTMadnessButtonClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMadnessButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0054EAD0
 // GHIDRA_NAME TMadnessButton::GetTMadnessButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMadnessButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMadnessButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMadnessButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TMadnessButton. */
-
-void * __cdecl TMadnessButton::GetTMadnessButtonClassNamePointer(void)
+undefined ** TMadnessButton::GetTMadnessButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTMadnessButton;
+  return &PTR_s_TMadnessButton_0065c1b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054EB30
 // GHIDRA_NAME TMadnessButton::DestructTMadnessButtonAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTMadnessButtonAndMaybeFree(byte arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Update madness button state index and redraw when requested
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTMadnessButtonAndMaybeFree()
 
-/* Update madness button state index and redraw when requested */
-
-void __thiscall TMadnessButton::DestructTMadnessButtonAndMaybeFree(TMadnessButton *this,byte arg1)
+void __thiscall TMadnessButton::DestructTMadnessButtonAndMaybeFree(int *param_1,char param_2)
 
 {
-  void *pvVar1;
+  int iVar1;
   char cVar2;
-  void *pvVar3;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_34 [12];
-  undefined1 auStack_28 [28];
+  undefined1 auStack_34 [40];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -98,28 +33,28 @@ void __thiscall TMadnessButton::DestructTMadnessButtonAndMaybeFree(TMadnessButto
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634f88;
   *unaff_FS_OFFSET = &uStack_c;
-  pvVar1 = this->pVtable;
-  pvVar3 = this->field148_0x98;
-  cVar2 = (**(code **)((int)pvVar1 + 0x28))();
+  iVar1 = *param_1;
+  iVar3 = param_1[0x26];
+  cVar2 = (**(code **)(iVar1 + 0x28))();
   if (cVar2 == '\0') {
-    pvVar3 = (void *)((int)pvVar3 + 4);
+    iVar3 = iVar3 + 4;
   }
   else {
-    cVar2 = (**(code **)((int)pvVar1 + 0x1d0))();
+    cVar2 = (**(code **)(iVar1 + 0x1d0))();
     if (cVar2 == '\0') {
-      pvVar3 = (void *)((int)pvVar3 + 2);
+      iVar3 = iVar3 + 2;
     }
-    if (this->field97_0x64 != '\0') {
-      pvVar3 = (void *)((int)pvVar3 + 1);
+    if ((char)param_1[0x19] != '\0') {
+      iVar3 = iVar3 + 1;
     }
   }
-  if ((void *)(int)this->field129_0x84 != pvVar3) {
-    (**(code **)((int)pvVar1 + 0x1c8))(pvVar3,0);
-    if (arg1 != 0) {
-      (**(code **)((int)pvVar1 + 0x128))(auStack_34);
-      thunk_ConstructScopedMapQuickDrawContext(auStack_28,(int)this);
+  if ((short)param_1[0x21] != iVar3) {
+    (**(code **)(iVar1 + 0x1c8))(iVar3,0);
+    if (param_2 != '\0') {
+      (**(code **)(iVar1 + 0x128))(auStack_34);
+      ConstructScopedMapQuickDrawContext(param_1);
       puStack_8 = (undefined1 *)0x0;
-      (**(code **)((int)pvVar1 + 0x110))(&stack0xffffffc8);
+      (**(code **)(iVar1 + 0x110))(&stack0xffffffc8);
       uStack_4 = 0xffffffff;
       thunk_DestroyScopedMapQuickDrawContext();
     }

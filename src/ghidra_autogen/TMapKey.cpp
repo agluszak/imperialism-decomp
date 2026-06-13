@@ -3,105 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TMapKey.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040217B
-// GHIDRA_NAME TMapKey::thunk_ConstructTMapKeyBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTMapKeyBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTMapKeyBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTMapKeyBaseState */
-
-void * __thiscall TMapKey::thunk_ConstructTMapKeyBaseState(TMapKey *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ConstructTMapKeyBaseState(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403CCE
-// GHIDRA_NAME TMapKey::thunk_DispatchHintRenderByViewMode
-// GHIDRA_PROTO void __thiscall thunk_DispatchHintRenderByViewMode(void * param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
-// GHIDRA_COMMENT_END
-
-/* Direct thunk */
-
-void __thiscall TMapKey::thunk_DispatchHintRenderByViewMode(TMapKey *this,void *param_1)
-
-{
-  THQButton::DispatchHintRenderByViewMode((THQButton *)this,param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406E8D
-// GHIDRA_NAME TMapKey::thunk_scalar_deleting_destructor_00406E8D
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00406E8D(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TMapKey::thunk_scalar_deleting_destructor_00406E8D(TMapKey *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004086B1
-// GHIDRA_NAME TMapKey::thunk_GetTMapKeyClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMapKeyClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMapKeyClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMapKeyClassNamePointer */
-
-void * __cdecl TMapKey::thunk_GetTMapKeyClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMapKeyClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AD20
 // GHIDRA_NAME TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_ConstructUiTextResourceEntryBase; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20()
 
-/* [WrapperShape] small wrapper around thunk_ConstructUiTextResourceEntryBase; instructions=7,
-   call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(TMapKey *this)
+undefined4 * __fastcall
+TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20(undefined4 *param_1)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  this->pVtable = &g_vtblTMapKey;
-  return;
+  TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  *param_1 = &PTR_LAB_00644308;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FC9C0
 // GHIDRA_NAME TMapKey::CreateTMapKeyInstance
-// GHIDRA_PROTO void * __cdecl CreateTMapKeyInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TMapKey; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTMapKeyInstance()
 
-/* [ClassQuad] create inferred for TMapKey; alloc factory pattern. */
-
-void * __cdecl TMapKey::CreateTMapKeyInstance(void)
+undefined4 * TMapKey::CreateTMapKeyInstance(void)
 
 {
   undefined4 *puVar1;
@@ -114,65 +33,54 @@ void * __cdecl TMapKey::CreateTMapKeyInstance(void)
   puStack_8 = &LAB_006330ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTMapKeyClassNamePointer_006404b0;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_006404b0;
     *(undefined2 *)(puVar1 + 0x24) = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FCA70
 // GHIDRA_NAME TMapKey::GetTMapKeyClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMapKeyClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMapKey.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMapKeyClassNamePointer()
 
-/* Returns class descriptor pointer for TMapKey. */
-
-void * __cdecl TMapKey::GetTMapKeyClassNamePointer(void)
+undefined ** TMapKey::GetTMapKeyClassNamePointer(void)
 
 {
-  return &g_pClassDescTMapKey;
+  return &PTR_s_TMapKey_00655038;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FCAC0
 // GHIDRA_NAME TMapKey::ConstructTMapKeyBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTMapKeyBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] ctor inferred for TMapKey from in-body g_vtblTMapKey assignment/use.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTMapKeyBaseState()
 
-/* [ClassQuad] ctor inferred for TMapKey from in-body g_vtblTMapKey assignment/use. */
-
-void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
+void __thiscall TMapKey::ConstructTMapKeyBaseState(int param_1,undefined4 param_2)
 
 {
   short sVar1;
-  void *pvVar2;
-  uint uVar3;
-  TDeluxeText *pTVar4;
-  undefined4 *extraout_EAX;
-  void *extraout_EAX_00;
-  int iVar5;
+  short sVar2;
+  int iVar3;
+  int *piVar4;
+  int *piVar5;
+  int iVar6;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar6;
+  int iVar7;
   undefined1 local_88;
   undefined1 local_87;
   undefined1 local_86;
   undefined1 local_85;
   undefined1 local_84 [4];
-  void **local_80;
-  TMapKey *local_7c;
+  int *local_80;
+  int local_7c;
   int local_78;
   int local_74;
-  TDeluxeText *pTStack_70;
+  int *piStack_70;
   undefined1 auStack_6c [4];
   undefined4 local_68;
   undefined4 local_64;
@@ -194,8 +102,8 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
   puStack_8 = &LAB_0063311d;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_7c = this;
-  thunk_NoOpUiLifecycleHook();
+  local_7c = param_1;
+  TView::thunk_NoOpUiLifecycleHook(param_2);
   local_4c[0] = 0x171;
   local_4c[1] = 0x171;
   local_4c[2] = 0x171;
@@ -208,11 +116,12 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
   local_4c[0xe] = 0x1b8;
   local_4c[0xb] = 0x1d1;
   local_4c[0xf] = 0x1d1;
-  local_80 = (void **)(uint)(ushort)((short)this->dwField_28 + *(short *)(this->dwField_20 + 0x28));
+  local_80 = (int *)(uint)(ushort)(*(short *)(param_1 + 0x28) +
+                                  *(short *)(*(int *)(param_1 + 0x20) + 0x28));
   local_4c[8] = 0x187;
   local_4c[0xc] = 0x187;
-  uVar3 = this->dwField_24;
-  sVar1 = *(short *)(this->dwField_20 + 0x24);
+  sVar1 = *(short *)(param_1 + 0x24);
+  sVar2 = *(short *)(*(int *)(param_1 + 0x20) + 0x24);
   local_4c[9] = 0x1a0;
   local_4c[0xd] = 0x1a0;
   local_68 = 0x46;
@@ -227,39 +136,39 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
   local_87 = 0;
   local_86 = 0;
   local_85 = 0;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_88);
-  thunk_InitializeUiTextStyleDescriptor((int)local_58,0,10,0x2b6b,3);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_88);
+  thunk_InitializeUiTextStyleDescriptor(local_58,0,10,0x2b6b,3);
   local_74 = (int)(short)local_80;
-  local_78 = (int)(short)((short)uVar3 + sVar1);
-  iVar5 = 0;
-  local_80 = g_apTerrainTypeDescriptorTable;
+  local_78 = (int)(short)(sVar1 + sVar2);
+  iVar6 = 0;
+  local_80 = &g_apTerrainTypeDescriptorTable;
   do {
-    if (*local_80 == (void *)0x0) {
-      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x275d,2,local_84);
+    if (*local_80 == 0) {
+      (**(code **)(*g_pLocalizationTable + 0x84))(0x275d,2,local_84);
     }
     else {
-      FormatOverlayTerrainLabelText();
+      FormatOverlayTerrainLabelText(local_84);
     }
-    pTVar4 = AllocateWithFallbackHandler();
+    piVar4 = (int *)AllocateWithFallbackHandler(0xa4);
     local_4._0_1_ = 1;
-    pTStack_70 = pTVar4;
-    if (pTVar4 == (TDeluxeText *)0x0) {
-      pTVar4 = (TDeluxeText *)0x0;
+    piStack_70 = piVar4;
+    if (piVar4 == (int *)0x0) {
+      piVar4 = (int *)0x0;
     }
     else {
-      TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)pTVar4);
-      ((TView *)&pTVar4->pVtable)->pVtable = &g_vtblTMapKey;
+      TStaticText::thunk_ConstructUiTextResourceEntryBase();
+      *piVar4 = (int)&PTR_LAB_00644308;
       local_4._0_1_ = 2;
-      pTVar4->field_0x98 = 0;
-      pTVar4->field99 = 0;
-      pTVar4->field9a = 0;
-      pTVar4->field9b = 0;
-      thunk_ClearColorRgbaBytes();
-      ((TView *)&pTVar4->pVtable)->pVtable = &g_vtblTMapKey;
-      thunk_SetColorRgbAndClearAlphaByte();
-      uVar6 = *extraout_EAX;
-      *(undefined1 *)&pTVar4[1].pVtable = 0;
-      *(undefined4 *)&pTVar4->field_0x98 = uVar6;
+      *(undefined1 *)(piVar4 + 0x26) = 0;
+      *(undefined1 *)((int)piVar4 + 0x99) = 0;
+      *(undefined1 *)((int)piVar4 + 0x9a) = 0;
+      *(undefined1 *)((int)piVar4 + 0x9b) = 0;
+      ClearColorRgbaBytes();
+      *piVar4 = (int)&PTR_LAB_006406d8;
+      piVar5 = (int *)SetColorRgbAndClearAlphaByte(0,0,0);
+      iVar3 = *piVar5;
+      *(undefined1 *)(piVar4 + 0x28) = 0;
+      piVar4[0x26] = iVar3;
     }
     local_4 = (uint)local_4._1_3_ << 8;
     RStack_2c.left = 0;
@@ -267,26 +176,26 @@ void * __thiscall TMapKey::ConstructTMapKeyBaseState(TMapKey *this)
     RStack_2c.right = 0;
     RStack_2c.bottom = 0;
     CopyRect(&tStack_1c,&RStack_2c);
-    iStack_60 = local_4c[iVar5] - local_78;
-    iStack_5c = (local_4c[iVar5 + 8] - local_74) + -0xf;
-    TDeluxeText::thunk_ConstructTDeluxeTextBaseState
-              (pTVar4,(int)this,(int)&iStack_60,(int)&local_68,(int)&tStack_1c,(int)local_58,-2);
-    pvVar2 = pTVar4->pVtable;
-    uVar6 = 0;
-    (**(code **)((int)pvVar2 + 0x1ec))(local_84);
-    (**(code **)((int)pvVar2 + 0xa4))(0,0);
-    *(int *)&pTVar4->field_0x1c = iVar5 + 0x6e616d30;
-    (**(code **)((int)pvVar2 + 0x1f8))(0);
-    *(undefined4 *)&pTVar4->field_0x9c = uVar6;
-    *(undefined1 *)&pTVar4[1].pVtable = 1;
-    (**(code **)((int)pvVar2 + 0x1e4))(auStack_6c,1);
-    iVar5 = iVar5 + 1;
+    iStack_60 = local_4c[iVar6] - local_78;
+    iStack_5c = (local_4c[iVar6 + 8] - local_74) + -0xf;
+    TDeluxeText::ConstructTDeluxeTextBaseState
+              (param_1,&iStack_60,&local_68,&tStack_1c,local_58,0xfffffffe);
+    iVar3 = *piVar4;
+    iVar7 = 0;
+    (**(code **)(iVar3 + 0x1ec))(local_84);
+    (**(code **)(iVar3 + 0xa4))(0,0);
+    piVar4[7] = iVar6 + 0x6e616d30;
+    (**(code **)(iVar3 + 0x1f8))(0);
+    piVar4[0x27] = iVar7;
+    *(undefined1 *)(piVar4 + 0x28) = 1;
+    (**(code **)(iVar3 + 0x1e4))(auStack_6c,1);
+    iVar6 = iVar6 + 1;
     local_80 = local_80 + 1;
-    this = local_7c;
+    param_1 = local_7c;
   } while ((int)local_80 < 0x6a432c);
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;
-  return extraout_EAX_00;
+  return;
 }
 

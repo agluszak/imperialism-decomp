@@ -3,70 +3,35 @@
 // Program: Imperialism.exe
 // Bucket: TColorFill.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405583
-// GHIDRA_NAME TColorFill::thunk_CreateTColorFillInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTColorFillInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTColorFillRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTColorFillRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TColorFill::thunk_CreateTColorFillInstance(TColorFill *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF180
 // GHIDRA_NAME TColorFill::CreateTColorFillInstance
-// GHIDRA_PROTO void * __thiscall CreateTColorFillInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TColorFill runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTColorFillInstance()
 
-/* Returns TColorFill runtime class descriptor pointer. */
-
-void * __thiscall TColorFill::CreateTColorFillInstance(TColorFill *this)
+void __fastcall TColorFill::CreateTColorFillInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF1A0
 // GHIDRA_NAME TColorFill::GetTColorFillClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTColorFillClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TColorFill.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTColorFillClassNamePointer()
 
-/* Returns class descriptor pointer for TColorFill. */
-
-void * __cdecl TColorFill::GetTColorFillClassNamePointer(void)
+undefined ** TColorFill::GetTColorFillClassNamePointer(void)
 
 {
-  return &g_pClassDescTColorFill;
+  return &PTR_s_TColorFill_00656618;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF1F0
 // GHIDRA_NAME TColorFill::DestructTColorFillAndMaybeFree
-// GHIDRA_PROTO void * __cdecl DestructTColorFillAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and constructs a TColorFill view instance.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTColorFillAndMaybeFree()
 
-/* Allocates and constructs a TColorFill view instance. */
-
-void * __cdecl TColorFill::DestructTColorFillAndMaybeFree(void)
+undefined4 * TColorFill::DestructTColorFillAndMaybeFree(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -76,16 +41,16 @@ void * __cdecl TColorFill::DestructTColorFillAndMaybeFree(void)
   puStack_8 = &LAB_006332fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &PTR_thunk_GetTGWorldPeekerClassNamePointer_00656748;
-    this[1].pVtable = (void *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00656748;
+    puVar1[0x18] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 

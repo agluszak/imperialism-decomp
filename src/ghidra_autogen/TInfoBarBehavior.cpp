@@ -3,70 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TInfoBarBehavior.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404296
-// GHIDRA_NAME TInfoBarBehavior::thunk_DestructTInfoBarBehaviorAndMaybeFree_At00404296
-// GHIDRA_PROTO void * __thiscall thunk_DestructTInfoBarBehaviorAndMaybeFree_At00404296(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTInfoBarBehaviorAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTInfoBarBehaviorAndMaybeFree */
-
-void * __thiscall
-TInfoBarBehavior::thunk_DestructTInfoBarBehaviorAndMaybeFree_At00404296
-          (TInfoBarBehavior *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTInfoBarBehaviorAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406721
-// GHIDRA_NAME TInfoBarBehavior::thunk_RefreshInfoBarCursorPanelRegionClip_At00406721
-// GHIDRA_PROTO void __thiscall thunk_RefreshInfoBarCursorPanelRegionClip_At00406721(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshInfoBarCursorPanelRegionClip
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshInfoBarCursorPanelRegionClip */
-
-void __thiscall
-TInfoBarBehavior::thunk_RefreshInfoBarCursorPanelRegionClip_At00406721(TInfoBarBehavior *this)
-
-{
-  RefreshInfoBarCursorPanelRegionClip(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409359
-// GHIDRA_NAME TInfoBarBehavior::thunk_GetTInfoBarBehaviorClassNamePointer_At00409359
-// GHIDRA_PROTO void * __cdecl thunk_GetTInfoBarBehaviorClassNamePointer_At00409359(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTInfoBarBehaviorClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTInfoBarBehaviorClassNamePointer */
-
-void * __cdecl TInfoBarBehavior::thunk_GetTInfoBarBehaviorClassNamePointer_At00409359(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTInfoBarBehaviorClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0C90
 // GHIDRA_NAME TInfoBarBehavior::CreateTInfoBarBehaviorInstance
-// GHIDRA_PROTO void * __cdecl CreateTInfoBarBehaviorInstance(void)
+// GHIDRA_PROTO undefined CreateTInfoBarBehaviorInstance()
 
-void * __cdecl TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
+undefined4 * TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
 
 {
-  TBehavior *pThis;
-  TBehavior *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -76,40 +21,35 @@ void * __cdecl TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
   puStack_8 = &LAB_00630c42;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x24);
   local_4 = 0;
-  pTVar1 = (TBehavior *)0x0;
-  if (pThis != (TBehavior *)0x0) {
-    TBehavior::ConstructTBehaviorBaseState(pThis);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TBehavior::ConstructTBehaviorBaseState();
     local_4 = CONCAT31(local_4._1_3_,1);
     InitializeSharedStringRefFromEmpty();
-    *(undefined ***)pThis = &g_vtblTInfoBarBehavior;
-    pTVar1 = pThis;
+    *puVar1 = &PTR_LAB_0064eb10;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0D10
 // GHIDRA_NAME TInfoBarBehavior::GetTInfoBarBehaviorClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTInfoBarBehaviorClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TInfoBarBehavior.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTInfoBarBehaviorClassNamePointer()
 
-/* Returns class descriptor pointer for TInfoBarBehavior. */
-
-void * __cdecl TInfoBarBehavior::GetTInfoBarBehaviorClassNamePointer(void)
+undefined ** TInfoBarBehavior::GetTInfoBarBehaviorClassNamePointer(void)
 
 {
-  return &g_pClassDescTInfoBarBehavior;
+  return &PTR_s_TInfoBarBehavior_0064ea60;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0D30
 // GHIDRA_NAME TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTInfoBarBehaviorBaseState(void)
+// GHIDRA_PROTO undefined ConstructTInfoBarBehaviorBaseState()
 
-void * __thiscall TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(TInfoBarBehavior *this)
+undefined4 * __fastcall TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -121,53 +61,50 @@ void * __thiscall TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(TInfoBarB
   puStack_8 = &LAB_00630c68;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
+  TBehavior::ConstructTBehaviorBaseState();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  this->field0_0x0 = &g_vtblTInfoBarBehavior;
+  *param_1 = &PTR_LAB_0064eb10;
   *unaff_FS_OFFSET = local_c;
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0DA0
 // GHIDRA_NAME TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTInfoBarBehaviorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTInfoBarBehaviorAndMaybeFree()
 
-void * __thiscall
-TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(TInfoBarBehavior *this,byte freeSelfFlag)
+undefined4 __thiscall
+TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0F50
 // GHIDRA_NAME TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip
-// GHIDRA_PROTO void __thiscall RefreshInfoBarCursorPanelRegionClip(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refresh cursor control panel region clip from info-bar behavior
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RefreshInfoBarCursorPanelRegionClip()
 
-/* Refresh cursor control panel region clip from info-bar behavior */
-
-void __thiscall TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip(TInfoBarBehavior *this)
+uint __fastcall TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip(int param_1)
 
 {
-  char extraout_AL;
-  int unaff_retaddr;
+  uint uVar1;
+  undefined4 unaff_retaddr;
   
-  if (g_pCursorControlPanel != (void *)0x0) {
-    thunk_AssignStringSharedRefAndReturnThis();
-    (**(code **)(*(int *)g_pCursorControlPanel + 0x200))();
-    (**(code **)(*(int *)this->pField08 + 0xf8))();
-    GetRegionBoxToRectIfPresent(unaff_retaddr);
-    if (extraout_AL != '\0') {
-      WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0(unaff_retaddr,0,0,0x280,0x1e0);
+  uVar1 = 0;
+  if (g_pCursorControlPanel != (int *)0x0) {
+    thunk_AssignStringSharedRefAndReturnThis(param_1 + 0x10);
+    (**(code **)(*g_pCursorControlPanel + 0x200))();
+    (**(code **)(**(int **)(param_1 + 8) + 0xf8))();
+    uVar1 = GetRegionBoxToRectIfPresent(unaff_retaddr);
+    if ((char)uVar1 != '\0') {
+      uVar1 = WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0
+                        (unaff_retaddr,0,0,0x280,0x1e0);
     }
   }
-  return;
+  return uVar1 & 0xffffff00;
 }
 

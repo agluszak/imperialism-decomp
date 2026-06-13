@@ -3,56 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TMyStaticText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404516
-// GHIDRA_NAME TMyStaticText::TMyStaticText_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TMyStaticText_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMyStaticTextClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMyStaticTextClassNamePointer */
-
-void * __cdecl TMyStaticText::TMyStaticText_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMyStaticTextClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406AC3
-// GHIDRA_NAME TMyStaticText::TMyStaticText_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TMyStaticText_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTMyStaticTextAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTMyStaticTextAndMaybeFree */
-
-void * __thiscall TMyStaticText::TMyStaticText_VtblSlot001(TMyStaticText *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTMyStaticTextAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5380
 // GHIDRA_NAME TMyStaticText::CreateTMyStaticTextInstance
-// GHIDRA_PROTO void * __cdecl CreateTMyStaticTextInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TMyStaticText; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTMyStaticTextInstance()
 
-/* [ClassQuad] create inferred for TMyStaticText; alloc factory pattern. */
-
-void * __cdecl TMyStaticText::CreateTMyStaticTextInstance(void)
+undefined4 * TMyStaticText::CreateTMyStaticTextInstance(void)
 
 {
-  TStaticText *this;
-  TStaticText *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -62,62 +21,53 @@ void * __cdecl TMyStaticText::CreateTMyStaticTextInstance(void)
   puStack_8 = &LAB_00638e4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TStaticText *)0x0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTMyStaticText;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+    *puVar1 = &PTR_LAB_0066cbc8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5400
 // GHIDRA_NAME TMyStaticText::GetTMyStaticTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMyStaticTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMyStaticText.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMyStaticTextClassNamePointer()
 
-/* Returns class descriptor pointer for TMyStaticText. */
-
-void * __cdecl TMyStaticText::GetTMyStaticTextClassNamePointer(void)
+undefined ** TMyStaticText::GetTMyStaticTextClassNamePointer(void)
 
 {
-  return &g_pClassDescTMyStaticText;
+  return &PTR_s_TMyStaticText_0066c3f0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5420
 // GHIDRA_NAME TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
-// GHIDRA_PROTO void __thiscall ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
+// GHIDRA_PROTO undefined ConstructUiTextResourceEntry_Vtbl0066cbc8()
 
-void __thiscall TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStaticText *this)
+undefined4 * __fastcall
+TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(undefined4 *param_1)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
-  this->field0_0x0 = &g_vtblTMyStaticText;
-  return;
+  TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  *param_1 = &PTR_LAB_0066cbc8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5450
 // GHIDRA_NAME TMyStaticText::DestructTMyStaticTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTMyStaticTextAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TMyStaticText derives from TStaticText (dtor_calls_base_dtor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTMyStaticTextAndMaybeFree()
 
-/* [InheritanceEvidence] TMyStaticText derives from TStaticText (dtor_calls_base_dtor, medium) */
-
-void * __thiscall
-TMyStaticText::DestructTMyStaticTextAndMaybeFree(TMyStaticText *this,byte freeSelfFlag)
+undefined4 __thiscall
+TMyStaticText::DestructTMyStaticTextAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TStaticText::DestructTStaticTextCore((TStaticText *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TStaticText::~TStaticText();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

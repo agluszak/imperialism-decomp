@@ -3,129 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TFocusAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401AB9
-// GHIDRA_NAME TFocusAnimation::thunk_CreateTFocusAnimationInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTFocusAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTFocusAnimationRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTFocusAnimationRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TFocusAnimation::thunk_CreateTFocusAnimationInstance(TFocusAnimation *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402FAE
-// GHIDRA_NAME TFocusAnimation::thunk_ConstructTFocusAnimationBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTFocusAnimationBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AdvanceFocusAnimationFrameWithWrapCallback [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AdvanceFocusAnimationFrameWithWrapCallback [FID:thunk_target_sync] */
-
-void __thiscall TFocusAnimation::thunk_ConstructTFocusAnimationBaseState(TFocusAnimation *this)
-
-{
-  ConstructTFocusAnimationBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408959
-// GHIDRA_NAME TFocusAnimation::thunk_DestructTFocusAnimationAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTFocusAnimationAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Direct thunk [FID:thunk_target_sync] */
-
-void __thiscall TFocusAnimation::thunk_DestructTFocusAnimationAndMaybeFree(TFocusAnimation *this)
-
-{
-  DestructTFocusAnimationAndMaybeFree(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004089EF
-// GHIDRA_NAME TFocusAnimation::thunk_GetTFocusAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTFocusAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTFocusAnimationClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTFocusAnimationClassNamePointer */
-
-void * __cdecl TFocusAnimation::thunk_GetTFocusAnimationClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTFocusAnimationClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0080
 // GHIDRA_NAME TFocusAnimation::CreateTFocusAnimationInstance
-// GHIDRA_PROTO void * __thiscall CreateTFocusAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TFocusAnimation runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTFocusAnimationInstance()
 
-/* Returns TFocusAnimation runtime class descriptor pointer. */
-
-void * __thiscall TFocusAnimation::CreateTFocusAnimationInstance(TFocusAnimation *this)
+void __fastcall TFocusAnimation::CreateTFocusAnimationInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A00A0
 // GHIDRA_NAME TFocusAnimation::GetTFocusAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTFocusAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TFocusAnimation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTFocusAnimationClassNamePointer()
 
-/* Returns class descriptor pointer for TFocusAnimation. */
-
-void * __cdecl TFocusAnimation::GetTFocusAnimationClassNamePointer(void)
+undefined ** TFocusAnimation::GetTFocusAnimationClassNamePointer(void)
 
 {
-  return &g_pClassDescTFocusAnimation;
+  return &PTR_s_TFocusAnimation_0064c268;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0140
 // GHIDRA_NAME TFocusAnimation::ConstructTFocusAnimationBaseState
-// GHIDRA_PROTO void __thiscall ConstructTFocusAnimationBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Advances focus animation frame timer and invokes wrap callback at frame boundary.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTFocusAnimationBaseState()
 
-/* Advances focus animation frame timer and invokes wrap callback at frame boundary. */
-
-void __thiscall TFocusAnimation::ConstructTFocusAnimationBaseState(TFocusAnimation *this)
+void __fastcall TFocusAnimation::ConstructTFocusAnimationBaseState(int *param_1)
 
 {
-  void *pvVar1;
+  int iVar1;
   
-  pvVar1 = (void *)((int)this->field8_0x10 + 1);
-  this->field8_0x10 = pvVar1;
-  if (pvVar1 == this->field9_0x14) {
-    (**(code **)((int)this->pVtable + 0x34))();
-    this->field2_0x8 = this->field2_0x8 + 1;
-    this->field8_0x10 = (void *)0x0;
-    if (this->field2_0x8 == this->field3_0xa) {
-      this->field2_0x8 = 0;
+  iVar1 = param_1[4];
+  param_1[4] = iVar1 + 1;
+  if (iVar1 + 1 == param_1[5]) {
+    (**(code **)(*param_1 + 0x34))();
+    *(short *)(param_1 + 2) = (short)param_1[2] + 1;
+    param_1[4] = 0;
+    if ((short)param_1[2] == *(short *)((int)param_1 + 10)) {
+      *(undefined2 *)(param_1 + 2) = 0;
     }
   }
   return;
@@ -133,40 +48,34 @@ void __thiscall TFocusAnimation::ConstructTFocusAnimationBaseState(TFocusAnimati
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0190
 // GHIDRA_NAME TFocusAnimation::DestructTFocusAnimationAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTFocusAnimationAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Focus animation render pass guarded by enabled flag
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTFocusAnimationAndMaybeFree()
 
-/* Focus animation render pass guarded by enabled flag */
-
-void __thiscall TFocusAnimation::DestructTFocusAnimationAndMaybeFree(TFocusAnimation *this)
+void __fastcall TFocusAnimation::DestructTFocusAnimationAndMaybeFree(int *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_2c;
   undefined4 uStack_28;
-  undefined1 local_24 [24];
-  undefined4 local_c;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  undefined4 uStack_4;
   
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe58;
-  *unaff_FS_OFFSET = &local_c;
-  if (this->field30_0x2c != '\0') {
-    thunk_ConstructScopedMapQuickDrawContext(local_24,(int)this->field1_0x4);
-    local_4 = 0;
-    (**(code **)(*this->field1_0x4 + 0xf8))();
+  *unaff_FS_OFFSET = &uStack_c;
+  if ((char)param_1[0xb] != '\0') {
+    ConstructScopedMapQuickDrawContext(param_1[1]);
+    uStack_4 = 0;
+    (**(code **)(*(int *)param_1[1] + 0xf8))();
     uStack_2c = 0;
     uStack_28 = 0;
-    (**(code **)((int)this->pVtable + 0x2c))(&uStack_2c);
-    (**(code **)(*this->field1_0x4 + 0xfc))();
-    local_4 = 0xffffffff;
+    (**(code **)(*param_1 + 0x2c))(&uStack_2c);
+    (**(code **)(*(int *)param_1[1] + 0xfc))();
+    uStack_4 = 0xffffffff;
     thunk_DestroyScopedMapQuickDrawContext();
   }
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 

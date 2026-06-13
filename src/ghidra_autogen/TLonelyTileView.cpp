@@ -3,87 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TLonelyTileView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401046
-// GHIDRA_NAME TLonelyTileView::thunk_DestructTLonelyTileViewAndMaybeFree_At00401046
-// GHIDRA_PROTO void * __thiscall thunk_DestructTLonelyTileViewAndMaybeFree_At00401046(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTLonelyTileViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTLonelyTileViewAndMaybeFree */
-
-void * __thiscall
-TLonelyTileView::thunk_DestructTLonelyTileViewAndMaybeFree_At00401046
-          (TLonelyTileView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTLonelyTileViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004014C9
-// GHIDRA_NAME TLonelyTileView::thunk_GetTLonelyTileViewClassNamePointer_At004014c9
-// GHIDRA_PROTO void * __cdecl thunk_GetTLonelyTileViewClassNamePointer_At004014c9(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTLonelyTileViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTLonelyTileViewClassNamePointer */
-
-void * __cdecl TLonelyTileView::thunk_GetTLonelyTileViewClassNamePointer_At004014c9(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTLonelyTileViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404769
-// GHIDRA_NAME TLonelyTileView::thunk_ConstructTLonelyTileViewBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTLonelyTileViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTLonelyTileViewBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTLonelyTileViewBaseState */
-
-void * __thiscall TLonelyTileView::thunk_ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
-
-{
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTLonelyTileView;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406A9B
-// GHIDRA_NAME TLonelyTileView::thunk_Helper_Uses_BlitRectWithOptionalTransparency_At00505b60_At00406a9b
-// GHIDRA_PROTO void __cdecl thunk_Helper_Uses_BlitRectWithOptionalTransparency_At00505b60_At00406a9b(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_BlitRectWithOptionalTransparency_At00505b60
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Helper_Uses_BlitRectWithOptionalTransparency_At00505b60 */
-
-void __cdecl
-TLonelyTileView::thunk_Helper_Uses_BlitRectWithOptionalTransparency_At00505b60_At00406a9b(void)
-
-{
-  Helper_Uses_BlitRectWithOptionalTransparency_At00505b60();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00505A50
 // GHIDRA_NAME TLonelyTileView::CreateTLonelyTileViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTLonelyTileViewInstance(void)
+// GHIDRA_PROTO undefined CreateTLonelyTileViewInstance()
 
-void * __cdecl TLonelyTileView::CreateTLonelyTileViewInstance(void)
+undefined4 * TLonelyTileView::CreateTLonelyTileViewInstance(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -93,57 +21,52 @@ void * __cdecl TLonelyTileView::CreateTLonelyTileViewInstance(void)
   puStack_8 = &LAB_0063374a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTLonelyTileView;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00657740;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505AC0
 // GHIDRA_NAME TLonelyTileView::GetTLonelyTileViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTLonelyTileViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TLonelyTileView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTLonelyTileViewClassNamePointer()
 
-/* Returns class descriptor pointer for TLonelyTileView. */
-
-void * __cdecl TLonelyTileView::GetTLonelyTileViewClassNamePointer(void)
+undefined ** TLonelyTileView::GetTLonelyTileViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTLonelyTileView;
+  return &PTR_s_TLonelyTileView_00656fe0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505AE0
 // GHIDRA_NAME TLonelyTileView::ConstructTLonelyTileViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTLonelyTileViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTLonelyTileViewBaseState()
 
-void * __thiscall TLonelyTileView::ConstructTLonelyTileViewBaseState(TLonelyTileView *this)
+undefined4 * __fastcall TLonelyTileView::ConstructTLonelyTileViewBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTLonelyTileView;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_00657740;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00505B10
 // GHIDRA_NAME TLonelyTileView::DestructTLonelyTileViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTLonelyTileViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTLonelyTileViewAndMaybeFree()
 
-void * __thiscall
-TLonelyTileView::DestructTLonelyTileViewAndMaybeFree(TLonelyTileView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TLonelyTileView::DestructTLonelyTileViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

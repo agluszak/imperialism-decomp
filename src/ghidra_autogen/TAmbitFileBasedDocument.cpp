@@ -3,197 +3,41 @@
 // Program: Imperialism.exe
 // Bucket: TAmbitFileBasedDocument.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403364
-// GHIDRA_NAME TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot011
-// GHIDRA_PROTO void __cdecl TAmbitFileBasedDocument_VtblSlot011(TAmbitFileBasedDocument * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SaveGlobalSystemsToStream
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SaveGlobalSystemsToStream */
-
-void __cdecl
-TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot011(TAmbitFileBasedDocument *pThis)
-
-{
-  SaveGlobalSystemsToStream(pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004054CA
-// GHIDRA_NAME TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TAmbitFileBasedDocument_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTAmbitFileBasedDocumentClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTAmbitFileBasedDocumentClassNamePointer */
-
-void * __cdecl TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTAmbitFileBasedDocumentClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406249
-// GHIDRA_NAME TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot010
-// GHIDRA_PROTO void __cdecl TAmbitFileBasedDocument_VtblSlot010(TAmbitFileBasedDocument * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to LoadGlobalSystemsFromSave
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to LoadGlobalSystemsFromSave */
-
-void __cdecl
-TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot010(TAmbitFileBasedDocument *pThis)
-
-{
-  LoadGlobalSystemsFromSave(pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040646A
-// GHIDRA_NAME TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot014
-// GHIDRA_PROTO void __stdcall TAmbitFileBasedDocument_VtblSlot014(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AssertUAmbitLine1335
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AssertUAmbitLine1335 */
-
-void TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot014(void)
-
-{
-  AssertUAmbitLine1335();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408D37
-// GHIDRA_NAME TAmbitFileBasedDocument::thunk_EnsureBitmapResourceLoadedAndCopyRectSize_At00408d37
-// GHIDRA_PROTO void __thiscall thunk_EnsureBitmapResourceLoadedAndCopyRectSize_At00408d37(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to EnsureBitmapResourceLoadedAndCopyRectSize
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to EnsureBitmapResourceLoadedAndCopyRectSize */
-
-void __thiscall
-TAmbitFileBasedDocument::thunk_EnsureBitmapResourceLoadedAndCopyRectSize_At00408d37
-          (TAmbitFileBasedDocument *this)
-
-{
-  undefined4 uVar1;
-  undefined4 uVar2;
-  int extraout_EAX;
-  undefined4 extraout_EAX_00;
-  undefined4 *extraout_EAX_01;
-  
-  if (*(int *)(this + 0x18) == 0) {
-    thunk_LoadBmpResourceByIdCached();
-    *(int *)(this + 0x18) = extraout_EAX;
-    if (extraout_EAX == 0) {
-      thunk_BuildIndexedBmpResourceById();
-      *(undefined4 *)(this + 0x18) = extraout_EAX_00;
-    }
-  }
-  CopyOffset10PointPairToOutOrZero();
-  uVar1 = *extraout_EAX_01;
-  uVar2 = extraout_EAX_01[1];
-  *(undefined4 *)(this + 8) = 0;
-  *(undefined4 *)(this + 0xc) = 0;
-  *(undefined4 *)(this + 0x10) = uVar1;
-  *(undefined4 *)(this + 0x14) = uVar2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409124
-// GHIDRA_NAME TAmbitFileBasedDocument::thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to
-   WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00 */
-
-void __cdecl
-TAmbitFileBasedDocument::
-thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124
-          (void)
-
-{
-  int in_ECX;
-  
-  if (*(int *)(in_ECX + 0x18) != 0) {
-    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup();
-  }
-  *(undefined4 *)(in_ECX + 0x18) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409A0C
-// GHIDRA_NAME TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TAmbitFileBasedDocument_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTAmbitFileBasedDocumentAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTAmbitFileBasedDocumentAndMaybeFree */
-
-void * __thiscall
-TAmbitFileBasedDocument::TAmbitFileBasedDocument_VtblSlot001
-          (TAmbitFileBasedDocument *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTAmbitFileBasedDocumentAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E5D0
 // GHIDRA_NAME TAmbitFileBasedDocument::GetTAmbitFileBasedDocumentClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTAmbitFileBasedDocumentClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TAmbitFileBasedDocument.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTAmbitFileBasedDocumentClassNamePointer()
 
-/* Returns class descriptor pointer for TAmbitFileBasedDocument. */
-
-void * __cdecl TAmbitFileBasedDocument::GetTAmbitFileBasedDocumentClassNamePointer(void)
+undefined ** TAmbitFileBasedDocument::GetTAmbitFileBasedDocumentClassNamePointer(void)
 
 {
-  return &g_pClassDescTAmbitFileBasedDocument;
+  return &PTR_s_TAmbitFileBasedDocument_0064c0d0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E5F0
 // GHIDRA_NAME TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState
-// GHIDRA_PROTO void __fastcall ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBasedDocument * pThis)
+// GHIDRA_PROTO undefined ConstructTAmbitFileBasedDocumentBaseState()
 
 void __fastcall
-TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBasedDocument *pThis)
+TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(undefined4 *param_1)
 
 {
-  *(undefined ***)pThis = &g_vtblTAmbitFileBasedDocument;
+  *param_1 = &PTR_LAB_0064c170;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E610
 // GHIDRA_NAME TAmbitFileBasedDocument::DestructTAmbitFileBasedDocumentAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTAmbitFileBasedDocumentAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTAmbitFileBasedDocumentAndMaybeFree()
 
-void * __thiscall
+undefined4 __thiscall
 TAmbitFileBasedDocument::DestructTAmbitFileBasedDocumentAndMaybeFree
-          (TAmbitFileBasedDocument *this,byte freeSelfFlag)
+          (undefined4 param_1,byte param_2)
 
 {
   DestructTAmbitFileBasedDocumentAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

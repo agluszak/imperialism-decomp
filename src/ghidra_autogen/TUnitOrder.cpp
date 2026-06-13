@@ -3,388 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TUnitOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401852
-// GHIDRA_NAME TUnitOrder::thunk_InitializeCityRecruitmentOrderContext
-// GHIDRA_PROTO void __thiscall thunk_InitializeCityRecruitmentOrderContext(void * pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit, short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit, short nWorkforceMode, byte bSpecialistMode)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeCityRecruitmentOrderContext
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeCityRecruitmentOrderContext */
-
-void __thiscall
-TUnitOrder::thunk_InitializeCityRecruitmentOrderContext
-          (TUnitOrder *this,void *pCityState,short nEntryId,short nPrimaryInputResourceId,
-          short nPrimaryInputPerUnit,short nSecondaryInputResourceId,short nSecondaryInputPerUnit,
-          short nCashCostPerUnit,short nWorkforceMode,byte bSpecialistMode)
-
-{
-  int iVar1;
-  void **ppvVar2;
-  
-  this->field08 = pCityState;
-  this->field0c = *(int **)((int)pCityState + 0x1d8);
-  *(short *)&this->field48 = nEntryId;
-  this->field04 = 0;
-  ppvVar2 = &this->pField10;
-  for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *ppvVar2 = (void *)0x0;
-    ppvVar2 = ppvVar2 + 1;
-  }
-  *(undefined2 *)ppvVar2 = 0;
-  this->field50 = nPrimaryInputPerUnit;
-  this->field4c = nPrimaryInputResourceId;
-  this->field52 = nSecondaryInputPerUnit;
-  this->field4e = nSecondaryInputResourceId;
-  this->field44 = (void *)0x0;
-  this->field54 = nCashCostPerUnit;
-  *(undefined2 *)&this->field40 = 0;
-  this->field3e = 0;
-  this->field56 = nWorkforceMode;
-  *(byte *)&this->field58 = bSpecialistMode;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401F5A
-// GHIDRA_NAME TUnitOrder::thunk_GetTUnitOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTUnitOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTUnitOrderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTUnitOrderClassNamePointer */
-
-void * __cdecl TUnitOrder::thunk_GetTUnitOrderClassNamePointer(void)
-
-{
-  return &g_pClassDescTUnitOrder;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403085
-// GHIDRA_NAME TUnitOrder::thunk_CreateTUnitOrderInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTUnitOrderInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyUnitOrderPopulationTransferAndAlerts [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyUnitOrderPopulationTransferAndAlerts [FID:thunk_target_sync] */
-
-void __thiscall TUnitOrder::thunk_CreateTUnitOrderInstance(TUnitOrder *this)
-
-{
-  CreateTUnitOrderInstance(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404589
-// GHIDRA_NAME TUnitOrder::thunk_SyncCityEntryOrderStateWithArchive
-// GHIDRA_PROTO void __thiscall thunk_SyncCityEntryOrderStateWithArchive(int * pArchive)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SyncCityEntryOrderStateWithArchive
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SyncCityEntryOrderStateWithArchive */
-
-void __thiscall TUnitOrder::thunk_SyncCityEntryOrderStateWithArchive(TUnitOrder *this,int *pArchive)
-
-{
-  SyncCityEntryOrderStateWithArchive(this,pArchive);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404A89
-// GHIDRA_NAME TUnitOrder::thunk_CommitCityRecruitmentOrderDelta
-// GHIDRA_PROTO void __thiscall thunk_CommitCityRecruitmentOrderDelta(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CommitCityRecruitmentOrderDelta
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CommitCityRecruitmentOrderDelta */
-
-void __thiscall TUnitOrder::thunk_CommitCityRecruitmentOrderDelta(TUnitOrder *this)
-
-{
-  short *psVar1;
-  int *piVar2;
-  short sVar3;
-  int pOwnerContext;
-  TGreatPower *extraout_EAX;
-  TGreatPower *this_00;
-  int extraout_EAX_00;
-  int iVar4;
-  short sVar5;
-  undefined2 uVar6;
-  int iVar7;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar8;
-  void *apvStack_1c [3];
-  undefined1 uStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00630f64;
-  *unaff_FS_OFFSET = &uStack_c;
-  iVar7 = 0;
-  if (this->field04 != 0) {
-    InitializeSharedStringRefFromEmpty();
-    uStack_4 = 0;
-    InitializeSharedStringRefFromEmpty();
-    uStack_4 = CONCAT31(uStack_4._1_3_,1);
-    if ((char)this->field58 == '\0') {
-      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2718);
-      psVar1 = (short *)((int)this->field08 + (short)this->field48 * 2 + 0x4a);
-      *psVar1 = *psVar1 + this->field04;
-      if (0 < this->field04) {
-        do {
-          thunk_FindReachableRecruitSpawnTileWithVisitedReset();
-          if ((short)pOwnerContext != -1) {
-            apvStack_1c[0] = AllocateWithFallbackHandler();
-            uStack_10 = 2;
-            if (apvStack_1c[0] == (void *)0x0) {
-              this_00 = (TGreatPower *)0x0;
-            }
-            else {
-              thunk_InitializeCivUnitOrderObject();
-              this_00 = extraout_EAX;
-            }
-            uStack_10 = 1;
-            iVar4 = *(int *)((int)this->field08 + 0xac);
-            TGreatPower::thunk_InitializeCivWorkOrderState
-                      (this_00,CONCAT22((short)((uint)iVar4 >> 0x10),(short)this->field48),
-                       pOwnerContext,
-                       CONCAT22((short)((uint)this->field08 >> 0x10),*(undefined2 *)(iVar4 + 0xc)));
-          }
-          iVar7 = iVar7 + 1;
-        } while (iVar7 < this->field04);
-      }
-    }
-    else {
-      (**(code **)(*(int *)g_pLocalizationTable + 0x84))
-                (0x2717,CONCAT22((short)((uint)apvStack_1c >> 0x10),(short)this->field48),
-                 apvStack_1c);
-      iVar7 = 0;
-      if (0 < this->field04) {
-        do {
-          apvStack_1c[0] = AllocateWithFallbackHandler();
-          uStack_10 = 3;
-          if (apvStack_1c[0] == (void *)0x0) {
-            iVar4 = 0;
-          }
-          else {
-            thunk_InitializeMilitaryUnitOrderObject();
-            iVar4 = extraout_EAX_00;
-          }
-          uStack_10 = 1;
-          thunk_InitializeMilitaryRecruitOrderState();
-          if ('2' < *(char *)(*(int *)((int)this->field08 + 0xac) + 0x8ce)) {
-            *(undefined2 *)(iVar4 + 0x38) = 100;
-          }
-          thunk_ComputeSelectedMilitaryPowerScore();
-          if (*(char *)(*(int *)((int)this->field08 + 0xac) + 0x8c9) != '2') {
-            iVar4 = thunk_ComputeSelectedMilitaryPowerScore();
-            piVar2 = *(int **)((int)this->field08 + 0xac);
-            if (*(char *)((int)piVar2 + 0x8c9) == '\0') {
-              sVar5 = 0;
-            }
-            else {
-              sVar5 = *(char *)((int)piVar2 + 0x8c9) + -0x33;
-            }
-            sVar3 = (short)iVar4;
-            if (sVar3 < 0xf) {
-              if (0x27 < sVar3) goto LAB_004b75ec;
-              if (0x45 < sVar3) goto LAB_004b7604;
-              if (0x77 < sVar3) goto LAB_004b7624;
-LAB_004b7636:
-              if (sVar3 < 0xdc) {
-                if (0x10d < sVar3) goto LAB_004b765c;
-              }
-              else if (sVar3 < 0x10e) {
-                if (sVar5 < 5) {
-                  (**(code **)(*piVar2 + 0xb8))(1,5);
-                }
-              }
-              else {
-LAB_004b765c:
-                if ((sVar3 < 0x140) && (sVar5 < 6)) {
-                  iVar4 = *piVar2;
-                  uVar8 = 6;
-                  goto LAB_004b766c;
-                }
-              }
-            }
-            else if (sVar3 < 0x28) {
-              if (sVar5 == 0) {
-                (**(code **)(*piVar2 + 0xb8))(1,1);
-              }
-            }
-            else {
-LAB_004b75ec:
-              if (sVar3 < 0x46) {
-                if (sVar5 < 2) {
-                  iVar4 = *piVar2;
-                  uVar8 = 2;
-LAB_004b766c:
-                  (**(code **)(iVar4 + 0xb8))(1,uVar8);
-                }
-              }
-              else {
-LAB_004b7604:
-                if (sVar3 < 0x78) {
-                  if (sVar5 < 3) {
-                    (**(code **)(*piVar2 + 0xb8))(1,3);
-                  }
-                }
-                else {
-LAB_004b7624:
-                  if (0xa9 < sVar3) goto LAB_004b7636;
-                  if (sVar5 < 4) {
-                    iVar4 = *piVar2;
-                    uVar8 = 4;
-                    goto LAB_004b766c;
-                  }
-                }
-              }
-            }
-          }
-          iVar7 = iVar7 + 1;
-        } while (iVar7 < this->field04);
-      }
-    }
-    uVar6 = (undefined2)((uint)this->field08 >> 0x10);
-    if ((char)this->field58 == '\0') {
-      uVar8 = 2;
-    }
-    else {
-      uVar8 = 3;
-    }
-    (**(code **)(**(int **)((int)this->field08 + 0xac) + 0x2c0))
-              (uVar8,CONCAT22(uVar6,(short)this->field48),CONCAT22(uVar6,this->field04));
-    this->field04 = 0;
-    if ((short)this->field48 == 0) {
-      psVar1 = (short *)((int)this->field08 + 10);
-      *psVar1 = *psVar1 + 1;
-    }
-    uStack_4 = uStack_4 & 0xffffff00;
-    ReleaseSharedStringRefIfNotEmpty();
-    uStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
-  }
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404C5A
-// GHIDRA_NAME TUnitOrder::thunk_ApplyCityEntryOrderDeltaAndCosts
-// GHIDRA_PROTO bool __thiscall thunk_ApplyCityEntryOrderDeltaAndCosts(short nTargetOrderAmount)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyCityEntryOrderDeltaAndCosts
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyCityEntryOrderDeltaAndCosts */
-
-bool __thiscall
-TUnitOrder::thunk_ApplyCityEntryOrderDeltaAndCosts(TUnitOrder *this,short nTargetOrderAmount)
-
-{
-  short *psVar1;
-  int *piVar2;
-  int iVar3;
-  bool bVar4;
-  short sVar5;
-  undefined2 extraout_var;
-  undefined2 extraout_var_00;
-  undefined2 uVar6;
-  short sVar7;
-  
-  sVar7 = nTargetOrderAmount - this->field04;
-  sVar5 = (**(code **)((int)this->pVtable + 0x30))();
-  if ((sVar5 < nTargetOrderAmount) || (nTargetOrderAmount < 0)) {
-    bVar4 = false;
-  }
-  else {
-    this->field04 = nTargetOrderAmount;
-    bVar4 = true;
-  }
-  if (!bVar4) {
-    return false;
-  }
-  piVar2 = this->field08;
-  psVar1 = (short *)((int)piVar2 + this->field4c * 2 + 0xb6);
-  *psVar1 = *psVar1 - this->field50 * sVar7;
-  (**(code **)(*piVar2 + 0x80))();
-  uVar6 = extraout_var;
-  if (-1 < (short)this->field4e) {
-    piVar2 = this->field08;
-    psVar1 = (short *)((int)piVar2 + (short)this->field4e * 2 + 0xb6);
-    *psVar1 = *psVar1 - this->field52 * sVar7;
-    (**(code **)(*piVar2 + 0x80))();
-    uVar6 = extraout_var_00;
-  }
-  if (this->field56 != 0) {
-    (**(code **)(*this->field0c + 0x34))(CONCAT22(uVar6,this->field56),sVar7);
-  }
-  iVar3 = *(int *)((int)this->field08 + 0xac);
-  *(int *)(iVar3 + 0x10) = *(int *)(iVar3 + 0x10) - (int)(short)this->field54 * (int)sVar7;
-  (**(code **)(*(int *)g_pUiRuntimeContext + 0xac))();
-  return true;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040668B
-// GHIDRA_NAME TUnitOrder::thunk_DestructTUnitOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTUnitOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTUnitOrderRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTUnitOrderRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TUnitOrder::thunk_DestructTUnitOrderAndMaybeFree(TUnitOrder *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406A73
-// GHIDRA_NAME TUnitOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b7850 */
-
-void __thiscall
-TUnitOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(TUnitOrder *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407252
-// GHIDRA_NAME TUnitOrder::thunk_ComputeMaxRecruitableDeltaForCityEntry
-// GHIDRA_PROTO int __thiscall thunk_ComputeMaxRecruitableDeltaForCityEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ComputeMaxRecruitableDeltaForCityEntry
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ComputeMaxRecruitableDeltaForCityEntry */
-
-int __thiscall TUnitOrder::thunk_ComputeMaxRecruitableDeltaForCityEntry(TUnitOrder *this)
-
-{
-  int iVar1;
-  
-  iVar1 = ComputeMaxRecruitableDeltaForCityEntry(this);
-  return iVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B58F0
 // GHIDRA_NAME TUnitOrder::ComputeRecruitmentCapFromPools
 // GHIDRA_PROTO int __thiscall ComputeRecruitmentCapFromPools(void)
@@ -420,31 +38,32 @@ int __thiscall TUnitOrder::ComputeRecruitmentCapFromPools(TUnitOrder *this)
 
 {
   short sVar1;
-  void *pvVar2;
+  int iVar2;
   short nCapByUnitCounter;
   int nCapByInputPool;
   int nCapByStagedAndStock;
   uint dwScratchHigh;
   int nCapByWorkforce;
   
-  pvVar2 = this->field08;
+  iVar2 = *(int *)(this + 8);
   nCapByWorkforce =
-       (int)(short)this->field0c[7] / 2 + CONCAT22((short)(dwScratchHigh >> 0x10),this->field04);
+       (int)*(short *)(*(int *)(this + 0xc) + 0x1c) / 2 +
+       CONCAT22((short)(dwScratchHigh >> 0x10),*(short *)(this + 4));
   nCapByStagedAndStock =
-       (int)(short)(*(short *)((int)&this->pField10 + this->field50 * 2) +
-                    *(short *)((int)&this->pField10 + (short)this->field4e * 2) +
-                    *(short *)((int)pvVar2 + this->field50 * 2 + 0xb6) +
-                   *(short *)((int)pvVar2 + (short)this->field4e * 2 + 0xb6)) / 2;
-  sVar1 = *(short *)((int)pvVar2 + this->field52 * 2 + 0x1fc);
-  *(undefined2 *)&this->field40 = 2;
-  nCapByUnitCounter = sVar1 + this->field04;
-  nCapByInputPool = CONCAT22(this->field52 >> 0xf,nCapByUnitCounter);
+       (int)(short)(*(short *)(this + *(short *)(this + 0x50) * 2 + 0x10) +
+                    *(short *)(this + *(short *)(this + 0x4e) * 2 + 0x10) +
+                    *(short *)(iVar2 + 0xb6 + *(short *)(this + 0x50) * 2) +
+                   *(short *)(iVar2 + 0xb6 + *(short *)(this + 0x4e) * 2)) / 2;
+  sVar1 = *(short *)(iVar2 + 0x1fc + *(short *)(this + 0x52) * 2);
+  *(undefined2 *)(this + 0x40) = 2;
+  nCapByUnitCounter = sVar1 + *(short *)(this + 4);
+  nCapByInputPool = CONCAT22(*(short *)(this + 0x52) >> 0xf,nCapByUnitCounter);
   if ((short)nCapByWorkforce < nCapByUnitCounter) {
-    *(undefined2 *)&this->field40 = 1;
+    *(undefined2 *)(this + 0x40) = 1;
     nCapByInputPool = nCapByWorkforce;
   }
   if ((short)nCapByStagedAndStock < (short)nCapByInputPool) {
-    *(undefined2 *)&this->field40 = 0;
+    *(undefined2 *)(this + 0x40) = 0;
     nCapByInputPool = nCapByStagedAndStock;
   }
   return nCapByInputPool;
@@ -484,7 +103,7 @@ TUnitOrder::ApplyRecruitmentSliderDeltaAndRebalancePools(TUnitOrder *this,short 
 
 {
   short *psVar1;
-  ushort uVar2;
+  short sVar2;
   short sVar3;
   int iVar4;
   int *piVar5;
@@ -494,33 +113,33 @@ TUnitOrder::ApplyRecruitmentSliderDeltaAndRebalancePools(TUnitOrder *this,short 
   short sVar9;
   short sVar10;
   
-  sVar9 = nNewOrderAmount - this->field04;
-  sVar7 = (**(code **)((int)this->pVtable + 0x30))();
+  sVar9 = nNewOrderAmount - *(short *)(this + 4);
+  sVar7 = (**(code **)(*(int *)this + 0x30))();
   if ((sVar7 < nNewOrderAmount) || (nNewOrderAmount < 0)) {
     bVar6 = false;
   }
   else {
-    this->field04 = nNewOrderAmount;
+    *(short *)(this + 4) = nNewOrderAmount;
     bVar6 = true;
   }
   if (!bVar6) {
     return false;
   }
-  uVar2 = this->field4e;
-  this->field4c = this->field04;
+  sVar7 = *(short *)(this + 0x4e);
+  *(undefined2 *)(this + 0x4c) = *(undefined2 *)(this + 4);
   if (sVar9 < 1) {
-    sVar3 = *(short *)((int)&this->pField10 + this->field50 * 2);
-    sVar7 = *(short *)((int)&this->pField10 + (short)uVar2 * 2);
+    sVar3 = *(short *)(this + *(short *)(this + 0x50) * 2 + 0x10);
+    sVar2 = *(short *)(this + sVar7 * 2 + 0x10);
     sVar10 = -sVar9;
   }
   else {
-    sVar7 = *(short *)((int)this->field08 + (short)uVar2 * 2 + 0xb6);
-    sVar3 = *(short *)((int)this->field08 + this->field50 * 2 + 0xb6);
+    sVar2 = *(short *)(*(int *)(this + 8) + 0xb6 + sVar7 * 2);
+    sVar3 = *(short *)(*(int *)(this + 8) + 0xb6 + *(short *)(this + 0x50) * 2);
     sVar10 = sVar9;
   }
-  if (sVar7 < sVar10) {
-    sVar8 = sVar10 + (sVar10 - sVar7);
-    sVar10 = sVar10 - (sVar10 - sVar7);
+  if (sVar2 < sVar10) {
+    sVar8 = sVar10 + (sVar10 - sVar2);
+    sVar10 = sVar10 - (sVar10 - sVar2);
   }
   else {
     sVar8 = sVar10;
@@ -533,36 +152,31 @@ TUnitOrder::ApplyRecruitmentSliderDeltaAndRebalancePools(TUnitOrder *this,short 
     sVar10 = -sVar10;
     sVar8 = -sVar8;
   }
-  iVar4 = *(int *)this->field08;
-  psVar1 = (short *)((int)this->field08 + (short)uVar2 * 2 + 0xb6);
+  iVar4 = **(int **)(this + 8);
+  psVar1 = (short *)((int)*(int **)(this + 8) + sVar7 * 2 + 0xb6);
   *psVar1 = *psVar1 - sVar10;
   (**(code **)(iVar4 + 0x80))();
-  psVar1 = (short *)((int)&this->pField10 + (short)this->field4e * 2);
-  *psVar1 = *psVar1 + sVar10;
-  piVar5 = this->field08;
-  psVar1 = (short *)((int)piVar5 + this->field50 * 2 + 0xb6);
+  *(short *)(this + *(short *)(this + 0x4e) * 2 + 0x10) =
+       *(short *)(this + *(short *)(this + 0x4e) * 2 + 0x10) + sVar10;
+  piVar5 = *(int **)(this + 8);
+  psVar1 = (short *)((int)piVar5 + *(short *)(this + 0x50) * 2 + 0xb6);
   *psVar1 = *psVar1 - sVar8;
   (**(code **)(*piVar5 + 0x80))();
-  psVar1 = (short *)((int)&this->pField10 + this->field50 * 2);
-  *psVar1 = *psVar1 + sVar8;
-  *(short *)(this->field0c + 7) = (short)this->field0c[7] + sVar9 * -2;
-  this->field3e = this->field3e + sVar9 * 2;
-  iVar4 = this->field52 * 2 + 0x1fc;
-  *(short *)((int)this->field08 + iVar4) = *(short *)(iVar4 + (int)this->field08) - sVar9;
-  (**(code **)(*(int *)g_pUiRuntimeContext + 0xac))();
+  *(short *)(this + *(short *)(this + 0x50) * 2 + 0x10) =
+       *(short *)(this + *(short *)(this + 0x50) * 2 + 0x10) + sVar8;
+  *(short *)(*(int *)(this + 0xc) + 0x1c) = *(short *)(*(int *)(this + 0xc) + 0x1c) + sVar9 * -2;
+  *(short *)(this + 0x3e) = *(short *)(this + 0x3e) + sVar9 * 2;
+  iVar4 = *(short *)(this + 0x52) * 2 + 0x1fc;
+  *(short *)(*(int *)(this + 8) + iVar4) = *(short *)(iVar4 + *(int *)(this + 8)) - sVar9;
+  (**(code **)(*g_pUiRuntimeContext + 0xac))();
   return true;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6E30
 // GHIDRA_NAME TUnitOrder::CreateTUnitOrderInstance
-// GHIDRA_PROTO void __thiscall CreateTUnitOrderInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Applies unit-order population transfer and emits threshold alerts based on resulting counts.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTUnitOrderInstance()
 
-/* Applies unit-order population transfer and emits threshold alerts based on resulting counts. */
-
-void __thiscall TUnitOrder::CreateTUnitOrderInstance(TUnitOrder *this)
+void __fastcall TUnitOrder::CreateTUnitOrderInstance(int param_1)
 
 {
   short sVar1;
@@ -570,86 +184,66 @@ void __thiscall TUnitOrder::CreateTUnitOrderInstance(TUnitOrder *this)
   int *piVar3;
   int iVar4;
   
-  sVar1 = this->field04;
+  sVar1 = *(short *)(param_1 + 4);
   if (sVar1 != 0) {
-    iVar2 = this->field0c[4];
-    if ((short)this->field48 == 1) {
+    iVar2 = *(int *)(*(int *)(param_1 + 0xc) + 0x10);
+    if (*(short *)(param_1 + 0x48) == 1) {
       *(short *)(iVar2 + 4) = *(short *)(iVar2 + 4) - sVar1;
-      *(short *)(iVar2 + 6) = *(short *)(iVar2 + 6) + this->field04;
-      this->field04 = 0;
+      *(short *)(iVar2 + 6) = *(short *)(iVar2 + 6) + *(short *)(param_1 + 4);
+      *(undefined2 *)(param_1 + 4) = 0;
       return;
     }
     iVar4 = (int)sVar1 + (int)*(short *)(iVar2 + 8);
     if ((iVar4 < 10) ||
-       (piVar3 = *(int **)((int)this->field08 + 0xac), '1' < *(char *)((int)piVar3 + 0x8cf))) {
+       (piVar3 = *(int **)(*(int *)(param_1 + 8) + 0xac), '1' < *(char *)((int)piVar3 + 0x8cf))) {
       if ((0x1d < iVar4) &&
-         (piVar3 = *(int **)((int)this->field08 + 0xac), *(char *)((int)piVar3 + 0x8cf) < '4')) {
+         (piVar3 = *(int **)(*(int *)(param_1 + 8) + 0xac), *(char *)((int)piVar3 + 0x8cf) < '4')) {
         (**(code **)(*piVar3 + 0xb8))(7,3);
       }
     }
     else {
       (**(code **)(*piVar3 + 0xb8))(7,2);
     }
-    *(short *)(iVar2 + 6) = *(short *)(iVar2 + 6) - this->field04;
-    *(short *)(iVar2 + 8) = *(short *)(iVar2 + 8) + this->field04;
-    this->field04 = 0;
+    *(short *)(iVar2 + 6) = *(short *)(iVar2 + 6) - *(short *)(param_1 + 4);
+    *(short *)(iVar2 + 8) = *(short *)(iVar2 + 8) + *(short *)(param_1 + 4);
+    *(undefined2 *)(param_1 + 4) = 0;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F50
 // GHIDRA_NAME TUnitOrder::GetTUnitOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTUnitOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TUnitOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTUnitOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TUnitOrder. */
-
-void * __cdecl TUnitOrder::GetTUnitOrderClassNamePointer(void)
+undefined ** TUnitOrder::GetTUnitOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTUnitOrder;
+  return &PTR_s_TUnitOrder_0064f3c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F90
 // GHIDRA_NAME TUnitOrder::ConstructTUnitOrderBaseState
-// GHIDRA_PROTO void __thiscall ConstructTUnitOrderBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTUnitOrderBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TUnitOrder::ConstructTUnitOrderBaseState(TUnitOrder *this)
+undefined4 __thiscall TUnitOrder::ConstructTUnitOrderBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTUnitOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTUnitOrderAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6FC0
 // GHIDRA_NAME TUnitOrder::DestructTUnitOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTUnitOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TUnitOrder runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTUnitOrderAndMaybeFree()
 
-/* Returns TUnitOrder runtime class descriptor pointer. */
-
-void * __thiscall TUnitOrder::DestructTUnitOrderAndMaybeFree(TUnitOrder *this)
+void __fastcall TUnitOrder::DestructTUnitOrderAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6FE0
@@ -671,28 +265,28 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
 
 {
   int iVar1;
-  void **ppvVar2;
+  TUnitOrder *pTVar2;
   
-  this->field08 = pCityState;
-  this->field0c = *(int **)((int)pCityState + 0x1d8);
-  *(short *)&this->field48 = nEntryId;
-  this->field04 = 0;
-  ppvVar2 = &this->pField10;
+  *(void **)(this + 8) = pCityState;
+  *(undefined4 *)(this + 0xc) = *(undefined4 *)((int)pCityState + 0x1d8);
+  *(short *)(this + 0x48) = nEntryId;
+  *(undefined2 *)(this + 4) = 0;
+  pTVar2 = this + 0x10;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *ppvVar2 = (void *)0x0;
-    ppvVar2 = ppvVar2 + 1;
+    *(undefined4 *)pTVar2 = 0;
+    pTVar2 = pTVar2 + 4;
   }
-  *(undefined2 *)ppvVar2 = 0;
-  this->field50 = nPrimaryInputPerUnit;
-  this->field4c = nPrimaryInputResourceId;
-  this->field52 = nSecondaryInputPerUnit;
-  this->field4e = nSecondaryInputResourceId;
-  this->field44 = (void *)0x0;
-  this->field54 = nCashCostPerUnit;
-  *(undefined2 *)&this->field40 = 0;
-  this->field3e = 0;
-  this->field56 = nWorkforceMode;
-  *(byte *)&this->field58 = bSpecialistMode;
+  *(undefined2 *)pTVar2 = 0;
+  *(short *)(this + 0x50) = nPrimaryInputPerUnit;
+  *(short *)(this + 0x4c) = nPrimaryInputResourceId;
+  *(short *)(this + 0x52) = nSecondaryInputPerUnit;
+  *(short *)(this + 0x4e) = nSecondaryInputResourceId;
+  *(undefined4 *)(this + 0x44) = 0;
+  *(short *)(this + 0x54) = nCashCostPerUnit;
+  *(undefined2 *)(this + 0x40) = 0;
+  *(undefined2 *)(this + 0x3e) = 0;
+  *(short *)(this + 0x56) = nWorkforceMode;
+  this[0x58] = (TUnitOrder)bSpecialistMode;
   return;
 }
 
@@ -727,9 +321,8 @@ int __thiscall TUnitOrder::ComputeMaxRecruitableDeltaForCityEntry(TUnitOrder *th
 
 {
   short sVar1;
-  void *pvVar2;
   int nCapCandidateA;
-  int iVar3;
+  int iVar2;
   int nPrimaryResourceCap;
   uint dwTreasuryPlusIncome;
   int nTreasuryCap;
@@ -739,62 +332,62 @@ int __thiscall TUnitOrder::ComputeMaxRecruitableDeltaForCityEntry(TUnitOrder *th
   short nRecruitmentMode;
   short nWorkerCapMode1;
   
-  nRecruitmentMode = this->field56;
+  nRecruitmentMode = *(short *)(this + 0x56);
   if (nRecruitmentMode == 1) {
-    sVar1 = (short)this->field0c[7];
+    sVar1 = *(short *)(*(int *)(this + 0xc) + 0x1c);
     nFinalCap = CONCAT22((short)((uint)in_EDX >> 0x10),sVar1);
-    iVar3 = this->field0c[5];
-    nWorkerCapMode1 = *(short *)(iVar3 + 4);
-    iVar3 = CONCAT22((short)((uint)iVar3 >> 0x10),nWorkerCapMode1);
+    iVar2 = *(int *)(*(int *)(this + 0xc) + 0x14);
+    nWorkerCapMode1 = *(short *)(iVar2 + 4);
+    iVar2 = CONCAT22((short)((uint)iVar2 >> 0x10),nWorkerCapMode1);
     if (sVar1 < nWorkerCapMode1) goto LAB_004b70ec;
   }
   else if (nRecruitmentMode == 2) {
-    iVar3 = (int)(short)this->field0c[7] / 2;
-    nFinalCap = (int)*(short *)(this->field0c[5] + 6);
-    if (nFinalCap <= iVar3) goto LAB_004b70ec;
+    iVar2 = (int)*(short *)(*(int *)(this + 0xc) + 0x1c) / 2;
+    nFinalCap = (int)*(short *)(*(int *)(*(int *)(this + 0xc) + 0x14) + 6);
+    if (nFinalCap <= iVar2) goto LAB_004b70ec;
   }
   else {
     if (nRecruitmentMode != 4) {
       nFinalCap = 9999;
       goto LAB_004b70ec;
     }
-    nCapCandidateA = (int)(short)this->field0c[7];
-    iVar3 = (int)(nCapCandidateA + (nCapCandidateA >> 0x1f & 3U)) >> 2;
-    nFinalCap = (int)*(short *)(this->field0c[5] + 8);
-    if (nFinalCap <= iVar3) goto LAB_004b70ec;
+    nCapCandidateA = (int)*(short *)(*(int *)(this + 0xc) + 0x1c);
+    iVar2 = (int)(nCapCandidateA + (nCapCandidateA >> 0x1f & 3U)) >> 2;
+    nFinalCap = (int)*(short *)(*(int *)(*(int *)(this + 0xc) + 0x14) + 8);
+    if (nFinalCap <= iVar2) goto LAB_004b70ec;
   }
-  nFinalCap = iVar3;
+  nFinalCap = iVar2;
 LAB_004b70ec:
-  pvVar2 = this->field08;
-  nPrimaryResourceCap = (int)*(short *)((int)pvVar2 + this->field4c * 2 + 0xb6) / (int)this->field50
-  ;
+  iVar2 = *(int *)(this + 8);
+  nPrimaryResourceCap =
+       (int)*(short *)(iVar2 + 0xb6 + *(short *)(this + 0x4c) * 2) / (int)*(short *)(this + 0x50);
   nSecondaryResourceCap = nPrimaryResourceCap;
-  if (-1 < (short)this->field4e) {
+  if (-1 < *(short *)(this + 0x4e)) {
     nSecondaryResourceCap =
-         (int)*(short *)((int)pvVar2 + (short)this->field4e * 2 + 0xb6) / (int)this->field52;
+         (int)*(short *)(iVar2 + 0xb6 + *(short *)(this + 0x4e) * 2) / (int)*(short *)(this + 0x52);
   }
-  iVar3 = *(int *)((int)pvVar2 + 0xac);
+  iVar2 = *(int *)(iVar2 + 0xac);
   nTreasuryCap = nPrimaryResourceCap;
-  if (((this->field54 != 0) && (*(char *)(iVar3 + 0xa0) != '\0')) &&
-     (dwTreasuryPlusIncome = *(int *)(iVar3 + 0x10) + *(int *)(iVar3 + 0x8f0) / 100,
+  if (((*(short *)(this + 0x54) != 0) && (*(char *)(iVar2 + 0xa0) != '\0')) &&
+     (dwTreasuryPlusIncome = *(int *)(iVar2 + 0x10) + *(int *)(iVar2 + 0x8f0) / 100,
      nTreasuryCap = (int)(dwTreasuryPlusIncome & ((int)dwTreasuryPlusIncome < 1) - 1) /
-                    (int)(short)this->field54, (short)nTreasuryCap < 0)) {
+                    (int)*(short *)(this + 0x54), (short)nTreasuryCap < 0)) {
     nTreasuryCap = 0;
   }
-  *(undefined2 *)&this->field40 = 1;
+  *(undefined2 *)(this + 0x40) = 1;
   if ((short)nPrimaryResourceCap < (short)nFinalCap) {
-    *(undefined2 *)&this->field40 = 0;
+    *(undefined2 *)(this + 0x40) = 0;
     nFinalCap = nPrimaryResourceCap;
   }
   if ((short)nSecondaryResourceCap < (short)nFinalCap) {
-    *(undefined2 *)&this->field40 = 0;
+    *(undefined2 *)(this + 0x40) = 0;
     nFinalCap = nSecondaryResourceCap;
   }
   if ((short)nTreasuryCap < (short)nFinalCap) {
-    *(undefined2 *)&this->field40 = 3;
+    *(undefined2 *)(this + 0x40) = 3;
     nFinalCap = nTreasuryCap;
   }
-  return CONCAT22((short)((uint)nTreasuryCap >> 0x10),this->field04) + nFinalCap;
+  return CONCAT22((short)((uint)nTreasuryCap >> 0x10),*(undefined2 *)(this + 4)) + nFinalCap;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7210
@@ -850,15 +443,15 @@ TUnitOrder::ApplyCityEntryOrderDeltaAndCosts(TUnitOrder *this,short nTargetOrder
   int *pCityStateSecondary;
   short *pnCityResourceStock;
   
-  nOrderDelta = nTargetOrderAmount - this->field04;
+  nOrderDelta = nTargetOrderAmount - *(short *)(this + 4);
                     /* Pending order amount is stored at entry field +0x04; changes are applied as
                        deltas. */
-  nMaxOrderAmount = (**(code **)((int)this->pVtable + 0x30))();
+  nMaxOrderAmount = (**(code **)(*(int *)this + 0x30))();
   if ((nMaxOrderAmount < nTargetOrderAmount) || (nTargetOrderAmount < 0)) {
     fIsValidOrder = false;
   }
   else {
-    this->field04 = nTargetOrderAmount;
+    *(short *)(this + 4) = nTargetOrderAmount;
     fIsValidOrder = true;
   }
                     /* Rejects requests above entry cap or below zero; no resource/cash mutation on
@@ -868,63 +461,59 @@ TUnitOrder::ApplyCityEntryOrderDeltaAndCosts(TUnitOrder *this,short nTargetOrder
   }
                     /* Consumes primary input resource at city stock offset 0xB6 + resourceIndex*2.
                         */
-  pCityState = this->field08;
-  pnResourceStock = (short *)((int)pCityState + this->field4c * 2 + 0xb6);
-  *pnResourceStock = *pnResourceStock - this->field50 * nOrderDelta;
+  pCityState = *(int **)(this + 8);
+  pnResourceStock = (short *)((int)pCityState + *(short *)(this + 0x4c) * 2 + 0xb6);
+  *pnResourceStock = *pnResourceStock - *(short *)(this + 0x50) * nOrderDelta;
                     /* Primary and optional secondary resource stocks are decremented immediately at
                        city stock array +0xB6. */
   (**(code **)(*pCityState + 0x80))();
   wLaborContext = extraout_var;
-  if (-1 < (short)this->field4e) {
-    pCityStateSecondary = this->field08;
-    pnCityResourceStock = (short *)((int)pCityStateSecondary + (short)this->field4e * 2 + 0xb6);
-    *pnCityResourceStock = *pnCityResourceStock - this->field52 * nOrderDelta;
+  if (-1 < *(short *)(this + 0x4e)) {
+    pCityStateSecondary = *(int **)(this + 8);
+    pnCityResourceStock = (short *)((int)pCityStateSecondary + *(short *)(this + 0x4e) * 2 + 0xb6);
+    *pnCityResourceStock = *pnCityResourceStock - *(short *)(this + 0x52) * nOrderDelta;
     (**(code **)(*pCityStateSecondary + 0x80))();
     wLaborContext = extraout_var_00;
   }
                     /* Optional worker-group field (0x56) routes to manager callback for labor
                        allocation updates. */
-  if (this->field56 != 0) {
-    (**(code **)(*this->field0c + 0x34))(CONCAT22(wLaborContext,this->field56),nOrderDelta);
+  if (*(short *)(this + 0x56) != 0) {
+    (**(code **)(**(int **)(this + 0xc) + 0x34))
+              (CONCAT22(wLaborContext,*(short *)(this + 0x56)),nOrderDelta);
   }
-  pOwnerNationState = *(int **)((int)this->field08 + 0xac);
+  pOwnerNationState = *(int **)(*(int *)(this + 8) + 0xac);
                     /* Cash is charged immediately from owner nation treasury (+0x10) using per-unit
                        cash cost field +0x54. */
-  pOwnerNationState[4] = pOwnerNationState[4] - (int)(short)this->field54 * (int)nOrderDelta;
-  (**(code **)(*(int *)g_pUiRuntimeContext + 0xac))();
+  pOwnerNationState[4] = pOwnerNationState[4] - (int)*(short *)(this + 0x54) * (int)nOrderDelta;
+  (**(code **)(*g_pUiRuntimeContext + 0xac))();
   return true;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7850
 // GHIDRA_NAME TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b7850()
 
 void __thiscall
-TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(TUnitOrder *this,void *pMessage)
+TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
-  (*pcVar1)(&this->field48,2);
-  (*pcVar1)(&this->field04,2);
-  (*pcVar1)(&this->field40,2);
-  (*pcVar1)(&this->field48,2);
-  (*pcVar1)(&this->pField10,0x2e);
-  (*pcVar1)(&this->field44,4);
-  (*pcVar1)(&this->field4c,2);
-  (*pcVar1)(&this->field4e,2);
-  (*pcVar1)(&this->field50,2);
-  (*pcVar1)(&this->field52,2);
-  (*pcVar1)(&this->field54,2);
-  (*pcVar1)(&this->field56,2);
-  (*pcVar1)(&this->field58,1);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  (*pcVar1)(param_1 + 0x48,2);
+  (*pcVar1)(param_1 + 4,2);
+  (*pcVar1)(param_1 + 0x40,2);
+  (*pcVar1)(param_1 + 0x48,2);
+  (*pcVar1)(param_1 + 0x10,0x2e);
+  (*pcVar1)(param_1 + 0x44,4);
+  (*pcVar1)(param_1 + 0x4c,2);
+  (*pcVar1)(param_1 + 0x4e,2);
+  (*pcVar1)(param_1 + 0x50,2);
+  (*pcVar1)(param_1 + 0x52,2);
+  (*pcVar1)(param_1 + 0x54,2);
+  (*pcVar1)(param_1 + 0x56,2);
+  (*pcVar1)(param_1 + 0x58,1);
   return;
 }
 
@@ -960,21 +549,21 @@ void __thiscall TUnitOrder::SyncCityEntryOrderStateWithArchive(TUnitOrder *this,
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(pArchive);
   pcVar1 = *(code **)(*pArchive + 0x3c);
-  (*pcVar1)(&this->field48,2);
-  (*pcVar1)(&this->field04,2);
-  (*pcVar1)(&this->field40,2);
-  (*pcVar1)(&this->field48,2);
-  (*pcVar1)(&this->pField10,0x2e);
-  (*pcVar1)(&this->field44,4);
-  (*pcVar1)(&this->field4c,2);
-  (*pcVar1)(&this->field4e,2);
-  (*pcVar1)(&this->field50,2);
-  (*pcVar1)(&this->field52,2);
-  (*pcVar1)(&this->field54,2);
-  (*pcVar1)(&this->field56,2);
-  (*pcVar1)(&this->field58,1);
+  (*pcVar1)(this + 0x48,2);
+  (*pcVar1)(this + 4,2);
+  (*pcVar1)(this + 0x40,2);
+  (*pcVar1)(this + 0x48,2);
+  (*pcVar1)(this + 0x10,0x2e);
+  (*pcVar1)(this + 0x44,4);
+  (*pcVar1)(this + 0x4c,2);
+  (*pcVar1)(this + 0x4e,2);
+  (*pcVar1)(this + 0x50,2);
+  (*pcVar1)(this + 0x52,2);
+  (*pcVar1)(this + 0x54,2);
+  (*pcVar1)(this + 0x56,2);
+  (*pcVar1)(this + 0x58,1);
   return;
 }
 

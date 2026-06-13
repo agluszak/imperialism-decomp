@@ -3,40 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TBuildingView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004022E3
-// GHIDRA_NAME TBuildingView::TBuildingView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TBuildingView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTBuildingViewAndMaybeFree
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TBuildingView */
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407A22
-// GHIDRA_NAME TBuildingView::TBuildingView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TBuildingView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBuildingViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBuildingViewClassNamePointer */
-
-void * __cdecl TBuildingView::TBuildingView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBuildingViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6DF0
 // GHIDRA_NAME TBuildingView::CreateTBuildingViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTBuildingViewInstance(void)
+// GHIDRA_PROTO undefined CreateTBuildingViewInstance()
 
-void * __cdecl TBuildingView::CreateTBuildingViewInstance(void)
+undefined4 * TBuildingView::CreateTBuildingViewInstance(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -46,41 +20,54 @@ void * __cdecl TBuildingView::CreateTBuildingViewInstance(void)
   puStack_8 = &LAB_0063154a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    this->field0_0x0 = &g_vtblTBuildingView;
-    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    *puVar1 = &PTR_LAB_00651458;
+    puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6E90
 // GHIDRA_NAME TBuildingView::GetTBuildingViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBuildingViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBuildingView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBuildingViewClassNamePointer()
 
-/* Returns class descriptor pointer for TBuildingView. */
-
-void * __cdecl TBuildingView::GetTBuildingViewClassNamePointer(void)
+undefined ** TBuildingView::GetTBuildingViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTBuildingView;
+  return &PTR_s_TBuildingView_00651230;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6EB0
 // GHIDRA_NAME TBuildingView::ConstructTBuildingViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTBuildingViewBaseState(void)
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TBuildingView */
+// GHIDRA_PROTO undefined ConstructTBuildingViewBaseState()
+
+undefined4 * __fastcall TBuildingView::ConstructTBuildingViewBaseState(undefined4 *param_1)
+
+{
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00651458;
+  param_1[0x25] = 0;
+  return param_1;
+}
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6EE0
 // GHIDRA_NAME TBuildingView::DestructTBuildingViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTBuildingViewAndMaybeFree(byte freeSelfFlag)
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TBuildingView */
+// GHIDRA_PROTO undefined DestructTBuildingViewAndMaybeFree()
+
+undefined4 __thiscall
+TBuildingView::DestructTBuildingViewAndMaybeFree(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
+}
 

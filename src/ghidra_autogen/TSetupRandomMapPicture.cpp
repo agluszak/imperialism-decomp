@@ -3,218 +3,22 @@
 // Program: Imperialism.exe
 // Bucket: TSetupRandomMapPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401BEF
-// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot055
-// GHIDRA_PROTO void __thiscall TSetupRandomMapPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeSetupRandomMapPictureDialogFromGameContext
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeSetupRandomMapPictureDialogFromGameContext */
-
-void __thiscall
-TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot055(TSetupRandomMapPicture *this)
-
-{
-  TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext((TRadioTextCluster *)this)
-  ;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402D88
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_DestructTSetupRandomMapPictureBaseState
-// GHIDRA_PROTO void __cdecl thunk_DestructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTSetupRandomMapPictureBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTSetupRandomMapPictureBaseState */
-
-void __cdecl
-TSetupRandomMapPicture::thunk_DestructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture *pThis)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  puStack_8 = &LAB_00636938;
-  *unaff_FS_OFFSET = &uStack_c;
-  uStack_4 = 0;
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_4 = 0xffffffff;
-  thunk_DestructCityDialogSharedBaseState();
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404E7B
-// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot015
-// GHIDRA_PROTO void __thiscall TSetupRandomMapPicture_VtblSlot015(int commandId, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleRandomMapNationPlanAndFlagCommands
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleRandomMapNationPlanAndFlagCommands */
-
-void __thiscall
-TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot015
-          (TSetupRandomMapPicture *this,int commandId,PanelEventPayload *pPanelEvent)
-
-{
-  TSpaceCommand::HandleRandomMapNationPlanAndFlagCommands
-            ((TSpaceCommand *)this,commandId,pPanelEvent);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040500B
-// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot018
-// GHIDRA_PROTO void __cdecl TSetupRandomMapPicture_VtblSlot018(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DispatchByEntryTypeToVslots1D0_1D4
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DispatchByEntryTypeToVslots1D0_1D4 */
-
-void __cdecl TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot018(void)
-
-{
-  DispatchByEntryTypeToVslots1D0_1D4();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405D8A
-// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot117
-// GHIDRA_PROTO void __cdecl TSetupRandomMapPicture_VtblSlot117(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PostTurnEvent5DCOrResetLocalUiState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to PostTurnEvent5DCOrResetLocalUiState */
-
-void __cdecl TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot117(void)
-
-{
-  PostTurnEvent5DCOrResetLocalUiState();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004085A8
-// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot116
-// GHIDRA_PROTO void __thiscall TSetupRandomMapPicture_VtblSlot116(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyNationSelectionAndMaybePostTurnEvent5E4
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyNationSelectionAndMaybePostTurnEvent5E4 */
-
-void __thiscall
-TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot116(TSetupRandomMapPicture *this)
-
-{
-  TToolBarCluster::ApplyNationSelectionAndMaybePostTurnEvent5E4((TToolBarCluster *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409061
-// GHIDRA_NAME TSetupRandomMapPicture::thunk_ConstructTSetupRandomMapPictureBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTSetupRandomMapPictureBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTSetupRandomMapPictureBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTSetupRandomMapPictureBaseState */
-
-void * __thiscall
-TSetupRandomMapPicture::thunk_ConstructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636918;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  uStack_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  this->field98 = 0;
-  this->fielda4 = 0;
-  this->field0_0x0 = &g_vtblTSetupRandomMapPicture;
-  *unaff_FS_OFFSET = uStack_c;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409151
-// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TSetupRandomMapPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSetupRandomMapPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSetupRandomMapPictureClassNamePointer */
-
-void * __cdecl TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSetupRandomMapPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409197
-// GHIDRA_NAME TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TSetupRandomMapPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTSetupRandomMapPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTSetupRandomMapPictureAndMaybeFree */
-
-void * __thiscall
-TSetupRandomMapPicture::TSetupRandomMapPicture_VtblSlot001
-          (TSetupRandomMapPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTSetupRandomMapPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00576D60
 // GHIDRA_NAME TSetupRandomMapPicture::GetTSetupRandomMapPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSetupRandomMapPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSetupRandomMapPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSetupRandomMapPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TSetupRandomMapPicture. */
-
-void * __cdecl TSetupRandomMapPicture::GetTSetupRandomMapPictureClassNamePointer(void)
+undefined ** TSetupRandomMapPicture::GetTSetupRandomMapPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTSetupRandomMapPicture;
+  return &PTR_s_TSetupRandomMapPicture_006619e0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576D80
 // GHIDRA_NAME TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTSetupRandomMapPictureBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructs TSetupRandomMapPicture base state on provided instance and installs vtable 0x6621E0.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTSetupRandomMapPictureBaseState()
 
-/* Constructs TSetupRandomMapPicture base state on provided instance and installs vtable 0x6621E0.
-    */
-
-void * __thiscall
-TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture *this)
+undefined4 * __fastcall
+TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -226,51 +30,36 @@ TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(TSetupRandomMap
   puStack_8 = &LAB_00636918;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  this->field98 = 0;
-  this->fielda4 = 0;
-  this->field0_0x0 = &g_vtblTSetupRandomMapPicture;
+  *(undefined1 *)(param_1 + 0x26) = 0;
+  *(undefined1 *)(param_1 + 0x29) = 0;
+  *param_1 = &PTR_LAB_006621e0;
   *unaff_FS_OFFSET = local_c;
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576E00
 // GHIDRA_NAME TSetupRandomMapPicture::DestructTSetupRandomMapPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTSetupRandomMapPictureAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Runs TSetupRandomMapPicture base destructor and frees object when delete flag bit is set.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTSetupRandomMapPictureAndMaybeFree()
 
-/* Runs TSetupRandomMapPicture base destructor and frees object when delete flag bit is set. */
-
-void * __thiscall
-TSetupRandomMapPicture::DestructTSetupRandomMapPictureAndMaybeFree
-          (TSetupRandomMapPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+TSetupRandomMapPicture::DestructTSetupRandomMapPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TSetupRandomMapPicture *unaff_ESI;
-  
-  thunk_DestructTSetupRandomMapPictureBaseState(unaff_ESI);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTSetupRandomMapPictureBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576E30
 // GHIDRA_NAME TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState
-// GHIDRA_PROTO void __cdecl DestructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Releases TSetupRandomMapPicture shared string fields and calls shared city-dialog base destructor.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTSetupRandomMapPictureBaseState()
 
-/* Releases TSetupRandomMapPicture shared string fields and calls shared city-dialog base
-   destructor. */
-
-void __cdecl
-TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(TSetupRandomMapPicture *pThis)
+void TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(void)
 
 {
   undefined4 *unaff_FS_OFFSET;

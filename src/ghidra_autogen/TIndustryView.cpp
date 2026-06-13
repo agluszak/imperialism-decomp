@@ -3,86 +3,43 @@
 // Program: Imperialism.exe
 // Bucket: TIndustryView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004011EF
-// GHIDRA_NAME TIndustryView::TIndustryView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TIndustryView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTIndustryViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTIndustryViewClassNamePointer */
-
-void * __cdecl TIndustryView::TIndustryView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTIndustryViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040265D
-// GHIDRA_NAME TIndustryView::TIndustryView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TIndustryView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTIndustryViewAndMaybeFree
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field141_0x90 does not fit in structure TIndustryView */
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402D33
-// GHIDRA_NAME TIndustryView::TIndustryView_VtblSlot117
-// GHIDRA_PROTO void __fastcall TIndustryView_VtblSlot117(TIndustryView * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshCityViewSelectedProductionCapabilityDetails
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field141_0x90 does not fit in structure TIndustryView */
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404994
-// GHIDRA_NAME TIndustryView::TIndustryView_VtblSlot118
-// GHIDRA_PROTO void __fastcall TIndustryView_VtblSlot118(int * pCityViewDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshCityViewActionAvailability
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshCityViewActionAvailability */
-
-void __fastcall TIndustryView::TIndustryView_VtblSlot118(int *pCityViewDialog)
-
-{
-  RefreshCityViewActionAvailability(pCityViewDialog);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040764E
-// GHIDRA_NAME TIndustryView::thunk_ConstructTIndustryViewBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTIndustryViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTIndustryViewBaseState
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field141_0x90 does not fit in structure TIndustryView */
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC770
 // GHIDRA_NAME TIndustryView::GetTIndustryViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTIndustryViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TIndustryView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTIndustryViewClassNamePointer()
 
-/* Returns class descriptor pointer for TIndustryView. */
-
-void * __cdecl TIndustryView::GetTIndustryViewClassNamePointer(void)
+undefined ** TIndustryView::GetTIndustryViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTIndustryView;
+  return &PTR_s_TIndustryView_006512f0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC790
 // GHIDRA_NAME TIndustryView::ConstructTIndustryViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTIndustryViewBaseState(void)
-/* DECOMPILATION FAILED: Low-level Error: Field field141_0x90 does not fit in structure TIndustryView */
+// GHIDRA_PROTO undefined ConstructTIndustryViewBaseState()
+
+undefined4 * __fastcall TIndustryView::ConstructTIndustryViewBaseState(undefined4 *param_1)
+
+{
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00652448;
+  param_1[0x25] = 0;
+  param_1[0x28] = 0;
+  *(undefined2 *)(param_1 + 0x29) = 0xffff;
+  return param_1;
+}
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CC7D0
 // GHIDRA_NAME TIndustryView::DestructTIndustryViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTIndustryViewAndMaybeFree(byte freeSelfFlag)
-/* DECOMPILATION FAILED: Low-level Error: Field field141_0x90 does not fit in structure TIndustryView */
+// GHIDRA_PROTO undefined DestructTIndustryViewAndMaybeFree()
+
+undefined4 __thiscall
+TIndustryView::DestructTIndustryViewAndMaybeFree(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
+}
 

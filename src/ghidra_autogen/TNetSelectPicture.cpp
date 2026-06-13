@@ -3,146 +3,60 @@
 // Program: Imperialism.exe
 // Bucket: TNetSelectPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401785
-// GHIDRA_NAME TNetSelectPicture::TNetSelectPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TNetSelectPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNetSelectPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNetSelectPictureClassNamePointer */
-
-void * __cdecl TNetSelectPicture::TNetSelectPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNetSelectPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004056F5
-// GHIDRA_NAME TNetSelectPicture::TNetSelectPicture_VtblSlot015
-// GHIDRA_PROTO void __thiscall TNetSelectPicture_VtblSlot015(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleTNetSelectPictureCommandOkayCancelAndForward
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleTNetSelectPictureCommandOkayCancelAndForward */
-
-void __thiscall TNetSelectPicture::TNetSelectPicture_VtblSlot015(TNetSelectPicture *this)
-
-{
-  HandleTNetSelectPictureCommandOkayCancelAndForward(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407FDB
-// GHIDRA_NAME TNetSelectPicture::TNetSelectPicture_thunk_scalar_deleting_destructor
-// GHIDRA_PROTO void * __thiscall TNetSelectPicture_thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TNetSelectPicture::TNetSelectPicture_thunk_scalar_deleting_destructor
-          (TNetSelectPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408A58
-// GHIDRA_NAME TNetSelectPicture::TNetSelectPicture_VtblSlot055
-// GHIDRA_PROTO void __cdecl TNetSelectPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTNetSelectPictureBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTNetSelectPictureBaseState */
-
-void __cdecl TNetSelectPicture::TNetSelectPicture_VtblSlot055(void)
-
-{
-  DestructTNetSelectPictureBaseState();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00576980
 // GHIDRA_NAME TNetSelectPicture::GetTNetSelectPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNetSelectPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNetSelectPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNetSelectPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TNetSelectPicture. */
-
-void * __cdecl TNetSelectPicture::GetTNetSelectPictureClassNamePointer(void)
+undefined ** TNetSelectPicture::GetTNetSelectPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTNetSelectPicture;
+  return &PTR_s_TNetSelectPicture_006619b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005769A0
 // GHIDRA_NAME TNetSelectPicture::DestructTNetSelectPictureBaseState
-// GHIDRA_PROTO void __cdecl DestructTNetSelectPictureBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Forwards destruction of TNetSelectPicture base state to shared helper.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTNetSelectPictureBaseState()
 
-/* Forwards destruction of TNetSelectPicture base state to shared helper. */
-
-void __cdecl TNetSelectPicture::DestructTNetSelectPictureBaseState(void)
+void TNetSelectPicture::DestructTNetSelectPictureBaseState(undefined4 param_1)
 
 {
-  thunk_NoOpUiLifecycleHook();
+  TView::thunk_NoOpUiLifecycleHook(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005769C0
 // GHIDRA_NAME TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward
-// GHIDRA_PROTO void __thiscall HandleTNetSelectPictureCommandOkayCancelAndForward(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles TNetSelectPicture command tags cncl/okay, applies cancel or validate-selection flow, then forwards to shared city-dialog toggle handler.
-// GHIDRA_COMMENT_END
-
-/* Handles TNetSelectPicture command tags cncl/okay, applies cancel or validate-selection flow, then
-   forwards to shared city-dialog toggle handler. */
+// GHIDRA_PROTO undefined HandleTNetSelectPictureCommandOkayCancelAndForward()
 
 void __thiscall
-TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward(TNetSelectPicture *this)
+TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
   code *pcVar1;
-  int iVar2;
-  int *piVar3;
-  undefined4 uVar4;
-  int in_stack_00000004;
-  int in_stack_00000008;
+  int *piVar2;
+  undefined4 uVar3;
+  int iVar4;
   
-  if (g_TNet_Select_Picture_Value_006A4264 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  if (DAT_006a4264 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_USetupScreens_cpp_00698ab8,0x2e6);
   }
-  if (((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22)) {
-    if (*(int *)(in_stack_00000008 + 0x1c) == 0x636e636c) {
-      thunk_ResetGameFlowStateAndPostTurnEvent5DC();
+  if (((param_2 == 0x14) || (param_2 == 10)) || (param_2 == 0x22)) {
+    if (*(int *)(param_3 + 0x1c) == 0x636e636c) {
+      ResetGameFlowStateAndPostTurnEvent5DC();
     }
-    else if (*(int *)(in_stack_00000008 + 0x1c) == 0x6f6b6179) {
-      pcVar1 = *(code **)((int)this->pVtable + 0x94);
-      piVar3 = (int *)(*pcVar1)(0x70726f74);
-      iVar2 = *piVar3;
-      (**(code **)(iVar2 + 0xc))();
-      uVar4 = (**(code **)(iVar2 + 0x1c4))();
-      (*pcVar1)(uVar4);
-      ValidateGameFlowNameAndSelectionContext();
+    else if (*(int *)(param_3 + 0x1c) == 0x6f6b6179) {
+      pcVar1 = *(code **)(*param_1 + 0x94);
+      piVar2 = (int *)(*pcVar1)(0x70726f74);
+      iVar4 = *piVar2;
+      (**(code **)(iVar4 + 0xc))();
+      uVar3 = (**(code **)(iVar4 + 0x1c4))();
+      iVar4 = (*pcVar1)(uVar3);
+      ValidateGameFlowNameAndSelectionContext(*(undefined4 *)(iVar4 + 0x3c),1);
     }
   }
-  thunk_HandleCityDialogToggleCommandOrForward();
+  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
   return;
 }
 

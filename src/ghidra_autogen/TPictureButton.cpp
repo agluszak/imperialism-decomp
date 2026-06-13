@@ -3,52 +3,60 @@
 // Program: Imperialism.exe
 // Bucket: TPictureButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040393B
-// GHIDRA_NAME TPictureButton::TPictureButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TPictureButton_VtblSlot000(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x0048EFC0
+// GHIDRA_NAME TPictureButton::TPictureButton
+// GHIDRA_PROTO undefined TPictureButton()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPictureButtonClassNamePointer
+// GHIDRA_COMMENT Base constructor for picture-oriented UI resource entries.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Calls ConstructUiResourceEntryBase.
+// GHIDRA_COMMENT 2. Initializes picture/style fields from global defaults.
+// GHIDRA_COMMENT 3. Installs picture-entry base vtable.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - this pointer.
 // GHIDRA_COMMENT_END
 
-/* Single-JMP thunk to GetTPictureButtonClassNamePointer */
+/* Base constructor for picture-oriented UI resource entries.
+   
+   Algorithm:
+   1. Calls ConstructUiResourceEntryBase.
+   2. Initializes picture/style fields from global defaults.
+   3. Installs picture-entry base vtable.
+   
+   Returns:
+   - this pointer. */
 
-void * __cdecl TPictureButton::TPictureButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPictureButtonClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405010
-// GHIDRA_NAME TPictureButton::TPictureButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TPictureButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTPictureButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTPictureButtonAndMaybeFree */
-
-void * __thiscall TPictureButton::TPictureButton_VtblSlot001(TPictureButton *this,byte freeSelfFlag)
+undefined4 * __fastcall TPictureButton::TPictureButton(undefined4 *param_1)
 
 {
-  void *pvVar1;
+  ushort uVar1;
   
-  pvVar1 = DestructTPictureButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
+  TView::thunk_ConstructTViewBaseState();
+  param_1[0x18] = 1;
+  *(undefined1 *)(param_1 + 0x19) = 0;
+  param_1[0x1a] = 0;
+  param_1[0x1b] = 0;
+  param_1[0x1c] = 0;
+  param_1[0x1d] = 0;
+  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
+  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
+  uVar1 = g_wUiResourceEntryDefaultParam2;
+  param_1[0x22] = 0;
+  param_1[0x23] = 0;
+  *(undefined2 *)(param_1 + 0x21) = 0xffff;
+  *param_1 = &PTR_LAB_0064a930;
+  param_1[0x18] = 10;
+  *(ushort *)(param_1 + 0x20) = uVar1;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570750
 // GHIDRA_NAME TPictureButton::CreateTPictureButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTPictureButtonInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TPictureButton; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTPictureButtonInstance()
 
-/* [ClassQuad] create inferred for TPictureButton; alloc factory pattern. */
-
-void * __cdecl TPictureButton::CreateTPictureButtonInstance(void)
+undefined4 * TPictureButton::CreateTPictureButtonInstance(void)
 
 {
   undefined4 *puVar1;
@@ -62,12 +70,12 @@ void * __cdecl TPictureButton::CreateTPictureButtonInstance(void)
   puStack_8 = &LAB_0063634a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTPictureButton;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_0065e6f8;
     *(undefined2 *)((int)puVar1 + 0x92) = 7000;
     puVar2 = puVar1;
   }
@@ -77,22 +85,17 @@ void * __cdecl TPictureButton::CreateTPictureButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005707D0
 // GHIDRA_NAME TPictureButton::GetTPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPictureButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPictureButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPictureButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TPictureButton. */
-
-void * __cdecl TPictureButton::GetTPictureButtonClassNamePointer(void)
+undefined ** TPictureButton::GetTPictureButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTPictureButton;
+  return &PTR_s_TPictureButton_0065e538;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005707F0
 // GHIDRA_NAME TPictureButton::ConstructUiTabCursorPictureEntry
-// GHIDRA_PROTO void __thiscall ConstructUiTabCursorPictureEntry(void)
+// GHIDRA_PROTO undefined ConstructUiTabCursorPictureEntry()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived picture constructor reused for cursor/tab glyph entries (observed tags: 'curs', 'tab0'..'tab8'). Sets timing/word field (+0x92=7000).
 // GHIDRA_COMMENT_END
@@ -100,27 +103,12 @@ void * __cdecl TPictureButton::GetTPictureButtonClassNamePointer(void)
 /* Derived picture constructor reused for cursor/tab glyph entries (observed tags: 'curs',
    'tab0'..'tab8'). Sets timing/word field (+0x92=7000). */
 
-void __thiscall TPictureButton::ConstructUiTabCursorPictureEntry(TPictureButton *this)
+undefined4 * __fastcall TPictureButton::ConstructUiTabCursorPictureEntry(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTPictureButton;
-  this->field143_0x92 = 7000;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00570820
-// GHIDRA_NAME TPictureButton::DestructTPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPictureButtonAndMaybeFree(byte freeSelfFlag)
-
-void * __thiscall
-TPictureButton::DestructTPictureButtonAndMaybeFree(TPictureButton *this,byte freeSelfFlag)
-
-{
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_0065e6f8;
+  *(undefined2 *)((int)param_1 + 0x92) = 7000;
+  return param_1;
 }
 

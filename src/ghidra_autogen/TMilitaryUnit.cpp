@@ -5,31 +5,26 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2CB0
 // GHIDRA_NAME TMilitaryUnit::CreateTMilitaryUnitInstance
-// GHIDRA_PROTO void * __cdecl CreateTMilitaryUnitInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TMilitaryUnit; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTMilitaryUnitInstance()
 
-/* [ClassQuad] create inferred for TMilitaryUnit; alloc factory pattern. */
-
-void * __cdecl TMilitaryUnit::CreateTMilitaryUnitInstance(void)
+undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
 
 {
   undefined4 *puVar1;
-  int *unaff_FS_OFFSET;
+  undefined4 *unaff_FS_OFFSET;
   int local_14;
   undefined4 *local_10;
-  int local_c;
+  undefined4 local_c;
   undefined1 *puStack_8;
-  void *local_4;
+  undefined4 local_4;
   
-  local_4 = (void *)0xffffffff;
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_006398e5;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x44);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &PTR_thunk_GetTUnitClassNamePointer_0066ee18;
+    *puVar1 = &TUnitOrderState::_vftable_;
     puVar1[4] = 0;
     puVar1[5] = 0;
     *(undefined2 *)((int)puVar1 + 6) = 0xffff;
@@ -43,34 +38,29 @@ void * __cdecl TMilitaryUnit::CreateTMilitaryUnitInstance(void)
     *(undefined2 *)((int)puVar1 + 0x3a) = 0;
     *(undefined2 *)(puVar1 + 0xf) = 0;
     puVar1[0x10] = 0;
-    *puVar1 = &PTR_thunk_GetTMilitaryUnitClassNamePointer_At0040794b_0066eea8;
+    *puVar1 = &TMilitaryUnitOrderState::_vftable_;
     *(undefined1 *)(puVar1 + 7) = 1;
     *(undefined2 *)(puVar1 + 0xd) = 500;
     *(undefined2 *)((int)puVar1 + 0x36) = 0;
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&local_14);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
     local_4._0_1_ = 3;
     AssignFromPtr(puVar1 + 9,&local_14);
-    local_4 = (void *)CONCAT31(local_4._1_3_,2);
+    local_4 = CONCAT31(local_4._1_3_,2);
     ReleaseSharedStringRefIfNotEmpty();
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2DD0
 // GHIDRA_NAME TMilitaryUnit::GetTMilitaryUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMilitaryUnitClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMilitaryUnit.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMilitaryUnitClassNamePointer()
 
-/* Returns class descriptor pointer for TMilitaryUnit. */
-
-void * __cdecl TMilitaryUnit::GetTMilitaryUnitClassNamePointer(void)
+undefined ** TMilitaryUnit::GetTMilitaryUnitClassNamePointer(void)
 
 {
-  return &g_pClassDescTMilitaryUnit;
+  return &PTR_s_TMilitaryUnit_0066ed70;
 }
 

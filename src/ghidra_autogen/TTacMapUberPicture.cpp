@@ -3,92 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TTacMapUberPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040363E
-// GHIDRA_NAME TTacMapUberPicture::thunk_GetTTacMapUberPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTacMapUberPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTacMapUberPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTacMapUberPictureClassNamePointer */
-
-void * __cdecl TTacMapUberPicture::thunk_GetTTacMapUberPictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTacMapUberPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004078FB
-// GHIDRA_NAME TTacMapUberPicture::thunk_scalar_deleting_destructor_004078FB
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004078FB(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTacMapUberPicture::thunk_scalar_deleting_destructor_004078FB
-          (TTacMapUberPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040966F
-// GHIDRA_NAME TTacMapUberPicture::thunk_ConstructTTacMapUberPictureBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTacMapUberPictureBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeTacMapUberPictureDialogHandle [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeTacMapUberPictureDialogHandle [FID:thunk_target_sync] */
-
-void __thiscall
-TTacMapUberPicture::thunk_ConstructTTacMapUberPictureBaseState(TTacMapUberPicture *this)
-
-{
-  ConstructTTacMapUberPictureBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040970A
-// GHIDRA_NAME TTacMapUberPicture::thunk_DestructTTacMapUberPictureAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTTacMapUberPictureAndMaybeFree(int modeValue)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyTacMapUberPictureDialogModeValue [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyTacMapUberPictureDialogModeValue [FID:thunk_target_sync] */
-
-void __thiscall
-TTacMapUberPicture::thunk_DestructTTacMapUberPictureAndMaybeFree
-          (TTacMapUberPicture *this,int modeValue)
-
-{
-  DestructTTacMapUberPictureAndMaybeFree(this,modeValue);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD2E0
 // GHIDRA_NAME TTacMapUberPicture::CreateTTacMapUberPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTTacMapUberPictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTacMapUberPicture; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTacMapUberPictureInstance()
 
-/* [ClassQuad] create inferred for TTacMapUberPicture; alloc factory pattern. */
-
-void * __cdecl TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
+undefined4 * TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
 
 {
-  TOffLimitsPicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -98,73 +20,58 @@ void * __cdecl TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
   puStack_8 = &LAB_0063883a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (this != (TOffLimitsPicture *)0x0) {
-    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
-    this->field0_0x0 = &PTR_thunk_GetTTacMapUberPictureClassNamePointer_006451f0;
-    *(undefined4 *)&this->field_0x94 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState();
+    *puVar1 = &PTR_LAB_006451f0;
+    puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD380
 // GHIDRA_NAME TTacMapUberPicture::GetTTacMapUberPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTacMapUberPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTacMapUberPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTacMapUberPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TTacMapUberPicture. */
-
-void * __cdecl TTacMapUberPicture::GetTTacMapUberPictureClassNamePointer(void)
+undefined ** TTacMapUberPicture::GetTTacMapUberPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTTacMapUberPicture;
+  return &PTR_s_TTacMapUberPicture_0066a2e0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD3A0
 // GHIDRA_NAME TTacMapUberPicture::ConstructTTacMapUberPictureBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTacMapUberPictureBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Resolves tactical map dialog handle/object and stores it in TacMapUberPicture state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTacMapUberPictureBaseState()
 
-/* Resolves tactical map dialog handle/object and stores it in TacMapUberPicture state. */
-
-void __thiscall TTacMapUberPicture::ConstructTTacMapUberPictureBaseState(TTacMapUberPicture *this)
+void __thiscall
+TTacMapUberPicture::ConstructTTacMapUberPictureBaseState(int *param_1,undefined4 param_2)
 
 {
   int *piVar1;
   
-  TMapUberUberPicture::TMapUberUberPicture_VtblSlot055((TMapUberUberPicture *)this);
-  piVar1 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x444c4f47);
+  TMapUberUberPicture::ConstructTMapUberUberPictureBaseState(param_2);
+  piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x444c4f47);
   (**(code **)(*piVar1 + 0xc))();
-  this->field94 = piVar1;
+  param_1[0x25] = (int)piVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD3F0
 // GHIDRA_NAME TTacMapUberPicture::DestructTTacMapUberPictureAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTTacMapUberPictureAndMaybeFree(int modeValue)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Applies mode/value update to tactical map dialog handle object.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTacMapUberPictureAndMaybeFree()
 
-/* Applies mode/value update to tactical map dialog handle object. */
-
-void __thiscall
-TTacMapUberPicture::DestructTTacMapUberPictureAndMaybeFree(TTacMapUberPicture *this,int modeValue)
+void __fastcall TTacMapUberPicture::DestructTTacMapUberPictureAndMaybeFree(int *param_1)
 
 {
   int iVar1;
   int *piVar2;
   undefined4 unaff_retaddr;
   
-  piVar2 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x444c4f47);
+  piVar2 = (int *)(**(code **)(*param_1 + 0x94))(0x444c4f47);
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0xc))();
   (**(code **)(iVar1 + 0x48))(unaff_retaddr);

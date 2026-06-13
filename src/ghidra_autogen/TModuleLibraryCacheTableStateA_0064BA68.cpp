@@ -3,70 +3,19 @@
 // Program: Imperialism.exe
 // Bucket: TModuleLibraryCacheTableStateA_0064BA68.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405114
-// GHIDRA_NAME TModuleLibraryCacheTableStateA_0064BA68::thunk_DestructModuleLibraryCacheTableStateAAndFree
-// GHIDRA_PROTO void __thiscall thunk_DestructModuleLibraryCacheTableStateAAndFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk mirror for DestructModuleLibraryCacheTableStateAAndFree.
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk mirror for DestructModuleLibraryCacheTableStateAAndFree. */
-
-void __thiscall
-TModuleLibraryCacheTableStateA_0064BA68::thunk_DestructModuleLibraryCacheTableStateAAndFree
-          (TModuleLibraryCacheTableStateA_0064BA68 *this)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  uint uVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  puStack_8 = &LAB_0062fb78;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateA_0064BA68;
-  puVar2 = this->pHashBucketTable_04;
-  uStack_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    for (uVar3 = this->nHashBucketCount_08; uVar3 != 0; uVar3 = uVar3 - 1) {
-      for (puVar1 = (undefined4 *)*puVar2; puVar1 != (undefined4 *)0x0;
-          puVar1 = (undefined4 *)*puVar1) {
-      }
-      puVar2 = puVar2 + 1;
-    }
-  }
-  FreeHeapBufferIfNotNull();
-  this->pHashBucketTable_04 = (void *)0x0;
-  this->nHashNodeCount_0C = 0;
-  this->nHashTableCapacity_10 = 0;
-  FreeDataChain();
-  this->pHashBucketBlockChainHead_14 = (void *)0x0;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049B270
 // GHIDRA_NAME TModuleLibraryCacheTableStateA_0064BA68::DestructModuleLibraryCacheTableStateAAndFree
-// GHIDRA_PROTO void __thiscall DestructModuleLibraryCacheTableStateAAndFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] Destroys module-cache table-A state and frees owned hash/chain buffers.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructModuleLibraryCacheTableStateAAndFree()
 
-/* [Behavior] Destroys module-cache table-A state and frees owned hash/chain buffers. */
-
-void __thiscall
+void __fastcall
 TModuleLibraryCacheTableStateA_0064BA68::DestructModuleLibraryCacheTableStateAAndFree
-          (TModuleLibraryCacheTableStateA_0064BA68 *this)
+          (undefined4 *param_1)
 
 {
   undefined4 *puVar1;
   undefined4 *puVar2;
-  uint uVar3;
+  undefined4 *puVar3;
+  int iVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -75,24 +24,25 @@ TModuleLibraryCacheTableStateA_0064BA68::DestructModuleLibraryCacheTableStateAAn
   puStack_8 = &LAB_0062fb78;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateA_0064BA68;
-  puVar2 = this->pHashBucketTable_04;
+  *param_1 = &PTR_GetCObjectRuntimeClass_0064ba68;
+  puVar1 = (undefined4 *)param_1[1];
   local_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    for (uVar3 = this->nHashBucketCount_08; uVar3 != 0; uVar3 = uVar3 - 1) {
-      for (puVar1 = (undefined4 *)*puVar2; puVar1 != (undefined4 *)0x0;
-          puVar1 = (undefined4 *)*puVar1) {
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar3 = puVar1;
+    for (iVar4 = param_1[2]; iVar4 != 0; iVar4 = iVar4 + -1) {
+      for (puVar2 = (undefined4 *)*puVar3; puVar2 != (undefined4 *)0x0;
+          puVar2 = (undefined4 *)*puVar2) {
       }
-      puVar2 = puVar2 + 1;
+      puVar3 = puVar3 + 1;
     }
   }
-  FreeHeapBufferIfNotNull();
-  this->pHashBucketTable_04 = (void *)0x0;
-  this->nHashNodeCount_0C = 0;
-  this->nHashTableCapacity_10 = 0;
+  FreeHeapBufferIfNotNull(puVar1);
+  param_1[1] = 0;
+  param_1[3] = 0;
+  param_1[4] = 0;
   FreeDataChain();
-  this->pHashBucketBlockChainHead_14 = (void *)0x0;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

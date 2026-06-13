@@ -3,185 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTradePageBuyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403F58
-// GHIDRA_NAME TTradePageBuyView::thunk_scalar_deleting_destructor_00403F58
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403F58(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTradePageBuyView::thunk_scalar_deleting_destructor_00403F58
-          (TTradePageBuyView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004071B2
-// GHIDRA_NAME TTradePageBuyView::thunk_DestructTTradePageBuyViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTradePageBuyViewAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTradePageBuyViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTradePageBuyViewAndMaybeFree */
-
-void * __thiscall
-TTradePageBuyView::thunk_DestructTTradePageBuyViewAndMaybeFree
-          (TTradePageBuyView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTradePageBuyViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407BC1
-// GHIDRA_NAME TTradePageBuyView::thunk_GetTTradePageBuyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradePageBuyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradePageBuyViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradePageBuyViewClassNamePointer */
-
-void * __cdecl TTradePageBuyView::thunk_GetTTradePageBuyViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradePageBuyViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408300
-// GHIDRA_NAME TTradePageBuyView::thunk_ConstructTTradePageBuyViewBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTTradePageBuyViewBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RefreshTradeBuyPageNationBidLinesForSelection. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for RefreshTradeBuyPageNationBidLinesForSelection. [FID:thunk_target_sync] */
-
-void * __thiscall
-TTradePageBuyView::thunk_ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this,int arg1)
-
-{
-  undefined *puVar1;
-  uint3 uVar2;
-  char cVar3;
-  short extraout_AX;
-  short extraout_AX_00;
-  void *pvVar4;
-  TLineData *pTVar5;
-  undefined **ppuVar6;
-  int iVar7;
-  undefined4 *unaff_FS_OFFSET;
-  int aiStack_28 [2];
-  undefined4 uStack_20;
-  uint uStack_1c;
-  undefined1 uStack_18;
-  undefined1 uStack_17;
-  void *pvStack_c;
-  undefined1 *puStack_8;
-  TLineData *pTStack_4;
-  
-  pTStack_4 = (TLineData *)0xffffffff;
-  puStack_8 = &LAB_00639404;
-  pvVar4 = (void *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &pvStack_c;
-  uStack_20 = 0xe0;
-  uStack_1c = 0x24;
-  pvStack_c = pvVar4;
-  if ((short)arg1 == this->field84) goto LAB_005bd863;
-  ppuVar6 = this->field0_0x0;
-  this->field84 = (short)arg1;
-  (*(code *)ppuVar6[0x6d])();
-  if ((short)arg1 != -1) {
-    puVar1 = g_pNationInteractionStateManager->vftable;
-    thunk_GetActiveNationId();
-    cVar3 = (**(code **)(puVar1 + 0x78))((int)(short)arg1,(int)extraout_AX);
-    if (cVar3 == '\0') {
-      puVar1 = g_pNationInteractionStateManager->vftable;
-      thunk_GetActiveNationId();
-      cVar3 = (**(code **)(puVar1 + 0x7c))((int)(short)arg1,(int)extraout_AX_00);
-      if (cVar3 != '\0') goto LAB_005bd73a;
-    }
-    else {
-LAB_005bd73a:
-      pTStack_4 = AllocateWithFallbackHandler();
-      iVar7 = 0;
-      pvStack_c = (void *)0x0;
-      if (pTStack_4 == (TLineData *)0x0) {
-        pvVar4 = (void *)0x0;
-      }
-      else {
-        pvVar4 = TTextLine::ConstructTTextLineBaseState((TTextLine *)pTStack_4);
-      }
-      pvStack_c = (void *)0xffffffff;
-      WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390();
-      SetObjectField1EWord();
-      uVar2 = (uint3)uStack_1c;
-      uStack_1c = (uint)(uVar2 & 0xffff);
-      uStack_18 = 0;
-      uStack_17 = 0;
-      thunk_BuildUiTextStyleDescriptor();
-      CopyTwoDwordsAndWordToObjectOffset14();
-      (**(code **)(*(int *)this->pField7c + 0x30))(pvVar4);
-      do {
-        cVar3 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x78))
-                          ((int)(short)arg1,iVar7);
-        if (cVar3 != '\0') {
-          pTVar5 = AllocateWithFallbackHandler();
-          pvStack_c = (void *)0x1;
-          pTStack_4 = pTVar5;
-          if (pTVar5 == (TLineData *)0x0) {
-            pTVar5 = (TLineData *)0x0;
-          }
-          else {
-            TLineData::ConstructTLineDataBaseState(pTVar5);
-            pTVar5->field0_0x0 = &PTR_thunk_GetTTradeBidNationLineClassNamePointer_0066e4f0;
-          }
-          pvStack_c = (void *)0xffffffff;
-          TLineData::thunk_SetLineDataRowAndBounds(pTVar5,0,0,aiStack_28);
-          *(short *)((int)&pTVar5->field10 + 2) = (short)iVar7;
-          *(short *)&pTVar5->field10 = (short)arg1;
-          (**(code **)(*(int *)this->pField7c + 0x30))(pTVar5);
-        }
-        iVar7 = iVar7 + 1;
-      } while (iVar7 < 0x17);
-    }
-    ppuVar6 = this->field0_0x0;
-    (*(code *)ppuVar6[0x6b])();
-    (*(code *)ppuVar6[0x6c])(1);
-  }
-  pvVar4 = (void *)(*(code *)ppuVar6[0x39])();
-LAB_005bd863:
-  *unaff_FS_OFFSET = pvStack_c;
-  return pvVar4;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD5F0
 // GHIDRA_NAME TTradePageBuyView::CreateTTradePageBuyViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradePageBuyViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTradePageBuyView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTradePageBuyViewInstance()
 
-/* [ClassQuad] create inferred for TTradePageBuyView; alloc factory pattern. */
-
-void * __cdecl TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
+undefined4 * TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
 
 {
-  TPageView *this;
-  TPageView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -191,172 +21,148 @@ void * __cdecl TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
   puStack_8 = &LAB_006393da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TPageView *)0x0;
-  if (this != (TPageView *)0x0) {
-    TPageView::ConstructTPageViewBaseState(this);
-    (this->base).pVtable = &PTR_thunk_GetTTradePageBuyViewClassNamePointer_00640d48;
-    this->field84 = -1;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TPageView::ConstructTPageViewBaseState();
+    *puVar1 = &PTR_LAB_00640d48;
+    *(undefined2 *)(puVar1 + 0x21) = 0xffff;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD670
 // GHIDRA_NAME TTradePageBuyView::GetTTradePageBuyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradePageBuyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradePageBuyView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradePageBuyViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTradePageBuyView. */
-
-void * __cdecl TTradePageBuyView::GetTTradePageBuyViewClassNamePointer(void)
+undefined ** TTradePageBuyView::GetTTradePageBuyViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradePageBuyView;
+  return &PTR_s_TTradePageBuyView_0066dc30;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD690
 // GHIDRA_NAME TTradePageBuyView::ConstructTTradePageBuyViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTradePageBuyViewBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Rebuilds trade buy-page nation bid line list for selected nation and updates page view controls.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTradePageBuyViewBaseState()
 
-/* Rebuilds trade buy-page nation bid line list for selected nation and updates page view controls.
-    */
-
-void * __thiscall
-TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this,int arg1)
+void __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(int *param_1,short param_2)
 
 {
-  undefined *puVar1;
-  uint3 uVar2;
-  char cVar3;
-  short extraout_AX;
-  short extraout_AX_00;
-  void *pvVar4;
-  TLineData *pTVar5;
-  undefined **ppuVar6;
-  int iVar7;
+  uint3 uVar1;
+  char cVar2;
+  short sVar3;
+  undefined4 uVar4;
+  undefined4 *puVar5;
+  int iVar6;
   undefined4 *unaff_FS_OFFSET;
-  int aiStack_28 [2];
+  undefined1 auStack_28 [8];
   undefined4 local_20;
   uint local_1c;
   undefined1 uStack_18;
   undefined1 uStack_17;
-  void *local_c;
+  undefined4 local_c;
   undefined1 *puStack_8;
-  TLineData *pTStack_4;
+  undefined4 *puStack_4;
   
-  pTStack_4 = (TLineData *)0xffffffff;
+  puStack_4 = (undefined4 *)0xffffffff;
   puStack_8 = &LAB_00639404;
-  pvVar4 = (void *)*unaff_FS_OFFSET;
+  local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_20 = 0xe0;
   local_1c = 0x24;
-  local_c = pvVar4;
-  if ((short)arg1 == this->field84) goto LAB_005bd863;
-  ppuVar6 = this->field0_0x0;
-  this->field84 = (short)arg1;
-  (*(code *)ppuVar6[0x6d])();
-  if ((short)arg1 != -1) {
-    puVar1 = g_pNationInteractionStateManager->vftable;
-    thunk_GetActiveNationId();
-    cVar3 = (**(code **)(puVar1 + 0x78))((int)(short)arg1,(int)extraout_AX);
-    if (cVar3 == '\0') {
-      puVar1 = g_pNationInteractionStateManager->vftable;
-      thunk_GetActiveNationId();
-      cVar3 = (**(code **)(puVar1 + 0x7c))((int)(short)arg1,(int)extraout_AX_00);
-      if (cVar3 != '\0') goto LAB_005bd73a;
+  if (param_2 == (short)param_1[0x21]) goto LAB_005bd863;
+  iVar6 = *param_1;
+  *(short *)(param_1 + 0x21) = param_2;
+  (**(code **)(iVar6 + 0x1b4))();
+  if (param_2 != -1) {
+    iVar6 = *(int *)g_pNationInteractionStateManager;
+    sVar3 = UiRuntimeContext::GetActiveNationId();
+    cVar2 = (**(code **)(iVar6 + 0x78))((int)param_2,(int)sVar3);
+    if (cVar2 == '\0') {
+      iVar6 = *(int *)g_pNationInteractionStateManager;
+      sVar3 = UiRuntimeContext::GetActiveNationId();
+      cVar2 = (**(code **)(iVar6 + 0x7c))((int)param_2,(int)sVar3);
+      if (cVar2 != '\0') goto LAB_005bd73a;
     }
     else {
 LAB_005bd73a:
-      pTStack_4 = AllocateWithFallbackHandler();
-      iVar7 = 0;
-      local_c = (void *)0x0;
-      if (pTStack_4 == (TLineData *)0x0) {
-        pvVar4 = (void *)0x0;
+      puStack_4 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+      iVar6 = 0;
+      local_c = 0;
+      if (puStack_4 == (undefined4 *)0x0) {
+        uVar4 = 0;
       }
       else {
-        pvVar4 = TTextLine::ConstructTTextLineBaseState((TTextLine *)pTStack_4);
+        uVar4 = TTextLine::ConstructTTextLineBaseState();
       }
-      local_c = (void *)0xffffffff;
-      WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390();
-      SetObjectField1EWord();
-      uVar2 = (uint3)local_1c;
-      local_1c = (uint)(uVar2 & 0xffff);
+      local_c = 0xffffffff;
+      WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&stack0xffffffd0,0x2741,3);
+      SetObjectField1EWord(1);
+      uVar1 = (uint3)local_1c;
+      local_1c = (uint)(uVar1 & 0xffff);
       uStack_18 = 0;
       uStack_17 = 0;
-      thunk_BuildUiTextStyleDescriptor();
-      CopyTwoDwordsAndWordToObjectOffset14();
-      (**(code **)(*(int *)this->pField7c + 0x30))(pvVar4);
+      thunk_BuildUiTextStyleDescriptor(&local_20,4,0xc,0x2b6a);
+      CopyTwoDwordsAndWordToObjectOffset14(&local_20);
+      (**(code **)(*(int *)param_1[0x1f] + 0x30))(uVar4);
       do {
-        cVar3 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x78))
-                          ((int)(short)arg1,iVar7);
-        if (cVar3 != '\0') {
-          pTVar5 = AllocateWithFallbackHandler();
-          local_c = (void *)0x1;
-          pTStack_4 = pTVar5;
-          if (pTVar5 == (TLineData *)0x0) {
-            pTVar5 = (TLineData *)0x0;
+        cVar2 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x78))((int)param_2,iVar6);
+        if (cVar2 != '\0') {
+          puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+          local_c = 1;
+          puStack_4 = puVar5;
+          if (puVar5 == (undefined4 *)0x0) {
+            puVar5 = (undefined4 *)0x0;
           }
           else {
-            TLineData::ConstructTLineDataBaseState(pTVar5);
-            pTVar5->field0_0x0 = &PTR_thunk_GetTTradeBidNationLineClassNamePointer_0066e4f0;
+            TLineData::ConstructTLineDataBaseState();
+            *puVar5 = &PTR_LAB_0066e4f0;
           }
-          local_c = (void *)0xffffffff;
-          TLineData::thunk_SetLineDataRowAndBounds(pTVar5,0,0,aiStack_28);
-          *(short *)((int)&pTVar5->field10 + 2) = (short)iVar7;
-          *(short *)&pTVar5->field10 = (short)arg1;
-          (**(code **)(*(int *)this->pField7c + 0x30))(pTVar5);
+          local_c = 0xffffffff;
+          TLineData::SetLineDataRowAndBounds(0,0,auStack_28);
+          *(short *)((int)puVar5 + 0x12) = (short)iVar6;
+          *(short *)(puVar5 + 4) = param_2;
+          (**(code **)(*(int *)param_1[0x1f] + 0x30))(puVar5);
         }
-        iVar7 = iVar7 + 1;
-      } while (iVar7 < 0x17);
+        iVar6 = iVar6 + 1;
+      } while (iVar6 < 0x17);
     }
-    ppuVar6 = this->field0_0x0;
-    (*(code *)ppuVar6[0x6b])();
-    (*(code *)ppuVar6[0x6c])(1);
+    iVar6 = *param_1;
+    (**(code **)(iVar6 + 0x1ac))();
+    (**(code **)(iVar6 + 0x1b0))(1);
   }
-  pvVar4 = (void *)(*(code *)ppuVar6[0x39])();
+  (**(code **)(iVar6 + 0xe4))();
 LAB_005bd863:
   *unaff_FS_OFFSET = local_c;
-  return pvVar4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD900
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTradePageBuyViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTradePageBuyViewAndMaybeFree()
 
-void * __thiscall
-TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(TTradePageBuyView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  DestructTTradePageBuyViewAndMaybeFree_Impl(this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTTradePageBuyViewAndMaybeFree_Impl();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD930
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
-// GHIDRA_PROTO void __thiscall DestructTTradePageBuyViewAndMaybeFree_Impl(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_005bd930 with single named caller DestructTTradePageBuyViewAndMaybeFree@0x005bd900
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTradePageBuyViewAndMaybeFree_Impl()
 
-/* [ThunkBridge] promoted from thunk_FUN_005bd930 with single named caller
-   DestructTTradePageBuyViewAndMaybeFree@0x005bd900 */
-
-void __thiscall
-TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(TTradePageBuyView *this)
+void __fastcall TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(undefined4 *param_1)
 
 {
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

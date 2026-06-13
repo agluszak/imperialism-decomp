@@ -3,34 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TEvent.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00408463
-// GHIDRA_NAME TEvent::thunk_GetTEventClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTEventClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTEventClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTEventClassNamePointer */
-
-void * __cdecl TEvent::thunk_GetTEventClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTEventClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00489EE0
 // GHIDRA_NAME TEvent::CreateTEventInstance
-// GHIDRA_PROTO void * __cdecl CreateTEventInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns static class-info pointer for TEvent.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTEventInstance()
 
-/* Returns static class-info pointer for TEvent. */
-
-void * __cdecl TEvent::CreateTEventInstance(void)
+undefined ** TEvent::CreateTEventInstance(void)
 
 {
   return &PTR_PTR_00649538;
@@ -38,16 +15,11 @@ void * __cdecl TEvent::CreateTEventInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489F40
 // GHIDRA_NAME TEvent::GetTEventClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTEventClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TEvent.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTEventClassNamePointer()
 
-/* Returns class descriptor pointer for TEvent. */
-
-void * __cdecl TEvent::GetTEventClassNamePointer(void)
+undefined ** TEvent::GetTEventClassNamePointer(void)
 
 {
-  return &g_pClassDescTEvent;
+  return &PTR_s_TEvent_00649570;
 }
 

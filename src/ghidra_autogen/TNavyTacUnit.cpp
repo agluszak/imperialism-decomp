@@ -3,117 +3,45 @@
 // Program: Imperialism.exe
 // Bucket: TNavyTacUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040167C
-// GHIDRA_NAME TNavyTacUnit::thunk_CreateTNavyTacUnitInstance_At0040167c
-// GHIDRA_PROTO void __thiscall thunk_CreateTNavyTacUnitInstance_At0040167c(int hullDamage, int crewDamage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateTNavyTacUnitInstance
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateTNavyTacUnitInstance */
-
-void __thiscall
-TNavyTacUnit::thunk_CreateTNavyTacUnitInstance_At0040167c
-          (TNavyTacUnit *this,int hullDamage,int crewDamage)
-
-{
-  CreateTNavyTacUnitInstance(this,hullDamage,crewDamage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405DD0
-// GHIDRA_NAME TNavyTacUnit::thunk_DestructTNavyTacUnitAndMaybeFree
-// GHIDRA_PROTO int __thiscall thunk_DestructTNavyTacUnitAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetNavyTacUnitField3CValue [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetNavyTacUnitField3CValue [FID:thunk_target_sync] */
-
-int __thiscall TNavyTacUnit::thunk_DestructTNavyTacUnitAndMaybeFree(TNavyTacUnit *this)
-
-{
-  int iVar1;
-  
-  iVar1 = DestructTNavyTacUnitAndMaybeFree(this);
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408391
-// GHIDRA_NAME TNavyTacUnit::thunk_GetTNavyTacUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNavyTacUnitClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNavyTacUnitClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNavyTacUnitClassNamePointer */
-
-void * __cdecl TNavyTacUnit::thunk_GetTNavyTacUnitClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNavyTacUnitClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005A61C0
 // GHIDRA_NAME TNavyTacUnit::CreateTNavyTacUnitInstance
-// GHIDRA_PROTO void __thiscall CreateTNavyTacUnitInstance(int hullDamage, int crewDamage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Applies dual damage channels to navy tactical unit and updates sunk/disabled state flags.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTNavyTacUnitInstance()
 
-/* Applies dual damage channels to navy tactical unit and updates sunk/disabled state flags. */
-
-void __thiscall
-TNavyTacUnit::CreateTNavyTacUnitInstance(TNavyTacUnit *this,int hullDamage,int crewDamage)
+void __thiscall TNavyTacUnit::CreateTNavyTacUnitInstance(int param_1,int param_2,int param_3)
 
 {
-  void *pvVar1;
-  
-  pvVar1 = (void *)((int)this->field43_0x34 - crewDamage);
-  this->field43_0x34 = pvVar1;
-  if ((int)pvVar1 < 1) {
-    this->field43_0x34 = (void *)0x0;
-    this->field22_0x1c = (void *)0x1;
+  param_3 = *(int *)(param_1 + 0x34) - param_3;
+  *(int *)(param_1 + 0x34) = param_3;
+  if (param_3 < 1) {
+    *(undefined4 *)(param_1 + 0x34) = 0;
+    *(undefined4 *)(param_1 + 0x1c) = 1;
   }
-  pvVar1 = (void *)((int)this->field1_0x4 - hullDamage);
-  this->field1_0x4 = pvVar1;
-  if ((int)pvVar1 < 1) {
-    this->field1_0x4 = (void *)0x0;
-    this->field22_0x1c = (void *)0x3;
+  param_2 = *(int *)(param_1 + 4) - param_2;
+  *(int *)(param_1 + 4) = param_2;
+  if (param_2 < 1) {
+    *(undefined4 *)(param_1 + 4) = 0;
+    *(undefined4 *)(param_1 + 0x1c) = 3;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6270
 // GHIDRA_NAME TNavyTacUnit::GetTNavyTacUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNavyTacUnitClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNavyTacUnit.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNavyTacUnitClassNamePointer()
 
-/* Returns class descriptor pointer for TNavyTacUnit. */
-
-void * __cdecl TNavyTacUnit::GetTNavyTacUnitClassNamePointer(void)
+undefined ** TNavyTacUnit::GetTNavyTacUnitClassNamePointer(void)
 
 {
-  return &g_pClassDescTNavyTacUnit;
+  return &PTR_s_TNavyTacUnit_00669e78;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6310
 // GHIDRA_NAME TNavyTacUnit::DestructTNavyTacUnitAndMaybeFree
-// GHIDRA_PROTO int __thiscall DestructTNavyTacUnitAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns navy tactical unit field at offset +0x3c.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTNavyTacUnitAndMaybeFree()
 
-/* Returns navy tactical unit field at offset +0x3c. */
-
-int __thiscall TNavyTacUnit::DestructTNavyTacUnitAndMaybeFree(TNavyTacUnit *this)
+undefined4 __fastcall TNavyTacUnit::DestructTNavyTacUnitAndMaybeFree(int param_1)
 
 {
-  return (int)this->field48_0x3c;
+  return *(undefined4 *)(param_1 + 0x3c);
 }
 

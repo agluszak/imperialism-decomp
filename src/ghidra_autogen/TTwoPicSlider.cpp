@@ -3,94 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TTwoPicSlider.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401D84
-// GHIDRA_NAME TTwoPicSlider::thunk_DestructTTwoPicSliderAndMaybeFree
-// GHIDRA_PROTO void __fastcall thunk_DestructTTwoPicSliderAndMaybeFree(TTwoPicSlider * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTwoPicSliderAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTwoPicSliderAndMaybeFree */
-
-void __fastcall TTwoPicSlider::thunk_DestructTTwoPicSliderAndMaybeFree(TTwoPicSlider *pThis)
-
-{
-  DestructTTwoPicSliderAndMaybeFree(pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402644
-// GHIDRA_NAME TTwoPicSlider::thunk_HandleMapOverlaySliderInputAndRefresh
-// GHIDRA_PROTO void __thiscall thunk_HandleMapOverlaySliderInputAndRefresh(void * pInput, void * param_2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for HandleMapOverlaySliderInputAndRefresh.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for HandleMapOverlaySliderInputAndRefresh. */
-
-void __thiscall
-TTwoPicSlider::thunk_HandleMapOverlaySliderInputAndRefresh
-          (TTwoPicSlider *this,void *pInput,void *param_2)
-
-{
-  HandleMapOverlaySliderInputAndRefresh(this,pInput,param_2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407496
-// GHIDRA_NAME TTwoPicSlider::thunk_RenderSplitOverlaySurfaceAndCenteredStatusText
-// GHIDRA_PROTO void __thiscall thunk_RenderSplitOverlaySurfaceAndCenteredStatusText(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RenderSplitOverlaySurfaceAndCenteredStatusText.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for RenderSplitOverlaySurfaceAndCenteredStatusText. */
-
-void __thiscall
-TTwoPicSlider::thunk_RenderSplitOverlaySurfaceAndCenteredStatusText(TTwoPicSlider *this)
-
-{
-  RenderSplitOverlaySurfaceAndCenteredStatusText(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407982
-// GHIDRA_NAME TTwoPicSlider::thunk_scalar_deleting_destructor_00407982
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407982(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTwoPicSlider::thunk_scalar_deleting_destructor_00407982(TTwoPicSlider *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004094DF
-// GHIDRA_NAME TTwoPicSlider::thunk_GetTTwoPicSliderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTwoPicSliderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTwoPicSliderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTwoPicSliderClassNamePointer */
-
-void * __cdecl TTwoPicSlider::thunk_GetTTwoPicSliderClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTwoPicSliderClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F520
 // GHIDRA_NAME TTwoPicSlider::ResetPictureResourceEntry
 // GHIDRA_PROTO void __thiscall ResetPictureResourceEntry(void)
@@ -103,28 +15,23 @@ void * __cdecl TTwoPicSlider::thunk_GetTTwoPicSliderClassNamePointer(void)
 void __thiscall TTwoPicSlider::ResetPictureResourceEntry(TTwoPicSlider *this)
 
 {
-  if (*(short *)&this->field84 != -1) {
-    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup();
+  if (*(short *)(this + 0x84) != -1) {
+    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(*(short *)(this + 0x84));
   }
-  *(undefined2 *)&this->field84 = 0xffff;
-  this->field88 = (void *)0x0;
-  this->field8c = 0;
+  *(undefined2 *)(this + 0x84) = 0xffff;
+  *(undefined4 *)(this + 0x88) = 0;
+  *(undefined4 *)(this + 0x8c) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E120
 // GHIDRA_NAME TTwoPicSlider::CreateTTwoPicSliderInstance
-// GHIDRA_PROTO void * __cdecl CreateTTwoPicSliderInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTwoPicSlider; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTwoPicSliderInstance()
 
-/* [ClassQuad] create inferred for TTwoPicSlider; alloc factory pattern. */
-
-void * __cdecl TTwoPicSlider::CreateTTwoPicSliderInstance(void)
+undefined4 * TTwoPicSlider::CreateTTwoPicSliderInstance(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -134,57 +41,45 @@ void * __cdecl TTwoPicSlider::CreateTTwoPicSliderInstance(void)
   puStack_8 = &LAB_0063611a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &PTR_thunk_GetTTwoPicSliderClassNamePointer_00641bd0;
-    *(undefined4 *)&this->field_0x84 = 0;
-    *(undefined4 *)&this->field_0x88 = 0;
-    *(undefined2 *)&this->field90 = 0;
-    this->pField94 = (void *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_00641bd0;
+    puVar1[0x21] = 0;
+    puVar1[0x22] = 0;
+    *(undefined2 *)(puVar1 + 0x24) = 0;
+    puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E1E0
 // GHIDRA_NAME TTwoPicSlider::GetTTwoPicSliderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTwoPicSliderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTwoPicSlider.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTwoPicSliderClassNamePointer()
 
-/* Returns class descriptor pointer for TTwoPicSlider. */
-
-void * __cdecl TTwoPicSlider::GetTTwoPicSliderClassNamePointer(void)
+undefined ** TTwoPicSlider::GetTTwoPicSliderClassNamePointer(void)
 
 {
-  return &g_pClassDescTTwoPicSlider;
+  return &PTR_s_TTwoPicSlider_0065de58;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E200
 // GHIDRA_NAME TTwoPicSlider::ConstructTTwoPicSliderBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTwoPicSliderBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around Cluster_MapTileHint_005c3b70; instructions=47, call_insns=3, internal_calls=2, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTwoPicSliderBaseState()
 
-/* [WrapperShape] small wrapper around Cluster_MapTileHint_005c3b70; instructions=47, call_insns=3,
-   internal_calls=2, unique_internal=1 */
-
-void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(TTwoPicSlider *this)
+void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(int param_1,int param_2)
 
 {
-  void *pvVar1;
+  undefined4 uVar1;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 local_1c;
   undefined4 local_18;
-  int local_14;
-  int local_10;
+  undefined4 local_14;
+  undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -192,61 +87,55 @@ void __thiscall TTwoPicSlider::ConstructTTwoPicSliderBaseState(TTwoPicSlider *th
   puStack_8 = &LAB_00636138;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  g_nSharedPreviewBitmapContextDepth = g_nSharedPreviewBitmapContextDepth + 1;
+  DAT_006a1890 = DAT_006a1890 + 1;
   local_4 = 0;
-  pvVar1 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004 + 1);
-  this->field84 = pvVar1;
-  pvVar1 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004);
-  local_14 = this->field34;
-  local_10 = this->field38;
-  this->field88 = pvVar1;
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_2 + 1);
+  *(undefined4 *)(param_1 + 0x84) = uVar1;
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_2);
+  local_14 = *(undefined4 *)(param_1 + 0x34);
+  local_10 = *(undefined4 *)(param_1 + 0x38);
+  *(undefined4 *)(param_1 + 0x88) = uVar1;
   local_1c = 0;
   local_18 = 0;
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->field8c,8,&local_1c);
-  g_nSharedPreviewBitmapContextDepth = g_nSharedPreviewBitmapContextDepth + -1;
+  (**(code **)(*DAT_006a2158 + 0x2c))(param_1 + 0x8c,8,&local_1c);
+  DAT_006a1890 = DAT_006a1890 + -1;
   *unaff_FS_OFFSET = local_18;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E2F0
 // GHIDRA_NAME TTwoPicSlider::DestructTTwoPicSliderAndMaybeFree
-// GHIDRA_PROTO void __fastcall DestructTTwoPicSliderAndMaybeFree(TTwoPicSlider * pThis)
+// GHIDRA_PROTO undefined DestructTTwoPicSliderAndMaybeFree()
 
-void __fastcall TTwoPicSlider::DestructTTwoPicSliderAndMaybeFree(TTwoPicSlider *pThis)
+void __fastcall TTwoPicSlider::DestructTTwoPicSliderAndMaybeFree(int param_1)
 
 {
-  if (pThis->field84 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (*(int *)(param_1 + 0x84) != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x84);
   }
-  if (pThis->field88 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (*(int *)(param_1 + 0x88) != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x88);
   }
-  if (pThis->field8c != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (*(int *)(param_1 + 0x8c) != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x8c);
   }
-  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf((TControl *)pThis);
+  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E370
 // GHIDRA_NAME TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText
-// GHIDRA_PROTO void __thiscall RenderSplitOverlaySurfaceAndCenteredStatusText(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Render split overlay surface and draw centered status text for constrained viewport states.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderSplitOverlaySurfaceAndCenteredStatusText()
 
-/* Render split overlay surface and draw centered status text for constrained viewport states. */
-
-void __thiscall TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText(TTwoPicSlider *this)
+void __fastcall TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText(int param_1)
 
 {
   short sVar1;
-  short sVar2;
-  short extraout_AX;
-  THQButton *this_00;
+  int iVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int iStack_28;
-  int iStack_24;
+  undefined4 uStack_28;
+  undefined4 uStack_24;
   undefined1 local_20 [4];
   RECT local_1c;
   undefined4 local_c;
@@ -257,50 +146,53 @@ void __thiscall TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText(TT
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636158;
   *unaff_FS_OFFSET = &local_c;
-  if (((this->field84 != (void *)0x0) && (this->field88 != (void *)0x0)) && (this->field8c != 0)) {
-    sVar2 = this->field90;
-    if (sVar2 < 0xc) {
-      sVar2 = 0;
+  if (((*(int *)(param_1 + 0x84) != 0) && (*(int *)(param_1 + 0x88) != 0)) &&
+     (*(int *)(param_1 + 0x8c) != 0)) {
+    sVar1 = *(short *)(param_1 + 0x90);
+    if (sVar1 < 0xc) {
+      sVar1 = 0;
     }
-    local_1c.bottom = this->field38;
+    local_1c.bottom = *(int *)(param_1 + 0x38);
     local_1c.left = 0;
-    local_1c.top = local_1c.bottom - sVar2;
-    local_1c.right = this->field34;
+    local_1c.top = local_1c.bottom - sVar1;
+    local_1c.right = *(LONG *)(param_1 + 0x34);
     ResetQuickDrawStrokeState();
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)((int)this->field84 + 4),(astruct_18 *)(this->field8c + 4),&local_1c,
-               &local_1c,0,(astruct_19 *)0x0);
+              ((astruct_17 *)(*(int *)(param_1 + 0x84) + 4),
+               (astruct_18 *)(*(int *)(param_1 + 0x8c) + 4),&local_1c,&local_1c,0,(astruct_19 *)0x0)
+    ;
     local_1c.bottom = local_1c.top;
     local_1c.top = 0;
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)((int)this->field88 + 4),(astruct_18 *)(this->field8c + 4),&local_1c,
-               &local_1c,0,(astruct_19 *)0x0);
-    local_1c.right = this->field34;
-    local_1c.bottom = this->field38;
+              ((astruct_17 *)(*(int *)(param_1 + 0x88) + 4),
+               (astruct_18 *)(*(int *)(param_1 + 0x8c) + 4),&local_1c,&local_1c,0,(astruct_19 *)0x0)
+    ;
+    local_1c.right = *(LONG *)(param_1 + 0x34);
+    local_1c.bottom = *(LONG *)(param_1 + 0x38);
     local_1c.left = 0;
     local_1c.top = 0;
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(this->field8c + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_1c,0,
+              ((astruct_17 *)(*(int *)(param_1 + 0x8c) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_1c,0,
                (astruct_19 *)0x0);
-    if (this->field90 < 0xc) {
+    if (*(short *)(param_1 + 0x90) < 0xc) {
       InitializeSharedStringRefFromEmpty();
       local_4 = 0;
-      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2743,0x3b,local_20);
-      ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-      iStack_24 = 0;
-      iStack_28 = 0;
-      thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)&iStack_24);
-      thunk_MapUiThemeCodeToStyleFlags(0x2b67,(int)&iStack_28);
-      sVar1 = (short)(this->field38 / 2);
-      thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-      sVar2 = (short)(this->field34 / 2) - extraout_AX / 2;
-      SetQuickDrawColorAndSyncGlobals(iStack_28);
-      thunk_SetQuickDrawTextOriginWithContextOffset(sVar2 + 1,sVar1 + 5);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-      SetQuickDrawColorAndSyncGlobals(iStack_24);
-      thunk_SetQuickDrawTextOriginWithContextOffset(sVar2,sVar1 + 4);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)local_20);
+      (**(code **)(*g_pLocalizationTable + 0x84))(0x2743,0x3b,local_20);
+      ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6c);
+      uStack_24 = 0;
+      uStack_28 = 0;
+      thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&uStack_24);
+      thunk_MapUiThemeCodeToStyleFlags(0x2b67,&uStack_28);
+      iVar3 = *(int *)(param_1 + 0x38) / 2;
+      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(local_20);
+      iVar2 = *(int *)(param_1 + 0x34) / 2 - (int)sVar1 / 2;
+      SetQuickDrawColorAndSyncGlobals(uStack_28);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar2 + 1,iVar3 + 5);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
+      SetQuickDrawColorAndSyncGlobals(uStack_24);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar2,iVar3 + 4);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
       local_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
     }
@@ -311,81 +203,74 @@ void __thiscall TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText(TT
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E640
 // GHIDRA_NAME TTwoPicSlider::HandleMapOverlaySliderInputAndRefresh
-// GHIDRA_PROTO void __thiscall HandleMapOverlaySliderInputAndRefresh(void * pInput, void * param_2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handle slider-like map overlay input and refresh rendering/state.
-// GHIDRA_COMMENT_END
-
-/* Handle slider-like map overlay input and refresh rendering/state. */
+// GHIDRA_PROTO undefined HandleMapOverlaySliderInputAndRefresh()
 
 void __thiscall
-TTwoPicSlider::HandleMapOverlaySliderInputAndRefresh(TTwoPicSlider *this,void *pInput,void *param_2)
+TTwoPicSlider::HandleMapOverlaySliderInputAndRefresh
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,int param_5)
 
 {
-  void *pvVar1;
-  short sVar2;
-  int iVar3;
+  short sVar1;
+  int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000010;
   undefined4 uStack_34;
   undefined4 uStack_30;
   int iStack_2c;
   int iStack_28;
-  undefined1 local_24 [24];
-  undefined4 local_c;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  undefined4 uStack_4;
   
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636178;
-  *unaff_FS_OFFSET = &local_c;
-  if (0 < (int)pInput) {
-    if (2 < (int)pInput) goto LAB_0056e7b7;
-    iVar3 = (int)*(short *)(in_stack_00000010 + 4);
-    if (this->field38 <= (int)*(short *)(in_stack_00000010 + 4)) {
-      iVar3 = this->field38;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (0 < param_2) {
+    if (2 < param_2) goto LAB_0056e7b7;
+    iVar2 = (int)*(short *)(param_5 + 4);
+    if (param_1[0xe] <= (int)*(short *)(param_5 + 4)) {
+      iVar2 = param_1[0xe];
     }
-    sVar2 = (short)this->field38 - (((short)(ushort)iVar3 < 1) - 1 & (ushort)iVar3);
-    if (this->field90 != sVar2) {
-      this->field90 = sVar2;
-      thunk_ConstructScopedMapQuickDrawContext(local_24,(int)this);
-      pvVar1 = this->pVtable;
-      local_4 = 0;
-      (**(code **)((int)pvVar1 + 0xf8))();
-      iStack_2c = this->field34;
-      iStack_28 = this->field38;
+    sVar1 = (short)param_1[0xe] - (((short)(ushort)iVar2 < 1) - 1 & (ushort)iVar2);
+    if ((short)param_1[0x24] != sVar1) {
+      *(short *)(param_1 + 0x24) = sVar1;
+      ConstructScopedMapQuickDrawContext(param_1);
+      iVar2 = *param_1;
+      uStack_4 = 0;
+      (**(code **)(iVar2 + 0xf8))();
+      iStack_2c = param_1[0xd];
+      iStack_28 = param_1[0xe];
       uStack_34 = 0;
       uStack_30 = 0;
-      (**(code **)((int)pvVar1 + 0x110))(&uStack_34);
-      if (this->field94 == 1) {
-        if (this->field90 < 0xc) {
-          sVar2 = 0;
+      (**(code **)(iVar2 + 0x110))(&uStack_34);
+      if (param_1[0x25] == 1) {
+        if ((short)param_1[0x24] < 0xc) {
+          sVar1 = 0;
         }
         else {
-          sVar2 = this->field90 + -0xc;
+          sVar1 = (short)param_1[0x24] + -0xc;
         }
-        iVar3 = (sVar2 * 0xff) / (int)(short)((short)this->field38 + -0xc);
-        WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0(iVar3);
-        *(short *)((int)g_pLocalizationTable + 0x4e) = (short)iVar3;
+        iVar2 = (sVar1 * 0xff) / (int)(short)((short)param_1[0xe] + -0xc);
+        WrapperFor_thunk_ApplyAuxOutputVolumeFromScalar_At00593cb0(iVar2);
+        *(short *)(g_pLocalizationTable + 0x4e) = (short)iVar2;
       }
-      local_4 = 0xffffffff;
+      uStack_4 = 0xffffffff;
       thunk_DestroyScopedMapQuickDrawContext();
     }
   }
-  if ((pInput == (void *)0x2) && (this->field94 == 2)) {
-    if (this->field90 < 0xc) {
-      sVar2 = 0;
+  if ((param_2 == 2) && (param_1[0x25] == 2)) {
+    if ((short)param_1[0x24] < 0xc) {
+      sVar1 = 0;
     }
     else {
-      sVar2 = this->field90 + -0xc;
+      sVar1 = (short)param_1[0x24] + -0xc;
     }
-    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xac))
-              ((sVar2 * 100) / (int)(short)((short)this->field38 + -0xc));
-    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+    (**(code **)(*g_pSfxPlaybackSystem + 0xac))
+              ((sVar1 * 100) / (int)(short)((short)param_1[0xe] + -0xc));
+    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
   }
 LAB_0056e7b7:
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 

@@ -5,16 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C28A0
 // GHIDRA_NAME TCivUnit::GetTCivUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCivUnitClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCivUnit.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCivUnitClassNamePointer()
 
-/* Returns class descriptor pointer for TCivUnit. */
-
-void * __cdecl TCivUnit::GetTCivUnitClassNamePointer(void)
+undefined ** TCivUnit::GetTCivUnitClassNamePointer(void)
 
 {
-  return &g_pClassDescTCivUnit;
+  return &PTR_s_TCivUnit_0066ed58;
 }
 

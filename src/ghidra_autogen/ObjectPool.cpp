@@ -3,122 +3,12 @@
 // Program: Imperialism.exe
 // Bucket: ObjectPool.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040635C
-// GHIDRA_NAME ObjectPool::thunk_FindMissionOrderNodeById
-// GHIDRA_PROTO void * __thiscall thunk_FindMissionOrderNodeById(int nChildNodeId)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to FindMissionOrderNodeById
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to FindMissionOrderNodeById */
-
-void * __thiscall ObjectPool::thunk_FindMissionOrderNodeById(ObjectPool *this,int nChildNodeId)
-
-{
-  while( true ) {
-    if (this == (ObjectPool *)0x0) {
-      return (void *)0x0;
-    }
-    if (*(int *)this == nChildNodeId) break;
-    this = *(ObjectPool **)&this->field04;
-  }
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004076FD
-// GHIDRA_NAME ObjectPool::thunk_SelectPreferredMapOrderEntryByPriorityRules
-// GHIDRA_PROTO int __thiscall thunk_SelectPreferredMapOrderEntryByPriorityRules(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SelectPreferredMapOrderEntryByPriorityRules
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SelectPreferredMapOrderEntryByPriorityRules */
-
-int __thiscall
-ObjectPool::thunk_SelectPreferredMapOrderEntryByPriorityRules(ObjectPool *this,int arg1,int arg2)
-
-{
-  int iVar1;
-  int iVar2;
-  bool bVar3;
-  short sVar4;
-  short sVar5;
-  
-  if ((char)arg2 != '\0') {
-    if (*(int *)(this + 2) != 0) {
-      return arg1;
-    }
-    if (arg1 == 0) {
-      return (int)this;
-    }
-    if (*(int *)(arg1 + 0x20) != 0) {
-      return (int)this;
-    }
-  }
-  if (arg1 == 0) {
-    return (int)this;
-  }
-  if (this != (ObjectPool *)0x0) {
-    iVar1 = *(int *)(this + 2);
-    iVar2 = *(int *)(arg1 + 0x20);
-    if (iVar1 == 0) {
-      bVar3 = false;
-    }
-    else if (iVar2 == 0) {
-      bVar3 = true;
-    }
-    else {
-      bVar3 = *(short *)(iVar2 + 0x10) < *(short *)(iVar1 + 0x10);
-    }
-    if (bVar3) {
-      return (int)this;
-    }
-    if (iVar2 == 0) {
-      bVar3 = false;
-    }
-    else if (iVar1 == 0) {
-      bVar3 = true;
-    }
-    else {
-      bVar3 = *(short *)(iVar1 + 0x10) < *(short *)(iVar2 + 0x10);
-    }
-    if (!bVar3) {
-      if (this->field04 != *(short *)(arg1 + 4)) {
-        if (*(short *)(arg1 + 4) <= this->field04) {
-          return (int)this;
-        }
-        return arg1;
-      }
-      sVar4 = *(short *)(this + 3);
-      sVar5 = (sVar4 / 100 + (sVar4 >> 0xf)) - (short)((longlong)(int)sVar4 * 0x51eb851f >> 0x3f);
-      sVar4 = *(short *)(arg1 + 0x30);
-      sVar4 = (sVar4 / 100 + (sVar4 >> 0xf)) - (short)((longlong)(int)sVar4 * 0x51eb851f >> 0x3f);
-      if (sVar5 != sVar4) {
-        if (sVar4 <= sVar5) {
-          return (int)this;
-        }
-        return arg1;
-      }
-      if (*(short *)(arg1 + 0x1c) < *(short *)&this[1].field0c) {
-        return (int)this;
-      }
-    }
-  }
-  return arg1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00550670
 // GHIDRA_NAME ObjectPool::SelectPreferredMapOrderEntryByPriorityRules
-// GHIDRA_PROTO int __thiscall SelectPreferredMapOrderEntryByPriorityRules(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Chooses preferred map-order entry between two candidates using attachment/status, priority, normalized strength, and value tie-breakers.
-// GHIDRA_COMMENT_END
-
-/* Chooses preferred map-order entry between two candidates using attachment/status, priority,
-   normalized strength, and value tie-breakers. */
+// GHIDRA_PROTO undefined SelectPreferredMapOrderEntryByPriorityRules()
 
 int __thiscall
-ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(ObjectPool *this,int arg1,int arg2)
+ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(int param_1,int param_2,char param_3)
 
 {
   int iVar1;
@@ -127,23 +17,23 @@ ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(ObjectPool *this,int arg
   short sVar4;
   short sVar5;
   
-  if ((char)arg2 != '\0') {
-    if (*(int *)(this + 2) != 0) {
-      return arg1;
+  if (param_3 != '\0') {
+    if (*(int *)(param_1 + 0x20) != 0) {
+      return param_2;
     }
-    if (arg1 == 0) {
-      return (int)this;
+    if (param_2 == 0) {
+      return param_1;
     }
-    if (*(int *)(arg1 + 0x20) != 0) {
-      return (int)this;
+    if (*(int *)(param_2 + 0x20) != 0) {
+      return param_1;
     }
   }
-  if (arg1 == 0) {
-    return (int)this;
+  if (param_2 == 0) {
+    return param_1;
   }
-  if (this != (ObjectPool *)0x0) {
-    iVar1 = *(int *)(this + 2);
-    iVar2 = *(int *)(arg1 + 0x20);
+  if (param_1 != 0) {
+    iVar1 = *(int *)(param_1 + 0x20);
+    iVar2 = *(int *)(param_2 + 0x20);
     if (iVar1 == 0) {
       bVar3 = false;
     }
@@ -154,7 +44,7 @@ ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(ObjectPool *this,int arg
       bVar3 = *(short *)(iVar2 + 0x10) < *(short *)(iVar1 + 0x10);
     }
     if (bVar3) {
-      return (int)this;
+      return param_1;
     }
     if (iVar2 == 0) {
       bVar3 = false;
@@ -166,28 +56,28 @@ ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(ObjectPool *this,int arg
       bVar3 = *(short *)(iVar1 + 0x10) < *(short *)(iVar2 + 0x10);
     }
     if (!bVar3) {
-      if (this->field04 != *(short *)(arg1 + 4)) {
-        if (*(short *)(arg1 + 4) <= this->field04) {
-          return (int)this;
+      if (*(short *)(param_1 + 4) != *(short *)(param_2 + 4)) {
+        if (*(short *)(param_2 + 4) <= *(short *)(param_1 + 4)) {
+          return param_1;
         }
-        return arg1;
+        return param_2;
       }
-      sVar4 = *(short *)(this + 3);
+      sVar4 = *(short *)(param_1 + 0x30);
       sVar5 = (sVar4 / 100 + (sVar4 >> 0xf)) - (short)((longlong)(int)sVar4 * 0x51eb851f >> 0x3f);
-      sVar4 = *(short *)(arg1 + 0x30);
+      sVar4 = *(short *)(param_2 + 0x30);
       sVar4 = (sVar4 / 100 + (sVar4 >> 0xf)) - (short)((longlong)(int)sVar4 * 0x51eb851f >> 0x3f);
       if (sVar5 != sVar4) {
         if (sVar4 <= sVar5) {
-          return (int)this;
+          return param_1;
         }
-        return arg1;
+        return param_2;
       }
-      if (*(short *)(arg1 + 0x1c) < *(short *)&this[1].field0c) {
-        return (int)this;
+      if (*(short *)(param_2 + 0x1c) < *(short *)(param_1 + 0x1c)) {
+        return param_1;
       }
     }
   }
-  return arg1;
+  return param_2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00550FF0
@@ -199,18 +89,14 @@ void __thiscall ObjectPool::RemoveNode(ObjectPool *this,int self)
 {
   int *list_head;
   int new_head;
-  int in_EDX;
-  int extraout_EDX;
-  int extraout_EDX_00;
   astruct_8 *owner_ctx;
   int *next_node;
   
-  owner_ctx = this->field0c;
+  owner_ctx = *(astruct_8 **)(this + 0xc);
   if (owner_ctx != (astruct_8 *)0x0) {
     list_head = owner_ctx->field16_0x10;
     if ((list_head != (int *)0x0) && ((ObjectPool *)*list_head != this)) {
-      list_head = thunk_FindMissionOrderNodeById((ObjectPool *)list_head[1],(int)this);
-      in_EDX = extraout_EDX;
+      list_head = FindMissionOrderNodeById((ObjectPool *)list_head[1],(int)this);
     }
     if (list_head != (int *)0x0) {
       list_head = owner_ctx->field16_0x10;
@@ -223,91 +109,83 @@ void __thiscall ObjectPool::RemoveNode(ObjectPool *this,int self)
           if (list_head[2] != 0) {
             *(int *)(list_head[2] + 4) = list_head[1];
           }
-          FreeHeapBufferIfNotNull();
+          FreeHeapBufferIfNotNull(list_head);
           list_head = next_node;
         }
         else {
-          thunk_RemoveLinkedOrderNodeByValueRecursive();
+          RemoveLinkedOrderNodeByValueRecursive(this);
         }
       }
       owner_ctx->field16_0x10 = list_head;
-      in_EDX = this->field04 * 9;
       *(short *)(&owner_ctx[1].field_0x0 +
-                *(short *)(&g_Task_Force_Order_LookupTable_00698120 + this->field04 * 0x24) * 2) =
+                *(short *)(&DAT_00698120 + *(short *)(this + 4) * 0x24) * 2) =
            *(short *)(&owner_ctx[1].field_0x0 +
-                     *(short *)(&g_Task_Force_Order_LookupTable_00698120 + this->field04 * 0x24) * 2
-                     ) + -1;
+                     *(short *)(&DAT_00698120 + *(short *)(this + 4) * 0x24) * 2) + -1;
     }
     if (this == (ObjectPool *)owner_ctx->field17_0x14) {
       list_head = owner_ctx->field16_0x10;
       owner_ctx->field17_0x14 = 0;
       for (; list_head != (int *)0x0; list_head = (int *)list_head[1]) {
-        new_head = thunk_SelectPreferredMapOrderEntryByPriorityRules
-                             ((ObjectPool *)*list_head,owner_ctx->field17_0x14,0);
+        new_head = SelectPreferredMapOrderEntryByPriorityRules(owner_ctx->field17_0x14,0);
         owner_ctx->field17_0x14 = new_head;
-        in_EDX = extraout_EDX_00;
       }
     }
-    this->field0c = (astruct_8 *)0x0;
+    *(undefined4 *)(this + 0xc) = 0;
   }
   if (self != 0) {
-    thunk_GetOrCreateTaskForceOrderNodeByTemplate(self,in_EDX);
+    GetOrCreateTaskForceOrderNodeByTemplate(this);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552340
 // GHIDRA_NAME ObjectPool::OrphanRecovered_00552340_OverlappingStub
-// GHIDRA_PROTO void __thiscall OrphanRecovered_00552340_OverlappingStub(void)
+// GHIDRA_PROTO undefined OrphanRecovered_00552340_OverlappingStub()
 
 /* WARNING: Instruction at (ram,0x00552342) overlaps instruction at (ram,0x00552341)
     */
 
-void __thiscall ObjectPool::OrphanRecovered_00552340_OverlappingStub(ObjectPool *this)
+void __thiscall ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
 
 {
-  ObjectPool *this_00;
-  undefined4 *puVar1;
+  int iVar1;
   int iVar2;
-  int iVar3;
+  undefined4 uVar3;
   int iVar4;
   int unaff_EBP;
   int in_stack_00000010;
   
-  *(int *)&this[0x768b144].field_0x7 = *(int *)&this[0x768b144].field_0x7 + -1;
+  *(int *)(param_1 + 0x768b1447) = *(int *)(param_1 + 0x768b1447) + -1;
   *(undefined4 *)(unaff_EBP + 8) = 0;
   iVar4 = 0;
-  for (this_00 = g_pNavyPrimaryOrderListHead; this_00 != (ObjectPool *)0x0;
-      this_00 = *(ObjectPool **)&this_00[2].field04) {
-    if ((*(int *)&this_00->field_0x8 == in_stack_00000010) &&
-       (this_00[1].field04 == *(short *)(unaff_EBP + 4))) {
-      iVar4 = thunk_SelectPreferredMapOrderEntryByPriorityRules(this_00,iVar4,1);
+  for (iVar1 = g_pNavyPrimaryOrderListHead; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
+    if ((*(int *)(iVar1 + 8) == in_stack_00000010) &&
+       (*(short *)(iVar1 + 0x14) == *(short *)(unaff_EBP + 4))) {
+      iVar4 = SelectPreferredMapOrderEntryByPriorityRules(iVar4,1);
     }
   }
   if (*(int *)(unaff_EBP + 8) != 0) {
     *(undefined4 *)(*(int *)(unaff_EBP + 8) + 0x20) = 0;
-    iVar3 = *(int *)(*(int *)(unaff_EBP + 8) + 0xc);
-    if (iVar3 != 0) {
-      puVar1 = *(undefined4 **)(iVar3 + 0x10);
-      *(undefined4 *)(iVar3 + 0x14) = 0;
-      for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)puVar1[1]) {
-        iVar2 = thunk_SelectPreferredMapOrderEntryByPriorityRules
-                          ((ObjectPool *)*puVar1,*(int *)(iVar3 + 0x14),0);
-        *(int *)(iVar3 + 0x14) = iVar2;
+    iVar1 = *(int *)(*(int *)(unaff_EBP + 8) + 0xc);
+    if (iVar1 != 0) {
+      iVar2 = *(int *)(iVar1 + 0x10);
+      *(undefined4 *)(iVar1 + 0x14) = 0;
+      for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
+        uVar3 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar1 + 0x14),0);
+        *(undefined4 *)(iVar1 + 0x14) = uVar3;
       }
     }
   }
   *(int *)(unaff_EBP + 8) = iVar4;
   if (iVar4 != 0) {
     *(int *)(iVar4 + 0x20) = unaff_EBP;
-    iVar4 = *(int *)(*(int *)(unaff_EBP + 8) + 0xc);
-    if (iVar4 != 0) {
-      puVar1 = *(undefined4 **)(iVar4 + 0x10);
-      *(undefined4 *)(iVar4 + 0x14) = 0;
-      for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)puVar1[1]) {
-        iVar3 = thunk_SelectPreferredMapOrderEntryByPriorityRules
-                          ((ObjectPool *)*puVar1,*(int *)(iVar4 + 0x14),0);
-        *(int *)(iVar4 + 0x14) = iVar3;
+    iVar1 = *(int *)(*(int *)(unaff_EBP + 8) + 0xc);
+    if (iVar1 != 0) {
+      iVar4 = *(int *)(iVar1 + 0x10);
+      *(undefined4 *)(iVar1 + 0x14) = 0;
+      for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 4)) {
+        uVar3 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar1 + 0x14),0);
+        *(undefined4 *)(iVar1 + 0x14) = uVar3;
       }
     }
   }
@@ -331,38 +209,37 @@ void * __thiscall ObjectPool::FindMissionOrderNodeById(ObjectPool *this,int nChi
       return (void *)0x0;
     }
     if (*(int *)this == nChildNodeId) break;
-    this = *(ObjectPool **)&this->field04;
+    this = *(ObjectPool **)(this + 4);
   }
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00553D40
 // GHIDRA_NAME ObjectPool::RemoveTaskForceOrderNodeById
-// GHIDRA_PROTO int __thiscall RemoveTaskForceOrderNodeById(void)
+// GHIDRA_PROTO undefined RemoveTaskForceOrderNodeById()
 
-int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(ObjectPool *this)
+int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(int param_1,int param_2)
 
 {
   short *psVar1;
   short sVar2;
   int *piVar3;
-  undefined4 *puVar4;
+  int iVar4;
   int *piVar5;
   int iVar6;
-  int in_stack_00000004;
   
-  piVar5 = *(int **)(this + 1);
+  piVar5 = *(int **)(param_1 + 0x10);
   if (piVar5 == (int *)0x0) {
     piVar5 = (int *)0x0;
   }
-  else if (*piVar5 != in_stack_00000004) {
-    piVar5 = thunk_FindMissionOrderNodeById((ObjectPool *)piVar5[1],in_stack_00000004);
+  else if (*piVar5 != param_2) {
+    piVar5 = FindMissionOrderNodeById((ObjectPool *)piVar5[1],param_2);
   }
   iVar6 = 0;
   if (piVar5 != (int *)0x0) {
-    piVar5 = *(int **)(this + 1);
+    piVar5 = *(int **)(param_1 + 0x10);
     if (piVar5 != (int *)0x0) {
-      if (in_stack_00000004 == *piVar5) {
+      if (param_2 == *piVar5) {
         piVar3 = (int *)piVar5[1];
         if (piVar3 != (int *)0x0) {
           piVar3[2] = piVar5[2];
@@ -370,30 +247,28 @@ int __thiscall ObjectPool::RemoveTaskForceOrderNodeById(ObjectPool *this)
         if (piVar5[2] != 0) {
           *(int *)(piVar5[2] + 4) = piVar5[1];
         }
-        FreeHeapBufferIfNotNull();
+        FreeHeapBufferIfNotNull(piVar5);
         piVar5 = piVar3;
       }
       else {
-        thunk_RemoveLinkedOrderNodeByValueRecursive();
+        RemoveLinkedOrderNodeByValueRecursive(param_2);
       }
     }
-    *(int **)(this + 1) = piVar5;
-    sVar2 = *(short *)(&g_Task_Force_Order_LookupTable_00698120 +
-                      *(short *)(in_stack_00000004 + 4) * 0x24);
-    psVar1 = (short *)((int)&this[1].field0c + sVar2 * 2 + 2);
+    *(int **)(param_1 + 0x10) = piVar5;
+    sVar2 = *(short *)(&DAT_00698120 + *(short *)(param_2 + 4) * 0x24);
+    psVar1 = (short *)(param_1 + 0x1e + sVar2 * 2);
     *psVar1 = *psVar1 + -1;
-    iVar6 = (int)&this[1].field0c + sVar2 * 2 + 2;
+    iVar6 = param_1 + 0x1e + sVar2 * 2;
   }
-  if (in_stack_00000004 == *(int *)&this[1].field04) {
-    puVar4 = *(undefined4 **)(this + 1);
-    *(undefined4 *)&this[1].field04 = 0;
-    for (; puVar4 != (undefined4 *)0x0; puVar4 = (undefined4 *)puVar4[1]) {
-      iVar6 = thunk_SelectPreferredMapOrderEntryByPriorityRules
-                        ((ObjectPool *)*puVar4,*(int *)&this[1].field04,0);
-      *(int *)&this[1].field04 = iVar6;
+  if (param_2 == *(int *)(param_1 + 0x14)) {
+    iVar4 = *(int *)(param_1 + 0x10);
+    *(undefined4 *)(param_1 + 0x14) = 0;
+    for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 4)) {
+      iVar6 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(param_1 + 0x14),0);
+      *(int *)(param_1 + 0x14) = iVar6;
     }
   }
-  *(undefined4 *)(in_stack_00000004 + 0xc) = 0;
+  *(undefined4 *)(param_2 + 0xc) = 0;
   return iVar6;
 }
 

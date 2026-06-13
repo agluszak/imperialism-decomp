@@ -3,162 +3,60 @@
 // Program: Imperialism.exe
 // Bucket: TModuleLibraryCacheTableStateB_0064BA80.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402F63
-// GHIDRA_NAME TModuleLibraryCacheTableStateB_0064BA80::thunk_DestructModuleLibraryCacheTableStateBAndFree
-// GHIDRA_PROTO void __thiscall thunk_DestructModuleLibraryCacheTableStateBAndFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk mirror for DestructModuleLibraryCacheTableStateBAndFree.
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk mirror for DestructModuleLibraryCacheTableStateBAndFree. */
-
-void __thiscall
-TModuleLibraryCacheTableStateB_0064BA80::thunk_DestructModuleLibraryCacheTableStateBAndFree
-          (TModuleLibraryCacheTableStateB_0064BA80 *this)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  undefined *puVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  puStack_8 = &LAB_0062fb58;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->pRuntimeClassOrOwner_00 = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateB_0064BA80
-  ;
-  puVar2 = this->pStateB_04;
-  uStack_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    for (puVar3 = this->uStateB_08; puVar3 != (undefined *)0x0; puVar3 = puVar3 + -1) {
-      for (puVar1 = (undefined4 *)*puVar2; puVar1 != (undefined4 *)0x0;
-          puVar1 = (undefined4 *)*puVar1) {
-      }
-      puVar2 = puVar2 + 1;
-    }
-  }
-  FreeHeapBufferIfNotNull();
-  this->pStateB_04 = (void *)0x0;
-  this->uStateB_0C = 0;
-  this->uStateB_10 = 0;
-  FreeDataChain();
-  this->pStateB_14 = (void *)0x0;
-  this->pRuntimeClassOrOwner_00 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408710
-// GHIDRA_NAME TModuleLibraryCacheTableStateB_0064BA80::thunk_ConstructModuleLibraryCacheDualTableState
-// GHIDRA_PROTO void __thiscall thunk_ConstructModuleLibraryCacheDualTableState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk mirror for ConstructModuleLibraryCacheDualTableState.
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk mirror for ConstructModuleLibraryCacheDualTableState. */
-
-void __thiscall
-TModuleLibraryCacheTableStateB_0064BA80::thunk_ConstructModuleLibraryCacheDualTableState
-          (TModuleLibraryCacheTableStateB_0064BA80 *this)
-
-{
-  this->pRuntimeClassOrOwner_00 = (void *)0x0;
-  this->pStateB_04 = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateB_0064BA80;
-  this->uStateB_08 = (undefined *)0x0;
-  this->uStateB_0C = 0x11;
-  this->uStateB_10 = 0;
-  this->pStateB_14 = (void *)0x0;
-  this->uStateB_18 = 0;
-  this->uStateB_1C = 10;
-  this->uStateA_38 = 10;
-  this->pStateA_20 = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateA_0064BA68;
-  this->pStateA_24 = (void *)0x0;
-  this->uStateA_28 = 0x11;
-  this->uStateA_2C = 0;
-  this->uStateA_30 = 0;
-  this->pStateA_34 = (void *)0x0;
-  this->uStateA_4C = (HMODULE)0x0;
-  this->uStateA_3C = (HMODULE)0x0;
-  this->uStateA_40 = 0;
-  this->uStateA_44 = 0;
-  this->uStateA_48 = 0;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00498F60
 // GHIDRA_NAME TModuleLibraryCacheTableStateB_0064BA80::ConstructModuleLibraryCacheDualTableState
-// GHIDRA_PROTO void __thiscall ConstructModuleLibraryCacheDualTableState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] Initializes paired module-cache table state records (B then A) in one contiguous state block.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructModuleLibraryCacheDualTableState()
 
-/* [Behavior] Initializes paired module-cache table state records (B then A) in one contiguous state
-   block. */
-
-void __thiscall
+void __fastcall
 TModuleLibraryCacheTableStateB_0064BA80::ConstructModuleLibraryCacheDualTableState
-          (TModuleLibraryCacheTableStateB_0064BA80 *this)
+          (undefined4 *param_1)
 
 {
-  this->pRuntimeClassOrOwner_00 = (void *)0x0;
-  this->pStateB_04 = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateB_0064BA80;
-  this->uStateB_08 = (undefined *)0x0;
-  this->uStateB_0C = 0x11;
-  this->uStateB_10 = 0;
-  this->pStateB_14 = (void *)0x0;
-  this->uStateB_18 = 0;
-  this->uStateB_1C = 10;
-  this->uStateA_38 = 10;
-  this->pStateA_20 = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateA_0064BA68;
-  this->pStateA_24 = (void *)0x0;
-  this->uStateA_28 = 0x11;
-  this->uStateA_2C = 0;
-  this->uStateA_30 = 0;
-  this->pStateA_34 = (void *)0x0;
-  this->uStateA_4C = (HMODULE)0x0;
-  this->uStateA_3C = (HMODULE)0x0;
-  this->uStateA_40 = 0;
-  this->uStateA_44 = 0;
-  this->uStateA_48 = 0;
+  *param_1 = 0;
+  param_1[1] = &PTR_GetCObjectRuntimeClass_0064ba80;
+  param_1[2] = 0;
+  param_1[3] = 0x11;
+  param_1[4] = 0;
+  param_1[5] = 0;
+  param_1[6] = 0;
+  param_1[7] = 10;
+  param_1[0xe] = 10;
+  param_1[8] = &PTR_GetCObjectRuntimeClass_0064ba68;
+  param_1[9] = 0;
+  param_1[10] = 0x11;
+  param_1[0xb] = 0;
+  param_1[0xc] = 0;
+  param_1[0xd] = 0;
+  param_1[0x13] = 0;
+  param_1[0xf] = 0;
+  param_1[0x10] = 0;
+  param_1[0x11] = 0;
+  param_1[0x12] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00498FE0
 // GHIDRA_NAME TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheDualTableAndUnloadModules
-// GHIDRA_PROTO void __thiscall DestructModuleLibraryCacheDualTableAndUnloadModules(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] Frees loaded module handles, then tears down both module-cache hash table records (A/B).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructModuleLibraryCacheDualTableAndUnloadModules()
 
-/* [Behavior] Frees loaded module handles, then tears down both module-cache hash table records
-   (A/B). */
-
-void __thiscall
+void __fastcall
 TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheDualTableAndUnloadModules
-          (TModuleLibraryCacheTableStateB_0064BA80 *this)
+          (undefined2 *param_1)
 
 {
-  void **ppvVar1;
-  void *pvVar2;
-  undefined4 *puVar3;
-  undefined4 *puVar4;
-  uint uVar5;
-  int extraout_EAX;
-  TModuleLibraryCacheTableStateB_0064BA80 *pTVar6;
-  TModuleLibraryCacheTableStateB_0064BA80 *extraout_ECX;
-  int *piVar7;
-  undefined4 *extraout_EDX;
-  undefined4 *extraout_EDX_00;
-  undefined4 *extraout_EDX_01;
-  undefined4 *puVar8;
-  TModuleLibraryCacheTableStateB_0064BA80 *pTVar9;
-  HMODULE *ppHVar10;
-  int iVar11;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  uint uVar3;
+  int iVar4;
+  int *piVar5;
+  undefined2 extraout_var;
+  undefined2 uVar7;
+  undefined4 *puVar6;
+  int *piVar8;
+  undefined2 *puVar9;
+  undefined4 *puVar10;
   undefined4 *unaff_FS_OFFSET;
-  void **local_10;
+  undefined4 *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -166,185 +64,192 @@ TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheDualTableAndU
   puStack_8 = &LAB_0062f926;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  uVar5 = this->uStateB_10;
+  iVar4 = *(int *)(param_1 + 8);
   local_4 = 1;
-  if (uVar5 != 0) {
-    pTVar6 = this;
-    pTVar9 = this;
-    do {
-      piVar7 = (int *)-(uint)(uVar5 != 0);
-      if (piVar7 == (int *)0xffffffff) {
-        uVar5 = 0;
-        if (this->uStateB_0C != 0) {
-          pTVar6 = (TModuleLibraryCacheTableStateB_0064BA80 *)this->uStateB_08;
-          do {
-            piVar7 = pTVar6->pRuntimeClassOrOwner_00;
-            if (piVar7 != (int *)0x0) break;
-            uVar5 = uVar5 + 1;
-            pTVar6 = (TModuleLibraryCacheTableStateB_0064BA80 *)&pTVar6->pStateB_04;
-          } while (uVar5 < this->uStateB_0C);
-        }
-      }
-      if (*piVar7 == 0) {
-        uVar5 = piVar7[1] + 1;
-        if (uVar5 < this->uStateB_0C) {
-          pTVar6 = (TModuleLibraryCacheTableStateB_0064BA80 *)(this->uStateB_08 + uVar5 * 4);
-          do {
-            if (pTVar6->pRuntimeClassOrOwner_00 != (void *)0x0) break;
-            uVar5 = uVar5 + 1;
-            pTVar6 = (TModuleLibraryCacheTableStateB_0064BA80 *)&pTVar6->pStateB_04;
-          } while (uVar5 < this->uStateB_0C);
-        }
-      }
-      thunk_FindShortKeyHashNodeAndOutputBucketIndex
-                (CONCAT22((short)((uint)pTVar6 >> 0x10),(short)piVar7[2]),(int)&local_10);
-      if (extraout_EAX != 0) {
-        pTVar9 = *(TModuleLibraryCacheTableStateB_0064BA80 **)(extraout_EAX + 0xc);
-      }
-      pTVar6 = (TModuleLibraryCacheTableStateB_0064BA80 *)(pTVar9->uStateB_08 + -1);
-      pTVar9->uStateB_08 = (undefined *)pTVar6;
-      if ((int)pTVar6 < 1) {
-        puVar8 = extraout_EDX;
-        if (pTVar9->pStateB_04 != (int *)0x0) {
-          (**(code **)(*(int *)pTVar9->pStateB_04 + 4))(1);
-          puVar8 = extraout_EDX_00;
-        }
-        pvVar2 = this->pStateA_24;
-        if (pvVar2 != (void *)0x0) {
-          uVar5 = ((uint)pTVar9->pStateB_04 >> 4) % this->uStateA_28;
-          puVar3 = *(undefined4 **)((int)pvVar2 + uVar5 * 4);
-          puVar8 = (undefined4 *)((int)pvVar2 + uVar5 * 4);
-          while (puVar4 = puVar3, puVar4 != (undefined4 *)0x0) {
-            if ((void *)puVar4[2] == pTVar9->pStateB_04) {
-              *puVar8 = *puVar4;
-              DestructModuleLibraryCacheAndHashTables_Impl((int)&this->pStateA_20,(int)puVar8);
-              puVar8 = extraout_EDX_01;
-              break;
-            }
-            puVar8 = puVar4;
-            puVar3 = (undefined4 *)*puVar4;
-          }
-        }
-        thunk_RemoveHashIndexedRecordByShortKey((int)&this->pStateB_04,(int)puVar8);
-        FreeHeapBufferIfNotNull();
-        pTVar6 = extraout_ECX;
-      }
-      uVar5 = this->uStateB_10;
-    } while (uVar5 != 0);
-  }
-  iVar11 = 4;
-  ppHVar10 = &this->uStateA_3C;
+  puVar9 = param_1;
   do {
-    if (*ppHVar10 != (HMODULE)0x0) {
-      FreeLibrary(*ppHVar10);
-    }
-    ppHVar10 = ppHVar10 + 1;
-    iVar11 = iVar11 + -1;
-  } while (iVar11 != 0);
-  FreeLibrary(this->uStateA_4C);
-  ppvVar1 = &this->pStateA_20;
-  *ppvVar1 = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateA_0064BA68;
-  puVar8 = this->pStateA_24;
-  local_4 = CONCAT31(local_4._1_3_,2);
-  if (puVar8 != (undefined4 *)0x0) {
-    for (uVar5 = this->uStateA_28; uVar5 != 0; uVar5 = uVar5 - 1) {
-      for (puVar3 = (undefined4 *)*puVar8; puVar3 != (undefined4 *)0x0;
-          puVar3 = (undefined4 *)*puVar3) {
+    if (iVar4 == 0) {
+      iVar4 = 4;
+      puVar10 = (undefined4 *)(param_1 + 0x1e);
+      do {
+        if ((HMODULE)*puVar10 != (HMODULE)0x0) {
+          FreeLibrary((HMODULE)*puVar10);
+        }
+        puVar10 = puVar10 + 1;
+        iVar4 = iVar4 + -1;
+      } while (iVar4 != 0);
+      FreeLibrary(*(HMODULE *)(param_1 + 0x26));
+      puVar10 = (undefined4 *)(param_1 + 0x10);
+      *puVar10 = &PTR_GetCObjectRuntimeClass_0064ba68;
+      puVar1 = *(undefined4 **)(param_1 + 0x12);
+      local_4 = CONCAT31(local_4._1_3_,2);
+      if (puVar1 != (undefined4 *)0x0) {
+        puVar6 = puVar1;
+        for (iVar4 = *(int *)(param_1 + 0x14); iVar4 != 0; iVar4 = iVar4 + -1) {
+          for (puVar2 = (undefined4 *)*puVar6; puVar2 != (undefined4 *)0x0;
+              puVar2 = (undefined4 *)*puVar2) {
+          }
+          puVar6 = puVar6 + 1;
+        }
       }
-      puVar8 = puVar8 + 1;
-    }
-  }
-  local_10 = ppvVar1;
-  FreeHeapBufferIfNotNull();
-  this->pStateA_24 = (void *)0x0;
-  this->uStateA_2C = 0;
-  this->uStateA_30 = 0;
-  FreeDataChain();
-  this->pStateA_34 = (void *)0x0;
-  *ppvVar1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  ppvVar1 = &this->pStateB_04;
-  *ppvVar1 = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateB_0064BA80;
-  puVar8 = (undefined4 *)this->uStateB_08;
-  local_4 = 3;
-  if (puVar8 != (undefined4 *)0x0) {
-    for (uVar5 = this->uStateB_0C; uVar5 != 0; uVar5 = uVar5 - 1) {
-      for (puVar3 = (undefined4 *)*puVar8; puVar3 != (undefined4 *)0x0;
-          puVar3 = (undefined4 *)*puVar3) {
+      local_10 = puVar10;
+      FreeHeapBufferIfNotNull(puVar1);
+      *(undefined4 *)(param_1 + 0x12) = 0;
+      *(undefined4 *)(param_1 + 0x16) = 0;
+      *(undefined4 *)(param_1 + 0x18) = 0;
+      FreeDataChain();
+      *(undefined4 *)(param_1 + 0x1a) = 0;
+      *puVar10 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+      puVar10 = (undefined4 *)(param_1 + 2);
+      *puVar10 = &PTR_GetCObjectRuntimeClass_0064ba80;
+      puVar1 = *(undefined4 **)(param_1 + 4);
+      local_4 = 3;
+      if (puVar1 != (undefined4 *)0x0) {
+        puVar6 = puVar1;
+        for (iVar4 = *(int *)(param_1 + 6); iVar4 != 0; iVar4 = iVar4 + -1) {
+          for (puVar2 = (undefined4 *)*puVar6; puVar2 != (undefined4 *)0x0;
+              puVar2 = (undefined4 *)*puVar2) {
+          }
+          puVar6 = puVar6 + 1;
+        }
       }
-      puVar8 = puVar8 + 1;
+      local_10 = puVar10;
+      FreeHeapBufferIfNotNull(puVar1);
+      *(undefined4 *)(param_1 + 4) = 0;
+      *(undefined4 *)(param_1 + 8) = 0;
+      *(undefined4 *)(param_1 + 10) = 0;
+      FreeDataChain();
+      *(undefined4 *)(param_1 + 0xc) = 0;
+      *puVar10 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+      *unaff_FS_OFFSET = uStack_c;
+      return;
     }
-  }
-  local_10 = ppvVar1;
-  FreeHeapBufferIfNotNull();
-  this->uStateB_08 = (undefined *)0x0;
-  this->uStateB_10 = 0;
-  this->pStateB_14 = (void *)0x0;
-  FreeDataChain();
-  this->uStateB_18 = 0;
-  *ppvVar1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
+    piVar8 = (int *)-(uint)(iVar4 != 0);
+    if (piVar8 == (int *)0xffffffff) {
+      uVar3 = 0;
+      if (*(uint *)(param_1 + 6) != 0) {
+        piVar5 = *(int **)(param_1 + 4);
+        do {
+          piVar8 = (int *)*piVar5;
+          if (piVar8 != (int *)0x0) break;
+          uVar3 = uVar3 + 1;
+          piVar5 = piVar5 + 1;
+        } while (uVar3 < *(uint *)(param_1 + 6));
+      }
+    }
+    if (*piVar8 == 0) {
+      uVar3 = piVar8[1] + 1;
+      if (uVar3 < *(uint *)(param_1 + 6)) {
+        piVar5 = (int *)(*(int *)(param_1 + 4) + uVar3 * 4);
+        do {
+          if (*piVar5 != 0) break;
+          uVar3 = uVar3 + 1;
+          piVar5 = piVar5 + 1;
+        } while (uVar3 < *(uint *)(param_1 + 6));
+      }
+    }
+    iVar4 = FindShortKeyHashNodeAndOutputBucketIndex((short)piVar8[2],&local_10);
+    if (iVar4 != 0) {
+      puVar9 = *(undefined2 **)(iVar4 + 0xc);
+    }
+    iVar4 = *(int *)(puVar9 + 4);
+    *(int *)(puVar9 + 4) = iVar4 + -1;
+    if (iVar4 + -1 < 1) {
+      if (*(int **)(puVar9 + 2) != (int *)0x0) {
+        (**(code **)(**(int **)(puVar9 + 2) + 4))(1);
+      }
+      iVar4 = *(int *)(param_1 + 0x12);
+      uVar7 = (undefined2)((uint)(param_1 + 0x10) >> 0x10);
+      if (iVar4 != 0) {
+        uVar3 = (*(uint *)(puVar9 + 2) >> 4) % *(uint *)(param_1 + 0x14);
+        puVar1 = *(undefined4 **)(iVar4 + uVar3 * 4);
+        puVar10 = (undefined4 *)(iVar4 + uVar3 * 4);
+        while (puVar6 = puVar1, puVar6 != (undefined4 *)0x0) {
+          if (puVar6[2] == *(uint *)(puVar9 + 2)) {
+            *puVar10 = *puVar6;
+            DestructModuleLibraryCacheAndHashTables_Impl(puVar6);
+            uVar7 = extraout_var;
+            break;
+          }
+          puVar10 = puVar6;
+          puVar1 = (undefined4 *)*puVar6;
+        }
+      }
+      RemoveHashIndexedRecordByShortKey(CONCAT22(uVar7,*puVar9));
+      FreeHeapBufferIfNotNull(puVar9);
+    }
+    iVar4 = *(int *)(param_1 + 8);
+  } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004992A0
 // GHIDRA_NAME TModuleLibraryCacheTableStateB_0064BA80::LoadModuleLibrarySlotWithErrorDialog
-// GHIDRA_PROTO void __thiscall LoadModuleLibrarySlotWithErrorDialog(char * pLibraryPath, int slotIndex)
+// GHIDRA_PROTO undefined LoadModuleLibrarySlotWithErrorDialog()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] (Re)loads one module-library slot handle and shows missing-file dialog on failure.
+// GHIDRA_COMMENT Loads/reloads a required data library into one of the per-slot handles at object+0x3C.
+// GHIDRA_COMMENT - Frees previous module in the slot if present.
+// GHIDRA_COMMENT - Loads requested path via LoadLibraryExA(..., LOAD_LIBRARY_AS_DATAFILE).
+// GHIDRA_COMMENT - On failure, builds and shows a formatted missing-file error message.
+// GHIDRA_COMMENT Returns nonzero if slot module handle is valid.
 // GHIDRA_COMMENT_END
 
-/* [Behavior] (Re)loads one module-library slot handle and shows missing-file dialog on failure. */
+/* Loads/reloads a required data library into one of the per-slot handles at object+0x3C.
+   - Frees previous module in the slot if present.
+   - Loads requested path via LoadLibraryExA(..., LOAD_LIBRARY_AS_DATAFILE).
+   - On failure, builds and shows a formatted missing-file error message.
+   Returns nonzero if slot module handle is valid. */
 
-void __thiscall
+bool __thiscall
 TModuleLibraryCacheTableStateB_0064BA80::LoadModuleLibrarySlotWithErrorDialog
-          (TModuleLibraryCacheTableStateB_0064BA80 *this,char *pLibraryPath,int slotIndex)
+          (int param_1,LPCSTR param_2,int param_3)
 
 {
-  HMODULE pHVar1;
+  int iVar1;
+  HMODULE pHVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
+  iVar1 = param_3;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f948;
   *unaff_FS_OFFSET = &local_c;
-  if ((&this->uStateA_3C)[slotIndex] != (HMODULE)0x0) {
-    FreeLibrary((&this->uStateA_3C)[slotIndex]);
-    (&this->uStateA_3C)[slotIndex] = (HMODULE)0x0;
+  pHVar2 = *(HMODULE *)(param_1 + 0x3c + param_3 * 4);
+  if (pHVar2 != (HMODULE)0x0) {
+    FreeLibrary(pHVar2);
+    *(undefined4 *)(param_1 + 0x3c + iVar1 * 4) = 0;
   }
-  pHVar1 = LoadLibraryExA(pLibraryPath,(HANDLE)0x0,2);
-  (&this->uStateA_3C)[slotIndex] = pHVar1;
-  if (pHVar1 == (HMODULE)0x0) {
+  pHVar2 = LoadLibraryExA(param_2,(HANDLE)0x0,2);
+  *(HMODULE *)(param_1 + 0x3c + iVar1 * 4) = pHVar2;
+  if (pHVar2 == (HMODULE)0x0) {
     InitializeSharedStringRefFromEmpty();
     local_4 = 0;
-    FormatStringWithVarArgsToSharedRef();
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(slotIndex,0,0);
+    FormatStringWithVarArgsToSharedRef
+              (&param_3,s_A_file_required_by_the_program____00695188,param_2);
+    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(param_3,0,0);
     local_4 = 0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
   }
+  iVar1 = *(int *)(param_1 + 0x3c + iVar1 * 4);
   *unaff_FS_OFFSET = local_c;
-  return;
+  return iVar1 != 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049AE30
 // GHIDRA_NAME TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheTableStateBAndFree
-// GHIDRA_PROTO void __thiscall DestructModuleLibraryCacheTableStateBAndFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] Destroys module-cache table-B state and frees owned hash/chain buffers.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructModuleLibraryCacheTableStateBAndFree()
 
-/* [Behavior] Destroys module-cache table-B state and frees owned hash/chain buffers. */
-
-void __thiscall
+void __fastcall
 TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheTableStateBAndFree
-          (TModuleLibraryCacheTableStateB_0064BA80 *this)
+          (undefined4 *param_1)
 
 {
   undefined4 *puVar1;
   undefined4 *puVar2;
-  undefined *puVar3;
+  undefined4 *puVar3;
+  int iVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -353,25 +258,25 @@ TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheTableStateBAn
   puStack_8 = &LAB_0062fb58;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->pRuntimeClassOrOwner_00 = &PTR_GetCObjectRuntimeClass_ModuleLibraryCacheTableStateB_0064BA80
-  ;
-  puVar2 = this->pStateB_04;
+  *param_1 = &PTR_GetCObjectRuntimeClass_0064ba80;
+  puVar1 = (undefined4 *)param_1[1];
   local_4 = 0;
-  if (puVar2 != (undefined4 *)0x0) {
-    for (puVar3 = this->uStateB_08; puVar3 != (undefined *)0x0; puVar3 = puVar3 + -1) {
-      for (puVar1 = (undefined4 *)*puVar2; puVar1 != (undefined4 *)0x0;
-          puVar1 = (undefined4 *)*puVar1) {
+  if (puVar1 != (undefined4 *)0x0) {
+    puVar3 = puVar1;
+    for (iVar4 = param_1[2]; iVar4 != 0; iVar4 = iVar4 + -1) {
+      for (puVar2 = (undefined4 *)*puVar3; puVar2 != (undefined4 *)0x0;
+          puVar2 = (undefined4 *)*puVar2) {
       }
-      puVar2 = puVar2 + 1;
+      puVar3 = puVar3 + 1;
     }
   }
-  FreeHeapBufferIfNotNull();
-  this->pStateB_04 = (void *)0x0;
-  this->uStateB_0C = 0;
-  this->uStateB_10 = 0;
+  FreeHeapBufferIfNotNull(puVar1);
+  param_1[1] = 0;
+  param_1[3] = 0;
+  param_1[4] = 0;
   FreeDataChain();
-  this->pStateB_14 = (void *)0x0;
-  this->pRuntimeClassOrOwner_00 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

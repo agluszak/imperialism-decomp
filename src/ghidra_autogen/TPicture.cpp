@@ -5,30 +5,25 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EFA0
 // GHIDRA_NAME TPicture::GetTPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TPicture. */
-
-void * __cdecl TPicture::GetTPictureClassNamePointer(void)
+undefined ** TPicture::GetTPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTPicture;
+  return &PTR_s_TPicture_00649660;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F050
 // GHIDRA_NAME TPicture::DestructTPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTPictureAndMaybeFree()
 
-void * __thiscall TPicture::DestructTPictureAndMaybeFree(TPicture *this,byte freeSelfFlag)
+undefined4 __thiscall TPicture::DestructTPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

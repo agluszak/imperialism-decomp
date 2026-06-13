@@ -3,136 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TAnimator.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401D9D
-// GHIDRA_NAME TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50_At00401d9d
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50_At00401d9d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50 */
-
-void __cdecl TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50_At00401d9d(void)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At004a0e50();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004023FB
-// GHIDRA_NAME TAnimator::thunk_GetTAnimatorClassNamePointer_At004023fb
-// GHIDRA_PROTO void * __cdecl thunk_GetTAnimatorClassNamePointer_At004023fb(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTAnimatorClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTAnimatorClassNamePointer */
-
-void * __cdecl TAnimator::thunk_GetTAnimatorClassNamePointer_At004023fb(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTAnimatorClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004042CD
-// GHIDRA_NAME TAnimator::thunk_OrphanCallChain_C2_I13_004a0c00_At004042cd
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C2_I13_004a0c00_At004042cd(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C2_I13_004a0c00
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanCallChain_C2_I13_004a0c00 */
-
-void __cdecl TAnimator::thunk_OrphanCallChain_C2_I13_004a0c00_At004042cd(void)
-
-{
-  OrphanCallChain_C2_I13_004a0c00();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404561
-// GHIDRA_NAME TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner_At00404561
-// GHIDRA_PROTO void __thiscall thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner_At00404561(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ResetUiViewStateAndReleaseRuntimeSelectionOwner
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ResetUiViewStateAndReleaseRuntimeSelectionOwner */
-
-void __thiscall
-TAnimator::thunk_ResetUiViewStateAndReleaseRuntimeSelectionOwner_At00404561(TAnimator *this)
-
-{
-  ResetUiViewStateAndReleaseRuntimeSelectionOwner(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405371
-// GHIDRA_NAME TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10_At00405371
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10_At00405371(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10 */
-
-void __cdecl TAnimator::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10_At00405371(void)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At004a0e10();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040786F
-// GHIDRA_NAME TAnimator::thunk_DestructTAnimatorAndMaybeFree_At0040786f
-// GHIDRA_PROTO void * __thiscall thunk_DestructTAnimatorAndMaybeFree_At0040786f(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTAnimatorAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTAnimatorAndMaybeFree */
-
-void * __thiscall
-TAnimator::thunk_DestructTAnimatorAndMaybeFree_At0040786f(TAnimator *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTAnimatorAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407FEF
-// GHIDRA_NAME TAnimator::thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30_At00407fef
-// GHIDRA_PROTO uint __cdecl thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30_At00407fef(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30 */
-
-uint __cdecl TAnimator::thunk_Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30_At00407fef(void)
-
-{
-  uint uVar1;
-  
-  uVar1 = Helper_Uses_thunk_AdvanceLinkedListCursor_At004a0c30();
-  return uVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A09F0
 // GHIDRA_NAME TAnimator::CreateTAnimatorInstance
-// GHIDRA_PROTO void * __cdecl CreateTAnimatorInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TAnimator; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTAnimatorInstance()
 
-/* [ClassQuad] create inferred for TAnimator; alloc factory pattern. */
-
-void * __cdecl TAnimator::CreateTAnimatorInstance(void)
+undefined4 * TAnimator::CreateTAnimatorInstance(void)
 
 {
   undefined4 *puVar1;
@@ -145,11 +20,11 @@ void * __cdecl TAnimator::CreateTAnimatorInstance(void)
   puStack_8 = &LAB_0062feba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x30);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-    *puVar1 = &g_vtblTAnimator;
+    *puVar1 = &PTR_LAB_0064c4e8;
     puVar1[0xb] = 0;
     puVar1[8] = 0;
     puVar1[9] = 0;
@@ -157,57 +32,46 @@ void * __cdecl TAnimator::CreateTAnimatorInstance(void)
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0A80
 // GHIDRA_NAME TAnimator::GetTAnimatorClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTAnimatorClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TAnimator.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTAnimatorClassNamePointer()
 
-/* Returns class descriptor pointer for TAnimator. */
-
-void * __cdecl TAnimator::GetTAnimatorClassNamePointer(void)
+undefined ** TAnimator::GetTAnimatorClassNamePointer(void)
 
 {
-  return &g_pClassDescTAnimator;
+  return &PTR_s_TAnimator_0064c298;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0AD0
 // GHIDRA_NAME TAnimator::DestructTAnimatorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTAnimatorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTAnimatorAndMaybeFree()
 
-void * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this,byte freeSelfFlag)
+undefined4 __thiscall TAnimator::DestructTAnimatorAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTAnimatorAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0DC0
 // GHIDRA_NAME TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner
-// GHIDRA_PROTO void __thiscall ResetUiViewStateAndReleaseRuntimeSelectionOwner(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Resets UI view state for object, flushes child state at +0x24/+0x20, then releases runtime selection owner context.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ResetUiViewStateAndReleaseRuntimeSelectionOwner()
 
-/* Resets UI view state for object, flushes child state at +0x24/+0x20, then releases runtime
-   selection owner context. */
-
-void __thiscall TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner(TAnimator *this)
+void __fastcall TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner(int param_1)
 
 {
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0xa4))(this,0);
-  if (this->pField24 != (int *)0x0) {
-    (**(code **)(*(int *)this->pField24 + 0x58))();
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0xa4))(param_1,0);
+  if (*(int **)(param_1 + 0x24) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0x24) + 0x58))();
   }
-  WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-  thunk_ReleaseRuntimeSelectionOwnerAndDestroyObject();
+  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x20);
+  ReleaseRuntimeSelectionOwnerAndDestroyObject();
   return;
 }
 

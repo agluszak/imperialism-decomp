@@ -3,179 +3,76 @@
 // Program: Imperialism.exe
 // Bucket: TBullyMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402B76
-// GHIDRA_NAME TBullyMinister::TBullyMinister_VtblSlot024
-// GHIDRA_PROTO TBullyMinister * __cdecl TBullyMinister_VtblSlot024(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateTBullyMinisterInstance
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateTBullyMinisterInstance */
-
-TBullyMinister * __cdecl TBullyMinister::TBullyMinister_VtblSlot024(void)
-
-{
-  TBullyMinister *pTVar1;
-  
-  pTVar1 = CreateTBullyMinisterInstance();
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406230
-// GHIDRA_NAME TBullyMinister::TBullyMinister_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TBullyMinister_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTBullyMinisterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTBullyMinisterAndMaybeFree */
-
-void * __thiscall TBullyMinister::TBullyMinister_VtblSlot001(TBullyMinister *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTBullyMinisterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004079F0
-// GHIDRA_NAME TBullyMinister::thunk_ConstructTBullyMinisterBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTBullyMinisterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTBullyMinisterBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTBullyMinisterBaseState */
-
-void * __thiscall TBullyMinister::thunk_ConstructTBullyMinisterBaseState(TBullyMinister *this)
-
-{
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  this->field0_0x0 = &g_vtblTBullyMinister;
-  this->field0c = 4;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409156
-// GHIDRA_NAME TBullyMinister::TBullyMinister_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TBullyMinister_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBullyMinisterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBullyMinisterClassNamePointer */
-
-void * __cdecl TBullyMinister::TBullyMinister_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBullyMinisterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409949
-// GHIDRA_NAME TBullyMinister::TBullyMinister_VtblSlot017
-// GHIDRA_PROTO void __thiscall TBullyMinister_VtblSlot017(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3 */
-
-void __thiscall TBullyMinister::TBullyMinister_VtblSlot017(TBullyMinister *this)
-
-{
-  InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE080
 // GHIDRA_NAME TBullyMinister::CreateTBullyMinisterInstance
-// GHIDRA_PROTO TBullyMinister * __cdecl CreateTBullyMinisterInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns Bully minister signed preference scalar selected by polarity flag.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTBullyMinisterInstance()
 
-/* Returns Bully minister signed preference scalar selected by polarity flag. */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-TBullyMinister * __cdecl TBullyMinister::CreateTBullyMinisterInstance(void)
+float10 TBullyMinister::CreateTBullyMinisterInstance(char param_1)
 
 {
-  undefined4 in_EAX;
-  TBullyMinister *pTVar1;
-  char in_stack_00000004;
-  
-  pTVar1 = (TBullyMinister *)CONCAT31((int3)((uint)in_EAX >> 8),in_stack_00000004);
-  if (in_stack_00000004 != '\0') {
-    return pTVar1;
+  if (param_1 != '\0') {
+    return (float10)_DAT_00654910;
   }
-  return pTVar1;
+  return (float10)_DAT_00654918;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE0B0
 // GHIDRA_NAME TBullyMinister::GetTBullyMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBullyMinisterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBullyMinister.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBullyMinisterClassNamePointer()
 
-/* Returns class descriptor pointer for TBullyMinister. */
-
-void * __cdecl TBullyMinister::GetTBullyMinisterClassNamePointer(void)
+undefined ** TBullyMinister::GetTBullyMinisterClassNamePointer(void)
 
 {
-  return &g_pClassDescTBullyMinister;
+  return &PTR_s_TBullyMinister_006548b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE0D0
 // GHIDRA_NAME TBullyMinister::ConstructTBullyMinisterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTBullyMinisterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTBullyMinisterBaseState()
 
-void * __thiscall TBullyMinister::ConstructTBullyMinisterBaseState(TBullyMinister *this)
+undefined4 * __fastcall TBullyMinister::ConstructTBullyMinisterBaseState(undefined4 *param_1)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  this->field0_0x0 = &g_vtblTBullyMinister;
-  this->field0c = 4;
-  return this;
+  TMinister::ConstructTMinister();
+  *param_1 = &PTR_LAB_00654c08;
+  *(undefined2 *)(param_1 + 3) = 4;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE100
 // GHIDRA_NAME TBullyMinister::DestructTBullyMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTBullyMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTBullyMinisterAndMaybeFree()
 
-void * __thiscall
-TBullyMinister::DestructTBullyMinisterAndMaybeFree(TBullyMinister *this,byte freeSelfFlag)
+undefined4 __thiscall
+TBullyMinister::DestructTBullyMinisterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTBullyMinisterAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE210
 // GHIDRA_NAME TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// GHIDRA_PROTO void __thiscall InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes recruit queue preset E: field64 mode=2 with two type-2 orders and three type-4 orders.
-// GHIDRA_COMMENT_END
-
-/* Initializes recruit queue preset E: field64 mode=2 with two type-2 orders and three type-4
-   orders. */
+// GHIDRA_PROTO undefined InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3()
 
 void __thiscall
-TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBullyMinister *this)
+TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(int param_1,int param_2)
 
 {
-  void *pvVar1;
+  int iVar1;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar2;
+  undefined2 extraout_var_01;
+  undefined2 extraout_var_02;
   undefined4 unaff_EBP;
-  int iVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
@@ -184,28 +81,34 @@ TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(TBul
   piStack_8 = (int *)&LAB_006328c4;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  (**(code **)(**(int **)(in_stack_00000004 + 0x1d8) + 0x2c))(10,4,0);
-  *(undefined2 *)(in_stack_00000004 + 100) = 2;
-  iVar2 = 2;
+  (**(code **)(**(int **)(param_2 + 0x1d8) + 0x2c))(10,4,0);
+  *(undefined2 *)(param_2 + 100) = 2;
+  iVar3 = 2;
   do {
-    pvVar1 = AllocateWithFallbackHandler();
-    if (pvVar1 != (void *)0x0) {
-      thunk_InitializeMilitaryUnitOrderObject();
+    iVar1 = AllocateWithFallbackHandler(0x44);
+    uVar2 = extraout_var;
+    if (iVar1 != 0) {
+      TMilitaryUnitOrderState::TMilitaryUnitOrderState();
+      uVar2 = extraout_var_00;
     }
-    thunk_InitializeMilitaryRecruitOrderState();
-    this->field18 = this->field18 + 1;
-    iVar2 = iVar2 + -1;
-  } while (iVar2 != 0);
-  iVar2 = 3;
+    InitializeMilitaryRecruitOrderState
+              (2,0,CONCAT22(uVar2,*(undefined2 *)(*(int *)(param_1 + 4) + 0xc)),0);
+    *(short *)(param_1 + 0x18) = *(short *)(param_1 + 0x18) + 1;
+    iVar3 = iVar3 + -1;
+  } while (iVar3 != 0);
+  iVar3 = 3;
   do {
-    pvVar1 = AllocateWithFallbackHandler();
-    if (pvVar1 != (void *)0x0) {
-      thunk_InitializeMilitaryUnitOrderObject();
+    iVar1 = AllocateWithFallbackHandler(0x44);
+    uVar2 = extraout_var_01;
+    if (iVar1 != 0) {
+      TMilitaryUnitOrderState::TMilitaryUnitOrderState();
+      uVar2 = extraout_var_02;
     }
-    thunk_InitializeMilitaryRecruitOrderState();
-    this->field1c = this->field1c + 1;
-    iVar2 = iVar2 + -1;
-  } while (iVar2 != 0);
+    InitializeMilitaryRecruitOrderState
+              (4,0,CONCAT22(uVar2,*(undefined2 *)(*(int *)(param_1 + 4) + 0xc)),0);
+    *(short *)(param_1 + 0x1c) = *(short *)(param_1 + 0x1c) + 1;
+    iVar3 = iVar3 + -1;
+  } while (iVar3 != 0);
   *(undefined2 *)((int)piStack_8 + 0xd6) = 2;
   (**(code **)(*piStack_8 + 0x80))();
   *unaff_FS_OFFSET = unaff_EBP;

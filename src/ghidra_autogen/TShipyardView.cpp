@@ -3,203 +3,42 @@
 // Program: Imperialism.exe
 // Bucket: TShipyardView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401CC1
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot118
-// GHIDRA_PROTO void __stdcall TShipyardView_VtblSlot118(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_InvalidateCityDialogRectRegion_At004c8a50
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_InvalidateCityDialogRectRegion_At004c8a50 */
-
-void TShipyardView::TShipyardView_VtblSlot118(int arg1,int arg2)
-
-{
-  WrapperFor_InvalidateCityDialogRectRegion_At004c8a50(arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402928
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot122
-// GHIDRA_PROTO void __fastcall TShipyardView_VtblSlot122(int * pCityViewDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshCityViewStatusPanel
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshCityViewStatusPanel */
-
-void __fastcall TShipyardView::TShipyardView_VtblSlot122(int *pCityViewDialog)
-
-{
-  RefreshCityViewStatusPanel(pCityViewDialog);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402CBB
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot068
-// GHIDRA_PROTO void __thiscall TShipyardView_VtblSlot068(int pDialogState, int * pRenderRectData)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderCityViewProductionDialogMetrics
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderCityViewProductionDialogMetrics */
-
-void __thiscall
-TShipyardView::TShipyardView_VtblSlot068(TShipyardView *this,int pDialogState,int *pRenderRectData)
-
-{
-  THQButton::RenderCityViewProductionDialogMetrics((THQButton *)this,pDialogState,pRenderRectData);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004047C8
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot007
-// GHIDRA_PROTO void __cdecl TShipyardView_VtblSlot007(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004c8340
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004c8340 */
-
-void __cdecl TShipyardView::TShipyardView_VtblSlot007(void)
-
-{
-  WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004c8340();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004071BC
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TShipyardView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTShipyardViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTShipyardViewClassNamePointer */
-
-void * __cdecl TShipyardView::TShipyardView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTShipyardViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040725C
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot117
-// GHIDRA_PROTO void __thiscall TShipyardView_VtblSlot117(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeCityViewProductionRows
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeCityViewProductionRows */
-
-void __thiscall TShipyardView::TShipyardView_VtblSlot117(TShipyardView *this)
-
-{
-  InitializeCityViewProductionRows(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407914
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TShipyardView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTShipyardViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTShipyardViewAndMaybeFree */
-
-void * __thiscall TShipyardView::TShipyardView_VtblSlot001(TShipyardView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTShipyardViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407F81
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot123
-// GHIDRA_PROTO void __cdecl TShipyardView_VtblSlot123(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BuildIndustryActionCostSummaryTextByActionIndex
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BuildIndustryActionCostSummaryTextByActionIndex */
-
-void __cdecl TShipyardView::TShipyardView_VtblSlot123(int arg1,int arg2)
-
-{
-  BuildIndustryActionCostSummaryTextByActionIndex(arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408639
-// GHIDRA_NAME TShipyardView::TShipyardView_VtblSlot124
-// GHIDRA_PROTO void __thiscall TShipyardView_VtblSlot124(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeCityViewActionButtons
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeCityViewActionButtons */
-
-void __thiscall TShipyardView::TShipyardView_VtblSlot124(TShipyardView *this)
-
-{
-  TacticalBattleView::InitializeCityViewActionButtons((TacticalBattleView *)this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AE60
 // GHIDRA_NAME TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_ConstructPictureResourceEntryType606E8; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60()
 
-/* [WrapperShape] small wrapper around thunk_ConstructPictureResourceEntryType606E8; instructions=7,
-   call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
+undefined4 * __fastcall
 TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60
-          (TShipyardView *this)
+          (undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field0_0x0 = &PTR_thunk_GetTScenarioChooserClassNamePointer_00644540;
-  return;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00644540;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0045AF80
 // GHIDRA_NAME TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_ConstructPictureResourceEntryType606E8; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80()
 
-/* [WrapperShape] small wrapper around thunk_ConstructPictureResourceEntryType606E8; instructions=7,
-   call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
+undefined4 * __fastcall
 TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80
-          (TShipyardView *this)
+          (undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field0_0x0 = &PTR_thunk_GetTGameScorePictureClassNamePointer_00644970;
-  return;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00644970;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C8200
 // GHIDRA_NAME TShipyardView::CreateTShipyardViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTShipyardViewInstance(void)
+// GHIDRA_PROTO undefined CreateTShipyardViewInstance()
 
-void * __cdecl TShipyardView::CreateTShipyardViewInstance(void)
+undefined4 * TShipyardView::CreateTShipyardViewInstance(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -209,62 +48,57 @@ void * __cdecl TShipyardView::CreateTShipyardViewInstance(void)
   puStack_8 = &LAB_0063166a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xcc);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
-    this->field0_0x0 = &g_vtblTShipyardView;
-    *(undefined4 *)&this[1].field_0x7 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    puVar1[0x25] = 0;
+    *puVar1 = &PTR_LAB_00651b30;
+    puVar1[0x26] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C82A0
 // GHIDRA_NAME TShipyardView::GetTShipyardViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTShipyardViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TShipyardView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTShipyardViewClassNamePointer()
 
-/* Returns class descriptor pointer for TShipyardView. */
-
-void * __cdecl TShipyardView::GetTShipyardViewClassNamePointer(void)
+undefined ** TShipyardView::GetTShipyardViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTShipyardView;
+  return &PTR_s_TShipyardView_00651278;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C82C0
 // GHIDRA_NAME TShipyardView::ConstructTShipyardViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTShipyardViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTShipyardViewBaseState()
 
-void * __thiscall TShipyardView::ConstructTShipyardViewBaseState(TShipyardView *this)
+undefined4 * __fastcall TShipyardView::ConstructTShipyardViewBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field0_0x0 = &g_vtblTShipyardView;
-  this->field94 = 0;
-  this->field98 = 0;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00651b30;
+  param_1[0x25] = 0;
+  param_1[0x26] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C82F0
 // GHIDRA_NAME TShipyardView::DestructTShipyardViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTShipyardViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTShipyardViewAndMaybeFree()
 
-void * __thiscall
-TShipyardView::DestructTShipyardViewAndMaybeFree(TShipyardView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TShipyardView::DestructTShipyardViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C8390
@@ -291,7 +125,7 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
 {
   short sVar1;
   int iVar2;
-  void *pvVar3;
+  undefined4 uVar3;
   int *piVar4;
   int iVar5;
   undefined2 extraout_var;
@@ -303,8 +137,8 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
   int iVar7;
   code *pcVar8;
   int local_28;
-  short *local_24;
-  short *psStack_20;
+  TShipyardView *local_24;
+  TShipyardView *pTStack_20;
   undefined *local_1c;
   int iStack_18;
   code *local_10;
@@ -317,20 +151,20 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
   local_5 = 0;
   local_4 = 0;
   local_3 = 0;
-  this->field98 = *(int *)((int)g_pStrategicMapViewSystem + 4);
-  this->fieldb4 = 0;
-  pvVar3 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
-  this->pFieldb8 = pvVar3;
+  *(undefined4 *)(this + 0x98) = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
+  *(undefined4 *)(this + 0xb4) = 0;
+  uVar3 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext();
+  *(undefined4 *)(this + 0xb8) = uVar3;
   local_28 = 0x636c7530;
-  pcVar6 = *(code **)((int)this->field0_0x0 + 0x94);
-  local_24 = &this->fielda4;
+  pcVar6 = *(code **)(*(int *)this + 0x94);
+  local_24 = this + 0xa4;
   local_1c = (undefined *)0x8;
   local_10 = pcVar6;
   do {
     piVar4 = (int *)(*pcVar6)();
     if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar5 = *piVar4;
     (**(code **)(iVar5 + 0xa4))();
@@ -338,8 +172,8 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
     *unaff_EDI = 0;
     piVar4 = (int *)(*pcVar6)();
     if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
     }
     iVar5 = *piVar4;
     pcVar8 = (code *)0x1;
@@ -353,24 +187,24 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
     iVar5 = *piVar4;
     (**(code **)(iVar5 + 0xc))();
     (**(code **)(iVar5 + 0xa8))(0,0);
-    local_24 = local_24 + 1;
+    local_24 = local_24 + 2;
     local_28 = local_28 + 1;
     local_1c = (undefined *)((int)local_1c + -1);
   } while (local_1c != (undefined *)0x0);
   thunk_BuildUiTextStyleDescriptor();
-  psStack_20 = &this->fielda4;
+  pTStack_20 = this + 0xa4;
   local_28 = 0;
-  local_24 = (short *)0x636c7530;
-  local_1c = &g_City_View_Production_Value_00696508;
+  local_24 = (TShipyardView *)0x636c7530;
+  local_1c = &DAT_00696508;
   do {
-    iStack_18 = *(int *)(this->field94 + 0xe4 + (short)((short)local_28 + 0x2b) * 4);
+    iStack_18 = *(int *)(*(int *)(this + 0x94) + 0xe4 + (short)((short)local_28 + 0x2b) * 4);
     if (*(short *)(iStack_18 + 0x48) != 0) {
       piVar4 = (int *)(*pcVar6)();
       iVar5 = *piVar4;
       (**(code **)(iVar5 + 0xa4))();
       (**(code **)(iVar5 + 0xa8))();
       *unaff_ESI = *(short *)(unaff_EBX + 0x48);
-      piVar4[0x26] = (int)this->pFieldb8;
+      piVar4[0x26] = *(int *)(this + 0xb8);
       iVar5 = (int)(short)(*unaff_ESI * 0x50 + -0x50);
       piVar4[0x27] = iVar5;
       piVar4[0x28] = 0;
@@ -383,8 +217,8 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
       piVar4[0x2e] = 0x39;
       piVar4 = (int *)(*pcVar6)();
       if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       iVar5 = *piVar4;
       (**(code **)(iVar5 + 0xa4))();
@@ -400,8 +234,9 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
       (**(code **)(iVar5 + 0xa8))(1,0);
       piVar4 = (int *)(*pcVar6)(0x6e756d62);
       if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                  (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x274);
       }
       iVar5 = *piVar4;
       (**(code **)(iVar5 + 0xa8))(0,0);
@@ -410,49 +245,47 @@ void __thiscall TShipyardView::InitializeCityViewProductionRows(TShipyardView *t
       pcVar6 = local_10;
     }
     local_28 = local_28 + 1;
-    psStack_20 = psStack_20 + 1;
+    pTStack_20 = pTStack_20 + 2;
     local_1c = local_1c + 2;
-    local_24 = (short *)((int)local_24 + 1);
-    if (7 < (short)local_28) {
-      thunk_BuildUiTextStyleDescriptor();
-      piVar4 = (int *)(*pcVar6)();
-      iVar5 = *piVar4;
-      (**(code **)(iVar5 + 0xc))();
-      (**(code **)(iVar5 + 0x1b4))();
-      iVar7 = 0xe;
-      (**(code **)(iVar5 + 0x1cc))();
-      thunk_BuildUiTextStyleDescriptor();
-      iVar5 = 0;
-      do {
-        piVar4 = (int *)(*pcVar6)();
-        iVar2 = *piVar4;
-        (**(code **)(iVar2 + 0xc))();
-        (**(code **)(iVar2 + 0x1b4))(&local_28);
-        (**(code **)(iVar2 + 0x1cc))(0x2736,iVar7 + 0xf,1);
-        iVar5 = iVar5 + 1;
-      } while ((short)iVar5 < 2);
-      thunk_BuildUiTextStyleDescriptor();
-      piVar4 = (int *)(*pcVar6)();
-      iVar5 = *piVar4;
-      (**(code **)(iVar5 + 0xc))();
-      (**(code **)(iVar5 + 0x1b4))(&local_28);
-      thunk_BuildUiTextStyleDescriptor();
-      piVar4 = (int *)(*pcVar6)(0x64657363);
-      iVar5 = *piVar4;
-      (**(code **)(iVar5 + 0xc))();
-      (**(code **)(iVar5 + 0x1b4))(&stack0xffffffcc,1);
-      pvVar3 = this->field0_0x0;
-      this->fielda2 = 0;
-      this->fielda0 = 0;
-      (**(code **)((int)pvVar3 + 0x1f0))(CONCAT22(extraout_var,this->fielda4));
-      thunk_BuildUiTextStyleDescriptor();
-      piVar4 = (int *)(*pcVar6)(0x73656c65);
-      iVar5 = *piVar4;
-      (**(code **)(iVar5 + 0xc))();
-      (**(code **)(iVar5 + 0x1c8))(0x62757430);
-      (**(code **)((int)pvVar3 + 0x1d8))();
-      return;
-    }
-  } while( true );
+    local_24 = local_24 + 1;
+  } while ((short)local_28 < 8);
+  thunk_BuildUiTextStyleDescriptor();
+  piVar4 = (int *)(*pcVar6)();
+  iVar5 = *piVar4;
+  (**(code **)(iVar5 + 0xc))();
+  (**(code **)(iVar5 + 0x1b4))();
+  iVar7 = 0xe;
+  (**(code **)(iVar5 + 0x1cc))();
+  thunk_BuildUiTextStyleDescriptor(&local_24,0);
+  iVar5 = 0;
+  do {
+    piVar4 = (int *)(*pcVar6)();
+    iVar2 = *piVar4;
+    (**(code **)(iVar2 + 0xc))();
+    (**(code **)(iVar2 + 0x1b4))(&local_28);
+    (**(code **)(iVar2 + 0x1cc))(0x2736,iVar7 + 0xf,1);
+    iVar5 = iVar5 + 1;
+  } while ((short)iVar5 < 2);
+  thunk_BuildUiTextStyleDescriptor(&local_24,0);
+  piVar4 = (int *)(*pcVar6)();
+  iVar5 = *piVar4;
+  (**(code **)(iVar5 + 0xc))();
+  (**(code **)(iVar5 + 0x1b4))(&local_28);
+  thunk_BuildUiTextStyleDescriptor(&stack0xffffffd0,0,10,0x2b6b);
+  piVar4 = (int *)(*pcVar6)(0x64657363);
+  iVar5 = *piVar4;
+  (**(code **)(iVar5 + 0xc))();
+  (**(code **)(iVar5 + 0x1b4))(&stack0xffffffcc,1);
+  iVar5 = *(int *)this;
+  *(undefined2 *)(this + 0xa2) = 0;
+  *(undefined2 *)(this + 0xa0) = 0;
+  (**(code **)(iVar5 + 0x1f0))(CONCAT22(extraout_var,*(undefined2 *)(this + 0xa4)));
+  thunk_BuildUiTextStyleDescriptor(&stack0xffffffc0,0,10,0x2b6b);
+  piVar4 = (int *)(*pcVar6)(0x73656c65);
+  iVar7 = *piVar4;
+  (**(code **)(iVar7 + 0xc))();
+  (**(code **)(iVar7 + 0x1c8))(0x62757430);
+  (**(code **)(iVar5 + 0x1d8))();
+  return;
 }
 

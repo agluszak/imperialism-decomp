@@ -3,71 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TClientGreatPower.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402829
-// GHIDRA_NAME TClientGreatPower::thunk_GetTClientGreatPowerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTClientGreatPowerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTClientGreatPowerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTClientGreatPowerClassNamePointer */
-
-void * __cdecl TClientGreatPower::thunk_GetTClientGreatPowerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTClientGreatPowerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403AC1
-// GHIDRA_NAME TClientGreatPower::thunk_DestructTClientGreatPower
-// GHIDRA_PROTO void __thiscall thunk_DestructTClientGreatPower(void)
-
-void __thiscall TClientGreatPower::thunk_DestructTClientGreatPower(TClientGreatPower *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint uStack_4;
-  
-  puStack_8 = &LAB_006345e3;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  uStack_4 = 1;
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_4 = uStack_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406EDD
-// GHIDRA_NAME TClientGreatPower::thunk_ApplyClientGreatPowerCommand69AndEmitTurnEvent1E
-// GHIDRA_PROTO void __thiscall thunk_ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyClientGreatPowerCommand69AndEmitTurnEvent1E
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyClientGreatPowerCommand69AndEmitTurnEvent1E */
-
-void __thiscall
-TClientGreatPower::thunk_ApplyClientGreatPowerCommand69AndEmitTurnEvent1E
-          (TClientGreatPower *this,int arg1,int arg2)
-
-{
-  TGreatPower::ApplyClientGreatPowerCommand69AndEmitTurnEvent1E((TGreatPower *)this,arg1,arg2);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00541320
 // GHIDRA_NAME TClientGreatPower::DestructTClientGreatPower
-// GHIDRA_PROTO void __thiscall DestructTClientGreatPower(void)
+// GHIDRA_PROTO undefined DestructTClientGreatPower()
 
-void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *this)
+void __fastcall TClientGreatPower::DestructTClientGreatPower(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -82,23 +22,18 @@ void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541390
 // GHIDRA_NAME TClientGreatPower::GetTClientGreatPowerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTClientGreatPowerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TClientGreatPower.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTClientGreatPowerClassNamePointer()
 
-/* Returns class descriptor pointer for TClientGreatPower. */
-
-void * __cdecl TClientGreatPower::GetTClientGreatPowerClassNamePointer(void)
+undefined ** TClientGreatPower::GetTClientGreatPowerClassNamePointer(void)
 
 {
-  return &g_pClassDescTClientGreatPower;
+  return &PTR_s_TClientGreatPower_0065aff0;
 }
 

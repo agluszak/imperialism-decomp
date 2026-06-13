@@ -3,180 +3,28 @@
 // Program: Imperialism.exe
 // Bucket: TCityTask.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402D56
-// GHIDRA_NAME TCityTask::thunk_ExecuteDeferredCityOrderCommand
-// GHIDRA_PROTO bool __thiscall thunk_ExecuteDeferredCityOrderCommand(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ExecuteDeferredCityOrderCommand
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ExecuteDeferredCityOrderCommand */
-
-bool __thiscall TCityTask::thunk_ExecuteDeferredCityOrderCommand(TCityTask *this)
-
-{
-  short sVar1;
-  int *piVar2;
-  bool bVar3;
-  short sVar4;
-  undefined4 uVar5;
-  undefined2 extraout_var;
-  int iVar6;
-  undefined2 extraout_var_00;
-  undefined2 extraout_var_01;
-  undefined4 uVar7;
-  code *unaff_EBX;
-  int *piVar8;
-  int iVar9;
-  undefined8 uVar10;
-  undefined4 unaff_retaddr;
-  int iStack_88;
-  code *pcStack_84;
-  undefined1 auStack_80 [128];
-  
-  bVar3 = true;
-  sVar4 = this->field04;
-  if ((-1 < sVar4) && (sVar4 < 7)) {
-    sVar4 = (**(code **)(*(int *)this->pField08 + 0x4c))(sVar4,this->field0c);
-    this->field0c = this->field0c - sVar4;
-    bVar3 = this->field0c < 1;
-    this->field06 = this->field06 + -1;
-    if (this->field06 == 0) {
-      bVar3 = true;
-    }
-  }
-  piVar2 = *(int **)((int)this->pField08 + this->field04 * 4 + 0xe4);
-  if (piVar2 != (int *)0x0) {
-    iVar9 = *piVar2;
-    pcStack_84 = *(code **)(iVar9 + 0x30);
-    iStack_88 = iVar9;
-    uVar5 = (*pcStack_84)();
-    iVar6 = CONCAT22(extraout_var,(short)piVar2[1]);
-    uVar7 = CONCAT22(extraout_var_01,this->field0c);
-    sVar4 = (short)uVar5 - (short)piVar2[1];
-    uVar10 = CONCAT44(uVar7,uVar5);
-    if ((sVar4 < this->field0c) && (uVar10 = CONCAT44(uVar7,uVar5), (short)piVar2[0x10] == 0)) {
-      (**(code **)(iVar9 + 0x40))(auStack_80,uVar7);
-      iVar9 = 0;
-      piVar8 = &iStack_88;
-      do {
-        if ((short)*piVar8 != 0) {
-          (**(code **)(*(int *)this->pField08 + 0x4c))(iVar9,(short)*piVar8);
-        }
-        iVar9 = iVar9 + 1;
-        piVar8 = (int *)((int)piVar8 + 2);
-      } while ((short)iVar9 < 0x17);
-      uVar10 = (*unaff_EBX)();
-      iVar6 = CONCAT22(extraout_var_00,(short)piVar2[1]);
-      sVar4 = (short)uVar10 - (short)piVar2[1];
-      iVar9 = iStack_88;
-    }
-    if (sVar4 < this->field0c) {
-      (**(code **)(iVar9 + 0x2c))((int)uVar10);
-      sVar1 = this->field04;
-      this->field0c = this->field0c - sVar4;
-      bVar3 = false;
-      if ((sVar1 < 8) || (0xc < sVar1)) {
-        if ((sVar1 < 0xd) || (0x10 < sVar1)) {
-          if (((sVar1 < 0x35) || (0x3b < sVar1)) && (sVar1 != 0x33)) {
-            if (((sVar1 < 0x19) || (0x1c < sVar1)) && ((sVar1 < 0x22 || (0x26 < sVar1)))) {
-              if ((0x16 < sVar1) && (sVar1 < 0x19)) {
-                (**(code **)((int)this->pVtable + 0x2c))(unaff_retaddr);
-              }
-            }
-            else {
-              (**(code **)((int)this->pVtable + 0x38))(unaff_retaddr);
-            }
-          }
-          else {
-            (**(code **)((int)this->pVtable + 0x34))(unaff_retaddr);
-          }
-        }
-        else {
-          (**(code **)((int)this->pVtable + 0x3c))(unaff_retaddr);
-        }
-      }
-      else {
-        (**(code **)((int)this->pVtable + 0x30))();
-      }
-    }
-    else {
-      (**(code **)(iVar9 + 0x2c))
-                (iVar6 + CONCAT22((short)((ulonglong)uVar10 >> 0x30),this->field0c));
-      bVar3 = true;
-    }
-    if ((!bVar3) && (this->field06 = this->field06 + -1, this->field06 == 0)) {
-      bVar3 = true;
-    }
-  }
-  return bVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004034A9
-// GHIDRA_NAME TCityTask::thunk_SerializeCityProductionQueueCommand
-// GHIDRA_PROTO void __thiscall thunk_SerializeCityProductionQueueCommand(void * pArchive)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SerializeCityProductionQueueCommand
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SerializeCityProductionQueueCommand */
-
-void __thiscall TCityTask::thunk_SerializeCityProductionQueueCommand(TCityTask *this,void *pArchive)
-
-{
-  SerializeCityProductionQueueCommand(this,pArchive);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409886
-// GHIDRA_NAME TCityTask::thunk_DeserializeCityProductionQueueCommand
-// GHIDRA_PROTO void __thiscall thunk_DeserializeCityProductionQueueCommand(void * pArchive)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeserializeCityProductionQueueCommand
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeserializeCityProductionQueueCommand */
-
-void __thiscall
-TCityTask::thunk_DeserializeCityProductionQueueCommand(TCityTask *this,void *pArchive)
-
-{
-  DeserializeCityProductionQueueCommand(this,pArchive);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADD00
 // GHIDRA_NAME TCityTask::GetTCityTaskClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCityTaskClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCityTask.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCityTaskClassNamePointer()
 
-/* Returns class descriptor pointer for TCityTask. */
-
-void * __cdecl TCityTask::GetTCityTaskClassNamePointer(void)
+undefined ** TCityTask::GetTCityTaskClassNamePointer(void)
 
 {
-  return &g_pClassDescTCityTask;
+  return &PTR_s_TCityTask_0066a8c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADD40
 // GHIDRA_NAME TCityTask::DestructTCityTaskAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCityTaskAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] dtor inferred for TCityTask; free-if-owned pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTCityTaskAndMaybeFree()
 
-/* [ClassQuad] dtor inferred for TCityTask; free-if-owned pattern. */
-
-void * __thiscall TCityTask::DestructTCityTaskAndMaybeFree(TCityTask *this,byte freeSelfFlag)
+undefined4 __thiscall TCityTask::DestructTCityTaskAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestroyTCityTask_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE570
@@ -194,12 +42,12 @@ void __thiscall TCityTask::SerializeCityProductionQueueCommand(TCityTask *this,v
   code *pcVar1;
   
   pcVar1 = *(code **)(*(int *)pArchive + 0x78);
-  (*pcVar1)(&this->field6_0x10,1);
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  (*pcVar1)(&this->field04,2);
-  (*pcVar1)(&this->field06,2);
-  (*pcVar1)(&this->field0c,2);
-  (*pcVar1)(&this->field5_0xe,2);
+  (*pcVar1)(this + 0x10,1);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(pArchive);
+  (*pcVar1)(this + 4,2);
+  (*pcVar1)(this + 6,2);
+  (*pcVar1)(this + 0xc,2);
+  (*pcVar1)(this + 0xe,2);
   return;
 }
 
@@ -217,12 +65,12 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(pArchive);
   pcVar1 = *(code **)(*(int *)pArchive + 0x3c);
-  (*pcVar1)(&this->field04,2);
-  (*pcVar1)(&this->field06,2);
-  (*pcVar1)(&this->field0c,2);
-  (*pcVar1)(&this->field5_0xe,2);
+  (*pcVar1)(this + 4,2);
+  (*pcVar1)(this + 6,2);
+  (*pcVar1)(this + 0xc,2);
+  (*pcVar1)(this + 0xe,2);
   return;
 }
 

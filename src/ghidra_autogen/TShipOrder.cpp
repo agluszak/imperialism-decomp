@@ -3,129 +3,52 @@
 // Program: Imperialism.exe
 // Bucket: TShipOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004037F1
-// GHIDRA_NAME TShipOrder::thunk_GetTShipOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTShipOrderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTShipOrderClassNamePointer */
-
-void * __cdecl TShipOrder::thunk_GetTShipOrderClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTShipOrderClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405303
-// GHIDRA_NAME TShipOrder::thunk_CreateTShipOrderInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTShipOrderInstance(int * pTargetOrder)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeShipOrderFieldsFromTarget [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeShipOrderFieldsFromTarget [FID:thunk_target_sync] */
-
-void __thiscall TShipOrder::thunk_CreateTShipOrderInstance(TShipOrder *this,int *pTargetOrder)
-
-{
-  CreateTShipOrderInstance(this,pTargetOrder);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040702C
-// GHIDRA_NAME TShipOrder::thunk_DestructTShipOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTShipOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTShipOrderRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTShipOrderRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TShipOrder::thunk_DestructTShipOrderAndMaybeFree(TShipOrder *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8440
 // GHIDRA_NAME TShipOrder::CreateTShipOrderInstance
-// GHIDRA_PROTO void __thiscall CreateTShipOrderInstance(int * pTargetOrder)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes ship-order fields from target record and default endpoint values.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTShipOrderInstance()
 
-/* Initializes ship-order fields from target record and default endpoint values. */
-
-void __thiscall TShipOrder::CreateTShipOrderInstance(TShipOrder *this,int *pTargetOrder)
+void __thiscall TShipOrder::CreateTShipOrderInstance(int *param_1,int param_2)
 
 {
-  (**(code **)((int)this->pVtable + 0x3c))(pTargetOrder);
-  *(undefined2 *)((int)pTargetOrder + 0x1a) = pTargetOrder._0_2_;
-  *(undefined2 *)(pTargetOrder + 7) = pTargetOrder._0_2_;
-  *(undefined2 *)((int)pTargetOrder + 0xe) = pTargetOrder._0_2_;
+  (**(code **)(*param_1 + 0x3c))(param_2);
+  *(undefined2 *)(param_2 + 0x1a) = (undefined2)param_2;
+  *(undefined2 *)(param_2 + 0x1c) = (undefined2)param_2;
+  *(undefined2 *)(param_2 + 0xe) = (undefined2)param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B84A0
 // GHIDRA_NAME TShipOrder::GetTShipOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTShipOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TShipOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTShipOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TShipOrder. */
-
-void * __cdecl TShipOrder::GetTShipOrderClassNamePointer(void)
+undefined ** TShipOrder::GetTShipOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTShipOrder;
+  return &PTR_s_TShipOrder_0064f428;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B84E0
 // GHIDRA_NAME TShipOrder::ConstructTShipOrderBaseState
-// GHIDRA_PROTO void __thiscall ConstructTShipOrderBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTShipOrderBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TShipOrder::ConstructTShipOrderBaseState(TShipOrder *this)
+undefined4 __thiscall TShipOrder::ConstructTShipOrderBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTShipOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTShipOrderAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8510
 // GHIDRA_NAME TShipOrder::DestructTShipOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTShipOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TShipOrder runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTShipOrderAndMaybeFree()
 
-/* Returns TShipOrder runtime class descriptor pointer. */
-
-void * __thiscall TShipOrder::DestructTShipOrderAndMaybeFree(TShipOrder *this)
+void __fastcall TShipOrder::DestructTShipOrderAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

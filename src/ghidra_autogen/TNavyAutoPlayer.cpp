@@ -3,141 +3,64 @@
 // Program: Imperialism.exe
 // Bucket: TNavyAutoPlayer.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401CE9
-// GHIDRA_NAME TNavyAutoPlayer::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_PROTO void __thiscall thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange */
-
-void __thiscall
-TNavyAutoPlayer::thunk_DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TNavyAutoPlayer *this)
-
-{
-  DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406FFF
-// GHIDRA_NAME TNavyAutoPlayer::thunk_GetTNavyAutoPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNavyAutoPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNavyAutoPlayerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNavyAutoPlayerClassNamePointer */
-
-void * __cdecl TNavyAutoPlayer::thunk_GetTNavyAutoPlayerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNavyAutoPlayerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409043
-// GHIDRA_NAME TNavyAutoPlayer::thunk_CreateTNavyAutoPlayerInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTNavyAutoPlayerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to ConstructNavyAutoPlayerBaseState. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk to ConstructNavyAutoPlayerBaseState. [FID:thunk_target_sync] */
-
-void __thiscall TNavyAutoPlayer::thunk_CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *this)
-
-{
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F0A0
 // GHIDRA_NAME TNavyAutoPlayer::CreateTNavyAutoPlayerInstance
-// GHIDRA_PROTO void __thiscall CreateTNavyAutoPlayerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes NavyAutoPlayer base state/vtable root.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTNavyAutoPlayerInstance()
 
-/* Initializes NavyAutoPlayer base state/vtable root. */
-
-void __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *this)
+void __fastcall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(undefined4 *param_1)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F0C0
 // GHIDRA_NAME TNavyAutoPlayer::GetTNavyAutoPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNavyAutoPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNavyAutoPlayer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNavyAutoPlayerClassNamePointer()
 
-/* Returns class descriptor pointer for TNavyAutoPlayer. */
-
-void * __cdecl TNavyAutoPlayer::GetTNavyAutoPlayerClassNamePointer(void)
+undefined ** TNavyAutoPlayer::GetTNavyAutoPlayerClassNamePointer(void)
 
 {
-  return &g_pClassDescTNavyAutoPlayer;
+  return &PTR_s_TNavyAutoPlayer_006694d0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F110
 // GHIDRA_NAME TNavyAutoPlayer::ConstructTNavyAutoPlayerBaseState
-// GHIDRA_PROTO void __fastcall ConstructTNavyAutoPlayerBaseState(TNavyAutoPlayer * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Runs naval autoplayer countdown/step loop until completion flag is set.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTNavyAutoPlayerBaseState()
 
-/* Runs naval autoplayer countdown/step loop until completion flag is set. */
-
-void __fastcall TNavyAutoPlayer::ConstructTNavyAutoPlayerBaseState(TNavyAutoPlayer *pThis)
+void __fastcall TNavyAutoPlayer::ConstructTNavyAutoPlayerBaseState(int param_1)
 
 {
   char cVar1;
   int iVar2;
   
-  if (pThis->field0c == 0) {
+  if (*(char *)(param_1 + 0xc) == '\0') {
     iVar2 = 0x29;
   }
   else {
-    iVar2 = pThis->field14[0xd] * 6 + -0x19;
+    iVar2 = *(int *)(*(int *)(param_1 + 0x14) + 0x34) * 6 + -0x19;
   }
-  cVar1 = pThis->field_0x10;
+  cVar1 = *(char *)(param_1 + 0x10);
   while (cVar1 == '\0') {
-    (**(code **)(*pThis->field14 + 0x30))(pThis->field14[7],iVar2);
+    (**(code **)(**(int **)(param_1 + 0x14) + 0x30))((*(int **)(param_1 + 0x14))[7],iVar2);
     iVar2 = iVar2 + -1;
-    cVar1 = pThis->field_0x10;
+    cVar1 = *(char *)(param_1 + 0x10);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F160
 // GHIDRA_NAME TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_PROTO void __thiscall DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Selects nearest enemy target, moves toward reachable closer tile, and triggers attack event when target becomes reachable.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange()
 
-/* Selects nearest enemy target, moves toward reachable closer tile, and triggers attack event when
-   target becomes reachable. */
-
-void __thiscall
-TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TNavyAutoPlayer *this)
+void __fastcall TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(int param_1)
 
 {
   code *pcVar1;
-  bool bVar2;
-  int *piVar3;
-  int extraout_EAX;
-  undefined3 extraout_var;
+  undefined4 uVar2;
+  undefined4 uVar3;
   int iVar4;
-  int extraout_EAX_00;
-  undefined3 extraout_var_00;
-  int iVar5;
+  int *piVar5;
   int iVar6;
   int iVar7;
   int unaff_EBX;
@@ -146,78 +69,74 @@ TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(TNavyAuto
   int iStack_20;
   int *piStack_18;
   
-  if (this->field0c == 0) {
-    piVar8 = *(int **)(this->field14[5] + 4);
+  if (*(char *)(param_1 + 0xc) == '\0') {
+    piVar8 = *(int **)(*(int *)(*(int *)(param_1 + 0x14) + 0x14) + 4);
   }
   else {
-    piVar8 = *(int **)(this->field14[6] + 4);
+    piVar8 = *(int **)(*(int *)(*(int *)(param_1 + 0x14) + 0x18) + 4);
   }
-  iVar6 = *piVar8;
-  pcVar1 = *(code **)(iVar6 + 0x48);
-  (*pcVar1)();
-  piVar3 = AllocateWithFallbackHandler();
-  iVar5 = *(int *)(this->field14[7] + 8);
-  thunk_InitializeLinkedListCursorFromOwnerHead();
-  bVar2 = thunk_LinkedListCursorHasCurrent();
-  iVar9 = CONCAT31(extraout_var,bVar2);
-  piVar8 = piVar3;
-  iVar4 = extraout_EAX;
-  while (iVar9 != 0) {
-    iVar4 = thunk_ComputeHexTileDistanceFromIndices(iVar5,*(int *)(iVar4 + 8));
+  iVar7 = *piVar8;
+  pcVar1 = *(code **)(iVar7 + 0x48);
+  iVar4 = (*pcVar1)();
+  piVar5 = (int *)AllocateWithFallbackHandler(iVar4 << 2);
+  uVar2 = *(undefined4 *)(*(int *)(*(int *)(param_1 + 0x14) + 0x1c) + 8);
+  iVar4 = InitializeLinkedListCursorFromOwnerHead();
+  iVar6 = LinkedListCursorHasCurrent();
+  piVar8 = piVar5;
+  while (iVar6 != 0) {
+    iVar4 = ComputeHexTileDistanceFromIndices(uVar2,*(undefined4 *)(iVar4 + 8));
     *piVar8 = iVar4;
     piVar8 = piVar8 + 1;
-    thunk_AdvanceLinkedListCursor();
-    bVar2 = thunk_LinkedListCursorHasCurrent();
-    iVar4 = extraout_EAX_00;
-    iVar9 = CONCAT31(extraout_var_00,bVar2);
+    iVar4 = AdvanceLinkedListCursor();
+    iVar6 = LinkedListCursorHasCurrent();
   }
   piStack_18 = (int *)0xffffffff;
   iStack_20 = 999;
   piVar8 = (int *)0x0;
-  iVar5 = (*pcVar1)();
-  if (0 < iVar5) {
+  iVar4 = (*pcVar1)();
+  if (0 < iVar4) {
     do {
-      if (*piVar3 < iStack_20) {
-        iStack_20 = *piVar3;
+      if (*piVar5 < iStack_20) {
+        iStack_20 = *piVar5;
         piStack_18 = piVar8;
       }
       piVar8 = (int *)((int)piVar8 + 1);
-      piVar3 = piVar3 + 1;
-      iVar5 = (*pcVar1)();
-    } while ((int)piVar8 < iVar5);
+      piVar5 = piVar5 + 1;
+      iVar4 = (*pcVar1)();
+    } while ((int)piVar8 < iVar4);
   }
-  iVar6 = (**(code **)(iVar6 + 0x4c))((int)piStack_18 + 1);
-  iVar6 = *(int *)(iVar6 + 8);
-  iVar4 = thunk_ComputeHexTileDistanceFromIndices(unaff_EBX,iVar6);
-  piVar8 = this->field14;
+  iVar7 = (**(code **)(iVar7 + 0x4c))((int)piStack_18 + 1);
+  uVar3 = *(undefined4 *)(iVar7 + 8);
+  iVar6 = ComputeHexTileDistanceFromIndices(unaff_EBX,uVar3);
+  iVar7 = *(int *)(param_1 + 0x14);
   iVar9 = 0;
-  iVar5 = unaff_EBX;
-  if (0 < piVar8[0xf]) {
+  iVar4 = unaff_EBX;
+  if (0 < *(int *)(iVar7 + 0x3c)) {
     do {
-      if ((*(short *)(piVar8[9] + iVar9 * 2) != -1) &&
-         (iVar7 = thunk_ComputeHexTileDistanceFromIndices(iVar9,iVar6), iVar7 < iVar4)) {
-        iVar5 = iVar9;
-        iVar4 = iVar7;
+      if ((*(short *)(*(int *)(iVar7 + 0x24) + iVar9 * 2) != -1) &&
+         (iVar7 = ComputeHexTileDistanceFromIndices(iVar9,uVar3), iVar7 < iVar6)) {
+        iVar4 = iVar9;
+        iVar6 = iVar7;
       }
-      piVar8 = this->field14;
+      iVar7 = *(int *)(param_1 + 0x14);
       iVar9 = iVar9 + 1;
-    } while (iVar9 < piVar8[0xf]);
+    } while (iVar9 < *(int *)(iVar7 + 0x3c));
   }
-  if (iVar5 != unaff_EBX) {
-    piVar8 = this->field14;
-    piVar3 = (int *)piVar8[7];
-    while ((piVar3 == piStack_18 && (piStack_18[2] != iVar5))) {
-      (**(code **)(*piVar8 + 0x34))(piStack_18,iVar5);
-      piVar8 = this->field14;
-      piVar3 = (int *)piVar8[7];
+  if (iVar4 != unaff_EBX) {
+    piVar8 = *(int **)(param_1 + 0x14);
+    piVar5 = (int *)piVar8[7];
+    while ((piVar5 == piStack_18 && (piStack_18[2] != iVar4))) {
+      (**(code **)(*piVar8 + 0x34))(piStack_18,iVar4);
+      piVar8 = *(int **)(param_1 + 0x14);
+      piVar5 = (int *)piVar8[7];
     }
   }
-  iVar5 = (**(code **)(*piStack_18 + 0x2c))();
-  if ((iVar4 <= iVar5) && ((int *)this->field14[7] == piStack_18)) {
-    (**(code **)(*this->field14 + 0x40))(piStack_18,iVar6);
+  iVar7 = (**(code **)(*piStack_18 + 0x2c))();
+  if ((iVar6 <= iVar7) && ((int *)(*(int **)(param_1 + 0x14))[7] == piStack_18)) {
+    (**(code **)(**(int **)(param_1 + 0x14) + 0x40))(piStack_18,uVar3);
   }
-  FreeHeapBufferIfNotNull();
-  if ((int *)this->field14[7] == piStack_18) {
+  FreeHeapBufferIfNotNull(uVar2);
+  if (*(int **)(*(int *)(param_1 + 0x14) + 0x1c) == piStack_18) {
     thunk_QueueTacticalEventPacket232A();
   }
   return;

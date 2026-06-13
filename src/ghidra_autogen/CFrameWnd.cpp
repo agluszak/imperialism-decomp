@@ -5,71 +5,53 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006074F9
 // GHIDRA_NAME CFrameWnd::ShowWindow
-// GHIDRA_PROTO void __thiscall ShowWindow(void)
+// GHIDRA_PROTO undefined ShowWindow()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards to site virtual Show handler (+0xA8). [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards to site virtual Show handler (+0xA8).
 // GHIDRA_COMMENT_END
 
 /* Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards
-   to site virtual Show handler (+0xA8). [FID:FID_single_match_phase1_nodebug] */
+   to site virtual Show handler (+0xA8). */
 
-void __thiscall CFrameWnd::ShowWindow(CFrameWnd *this)
+void __thiscall CFrameWnd::ShowWindow(int param_1,int param_2)
 
 {
-  int in_stack_00000004;
-  
-  if (*(int **)&this->field_0x38 == (int *)0x0) {
-    ::ShowWindow(this->field25_0x1c,in_stack_00000004);
+  if (*(int **)(param_1 + 0x38) == (int *)0x0) {
+    ::ShowWindow(*(HWND *)(param_1 + 0x1c),param_2);
   }
   else {
-    (**(code **)(**(int **)&this->field_0x38 + 0xa8))();
+    (**(code **)(**(int **)(param_1 + 0x38) + 0xa8))(param_2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DDC2
 // GHIDRA_NAME CFrameWnd::OnEnterIdle_61ddc2
-// GHIDRA_PROTO void __thiscall OnEnterIdle_61ddc2(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  OnEnterIdle
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: msvc500 phase1 nodebug [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OnEnterIdle_61ddc2()
 
-/* Library Function - Single Match
-    OnEnterIdle
-   
-   Library: msvc500 phase1 nodebug [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall CFrameWnd::OnEnterIdle_61ddc2(CFrameWnd *this)
+void __thiscall CFrameWnd::OnEnterIdle_61ddc2(int param_1,int param_2,undefined4 param_3)
 
 {
-  int in_stack_00000004;
-  
-  OnEnterIdle();
-  if ((in_stack_00000004 == 2) && (this->field123_0x90 != this->field124_0x94)) {
-    SetMessageText(this);
+  OnEnterIdle(param_2,param_3);
+  if ((param_2 == 2) && (*(int *)(param_1 + 0x90) != *(int *)(param_1 + 0x94))) {
+    SetMessageText(*(int *)(param_1 + 0x90));
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DE0A
 // GHIDRA_NAME CFrameWnd::SetMessageText
-// GHIDRA_PROTO void __thiscall SetMessageText(void)
+// GHIDRA_PROTO undefined SetMessageText()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sends WM_SETMESSAGESTRING-like message 0x362 with wParam to this->HWND. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT Sends WM_SETMESSAGESTRING-like message 0x362 with wParam to this->HWND.
 // GHIDRA_COMMENT_END
 
-/* Sends WM_SETMESSAGESTRING-like message 0x362 with wParam to this->HWND.
-   [FID:FID_single_match_phase1_nodebug] */
+/* Sends WM_SETMESSAGESTRING-like message 0x362 with wParam to this->HWND. */
 
-void __thiscall CFrameWnd::SetMessageText(CFrameWnd *this)
+void __thiscall CFrameWnd::SetMessageText(int param_1,WPARAM param_2)
 
 {
-  WPARAM in_stack_00000004;
-  
-  SendMessageA(this->field25_0x1c,0x362,in_stack_00000004,0);
+  SendMessageA(*(HWND *)(param_1 + 0x1c),0x362,param_2,0);
   return;
 }
 

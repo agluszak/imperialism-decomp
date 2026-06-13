@@ -3,70 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TRemoteGreatPower.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004039A4
-// GHIDRA_NAME TRemoteGreatPower::thunk_SetNationSelectedRegionAndMapCellLabel
-// GHIDRA_PROTO void __thiscall thunk_SetNationSelectedRegionAndMapCellLabel(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetNationSelectedRegionAndMapCellLabel
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetNationSelectedRegionAndMapCellLabel */
-
-void __thiscall
-TRemoteGreatPower::thunk_SetNationSelectedRegionAndMapCellLabel(TRemoteGreatPower *this,int arg1)
-
-{
-  TToolBarCluster::SetNationSelectedRegionAndMapCellLabel((TToolBarCluster *)this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409430
-// GHIDRA_NAME TRemoteGreatPower::thunk_GetTRemoteGreatPowerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRemoteGreatPowerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRemoteGreatPowerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRemoteGreatPowerClassNamePointer */
-
-void * __cdecl TRemoteGreatPower::thunk_GetTRemoteGreatPowerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRemoteGreatPowerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040978C
-// GHIDRA_NAME TRemoteGreatPower::thunk_DestructTRemoteGreatPower
-// GHIDRA_PROTO void __thiscall thunk_DestructTRemoteGreatPower(void)
-
-void __thiscall TRemoteGreatPower::thunk_DestructTRemoteGreatPower(TRemoteGreatPower *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint uStack_4;
-  
-  puStack_8 = &LAB_00634633;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  uStack_4 = 1;
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_4 = uStack_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00541AB0
 // GHIDRA_NAME TRemoteGreatPower::DestructTRemoteGreatPower
-// GHIDRA_PROTO void __thiscall DestructTRemoteGreatPower(void)
+// GHIDRA_PROTO undefined DestructTRemoteGreatPower()
 
-void __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(TRemoteGreatPower *this)
+void __fastcall TRemoteGreatPower::DestructTRemoteGreatPower(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -81,23 +22,18 @@ void __thiscall TRemoteGreatPower::DestructTRemoteGreatPower(TRemoteGreatPower *
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541B20
 // GHIDRA_NAME TRemoteGreatPower::GetTRemoteGreatPowerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTRemoteGreatPowerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TRemoteGreatPower.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTRemoteGreatPowerClassNamePointer()
 
-/* Returns class descriptor pointer for TRemoteGreatPower. */
-
-void * __cdecl TRemoteGreatPower::GetTRemoteGreatPowerClassNamePointer(void)
+undefined ** TRemoteGreatPower::GetTRemoteGreatPowerClassNamePointer(void)
 
 {
-  return &g_pClassDescTRemoteGreatPower;
+  return &PTR_s_TRemoteGreatPower_0065b008;
 }
 

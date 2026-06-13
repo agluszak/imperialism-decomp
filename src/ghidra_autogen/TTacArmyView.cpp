@@ -3,496 +3,178 @@
 // Program: Imperialism.exe
 // Bucket: TTacArmyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004043AE
-// GHIDRA_NAME TTacArmyView::thunk_GetTTacArmyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTacArmyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTacArmyViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTacArmyViewClassNamePointer */
-
-void * __cdecl TTacArmyView::thunk_GetTTacArmyViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTacArmyViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040652D
-// GHIDRA_NAME TTacArmyView::thunk_ConfigureTacticalTargetDoneRetreatAutoControls
-// GHIDRA_PROTO void __thiscall thunk_ConfigureTacticalTargetDoneRetreatAutoControls(int modeFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT JMP thunk
-// GHIDRA_COMMENT_END
-
-/* JMP thunk */
-
-void __thiscall
-TTacArmyView::thunk_ConfigureTacticalTargetDoneRetreatAutoControls(TTacArmyView *this,int modeFlag)
-
-{
-  code *pcVar1;
-  int iVar2;
-  int *piVar3;
-  
-  if (modeFlag == 0) {
-    pcVar1 = *(code **)(this->field0_0x0 + 0x94);
-    piVar3 = (int *)(*pcVar1)(0x74617267);
-    iVar2 = *piVar3;
-    (**(code **)(iVar2 + 0xc))();
-    (**(code **)(iVar2 + 0xa4))(0,1);
-    (**(code **)(iVar2 + 0xa8))(0,1);
-    piVar3 = (int *)(*pcVar1)(0x646f6e65);
-    iVar2 = *piVar3;
-    (**(code **)(iVar2 + 0xc))();
-    (**(code **)(iVar2 + 0x1c8))(0xed4,1);
-    piVar3 = (int *)(*pcVar1)(0x72657472);
-    iVar2 = *piVar3;
-    (**(code **)(iVar2 + 0xc))();
-    (**(code **)(iVar2 + 0x1c8))(0xed2,1);
-    piVar3 = (int *)(*pcVar1)(0x6175746f);
-    iVar2 = *piVar3;
-    (**(code **)(iVar2 + 0xc))();
-    (**(code **)(iVar2 + 0xa4))(0,1);
-    (**(code **)(iVar2 + 0xa8))(0,1);
-    (*pcVar1)(0x646f6e65);
-    thunk_LoadUiStringAndDispatchSharedMessageCommand();
-    (*pcVar1)(0x72657472);
-    thunk_LoadUiStringAndDispatchSharedMessageCommand();
-    return;
-  }
-  pcVar1 = *(code **)(this->field0_0x0 + 0x94);
-  piVar3 = (int *)(*pcVar1)(0x74617267);
-  iVar2 = *piVar3;
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0xa4))(1,1);
-  (**(code **)(iVar2 + 0xa8))(1,1);
-  piVar3 = (int *)(*pcVar1)(0x646f6e65);
-  iVar2 = *piVar3;
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1c8))(0xece,1);
-  piVar3 = (int *)(*pcVar1)(0x72657472);
-  iVar2 = *piVar3;
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1c8))(0xed0,1);
-  piVar3 = (int *)(*pcVar1)(0x6175746f);
-  iVar2 = *piVar3;
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0xa4))(1,1);
-  (**(code **)(iVar2 + 0xa8))(1,1);
-  (*pcVar1)(0x646f6e65);
-  thunk_LoadUiStringAndDispatchSharedMessageCommand();
-  (*pcVar1)(0x72657472);
-  thunk_LoadUiStringAndDispatchSharedMessageCommand();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004065C3
-// GHIDRA_NAME TTacArmyView::thunk_scalar_deleting_destructor_004065C3
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004065C3(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTacArmyView::thunk_scalar_deleting_destructor_004065C3(TTacArmyView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408F99
-// GHIDRA_NAME TTacArmyView::thunk_RenderTacticalBattleSelectionAndUnitOverlayPass
-// GHIDRA_PROTO void __thiscall thunk_RenderTacticalBattleSelectionAndUnitOverlayPass(int param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RenderTacticalBattleSelectionAndUnitOverlayPass.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for RenderTacticalBattleSelectionAndUnitOverlayPass. */
-
-void __thiscall
-TTacArmyView::thunk_RenderTacticalBattleSelectionAndUnitOverlayPass(TTacArmyView *this,int param_1)
-
-{
-  TCivDescription::RenderTacticalBattleSelectionAndUnitOverlayPass((TCivDescription *)this,param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409642
-// GHIDRA_NAME TTacArmyView::thunk_DestructTTacArmyViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTTacArmyViewAndMaybeFree(int * pDestRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* [FID:thunk_target_sync] */
-
-void __thiscall
-TTacArmyView::thunk_DestructTTacArmyViewAndMaybeFree(TTacArmyView *this,int *pDestRect)
-
-{
-  DestructTTacArmyViewAndMaybeFree(this,pDestRect);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409697
-// GHIDRA_NAME TTacArmyView::thunk_ConstructTTacArmyViewBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTTacArmyViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT JMP thunk for InitializeTacArmyViewSurfacesAndControlBindings. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* JMP thunk for InitializeTacArmyViewSurfacesAndControlBindings. [FID:thunk_target_sync] */
-
-void * __thiscall TTacArmyView::thunk_ConstructTTacArmyViewBaseState(TTacArmyView *this)
-
-{
-  int **ppiVar1;
-  short sVar2;
-  undefined4 *puVar3;
-  int *piVar4;
-  int *piVar5;
-  void *extraout_EAX;
-  void *pvVar6;
-  int iVar7;
-  TTacArmyView *this_00;
-  int *unaff_EBP;
-  int unaff_ESI;
-  int iStack_38;
-  int *piStack_34;
-  int iStack_30;
-  RECT RStack_2c;
-  RECT RStack_1c;
-  void *pvStack_8;
-  TArmyBattle *pTStack_4;
-  
-  iStack_38 = 0;
-  this->field88 = g_TTac_Army_View_Value_006A5430;
-  this->field8c = g_TTac_Army_View_Value_006A5434;
-  this->field90 = g_TTac_Army_View_Value_006A5498;
-  ppiVar1 = &this->field64;
-  this->field94 = g_TTac_Army_View_Value_006A549C;
-  this->field80 = 0x1d;
-  if (*ppiVar1 != (int *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-  }
-  if (this->field68 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-  }
-  if (this->fieldbc != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-  }
-  if (this->field6c != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-  }
-  if (this->field70 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-  }
-  if (this->field74 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-  }
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&piStack_34,&iStack_38);
-  RStack_2c.left = 0;
-  RStack_2c.top = g_TacArmyViewLayoutAnchorX_6A5448;
-  iStack_30 = 0;
-  RStack_2c.right = g_TTac_Army_View_Value_006A544C;
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(ppiVar1,8,&iStack_30);
-  piVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130();
-  thunk_SetActiveQuickDrawSurfaceContext(*ppiVar1,unaff_ESI);
-  thunk_GetSurfaceObjectAtContextOffset24(*ppiVar1);
-  thunk_ReturnConstantTrueQuickDrawFlag();
-  NoOpRuntimeCallback_00497c00();
-  puVar3 = (undefined4 *)*piVar5;
-  pvVar6 = extraout_EAX;
-  if (puVar3 != (undefined4 *)0x0) {
-    (**(code **)*puVar3)();
-    *(byte *)(puVar3 + 1) = *(byte *)(puVar3 + 1) | 1;
-    ResetQuickDrawStrokeState();
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
-    piVar4 = (int *)*piVar5;
-    (**(code **)(*piVar4 + 4))();
-    *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
-    if ((undefined4 *)*piVar5 != (undefined4 *)0x0) {
-      *(undefined4 *)*piVar5 = &g_vslotTAmbitFileBasedDocument_Slot01D0_NotifyControlStateChange;
-      TAmbitFileBasedDocument::
-      thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124
-                ();
-      FreeHeapBufferIfNotNull();
-    }
-    FreeHeapBufferIfNotNull();
-    thunk_GetSurfaceObjectAtContextOffset24(*ppiVar1);
-    thunk_NoOpQuickDrawLifecycleHookB();
-    thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
-    if (pTStack_4[1].field_0x11 != '\0') {
-      pvStack_8 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xf0e);
-      RStack_2c.left = g_TacArmyViewLayoutAnchorX_6A5448 + -0x11e;
-      RStack_1c.left = 0;
-      RStack_1c.top = 0;
-      RStack_1c.right = 0x11e;
-      RStack_1c.bottom = 0x1c2;
-      RStack_2c.top = 0;
-      RStack_2c.right = g_TacArmyViewLayoutAnchorX_6A5448;
-      RStack_2c.bottom = 0x1c2;
-      ResetQuickDrawStrokeState();
-      UpdatePaletteIndexWithDefaultFallback(0x13);
-      SetQuickDrawFillColorFromPaletteIndex(0);
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)((int)pvStack_8 + 4),(astruct_18 *)(*ppiVar1 + 1),&RStack_1c,
-                 &RStack_2c,0,(astruct_19 *)0x0);
-      WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-    }
-    pvVar6 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xee2);
-    this->field68 = pvVar6;
-    if (pTStack_4[1].field_0x11 == '\0') {
-      iVar7 = 0xee7;
-    }
-    else {
-      iVar7 = CONCAT22((short)((uint)pvVar6 >> 0x10),(short)(char)pTStack_4[1].field_0x11) + 0xee6;
-    }
-    pvVar6 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(iVar7);
-    this->field6c = pvVar6;
-    pvVar6 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xeeb);
-    RStack_1c.right = this->field88;
-    this->field74 = pvVar6;
-    RStack_1c.bottom = this->field8c;
-    RStack_1c.left = 0;
-    RStack_1c.top = 0;
-    (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->field70,8,&RStack_1c);
-    this->field84 = -1;
-    this->field60 = pTStack_4;
-    this->fieldd8 = (short)pTStack_4->field34;
-    sVar2 = (short)this->field88;
-    this->field7a = ((short)pTStack_4->field34 + 1) * sVar2;
-    iVar7 = *(int *)this->pField20;
-    this->fieldd4 = (0x1d - (short)pTStack_4->field34) * sVar2;
-    this_00 = (TTacArmyView *)(**(code **)(iVar7 + 0x94))(0x746f6f6c);
-    if (this_00 == (TTacArmyView *)0x0) {
-                    /* WARNING: Subroutine does not return */
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    }
-    this_00->field88 = (LONG)pTStack_4;
-    this_00->field94 = (int)this->field68;
-    (**(code **)(this_00->field0_0x0 + 0x1cc))(*(undefined4 *)&this->field60->field_0x1c);
-    thunk_ConfigureTacticalTargetDoneRetreatAutoControls(this_00,0);
-    this->pFieldd0 = this_00;
-    piVar5 = (int *)(**(code **)(*(int *)this->pField20 + 0x94))(0x636f6174);
-    iVar7 = *piVar5;
-    (**(code **)(iVar7 + 0xc))();
-    (**(code **)(iVar7 + 0x1c8))
-              (*(int *)(*(int *)(&this->field60->field_0x14 + *(int *)&this->field60->field_0xc * 4)
-                       + 0x1c) + 0xea6,1);
-    piStack_34 = (int *)(this->field90 << 1);
-    iStack_38 = 0;
-    iStack_30 = this->field94 * 3;
-    (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->fieldbc,8,&stack0xffffffc4);
-    iVar7 = this->field0_0x0;
-    (**(code **)(iVar7 + 0xe4))();
-    piVar5 = (int *)(**(code **)(iVar7 + 0x58))();
-    pvVar6 = (void *)(**(code **)(*piVar5 + 0x13c))();
-  }
-  return pvVar6;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005A9D70
 // GHIDRA_NAME TTacArmyView::GetTTacArmyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTacArmyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTacArmyView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTacArmyViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTacArmyView. */
-
-void * __cdecl TTacArmyView::GetTTacArmyViewClassNamePointer(void)
+undefined ** TTacArmyView::GetTTacArmyViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTacArmyView;
+  return &PTR_s_TTacArmyView_0066a298;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A9D90
 // GHIDRA_NAME TTacArmyView::ConstructTTacArmyViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTacArmyViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes TTacArmyView tactical bitmap surfaces, toolbar bindings, and preview/control state from battle setup context.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTacArmyViewBaseState()
 
-/* Initializes TTacArmyView tactical bitmap surfaces, toolbar bindings, and preview/control state
-   from battle setup context. */
-
-void * __thiscall TTacArmyView::ConstructTTacArmyViewBaseState(TTacArmyView *this)
+void __fastcall TTacArmyView::ConstructTTacArmyViewBaseState(int *param_1)
 
 {
-  int **ppiVar1;
-  short sVar2;
-  undefined4 *puVar3;
-  int *piVar4;
-  int *piVar5;
-  void *extraout_EAX;
-  void *pvVar6;
-  int iVar7;
-  TTacArmyView *this_00;
-  int *unaff_EBP;
-  int unaff_ESI;
-  int local_38;
-  int *local_34;
+  undefined4 *puVar1;
+  int *piVar2;
+  int *piVar3;
+  undefined4 uVar4;
+  int iVar5;
+  int *piVar6;
+  undefined4 unaff_EBP;
+  undefined4 unaff_ESI;
+  undefined4 local_38;
+  int local_34;
   int local_30;
   RECT local_2c;
   RECT RStack_1c;
-  void *pvStack_8;
-  TArmyBattle *pTStack_4;
+  int iStack_8;
+  int iStack_4;
   
   local_38 = 0;
-  this->field88 = g_TTac_Army_View_Value_006A5430;
-  this->field8c = g_TTac_Army_View_Value_006A5434;
-  this->field90 = g_TTac_Army_View_Value_006A5498;
-  ppiVar1 = &this->field64;
-  this->field94 = g_TTac_Army_View_Value_006A549C;
-  this->field80 = 0x1d;
-  if (*ppiVar1 != (int *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  param_1[0x22] = DAT_006a5430;
+  param_1[0x23] = DAT_006a5434;
+  param_1[0x24] = DAT_006a5498;
+  piVar6 = param_1 + 0x19;
+  param_1[0x25] = DAT_006a549c;
+  param_1[0x20] = 0x1d;
+  if (*piVar6 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(piVar6);
   }
-  if (this->field68 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (param_1[0x1a] != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x1a);
   }
-  if (this->fieldbc != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (param_1[0x2f] != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x2f);
   }
-  if (this->field6c != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (param_1[0x1b] != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x1b);
   }
-  if (this->field70 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (param_1[0x1c] != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x1c);
   }
-  if (this->field74 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (param_1[0x1d] != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x1d);
   }
   thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_34,&local_38);
   local_2c.left = 0;
-  local_2c.top = g_TacArmyViewLayoutAnchorX_6A5448;
+  local_2c.top = DAT_006a5448;
   local_30 = 0;
-  local_2c.right = g_TTac_Army_View_Value_006A544C;
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(ppiVar1,8,&local_30);
-  piVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130();
-  thunk_SetActiveQuickDrawSurfaceContext(*ppiVar1,unaff_ESI);
-  thunk_GetSurfaceObjectAtContextOffset24(*ppiVar1);
-  thunk_ReturnConstantTrueQuickDrawFlag();
-  NoOpRuntimeCallback_00497c00();
-  puVar3 = (undefined4 *)*piVar5;
-  pvVar6 = extraout_EAX;
-  if (puVar3 != (undefined4 *)0x0) {
-    (**(code **)*puVar3)();
-    *(byte *)(puVar3 + 1) = *(byte *)(puVar3 + 1) | 1;
+  local_2c.right = DAT_006a544c;
+  (**(code **)(*DAT_006a2158 + 0x2c))(piVar6,8,&local_30);
+  piVar3 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(iStack_8 + 0xf0a);
+  thunk_SetActiveQuickDrawSurfaceContext(*piVar6,unaff_ESI);
+  uVar4 = thunk_GetSurfaceObjectAtContextOffset24(*piVar6);
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar4);
+  NoOpRuntimeCallback_00497c00(piVar3);
+  puVar1 = (undefined4 *)*piVar3;
+  if (puVar1 != (undefined4 *)0x0) {
+    (**(code **)*puVar1)();
+    *(byte *)(puVar1 + 1) = *(byte *)(puVar1 + 1) | 1;
     ResetQuickDrawStrokeState();
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
-    piVar4 = (int *)*piVar5;
-    (**(code **)(*piVar4 + 4))();
-    *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
-    if ((undefined4 *)*piVar5 != (undefined4 *)0x0) {
-      *(undefined4 *)*piVar5 = &g_vslotTAmbitFileBasedDocument_Slot01D0_NotifyControlStateChange;
-      TAmbitFileBasedDocument::
-      thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124
-                ();
-      FreeHeapBufferIfNotNull();
+    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar3,&stack0xffffffc4);
+    piVar2 = (int *)*piVar3;
+    (**(code **)(*piVar2 + 4))();
+    *(byte *)(piVar2 + 1) = *(byte *)(piVar2 + 1) & 0xfe;
+    puVar1 = (undefined4 *)*piVar3;
+    if (puVar1 != (undefined4 *)0x0) {
+      *puVar1 = &PTR_EnsureBitmapResourceLoadedAndCopyRectSize_0064c340;
+      WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();
+      FreeHeapBufferIfNotNull(puVar1);
     }
-    FreeHeapBufferIfNotNull();
-    thunk_GetSurfaceObjectAtContextOffset24(*ppiVar1);
-    thunk_NoOpQuickDrawLifecycleHookB();
+    FreeHeapBufferIfNotNull(piVar3);
+    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(*piVar6);
+    thunk_NoOpQuickDrawLifecycleHookB(uVar4);
     thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
-    if (pTStack_4[1].field_0x11 != '\0') {
-      pvStack_8 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xf0e);
-      local_2c.left = g_TacArmyViewLayoutAnchorX_6A5448 + -0x11e;
+    if (*(char *)(iStack_4 + 0x49) != '\0') {
+      iStack_8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xf0e);
+      local_2c.left = DAT_006a5448 + -0x11e;
       RStack_1c.left = 0;
       RStack_1c.top = 0;
       RStack_1c.right = 0x11e;
       RStack_1c.bottom = 0x1c2;
       local_2c.top = 0;
-      local_2c.right = g_TacArmyViewLayoutAnchorX_6A5448;
+      local_2c.right = DAT_006a5448;
       local_2c.bottom = 0x1c2;
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x13);
       SetQuickDrawFillColorFromPaletteIndex(0);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)((int)pvStack_8 + 4),(astruct_18 *)(*ppiVar1 + 1),&RStack_1c,
-                 &local_2c,0,(astruct_19 *)0x0);
-      WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+                ((astruct_17 *)(iStack_8 + 4),(astruct_18 *)(*piVar6 + 4),&RStack_1c,&local_2c,0,
+                 (astruct_19 *)0x0);
+      WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&iStack_8);
     }
-    pvVar6 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xee2);
-    this->field68 = pvVar6;
-    if (pTStack_4[1].field_0x11 == '\0') {
-      iVar7 = 0xee7;
+    iVar5 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xee2);
+    param_1[0x1a] = iVar5;
+    if (*(char *)(iStack_4 + 0x49) == '\0') {
+      iVar5 = 0xee7;
     }
     else {
-      iVar7 = CONCAT22((short)((uint)pvVar6 >> 0x10),(short)(char)pTStack_4[1].field_0x11) + 0xee6;
+      iVar5 = CONCAT22((short)((uint)iVar5 >> 0x10),(short)*(char *)(iStack_4 + 0x49)) + 0xee6;
     }
-    pvVar6 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(iVar7);
-    this->field6c = pvVar6;
-    pvVar6 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xeeb);
-    RStack_1c.right = this->field88;
-    this->field74 = pvVar6;
-    RStack_1c.bottom = this->field8c;
+    iVar5 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(iVar5);
+    param_1[0x1b] = iVar5;
+    iVar5 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xeeb);
+    RStack_1c.right = param_1[0x22];
+    param_1[0x1d] = iVar5;
+    RStack_1c.bottom = param_1[0x23];
     RStack_1c.left = 0;
     RStack_1c.top = 0;
-    (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->field70,8,&RStack_1c);
-    this->field84 = -1;
-    this->field60 = pTStack_4;
-    this->fieldd8 = (short)pTStack_4->field34;
-    sVar2 = (short)this->field88;
-    this->field7a = ((short)pTStack_4->field34 + 1) * sVar2;
-    iVar7 = *(int *)this->pField20;
-    this->fieldd4 = (0x1d - (short)pTStack_4->field34) * sVar2;
-    this_00 = (TTacArmyView *)(**(code **)(iVar7 + 0x94))(0x746f6f6c);
-    if (this_00 == (TTacArmyView *)0x0) {
-                    /* WARNING: Subroutine does not return */
+    (**(code **)(*DAT_006a2158 + 0x2c))(param_1 + 0x1c,8,&RStack_1c);
+    param_1[0x21] = -1;
+    param_1[0x18] = iStack_4;
+    *(short *)(param_1 + 0x36) = (short)*(undefined4 *)(iStack_4 + 0x34);
+    *(short *)((int)param_1 + 0x7a) =
+         ((short)*(undefined4 *)(iStack_4 + 0x34) + 1) * (short)param_1[0x22];
+    iVar5 = *(int *)param_1[8];
+    *(short *)(param_1 + 0x35) =
+         (0x1d - (short)*(undefined4 *)(iStack_4 + 0x34)) * (short)param_1[0x22];
+    piVar6 = (int *)(**(code **)(iVar5 + 0x94))(0x746f6f6c);
+    if (piVar6 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UTacViews_cpp_00699ff4,0x497);
     }
-    this_00->field88 = (LONG)pTStack_4;
-    this_00->field94 = (int)this->field68;
-    (**(code **)(this_00->field0_0x0 + 0x1cc))(*(undefined4 *)&this->field60->field_0x1c);
-    thunk_ConfigureTacticalTargetDoneRetreatAutoControls(this_00,0);
-    this->pFieldd0 = this_00;
-    piVar5 = (int *)(**(code **)(*(int *)this->pField20 + 0x94))(0x636f6174);
-    iVar7 = *piVar5;
-    (**(code **)(iVar7 + 0xc))();
-    (**(code **)(iVar7 + 0x1c8))
-              (*(int *)(*(int *)(&this->field60->field_0x14 + *(int *)&this->field60->field_0xc * 4)
-                       + 0x1c) + 0xea6,1);
-    local_34 = (int *)(this->field90 << 1);
+    piVar6[0x22] = iStack_4;
+    piVar6[0x25] = param_1[0x1a];
+    (**(code **)(*piVar6 + 0x1cc))(*(undefined4 *)(param_1[0x18] + 0x1c));
+    ConfigureTacticalTargetDoneRetreatAutoControls(0);
+    param_1[0x34] = (int)piVar6;
+    piVar6 = (int *)(**(code **)(*(int *)param_1[8] + 0x94))(0x636f6174);
+    iVar5 = *piVar6;
+    (**(code **)(iVar5 + 0xc))();
+    (**(code **)(iVar5 + 0x1c8))
+              (*(int *)(*(int *)(param_1[0x18] + 0x14 + *(int *)(param_1[0x18] + 0xc) * 4) + 0x1c) +
+               0xea6,1);
+    local_34 = param_1[0x24] << 1;
     local_38 = 0;
-    local_30 = this->field94 * 3;
-    (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->fieldbc,8,&stack0xffffffc4);
-    iVar7 = this->field0_0x0;
-    (**(code **)(iVar7 + 0xe4))();
-    piVar5 = (int *)(**(code **)(iVar7 + 0x58))();
-    pvVar6 = (void *)(**(code **)(*piVar5 + 0x13c))();
+    local_30 = param_1[0x25] * 3;
+    (**(code **)(*DAT_006a2158 + 0x2c))(param_1 + 0x2f,8,&stack0xffffffc4);
+    iVar5 = *param_1;
+    (**(code **)(iVar5 + 0xe4))();
+    piVar6 = (int *)(**(code **)(iVar5 + 0x58))();
+    (**(code **)(*piVar6 + 0x13c))();
   }
-  return pvVar6;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA2E0
 // GHIDRA_NAME TTacArmyView::DestructTTacArmyViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTTacArmyViewAndMaybeFree(int * pDestRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders tactical army view band into primary surface and updates overlay/clip region
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTacArmyViewAndMaybeFree()
 
-/* Renders tactical army view band into primary surface and updates overlay/clip region */
-
-void __thiscall TTacArmyView::DestructTTacArmyViewAndMaybeFree(TTacArmyView *this,int *pDestRect)
+void __thiscall TTacArmyView::DestructTTacArmyViewAndMaybeFree(int *param_1,int *param_2)
 
 {
   code *pcVar1;
   short sVar2;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int local_58;
-  int *local_54;
+  undefined4 local_54;
   undefined1 *puStack_50;
   RECT local_4c;
   tagRECT local_3c;
@@ -506,21 +188,20 @@ void __thiscall TTacArmyView::DestructTTacArmyViewAndMaybeFree(TTacArmyView *thi
   puStack_8 = &LAB_006387b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_4c.left = *pDestRect;
-  local_58 = 0;
-  local_4c.top = pDestRect[1];
-  local_4c.right = pDestRect[2];
-  local_4c.bottom = pDestRect[3];
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_54,&local_58);
-  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_58);
-  thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+  local_4c.left = *param_2;
+  local_4c.top = param_2[1];
+  local_4c.right = param_2[2];
+  local_4c.bottom = param_2[3];
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_54);
+  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext);
+  thunk_GetSurfaceObjectAtContextOffset24();
   thunk_ReturnConstantTrueQuickDrawFlag();
-  thunk_GetSurfaceObjectAtContextOffset24(this->field64);
+  thunk_GetSurfaceObjectAtContextOffset24();
   thunk_ReturnConstantTrueQuickDrawFlag();
-  sVar2 = (0x1d - (short)this->field60->field34) * (short)this->field88;
-  this->fieldd4 = sVar2;
+  sVar2 = (0x1d - (short)*(undefined4 *)(param_1[0x18] + 0x34)) * (short)param_1[0x22];
+  *(short *)(param_1 + 0x35) = sVar2;
   local_3c.bottom = local_4c.bottom;
-  local_3c.right = (int)sVar2 + (int)this->field78;
+  local_3c.right = (int)sVar2 + (int)(short)param_1[0x1e];
   local_2c.left = local_4c.left;
   local_3c.left = local_4c.left + local_3c.right;
   local_3c.right = local_4c.right + local_3c.right;
@@ -529,36 +210,35 @@ void __thiscall TTacArmyView::DestructTTacArmyViewAndMaybeFree(TTacArmyView *thi
   local_2c.right = local_4c.right;
   local_2c.bottom = local_4c.bottom;
   ResetQuickDrawStrokeState();
-  TCivDescription::SetQuickDrawStrokeColor();
-  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor();
+  SetQuickDrawFillColor();
   local_1c.left = local_2c.left;
   local_1c.top = local_2c.top;
   local_1c.right = local_2c.right;
   local_1c.bottom = local_2c.bottom;
-  if (this->field64[8] != 0) {
-    iVar3 = *(int *)(*(int *)(this->field64[8] + 0x10) + 8);
+  if (*(int *)(param_1[0x19] + 0x20) != 0) {
+    iVar3 = *(int *)(*(int *)(*(int *)(param_1[0x19] + 0x20) + 0x10) + 8);
     if (iVar3 < 1) {
       iVar3 = -iVar3;
     }
     OffsetRect(&local_3c,0,(iVar3 - local_3c.top) - local_3c.bottom);
   }
-  if (*(int *)((int)g_pPrimaryRenderSurfaceContext + 0x20) != 0) {
-    iVar3 = *(int *)(*(int *)(*(int *)((int)g_pPrimaryRenderSurfaceContext + 0x20) + 0x10) + 8);
+  if (*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) != 0) {
+    iVar3 = *(int *)(*(int *)(*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) + 0x10) + 8);
     if (iVar3 < 1) {
       iVar3 = -iVar3;
     }
     OffsetRect(&local_1c,0,(iVar3 - local_1c.top) - local_1c.bottom);
   }
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)(this->field64 + 1),
-             (astruct_18 *)((int)g_pPrimaryRenderSurfaceContext + 4),&local_3c,&local_1c,0,
-             (astruct_19 *)0x0);
-  if (this->field60 != (TArmyBattle *)0x0) {
+            ((astruct_17 *)(param_1[0x19] + 4),(astruct_18 *)(g_pPrimaryRenderSurfaceContext + 4),
+             &local_3c,&local_1c,0,(astruct_19 *)0x0);
+  if (param_1[0x18] != 0) {
     AcquireReusableQuickDrawSurface();
     local_4 = 0;
-    ApplyHitRegionToClipState((int)&stack0xffffff94);
+    ApplyHitRegionToClipState();
     iVar3 = 0;
-    pcVar1 = *(code **)(this->field0_0x0 + 0x1b0);
+    pcVar1 = *(code **)(*param_1 + 0x1b0);
     do {
       (*pcVar1)(iVar3);
       iVar3 = iVar3 + 1;
@@ -567,18 +247,18 @@ void __thiscall TTacArmyView::DestructTTacArmyViewAndMaybeFree(TTacArmyView *thi
     local_4 = 0xffffffff;
     ReleaseOrCacheQuickDrawSurface();
   }
-  thunk_SetActiveQuickDrawSurfaceContext(local_54,local_58);
+  thunk_SetActiveQuickDrawSurfaceContext(local_54);
   ResetQuickDrawStrokeState();
   puStack_50 = &stack0xffffff94;
-  TCivDescription::SetQuickDrawStrokeColor();
+  SetQuickDrawStrokeColor();
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)((int)g_pPrimaryRenderSurfaceContext + 4),
-             (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_4c,&local_2c,0,
+            ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
+             (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_4c,&local_2c,0,
              (astruct_19 *)0x0);
-  (**(code **)(this->field0_0x0 + 0x1c0))();
-  thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+  (**(code **)(*param_1 + 0x1c0))();
+  thunk_GetSurfaceObjectAtContextOffset24();
   thunk_NoOpQuickDrawLifecycleHookB();
-  thunk_GetSurfaceObjectAtContextOffset24(this->field64);
+  thunk_GetSurfaceObjectAtContextOffset24();
   thunk_NoOpQuickDrawLifecycleHookB();
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -586,23 +266,19 @@ void __thiscall TTacArmyView::DestructTTacArmyViewAndMaybeFree(TTacArmyView *thi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ACD60
 // GHIDRA_NAME TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls
-// GHIDRA_PROTO void __thiscall ConfigureTacticalTargetDoneRetreatAutoControls(int modeFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Toggles targ/done/retr/auto control state and routes done/retr controls by mode
-// GHIDRA_COMMENT_END
-
-/* Toggles targ/done/retr/auto control state and routes done/retr controls by mode */
+// GHIDRA_PROTO undefined ConfigureTacticalTargetDoneRetreatAutoControls()
 
 void __thiscall
-TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(TTacArmyView *this,int modeFlag)
+TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(int *param_1,int param_2)
 
 {
   code *pcVar1;
   int iVar2;
   int *piVar3;
+  undefined4 uVar4;
   
-  if (modeFlag == 0) {
-    pcVar1 = *(code **)(this->field0_0x0 + 0x94);
+  if (param_2 == 0) {
+    pcVar1 = *(code **)(*param_1 + 0x94);
     piVar3 = (int *)(*pcVar1)(0x74617267);
     iVar2 = *piVar3;
     (**(code **)(iVar2 + 0xc))();
@@ -621,13 +297,13 @@ TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(TTacArmyView *this,
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0xa4))(0,1);
     (**(code **)(iVar2 + 0xa8))(0,1);
-    (*pcVar1)(0x646f6e65);
-    thunk_LoadUiStringAndDispatchSharedMessageCommand();
-    (*pcVar1)(0x72657472);
-    thunk_LoadUiStringAndDispatchSharedMessageCommand();
+    uVar4 = (*pcVar1)(0x646f6e65);
+    LoadUiStringAndDispatchSharedMessageCommand(0x273d,0x2e,uVar4);
+    uVar4 = (*pcVar1)(0x72657472);
+    LoadUiStringAndDispatchSharedMessageCommand(0x273d,0x2f,uVar4);
     return;
   }
-  pcVar1 = *(code **)(this->field0_0x0 + 0x94);
+  pcVar1 = *(code **)(*param_1 + 0x94);
   piVar3 = (int *)(*pcVar1)(0x74617267);
   iVar2 = *piVar3;
   (**(code **)(iVar2 + 0xc))();
@@ -646,10 +322,10 @@ TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls(TTacArmyView *this,
   (**(code **)(iVar2 + 0xc))();
   (**(code **)(iVar2 + 0xa4))(1,1);
   (**(code **)(iVar2 + 0xa8))(1,1);
-  (*pcVar1)(0x646f6e65);
-  thunk_LoadUiStringAndDispatchSharedMessageCommand();
-  (*pcVar1)(0x72657472);
-  thunk_LoadUiStringAndDispatchSharedMessageCommand();
+  uVar4 = (*pcVar1)(0x646f6e65);
+  LoadUiStringAndDispatchSharedMessageCommand(0x273d,0x22,uVar4);
+  uVar4 = (*pcVar1)(0x72657472);
+  LoadUiStringAndDispatchSharedMessageCommand(0x273d,0x23,uVar4);
   return;
 }
 

@@ -3,70 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TDlgWindow.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401019
-// GHIDRA_NAME TDlgWindow::TDlgWindow_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TDlgWindow_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDlgWindowClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDlgWindowClassNamePointer */
-
-void * __cdecl TDlgWindow::TDlgWindow_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDlgWindowClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406DB1
-// GHIDRA_NAME TDlgWindow::TDlgWindow_VtblSlot114
-// GHIDRA_PROTO void __stdcall TDlgWindow_VtblSlot114(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AssertUGameWindowLines634And639
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AssertUGameWindowLines634And639 */
-
-void TDlgWindow::TDlgWindow_VtblSlot114(void)
-
-{
-  AssertUGameWindowLines634And639();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040952A
-// GHIDRA_NAME TDlgWindow::TDlgWindow_VtblSlot001
-// GHIDRA_PROTO void __cdecl TDlgWindow_VtblSlot001(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTurnEventWindowEntryStaticBackdrop
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTurnEventWindowEntryStaticBackdrop */
-
-void __cdecl TDlgWindow::TDlgWindow_VtblSlot001(int arg1)
-
-{
-  DestroyTurnEventWindowEntryStaticBackdrop(arg1);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00500280
 // GHIDRA_NAME TDlgWindow::CreateTDlgWindowInstance
-// GHIDRA_PROTO void * __cdecl CreateTDlgWindowInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TDlgWindow; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTDlgWindowInstance()
 
-/* [ClassQuad] create inferred for TDlgWindow; alloc factory pattern. */
-
-void * __cdecl TDlgWindow::CreateTDlgWindowInstance(void)
+undefined4 * TDlgWindow::CreateTDlgWindowInstance(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -76,36 +21,31 @@ void * __cdecl TDlgWindow::CreateTDlgWindowInstance(void)
   puStack_8 = &LAB_0063333a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTDlgWindow;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryBase();
+    *puVar1 = &PTR_LAB_00656ce8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500300
 // GHIDRA_NAME TDlgWindow::GetTDlgWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDlgWindowClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDlgWindow.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDlgWindowClassNamePointer()
 
-/* Returns class descriptor pointer for TDlgWindow. */
-
-void * __cdecl TDlgWindow::GetTDlgWindowClassNamePointer(void)
+undefined ** TDlgWindow::GetTDlgWindowClassNamePointer(void)
 
 {
-  return &g_pClassDescTDlgWindow;
+  return &PTR_s_TDlgWindow_00656a48;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500320
 // GHIDRA_NAME TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop
-// GHIDRA_PROTO void __thiscall ConstructTurnEventWindowEntryStaticBackdrop(void)
+// GHIDRA_PROTO undefined ConstructTurnEventWindowEntryStaticBackdrop()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Constructor for static-backdrop turn-event window entry used by BuildTurnEventDialogUiByCode branch 0x3B6.
 // GHIDRA_COMMENT_END
@@ -113,11 +53,11 @@ void * __cdecl TDlgWindow::GetTDlgWindowClassNamePointer(void)
 /* Constructor for static-backdrop turn-event window entry used by BuildTurnEventDialogUiByCode
    branch 0x3B6. */
 
-void __thiscall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(TDlgWindow *this)
+undefined4 * __fastcall TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop(undefined4 *param_1)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryBase((TControl *)this);
-  this->pVtable = &g_vtblTDlgWindow;
-  return;
+  TControl::thunk_ConstructUiWindowResourceEntryBase();
+  *param_1 = &PTR_LAB_00656ce8;
+  return param_1;
 }
 

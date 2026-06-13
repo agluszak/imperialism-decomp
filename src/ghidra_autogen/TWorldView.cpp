@@ -3,58 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TWorldView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401154
-// GHIDRA_NAME TWorldView::TWorldView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TWorldView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTWorldViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTWorldViewAndMaybeFree */
-
-void * __thiscall TWorldView::TWorldView_VtblSlot001(TWorldView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTWorldViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004072C5
-// GHIDRA_NAME TWorldView::TWorldView_VtblSlot055
-// GHIDRA_PROTO void __cdecl TWorldView_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RunNoOpUiLifecycleHook
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RunNoOpUiLifecycleHook */
-
-void __cdecl TWorldView::TWorldView_VtblSlot055(void)
-
-{
-  thunk_NoOpUiLifecycleHook();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409269
-// GHIDRA_NAME TWorldView::TWorldView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TWorldView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTWorldViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTWorldViewClassNamePointer */
-
-void * __cdecl TWorldView::TWorldView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTWorldViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CC60
 // GHIDRA_NAME TWorldView::InitializeStrategicMapTileIconStateCache
 // GHIDRA_PROTO void __thiscall InitializeStrategicMapTileIconStateCache(void * pMapView, int nInitToken)
@@ -101,26 +49,26 @@ TWorldView::InitializeStrategicMapTileIconStateCache(TWorldView *this,void *pMap
   undefined4 local_14;
   undefined2 uStack_10;
   
-  TWorldView_VtblSlot055();
-  this->field78 = 0x40;
+  RunNoOpUiLifecycleHook(pMapView);
+  *(undefined2 *)(this + 0x78) = 0x40;
   local_14 = 0x40;
-  this->field76 = 1;
+  *(undefined2 *)(this + 0x76) = 1;
   sVar5 = 0;
   local_20 = 0;
   local_1c = 0;
   local_18 = 0x1680;
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->pField350,8,&local_20);
-  (**(code **)((int)(this->base).pVtable + 0x1f8))();
-  g_pMapInteractionPreviewSurfaceContext = g_pPrimaryRenderSurfaceContext;
-  InitializeMainRoutineContextAndRun();
-  InitializeMainRoutineContextAndRun();
-  TCivToolbar::thunk_SetMapInteractionMode((this->base).pChildMapView20,MAP_INTERACTION_MODE_5);
-  *(undefined1 *)((int)g_pGlobalMapState + 0x24) = 1;
-  (**(code **)(*(int *)g_pUiRuntimeContext + 0xc4))();
-  (**(code **)(*(int *)(this->base).pChildMapView20 + 500))();
+  (**(code **)(*DAT_006a2158 + 0x2c))(this + 0x350,8,&local_20);
+  (**(code **)(*(int *)this + 0x1f8))();
+  DAT_006a3450 = g_pPrimaryRenderSurfaceContext;
+  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x6d61696e);
+  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00658990,0x444c4f47);
+  TCivToolbar::thunk_SetMapInteractionMode(*(TCivToolbar **)(this + 0x20),5);
+  *(undefined1 *)(g_pGlobalMapState + 0x24) = 1;
+  (**(code **)(*g_pUiRuntimeContext + 0xc4))();
+  (**(code **)(**(int **)(this + 0x20) + 500))();
   iVar4 = 0;
   do {
-    iVar1 = *(int *)((int)g_pGlobalMapState + 0xc);
+    iVar1 = *(int *)(g_pGlobalMapState + 0xc);
     if (*(char *)(iVar4 + iVar1) != '\x05') {
       iVar2 = sVar5 * 0x24;
       local_20 = 0x10012;
@@ -130,12 +78,12 @@ TWorldView::InitializeStrategicMapTileIconStateCache(TWorldView *this,void *pMap
       uStack_10 = 0xffff;
       *(undefined1 *)(iVar2 + 0x11 + iVar1) =
            (&stack0xffffffd4)[*(char *)(iVar2 + 0x13 + iVar1) * 2];
-      *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x12 + iVar2) = 0xff;
+      *(undefined1 *)(*(int *)(g_pGlobalMapState + 0xc) + 0x12 + iVar2) = 0xff;
     }
     iVar4 = iVar4 + 0x24;
     sVar5 = sVar5 + 1;
   } while (iVar4 < 0x38f40);
-  piVar3 = (int *)(**(code **)(*(int *)(this->base).pChildMapView20 + 0x94))(0x70726e75);
+  piVar3 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))(0x70726e75);
   (**(code **)(*piVar3 + 0xc))();
   piVar3[0x2a] = 0x17f;
   return;
@@ -143,12 +91,12 @@ TWorldView::InitializeStrategicMapTileIconStateCache(TWorldView *this,void *pMap
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594F20
 // GHIDRA_NAME TWorldView::CreateTWorldViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTWorldViewInstance(void)
+// GHIDRA_PROTO undefined CreateTWorldViewInstance()
 
-void * __cdecl TWorldView::CreateTWorldViewInstance(void)
+undefined4 * TWorldView::CreateTWorldViewInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -158,66 +106,61 @@ void * __cdecl TWorldView::CreateTWorldViewInstance(void)
   puStack_8 = &LAB_006381ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x7c);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTWorldView;
-    *(undefined2 *)&this[1].dialogValueDwordC = 0;
-    *(undefined2 *)((int)&this[1].dialogValueDwordC + 2) = 0;
-    *(undefined2 *)&this[1].field3_0x8 = 0;
-    *(undefined2 *)((int)&this[1].field3_0x8 + 2) = 0;
-    *(undefined2 *)((int)&this[1].pUiOwner18 + 2) = 0xffff;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00668cb0;
+    *(undefined2 *)(puVar1 + 0x1b) = 0;
+    *(undefined2 *)((int)puVar1 + 0x6e) = 0;
+    *(undefined2 *)(puVar1 + 0x1a) = 0;
+    *(undefined2 *)((int)puVar1 + 0x6a) = 0;
+    *(undefined2 *)((int)puVar1 + 0x7a) = 0xffff;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00594FE0
 // GHIDRA_NAME TWorldView::GetTWorldViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTWorldViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TWorldView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTWorldViewClassNamePointer()
 
-/* Returns class descriptor pointer for TWorldView. */
-
-void * __cdecl TWorldView::GetTWorldViewClassNamePointer(void)
+undefined ** TWorldView::GetTWorldViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTWorldView;
+  return &PTR_s_TWorldView_00668c10;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595000
 // GHIDRA_NAME TWorldView::ConstructTWorldViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTWorldViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTWorldViewBaseState()
 
-void * __thiscall TWorldView::ConstructTWorldViewBaseState(TWorldView *this)
+undefined4 * __fastcall TWorldView::ConstructTWorldViewBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTWorldView;
-  this->field6c = 0;
-  this->field6e = 0;
-  this->field68 = 0;
-  this->field6a = 0;
-  this->field7a = -1;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_00668cb0;
+  *(undefined2 *)(param_1 + 0x1b) = 0;
+  *(undefined2 *)((int)param_1 + 0x6e) = 0;
+  *(undefined2 *)(param_1 + 0x1a) = 0;
+  *(undefined2 *)((int)param_1 + 0x6a) = 0;
+  *(undefined2 *)((int)param_1 + 0x7a) = 0xffff;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00595040
 // GHIDRA_NAME TWorldView::DestructTWorldViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTWorldViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTWorldViewAndMaybeFree()
 
-void * __thiscall TWorldView::DestructTWorldViewAndMaybeFree(TWorldView *this,byte freeSelfFlag)
+undefined4 __thiscall TWorldView::DestructTWorldViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

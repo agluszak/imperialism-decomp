@@ -3,175 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TArmyUnitLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405B55
-// GHIDRA_NAME TArmyUnitLine::TArmyUnitLine_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TArmyUnitLine_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTArmyUnitLineAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTArmyUnitLineAndMaybeFree */
-
-void * __thiscall TArmyUnitLine::TArmyUnitLine_VtblSlot001(TArmyUnitLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTArmyUnitLineAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406032
-// GHIDRA_NAME TArmyUnitLine::TArmyUnitLine_VtblSlot010
-// GHIDRA_PROTO void __thiscall TArmyUnitLine_VtblSlot010(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeArmyUnitLineControlsAndState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeArmyUnitLineControlsAndState */
-
-void __thiscall TArmyUnitLine::TArmyUnitLine_VtblSlot010(TArmyUnitLine *this,int arg1,int arg2)
-
-{
-  TToolBarCluster::InitializeArmyUnitLineControlsAndState((TToolBarCluster *)this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040616D
-// GHIDRA_NAME TArmyUnitLine::thunk_SetArmyUnitLineActiveFlagAndNotify
-// GHIDRA_PROTO void __thiscall thunk_SetArmyUnitLineActiveFlagAndNotify(byte isActive, void * notifyContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct JMP thunk to SetArmyUnitLineActiveFlagAndNotify.
-// GHIDRA_COMMENT_END
-
-/* Direct JMP thunk to SetArmyUnitLineActiveFlagAndNotify. */
-
-void __thiscall
-TArmyUnitLine::thunk_SetArmyUnitLineActiveFlagAndNotify
-          (TArmyUnitLine *this,byte isActive,void *notifyContext)
-
-{
-  if (this->field84 != isActive) {
-    this->field84 = isActive;
-    (**(code **)((int)this->field0_0x0 + 0x1cc))(notifyContext);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004074E6
-// GHIDRA_NAME TArmyUnitLine::TArmyUnitLine_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TArmyUnitLine_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTArmyUnitLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTArmyUnitLineClassNamePointer */
-
-void * __cdecl TArmyUnitLine::TArmyUnitLine_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTArmyUnitLineClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004080EE
-// GHIDRA_NAME TArmyUnitLine::thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280 */
-
-void __cdecl
-TArmyUnitLine::thunk_WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280(void)
-
-{
-  WrapperFor_thunk_HandleCityDialogToggleCommandOrForward_At004aa280();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408409
-// GHIDRA_NAME TArmyUnitLine::thunk_GetTArmyCheckBoxClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyCheckBoxClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTArmyCheckBoxClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTArmyCheckBoxClassNamePointer */
-
-void * __cdecl TArmyUnitLine::thunk_GetTArmyCheckBoxClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TArmyCheckBox::GetTArmyCheckBoxClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040849A
-// GHIDRA_NAME TArmyUnitLine::thunk_OrphanVtableAssignStub_004aa2f0_At0040849a
-// GHIDRA_PROTO void __thiscall thunk_OrphanVtableAssignStub_004aa2f0_At0040849a(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanVtableAssignStub_004aa2f0
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanVtableAssignStub_004aa2f0 */
-
-void __thiscall TArmyUnitLine::thunk_OrphanVtableAssignStub_004aa2f0_At0040849a(TArmyUnitLine *this)
-
-{
-  OrphanVtableAssignStub_004aa2f0(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040917E
-// GHIDRA_NAME TArmyUnitLine::TArmyUnitLine_thunk_scalar_deleting_destructor
-// GHIDRA_PROTO void * __thiscall TArmyUnitLine_thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TArmyUnitLine::TArmyUnitLine_thunk_scalar_deleting_destructor(TArmyUnitLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004095D4
-// GHIDRA_NAME TArmyUnitLine::thunk_DestructTArmyCheckBoxAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTArmyCheckBoxAndMaybeFree(byte notify)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateArmyCheckBoxSelectionOffsetAndRefresh [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdateArmyCheckBoxSelectionOffsetAndRefresh [FID:thunk_target_sync] */
-
-void __thiscall
-TArmyUnitLine::thunk_DestructTArmyCheckBoxAndMaybeFree(TArmyUnitLine *this,byte notify)
-
-{
-  TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree((TArmyCheckBox *)this,notify);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8CA0
 // GHIDRA_NAME TArmyUnitLine::CreateTArmyUnitLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTArmyUnitLineInstance(void)
+// GHIDRA_PROTO undefined CreateTArmyUnitLineInstance()
 
-void * __cdecl TArmyUnitLine::CreateTArmyUnitLineInstance(void)
+undefined4 * TArmyUnitLine::CreateTArmyUnitLineInstance(void)
 
 {
-  TLineData *pThis;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -181,73 +21,63 @@ void * __cdecl TArmyUnitLine::CreateTArmyUnitLineInstance(void)
   puStack_8 = &LAB_0063035a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (pThis != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(pThis);
-    pThis->field0_0x0 = &g_vtblTArmyUnitLine;
-    pTVar1 = pThis;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TLineData::ConstructTLineDataBaseState();
+    *puVar1 = &PTR_LAB_0064ce80;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8D10
 // GHIDRA_NAME TArmyUnitLine::GetTArmyUnitLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmyUnitLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmyUnitLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmyUnitLineClassNamePointer()
 
-/* Returns class descriptor pointer for TArmyUnitLine. */
-
-void * __cdecl TArmyUnitLine::GetTArmyUnitLineClassNamePointer(void)
+undefined ** TArmyUnitLine::GetTArmyUnitLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmyUnitLine;
+  return &PTR_s_TArmyUnitLine_0064cb38;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8D30
 // GHIDRA_NAME TArmyUnitLine::ConstructTArmyUnitLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTArmyUnitLineBaseState(void)
+// GHIDRA_PROTO undefined ConstructTArmyUnitLineBaseState()
 
-void * __thiscall TArmyUnitLine::ConstructTArmyUnitLineBaseState(TArmyUnitLine *this)
+undefined4 * __fastcall TArmyUnitLine::ConstructTArmyUnitLineBaseState(undefined4 *param_1)
 
 {
-  TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  this->field0_0x0 = &g_vtblTArmyUnitLine;
-  return this;
+  TLineData::ConstructTLineDataBaseState();
+  *param_1 = &PTR_LAB_0064ce80;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8D60
 // GHIDRA_NAME TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTArmyUnitLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTArmyUnitLineAndMaybeFree()
 
-void * __thiscall
-TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this,byte freeSelfFlag)
+undefined4 __thiscall
+TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTArmyUnitLineAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA2F0
 // GHIDRA_NAME TArmyUnitLine::OrphanVtableAssignStub_004aa2f0
-// GHIDRA_PROTO void __thiscall OrphanVtableAssignStub_004aa2f0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Orphan no-xref vtable-assignment stub from orphan triage lane.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OrphanVtableAssignStub_004aa2f0()
 
-/* Orphan no-xref vtable-assignment stub from orphan triage lane. */
-
-void __thiscall TArmyUnitLine::OrphanVtableAssignStub_004aa2f0(TArmyUnitLine *this)
+void __fastcall TArmyUnitLine::OrphanVtableAssignStub_004aa2f0(int param_1)
 
 {
-  this->field60 = 4;
+  *(undefined4 *)(param_1 + 0x60) = 4;
   return;
 }
 

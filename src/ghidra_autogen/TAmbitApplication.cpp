@@ -5,16 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DEB0
 // GHIDRA_NAME TAmbitApplication::GetTAmbitApplicationClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTAmbitApplicationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TAmbitApplication.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTAmbitApplicationClassNamePointer()
 
-/* Returns class descriptor pointer for TAmbitApplication. */
-
-void * __cdecl TAmbitApplication::GetTAmbitApplicationClassNamePointer(void)
+undefined ** TAmbitApplication::GetTAmbitApplicationClassNamePointer(void)
 
 {
-  return &g_pClassDescTAmbitApplication;
+  return &PTR_s_TAmbitApplication_0064c0b8;
 }
 

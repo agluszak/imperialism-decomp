@@ -3,242 +3,169 @@
 // Program: Imperialism.exe
 // Bucket: TBattleUnitsView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040200E
-// GHIDRA_NAME TBattleUnitsView::thunk_DestructTBattleUnitsViewAndMaybeFree_At0040200e
-// GHIDRA_PROTO void __thiscall thunk_DestructTBattleUnitsViewAndMaybeFree_At0040200e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTBattleUnitsViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTBattleUnitsViewAndMaybeFree */
-
-void __thiscall
-TBattleUnitsView::thunk_DestructTBattleUnitsViewAndMaybeFree_At0040200e(TBattleUnitsView *this)
-
-{
-  DestructTBattleUnitsViewAndMaybeFree(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404AFC
-// GHIDRA_NAME TBattleUnitsView::thunk_ConstructTBatRepDetLineBaseState_At00404afc
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTBatRepDetLineBaseState_At00404afc(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTBatRepDetLineBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTBatRepDetLineBaseState */
-
-void * __thiscall
-TBattleUnitsView::thunk_ConstructTBatRepDetLineBaseState_At00404afc(TBattleUnitsView *this,int arg1)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TBatRepDetLine::ConstructTBatRepDetLineBaseState((TBatRepDetLine *)this,arg1);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405A01
-// GHIDRA_NAME TBattleUnitsView::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004affd0_At00405a01
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004affd0_At00405a01(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004affd0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004affd0 */
-
-void __cdecl TBattleUnitsView::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004affd0_At00405a01(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At004affd0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408AEE
-// GHIDRA_NAME TBattleUnitsView::thunk_GetTBattleUnitsViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBattleUnitsViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBattleUnitsViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBattleUnitsViewClassNamePointer */
-
-void * __cdecl TBattleUnitsView::thunk_GetTBattleUnitsViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBattleUnitsViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004096C9
-// GHIDRA_NAME TBattleUnitsView::thunk_scalar_deleting_destructor_004096C9
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004096C9(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TBattleUnitsView::thunk_scalar_deleting_destructor_004096C9
-          (TBattleUnitsView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409723
-// GHIDRA_NAME TBattleUnitsView::thunk_GetTBatRepDetLineClassNamePointer_At00409723
-// GHIDRA_PROTO void * __cdecl thunk_GetTBatRepDetLineClassNamePointer_At00409723(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBatRepDetLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBatRepDetLineClassNamePointer */
-
-void * __cdecl TBattleUnitsView::thunk_GetTBatRepDetLineClassNamePointer_At00409723(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TBatRepDetLine::GetTBatRepDetLineClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AD7A0
 // GHIDRA_NAME TBattleUnitsView::HandleMapContextPrevNextInfoCommands
-// GHIDRA_PROTO void __thiscall HandleMapContextPrevNextInfoCommands(int eventCode, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles map-context next/prev/info/okay command tags and forwards city-dialog toggles
-// GHIDRA_COMMENT_END
-
-/* Handles map-context next/prev/info/okay command tags and forwards city-dialog toggles */
+// GHIDRA_PROTO undefined HandleMapContextPrevNextInfoCommands()
 
 void __thiscall
-TBattleUnitsView::HandleMapContextPrevNextInfoCommands
-          (TBattleUnitsView *this,int eventCode,PanelEventPayload *pPanelEvent)
+TBattleUnitsView::HandleMapContextPrevNextInfoCommands(int param_1,int param_2,int param_3)
 
 {
-  EControlTagFourCC EVar1;
+  uint uVar1;
   code *pcVar2;
-  int *piVar3;
-  int iVar4;
-  TBattleUnitsView *this_00;
-  TBattleUnitsView *this_01;
-  int *pControl;
-  void *pvVar5;
-  int pageDelta;
+  char *pcVar3;
+  int *piVar4;
+  undefined4 uVar5;
+  int *piVar6;
+  undefined4 *puVar7;
+  int iVar8;
+  int iVar9;
   int unaff_EBP;
-  int *unaff_FS_OFFSET;
-  void *pvVar6;
-  int iVar7;
-  undefined4 *puStack_18;
-  int local_c;
+  undefined4 *unaff_FS_OFFSET;
+  int aiStack_78 [5];
+  undefined4 uStack_64;
+  int iStack_60;
+  undefined4 uStack_5c;
+  undefined4 uStack_58;
+  undefined4 uStack_54;
+  int iStack_50;
+  int iStack_18;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
-  int iStack_4;
+  undefined4 uStack_4;
   
-  local_c = *unaff_FS_OFFSET;
-  iStack_4._0_2_ = -1;
-  iStack_4._2_2_ = ~MAP_INTERACTION_MODE_0;
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00630890;
-  *unaff_FS_OFFSET = (int)&local_c;
-  if (eventCode == 10) {
-    EVar1 = pPanelEvent->controlTag1c;
-    if (EVar1 < 0x6e657875) {
-      if (EVar1 == CONTROL_TAG_TAG_TXEN) {
-        if (*(int *)&this[0x43].field_0x24 < (*(int **)((int)g_pMapContextActionManager + 4))[2]) {
-          pvVar5 = (void *)(**(code **)(**(int **)((int)g_pMapContextActionManager + 4) + 0x2c))();
-          TBattleReportView::thunk_RefreshMapContextSelectionPanelAndInfoLabels
-                    ((TBattleReportView *)this,pvVar5);
+  *unaff_FS_OFFSET = &uStack_c;
+  if (param_2 == 10) {
+    uVar1 = *(uint *)(param_3 + 0x1c);
+    if (uVar1 < 0x6e657875) {
+      if (uVar1 == 0x6e657874) {
+        if (*(int *)(param_1 + 0x24c8) < (*(int **)(g_pMapContextActionManager + 4))[2]) {
+          (**(code **)(**(int **)(g_pMapContextActionManager + 4) + 0x2c))();
+          TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels();
         }
         goto LAB_004adb34;
       }
-      if (EVar1 == 0x696e666f) {
-        piVar3 = (int *)(**(code **)(*(int *)g_pUiViewManager + 0x28))();
-        if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
+      if (uVar1 == 0x696e666f) {
+        piVar4 = (int *)(**(code **)(*g_pUiViewManager + 0x28))();
+        if (piVar4 == (int *)0x0) {
+          iStack_50 = 0x4ad81b;
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+          thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
         }
-        iVar7 = *piVar3;
-        (**(code **)(iVar7 + 0x1a0))();
-        piVar3 = (int *)(**(code **)(iVar7 + 0x94))();
-        iVar7 = *piVar3;
-        (**(code **)(iVar7 + 0xc))();
-        iVar4 = (**(code **)(**(int **)((int)g_pMapContextActionManager + 4) + 0x2c))();
-        pcVar2 = *(code **)(iVar7 + 0x94);
-        iStack_4 = iVar4;
-        this_00 = (TBattleUnitsView *)(*pcVar2)();
-        (**(code **)((int)this_00->pVtable + 0xc))();
-        ConstructTBattleUnitsViewBaseState(this_00,iVar4,0);
-        iVar7 = 0x70616766;
-        this_01 = (TBattleUnitsView *)(*pcVar2)();
-        (**(code **)((int)this_01->pVtable + 0xc))();
-        ConstructTBattleUnitsViewBaseState(this_01,local_c,1);
-        if (*(short *)&this_00->field_0x60 < *(short *)&this_01->field_0x60) {
-          *(short *)&this_00->field_0x60 = *(short *)&this_01->field_0x60;
+        iVar8 = *piVar4;
+        (**(code **)(iVar8 + 0x1a0))();
+        piVar4 = (int *)(**(code **)(iVar8 + 0x94))();
+        iVar8 = *piVar4;
+        (**(code **)(iVar8 + 0xc))();
+        uVar5 = (**(code **)(**(int **)(g_pMapContextActionManager + 4) + 0x2c))();
+        pcVar2 = *(code **)(iVar8 + 0x94);
+        iStack_50 = 0x4ad87d;
+        uStack_4 = uVar5;
+        piVar4 = (int *)(*pcVar2)();
+        iStack_50 = 0x4ad886;
+        (**(code **)(*piVar4 + 0xc))();
+        iStack_50 = 0;
+        uStack_58 = 0x4ad890;
+        uStack_54 = uVar5;
+        ConstructTBattleUnitsViewBaseState();
+        iStack_50 = 0x70616766;
+        uStack_54 = 0x4ad899;
+        piVar6 = (int *)(*pcVar2)();
+        uStack_54 = 0x4ad8a3;
+        (**(code **)(*piVar6 + 0xc))();
+        uStack_54 = 1;
+        uStack_58 = uStack_c;
+        uStack_5c = 0x4ad8b1;
+        ConstructTBattleUnitsViewBaseState();
+        if ((short)piVar4[0x18] < (short)piVar6[0x18]) {
+          *(short *)(piVar4 + 0x18) = (short)piVar6[0x18];
         }
         else {
-          *(short *)&this_01->field_0x60 = *(short *)&this_00->field_0x60;
+          *(short *)(piVar6 + 0x18) = (short)piVar4[0x18];
         }
-        thunk_UpdatePagedListNavigationButtonState(piVar3,pageDelta);
-        piVar3 = (int *)(*pcVar2)();
-        iVar4 = *piVar3;
-        (**(code **)(iVar4 + 0xc))();
-        piVar3 = (int *)(*pcVar2)();
-        pvVar5 = (void *)*piVar3;
-        (**(code **)((int)pvVar5 + 0xc))();
-        iVar4 = *(char *)(iVar4 + 1) + 0x114e;
-        (*(code *)puStack_18[0x72])();
-        (**(code **)(iVar4 + 0x1c8))();
-        piVar3 = (int *)(*pcVar2)();
-        (**(code **)(*piVar3 + 0xc))();
-        pControl = (int *)(*pcVar2)();
-        (**(code **)(*pControl + 0xc))();
-        thunk_ApplyUiTextStyleAndThemeFlags(piVar3,0,0xe,0x2b6b,0x2b6c);
-        thunk_ApplyUiTextStyleAndThemeFlags(pControl,0,0xe,0x2b6b,0x2b6c);
-        pvVar6 = (void *)0x1;
+        uStack_54 = 1;
+        uStack_58 = 0x4ad8d1;
+        UpdatePagedListNavigationButtonState();
+        uStack_54 = 0x666c674c;
+        uStack_58 = 0x4ad8da;
+        puVar7 = (undefined4 *)(*pcVar2)();
+        pcVar3 = (char *)*puVar7;
+        uStack_58 = 0x4ad8e7;
+        (**(code **)(pcVar3 + 0xc))();
+        uStack_58 = 0x666c6752;
+        uStack_5c = 0x4ad8f0;
+        piVar4 = (int *)(*pcVar2)();
+        iVar8 = *piVar4;
+        uStack_5c = 0x4ad8fe;
+        (**(code **)(iVar8 + 0xc))();
+        uStack_5c = 0;
+        iVar9 = pcVar3[1] + 0x114e;
+        iStack_60 = *pcVar3 + 0x1147;
+        uStack_64 = 0x4ad927;
+        (**(code **)(iStack_18 + 0x1c8))();
+        uStack_64 = 0;
+        aiStack_78[4] = iStack_50;
+        aiStack_78[3] = 0x4ad93a;
+        (**(code **)(iVar9 + 0x1c8))();
+        aiStack_78[3] = 0x6e61744c;
+        aiStack_78[2] = 0x4ad943;
+        piVar4 = (int *)(*pcVar2)();
+        aiStack_78[2] = 0x4ad950;
+        (**(code **)(*piVar4 + 0xc))();
+        aiStack_78[2] = 0x6e617452;
+        aiStack_78[1] = 0x4ad959;
+        piVar4 = (int *)(*pcVar2)();
+        iStack_60 = *piVar4;
+        aiStack_78[1] = 0x4ad967;
+        (**(code **)(iStack_60 + 0xc))();
+        aiStack_78[1] = 0x2b6c;
+        aiStack_78[0] = 0x2b6b;
+        ApplyUiTextStyleAndThemeFlags();
+        aiStack_78[1] = 0x2b6c;
+        aiStack_78[0] = 0x2b6b;
+        ApplyUiTextStyleAndThemeFlags();
+        aiStack_78[1] = 0;
+        aiStack_78[0] = 1;
         (**(code **)(unaff_EBP + 0x1c4))();
-        iVar4 = 0;
-        (**(code **)(iVar7 + 0x1c4))();
+        (**(code **)(aiStack_78[4] + 0x1c4))();
         InitializeOutSharedStringWithEmptyRefAndCopyBuffer();
-        (**(code **)((int)pvVar5 + 0x1c8))();
+        (**(code **)(iVar8 + 0x1c8))();
+        uStack_54 = 0xffffffff;
         ReleaseSharedStringRefIfNotEmpty();
         InitializeOutSharedStringWithEmptyRefAndCopyBuffer();
-        (**(code **)((int)pvVar6 + 0x1c8))();
+        uStack_54 = 1;
+        (**(code **)(aiStack_78[0] + 0x1c8))();
+        uStack_5c = 0xffffffff;
         ReleaseSharedStringRefIfNotEmpty();
         TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-                  ((TToolBarCluster *)&stack0xffffff68);
-        TToolBarCluster::InitializeAndRunMainRoutine();
-        pvVar5 = (void *)(*pcVar2)();
-        thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0x22,pvVar5);
-        (**(code **)(*(int *)g_pUiRuntimeContext + 0x44))(pvVar6);
-        (**(code **)(iVar4 + 0xf0))(&stack0xffffff88,0);
-        iVar7 = (**(code **)(iVar4 + 0x1b8))();
-        if (iVar7 != 0) {
-          *(undefined4 *)(iVar7 + 0x14) = 0x6f6b6179;
+                  (PTR_g_szEmptyString_0064dc30);
+        InitializeAndRunMainRoutine();
+        (*pcVar2)();
+        LoadUiStringByGroupAndIndexToControlObject(0x2730,0x22);
+        (**(code **)(*g_pUiRuntimeContext + 0x44))(aiStack_78[0]);
+        (*pcRam000000f0)(aiStack_78,0);
+        iVar8 = (*pcRam000001b8)();
+        if (iVar8 != 0) {
+          *(undefined4 *)(iVar8 + 0x14) = 0x6f6b6179;
         }
-        (**(code **)(iVar4 + 0x1ac))();
-        (**(code **)(iVar4 + 0xa0))();
-        (**(code **)(iVar4 + 0x1c))();
+        (*pcRam000001ac)();
+        (*pcRam000000a0)();
+        (*pcRam0000001c)();
         goto LAB_004adb34;
       }
     }
     else {
-      if (EVar1 == CONTROL_TAG_TAG_YAKO) {
-        (**(code **)(*(int *)g_pLocalizationTable + 0x44))();
+      if (uVar1 == 0x6f6b6179) {
+        (**(code **)(*g_pLocalizationTable + 0x44))();
         goto LAB_004adb34;
       }
-      if (EVar1 == 0x70726576) {
-        if (1 < *(int *)&this[0x43].field_0x24) {
-          pvVar5 = (void *)(**(code **)(**(int **)((int)g_pMapContextActionManager + 4) + 0x2c))();
-          TBattleReportView::thunk_RefreshMapContextSelectionPanelAndInfoLabels
-                    ((TBattleReportView *)this,pvVar5);
+      if (uVar1 == 0x70726576) {
+        if (1 < *(int *)(param_1 + 0x24c8)) {
+          (**(code **)(**(int **)(g_pMapContextActionManager + 4) + 0x2c))();
+          TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels();
         }
         goto LAB_004adb34;
       }
@@ -246,23 +173,18 @@ TBattleUnitsView::HandleMapContextPrevNextInfoCommands
   }
   thunk_HandleCityDialogToggleCommandOrForward();
 LAB_004adb34:
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0630
 // GHIDRA_NAME TBattleUnitsView::CreateTBattleUnitsViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTBattleUnitsViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TBattleUnitsView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTBattleUnitsViewInstance()
 
-/* [ClassQuad] create inferred for TBattleUnitsView; alloc factory pattern. */
-
-void * __cdecl TBattleUnitsView::CreateTBattleUnitsViewInstance(void)
+undefined4 * TBattleUnitsView::CreateTBattleUnitsViewInstance(void)
 
 {
-  TMilitaryPageView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -272,55 +194,44 @@ void * __cdecl TBattleUnitsView::CreateTBattleUnitsViewInstance(void)
   puStack_8 = &LAB_00630bca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
-  if (this != (TMilitaryPageView *)0x0) {
-    TMilitaryPageView::ConstructTMilitaryPageViewBaseState(this);
-    this[1].base.base.pVtable = (void *)0x0;
-    (this->base).base.pVtable = &PTR_thunk_GetTBattleUnitsViewClassNamePointer_00640940;
+  if (puVar1 != (undefined4 *)0x0) {
+    TMilitaryPageView::ConstructTMilitaryPageViewBaseState();
+    puVar1[0x22] = 0;
+    *puVar1 = &PTR_LAB_00640940;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B06D0
 // GHIDRA_NAME TBattleUnitsView::GetTBattleUnitsViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBattleUnitsViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBattleUnitsView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBattleUnitsViewClassNamePointer()
 
-/* Returns class descriptor pointer for TBattleUnitsView. */
-
-void * __cdecl TBattleUnitsView::GetTBattleUnitsViewClassNamePointer(void)
+undefined ** TBattleUnitsView::GetTBattleUnitsViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTBattleUnitsView;
+  return &PTR_s_TBattleUnitsView_0064dd40;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B06F0
 // GHIDRA_NAME TBattleUnitsView::ConstructTBattleUnitsViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTBattleUnitsViewBaseState(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] ctor inferred for TBattleUnitsView from in-body g_vtblTBattleUnitsView assignment/use.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTBattleUnitsViewBaseState()
 
-/* [ClassQuad] ctor inferred for TBattleUnitsView from in-body g_vtblTBattleUnitsView
-   assignment/use. */
-
-void * __thiscall
-TBattleUnitsView::ConstructTBattleUnitsViewBaseState(TBattleUnitsView *this,int arg1,int arg2)
+void __thiscall
+TBattleUnitsView::ConstructTBattleUnitsViewBaseState(int *param_1,int param_2,int param_3)
 
 {
   code *pcVar1;
-  TLineData *pThis;
-  void *pvVar2;
+  undefined4 *puVar2;
   int iVar3;
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
-  int local_14;
+  undefined4 uVar5;
+  undefined4 local_14;
   undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -330,26 +241,26 @@ TBattleUnitsView::ConstructTBattleUnitsViewBaseState(TBattleUnitsView *this,int 
   puStack_8 = &LAB_00630bfa;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  switch(*(undefined4 *)(arg1 + 4)) {
+  switch(*(undefined4 *)(param_2 + 4)) {
   case 0:
   case 3:
   case 4:
-    pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
-    this->dwField_84 = pvVar2;
+    iVar3 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdb8);
+    param_1[0x21] = iVar3;
     goto switchD_004b071e_default;
   case 1:
-    iVar3 = 0xdb8;
+    uVar5 = 0xdb8;
     break;
   case 2:
-    iVar3 = 0xdbb;
+    uVar5 = 0xdbb;
     break;
   default:
     goto switchD_004b071e_default;
   }
-  pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(iVar3);
-  this->dwField_84 = pvVar2;
-  pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
-  this->dwField_88 = pvVar2;
+  iVar3 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(uVar5);
+  param_1[0x21] = iVar3;
+  iVar3 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
+  param_1[0x22] = iVar3;
 switchD_004b071e_default:
   InitializeSharedStringRefFromEmpty();
   iVar4 = 0;
@@ -357,62 +268,56 @@ switchD_004b071e_default:
   InitializeSharedStringRefFromEmpty();
   iVar3 = 0;
   local_4._0_1_ = 1;
-  if (0 < *(short *)(arg1 + 0x24a + arg2 * 2)) {
-    pcVar1 = *(code **)((int)this->pVtable + 0x1a0);
+  if (0 < *(short *)(param_2 + 0x24a + param_3 * 2)) {
+    pcVar1 = *(code **)(*param_1 + 0x1a0);
     do {
-      pThis = AllocateWithFallbackHandler();
+      puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x18);
       local_4._0_1_ = 2;
-      if (pThis == (TLineData *)0x0) {
-        pThis = (TLineData *)0x0;
+      if (puVar2 == (undefined4 *)0x0) {
+        puVar2 = (undefined4 *)0x0;
       }
       else {
-        TLineData::ConstructTLineDataBaseState(pThis);
-        pThis->field0_0x0 = &g_vtblTBattleUnitsView;
+        TLineData::ConstructTLineDataBaseState();
+        *puVar2 = &PTR_LAB_0064e9d0;
       }
       local_4._0_1_ = 1;
       local_14 = 0xec;
       local_10 = 0x31;
-      TLineData::thunk_SetLineDataRowAndBounds(pThis,0,0,&local_14);
-      pThis->field10 = arg1;
-      *(int *)&pThis->field_0x14 = *(int *)(arg1 + 0x250 + arg2 * 4) + iVar4;
-      (*pcVar1)(pThis);
+      TLineData::SetLineDataRowAndBounds(0,0,&local_14);
+      puVar2[4] = param_2;
+      puVar2[5] = *(int *)(param_2 + 0x250 + param_3 * 4) + iVar4;
+      (*pcVar1)(puVar2);
       iVar3 = iVar3 + 1;
       iVar4 = iVar4 + 0x2c;
-    } while (iVar3 < *(short *)(arg1 + 0x24a + arg2 * 2));
+    } while (iVar3 < *(short *)(param_2 + 0x24a + param_3 * 2));
   }
   local_4 = (uint)local_4._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  pvVar2 = this->pVtable;
-  this->field88_0x64 = 1;
-  (**(code **)((int)pvVar2 + 0x1ac))();
-  pvVar2 = (void *)(**(code **)((int)pvVar2 + 0x1b0))(1);
+  iVar3 = *param_1;
+  *(undefined2 *)(param_1 + 0x19) = 1;
+  (**(code **)(iVar3 + 0x1ac))();
+  (**(code **)(iVar3 + 0x1b0))(1);
   *unaff_FS_OFFSET = local_10;
-  return pvVar2;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0900
 // GHIDRA_NAME TBattleUnitsView::DestructTBattleUnitsViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTBattleUnitsViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_DispatchVfuncA0ToLinkedChildListSlot44; instructions=23, call_insns=3, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTBattleUnitsViewAndMaybeFree()
 
-/* [WrapperShape] small wrapper around thunk_DispatchVfuncA0ToLinkedChildListSlot44;
-   instructions=23, call_insns=3, internal_calls=1, unique_internal=1 */
-
-void __thiscall TBattleUnitsView::DestructTBattleUnitsViewAndMaybeFree(TBattleUnitsView *this)
+void __fastcall TBattleUnitsView::DestructTBattleUnitsViewAndMaybeFree(int param_1)
 
 {
-  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
-  if (this->dwField_84 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-    this->dwField_84 = (void *)0x0;
+  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44();
+  if (*(int *)(param_1 + 0x84) != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50((undefined4 *)(param_1 + 0x84));
+    *(undefined4 *)(param_1 + 0x84) = 0;
   }
-  if (this->dwField_88 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
-    this->dwField_88 = (void *)0x0;
+  if (*(int *)(param_1 + 0x88) != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50((undefined4 *)(param_1 + 0x88));
+    *(undefined4 *)(param_1 + 0x88) = 0;
   }
   return;
 }

@@ -3,81 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TArmyBattle.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403715
-// GHIDRA_NAME TArmyBattle::thunk_CreateTArmyBattleInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTArmyBattleInstance(int battleCellIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to CheckArmyBattleRowParitySuppressionCondition. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to CheckArmyBattleRowParitySuppressionCondition. [FID:thunk_target_sync] */
-
-void __thiscall TArmyBattle::thunk_CreateTArmyBattleInstance(TArmyBattle *this,int battleCellIndex)
-
-{
-  uint uVar1;
-  
-  uVar1 = battleCellIndex / 0x1d;
-  if ((((uVar1 == 5) || (uVar1 == 7)) || (uVar1 == 9)) &&
-     ((int)((uVar1 & 1) + (battleCellIndex % 0x1d) * 2) / 2 == this->field34 + -6)) {
-    return;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408F4E
-// GHIDRA_NAME TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTArmyBattleBaseStateImpl(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [CtorChain] Single-JMP thunk to ConstructTArmyBattleBaseStateImpl.
-// GHIDRA_COMMENT_END
-
-/* [CtorChain] Single-JMP thunk to ConstructTArmyBattleBaseStateImpl. */
-
-void * __thiscall TArmyBattle::thunk_ConstructTArmyBattleBaseStateImpl(TArmyBattle *this)
-
-{
-  undefined4 *puVar1;
-  void *extraout_EAX;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006385c2;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = AllocateWithFallbackHandler();
-  if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &g_vtblRefCountedObjectBase;
-    uStack_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
-    *puVar1 = &g_vtblTArmyBattle;
-    this->pField20 = puVar1;
-    *unaff_FS_OFFSET = uStack_c;
-    return extraout_EAX;
-  }
-  this->pField20 = (void *)0x0;
-  *unaff_FS_OFFSET = uStack_c;
-  return (void *)0x0;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F7F0
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseStateImpl
-// GHIDRA_PROTO void * __thiscall ConstructTArmyBattleBaseStateImpl(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [CtorChain] Real implementation behind 0x005a4770 -> 0x00408f4e thunk chain; allocates 0x20 bytes, installs g_vtblTArmyBattle, stores at this+0x20.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTArmyBattleBaseStateImpl()
 
-/* [CtorChain] Real implementation behind 0x005a4770 -> 0x00408f4e thunk chain; allocates 0x20
-   bytes, installs g_vtblTArmyBattle, stores at this+0x20. */
-
-void * __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *this)
+void __fastcall TArmyBattle::ConstructTArmyBattleBaseStateImpl(int param_1)
 
 {
   undefined4 *puVar1;
-  void *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -87,73 +20,58 @@ void * __thiscall TArmyBattle::ConstructTArmyBattleBaseStateImpl(TArmyBattle *th
   puStack_8 = &LAB_006385c2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &g_vtblRefCountedObjectBase;
+    *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
-    *puVar1 = &g_vtblTArmyBattle;
-    this->pField20 = puVar1;
+    TGreatPower::CPtrList(10);
+    *puVar1 = &TList::_vftable_;
+    *(undefined4 **)(param_1 + 0x20) = puVar1;
     *unaff_FS_OFFSET = local_c;
-    return extraout_EAX;
+    return;
   }
-  this->pField20 = (void *)0x0;
+  *(undefined4 *)(param_1 + 0x20) = 0;
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4690
 // GHIDRA_NAME TArmyBattle::CreateTArmyBattleInstance
-// GHIDRA_PROTO void __thiscall CreateTArmyBattleInstance(int battleCellIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Evaluates army-battle row/parity suppression condition for a board index (no-op hook in current build).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTArmyBattleInstance()
 
-/* Evaluates army-battle row/parity suppression condition for a board index (no-op hook in current
-   build). */
-
-void __thiscall TArmyBattle::CreateTArmyBattleInstance(TArmyBattle *this,int battleCellIndex)
+uint __thiscall TArmyBattle::CreateTArmyBattleInstance(int param_1,int param_2)
 
 {
   uint uVar1;
+  uint uVar2;
   
-  uVar1 = battleCellIndex / 0x1d;
+  uVar1 = param_2 / 0x1d;
+  uVar2 = (uVar1 & 1) + (param_2 % 0x1d) * 2;
   if ((((uVar1 == 5) || (uVar1 == 7)) || (uVar1 == 9)) &&
-     ((int)((uVar1 & 1) + (battleCellIndex % 0x1d) * 2) / 2 == this->field34 + -6)) {
-    return;
+     (uVar2 = (int)uVar2 / 2, uVar2 == *(int *)(param_1 + 0x34) - 6U)) {
+    return CONCAT31((int3)(uVar2 >> 8),1);
   }
-  return;
+  return uVar2 & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4750
 // GHIDRA_NAME TArmyBattle::GetTArmyBattleClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmyBattleClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmyBattle.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmyBattleClassNamePointer()
 
-/* Returns class descriptor pointer for TArmyBattle. */
-
-void * __cdecl TArmyBattle::GetTArmyBattleClassNamePointer(void)
+undefined ** TArmyBattle::GetTArmyBattleClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmyBattle;
+  return &PTR_s_TArmyBattle_00669e18;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A4770
 // GHIDRA_NAME TArmyBattle::ConstructTArmyBattleBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTArmyBattleBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] ctor inferred for TArmyBattle from in-body g_vtblTArmyBattle assignment/use.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTArmyBattleBaseState()
 
-/* [ClassQuad] ctor inferred for TArmyBattle from in-body g_vtblTArmyBattle assignment/use. */
-
-void * __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
+void __fastcall TArmyBattle::ConstructTArmyBattleBaseState(int param_1)
 
 {
   undefined4 *puVar1;
-  void *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -163,18 +81,18 @@ void * __thiscall TArmyBattle::ConstructTArmyBattleBaseState(TArmyBattle *this)
   puStack_8 = &LAB_006385c2;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &g_vtblRefCountedObjectBase;
+    *puVar1 = &RefCountedObjectBase::_vftable_;
     uStack_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
-    *puVar1 = &g_vtblTArmyBattle;
-    this->pField20 = puVar1;
+    TGreatPower::CPtrList(10);
+    *puVar1 = &TList::_vftable_;
+    *(undefined4 **)(param_1 + 0x20) = puVar1;
     *unaff_FS_OFFSET = uStack_c;
-    return extraout_EAX;
+    return;
   }
-  this->pField20 = (void *)0x0;
+  *(undefined4 *)(param_1 + 0x20) = 0;
   *unaff_FS_OFFSET = uStack_c;
-  return (void *)0x0;
+  return;
 }
 

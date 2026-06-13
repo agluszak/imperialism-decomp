@@ -3,71 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TDefenseMinisterView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406523
-// GHIDRA_NAME TDefenseMinisterView::thunk_GetTDefenseMinisterViewClassNamePointer_At00406523
-// GHIDRA_PROTO void * __cdecl thunk_GetTDefenseMinisterViewClassNamePointer_At00406523(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDefenseMinisterViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDefenseMinisterViewClassNamePointer */
-
-void * __cdecl TDefenseMinisterView::thunk_GetTDefenseMinisterViewClassNamePointer_At00406523(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDefenseMinisterViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407CD4
-// GHIDRA_NAME TDefenseMinisterView::thunk_DestructTDefenseMinisterViewAndMaybeFree_At00407cd4
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDefenseMinisterViewAndMaybeFree_At00407cd4(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDefenseMinisterViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDefenseMinisterViewAndMaybeFree */
-
-void * __thiscall
-TDefenseMinisterView::thunk_DestructTDefenseMinisterViewAndMaybeFree_At00407cd4
-          (TDefenseMinisterView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDefenseMinisterViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040811B
-// GHIDRA_NAME TDefenseMinisterView::thunk_DispatchEngineerDialogCommandTagsByEventCode_At0040811b
-// GHIDRA_PROTO void __thiscall thunk_DispatchEngineerDialogCommandTagsByEventCode_At0040811b(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DispatchEngineerDialogCommandTagsByEventCode
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DispatchEngineerDialogCommandTagsByEventCode */
-
-void __thiscall
-TDefenseMinisterView::thunk_DispatchEngineerDialogCommandTagsByEventCode_At0040811b
-          (TDefenseMinisterView *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent)
-
-{
-  TInteriorMinisterView::DispatchEngineerDialogCommandTagsByEventCode
-            ((TInteriorMinisterView *)this,eventCode,pPanelEvent);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3240
 // GHIDRA_NAME TDefenseMinisterView::CreateTDefenseMinisterViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTDefenseMinisterViewInstance(void)
+// GHIDRA_PROTO undefined CreateTDefenseMinisterViewInstance()
 
-void * __cdecl TDefenseMinisterView::CreateTDefenseMinisterViewInstance(void)
+undefined4 * TDefenseMinisterView::CreateTDefenseMinisterViewInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -77,61 +20,55 @@ void * __cdecl TDefenseMinisterView::CreateTDefenseMinisterViewInstance(void)
   puStack_8 = &LAB_00632a4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this[1].pVtable = (void *)0x0;
-    this->pVtable = &g_vtblTDefenseMinisterView;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    puVar1[0x18] = 0;
+    *puVar1 = &PTR_LAB_00655518;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F32D0
 // GHIDRA_NAME TDefenseMinisterView::GetTDefenseMinisterViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDefenseMinisterViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDefenseMinisterView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDefenseMinisterViewClassNamePointer()
 
-/* Returns class descriptor pointer for TDefenseMinisterView. */
-
-void * __cdecl TDefenseMinisterView::GetTDefenseMinisterViewClassNamePointer(void)
+undefined ** TDefenseMinisterView::GetTDefenseMinisterViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTDefenseMinisterView;
+  return &PTR_s_TDefenseMinisterView_00654f00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F32F0
 // GHIDRA_NAME TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTDefenseMinisterViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTDefenseMinisterViewBaseState()
 
-void * __thiscall
-TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState(TDefenseMinisterView *this)
+undefined4 * __fastcall
+TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  this->field60 = 0;
-  (this->base).pVtable = &g_vtblTDefenseMinisterView;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  param_1[0x18] = 0;
+  *param_1 = &PTR_LAB_00655518;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3320
 // GHIDRA_NAME TDefenseMinisterView::DestructTDefenseMinisterViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDefenseMinisterViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDefenseMinisterViewAndMaybeFree()
 
-void * __thiscall
-TDefenseMinisterView::DestructTDefenseMinisterViewAndMaybeFree
-          (TDefenseMinisterView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TDefenseMinisterView::DestructTDefenseMinisterViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

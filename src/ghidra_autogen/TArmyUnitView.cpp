@@ -3,71 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TArmyUnitView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405D4E
-// GHIDRA_NAME TArmyUnitView::thunk_GetTArmyUnitViewClassNamePointer_At00405d4e
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyUnitViewClassNamePointer_At00405d4e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTArmyUnitViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTArmyUnitViewClassNamePointer */
-
-void * __cdecl TArmyUnitView::thunk_GetTArmyUnitViewClassNamePointer_At00405d4e(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTArmyUnitViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405D8F
-// GHIDRA_NAME TArmyUnitView::thunk_DestructTArmyUnitViewAndMaybeFree_At00405d8f
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyUnitViewAndMaybeFree_At00405d8f(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTArmyUnitViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTArmyUnitViewAndMaybeFree */
-
-void * __thiscall
-TArmyUnitView::thunk_DestructTArmyUnitViewAndMaybeFree_At00405d8f
-          (TArmyUnitView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTArmyUnitViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409903
-// GHIDRA_NAME TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch_At00409903
-// GHIDRA_PROTO void __thiscall thunk_HandleCrossUArmyViewsCommandTagDispatch_At00409903(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleCrossUArmyViewsCommandTagDispatch
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleCrossUArmyViewsCommandTagDispatch */
-
-void __thiscall
-TArmyUnitView::thunk_HandleCrossUArmyViewsCommandTagDispatch_At00409903
-          (TArmyUnitView *this,int arg1,int arg2)
-
-{
-  HandleCrossUArmyViewsCommandTagDispatch(this,arg1,arg2);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9450
 // GHIDRA_NAME TArmyUnitView::CreateTArmyUnitViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTArmyUnitViewInstance(void)
+// GHIDRA_PROTO undefined CreateTArmyUnitViewInstance()
 
-void * __cdecl TArmyUnitView::CreateTArmyUnitViewInstance(void)
+undefined4 * TArmyUnitView::CreateTArmyUnitViewInstance(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -77,63 +21,58 @@ void * __cdecl TArmyUnitView::CreateTArmyUnitViewInstance(void)
   puStack_8 = &LAB_0063040a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTArmyUnitView;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_0064d100;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A94C0
 // GHIDRA_NAME TArmyUnitView::GetTArmyUnitViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmyUnitViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmyUnitView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmyUnitViewClassNamePointer()
 
-/* Returns class descriptor pointer for TArmyUnitView. */
-
-void * __cdecl TArmyUnitView::GetTArmyUnitViewClassNamePointer(void)
+undefined ** TArmyUnitView::GetTArmyUnitViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmyUnitView;
+  return &PTR_s_TArmyUnitView_0064cb50;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A94E0
 // GHIDRA_NAME TArmyUnitView::ConstructTArmyUnitViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTArmyUnitViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTArmyUnitViewBaseState()
 
-void * __thiscall TArmyUnitView::ConstructTArmyUnitViewBaseState(TArmyUnitView *this)
+undefined4 * __fastcall TArmyUnitView::ConstructTArmyUnitViewBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTArmyUnitView;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_0064d100;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9510
 // GHIDRA_NAME TArmyUnitView::DestructTArmyUnitViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTArmyUnitViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTArmyUnitViewAndMaybeFree()
 
-void * __thiscall
-TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(TArmyUnitView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9990
 // GHIDRA_NAME TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch
-// GHIDRA_PROTO void __thiscall HandleCrossUArmyViewsCommandTagDispatch(int arg1, int arg2)
+// GHIDRA_PROTO undefined HandleCrossUArmyViewsCommandTagDispatch()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches Cross_UArmyViews command tags.
 // GHIDRA_COMMENT - Handles 'chec' by cycling/checking selected entry and then calling g_pUiRuntimeContext vfunc +0x48 with a computed state code.
@@ -155,86 +94,81 @@ TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(TArmyUnitView *this,byte freeSe
    dispatch producer. */
 
 void __thiscall
-TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch(TArmyUnitView *this,int arg1,int arg2)
+TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch
+          (int *param_1,undefined4 param_2,int *param_3,undefined4 param_4)
 
 {
   int iVar1;
-  char extraout_AL;
-  ushort uVar2;
-  int *piVar3;
-  undefined4 extraout_EAX;
+  char cVar2;
+  ushort uVar3;
+  int *piVar4;
+  undefined4 uVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
+  piVar4 = param_3;
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630448;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar1 = *(int *)(arg2 + 0x1c);
+  iVar1 = param_3[7];
   if (iVar1 == 0x63686563) {
-    uVar2 = GetAsyncKeyState(0x11);
-    piVar3 = this->field60;
-    if ((uVar2 & 0x8000) == 0) {
-      if (piVar3[2] == 0) {
-        (**(code **)(*piVar3 + 0x34))();
+    uVar3 = GetAsyncKeyState(0x11);
+    piVar4 = (int *)param_1[0x18];
+    if ((uVar3 & 0x8000) == 0) {
+      if (piVar4[2] == 0) {
+        (**(code **)(*piVar4 + 0x34))();
       }
       else {
-        (**(code **)(*piVar3 + 0x34))();
+        (**(code **)(*piVar4 + 0x34))();
       }
     }
-    else if (piVar3[2] != 0xe) {
-      (**(code **)(*piVar3 + 0x34))();
+    else if (piVar4[2] != 0xe) {
+      (**(code **)(*piVar4 + 0x34))();
     }
-    local_1c = 0x40;
-    local_18 = 0x18;
-    local_14 = 0x108;
-    local_10 = 0x24;
-    thunk_InvalidateCityDialogRectRegion((int)&local_1c,1);
-    piVar3 = *(int **)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0xb0 +
-                      *(short *)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0x96) * 4);
-    if (piVar3 != (int *)0x0) {
-      piVar3 = (int *)(**(code **)(*piVar3 + 0x94))();
-      (**(code **)(*piVar3 + 0x1c4))();
-      (**(code **)(*(int *)g_pUiRuntimeContext + 0x48))();
+    thunk_InvalidateCityDialogRectRegion();
+    piVar4 = *(int **)(g_pUiRuntimeContext[0x3c] + 0xb0 +
+                      *(short *)(g_pUiRuntimeContext[0x3c] + 0x96) * 4);
+    if (piVar4 != (int *)0x0) {
+      piVar4 = (int *)(**(code **)(*piVar4 + 0x94))();
+      (**(code **)(*piVar4 + 0x1c4))();
+      (**(code **)(*g_pUiRuntimeContext + 0x48))();
     }
   }
   else if (iVar1 == 0x75706772) {
-    ApplyEraCapabilityCostAndSetSelection();
-    if (extraout_AL == '\0') {
+    cVar2 = ApplyEraCapabilityCostAndSetSelection();
+    if (cVar2 == '\0') {
       InitializeSharedStringRefFromEmpty();
       local_4 = 0;
-      (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-      thunk_AssignStringSharedRefAndReturnThis();
+      (**(code **)(*g_pLocalizationTable + 0x84))();
+      thunk_AssignStringSharedRefAndReturnThis(&param_3);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
     }
     else {
-      (**(code **)(*(int *)arg2 + 0xa4))();
-      piVar3 = (int *)(**(code **)((int)(this->base).pVtable + 0x94))();
-      if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
+      (**(code **)(*piVar4 + 0xa4))();
+      piVar4 = (int *)(**(code **)(*param_1 + 0x94))();
+      if (piVar4 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UArmyViews_cpp_00695858)
+        ;
       }
-      piVar3[0x22] = (piVar3[0x23] + (short)this->field60[1] * 2) * 0x40;
-      (**(code **)(*piVar3 + 0xe4))();
-      piVar3 = (int *)(**(code **)(**(int **)((int)g_pDisplayManager + 4) + 0x94))();
-      iVar1 = *piVar3;
+      piVar4[0x22] = (piVar4[0x23] + *(short *)(param_1[0x18] + 4) * 2) * 0x40;
+      (**(code **)(*piVar4 + 0xe4))();
+      piVar4 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
+      iVar1 = *piVar4;
       (**(code **)(iVar1 + 0xc))();
-      thunk_GetActiveNationId();
-      (**(code **)(iVar1 + 0x1d0))(extraout_EAX);
+      uVar5 = UiRuntimeContext::GetActiveNationId();
+      (**(code **)(iVar1 + 0x1d0))(uVar5);
     }
   }
   else if (iVar1 == 0x6e616d65) {
     thunk_HandleCrossUArmyViewsNameCommand();
   }
-  TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+  thunk_ForwardEngineerDialogCommandToChildSlot40();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

@@ -3,109 +3,78 @@
 // Program: Imperialism.exe
 // Bucket: CBrush.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040381E
-// GHIDRA_NAME CBrush::thunk_InitializeGlobalClipRegionHandleState
-// GHIDRA_PROTO void __thiscall thunk_InitializeGlobalClipRegionHandleState(void)
-
-void __thiscall CBrush::thunk_InitializeGlobalClipRegionHandleState(CBrush *this)
-
-{
-  CBrush *this_00;
-  
-  *(void ***)(this + 1) = &g_DefaultQuickDrawSurfaceContext;
-  this_00 = AllocateWithFallbackHandler();
-  if (this_00 == (CBrush *)0x0) {
-    this_00 = (CBrush *)0x0;
-  }
-  else {
-    this_00->field4_0x4 = 0;
-    *(undefined ***)this_00 = &PTR_LAB_0067106c;
-  }
-  g_pGlobalClipRegionHandleObject = this_00;
-  CreateRectRgn(0,0,0,0);
-  AttachRegionHandleToClipStateAndRegister(this_00);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00494040
 // GHIDRA_NAME CBrush::InitializeGlobalClipRegionHandleState
-// GHIDRA_PROTO void __thiscall InitializeGlobalClipRegionHandleState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [CalleeHint] initializes global clip-region state object and attaches empty RectRgn handle.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeGlobalClipRegionHandleState()
 
-/* [CalleeHint] initializes global clip-region state object and attaches empty RectRgn handle. */
-
-void __thiscall CBrush::InitializeGlobalClipRegionHandleState(CBrush *this)
+int __fastcall CBrush::InitializeGlobalClipRegionHandleState(int param_1)
 
 {
-  CBrush *this_00;
+  HRGN pHVar1;
   
-  *(void ***)(this + 1) = &g_DefaultQuickDrawSurfaceContext;
-  this_00 = AllocateWithFallbackHandler();
-  if (this_00 == (CBrush *)0x0) {
-    this_00 = (CBrush *)0x0;
+  *(undefined **)(param_1 + 8) = &DAT_006a1ca0;
+  g_pGlobalClipRegionHandleObject = AllocateWithFallbackHandler(8);
+  if ((undefined4 *)g_pGlobalClipRegionHandleObject == (undefined4 *)0x0) {
+    g_pGlobalClipRegionHandleObject = 0;
   }
   else {
-    this_00->field4_0x4 = 0;
-    *(undefined ***)this_00 = &PTR_LAB_0067106c;
+    *(undefined4 *)(g_pGlobalClipRegionHandleObject + 4) = 0;
+    *(undefined ***)g_pGlobalClipRegionHandleObject = &_vftable_;
   }
-  g_pGlobalClipRegionHandleObject = this_00;
-  CreateRectRgn(0,0,0,0);
-  AttachRegionHandleToClipStateAndRegister(this_00);
-  return;
+  pHVar1 = CreateRectRgn(0,0,0,0);
+  AttachRegionHandleToClipStateAndRegister(pHVar1);
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004955B0
 // GHIDRA_NAME CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0
-// GHIDRA_PROTO void __thiscall Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [CalleeAnchor] unresolved Cluster_* renamed with named-callee anchor; named_callee_count=2; anchor=AttachRegionHandleToClipStateAndRegister; sample=AttachRegionHandleToClipStateAndRegister;DeleteRegionHandleFromClipState
-// GHIDRA_COMMENT_END
-
-/* [CalleeAnchor] unresolved Cluster_* renamed with named-callee anchor; named_callee_count=2;
-   anchor=AttachRegionHandleToClipStateAndRegister;
-   sample=AttachRegionHandleToClipStateAndRegister;DeleteRegionHandleFromClipState */
+// GHIDRA_PROTO undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0()
 
 void __thiscall
-CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(CBrush *this)
+CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(int param_1,RECT *param_2)
 
 {
-  bool bVar1;
-  undefined3 extraout_var;
-  RECT *in_stack_00000004;
+  HRGN pHVar1;
+  undefined4 uVar2;
   
-  if (*(int *)(this + 2) != 0) {
+  if (*(int *)(param_1 + 0x10) != 0) {
     DeleteObject();
   }
-  CreateRectRgnIndirect(in_stack_00000004);
-  bVar1 = AttachRegionHandleToClipStateAndRegister((CBrush *)&this[2].field4_0x4);
-  *(uint *)(this + 2) = CONCAT31(extraout_var,bVar1);
+  pHVar1 = CreateRectRgnIndirect(param_2);
+  uVar2 = AttachRegionHandleToClipStateAndRegister(pHVar1);
+  *(undefined4 *)(param_1 + 0x10) = uVar2;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E6EA2
+// GHIDRA_NAME CBrush::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall CBrush::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  CGdiObject::~CGdiObject();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613A4C
 // GHIDRA_NAME CBrush::AttachRegionHandleToClipStateAndRegister
-// GHIDRA_PROTO bool __thiscall AttachRegionHandleToClipStateAndRegister(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Attaches region handle to clip-state wrapper and registers mapping entry.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined AttachRegionHandleToClipStateAndRegister()
 
-/* Attaches region handle to clip-state wrapper and registers mapping entry. */
-
-bool __thiscall CBrush::AttachRegionHandleToClipStateAndRegister(CBrush *this)
+bool __thiscall CBrush::AttachRegionHandleToClipStateAndRegister(int param_1,int param_2)
 
 {
-  TNetMgr *this_00;
   int *piVar1;
-  int in_stack_00000004;
   
-  if (in_stack_00000004 != 0) {
-    this_00 = afxMapHIMAGELIST_6139c6();
-    this->field4_0x4 = in_stack_00000004;
-    piVar1 = TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00);
-    *piVar1 = (int)this;
+  if (param_2 != 0) {
+    afxMapHIMAGELIST_6139c6(1);
+    *(int *)(param_1 + 4) = param_2;
+    piVar1 = (int *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(param_2);
+    *piVar1 = param_1;
   }
-  return in_stack_00000004 != 0;
+  return param_2 != 0;
 }
 

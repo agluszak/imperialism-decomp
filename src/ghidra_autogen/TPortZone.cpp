@@ -5,13 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005615E0
 // GHIDRA_NAME TPortZone::CreateTPortZone
-// GHIDRA_PROTO TPortZone * __cdecl CreateTPortZone(void)
+// GHIDRA_PROTO undefined CreateTPortZone()
 
-TPortZone * __cdecl TPortZone::CreateTPortZone(void)
+undefined4 * TPortZone::CreateTPortZone(void)
 
 {
-  TZone *this;
-  TZone *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,29 +21,24 @@ TPortZone * __cdecl TPortZone::CreateTPortZone(void)
   puStack_8 = &LAB_006357ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x4c);
   local_4 = 0;
-  pTVar1 = (TZone *)0x0;
-  if (this != (TZone *)0x0) {
-    TZone::thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList(this);
-    this->field48 = -1;
-    this->field0_0x0 = &PTR_thunk_GetTPortZoneClassNamePointer_0065c758;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList();
+    *(undefined2 *)(puVar1 + 0x12) = 0xffff;
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TPortZone *)pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005617D0
 // GHIDRA_NAME TPortZone::GetTPortZoneClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPortZoneClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPortZone.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPortZoneClassNamePointer()
 
-/* Returns class descriptor pointer for TPortZone. */
-
-void * __cdecl TPortZone::GetTPortZoneClassNamePointer(void)
+char * TPortZone::GetTPortZoneClassNamePointer(void)
 
 {
   return &g_pClassDescTPortZone;
@@ -51,9 +46,9 @@ void * __cdecl TPortZone::GetTPortZoneClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005618B0
 // GHIDRA_NAME TPortZone::RefreshTPortZoneDisplayNameFromLocalization
-// GHIDRA_PROTO void __thiscall RefreshTPortZoneDisplayNameFromLocalization(void)
+// GHIDRA_PROTO undefined RefreshTPortZoneDisplayNameFromLocalization()
 
-void __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(TPortZone *this)
+void __fastcall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(int param_1)
 
 {
   undefined4 unaff_ESI;
@@ -76,10 +71,10 @@ void __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(TPortZone
   InitializeSharedStringRefFromEmpty();
   puStack_20 = &local_10;
   local_4 = CONCAT31(local_4._1_3_,1);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))
-            (0x275a,CONCAT22((short)((uint)puStack_20 >> 0x10),this->field1_0x4));
+  (**(code **)(*g_pLocalizationTable + 0x84))
+            (0x275a,CONCAT22((short)((uint)puStack_20 >> 0x10),*(undefined2 *)(param_1 + 4)));
   scanBracketExpressions(g_pLocalizationTable,&puStack_20,unaff_EDI);
-  AssignFromPtr(&this->field4_0x8,(int *)&puStack_20);
+  AssignFromPtr((void *)(param_1 + 8),(int *)&puStack_20);
   local_10 = local_10 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
   local_10 = 0xffffffff;
@@ -90,40 +85,30 @@ void __thiscall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(TPortZone
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005621E0
 // GHIDRA_NAME TPortZone::DestroyTPortZoneManagerAndPurgePortZones
-// GHIDRA_PROTO void __thiscall DestroyTPortZoneManagerAndPurgePortZones(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Destroys manager-owned port-zone array, unlinks surviving zone contexts, and purges residual TPortZone nodes from global list.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestroyTPortZoneManagerAndPurgePortZones()
 
-/* Destroys manager-owned port-zone array, unlinks surviving zone contexts, and purges residual
-   TPortZone nodes from global list. */
-
-void __thiscall TPortZone::DestroyTPortZoneManagerAndPurgePortZones(TPortZone *this)
+void __fastcall TPortZone::DestroyTPortZoneManagerAndPurgePortZones(int *param_1)
 
 {
-  LinkedListQueryOwner *this_00;
-  bool bVar1;
+  int *piVar1;
   void *pvVar2;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
   int iVar3;
   int iVar4;
-  LinkedListQueryOwner *this_01;
   
-  if (g_pNavyOrderManager != (void *)0x0) {
-    thunk_ResetPrimaryOrderActiveFlagsAndClearManagerState();
+  if (g_pNavyOrderManager != 0) {
+    ResetPrimaryOrderActiveFlagsAndClearManagerState();
   }
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
-    FreeHeapBufferIfNotNull();
+    FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
-    g_TPort_Zone_Manager_State_006984B4 = -1;
+    DAT_006984b4 = 0xffffffff;
     g_nMapActionContextCount = 0;
   }
   iVar3 = 0;
-  if (0 < this->field1_0x4) {
+  if (0 < (short)param_1[1]) {
     iVar4 = 0;
     do {
-      pvVar2 = (void *)((int)this->field4_0x8 + iVar4);
+      pvVar2 = (void *)(param_1[2] + iVar4);
       if (g_pMapActionContextListHead == pvVar2) {
         g_pMapActionContextListHead = *(void **)((int)pvVar2 + 0x18);
       }
@@ -137,29 +122,28 @@ void __thiscall TPortZone::DestroyTPortZoneManagerAndPurgePortZones(TPortZone *t
       *(undefined4 *)((int)pvVar2 + 0x18) = 0;
       iVar3 = iVar3 + 1;
       iVar4 = iVar4 + 0x48;
-    } while (iVar3 < this->field1_0x4);
+    } while (iVar3 < (short)param_1[1]);
   }
-  if (this->field4_0x8 != (int *)0x0) {
-    (**(code **)(*this->field4_0x8 + 4))(3);
+  if ((int *)param_1[2] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[2] + 4))(3);
   }
-  while (this_01 = g_pMapActionContextListHead, g_pMapActionContextListHead != (void *)0x0) {
+  while (pvVar2 = g_pMapActionContextListHead, g_pMapActionContextListHead != (void *)0x0) {
     do {
-      bVar1 = LinkedListQueryOwner::IsKindOf(this_01);
-      if (CONCAT31(extraout_var,bVar1) != 0) break;
-      this_01 = *(LinkedListQueryOwner **)&this_01->field_0x18;
-    } while (this_01 != (LinkedListQueryOwner *)0x0);
-    this_00 = g_pMapActionContextListHead;
-    if (this_01 == (LinkedListQueryOwner *)0x0) break;
-    while ((this_00 != (LinkedListQueryOwner *)0x0 &&
-           (bVar1 = LinkedListQueryOwner::IsKindOf(this_00), CONCAT31(extraout_var_00,bVar1) == 0)))
-    {
-      this_00 = *(LinkedListQueryOwner **)&this_00->field_0x18;
+      iVar3 = CObject::IsKindOf(&g_pClassDescTPortZone);
+      if (iVar3 != 0) break;
+      pvVar2 = *(void **)((int)pvVar2 + 0x18);
+    } while (pvVar2 != (void *)0x0);
+    piVar1 = g_pMapActionContextListHead;
+    if (pvVar2 == (void *)0x0) break;
+    while ((piVar1 != (int *)0x0 && (iVar3 = CObject::IsKindOf(&g_pClassDescTPortZone), iVar3 == 0))
+          ) {
+      piVar1 = (int *)piVar1[6];
     }
-    (*(code *)this_00->field0_0x0[7])();
+    (**(code **)(*piVar1 + 0x1c))();
   }
-  FreeHeapBufferIfNotNull();
-  if (this != (TPortZone *)0x0) {
-    (**(code **)((int)this->pVtable + 4))(1);
+  FreeHeapBufferIfNotNull(param_1[4]);
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
   }
   return;
 }

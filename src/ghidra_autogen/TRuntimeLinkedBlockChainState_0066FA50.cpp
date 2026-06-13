@@ -3,88 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TRuntimeLinkedBlockChainState_0066FA50.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004056E6
-// GHIDRA_NAME TRuntimeLinkedBlockChainState_0066FA50::thunk_InitializeRuntimeClassVtablePointer_0066FA50_State_At004056e6
-// GHIDRA_PROTO void __thiscall thunk_InitializeRuntimeClassVtablePointer_0066FA50_State_At004056e6(uint arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeRuntimeClassVtablePointer_0066FA50_State
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeRuntimeClassVtablePointer_0066FA50_State */
-
-void __thiscall
-TRuntimeLinkedBlockChainState_0066FA50::
-thunk_InitializeRuntimeClassVtablePointer_0066FA50_State_At004056e6
-          (TRuntimeLinkedBlockChainState_0066FA50 *this,uint arg1)
-
-{
-  this->nNodeCount_0C = 0;
-  this->nNodeCapacity_10 = 0;
-  this->pNodeTail_08 = (void *)0x0;
-  this->pNodeHead_04 = (void *)0x0;
-  this->pNodeBlockChainHead_14 = (void *)0x0;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_LinkedBlockChainState_0066FA50;
-  this->nNodesPerBlock_18 = arg1;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2705
 // GHIDRA_NAME TRuntimeLinkedBlockChainState_0066FA50::thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// GHIDRA_PROTO void __thiscall thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeLinkedBlockChain_At005e4580 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580()
 
-/* Single-JMP thunk to WrapperFor_FreeLinkedBlockChain_At005e4580 [FID:thunk_target_sync] */
-
-void __thiscall
-TRuntimeLinkedBlockChainState_0066FA50::
-thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-          (TRuntimeLinkedBlockChainState_0066FA50 *this)
+void TRuntimeLinkedBlockChainState_0066FA50::
+     thunk_DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
 
 {
-  DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
+  DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4540
 // GHIDRA_NAME TRuntimeLinkedBlockChainState_0066FA50::InitializeRuntimeClassVtablePointer_0066FA50_State
-// GHIDRA_PROTO void __thiscall InitializeRuntimeClassVtablePointer_0066FA50_State(uint arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes object state fields to zero and sets runtime class/vtable pointer root at 0x0066FA50.
-// GHIDRA_COMMENT_END
-
-/* Initializes object state fields to zero and sets runtime class/vtable pointer root at 0x0066FA50.
-    */
+// GHIDRA_PROTO undefined InitializeRuntimeClassVtablePointer_0066FA50_State()
 
 void __thiscall
 TRuntimeLinkedBlockChainState_0066FA50::InitializeRuntimeClassVtablePointer_0066FA50_State
-          (TRuntimeLinkedBlockChainState_0066FA50 *this,uint arg1)
+          (undefined4 *param_1,undefined4 param_2)
 
 {
-  this->nNodeCount_0C = 0;
-  this->nNodeCapacity_10 = 0;
-  this->pNodeTail_08 = (void *)0x0;
-  this->pNodeHead_04 = (void *)0x0;
-  this->pNodeBlockChainHead_14 = (void *)0x0;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_LinkedBlockChainState_0066FA50;
-  this->nNodesPerBlock_18 = arg1;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[1] = 0;
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_0066fa50;
+  param_1[6] = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4580
 // GHIDRA_NAME TRuntimeLinkedBlockChainState_0066FA50::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-// GHIDRA_PROTO void __thiscall DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [RuntimePtrWrapper] Sets runtime ptr 0066FA50, frees linked chain, restores base runtime ptr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580()
 
-/* [RuntimePtrWrapper] Sets runtime ptr 0066FA50, frees linked chain, restores base runtime ptr. */
-
-void __thiscall
+void __fastcall
 TRuntimeLinkedBlockChainState_0066FA50::
-DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
-          (TRuntimeLinkedBlockChainState_0066FA50 *this)
+DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(undefined4 *param_1)
 
 {
   undefined4 *puVar1;
@@ -96,18 +52,18 @@ DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
   puStack_8 = &LAB_0063aa58;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_LinkedBlockChainState_0066FA50;
-  puVar1 = this->pNodeHead_04;
+  *param_1 = &PTR_GetCObjectRuntimeClass_0066fa50;
+  puVar1 = (undefined4 *)param_1[1];
   local_4 = 0;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  this->nNodeCount_0C = 0;
-  this->nNodeCapacity_10 = 0;
-  this->pNodeTail_08 = (void *)0x0;
-  this->pNodeHead_04 = (void *)0x0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[1] = 0;
   FreeDataChain();
-  this->pNodeBlockChainHead_14 = (void *)0x0;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

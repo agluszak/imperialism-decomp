@@ -3,119 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TFileBasedDocument.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403A12
-// GHIDRA_NAME TFileBasedDocument::thunk_GetTCommandHandlerClassNamePointer_At00403a12
-// GHIDRA_PROTO void * __cdecl thunk_GetTCommandHandlerClassNamePointer_At00403a12(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCommandHandlerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCommandHandlerClassNamePointer */
-
-void * __cdecl TFileBasedDocument::thunk_GetTCommandHandlerClassNamePointer_At00403a12(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TCommandHandler::GetTCommandHandlerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004045BB
-// GHIDRA_NAME TFileBasedDocument::thunk_DestructTFileBasedDocumentAndMaybeFree_At004045bb
-// GHIDRA_PROTO void * __thiscall thunk_DestructTFileBasedDocumentAndMaybeFree_At004045bb(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTFileBasedDocumentAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTFileBasedDocumentAndMaybeFree */
-
-void * __thiscall
-TFileBasedDocument::thunk_DestructTFileBasedDocumentAndMaybeFree_At004045bb
-          (TFileBasedDocument *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTFileBasedDocumentAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040850D
-// GHIDRA_NAME TFileBasedDocument::thunk_CreateTFileBasedDocumentInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTFileBasedDocumentInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTFileBasedDocumentRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTFileBasedDocumentRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall
-TFileBasedDocument::thunk_CreateTFileBasedDocumentInstance(TFileBasedDocument *this)
-
-{
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408E22
-// GHIDRA_NAME TFileBasedDocument::thunk_GetTFileBasedDocumentClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTFileBasedDocumentClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTFileBasedDocumentClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTFileBasedDocumentClassNamePointer */
-
-void * __cdecl TFileBasedDocument::thunk_GetTFileBasedDocumentClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTFileBasedDocumentClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00486420
 // GHIDRA_NAME TFileBasedDocument::CreateTFileBasedDocumentInstance
-// GHIDRA_PROTO void * __thiscall CreateTFileBasedDocumentInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TFileBasedDocument runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTFileBasedDocumentInstance()
 
-/* Returns TFileBasedDocument runtime class descriptor pointer. */
-
-void * __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(TFileBasedDocument *this)
+void __fastcall TFileBasedDocument::CreateTFileBasedDocumentInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486440
 // GHIDRA_NAME TFileBasedDocument::GetTFileBasedDocumentClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTFileBasedDocumentClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TFileBasedDocument.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTFileBasedDocumentClassNamePointer()
 
-/* Returns class descriptor pointer for TFileBasedDocument. */
-
-void * __cdecl TFileBasedDocument::GetTFileBasedDocumentClassNamePointer(void)
+undefined ** TFileBasedDocument::GetTFileBasedDocumentClassNamePointer(void)
 
 {
-  return &g_pClassDescTFileBasedDocument;
+  return &PTR_s_TFileBasedDocument_00648a38;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486570
 // GHIDRA_NAME TFileBasedDocument::ConstructTFileBasedDocumentBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTFileBasedDocumentBaseState(void)
+// GHIDRA_PROTO undefined ConstructTFileBasedDocumentBaseState()
 
-void * __cdecl TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
+undefined4 * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
 
 {
   undefined4 *puVar1;
@@ -129,12 +42,12 @@ void * __cdecl TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
   puStack_8 = &LAB_0062ea7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-    *puVar1 = &g_vtblTFileBasedDocument;
+    *puVar1 = &PTR_LAB_00648b20;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -143,17 +56,16 @@ void * __cdecl TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004865E0
 // GHIDRA_NAME TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTFileBasedDocumentAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTFileBasedDocumentAndMaybeFree()
 
-void * __thiscall
-TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
-          (TFileBasedDocument *this,byte freeSelfFlag)
+undefined4 __thiscall
+TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TCommandHandler::thunk_CreateTCommandHandlerInstance((TCommandHandler *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TCommandHandler::CreateTCommandHandlerInstance();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

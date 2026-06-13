@@ -5,21 +5,15 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612682
 // GHIDRA_NAME CDC::CDC
-// GHIDRA_PROTO void __fastcall CDC(CDC * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT CDC constructor; initializes base DC wrapper fields and vtable. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CDC()
 
-/* CDC constructor; initializes base DC wrapper fields and vtable.
-   [FID:FID_single_match_phase1_nodebug] */
-
-void __fastcall CDC::CDC(CDC *pThis)
+void __fastcall CDC::CDC(undefined4 *param_1)
 
 {
-  pThis->pVtable = &g_vtblCDC;
-  pThis->field04 = 0;
-  pThis->field08 = 0;
-  pThis[1].pVtable = (void *)0x0;
+  *param_1 = &_vftable_;
+  param_1[1] = 0;
+  param_1[2] = 0;
+  param_1[3] = 0;
   return;
 }
 

@@ -3,94 +3,38 @@
 // Program: Imperialism.exe
 // Bucket: TDocument.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402347
-// GHIDRA_NAME TDocument::thunk_GetTDocumentClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTDocumentClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDocumentClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDocumentClassNamePointer */
-
-void * __cdecl TDocument::thunk_GetTDocumentClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDocumentClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406226
-// GHIDRA_NAME TDocument::thunk_CreateTDocumentInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTDocumentInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTDocumentRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTDocumentRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TDocument::thunk_CreateTDocumentInstance(TDocument *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00486380
 // GHIDRA_NAME TDocument::CreateTDocumentInstance
-// GHIDRA_PROTO void * __thiscall CreateTDocumentInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TDocument runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTDocumentInstance()
 
-/* Returns TDocument runtime class descriptor pointer. */
-
-void * __thiscall TDocument::CreateTDocumentInstance(TDocument *this)
+void __fastcall TDocument::CreateTDocumentInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004863A0
 // GHIDRA_NAME TDocument::GetTDocumentClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDocumentClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDocument.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDocumentClassNamePointer()
 
-/* Returns class descriptor pointer for TDocument. */
-
-void * __cdecl TDocument::GetTDocumentClassNamePointer(void)
+undefined ** TDocument::GetTDocumentClassNamePointer(void)
 
 {
-  return &g_pClassDescTDocument;
+  return &PTR_s_TDocument_00648a20;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004863F0
 // GHIDRA_NAME TDocument::ConstructTDocumentBaseState
-// GHIDRA_PROTO void __thiscall ConstructTDocumentBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTDocumentBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TDocument::ConstructTDocumentBaseState(TDocument *this)
+undefined4 __thiscall TDocument::ConstructTDocumentBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  TFileBasedDocument::thunk_CreateTFileBasedDocumentInstance((TFileBasedDocument *)this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TFileBasedDocument::CreateTFileBasedDocumentInstance();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 

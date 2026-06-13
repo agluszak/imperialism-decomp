@@ -3,54 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TOrItemOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401069
-// GHIDRA_NAME TOrItemOrder::thunk_DestructTOrItemOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTOrItemOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTOrItemOrderRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTOrItemOrderRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TOrItemOrder::thunk_DestructTOrItemOrderAndMaybeFree(TOrItemOrder *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B57E0
 // GHIDRA_NAME TOrItemOrder::GetTOrItemOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTOrItemOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TOrItemOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTOrItemOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TOrItemOrder. */
-
-void * __cdecl TOrItemOrder::GetTOrItemOrderClassNamePointer(void)
+undefined ** TOrItemOrder::GetTOrItemOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTOrItemOrder;
+  return &PTR_s_TOrItemOrder_0064f380;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5850
 // GHIDRA_NAME TOrItemOrder::DestructTOrItemOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTOrItemOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TOrItemOrder runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTOrItemOrderAndMaybeFree()
 
-/* Returns TOrItemOrder runtime class descriptor pointer. */
-
-void * __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(TOrItemOrder *this)
+void __fastcall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

@@ -3,87 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TTradeSchoolView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004030F3
-// GHIDRA_NAME TTradeSchoolView::thunk_ConstructTTradeSchoolViewBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTTradeSchoolViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeSchoolViewBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTTradeSchoolViewBaseState */
-
-void * __thiscall TTradeSchoolView::thunk_ConstructTTradeSchoolViewBaseState(TTradeSchoolView *this)
-
-{
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->fielda4 = -1;
-  this->field94 = 0;
-  this->fielda0 = 0;
-  this->field0_0x0 = &g_vtblTTradeSchoolView;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040385A
-// GHIDRA_NAME TTradeSchoolView::TTradeSchoolView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TTradeSchoolView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTradeSchoolViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTradeSchoolViewAndMaybeFree */
-
-void * __thiscall
-TTradeSchoolView::TTradeSchoolView_VtblSlot001(TTradeSchoolView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTradeSchoolViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404782
-// GHIDRA_NAME TTradeSchoolView::TTradeSchoolView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TTradeSchoolView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradeSchoolViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradeSchoolViewClassNamePointer */
-
-void * __cdecl TTradeSchoolView::TTradeSchoolView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradeSchoolViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404C14
-// GHIDRA_NAME TTradeSchoolView::TTradeSchoolView_VtblSlot117
-// GHIDRA_PROTO void __fastcall TTradeSchoolView_VtblSlot117(int * pCityViewDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshCityViewEquipmentSummary
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshCityViewEquipmentSummary */
-
-void __fastcall TTradeSchoolView::TTradeSchoolView_VtblSlot117(int *pCityViewDialog)
-
-{
-  RefreshCityViewEquipmentSummary(pCityViewDialog);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004CD760
 // GHIDRA_NAME TTradeSchoolView::CreateTTradeSchoolViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradeSchoolViewInstance(void)
+// GHIDRA_PROTO undefined CreateTTradeSchoolViewInstance()
 
-void * __cdecl TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
+undefined4 * TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -93,63 +20,58 @@ void * __cdecl TTradeSchoolView::CreateTTradeSchoolViewInstance(void)
   puStack_8 = &LAB_006318fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa8);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
-    *(undefined4 *)&this[1].field_0xf = 0;
-    *(undefined2 *)&this[1].field_0x13 = 0xffff;
-    this->field0_0x0 = &g_vtblTTradeSchoolView;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    puVar1[0x25] = 0;
+    puVar1[0x28] = 0;
+    *(undefined2 *)(puVar1 + 0x29) = 0xffff;
+    *puVar1 = &PTR_LAB_00652690;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CD820
 // GHIDRA_NAME TTradeSchoolView::GetTTradeSchoolViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradeSchoolViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradeSchoolView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradeSchoolViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTradeSchoolView. */
-
-void * __cdecl TTradeSchoolView::GetTTradeSchoolViewClassNamePointer(void)
+undefined ** TTradeSchoolView::GetTTradeSchoolViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradeSchoolView;
+  return &PTR_s_TTradeSchoolView_00651308;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CD840
 // GHIDRA_NAME TTradeSchoolView::ConstructTTradeSchoolViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTradeSchoolViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTradeSchoolViewBaseState()
 
-void * __thiscall TTradeSchoolView::ConstructTTradeSchoolViewBaseState(TTradeSchoolView *this)
+undefined4 * __fastcall TTradeSchoolView::ConstructTTradeSchoolViewBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->fielda4 = -1;
-  this->field94 = 0;
-  this->fielda0 = 0;
-  this->field0_0x0 = &g_vtblTTradeSchoolView;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *(undefined2 *)(param_1 + 0x29) = 0xffff;
+  param_1[0x25] = 0;
+  param_1[0x28] = 0;
+  *param_1 = &PTR_LAB_00652690;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CD880
 // GHIDRA_NAME TTradeSchoolView::DestructTTradeSchoolViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTradeSchoolViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTradeSchoolViewAndMaybeFree()
 
-void * __thiscall
-TTradeSchoolView::DestructTTradeSchoolViewAndMaybeFree(TTradeSchoolView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTradeSchoolView::DestructTTradeSchoolViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

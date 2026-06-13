@@ -3,108 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TMapUberUberPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040103C
-// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_thunk_scalar_deleting_destructor
-// GHIDRA_PROTO void * __thiscall TMapUberUberPicture_thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TMapUberUberPicture::TMapUberUberPicture_thunk_scalar_deleting_destructor
-          (TMapUberUberPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401997
-// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_VtblSlot055
-// GHIDRA_PROTO void __thiscall TMapUberUberPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTMapUberUberPictureBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTMapUberUberPictureBaseState */
-
-void __thiscall TMapUberUberPicture::TMapUberUberPicture_VtblSlot055(TMapUberUberPicture *this)
-
-{
-  TOffLimitsPicture::TOffLimitsPicture_VtblSlot055((TOffLimitsPicture *)this);
-  *(TMapUberUberPicture **)((int)g_pGlobalUiRootController + 0x48) = this;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401F5F
-// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_VtblSlot007
-// GHIDRA_PROTO void __cdecl TMapUberUberPicture_VtblSlot007(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTMapUberUberPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTMapUberUberPictureAndMaybeFree */
-
-void __cdecl TMapUberUberPicture::TMapUberUberPicture_VtblSlot007(void)
-
-{
-  DestructTMapUberUberPictureAndMaybeFree();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402DA6
-// GHIDRA_NAME TMapUberUberPicture::TMapUberUberPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TMapUberUberPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMapUberUberPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMapUberUberPictureClassNamePointer */
-
-void * __cdecl TMapUberUberPicture::TMapUberUberPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMapUberUberPictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00573850
 // GHIDRA_NAME TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources
-// GHIDRA_PROTO void __thiscall InitializeOffLimitsPictureCachedBrushResources(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes OffLimitsPicture cached brush/surface resources.
-// GHIDRA_COMMENT_END
-
-/* Initializes OffLimitsPicture cached brush/surface resources. */
+// GHIDRA_PROTO undefined InitializeOffLimitsPictureCachedBrushResources()
 
 void __thiscall
-TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources(TMapUberUberPicture *this)
+TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources(int param_1,undefined4 param_2)
 
 {
-  int arg1;
+  undefined4 uVar1;
   
-  thunk_NoOpUiLifecycleHook();
-  CreateClipStateRegionWrapperObject();
-  this->field141_0x90 = arg1;
-  thunk_ResetClipRegionAndReadBoundingRect(arg1);
+  TView::thunk_NoOpUiLifecycleHook(param_2);
+  uVar1 = CreateClipStateRegionWrapperObject();
+  *(undefined4 *)(param_1 + 0x90) = uVar1;
+  ResetClipRegionAndReadBoundingRect(uVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596770
 // GHIDRA_NAME TMapUberUberPicture::CreateTMapUberUberPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTMapUberUberPictureInstance(void)
+// GHIDRA_PROTO undefined CreateTMapUberUberPictureInstance()
 
-void * __cdecl TMapUberUberPicture::CreateTMapUberUberPictureInstance(void)
+undefined4 * TMapUberUberPicture::CreateTMapUberUberPictureInstance(void)
 
 {
-  TOffLimitsPicture *this;
-  TOffLimitsPicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -114,67 +38,51 @@ void * __cdecl TMapUberUberPicture::CreateTMapUberUberPictureInstance(void)
   puStack_8 = &LAB_006382fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TOffLimitsPicture *)0x0;
-  if (this != (TOffLimitsPicture *)0x0) {
-    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
-    this->field0_0x0 = &g_vtblTMapUberUberPicture;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState();
+    *puVar1 = &PTR_LAB_00645650;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005967F0
 // GHIDRA_NAME TMapUberUberPicture::GetTMapUberUberPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMapUberUberPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMapUberUberPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMapUberUberPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TMapUberUberPicture. */
-
-void * __cdecl TMapUberUberPicture::GetTMapUberUberPictureClassNamePointer(void)
+undefined ** TMapUberUberPicture::GetTMapUberUberPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTMapUberUberPicture;
+  return &PTR_s_TMapUberUberPicture_00668c28;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596810
 // GHIDRA_NAME TMapUberUberPicture::ConstructTMapUberUberPictureBaseState
-// GHIDRA_PROTO void __thiscall ConstructTMapUberUberPictureBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around TOffLimitsPicture_VtblSlot55; instructions=9, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around TOffLimitsPicture_VtblSlot55; instructions=9, call_insns=1,
-   internal_calls=1, unique_internal=1 */
+// GHIDRA_PROTO undefined ConstructTMapUberUberPictureBaseState()
 
 void __thiscall
-TMapUberUberPicture::ConstructTMapUberUberPictureBaseState(TMapUberUberPicture *this)
+TMapUberUberPicture::ConstructTMapUberUberPictureBaseState(undefined4 param_1,undefined4 param_2)
 
 {
-  TOffLimitsPicture::TOffLimitsPicture_VtblSlot055((TOffLimitsPicture *)this);
-  *(TMapUberUberPicture **)((int)g_pGlobalUiRootController + 0x48) = this;
+  InitializeOffLimitsPictureCachedBrushResources(param_2);
+  *(undefined4 *)((int)g_pGlobalUiRootController + 0x48) = param_1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596840
 // GHIDRA_NAME TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree
-// GHIDRA_PROTO void __cdecl DestructTMapUberUberPictureAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Resets map-uber-uber picture state and closes/release off-limits dialog chain.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTMapUberUberPictureAndMaybeFree()
 
-/* Resets map-uber-uber picture state and closes/release off-limits dialog chain. */
-
-void __cdecl TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree(void)
+void TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree(void)
 
 {
   *(undefined4 *)((int)g_pGlobalUiRootController + 0x48) = 0;
   *(undefined4 *)((int)g_pGlobalUiRootController + 0x28) = 0;
-  TOffLimitsPicture::TOffLimitsPicture_VtblSlot007();
+  WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900();
   return;
 }
 

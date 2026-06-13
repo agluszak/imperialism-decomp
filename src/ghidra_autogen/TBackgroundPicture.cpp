@@ -3,64 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TBackgroundPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401AFA
-// GHIDRA_NAME TBackgroundPicture::TBackgroundPicture_VtblSlot068
-// GHIDRA_PROTO void __thiscall TBackgroundPicture_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00 */
-
-void __thiscall TBackgroundPicture::TBackgroundPicture_VtblSlot068(TBackgroundPicture *this)
-
-{
-  THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00((THQButton *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401B63
-// GHIDRA_NAME TBackgroundPicture::TBackgroundPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TBackgroundPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBackgroundPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBackgroundPictureClassNamePointer */
-
-void * __cdecl TBackgroundPicture::TBackgroundPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBackgroundPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403990
-// GHIDRA_NAME TBackgroundPicture::TBackgroundPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TBackgroundPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTBackgroundPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTBackgroundPictureAndMaybeFree */
-
-void * __thiscall
-TBackgroundPicture::TBackgroundPicture_VtblSlot001(TBackgroundPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTBackgroundPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00572BD0
 // GHIDRA_NAME TBackgroundPicture::CreateTBackgroundPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTBackgroundPictureInstance(void)
+// GHIDRA_PROTO undefined CreateTBackgroundPictureInstance()
 
-void * __cdecl TBackgroundPicture::CreateTBackgroundPictureInstance(void)
+undefined4 * TBackgroundPicture::CreateTBackgroundPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -73,60 +20,55 @@ void * __cdecl TBackgroundPicture::CreateTBackgroundPictureInstance(void)
   puStack_8 = &LAB_0063657a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
+    thunk_TPictureButton::TPictureButton();
     *(undefined1 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &g_vtblTBackgroundPicture;
+    *puVar1 = &PTR_LAB_00660918;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572C60
 // GHIDRA_NAME TBackgroundPicture::GetTBackgroundPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBackgroundPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBackgroundPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBackgroundPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TBackgroundPicture. */
-
-void * __cdecl TBackgroundPicture::GetTBackgroundPictureClassNamePointer(void)
+undefined ** TBackgroundPicture::GetTBackgroundPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTBackgroundPicture;
+  return &PTR_s_TBackgroundPicture_00660628;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572C80
 // GHIDRA_NAME TBackgroundPicture::ConstructTBackgroundPictureBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTBackgroundPictureBaseState(void)
+// GHIDRA_PROTO undefined ConstructTBackgroundPictureBaseState()
 
-void * __thiscall TBackgroundPicture::ConstructTBackgroundPictureBaseState(TBackgroundPicture *this)
+undefined4 * __fastcall
+TBackgroundPicture::ConstructTBackgroundPictureBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field141_0x90 = 0;
-  this->field0_0x0 = &g_vtblTBackgroundPicture;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *(undefined1 *)(param_1 + 0x24) = 0;
+  *param_1 = &PTR_LAB_00660918;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572CB0
 // GHIDRA_NAME TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTBackgroundPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTBackgroundPictureAndMaybeFree()
 
-void * __thiscall
-TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree
-          (TBackgroundPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

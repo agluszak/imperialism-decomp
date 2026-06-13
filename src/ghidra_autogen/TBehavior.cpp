@@ -3,58 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TBehavior.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004036F7
-// GHIDRA_NAME TBehavior::TBehavior_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TBehavior_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBehaviorClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBehaviorClassNamePointer */
-
-void * __cdecl TBehavior::TBehavior_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBehaviorClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407086
-// GHIDRA_NAME TBehavior::TBehavior_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TBehavior_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTBehaviorAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTBehaviorAndMaybeFree */
-
-void * __thiscall TBehavior::TBehavior_VtblSlot001(TBehavior *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTBehaviorAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00486F90
 // GHIDRA_NAME TBehavior::CreateTBehaviorInstance
-// GHIDRA_PROTO TBehavior * __cdecl CreateTBehaviorInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeLinkedBlockChain; instructions=33, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTBehaviorInstance()
 
-/* [WrapperShape] small wrapper around FreeLinkedBlockChain; instructions=33, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-TBehavior * __cdecl TBehavior::CreateTBehaviorInstance(void)
+void __fastcall TBehavior::CreateTBehaviorInstance(undefined4 *param_1)
 
 {
   undefined4 *puVar1;
-  TBehavior *extraout_EAX;
-  undefined4 *in_ECX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -63,62 +19,57 @@ TBehavior * __cdecl TBehavior::CreateTBehaviorInstance(void)
   puStack_8 = &LAB_0062ead8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *in_ECX = &PTR_GetCObjectRuntimeClass_ApplicationUiRootControllerState_00648CA8;
-  puVar1 = (undefined4 *)in_ECX[1];
+  *param_1 = &PTR_GetCObjectRuntimeClass_00648ca8;
+  puVar1 = (undefined4 *)param_1[1];
   local_4 = 0;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  in_ECX[3] = 0;
-  in_ECX[4] = 0;
-  in_ECX[2] = 0;
-  in_ECX[1] = 0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[1] = 0;
   FreeDataChain();
-  in_ECX[5] = 0;
-  *in_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
-  return extraout_EAX;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871C0
 // GHIDRA_NAME TBehavior::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBehaviorClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBehavior.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBehaviorClassNamePointer()
 
-/* Returns class descriptor pointer for TBehavior. */
-
-void * __cdecl TBehavior::GetTBehaviorClassNamePointer(void)
+undefined ** TBehavior::GetTBehaviorClassNamePointer(void)
 
 {
-  return &g_pClassDescTBehavior;
+  return &PTR_s_TBehavior_00648cf8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871E0
 // GHIDRA_NAME TBehavior::ConstructTBehaviorBaseState
-// GHIDRA_PROTO void __fastcall ConstructTBehaviorBaseState(TBehavior * pThis)
+// GHIDRA_PROTO undefined ConstructTBehaviorBaseState()
 
-void __fastcall TBehavior::ConstructTBehaviorBaseState(TBehavior *pThis)
+void __fastcall TBehavior::ConstructTBehaviorBaseState(undefined4 *param_1)
 
 {
-  *(undefined ***)pThis = &g_vtblTBehavior;
-  pThis->field04 = 0x20202020;
-  pThis->field08 = 0;
-  *(undefined1 *)(pThis + 1) = 1;
+  *param_1 = &PTR_LAB_00648d60;
+  param_1[1] = 0x20202020;
+  param_1[2] = 0;
+  *(undefined1 *)(param_1 + 3) = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487210
 // GHIDRA_NAME TBehavior::DestructTBehaviorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTBehaviorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTBehaviorAndMaybeFree()
 
-void * __thiscall TBehavior::DestructTBehaviorAndMaybeFree(TBehavior *this,byte freeSelfFlag)
+undefined4 __thiscall TBehavior::DestructTBehaviorAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTBehaviorAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

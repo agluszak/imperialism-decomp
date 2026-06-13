@@ -3,72 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TTradeBookView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004020CC
-// GHIDRA_NAME TTradeBookView::thunk_GetTTradeBookViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeBookViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradeBookViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradeBookViewClassNamePointer */
-
-void * __cdecl TTradeBookView::thunk_GetTTradeBookViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradeBookViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402252
-// GHIDRA_NAME TTradeBookView::thunk_scalar_deleting_destructor_00402252
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402252(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTradeBookView::thunk_scalar_deleting_destructor_00402252(TTradeBookView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408332
-// GHIDRA_NAME TTradeBookView::SetupSceneResources
-// GHIDRA_PROTO void __thiscall SetupSceneResources(uint this_obj)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Init::SetupSceneResources
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Init::SetupSceneResources */
-
-void __thiscall TTradeBookView::SetupSceneResources(TTradeBookView *this,uint this_obj)
-
-{
-  SetupSceneResources_005BDEF0(this,this_obj);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDE30
 // GHIDRA_NAME TTradeBookView::CreateTTradeBookViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradeBookViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTradeBookView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTradeBookViewInstance()
 
-/* [ClassQuad] create inferred for TTradeBookView; alloc factory pattern. */
-
-void * __cdecl TTradeBookView::CreateTTradeBookViewInstance(void)
+undefined4 * TTradeBookView::CreateTTradeBookViewInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -78,34 +20,28 @@ void * __cdecl TTradeBookView::CreateTTradeBookViewInstance(void)
   puStack_8 = &LAB_006394aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x78);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &PTR_thunk_GetTTradeBookViewClassNamePointer_00640b50;
-    this[1].pVtable = (void *)0x0;
-    this[1].field1_0x4 = 0;
-    this[1].field2_0x5 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00640b50;
+    puVar1[0x18] = 0;
+    puVar1[0x19] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDED0
 // GHIDRA_NAME TTradeBookView::GetTTradeBookViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradeBookViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradeBookView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradeBookViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTradeBookView. */
-
-void * __cdecl TTradeBookView::GetTTradeBookViewClassNamePointer(void)
+undefined ** TTradeBookView::GetTTradeBookViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradeBookView;
+  return &PTR_s_TTradeBookView_0066dc78;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BDEF0
@@ -118,51 +54,59 @@ void __thiscall TTradeBookView::SetupSceneResources_005BDEF0(TTradeBookView *thi
   astruct_7 *resource_obj;
   astruct_5 *lit_resource;
   astruct_6 *lit_resource2;
+  undefined4 text_handle;
   undefined4 *seh_chain;
-  void *tag_or_handle;
+  undefined4 temp_tag;
+  int tag_or_handle;
   uint color_or_tag;
   undefined1 tmp_buf4 [4];
   undefined1 tmp_buf8 [8];
   undefined4 seh_prev;
   undefined1 *seh_handler;
-  int seh_state;
+  undefined4 seh_state;
   code *getResourceByTag;
   int iVar1;
   
-  seh_state = -1;
+  seh_state = 0xffffffff;
   seh_handler = &LAB_006394e8;
   seh_prev = *seh_chain;
   *seh_chain = &seh_prev;
   color_or_tag = this_obj;
-  tag_or_handle = (void *)0x5bdf18;
-  thunk_NoOpUiLifecycleHook();
+  tag_or_handle = 0x5bdf18;
+  TView::thunk_NoOpUiLifecycleHook();
   color_or_tag = 0x6c636f72;
-  getResourceByTag = *(code **)((int)this->pVtable + 0x94);
-  tag_or_handle = (void *)0x5bdf29;
+  getResourceByTag = *(code **)(*(int *)this + 0x94);
+  tag_or_handle = 0x5bdf29;
   resource_obj = (astruct_7 *)(*getResourceByTag)();
-  tag_or_handle = (void *)0x72636f72;
-  this->pField60 = resource_obj;
-  iVar1 = (*getResourceByTag)();
-  this->field64 = iVar1;
-  iVar1 = (*getResourceByTag)();
-  this->field68 = iVar1;
-  iVar1 = (*getResourceByTag)(0x74736f6c);
-  this->field6c = iVar1;
+  tag_or_handle = 0x72636f72;
+  *(astruct_7 **)(this + 0x60) = resource_obj;
+  temp_tag = 0x5bdf35;
+  text_handle = (*getResourceByTag)();
+  temp_tag = 0x74626f75;
+  *(undefined4 *)(this + 100) = text_handle;
+  text_handle = (*getResourceByTag)();
+  *(undefined4 *)(this + 0x68) = text_handle;
+  text_handle = (*getResourceByTag)(0x74736f6c);
+  *(undefined4 *)(this + 0x6c) = text_handle;
   lit_resource = (astruct_5 *)(*getResourceByTag)(0x7274696c);
   iVar1 = lit_resource->field0_0x0;
   (**(code **)(iVar1 + 0xc))();
   lit_resource2 = (astruct_6 *)(*getResourceByTag)(0x7469744c);
   (**(code **)(lit_resource2->field0_0x0 + 0xc))();
-  thunk_ApplyUiTextStyleAndThemeFlags((int *)lit_resource,0,0x12,0x2b6b,0x2b6c);
-  thunk_ApplyUiTextStyleAndThemeFlags((int *)lit_resource2,0,0x12,0x2b6b,0x2b6c);
+  ApplyUiTextStyleAndThemeFlags(lit_resource,0,0x12,0x2b6b,0x2b6c);
+  ApplyUiTextStyleAndThemeFlags(lit_resource2,0,0x12,0x2b6b,0x2b6c);
   InitializeSharedStringRefFromEmpty();
   InitializeSharedStringRefFromEmpty();
-  FormatStringWithVarArgsToSharedRef();
-  (**(code **)(*(int *)g_pLocalizationTable + 0x34))(tmp_buf8);
-  AssignSharedStringConcatRefAndCStr();
-  AssignSharedStringConcatRefAndRef();
-  TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&tag_or_handle);
-  AssignFromPtr(tmp_buf4,(int *)&tag_or_handle);
+  FormatStringWithVarArgsToSharedRef
+            (&tag_or_handle,&g_szDecimalFormat,
+             (short)((int)((int)(short)g_pLocalizationTable[0xb] +
+                          ((int)(short)g_pLocalizationTable[0xb] >> 0x1f & 3U)) >> 2) + 0x717);
+  (**(code **)(*g_pLocalizationTable + 0x34))(tmp_buf8);
+  text_handle = AssignSharedStringConcatRefAndCStr
+                          (&stack0xffffffd4,tmp_buf4,g_Build_Map_Order_LookupTable_00695794);
+  text_handle = AssignSharedStringConcatRefAndRef(&color_or_tag,text_handle,&temp_tag);
+  TToolBarCluster::StringSharedRef_AssignFromPtr(text_handle);
+  AssignFromPtr(tmp_buf4,&tag_or_handle);
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
@@ -170,9 +114,9 @@ void __thiscall TTradeBookView::SetupSceneResources_005BDEF0(TTradeBookView *thi
   (**(code **)(iVar1 + 0xa4))(1,1);
   color_or_tag = color_or_tag & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  color_or_tag = -1;
+  color_or_tag = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  *seh_chain = 0x74626f75;
+  *seh_chain = temp_tag;
   return;
 }
 

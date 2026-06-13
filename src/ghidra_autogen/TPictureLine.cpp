@@ -3,94 +3,38 @@
 // Program: Imperialism.exe
 // Bucket: TPictureLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407784
-// GHIDRA_NAME TPictureLine::thunk_DestructTPictureLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPictureLineAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTPictureLineRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTPictureLineRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TPictureLine::thunk_DestructTPictureLineAndMaybeFree(TPictureLine *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040884B
-// GHIDRA_NAME TPictureLine::thunk_GetTPictureLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPictureLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPictureLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPictureLineClassNamePointer */
-
-void * __cdecl TPictureLine::thunk_GetTPictureLineClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPictureLineClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00570060
 // GHIDRA_NAME TPictureLine::GetTPictureLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPictureLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPictureLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPictureLineClassNamePointer()
 
-/* Returns class descriptor pointer for TPictureLine. */
-
-void * __cdecl TPictureLine::GetTPictureLineClassNamePointer(void)
+undefined ** TPictureLine::GetTPictureLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTPictureLine;
+  return &PTR_s_TPictureLine_0065e1b8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700A0
 // GHIDRA_NAME TPictureLine::ConstructTPictureLineBaseState
-// GHIDRA_PROTO void __thiscall ConstructTPictureLineBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTPictureLineBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this)
+undefined4 __thiscall TPictureLine::ConstructTPictureLineBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTPictureLineAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTPictureLineAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700D0
 // GHIDRA_NAME TPictureLine::DestructTPictureLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPictureLineAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TPictureLine runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTPictureLineAndMaybeFree()
 
-/* Returns TPictureLine runtime class descriptor pointer. */
-
-void * __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(TPictureLine *this)
+void __fastcall TPictureLine::DestructTPictureLineAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

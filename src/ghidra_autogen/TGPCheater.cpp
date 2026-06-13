@@ -5,98 +5,80 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1710
 // GHIDRA_NAME TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
-// GHIDRA_PROTO void __thiscall ConstructNumericEntryDialogCoreAndValueLabel(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] allocates numeric-entry dialog core, initializes numeric state, then allocates/initializes attached static text label.
-// GHIDRA_COMMENT_END
-
-/* [Behavior] allocates numeric-entry dialog core, initializes numeric state, then
-   allocates/initializes attached static text label. */
+// GHIDRA_PROTO undefined ConstructNumericEntryDialogCoreAndValueLabel()
 
 void __thiscall
 TGPCheater::ConstructNumericEntryDialogCoreAndValueLabel
-          (TGPCheater *this,int arg1,int arg2,int arg3,int arg4)
+          (int param_1,int *param_2,undefined4 param_3,short param_4,undefined4 param_5)
 
 {
-  TNumberText *this_00;
-  TStaticText *this_01;
+  undefined4 *puVar1;
+  int iVar2;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 local_c;
+  undefined4 *local_24;
+  int local_20;
+  int local_1c [5];
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630d84;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_1c = 0x20;
-  local_18 = 0x16;
-  local_14 = 0x80;
-  local_10 = 0x18;
-  this_00 = AllocateWithFallbackHandler();
+  local_1c[4] = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = local_1c + 4;
+  local_1c[0] = 0x20;
+  local_1c[1] = 0x16;
+  local_1c[2] = 0x80;
+  local_1c[3] = 0x18;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (this_00 == (TNumberText *)0x0) {
-    this_00 = (TNumberText *)0x0;
+  local_24 = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
   }
   else {
-    TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this_00);
-    this_00->fielda0 = 0;
-    (((TStaticText *)&this_00->field0_0x0)->base).pVtable =
-         &g_vtblFamily_NumericEntryDialogCore_Root;
+    TEditText::thunk_ConstructUiNumericTextEntryBase();
+    puVar1[0x28] = 0;
+    *puVar1 = &PTR_thunk_NumericEntryMethod_00406d0c_0063e8b0;
   }
   local_4 = 0xffffffff;
-  TNumberText::thunk_ConstructTNumberTextBaseState
-            (this_00,(int)this,arg1,(int)&local_1c,(int)(short)arg3,-30000);
-  *(int *)&this_00->field_0x1c = arg4;
-  this_01 = AllocateWithFallbackHandler();
+  TNumberText::ConstructTNumberTextBaseState(param_1,param_2,local_1c,(int)param_4,0xffff8ad0,3000);
+  puVar1[7] = param_5;
+  iVar2 = AllocateWithFallbackHandler(0x94);
   local_4 = 1;
-  if (this_01 != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this_01);
+  if (iVar2 != 0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase();
   }
+  local_24 = (undefined4 *)(*param_2 + local_1c[0]);
+  local_20 = param_2[1];
   local_4 = 0xffffffff;
-  thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  *unaff_FS_OFFSET = local_c;
+  InitializeTextEntryBaseAndOptionalStringResource
+            (param_1,&local_24,local_1c + 2,5,5,
+             CONCAT22((short)((uint)local_20 >> 0x10),*(undefined2 *)(param_1 + 0x60)),param_3);
+  *unaff_FS_OFFSET = local_1c[4];
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A70
 // GHIDRA_NAME TGPCheater::GetTGPCheaterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTGPCheaterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TGPCheater.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTGPCheaterClassNamePointer()
 
-/* Returns class descriptor pointer for TGPCheater. */
-
-void * __cdecl TGPCheater::GetTGPCheaterClassNamePointer(void)
+undefined ** TGPCheater::GetTGPCheaterClassNamePointer(void)
 
 {
-  return &g_pClassDescTGPCheater;
+  return &PTR_s_TGPCheater_0064ec10;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1A90
 // GHIDRA_NAME TGPCheater::ConstructTGPCheaterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTGPCheaterBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [LowHanging] TGPCheater method that allocates and initializes labor-pool dialog text resources and then triggers labor-pool value refresh.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTGPCheaterBaseState()
 
-/* [LowHanging] TGPCheater method that allocates and initializes labor-pool dialog text resources
-   and then triggers labor-pool value refresh. */
-
-void * __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *this,int arg1)
+void __thiscall TGPCheater::ConstructTGPCheaterBaseState(int *param_1,undefined4 param_2)
 
 {
-  TStaticText *this_00;
-  int extraout_EAX;
-  int *piVar1;
-  void *extraout_EAX_00;
-  int iVar2;
+  int iVar1;
+  int *piVar2;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 local_24;
   undefined4 local_20;
   undefined4 local_1c;
   undefined4 local_18;
@@ -109,47 +91,47 @@ void * __thiscall TGPCheater::ConstructTGPCheaterBaseState(TGPCheater *this,int 
   puStack_8 = &LAB_00630dea;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TCheater::thunk_ConstructTCheaterBaseState((TCheater *)this,arg1,0x2728);
-  this_00 = AllocateWithFallbackHandler();
+  TCheater::ConstructTCheaterBaseState(param_2,0x2728);
+  iVar1 = AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (this_00 == (TStaticText *)0x0) {
-    iVar2 = 0;
+  if (iVar1 == 0) {
+    iVar1 = 0;
   }
   else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this_00);
-    iVar2 = extraout_EAX;
+    iVar1 = TStaticText::thunk_ConstructUiTextResourceEntryBase();
   }
   local_4 = 0xffffffff;
+  local_24 = 0x80;
   local_20 = 0x18;
   local_1c = 4;
   local_18 = 0x20;
-  thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  *(undefined4 *)(iVar2 + 0x1c) = 0x6e616d65;
+  InitializeTextEntryBaseAndOptionalStringResource(param_1,&local_1c,&local_24,5,5,0xffffffff,0);
+  *(undefined4 *)(iVar1 + 0x1c) = 0x6e616d65;
   local_1c = 2;
   local_18 = 0x40;
-  ConstructNumericEntryDialogCoreAndValueLabel(this,(int)&local_1c,2,0,0x74726561);
+  ConstructNumericEntryDialogCoreAndValueLabel(&local_1c,2,0,0x74726561);
   local_1c = 2;
   local_18 = 0x58;
-  ConstructNumericEntryDialogCoreAndValueLabel(this,(int)&local_1c,3,0,0x6d657263);
+  ConstructNumericEntryDialogCoreAndValueLabel(&local_1c,3,0,0x6d657263);
   local_1c = 2;
   local_18 = 0x70;
-  ConstructNumericEntryDialogCoreAndValueLabel(this,(int)&local_1c,4,0,0x74636170);
+  ConstructNumericEntryDialogCoreAndValueLabel(&local_1c,4,0,0x74636170);
   local_1c = 2;
   local_18 = 0x88;
-  ConstructNumericEntryDialogCoreAndValueLabel(this,(int)&local_1c,5,0,0x73616c65);
+  ConstructNumericEntryDialogCoreAndValueLabel(&local_1c,5,0,0x73616c65);
   local_1c = 2;
   local_18 = 0x9e;
-  ConstructNumericEntryDialogCoreAndValueLabel(this,(int)&local_1c,6,0,0x70757263);
-  piVar1 = (int *)(**(code **)((int)this->pVtable + 0x58))();
-  iVar2 = *piVar1;
-  (**(code **)(iVar2 + 300))(&local_1c);
+  ConstructNumericEntryDialogCoreAndValueLabel(&local_1c,6,0,0x70757263);
+  piVar2 = (int *)(**(code **)(*param_1 + 0x58))();
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 300))(&local_1c);
   local_1c = 0x94;
   local_20 = 0xc0;
   local_18 = 0x1c0;
   uStack_14 = 0x14c;
-  (**(code **)(iVar2 + 0x168))(&local_20,1);
-  TLaborPool::thunk_CreateTLaborPoolInstance((TLaborPool *)this,0);
+  (**(code **)(iVar1 + 0x168))(&local_20,1);
+  TLaborPool::CreateTLaborPoolInstance(0);
   *unaff_FS_OFFSET = local_18;
-  return extraout_EAX_00;
+  return;
 }
 

@@ -3,70 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TRemoteMinor.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040423C
-// GHIDRA_NAME TRemoteMinor::thunk_SetNationSelectedRegionAndMapCellLabelAlt
-// GHIDRA_PROTO void __thiscall thunk_SetNationSelectedRegionAndMapCellLabelAlt(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetNationSelectedRegionAndMapCellLabelAlt
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetNationSelectedRegionAndMapCellLabelAlt */
-
-void __thiscall
-TRemoteMinor::thunk_SetNationSelectedRegionAndMapCellLabelAlt(TRemoteMinor *this,int arg1)
-
-{
-  TToolBarCluster::SetNationSelectedRegionAndMapCellLabelAlt((TToolBarCluster *)this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406A64
-// GHIDRA_NAME TRemoteMinor::thunk_DestructTRemoteMinor
-// GHIDRA_PROTO void __thiscall thunk_DestructTRemoteMinor(void)
-
-void __thiscall TRemoteMinor::thunk_DestructTRemoteMinor(TRemoteMinor *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint uStack_4;
-  
-  puStack_8 = &LAB_006346a3;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  uStack_4 = 1;
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_4 = uStack_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407121
-// GHIDRA_NAME TRemoteMinor::thunk_GetTRemoteMinorClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRemoteMinorClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRemoteMinorClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRemoteMinorClassNamePointer */
-
-void * __cdecl TRemoteMinor::thunk_GetTRemoteMinorClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRemoteMinorClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00541D00
 // GHIDRA_NAME TRemoteMinor::DestructTRemoteMinor
-// GHIDRA_PROTO void __thiscall DestructTRemoteMinor(void)
+// GHIDRA_PROTO undefined DestructTRemoteMinor()
 
-void __thiscall TRemoteMinor::DestructTRemoteMinor(TRemoteMinor *this)
+void __fastcall TRemoteMinor::DestructTRemoteMinor(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -81,23 +22,18 @@ void __thiscall TRemoteMinor::DestructTRemoteMinor(TRemoteMinor *this)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541D70
 // GHIDRA_NAME TRemoteMinor::GetTRemoteMinorClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTRemoteMinorClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TRemoteMinor.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTRemoteMinorClassNamePointer()
 
-/* Returns class descriptor pointer for TRemoteMinor. */
-
-void * __cdecl TRemoteMinor::GetTRemoteMinorClassNamePointer(void)
+undefined ** TRemoteMinor::GetTRemoteMinorClassNamePointer(void)
 
 {
-  return &g_pClassDescTRemoteMinor;
+  return &PTR_s_TRemoteMinor_0065b020;
 }
 

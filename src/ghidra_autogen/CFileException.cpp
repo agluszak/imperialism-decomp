@@ -5,15 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ABAC
 // GHIDRA_NAME CFileException::ConstructCFileException
-// GHIDRA_PROTO void * __thiscall ConstructCFileException(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructs CFileException-like object: sets runtime class/vtable, initializes empty file-name string, and clears cause/os-error fields.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructCFileException()
 
-/* Constructs CFileException-like object: sets runtime class/vtable, initializes empty file-name
-   string, and clears cause/os-error fields. */
-
-void * __thiscall CFileException::ConstructCFileException(CFileException *this)
+undefined4 * CFileException::ConstructCFileException(void)
 
 {
   undefined4 uVar1;
@@ -36,75 +30,55 @@ void * __thiscall CFileException::ConstructCFileException(CFileException *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ABEC
 // GHIDRA_NAME CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec
-// GHIDRA_PROTO void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0060abec(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0060abec()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void * __thiscall
-CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(CFileException *this)
+undefined4 __thiscall
+CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  DestructCFileException(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructCFileException();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ACF6
 // GHIDRA_NAME CFileException::DestructCFileException
-// GHIDRA_PROTO void __thiscall DestructCFileException(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Destroys CFileException-like object: conditionally releases attached file-name payload, releases shared string, and restores base CObject vtable.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructCFileException()
 
-/* Destroys CFileException-like object: conditionally releases attached file-name payload, releases
-   shared string, and restores base CObject vtable. */
-
-void __thiscall CFileException::DestructCFileException(CFileException *this)
+void CFileException::DestructCFileException(void)
 
 {
   int iVar1;
   undefined4 uVar2;
-  undefined4 *pFileState;
+  undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = pFileState;
-  *pFileState = &PTR_LAB_006727e4;
-  iVar1 = pFileState[1];
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &PTR_LAB_006727e4;
+  iVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  if ((iVar1 != -1) && (pFileState[2] != 0)) {
-    CloseFileHandleAndThrowMfcExceptionOnError(pFileState);
+  if ((iVar1 != -1) && (extraout_ECX[2] != 0)) {
+    CloseFileHandleAndThrowMfcExceptionOnError();
   }
   *(undefined1 *)(unaff_EBP + -4) = 0;
   ReleaseSharedStringRefIfNotEmpty();
   uVar2 = *(undefined4 *)(unaff_EBP + -0xc);
-  *pFileState = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uVar2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006113C6
 // GHIDRA_NAME CFileException::DestructFileExceptionAndReleaseMessageString
-// GHIDRA_PROTO void __thiscall DestructFileExceptionAndReleaseMessageString(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Destructor helper releasing message shared string then invoking CFileException destructor.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructFileExceptionAndReleaseMessageString()
 
-/* Destructor helper releasing message shared string then invoking CFileException destructor. */
-
-void __thiscall CFileException::DestructFileExceptionAndReleaseMessageString(CFileException *this)
+void CFileException::DestructFileExceptionAndReleaseMessageString(void)
 
 {
-  CFileException *this_00;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
@@ -112,62 +86,45 @@ void __thiscall CFileException::DestructFileExceptionAndReleaseMessageString(CFi
   *(undefined4 *)(unaff_EBP + -4) = 0;
   ReleaseSharedStringRefIfNotEmpty();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  DestructCFileException(this_00);
+  DestructCFileException();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AAC
 // GHIDRA_NAME CFileException::CMemFile
-// GHIDRA_PROTO void * __thiscall CMemFile(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructCFileException; instructions=15, call_insns=1, internal_calls=1, unique_internal=1 [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CMemFile()
 
-/* [WrapperShape] small wrapper around ConstructCFileException; instructions=15, call_insns=1,
-   internal_calls=1, unique_internal=1 [FID:FID_single_match_phase1_nodebug] */
-
-void * __thiscall CFileException::CMemFile(CFileException *this)
+undefined4 * __thiscall CFileException::CMemFile(undefined4 *param_1,undefined4 param_2)
 
 {
-  void *in_stack_00000004;
-  
-  ConstructCFileException(this);
-  this->pVtable = &PTR_GetCMemFileRuntimeClass_00672f7c;
-  this[4].pVtable = in_stack_00000004;
-  this[5].pVtable = (void *)0x0;
-  this[6].pVtable = (void *)0x0;
-  this[7].pVtable = (void *)0x0;
-  this[8].pVtable = (void *)0x0;
-  this[9].pVtable = (void *)0x1;
-  return this;
+  ConstructCFileException();
+  *param_1 = &PTR_GetCMemFileRuntimeClass_00672f7c;
+  param_1[4] = param_2;
+  param_1[5] = 0;
+  param_1[6] = 0;
+  param_1[7] = 0;
+  param_1[8] = 0;
+  param_1[9] = 1;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AF8
 // GHIDRA_NAME CFileException::CMemFile_619af8
-// GHIDRA_PROTO void * __thiscall CMemFile_619af8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructCFileException; instructions=20, call_insns=1, internal_calls=1, unique_internal=1 [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CMemFile_619af8()
 
-/* [WrapperShape] small wrapper around ConstructCFileException; instructions=20, call_insns=1,
-   internal_calls=1, unique_internal=1 [FID:FID_single_match_phase1_nodebug] */
-
-void * __thiscall CFileException::CMemFile_619af8(CFileException *this)
+undefined4 * __thiscall
+CFileException::CMemFile_619af8(undefined4 *param_1,undefined4 param_2,uint param_3,int param_4)
 
 {
-  void *in_stack_00000004;
-  void *in_stack_00000008;
-  void *in_stack_0000000c;
-  
-  ConstructCFileException(this);
-  this[5].pVtable = (void *)0x0;
-  this[4].pVtable = in_stack_0000000c;
-  this[9].pVtable = (void *)0x0;
-  this->pVtable = &PTR_GetCMemFileRuntimeClass_00672f7c;
-  this[7].pVtable = (void *)(~-(uint)(in_stack_0000000c != (void *)0x0) & (uint)in_stack_00000008);
-  this[8].pVtable = in_stack_00000004;
-  this[6].pVtable = in_stack_00000008;
-  return this;
+  ConstructCFileException();
+  param_1[5] = 0;
+  param_1[4] = param_4;
+  param_1[9] = 0;
+  *param_1 = &PTR_GetCMemFileRuntimeClass_00672f7c;
+  param_1[7] = ~-(uint)(param_4 != 0) & param_3;
+  param_1[8] = param_2;
+  param_1[6] = param_3;
+  return param_1;
 }
 

@@ -5,196 +5,151 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00415510
 // GHIDRA_NAME CWinApp::WrapperFor_WriteProfileInt_At00415510
-// GHIDRA_PROTO void __thiscall WrapperFor_WriteProfileInt_At00415510(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around WriteProfileInt; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_WriteProfileInt_At00415510()
 
-/* [WrapperShape] small wrapper around WriteProfileInt; instructions=8, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall CWinApp::WrapperFor_WriteProfileInt_At00415510(CWinApp *this)
+void CWinApp::WrapperFor_WriteProfileInt_At00415510(undefined4 param_1,undefined4 param_2)
 
 {
-  WriteProfileInt(this);
+  FUN_0061880f(PTR_s_Settings_0063e044,param_1,param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006067A2
 // GHIDRA_NAME CWinApp::ProcessMessageFilter
-// GHIDRA_PROTO void __thiscall ProcessMessageFilter(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ProcessMessageFilter()
 
-/* [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall CWinApp::ProcessMessageFilter(CWinApp *this,int arg1,int arg2)
+undefined4 CWinApp::ProcessMessageFilter(int param_1,undefined4 *param_2)
 
 {
-  CWinApp *pCVar1;
-  bool bVar2;
-  void *pvVar3;
-  int *piVar4;
-  int iVar5;
-  undefined3 extraout_var;
-  int iVar6;
-  undefined4 *puVar7;
+  int iVar1;
+  int iVar2;
+  undefined4 *puVar3;
   HWND hWnd;
   undefined4 local_24 [7];
-  CWinApp *local_8;
+  int *local_8;
   
-  if (arg2 == 0) {
-    return;
+  if (param_2 == (undefined4 *)0x0) {
+    return 0;
   }
-  local_8 = this;
-  if (arg1 != 0) {
-    if (arg1 != 2) {
-      return;
+  if (param_1 != 0) {
+    if (param_1 != 2) {
+      return 0;
     }
-    pvVar3 = FromHandle();
-    if (((((pvVar3 != (void *)0x0) && (piVar4 = GetTopLevelFrame(), piVar4 != (int *)0x0)) &&
-         (iVar5 = IsTracking(), iVar5 != 0)) &&
-        ((piVar4[0x14] != 0 && (iVar5 = AfxGetMainWnd(), *(int *)&local_8->field_0x1c != 0)))) &&
-       (((*(int *)(arg2 + 4) == 0x100 && (*(int *)(arg2 + 8) == 0xd)) ||
-        (*(int *)(arg2 + 4) == 0x202)))) {
-      hWnd = *(HWND *)(iVar5 + 0x1c);
+    iVar1 = FromHandle(*param_2);
+    if (((((iVar1 != 0) && (iVar1 = GetTopLevelFrame(), iVar1 != 0)) &&
+         (iVar2 = IsTracking(), iVar2 != 0)) &&
+        ((*(int *)(iVar1 + 0x50) != 0 &&
+         (iVar1 = AfxGetMainWnd(), *(int *)((int)local_8 + 0x1c) != 0)))) &&
+       (((param_2[1] == 0x100 && (param_2[2] == 0xd)) || (param_2[1] == 0x202)))) {
+      hWnd = *(HWND *)(iVar1 + 0x1c);
       goto LAB_0060685d;
     }
   }
-  iVar5 = AfxGetMainWnd();
-  if (((0x332 < (uint)g_dwScrollInfoApiGateVersion) || (iVar5 == 0)) ||
-     (bVar2 = IsHelpKey(arg2), CONCAT31(extraout_var,bVar2) == 0)) {
-    if (arg1 != 0) {
-      return;
+  iVar1 = AfxGetMainWnd();
+  if (((0x332 < DAT_006a7d54) || (iVar1 == 0)) || (iVar2 = FUN_006068e9(param_2), iVar2 == 0)) {
+    if ((((param_1 != 0) || (local_8[8] == 0)) || ((uint)param_2[1] < 0x100)) ||
+       ((0x108 < (uint)param_2[1] ||
+        (iVar1 = TMacViewMgr::GetData(CreateObject_5e540c), *(int *)(iVar1 + 0xbc) != 0)))) {
+      return 0;
     }
-    if (*(int *)&local_8->field_0x20 == 0) {
-      return;
+    *(undefined4 *)(iVar1 + 0xbc) = 1;
+    puVar3 = local_24;
+    for (iVar2 = 7; iVar2 != 0; iVar2 = iVar2 + -1) {
+      *puVar3 = *param_2;
+      param_2 = param_2 + 1;
+      puVar3 = puVar3 + 1;
     }
-    if (*(uint *)(arg2 + 4) < 0x100) {
-      return;
+    iVar2 = IsWindowEnabled();
+    if ((iVar2 != 0) && (iVar2 = (**(code **)(*local_8 + 0x60))(local_24), iVar2 != 0)) {
+      *(undefined4 *)(iVar1 + 0xbc) = 0;
+      return 1;
     }
-    if (0x108 < *(uint *)(arg2 + 4)) {
-      return;
-    }
-    iVar5 = TMacViewMgr::GetData((TMacViewMgr *)&g_MfcThreadStateSlotManager);
-    if (*(int *)(iVar5 + 0xbc) != 0) {
-      return;
-    }
-    *(undefined4 *)(iVar5 + 0xbc) = 1;
-    puVar7 = local_24;
-    for (iVar6 = 7; pCVar1 = local_8, iVar6 != 0; iVar6 = iVar6 + -1) {
-      *puVar7 = *(undefined4 *)arg2;
-      arg2 = (int)(arg2 + 4);
-      puVar7 = puVar7 + 1;
-    }
-    iVar6 = IsWindowEnabled();
-    if ((iVar6 != 0) && (iVar6 = (**(code **)((int)pCVar1->pVtable + 0x60))(local_24), iVar6 != 0))
-    {
-      *(undefined4 *)(iVar5 + 0xbc) = 0;
-      return;
-    }
-    *(undefined4 *)(iVar5 + 0xbc) = 0;
-    return;
+    *(undefined4 *)(iVar1 + 0xbc) = 0;
+    return 0;
   }
-  hWnd = *(HWND *)(iVar5 + 0x1c);
+  hWnd = *(HWND *)(iVar1 + 0x1c);
 LAB_0060685d:
   SendMessageA(hWnd,0x111,0xe146,0);
-  return;
+  return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061852A
 // GHIDRA_NAME CWinApp::DoMessageBox
-// GHIDRA_PROTO int __thiscall DoMessageBox(void * pContext, char * pMessage, uint uType, int nHelpContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID/UI] Single Match: DoMessageBox; resolves safe owner and calls MessageBoxA with app caption/help context.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DoMessageBox()
 
-/* [FID/UI] Single Match: DoMessageBox; resolves safe owner and calls MessageBoxA with app
-   caption/help context. */
-
-int __thiscall
-CWinApp::DoMessageBox(CWinApp *this,void *pContext,char *pMessage,uint uType,int nHelpContext)
+int __thiscall CWinApp::DoMessageBox(HWND param_1,LPCSTR param_2,uint param_3,int param_4)
 
 {
-  int extraout_EAX;
-  int *piVar1;
-  int iVar2;
-  uint uVar3;
+  int iVar1;
+  int *piVar2;
+  int iVar3;
+  uint uVar4;
   HWND hWnd;
-  uint *puVar4;
-  CWinApp *local_8;
+  HWND pHVar5;
+  HWND local_8;
   
-  local_8 = this;
-  EnableModeless();
-  GetSafeOwner(0,(int)&local_8);
-  puVar4 = &this->field138_0x9c;
-  if (extraout_EAX != 0) {
-    piVar1 = GetTopLevelParent();
-    iVar2 = (**(code **)(*piVar1 + 0xb8))();
-    if (iVar2 != 0) {
-      puVar4 = (uint *)(piVar1 + 0x13);
+  local_8 = param_1;
+  FUN_006184fc(0);
+  iVar1 = FUN_00609437(0,&local_8);
+  pHVar5 = param_1 + 0x27;
+  if (iVar1 != 0) {
+    piVar2 = (int *)GetTopLevelParent();
+    iVar3 = (**(code **)(*piVar2 + 0xb8))();
+    if (iVar3 != 0) {
+      pHVar5 = (HWND)(piVar2 + 0x13);
     }
   }
-  if (uType != 0) {
-    *puVar4 = uType + 0x30000;
+  iVar3 = pHVar5->unused;
+  if (param_4 != 0) {
+    pHVar5->unused = param_4 + 0x30000;
   }
-  if ((((uint)pMessage & 0xf0) == 0) &&
-     ((uVar3 = (uint)pMessage & 0xf, uVar3 < 2 || ((2 < uVar3 && (uVar3 < 5)))))) {
-    pMessage = (char *)((uint)pMessage | 0x30);
+  if (((param_3 & 0xf0) == 0) &&
+     ((uVar4 = param_3 & 0xf, uVar4 < 2 || ((2 < uVar4 && (uVar4 < 5)))))) {
+    param_3 = param_3 | 0x30;
   }
   AfxGetThreadState();
   hWnd = (HWND)0x0;
-  if (extraout_EAX != 0) {
-    hWnd = *(HWND *)(extraout_EAX + 0x1c);
+  if (iVar1 != 0) {
+    hWnd = *(HWND *)(iVar1 + 0x1c);
   }
-                    /* WARNING: Subroutine does not return */
-  MessageBoxA(hWnd,pContext,this->field114_0x78,(UINT)pMessage);
+  iVar1 = MessageBoxA(hWnd,param_2,(LPCSTR)param_1[0x1e].unused,param_3);
+  pHVar5->unused = iVar3;
+  if (local_8 != (HWND)0x0) {
+    EnableWindow(local_8,1);
+  }
+  FUN_006184fc(1);
+  return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618704
 // GHIDRA_NAME CWinApp::CloseAllDocuments_618704
-// GHIDRA_PROTO void __thiscall CloseAllDocuments_618704(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  CloseAllDocuments
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: msvc500 phase1 nodebug [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CloseAllDocuments_618704()
 
-/* Library Function - Single Match
-    CloseAllDocuments
-   
-   Library: msvc500 phase1 nodebug [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall CWinApp::CloseAllDocuments_618704(CWinApp *this)
+void __thiscall CWinApp::CloseAllDocuments_618704(int param_1,undefined4 param_2)
 
 {
-  if (this->pField80 != (int *)0x0) {
-    (**(code **)(*(int *)this->pField80 + 0x2c))();
+  if (*(int **)(param_1 + 0x80) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0x80) + 0x2c))(param_2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061873C
 // GHIDRA_NAME CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
-// GHIDRA_PROTO int __thiscall CallField80VirtualSlot38OrReturnFalse_0061873c(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [RecoveredNoFunc] Calls field+0x80 vslot+0x38 when present; otherwise returns false.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CallField80VirtualSlot38OrReturnFalse_0061873c()
 
-/* [RecoveredNoFunc] Calls field+0x80 vslot+0x38 when present; otherwise returns false. */
-
-int __thiscall CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c(CWinApp *this,int arg1)
+undefined4 __thiscall
+CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c(int param_1,undefined4 param_2)
 
 {
-  int extraout_EAX;
+  undefined4 uVar1;
   
-  if (this->pField80 != (int *)0x0) {
-    (**(code **)(*(int *)this->pField80 + 0x38))(arg1);
-    NoOpVirtualStub_00618753();
-    return extraout_EAX;
+  if (*(int **)(param_1 + 0x80) == (int *)0x0) {
+    uVar1 = 0;
   }
-  return 0;
+  else {
+    uVar1 = (**(code **)(**(int **)(param_1 + 0x80) + 0x38))(param_2);
+  }
+  return uVar1;
 }
 

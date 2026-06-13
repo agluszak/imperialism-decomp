@@ -3,41 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TColorKeyButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004031A7
-// GHIDRA_NAME TColorKeyButton::TColorKeyButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TColorKeyButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTColorKeyButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TColorKeyButton */
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040729D
-// GHIDRA_NAME TColorKeyButton::TColorKeyButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TColorKeyButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTColorKeyButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTColorKeyButtonClassNamePointer */
-
-void * __cdecl TColorKeyButton::TColorKeyButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTColorKeyButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00571ED0
 // GHIDRA_NAME TColorKeyButton::CreateTColorKeyButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTColorKeyButtonInstance(void)
+// GHIDRA_PROTO undefined CreateTColorKeyButtonInstance()
 
-void * __cdecl TColorKeyButton::CreateTColorKeyButtonInstance(void)
+undefined4 * TColorKeyButton::CreateTColorKeyButtonInstance(void)
 
 {
-  TColorKeyPicture *this;
-  TColorKeyPicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -47,40 +21,52 @@ void * __cdecl TColorKeyButton::CreateTColorKeyButtonInstance(void)
   puStack_8 = &LAB_0063648a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
   local_4 = 0;
-  pTVar1 = (TColorKeyPicture *)0x0;
-  if (this != (TColorKeyPicture *)0x0) {
-    TColorKeyPicture::thunk_ConstructPictureResourceEntry_Vtbl00660b48(this);
-    this->field0_0x0 = &g_vtblTColorKeyButton;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48();
+    *puVar1 = &PTR_LAB_0065fd28;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F50
 // GHIDRA_NAME TColorKeyButton::GetTColorKeyButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTColorKeyButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TColorKeyButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTColorKeyButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TColorKeyButton. */
-
-void * __cdecl TColorKeyButton::GetTColorKeyButtonClassNamePointer(void)
+undefined ** TColorKeyButton::GetTColorKeyButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTColorKeyButton;
+  return &PTR_s_TColorKeyButton_0065e628;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F70
 // GHIDRA_NAME TColorKeyButton::ConstructTColorKeyButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTColorKeyButtonBaseState(void)
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TColorKeyButton */
+// GHIDRA_PROTO undefined ConstructTColorKeyButtonBaseState()
+
+undefined4 * __fastcall TColorKeyButton::ConstructTColorKeyButtonBaseState(undefined4 *param_1)
+
+{
+  TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48();
+  *param_1 = &PTR_LAB_0065fd28;
+  return param_1;
+}
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571FA0
 // GHIDRA_NAME TColorKeyButton::DestructTColorKeyButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTColorKeyButtonAndMaybeFree(byte freeSelfFlag)
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TColorKeyButton */
+// GHIDRA_PROTO undefined DestructTColorKeyButtonAndMaybeFree()
+
+undefined4 __thiscall
+TColorKeyButton::DestructTColorKeyButtonAndMaybeFree(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
+}
 

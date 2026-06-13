@@ -3,51 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TUberCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404192
-// GHIDRA_NAME TUberCluster::TUberCluster_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TUberCluster_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTUberClusterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTUberClusterAndMaybeFree */
-
-void * __thiscall TUberCluster::TUberCluster_VtblSlot001(TUberCluster *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTUberClusterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407720
-// GHIDRA_NAME TUberCluster::TUberCluster_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TUberCluster_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTUberClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTUberClusterClassNamePointer */
-
-void * __cdecl TUberCluster::TUberCluster_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTUberClusterClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005713C0
 // GHIDRA_NAME TUberCluster::CreateTUberClusterInstance
-// GHIDRA_PROTO void * __cdecl CreateTUberClusterInstance(void)
+// GHIDRA_PROTO undefined CreateTUberClusterInstance()
 
-void * __cdecl TUberCluster::CreateTUberClusterInstance(void)
+undefined4 * TUberCluster::CreateTUberClusterInstance(void)
 
 {
-  TCluster *this;
-  TCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -57,57 +21,105 @@ void * __cdecl TUberCluster::CreateTUberClusterInstance(void)
   puStack_8 = &LAB_006363ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TCluster *)0x0;
-  if (this != (TCluster *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
-    this->field0_0x0 = &g_vtblTUberCluster;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
+    *puVar1 = &_vftable_;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571440
 // GHIDRA_NAME TUberCluster::GetTUberClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTUberClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TUberCluster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTUberClusterClassNamePointer()
 
-/* Returns class descriptor pointer for TUberCluster. */
-
-void * __cdecl TUberCluster::GetTUberClusterClassNamePointer(void)
+undefined ** TUberCluster::GetTUberClusterClassNamePointer(void)
 
 {
-  return &g_pClassDescTUberCluster;
+  return &PTR_s_TUberCluster_0065e5b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571460
 // GHIDRA_NAME TUberCluster::ConstructTUberClusterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTUberClusterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTUberClusterBaseState()
 
-void * __thiscall TUberCluster::ConstructTUberClusterBaseState(TUberCluster *this)
+undefined4 * __fastcall TUberCluster::ConstructTUberClusterBaseState(undefined4 *param_1)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  this->field0_0x0 = &g_vtblTUberCluster;
-  return this;
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0();
+  *param_1 = &_vftable_;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571490
 // GHIDRA_NAME TUberCluster::DestructTUberClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTUberClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTUberClusterAndMaybeFree()
 
-void * __thiscall
-TUberCluster::DestructTUberClusterAndMaybeFree(TUberCluster *this,byte freeSelfFlag)
+undefined4 __thiscall
+TUberCluster::DestructTUberClusterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00586E70
+// GHIDRA_NAME TUberCluster::HandleTradeMoveControlAdjustment
+// GHIDRA_PROTO undefined HandleTradeMoveControlAdjustment()
+
+void __thiscall
+TUberCluster::HandleTradeMoveControlAdjustment
+          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
+
+{
+  int iVar1;
+  code *pcVar2;
+  short sVar3;
+  int *piVar4;
+  int iVar5;
+  
+  if (param_2 == 100) {
+    iVar1 = *(int *)param_1;
+    pcVar2 = *(code **)(iVar1 + 0x94);
+    piVar4 = (int *)(*pcVar2)(0x6d6f7665);
+    if (piVar4 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x749);
+    }
+    (**(code **)(*piVar4 + 0x1e8))();
+    piVar4 = (int *)(*pcVar2)(0x61766169);
+    if (piVar4 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x74d);
+    }
+    sVar3 = (**(code **)(*piVar4 + 0x1e8))();
+    if ((short)param_1 < sVar3) {
+      (**(code **)(iVar1 + 0x1d0))(param_1 + 1);
+    }
+  }
+  else if (param_2 == 0x65) {
+    iVar1 = *(int *)param_1;
+    piVar4 = (int *)(**(code **)(iVar1 + 0x94))(0x6d6f7665);
+    if (piVar4 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x759);
+    }
+    iVar5 = (**(code **)(*piVar4 + 0x1e8))();
+    if ((short)iVar5 != 0) {
+      (**(code **)(iVar1 + 0x1d0))(iVar5 + -1);
+    }
+  }
+  TMapEditCluster::thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
+  return;
 }
 

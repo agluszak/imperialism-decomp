@@ -3,121 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTEView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004047EB
-// GHIDRA_NAME TTEView::thunk_ConstructTTEViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTEViewBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeTEViewTextEntryBoundsAndMetrics. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to InitializeTEViewTextEntryBoundsAndMetrics. [FID:thunk_target_sync] */
-
-void __thiscall
-TTEView::thunk_ConstructTTEViewBaseState
-          (TTEView *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6,int arg7,int arg8,
-          int arg9)
-
-{
-  short sVar1;
-  
-  thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  this->field68 = *(int *)arg7;
-  this->field6c = *(int *)(arg7 + 4);
-  this->field70 = *(int *)(arg7 + 8);
-  this->field74 = *(int *)(arg7 + 0xc);
-  this->field78 = *(int *)arg8;
-  this->field7c = *(int *)(arg8 + 4);
-  sVar1 = *(short *)(arg8 + 8);
-  *(undefined2 *)&this->field90 = (undefined2)arg9;
-  this->field80 = sVar1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004060E1
-// GHIDRA_NAME TTEView::thunk_GetTTEViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTEViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTEViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTEViewClassNamePointer */
-
-void * __cdecl TTEView::thunk_GetTTEViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTEViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004065E1
-// GHIDRA_NAME TTEView::thunk_DestructTTEViewAndMaybeFree
-// GHIDRA_PROTO int __thiscall thunk_DestructTTEViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* [FID:thunk_target_sync] */
-
-int __thiscall TTEView::thunk_DestructTTEViewAndMaybeFree(TTEView *this)
-
-{
-  int unaff_ESI;
-  uint *unaff_FS_OFFSET;
-  uint *puStack_40;
-  int *piStack_3c;
-  CDC CStack_2c;
-  uint auStack_20 [2];
-  uint uStack_18;
-  void *pvStack_c;
-  undefined1 *puStack_8;
-  int iStack_4;
-  
-  iStack_4 = -1;
-  puStack_8 = &LAB_0062ea38;
-  pvStack_c = (void *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (uint)&pvStack_c;
-  CDC::CDC(&CStack_2c);
-  iStack_4 = 0;
-  piStack_3c = (int *)0x486115;
-  CreateCompatibleDC((HDC)0x0);
-  piStack_3c = (int *)0x48611f;
-  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)&CStack_2c);
-  piStack_3c = (int *)0x486128;
-  UpdateGlobalFontPresetAndRebuildCachedFontIfDirty((int)&this->field78);
-  piStack_3c = (int *)0x486135;
-  SelectObject_6129d7((TTEView *)&CStack_2c);
-  piStack_3c = (int *)0x486146;
-  (**(code **)(this->field0_0x0 + 0x160))();
-  piStack_3c = &this->field68;
-  puStack_40 = (uint *)0x486153;
-  DeflateRect((TTEView *)auStack_20);
-  puStack_40 = auStack_20;
-  piStack_3c = (int *)0xd10;
-  (**(code **)(unaff_ESI + 0x70))
-            (*(int *)this->pField84,*(undefined4 *)(*(int *)this->pField84 + -8));
-  SelectObject_6129d7((TTEView *)&puStack_40);
-  uStack_18 = 0xffffffff;
-  DestroyCDCAndDeleteOwnedHdc();
-  *unaff_FS_OFFSET = auStack_20[0];
-  return CStack_2c.field08 - (int)CStack_2c.pVtable;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00485FB0
 // GHIDRA_NAME TTEView::CreateTTEViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTTEViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTEView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTEViewInstance()
 
-/* [ClassQuad] create inferred for TTEView; alloc factory pattern. */
-
-void * __cdecl TTEView::CreateTTEViewInstance(void)
+undefined4 * TTEView::CreateTTEViewInstance(void)
 
 {
-  TStaticText *this;
-  TStaticText *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -127,126 +21,101 @@ void * __cdecl TTEView::CreateTTEViewInstance(void)
   puStack_8 = &LAB_0062ea1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  pTVar1 = (TStaticText *)0x0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTMapKey;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+    *puVar1 = &PTR_LAB_00644308;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486030
 // GHIDRA_NAME TTEView::GetTTEViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTEViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTEView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTEViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTEView. */
-
-void * __cdecl TTEView::GetTTEViewClassNamePointer(void)
+undefined ** TTEView::GetTTEViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTEView;
+  return &PTR_s_TTEView_00648a08;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486050
 // GHIDRA_NAME TTEView::ConstructTTEViewBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTEViewBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes TEView text entry base and stores content/clip bounds plus layout metric fields.
-// GHIDRA_COMMENT_END
-
-/* Initializes TEView text entry base and stores content/clip bounds plus layout metric fields. */
+// GHIDRA_PROTO undefined ConstructTTEViewBaseState()
 
 void __thiscall
 TTEView::ConstructTTEViewBaseState
-          (TTEView *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6,int arg7,int arg8,
-          int arg9)
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
+          undefined4 param_6,undefined4 param_7,undefined4 *param_8,undefined4 *param_9,
+          undefined2 param_10)
 
 {
-  short sVar1;
+  undefined2 uVar1;
   
-  thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  this->field68 = *(int *)arg7;
-  this->field6c = *(int *)(arg7 + 4);
-  this->field70 = *(int *)(arg7 + 8);
-  this->field74 = *(int *)(arg7 + 0xc);
-  this->field78 = *(int *)arg8;
-  this->field7c = *(int *)(arg8 + 4);
-  sVar1 = *(short *)(arg8 + 8);
-  *(undefined2 *)&this->field90 = (undefined2)arg9;
-  this->field80 = sVar1;
+  InitializeTextEntryBaseAndOptionalStringResource
+            (param_3,param_4,param_5,param_6,param_7,0xffffffff,0);
+  *(undefined4 *)(param_1 + 0x68) = *param_8;
+  *(undefined4 *)(param_1 + 0x6c) = param_8[1];
+  *(undefined4 *)(param_1 + 0x70) = param_8[2];
+  *(undefined4 *)(param_1 + 0x74) = param_8[3];
+  *(undefined4 *)(param_1 + 0x78) = *param_9;
+  *(undefined4 *)(param_1 + 0x7c) = param_9[1];
+  uVar1 = *(undefined2 *)(param_9 + 2);
+  *(undefined2 *)(param_1 + 0x90) = param_10;
+  *(undefined2 *)(param_1 + 0x80) = uVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004860E0
 // GHIDRA_NAME TTEView::DestructTTEViewAndMaybeFree
-// GHIDRA_PROTO int __thiscall DestructTTEViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Uses temporary compatible DC to measure rendered text extent and compute layout metrics.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTEViewAndMaybeFree()
 
-/* Uses temporary compatible DC to measure rendered text extent and compute layout metrics. */
-
-int __thiscall TTEView::DestructTTEViewAndMaybeFree(TTEView *this)
+int __fastcall TTEView::DestructTTEViewAndMaybeFree(int *param_1)
 
 {
+  HDC pHVar1;
+  undefined4 uVar2;
   int unaff_ESI;
-  uint *unaff_FS_OFFSET;
-  uint *puStack_40;
-  int *piStack_3c;
-  CDC local_2c;
-  uint auStack_20 [2];
-  uint uStack_18;
-  void *pvStack_c;
+  undefined4 *unaff_FS_OFFSET;
+  int local_2c;
+  int iStack_24;
+  undefined4 uStack_20;
+  undefined1 local_1c [4];
+  undefined4 uStack_18;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
-  int local_4;
+  undefined4 local_4;
   
-  local_4 = -1;
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ea38;
-  pvStack_c = (void *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (uint)&pvStack_c;
-  CDC::CDC(&local_2c);
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CDC::CDC();
   local_4 = 0;
-  piStack_3c = (int *)0x486115;
-  CreateCompatibleDC((HDC)0x0);
-  piStack_3c = (int *)0x48611f;
-  TCivDescription::AttachHdcToDcWrapper((TCivDescription *)&local_2c);
-  piStack_3c = (int *)0x486128;
-  UpdateGlobalFontPresetAndRebuildCachedFontIfDirty((int)&this->field78);
-  piStack_3c = (int *)0x486135;
-  SelectObject_6129d7((TTEView *)&local_2c);
-  piStack_3c = (int *)0x486146;
-  (**(code **)(this->field0_0x0 + 0x160))();
-  piStack_3c = &this->field68;
-  puStack_40 = (uint *)0x486153;
-  DeflateRect((TTEView *)auStack_20);
-  puStack_40 = auStack_20;
-  piStack_3c = (int *)0xd10;
+  pHVar1 = CreateCompatibleDC((HDC)0x0);
+  TCivDescription::AttachHdcToDcWrapper(pHVar1);
+  uVar2 = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(param_1 + 0x1e);
+  uVar2 = SelectObject_6129d7(uVar2);
+  (**(code **)(*param_1 + 0x160))(local_1c);
+  DeflateRect(param_1 + 0x1a);
   (**(code **)(unaff_ESI + 0x70))
-            (*(int *)this->pField84,*(undefined4 *)(*(int *)this->pField84 + -8));
-  SelectObject_6129d7((TTEView *)&puStack_40);
+            (*(int *)param_1[0x21],*(undefined4 *)(*(int *)param_1[0x21] + -8),&uStack_20,0xd10);
+  SelectObject_6129d7(uVar2);
   uStack_18 = 0xffffffff;
   DestroyCDCAndDeleteOwnedHdc();
-  *unaff_FS_OFFSET = auStack_20[0];
-  return local_2c.field08 - (int)local_2c.pVtable;
+  *unaff_FS_OFFSET = uStack_20;
+  return iStack_24 - local_2c;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504220
 // GHIDRA_NAME TTEView::BuildHelpSubjectListControlsWithPrevNext
-// GHIDRA_PROTO void __thiscall BuildHelpSubjectListControlsWithPrevNext(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds HelpPicture subject/toggle/name slot controls (subj/togl/nam1..nam5 + prev/next).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined BuildHelpSubjectListControlsWithPrevNext()
 
-/* Builds HelpPicture subject/toggle/name slot controls (subj/togl/nam1..nam5 + prev/next). */
-
-void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
+void __fastcall TTEView::BuildHelpSubjectListControlsWithPrevNext(int *param_1)
 
 {
   short sVar1;
@@ -255,8 +124,10 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
   short sVar4;
   int *piVar5;
   int iVar6;
+  undefined2 extraout_var;
   int iVar7;
   undefined4 *unaff_FS_OFFSET;
+  int unaff_retaddr;
   undefined4 uStack_118;
   undefined4 **ppuStack_114;
   undefined4 uStack_110;
@@ -293,6 +164,11 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
   undefined4 uStack_90;
   undefined4 uStack_8c;
   undefined4 uStack_88;
+  undefined1 *puStack_84;
+  undefined4 uStack_80;
+  int iStack_7c;
+  undefined4 uStack_78;
+  undefined4 uStack_74;
   undefined1 local_50 [6];
   undefined1 local_4a;
   undefined1 local_49;
@@ -328,18 +204,41 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
   local_3d = 0;
   local_3c = 0;
   local_3b = 0;
+  uStack_74 = 0x50428f;
   InitializeSharedStringRefFromEmpty();
+  uStack_74 = 3;
+  uStack_78 = 0x2b6d;
+  iStack_7c = 0xc;
+  puStack_84 = local_50;
+  uStack_80 = 4;
   local_4 = 0;
   uStack_88 = 0x5042af;
-  thunk_InitializeUiTextStyleDescriptor((int)local_50,4,0xc,0x2b6d,3);
+  thunk_InitializeUiTextStyleDescriptor();
+  puStack_84 = local_38;
+  uStack_74 = 3;
+  uStack_78 = 0x2b69;
+  iStack_7c = 0xc;
+  uStack_80 = 4;
   uStack_88 = 0x5042c7;
-  thunk_InitializeUiTextStyleDescriptor((int)local_38,4,0xc,0x2b69,3);
+  thunk_InitializeUiTextStyleDescriptor();
+  puStack_84 = local_44;
+  uStack_74 = 1;
+  uStack_78 = 0x2b67;
+  iStack_7c = 0xc;
+  uStack_80 = 0;
   uStack_88 = 0x5042df;
-  thunk_InitializeUiTextStyleDescriptor((int)local_44,0,0xc,0x2b67,1);
-  pcVar2 = *(code **)(this->field0_0x0 + 0x94);
+  thunk_InitializeUiTextStyleDescriptor();
+  pcVar2 = *(code **)(*param_1 + 0x94);
+  uStack_74 = 0x7375626a;
+  uStack_78 = 0x5042f7;
   piVar5 = (int *)(*pcVar2)();
+  iStack_7c = unaff_retaddr + 1;
   iVar7 = *piVar5;
+  uStack_78 = 1;
+  uStack_80 = CONCAT22(extraout_var,*(undefined2 *)param_1[0x24]);
+  puStack_84 = (undefined1 *)0x504315;
   (**(code **)(iVar7 + 0x1cc))();
+  puStack_84 = (undefined1 *)0x1;
   uStack_88 = 1;
   uStack_8c = 0x504321;
   (**(code **)(iVar7 + 0xa4))();
@@ -398,7 +297,7 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
   uStack_d0 = 0xd;
   uStack_d4 = 0x2749;
   pcStack_d8 = (code *)0x5043e4;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  (**(code **)(*g_pLocalizationTable + 0x84))();
   iVar7 = *piVar5;
   ppuStack_dc = &puStack_c4;
   pcStack_d8 = (code *)0x1;
@@ -427,7 +326,7 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
   aiStack_10c[1] = 0xe;
   aiStack_10c[0] = 0x2749;
   uStack_110 = 0x50444d;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  (**(code **)(*g_pLocalizationTable + 0x84))();
   iVar7 = *piVar5;
   ppuStack_114 = &puStack_fc;
   uStack_110 = 1;
@@ -438,17 +337,17 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
   (**(code **)(iVar7 + 0xa8))(0,1);
   (**(code **)(iVar7 + 0x1c4))(0xffffffff,0);
   (**(code **)(iVar7 + 0x1b4))(aiStack_10c,0);
-  (**(code **)(*(int *)this->pField94 + 0xa4))(1,0);
+  (**(code **)(*(int *)param_1[0x25] + 0xa4))(1,0);
   piVar5 = (int *)(*pcVar2)(0x7377696e);
   iVar7 = *piVar5;
   (**(code **)(iVar7 + 0xc))();
   piVar5 = (int *)0x1;
   (**(code **)(iVar7 + 0xa4))(1,0);
-  sVar1 = *this->field90;
+  sVar1 = *(short *)param_1[0x24];
   sVar4 = (short)uStack_d4;
   uVar3 = (uint)uStack_d4 >> 0x10;
-  (**(code **)(*(int *)this->pField94 + 0x1dc))();
-  iVar6 = thunk_DestructTTEViewAndMaybeFree(this->pField94);
+  (**(code **)(*(int *)param_1[0x25] + 0x1dc))();
+  iVar6 = DestructTTEViewAndMaybeFree();
   pcStack_d8 = *(code **)(iVar7 + 300);
   (*pcStack_d8)(&uStack_f8);
   pcVar2 = *(code **)(iVar7 + 0x168);
@@ -460,10 +359,10 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
     ppuStack_114 = (undefined4 **)((int)ppuStack_114 + 10);
     (*pcVar2)(&uStack_118,0);
   }
-  (**(code **)(*(int *)this->pField94 + 300))(&ppuStack_114);
+  (**(code **)(*(int *)param_1[0x25] + 300))(&ppuStack_114);
   ppuStack_114 = (undefined4 **)0x0;
   aiStack_10c[0] = iVar6 + 8;
-  (**(code **)(*(int *)this->pField94 + 0x168))(&uStack_118,0);
+  (**(code **)(*(int *)param_1[0x25] + 0x168))(&uStack_118,0);
   SyncBoundedValueAndToggleControlStates();
   (**(code **)(CONCAT22((short)uVar3,sVar4 + sVar1) + 0xe4))();
   (**(code **)(*piVar5 + 0x13c))();
@@ -475,61 +374,48 @@ void __thiscall TTEView::BuildHelpSubjectListControlsWithPrevNext(TTEView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006129D7
 // GHIDRA_NAME TTEView::SelectObject_6129d7
-// GHIDRA_PROTO void __thiscall SelectObject_6129d7(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around LookupHandleMapEntryWithCreate; instructions=39, call_insns=3, internal_calls=1, unique_internal=1 [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SelectObject_6129d7()
 
-/* [WrapperShape] small wrapper around LookupHandleMapEntryWithCreate; instructions=39,
-   call_insns=3, internal_calls=1, unique_internal=1 [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall TTEView::SelectObject_6129d7(TTEView *this)
+void __thiscall TTEView::SelectObject_6129d7(int param_1,HGDIOBJ param_2)
 
 {
   HGDIOBJ pvVar1;
-  int in_stack_00000004;
+  HGDIOBJ h;
   
-  if (*(HDC *)&this->field_0x4 != *(HDC *)&this->field_0x8) {
-    if (in_stack_00000004 == 0) {
+  pvVar1 = param_2;
+  if (*(HDC *)(param_1 + 4) != *(HDC *)(param_1 + 8)) {
+    if (param_2 == (HGDIOBJ)0x0) {
+      h = (HGDIOBJ)0x0;
+    }
+    else {
+      h = *(HGDIOBJ *)((int)param_2 + 4);
+    }
+    param_2 = SelectObject(*(HDC *)(param_1 + 4),h);
+  }
+  if (*(HDC *)(param_1 + 8) != (HDC)0x0) {
+    if (pvVar1 == (HGDIOBJ)0x0) {
       pvVar1 = (HGDIOBJ)0x0;
     }
     else {
-      pvVar1 = *(HGDIOBJ *)(in_stack_00000004 + 4);
+      pvVar1 = *(HGDIOBJ *)((int)pvVar1 + 4);
     }
-    SelectObject(*(HDC *)&this->field_0x4,pvVar1);
+    param_2 = SelectObject(*(HDC *)(param_1 + 8),pvVar1);
   }
-  if (*(HDC *)&this->field_0x8 != (HDC)0x0) {
-    if (in_stack_00000004 == 0) {
-      pvVar1 = (HGDIOBJ)0x0;
-    }
-    else {
-      pvVar1 = *(HGDIOBJ *)(in_stack_00000004 + 4);
-    }
-    SelectObject(*(HDC *)&this->field_0x8,pvVar1);
-  }
-  FromHandle_613a36();
+  FromHandle_613a36(param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061F342
 // GHIDRA_NAME TTEView::DeflateRect
-// GHIDRA_PROTO void __thiscall DeflateRect(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Applies per-edge margins to rectangle in place (left/top added right/bottom subtracted). [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DeflateRect()
 
-/* Applies per-edge margins to rectangle in place (left/top added right/bottom subtracted).
-   [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall TTEView::DeflateRect(TTEView *this)
+void __thiscall TTEView::DeflateRect(int *param_1,int *param_2)
 
 {
-  int *in_stack_00000004;
-  
-  this->field0_0x0 = this->field0_0x0 + *in_stack_00000004;
-  *(int *)&this->field_0x4 = *(int *)&this->field_0x4 + in_stack_00000004[1];
-  *(int *)&this->field_0x8 = *(int *)&this->field_0x8 - in_stack_00000004[2];
-  *(int *)&this->field_0xc = *(int *)&this->field_0xc - in_stack_00000004[3];
+  *param_1 = *param_1 + *param_2;
+  param_1[1] = param_1[1] + param_2[1];
+  param_1[2] = param_1[2] - param_2[2];
+  param_1[3] = param_1[3] - param_2[3];
   return;
 }
 

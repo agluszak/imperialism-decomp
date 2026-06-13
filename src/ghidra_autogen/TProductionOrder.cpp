@@ -3,113 +3,39 @@
 // Program: Imperialism.exe
 // Bucket: TProductionOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040204F
-// GHIDRA_NAME TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060_At0040204f
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060_At0040204f(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b5060 */
-
-void __thiscall
-TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b5060_At0040204f
-          (TProductionOrder *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405B96
-// GHIDRA_NAME TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0_At00405b96
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0_At00405b96(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0 */
-
-void __thiscall
-TProductionOrder::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0_At00405b96
-          (TProductionOrder *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F92
-// GHIDRA_NAME TProductionOrder::thunk_OrphanCallChain_C1_I16_004b5100_At00405f92
-// GHIDRA_PROTO int __cdecl thunk_OrphanCallChain_C1_I16_004b5100_At00405f92(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C1_I16_004b5100
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanCallChain_C1_I16_004b5100 */
-
-int __cdecl TProductionOrder::thunk_OrphanCallChain_C1_I16_004b5100_At00405f92(void)
-
-{
-  int iVar1;
-  
-  iVar1 = OrphanCallChain_C1_I16_004b5100();
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408C8D
-// GHIDRA_NAME TProductionOrder::thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d
-// GHIDRA_PROTO void __cdecl thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ResetCityOrderItemDerivedStateNoop
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ResetCityOrderItemDerivedStateNoop */
-
-void __cdecl TProductionOrder::thunk_ResetCityOrderItemDerivedStateNoop_At00408c8d(void)
-
-{
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4EE0
 // GHIDRA_NAME TProductionOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTProductionOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TProductionOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTProductionOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TProductionOrder. */
-
-void * __cdecl TProductionOrder::GetTProductionOrderClassNamePointer(void)
+undefined ** TProductionOrder::GetTProductionOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTProductionOrder;
+  return &PTR_s_TProductionOrder_0064f350;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F00
 // GHIDRA_NAME TProductionOrder::ConstructTProductionOrderBaseState
-// GHIDRA_PROTO void __fastcall ConstructTProductionOrderBaseState(TProductionOrder * pThis)
+// GHIDRA_PROTO undefined ConstructTProductionOrderBaseState()
 
-void __fastcall TProductionOrder::ConstructTProductionOrderBaseState(TProductionOrder *pThis)
+void __fastcall TProductionOrder::ConstructTProductionOrderBaseState(undefined4 *param_1)
 
 {
-  *(undefined ***)pThis = &g_vtblTProductionOrder;
+  *param_1 = &PTR_LAB_0064fa18;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F20
 // GHIDRA_NAME TProductionOrder::DestructTProductionOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTProductionOrderAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTProductionOrderAndMaybeFree()
 
-void * __thiscall
-TProductionOrder::DestructTProductionOrderAndMaybeFree(TProductionOrder *this,byte freeSelfFlag)
+undefined4 __thiscall
+TProductionOrder::DestructTProductionOrderAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTProductionOrderAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

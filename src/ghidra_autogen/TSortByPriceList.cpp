@@ -3,75 +3,62 @@
 // Program: Imperialism.exe
 // Bucket: TSortByPriceList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004023C9
-// GHIDRA_NAME TSortByPriceList::thunk_DestructTSortByPriceList
-// GHIDRA_PROTO void __cdecl thunk_DestructTSortByPriceList(TIndexAndRankList * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTSortByPriceList
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTSortByPriceList */
-
-void __cdecl TSortByPriceList::thunk_DestructTSortByPriceList(TIndexAndRankList *pThis)
-
-{
-  undefined4 *extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &g_vtblTIndexAndRankList;
-  *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull();
-  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005346F0
 // GHIDRA_NAME TSortByPriceList::GetTSortByPriceListClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSortByPriceListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSortByPriceList.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSortByPriceListClassNamePointer()
 
-/* Returns class descriptor pointer for TSortByPriceList. */
-
-void * __cdecl TSortByPriceList::GetTSortByPriceListClassNamePointer(void)
+char * TSortByPriceList::GetTSortByPriceListClassNamePointer(void)
 
 {
-  return &g_pClassDescTSortByPriceList;
+  return "Xwi";
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534710
 // GHIDRA_NAME TSortByPriceList::ConstructTSortByPriceList
-// GHIDRA_PROTO void __thiscall ConstructTSortByPriceList(void)
+// GHIDRA_PROTO undefined ConstructTSortByPriceList()
 
-void __thiscall TSortByPriceList::ConstructTSortByPriceList(TSortByPriceList *this)
+TIndexAndRankList * __fastcall
+TSortByPriceList::ConstructTSortByPriceList(TIndexAndRankList *param_1)
 
 {
-  TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
-  this->pVtable = &PTR_thunk_GetTSortByPriceListClassNamePointer_00659ef0;
-  return;
+  TIndexAndRankList::CPtrArray(param_1);
+  *(undefined ***)param_1 = &_vftable_;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00534740
+// GHIDRA_NAME TSortByPriceList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall
+TSortByPriceList::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  ~TSortByPriceList();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534770
-// GHIDRA_NAME TSortByPriceList::DestructTSortByPriceList
-// GHIDRA_PROTO void __cdecl DestructTSortByPriceList(TIndexAndRankList * pThis)
+// GHIDRA_NAME TSortByPriceList::~TSortByPriceList
+// GHIDRA_PROTO undefined ~TSortByPriceList()
 
-void __cdecl TSortByPriceList::DestructTSortByPriceList(TIndexAndRankList *pThis)
+void TSortByPriceList::~TSortByPriceList(void)
 
 {
+  undefined4 uVar1;
   undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &g_vtblTIndexAndRankList;
+  *extraout_ECX = &TIndexAndRankList::_vftable_;
+  uVar1 = extraout_ECX[1];
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(uVar1);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;

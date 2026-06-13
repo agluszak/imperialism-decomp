@@ -3,34 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040619A
-// GHIDRA_NAME TList::thunk_GetTListClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTListClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTListClassNamePointer */
-
-void * __cdecl TList::thunk_GetTListClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTListClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00487E50
 // GHIDRA_NAME TList::CreateTListInstance
-// GHIDRA_PROTO void * __cdecl CreateTListInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TList; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTListInstance()
 
-/* [ClassQuad] create inferred for TList; alloc factory pattern. */
-
-void * __cdecl TList::CreateTListInstance(void)
+undefined4 * TList::CreateTListInstance(void)
 
 {
   undefined4 *puVar1;
@@ -44,13 +21,13 @@ void * __cdecl TList::CreateTListInstance(void)
   puStack_8 = &LAB_0062eb32;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &g_vtblRefCountedObjectBase;
+    *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
-    *puVar1 = &g_vtblTArmyBattle;
+    TGreatPower::CPtrList(10);
+    *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -59,16 +36,11 @@ void * __cdecl TList::CreateTListInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487ED0
 // GHIDRA_NAME TList::GetTListClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TList.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTListClassNamePointer()
 
-/* Returns class descriptor pointer for TList. */
-
-void * __cdecl TList::GetTListClassNamePointer(void)
+char * TList::GetTListClassNamePointer(void)
 
 {
-  return &g_pClassDescTList;
+  return "POi";
 }
 

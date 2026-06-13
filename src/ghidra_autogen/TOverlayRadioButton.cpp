@@ -3,78 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TOverlayRadioButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404435
-// GHIDRA_NAME TOverlayRadioButton::thunk_ConstructTOverlayRadioButtonBaseState_At00404435
-// GHIDRA_PROTO void __thiscall thunk_ConstructTOverlayRadioButtonBaseState_At00404435(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTOverlayRadioButtonBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTOverlayRadioButtonBaseState */
-
-void __thiscall
-TOverlayRadioButton::thunk_ConstructTOverlayRadioButtonBaseState_At00404435
-          (TOverlayRadioButton *this)
-
-{
-  ConstructTOverlayRadioButtonBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405600
-// GHIDRA_NAME TOverlayRadioButton::thunk_GetTOverlayRadioButtonClassNamePointer_At00405600
-// GHIDRA_PROTO void * __cdecl thunk_GetTOverlayRadioButtonClassNamePointer_At00405600(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTOverlayRadioButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTOverlayRadioButtonClassNamePointer */
-
-void * __cdecl TOverlayRadioButton::thunk_GetTOverlayRadioButtonClassNamePointer_At00405600(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTOverlayRadioButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAAF0
 // GHIDRA_NAME TOverlayRadioButton::GetTOverlayRadioButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTOverlayRadioButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TOverlayRadioButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTOverlayRadioButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TOverlayRadioButton. */
-
-void * __cdecl TOverlayRadioButton::GetTOverlayRadioButtonClassNamePointer(void)
+undefined ** TOverlayRadioButton::GetTOverlayRadioButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTOverlayRadioButton;
+  return &PTR_s_TOverlayRadioButton_006512a8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAB10
 // GHIDRA_NAME TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState
-// GHIDRA_PROTO void __thiscall ConstructTOverlayRadioButtonBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders overlay radio-button selection layer onto active surface when enabled.
-// GHIDRA_COMMENT_END
-
-/* Renders overlay radio-button selection layer onto active surface when enabled. */
+// GHIDRA_PROTO undefined ConstructTOverlayRadioButtonBaseState()
 
 void __thiscall
-TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState(TOverlayRadioButton *this)
+TOverlayRadioButton::ConstructTOverlayRadioButtonBaseState(int param_1,undefined4 param_2)
 
 {
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
-  if (this->field134_0x98 != 0) {
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
+  if (*(int *)(param_1 + 0x98) != 0) {
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(this->field134_0x98 + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&this->field135_0x9c,
-               &this->field136_0xac,0x24,(astruct_19 *)0x0);
-    TCivDescription::SetQuickDrawStrokeColor();
+              ((astruct_17 *)(*(int *)(param_1 + 0x98) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)(param_1 + 0x9c),
+               (RECT *)(param_1 + 0xac),0x24,(astruct_19 *)0x0);
+    SetQuickDrawStrokeColor(0x13);
   }
   return;
 }

@@ -5,16 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00562190
 // GHIDRA_NAME TOcean::GetTOceanClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTOceanClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TOcean.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTOceanClassNamePointer()
 
-/* Returns class descriptor pointer for TOcean. */
-
-void * __cdecl TOcean::GetTOceanClassNamePointer(void)
+undefined * TOcean::GetTOceanClassNamePointer(void)
 
 {
-  return &g_pClassDescTOcean;
+  return &DAT_0065c630;
 }
 

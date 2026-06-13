@@ -3,405 +3,228 @@
 // Program: Imperialism.exe
 // Bucket: TTown.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040398B
-// GHIDRA_NAME TTown::thunk_RecomputeTownAdjacentResourceSupplyTotals
-// GHIDRA_PROTO void __thiscall thunk_RecomputeTownAdjacentResourceSupplyTotals(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RecomputeTownAdjacentResourceSupplyTotals.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for RecomputeTownAdjacentResourceSupplyTotals. */
-
-void __thiscall TTown::thunk_RecomputeTownAdjacentResourceSupplyTotals(TTown *this)
-
-{
-  RecomputeTownAdjacentResourceSupplyTotals(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040673A
-// GHIDRA_NAME TTown::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60 */
-
-void __thiscall
-TTown::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(TTown *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408990
-// GHIDRA_NAME TTown::thunk_RecomputeTownAdjacentTileYieldTotals
-// GHIDRA_PROTO void __thiscall thunk_RecomputeTownAdjacentTileYieldTotals(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RecomputeTownAdjacentTileYieldTotals.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for RecomputeTownAdjacentTileYieldTotals. */
-
-void __thiscall TTown::thunk_RecomputeTownAdjacentTileYieldTotals(TTown *this)
-
-{
-  TControl::RecomputeTownAdjacentTileYieldTotals((TControl *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408CE2
-// GHIDRA_NAME TTown::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70 */
-
-void __thiscall
-TTown::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(TTown *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004091BF
-// GHIDRA_NAME TTown::thunk_IncrementProductionDerivedCountersWithTurnParityRules
-// GHIDRA_PROTO void __thiscall thunk_IncrementProductionDerivedCountersWithTurnParityRules(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to IncrementProductionDerivedCountersWithTurnParityRules
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to IncrementProductionDerivedCountersWithTurnParityRules */
-
-void __thiscall TTown::thunk_IncrementProductionDerivedCountersWithTurnParityRules(TTown *this)
-
-{
-  IncrementProductionDerivedCountersWithTurnParityRules(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004094DA
-// GHIDRA_NAME TTown::thunk_GetTTownClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTownClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTownClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTownClassNamePointer */
-
-void * __cdecl TTown::thunk_GetTTownClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTownClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409958
-// GHIDRA_NAME TTown::thunk_DestructTTownAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTownAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTownAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTownAndMaybeFree */
-
-void * __thiscall TTown::thunk_DestructTTownAndMaybeFree(TTown *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTownAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040997B
-// GHIDRA_NAME TTown::thunk_RecomputeTownAdjacentUniversityWeightedTotals
-// GHIDRA_PROTO void __thiscall thunk_RecomputeTownAdjacentUniversityWeightedTotals(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RecomputeTownAdjacentUniversityWeightedTotals.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for RecomputeTownAdjacentUniversityWeightedTotals. */
-
-void __thiscall TTown::thunk_RecomputeTownAdjacentUniversityWeightedTotals(TTown *this)
-
-{
-  RecomputeTownAdjacentUniversityWeightedTotals(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6A80
 // GHIDRA_NAME TTown::CreateTTownInstance
-// GHIDRA_PROTO void __cdecl CreateTTownInstance(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Parses numeric town value from string input and releases source shared string reference.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTownInstance()
 
-/* Parses numeric town value from string input and releases source shared string reference. */
-
-void __cdecl TTown::CreateTTownInstance(int arg1,int arg2)
+void TTown::CreateTTownInstance(undefined4 param_1,undefined4 *param_2)
 
 {
-  undefined4 extraout_EAX;
+  undefined4 uVar1;
   
-  ParseSignedIntAndDiscardResult((byte *)arg1);
-  *(undefined4 *)arg2 = extraout_EAX;
+  uVar1 = ParseSignedIntAndDiscardResult(param_1);
+  *param_2 = uVar1;
   ReleaseSharedStringRefIfNotEmpty();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6C40
 // GHIDRA_NAME TTown::GetTTownClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTownClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTown.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTownClassNamePointer()
 
-/* Returns class descriptor pointer for TTown. */
-
-void * __cdecl TTown::GetTTownClassNamePointer(void)
+undefined ** TTown::GetTTownClassNamePointer(void)
 
 {
-  return &g_pClassDescTTown;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B6C60
-// GHIDRA_NAME TTown::ConstructFrogCityMarker
-// GHIDRA_PROTO void __thiscall ConstructFrogCityMarker(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Tiny constructor assigning FrogCity marker vtable (`PTR_LAB_0066d7c8`).
-// GHIDRA_COMMENT_END
-
-/* Tiny constructor assigning FrogCity marker vtable (`PTR_LAB_0066d7c8`). */
-
-void __thiscall TTown::ConstructFrogCityMarker(TTown *this)
-
-{
-  this->field0_0x0 = &g_vtblTTown;
-  return;
+  return &PTR_s_TTown_0066d780;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6C80
 // GHIDRA_NAME TTown::DestructTTownAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTownAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTownAndMaybeFree()
 
-void * __thiscall TTown::DestructTTownAndMaybeFree(TTown *this,byte freeSelfFlag)
+undefined4 __thiscall TTown::DestructTTownAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTTownAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6D70
 // GHIDRA_NAME TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70()
 
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
-
-void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(TTown *this,void *pMessage)
+void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot18_At005b6d70(int param_1,int *param_2)
 
 {
   code *pcVar1;
-  short sVar2;
-  undefined1 uVar3;
-  short *psVar4;
-  int iVar5;
+  undefined1 uVar2;
+  undefined1 *puVar3;
+  int iVar4;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x3c);
-  (*pcVar1)(&this->field1_0x4,0x10);
-  (*pcVar1)(&this->field14,2);
-  (*pcVar1)(&this->field18_0x16,2);
-  (*pcVar1)(&this->field_0x18,2);
-  (*pcVar1)(&this->field1a,2);
-  (*pcVar1)(&this->field1c,2);
-  psVar4 = &this->field24_0x1e;
-  (*pcVar1)(psVar4,0x2e);
-  iVar5 = 0x17;
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x3c);
+  (*pcVar1)(param_1 + 4,0x10);
+  (*pcVar1)(param_1 + 0x14,2);
+  (*pcVar1)(param_1 + 0x16,2);
+  (*pcVar1)(param_1 + 0x18,2);
+  (*pcVar1)(param_1 + 0x1a,2);
+  (*pcVar1)(param_1 + 0x1c,2);
+  puVar3 = (undefined1 *)(param_1 + 0x1e);
+  (*pcVar1)(puVar3,0x2e);
+  iVar4 = 0x17;
   do {
-    sVar2 = *psVar4;
-    *(undefined1 *)psVar4 = *(undefined1 *)((int)psVar4 + 1);
-    *(char *)((int)psVar4 + 1) = (char)sVar2;
-    psVar4 = psVar4 + 1;
-    iVar5 = iVar5 + -1;
-  } while (iVar5 != 0);
-  (*pcVar1)(&this->field55_0x4c);
-  (*pcVar1)(&this->field4d,1);
-  (*pcVar1)(&this->field4e,1);
-  if (g_Advance_Turn_Machine_State_00695278 < 10) {
-    *(undefined1 *)((int)&this->field4e + 1) = 1;
+    uVar2 = *puVar3;
+    *puVar3 = puVar3[1];
+    puVar3[1] = uVar2;
+    puVar3 = puVar3 + 2;
+    iVar4 = iVar4 + -1;
+  } while (iVar4 != 0);
+  (*pcVar1)(param_1 + 0x4c);
+  (*pcVar1)(param_1 + 0x4d,1);
+  (*pcVar1)(param_1 + 0x4e,1);
+  if (DAT_00695278 < 10) {
+    *(undefined1 *)(param_1 + 0x4f) = 1;
     return;
   }
-  uVar3 = (*pcRam00000045)();
-  *(undefined1 *)((int)&this->field4e + 1) = uVar3;
+  uVar2 = (*pcRam00000045)();
+  *(undefined1 *)(param_1 + 0x4f) = uVar2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6E60
 // GHIDRA_NAME TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60()
 
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
-
-void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(TTown *this,void *pMessage)
+void __thiscall TTown::WrapperFor_HandleCityDialogNoOpSlot14_At005b6e60(int param_1,int *param_2)
 
 {
   code *pcVar1;
   int iVar2;
-  short *psVar3;
+  undefined2 *puVar3;
   int iVar4;
   undefined4 uStack_2c;
-  ushort *puStack_28;
+  int iStack_28;
   undefined4 uStack_24;
-  undefined1 *puStack_20;
-  void *pvStack_1c;
+  int iStack_20;
+  int *piStack_1c;
   
-  pvStack_1c = pMessage;
-  puStack_20 = (undefined1 *)0x5b6e73;
+  piStack_1c = param_2;
+  iStack_20 = 0x5b6e73;
   TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  pvStack_1c = (void *)0x10;
-  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
-  puStack_20 = &this->field1_0x4;
+  piStack_1c = (int *)0x10;
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  iStack_20 = param_1 + 4;
   uStack_24 = 0x5b6e86;
   (*pcVar1)();
-  puStack_28 = &this->field14;
+  iStack_28 = param_1 + 0x14;
   uStack_24 = 2;
   uStack_2c = 0x5b6e90;
   (*pcVar1)();
   uStack_2c = 2;
-  (*pcVar1)(&this->field18_0x16);
-  (*pcVar1)(&this->field_0x18,2);
-  (*pcVar1)(&this->field1a,2);
-  iVar2 = (*pcVar1)(&this->field1c,2);
-  psVar3 = &this->field24_0x1e;
+  (*pcVar1)(param_1 + 0x16);
+  (*pcVar1)(param_1 + 0x18,2);
+  (*pcVar1)(param_1 + 0x1a,2);
+  iVar2 = (*pcVar1)(param_1 + 0x1c,2);
+  puVar3 = (undefined2 *)(param_1 + 0x1e);
   iVar4 = 0x17;
   do {
-    uStack_2c._1_1_ = (undefined1)((ushort)*psVar3 >> 8);
-    uStack_2c._0_1_ = (undefined1)*psVar3;
+    uStack_2c._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    uStack_2c._0_1_ = (undefined1)*puVar3;
     uStack_2c._0_2_ = CONCAT11((undefined1)uStack_2c,uStack_2c._1_1_);
     uStack_2c = CONCAT22((short)((uint)iVar2 >> 0x10),(undefined2)uStack_2c);
     (*pcVar1)(&uStack_2c,2);
-    psVar3 = psVar3 + 1;
+    puVar3 = puVar3 + 1;
     iVar2 = iVar4 + -1;
     iVar4 = iVar2;
   } while (iVar2 != 0);
   iVar4 = 1;
-  (*pcVar1)(&this->field55_0x4c);
-  (*pcVar1)(&this->field4d,1);
-  (*pcVar1)(&this->field4e,1);
-  (**(code **)(iVar4 + 0x80))(*(undefined1 *)((int)&this->field4e + 1));
+  (*pcVar1)(param_1 + 0x4c);
+  (*pcVar1)(param_1 + 0x4d,1);
+  (*pcVar1)(param_1 + 0x4e,1);
+  (**(code **)(iVar4 + 0x80))(*(undefined1 *)(param_1 + 0x4f));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7140
 // GHIDRA_NAME TTown::RecomputeTownAdjacentResourceSupplyTotals
-// GHIDRA_PROTO void __thiscall RecomputeTownAdjacentResourceSupplyTotals(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Recompute town adjacent resource supply totals from eligible neighbor tiles.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RecomputeTownAdjacentResourceSupplyTotals()
 
-/* Recompute town adjacent resource supply totals from eligible neighbor tiles. */
-
-void __thiscall TTown::RecomputeTownAdjacentResourceSupplyTotals(TTown *this)
+void __fastcall TTown::RecomputeTownAdjacentResourceSupplyTotals(int param_1)
 
 {
   char cVar1;
   char cVar2;
   char cVar3;
-  uint extraout_EAX;
-  short *psVar4;
-  int iVar5;
-  int *piVar6;
-  int iVar7;
+  short sVar4;
+  short *psVar5;
+  int iVar6;
+  int *piVar7;
+  int iVar8;
   int unaff_EBP;
-  short sVar8;
   short sVar9;
-  uint uVar10;
+  undefined4 *puVar10;
   int local_10;
   int local_c;
   
-  cVar1 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 5 + (short)this->field14 * 0x24);
-  *(undefined1 *)&this->field4e = 0;
-  psVar4 = &this->field24_0x1e;
-  for (iVar5 = 0xb; iVar5 != 0; iVar5 = iVar5 + -1) {
-    *(undefined4 *)psVar4 = 0;
-    psVar4 = psVar4 + 2;
+  cVar1 = *(char *)(g_pGlobalMapState[3] + 5 + *(short *)(param_1 + 0x14) * 0x24);
+  *(undefined1 *)(param_1 + 0x4e) = 0;
+  puVar10 = (undefined4 *)(param_1 + 0x1e);
+  for (iVar6 = 0xb; iVar6 != 0; iVar6 = iVar6 + -1) {
+    *puVar10 = 0;
+    puVar10 = puVar10 + 1;
   }
-  *psVar4 = 0;
+  *(undefined2 *)puVar10 = 0;
   local_c = 0;
-  piVar6 = g_pGlobalMapState;
+  piVar7 = g_pGlobalMapState;
   do {
     if (local_c < 6) {
-      thunk_GetWrappedHexNeighborTileIndexByDirection();
-      piVar6 = g_pGlobalMapState;
-      uVar10 = extraout_EAX;
+      sVar4 = thunk_GetWrappedHexNeighborTileIndexByDirection
+                        (*(undefined2 *)(param_1 + 0x14),local_c);
+      piVar7 = g_pGlobalMapState;
     }
     else {
-      uVar10 = (uint)this->field14;
+      sVar4 = *(short *)(param_1 + 0x14);
     }
-    sVar9 = (short)uVar10;
-    if (sVar9 != -1) {
-      iVar5 = sVar9 * 0x24;
-      if (((short)*(char *)(piVar6[3] + 4 + iVar5) == this->field1c) &&
-         ((cVar2 = *(char *)(piVar6[3] + iVar5 + 5), cVar2 == cVar1 || (cVar2 == -1)))) {
-        iVar7 = 0;
+    if (sVar4 != -1) {
+      iVar6 = sVar4 * 0x24;
+      if (((short)*(char *)(piVar7[3] + 4 + iVar6) == *(short *)(param_1 + 0x1c)) &&
+         ((cVar2 = *(char *)(piVar7[3] + iVar6 + 5), cVar2 == cVar1 || (cVar2 == -1)))) {
+        iVar8 = 0;
         local_10 = 0;
         do {
-          sVar8 = (short)*(char *)(piVar6[3] + local_10 + 0x11 + iVar5);
-          if (sVar8 != -1) {
-            if ((((sVar8 == 3) || (sVar8 == 4)) || (sVar8 == 0x16)) ||
-               ((sVar8 == 0x15 || (sVar8 == 6)))) {
-              cVar2 = (**(code **)(*piVar6 + 200))(uVar10,1);
+          sVar9 = (short)*(char *)(piVar7[3] + local_10 + 0x11 + iVar6);
+          if (sVar9 != -1) {
+            if ((((sVar9 == 3) || (sVar9 == 4)) || (sVar9 == 0x16)) ||
+               ((sVar9 == 0x15 || (sVar9 == 6)))) {
+              cVar2 = (**(code **)(*piVar7 + 200))(sVar4,1);
               if (cVar2 == '\0') {
-                (**(code **)(*(int *)g_pGlobalMapState + 0xcc))(uVar10,1,1,0);
+                (**(code **)(*g_pGlobalMapState + 0xcc))(sVar4,1,1,0);
               }
-              psVar4 = (short *)(unaff_EBP + 0x1e + sVar8 * 2);
-              cVar3 = (**(code **)(*(int *)g_pGlobalMapState + 0xc4))(uVar10,iVar7);
-              *psVar4 = *psVar4 + (short)cVar3;
-              piVar6 = g_pGlobalMapState;
+              psVar5 = (short *)(unaff_EBP + 0x1e + sVar9 * 2);
+              cVar3 = (**(code **)(*g_pGlobalMapState + 0xc4))(sVar4,iVar8);
+              *psVar5 = *psVar5 + (short)cVar3;
+              piVar7 = g_pGlobalMapState;
               if (cVar2 == '\0') {
-                (**(code **)(*(int *)g_pGlobalMapState + 0xcc))(uVar10,1,0,0);
-                piVar6 = g_pGlobalMapState;
+                (**(code **)(*g_pGlobalMapState + 0xcc))(sVar4,1,0,0);
+                piVar7 = g_pGlobalMapState;
               }
             }
             else {
-              cVar2 = (**(code **)(*piVar6 + 0xc4))(uVar10,iVar7);
-              (&this->field24_0x1e)[sVar8] = (&this->field24_0x1e)[sVar8] + (short)cVar2;
-              piVar6 = g_pGlobalMapState;
+              psVar5 = (short *)(param_1 + 0x1e + sVar9 * 2);
+              cVar2 = (**(code **)(*piVar7 + 0xc4))(sVar4,iVar8);
+              *psVar5 = *psVar5 + (short)cVar2;
+              piVar7 = g_pGlobalMapState;
             }
           }
-          iVar7 = iVar7 + 1;
+          iVar8 = iVar8 + 1;
           local_10 = local_10 + 1;
-        } while ((short)iVar7 < 2);
-        sVar8 = *(short *)(piVar6[3] + 0x14 + iVar5);
-        if ((sVar8 != -1) && (iVar5 = sVar8 * 0xa8, *(short *)(piVar6[4] + 4 + iVar5) == sVar9)) {
-          iVar5 = iVar5 + 0x82;
-          iVar7 = 10;
-          *(undefined1 *)&this->field4e = 1;
-          psVar4 = &this->field32_0x2c;
+        } while ((short)iVar8 < 2);
+        sVar9 = *(short *)(piVar7[3] + 0x14 + iVar6);
+        if ((sVar9 != -1) && (iVar6 = sVar9 * 0xa8, *(short *)(piVar7[4] + 4 + iVar6) == sVar4)) {
+          iVar6 = iVar6 + 0x82;
+          iVar8 = 10;
+          *(undefined1 *)(param_1 + 0x4e) = 1;
+          psVar5 = (short *)(param_1 + 0x2c);
           do {
-            iVar5 = iVar5 + 2;
-            *psVar4 = *psVar4 + *(short *)(*(int *)((int)g_pGlobalMapState + 0x10) + -2 + iVar5);
-            iVar7 = iVar7 + -1;
-            psVar4 = psVar4 + 1;
-            piVar6 = g_pGlobalMapState;
-          } while (iVar7 != 0);
+            iVar6 = iVar6 + 2;
+            *psVar5 = *psVar5 + *(short *)(g_pGlobalMapState[4] + -2 + iVar6);
+            iVar8 = iVar8 + -1;
+            psVar5 = psVar5 + 1;
+            piVar7 = g_pGlobalMapState;
+          } while (iVar8 != 0);
         }
       }
     }
@@ -412,72 +235,67 @@ void __thiscall TTown::RecomputeTownAdjacentResourceSupplyTotals(TTown *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B73E0
 // GHIDRA_NAME TTown::RecomputeTownAdjacentUniversityWeightedTotals
-// GHIDRA_PROTO void __thiscall RecomputeTownAdjacentUniversityWeightedTotals(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Recompute town adjacent weighted totals with university/capability modifiers.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RecomputeTownAdjacentUniversityWeightedTotals()
 
-/* Recompute town adjacent weighted totals with university/capability modifiers. */
-
-void __thiscall TTown::RecomputeTownAdjacentUniversityWeightedTotals(TTown *this)
+void __fastcall TTown::RecomputeTownAdjacentUniversityWeightedTotals(int param_1)
 
 {
   char cVar1;
   short sVar2;
-  uint extraout_EAX;
-  int iVar3;
-  int *piVar4;
-  int iVar5;
+  short sVar3;
+  int iVar4;
+  int *piVar5;
   int iVar6;
-  short *psVar7;
-  uint local_c;
+  int iVar7;
+  short *psVar8;
   int local_8;
   
-  psVar7 = &this->field24_0x1e;
-  for (iVar3 = 0xb; iVar3 != 0; iVar3 = iVar3 + -1) {
-    *(undefined4 *)psVar7 = 0;
-    psVar7 = psVar7 + 2;
+  psVar8 = (short *)(param_1 + 0x1e);
+  for (iVar4 = 0xb; iVar4 != 0; iVar4 = iVar4 + -1) {
+    psVar8[0] = 0;
+    psVar8[1] = 0;
+    psVar8 = psVar8 + 2;
   }
-  *psVar7 = 0;
+  *psVar8 = 0;
   local_8 = 0;
-  piVar4 = g_pGlobalMapState;
+  piVar5 = g_pGlobalMapState;
   do {
     if (local_8 < 6) {
-      thunk_GetWrappedHexNeighborTileIndexByDirection();
-      piVar4 = g_pGlobalMapState;
-      local_c = extraout_EAX;
+      sVar2 = thunk_GetWrappedHexNeighborTileIndexByDirection
+                        (*(undefined2 *)(param_1 + 0x14),local_8);
+      piVar5 = g_pGlobalMapState;
     }
     else {
-      local_c = (uint)this->field14;
+      sVar2 = *(short *)(param_1 + 0x14);
     }
-    if ((short)local_c != -1) {
-      iVar3 = (short)local_c * 0x24;
-      if (((short)((char *)(piVar4[3] + iVar3))[4] == this->field1c) ||
-         (*(char *)(piVar4[3] + iVar3) == '\x05')) {
+    if (sVar2 != -1) {
+      iVar4 = sVar2 * 0x24;
+      if (((short)((char *)(piVar5[3] + iVar4))[4] == *(short *)(param_1 + 0x1c)) ||
+         (*(char *)(piVar5[3] + iVar4) == '\x05')) {
+        iVar7 = 0;
         iVar6 = 0;
-        iVar5 = 0;
-        psVar7 = &this->field24_0x1e;
+        psVar8 = (short *)(param_1 + 0x1e);
         do {
-          cVar1 = (**(code **)(*piVar4 + 0xd4))(local_c,iVar6);
-          sVar2 = (short)cVar1;
-          if ((sVar2 != 0) &&
-             ((&g_Recompute_Town_Adjacent_Value_0066D770)
-              [*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x13 + iVar3)] != '\0')) {
-            sVar2 = (short)(char)(&g_abUniversityRequirementLevelById)
-                                 [iVar5 * 4 +
+          cVar1 = (**(code **)(*piVar5 + 0xd4))(sVar2,iVar7);
+          sVar3 = (short)cVar1;
+          if ((sVar3 != 0) &&
+             ((&DAT_0066d770)[*(char *)(g_pGlobalMapState[3] + 0x13 + iVar4)] != '\0')) {
+            sVar3 = (short)(char)(&g_abUniversityRequirementLevelById)
+                                 [iVar6 * 4 +
                                   (int)*(short *)((int)g_pCityOrderCapabilityState +
-                                                 (this->field1c * 0x17 + iVar5) * 2 + 0x3e)];
+                                                 (*(short *)(param_1 + 0x1c) * 0x17 + iVar6) * 2 +
+                                                 0x3e)];
           }
-          *psVar7 = *psVar7 + sVar2;
+          *psVar8 = *psVar8 + sVar3;
+          iVar7 = iVar7 + 1;
           iVar6 = iVar6 + 1;
-          iVar5 = iVar5 + 1;
-          psVar7 = psVar7 + 1;
-          piVar4 = g_pGlobalMapState;
-        } while ((short)iVar6 < 0x17);
-        if ((*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 2 + iVar3) != '\0') &&
-           (this->field4d != 0)) {
-          this->field44 = this->field44 + 1;
-          piVar4 = g_pGlobalMapState;
+          psVar8 = psVar8 + 1;
+          piVar5 = g_pGlobalMapState;
+        } while ((short)iVar7 < 0x17);
+        if ((*(char *)(g_pGlobalMapState[3] + 2 + iVar4) != '\0') &&
+           (*(char *)(param_1 + 0x4d) != '\0')) {
+          *(short *)(param_1 + 0x44) = *(short *)(param_1 + 0x44) + 1;
+          piVar5 = g_pGlobalMapState;
         }
       }
     }
@@ -488,81 +306,75 @@ void __thiscall TTown::RecomputeTownAdjacentUniversityWeightedTotals(TTown *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B7570
 // GHIDRA_NAME TTown::IncrementProductionDerivedCountersWithTurnParityRules
-// GHIDRA_PROTO void __thiscall IncrementProductionDerivedCountersWithTurnParityRules(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Advances multiple production-derived short counters using turn-parity gates, resource availability checks, and per-slot production thresholds for the active nation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined IncrementProductionDerivedCountersWithTurnParityRules()
 
-/* Advances multiple production-derived short counters using turn-parity gates, resource
-   availability checks, and per-slot production thresholds for the active nation. */
-
-void __thiscall TTown::IncrementProductionDerivedCountersWithTurnParityRules(TTown *this)
+void __fastcall TTown::IncrementProductionDerivedCountersWithTurnParityRules(int param_1)
 
 {
   short sVar1;
   short sVar2;
   int iVar3;
   ushort uVar4;
-  int *this_00;
+  int *this;
   
-  if (g_apNationStates[this->field1c] == (void *)0x0) {
-    this_00 = (int *)0x0;
+  if ((&g_apNationStates)[*(short *)(param_1 + 0x1c)] == 0) {
+    this = (int *)0x0;
   }
   else {
-    this_00 = *(int **)((int)g_apNationStates[this->field1c] + 0x894);
+    this = *(int **)((&g_apNationStates)[*(short *)(param_1 + 0x1c)] + 0x894);
   }
-  sVar2 = (**(code **)(*(int *)g_pLocalizationTable + 0x3c))();
-  uVar4 = sVar2 - this->field1a;
+  sVar2 = (**(code **)(*g_pLocalizationTable + 0x3c))();
+  uVar4 = sVar2 - *(short *)(param_1 + 0x1a);
   if ((4 < (short)uVar4) && ((uVar4 & 1) == 0)) {
-    sVar2 = this->field25_0x20 + this->field24_0x1e;
+    sVar2 = *(short *)(param_1 + 0x20) + *(short *)(param_1 + 0x1e);
     if (sVar2 != 0) {
-      iVar3 = thunk_GetCityBuildingProductionValueBySlot(this_00,1);
-      sVar1 = this->field33_0x2e;
+      iVar3 = thunk_GetCityBuildingProductionValueBySlot(this,1);
+      sVar1 = *(short *)(param_1 + 0x2e);
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar2 / 2)) {
-        this->field33_0x2e = sVar1 + 1;
+        *(short *)(param_1 + 0x2e) = sVar1 + 1;
       }
     }
-    if (this->field22 != 0) {
-      iVar3 = thunk_GetCityBuildingProductionValueBySlot(this_00,5);
-      sVar2 = this->field30;
+    if (*(short *)(param_1 + 0x22) != 0) {
+      iVar3 = thunk_GetCityBuildingProductionValueBySlot(this,5);
+      sVar2 = *(short *)(param_1 + 0x30);
       if ((sVar2 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
-         ((int)sVar2 < (int)this->field22 / 2)) {
-        this->field30 = sVar2 + 1;
+         ((int)sVar2 < (int)*(short *)(param_1 + 0x22) / 2)) {
+        *(short *)(param_1 + 0x30) = sVar2 + 1;
       }
     }
-    sVar2 = this->field24;
-    if ((sVar2 != 0) && (sVar1 = this->field26, sVar1 != 0)) {
+    sVar2 = *(short *)(param_1 + 0x24);
+    if ((sVar2 != 0) && (sVar1 = *(short *)(param_1 + 0x26), sVar1 != 0)) {
       if (sVar1 <= sVar2) {
         sVar2 = sVar1;
       }
-      iVar3 = thunk_GetCityBuildingProductionValueBySlot(this_00,3);
-      sVar1 = this->field34;
+      iVar3 = thunk_GetCityBuildingProductionValueBySlot(this,3);
+      sVar1 = *(short *)(param_1 + 0x34);
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar2 / 2)) {
-        this->field34 = sVar1 + 1;
+        *(short *)(param_1 + 0x34) = sVar1 + 1;
       }
     }
-    if (((this->field2a != 0) &&
-        (*(char *)((int)g_pCityOrderCapabilityState + this->field1c * 0x1d + 0x27c) == '\x02')) &&
-       ((int)this->field36 < (int)this->field2a / 2)) {
-      this->field36 = this->field36 + 1;
+    if (((*(short *)(param_1 + 0x2a) != 0) &&
+        (*(char *)((int)g_pCityOrderCapabilityState + *(short *)(param_1 + 0x1c) * 0x1d + 0x27c) ==
+         '\x02')) && ((int)*(short *)(param_1 + 0x36) < (int)*(short *)(param_1 + 0x2a) / 2)) {
+      *(short *)(param_1 + 0x36) = *(short *)(param_1 + 0x36) + 1;
     }
   }
   if ((9 < (short)uVar4 & (byte)uVar4) != 0) {
-    iVar3 = (**(code **)(*this_00 + 0x74))();
+    iVar3 = (**(code **)(*this + 0x74))();
     sVar2 = *(short *)(iVar3 + 0x1a) + *(short *)(iVar3 + 0x1c) + *(short *)(iVar3 + 0x1e);
-    if (((this->field33_0x2e != 0) && (sVar1 = this->field38, sVar1 < sVar2)) &&
-       ((int)sVar1 < (int)this->field33_0x2e / 2)) {
-      this->field38 = sVar1 + 1;
+    if (((*(short *)(param_1 + 0x2e) != 0) && (sVar1 = *(short *)(param_1 + 0x38), sVar1 < sVar2))
+       && ((int)sVar1 < (int)*(short *)(param_1 + 0x2e) / 2)) {
+      *(short *)(param_1 + 0x38) = sVar1 + 1;
     }
-    if (((this->field30 != 0) && (sVar1 = this->field3a, sVar1 < sVar2)) &&
-       ((int)sVar1 < (int)this->field30 / 2)) {
-      this->field3a = sVar1 + 1;
+    if (((*(short *)(param_1 + 0x30) != 0) && (sVar1 = *(short *)(param_1 + 0x3a), sVar1 < sVar2))
+       && ((int)sVar1 < (int)*(short *)(param_1 + 0x30) / 2)) {
+      *(short *)(param_1 + 0x3a) = sVar1 + 1;
     }
-    if (((this->field34 != 0) && (sVar1 = this->field3c, sVar1 < sVar2)) &&
-       ((int)sVar1 < (int)this->field34 / 2)) {
-      this->field3c = sVar1 + 1;
+    if (((*(short *)(param_1 + 0x34) != 0) && (sVar1 = *(short *)(param_1 + 0x3c), sVar1 < sVar2))
+       && ((int)sVar1 < (int)*(short *)(param_1 + 0x34) / 2)) {
+      *(short *)(param_1 + 0x3c) = sVar1 + 1;
     }
   }
   return;

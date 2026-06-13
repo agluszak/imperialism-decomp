@@ -5,9 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00405529
 // GHIDRA_NAME Config::InitDefaults
-// GHIDRA_PROTO int * __fastcall InitDefaults(astruct_11 * this_obj)
+// GHIDRA_PROTO undefined4 * __fastcall InitDefaults(astruct_11 * this_obj)
 
-int * __fastcall Config::InitDefaults(astruct_11 *this_obj)
+undefined4 * __fastcall Config::InitDefaults(astruct_11 *this_obj)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -21,26 +21,28 @@ int * __fastcall Config::InitDefaults(astruct_11 *this_obj)
   *unaff_FS_OFFSET = &uStack_c;
   thunk_InitializeUiResourceEntryBaseHeaderDefaults();
   uStack_4 = 0;
-  CallCallbackRepeatedly((int)&this_obj->field29_0x20,8,4,0x405209,0x40208b);
+  CallCallbackRepeatedly(&this_obj->field29_0x20,8,4,&LAB_00405209);
   uStack_4._0_1_ = 1;
   InitializeSharedStringRefFromEmpty();
   uStack_4._0_1_ = 2;
-  CallCallbackRepeatedly((int)&this_obj->field105_0x78,4,7,0x404642,0x405fa1);
+  CallCallbackRepeatedly
+            (&this_obj->field105_0x78,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   uStack_4._0_1_ = 3;
-  CallCallbackRepeatedly((int)&this_obj->field130_0x94,4,7,0x404642,0x405fa1);
+  CallCallbackRepeatedly
+            (&this_obj->field130_0x94,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   uStack_4._0_1_ = 4;
   InitializeSharedStringRefFromEmpty();
   uStack_4._0_1_ = 5;
   InitializeSharedStringRefFromEmpty();
   uStack_4 = CONCAT31(uStack_4._1_3_,6);
   InitializeSharedStringRefFromEmpty();
-  this_obj->field0_0x0 = &g_vtblTMultiplayerMgr;
+  this_obj->field0_0x0 = &PTR_LAB_0065c030;
   this_obj->field58_0x40 = 0;
   this_obj->field99_0x6c = 0;
   this_obj->field100_0x70 = 0;
   this_obj->field195_0xd8 = 0x6e616461;
   this_obj->field220_0xf4 = 0;
   *unaff_FS_OFFSET = uStack_c;
-  return (int *)this_obj;
+  return &this_obj->field0_0x0;
 }
 

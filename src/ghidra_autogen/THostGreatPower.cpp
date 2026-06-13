@@ -3,88 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: THostGreatPower.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004011EA
-// GHIDRA_NAME THostGreatPower::thunk_DestructTHostGreatPower
-// GHIDRA_PROTO void __thiscall thunk_DestructTHostGreatPower(void)
-
-void __thiscall THostGreatPower::thunk_DestructTHostGreatPower(THostGreatPower *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint uStack_4;
-  
-  puStack_8 = &LAB_00634593;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  uStack_4 = 1;
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_4 = uStack_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401514
-// GHIDRA_NAME THostGreatPower::thunk_ProcessPendingDiplomacyThenDispatchTurnEvent29A
-// GHIDRA_PROTO void __thiscall thunk_ProcessPendingDiplomacyThenDispatchTurnEvent29A(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ProcessPendingDiplomacyThenDispatchTurnEvent29A
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ProcessPendingDiplomacyThenDispatchTurnEvent29A */
-
-void __thiscall
-THostGreatPower::thunk_ProcessPendingDiplomacyThenDispatchTurnEvent29A(THostGreatPower *this)
-
-{
-  TGreatPower::ProcessPendingDiplomacyThenDispatchTurnEvent29A((TGreatPower *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404273
-// GHIDRA_NAME THostGreatPower::thunk_TryDispatchNationActionViaUiThenTurnEvent
-// GHIDRA_PROTO void __thiscall thunk_TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to TryDispatchNationActionViaUiThenTurnEvent
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to TryDispatchNationActionViaUiThenTurnEvent */
-
-void __thiscall
-THostGreatPower::thunk_TryDispatchNationActionViaUiThenTurnEvent
-          (THostGreatPower *this,int arg1,int arg2)
-
-{
-  TGreatPower::TryDispatchNationActionViaUiThenTurnEvent((TGreatPower *)this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004084F9
-// GHIDRA_NAME THostGreatPower::thunk_GetTHostGreatPowerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTHostGreatPowerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTHostGreatPowerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTHostGreatPowerClassNamePointer */
-
-void * __cdecl THostGreatPower::thunk_GetTHostGreatPowerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTHostGreatPowerClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00540F70
 // GHIDRA_NAME THostGreatPower::DestructTHostGreatPower
-// GHIDRA_PROTO void __thiscall DestructTHostGreatPower(void)
+// GHIDRA_PROTO undefined DestructTHostGreatPower()
 
-void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
+void __fastcall THostGreatPower::DestructTHostGreatPower(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -99,23 +22,18 @@ void __thiscall THostGreatPower::DestructTHostGreatPower(THostGreatPower *this)
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00540FE0
 // GHIDRA_NAME THostGreatPower::GetTHostGreatPowerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTHostGreatPowerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for THostGreatPower.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTHostGreatPowerClassNamePointer()
 
-/* Returns class descriptor pointer for THostGreatPower. */
-
-void * __cdecl THostGreatPower::GetTHostGreatPowerClassNamePointer(void)
+undefined ** THostGreatPower::GetTHostGreatPowerClassNamePointer(void)
 
 {
-  return &g_pClassDescTHostGreatPower;
+  return &PTR_s_THostGreatPower_0065afd8;
 }
 

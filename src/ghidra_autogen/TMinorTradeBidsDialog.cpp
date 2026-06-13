@@ -3,89 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TMinorTradeBidsDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401EA6
-// GHIDRA_NAME TMinorTradeBidsDialog::thunk_scalar_deleting_destructor_00401EA6
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00401EA6(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TMinorTradeBidsDialog::thunk_scalar_deleting_destructor_00401EA6
-          (TMinorTradeBidsDialog *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403CB0
-// GHIDRA_NAME TMinorTradeBidsDialog::thunk_GetTMinorTradeBidsDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMinorTradeBidsDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMinorTradeBidsDialogClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMinorTradeBidsDialogClassNamePointer */
-
-void * __cdecl TMinorTradeBidsDialog::thunk_GetTMinorTradeBidsDialogClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMinorTradeBidsDialogClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004097CD
-// GHIDRA_NAME TMinorTradeBidsDialog::thunk_ConstructTMinorTradeBidsDialogBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTMinorTradeBidsDialogBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateMinorTradeBidsDialogControlValuesFromNationState [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to PopulateMinorTradeBidsDialogControlValuesFromNationState
-   [FID:thunk_target_sync] */
-
-void __thiscall
-TMinorTradeBidsDialog::thunk_ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDialog *this)
-
-{
-  ConstructTMinorTradeBidsDialogBaseState(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2A80
 // GHIDRA_NAME TMinorTradeBidsDialog::GetTMinorTradeBidsDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMinorTradeBidsDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMinorTradeBidsDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMinorTradeBidsDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TMinorTradeBidsDialog. */
-
-void * __cdecl TMinorTradeBidsDialog::GetTMinorTradeBidsDialogClassNamePointer(void)
+undefined ** TMinorTradeBidsDialog::GetTMinorTradeBidsDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTMinorTradeBidsDialog;
+  return &PTR_s_TMinorTradeBidsDialog_0066b250;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2AA0
 // GHIDRA_NAME TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState
-// GHIDRA_PROTO void __thiscall ConstructTMinorTradeBidsDialogBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Populates minor-trade-bids dialog control values from current nation interaction/resource state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTMinorTradeBidsDialogBaseState()
 
-/* Populates minor-trade-bids dialog control values from current nation interaction/resource state.
-    */
-
-void __thiscall
-TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDialog *this)
+void __fastcall TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(code *param_1)
 
 {
   code *pcVar1;
@@ -98,10 +30,11 @@ TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDi
   int iStack_1c;
   int iStack_18;
   
-  piVar4 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x436f7374);
+  piVar4 = (int *)(**(code **)(*(int *)param_1 + 0x94))(0x436f7374);
   if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x179);
   }
   iVar6 = 0;
   pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
@@ -110,7 +43,7 @@ TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDi
     piVar4 = (int *)(*pcVar1)(*(undefined4 *)pcVar5);
     if (piVar4 != (int *)0x0) {
       iVar2 = *piVar4;
-      sVar3 = (**(code **)(g_pNationInteractionStateManager->vftable + 0x4c))(iVar6,0);
+      sVar3 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x4c))(iVar6,0);
       (**(code **)(iVar2 + 0x1e4))((int)sVar3);
     }
     iVar6 = iVar6 + 1;
@@ -119,13 +52,12 @@ TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDi
   iStack_1c = 0;
   iStack_18 = 0x10;
   do {
-    if (*(int *)((int)g_apTerrainTypeDescriptorTable + iStack_1c + 0x1c) != 0) {
-      piVar4 = (int *)(*(code *)this)(*(undefined4 *)
-                                       ((int)&g_TMinor_Relationship_Dialog_LookupTable_0066B13C +
-                                       iStack_1c));
+    if (*(int *)((int)&g_apMinorNationCapabilityObjects + iStack_1c) != 0) {
+      piVar4 = (int *)(*param_1)(*(undefined4 *)((int)&DAT_0066b13c + iStack_1c));
       if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x189);
       }
       iVar6 = 0;
       pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
@@ -151,18 +83,13 @@ TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2CA0
 // GHIDRA_NAME TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTMinorTradeBidsDialogAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and constructs minor-trade-bids dialog adorner/view instance.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTMinorTradeBidsDialogAndMaybeFree()
 
-/* Allocates and constructs minor-trade-bids dialog adorner/view instance. */
-
-void __thiscall
-TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(TMinorTradeBidsDialog *this)
+undefined4 * TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(void)
 
 {
-  TView *this_00;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -172,16 +99,18 @@ TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(TMinorTradeBids
   puStack_8 = &LAB_00638c02;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this_00 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  if (this_00 != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this_00);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
     local_4 = CONCAT31(local_4._1_3_,1);
-    this_00->pVtable = &g_vtblTAdorner;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    this_00->pVtable = &PTR_thunk_GetTRelationshipDialogClassNamePointer_0066b998;
+    *puVar1 = &PTR_LAB_0064be28;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    *puVar1 = &PTR_LAB_0066b998;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return;
+  return puVar2;
 }
 

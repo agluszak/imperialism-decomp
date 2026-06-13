@@ -3,138 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TDialogBehavior.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401050
-// GHIDRA_NAME TDialogBehavior::TDialogBehavior_VtblSlot018
-// GHIDRA_PROTO void __thiscall TDialogBehavior_VtblSlot018(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateTCommandInstance
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateTCommandInstance */
-
-void __thiscall TDialogBehavior::TDialogBehavior_VtblSlot018(TDialogBehavior *this)
-
-{
-  TCommand::CreateTCommandInstance((TCommand *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402DC9
-// GHIDRA_NAME TDialogBehavior::thunk_CreateTDialogBehaviorInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTDialogBehaviorInstance(byte enabled)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetDialogBehaviorEnabledFlag [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetDialogBehaviorEnabledFlag [FID:thunk_target_sync] */
-
-void __thiscall
-TDialogBehavior::thunk_CreateTDialogBehaviorInstance(TDialogBehavior *this,byte enabled)
-
-{
-  CreateTDialogBehaviorInstance(this,enabled);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004042A0
-// GHIDRA_NAME TDialogBehavior::TDialogBehavior_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TDialogBehavior_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDialogBehaviorAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDialogBehaviorAndMaybeFree */
-
-void * __thiscall
-TDialogBehavior::TDialogBehavior_VtblSlot001(TDialogBehavior *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDialogBehaviorAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004077C5
-// GHIDRA_NAME TDialogBehavior::TDialogBehavior_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TDialogBehavior_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDialogBehaviorClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDialogBehaviorClassNamePointer */
-
-void * __cdecl TDialogBehavior::TDialogBehavior_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDialogBehaviorClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004872C0
 // GHIDRA_NAME TDialogBehavior::CreateTDialogBehaviorInstance
-// GHIDRA_PROTO void __thiscall CreateTDialogBehaviorInstance(byte enabled)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sets dialog behavior enabled/active flag.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTDialogBehaviorInstance()
 
-/* Sets dialog behavior enabled/active flag. */
-
-void __thiscall TDialogBehavior::CreateTDialogBehaviorInstance(TDialogBehavior *this,byte enabled)
+void __thiscall TDialogBehavior::CreateTDialogBehaviorInstance(int param_1,undefined1 param_2)
 
 {
-  this->field6_0xc = enabled;
+  *(undefined1 *)(param_1 + 0xc) = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487350
 // GHIDRA_NAME TDialogBehavior::GetTDialogBehaviorClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDialogBehaviorClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDialogBehavior.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDialogBehaviorClassNamePointer()
 
-/* Returns class descriptor pointer for TDialogBehavior. */
-
-void * __cdecl TDialogBehavior::GetTDialogBehaviorClassNamePointer(void)
+undefined ** TDialogBehavior::GetTDialogBehaviorClassNamePointer(void)
 
 {
-  return &g_pClassDescTDialogBehavior;
+  return &PTR_s_TDialogBehavior_00648d10;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487370
 // GHIDRA_NAME TDialogBehavior::ConstructTDialogBehaviorBaseState
-// GHIDRA_PROTO void __fastcall ConstructTDialogBehaviorBaseState(TDialogBehavior * pThis)
+// GHIDRA_PROTO undefined ConstructTDialogBehaviorBaseState()
 
-void __fastcall TDialogBehavior::ConstructTDialogBehaviorBaseState(TDialogBehavior *pThis)
+void __fastcall TDialogBehavior::ConstructTDialogBehaviorBaseState(undefined4 *param_1)
 
 {
-  pThis->field04 = 0x20202020;
-  pThis->field08 = 0;
-  pThis->field6_0xc = 1;
-  *(undefined ***)pThis = &g_vtblTDialogBehavior;
-  pThis->field_0x10 = 0;
-  pThis->field14 = 0x20202020;
-  pThis->field18 = 0x20202020;
-  pThis->field1c = 0x20202020;
-  *(undefined1 *)(pThis + 1) = 1;
+  param_1[1] = 0x20202020;
+  param_1[2] = 0;
+  *(undefined1 *)(param_1 + 3) = 1;
+  *param_1 = &PTR_LAB_00648da8;
+  *(undefined1 *)(param_1 + 4) = 0;
+  param_1[5] = 0x20202020;
+  param_1[6] = 0x20202020;
+  param_1[7] = 0x20202020;
+  *(undefined1 *)(param_1 + 8) = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004873B0
 // GHIDRA_NAME TDialogBehavior::DestructTDialogBehaviorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDialogBehaviorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDialogBehaviorAndMaybeFree()
 
-void * __thiscall
-TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(TDialogBehavior *this,byte freeSelfFlag)
+undefined4 __thiscall
+TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTDialogBehaviorAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -3,68 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTradeTotalsLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402F72
-// GHIDRA_NAME TTradeTotalsLine::TTradeTotalsLine_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TTradeTotalsLine_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradeTotalsLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradeTotalsLineClassNamePointer */
-
-void * __cdecl TTradeTotalsLine::TTradeTotalsLine_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradeTotalsLineClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405759
-// GHIDRA_NAME TTradeTotalsLine::TTradeTotalsLine_VtblSlot010
-// GHIDRA_PROTO void __cdecl TTradeTotalsLine_VtblSlot010(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0 */
-
-void __cdecl TTradeTotalsLine::TTradeTotalsLine_VtblSlot010(void)
-
-{
-  Helper_Uses_thunk_ConstructTViewBaseState_At005c19c0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040675D
-// GHIDRA_NAME TTradeTotalsLine::TTradeTotalsLine_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TTradeTotalsLine_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTradeTotalsLineAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTradeTotalsLineAndMaybeFree */
-
-void * __thiscall
-TTradeTotalsLine::TTradeTotalsLine_VtblSlot001(TTradeTotalsLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTradeTotalsLineAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1870
 // GHIDRA_NAME TTradeTotalsLine::CreateTTradeTotalsLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradeTotalsLineInstance(void)
+// GHIDRA_PROTO undefined CreateTTradeTotalsLineInstance()
 
-void * __cdecl TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
+undefined4 * TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
 
 {
-  TLineData *pThis;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -74,74 +21,63 @@ void * __cdecl TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
   puStack_8 = &LAB_0063983a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (pThis != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(pThis);
-    pThis->field0_0x0 = &g_vtblTTradeTotalsLine;
-    pTVar1 = pThis;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TLineData::ConstructTLineDataBaseState();
+    *puVar1 = &PTR_LAB_0066e1f8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C18E0
 // GHIDRA_NAME TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradeTotalsLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradeTotalsLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradeTotalsLineClassNamePointer()
 
-/* Returns class descriptor pointer for TTradeTotalsLine. */
-
-void * __cdecl TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer(void)
+undefined ** TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradeTotalsLine;
+  return &PTR_s_TTradeTotalsLine_0066dcd8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1900
 // GHIDRA_NAME TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTradeTotalsLineBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTradeTotalsLineBaseState()
 
-void * __thiscall TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(TTradeTotalsLine *this)
+undefined4 * __fastcall TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(undefined4 *param_1)
 
 {
-  TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  this->field0_0x0 = &g_vtblTTradeTotalsLine;
-  return this;
+  TLineData::ConstructTLineDataBaseState();
+  *param_1 = &PTR_LAB_0066e1f8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1930
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTradeTotalsLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTradeTotalsLineAndMaybeFree()
 
-void * __thiscall
-TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  DestructTTradeTotalsLineAndMaybeFree_Impl(this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTTradeTotalsLineAndMaybeFree_Impl();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1960
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
-// GHIDRA_PROTO void __thiscall DestructTTradeTotalsLineAndMaybeFree_Impl(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_005c1960 with single named caller DestructTTradeTotalsLineAndMaybeFree@0x005c1930
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTradeTotalsLineAndMaybeFree_Impl()
 
-/* [ThunkBridge] promoted from thunk_FUN_005c1960 with single named caller
-   DestructTTradeTotalsLineAndMaybeFree@0x005c1930 */
-
-void __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(TTradeTotalsLine *this)
+void __fastcall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(undefined4 *param_1)
 
 {
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

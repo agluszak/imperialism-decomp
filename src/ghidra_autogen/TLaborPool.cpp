@@ -3,169 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TLaborPool.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040114F
-// GHIDRA_NAME TLaborPool::thunk_GetTLaborPoolClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTLaborPoolClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTLaborPoolClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTLaborPoolClassNamePointer */
-
-void * __cdecl TLaborPool::thunk_GetTLaborPoolClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTLaborPoolClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401A00
-// GHIDRA_NAME TLaborPool::thunk_CreateTLaborPoolInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTLaborPoolInstance(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Thunk] forwards to RefreshLaborPoolOverlayResourceValues. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* [Thunk] forwards to RefreshLaborPoolOverlayResourceValues. [FID:thunk_target_sync] */
-
-void __thiscall TLaborPool::thunk_CreateTLaborPoolInstance(TLaborPool *this,int arg1)
-
-{
-  void *pvVar1;
-  code *pcVar2;
-  short sVar3;
-  int *piVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar5;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00630e08;
-  *unaff_FS_OFFSET = &uStack_c;
-  pvVar1 = g_apNationStates[arg1];
-  InitializeSharedStringRefFromEmpty();
-  uStack_4 = 0;
-  pcVar2 = *(code **)((int)this->pVtable + 0x94);
-  piVar4 = (int *)(*pcVar2)(0x6e616d65);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  FormatOverlayTerrainLabelText();
-  (**(code **)(*piVar4 + 0x1c8))(&stack0x00000000,1);
-  piVar4 = (int *)(*pcVar2)(0x74726561);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)((int)pvVar1 + 0x10),1);
-  piVar4 = (int *)(*pcVar2)(0x6d657263);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  (**(code **)(*piVar4 + 0x1e4))((int)*(short *)((int)pvVar1 + 0xa4),1);
-  piVar4 = (int *)(*pcVar2)(0x74636170);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  if (pvVar1 == (void *)0x0) {
-    sVar3 = 0;
-  }
-  else {
-    sVar3 = *(short *)((int)pvVar1 + 0xa6);
-  }
-  (**(code **)(*piVar4 + 0x1e4))((int)sVar3,1);
-  piVar4 = (int *)(*pcVar2)(0x73616c65);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  uVar5 = 1;
-  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)((int)pvVar1 + 0x840));
-  piVar4 = (int *)(*pcVar2)(0x70757263);
-  if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)((int)pvVar1 + 0x844),1);
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uVar5;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403CE2
-// GHIDRA_NAME TLaborPool::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0 */
-
-void __thiscall
-TLaborPool::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403DA5
-// GHIDRA_NAME TLaborPool::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b2220 */
-
-void __thiscall
-TLaborPool::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040852B
-// GHIDRA_NAME TLaborPool::thunk_DestructTLaborPoolAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTLaborPoolAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTLaborPoolRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTLaborPoolRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TLaborPool::thunk_DestructTLaborPoolAndMaybeFree(TLaborPool *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1CB0
 // GHIDRA_NAME TLaborPool::CreateTLaborPoolInstance
-// GHIDRA_PROTO void __thiscall CreateTLaborPoolInstance(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [LowHanging] TLaborPool method that resolves resource tags (name/trea/elas/crup/etc.) and writes current nation/labor values into overlay entries.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTLaborPoolInstance()
 
-/* [LowHanging] TLaborPool method that resolves resource tags (name/trea/elas/crup/etc.) and writes
-   current nation/labor values into overlay entries. */
-
-void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this,int arg1)
+void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,int param_2)
 
 {
-  void *pvVar1;
+  int iVar1;
   code *pcVar2;
   short sVar3;
   int *piVar4;
@@ -179,54 +24,60 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this,int arg1)
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630e08;
   *unaff_FS_OFFSET = &uStack_c;
-  pvVar1 = g_apNationStates[arg1];
+  iVar1 = (&g_apNationStates)[param_2];
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  pcVar2 = *(code **)((int)this->pVtable + 0x94);
+  pcVar2 = *(code **)(*param_1 + 0x94);
   piVar4 = (int *)(*pcVar2)(0x6e616d65);
   if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xec)
+    ;
   }
-  FormatOverlayTerrainLabelText();
+  FormatOverlayTerrainLabelText(&stack0x00000000);
   (**(code **)(*piVar4 + 0x1c8))(&stack0x00000000,1);
   piVar4 = (int *)(*pcVar2)(0x74726561);
   if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xf2)
+    ;
   }
-  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)((int)pvVar1 + 0x10),1);
+  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)(iVar1 + 0x10),1);
   piVar4 = (int *)(*pcVar2)(0x6d657263);
   if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xf5)
+    ;
   }
-  (**(code **)(*piVar4 + 0x1e4))((int)*(short *)((int)pvVar1 + 0xa4),1);
+  (**(code **)(*piVar4 + 0x1e4))((int)*(short *)(iVar1 + 0xa4),1);
   piVar4 = (int *)(*pcVar2)(0x74636170);
   if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xf8)
+    ;
   }
-  if (pvVar1 == (void *)0x0) {
+  if (iVar1 == 0) {
     sVar3 = 0;
   }
   else {
-    sVar3 = *(short *)((int)pvVar1 + 0xa6);
+    sVar3 = *(short *)(iVar1 + 0xa6);
   }
   (**(code **)(*piVar4 + 0x1e4))((int)sVar3,1);
   piVar4 = (int *)(*pcVar2)(0x73616c65);
   if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xfb)
+    ;
   }
   uVar5 = 1;
-  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)((int)pvVar1 + 0x840));
+  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)(iVar1 + 0x840));
   piVar4 = (int *)(*pcVar2)(0x70757263);
   if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xfe)
+    ;
   }
-  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)((int)pvVar1 + 0x844),1);
+  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)(iVar1 + 0x844),1);
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uVar5;
   return;
@@ -234,102 +85,72 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(TLaborPool *this,int arg1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2110
 // GHIDRA_NAME TLaborPool::GetTLaborPoolClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTLaborPoolClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TLaborPool.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTLaborPoolClassNamePointer()
 
-/* Returns class descriptor pointer for TLaborPool. */
-
-void * __cdecl TLaborPool::GetTLaborPoolClassNamePointer(void)
+undefined ** TLaborPool::GetTLaborPoolClassNamePointer(void)
 
 {
-  return &g_pClassDescTLaborPool;
+  return &PTR_s_TLaborPool_0064f320;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2160
 // GHIDRA_NAME TLaborPool::ConstructTLaborPoolBaseState
-// GHIDRA_PROTO void __thiscall ConstructTLaborPoolBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTLaborPoolBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TLaborPool::ConstructTLaborPoolBaseState(TLaborPool *this)
+undefined4 __thiscall TLaborPool::ConstructTLaborPoolBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTLaborPoolAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTLaborPoolAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2190
 // GHIDRA_NAME TLaborPool::DestructTLaborPoolAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTLaborPoolAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TLaborPool runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTLaborPoolAndMaybeFree()
 
-/* Returns TLaborPool runtime class descriptor pointer. */
-
-void * __thiscall TLaborPool::DestructTLaborPoolAndMaybeFree(TLaborPool *this)
+void __fastcall TLaborPool::DestructTLaborPoolAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B21D0
 // GHIDRA_NAME TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0()
 
 void __thiscall
-TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(TLaborPool *this,void *pMessage)
+TLaborPool::WrapperFor_HandleCityDialogNoOpSlot14_At004b21d0(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
-  (*pcVar1)(&this->field1_0x4,2);
-  (*pcVar1)(&this->field3_0x6,2);
-  (*pcVar1)(&this->field4_0x8,2);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  (*pcVar1)(param_1 + 4,2);
+  (*pcVar1)(param_1 + 6,2);
+  (*pcVar1)(param_1 + 8,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2220
 // GHIDRA_NAME TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b2220()
 
 void __thiscall
-TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(TLaborPool *this,void *pMessage)
+TLaborPool::WrapperFor_HandleCityDialogNoOpSlot18_At004b2220(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x3c);
-  (*pcVar1)(&this->field1_0x4,2);
-  (*pcVar1)(&this->field3_0x6,2);
-  (*pcVar1)(&this->field4_0x8,2);
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x3c);
+  (*pcVar1)(param_1 + 4,2);
+  (*pcVar1)(param_1 + 6,2);
+  (*pcVar1)(param_1 + 8,2);
   return;
 }
 

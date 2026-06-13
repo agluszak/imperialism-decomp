@@ -3,87 +3,43 @@
 // Program: Imperialism.exe
 // Bucket: TNewsMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407BF8
-// GHIDRA_NAME TNewsMgr::thunk_GetTNewsMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTNewsMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNewsMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNewsMgrClassNamePointer */
-
-void * __cdecl TNewsMgr::thunk_GetTNewsMgrClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNewsMgrClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004091E7
-// GHIDRA_NAME TNewsMgr::thunk_DestroyTNewsMgrAndReleaseHeadlineEntries
-// GHIDRA_PROTO void __thiscall thunk_DestroyTNewsMgrAndReleaseHeadlineEntries(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTNewsMgrAndReleaseHeadlineEntries
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTNewsMgrAndReleaseHeadlineEntries */
-
-void __thiscall TNewsMgr::thunk_DestroyTNewsMgrAndReleaseHeadlineEntries(TNewsMgr *this)
-
-{
-  DestroyTNewsMgrAndReleaseHeadlineEntries(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0055B6F0
 // GHIDRA_NAME TNewsMgr::GetTNewsMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNewsMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNewsMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNewsMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TNewsMgr. */
-
-void * __cdecl TNewsMgr::GetTNewsMgrClassNamePointer(void)
+undefined ** TNewsMgr::GetTNewsMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTNewsMgr;
+  return &PTR_s_TNewsMgr_0065c530;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055B820
 // GHIDRA_NAME TNewsMgr::DestroyTNewsMgrAndReleaseHeadlineEntries
-// GHIDRA_PROTO void __thiscall DestroyTNewsMgrAndReleaseHeadlineEntries(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Releases embedded headline objects/arrays and then destroys the TNewsMgr instance.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestroyTNewsMgrAndReleaseHeadlineEntries()
 
-/* Releases embedded headline objects/arrays and then destroys the TNewsMgr instance. */
-
-void __thiscall TNewsMgr::DestroyTNewsMgrAndReleaseHeadlineEntries(TNewsMgr *this)
+void __fastcall TNewsMgr::DestroyTNewsMgrAndReleaseHeadlineEntries(int *param_1)
 
 {
-  int **ppiVar1;
+  int *piVar1;
   int iVar2;
   
-  ppiVar1 = &this->field3790_0xed4;
+  piVar1 = param_1 + 0x3b5;
   iVar2 = 7;
   do {
-    if (*ppiVar1 != (int *)0x0) {
-      (**(code **)(**ppiVar1 + 0x24))();
+    if ((int *)*piVar1 != (int *)0x0) {
+      (**(code **)(*(int *)*piVar1 + 0x24))();
     }
-    if (ppiVar1[8] != (int *)0x0) {
-      FreeHeapBufferIfNotNull();
+    if (piVar1[8] != 0) {
+      FreeHeapBufferIfNotNull(piVar1[8]);
     }
-    ppiVar1 = ppiVar1 + 1;
+    piVar1 = piVar1 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
-  if (this->field3815_0xef0 != (int *)0x0) {
-    (**(code **)(*this->field3815_0xef0 + 0x24))();
+  if ((int *)param_1[0x3bc] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0x3bc] + 0x24))();
   }
-  if (this != (TNewsMgr *)0x0) {
-    (**(code **)((int)this->pVtable + 4))(1);
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
   }
   return;
 }

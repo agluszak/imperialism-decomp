@@ -3,118 +3,13 @@
 // Program: Imperialism.exe
 // Bucket: TSoundPlayer.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402A40
-// GHIDRA_NAME TSoundPlayer::thunk_WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0_At00402a40
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0_At00402a40(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0 */
-
-void __cdecl
-TSoundPlayer::thunk_WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0_At00402a40(void)
-
-{
-  WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403413
-// GHIDRA_NAME TSoundPlayer::thunk_ReleaseRuntimeSelectionPeersAndResetOwner_At00403413
-// GHIDRA_PROTO void __thiscall thunk_ReleaseRuntimeSelectionPeersAndResetOwner_At00403413(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReleaseRuntimeSelectionPeersAndResetOwner
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReleaseRuntimeSelectionPeersAndResetOwner */
-
-void __thiscall
-TSoundPlayer::thunk_ReleaseRuntimeSelectionPeersAndResetOwner_At00403413(TSoundPlayer *this)
-
-{
-  ReleaseRuntimeSelectionPeersAndResetOwner(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404BD8
-// GHIDRA_NAME TSoundPlayer::thunk_WrapperFor_ftol_At005e5020_At00404bd8
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_ftol_At005e5020_At00404bd8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ftol_At005e5020
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_ftol_At005e5020 */
-
-void __cdecl TSoundPlayer::thunk_WrapperFor_ftol_At005e5020_At00404bd8(void)
-
-{
-  WrapperFor_ftol_At005e5020();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408418
-// GHIDRA_NAME TSoundPlayer::TSoundPlayer_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TSoundPlayer_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTSoundPlayerAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTSoundPlayerAndMaybeFree */
-
-void * __thiscall TSoundPlayer::TSoundPlayer_VtblSlot001(TSoundPlayer *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = _DestructTSoundPlayerAndMaybeFree__YIPAUSoundPlayerState___Z__imperialism_src_game_TSoundPlayer_cpp14012305__PAU12_HE_Z
-                     (this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004088EB
-// GHIDRA_NAME TSoundPlayer::thunk_GetTSoundPlayerClassNamePointer_At004088eb
-// GHIDRA_PROTO void * __cdecl thunk_GetTSoundPlayerClassNamePointer_At004088eb(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSoundPlayerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSoundPlayerClassNamePointer */
-
-void * __cdecl TSoundPlayer::thunk_GetTSoundPlayerClassNamePointer_At004088eb(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSoundPlayerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040923C
-// GHIDRA_NAME TSoundPlayer::thunk_ConstructSfxPlaybackSystemState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructSfxPlaybackSystemState(void)
-
-void * __thiscall TSoundPlayer::thunk_ConstructSfxPlaybackSystemState(TSoundPlayer *this)
-
-{
-  thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-  this->field0_0x0 = &g_vtblTSoundPlayer;
-  this->pField6c = (void *)0x0;
-  this->pField70 = (void *)0x0;
-  this->field78 = 0;
-  this->field107_0x79 = 0;
-  this->field108_0x7a = 0;
-  this->field7c = 0;
-  return this;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005932B0
-// GHIDRA_NAME TSoundPlayer::?CreateTSoundPlayerInstance@@YAPAUSoundPlayerState@?%Z:\imperialism\src\game\TSoundPlayer.cpp14012305@@XZ
-// GHIDRA_PROTO void * __cdecl ?CreateTSoundPlayerInstance@@YAPAUSoundPlayerState@?%Z:\imperialism\src\game\TSoundPlayer.cpp14012305@@XZ(void)
+// GHIDRA_NAME TSoundPlayer::?CreateTSoundPlayerInstance@@YAPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@XZ
+// GHIDRA_PROTO undefined ?CreateTSoundPlayerInstance@@YAPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@XZ()
 
-void * __cdecl
+undefined4 *
 TSoundPlayer::
-_CreateTSoundPlayerInstance__YAPAUSoundPlayerState___Z__imperialism_src_game_TSoundPlayer_cpp14012305__XZ
+_CreateTSoundPlayerInstance__YAPAUSoundPlayerState___Z_imperialismsrcgameTSoundPlayer_cpp14012305__XZ
           (void)
 
 {
@@ -128,11 +23,11 @@ _CreateTSoundPlayerInstance__YAPAUSoundPlayerState___Z__imperialism_src_game_TSo
   puStack_8 = &LAB_0063816a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-    *puVar1 = &g_vtblTSoundPlayer;
+    *puVar1 = &PTR_LAB_00668a60;
     puVar1[0x1b] = 0;
     puVar1[0x1c] = 0;
     *(undefined1 *)(puVar1 + 0x1e) = 0;
@@ -143,161 +38,145 @@ _CreateTSoundPlayerInstance__YAPAUSoundPlayerState___Z__imperialism_src_game_TSo
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593350
 // GHIDRA_NAME TSoundPlayer::GetTSoundPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSoundPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSoundPlayer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSoundPlayerClassNamePointer()
 
-/* Returns class descriptor pointer for TSoundPlayer. */
-
-void * __cdecl TSoundPlayer::GetTSoundPlayerClassNamePointer(void)
+undefined ** TSoundPlayer::GetTSoundPlayerClassNamePointer(void)
 
 {
-  return &g_pClassDescTSoundPlayer;
+  return &PTR_s_TSoundPlayer_00668a18;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593370
-// GHIDRA_NAME TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:\imperialism\src\game\TSoundPlayer.cpp14012305@@PAU12@@Z
-// GHIDRA_PROTO void * __thiscall ?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:\imperialism\src\game\TSoundPlayer.cpp14012305@@PAU12@@Z(void)
+// GHIDRA_NAME TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z
+// GHIDRA_PROTO undefined ?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z()
 
-void * __thiscall
+undefined4 * __fastcall
 TSoundPlayer::
-_ConstructTSoundPlayerBaseState__YIPAUSoundPlayerState___Z__imperialism_src_game_TSoundPlayer_cpp14012305__PAU12__Z
-          (TSoundPlayer *this)
+_ConstructTSoundPlayerBaseState__YIPAUSoundPlayerState___Z_imperialismsrcgameTSoundPlayer_cpp14012305__PAU12__Z
+          (undefined4 *param_1)
 
 {
   thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-  this->field0_0x0 = &g_vtblTSoundPlayer;
-  this->pField6c = (void *)0x0;
-  this->pField70 = (void *)0x0;
-  this->field78 = 0;
-  this->field107_0x79 = 0;
-  this->field108_0x7a = 0;
-  this->field7c = 0;
-  return this;
+  *param_1 = &PTR_LAB_00668a60;
+  param_1[0x1b] = 0;
+  param_1[0x1c] = 0;
+  *(undefined1 *)(param_1 + 0x1e) = 0;
+  *(undefined1 *)((int)param_1 + 0x79) = 0;
+  *(undefined1 *)((int)param_1 + 0x7a) = 0;
+  param_1[0x1f] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005933B0
-// GHIDRA_NAME TSoundPlayer::?DestructTSoundPlayerAndMaybeFree@@YIPAUSoundPlayerState@?%Z:\imperialism\src\game\TSoundPlayer.cpp14012305@@PAU12@HE@Z
-// GHIDRA_PROTO void * __thiscall ?DestructTSoundPlayerAndMaybeFree@@YIPAUSoundPlayerState@?%Z:\imperialism\src\game\TSoundPlayer.cpp14012305@@PAU12@HE@Z(byte freeSelfFlag)
+// GHIDRA_NAME TSoundPlayer::?DestructTSoundPlayerAndMaybeFree@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@HE@Z
+// GHIDRA_PROTO undefined ?DestructTSoundPlayerAndMaybeFree@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@HE@Z()
 
-void * __thiscall
+undefined4 __thiscall
 TSoundPlayer::
-_DestructTSoundPlayerAndMaybeFree__YIPAUSoundPlayerState___Z__imperialism_src_game_TSoundPlayer_cpp14012305__PAU12_HE_Z
-          (TSoundPlayer *this,byte freeSelfFlag)
+_DestructTSoundPlayerAndMaybeFree__YIPAUSoundPlayerState___Z_imperialismsrcgameTSoundPlayer_cpp14012305__PAU12_HE_Z
+          (undefined4 param_1,byte param_2)
 
 {
-  DestructTSoundPlayerBaseState(this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  _DestructTSoundPlayerBaseState__YIXPAUSoundPlayerState___Z_imperialismsrcgameTSoundPlayer_cpp14012305___Z
+            ();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005933E0
-// GHIDRA_NAME TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:\imperialism\src\game\TSoundPlayer.cpp14012305@@@Z
-// GHIDRA_PROTO void __fastcall ?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:\imperialism\src\game\TSoundPlayer.cpp14012305@@@Z(TSoundPlayer * pThis)
+// GHIDRA_NAME TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z
+// GHIDRA_PROTO undefined ?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z()
 
 void __fastcall
 TSoundPlayer::
-_DestructTSoundPlayerBaseState__YIXPAUSoundPlayerState___Z__imperialism_src_game_TSoundPlayer_cpp14012305___Z
-          (TSoundPlayer *pThis)
+_DestructTSoundPlayerBaseState__YIXPAUSoundPlayerState___Z_imperialismsrcgameTSoundPlayer_cpp14012305___Z
+          (undefined4 *param_1)
 
 {
-  pThis->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4E70
 // GHIDRA_NAME TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists
-// GHIDRA_PROTO void __thiscall InitializeSoundSubsystemAndAllocateChannelLists(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes DirectSound availability state, allocates two runtime channel list objects, and registers object in global manager.
-// GHIDRA_COMMENT_END
-
-/* Initializes DirectSound availability state, allocates two runtime channel list objects, and
-   registers object in global manager. */
+// GHIDRA_PROTO undefined InitializeSoundSubsystemAndAllocateChannelLists()
 
 void __thiscall
-TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(TSoundPlayer *this,int arg1)
+TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int *param_1,int param_2)
 
 {
-  byte extraout_AL;
-  undefined4 *puVar1;
+  char cVar1;
+  undefined4 *puVar2;
   
-  InitializePacketHeaderFields_Tag20202020();
-  thunk_InitializeDirectSoundDeviceAndChannels();
-  this->field20 = extraout_AL;
-  if (extraout_AL == 0) {
-    (*(code *)this->field0_0x0[0x29])();
+  InitializePacketHeaderFields_Tag20202020(0);
+  cVar1 = thunk_InitializeDirectSoundDeviceAndChannels_004061D1();
+  *(char *)(param_1 + 8) = cVar1;
+  if (cVar1 == '\0') {
+    (**(code **)(*param_1 + 0xa4))();
   }
   else {
-    (*(code *)this->field0_0x0[0x28])();
+    (**(code **)(*param_1 + 0xa0))();
   }
-  puVar1 = AllocateWithFallbackHandler();
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
-  }
-  else {
-    puVar1[3] = 0;
-    puVar1[4] = 0;
-    puVar1[2] = 0;
-    puVar1[1] = 0;
-    puVar1[5] = 0;
-    puVar1[6] = 10;
-    *puVar1 = &PTR_GetCObjectRuntimeClass_LinkedValueCollectionState_00650A08;
-  }
-  this->pField6c = puVar1;
-  puVar1 = AllocateWithFallbackHandler();
-  if (puVar1 == (undefined4 *)0x0) {
-    puVar1 = (undefined4 *)0x0;
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
   }
   else {
-    puVar1[3] = 0;
-    puVar1[4] = 0;
-    puVar1[2] = 0;
-    puVar1[1] = 0;
-    puVar1[5] = 0;
-    puVar1[6] = 10;
-    *puVar1 = &PTR_GetCObjectRuntimeClass_LinkedValueCollectionState_00650A08;
+    puVar2[3] = 0;
+    puVar2[4] = 0;
+    puVar2[2] = 0;
+    puVar2[1] = 0;
+    puVar2[5] = 0;
+    puVar2[6] = 10;
+    *puVar2 = &PTR_GetCObjectRuntimeClass_00650a08;
   }
-  this->pField70 = puVar1;
-  this->field74 = 0;
+  param_1[0x1b] = (int)puVar2;
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    puVar2[3] = 0;
+    puVar2[4] = 0;
+    puVar2[2] = 0;
+    puVar2[1] = 0;
+    puVar2[5] = 0;
+    puVar2[6] = 10;
+    *puVar2 = &PTR_GetCObjectRuntimeClass_00650a08;
+  }
+  param_1[0x1c] = (int)puVar2;
+  *(undefined2 *)(param_1 + 0x1d) = 0;
   EnsureCdAudioDeviceHandleInitialized();
-  this->field10 = arg1;
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0xa4))(this,1);
+  param_1[4] = param_2;
+  (**(code **)(*(int *)g_pGlobalUiRootController + 0xa4))(param_1,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E51D0
 // GHIDRA_NAME TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner
-// GHIDRA_PROTO void __thiscall ReleaseRuntimeSelectionPeersAndResetOwner(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Releases peer/session pointers at +0x6C/+0x70, performs runtime cleanup callbacks, then clears runtime selection owner context.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ReleaseRuntimeSelectionPeersAndResetOwner()
 
-/* Releases peer/session pointers at +0x6C/+0x70, performs runtime cleanup callbacks, then clears
-   runtime selection owner context. */
-
-void __thiscall TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner(TSoundPlayer *this)
+void __fastcall TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner(int param_1)
 
 {
-  if (this->pField70 != (int *)0x0) {
-    (**(code **)(*(int *)this->pField70 + 0x38))();
+  if (*(int **)(param_1 + 0x70) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0x70) + 0x38))();
   }
-  this->pField70 = (void *)0x0;
-  if (this->pField6c != (int *)0x0) {
-    (**(code **)(*(int *)this->pField6c + 0x38))();
+  *(undefined4 *)(param_1 + 0x70) = 0;
+  if (*(int **)(param_1 + 0x6c) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 0x6c) + 0x38))();
   }
-  this->pField6c = (void *)0x0;
+  *(undefined4 *)(param_1 + 0x6c) = 0;
   ReleaseRuntimeSelectionPeersAndResetOwner_Impl();
   ForwardMciCommand808ToDevice();
-  thunk_ReleaseRuntimeSelectionOwnerAndDestroyObject();
+  ReleaseRuntimeSelectionOwnerAndDestroyObject();
   return;
 }
 

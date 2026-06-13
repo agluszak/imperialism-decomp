@@ -3,73 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TBattleDetailBook.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402C61
-// GHIDRA_NAME TBattleDetailBook::thunk_GetTBattleDetailBookClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBattleDetailBookClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBattleDetailBookClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBattleDetailBookClassNamePointer */
-
-void * __cdecl TBattleDetailBook::thunk_GetTBattleDetailBookClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBattleDetailBookClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407586
-// GHIDRA_NAME TBattleDetailBook::thunk_scalar_deleting_destructor_00407586
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407586(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TBattleDetailBook::thunk_scalar_deleting_destructor_00407586
-          (TBattleDetailBook *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407F04
-// GHIDRA_NAME TBattleDetailBook::thunk_ConstructTBattleDetailBookBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTBattleDetailBookBaseState(int nCommand, int pControl, int a4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_Cluster_ArmyNavyHint_0056f5e0_At004aea90 [FID:thunk_target_sync]
-    */
-
-void __thiscall
-TBattleDetailBook::thunk_ConstructTBattleDetailBookBaseState
-          (TBattleDetailBook *this,int nCommand,int pControl,int a4)
-
-{
-  ConstructTBattleDetailBookBaseState(this,nCommand,pControl,a4);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AE9D0
 // GHIDRA_NAME TBattleDetailBook::CreateTBattleDetailBookInstance
-// GHIDRA_PROTO void * __cdecl CreateTBattleDetailBookInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TBattleDetailBook; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTBattleDetailBookInstance()
 
-/* [ClassQuad] create inferred for TBattleDetailBook; alloc factory pattern. */
-
-void * __cdecl TBattleDetailBook::CreateTBattleDetailBookInstance(void)
+undefined4 * TBattleDetailBook::CreateTBattleDetailBookInstance(void)
 
 {
   undefined4 *puVar1;
@@ -82,74 +20,59 @@ void * __cdecl TBattleDetailBook::CreateTBattleDetailBookInstance(void)
   puStack_8 = &LAB_0063091a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
+    thunk_TPictureButton::TPictureButton();
     puVar1[0x24] = 0;
     puVar1[0x25] = 0;
-    *puVar1 = &PTR_thunk_GetTBattleDetailBookClassNamePointer_0063f428;
+    *puVar1 = &PTR_LAB_0063f428;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEA70
 // GHIDRA_NAME TBattleDetailBook::GetTBattleDetailBookClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBattleDetailBookClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBattleDetailBook.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBattleDetailBookClassNamePointer()
 
-/* Returns class descriptor pointer for TBattleDetailBook. */
-
-void * __cdecl TBattleDetailBook::GetTBattleDetailBookClassNamePointer(void)
+undefined ** TBattleDetailBook::GetTBattleDetailBookClassNamePointer(void)
 
 {
-  return &g_pClassDescTBattleDetailBook;
+  return &PTR_s_TBattleDetailBook_0064dc98;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEA90
 // GHIDRA_NAME TBattleDetailBook::ConstructTBattleDetailBookBaseState
-// GHIDRA_PROTO void __thiscall ConstructTBattleDetailBookBaseState(int nCommand, int pControl, int a4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Battle-detail wrapper that handles 'okay' short-circuit then forwards to TBook command handler
-// GHIDRA_COMMENT_END
-
-/* Battle-detail wrapper that handles 'okay' short-circuit then forwards to TBook command handler */
+// GHIDRA_PROTO undefined ConstructTBattleDetailBookBaseState()
 
 void __thiscall
 TBattleDetailBook::ConstructTBattleDetailBookBaseState
-          (TBattleDetailBook *this,int nCommand,int pControl,int a4)
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
   int *piVar1;
   
-  if ((nCommand == 10) && (*(int *)(pControl + 0x1c) == 0x6f6b6179)) {
-    piVar1 = (int *)(**(code **)((int)this->pVtable + 0x58))();
-    (**(code **)(*piVar1 + 0x1b4))(*(undefined4 *)(pControl + 0x1c),1);
+  if ((param_2 == 10) && (*(int *)(param_3 + 0x1c) == 0x6f6b6179)) {
+    piVar1 = (int *)(**(code **)(*param_1 + 0x58))();
+    (**(code **)(*piVar1 + 0x1b4))(*(undefined4 *)(param_3 + 0x1c),1);
     return;
   }
-  TBook::TBook_HandleArmyNavyPageNavigationCommand((TBook *)this,nCommand,pControl,a4);
+  TBook::DestructTBookAndMaybeFree(param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEAE0
 // GHIDRA_NAME TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree
-// GHIDRA_PROTO void * __cdecl DestructTBattleDetailBookAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and constructs battle-detail book view instance.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTBattleDetailBookAndMaybeFree()
 
-/* Allocates and constructs battle-detail book view instance. */
-
-void * __cdecl TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree(void)
+undefined4 * TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -159,15 +82,15 @@ void * __cdecl TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree(void)
   puStack_8 = &LAB_0063093a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &PTR_thunk_GetTArmyBoyViewClassNamePointer_0064dff8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_0064dff8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 

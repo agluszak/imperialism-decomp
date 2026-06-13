@@ -3,64 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: TTaskForce.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004071B7
-// GHIDRA_NAME TTaskForce::thunk_ConstructTTaskForce
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTaskForce(int arg1, int arg2)
-
-void __thiscall TTaskForce::thunk_ConstructTTaskForce(TTaskForce *this,int arg1,int arg2)
-
-{
-  this->field6_0x18 = (void *)arg1;
-  this->field7_0x1c = (undefined2)arg2;
-  this->field1_0x4 = (void *)0x1;
-  this->field2_0x8 = (void *)0x0;
-  this->field3_0xc = (void *)0x0;
-  this->field4_0x10 = (void *)0x0;
-  this->field5_0x14 = (void *)0x0;
-  this->field12_0x28 = (void *)0x0;
-  this->field13_0x2c = (void *)0x0;
-  this->field14_0x30 = 0xffff;
-  this->pVtable = &PTR_thunk_GetTTaskForceClassNamePointer_At00404115_0065c468;
-  this->field8_0x1e = 0;
-  this->field9_0x22 = 0;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005527E0
 // GHIDRA_NAME TTaskForce::GetTTaskForceClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTaskForceClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTaskForce.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTaskForceClassNamePointer()
 
-/* Returns class descriptor pointer for TTaskForce. */
-
-void * __cdecl TTaskForce::GetTTaskForceClassNamePointer(void)
+undefined ** TTaskForce::GetTTaskForceClassNamePointer(void)
 
 {
-  return &g_pClassDescTTaskForce;
+  return &PTR_s_TTaskForce_0065c348;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552800
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
-// GHIDRA_PROTO void __thiscall ConstructTTaskForce(int arg1, int arg2)
+// GHIDRA_PROTO undefined ConstructTTaskForce()
 
-void __thiscall TTaskForce::ConstructTTaskForce(TTaskForce *this,int arg1,int arg2)
+void __thiscall
+TTaskForce::ConstructTTaskForce(undefined4 *param_1,undefined4 param_2,undefined2 param_3)
 
 {
-  this->field6_0x18 = (void *)arg1;
-  this->field7_0x1c = (undefined2)arg2;
-  this->field1_0x4 = (void *)0x1;
-  this->field2_0x8 = (void *)0x0;
-  this->field3_0xc = (void *)0x0;
-  this->field4_0x10 = (void *)0x0;
-  this->field5_0x14 = (void *)0x0;
-  this->field12_0x28 = (void *)0x0;
-  this->field13_0x2c = (void *)0x0;
-  this->field14_0x30 = 0xffff;
-  this->pVtable = &PTR_thunk_GetTTaskForceClassNamePointer_At00404115_0065c468;
-  this->field8_0x1e = 0;
-  this->field9_0x22 = 0;
+  param_1[6] = param_2;
+  *(undefined2 *)(param_1 + 7) = param_3;
+  param_1[1] = 1;
+  param_1[2] = 0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[5] = 0;
+  param_1[10] = 0;
+  param_1[0xb] = 0;
+  *(undefined2 *)(param_1 + 0xc) = 0xffff;
+  *param_1 = &PTR_LAB_0065c468;
+  *(undefined4 *)((int)param_1 + 0x1e) = 0;
+  *(undefined4 *)((int)param_1 + 0x22) = 0;
   return;
 }
 

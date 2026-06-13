@@ -3,137 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TOfferDeskPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403062
-// GHIDRA_NAME TOfferDeskPicture::TOfferDeskPicture_VtblSlot115
-// GHIDRA_PROTO void __thiscall TOfferDeskPicture_VtblSlot115(int arg1, int arg2, int arg3, int arg4, int arg5)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeTradeScreenControlsLabelsAndNationContext
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeTradeScreenControlsLabelsAndNationContext */
-
-void __thiscall
-TOfferDeskPicture::TOfferDeskPicture_VtblSlot115
-          (TOfferDeskPicture *this,int arg1,int arg2,int arg3,int arg4,int arg5)
-
-{
-  TToolBarCluster::InitializeTradeScreenControlsLabelsAndNationContext
-            ((TToolBarCluster *)this,arg1,arg2,arg3,arg4,arg5);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004030C1
-// GHIDRA_NAME TOfferDeskPicture::TOfferDeskPicture_VtblSlot072
-// GHIDRA_PROTO void __thiscall TOfferDeskPicture_VtblSlot072(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930 */
-
-void __thiscall
-TOfferDeskPicture::TOfferDeskPicture_VtblSlot072
-          (TOfferDeskPicture *this,int arg1,int arg2,int arg3,int arg4)
-
-{
-  WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930(this,arg1,arg2,arg3,arg4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004048A9
-// GHIDRA_NAME TOfferDeskPicture::TOfferDeskPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TOfferDeskPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTOfferDeskPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTOfferDeskPictureClassNamePointer */
-
-void * __cdecl TOfferDeskPicture::TOfferDeskPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTOfferDeskPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004055B0
-// GHIDRA_NAME TOfferDeskPicture::TOfferDeskPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TOfferDeskPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTOfferDeskPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTOfferDeskPictureAndMaybeFree */
-
-void * __thiscall
-TOfferDeskPicture::TOfferDeskPicture_VtblSlot001(TOfferDeskPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTOfferDeskPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405B69
-// GHIDRA_NAME TOfferDeskPicture::TOfferDeskPicture_VtblSlot018
-// GHIDRA_PROTO void __thiscall TOfferDeskPicture_VtblSlot018(int eventRecord)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleDialogAcceptRejectShortcutAndQueueUiEventAlt
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleDialogAcceptRejectShortcutAndQueueUiEventAlt */
-
-void __thiscall
-TOfferDeskPicture::TOfferDeskPicture_VtblSlot018(TOfferDeskPicture *this,int eventRecord)
-
-{
-  HandleDialogAcceptRejectShortcutAndQueueUiEventAlt(this,eventRecord);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040684D
-// GHIDRA_NAME TOfferDeskPicture::TOfferDeskPicture_VtblSlot015
-// GHIDRA_PROTO void __thiscall TOfferDeskPicture_VtblSlot015(int commandId, PanelEventPayload * pCommandRecord, int forwardArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleTradeCommandTagsAndSelectionUpdates
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleTradeCommandTagsAndSelectionUpdates */
-
-void __thiscall
-TOfferDeskPicture::TOfferDeskPicture_VtblSlot015
-          (TOfferDeskPicture *this,int commandId,PanelEventPayload *pCommandRecord,int forwardArg)
-
-{
-  TNextTradeCommand::HandleTradeCommandTagsAndSelectionUpdates
-            ((TNextTradeCommand *)this,commandId,pCommandRecord,forwardArg);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407C4D
-// GHIDRA_NAME TOfferDeskPicture::TOfferDeskPicture_VtblSlot055
-// GHIDRA_PROTO void __thiscall TOfferDeskPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConfigureNationStateResponseCommandTagsAndTimers
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConfigureNationStateResponseCommandTagsAndTimers */
-
-void __thiscall TOfferDeskPicture::TOfferDeskPicture_VtblSlot055(TOfferDeskPicture *this)
-
-{
-  TToolBarCluster::ConfigureNationStateResponseCommandTagsAndTimers((TToolBarCluster *)this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE4B0
 // GHIDRA_NAME TOfferDeskPicture::CreateTOfferDeskPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTOfferDeskPictureInstance(void)
+// GHIDRA_PROTO undefined CreateTOfferDeskPictureInstance()
 
-void * __cdecl TOfferDeskPicture::CreateTOfferDeskPictureInstance(void)
+undefined4 * TOfferDeskPicture::CreateTOfferDeskPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -146,11 +20,11 @@ void * __cdecl TOfferDeskPicture::CreateTOfferDeskPictureInstance(void)
   puStack_8 = &LAB_0063953a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa8);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTOfferDeskPicture;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_0066e728;
     *(undefined1 *)((int)puVar1 + 0x9e) = 0;
     puVar1[0x29] = 0;
     puVar1[0x28] = 0;
@@ -158,93 +32,75 @@ void * __cdecl TOfferDeskPicture::CreateTOfferDeskPictureInstance(void)
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE550
 // GHIDRA_NAME TOfferDeskPicture::GetTOfferDeskPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTOfferDeskPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TOfferDeskPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTOfferDeskPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TOfferDeskPicture. */
-
-void * __cdecl TOfferDeskPicture::GetTOfferDeskPictureClassNamePointer(void)
+undefined ** TOfferDeskPicture::GetTOfferDeskPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTOfferDeskPicture;
+  return &PTR_s_TOfferDeskPicture_0066dc90;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE570
 // GHIDRA_NAME TOfferDeskPicture::ConstructTOfferDeskPictureBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTOfferDeskPictureBaseState(void)
+// GHIDRA_PROTO undefined ConstructTOfferDeskPictureBaseState()
 
-void * __thiscall TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(TOfferDeskPicture *this)
+undefined4 * __fastcall TOfferDeskPicture::ConstructTOfferDeskPictureBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTOfferDeskPicture;
-  this->field147_0x9e = 0;
-  this->pFielda4 = (void *)0x0;
-  this->pFielda0 = (void *)0x0;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_0066e728;
+  *(undefined1 *)((int)param_1 + 0x9e) = 0;
+  param_1[0x29] = 0;
+  param_1[0x28] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BE5B0
 // GHIDRA_NAME TOfferDeskPicture::DestructTOfferDeskPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTOfferDeskPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTOfferDeskPictureAndMaybeFree()
 
-void * __thiscall
-TOfferDeskPicture::DestructTOfferDeskPictureAndMaybeFree(TOfferDeskPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+TOfferDeskPicture::DestructTOfferDeskPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BF860
 // GHIDRA_NAME TOfferDeskPicture::HandleDialogAcceptRejectShortcutAndQueueUiEventAlt
-// GHIDRA_PROTO void __thiscall HandleDialogAcceptRejectShortcutAndQueueUiEventAlt(int eventRecord)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Alternate accept/reject shortcut handler that maps shortcut key states to acce/reje controls and queues deferred UI event packet.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT [TradeCmdFlow] Keyboard accept/reject shortcut bridge for trade dialogs.
-// GHIDRA_COMMENT Maps key states to acce/reje controls and queues deferred UI event packet.
-// GHIDRA_COMMENT_END
-
-/* Alternate accept/reject shortcut handler that maps shortcut key states to acce/reje controls and
-   queues deferred UI event packet.
-   
-   [TradeCmdFlow] Keyboard accept/reject shortcut bridge for trade dialogs.
-   Maps key states to acce/reje controls and queues deferred UI event packet. */
+// GHIDRA_PROTO undefined HandleDialogAcceptRejectShortcutAndQueueUiEventAlt()
 
 void __thiscall
-TOfferDeskPicture::HandleDialogAcceptRejectShortcutAndQueueUiEventAlt
-          (TOfferDeskPicture *this,int eventRecord)
+TOfferDeskPicture::HandleDialogAcceptRejectShortcutAndQueueUiEventAlt(int *param_1,int param_2)
 
 {
   short sVar1;
   int iVar2;
   undefined2 extraout_var;
   
-  sVar1 = *(short *)(eventRecord + 0x1c);
+  sVar1 = *(short *)(param_2 + 0x1c);
   if ((sVar1 == 3) || (sVar1 == 0xd)) {
-    iVar2 = (**(code **)((int)this->field0_0x0 + 0x94))(0x61636365);
+    iVar2 = (**(code **)(*param_1 + 0x94))(0x61636365);
     if (iVar2 != 0) {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(*(undefined2 *)(iVar2 + 0x92),0,1);
-      thunk_QueueDeferredUiEventPacket((int)this,10,iVar2);
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(*(undefined2 *)(iVar2 + 0x92),0,1);
+      thunk_QueueDeferredUiEventPacket(param_1,10,iVar2);
     }
   }
   else if (sVar1 == 0x1b) {
-    iVar2 = (**(code **)((int)this->field0_0x0 + 0x94))(0x72656a65);
+    iVar2 = (**(code **)(*param_1 + 0x94))(0x72656a65);
     if (iVar2 != 0) {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))
                 (CONCAT22(extraout_var,*(undefined2 *)(iVar2 + 0x92)),0,1);
-      thunk_QueueDeferredUiEventPacket((int)this,10,iVar2);
+      thunk_QueueDeferredUiEventPacket(param_1,10,iVar2);
       return;
     }
   }
@@ -253,34 +109,28 @@ TOfferDeskPicture::HandleDialogAcceptRejectShortcutAndQueueUiEventAlt
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0930
 // GHIDRA_NAME TOfferDeskPicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930
-// GHIDRA_PROTO void __thiscall WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around DispatchUiMouseEventToChildrenOrSelf; instructions=38, call_insns=5, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around DispatchUiMouseEventToChildrenOrSelf; instructions=38,
-   call_insns=5, internal_calls=1, unique_internal=1 */
+// GHIDRA_PROTO undefined WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930()
 
 void __thiscall
 TOfferDeskPicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At005c0930
-          (TOfferDeskPicture *this,int arg1,int arg2,int arg3,int arg4)
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
   char cVar1;
   
-  if (this->pFielda0 != (int *)0x0) {
-    cVar1 = (**(code **)(*(int *)this->pFielda0 + 0xec))();
+  if (*(int **)(param_1 + 0xa0) != (int *)0x0) {
+    cVar1 = (**(code **)(**(int **)(param_1 + 0xa0) + 0xec))();
     if (cVar1 != '\0') {
-      (**(code **)(*(int *)this->pFielda0 + 0xa4))(0,1);
+      (**(code **)(**(int **)(param_1 + 0xa0) + 0xa4))(0,1);
     }
   }
-  if (this->pFielda4 != (int *)0x0) {
-    cVar1 = (**(code **)(*(int *)this->pFielda4 + 0xec))();
+  if (*(int **)(param_1 + 0xa4) != (int *)0x0) {
+    cVar1 = (**(code **)(**(int **)(param_1 + 0xa4) + 0xec))();
     if (cVar1 != '\0') {
-      (**(code **)(*(int *)this->pFielda4 + 0xa4))(0,1);
+      (**(code **)(**(int **)(param_1 + 0xa4) + 0xa4))(0,1);
     }
   }
-  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this,arg1,arg2,arg3,arg4);
+  TControl::DispatchUiMouseEventToChildrenOrSelf(param_2,param_3,param_4,param_5);
   return;
 }
 

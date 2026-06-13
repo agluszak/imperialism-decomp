@@ -3,394 +3,225 @@
 // Program: Imperialism.exe
 // Bucket: THQButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040157D
-// GHIDRA_NAME THQButton::THQButton_VtblSlot015
-// GHIDRA_PROTO void __thiscall THQButton_VtblSlot015(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0 */
-
-void __thiscall THQButton::THQButton_VtblSlot015(THQButton *this)
-
-{
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040179E
-// GHIDRA_NAME THQButton::THQButton_VtblSlot055
-// GHIDRA_PROTO void __cdecl THQButton_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0 */
-
-void __cdecl THQButton::THQButton_VtblSlot055(void)
-
-{
-  WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004029AA
 // GHIDRA_NAME THQButton::thunk_DrawTextWithCachedQuickDrawStyleState
-// GHIDRA_PROTO void __thiscall thunk_DrawTextWithCachedQuickDrawStyleState(void)
+// GHIDRA_PROTO undefined thunk_DrawTextWithCachedQuickDrawStyleState()
 
-void __thiscall THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(THQButton *this)
+void __fastcall THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(int *param_1)
 
 {
-  void *extraout_EAX;
-  HDC hdc;
-  int *piVar1;
-  UINT align;
-  uint align_00;
+  undefined4 uVar1;
+  int *piVar2;
+  int iVar3;
   
-  if ((g_bQuickDrawStyleDirty != 0) || (g_hQuickDrawCachedFontHandle == (void *)0x0)) {
-    if (g_hQuickDrawCachedFontHandle != (void *)0x0) {
-      (**(code **)(*(int *)g_hQuickDrawCachedFontHandle + 4))(1);
+  if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
+    if (DAT_006a1d48 != (int *)0x0) {
+      (**(code **)(*DAT_006a1d48 + 4))(1);
     }
-    CreateFontFromPresetAndAttachRegionHandle(0x6a1d4c);
-    g_bQuickDrawStyleDirty = 0;
-    g_hQuickDrawCachedFontHandle = extraout_EAX;
+    DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
+    DAT_006a1d56 = '\0';
   }
-  piVar1 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  piVar2 = DAT_006a1da0;
+  if (DAT_006a1da0 == (int *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  (**(code **)(*piVar1 + 0x30))(g_hQuickDrawCachedFontHandle);
-  piVar1 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  (**(code **)(*piVar2 + 0x30))(DAT_006a1d48);
+  piVar2 = DAT_006a1da0;
+  if (DAT_006a1da0 == (int *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  align_00 = g_uQuickDrawCurrentColor;
-  (**(code **)(*piVar1 + 0x38))();
-  SetBkModeOnPrimaryAndSecondaryDc();
-  hdc = (HDC)SetTextAlign((HDC)&DAT_00000018,align_00);
-  piVar1 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  iVar3 = g_uQuickDrawCurrentColor;
+  (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
+  SetBkModeOnPrimaryAndSecondaryDc(1);
+  uVar1 = FUN_00613121(0x18);
+  piVar2 = DAT_006a1da0;
+  if (DAT_006a1da0 == (int *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  align = g_nQuickDrawTextOriginX;
-  (**(code **)(*piVar1 + 100))
-            (g_nQuickDrawTextOriginX,g_nQuickDrawTextOriginY,this->pVtable,
-             *(undefined4 *)((int)this->pVtable + -8));
-  SetTextAlign(hdc,align);
-  piVar1 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  (**(code **)(*piVar2 + 100))(DAT_006a1d00,DAT_006a1d04,*param_1,*(undefined4 *)(*param_1 + -8));
+  FUN_00613121(uVar1);
+  piVar2 = DAT_006a1da0;
+  if (DAT_006a1da0 == (int *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  (**(code **)(*piVar1 + 0x30))(align_00);
+  (**(code **)(*piVar2 + 0x30))(iVar3);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040415B
-// GHIDRA_NAME THQButton::THQButton_VtblSlot112
-// GHIDRA_PROTO void __thiscall THQButton_VtblSlot112(EMapInteractionMode mode, byte refreshParent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetModeAndBitmapBySelectionState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetModeAndBitmapBySelectionState */
-
-void __thiscall
-THQButton::THQButton_VtblSlot112(THQButton *this,EMapInteractionMode mode,byte refreshParent)
-
-{
-  int *piVar1;
-  void *pvVar2;
-  char unaff_retaddr;
-  short sVar3;
-  
-  if ((undefined1)mode != this->modeFlag64) {
-    this->modeFlag64 = (undefined1)mode;
-    if ((undefined1)mode == MAP_INTERACTION_MODE_0) {
-      if (this->selectionState98 == MAP_INTERACTION_MODE_0) {
-        pvVar2 = this->pVtable;
-        sVar3 = this->bitmapId90;
-      }
-      else {
-        pvVar2 = this->pVtable;
-        if (this->selectionState98 == MAP_INTERACTION_MODE_1) {
-          sVar3 = this->bitmapId94;
-        }
-        else {
-          sVar3 = this->bitmapId96;
-        }
-      }
-    }
-    else {
-      pvVar2 = this->pVtable;
-      sVar3 = this->bitmapId92;
-    }
-    (**(code **)((int)pvVar2 + 0x1c8))(sVar3,1);
-    if (unaff_retaddr != '\0') {
-      piVar1 = (int *)(**(code **)((int)pvVar2 + 0x58))();
-      (**(code **)(*piVar1 + 0x13c))();
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404D86
-// GHIDRA_NAME THQButton::THQButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl THQButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTHQButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTHQButtonClassNamePointer */
-
-void * __cdecl THQButton::THQButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTHQButtonClassNamePointer();
-  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404FE8
 // GHIDRA_NAME THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay
-// GHIDRA_PROTO void __thiscall thunk_RenderHintHelperWithCtrlModifierOverlay(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_RenderHintHelperWithCtrlModifierOverlay()
 
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-/* Direct thunk */
-
-void __thiscall THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(THQButton *this)
+void __fastcall THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(int *param_1)
 
 {
   code *pcVar1;
   ushort uVar2;
-  int extraout_EAX;
-  int extraout_EAX_00;
-  TIconSlider *this_00;
   int iVar3;
-  int arg2;
+  undefined4 uVar4;
+  undefined4 *puVar5;
+  undefined4 uVar6;
+  int iVar7;
+  int *piVar8;
+  undefined1 *puVar9;
+  int iVar10;
+  undefined4 uVar11;
+  undefined4 uVar12;
+  undefined4 uVar13;
   undefined1 auStack_18 [4];
-  undefined1 auStack_14 [4];
-  undefined1 auStack_10 [16];
+  int iStack_14;
+  int iStack_10;
+  int iStack_c;
+  int iStack_8;
   
   uVar2 = GetAsyncKeyState(0x11);
   if ((uVar2 & 0x8000) != 0) {
-    (**(code **)((int)this->pVtable + 0x160))(auStack_10);
+    (**(code **)(*param_1 + 0x160))(&iStack_10);
   }
-  RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
-  if (((extraout_EAX != 0) && (iVar3 = *(int *)(this->field8c + 0x10), *(short *)(iVar3 + 0xe) == 8)
-      ) && (*(int *)(iVar3 + 0x10) == 0)) {
-    (**(code **)((int)this->pVtable + 0x160))(auStack_10);
-    RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
-    BlitSurfaceRectSkippingTransparentColor();
+  iVar3 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
+  if (((iVar3 != 0) && (*(short *)(*(int *)(param_1[0x23] + 0x10) + 0xe) == 8)) &&
+     (*(int *)(*(int *)(param_1[0x23] + 0x10) + 0x10) == 0)) {
+    (**(code **)(*param_1 + 0x160))(&iStack_10);
+    iVar7 = iStack_c - iStack_14;
+    iVar3 = iStack_8 - iStack_10;
+    uVar4 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
+    BlitSurfaceRectSkippingTransparentColor(uVar4,0,0,iVar7,iVar3,iStack_14,iStack_10,0xffffffff);
     return;
   }
-  arg2 = 0;
-  thunk_NoOpQuickDrawContextSelectionHook();
-  iVar3 = extraout_EAX_00;
-  TMacViewMgr::thunk_ResolveBmpResourceHandleWithDefault3B6(g_pModuleLibraryCacheState);
-  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-            (this_00,iVar3,arg2);
-  iVar3 = *(int *)(*(int *)(this->field8c + 0x10) + 8);
+  uVar13 = 0;
+  uVar4 = NoOpQuickDrawContextSelectionHook(0);
+  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(uVar4);
+  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(uVar4,uVar13);
+  iVar3 = *(int *)(*(int *)(param_1[0x23] + 0x10) + 8);
   if (iVar3 < 1) {
     iVar3 = -iVar3;
   }
-  pcVar1 = *(code **)((int)this->pVtable + 0x158);
-  iVar3 = (*pcVar1)(auStack_18,this->controlWidth34,this->controlHeight38,0,0,
-                    *(undefined4 *)(*(int *)(this->field8c + 0x10) + 4),iVar3);
-  (*pcVar1)(auStack_14,*(undefined4 *)(iVar3 + 4));
-  thunk_NoOpQuickDrawContextSelectionHook();
-  RenderHintHelperWithCtrlModifierOverlay_Impl();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406028
-// GHIDRA_NAME THQButton::THQButton_VtblSlot115
-// GHIDRA_PROTO void __thiscall THQButton_VtblSlot115(int arg2, int arg3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InvokeSlot1CCIfSlot28Enabled
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InvokeSlot1CCIfSlot28Enabled */
-
-void __thiscall THQButton::THQButton_VtblSlot115(THQButton *this,int arg2,int arg3)
-
-{
-  void *pvVar1;
-  char cVar2;
-  
-  pvVar1 = this->pVtable;
-  cVar2 = (**(code **)((int)pvVar1 + 0x28))();
-  if (cVar2 != '\0') {
-    (**(code **)((int)pvVar1 + 0x1c0))(arg2,arg3);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407D88
-// GHIDRA_NAME THQButton::THQButton_VtblSlot001
-// GHIDRA_PROTO THQButton * __thiscall THQButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTHQButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTHQButtonAndMaybeFree */
-
-THQButton * __thiscall THQButton::THQButton_VtblSlot001(THQButton *this,byte freeSelfFlag)
-
-{
-  THQButton *pTVar1;
-  
-  pTVar1 = DestructTHQButtonAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408891
-// GHIDRA_NAME THQButton::THQButton_VtblSlot116
-// GHIDRA_PROTO void __thiscall THQButton_VtblSlot116(EMapInteractionMode mode)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetSelectionStateAndRefreshBitmap
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetSelectionStateAndRefreshBitmap */
-
-void __thiscall THQButton::THQButton_VtblSlot116(THQButton *this,EMapInteractionMode mode)
-
-{
-  void *pvVar1;
-  short sVar2;
-  
-  this->selectionState98 = mode;
-  this->modeFlag64 = 0;
-  if (mode == MAP_INTERACTION_MODE_0) {
-    sVar2 = this->bitmapId90;
-    pvVar1 = this->pVtable;
-  }
-  else {
-    pvVar1 = this->pVtable;
-    if (mode == MAP_INTERACTION_MODE_1) {
-      sVar2 = this->bitmapId94;
-    }
-    else {
-      sVar2 = this->bitmapId96;
-    }
-  }
-  (**(code **)((int)pvVar1 + 0x1c8))(sVar2,1);
-  (**(code **)((int)pvVar1 + 0xa8))(mode != MAP_INTERACTION_MODE_2,0);
+  pcVar1 = *(code **)(*param_1 + 0x158);
+  iVar7 = param_1[0xe];
+  iVar10 = param_1[0xd];
+  uVar12 = 0;
+  uVar11 = 0;
+  puVar9 = auStack_18;
+  iVar3 = (*pcVar1)(puVar9,iVar10,iVar7,0,0,*(undefined4 *)(*(int *)(param_1[0x23] + 0x10) + 4),
+                    iVar3);
+  uVar4 = *(undefined4 *)(iVar3 + 4);
+  piVar8 = &iStack_14;
+  puVar5 = (undefined4 *)(*pcVar1)(piVar8,uVar4);
+  uVar13 = *puVar5;
+  uVar6 = NoOpQuickDrawContextSelectionHook(uVar13);
+  RenderHintHelperWithCtrlModifierOverlay_Impl
+            (uVar6,uVar13,piVar8,uVar4,puVar9,iVar10,iVar7,uVar11,uVar12);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F3C0
 // GHIDRA_NAME THQButton::RenderHintHelperWithCtrlModifierOverlay
-// GHIDRA_PROTO void __thiscall RenderHintHelperWithCtrlModifierOverlay(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Render hint helper overlay with Ctrl-modifier path and fallback blit
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderHintHelperWithCtrlModifierOverlay()
 
-/* WARNING: Struct "TIconSlider": ignoring multiple overlapping fields */
-/* Render hint helper overlay with Ctrl-modifier path and fallback blit */
-
-void __thiscall THQButton::RenderHintHelperWithCtrlModifierOverlay(THQButton *this)
+void __fastcall THQButton::RenderHintHelperWithCtrlModifierOverlay(int *param_1)
 
 {
   code *pcVar1;
   ushort uVar2;
-  int extraout_EAX;
-  int extraout_EAX_00;
-  TIconSlider *this_00;
   int iVar3;
-  int arg2;
+  undefined4 uVar4;
+  undefined4 *puVar5;
+  undefined4 uVar6;
+  int iVar7;
+  int *piVar8;
+  undefined1 *puVar9;
+  int iVar10;
+  undefined4 uVar11;
+  undefined4 uVar12;
+  undefined4 uVar13;
   undefined1 auStack_18 [4];
-  undefined1 auStack_14 [4];
-  undefined1 local_10 [16];
+  int iStack_14;
+  int local_10;
+  int iStack_c;
+  int iStack_8;
   
   uVar2 = GetAsyncKeyState(0x11);
   if ((uVar2 & 0x8000) != 0) {
-    (**(code **)((int)this->pVtable + 0x160))(local_10);
+    (**(code **)(*param_1 + 0x160))(&local_10);
   }
-  RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
-  if (((extraout_EAX != 0) && (iVar3 = *(int *)(this->field8c + 0x10), *(short *)(iVar3 + 0xe) == 8)
-      ) && (*(int *)(iVar3 + 0x10) == 0)) {
-    (**(code **)((int)this->pVtable + 0x160))(local_10);
-    RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
-    BlitSurfaceRectSkippingTransparentColor();
+  iVar3 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
+  if (((iVar3 != 0) && (*(short *)(*(int *)(param_1[0x23] + 0x10) + 0xe) == 8)) &&
+     (*(int *)(*(int *)(param_1[0x23] + 0x10) + 0x10) == 0)) {
+    (**(code **)(*param_1 + 0x160))(&local_10);
+    iVar7 = iStack_c - iStack_14;
+    iVar3 = iStack_8 - local_10;
+    uVar4 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
+    BlitSurfaceRectSkippingTransparentColor(uVar4,0,0,iVar7,iVar3,iStack_14,local_10,0xffffffff);
     return;
   }
-  arg2 = 0;
-  thunk_NoOpQuickDrawContextSelectionHook();
-  iVar3 = extraout_EAX_00;
-  TMacViewMgr::thunk_ResolveBmpResourceHandleWithDefault3B6(g_pModuleLibraryCacheState);
-  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-            (this_00,iVar3,arg2);
-  iVar3 = *(int *)(*(int *)(this->field8c + 0x10) + 8);
+  uVar13 = 0;
+  uVar4 = NoOpQuickDrawContextSelectionHook(0);
+  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(uVar4);
+  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(uVar4,uVar13);
+  iVar3 = *(int *)(*(int *)(param_1[0x23] + 0x10) + 8);
   if (iVar3 < 1) {
     iVar3 = -iVar3;
   }
-  pcVar1 = *(code **)((int)this->pVtable + 0x158);
-  iVar3 = (*pcVar1)(auStack_18,this->controlWidth34,this->controlHeight38,0,0,
-                    *(undefined4 *)(*(int *)(this->field8c + 0x10) + 4),iVar3);
-  (*pcVar1)(auStack_14,*(undefined4 *)(iVar3 + 4));
-  thunk_NoOpQuickDrawContextSelectionHook();
-  RenderHintHelperWithCtrlModifierOverlay_Impl();
+  pcVar1 = *(code **)(*param_1 + 0x158);
+  iVar7 = param_1[0xe];
+  iVar10 = param_1[0xd];
+  uVar12 = 0;
+  uVar11 = 0;
+  puVar9 = auStack_18;
+  iVar3 = (*pcVar1)(puVar9,iVar10,iVar7,0,0,*(undefined4 *)(*(int *)(param_1[0x23] + 0x10) + 4),
+                    iVar3);
+  uVar4 = *(undefined4 *)(iVar3 + 4);
+  piVar8 = &iStack_14;
+  puVar5 = (undefined4 *)(*pcVar1)(piVar8,uVar4);
+  uVar13 = *puVar5;
+  uVar6 = NoOpQuickDrawContextSelectionHook(uVar13);
+  RenderHintHelperWithCtrlModifierOverlay_Impl
+            (uVar6,uVar13,piVar8,uVar4,puVar9,iVar10,iVar7,uVar11,uVar12);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00494A90
 // GHIDRA_NAME THQButton::DrawTextWithCachedQuickDrawStyleState
-// GHIDRA_PROTO void __thiscall DrawTextWithCachedQuickDrawStyleState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Ensures cached quick-draw style object is up to date, then renders text using selected context
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DrawTextWithCachedQuickDrawStyleState()
 
-/* Ensures cached quick-draw style object is up to date, then renders text using selected context */
-
-void __thiscall THQButton::DrawTextWithCachedQuickDrawStyleState(THQButton *this)
+void __fastcall THQButton::DrawTextWithCachedQuickDrawStyleState(int *param_1)
 
 {
-  void *extraout_EAX;
-  HDC hdc;
-  int *piVar1;
-  UINT align;
-  uint align_00;
+  undefined4 uVar1;
+  int *piVar2;
+  int iVar3;
   
-  if ((g_bQuickDrawStyleDirty != 0) || (g_hQuickDrawCachedFontHandle == (void *)0x0)) {
-    if (g_hQuickDrawCachedFontHandle != (void *)0x0) {
-      (**(code **)(*(int *)g_hQuickDrawCachedFontHandle + 4))(1);
+  if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
+    if (DAT_006a1d48 != (int *)0x0) {
+      (**(code **)(*DAT_006a1d48 + 4))(1);
     }
-    CreateFontFromPresetAndAttachRegionHandle(0x6a1d4c);
-    g_bQuickDrawStyleDirty = 0;
-    g_hQuickDrawCachedFontHandle = extraout_EAX;
+    DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
+    DAT_006a1d56 = '\0';
   }
-  piVar1 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  piVar2 = DAT_006a1da0;
+  if (DAT_006a1da0 == (int *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  (**(code **)(*piVar1 + 0x30))(g_hQuickDrawCachedFontHandle);
-  piVar1 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  (**(code **)(*piVar2 + 0x30))(DAT_006a1d48);
+  piVar2 = DAT_006a1da0;
+  if (DAT_006a1da0 == (int *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  align_00 = g_uQuickDrawCurrentColor;
-  (**(code **)(*piVar1 + 0x38))();
-  SetBkModeOnPrimaryAndSecondaryDc();
-  hdc = (HDC)SetTextAlign((HDC)&DAT_00000018,align_00);
-  piVar1 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  iVar3 = g_uQuickDrawCurrentColor;
+  (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
+  SetBkModeOnPrimaryAndSecondaryDc(1);
+  uVar1 = FUN_00613121(0x18);
+  piVar2 = DAT_006a1da0;
+  if (DAT_006a1da0 == (int *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  align = g_nQuickDrawTextOriginX;
-  (**(code **)(*piVar1 + 100))
-            (g_nQuickDrawTextOriginX,g_nQuickDrawTextOriginY,this->pVtable,
-             *(undefined4 *)((int)this->pVtable + -8));
-  SetTextAlign(hdc,align);
-  piVar1 = g_pQuickDrawActiveMemoryDc;
-  if (g_pQuickDrawActiveMemoryDc == (void *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
+  (**(code **)(*piVar2 + 100))(DAT_006a1d00,DAT_006a1d04,*param_1,*(undefined4 *)(*param_1 + -8));
+  FUN_00613121(uVar1);
+  piVar2 = DAT_006a1da0;
+  if (DAT_006a1da0 == (int *)0x0) {
+    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
   }
-  (**(code **)(*piVar1 + 0x30))(align_00);
+  (**(code **)(*piVar2 + 0x30))(iVar3);
   return;
 }
 
@@ -464,141 +295,138 @@ void __thiscall THQButton::DrawTextWithCachedQuickDrawStyleState(THQButton *this
 void __thiscall THQButton::RenderCityBuildingIcons(THQButton *this,tagRECT *pTargetRect)
 
 {
-  short sVar1;
-  code *pcVar2;
-  bool bVar3;
-  char cVar4;
-  short extraout_AX;
+  code *pcVar1;
+  bool bVar2;
+  char cVar3;
+  short sVar4;
   int *piVar5;
-  int iVar6;
-  undefined4 *puVar7;
-  int iVar8;
-  int *unaff_EBP;
-  int unaff_ESI;
-  undefined4 *puVar9;
-  int *piVar10;
-  undefined4 uVar11;
+  undefined4 uVar6;
+  int iVar7;
+  undefined4 *puVar8;
+  int iVar9;
+  undefined4 unaff_EBP;
+  undefined4 unaff_ESI;
+  undefined4 *puVar10;
+  int *piVar11;
   undefined4 uVar12;
   undefined4 uVar13;
   short *psVar14;
   int *local_20;
-  int *local_1c [2];
+  undefined1 local_1c [8];
   THQButton *local_14;
   RECT local_10;
   
   local_14 = this;
-  if ((*(short *)((int)g_pDisplayManager + 0x1c) == 0x7db) && (this->field142_0xa6 == '\0')) {
+  if (((short)DAT_006a2158[7] == 0x7db) && (this[0xa6] == (THQButton)0x0)) {
     local_10.left = pTargetRect->left;
     local_10.top = pTargetRect->top;
     local_10.right = pTargetRect->right;
     local_10.bottom = pTargetRect->bottom;
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)((int)g_pPrimaryRenderSurfaceContext + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
+              ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
                (astruct_19 *)0x0);
-    (**(code **)((int)this->pVtable + 0x1d4))();
+    (**(code **)(*(int *)this + 0x1d4))();
     return;
   }
-  this->field142_0xa6 = 0;
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+  this[0xa6] = (THQButton)0x0;
+  thunk_RenderHintHelperWithCtrlModifierOverlay(pTargetRect);
   local_20 = (int *)0x0;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_1c,(int *)&local_20);
-  piVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130();
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_1c,&local_20);
+  piVar5 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(7000);
   CopyRect(&local_10,(RECT *)(*piVar5 + 8));
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&pTargetRect,8,&local_10);
-  piVar10 = (int *)*piVar5;
-  (**(code **)(*piVar10 + 4))();
-  *(byte *)(piVar10 + 1) = *(byte *)(piVar10 + 1) & 0xfe;
-  puVar9 = (undefined4 *)*piVar5;
-  if (puVar9 != (undefined4 *)0x0) {
-    *puVar9 = &g_vslotTAmbitFileBasedDocument_Slot01D0_NotifyControlStateChange;
-    TAmbitFileBasedDocument::
-    thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124
-              ();
-    FreeHeapBufferIfNotNull();
+  (**(code **)(*DAT_006a2158 + 0x2c))(&pTargetRect,8,&local_10);
+  piVar11 = (int *)*piVar5;
+  (**(code **)(*piVar11 + 4))();
+  *(byte *)(piVar11 + 1) = *(byte *)(piVar11 + 1) & 0xfe;
+  puVar10 = (undefined4 *)*piVar5;
+  if (puVar10 != (undefined4 *)0x0) {
+    *puVar10 = &PTR_EnsureBitmapResourceLoadedAndCopyRectSize_0064c340;
+    WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();
+    FreeHeapBufferIfNotNull(puVar10);
   }
-  FreeHeapBufferIfNotNull();
-  thunk_SetActiveQuickDrawSurfaceContext((int *)local_10.right,unaff_ESI);
-  thunk_GetSurfaceObjectAtContextOffset24((int *)local_10.right);
-  thunk_ReturnConstantTrueQuickDrawFlag();
+  FreeHeapBufferIfNotNull(piVar5);
+  thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+  uVar6 = thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar6);
   psVar14 = &g_anCityBuildingSlotOrder;
   do {
-    thunk_SetActiveQuickDrawSurfaceContext((int *)local_10.right,unaff_ESI);
-    thunk_GetActiveNationId();
-    if (g_apNationStates[extraout_AX] == (void *)0x0) {
-      piVar10 = (int *)0x0;
+    thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+    sVar4 = UiRuntimeContext::GetActiveNationId();
+    if ((&g_apNationStates)[sVar4] == 0) {
+      piVar11 = (int *)0x0;
     }
     else {
-      piVar10 = *(int **)((int)g_apNationStates[extraout_AX] + 0x894);
+      piVar11 = *(int **)((&g_apNationStates)[sVar4] + 0x894);
     }
-    iVar8 = *piVar10;
-    sVar1 = *psVar14;
-    puVar9 = (undefined4 *)CONCAT22((short)((uint)puVar9 >> 0x10),sVar1);
-    iVar6 = (**(code **)(iVar8 + 0x5c))(puVar9);
-    if ((short)iVar6 < 1) {
-      bVar3 = false;
-      if ((sVar1 < 0) || (6 < sVar1)) {
-        if ((sVar1 == 0xb) && ((char)piVar10[1] != '\0')) goto LAB_004ba97b;
+    iVar9 = *piVar11;
+    sVar4 = *psVar14;
+    puVar10 = (undefined4 *)CONCAT22((short)((uint)puVar10 >> 0x10),sVar4);
+    iVar7 = (**(code **)(iVar9 + 0x5c))(puVar10);
+    if ((short)iVar7 < 1) {
+      bVar2 = false;
+      if ((sVar4 < 0) || (6 < sVar4)) {
+        if ((sVar4 == 0xb) && ((char)piVar11[1] != '\0')) goto LAB_004ba97b;
       }
-      else if (0 < *(short *)(piVar10[(short)(sVar1 + 0x35) + 0x39] + 4)) {
+      else if (0 < *(short *)(piVar11[(short)(sVar4 + 0x35) + 0x39] + 4)) {
 LAB_004ba97b:
-        bVar3 = true;
+        bVar2 = true;
       }
-      if (bVar3) goto LAB_004ba985;
+      if (bVar2) goto LAB_004ba985;
     }
     else {
 LAB_004ba985:
-      if (sVar1 == 0xb) {
-        puVar7 = (undefined4 *)((-(uint)((char)piVar10[1] != '\0') & 0xfffffff0) + 0x1b73);
+      if (sVar4 == 0xb) {
+        puVar8 = (undefined4 *)((-(uint)((char)piVar11[1] != '\0') & 0xfffffff0) + 0x1b73);
       }
-      else if (((((short)iVar6 == 0) || (sVar1 < 0)) || (5 < sVar1)) ||
-              ((*(short *)(piVar10[(short)(sVar1 + 0x35) + 0x39] + 4) < 1 ||
-               (cVar4 = (**(code **)(iVar8 + 0x78))(puVar9), cVar4 == '\0')))) {
-        puVar7 = puVar9 + iVar6 * 4 + 0x6d6;
+      else if (((((short)iVar7 == 0) || (sVar4 < 0)) || (5 < sVar4)) ||
+              ((*(short *)(piVar11[(short)(sVar4 + 0x35) + 0x39] + 4) < 1 ||
+               (cVar3 = (**(code **)(iVar9 + 0x78))(puVar10), cVar3 == '\0')))) {
+        puVar8 = puVar10 + iVar7 * 4 + 0x6d6;
       }
       else {
-        puVar7 = puVar9 + iVar6 * 4 + 0x721;
+        puVar8 = puVar10 + iVar7 * 4 + 0x721;
       }
-      pcVar2 = *(code **)(*local_20 + 0x1d0);
-      (*pcVar2)(local_1c,local_10.right,
-                (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawXOffsetIndex + sVar1 * 2],
-                (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawYOffsetIndex + sVar1 * 2],
-                puVar7,unaff_EBP,unaff_ESI);
-      if ((sVar1 == 0xf) && ('2' < *(char *)(piVar10[0x2b] + 0x8d2))) {
-        thunk_SetActiveQuickDrawSurfaceContext((int *)local_10.right,unaff_ESI);
+      pcVar1 = *(code **)(*local_20 + 0x1d0);
+      (*pcVar1)(local_1c,local_10.right,
+                (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawXOffsetIndex + sVar4 * 2],
+                (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawYOffsetIndex + sVar4 * 2],
+                puVar8,unaff_EBP,unaff_ESI);
+      if ((sVar4 == 0xf) && ('2' < *(char *)(piVar11[0x2b] + 0x8d2))) {
+        thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
         uVar13 = 0x1b9e;
         uVar12 = 0x3c;
-        uVar11 = 0xa6;
+        uVar6 = 0xa6;
       }
       else {
-        if ((sVar1 != 0xe) || (*(char *)(piVar10[0x2b] + 0x8d3) < '3')) goto LAB_004baac3;
-        thunk_SetActiveQuickDrawSurfaceContext((int *)local_10.right,unaff_ESI);
+        if ((sVar4 != 0xe) || (*(char *)(piVar11[0x2b] + 0x8d3) < '3')) goto LAB_004baac3;
+        thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
         uVar13 = 0x1b9f;
         uVar12 = 0x143;
-        uVar11 = 0x6d;
+        uVar6 = 0x6d;
       }
-      (*pcVar2)(local_1c,local_10.right,uVar11,uVar12,uVar13,unaff_EBP,unaff_ESI);
+      (*pcVar1)(local_1c,local_10.right,uVar6,uVar12,uVar13,unaff_EBP,unaff_ESI);
     }
 LAB_004baac3:
     psVar14 = psVar14 + 1;
     if (0x696197 < (int)psVar14) {
-      iVar8 = 8;
-      piVar10 = local_20 + 0x4b;
+      iVar9 = 8;
+      piVar11 = local_20 + 0x4b;
       do {
-        iVar6 = 3;
+        iVar7 = 3;
         do {
-          if ((int *)*piVar10 != (int *)0x0) {
-            (**(code **)(*(int *)*piVar10 + 0x3c))();
+          if ((int *)*piVar11 != (int *)0x0) {
+            (**(code **)(*(int *)*piVar11 + 0x3c))();
           }
-          piVar10 = piVar10 + 1;
-          iVar6 = iVar6 + -1;
-        } while (iVar6 != 0);
-        iVar8 = iVar8 + -1;
-      } while (iVar8 != 0);
+          piVar11 = piVar11 + 1;
+          iVar7 = iVar7 + -1;
+        } while (iVar7 != 0);
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
       thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
-      thunk_GetSurfaceObjectAtContextOffset24((int *)local_10.right);
-      thunk_NoOpQuickDrawLifecycleHookB();
-      WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+      uVar6 = thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
+      thunk_NoOpQuickDrawLifecycleHookB(uVar6);
+      WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&local_10.right);
       (**(code **)(*local_20 + 0x1d4))();
       return;
     }
@@ -620,36 +448,25 @@ THQButton::RenderCityViewProductionDialogMetrics
           (THQButton *this,int pDialogState,int *pRenderRectData)
 
 {
-  short originX;
+  undefined2 uVar1;
   char fHasClipIntersection;
-  char extraout_AL;
-  THQButton *this_00;
-  THQButton *this_01;
-  THQButton *this_02;
-  THQButton *this_03;
-  short *pnCommoditySlotInfo;
+  short nMetricRawValue;
+  int nMetricValue;
+  int unaff_EBP;
+  int nValueTextY;
+  THQButton *pnCommoditySlotInfo;
   int nMetricColumnX;
   undefined4 *unaff_FS_OFFSET;
   undefined1 local_84 [4];
-  short local_80 [12];
+  undefined2 local_80 [12];
   RECT local_68;
   RECT local_58;
-  undefined4 local_48 [4];
+  undefined4 local_48;
+  undefined4 local_44;
+  undefined4 local_40;
+  undefined4 local_3c;
   undefined1 local_38 [16];
-  undefined2 local_28;
-  undefined2 local_26;
-  undefined2 local_24;
-  undefined2 local_22;
-  undefined2 local_20;
-  undefined2 local_1e;
-  undefined2 local_1c;
-  undefined2 local_1a;
-  undefined2 local_18;
-  undefined2 local_16;
-  undefined2 local_14;
-  undefined2 local_12;
-  undefined2 local_10;
-  undefined2 local_e;
+  short local_28 [14];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -660,21 +477,20 @@ THQButton::RenderCityViewProductionDialogMetrics
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   InitializeSharedStringRefFromEmpty();
-  local_26 = 0x19;
-  local_1c = 0x19;
-  local_48[0] = *(undefined4 *)pDialogState;
+  local_28[1] = 0x19;
+  local_28[6] = 0x19;
+  local_48 = *(undefined4 *)pDialogState;
   local_4 = 0;
-  local_48[1] = *(undefined4 *)(pDialogState + 4);
-  local_28 = 0;
-  local_20._0_1_ = 0x41;
-  local_20._1_1_ = 0;
-  local_48[2] = *(undefined4 *)(pDialogState + 8);
-  local_1a = 0x1e;
-  local_48[3] = *(undefined4 *)(pDialogState + 0xc);
-  local_24 = 0x28;
-  local_22 = 0x23;
-  local_1e = 0x23;
-  local_12 = 0x28;
+  local_44 = *(undefined4 *)(pDialogState + 4);
+  local_28[0] = 0;
+  local_28[4] = 0x41;
+  local_40 = *(undefined4 *)(pDialogState + 8);
+  local_28[7] = 0x1e;
+  local_3c = *(undefined4 *)(pDialogState + 0xc);
+  local_28[2] = 0x28;
+  local_28[3] = 0x23;
+  local_28[5] = 0x23;
+  local_28[0xb] = 0x28;
   local_80[6] = 0x1c;
   local_80[7] = 0x1c;
   local_80[8] = 0x1c;
@@ -683,107 +499,120 @@ THQButton::RenderCityViewProductionDialogMetrics
   local_80[0xb] = 0x78;
   local_80[2] = 0x76;
   local_80[5] = 0x76;
-  local_18 = 0x32;
-  local_16 = 0x46;
-  local_14 = 0x2d;
-  local_10 = 0x73;
-  local_e = 0x5a;
+  local_28[8] = 0x32;
+  local_28[9] = 0x46;
+  local_28[10] = 0x2d;
+  local_28[0xc] = 0x73;
+  local_28[0xd] = 0x5a;
   local_80[0] = 0x56;
   local_80[1] = 0x66;
   local_80[3] = 0x56;
   local_80[4] = 0x66;
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(pDialogState);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   local_68.right = 0xe5;
   local_68.left = 0x16;
   local_68.top = 0x82;
   local_68.bottom = 0xc4;
-  IntersectRectWrapper((int)local_48,(int)&local_68,(int)local_38);
+  fHasClipIntersection = IntersectRectWrapper(&local_48,&local_68,local_38);
   if (fHasClipIntersection != '\0') {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6b);
     nMetricColumnX = 0x3a;
-    pnCommoditySlotInfo = &this->field164_0xbc;
+    pnCommoditySlotInfo = this + 0xbc;
     do {
-      nCommoditySpriteId = *pnCommoditySlotInfo;
+      nCommoditySpriteId = *(short *)pnCommoditySlotInfo;
       if (nCommoditySpriteId != -1) {
         local_58.left = (int)nCommoditySpriteId << 5;
         local_58.top = 0;
         local_58.right = (nCommoditySpriteId + 1) * 0x20;
         local_68.bottom = 0xb0;
         local_68.left = nMetricColumnX + -0x20;
+        unaff_EBP = 0;
         local_68.top = 0x98;
         local_58.bottom = 0x18;
         local_68.right = nMetricColumnX;
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x674) + 4),
-                   (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_58,&local_68,
-                   0x24,(astruct_19 *)0x0);
+                  ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
+                   (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_58,&local_68,0x24,
+                   (astruct_19 *)0x0);
         local_68.top = 0xcc;
         local_68.bottom = 0xe4;
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x674) + 4),
-                   (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_58,&local_68,
-                   0x24,(astruct_19 *)0x0);
-        thunk_SetQuickDrawTextOriginWithContextOffset((short)local_68.right,0xb2);
-        FormatStringWithVarArgsToSharedRef();
-        thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-        FormatStringWithVarArgsToSharedRef();
-        if (*(short *)(*(int *)&this->bitmapId94 + 0xb6 + *pnCommoditySlotInfo * 2) <
-            pnCommoditySlotInfo[4]) {
-          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-          thunk_SetQuickDrawTextOriginWithContextOffset((short)local_68.right,0xe6);
-          thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
-          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+                  ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
+                   (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_58,&local_68,0x24,
+                   (astruct_19 *)0x0);
+        thunk_SetQuickDrawTextOriginWithContextOffset(local_68.right,0xb2);
+        FormatStringWithVarArgsToSharedRef
+                  (local_84,&g_szDecimalFormat,(int)*(short *)(pnCommoditySlotInfo + 8));
+        thunk_DrawTextWithCachedQuickDrawStyleState(local_84);
+        FormatStringWithVarArgsToSharedRef
+                  (local_84,&g_szDecimalFormat,
+                   (int)*(short *)(*(int *)(this + 0x94) + 0xb6 + *(short *)pnCommoditySlotInfo * 2)
+                  );
+        if (*(short *)(*(int *)(this + 0x94) + 0xb6 + *(short *)pnCommoditySlotInfo * 2) <
+            *(short *)(pnCommoditySlotInfo + 8)) {
+          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b69);
+          thunk_SetQuickDrawTextOriginWithContextOffset(local_68.right,0xe6);
+          thunk_DrawTextWithCachedQuickDrawStyleState(local_84);
+          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6b);
         }
         else {
-          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-          thunk_SetQuickDrawTextOriginWithContextOffset((short)local_68.right,0xe6);
-          thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+          ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6b);
+          thunk_SetQuickDrawTextOriginWithContextOffset(local_68.right,0xe6);
+          thunk_DrawTextWithCachedQuickDrawStyleState(local_84);
         }
       }
       nMetricColumnX = nMetricColumnX + 0x28;
-      pnCommoditySlotInfo = pnCommoditySlotInfo + 1;
+      pnCommoditySlotInfo = pnCommoditySlotInfo + 2;
     } while (nMetricColumnX < 0xda);
   }
   local_68.left = 0x19;
   local_68.top = 0x4b;
   local_68.right = 0xc4;
   local_68.bottom = 0x80;
-  IntersectRectWrapper((int)local_48,(int)&local_68,(int)local_38);
-  if (extraout_AL != '\0') {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  fHasClipIntersection = IntersectRectWrapper(&local_48,&local_68,local_38);
+  if (fHasClipIntersection != '\0') {
+    nCommoditySpriteId = *(short *)(this + *(short *)(this + 0xa0) * 2 + 0xa4);
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6b);
     nMetricColumnX = 0;
     do {
-      (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2736,nMetricColumnX + 0x10,local_84);
-      nCommoditySpriteId = local_80[nMetricColumnX];
-      originX = local_80[nMetricColumnX + 6];
-      thunk_SetQuickDrawTextOriginWithContextOffset(originX,nCommoditySpriteId);
-      thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)local_84);
+      (**(code **)(*g_pLocalizationTable + 0x84))(0x2736,nMetricColumnX + 0x10,local_84);
+      uVar1 = local_80[nMetricColumnX];
+      nValueTextY = CONCAT22((short)((uint)unaff_EBP >> 0x10),local_80[nMetricColumnX + 6]);
+      thunk_SetQuickDrawTextOriginWithContextOffset(nValueTextY,uVar1);
+      thunk_DrawTextWithCachedQuickDrawStyleState(local_84);
       switch(nMetricColumnX) {
       case 0:
-        thunk_GetResourceTypeRandomDrawBlockFlag();
+        nMetricRawValue = thunk_GetResourceTypeRandomDrawBlockFlag(nCommoditySpriteId);
+        nMetricValue = (int)nMetricRawValue / 100;
         break;
       case 1:
-        thunk_GetResourceDescriptorWord0CByType();
+        nMetricRawValue = GetResourceDescriptorWord0CByType(nCommoditySpriteId);
+        nMetricValue = (int)nMetricRawValue;
         break;
       case 2:
-        thunk_GetResourceDescriptorWord10ByType();
+        nMetricRawValue = GetResourceDescriptorWord10ByType(nCommoditySpriteId);
+        nMetricValue = 100 - nMetricRawValue;
         break;
       case 3:
+        nMetricValue = (int)local_28[nCommoditySpriteId];
         break;
       case 4:
-        thunk_GetResourceDescriptorWord18ByType();
+        nMetricRawValue = GetResourceDescriptorWord18ByType(nCommoditySpriteId);
+        nMetricValue = (int)nMetricRawValue;
         break;
       case 5:
-        thunk_GetResourceDescriptorWeightWord0ByType();
+        nMetricRawValue = thunk_GetResourceDescriptorWeightWord0ByType(nCommoditySpriteId);
+        nMetricValue = (int)nMetricRawValue;
         break;
       default:
         goto switchD_004c9540_default;
       }
-      FormatStringWithVarArgsToSharedRef();
+      FormatStringWithVarArgsToSharedRef(local_84,&g_szDecimalFormat,nMetricValue);
 switchD_004c9540_default:
-      thunk_SetQuickDrawTextOriginWithContextOffset(originX + 0x3c,nCommoditySpriteId);
-      thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
+      unaff_EBP = nValueTextY + 0x3c;
+      thunk_SetQuickDrawTextOriginWithContextOffset(unaff_EBP,uVar1);
+      thunk_DrawTextWithCachedQuickDrawStyleState(local_84);
       nMetricColumnX = nMetricColumnX + 1;
     } while (nMetricColumnX < 6);
   }
@@ -808,9 +637,8 @@ THQButton::RenderUniversityRecruitmentRequirementGrid(THQButton *this,RECT *pCli
 
 {
   char fClipIntersectsPanel;
-  char extraout_AL;
   short nRequirementPanelPaletteIndex;
-  short extraout_AX;
+  int nResearchedLevel;
   THQButton *pUniversityDialogThis;
   int nRequirementRowBottomY;
   int nHighestRequirementLevel;
@@ -827,22 +655,23 @@ THQButton::RenderUniversityRecruitmentRequirementGrid(THQButton *this,RECT *pCli
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  int iStack_4;
+  undefined4 uStack_4;
+  int nRequirementLevelColumn;
   
-  iStack_4 = -1;
+  uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00631818;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   RStack_58.right = (LONG)this;
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(pClipRect);
   local_2c = pClipRect->left;
   local_28 = pClipRect->top;
   local_24 = pClipRect->right;
   local_20 = pClipRect->bottom;
   nHighestRequirementLevel = 0;
   nRequirementPanelPaletteIndex =
-       (**(code **)(*(int *)g_pGlobalMapState + 0x114))
-                 (CONCAT22((short)((uint)local_20 >> 0x10),this->field141_0xa4),0,1);
+       (**(code **)(*g_pGlobalMapState + 0x114))
+                 (CONCAT22((short)((uint)local_20 >> 0x10),*(undefined2 *)(this + 0xa4)),0,1);
   UpdatePaletteIndexWithDefaultFallback(0x10);
   RStack_48.left = (LONG)nRequirementPanelPaletteIndex;
   RStack_48.right = RStack_48.left + 0x40;
@@ -852,30 +681,30 @@ THQButton::RenderUniversityRecruitmentRequirementGrid(THQButton *this,RECT *pCli
   RStack_58.top = 0x5c;
   RStack_58.right = 0xbc;
   RStack_58.bottom = 0x9c;
-  IntersectRectWrapper((int)auStack_38,(int)&RStack_58,(int)&local_28);
+  fClipIntersectsPanel = IntersectRectWrapper(auStack_38,&RStack_58,&local_28);
   if (fClipIntersectsPanel != '\0') {
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x66c) + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_48,&RStack_58,0x24,
+              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_48,&RStack_58,0x24,
                (astruct_19 *)0x0);
   }
   RStack_58.left = 0;
   RStack_58.top = 0xff;
   RStack_58.right = 200;
   RStack_58.bottom = 0x186;
-  IntersectRectWrapper((int)auStack_38,(int)&RStack_58,(int)&local_28);
-  if (extraout_AL != '\0') {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  fClipIntersectsPanel = IntersectRectWrapper(auStack_38,&RStack_58,&local_28);
+  if (fClipIntersectsPanel != '\0') {
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6b);
     puStack_8 = (undefined1 *)0x0;
     nRequirementRowBottomY = 0x12e;
     do {
       InitializeSharedStringRefFromEmpty();
       uStack_10 = 0;
       if (*(short *)(&g_anUniversityRequirementIdByRecruitRow +
-                    (int)(puStack_8 + this->field141_0xa4 * 4) * 4) != -1) {
+                    (int)(puStack_8 + *(short *)(this + 0xa4) * 4) * 4) != -1) {
         nRequirementId =
              (int)*(short *)(&g_anUniversityRequirementIdByRecruitRow +
-                            (int)(puStack_8 + this->field141_0xa4 * 4) * 4);
+                            (int)(puStack_8 + *(short *)(this + 0xa4) * 4) * 4);
         RStack_48.left = nRequirementId * 0x14;
         RStack_48.right = (nRequirementId + 1) * 0x14;
         RStack_58.left = 0x19;
@@ -885,28 +714,30 @@ THQButton::RenderUniversityRecruitmentRequirementGrid(THQButton *this,RECT *pCli
         RStack_48.bottom = 0x18;
         RStack_58.bottom = nRequirementRowBottomY;
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x678) + 4),
-                   (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_48,&RStack_58,
-                   0x24,(astruct_19 *)0x0);
-        thunk_GetActiveNationId();
-        nRequirementId =
+                  ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x678) + 4),
+                   (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_48,&RStack_58,0x24,
+                   (astruct_19 *)0x0);
+        nRequirementPanelPaletteIndex = UiRuntimeContext::GetActiveNationId();
+        nResearchedLevel =
              (int)*(short *)((int)g_pCityOrderCapabilityState +
-                            (extraout_AX * 0x17 + nRequirementId) * 2 + 0x3e);
-        if (nHighestRequirementLevel < nRequirementId) {
-          nHighestRequirementLevel = nRequirementId;
+                            (nRequirementPanelPaletteIndex * 0x17 + nRequirementId) * 2 + 0x3e);
+        if (nHighestRequirementLevel < nResearchedLevel) {
+          nHighestRequirementLevel = nResearchedLevel;
         }
-        nRequirementId = 1;
+        nResearchedLevel = 1;
         this = pUniversityDialogThis;
         if (0 < nHighestRequirementLevel) {
-          nRequirementPanelPaletteIndex = (short)puStack_8;
+          nRequirementLevelColumn = (int)puStack_8 * 0x19;
           do {
-            FormatStringWithVarArgsToSharedRef();
+            FormatStringWithVarArgsToSharedRef
+                      (&stack0xffffff9c,&g_szDecimalFormat,
+                       (int)(char)(&g_abUniversityRequirementLevelById)
+                                  [nResearchedLevel + nRequirementId * 4]);
             thunk_SetQuickDrawTextOriginWithContextOffset
-                      ((short)nRequirementId * 0x28 + 0x27,
-                       nRequirementPanelPaletteIndex * 0x19 + 0x121);
-            thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffff9c);
-            nRequirementId = nRequirementId + 1;
-          } while (nRequirementId <= nHighestRequirementLevel);
+                      (nResearchedLevel * 0x28 + 0x27,nRequirementLevelColumn + 0x121);
+            thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffff9c);
+            nResearchedLevel = nResearchedLevel + 1;
+          } while (nResearchedLevel <= nHighestRequirementLevel);
         }
       }
       uStack_10 = 0xffffffff;
@@ -922,47 +753,36 @@ THQButton::RenderUniversityRecruitmentRequirementGrid(THQButton *this,RECT *pCli
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D1E40
 // GHIDRA_NAME THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40()
 
-/* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
-   instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40(THQButton *this)
+void THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At004d1e40
+               (undefined4 param_1)
 
 {
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FCF80
 // GHIDRA_NAME THQButton::DispatchHintRenderByViewMode
-// GHIDRA_PROTO void __thiscall DispatchHintRenderByViewMode(void * param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Dispatch hint rendering helper by current view-mode code
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DispatchHintRenderByViewMode()
 
-/* Dispatch hint rendering helper by current view-mode code */
-
-void __thiscall THQButton::DispatchHintRenderByViewMode(THQButton *this,void *param_1)
+void __thiscall THQButton::DispatchHintRenderByViewMode(int param_1,undefined4 param_2)
 
 {
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
-  switch(this->bitmapId90) {
+  thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
+  switch(*(undefined2 *)(param_1 + 0x90)) {
   case 0:
-    thunk_RenderMapHintOverlayMode0();
+    RenderMapHintOverlayMode0();
     return;
   case 1:
-    thunk_RenderMapHintOverlayMode1();
+    RenderMapHintOverlayMode1();
     return;
   case 2:
-    thunk_RenderMapHintOverlayMode2();
+    RenderMapHintOverlayMode2();
     break;
   case 4:
-    thunk_RenderMapHintOverlayMode4();
+    RenderMapHintOverlayMode4();
     return;
   }
   return;
@@ -970,25 +790,20 @@ void __thiscall THQButton::DispatchHintRenderByViewMode(THQButton *this,void *pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BCC0
 // GHIDRA_NAME THQButton::RenderMapTileNameControlHighlight
-// GHIDRA_PROTO void __thiscall RenderMapTileNameControlHighlight(void * pControlRuntime)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Resolves 'name' tagged control and renders tile-name highlight fill with palette update
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderMapTileNameControlHighlight()
 
-/* Resolves 'name' tagged control and renders tile-name highlight fill with palette update */
-
-void __thiscall THQButton::RenderMapTileNameControlHighlight(THQButton *this,void *pControlRuntime)
+void __thiscall THQButton::RenderMapTileNameControlHighlight(int *param_1,undefined4 param_2)
 
 {
   int *piVar1;
-  int aiStack_14 [5];
+  undefined1 auStack_14 [20];
   
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
-  piVar1 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x6e616d65);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
+  piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x6e616d65);
   if (piVar1 != (int *)0x0) {
     (**(code **)(*piVar1 + 300))(&stack0xffffffdc);
-    (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))(0xf);
-    thunk_FillRectWithQuickDrawBrushAndContextOffset(aiStack_14);
+    (**(code **)(*g_pUiRuntimeContext + 0x34))(0xf);
+    thunk_FillRectWithQuickDrawBrushAndContextOffset(auStack_14);
   }
   UpdatePaletteIndexWithDefaultFallback(0x50);
   return;
@@ -996,118 +811,90 @@ void __thiscall THQButton::RenderMapTileNameControlHighlight(THQButton *this,voi
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F190
 // GHIDRA_NAME THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190()
 
-/* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
-   instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190(THQButton *this)
+void THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190
+               (undefined4 param_1)
 
 {
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572790
 // GHIDRA_NAME THQButton::RenderTextPictureButtonCaptionWithPressedOffset
-// GHIDRA_PROTO void __thiscall RenderTextPictureButtonCaptionWithPressedOffset(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Render centered button caption with pressed-state shadow offset.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderTextPictureButtonCaptionWithPressedOffset()
 
-/* Render centered button caption with pressed-state shadow offset. */
-
-void __thiscall THQButton::RenderTextPictureButtonCaptionWithPressedOffset(THQButton *this)
+void __thiscall
+THQButton::RenderTextPictureButtonCaptionWithPressedOffset(int param_1,undefined4 param_2)
 
 {
-  short extraout_AX;
+  undefined4 *puVar1;
+  short sVar2;
   undefined2 extraout_var;
-  int extraout_EAX;
-  int iVar1;
-  THQButton *this_00;
+  int iVar3;
+  uint uVar4;
   undefined2 extraout_var_00;
-  THQButton *this_01;
-  bool bVar2;
-  int iStack00000004;
+  undefined2 extraout_var_01;
   tagSIZE local_8;
   
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
-  bVar2 = this->modeFlag64 != 0;
-  iStack00000004 = 0;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  thunk_MapUiThemeCodeToStyleFlags(CONCAT22(extraout_var,this->field134_0x9c),(int)&stack0x00000004)
-  ;
-  SetQuickDrawColorAndSyncGlobals(iStack00000004);
-  thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-  thunk_NoOpQuickDrawContextSelectionHook();
-  GetTextExtentPointA(*(HDC *)(extraout_EAX + 8),*(LPCSTR *)&this->bitmapId94,
-                      *(int *)(*(LPCSTR *)&this->bitmapId94 + -8),&local_8);
-  iVar1 = (int)(local_8.cy + (local_8.cy >> 0x1f & 3U)) >> 2;
-  local_8.cx = -iVar1;
+  thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
+  uVar4 = (uint)(*(char *)(param_1 + 100) != '\0');
+  param_2 = 0;
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor
+            (0,*(undefined2 *)(param_1 + 0x98),
+             CONCAT22(extraout_var_01,*(undefined2 *)(param_1 + 0x9c)));
+  thunk_MapUiThemeCodeToStyleFlags(CONCAT22(extraout_var,*(undefined2 *)(param_1 + 0x9c)),&param_2);
+  SetQuickDrawColorAndSyncGlobals(param_2);
+  puVar1 = (undefined4 *)(param_1 + 0x94);
+  sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(puVar1);
+  iVar3 = NoOpQuickDrawContextSelectionHook();
+  GetTextExtentPointA(*(HDC *)(iVar3 + 8),(LPCSTR)*puVar1,*(int *)((LPCSTR)*puVar1 + -8),&local_8);
+  iVar3 = (int)(local_8.cy + (local_8.cy >> 0x1f & 3U)) >> 2;
+  local_8.cx = -iVar3;
   thunk_SetQuickDrawTextOriginWithContextOffset
-            (((short)(this->controlWidth34 / 2) - extraout_AX / 2) + 1 + (ushort)bVar2,
-             (short)(this->controlHeight38 / 2) + (short)iVar1 + 1 + (ushort)bVar2);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+            ((*(int *)(param_1 + 0x34) / 2 - (int)sVar2 / 2) + 1 + uVar4,
+             *(int *)(param_1 + 0x38) / 2 + iVar3 + 1 + uVar4);
+  thunk_DrawTextWithCachedQuickDrawStyleState(puVar1);
   thunk_MapUiThemeCodeToStyleFlags
-            (CONCAT22(extraout_var_00,this->field133_0x9a),(int)&stack0x00000004);
-  SetQuickDrawColorAndSyncGlobals(iStack00000004);
+            (CONCAT22(extraout_var_00,*(undefined2 *)(param_1 + 0x9a)),&param_2);
+  SetQuickDrawColorAndSyncGlobals(param_2);
   thunk_SetQuickDrawTextOriginWithContextOffset
-            (((short)(this->controlWidth34 / 2) - extraout_AX / 2) + (ushort)bVar2,
-             ((short)(this->controlHeight38 / 2) - (short)local_8.cx) + (ushort)bVar2);
-  thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+            ((*(int *)(param_1 + 0x34) / 2 - (int)sVar2 / 2) + uVar4,
+             (*(int *)(param_1 + 0x38) / 2 - local_8.cx) + uVar4);
+  thunk_DrawTextWithCachedQuickDrawStyleState(puVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572D00
 // GHIDRA_NAME THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00()
 
-/* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
-   instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00(THQButton *this)
+void THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00
+               (undefined4 param_1)
 
 {
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573AA0
 // GHIDRA_NAME THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0()
 
-/* [WrapperShape] small wrapper around thunk_RenderHintHelperWithCtrlModifierOverlay;
-   instructions=4, call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0(THQButton *this)
+void THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
+               (undefined4 param_1)
 
 {
-  thunk_RenderHintHelperWithCtrlModifierOverlay(this);
+  thunk_RenderHintHelperWithCtrlModifierOverlay(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B5C0
 // GHIDRA_NAME THQButton::CreateTHQButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTHQButtonInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled class factory name
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTHQButtonInstance()
 
-/* demangled from mangled class factory name */
-
-void * __cdecl THQButton::CreateTHQButtonInstance(void)
+undefined4 * THQButton::CreateTHQButtonInstance(void)
 
 {
   undefined4 *puVar1;
@@ -1121,12 +908,12 @@ void * __cdecl THQButton::CreateTHQButtonInstance(void)
   puStack_8 = &LAB_00637b1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTHQButton;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00666fe0;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -1135,124 +922,83 @@ void * __cdecl THQButton::CreateTHQButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B640
 // GHIDRA_NAME THQButton::GetTHQButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTHQButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for THQButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTHQButtonClassNamePointer()
 
-/* Returns class descriptor pointer for THQButton. */
-
-void * __cdecl THQButton::GetTHQButtonClassNamePointer(void)
+int * THQButton::GetTHQButtonClassNamePointer(void)
 
 {
   return &g_pClassDescTHQButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B660
-// GHIDRA_NAME THQButton::ConstructTHQButtonBaseState
-// GHIDRA_PROTO THQButton * __thiscall ConstructTHQButtonBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled constructor name
-// GHIDRA_COMMENT_END
+// GHIDRA_NAME THQButton::THQButton
+// GHIDRA_PROTO undefined THQButton()
 
-/* demangled from mangled constructor name */
-
-THQButton * __thiscall THQButton::ConstructTHQButtonBaseState(THQButton *this)
+undefined4 * __fastcall THQButton::THQButton(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->pVtable = &g_vtblTHQButton;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0058B690
-// GHIDRA_NAME THQButton::DestructTHQButtonAndMaybeFree
-// GHIDRA_PROTO THQButton * __thiscall DestructTHQButtonAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled destructor name
-// GHIDRA_COMMENT_END
-
-/* demangled from mangled destructor name */
-
-THQButton * __thiscall THQButton::DestructTHQButtonAndMaybeFree(THQButton *this,byte freeSelfFlag)
-
-{
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_00666fe0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B6E0
 // GHIDRA_NAME THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0
-// GHIDRA_PROTO void __cdecl WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled HQButton wrapper name
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0()
 
-/* demangled from mangled HQButton wrapper name */
-
-void __cdecl THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(void)
+void __thiscall
+THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(int param_1,undefined4 param_2)
 
 {
   short sVar1;
-  int in_ECX;
   
-  thunk_NoOpUiLifecycleHook();
-  sVar1 = *(short *)(in_ECX + 0x84);
-  *(undefined2 *)(in_ECX + 0x98) = 0;
-  *(short *)(in_ECX + 0x90) = sVar1;
-  *(undefined4 *)(in_ECX + 0x60) = 0xc;
-  *(short *)(in_ECX + 0x92) = sVar1 + 1;
-  *(short *)(in_ECX + 0x94) = sVar1 + 2;
-  *(short *)(in_ECX + 0x96) = sVar1 + 3;
+  TView::thunk_NoOpUiLifecycleHook(param_2);
+  sVar1 = *(short *)(param_1 + 0x84);
+  *(undefined2 *)(param_1 + 0x98) = 0;
+  *(short *)(param_1 + 0x90) = sVar1;
+  *(undefined4 *)(param_1 + 0x60) = 0xc;
+  *(short *)(param_1 + 0x92) = sVar1 + 1;
+  *(short *)(param_1 + 0x94) = sVar1 + 2;
+  *(short *)(param_1 + 0x96) = sVar1 + 3;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B750
 // GHIDRA_NAME THQButton::SetModeAndBitmapBySelectionState
-// GHIDRA_PROTO void __thiscall SetModeAndBitmapBySelectionState(EMapInteractionMode mode, byte refreshParent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Set mode flag and choose bitmap by selection state; optional parent refresh
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SetModeAndBitmapBySelectionState()
 
-/* Set mode flag and choose bitmap by selection state; optional parent refresh */
-
-void __thiscall
-THQButton::SetModeAndBitmapBySelectionState
-          (THQButton *this,EMapInteractionMode mode,byte refreshParent)
+void __thiscall THQButton::SetModeAndBitmapBySelectionState(int *param_1,char param_2)
 
 {
   int *piVar1;
-  void *pvVar2;
+  int iVar2;
   char unaff_retaddr;
-  short sVar3;
+  undefined2 uVar3;
   
-  if ((undefined1)mode != this->modeFlag64) {
-    this->modeFlag64 = (undefined1)mode;
-    if ((undefined1)mode == MAP_INTERACTION_MODE_0) {
-      if (this->selectionState98 == MAP_INTERACTION_MODE_0) {
-        pvVar2 = this->pVtable;
-        sVar3 = this->bitmapId90;
+  if (param_2 != (char)param_1[0x19]) {
+    *(char *)(param_1 + 0x19) = param_2;
+    if (param_2 == '\0') {
+      if ((short)param_1[0x26] == 0) {
+        iVar2 = *param_1;
+        uVar3 = (undefined2)param_1[0x24];
       }
       else {
-        pvVar2 = this->pVtable;
-        if (this->selectionState98 == MAP_INTERACTION_MODE_1) {
-          sVar3 = this->bitmapId94;
+        iVar2 = *param_1;
+        if ((short)param_1[0x26] == 1) {
+          uVar3 = (undefined2)param_1[0x25];
         }
         else {
-          sVar3 = this->bitmapId96;
+          uVar3 = *(undefined2 *)((int)param_1 + 0x96);
         }
       }
     }
     else {
-      pvVar2 = this->pVtable;
-      sVar3 = this->bitmapId92;
+      iVar2 = *param_1;
+      uVar3 = *(undefined2 *)((int)param_1 + 0x92);
     }
-    (**(code **)((int)pvVar2 + 0x1c8))(sVar3,1);
+    (**(code **)(iVar2 + 0x1c8))(uVar3,1);
     if (unaff_retaddr != '\0') {
-      piVar1 = (int *)(**(code **)((int)pvVar2 + 0x58))();
+      piVar1 = (int *)(**(code **)(iVar2 + 0x58))();
       (**(code **)(*piVar1 + 0x13c))();
     }
   }
@@ -1261,94 +1007,78 @@ THQButton::SetModeAndBitmapBySelectionState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B7F0
 // GHIDRA_NAME THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled wrapper name
-// GHIDRA_COMMENT_END
-
-/* demangled from mangled wrapper name */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0()
 
 void __thiscall
-THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(THQButton *this)
+THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 0xc) {
-    if (this->modeFlag64 == 0) {
-      (**(code **)((int)this->pVtable + 0x1cc))(1,1);
+  if (param_2 == 0xc) {
+    if ((char)param_1[0x19] == '\0') {
+      (**(code **)(*param_1 + 0x1cc))(1,1);
     }
-    thunk_HandleCityDialogToggleCommandOrForward();
+    thunk_HandleCityDialogToggleCommandOrForward(0xc,param_3,param_4);
     return;
   }
-  if (in_stack_00000004 != 0x1f) {
-    if (in_stack_00000004 != 0x20) {
-      thunk_HandleCityDialogToggleCommandOrForward();
+  if (param_2 != 0x1f) {
+    if (param_2 != 0x20) {
+      thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
       return;
     }
-    (**(code **)((int)this->pVtable + 0x1cc))(0,1);
+    (**(code **)(*param_1 + 0x1cc))(0,1);
     return;
   }
-  (**(code **)((int)this->pVtable + 0x1cc))(1,1);
+  (**(code **)(*param_1 + 0x1cc))(1,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B890
 // GHIDRA_NAME THQButton::InvokeSlot1CCIfSlot28Enabled
-// GHIDRA_PROTO void __thiscall InvokeSlot1CCIfSlot28Enabled(int arg2, int arg3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Calls virtual slot +0x1CC only when virtual predicate at slot +0x28 succeeds.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InvokeSlot1CCIfSlot28Enabled()
 
-/* Calls virtual slot +0x1CC only when virtual predicate at slot +0x28 succeeds. */
-
-void __thiscall THQButton::InvokeSlot1CCIfSlot28Enabled(THQButton *this,int arg2,int arg3)
+void __thiscall
+THQButton::InvokeSlot1CCIfSlot28Enabled(int *param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  void *pvVar1;
+  int iVar1;
   char cVar2;
   
-  pvVar1 = this->pVtable;
-  cVar2 = (**(code **)((int)pvVar1 + 0x28))();
+  iVar1 = *param_1;
+  cVar2 = (**(code **)(iVar1 + 0x28))();
   if (cVar2 != '\0') {
-    (**(code **)((int)pvVar1 + 0x1c0))(arg2,arg3);
+    (**(code **)(iVar1 + 0x1c0))(param_2,param_3);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B8D0
 // GHIDRA_NAME THQButton::SetSelectionStateAndRefreshBitmap
-// GHIDRA_PROTO void __thiscall SetSelectionStateAndRefreshBitmap(EMapInteractionMode mode)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Set selection state
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SetSelectionStateAndRefreshBitmap()
 
-/* Set selection state */
-
-void __thiscall
-THQButton::SetSelectionStateAndRefreshBitmap(THQButton *this,EMapInteractionMode mode)
+void __thiscall THQButton::SetSelectionStateAndRefreshBitmap(int *param_1,short param_2)
 
 {
-  void *pvVar1;
-  short sVar2;
+  int iVar1;
+  undefined2 uVar2;
   
-  this->selectionState98 = mode;
-  this->modeFlag64 = 0;
-  if (mode == MAP_INTERACTION_MODE_0) {
-    sVar2 = this->bitmapId90;
-    pvVar1 = this->pVtable;
+  *(short *)(param_1 + 0x26) = param_2;
+  *(undefined1 *)(param_1 + 0x19) = 0;
+  if (param_2 == 0) {
+    uVar2 = (undefined2)param_1[0x24];
+    iVar1 = *param_1;
   }
   else {
-    pvVar1 = this->pVtable;
-    if (mode == MAP_INTERACTION_MODE_1) {
-      sVar2 = this->bitmapId94;
+    iVar1 = *param_1;
+    if (param_2 == 1) {
+      uVar2 = (undefined2)param_1[0x25];
     }
     else {
-      sVar2 = this->bitmapId96;
+      uVar2 = *(undefined2 *)((int)param_1 + 0x96);
     }
   }
-  (**(code **)((int)pvVar1 + 0x1c8))(sVar2,1);
-  (**(code **)((int)pvVar1 + 0xa8))(mode != MAP_INTERACTION_MODE_2,0);
+  (**(code **)(iVar1 + 0x1c8))(uVar2,1);
+  (**(code **)(iVar1 + 0xa8))(param_2 != 2,0);
   return;
 }
 

@@ -3,63 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TSliderPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040123A
-// GHIDRA_NAME TSliderPicture::TSliderPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TSliderPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTSliderPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTSliderPictureAndMaybeFree */
-
-void * __thiscall TSliderPicture::TSliderPicture_VtblSlot001(TSliderPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTSliderPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402013
-// GHIDRA_NAME TSliderPicture::TSliderPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TSliderPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSliderPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSliderPictureClassNamePointer */
-
-void * __cdecl TSliderPicture::TSliderPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSliderPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403D0F
-// GHIDRA_NAME TSliderPicture::TSliderPicture_VtblSlot068
-// GHIDRA_PROTO void __thiscall TSliderPicture_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0 */
-
-void __thiscall TSliderPicture::TSliderPicture_VtblSlot068(TSliderPicture *this)
-
-{
-  THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0((THQButton *)this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00573970
 // GHIDRA_NAME TSliderPicture::CreateTSliderPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTSliderPictureInstance(void)
+// GHIDRA_PROTO undefined CreateTSliderPictureInstance()
 
-void * __cdecl TSliderPicture::CreateTSliderPictureInstance(void)
+undefined4 * TSliderPicture::CreateTSliderPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -72,59 +20,54 @@ void * __cdecl TSliderPicture::CreateTSliderPictureInstance(void)
   puStack_8 = &LAB_0063661a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
+    thunk_TPictureButton::TPictureButton();
     *(undefined1 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &g_vtblTSliderPicture;
+    *puVar1 = &PTR_LAB_006611e0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A00
 // GHIDRA_NAME TSliderPicture::GetTSliderPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSliderPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSliderPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSliderPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TSliderPicture. */
-
-void * __cdecl TSliderPicture::GetTSliderPictureClassNamePointer(void)
+undefined ** TSliderPicture::GetTSliderPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTSliderPicture;
+  return &PTR_s_TSliderPicture_00660688;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A20
 // GHIDRA_NAME TSliderPicture::ConstructTSliderPictureBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTSliderPictureBaseState(void)
+// GHIDRA_PROTO undefined ConstructTSliderPictureBaseState()
 
-void * __thiscall TSliderPicture::ConstructTSliderPictureBaseState(TSliderPicture *this)
+undefined4 * __fastcall TSliderPicture::ConstructTSliderPictureBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field141_0x90 = 0;
-  this->field0_0x0 = &g_vtblTSliderPicture;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *(undefined1 *)(param_1 + 0x24) = 0;
+  *param_1 = &PTR_LAB_006611e0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A50
 // GHIDRA_NAME TSliderPicture::DestructTSliderPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTSliderPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTSliderPictureAndMaybeFree()
 
-void * __thiscall
-TSliderPicture::DestructTSliderPictureAndMaybeFree(TSliderPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+TSliderPicture::DestructTSliderPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

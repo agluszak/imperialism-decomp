@@ -3,128 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: TAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402C43
-// GHIDRA_NAME TAnimation::thunk_GetTAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTAnimationClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTAnimationClassNamePointer */
-
-void * __cdecl TAnimation::thunk_GetTAnimationClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTAnimationClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040302B
-// GHIDRA_NAME TAnimation::thunk_ConstructTAnimationBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeAnimationFrameState. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to InitializeAnimationFrameState. [FID:thunk_target_sync] */
-
-void __thiscall
-TAnimation::thunk_ConstructTAnimationBaseState
-          (TAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
-
-{
-  this->field1_0x4 = (void *)arg1;
-  this->field10_0x1c = *(void **)arg2;
-  this->field11_0x20 = *(void **)(arg2 + 4);
-  this->field12_0x24 = *(void **)(arg2 + 8);
-  this->field13_0x28 = *(void **)(arg2 + 0xc);
-  this->field3_0xa = (undefined2)arg3;
-  this->field4_0xc = (undefined2)arg4;
-  this->field2_0x8 = 0;
-  this->field7_0x10 = (void *)0x0;
-  this->field8_0x14 = (void *)arg5;
-  this->field9_0x18 = (void *)arg6;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004089CC
-// GHIDRA_NAME TAnimation::thunk_CreateTAnimationInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTAnimationRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTAnimationRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TAnimation::thunk_CreateTAnimationInstance(TAnimation *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F080
 // GHIDRA_NAME TAnimation::CreateTAnimationInstance
-// GHIDRA_PROTO void * __thiscall CreateTAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TAnimation runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTAnimationInstance()
 
-/* Returns TAnimation runtime class descriptor pointer. */
-
-void * __thiscall TAnimation::CreateTAnimationInstance(TAnimation *this)
+void __fastcall TAnimation::CreateTAnimationInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0A0
 // GHIDRA_NAME TAnimation::GetTAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TAnimation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTAnimationClassNamePointer()
 
-/* Returns class descriptor pointer for TAnimation. */
-
-void * __cdecl TAnimation::GetTAnimationClassNamePointer(void)
+undefined ** TAnimation::GetTAnimationClassNamePointer(void)
 
 {
-  return &g_pClassDescTAnimation;
+  return &PTR_s_TAnimation_0064c1f0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0C0
 // GHIDRA_NAME TAnimation::ConstructTAnimationBaseState
-// GHIDRA_PROTO void __thiscall ConstructTAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes base animation frame rectangle/state and frame timing fields.
-// GHIDRA_COMMENT_END
-
-/* Initializes base animation frame rectangle/state and frame timing fields. */
+// GHIDRA_PROTO undefined ConstructTAnimationBaseState()
 
 void __thiscall
 TAnimation::ConstructTAnimationBaseState
-          (TAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
+          (int param_1,undefined4 param_2,undefined4 *param_3,undefined2 param_4,undefined2 param_5,
+          undefined4 param_6,undefined4 param_7)
 
 {
-  this->field1_0x4 = (void *)arg1;
-  this->field10_0x1c = *(void **)arg2;
-  this->field11_0x20 = *(void **)(arg2 + 4);
-  this->field12_0x24 = *(void **)(arg2 + 8);
-  this->field13_0x28 = *(void **)(arg2 + 0xc);
-  this->field3_0xa = (undefined2)arg3;
-  this->field4_0xc = (undefined2)arg4;
-  this->field2_0x8 = 0;
-  this->field7_0x10 = (void *)0x0;
-  this->field8_0x14 = (void *)arg5;
-  this->field9_0x18 = (void *)arg6;
+  *(undefined4 *)(param_1 + 4) = param_2;
+  *(undefined4 *)(param_1 + 0x1c) = *param_3;
+  *(undefined4 *)(param_1 + 0x20) = param_3[1];
+  *(undefined4 *)(param_1 + 0x24) = param_3[2];
+  *(undefined4 *)(param_1 + 0x28) = param_3[3];
+  *(undefined2 *)(param_1 + 10) = param_4;
+  *(undefined2 *)(param_1 + 0xc) = param_5;
+  *(undefined2 *)(param_1 + 8) = 0;
+  *(undefined4 *)(param_1 + 0x10) = 0;
+  *(undefined4 *)(param_1 + 0x14) = param_6;
+  *(undefined4 *)(param_1 + 0x18) = param_7;
   return;
 }
 

@@ -3,76 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TRailCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403C83
-// GHIDRA_NAME TRailCluster::thunk_GetTRailClusterClassNamePointer_At00403c83
-// GHIDRA_PROTO void * __cdecl thunk_GetTRailClusterClassNamePointer_At00403c83(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRailClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRailClusterClassNamePointer */
-
-void * __cdecl TRailCluster::thunk_GetTRailClusterClassNamePointer_At00403c83(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRailClusterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404C3C
-// GHIDRA_NAME TRailCluster::thunk_ConstructTradeMoveScaledControlPanel
-// GHIDRA_PROTO TRailCluster * __thiscall thunk_ConstructTradeMoveScaledControlPanel(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTradeMoveScaledControlPanel
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTradeMoveScaledControlPanel */
-
-TRailCluster * __thiscall
-TRailCluster::thunk_ConstructTradeMoveScaledControlPanel(TRailCluster *this)
-
-{
-  TUberCluster::ConstructTUberClusterBaseState(&this->base);
-  (this->base).field0_0x0 = &g_vtblTIndustryAmtBar_Slot130_Slot0208;
-  this->selectedMetric88 = 0;
-  this->field_8e = 0;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406BAE
-// GHIDRA_NAME TRailCluster::thunk_DestructTRailClusterMaybeFree_At00406bae
-// GHIDRA_PROTO TRailCluster * __thiscall thunk_DestructTRailClusterMaybeFree_At00406bae(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTRailClusterMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTRailClusterMaybeFree */
-
-TRailCluster * __thiscall
-TRailCluster::thunk_DestructTRailClusterMaybeFree_At00406bae(TRailCluster *this,byte freeSelfFlag)
-
-{
-  TRailCluster *pTVar1;
-  
-  pTVar1 = DestructTRailClusterMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00589660
 // GHIDRA_NAME TRailCluster::CreateTradeMoveScaledControlPanel
-// GHIDRA_PROTO TRailCluster * __cdecl CreateTradeMoveScaledControlPanel(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled factory helper name
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTradeMoveScaledControlPanel()
 
-/* demangled from mangled factory helper name */
-
-TRailCluster * __cdecl TRailCluster::CreateTradeMoveScaledControlPanel(void)
+undefined4 * TRailCluster::CreateTradeMoveScaledControlPanel(void)
 
 {
-  TRailCluster *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -82,71 +20,135 @@ TRailCluster * __cdecl TRailCluster::CreateTradeMoveScaledControlPanel(void)
   puStack_8 = &LAB_006379ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  if (this != (TRailCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(&this->base);
-    (this->base).field0_0x0 = &g_vtblTIndustryAmtBar_Slot130_Slot0208;
-    this->selectedMetric88 = 0;
-    this->field_8e = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState();
+    *puVar1 = &PTR_LAB_00666318;
+    puVar1[0x22] = 0;
+    *(undefined2 *)((int)puVar1 + 0x8e) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TRailCluster *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589700
 // GHIDRA_NAME TRailCluster::GetTRailClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTRailClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TRailCluster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTRailClusterClassNamePointer()
 
-/* Returns class descriptor pointer for TRailCluster. */
-
-void * __cdecl TRailCluster::GetTRailClusterClassNamePointer(void)
+undefined ** TRailCluster::GetTRailClusterClassNamePointer(void)
 
 {
-  return &g_pClassDescTRailCluster;
+  return &PTR_s_TRailCluster_00662fc8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589720
-// GHIDRA_NAME TRailCluster::ConstructTradeMoveScaledControlPanel
-// GHIDRA_PROTO TRailCluster * __thiscall ConstructTradeMoveScaledControlPanel(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
-// GHIDRA_COMMENT_END
+// GHIDRA_NAME TRailCluster::TRailCluster
+// GHIDRA_PROTO undefined TRailCluster()
 
-/* imported from redecomp:src/game/trade_screen.cpp */
-
-TRailCluster * __thiscall TRailCluster::ConstructTradeMoveScaledControlPanel(TRailCluster *this)
+undefined4 * __fastcall TRailCluster::TRailCluster(undefined4 *param_1)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState(&this->base);
-  (this->base).field0_0x0 = &g_vtblTIndustryAmtBar_Slot130_Slot0208;
-  this->selectedMetric88 = 0;
-  this->field_8e = 0;
-  return this;
+  TUberCluster::ConstructTUberClusterBaseState();
+  *param_1 = &PTR_LAB_00666318;
+  param_1[0x22] = 0;
+  *(undefined2 *)((int)param_1 + 0x8e) = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589760
-// GHIDRA_NAME TRailCluster::DestructTRailClusterMaybeFree
-// GHIDRA_PROTO TRailCluster * __thiscall DestructTRailClusterMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled destructor helper name
-// GHIDRA_COMMENT_END
+// GHIDRA_NAME TRailCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-/* demangled from mangled destructor helper name */
-
-TRailCluster * __thiscall
-TRailCluster::DestructTRailClusterMaybeFree(TRailCluster *this,byte freeSelfFlag)
+undefined4 __thiscall TRailCluster::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructTViewBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005897B0
+// GHIDRA_NAME TRailCluster::SelectTradeCommodityPresetBySummaryTagAndInitControls
+// GHIDRA_PROTO undefined SelectTradeCommodityPresetBySummaryTagAndInitControls()
+
+void __thiscall
+TRailCluster::SelectTradeCommodityPresetBySummaryTagAndInitControls(int *param_1,undefined4 param_2)
+
+{
+  uint uVar1;
+  short sVar2;
+  int iVar3;
+  undefined2 extraout_var;
+  void *this;
+  
+  sVar2 = UiRuntimeContext::GetActiveNationId();
+  if ((&g_apNationStates)[sVar2] == 0) {
+    this = (void *)0x0;
+  }
+  else {
+    this = *(void **)((&g_apNationStates)[sVar2] + 0x894);
+  }
+  uVar1 = param_1[7];
+  iVar3 = *(int *)((int)this + 0x1d8);
+  if (uVar1 < 0x706f7076) {
+    if (uVar1 == 0x706f7075) {
+      sVar2 = 0x3c;
+      *(undefined2 *)((int)param_1 + 0x8e) = 1;
+      iVar3 = thunk_GetCityBuildingProductionValueBySlot(this,0xf);
+      *(short *)(param_1 + 0x23) = (short)iVar3;
+      goto LAB_00589911;
+    }
+    if (uVar1 == 0x666f6f64) {
+      *(undefined2 *)((int)param_1 + 0x8e) = 2;
+      sVar2 = 7;
+      iVar3 = *(int *)(*(int *)((int)this + 0x1d8) + 0x14);
+      *(short *)(param_1 + 0x23) =
+           (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 +
+                   *(short *)(*(int *)((int)this + 0x1d8) + 0x1e) + *(short *)(iVar3 + 4)) / 2;
+      goto LAB_00589911;
+    }
+  }
+  else if (uVar1 < 0x70726f67) {
+    if (uVar1 == 0x70726f66) {
+      *(undefined2 *)((int)param_1 + 0x8e) = 1;
+      sVar2 = 0x18;
+      *(undefined2 *)(param_1 + 0x23) = *(undefined2 *)(*(int *)(iVar3 + 0x10) + 6);
+      goto LAB_00589911;
+    }
+    if (uVar1 == 0x706f7765) {
+      sVar2 = 0x34;
+      *(undefined2 *)((int)param_1 + 0x8e) = 6;
+      *(undefined2 *)(param_1 + 0x23) = 999;
+      goto LAB_00589911;
+    }
+  }
+  else {
+    if (uVar1 == 0x7261696c) {
+      *(undefined2 *)((int)param_1 + 0x8e) = 1;
+      sVar2 = 0x33;
+      iVar3 = *(int *)(*(int *)((int)this + 0x1d8) + 0x14);
+      *(short *)(param_1 + 0x23) =
+           (short)((*(short *)(iVar3 + 8) * 2 + *(short *)(iVar3 + 6)) * 2 + *(short *)(iVar3 + 4) +
+                  *(short *)(*(int *)((int)this + 0x1d8) + 0x1e)) / 2;
+      goto LAB_00589911;
+    }
+    if (uVar1 == 0x74726169) {
+      *(undefined2 *)((int)param_1 + 0x8e) = 1;
+      sVar2 = 0x17;
+      *(undefined2 *)(param_1 + 0x23) = *(undefined2 *)(*(int *)(iVar3 + 0x10) + 4);
+      goto LAB_00589911;
+    }
+  }
+  sVar2 = (short)param_2;
+LAB_00589911:
+  param_1[0x22] = *(int *)((int)this + sVar2 * 4 + 0xe4);
+  TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls(param_2);
+  (**(code **)(*param_1 + 0x1d4))(CONCAT22(extraout_var,*(undefined2 *)(param_1[0x22] + 4)),1);
+  return;
 }
 

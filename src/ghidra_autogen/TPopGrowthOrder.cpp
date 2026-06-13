@@ -3,187 +3,81 @@
 // Program: Imperialism.exe
 // Bucket: TPopGrowthOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401F14
-// GHIDRA_NAME TPopGrowthOrder::thunk_GetTPopGrowthOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPopGrowthOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPopGrowthOrderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPopGrowthOrderClassNamePointer */
-
-void * __cdecl TPopGrowthOrder::thunk_GetTPopGrowthOrderClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPopGrowthOrderClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004033D7
-// GHIDRA_NAME TPopGrowthOrder::thunk_CreateTPopGrowthOrderInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTPopGrowthOrderInstance(int * pTargetCity, ushort span)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyPopGrowthOrderSpanToTargetCity [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyPopGrowthOrderSpanToTargetCity [FID:thunk_target_sync] */
-
-void __thiscall
-TPopGrowthOrder::thunk_CreateTPopGrowthOrderInstance
-          (TPopGrowthOrder *this,int *pTargetCity,ushort span)
-
-{
-  CreateTPopGrowthOrderInstance(this,pTargetCity,span);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406668
-// GHIDRA_NAME TPopGrowthOrder::thunk_DestructTPopGrowthOrderAndMaybeFree
-// GHIDRA_PROTO short __thiscall thunk_DestructTPopGrowthOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ComputePopGrowthOrderMinimumCapacityWithLimitFlag [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ComputePopGrowthOrderMinimumCapacityWithLimitFlag [FID:thunk_target_sync] */
-
-short __thiscall TPopGrowthOrder::thunk_DestructTPopGrowthOrderAndMaybeFree(TPopGrowthOrder *this)
-
-{
-  short sVar1;
-  
-  sVar1 = DestructTPopGrowthOrderAndMaybeFree(this);
-  return sVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040899F
-// GHIDRA_NAME TPopGrowthOrder::thunk_ConstructTPopGrowthOrderBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTPopGrowthOrderBaseState(int * pCity)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializePopGrowthOrderStateFromCity. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to InitializePopGrowthOrderStateFromCity. [FID:thunk_target_sync] */
-
-void __thiscall
-TPopGrowthOrder::thunk_ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this,int *pCity)
-
-{
-  int iVar1;
-  undefined4 *puVar2;
-  
-  this->field4_0x8 = pCity;
-  this->field5_0xc = pCity[0x76];
-  this->field56_0x48 = 1;
-  this->field1_0x4 = 0;
-  puVar2 = (undefined4 *)&this->field6_0x10;
-  for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar2 = 0;
-    puVar2 = puVar2 + 1;
-  }
-  *(undefined2 *)puVar2 = 0;
-  this->field55_0x44 = 0;
-  this->field52_0x40 = 0;
-  this->field51_0x3e = 0;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B80C0
 // GHIDRA_NAME TPopGrowthOrder::CreateTPopGrowthOrderInstance
-// GHIDRA_PROTO void __thiscall CreateTPopGrowthOrderInstance(int * pTargetCity, ushort span)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Writes even-width span into target city growth fields and order cache fields.
-// GHIDRA_COMMENT_END
-
-/* Writes even-width span into target city growth fields and order cache fields. */
+// GHIDRA_PROTO undefined CreateTPopGrowthOrderInstance()
 
 void __thiscall
-TPopGrowthOrder::CreateTPopGrowthOrderInstance(TPopGrowthOrder *this,int *pTargetCity,ushort span)
+TPopGrowthOrder::CreateTPopGrowthOrderInstance(int *param_1,int param_2,ushort param_3)
 
 {
-  if ((span & 1) != 0) {
-    span = span + 1;
+  if ((param_3 & 1) != 0) {
+    param_3 = param_3 + 1;
   }
-  (**(code **)((int)this->pVtable + 0x3c))(pTargetCity);
-  *(ushort *)((int)pTargetCity + 0x22) = span;
-  *(short *)(pTargetCity + 9) = (short)span / 2;
-  *(short *)(pTargetCity + 10) = (short)span / 2;
-  *(ushort *)((int)pTargetCity + 0x7a) = span;
+  (**(code **)(*param_1 + 0x3c))(param_2);
+  *(ushort *)(param_2 + 0x22) = param_3;
+  *(short *)(param_2 + 0x24) = (short)param_3 / 2;
+  *(short *)(param_2 + 0x28) = (short)param_3 / 2;
+  *(ushort *)(param_2 + 0x7a) = param_3;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8140
 // GHIDRA_NAME TPopGrowthOrder::GetTPopGrowthOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPopGrowthOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPopGrowthOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPopGrowthOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TPopGrowthOrder. */
-
-void * __cdecl TPopGrowthOrder::GetTPopGrowthOrderClassNamePointer(void)
+undefined ** TPopGrowthOrder::GetTPopGrowthOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTPopGrowthOrder;
+  return &PTR_s_TPopGrowthOrder_0064f410;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8160
 // GHIDRA_NAME TPopGrowthOrder::ConstructTPopGrowthOrderBaseState
-// GHIDRA_PROTO void __thiscall ConstructTPopGrowthOrderBaseState(int * pCity)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes population-growth order fields from owning city state and clears accumulators.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTPopGrowthOrderBaseState()
 
-/* Initializes population-growth order fields from owning city state and clears accumulators. */
-
-void __thiscall TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this,int *pCity)
+void __thiscall TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1,int param_2)
 
 {
   int iVar1;
   undefined4 *puVar2;
   
-  this->field4_0x8 = pCity;
-  this->field5_0xc = pCity[0x76];
-  this->field56_0x48 = 1;
-  this->field1_0x4 = 0;
-  puVar2 = (undefined4 *)&this->field6_0x10;
+  *(int *)(param_1 + 8) = param_2;
+  *(undefined4 *)(param_1 + 0xc) = *(undefined4 *)(param_2 + 0x1d8);
+  *(undefined2 *)(param_1 + 0x48) = 1;
+  *(undefined2 *)(param_1 + 4) = 0;
+  puVar2 = (undefined4 *)(param_1 + 0x10);
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
     *puVar2 = 0;
     puVar2 = puVar2 + 1;
   }
   *(undefined2 *)puVar2 = 0;
-  this->field55_0x44 = 0;
-  this->field52_0x40 = 0;
-  this->field51_0x3e = 0;
+  *(undefined4 *)(param_1 + 0x44) = 0;
+  *(undefined2 *)(param_1 + 0x40) = 0;
+  *(undefined2 *)(param_1 + 0x3e) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B81B0
 // GHIDRA_NAME TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree
-// GHIDRA_PROTO short __thiscall DestructTPopGrowthOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes minimum available capacity and records limiting source flag.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTPopGrowthOrderAndMaybeFree()
 
-/* Computes minimum available capacity and records limiting source flag. */
-
-short __thiscall TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree(TPopGrowthOrder *this)
+short __fastcall TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree(int param_1)
 
 {
-  void *pvVar1;
+  int iVar1;
   short sVar2;
   short sVar3;
   short sVar4;
   short sVar5;
   
-  pvVar1 = this->field4_0x8;
-  sVar2 = this->field1_0x4;
-  sVar4 = *(short *)((int)pvVar1 + 0xd2) + sVar2;
-  sVar5 = *(short *)((int)pvVar1 + 0xd0) + sVar2;
-  sVar3 = *(short *)((int)pvVar1 + 0x21a) + sVar2;
-  sVar2 = *(short *)((int)pvVar1 + 0xc4) + sVar2;
-  this->field52_0x40 = 0;
+  iVar1 = *(int *)(param_1 + 8);
+  sVar2 = *(short *)(param_1 + 4);
+  sVar4 = *(short *)(iVar1 + 0xd2) + sVar2;
+  sVar5 = *(short *)(iVar1 + 0xd0) + sVar2;
+  sVar3 = *(short *)(iVar1 + 0x21a) + sVar2;
+  sVar2 = *(short *)(iVar1 + 0xc4) + sVar2;
+  *(undefined2 *)(param_1 + 0x40) = 0;
   if (sVar5 < sVar4) {
     sVar4 = sVar5;
   }
@@ -191,7 +85,7 @@ short __thiscall TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree(TPopGrowth
     sVar4 = sVar2;
   }
   if (sVar3 < sVar4) {
-    this->field52_0x40 = 2;
+    *(undefined2 *)(param_1 + 0x40) = 2;
     sVar4 = sVar3;
   }
   return sVar4;

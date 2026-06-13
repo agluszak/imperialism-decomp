@@ -3,53 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TRadioText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040624E
-// GHIDRA_NAME TRadioText::thunk_GetTRadioTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRadioTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRadioTextClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRadioTextClassNamePointer */
-
-void * __cdecl TRadioText::thunk_GetTRadioTextClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRadioTextClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00579470
 // GHIDRA_NAME TRadioText::GetTRadioTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTRadioTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TRadioText.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTRadioTextClassNamePointer()
 
-/* Returns class descriptor pointer for TRadioText. */
-
-void * __cdecl TRadioText::GetTRadioTextClassNamePointer(void)
+undefined ** TRadioText::GetTRadioTextClassNamePointer(void)
 
 {
-  return &g_pClassDescTRadioText;
+  return &PTR_s_TRadioText_00661a10;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579490
 // GHIDRA_NAME TRadioText::ConstructTRadioTextBaseState
-// GHIDRA_PROTO void __thiscall ConstructTRadioTextBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=4, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTRadioTextBaseState()
 
-/* [WrapperShape] small wrapper around thunk_NoOpUiLifecycleHook; instructions=4, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TRadioText::ConstructTRadioTextBaseState(TRadioText *this)
+void TRadioText::ConstructTRadioTextBaseState(undefined4 param_1)
 
 {
-  thunk_NoOpUiLifecycleHook();
+  TView::thunk_NoOpUiLifecycleHook(param_1);
   return;
 }
 

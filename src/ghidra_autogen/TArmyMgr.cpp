@@ -3,312 +3,94 @@
 // Program: Imperialism.exe
 // Bucket: TArmyMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401429
-// GHIDRA_NAME TArmyMgr::thunk_SelectMovableUnitOnCurrentTileAndPlaySfx
-// GHIDRA_PROTO void __thiscall thunk_SelectMovableUnitOnCurrentTileAndPlaySfx(short param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
-// GHIDRA_COMMENT_END
-
-/* Direct thunk */
-
-void __thiscall
-TArmyMgr::thunk_SelectMovableUnitOnCurrentTileAndPlaySfx(TArmyMgr *this,short param_1)
-
-{
-  SelectMovableUnitOnCurrentTileAndPlaySfx(this,param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401D07
-// GHIDRA_NAME TArmyMgr::thunk_DeserializeArmyManagerListFromStream
-// GHIDRA_PROTO void __thiscall thunk_DeserializeArmyManagerListFromStream(void * param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
-// GHIDRA_COMMENT_END
-
-/* Direct thunk */
-
-void __thiscall TArmyMgr::thunk_DeserializeArmyManagerListFromStream(TArmyMgr *this,void *param_1)
-
-{
-  DeserializeArmyManagerListFromStream(this,param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403DAF
-// GHIDRA_NAME TArmyMgr::thunk_RebuildMapActionSelectionCachesAndContexts
-// GHIDRA_PROTO void __thiscall thunk_RebuildMapActionSelectionCachesAndContexts(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RebuildMapActionSelectionCachesAndContexts
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RebuildMapActionSelectionCachesAndContexts */
-
-void __thiscall TArmyMgr::thunk_RebuildMapActionSelectionCachesAndContexts(TArmyMgr *this,int arg1)
-
-{
-  RebuildMapActionSelectionCachesAndContexts(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404CE6
-// GHIDRA_NAME TArmyMgr::thunk_HandleMapClickByCivilianCursorState
-// GHIDRA_PROTO void __thiscall thunk_HandleMapClickByCivilianCursorState(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleMapClickByCivilianCursorState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleMapClickByCivilianCursorState */
-
-void __thiscall
-TArmyMgr::thunk_HandleMapClickByCivilianCursorState(TArmyMgr *this,int arg1,int arg2)
-
-{
-  HandleMapClickByCivilianCursorState(this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405006
-// GHIDRA_NAME TArmyMgr::thunk_ProcessTileUnitListsAndApplyRandomStatusUpdates
-// GHIDRA_PROTO void __thiscall thunk_ProcessTileUnitListsAndApplyRandomStatusUpdates(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for ProcessTileUnitListsAndApplyRandomStatusUpdates.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for ProcessTileUnitListsAndApplyRandomStatusUpdates. */
-
-void __thiscall TArmyMgr::thunk_ProcessTileUnitListsAndApplyRandomStatusUpdates(TArmyMgr *this)
-
-{
-  TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates((TArmyStack *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405A1A
-// GHIDRA_NAME TArmyMgr::thunk_CreateTArmyMgrInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTArmyMgrInstance(void * pStream)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to DeserializeArmyMgrStateFromStream. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to DeserializeArmyMgrStateFromStream. [FID:thunk_target_sync] */
-
-void __thiscall TArmyMgr::thunk_CreateTArmyMgrInstance(TArmyMgr *this,void *pStream)
-
-{
-  code *pcVar1;
-  undefined1 *puVar2;
-  void **ppvVar3;
-  int iVar4;
-  int unaff_EDI;
-  void **ppvVar5;
-  undefined4 uVar6;
-  int *piVar7;
-  int iVar8;
-  int iVar9;
-  int iStack_1c;
-  
-  pcVar1 = *(code **)(*(int *)pStream + 0x78);
-  (*pcVar1)((undefined1 *)((int)&this->field0_0x0 + 2),1);
-  (*pcVar1)((undefined1 *)((int)&this->field0_0x0 + 3),1);
-  ppvVar3 = &this->pField04;
-  uVar6 = 4;
-  ppvVar5 = ppvVar3;
-  (*pcVar1)(ppvVar3,4);
-  puVar2 = *ppvVar3;
-  if (((puVar2 != (undefined1 *)0x0) && (puVar2 != (undefined1 *)0x3)) && (puVar2 != &DAT_00000004))
-  {
-    thunk_GetShortAtOffset14OrInvalid();
-  }
-  (*pcVar1)(&stack0xffffffd8,2);
-  iVar9 = 0;
-  ppvVar3 = &this->pField24a;
-  piVar7 = (int *)(unaff_EDI + 0x250);
-  do {
-    (*pcVar1)(unaff_EDI + iVar9,1);
-    (*pcVar1)(uVar6,0x20);
-    (*pcVar1)(ppvVar5,0xff);
-    (*pcVar1)(ppvVar3,2);
-    iVar8 = 0;
-    if (0 < *(short *)ppvVar3) {
-      iStack_1c = 0;
-      do {
-        iVar4 = iStack_1c + *piVar7;
-        (*pcVar1)(iVar4,2);
-        (*pcVar1)(iVar4 + 2,2);
-        (*pcVar1)(iVar4 + 4,0x20);
-        (*pcVar1)(iVar4 + 0x24,2);
-        (*pcVar1)(iVar4 + 0x28,4);
-        iVar8 = iVar8 + 1;
-        iStack_1c = iStack_1c + 0x2c;
-      } while (iVar8 < *(short *)ppvVar3);
-    }
-    piVar7 = piVar7 + 1;
-    iVar9 = iVar9 + 1;
-    ppvVar3 = (void **)((int)ppvVar3 + 2);
-  } while (iVar9 < 2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040605A
-// GHIDRA_NAME TArmyMgr::thunk_HandleMapClickByComputedCursorState
-// GHIDRA_PROTO void __thiscall thunk_HandleMapClickByComputedCursorState(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleMapClickByComputedCursorState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleMapClickByComputedCursorState */
-
-void __thiscall
-TArmyMgr::thunk_HandleMapClickByComputedCursorState(TArmyMgr *this,int arg1,int arg2)
-
-{
-  HandleMapClickByComputedCursorState(this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040866B
-// GHIDRA_NAME TArmyMgr::thunk_DestructTArmyMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTArmyMgrAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTArmyMgrAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTArmyMgrAndMaybeFree */
-
-void * __thiscall TArmyMgr::thunk_DestructTArmyMgrAndMaybeFree(TArmyMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTArmyMgrAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408DFF
-// GHIDRA_NAME TArmyMgr::thunk_GetTArmyMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTArmyMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTArmyMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTArmyMgrClassNamePointer */
-
-void * __cdecl TArmyMgr::thunk_GetTArmyMgrClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTArmyMgrClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A1640
 // GHIDRA_NAME TArmyMgr::CreateTArmyMgrInstance
-// GHIDRA_PROTO void __thiscall CreateTArmyMgrInstance(void * pStream)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Deserializes ArmyMgr state fields and army entry arrays from stream reader callbacks.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTArmyMgrInstance()
 
-/* Deserializes ArmyMgr state fields and army entry arrays from stream reader callbacks. */
-
-void __thiscall TArmyMgr::CreateTArmyMgrInstance(TArmyMgr *this,void *pStream)
+void __thiscall TArmyMgr::CreateTArmyMgrInstance(int param_1,int *param_2)
 
 {
   code *pcVar1;
-  undefined1 *puVar2;
-  void **ppvVar3;
-  int iVar4;
+  short *psVar2;
+  int iVar3;
   int unaff_EDI;
-  void **ppvVar5;
-  undefined4 uVar6;
-  int *piVar7;
+  int *piVar4;
+  undefined4 uVar5;
+  int *piVar6;
+  int iVar7;
   int iVar8;
-  int iVar9;
   int iStack_1c;
   
-  pcVar1 = *(code **)(*(int *)pStream + 0x78);
-  (*pcVar1)((undefined1 *)((int)&this->field0_0x0 + 2),1);
-  (*pcVar1)((undefined1 *)((int)&this->field0_0x0 + 3),1);
-  ppvVar3 = &this->pField04;
-  uVar6 = 4;
-  ppvVar5 = ppvVar3;
-  (*pcVar1)(ppvVar3,4);
-  puVar2 = *ppvVar3;
-  if (((puVar2 != (undefined1 *)0x0) && (puVar2 != (undefined1 *)0x3)) && (puVar2 != &DAT_00000004))
-  {
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  (*pcVar1)(param_1 + 2,1);
+  (*pcVar1)(param_1 + 3,1);
+  piVar6 = (int *)(param_1 + 4);
+  uVar5 = 4;
+  piVar4 = piVar6;
+  (*pcVar1)(piVar6,4);
+  iVar8 = *piVar6;
+  if (((iVar8 != 0) && (iVar8 != 3)) && (iVar8 != 4)) {
     thunk_GetShortAtOffset14OrInvalid();
   }
   (*pcVar1)(&stack0xffffffd8,2);
-  iVar9 = 0;
-  ppvVar3 = &this->pField24a;
-  piVar7 = (int *)(unaff_EDI + 0x250);
+  iVar8 = 0;
+  psVar2 = (short *)(param_1 + 0x24a);
+  piVar6 = (int *)(unaff_EDI + 0x250);
   do {
-    (*pcVar1)(unaff_EDI + iVar9,1);
-    (*pcVar1)(uVar6,0x20);
-    (*pcVar1)(ppvVar5,0xff);
-    (*pcVar1)(ppvVar3,2);
-    iVar8 = 0;
-    if (0 < *(short *)ppvVar3) {
+    (*pcVar1)(unaff_EDI + iVar8,1);
+    (*pcVar1)(uVar5,0x20);
+    (*pcVar1)(piVar4,0xff);
+    (*pcVar1)(psVar2,2);
+    iVar7 = 0;
+    if (0 < *psVar2) {
       iStack_1c = 0;
       do {
-        iVar4 = iStack_1c + *piVar7;
-        (*pcVar1)(iVar4,2);
-        (*pcVar1)(iVar4 + 2,2);
-        (*pcVar1)(iVar4 + 4,0x20);
-        (*pcVar1)(iVar4 + 0x24,2);
-        (*pcVar1)(iVar4 + 0x28,4);
-        iVar8 = iVar8 + 1;
+        iVar3 = iStack_1c + *piVar6;
+        (*pcVar1)(iVar3,2);
+        (*pcVar1)(iVar3 + 2,2);
+        (*pcVar1)(iVar3 + 4,0x20);
+        (*pcVar1)(iVar3 + 0x24,2);
+        (*pcVar1)(iVar3 + 0x28,4);
+        iVar7 = iVar7 + 1;
         iStack_1c = iStack_1c + 0x2c;
-      } while (iVar8 < *(short *)ppvVar3);
+      } while (iVar7 < *psVar2);
     }
-    piVar7 = piVar7 + 1;
-    iVar9 = iVar9 + 1;
-    ppvVar3 = (void **)((int)ppvVar3 + 2);
-  } while (iVar9 < 2);
+    piVar6 = piVar6 + 1;
+    iVar8 = iVar8 + 1;
+    psVar2 = psVar2 + 1;
+  } while (iVar8 < 2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A1850
 // GHIDRA_NAME TArmyMgr::GetTArmyMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmyMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmyMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmyMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TArmyMgr. */
-
-void * __cdecl TArmyMgr::GetTArmyMgrClassNamePointer(void)
+undefined ** TArmyMgr::GetTArmyMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmyMgr;
+  return &PTR_s_TArmyMgr_0064c828;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A18A0
 // GHIDRA_NAME TArmyMgr::DestructTArmyMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTArmyMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTArmyMgrAndMaybeFree()
 
-void * __thiscall TArmyMgr::DestructTArmyMgrAndMaybeFree(TArmyMgr *this,byte freeSelfFlag)
+undefined4 __thiscall TArmyMgr::DestructTArmyMgrAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTArmyMgrAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A1B80
 // GHIDRA_NAME TArmyMgr::RebuildMapActionSelectionCachesAndContexts
-// GHIDRA_PROTO void __thiscall RebuildMapActionSelectionCachesAndContexts(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Clears map-action cached buffers
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RebuildMapActionSelectionCachesAndContexts()
 
-/* Clears map-action cached buffers */
-
-void __thiscall TArmyMgr::RebuildMapActionSelectionCachesAndContexts(TArmyMgr *this,int arg1)
+void __thiscall TArmyMgr::RebuildMapActionSelectionCachesAndContexts(int param_1,int *param_2)
 
 {
   short sVar1;
@@ -331,21 +113,21 @@ void __thiscall TArmyMgr::RebuildMapActionSelectionCachesAndContexts(TArmyMgr *t
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062ff5b;
   *unaff_FS_OFFSET = &uStack_c;
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  if (this->pField04 != (void *)0x0) {
-    for (iVar4 = *(int *)(*(int *)((int)g_pMapContextActionManager + 4) + 8); 0 < iVar4;
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  if (*(int *)(param_1 + 4) != 0) {
+    for (iVar4 = *(int *)(*(int *)(g_pMapContextActionManager + 4) + 8); 0 < iVar4;
         iVar4 = iVar4 + -1) {
-      iVar2 = (**(code **)(**(int **)((int)g_pMapContextActionManager + 4) + 0x2c))(iVar4);
-      FreeHeapBufferIfNotNull();
-      FreeHeapBufferIfNotNull();
+      iVar2 = (**(code **)(**(int **)(g_pMapContextActionManager + 4) + 0x2c))(iVar4);
+      FreeHeapBufferIfNotNull(*(undefined4 *)(iVar2 + 0x250));
+      FreeHeapBufferIfNotNull(*(undefined4 *)(iVar2 + 0x254));
       *(undefined4 *)(iVar2 + 0x254) = 0;
       *(undefined4 *)(iVar2 + 0x250) = 0;
     }
-    (**(code **)(*(int *)this->pField04 + 0x1c))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x1c))();
   }
-  this->field2_0x8 = 0;
-  if (0x24 < g_Advance_Turn_Machine_State_00695278) {
-    sVar1 = (**(code **)(*(int *)arg1 + 0x4c))();
+  *(undefined1 *)(param_1 + 8) = 0;
+  if (0x24 < DAT_00695278) {
+    sVar1 = (**(code **)(*param_2 + 0x4c))();
     for (iVar4 = (int)sVar1; iVar4 != 0; iVar4 = iVar4 + -1) {
       puVar3 = auStack_268;
       iVar2 = 2;
@@ -366,19 +148,19 @@ void __thiscall TArmyMgr::RebuildMapActionSelectionCachesAndContexts(TArmyMgr *t
       uStack_20 = 0;
       uStack_24 = 0;
       uStack_4 = 0;
-      thunk_ResetMapActionSelectionAndLoadContextByNodeId(auStack_274,arg1);
-      (**(code **)(*(int *)this->pField04 + 0x3c))(auStack_274);
-      this->field2_0x8 = 1;
+      ResetMapActionSelectionAndLoadContextByNodeId(param_2);
+      (**(code **)(**(int **)(param_1 + 4) + 0x3c))(auStack_274);
+      *(undefined1 *)(param_1 + 8) = 1;
       uStack_20 = 0;
       uStack_24 = 0;
       uStack_28 = 0;
       uStack_2a = 0;
-      if (g_bTurnFlowAuxStateFlag != 0) {
-        this->field2_0x8 = 1;
+      if (DAT_006a42dc != '\0') {
+        *(undefined1 *)(param_1 + 8) = 1;
       }
       uStack_4 = 0xffffffff;
-      FreeHeapBufferIfNotNull();
-      FreeHeapBufferIfNotNull();
+      FreeHeapBufferIfNotNull(0);
+      FreeHeapBufferIfNotNull(uStack_20);
     }
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -387,30 +169,24 @@ void __thiscall TArmyMgr::RebuildMapActionSelectionCachesAndContexts(TArmyMgr *t
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A1DD0
 // GHIDRA_NAME TArmyMgr::DeserializeArmyManagerListFromStream
-// GHIDRA_PROTO void __thiscall DeserializeArmyManagerListFromStream(void * param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Deserialize army manager list entries from stream
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DeserializeArmyManagerListFromStream()
 
-/* Deserialize army manager list entries from stream */
-
-void __thiscall TArmyMgr::DeserializeArmyManagerListFromStream(TArmyMgr *this,void *param_1)
+void __thiscall TArmyMgr::DeserializeArmyManagerListFromStream(int param_1,int *param_2)
 
 {
   int iVar1;
-  TArmyMgr *this_00;
   int *piVar2;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  (**(code **)(*(int *)param_1 + 0x88))(*(undefined4 *)((int)this->pField04 + 8));
-  piVar2 = this->pField04;
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  (**(code **)(*param_2 + 0x88))(*(undefined4 *)(*(int *)(param_1 + 4) + 8));
+  piVar2 = *(int **)(param_1 + 4);
   iVar1 = 0;
   if (0 < piVar2[2]) {
     do {
       iVar1 = iVar1 + 1;
-      this_00 = (TArmyMgr *)(**(code **)(*piVar2 + 0x2c))(iVar1);
-      thunk_CreateTArmyMgrInstance(this_00,param_1);
-      piVar2 = this->pField04;
+      (**(code **)(*piVar2 + 0x2c))(iVar1);
+      CreateTArmyMgrInstance(param_2);
+      piVar2 = *(int **)(param_1 + 4);
     } while (iVar1 < piVar2[2]);
   }
   return;
@@ -418,186 +194,169 @@ void __thiscall TArmyMgr::DeserializeArmyManagerListFromStream(TArmyMgr *this,vo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A3E50
 // GHIDRA_NAME TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx
-// GHIDRA_PROTO void __thiscall SelectMovableUnitOnCurrentTileAndPlaySfx(short param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Select first movable unit on current tile and trigger selection SFX
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SelectMovableUnitOnCurrentTileAndPlaySfx()
 
-/* Select first movable unit on current tile and trigger selection SFX */
-
-void __thiscall TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(TArmyMgr *this,short param_1)
+char __thiscall TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx(int param_1,undefined4 param_2)
 
 {
   short sVar1;
-  bool bVar2;
-  short extraout_AX;
+  char cVar2;
   int *piVar3;
-  undefined2 in_stack_00000006;
   
-  bVar2 = false;
-  sVar1 = this->field31c;
+  cVar2 = '\0';
+  sVar1 = *(short *)(param_1 + 0x31c);
   if ((sVar1 < 0) || (0x17f < sVar1)) {
     piVar3 = (int *)0x0;
   }
   else {
-    piVar3 = *(int **)(*(int *)((int)g_pGlobalMapState + 0x10) + 0x98 + sVar1 * 0xa8);
+    piVar3 = *(int **)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + sVar1 * 0xa8);
   }
   for (; piVar3 != (int *)0x0; piVar3 = (int *)piVar3[5]) {
-    if ((piVar3[2] == 0) && (thunk_GetUnitMovementClassId(), extraout_AX != 0)) {
-      (**(code **)(*piVar3 + 0x34))(1,_param_1);
-      bVar2 = true;
+    if ((piVar3[2] == 0) && (sVar1 = thunk_GetUnitMovementClassId(), sVar1 != 0)) {
+      (**(code **)(*piVar3 + 0x34))(1,param_2);
+      cVar2 = '\x01';
     }
   }
-  if (bVar2) {
-    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x3aa7,0,1);
-    thunk_MarkAdjacentHexOrderDirectionAndSelectTile();
+  if (cVar2 != '\0') {
+    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x3aa7,0,1);
+    MarkAdjacentHexOrderDirectionAndSelectTile
+              ((int)*(short *)(param_1 + 0x31c),(int)(short)param_2,0);
   }
-  return;
+  return cVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A4870
 // GHIDRA_NAME TArmyMgr::HandleMapClickByComputedCursorState
-// GHIDRA_PROTO void __thiscall HandleMapClickByComputedCursorState(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes map cursor state for clicked tile and dispatches province/mode handlers by state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined HandleMapClickByComputedCursorState()
 
-/* Computes map cursor state for clicked tile and dispatches province/mode handlers by state. */
-
-void __thiscall TArmyMgr::HandleMapClickByComputedCursorState(TArmyMgr *this,int arg1,int arg2)
+undefined1 TArmyMgr::HandleMapClickByComputedCursorState(undefined4 param_1,undefined4 param_2)
 
 {
-  int extraout_EAX;
+  short sVar1;
+  int iVar2;
+  undefined1 uVar3;
   
-  thunk_ComputeMapCursorStateIndex(arg1,arg2);
-  if (extraout_EAX == 2) {
-    if (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0) != (TCivToolbar *)0x0) {
-      TCivToolbar::thunk_SetMapInteractionMode
-                (*(TCivToolbar **)((int)g_pUiRuntimeContext + 0xf0),MAP_INTERACTION_MODE_1);
-      thunk_SetActiveProvinceSelection();
+  uVar3 = 0;
+  iVar2 = ComputeMapCursorStateIndex(param_1,param_2);
+  sVar1 = *(short *)(*(int *)(g_pGlobalMapState + 0xc) + 0x14 + (short)param_1 * 0x24);
+  if (iVar2 == 2) {
+    if (*(TCivToolbar **)(g_pUiRuntimeContext + 0xf0) != (TCivToolbar *)0x0) {
+      TCivToolbar::thunk_SetMapInteractionMode(*(TCivToolbar **)(g_pUiRuntimeContext + 0xf0),1);
+      SetActiveProvinceSelection(sVar1);
+      uVar3 = 1;
     }
   }
   else {
-    if (extraout_EAX == 6) {
-      thunk_SetActiveProvinceAndBuildDirectionalOrderOverlays();
-      return;
+    if (iVar2 == 6) {
+      SetActiveProvinceAndBuildDirectionalOrderOverlays(param_1);
+      return 1;
     }
-    if (extraout_EAX == 8) {
-      thunk_BuildMapHintOverlayTextAndDispatchUiMessages
-                ((int)*(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 + (short)arg1 * 0x24)
-                );
-      return;
+    if (iVar2 == 8) {
+      BuildMapHintOverlayTextAndDispatchUiMessages((int)sVar1);
+      return 1;
     }
   }
-  return;
+  return uVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A4AD0
 // GHIDRA_NAME TArmyMgr::HandleMapClickByCivilianCursorState
-// GHIDRA_PROTO void __thiscall HandleMapClickByCivilianCursorState(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes civilian map cursor state and dispatches selection/action behavior by state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined HandleMapClickByCivilianCursorState()
 
-/* Computes civilian map cursor state and dispatches selection/action behavior by state. */
-
-void __thiscall TArmyMgr::HandleMapClickByCivilianCursorState(TArmyMgr *this,int arg1,int arg2)
+uint __thiscall
+TArmyMgr::HandleMapClickByCivilianCursorState(int *param_1,undefined4 param_2,undefined4 param_3)
 
 {
   short sVar1;
   bool bVar2;
   bool bVar3;
   short sVar4;
-  int extraout_EAX;
-  short sVar5;
-  undefined4 uVar6;
+  int iVar5;
+  uint uVar6;
+  short sVar7;
+  undefined4 uVar8;
   
-  thunk_ComputeCivilianMapCursorStateIndex();
-  sVar1 = *(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 + (short)arg1 * 0x24);
-  uVar6 = CONCAT22((short)((uint)*(int *)((int)g_pGlobalMapState + 0xc) >> 0x10),sVar1);
-  switch(extraout_EAX + -2) {
+  iVar5 = ComputeCivilianMapCursorStateIndex(param_2,param_3);
+  uVar6 = iVar5 - 2;
+  sVar1 = *(short *)(*(int *)(g_pGlobalMapState + 0xc) + 0x14 + (short)param_2 * 0x24);
+  uVar8 = CONCAT22((short)((uint)*(int *)(g_pGlobalMapState + 0xc) >> 0x10),sVar1);
+  switch(uVar6) {
   case 0:
-    thunk_SetActiveProvinceSelection();
-    return;
+    uVar6 = SetActiveProvinceSelection(uVar8);
+    return uVar6 & 0xffffff00;
   case 1:
   case 2:
     break;
   case 3:
-    thunk_ValidateOrderPlacementPrerequisitesForSelectedTile();
-    return;
+    uVar6 = ValidateOrderPlacementPrerequisitesForSelectedTile(uVar8);
+    return uVar6;
   case 4:
-    thunk_SetActiveProvinceAndBuildDirectionalOrderOverlays();
-    return;
+    uVar6 = SetActiveProvinceAndBuildDirectionalOrderOverlays(param_2);
+    return uVar6 & 0xffffff00;
   case 5:
-    (**(code **)(*(int *)g_pUiRuntimeContext + 0xec))
-              (CONCAT22((short)((uint)(extraout_EAX + -2) >> 0x10),this->field31c));
-    return;
+    uVar6 = (**(code **)(*g_pUiRuntimeContext + 0xec))
+                      (CONCAT22((short)(uVar6 >> 0x10),(short)param_1[199]));
+    return uVar6 & 0xffffff00;
   case 6:
-    thunk_BuildMapHintOverlayTextAndDispatchUiMessages((int)sVar1);
+    uVar6 = BuildMapHintOverlayTextAndDispatchUiMessages((int)sVar1);
   default:
-    return;
+    return uVar6 & 0xffffff00;
   }
   bVar2 = false;
-  sVar5 = 0;
-  sVar4 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 8 + this->field31c * 0xa8);
+  sVar7 = 0;
+  sVar4 = (short)*(char *)(*(int *)(g_pGlobalMapState + 0x10) + 8 + (short)param_1[199] * 0xa8);
   bVar3 = false;
   if (0 < sVar4) {
     do {
       if (bVar3) goto LAB_004a4b81;
       bVar2 = bVar3;
-      if (*(short *)(*(int *)((int)g_pGlobalMapState + 0x10) + 10 +
-                    ((int)sVar5 + this->field31c * 0x54) * 2) == sVar1) {
+      if (*(short *)(*(int *)(g_pGlobalMapState + 0x10) + 10 +
+                    ((int)sVar7 + (short)param_1[199] * 0x54) * 2) == sVar1) {
         bVar2 = true;
       }
-      sVar5 = sVar5 + 1;
+      sVar7 = sVar7 + 1;
       bVar3 = bVar2;
-    } while (sVar5 < sVar4);
+    } while (sVar7 < sVar4);
   }
   if (!bVar2) {
-    (**(code **)(this->field0_0x0 + 0x54))(uVar6);
-    return;
+    uVar6 = (**(code **)(*param_1 + 0x54))(uVar8);
+    return uVar6;
   }
 LAB_004a4b81:
-  (**(code **)(this->field0_0x0 + 0x50))(uVar6);
-  return;
+  uVar6 = (**(code **)(*param_1 + 0x50))(uVar8);
+  return uVar6;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A4FC0
 // GHIDRA_NAME TArmyMgr::OrphanCallChain_C2_I54_004a4fc0
-// GHIDRA_PROTO void __thiscall OrphanCallChain_C2_I54_004a4fc0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [OrphanCallChain] no incoming code refs; calls=2; instructions=54
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OrphanCallChain_C2_I54_004a4fc0()
 
-/* [OrphanCallChain] no incoming code refs; calls=2; instructions=54 */
-
-void __thiscall TArmyMgr::OrphanCallChain_C2_I54_004a4fc0(TArmyMgr *this)
+void __thiscall TArmyMgr::OrphanCallChain_C2_I54_004a4fc0(int *param_1,undefined4 param_2)
 
 {
   bool bVar1;
   short sVar2;
   short sVar3;
-  short in_stack_00000004;
   
   bVar1 = false;
   sVar3 = 0;
-  sVar2 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 8 + this->field31c * 0xa8);
+  sVar2 = (short)*(char *)(*(int *)(g_pGlobalMapState + 0x10) + 8 + (short)param_1[199] * 0xa8);
   if (0 < sVar2) {
     do {
       if (bVar1) goto LAB_004a5028;
-      if (*(short *)(*(int *)((int)g_pGlobalMapState + 0x10) + 10 +
-                    ((int)sVar3 + this->field31c * 0x54) * 2) == in_stack_00000004) {
+      if (*(short *)(*(int *)(g_pGlobalMapState + 0x10) + 10 +
+                    ((int)sVar3 + (short)param_1[199] * 0x54) * 2) == (short)param_2) {
         bVar1 = true;
       }
       sVar3 = sVar3 + 1;
     } while (sVar3 < sVar2);
   }
   if (!bVar1) {
-    (**(code **)(this->field0_0x0 + 0x54))();
+    (**(code **)(*param_1 + 0x54))(param_2);
     return;
   }
 LAB_004a5028:
-  (**(code **)(this->field0_0x0 + 0x50))();
+  (**(code **)(*param_1 + 0x50))(param_2);
   return;
 }
 

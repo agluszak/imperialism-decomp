@@ -3,72 +3,24 @@
 // Program: Imperialism.exe
 // Bucket: TTurnStartEvent.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00408A0D
-// GHIDRA_NAME TTurnStartEvent::thunk_CreateTTurnStartEventInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTTurnStartEventInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTTurnStartEventRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTTurnStartEventRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TTurnStartEvent::thunk_CreateTTurnStartEventInstance(TTurnStartEvent *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409674
-// GHIDRA_NAME TTurnStartEvent::thunk_GetTTurnStartEventClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTurnStartEventClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTurnStartEventClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTurnStartEventClassNamePointer */
-
-void * __cdecl TTurnStartEvent::thunk_GetTTurnStartEventClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTurnStartEventClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6660
 // GHIDRA_NAME TTurnStartEvent::CreateTTurnStartEventInstance
-// GHIDRA_PROTO void * __thiscall CreateTTurnStartEventInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TTurnStartEvent runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTurnStartEventInstance()
 
-/* Returns TTurnStartEvent runtime class descriptor pointer. */
-
-void * __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(TTurnStartEvent *this)
+void __fastcall TTurnStartEvent::CreateTTurnStartEventInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6680
 // GHIDRA_NAME TTurnStartEvent::GetTTurnStartEventClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTurnStartEventClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTurnStartEvent.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTurnStartEventClassNamePointer()
 
-/* Returns class descriptor pointer for TTurnStartEvent. */
-
-void * __cdecl TTurnStartEvent::GetTTurnStartEventClassNamePointer(void)
+undefined ** TTurnStartEvent::GetTTurnStartEventClassNamePointer(void)
 
 {
-  return &g_pClassDescTTurnStartEvent;
+  return &PTR_s_TTurnStartEvent_006536b8;
 }
 

@@ -5,16 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF2D0
 // GHIDRA_NAME TGWorldPeeker::GetTGWorldPeekerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTGWorldPeekerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TGWorldPeeker.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTGWorldPeekerClassNamePointer()
 
-/* Returns class descriptor pointer for TGWorldPeeker. */
-
-void * __cdecl TGWorldPeeker::GetTGWorldPeekerClassNamePointer(void)
+undefined ** TGWorldPeeker::GetTGWorldPeekerClassNamePointer(void)
 
 {
-  return &g_pClassDescTGWorldPeeker;
+  return &PTR_s_TGWorldPeeker_00656630;
 }
 

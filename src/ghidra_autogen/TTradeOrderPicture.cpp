@@ -3,100 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TTradeOrderPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403BE8
-// GHIDRA_NAME TTradeOrderPicture::thunk_ConstructTTradeOrderPictureBaseState
-// GHIDRA_PROTO TTradeOrderPicture * __thiscall thunk_ConstructTTradeOrderPictureBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeOrderPictureBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTTradeOrderPictureBaseState */
-
-TTradeOrderPicture * __thiscall
-TTradeOrderPicture::thunk_ConstructTTradeOrderPictureBaseState(TTradeOrderPicture *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTTradeOrderPicture;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405367
-// GHIDRA_NAME TTradeOrderPicture::TTradeOrderPicture_VtblSlot001
-// GHIDRA_PROTO TTradeOrderPicture * __thiscall TTradeOrderPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTradeOrderPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTradeOrderPictureAndMaybeFree */
-
-TTradeOrderPicture * __thiscall
-TTradeOrderPicture::TTradeOrderPicture_VtblSlot001(TTradeOrderPicture *this,byte freeSelfFlag)
-
-{
-  TTradeOrderPicture *pTVar1;
-  
-  pTVar1 = DestructTTradeOrderPictureAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004060AF
-// GHIDRA_NAME TTradeOrderPicture::TTradeOrderPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TTradeOrderPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradeOrderPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradeOrderPictureClassNamePointer */
-
-void * __cdecl TTradeOrderPicture::TTradeOrderPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradeOrderPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040663B
-// GHIDRA_NAME TTradeOrderPicture::TTradeOrderPicture_VtblSlot055
-// GHIDRA_PROTO void __thiscall TTradeOrderPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InvokeVirtualA8WithOneZero
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InvokeVirtualA8WithOneZero */
-
-void __thiscall TTradeOrderPicture::TTradeOrderPicture_VtblSlot055(TTradeOrderPicture *this)
-
-{
-  InvokeVirtualA8WithOneZero(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406F00
-// GHIDRA_NAME TTradeOrderPicture::TTradeOrderPicture_VtblSlot071
-// GHIDRA_PROTO void __thiscall TTradeOrderPicture_VtblSlot071(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleCardOrOfferTagClickAndDispatchTradeActions
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleCardOrOfferTagClickAndDispatchTradeActions */
-
-void __thiscall
-TTradeOrderPicture::TTradeOrderPicture_VtblSlot071
-          (TTradeOrderPicture *this,int arg1,int arg2,int arg3,int arg4)
-
-{
-  HandleCardOrOfferTagClickAndDispatchTradeActions(this,arg1,arg2,arg3,arg4);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005843E0
 // GHIDRA_NAME TTradeOrderPicture::CreateTTradeOrderPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradeOrderPictureInstance(void)
+// GHIDRA_PROTO undefined CreateTTradeOrderPictureInstance()
 
-void * __cdecl TTradeOrderPicture::CreateTTradeOrderPictureInstance(void)
+undefined4 * TTradeOrderPicture::CreateTTradeOrderPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -110,12 +21,12 @@ void * __cdecl TTradeOrderPicture::CreateTTradeOrderPictureInstance(void)
   puStack_8 = &LAB_006375ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTTradeOrderPicture;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00664010;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -124,119 +35,92 @@ void * __cdecl TTradeOrderPicture::CreateTTradeOrderPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584460
 // GHIDRA_NAME TTradeOrderPicture::GetTTradeOrderPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradeOrderPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradeOrderPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradeOrderPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TTradeOrderPicture. */
-
-void * __cdecl TTradeOrderPicture::GetTTradeOrderPictureClassNamePointer(void)
+undefined ** TTradeOrderPicture::GetTTradeOrderPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradeOrderPicture;
+  return &PTR_s_TTradeOrderPicture_00662e48;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584480
 // GHIDRA_NAME TTradeOrderPicture::ConstructTTradeOrderPictureBaseState
-// GHIDRA_PROTO TTradeOrderPicture * __thiscall ConstructTTradeOrderPictureBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTradeOrderPictureBaseState()
 
-TTradeOrderPicture * __thiscall
-TTradeOrderPicture::ConstructTTradeOrderPictureBaseState(TTradeOrderPicture *this)
+undefined4 * __fastcall
+TTradeOrderPicture::ConstructTTradeOrderPictureBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTTradeOrderPicture;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_00664010;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005844B0
 // GHIDRA_NAME TTradeOrderPicture::DestructTTradeOrderPictureAndMaybeFree
-// GHIDRA_PROTO TTradeOrderPicture * __thiscall DestructTTradeOrderPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTradeOrderPictureAndMaybeFree()
 
-TTradeOrderPicture * __thiscall
-TTradeOrderPicture::DestructTTradeOrderPictureAndMaybeFree
-          (TTradeOrderPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTradeOrderPicture::DestructTTradeOrderPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584500
 // GHIDRA_NAME TTradeOrderPicture::InvokeVirtualA8WithOneZero
-// GHIDRA_PROTO void __thiscall InvokeVirtualA8WithOneZero(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thin wrapper invoking virtual slot 0xA8 with (1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InvokeVirtualA8WithOneZero()
 
-/* Thin wrapper invoking virtual slot 0xA8 with (1 */
-
-void __thiscall TTradeOrderPicture::InvokeVirtualA8WithOneZero(TTradeOrderPicture *this)
+void __fastcall TTradeOrderPicture::InvokeVirtualA8WithOneZero(int *param_1)
 
 {
-  (*(code *)this->field0_0x0[0x2a])(1,0);
+  (**(code **)(*param_1 + 0xa8))(1,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584520
 // GHIDRA_NAME TTradeOrderPicture::HandleCardOrOfferTagClickAndDispatchTradeActions
-// GHIDRA_PROTO void __thiscall HandleCardOrOfferTagClickAndDispatchTradeActions(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Routes control tags 0x63617264 and 0x6f666672 through sound + command dispatch and trade/diplomacy action slots.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT [TradeCmdFlow] Routes card/offr click events into action command IDs 0x67..0x6A.
-// GHIDRA_COMMENT Branching depends on current bitmap state (bid/offer state pairs) and actionable gate.
-// GHIDRA_COMMENT Also dispatches sound effects and follow-up vtable actions.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined HandleCardOrOfferTagClickAndDispatchTradeActions()
 
-/* Routes control tags 0x63617264 and 0x6f666672 through sound + command dispatch and
-   trade/diplomacy action slots.
-   
-   [TradeCmdFlow] Routes card/offr click events into action command IDs 0x67..0x6A.
-   Branching depends on current bitmap state (bid/offer state pairs) and actionable gate.
-   Also dispatches sound effects and follow-up vtable actions. */
-
-void __thiscall
-TTradeOrderPicture::HandleCardOrOfferTagClickAndDispatchTradeActions
-          (TTradeOrderPicture *this,int arg1,int arg2,int arg3,int arg4)
+void __fastcall TTradeOrderPicture::HandleCardOrOfferTagClickAndDispatchTradeActions(int *param_1)
 
 {
   char cVar1;
   
-  cVar1 = (*(code *)this->field0_0x0[0x3b])();
+  cVar1 = (**(code **)(*param_1 + 0xec))();
   if (cVar1 != '\0') {
-    if (this->field1c == 0x63617264) {
-      if ((this->field84 != 0x83f) && (this->field84 != 0x84d)) {
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
-        (**(code **)(*(int *)this->pField20 + 0x40))(0x68,this,0);
-        (**(code **)(*(int *)this->pField20 + 0x1e4))();
-        (**(code **)(*(int *)this->pField20 + 0x1ec))();
-        (**(code **)(*(int *)this->pField20 + 0x40))(0x6a,this,0);
+    if (param_1[7] == 0x63617264) {
+      if (((short)param_1[0x21] != 0x83f) && ((short)param_1[0x21] != 0x84d)) {
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
+        (**(code **)(*(int *)param_1[8] + 0x40))(0x68,param_1,0);
+        (**(code **)(*(int *)param_1[8] + 0x1e4))();
+        (**(code **)(*(int *)param_1[8] + 0x1ec))();
+        (**(code **)(*(int *)param_1[8] + 0x40))(0x6a,param_1,0);
         return;
       }
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
-      (**(code **)(*(int *)this->pField20 + 0x40))(0x67,this,0);
-      (**(code **)(*(int *)this->pField20 + 0x1e0))();
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
+      (**(code **)(*(int *)param_1[8] + 0x40))(0x67,param_1,0);
+      (**(code **)(*(int *)param_1[8] + 0x1e0))();
       return;
     }
-    if (this->field1c == 0x6f666672) {
-      if ((this->field84 == 0x841) || (this->field84 == 0x84f)) {
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
-        (**(code **)(*(int *)this->pField20 + 0x40))(0x6a,this,0);
-        (**(code **)(*(int *)this->pField20 + 0x1ec))();
+    if (param_1[7] == 0x6f666672) {
+      if (((short)param_1[0x21] == 0x841) || ((short)param_1[0x21] == 0x84f)) {
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
+        (**(code **)(*(int *)param_1[8] + 0x40))(0x6a,param_1,0);
+        (**(code **)(*(int *)param_1[8] + 0x1ec))();
       }
       else {
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
-        (**(code **)(*(int *)this->pField20 + 0x40))(0x69,this,0);
-        (**(code **)(*(int *)this->pField20 + 0x1e8))();
-        cVar1 = (**(code **)(*(int *)this->pField20 + 0x1d8))();
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
+        (**(code **)(*(int *)param_1[8] + 0x40))(0x69,param_1,0);
+        (**(code **)(*(int *)param_1[8] + 0x1e8))();
+        cVar1 = (**(code **)(*(int *)param_1[8] + 0x1d8))();
         if (cVar1 != '\0') {
-          (**(code **)(*(int *)this->pField20 + 0x1e0))();
-          (**(code **)(*(int *)this->pField20 + 0x40))(0x67,this,0);
+          (**(code **)(*(int *)param_1[8] + 0x1e0))();
+          (**(code **)(*(int *)param_1[8] + 0x40))(0x67,param_1,0);
           return;
         }
       }

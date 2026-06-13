@@ -3,110 +3,49 @@
 // Program: Imperialism.exe
 // Bucket: TItemOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004049F3
-// GHIDRA_NAME TItemOrder::thunk_GetTItemOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTItemOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTItemOrderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTItemOrderClassNamePointer */
-
-void * __cdecl TItemOrder::thunk_GetTItemOrderClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTItemOrderClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004062AD
-// GHIDRA_NAME TItemOrder::thunk_DestructTItemOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTItemOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTItemOrderRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTItemOrderRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TItemOrder::thunk_DestructTItemOrderAndMaybeFree(TItemOrder *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B51B0
 // GHIDRA_NAME TItemOrder::CreateTItemOrderInstance
-// GHIDRA_PROTO void __thiscall CreateTItemOrderInstance(int * pTargetOrder)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes item-order target record from source template/order context.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTItemOrderInstance()
 
-/* Initializes item-order target record from source template/order context. */
-
-void __thiscall TItemOrder::CreateTItemOrderInstance(TItemOrder *this,int *pTargetOrder)
+void __thiscall TItemOrder::CreateTItemOrderInstance(int *param_1,undefined4 param_2)
 
 {
-  (**(code **)((int)this->pVtable + 0x3c))(pTargetOrder);
+  (**(code **)(*param_1 + 0x3c))(param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5200
 // GHIDRA_NAME TItemOrder::GetTItemOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTItemOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TItemOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTItemOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TItemOrder. */
-
-void * __cdecl TItemOrder::GetTItemOrderClassNamePointer(void)
+undefined ** TItemOrder::GetTItemOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTItemOrder;
+  return &PTR_s_TItemOrder_0064f368;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5240
 // GHIDRA_NAME TItemOrder::ConstructTItemOrderBaseState
-// GHIDRA_PROTO void __thiscall ConstructTItemOrderBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTItemOrderBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TItemOrder::ConstructTItemOrderBaseState(TItemOrder *this)
+undefined4 __thiscall TItemOrder::ConstructTItemOrderBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTItemOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTItemOrderAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5270
 // GHIDRA_NAME TItemOrder::DestructTItemOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTItemOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TItemOrder runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTItemOrderAndMaybeFree()
 
-/* Returns TItemOrder runtime class descriptor pointer. */
-
-void * __thiscall TItemOrder::DestructTItemOrderAndMaybeFree(TItemOrder *this)
+void __fastcall TItemOrder::DestructTItemOrderAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

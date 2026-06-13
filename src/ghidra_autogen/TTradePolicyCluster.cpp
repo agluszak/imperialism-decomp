@@ -3,68 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTradePolicyCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004017BC
-// GHIDRA_NAME TTradePolicyCluster::TTradePolicyCluster_VtblSlot001
-// GHIDRA_PROTO TTradePolicyCluster * __thiscall TTradePolicyCluster_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTradePolicyClusterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTradePolicyClusterAndMaybeFree */
-
-TTradePolicyCluster * __thiscall
-TTradePolicyCluster::TTradePolicyCluster_VtblSlot001(TTradePolicyCluster *this,byte freeSelfFlag)
-
-{
-  TTradePolicyCluster *pTVar1;
-  
-  pTVar1 = DestructTTradePolicyClusterAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405D44
-// GHIDRA_NAME TTradePolicyCluster::TTradePolicyCluster_VtblSlot015
-// GHIDRA_PROTO void __thiscall TTradePolicyCluster_VtblSlot015(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandlePanelEvent67AndClearControlTag636c7573
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandlePanelEvent67AndClearControlTag636c7573 */
-
-void __thiscall TTradePolicyCluster::TTradePolicyCluster_VtblSlot015(TTradePolicyCluster *this)
-
-{
-  HandlePanelEvent67AndClearControlTag636c7573(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409322
-// GHIDRA_NAME TTradePolicyCluster::TTradePolicyCluster_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TTradePolicyCluster_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradePolicyClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradePolicyClusterClassNamePointer */
-
-void * __cdecl TTradePolicyCluster::TTradePolicyCluster_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradePolicyClusterClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00584200
 // GHIDRA_NAME TTradePolicyCluster::CreateTTradePolicyClusterInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradePolicyClusterInstance(void)
+// GHIDRA_PROTO undefined CreateTTradePolicyClusterInstance()
 
-void * __cdecl TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
+undefined4 * TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -74,94 +21,80 @@ void * __cdecl TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
   puStack_8 = &LAB_006375ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->field0_0x0 = &g_vtblTTradePolicyCluster;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState();
+    *puVar1 = &PTR_LAB_00663de0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584280
 // GHIDRA_NAME TTradePolicyCluster::GetTTradePolicyClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradePolicyClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradePolicyCluster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradePolicyClusterClassNamePointer()
 
-/* Returns class descriptor pointer for TTradePolicyCluster. */
-
-void * __cdecl TTradePolicyCluster::GetTTradePolicyClusterClassNamePointer(void)
+undefined ** TTradePolicyCluster::GetTTradePolicyClusterClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradePolicyCluster;
+  return &PTR_s_TTradePolicyCluster_00662e30;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005842A0
 // GHIDRA_NAME TTradePolicyCluster::ConstructTTradePolicyClusterBaseState
-// GHIDRA_PROTO TTradePolicyCluster * __thiscall ConstructTTradePolicyClusterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTradePolicyClusterBaseState()
 
-TTradePolicyCluster * __thiscall
-TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(TTradePolicyCluster *this)
+undefined4 * __fastcall
+TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(undefined4 *param_1)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  (this->field0_0x0).pVtable = &g_vtblTTradePolicyCluster;
-  return this;
+  TUberCluster::ConstructTUberClusterBaseState();
+  *param_1 = &PTR_LAB_00663de0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005842D0
 // GHIDRA_NAME TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree
-// GHIDRA_PROTO TTradePolicyCluster * __thiscall DestructTTradePolicyClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTradePolicyClusterAndMaybeFree()
 
-TTradePolicyCluster * __thiscall
-TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree
-          (TTradePolicyCluster *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructTViewBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584320
 // GHIDRA_NAME TTradePolicyCluster::HandlePanelEvent67AndClearControlTag636c7573
-// GHIDRA_PROTO void __thiscall HandlePanelEvent67AndClearControlTag636c7573(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles event code 0x67 by clearing control tag 0x636c7573; otherwise forwards through panel dispatcher.
-// GHIDRA_COMMENT_END
-
-/* Handles event code 0x67 by clearing control tag 0x636c7573; otherwise forwards through panel
-   dispatcher. */
+// GHIDRA_PROTO undefined HandlePanelEvent67AndClearControlTag636c7573()
 
 void __thiscall
-TTradePolicyCluster::HandlePanelEvent67AndClearControlTag636c7573(TTradePolicyCluster *this)
+TTradePolicyCluster::HandlePanelEvent67AndClearControlTag636c7573
+          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
 
 {
-  void *pvVar1;
+  int iVar1;
   int *piVar2;
-  int in_stack_00000004;
-  PanelEventPayload *in_stack_00000008;
-  int in_stack_0000000c;
   
-  if (in_stack_00000004 != 0x67) {
-    TMapEditCluster::thunk_DispatchPanelControlEvent
-              (&this->field0_0x0,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  if (param_2 != 0x67) {
+    TMapEditCluster::thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
     return;
   }
-  pvVar1 = (this->field0_0x0).pVtable;
-  piVar2 = (int *)(**(code **)((int)pvVar1 + 0x58))();
-  (**(code **)((int)pvVar1 + 0x1c8))(0x20202020);
+  iVar1 = *(int *)param_1;
+  piVar2 = (int *)(**(code **)(iVar1 + 0x58))();
+  (**(code **)(iVar1 + 0x1c8))(0x20202020);
   piVar2 = (int *)(**(code **)(*piVar2 + 0x94))(0x636c7573);
   if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x203);
   }
   (**(code **)(*piVar2 + 0x1c8))(0x20202020);
   return;

@@ -3,53 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TMinor.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406988
-// GHIDRA_NAME TMinor::thunk_DestructTMinorAndMaybeFree_At00406988
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMinorAndMaybeFree_At00406988(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTMinorAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTMinorAndMaybeFree */
-
-void * __thiscall
-TMinor::thunk_DestructTMinorAndMaybeFree_At00406988(TMinor *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTMinorAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00406EE7
 // GHIDRA_NAME TMinor::thunk_GetTMinorClassNamePointer_At00406ee7
-// GHIDRA_PROTO void * __cdecl thunk_GetTMinorClassNamePointer_At00406ee7(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMinorClassNamePointer
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_GetTMinorClassNamePointer_At00406ee7()
 
-/* Single-JMP thunk to GetTMinorClassNamePointer */
-
-void * __cdecl TMinor::thunk_GetTMinorClassNamePointer_At00406ee7(void)
+undefined ** TMinor::thunk_GetTMinorClassNamePointer_At00406ee7(void)
 
 {
-  void *pvVar1;
-  
-  pvVar1 = GetTMinorClassNamePointer();
-  return pvVar1;
+  return &PTR_s_TMinor_006536a0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E3660
 // GHIDRA_NAME TMinor::CreateTMinorInstance
-// GHIDRA_PROTO void * __cdecl CreateTMinorInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TMinor; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTMinorInstance()
 
-/* [ClassQuad] create inferred for TMinor; alloc factory pattern. */
-
-void * __cdecl TMinor::CreateTMinorInstance(void)
+undefined4 * TMinor::CreateTMinorInstance(void)
 
 {
   undefined4 *puVar1;
@@ -63,16 +31,16 @@ void * __cdecl TMinor::CreateTMinorInstance(void)
   puStack_8 = &LAB_0063243d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x2dc);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &g_vtblRefCountedObjectBase;
+    *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4._0_1_ = 1;
     local_4._1_3_ = 0;
     InitializeSharedStringRefFromEmpty();
     local_4 = CONCAT31(local_4._1_3_,2);
     InitializeSharedStringRefFromEmpty();
-    *puVar1 = &g_vtblSecondaryNationState;
+    *puVar1 = &PTR_thunk_GetTMinorClassNamePointer_At00406ee7_00653c90;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -81,30 +49,36 @@ void * __cdecl TMinor::CreateTMinorInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E36F0
 // GHIDRA_NAME TMinor::GetTMinorClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMinorClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMinor.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMinorClassNamePointer()
 
-/* Returns class descriptor pointer for TMinor. */
-
-void * __cdecl TMinor::GetTMinorClassNamePointer(void)
+undefined ** TMinor::GetTMinorClassNamePointer(void)
 
 {
-  return &g_pClassDescTMinor;
+  return &PTR_s_TMinor_006536a0;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004E3790
-// GHIDRA_NAME TMinor::DestructTMinorAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTMinorAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_FUNCTION IMPERIALISM 0x004E3710
+// GHIDRA_NAME TMinor::TMinor
+// GHIDRA_PROTO undefined TMinor()
 
-void * __thiscall TMinor::DestructTMinorAndMaybeFree(TMinor *this,byte freeSelfFlag)
+undefined4 * __fastcall TMinor::TMinor(undefined4 *param_1)
 
 {
-  WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_00632463;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  *param_1 = &RefCountedObjectBase::_vftable_;
+  local_4 = 0;
+  InitializeSharedStringRefFromEmpty();
+  local_4 = CONCAT31(local_4._1_3_,1);
+  InitializeSharedStringRefFromEmpty();
+  *param_1 = &PTR_thunk_GetTMinorClassNamePointer_At00406ee7_00653c90;
+  *unaff_FS_OFFSET = local_c;
+  return param_1;
 }
 

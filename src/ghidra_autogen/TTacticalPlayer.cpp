@@ -3,107 +3,42 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalPlayer.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401438
-// GHIDRA_NAME TTacticalPlayer::thunk_GetTTacticalPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTacticalPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTacticalPlayerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTacticalPlayerClassNamePointer */
-
-void * __cdecl TTacticalPlayer::thunk_GetTTacticalPlayerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTacticalPlayerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004086C0
-// GHIDRA_NAME TTacticalPlayer::thunk_ConstructTTacticalPlayerBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTacticalPlayerBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReleaseOwnedTacticalPlayerViewsAndDeleteSelf [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReleaseOwnedTacticalPlayerViewsAndDeleteSelf [FID:thunk_target_sync] */
-
-void __thiscall TTacticalPlayer::thunk_ConstructTTacticalPlayerBaseState(TTacticalPlayer *this)
-
-{
-  ConstructTTacticalPlayerBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040989F
-// GHIDRA_NAME TTacticalPlayer::thunk_CreateTTacticalPlayerInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTTacticalPlayerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to ConstructTacticalPlayerBaseState. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk to ConstructTacticalPlayerBaseState. [FID:thunk_target_sync] */
-
-void __thiscall TTacticalPlayer::thunk_CreateTTacticalPlayerInstance(TTacticalPlayer *this)
-
-{
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE60
 // GHIDRA_NAME TTacticalPlayer::CreateTTacticalPlayerInstance
-// GHIDRA_PROTO void __thiscall CreateTTacticalPlayerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes TacticalPlayer base state/vtable root.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTacticalPlayerInstance()
 
-/* Initializes TacticalPlayer base state/vtable root. */
-
-void __thiscall TTacticalPlayer::CreateTTacticalPlayerInstance(TTacticalPlayer *this)
+void __fastcall TTacticalPlayer::CreateTTacticalPlayerInstance(undefined4 *param_1)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE80
 // GHIDRA_NAME TTacticalPlayer::GetTTacticalPlayerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTacticalPlayerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTacticalPlayer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTacticalPlayerClassNamePointer()
 
-/* Returns class descriptor pointer for TTacticalPlayer. */
-
-void * __cdecl TTacticalPlayer::GetTTacticalPlayerClassNamePointer(void)
+undefined ** TTacticalPlayer::GetTTacticalPlayerClassNamePointer(void)
 
 {
-  return &g_pClassDescTTacticalPlayer;
+  return &PTR_s_TTacticalPlayer_00669470;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AEE0
 // GHIDRA_NAME TTacticalPlayer::ConstructTTacticalPlayerBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTacticalPlayerBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Releases owned TacticalPlayer view pointers and conditionally deletes self.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTacticalPlayerBaseState()
 
-/* Releases owned TacticalPlayer view pointers and conditionally deletes self. */
-
-void __thiscall TTacticalPlayer::ConstructTTacticalPlayerBaseState(TTacticalPlayer *this)
+void __fastcall TTacticalPlayer::ConstructTTacticalPlayerBaseState(int *param_1)
 
 {
-  if (this->field1_0x4 != (int *)0x0) {
-    (**(code **)(*(int *)this->field1_0x4 + 0x58))();
+  if ((int *)param_1[1] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[1] + 0x58))();
   }
-  if (this->field2_0x8 != (int *)0x0) {
-    (**(code **)(*(int *)this->field2_0x8 + 0x58))();
+  if ((int *)param_1[2] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[2] + 0x58))();
   }
-  if (this != (TTacticalPlayer *)0x0) {
-    (**(code **)((int)this->pVtable + 4))(1);
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
   }
   return;
 }

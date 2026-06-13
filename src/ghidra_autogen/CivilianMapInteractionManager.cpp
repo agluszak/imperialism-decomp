@@ -5,37 +5,24 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401816
 // GHIDRA_NAME CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816
-// GHIDRA_PROTO void * __cdecl thunk_GetTCivMgrClassNamePointer_At00401816(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCivMgrClassNamePointer
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_GetTCivMgrClassNamePointer_At00401816()
 
-/* Single-JMP thunk to GetTCivMgrClassNamePointer */
-
-void * __cdecl CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816(void)
+void CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816(void)
 
 {
-  void *pvVar1;
-  
-  pvVar1 = TCivMgr::GetTCivMgrClassNamePointer();
-  return pvVar1;
+  TCivMgr::GetTCivMgrClassNamePointer();
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D2050
 // GHIDRA_NAME CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable
-// GHIDRA_PROTO void __thiscall InitializeCivilianMapInteractionManagerVtable(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Ctor/vtable-init helper: writes g_vtblCivilianMapInteractionManager into *this.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeCivilianMapInteractionManagerVtable()
 
-/* Ctor/vtable-init helper: writes g_vtblCivilianMapInteractionManager into *this. */
-
-void __thiscall
-CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable
-          (CivilianMapInteractionManager *this)
+void __fastcall
+CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable(undefined4 *param_1)
 
 {
-  *(undefined ***)this = &g_vtblCivilianMapInteractionManager;
+  *param_1 = &g_vtblCivilianMapInteractionManager;
   return;
 }
 

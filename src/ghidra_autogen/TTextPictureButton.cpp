@@ -3,90 +3,28 @@
 // Program: Imperialism.exe
 // Bucket: TTextPictureButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401BBD
-// GHIDRA_NAME TTextPictureButton::thunk_RenderTextPictureButtonCaptionWithPressedOffset_At00401bbd
-// GHIDRA_PROTO void __thiscall thunk_RenderTextPictureButtonCaptionWithPressedOffset_At00401bbd(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderTextPictureButtonCaptionWithPressedOffset
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderTextPictureButtonCaptionWithPressedOffset */
-
-void __thiscall
-TTextPictureButton::thunk_RenderTextPictureButtonCaptionWithPressedOffset_At00401bbd
-          (TTextPictureButton *this)
-
-{
-  THQButton::RenderTextPictureButtonCaptionWithPressedOffset((THQButton *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402482
-// GHIDRA_NAME TTextPictureButton::thunk_GetTTextPictureButtonClassNamePointer_At00402482
-// GHIDRA_PROTO void * __cdecl thunk_GetTTextPictureButtonClassNamePointer_At00402482(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTextPictureButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTextPictureButtonClassNamePointer */
-
-void * __cdecl TTextPictureButton::thunk_GetTTextPictureButtonClassNamePointer_At00402482(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTextPictureButtonClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004061CC
-// GHIDRA_NAME TTextPictureButton::thunk_DestructTTextPictureButtonAndMaybeFree_At004061cc
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTextPictureButtonAndMaybeFree_At004061cc(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTextPictureButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTextPictureButtonAndMaybeFree */
-
-void * __thiscall
-TTextPictureButton::thunk_DestructTTextPictureButtonAndMaybeFree_At004061cc
-          (TTextPictureButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTextPictureButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005725B0
 // GHIDRA_NAME TTextPictureButton::GetTTextPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTextPictureButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTextPictureButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTextPictureButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TTextPictureButton. */
-
-void * __cdecl TTextPictureButton::GetTTextPictureButtonClassNamePointer(void)
+undefined ** TTextPictureButton::GetTTextPictureButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTTextPictureButton;
+  return &PTR_s_TTextPictureButton_0065e670;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572670
 // GHIDRA_NAME TTextPictureButton::DestructTTextPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTextPictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTextPictureButtonAndMaybeFree()
 
-void * __thiscall
-TTextPictureButton::DestructTTextPictureButtonAndMaybeFree
-          (TTextPictureButton *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTextPictureButton::DestructTTextPictureButtonAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTTextPictureButtonAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

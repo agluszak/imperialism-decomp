@@ -5,51 +5,40 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061096B
 // GHIDRA_NAME CDocument::CDocument
-// GHIDRA_PROTO void * __thiscall CDocument(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [MfcBaseState] Constructor-like init: installs CDocument runtime/message-map vtable and initializes owned members. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CDocument()
 
-/* [MfcBaseState] Constructor-like init: installs CDocument runtime/message-map vtable and
-   initializes owned members. [FID:FID_single_match_phase1_nodebug] */
-
-void * __thiscall CDocument::CDocument(CDocument *this)
+undefined4 * CDocument::CDocument(void)
 
 {
   undefined4 uVar1;
-  undefined4 *pThis;
+  undefined4 *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  *(undefined4 **)(unaff_EBP + -0x10) = pThis;
-  CCmdTarget(pThis);
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  CCmdTarget();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   InitializeSharedStringRefFromEmpty();
   *(undefined1 *)(unaff_EBP + -4) = 1;
   InitializeSharedStringRefFromEmpty();
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  TGreatPower::CPtrList((TGreatPower *)(pThis + 10));
-  pThis[9] = 0;
-  pThis[0x11] = 0;
+  TGreatPower::CPtrList(10);
+  extraout_ECX[9] = 0;
+  extraout_ECX[0x11] = 0;
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
-  pThis[0x13] = 0;
-  *pThis = &PTR_GetCDocumentRuntimeClass_0067210c;
-  pThis[0x12] = 1;
+  extraout_ECX[0x13] = 0;
+  *extraout_ECX = &PTR_GetCDocumentRuntimeClass_0067210c;
+  extraout_ECX[0x12] = 1;
   *unaff_FS_OFFSET = uVar1;
-  return pThis;
+  return extraout_ECX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006109EB
 // GHIDRA_NAME CDocument::DestructCDocumentBaseState
-// GHIDRA_PROTO void __thiscall DestructCDocumentBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [MfcBaseState] Destructor-like cleanup for CDocument base state with member-release calls.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructCDocumentBaseState()
 
-/* [MfcBaseState] Destructor-like cleanup for CDocument base state with member-release calls. */
-
-void __thiscall CDocument::DestructCDocumentBaseState(CDocument *this)
+void CDocument::DestructCDocumentBaseState(void)
 
 {
   undefined4 *extraout_ECX;
@@ -65,7 +54,7 @@ void __thiscall CDocument::DestructCDocumentBaseState(CDocument *this)
     (**(code **)(*(int *)extraout_ECX[9] + 0x68))(extraout_ECX);
   }
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  DestructCPtrListBaseState(extraout_ECX + 10);
+  DestructCPtrListBaseState();
   *(undefined1 *)(unaff_EBP + -4) = 1;
   ReleaseSharedStringRefIfNotEmpty();
   *(undefined1 *)(unaff_EBP + -4) = 0;
@@ -76,156 +65,160 @@ void __thiscall CDocument::DestructCDocumentBaseState(CDocument *this)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00610ABA
-// GHIDRA_NAME CDocument::RenumberAndActivateVisibleDocumentFrames
-// GHIDRA_PROTO void __thiscall RenumberAndActivateVisibleDocumentFrames(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Iterates visible frames, reassigns sequential frame slot markers, and activates each in order.
-// GHIDRA_COMMENT_END
+// GHIDRA_FUNCTION IMPERIALISM 0x00610A5F
+// GHIDRA_NAME CDocument::DisconnectViews
+// GHIDRA_PROTO undefined DisconnectViews()
 
-/* Iterates visible frames, reassigns sequential frame slot markers, and activates each in order. */
-
-void __thiscall CDocument::RenumberAndActivateVisibleDocumentFrames(CDocument *this)
+void __fastcall CDocument::DisconnectViews(int param_1)
 
 {
-  void *pvVar1;
-  code *pcVar2;
-  code *pcVar3;
-  int iVar4;
-  BOOL BVar5;
-  int *piVar6;
-  int local_14;
-  int local_10;
-  int local_8;
+  int iVar1;
   
-  pvVar1 = this->pVtable;
-  pcVar2 = *(code **)((int)pvVar1 + 0x68);
-  local_8 = (*pcVar2)();
-  if (local_8 != 0) {
-    pcVar3 = *(code **)((int)pvVar1 + 0x6c);
+  iVar1 = *(int *)(param_1 + 0x34);
+  while (iVar1 != 0) {
+    iVar1 = RemoveHead();
+    *(undefined4 *)(iVar1 + 0x3c) = 0;
+    iVar1 = *(int *)(param_1 + 0x34);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00610ABA
+// GHIDRA_NAME CDocument::RenumberAndActivateVisibleDocumentFrames
+// GHIDRA_PROTO undefined RenumberAndActivateVisibleDocumentFrames()
+
+void __fastcall CDocument::RenumberAndActivateVisibleDocumentFrames(int *param_1)
+
+{
+  code *pcVar1;
+  code *pcVar2;
+  int iVar3;
+  BOOL BVar4;
+  int *piVar5;
+  int iStack_14;
+  int iStack_10;
+  int iStack_8;
+  
+  iVar3 = *param_1;
+  pcVar1 = *(code **)(iVar3 + 0x68);
+  iStack_8 = (*pcVar1)();
+  if (iStack_8 != 0) {
+    pcVar2 = *(code **)(iVar3 + 0x6c);
     do {
-      iVar4 = (*pcVar3)(&local_8);
-      BVar5 = IsWindowVisible(*(HWND *)(iVar4 + 0x1c));
-      if (BVar5 != 0) {
-        piVar6 = GetParentFrame();
-        if (piVar6 != (int *)0x0) {
-          piVar6[0x10] = -1;
+      iVar3 = (*pcVar2)(&iStack_8);
+      BVar4 = IsWindowVisible(*(HWND *)(iVar3 + 0x1c));
+      if (BVar4 != 0) {
+        iVar3 = GetParentFrame();
+        if (iVar3 != 0) {
+          *(undefined4 *)(iVar3 + 0x40) = 0xffffffff;
         }
       }
-    } while (local_8 != 0);
+    } while (iStack_8 != 0);
   }
-  local_10 = 0;
-  local_8 = (*pcVar2)();
-  if (local_8 != 0) {
-    pcVar3 = *(code **)((int)this->pVtable + 0x6c);
+  iStack_10 = 0;
+  iStack_8 = (*pcVar1)();
+  if (iStack_8 != 0) {
+    pcVar2 = *(code **)(*param_1 + 0x6c);
     do {
-      iVar4 = (*pcVar3)(&local_8);
-      BVar5 = IsWindowVisible(*(HWND *)(iVar4 + 0x1c));
-      if (BVar5 != 0) {
-        piVar6 = GetParentFrame();
-        if ((piVar6 != (int *)0x0) && (piVar6[0x10] == -1)) {
-          local_10 = local_10 + 1;
-          piVar6[0x10] = local_10;
+      iVar3 = (*pcVar2)(&iStack_8);
+      BVar4 = IsWindowVisible(*(HWND *)(iVar3 + 0x1c));
+      if (BVar4 != 0) {
+        iVar3 = GetParentFrame();
+        if ((iVar3 != 0) && (*(int *)(iVar3 + 0x40) == -1)) {
+          iStack_10 = iStack_10 + 1;
+          *(int *)(iVar3 + 0x40) = iStack_10;
         }
       }
-    } while (local_8 != 0);
+    } while (iStack_8 != 0);
   }
-  local_14 = 1;
-  local_8 = (*pcVar2)();
-  if (local_8 != 0) {
-    pcVar2 = *(code **)((int)this->pVtable + 0x6c);
+  iStack_14 = 1;
+  iStack_8 = (*pcVar1)();
+  if (iStack_8 != 0) {
+    pcVar1 = *(code **)(*param_1 + 0x6c);
     do {
-      iVar4 = (*pcVar2)(&local_8);
-      BVar5 = IsWindowVisible(*(HWND *)(iVar4 + 0x1c));
-      if (BVar5 != 0) {
-        piVar6 = GetParentFrame();
-        if ((piVar6 != (int *)0x0) && (piVar6[0x10] == local_14)) {
-          if (local_10 == 1) {
-            piVar6[0x10] = 0;
+      iVar3 = (*pcVar1)(&iStack_8);
+      BVar4 = IsWindowVisible(*(HWND *)(iVar3 + 0x1c));
+      if (BVar4 != 0) {
+        piVar5 = (int *)GetParentFrame();
+        if ((piVar5 != (int *)0x0) && (piVar5[0x10] == iStack_14)) {
+          if (iStack_10 == 1) {
+            piVar5[0x10] = 0;
           }
-          (**(code **)(*piVar6 + 0xe8))(1);
-          local_14 = local_14 + 1;
+          (**(code **)(*piVar5 + 0xe8))(1);
+          iStack_14 = iStack_14 + 1;
         }
       }
-    } while (local_8 != 0);
+    } while (iStack_8 != 0);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610CE5
 // GHIDRA_NAME CDocument::DoSaveDocumentWithPromptAndReplace
-// GHIDRA_PROTO bool __thiscall DoSaveDocumentWithPromptAndReplace(char * pathName, int replaceCurrent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Implements DoSave-like path: prompt for filename when needed, call save virtual, optionally replace document path, cleanup on failure.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DoSaveDocumentWithPromptAndReplace()
 
-/* Implements DoSave-like path: prompt for filename when needed, call save virtual, optionally
-   replace document path, cleanup on failure. */
-
-bool __thiscall
-CDocument::DoSaveDocumentWithPromptAndReplace(CDocument *this,char *pathName,int replaceCurrent)
+undefined4 CDocument::DoSaveDocumentWithPromptAndReplace(void)
 
 {
   int *piVar1;
-  bool bVar2;
+  int iVar2;
   int iVar3;
-  void *pvVar4;
-  int extraout_EAX;
-  int iVar5;
+  undefined4 uVar4;
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)(unaff_EBP + -0x14))
-  ;
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(*(undefined4 *)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0) {
     piVar1 = (int *)extraout_ECX[9];
     AssignFromPtr((void *)(unaff_EBP + -0x14),extraout_ECX + 8);
     if ((*(int *)(unaff_EBP + 0xc) != 0) && (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0)) {
       AssignFromPtr((void *)(unaff_EBP + -0x14),extraout_ECX + 7);
-      iVar3 = FindOneOf((void *)(unaff_EBP + -0x14));
-      if (iVar3 != -1) {
-        ReleaseBuffer();
+      iVar2 = FUN_00605e33(" #%;/\\");
+      if (iVar2 != -1) {
+        ReleaseBuffer(iVar2);
       }
       InitializeSharedStringRefFromEmpty();
-      iVar3 = *piVar1;
+      iVar2 = *piVar1;
       *(undefined1 *)(unaff_EBP + -4) = 1;
-      iVar3 = (**(code **)(iVar3 + 0x6c))(unaff_EBP + -0x18,4);
-      if ((iVar3 != 0) && (*(int *)(*(int *)(unaff_EBP + -0x18) + -8) != 0)) {
-        AssignStringSharedFromRef();
+      iVar2 = (**(code **)(iVar2 + 0x6c))(unaff_EBP + -0x18,4);
+      if ((iVar2 != 0) && (*(int *)(*(int *)(unaff_EBP + -0x18) + -8) != 0)) {
+        AssignStringSharedFromRef(unaff_EBP + -0x18);
       }
       *(undefined1 *)(unaff_EBP + -4) = 0;
       ReleaseSharedStringRefIfNotEmpty();
     }
-    pvVar4 = AfxGetModuleState();
-    CWinApp::DoPromptFileName(*(CWinApp **)((int)pvVar4 + 4));
-    if (extraout_EAX != 0) goto LAB_00610dc4;
+    AfxGetModuleState();
+    iVar2 = FUN_0061844a(unaff_EBP + -0x14,
+                         (-(uint)(*(int *)(unaff_EBP + 0xc) != 0) & 0xfffffffd) + 0xf004,0x804,0,
+                         piVar1);
+    if (iVar2 != 0) goto LAB_00610dc4;
   }
   else {
 LAB_00610dc4:
     AfxGetModuleState();
     BeginWaitCursor();
-    iVar3 = *extraout_ECX;
+    iVar2 = *extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 2;
-    iVar5 = (**(code **)(iVar3 + 0x80))(*(undefined4 *)(unaff_EBP + -0x14));
-    if (iVar5 != 0) {
+    iVar3 = (**(code **)(iVar2 + 0x80))(*(undefined4 *)(unaff_EBP + -0x14));
+    if (iVar3 != 0) {
       if (*(int *)(unaff_EBP + 0xc) != 0) {
-        (**(code **)(iVar3 + 0x5c))(*(undefined4 *)(unaff_EBP + -0x14),1);
+        (**(code **)(iVar2 + 0x5c))(*(undefined4 *)(unaff_EBP + -0x14),1);
       }
       *(undefined1 *)(unaff_EBP + -4) = 0;
       AfxGetModuleState();
       EndWaitCursor();
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
-      bVar2 = true;
+      uVar4 = 1;
       goto LAB_00610e5e;
     }
     if (*(int *)(unaff_EBP + 8) == 0) {
       *(undefined1 *)(unaff_EBP + -4) = 3;
-      DeleteFileOrReportLastError();
+      DeleteFileOrReportLastError(*(undefined4 *)(unaff_EBP + -0x14));
       *(undefined4 *)(unaff_EBP + -4) = 2;
     }
     *(undefined1 *)(unaff_EBP + -4) = 0;
@@ -234,44 +227,35 @@ LAB_00610dc4:
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  bVar2 = false;
+  uVar4 = 0;
 LAB_00610e5e:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return bVar2;
+  return uVar4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610E6F
 // GHIDRA_NAME CDocument::SaveModified
-// GHIDRA_PROTO bool __thiscall SaveModified(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT CDocument-like SaveModified flow: checks modified state, builds prompt text, invokes save on affirmative, returns false on cancel or save failure. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SaveModified()
 
-/* CDocument-like SaveModified flow: checks modified state, builds prompt text, invokes save on
-   affirmative, returns false on cancel or save failure. [FID:FID_single_match_phase1_nodebug] */
-
-bool __thiscall CDocument::SaveModified(CDocument *this)
+undefined4 CDocument::SaveModified(void)
 
 {
-  char *sourcePath;
-  bool bVar1;
-  int iVar2;
-  char *outBuffer;
-  void *pvVar3;
+  int iVar1;
+  undefined4 uVar2;
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  uint outChars;
+  undefined4 uVar3;
   
   EstablishSehFrameProlog();
-  iVar2 = *extraout_ECX;
-  *(int *)(unaff_EBP + -0x18) = iVar2;
-  iVar2 = (**(code **)(iVar2 + 0x60))();
-  if (iVar2 != 0) {
+  iVar1 = *extraout_ECX;
+  *(int *)(unaff_EBP + -0x18) = iVar1;
+  iVar1 = (**(code **)(iVar1 + 0x60))();
+  if (iVar1 != 0) {
     InitializeSharedStringRefFromEmpty();
-    iVar2 = *(int *)(extraout_ECX[8] + -8);
+    iVar1 = *(int *)(extraout_ECX[8] + -8);
     *(undefined4 *)(unaff_EBP + -4) = 0;
-    if (iVar2 == 0) {
+    if (iVar1 == 0) {
       AssignFromPtr((void *)(unaff_EBP + -0x10),extraout_ECX + 7);
       if (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0) {
         LoadStringA(0xf003);
@@ -279,120 +263,107 @@ bool __thiscall CDocument::SaveModified(CDocument *this)
     }
     else {
       AssignFromPtr((void *)(unaff_EBP + -0x10),extraout_ECX + 8);
-      if (g_bMfcWin40UiModeEnabled != 0) {
-        sourcePath = (char *)extraout_ECX[8];
-        outChars = 0x104;
-        outBuffer = (char *)TToolBarCluster::GetBuffer((TToolBarCluster *)(unaff_EBP + -0x10));
-        AfxGetFileTitle(sourcePath,outBuffer,outChars);
-        ReleaseBuffer();
+      if (DAT_006a7d68 != 0) {
+        iVar1 = extraout_ECX[8];
+        uVar3 = 0x104;
+        uVar2 = TToolBarCluster::GetBuffer(0x104);
+        AfxGetFileTitle(iVar1,uVar2,uVar3);
+        ReleaseBuffer(0xffffffff);
       }
     }
     InitializeSharedStringRefFromEmpty();
     *(undefined1 *)(unaff_EBP + -4) = 1;
-    AfxFormatString1((void *)(unaff_EBP + -0x14),0xf103,*(void **)(unaff_EBP + -0x10));
-    pvVar3 = WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-                       (*(int *)(unaff_EBP + -0x14),3,0xf103);
-    if (pvVar3 == (void *)0x2) {
+    AfxFormatString1(unaff_EBP + -0x14,0xf103,*(undefined4 *)(unaff_EBP + -0x10));
+    iVar1 = WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
+                      (*(undefined4 *)(unaff_EBP + -0x14),3,0xf103);
+    if (iVar1 == 2) {
 LAB_00610f5c:
       *(undefined1 *)(unaff_EBP + -4) = 0;
       ReleaseSharedStringRefIfNotEmpty();
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
-      bVar1 = false;
+      uVar2 = 0;
       goto LAB_00610f75;
     }
-    if (pvVar3 == (void *)0x6) {
-      iVar2 = (**(code **)(*(int *)(unaff_EBP + -0x18) + 0xa4))();
-      if (iVar2 == 0) goto LAB_00610f5c;
+    if (iVar1 == 6) {
+      iVar1 = (**(code **)(*(int *)(unaff_EBP + -0x18) + 0xa4))();
+      if (iVar1 == 0) goto LAB_00610f5c;
     }
     *(undefined1 *)(unaff_EBP + -4) = 0;
     ReleaseSharedStringRefIfNotEmpty();
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
   }
-  bVar1 = true;
+  uVar2 = 1;
 LAB_00610f75:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return bVar1;
+  return uVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610F8A
 // GHIDRA_NAME CDocument::ReportSaveLoadException
-// GHIDRA_PROTO void __thiscall ReportSaveLoadException(char * pathName, void * pException, int isSaving, uint defaultPromptId)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds file/path aware save-load exception prompt and dispatches application-level warning dialog with style flags. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ReportSaveLoadException()
 
-/* Builds file/path aware save-load exception prompt and dispatches application-level warning dialog
-   with style flags. [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall
-CDocument::ReportSaveLoadException
-          (CDocument *this,char *pathName,void *pException,int isSaving,uint defaultPromptId)
+void CDocument::ReportSaveLoadException(void)
 
 {
-  LinkedListQueryOwner *this_00;
   int *piVar1;
-  bool bVar2;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  undefined3 extraout_var_01;
-  int iVar3;
-  uint resourceId;
+  int iVar2;
+  undefined4 uVar3;
+  int iVar4;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  resourceId = *(uint *)(unaff_EBP + 0x14);
-  *(uint *)(unaff_EBP + -0x10) = resourceId;
+  iVar4 = *(int *)(unaff_EBP + 0x14);
+  *(int *)(unaff_EBP + -0x10) = iVar4;
   InitializeSharedStringRefFromEmpty();
-  this_00 = *(LinkedListQueryOwner **)(unaff_EBP + 0xc);
+  piVar1 = *(int **)(unaff_EBP + 0xc);
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  if (this_00 != (LinkedListQueryOwner *)0x0) {
-    bVar2 = LinkedListQueryOwner::IsKindOf(this_00);
-    if (CONCAT31(extraout_var,bVar2) != 0) goto LAB_006110dd;
-    bVar2 = LinkedListQueryOwner::IsKindOf(this_00);
-    if (CONCAT31(extraout_var_00,bVar2) == 0) {
-      bVar2 = LinkedListQueryOwner::IsKindOf(this_00);
-      if (CONCAT31(extraout_var_01,bVar2) != 0) {
-        if (*(int *)(this_00->field10 + -8) == 0) {
-          WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78();
+  if (piVar1 != (int *)0x0) {
+    iVar2 = CObject::IsKindOf(&PTR_s_CUserException_00672268);
+    if (iVar2 != 0) goto LAB_006110dd;
+    iVar2 = CObject::IsKindOf(&PTR_s_CArchiveException_00673700);
+    if (iVar2 == 0) {
+      iVar2 = CObject::IsKindOf(&PTR_s_CFileException_00672f28);
+      if (iVar2 != 0) {
+        if (*(int *)(piVar1[4] + -8) == 0) {
+          WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(*(undefined4 *)(unaff_EBP + 8));
         }
-        iVar3 = TToolBarCluster::GetBuffer((TToolBarCluster *)(unaff_EBP + 0x14));
-        iVar3 = (*(code *)this_00->field0_0x0[5])(iVar3,0x100,unaff_EBP + -0x10);
-        if (((iVar3 == 0) && (piVar1 = this_00->field08, piVar1 != (int *)0x1)) && (1 < (int)piVar1)
-           ) {
-          if ((int)piVar1 < 4) {
-            resourceId = 0xf121;
+        uVar3 = TToolBarCluster::GetBuffer(0xff);
+        iVar2 = (**(code **)(*piVar1 + 0x14))(uVar3,0x100,unaff_EBP + -0x10);
+        if (((iVar2 == 0) && (iVar2 = piVar1[2], iVar2 != 1)) && (1 < iVar2)) {
+          if (iVar2 < 4) {
+            iVar4 = 0xf121;
           }
-          else if (piVar1 == (int *)&DAT_00000005) {
-            resourceId = (*(int *)(unaff_EBP + 0x10) != 0) + 0xf123;
+          else if (iVar2 == 5) {
+            iVar4 = (*(int *)(unaff_EBP + 0x10) != 0) + 0xf123;
           }
-          else if (piVar1 == (int *)&DAT_0000000d) {
-            resourceId = 0xf122;
+          else if (iVar2 == 0xd) {
+            iVar4 = 0xf122;
           }
         }
-        ReleaseBuffer();
+        ReleaseBuffer(0xffffffff);
       }
     }
     else {
-      piVar1 = this_00->field08;
-      if ((piVar1 == (int *)0x3) || ((4 < (int)piVar1 && ((int)piVar1 < 8)))) {
-        resourceId = 0xf120;
+      iVar2 = piVar1[2];
+      if ((iVar2 == 3) || ((4 < iVar2 && (iVar2 < 8)))) {
+        iVar4 = 0xf120;
       }
     }
   }
   if (*(int *)(*(int *)(unaff_EBP + 0x14) + -8) == 0) {
-    if (g_bMfcWin40UiModeEnabled == 0) {
+    if (DAT_006a7d68 == 0) {
       lstrcpynA((LPSTR)(unaff_EBP + -0x114),*(LPCSTR *)(unaff_EBP + 8),0x104);
     }
     else {
-      AfxGetFileTitle(*(char **)(unaff_EBP + 8),(char *)(unaff_EBP + -0x114),0x104);
+      AfxGetFileTitle(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x114,0x104);
     }
-    AfxFormatString1((void *)(unaff_EBP + 0x14),resourceId,(void *)(unaff_EBP + -0x114));
+    AfxFormatString1(unaff_EBP + 0x14,iVar4,unaff_EBP + -0x114);
   }
   WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
-            (*(int *)(unaff_EBP + 0x14),0x30,*(int *)(unaff_EBP + -0x10));
+            (*(undefined4 *)(unaff_EBP + 0x14),0x30,*(undefined4 *)(unaff_EBP + -0x10));
 LAB_006110dd:
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
@@ -402,73 +373,62 @@ LAB_006110dd:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611334
 // GHIDRA_NAME CDocument::GetFile
-// GHIDRA_PROTO void * __thiscall GetFile(char * pathName, uint openFlags, void * pError)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates CFile-like object, attempts open/copy operation for path+flags, and returns object or null on failure. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetFile()
 
-/* Allocates CFile-like object, attempts open/copy operation for path+flags, and returns object or
-   null on failure. [FID:FID_single_match_phase1_nodebug] */
-
-void * __thiscall CDocument::GetFile(CDocument *this,char *pathName,uint openFlags,void *pError)
+int * CDocument::GetFile(void)
 
 {
-  void *pvVar1;
-  CFileException *this_00;
-  int iVar2;
+  int iVar1;
+  int *piVar2;
+  int iVar3;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  this_00 = AllocateWithFallbackHandler();
-  *(CFileException **)(unaff_EBP + -0x10) = this_00;
+  piVar2 = (int *)AllocateWithFallbackHandler(0x14);
+  *(int **)(unaff_EBP + -0x10) = piVar2;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  if (this_00 == (CFileException *)0x0) {
-    this_00 = (CFileException *)0x0;
+  if (piVar2 == (int *)0x0) {
+    piVar2 = (int *)0x0;
   }
   else {
-    CFileException::ConstructCFileException(this_00);
+    CFileException::ConstructCFileException();
     *(undefined1 *)(unaff_EBP + -4) = 1;
     InitializeSharedStringRefFromEmpty();
-    this_00->pVtable = &PTR_LAB_006721d4;
+    *piVar2 = (int)&PTR_LAB_006721d4;
   }
-  pvVar1 = this_00->pVtable;
+  iVar1 = *piVar2;
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  iVar2 = (**(code **)((int)pvVar1 + 0x28))
+  iVar3 = (**(code **)(iVar1 + 0x28))
                     (*(undefined4 *)(unaff_EBP + 8),*(undefined4 *)(unaff_EBP + 0xc),
                      *(undefined4 *)(unaff_EBP + 0x10));
-  if (iVar2 == 0) {
-    if (this_00 != (CFileException *)0x0) {
-      (**(code **)((int)pvVar1 + 4))(1);
+  if (iVar3 == 0) {
+    if (piVar2 != (int *)0x0) {
+      (**(code **)(iVar1 + 4))(1);
     }
-    this_00 = (CFileException *)0x0;
+    piVar2 = (int *)0x0;
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return this_00;
+  return piVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006113F7
 // GHIDRA_NAME CDocument::ReleaseFileObjectCloseOrAbort
-// GHIDRA_PROTO void __thiscall ReleaseFileObjectCloseOrAbort(void * pFile, int abortFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Invokes close/abort virtual slot based on flag, then deletes the temporary file object.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ReleaseFileObjectCloseOrAbort()
 
-/* Invokes close/abort virtual slot based on flag, then deletes the temporary file object. */
-
-void __thiscall CDocument::ReleaseFileObjectCloseOrAbort(CDocument *this,void *pFile,int abortFlag)
+void CDocument::ReleaseFileObjectCloseOrAbort(int *param_1,int param_2)
 
 {
   int iVar1;
   
-  iVar1 = *(int *)pFile;
-  if (abortFlag == 0) {
+  iVar1 = *param_1;
+  if (param_2 == 0) {
     (**(code **)(iVar1 + 0x54))();
   }
   else {
     (**(code **)(iVar1 + 0x4c))();
   }
-  if (pFile != (void *)0x0) {
+  if (param_1 != (int *)0x0) {
     (**(code **)(iVar1 + 4))(1);
   }
   return;
@@ -476,21 +436,15 @@ void __thiscall CDocument::ReleaseFileObjectCloseOrAbort(CDocument *this,void *p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611443
 // GHIDRA_NAME CDocument::OnOpenDocument
-// GHIDRA_PROTO bool __thiscall OnOpenDocument(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds archive state, opens backing file with mode 0x20, runs callback under MFC temp-map lock, then flushes and releases archive resources. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OnOpenDocument()
 
-/* Builds archive state, opens backing file with mode 0x20, runs callback under MFC temp-map lock,
-   then flushes and releases archive resources. [FID:FID_single_match_phase1_nodebug] */
-
-bool __thiscall CDocument::OnOpenDocument(CDocument *this)
+undefined4 CDocument::OnOpenDocument(void)
 
 {
   int iVar1;
   code *pcVar2;
-  bool bVar3;
-  int iVar4;
+  int iVar3;
+  undefined4 uVar4;
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -500,41 +454,41 @@ bool __thiscall CDocument::OnOpenDocument(CDocument *this)
   *(int **)(unaff_EBP + -0x1c) = extraout_ECX;
   iVar1 = *extraout_ECX;
   (**(code **)(iVar1 + 0x60))();
-  ConstructSerializedDataExceptionBase((void *)(unaff_EBP + -0x34));
+  ConstructSerializedDataExceptionBase();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   InitializeSharedStringRefFromEmpty();
   *(undefined4 *)(unaff_EBP + -0x2c) = 0;
   *(undefined4 *)(unaff_EBP + -0x28) = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
-  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78();
+  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(0);
   *(undefined4 *)(unaff_EBP + -4) = 2;
-  iVar4 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x20,unaff_EBP + -0x34);
-  *(int *)(unaff_EBP + -0x14) = iVar4;
-  if (iVar4 == 0) {
+  iVar3 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x20,unaff_EBP + -0x34);
+  *(int *)(unaff_EBP + -0x14) = iVar3;
+  if (iVar3 == 0) {
     (**(code **)(iVar1 + 0x88))(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x34,0,0xf101);
     *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 3;
     ReleaseSharedStringRefIfNotEmpty();
-    bVar3 = false;
+    uVar4 = 0;
   }
   else {
     (**(code **)(iVar1 + 0x74))();
     pcVar2 = *(code **)(iVar1 + 100);
     *(code **)(unaff_EBP + -0x18) = pcVar2;
     (*pcVar2)(1);
-    CArchive((CDocument *)(unaff_EBP + -0x78),*(int *)(unaff_EBP + -0x14),3,0x1000,0);
+    CArchive(*(undefined4 *)(unaff_EBP + -0x14),3,0x1000,0);
     *(undefined4 *)(unaff_EBP + -0x74) = 0;
     *(int **)(unaff_EBP + -0x78) = extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
     BeginWaitCursor();
     *(undefined1 *)(unaff_EBP + -4) = 6;
-    iVar4 = (**(code **)(**(int **)(unaff_EBP + -0x14) + 0x38))();
-    if (iVar4 != 0) {
+    iVar3 = (**(code **)(**(int **)(unaff_EBP + -0x14) + 0x38))();
+    if (iVar3 != 0) {
       (**(code **)(iVar1 + 8))(unaff_EBP + -0x78);
     }
-    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount((TNetMgr *)(unaff_EBP + -0x78));
+    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount();
     (**(code **)(iVar1 + 0x90))(*(undefined4 *)(unaff_EBP + -0x14),0);
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
@@ -542,31 +496,25 @@ bool __thiscall CDocument::OnOpenDocument(CDocument *this)
     *(undefined4 *)(unaff_EBP + -4) = 4;
     (**(code **)(unaff_EBP + -0x18))(0);
     *(undefined1 *)(unaff_EBP + -4) = 2;
-    ReleaseSerializedArchiveBufferState((CDocument *)(unaff_EBP + -0x78));
+    ReleaseSerializedArchiveBufferState();
     *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 0xb;
     ReleaseSharedStringRefIfNotEmpty();
-    bVar3 = true;
+    uVar4 = 1;
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return bVar3;
+  return uVar4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061160E
 // GHIDRA_NAME CDocument::OnSaveDocument
-// GHIDRA_PROTO bool __thiscall OnSaveDocument(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds archive state, opens backing file with mode 0x1012, runs callback under MFC temp-map lock, then flushes and releases archive resources. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OnSaveDocument()
 
-/* Builds archive state, opens backing file with mode 0x1012, runs callback under MFC temp-map lock,
-   then flushes and releases archive resources. [FID:FID_single_match_phase1_nodebug] */
-
-bool __thiscall CDocument::OnSaveDocument(CDocument *this)
+bool CDocument::OnSaveDocument(void)
 
 {
   int iVar1;
-  int arg1;
+  int iVar2;
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -574,20 +522,20 @@ bool __thiscall CDocument::OnSaveDocument(CDocument *this)
   EstablishSehFrameProlog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffff8c;
   *(int **)(unaff_EBP + -0x18) = extraout_ECX;
-  ConstructSerializedDataExceptionBase((void *)(unaff_EBP + -0x30));
+  ConstructSerializedDataExceptionBase();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   InitializeSharedStringRefFromEmpty();
   *(undefined4 *)(unaff_EBP + -0x24) = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *(undefined ***)(unaff_EBP + -0x30) = &PTR_GetCFileExceptionRuntimeClass_00672234;
   *(undefined4 *)(unaff_EBP + -0x28) = 0;
-  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78();
+  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(0);
   iVar1 = *extraout_ECX;
   *(undefined4 *)(unaff_EBP + -4) = 2;
-  arg1 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x1012,unaff_EBP + -0x30);
-  *(int *)(unaff_EBP + -0x14) = arg1;
-  if (arg1 != 0) {
-    CArchive((CDocument *)(unaff_EBP + -0x74),arg1,2,0x1000,0);
+  iVar2 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x1012,unaff_EBP + -0x30);
+  *(int *)(unaff_EBP + -0x14) = iVar2;
+  if (iVar2 != 0) {
+    CArchive(iVar2,2,0x1000,0);
     *(undefined4 *)(unaff_EBP + -0x70) = 0;
     *(int **)(unaff_EBP + -0x74) = extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 5;
@@ -595,7 +543,7 @@ bool __thiscall CDocument::OnSaveDocument(CDocument *this)
     BeginWaitCursor();
     *(undefined1 *)(unaff_EBP + -4) = 6;
     (**(code **)(iVar1 + 8))(unaff_EBP + -0x74);
-    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount((TNetMgr *)(unaff_EBP + -0x74));
+    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount();
     (**(code **)(iVar1 + 0x90))(*(undefined4 *)(unaff_EBP + -0x14),0);
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
@@ -603,7 +551,7 @@ bool __thiscall CDocument::OnSaveDocument(CDocument *this)
     *(undefined4 *)(unaff_EBP + -4) = 4;
     (**(code **)(iVar1 + 100))(0);
     *(undefined1 *)(unaff_EBP + -4) = 2;
-    ReleaseSerializedArchiveBufferState((CDocument *)(unaff_EBP + -0x74));
+    ReleaseSerializedArchiveBufferState();
     *(undefined ***)(unaff_EBP + -0x30) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 0xb;
     ReleaseSharedStringRefIfNotEmpty();
@@ -615,114 +563,117 @@ bool __thiscall CDocument::OnSaveDocument(CDocument *this)
     ReleaseSharedStringRefIfNotEmpty();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return arg1 != 0;
+  return iVar2 != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00611810
+// GHIDRA_NAME CDocument::AddView
+// GHIDRA_PROTO undefined AddView()
+
+void __thiscall CDocument::AddView(int *param_1,int param_2)
+
+{
+  int iVar1;
+  
+  CPtrList::AddTail(param_2);
+  iVar1 = *param_1;
+  *(int **)(param_2 + 0x3c) = param_1;
+  (**(code **)(iVar1 + 0x70))();
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611BB4
 // GHIDRA_NAME CDocument::CArchive
-// GHIDRA_PROTO void __thiscall CArchive(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes serialized archive buffer fields, mode flags, backing stream pointer, and allocation strategy for archive I/O. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CArchive()
 
-/* Initializes serialized archive buffer fields, mode flags, backing stream pointer, and allocation
-   strategy for archive I/O. [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall CDocument::CArchive(CDocument *this,int arg1,int arg2,int arg3,int arg4)
+undefined4 * CDocument::CArchive(void)
 
 {
   undefined4 uVar1;
-  undefined4 uVar2;
-  int iVar3;
-  void *pvVar4;
+  int iVar2;
+  undefined4 uVar3;
   undefined4 *extraout_ECX;
-  int iVar5;
+  int iVar4;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  iVar3 = **(int **)(unaff_EBP + 8);
-  (**(code **)(iVar3 + 0x20))(extraout_ECX + 4);
-  uVar1 = *(undefined4 *)(unaff_EBP + 0xc);
-  uVar2 = *(undefined4 *)(unaff_EBP + 8);
+  iVar2 = **(int **)(unaff_EBP + 8);
+  (**(code **)(iVar2 + 0x20))(extraout_ECX + 4);
+  uVar3 = *(undefined4 *)(unaff_EBP + 0xc);
+  uVar1 = *(undefined4 *)(unaff_EBP + 8);
   extraout_ECX[3] = 0xffffffff;
-  extraout_ECX[5] = uVar1;
-  extraout_ECX[8] = uVar2;
+  extraout_ECX[5] = uVar3;
+  extraout_ECX[8] = uVar1;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   extraout_ECX[0xe] = 0;
   extraout_ECX[0xd] = 0;
   *extraout_ECX = 0;
   extraout_ECX[1] = 1;
-  if ((~(byte)uVar1 & 1) == 0) {
+  if ((~(byte)uVar3 & 1) == 0) {
     extraout_ECX[0xf] = 0x40;
   }
   else {
     extraout_ECX[0xf] = 0x10;
   }
-  uVar1 = *(undefined4 *)(unaff_EBP + 0x14);
+  uVar3 = *(undefined4 *)(unaff_EBP + 0x14);
   extraout_ECX[6] = 1;
-  extraout_ECX[0xb] = uVar1;
-  iVar5 = *(int *)(unaff_EBP + 0x10);
+  extraout_ECX[0xb] = uVar3;
+  iVar4 = *(int *)(unaff_EBP + 0x10);
   extraout_ECX[0x10] = 0x89;
   extraout_ECX[2] = 0;
-  if (iVar5 < 0x80) {
+  if (iVar4 < 0x80) {
     extraout_ECX[7] = 0x80;
     extraout_ECX[0xb] = 0;
   }
   else {
-    extraout_ECX[7] = iVar5;
+    extraout_ECX[7] = iVar4;
   }
-  iVar5 = extraout_ECX[0xb];
+  iVar4 = extraout_ECX[0xb];
   *(undefined4 *)(unaff_EBP + 0x10) = extraout_ECX[7];
-  if (iVar5 == 0) {
-    iVar3 = (**(code **)(iVar3 + 0x58))(3,0,0,0);
-    extraout_ECX[2] = iVar3;
-    if (iVar3 == 0) {
-      pvVar4 = AllocateWithFallbackHandler();
-      extraout_ECX[0xb] = pvVar4;
+  if (iVar4 == 0) {
+    iVar2 = (**(code **)(iVar2 + 0x58))(3,0,0,0);
+    extraout_ECX[2] = iVar2;
+    if (iVar2 == 0) {
+      uVar3 = AllocateWithFallbackHandler(extraout_ECX[7]);
+      extraout_ECX[0xb] = uVar3;
       extraout_ECX[6] = 0;
     }
     else {
       *(undefined4 *)(unaff_EBP + 0x10) = 0;
     }
   }
-  iVar5 = *(int *)(unaff_EBP + 0x10) + extraout_ECX[0xb];
-  extraout_ECX[10] = iVar5;
-  iVar3 = extraout_ECX[0xb];
+  iVar4 = *(int *)(unaff_EBP + 0x10) + extraout_ECX[0xb];
+  extraout_ECX[10] = iVar4;
+  iVar2 = extraout_ECX[0xb];
   if ((*(byte *)(extraout_ECX + 5) & 1) != 0) {
-    iVar3 = iVar5;
+    iVar2 = iVar4;
   }
-  uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
-  extraout_ECX[9] = iVar3;
-  *unaff_FS_OFFSET = uVar1;
-  return;
+  uVar3 = *(undefined4 *)(unaff_EBP + -0xc);
+  extraout_ECX[9] = iVar2;
+  *unaff_FS_OFFSET = uVar3;
+  return extraout_ECX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611C90
 // GHIDRA_NAME CDocument::ReleaseSerializedArchiveBufferState
-// GHIDRA_PROTO void __thiscall ReleaseSerializedArchiveBufferState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Flushes pending serialized archive buffer state when needed, frees backing buffers/maps, and releases shared string refs.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ReleaseSerializedArchiveBufferState()
 
-/* Flushes pending serialized archive buffer state when needed, frees backing buffers/maps, and
-   releases shared string refs. */
-
-void __thiscall CDocument::ReleaseSerializedArchiveBufferState(CDocument *this)
+void CDocument::ReleaseSerializedArchiveBufferState(void)
 
 {
-  TNetMgr *this_00;
+  int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  *(TNetMgr **)(unaff_EBP + -0x10) = this_00;
+  *(int *)(unaff_EBP + -0x10) = extraout_ECX;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  if ((this_00->field8_0x20 != (int *)0x0) && ((this_00->field14 & 2) == 0)) {
-    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount(this_00);
+  if ((*(int *)(extraout_ECX + 0x20) != 0) && ((*(byte *)(extraout_ECX + 0x14) & 2) == 0)) {
+    TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount();
   }
-  Abort_611cd6(this_00);
+  Abort_611cd6();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);

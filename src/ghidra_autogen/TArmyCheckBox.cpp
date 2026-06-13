@@ -5,17 +5,12 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9F20
 // GHIDRA_NAME TArmyCheckBox::CreateTArmyCheckBoxInstance
-// GHIDRA_PROTO void * __cdecl CreateTArmyCheckBoxInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TArmyCheckBox; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTArmyCheckBoxInstance()
 
-/* [ClassQuad] create inferred for TArmyCheckBox; alloc factory pattern. */
-
-void * __cdecl TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
+undefined4 * TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -25,91 +20,76 @@ void * __cdecl TArmyCheckBox::CreateTArmyCheckBoxInstance(void)
   puStack_8 = &LAB_0063048a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-    *(undefined4 *)&this->field_0x88 = 0;
-    this->field90 = (byte *)0x0;
-    *(undefined4 *)&this->field_0x8c = 0;
-    this->field_0x84 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_0064cec0;
+    puVar1[0x22] = 0;
+    puVar1[0x24] = 0;
+    puVar1[0x23] = 0;
+    *(undefined1 *)(puVar1 + 0x21) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9FC0
 // GHIDRA_NAME TArmyCheckBox::GetTArmyCheckBoxClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmyCheckBoxClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmyCheckBox.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmyCheckBoxClassNamePointer()
 
-/* Returns class descriptor pointer for TArmyCheckBox. */
-
-void * __cdecl TArmyCheckBox::GetTArmyCheckBoxClassNamePointer(void)
+undefined ** TArmyCheckBox::GetTArmyCheckBoxClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmyCheckBox;
+  return &PTR_s_TArmyCheckBox_0064cb68;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9FE0
 // GHIDRA_NAME TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-// GHIDRA_PROTO void __thiscall ConstructTArmyCheckBoxBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_InitializeUiResourceEntryFrameAndParent; instructions=20, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_InitializeUiResourceEntryFrameAndParent;
-   instructions=20, call_insns=1, internal_calls=1, unique_internal=1 */
+// GHIDRA_PROTO undefined ConstructTArmyCheckBoxBaseState()
 
 void __thiscall
 TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-          (TArmyCheckBox *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6,int arg7)
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5,
+          undefined4 param_6,undefined4 param_7,undefined4 param_8)
 
 {
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  this->field132_0x90 = (void *)arg6;
-  this->field130_0x88 = (void *)arg7;
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_4,4,4,0);
+  *(undefined4 *)(param_1 + 0x90) = param_7;
+  *(undefined4 *)(param_1 + 0x88) = param_8;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA030
 // GHIDRA_NAME TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTArmyCheckBoxAndMaybeFree(byte notify)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Updates army-checkbox selection offset/state and optionally triggers redraw/callback.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTArmyCheckBoxAndMaybeFree()
 
-/* Updates army-checkbox selection offset/state and optionally triggers redraw/callback. */
-
-void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(TArmyCheckBox *this,byte notify)
+void __thiscall TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree(int *param_1,char param_2)
 
 {
-  void *pvVar1;
+  int iVar1;
   
-  if ((this->field126_0x84 == '\0') && (this->field94_0x64 == '\0')) {
-    if (this->field131_0x8c != 0) {
-      pvVar1 = this->pVtable;
-      this->field130_0x88 = (void *)((int)this->field130_0x88 - this->field49_0x34);
-      this->field131_0x8c = 0;
-      (**(code **)((int)pvVar1 + 0xe4))();
-      if (notify != 0) {
-        (**(code **)((int)pvVar1 + 0x1d8))();
+  if (((char)param_1[0x21] == '\0') && ((char)param_1[0x19] == '\0')) {
+    if (param_1[0x23] != 0) {
+      iVar1 = *param_1;
+      param_1[0x22] = param_1[0x22] - param_1[0xd];
+      param_1[0x23] = 0;
+      (**(code **)(iVar1 + 0xe4))();
+      if (param_2 != '\0') {
+        (**(code **)(iVar1 + 0x1d8))();
         return;
       }
     }
   }
-  else if (this->field131_0x8c == 0) {
-    pvVar1 = this->pVtable;
-    this->field131_0x8c = 1;
-    this->field130_0x88 = (void *)((int)this->field130_0x88 + this->field49_0x34);
-    (**(code **)((int)pvVar1 + 0xe4))();
-    if (notify != 0) {
-      (**(code **)((int)pvVar1 + 0x1d8))();
+  else if (param_1[0x23] == 0) {
+    iVar1 = *param_1;
+    param_1[0x23] = 1;
+    param_1[0x22] = param_1[0x22] + param_1[0xd];
+    (**(code **)(iVar1 + 0xe4))();
+    if (param_2 != '\0') {
+      (**(code **)(iVar1 + 0x1d8))();
     }
   }
   return;

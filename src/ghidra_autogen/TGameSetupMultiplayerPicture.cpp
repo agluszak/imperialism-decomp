@@ -3,57 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TGameSetupMultiplayerPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401E24
-// GHIDRA_NAME TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot055
-// GHIDRA_PROTO void __thiscall TGameSetupMultiplayerPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeDiplomacyProtocolOptionsOrResetSelection
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040355D
-// GHIDRA_NAME TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot015
-// GHIDRA_PROTO void __thiscall TGameSetupMultiplayerPicture_VtblSlot015(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleSetupDialogCommandTagsAndDispatchEvents
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403ADF
-// GHIDRA_NAME TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TGameSetupMultiplayerPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTGameSetupMultiplayerPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004085BC
-// GHIDRA_NAME TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TGameSetupMultiplayerPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGameSetupMultiplayerPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGameSetupMultiplayerPictureClassNamePointer */
-
-void * __cdecl TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTGameSetupMultiplayerPictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00575E90
 // GHIDRA_NAME TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTGameSetupMultiplayerPictureInstance(void)
+// GHIDRA_PROTO undefined CreateTGameSetupMultiplayerPictureInstance()
 
-void * __cdecl TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPictureInstance(void)
+undefined4 * TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPictureInstance(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -63,48 +21,113 @@ void * __cdecl TGameSetupMultiplayerPicture::CreateTGameSetupMultiplayerPictureI
   puStack_8 = &LAB_0063682a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    this->field0_0x0 = &g_vtblTGameSetupMultiplayerPicture;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    *puVar1 = &PTR_LAB_00661d80;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F10
 // GHIDRA_NAME TGameSetupMultiplayerPicture::GetTGameSetupMultiplayerPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTGameSetupMultiplayerPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TGameSetupMultiplayerPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTGameSetupMultiplayerPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TGameSetupMultiplayerPicture. */
-
-void * __cdecl TGameSetupMultiplayerPicture::GetTGameSetupMultiplayerPictureClassNamePointer(void)
+undefined ** TGameSetupMultiplayerPicture::GetTGameSetupMultiplayerPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTGameSetupMultiplayerPicture;
+  return &PTR_s_TGameSetupMultiplayerPicture_00661998;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F30
 // GHIDRA_NAME TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTGameSetupMultiplayerPictureBaseState(void)
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
+// GHIDRA_PROTO undefined ConstructTGameSetupMultiplayerPictureBaseState()
+
+undefined4 * __fastcall
+TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState(undefined4 *param_1)
+
+{
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00661d80;
+  return param_1;
+}
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575F60
 // GHIDRA_NAME TGameSetupMultiplayerPicture::DestructTGameSetupMultiplayerPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTGameSetupMultiplayerPictureAndMaybeFree(byte freeSelfFlag)
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
+// GHIDRA_PROTO undefined DestructTGameSetupMultiplayerPictureAndMaybeFree()
+
+undefined4 __thiscall
+TGameSetupMultiplayerPicture::DestructTGameSetupMultiplayerPictureAndMaybeFree
+          (undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
+}
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575FB0
 // GHIDRA_NAME TGameSetupMultiplayerPicture::InitializeDiplomacyProtocolOptionsOrResetSelection
-// GHIDRA_PROTO void __thiscall InitializeDiplomacyProtocolOptionsOrResetSelection(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes protocol-option controls; resets diplomacy runtime selection when provider init fails.
-// GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Low-level Error: Field field90 does not fit in structure TGameSetupMultiplayerPicture */
+// GHIDRA_PROTO undefined InitializeDiplomacyProtocolOptionsOrResetSelection()
+
+void __thiscall
+TGameSetupMultiplayerPicture::InitializeDiplomacyProtocolOptionsOrResetSelection
+          (int *param_1,undefined4 param_2)
+
+{
+  code *pcVar1;
+  char cVar2;
+  int *piVar3;
+  int iVar4;
+  
+  TView::thunk_NoOpUiLifecycleHook(param_2);
+  pcVar1 = *(code **)(*param_1 + 0x94);
+  piVar3 = (int *)(*pcVar1)(0x70726f74);
+  (**(code **)(*piVar3 + 0xc))();
+  *(undefined2 *)(piVar3 + 0x23) = 0x4c;
+  *(undefined2 *)((int)piVar3 + 0x8e) = 0x4d;
+  cVar2 = InitializeProtocolOptionControlFromProvider(param_1);
+  if (cVar2 == '\0') {
+    ResetDiplomacyRuntimeSelectionAndSetModeNada();
+  }
+  else {
+    InitializeSelectableTextOptionEntryIteratorContext(piVar3);
+    piVar3 = (int *)BeginSelectableTextOptionEntryIterator();
+    iVar4 = IsSelectableTextOptionEntryIteratorValid();
+    while (iVar4 != 0) {
+      (**(code **)(*piVar3 + 0xc))();
+      ApplyUiTextStyleAndThemeFlags(piVar3,0,0xc,0x2b6c,0x2b6a);
+      piVar3 = (int *)AdvanceSelectableTextOptionEntryIterator();
+      iVar4 = IsSelectableTextOptionEntryIteratorValid();
+    }
+    g_pCursorControlPanel = (int *)(*pcVar1)(0x63757273);
+    (**(code **)(*g_pCursorControlPanel + 0xc))();
+    thunk_BuildUiTextStyleDescriptor(&stack0xffffffd8,0,0xe,0x2b6c);
+    (**(code **)(*g_pCursorControlPanel + 0x1e4))(&stack0xffffffd8,1);
+    (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6b,0x2b6c);
+    (**(code **)(*g_pCursorControlPanel + 0x1c4))(1,0);
+    InitializeMainRoutineContextAndRun(&g_szEmptyString,0x6d61696e);
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x1f,0x72616e64);
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x20,0x7363656e);
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x21,0x6c6f6164);
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x22,0x6d756c74);
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x23,0x6a6f696e);
+    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(0x2737,0x24,0x70726f74);
+  }
+  cVar2 = WrapperFor_FindFirstFileAndPopulateFileInfoRecord_At005e02f0();
+  if (cVar2 != '\0') {
+    piVar3 = (int *)(*pcVar1)(0x73706974);
+    iVar4 = *piVar3;
+    (**(code **)(iVar4 + 0xc))();
+    (**(code **)(iVar4 + 0xa8))(1,0);
+    LoadUiStringByGroupAndIndexToControlObject(0x2759,7,piVar3);
+  }
+  return;
+}
 

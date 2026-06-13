@@ -3,38 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TMinisterView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040518C
-// GHIDRA_NAME TMinisterView::thunk_DestructTMinisterViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMinisterViewAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTMinisterView [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTMinisterView [FID:thunk_target_sync] */
-
-void * __thiscall
-TMinisterView::thunk_DestructTMinisterViewAndMaybeFree(TMinisterView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTMinisterViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2BB0
 // GHIDRA_NAME TMinisterView::CreateTMinisterViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTMinisterViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TMinisterView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTMinisterViewInstance()
 
-/* [ClassQuad] create inferred for TMinisterView; alloc factory pattern. */
-
-void * __cdecl TMinisterView::CreateTMinisterViewInstance(void)
+undefined4 * TMinisterView::CreateTMinisterViewInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -44,69 +20,54 @@ void * __cdecl TMinisterView::CreateTMinisterViewInstance(void)
   puStack_8 = &LAB_00632a0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &PTR_thunk_GetTMinisterViewClassNamePointer_00655100;
-    this[1].pVtable = (void *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00655100;
+    puVar1[0x18] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C40
 // GHIDRA_NAME TMinisterView::GetTMinisterViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMinisterViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMinisterView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMinisterViewClassNamePointer()
 
-/* Returns class descriptor pointer for TMinisterView. */
-
-void * __cdecl TMinisterView::GetTMinisterViewClassNamePointer(void)
+undefined ** TMinisterView::GetTMinisterViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTMinisterView;
+  return &PTR_s_TMinisterView_00654ed0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C60
 // GHIDRA_NAME TMinisterView::ConstructTMinisterViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTMinisterViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] ctor inferred for TMinisterView; vtable install pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTMinisterViewBaseState()
 
-/* [ClassQuad] ctor inferred for TMinisterView; vtable install pattern. */
-
-void * __thiscall TMinisterView::ConstructTMinisterViewBaseState(TMinisterView *this)
+undefined4 * __fastcall TMinisterView::ConstructTMinisterViewBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &PTR_thunk_GetTMinisterViewClassNamePointer_00655100;
-  this->field1_0x60 = (void *)0x0;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_00655100;
+  param_1[0x18] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C90
 // GHIDRA_NAME TMinisterView::DestructTMinisterViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTMinisterViewAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] dtor inferred for TMinisterView; free-if-owned pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTMinisterViewAndMaybeFree()
 
-/* [ClassQuad] dtor inferred for TMinisterView; free-if-owned pattern. */
-
-void * __thiscall
-TMinisterView::DestructTMinisterViewAndMaybeFree(TMinisterView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TMinisterView::DestructTMinisterViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

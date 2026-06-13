@@ -3,53 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: T2PictureButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004022D9
-// GHIDRA_NAME T2PictureButton::T2PictureButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall T2PictureButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructT2PictureButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructT2PictureButtonAndMaybeFree */
-
-void * __thiscall
-T2PictureButton::T2PictureButton_VtblSlot001(T2PictureButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructT2PictureButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404E80
-// GHIDRA_NAME T2PictureButton::T2PictureButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl T2PictureButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetT2PictureButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetT2PictureButtonClassNamePointer */
-
-void * __cdecl T2PictureButton::T2PictureButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetT2PictureButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00570B10
 // GHIDRA_NAME T2PictureButton::CreateT2PictureButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateT2PictureButtonInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for T2PictureButton; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateT2PictureButtonInstance()
 
-/* [ClassQuad] create inferred for T2PictureButton; alloc factory pattern. */
-
-void * __cdecl T2PictureButton::CreateT2PictureButtonInstance(void)
+undefined4 * T2PictureButton::CreateT2PictureButtonInstance(void)
 
 {
   undefined4 *puVar1;
@@ -63,13 +21,13 @@ void * __cdecl T2PictureButton::CreateT2PictureButtonInstance(void)
   puStack_8 = &LAB_0063638a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
+    thunk_TPictureButton::TPictureButton();
     *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    *puVar1 = &g_vtblT2PictureButton;
+    *puVar1 = &PTR_LAB_0065eb60;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -78,22 +36,17 @@ void * __cdecl T2PictureButton::CreateT2PictureButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570B90
 // GHIDRA_NAME T2PictureButton::GetT2PictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetT2PictureButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for T2PictureButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetT2PictureButtonClassNamePointer()
 
-/* Returns class descriptor pointer for T2PictureButton. */
-
-void * __cdecl T2PictureButton::GetT2PictureButtonClassNamePointer(void)
+undefined ** T2PictureButton::GetT2PictureButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescT2PictureButton;
+  return &PTR_s_T2PictureButton_0065e568;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570BB0
 // GHIDRA_NAME T2PictureButton::ConstructUiBattleTabPictureEntry
-// GHIDRA_PROTO void __thiscall ConstructUiBattleTabPictureEntry(void)
+// GHIDRA_PROTO undefined ConstructUiBattleTabPictureEntry()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived picture entry used by BuildTurnEventDialogUiByCode battle-tab sequence (tag evidence includes batt/ttab path with event-id sequence 0x101B..0x101F).
 // GHIDRA_COMMENT_END
@@ -101,27 +54,12 @@ void * __cdecl T2PictureButton::GetT2PictureButtonClassNamePointer(void)
 /* Derived picture entry used by BuildTurnEventDialogUiByCode battle-tab sequence (tag evidence
    includes batt/ttab path with event-id sequence 0x101B..0x101F). */
 
-void __thiscall T2PictureButton::ConstructUiBattleTabPictureEntry(T2PictureButton *this)
+undefined4 * __fastcall T2PictureButton::ConstructUiBattleTabPictureEntry(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field143_0x92 = 7000;
-  this->field0_0x0 = &g_vtblT2PictureButton;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00570BE0
-// GHIDRA_NAME T2PictureButton::DestructT2PictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructT2PictureButtonAndMaybeFree(byte freeSelfFlag)
-
-void * __thiscall
-T2PictureButton::DestructT2PictureButtonAndMaybeFree(T2PictureButton *this,byte freeSelfFlag)
-
-{
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *(undefined2 *)((int)param_1 + 0x92) = 7000;
+  *param_1 = &PTR_LAB_0065eb60;
+  return param_1;
 }
 

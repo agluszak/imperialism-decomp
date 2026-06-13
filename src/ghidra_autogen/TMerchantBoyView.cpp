@@ -3,90 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TMerchantBoyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040239C
-// GHIDRA_NAME TMerchantBoyView::thunk_GetTMerchantBoyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMerchantBoyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMerchantBoyViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMerchantBoyViewClassNamePointer */
-
-void * __cdecl TMerchantBoyView::thunk_GetTMerchantBoyViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMerchantBoyViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004045E3
-// GHIDRA_NAME TMerchantBoyView::thunk_scalar_deleting_destructor_004045E3
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004045E3(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TMerchantBoyView::thunk_scalar_deleting_destructor_004045E3
-          (TMerchantBoyView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040664F
-// GHIDRA_NAME TMerchantBoyView::thunk_ConstructTMerchantBoyViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTMerchantBoyViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to RenderMerchantBoyCommodityCountAndStatusLabel [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk to RenderMerchantBoyCommodityCountAndStatusLabel [FID:thunk_target_sync] */
-
-void __thiscall TMerchantBoyView::thunk_ConstructTMerchantBoyViewBaseState(TMerchantBoyView *this)
-
-{
-  ConstructTMerchantBoyViewBaseState(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF760
 // GHIDRA_NAME TMerchantBoyView::GetTMerchantBoyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMerchantBoyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMerchantBoyView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMerchantBoyViewClassNamePointer()
 
-/* Returns class descriptor pointer for TMerchantBoyView. */
-
-void * __cdecl TMerchantBoyView::GetTMerchantBoyViewClassNamePointer(void)
+undefined ** TMerchantBoyView::GetTMerchantBoyViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTMerchantBoyView;
+  return &PTR_s_TMerchantBoyView_0064dce0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF780
 // GHIDRA_NAME TMerchantBoyView::ConstructTMerchantBoyViewBaseState
-// GHIDRA_PROTO void __thiscall ConstructTMerchantBoyViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] Renders merchant-boy commodity count and localized status label with style/measure/position flow.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTMerchantBoyViewBaseState()
 
-/* [ClassLane] Renders merchant-boy commodity count and localized status label with
-   style/measure/position flow. */
-
-void __thiscall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(TMerchantBoyView *this)
+void __fastcall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(int param_1)
 
 {
-  THQButton *this_00;
-  THQButton *this_01;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_18;
   undefined4 uStack_c;
@@ -103,20 +36,20 @@ void __thiscall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(TMerchantBo
   InitializeSharedStringRefFromEmpty();
   local_4 = CONCAT31(local_4._1_3_,1);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
-  thunk_FormatLocalizedCommodityCountLabelByIndex();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x50,0x18);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  if (*(short *)((int)this->field93_0x60 + 2) == 0) {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  FormatLocalizedCommodityCountLabelByIndex();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  if (*(short *)(*(int *)(param_1 + 0x60) + 2) == 0) {
+    (**(code **)(*g_pLocalizationTable + 0x84))();
   }
   else {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+    (**(code **)(*g_pLocalizationTable + 0x84))();
   }
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
   thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x50,0x26);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
-  TCivDescription::SetQuickDrawStrokeColor();
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawStrokeColor();
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_18;
@@ -125,18 +58,13 @@ void __thiscall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(TMerchantBo
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF910
 // GHIDRA_NAME TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree
-// GHIDRA_PROTO void * __cdecl DestructTMerchantBoyViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and constructs merchant-boy view panel instance.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTMerchantBoyViewAndMaybeFree()
 
-/* Allocates and constructs merchant-boy view panel instance. */
-
-void * __cdecl TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree(void)
+undefined4 * TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -146,15 +74,15 @@ void * __cdecl TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree(void)
   puStack_8 = &LAB_00630a7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &PTR_thunk_GetTItemBoyViewClassNamePointer_0064e5e0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_0064e5e0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 

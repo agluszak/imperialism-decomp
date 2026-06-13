@@ -3,158 +3,70 @@
 // Program: Imperialism.exe
 // Bucket: TCivAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401EAB
-// GHIDRA_NAME TCivAnimation::thunk_DestructTCivAnimationAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCivAnimationAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCivAnimationAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCivAnimationAndMaybeFree */
-
-void * __thiscall
-TCivAnimation::thunk_DestructTCivAnimationAndMaybeFree(TCivAnimation *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTCivAnimationAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403CE7
-// GHIDRA_NAME TCivAnimation::thunk_GetTCivAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCivAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCivAnimationClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCivAnimationClassNamePointer */
-
-void * __cdecl TCivAnimation::thunk_GetTCivAnimationClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCivAnimationClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004080AD
-// GHIDRA_NAME TCivAnimation::thunk_CreateTCivAnimationInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTCivAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTCivAnimationRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTCivAnimationRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TCivAnimation::thunk_CreateTCivAnimationInstance(TCivAnimation *this)
-
-{
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408D9B
-// GHIDRA_NAME TCivAnimation::thunk_ConstructTCivAnimationBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTCivAnimationBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AdvanceCivAnimationFrameAndInvalidateOnCycle [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AdvanceCivAnimationFrameAndInvalidateOnCycle [FID:thunk_target_sync] */
-
-void __thiscall TCivAnimation::thunk_ConstructTCivAnimationBaseState(TCivAnimation *this)
-
-{
-  ConstructTCivAnimationBaseState(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F4B0
 // GHIDRA_NAME TCivAnimation::CreateTCivAnimationInstance
-// GHIDRA_PROTO void * __thiscall CreateTCivAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TCivAnimation runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCivAnimationInstance()
 
-/* Returns TCivAnimation runtime class descriptor pointer. */
-
-void * __thiscall TCivAnimation::CreateTCivAnimationInstance(TCivAnimation *this)
+void __fastcall TCivAnimation::CreateTCivAnimationInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F4D0
 // GHIDRA_NAME TCivAnimation::GetTCivAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCivAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCivAnimation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCivAnimationClassNamePointer()
 
-/* Returns class descriptor pointer for TCivAnimation. */
-
-void * __cdecl TCivAnimation::GetTCivAnimationClassNamePointer(void)
+undefined ** TCivAnimation::GetTCivAnimationClassNamePointer(void)
 
 {
-  return &g_pClassDescTCivAnimation;
+  return &PTR_s_TCivAnimation_0064c208;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F580
 // GHIDRA_NAME TCivAnimation::ConstructTCivAnimationBaseState
-// GHIDRA_PROTO void __thiscall ConstructTCivAnimationBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Advances CivAnimation frame timer and invalidates city dialog when frame cycle advances.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTCivAnimationBaseState()
 
-/* Advances CivAnimation frame timer and invalidates city dialog when frame cycle advances. */
-
-void __thiscall TCivAnimation::ConstructTCivAnimationBaseState(TCivAnimation *this)
+void __fastcall TCivAnimation::ConstructTCivAnimationBaseState(int param_1)
 
 {
-  uint uVar1;
+  ushort uVar1;
   int iVar2;
   
-  iVar2 = this->field10 + 1;
-  this->field10 = iVar2;
-  if (iVar2 != this->field14) {
+  iVar2 = *(int *)(param_1 + 0x10) + 1;
+  *(int *)(param_1 + 0x10) = iVar2;
+  if (iVar2 != *(int *)(param_1 + 0x14)) {
     return;
   }
-  thunk_InvalidateCityDialogRectRegion((int)&this->pField1c,1);
-  this->field08 = this->field08 + 1;
-  this->field10 = 0;
-  if (this->field08 != this->field0a) {
-    if (this->field08 != this->field2c) {
+  thunk_InvalidateCityDialogRectRegion(param_1 + 0x1c,1);
+  *(short *)(param_1 + 8) = *(short *)(param_1 + 8) + 1;
+  *(undefined4 *)(param_1 + 0x10) = 0;
+  if (*(short *)(param_1 + 8) != *(short *)(param_1 + 10)) {
+    if (*(short *)(param_1 + 8) != *(short *)(param_1 + 0x2c)) {
       return;
     }
     uVar1 = GenerateThreadLocalRandom15();
-    if (this->field2e <= (short)((ushort)uVar1 & 0xf)) {
+    if (*(short *)(param_1 + 0x2e) <= (short)(uVar1 & 0xf)) {
       return;
     }
   }
-  this->field08 = 0;
+  *(undefined2 *)(param_1 + 8) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F630
 // GHIDRA_NAME TCivAnimation::DestructTCivAnimationAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCivAnimationAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTCivAnimationAndMaybeFree()
 
-void * __thiscall
-TCivAnimation::DestructTCivAnimationAndMaybeFree(TCivAnimation *this,byte freeSelfFlag)
+undefined4 __thiscall
+TCivAnimation::DestructTCivAnimationAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TCivAnimation2::thunk_CreateTCivAnimation2Instance((TCivAnimation2 *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TCivAnimation2::CreateTCivAnimation2Instance();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

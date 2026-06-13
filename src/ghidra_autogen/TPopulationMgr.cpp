@@ -3,190 +3,87 @@
 // Program: Imperialism.exe
 // Bucket: TPopulationMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004053BC
-// GHIDRA_NAME TPopulationMgr::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At004b6850 */
-
-void __thiscall
-TPopulationMgr::thunk_WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
-          (TPopulationMgr *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406848
-// GHIDRA_NAME TPopulationMgr::thunk_GetTPopulationMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPopulationMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPopulationMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPopulationMgrClassNamePointer */
-
-void * __cdecl TPopulationMgr::thunk_GetTPopulationMgrClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPopulationMgrClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040798C
-// GHIDRA_NAME TPopulationMgr::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0 */
-
-void __thiscall
-TPopulationMgr::thunk_WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
-          (TPopulationMgr *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408878
-// GHIDRA_NAME TPopulationMgr::thunk_DestructTPopulationMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPopulationMgrAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTPopulationMgrRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTPopulationMgrRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TPopulationMgr::thunk_DestructTPopulationMgrAndMaybeFree(TPopulationMgr *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5B70
 // GHIDRA_NAME TPopulationMgr::GetTPopulationMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPopulationMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPopulationMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPopulationMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TPopulationMgr. */
-
-void * __cdecl TPopulationMgr::GetTPopulationMgrClassNamePointer(void)
+undefined ** TPopulationMgr::GetTPopulationMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTPopulationMgr;
+  return &PTR_s_TPopulationMgr_0064f398;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5BB0
 // GHIDRA_NAME TPopulationMgr::ConstructTPopulationMgrBaseState
-// GHIDRA_PROTO void __thiscall ConstructTPopulationMgrBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTPopulationMgrBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TPopulationMgr::ConstructTPopulationMgrBaseState(TPopulationMgr *this)
+undefined4 __thiscall
+TPopulationMgr::ConstructTPopulationMgrBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTPopulationMgrAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTPopulationMgrAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5BE0
 // GHIDRA_NAME TPopulationMgr::DestructTPopulationMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPopulationMgrAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TPopulationMgr runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTPopulationMgrAndMaybeFree()
 
-/* Returns TPopulationMgr runtime class descriptor pointer. */
-
-void * __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(TPopulationMgr *this)
+void __fastcall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6850
 // GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b6850()
 
 void __thiscall
-TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
-          (TPopulationMgr *this,void *pMessage)
+TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
-  (*pcVar1)(&this->field5_0x8,2);
-  (*pcVar1)(&this->field12_0x1c,2);
-  (*pcVar1)((undefined1 *)((int)&this->field12_0x1c + 2),2);
-  (*pcVar1)(&this->field13_0x20,2);
-  (*pcVar1)((undefined1 *)((int)&this->field13_0x20 + 2),0x2e);
-  (*pcVar1)(&this->field6_0xc,4);
-  (**(code **)(*this->field9_0x10 + 0x14))(pMessage);
-  (**(code **)(*(int *)this->field10_0x14 + 0x14))(pMessage);
-  (**(code **)(*(int *)this->field11_0x18 + 0x14))(pMessage);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  (*pcVar1)(param_1 + 8,2);
+  (*pcVar1)(param_1 + 0x1c,2);
+  (*pcVar1)(param_1 + 0x1e,2);
+  (*pcVar1)(param_1 + 0x20,2);
+  (*pcVar1)(param_1 + 0x22,0x2e);
+  (*pcVar1)(param_1 + 0xc,4);
+  (**(code **)(**(int **)(param_1 + 0x10) + 0x14))(param_2);
+  (**(code **)(**(int **)(param_1 + 0x14) + 0x14))(param_2);
+  (**(code **)(**(int **)(param_1 + 0x18) + 0x14))(param_2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B68F0
 // GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0()
 
 void __thiscall
-TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
-          (TPopulationMgr *this,void *pMessage)
+TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int param_1,int *param_2)
 
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  pcVar1 = *(code **)(*(int *)pMessage + 0x3c);
-  (*pcVar1)(&this->field5_0x8,2);
-  (*pcVar1)(&this->field12_0x1c,2);
-  (*pcVar1)((undefined1 *)((int)&this->field12_0x1c + 2),2);
-  (*pcVar1)(&this->field13_0x20,2);
-  (*pcVar1)((undefined1 *)((int)&this->field13_0x20 + 2),0x2e);
-  (*pcVar1)(&this->field6_0xc,4);
-  (**(code **)(*this->field9_0x10 + 0x18))(pMessage);
-  (**(code **)(*(int *)this->field10_0x14 + 0x18))(pMessage);
-  (**(code **)(*(int *)this->field11_0x18 + 0x18))(pMessage);
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x3c);
+  (*pcVar1)(param_1 + 8,2);
+  (*pcVar1)(param_1 + 0x1c,2);
+  (*pcVar1)(param_1 + 0x1e,2);
+  (*pcVar1)(param_1 + 0x20,2);
+  (*pcVar1)(param_1 + 0x22,0x2e);
+  (*pcVar1)(param_1 + 0xc,4);
+  (**(code **)(**(int **)(param_1 + 0x10) + 0x18))(param_2);
+  (**(code **)(**(int **)(param_1 + 0x14) + 0x18))(param_2);
+  (**(code **)(**(int **)(param_1 + 0x18) + 0x18))(param_2);
   return;
 }
 

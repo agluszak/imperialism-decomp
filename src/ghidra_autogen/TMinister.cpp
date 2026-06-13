@@ -3,131 +3,82 @@
 // Program: Imperialism.exe
 // Bucket: TMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040293C
-// GHIDRA_NAME TMinister::thunk_DestructTMinister
-// GHIDRA_PROTO void __thiscall thunk_DestructTMinister(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTMinister
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTMinister */
-
-void __thiscall TMinister::thunk_DestructTMinister(TMinister *this)
-
-{
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040433B
-// GHIDRA_NAME TMinister::thunk_ConstructTMinister
-// GHIDRA_PROTO void __thiscall thunk_ConstructTMinister(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTMinister
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTMinister */
-
-void __thiscall TMinister::thunk_ConstructTMinister(TMinister *this)
-
-{
-  this->field9_0xc = 0;
-  this->pVtable = &PTR_thunk_GetTMinisterClassNamePointer_00659c00;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004089F4
 // GHIDRA_NAME TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ConstructTMinister_At004be840 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_ConstructTMinister_At004be840()
 
-/* Single-JMP thunk to WrapperFor_ConstructTMinister_At004be840 [FID:thunk_target_sync] */
-
-void __thiscall TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
+undefined4 * __fastcall
+TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840(undefined4 *param_1)
 
 {
-  thunk_ConstructTMinister(this);
-  this->field390_0x18c = 0;
-  this->field16_0x14 = 1;
-  this->field17_0x16 = 1;
-  this->pVtable = &PTR_thunk_GetTCityInteriorMinisterClassNamePointer_006508a8;
-  return;
+  ConstructTMinister();
+  param_1[99] = 0;
+  *(undefined2 *)(param_1 + 5) = 1;
+  *(undefined2 *)((int)param_1 + 0x16) = 1;
+  *param_1 = &PTR_thunk_GetCityInteriorMinisterTypeName_006508a8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE840
 // GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_ConstructTMinister_At004be840(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_ConstructTMinister; instructions=11, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_ConstructTMinister_At004be840()
 
-/* [WrapperShape] small wrapper around thunk_ConstructTMinister; instructions=11, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
+undefined4 * __fastcall
+TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(undefined4 *param_1)
 
 {
-  thunk_ConstructTMinister(this);
-  this->field390_0x18c = 0;
-  this->field16_0x14 = 1;
-  this->field17_0x16 = 1;
-  this->pVtable = &PTR_thunk_GetTCityInteriorMinisterClassNamePointer_006508a8;
-  return;
+  ConstructTMinister();
+  param_1[99] = 0;
+  *(undefined2 *)(param_1 + 5) = 1;
+  *(undefined2 *)((int)param_1 + 0x16) = 1;
+  *param_1 = &PTR_thunk_GetCityInteriorMinisterTypeName_006508a8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB60
 // GHIDRA_NAME TMinister::GetTMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMinisterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMinister.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMinisterClassNamePointer()
 
-/* Returns class descriptor pointer for TMinister. */
-
-void * __cdecl TMinister::GetTMinisterClassNamePointer(void)
+undefined ** TMinister::GetTMinisterClassNamePointer(void)
 
 {
-  return &g_pClassDescTMinister;
+  return &PTR_s_TMinister_00659a80;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB80
 // GHIDRA_NAME TMinister::ConstructTMinister
-// GHIDRA_PROTO void __thiscall ConstructTMinister(void)
+// GHIDRA_PROTO undefined ConstructTMinister()
 
-void __thiscall TMinister::ConstructTMinister(TMinister *this)
+void __fastcall TMinister::ConstructTMinister(undefined4 *param_1)
 
 {
-  this->field9_0xc = 0;
-  this->pVtable = &PTR_thunk_GetTMinisterClassNamePointer_00659c00;
+  *(undefined2 *)(param_1 + 3) = 0;
+  *param_1 = &PTR_LAB_00659c00;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBA0
 // GHIDRA_NAME TMinister::DeletingDestructTMinister
-// GHIDRA_PROTO void __thiscall DeletingDestructTMinister(void)
+// GHIDRA_PROTO undefined DeletingDestructTMinister()
 
-void __thiscall TMinister::DeletingDestructTMinister(TMinister *this)
+undefined4 __thiscall TMinister::DeletingDestructTMinister(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTMinister(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTMinister();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBD0
 // GHIDRA_NAME TMinister::DestructTMinister
-// GHIDRA_PROTO void __thiscall DestructTMinister(void)
+// GHIDRA_PROTO undefined DestructTMinister()
 
-void __thiscall TMinister::DestructTMinister(TMinister *this)
+void __fastcall TMinister::DestructTMinister(undefined4 *param_1)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

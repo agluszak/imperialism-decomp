@@ -3,48 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TDisappearingButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402293
-// GHIDRA_NAME TDisappearingButton::TDisappearingButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TDisappearingButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDisappearingButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDisappearingButtonClassNamePointer */
-
-void * __cdecl TDisappearingButton::TDisappearingButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDisappearingButtonClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403C56
-// GHIDRA_NAME TDisappearingButton::TDisappearingButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TDisappearingButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDisappearingButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDisappearingButtonAndMaybeFree */
-
-void * __thiscall
-TDisappearingButton::TDisappearingButton_VtblSlot001(TDisappearingButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDisappearingButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00568B20
 // GHIDRA_NAME TDisappearingButton::CreateTDisappearingButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTDisappearingButtonInstance(void)
+// GHIDRA_PROTO undefined CreateTDisappearingButtonInstance()
 
-void * __cdecl TDisappearingButton::CreateTDisappearingButtonInstance(void)
+undefined4 * TDisappearingButton::CreateTDisappearingButtonInstance(void)
 
 {
   undefined4 *puVar1;
@@ -58,12 +21,12 @@ void * __cdecl TDisappearingButton::CreateTDisappearingButtonInstance(void)
   puStack_8 = &LAB_00635b1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTDisappearingButton;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_0065d280;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -72,45 +35,39 @@ void * __cdecl TDisappearingButton::CreateTDisappearingButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BA0
 // GHIDRA_NAME TDisappearingButton::GetTDisappearingButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDisappearingButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDisappearingButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDisappearingButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TDisappearingButton. */
-
-void * __cdecl TDisappearingButton::GetTDisappearingButtonClassNamePointer(void)
+undefined ** TDisappearingButton::GetTDisappearingButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTDisappearingButton;
+  return &PTR_s_TDisappearingButton_0065c8b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BC0
 // GHIDRA_NAME TDisappearingButton::ConstructTDisappearingButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTDisappearingButtonBaseState(void)
+// GHIDRA_PROTO undefined ConstructTDisappearingButtonBaseState()
 
-void * __thiscall
-TDisappearingButton::ConstructTDisappearingButtonBaseState(TDisappearingButton *this)
+undefined4 * __fastcall
+TDisappearingButton::ConstructTDisappearingButtonBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTDisappearingButton;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_0065d280;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BF0
 // GHIDRA_NAME TDisappearingButton::DestructTDisappearingButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDisappearingButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDisappearingButtonAndMaybeFree()
 
-void * __thiscall
-TDisappearingButton::DestructTDisappearingButtonAndMaybeFree
-          (TDisappearingButton *this,byte freeSelfFlag)
+undefined4 __thiscall
+TDisappearingButton::DestructTDisappearingButtonAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -3,106 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TRelationshipDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040143D
-// GHIDRA_NAME TRelationshipDialog::thunk_DestructTRelationshipDialogAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTRelationshipDialogAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateRelationshipDialogControlValuesFromNationState [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to PopulateRelationshipDialogControlValuesFromNationState
-   [FID:thunk_target_sync] */
-
-void __thiscall
-TRelationshipDialog::thunk_DestructTRelationshipDialogAndMaybeFree(TRelationshipDialog *this)
-
-{
-  DestructTRelationshipDialogAndMaybeFree(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004026C6
-// GHIDRA_NAME TRelationshipDialog::thunk_GetTRelationshipDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRelationshipDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRelationshipDialogClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRelationshipDialogClassNamePointer */
-
-void * __cdecl TRelationshipDialog::thunk_GetTRelationshipDialogClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRelationshipDialogClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403215
-// GHIDRA_NAME TRelationshipDialog::thunk_ConstructTRelationshipDialogBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTRelationshipDialogBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for SyncRelationshipDialogGridValuesToDiplomacyTurnState. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for SyncRelationshipDialogGridValuesToDiplomacyTurnState. [FID:thunk_target_sync]
-    */
-
-void __thiscall
-TRelationshipDialog::thunk_ConstructTRelationshipDialogBaseState(TRelationshipDialog *this)
-
-{
-  ConstructTRelationshipDialogBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040378D
-// GHIDRA_NAME TRelationshipDialog::thunk_scalar_deleting_destructor_0040378D
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040378D(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TRelationshipDialog::thunk_scalar_deleting_destructor_0040378D
-          (TRelationshipDialog *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2D80
 // GHIDRA_NAME TRelationshipDialog::GetTRelationshipDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTRelationshipDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TRelationshipDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTRelationshipDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TRelationshipDialog. */
-
-void * __cdecl TRelationshipDialog::GetTRelationshipDialogClassNamePointer(void)
+undefined ** TRelationshipDialog::GetTRelationshipDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTRelationshipDialog;
+  return &PTR_s_TRelationshipDialog_0066b268;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2DA0
 // GHIDRA_NAME TRelationshipDialog::ConstructTRelationshipDialogBaseState
-// GHIDRA_PROTO void __thiscall ConstructTRelationshipDialogBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Collect relation grid control values and push into diplomacy turn-state manager.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTRelationshipDialogBaseState()
 
-/* Collect relation grid control values and push into diplomacy turn-state manager. */
-
-void __thiscall
-TRelationshipDialog::ConstructTRelationshipDialogBaseState(TRelationshipDialog *this)
+void __fastcall TRelationshipDialog::ConstructTRelationshipDialogBaseState(int *param_1)
 
 {
   int *piVar1;
@@ -112,57 +27,50 @@ TRelationshipDialog::ConstructTRelationshipDialogBaseState(TRelationshipDialog *
   int iVar4;
   short sVar5;
   int iVar6;
-  void *local_c;
+  int local_c;
   
   sVar5 = 0;
-  local_c = (void *)0x0;
+  local_c = 0;
   do {
-    if (*(int *)((int)g_apTerrainTypeDescriptorTable + (int)local_c) != 0) {
-      piVar1 = (int *)(**(code **)((int)this->pVtable + 0x94))
-                                (*(undefined4 *)
-                                  ((int)&g_TGPTreaty_Dialog_Base_Value_0066B100 + (int)local_c));
+    if (*(int *)((int)&g_apTerrainTypeDescriptorTable + local_c) != 0) {
+      piVar1 = (int *)(**(code **)(*param_1 + 0x94))(*(undefined4 *)((int)&DAT_0066b100 + local_c));
       if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x1bc);
       }
       iVar6 = 0;
       iVar4 = 0;
       do {
-        if ((*(int *)((int)g_apTerrainTypeDescriptorTable + iVar4) != 0) && ((short)iVar6 < sVar5))
+        if ((*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar4) != 0) && ((short)iVar6 < sVar5))
         {
-          piVar2 = (int *)(**(code **)(*piVar1 + 0x94))
-                                    (*(undefined4 *)
-                                      ((int)&g_TGPTreaty_Dialog_Base_LookupTable_0066B180 + iVar4));
+          piVar2 = (int *)(**(code **)(*piVar1 + 0x94))(*(undefined4 *)((int)&DAT_0066b180 + iVar4))
+          ;
           if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                      (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x1c5);
           }
-          local_c = g_pDiplomacyTurnStateManager->vftable;
+          local_c = *g_pDiplomacyTurnStateManager;
           uVar3 = (**(code **)(*piVar2 + 0x1e8))();
-          (**(code **)((int)local_c + 0x28))(iVar6,unaff_EBX,uVar3);
+          (**(code **)(local_c + 0x28))(iVar6,unaff_EBX,uVar3);
         }
         iVar6 = iVar6 + 1;
         iVar4 = iVar4 + 4;
       } while ((short)iVar6 < 7);
     }
     sVar5 = sVar5 + 1;
-    local_c = (void *)((int)local_c + 4);
+    local_c = local_c + 4;
   } while (sVar5 < 7);
-  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
+  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2F10
 // GHIDRA_NAME TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTRelationshipDialogAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Populates relationship-dialog controls from current nation interaction/resource state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTRelationshipDialogAndMaybeFree()
 
-/* Populates relationship-dialog controls from current nation interaction/resource state. */
-
-void __thiscall
-TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(TRelationshipDialog *this)
+void __fastcall TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(int *param_1)
 
 {
   int iVar1;
@@ -178,61 +86,50 @@ TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(TRelationshipDialog
   int *local_3c;
   int *local_38;
   int local_34;
-  TRelationshipDialog *local_30;
-  int *piStack_2c;
-  undefined4 local_28;
-  undefined4 local_24;
-  undefined4 local_20;
-  undefined4 local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
+  int *local_30 [11];
   undefined4 local_4;
   
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_00638c28;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  local_30 = this;
+  local_30[10] = (int *)&LAB_00638c28;
+  local_30[9] = (int *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = local_30 + 9;
+  local_30[0] = param_1;
   InitializeSharedStringRefFromEmpty();
-  local_28 = 0x6e616d30;
+  local_30[2] = (int *)0x6e616d30;
   local_4 = 0;
-  local_24 = 0x6e616d31;
-  local_20 = 0x6e616d32;
-  local_1c = 0x6e616d33;
-  local_18 = 0x6e616d34;
-  local_14 = 0x6e616d35;
-  local_10 = 0x6e616d36;
+  local_30[3] = (int *)0x6e616d31;
+  local_30[4] = (int *)0x6e616d32;
+  local_30[5] = (int *)0x6e616d33;
+  local_30[6] = (int *)0x6e616d34;
+  local_30[7] = (int *)0x6e616d35;
+  local_30[8] = (int *)0x6e616d36;
   local_3c = (int *)0x0;
   local_38 = (int *)0x79c;
   local_34 = 0;
   do {
-    if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_34) != 0) {
-      piVar4 = (int *)(**(code **)((int)this->pVtable + 0x94))();
-      piStack_2c = piVar4;
+    if (*(int *)((int)&g_apTerrainTypeDescriptorTable + local_34) != 0) {
+      piVar4 = (int *)(**(code **)(*param_1 + 0x94))();
+      local_30[1] = piVar4;
       if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
       }
       sVar6 = 0;
       piStack_40 = local_38;
       iVar7 = 0;
       do {
-        if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar7) != 0) {
+        if (*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar7) != 0) {
           piVar5 = (int *)(**(code **)(*piVar4 + 0x94))();
           if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                      (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
           }
           if (sVar6 < (short)piStack_40) {
             iVar1 = *piVar5;
-            (**(code **)(iVar1 + 0x1e4))
-                      ((int)*(short *)((int)g_pDiplomacyTurnStateManager->relationCodeMatrix17x17 +
-                                      local_44 + -4));
-            (**(code **)(iVar1 + 0xa8))((int)(char)g_bTurnFlowAuxStateFlag,0);
-            piVar4 = piStack_2c;
+            (**(code **)(iVar1 + 0x1e4))((int)*(short *)(g_pDiplomacyTurnStateManager + local_44));
+            (**(code **)(iVar1 + 0xa8))((int)DAT_006a42dc,0);
+            piVar4 = local_30[1];
           }
           else {
             (**(code **)(*piVar5 + 0xa4))(0);
@@ -241,52 +138,53 @@ TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(TRelationshipDialog
         sVar6 = sVar6 + 1;
         iVar7 = iVar7 + 4;
         piStack_40 = (int *)((int)piStack_40 + 0x2e);
-        this = local_30;
+        param_1 = local_30[0];
       } while (sVar6 < 7);
     }
     local_3c = (int *)((int)local_3c + 1);
     local_38 = (int *)((int)local_38 + 2);
     local_34 = local_34 + 4;
   } while ((short)local_3c < 7);
-  pcVar2 = *(code **)((int)this->pVtable + 0x94);
+  pcVar2 = *(code **)(*param_1 + 0x94);
   piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
   iVar7 = (*pcVar2)();
   if (iVar7 == 0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x1fe);
   }
   iVar7 = 0;
   local_38 = (int *)0x7;
   do {
-    if (*(int *)((int)g_apTerrainTypeDescriptorTable + iVar7) != 0) {
-      FormatOverlayTerrainLabelText();
-      uVar3 = *(undefined4 *)((int)&local_30 + iVar7);
+    if (*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar7) != 0) {
+      FormatOverlayTerrainLabelText(&stack0xffffffb4);
+      uVar3 = *(undefined4 *)((int)local_30 + iVar7);
       piVar4 = (int *)(**(code **)(*piVar4 + 0x94))(uVar3);
       if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x207);
       }
       (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffb0,0);
       piVar4 = (int *)(**(code **)(*piStack_40 + 0x94))(uVar3);
       if (piVar4 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                  (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x20a);
       }
       (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffa4,0);
       piVar4 = local_3c;
     }
     iVar7 = iVar7 + 4;
     local_38 = (int *)((int)local_38 + -1);
-    if (local_38 == (int *)0x0) {
-      uStack_c = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
-      *unaff_FS_OFFSET = local_14;
-      return;
-    }
-  } while( true );
+  } while (local_38 != (int *)0x0);
+  local_30[9] = (int *)0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty();
+  *unaff_FS_OFFSET = local_30[7];
+  return;
 }
 

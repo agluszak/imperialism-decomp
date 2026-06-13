@@ -3,70 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TInfoBarText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407D24
-// GHIDRA_NAME TInfoBarText::thunk_ConstructTInfoBarTextBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTInfoBarTextBaseState(int textRef, int * pRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateInfoBarTextRegionAndRefresh [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdateInfoBarTextRegionAndRefresh [FID:thunk_target_sync] */
-
-void __thiscall
-TInfoBarText::thunk_ConstructTInfoBarTextBaseState(TInfoBarText *this,int textRef,int *pRect)
-
-{
-  ConstructTInfoBarTextBaseState(this,textRef,pRect);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407D60
-// GHIDRA_NAME TInfoBarText::thunk_GetTInfoBarTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTInfoBarTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTInfoBarTextClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTInfoBarTextClassNamePointer */
-
-void * __cdecl TInfoBarText::thunk_GetTInfoBarTextClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTInfoBarTextClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409994
-// GHIDRA_NAME TInfoBarText::thunk_DestructTInfoBarTextAndMaybeFree
-// GHIDRA_PROTO void __fastcall thunk_DestructTInfoBarTextAndMaybeFree(TInfoBarText * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTInfoBarTextAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTInfoBarTextAndMaybeFree */
-
-void __fastcall TInfoBarText::thunk_DestructTInfoBarTextAndMaybeFree(TInfoBarText *pThis)
-
-{
-  DestructTInfoBarTextAndMaybeFree(pThis);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B65A0
 // GHIDRA_NAME TInfoBarText::CreateTInfoBarTextInstance
-// GHIDRA_PROTO void * __cdecl CreateTInfoBarTextInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TInfoBarText; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTInfoBarTextInstance()
 
-/* [ClassQuad] create inferred for TInfoBarText; alloc factory pattern. */
-
-void * __cdecl TInfoBarText::CreateTInfoBarTextInstance(void)
+undefined4 * TInfoBarText::CreateTInfoBarTextInstance(void)
 
 {
-  TStaticText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -76,81 +20,70 @@ void * __cdecl TInfoBarText::CreateTInfoBarTextInstance(void)
   puStack_8 = &LAB_00638ffa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb4);
   local_4 = 0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    *(undefined1 *)((int)&this[1].base.field2_0x5 + 1) = 0;
-    *(undefined1 *)((int)&this[1].base.field2_0x5 + 2) = 0;
-    *(undefined1 *)&this[1].base.field3_0x8 = 0;
-    *(undefined1 *)((int)&this[1].base.field3_0x8 + 1) = 0;
-    *(undefined1 *)((int)&this[1].base.field3_0x8 + 2) = 0;
-    *(undefined1 *)((int)&this[1].base.field3_0x8 + 3) = 0;
-    *(undefined1 *)&this[1].base.dialogValueDwordC = 0;
-    *(undefined1 *)((int)&this[1].base.dialogValueDwordC + 1) = 0;
-    *(undefined4 *)((int)&this[1].base.field2_0x5 + 1) = 0;
-    *(undefined1 *)((int)&this[1].base.dialogValueDwordC + 2) = 0;
-    (this->base).pVtable =
-         &g_vslotFamily_CityProductionDialogCore_Slot05_Slot0094_ResolveControlByTag;
+  if (puVar1 != (undefined4 *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+    *(undefined1 *)(puVar1 + 0x26) = 0;
+    *(undefined1 *)((int)puVar1 + 0x99) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
+    *(undefined1 *)(puVar1 + 0x27) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
+    puVar1[0x26] = 0;
+    *(undefined1 *)(puVar1 + 0x28) = 0;
+    *puVar1 = &PTR_LAB_0063eb00;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6690
 // GHIDRA_NAME TInfoBarText::GetTInfoBarTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTInfoBarTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TInfoBarText.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTInfoBarTextClassNamePointer()
 
-/* Returns class descriptor pointer for TInfoBarText. */
-
-void * __cdecl TInfoBarText::GetTInfoBarTextClassNamePointer(void)
+undefined ** TInfoBarText::GetTInfoBarTextClassNamePointer(void)
 
 {
-  return &g_pClassDescTInfoBarText;
+  return &PTR_s_TInfoBarText_0066c468;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B66B0
 // GHIDRA_NAME TInfoBarText::ConstructTInfoBarTextBaseState
-// GHIDRA_PROTO void __thiscall ConstructTInfoBarTextBaseState(int textRef, int * pRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Updates info-bar text region and refreshes text state when bounds change.
-// GHIDRA_COMMENT_END
-
-/* Updates info-bar text region and refreshes text state when bounds change. */
+// GHIDRA_PROTO undefined ConstructTInfoBarTextBaseState()
 
 void __thiscall
-TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this,int textRef,int *pRect)
+TInfoBarText::ConstructTInfoBarTextBaseState(int *param_1,undefined4 param_2,RECT *param_3)
 
 {
-  void *pvVar1;
-  int *piVar2;
+  int iVar1;
+  RECT *pRVar2;
   BOOL BVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  undefined4 uStack_4;
   
-  piVar2 = pRect;
+  pRVar2 = param_3;
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639018;
   *unaff_FS_OFFSET = &uStack_c;
-  local_4 = 0;
-  BVar3 = EqualRect((RECT *)pRect,(RECT *)&this->field_0xa4);
+  uStack_4 = 0;
+  BVar3 = EqualRect(param_3,(RECT *)(param_1 + 0x29));
   if (BVar3 == 0) {
-    *(int *)&this->field_0xa4 = *piVar2;
-    *(int *)&this->field_0xa8 = piVar2[1];
-    *(int *)&this->field_0xac = piVar2[2];
-    this->field170_0xb0 = piVar2[3];
-    pvVar1 = this->pVtable;
-    (**(code **)((int)pvVar1 + 0x1f0))(&textRef);
-    (**(code **)((int)pvVar1 + 0x1f8))(1);
+    ((RECT *)(param_1 + 0x29))->left = pRVar2->left;
+    param_1[0x2a] = pRVar2->top;
+    param_1[0x2b] = pRVar2->right;
+    param_1[0x2c] = pRVar2->bottom;
+    iVar1 = *param_1;
+    (**(code **)(iVar1 + 0x1f0))(&param_2);
+    (**(code **)(iVar1 + 0x1f8))(1);
   }
-  local_4 = 0xffffffff;
+  uStack_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -158,29 +91,29 @@ TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this,int textRef,int 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6770
 // GHIDRA_NAME TInfoBarText::DestructTInfoBarTextAndMaybeFree
-// GHIDRA_PROTO void __fastcall DestructTInfoBarTextAndMaybeFree(TInfoBarText * pThis)
+// GHIDRA_PROTO undefined DestructTInfoBarTextAndMaybeFree()
 
-void __fastcall TInfoBarText::DestructTInfoBarTextAndMaybeFree(TInfoBarText *pThis)
+void __fastcall TInfoBarText::DestructTInfoBarTextAndMaybeFree(int *param_1)
 
 {
-  void *pvVar1;
+  int iVar1;
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  undefined4 uStack_4;
   
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639038;
   *unaff_FS_OFFSET = &uStack_c;
-  *(undefined4 *)&pThis->field_0xa4 = 0;
-  local_4 = 0;
-  *(undefined4 *)&pThis->field_0xa8 = 0;
-  *(undefined4 *)&pThis->field_0xac = 0;
-  pThis->field170_0xb0 = 0;
-  pvVar1 = pThis->pVtable;
-  (**(code **)((int)pvVar1 + 0x1f0))(&stack0x00000004);
-  (**(code **)((int)pvVar1 + 0x1f8))(1);
+  param_1[0x29] = 0;
+  uStack_4 = 0;
+  param_1[0x2a] = 0;
+  param_1[0x2b] = 0;
+  param_1[0x2c] = 0;
+  iVar1 = *param_1;
+  (**(code **)(iVar1 + 0x1f0))(&stack0x00000004);
+  (**(code **)(iVar1 + 0x1f8))(1);
   uStack_c = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = unaff_ESI;

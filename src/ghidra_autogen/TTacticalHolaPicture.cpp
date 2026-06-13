@@ -3,54 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalHolaPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401271
-// GHIDRA_NAME TTacticalHolaPicture::thunk_scalar_deleting_destructor_00401271
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00401271(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTacticalHolaPicture::thunk_scalar_deleting_destructor_00401271
-          (TTacticalHolaPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004044C1
-// GHIDRA_NAME TTacticalHolaPicture::thunk_GetTTacticalHolaPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTacticalHolaPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTacticalHolaPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTacticalHolaPictureClassNamePointer */
-
-void * __cdecl TTacticalHolaPicture::thunk_GetTTacticalHolaPictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTacticalHolaPictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD6C0
 // GHIDRA_NAME TTacticalHolaPicture::CreateTTacticalHolaPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTTacticalHolaPictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTacticalHolaPicture; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTacticalHolaPictureInstance()
 
-/* [ClassQuad] create inferred for TTacticalHolaPicture; alloc factory pattern. */
-
-void * __cdecl TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(void)
+undefined4 * TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -64,12 +21,12 @@ void * __cdecl TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(void)
   puStack_8 = &LAB_0063887a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTTacticalHolaPictureClassNamePointer_00645888;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00645888;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -78,16 +35,11 @@ void * __cdecl TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD740
 // GHIDRA_NAME TTacticalHolaPicture::GetTTacticalHolaPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTacticalHolaPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTacticalHolaPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTacticalHolaPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TTacticalHolaPicture. */
-
-void * __cdecl TTacticalHolaPicture::GetTTacticalHolaPictureClassNamePointer(void)
+undefined ** TTacticalHolaPicture::GetTTacticalHolaPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTTacticalHolaPicture;
+  return &PTR_s_TTacticalHolaPicture_0066a310;
 }
 

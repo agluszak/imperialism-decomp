@@ -3,56 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TClickZone.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401762
-// GHIDRA_NAME TClickZone::TClickZone_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TClickZone_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTClickZoneClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTClickZoneClassNamePointer */
-
-void * __cdecl TClickZone::TClickZone_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTClickZoneClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408198
-// GHIDRA_NAME TClickZone::TClickZone_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TClickZone_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTClickZoneAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTClickZoneAndMaybeFree */
-
-void * __thiscall TClickZone::TClickZone_VtblSlot001(TClickZone *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTClickZoneAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00572350
 // GHIDRA_NAME TClickZone::CreateTClickZoneInstance
-// GHIDRA_PROTO void * __cdecl CreateTClickZoneInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TClickZone; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTClickZoneInstance()
 
-/* [ClassQuad] create inferred for TClickZone; alloc factory pattern. */
-
-void * __cdecl TClickZone::CreateTClickZoneInstance(void)
+undefined4 * TClickZone::CreateTClickZoneInstance(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -62,37 +21,32 @@ void * __cdecl TClickZone::CreateTClickZoneInstance(void)
   puStack_8 = &LAB_006364ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTClickZone;
-    *(undefined2 *)&this->field_0x84 = 7000;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_00660180;
+    *(undefined2 *)(puVar1 + 0x21) = 7000;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005723F0
 // GHIDRA_NAME TClickZone::GetTClickZoneClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTClickZoneClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TClickZone.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTClickZoneClassNamePointer()
 
-/* Returns class descriptor pointer for TClickZone. */
-
-void * __cdecl TClickZone::GetTClickZoneClassNamePointer(void)
+undefined ** TClickZone::GetTClickZoneClassNamePointer(void)
 
 {
-  return &g_pClassDescTClickZone;
+  return &PTR_s_TClickZone_0065e658;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572410
 // GHIDRA_NAME TClickZone::ConstructUiCommandTagResourceEntry
-// GHIDRA_PROTO void __thiscall ConstructUiCommandTagResourceEntry(void)
+// GHIDRA_PROTO undefined ConstructUiCommandTagResourceEntry()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived command-tag UI entry over ConstructUiCommandTagResourceEntryBase; used by list/info/view/count style command-tag paths and sets +0x84 word to 7000.
 // GHIDRA_COMMENT_END
@@ -100,49 +54,44 @@ void * __cdecl TClickZone::GetTClickZoneClassNamePointer(void)
 /* Derived command-tag UI entry over ConstructUiCommandTagResourceEntryBase; used by
    list/info/view/count style command-tag paths and sets +0x84 word to 7000. */
 
-void __thiscall TClickZone::ConstructUiCommandTagResourceEntry(TClickZone *this)
+undefined4 * __fastcall TClickZone::ConstructUiCommandTagResourceEntry(undefined4 *param_1)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  this->field0_0x0 = &g_vtblTClickZone;
-  this->field84 = 7000;
-  return;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  *param_1 = &PTR_LAB_00660180;
+  *(undefined2 *)(param_1 + 0x21) = 7000;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572440
 // GHIDRA_NAME TClickZone::DestructTClickZoneAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTClickZoneAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTClickZoneAndMaybeFree()
 
-void * __thiscall TClickZone::DestructTClickZoneAndMaybeFree(TClickZone *this,byte freeSelfFlag)
+undefined4 __thiscall TClickZone::DestructTClickZoneAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572490
 // GHIDRA_NAME TClickZone::PlayControlSoundAndBeginMouseCapture_Field84
-// GHIDRA_PROTO void __thiscall PlayControlSoundAndBeginMouseCapture_Field84(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Play control sound from field +0x84 and begin mouse capture/repeat timer sequence.
-// GHIDRA_COMMENT_END
-
-/* Play control sound from field +0x84 and begin mouse capture/repeat timer sequence. */
+// GHIDRA_PROTO undefined PlayControlSoundAndBeginMouseCapture_Field84()
 
 void __thiscall
-TClickZone::PlayControlSoundAndBeginMouseCapture_Field84
-          (TClickZone *this,int arg1,int arg2,int arg3,int arg4)
+TClickZone::PlayControlSoundAndBeginMouseCapture_Field84(int param_1,undefined4 param_2)
 
 {
-  int unaff_ESI;
-  int unaff_retaddr;
+  undefined4 unaff_ESI;
+  undefined4 unaff_retaddr;
+  undefined4 uVar1;
   
-  (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(this->field84,0);
-  TControl::thunk_BeginMouseCaptureAndStartRepeatTimer
-            ((TControl *)this,1,unaff_ESI,unaff_retaddr,arg1);
+  uVar1 = 1;
+  (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(*(undefined2 *)(param_1 + 0x84),0,1);
+  TControl::BeginMouseCaptureAndStartRepeatTimer(uVar1,unaff_ESI,unaff_retaddr,param_2);
   return;
 }
 

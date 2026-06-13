@@ -3,68 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TSortedPtrList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403FE4
-// GHIDRA_NAME TSortedPtrList::thunk_scalar_deleting_destructor_00403FE4
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403FE4(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
+// GHIDRA_FUNCTION IMPERIALISM 0x00488110
+// GHIDRA_NAME TSortedPtrList::ResetPtrListAndShrinkCapacity
+// GHIDRA_PROTO undefined ResetPtrListAndShrinkCapacity()
 
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TSortedPtrList::thunk_scalar_deleting_destructor_00403FE4(TSortedPtrList *this,byte freeSelfFlag)
+void __fastcall TSortedPtrList::ResetPtrListAndShrinkCapacity(int *param_1)
 
 {
-  void *pvVar1;
+  int iVar1;
   
-  pvVar1 = CObArray::_scalar_deleting_destructor_((CObArray *)this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407491
-// GHIDRA_NAME TSortedPtrList::thunk_GetTSortedPtrListClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTSortedPtrListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSortedPtrListClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSortedPtrListClassNamePointer */
-
-void * __cdecl TSortedPtrList::thunk_GetTSortedPtrListClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSortedPtrListClassNamePointer();
-  return pvVar1;
+  iVar1 = *param_1;
+  (**(code **)(iVar1 + 0x1c))();
+  (**(code **)(iVar1 + 0x28))();
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004883E0
 // GHIDRA_NAME TSortedPtrList::GetTSortedPtrListClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSortedPtrListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSortedPtrList.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSortedPtrListClassNamePointer()
 
-/* Returns class descriptor pointer for TSortedPtrList. */
-
-void * __cdecl TSortedPtrList::GetTSortedPtrListClassNamePointer(void)
+char * TSortedPtrList::GetTSortedPtrListClassNamePointer(void)
 
 {
-  return &g_pClassDescTSortedPtrList;
+  return "<Oi";
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488400
 // GHIDRA_NAME TSortedPtrList::ConstructTSortedPtrListBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTSortedPtrListBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and constructs sorted pointer-list instance.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTSortedPtrListBaseState()
 
-/* Allocates and constructs sorted pointer-list instance. */
-
-void * __cdecl TSortedPtrList::ConstructTSortedPtrListBaseState(void)
+TIndexAndRankList * TSortedPtrList::ConstructTSortedPtrListBaseState(void)
 
 {
   TIndexAndRankList *this;
@@ -78,12 +46,12 @@ void * __cdecl TSortedPtrList::ConstructTSortedPtrListBaseState(void)
   puStack_8 = &LAB_0062eb7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  this = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
     TIndexAndRankList::CPtrArray(this);
-    this->pVtable = &PTR_thunk_GetTPtrListClassNamePointer_00649068;
+    *(undefined ***)this = &_vftable_;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

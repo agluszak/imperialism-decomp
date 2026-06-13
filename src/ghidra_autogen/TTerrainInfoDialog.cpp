@@ -3,52 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTerrainInfoDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040812F
-// GHIDRA_NAME TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TTerrainInfoDialog_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTerrainInfoDialogAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTerrainInfoDialogAndMaybeFree */
-
-void * __thiscall
-TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot001(TTerrainInfoDialog *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTerrainInfoDialogAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004090FC
-// GHIDRA_NAME TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TTerrainInfoDialog_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTerrainInfoDialogClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTerrainInfoDialogClassNamePointer */
-
-void * __cdecl TTerrainInfoDialog::TTerrainInfoDialog_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTerrainInfoDialogClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B0A0
 // GHIDRA_NAME TTerrainInfoDialog::CreateTTerrainInfoDialogInstance
-// GHIDRA_PROTO void * __cdecl CreateTTerrainInfoDialogInstance(void)
+// GHIDRA_PROTO undefined CreateTTerrainInfoDialogInstance()
 
-void * __cdecl TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
+undefined4 * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,58 +21,53 @@ void * __cdecl TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
   puStack_8 = &LAB_00633dda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    this->field0_0x0 = &g_vtblTTerrainInfoDialog;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    *puVar1 = &PTR_LAB_00658d70;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B120
 // GHIDRA_NAME TTerrainInfoDialog::GetTTerrainInfoDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTerrainInfoDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTerrainInfoDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTerrainInfoDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TTerrainInfoDialog. */
-
-void * __cdecl TTerrainInfoDialog::GetTTerrainInfoDialogClassNamePointer(void)
+undefined ** TTerrainInfoDialog::GetTTerrainInfoDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTTerrainInfoDialog;
+  return &PTR_s_TTerrainInfoDialog_006589b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B140
 // GHIDRA_NAME TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTerrainInfoDialogBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTerrainInfoDialogBaseState()
 
-void * __thiscall TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(TTerrainInfoDialog *this)
+undefined4 * __fastcall
+TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field0_0x0 = &g_vtblTTerrainInfoDialog;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00658d70;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B170
 // GHIDRA_NAME TTerrainInfoDialog::DestructTTerrainInfoDialogAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTerrainInfoDialogAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTerrainInfoDialogAndMaybeFree()
 
-void * __thiscall
-TTerrainInfoDialog::DestructTTerrainInfoDialogAndMaybeFree
-          (TTerrainInfoDialog *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTerrainInfoDialog::DestructTTerrainInfoDialogAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

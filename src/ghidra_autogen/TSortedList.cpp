@@ -3,323 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TSortedList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401140
-// GHIDRA_NAME TSortedList::thunk_ConstructTPtrListBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTPtrListBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_AddHead_At004885d0 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_AddHead_At004885d0 [FID:thunk_target_sync] */
-
-void __thiscall TSortedList::thunk_ConstructTPtrListBaseState(TSortedList *this)
-
-{
-  TPtrList::ConstructTPtrListBaseState((TPtrList *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004013FC
-// GHIDRA_NAME TSortedList::thunk_WrapperFor_AddTail_At00488690
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_AddTail_At00488690(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_AddTail_At00488690
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_AddTail_At00488690 */
-
-void __cdecl TSortedList::thunk_WrapperFor_AddTail_At00488690(void)
-
-{
-  WrapperFor_AddTail_At00488690();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040317F
-// GHIDRA_NAME TSortedList::thunk_OrphanCallChain_C3_I23_00487dd0_At0040317f
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C3_I23_00487dd0_At0040317f(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanCallChain_C3_I23_00487dd0
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanCallChain_C3_I23_00487dd0 */
-
-void __cdecl TSortedList::thunk_OrphanCallChain_C3_I23_00487dd0_At0040317f(void)
-
-{
-  OrphanCallChain_C3_I23_00487dd0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040336E
-// GHIDRA_NAME TSortedList::thunk_OrphanTiny_ThisAdjustJump_4_004886b0_At0040336e
-// GHIDRA_PROTO void __cdecl thunk_OrphanTiny_ThisAdjustJump_4_004886b0_At0040336e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanTiny_ThisAdjustJump_4_004886b0
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanTiny_ThisAdjustJump_4_004886b0 */
-
-void __cdecl TSortedList::thunk_OrphanTiny_ThisAdjustJump_4_004886b0_At0040336e(void)
-
-{
-  OrphanTiny_ThisAdjustJump_4_004886b0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040439A
-// GHIDRA_NAME TSortedList::thunk_OrphanRetStub_00488820_At0040439a
-// GHIDRA_PROTO void __cdecl thunk_OrphanRetStub_00488820_At0040439a(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanRetStub_00488820
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanRetStub_00488820 */
-
-void __cdecl TSortedList::thunk_OrphanRetStub_00488820_At0040439a(void)
-
-{
-  OrphanRetStub_00488820();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404412
-// GHIDRA_NAME TSortedList::thunk_WrapperFor_AddTail_At00488650
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_AddTail_At00488650(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_AddTail_At00488650
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_AddTail_At00488650 */
-
-void __cdecl TSortedList::thunk_WrapperFor_AddTail_At00488650(void)
-
-{
-  WrapperFor_AddTail_At00488650();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404665
-// GHIDRA_NAME TSortedList::thunk_OrphanCallChain_C3_I21_00487d90_At00404665
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C3_I21_00487d90_At00404665(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanCallChain_C3_I21_00487d90
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanCallChain_C3_I21_00487d90 */
-
-void __cdecl TSortedList::thunk_OrphanCallChain_C3_I21_00487d90_At00404665(void)
-
-{
-  OrphanCallChain_C3_I21_00487d90();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040588F
-// GHIDRA_NAME TSortedList::thunk_OrphanTiny_ThisAdjustJump_4_00488670_At0040588f
-// GHIDRA_PROTO void __cdecl thunk_OrphanTiny_ThisAdjustJump_4_00488670_At0040588f(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanTiny_ThisAdjustJump_4_00488670
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanTiny_ThisAdjustJump_4_00488670 */
-
-void __cdecl TSortedList::thunk_OrphanTiny_ThisAdjustJump_4_00488670_At0040588f(void)
-
-{
-  OrphanTiny_ThisAdjustJump_4_00488670();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405C4F
-// GHIDRA_NAME TSortedList::thunk_WrapperFor_AddTail_At00488630
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_AddTail_At00488630(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_AddTail_At00488630
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_AddTail_At00488630 */
-
-void __cdecl TSortedList::thunk_WrapperFor_AddTail_At00488630(void)
-
-{
-  WrapperFor_AddTail_At00488630();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406366
-// GHIDRA_NAME TSortedList::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004888f0
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004888f0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004888f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004888f0 */
-
-void __cdecl TSortedList::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004888f0(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At004888f0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406460
-// GHIDRA_NAME TSortedList::thunk_OrphanCallChain_C2_I10_004887b0_At00406460
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C2_I10_004887b0_At00406460(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanCallChain_C2_I10_004887b0
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanCallChain_C2_I10_004887b0 */
-
-void __cdecl TSortedList::thunk_OrphanCallChain_C2_I10_004887b0_At00406460(void)
-
-{
-  OrphanCallChain_C2_I10_004887b0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406A00
-// GHIDRA_NAME TSortedList::thunk_WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750 */
-
-void __cdecl TSortedList::thunk_WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750(void)
-
-{
-  WrapperFor_RemoveHeadNodeAndReturnPayload_At00488750();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407275
-// GHIDRA_NAME TSortedList::thunk_NoOpCallback_004886d0
-// GHIDRA_PROTO void __cdecl thunk_NoOpCallback_004886d0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk forwarding to NoOpCallback_004886d0.
-// GHIDRA_COMMENT_END
-
-/* Direct thunk forwarding to NoOpCallback_004886d0. */
-
-void __cdecl TSortedList::thunk_NoOpCallback_004886d0(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407581
-// GHIDRA_NAME TSortedList::thunk_DestructTSortedListAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTSortedListAndMaybeFree(int leftIndex, int rightIndex, int contextA, int contextB)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConditionalSwapSortedListEntries [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConditionalSwapSortedListEntries [FID:thunk_target_sync] */
-
-void __thiscall
-TSortedList::thunk_DestructTSortedListAndMaybeFree
-          (TSortedList *this,int leftIndex,int rightIndex,int contextA,int contextB)
-
-{
-  DestructTSortedListAndMaybeFree(this,leftIndex,rightIndex,contextA,contextB);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407C84
-// GHIDRA_NAME TSortedList::thunk_DestructTPtrListAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTPtrListAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_AddHead_At004885f0 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_AddHead_At004885f0 [FID:thunk_target_sync] */
-
-void __thiscall TSortedList::thunk_DestructTPtrListAndMaybeFree(TSortedList *this)
-
-{
-  TPtrList::DestructTPtrListAndMaybeFree((TPtrList *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004092F5
-// GHIDRA_NAME TSortedList::thunk_WrapperFor_FindIndex_At00488840_At004092f5
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FindIndex_At00488840_At004092f5(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FindIndex_At00488840
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FindIndex_At00488840 */
-
-void __cdecl TSortedList::thunk_WrapperFor_FindIndex_At00488840_At004092f5(void)
-
-{
-  WrapperFor_FindIndex_At00488840();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004094F3
-// GHIDRA_NAME TSortedList::thunk_GetTSortedListClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTSortedListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSortedListClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSortedListClassNamePointer */
-
-void * __cdecl TSortedList::thunk_GetTSortedListClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSortedListClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409516
-// GHIDRA_NAME TSortedList::thunk_OrphanRetStub_00488800_At00409516
-// GHIDRA_PROTO void __cdecl thunk_OrphanRetStub_00488800_At00409516(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanRetStub_00488800
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanRetStub_00488800 */
-
-void __cdecl TSortedList::thunk_OrphanRetStub_00488800_At00409516(void)
-
-{
-  OrphanRetStub_00488800();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004095C5
-// GHIDRA_NAME TSortedList::thunk_WrapperFor_RemoveListNodeAndRecycle_At00488720
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_RemoveListNodeAndRecycle_At00488720(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_RemoveListNodeAndRecycle_At00488720
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_RemoveListNodeAndRecycle_At00488720 */
-
-void __cdecl TSortedList::thunk_WrapperFor_RemoveListNodeAndRecycle_At00488720(void)
-
-{
-  WrapperFor_RemoveListNodeAndRecycle_At00488720();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00487A90
 // GHIDRA_NAME TSortedList::CreateTSortedListInstance
-// GHIDRA_PROTO void * __cdecl CreateTSortedListInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TSortedList; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTSortedListInstance()
 
-/* [ClassQuad] create inferred for TSortedList; alloc factory pattern. */
-
-void * __cdecl TSortedList::CreateTSortedListInstance(void)
+undefined4 * TSortedList::CreateTSortedListInstance(void)
 
 {
   undefined4 *puVar1;
@@ -333,13 +21,13 @@ void * __cdecl TSortedList::CreateTSortedListInstance(void)
   puStack_8 = &LAB_0062eb02;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &g_vtblRefCountedObjectBase;
+    *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
-    *puVar1 = &g_vtblTSortedList;
+    TGreatPower::CPtrList(10);
+    *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -348,65 +36,50 @@ void * __cdecl TSortedList::CreateTSortedListInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487B10
 // GHIDRA_NAME TSortedList::GetTSortedListClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSortedListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSortedList.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSortedListClassNamePointer()
 
-/* Returns class descriptor pointer for TSortedList. */
-
-void * __cdecl TSortedList::GetTSortedListClassNamePointer(void)
+char * TSortedList::GetTSortedListClassNamePointer(void)
 
 {
-  return &g_pClassDescTSortedList;
+  return "XOi";
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487B30
 // GHIDRA_NAME TSortedList::ConstructTSortedListBaseState
-// GHIDRA_PROTO int __cdecl ConstructTSortedListBaseState(uint lhs, uint rhs)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Compares two unsigned integer values for sorted-list ordering.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTSortedListBaseState()
 
-/* Compares two unsigned integer values for sorted-list ordering. */
-
-int __cdecl TSortedList::ConstructTSortedListBaseState(uint lhs,uint rhs)
+int TSortedList::ConstructTSortedListBaseState(uint param_1,uint param_2)
 
 {
-  if (rhs < lhs) {
-    return CONCAT22((short)(lhs >> 0x10),1);
+  if (param_2 < param_1) {
+    return 1;
   }
-  return -(uint)(lhs < rhs);
+  return -(uint)(param_1 < param_2);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487B60
 // GHIDRA_NAME TSortedList::DestructTSortedListAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTSortedListAndMaybeFree(int leftIndex, int rightIndex, int contextA, int contextB)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Performs sorted-list conditional swap/merge callback sequence for index range.
-// GHIDRA_COMMENT_END
-
-/* Performs sorted-list conditional swap/merge callback sequence for index range. */
+// GHIDRA_PROTO undefined DestructTSortedListAndMaybeFree()
 
 void __thiscall
 TSortedList::DestructTSortedListAndMaybeFree
-          (TSortedList *this,int leftIndex,int rightIndex,int contextA,int contextB)
+          (int *param_1,int param_2,int param_3,undefined4 param_4,undefined4 param_5)
 
 {
-  void *pvVar1;
+  int iVar1;
   code *pcVar2;
   undefined4 uVar3;
   int unaff_EBX;
   undefined4 unaff_EBP;
-  int iVar4;
+  undefined4 uVar4;
   
-  if (leftIndex < rightIndex) {
-    pvVar1 = this->pVtable;
-    iVar4 = contextA;
-    uVar3 = (**(code **)((int)pvVar1 + 0x78))(leftIndex,rightIndex,contextA,contextB);
-    pcVar2 = *(code **)((int)pvVar1 + 0x70);
-    (*pcVar2)(unaff_EBP,uVar3,contextA,contextB);
-    (*pcVar2)(unaff_EBX + 1,iVar4,contextA,contextB);
+  if (param_2 < param_3) {
+    iVar1 = *param_1;
+    uVar4 = param_4;
+    uVar3 = (**(code **)(iVar1 + 0x78))(param_2,param_3,param_4,param_5);
+    pcVar2 = *(code **)(iVar1 + 0x70);
+    (*pcVar2)(unaff_EBP,uVar3,param_4,param_5);
+    (*pcVar2)(unaff_EBX + 1,uVar4,param_4,param_5);
   }
   return;
 }

@@ -3,102 +3,13 @@
 // Program: Imperialism.exe
 // Bucket: TCombatReportView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401C76
-// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TCombatReportView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCombatReportViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCombatReportViewClassNamePointer */
-
-void * __cdecl TCombatReportView::TCombatReportView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCombatReportViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004026D5
-// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TCombatReportView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCombatReportViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCombatReportViewAndMaybeFree */
-
-void * __thiscall
-TCombatReportView::TCombatReportView_VtblSlot001(TCombatReportView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = _DestructTCombatReportViewAndMaybeFree__YIPAUCombatReportViewState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12_HE_Z
-                     (this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403F80
-// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot015
-// GHIDRA_PROTO void __thiscall TCombatReportView_VtblSlot015(int commandId, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to HandleCombatReportPageNavigationAndRefreshText
-// GHIDRA_COMMENT_END
-
-/* Thunk to HandleCombatReportPageNavigationAndRefreshText */
-
-void __thiscall
-TCombatReportView::TCombatReportView_VtblSlot015
-          (TCombatReportView *this,int commandId,PanelEventPayload *pPanelEvent)
-
-{
-  TNumberedArrowButton::HandleCombatReportPageNavigationAndRefreshText
-            ((TNumberedArrowButton *)this,commandId,pPanelEvent);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404183
-// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot068
-// GHIDRA_PROTO void __cdecl TCombatReportView_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to RenderBoundedValueProgressWithStyledOverlayText
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to RenderBoundedValueProgressWithStyledOverlayText */
-
-void __cdecl TCombatReportView::TCombatReportView_VtblSlot068(void)
-
-{
-  RenderBoundedValueProgressWithStyledOverlayText();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404CAA
-// GHIDRA_NAME TCombatReportView::TCombatReportView_VtblSlot115
-// GHIDRA_PROTO void __cdecl TCombatReportView_VtblSlot115(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BuildCombatReportLossesSummaryText
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BuildCombatReportLossesSummaryText */
-
-void __cdecl TCombatReportView::TCombatReportView_VtblSlot115(void)
-
-{
-  BuildCombatReportLossesSummaryText();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C830
-// GHIDRA_NAME TCombatReportView::?CreateTCombatReportViewInstance@@YAPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@XZ
-// GHIDRA_PROTO void * __cdecl ?CreateTCombatReportViewInstance@@YAPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@XZ(void)
+// GHIDRA_NAME TCombatReportView::?CreateTCombatReportViewInstance@@YAPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@XZ
+// GHIDRA_PROTO undefined ?CreateTCombatReportViewInstance@@YAPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@XZ()
 
-void * __cdecl
+undefined4 *
 TCombatReportView::
-_CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z__imperialism_include_game_ui_widget_shared_h29086985__XZ
+_CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z_imperialismincludegame_ui_widget_shared_h29086985__XZ
           (void)
 
 {
@@ -113,12 +24,12 @@ _CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z__imperialism_in
   puStack_8 = &LAB_00637bfa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = "v\x1c@";
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_006678a0;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -127,48 +38,41 @@ _CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z__imperialism_in
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C8B0
 // GHIDRA_NAME TCombatReportView::GetTCombatReportViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCombatReportViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCombatReportView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCombatReportViewClassNamePointer()
 
-/* Returns class descriptor pointer for TCombatReportView. */
-
-void * __cdecl TCombatReportView::GetTCombatReportViewClassNamePointer(void)
+int * TCombatReportView::GetTCombatReportViewClassNamePointer(void)
 
 {
   return &g_pClassDescTCombatReportView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C8D0
-// GHIDRA_NAME TCombatReportView::?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@@Z
-// GHIDRA_PROTO void * __thiscall ?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@@Z(void)
+// GHIDRA_NAME TCombatReportView::?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@PAU12@@Z
+// GHIDRA_PROTO undefined ?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@PAU12@@Z()
 
-void * __thiscall
+undefined4 * __fastcall
 TCombatReportView::
-_ConstructTCombatReportViewBaseState__YIPAUCombatReportViewState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12__Z
-          (TCombatReportView *this)
+_ConstructTCombatReportViewBaseState__YIPAUCombatReportViewState___Z_imperialismincludegame_ui_widget_shared_h29086985__PAU12__Z
+          (undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = "v\x1c@";
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_006678a0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C900
-// GHIDRA_NAME TCombatReportView::?DestructTCombatReportViewAndMaybeFree@@YIPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@HE@Z
-// GHIDRA_PROTO void * __thiscall ?DestructTCombatReportViewAndMaybeFree@@YIPAUCombatReportViewState@?%Z:\imperialism\include\game/ui_widget_shared.h29086985@@PAU12@HE@Z(byte freeSelfFlag)
+// GHIDRA_NAME TCombatReportView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall
-TCombatReportView::
-_DestructTCombatReportViewAndMaybeFree__YIPAUCombatReportViewState___Z__imperialism_include_game_ui_widget_shared_h29086985__PAU12_HE_Z
-          (TCombatReportView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TCombatReportView::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

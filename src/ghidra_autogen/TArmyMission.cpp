@@ -3,158 +3,54 @@
 // Program: Imperialism.exe
 // Bucket: TArmyMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401794
-// GHIDRA_NAME TArmyMission::thunk_ReturnMissionIfMovementClassMatchesTargetTile_At00401794
-// GHIDRA_PROTO void __cdecl thunk_ReturnMissionIfMovementClassMatchesTargetTile_At00401794(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnMissionIfMovementClassMatchesTargetTile
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnMissionIfMovementClassMatchesTargetTile */
-
-void __cdecl TArmyMission::thunk_ReturnMissionIfMovementClassMatchesTargetTile_At00401794(void)
-
-{
-  ReturnMissionIfMovementClassMatchesTargetTile();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040476E
-// GHIDRA_NAME TArmyMission::thunk_NoOpMissionVtableSlot44_At0040476e
-// GHIDRA_PROTO void __cdecl thunk_NoOpMissionVtableSlot44_At0040476e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to NoOpMissionVtableSlot44
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to NoOpMissionVtableSlot44 */
-
-void __cdecl TArmyMission::thunk_NoOpMissionVtableSlot44_At0040476e(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405D35
-// GHIDRA_NAME TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext_At00405d35
-// GHIDRA_PROTO void __thiscall thunk_CleanupTArmyMissionAndReleaseChildContext_At00405d35(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CleanupTArmyMissionAndReleaseChildContext
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CleanupTArmyMissionAndReleaseChildContext */
-
-void __thiscall
-TArmyMission::thunk_CleanupTArmyMissionAndReleaseChildContext_At00405d35(TArmyMission *this)
-
-{
-  CleanupTArmyMissionAndReleaseChildContext(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406D7F
-// GHIDRA_NAME TArmyMission::thunk_DestroyTArmyMission_At00406d7f
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTArmyMission_At00406d7f(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTArmyMission
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTArmyMission */
-
-void * __thiscall TArmyMission::thunk_DestroyTArmyMission_At00406d7f(TArmyMission *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestroyTArmyMission(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408819
-// GHIDRA_NAME TArmyMission::Reassess
-// GHIDRA_PROTO void * __cdecl Reassess(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT macos_vtable_slot=0;class=TArmyMission;confidence=low;current=thunk_GetTArmyMissionClassNamePointer_At00408819
-// GHIDRA_COMMENT_END
-
-/* macos_vtable_slot=0;class=TArmyMission;confidence=low;current=thunk_GetTArmyMissionClassNamePointer_At00408819
-    */
-
-void * __cdecl TArmyMission::Reassess(void)
-
-{
-  return &g_pClassDescTArmyMission;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C030
 // GHIDRA_NAME TArmyMission::GetTArmyMissionClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmyMissionClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmyMission.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmyMissionClassNamePointer()
 
-/* Returns class descriptor pointer for TArmyMission. */
-
-void * __cdecl TArmyMission::GetTArmyMissionClassNamePointer(void)
+undefined ** TArmyMission::GetTArmyMissionClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmyMission;
+  return &PTR_s_TArmyMission_00697a28;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C1D0
 // GHIDRA_NAME TArmyMission::DestroyTArmyMission
-// GHIDRA_PROTO void * __thiscall DestroyTArmyMission(void)
+// GHIDRA_PROTO undefined DestroyTArmyMission()
 
-void * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this)
+undefined4 __thiscall TArmyMission::DestroyTArmyMission(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_ResetTArmyMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  ResetTArmyMissionToSentinelVtable();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C220
 // GHIDRA_NAME TArmyMission::CleanupTArmyMissionAndReleaseChildContext
-// GHIDRA_PROTO void __thiscall CleanupTArmyMissionAndReleaseChildContext(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Base army mission cleanup: clears transient unit/link state, releases child context, and destroys self when requested.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CleanupTArmyMissionAndReleaseChildContext()
 
-/* Base army mission cleanup: clears transient unit/link state, releases child context, and destroys
-   self when requested. */
-
-void __thiscall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(TArmyMission *this)
+void __fastcall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(int *param_1)
 
 {
   int iVar1;
-  bool bVar2;
-  int extraout_EAX;
-  undefined3 extraout_var;
-  int extraout_EAX_00;
-  undefined3 extraout_var_00;
-  int iVar3;
+  int iVar2;
   
-  thunk_InitializeLinkedListCursorFromOwnerHead();
-  bVar2 = thunk_LinkedListCursorHasCurrent();
-  iVar3 = CONCAT31(extraout_var,bVar2);
-  iVar1 = extraout_EAX;
-  while (iVar3 != 0) {
+  iVar1 = InitializeLinkedListCursorFromOwnerHead();
+  iVar2 = LinkedListCursorHasCurrent();
+  while (iVar2 != 0) {
     *(undefined4 *)(iVar1 + 0x40) = 0;
-    thunk_AdvanceLinkedListCursor();
-    bVar2 = thunk_LinkedListCursorHasCurrent();
-    iVar1 = extraout_EAX_00;
-    iVar3 = CONCAT31(extraout_var_00,bVar2);
+    iVar1 = AdvanceLinkedListCursor();
+    iVar2 = LinkedListCursorHasCurrent();
   }
-  (**(code **)(*(int *)this->pField18 + 0x5c))();
-  if (this->pField18 != (int *)0x0) {
-    (**(code **)(*(int *)this->pField18 + 0x58))();
+  (**(code **)(*(int *)param_1[6] + 0x5c))();
+  if ((int *)param_1[6] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[6] + 0x58))();
   }
-  this->pField18 = (void *)0x0;
-  if (this != (TArmyMission *)0x0) {
-    (**(code **)(this->field0_0x0 + 4))(1);
+  param_1[6] = 0;
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
   }
   return;
 }

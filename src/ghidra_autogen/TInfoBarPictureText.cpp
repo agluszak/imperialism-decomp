@@ -3,77 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TInfoBarPictureText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004012B7
-// GHIDRA_NAME TInfoBarPictureText::thunk_GetTInfoBarPictureTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTInfoBarPictureTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTInfoBarPictureTextClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTInfoBarPictureTextClassNamePointer */
-
-void * __cdecl TInfoBarPictureText::thunk_GetTInfoBarPictureTextClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTInfoBarPictureTextClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401AB4
-// GHIDRA_NAME TInfoBarPictureText::thunk_DestructTInfoBarPictureTextAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTInfoBarPictureTextAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* [FID:thunk_target_sync] */
-
-void __thiscall
-TInfoBarPictureText::thunk_DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  puStack_8 = &LAB_0062f0ab;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblTStaticText;
-  uStack_4 = 0;
-  if (this->field126_0x84 != 0) {
-    ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull();
-  }
-  this->pVtable = &g_vtblTView;
-  uStack_4 = 2;
-  if (this->field65_0x44 != (int *)0x0) {
-    (**(code **)(*this->field65_0x44 + 4))(1);
-  }
-  FreeHeapBufferIfNotNull();
-  uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5AC0
 // GHIDRA_NAME TInfoBarPictureText::CreateTInfoBarPictureTextInstance
-// GHIDRA_PROTO void * __cdecl CreateTInfoBarPictureTextInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TInfoBarPictureText; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTInfoBarPictureTextInstance()
 
-/* [ClassQuad] create inferred for TInfoBarPictureText; alloc factory pattern. */
-
-void * __cdecl TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
+undefined4 * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
 
 {
-  TStaticText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -83,74 +20,61 @@ void * __cdecl TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
   puStack_8 = &LAB_00638efa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb4);
   local_4 = 0;
-  if (this != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
-    *(undefined1 *)((int)&this[1].base.field2_0x5 + 1) = 0;
-    *(undefined1 *)((int)&this[1].base.field2_0x5 + 2) = 0;
-    *(undefined1 *)&this[1].base.field3_0x8 = 0;
-    *(undefined1 *)((int)&this[1].base.field3_0x8 + 1) = 0;
-    *(undefined1 *)((int)&this[1].base.field3_0x8 + 2) = 0;
-    *(undefined1 *)((int)&this[1].base.field3_0x8 + 3) = 0;
-    *(undefined1 *)&this[1].base.dialogValueDwordC = 0;
-    *(undefined1 *)((int)&this[1].base.dialogValueDwordC + 1) = 0;
-    *(undefined4 *)((int)&this[1].base.field2_0x5 + 1) = 0;
-    *(undefined1 *)((int)&this[1].base.dialogValueDwordC + 2) = 0;
-    (this->base).pVtable = &PTR_thunk_GetTInfoBarPictureTextClassNamePointer_0066d288;
+  if (puVar1 != (undefined4 *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+    *(undefined1 *)(puVar1 + 0x26) = 0;
+    *(undefined1 *)((int)puVar1 + 0x99) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
+    *(undefined1 *)(puVar1 + 0x27) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
+    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
+    puVar1[0x26] = 0;
+    *(undefined1 *)(puVar1 + 0x28) = 0;
+    *puVar1 = &PTR_LAB_0066d288;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5BB0
 // GHIDRA_NAME TInfoBarPictureText::GetTInfoBarPictureTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTInfoBarPictureTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TInfoBarPictureText.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTInfoBarPictureTextClassNamePointer()
 
-/* Returns class descriptor pointer for TInfoBarPictureText. */
-
-void * __cdecl TInfoBarPictureText::GetTInfoBarPictureTextClassNamePointer(void)
+undefined ** TInfoBarPictureText::GetTInfoBarPictureTextClassNamePointer(void)
 
 {
-  return &g_pClassDescTInfoBarPictureText;
+  return &PTR_s_TInfoBarPictureText_0066c438;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C60
 // GHIDRA_NAME TInfoBarPictureText::ConstructTInfoBarPictureTextBaseState
-// GHIDRA_PROTO void __thiscall ConstructTInfoBarPictureTextBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTInfoBarPictureTextBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall
-TInfoBarPictureText::ConstructTInfoBarPictureTextBaseState(TInfoBarPictureText *this)
+undefined4 __thiscall
+TInfoBarPictureText::ConstructTInfoBarPictureTextBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTInfoBarPictureTextAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTInfoBarPictureTextAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C90
 // GHIDRA_NAME TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTInfoBarPictureTextAndMaybeFree(void)
+// GHIDRA_PROTO undefined DestructTInfoBarPictureTextAndMaybeFree()
 
-void __thiscall
-TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText *this)
+void __fastcall TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(undefined4 *param_1)
 
 {
+  int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -159,21 +83,22 @@ TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblTStaticText;
+  *param_1 = &TStaticText::_vftable_;
+  iVar1 = param_1[0x21];
   uStack_4 = 0;
-  if (this->field126_0x84 != 0) {
+  if (iVar1 != 0) {
     ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull();
+    FreeHeapBufferIfNotNull(iVar1);
   }
-  this->pVtable = &g_vtblTView;
+  *param_1 = &TView::_vftable_;
   uStack_4 = 2;
-  if (this->field65_0x44 != (int *)0x0) {
-    (**(code **)(*this->field65_0x44 + 4))(1);
+  if ((int *)param_1[0x11] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0x11] + 4))(1);
   }
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(param_1[0x12]);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

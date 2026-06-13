@@ -3,227 +3,19 @@
 // Program: Imperialism.exe
 // Bucket: TLineData.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040533A
-// GHIDRA_NAME TLineData::thunk_ConstructUiGoldLabelResourceEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructUiGoldLabelResourceEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructUiGoldLabelResourceEntry
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructUiGoldLabelResourceEntry */
-
-void __thiscall TLineData::thunk_ConstructUiGoldLabelResourceEntry(TLineData *this)
-
-{
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  this->field0_0x0 = &g_vtblTRadioTextCluster;
-  this->field8c = 0x4b;
-  this->field100_0x8e = 0x49;
-  this->field90 = -1;
-  this->field92 = 0;
-  *(undefined2 *)&this->pField94 = 2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405A8D
-// GHIDRA_NAME TLineData::thunk_ApplyCityViewSelectionPayloadAndRefreshControls
-// GHIDRA_PROTO void __thiscall thunk_ApplyCityViewSelectionPayloadAndRefreshControls(int selectionValue, byte selectionState, int secondaryValue, ushort selectionKind)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyCityViewSelectionPayloadAndRefreshControls.
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyCityViewSelectionPayloadAndRefreshControls. */
-
-void __thiscall
-TLineData::thunk_ApplyCityViewSelectionPayloadAndRefreshControls
-          (TLineData *this,int selectionValue,byte selectionState,int secondaryValue,
-          ushort selectionKind)
-
-{
-  undefined **ppuVar1;
-  int iVar2;
-  
-  ppuVar1 = this->field0_0x0;
-  this->pField94 = (void *)selectionValue;
-  this->field105_0x9c = selectionState;
-  this->pField98 = (void *)secondaryValue;
-  this->field107_0x9e = selectionKind;
-  iVar2 = (*(code *)ppuVar1[0x16])();
-  *(undefined4 *)(iVar2 + 0x3c) = 0x65;
-  (*(code *)ppuVar1[0x75])();
-  (*(code *)ppuVar1[0x76])();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040610E
-// GHIDRA_NAME TLineData::thunk_ConstructPictureScreenVariantEntry
-// GHIDRA_PROTO void __thiscall thunk_ConstructPictureScreenVariantEntry(void)
-
-void __thiscall TLineData::thunk_ConstructPictureScreenVariantEntry(TLineData *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636518;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTUpDownPictureButton;
-  this->field92 = 7000;
-  uStack_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  *(undefined2 *)&this->pField98 = 0;
-  *(undefined2 *)((int)&this->pField98 + 2) = 0;
-  *(undefined2 *)&this->field105_0x9c = 0;
-  this->field0_0x0 = &g_vtblTTextPictureButton;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407C6B
-// GHIDRA_NAME TLineData::thunk_RenderUiBitmapOnRuntimeSurfaceContext
-// GHIDRA_PROTO void __thiscall thunk_RenderUiBitmapOnRuntimeSurfaceContext(int arg2, int arg3, int param_3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to RenderUiBitmapOnRuntimeSurfaceContext
-// GHIDRA_COMMENT_END
-
-/* Thunk to RenderUiBitmapOnRuntimeSurfaceContext */
-
-void __thiscall
-TLineData::thunk_RenderUiBitmapOnRuntimeSurfaceContext
-          (TLineData *this,int arg2,int arg3,int param_3)
-
-{
-  byte *pbVar1;
-  int iVar2;
-  undefined4 *puVar3;
-  int *piVar4;
-  undefined1 extraout_AL;
-  int *piVar5;
-  int iStack_18;
-  int *piStack_14;
-  undefined4 uStack_10;
-  undefined4 uStack_c;
-  int iStack_8;
-  int iStack_4;
-  
-  piVar5 = *(int **)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0xa8);
-  iVar2 = *piVar5;
-  this->field97_0x84 = (int *)piVar5[0xd4];
-  *(undefined1 *)(piVar5 + 0xd3) = 1;
-  (**(code **)(iVar2 + 0x1f8))();
-  piVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130();
-  iStack_8 = arg3;
-  uStack_10 = 0;
-  uStack_c = 0;
-  iStack_4 = param_3;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&piStack_14,&iStack_18);
-  thunk_SetActiveQuickDrawSurfaceContext(this->field97_0x84,iStack_18);
-  thunk_GetSurfaceObjectAtContextOffset24(this->field97_0x84);
-  thunk_ReturnConstantTrueQuickDrawFlag();
-  NoOpRuntimeCallback_00497c00();
-  if (*piVar5 != 0) {
-    RenderUiBitmapOnRuntimeSurfaceContext_Impl();
-    puVar3 = (undefined4 *)*piVar5;
-    arg2 = CONCAT31(arg2._1_3_,extraout_AL);
-    (**(code **)*puVar3)();
-    pbVar1 = (byte *)(puVar3 + 1);
-    *pbVar1 = *pbVar1 | 1;
-    ResetQuickDrawStrokeState();
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
-    RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400((int)piVar5,arg2);
-  }
-  piVar4 = (int *)*piVar5;
-  (**(code **)(*piVar4 + 4))();
-  *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
-  if ((undefined4 *)*piVar5 != (undefined4 *)0x0) {
-    *(undefined4 *)*piVar5 = &g_vslotTAmbitFileBasedDocument_Slot01D0_NotifyControlStateChange;
-    TAmbitFileBasedDocument::
-    thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124
-              ();
-    FreeHeapBufferIfNotNull();
-  }
-  FreeHeapBufferIfNotNull();
-  thunk_SetActiveQuickDrawSurfaceContext(piStack_14,iStack_18);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409025
-// GHIDRA_NAME TLineData::thunk_SetLineDataRowAndBounds
-// GHIDRA_PROTO void __thiscall thunk_SetLineDataRowAndBounds(ushort primaryIndex, ushort secondaryIndex, int * pRect)
-
-void __thiscall
-TLineData::thunk_SetLineDataRowAndBounds
-          (TLineData *this,ushort primaryIndex,ushort secondaryIndex,int *pRect)
-
-{
-  *(ushort *)&this->field_0x4 = secondaryIndex;
-  *(int *)&this->field_0x8 = *pRect;
-  *(int *)&this->field_0xc = pRect[1];
-  *(ushort *)&this->field_0x6 = primaryIndex;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004093B3
-// GHIDRA_NAME TLineData::thunk_DestructTLineDataAndMaybeFree_At004093b3
-// GHIDRA_PROTO void * __thiscall thunk_DestructTLineDataAndMaybeFree_At004093b3(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTLineDataAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTLineDataAndMaybeFree */
-
-void * __thiscall
-TLineData::thunk_DestructTLineDataAndMaybeFree_At004093b3(TLineData *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTLineDataAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040955C
-// GHIDRA_NAME TLineData::thunk_GetTLineDataClassNamePointer_At0040955c
-// GHIDRA_PROTO void * __cdecl thunk_GetTLineDataClassNamePointer_At0040955c(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTLineDataClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTLineDataClassNamePointer */
-
-void * __cdecl TLineData::thunk_GetTLineDataClassNamePointer_At0040955c(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTLineDataClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8890
 // GHIDRA_NAME TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection
-// GHIDRA_PROTO void __thiscall PopulateTurnEventDialogArmyUnitLinesForTileSelection(int param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds and appends TArmyUnitLine records for units on selected map tile and updates dialog line list.
-// GHIDRA_COMMENT_END
-
-/* Builds and appends TArmyUnitLine records for units on selected map tile and updates dialog line
-   list. */
+// GHIDRA_PROTO undefined PopulateTurnEventDialogArmyUnitLinesForTileSelection()
 
 void __thiscall
-TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *this,int param_1)
+TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(int *param_1,short param_2)
 
 {
-  undefined **ppuVar1;
-  TLineData *pThis;
-  int iVar2;
+  int iVar1;
+  undefined4 *puVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int local_14;
+  undefined4 local_14;
   undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -233,36 +25,36 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *this,
   puStack_8 = &LAB_0063031a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_RenderUiBitmapOnRuntimeSurfaceContext(this,0xdb8,0xeff,0x30);
+  RenderUiBitmapOnRuntimeSurfaceContext(0xdb8,0xeff,0x30);
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
-  this->field8c = (short)param_1;
-  if (((short)param_1 < 0) || (0x17f < (short)param_1)) {
-    iVar2 = 0;
+  *(short *)(param_1 + 0x23) = param_2;
+  if ((param_2 < 0) || (0x17f < param_2)) {
+    iVar3 = 0;
   }
   else {
-    iVar2 = *(int *)(*(int *)((int)g_pGlobalMapState + 0x10) + 0x98 + (short)param_1 * 0xa8);
+    iVar3 = *(int *)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + param_2 * 0xa8);
   }
-  for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x14)) {
-    if (*(short *)(iVar2 + 8) != 1) {
-      pThis = AllocateWithFallbackHandler();
+  for (; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x14)) {
+    if (*(short *)(iVar3 + 8) != 1) {
+      puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x14);
       local_4._0_1_ = 2;
-      if (pThis == (TLineData *)0x0) {
-        pThis = (TLineData *)0x0;
+      if (puVar2 == (undefined4 *)0x0) {
+        puVar2 = (undefined4 *)0x0;
       }
       else {
-        ConstructTLineDataBaseState(pThis);
-        pThis->field0_0x0 = &g_vtblTArmyUnitLine;
+        ConstructTLineDataBaseState();
+        *puVar2 = &PTR_LAB_0064ce80;
       }
       local_4._0_1_ = 1;
       local_14 = 0xec;
       local_10 = 0x31;
-      thunk_SetLineDataRowAndBounds(pThis,0,0,&local_14);
-      ppuVar1 = this->field0_0x0;
-      pThis->field10 = iVar2;
-      (*(code *)ppuVar1[0x68])(pThis);
+      SetLineDataRowAndBounds(0,0,&local_14);
+      iVar1 = *param_1;
+      puVar2[4] = iVar3;
+      (**(code **)(iVar1 + 0x1a0))(puVar2);
     }
   }
   WrapperFor_thunk_UpdatePagedListNavigationButtonState_At00564a10();
@@ -276,127 +68,108 @@ TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection(TLineData *this,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6F30
 // GHIDRA_NAME TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
-// GHIDRA_PROTO void __thiscall ApplyCityViewSelectionPayloadAndRefreshControls(int selectionValue, byte selectionState, int secondaryValue, ushort selectionKind)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Stores incoming city-view selection payload fields on the view object, sets active pane marker, then triggers slot +0x1D4 and +0x1D8 refresh callbacks.
-// GHIDRA_COMMENT_END
-
-/* Stores incoming city-view selection payload fields on the view object, sets active pane marker,
-   then triggers slot +0x1D4 and +0x1D8 refresh callbacks. */
+// GHIDRA_PROTO undefined ApplyCityViewSelectionPayloadAndRefreshControls()
 
 void __thiscall
 TLineData::ApplyCityViewSelectionPayloadAndRefreshControls
-          (TLineData *this,int selectionValue,byte selectionState,int secondaryValue,
-          ushort selectionKind)
+          (int *param_1,int param_2,undefined1 param_3,int param_4,undefined2 param_5)
 
 {
-  undefined **ppuVar1;
+  int iVar1;
   int iVar2;
   
-  ppuVar1 = this->field0_0x0;
-  this->pField94 = (void *)selectionValue;
-  this->field105_0x9c = selectionState;
-  this->pField98 = (void *)secondaryValue;
-  this->field107_0x9e = selectionKind;
-  iVar2 = (*(code *)ppuVar1[0x16])();
+  iVar1 = *param_1;
+  param_1[0x25] = param_2;
+  *(undefined1 *)(param_1 + 0x27) = param_3;
+  param_1[0x26] = param_4;
+  *(undefined2 *)((int)param_1 + 0x9e) = param_5;
+  iVar2 = (**(code **)(iVar1 + 0x58))();
   *(undefined4 *)(iVar2 + 0x3c) = 0x65;
-  (*(code *)ppuVar1[0x75])();
-  (*(code *)ppuVar1[0x76])();
+  (**(code **)(iVar1 + 0x1d4))();
+  (**(code **)(iVar1 + 0x1d8))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564A60
 // GHIDRA_NAME TLineData::RenderUiBitmapOnRuntimeSurfaceContext
-// GHIDRA_PROTO void __thiscall RenderUiBitmapOnRuntimeSurfaceContext(int arg2, int arg3, int param_3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] Renders bitmap resource on active runtime surface context using temporary sprite object and resource-handle cleanup flow.
-// GHIDRA_COMMENT_END
-
-/* [ClassLane] Renders bitmap resource on active runtime surface context using temporary sprite
-   object and resource-handle cleanup flow. */
+// GHIDRA_PROTO undefined RenderUiBitmapOnRuntimeSurfaceContext()
 
 void __thiscall
-TLineData::RenderUiBitmapOnRuntimeSurfaceContext(TLineData *this,int arg2,int arg3,int param_3)
+TLineData::RenderUiBitmapOnRuntimeSurfaceContext
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
   byte *pbVar1;
   int iVar2;
   undefined4 *puVar3;
   int *piVar4;
-  undefined1 extraout_AL;
-  int *piVar5;
-  int iStack_18;
-  int *piStack_14;
+  undefined1 uVar5;
+  int *piVar6;
+  undefined4 uVar7;
+  undefined4 uStack_18;
+  undefined4 uStack_14;
   undefined4 uStack_10;
   undefined4 uStack_c;
-  int iStack_8;
-  int iStack_4;
+  undefined4 uStack_8;
+  undefined4 uStack_4;
   
-  piVar5 = *(int **)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0xa8);
-  iVar2 = *piVar5;
-  this->field97_0x84 = (int *)piVar5[0xd4];
-  *(undefined1 *)(piVar5 + 0xd3) = 1;
+  piVar6 = *(int **)(*(int *)(g_pUiRuntimeContext + 0xf0) + 0xa8);
+  iVar2 = *piVar6;
+  *(int *)(param_1 + 0x84) = piVar6[0xd4];
+  *(undefined1 *)(piVar6 + 0xd3) = 1;
   (**(code **)(iVar2 + 0x1f8))();
-  piVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130();
-  iStack_8 = arg3;
+  piVar6 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(param_2);
+  uStack_8 = param_3;
   uStack_10 = 0;
   uStack_c = 0;
-  iStack_4 = param_3;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&piStack_14,&iStack_18);
-  thunk_SetActiveQuickDrawSurfaceContext(this->field97_0x84,iStack_18);
-  thunk_GetSurfaceObjectAtContextOffset24(this->field97_0x84);
-  thunk_ReturnConstantTrueQuickDrawFlag();
-  NoOpRuntimeCallback_00497c00();
-  if (*piVar5 != 0) {
-    RenderUiBitmapOnRuntimeSurfaceContext_Impl();
-    puVar3 = (undefined4 *)*piVar5;
-    arg2 = CONCAT31(arg2._1_3_,extraout_AL);
+  uStack_4 = param_4;
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&uStack_14,&uStack_18);
+  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)(param_1 + 0x84),uStack_18);
+  uVar7 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x84));
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar7);
+  NoOpRuntimeCallback_00497c00(piVar6);
+  if (*piVar6 != 0) {
+    uVar5 = RenderUiBitmapOnRuntimeSurfaceContext_Impl(piVar6);
+    puVar3 = (undefined4 *)*piVar6;
     (**(code **)*puVar3)();
     pbVar1 = (byte *)(puVar3 + 1);
     *pbVar1 = *pbVar1 | 1;
     ResetQuickDrawStrokeState();
-    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40();
-    RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400((int)piVar5,arg2);
+    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar6,&uStack_10);
+    RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400(piVar6,uVar5);
   }
-  piVar4 = (int *)*piVar5;
+  piVar4 = (int *)*piVar6;
   (**(code **)(*piVar4 + 4))();
   *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
-  if ((undefined4 *)*piVar5 != (undefined4 *)0x0) {
-    *(undefined4 *)*piVar5 = &g_vslotTAmbitFileBasedDocument_Slot01D0_NotifyControlStateChange;
-    TAmbitFileBasedDocument::
-    thunk_WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00_At00409124
-              ();
-    FreeHeapBufferIfNotNull();
+  puVar3 = (undefined4 *)*piVar6;
+  if (puVar3 != (undefined4 *)0x0) {
+    *puVar3 = &PTR_EnsureBitmapResourceLoadedAndCopyRectSize_0064c340;
+    WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00();
+    FreeHeapBufferIfNotNull(puVar3);
   }
-  FreeHeapBufferIfNotNull();
-  thunk_SetActiveQuickDrawSurfaceContext(piStack_14,iStack_18);
+  FreeHeapBufferIfNotNull(piVar6);
+  thunk_SetActiveQuickDrawSurfaceContext(uStack_14,uStack_18);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564DC0
 // GHIDRA_NAME TLineData::InitializePagedListLineDataControlsAndHeaderBitmap
-// GHIDRA_PROTO void __thiscall InitializePagedListLineDataControlsAndHeaderBitmap(int param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Build line-data controls and header bitmap for paged list style view.
-// GHIDRA_COMMENT_END
-
-/* Build line-data controls and header bitmap for paged list style view. */
+// GHIDRA_PROTO undefined InitializePagedListLineDataControlsAndHeaderBitmap()
 
 void __thiscall
-TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this,int param_1)
+TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(int *param_1,int param_2)
 
 {
   code *pcVar1;
-  undefined **ppuVar2;
-  void *pvVar3;
-  TLineData *pThis;
-  int pageDelta;
-  void **ppvVar4;
-  int iVar5;
-  int *piVar6;
+  undefined4 uVar2;
+  int iVar3;
+  undefined4 *puVar4;
+  int *piVar5;
+  int iVar6;
+  undefined4 *puVar7;
   undefined4 *unaff_FS_OFFSET;
   int local_18;
-  int iStack_14;
+  undefined4 uStack_14;
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -406,131 +179,114 @@ TLineData::InitializePagedListLineDataControlsAndHeaderBitmap(TLineData *this,in
   puStack_8 = &LAB_0063591a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_RenderUiBitmapOnRuntimeSurfaceContext(this,0xdba,0x500,0x2d);
-  iVar5 = 0x636c7330;
-  this->field88 = param_1;
-  ppvVar4 = (void **)&this->field90;
+  RenderUiBitmapOnRuntimeSurfaceContext(0xdba,0x500,0x2d);
+  iVar6 = 0x636c7330;
+  param_1[0x22] = param_2;
+  piVar5 = param_1 + 0x24;
   local_18 = 4;
   do {
-    pvVar3 = (void *)(**(code **)(**(int **)((int)g_pDisplayManager + 4) + 0x94))(iVar5);
-    if (pvVar3 == (void *)0x0) {
-                    /* WARNING: Subroutine does not return */
+    iVar3 = (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))(iVar6);
+    if (iVar3 == 0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UOceanViews_cpp_00698650,0x114);
     }
-    *ppvVar4 = pvVar3;
-    ppvVar4 = ppvVar4 + 1;
-    iVar5 = iVar5 + 1;
+    *piVar5 = iVar3;
+    piVar5 = piVar5 + 1;
+    iVar6 = iVar6 + 1;
     local_18 = local_18 + -1;
   } while (local_18 != 0);
-  piVar6 = *(int **)(this->field88 + 0x10);
-  if (piVar6 != (int *)0x0) {
-    pcVar1 = (code *)this->field0_0x0[0x68];
+  puVar7 = *(undefined4 **)(param_1[0x22] + 0x10);
+  if (puVar7 != (undefined4 *)0x0) {
+    pcVar1 = *(code **)(*param_1 + 0x1a0);
     do {
-      pThis = AllocateWithFallbackHandler();
+      puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
       uStack_4 = 0;
-      if (pThis == (TLineData *)0x0) {
-        pThis = (TLineData *)0x0;
+      if (puVar4 == (undefined4 *)0x0) {
+        puVar4 = (undefined4 *)0x0;
       }
       else {
-        ConstructTLineDataBaseState(pThis);
-        pThis->field0_0x0 = &PTR_thunk_GetTShipLineClassNamePointer_0065cde8;
+        ConstructTLineDataBaseState();
+        *puVar4 = &PTR_LAB_0065cde8;
       }
       uStack_4 = 0xffffffff;
-      iStack_14 = 0xec;
+      uStack_14 = 0xec;
       uStack_10 = 0x31;
-      thunk_SetLineDataRowAndBounds(pThis,0,0,&iStack_14);
-      *(int **)&pThis->field_0x14 = piVar6;
-      iVar5 = *piVar6;
-      *(int *)&pThis->field_0x18 = param_1;
-      pThis->field10 = iVar5;
-      (*pcVar1)(pThis);
-      piVar6 = (int *)piVar6[1];
-    } while (piVar6 != (int *)0x0);
+      SetLineDataRowAndBounds(0,0,&uStack_14);
+      puVar4[5] = puVar7;
+      uVar2 = *puVar7;
+      puVar4[6] = param_2;
+      puVar4[4] = uVar2;
+      (*pcVar1)(puVar4);
+      puVar7 = (undefined4 *)puVar7[1];
+    } while (puVar7 != (undefined4 *)0x0);
   }
-  ppuVar2 = this->field0_0x0;
-  this->field64 = 2;
-  (*(code *)ppuVar2[0x6b])();
-  (*(code *)ppuVar2[0x6c])(1);
-  piVar6 = this->pField20;
-  (**(code **)(*piVar6 + 0xc))();
-  thunk_UpdatePagedListNavigationButtonState(piVar6,pageDelta);
+  iVar6 = *param_1;
+  *(undefined2 *)(param_1 + 0x19) = 2;
+  (**(code **)(iVar6 + 0x1ac))();
+  (**(code **)(iVar6 + 0x1b0))(1);
+  (**(code **)(*(int *)param_1[8] + 0xc))();
+  UpdatePagedListNavigationButtonState((int)*(short *)((int)param_1 + 0x62));
   *unaff_FS_OFFSET = uStack_10;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F390
 // GHIDRA_NAME TLineData::GetTLineDataClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTLineDataClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TLineData.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTLineDataClassNamePointer()
 
-/* Returns class descriptor pointer for TLineData. */
-
-void * __cdecl TLineData::GetTLineDataClassNamePointer(void)
+undefined ** TLineData::GetTLineDataClassNamePointer(void)
 
 {
-  return &g_pClassDescTLineData;
+  return &PTR_s_TLineData_0065e158;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F3B0
 // GHIDRA_NAME TLineData::ConstructTLineDataBaseState
-// GHIDRA_PROTO void __fastcall ConstructTLineDataBaseState(TLineData * pThis)
+// GHIDRA_PROTO undefined ConstructTLineDataBaseState()
 
-void __fastcall TLineData::ConstructTLineDataBaseState(TLineData *pThis)
+void __fastcall TLineData::ConstructTLineDataBaseState(undefined4 *param_1)
 
 {
-  pThis->field0_0x0 = &g_vtblTLineData;
+  *param_1 = &PTR_LAB_0065e230;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F3D0
 // GHIDRA_NAME TLineData::DestructTLineDataAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTLineDataAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTLineDataAndMaybeFree()
 
-void * __thiscall TLineData::DestructTLineDataAndMaybeFree(TLineData *this,byte freeSelfFlag)
+undefined4 __thiscall TLineData::DestructTLineDataAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTLineDataAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F420
 // GHIDRA_NAME TLineData::SetLineDataRowAndBounds
-// GHIDRA_PROTO void __thiscall SetLineDataRowAndBounds(ushort primaryIndex, ushort secondaryIndex, int * pRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Assigns line-data row identifiers and packed bounds/rect coordinates into the line descriptor object.
-// GHIDRA_COMMENT_END
-
-/* Assigns line-data row identifiers and packed bounds/rect coordinates into the line descriptor
-   object. */
+// GHIDRA_PROTO undefined SetLineDataRowAndBounds()
 
 void __thiscall
 TLineData::SetLineDataRowAndBounds
-          (TLineData *this,ushort primaryIndex,ushort secondaryIndex,int *pRect)
+          (int param_1,undefined2 param_2,undefined2 param_3,undefined4 *param_4)
 
 {
-  *(ushort *)&this->field_0x4 = secondaryIndex;
-  *(int *)&this->field_0x8 = *pRect;
-  *(int *)&this->field_0xc = pRect[1];
-  *(ushort *)&this->field_0x6 = primaryIndex;
+  *(undefined2 *)(param_1 + 4) = param_3;
+  *(undefined4 *)(param_1 + 8) = *param_4;
+  *(undefined4 *)(param_1 + 0xc) = param_4[1];
+  *(undefined2 *)(param_1 + 6) = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005725D0
 // GHIDRA_NAME TLineData::ConstructPictureScreenVariantEntry
-// GHIDRA_PROTO void __thiscall ConstructPictureScreenVariantEntry(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TTextPictureButton derives from TUpDownPictureButton (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructPictureScreenVariantEntry()
 
-/* [InheritanceEvidence] TTextPictureButton derives from TUpDownPictureButton (decomp_vtbl_seq_ctor,
-   medium) */
-
-void __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *this)
+undefined4 * __fastcall TLineData::ConstructPictureScreenVariantEntry(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -542,22 +298,22 @@ void __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *this)
   puStack_8 = &LAB_00636518;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTUpDownPictureButton;
-  this->field92 = 7000;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_0065f440;
+  *(undefined2 *)((int)param_1 + 0x92) = 7000;
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  *(undefined2 *)&this->pField98 = 0;
-  *(undefined2 *)((int)&this->pField98 + 2) = 0;
-  *(undefined2 *)&this->field105_0x9c = 0;
-  this->field0_0x0 = &g_vtblTTextPictureButton;
+  *(undefined2 *)(param_1 + 0x26) = 0;
+  *(undefined2 *)((int)param_1 + 0x9a) = 0;
+  *(undefined2 *)(param_1 + 0x27) = 0;
+  *param_1 = &PTR_LAB_006603a8;
   *unaff_FS_OFFSET = local_c;
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005796A0
 // GHIDRA_NAME TLineData::ConstructUiGoldLabelResourceEntry
-// GHIDRA_PROTO void __thiscall ConstructUiGoldLabelResourceEntry(void)
+// GHIDRA_PROTO undefined ConstructUiGoldLabelResourceEntry()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived UI resource constructor used in call paths that bind tag 'gold' and localized string setup; initializes label geometry/sentinel defaults.
 // GHIDRA_COMMENT_END
@@ -565,55 +321,59 @@ void __thiscall TLineData::ConstructPictureScreenVariantEntry(TLineData *this)
 /* Derived UI resource constructor used in call paths that bind tag 'gold' and localized string
    setup; initializes label geometry/sentinel defaults. */
 
-void __thiscall TLineData::ConstructUiGoldLabelResourceEntry(TLineData *this)
+undefined4 * __fastcall TLineData::ConstructUiGoldLabelResourceEntry(undefined4 *param_1)
 
 {
-  TCluster::thunk_ConstructUiResourceEntryType4B0C0((TCluster *)this);
-  this->field0_0x0 = &g_vtblTRadioTextCluster;
-  this->field8c = 0x4b;
-  this->field100_0x8e = 0x49;
-  this->field90 = -1;
-  this->field92 = 0;
-  *(undefined2 *)&this->pField94 = 2;
-  return;
+  TCluster::thunk_ConstructUiResourceEntryType4B0C0();
+  *param_1 = &PTR_LAB_00662418;
+  *(undefined2 *)(param_1 + 0x23) = 0x4b;
+  *(undefined2 *)((int)param_1 + 0x8e) = 0x49;
+  *(undefined2 *)(param_1 + 0x24) = 0xffff;
+  *(undefined2 *)((int)param_1 + 0x92) = 0;
+  *(undefined2 *)(param_1 + 0x25) = 2;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BB2E0
 // GHIDRA_NAME TLineData::BuildSelectedNationOrderCapabilityRows
-// GHIDRA_PROTO void __thiscall BuildSelectedNationOrderCapabilityRows(void)
+// GHIDRA_PROTO undefined BuildSelectedNationOrderCapabilityRows()
 
-/* WARNING: Type propagation algorithm not settling */
-
-void __thiscall TLineData::BuildSelectedNationOrderCapabilityRows(TLineData *this)
+void __fastcall TLineData::BuildSelectedNationOrderCapabilityRows(int *param_1)
 
 {
-  short sVar1;
+  int iVar1;
   short sVar2;
   int iVar3;
-  TLineData *pTVar4;
-  void *pvVar5;
-  int *dst_ref_ptr;
+  undefined4 *puVar4;
+  undefined4 uVar5;
   int *piVar6;
-  TLineData *this_00;
-  undefined2 uVar7;
-  int iVar8;
+  undefined4 uVar7;
+  undefined4 *puVar8;
+  undefined2 uVar9;
+  int iVar10;
   int *unaff_FS_OFFSET;
-  undefined4 *puVar9;
-  undefined4 uStack_6c;
-  int local_68 [2];
+  undefined1 *puVar11;
+  undefined1 auStack_6c [2];
+  undefined1 auStack_6a [2];
+  int local_68;
+  undefined4 local_64;
   undefined1 auStack_60 [4];
-  void **ppvStack_5c;
-  TLineData *pTStack_58;
-  int iStack_54;
-  TLineData *pTStack_50;
+  int *piStack_5c;
+  undefined4 *puStack_58;
+  undefined4 uStack_54;
+  undefined4 *puStack_50;
   int iStack_48;
   int iStack_44;
-  int aiStack_40 [2];
-  TLineData *pTStack_38;
+  undefined4 uStack_40;
+  undefined4 uStack_3c;
+  undefined4 *puStack_38;
   undefined1 auStack_34 [4];
-  TLineData *pTStack_30;
+  undefined4 *puStack_30;
   undefined4 uStack_2c;
-  int aiStack_28 [5];
+  undefined4 uStack_28;
+  undefined4 uStack_24;
+  undefined4 uStack_20;
+  int iStack_1c;
   undefined1 local_12;
   undefined1 local_11;
   undefined1 local_10;
@@ -628,293 +388,294 @@ void __thiscall TLineData::BuildSelectedNationOrderCapabilityRows(TLineData *thi
   *unaff_FS_OFFSET = (int)&iStack_c;
   local_12 = 0;
   local_11 = 0;
-  this->field124_0xb0 = 1;
+  *(undefined1 *)(param_1 + 0x2c) = 1;
   local_10 = 0;
   local_f = 0;
-  iVar8 = 0;
-  local_68[1] = 0;
-  local_68[0] = 0;
-  if ((char)*(int *)((int)g_apNationStates[this->field90] + 0x8fc) < '\x01') {
-    iVar3 = (**(code **)(*(int *)g_apNationStates[this->field90] + 0x180))();
+  iVar10 = 0;
+  local_64 = 0;
+  local_68 = 0;
+  if ((char)((int *)(&g_apNationStates)[(short)param_1[0x24]])[0x23f] < '\x01') {
+    iVar3 = (**(code **)(*(int *)(&g_apNationStates)[(short)param_1[0x24]] + 0x180))();
     if (iVar3 == 0) goto LAB_005bb355;
   }
-  this->field124_0xb0 = 0;
+  *(undefined1 *)(param_1 + 0x2c) = 0;
 LAB_005bb355:
   do {
-    sVar2 = (**(code **)(*(int *)g_apNationStates[this->field90] + 0x1b4))(iVar8);
+    sVar2 = (**(code **)(*(int *)(&g_apNationStates)[(short)param_1[0x24]] + 0x1b4))(iVar10);
     if (sVar2 != 0) {
-      this->field124_0xb0 = 0;
-      puVar9 = &uStack_6c;
-      (**(code **)(*(int *)g_apNationStates[this->field90] + 0x1bc))
-                (iVar8,1,(int)&uStack_6c + 2,&uStack_6c,puVar9,auStack_34);
-      uVar7 = (undefined2)iVar8;
-      if ((short)((uint)puVar9 >> 0x10) == 1) {
-        this->field124_0xb0 = 0;
-        pTVar4 = AllocateWithFallbackHandler();
-        aiStack_28[3] = 0;
-        pTStack_50 = pTVar4;
-        if (pTVar4 == (TLineData *)0x0) {
-          pTVar4 = (TLineData *)0x0;
+      *(undefined1 *)(param_1 + 0x2c) = 0;
+      puVar11 = auStack_6c;
+      (**(code **)(*(int *)(&g_apNationStates)[(short)param_1[0x24]] + 0x1bc))
+                (iVar10,1,auStack_6a,auStack_6c,puVar11,auStack_34);
+      uVar9 = (undefined2)iVar10;
+      if ((short)((uint)puVar11 >> 0x10) == 1) {
+        *(undefined1 *)(param_1 + 0x2c) = 0;
+        puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+        iStack_1c = 0;
+        puStack_50 = puVar4;
+        if (puVar4 == (undefined4 *)0x0) {
+          puVar4 = (undefined4 *)0x0;
         }
         else {
-          ConstructTLineDataBaseState(pTVar4);
-          pTVar4->field0_0x0 = &g_vtblTCommodityLine;
+          ConstructTLineDataBaseState();
+          *puVar4 = &PTR_LAB_0066e278;
         }
-        aiStack_28[3] = 0xffffffff;
+        iStack_1c = 0xffffffff;
         iStack_48 = 200;
         iStack_44 = 0x1e;
-        thunk_SetLineDataRowAndBounds(pTVar4,0,0x1e,&iStack_48);
-        *(undefined2 *)&pTVar4->field10 = uVar7;
-        (**(code **)(*(int *)this->pField98 + 0x1a4))(pTVar4);
+        SetLineDataRowAndBounds(0,0x1e,&iStack_48);
+        *(undefined2 *)(puVar4 + 4) = uVar9;
+        (**(code **)(*(int *)param_1[0x26] + 0x1a4))(puVar4);
         iStack_48 = (int)sVar2;
         sVar2 = 1;
         do {
-          pTVar4 = AllocateWithFallbackHandler();
+          puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x18);
           uStack_4 = 1;
-          pTStack_38 = pTVar4;
-          if (pTVar4 == (TLineData *)0x0) {
-            pTVar4 = (TLineData *)0x0;
+          puStack_38 = puVar4;
+          if (puVar4 == (undefined4 *)0x0) {
+            puVar4 = (undefined4 *)0x0;
           }
           else {
-            ConstructTLineDataBaseState(pTVar4);
-            pTVar4->field0_0x0 = &g_vtblTDealLine;
+            ConstructTLineDataBaseState();
+            *puVar4 = &PTR_LAB_0066e238;
           }
-          iStack_44 = CONCAT22(iStack_44._2_2_,this->field90);
+          iStack_44 = CONCAT22(iStack_44._2_2_,(short)param_1[0x24]);
           uStack_4 = 0xffffffff;
-          aiStack_40[0] = 200;
-          aiStack_40[1] = 0x1e;
-          thunk_SetLineDataRowAndBounds(pTVar4,(ushort)local_68[1],0,aiStack_40);
-          *(undefined2 *)&pTVar4->field10 = uVar7;
-          *(undefined2 *)((int)&pTVar4->field10 + 2) = (undefined2)iStack_44;
-          *(short *)&pTVar4->field_0x14 = sVar2;
-          (**(code **)(*(int *)this->pField98 + 0x1a0))(pTVar4);
+          uStack_40 = 200;
+          uStack_3c = 0x1e;
+          SetLineDataRowAndBounds(local_64,0,&uStack_40);
+          *(undefined2 *)(puVar4 + 4) = uVar9;
+          *(undefined2 *)((int)puVar4 + 0x12) = (undefined2)iStack_44;
+          *(short *)(puVar4 + 5) = sVar2;
+          (**(code **)(*(int *)param_1[0x26] + 0x1a0))(puVar4);
           sVar2 = sVar2 + 1;
           iStack_48 = iStack_48 + -1;
         } while (iStack_48 != 0);
         iStack_48 = 0;
       }
       else {
-        this->field124_0xb0 = 0;
-        pTVar4 = AllocateWithFallbackHandler();
-        aiStack_28[3] = 2;
-        pTStack_50 = pTVar4;
-        if (pTVar4 == (TLineData *)0x0) {
-          pTVar4 = (TLineData *)0x0;
+        *(undefined1 *)(param_1 + 0x2c) = 0;
+        puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+        iStack_1c = 2;
+        puStack_50 = puVar4;
+        if (puVar4 == (undefined4 *)0x0) {
+          puVar4 = (undefined4 *)0x0;
         }
         else {
-          ConstructTLineDataBaseState(pTVar4);
-          pTVar4->field0_0x0 = &g_vtblTCommodityLine;
+          ConstructTLineDataBaseState();
+          *puVar4 = &PTR_LAB_0066e278;
         }
-        aiStack_28[3] = 0xffffffff;
-        local_68[0] = 200;
-        local_68[1] = 0x1e;
-        thunk_SetLineDataRowAndBounds(pTVar4,0,0x1e,local_68);
-        *(undefined2 *)&pTVar4->field10 = uVar7;
-        (**(code **)(**(int **)&this->field105_0x9c + 0x1a4))(pTVar4);
+        iStack_1c = 0xffffffff;
+        local_68 = 200;
+        local_64 = 0x1e;
+        SetLineDataRowAndBounds(0,0x1e,&local_68);
+        *(undefined2 *)(puVar4 + 4) = uVar9;
+        (**(code **)(*(int *)param_1[0x27] + 0x1a4))(puVar4);
         iStack_48 = (int)sVar2;
         sVar2 = 1;
         do {
-          pTVar4 = AllocateWithFallbackHandler();
+          puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x18);
           uStack_4 = 3;
-          pTStack_38 = pTVar4;
-          if (pTVar4 == (TLineData *)0x0) {
-            pTVar4 = (TLineData *)0x0;
+          puStack_38 = puVar4;
+          if (puVar4 == (undefined4 *)0x0) {
+            puVar4 = (undefined4 *)0x0;
           }
           else {
-            ConstructTLineDataBaseState(pTVar4);
-            pTVar4->field0_0x0 = &g_vtblTDealLine;
+            ConstructTLineDataBaseState();
+            *puVar4 = &PTR_LAB_0066e238;
           }
-          iStack_44 = CONCAT22(iStack_44._2_2_,this->field90);
+          iStack_44 = CONCAT22(iStack_44._2_2_,(short)param_1[0x24]);
           uStack_4 = 0xffffffff;
-          pTStack_58 = (TLineData *)0xc8;
-          iStack_54 = 0x1e;
-          thunk_SetLineDataRowAndBounds(pTVar4,(ushort)local_68[0],0,(int *)&pTStack_58);
-          *(undefined2 *)&pTVar4->field10 = uVar7;
-          *(undefined2 *)((int)&pTVar4->field10 + 2) = (undefined2)iStack_44;
-          *(short *)&pTVar4->field_0x14 = sVar2;
-          (**(code **)(**(int **)&this->field105_0x9c + 0x1a0))(pTVar4);
+          puStack_58 = (undefined4 *)0xc8;
+          uStack_54 = 0x1e;
+          SetLineDataRowAndBounds(local_68,0,&puStack_58);
+          *(undefined2 *)(puVar4 + 4) = uVar9;
+          *(undefined2 *)((int)puVar4 + 0x12) = (undefined2)iStack_44;
+          *(short *)(puVar4 + 5) = sVar2;
+          (**(code **)(*(int *)param_1[0x27] + 0x1a0))(puVar4);
           sVar2 = sVar2 + 1;
           iStack_48 = iStack_48 + -1;
         } while (iStack_48 != 0);
       }
     }
-    iVar8 = iVar8 + 1;
-  } while ((short)iVar8 < 0x11);
-  iVar8 = (**(code **)(*(int *)g_apNationStates[this->field90] + 0x17c))();
-  if (iVar8 != 0) {
+    iVar10 = iVar10 + 1;
+  } while ((short)iVar10 < 0x11);
+  iVar10 = (**(code **)(*(int *)(&g_apNationStates)[(short)param_1[0x24]] + 0x17c))();
+  if (iVar10 != 0) {
     InitializeSharedStringRefFromEmpty();
     uStack_4 = 4;
-    this->field124_0xb0 = 0;
-    pTStack_38 = AllocateWithFallbackHandler();
+    *(undefined1 *)(param_1 + 0x2c) = 0;
+    puStack_38 = (undefined4 *)AllocateWithFallbackHandler(0x20);
     uStack_4._0_1_ = 5;
-    if (pTStack_38 == (TLineData *)0x0) {
-      pvVar5 = (void *)0x0;
+    if (puStack_38 == (undefined4 *)0x0) {
+      uVar5 = 0;
     }
     else {
-      pvVar5 = TTextLine::ConstructTTextLineBaseState((TTextLine *)pTStack_38);
+      uVar5 = TTextLine::ConstructTTextLineBaseState();
     }
     uStack_4 = CONCAT31(uStack_4._1_3_,4);
-    pTStack_30 = (TLineData *)0xc8;
+    puStack_30 = (undefined4 *)0xc8;
     uStack_2c = 0x1e;
-    WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390();
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2741,7,&iStack_48);
-    WrapperFor_StringShared_AssignFromPtr_At00570420(pvVar5,&iStack_54);
-    thunk_BuildUiTextStyleDescriptor();
-    CopyTwoDwordsAndWordToObjectOffset14();
-    SetObjectField1EWord();
-    (**(code **)(**(int **)&this->field105_0x9c + 0x1a0))(pvVar5);
+    WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0x3c,&puStack_30,0xffffffff,0);
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2741,7,&iStack_48);
+    WrapperFor_StringShared_AssignFromPtr_At00570420(&uStack_54);
+    thunk_BuildUiTextStyleDescriptor(&uStack_24,0,0xe,0x2b67);
+    CopyTwoDwordsAndWordToObjectOffset14(&uStack_24);
+    SetObjectField1EWord(1);
+    (**(code **)(*(int *)param_1[0x27] + 0x1a0))(uVar5);
     iStack_44 = 0;
-    pTStack_50 = (TLineData *)0x0;
+    puStack_50 = (undefined4 *)0x0;
     do {
-      iVar8 = iStack_44;
-      iVar3 = (**(code **)(*(int *)g_apNationStates[this->field90] + 0x178))(iStack_44);
+      iVar10 = iStack_44;
+      iVar3 = (**(code **)(*(int *)(&g_apNationStates)[(short)param_1[0x24]] + 0x178))(iStack_44);
       if (iVar3 != 0) {
-        local_68[0] = local_68[0] + 1;
-        this->field124_0xb0 = 0;
-        pTVar4 = AllocateWithFallbackHandler();
+        local_68 = local_68 + 1;
+        *(undefined1 *)(param_1 + 0x2c) = 0;
+        puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x14);
         uStack_4._0_1_ = 6;
-        if (pTVar4 == (TLineData *)0x0) {
-          this_00 = (TLineData *)0x0;
-          pTStack_58 = pTVar4;
+        if (puVar4 == (undefined4 *)0x0) {
+          puVar8 = (undefined4 *)0x0;
+          puStack_58 = puVar4;
         }
         else {
-          pTStack_58 = pTVar4;
-          ConstructTLineDataBaseState(pTVar4);
-          pTVar4->field0_0x0 = &g_vtblTCommodityLine;
-          this_00 = pTVar4;
+          puStack_58 = puVar4;
+          ConstructTLineDataBaseState();
+          *puVar4 = &PTR_LAB_0066e278;
+          puVar8 = puVar4;
         }
         uStack_4 = CONCAT31(uStack_4._1_3_,4);
-        aiStack_28[0] = 200;
-        aiStack_28[1] = 0x1e;
-        thunk_SetLineDataRowAndBounds(this_00,0,0x1e,aiStack_28);
-        *(short *)&this_00->field10 = (short)iVar8;
-        (**(code **)(**(int **)&this->field105_0x9c + 0x1a4))(this_00);
-        sVar2 = 7;
-        pTStack_58 = (TLineData *)0xa1;
-        ppvStack_5c = g_apTerrainTypeDescriptorTable + 7;
+        uStack_28 = 200;
+        uStack_24 = 0x1e;
+        SetLineDataRowAndBounds(0,0x1e,&uStack_28);
+        *(short *)(puVar8 + 4) = (short)iVar10;
+        (**(code **)(*(int *)param_1[0x27] + 0x1a4))(puVar8);
+        iVar3 = 7;
+        puStack_58 = (undefined4 *)0xa1;
+        piStack_5c = &g_apMinorNationCapabilityObjects;
         do {
-          if ((*ppvStack_5c != (void *)0x0) &&
-             (iVar3 = *(int *)((int)g_apNationStates[this->field90] +
-                              ((int)&pTStack_50->field0_0x0 + (int)pTStack_58) * 4 + -4), iVar3 != 0
-             )) {
+          if ((*piStack_5c != 0) &&
+             (iVar1 = *(int *)((&g_apNationStates)[(short)param_1[0x24]] + -4 +
+                              ((int)puStack_50 + (int)puStack_58) * 4), iVar1 != 0)) {
             InitializeSharedStringRefFromEmpty();
             uStack_4._0_1_ = 7;
             InitializeSharedStringRefFromEmpty();
             uStack_4._0_1_ = 8;
-            pTStack_30 = AllocateWithFallbackHandler();
+            puStack_30 = (undefined4 *)AllocateWithFallbackHandler(0x20);
             uStack_4._0_1_ = 9;
-            if (pTStack_30 == (TLineData *)0x0) {
-              pvVar5 = (void *)0x0;
+            if (puStack_30 == (undefined4 *)0x0) {
+              uVar5 = 0;
             }
             else {
-              pvVar5 = TTextLine::ConstructTTextLineBaseState((TTextLine *)pTStack_30);
+              uVar5 = TTextLine::ConstructTTextLineBaseState();
             }
             uStack_4._0_1_ = 8;
-            aiStack_28[2] = 200;
-            aiStack_28[3] = 0x1e;
-            WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390();
-            thunk_AssignNormalizedCredentialTokenToIndexedSlot();
+            uStack_20 = 200;
+            iStack_1c = 0x1e;
+            WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390
+                      (local_68,0,&uStack_20,0xffffffff,0);
+            piVar6 = (int *)AssignNormalizedCredentialTokenToIndexedSlot(&uStack_40,iVar3);
             uStack_4._0_1_ = 10;
-            AssignFromPtr(local_68 + 1,dst_ref_ptr);
+            AssignFromPtr(&local_64,piVar6);
             uStack_4._0_1_ = 8;
             ReleaseSharedStringRefIfNotEmpty();
-            (**(code **)(*(int *)g_pLocalizationTable + 0x74))(iVar3,auStack_60);
-            AssignSharedStringConcatCStrAndRef();
+            (**(code **)(*g_pLocalizationTable + 0x74))(iVar1,auStack_60);
+            uVar7 = AssignSharedStringConcatCStrAndRef(&uStack_40,&DAT_00699320,&local_68);
             iStack_c._0_1_ = 0xb;
-            AssignStringSharedFromRef();
+            AssignStringSharedFromRef(uVar7);
             iStack_c = CONCAT31(iStack_c._1_3_,8);
             ReleaseSharedStringRefIfNotEmpty();
-            WrapperFor_StringShared_AssignFromPtr_At00570420(pvVar5,&uStack_6c);
-            (**(code **)(**(int **)&this->field105_0x9c + 0x1a0))(pvVar5);
+            WrapperFor_StringShared_AssignFromPtr_At00570420(auStack_6c);
+            (**(code **)(*(int *)param_1[0x27] + 0x1a0))(uVar5);
             uStack_4._0_1_ = 7;
             ReleaseSharedStringRefIfNotEmpty();
             uStack_4 = CONCAT31(uStack_4._1_3_,4);
             ReleaseSharedStringRefIfNotEmpty();
-            iVar8 = iStack_44;
+            iVar10 = iStack_44;
           }
-          sVar2 = sVar2 + 1;
-          ppvStack_5c = ppvStack_5c + 1;
-          pTStack_58 = (TLineData *)&pTStack_58->field_0x17;
-        } while (sVar2 < 0x17);
+          iVar3 = iVar3 + 1;
+          piStack_5c = piStack_5c + 1;
+          puStack_58 = (undefined4 *)((int)puStack_58 + 0x17);
+        } while ((short)iVar3 < 0x17);
       }
-      iStack_44 = iVar8 + 1;
-      pTStack_50 = (TLineData *)((int)&pTStack_50->field0_0x0 + 1);
+      iStack_44 = iVar10 + 1;
+      puStack_50 = (undefined4 *)((int)puStack_50 + 1);
     } while ((short)iStack_44 < 0x17);
     uStack_4 = 0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
   }
-  pTVar4 = AllocateWithFallbackHandler();
+  puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   uStack_4 = 0xe;
-  pTStack_30 = pTVar4;
-  if (pTVar4 == (TLineData *)0x0) {
-    pTVar4 = (TLineData *)0x0;
+  puStack_30 = puVar4;
+  if (puVar4 == (undefined4 *)0x0) {
+    puVar4 = (undefined4 *)0x0;
   }
   else {
-    ConstructTLineDataBaseState(pTVar4);
-    pTVar4->field0_0x0 = &g_vtblTTradeTotalsLine;
+    ConstructTLineDataBaseState();
+    *puVar4 = &PTR_LAB_0066e1f8;
   }
-  sVar2 = this->field90;
+  iVar10 = param_1[0x24];
   uStack_4 = 0xffffffff;
-  aiStack_28[2] = 200;
-  aiStack_28[3] = (('\0' < *(char *)((int)g_apNationStates[sVar2] + 0x8fc)) + 4) * 0x1e;
-  thunk_SetLineDataRowAndBounds(pTVar4,0,0,aiStack_28 + 2);
-  *(short *)&pTVar4->field10 = sVar2;
-  (**(code **)(**(int **)&this->field105_0x9c + 0x1a0))(pTVar4);
-  (**(code **)(*(int *)this->pField98 + 0x1ac))();
-  (**(code **)(**(int **)&this->field105_0x9c + 0x1ac))();
-  sVar2 = *(short *)((int)this->pField98 + 0x60);
-  sVar1 = *(short *)(*(int *)&this->field105_0x9c + 0x60);
-  if (sVar1 < sVar2) {
-    this->field92 = sVar2 + -1;
+  uStack_20 = 200;
+  iStack_1c = (('\0' < *(char *)((&g_apNationStates)[(short)iVar10] + 0x8fc)) + 4) * 0x1e;
+  SetLineDataRowAndBounds(0,0,&uStack_20);
+  *(short *)(puVar4 + 4) = (short)iVar10;
+  (**(code **)(*(int *)param_1[0x27] + 0x1a0))(puVar4);
+  (**(code **)(*(int *)param_1[0x26] + 0x1ac))();
+  (**(code **)(*(int *)param_1[0x27] + 0x1ac))();
+  if (*(short *)(param_1[0x27] + 0x60) < *(short *)(param_1[0x26] + 0x60)) {
+    *(short *)((int)param_1 + 0x92) = *(short *)(param_1[0x26] + 0x60) + -1;
   }
   else {
-    this->field92 = sVar1 + -1;
+    *(short *)((int)param_1 + 0x92) = *(short *)(param_1[0x27] + 0x60) + -1;
   }
-  piVar6 = (int *)(*(code *)this->field0_0x0[0x25])(0x74616273);
-  iVar8 = *piVar6;
-  (**(code **)(iVar8 + 0xc))();
-  (**(code **)(iVar8 + 0x1c4))(0x2266,*(undefined1 *)((int)g_pCityOrderCapabilityState + 0x193));
-  *unaff_FS_OFFSET = aiStack_28[3];
+  piVar6 = (int *)(**(code **)(*param_1 + 0x94))(0x74616273);
+  iVar10 = *piVar6;
+  (**(code **)(iVar10 + 0xc))();
+  (**(code **)(iVar10 + 0x1c4))(0x2266,*(undefined1 *)((int)g_pCityOrderCapabilityState + 0x193));
+  *unaff_FS_OFFSET = iStack_1c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DD900
 // GHIDRA_NAME TLineData::HandleTurnEventDialogFactorySlotEC
-// GHIDRA_PROTO void __thiscall HandleTurnEventDialogFactorySlotEC(void)
+// GHIDRA_PROTO undefined HandleTurnEventDialogFactorySlotEC()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Enum] ETurnEventFactorySlotId::TURN_EVENT_FACTORY_SLOT_EC handler.
+// GHIDRA_COMMENT TurnEventState vtable slot +0xEC handler. Opens dialog id 0x0DAC, updates PAGE/widget values, commits, then updates active-item widget selection.
 // GHIDRA_COMMENT_END
 
-/* [Enum] ETurnEventFactorySlotId::TURN_EVENT_FACTORY_SLOT_EC handler. */
+/* TurnEventState vtable slot +0xEC handler. Opens dialog id 0x0DAC, updates PAGE/widget values,
+   commits, then updates active-item widget selection. */
 
-void __thiscall TLineData::HandleTurnEventDialogFactorySlotEC(TLineData *this)
+void __fastcall TLineData::HandleTurnEventDialogFactorySlotEC(int *param_1)
 
 {
   int iVar1;
   int *piVar2;
-  TLineData *this_00;
-  int iStack_4;
+  int iVar3;
+  undefined4 uStack_4;
   
-  piVar2 = (int *)(**(code **)(*(int *)g_pUiViewManager + 0x28))(0xdac);
+  piVar2 = (int *)(**(code **)(*g_pUiViewManager + 0x28))(0xdac);
   if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x1e2);
   }
   iVar1 = *piVar2;
-  this_00 = (TLineData *)(**(code **)(iVar1 + 0x94))(0x70616765);
-  if (this_00 == (TLineData *)0x0) {
-                    /* WARNING: Subroutine does not return */
+  iVar3 = (**(code **)(iVar1 + 0x94))(0x70616765);
+  if (iVar3 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UViewMgr_more_cpp_0069b740,0x1e3);
   }
-  PopulateTurnEventDialogArmyUnitLinesForTileSelection(this_00,iStack_4);
-  (*(code *)this->field0_0x0[0x11])(piVar2,&stack0xfffffff0);
+  PopulateTurnEventDialogArmyUnitLinesForTileSelection(uStack_4);
+  (**(code **)(*param_1 + 0x44))(piVar2,&stack0xfffffff0);
   (**(code **)(iVar1 + 0xf0))(&stack0xffffffe8,0);
   (**(code **)(iVar1 + 0x1a0))(1);
   (**(code **)(iVar1 + 0x1ac))();
   (**(code **)(iVar1 + 0xa0))();
   (**(code **)(iVar1 + 0x1c))();
-  (**(code **)(**(int **)(this->fieldf0 + 0xb0 + *(short *)(this->fieldf0 + 0x96) * 4) + 0x1d0))
-            (iStack_4);
+  (**(code **)(**(int **)(param_1[0x3c] + 0xb0 + *(short *)(param_1[0x3c] + 0x96) * 4) + 0x1d0))
+            (uStack_4);
   return;
 }
 

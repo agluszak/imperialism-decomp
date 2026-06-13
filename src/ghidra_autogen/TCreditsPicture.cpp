@@ -3,71 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TCreditsPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401CE4
-// GHIDRA_NAME TCreditsPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At0056f190
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_Cluster_MapTileHint_0048f3c0_At0056f190 */
-
-void __thiscall
-TCreditsPicture::thunk_WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190
-          (TCreditsPicture *this)
-
-{
-  THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At0056f190((THQButton *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004033C8
-// GHIDRA_NAME TCreditsPicture::thunk_GetTCreditsPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCreditsPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCreditsPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCreditsPictureClassNamePointer */
-
-void * __cdecl TCreditsPicture::thunk_GetTCreditsPictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCreditsPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407806
-// GHIDRA_NAME TCreditsPicture::thunk_scalar_deleting_destructor_00407806
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407806(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TCreditsPicture::thunk_scalar_deleting_destructor_00407806(TCreditsPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0056EDB0
 // GHIDRA_NAME TCreditsPicture::CreateTCreditsPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTCreditsPictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TCreditsPicture; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCreditsPictureInstance()
 
-/* [ClassQuad] create inferred for TCreditsPicture; alloc factory pattern. */
-
-void * __cdecl TCreditsPicture::CreateTCreditsPictureInstance(void)
+undefined4 * TCreditsPicture::CreateTCreditsPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -81,12 +21,12 @@ void * __cdecl TCreditsPicture::CreateTCreditsPictureInstance(void)
   puStack_8 = &LAB_006361da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTCreditsPictureClassNamePointer_00642d58;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00642d58;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -95,16 +35,11 @@ void * __cdecl TCreditsPicture::CreateTCreditsPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056EE30
 // GHIDRA_NAME TCreditsPicture::GetTCreditsPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCreditsPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCreditsPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCreditsPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TCreditsPicture. */
-
-void * __cdecl TCreditsPicture::GetTCreditsPictureClassNamePointer(void)
+undefined ** TCreditsPicture::GetTCreditsPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTCreditsPicture;
+  return &PTR_s_TCreditsPicture_0065de88;
 }
 

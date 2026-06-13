@@ -3,118 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: THelpPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401E5B
-// GHIDRA_NAME THelpPicture::THelpPicture_VtblSlot015
-// GHIDRA_PROTO void __thiscall THelpPicture_VtblSlot015(int eventCode, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleNameSlotNextPrevToggleCommands
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleNameSlotNextPrevToggleCommands */
-
-void __thiscall
-THelpPicture::THelpPicture_VtblSlot015
-          (THelpPicture *this,int eventCode,PanelEventPayload *pPanelEvent)
-
-{
-  HandleNameSlotNextPrevToggleCommands(this,eventCode,pPanelEvent);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403D6E
-// GHIDRA_NAME THelpPicture::THelpPicture_VtblSlot055
-// GHIDRA_PROTO void __cdecl THelpPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeMapKeyStaticTextEntryAndSyncBounds
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeMapKeyStaticTextEntryAndSyncBounds */
-
-void __cdecl THelpPicture::THelpPicture_VtblSlot055(void)
-
-{
-  InitializeMapKeyStaticTextEntryAndSyncBounds();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405984
-// GHIDRA_NAME THelpPicture::THelpPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall THelpPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTHelpPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTHelpPictureAndMaybeFree */
-
-void * __thiscall THelpPicture::THelpPicture_VtblSlot001(THelpPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTHelpPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406343
-// GHIDRA_NAME THelpPicture::THelpPicture_VtblSlot118
-// GHIDRA_PROTO void __thiscall THelpPicture_VtblSlot118(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BuildHelpSubjectListControlsWithPrevNext
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BuildHelpSubjectListControlsWithPrevNext */
-
-void __thiscall THelpPicture::THelpPicture_VtblSlot118(THelpPicture *this)
-
-{
-  TTEView::BuildHelpSubjectListControlsWithPrevNext((TTEView *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004070B3
-// GHIDRA_NAME THelpPicture::THelpPicture_VtblSlot117
-// GHIDRA_PROTO void __thiscall THelpPicture_VtblSlot117(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshHelpSubjectListControlsWithPrevNext
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshHelpSubjectListControlsWithPrevNext */
-
-void __thiscall THelpPicture::THelpPicture_VtblSlot117(THelpPicture *this)
-
-{
-  RefreshHelpSubjectListControlsWithPrevNext(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040998F
-// GHIDRA_NAME THelpPicture::THelpPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl THelpPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTHelpPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTHelpPictureClassNamePointer */
-
-void * __cdecl THelpPicture::THelpPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTHelpPictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00503BD0
 // GHIDRA_NAME THelpPicture::CreateTHelpPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTHelpPictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for THelpPicture; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTHelpPictureInstance()
 
-/* [ClassQuad] create inferred for THelpPicture; alloc factory pattern. */
-
-void * __cdecl THelpPicture::CreateTHelpPictureInstance(void)
+undefined4 * THelpPicture::CreateTHelpPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -127,38 +20,33 @@ void * __cdecl THelpPicture::CreateTHelpPictureInstance(void)
   puStack_8 = &LAB_006335da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTHelpPicture;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00657080;
     puVar1[0x24] = 0;
     puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503C70
 // GHIDRA_NAME THelpPicture::GetTHelpPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTHelpPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for THelpPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTHelpPictureClassNamePointer()
 
-/* Returns class descriptor pointer for THelpPicture. */
-
-void * __cdecl THelpPicture::GetTHelpPictureClassNamePointer(void)
+undefined ** THelpPicture::GetTHelpPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTHelpPicture;
+  return &PTR_s_THelpPicture_00656f80;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503C90
 // GHIDRA_NAME THelpPicture::ConstructPictureResourceEntryType57080
-// GHIDRA_PROTO void __thiscall ConstructPictureResourceEntryType57080(void)
+// GHIDRA_PROTO undefined ConstructPictureResourceEntryType57080()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin derived picture-entry constructor over ConstructPictureResourceEntryBase, installing vtable PTR_LAB_00657080 and clearing two dword fields.
 // GHIDRA_COMMENT_END
@@ -166,93 +54,88 @@ void * __cdecl THelpPicture::GetTHelpPictureClassNamePointer(void)
 /* Thin derived picture-entry constructor over ConstructPictureResourceEntryBase, installing vtable
    PTR_LAB_00657080 and clearing two dword fields. */
 
-void __thiscall THelpPicture::ConstructPictureResourceEntryType57080(THelpPicture *this)
+undefined4 * __fastcall THelpPicture::ConstructPictureResourceEntryType57080(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTHelpPicture;
-  this->field90 = (short *)0x0;
-  this->pField94 = (void *)0x0;
-  return;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_00657080;
+  param_1[0x24] = 0;
+  param_1[0x25] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503CC0
 // GHIDRA_NAME THelpPicture::DestructTHelpPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTHelpPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTHelpPictureAndMaybeFree()
 
-void * __thiscall
-THelpPicture::DestructTHelpPictureAndMaybeFree(THelpPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+THelpPicture::DestructTHelpPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00503ED0
 // GHIDRA_NAME THelpPicture::HandleNameSlotNextPrevToggleCommands
-// GHIDRA_PROTO void __thiscall HandleNameSlotNextPrevToggleCommands(int eventCode, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Dispatch-matrix validated handler for nam1..nam5/next/prev/togl/more command tags
-// GHIDRA_COMMENT_END
-
-/* Dispatch-matrix validated handler for nam1..nam5/next/prev/togl/more command tags */
+// GHIDRA_PROTO undefined HandleNameSlotNextPrevToggleCommands()
 
 void __thiscall
 THelpPicture::HandleNameSlotNextPrevToggleCommands
-          (THelpPicture *this,int eventCode,PanelEventPayload *pPanelEvent)
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
-  EControlTagFourCC EVar1;
+  uint uVar1;
   
-  thunk_HandleCityDialogToggleCommandOrForward();
-  if (eventCode == 0xd) {
-    EVar1 = pPanelEvent->controlTag1c;
-    if (EVar1 < 0x6e616d32) {
-      if (EVar1 == 0x6e616d31) {
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-        (*(code *)this->field0_0x0[0x76])(1);
+  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
+  if (param_2 == 0xd) {
+    uVar1 = *(uint *)(param_3 + 0x1c);
+    if (uVar1 < 0x6e616d32) {
+      if (uVar1 == 0x6e616d31) {
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+        (**(code **)(*param_1 + 0x1d8))(1);
         return;
       }
-      if (EVar1 == 0x6d6f7265) {
-        PlayDefaultMessageBeep();
+      if (uVar1 == 0x6d6f7265) {
+        PlayDefaultMessageBeep(1);
         return;
       }
     }
-    else if (EVar1 < 0x6e657875) {
-      if (EVar1 == CONTROL_TAG_TAG_TXEN) {
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-        (*(code *)this->field0_0x0[0x73])();
+    else if (uVar1 < 0x6e657875) {
+      if (uVar1 == 0x6e657874) {
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+        (**(code **)(*param_1 + 0x1cc))();
         return;
       }
-      switch(EVar1) {
+      switch(uVar1) {
       case 0x6e616d32:
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-        (*(code *)this->field0_0x0[0x76])(2);
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+        (**(code **)(*param_1 + 0x1d8))(2);
         return;
       case 0x6e616d33:
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-        (*(code *)this->field0_0x0[0x76])(3);
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+        (**(code **)(*param_1 + 0x1d8))(3);
         return;
       case 0x6e616d34:
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-        (*(code *)this->field0_0x0[0x76])(4);
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+        (**(code **)(*param_1 + 0x1d8))(4);
         return;
       case 0x6e616d35:
-        (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-        (*(code *)this->field0_0x0[0x76])(5);
+        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+        (**(code **)(*param_1 + 0x1d8))(5);
         return;
       }
     }
-    else if (EVar1 == 0x70726576) {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-      (*(code *)this->field0_0x0[0x74])();
+    else if (uVar1 == 0x70726576) {
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+      (**(code **)(*param_1 + 0x1d0))();
     }
-    else if (EVar1 == 0x746f676c) {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-      (*(code *)this->field0_0x0[0x75])();
+    else if (uVar1 == 0x746f676c) {
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+      (**(code **)(*param_1 + 0x1d4))();
       return;
     }
   }
@@ -261,15 +144,9 @@ THelpPicture::HandleNameSlotNextPrevToggleCommands
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005046C0
 // GHIDRA_NAME THelpPicture::RefreshHelpSubjectListControlsWithPrevNext
-// GHIDRA_PROTO void __thiscall RefreshHelpSubjectListControlsWithPrevNext(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refreshes HelpPicture subject list controls from current page/count and prev/next availability.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RefreshHelpSubjectListControlsWithPrevNext()
 
-/* Refreshes HelpPicture subject list controls from current page/count and prev/next availability.
-    */
-
-void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPicture *this)
+void __fastcall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(int *param_1)
 
 {
   code *pcVar1;
@@ -305,6 +182,11 @@ void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPi
   undefined4 uStack_74;
   undefined4 uStack_70;
   undefined4 uStack_6c;
+  undefined1 *puStack_68;
+  undefined4 uStack_64;
+  undefined4 uStack_60;
+  undefined4 uStack_5c;
+  undefined4 uStack_58;
   undefined1 local_30 [6];
   undefined1 local_2a;
   undefined1 local_29;
@@ -340,18 +222,41 @@ void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPi
   local_1d = 0;
   local_1c = 0;
   local_1b = 0;
+  uStack_58 = 0x50472f;
   InitializeSharedStringRefFromEmpty();
+  uStack_58 = 3;
+  uStack_5c = 0x2b6d;
+  uStack_60 = 0xc;
+  puStack_68 = local_30;
+  uStack_64 = 4;
   local_4 = 0;
   uStack_6c = 0x50474c;
-  thunk_InitializeUiTextStyleDescriptor((int)local_30,4,0xc,0x2b6d,3);
+  thunk_InitializeUiTextStyleDescriptor();
+  puStack_68 = local_18;
+  uStack_58 = 3;
+  uStack_5c = 0x2b69;
+  uStack_60 = 0xc;
+  uStack_64 = 4;
   uStack_6c = 0x504764;
-  thunk_InitializeUiTextStyleDescriptor((int)local_18,4,0xc,0x2b69,3);
+  thunk_InitializeUiTextStyleDescriptor();
+  puStack_68 = local_24;
+  uStack_58 = 1;
+  uStack_5c = 0x2b67;
+  uStack_60 = 0xc;
+  uStack_64 = 0;
   uStack_6c = 0x50477c;
-  thunk_InitializeUiTextStyleDescriptor((int)local_24,0,0xc,0x2b67,1);
-  pcVar1 = (code *)this->field0_0x0[0x25];
+  thunk_InitializeUiTextStyleDescriptor();
+  pcVar1 = *(code **)(*param_1 + 0x94);
+  uStack_58 = 0x7375626a;
+  uStack_5c = 0x504794;
   piVar2 = (int *)(*pcVar1)();
+  uStack_5c = 1;
+  uStack_60 = 1;
+  uStack_64 = CONCAT22((short)((uint)piVar2 >> 0x10),*(undefined2 *)param_1[0x24]);
   iVar3 = *piVar2;
+  puStack_68 = (undefined1 *)0x5047ae;
   (**(code **)(iVar3 + 0x1cc))();
+  puStack_68 = (undefined1 *)0x1;
   uStack_6c = 1;
   uStack_70 = 0x5047ba;
   (**(code **)(iVar3 + 0xa4))();
@@ -385,13 +290,13 @@ void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPi
   aiStack_a8[0] = 0x504817;
   (**(code **)(iVar3 + 0x1cc))();
   iStack_8c = 0;
-  if (0 < this->field90[6]) {
+  if (0 < *(short *)(param_1[0x24] + 0xc)) {
     do {
       aiStack_a8[0] = iStack_8c + 0x6e616d31;
       uStack_ac = (undefined4 *)0x50483a;
       piVar2 = (int *)(*pcVar1)();
       iStack_b0 = iStack_90 + 2;
-      uStack_b4 = CONCAT22((short)((uint)piVar2 >> 0x10),*this->field90);
+      uStack_b4 = CONCAT22((short)((uint)piVar2 >> 0x10),*(undefined2 *)param_1[0x24]);
       uStack_ac = (undefined4 *)0x1;
       iVar3 = *piVar2;
       uStack_b8 = 0x50485a;
@@ -413,10 +318,10 @@ void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPi
       uStack_d8 = 0x50488d;
       (**(code **)(iVar3 + 0x1b4))();
       iStack_8c = iStack_8c + 1;
-    } while (iStack_8c < this->field90[6]);
+    } while (iStack_8c < *(short *)(param_1[0x24] + 0xc));
   }
-  if (this->field90[6] < 5) {
-    iVar3 = this->field90[6] + 0x6e616d31;
+  if (*(short *)(param_1[0x24] + 0xc) < 5) {
+    iVar3 = *(short *)(param_1[0x24] + 0xc) + 0x6e616d31;
     do {
       uStack_ac = (undefined4 *)0x5048be;
       aiStack_a8[0] = iVar3;
@@ -434,14 +339,14 @@ void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPi
     } while (iVar3 < 0x6e616d36);
   }
   aiStack_a8[0] = 0x70726576;
-  uStack_94 = CONCAT13(this->field90[1] != 0,(undefined3)uStack_94);
+  uStack_94 = CONCAT13(*(short *)(param_1[0x24] + 2) != 0,(undefined3)uStack_94);
   uStack_ac = (undefined4 *)0x504904;
   piVar2 = (int *)(*pcVar1)();
   uStack_ac = &uStack_94;
   iStack_b0 = 0xd;
   uStack_b4 = 0x2749;
   uStack_b8 = 0x504920;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  (**(code **)(*g_pLocalizationTable + 0x84))();
   iVar3 = *piVar2;
   piStack_bc = aiStack_a8 + 2;
   uStack_b8 = 1;
@@ -464,20 +369,20 @@ void __thiscall THelpPicture::RefreshHelpSubjectListControlsWithPrevNext(THelpPi
   uStack_e0 = 0x50496c;
   (**(code **)(iVar3 + 0x1b4))();
   uStack_e0 = 0x6e657874;
-  uStack_cc = CONCAT13(this->field90[2] != 0,(undefined3)uStack_cc);
+  uStack_cc = CONCAT13(*(short *)(param_1[0x24] + 4) != 0,(undefined3)uStack_cc);
   uStack_e4 = (undefined4 *)0x504985;
   piVar2 = (int *)(*pcVar1)();
   uStack_e4 = &uStack_cc;
   uStack_e8 = 0xe;
   cVar4 = '\0';
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2749);
+  (**(code **)(*g_pLocalizationTable + 0x84))(0x2749);
   iVar3 = *piVar2;
   (**(code **)(iVar3 + 0x1c8))(&uStack_d8,1);
   (**(code **)(iVar3 + 0xa4))((int)uStack_e4._3_1_,1);
   (**(code **)(iVar3 + 0xa8))((int)cVar4,1);
   (**(code **)(iVar3 + 0x1c4))();
   (**(code **)(iVar3 + 0x1b4))(&uStack_e8,0);
-  (**(code **)(*(int *)this->pField94 + 0xa4))(0,1);
+  (**(code **)(*(int *)param_1[0x25] + 0xa4))(0,1);
   piVar2 = (int *)(*pcVar1)(0x7377696e);
   iVar3 = *piVar2;
   (**(code **)(iVar3 + 0xc))();

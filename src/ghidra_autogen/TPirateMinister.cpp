@@ -3,181 +3,74 @@
 // Program: Imperialism.exe
 // Bucket: TPirateMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402509
-// GHIDRA_NAME TPirateMinister::thunk_ConstructTPirateMinisterBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTPirateMinisterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTPirateMinisterBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTPirateMinisterBaseState */
-
-void * __thiscall TPirateMinister::thunk_ConstructTPirateMinisterBaseState(TPirateMinister *this)
-
-{
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  this->field0_0x0 = &g_vtblTPirateMinister;
-  this->field0c = 2;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402C7F
-// GHIDRA_NAME TPirateMinister::thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3
-// GHIDRA_PROTO void __thiscall thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeRecruitQueuePatternC_Mode2_Type2x3
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeRecruitQueuePatternC_Mode2_Type2x3 */
-
-void __thiscall
-TPirateMinister::thunk_InitializeRecruitQueuePatternC_Mode2_Type2x3(TPirateMinister *this)
-
-{
-  InitializeRecruitQueuePatternC_Mode2_Type2x3(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403DA0
-// GHIDRA_NAME TPirateMinister::thunk_CreateTPirateMinisterInstance_At00403da0
-// GHIDRA_PROTO TPirateMinister * __cdecl thunk_CreateTPirateMinisterInstance_At00403da0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateTPirateMinisterInstance
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateTPirateMinisterInstance */
-
-TPirateMinister * __cdecl TPirateMinister::thunk_CreateTPirateMinisterInstance_At00403da0(void)
-
-{
-  TPirateMinister *pTVar1;
-  
-  pTVar1 = CreateTPirateMinisterInstance();
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004065F0
-// GHIDRA_NAME TPirateMinister::thunk_DestructTPirateMinisterAndMaybeFree_At004065f0
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPirateMinisterAndMaybeFree_At004065f0(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTPirateMinisterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTPirateMinisterAndMaybeFree */
-
-void * __thiscall
-TPirateMinister::thunk_DestructTPirateMinisterAndMaybeFree_At004065f0
-          (TPirateMinister *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTPirateMinisterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409665
-// GHIDRA_NAME TPirateMinister::thunk_GetTPirateMinisterClassNamePointer_At00409665
-// GHIDRA_PROTO void * __cdecl thunk_GetTPirateMinisterClassNamePointer_At00409665(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPirateMinisterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPirateMinisterClassNamePointer */
-
-void * __cdecl TPirateMinister::thunk_GetTPirateMinisterClassNamePointer_At00409665(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPirateMinisterClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDAB0
 // GHIDRA_NAME TPirateMinister::CreateTPirateMinisterInstance
-// GHIDRA_PROTO TPirateMinister * __cdecl CreateTPirateMinisterInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns Pirate minister signed preference scalar selected by polarity flag.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTPirateMinisterInstance()
 
-/* Returns Pirate minister signed preference scalar selected by polarity flag. */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-TPirateMinister * __cdecl TPirateMinister::CreateTPirateMinisterInstance(void)
+float10 TPirateMinister::CreateTPirateMinisterInstance(char param_1)
 
 {
-  undefined4 in_EAX;
-  TPirateMinister *pTVar1;
-  char in_stack_00000004;
-  
-  pTVar1 = (TPirateMinister *)CONCAT31((int3)((uint)in_EAX >> 8),in_stack_00000004);
-  if (in_stack_00000004 != '\0') {
-    return pTVar1;
+  if (param_1 != '\0') {
+    return (float10)_DAT_006548e8;
   }
-  return pTVar1;
+  return (float10)_DAT_006548f0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDAE0
 // GHIDRA_NAME TPirateMinister::GetTPirateMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPirateMinisterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPirateMinister.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPirateMinisterClassNamePointer()
 
-/* Returns class descriptor pointer for TPirateMinister. */
-
-void * __cdecl TPirateMinister::GetTPirateMinisterClassNamePointer(void)
+undefined ** TPirateMinister::GetTPirateMinisterClassNamePointer(void)
 
 {
-  return &g_pClassDescTPirateMinister;
+  return &PTR_s_TPirateMinister_00654880;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDB00
 // GHIDRA_NAME TPirateMinister::ConstructTPirateMinisterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTPirateMinisterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTPirateMinisterBaseState()
 
-void * __thiscall TPirateMinister::ConstructTPirateMinisterBaseState(TPirateMinister *this)
+undefined4 * __fastcall TPirateMinister::ConstructTPirateMinisterBaseState(undefined4 *param_1)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  this->field0_0x0 = &g_vtblTPirateMinister;
-  this->field0c = 2;
-  return this;
+  TMinister::ConstructTMinister();
+  *param_1 = &PTR_LAB_00654b18;
+  *(undefined2 *)(param_1 + 3) = 2;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDB30
 // GHIDRA_NAME TPirateMinister::DestructTPirateMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPirateMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTPirateMinisterAndMaybeFree()
 
-void * __thiscall
-TPirateMinister::DestructTPirateMinisterAndMaybeFree(TPirateMinister *this,byte freeSelfFlag)
+undefined4 __thiscall
+TPirateMinister::DestructTPirateMinisterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTPirateMinisterAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDC40
 // GHIDRA_NAME TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3
-// GHIDRA_PROTO void __thiscall InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes recruit queue preset C: mode=2 with three type-2 orders and post-setup +2 adjustment.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeRecruitQueuePatternC_Mode2_Type2x3()
 
-/* Initializes recruit queue preset C: mode=2 with three type-2 orders and post-setup +2 adjustment.
-    */
-
-void __thiscall TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(TPirateMinister *this)
+void __thiscall
+TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(int param_1,int param_2)
 
 {
-  void *pvVar1;
+  int iVar1;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar2;
   undefined4 unaff_EBP;
-  int iVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
@@ -186,18 +79,21 @@ void __thiscall TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3(TP
   piStack_8 = (int *)&LAB_0063283a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  (**(code **)(**(int **)(in_stack_00000004 + 0x1d8) + 0x2c))(8,4,1);
-  *(undefined2 *)(in_stack_00000004 + 0x62) = 2;
-  iVar2 = 3;
+  (**(code **)(**(int **)(param_2 + 0x1d8) + 0x2c))(8,4,1);
+  *(undefined2 *)(param_2 + 0x62) = 2;
+  iVar3 = 3;
   do {
-    pvVar1 = AllocateWithFallbackHandler();
-    if (pvVar1 != (void *)0x0) {
-      thunk_InitializeMilitaryUnitOrderObject();
+    iVar1 = AllocateWithFallbackHandler(0x44);
+    uVar2 = extraout_var;
+    if (iVar1 != 0) {
+      TMilitaryUnitOrderState::TMilitaryUnitOrderState();
+      uVar2 = extraout_var_00;
     }
-    thunk_InitializeMilitaryRecruitOrderState();
-    this->field18 = this->field18 + 1;
-    iVar2 = iVar2 + -1;
-  } while (iVar2 != 0);
+    InitializeMilitaryRecruitOrderState
+              (2,0,CONCAT22(uVar2,*(undefined2 *)(*(int *)(param_1 + 4) + 0xc)),0);
+    *(short *)(param_1 + 0x18) = *(short *)(param_1 + 0x18) + 1;
+    iVar3 = iVar3 + -1;
+  } while (iVar3 != 0);
   *(short *)((int)piStack_8 + 0xd6) = *(short *)((int)piStack_8 + 0xd6) + 2;
   (**(code **)(*piStack_8 + 0x80))();
   *unaff_FS_OFFSET = unaff_EBP;

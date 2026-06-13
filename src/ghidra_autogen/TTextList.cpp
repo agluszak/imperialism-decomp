@@ -3,88 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TTextList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004016C7
-// GHIDRA_NAME TTextList::thunk_GetTTextListClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTextListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTextListClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTextListClassNamePointer */
-
-void * __cdecl TTextList::thunk_GetTTextListClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTextListClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402761
-// GHIDRA_NAME TTextList::thunk_scalar_deleting_destructor_00402761
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402761(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTextList::thunk_scalar_deleting_destructor_00402761(TTextList *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040362F
-// GHIDRA_NAME TTextList::thunk_ConstructTTextListBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTextListBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for RenderTextListRowsWithSelectionHighlight. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for RenderTextListRowsWithSelectionHighlight. [FID:thunk_target_sync] */
-
-void __thiscall TTextList::thunk_ConstructTTextListBaseState(TTextList *this)
-
-{
-  ConstructTTextListBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403DE1
-// GHIDRA_NAME TTextList::thunk_DestructTTextListAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTTextListAndMaybeFree(int * pScrollData)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleTextListScrollSelectionChange [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleTextListScrollSelectionChange [FID:thunk_target_sync] */
-
-void __thiscall TTextList::thunk_DestructTTextListAndMaybeFree(TTextList *this,int *pScrollData)
-
-{
-  DestructTTextListAndMaybeFree(this,pScrollData);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AB70
 // GHIDRA_NAME TTextList::CreateTTextListInstance
-// GHIDRA_PROTO void * __cdecl CreateTTextListInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTextList; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTextListInstance()
 
-/* [ClassQuad] create inferred for TTextList; alloc factory pattern. */
-
-void * __cdecl TTextList::CreateTTextListInstance(void)
+undefined4 * TTextList::CreateTTextListInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -94,33 +20,27 @@ void * __cdecl TTextList::CreateTTextListInstance(void)
   puStack_8 = &LAB_00636bda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1070);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &PTR_thunk_GetTTextListClassNamePointer_00644778;
-    this[0x2b].inputEnableFlag4c = 0x10;
-    this[0x2b].renderEnableFlag4d = 0;
-    *(undefined4 *)&this[0x2b].field_0x40 = 0;
-    this[0x2b].pChildControlList44 = (void *)0x0;
-    this[0x2b].pOwnedBuffer48 = (void *)0xffffffff;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &g_vtblTTextList;
+    *(undefined2 *)(puVar1 + 0x41b) = 0x10;
+    puVar1[0x418] = 0;
+    puVar1[0x419] = 0;
+    puVar1[0x41a] = 0xffffffff;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AC30
 // GHIDRA_NAME TTextList::GetTTextListClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTextListClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTextList.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTextListClassNamePointer()
 
-/* Returns class descriptor pointer for TTextList. */
-
-void * __cdecl TTextList::GetTTextListClassNamePointer(void)
+char * TTextList::GetTTextListClassNamePointer(void)
 
 {
   return &g_pClassDescTTextList;
@@ -128,75 +48,70 @@ void * __cdecl TTextList::GetTTextListClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057ACC0
 // GHIDRA_NAME TTextList::ConstructTTextListBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTextListBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Render visible text-list rows with centered labels and selected-row highlight fill.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTextListBaseState()
 
-/* Render visible text-list rows with centered labels and selected-row highlight fill. */
-
-void __thiscall TTextList::ConstructTTextListBaseState(TTextList *this)
+void __fastcall TTextList::ConstructTTextListBaseState(int param_1)
 
 {
-  short originX;
-  short extraout_AX;
-  THQButton *this_00;
   short sVar1;
-  void *pvVar2;
-  int *unaff_FS_OFFSET;
-  int local_30;
-  int local_2c [2];
-  void *local_24;
+  undefined2 extraout_var;
+  int iVar2;
+  int iVar3;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_30;
+  undefined4 local_2c;
+  undefined1 local_28 [4];
+  int local_24;
   int local_20;
-  int iStack_1c;
+  undefined4 uStack_1c;
   int iStack_18;
-  void *pvStack_14;
+  undefined4 uStack_14;
   int iStack_10;
-  int local_c;
+  undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00636bf8;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&local_c;
-  pvVar2 = this[0x45].field47_0x38;
-  sVar1 = 0;
-  local_2c[0] = 0;
+  *unaff_FS_OFFSET = &local_c;
+  iVar3 = *(int *)(param_1 + 0x1064);
+  iVar2 = 0;
+  local_2c = 0;
   local_30 = 0;
-  local_24 = pvVar2;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)local_2c);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6a,(int)&local_30);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  if ((int)*(short *)&this[0x46].field_0x4 < (int)this->field47_0x38) {
-    local_20 = (int)pvVar2 * 0x40 + 0x60 + (int)this;
+  local_24 = iVar3;
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&local_2c);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6a,&local_30);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6c);
+  if ((int)*(short *)(param_1 + 0x106c) < *(int *)(param_1 + 0x38)) {
+    local_20 = iVar3 * 0x40 + 0x60 + param_1;
     do {
-      if ((int)this[0x45].field46_0x34 <= (int)pvVar2) break;
-      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)(local_2c + 1));
+      if (*(int *)(param_1 + 0x1060) <= iVar3) break;
+      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(local_20);
       local_4 = 0;
-      if (pvVar2 == this[0x46].pVtable) {
-        (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))(5);
-        iStack_18 = (int)sVar1;
-        iStack_10 = *(short *)&this[0x46].field_0x4 + iStack_18;
-        pvStack_14 = this->field46_0x34;
-        iStack_1c = 0;
-        thunk_FillRectWithQuickDrawBrushAndContextOffset(&iStack_1c);
+      if (iVar3 == *(int *)(param_1 + 0x1068)) {
+        (**(code **)(*g_pUiRuntimeContext + 0x34))(5);
+        iStack_18 = (int)(short)iVar2;
+        iStack_10 = *(short *)(param_1 + 0x106c) + iStack_18;
+        uStack_14 = *(undefined4 *)(param_1 + 0x34);
+        uStack_1c = 0;
+        thunk_FillRectWithQuickDrawBrushAndContextOffset(&uStack_1c);
       }
-      thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-      originX = (short)((int)this->field46_0x34 / 2) - extraout_AX / 2;
+      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(local_28);
+      iVar3 = *(int *)(param_1 + 0x34) / 2 - (int)sVar1 / 2;
       SetQuickDrawColorAndSyncGlobals(local_30);
-      thunk_SetQuickDrawTextOriginWithContextOffset(originX + 1,sVar1 + 0xc);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-      SetQuickDrawColorAndSyncGlobals(local_2c[0]);
-      thunk_SetQuickDrawTextOriginWithContextOffset(originX,sVar1 + 0xb);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)(local_2c + 1));
-      sVar1 = sVar1 + *(short *)&this[0x46].field_0x4;
-      local_24 = (void *)((int)local_24 + 1);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,iVar2 + 0xc);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_28);
+      SetQuickDrawColorAndSyncGlobals(local_2c);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar3,iVar2 + 0xb);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_28);
+      iVar2 = iVar2 + CONCAT22(extraout_var,*(undefined2 *)(param_1 + 0x106c));
+      local_24 = local_24 + 1;
       local_20 = local_20 + 0x40;
       local_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
-      pvVar2 = local_24;
-    } while ((int)sVar1 + (int)*(short *)&this[0x46].field_0x4 < (int)this->field47_0x38);
+      iVar3 = local_24;
+    } while ((int)(short)iVar2 + (int)*(short *)(param_1 + 0x106c) < *(int *)(param_1 + 0x38));
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -204,38 +119,32 @@ void __thiscall TTextList::ConstructTTextListBaseState(TTextList *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AF20
 // GHIDRA_NAME TTextList::DestructTTextListAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTTextListAndMaybeFree(int * pScrollData)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles text-list scroll/selection change and triggers invalidation/refresh callbacks.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTextListAndMaybeFree()
 
-/* Handles text-list scroll/selection change and triggers invalidation/refresh callbacks. */
-
-void __thiscall TTextList::DestructTTextListAndMaybeFree(TTextList *this,int *pScrollData)
+void __thiscall TTextList::DestructTTextListAndMaybeFree(int *param_1,int param_2)
 
 {
-  void *pvVar1;
-  void *pvVar2;
+  int iVar1;
+  int iVar2;
   LONG LStack_30;
   LONG LStack_2c;
   LONG LStack_28;
   RECT RStack_24;
   tagRECT tStack_14;
   
-  pvVar2 = (void *)((int)(short)(pScrollData[1] / (int)*(short *)&this[0x46].field_0x4) +
-                   (int)this[0x45].field47_0x38);
-  if ((int)pvVar2 < (int)this[0x45].field46_0x34) {
-    pvVar1 = this->pVtable;
-    this[0x46].pVtable = pvVar2;
-    (**(code **)((int)pvVar1 + 0xe4))();
-    (**(code **)((int)pvVar1 + 300))(&LStack_30);
+  iVar2 = (int)(short)(*(int *)(param_2 + 4) / (int)(short)param_1[0x41b]) + param_1[0x419];
+  if (iVar2 < param_1[0x418]) {
+    iVar1 = *param_1;
+    param_1[0x41a] = iVar2;
+    (**(code **)(iVar1 + 0xe4))();
+    (**(code **)(iVar1 + 300))(&LStack_30);
     RStack_24.top = LStack_30;
     RStack_24.right = LStack_2c;
     RStack_24.bottom = LStack_28;
     CopyRect(&tStack_14,&RStack_24);
-    thunk_InvalidateCityDialogRectRegion((int)&tStack_14,1);
-    (**(code **)((int)pvVar1 + 0x13c))();
-    (**(code **)(*this->field29_0x20 + 0x40))(4,this,0);
+    thunk_InvalidateCityDialogRectRegion(&tStack_14,1);
+    (**(code **)(iVar1 + 0x13c))();
+    (**(code **)(*(int *)param_1[8] + 0x40))(4,param_1,0);
   }
   return;
 }

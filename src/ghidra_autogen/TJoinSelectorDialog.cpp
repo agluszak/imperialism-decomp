@@ -3,56 +3,13 @@
 // Program: Imperialism.exe
 // Bucket: TJoinSelectorDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402DF1
-// GHIDRA_NAME TJoinSelectorDialog::thunk_scalar_deleting_destructor_00402DF1
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402DF1(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TJoinSelectorDialog::thunk_scalar_deleting_destructor_00402DF1
-          (TJoinSelectorDialog *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004086F7
-// GHIDRA_NAME TJoinSelectorDialog::thunk_GetTJoinSelectorDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTJoinSelectorDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTJoinSelectorDialogClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTJoinSelectorDialogClassNamePointer */
-
-void * __cdecl TJoinSelectorDialog::thunk_GetTJoinSelectorDialogClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTJoinSelectorDialogClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E710
 // GHIDRA_NAME TJoinSelectorDialog::GetTJoinSelectorDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTJoinSelectorDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TJoinSelectorDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTJoinSelectorDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TJoinSelectorDialog. */
-
-void * __cdecl TJoinSelectorDialog::GetTJoinSelectorDialogClassNamePointer(void)
+undefined ** TJoinSelectorDialog::GetTJoinSelectorDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTJoinSelectorDialog;
+  return &PTR_s_TJoinSelectorDialog_0065c198;
 }
 

@@ -3,252 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TScenarioChooser.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004039C7
-// GHIDRA_NAME TScenarioChooser::thunk_GetTScenarioChooserClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTScenarioChooserClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTScenarioChooserClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTScenarioChooserClassNamePointer */
-
-void * __cdecl TScenarioChooser::thunk_GetTScenarioChooserClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTScenarioChooserClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040479B
-// GHIDRA_NAME TScenarioChooser::thunk_ConstructTScenarioChooserBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTScenarioChooserBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Cluster_MapTileHint_00579b80 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Cluster_MapTileHint_00579b80 [FID:thunk_target_sync] */
-
-void * __thiscall TScenarioChooser::thunk_ConstructTScenarioChooserBaseState(TScenarioChooser *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ConstructTScenarioChooserBaseState(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406FC8
-// GHIDRA_NAME TScenarioChooser::thunk_scalar_deleting_destructor_00406FC8
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00406FC8(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TScenarioChooser::thunk_scalar_deleting_destructor_00406FC8
-          (TScenarioChooser *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040840E
-// GHIDRA_NAME TScenarioChooser::thunk_DestructTScenarioChooserAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTScenarioChooserAndMaybeFree(int commandTag, int payload)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleScenarioChooserCommandAndCursorState [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleScenarioChooserCommandAndCursorState [FID:thunk_target_sync] */
-
-void __thiscall
-TScenarioChooser::thunk_DestructTScenarioChooserAndMaybeFree
-          (TScenarioChooser *this,int commandTag,int payload)
-
-{
-  DestructTScenarioChooserAndMaybeFree(this,commandTag,payload);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004099B7
-// GHIDRA_NAME TScenarioChooser::thunk_LoadScenarioMetadataByIndexIntoUiControlCore
-// GHIDRA_PROTO void __thiscall thunk_LoadScenarioMetadataByIndexIntoUiControlCore(ushort param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for LoadScenarioMetadataByIndexIntoUiControlCore.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for LoadScenarioMetadataByIndexIntoUiControlCore. */
-
-void __thiscall
-TScenarioChooser::thunk_LoadScenarioMetadataByIndexIntoUiControlCore
-          (TScenarioChooser *this,ushort param_1)
-
-{
-  short sVar1;
-  code cVar2;
-  char cVar3;
-  code *pcVar4;
-  int arg1;
-  uint uVar5;
-  int *piVar6;
-  void *pvVar7;
-  int arg4;
-  TLoadSavePicture *this_00;
-  undefined2 extraout_var;
-  void *unaff_EBX;
-  void **ppvVar8;
-  short *psVar9;
-  code *pcVar10;
-  char *pcVar11;
-  int unaff_EDI;
-  undefined4 *unaff_FS_OFFSET;
-  code *pcVar12;
-  int iVar13;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00636bb8;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
-  this->field310_0x142 = param_1;
-  uStack_4 = 0;
-  thunk_BuildScenarioPathForModeAndIndex();
-  pcVar4 = AllocateWithFallbackHandler();
-  OpenBufferedStreamWithMode40();
-  do {
-    uVar5 = ReadNextByteFromBufferedStreamWithLock(arg1);
-    pcVar10 = pcVar4;
-    if ((*(byte *)(arg1 + 0xc) & 0x10) != 0) break;
-  } while ((char)uVar5 != '#');
-  do {
-    uVar5 = ReadNextByteFromBufferedStreamWithLock(arg1);
-    cVar2 = SUB41(uVar5,0);
-    if (cVar2 == (code)0x23) {
-LAB_0057a7a7:
-      pvVar7 = this->pVtable;
-      *pcVar10 = (code)0x0;
-      piVar6 = (int *)(**(code **)((int)pvVar7 + 0x94))();
-      iVar13 = *piVar6;
-      (**(code **)(iVar13 + 0xc))();
-      (**(code **)(iVar13 + 500))();
-      (**(code **)(iVar13 + 0xa4))();
-      (**(code **)(iVar13 + 0xe4))();
-      ppvVar8 = &this->field272_0x118;
-      iVar13 = 7;
-      psVar9 = &this->field297_0x134;
-      do {
-        pcVar11 = *ppvVar8;
-        while( true ) {
-          uVar5 = ReadNextByteFromBufferedStreamWithLock((int)unaff_EBX);
-          cVar3 = (char)uVar5;
-          if (cVar3 == '#') break;
-          if ((cVar3 == '\n') || (cVar3 == '\r')) {
-            *pcVar11 = ' ';
-          }
-          else if (cVar3 == '^') {
-            *pcVar11 = '\r';
-          }
-          else {
-            *pcVar11 = cVar3;
-          }
-          pcVar11 = pcVar11 + 1;
-          if ((cVar3 == '#') || (0x7fd < (int)pcVar11 - (int)*ppvVar8)) break;
-        }
-        *pcVar11 = '\0';
-        sVar1 = *(short *)ppvVar8;
-        ppvVar8 = ppvVar8 + 1;
-        iVar13 = iVar13 + -1;
-        *psVar9 = ((short)pcVar11 + 1) - sVar1;
-        psVar9 = psVar9 + 1;
-        if (iVar13 == 0) {
-          DecodeScenarioTilePaletteMaskWithStreamLock(unaff_EBX,s__d__d__d__d__d__d__d__d_00698af0);
-          CloseBufferedStreamAndReleaseResources((int)unaff_EBX);
-          pcVar12 = (code *)0x63646573;
-          piVar6 = (int *)(*pcVar4)();
-          iVar13 = *piVar6;
-          (**(code **)(iVar13 + 0xc))();
-          sVar1 = (&this->field297_0x134)[unaff_EDI];
-          (**(code **)(iVar13 + 500))((&this->field272_0x118)[unaff_EDI]);
-          (**(code **)(iVar13 + 0xa4))();
-          (**(code **)(iVar13 + 0xe4))();
-          pvVar7 = AllocateWithFallbackHandler();
-          thunk_BuildScenarioPathForModeAndIndex();
-          OpenBufferedStreamWithMode40();
-          ReadBufferedStreamLocked((int)pvVar7,0x24,0x1950,arg4);
-          LoadScenarioMetadataByIndexIntoUiControlCore_Impl();
-          CloseBufferedStreamAndReleaseResources(arg4);
-          iVar13 = 0;
-          pcVar10 = (code *)((int)pvVar7 + 4);
-          do {
-            cVar2 = *pcVar10;
-            pcVar10 = pcVar10 + 0x24;
-            pcVar12[iVar13] = cVar2;
-            iVar13 = iVar13 + 1;
-          } while (iVar13 < 0x1950);
-          this_00 = (TLoadSavePicture *)(*pcVar4)(0x706d6170);
-          iVar13 = this_00->field0_0x0;
-          (**(code **)(iVar13 + 0xc))();
-          TLoadSavePicture::thunk_RasterizeHexNeighborTerrainPaletteMap
-                    (this_00,CONCAT22(extraout_var,sVar1));
-          *(undefined4 *)&this_00->field_0x68 = 1;
-          thunk_ApplyPaletteMaskToTileBufferByEventCode((int)this_00);
-          (**(code **)(iVar13 + 0xa4))(1,0);
-          (**(code **)(iVar13 + 0xa8))(1,0);
-          (**(code **)(iVar13 + 0xe4))();
-          piVar6 = (int *)(*pcVar12)(0x73746172);
-          iVar13 = *piVar6;
-          (**(code **)(iVar13 + 0xc))();
-          (**(code **)(iVar13 + 0xa8))(1,1);
-          (**(code **)(iVar13 + 0xa4))(1,0);
-          FreeHeapBufferIfNotNull();
-          FreeHeapBufferIfNotNull();
-          if (this->field126_0x84 != 0x1198) {
-            (*pcRam000001c9)(0x1198,1);
-          }
-          ReleaseSharedStringRefIfNotEmpty();
-          *unaff_FS_OFFSET = 0;
-          return;
-        }
-      } while( true );
-    }
-    if ((cVar2 == (code)0xa) || (cVar2 == (code)0xd)) {
-      *pcVar10 = (code)0x20;
-    }
-    else if (cVar2 == (code)0x5e) {
-      *pcVar10 = (code)0xd;
-    }
-    else {
-      *pcVar10 = cVar2;
-    }
-    pcVar10 = pcVar10 + 1;
-    if ((cVar2 == (code)0x23) || (0x7fd < (int)pcVar10 - (int)pcVar4)) goto LAB_0057a7a7;
-  } while( true );
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00579AE0
 // GHIDRA_NAME TScenarioChooser::CreateTScenarioChooserInstance
-// GHIDRA_PROTO void * __cdecl CreateTScenarioChooserInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TScenarioChooser; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTScenarioChooserInstance()
 
-/* [ClassQuad] create inferred for TScenarioChooser; alloc factory pattern. */
-
-void * __cdecl TScenarioChooser::CreateTScenarioChooserInstance(void)
+undefined4 * TScenarioChooser::CreateTScenarioChooserInstance(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -258,68 +21,61 @@ void * __cdecl TScenarioChooser::CreateTScenarioChooserInstance(void)
   puStack_8 = &LAB_00636b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x160);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    this->field0_0x0 = &PTR_thunk_GetTScenarioChooserClassNamePointer_00644540;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    *puVar1 = &PTR_LAB_00644540;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579B60
 // GHIDRA_NAME TScenarioChooser::GetTScenarioChooserClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTScenarioChooserClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TScenarioChooser.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTScenarioChooserClassNamePointer()
 
-/* Returns class descriptor pointer for TScenarioChooser. */
-
-void * __cdecl TScenarioChooser::GetTScenarioChooserClassNamePointer(void)
+undefined ** TScenarioChooser::GetTScenarioChooserClassNamePointer(void)
 
 {
-  return &g_pClassDescTScenarioChooser;
+  return &PTR_s_TScenarioChooser_00661a40;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579B80
 // GHIDRA_NAME TScenarioChooser::ConstructTScenarioChooserBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTScenarioChooserBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] TScenarioChooser loader scanning scenario files, reading first-line metadata, and populating chooser entries/index mapping.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTScenarioChooserBaseState()
 
-/* [ClassLane] TScenarioChooser loader scanning scenario files, reading first-line metadata, and
-   populating chooser entries/index mapping. */
-
-void * __thiscall TScenarioChooser::ConstructTScenarioChooserBaseState(TScenarioChooser *this)
+void __thiscall
+TScenarioChooser::ConstructTScenarioChooserBaseState(int *param_1,undefined4 param_2)
 
 {
   char cVar1;
-  char extraout_AL;
   int *piVar2;
-  int arg3;
   char *pcVar3;
-  void *pvVar4;
-  void *extraout_EAX;
-  int *piVar5;
-  int iVar6;
+  int iVar4;
+  undefined4 uVar5;
+  int *piVar6;
+  int iVar7;
   undefined4 unaff_EBP;
-  void **ppvVar7;
-  undefined4 *unaff_FS_OFFSET;
   code *pcVar8;
+  undefined4 *unaff_FS_OFFSET;
+  code *pcVar9;
   undefined1 *puStack_94;
+  code *pcStack_90;
+  code **ppcStack_8c;
+  undefined4 uStack_84;
   code *pcStack_70;
-  int local_6c;
+  code *local_6c [3];
+  int iStack_60;
   undefined1 auStack_5c [6];
   undefined1 uStack_56;
   undefined1 uStack_55;
   undefined1 uStack_54;
   undefined1 uStack_53;
-  char acStack_50 [68];
+  undefined1 uStack_50;
+  char acStack_4f [67];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -328,53 +84,66 @@ void * __thiscall TScenarioChooser::ConstructTScenarioChooserBaseState(TScenario
   puStack_8 = &LAB_00636b68;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_NoOpUiLifecycleHook();
-  g_bScenarioSetupModeActive = 0;
-  pcVar8 = *(code **)((int)this->pVtable + 0x94);
-  this->field269_0x114 = 0;
-  piVar2 = (int *)(*pcVar8)();
-  iVar6 = *piVar2;
-  (**(code **)(iVar6 + 0xc))();
-  local_6c = 0;
+  uStack_84 = param_2;
+  TView::thunk_NoOpUiLifecycleHook();
+  DAT_006a43f0 = 0;
+  uStack_84 = 0x6c697374;
+  local_6c[0] = *(code **)(*param_1 + 0x94);
+  *(undefined2 *)(param_1 + 0x45) = 0;
+  piVar2 = (int *)(*local_6c[0])();
+  iStack_60 = *piVar2;
+  (**(code **)(iStack_60 + 0xc))();
+  local_6c[0] = (code *)0x0;
   do {
+    pcVar8 = local_6c[0];
     InitializeSharedStringRefFromEmpty();
     puStack_8 = (undefined1 *)0x0;
     InitializeSharedStringRefFromEmpty();
     puStack_8._0_1_ = 1;
-    if (((local_6c < 9) || (0xf < local_6c)) || (*(int *)((int)g_pLocalizationTable + 0x44) == 0)) {
+    if ((((int)pcVar8 < 9) || (0xf < (int)pcVar8)) || (g_pLocalizationTable[0x11] == 0)) {
+      ppcStack_8c = (code **)0x0;
       puStack_94 = (undefined1 *)0x579c32;
+      pcStack_90 = pcVar8;
       thunk_BuildScenarioPathForModeAndIndex();
-      thunk_TryGetFileMetadataForPath();
-      if (extraout_AL != '\0') {
+      ppcStack_8c = (code **)0x579c3f;
+      cVar1 = thunk_TryGetFileMetadataForPath();
+      if (cVar1 != '\0') {
+        pcStack_90 = (code *)0x579c5c;
         OpenBufferedStreamWithMode40();
+        pcStack_90 = (code *)&uStack_50;
+        ppcStack_8c = (code **)0x40;
         puStack_94 = (undefined1 *)0x579c6e;
-        thunk_ReadLineFromBufferedStreamUntilTerminator((int)acStack_50,0x40,arg3);
-        CloseBufferedStreamAndReleaseResources(arg3);
+        ReadLineFromBufferedStreamUntilTerminator();
+        ppcStack_8c = (code **)0x579c77;
+        CloseBufferedStreamAndReleaseResources();
         if (piVar2[0x418] < 0x40) {
-          piVar5 = piVar2 + piVar2[0x418] * 0x10 + 0x18;
-          cVar1 = acStack_50[0];
-          for (pcVar3 = acStack_50;
-              ((cVar1 != '\0' && ((int)pcVar3 - (int)acStack_50 < 0x40)) && (*pcVar3 != '\n'));
+          piVar6 = piVar2 + piVar2[0x418] * 0x10 + 0x18;
+          cVar1 = uStack_50;
+          for (pcVar3 = &uStack_50;
+              ((cVar1 != '\0' && ((int)pcVar3 - (int)&uStack_50 < 0x40)) && (*pcVar3 != '\n'));
               pcVar3 = pcVar3 + 1) {
-            *(char *)piVar5 = *pcVar3;
+            *(char *)piVar6 = *pcVar3;
             cVar1 = pcVar3[1];
-            piVar5 = (int *)((int)piVar5 + 1);
+            piVar6 = (int *)((int)piVar6 + 1);
           }
-          *(char *)piVar5 = '\0';
+          *(char *)piVar6 = '\0';
           piVar2[0x418] = piVar2[0x418] + 1;
         }
-        *(undefined2 *)(&this->field_0x94 + this->field269_0x114 * 2) = (undefined2)local_6c;
-        this->field269_0x114 = this->field269_0x114 + 1;
+        *(undefined2 *)((int)param_1 + (short)param_1[0x45] * 2 + 0x94) = local_6c[0]._0_2_;
+        *(short *)(param_1 + 0x45) = (short)param_1[0x45] + 1;
+        pcVar8 = local_6c[0];
       }
     }
     puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
     ReleaseSharedStringRefIfNotEmpty();
     puStack_8 = (undefined1 *)0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
-    local_6c = local_6c + 1;
-  } while (local_6c < 0x40);
-  (**(code **)(iVar6 + 0xe4))();
+    local_6c[0] = pcVar8 + 1;
+  } while ((int)local_6c[0] < 0x40);
+  (**(code **)(iStack_60 + 0xe4))();
+  ppcStack_8c = (code **)0xe;
   puStack_94 = auStack_5c;
+  pcStack_90 = (code *)0x0;
   uStack_56 = 0;
   uStack_55 = 0;
   uStack_54 = 0;
@@ -382,67 +151,69 @@ void * __thiscall TScenarioChooser::ConstructTScenarioChooserBaseState(TScenario
   thunk_BuildUiTextStyleDescriptor();
   InitializeSharedStringRefFromEmpty();
   puStack_8 = (undefined1 *)0x2;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)&stack0xffffff8c);
+  ppcStack_8c = (code **)0x2b6c;
+  pcStack_90 = (code *)0x579d75;
+  thunk_MapUiThemeCodeToStyleFlags();
+  ppcStack_8c = (code **)0x579d83;
   piVar2 = (int *)(*pcStack_70)();
-  iVar6 = *piVar2;
-  (**(code **)(iVar6 + 0xc))();
+  iVar7 = *piVar2;
+  ppcStack_8c = (code **)0x579d8c;
+  (**(code **)(iVar7 + 0xc))();
+  ppcStack_8c = local_6c;
+  pcStack_90 = (code *)0x20;
   puStack_94 = (undefined1 *)0x2758;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  (**(code **)(iVar6 + 0x1c8))(&stack0xffffff88);
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (**(code **)(iVar7 + 0x1c8))(&stack0xffffff88);
   pcVar8 = (code *)&stack0xffffff8c;
-  (**(code **)(iVar6 + 0x1b4))(pcVar8,1);
+  (**(code **)(iVar7 + 0x1b4))(pcVar8,1);
   piVar2[0x25] = (int)puStack_94;
-  (**(code **)(iVar6 + 0xa8))(1,0);
-  thunk_BuildUiTextStyleDescriptor();
+  (**(code **)(iVar7 + 0xa8))(1,0);
+  thunk_BuildUiTextStyleDescriptor(&uStack_84,0,0xc,0x2b6a);
+  pcVar9 = (code *)0x73646573;
   piVar2 = (int *)(*(code *)0x0)();
-  iVar6 = *piVar2;
-  (**(code **)(iVar6 + 0xc))();
-  (**(code **)(iVar6 + 0x1e4))(&stack0xffffff78,0);
+  iVar7 = *piVar2;
+  (**(code **)(iVar7 + 0xc))();
+  (**(code **)(iVar7 + 0x1e4))(&stack0xffffff78,0);
   piVar2 = (int *)(*pcVar8)(0x63646573);
-  iVar6 = *piVar2;
-  (**(code **)(iVar6 + 0xc))();
-  (**(code **)(iVar6 + 0x1e4))(&puStack_94,0);
-  ppvVar7 = &this->field272_0x118;
-  iVar6 = 7;
+  iVar7 = *piVar2;
+  (**(code **)(iVar7 + 0xc))();
+  (**(code **)(iVar7 + 0x1e4))(&puStack_94,0);
+  piVar2 = param_1 + 0x46;
+  iVar7 = 7;
   do {
-    pvVar4 = AllocateWithFallbackHandler();
-    *ppvVar7 = pvVar4;
-    ppvVar7 = ppvVar7 + 1;
-    iVar6 = iVar6 + -1;
-  } while (iVar6 != 0);
-  this->field310_0x142 = 0xffff;
-  g_pCursorControlPanel = (void *)(*(code *)0x73646573)(0x63757273);
-  (**(code **)(*(int *)g_pCursorControlPanel + 0xc))();
-  (**(code **)(*(int *)g_pCursorControlPanel + 0x204))(0x2b6b,0x2b6c);
-  (**(code **)(*(int *)g_pCursorControlPanel + 0x1c4))(1,1);
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2758,0x18,this);
-  pvVar4 = (void *)(*(code *)0x73646573)(0x65786974);
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2737,0x14,pvVar4);
-  pvVar4 = (void *)(*(code *)0x73646573)(0x706d6170);
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2737,0x16,pvVar4);
-  pvVar4 = (void *)(*(code *)0x73646573)(0x73746172);
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2758,0x19,pvVar4);
-  pvVar4 = (void *)(*(code *)0x73646573)(0x6c697374);
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2758,0x1a,pvVar4);
-  pvVar4 = (void *)(*(code *)0x73646573)(0x6d6f7265);
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2758,0x1c,pvVar4);
+    iVar4 = AllocateWithFallbackHandler(0x400);
+    *piVar2 = iVar4;
+    piVar2 = piVar2 + 1;
+    iVar7 = iVar7 + -1;
+  } while (iVar7 != 0);
+  *(undefined2 *)((int)param_1 + 0x142) = 0xffff;
+  g_pCursorControlPanel = (int *)(*pcVar9)(0x63757273);
+  (**(code **)(*g_pCursorControlPanel + 0xc))();
+  (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6b,0x2b6c);
+  (**(code **)(*g_pCursorControlPanel + 0x1c4))(1,1);
+  LoadUiStringByGroupAndIndexToControlObject(0x2758,0x18,param_1);
+  uVar5 = (*pcVar9)(0x65786974);
+  LoadUiStringByGroupAndIndexToControlObject(0x2737,0x14,uVar5);
+  uVar5 = (*pcVar9)(0x706d6170);
+  LoadUiStringByGroupAndIndexToControlObject(0x2737,0x16,uVar5);
+  uVar5 = (*pcVar9)(0x73746172);
+  LoadUiStringByGroupAndIndexToControlObject(0x2758,0x19,uVar5);
+  uVar5 = (*pcVar9)(0x6c697374);
+  LoadUiStringByGroupAndIndexToControlObject(0x2758,0x1a,uVar5);
+  uVar5 = (*pcVar9)(0x6d6f7265);
+  LoadUiStringByGroupAndIndexToControlObject(0x2758,0x1c,uVar5);
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = unaff_EBP;
-  return extraout_EAX;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057A050
 // GHIDRA_NAME TScenarioChooser::DestructTScenarioChooserAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTScenarioChooserAndMaybeFree(int commandTag, int payload)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles scenario-chooser command tags, updates cursor state, and applies selection changes.
-// GHIDRA_COMMENT_END
-
-/* Handles scenario-chooser command tags, updates cursor state, and applies selection changes. */
+// GHIDRA_PROTO undefined DestructTScenarioChooserAndMaybeFree()
 
 void __thiscall
 TScenarioChooser::DestructTScenarioChooserAndMaybeFree
-          (TScenarioChooser *this,int commandTag,int payload)
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
   code *pcVar1;
@@ -454,54 +225,53 @@ TScenarioChooser::DestructTScenarioChooserAndMaybeFree
   undefined2 extraout_var;
   int *unaff_EBX;
   
-  if (commandTag == 4) {
-    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-    SetCursor(*(HCURSOR *)((int)g_pUiRuntimeContext + 0x7c));
+  if (param_2 == 4) {
+    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+    SetCursor(*(HCURSOR *)(g_pUiRuntimeContext + 0x7c));
     (**(code **)(*unaff_EBX + 0xc))();
-    thunk_LoadScenarioMetadataByIndexIntoUiControlCore
-              (this,*(ushort *)(&this->field_0x94 + unaff_EBX[0x41a] * 2));
+    LoadScenarioMetadataByIndexIntoUiControlCore
+              ((int)*(short *)((int)param_1 + unaff_EBX[0x41a] * 2 + 0x94));
     hCursor = LoadCursorA((HINSTANCE)0x0,&DAT_00007f00);
     SetCursor(hCursor);
   }
-  else if (commandTag == 0x7069636b) {
-    pcVar1 = *(code **)((int)this->pVtable + 0x94);
+  else if (param_2 == 0x7069636b) {
+    pcVar1 = *(code **)(*param_1 + 0x94);
     piVar3 = (int *)(*pcVar1)(0x706d6170);
     iVar2 = *piVar3;
     (**(code **)(iVar2 + 0xc))();
-    if (((&this[1].pVtable)[piVar3[0x1b]] != (void *)0xffffffff) && (piVar3[0x1b] != piVar3[0x1a]))
-    {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+    if ((param_1[piVar3[0x1b] + 0x51] != -1) && (piVar3[0x1b] != piVar3[0x1a])) {
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
       piVar3[0x1a] = piVar3[0x1b];
-      thunk_ApplyPaletteMaskToTileBufferByEventCode((int)piVar3);
+      ApplyPaletteMaskToTileBufferByEventCode();
       (**(code **)(iVar2 + 0xe4))();
       piVar4 = (int *)(*pcVar1)(0x63646573);
       iVar2 = *piVar4;
       (**(code **)(iVar2 + 0xc))();
       (**(code **)(iVar2 + 500))
-                ((&this->field272_0x118)[piVar3[0x1b]],
-                 CONCAT22(extraout_var,(&this->field297_0x134)[piVar3[0x1b]]));
+                (param_1[piVar3[0x1b] + 0x46],
+                 CONCAT22(extraout_var,*(undefined2 *)((int)param_1 + piVar3[0x1b] * 2 + 0x134)));
       (**(code **)(iVar2 + 0xa4))(1,0);
       (**(code **)(iVar2 + 0xe4))();
     }
   }
-  else if (commandTag == 10) {
-    if (*(int *)(payload + 0x1c) == 0x73746172) {
-      (**(code **)((int)this->pVtable + 0x1d0))();
+  else if (param_2 == 10) {
+    if (*(int *)(param_3 + 0x1c) == 0x73746172) {
+      (**(code **)(*param_1 + 0x1d0))();
     }
   }
-  else if ((commandTag == 0xd) && (*(int *)(payload + 0x1c) == 0x6d6f7265)) {
-    (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-    piVar3 = (int *)(**(code **)((int)this->pVtable + 0x94))(0x6c697374);
+  else if ((param_2 == 0xd) && (*(int *)(param_3 + 0x1c) == 0x6d6f7265)) {
+    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
+    piVar3 = (int *)(**(code **)(*param_1 + 0x94))(0x6c697374);
     iVar2 = *piVar3;
     (**(code **)(iVar2 + 0xc))();
     uVar5 = piVar3[0xe] / (int)(short)piVar3[0x41b] + piVar3[0x419];
     piVar3[0x419] = (piVar3[0x418] < (int)uVar5) - 1 & uVar5;
     (**(code **)(iVar2 + 0xe4))();
   }
-  else if ((commandTag == 0x14) && (*(int *)(payload + 0x1c) == 0x65786974)) {
-    (**(code **)((int)this->pVtable + 0x1d4))();
+  else if ((param_2 == 0x14) && (*(int *)(param_3 + 0x1c) == 0x65786974)) {
+    (**(code **)(*param_1 + 0x1d4))();
   }
-  thunk_HandleCityDialogToggleCommandOrForward();
+  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
   return;
 }
 

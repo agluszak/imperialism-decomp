@@ -3,68 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TDipDlgCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040105F
-// GHIDRA_NAME TDipDlgCluster::TDipDlgCluster_VtblSlot115
-// GHIDRA_PROTO void __thiscall TDipDlgCluster_VtblSlot115(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to EvaluateSubsAndSancControlActiveState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to EvaluateSubsAndSancControlActiveState */
-
-void __thiscall TDipDlgCluster::TDipDlgCluster_VtblSlot115(TDipDlgCluster *this)
-
-{
-  EvaluateSubsAndSancControlActiveState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004026B7
-// GHIDRA_NAME TDipDlgCluster::TDipDlgCluster_VtblSlot001
-// GHIDRA_PROTO TDipDlgCluster * __thiscall TDipDlgCluster_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDipDlgClusterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDipDlgClusterAndMaybeFree */
-
-TDipDlgCluster * __thiscall
-TDipDlgCluster::TDipDlgCluster_VtblSlot001(TDipDlgCluster *this,byte freeSelfFlag)
-
-{
-  TDipDlgCluster *pTVar1;
-  
-  pTVar1 = DestructTDipDlgClusterAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406B5E
-// GHIDRA_NAME TDipDlgCluster::TDipDlgCluster_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TDipDlgCluster_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDipDlgClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDipDlgClusterClassNamePointer */
-
-void * __cdecl TDipDlgCluster::TDipDlgCluster_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDipDlgClusterClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00584040
 // GHIDRA_NAME TDipDlgCluster::CreateTDipDlgClusterInstance
-// GHIDRA_PROTO void * __cdecl CreateTDipDlgClusterInstance(void)
+// GHIDRA_PROTO undefined CreateTDipDlgClusterInstance()
 
-void * __cdecl TDipDlgCluster::CreateTDipDlgClusterInstance(void)
+undefined4 * TDipDlgCluster::CreateTDipDlgClusterInstance(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -74,91 +21,81 @@ void * __cdecl TDipDlgCluster::CreateTDipDlgClusterInstance(void)
   puStack_8 = &LAB_006375aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->field0_0x0 = &g_vtblTDipDlgCluster;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState();
+    *puVar1 = &PTR_LAB_00663bb0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005840C0
 // GHIDRA_NAME TDipDlgCluster::GetTDipDlgClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDipDlgClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDipDlgCluster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDipDlgClusterClassNamePointer()
 
-/* Returns class descriptor pointer for TDipDlgCluster. */
-
-void * __cdecl TDipDlgCluster::GetTDipDlgClusterClassNamePointer(void)
+undefined ** TDipDlgCluster::GetTDipDlgClusterClassNamePointer(void)
 
 {
-  return &g_pClassDescTDipDlgCluster;
+  return &PTR_s_TDipDlgCluster_00662e18;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005840E0
 // GHIDRA_NAME TDipDlgCluster::ConstructTDipDlgClusterBaseState
-// GHIDRA_PROTO TDipDlgCluster * __thiscall ConstructTDipDlgClusterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTDipDlgClusterBaseState()
 
-TDipDlgCluster * __thiscall TDipDlgCluster::ConstructTDipDlgClusterBaseState(TDipDlgCluster *this)
+undefined4 * __fastcall TDipDlgCluster::ConstructTDipDlgClusterBaseState(undefined4 *param_1)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  this->field0_0x0 = &g_vtblTDipDlgCluster;
-  return this;
+  TUberCluster::ConstructTUberClusterBaseState();
+  *param_1 = &PTR_LAB_00663bb0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584110
 // GHIDRA_NAME TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree
-// GHIDRA_PROTO TDipDlgCluster * __thiscall DestructTDipDlgClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDipDlgClusterAndMaybeFree()
 
-TDipDlgCluster * __thiscall
-TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree(TDipDlgCluster *this,byte freeSelfFlag)
+undefined4 __thiscall
+TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructTViewBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584160
 // GHIDRA_NAME TDipDlgCluster::EvaluateSubsAndSancControlActiveState
-// GHIDRA_PROTO void __thiscall EvaluateSubsAndSancControlActiveState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Queries control tags 0x73756273 and 0x73616e63 and returns whether either control reports active state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined EvaluateSubsAndSancControlActiveState()
 
-/* Queries control tags 0x73756273 and 0x73616e63 and returns whether either control reports active
-   state. */
-
-void __thiscall TDipDlgCluster::EvaluateSubsAndSancControlActiveState(TDipDlgCluster *this)
+bool __fastcall TDipDlgCluster::EvaluateSubsAndSancControlActiveState(int param_1)
 
 {
   char cVar1;
   int *piVar2;
   int *piVar3;
   
-  piVar2 = (int *)(**(code **)(*(int *)this->pField20 + 0x94))(0x73756273);
+  piVar2 = (int *)(**(code **)(**(int **)(param_1 + 0x20) + 0x94))(0x73756273);
   if (piVar2 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1cd);
   }
-  piVar3 = (int *)(**(code **)(*(int *)this->pField20 + 0x94))(0x73616e63);
+  piVar3 = (int *)(**(code **)(**(int **)(param_1 + 0x20) + 0x94))(0x73616e63);
   cVar1 = (**(code **)(*piVar2 + 0x1cc))();
   if (cVar1 != '\0') {
-    return;
+    return true;
   }
   if (piVar3 != (int *)0x0) {
-    (**(code **)(*piVar3 + 0x1cc))();
-    return;
+    cVar1 = (**(code **)(*piVar3 + 0x1cc))();
+    return cVar1 != '\0';
   }
-  return;
+  return false;
 }
 

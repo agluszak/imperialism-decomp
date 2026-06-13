@@ -3,56 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004047FF
-// GHIDRA_NAME TCluster::TCluster_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TCluster_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTClusterClassNamePointer */
-
-void * __cdecl TCluster::TCluster_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTClusterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408F5D
-// GHIDRA_NAME TCluster::TCluster_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TCluster_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTClusterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTClusterAndMaybeFree */
-
-void * __thiscall TCluster::TCluster_VtblSlot001(TCluster *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTClusterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00491300
 // GHIDRA_NAME TCluster::CreateTClusterInstance
-// GHIDRA_PROTO void * __cdecl CreateTClusterInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TCluster; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTClusterInstance()
 
-/* [ClassQuad] create inferred for TCluster; alloc factory pattern. */
-
-void * __cdecl TCluster::CreateTClusterInstance(void)
+undefined4 * TCluster::CreateTClusterInstance(void)
 
 {
   ushort uVar1;
-  TView *this;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -62,82 +21,77 @@ void * __cdecl TCluster::CreateTClusterInstance(void)
   puStack_8 = &LAB_0062f28a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this[1].pVtable = (void *)0x1;
-    this[1].field1_0x4 = 0;
-    this[1].field3_0x8 = 0;
-    this[1].dialogValueDwordC = 0;
-    this[1].dialogValueDword10 = 0;
-    this[1].viewStateDword14 = 0;
-    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
-    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
+  if (puVar2 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    puVar2[0x18] = 1;
+    *(undefined1 *)(puVar2 + 0x19) = 0;
+    puVar2[0x1a] = 0;
+    puVar2[0x1b] = 0;
+    puVar2[0x1c] = 0;
+    puVar2[0x1d] = 0;
+    puVar2[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar2[0x1f] = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    this->pVtable = &g_vtblTCluster;
-    this[1].field10_0x24 = 0x20202020;
-    *(ushort *)&this[1].pChildMapView20 = uVar1;
-    this[1].pVtable = (void *)0x5;
+    *puVar2 = &PTR_LAB_0064b0c0;
+    puVar2[0x21] = 0x20202020;
+    *(ushort *)(puVar2 + 0x20) = uVar1;
+    puVar2[0x18] = 5;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar2;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004913E0
 // GHIDRA_NAME TCluster::GetTClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCluster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTClusterClassNamePointer()
 
-/* Returns class descriptor pointer for TCluster. */
-
-void * __cdecl TCluster::GetTClusterClassNamePointer(void)
+undefined ** TCluster::GetTClusterClassNamePointer(void)
 
 {
-  return &g_pClassDescTCluster;
+  return &PTR_s_TCluster_006496c0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491400
 // GHIDRA_NAME TCluster::ConstructUiResourceEntryType4B0C0
-// GHIDRA_PROTO void __thiscall ConstructUiResourceEntryType4B0C0(void)
+// GHIDRA_PROTO undefined ConstructUiResourceEntryType4B0C0()
 
-void __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this)
+undefined4 * __fastcall TCluster::ConstructUiResourceEntryType4B0C0(undefined4 *param_1)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState((TView *)this);
-  this->field55_0x60 = 1;
-  this->field56_0x64 = 0;
-  this->field60_0x68 = 0;
-  this->field61_0x6c = 0;
-  this->field62_0x70 = 0;
-  this->field63_0x74 = 0;
-  this->field64_0x78 = g_nUiResourceEntryDefaultParam0;
-  this->field65_0x7c = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState();
+  param_1[0x18] = 1;
+  *(undefined1 *)(param_1 + 0x19) = 0;
+  param_1[0x1a] = 0;
+  param_1[0x1b] = 0;
+  param_1[0x1c] = 0;
+  param_1[0x1d] = 0;
+  param_1[0x1e] = g_nUiResourceEntryDefaultParam0;
+  param_1[0x1f] = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  this->field0_0x0 = &g_vtblTCluster;
-  this->field69_0x84 = 0x20202020;
-  this->field66_0x80 = uVar1;
-  this->field55_0x60 = 5;
-  return;
+  *param_1 = &PTR_LAB_0064b0c0;
+  param_1[0x21] = 0x20202020;
+  *(ushort *)(param_1 + 0x20) = uVar1;
+  param_1[0x18] = 5;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491480
-// GHIDRA_NAME TCluster::DestructTClusterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTClusterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall TCluster::DestructTClusterAndMaybeFree(TCluster *this,byte freeSelfFlag)
+undefined4 __thiscall TCluster::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
   DestructTClusterAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

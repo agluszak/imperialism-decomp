@@ -3,149 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TUniversityView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401749
-// GHIDRA_NAME TUniversityView::TUniversityView_VtblSlot118
-// GHIDRA_PROTO void __fastcall TUniversityView_VtblSlot118(int * pCityViewDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshUniversityRecruitmentRequirements
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshUniversityRecruitmentRequirements */
-
-void __fastcall TUniversityView::TUniversityView_VtblSlot118(int *pCityViewDialog)
-
-{
-  RefreshUniversityRecruitmentRequirements(pCityViewDialog);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040592F
-// GHIDRA_NAME TUniversityView::TUniversityView_VtblSlot121
-// GHIDRA_PROTO void __thiscall TUniversityView_VtblSlot121(short nRecruitmentEntryIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SelectUniversityRecruitmentEntry
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SelectUniversityRecruitmentEntry */
-
-void __thiscall
-TUniversityView::TUniversityView_VtblSlot121(TUniversityView *this,short nRecruitmentEntryIndex)
-
-{
-  TToolBarCluster::SelectUniversityRecruitmentEntry((TToolBarCluster *)this,nRecruitmentEntryIndex);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F47
-// GHIDRA_NAME TUniversityView::TUniversityView_VtblSlot068
-// GHIDRA_PROTO void __thiscall TUniversityView_VtblSlot068(RECT * pClipRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderUniversityRecruitmentRequirementGrid
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderUniversityRecruitmentRequirementGrid */
-
-void __thiscall TUniversityView::TUniversityView_VtblSlot068(TUniversityView *this,RECT *pClipRect)
-
-{
-  THQButton::RenderUniversityRecruitmentRequirementGrid((THQButton *)this,pClipRect);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004061F9
-// GHIDRA_NAME TUniversityView::TUniversityView_VtblSlot007
-// GHIDRA_PROTO void __thiscall TUniversityView_VtblSlot007(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30 */
-
-void __thiscall TUniversityView::TUniversityView_VtblSlot007(TUniversityView *this)
-
-{
-  WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406AA5
-// GHIDRA_NAME TUniversityView::TUniversityView_VtblSlot015
-// GHIDRA_PROTO void __thiscall TUniversityView_VtblSlot015(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleUniversityRecruitmentSelectionAndStepCommand
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleUniversityRecruitmentSelectionAndStepCommand */
-
-void __thiscall
-TUniversityView::TUniversityView_VtblSlot015(TUniversityView *this,int arg1,int arg2)
-
-{
-  HandleUniversityRecruitmentSelectionAndStepCommand(this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406CA8
-// GHIDRA_NAME TUniversityView::TUniversityView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TUniversityView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTUniversityViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTUniversityViewClassNamePointer */
-
-void * __cdecl TUniversityView::TUniversityView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTUniversityViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407734
-// GHIDRA_NAME TUniversityView::TUniversityView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TUniversityView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTUniversityViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTUniversityViewAndMaybeFree */
-
-void * __thiscall
-TUniversityView::TUniversityView_VtblSlot001(TUniversityView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTUniversityViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408F76
-// GHIDRA_NAME TUniversityView::TUniversityView_VtblSlot117
-// GHIDRA_PROTO void __fastcall TUniversityView_VtblSlot117(int * pCityViewDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshUniversityRecruitmentDialog
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshUniversityRecruitmentDialog */
-
-void __fastcall TUniversityView::TUniversityView_VtblSlot117(int *pCityViewDialog)
-
-{
-  RefreshUniversityRecruitmentDialog(pCityViewDialog);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004CABA0
 // GHIDRA_NAME TUniversityView::CreateTUniversityViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTUniversityViewInstance(void)
+// GHIDRA_PROTO undefined CreateTUniversityViewInstance()
 
-void * __cdecl TUniversityView::CreateTUniversityViewInstance(void)
+undefined4 * TUniversityView::CreateTUniversityViewInstance(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -155,177 +20,143 @@ void * __cdecl TUniversityView::CreateTUniversityViewInstance(void)
   puStack_8 = &LAB_006317ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
-    this->field0_0x0 = &g_vtblTUniversityView;
-    *(undefined4 *)&this[1].field_0x7 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    puVar1[0x25] = 0;
+    *puVar1 = &PTR_LAB_00651fc0;
+    puVar1[0x26] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC40
 // GHIDRA_NAME TUniversityView::GetTUniversityViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTUniversityViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TUniversityView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTUniversityViewClassNamePointer()
 
-/* Returns class descriptor pointer for TUniversityView. */
-
-void * __cdecl TUniversityView::GetTUniversityViewClassNamePointer(void)
+undefined ** TUniversityView::GetTUniversityViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTUniversityView;
+  return &PTR_s_TUniversityView_006512c0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC60
 // GHIDRA_NAME TUniversityView::ConstructTUniversityViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTUniversityViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTUniversityViewBaseState()
 
-void * __thiscall TUniversityView::ConstructTUniversityViewBaseState(TUniversityView *this)
+undefined4 * __fastcall TUniversityView::ConstructTUniversityViewBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field0_0x0 = &g_vtblTUniversityView;
-  this->field94 = (void *)0x0;
-  this->field98 = 0;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00651fc0;
+  param_1[0x25] = 0;
+  param_1[0x26] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC90
 // GHIDRA_NAME TUniversityView::DestructTUniversityViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTUniversityViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTUniversityViewAndMaybeFree()
 
-void * __thiscall
-TUniversityView::DestructTUniversityViewAndMaybeFree(TUniversityView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TUniversityView::DestructTUniversityViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CB8A0
 // GHIDRA_NAME TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
-// GHIDRA_PROTO void __thiscall HandleUniversityRecruitmentSelectionAndStepCommand(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Dehardcoded recruit-row/class mapping anchor from this builder:
-// GHIDRA_COMMENT - civ0 uses bitmap 9920 (0x26C0): Miner (class id 0)
-// GHIDRA_COMMENT - civ1 uses bitmap 9922 (0x26C2): Prospector (class id 1)
-// GHIDRA_COMMENT - civ2 uses bitmap 9924 (0x26C4): Farmer (class id 2)
-// GHIDRA_COMMENT - civ3 uses bitmap 9926 (0x26C6): Forester (class id 3)
-// GHIDRA_COMMENT - civ4 uses bitmap 9928 (0x26C8): Engineer (class id 4)
-// GHIDRA_COMMENT - civ5 uses bitmap 9930 (0x26CA): Rancher (class id 5)
-// GHIDRA_COMMENT - civ8 uses bitmap 9936 (0x26D0): Driller (class id 8)
-// GHIDRA_COMMENT Row tags/selection use 0x63697630+index, matching class-index semantics used in recruit/order tables.
-// GHIDRA_COMMENT_END
-
-/* Dehardcoded recruit-row/class mapping anchor from this builder:
-   - civ0 uses bitmap 9920 (0x26C0): Miner (class id 0)
-   - civ1 uses bitmap 9922 (0x26C2): Prospector (class id 1)
-   - civ2 uses bitmap 9924 (0x26C4): Farmer (class id 2)
-   - civ3 uses bitmap 9926 (0x26C6): Forester (class id 3)
-   - civ4 uses bitmap 9928 (0x26C8): Engineer (class id 4)
-   - civ5 uses bitmap 9930 (0x26CA): Rancher (class id 5)
-   - civ8 uses bitmap 9936 (0x26D0): Driller (class id 8)
-   Row tags/selection use 0x63697630+index, matching class-index semantics used in recruit/order
-   tables. */
+// GHIDRA_PROTO undefined HandleUniversityRecruitmentSelectionAndStepCommand()
 
 void __thiscall
 TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
-          (TUniversityView *this,int arg1,int arg2)
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
-  void *pvVar1;
+  int iVar1;
   code *pcVar2;
-  int iVar3;
-  char cVar4;
-  short sVar5;
+  char cVar3;
+  short sVar4;
+  int *piVar5;
   int *piVar6;
-  int *piVar7;
   code *pcStack_38;
   RECT RStack_34;
   tagRECT atStack_24 [2];
   int iStack_4;
   
-  if (arg1 == 0xc) {
-    sVar5 = *(short *)(arg2 + 0x1c) + -0x7630;
-    if ((-1 < sVar5) && (sVar5 < 9)) {
-      this->fielda4 = sVar5;
-      (**(code **)((int)this->field0_0x0 + 0x1e4))(sVar5);
+  if (param_2 == 0xc) {
+    sVar4 = *(short *)(param_3 + 0x1c) + -0x7630;
+    if ((-1 < sVar4) && (sVar4 < 9)) {
+      *(short *)(param_1 + 0x29) = sVar4;
+      (**(code **)(*param_1 + 0x1e4))(sVar4);
     }
   }
-  else if (arg1 == 10) {
-    sVar5 = *(short *)(*(int *)(arg2 + 0x20) + 0x1c) + -30000;
-    if ((-1 < sVar5) && (sVar5 < 9)) {
-      pvVar1 = this->field0_0x0;
-      this->fielda4 = sVar5;
-      (**(code **)((int)pvVar1 + 0x1e4))(sVar5);
-      pcVar2 = *(code **)((int)pvVar1 + 0x94);
-      piVar6 = (int *)(*pcVar2)(0x73656c65);
-      iVar3 = *piVar6;
-      (**(code **)(iVar3 + 0xc))();
-      (**(code **)(iVar3 + 0x1c8))(sVar5 + 0x63697630);
-      piVar6 = *(int **)((int)this->field94 + (short)(this->fielda4 + 0x22) * 4 + 0xe4);
+  else if (param_2 == 10) {
+    sVar4 = *(short *)(*(int *)(param_3 + 0x20) + 0x1c) + -30000;
+    if ((-1 < sVar4) && (sVar4 < 9)) {
+      iVar1 = *param_1;
+      *(short *)(param_1 + 0x29) = sVar4;
+      (**(code **)(iVar1 + 0x1e4))(sVar4);
+      pcVar2 = *(code **)(iVar1 + 0x94);
+      piVar5 = (int *)(*pcVar2)(0x73656c65);
+      iVar1 = *piVar5;
+      (**(code **)(iVar1 + 0xc))();
+      (**(code **)(iVar1 + 0x1c8))(sVar4 + 0x63697630);
+      piVar5 = *(int **)(param_1[0x25] + 0xe4 + (short)((short)param_1[0x29] + 0x22) * 4);
       if (*(int *)(iStack_4 + 0x1c) == 0x706c7573) {
-        sVar5 = (short)piVar6[1] + 1;
+        sVar4 = (short)piVar5[1] + 1;
       }
       else {
-        sVar5 = (short)piVar6[1] + -1;
+        sVar4 = (short)piVar5[1] + -1;
       }
-      cVar4 = (**(code **)(*piVar6 + 0x2c))(sVar5);
-      if (cVar4 != '\0') {
-        piVar7 = (int *)(*pcStack_38)(this->fielda4 + 0x6e756d30);
-        if (piVar7 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
+      cVar3 = (**(code **)(*piVar5 + 0x2c))(sVar4);
+      if (cVar3 != '\0') {
+        piVar6 = (int *)(*pcStack_38)((short)param_1[0x29] + 0x6e756d30);
+        if (piVar6 == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                    (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66c);
         }
-        piVar7 = (int *)(**(code **)(*piVar7 + 0x94))(0x6e756d62);
-        if (piVar7 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
+        piVar6 = (int *)(**(code **)(*piVar6 + 0x94))(0x6e756d62);
+        if (piVar6 == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                    (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66d);
         }
-        iVar3 = *piVar7;
-        (**(code **)(iVar3 + 0x1e4))((int)*(short *)(pcVar2 + 4),0);
-        (**(code **)(iVar3 + 300))(&stack0xffffffc0);
-        RStack_34.top = (LONG)piVar6;
+        iVar1 = *piVar6;
+        (**(code **)(iVar1 + 0x1e4))((int)*(short *)(pcVar2 + 4),0);
+        (**(code **)(iVar1 + 300))(&stack0xffffffc0);
+        RStack_34.top = (LONG)piVar5;
         RStack_34.right = (LONG)pcVar2;
         CopyRect(atStack_24,&RStack_34);
-        thunk_InvalidateCityDialogRectRegion((int)atStack_24,1);
-        (**(code **)((int)this->field0_0x0 + 0x1d8))();
+        thunk_InvalidateCityDialogRectRegion(atStack_24,1);
+        (**(code **)(*param_1 + 0x1d8))();
       }
     }
   }
-  thunk_HandleCityDialogToggleCommandOrForward();
+  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CBF30
 // GHIDRA_NAME TUniversityView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_CloseCityDialogChildrenAndReleaseSelf; instructions=8, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30()
 
-/* [WrapperShape] small wrapper around thunk_CloseCityDialogChildrenAndReleaseSelf; instructions=8,
-   call_insns=2, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-TUniversityView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30
-          (TUniversityView *this)
+void TUniversityView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30(void)
 
 {
-  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf((TControl *)this);
-  if (g_Advance_Turn_Machine_State_00695278 != 0x4d6f696c) {
-    (**(code **)(*(int *)g_pUiViewManager + 0x34))(0x23fa);
+  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf();
+  if (DAT_00695278 != 0x4d6f696c) {
+    (**(code **)(*g_pUiViewManager + 0x34))(0x23fa);
   }
   return;
 }

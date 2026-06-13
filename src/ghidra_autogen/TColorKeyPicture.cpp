@@ -3,53 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TColorKeyPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403B9D
-// GHIDRA_NAME TColorKeyPicture::TColorKeyPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TColorKeyPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTColorKeyPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTColorKeyPictureAndMaybeFree */
-
-void * __thiscall
-TColorKeyPicture::TColorKeyPicture_VtblSlot001(TColorKeyPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTColorKeyPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407635
-// GHIDRA_NAME TColorKeyPicture::TColorKeyPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TColorKeyPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTColorKeyPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTColorKeyPictureClassNamePointer */
-
-void * __cdecl TColorKeyPicture::TColorKeyPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTColorKeyPictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00572D20
 // GHIDRA_NAME TColorKeyPicture::CreateTColorKeyPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTColorKeyPictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TColorKeyPicture; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTColorKeyPictureInstance()
 
-/* [ClassQuad] create inferred for TColorKeyPicture; alloc factory pattern. */
-
-void * __cdecl TColorKeyPicture::CreateTColorKeyPictureInstance(void)
+undefined4 * TColorKeyPicture::CreateTColorKeyPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -62,61 +20,57 @@ void * __cdecl TColorKeyPicture::CreateTColorKeyPictureInstance(void)
   puStack_8 = &LAB_0063659a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
+    thunk_TPictureButton::TPictureButton();
     *(undefined1 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &g_vtblTColorKeyPicture;
+    *puVar1 = &PTR_LAB_00660b48;
     puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DC0
 // GHIDRA_NAME TColorKeyPicture::GetTColorKeyPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTColorKeyPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TColorKeyPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTColorKeyPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TColorKeyPicture. */
-
-void * __cdecl TColorKeyPicture::GetTColorKeyPictureClassNamePointer(void)
+undefined ** TColorKeyPicture::GetTColorKeyPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTColorKeyPicture;
+  return &PTR_s_TColorKeyPicture_00660640;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DE0
 // GHIDRA_NAME TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
-// GHIDRA_PROTO void __thiscall ConstructPictureResourceEntry_Vtbl00660b48(void)
+// GHIDRA_PROTO undefined ConstructPictureResourceEntry_Vtbl00660b48()
 
-void __thiscall TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *this)
+undefined4 * __fastcall
+TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTColorKeyPicture;
-  this->field141_0x90 = 0;
-  this->field145_0x94 = 0;
-  return;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_00660b48;
+  *(undefined1 *)(param_1 + 0x24) = 0;
+  param_1[0x25] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572E10
 // GHIDRA_NAME TColorKeyPicture::DestructTColorKeyPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTColorKeyPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTColorKeyPictureAndMaybeFree()
 
-void * __thiscall
-TColorKeyPicture::DestructTColorKeyPictureAndMaybeFree(TColorKeyPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+TColorKeyPicture::DestructTColorKeyPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

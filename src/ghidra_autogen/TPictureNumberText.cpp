@@ -3,52 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TPictureNumberText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404F52
-// GHIDRA_NAME TPictureNumberText::TPictureNumberText_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TPictureNumberText_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPictureNumberTextClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPictureNumberTextClassNamePointer */
-
-void * __cdecl TPictureNumberText::TPictureNumberText_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPictureNumberTextClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406C12
-// GHIDRA_NAME TPictureNumberText::TPictureNumberText_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TPictureNumberText_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTPictureNumberTextAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TPictureNumberText": ignoring overlapping field "field9c" */
-/* Single-JMP thunk to DestructTPictureNumberTextAndMaybeFree */
-
-void * __thiscall
-TPictureNumberText::TPictureNumberText_VtblSlot001(TPictureNumberText *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTPictureNumberTextAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5120
 // GHIDRA_NAME TPictureNumberText::CreateTPictureNumberTextInstance
-// GHIDRA_PROTO void * __cdecl CreateTPictureNumberTextInstance(void)
+// GHIDRA_PROTO undefined CreateTPictureNumberTextInstance()
 
-void * __cdecl TPictureNumberText::CreateTPictureNumberTextInstance(void)
+undefined4 * TPictureNumberText::CreateTPictureNumberTextInstance(void)
 
 {
-  TEditText *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,68 +20,55 @@ void * __cdecl TPictureNumberText::CreateTPictureNumberTextInstance(void)
   puStack_8 = &LAB_00638e0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (this != (TEditText *)0x0) {
-    TEditText::thunk_ConstructUiNumericTextEntryBase(this);
-    *(undefined4 *)((int)&this[1].base.base.pVtable + 2) = 0;
-    (this->base).base.pVtable = &g_vtblTPictureNumberText;
+  if (puVar1 != (undefined4 *)0x0) {
+    TEditText::thunk_ConstructUiNumericTextEntryBase();
+    puVar1[0x28] = 0;
+    *puVar1 = &PTR_LAB_0066c740;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B51C0
 // GHIDRA_NAME TPictureNumberText::GetTPictureNumberTextClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPictureNumberTextClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPictureNumberText.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPictureNumberTextClassNamePointer()
 
-/* Returns class descriptor pointer for TPictureNumberText. */
-
-void * __cdecl TPictureNumberText::GetTPictureNumberTextClassNamePointer(void)
+undefined ** TPictureNumberText::GetTPictureNumberTextClassNamePointer(void)
 
 {
-  return &g_pClassDescTPictureNumberText;
+  return &PTR_s_TPictureNumberText_0066c3c0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B51E0
 // GHIDRA_NAME TPictureNumberText::ConstructTPictureNumberTextBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTPictureNumberTextBaseState(void)
+// GHIDRA_PROTO undefined ConstructTPictureNumberTextBaseState()
 
-/* WARNING: Struct "TPictureNumberText": ignoring overlapping field "field9c" */
-
-void * __thiscall TPictureNumberText::ConstructTPictureNumberTextBaseState(TPictureNumberText *this)
+undefined4 * __fastcall
+TPictureNumberText::ConstructTPictureNumberTextBaseState(undefined4 *param_1)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase(&this->base);
-  this->fielda0 = 0;
-  (this->base).base.base.pVtable = &g_vtblTPictureNumberText;
-  return this;
+  TEditText::thunk_ConstructUiNumericTextEntryBase();
+  param_1[0x28] = 0;
+  *param_1 = &PTR_LAB_0066c740;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5210
 // GHIDRA_NAME TPictureNumberText::DestructTPictureNumberTextAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPictureNumberTextAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TPictureNumberText derives from TEditText (dtor_calls_base_dtor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTPictureNumberTextAndMaybeFree()
 
-/* WARNING: Struct "TPictureNumberText": ignoring overlapping field "field9c" */
-/* [InheritanceEvidence] TPictureNumberText derives from TEditText (dtor_calls_base_dtor, medium) */
-
-void * __thiscall
-TPictureNumberText::DestructTPictureNumberTextAndMaybeFree
-          (TPictureNumberText *this,byte freeSelfFlag)
+undefined4 __thiscall
+TPictureNumberText::DestructTPictureNumberTextAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  DestructTEditTextAndMaybeFree(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTEditTextAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

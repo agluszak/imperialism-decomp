@@ -3,154 +3,64 @@
 // Program: Imperialism.exe
 // Bucket: TNetGameSelectPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F29
-// GHIDRA_NAME TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot015
-// GHIDRA_PROTO void __thiscall TNetGameSelectPicture_VtblSlot015(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleTNetGameSelectPictureCommandHostJoinCancelAndForward */
-
-void __thiscall
-TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot015(TNetGameSelectPicture *this)
-
-{
-  HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406401
-// GHIDRA_NAME TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TNetGameSelectPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTNetGameSelectPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTNetGameSelectPictureAndMaybeFree */
-
-void * __thiscall
-TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot001
-          (TNetGameSelectPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTNetGameSelectPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004073E2
-// GHIDRA_NAME TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot055
-// GHIDRA_PROTO void __cdecl TNetGameSelectPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeRuntimeSelectionCredentialsFromProvider
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeRuntimeSelectionCredentialsFromProvider */
-
-void __cdecl TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot055(void)
-
-{
-  InitializeRuntimeSelectionCredentialsFromProvider();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408D23
-// GHIDRA_NAME TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TNetGameSelectPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNetGameSelectPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNetGameSelectPictureClassNamePointer */
-
-void * __cdecl TNetGameSelectPicture::TNetGameSelectPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNetGameSelectPictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00576B20
 // GHIDRA_NAME TNetGameSelectPicture::DestructTNetGameSelectPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTNetGameSelectPictureAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Runs shared base destructor and frees object when delete flag bit is set.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTNetGameSelectPictureAndMaybeFree()
 
-/* Runs shared base destructor and frees object when delete flag bit is set. */
-
-void * __thiscall
-TNetGameSelectPicture::DestructTNetGameSelectPictureAndMaybeFree
-          (TNetGameSelectPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+TNetGameSelectPicture::DestructTNetGameSelectPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576B70
 // GHIDRA_NAME TNetGameSelectPicture::GetTNetGameSelectPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNetGameSelectPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNetGameSelectPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNetGameSelectPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TNetGameSelectPicture. */
-
-void * __cdecl TNetGameSelectPicture::GetTNetGameSelectPictureClassNamePointer(void)
+undefined ** TNetGameSelectPicture::GetTNetGameSelectPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTNetGameSelectPicture;
+  return &PTR_s_TNetGameSelectPicture_006619c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576BC0
 // GHIDRA_NAME TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-// GHIDRA_PROTO void __thiscall HandleTNetGameSelectPictureCommandHostJoinCancelAndForward(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles TNetGameSelectPicture command tags cncl/host/join, applies host/join selection flow, then forwards to shared city-dialog toggle handler.
-// GHIDRA_COMMENT_END
-
-/* Handles TNetGameSelectPicture command tags cncl/host/join, applies host/join selection flow, then
-   forwards to shared city-dialog toggle handler. */
+// GHIDRA_PROTO undefined HandleTNetGameSelectPictureCommandHostJoinCancelAndForward()
 
 void __thiscall
 TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-          (TNetGameSelectPicture *this)
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
   code *pcVar1;
   int *piVar2;
   undefined4 uVar3;
   int iVar4;
-  int in_stack_00000004;
-  int in_stack_00000008;
   
-  if (((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22)) {
-    iVar4 = *(int *)(in_stack_00000008 + 0x1c);
+  if (((param_2 == 0x14) || (param_2 == 10)) || (param_2 == 0x22)) {
+    iVar4 = *(int *)(param_3 + 0x1c);
     if (iVar4 == 0x636e636c) {
-      thunk_ResetGameFlowStateAndPostTurnEvent5DCAlt();
+      ResetGameFlowStateAndPostTurnEvent5DCAlt();
     }
     else if (iVar4 == 0x686f7374) {
-      thunk_AssignStringAtB4FromB0AndResetState40();
+      AssignStringAtB4FromB0AndResetState40();
     }
     else if (iVar4 == 0x6a6f696e) {
-      pcVar1 = *(code **)(this->field0_0x0 + 0x94);
+      pcVar1 = *(code **)(*param_1 + 0x94);
       piVar2 = (int *)(*pcVar1)(0x67616d65);
       iVar4 = *piVar2;
       (**(code **)(iVar4 + 0xc))();
       uVar3 = (**(code **)(iVar4 + 0x1c4))();
       iVar4 = (*pcVar1)(uVar3);
-      thunk_ApplyJoinGameSelectionAndPostTurnEvent5E4(g_pGameFlowState,*(int *)(iVar4 + 0x3c));
+      ApplyJoinGameSelectionAndPostTurnEvent5E4(*(undefined4 *)(iVar4 + 0x3c));
     }
   }
-  thunk_HandleCityDialogToggleCommandOrForward();
+  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
   return;
 }
 

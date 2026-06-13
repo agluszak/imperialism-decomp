@@ -5,39 +5,27 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004829F0
 // GHIDRA_NAME TCViewOwnedBufferChainState_00648578::WrapperFor_FreeHeapBufferIfNotNull_At004829f0
-// GHIDRA_PROTO void * __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004829f0(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At004829f0()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void * __thiscall
+undefined4 __thiscall
 TCViewOwnedBufferChainState_00648578::WrapperFor_FreeHeapBufferIfNotNull_At004829f0
-          (TCViewOwnedBufferChainState_00648578 *this,byte freeSelfFlag)
+          (undefined4 param_1,byte param_2)
 
 {
-  DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00482A20
 // GHIDRA_NAME TCViewOwnedBufferChainState_00648578::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20
-// GHIDRA_PROTO void __thiscall DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [RuntimePtrWrapper] CView-owned buffer-chain teardown for runtime ptr 00648578.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20()
 
-/* [RuntimePtrWrapper] CView-owned buffer-chain teardown for runtime ptr 00648578. */
-
-void __thiscall
+void __fastcall
 TCViewOwnedBufferChainState_00648578::
-DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20
-          (TCViewOwnedBufferChainState_00648578 *this)
+DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(undefined4 *param_1)
 
 {
   undefined4 *puVar1;
@@ -49,35 +37,29 @@ DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20
   puStack_8 = &LAB_0062e7c8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_CViewOwnedBufferChainState_00648578;
-  puVar1 = this->pNodeHead_04;
+  *param_1 = &PTR_GetCObjectRuntimeClass_00648578;
+  puVar1 = (undefined4 *)param_1[1];
   local_4 = 0;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  this->nNodeCount_0C = 0;
-  this->nNodeCapacity_10 = 0;
-  this->pNodeTail_08 = (void *)0x0;
-  this->pNodeHead_04 = (void *)0x0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[1] = 0;
   FreeDataChain();
-  this->pNodeBlockChainHead_14 = (void *)0x0;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004847D0
 // GHIDRA_NAME TCViewOwnedBufferChainState_00648578::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0
-// GHIDRA_PROTO void __thiscall DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [RuntimePtrWrapper] CView-owned buffer-chain teardown for runtime ptr 00648578.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0()
 
-/* [RuntimePtrWrapper] CView-owned buffer-chain teardown for runtime ptr 00648578. */
-
-void __thiscall
+void __fastcall
 TCViewOwnedBufferChainState_00648578::
-DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0
-          (TCViewOwnedBufferChainState_00648578 *this)
+DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(undefined4 *param_1)
 
 {
   undefined4 *puVar1;
@@ -89,18 +71,18 @@ DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0
   puStack_8 = &LAB_0062e878;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_CViewOwnedBufferChainState_00648578;
-  puVar1 = this->pNodeHead_04;
+  *param_1 = &PTR_GetCObjectRuntimeClass_00648578;
+  puVar1 = (undefined4 *)param_1[1];
   local_4 = 0;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  this->nNodeCount_0C = 0;
-  this->nNodeCapacity_10 = 0;
-  this->pNodeTail_08 = (void *)0x0;
-  this->pNodeHead_04 = (void *)0x0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[1] = 0;
   FreeDataChain();
-  this->pNodeBlockChainHead_14 = (void *)0x0;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

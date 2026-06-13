@@ -3,71 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TMiniArmyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403323
-// GHIDRA_NAME TMiniArmyView::thunk_ConstructTMiniArmyViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTMiniArmyViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderMiniArmyViewUnitSummaryAndBars [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderMiniArmyViewUnitSummaryAndBars [FID:thunk_target_sync] */
-
-void __thiscall TMiniArmyView::thunk_ConstructTMiniArmyViewBaseState(TMiniArmyView *this)
-
-{
-  ConstructTMiniArmyViewBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004079C8
-// GHIDRA_NAME TMiniArmyView::thunk_GetTMiniArmyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMiniArmyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMiniArmyViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMiniArmyViewClassNamePointer */
-
-void * __cdecl TMiniArmyView::thunk_GetTMiniArmyViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMiniArmyViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040938B
-// GHIDRA_NAME TMiniArmyView::thunk_DestructTMiniArmyViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTMiniArmyViewAndMaybeFree(void * arg1, void * arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to HandleMiniArmyViewUpgradeCommandAndSyncNationState [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk to HandleMiniArmyViewUpgradeCommandAndSyncNationState [FID:thunk_target_sync] */
-
-void __thiscall
-TMiniArmyView::thunk_DestructTMiniArmyViewAndMaybeFree(TMiniArmyView *this,void *arg1,void *arg2)
-
-{
-  DestructTMiniArmyViewAndMaybeFree(this,arg1,arg2);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAD90
 // GHIDRA_NAME TMiniArmyView::CreateTMiniArmyViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTMiniArmyViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TMiniArmyView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTMiniArmyViewInstance()
 
-/* [ClassQuad] create inferred for TMiniArmyView; alloc factory pattern. */
-
-void * __cdecl TMiniArmyView::CreateTMiniArmyViewInstance(void)
+undefined4 * TMiniArmyView::CreateTMiniArmyViewInstance(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -77,55 +21,43 @@ void * __cdecl TMiniArmyView::CreateTMiniArmyViewInstance(void)
   puStack_8 = &LAB_0063059a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &PTR_thunk_GetTMiniArmyViewClassNamePointer_0064d550;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_0064d550;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAE10
 // GHIDRA_NAME TMiniArmyView::GetTMiniArmyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMiniArmyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMiniArmyView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMiniArmyViewClassNamePointer()
 
-/* Returns class descriptor pointer for TMiniArmyView. */
-
-void * __cdecl TMiniArmyView::GetTMiniArmyViewClassNamePointer(void)
+undefined ** TMiniArmyView::GetTMiniArmyViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTMiniArmyView;
+  return &PTR_s_TMiniArmyView_0064cbb0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AAEB0
 // GHIDRA_NAME TMiniArmyView::ConstructTMiniArmyViewBaseState
-// GHIDRA_PROTO void __thiscall ConstructTMiniArmyViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders mini-army summary text and per-unit status bars/icons in the mini army panel.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTMiniArmyViewBaseState()
 
-/* Renders mini-army summary text and per-unit status bars/icons in the mini army panel. */
-
-void __thiscall TMiniArmyView::ConstructTMiniArmyViewBaseState(TMiniArmyView *this)
+void __fastcall TMiniArmyView::ConstructTMiniArmyViewBaseState(int param_1)
 
 {
-  short extraout_AX;
-  short extraout_AX_00;
   short sVar1;
   int *dst_ref_ptr;
   short sVar2;
-  THQButton *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined1 local_40 [4];
   int local_3c;
-  int local_38 [2];
+  int local_38;
+  undefined1 local_34 [4];
   undefined1 *local_30;
   RECT local_2c;
   RECT local_1c;
@@ -141,30 +73,30 @@ void __thiscall TMiniArmyView::ConstructTMiniArmyViewBaseState(TMiniArmyView *th
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
-  AssignFromPtr(local_38,(int *)((int)this->field126_0x84 + 0x24));
-  AssignFromPtr(local_40,local_38);
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw();
-  thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-  if (100 < extraout_AX) {
+  AssignFromPtr(&local_38,(int *)(*(int *)(param_1 + 0x84) + 0x24));
+  AssignFromPtr(local_40,&local_38);
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc,0x2b6a);
+  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+  if (100 < sVar1) {
     InitializeSharedStringRefFromEmpty();
     local_4._0_1_ = 2;
     do {
-      AssignSharedStringFromMidSubstring();
+      dst_ref_ptr = (int *)AssignSharedStringFromMidSubstring(local_34,1);
       local_4._0_1_ = 3;
       AssignFromPtr(&local_3c,dst_ref_ptr);
       local_4._0_1_ = 2;
       ReleaseSharedStringRefIfNotEmpty();
       AssignFromPtr(local_40,&local_3c);
       AssignStringSharedFromCStr();
-      thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    } while (100 < extraout_AX_00);
+      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+    } while (100 < sVar1);
     AssignFromPtr(local_40,&local_3c);
     local_4._0_1_ = 1;
     ReleaseSharedStringRefIfNotEmpty();
   }
-  thunk_SetQuickDrawTextOriginWithContextOffset(10,0xc);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  sVar1 = *(short *)((int)this->field126_0x84 + 0x34) / 0x19 + 1;
+  thunk_SetQuickDrawTextOriginWithContextOffset(10);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  sVar1 = *(short *)(*(int *)(param_1 + 0x84) + 0x34) / 0x19 + 1;
   if (0x14 < sVar1) {
     sVar1 = 0x14;
   }
@@ -184,15 +116,15 @@ void __thiscall TMiniArmyView::ConstructTMiniArmyViewBaseState(TMiniArmyView *th
   local_2c.bottom = 0xb;
   UpdatePaletteIndexWithDefaultFallback(0x10);
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x694) + 4),
-             (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_2c,0x24,
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
+             (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_2c,0x24,
              (astruct_19 *)0x0);
   local_30 = &stack0xffffffb4;
-  TCivDescription::SetQuickDrawStrokeColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x8a,6);
-  thunk_DrawCenteredGuideLineOnMapDc(0x8a,0xc);
-  thunk_DrawCenteredGuideLineOnMapDc(0xdc,0xc);
-  thunk_DrawCenteredGuideLineOnMapDc(0xdc,6);
+  SetQuickDrawStrokeColor();
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x8a);
+  thunk_DrawCenteredGuideLineOnMapDc(0x8a);
+  thunk_DrawCenteredGuideLineOnMapDc(0xdc);
+  thunk_DrawCenteredGuideLineOnMapDc(0xdc);
   local_4 = (uint)local_4._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = 0xffffffff;
@@ -203,88 +135,54 @@ void __thiscall TMiniArmyView::ConstructTMiniArmyViewBaseState(TMiniArmyView *th
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB1D0
 // GHIDRA_NAME TMiniArmyView::DestructTMiniArmyViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTMiniArmyViewAndMaybeFree(void * arg1, void * arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] Handles mini-army upgrade command, applies era capability selection, updates nation state fields, and forwards control toggle flow.
-// GHIDRA_COMMENT_END
-
-/* [ClassLane] Handles mini-army upgrade command, applies era capability selection, updates nation
-   state fields, and forwards control toggle flow. */
+// GHIDRA_PROTO undefined DestructTMiniArmyViewAndMaybeFree()
 
 void __thiscall
-TMiniArmyView::DestructTMiniArmyViewAndMaybeFree(TMiniArmyView *this,void *arg1,void *arg2)
+TMiniArmyView::DestructTMiniArmyViewAndMaybeFree
+          (int *param_1,undefined4 param_2,int *param_3,undefined4 param_4)
 
 {
   int iVar1;
-  void *pvVar2;
-  char extraout_AL;
+  char cVar2;
   int *piVar3;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_0000000c;
-  void *pvStack_30;
-  void **ppvStack_2c;
-  void *pvStack_28;
-  void **ppvStack_24;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  int local_4;
+  undefined4 local_4;
   
-  pvVar2 = arg2;
-  local_4 = -1;
+  piVar3 = param_3;
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_006305f8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  if (*(int *)((int)arg2 + 0x1c) == 0x75706772) {
-    ppvStack_24 = (void **)0x4ab208;
-    ApplyEraCapabilityCostAndSetSelection();
-    if (extraout_AL == '\0') {
-      ppvStack_24 = (void **)0x4ab276;
+  if (param_3[7] == 0x75706772) {
+    cVar2 = ApplyEraCapabilityCostAndSetSelection();
+    if (cVar2 == '\0') {
       InitializeSharedStringRefFromEmpty();
-      ppvStack_24 = &arg2;
-      pvStack_28 = (void *)0x3;
-      ppvStack_2c = (void **)0x2745;
       local_4 = 0;
-      pvStack_30 = (void *)0x4ab298;
-      (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-      ppvStack_24 = (void **)0x0;
-      pvStack_28 = (void *)0x2;
-      ppvStack_2c = &g_pCrossUArmyViewsSharedState_6A2318;
-      thunk_AssignStringSharedRefAndReturnThis();
+      (**(code **)(*g_pLocalizationTable + 0x84))();
+      thunk_AssignStringSharedRefAndReturnThis(&param_3);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-      local_4 = -1;
-      ppvStack_24 = (void **)0x4ab2ce;
+      local_4 = 0xffffffff;
       ReleaseSharedStringRefIfNotEmpty();
     }
     else {
-      ppvStack_24 = (void **)0x1;
-      pvStack_28 = (void *)0x0;
-      ppvStack_2c = (void **)0x4ab21a;
-      (**(code **)(*(int *)pvVar2 + 0xa4))();
-      ppvStack_2c = pvVar2;
+      (**(code **)(*piVar3 + 0xa4))();
       TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-                ((TToolBarCluster *)&pvStack_30);
-      thunk_EnableAndProcessFlagWithSharedStringCleanup();
-      ppvStack_2c = (void **)0x74627231;
-      pvStack_30 = (void *)0x4ab24b;
-      piVar3 = (int *)(**(code **)(**(int **)((int)g_pDisplayManager + 4) + 0x94))();
+                (PTR_g_szEmptyString_0064cb18);
+      EnableAndProcessFlagWithSharedStringCleanup();
+      piVar3 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
       iVar1 = *piVar3;
-      pvStack_30 = (void *)0x4ab254;
       (**(code **)(iVar1 + 0xc))();
-      pvStack_30 = (void *)0x4ab25f;
-      thunk_GetActiveNationId();
+      UiRuntimeContext::GetActiveNationId();
       (**(code **)(iVar1 + 0x1d0))();
     }
   }
-  else if (arg2 == this) {
-    piVar3 = this->field29_0x20;
-    ppvStack_24 = (void **)0x4ab2de;
+  else if (param_3 == param_1) {
+    piVar3 = (int *)param_1[8];
     (**(code **)(*piVar3 + 0xc))();
-    *(undefined2 *)(piVar3 + 0x21) = *(undefined2 *)((int)this->field126_0x84 + 6);
+    *(undefined2 *)(piVar3 + 0x21) = *(undefined2 *)(param_1[0x21] + 6);
   }
-  ppvStack_24 = (void **)in_stack_0000000c;
-  pvStack_28 = pvVar2;
-  ppvStack_2c = arg1;
-  pvStack_30 = (void *)0x4ab301;
   thunk_HandleCityDialogToggleCommandOrForward();
   *unaff_FS_OFFSET = uStack_c;
   return;

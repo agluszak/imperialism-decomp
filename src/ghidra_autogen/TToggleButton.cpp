@@ -3,72 +3,30 @@
 // Program: Imperialism.exe
 // Bucket: TToggleButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402CA2
-// GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TToggleButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTToggleButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTToggleButtonClassNamePointer */
-
-void * __cdecl TToggleButton::TToggleButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTToggleButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00405F8D
 // GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot116
-// GHIDRA_PROTO void __thiscall TToggleButton_VtblSlot116(int isPressed, int notifyParent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleToggleButtonStateChangeAndRefresh
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined TToggleButton_VtblSlot116()
 
-/* Single-JMP thunk to HandleToggleButtonStateChangeAndRefresh */
-
-void __thiscall
-TToggleButton::TToggleButton_VtblSlot116(TToggleButton *this,int isPressed,int notifyParent)
+void __thiscall TToggleButton::TToggleButton_VtblSlot116(int *param_1,char param_2,char param_3)
 
 {
-  undefined **ppuVar1;
+  int iVar1;
   
-  ppuVar1 = this->field0_0x0;
-  (*(code *)ppuVar1[0x29])((int)(char)isPressed,(int)(char)notifyParent);
-  if ((char)isPressed != '\0') {
-    (**(code **)(*(int *)this->pField20 + 0x1c8))(this->field1c);
+  iVar1 = *param_1;
+  (**(code **)(iVar1 + 0xa4))((int)param_2,(int)param_3);
+  if (param_2 != '\0') {
+    (**(code **)(*(int *)param_1[8] + 0x1c8))(param_1[7]);
   }
-  (*(code *)ppuVar1[0x3e])();
-  (*(code *)ppuVar1[0x45])(0);
+  (**(code **)(iVar1 + 0xf8))();
+  (**(code **)(iVar1 + 0x114))(0);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409566
-// GHIDRA_NAME TToggleButton::TToggleButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TToggleButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTToggleButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTToggleButtonAndMaybeFree */
-
-void * __thiscall TToggleButton::TToggleButton_VtblSlot001(TToggleButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTToggleButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571050
 // GHIDRA_NAME TToggleButton::CreateTToggleButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTToggleButtonInstance(void)
+// GHIDRA_PROTO undefined CreateTToggleButtonInstance()
 
-void * __cdecl TToggleButton::CreateTToggleButtonInstance(void)
+undefined4 * TToggleButton::CreateTToggleButtonInstance(void)
 
 {
   undefined4 *puVar1;
@@ -82,12 +40,12 @@ void * __cdecl TToggleButton::CreateTToggleButtonInstance(void)
   puStack_8 = &LAB_006363ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTToggleButton;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_0065efd8;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -96,43 +54,37 @@ void * __cdecl TToggleButton::CreateTToggleButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005710D0
 // GHIDRA_NAME TToggleButton::GetTToggleButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTToggleButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TToggleButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTToggleButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TToggleButton. */
-
-void * __cdecl TToggleButton::GetTToggleButtonClassNamePointer(void)
+undefined ** TToggleButton::GetTToggleButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTToggleButton;
+  return &PTR_s_TToggleButton_0065e598;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005710F0
 // GHIDRA_NAME TToggleButton::ConstructTToggleButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTToggleButtonBaseState(void)
+// GHIDRA_PROTO undefined ConstructTToggleButtonBaseState()
 
-void * __thiscall TToggleButton::ConstructTToggleButtonBaseState(TToggleButton *this)
+undefined4 * __fastcall TToggleButton::ConstructTToggleButtonBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTToggleButton;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_0065efd8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571120
-// GHIDRA_NAME TToggleButton::DestructTToggleButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTToggleButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME TToggleButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall
-TToggleButton::DestructTToggleButtonAndMaybeFree(TToggleButton *this,byte freeSelfFlag)
+undefined4 __thiscall TToggleButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -3,82 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TNumberedIcon.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403107
-// GHIDRA_NAME TNumberedIcon::TNumberedIcon_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TNumberedIcon_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTNumberedIconAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTNumberedIconAndMaybeFree */
-
-void * __thiscall TNumberedIcon::TNumberedIcon_VtblSlot001(TNumberedIcon *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTNumberedIconAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404002
-// GHIDRA_NAME TNumberedIcon::TNumberedIcon_VtblSlot119
-// GHIDRA_PROTO void __cdecl TNumberedIcon_VtblSlot119(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_ConstructTMyNumberTextBaseState_At00507570
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Helper_Uses_ConstructTMyNumberTextBaseState_At00507570 */
-
-void __cdecl TNumberedIcon::TNumberedIcon_VtblSlot119(void)
-
-{
-  Helper_Uses_ConstructTMyNumberTextBaseState_At00507570();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404499
-// GHIDRA_NAME TNumberedIcon::TNumberedIcon_VtblSlot055
-// GHIDRA_PROTO void __cdecl TNumberedIcon_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0 */
-
-void __cdecl TNumberedIcon::TNumberedIcon_VtblSlot055(void)
-
-{
-  WrapperFor_thunk_NoOpUiLifecycleHook_At005074e0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405E57
-// GHIDRA_NAME TNumberedIcon::TNumberedIcon_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TNumberedIcon_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNumberedIconClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNumberedIconClassNamePointer */
-
-void * __cdecl TNumberedIcon::TNumberedIcon_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNumberedIconClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005072E0
 // GHIDRA_NAME TNumberedIcon::CreateTNumberedIconInstance
-// GHIDRA_PROTO void * __cdecl CreateTNumberedIconInstance(void)
+// GHIDRA_PROTO undefined CreateTNumberedIconInstance()
 
-void * __cdecl TNumberedIcon::CreateTNumberedIconInstance(void)
+undefined4 * TNumberedIcon::CreateTNumberedIconInstance(void)
 
 {
-  TMegaPicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -88,59 +20,54 @@ void * __cdecl TNumberedIcon::CreateTNumberedIconInstance(void)
   puStack_8 = &LAB_006337ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb0);
   local_4 = 0;
-  if (this != (TMegaPicture *)0x0) {
-    TMegaPicture::ConstructTMegaPictureBaseState(this);
-    this->field0_0x0 = &g_vtblTNumberedIcon;
-    *(undefined4 *)&this[1].field_0x12 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TMegaPicture::ConstructTMegaPictureBaseState();
+    *puVar1 = &PTR_LAB_006580b0;
+    puVar1[0x2b] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507380
 // GHIDRA_NAME TNumberedIcon::GetTNumberedIconClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNumberedIconClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNumberedIcon.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNumberedIconClassNamePointer()
 
-/* Returns class descriptor pointer for TNumberedIcon. */
-
-void * __cdecl TNumberedIcon::GetTNumberedIconClassNamePointer(void)
+undefined ** TNumberedIcon::GetTNumberedIconClassNamePointer(void)
 
 {
-  return &g_pClassDescTNumberedIcon;
+  return &PTR_s_TNumberedIcon_006579b8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005073A0
 // GHIDRA_NAME TNumberedIcon::ConstructTNumberedIconBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTNumberedIconBaseState(void)
+// GHIDRA_PROTO undefined ConstructTNumberedIconBaseState()
 
-void * __thiscall TNumberedIcon::ConstructTNumberedIconBaseState(TNumberedIcon *this)
+undefined4 * __fastcall TNumberedIcon::ConstructTNumberedIconBaseState(undefined4 *param_1)
 
 {
-  TMegaPicture::ConstructTMegaPictureBaseState((TMegaPicture *)this);
-  this->field0_0x0 = &g_vtblTNumberedIcon;
-  this->pFieldac = (void *)0x0;
-  return this;
+  TMegaPicture::ConstructTMegaPictureBaseState();
+  *param_1 = &PTR_LAB_006580b0;
+  param_1[0x2b] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005073D0
 // GHIDRA_NAME TNumberedIcon::DestructTNumberedIconAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTNumberedIconAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTNumberedIconAndMaybeFree()
 
-void * __thiscall
-TNumberedIcon::DestructTNumberedIconAndMaybeFree(TNumberedIcon *this,byte freeSelfFlag)
+undefined4 __thiscall
+TNumberedIcon::DestructTNumberedIconAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

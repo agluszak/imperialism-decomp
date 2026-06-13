@@ -3,238 +3,66 @@
 // Program: Imperialism.exe
 // Bucket: TMapEditView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004022CA
-// GHIDRA_NAME TMapEditView::thunk_GetTMapEditViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTMapEditViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMapEditViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMapEditViewClassNamePointer */
-
-void * __cdecl TMapEditView::thunk_GetTMapEditViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMapEditViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403422
-// GHIDRA_NAME TMapEditView::thunk_ApplyTileIconOverlayFromEditorSelection
-// GHIDRA_PROTO void __thiscall thunk_ApplyTileIconOverlayFromEditorSelection(void * pMapTileEditState, short nTileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyTileIconOverlayFromEditorSelection
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyTileIconOverlayFromEditorSelection */
-
-void __thiscall
-TMapEditView::thunk_ApplyTileIconOverlayFromEditorSelection
-          (TMapEditView *this,void *pMapTileEditState,short nTileIndex)
-
-{
-  int iVar1;
-  int iVar2;
-  
-  iVar2 = (short)pMapTileEditState * 0x24;
-  iVar1 = 0;
-  if ((*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x11 + iVar2) != -1) &&
-     (iVar1 = 1, *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar2 + 0x12) != -1)) {
-    PlayDefaultMessageBeep();
-    return;
-  }
-  (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(4000,0,1);
-  *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar1 + 0x11 + iVar2) =
-       (&stack0xffffffe8)[this->field36c * 2];
-  (**(code **)((int)this->pVtable + 0x200))(pMapTileEditState);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403CB5
-// GHIDRA_NAME TMapEditView::thunk_InitializeStrategicMapTileIconStateCache
-// GHIDRA_PROTO void __thiscall thunk_InitializeStrategicMapTileIconStateCache(void * pMapView, int nInitToken)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeStrategicMapTileIconStateCache
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeStrategicMapTileIconStateCache */
-
-void __thiscall
-TMapEditView::thunk_InitializeStrategicMapTileIconStateCache
-          (TMapEditView *this,void *pMapView,int nInitToken)
-
-{
-  TWorldView::InitializeStrategicMapTileIconStateCache((TWorldView *)this,pMapView,nInitToken);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404A98
-// GHIDRA_NAME TMapEditView::thunk_scalar_deleting_destructor_00404A98
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00404A98(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TMapEditView::thunk_scalar_deleting_destructor_00404A98(TMapEditView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004050CE
-// GHIDRA_NAME TMapEditView::thunk_ApplyTileIconProfileFromEditorSelection
-// GHIDRA_PROTO void __thiscall thunk_ApplyTileIconProfileFromEditorSelection(void * pMapTileEditState, short nTileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyTileIconProfileFromEditorSelection
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyTileIconProfileFromEditorSelection */
-
-void __thiscall
-TMapEditView::thunk_ApplyTileIconProfileFromEditorSelection
-          (TMapEditView *this,void *pMapTileEditState,short nTileIndex)
-
-{
-  code *pcVar1;
-  undefined4 extraout_EAX;
-  int iVar2;
-  int iVar3;
-  
-  if (this->field36c != 0) {
-    iVar3 = (short)pMapTileEditState * 0x24;
-    if (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x13 + iVar3) != '\0') {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(4000,0,1);
-      *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x13 + iVar3) = (char)this->field36c;
-      *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar3) =
-           (&stack0xffffffd4)[this->field36c * 2];
-      *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 10 + iVar3) = 0;
-      *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0xb + iVar3) = 0;
-      *(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 2 + iVar3) =
-           *(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 2 + iVar3) | 0x80;
-      *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 1 + iVar3) = 0;
-      *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar3 + 0x11) =
-           (&stack0xffffffd4)[*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x13 + iVar3) * 2];
-      *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x12 + iVar3) = 0xff;
-      (**(code **)(*(int *)g_pGlobalMapState + 0x34))(pMapTileEditState);
-      pcVar1 = *(code **)((int)this->pVtable + 0x200);
-      (*pcVar1)(0x60004);
-      iVar3 = 0;
-      do {
-        thunk_GetWrappedHexNeighborTileIndexByDirection();
-        if ((short)extraout_EAX != -1) {
-          iVar2 = (short)extraout_EAX * 0x24;
-          *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 10 + iVar2) = 0;
-          *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0xb + iVar2) = 0;
-          *(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 2 + iVar2) =
-               *(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 2 + iVar2) | 0x80;
-          *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 1 + iVar2) = 0;
-          (**(code **)(*(int *)g_pGlobalMapState + 0x34))(extraout_EAX);
-          (*pcVar1)(extraout_EAX);
-        }
-        iVar3 = iVar3 + 1;
-      } while ((short)iVar3 < 6);
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407B1C
-// GHIDRA_NAME TMapEditView::thunk_DispatchStrategicMapTileEditAction
-// GHIDRA_PROTO void __thiscall thunk_DispatchStrategicMapTileEditAction(void * pMapTileEditState, short nTileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DispatchStrategicMapTileEditAction
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DispatchStrategicMapTileEditAction */
-
-void __thiscall
-TMapEditView::thunk_DispatchStrategicMapTileEditAction
-          (TMapEditView *this,void *pMapTileEditState,short nTileIndex)
-
-{
-  DispatchStrategicMapTileEditAction(this,pMapTileEditState,nTileIndex);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CAB0
 // GHIDRA_NAME TMapEditView::CreateTMapEditViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTMapEditViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates map-dialog-derived TMapEditView instance and installs map-edit vtable/type hooks
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTMapEditViewInstance()
 
-/* Allocates map-dialog-derived TMapEditView instance and installs map-edit vtable/type hooks */
-
-void * __cdecl TMapEditView::CreateTMapEditViewInstance(void)
+int * TMapEditView::CreateTMapEditViewInstance(void)
 
 {
-  TWorldView *this;
-  uint *unaff_FS_OFFSET;
-  void *local_18;
-  uint local_14;
-  TWorldView *local_10;
-  uint local_c;
+  int *piVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_18;
+  undefined4 local_14;
+  int *local_10;
+  undefined4 local_c;
   undefined1 *puStack_8;
-  uint local_4;
+  undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00633fc2;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (uint)&local_c;
-  this = AllocateWithFallbackHandler();
+  *unaff_FS_OFFSET = &local_c;
+  piVar1 = (int *)AllocateWithFallbackHandler(0x370);
   local_4 = 0;
-  if (this != (TWorldView *)0x0) {
-    local_10 = this;
-    TWorldView::ConstructTWorldViewBaseState(this);
-    *(undefined4 *)&this->field_0x60 = 0;
-    this->field_0x34c = 0;
-    this[1].base.field3_0x8 = 0;
-    (this->base).pVtable = &g_vtblTMapDialog;
-    *(undefined4 *)&this->field_0x64 = 0;
+  if (piVar1 != (int *)0x0) {
+    local_10 = piVar1;
+    TWorldView::ConstructTWorldViewBaseState();
+    piVar1[0x18] = 0;
+    *(undefined1 *)(piVar1 + 0xd3) = 0;
+    piVar1[0xd7] = 0;
+    *piVar1 = (int)&PTR_LAB_00658a58;
+    piVar1[0x19] = 0;
     local_4 = CONCAT31(local_4._1_3_,1);
     TMapDialog::thunk_SplitTileIndexToRowAndColumn
-              ((TMapDialog *)&local_18,
-               CONCAT22((short)((uint)&local_14 >> 0x10),*(undefined2 *)((int)g_pGlobalMapState + 6)
-                       ),(int)&local_18,(int)&local_14);
-    (**(code **)((int)(this->base).pVtable + 0x1e4))(local_14,local_18);
-    *(undefined2 *)&this[1].base.pVtable = 0;
-    *(undefined2 *)((int)&this[1].base.pVtable + 2) = 0xffff;
-    this[1].base.field1_0x4 = 0;
-    this->field76 = 1;
-    this->field78 = 0x40;
-    *(undefined1 *)&this[1].base.dialogValueDwordC = 0;
-    (this->base).pVtable = &PTR_thunk_GetTMapEditViewClassNamePointer_006594e8;
-    *(undefined1 *)&this[1].base.dialogValueDword10 = 0;
-    this[1].base.viewStateDword14 = 0;
-    this[1].base.pUiOwner18 = (void *)0x0;
+              (CONCAT22((short)((uint)&local_14 >> 0x10),*(undefined2 *)(g_pGlobalMapState + 6)),
+               &local_18,&local_14);
+    (**(code **)(*piVar1 + 0x1e4))(local_14,local_18);
+    *(undefined2 *)(piVar1 + 0xd5) = 0;
+    *(undefined2 *)((int)piVar1 + 0x356) = 0xffff;
+    *(undefined1 *)(piVar1 + 0xd6) = 0;
+    *(undefined2 *)((int)piVar1 + 0x76) = 1;
+    *(undefined2 *)(piVar1 + 0x1e) = 0x40;
+    *(undefined1 *)(piVar1 + 0xd8) = 0;
+    *piVar1 = (int)&PTR_LAB_006594e8;
+    *(undefined1 *)(piVar1 + 0xd9) = 0;
+    piVar1[0xda] = 0;
+    piVar1[0xdb] = 0;
     *unaff_FS_OFFSET = local_14;
-    return this;
+    return piVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (int *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CC40
 // GHIDRA_NAME TMapEditView::GetTMapEditViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMapEditViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMapEditView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMapEditViewClassNamePointer()
 
-/* Returns class descriptor pointer for TMapEditView. */
-
-void * __cdecl TMapEditView::GetTMapEditViewClassNamePointer(void)
+undefined ** TMapEditView::GetTMapEditViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTMapEditView;
+  return &PTR_s_TMapEditView_006589f8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051CE60
@@ -267,39 +95,39 @@ TMapEditView::DispatchStrategicMapTileEditAction
           (TMapEditView *this,void *pMapTileEditState,short nTileIndex)
 
 {
-  void *pvVar1;
+  int iVar1;
   int *piVar2;
   int iVar3;
   void *unaff_retaddr;
   short nTileIndex_00;
   
   nTileIndex_00 = 0x6f6e;
-  piVar2 = (int *)(**(code **)(*(int *)this->pField20 + 0x94))();
+  piVar2 = (int *)(**(code **)(**(int **)(this + 0x20) + 0x94))();
   (**(code **)(*piVar2 + 0xc))();
   iVar3 = (short)unaff_retaddr * 0x24;
-  if ((*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar3) != '\x05') || (this->field368 == 5)
-     ) {
-    switch(this->field368) {
+  if ((*(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar3) != '\x05') ||
+     (*(int *)(this + 0x368) == 5)) {
+    switch(*(undefined4 *)(this + 0x368)) {
     case 0:
-      thunk_ApplyTileIconProfileFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
+      ApplyTileIconProfileFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
       return;
     case 1:
-      thunk_ApplyTileCityIdAndInvalidateLocalOverlays();
+      ApplyTileCityIdAndInvalidateLocalOverlays(unaff_retaddr);
       return;
     case 2:
-      thunk_ApplyTileIconOverlayFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
+      ApplyTileIconOverlayFromEditorSelection(this,unaff_retaddr,nTileIndex_00);
       return;
     case 3:
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(4000,0,1);
-      pvVar1 = this->pVtable;
-      *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 6 + iVar3) = (char)this->field36c;
-      (**(code **)((int)pvVar1 + 0x200))(unaff_retaddr);
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(4000,0,1);
+      iVar1 = *(int *)this;
+      *(TMapEditView *)(*(int *)(g_pGlobalMapState + 0xc) + 6 + iVar3) = this[0x36c];
+      (**(code **)(iVar1 + 0x200))(unaff_retaddr);
       return;
     case 4:
-      thunk_PromoteTileToCityAndRefreshNeighbors();
+      PromoteTileToCityAndRefreshNeighbors(unaff_retaddr);
       return;
     case 5:
-      thunk_ApplyTileTerrainIndexAndInvalidateAdjacency();
+      ApplyTileTerrainIndexAndInvalidateAdjacency(unaff_retaddr);
     }
   }
   return;

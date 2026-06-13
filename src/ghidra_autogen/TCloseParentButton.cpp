@@ -3,73 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TCloseParentButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403260
-// GHIDRA_NAME TCloseParentButton::TCloseParentButton_VtblSlot001
-// GHIDRA_PROTO TCloseParentButton * __thiscall TCloseParentButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCloseParentButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCloseParentButtonAndMaybeFree */
-
-TCloseParentButton * __thiscall
-TCloseParentButton::TCloseParentButton_VtblSlot001(TCloseParentButton *this,byte freeSelfFlag)
-
-{
-  TCloseParentButton *pTVar1;
-  
-  pTVar1 = DestructTCloseParentButtonAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403EF4
-// GHIDRA_NAME TCloseParentButton::TCloseParentButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TCloseParentButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCloseParentButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCloseParentButtonClassNamePointer */
-
-void * __cdecl TCloseParentButton::TCloseParentButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCloseParentButtonClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404624
-// GHIDRA_NAME TCloseParentButton::TCloseParentButton_VtblSlot015
-// GHIDRA_PROTO void __thiscall TCloseParentButton_VtblSlot015(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to NotifyOwnerA0WhenSelectionMatchesAndReady
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to NotifyOwnerA0WhenSelectionMatchesAndReady */
-
-void __thiscall TCloseParentButton::TCloseParentButton_VtblSlot015(TCloseParentButton *this)
-
-{
-  NotifyOwnerA0WhenSelectionMatchesAndReady(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00584BB0
 // GHIDRA_NAME TCloseParentButton::CreateTCloseParentButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTCloseParentButtonInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TCloseParentButton derives from TButton (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCloseParentButtonInstance()
 
-/* [InheritanceEvidence] TCloseParentButton derives from TButton (decomp_vtbl_seq_ctor, medium) */
-
-void * __cdecl TCloseParentButton::CreateTCloseParentButtonInstance(void)
+undefined4 * TCloseParentButton::CreateTCloseParentButtonInstance(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -79,47 +21,37 @@ void * __cdecl TCloseParentButton::CreateTCloseParentButtonInstance(void)
   puStack_8 = &LAB_00637672;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
     local_4 = CONCAT31(local_4._1_3_,1);
-    (this->base).pVtable = &g_vtblTButton;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    (this->base).pVtable = &g_vtblTCloseParentButton;
-    pTVar1 = this;
+    *puVar1 = &PTR_LAB_0064a2b8;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+    *puVar1 = &PTR_LAB_006648d8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584C40
 // GHIDRA_NAME TCloseParentButton::GetTCloseParentButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCloseParentButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCloseParentButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCloseParentButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TCloseParentButton. */
-
-void * __cdecl TCloseParentButton::GetTCloseParentButtonClassNamePointer(void)
+undefined ** TCloseParentButton::GetTCloseParentButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTCloseParentButton;
+  return &PTR_s_TCloseParentButton_00662ea8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584C60
 // GHIDRA_NAME TCloseParentButton::ConstructTCloseParentButtonBaseState
-// GHIDRA_PROTO TCloseParentButton * __thiscall ConstructTCloseParentButtonBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TCloseParentButton derives from TButton (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTCloseParentButtonBaseState()
 
-/* [InheritanceEvidence] TCloseParentButton derives from TButton (decomp_vtbl_seq_ctor, medium) */
-
-TCloseParentButton * __thiscall
-TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *this)
+undefined4 * __fastcall
+TCloseParentButton::ConstructTCloseParentButtonBaseState(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -131,58 +63,51 @@ TCloseParentButton::ConstructTCloseParentButtonBaseState(TCloseParentButton *thi
   puStack_8 = &LAB_00637698;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
   local_4 = 0;
-  this->field0_0x0 = &g_vtblTButton;
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-  this->field0_0x0 = &g_vtblTCloseParentButton;
+  *param_1 = &PTR_LAB_0064a2b8;
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+  *param_1 = &PTR_LAB_006648d8;
   *unaff_FS_OFFSET = local_c;
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584CE0
 // GHIDRA_NAME TCloseParentButton::DestructTCloseParentButtonAndMaybeFree
-// GHIDRA_PROTO TCloseParentButton * __thiscall DestructTCloseParentButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTCloseParentButtonAndMaybeFree()
 
-TCloseParentButton * __thiscall
-TCloseParentButton::DestructTCloseParentButtonAndMaybeFree
-          (TCloseParentButton *this,byte freeSelfFlag)
+undefined4 __thiscall
+TCloseParentButton::DestructTCloseParentButtonAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructTViewBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584D30
 // GHIDRA_NAME TCloseParentButton::NotifyOwnerA0WhenSelectionMatchesAndReady
-// GHIDRA_PROTO void __thiscall NotifyOwnerA0WhenSelectionMatchesAndReady(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT When requested selection matches current and control is interactive
-// GHIDRA_COMMENT_END
-
-/* When requested selection matches current and control is interactive */
+// GHIDRA_PROTO undefined NotifyOwnerA0WhenSelectionMatchesAndReady()
 
 void __thiscall
-TCloseParentButton::NotifyOwnerA0WhenSelectionMatchesAndReady(TCloseParentButton *this)
+TCloseParentButton::NotifyOwnerA0WhenSelectionMatchesAndReady(int *param_1,int param_2)
 
 {
-  undefined **ppuVar1;
+  int iVar1;
   char cVar2;
   int iVar3;
   int *piVar4;
-  int in_stack_00000004;
   
-  ppuVar1 = this->field0_0x0;
-  iVar3 = (*(code *)ppuVar1[0x2f])();
-  if (in_stack_00000004 == iVar3) {
-    cVar2 = (*(code *)ppuVar1[10])();
+  iVar1 = *param_1;
+  iVar3 = (**(code **)(iVar1 + 0xbc))();
+  if (param_2 == iVar3) {
+    cVar2 = (**(code **)(iVar1 + 0x28))();
     if (cVar2 != '\0') {
-      cVar2 = (*(code *)ppuVar1[0x6f])();
+      cVar2 = (**(code **)(iVar1 + 0x1bc))();
       if (cVar2 == '\0') {
-        piVar4 = (int *)(*(code *)ppuVar1[0x16])();
+        piVar4 = (int *)(**(code **)(iVar1 + 0x58))();
         (**(code **)(*piVar4 + 0xa0))();
       }
     }

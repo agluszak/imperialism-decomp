@@ -3,86 +3,42 @@
 // Program: Imperialism.exe
 // Bucket: TUpDownPictureButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402257
-// GHIDRA_NAME TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree_At00402257
-// GHIDRA_PROTO void * __thiscall thunk_DestructTUpDownPictureButtonAndMaybeFree_At00402257(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTUpDownPictureButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTUpDownPictureButtonAndMaybeFree */
-
-void * __thiscall
-TUpDownPictureButton::thunk_DestructTUpDownPictureButtonAndMaybeFree_At00402257
-          (TUpDownPictureButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTUpDownPictureButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403DBE
-// GHIDRA_NAME TUpDownPictureButton::thunk_GetTUpDownPictureButtonClassNamePointer_At00403dbe
-// GHIDRA_PROTO void * __cdecl thunk_GetTUpDownPictureButtonClassNamePointer_At00403dbe(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTUpDownPictureButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTUpDownPictureButtonClassNamePointer */
-
-void * __cdecl TUpDownPictureButton::thunk_GetTUpDownPictureButtonClassNamePointer_At00403dbe(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTUpDownPictureButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00571580
 // GHIDRA_NAME TUpDownPictureButton::GetTUpDownPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTUpDownPictureButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TUpDownPictureButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTUpDownPictureButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TUpDownPictureButton. */
-
-void * __cdecl TUpDownPictureButton::GetTUpDownPictureButtonClassNamePointer(void)
+undefined ** TUpDownPictureButton::GetTUpDownPictureButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTUpDownPictureButton;
+  return &PTR_s_TUpDownPictureButton_0065e5c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005715A0
 // GHIDRA_NAME TUpDownPictureButton::ConstructPictureScreenResourceEntry
-// GHIDRA_PROTO void __thiscall ConstructPictureScreenResourceEntry(void)
+// GHIDRA_PROTO undefined ConstructPictureScreenResourceEntry()
 
-void __thiscall
-TUpDownPictureButton::ConstructPictureScreenResourceEntry(TUpDownPictureButton *this)
+undefined4 * __fastcall
+TUpDownPictureButton::ConstructPictureScreenResourceEntry(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTUpDownPictureButton;
-  this->field143_0x92 = 7000;
-  return;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_0065f440;
+  *(undefined2 *)((int)param_1 + 0x92) = 7000;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005715D0
 // GHIDRA_NAME TUpDownPictureButton::DestructTUpDownPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTUpDownPictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTUpDownPictureButtonAndMaybeFree()
 
-void * __thiscall
-TUpDownPictureButton::DestructTUpDownPictureButtonAndMaybeFree
-          (TUpDownPictureButton *this,byte freeSelfFlag)
+undefined4 __thiscall
+TUpDownPictureButton::DestructTUpDownPictureButtonAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

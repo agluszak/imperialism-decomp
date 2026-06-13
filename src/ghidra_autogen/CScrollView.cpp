@@ -5,27 +5,23 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615A34
 // GHIDRA_NAME CScrollView::DoMouseWheel
-// GHIDRA_PROTO void __thiscall DoMouseWheel(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DoMouseWheel()
 
-/* [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall CScrollView::DoMouseWheel(CScrollView *this,int arg1,int arg2,int arg3,int arg4)
+int __thiscall CScrollView::DoMouseWheel(int *param_1,undefined4 param_2,short param_3)
 
 {
-  void *pvVar1;
+  int iVar1;
   code *pcVar2;
   bool bVar3;
   bool bVar4;
   uint uVar5;
   int iVar6;
   int iVar7;
+  int iVar8;
   
   uVar5 = GetStyle();
-  pvVar1 = this->field0_0x0;
-  pcVar2 = *(code **)((int)pvVar1 + 0x70);
+  iVar1 = *param_1;
+  pcVar2 = *(code **)(iVar1 + 0x70);
   iVar6 = (*pcVar2)(1);
   if (((iVar6 == 0) || (iVar6 = IsWindowEnabled(), iVar6 == 0)) && ((uVar5 & 0x200000) == 0)) {
     bVar3 = false;
@@ -34,55 +30,50 @@ void __thiscall CScrollView::DoMouseWheel(CScrollView *this,int arg1,int arg2,in
     bVar3 = true;
   }
   iVar6 = (*pcVar2)(0);
-  iVar7 = 0;
+  iVar8 = 0;
   if (((iVar6 != 0) && (iVar6 = IsWindowEnabled(), iVar6 != 0)) ||
      (bVar4 = false, (uVar5 & 0x100000) != 0)) {
     bVar4 = true;
   }
   if ((!bVar3) && (!bVar4)) {
-    return;
+    return 0;
   }
   iVar6 = AfxGetMouseScrollLines(0);
   if (bVar3) {
-    iVar7 = MulDiv(-(int)(short)arg2,iVar6,0x78);
+    iVar7 = MulDiv(-(int)param_3,iVar6,0x78);
     if ((iVar7 == -1) || (iVar6 == -1)) {
-      uVar5 = this->field81_0x58;
-      if (0 < (short)arg2) {
-        uVar5 = -uVar5;
+      iVar8 = param_1[0x16];
+      if (0 < param_3) {
+        iVar8 = -iVar8;
       }
     }
     else {
-      uVar5 = this->field83_0x60 * iVar7;
-      if ((int)this->field81_0x58 <= (int)uVar5) {
-        uVar5 = this->field81_0x58;
+      iVar8 = param_1[0x18] * iVar7;
+      if (param_1[0x16] <= param_1[0x18] * iVar7) {
+        iVar8 = param_1[0x16];
       }
     }
-    iVar7 = 0;
+    iVar6 = 0;
   }
   else {
     if (!bVar4) goto LAB_00615b42;
-    iVar7 = MulDiv(-(int)(short)arg2,iVar6,0x78);
-    if ((iVar7 == -1) || (iVar6 == -1)) {
-      iVar7._0_2_ = this->field78_0x54;
-      iVar7._2_1_ = this->field79_0x56;
-      iVar7._3_1_ = this->field80_0x57;
+    iVar8 = MulDiv(-(int)param_3,iVar6,0x78);
+    if ((iVar8 == -1) || (iVar6 == -1)) {
+      iVar6 = param_1[0x15];
     }
     else {
-      iVar7 = this->field82_0x5c * iVar7;
-      iVar6._0_2_ = this->field78_0x54;
-      iVar6._2_1_ = this->field79_0x56;
-      iVar6._3_1_ = this->field80_0x57;
-      if (iVar6 <= iVar7) {
-        iVar7 = iVar6;
+      iVar6 = param_1[0x17] * iVar8;
+      if (param_1[0x15] <= param_1[0x17] * iVar8) {
+        iVar6 = param_1[0x15];
       }
     }
-    uVar5 = 0;
+    iVar8 = 0;
   }
-  iVar7 = (**(code **)((int)pvVar1 + 200))(iVar7,uVar5,1);
+  iVar8 = (**(code **)(iVar1 + 200))(iVar6,iVar8,1);
 LAB_00615b42:
-  if (iVar7 != 0) {
-    UpdateWindow(this->field25_0x1c);
+  if (iVar8 != 0) {
+    UpdateWindow((HWND)param_1[7]);
   }
-  return;
+  return iVar8;
 }
 

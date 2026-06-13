@@ -3,138 +3,21 @@
 // Program: Imperialism.exe
 // Bucket: TItemBoyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004020BD
-// GHIDRA_NAME TItemBoyView::thunk_ConstructTItemBoyViewBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTItemBoyViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateItemBoyViewLocalizedSummaryAndRender [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdateItemBoyViewLocalizedSummaryAndRender [FID:thunk_target_sync] */
-
-void __thiscall TItemBoyView::thunk_ConstructTItemBoyViewBaseState(TItemBoyView *this)
-
-{
-  ConstructTItemBoyViewBaseState(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004031E3
-// GHIDRA_NAME TItemBoyView::thunk_DestructTItemBoyViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTItemBoyViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to RenderItemBoyViewColumnBarsAndText. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to RenderItemBoyViewColumnBarsAndText. [FID:thunk_target_sync] */
-
-void __thiscall TItemBoyView::thunk_DestructTItemBoyViewAndMaybeFree(TItemBoyView *this)
-
-{
-  int iVar1;
-  THQButton *this_00;
-  short *psVar2;
-  int iVar3;
-  int iVar4;
-  RECT RStack_20;
-  RECT RStack_10;
-  
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x1a,0x14);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  psVar2 = this->field90_0x60;
-  iVar1 = (this->field49_0x34 + -0x3a) / (int)psVar2[1];
-  if (0x20 < iVar1) {
-    iVar1 = 0x20;
-  }
-  iVar4 = 0;
-  if (0 < psVar2[1]) {
-    iVar3 = 0x3a;
-    do {
-      RStack_10.top = 0;
-      RStack_10.bottom = 0x17;
-      RStack_10.right = (*psVar2 + 1) * 0x20;
-      RStack_20.left = iVar3 + -0x20;
-      RStack_10.left = (int)*psVar2 << 5;
-      RStack_20.top = 0x19;
-      RStack_20.bottom = 0x30;
-      RStack_20.right = iVar3;
-      UpdatePaletteIndexWithDefaultFallback(0x10);
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x674) + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_10,&RStack_20,
-                 0x24,(astruct_19 *)0x0);
-      psVar2 = this->field90_0x60;
-      iVar4 = iVar4 + 1;
-      iVar3 = iVar3 + iVar1;
-    } while (iVar4 < psVar2[1]);
-  }
-  TCivDescription::SetQuickDrawStrokeColor();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040892C
-// GHIDRA_NAME TItemBoyView::thunk_scalar_deleting_destructor_0040892C
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040892C(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TItemBoyView::thunk_scalar_deleting_destructor_0040892C(TItemBoyView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409AA7
-// GHIDRA_NAME TItemBoyView::thunk_GetTItemBoyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTItemBoyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTItemBoyViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTItemBoyViewClassNamePointer */
-
-void * __cdecl TItemBoyView::thunk_GetTItemBoyViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTItemBoyViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF9D0
 // GHIDRA_NAME TItemBoyView::GetTItemBoyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTItemBoyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TItemBoyView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTItemBoyViewClassNamePointer()
 
-/* Returns class descriptor pointer for TItemBoyView. */
-
-void * __cdecl TItemBoyView::GetTItemBoyViewClassNamePointer(void)
+undefined ** TItemBoyView::GetTItemBoyViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTItemBoyView;
+  return &PTR_s_TItemBoyView_0064dcf8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF9F0
 // GHIDRA_NAME TItemBoyView::ConstructTItemBoyViewBaseState
-// GHIDRA_PROTO void __thiscall ConstructTItemBoyViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds localized summary strings for ItemBoy view and triggers panel render.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTItemBoyViewBaseState()
 
-/* Builds localized summary strings for ItemBoy view and triggers panel render. */
-
-void __thiscall TItemBoyView::ConstructTItemBoyViewBaseState(TItemBoyView *this)
+void __fastcall TItemBoyView::ConstructTItemBoyViewBaseState(int param_1)
 
 {
   undefined4 unaff_ESI;
@@ -160,15 +43,17 @@ void __thiscall TItemBoyView::ConstructTItemBoyViewBaseState(TItemBoyView *this)
   InitializeSharedStringRefFromEmpty();
   puStack_24 = local_14;
   local_4 = CONCAT31(local_4._1_3_,2);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x7c))
-            (CONCAT22((short)((uint)this->field90_0x60 >> 0x10),*(undefined2 *)this->field90_0x60));
-  FormatStringWithVarArgsToSharedRef();
+  (**(code **)(*g_pLocalizationTable + 0x7c))
+            (CONCAT22((short)((uint)*(undefined2 **)(param_1 + 0x60) >> 0x10),
+                      **(undefined2 **)(param_1 + 0x60)));
+  FormatStringWithVarArgsToSharedRef
+            (&stack0xffffffe0,&g_szDecimalFormat,(int)*(short *)(*(int *)(param_1 + 0x60) + 2));
   InitializeSharedStringRefFromEmpty();
   input_str = (char *)0x1d;
   uStack_c = CONCAT31(uStack_c._1_3_,3);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x273c,0x1d,&puStack_24);
+  (**(code **)(*g_pLocalizationTable + 0x84))(0x273c,0x1d,&puStack_24);
   scanBracketExpressions(g_pLocalizationTable,&puStack_24,input_str);
-  thunk_DestructTItemBoyViewAndMaybeFree(this);
+  DestructTItemBoyViewAndMaybeFree(&puStack_24);
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
@@ -179,29 +64,23 @@ void __thiscall TItemBoyView::ConstructTItemBoyViewBaseState(TItemBoyView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFB60
 // GHIDRA_NAME TItemBoyView::DestructTItemBoyViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTItemBoyViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders ItemBoy view text plus per-column bars/icons into the strategic UI panel.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTItemBoyViewAndMaybeFree()
 
-/* Renders ItemBoy view text plus per-column bars/icons into the strategic UI panel. */
-
-void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *this)
+void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(int param_1,undefined4 param_2)
 
 {
   int iVar1;
-  THQButton *this_00;
   short *psVar2;
   int iVar3;
   int iVar4;
   RECT local_20;
   RECT local_10;
   
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6a);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x1a,0x14);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  psVar2 = this->field90_0x60;
-  iVar1 = (this->field49_0x34 + -0x3a) / (int)psVar2[1];
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(param_2);
+  psVar2 = *(short **)(param_1 + 0x60);
+  iVar1 = (*(int *)(param_1 + 0x34) + -0x3a) / (int)psVar2[1];
   if (0x20 < iVar1) {
     iVar1 = 0x20;
   }
@@ -219,15 +98,15 @@ void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *thi
       local_20.right = iVar3;
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x674) + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0x24,
+                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0x24,
                  (astruct_19 *)0x0);
-      psVar2 = this->field90_0x60;
+      psVar2 = *(short **)(param_1 + 0x60);
       iVar4 = iVar4 + 1;
       iVar3 = iVar3 + iVar1;
     } while (iVar4 < psVar2[1]);
   }
-  TCivDescription::SetQuickDrawStrokeColor();
+  SetQuickDrawStrokeColor(0x13);
   return;
 }
 

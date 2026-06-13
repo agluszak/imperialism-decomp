@@ -3,93 +3,38 @@
 // Program: Imperialism.exe
 // Bucket: TSwapperDaddyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403283
-// GHIDRA_NAME TSwapperDaddyView::thunk_scalar_deleting_destructor_00403283
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00403283(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TSwapperDaddyView::thunk_scalar_deleting_destructor_00403283
-          (TSwapperDaddyView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405C5E
-// GHIDRA_NAME TSwapperDaddyView::thunk_GetTSwapperDaddyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTSwapperDaddyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSwapperDaddyViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSwapperDaddyViewClassNamePointer */
-
-void * __cdecl TSwapperDaddyView::thunk_GetTSwapperDaddyViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSwapperDaddyViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC6A0
 // GHIDRA_NAME TSwapperDaddyView::GetTSwapperDaddyViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSwapperDaddyViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSwapperDaddyView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSwapperDaddyViewClassNamePointer()
 
-/* Returns class descriptor pointer for TSwapperDaddyView. */
-
-void * __cdecl TSwapperDaddyView::GetTSwapperDaddyViewClassNamePointer(void)
+undefined ** TSwapperDaddyView::GetTSwapperDaddyViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTSwapperDaddyView;
+  return &PTR_s_TSwapperDaddyView_0064dc38;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC6C0
 // GHIDRA_NAME TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState
-// GHIDRA_PROTO int * __thiscall ConstructTSwapperDaddyViewBaseState(int optionId)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Selects swapper entry by option id and reflows entry positions/visibility state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTSwapperDaddyViewBaseState()
 
-/* Selects swapper entry by option id and reflows entry positions/visibility state. */
-
-int * __thiscall
-TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this,int optionId)
+int * __thiscall TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(int *param_1,int param_2)
 
 {
   int *piVar1;
-  int *extraout_EAX;
-  int extraout_EAX_00;
   int iVar2;
-  int *extraout_EAX_01;
-  int extraout_EAX_02;
   int *piVar3;
   undefined4 local_24;
   undefined4 local_20;
   undefined4 uStack_1c;
   undefined4 uStack_18;
   
-  if ((void *)optionId != this->field93_0x60) {
+  if (param_2 != param_1[0x18]) {
     piVar3 = (int *)0x0;
-    thunk_InitializeSelectableTextOptionEntryIteratorContext();
-    thunk_BeginSelectableTextOptionEntryIterator();
-    thunk_IsSelectableTextOptionEntryIteratorValid();
-    piVar1 = extraout_EAX;
-    iVar2 = extraout_EAX_00;
+    InitializeSelectableTextOptionEntryIteratorContext(param_1);
+    piVar1 = (int *)BeginSelectableTextOptionEntryIterator();
+    iVar2 = IsSelectableTextOptionEntryIteratorValid();
     while (iVar2 != 0) {
-      if (piVar1[7] == optionId) {
+      if (piVar1[7] == param_2) {
         local_24 = 0;
         local_20 = 0;
         (**(code **)(*piVar1 + 0xf0))(&local_24,1);
@@ -100,15 +45,13 @@ TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this,i
         uStack_18 = 1000;
         (**(code **)(*piVar1 + 0xf0))(&uStack_1c,0);
       }
-      thunk_AdvanceSelectableTextOptionEntryIterator();
-      thunk_IsSelectableTextOptionEntryIteratorValid();
-      piVar1 = extraout_EAX_01;
-      iVar2 = extraout_EAX_02;
+      piVar1 = (int *)AdvanceSelectableTextOptionEntryIterator();
+      iVar2 = IsSelectableTextOptionEntryIteratorValid();
     }
-    this->field93_0x60 = (void *)optionId;
+    param_1[0x18] = param_2;
     return piVar3;
   }
-  piVar3 = (int *)(**(code **)((int)this->pVtable + 0x94))(optionId);
+  piVar3 = (int *)(**(code **)(*param_1 + 0x94))(param_2);
   return piVar3;
 }
 

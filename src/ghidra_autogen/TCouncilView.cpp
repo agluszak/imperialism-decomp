@@ -3,92 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TCouncilView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402883
-// GHIDRA_NAME TCouncilView::thunk_GetTCouncilViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCouncilViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCouncilViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCouncilViewClassNamePointer */
-
-void * __cdecl TCouncilView::thunk_GetTCouncilViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCouncilViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004065B9
-// GHIDRA_NAME TCouncilView::thunk_WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950_At004065b9
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950_At004065b9(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to
-   WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950 */
-
-void __thiscall
-TCouncilView::
-thunk_WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950_At004065b9
-          (TCouncilView *this,int arg1,int arg2)
-
-{
-  WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950(this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407D15
-// GHIDRA_NAME TCouncilView::thunk_DestructTCouncilViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTCouncilViewAndMaybeFree(void * arg1, void * arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for HandleCouncilViewCommandByControlTag. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for HandleCouncilViewCommandByControlTag. [FID:thunk_target_sync] */
-
-void __thiscall
-TCouncilView::thunk_DestructTCouncilViewAndMaybeFree(TCouncilView *this,void *arg1,void *arg2)
-
-{
-  DestructTCouncilViewAndMaybeFree(this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040875B
-// GHIDRA_NAME TCouncilView::thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b
-// GHIDRA_PROTO void __thiscall thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshDiplomacyNationOverlayGeometryAndLabels
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshDiplomacyNationOverlayGeometryAndLabels */
-
-void __thiscall
-TCouncilView::thunk_RefreshDiplomacyNationOverlayGeometryAndLabels_At0040875b(TCouncilView *this)
-
-{
-  RefreshDiplomacyNationOverlayGeometryAndLabels(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB9D0
 // GHIDRA_NAME TCouncilView::CreateTCouncilViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTCouncilViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TCouncilView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCouncilViewInstance()
 
-/* [ClassQuad] create inferred for TCouncilView; alloc factory pattern. */
-
-void * __cdecl TCouncilView::CreateTCouncilViewInstance(void)
+undefined4 * TCouncilView::CreateTCouncilViewInstance(void)
 
 {
-  TDiplomacyMapView *this;
-  TDiplomacyMapView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -98,53 +21,46 @@ void * __cdecl TCouncilView::CreateTCouncilViewInstance(void)
   puStack_8 = &LAB_0063303a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x24e0);
   local_4 = 0;
-  pTVar1 = (TDiplomacyMapView *)0x0;
-  if (this != (TDiplomacyMapView *)0x0) {
-    TDiplomacyMapView::thunk_ConstructTDiplomacyMapViewBaseState(this);
-    this->field00 = &PTR_thunk_GetTCouncilViewClassNamePointer_00640258;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState();
+    *puVar1 = &PTR_LAB_00640258;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBA50
 // GHIDRA_NAME TCouncilView::GetTCouncilViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCouncilViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCouncilView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCouncilViewClassNamePointer()
 
-/* Returns class descriptor pointer for TCouncilView. */
-
-void * __cdecl TCouncilView::GetTCouncilViewClassNamePointer(void)
+undefined ** TCouncilView::GetTCouncilViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTCouncilView;
+  return &PTR_s_TCouncilView_00655020;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBA70
 // GHIDRA_NAME TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels
-// GHIDRA_PROTO void __thiscall RefreshDiplomacyNationOverlayGeometryAndLabels(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Rebuilds diplomacy nation overlay geometry and associated styled labels.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RefreshDiplomacyNationOverlayGeometryAndLabels()
 
-/* Rebuilds diplomacy nation overlay geometry and associated styled labels. */
-
-void __thiscall TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(TCouncilView *this)
+void __thiscall
+TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(int *param_1,undefined4 param_2)
 
 {
   short sVar1;
   code *pcVar2;
   int iVar3;
-  short extraout_AX;
-  int *pControl;
-  void *pvVar4;
+  short sVar4;
+  int *piVar5;
+  undefined4 uVar6;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar5;
+  undefined4 uVar7;
+  undefined4 uStack_30;
+  char *pcStack_2c;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -153,121 +69,120 @@ void __thiscall TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(TCo
   puStack_8 = &LAB_00633068;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
+  pcStack_2c = (char *)0x4fba97;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
+  pcStack_2c = (char *)0x4fbaa6;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
+  pcStack_2c = (char *)0x4fbab4;
   InitializeSharedStringRefFromEmpty();
+  pcStack_2c = (char *)param_2;
   local_4 = CONCAT31(local_4._1_3_,2);
-  thunk_NoOpUiLifecycleHook();
-  TDiplomacyMapView::thunk_BuildDiplomacyNationOverlayGeometryAndHitMasks((TDiplomacyMapView *)this)
-  ;
-  this->field94 = 5;
-  this->field24ca = 0;
-  pcVar2 = *(code **)((int)this->pVtable + 0x94);
-  this->field24ce = 0;
-  this->field24d2 = 0;
-  this->field24d6 = 0;
-  this->field24dc = 0;
-  this->field24da = 0;
-  pControl = (int *)(*pcVar2)();
-  iVar3 = *pControl;
+  uStack_30 = 0x4fbac5;
+  TView::thunk_NoOpUiLifecycleHook();
+  pcStack_2c = (char *)0x4fbacc;
+  TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks();
+  param_1[0x25] = 5;
+  *(undefined4 *)((int)param_1 + 0x24ca) = 0;
+  pcVar2 = *(code **)(*param_1 + 0x94);
+  *(undefined4 *)((int)param_1 + 0x24ce) = 0;
+  *(undefined4 *)((int)param_1 + 0x24d2) = 0;
+  pcStack_2c = (char *)0x7469746c;
+  *(undefined4 *)((int)param_1 + 0x24d6) = 0;
+  *(undefined2 *)(param_1 + 0x937) = 0;
+  *(undefined2 *)((int)param_1 + 0x24da) = 0;
+  uStack_30 = 0x4fbb0f;
+  piVar5 = (int *)(*pcVar2)();
+  iVar3 = *piVar5;
+  uStack_30 = 0x4fbb18;
   (**(code **)(iVar3 + 0xc))();
-  thunk_ApplyUiTextStyleAndThemeFlags(pControl,0,0x10,0x2b6c,0x2b67);
-  uVar5 = 0xfffffffe;
+  uStack_30 = 0x2b67;
+  ApplyUiTextStyleAndThemeFlags(piVar5,0,0x10,0x2b6c);
+  uStack_30 = 0;
+  uVar7 = 0xfffffffe;
   (**(code **)(iVar3 + 0x1c4))();
-  if ((*(short *)((int)g_pLocalizationTable + 8) == 0x17) ||
-     (*(short *)((int)g_pLocalizationTable + 8) == 0x16)) {
-    FormatOverlayTerrainLabelText();
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x275d,3,&stack0xffffffe0);
-    scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd0,(char *)0x7469746c);
-    (**(code **)(iVar3 + 0x1c8))(&stack0xffffffd0,0);
-    thunk_BuildDiplomacyMapHintOverlayTextAndMetrics(this);
-    sVar1 = g_pDiplomacyTurnStateManager->lastProcessedNationSlot;
-    thunk_GetActiveNationId();
-    if (sVar1 == extraout_AX) {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x1f43,0,1);
+  if (((short)g_pLocalizationTable[2] == 0x17) || ((short)g_pLocalizationTable[2] == 0x16)) {
+    FormatOverlayTerrainLabelText(&stack0xffffffe4);
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x275d,3,&stack0xffffffe0);
+    scanBracketExpressions(g_pLocalizationTable,&uStack_30,pcStack_2c);
+    (**(code **)(iVar3 + 0x1c8))(&uStack_30,0);
+    BuildDiplomacyMapHintOverlayTextAndMetrics();
+    sVar1 = *(short *)(g_pDiplomacyTurnStateManager + 0x78e);
+    sVar4 = UiRuntimeContext::GetActiveNationId();
+    if (sVar1 == sVar4) {
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x1f43,0,1);
     }
     else {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x1f44,0,1);
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x1f44,0,1);
     }
   }
   else {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2733,0x5e,&stack0xffffffdc);
-    (**(code **)(iVar3 + 0x1c8))(&stack0xffffffd0,0);
-    InitializeMainRoutineContextAndRun();
-    pvVar4 = (void *)(*pcVar2)(0x656e6420);
-    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2746,6,pvVar4);
-    pvVar4 = (void *)(*pcVar2)(0x71756572);
-    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,3,pvVar4);
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x5e,&stack0xffffffdc);
+    (**(code **)(iVar3 + 0x1c8))(&uStack_30,0);
+    InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00654ec8,0x6d61696e);
+    uVar6 = (*pcVar2)(0x656e6420);
+    LoadUiStringByGroupAndIndexToControlObject(0x2746,6,uVar6);
+    uVar6 = (*pcVar2)(0x71756572);
+    LoadUiStringByGroupAndIndexToControlObject(0x2730,3,uVar6);
   }
+  pcStack_2c._0_1_ = 1;
   ReleaseSharedStringRefIfNotEmpty();
+  pcStack_2c = (char *)((uint)pcStack_2c._1_3_ << 8);
   ReleaseSharedStringRefIfNotEmpty();
+  pcStack_2c = (char *)0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uVar5;
+  *unaff_FS_OFFSET = uVar7;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FBD60
 // GHIDRA_NAME TCouncilView::DestructTCouncilViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTCouncilViewAndMaybeFree(void * arg1, void * arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Dispatch council view command handling by control tag and command id.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTCouncilViewAndMaybeFree()
 
-/* Dispatch council view command handling by control tag and command id. */
-
-void __thiscall
-TCouncilView::DestructTCouncilViewAndMaybeFree(TCouncilView *this,void *arg1,void *arg2)
+void TCouncilView::DestructTCouncilViewAndMaybeFree(int param_1,int param_2,undefined4 param_3)
 
 {
   int *piVar1;
   int iVar2;
   
-  if (arg1 == (void *)0xa) {
-    if (*(int *)((int)arg2 + 0x1c) == 0x73746172) {
-      TCouncilTickerAnimation::thunk_InitializeDiplomacyCouncilViewControlsAndTicker
-                ((TCouncilTickerAnimation *)this);
+  if (param_1 == 10) {
+    if (*(int *)(param_2 + 0x1c) == 0x73746172) {
+      TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker();
       return;
     }
   }
-  else if (arg1 == (void *)0x14) {
+  else if (param_1 == 0x14) {
     iVar2 = 0;
-    piVar1 = &g_Destruct_TCouncil_View_LookupTable_00696978;
+    piVar1 = &DAT_00696978;
     do {
-      if (*(int *)((int)arg2 + 0x1c) == *piVar1) break;
+      if (*(int *)(param_2 + 0x1c) == *piVar1) break;
       piVar1 = piVar1 + 1;
       iVar2 = iVar2 + 1;
     } while ((int)piVar1 < 0x696990);
     if (iVar2 < 6) {
-      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90();
+      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(iVar2);
       return;
     }
   }
   else {
-    thunk_HandleCityDialogToggleCommandOrForward();
+    thunk_HandleCityDialogToggleCommandOrForward(param_1,param_2,param_3);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FC950
 // GHIDRA_NAME TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_HandleCursorHoverSelectionByChildHitTestAndFallback; instructions=19, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_HandleCursorHoverSelectionByChildHitTestAndFallback;
-   instructions=19, call_insns=2, internal_calls=1, unique_internal=1 */
+// GHIDRA_PROTO undefined WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950()
 
 void __thiscall
 TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
-          (TCouncilView *this,int arg1,int arg2)
+          (int param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback((TControl *)this,arg1,arg2);
-  if ((int)this->field528 < this->field24c8 + 2) {
-    SetCursor(*(HCURSOR *)((int)g_pUiRuntimeContext + 0x7c));
+  TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(param_2,param_3);
+  if ((int)*(short *)(param_1 + 0x528) < *(short *)(param_1 + 0x24c8) + 2) {
+    SetCursor(*(HCURSOR *)(g_pUiRuntimeContext + 0x7c));
   }
   return;
 }

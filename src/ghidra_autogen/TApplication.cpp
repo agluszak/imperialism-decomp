@@ -3,73 +3,29 @@
 // Program: Imperialism.exe
 // Bucket: TApplication.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404B3D
-// GHIDRA_NAME TApplication::thunk_DestructTApplicationAndMaybeFree_At00404b3d
-// GHIDRA_PROTO void * __thiscall thunk_DestructTApplicationAndMaybeFree_At00404b3d(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTApplicationAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTApplicationAndMaybeFree */
-
-void * __thiscall
-TApplication::thunk_DestructTApplicationAndMaybeFree_At00404b3d
-          (TApplication *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTApplicationAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408841
-// GHIDRA_NAME TApplication::thunk_GetTApplicationClassNamePointer_At00408841
-// GHIDRA_PROTO void * __cdecl thunk_GetTApplicationClassNamePointer_At00408841(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTApplicationClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTApplicationClassNamePointer */
-
-void * __cdecl TApplication::thunk_GetTApplicationClassNamePointer_At00408841(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTApplicationClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00486740
 // GHIDRA_NAME TApplication::GetTApplicationClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTApplicationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TApplication.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTApplicationClassNamePointer()
 
-/* Returns class descriptor pointer for TApplication. */
-
-void * __cdecl TApplication::GetTApplicationClassNamePointer(void)
+undefined ** TApplication::GetTApplicationClassNamePointer(void)
 
 {
-  return &g_pClassDescTApplication;
+  return &PTR_s_TApplication_00648af8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004867B0
 // GHIDRA_NAME TApplication::DestructTApplicationAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTApplicationAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTApplicationAndMaybeFree()
 
-void * __thiscall
-TApplication::DestructTApplicationAndMaybeFree(TApplication *this,byte freeSelfFlag)
+undefined4 __thiscall
+TApplication::DestructTApplicationAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   TApplicationUiRootControllerState_00648CA8::
-  DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
-            ((TApplicationUiRootControllerState_00648CA8 *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

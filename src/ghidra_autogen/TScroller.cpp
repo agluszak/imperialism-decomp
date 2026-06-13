@@ -3,67 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TScroller.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401C58
-// GHIDRA_NAME TScroller::thunk_GetTScrollerClassNamePointer_At00401c58
-// GHIDRA_PROTO void * __cdecl thunk_GetTScrollerClassNamePointer_At00401c58(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTScrollerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTScrollerClassNamePointer */
-
-void * __cdecl TScroller::thunk_GetTScrollerClassNamePointer_At00401c58(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTScrollerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004086E3
-// GHIDRA_NAME TScroller::thunk_CreateTScrollerInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTScrollerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to DestroyScrollerAndReleaseOwnedResources. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to DestroyScrollerAndReleaseOwnedResources. [FID:thunk_target_sync] */
-
-void __thiscall TScroller::thunk_CreateTScrollerInstance(TScroller *this)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint uStack_4;
-  
-  puStack_8 = &LAB_0062ece3;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblTView;
-  uStack_4 = 1;
-  if (this->field38_0x44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field38_0x44 + 4))(1);
-  }
-  FreeHeapBufferIfNotNull();
-  uStack_4 = uStack_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CB00
 // GHIDRA_NAME TScroller::CreateTScrollerInstance
-// GHIDRA_PROTO void __thiscall CreateTScrollerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Destroys scroller-owned helpers/buffers/string refs and restores base runtime-class vtable.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTScrollerInstance()
 
-/* Destroys scroller-owned helpers/buffers/string refs and restores base runtime-class vtable. */
-
-void __thiscall TScroller::CreateTScrollerInstance(TScroller *this)
+void __fastcall TScroller::CreateTScrollerInstance(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -74,116 +18,101 @@ void __thiscall TScroller::CreateTScrollerInstance(TScroller *this)
   puStack_8 = &LAB_0062ece3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblTView;
+  *param_1 = &TView::_vftable_;
   local_4 = 1;
-  if (this->field38_0x44 != (int *)0x0) {
-    (**(code **)(*(int *)this->field38_0x44 + 4))(1);
+  if ((int *)param_1[0x11] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0x11] + 4))(1);
   }
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(param_1[0x12]);
   local_4 = local_4 & 0xffffff00;
   ReleaseSharedStringRefIfNotEmpty();
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CB90
 // GHIDRA_NAME TScroller::GetTScrollerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTScrollerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TScroller.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTScrollerClassNamePointer()
 
-/* Returns class descriptor pointer for TScroller. */
-
-void * __cdecl TScroller::GetTScrollerClassNamePointer(void)
+undefined ** TScroller::GetTScrollerClassNamePointer(void)
 
 {
-  return &g_pClassDescTScroller;
+  return &PTR_s_TScroller_006495b8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CBB0
 // GHIDRA_NAME TScroller::ConstructTScrollerBaseState
-// GHIDRA_PROTO void __thiscall ConstructTScrollerBaseState(int arg1, int arg2, int arg3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes scroller geometry/state and attaches to optional owner view/controller.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTScrollerBaseState()
 
-/* Initializes scroller geometry/state and attaches to optional owner view/controller. */
-
-void __thiscall TScroller::ConstructTScrollerBaseState(TScroller *this,int arg1,int arg2,int arg3)
+void __thiscall
+TScroller::ConstructTScrollerBaseState
+          (int param_1,int *param_2,undefined4 *param_3,undefined4 *param_4)
 
 {
-  undefined4 uVar1;
+  int iVar1;
   
-  uVar1 = 0;
-  if ((arg1 != 0) && (uVar1 = *(undefined4 *)(arg1 + 0x40), arg1 != 0)) {
-    this->field47_0x50 = *(undefined4 *)(arg1 + 0x50);
+  iVar1 = 0;
+  if ((param_2 != (int *)0x0) && (iVar1 = param_2[0x10], param_2 != (int *)0x0)) {
+    *(int *)(param_1 + 0x50) = param_2[0x14];
   }
-  this->field16_0x1c = 0x20202020;
-  this->field1_0x4 = 1;
-  this->field2_0x8 = 1;
-  this->field3_0xc = arg1;
-  this->field21_0x24 = *(undefined4 *)arg2;
-  this->field22_0x28 = *(undefined4 *)(arg2 + 4);
-  this->field31_0x34 = *(undefined4 *)arg3;
-  this->field32_0x38 = *(undefined4 *)(arg3 + 4);
-  if (arg1 != 0) {
-    (**(code **)(*(int *)arg1 + 0x170))(this,0);
+  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
+  *(undefined4 *)(param_1 + 4) = 1;
+  *(undefined4 *)(param_1 + 8) = 1;
+  *(int **)(param_1 + 0xc) = param_2;
+  *(undefined4 *)(param_1 + 0x24) = *param_3;
+  *(undefined4 *)(param_1 + 0x28) = param_3[1];
+  *(undefined4 *)(param_1 + 0x34) = *param_4;
+  *(undefined4 *)(param_1 + 0x38) = param_4[1];
+  if (param_2 != (int *)0x0) {
+    (**(code **)(*param_2 + 0x170))(param_1,0);
   }
-  this->field37_0x40 = uVar1;
+  *(int *)(param_1 + 0x40) = iVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CC40
 // GHIDRA_NAME TScroller::DestructTScrollerAndMaybeFree
-// GHIDRA_PROTO void * __cdecl DestructTScrollerAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and initializes a TScroller object (0x74 bytes)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTScrollerAndMaybeFree()
 
-/* Allocates and initializes a TScroller object (0x74 bytes) */
-
-void * __cdecl TScroller::DestructTScrollerAndMaybeFree(void)
+undefined4 * TScroller::DestructTScrollerAndMaybeFree(void)
 
 {
-  TView *this;
-  int *unaff_FS_OFFSET;
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
   int local_14;
-  TView *local_10;
-  int local_c;
+  undefined4 *local_10;
+  undefined4 local_c;
   undefined1 *puStack_8;
-  void *local_4;
+  undefined4 local_4;
   
-  local_4 = (void *)0xffffffff;
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_0062ed25;
   local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&local_c;
-  this = AllocateWithFallbackHandler();
-  local_4 = (void *)0x0;
-  if (this != (TView *)0x0) {
-    local_10 = this;
-    TView::thunk_ConstructTViewBaseState(this);
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x74);
+  local_4 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    local_10 = puVar1;
+    TView::thunk_ConstructTViewBaseState();
     local_4._0_1_ = 1;
     InitializeSharedStringRefFromEmpty();
-    this[1].field1_0x4 = 0;
-    this[1].field2_0x5 = 0;
-    this[1].field3_0x8 = 0;
+    puVar1[0x19] = 0;
+    puVar1[0x1a] = 0;
     local_4._0_1_ = 2;
-    this->pVtable = &g_vtblTIncludeView;
-    *(undefined2 *)&this[1].pVtable = 0xffff;
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&local_14);
+    *puVar1 = &PTR_LAB_00649c60;
+    *(undefined2 *)(puVar1 + 0x18) = 0xffff;
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
     local_4._0_1_ = 3;
-    AssignFromPtr(&this[1].dialogValueDwordC,&local_14);
-    local_4 = (void *)CONCAT31(local_4._1_3_,2);
+    AssignFromPtr(puVar1 + 0x1b,&local_14);
+    local_4 = CONCAT31(local_4._1_3_,2);
     ReleaseSharedStringRefIfNotEmpty();
-    *(undefined2 *)&this[1].dialogValueDword10 = 1;
-    this->field1_0x4 = 0;
-    this->field2_0x5 = 0;
+    *(undefined2 *)(puVar1 + 0x1c) = 1;
+    puVar1[1] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 

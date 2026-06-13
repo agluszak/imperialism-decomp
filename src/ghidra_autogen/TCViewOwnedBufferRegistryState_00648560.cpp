@@ -3,131 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TCViewOwnedBufferRegistryState_00648560.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00408D46
-// GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::thunk_BuildTurnEventFactoryPacket
-// GHIDRA_PROTO void __thiscall thunk_BuildTurnEventFactoryPacket(uint dwDispatchArg40, STurnEventFactoryPacket * pSourcePacket0C, ETurnEventFactorySlotId eFactorySlot60, uint * pPayloadPair64_68, STSharedStringRef * pSharedString6C, ushort wPayload70)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Typed] Direct thunk kept signature-aligned with target BuildTurnEventFactoryPacket.
-// GHIDRA_COMMENT_END
-
-/* [Typed] Direct thunk kept signature-aligned with target BuildTurnEventFactoryPacket. */
-
-void __thiscall
-TCViewOwnedBufferRegistryState_00648560::thunk_BuildTurnEventFactoryPacket
-          (TCViewOwnedBufferRegistryState_00648560 *this,uint dwDispatchArg40,
-          STurnEventFactoryPacket *pSourcePacket0C,ETurnEventFactorySlotId eFactorySlot60,
-          uint *pPayloadPair64_68,STSharedStringRef *pSharedString6C,ushort wPayload70)
-
-{
-  if (pSourcePacket0C != (STurnEventFactoryPacket *)0x0) {
-    this->pOwnedBufferNodeHead_50 = (void *)pSourcePacket0C->dwOwnerCtxMirror50;
-  }
-  this->dwBaseWndFieldA_1C = (HWND)0x20202020;
-  this->dwBaseObjStateA_04 = 1;
-  this->dwBaseObjStateB_08 = 1;
-  this->dwBaseObjStateC_0C = (uint)pSourcePacket0C;
-  this->dwBaseWndFieldC_24 = g_adwTurnEventFactoryDispatchScratch[0];
-  this->dwBaseWndFieldD_28 = g_adwTurnEventFactoryDispatchScratch[1];
-  this->dwBaseWndFieldG_34 = pSourcePacket0C->dwPayload34;
-  this->dwBaseWndFieldH_38 = pSourcePacket0C->dwPayload38;
-  if (pSourcePacket0C != (STurnEventFactoryPacket *)0x0) {
-    (**(code **)(pSourcePacket0C->dwVtableOrType + 0x170))(this,0);
-  }
-  this->pOwnedBufferView_40 = (void *)dwDispatchArg40;
-  *(ETurnEventFactorySlotId *)&this->pOwnedBufferNodeBlockChainHead_60 = eFactorySlot60;
-  this->nOwnedBufferNodesPerBlock_64 = (void *)*pPayloadPair64_68;
-  this->dwReserved_68 = (void *)pPayloadPair64_68[1];
-  AssignFromPtr(&this->pQuickDrawDetachContext_6C,(int *)pSharedString6C);
-  *(ushort *)&this->dwRegistryAuxState_70 = wPayload70;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408E36
-// GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::RenderMapTileHintOverlayToDcOrWindow
-// GHIDRA_PROTO void __thiscall RenderMapTileHintOverlayToDcOrWindow(int pHdc, int pClipRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders map-tile hint overlay; uses passed DC/clip or acquires window DC and clips to visible bounds
-// GHIDRA_COMMENT_END
-
-/* Renders map-tile hint overlay; uses passed DC/clip or acquires window DC and clips to visible
-   bounds */
-
-void __thiscall
-TCViewOwnedBufferRegistryState_00648560::RenderMapTileHintOverlayToDcOrWindow
-          (TCViewOwnedBufferRegistryState_00648560 *this,int pHdc,int pClipRect)
-
-{
-  int *extraout_EAX;
-  HDC pHVar1;
-  HGDIOBJ h;
-  HDC hdc;
-  int unaff_EBX;
-  int unaff_retaddr;
-  tagRECT tStack_44;
-  RECT RStack_34;
-  undefined1 auStack_24 [16];
-  RECT RStack_14;
-  
-  if (pHdc == 0) {
-    GetDC(this->dwBaseWndFieldA_1C);
-    FromHandle_612736();
-    pHdc = (int)extraout_EAX;
-  }
-  if (pClipRect == 0) {
-    GetClientRect(this->dwBaseWndFieldA_1C,(LPRECT)(auStack_24 + 4));
-  }
-  else {
-    CopyRect((LPRECT)(auStack_24 + 4),(RECT *)pClipRect);
-  }
-  (**(code **)(*(int *)pHdc + 0x58))(&RStack_14.top);
-  RStack_34.bottom = *(int *)(*(int *)((int)this->pOwnedBufferChainState_48 + 0x10) + 8);
-  if (RStack_34.bottom < 1) {
-    RStack_34.bottom = -RStack_34.bottom;
-  }
-  RStack_34.right = *(int *)(*(int *)((int)this->pOwnedBufferChainState_48 + 0x10) + 4) + -1;
-  RStack_34.left = 0;
-  RStack_34.top = 0;
-  IntersectRect(&tStack_44,(RECT *)auStack_24,&RStack_14);
-  IntersectRect(&tStack_44,&tStack_44,&RStack_34);
-  thunk_SelectAndRealizeDibPalette();
-  if ((int *)pHdc == (int *)0x0) {
-    pHVar1 = (HDC)0x0;
-  }
-  else {
-    pHVar1 = *(HDC *)(pHdc + 4);
-  }
-  pHVar1 = CreateCompatibleDC(pHVar1);
-  h = SelectObject(pHVar1,*(HGDIOBJ *)(*(int *)(unaff_EBX + 0x44) + 8));
-  if ((int *)pHdc == (int *)0x0) {
-    hdc = (HDC)0x0;
-  }
-  else {
-    hdc = *(HDC *)(pHdc + 4);
-  }
-  BitBlt(hdc,tStack_44.left,tStack_44.top,tStack_44.right - tStack_44.left,
-         tStack_44.bottom - tStack_44.top,pHVar1,tStack_44.left,tStack_44.top,0xcc0020);
-  SelectObject(pHVar1,h);
-  DeleteDC(pHVar1);
-  if (unaff_retaddr == 0) {
-    ReleaseDC(*(HWND *)(unaff_EBX + 0x1c),*(HDC *)(pHdc + 4));
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00482850
 // GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::CreateCViewOwnedBufferRegistryState
-// GHIDRA_PROTO TCViewOwnedBufferRegistryState_00648560 * __cdecl CreateCViewOwnedBufferRegistryState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] Allocates and initializes CView-owned buffer registry state object.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateCViewOwnedBufferRegistryState()
 
-/* [Behavior] Allocates and initializes CView-owned buffer registry state object. */
-
-TCViewOwnedBufferRegistryState_00648560 * __cdecl
-TCViewOwnedBufferRegistryState_00648560::CreateCViewOwnedBufferRegistryState(void)
+undefined4 * TCViewOwnedBufferRegistryState_00648560::CreateCViewOwnedBufferRegistryState(void)
 
 {
-  TCViewOwnedBufferRegistryState_00648560 *pThis;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -137,82 +20,70 @@ TCViewOwnedBufferRegistryState_00648560::CreateCViewOwnedBufferRegistryState(voi
   puStack_8 = &LAB_0062e7aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (pThis != (TCViewOwnedBufferRegistryState_00648560 *)0x0) {
-    CView(pThis);
-    pThis->pOwnedBufferView_40 = (void *)0x0;
-    pThis->dwOwnedBufferViewFlags_44 = 0;
-    pThis->pOwnedBufferChainState_48 = (void *)0x0;
-    pThis->nOwnedBufferNodeCount_58 = 0;
-    pThis->nOwnedBufferNodeCapacity_5C = 0;
-    pThis->pOwnedBufferNodeTail_54 = (void *)0x0;
-    pThis->pOwnedBufferNodeHead_50 = (void *)0x0;
-    pThis->pOwnedBufferNodeBlockChainHead_60 = (void *)0x0;
-    pThis->nOwnedBufferNodesPerBlock_64 = (void *)0xa;
-    pThis->pOwnedBufferChainRuntimeClass_4C =
-         &PTR_GetCObjectRuntimeClass_CViewOwnedBufferRegistryState_00648560;
-    pThis->pQuickDrawDetachContext_6C = (void *)0x0;
-    pThis->dwRegistryAuxState_70 = 0;
-    pThis->dwRegistryAuxFlags_74 = (int *)0x0;
-    pThis->dwRegistryInitFlag_90 = 1;
-    pThis->pVtable = &PTR_OrphanVtableAssignStub_00482930_00648418;
+  if (puVar1 != (undefined4 *)0x0) {
+    CView();
+    puVar1[0x10] = 0;
+    puVar1[0x11] = 0;
+    puVar1[0x12] = 0;
+    puVar1[0x16] = 0;
+    puVar1[0x17] = 0;
+    puVar1[0x15] = 0;
+    puVar1[0x14] = 0;
+    puVar1[0x18] = 0;
+    puVar1[0x19] = 10;
+    puVar1[0x13] = &PTR_GetCObjectRuntimeClass_00648560;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x24] = 1;
+    *puVar1 = &PTR_LAB_00648418;
     *unaff_FS_OFFSET = local_c;
-    return pThis;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TCViewOwnedBufferRegistryState_00648560 *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00482950
 // GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::ConstructCViewOwnedBufferRegistryState
-// GHIDRA_PROTO TCViewOwnedBufferRegistryState_00648560 * __thiscall ConstructCViewOwnedBufferRegistryState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] In-place constructor for CView-owned buffer registry state object.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructCViewOwnedBufferRegistryState()
 
-/* [Behavior] In-place constructor for CView-owned buffer registry state object. */
-
-TCViewOwnedBufferRegistryState_00648560 * __thiscall
-TCViewOwnedBufferRegistryState_00648560::ConstructCViewOwnedBufferRegistryState
-          (TCViewOwnedBufferRegistryState_00648560 *this)
+undefined4 * __fastcall
+TCViewOwnedBufferRegistryState_00648560::ConstructCViewOwnedBufferRegistryState(undefined4 *param_1)
 
 {
-  CView(this);
-  this->pOwnedBufferView_40 = (void *)0x0;
-  this->dwOwnedBufferViewFlags_44 = 0;
-  this->pOwnedBufferChainState_48 = (void *)0x0;
-  this->nOwnedBufferNodeCount_58 = 0;
-  this->nOwnedBufferNodeCapacity_5C = 0;
-  this->pOwnedBufferNodeTail_54 = (void *)0x0;
-  this->pOwnedBufferNodeHead_50 = (void *)0x0;
-  this->pOwnedBufferNodeBlockChainHead_60 = (void *)0x0;
-  this->nOwnedBufferNodesPerBlock_64 = (void *)0xa;
-  this->pOwnedBufferChainRuntimeClass_4C =
-       &PTR_GetCObjectRuntimeClass_CViewOwnedBufferRegistryState_00648560;
-  this->pQuickDrawDetachContext_6C = (void *)0x0;
-  this->dwRegistryAuxState_70 = 0;
-  this->dwRegistryAuxFlags_74 = (int *)0x0;
-  this->dwRegistryInitFlag_90 = 1;
-  this->pVtable = &PTR_OrphanVtableAssignStub_00482930_00648418;
-  return this;
+  CView();
+  param_1[0x10] = 0;
+  param_1[0x11] = 0;
+  param_1[0x12] = 0;
+  param_1[0x16] = 0;
+  param_1[0x17] = 0;
+  param_1[0x15] = 0;
+  param_1[0x14] = 0;
+  param_1[0x18] = 0;
+  param_1[0x19] = 10;
+  param_1[0x13] = &PTR_GetCObjectRuntimeClass_00648560;
+  param_1[0x1b] = 0;
+  param_1[0x1c] = 0;
+  param_1[0x1d] = 0;
+  param_1[0x24] = 1;
+  *param_1 = &PTR_LAB_00648418;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00482AB0
 // GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers
-// GHIDRA_PROTO void __thiscall DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Behavior] Releases owned buffer view and linked buffer-chain state
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers()
 
-/* [Behavior] Releases owned buffer view and linked buffer-chain state */
-
-void __thiscall
+void __fastcall
 TCViewOwnedBufferRegistryState_00648560::DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers
-          (TCViewOwnedBufferRegistryState_00648560 *this)
+          (undefined4 *param_1)
 
 {
   undefined4 *puVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -221,205 +92,191 @@ TCViewOwnedBufferRegistryState_00648560::DestructCViewOwnedBufferRegistryStateAn
   puStack_8 = &LAB_0062e7fb;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &PTR_OrphanVtableAssignStub_00482930_00648418;
+  *param_1 = &PTR_LAB_00648418;
   local_4 = 1;
-  if (this->pQuickDrawDetachContext_6C != (void *)0x0) {
-    this->pQuickDrawDetachContext_6C = (void *)0x0;
+  if (param_1[0x1b] != 0) {
+    param_1[0x1b] = 0;
   }
-  this->dwOwnedBufferViewFlags_44 = 0;
-  if (this->pOwnedBufferView_40 != (void *)0x0) {
-    ClearQuickDrawModeFlag950AC();
-    *(undefined4 *)((int)this->pOwnedBufferView_40 + 0x50) = 0;
-    if (this->pOwnedBufferView_40 != (int *)0x0) {
-      (**(code **)(*(int *)this->pOwnedBufferView_40 + 0x1c))();
+  param_1[0x11] = 0;
+  if (param_1[0x10] != 0) {
+    uVar2 = ClearQuickDrawModeFlag950AC();
+    *(undefined4 *)(param_1[0x10] + 0x50) = 0;
+    if ((int *)param_1[0x10] != (int *)0x0) {
+      (**(code **)(*(int *)param_1[0x10] + 0x1c))();
     }
-    this->pOwnedBufferView_40 = (void *)0x0;
-    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious();
+    param_1[0x10] = 0;
+    thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
   }
-  if (this->pOwnedBufferChainState_48 != (int *)0x0) {
-    (**(code **)(*(int *)this->pOwnedBufferChainState_48 + 4))(1);
+  if ((int *)param_1[0x12] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0x12] + 4))(1);
   }
-  this->pOwnedBufferChainRuntimeClass_4C =
-       &PTR_GetCObjectRuntimeClass_CViewOwnedBufferChainState_00648578;
-  puVar1 = this->pOwnedBufferNodeHead_50;
+  param_1[0x13] = &PTR_GetCObjectRuntimeClass_00648578;
+  puVar1 = (undefined4 *)param_1[0x14];
   local_4 = CONCAT31(local_4._1_3_,2);
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  this->nOwnedBufferNodeCount_58 = 0;
-  this->nOwnedBufferNodeCapacity_5C = 0;
-  this->pOwnedBufferNodeTail_54 = (void *)0x0;
-  this->pOwnedBufferNodeHead_50 = (void *)0x0;
+  param_1[0x16] = 0;
+  param_1[0x17] = 0;
+  param_1[0x15] = 0;
+  param_1[0x14] = 0;
   FreeDataChain();
-  this->pOwnedBufferNodeBlockChainHead_60 = (void *)0x0;
-  this->pOwnedBufferChainRuntimeClass_4C =
-       &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  param_1[0x18] = 0;
+  param_1[0x13] = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   local_4 = 0xffffffff;
-  ~CView();
+  FUN_00613ce3();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00482FC0
 // GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::UpdateAndRenderMapTileHintOverlayQueue
-// GHIDRA_PROTO void __thiscall UpdateAndRenderMapTileHintOverlayQueue(int param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Scans hint node queue, updates active marker, and renders current tile hint overlays
-// GHIDRA_COMMENT_END
-
-/* Scans hint node queue, updates active marker, and renders current tile hint overlays */
+// GHIDRA_PROTO undefined UpdateAndRenderMapTileHintOverlayQueue()
 
 void __thiscall
 TCViewOwnedBufferRegistryState_00648560::UpdateAndRenderMapTileHintOverlayQueue
-          (TCViewOwnedBufferRegistryState_00648560 *this,int param_1)
+          (int param_1,int param_2)
 
 {
-  void **ppvVar1;
-  undefined4 *puVar2;
-  RECT *extraout_EAX;
-  LONG *extraout_EAX_00;
-  RECT *extraout_EAX_01;
-  int extraout_EAX_02;
-  int *piVar3;
-  void *pvVar4;
-  int pHdc;
-  RECT *pRVar5;
-  int local_28 [2];
+  undefined4 *puVar1;
+  RECT *pRVar2;
+  LONG *pLVar3;
+  undefined4 uVar4;
+  HDC pHVar5;
+  int iVar6;
+  int *piVar7;
+  undefined4 uVar8;
+  undefined1 local_30 [8];
+  undefined1 local_28 [8];
   RECT local_20;
   undefined4 local_10;
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
   
-  this->dwReserved_68 = this->pOwnedBufferNodeHead_50;
-  ppvVar1 = &this->dwReserved_68;
+  *(undefined4 *)(param_1 + 0x68) = *(undefined4 *)(param_1 + 0x50);
+  piVar7 = (int *)(param_1 + 0x68);
   do {
-    pvVar4 = *ppvVar1;
-    while (pvVar4 != (void *)0x0) {
-      thunk_DereferencePointerCellInPlace_At00408cd3(ppvVar1);
-      if (extraout_EAX[1].left == 0) {
-        extraout_EAX[1].left = 1;
-        pRVar5 = extraout_EAX;
+    iVar6 = *piVar7;
+    while (iVar6 != 0) {
+      pRVar2 = (RECT *)DereferencePointerCellInPlace(piVar7);
+      if (pRVar2[1].left == 0) {
+        pRVar2[1].left = 1;
         goto LAB_00482ffc;
       }
-      pvVar4 = *ppvVar1;
+      iVar6 = *piVar7;
     }
-    pRVar5 = (RECT *)0x0;
+    pRVar2 = (RECT *)0x0;
 LAB_00482ffc:
-    if (pRVar5 == (RECT *)0x0) {
-      this->dwReserved_68 = this->pOwnedBufferNodeHead_50;
-      ppvVar1 = &this->dwReserved_68;
+    if (pRVar2 == (RECT *)0x0) {
+      *(undefined4 *)(param_1 + 0x68) = *(undefined4 *)(param_1 + 0x50);
+      piVar7 = (int *)(param_1 + 0x68);
       do {
-        pvVar4 = *ppvVar1;
-        while (pvVar4 != (void *)0x0) {
-          thunk_DereferencePointerCellInPlace_At00408cd3(ppvVar1);
-          if (extraout_EAX_01[1].left == 0) {
-            extraout_EAX_01[1].left = 1;
-            pRVar5 = extraout_EAX_01;
+        iVar6 = *piVar7;
+        while (iVar6 != 0) {
+          pRVar2 = (RECT *)DereferencePointerCellInPlace(piVar7);
+          if (pRVar2[1].left == 0) {
+            pRVar2[1].left = 1;
             goto LAB_0048309c;
           }
-          pvVar4 = *ppvVar1;
+          iVar6 = *piVar7;
         }
-        pRVar5 = (RECT *)0x0;
+        pRVar2 = (RECT *)0x0;
 LAB_0048309c:
-        if (pRVar5 == (RECT *)0x0) {
-          pHdc = param_1;
-          if (param_1 == 0) {
-            GetDC(this->dwBaseWndFieldA_1C);
-            FromHandle_612736();
-            pHdc = extraout_EAX_02;
+        if (pRVar2 == (RECT *)0x0) {
+          iVar6 = param_2;
+          if (param_2 == 0) {
+            pHVar5 = GetDC(*(HWND *)(param_1 + 0x1c));
+            iVar6 = FromHandle_612736(pHVar5);
           }
-          this->dwReserved_68 = this->pOwnedBufferNodeHead_50;
-          while (piVar3 = this->dwReserved_68, piVar3 != (int *)0x0) {
+          *(undefined4 *)(param_1 + 0x68) = *(undefined4 *)(param_1 + 0x50);
+          while (piVar7 = *(int **)(param_1 + 0x68), piVar7 != (int *)0x0) {
             while( true ) {
-              puVar2 = this->dwReserved_68;
-              this->dwReserved_68 = (void *)*puVar2;
-              if (puVar2[6] == 2) break;
-              piVar3 = this->dwReserved_68;
-              if (piVar3 == (int *)0x0) goto LAB_0048316b;
+              puVar1 = *(undefined4 **)(param_1 + 0x68);
+              *(undefined4 *)(param_1 + 0x68) = *puVar1;
+              if (puVar1[6] == 2) break;
+              piVar7 = *(int **)(param_1 + 0x68);
+              if (piVar7 == (int *)0x0) goto LAB_0048316b;
             }
-            local_10 = puVar2[2];
-            local_c = puVar2[3];
-            local_8 = puVar2[4];
-            local_4 = puVar2[5];
-            if (piVar3 == this->pOwnedBufferNodeHead_50) {
-              pvVar4 = (void *)*piVar3;
-              this->pOwnedBufferNodeHead_50 = pvVar4;
-            }
-            else {
-              pvVar4 = (void *)*piVar3;
-              *(void **)piVar3[1] = pvVar4;
-            }
-            if (piVar3 == this->pOwnedBufferNodeTail_54) {
-              this->pOwnedBufferNodeTail_54 = (void *)piVar3[1];
+            local_10 = puVar1[2];
+            local_c = puVar1[3];
+            local_8 = puVar1[4];
+            local_4 = puVar1[5];
+            if (piVar7 == *(int **)(param_1 + 0x50)) {
+              *(int *)(param_1 + 0x50) = *piVar7;
             }
             else {
-              pvVar4 = (void *)*piVar3;
-              *(int *)((int)pvVar4 + 4) = piVar3[1];
+              *(int *)piVar7[1] = *piVar7;
             }
-            WrapperFor_FreeLinkedBlockChain_At00484860
-                      ((int)&this->pOwnedBufferChainRuntimeClass_4C,(int)pvVar4);
-            RenderMapTileHintOverlayToDcOrWindow(this,pHdc,(int)&local_10);
+            if (piVar7 == *(int **)(param_1 + 0x54)) {
+              *(int *)(param_1 + 0x54) = piVar7[1];
+            }
+            else {
+              *(int *)(*piVar7 + 4) = piVar7[1];
+            }
+            WrapperFor_FreeLinkedBlockChain_At00484860(piVar7);
+            BlitMapDialogSurfaceToHdcWithClipBounds(iVar6,&local_10);
           }
 LAB_0048316b:
-          if (param_1 == 0) {
-            ReleaseDC(this->dwBaseWndFieldA_1C,*(HDC *)(pHdc + 4));
+          if (param_2 == 0) {
+            ReleaseDC(*(HWND *)(param_1 + 0x1c),*(HDC *)(iVar6 + 4));
           }
           return;
         }
-        CopyRect(&local_20,pRVar5);
-        (**(code **)(*(int *)this->pOwnedBufferView_40 + 0x10c))(&local_20,0);
+        CopyRect(&local_20,pRVar2);
+        (**(code **)(**(int **)(param_1 + 0x40) + 0x10c))(&local_20,0);
       } while( true );
     }
-    CopyOffset10PointPairToOutOrZero();
-    local_20.right = *extraout_EAX_00;
-    local_20.bottom = extraout_EAX_00[1];
+    pLVar3 = (LONG *)CopyOffset10PointPairToOutOrZero(local_30);
+    local_20.right = *pLVar3;
+    local_20.bottom = pLVar3[1];
     local_20.left = 0;
     local_20.top = 0;
-    IntersectRect(&local_20,pRVar5,&local_20);
-    thunk_ComputeRectSpanFromStoredBounds_At00404c1e(&local_20,local_28);
-    thunk_ForwardBlitSurfaceRectSkippingTransparentColor();
+    IntersectRect(&local_20,pRVar2,&local_20);
+    pRVar2 = &local_20;
+    uVar8 = 0xffffffff;
+    uVar4 = ComputeRectSpanFromStoredBounds(local_28);
+    ForwardBlitSurfaceRectSkippingTransparentColor
+              (*(undefined4 *)(param_1 + 0x48),&local_20,uVar4,pRVar2,uVar8);
   } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004838B0
 // GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotifyChildren
-// GHIDRA_PROTO void __thiscall HandleIncludeViewPointerUpdateAndNotifyChildren(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT IncludeView.cpp anchor. Handles pointer/motion update for include view, forwards transformed coordinates to child view/controller, updates previous/current pointer state, and triggers dependent UI callbacks.
-// GHIDRA_COMMENT_END
-
-/* IncludeView.cpp anchor. Handles pointer/motion update for include view, forwards transformed
-   coordinates to child view/controller, updates previous/current pointer state, and triggers
-   dependent UI callbacks. */
+// GHIDRA_PROTO undefined HandleIncludeViewPointerUpdateAndNotifyChildren()
 
 void __thiscall
 TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotifyChildren
-          (TCViewOwnedBufferRegistryState_00648560 *this)
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  int extraout_EAX;
-  uint in_stack_00000004;
-  uint in_stack_00000008;
+  undefined4 uVar1;
+  undefined4 uVar2;
+  int iVar3;
   
-  if (this->dwRegistryInitFlag_90 != 0) {
-    thunk_NotifyCaptureOwnerState1AndMaybeUpdateCoords();
-    if (this->dwRegistryAuxFlags_74 != (int *)0x0) {
-      if (g_Include_View_Pointer_Value_006A17C4 == 0) {
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  uVar2 = param_4;
+  uVar1 = param_3;
+  if (*(int *)(param_1 + 0x90) != 0) {
+    NotifyCaptureOwnerState1AndMaybeUpdateCoords(param_2,param_3,param_4);
+    if (*(int *)(param_1 + 0x74) != 0) {
+      if (DAT_006a17c4 == 0) {
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                  (s_D__Ambit_IncludeView_cpp_00694d10,0x2b7);
       }
-      (**(code **)(*this->dwRegistryAuxFlags_74 + 0x19c))(&stack0x00000008);
-      this->dwReserved_80 = this->dwReserved_88;
-      this->dwReserved_84 = this->dwReserved_8C;
-      this->dwReserved_88 = in_stack_00000004;
-      this->dwReserved_8C = in_stack_00000008;
-      (**(code **)(*this->dwRegistryAuxFlags_74 + 0x1a0))
-                (1,&this->dwReserved_78,&this->dwReserved_80,&this->dwReserved_88,1);
+      param_3 = uVar1;
+      param_4 = uVar2;
+      (**(code **)(**(int **)(param_1 + 0x74) + 0x19c))(&param_3);
+      *(undefined4 *)(param_1 + 0x80) = *(undefined4 *)(param_1 + 0x88);
+      *(undefined4 *)(param_1 + 0x84) = *(undefined4 *)(param_1 + 0x8c);
+      *(undefined4 *)(param_1 + 0x88) = param_2;
+      *(undefined4 *)(param_1 + 0x8c) = param_3;
+      (**(code **)(**(int **)(param_1 + 0x74) + 0x1a0))
+                (1,param_1 + 0x78,(undefined4 *)(param_1 + 0x80),(undefined4 *)(param_1 + 0x88),1);
     }
-    (**(code **)(*(int *)g_pGlobalUiRootController + 0xac))();
-    if (this->pOwnedBufferView_40 != (void *)0x0) {
-      NoOpRuntimeCallback_00489a70();
-      if (extraout_EAX != 0) {
-        (**(code **)(*(int *)this->pOwnedBufferView_40 + 0xd4))(&stack0xfffffffc,0);
+    (**(code **)(*(int *)g_pGlobalUiRootController + 0xac))(uVar1,uVar2,0);
+    if (*(int *)(param_1 + 0x40) != 0) {
+      iVar3 = NoOpRuntimeCallback_00489a70();
+      if (iVar3 != 0) {
+        (**(code **)(**(int **)(param_1 + 0x40) + 0xd4))(&stack0xfffffffc,0);
       }
     }
   }
@@ -428,100 +285,87 @@ TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotify
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CF10
 // GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::BuildTurnEventFactoryPacket
-// GHIDRA_PROTO void __thiscall BuildTurnEventFactoryPacket(uint dwDispatchArg40, STurnEventFactoryPacket * pSourcePacket0C, ETurnEventFactorySlotId eFactorySlot60, uint * pPayloadPair64_68, STSharedStringRef * pSharedString6C, ushort wPayload70)
+// GHIDRA_PROTO undefined BuildTurnEventFactoryPacket()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Typed] this=STurnEventFactoryPacket*. Builds packet fields including pSourcePacket0C:STurnEventFactoryPacket*, eFactorySlot60 and dispatch payload (+0x64/+0x68).
+// GHIDRA_COMMENT Builds/initializes turn-event factory packet fields from dispatcher arguments. Copies incoming event code into packet word at +0x60 (pEventPacket[0x18]) before callback-factory dispatch.
 // GHIDRA_COMMENT_END
 
-/* [Typed] this=STurnEventFactoryPacket*. Builds packet fields including
-   pSourcePacket0C:STurnEventFactoryPacket*, eFactorySlot60 and dispatch payload (+0x64/+0x68). */
+/* Builds/initializes turn-event factory packet fields from dispatcher arguments. Copies incoming
+   event code into packet word at +0x60 (pEventPacket[0x18]) before callback-factory dispatch. */
 
 void __thiscall
 TCViewOwnedBufferRegistryState_00648560::BuildTurnEventFactoryPacket
-          (TCViewOwnedBufferRegistryState_00648560 *this,uint dwDispatchArg40,
-          STurnEventFactoryPacket *pSourcePacket0C,ETurnEventFactorySlotId eFactorySlot60,
-          uint *pPayloadPair64_68,STSharedStringRef *pSharedString6C,ushort wPayload70)
+          (int param_1,undefined4 param_2,int *param_3,undefined2 param_4,undefined4 *param_5,
+          int *param_6,undefined2 param_7)
 
 {
-  if (pSourcePacket0C != (STurnEventFactoryPacket *)0x0) {
-    this->pOwnedBufferNodeHead_50 = (void *)pSourcePacket0C->dwOwnerCtxMirror50;
+  if (param_3 != (int *)0x0) {
+    *(int *)(param_1 + 0x50) = param_3[0x14];
   }
-  this->dwBaseWndFieldA_1C = (HWND)0x20202020;
-  this->dwBaseObjStateA_04 = 1;
-  this->dwBaseObjStateB_08 = 1;
-  this->dwBaseObjStateC_0C = (uint)pSourcePacket0C;
-  this->dwBaseWndFieldC_24 = g_adwTurnEventFactoryDispatchScratch[0];
-  this->dwBaseWndFieldD_28 = g_adwTurnEventFactoryDispatchScratch[1];
-  this->dwBaseWndFieldG_34 = pSourcePacket0C->dwPayload34;
-  this->dwBaseWndFieldH_38 = pSourcePacket0C->dwPayload38;
-  if (pSourcePacket0C != (STurnEventFactoryPacket *)0x0) {
-    (**(code **)(pSourcePacket0C->dwVtableOrType + 0x170))(this,0);
+  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
+  *(undefined4 *)(param_1 + 4) = 1;
+  *(undefined4 *)(param_1 + 8) = 1;
+  *(int **)(param_1 + 0xc) = param_3;
+  *(undefined4 *)(param_1 + 0x24) = DAT_006a1ab0;
+  *(undefined4 *)(param_1 + 0x28) = DAT_006a1ab4;
+  *(int *)(param_1 + 0x34) = param_3[0xd];
+  *(int *)(param_1 + 0x38) = param_3[0xe];
+  if (param_3 != (int *)0x0) {
+    (**(code **)(*param_3 + 0x170))(param_1,0);
   }
-  this->pOwnedBufferView_40 = (void *)dwDispatchArg40;
-  *(ETurnEventFactorySlotId *)&this->pOwnedBufferNodeBlockChainHead_60 = eFactorySlot60;
-  this->nOwnedBufferNodesPerBlock_64 = (void *)*pPayloadPair64_68;
-  this->dwReserved_68 = (void *)pPayloadPair64_68[1];
-  AssignFromPtr(&this->pQuickDrawDetachContext_6C,(int *)pSharedString6C);
-  *(ushort *)&this->dwRegistryAuxState_70 = wPayload70;
+  *(undefined4 *)(param_1 + 0x40) = param_2;
+  *(undefined2 *)(param_1 + 0x60) = param_4;
+  *(undefined4 *)(param_1 + 100) = *param_5;
+  *(undefined4 *)(param_1 + 0x68) = param_5[1];
+  AssignFromPtr((void *)(param_1 + 0x6c),param_6);
+  *(undefined2 *)(param_1 + 0x70) = param_7;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00614EBF
 // GHIDRA_NAME TCViewOwnedBufferRegistryState_00648560::OnPrepareDC_614ebf
-// GHIDRA_PROTO void __thiscall OnPrepareDC_614ebf(TMacViewMgr * thisObj, pointer pDc, pointer drawInfo)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Configures DC map/extents/origin from scroll-view map mode + scroll position, then chains view update helper. [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
-
-/* Configures DC map/extents/origin from scroll-view map mode + scroll position, then chains view
-   update helper. [FID:FID_single_match_phase1_nodebug] */
+// GHIDRA_PROTO undefined OnPrepareDC_614ebf()
 
 void __thiscall
 TCViewOwnedBufferRegistryState_00648560::OnPrepareDC_614ebf
-          (TCViewOwnedBufferRegistryState_00648560 *this,TMacViewMgr *thisObj,undefined *pDc,
-          undefined *drawInfo)
+          (int param_1,int *param_2,undefined4 param_3)
 
 {
-  undefined *puVar1;
-  int *extraout_EAX;
-  int *outPtDevice;
+  int iVar1;
+  int *piVar2;
   tagRECT local_1c;
   int local_c;
   int local_8;
   
-  puVar1 = thisObj->vftable;
-  outPtDevice = this->pOwnedBufferView_40;
-  if (outPtDevice == (int *)0xffffffff) {
-    outPtDevice = (int *)&DAT_00000008;
-    (**(code **)(puVar1 + 0x3c))();
-    (**(code **)(puVar1 + 0x50))
-              (&local_c,this->dwOwnedBufferViewFlags_44,this->pOwnedBufferChainState_48);
-    (**(code **)(puVar1 + 0x48))
-              (&local_1c.right,this->pOwnedBufferChainRuntimeClass_4C,this->pOwnedBufferNodeHead_50)
-    ;
+  iVar1 = *param_2;
+  if (*(int *)(param_1 + 0x40) == -1) {
+    (**(code **)(iVar1 + 0x3c))(8);
+    (**(code **)(iVar1 + 0x50))
+              (&local_c,*(undefined4 *)(param_1 + 0x44),*(undefined4 *)(param_1 + 0x48));
+    (**(code **)(iVar1 + 0x48))
+              (&local_1c.right,*(undefined4 *)(param_1 + 0x4c),*(undefined4 *)(param_1 + 0x50));
   }
   else {
-    (**(code **)(puVar1 + 0x3c))();
+    (**(code **)(iVar1 + 0x3c))(*(int *)(param_1 + 0x40));
   }
   local_c = 0;
   local_8 = 0;
-  if (*(int *)&thisObj->field_0xc == 0) {
-    TControl::GetDeviceScrollPosition((TControl *)this,(TMacViewMgr *)&local_1c.right,outPtDevice);
-    local_c = -*extraout_EAX;
-    local_8 = -extraout_EAX[1];
-    if (this->nOwnedBufferNodesPerBlock_64 != (void *)0x0) {
-      GetClientRect(this->dwBaseWndFieldA_1C,&local_1c);
-      if ((int)this->pOwnedBufferChainRuntimeClass_4C < local_1c.right - local_1c.left) {
-        local_c = (local_1c.right + (-(int)this->pOwnedBufferChainRuntimeClass_4C - local_1c.left))
-                  / 2;
+  if (param_2[3] == 0) {
+    piVar2 = (int *)TControl::GetDeviceScrollPosition(&local_1c.right);
+    local_c = -*piVar2;
+    local_8 = -piVar2[1];
+    if (*(int *)(param_1 + 100) != 0) {
+      GetClientRect(*(HWND *)(param_1 + 0x1c),&local_1c);
+      if (*(int *)(param_1 + 0x4c) < local_1c.right - local_1c.left) {
+        local_c = ((local_1c.right - local_1c.left) - *(int *)(param_1 + 0x4c)) / 2;
       }
-      if ((int)this->pOwnedBufferNodeHead_50 < local_1c.bottom - local_1c.top) {
-        local_8 = ((local_1c.bottom - local_1c.top) - (int)this->pOwnedBufferNodeHead_50) / 2;
+      if (*(int *)(param_1 + 0x50) < local_1c.bottom - local_1c.top) {
+        local_8 = ((local_1c.bottom - local_1c.top) - *(int *)(param_1 + 0x50)) / 2;
       }
     }
   }
-  (**(code **)(puVar1 + 0x40))(&local_1c.right,local_c,local_8);
-  OnPrepareDC();
+  (**(code **)(iVar1 + 0x40))(&local_1c.right,local_c,local_8);
+  FUN_0061416e(param_2,param_3);
   return;
 }
 

@@ -3,51 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TTextLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404D2C
-// GHIDRA_NAME TTextLine::thunk_GetTTextLineClassNamePointer_At00404d2c
-// GHIDRA_PROTO void * __cdecl thunk_GetTTextLineClassNamePointer_At00404d2c(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTextLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTextLineClassNamePointer */
-
-void * __cdecl TTextLine::thunk_GetTTextLineClassNamePointer_At00404d2c(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTextLineClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004085DA
-// GHIDRA_NAME TTextLine::thunk_Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500_At004085da
-// GHIDRA_PROTO void __cdecl thunk_Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500_At004085da(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500 */
-
-void __cdecl
-TTextLine::thunk_Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500_At004085da(void)
-
-{
-  Helper_Uses_thunk_ConstructUiTextResourceEntryBase_At00570500();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005701D0
 // GHIDRA_NAME TTextLine::CreateTTextLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTTextLineInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TTextLine derives from TLineData (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTextLineInstance()
 
-/* [InheritanceEvidence] TTextLine derives from TLineData (decomp_vtbl_seq_ctor, medium) */
-
-void * __cdecl TTextLine::CreateTTextLineInstance(void)
+undefined4 * TTextLine::CreateTTextLineInstance(void)
 
 {
   undefined4 *puVar1;
@@ -60,48 +20,38 @@ void * __cdecl TTextLine::CreateTTextLineInstance(void)
   puStack_8 = &LAB_006362c2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &g_vtblTLineData;
+    *puVar1 = &PTR_LAB_0065e230;
     local_4 = 1;
     InitializeSharedStringRefFromEmpty();
     *(undefined1 *)((int)puVar1 + 0x1a) = 0;
     *(undefined1 *)((int)puVar1 + 0x1b) = 0;
     *(undefined1 *)(puVar1 + 7) = 0;
     *(undefined1 *)((int)puVar1 + 0x1d) = 0;
-    *puVar1 = &g_vtblTTextLine;
+    *puVar1 = &PTR_LAB_0065e4c0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570270
 // GHIDRA_NAME TTextLine::GetTTextLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTextLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTextLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTextLineClassNamePointer()
 
-/* Returns class descriptor pointer for TTextLine. */
-
-void * __cdecl TTextLine::GetTTextLineClassNamePointer(void)
+undefined ** TTextLine::GetTTextLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTTextLine;
+  return &PTR_s_TTextLine_0065e1d0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570290
 // GHIDRA_NAME TTextLine::ConstructTTextLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTextLineBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TTextLine derives from TLineData (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTextLineBaseState()
 
-/* [InheritanceEvidence] TTextLine derives from TLineData (decomp_vtbl_seq_ctor, medium) */
-
-void * __thiscall TTextLine::ConstructTTextLineBaseState(TTextLine *this)
+undefined4 * __fastcall TTextLine::ConstructTTextLineBaseState(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -112,29 +62,29 @@ void * __thiscall TTextLine::ConstructTTextLineBaseState(TTextLine *this)
   puStack_8 = &LAB_006362e8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  (this->base).field0_0x0 = &g_vtblTLineData;
+  *param_1 = &PTR_LAB_0065e230;
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  (this->base).field_0x1a = 0;
-  (this->base).field_0x1b = 0;
-  (this->base).field_0x1c = 0;
-  (this->base).field_0x1d = 0;
-  (this->base).field0_0x0 = &g_vtblTTextLine;
+  *(undefined1 *)((int)param_1 + 0x1a) = 0;
+  *(undefined1 *)((int)param_1 + 0x1b) = 0;
+  *(undefined1 *)(param_1 + 7) = 0;
+  *(undefined1 *)((int)param_1 + 0x1d) = 0;
+  *param_1 = &PTR_LAB_0065e4c0;
   *unaff_FS_OFFSET = local_c;
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570310
 // GHIDRA_NAME TTextLine::DestructTTextLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTextLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTextLineAndMaybeFree()
 
-void * __thiscall TTextLine::DestructTTextLineAndMaybeFree(TTextLine *this,byte freeSelfFlag)
+undefined4 __thiscall TTextLine::DestructTTextLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

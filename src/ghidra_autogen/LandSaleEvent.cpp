@@ -3,58 +3,17 @@
 // Program: Imperialism.exe
 // Bucket: LandSaleEvent.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040508D
-// GHIDRA_NAME LandSaleEvent::thunk_GetTLandSaleEventClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTLandSaleEventClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetLandSaleEventClassNamePointer [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetLandSaleEventClassNamePointer [FID:thunk_target_sync] */
-
-void * __cdecl LandSaleEvent::thunk_GetTLandSaleEventClassNamePointer(void)
-
-{
-  return &g_pClassDescTLandSaleEvent;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408CA1
-// GHIDRA_NAME LandSaleEvent::thunk_DeleteLandSaleEvent
-// GHIDRA_PROTO void * __cdecl thunk_DeleteLandSaleEvent(LandSaleEvent * pThis, byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeleteLandSaleEvent
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeleteLandSaleEvent */
-
-void * __cdecl LandSaleEvent::thunk_DeleteLandSaleEvent(LandSaleEvent *pThis,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DeleteLandSaleEvent(pThis,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004D49A0
 // GHIDRA_NAME LandSaleEvent::DeleteLandSaleEvent
-// GHIDRA_PROTO void * __cdecl DeleteLandSaleEvent(LandSaleEvent * pThis, byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Deleting destructor wrapper for TLandSaleEvent: calls DestructLandSaleEventToBase, optionally frees heap object when delete-flag bit is set.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DeleteLandSaleEvent()
 
-/* Deleting destructor wrapper for TLandSaleEvent: calls DestructLandSaleEventToBase, optionally
-   frees heap object when delete-flag bit is set. */
-
-void * __cdecl LandSaleEvent::DeleteLandSaleEvent(LandSaleEvent *pThis,byte freeSelfFlag)
+undefined4 __thiscall LandSaleEvent::DeleteLandSaleEvent(undefined4 param_1,byte param_2)
 
 {
-  void *in_ECX;
-  
-  thunk_DestructLandSaleEventToBase();
-  if (((uint)pThis & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructLandSaleEventToBase();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return in_ECX;
+  return param_1;
 }
 

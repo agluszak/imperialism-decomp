@@ -5,16 +5,11 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CED80
 // GHIDRA_NAME TArmoryView::GetTArmoryViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmoryViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmoryView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmoryViewClassNamePointer()
 
-/* Returns class descriptor pointer for TArmoryView. */
-
-void * __cdecl TArmoryView::GetTArmoryViewClassNamePointer(void)
+undefined ** TArmoryView::GetTArmoryViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmoryView;
+  return &PTR_s_TArmoryView_00651338;
 }
 

@@ -3,71 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TRightLeftView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004013ED
-// GHIDRA_NAME TRightLeftView::TRightLeftView_VtblSlot001
-// GHIDRA_PROTO TRightLeftView * __thiscall TRightLeftView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTRightLeftViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTRightLeftViewAndMaybeFree */
-
-TRightLeftView * __thiscall
-TRightLeftView::TRightLeftView_VtblSlot001(TRightLeftView *this,byte freeSelfFlag)
-
-{
-  TRightLeftView *pTVar1;
-  
-  pTVar1 = DestructTRightLeftViewAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406843
-// GHIDRA_NAME TRightLeftView::TRightLeftView_VtblSlot104
-// GHIDRA_PROTO void __thiscall TRightLeftView_VtblSlot104(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84 */
-
-void __thiscall
-TRightLeftView::TRightLeftView_VtblSlot104
-          (TRightLeftView *this,int nEventType,void *pEventSender,void *pEventDataA,
-          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
-
-{
-  HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
-            (this,nEventType,pEventSender,pEventDataA,pHitPayload,pRepeatArg);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004090BB
-// GHIDRA_NAME TRightLeftView::TRightLeftView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TRightLeftView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRightLeftViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRightLeftViewClassNamePointer */
-
-void * __cdecl TRightLeftView::TRightLeftView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRightLeftViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00583E70
 // GHIDRA_NAME TRightLeftView::CreateTRightLeftViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTRightLeftViewInstance(void)
+// GHIDRA_PROTO undefined CreateTRightLeftViewInstance()
 
-void * __cdecl TRightLeftView::CreateTRightLeftViewInstance(void)
+undefined4 * TRightLeftView::CreateTRightLeftViewInstance(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -77,99 +20,86 @@ void * __cdecl TRightLeftView::CreateTRightLeftViewInstance(void)
   puStack_8 = &LAB_0063758a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTRightLeftView;
-    *(undefined4 *)&this->field_0x84 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_00663990;
+    puVar1[0x21] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F10
 // GHIDRA_NAME TRightLeftView::GetTRightLeftViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTRightLeftViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TRightLeftView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTRightLeftViewClassNamePointer()
 
-/* Returns class descriptor pointer for TRightLeftView. */
-
-void * __cdecl TRightLeftView::GetTRightLeftViewClassNamePointer(void)
+undefined ** TRightLeftView::GetTRightLeftViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTRightLeftView;
+  return &PTR_s_TRightLeftView_00662e00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F30
 // GHIDRA_NAME TRightLeftView::ConstructTRightLeftViewBaseState
-// GHIDRA_PROTO TRightLeftView * __thiscall ConstructTRightLeftViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTRightLeftViewBaseState()
 
-TRightLeftView * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRightLeftView *this)
+undefined4 * __fastcall TRightLeftView::ConstructTRightLeftViewBaseState(undefined4 *param_1)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase(&this->base);
-  (this->base).base.pVtable = &g_vtblTRightLeftView;
-  *(undefined4 *)&(this->base).field_0x84 = 0;
-  return this;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  *param_1 = &PTR_LAB_00663990;
+  param_1[0x21] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F60
 // GHIDRA_NAME TRightLeftView::DestructTRightLeftViewAndMaybeFree
-// GHIDRA_PROTO TRightLeftView * __thiscall DestructTRightLeftViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTRightLeftViewAndMaybeFree()
 
-TRightLeftView * __thiscall
-TRightLeftView::DestructTRightLeftViewAndMaybeFree(TRightLeftView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TRightLeftView::DestructTRightLeftViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructTViewBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583FB0
 // GHIDRA_NAME TRightLeftView::HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
-// GHIDRA_PROTO void __thiscall HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Enum] Tagged auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x84 timer state).
-// GHIDRA_COMMENT_END
-
-/* [Enum] Tagged auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset
-   0x84 timer state). */
+// GHIDRA_PROTO undefined HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84()
 
 void __thiscall
 TRightLeftView::HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
-          (TRightLeftView *this,int nEventType,void *pEventSender,void *pEventDataA,
-          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
-  void *pvVar1;
-  char cVar2;
-  uint extraout_EAX;
-  int extraout_EAX_00;
+  char cVar1;
+  uint uVar2;
+  int iVar3;
   
-  if (nEventType != 2) {
-    thunk_GetTickCountDiv16();
-    if (*(int *)&(this->base).field_0x84 + 5U <= extraout_EAX) {
-      thunk_GetTickCountDiv16();
-      *(int *)&(this->base).field_0x84 = extraout_EAX_00;
-      if (nEventType == 0) {
-        *(int *)&(this->base).field_0x84 = extraout_EAX_00 + 10;
+  if (param_2 != 2) {
+    uVar2 = thunk_GetTickCountDiv16();
+    if (param_1[0x21] + 5U <= uVar2) {
+      iVar3 = thunk_GetTickCountDiv16();
+      param_1[0x21] = iVar3;
+      if (param_2 == 0) {
+        param_1[0x21] = iVar3 + 10;
       }
-      pvVar1 = (this->base).base.pVtable;
-      cVar2 = (**(code **)((int)pvVar1 + 0x16c))(pHitPayload);
-      if (cVar2 != '\0') {
-        if ((this->base).base.field8_0x1c == 0x72676874) {
-          (**(code **)((int)pvVar1 + 0x40))(100);
+      iVar3 = *param_1;
+      cVar1 = (**(code **)(iVar3 + 0x16c))(param_5);
+      if (cVar1 != '\0') {
+        if (param_1[7] == 0x72676874) {
+          (**(code **)(iVar3 + 0x40))(100);
           return;
         }
-        (**(code **)((int)pvVar1 + 0x40))(0x65,this,0);
+        (**(code **)(iVar3 + 0x40))(0x65,param_1,0);
       }
     }
   }

@@ -3,134 +3,33 @@
 // Program: Imperialism.exe
 // Bucket: TCheater.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004023BA
-// GHIDRA_NAME TCheater::thunk_GetTCheaterClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCheaterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCheaterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCheaterClassNamePointer */
-
-void * __cdecl TCheater::thunk_GetTCheaterClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCheaterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402860
-// GHIDRA_NAME TCheater::thunk_scalar_deleting_destructor_00402860
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402860(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TCheater::thunk_scalar_deleting_destructor_00402860(TCheater *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404985
-// GHIDRA_NAME TCheater::thunk_ConstructTCheaterBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTCheaterBaseState(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to InitializeCheaterDialogControlsAndBindings. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to InitializeCheaterDialogControlsAndBindings. [FID:thunk_target_sync] */
-
-void * __thiscall TCheater::thunk_ConstructTCheaterBaseState(TCheater *this,int arg1,int arg2)
-
-{
-  int iVar1;
-  TControl *pTVar2;
-  void *extraout_EAX;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00630d54;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  arg1 = (int)AllocateWithFallbackHandler();
-  uStack_4 = 0;
-  if ((TStaticText *)arg1 != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)arg1);
-  }
-  iVar1 = arg2;
-  uStack_4 = 0xffffffff;
-  thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  pTVar2 = AllocateWithFallbackHandler();
-  uStack_4 = 1;
-  arg1 = (int)pTVar2;
-  if (pTVar2 == (TControl *)0x0) {
-    pTVar2 = (TControl *)0x0;
-  }
-  else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar2);
-    uStack_4 = CONCAT31(uStack_4._1_3_,2);
-    (pTVar2->base).pVtable = &g_vtblTButton;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    (pTVar2->base).pVtable = &g_vtblTCtlMgr;
-  }
-  uStack_4 = 0xffffffff;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&arg1);
-  uStack_4 = 3;
-  if (g_TCheater_Base_Value_006A2480 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-  }
-  uStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  pTVar2->hasCommandTagResource60 = (void *)0x22;
-  *(short *)&this->dwField_60 = (short)iVar1;
-  *unaff_FS_OFFSET = uStack_c;
-  return extraout_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1480
 // GHIDRA_NAME TCheater::GetTCheaterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCheaterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCheater.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCheaterClassNamePointer()
 
-/* Returns class descriptor pointer for TCheater. */
-
-void * __cdecl TCheater::GetTCheaterClassNamePointer(void)
+undefined ** TCheater::GetTCheaterClassNamePointer(void)
 
 {
-  return &g_pClassDescTCheater;
+  return &PTR_s_TCheater_0064ebe0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B14A0
 // GHIDRA_NAME TCheater::ConstructTCheaterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTCheaterBaseState(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds cheater dialog UI controls/text resources and binds them into the dialog frame.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTCheaterBaseState()
 
-/* Builds cheater dialog UI controls/text resources and binds them into the dialog frame. */
-
-void * __thiscall TCheater::ConstructTCheaterBaseState(TCheater *this,int arg1,int arg2)
+void __thiscall
+TCheater::ConstructTCheaterBaseState(int param_1,undefined4 param_2,undefined4 param_3)
 
 {
   int iVar1;
-  TControl *pTVar2;
-  void *extraout_EAX;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -139,52 +38,51 @@ void * __thiscall TCheater::ConstructTCheaterBaseState(TCheater *this,int arg1,i
   puStack_8 = &LAB_00630d54;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  arg1 = (int)AllocateWithFallbackHandler();
+  local_24 = 0;
+  local_20 = 0;
+  local_1c = 0x280;
+  local_18 = 0x1e0;
+  local_14 = 0x80;
+  local_10 = 0x20;
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,&local_24,&local_1c,5,5,0);
+  iVar1 = AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if ((TStaticText *)arg1 != (TStaticText *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)arg1);
+  if (iVar1 != 0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase();
   }
-  iVar1 = arg2;
   local_4 = 0xffffffff;
-  thunk_InitializeTextEntryBaseAndOptionalStringResource();
-  pTVar2 = AllocateWithFallbackHandler();
+  InitializeTextEntryBaseAndOptionalStringResource(param_1,&local_24,&local_14,5,5,param_3,1);
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x84);
   local_4 = 1;
-  arg1 = (int)pTVar2;
-  if (pTVar2 == (TControl *)0x0) {
-    pTVar2 = (TControl *)0x0;
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar2);
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
     local_4 = CONCAT31(local_4._1_3_,2);
-    (pTVar2->base).pVtable = &g_vtblTButton;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    (pTVar2->base).pVtable = &g_vtblTCtlMgr;
+    *puVar2 = &PTR_LAB_0064a2b8;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+    *puVar2 = &PTR_LAB_0064a4e0;
   }
   local_4 = 0xffffffff;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&arg1);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&DAT_00695a18);
   local_4 = 3;
-  if (g_TCheater_Base_Value_006A2480 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  if (DAT_006a2480 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5b7);
   }
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  pTVar2->hasCommandTagResource60 = (void *)0x22;
-  *(short *)&this->dwField_60 = (short)iVar1;
+  puVar2[0x18] = 0x22;
+  *(short *)(param_1 + 0x60) = (short)param_3;
   *unaff_FS_OFFSET = local_c;
-  return extraout_EAX;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1670
 // GHIDRA_NAME TCheater::DestructTCheaterAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTCheaterAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes centered dialog bounds from content dimensions and applies modal positioning.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTCheaterAndMaybeFree()
 
-/* Computes centered dialog bounds from content dimensions and applies modal positioning. */
-
-void __thiscall TCheater::DestructTCheaterAndMaybeFree(TCheater *this)
+void __fastcall TCheater::DestructTCheaterAndMaybeFree(int *param_1)
 
 {
   int iVar1;
@@ -194,7 +92,7 @@ void __thiscall TCheater::DestructTCheaterAndMaybeFree(TCheater *this)
   int iStack_c;
   int iStack_8;
   
-  piVar2 = (int *)(**(code **)((int)this->pVtable + 0x58))();
+  piVar2 = (int *)(**(code **)(*param_1 + 0x58))();
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 300))(&iStack_10);
   iStack_10 = 0xf0 - unaff_retaddr[1] / 2;

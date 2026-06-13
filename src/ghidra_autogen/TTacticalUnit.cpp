@@ -3,136 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040443A
-// GHIDRA_NAME TTacticalUnit::thunk_CreateTTacticalUnitInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTTacticalUnitInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTTacticalUnitRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTTacticalUnitRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TTacticalUnit::thunk_CreateTTacticalUnitInstance(TTacticalUnit *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404DA4
-// GHIDRA_NAME TTacticalUnit::thunk_DestructTTacticalUnitAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTTacticalUnitAndMaybeFree(int damage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ApplyTacticalUnitDamageAndSetDefeatedState [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ApplyTacticalUnitDamageAndSetDefeatedState [FID:thunk_target_sync] */
-
-void __thiscall
-TTacticalUnit::thunk_DestructTTacticalUnitAndMaybeFree(TTacticalUnit *this,int damage)
-
-{
-  DestructTTacticalUnitAndMaybeFree(this,damage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406ACD
-// GHIDRA_NAME TTacticalUnit::thunk_GetTTacticalUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTacticalUnitClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTacticalUnitClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTacticalUnitClassNamePointer */
-
-void * __cdecl TTacticalUnit::thunk_GetTTacticalUnitClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTacticalUnitClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5DF0
 // GHIDRA_NAME TTacticalUnit::CreateTTacticalUnitInstance
-// GHIDRA_PROTO void * __thiscall CreateTTacticalUnitInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TTacticalUnit runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTacticalUnitInstance()
 
-/* Returns TTacticalUnit runtime class descriptor pointer. */
-
-void * __thiscall TTacticalUnit::CreateTTacticalUnitInstance(TTacticalUnit *this)
+void __fastcall TTacticalUnit::CreateTTacticalUnitInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E10
 // GHIDRA_NAME TTacticalUnit::GetTTacticalUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTacticalUnitClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTacticalUnit.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTacticalUnitClassNamePointer()
 
-/* Returns class descriptor pointer for TTacticalUnit. */
-
-void * __cdecl TTacticalUnit::GetTTacticalUnitClassNamePointer(void)
+undefined ** TTacticalUnit::GetTTacticalUnitClassNamePointer(void)
 
 {
-  return &g_pClassDescTTacticalUnit;
+  return &PTR_s_TTacticalUnit_00669e48;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E30
 // GHIDRA_NAME TTacticalUnit::ConstructTTacticalUnitBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTacticalUnitBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Resets tactical-unit turn/transient state and refreshes default range value via vtable callback.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTacticalUnitBaseState()
 
-/* Resets tactical-unit turn/transient state and refreshes default range value via vtable callback.
-    */
-
-void __thiscall TTacticalUnit::ConstructTTacticalUnitBaseState(TTacticalUnit *this)
+void __fastcall TTacticalUnit::ConstructTTacticalUnitBaseState(int *param_1)
 
 {
-  undefined4 uVar1;
+  int iVar1;
   
-  this->field2_0x8 = 0xfffffffe;
-  this->field15_0x18 = 0;
-  this->field19_0x1c = (void *)0x0;
-  uVar1 = (**(code **)((int)this->pVtable + 0x28))();
-  this->field28_0x28 = uVar1;
-  this->field29_0x2c = 0;
-  this->field30_0x30 = 0;
+  param_1[2] = -2;
+  *(undefined1 *)(param_1 + 6) = 0;
+  param_1[7] = 0;
+  iVar1 = (**(code **)(*param_1 + 0x28))();
+  param_1[10] = iVar1;
+  param_1[0xb] = 0;
+  param_1[0xc] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E70
 // GHIDRA_NAME TTacticalUnit::DestructTTacticalUnitAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTTacticalUnitAndMaybeFree(int damage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Applies damage to tactical unit HP and marks state defeated when HP reaches zero.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTacticalUnitAndMaybeFree()
 
-/* Applies damage to tactical unit HP and marks state defeated when HP reaches zero. */
-
-void __thiscall TTacticalUnit::DestructTTacticalUnitAndMaybeFree(TTacticalUnit *this,int damage)
+void __thiscall TTacticalUnit::DestructTTacticalUnitAndMaybeFree(int param_1,int param_2)
 
 {
-  void *pvVar1;
-  
-  pvVar1 = (void *)((int)this->field1_0x4 - damage);
-  this->field1_0x4 = pvVar1;
-  if ((int)pvVar1 < 1) {
-    this->field1_0x4 = (void *)0x0;
-    this->field19_0x1c = (void *)0x3;
+  param_2 = *(int *)(param_1 + 4) - param_2;
+  *(int *)(param_1 + 4) = param_2;
+  if (param_2 < 1) {
+    *(undefined4 *)(param_1 + 4) = 0;
+    *(undefined4 *)(param_1 + 0x1c) = 3;
   }
   return;
 }

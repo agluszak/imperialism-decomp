@@ -3,137 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTechStorePage.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040141A
-// GHIDRA_NAME TTechStorePage::thunk_GetTTechStorePageClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTechStorePageClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTechStorePageClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTechStorePageClassNamePointer */
-
-void * __cdecl TTechStorePage::thunk_GetTTechStorePageClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTechStorePageClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401799
-// GHIDRA_NAME TTechStorePage::thunk_ConstructTTechStorePageBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTTechStorePageBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* [FID:thunk_target_sync] */
-
-void * __thiscall
-TTechStorePage::thunk_ConstructTTechStorePageBaseState(TTechStorePage *this,int arg1)
-
-{
-  int iVar1;
-  TLineData *pThis;
-  void *extraout_EAX;
-  int pageDelta;
-  int iVar2;
-  undefined4 *unaff_FS_OFFSET;
-  int iStack_14;
-  undefined4 uStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063899a;
-  *unaff_FS_OFFSET = &uStack_c;
-  iVar2 = 0x1c;
-  do {
-    if (*(char *)((short)iVar2 + 0x180 + (int)g_pCityOrderCapabilityState) != '\0') {
-      pThis = AllocateWithFallbackHandler();
-      uStack_4 = 0;
-      if (pThis == (TLineData *)0x0) {
-        pThis = (TLineData *)0x0;
-      }
-      else {
-        TLineData::ConstructTLineDataBaseState(pThis);
-        pThis->field0_0x0 = &PTR_thunk_GetTTechItemLineClassNamePointer_0066aec8;
-      }
-      uStack_4 = 0xffffffff;
-      iStack_14 = 0x232;
-      uStack_10 = 0x3f;
-      TLineData::thunk_SetLineDataRowAndBounds(pThis,0,0,&iStack_14);
-      iVar1 = this->field0_0x0;
-      pThis->field10 = arg1;
-      *(int *)&pThis->field_0x14 = iVar2;
-      (**(code **)(iVar1 + 0x1a0))(pThis);
-    }
-    iVar2 = iVar2 + -1;
-  } while (0 < iVar2);
-  iVar2 = this->field0_0x0;
-  (**(code **)(iVar2 + 0x1ac))();
-  (**(code **)(iVar2 + 0x1b0))(1);
-  thunk_UpdatePagedListNavigationButtonState(this->pField20,pageDelta);
-  InitializeMainRoutineContextAndRun();
-  *unaff_FS_OFFSET = uStack_10;
-  return extraout_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004020EA
-// GHIDRA_NAME TTechStorePage::thunk_DestructTTechStorePageAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTechStorePageAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTechStorePageAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTechStorePageAndMaybeFree */
-
-void * __thiscall
-TTechStorePage::thunk_DestructTTechStorePageAndMaybeFree(TTechStorePage *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTechStorePageAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004025EA
-// GHIDRA_NAME TTechStorePage::thunk_scalar_deleting_destructor_004025EA
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004025EA(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTechStorePage::thunk_scalar_deleting_destructor_004025EA(TTechStorePage *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0E70
 // GHIDRA_NAME TTechStorePage::CreateTTechStorePageInstance
-// GHIDRA_PROTO void * __cdecl CreateTTechStorePageInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTechStorePage; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTechStorePageInstance()
 
-/* [ClassQuad] create inferred for TTechStorePage; alloc factory pattern. */
-
-void * __cdecl TTechStorePage::CreateTTechStorePageInstance(void)
+undefined4 * TTechStorePage::CreateTTechStorePageInstance(void)
 
 {
-  TPageView *this;
-  TPageView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -143,53 +21,40 @@ void * __cdecl TTechStorePage::CreateTTechStorePageInstance(void)
   puStack_8 = &LAB_0063897a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  pTVar1 = (TPageView *)0x0;
-  if (this != (TPageView *)0x0) {
-    TPageView::ConstructTPageViewBaseState(this);
-    (this->base).pVtable = &PTR_thunk_GetTTechStorePageClassNamePointer_00645ca8;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TPageView::ConstructTPageViewBaseState();
+    *puVar1 = &PTR_LAB_00645ca8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0EF0
 // GHIDRA_NAME TTechStorePage::GetTTechStorePageClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTechStorePageClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTechStorePage.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTechStorePageClassNamePointer()
 
-/* Returns class descriptor pointer for TTechStorePage. */
-
-void * __cdecl TTechStorePage::GetTTechStorePageClassNamePointer(void)
+undefined ** TTechStorePage::GetTTechStorePageClassNamePointer(void)
 
 {
-  return &g_pClassDescTTechStorePage;
+  return &PTR_s_TTechStorePage_0066ae10;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B0F10
 // GHIDRA_NAME TTechStorePage::ConstructTTechStorePageBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTechStorePageBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds TTechItemLine entries from city capability-state slots, updates page/line collections, refreshes paging arrows, and triggers post-build UI hook updates.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTechStorePageBaseState()
 
-/* Builds TTechItemLine entries from city capability-state slots, updates page/line collections,
-   refreshes paging arrows, and triggers post-build UI hook updates. */
-
-void * __thiscall TTechStorePage::ConstructTTechStorePageBaseState(TTechStorePage *this,int arg1)
+void __thiscall TTechStorePage::ConstructTTechStorePageBaseState(int *param_1,undefined4 param_2)
 
 {
   int iVar1;
-  TLineData *pThis;
-  void *extraout_EAX;
-  int pageDelta;
-  int iVar2;
+  undefined4 *puVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int local_14;
+  undefined4 local_14;
   undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -199,50 +64,50 @@ void * __thiscall TTechStorePage::ConstructTTechStorePageBaseState(TTechStorePag
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0063899a;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar2 = 0x1c;
+  iVar3 = 0x1c;
   do {
-    if (*(char *)((short)iVar2 + 0x180 + (int)g_pCityOrderCapabilityState) != '\0') {
-      pThis = AllocateWithFallbackHandler();
+    if (*(char *)((short)iVar3 + 0x180 + (int)g_pCityOrderCapabilityState) != '\0') {
+      puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x18);
       local_4 = 0;
-      if (pThis == (TLineData *)0x0) {
-        pThis = (TLineData *)0x0;
+      if (puVar2 == (undefined4 *)0x0) {
+        puVar2 = (undefined4 *)0x0;
       }
       else {
-        TLineData::ConstructTLineDataBaseState(pThis);
-        pThis->field0_0x0 = &PTR_thunk_GetTTechItemLineClassNamePointer_0066aec8;
+        TLineData::ConstructTLineDataBaseState();
+        *puVar2 = &PTR_LAB_0066aec8;
       }
       local_4 = 0xffffffff;
       local_14 = 0x232;
       local_10 = 0x3f;
-      TLineData::thunk_SetLineDataRowAndBounds(pThis,0,0,&local_14);
-      iVar1 = this->field0_0x0;
-      pThis->field10 = arg1;
-      *(int *)&pThis->field_0x14 = iVar2;
-      (**(code **)(iVar1 + 0x1a0))(pThis);
+      TLineData::SetLineDataRowAndBounds(0,0,&local_14);
+      iVar1 = *param_1;
+      puVar2[4] = param_2;
+      puVar2[5] = iVar3;
+      (**(code **)(iVar1 + 0x1a0))(puVar2);
     }
-    iVar2 = iVar2 + -1;
-  } while (0 < iVar2);
-  iVar2 = this->field0_0x0;
-  (**(code **)(iVar2 + 0x1ac))();
-  (**(code **)(iVar2 + 0x1b0))(1);
-  thunk_UpdatePagedListNavigationButtonState(this->pField20,pageDelta);
-  InitializeMainRoutineContextAndRun();
+    iVar3 = iVar3 + -1;
+  } while (0 < iVar3);
+  iVar3 = *param_1;
+  (**(code **)(iVar3 + 0x1ac))();
+  (**(code **)(iVar3 + 0x1b0))(1);
+  UpdatePagedListNavigationButtonState((int)*(short *)((int)param_1 + 0x62));
+  InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_0066ae08,param_1[7]);
   *unaff_FS_OFFSET = local_10;
-  return extraout_EAX;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1040
 // GHIDRA_NAME TTechStorePage::DestructTTechStorePageAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTechStorePageAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTechStorePageAndMaybeFree()
 
-void * __thiscall
-TTechStorePage::DestructTTechStorePageAndMaybeFree(TTechStorePage *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTechStorePage::DestructTTechStorePageAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTTechStorePageAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

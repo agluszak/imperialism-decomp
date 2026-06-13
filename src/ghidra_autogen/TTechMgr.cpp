@@ -3,107 +3,61 @@
 // Program: Imperialism.exe
 // Bucket: TTechMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403C38
-// GHIDRA_NAME TTechMgr::thunk_DestructTTechMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTechMgrAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTechMgrAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTechMgrAndMaybeFree */
-
-void * __thiscall TTechMgr::thunk_DestructTTechMgrAndMaybeFree(TTechMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTechMgrAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406AF5
-// GHIDRA_NAME TTechMgr::thunk_GetTTechMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTechMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTechMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTechMgrClassNamePointer */
-
-void * __cdecl TTechMgr::thunk_GetTTechMgrClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTechMgrClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AED50
 // GHIDRA_NAME TTechMgr::CreateTTechMgrInstance
-// GHIDRA_PROTO int __thiscall CreateTTechMgrInstance(short techId)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns whether TechMgr contains the specified technology id.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTechMgrInstance()
 
-/* Returns whether TechMgr contains the specified technology id. */
-
-int __thiscall TTechMgr::CreateTTechMgrInstance(TTechMgr *this,short techId)
+undefined4 __fastcall TTechMgr::CreateTTechMgrInstance(int *param_1)
 
 {
   code *pcVar1;
-  uint uVar2;
+  int iVar2;
   short sVar3;
   code *unaff_EBX;
   int iVar4;
   short unaff_retaddr;
   
   sVar3 = 1;
-  iVar4 = this->field0_0x0;
-  uVar2 = (**(code **)(iVar4 + 0x48))();
-  if ((int)uVar2 < 1) {
-    return uVar2 & 0xffffff00;
+  iVar4 = *param_1;
+  iVar2 = (**(code **)(iVar4 + 0x48))();
+  if (iVar2 < 1) {
+    return 0;
   }
   pcVar1 = *(code **)(iVar4 + 0x4c);
   iVar4 = 1;
   do {
     iVar4 = (*pcVar1)(iVar4);
     if (*(short *)(iVar4 + 4) == unaff_retaddr) {
-      return CONCAT31((int3)((uint)iVar4 >> 8),1);
+      return 1;
     }
     sVar3 = sVar3 + 1;
     iVar4 = (int)sVar3;
-    uVar2 = (*unaff_EBX)();
-  } while (iVar4 <= (int)uVar2);
-  return uVar2 & 0xffffff00;
+    iVar2 = (*unaff_EBX)();
+  } while (iVar4 <= iVar2);
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEF60
 // GHIDRA_NAME TTechMgr::GetTTechMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTechMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTechMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTechMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TTechMgr. */
-
-void * __cdecl TTechMgr::GetTTechMgrClassNamePointer(void)
+undefined ** TTechMgr::GetTTechMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTTechMgr;
+  return &PTR_s_TTechMgr_0066ac98;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEFA0
 // GHIDRA_NAME TTechMgr::DestructTTechMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTechMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTechMgrAndMaybeFree()
 
-void * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this,byte freeSelfFlag)
+undefined4 __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTTechMgrAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

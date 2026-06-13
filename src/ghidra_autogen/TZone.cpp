@@ -3,816 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TZone.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401078
-// GHIDRA_NAME TZone::thunk_DestroyTPortZone
-// GHIDRA_PROTO void __cdecl thunk_DestroyTPortZone(void)
-
-void __cdecl TZone::thunk_DestroyTPortZone(void)
-
-{
-  DestroyTPortZone();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004011F9
-// GHIDRA_NAME TZone::thunk_GetTPortZoneClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTPortZoneClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:stale_thunk]
-// GHIDRA_COMMENT_END
-
-/* [FID:stale_thunk] */
-
-void * __cdecl TZone::thunk_GetTPortZoneClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TPortZone::GetTPortZoneClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401212
-// GHIDRA_NAME TZone::thunk_DeserializeTPortZoneFromBinaryStream
-// GHIDRA_PROTO void __thiscall thunk_DeserializeTPortZoneFromBinaryStream(int arg1)
-
-void __thiscall TZone::thunk_DeserializeTPortZoneFromBinaryStream(TZone *this,int arg1)
-
-{
-  thunk_DeserializeZoneFromBinaryStream_At0040466f(this,arg1);
-  (**(code **)(*(int *)arg1 + 0x3c))(&this->field48,2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004013C5
-// GHIDRA_NAME TZone::thunk_ReturnFalseForZoneCapabilityFlagD_At004013c5
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForZoneCapabilityFlagD_At004013c5(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForZoneCapabilityFlagD
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForZoneCapabilityFlagD */
-
-bool TZone::thunk_ReturnFalseForZoneCapabilityFlagD_At004013c5(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForZoneCapabilityFlagD();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401ABE
-// GHIDRA_NAME TZone::thunk_GetTOceanClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTOceanClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* [FID:thunk_target_sync] */
-
-void * __cdecl TZone::thunk_GetTOceanClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TOcean::GetTOceanClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401B04
-// GHIDRA_NAME TZone::thunk_ReturnTrueForPortZoneCapabilityFlagA
-// GHIDRA_PROTO bool __stdcall thunk_ReturnTrueForPortZoneCapabilityFlagA(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnTrueForPortZoneCapabilityFlagA
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnTrueForPortZoneCapabilityFlagA */
-
-bool TZone::thunk_ReturnTrueForPortZoneCapabilityFlagA(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnTrueForPortZoneCapabilityFlagA();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401B6D
-// GHIDRA_NAME TZone::thunk_FindNearestValidPortZoneOrCityContextTile
-// GHIDRA_PROTO short __fastcall thunk_FindNearestValidPortZoneOrCityContextTile(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to FindNearestValidPortZoneOrCityContextTile
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to FindNearestValidPortZoneOrCityContextTile */
-
-short __fastcall TZone::thunk_FindNearestValidPortZoneOrCityContextTile(void)
-
-{
-  short sVar1;
-  
-  sVar1 = FindNearestValidPortZoneOrCityContextTile();
-  return sVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401BC2
-// GHIDRA_NAME TZone::thunk_DestroyTPortZoneManager
-// GHIDRA_PROTO void __cdecl thunk_DestroyTPortZoneManager(void)
-
-void __cdecl TZone::thunk_DestroyTPortZoneManager(void)
-
-{
-  DestroyTPortZoneManager();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402923
-// GHIDRA_NAME TZone::thunk_RemoveZoneFromGlobalListAndRelease_At00402923
-// GHIDRA_PROTO void __thiscall thunk_RemoveZoneFromGlobalListAndRelease_At00402923(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RemoveZoneFromGlobalListAndRelease
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RemoveZoneFromGlobalListAndRelease */
-
-void __thiscall TZone::thunk_RemoveZoneFromGlobalListAndRelease_At00402923(TZone *this)
-
-{
-  RemoveZoneFromGlobalListAndRelease(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402A1D
-// GHIDRA_NAME TZone::thunk_SerializeZoneToBinaryStream_At00402a1d
-// GHIDRA_PROTO void __thiscall thunk_SerializeZoneToBinaryStream_At00402a1d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SerializeZoneToBinaryStream
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SerializeZoneToBinaryStream */
-
-void __thiscall TZone::thunk_SerializeZoneToBinaryStream_At00402a1d(TZone *this)
-
-{
-  SerializeZoneToBinaryStream(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402C39
-// GHIDRA_NAME TZone::thunk_SerializeMapActionContextRuntimeState
-// GHIDRA_PROTO void __thiscall thunk_SerializeMapActionContextRuntimeState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SerializeMapActionContextRuntimeState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SerializeMapActionContextRuntimeState */
-
-void __thiscall TZone::thunk_SerializeMapActionContextRuntimeState(TZone *this)
-
-{
-  LinkedListQueryOwner::SerializeMapActionContextRuntimeState((LinkedListQueryOwner *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402CB1
-// GHIDRA_NAME TZone::thunk_RefreshTPortZoneDisplayNameFromLocalization
-// GHIDRA_PROTO void __thiscall thunk_RefreshTPortZoneDisplayNameFromLocalization(void)
-
-void __thiscall TZone::thunk_RefreshTPortZoneDisplayNameFromLocalization(TZone *this)
-
-{
-  undefined4 unaff_ESI;
-  char *unaff_EDI;
-  undefined4 *unaff_FS_OFFSET;
-  uint *puStack_20;
-  uint uStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00635830;
-  *unaff_FS_OFFSET = &uStack_c;
-  puStack_20 = (uint *)0x561907;
-  InitializeSharedStringRefFromEmpty();
-  uStack_4 = 0;
-  puStack_20 = (uint *)0x561918;
-  InitializeSharedStringRefFromEmpty();
-  puStack_20 = &uStack_10;
-  uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))
-            (0x275a,CONCAT22((short)((uint)puStack_20 >> 0x10),*(undefined2 *)&this->pField04));
-  scanBracketExpressions(g_pLocalizationTable,&puStack_20,unaff_EDI);
-  AssignFromPtr(&this->field08,(int *)&puStack_20);
-  uStack_10 = uStack_10 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_10 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = unaff_ESI;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403229
-// GHIDRA_NAME TZone::thunk_DeserializeMapActionContextRuntimeState
-// GHIDRA_PROTO void __thiscall thunk_DeserializeMapActionContextRuntimeState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeserializeMapActionContextRuntimeState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeserializeMapActionContextRuntimeState */
-
-void __thiscall TZone::thunk_DeserializeMapActionContextRuntimeState(TZone *this)
-
-{
-  LinkedListQueryOwner::DeserializeMapActionContextRuntimeState((LinkedListQueryOwner *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004032B5
-// GHIDRA_NAME TZone::thunk_SerializeTPortZoneToBinaryStream
-// GHIDRA_PROTO void __thiscall thunk_SerializeTPortZoneToBinaryStream(void)
-
-void __thiscall TZone::thunk_SerializeTPortZoneToBinaryStream(TZone *this)
-
-{
-  SerializeTPortZoneToBinaryStream(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403B25
-// GHIDRA_NAME TZone::thunk_FindBestCoastalTileForContextAndCityStateByHeuristic_At00403b25
-// GHIDRA_PROTO short __thiscall thunk_FindBestCoastalTileForContextAndCityStateByHeuristic_At00403b25(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to FindBestCoastalTileForContextAndCityStateByHeuristic
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to FindBestCoastalTileForContextAndCityStateByHeuristic */
-
-short __thiscall
-TZone::thunk_FindBestCoastalTileForContextAndCityStateByHeuristic_At00403b25(TZone *this)
-
-{
-  short sVar1;
-  
-  sVar1 = FindBestCoastalTileForContextAndCityStateByHeuristic(this);
-  return sVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403E95
-// GHIDRA_NAME TZone::thunk_AssignZoneDisplayNameToOutputRef_At00403e95
-// GHIDRA_PROTO void __thiscall thunk_AssignZoneDisplayNameToOutputRef_At00403e95(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AssignZoneDisplayNameToOutputRef
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AssignZoneDisplayNameToOutputRef */
-
-void __thiscall TZone::thunk_AssignZoneDisplayNameToOutputRef_At00403e95(TZone *this)
-
-{
-  AssignZoneDisplayNameToOutputRef(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404287
-// GHIDRA_NAME TZone::thunk_NotifyDiplomacyManagerForPortZoneOwnerNation
-// GHIDRA_PROTO void __cdecl thunk_NotifyDiplomacyManagerForPortZoneOwnerNation(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to NotifyDiplomacyManagerForPortZoneOwnerNation
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to NotifyDiplomacyManagerForPortZoneOwnerNation */
-
-void __cdecl TZone::thunk_NotifyDiplomacyManagerForPortZoneOwnerNation(void)
-
-{
-  NotifyDiplomacyManagerForPortZoneOwnerNation();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040466F
-// GHIDRA_NAME TZone::thunk_DeserializeZoneFromBinaryStream_At0040466f
-// GHIDRA_PROTO void __thiscall thunk_DeserializeZoneFromBinaryStream_At0040466f(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeserializeZoneFromBinaryStream
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeserializeZoneFromBinaryStream */
-
-void __thiscall TZone::thunk_DeserializeZoneFromBinaryStream_At0040466f(TZone *this,int arg1)
-
-{
-  uint uVar1;
-  void *pvVar2;
-  uint uVar3;
-  uint uVar4;
-  void **ppvVar5;
-  void **ppvVar6;
-  int iVar7;
-  int iVar8;
-  undefined4 uStack_44;
-  int iStack_40;
-  undefined4 uStack_3c;
-  uint uStack_38;
-  void **ppvStack_34;
-  undefined4 uStack_30;
-  void **ppvStack_2c;
-  int iStack_28;
-  
-  iStack_28 = arg1;
-  ppvStack_2c = (void **)0x55ed33;
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  iVar7 = *(int *)arg1;
-  ppvStack_2c = &this->field08;
-  iStack_28 = 0x20;
-  uStack_30 = 0x55ed41;
-  (**(code **)(iVar7 + 0x70))();
-  ppvVar5 = *(void ***)(iVar7 + 0x3c);
-  ppvStack_34 = &this->pField04;
-  uStack_30 = 2;
-  uStack_38 = 0x55ed52;
-  (*(code *)ppvVar5)();
-  uStack_3c = &this->field0c;
-  uStack_38 = 4;
-  iStack_40 = 0x55ed5c;
-  (*(code *)ppvVar5)();
-  uStack_44 = (void **)((int)&this->field10 + 2);
-  iStack_40 = 2;
-  (*(code *)ppvVar5)();
-  ppvVar6 = &this->field20;
-  (*(code *)ppvVar5)(ppvVar6,2);
-  if (g_Advance_Turn_Machine_State_00695278 < 0x12) {
-    *(undefined2 *)&this->field14 = (undefined2)g_nMapActionContextCount;
-    g_nMapActionContextCount = g_nMapActionContextCount + 1;
-  }
-  else {
-    (*(code *)ppvVar5)(&this->field14,2);
-  }
-  *(undefined2 *)&this->field10 = 0;
-  this->field44 = 0;
-  if (this->pField28 != (void *)0x0) {
-    this->pField28 = (void *)0x0;
-    this->field2c = 0;
-    this->field30 = 0;
-    FreeHeapBlockWithAllocatorTracking();
-  }
-  if (this->field38 != (void *)0x0) {
-    this->field38 = (void *)0x0;
-    this->field3c = 0;
-    this->field40 = 0;
-    FreeHeapBlockWithAllocatorTracking();
-  }
-  if (g_Advance_Turn_Machine_State_00695278 < 0xd) {
-    (*(code *)ppvVar5)((int)&uStack_3c + 2,2);
-    iStack_40 = 0;
-    if (0 < uStack_44._2_2_) {
-      do {
-        iVar7 = iStack_40;
-        (*(code *)ppvVar5)(&ppvStack_34,4);
-        uVar4 = (uint)(short)iVar7;
-        if (this->field2c <= uVar4) {
-          uVar1 = uVar4 + 1;
-          uStack_38 = uVar1 * 2;
-          if (0x7fffffff < uStack_38) {
-            uStack_38 = 0x7fffffff;
-          }
-          pvVar2 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField28,uVar1 * 8);
-          if (pvVar2 == (void *)0x0) {
-            pvVar2 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField28,uVar1 * 4);
-            this->pField28 = pvVar2;
-            this->field2c = uVar1;
-          }
-          else {
-            this->pField28 = pvVar2;
-            this->field2c = uStack_38;
-          }
-        }
-        if (this->field30 <= uVar4) {
-          this->field30 = uVar4 + 1;
-        }
-        iStack_40 = iStack_40 + 1;
-        *(void ***)((int)this->pField28 + uVar4 * 4) = ppvStack_34;
-        ppvVar5 = uStack_3c;
-      } while ((short)iStack_40 < uStack_44._2_2_);
-    }
-    (*(code *)ppvVar5)((int)&uStack_44 + 2,2);
-    iVar7 = 0;
-    if (0 < (short)((uint)ppvVar6 >> 0x10)) {
-      do {
-        iVar8 = iVar7;
-        (*(code *)ppvVar5)(&uStack_3c,4);
-        uVar4 = (uint)(short)iVar7;
-        if (this->field3c <= uVar4) {
-          uVar1 = uVar4 + 1;
-          uVar3 = uVar1 * 2;
-          if (0x7fffffff < uVar3) {
-            uVar3 = 0x7fffffff;
-          }
-          pvVar2 = ReallocateHeapBlockWithAllocatorTracking((int)this->field38,uVar1 * 8);
-          if (pvVar2 == (void *)0x0) {
-            pvVar2 = ReallocateHeapBlockWithAllocatorTracking((int)this->field38,uVar1 * 4);
-            this->field38 = pvVar2;
-            this->field3c = uVar1;
-          }
-          else {
-            this->field38 = pvVar2;
-            this->field3c = uVar3;
-          }
-        }
-        if (this->field40 <= uVar4) {
-          this->field40 = uVar4 + 1;
-        }
-        iVar7 = iVar8 + 1;
-        *(void ***)((int)this->field38 + uVar4 * 4) = uStack_3c;
-        ppvVar5 = uStack_44;
-      } while ((short)iVar7 < (short)((uint)ppvVar6 >> 0x10));
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404FFC
-// GHIDRA_NAME TZone::thunk_ReturnFalseForPortZoneCapabilityFlagC
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForPortZoneCapabilityFlagC(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForPortZoneCapabilityFlagC
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForPortZoneCapabilityFlagC */
-
-bool TZone::thunk_ReturnFalseForPortZoneCapabilityFlagC(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForPortZoneCapabilityFlagC();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405A29
-// GHIDRA_NAME TZone::thunk_UpdatePortZoneTileOverlayMarkersForStateToggle_At00405a29
-// GHIDRA_PROTO void __thiscall thunk_UpdatePortZoneTileOverlayMarkersForStateToggle_At00405a29(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdatePortZoneTileOverlayMarkersForStateToggle
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdatePortZoneTileOverlayMarkersForStateToggle */
-
-void __thiscall TZone::thunk_UpdatePortZoneTileOverlayMarkersForStateToggle_At00405a29(TZone *this)
-
-{
-  InputState::UpdatePortZoneTileOverlayMarkersForStateToggle((InputState *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405C13
-// GHIDRA_NAME TZone::thunk_CanPortZoneInteractWithNationUnderDiplomacyRules
-// GHIDRA_PROTO bool __thiscall thunk_CanPortZoneInteractWithNationUnderDiplomacyRules(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CanPortZoneInteractWithNationUnderDiplomacyRules
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CanPortZoneInteractWithNationUnderDiplomacyRules */
-
-bool __thiscall TZone::thunk_CanPortZoneInteractWithNationUnderDiplomacyRules(TZone *this,int arg1)
-
-{
-  bool bVar1;
-  
-  bVar1 = CanPortZoneInteractWithNationUnderDiplomacyRules(this,arg1);
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F5B
-// GHIDRA_NAME TZone::thunk_FindNearestActiveSeaContextTileFromCurrentTile_At00405f5b
-// GHIDRA_PROTO short __thiscall thunk_FindNearestActiveSeaContextTileFromCurrentTile_At00405f5b(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to FindNearestActiveSeaContextTileFromCurrentTile
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to FindNearestActiveSeaContextTileFromCurrentTile */
-
-short __thiscall TZone::thunk_FindNearestActiveSeaContextTileFromCurrentTile_At00405f5b(TZone *this)
-
-{
-  short sVar1;
-  
-  sVar1 = FindNearestActiveSeaContextTileFromCurrentTile(this);
-  return sVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406208
-// GHIDRA_NAME TZone::thunk_FindNearestActiveSeaContextTileFromOffset216_At00406208
-// GHIDRA_PROTO short __thiscall thunk_FindNearestActiveSeaContextTileFromOffset216_At00406208(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to FindNearestActiveSeaContextTileFromOffset216
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to FindNearestActiveSeaContextTileFromOffset216 */
-
-short __thiscall TZone::thunk_FindNearestActiveSeaContextTileFromOffset216_At00406208(TZone *this)
-
-{
-  short sVar1;
-  
-  sVar1 = FindNearestActiveSeaContextTileFromOffset216(this);
-  return sVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406389
-// GHIDRA_NAME TZone::thunk_ReturnTrueForZoneCapabilityFlagA_At00406389
-// GHIDRA_PROTO bool __stdcall thunk_ReturnTrueForZoneCapabilityFlagA_At00406389(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnTrueForZoneCapabilityFlagA
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnTrueForZoneCapabilityFlagA */
-
-bool TZone::thunk_ReturnTrueForZoneCapabilityFlagA_At00406389(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnTrueForZoneCapabilityFlagA();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406582
-// GHIDRA_NAME TZone::thunk_AssignZoneDisplayNameAliasToOutputRef_At00406582
-// GHIDRA_PROTO void __thiscall thunk_AssignZoneDisplayNameAliasToOutputRef_At00406582(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AssignZoneDisplayNameAliasToOutputRef
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AssignZoneDisplayNameAliasToOutputRef */
-
-void __thiscall TZone::thunk_AssignZoneDisplayNameAliasToOutputRef_At00406582(TZone *this)
-
-{
-  AssignZoneDisplayNameAliasToOutputRef(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406898
-// GHIDRA_NAME TZone::thunk_AppendZonePointerToPrimaryArray
-// GHIDRA_PROTO void __thiscall thunk_AppendZonePointerToPrimaryArray(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AppendZonePointerToPrimaryArray
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AppendZonePointerToPrimaryArray */
-
-void __thiscall TZone::thunk_AppendZonePointerToPrimaryArray(TZone *this)
-
-{
-  AppendZonePointerToPrimaryArray(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406EC9
-// GHIDRA_NAME TZone::thunk_GetOrAppendUniqueZonePointerInPrimaryArray
-// GHIDRA_PROTO void __thiscall thunk_GetOrAppendUniqueZonePointerInPrimaryArray(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetOrAppendUniqueZonePointerInPrimaryArray
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetOrAppendUniqueZonePointerInPrimaryArray */
-
-void __thiscall TZone::thunk_GetOrAppendUniqueZonePointerInPrimaryArray(TZone *this)
-
-{
-  GetOrAppendUniqueZonePointerInPrimaryArray(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040711C
-// GHIDRA_NAME TZone::thunk_ReturnFalseForZoneCapabilityFlagB_At0040711c
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForZoneCapabilityFlagB_At0040711c(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForZoneCapabilityFlagB
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForZoneCapabilityFlagB */
-
-bool TZone::thunk_ReturnFalseForZoneCapabilityFlagB_At0040711c(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForZoneCapabilityFlagB();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040749B
-// GHIDRA_NAME TZone::thunk_DestroyTPortZoneManagerAndPurgePortZones
-// GHIDRA_PROTO void __thiscall thunk_DestroyTPortZoneManagerAndPurgePortZones(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTPortZoneManagerAndPurgePortZones
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTPortZoneManagerAndPurgePortZones */
-
-void __thiscall TZone::thunk_DestroyTPortZoneManagerAndPurgePortZones(TZone *this)
-
-{
-  TPortZone::DestroyTPortZoneManagerAndPurgePortZones((TPortZone *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040767B
-// GHIDRA_NAME TZone::thunk_GetOrAppendUniqueZonePointerInSecondaryArray
-// GHIDRA_PROTO void __thiscall thunk_GetOrAppendUniqueZonePointerInSecondaryArray(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetOrAppendUniqueZonePointerInSecondaryArray
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetOrAppendUniqueZonePointerInSecondaryArray */
-
-void __thiscall TZone::thunk_GetOrAppendUniqueZonePointerInSecondaryArray(TZone *this)
-
-{
-  GetOrAppendUniqueZonePointerInSecondaryArray(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004078D3
-// GHIDRA_NAME TZone::thunk_GenerateMapActionContextDisplayNameAndHeadline_At004078d3
-// GHIDRA_PROTO void __thiscall thunk_GenerateMapActionContextDisplayNameAndHeadline_At004078d3(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GenerateMapActionContextDisplayNameAndHeadline
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GenerateMapActionContextDisplayNameAndHeadline */
-
-void __thiscall TZone::thunk_GenerateMapActionContextDisplayNameAndHeadline_At004078d3(TZone *this)
-
-{
-  GenerateMapActionContextDisplayNameAndHeadline(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407FB8
-// GHIDRA_NAME TZone::thunk_DestroyTPortZoneArrayWithOptionalElementDestruct_At00407fb8
-// GHIDRA_PROTO void __cdecl thunk_DestroyTPortZoneArrayWithOptionalElementDestruct_At00407fb8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTPortZoneArrayWithOptionalElementDestruct
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTPortZoneArrayWithOptionalElementDestruct */
-
-void __cdecl TZone::thunk_DestroyTPortZoneArrayWithOptionalElementDestruct_At00407fb8(void)
-
-{
-  DestroyTPortZoneArrayWithOptionalElementDestruct();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408747
-// GHIDRA_NAME TZone::thunk_HasZoneActiveChildCount_At00408747
-// GHIDRA_PROTO bool __thiscall thunk_HasZoneActiveChildCount_At00408747(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HasZoneActiveChildCount
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HasZoneActiveChildCount */
-
-bool __thiscall TZone::thunk_HasZoneActiveChildCount_At00408747(TZone *this)
-
-{
-  bool bVar1;
-  
-  bVar1 = HasZoneActiveChildCount(this);
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408918
-// GHIDRA_NAME TZone::thunk_AppendZonePointerToSecondaryArray
-// GHIDRA_PROTO void __thiscall thunk_AppendZonePointerToSecondaryArray(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AppendZonePointerToSecondaryArray
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AppendZonePointerToSecondaryArray */
-
-void __thiscall TZone::thunk_AppendZonePointerToSecondaryArray(TZone *this)
-
-{
-  AppendZonePointerToSecondaryArray(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408C3D
-// GHIDRA_NAME TZone::thunk_ReturnFalseForZoneCapabilityFlagE_At00408c3d
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForZoneCapabilityFlagE_At00408c3d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForZoneCapabilityFlagE
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForZoneCapabilityFlagE */
-
-bool TZone::thunk_ReturnFalseForZoneCapabilityFlagE_At00408c3d(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForZoneCapabilityFlagE();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408D0F
-// GHIDRA_NAME TZone::thunk_ReturnFalseForZoneCapabilityFlagC_At00408d0f
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForZoneCapabilityFlagC_At00408d0f(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForZoneCapabilityFlagC
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForZoneCapabilityFlagC */
-
-bool TZone::thunk_ReturnFalseForZoneCapabilityFlagC_At00408d0f(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForZoneCapabilityFlagC();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408E3B
-// GHIDRA_NAME TZone::thunk_ReturnTrueForPortZoneCapabilityFlagB
-// GHIDRA_PROTO bool __stdcall thunk_ReturnTrueForPortZoneCapabilityFlagB(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnTrueForPortZoneCapabilityFlagB
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnTrueForPortZoneCapabilityFlagB */
-
-bool TZone::thunk_ReturnTrueForPortZoneCapabilityFlagB(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnTrueForPortZoneCapabilityFlagB();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409327
-// GHIDRA_NAME TZone::thunk_DestroyTPortZoneAndClearOverlayMarkers
-// GHIDRA_PROTO void __cdecl thunk_DestroyTPortZoneAndClearOverlayMarkers(void)
-
-void __cdecl TZone::thunk_DestroyTPortZoneAndClearOverlayMarkers(void)
-
-{
-  DestroyTPortZoneAndClearOverlayMarkers();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409368
-// GHIDRA_NAME TZone::thunk_GetTZoneClassNamePointer_At00409368
-// GHIDRA_PROTO void * __cdecl thunk_GetTZoneClassNamePointer_At00409368(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTZoneClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTZoneClassNamePointer */
-
-void * __cdecl TZone::thunk_GetTZoneClassNamePointer_At00409368(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTZoneClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409791
-// GHIDRA_NAME TZone::thunk_IsPortZoneOwnerNationEqual
-// GHIDRA_PROTO bool __thiscall thunk_IsPortZoneOwnerNationEqual(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to IsPortZoneOwnerNationEqual
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to IsPortZoneOwnerNationEqual */
-
-bool __thiscall TZone::thunk_IsPortZoneOwnerNationEqual(TZone *this)
-
-{
-  bool bVar1;
-  
-  bVar1 = IsPortZoneOwnerNationEqual(this);
-  return bVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E660
 // GHIDRA_NAME TZone::CreateTZone
-// GHIDRA_PROTO TZone * __cdecl CreateTZone(void)
+// GHIDRA_PROTO undefined CreateTZone()
 
-TZone * __cdecl TZone::CreateTZone(void)
+undefined4 __fastcall TZone::CreateTZone(undefined4 param_1)
 
 {
-  TZone *this;
-  TZone *extraout_EAX;
+  int iVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -822,27 +21,22 @@ TZone * __cdecl TZone::CreateTZone(void)
   puStack_8 = &LAB_006356ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  iVar1 = AllocateWithFallbackHandler(0x48,param_1);
   local_4 = 0;
-  if (this != (TZone *)0x0) {
-    thunk_ConstructTZoneAndLinkIntoGlobalMapActionContextList(this);
+  if (iVar1 != 0) {
+    uVar2 = ConstructTZoneAndLinkIntoGlobalMapActionContextList(iVar1);
     *unaff_FS_OFFSET = local_c;
-    return extraout_EAX;
+    return uVar2;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TZone *)0x0;
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E6E0
 // GHIDRA_NAME TZone::GetTZoneClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTZoneClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TZone.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTZoneClassNamePointer()
 
-/* Returns class descriptor pointer for TZone. */
-
-void * __cdecl TZone::GetTZoneClassNamePointer(void)
+char * TZone::GetTZoneClassNamePointer(void)
 
 {
   return &g_pClassDescTZone;
@@ -850,15 +44,10 @@ void * __cdecl TZone::GetTZoneClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E700
 // GHIDRA_NAME TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList
-// GHIDRA_PROTO void __thiscall ConstructTZoneAndLinkIntoGlobalMapActionContextList(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes TZone fields, links into global map-action context list, and resets cached context arrays.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTZoneAndLinkIntoGlobalMapActionContextList()
 
-/* Initializes TZone fields, links into global map-action context list, and resets cached context
-   arrays. */
-
-void __thiscall TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(TZone *this)
+undefined4 * __fastcall
+TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -869,440 +58,451 @@ void __thiscall TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(TZone
   puStack_8 = &LAB_00635709;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->field0_0x0 = &g_vtblRefCountedObjectBase;
+  *param_1 = &RefCountedObjectBase::_vftable_;
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
-  this->pField28 = (void *)0x0;
-  this->field2c = 0;
-  this->field30 = 0;
-  this->pField24 = &PTR_thunk_GetOrAppendUniqueZonePointerInPrimaryArray_0065c74c;
-  this->field38 = (void *)0x0;
-  this->field3c = 0;
-  this->field40 = 0;
-  this->pField34 = &PTR_thunk_GetOrAppendUniqueZonePointerInSecondaryArray_0065c748;
-  this->field0_0x0 = &g_vtblTZone;
-  *(undefined2 *)((int)&this->field10 + 2) = 0xffff;
-  *(undefined2 *)&this->field14 = (undefined2)g_nMapActionContextCount;
+  param_1[10] = 0;
+  param_1[0xb] = 0;
+  param_1[0xc] = 0;
+  param_1[9] = &PTR_LAB_0065c74c;
+  param_1[0xe] = 0;
+  param_1[0xf] = 0;
+  param_1[0x10] = 0;
+  param_1[0xd] = &PTR_LAB_0065c748;
+  *param_1 = &PTR_LAB_0065c6d8;
+  *(undefined2 *)((int)param_1 + 0x12) = 0xffff;
+  *(undefined2 *)(param_1 + 5) = (undefined2)g_nMapActionContextCount;
   g_nMapActionContextCount = g_nMapActionContextCount + 1;
   local_4 = CONCAT31(local_4._1_3_,3);
-  this->field0c = (void *)0xffffffff;
-  *(undefined2 *)&this->field10 = 0;
-  this->field18 = g_pMapActionContextListHead;
-  this->field1c = 0;
-  this->field44 = 0;
-  *(undefined2 *)&this->pField04 = 0xffff;
-  *(undefined2 *)&this->field20 = 0xffff;
-  g_pMapActionContextListHead = this;
-  if (this->field18 != (void *)0x0) {
-    *(TZone **)((int)this->field18 + 0x1c) = this;
+  param_1[3] = 0xffffffff;
+  *(undefined2 *)(param_1 + 4) = 0;
+  param_1[6] = g_pMapActionContextListHead;
+  param_1[7] = 0;
+  *(undefined2 *)(param_1 + 0x11) = 0;
+  *(undefined2 *)(param_1 + 1) = 0xffff;
+  *(undefined2 *)(param_1 + 8) = 0xffff;
+  g_pMapActionContextListHead = param_1;
+  if (param_1[6] != 0) {
+    *(undefined4 **)(param_1[6] + 0x1c) = param_1;
   }
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
-    FreeHeapBufferIfNotNull();
+    FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
   }
   *unaff_FS_OFFSET = local_c;
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E8C0
 // GHIDRA_NAME TZone::HasZoneActiveChildCount
-// GHIDRA_PROTO bool __thiscall HasZoneActiveChildCount(void)
+// GHIDRA_PROTO undefined HasZoneActiveChildCount()
 
-bool __thiscall TZone::HasZoneActiveChildCount(TZone *this)
+bool __fastcall TZone::HasZoneActiveChildCount(int param_1)
 
 {
-  return 0 < this->field44;
+  return 0 < *(short *)(param_1 + 0x44);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E8E0
 // GHIDRA_NAME TZone::GetOrAppendUniqueZonePointerInPrimaryArray
-// GHIDRA_PROTO void __thiscall GetOrAppendUniqueZonePointerInPrimaryArray(void)
+// GHIDRA_PROTO undefined GetOrAppendUniqueZonePointerInPrimaryArray()
 
-void __thiscall TZone::GetOrAppendUniqueZonePointerInPrimaryArray(TZone *this)
+int * __thiscall TZone::GetOrAppendUniqueZonePointerInPrimaryArray(int param_1,int param_2)
 
 {
-  void *pvVar1;
-  void *pvVar2;
-  int *piVar3;
-  void *pvVar4;
-  void *pvVar5;
-  int in_stack_00000004;
+  int iVar1;
+  uint uVar2;
+  uint uVar3;
+  int *piVar4;
+  int iVar5;
+  undefined4 uVar6;
   
-  pvVar2 = (void *)0x0;
-  pvVar1 = this->field0c;
-  if (pvVar1 != (void *)0x0) {
-    piVar3 = this->pField04;
+  uVar3 = 0;
+  uVar2 = *(uint *)(param_1 + 0xc);
+  if (uVar2 != 0) {
+    piVar4 = *(int **)(param_1 + 4);
     do {
-      if (*piVar3 == in_stack_00000004) {
-        piVar3 = (int *)((int)this->pField04 + pvVar2 * 4);
+      if (*piVar4 == param_2) {
+        piVar4 = *(int **)(param_1 + 4) + uVar3;
         goto LAB_0055e90c;
       }
-      pvVar2 = (void *)((int)pvVar2 + 1);
-      piVar3 = piVar3 + 1;
-    } while (pvVar2 < pvVar1);
+      uVar3 = uVar3 + 1;
+      piVar4 = piVar4 + 1;
+    } while (uVar3 < uVar2);
   }
-  piVar3 = (int *)0x0;
+  piVar4 = (int *)0x0;
 LAB_0055e90c:
-  if (piVar3 == (int *)0x0) {
-    if (this->field08 <= pvVar1) {
-      pvVar2 = (void *)((int)pvVar1 + 1);
-      pvVar5 = (void *)((int)pvVar2 * 2);
-      if ((void *)0x7fffffff < pvVar5) {
-        pvVar5 = (void *)0x7fffffff;
+  if (piVar4 == (int *)0x0) {
+    if (*(uint *)(param_1 + 8) <= uVar2) {
+      iVar1 = uVar2 + 1;
+      uVar3 = iVar1 * 2;
+      if (0x7fffffff < uVar3) {
+        uVar3 = 0x7fffffff;
       }
-      pvVar4 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField04,(int)pvVar2 * 8);
-      if (pvVar4 == (void *)0x0) {
-        pvVar5 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField04,(int)pvVar2 * 4);
-        this->pField04 = pvVar5;
-        this->field08 = pvVar2;
+      iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 8);
+      if (iVar5 == 0) {
+        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 4);
+        *(undefined4 *)(param_1 + 4) = uVar6;
+        *(int *)(param_1 + 8) = iVar1;
       }
       else {
-        this->pField04 = pvVar4;
-        this->field08 = pvVar5;
+        *(int *)(param_1 + 4) = iVar5;
+        *(uint *)(param_1 + 8) = uVar3;
       }
     }
-    if (this->field0c <= pvVar1) {
-      this->field0c = (void *)((int)pvVar1 + 1);
+    if (*(uint *)(param_1 + 0xc) <= uVar2) {
+      *(uint *)(param_1 + 0xc) = uVar2 + 1;
     }
-    *(int *)((int)this->pField04 + (int)pvVar1 * 4) = in_stack_00000004;
+    iVar1 = *(int *)(param_1 + 4);
+    *(int *)(iVar1 + uVar2 * 4) = param_2;
+    piVar4 = (int *)(iVar1 + uVar2 * 4);
   }
-  return;
+  return piVar4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055E9C0
 // GHIDRA_NAME TZone::GetOrAppendUniqueZonePointerInSecondaryArray
-// GHIDRA_PROTO void __thiscall GetOrAppendUniqueZonePointerInSecondaryArray(void)
+// GHIDRA_PROTO undefined GetOrAppendUniqueZonePointerInSecondaryArray()
 
-void __thiscall TZone::GetOrAppendUniqueZonePointerInSecondaryArray(TZone *this)
+int * __thiscall TZone::GetOrAppendUniqueZonePointerInSecondaryArray(int param_1,int param_2)
 
 {
-  void *pvVar1;
-  void *pvVar2;
-  int *piVar3;
-  void *pvVar4;
-  void *pvVar5;
-  int in_stack_00000004;
+  int iVar1;
+  uint uVar2;
+  uint uVar3;
+  int *piVar4;
+  int iVar5;
+  undefined4 uVar6;
   
-  pvVar2 = (void *)0x0;
-  pvVar1 = this->field0c;
-  if (pvVar1 != (void *)0x0) {
-    piVar3 = this->pField04;
+  uVar3 = 0;
+  uVar2 = *(uint *)(param_1 + 0xc);
+  if (uVar2 != 0) {
+    piVar4 = *(int **)(param_1 + 4);
     do {
-      if (*piVar3 == in_stack_00000004) {
-        piVar3 = (int *)((int)this->pField04 + pvVar2 * 4);
+      if (*piVar4 == param_2) {
+        piVar4 = *(int **)(param_1 + 4) + uVar3;
         goto LAB_0055e9ec;
       }
-      pvVar2 = (void *)((int)pvVar2 + 1);
-      piVar3 = piVar3 + 1;
-    } while (pvVar2 < pvVar1);
+      uVar3 = uVar3 + 1;
+      piVar4 = piVar4 + 1;
+    } while (uVar3 < uVar2);
   }
-  piVar3 = (int *)0x0;
+  piVar4 = (int *)0x0;
 LAB_0055e9ec:
-  if (piVar3 == (int *)0x0) {
-    if (this->field08 <= pvVar1) {
-      pvVar2 = (void *)((int)pvVar1 + 1);
-      pvVar5 = (void *)((int)pvVar2 * 2);
-      if ((void *)0x7fffffff < pvVar5) {
-        pvVar5 = (void *)0x7fffffff;
+  if (piVar4 == (int *)0x0) {
+    if (*(uint *)(param_1 + 8) <= uVar2) {
+      iVar1 = uVar2 + 1;
+      uVar3 = iVar1 * 2;
+      if (0x7fffffff < uVar3) {
+        uVar3 = 0x7fffffff;
       }
-      pvVar4 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField04,(int)pvVar2 * 8);
-      if (pvVar4 == (void *)0x0) {
-        pvVar5 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField04,(int)pvVar2 * 4);
-        this->pField04 = pvVar5;
-        this->field08 = pvVar2;
+      iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 8);
+      if (iVar5 == 0) {
+        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 4);
+        *(undefined4 *)(param_1 + 4) = uVar6;
+        *(int *)(param_1 + 8) = iVar1;
       }
       else {
-        this->pField04 = pvVar4;
-        this->field08 = pvVar5;
+        *(int *)(param_1 + 4) = iVar5;
+        *(uint *)(param_1 + 8) = uVar3;
       }
     }
-    if (this->field0c <= pvVar1) {
-      this->field0c = (void *)((int)pvVar1 + 1);
+    if (*(uint *)(param_1 + 0xc) <= uVar2) {
+      *(uint *)(param_1 + 0xc) = uVar2 + 1;
     }
-    *(int *)((int)this->pField04 + (int)pvVar1 * 4) = in_stack_00000004;
+    iVar1 = *(int *)(param_1 + 4);
+    *(int *)(iVar1 + uVar2 * 4) = param_2;
+    piVar4 = (int *)(iVar1 + uVar2 * 4);
   }
-  return;
+  return piVar4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055EAD0
 // GHIDRA_NAME TZone::AppendZonePointerToPrimaryArray
-// GHIDRA_PROTO void __thiscall AppendZonePointerToPrimaryArray(void)
+// GHIDRA_PROTO undefined AppendZonePointerToPrimaryArray()
 
-void __thiscall TZone::AppendZonePointerToPrimaryArray(TZone *this)
+void __thiscall TZone::AppendZonePointerToPrimaryArray(int param_1,undefined4 param_2)
 
 {
-  void *pvVar1;
-  void *pvVar2;
-  void *pvVar3;
-  void *pvVar4;
-  undefined4 in_stack_00000004;
+  int iVar1;
+  uint uVar2;
+  int iVar3;
+  undefined4 uVar4;
+  uint uVar5;
   
-  pvVar2 = this->field0c;
-  if (this->field08 <= pvVar2) {
-    pvVar1 = (void *)((int)pvVar2 + 1);
-    pvVar4 = (void *)((int)pvVar1 * 2);
-    if ((void *)0x7fffffff < pvVar4) {
-      pvVar4 = (void *)0x7fffffff;
+  uVar2 = *(uint *)(param_1 + 0xc);
+  if (*(uint *)(param_1 + 8) <= uVar2) {
+    iVar1 = uVar2 + 1;
+    uVar5 = iVar1 * 2;
+    if (0x7fffffff < uVar5) {
+      uVar5 = 0x7fffffff;
     }
-    pvVar3 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField04,(int)pvVar1 * 8);
-    if (pvVar3 == (void *)0x0) {
-      pvVar4 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField04,(int)pvVar1 * 4);
-      this->pField04 = pvVar4;
-      this->field08 = pvVar1;
+    iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 8);
+    if (iVar3 == 0) {
+      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 4);
+      *(undefined4 *)(param_1 + 4) = uVar4;
+      *(int *)(param_1 + 8) = iVar1;
     }
     else {
-      this->pField04 = pvVar3;
-      this->field08 = pvVar4;
+      *(int *)(param_1 + 4) = iVar3;
+      *(uint *)(param_1 + 8) = uVar5;
     }
   }
-  if (this->field0c <= pvVar2) {
-    this->field0c = (void *)((int)pvVar2 + 1);
+  if (*(uint *)(param_1 + 0xc) <= uVar2) {
+    *(uint *)(param_1 + 0xc) = uVar2 + 1;
   }
-  *(undefined4 *)((int)this->pField04 + (int)pvVar2 * 4) = in_stack_00000004;
+  *(undefined4 *)(*(int *)(param_1 + 4) + uVar2 * 4) = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055EBA0
 // GHIDRA_NAME TZone::AppendZonePointerToSecondaryArray
-// GHIDRA_PROTO void __thiscall AppendZonePointerToSecondaryArray(void)
+// GHIDRA_PROTO undefined AppendZonePointerToSecondaryArray()
 
-void __thiscall TZone::AppendZonePointerToSecondaryArray(TZone *this)
+void __thiscall TZone::AppendZonePointerToSecondaryArray(int param_1,undefined4 param_2)
 
 {
-  void *pvVar1;
-  void *pvVar2;
-  void *pvVar3;
-  void *pvVar4;
-  undefined4 in_stack_00000004;
+  int iVar1;
+  uint uVar2;
+  int iVar3;
+  undefined4 uVar4;
+  uint uVar5;
   
-  pvVar2 = this->field0c;
-  if (this->field08 <= pvVar2) {
-    pvVar1 = (void *)((int)pvVar2 + 1);
-    pvVar4 = (void *)((int)pvVar1 * 2);
-    if ((void *)0x7fffffff < pvVar4) {
-      pvVar4 = (void *)0x7fffffff;
+  uVar2 = *(uint *)(param_1 + 0xc);
+  if (*(uint *)(param_1 + 8) <= uVar2) {
+    iVar1 = uVar2 + 1;
+    uVar5 = iVar1 * 2;
+    if (0x7fffffff < uVar5) {
+      uVar5 = 0x7fffffff;
     }
-    pvVar3 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField04,(int)pvVar1 * 8);
-    if (pvVar3 == (void *)0x0) {
-      pvVar4 = ReallocateHeapBlockWithAllocatorTracking((int)this->pField04,(int)pvVar1 * 4);
-      this->pField04 = pvVar4;
-      this->field08 = pvVar1;
+    iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 8);
+    if (iVar3 == 0) {
+      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 4);
+      *(undefined4 *)(param_1 + 4) = uVar4;
+      *(int *)(param_1 + 8) = iVar1;
     }
     else {
-      this->pField04 = pvVar3;
-      this->field08 = pvVar4;
+      *(int *)(param_1 + 4) = iVar3;
+      *(uint *)(param_1 + 8) = uVar5;
     }
   }
-  if (this->field0c <= pvVar2) {
-    this->field0c = (void *)((int)pvVar2 + 1);
+  if (*(uint *)(param_1 + 0xc) <= uVar2) {
+    *(uint *)(param_1 + 0xc) = uVar2 + 1;
   }
-  *(undefined4 *)((int)this->pField04 + (int)pvVar2 * 4) = in_stack_00000004;
+  *(undefined4 *)(*(int *)(param_1 + 4) + uVar2 * 4) = param_2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055EC60
 // GHIDRA_NAME TZone::RemoveZoneFromGlobalListAndRelease
-// GHIDRA_PROTO void __thiscall RemoveZoneFromGlobalListAndRelease(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Unlinks zone from global context list and releases via virtual destructor path.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RemoveZoneFromGlobalListAndRelease()
 
-/* Unlinks zone from global context list and releases via virtual destructor path. */
-
-void __thiscall TZone::RemoveZoneFromGlobalListAndRelease(TZone *this)
+void __fastcall TZone::RemoveZoneFromGlobalListAndRelease(int *param_1)
 
 {
-  if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = this->field18;
+  if (g_pMapActionContextListHead == param_1) {
+    g_pMapActionContextListHead = (void *)param_1[6];
   }
-  if (this->field18 != (void *)0x0) {
-    *(int *)((int)this->field18 + 0x1c) = this->field1c;
+  if (param_1[6] != 0) {
+    *(int *)(param_1[6] + 0x1c) = param_1[7];
   }
-  if (this->field1c != 0) {
-    *(void **)(this->field1c + 0x18) = this->field18;
+  if (param_1[7] != 0) {
+    *(int *)(param_1[7] + 0x18) = param_1[6];
   }
-  this->field1c = 0;
-  this->field18 = (void *)0x0;
-  if (this != (TZone *)0x0) {
-    (**(code **)((int)this->field0_0x0 + 4))(1);
+  param_1[7] = 0;
+  param_1[6] = 0;
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055EFF0
 // GHIDRA_NAME TZone::SerializeZoneToBinaryStream
-// GHIDRA_PROTO void __thiscall SerializeZoneToBinaryStream(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Serializes zone/core context fields to stream state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SerializeZoneToBinaryStream()
 
-/* Serializes zone/core context fields to stream state. */
-
-void __thiscall TZone::SerializeZoneToBinaryStream(TZone *this)
+void __thiscall TZone::SerializeZoneToBinaryStream(int param_1,int *param_2)
 
 {
   int iVar1;
   code *pcVar2;
-  int *in_stack_00000004;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  iVar1 = *in_stack_00000004;
-  (**(code **)(iVar1 + 0xac))(&this->field08);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  iVar1 = *param_2;
+  (**(code **)(iVar1 + 0xac))(param_1 + 8);
   pcVar2 = *(code **)(iVar1 + 0x78);
-  (*pcVar2)(&this->pField04,2);
-  (*pcVar2)(&this->field0c,4);
-  (*pcVar2)((undefined1 *)((int)&this->field10 + 2),2);
-  (*pcVar2)(&this->field20,2);
-  (*pcVar2)(&this->field14,2);
+  (*pcVar2)(param_1 + 4,2);
+  (*pcVar2)(param_1 + 0xc,4);
+  (*pcVar2)(param_1 + 0x12,2);
+  (*pcVar2)(param_1 + 0x20,2);
+  (*pcVar2)(param_1 + 0x14,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055F070
 // GHIDRA_NAME TZone::AssignZoneDisplayNameToOutputRef
-// GHIDRA_PROTO void __thiscall AssignZoneDisplayNameToOutputRef(void)
+// GHIDRA_PROTO undefined AssignZoneDisplayNameToOutputRef()
 
-void __thiscall TZone::AssignZoneDisplayNameToOutputRef(TZone *this)
+void __thiscall TZone::AssignZoneDisplayNameToOutputRef(int param_1,void *param_2)
 
 {
-  void *in_stack_00000004;
-  
-  AssignFromPtr(in_stack_00000004,(int *)&this->field08);
+  AssignFromPtr(param_2,(int *)(param_1 + 8));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055F090
 // GHIDRA_NAME TZone::AssignZoneDisplayNameAliasToOutputRef
-// GHIDRA_PROTO void __thiscall AssignZoneDisplayNameAliasToOutputRef(void)
+// GHIDRA_PROTO undefined AssignZoneDisplayNameAliasToOutputRef()
 
-void __thiscall TZone::AssignZoneDisplayNameAliasToOutputRef(TZone *this)
+void __thiscall TZone::AssignZoneDisplayNameAliasToOutputRef(int param_1,void *param_2)
 
 {
-  void *in_stack_00000004;
-  
-  AssignFromPtr(in_stack_00000004,(int *)&this->field08);
+  AssignFromPtr(param_2,(int *)(param_1 + 8));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055F780
 // GHIDRA_NAME TZone::GenerateMapActionContextDisplayNameAndHeadline
-// GHIDRA_PROTO void __thiscall GenerateMapActionContextDisplayNameAndHeadline(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Generates context headline/display text using localization resources and rotating/randomized source pools.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GenerateMapActionContextDisplayNameAndHeadline()
 
-/* Generates context headline/display text using localization resources and rotating/randomized
-   source pools. */
-
-void __thiscall TZone::GenerateMapActionContextDisplayNameAndHeadline(TZone *this)
+void __thiscall
+TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1,int param_2,int param_3)
 
 {
   int iVar1;
   uint uVar2;
   char *unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  void *in_stack_00000008;
-  undefined1 local_20 [4];
-  int local_1c [3];
-  undefined4 local_10;
+  undefined1 auStack_20 [4];
+  int aiStack_1c [3];
+  undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  undefined4 uStack_4;
   
-  local_4 = 0xffffffff;
+  uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635740;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  if (in_stack_00000008 == (void *)0x0) {
+  if (param_3 == 0) {
     iVar1 = -1;
-    if ((in_stack_00000004 != 0) && (this->field40 != 0)) {
-      g_uMapContextStatusRngState = g_uMapContextStatusRngState * 0x15a4e35 + 1;
-      uVar2 = (g_uMapContextStatusRngState >> 0xc & 0x7fff) % this->field40;
-      if (this->field3c <= uVar2) {
-        thunk_ResizePointerArrayCapacityByRequestedCount();
+    if ((param_2 != 0) && (*(int *)(param_1 + 0x40) != 0)) {
+      DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
+      uVar2 = (DAT_006a5aec >> 0xc & 0x7fff) % *(uint *)(param_1 + 0x40);
+      if (*(uint *)(param_1 + 0x3c) <= uVar2) {
+        ResizePointerArrayCapacityByRequestedCount(uVar2 + 1);
       }
-      if (this->field40 <= uVar2) {
-        this->field40 = uVar2 + 1;
+      if (*(uint *)(param_1 + 0x40) <= uVar2) {
+        *(uint *)(param_1 + 0x40) = uVar2 + 1;
       }
-      iVar1 = (int)*(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 +
-                             *(short *)(*(int *)((int)this->field38 + uVar2 * 4) + 0x42) * 0x24);
-      if (*(char *)(iVar1 + in_stack_00000004) == '\0') {
-        *(undefined1 *)(iVar1 + in_stack_00000004) = 1;
+      iVar1 = (int)*(short *)(*(int *)(g_pGlobalMapState + 0xc) + 0x14 +
+                             *(short *)(*(int *)(*(int *)(param_1 + 0x38) + uVar2 * 4) + 0x42) *
+                             0x24);
+      if (*(char *)(iVar1 + param_2) == '\0') {
+        *(undefined1 *)(iVar1 + param_2) = 1;
       }
       else {
         iVar1 = -1;
       }
     }
     if (iVar1 == -1) {
-      if (*(char *)((int)g_pLocalizationTable + 0x68) == '\0') {
-        thunk_GenerateMappedFlavorTextByCurrentContextNation(&this->field08);
+      if ((char)g_pLocalizationTable[0x1a] == '\0') {
+        GenerateMappedFlavorTextByCurrentContextNation(param_1 + 8);
       }
       else {
-        if (g_Generate_Map_Action_State_006984B8 == -1) {
-          uVar2 = g_uMapContextStatusRngState * 0x15a4e35 + 1;
-          local_1c[0] = 1;
-          g_Generate_Map_Action_State_006984B8 = (uVar2 >> 0xc & 0x7fff) % 0x25;
-          g_uMapContextStatusRngState = uVar2 * 0x15a4e35 + 1;
-          local_1c[1] = 7;
-          local_1c[2] = 0xb;
-          local_10 = 0x17;
-          g_Generate_Map_Action_State_006984BC = local_1c[g_uMapContextStatusRngState >> 0xc & 3];
+        if (DAT_006984b8 == 0xffffffff) {
+          uVar2 = DAT_006a5aec * 0x15a4e35 + 1;
+          aiStack_1c[0] = 1;
+          DAT_006984b8 = (uVar2 >> 0xc & 0x7fff) % 0x25;
+          DAT_006a5aec = uVar2 * 0x15a4e35 + 1;
+          aiStack_1c[1] = 7;
+          aiStack_1c[2] = 0xb;
+          uStack_10 = 0x17;
+          DAT_006984bc = aiStack_1c[DAT_006a5aec >> 0xc & 3];
         }
         InitializeSharedStringRefFromEmpty();
-        local_4 = 1;
-        (**(code **)(*(int *)g_pLocalizationTable + 0x84))
-                  (0x275b,CONCAT22((short)((uint)&stack0x00000008 >> 0x10),
-                                   (undefined2)g_Generate_Map_Action_State_006984B8),
-                   &stack0x00000008);
-        AssignFromPtr(&this->field08,(int *)&stack0x00000008);
-        g_Generate_Map_Action_State_006984B8 =
-             g_Generate_Map_Action_State_006984B8 + g_Generate_Map_Action_State_006984BC;
-        if (0x24 < g_Generate_Map_Action_State_006984B8) {
-          g_Generate_Map_Action_State_006984B8 = g_Generate_Map_Action_State_006984B8 + -0x25;
+        uStack_4 = 1;
+        (**(code **)(*g_pLocalizationTable + 0x84))
+                  (0x275b,CONCAT22((short)((uint)&param_3 >> 0x10),(undefined2)DAT_006984b8),
+                   &param_3);
+        AssignFromPtr((void *)(param_1 + 8),&param_3);
+        DAT_006984b8 = DAT_006984b8 + DAT_006984bc;
+        if (0x24 < (int)DAT_006984b8) {
+          DAT_006984b8 = DAT_006984b8 - 0x25;
         }
-        local_4 = 0xffffffff;
+        uStack_4 = 0xffffffff;
         ReleaseSharedStringRefIfNotEmpty();
       }
     }
     else {
-      thunk_AssignSharedStringFromIndexedA8EntryNameField();
+      thunk_AssignSharedStringFromIndexedA8EntryNameField(iVar1,param_1 + 8);
     }
   }
   else {
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&stack0x00000008);
-    local_4 = 0;
-    AssignFromPtr(&this->field08,(int *)&stack0x00000008);
-    local_4 = 0xffffffff;
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_3);
+    uStack_4 = 0;
+    AssignFromPtr((void *)(param_1 + 8),&param_3);
+    uStack_4 = 0xffffffff;
     ReleaseSharedStringRefIfNotEmpty();
   }
   InitializeSharedStringRefFromEmpty();
-  local_4 = 2;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))
-            (0x275a,CONCAT22((short)((uint)local_20 >> 0x10),*(undefined2 *)&this->pField04),
-             local_20);
+  uStack_4 = 2;
+  (**(code **)(*g_pLocalizationTable + 0x84))
+            (0x275a,CONCAT22((short)((uint)auStack_20 >> 0x10),*(undefined2 *)(param_1 + 4)),
+             auStack_20);
   InitializeSharedStringRefFromEmpty();
-  local_10._0_1_ = 3;
+  uStack_10._0_1_ = 3;
   scanBracketExpressions(g_pLocalizationTable,&puStack_8,unaff_ESI);
-  AssignFromPtr(&this->field08,(int *)&puStack_8);
-  local_10 = CONCAT31(local_10._1_3_,2);
+  AssignFromPtr((void *)(param_1 + 8),(int *)&puStack_8);
+  uStack_10 = CONCAT31(uStack_10._1_3_,2);
   ReleaseSharedStringRefIfNotEmpty();
-  local_10 = 0xffffffff;
+  uStack_10 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = local_1c[1];
+  *unaff_FS_OFFSET = aiStack_1c[1];
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0055FB60
+// GHIDRA_NAME TZone::SetMapActionContextTargetTileAndRefreshMarkers
+// GHIDRA_PROTO undefined SetMapActionContextTargetTileAndRefreshMarkers()
+
+void __thiscall
+TZone::SetMapActionContextTargetTileAndRefreshMarkers(int *param_1,undefined4 param_2,short param_3)
+
+{
+  char cVar1;
+  undefined4 uVar2;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  
+  *(short *)((int)param_1 + 0x12) = (short)param_2;
+  if (param_3 == -1) {
+    param_3 = thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(param_2,0);
+  }
+  param_1[3] = (int)param_3;
+  *(short *)(param_1 + 8) = (short)param_1[3];
+  cVar1 = (**(code **)(*param_1 + 0x38))();
+  if (cVar1 != '\0') {
+    InputState::SetMapTileStateByteAndNotifyObserver((short)param_1[8],0xfffffff2);
+    return;
+  }
+  InputState::SetMapTileStateByteAndNotifyObserver
+            (CONCAT22(extraout_var_00,(short)param_1[8]),0xfffffff0);
+  uVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules
+                    (CONCAT22(extraout_var_01,(short)param_1[8]),5);
+  InputState::SetMapTileStateByteAndNotifyObserver(uVar2,0xffffffee);
+  uVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules(CONCAT22(extraout_var,(short)param_1[8]),0)
+  ;
+  InputState::SetMapTileStateByteAndNotifyObserver(uVar2,0xffffffec);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055FE60
 // GHIDRA_NAME TZone::FindNearestActiveSeaContextTileFromOffset216
-// GHIDRA_PROTO short __thiscall FindNearestActiveSeaContextTileFromOffset216(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Searches outward in alternating offsets from tile+216 until it finds a tile bound to an active sea context; returns that tile index in AX.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined FindNearestActiveSeaContextTileFromOffset216()
 
-/* Searches outward in alternating offsets from tile+216 until it finds a tile bound to an active
-   sea context; returns that tile index in AX. */
-
-short __thiscall TZone::FindNearestActiveSeaContextTileFromOffset216(TZone *this)
+void __fastcall TZone::FindNearestActiveSeaContextTileFromOffset216(int param_1)
 
 {
   short sVar1;
@@ -1312,10 +512,10 @@ short __thiscall TZone::FindNearestActiveSeaContextTileFromOffset216(TZone *this
   short sVar5;
   
   sVar4 = 1;
-  sVar1 = *(short *)&this->field0c + 0xd8;
+  sVar1 = *(short *)(param_1 + 0xc) + 0xd8;
   sVar5 = 1;
   do {
-    iVar3 = *(int *)((int)g_pGlobalMapState + 0xc) + sVar1 * 0x24;
+    iVar3 = *(int *)(g_pGlobalMapState + 0xc) + sVar1 * 0x24;
     if (*(char *)(iVar3 + 0x16) == -1) {
       sVar2 = (short)*(char *)(iVar3 + 4);
       if (sVar2 < 0x17) {
@@ -1325,7 +525,7 @@ short __thiscall TZone::FindNearestActiveSeaContextTileFromOffset216(TZone *this
         iVar3 = *(int *)((int)g_pActiveMapOrderContext + 8) + (sVar2 + -0x17) * 0x48;
       }
       if (iVar3 != 0) {
-        return sVar1;
+        return;
       }
     }
     sVar1 = sVar1 + sVar4 * sVar5;
@@ -1335,16 +535,10 @@ short __thiscall TZone::FindNearestActiveSeaContextTileFromOffset216(TZone *this
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055FEF0
-// GHIDRA_NAME TZone::FindNearestActiveSeaContextTileFromCurrentTile
-// GHIDRA_PROTO short __thiscall FindNearestActiveSeaContextTileFromCurrentTile(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Searches outward in alternating offsets from current tile until it finds a tile bound to an active sea context; returns that tile index in AX.
-// GHIDRA_COMMENT_END
+// GHIDRA_NAME TZone::GetActiveNationSlotTile
+// GHIDRA_PROTO undefined GetActiveNationSlotTile()
 
-/* Searches outward in alternating offsets from current tile until it finds a tile bound to an
-   active sea context; returns that tile index in AX. */
-
-short __thiscall TZone::FindNearestActiveSeaContextTileFromCurrentTile(TZone *this)
+void __fastcall TZone::GetActiveNationSlotTile(int param_1)
 
 {
   short sVar1;
@@ -1353,11 +547,11 @@ short __thiscall TZone::FindNearestActiveSeaContextTileFromCurrentTile(TZone *th
   short sVar4;
   short sVar5;
   
-  sVar1 = *(short *)&this->field0c;
+  sVar1 = *(short *)(param_1 + 0xc);
   sVar4 = 1;
   sVar5 = 1;
   do {
-    iVar3 = *(int *)((int)g_pGlobalMapState + 0xc) + sVar1 * 0x24;
+    iVar3 = *(int *)(g_pGlobalMapState + 0xc) + sVar1 * 0x24;
     if (*(char *)(iVar3 + 0x16) == -1) {
       sVar2 = (short)*(char *)(iVar3 + 4);
       if (sVar2 < 0x17) {
@@ -1367,7 +561,7 @@ short __thiscall TZone::FindNearestActiveSeaContextTileFromCurrentTile(TZone *th
         iVar3 = *(int *)((int)g_pActiveMapOrderContext + 8) + (sVar2 + -0x17) * 0x48;
       }
       if (iVar3 != 0) {
-        return sVar1;
+        return;
       }
     }
     sVar1 = sVar1 + sVar5 * sVar4;
@@ -1376,98 +570,172 @@ short __thiscall TZone::FindNearestActiveSeaContextTileFromCurrentTile(TZone *th
   } while( true );
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0055FF70
+// GHIDRA_NAME TZone::ScoreCoastalTileForContextAndCityStateAffinity
+// GHIDRA_PROTO undefined ScoreCoastalTileForContextAndCityStateAffinity()
+
+int TZone::ScoreCoastalTileForContextAndCityStateAffinity
+              (undefined4 param_1,void *param_2,int param_3)
+
+{
+  char *pcVar1;
+  short sVar2;
+  int iVar3;
+  void *pvVar4;
+  int iVar5;
+  int iVar6;
+  
+  iVar5 = *(int *)(g_pGlobalMapState + 0xc) + (short)param_1 * 0x24;
+  if (*(char *)(*(int *)(g_pGlobalMapState + 0xc) + (short)param_1 * 0x24) != '\x05') {
+    return 0;
+  }
+  if (*(char *)(iVar5 + 0x16) != -1) {
+    return 0;
+  }
+  sVar2 = (short)*(char *)(iVar5 + 4);
+  iVar5 = 5000;
+  if (sVar2 < 0x17) {
+    pvVar4 = (void *)0x0;
+  }
+  else {
+    pvVar4 = (void *)(*(int *)((int)g_pActiveMapOrderContext + 8) + (sVar2 + -0x17) * 0x48);
+  }
+  if (pvVar4 != param_2) {
+    return 1000;
+  }
+  iVar6 = 0;
+  do {
+    sVar2 = thunk_StepHexTileIndexByDirectionWithWrapRules(param_1,iVar6);
+    if (sVar2 != -1) {
+      pcVar1 = (char *)(*(int *)(g_pGlobalMapState + 0xc) + sVar2 * 0x24);
+      if (*pcVar1 == '\x05') {
+        pvVar4 = g_pMapActionContextListHead;
+        if ((pcVar1[0x16] == '\x03') || (pcVar1[0x16] == '\x0e')) {
+          while ((pvVar4 != (void *)0x0 &&
+                 (iVar3 = CObject::IsKindOf(&g_pClassDescTPortZone), iVar3 == 0))) {
+            pvVar4 = *(void **)((int)pvVar4 + 0x18);
+          }
+          for (; pvVar4 != (void *)0x0; pvVar4 = GetNextPortZone(pvVar4)) {
+            if (((*(short *)((int)pvVar4 + 0xc) == sVar2) ||
+                (*(short *)((int)pvVar4 + 0x20) == sVar2)) ||
+               (*(short *)((int)pvVar4 + 0x48) == sVar2)) goto LAB_00560099;
+          }
+LAB_00560097:
+          pvVar4 = (void *)0x0;
+        }
+        else {
+          if (pcVar1[4] < 0x17) goto LAB_00560097;
+          pvVar4 = (void *)(*(int *)((int)g_pActiveMapOrderContext + 8) +
+                           ((short)pcVar1[4] + -0x17) * 0x48);
+        }
+LAB_00560099:
+        if (pvVar4 != param_2) {
+          iVar5 = iVar5 + -1;
+        }
+      }
+      else {
+        if (*(short *)(pcVar1 + 0x14) == -1) {
+          iVar3 = 0;
+        }
+        else {
+          iVar3 = *(int *)(g_pGlobalMapState + 0x10) + *(short *)(pcVar1 + 0x14) * 0xa8;
+        }
+        if (iVar3 == param_3) {
+          iVar5 = iVar5 + 100;
+        }
+        else {
+          iVar5 = iVar5 + -10;
+        }
+      }
+    }
+    iVar6 = iVar6 + 1;
+    if (5 < iVar6) {
+      return iVar5;
+    }
+  } while( true );
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00560150
 // GHIDRA_NAME TZone::FindBestCoastalTileForContextAndCityStateByHeuristic
-// GHIDRA_PROTO short __thiscall FindBestCoastalTileForContextAndCityStateByHeuristic(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Finds best coastal tile for a context/city-state pair using neighborhood scoring and spiral fallback search.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined FindBestCoastalTileForContextAndCityStateByHeuristic()
 
-/* Finds best coastal tile for a context/city-state pair using neighborhood scoring and spiral
-   fallback search. */
-
-short __thiscall TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(TZone *this)
+short __thiscall
+TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(void *param_1,int param_2)
 
 {
   char *pcVar1;
   bool bVar2;
-  short extraout_AX;
-  TZone *pTVar3;
-  int iVar4;
-  int extraout_EAX;
-  int extraout_EAX_00;
-  void *pvVar5;
-  short sVar6;
-  uint arg1;
+  short sVar3;
+  void *pvVar4;
+  int iVar5;
+  uint uVar6;
   int iVar7;
-  int in_stack_00000004;
   int local_14;
   int local_10;
   int local_c;
   int local_8;
   int local_4;
   
-  arg1 = 0;
-  pvVar5 = g_pGlobalMapState;
+  uVar6 = 0;
+  iVar5 = g_pGlobalMapState;
   do {
-    pcVar1 = (char *)(*(int *)((int)pvVar5 + 0xc) + (short)arg1 * 0x24);
+    pcVar1 = (char *)(*(int *)(iVar5 + 0xc) + (short)uVar6 * 0x24);
     if (*pcVar1 == '\x05') {
       if ((pcVar1[0x16] == '\x03') || (pcVar1[0x16] == '\x0e')) {
-        pTVar3 = thunk_FindPortZoneByTile((short)arg1);
-        pvVar5 = g_pGlobalMapState;
+        pvVar4 = thunk_FindPortZoneByTile((short)uVar6);
+        iVar5 = g_pGlobalMapState;
       }
       else if (pcVar1[4] < 0x17) {
-        pTVar3 = (TZone *)0x0;
+        pvVar4 = (void *)0x0;
       }
       else {
-        pTVar3 = (TZone *)(*(int *)((int)g_pActiveMapOrderContext + 8) +
-                          ((short)pcVar1[4] + -0x17) * 0x48);
+        pvVar4 = (void *)(*(int *)((int)g_pActiveMapOrderContext + 8) +
+                         ((short)pcVar1[4] + -0x17) * 0x48);
       }
-      if (pTVar3 == this) {
+      if (pvVar4 == param_1) {
         iVar7 = 0;
         do {
-          thunk_StepHexTileIndexByDirectionWithWrapRules(arg1,iVar7);
-          if ((extraout_AX != -1) &&
-             (pcVar1 = (char *)(*(int *)((int)g_pGlobalMapState + 0xc) + extraout_AX * 0x24),
-             *pcVar1 != '\x05')) {
-            sVar6 = *(short *)(pcVar1 + 0x14);
-            if (sVar6 == -1) {
-              iVar4 = 0;
+          sVar3 = thunk_StepHexTileIndexByDirectionWithWrapRules(uVar6,iVar7);
+          if ((sVar3 != -1) &&
+             (pcVar1 = (char *)(*(int *)(g_pGlobalMapState + 0xc) + sVar3 * 0x24), *pcVar1 != '\x05'
+             )) {
+            sVar3 = *(short *)(pcVar1 + 0x14);
+            if (sVar3 == -1) {
+              iVar5 = 0;
             }
             else {
-              iVar4 = *(int *)((int)g_pGlobalMapState + 0x10) + sVar6 * 0xa8;
+              iVar5 = *(int *)(g_pGlobalMapState + 0x10) + sVar3 * 0xa8;
             }
-            if (iVar4 == in_stack_00000004) break;
+            if (iVar5 == param_2) break;
           }
           iVar7 = iVar7 + 1;
         } while (iVar7 < 6);
-        pvVar5 = g_pGlobalMapState;
+        iVar5 = g_pGlobalMapState;
         if (iVar7 < 6) break;
       }
     }
-    arg1 = arg1 + 1;
-  } while ((short)arg1 < 0x1950);
-  if (0x194f < (short)arg1) {
-    arg1 = (uint)(ushort)(*(short *)&this->field0c + 0x6c);
+    uVar6 = uVar6 + 1;
+  } while ((short)uVar6 < 0x1950);
+  if (0x194f < (short)uVar6) {
+    uVar6 = (uint)(ushort)(*(short *)((int)param_1 + 0xc) + 0x6c);
   }
-  sVar6 = (short)arg1;
-  iVar7 = (int)sVar6;
-  thunk_ScoreCoastalTileForContextAndCityStateAffinity(iVar7,(int)this);
+  sVar3 = (short)uVar6;
+  iVar7 = (int)sVar3;
+  iVar5 = ScoreCoastalTileForContextAndCityStateAffinity(iVar7,param_1,param_2);
   local_14 = iVar7 / 0x6c;
   local_10 = iVar7 % 0x6c;
   local_c = 0;
   local_8 = 5;
   local_4 = 1;
-  thunk_AdvanceSpiralSearchStateAndStepHexCoordinates();
-  iVar7 = extraout_EAX;
+  thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(0);
   while (local_c < 0xc) {
     if ((((local_14 < 0) || (0x3b < local_14)) || (local_10 < 0)) || (0x6b < local_10)) {
-      sVar6 = -1;
+      sVar3 = -1;
     }
     else {
-      sVar6 = (short)local_10 + (short)local_14 * 0x6c;
+      sVar3 = (short)local_10 + (short)local_14 * 0x6c;
     }
-    if ((sVar6 < 0) || (0x194f < sVar6)) {
+    if ((sVar3 < 0) || (0x194f < sVar3)) {
       bVar2 = false;
     }
     else {
@@ -1475,23 +743,23 @@ short __thiscall TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(TZo
     }
     if (bVar2) {
       if (((local_14 < 0) || (0x3b < local_14)) || ((local_10 < 0 || (0x6b < local_10)))) {
-        iVar4 = -1;
+        iVar7 = -1;
       }
       else {
-        iVar4 = local_10 + local_14 * 0x6c;
+        iVar7 = local_10 + local_14 * 0x6c;
       }
-      thunk_ScoreCoastalTileForContextAndCityStateAffinity(iVar4,(int)this);
-      if (iVar7 < extraout_EAX_00) {
-        iVar7 = extraout_EAX_00;
+      iVar7 = ScoreCoastalTileForContextAndCityStateAffinity(iVar7,param_1,param_2);
+      if (iVar5 < iVar7) {
+        iVar5 = iVar7;
         if ((((local_14 < 0) || (0x3b < local_14)) || (local_10 < 0)) || (0x6b < local_10)) {
-          arg1 = 0xffffffff;
+          uVar6 = 0xffffffff;
         }
         else {
-          arg1 = local_10 + local_14 * 0x6c;
+          uVar6 = local_10 + local_14 * 0x6c;
         }
       }
     }
-    sVar6 = (short)arg1;
+    sVar3 = (short)uVar6;
     local_4 = local_4 + 1;
     if (local_c <= local_4) {
       local_4 = 0;
@@ -1499,89 +767,156 @@ short __thiscall TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(TZo
       if (5 < local_8) {
         local_c = local_c + 1;
         local_8 = 0;
-        thunk_StepHexRowColByDirectionWithWrapRules((int)&local_14,(int)&local_10,4);
+        thunk_StepHexRowColByDirectionWithWrapRules(&local_14,&local_10,4);
       }
     }
-    thunk_StepHexRowColByDirectionWithWrapRules((int)&local_14,(int)&local_10,local_8);
+    thunk_StepHexRowColByDirectionWithWrapRules(&local_14,&local_10,local_8);
   }
-  return sVar6;
+  return sVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00560580
+// GHIDRA_NAME TZone::SetMapOrderUiFlag
+// GHIDRA_PROTO undefined SetMapOrderUiFlag()
+
+void __thiscall TZone::SetMapOrderUiFlag(int *param_1,char param_2)
+
+{
+  int *piVar1;
+  code *pcVar2;
+  char cVar3;
+  undefined4 uVar4;
+  undefined2 uVar5;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 extraout_var_02;
+  undefined2 extraout_var_03;
+  undefined4 unaff_EDI;
+  int iVar6;
+  
+  piVar1 = *(int **)(g_pUiRuntimeContext + 0xf0);
+  if (((bool)param_2 !=
+       -1 < *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0x16 + (short)param_1[8] * 0x24)) &&
+     (piVar1 != (int *)0x0)) {
+    cVar3 = (-(param_2 != '\0') & 2U) - 1;
+    uVar4 = (**(code **)(*param_1 + 0x38))();
+    uVar5 = (undefined2)((uint)uVar4 >> 0x10);
+    if ((char)uVar4 != '\0') {
+      InputState::SetMapTileStateByteAndNotifyObserver
+                (CONCAT22(extraout_var_02,(short)param_1[8]),CONCAT22(uVar5,(short)cVar3) * 0xe);
+      (**(code **)(*piVar1 + 0x1d8))(CONCAT22(extraout_var_01,(short)param_1[8]));
+      return;
+    }
+    iVar6 = CONCAT22((short)((uint)unaff_EDI >> 0x10),(short)cVar3);
+    InputState::SetMapTileStateByteAndNotifyObserver(CONCAT22(uVar5,(short)param_1[8]),iVar6 << 4);
+    pcVar2 = *(code **)(*piVar1 + 0x1d8);
+    (*pcVar2)(CONCAT22(extraout_var_03,(short)param_1[8]));
+    uVar4 = thunk_StepHexTileIndexByDirectionWithWrapRules
+                      (CONCAT22(extraout_var,(short)param_1[8]),5);
+    InputState::SetMapTileStateByteAndNotifyObserver(uVar4,iVar6 * 0x12);
+    (*pcVar2)(uVar4);
+    uVar4 = thunk_StepHexTileIndexByDirectionWithWrapRules
+                      (CONCAT22(extraout_var_00,(short)param_1[8]),0);
+    InputState::SetMapTileStateByteAndNotifyObserver(uVar4,iVar6 * 0x14);
+    (*pcVar2)(uVar4);
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005617F0
 // GHIDRA_NAME TZone::DeserializeTPortZoneFromBinaryStream
-// GHIDRA_PROTO void __thiscall DeserializeTPortZoneFromBinaryStream(int arg1)
+// GHIDRA_PROTO undefined DeserializeTPortZoneFromBinaryStream()
 
-void __thiscall TZone::DeserializeTPortZoneFromBinaryStream(TZone *this,int arg1)
+void __thiscall TZone::DeserializeTPortZoneFromBinaryStream(int param_1,int *param_2)
 
 {
-  thunk_DeserializeZoneFromBinaryStream_At0040466f(this,arg1);
-  (**(code **)(*(int *)arg1 + 0x3c))(&this->field48,2);
+  DeserializeZoneFromBinaryStream(param_2);
+  (**(code **)(*param_2 + 0x3c))(param_1 + 0x48,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00561820
 // GHIDRA_NAME TZone::SerializeTPortZoneToBinaryStream
-// GHIDRA_PROTO void __thiscall SerializeTPortZoneToBinaryStream(void)
+// GHIDRA_PROTO undefined SerializeTPortZoneToBinaryStream()
 
-void __thiscall TZone::SerializeTPortZoneToBinaryStream(TZone *this)
+void __thiscall TZone::SerializeTPortZoneToBinaryStream(int param_1,int *param_2)
 
 {
   int iVar1;
   code *pcVar2;
-  int *in_stack_00000004;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  iVar1 = *in_stack_00000004;
-  (**(code **)(iVar1 + 0xac))(&this->field08);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  iVar1 = *param_2;
+  (**(code **)(iVar1 + 0xac))(param_1 + 8);
   pcVar2 = *(code **)(iVar1 + 0x78);
-  (*pcVar2)(&this->pField04,2);
-  (*pcVar2)(&this->field0c,4);
-  (*pcVar2)((undefined1 *)((int)&this->field10 + 2),2);
-  (*pcVar2)(&this->field20,2);
-  (*pcVar2)(&this->field14,2);
-  (*pcVar2)(&this->field48,2);
+  (*pcVar2)(param_1 + 4,2);
+  (*pcVar2)(param_1 + 0xc,4);
+  (*pcVar2)(param_1 + 0x12,2);
+  (*pcVar2)(param_1 + 0x20,2);
+  (*pcVar2)(param_1 + 0x14,2);
+  (*pcVar2)(param_1 + 0x48,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00561B10
 // GHIDRA_NAME TZone::IsPortZoneOwnerNationEqual
-// GHIDRA_PROTO bool __thiscall IsPortZoneOwnerNationEqual(void)
+// GHIDRA_PROTO undefined IsPortZoneOwnerNationEqual()
 
-bool __thiscall TZone::IsPortZoneOwnerNationEqual(TZone *this)
+undefined4 __thiscall TZone::IsPortZoneOwnerNationEqual(int param_1,short param_2)
 
 {
-  short in_stack_00000004;
+  short sVar1;
   
-  return *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + this->field48 * 0x24) ==
-         in_stack_00000004;
+  sVar1 = (short)*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 4 + *(short *)(param_1 + 0x48) * 0x24
+                          );
+  return CONCAT31((int3)(CONCAT22((short)((uint)(*(short *)(param_1 + 0x48) * 9) >> 0x10),sVar1) >>
+                        8),sVar1 == param_2);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00561DC0
 // GHIDRA_NAME TZone::CanPortZoneInteractWithNationUnderDiplomacyRules
-// GHIDRA_PROTO bool __thiscall CanPortZoneInteractWithNationUnderDiplomacyRules(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns true only when port zone has active children and diplomacy relation with target nation permits interaction.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CanPortZoneInteractWithNationUnderDiplomacyRules()
 
-/* Returns true only when port zone has active children and diplomacy relation with target nation
-   permits interaction. */
-
-bool __thiscall TZone::CanPortZoneInteractWithNationUnderDiplomacyRules(TZone *this,int arg1)
+undefined4 __thiscall
+TZone::CanPortZoneInteractWithNationUnderDiplomacyRules(int param_1,int param_2)
 
 {
   char cVar1;
   short sVar2;
   
-  if ((this->field44 < 1) || (*(TZone **)(arg1 + 0x18) == this)) {
-    return false;
+  if ((*(short *)(param_1 + 0x44) < 1) || (*(int *)(param_2 + 0x18) == param_1)) {
+    return 0;
   }
-  sVar2 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + this->field48 * 0x24);
-  if ((*(short *)(arg1 + 0x1c) != sVar2) &&
-     (cVar1 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x48))
-                        (CONCAT22((short)((uint)*(int *)((int)g_pGlobalMapState + 0xc) >> 0x10),
-                                  sVar2),*(short *)(arg1 + 0x1c)), cVar1 == '\0')) {
-    return false;
+  sVar2 = (short)*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 4 + *(short *)(param_1 + 0x48) * 0x24
+                          );
+  if ((*(short *)(param_2 + 0x1c) != sVar2) &&
+     (cVar1 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x48))
+                        (CONCAT22((short)((uint)*(int *)(g_pGlobalMapState + 0xc) >> 0x10),sVar2),
+                         *(short *)(param_2 + 0x1c)), cVar1 == '\0')) {
+    return 0;
   }
-  return true;
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00562880
+// GHIDRA_NAME TZone::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+int __thiscall TZone::_scalar_deleting_destructor_(int param_1,byte param_2)
+
+{
+  if ((param_2 & 2) != 0) {
+    TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard
+              (param_1,0x48,*(undefined4 *)(param_1 + -4),
+               ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList);
+    FreeHeapBufferIfNotNull(param_1 + -4);
+    return param_1;
+  }
+  ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
 }
 

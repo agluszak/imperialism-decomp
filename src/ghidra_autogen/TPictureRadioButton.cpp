@@ -3,81 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TPictureRadioButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040430E
-// GHIDRA_NAME TPictureRadioButton::TPictureRadioButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TPictureRadioButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPictureRadioButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPictureRadioButtonClassNamePointer */
-
-void * __cdecl TPictureRadioButton::TPictureRadioButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPictureRadioButtonClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405FA6
-// GHIDRA_NAME TPictureRadioButton::TPictureRadioButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TPictureRadioButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTPictureRadioButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTPictureRadioButtonAndMaybeFree */
-
-void * __thiscall
-TPictureRadioButton::TPictureRadioButton_VtblSlot001(TPictureRadioButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTPictureRadioButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004067EE
-// GHIDRA_NAME TPictureRadioButton::TPictureRadioButton_VtblSlot117
-// GHIDRA_PROTO void __thiscall TPictureRadioButton_VtblSlot117(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0 */
-
-void __thiscall
-TPictureRadioButton::TPictureRadioButton_VtblSlot117(TPictureRadioButton *this,int arg1,int arg2)
-
-{
-  WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(this,arg1,arg2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409A98
-// GHIDRA_NAME TPictureRadioButton::TPictureRadioButton_VtblSlot118
-// GHIDRA_PROTO void __cdecl TPictureRadioButton_VtblSlot118(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0 */
-
-void __cdecl TPictureRadioButton::TPictureRadioButton_VtblSlot118(void)
-
-{
-  WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00570CC0
 // GHIDRA_NAME TPictureRadioButton::CreateTPictureRadioButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTPictureRadioButtonInstance(void)
+// GHIDRA_PROTO undefined CreateTPictureRadioButtonInstance()
 
-void * __cdecl TPictureRadioButton::CreateTPictureRadioButtonInstance(void)
+undefined4 * TPictureRadioButton::CreateTPictureRadioButtonInstance(void)
 
 {
   undefined4 *puVar1;
@@ -91,12 +21,12 @@ void * __cdecl TPictureRadioButton::CreateTPictureRadioButtonInstance(void)
   puStack_8 = &LAB_006363aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTPictureRadioButton;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_0065ed98;
     puVar1[0x18] = 0xc;
     puVar2 = puVar1;
   }
@@ -106,93 +36,81 @@ void * __cdecl TPictureRadioButton::CreateTPictureRadioButtonInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D40
 // GHIDRA_NAME TPictureRadioButton::GetTPictureRadioButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPictureRadioButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPictureRadioButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPictureRadioButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TPictureRadioButton. */
-
-void * __cdecl TPictureRadioButton::GetTPictureRadioButtonClassNamePointer(void)
+undefined ** TPictureRadioButton::GetTPictureRadioButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTPictureRadioButton;
+  return &PTR_s_TPictureRadioButton_0065e580;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D60
 // GHIDRA_NAME TPictureRadioButton::ConstructTPictureRadioButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTPictureRadioButtonBaseState(void)
+// GHIDRA_PROTO undefined ConstructTPictureRadioButtonBaseState()
 
-void * __thiscall
-TPictureRadioButton::ConstructTPictureRadioButtonBaseState(TPictureRadioButton *this)
+undefined4 * __fastcall
+TPictureRadioButton::ConstructTPictureRadioButtonBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTPictureRadioButton;
-  this->field60 = 0xc;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_0065ed98;
+  param_1[0x18] = 0xc;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D90
 // GHIDRA_NAME TPictureRadioButton::DestructTPictureRadioButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPictureRadioButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTPictureRadioButtonAndMaybeFree()
 
-void * __thiscall
-TPictureRadioButton::DestructTPictureRadioButtonAndMaybeFree
-          (TPictureRadioButton *this,byte freeSelfFlag)
+undefined4 __thiscall
+TPictureRadioButton::DestructTPictureRadioButtonAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570DE0
 // GHIDRA_NAME TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-// GHIDRA_PROTO void __thiscall WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow; instructions=53, call_insns=5, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
-
-/* [WrapperShape] small wrapper around thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow;
-   instructions=53, call_insns=5, internal_calls=1, unique_internal=1 */
+// GHIDRA_PROTO undefined WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0()
 
 void __thiscall
 TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-          (TPictureRadioButton *this,int arg1,int arg2)
+          (int *param_1,char param_2,char param_3)
 
 {
-  short sVar1;
-  short sVar2;
-  void *pvVar3;
+  int iVar1;
+  int iVar2;
+  int iVar3;
   char cVar4;
   short unaff_BP;
   char local_4;
   
-  sVar1 = this->field84;
-  pvVar3 = this->field0_0x0;
-  sVar2 = (short)this->field3c;
-  cVar4 = (**(code **)((int)pvVar3 + 0x28))();
-  if ((char)arg1 == '\0') {
+  iVar2 = param_1[0x21];
+  iVar1 = *param_1;
+  iVar3 = param_1[0xf];
+  cVar4 = (**(code **)(iVar1 + 0x28))();
+  if (param_2 == '\0') {
 LAB_00570e0c:
     if (cVar4 == '\0') goto LAB_00570e4e;
   }
   else if (cVar4 != '\0') {
-    if ((char)arg1 != '\0') goto LAB_00570e4e;
+    if (param_2 != '\0') goto LAB_00570e4e;
     goto LAB_00570e0c;
   }
-  if (sVar2 != 0) {
-    (**(code **)((int)pvVar3 + 0x1c8))(sVar2,0);
-    this->field3c = (int)unaff_BP;
-    (**(code **)((int)pvVar3 + 0x1d8))(1);
-    local_4 = (char)sVar1;
-    this->field08 = (int)(char)arg1;
-    (**(code **)((int)pvVar3 + 0xa4))((char)arg1 == '\0',(int)local_4);
+  if ((short)iVar3 != 0) {
+    (**(code **)(iVar1 + 0x1c8))((short)iVar3,0);
+    param_1[0xf] = (int)unaff_BP;
+    (**(code **)(iVar1 + 0x1d8))(1);
+    local_4 = (char)(short)iVar2;
+    param_1[2] = (int)param_2;
+    (**(code **)(iVar1 + 0xa4))(param_2 == '\0',(int)local_4);
   }
 LAB_00570e4e:
-  TControl::thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow((TControl *)this,(int)(char)arg1);
+  TControl::SetUiControlVisibleFlagAndMaybeRefreshWindow((int)param_2,(int)param_3);
   return;
 }
 

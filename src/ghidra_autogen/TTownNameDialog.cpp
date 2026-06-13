@@ -3,69 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTownNameDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402621
-// GHIDRA_NAME TTownNameDialog::TTownNameDialog_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TTownNameDialog_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTownNameDialogClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTownNameDialogClassNamePointer */
-
-void * __cdecl TTownNameDialog::TTownNameDialog_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTownNameDialogClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403878
-// GHIDRA_NAME TTownNameDialog::TTownNameDialog_VtblSlot068
-// GHIDRA_PROTO void __thiscall TTownNameDialog_VtblSlot068(void * pControlRuntime)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderMapTileNameControlHighlight
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderMapTileNameControlHighlight */
-
-void __thiscall
-TTownNameDialog::TTownNameDialog_VtblSlot068(TTownNameDialog *this,void *pControlRuntime)
-
-{
-  THQButton::RenderMapTileNameControlHighlight((THQButton *)this,pControlRuntime);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004099BC
-// GHIDRA_NAME TTownNameDialog::TTownNameDialog_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TTownNameDialog_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTownNameDialogAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTownNameDialogAndMaybeFree */
-
-void * __thiscall
-TTownNameDialog::TTownNameDialog_VtblSlot001(TTownNameDialog *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTownNameDialogAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BA70
 // GHIDRA_NAME TTownNameDialog::CreateTTownNameDialogInstance
-// GHIDRA_PROTO void * __cdecl CreateTTownNameDialogInstance(void)
+// GHIDRA_PROTO undefined CreateTTownNameDialogInstance()
 
-void * __cdecl TTownNameDialog::CreateTTownNameDialogInstance(void)
+undefined4 * TTownNameDialog::CreateTTownNameDialogInstance(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -75,57 +21,52 @@ void * __cdecl TTownNameDialog::CreateTTownNameDialogInstance(void)
   puStack_8 = &LAB_00633eea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    this->field0_0x0 = &g_vtblTTownNameDialog;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    *puVar1 = &PTR_LAB_00658fa0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BAF0
 // GHIDRA_NAME TTownNameDialog::GetTTownNameDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTownNameDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTownNameDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTownNameDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TTownNameDialog. */
-
-void * __cdecl TTownNameDialog::GetTTownNameDialogClassNamePointer(void)
+undefined ** TTownNameDialog::GetTTownNameDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTTownNameDialog;
+  return &PTR_s_TTownNameDialog_006589c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BB10
 // GHIDRA_NAME TTownNameDialog::ConstructTTownNameDialogBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTownNameDialogBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTownNameDialogBaseState()
 
-void * __thiscall TTownNameDialog::ConstructTTownNameDialogBaseState(TTownNameDialog *this)
+undefined4 * __fastcall TTownNameDialog::ConstructTTownNameDialogBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field0_0x0 = &g_vtblTTownNameDialog;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00658fa0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051BB40
 // GHIDRA_NAME TTownNameDialog::DestructTTownNameDialogAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTownNameDialogAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTownNameDialogAndMaybeFree()
 
-void * __thiscall
-TTownNameDialog::DestructTTownNameDialogAndMaybeFree(TTownNameDialog *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTownNameDialog::DestructTTownNameDialogAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

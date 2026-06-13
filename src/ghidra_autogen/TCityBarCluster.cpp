@@ -3,74 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TCityBarCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004086A2
-// GHIDRA_NAME TCityBarCluster::TCityBarCluster_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TCityBarCluster_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCityBarClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCityBarClusterClassNamePointer */
-
-void * __cdecl TCityBarCluster::TCityBarCluster_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCityBarClusterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004093FE
-// GHIDRA_NAME TCityBarCluster::TCityBarCluster_VtblSlot001
-// GHIDRA_PROTO TCityBarCluster * __thiscall TCityBarCluster_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCityBarClusterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCityBarClusterAndMaybeFree */
-
-TCityBarCluster * __thiscall
-TCityBarCluster::TCityBarCluster_VtblSlot001(TCityBarCluster *this,byte freeSelfFlag)
-
-{
-  TCityBarCluster *pTVar1;
-  
-  pTVar1 = DestructTCityBarClusterAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004096A1
-// GHIDRA_NAME TCityBarCluster::TCityBarCluster_VtblSlot116
-// GHIDRA_PROTO void __thiscall TCityBarCluster_VtblSlot116(int recordContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateTradeSummaryMetricControlsFromRecord
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdateTradeSummaryMetricControlsFromRecord */
-
-void __thiscall
-TCityBarCluster::TCityBarCluster_VtblSlot116(TCityBarCluster *this,int recordContext)
-
-{
-  UpdateTradeSummaryMetricControlsFromRecord(this,recordContext);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00586590
 // GHIDRA_NAME TCityBarCluster::CreateTCityBarClusterInstance
-// GHIDRA_PROTO void * __cdecl CreateTCityBarClusterInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCityBarClusterInstance()
 
-/* imported from redecomp:src/game/trade_screen.cpp */
-
-void * __cdecl TCityBarCluster::CreateTCityBarClusterInstance(void)
+undefined4 * TCityBarCluster::CreateTCityBarClusterInstance(void)
 
 {
-  TUberCluster *this;
-  TUberCluster *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -80,28 +21,23 @@ void * __cdecl TCityBarCluster::CreateTCityBarClusterInstance(void)
   puStack_8 = &LAB_0063785a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TUberCluster *)0x0;
-  if (this != (TUberCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(this);
-    this->field0_0x0 = &g_vtblTCityBarCluster;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState();
+    *puVar1 = &g_vtblTCityBarCluster;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586610
 // GHIDRA_NAME TCityBarCluster::GetTCityBarClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCityBarClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCityBarClusterClassNamePointer()
 
-/* imported from redecomp:src/game/trade_screen.cpp */
-
-void * __cdecl TCityBarCluster::GetTCityBarClusterClassNamePointer(void)
+char * TCityBarCluster::GetTCityBarClusterClassNamePointer(void)
 
 {
   return &g_pClassDescTCityBarCluster;
@@ -109,53 +45,37 @@ void * __cdecl TCityBarCluster::GetTCityBarClusterClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586630
 // GHIDRA_NAME TCityBarCluster::ConstructTCityBarClusterBaseState
-// GHIDRA_PROTO TCityBarCluster * __thiscall ConstructTCityBarClusterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTCityBarClusterBaseState()
 
-/* imported from redecomp:src/game/trade_screen.cpp */
-
-TCityBarCluster * __thiscall
-TCityBarCluster::ConstructTCityBarClusterBaseState(TCityBarCluster *this)
+undefined4 * __fastcall TCityBarCluster::ConstructTCityBarClusterBaseState(undefined4 *param_1)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
-  this->field0_0x0 = &g_vtblTCityBarCluster;
-  return this;
+  TUberCluster::ConstructTUberClusterBaseState();
+  *param_1 = &g_vtblTCityBarCluster;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586660
 // GHIDRA_NAME TCityBarCluster::DestructTCityBarClusterAndMaybeFree
-// GHIDRA_PROTO TCityBarCluster * __thiscall DestructTCityBarClusterAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTCityBarClusterAndMaybeFree()
 
-/* imported from redecomp:src/game/trade_screen.cpp */
-
-TCityBarCluster * __thiscall
-TCityBarCluster::DestructTCityBarClusterAndMaybeFree(TCityBarCluster *this,byte freeSelfFlag)
+undefined4 __thiscall
+TCityBarCluster::DestructTCityBarClusterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructTViewBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005866B0
 // GHIDRA_NAME TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord
-// GHIDRA_PROTO void __thiscall UpdateTradeSummaryMetricControlsFromRecord(int recordContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
-// GHIDRA_COMMENT_END
-
-/* imported from redecomp:src/game/trade_screen.cpp */
+// GHIDRA_PROTO undefined UpdateTradeSummaryMetricControlsFromRecord()
 
 void __thiscall
-TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *this,int recordContext)
+TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int *param_1,int param_2)
 
 {
   int iVar1;
@@ -165,8 +85,8 @@ TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *thi
   int unaff_ESI;
   int iVar4;
   
-  iVar1 = *(int *)(recordContext + 0xac);
-  pcVar2 = (code *)this->field0_0x0[0x25];
+  iVar1 = *(int *)(param_2 + 0xac);
+  pcVar2 = *(code **)(*param_1 + 0x94);
   piVar3 = (int *)(*pcVar2)(0x74726561);
   if (piVar3 != (int *)0x0) {
     iVar4 = *piVar3;
@@ -176,20 +96,23 @@ TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *thi
   iVar4 = 0x756e7472;
   piVar3 = (int *)(*pcVar2)();
   if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x67d);
   }
   (**(code **)(*piVar3 + 0x1e4))((int)*(short *)(*(int *)(iVar1 + 0x10) + 4),1);
   piVar3 = (int *)(*pcVar2)(0x74726169);
   if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x682);
   }
   (**(code **)(*piVar3 + 0x1e4))((int)*(short *)(*(int *)(unaff_ESI + 0x10) + 6),1);
   piVar3 = (int *)(*pcVar2)(0x70726f66);
   if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x687);
   }
   (**(code **)(*piVar3 + 0x1e4))((int)*(short *)(*(int *)(iVar4 + 0x10) + 8),1);
   return;

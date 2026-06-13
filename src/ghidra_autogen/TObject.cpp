@@ -3,216 +3,61 @@
 // Program: Imperialism.exe
 // Bucket: TObject.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402423
-// GHIDRA_NAME TObject::thunk_RunRegisteredDialogFactoriesByEventCode
-// GHIDRA_PROTO int * __thiscall thunk_RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RunRegisteredDialogFactoriesByEventCode
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RunRegisteredDialogFactoriesByEventCode */
-
-int * __thiscall
-TObject::thunk_RunRegisteredDialogFactoriesByEventCode
-          (TObject *this,int nContextId,int *pEventPacket,int nEventCode,int *pAnchorPoint)
-
-{
-  int *piVar1;
-  
-  piVar1 = RunRegisteredDialogFactoriesByEventCode
-                     (this,nContextId,pEventPacket,nEventCode,pAnchorPoint);
-  return piVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040587B
-// GHIDRA_NAME TObject::thunk_InvokeDialogFactoryFromPacket
-// GHIDRA_PROTO int * __thiscall thunk_InvokeDialogFactoryFromPacket(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InvokeDialogFactoryFromPacket
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InvokeDialogFactoryFromPacket */
-
-int * __thiscall
-TObject::thunk_InvokeDialogFactoryFromPacket
-          (TObject *this,int nContextId,int *pEventPacket,int nEventCode,int *pAnchorPoint)
-
-{
-  int *piVar1;
-  
-  piVar1 = InvokeDialogFactoryFromPacket(this,nContextId,pEventPacket,nEventCode,pAnchorPoint);
-  return piVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F1A
-// GHIDRA_NAME TObject::TObject_thunk_scalar_deleting_destructor
-// GHIDRA_PROTO void * __thiscall TObject_thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall TObject::TObject_thunk_scalar_deleting_destructor(TObject *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405FE7
-// GHIDRA_NAME TObject::thunk_GetTObjectClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTObjectClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTObjectClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTObjectClassNamePointer */
-
-void * __cdecl TObject::thunk_GetTObjectClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTObjectClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406E56
-// GHIDRA_NAME TObject::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004798f0_At00406e56
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004798f0_At00406e56(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004798f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004798f0 */
-
-void __cdecl TObject::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004798f0_At00406e56(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At004798f0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407608
-// GHIDRA_NAME TObject::thunk_WrapperFor_FreeHeapBufferIfNotNull_At00479fb0_At00407608
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At00479fb0_At00407608(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At00479fb0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At00479fb0 */
-
-void __cdecl TObject::thunk_WrapperFor_FreeHeapBufferIfNotNull_At00479fb0_At00407608(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At00479fb0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407644
-// GHIDRA_NAME TObject::thunk_DestructTObjectAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTObjectAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTObjectRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTObjectRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TObject::thunk_DestructTObjectAndMaybeFree(TObject *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00479ED0
 // GHIDRA_NAME TObject::OrphanVtableAssignStub_00479ed0
-// GHIDRA_PROTO void __thiscall OrphanVtableAssignStub_00479ed0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Orphan no-xref vtable-assignment stub from orphan triage lane.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined OrphanVtableAssignStub_00479ed0()
 
-/* Orphan no-xref vtable-assignment stub from orphan triage lane. */
-
-void __thiscall TObject::OrphanVtableAssignStub_00479ed0(TObject *this)
+undefined ** TObject::OrphanVtableAssignStub_00479ed0(void)
 
 {
-  return;
+  return &PTR_DAT_00694b48;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485C90
 // GHIDRA_NAME TObject::CreateTObjectInstance
-// GHIDRA_PROTO TObject * __fastcall CreateTObjectInstance(int ecxArg, int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around InvokeCurrentMessageFallbackHandler; instructions=28, call_insns=3, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTObjectInstance()
 
-/* [WrapperShape] small wrapper around InvokeCurrentMessageFallbackHandler; instructions=28,
-   call_insns=3, internal_calls=1, unique_internal=1 */
-
-TObject * __fastcall TObject::CreateTObjectInstance(int ecxArg,int arg1)
+void TObject::CreateTObjectInstance(int param_1)
 
 {
-  TObject *pTVar1;
-  TObject *extraout_EAX;
-  int in_stack_00000004;
   undefined4 local_2c;
   undefined4 local_28;
   int local_24;
   undefined4 local_20;
   undefined4 local_1c;
   
-  CWnd::Default((CWnd *)ecxArg);
+  CWnd::Default();
   local_2c = 0x2c;
-  GetWindowPlacementFromThisHwnd((void *)ecxArg,&local_2c);
-  pTVar1 = (TObject *)0x2;
-  if ((in_stack_00000004 == 0) && (local_24 != 2)) {
+  GetWindowPlacementFromThisHwnd(&local_2c);
+  if ((param_1 == 0) && (local_24 != 2)) {
     local_24 = 2;
     local_1c = 0xfffffc18;
     local_20 = 0xfffffc18;
     local_28 = 3;
-    SetWindowPlacementFromThisHwnd((void *)ecxArg,&local_2c);
-    pTVar1 = extraout_EAX;
+    SetWindowPlacementFromThisHwnd(&local_2c);
   }
-  return pTVar1;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485E20
 // GHIDRA_NAME TObject::GetTObjectClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTObjectClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TObject.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTObjectClassNamePointer()
 
-/* Returns class descriptor pointer for TObject. */
-
-void * __cdecl TObject::GetTObjectClassNamePointer(void)
+undefined ** TObject::GetTObjectClassNamePointer(void)
 
 {
-  return &g_pClassDescTObject;
+  return &PTR_s_TObject_00694eb8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485F50
 // GHIDRA_NAME TObject::DestructTObjectAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTObjectAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TObject runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTObjectAndMaybeFree()
 
-/* Returns TObject runtime class descriptor pointer. */
-
-void * __thiscall TObject::DestructTObjectAndMaybeFree(TObject *this)
+void __fastcall TObject::DestructTObjectAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491CC0
@@ -237,7 +82,7 @@ TObject::RunRegisteredDialogFactoriesByEventCode
   int iStack_4;
   
   piVar3 = (int *)0x0;
-  puVar2 = this->pField08;
+  puVar2 = *(undefined4 **)(this + 8);
   do {
     if (puVar2 == (undefined4 *)0x0) {
       if (piVar3 == (int *)0x0) {
@@ -276,19 +121,19 @@ TObject::InvokeDialogFactoryFromPacket
 
 {
   int iVar1;
-  int iVar2;
+  undefined4 uVar2;
   int *piVar3;
   
-  iVar2 = g_Invoke_Dialog_Factory_State_006950AC;
-  g_Invoke_Dialog_Factory_State_006950AC = 0;
-  piVar3 = (int *)(**(code **)((int)this->pVtable + 0x30))
+  uVar2 = DAT_006950ac;
+  DAT_006950ac = 0;
+  piVar3 = (int *)(**(code **)(*(int *)this + 0x30))
                             (nContextId,pEventPacket,nEventCode,pAnchorPoint);
   if (piVar3 != (int *)0x0) {
     iVar1 = *piVar3;
     (**(code **)(iVar1 + 0xd8))(nContextId);
     (**(code **)(iVar1 + 0xe0))();
   }
-  g_Invoke_Dialog_Factory_State_006950AC = iVar2;
+  DAT_006950ac = uVar2;
   return piVar3;
 }
 

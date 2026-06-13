@@ -3,314 +3,334 @@
 // Program: Imperialism.exe
 // Bucket: TUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004043EA
-// GHIDRA_NAME TUnit::thunk_SerializeUnitOrderCoreState
-// GHIDRA_PROTO void __thiscall thunk_SerializeUnitOrderCoreState(int * pArchiveStream)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SerializeUnitOrderCoreState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SerializeUnitOrderCoreState */
-
-void __thiscall TUnit::thunk_SerializeUnitOrderCoreState(TUnit *this,int *pArchiveStream)
-
-{
-  code *pcVar1;
-  
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  pcVar1 = *(code **)(*pArchiveStream + 0x78);
-  (*pcVar1)(&this->field1_0x4,2);
-  (*pcVar1)(&this->field3_0x6,2);
-  (*pcVar1)(&this->field8_0xc,2);
-  (*pcVar1)(&this->field20_0x18,2);
-  (*pcVar1)(&this->field22_0x1a,2);
-  (*pcVar1)(&this->field24_0x1c,1);
-  (*pcVar1)(&this->field4_0x8,4);
-  (*pcVar1)(&this->field28_0x20,4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004050DD
-// GHIDRA_NAME TUnit::thunk_DestructTUnitAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTUnitAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTUnitRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTUnitRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TUnit::thunk_DestructTUnitAndMaybeFree(TUnit *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405ED4
-// GHIDRA_NAME TUnit::thunk_DeserializeUnitOrderCoreState
-// GHIDRA_PROTO void __thiscall thunk_DeserializeUnitOrderCoreState(int * pArchiveStream)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeserializeUnitOrderCoreState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeserializeUnitOrderCoreState */
-
-void __thiscall TUnit::thunk_DeserializeUnitOrderCoreState(TUnit *this,int *pArchiveStream)
-
-{
-  short *psVar1;
-  short sVar2;
-  code *pcVar3;
-  undefined2 extraout_var;
-  undefined2 uVar4;
-  
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  pcVar3 = *(code **)(*pArchiveStream + 0x3c);
-  (*pcVar3)(&this->field1_0x4,2);
-  psVar1 = &this->field3_0x6;
-  (*pcVar3)(psVar1,2);
-  (*pcVar3)(&this->field8_0xc,2);
-  (*pcVar3)(&this->field20_0x18,2);
-  (*pcVar3)(&this->field22_0x1a,2);
-  (*pcVar3)(&this->field24_0x1c,1);
-  (*pcVar3)(&this->field4_0x8,4);
-  sVar2 = *psVar1;
-  if (sVar2 != -1) {
-    uVar4 = *(undefined2 *)&this->field8_0xc;
-    *psVar1 = -1;
-    (**(code **)((int)this->pVtable + 0x28))(CONCAT22(extraout_var,sVar2));
-    *(undefined2 *)&this->field8_0xc = uVar4;
-  }
-  if (0x2d < g_Advance_Turn_Machine_State_00695278) {
-    (*pcVar3)(&this->field28_0x20,4);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407423
-// GHIDRA_NAME TUnit::thunk_GetTUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTUnitClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTUnitClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTUnitClassNamePointer */
-
-void * __cdecl TUnit::thunk_GetTUnitClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTUnitClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1BD0
 // GHIDRA_NAME TUnit::CreateTUnitInstance
-// GHIDRA_PROTO void __thiscall CreateTUnitInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassLane] Renders unit-side nation delta summary text lines with localized formatting and style/color application.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTUnitInstance()
 
-/* [ClassLane] Renders unit-side nation delta summary text lines with localized formatting and
-   style/color application. */
-
-void __thiscall TUnit::CreateTUnitInstance(TUnit *this)
+void __fastcall TUnit::CreateTUnitInstance(int param_1)
 
 {
-  char *input_str;
   int iVar1;
-  THQButton *this_00;
-  THQButton *this_01;
-  THQButton *this_02;
-  THQButton *this_03;
-  THQButton *this_04;
-  THQButton *this_05;
-  THQButton *this_06;
   undefined2 extraout_var;
-  THQButton *this_07;
-  THQButton *this_08;
-  int unaff_EBX;
-  int unaff_EBP;
   int iVar2;
-  int *unaff_FS_OFFSET;
-  short sVar3;
-  char *input_str_00;
-  void *pvStack_84;
-  int iStack_c;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar3;
+  undefined4 **ppuStack_98;
+  undefined4 uStack_94;
+  undefined4 **ppuStack_90;
+  undefined4 uStack_8c;
+  undefined4 **ppuStack_88;
+  undefined4 uStack_84;
+  undefined4 uStack_80;
+  undefined4 **ppuStack_7c;
+  char *pcStack_78;
+  undefined4 **ppuStack_74;
+  undefined4 uStack_70;
+  undefined4 uStack_6c;
+  undefined4 **ppuStack_68;
+  undefined4 uStack_64;
+  undefined4 **ppuStack_60;
+  undefined4 uStack_5c;
+  undefined4 uStack_58;
+  undefined1 **ppuStack_54;
+  undefined4 uStack_50;
+  undefined4 *puStack_4c;
+  undefined4 uStack_48;
+  undefined4 uStack_44;
+  undefined1 *puStack_40;
+  undefined4 uStack_3c;
+  undefined4 uStack_38;
+  undefined1 *puStack_34;
+  undefined1 local_20 [4];
+  undefined1 local_1c;
+  undefined1 local_1b;
+  undefined1 local_1a;
+  undefined1 local_19;
+  undefined1 local_18;
+  undefined1 local_17;
+  undefined1 local_16;
+  undefined1 local_15;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006398a8;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  puStack_34 = (undefined1 *)0x5c1bf7;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
+  local_18 = 0;
+  local_17 = 0;
+  local_16 = 0;
+  local_15 = 0;
+  local_1c = 0;
+  local_1b = 0;
+  local_1a = 0;
+  local_19 = 0;
+  puStack_34 = (undefined1 *)0x5c1c26;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
+  puStack_34 = (undefined1 *)0x5c1c34;
   InitializeSharedStringRefFromEmpty();
-  local_4._0_1_ = 2;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  puStack_34 = local_20;
+  uStack_38 = 0x17;
+  uStack_3c = 0x2740;
+  local_4 = CONCAT31(local_4._1_3_,2);
+  puStack_40 = (undefined1 *)0x5c1c53;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  puStack_40 = (undefined1 *)0x2b6b;
+  uStack_44 = 0xe;
+  uStack_48 = 0;
+  puStack_4c = (undefined4 *)0x5c1c60;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,(int)&stack0xffffffdc);
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)&stack0xffffffd8);
-  SetQuickDrawColorAndSyncGlobals(unaff_EBP);
-  thunk_SetQuickDrawTextOriginWithContextOffset(10,0x12);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  SetQuickDrawColorAndSyncGlobals(unaff_EBX);
-  thunk_SetQuickDrawTextOriginWithContextOffset(9,0x11);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+  puStack_40 = &stack0xffffffdc;
+  uStack_44 = 0x2b6b;
+  uStack_48 = 0x5c1c72;
+  thunk_MapUiThemeCodeToStyleFlags();
+  puStack_40 = &stack0xffffffd8;
+  uStack_44 = 0x2b6c;
+  uStack_48 = 0x5c1c84;
+  thunk_MapUiThemeCodeToStyleFlags();
+  uStack_44 = 0x5c1c91;
+  SetQuickDrawColorAndSyncGlobals();
+  puStack_40 = (undefined1 *)0x12;
+  uStack_44 = 10;
+  uStack_48 = 0x5c1c9d;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  puStack_40 = &stack0xffffffd4;
+  uStack_44 = 0x5c1caa;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  uStack_44 = 0x5c1cb7;
+  SetQuickDrawColorAndSyncGlobals();
+  puStack_40 = (undefined1 *)0x11;
+  uStack_44 = 9;
+  uStack_48 = 0x5c1cc3;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  puStack_40 = &stack0xffffffd4;
+  uStack_44 = 0x5c1cd0;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  puStack_40 = (undefined1 *)0x2b6a;
+  uStack_44 = 0xc;
+  uStack_48 = 0;
+  puStack_4c = (undefined4 *)0x5c1ce0;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(8,0x1e);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x80,0x1e);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffc0);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(8,0x2a);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffb4);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
-  if (*(int *)((int)g_apNationStates[this->field91_0x60] + 0x844) < 0) {
-    sVar3 = 0x7c;
+  puStack_40 = &stack0xffffffd4;
+  uStack_44 = 0x18;
+  uStack_48 = 0x2740;
+  puStack_4c = (undefined4 *)0x5c1cfd;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  puStack_4c = (undefined4 *)0x1e;
+  uStack_50 = 8;
+  ppuStack_54 = (undefined1 **)0x5c1d06;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  puStack_4c = &uStack_38;
+  uStack_50 = 0x5c1d13;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  puStack_4c = &uStack_38;
+  uStack_50 = *(undefined4 *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x840);
+  ppuStack_54 = (undefined1 **)0x5c1d38;
+  (**(code **)(*g_pLocalizationTable + 0x74))();
+  ppuStack_54 = (undefined1 **)0x1e;
+  uStack_58 = 0x80;
+  uStack_5c = 0x5c1d44;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  ppuStack_54 = &puStack_40;
+  uStack_58 = 0x5c1d51;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  ppuStack_54 = &puStack_40;
+  uStack_58 = 0x19;
+  uStack_5c = 0x2740;
+  ppuStack_60 = (undefined4 **)0x5c1d6e;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  ppuStack_60 = (undefined4 **)0x2a;
+  uStack_64 = 8;
+  ppuStack_68 = (undefined4 **)0x5c1d77;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  ppuStack_60 = &puStack_4c;
+  uStack_64 = 0x5c1d84;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  ppuStack_60 = &puStack_4c;
+  uStack_64 = *(undefined4 *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x844);
+  ppuStack_68 = (undefined4 **)0x5c1da9;
+  (**(code **)(*g_pLocalizationTable + 0x74))();
+  ppuStack_68 = (undefined4 **)0x2a;
+  if (*(int *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x844) < 0) {
+    uStack_6c = 0x7c;
   }
   else {
-    sVar3 = 0x80;
+    uStack_6c = 0x80;
   }
-  thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x2a);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(8,0x36);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa0);
-  input_str = (char *)-*(int *)((int)g_apNationStates[this->field91_0x60] + 0x960);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
-  if (*(int *)((int)g_apNationStates[this->field91_0x60] + 0x960) < 1) {
-    sVar3 = 0x80;
+  uStack_70 = 0x5c1dcc;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  ppuStack_68 = &ppuStack_54;
+  uStack_6c = 0x5c1dd9;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  ppuStack_68 = &ppuStack_54;
+  uStack_6c = 0x1d;
+  uStack_70 = 0x2740;
+  ppuStack_74 = (undefined4 **)0x5c1df6;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  ppuStack_74 = (undefined4 **)0x36;
+  pcStack_78 = (char *)0x8;
+  ppuStack_7c = (undefined4 **)0x5c1dff;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  ppuStack_74 = &ppuStack_60;
+  pcStack_78 = (char *)0x5c1e0c;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  ppuStack_74 = &ppuStack_60;
+  pcStack_78 = (char *)-*(int *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x960);
+  ppuStack_7c = (undefined4 **)0x5c1e33;
+  (**(code **)(*g_pLocalizationTable + 0x74))();
+  ppuStack_7c = (undefined4 **)0x36;
+  if (*(int *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x960) < 1) {
+    uStack_80 = 0x80;
   }
   else {
-    sVar3 = 0x7c;
+    uStack_80 = 0x7c;
   }
-  pvStack_84 = (void *)0x5c1e56;
-  thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x36);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
-  pvStack_84 = (void *)0x2740;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+  uStack_84 = 0x5c1e56;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  ppuStack_7c = &ppuStack_68;
+  uStack_80 = 0x5c1e63;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  ppuStack_7c = &ppuStack_68;
+  uStack_80 = 0x1a;
+  uStack_84 = 0x2740;
+  ppuStack_88 = (undefined4 **)0x5c1e80;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
   iVar2 = 0x42;
-  thunk_SetQuickDrawTextOriginWithContextOffset(8,0x42);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffff8c);
-  input_str_00 = &stack0xffffff8c;
-  iVar1 = *(int *)g_pLocalizationTable;
-  (**(code **)(*(int *)g_apNationStates[this->field91_0x60] + 0x17c))();
+  ppuStack_88 = (undefined4 **)0x42;
+  uStack_8c = 8;
+  ppuStack_90 = (undefined4 **)0x5c1e8d;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  ppuStack_88 = &ppuStack_74;
+  uStack_8c = 0x5c1e9a;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  ppuStack_88 = &ppuStack_74;
+  iVar1 = *g_pLocalizationTable;
+  uStack_8c = 0x5c1ebc;
+  uStack_8c = (**(code **)(*(int *)(&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x17c))();
+  ppuStack_90 = (undefined4 **)0x5c1ec6;
   (**(code **)(iVar1 + 0x74))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x80,0x42);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffff84);
-  if ('\0' < *(char *)((int)g_apNationStates[this->field91_0x60] + 0x8fc)) {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-    FormatStringWithVarArgsToSharedRef();
-    scanBracketExpressions(g_pLocalizationTable,&stack0xffffff78,input_str);
+  ppuStack_90 = (undefined4 **)0x42;
+  uStack_94 = 0x80;
+  ppuStack_98 = (undefined4 **)0x5c1ed1;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  ppuStack_90 = &ppuStack_7c;
+  uStack_94 = 0x5c1ede;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  if ('\0' < *(char *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x8fc)) {
+    ppuStack_90 = (undefined4 **)&uStack_6c;
+    uStack_94 = 0x1c;
+    ppuStack_98 = (undefined4 **)0x2740;
+    (**(code **)(*g_pLocalizationTable + 0x84))();
+    FormatStringWithVarArgsToSharedRef
+              (&ppuStack_7c,&g_szDecimalFormat,
+               (int)*(char *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x8f4));
+    scanBracketExpressions(g_pLocalizationTable,&ppuStack_88,pcStack_78);
     iVar2 = 0x4e;
     thunk_SetQuickDrawTextOriginWithContextOffset(8,0x4e);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
-    (**(code **)(*(int *)g_pLocalizationTable + 0x74))
-              (-*(int *)((int)g_apNationStates[this->field91_0x60] + 0x8f8),&stack0xffffff78);
-    if (*(int *)((int)g_apNationStates[this->field91_0x60] + 0x8f8) < 1) {
-      sVar3 = 0x80;
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&ppuStack_88);
+    (**(code **)(*g_pLocalizationTable + 0x74))
+              (-*(int *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x8f8),&ppuStack_88);
+    ppuStack_90 = (undefined4 **)0x4e;
+    if (*(int *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x8f8) < 1) {
+      uStack_94 = 0x80;
     }
     else {
-      sVar3 = 0x7c;
+      uStack_94 = 0x7c;
     }
-    thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,0x4e);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_06);
+    ppuStack_98 = (undefined4 **)0x5c1fbf;
+    thunk_SetQuickDrawTextOriginWithContextOffset();
+    ppuStack_90 = &ppuStack_7c;
+    uStack_94 = 0x5c1fcc;
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   }
-  thunk_SetQuickDrawTextOriginWithContextOffset(8,(short)(iVar2 + 2));
-  thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var,this->field48_0x34 + -8),iVar2 + 2);
-  iVar1 = *(int *)g_pLocalizationTable;
-  (**(code **)(*(int *)g_apNationStates[this->field91_0x60] + 0x180))();
+  uStack_94 = 8;
+  ppuStack_98 = (undefined4 **)0x5c1fda;
+  ppuStack_90 = (undefined4 **)(iVar2 + 2);
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  uStack_94 = CONCAT22(extraout_var,*(short *)(param_1 + 0x34) + -8);
+  ppuStack_98 = (undefined4 **)0x5c1fec;
+  ppuStack_90 = (undefined4 **)(iVar2 + 2);
+  thunk_DrawCenteredGuideLineOnMapDc();
+  ppuStack_90 = &ppuStack_7c;
+  iVar1 = *g_pLocalizationTable;
+  uStack_94 = 0x5c200e;
+  uStack_94 = (**(code **)(*(int *)(&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x180))();
+  ppuStack_98 = (undefined4 **)0x5c2018;
   (**(code **)(iVar1 + 0x74))();
-  iVar1 = (**(code **)(*(int *)g_apNationStates[this->field91_0x60] + 0x180))();
+  ppuStack_98 = (undefined4 **)0x5c202b;
+  iVar1 = (**(code **)(*(int *)(&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x180))();
   if (iVar1 < 0) {
-    (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
-    sVar3 = 0x7c;
+    ppuStack_98 = (undefined4 **)0x33;
+    (**(code **)(*g_pUiRuntimeContext + 0x34))();
+    uVar3 = 0x7c;
   }
   else {
-    sVar3 = 0x80;
+    uVar3 = 0x80;
   }
-  thunk_SetQuickDrawTextOriginWithContextOffset(sVar3,(short)iVar2 + 0xe);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&pvStack_84);
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2740,0x1b);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x74))
-            (*(int *)((int)g_apNationStates[this->field91_0x60] + 0x8f0) / 100,&pvStack_84);
-  scanBracketExpressions(g_pLocalizationTable,&stack0xffffff68,input_str_00);
-  sVar3 = (short)iVar2 + 0x1a;
-  thunk_SetQuickDrawTextOriginWithContextOffset(8,sVar3);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_07);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x80,sVar3);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_08);
+  ppuStack_98 = (undefined4 **)(iVar2 + 0xe);
+  thunk_SetQuickDrawTextOriginWithContextOffset(uVar3);
+  ppuStack_98 = (undefined4 **)&uStack_84;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  ppuStack_98 = (undefined4 **)0x2b6a;
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
+  ppuStack_98 = &ppuStack_74;
+  (**(code **)(*g_pLocalizationTable + 0x84))(0x2740,0x1b);
+  (**(code **)(*g_pLocalizationTable + 0x74))
+            (*(int *)((&g_apNationStates)[*(short *)(param_1 + 0x60)] + 0x8f0) / 100,&uStack_84);
+  scanBracketExpressions(g_pLocalizationTable,&ppuStack_98,(char *)ppuStack_88);
+  thunk_SetQuickDrawTextOriginWithContextOffset(8,iVar2 + 0x1a);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&ppuStack_98);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x80,iVar2 + 0x1a);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&uStack_8c);
   SetQuickDrawFillColorFromPaletteIndex(0);
+  ppuStack_7c._0_1_ = 1;
   ReleaseSharedStringRefIfNotEmpty();
+  ppuStack_7c = (undefined4 **)((uint)ppuStack_7c._1_3_ << 8);
   ReleaseSharedStringRefIfNotEmpty();
+  ppuStack_7c = (undefined4 **)0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = (int)pvStack_84;
+  *unaff_FS_OFFSET = uStack_84;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2490
 // GHIDRA_NAME TUnit::GetTUnitClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTUnitClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TUnit.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTUnitClassNamePointer()
 
-/* Returns class descriptor pointer for TUnit. */
-
-void * __cdecl TUnit::GetTUnitClassNamePointer(void)
+undefined ** TUnit::GetTUnitClassNamePointer(void)
 
 {
-  return &g_pClassDescTUnit;
+  return &PTR_s_TUnit_0066ed40;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C24E0
 // GHIDRA_NAME TUnit::ConstructTUnitBaseState
-// GHIDRA_PROTO void __thiscall ConstructTUnitBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTUnitBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TUnit::ConstructTUnitBaseState(TUnit *this)
+undefined4 __thiscall TUnit::ConstructTUnitBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTUnitAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTUnitAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2510
 // GHIDRA_NAME TUnit::DestructTUnitAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTUnitAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TUnit runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTUnitAndMaybeFree()
 
-/* Returns TUnit runtime class descriptor pointer. */
-
-void * __thiscall TUnit::DestructTUnitAndMaybeFree(TUnit *this)
+void __fastcall TUnit::DestructTUnitAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2B10
@@ -347,8 +367,8 @@ void * __thiscall TUnit::DestructTUnitAndMaybeFree(TUnit *this)
 void __thiscall TUnit::DeserializeCivUnitOrderState(TUnit *this,int *pArchiveStream)
 
 {
-  thunk_DeserializeUnitOrderCoreState(this,pArchiveStream);
-  (**(code **)(*pArchiveStream + 0x3c))(&this->field32_0x24,2);
+  DeserializeUnitOrderCoreState(this,pArchiveStream);
+  (**(code **)(*pArchiveStream + 0x3c))(this + 0x24,2);
   return;
 }
 
@@ -386,8 +406,8 @@ void __thiscall TUnit::DeserializeCivUnitOrderState(TUnit *this,int *pArchiveStr
 void __thiscall TUnit::SerializeCivUnitOrderState(TUnit *this,int *pArchiveStream)
 
 {
-  thunk_SerializeUnitOrderCoreState(this,pArchiveStream);
-  (**(code **)(*pArchiveStream + 0x78))(&this->field32_0x24,2);
+  SerializeUnitOrderCoreState(this,pArchiveStream);
+  (**(code **)(*pArchiveStream + 0x78))(this + 0x24,2);
   return;
 }
 

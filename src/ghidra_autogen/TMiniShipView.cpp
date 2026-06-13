@@ -5,18 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569DC0
 // GHIDRA_NAME TMiniShipView::CreateTMiniShipViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTMiniShipViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TMiniShipView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTMiniShipViewInstance()
 
-/* [ClassQuad] create inferred for TMiniShipView; alloc factory pattern. */
-
-void * __cdecl TMiniShipView::CreateTMiniShipViewInstance(void)
+undefined4 * TMiniShipView::CreateTMiniShipViewInstance(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -26,62 +21,52 @@ void * __cdecl TMiniShipView::CreateTMiniShipViewInstance(void)
   puStack_8 = &LAB_00635c4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTMiniShipLine;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_0065db68;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569E40
 // GHIDRA_NAME TMiniShipView::GetTMiniShipViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMiniShipViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMiniShipView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMiniShipViewClassNamePointer()
 
-/* Returns class descriptor pointer for TMiniShipView. */
-
-void * __cdecl TMiniShipView::GetTMiniShipViewClassNamePointer(void)
+undefined ** TMiniShipView::GetTMiniShipViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTMiniShipView;
+  return &PTR_s_TMiniShipView_0065c940;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056A330
 // GHIDRA_NAME TMiniShipView::DestructTMiniShipViewAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTMiniShipViewAndMaybeFree(int arg1, int arg2, int arg3, int arg4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refreshes mini-ship view cargo/resource counters from current ship record.
-// GHIDRA_COMMENT_END
-
-/* Refreshes mini-ship view cargo/resource counters from current ship record. */
+// GHIDRA_PROTO undefined DestructTMiniShipViewAndMaybeFree()
 
 void __thiscall
 TMiniShipView::DestructTMiniShipViewAndMaybeFree
-          (TMiniShipView *this,int arg1,int arg2,int arg3,int arg4)
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
 
 {
   int *piVar1;
   int iVar2;
   
-  piVar1 = this->field29_0x20;
+  piVar1 = *(int **)(param_1 + 0x20);
   (**(code **)(*piVar1 + 0xc))();
-  iVar2 = *(int *)((int)this->field123_0x84 + 0xc);
+  iVar2 = *(int *)(*(int *)(param_1 + 0x84) + 0xc);
   if (iVar2 == 0) {
     piVar1[0x22] = 0;
-    piVar1[0x21] = *(int *)((int)this->field123_0x84 + 8);
+    piVar1[0x21] = *(int *)(*(int *)(param_1 + 0x84) + 8);
   }
   else {
     piVar1[0x22] = iVar2;
     piVar1[0x21] = 0;
   }
-  TControl::thunk_BeginMouseCaptureAndStartRepeatTimer((TControl *)this,arg1,arg2,arg3,arg4);
+  TControl::BeginMouseCaptureAndStartRepeatTimer(param_2,param_3,param_4,param_5);
   return;
 }
 

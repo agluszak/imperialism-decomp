@@ -3,98 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TCzechBox.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004026E4
-// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TCzechBox_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCzechBoxClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCzechBoxClassNamePointer */
-
-void * __cdecl TCzechBox::TCzechBox_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCzechBoxClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402D8D
-// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TCzechBox_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCzechBoxAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCzechBoxAndMaybeFree */
-
-void * __thiscall TCzechBox::TCzechBox_VtblSlot001(TCzechBox *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTCzechBoxAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404D40
-// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot015
-// GHIDRA_PROTO void __cdecl TCzechBox_VtblSlot015(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0 */
-
-void __cdecl TCzechBox::TCzechBox_VtblSlot015(void)
-
-{
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At00571cb0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407563
-// GHIDRA_NAME TCzechBox::TCzechBox_VtblSlot055
-// GHIDRA_PROTO void __thiscall TCzechBox_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeCzechBoxVisualModeDefault
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeCzechBoxVisualModeDefault */
-
-void __thiscall TCzechBox::TCzechBox_VtblSlot055(TCzechBox *this)
-
-{
-  this->field60 = 4;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D6F0
 // GHIDRA_NAME TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0
-// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTCzechBoxBaseState; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0()
 
-/* [WrapperShape] small wrapper around ConstructTCzechBoxBaseState; instructions=8, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void * __thiscall TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(TCzechBox *this)
+undefined4 * __fastcall
+TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(undefined4 *param_1)
 
 {
-  ConstructTCzechBoxBaseState(this);
-  this->field98 = 0;
-  this->field0_0x0 = &PTR_thunk_GetTMadnessButtonClassNamePointer_00641df0;
-  return this;
+  ConstructTCzechBoxBaseState();
+  param_1[0x26] = 0;
+  *param_1 = &PTR_LAB_00641df0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571B60
 // GHIDRA_NAME TCzechBox::CreateTCzechBoxInstance
-// GHIDRA_PROTO void * __cdecl CreateTCzechBoxInstance(void)
+// GHIDRA_PROTO undefined CreateTCzechBoxInstance()
 
-void * __cdecl TCzechBox::CreateTCzechBoxInstance(void)
+undefined4 * TCzechBox::CreateTCzechBoxInstance(void)
 
 {
   undefined4 *puVar1;
@@ -107,60 +34,55 @@ void * __cdecl TCzechBox::CreateTCzechBoxInstance(void)
   puStack_8 = &LAB_0063646a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
+    thunk_TPictureButton::TPictureButton();
     *(undefined2 *)((int)puVar1 + 0x92) = 7000;
     *(undefined1 *)(puVar1 + 0x25) = 0;
-    *puVar1 = &g_vtblTCzechBox;
+    *puVar1 = &PTR_LAB_0065fae0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C00
 // GHIDRA_NAME TCzechBox::GetTCzechBoxClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCzechBoxClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCzechBox.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCzechBoxClassNamePointer()
 
-/* Returns class descriptor pointer for TCzechBox. */
-
-void * __cdecl TCzechBox::GetTCzechBoxClassNamePointer(void)
+undefined ** TCzechBox::GetTCzechBoxClassNamePointer(void)
 
 {
-  return &g_pClassDescTCzechBox;
+  return &PTR_s_TCzechBox_0065e610;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C20
 // GHIDRA_NAME TCzechBox::ConstructTCzechBoxBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTCzechBoxBaseState(void)
+// GHIDRA_PROTO undefined ConstructTCzechBoxBaseState()
 
-void * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
+undefined4 * __fastcall TCzechBox::ConstructTCzechBoxBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field92 = 7000;
-  this->field140_0x94 = 0;
-  this->field0_0x0 = &g_vtblTCzechBox;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *(undefined2 *)((int)param_1 + 0x92) = 7000;
+  *(undefined1 *)(param_1 + 0x25) = 0;
+  *param_1 = &PTR_LAB_0065fae0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C60
 // GHIDRA_NAME TCzechBox::DestructTCzechBoxAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCzechBoxAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTCzechBoxAndMaybeFree()
 
-void * __thiscall TCzechBox::DestructTCzechBoxAndMaybeFree(TCzechBox *this,byte freeSelfFlag)
+undefined4 __thiscall TCzechBox::DestructTCzechBoxAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

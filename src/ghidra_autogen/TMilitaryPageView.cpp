@@ -3,78 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TMilitaryPageView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040291E
-// GHIDRA_NAME TMilitaryPageView::thunk_GetTMilitaryPageViewClassNamePointer_At0040291e
-// GHIDRA_PROTO void * __cdecl thunk_GetTMilitaryPageViewClassNamePointer_At0040291e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTMilitaryPageViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTMilitaryPageViewClassNamePointer */
-
-void * __cdecl TMilitaryPageView::thunk_GetTMilitaryPageViewClassNamePointer_At0040291e(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTMilitaryPageViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040354E
-// GHIDRA_NAME TMilitaryPageView::thunk_WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564bf0_At0040354e
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564bf0_At0040354e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564bf0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564bf0 */
-
-void __thiscall
-TMilitaryPageView::
-thunk_WrapperFor_thunk_DispatchVfuncA0ToLinkedChildListSlot44_At00564bf0_At0040354e
-          (TMilitaryPageView *this)
-
-{
-  int *piVar1;
-  
-  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TControl *)this);
-  piVar1 = *(int **)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0xa8);
-  *(undefined1 *)(piVar1 + 0xd3) = 0;
-                    /* WARNING: Could not recover jumptable at 0x00564c0f. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-  (**(code **)(*piVar1 + 0x1f8))();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405538
-// GHIDRA_NAME TMilitaryPageView::thunk_DestructTMilitaryPageViewAndMaybeFree_At00405538
-// GHIDRA_PROTO void * __thiscall thunk_DestructTMilitaryPageViewAndMaybeFree_At00405538(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTMilitaryPageViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTMilitaryPageViewAndMaybeFree */
-
-void * __thiscall
-TMilitaryPageView::thunk_DestructTMilitaryPageViewAndMaybeFree_At00405538
-          (TMilitaryPageView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTMilitaryPageViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00564860
 // GHIDRA_NAME TMilitaryPageView::CreateTMilitaryPageViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTMilitaryPageViewInstance(void)
+// GHIDRA_PROTO undefined CreateTMilitaryPageViewInstance()
 
-void * __cdecl TMilitaryPageView::CreateTMilitaryPageViewInstance(void)
+undefined4 * TMilitaryPageView::CreateTMilitaryPageViewInstance(void)
 
 {
-  TPageView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -84,59 +20,54 @@ void * __cdecl TMilitaryPageView::CreateTMilitaryPageViewInstance(void)
   puStack_8 = &LAB_006358da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (this != (TPageView *)0x0) {
-    TPageView::ConstructTPageViewBaseState(this);
-    (this->base).pVtable = &g_vtblTMilitaryPageView;
-    *(undefined4 *)&this->field84 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TPageView::ConstructTPageViewBaseState();
+    *puVar1 = &PTR_LAB_0065c9c0;
+    puVar1[0x21] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564900
 // GHIDRA_NAME TMilitaryPageView::GetTMilitaryPageViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTMilitaryPageViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TMilitaryPageView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTMilitaryPageViewClassNamePointer()
 
-/* Returns class descriptor pointer for TMilitaryPageView. */
-
-void * __cdecl TMilitaryPageView::GetTMilitaryPageViewClassNamePointer(void)
+undefined ** TMilitaryPageView::GetTMilitaryPageViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTMilitaryPageView;
+  return &PTR_s_TMilitaryPageView_0065c838;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564920
 // GHIDRA_NAME TMilitaryPageView::ConstructTMilitaryPageViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTMilitaryPageViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTMilitaryPageViewBaseState()
 
-void * __thiscall TMilitaryPageView::ConstructTMilitaryPageViewBaseState(TMilitaryPageView *this)
+undefined4 * __fastcall TMilitaryPageView::ConstructTMilitaryPageViewBaseState(undefined4 *param_1)
 
 {
-  TPageView::ConstructTPageViewBaseState(&this->base);
-  (this->base).base.pVtable = &g_vtblTMilitaryPageView;
-  *(undefined4 *)&(this->base).field84 = 0;
-  return this;
+  TPageView::ConstructTPageViewBaseState();
+  *param_1 = &PTR_LAB_0065c9c0;
+  param_1[0x21] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00564950
 // GHIDRA_NAME TMilitaryPageView::DestructTMilitaryPageViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTMilitaryPageViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTMilitaryPageViewAndMaybeFree()
 
-void * __thiscall
-TMilitaryPageView::DestructTMilitaryPageViewAndMaybeFree(TMilitaryPageView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TMilitaryPageView::DestructTMilitaryPageViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -3,141 +3,86 @@
 // Program: Imperialism.exe
 // Bucket: TCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404656
-// GHIDRA_NAME TCommand::thunk_GetTCommandClassNamePointer_At00404656
-// GHIDRA_PROTO void * __cdecl thunk_GetTCommandClassNamePointer_At00404656(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCommandClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCommandClassNamePointer */
-
-void * __cdecl TCommand::thunk_GetTCommandClassNamePointer_At00404656(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCommandClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404D4A
-// GHIDRA_NAME TCommand::thunk_DestructTCommandAndMaybeFree_At00404d4a
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCommandAndMaybeFree_At00404d4a(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCommandAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCommandAndMaybeFree */
-
-void * __thiscall
-TCommand::thunk_DestructTCommandAndMaybeFree_At00404d4a(TCommand *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTCommandAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00484080
 // GHIDRA_NAME TCommand::RunCommandModalLoopAndFinalizeState_Impl
-// GHIDRA_PROTO void __thiscall RunCommandModalLoopAndFinalizeState_Impl(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_00484080 with single named caller RunCommandModalLoopAndFinalizeState@0x00487660
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RunCommandModalLoopAndFinalizeState_Impl()
 
-/* [ThunkBridge] promoted from thunk_FUN_00484080 with single named caller
-   RunCommandModalLoopAndFinalizeState@0x00487660 */
-
-void __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this,int arg1)
+undefined4 __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(int param_1,uint param_2)
 
 {
-  this->field90 = arg1 & 0xff;
-  return;
+  undefined4 uVar1;
+  
+  uVar1 = *(undefined4 *)(param_1 + 0x90);
+  *(uint *)(param_1 + 0x90) = param_2 & 0xff;
+  return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487660
 // GHIDRA_NAME TCommand::CreateTCommandInstance
-// GHIDRA_PROTO void __thiscall CreateTCommandInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Runs command modal loop and finalizes command state/owner callbacks on exit.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCommandInstance()
 
-/* Runs command modal loop and finalizes command state/owner callbacks on exit. */
-
-void __thiscall TCommand::CreateTCommandInstance(TCommand *this)
+void __fastcall TCommand::CreateTCommandInstance(int param_1)
 
 {
-  TMovieView *this_00;
-  TCommand *this_01;
-  int extraout_EAX;
-  int *piVar1;
-  TCommand *this_02;
-  BOOL unaff_EDI;
-  int iVar2;
+  int iVar1;
+  int *piVar2;
+  undefined4 uVar3;
   
-  iVar2 = 0;
-  InvokeAfxThreadVslot7CAndGetValueAtOffset98();
-  RunCommandModalLoopAndFinalizeState_Impl(this_01,iVar2);
-  piVar1 = (int *)(**(code **)(*(int *)this->pField08 + 0x58))();
-  (**(code **)(*piVar1 + 0x9c))();
-  iVar2 = (**(code **)(*(int *)this->pField08 + 0x58))();
-  this_00 = *(TMovieView **)(iVar2 + 0x50);
-  this->field11_0x20 = 0;
-  this->field1c = 0x20202020;
-  EnableWindow((HWND)0x1,unaff_EDI);
-  TMovieView::RunModalLoop(this_00);
-  if (extraout_EAX != 0) {
-    iVar2 = 1;
-    InvokeAfxThreadVslot7CAndGetValueAtOffset98();
-    RunCommandModalLoopAndFinalizeState_Impl(this_02,iVar2);
+  uVar3 = 0;
+  InvokeAfxThreadVslot7CAndGetValueAtOffset98(0);
+  iVar1 = RunCommandModalLoopAndFinalizeState_Impl(uVar3);
+  piVar2 = (int *)(**(code **)(**(int **)(param_1 + 8) + 0x58))();
+  (**(code **)(*piVar2 + 0x9c))();
+  (**(code **)(**(int **)(param_1 + 8) + 0x58))();
+  *(undefined1 *)(param_1 + 0x20) = 0;
+  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
+  FUN_0060753b(1);
+  TMovieView::RunModalLoop(0);
+  if (iVar1 != 0) {
+    uVar3 = 1;
+    InvokeAfxThreadVslot7CAndGetValueAtOffset98(1);
+    RunCommandModalLoopAndFinalizeState_Impl(uVar3);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487800
 // GHIDRA_NAME TCommand::GetTCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCommandClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCommand.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCommandClassNamePointer()
 
-/* Returns class descriptor pointer for TCommand. */
-
-void * __cdecl TCommand::GetTCommandClassNamePointer(void)
+undefined ** TCommand::GetTCommandClassNamePointer(void)
 
 {
-  return &g_pClassDescTCommand;
+  return &PTR_s_TCommand_00648e08;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487820
 // GHIDRA_NAME TCommand::ConstructTurnEventPacketBase
-// GHIDRA_PROTO void __thiscall ConstructTurnEventPacketBase(void)
+// GHIDRA_PROTO undefined ConstructTurnEventPacketBase()
 
-void __thiscall TCommand::ConstructTurnEventPacketBase(TCommand *this)
+void __fastcall TCommand::ConstructTurnEventPacketBase(undefined4 *param_1)
 
 {
-  this->field1_0x4 = 0;
-  this->pField08 = (void *)0x0;
-  this->field3_0xc = 0;
-  this->field4_0x10 = 0;
-  this->field0_0x0 = &g_vtblTCommand;
-  this->field5_0x14 = 0;
+  param_1[1] = 0;
+  param_1[2] = 0;
+  param_1[3] = 0;
+  param_1[4] = 0;
+  *param_1 = &PTR_LAB_00648e28;
+  param_1[5] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487850
 // GHIDRA_NAME TCommand::DestructTCommandAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCommandAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTCommandAndMaybeFree()
 
-void * __thiscall TCommand::DestructTCommandAndMaybeFree(TCommand *this,byte freeSelfFlag)
+undefined4 __thiscall TCommand::DestructTCommandAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTCommandAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

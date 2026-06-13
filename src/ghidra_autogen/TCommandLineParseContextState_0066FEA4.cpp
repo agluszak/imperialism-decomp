@@ -5,16 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00622690
 // GHIDRA_NAME TCommandLineParseContextState_0066FEA4::CCommandLineInfo
-// GHIDRA_PROTO void __thiscall CCommandLineInfo(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CCommandLineInfo()
 
-/* [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall
-TCommandLineParseContextState_0066FEA4::CCommandLineInfo
-          (TCommandLineParseContextState_0066FEA4 *this)
+undefined4 * TCommandLineParseContextState_0066FEA4::CCommandLineInfo(void)
 
 {
   undefined4 uVar1;
@@ -37,19 +30,17 @@ TCommandLineParseContextState_0066FEA4::CCommandLineInfo
   extraout_ECX[3] = 0;
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
   extraout_ECX[4] = 0;
-  *extraout_ECX = &PTR_GetCObjectRuntimeClass_CommandLineParseContextState_0066FEA4;
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_0066fea4;
   extraout_ECX[1] = 1;
   *unaff_FS_OFFSET = uVar1;
-  return;
+  return extraout_ECX;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0062271B
 // GHIDRA_NAME TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext
-// GHIDRA_PROTO void __thiscall DestructCommandLineParseContext(void)
+// GHIDRA_PROTO undefined DestructCommandLineParseContext()
 
-void __thiscall
-TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext
-          (TCommandLineParseContextState_0066FEA4 *this)
+void TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext(void)
 
 {
   undefined4 uVar1;
@@ -59,7 +50,7 @@ TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext
   
   EstablishSehFrameProlog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  *extraout_ECX = &PTR_GetCObjectRuntimeClass_CommandLineParseContextState_0066FEA4;
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_0066fea4;
   *(undefined4 *)(unaff_EBP + -4) = 3;
   ReleaseSharedStringRefIfNotEmpty();
   *(undefined1 *)(unaff_EBP + -4) = 2;

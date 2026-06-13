@@ -3,68 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTerrainHelpWindow.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040313E
-// GHIDRA_NAME TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot040
-// GHIDRA_PROTO void __cdecl TTerrainHelpWindow_VtblSlot040(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0 */
-
-void __cdecl TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot040(void)
-
-{
-  WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403945
-// GHIDRA_NAME TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TTerrainHelpWindow_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTerrainHelpWindowAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTerrainHelpWindowAndMaybeFree */
-
-void * __thiscall
-TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot001(TTerrainHelpWindow *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTerrainHelpWindowAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405416
-// GHIDRA_NAME TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TTerrainHelpWindow_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTerrainHelpWindowClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTerrainHelpWindowClassNamePointer */
-
-void * __cdecl TTerrainHelpWindow::TTerrainHelpWindow_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTerrainHelpWindowClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00504CA0
 // GHIDRA_NAME TTerrainHelpWindow::CreateTTerrainHelpWindowInstance
-// GHIDRA_PROTO void * __cdecl CreateTTerrainHelpWindowInstance(void)
+// GHIDRA_PROTO undefined CreateTTerrainHelpWindowInstance()
 
-void * __cdecl TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
+undefined4 * TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -74,58 +21,53 @@ void * __cdecl TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
   puStack_8 = &LAB_0063368a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
-    (this->base).pVtable = &g_vtblTTerrainHelpWindow;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryType4B340();
+    *puVar1 = &PTR_LAB_00657500;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D20
 // GHIDRA_NAME TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTerrainHelpWindowClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTerrainHelpWindow.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTerrainHelpWindowClassNamePointer()
 
-/* Returns class descriptor pointer for TTerrainHelpWindow. */
-
-void * __cdecl TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer(void)
+undefined ** TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer(void)
 
 {
-  return &g_pClassDescTTerrainHelpWindow;
+  return &PTR_s_TTerrainHelpWindow_00656fb0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D40
 // GHIDRA_NAME TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTerrainHelpWindowBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTerrainHelpWindowBaseState()
 
-void * __thiscall TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(TTerrainHelpWindow *this)
+undefined4 * __fastcall
+TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(undefined4 *param_1)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340(&this->base);
-  (this->base).base.pVtable = &g_vtblTTerrainHelpWindow;
-  return this;
+  TControl::thunk_ConstructUiWindowResourceEntryType4B340();
+  *param_1 = &PTR_LAB_00657500;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D70
 // GHIDRA_NAME TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTerrainHelpWindowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTerrainHelpWindowAndMaybeFree()
 
-void * __thiscall
-TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
-          (TTerrainHelpWindow *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTWindowViewAndUnlinkGlobalLists();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

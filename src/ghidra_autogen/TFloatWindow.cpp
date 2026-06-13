@@ -3,62 +3,18 @@
 // Program: Imperialism.exe
 // Bucket: TFloatWindow.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404DC7
-// GHIDRA_NAME TFloatWindow::TFloatWindow_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TFloatWindow_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTFloatWindowAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTFloatWindowAndMaybeFree */
-
-void * __thiscall TFloatWindow::TFloatWindow_VtblSlot001(TFloatWindow *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTFloatWindowAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409084
-// GHIDRA_NAME TFloatWindow::TFloatWindow_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TFloatWindow_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTFloatWindowClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTFloatWindowClassNamePointer */
-
-void * __cdecl TFloatWindow::TFloatWindow_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTFloatWindowClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00491E00
 // GHIDRA_NAME TFloatWindow::CreateTFloatWindowInstance
-// GHIDRA_PROTO void * __cdecl CreateTFloatWindowInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TFloatWindow; alloc factory pattern.
-// GHIDRA_COMMENT [InheritanceEvidence] TFloatWindow derives from TWindow (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTFloatWindowInstance()
 
-/* [ClassQuad] create inferred for TFloatWindow; alloc factory pattern.
-   [InheritanceEvidence] TFloatWindow derives from TWindow (decomp_vtbl_seq_ctor, medium) */
-
-void * __cdecl TFloatWindow::CreateTFloatWindowInstance(void)
+undefined4 * TFloatWindow::CreateTFloatWindowInstance(void)
 
 {
-  void *pvVar1;
-  undefined4 *puVar2;
-  TView *this;
-  void *pvVar3;
-  undefined4 *puVar4;
-  int iVar5;
+  int iVar1;
+  int *piVar2;
+  undefined4 *puVar3;
+  int iVar4;
+  int *piVar5;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -68,83 +24,78 @@ void * __cdecl TFloatWindow::CreateTFloatWindowInstance(void)
   puStack_8 = &LAB_0062f30d;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (this == (TView *)0x0) {
+  if (puVar3 == (undefined4 *)0x0) {
     *unaff_FS_OFFSET = local_c;
-    return (void *)0x0;
+    return (undefined4 *)0x0;
   }
-  TView::thunk_ConstructTViewBaseState(this);
+  TView::thunk_ConstructTViewBaseState();
   local_4._0_1_ = 1;
-  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)&this[1].viewStateDword14);
-  this[1].field15_0x38 = 0;
-  this->pVtable = &g_vtblTWindow;
-  pvVar1 = g_pWindowRegistryHead;
+  TDialogBehavior::ConstructTDialogBehaviorBaseState();
+  puVar3[0x26] = 0;
+  *puVar3 = &PTR_LAB_00649e58;
+  iVar1 = (int)DAT_006a1a44;
   local_4 = CONCAT31(local_4._1_3_,2);
-  puVar4 = g_pWindowRegistryFreeListHead;
-  if (g_pWindowRegistryFreeListHead == (void *)0x0) {
-    pvVar3 = AllocateAndLinkBlockHead();
-    puVar4 = g_pWindowRegistryFreeListHead;
-    puVar2 = (undefined4 *)((int)pvVar3 + g_nWindowRegistryNodesPerBlock * 0xc + -8);
-    iVar5 = g_nWindowRegistryNodesPerBlock;
-    if (-1 < g_nWindowRegistryNodesPerBlock + -1) {
+  piVar5 = DAT_006a1a50;
+  if (DAT_006a1a50 == (int *)0x0) {
+    iVar4 = AllocateAndLinkBlockHead(&DAT_006a1a54,DAT_006a1a58,0xc);
+    piVar5 = DAT_006a1a50;
+    piVar2 = (int *)(iVar4 + -8 + DAT_006a1a58 * 0xc);
+    iVar4 = DAT_006a1a58;
+    if (-1 < DAT_006a1a58 + -1) {
       do {
-        puVar4 = puVar2;
-        *puVar4 = g_pWindowRegistryFreeListHead;
-        iVar5 = iVar5 + -1;
-        g_pWindowRegistryFreeListHead = puVar4;
-        puVar2 = puVar4 + -3;
-      } while (iVar5 != 0);
+        piVar5 = piVar2;
+        *piVar5 = (int)DAT_006a1a50;
+        iVar4 = iVar4 + -1;
+        DAT_006a1a50 = piVar5;
+        piVar2 = piVar5 + -3;
+      } while (iVar4 != 0);
     }
   }
-  g_pWindowRegistryFreeListHead = (void *)*puVar4;
-  puVar4[1] = 0;
-  *puVar4 = pvVar1;
-  g_nWindowRegistryCount = g_nWindowRegistryCount + 1;
-  puVar4[2] = 0;
-  puVar4[2] = this;
-  puVar2 = puVar4;
-  if (g_pWindowRegistryHead != (void *)0x0) {
-    *(undefined4 **)((int)g_pWindowRegistryHead + 4) = puVar4;
-    puVar2 = g_pWindowRegistryTail;
+  DAT_006a1a50 = (int *)*piVar5;
+  piVar5[1] = 0;
+  *piVar5 = iVar1;
+  DAT_006a1a4c = DAT_006a1a4c + 1;
+  piVar5[2] = 0;
+  piVar5[2] = (int)puVar3;
+  piVar2 = piVar5;
+  if (DAT_006a1a44 != (int *)0x0) {
+    *(int **)((int)DAT_006a1a44 + 4) = piVar5;
+    piVar2 = DAT_006a1a48;
   }
-  g_pWindowRegistryTail = puVar2;
-  g_pWindowRegistryHead = puVar4;
-  thunk_SetUiColorDescriptorGoldTriplet();
-  this[1].field8_0x1c = (int)this;
-  *(TView **)&this[1].field1_0x4 = this;
-  this->pVtable = &g_vtblTFloatWindow;
+  DAT_006a1a48 = piVar2;
+  DAT_006a1a44 = piVar5;
+  thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
+  puVar3[0x1f] = puVar3;
+  puVar3[0x19] = puVar3;
+  *puVar3 = &PTR_LAB_0064b340;
   *unaff_FS_OFFSET = local_c;
-  return this;
+  return puVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491F90
 // GHIDRA_NAME TFloatWindow::GetTFloatWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTFloatWindowClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TFloatWindow.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTFloatWindowClassNamePointer()
 
-/* Returns class descriptor pointer for TFloatWindow. */
-
-void * __cdecl TFloatWindow::GetTFloatWindowClassNamePointer(void)
+undefined ** TFloatWindow::GetTFloatWindowClassNamePointer(void)
 
 {
-  return &g_pClassDescTFloatWindow;
+  return &PTR_s_TFloatWindow_006496d8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492110
 // GHIDRA_NAME TFloatWindow::DestructTFloatWindowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTFloatWindowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTFloatWindowAndMaybeFree()
 
-void * __thiscall
-TFloatWindow::DestructTFloatWindowAndMaybeFree(TFloatWindow *this,byte freeSelfFlag)
+undefined4 __thiscall
+TFloatWindow::DestructTFloatWindowAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTWindowAndUnlinkGlobalWindowNode();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

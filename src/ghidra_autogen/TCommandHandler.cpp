@@ -3,89 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: TCommandHandler.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405E1B
-// GHIDRA_NAME TCommandHandler::thunk_ConstructTCommandHandlerBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTCommandHandlerBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RunCommandHandlerPreAndPostHooks [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RunCommandHandlerPreAndPostHooks [FID:thunk_target_sync] */
-
-void __thiscall
-TCommandHandler::thunk_ConstructTCommandHandlerBaseState(TCommandHandler *this,int arg1)
-
-{
-  ConstructTCommandHandlerBaseState(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408BC5
-// GHIDRA_NAME TCommandHandler::thunk_CreateTCommandHandlerInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTCommandHandlerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTCommandHandlerRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTCommandHandlerRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TCommandHandler::thunk_CreateTCommandHandlerInstance(TCommandHandler *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00486610
 // GHIDRA_NAME TCommandHandler::CreateTCommandHandlerInstance
-// GHIDRA_PROTO void * __thiscall CreateTCommandHandlerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TCommandHandler runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCommandHandlerInstance()
 
-/* Returns TCommandHandler runtime class descriptor pointer. */
-
-void * __thiscall TCommandHandler::CreateTCommandHandlerInstance(TCommandHandler *this)
+void __fastcall TCommandHandler::CreateTCommandHandlerInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486630
 // GHIDRA_NAME TCommandHandler::GetTCommandHandlerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCommandHandlerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCommandHandler.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCommandHandlerClassNamePointer()
 
-/* Returns class descriptor pointer for TCommandHandler. */
-
-void * __cdecl TCommandHandler::GetTCommandHandlerClassNamePointer(void)
+undefined ** TCommandHandler::GetTCommandHandlerClassNamePointer(void)
 
 {
-  return &g_pClassDescTCommandHandler;
+  return &PTR_s_TCommandHandler_00648ae0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486650
 // GHIDRA_NAME TCommandHandler::ConstructTCommandHandlerBaseState
-// GHIDRA_PROTO void __thiscall ConstructTCommandHandlerBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Invokes command-handler pre/post virtual hooks in sequence.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTCommandHandlerBaseState()
 
-/* Invokes command-handler pre/post virtual hooks in sequence. */
-
-void __thiscall TCommandHandler::ConstructTCommandHandlerBaseState(TCommandHandler *this,int arg1)
+void TCommandHandler::ConstructTCommandHandlerBaseState(int *param_1)
 
 {
   int iVar1;
   
-  iVar1 = *(int *)arg1;
+  iVar1 = *param_1;
   (**(code **)(iVar1 + 0x2c))();
   (**(code **)(iVar1 + 0x1c))();
   return;

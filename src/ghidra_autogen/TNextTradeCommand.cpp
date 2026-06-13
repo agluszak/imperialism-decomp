@@ -3,207 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TNextTradeCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004028A1
-// GHIDRA_NAME TNextTradeCommand::thunk_ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked_At004028a1
-// GHIDRA_PROTO void __cdecl thunk_ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked_At004028a1(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked */
-
-void __cdecl
-TNextTradeCommand::thunk_ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked_At004028a1(void)
-
-{
-  ForwardProcessPendingDiplomacyTransferEntriesUntilBlocked();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004035FD
-// GHIDRA_NAME TNextTradeCommand::thunk_DestructTNextTradeCommandAndMaybeFree_At004035fd
-// GHIDRA_PROTO void * __thiscall thunk_DestructTNextTradeCommandAndMaybeFree_At004035fd(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTNextTradeCommandAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTNextTradeCommandAndMaybeFree */
-
-void * __thiscall
-TNextTradeCommand::thunk_DestructTNextTradeCommandAndMaybeFree_At004035fd
-          (TNextTradeCommand *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTNextTradeCommandAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404250
-// GHIDRA_NAME TNextTradeCommand::thunk_ConstructTNextTradeCommandBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTNextTradeCommandBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTNextTradeCommandBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTNextTradeCommandBaseState */
-
-void * __thiscall
-TNextTradeCommand::thunk_ConstructTNextTradeCommandBaseState(TNextTradeCommand *this)
-
-{
-  TCommand::thunk_ConstructTurnEventPacketBase((TCommand *)this);
-  this->field0_0x0 = &g_vtblTNextTradeCommand;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004055C4
-// GHIDRA_NAME TNextTradeCommand::thunk_GetTNextTradeCommandClassNamePointer_At004055c4
-// GHIDRA_PROTO void * __cdecl thunk_GetTNextTradeCommandClassNamePointer_At004055c4(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTNextTradeCommandClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTNextTradeCommandClassNamePointer */
-
-void * __cdecl TNextTradeCommand::thunk_GetTNextTradeCommandClassNamePointer_At004055c4(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTNextTradeCommandClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409895
-// GHIDRA_NAME TNextTradeCommand::thunk_CreateNextTradeCommandAndFormatPrompt
-// GHIDRA_PROTO void __thiscall thunk_CreateNextTradeCommandAndFormatPrompt(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateNextTradeCommandAndFormatPrompt
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateNextTradeCommandAndFormatPrompt */
-
-void __thiscall
-TNextTradeCommand::thunk_CreateNextTradeCommandAndFormatPrompt(TNextTradeCommand *this)
-
-{
-  code *pcVar1;
-  int iVar2;
-  char cVar3;
-  short sVar4;
-  int *piVar5;
-  TNextTradeCommand *this_00;
-  void *this_01;
-  undefined2 extraout_var;
-  int extraout_EDX;
-  int iVar6;
-  undefined2 uVar8;
-  undefined1 *puVar7;
-  int unaff_EBP;
-  int *unaff_FS_OFFSET;
-  int iVar9;
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  iStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006396f2;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  pcVar1 = *(code **)((int)this->field0_0x0 + 0x94);
-  piVar5 = (int *)(*pcVar1)();
-  if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  piVar5 = (int *)(**(code **)(*piVar5 + 0x94))();
-  if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  cVar3 = (**(code **)(*piVar5 + 0x1cc))();
-  this->field9a = (short)cVar3;
-  iVar9 = 0x70757263;
-  piVar5 = (int *)(*pcVar1)();
-  if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  iVar2 = *piVar5;
-  sVar4 = (**(code **)(iVar2 + 0x1e8))();
-  this->field98 = sVar4;
-  if (puStack_8 == (undefined1 *)0x72656a65) {
-    this->field98 = 0;
-    iVar6 = extraout_EDX;
-  }
-  else {
-    iVar6 = (int)sVar4;
-    if ((piVar5[0x2a] < iVar6) || (sVar4 < 0)) {
-      InitializeSharedStringRefFromEmpty();
-      InitializeSharedStringRefFromEmpty();
-      if (this->field132_0x9d == '\0') {
-        InitializeSharedStringRefFromEmpty();
-        FormatStringWithVarArgsToSharedRef();
-        (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-        scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd0,(char *)0x636c7573);
-        ReleaseSharedStringRefIfNotEmpty();
-      }
-      else {
-        (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-      }
-      thunk_AssignStringSharedRefAndReturnThis();
-      (**(code **)(*(int *)g_pDisplayManager + 0x4c))();
-      puVar7 = &stack0xffffffe4;
-      (**(code **)(iVar2 + 0x1dc))();
-      (**(code **)(iVar2 + 0x1d8))(0,*(undefined4 *)(unaff_EBP + -8),1);
-      ReleaseSharedStringRefIfNotEmpty();
-      ReleaseSharedStringRefIfNotEmpty();
-      goto LAB_005c082f;
-    }
-  }
-  uVar8 = (undefined2)((uint)iVar6 >> 0x10);
-  puVar7 = (undefined1 *)CONCAT22(uVar8,this->field92);
-  (**(code **)(g_pNationInteractionStateManager->vftable + 0x60))(CONCAT22(uVar8,this->field90));
-  piVar5 = (int *)(*pcVar1)(0x61636365);
-  iVar2 = *piVar5;
-  (**(code **)(iVar2 + 0xc))();
-  piVar5 = (int *)(*pcVar1)(0x72656a65);
-  (**(code **)(*piVar5 + 0xc))();
-  (**(code **)(iVar2 + 0xa8))(0,0);
-  (**(code **)(iVar9 + 0xa8))(0,0);
-  if (this->field98 != 0) {
-    piVar5 = (int *)(**(code **)(**(int **)((int)g_pDisplayManager + 4) + 0x94))(0x746f6f6c);
-    if (piVar5 != (int *)0x0) {
-      (**(code **)(*piVar5 + 0x1d0))(CONCAT22(extraout_var,this->field90));
-    }
-  }
-  if (*(int *)((int)g_pLocalizationTable + 0x44) != 2) {
-    this_00 = AllocateWithFallbackHandler();
-    if (this_00 == (TNextTradeCommand *)0x0) {
-      this_01 = (void *)0x0;
-    }
-    else {
-      this_01 = thunk_ConstructTNextTradeCommandBaseState(this_00);
-    }
-    thunk_InitializeRangePairFromDiplomacyConstants(this_01);
-    (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(this_01);
-  }
-LAB_005c082f:
-  *unaff_FS_OFFSET = (int)puVar7;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA370
 // GHIDRA_NAME TNextTradeCommand::CreateTNextTradeCommandInstance
-// GHIDRA_PROTO void * __cdecl CreateTNextTradeCommandInstance(void)
+// GHIDRA_PROTO undefined CreateTNextTradeCommandInstance()
 
-void * __cdecl TNextTradeCommand::CreateTNextTradeCommandInstance(void)
+undefined4 * TNextTradeCommand::CreateTNextTradeCommandInstance(void)
 
 {
-  TCommand *this;
-  TCommand *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -213,159 +21,118 @@ void * __cdecl TNextTradeCommand::CreateTNextTradeCommandInstance(void)
   puStack_8 = &LAB_006390ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
-  pTVar1 = (TCommand *)0x0;
-  if (this != (TCommand *)0x0) {
-    TCommand::thunk_ConstructTurnEventPacketBase(this);
-    this->field0_0x0 = &g_vtblTNextTradeCommand;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TCommand::thunk_ConstructTurnEventPacketBase();
+    *puVar1 = &PTR_LAB_0066da90;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA3E0
 // GHIDRA_NAME TNextTradeCommand::GetTNextTradeCommandClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTNextTradeCommandClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TNextTradeCommand.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTNextTradeCommandClassNamePointer()
 
-/* Returns class descriptor pointer for TNextTradeCommand. */
-
-void * __cdecl TNextTradeCommand::GetTNextTradeCommandClassNamePointer(void)
+undefined ** TNextTradeCommand::GetTNextTradeCommandClassNamePointer(void)
 
 {
-  return &g_pClassDescTNextTradeCommand;
+  return &PTR_s_TNextTradeCommand_0066d8a0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA400
 // GHIDRA_NAME TNextTradeCommand::ConstructTNextTradeCommandBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTNextTradeCommandBaseState(void)
+// GHIDRA_PROTO undefined ConstructTNextTradeCommandBaseState()
 
-void * __thiscall TNextTradeCommand::ConstructTNextTradeCommandBaseState(TNextTradeCommand *this)
+undefined4 * __fastcall TNextTradeCommand::ConstructTNextTradeCommandBaseState(undefined4 *param_1)
 
 {
-  TCommand::thunk_ConstructTurnEventPacketBase((TCommand *)this);
-  this->field0_0x0 = &g_vtblTNextTradeCommand;
-  return this;
+  TCommand::thunk_ConstructTurnEventPacketBase();
+  *param_1 = &PTR_LAB_0066da90;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA430
 // GHIDRA_NAME TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTNextTradeCommandAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTNextTradeCommandAndMaybeFree()
 
-void * __thiscall
-TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree(TNextTradeCommand *this,byte freeSelfFlag)
+undefined4 __thiscall
+TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  DestructTNextTradeCommandAndMaybeFree_Impl(this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTNextTradeCommandAndMaybeFree_Impl();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA460
 // GHIDRA_NAME TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
-// GHIDRA_PROTO void __thiscall DestructTNextTradeCommandAndMaybeFree_Impl(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_005ba460 with single named caller DestructTNextTradeCommandAndMaybeFree@0x005ba430
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTNextTradeCommandAndMaybeFree_Impl()
 
-/* [ThunkBridge] promoted from thunk_FUN_005ba460 with single named caller
-   DestructTNextTradeCommandAndMaybeFree@0x005ba430 */
-
-void __thiscall
-TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(TNextTradeCommand *this)
+void __fastcall TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl(undefined4 *param_1)
 
 {
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BF740
 // GHIDRA_NAME TNextTradeCommand::HandleTradeCommandTagsAndSelectionUpdates
-// GHIDRA_PROTO void __thiscall HandleTradeCommandTagsAndSelectionUpdates(int commandId, PanelEventPayload * pCommandRecord, int forwardArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles trade command tags (acce/reje/ForM/done) and updates selection rectangles for mapped command ids.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT [TradeCmdFlow] Handles command tags in trade desk flow.
-// GHIDRA_COMMENT Recognized tags: acce/reje/ForM/enod/koob.
-// GHIDRA_COMMENT Key effects: mode cycle, selection refresh, next-command prompt construction,
-// GHIDRA_COMMENT and selection-rect update for high command IDs.
-// GHIDRA_COMMENT_END
-
-/* Handles trade command tags (acce/reje/ForM/done) and updates selection rectangles for mapped
-   command ids.
-   
-   [TradeCmdFlow] Handles command tags in trade desk flow.
-   Recognized tags: acce/reje/ForM/enod/koob.
-   Key effects: mode cycle, selection refresh, next-command prompt construction,
-   and selection-rect update for high command IDs. */
+// GHIDRA_PROTO undefined HandleTradeCommandTagsAndSelectionUpdates()
 
 void __thiscall
 TNextTradeCommand::HandleTradeCommandTagsAndSelectionUpdates
-          (TNextTradeCommand *this,int commandId,PanelEventPayload *pCommandRecord,int forwardArg)
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
   undefined2 uVar1;
-  EControlTagFourCC EVar2;
-  TControl *this_00;
+  int iVar2;
+  TControl *this;
   undefined4 unaff_EBX;
   
-  EVar2 = pCommandRecord->controlTag1c;
-  if (commandId < 11000) {
-    if (commandId == 10) {
-      if ((EVar2 == 0x61636365) || (EVar2 == 0x72656a65)) {
-        thunk_CreateNextTradeCommandAndFormatPrompt(this);
+  iVar2 = *(int *)(param_3 + 0x1c);
+  if (param_2 < 11000) {
+    if (param_2 == 10) {
+      if ((iVar2 == 0x61636365) || (iVar2 == 0x72656a65)) {
+        CreateNextTradeCommandAndFormatPrompt(iVar2);
       }
-      else if (EVar2 == 0x466f724d) {
-        thunk_CycleTradeScreenMode0To2(g_pHelpManager);
-        thunk_RefreshSelectedNationOrderCompatibilityInfo();
+      else if (iVar2 == 0x466f724d) {
+        CycleTradeScreenMode0To2();
+        RefreshSelectedNationOrderCompatibilityInfo();
       }
     }
-    else if ((commandId == 0x14) && (EVar2 == CONTROL_TAG_TAG_ENOD)) {
-      TToolBarCluster::thunk_UpdateTradeSelectionStateAndRefreshUiIfChanged
-                ((TToolBarCluster *)this,'\0');
+    else if ((param_2 == 0x14) && (iVar2 == 0x646f6e65)) {
+      TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(0);
     }
   }
   else {
     uVar1 = *(undefined2 *)
-             (&UNK_00668528.field_0x40 +
-             (commandId + *(char *)((int)g_pCityOrderCapabilityState + 0x193) * 0x11) * 2);
-    if (this->field133_0x9e == 0) {
-      TToolBarCluster::thunk_UpdateTradeSelectionStateAndRefreshUiIfChanged
-                ((TToolBarCluster *)this,'\x01');
+             (&DAT_00668568 +
+             (param_2 + *(char *)((int)g_pCityOrderCapabilityState + 0x193) * 0x11) * 2);
+    if (*(char *)((int)param_1 + 0x9e) == '\0') {
+      TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged(1);
     }
     else {
-      (**(code **)(*(int *)g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
+      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
     }
-    this_00 = (TControl *)(**(code **)((int)this->field0_0x0 + 0x94))(0x626f6f6b);
+    this = (TControl *)(**(code **)(*param_1 + 0x94))(0x626f6f6b);
     TControl::UpdateSelectionRect
-              (this_00,(astruct_4 *)CONCAT22((short)((uint)unaff_EBX >> 0x10),uVar1));
+              (this,(astruct_4 *)CONCAT22((short)((uint)unaff_EBX >> 0x10),uVar1));
   }
-  thunk_HandleCityDialogToggleCommandOrForward();
+  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C04F0
 // GHIDRA_NAME TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
-// GHIDRA_PROTO void __thiscall CreateNextTradeCommandAndFormatPrompt(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructs next-trade command object and formats prompt text/resources for display.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT [TradeCmdFlow] Builds next-trade command object and formatted prompt text.
-// GHIDRA_COMMENT Consumes acce/reje/tool/purc-related control tags and updates related UI states.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateNextTradeCommandAndFormatPrompt()
 
-/* Constructs next-trade command object and formats prompt text/resources for display.
-   
-   [TradeCmdFlow] Builds next-trade command object and formatted prompt text.
-   Consumes acce/reje/tool/purc-related control tags and updates related UI states. */
-
-void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTradeCommand *this)
+void __fastcall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(int *param_1)
 
 {
   code *pcVar1;
@@ -373,16 +140,15 @@ void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTr
   char cVar3;
   short sVar4;
   int *piVar5;
-  TNextTradeCommand *this_00;
-  void *this_01;
+  undefined4 uVar6;
   undefined2 extraout_var;
   int extraout_EDX;
-  int iVar6;
-  undefined2 uVar8;
-  undefined1 *puVar7;
+  int iVar7;
+  undefined2 uVar9;
+  undefined1 *puVar8;
   int unaff_EBP;
   int *unaff_FS_OFFSET;
-  int iVar9;
+  int iVar10;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -391,50 +157,50 @@ void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTr
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006396f2;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  pcVar1 = *(code **)((int)this->field0_0x0 + 0x94);
+  pcVar1 = *(code **)(*param_1 + 0x94);
   piVar5 = (int *)(*pcVar1)();
   if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   piVar5 = (int *)(**(code **)(*piVar5 + 0x94))();
   if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   cVar3 = (**(code **)(*piVar5 + 0x1cc))();
-  this->field9a = (short)cVar3;
-  iVar9 = 0x70757263;
+  *(short *)((int)param_1 + 0x9a) = (short)cVar3;
+  iVar10 = 0x70757263;
   piVar5 = (int *)(*pcVar1)();
   if (piVar5 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar2 = *piVar5;
   sVar4 = (**(code **)(iVar2 + 0x1e8))();
-  this->field98 = sVar4;
+  *(short *)(param_1 + 0x26) = sVar4;
   if (puStack_8 == (undefined1 *)0x72656a65) {
-    this->field98 = 0;
-    iVar6 = extraout_EDX;
+    *(undefined2 *)(param_1 + 0x26) = 0;
+    iVar7 = extraout_EDX;
   }
   else {
-    iVar6 = (int)sVar4;
-    if ((piVar5[0x2a] < iVar6) || (sVar4 < 0)) {
+    iVar7 = (int)sVar4;
+    if ((piVar5[0x2a] < iVar7) || (sVar4 < 0)) {
       InitializeSharedStringRefFromEmpty();
       InitializeSharedStringRefFromEmpty();
-      if (this->field132_0x9d == '\0') {
+      if (*(char *)((int)param_1 + 0x9d) == '\0') {
         InitializeSharedStringRefFromEmpty();
         FormatStringWithVarArgsToSharedRef();
-        (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+        (**(code **)(*g_pLocalizationTable + 0x84))();
         scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd0,(char *)0x636c7573);
         ReleaseSharedStringRefIfNotEmpty();
       }
       else {
-        (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
+        (**(code **)(*g_pLocalizationTable + 0x84))();
       }
-      thunk_AssignStringSharedRefAndReturnThis();
-      (**(code **)(*(int *)g_pDisplayManager + 0x4c))();
-      puVar7 = &stack0xffffffe4;
+      thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffd0);
+      (**(code **)(*DAT_006a2158 + 0x4c))();
+      puVar8 = &stack0xffffffe4;
       (**(code **)(iVar2 + 0x1dc))();
       (**(code **)(iVar2 + 0x1d8))(0,*(undefined4 *)(unaff_EBP + -8),1);
       ReleaseSharedStringRefIfNotEmpty();
@@ -442,35 +208,36 @@ void __thiscall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(TNextTr
       goto LAB_005c082f;
     }
   }
-  uVar8 = (undefined2)((uint)iVar6 >> 0x10);
-  puVar7 = (undefined1 *)CONCAT22(uVar8,this->field92);
-  (**(code **)(g_pNationInteractionStateManager->vftable + 0x60))(CONCAT22(uVar8,this->field90));
+  uVar9 = (undefined2)((uint)iVar7 >> 0x10);
+  puVar8 = (undefined1 *)CONCAT22(uVar9,*(undefined2 *)((int)param_1 + 0x92));
+  (**(code **)(*(int *)g_pNationInteractionStateManager + 0x60))
+            (CONCAT22(uVar9,(short)param_1[0x24]));
   piVar5 = (int *)(*pcVar1)(0x61636365);
   iVar2 = *piVar5;
   (**(code **)(iVar2 + 0xc))();
   piVar5 = (int *)(*pcVar1)(0x72656a65);
   (**(code **)(*piVar5 + 0xc))();
   (**(code **)(iVar2 + 0xa8))(0,0);
-  (**(code **)(iVar9 + 0xa8))(0,0);
-  if (this->field98 != 0) {
-    piVar5 = (int *)(**(code **)(**(int **)((int)g_pDisplayManager + 4) + 0x94))(0x746f6f6c);
+  (**(code **)(iVar10 + 0xa8))(0,0);
+  if ((short)param_1[0x26] != 0) {
+    piVar5 = (int *)(**(code **)(*(int *)DAT_006a2158[1] + 0x94))(0x746f6f6c);
     if (piVar5 != (int *)0x0) {
-      (**(code **)(*piVar5 + 0x1d0))(CONCAT22(extraout_var,this->field90));
+      (**(code **)(*piVar5 + 0x1d0))(CONCAT22(extraout_var,(short)param_1[0x24]));
     }
   }
-  if (*(int *)((int)g_pLocalizationTable + 0x44) != 2) {
-    this_00 = AllocateWithFallbackHandler();
-    if (this_00 == (TNextTradeCommand *)0x0) {
-      this_01 = (void *)0x0;
+  if (g_pLocalizationTable[0x11] != 2) {
+    iVar10 = AllocateWithFallbackHandler(0x18);
+    if (iVar10 == 0) {
+      uVar6 = 0;
     }
     else {
-      this_01 = thunk_ConstructTNextTradeCommandBaseState(this_00);
+      uVar6 = ConstructTNextTradeCommandBaseState();
     }
-    thunk_InitializeRangePairFromDiplomacyConstants(this_01);
-    (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(this_01);
+    InitializeRangePairFromDiplomacyConstants();
+    (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))(uVar6);
   }
 LAB_005c082f:
-  *unaff_FS_OFFSET = (int)puVar7;
+  *unaff_FS_OFFSET = (int)puVar8;
   return;
 }
 

@@ -3,325 +3,47 @@
 // Program: Imperialism.exe
 // Bucket: TCivDescription.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401FD7
-// GHIDRA_NAME TCivDescription::thunk_RefreshCivilianTargetLegendBySelectedClass_At00401fd7
-// GHIDRA_PROTO void __thiscall thunk_RefreshCivilianTargetLegendBySelectedClass_At00401fd7(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshCivilianTargetLegendBySelectedClass
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshCivilianTargetLegendBySelectedClass */
-
-void __thiscall
-TCivDescription::thunk_RefreshCivilianTargetLegendBySelectedClass_At00401fd7(TCivDescription *this)
-
-{
-  RefreshCivilianTargetLegendBySelectedClass(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004030AD
-// GHIDRA_NAME TCivDescription::thunk_RenderCivilianTargetLegendVariantB_At004030ad
-// GHIDRA_PROTO void __thiscall thunk_RenderCivilianTargetLegendVariantB_At004030ad(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderCivilianTargetLegendVariantB
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderCivilianTargetLegendVariantB */
-
-void __thiscall
-TCivDescription::thunk_RenderCivilianTargetLegendVariantB_At004030ad(TCivDescription *this)
-
-{
-  RenderCivilianTargetLegendVariantB(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004042F5
-// GHIDRA_NAME TCivDescription::thunk_RenderCivilianTargetProfilePanel_At004042f5
-// GHIDRA_PROTO void __fastcall thunk_RenderCivilianTargetProfilePanel_At004042f5(TCivilianTargetProfilePanelContext * pPanelContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderCivilianTargetProfilePanel
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderCivilianTargetProfilePanel */
-
-void __fastcall
-TCivDescription::thunk_RenderCivilianTargetProfilePanel_At004042f5
-          (TCivilianTargetProfilePanelContext *pPanelContext)
-
-{
-  RenderCivilianTargetProfilePanel(pPanelContext);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404D8B
-// GHIDRA_NAME TCivDescription::thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation
-// GHIDRA_PROTO void __thiscall thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilianOrderState * pCivilianOrderState)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to UpdateCivilianOrderTargetTileCountsForOwnerNation
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to UpdateCivilianOrderTargetTileCountsForOwnerNation */
-
-void __thiscall
-TCivDescription::thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation
-          (TCivDescription *this,TCivilianOrderState *pCivilianOrderState)
-
-{
-  char cVar1;
-  int *piVar2;
-  code *pcVar3;
-  short sVar4;
-  int iVar5;
-  int iVar6;
-  short *psVar7;
-  int iVar8;
-  int iVar9;
-  short *psVar10;
-  int iStack_18;
-  code *pcStack_8;
-  
-  iVar8 = 1;
-  sVar4 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 +
-                          pCivilianOrderState->nCurrentTileIndex * 0x24);
-  this->field62 = sVar4;
-  piVar2 = *(int **)((int)g_apTerrainTypeDescriptorTable[sVar4] + 0x90);
-  *(undefined2 *)&this->field6c = 0;
-  *(undefined2 *)((int)&this->field68 + 2) = 0;
-  *(undefined2 *)&this->field68 = 0;
-  iVar6 = *piVar2;
-  this->field66 = 0;
-  this->field64 = 0;
-  iVar5 = (**(code **)(iVar6 + 0x28))();
-  if (0 < iVar5) {
-    pcVar3 = *(code **)(iVar6 + 0x24);
-    do {
-      iVar6 = (*pcVar3)(iVar8);
-      iVar5 = 0;
-      iVar6 = *(int *)((int)g_pGlobalMapState + 0x10) + iVar6 * 0xa8;
-      if ('\0' < *(char *)(iVar6 + 0x3a)) {
-        psVar10 = (short *)(iVar6 + 0x42);
-        do {
-          iVar8 = *(int *)((int)g_pGlobalMapState + 0xc) + *psVar10 * 0x24;
-          if (*(char *)(iVar8 + 0xe) == '\0') {
-            cVar1 = *(char *)(iVar8 + 0x13);
-            iVar8 = 0;
-            psVar7 = &this->field64;
-            iVar9 = 5;
-            do {
-              if ((short)cVar1 ==
-                  g_anTargetTileProfileByCivilianClassAndSlot[iVar8 + (short)this->field1_0x60 * 5])
-              {
-                *psVar7 = *psVar7 + 1;
-              }
-              iVar8 = iVar8 + 1;
-              psVar7 = psVar7 + 1;
-              iVar9 = iVar9 + -1;
-            } while (iVar9 != 0);
-          }
-          iVar5 = iVar5 + 1;
-          psVar10 = psVar10 + 1;
-          iVar8 = iStack_18;
-        } while (iVar5 < *(char *)(iVar6 + 0x3a));
-      }
-      iVar8 = iVar8 + 1;
-      iVar6 = (*pcStack_8)();
-      iStack_18 = iVar8;
-    } while (iVar8 <= iVar6);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405B87
-// GHIDRA_NAME TCivDescription::thunk_ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-// GHIDRA_PROTO ushort __thiscall thunk_ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int tacticalView, int tileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy */
-
-ushort __thiscall
-TCivDescription::thunk_ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-          (TCivDescription *this,int tacticalView,int tileIndex)
-
-{
-  int iVar1;
-  int in_EDX;
-  int iStack_38;
-  int iStack_30;
-  int iStack_2c;
-  int iStack_24;
-  ushort auStack_20 [16];
-  
-  iVar1._0_2_ = this->field1_0x60;
-  iVar1._2_2_ = this->field62;
-  auStack_20[0] = 6;
-  auStack_20[1] = 0;
-  auStack_20[2] = 3;
-  auStack_20[3] = 0;
-  auStack_20[4] = 5;
-  auStack_20[5] = 0;
-  auStack_20[6] = 1;
-  auStack_20[7] = 0;
-  auStack_20[8] = 6;
-  auStack_20[9] = 0;
-  auStack_20[10] = 0;
-  auStack_20[0xb] = 0;
-  auStack_20[0xc] = 2;
-  auStack_20[0xd] = 0;
-  auStack_20[0xe] = 4;
-  auStack_20[0xf] = 0;
-  thunk_ComputeHexNeighborTileIndices_005A0420(iVar1,in_EDX,tacticalView);
-  if ((((char)(tacticalView / 0x1d) + (char)(tacticalView >> 0x1f)) -
-       (char)((longlong)tacticalView * 0x8d3dcb09 >> 0x3f) & 1U) == 0) {
-    iVar1 = 4;
-    if ((iStack_38 != -1) &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + iStack_38 * 0x14) == 1)) {
-      iVar1 = 6;
-    }
-    if ((iStack_30 != -1) &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + iStack_30 * 0x14) == 1)) {
-      iVar1 = iVar1 + 1;
-    }
-  }
-  else {
-    iVar1 = 0;
-    if ((iStack_24 != -1) &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + iStack_24 * 0x14) == 1)) {
-      iVar1 = 2;
-    }
-    if ((iStack_2c != -1) &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + iStack_2c * 0x14) == 1)) {
-      return auStack_20[(iVar1 + 1) * 2];
-    }
-  }
-  return auStack_20[iVar1 * 2];
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040727F
-// GHIDRA_NAME TCivDescription::thunk_HandleCivilianLegendHitTestAndSelectOrder_At0040727f
-// GHIDRA_PROTO void __thiscall thunk_HandleCivilianLegendHitTestAndSelectOrder_At0040727f(POINT * pMousePoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleCivilianLegendHitTestAndSelectOrder
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleCivilianLegendHitTestAndSelectOrder */
-
-void __thiscall
-TCivDescription::thunk_HandleCivilianLegendHitTestAndSelectOrder_At0040727f
-          (TCivDescription *this,POINT *pMousePoint)
-
-{
-  HandleCivilianLegendHitTestAndSelectOrder(this,pMousePoint);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407DB5
-// GHIDRA_NAME TCivDescription::thunk_RenderCivilianTargetLegendVariantA_At00407db5
-// GHIDRA_PROTO void __thiscall thunk_RenderCivilianTargetLegendVariantA_At00407db5(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderCivilianTargetLegendVariantA
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderCivilianTargetLegendVariantA */
-
-void __thiscall
-TCivDescription::thunk_RenderCivilianTargetLegendVariantA_At00407db5(TCivDescription *this)
-
-{
-  RenderCivilianTargetLegendVariantA(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407F4A
-// GHIDRA_NAME TCivDescription::TCivDescription_thunk_scalar_deleting_destructor
-// GHIDRA_PROTO void * __thiscall TCivDescription_thunk_scalar_deleting_destructor(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TCivDescription::TCivDescription_thunk_scalar_deleting_destructor
-          (TCivDescription *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040838C
-// GHIDRA_NAME TCivDescription::thunk_GetTCivDescriptionClassNamePointer_At0040838c
-// GHIDRA_PROTO void * __cdecl thunk_GetTCivDescriptionClassNamePointer_At0040838c(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCivDescriptionClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCivDescriptionClassNamePointer */
-
-void * __cdecl TCivDescription::thunk_GetTCivDescriptionClassNamePointer_At0040838c(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCivDescriptionClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0044A770
 // GHIDRA_NAME TCivDescription::ConstructTCivDescriptionBaseState
-// GHIDRA_PROTO TCivDescription * __thiscall ConstructTCivDescriptionBaseState(void)
+// GHIDRA_PROTO undefined ConstructTCivDescriptionBaseState()
 
-TCivDescription * __thiscall
-TCivDescription::ConstructTCivDescriptionBaseState(TCivDescription *this)
+undefined4 * __fastcall TCivDescription::ConstructTCivDescriptionBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTCivDescription;
-  this->field1_0x60 = ~kCivilianClass_Miner;
-  *(undefined1 *)&this->field6c = 0;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_006431b0;
+  *(undefined2 *)(param_1 + 0x18) = 0xffff;
+  *(undefined1 *)(param_1 + 0x1b) = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0810
 // GHIDRA_NAME TCivDescription::BlitUiFrameToTransientSurfaceWithOptionalOverlay
-// GHIDRA_PROTO void __thiscall BlitUiFrameToTransientSurfaceWithOptionalOverlay(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Blits UI frame into transient surface and optionally overlays progress/selection segment based on state flags.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined BlitUiFrameToTransientSurfaceWithOptionalOverlay()
 
-/* Blits UI frame into transient surface and optionally overlays progress/selection segment based on
-   state flags. */
-
-void __thiscall
-TCivDescription::BlitUiFrameToTransientSurfaceWithOptionalOverlay(TCivDescription *this)
+void __fastcall TCivDescription::BlitUiFrameToTransientSurfaceWithOptionalOverlay(int *param_1)
 
 {
   code *pcVar1;
   int iVar2;
   int iVar3;
   short sVar4;
-  int iStack_3c;
+  undefined4 uStack_3c;
   astruct_18 *local_38;
-  int *piStack_34;
+  undefined4 uStack_34;
   RECT local_30;
   tagRECT local_20;
   RECT local_10;
   
-  sVar4 = (short)(this->base).field10_0x24 - (short)(this->base).field8_0x1c;
-  local_38 = *(astruct_18 **)(g_pUiTransientObjectRegistry->_pad_004_023 + 0x1c);
-  iVar3 = (int)(short)((short)(this->base).field11_0x28 - *(short *)&(this->base).pChildMapView20);
+  sVar4 = (short)param_1[9] - (short)param_1[7];
+  local_38 = *(astruct_18 **)(DAT_006a43e0 + 0x20);
+  iVar3 = (int)(short)((short)param_1[10] - (short)param_1[8]);
   local_30.left = 0;
   local_30.top = 0;
   local_30.right = (int)sVar4;
   local_30.bottom = iVar3;
   ResetQuickDrawStrokeState();
-  SetQuickDrawStrokeColor();
+  SetQuickDrawStrokeColor(0xffffff);
   SetQuickDrawFillColor(0);
   local_20.left = local_30.left;
   local_20.right = local_30.right;
@@ -336,134 +58,122 @@ TCivDescription::BlitUiFrameToTransientSurfaceWithOptionalOverlay(TCivDescriptio
   }
   local_38 = (astruct_18 *)((int)local_38 + 4);
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)((this->base).cachedPosY30 + 4),local_38,&local_30,&local_20,0,
-             (astruct_19 *)0x0);
-  if ((char)(this->base).cachedPosX2c != '\0') {
-    local_10.left = (LONG)(short)((short)(this->base).field3_0x8 * sVar4);
+            ((astruct_17 *)(param_1[0xc] + 4),local_38,&local_30,&local_20,0,(astruct_19 *)0x0);
+  if ((char)param_1[0xb] != '\0') {
+    local_10.left = (LONG)(short)((short)param_1[2] * sVar4);
     local_10.right = local_10.left + sVar4;
     local_10.top = 0;
     local_10.bottom = iVar3;
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)((this->base).field14_0x34 + 4),local_38,&local_10,&local_20,0x24,
-               (astruct_19 *)0x0);
+              ((astruct_17 *)(param_1[0xd] + 4),local_38,&local_10,&local_20,0x24,(astruct_19 *)0x0)
+    ;
   }
-  pcVar1 = *(code **)((int)(this->base).pVtable + 0x38);
+  pcVar1 = *(code **)(*param_1 + 0x38);
   (*pcVar1)();
-  iStack_3c = 0;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&piStack_34,&iStack_3c);
-  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,iStack_3c);
+  uStack_3c = 0;
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&uStack_34,&uStack_3c);
+  thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,uStack_3c);
   (*pcVar1)();
-  thunk_SetActiveQuickDrawSurfaceContext(piStack_34,iStack_3c);
+  thunk_SetActiveQuickDrawSurfaceContext(uStack_34,uStack_3c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3050
 // GHIDRA_NAME TCivDescription::HandleDialogEvent14ActionTagsAndEvent10BackOkay
-// GHIDRA_PROTO void __thiscall HandleDialogEvent14ActionTagsAndEvent10BackOkay(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles event code 0x14 action tags (deal/merc/opxe/cipr/ccer/blob) plus event code 10 back/okay fallback routing.
-// GHIDRA_COMMENT_END
-
-/* Handles event code 0x14 action tags (deal/merc/opxe/cipr/ccer/blob) plus event code 10 back/okay
-   fallback routing. */
+// GHIDRA_PROTO undefined HandleDialogEvent14ActionTagsAndEvent10BackOkay()
 
 void __thiscall
 TCivDescription::HandleDialogEvent14ActionTagsAndEvent10BackOkay
-          (TCivDescription *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent)
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
-  EControlTagFourCC EVar1;
-  void *pvVar2;
+  uint uVar1;
+  int iVar2;
   undefined4 uVar3;
   
-  EVar1 = pPanelEvent->controlTag1c;
-  if (eventCode == IN_EVENT_14_SPECIAL_RELATION_FLAG_2) {
-    if (EVar1 < 0x65787070) {
-      if (EVar1 == 0x6578706f) {
-        (**(code **)((int)(this->base).pVtable + 0x1a8))(0x2300);
+  uVar1 = *(uint *)(param_3 + 0x1c);
+  if (param_2 == 0x14) {
+    if (uVar1 < 0x65787070) {
+      if (uVar1 == 0x6578706f) {
+        (**(code **)(*param_1 + 0x1a8))(0x2300);
         return;
       }
-      if (EVar1 == 0x6465616c) {
-        (**(code **)((int)(this->base).pVtable + 0x1a8))(0x22f6);
-        return;
-      }
-    }
-    else if (EVar1 < 0x6d657264) {
-      if (EVar1 == 0x6d657263) {
-        (**(code **)((int)(this->base).pVtable + 0x1a8))(0x22ec);
-        return;
-      }
-      if (EVar1 == 0x676c6f62) {
-        (**(code **)((int)(this->base).pVtable + 0x1b0))();
+      if (uVar1 == 0x6465616c) {
+        (**(code **)(*param_1 + 0x1a8))(0x22f6);
         return;
       }
     }
-    else if (EVar1 == 0x70726963) {
-      (**(code **)((int)(this->base).pVtable + 0x1a8))(0x231e);
+    else if (uVar1 < 0x6d657264) {
+      if (uVar1 == 0x6d657263) {
+        (**(code **)(*param_1 + 0x1a8))(0x22ec);
+        return;
+      }
+      if (uVar1 == 0x676c6f62) {
+        (**(code **)(*param_1 + 0x1b0))();
+        return;
+      }
     }
-    else if (EVar1 == 0x72656363) {
-      (**(code **)((int)(this->base).pVtable + 0x1a8))(0x22e2);
+    else if (uVar1 == 0x70726963) {
+      (**(code **)(*param_1 + 0x1a8))(0x231e);
+    }
+    else if (uVar1 == 0x72656363) {
+      (**(code **)(*param_1 + 0x1a8))(0x22e2);
       return;
     }
     return;
   }
-  if (eventCode != 10) {
-    TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+  if (param_2 != 10) {
+    thunk_ForwardEngineerDialogCommandToChildSlot40(param_2,param_3,param_4);
     return;
   }
-  if (EVar1 != 0x6261636b) {
-    if (EVar1 != CONTROL_TAG_TAG_YAKO) {
-      TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+  if (uVar1 != 0x6261636b) {
+    if (uVar1 != 0x6f6b6179) {
+      thunk_ForwardEngineerDialogCommandToChildSlot40(10,param_3,param_4);
       return;
     }
-    pvVar2 = (this->base).pVtable;
-    (**(code **)((int)pvVar2 + 0x1ac))();
-    uVar3 = (**(code **)((int)pvVar2 + 0x58))();
+    iVar2 = *param_1;
+    (**(code **)(iVar2 + 0x1ac))();
+    uVar3 = (**(code **)(iVar2 + 0x58))();
     (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar3);
     return;
   }
-  (**(code **)((int)(this->base).pVtable + 0x1ac))();
+  (**(code **)(*param_1 + 0x1ac))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0050B640
 // GHIDRA_NAME TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress
-// GHIDRA_PROTO void __thiscall RenderTurnEventPalettePreviewSurfaceAndProgress(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Render turn-event palette preview surface and update progress spinner state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderTurnEventPalettePreviewSurfaceAndProgress()
 
 /* WARNING: Removing unreachable block (ram,0x0050b738) */
-/* Render turn-event palette preview surface and update progress spinner state. */
 
-void __thiscall
-TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription *this)
+void __fastcall TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(int param_1)
 
 {
   char cVar1;
-  undefined1 extraout_AL;
-  short sVar2;
-  int *pSurfaceObject;
-  int *piVar3;
-  undefined1 *puVar4;
-  undefined1 *puVar5;
-  char *pcVar6;
-  char *pcVar7;
-  int iVar8;
-  char cVar9;
-  uint uVar10;
-  int iVar11;
-  undefined1 *puVar12;
-  char *pcVar13;
-  char *pcVar14;
-  int iVar15;
-  int iStack_28;
+  undefined1 uVar2;
+  short sVar3;
+  int *piVar4;
+  int iVar5;
+  undefined1 *puVar6;
+  int iVar7;
+  undefined1 *puVar8;
+  char *pcVar9;
+  char *pcVar10;
+  undefined4 uVar11;
+  char cVar12;
+  uint uVar13;
+  int iVar14;
+  undefined1 *puVar15;
+  char *pcVar16;
+  char *pcVar17;
+  undefined4 uStack_28;
   int local_24;
-  int *piStack_20;
+  undefined4 uStack_20;
   int *local_1c;
-  TCivDescription *local_18;
-  int *local_14;
+  int local_18;
+  undefined1 local_14 [4];
   undefined4 local_10;
   undefined4 local_c;
   undefined4 local_8;
@@ -474,122 +184,123 @@ TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription
   local_c = 0;
   local_8 = 0xd7;
   local_4 = 0x78;
-  local_18 = this;
-  thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_14,&local_24);
-  thunk_SetActiveQuickDrawSurfaceContext(this->pField670,local_24);
-  pSurfaceObject = thunk_GetSurfaceObjectAtContextOffset24(this->pField670);
-  local_1c = pSurfaceObject;
-  thunk_ReturnConstantTrueQuickDrawFlag();
+  local_18 = param_1;
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_14,&local_24);
+  thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)(param_1 + 0x670),local_24);
+  piVar4 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x670));
+  local_1c = piVar4;
+  thunk_ReturnConstantTrueQuickDrawFlag(piVar4);
   ResetQuickDrawStrokeState();
-  piVar3 = thunk_GetSurfaceHeaderFromSurfaceObject(pSurfaceObject);
-  uVar10 = *(ushort *)(*pSurfaceObject + 4) & 0x3fff;
-  SetQuickDrawStrokeColor();
-  (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))(0x32);
-  thunk_FillRectWithQuickDrawBrushAndContextOffset((int *)&local_14);
-  iVar11 = 0;
+  iVar5 = GetSurfaceHeaderFromSurfaceObject(piVar4);
+  uVar13 = *(ushort *)(*piVar4 + 4) & 0x3fff;
+  SetQuickDrawStrokeColor(0xffffff);
+  (**(code **)(*g_pUiRuntimeContext + 0x34))(0x32);
+  thunk_FillRectWithQuickDrawBrushAndContextOffset(local_14);
+  iVar14 = 0;
   local_24 = 0;
   do {
-    sVar2 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + (short)local_24 * 0x24);
-    iVar15 = CONCAT22((short)((uint)g_pGlobalMapState >> 0x10),sVar2);
-    if (sVar2 < 0x17) {
-      if (sVar2 == 0) {
-        iVar15 = 0x3e;
+    sVar3 = (short)*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 4 + (short)local_24 * 0x24);
+    if (sVar3 < 0x17) {
+      if (sVar3 == 0) {
+        sVar3 = 0x3e;
       }
-      thunk_MapTurnEventCodeToPaletteIndex(iVar15);
-      *(undefined1 *)((int)piVar3 + iVar11) = extraout_AL;
-      puVar4 = (undefined1 *)((int)piVar3 + iVar11 + uVar10);
-      *(undefined1 *)((int)piVar3 + iVar11 + 1) = extraout_AL;
-      *puVar4 = extraout_AL;
-      puVar4[1] = extraout_AL;
+      uVar2 = thunk_MapTurnEventCodeToPaletteIndex(sVar3);
+      *(undefined1 *)(iVar5 + iVar14) = uVar2;
+      puVar6 = (undefined1 *)(uVar13 + iVar5 + iVar14);
+      *(undefined1 *)(iVar5 + 1 + iVar14) = uVar2;
+      *puVar6 = uVar2;
+      puVar6[1] = uVar2;
     }
-    iVar11 = iVar11 + 2;
-    if (iVar11 == 0xd8) {
-      iVar11 = 0;
-      piVar3 = (int *)((int)piVar3 + uVar10 * 2);
+    iVar14 = iVar14 + 2;
+    if (iVar14 == 0xd8) {
+      iVar14 = 0;
+      iVar5 = iVar5 + uVar13 * 2;
     }
     local_24 = local_24 + 1;
   } while (local_24 < 0x1950);
-  piVar3 = thunk_GetSurfaceHeaderFromSurfaceObject(pSurfaceObject);
-  local_24 = (int)piVar3 + uVar10 * 2;
-  puVar4 = AllocateWithFallbackHandler();
-  if (puVar4 == (undefined1 *)0x0) {
-                    /* WARNING: Subroutine does not return */
+  local_24 = GetSurfaceHeaderFromSurfaceObject(piVar4);
+  local_24 = local_24 + uVar13 * 2;
+  puVar6 = (undefined1 *)AllocateWithFallbackHandler(0x6540);
+  if (puVar6 == (undefined1 *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UMacViewMgr_cpp_00696d68,0x7e3);
   }
-  thunk_GetSurfaceHeaderFromSurfaceObject(pSurfaceObject);
-  iVar15 = 0;
-  iVar11 = 0x78;
-  puVar12 = puVar4;
+  GetSurfaceHeaderFromSurfaceObject(piVar4);
+  iVar14 = 0;
+  iVar5 = 0x78;
+  puVar15 = puVar6;
   do {
-    piVar3 = thunk_GetSurfaceHeaderFromSurfaceObject(piStack_20);
-    puVar5 = (undefined1 *)((int)piVar3 + iVar15);
-    iVar8 = 0xd8;
+    iVar7 = GetSurfaceHeaderFromSurfaceObject(uStack_20);
+    puVar8 = (undefined1 *)(iVar7 + iVar14);
+    iVar7 = 0xd8;
     do {
-      *puVar12 = *puVar5;
-      puVar12 = puVar12 + 1;
-      puVar5 = puVar5 + 1;
-      iVar8 = iVar8 + -1;
-    } while (iVar8 != 0);
-    iVar15 = iVar15 + uVar10;
-    iVar11 = iVar11 + -1;
-  } while (iVar11 != 0);
-  pcVar6 = (char *)(local_24 + 1);
+      *puVar15 = *puVar8;
+      puVar15 = puVar15 + 1;
+      puVar8 = puVar8 + 1;
+      iVar7 = iVar7 + -1;
+    } while (iVar7 != 0);
+    iVar14 = iVar14 + uVar13;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  pcVar9 = (char *)(local_24 + 1);
   local_24 = 0x70;
-  pcVar14 = puVar4 + 0x1b1;
+  pcVar17 = puVar6 + 0x1b1;
   do {
-    iVar11 = 0xd6;
-    pcVar7 = pcVar6;
+    iVar5 = 0xd6;
+    pcVar10 = pcVar9;
     do {
-      pcVar13 = pcVar14;
-      cVar1 = *pcVar7;
-      if ((pcVar7[-uVar10] != cVar1) &&
-         ((cVar9 = pcVar7[-1], cVar9 != cVar1 || (cVar9 = pcVar7[1], cVar9 != cVar1)))) {
-        *pcVar13 = cVar9;
+      pcVar16 = pcVar17;
+      cVar1 = *pcVar10;
+      if ((pcVar10[-uVar13] != cVar1) &&
+         ((cVar12 = pcVar10[-1], cVar12 != cVar1 || (cVar12 = pcVar10[1], cVar12 != cVar1)))) {
+        *pcVar16 = cVar12;
       }
-      if ((pcVar7[uVar10] != cVar1) &&
-         ((cVar9 = pcVar7[-1], cVar9 != cVar1 || (cVar9 = pcVar7[1], cVar9 != cVar1)))) {
-        *pcVar13 = cVar9;
+      if ((pcVar10[uVar13] != cVar1) &&
+         ((cVar12 = pcVar10[-1], cVar12 != cVar1 || (cVar12 = pcVar10[1], cVar12 != cVar1)))) {
+        *pcVar16 = cVar12;
       }
-      pcVar7 = pcVar7 + 1;
-      iVar11 = iVar11 + -1;
-      pcVar14 = pcVar13 + 1;
-    } while (iVar11 != 0);
-    pcVar6 = pcVar6 + uVar10;
-    pcVar14 = pcVar13 + 3;
+      pcVar10 = pcVar10 + 1;
+      iVar5 = iVar5 + -1;
+      pcVar17 = pcVar16 + 1;
+    } while (iVar5 != 0);
+    pcVar9 = pcVar9 + uVar13;
+    pcVar17 = pcVar16 + 3;
     local_24 = local_24 + -1;
   } while (local_24 != 0);
-  iVar15 = 0;
-  iVar11 = 0x78;
+  iVar14 = 0;
+  iVar5 = 0x78;
   local_24 = 0;
+  puVar15 = puVar6;
   do {
-    piVar3 = thunk_GetSurfaceHeaderFromSurfaceObject(piStack_20);
-    puVar12 = (undefined1 *)((int)piVar3 + iVar15);
-    iVar8 = 0xd8;
+    iVar7 = GetSurfaceHeaderFromSurfaceObject(uStack_20);
+    puVar8 = (undefined1 *)(iVar7 + iVar14);
+    iVar7 = 0xd8;
     do {
-      *puVar12 = *puVar4;
-      puVar12 = puVar12 + 1;
-      puVar4 = puVar4 + 1;
-      iVar8 = iVar8 + -1;
-    } while (iVar8 != 0);
-    iVar15 = iVar15 + uVar10;
-    iVar11 = iVar11 + -1;
-  } while (iVar11 != 0);
-  FreeHeapBufferIfNotNull();
+      *puVar8 = *puVar15;
+      puVar8 = puVar8 + 1;
+      puVar15 = puVar15 + 1;
+      iVar7 = iVar7 + -1;
+    } while (iVar7 != 0);
+    iVar14 = iVar14 + uVar13;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  FreeHeapBufferIfNotNull(puVar6);
   SetQuickDrawFillColor(0);
-  thunk_GetSurfaceObjectAtContextOffset24((int *)local_1c[0x19c]);
-  thunk_NoOpQuickDrawLifecycleHookB();
-  thunk_SetActiveQuickDrawSurfaceContext((int *)local_18,iStack_28);
-  if (g_pMapGenerationProgressContext != (void *)0x0) {
-    TSpaceCommand::thunk_UpdateMapGenerationProgressSpinnerFrame(g_pMapGenerationProgressContext);
+  uVar11 = thunk_GetSurfaceObjectAtContextOffset24(local_1c[0x19c]);
+  thunk_NoOpQuickDrawLifecycleHookB(uVar11);
+  thunk_SetActiveQuickDrawSurfaceContext(local_18,uStack_28);
+  if (DAT_006a4268 != 0) {
+    TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame();
   }
-  thunk_RebuildSurfaceRowsWithTemporaryRowBuffer();
-  *(undefined1 *)((int)g_pGlobalMapState + 4) = 1;
+  RebuildSurfaceRowsWithTemporaryRowBuffer();
+  *(undefined1 *)(g_pGlobalMapState + 4) = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051EB40
 // GHIDRA_NAME TCivDescription::RenderStrategicMapTileCell
-// GHIDRA_PROTO void __thiscall RenderStrategicMapTileCell(int arg1)
+// GHIDRA_PROTO undefined RenderStrategicMapTileCell()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Render one strategic-map tile cell including terrain/city base, route overlays, unit glyphs, and state/selection markers.
 // GHIDRA_COMMENT
@@ -614,6 +325,7 @@ TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription
 // GHIDRA_COMMENT - Civilian icon-state IDs (400/409/418 family) are composed through indirect icon/overlay draw paths rather than a single direct switch in this function.
 // GHIDRA_COMMENT_END
 
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Render one strategic-map tile cell including terrain/city base, route overlays, unit glyphs, and
    state/selection markers.
    
@@ -640,50 +352,32 @@ TCivDescription::RenderTurnEventPalettePreviewSurfaceAndProgress(TCivDescription
    - Civilian icon-state IDs (400/409/418 family) are composed through indirect icon/overlay draw
    paths rather than a single direct switch in this function. */
 
-void __thiscall TCivDescription::RenderStrategicMapTileCell(TCivDescription *this,int arg1)
+void __thiscall
+TCivDescription::RenderStrategicMapTileCell(int *param_1,short param_2,short param_3,short param_4)
 
 {
-  int iVar1;
-  void *this_00;
-  ushort uVar2;
+  ushort uVar1;
+  int iVar2;
   bool bVar3;
   char cVar4;
-  byte extraout_AL;
-  byte extraout_AL_00;
-  byte extraout_AL_01;
-  char cVar5;
-  short sVar6;
+  byte bVar5;
+  char cVar6;
   short sVar7;
-  short extraout_AX;
-  short extraout_AX_00;
-  short extraout_AX_01;
-  short extraout_AX_02;
-  short nOwnerNationId;
-  short extraout_AX_03;
-  int *pSurfaceObject;
-  int *piVar8;
-  undefined2 uVar10;
-  TDropShadowText *this_01;
-  TDropShadowText *this_02;
-  int *piVar9;
-  byte bVar11;
-  int iVar12;
-  char *pcVar13;
-  THQButton *this_03;
-  THQButton *this_04;
-  THQButton *this_05;
-  int iVar14;
-  uint uVar15;
+  short sVar8;
+  int iVar9;
+  int iVar10;
+  undefined2 uVar12;
+  int *piVar11;
+  int iVar13;
+  char *pcVar14;
+  int iVar15;
+  uint uVar16;
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  bool bVar16;
-  byte bStack00000008;
-  char cStack0000000c;
-  undefined3 uStack0000000d;
-  char cVar17;
+  bool bVar17;
+  char cVar18;
   int *local_6c;
-  undefined **ppuStack_58;
-  int iStack_54;
+  int iStack_58;
   RECT local_4c;
   RECT RStack_3c;
   RECT RStack_2c;
@@ -701,344 +395,318 @@ void __thiscall TCivDescription::RenderStrategicMapTileCell(TCivDescription *thi
   *unaff_FS_OFFSET = &uStack_c;
   AcquireReusableQuickDrawSurface();
   local_4 = 0;
-  if ((g_bStrategicTileRenderStaticBoundsInit & 1) == 0) {
-    g_bStrategicTileRenderStaticBoundsInit = g_bStrategicTileRenderStaticBoundsInit | 1;
-    UNK_006a33dd._3_4_ = 0;
-    UNK_006a33dd._7_4_ = 0;
-    UNK_006a33dd._11_4_ = 0x200;
-    UNK_006a33dd._15_4_ = 0x1c0;
+  if ((DAT_006a33dc & 1) == 0) {
+    DAT_006a33dc = DAT_006a33dc | 1;
+    _DAT_006a33e0 = 0;
+    _DAT_006a33e4 = 0;
+    _DAT_006a33e8 = 0x200;
+    _DAT_006a33ec = 0x1c0;
     AppendPointerToGlobalVectorAsStatus();
   }
-  piVar9 = this->pField350;
-  pSurfaceObject = thunk_GetSurfaceObjectAtContextOffset24(piVar9);
-  thunk_GetSurfaceHeaderFromSurfaceObject(pSurfaceObject);
-  local_4c.left = (LONG)_cStack0000000c;
-  local_4c.top = (LONG)_bStack00000008;
+  iVar2 = param_1[0xd4];
+  iVar9 = thunk_GetSurfaceObjectAtContextOffset24();
+  GetSurfaceHeaderFromSurfaceObject();
+  local_4c.left = (LONG)param_4;
+  local_4c.top = (LONG)param_3;
   local_4c.right = local_4c.left + 0x40;
   local_4c.bottom = local_4c.top + 0x40;
-  piVar8 = thunk_GetSurfaceObjectAtContextOffset24
-                     (*(int **)((int)g_pStrategicMapViewSystem + 0x668));
-  piVar8 = thunk_GetSurfaceHeaderFromSurfaceObject(piVar8);
-  iVar12 = (short)arg1 * 0x24;
-  bVar16 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar12) == '\x05';
-  _cStack0000000c = (undefined1 *)((uint)_cStack0000000c & 0xffffff00);
-  if (*(char *)((int)g_pGlobalMapState + 0x20) != '\0') {
-    iVar14 = (int)(short)arg1 % 0x6c;
-    sVar6 = (**(code **)((int)(this->base).pVtable + 0x288))();
-    if (((iVar14 == 0) && (0x36 < (int)sVar6 % 0x6c)) ||
-       ((iVar14 == 0x6b && ((int)sVar6 % 0x6c < 0x36)))) {
+  thunk_GetSurfaceObjectAtContextOffset24();
+  iVar10 = GetSurfaceHeaderFromSurfaceObject();
+  iVar13 = param_2 * 0x24;
+  bVar17 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13) == '\x05';
+  bVar3 = false;
+  if (g_pGlobalMapState[0x20] != (TCivToolbar)0x0) {
+    iVar15 = (int)param_2 % 0x6c;
+    sVar7 = (**(code **)(*param_1 + 0x288))();
+    if (((iVar15 == 0) && (0x36 < (int)sVar7 % 0x6c)) ||
+       ((iVar15 == 0x6b && ((int)sVar7 % 0x6c < 0x36)))) {
       (**(code **)(*(int *)g_pGlobalMapState + 0xfc))();
-      (**(code **)((int)(this->base).pVtable + 0x284))();
-      _cStack0000000c = (undefined1 *)CONCAT31(uStack0000000d,1);
+      (**(code **)(*param_1 + 0x284))();
+      bVar3 = true;
     }
   }
-  if (cStack0000000c == '\0') {
-    if (bVar16) {
+  if (!bVar3) {
+    if (bVar17) {
       (**(code **)(*(int *)g_pGlobalMapState + 0xe4))();
     }
     else {
       (**(code **)(*(int *)g_pGlobalMapState + 0xe0))();
     }
-    (**(code **)((int)(this->base).pVtable + 0x284))();
-    bVar11 = *(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0xb + iVar12);
-    _cStack0000000c =
-         (undefined1 *)
-         CONCAT31(uStack0000000d,
-                  *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar12 + 1));
-    if (!bVar16) {
-      _bStack00000008 = 0;
-      ppuStack_58 = (undefined **)0x6;
+    (**(code **)(*param_1 + 0x284))();
+    bVar5 = *(byte *)(*(int *)(g_pGlobalMapState + 0xc) + 0xb + iVar13);
+    if (!bVar17) {
+      _param_3 = 0;
+      iStack_58 = 6;
       do {
-        iVar14 = 0;
-        uVar15 = 1 << ((byte)_bStack00000008 & 0x1f);
-        pcVar13 = (char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar12);
-        if ((uVar15 & (int)pcVar13[10]) == 0) {
-          if (((uVar15 & (int)pcVar13[0xb]) != 0) && (*pcVar13 != '\x06')) {
-            sVar6 = (**(code **)(*(int *)g_pGlobalMapState + 0xec))();
+        iVar15 = 0;
+        uVar16 = 1 << ((byte)_param_3 & 0x1f);
+        pcVar14 = (char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13);
+        if ((uVar16 & (int)pcVar14[10]) == 0) {
+          if (((uVar16 & (int)pcVar14[0xb]) != 0) && (*pcVar14 != '\x06')) {
+            sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xec))();
             goto LAB_0051eddf;
           }
         }
         else {
-          sVar6 = (**(code **)(*(int *)g_pGlobalMapState + 0xe8))();
+          sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xe8))();
 LAB_0051eddf:
-          iVar14 = (int)sVar6 + (int)piVar8;
+          iVar15 = sVar7 + iVar10;
         }
-        if (iVar14 != 0) {
-          switch(_bStack00000008) {
+        if (iVar15 != 0) {
+          switch(_param_3) {
           case 0:
-            (**(code **)((int)(this->base).pVtable + 0x25c))();
+            (**(code **)(*param_1 + 0x25c))();
             break;
           case 1:
-            (**(code **)((int)(this->base).pVtable + 600))();
+            (**(code **)(*param_1 + 600))();
             break;
           case 2:
-            (**(code **)((int)(this->base).pVtable + 0x254))();
+            (**(code **)(*param_1 + 0x254))();
             break;
           case 3:
-            (**(code **)((int)(this->base).pVtable + 0x268))();
+            (**(code **)(*param_1 + 0x268))();
             break;
           case 4:
-            (**(code **)((int)(this->base).pVtable + 0x264))();
+            (**(code **)(*param_1 + 0x264))();
             break;
           case 5:
-            (**(code **)((int)(this->base).pVtable + 0x260))();
+            (**(code **)(*param_1 + 0x260))();
           }
         }
-        _bStack00000008 = _bStack00000008 + 1;
-        ppuStack_58 = (undefined **)((int)ppuStack_58 + -1);
-      } while (ppuStack_58 != (undefined **)0x0);
+        _param_3 = _param_3 + 1;
+        iStack_58 = iStack_58 + -1;
+      } while (iStack_58 != 0);
     }
-    sVar6 = (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 2 + iVar12);
-    local_6c = (int *)CONCAT22((short)((uint)iVar12 >> 0x10),sVar6);
-    if ((bVar11 == 0) || (!bVar16)) {
-      if (sVar6 != 0) {
-        if (0x1a < sVar6) {
+    sVar7 = (short)*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 2 + iVar13);
+    local_6c = (int *)CONCAT22((short)((uint)iVar13 >> 0x10),sVar7);
+    if ((bVar5 == 0) || (!bVar17)) {
+      if (sVar7 != 0) {
+        if (0x1a < sVar7) {
           local_6c = local_6c + -4;
         }
-        this_00 = (void *)((short)local_6c * 0x30 + 0x4ac + (int)g_pStrategicMapViewSystem);
-        thunk_DiscardTileTokenArgumentAndReturn(piVar9[5] - piVar9[3]);
-        thunk_AppendCallbackGeneratedByteToGrowableBuffer(this_00);
+        DiscardTileTokenArgumentAndReturn();
+        AppendCallbackGeneratedByteToGrowableBuffer();
       }
     }
     else {
-      if ((((bVar11 & 0x20) != 0) || ((bVar11 & 1) != 0)) &&
-         (sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))(), sVar7 != 0)) {
-        (**(code **)((int)(this->base).pVtable + 0x278))();
+      if ((((bVar5 & 0x20) != 0) || ((bVar5 & 1) != 0)) &&
+         (sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))(), sVar8 != 0)) {
+        (**(code **)(*param_1 + 0x278))();
       }
-      bStack00000008 = bVar11 & 2;
-      if (((bVar11 & 2) != 0) || ((bVar11 & 1) != 0)) {
-        if ((sVar6 == 0x33) || (sVar6 == 0x34)) {
+      param_3._0_1_ = bVar5 & 2;
+      if (((bVar5 & 2) != 0) || ((bVar5 & 1) != 0)) {
+        if ((sVar7 == 0x33) || (sVar7 == 0x34)) {
+          sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
+        }
+        else {
+          sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
+        }
+        if (sVar8 != 0) {
+          (**(code **)(*param_1 + 0x270))();
+        }
+      }
+      if (((byte)param_3 != 0) || ((bVar5 & 4) != 0)) {
+        if ((sVar7 == 0x35) || (sVar7 == 0x36)) {
+          sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
+        }
+        else {
+          sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
+        }
+        if (sVar8 != 0) {
+          (**(code **)(*param_1 + 0x26c))();
+        }
+      }
+      param_3._0_1_ = bVar5 & 8;
+      if (((bVar5 & 8) != 0) || ((bVar5 & 4) != 0)) {
+        if ((sVar7 == 0x36) || (sVar7 == 0x37)) {
+          sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
+        }
+        else {
+          sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
+        }
+        if (sVar8 != 0) {
+          (**(code **)(*param_1 + 0x274))();
+        }
+      }
+      if (((byte)param_3 != 0) || ((bVar5 & 0x10) != 0)) {
+        if ((sVar7 == 0x37) || (sVar7 == 0x39)) {
+          sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
+        }
+        else {
+          sVar8 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
+        }
+        if (sVar8 != 0) {
+          (**(code **)(*param_1 + 0x280))();
+        }
+      }
+      if (((bVar5 & 0x20) != 0) || ((bVar5 & 0x10) != 0)) {
+        if ((sVar7 == 0x38) || (sVar7 == 0x3a)) {
           sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
         }
         else {
           sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
         }
         if (sVar7 != 0) {
-          (**(code **)((int)(this->base).pVtable + 0x270))();
-        }
-      }
-      if ((bStack00000008 != 0) || ((bVar11 & 4) != 0)) {
-        if ((sVar6 == 0x35) || (sVar6 == 0x36)) {
-          sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
-        }
-        else {
-          sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
-        }
-        if (sVar7 != 0) {
-          (**(code **)((int)(this->base).pVtable + 0x26c))();
-        }
-      }
-      bStack00000008 = bVar11 & 8;
-      if (((bVar11 & 8) != 0) || ((bVar11 & 4) != 0)) {
-        if ((sVar6 == 0x36) || (sVar6 == 0x37)) {
-          sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
-        }
-        else {
-          sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
-        }
-        if (sVar7 != 0) {
-          (**(code **)((int)(this->base).pVtable + 0x274))();
-        }
-      }
-      if ((bStack00000008 != 0) || ((bVar11 & 0x10) != 0)) {
-        if ((sVar6 == 0x37) || (sVar6 == 0x39)) {
-          sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
-        }
-        else {
-          sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
-        }
-        if (sVar7 != 0) {
-          (**(code **)((int)(this->base).pVtable + 0x280))();
-        }
-      }
-      if (((bVar11 & 0x20) != 0) || ((bVar11 & 0x10) != 0)) {
-        if ((sVar6 == 0x38) || (sVar6 == 0x3a)) {
-          sVar6 = (**(code **)(*(int *)g_pGlobalMapState + 0xf8))();
-        }
-        else {
-          sVar6 = (**(code **)(*(int *)g_pGlobalMapState + 0xf4))();
-        }
-        if (sVar6 != 0) {
-          (**(code **)((int)(this->base).pVtable + 0x27c))();
+          (**(code **)(*param_1 + 0x27c))();
         }
       }
     }
-    cVar5 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 7 + iVar12);
-    if (cVar5 != '\0') {
-      cStack0000000c = cVar5;
-      SetQuickDrawFillColor(0);
-      if (bVar16) {
-        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-        if (bVar11 != 0) {
-          thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
-          (**(code **)((int)(this->base).pVtable + 0x240))();
+    if (*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 7 + iVar13) != '\0') {
+      SetQuickDrawFillColor();
+      if (bVar17) {
+        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
+        if (bVar5 != 0) {
+          thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
+          (**(code **)(*param_1 + 0x240))();
         }
       }
       else {
-        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2,2);
-        (**(code **)((int)(this->base).pVtable + 0x208))();
+        thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
+        (**(code **)(*param_1 + 0x208))();
       }
-      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,1);
-      SetQuickDrawFillColor(0);
+      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty();
+      SetQuickDrawFillColor();
     }
-    cVar5 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 8 + iVar12);
-    _cStack0000000c = (undefined1 *)CONCAT31(uStack0000000d,cVar5);
-    if ((!bVar16) && (cVar5 != '\0')) {
-      SetQuickDrawFillColor(0xffffff);
-      (**(code **)((int)(this->base).pVtable + 0x20c))();
-      _cStack0000000c = &stack0xffffff78;
-      SetQuickDrawFillColor(0);
+    if ((!bVar17) && (*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 8 + iVar13) != '\0')) {
+      SetQuickDrawFillColor();
+      (**(code **)(*param_1 + 0x20c))();
+      SetQuickDrawFillColor();
     }
-    cVar5 = *(char *)(iVar12 + 6 + *(int *)((int)g_pGlobalMapState + 0xc));
-    cVar4 = *(char *)(iVar12 + *(int *)((int)g_pGlobalMapState + 0xc) + 0x17);
-    _cStack0000000c = (undefined1 *)CONCAT31(uStack0000000d,cVar4);
-    if ((cVar5 != '\0') || (cVar4 != '\0')) {
-      bVar11 = 0;
-      iVar14 = 0;
-      ppuStack_58 = (undefined **)0x6;
+    cVar6 = *(char *)(iVar13 + 6 + *(int *)(g_pGlobalMapState + 0xc));
+    cVar4 = *(char *)(iVar13 + *(int *)(g_pGlobalMapState + 0xc) + 0x17);
+    if ((cVar6 != '\0') || (cVar4 != '\0')) {
+      bVar5 = 0;
+      iStack_58 = 6;
       do {
-        uVar15 = 1 << (bVar11 & 0x1f);
-        if (((int)cVar5 & uVar15) == 0) {
-          if ((uVar15 & (int)cVar4) != 0) {
-            iVar1 = (int)g_pStrategicMapViewSystem + 0xc5c;
-            goto LAB_0051f388;
-          }
+        uVar16 = 1 << (bVar5 & 0x1f);
+        if ((((int)cVar6 & uVar16) != 0) || ((uVar16 & (int)cVar4) != 0)) {
+          DiscardTileTokenArgumentAndReturn();
+          AppendCallbackGeneratedByteToGrowableBuffer();
         }
-        else {
-          iVar1 = (int)g_pStrategicMapViewSystem + 0xb3c;
-LAB_0051f388:
-          thunk_DiscardTileTokenArgumentAndReturn(piVar9[5] - piVar9[3]);
-          thunk_AppendCallbackGeneratedByteToGrowableBuffer((void *)(iVar1 + iVar14));
-        }
-        bVar11 = bVar11 + 1;
-        iVar14 = iVar14 + 0x30;
-        ppuStack_58 = (undefined **)((int)ppuStack_58 + -1);
-        if (ppuStack_58 == (undefined **)0x0) break;
-        cVar4 = cStack0000000c;
-      } while( true );
+        bVar5 = bVar5 + 1;
+        iStack_58 = iStack_58 + -1;
+      } while (iStack_58 != 0);
     }
-    iVar14 = *(int *)((int)g_pGlobalMapState + 0xc) + iVar12;
-    if ((((*(byte *)(iVar14 + 0x1c) & 3) != 0) && (*(char *)(iVar14 + 0x13) != '\0')) &&
-       (*(short *)((int)(this->base).pChildMapView20 + 0x96) != 4)) {
-      sVar6 = (**(code **)(*(int *)g_pGlobalMapState + 0x100))();
-      RStack_3c.left = (LONG)sVar6;
+    if ((((*(byte *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13 + 0x1c) & 3) != 0) &&
+        (*(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13 + 0x13) != '\0')) &&
+       (*(short *)(param_1[8] + 0x96) != 4)) {
+      sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0x100))();
+      RStack_3c.left = (LONG)sVar7;
       RStack_3c.right = RStack_3c.left + 0x40;
       RStack_3c.top = 0;
       RStack_3c.bottom = 0x40;
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x66c) + 4),
-                 (astruct_18 *)(piVar9 + 1),&RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
+                ((astruct_17 *)(g_pStrategicMapViewSystem[0x19b] + 4),(astruct_18 *)(iVar2 + 4),
+                 &RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
     }
-    uVar2 = *(ushort *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + iVar12);
-    if ((((uVar2 & 0x14) != 0) && ((uVar2 & 1) == 0)) &&
-       (sVar6 = (**(code **)(*(int *)g_pGlobalMapState + 0x104))(), sVar6 != 0)) {
-      RStack_3c.left = (LONG)sVar6;
+    uVar1 = *(ushort *)(*(int *)(g_pGlobalMapState + 0xc) + 0x1c + iVar13);
+    if ((((uVar1 & 0x14) != 0) && ((uVar1 & 1) == 0)) &&
+       (sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0x104))(), sVar7 != 0)) {
+      RStack_3c.left = (LONG)sVar7;
       RStack_3c.right = RStack_3c.left + 0x40;
       RStack_3c.top = 0;
       RStack_3c.bottom = 0x40;
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x66c) + 4),
-                 (astruct_18 *)(piVar9 + 1),&RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
+                ((astruct_17 *)(g_pStrategicMapViewSystem[0x19b] + 4),(astruct_18 *)(iVar2 + 4),
+                 &RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
     }
-    iVar14 = *(int *)((int)g_pGlobalMapState + 0xc) + iVar12;
-    if ((((*(byte *)(iVar14 + 0x1c) & 3) != 0) && (*(char *)(iVar14 + 0x13) != '\0')) &&
-       ((**(code **)((int)(this->base).pVtable + 0x1ac))(),
-       *(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 3 +
-                *(short *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x14 + iVar12) * 0xa8) != '\0'))
-    {
-      sVar6 = (**(code **)(*(int *)g_pGlobalMapState + 0x108))();
-      RStack_3c.left = (LONG)sVar6;
+    if ((((*(byte *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13 + 0x1c) & 3) != 0) &&
+        (*(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13 + 0x13) != '\0')) &&
+       ((**(code **)(*param_1 + 0x1ac))(),
+       *(char *)(*(int *)(g_pGlobalMapState + 0x10) + 3 +
+                *(short *)(*(int *)(g_pGlobalMapState + 0xc) + 0x14 + iVar13) * 0xa8) != '\0')) {
+      sVar7 = (**(code **)(*(int *)g_pGlobalMapState + 0x108))();
+      RStack_3c.left = (LONG)sVar7;
       RStack_3c.right = RStack_3c.left + 0x40;
       RStack_3c.top = 0;
       RStack_3c.bottom = 0x40;
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x66c) + 4),
-                 (astruct_18 *)(piVar9 + 1),&RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
+                ((astruct_17 *)(g_pStrategicMapViewSystem[0x19b] + 4),(astruct_18 *)(iVar2 + 4),
+                 &RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
       UpdatePaletteIndexWithDefaultFallback(0x13);
     }
-    if (((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + iVar12) & 3) == 0) ||
-       (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar12 + 0x13) == '\0')) {
+    if (((*(byte *)(*(int *)(g_pGlobalMapState + 0xc) + 0x1c + iVar13) & 3) == 0) ||
+       (*(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13 + 0x13) == '\0')) {
       (**(code **)(*(int *)g_pGlobalMapState + 200))();
       cVar4 = (**(code **)(*(int *)g_pGlobalMapState + 200))();
       local_4 = CONCAT31(local_4._1_3_,cVar4);
       puStack_8 = (undefined1 *)
                   CONCAT31(puStack_8._1_3_,
-                           *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x12 + iVar12));
-      cVar5 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar12 + 0x11);
-      cVar17 = (char)((uint)unaff_EDI >> 0x18);
-      switch(cVar5) {
+                           *(undefined1 *)(*(int *)(g_pGlobalMapState + 0xc) + 0x12 + iVar13));
+      cVar6 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13 + 0x11);
+      cVar18 = (char)((uint)unaff_EDI >> 0x18);
+      switch(cVar6) {
       case '\x03':
       case '\x04':
       case '\x06':
       case '\x15':
       case '\x16':
         if (cVar4 == '\0') {
-          thunk_GetActiveNationId();
-          pcVar13 = (char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar12);
-          if (((byte)(pcVar13[0xd] & (byte)(1 << (extraout_AL & 0x1f))) == 0) &&
-             ((*(char *)((int)g_pGlobalMapState + 0x24) == '\0' ||
-              (((cVar4 = *pcVar13, cVar4 != '\x02' && (cVar4 != '\x03')) &&
-               ((cVar4 != '\x06' && (cVar4 != '\x04')))))))) {
+          bVar5 = UiRuntimeContext::GetActiveNationId();
+          if (((byte)(((char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13))[0xd] &
+                     (byte)(1 << (bVar5 & 0x1f))) == 0) &&
+             ((g_pGlobalMapState[0x24] == (TCivToolbar)0x0 ||
+              (((cVar4 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13), cVar4 != '\x02' &&
+                (cVar4 != '\x03')) && ((cVar4 != '\x06' && (cVar4 != '\x04')))))))) {
             bVar3 = false;
           }
           else {
             bVar3 = true;
           }
           if (bVar3) {
-            (**(code **)(*(int *)g_pStrategicMapViewSystem + 0x80))
-                      (local_6c,(short)cVar5,pSurfaceObject);
+            (**(code **)(*g_pStrategicMapViewSystem + 0x80))(local_6c,(short)cVar6,iVar9);
           }
         }
         else {
-          uVar10 = (undefined2)((uint)((int)pSurfaceObject + 2) >> 0x10);
-          (**(code **)(*(int *)g_pStrategicMapViewSystem + 0x84))
-                    (local_6c,CONCAT22(uVar10,(short)cVar5),CONCAT22(uVar10,(short)cVar4),
-                     (int)pSurfaceObject + 2);
+          uVar12 = (undefined2)((uint)(iVar9 + 2) >> 0x10);
+          (**(code **)(*g_pStrategicMapViewSystem + 0x84))
+                    (local_6c,CONCAT22(uVar12,(short)cVar6),CONCAT22(uVar12,(short)cVar4),iVar9 + 2)
+          ;
         }
         break;
       default:
-        if (cVar17 != '\0') {
-          uVar10 = (undefined2)((uint)((int)pSurfaceObject + 0x1b) >> 0x10);
-          (**(code **)(*(int *)g_pStrategicMapViewSystem + 0x84))
-                    (local_6c,CONCAT22(uVar10,(short)cVar5),CONCAT22(uVar10,(short)cVar17),
-                     (int)pSurfaceObject + 0x1b);
+        if (cVar18 != '\0') {
+          uVar12 = (undefined2)((uint)(iVar9 + 0x1b) >> 0x10);
+          (**(code **)(*g_pStrategicMapViewSystem + 0x84))
+                    (local_6c,CONCAT22(uVar12,(short)cVar6),CONCAT22(uVar12,(short)cVar18),
+                     iVar9 + 0x1b);
         }
-        thunk_GetActiveNationId();
-        if (((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0xd + iVar12) &
-             (byte)(1 << (extraout_AL_00 & 0x1f))) == 0) &&
-           ((*(char *)((int)g_pGlobalMapState + 0x24) == '\0' ||
-            ((((cVar4 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar12), cVar4 != '\x02'
-               && (cVar4 != '\x03')) && (cVar4 != '\x06')) && (cVar4 != '\x04')))))) {
+        bVar5 = UiRuntimeContext::GetActiveNationId();
+        if (((*(byte *)(*(int *)(g_pGlobalMapState + 0xc) + 0xd + iVar13) &
+             (byte)(1 << (bVar5 & 0x1f))) == 0) &&
+           ((g_pGlobalMapState[0x24] == (TCivToolbar)0x0 ||
+            ((((cVar4 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13), cVar4 != '\x02' &&
+               (cVar4 != '\x03')) && (cVar4 != '\x06')) && (cVar4 != '\x04')))))) {
           bVar3 = false;
         }
         else {
           bVar3 = true;
         }
-        if ((bVar3) && (iVar14 = *(int *)((int)g_pSelectedCivilianOrderState + 4), iVar14 != 0)) {
-          sVar6 = *(short *)(iVar14 + 4);
-          if (sVar6 != 1) {
-            if (iVar14 == 0) {
-              sVar6 = 9;
+        if ((bVar3) && (iVar10 = *(int *)(g_pSelectedCivilianOrderState + 4), iVar10 != 0)) {
+          sVar7 = *(short *)(iVar10 + 4);
+          if (sVar7 != 1) {
+            if (iVar10 == 0) {
+              sVar7 = 9;
             }
-            if (sVar6 != 0) {
-              if (iVar14 == 0) {
-                sVar6 = 9;
+            if (sVar7 != 0) {
+              if (iVar10 == 0) {
+                sVar7 = 9;
               }
               else {
-                sVar6 = *(short *)(iVar14 + 4);
+                sVar7 = *(short *)(iVar10 + 4);
               }
-              if (sVar6 != 7) break;
+              if (sVar7 != 7) break;
             }
           }
           UpdatePaletteIndexWithDefaultFallback(0x10);
-          SetQuickDrawFillColor(0);
-          RStack_3c.left = (LONG)(short)((short)pSurfaceObject + 5);
-          RStack_3c.top = (LONG)(short)((short)ppuStack_58 + 0xc);
+          SetQuickDrawFillColor();
+          RStack_3c.left = (LONG)(short)((short)iVar9 + 5);
+          RStack_3c.top = (LONG)(short)((short)iStack_58 + 0xc);
           RStack_3c.right = RStack_3c.left + 0x14;
           RStack_3c.bottom = RStack_3c.top + 0x14;
           RStack_2c.left = 400;
@@ -1046,9 +714,9 @@ LAB_0051f388:
           RStack_2c.right = 0x1a4;
           RStack_2c.bottom = 0x14;
           BlitRectWithOptionalTransparency
-                    ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x698) + 4),
-                     (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_2c,&RStack_3c
-                     ,0x24,(astruct_19 *)0x0);
+                    ((astruct_17 *)(g_pStrategicMapViewSystem[0x1a6] + 4),
+                     (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_2c,&RStack_3c,0x24
+                     ,(astruct_19 *)0x0);
           SetQuickDrawStrokeColor();
         }
       }
@@ -1058,198 +726,169 @@ LAB_0051f388:
       case '\x15':
       case '\x16':
         if ((char)local_4 == '\0') {
-          thunk_GetActiveNationId();
-          if (((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0xd + iVar12) &
-               (byte)(1 << (extraout_AL_01 & 0x1f))) == 0) &&
-             ((*(char *)((int)g_pGlobalMapState + 0x24) == '\0' ||
-              ((((cVar4 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar12),
-                 cVar4 != '\x02' && (cVar4 != '\x03')) && (cVar4 != '\x06')) && (cVar4 != '\x04'))))
-             )) {
+          bVar5 = UiRuntimeContext::GetActiveNationId();
+          if (((*(byte *)(*(int *)(g_pGlobalMapState + 0xc) + 0xd + iVar13) &
+               (byte)(1 << (bVar5 & 0x1f))) == 0) &&
+             ((g_pGlobalMapState[0x24] == (TCivToolbar)0x0 ||
+              ((((cVar4 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + iVar13), cVar4 != '\x02' &&
+                 (cVar4 != '\x03')) && (cVar4 != '\x06')) && (cVar4 != '\x04')))))) {
             bVar3 = false;
           }
           else {
             bVar3 = true;
           }
           if (bVar3) {
-            (**(code **)(*(int *)g_pStrategicMapViewSystem + 0x80))
-                      (local_6c,(short)(char)puStack_8,pSurfaceObject);
+            (**(code **)(*g_pStrategicMapViewSystem + 0x80))(local_6c,(short)(char)puStack_8,iVar9);
           }
         }
         else {
-          uVar10 = (undefined2)((uint)((int)pSurfaceObject + 2) >> 0x10);
-          (**(code **)(*(int *)g_pStrategicMapViewSystem + 0x84))
-                    (local_6c,CONCAT22(uVar10,(short)(char)puStack_8),
-                     CONCAT22(uVar10,(short)(char)local_4),(int)pSurfaceObject + 2);
+          uVar12 = (undefined2)((uint)(iVar9 + 2) >> 0x10);
+          (**(code **)(*g_pStrategicMapViewSystem + 0x84))
+                    (local_6c,CONCAT22(uVar12,(short)(char)puStack_8),
+                     CONCAT22(uVar12,(short)(char)local_4),iVar9 + 2);
         }
       }
       if ((((char)puStack_8 != -1) && ((char)puStack_8 == '\x14')) &&
-         (((cVar5 == '\x03' || (cVar5 == '\x04')) && (cVar17 != '\0')))) {
-        (**(code **)(*(int *)g_pStrategicMapViewSystem + 0x84))
+         (((cVar6 == '\x03' || (cVar6 == '\x04')) && (cVar18 != '\0')))) {
+        (**(code **)(*g_pStrategicMapViewSystem + 0x84))
                   (local_6c,0x14,
-                   CONCAT22((short)((uint)((int)pSurfaceObject + 0x1b) >> 0x10),(short)(char)local_4
-                           ),(int)pSurfaceObject + 0x1b);
+                   CONCAT22((short)((uint)(iVar9 + 0x1b) >> 0x10),(short)(char)local_4),iVar9 + 0x1b
+                  );
       }
-      cVar5 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x84))();
-      if ((cVar5 == '\0') &&
-         (cVar5 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x18 + iVar12), cVar5 != -1)) {
+      cVar6 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x84))();
+      if ((cVar6 == '\0') &&
+         (cVar6 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0x18 + iVar13), cVar6 != -1)) {
         thunk_BlitStrategicMapUnitActivityOverlayFrame
-                  (g_pStrategicMapViewSystem,local_6c,(short)cVar5,(short)local_4c.left + 0x1e,
+                  (g_pStrategicMapViewSystem,local_6c,(short)cVar6,(short)local_4c.left + 0x1e,
                    (short)local_4c.top + 0x14);
       }
     }
   }
-  if (*(short *)((int)(this->base).pChildMapView20 + 0x96) != 4) {
-    thunk_GetWrappedHexNeighborTileIndexByDirection();
-    if (extraout_AX != -1) {
-      iVar14 = *(int *)((int)g_pGlobalMapState + 0xc) + extraout_AX * 0x24;
-      if (((*(byte *)(iVar14 + 0x1c) & 3) != 0) && (*(char *)(iVar14 + 0x13) != '\0')) {
-        InitializeSharedStringRefFromEmpty();
-        local_4._0_1_ = 1;
-        thunk_AssignSharedStringFromIndexedA8EntryNameField();
-        iStack_54 = 0;
-        ppuStack_58 = &PTR_LAB_0067106c;
-        local_4._0_1_ = 2;
-        thunk_NoOpQuickDrawContextSelectionHook();
-        CreateRectRgnIndirect(&local_4c);
-        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_58);
-        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_01);
-        DeleteObject();
-        ppuStack_58 = &PTR_LAB_00671054;
-        local_4._0_1_ = 3;
-        DeleteObject();
-        ppuStack_58 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-        local_4._0_1_ = 4;
-        thunk_SetQuickDrawStyleWord_1D4C_AndMarkDirty(4);
-        thunk_SetQuickDrawStyleWord_1D50_AndMarkDirty(9);
-        thunk_SetQuickDrawStyleWord_1D4E_AndMarkDirty(0);
-        thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-        sVar6 = (short)local_4c.left - extraout_AX_00 / 2;
-        if ((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + extraout_AX * 0x24) & 1) == 0
-           ) {
-          sVar6 = sVar6 + -10;
-        }
-        thunk_SetQuickDrawTextOriginWithContextOffset(sVar6 + 1,(short)local_4c.top + 10);
-        SetQuickDrawFillColorFromPaletteIndex(0);
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_03);
-        thunk_SetQuickDrawTextOriginWithContextOffset(sVar6,(short)local_4c.top + 9);
-        SetQuickDrawFillColorFromPaletteIndex(0x13);
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0x0000000c);
-        SetQuickDrawFillColorFromPaletteIndex(0);
-        local_4._0_1_ = 1;
-        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_01);
-        local_4 = (uint)local_4._1_3_ << 8;
-        ReleaseSharedStringRefIfNotEmpty();
-      }
+  if (*(short *)(param_1[8] + 0x96) != 4) {
+    sVar7 = thunk_GetWrappedHexNeighborTileIndexByDirection();
+    if (((sVar7 != -1) &&
+        (iVar9 = *(int *)(g_pGlobalMapState + 0xc) + sVar7 * 0x24,
+        (*(byte *)(iVar9 + 0x1c) & 3) != 0)) && (*(char *)(iVar9 + 0x13) != '\0')) {
+      InitializeSharedStringRefFromEmpty();
+      local_4._0_1_ = 1;
+      thunk_AssignSharedStringFromIndexedA8EntryNameField();
+      local_4._0_1_ = 2;
+      NoOpQuickDrawContextSelectionHook();
+      CreateRectRgnIndirect(&local_4c);
+      CBrush::AttachRegionHandleToClipStateAndRegister();
+      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc();
+      DeleteObject();
+      local_4._0_1_ = 3;
+      DeleteObject();
+      local_4._0_1_ = 4;
+      SetQuickDrawStyleWord_1D4C_AndMarkDirty();
+      SetQuickDrawStyleWord_1D50_AndMarkDirty();
+      SetQuickDrawStyleWord_1D4E_AndMarkDirty();
+      thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
+      SetQuickDrawFillColorFromPaletteIndex();
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
+      SetQuickDrawFillColorFromPaletteIndex();
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      SetQuickDrawFillColorFromPaletteIndex();
+      local_4._0_1_ = 1;
+      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc();
+      local_4 = (uint)local_4._1_3_ << 8;
+      ReleaseSharedStringRefIfNotEmpty();
     }
-    thunk_GetWrappedHexNeighborTileIndexByDirection();
-    if (extraout_AX_01 != -1) {
-      iVar14 = *(int *)((int)g_pGlobalMapState + 0xc) + extraout_AX_01 * 0x24;
-      if (((*(byte *)(iVar14 + 0x1c) & 3) != 0) && (*(char *)(iVar14 + 0x13) != '\0')) {
-        InitializeSharedStringRefFromEmpty();
-        local_4._0_1_ = 5;
-        thunk_AssignSharedStringFromIndexedA8EntryNameField();
-        iStack_54 = 0;
-        ppuStack_58 = &PTR_LAB_0067106c;
-        local_4._0_1_ = 6;
-        thunk_NoOpQuickDrawContextSelectionHook();
-        CreateRectRgnIndirect(&local_4c);
-        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_58);
-        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_02);
-        DeleteObject();
-        ppuStack_58 = &PTR_LAB_00671054;
-        local_4._0_1_ = 7;
-        DeleteObject();
-        ppuStack_58 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-        local_4._0_1_ = 8;
-        thunk_SetQuickDrawStyleWord_1D4C_AndMarkDirty(4);
-        thunk_SetQuickDrawStyleWord_1D50_AndMarkDirty(9);
-        thunk_SetQuickDrawStyleWord_1D4E_AndMarkDirty(0);
-        thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-        sVar6 = (short)local_4c.right - extraout_AX_02 / 2;
-        if ((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + extraout_AX_01 * 0x24) & 1)
-            == 0) {
-          sVar6 = sVar6 + -10;
-        }
-        thunk_SetQuickDrawTextOriginWithContextOffset(sVar6 + 1,(short)local_4c.top + 10);
-        SetQuickDrawFillColorFromPaletteIndex(0);
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_04);
-        thunk_SetQuickDrawTextOriginWithContextOffset(sVar6,(short)local_4c.top + 9);
-        SetQuickDrawFillColorFromPaletteIndex(0x13);
-        THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0x0000000c);
-        SetQuickDrawFillColorFromPaletteIndex(0);
-        local_4._0_1_ = 5;
-        TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(this_02);
-        local_4 = (uint)local_4._1_3_ << 8;
-        ReleaseSharedStringRefIfNotEmpty();
-      }
+    sVar7 = thunk_GetWrappedHexNeighborTileIndexByDirection();
+    if (((sVar7 != -1) &&
+        (iVar9 = *(int *)(g_pGlobalMapState + 0xc) + sVar7 * 0x24,
+        (*(byte *)(iVar9 + 0x1c) & 3) != 0)) && (*(char *)(iVar9 + 0x13) != '\0')) {
+      InitializeSharedStringRefFromEmpty();
+      local_4._0_1_ = 5;
+      thunk_AssignSharedStringFromIndexedA8EntryNameField();
+      local_4._0_1_ = 6;
+      NoOpQuickDrawContextSelectionHook();
+      CreateRectRgnIndirect(&local_4c);
+      CBrush::AttachRegionHandleToClipStateAndRegister();
+      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc();
+      DeleteObject();
+      local_4._0_1_ = 7;
+      DeleteObject();
+      local_4._0_1_ = 8;
+      SetQuickDrawStyleWord_1D4C_AndMarkDirty();
+      SetQuickDrawStyleWord_1D50_AndMarkDirty();
+      SetQuickDrawStyleWord_1D4E_AndMarkDirty();
+      thunk_MeasureTextExtentWithCachedQuickDrawStyle();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
+      SetQuickDrawFillColorFromPaletteIndex();
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      thunk_SetQuickDrawTextOriginWithContextOffset();
+      SetQuickDrawFillColorFromPaletteIndex();
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      SetQuickDrawFillColorFromPaletteIndex();
+      local_4._0_1_ = 5;
+      TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc();
+      local_4 = (uint)local_4._1_3_ << 8;
+      ReleaseSharedStringRefIfNotEmpty();
     }
   }
-  cVar5 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0xf + iVar12);
-  if (cVar5 == '\0') {
-    if ((short)arg1 != *(short *)((int)g_pGlobalMapState + 0x22)) goto LAB_0051fe9c;
-    if (bVar16) {
-      (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
+  cVar6 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0xf + iVar13);
+  if (cVar6 == '\0') {
+    if (param_2 != *(short *)(g_pGlobalMapState + 0x22)) goto LAB_0051fe9c;
+    if (bVar17) {
+      (**(code **)(*g_pUiRuntimeContext + 0x34))();
       iStack_1c = local_4c.left + 0x20;
       iStack_14 = local_4c.left + 0x21;
       iStack_18 = local_4c.top + 0x20;
       iStack_10 = local_4c.top + 0x21;
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(&iStack_1c);
+      thunk_FillRectWithQuickDrawBrushAndContextOffset();
       goto LAB_0051fe9c;
     }
   }
   else {
-    RStack_3c.left = (LONG)(short)(cVar5 * 0x40 + -0x40);
+    RStack_3c.left = (LONG)(short)(cVar6 * 0x40 + -0x40);
     RStack_3c.right = RStack_3c.left + 0x40;
     RStack_3c.top = 0;
     RStack_3c.bottom = 0x40;
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x6ac) + 4),
-               (astruct_18 *)(piVar9 + 1),&RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
+              ((astruct_17 *)(g_pStrategicMapViewSystem[0x1ab] + 4),(astruct_18 *)(iVar2 + 4),
+               &RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
 LAB_0051fe9c:
-    if (bVar16) {
-      cVar5 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x16 + iVar12);
-      if ((-1 < cVar5) && (cVar5 < '\x12')) {
-        RStack_3c.left = (LONG)(short)((short)cVar5 << 6);
-        _cStack0000000c = &stack0xffffff78;
+    if (bVar17) {
+      cVar6 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0x16 + iVar13);
+      if ((-1 < cVar6) && (cVar6 < '\x12')) {
+        RStack_3c.left = (LONG)(short)((short)cVar6 << 6);
         RStack_3c.right = RStack_3c.left + 0x40;
         RStack_3c.top = 0;
         RStack_3c.bottom = 0x40;
-        SetQuickDrawFillColor(0xffffff);
+        SetQuickDrawFillColor();
         UpdatePaletteIndexWithDefaultFallback(0x10);
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x690) + 4),
-                   (astruct_18 *)(piVar9 + 1),&RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
+                  ((astruct_17 *)(g_pStrategicMapViewSystem[0x1a4] + 4),(astruct_18 *)(iVar2 + 4),
+                   &RStack_3c,&local_4c,0x24,(astruct_19 *)0x0);
         UpdatePaletteIndexWithDefaultFallback(0x13);
       }
       goto LAB_0052005a;
     }
   }
-  thunk_GetActiveNationId();
-  piVar9 = TCivToolbar::thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,(short)arg1,nOwnerNationId);
-  if (piVar9 == (int *)0x0) {
-    piVar9 = *(int **)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x20 + iVar12);
+  sVar7 = UiRuntimeContext::GetActiveNationId();
+  piVar11 = TCivToolbar::thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,param_2,sVar7);
+  if (piVar11 == (int *)0x0) {
+    piVar11 = *(int **)(*(int *)(g_pGlobalMapState + 0xc) + 0x20 + iVar13);
   }
-  if (piVar9 != (int *)0x0) {
-    _cStack0000000c =
-         (undefined1 *)
-         CONCAT31(uStack0000000d,
-                  *(undefined1 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + iVar12));
-    thunk_GetActiveNationId();
-    if ((cStack0000000c == extraout_AX_03) ||
-       ('\x06' < *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + iVar12))) {
-      (**(code **)((int)(this->base).pVtable + 0x1a8))();
-    }
+  if ((piVar11 != (int *)0x0) &&
+     ((cVar6 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 4 + iVar13),
+      sVar7 = UiRuntimeContext::GetActiveNationId(), cVar6 == sVar7 ||
+      ('\x06' < *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 4 + iVar13))))) {
+    (**(code **)(*param_1 + 0x1a8))();
   }
-  if (this->field654_0x360 != '\0') {
+  if ((char)param_1[0xd8] != '\0') {
     InitializeSharedStringRefFromEmpty();
     local_4._0_1_ = 9;
-    SetQuickDrawFillColor(0);
-    thunk_SetQuickDrawTextOriginWithContextOffset
-              ((short)local_4c.left + 0x20,(short)local_4c.top + 0x20);
+    SetQuickDrawFillColor();
+    thunk_SetQuickDrawTextOriginWithContextOffset();
     FormatStringWithVarArgsToSharedRef();
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_05);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
     local_4 = (uint)local_4._1_3_ << 8;
     ReleaseSharedStringRefIfNotEmpty();
   }
@@ -1262,23 +901,13 @@ LAB_0052005a:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005654E0
 // GHIDRA_NAME TCivDescription::RenderAdmiralSummaryAndNavyNormalizationGauge
-// GHIDRA_PROTO void __thiscall RenderAdmiralSummaryAndNavyNormalizationGauge(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders admiral summary text rows and navy normalization gauge bar for current context.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderAdmiralSummaryAndNavyNormalizationGauge()
 
-/* Renders admiral summary text rows and navy normalization gauge bar for current context. */
-
-void __thiscall
-TCivDescription::RenderAdmiralSummaryAndNavyNormalizationGauge(TCivDescription *this)
+void __fastcall TCivDescription::RenderAdmiralSummaryAndNavyNormalizationGauge(int param_1)
 
 {
-  short extraout_AX;
   short sVar1;
   short sVar2;
-  THQButton *this_00;
-  THQButton *this_01;
-  TDiplomacyMapView *this_02;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined1 local_60 [4];
@@ -1298,80 +927,79 @@ TCivDescription::RenderAdmiralSummaryAndNavyNormalizationGauge(TCivDescription *
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   iVar3 = 0;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   InitializeSharedStringRefFromEmpty();
   local_4._0_1_ = 1;
-  InitializeUiTextStyleDescriptorAndApplyQuickDraw();
-  AssignFromPtr(local_60,(int *)(*(int *)&this->field1_0x60 + 0x18));
-  CallCallbackRepeatedly((int)local_2c,4,8,0x404642,0x405fa1);
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw(2,0xc,0x2b6a);
+  AssignFromPtr(local_60,(int *)(*(int *)(param_1 + 0x60) + 0x18));
+  CallCallbackRepeatedly(local_2c,4,8,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   local_4._0_1_ = 2;
   do {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2760,iVar3);
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2760,iVar3);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 8);
   AssignFromPtr(local_5c,local_2c +
-                         *(int *)(&g_Render_Admiral_Summary_Value_0065C7F8 +
-                                 *(short *)(*(int *)&this->field1_0x60 + 4) * 4));
-  AssignSharedStringConcatCStrAndRef();
+                         *(int *)(&DAT_0065c7f8 + *(short *)(*(int *)(param_1 + 0x60) + 4) * 4));
+  AssignSharedStringConcatCStrAndRef(&iStack_58,g_Build_Map_Order_LookupTable_00695794);
   local_4._0_1_ = 3;
   AssignStringSharedFromRef();
   local_4._0_1_ = 2;
   ReleaseSharedStringRefIfNotEmpty();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x50,0x18);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
   puStack_54 = &stack0xffffff90;
-  SetQuickDrawFillColor(0);
+  SetQuickDrawFillColor();
   puStack_54 = &stack0xffffff90;
   SetQuickDrawStrokeColor();
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  if (*(int *)(*(int *)&this->field1_0x60 + 0x20) != 0) {
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-    AssignSharedStringConcatCStrAndRef();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  if (*(int *)(*(int *)(param_1 + 0x60) + 0x20) != 0) {
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,9);
+    AssignSharedStringConcatCStrAndRef(&puStack_54,s_Adm__0069578c);
     local_4._0_1_ = 4;
-    TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&iStack_58);
+    TToolBarCluster::StringSharedRef_AssignFromPtr();
     local_4._0_1_ = 5;
     AssignFromPtr(local_60,&iStack_58);
     local_4._0_1_ = 4;
     ReleaseSharedStringRefIfNotEmpty();
     local_4._0_1_ = 2;
     ReleaseSharedStringRefIfNotEmpty();
-    thunk_SetQuickDrawTextOriginWithContextOffset(0x50,0xc);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   }
-  sVar1 = *(short *)(*(int *)&this->field1_0x60 + 0x1c);
-  thunk_GetNavyOrderNormalizationBaseByNationType();
-  sVar1 = (short)((sVar1 * 0x14) / (int)extraout_AX) + 1;
-  if (0x14 < sVar1) {
-    sVar1 = 0x14;
+  sVar2 = *(short *)(*(int *)(param_1 + 0x60) + 0x1c);
+  sVar1 = GetNavyOrderNormalizationBaseByNationType();
+  sVar2 = (short)((sVar2 * 0x14) / (int)sVar1) + 1;
+  if (0x14 < sVar2) {
+    sVar2 = 0x14;
   }
-  if (sVar1 < 5) {
-    sVar2 = 0x1a;
+  if (sVar2 < 5) {
+    sVar1 = 0x1a;
   }
   else {
-    sVar2 = ((0xe < sVar1) - 1 & 8) + 10;
+    sVar1 = ((0xe < sVar2) - 1 & 8) + 10;
   }
-  RStack_3c.top = (LONG)sVar2;
+  RStack_3c.top = (LONG)sVar1;
   RStack_3c.bottom = RStack_3c.top + 7;
-  RStack_3c.right = sVar1 * 4 + -1;
-  RStack_4c.right = sVar1 * 4 + 0x51;
+  RStack_3c.right = sVar2 * 4 + -1;
+  RStack_4c.right = sVar2 * 4 + 0x51;
   RStack_3c.left = 0;
   RStack_4c.left = 0x52;
   RStack_4c.top = 0x1e;
   RStack_4c.bottom = 0x25;
   UpdatePaletteIndexWithDefaultFallback(0x10);
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x694) + 4),
-             (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_3c,&RStack_4c,0x24,
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
+             (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_3c,&RStack_4c,0x24,
              (astruct_19 *)0x0);
   puStack_50 = &stack0xffffff90;
   SetQuickDrawStrokeColor();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x50,0x20);
-  thunk_DrawCenteredGuideLineOnMapDc(0x50,0x26);
-  thunk_DrawCenteredGuideLineOnMapDc(0xa2,0x26);
-  thunk_DrawCenteredGuideLineOnMapDc(0xa2,0x20);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
+  thunk_DrawCenteredGuideLineOnMapDc(0x50);
+  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
+  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
   local_4._0_1_ = 1;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(this_02,(int)local_2c,4,8,0x405fa1);
+  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(local_2c,4,8);
   local_4 = (uint)local_4._1_3_ << 8;
   ReleaseSharedStringRefIfNotEmpty();
   local_4 = 0xffffffff;
@@ -1382,35 +1010,48 @@ TCivDescription::RenderAdmiralSummaryAndNavyNormalizationGauge(TCivDescription *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005665E0
 // GHIDRA_NAME TCivDescription::RenderStrategicViewportOverlayBadgeIfVisible
-// GHIDRA_PROTO void __thiscall RenderStrategicViewportOverlayBadgeIfVisible(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Draws strategic viewport overlay badge only when viewport flag allows rendering.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderStrategicViewportOverlayBadgeIfVisible()
 
-/* Draws strategic viewport overlay badge only when viewport flag allows rendering. */
-
-void __thiscall TCivDescription::RenderStrategicViewportOverlayBadgeIfVisible(TCivDescription *this)
+void __fastcall TCivDescription::RenderStrategicViewportOverlayBadgeIfVisible(int *param_1)
 
 {
   code *pcVar1;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
-  char cVar2;
+  undefined4 uVar2;
+  int *piStack_38;
+  undefined1 *puStack_34;
+  undefined1 *puStack_30;
+  undefined4 local_2c;
+  undefined1 local_14 [2];
+  undefined1 local_12 [18];
   
-  if (*(short *)((int)(this->base).pChildMapView20 + 0x96) == 0) {
-    SetQuickDrawFillColor(0);
+  if (*(short *)(param_1[8] + 0x96) == 0) {
+    local_2c = 0;
+    puStack_30 = (undefined1 *)0x566622;
+    SetQuickDrawFillColor();
+    local_2c = 0xffffff;
+    puStack_30 = (undefined1 *)0x56662f;
     SetQuickDrawStrokeColor();
-    cVar2 = (char)((ushort)extraout_var_00 >> 8);
-    pcVar1 = *(code **)((int)(this->base).pVtable + 0x1b8);
-    (*pcVar1)(CONCAT22(extraout_var_00,*(undefined2 *)((int)&this->field6c + 2)));
+    local_2c = CONCAT22(extraout_var_00,*(undefined2 *)((int)param_1 + 0x76));
+    puStack_30 = local_14;
+    pcVar1 = *(code **)(*param_1 + 0x1b8);
+    puStack_34 = local_12;
+    uVar2 = CONCAT22(extraout_var_00,*(undefined2 *)((int)param_1 + 0x6e));
+    piStack_38 = param_1 + 0x18;
+    (*pcVar1)(uVar2);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)((int)g_pPrimaryRenderSurfaceContext + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&stack0xffffffdc,
+              ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&stack0xffffffdc,
                (RECT *)&stack0xffffffdc,0,(astruct_19 *)0x0);
-    if (cVar2 != '\0') {
-      (*pcVar1)(CONCAT22(extraout_var,(short)this->field6c),&this->field1_0x60,&stack0xffffffda,
-                &stack0xffffffd8,CONCAT22(extraout_var,*(undefined2 *)((int)&this->field74 + 2)));
-      DrawFrameRectOrUpdateClipRegion();
+    if (local_2c._3_1_ != '\0') {
+      (*pcVar1)(CONCAT22(extraout_var,(short)param_1[0x1b]),param_1 + 0x18,&stack0xffffffda,
+                &stack0xffffffd8,CONCAT22(extraout_var,*(undefined2 *)((int)param_1 + 0x76)));
+      piStack_38 = (int *)(int)(short)uVar2;
+      puStack_34 = (undefined1 *)(int)(short)((uint)uVar2 >> 0x10);
+      puStack_30 = (undefined1 *)((int)piStack_38 + (int)(short)param_1[0x1e]);
+      local_2c = (int)(short)param_1[0x1e] + (int)puStack_34;
+      DrawFrameRectOrUpdateClipRegion(&piStack_38);
     }
   }
   return;
@@ -1418,17 +1059,12 @@ void __thiscall TCivDescription::RenderStrategicViewportOverlayBadgeIfVisible(TC
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F050
 // GHIDRA_NAME TCivDescription::CreateTCivDescriptionInstance
-// GHIDRA_PROTO void * __cdecl CreateTCivDescriptionInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Demangled from TCivDescription.cpp symbol.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCivDescriptionInstance()
 
-/* Demangled from TCivDescription.cpp symbol. */
-
-void * __cdecl TCivDescription::CreateTCivDescriptionInstance(void)
+undefined4 * TCivDescription::CreateTCivDescriptionInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -1438,86 +1074,72 @@ void * __cdecl TCivDescription::CreateTCivDescriptionInstance(void)
   puStack_8 = &LAB_00637e7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x170);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTCivDescription;
-    *(undefined2 *)&this[1].pVtable = 0xffff;
-    *(undefined1 *)&this[1].dialogValueDwordC = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_006431b0;
+    *(undefined2 *)(puVar1 + 0x18) = 0xffff;
+    *(undefined1 *)(puVar1 + 0x1b) = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F0F0
 // GHIDRA_NAME TCivDescription::GetTCivDescriptionClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCivDescriptionClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCivDescription.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCivDescriptionClassNamePointer()
 
-/* Returns class descriptor pointer for TCivDescription. */
-
-void * __cdecl TCivDescription::GetTCivDescriptionClassNamePointer(void)
+undefined ** TCivDescription::GetTCivDescriptionClassNamePointer(void)
 
 {
-  return &g_pClassDescTCivDescription;
+  return &PTR_s_TCivDescription_00663118;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F110
 // GHIDRA_NAME TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
-// GHIDRA_PROTO void __thiscall UpdateCivilianOrderClassAndRefreshTargetCounts(TCivilianOrderState * pCivilianOrderState)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Demangled from TCivDescription.cpp symbol.
-// GHIDRA_COMMENT_END
-
-/* Demangled from TCivDescription.cpp symbol. */
+// GHIDRA_PROTO undefined UpdateCivilianOrderClassAndRefreshTargetCounts()
 
 void __thiscall
 TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts
-          (TCivDescription *this,TCivilianOrderState *pCivilianOrderState)
+          (TCivDescription *param_1,int *param_2)
 
 {
-  ECivilianClassId EVar1;
+  short sVar1;
   
-  if (pCivilianOrderState == (TCivilianOrderState *)0x0) {
-    this->field1_0x60 = ~kCivilianClass_Miner;
+  if (param_2 == (int *)0x0) {
+    *(undefined2 *)(param_1 + 0x60) = 0xffff;
     return;
   }
-  EVar1 = pCivilianOrderState->eCivilianClassId;
-  if (EVar1 != this->field1_0x60) {
-    this->field1_0x60 = EVar1;
-    switch(EVar1) {
-    case kCivilianClass_Miner:
-    case kCivilianClass_Prospector:
-    case kCivilianClass_Farmer:
-    case kCivilianClass_Forester:
-    case kCivilianClass_Rancher:
-    case kCivilianClass_Developer:
-    case kCivilianClass_Driller:
-      *(undefined1 *)&this->field6c = 0;
-      thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(this,pCivilianOrderState);
+  sVar1 = (short)param_2[1];
+  if (sVar1 != *(short *)(param_1 + 0x60)) {
+    *(short *)(param_1 + 0x60) = sVar1;
+    switch(sVar1) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 5:
+    case 7:
+    case 8:
+      param_1[0x6c] = (TCivDescription)0x0;
+      thunk_UpdateCivilianOrderTargetTileCountsForOwnerNation(param_1,param_2);
     }
-    (**(code **)((int)(this->base).pVtable + 0xe4))();
+    (**(code **)(*(int *)param_1 + 0xe4))();
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F1A0
 // GHIDRA_NAME TCivDescription::HandleCivilianLegendHitTestAndSelectOrder
-// GHIDRA_PROTO void __thiscall HandleCivilianLegendHitTestAndSelectOrder(POINT * pMousePoint)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Behavior-based rename from decomp hit-test flow.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined HandleCivilianLegendHitTestAndSelectOrder()
 
 /* WARNING: Removing unreachable block (ram,0x0058f2bf) */
-/* Behavior-based rename from decomp hit-test flow. */
 
 void __thiscall
-TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(TCivDescription *this,POINT *pMousePoint)
+TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int param_1,POINT *param_2)
 
 {
   short sVar1;
@@ -1530,19 +1152,19 @@ TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(TCivDescription *this
   ushort *unaff_EBX;
   RECT *pRVar8;
   int iVar9;
-  ushort *local_28;
+  undefined2 *local_28;
   int local_24;
   RECT *local_1c;
   code *pcStack_10;
   
-  local_1c = (RECT *)&this->pField70;
+  local_1c = (RECT *)(param_1 + 0x70);
   local_24 = 0;
-  local_28 = g_awCivilianLegendSelectionCountsBySlot;
+  local_28 = &g_awCivilianLegendSelectionCountsBySlot;
   do {
-    BVar4 = PtInRect(local_1c,*pMousePoint);
+    BVar4 = PtInRect(local_1c,*param_2);
     if (BVar4 != 0) {
       pRVar8 = (RECT *)0x1;
-      pcVar2 = *(code **)((int)g_apTerrainTypeDescriptorTable[this->field62] + 0x90);
+      pcVar2 = *(code **)((&g_apTerrainTypeDescriptorTable)[*(short *)(param_1 + 0x62)] + 0x90);
       iVar6 = *(int *)pcVar2;
       iVar5 = (**(code **)(iVar6 + 0x28))();
       if (0 < iVar5) {
@@ -1550,21 +1172,21 @@ TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(TCivDescription *this
         do {
           iVar6 = (*pcStack_10)(pRVar8);
           iVar9 = 0;
-          iVar5 = (int)*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 0x3a + iVar6 * 0xa8);
+          iVar5 = (int)*(char *)(*(int *)(g_pGlobalMapState + 0x10) + 0x3a + iVar6 * 0xa8);
           if (0 < iVar5) {
-            pcStack_10 = *(code **)((int)g_pGlobalMapState + 0xc);
-            psVar7 = (short *)(*(int *)((int)g_pGlobalMapState + 0x10) + iVar6 * 0xa8 + 0x42);
+            pcStack_10 = *(code **)(g_pGlobalMapState + 0xc);
+            psVar7 = (short *)(*(int *)(g_pGlobalMapState + 0x10) + iVar6 * 0xa8 + 0x42);
             do {
               sVar1 = *psVar7;
               if (((pcStack_10[sVar1 * 0x24 + 0xe] == (code)0x0) &&
-                  ((ushort *)(int)(char)pcStack_10[sVar1 * 0x24 + 0x13] == local_28)) &&
+                  ((undefined2 *)(int)(char)pcStack_10[sVar1 * 0x24 + 0x13] == local_28)) &&
                  (bVar3 = (int)(uint)*unaff_EBX <= local_24, local_24 = local_24 + 1, bVar3)) {
                 if (*(int **)((int)g_pGlobalUiRootController + 0x48) != (int *)0x0) {
                   (**(code **)(**(int **)((int)g_pGlobalUiRootController + 0x48) + 0x1e0))
                             ((int)sVar1);
                 }
-                g_awCivilianLegendSelectionCountsBySlot[(int)local_28] =
-                     g_awCivilianLegendSelectionCountsBySlot[(int)local_28] + 1;
+                (&g_awCivilianLegendSelectionCountsBySlot)[(int)local_28] =
+                     (&g_awCivilianLegendSelectionCountsBySlot)[(int)local_28] + 1;
                 return;
               }
               iVar9 = iVar9 + 1;
@@ -1589,22 +1211,51 @@ TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(TCivDescription *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F3C0
 // GHIDRA_NAME TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
-// GHIDRA_PROTO void __thiscall UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivilianOrderState * pCivilianOrderState)
+// GHIDRA_PROTO void __thiscall UpdateCivilianOrderTargetTileCountsForOwnerNation(int * pCivilianOrderEntry)
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Demangled from TCivDescription.cpp symbol.
+// GHIDRA_COMMENT Computes per-class target-tile availability counters for the selected civilian's owner nation.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve owner nation from selected civilian tile entry (tile owner byte).
+// GHIDRA_COMMENT 2. Store owner nation id in command-panel context (+0x62).
+// GHIDRA_COMMENT 3. Zero five target counters in panel context (+0x64..+0x6C).
+// GHIDRA_COMMENT 4. Iterate owner-nation province list and each province tile index.
+// GHIDRA_COMMENT 5. For valid non-blocked tiles (tile+0x0E == 0), read tile profile id (tile+0x13).
+// GHIDRA_COMMENT 6. Compare profile against 5-entry row in g_anTargetTileProfileByCivilianClassAndSlot selected by panel civilian class (+0x60).
+// GHIDRA_COMMENT 7. Increment matching bucket counters.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCivilianOrderEntry: selected civilian order/state entry.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Output counters feed civilian command-panel availability UI/hints.
 // GHIDRA_COMMENT_END
 
-/* Demangled from TCivDescription.cpp symbol. */
+/* Computes per-class target-tile availability counters for the selected civilian's owner nation.
+   Algorithm:
+   1. Resolve owner nation from selected civilian tile entry (tile owner byte).
+   2. Store owner nation id in command-panel context (+0x62).
+   3. Zero five target counters in panel context (+0x64..+0x6C).
+   4. Iterate owner-nation province list and each province tile index.
+   5. For valid non-blocked tiles (tile+0x0E == 0), read tile profile id (tile+0x13).
+   6. Compare profile against 5-entry row in g_anTargetTileProfileByCivilianClassAndSlot selected by
+   panel civilian class (+0x60).
+   7. Increment matching bucket counters.
+   Parameters:
+   - pCivilianOrderEntry: selected civilian order/state entry.
+   Returns:
+   - void.
+   Notes:
+   - Output counters feed civilian command-panel availability UI/hints. */
 
 void __thiscall
 TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
-          (TCivDescription *this,TCivilianOrderState *pCivilianOrderState)
+          (TCivDescription *this,int *pCivilianOrderEntry)
 
 {
   short nOwnerNationId;
   int nProvinceTileOrdinal;
   int iVar1;
-  short *psVar2;
+  TCivDescription *pTVar2;
   int iVar3;
   int iVar4;
   short *psVar5;
@@ -1616,41 +1267,41 @@ TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
   
   iVar3 = 1;
   nOwnerNationId =
-       (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 +
-                       pCivilianOrderState->nCurrentTileIndex * 0x24);
-  this->field62 = nOwnerNationId;
+       (short)*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 4 +
+                       *(short *)((int)pCivilianOrderEntry + 6) * 0x24);
+  *(short *)(this + 0x62) = nOwnerNationId;
   pOwnerNationProvinceCollection =
-       *(int **)((int)g_apTerrainTypeDescriptorTable[nOwnerNationId] + 0x90);
-  *(undefined2 *)&this->field6c = 0;
-  *(undefined2 *)((int)&this->field68 + 2) = 0;
-  *(undefined2 *)&this->field68 = 0;
+       *(int **)((&g_apTerrainTypeDescriptorTable)[nOwnerNationId] + 0x90);
+  *(undefined2 *)(this + 0x6c) = 0;
+  *(undefined2 *)(this + 0x6a) = 0;
+  *(undefined2 *)(this + 0x68) = 0;
   iVar1 = *pOwnerNationProvinceCollection;
-  this->field66 = 0;
-  this->field64 = 0;
+  *(undefined2 *)(this + 0x66) = 0;
+  *(undefined2 *)(this + 100) = 0;
   nProvinceTileOrdinal = (**(code **)(iVar1 + 0x28))();
   if (0 < nProvinceTileOrdinal) {
     pfnGetProvinceIdByOrdinal = *(code **)(iVar1 + 0x24);
     do {
       iVar1 = (*pfnGetProvinceIdByOrdinal)(iVar3);
       nProvinceTileOrdinal = 0;
-      iVar1 = *(int *)((int)g_pGlobalMapState + 0x10) + iVar1 * 0xa8;
+      iVar1 = *(int *)(g_pGlobalMapState + 0x10) + iVar1 * 0xa8;
       if ('\0' < *(char *)(iVar1 + 0x3a)) {
         psVar5 = (short *)(iVar1 + 0x42);
         do {
-          iVar3 = *(int *)((int)g_pGlobalMapState + 0xc) + *psVar5 * 0x24;
+          iVar3 = *(int *)(g_pGlobalMapState + 0xc) + *psVar5 * 0x24;
           if (*(char *)(iVar3 + 0xe) == '\0') {
             nTileProfileId = *(char *)(iVar3 + 0x13);
             iVar3 = 0;
-            psVar2 = &this->field64;
+            pTVar2 = this + 100;
             iVar4 = 5;
             do {
               if ((short)nTileProfileId ==
-                  g_anTargetTileProfileByCivilianClassAndSlot[iVar3 + (short)this->field1_0x60 * 5])
-              {
-                *psVar2 = *psVar2 + 1;
+                  *(short *)(&g_anTargetTileProfileByCivilianClassAndSlot +
+                            (iVar3 + *(short *)(this + 0x60) * 5) * 2)) {
+                *(short *)pTVar2 = *(short *)pTVar2 + 1;
               }
               iVar3 = iVar3 + 1;
-              psVar2 = psVar2 + 1;
+              pTVar2 = pTVar2 + 2;
               iVar4 = iVar4 + -1;
             } while (iVar4 != 0);
           }
@@ -1669,26 +1320,19 @@ TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F550
 // GHIDRA_NAME TCivDescription::RefreshCivilianTargetLegendBySelectedClass
-// GHIDRA_PROTO void __thiscall RefreshCivilianTargetLegendBySelectedClass(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Demangled from TCivDescription.cpp symbol.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RefreshCivilianTargetLegendBySelectedClass()
 
-/* Demangled from TCivDescription.cpp symbol. */
-
-void __thiscall TCivDescription::RefreshCivilianTargetLegendBySelectedClass(TCivDescription *this)
+void __thiscall
+TCivDescription::RefreshCivilianTargetLegendBySelectedClass(int *param_1,undefined4 param_2)
 
 {
-  ECivilianClassId EVar1;
-  short originX;
-  short extraout_AX;
-  ushort *puVar2;
-  ushort *puVar3;
-  void **ppvVar4;
-  THQButton *this_00;
+  short sVar1;
+  undefined2 *puVar2;
+  undefined2 *puVar3;
+  int *piVar4;
+  int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  TCivDescription *local_14;
+  int *local_14;
   undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -1698,53 +1342,52 @@ void __thiscall TCivDescription::RefreshCivilianTargetLegendBySelectedClass(TCiv
   puStack_8 = &LAB_00637e98;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_14 = this;
+  local_14 = param_1;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  if ((char)this->field6c == '\0') {
-    puVar2 = g_awCivilianLegendSelectionCountsBySlot;
-    ppvVar4 = &this->pField70;
+  if ((char)param_1[0x1b] == '\0') {
+    puVar2 = &g_awCivilianLegendSelectionCountsBySlot;
+    piVar4 = param_1 + 0x1c;
     do {
       puVar3 = puVar2 + 1;
-      *ppvVar4 = (void *)0x0;
-      ppvVar4[1] = (void *)0x0;
-      ppvVar4[2] = (void *)0x0;
-      ppvVar4[3] = (void *)0x0;
+      *piVar4 = 0;
+      piVar4[1] = 0;
+      piVar4[2] = 0;
+      piVar4[3] = 0;
       *puVar2 = 0;
       puVar2 = puVar3;
-      ppvVar4 = ppvVar4 + 4;
+      piVar4 = piVar4 + 4;
     } while ((int)puVar3 < 0x6a44b0);
-    (local_14->base).field1_0x4 = 0;
-    (local_14->base).field2_0x5 = 0;
-    this = local_14;
+    local_14[1] = 0;
+    param_1 = local_14;
   }
-  EVar1 = this->field1_0x60;
-  if (EVar1 == kCivilianClass_Prospector) {
-    (**(code **)((int)(this->base).pVtable + 0x1a0))(in_stack_00000004);
+  sVar1 = (short)param_1[0x18];
+  if (sVar1 == 1) {
+    (**(code **)(*param_1 + 0x1a0))(param_2);
   }
-  else if (EVar1 == kCivilianClass_Engineer) {
-    (**(code **)((int)(this->base).pVtable + 0x1a4))(in_stack_00000004);
+  else if (sVar1 == 4) {
+    (**(code **)(*param_1 + 0x1a4))(param_2);
   }
-  else if (EVar1 != kCivilianClass_Developer) {
-    (**(code **)((int)(this->base).pVtable + 0x1a8))(in_stack_00000004);
+  else if (sVar1 != 7) {
+    (**(code **)(*param_1 + 0x1a8))(param_2);
   }
-  *(undefined1 *)&this->field6c = 1;
-  if (this->field1_0x60 != ~kCivilianClass_Miner) {
-    local_14 = (TCivDescription *)0x0;
-    in_stack_00000004 = 0;
-    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-    thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)&local_14);
-    thunk_MapUiThemeCodeToStyleFlags(0x2b67,(int)&stack0x00000004);
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))
-              (0x2718,CONCAT22((short)((uint)local_10 >> 0x10),this->field1_0x60),local_10);
-    thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-    originX = (short)((this->base).field14_0x34 / 2) - extraout_AX / 2;
-    SetQuickDrawColorAndSyncGlobals(in_stack_00000004);
-    thunk_SetQuickDrawTextOriginWithContextOffset(originX + 1,0x47);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)local_10);
-    SetQuickDrawColorAndSyncGlobals((int)local_14);
-    thunk_SetQuickDrawTextOriginWithContextOffset(originX,0x46);
-    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
+  *(undefined1 *)(param_1 + 0x1b) = 1;
+  if ((short)param_1[0x18] != -1) {
+    local_14 = (int *)0x0;
+    param_2 = 0;
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc,0x2b68);
+    thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&local_14);
+    thunk_MapUiThemeCodeToStyleFlags(0x2b67,&param_2);
+    (**(code **)(*g_pLocalizationTable + 0x84))
+              (0x2718,CONCAT22((short)((uint)local_10 >> 0x10),(short)param_1[0x18]),local_10);
+    sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(local_10);
+    iVar5 = param_1[0xd] / 2 - (int)sVar1 / 2;
+    SetQuickDrawColorAndSyncGlobals(param_2);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar5 + 1,0x47);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_10);
+    SetQuickDrawColorAndSyncGlobals(local_14);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar5,0x46);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_10);
   }
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
@@ -1754,168 +1397,236 @@ void __thiscall TCivDescription::RefreshCivilianTargetLegendBySelectedClass(TCiv
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058F7B0
 // GHIDRA_NAME TCivDescription::RenderCivilianTargetLegendVariantA
-// GHIDRA_PROTO void __thiscall RenderCivilianTargetLegendVariantA(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Demangled from TCivDescription.cpp symbol.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderCivilianTargetLegendVariantA()
 
-/* Demangled from TCivDescription.cpp symbol. */
-
-void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescription *this)
+void __fastcall TCivDescription::RenderCivilianTargetLegendVariantA(int param_1)
 
 {
-  short extraout_AX;
-  short extraout_AX_00;
-  short extraout_AX_01;
-  short extraout_AX_02;
-  short extraout_AX_03;
-  THQButton *this_00;
-  THQButton *this_01;
-  THQButton *this_02;
-  short *psVar1;
-  short sVar2;
+  short sVar1;
+  undefined1 **ppuVar2;
   short sVar3;
-  int unaff_EDI;
-  int *unaff_FS_OFFSET;
-  int iVar4;
+  undefined4 unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  LONG *pLStack_a4;
+  undefined4 uStack_a0;
+  char acStack_9c [4];
+  RECT *pRStack_98;
   undefined1 *puStack_94;
-  LONG *pLStack_90;
-  LONG LStack_8c;
-  LONG LStack_78;
-  void *pvStack_6c;
-  void *pvStack_68;
+  RECT RStack_90;
+  RECT RStack_80;
+  undefined1 *puStack_70;
+  undefined4 uStack_6c;
+  undefined4 uStack_68;
   undefined1 *puStack_64;
-  undefined1 local_50 [52];
+  undefined1 local_50 [8];
+  undefined1 local_48;
+  undefined1 local_47;
+  undefined1 local_46;
+  undefined1 local_45;
   undefined4 local_1c;
   undefined4 local_18;
   undefined4 local_14;
   undefined4 local_10;
-  int iStack_c;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00637ec0;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
   puStack_64 = (undefined1 *)0x58f7d7;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
   puStack_64 = (undefined1 *)0x58f7e8;
   InitializeSharedStringRefFromEmpty();
-  local_4._0_1_ = 1;
+  local_4 = CONCAT31(local_4._1_3_,1);
   puStack_64 = (undefined1 *)0x58f7f8;
-  thunk_GetActiveNationId();
-  local_50[8] = *(char *)((int)g_pCityOrderCapabilityState + extraout_AX * 0x1d + 0x26e) != '\x02';
+  sVar1 = UiRuntimeContext::GetActiveNationId();
+  local_48 = *(char *)((int)g_pCityOrderCapabilityState + sVar1 * 0x1d + 0x26e) != '\x02';
   puStack_64 = (undefined1 *)0x58f827;
-  thunk_GetActiveNationId();
-  local_50[9] = *(char *)((int)g_pCityOrderCapabilityState + extraout_AX_00 * 0x1d + 0x274) !=
-                '\x02';
+  sVar1 = UiRuntimeContext::GetActiveNationId();
+  local_47 = *(char *)((int)g_pCityOrderCapabilityState + sVar1 * 0x1d + 0x274) != '\x02';
   puStack_64 = (undefined1 *)0x58f854;
-  thunk_GetActiveNationId();
-  local_50[10] = *(char *)((int)g_pCityOrderCapabilityState + extraout_AX_01 * 0x1d + 0x274) !=
-                 '\x02';
+  sVar1 = UiRuntimeContext::GetActiveNationId();
+  local_46 = *(char *)((int)g_pCityOrderCapabilityState + sVar1 * 0x1d + 0x274) != '\x02';
   puStack_64 = (undefined1 *)0x58f881;
-  thunk_GetActiveNationId();
+  sVar1 = UiRuntimeContext::GetActiveNationId();
   puStack_64 = (undefined1 *)0x3;
-  pvStack_68 = (void *)0x2b6c;
-  pvStack_6c = (void *)0xa;
-  local_50[0xb] =
-       *(char *)((int)g_pCityOrderCapabilityState + extraout_AX_02 * 0x1d + 0x27f) != '\x02';
+  uStack_68 = 0x2b6c;
+  uStack_6c = 10;
+  local_45 = *(char *)((int)g_pCityOrderCapabilityState + sVar1 * 0x1d + 0x27f) != '\x02';
+  puStack_70 = (undefined1 *)0x0;
   local_1c = 10;
   local_18 = 7;
   local_14 = 8;
   local_10 = 9;
+  RStack_80.bottom = 0x58f8d3;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   puStack_64 = local_50;
-  pvStack_68 = (void *)0x6;
-  pvStack_6c = (void *)0x272d;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  LStack_78 = 0x58f8f9;
-  thunk_SetQuickDrawTextOriginWithContextOffset(0xc,0x60);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffffa4);
-  LStack_78 = 0x272d;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x28,0x78);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&pvStack_68);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
-  LStack_8c = 0x58f95a;
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x54,0x78);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&pvStack_6c);
-  LStack_8c = 0x272d;
-  pLStack_90 = (LONG *)0x58f984;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  pLStack_90 = &LStack_78;
+  uStack_68 = 6;
+  uStack_6c = 0x272d;
+  puStack_70 = (undefined1 *)0x58f8f0;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  puStack_70 = (undefined1 *)0x60;
+  RStack_80.bottom = 0xc;
+  RStack_80.right = 0x58f8f9;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  puStack_70 = &stack0xffffffa4;
+  RStack_80.bottom = 0x58f906;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  puStack_70 = &stack0xffffffa4;
+  RStack_80.bottom = 7;
+  RStack_80.right = 0x272d;
+  RStack_80.top = 0x58f923;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  RStack_80.top = 0x78;
+  RStack_80.left = 0x28;
+  RStack_90.bottom = 0x58f92c;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  RStack_80.top = (LONG)&uStack_68;
+  RStack_80.left = 0x58f939;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  RStack_80.top = (LONG)&puStack_64;
+  RStack_80.left = 2000;
+  RStack_90.bottom = 0x58f951;
+  (**(code **)(*g_pLocalizationTable + 0x74))();
+  RStack_90.bottom = 0x78;
+  RStack_90.right = 0x54;
+  RStack_90.top = 0x58f95a;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  RStack_90.bottom = (LONG)&uStack_6c;
+  RStack_90.right = 0x58f967;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  RStack_90.bottom = (LONG)&puStack_70;
+  RStack_90.right = 8;
+  RStack_90.top = 0x272d;
+  RStack_90.left = 0x58f984;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  RStack_90.left = (LONG)&RStack_80.right;
   puStack_94 = (undefined1 *)0xbb8;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x28,0x90);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffff7c);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x54,0x90);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  (**(code **)(*(int *)g_pLocalizationTable + 0x74))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x28,0xa8);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_01);
-  thunk_SetQuickDrawTextOriginWithContextOffset(0x54,0xa8);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&puStack_94);
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  sVar2 = 0xd4;
-  thunk_MeasureTextExtentWithCachedQuickDrawStyle();
-  thunk_SetQuickDrawTextOriginWithContextOffset
-            ((short)((this->base).field14_0x34 / 2) - extraout_AX_03 / 2,sVar2);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_02);
+  pRStack_98 = (RECT *)0x58f999;
+  (**(code **)(*g_pLocalizationTable + 0x74))();
+  pRStack_98 = (RECT *)0x90;
+  acStack_9c[0] = '(';
+  acStack_9c[1] = '\0';
+  acStack_9c[2] = '\0';
+  acStack_9c[3] = '\0';
+  uStack_a0 = 0x58f9a5;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  pRStack_98 = (RECT *)&RStack_90.bottom;
+  acStack_9c[0] = -0x4e;
+  acStack_9c[1] = -7;
+  acStack_9c[2] = 'X';
+  acStack_9c[3] = '\0';
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  pRStack_98 = (RECT *)0x90;
+  acStack_9c[0] = 'T';
+  acStack_9c[1] = '\0';
+  acStack_9c[2] = '\0';
+  acStack_9c[3] = '\0';
+  uStack_a0 = 0x58f9c1;
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  pRStack_98 = &RStack_80;
+  acStack_9c[0] = -0x32;
+  acStack_9c[1] = -7;
+  acStack_9c[2] = 'X';
+  acStack_9c[3] = '\0';
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  pRStack_98 = (RECT *)&RStack_90.bottom;
+  acStack_9c[0] = '\t';
+  acStack_9c[1] = '\0';
+  acStack_9c[2] = '\0';
+  acStack_9c[3] = '\0';
+  uStack_a0 = 0x272d;
+  pLStack_a4 = (LONG *)0x58f9eb;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  pLStack_a4 = &RStack_90.top;
+  (**(code **)(*g_pLocalizationTable + 0x74))();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&pLStack_a4);
+  thunk_SetQuickDrawTextOriginWithContextOffset(*(int *)(param_1 + 0x34) / 2 - (int)sVar1 / 2);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  LStack_78 = 0x176;
-  pLStack_90 = (LONG *)0xa;
-  LStack_8c = 0x6e;
-  SetQuickDrawFillColor(0);
+  RStack_80.top = 0;
+  RStack_80.left = 0x15b;
+  pRStack_98 = (RECT *)&stack0xffffff48;
+  RStack_80.right = 0x176;
+  RStack_80.bottom = 0x14;
+  RStack_90.left = 10;
+  RStack_90.top = 0x6e;
+  RStack_90.right = 0x25;
+  RStack_90.bottom = 0x82;
+  SetQuickDrawFillColor();
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x698) + 4),
-             (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&stack0xffffff80,
-             (RECT *)&pLStack_90,0x24,(astruct_19 *)0x0);
-  LStack_78 = 0x191;
-  pLStack_90 = (LONG *)0xa;
-  LStack_8c = 0x86;
-  SetQuickDrawFillColor(0);
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x698) + 4),
+             (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_80,&RStack_90,0x24,
+             (astruct_19 *)0x0);
+  RStack_80.top = 0;
+  RStack_80.left = 0x176;
+  pRStack_98 = (RECT *)&stack0xffffff48;
+  RStack_80.right = 0x191;
+  RStack_80.bottom = 0x14;
+  RStack_90.left = 10;
+  RStack_90.top = 0x86;
+  RStack_90.right = 0x25;
+  RStack_90.bottom = 0x9a;
+  SetQuickDrawFillColor();
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x698) + 4),
-             (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&stack0xffffff80,
-             (RECT *)&pLStack_90,0x24,(astruct_19 *)0x0);
-  LStack_78 = 0x15b;
-  pLStack_90 = (LONG *)0xa;
-  LStack_8c = 0x9e;
-  SetQuickDrawFillColor(0);
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x698) + 4),
+             (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_80,&RStack_90,0x24,
+             (astruct_19 *)0x0);
+  RStack_80.top = 0;
+  RStack_80.left = 0x140;
+  pRStack_98 = (RECT *)&stack0xffffff48;
+  RStack_80.right = 0x15b;
+  RStack_80.bottom = 0x14;
+  RStack_90.left = 10;
+  RStack_90.top = 0x9e;
+  RStack_90.right = 0x25;
+  RStack_90.bottom = 0xb2;
+  SetQuickDrawFillColor();
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x698) + 4),
-             (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&stack0xffffff80,
-             (RECT *)&pLStack_90,0x24,(astruct_19 *)0x0);
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x698) + 4),
+             (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_80,&RStack_90,0x24,
+             (astruct_19 *)0x0);
+  pRStack_98 = (RECT *)&stack0xffffff48;
   SetQuickDrawStrokeColor();
   sVar3 = 10;
-  sVar2 = 0xd8;
-  iVar4 = 0;
-  psVar1 = (short *)&stack0xffffff90;
+  sVar1 = 0xd8;
+  pRStack_98 = (RECT *)0x0;
+  ppuVar2 = &puStack_70;
   do {
-    if ((&stack0xffffff64)[iVar4] != '\0') {
-      LStack_8c = (LONG)sVar2;
+    if (acStack_9c[(int)pRStack_98] != '\0') {
+      RStack_80.top = 0;
+      RStack_80.left = *(short *)ppuVar2 * 0x14;
+      RStack_90.top = (LONG)sVar1;
       puStack_94 = &stack0xffffff48;
-      LStack_78 = (*psVar1 + 1) * 0x14;
-      pLStack_90 = (LONG *)(int)sVar3;
-      SetQuickDrawFillColor(0);
+      RStack_80.right = (*(short *)ppuVar2 + 1) * 0x14;
+      RStack_80.bottom = 0x14;
+      RStack_90.left = (LONG)sVar3;
+      RStack_90.bottom = RStack_90.top + 0x14;
+      RStack_90.right = RStack_90.left + 0x14;
+      SetQuickDrawFillColor();
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x698) + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&stack0xffffff80,
-                 (RECT *)&pLStack_90,0,(astruct_19 *)0x0);
+                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x698) + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_80,&RStack_90,0,
+                 (astruct_19 *)0x0);
       if (sVar3 < 0x5e) {
         sVar3 = sVar3 + 0x1c;
       }
       else {
         sVar3 = 10;
-        sVar2 = sVar2 + 0x16;
+        sVar1 = sVar1 + 0x16;
       }
     }
-    psVar1 = psVar1 + 2;
-    iVar4 = iVar4 + 1;
-  } while (iVar4 < 4);
+    ppuVar2 = ppuVar2 + 1;
+    pRStack_98 = (RECT *)((int)pRStack_98 + 1);
+  } while ((int)pRStack_98 < 4);
   ReleaseSharedStringRefIfNotEmpty();
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = unaff_EDI;
@@ -1924,32 +1635,23 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantA(TCivDescript
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058FEC0
 // GHIDRA_NAME TCivDescription::RenderCivilianTargetLegendVariantB
-// GHIDRA_PROTO void __thiscall RenderCivilianTargetLegendVariantB(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Legend renderer variant B used via vtable thunk slot in civilian target panel lane. Draws icon/text rows driven by capability state and class-indexed lookup tables.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderCivilianTargetLegendVariantB()
 
-/* Legend renderer variant B used via vtable thunk slot in civilian target panel lane. Draws
-   icon/text rows driven by capability state and class-indexed lookup tables. */
-
-void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescription *this)
+void TCivDescription::RenderCivilianTargetLegendVariantB(void)
 
 {
   char cVar1;
   short sVar2;
-  short extraout_AX;
-  int iVar3;
-  TCivDescription *pTVar4;
-  int *piVar5;
+  short sVar3;
+  uint uVar4;
+  int iVar5;
   int iVar6;
-  int unaff_EDI;
-  undefined1 *puVar7;
+  int *piVar7;
+  int iVar8;
   undefined4 *unaff_FS_OFFSET;
-  short sVar8;
   short *local_70;
-  undefined1 *puStack_6c;
+  int iStack_6c;
   int local_68;
-  int iStack_64;
   RECT RStack_60;
   RECT RStack_50;
   short asStack_40 [6];
@@ -1979,19 +1681,17 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescript
   puStack_8 = &LAB_00637ed8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  RStack_60.top = (LONG)this;
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  thunk_GetActiveNationId();
+  sVar3 = UiRuntimeContext::GetActiveNationId();
   local_34 = 3;
   local_2c = 3;
-  cVar1 = *(char *)((int)g_pCityOrderCapabilityState + extraout_AX * 0x1d + 0x27b);
+  cVar1 = *(char *)((int)g_pCityOrderCapabilityState + sVar3 * 0x1d + 0x27b);
   local_32 = 4;
   local_2a = 4;
   local_24 = 6;
   local_1c = 6;
   local_14 = 6;
-  local_70 = (short *)0x0;
   local_30 = 0xffff;
   local_2e = 0xffff;
   local_28 = 0x16;
@@ -2002,62 +1702,55 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescript
   local_1a = 0xffff;
   local_18 = 0xffffffff;
   local_12 = 0xffff;
-  local_10._0_1_ = 0xff;
-  local_10._1_3_ = 0xffffff;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6c,(int)&local_70);
+  local_10 = 0xffffffff;
+  thunk_MapUiThemeCodeToStyleFlags();
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  thunk_SetQuickDrawTextOriginWithContextOffset(5,0x60);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffff8c);
-  iVar3 = (-(uint)(cVar1 == '\x02') & 3) + 2;
-  iStack_64 = iVar3;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  uVar4 = -(uint)(cVar1 == '\x02') & 3;
   ResetQuickDrawStrokeState();
-  puStack_6c = &stack0xffffff74;
   SetQuickDrawStrokeColor();
-  sVar8 = 0x68;
-  puStack_6c = (undefined1 *)0x0;
-  if (iVar3 != 0) {
+  sVar3 = 0x68;
+  iStack_6c = 0;
+  if (uVar4 != 0xfffffffe) {
     do {
-      puVar7 = puStack_6c;
-      iVar3 = (int)g_anTargetTileProfileByCivilianClassAndSlot[(int)puStack_6c + 5];
-      pTVar4 = (TCivDescription *)(int)sVar8;
-      RStack_50.left = iVar3 * 0x14;
-      RStack_50.right = (iVar3 + 1) * 0x14;
+      iVar6 = (int)(short)(&DAT_00698f62)[iStack_6c];
+      iVar5 = (int)sVar3;
+      RStack_50.left = iVar6 * 0x14;
+      RStack_50.right = (iVar6 + 1) * 0x14;
       RStack_50.top = 0;
       RStack_50.bottom = 0x14;
       RStack_60.left = 0xc;
-      RStack_60.bottom = (LONG)&(pTVar4->base).viewStateDword14;
+      RStack_60.bottom = iVar5 + 0x14;
       RStack_60.right = 0x20;
-      RStack_60.top = (LONG)pTVar4;
-      if (puStack_6c == (undefined1 *)0x1) {
-        RStack_60.bottom = (LONG)&(pTVar4->base).pChildMapView20;
-        RStack_60.top = (LONG)&(pTVar4->base).dialogValueDwordC;
+      RStack_60.top = iVar5;
+      if (iStack_6c == 1) {
+        RStack_60.bottom = iVar5 + 0x20;
+        RStack_60.top = iVar5 + 0xc;
       }
-      local_70 = (short *)&stack0xffffff70;
-      SetQuickDrawFillColor(0);
+      SetQuickDrawFillColor();
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x698) + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_50,&RStack_60,0,
+                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x698) + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_50,&RStack_60,0,
                  (astruct_19 *)0x0);
       if (*(char *)(local_68 + 0x6c) == '\0') {
-        piVar5 = (int *)((iVar3 + 7) * 0x10 + local_68);
-        *piVar5 = RStack_60.left;
-        piVar5[1] = RStack_60.top;
-        piVar5[2] = RStack_60.right;
-        piVar5[3] = RStack_60.bottom;
+        piVar7 = (int *)((iVar6 + 7) * 0x10 + local_68);
+        *piVar7 = RStack_60.left;
+        piVar7[1] = RStack_60.top;
+        piVar7[2] = RStack_60.right;
+        piVar7[3] = RStack_60.bottom;
         *(undefined4 *)(local_68 + 4) = 1;
       }
-      SetQuickDrawColorAndSyncGlobals(unaff_EDI);
-      thunk_SetQuickDrawTextOriginWithContextOffset
-                ((short)RStack_60.right + 2,(short)RStack_60.bottom);
-      FormatStringWithVarArgsToSharedRef();
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState((THQButton *)&stack0xffffff8c);
+      SetQuickDrawColorAndSyncGlobals();
+      thunk_SetQuickDrawTextOriginWithContextOffset(RStack_60.right + 2);
+      FormatStringWithVarArgsToSharedRef(&stack0xffffff8c,&g_szDecimalFormat);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      local_70 = (short *)&stack0xffffff70;
-      SetQuickDrawFillColor(0);
-      local_70 = asStack_40 + (int)puVar7 * 4;
-      iVar3 = 0;
-      iVar6 = 0x3c;
+      SetQuickDrawFillColor();
+      local_70 = asStack_40 + iStack_6c * 4;
+      iVar6 = 0;
+      iVar8 = 0x3c;
       do {
         sVar2 = *local_70;
         if (sVar2 != -1) {
@@ -2065,40 +1758,37 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescript
           RStack_50.left = sVar2 * 0x14;
           RStack_50.bottom = 0x18;
           RStack_50.right = (sVar2 + 1) * 0x14;
-          if (iVar6 < 0x78) {
-            RStack_60.left = iVar6 + -0x14;
-            RStack_60.top = (LONG)&pTVar4[-1].pField670;
-            RStack_60.bottom = (LONG)&(pTVar4->base).viewStateDword14;
-            RStack_60.right = iVar6;
+          if (iVar8 < 0x78) {
+            RStack_60.left = iVar8 + -0x14;
+            RStack_60.top = iVar5 + -4;
+            RStack_60.bottom = iVar5 + 0x14;
+            RStack_60.right = iVar8;
           }
           else {
-            RStack_60.left = iVar3 + -0x18;
-            RStack_60.top = (LONG)&(pTVar4->base).pUiOwner18;
-            RStack_60.right = iVar3 + -4;
-            RStack_60.bottom = (LONG)&(pTVar4->base).cachedPosY30;
+            RStack_60.left = iVar6 + -0x18;
+            RStack_60.top = iVar5 + 0x18;
+            RStack_60.right = iVar6 + -4;
+            RStack_60.bottom = iVar5 + 0x30;
           }
           BlitRectWithOptionalTransparency
-                    ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x678) + 4),
-                     (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&RStack_50,&RStack_60
-                     ,0x24,(astruct_19 *)0x0);
-          puVar7 = puStack_6c;
+                    ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x678) + 4),
+                     (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_50,&RStack_60,0x24
+                     ,(astruct_19 *)0x0);
         }
-        iVar6 = iVar6 + 0x1e;
+        iVar8 = iVar8 + 0x1e;
         local_70 = local_70 + 1;
-        iVar3 = iVar3 + 0x20;
-      } while (iVar6 < 0xb4);
-      puStack_6c = &stack0xffffff70;
+        iVar6 = iVar6 + 0x20;
+      } while (iVar8 < 0xb4);
       SetQuickDrawStrokeColor();
-      sVar2 = sVar8 + 0x1c;
-      if (puVar7 == (undefined1 *)0x1) {
-        sVar2 = sVar8 + 0x34;
+      sVar2 = sVar3 + 0x1c;
+      if (iStack_6c == 1) {
+        sVar2 = sVar3 + 0x34;
       }
-      sVar8 = sVar2;
-      puStack_6c = (undefined1 *)((int)puVar7 + 1);
-    } while ((int)puStack_6c < iStack_64);
+      sVar3 = sVar2;
+      iStack_6c = iStack_6c + 1;
+    } while (iStack_6c < (int)(uVar4 + 2));
   }
-  local_10._0_1_ = 0xff;
-  local_10._1_3_ = 0xffffff;
+  local_10 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_18;
   return;
@@ -2106,24 +1796,25 @@ void __thiscall TCivDescription::RenderCivilianTargetLegendVariantB(TCivDescript
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A8D40
 // GHIDRA_NAME TCivDescription::UpdateHexGridHoverCursorAndHighlight
-// GHIDRA_PROTO void __thiscall UpdateHexGridHoverCursorAndHighlight(void)
+// GHIDRA_PROTO undefined UpdateHexGridHoverCursorAndHighlight()
 
-void __thiscall TCivDescription::UpdateHexGridHoverCursorAndHighlight(TCivDescription *this)
+void __thiscall
+TCivDescription::UpdateHexGridHoverCursorAndHighlight(int *param_1,undefined4 param_2)
 
 {
-  int iVar1;
-  ushort extraout_AX;
-  ushort uVar2;
+  undefined1 *puVar1;
+  short sVar2;
   HCURSOR hCursor;
   uint uVar3;
-  short sVar4;
+  undefined4 unaff_EBX;
+  undefined1 *puVar4;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  short local_44;
-  short local_40;
-  RECT local_34;
-  undefined1 local_24 [24];
+  short local_44 [2];
+  int local_40;
+  undefined1 *local_3c;
+  undefined1 *local_38;
+  RECT local_34 [2];
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
@@ -2132,65 +1823,74 @@ void __thiscall TCivDescription::UpdateHexGridHoverCursorAndHighlight(TCivDescri
   puStack_8 = &LAB_00638780;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TacticalBattleView::ConvertScreenPointToHexGridCoordClamped();
-  sVar4 = local_44 * (short)this->field80 + local_40;
-  iVar5 = (int)sVar4;
-  thunk_ResolveTacticalHoverCursorToken();
-  if ((extraout_AX == 999) || (uVar2 = extraout_AX, extraout_AX == 0)) {
-    uVar2 = 0xffff;
+  ConvertScreenPointToHexGridCoordClamped(param_2,local_44);
+  puVar4 = (undefined1 *)
+           (CONCAT22((short)((uint)unaff_EBX >> 0x10),local_44[0] * (short)param_1[0x20]) + local_40
+           );
+  iVar5 = (int)(short)puVar4;
+  local_38 = puVar4;
+  sVar2 = ResolveTacticalHoverCursorToken();
+  if ((sVar2 == 999) || (sVar2 == 0)) {
+    sVar2 = -1;
   }
-  (this->base).selectionState4e = uVar2;
-  if (uVar2 == 0xffff) {
+  *(short *)((int)param_1 + 0x4e) = sVar2;
+  if (sVar2 == -1) {
     hCursor = LoadCursorA((HINSTANCE)0x0,&DAT_00007f00);
   }
   else {
-    hCursor = *(HCURSOR *)((int)g_pUiRuntimeContext + (short)uVar2 * 4 + -0xf8c);
+    hCursor = *(HCURSOR *)(g_pUiRuntimeContext + -0xf8c + sVar2 * 4);
   }
   SetCursor(hCursor);
-  if (iVar5 != this->field84) {
-    thunk_ConstructScopedMapQuickDrawContext(local_24,(int)this);
+  if (iVar5 != param_1[0x21]) {
+    ConstructScopedMapQuickDrawContext();
     local_4 = 0;
     AcquireReusableQuickDrawSurface();
     local_4 = CONCAT31(local_4._1_3_,1);
-    ApplyHitRegionToClipState(in_stack_00000004);
-    iVar1 = this->field84;
-    this->field84 = iVar5;
+    ApplyHitRegionToClipState();
+    puVar1 = (undefined1 *)param_1[0x21];
+    param_1[0x21] = iVar5;
+    local_3c = puVar1;
     ResetQuickDrawStrokeState();
-    if (iVar1 != -1) {
-      uVar3 = iVar1 / this->field80;
-      local_34.right = this->field88;
-      local_34.left = (iVar1 % this->field80) * local_34.right - (int)*(short *)&this->field78;
+    if (puVar1 != (undefined1 *)0xffffffff) {
+      uVar3 = (int)puVar1 / param_1[0x20];
+      local_34[0].right = param_1[0x22];
+      local_34[0].left =
+           ((int)local_3c % param_1[0x20]) * local_34[0].right - (int)(short)param_1[0x1e];
       if ((uVar3 & 1) != 0) {
-        local_34.left = local_34.left + local_34.right / 2;
+        local_34[0].left = local_34[0].left + local_34[0].right / 2;
       }
-      local_34.right = local_34.left + local_34.right;
-      local_34.top = uVar3 * this->field8c;
-      local_34.bottom = local_34.top + this->field8c;
+      local_34[0].right = local_34[0].left + local_34[0].right;
+      local_34[0].top = uVar3 * param_1[0x23];
+      local_3c = &stack0xffffffa8;
+      local_34[0].bottom = local_34[0].top + param_1[0x23];
       SetQuickDrawStrokeColor();
-      SetQuickDrawFillColor(0);
+      local_3c = &stack0xffffffa8;
+      SetQuickDrawFillColor();
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)((int)g_pPrimaryRenderSurfaceContext + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),&local_34,&local_34,0,
+                ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),local_34,local_34,0,
                  (astruct_19 *)0x0);
+      puVar4 = local_38;
     }
-    if (sVar4 != -1) {
-      uVar3 = iVar5 / this->field80;
-      local_34.right = this->field88;
-      local_34.left = (iVar5 % this->field80) * local_34.right - (int)*(short *)&this->field78;
+    if ((short)puVar4 != -1) {
+      uVar3 = iVar5 / param_1[0x20];
+      local_34[0].right = param_1[0x22];
+      local_34[0].left = (iVar5 % param_1[0x20]) * local_34[0].right - (int)(short)param_1[0x1e];
       if ((uVar3 & 1) != 0) {
-        local_34.left = local_34.left + local_34.right / 2;
+        local_34[0].left = local_34[0].left + local_34[0].right / 2;
       }
-      local_34.right = local_34.left + local_34.right;
-      local_34.top = uVar3 * this->field8c;
-      local_34.bottom = local_34.top + this->field8c;
+      local_34[0].right = local_34[0].left + local_34[0].right;
+      local_34[0].top = uVar3 * param_1[0x23];
+      local_38 = &stack0xffffffa8;
+      local_34[0].bottom = local_34[0].top + param_1[0x23];
       SetQuickDrawStrokeColor();
-      SetQuickDrawFillColorFromPaletteIndex(0);
-      DrawHexSelectionOutlineSegments((int)&local_34);
-      (**(code **)((int)(this->base).pVtable + 0x1b0))(iVar5);
+      SetQuickDrawFillColorFromPaletteIndex();
+      DrawHexSelectionOutlineSegments();
+      (**(code **)(*param_1 + 0x1b0))(iVar5);
     }
     SnapshotHitRegionToClipCache();
-    if ((this->pFieldd0 != (int *)0x0) && (*(int *)(*(int *)&this->field1_0x60 + 0x44) == 0)) {
-      (**(code **)(*(int *)this->pFieldd0 + 0x1d0))();
+    if (((int *)param_1[0x34] != (int *)0x0) && (*(int *)(param_1[0x18] + 0x44) == 0)) {
+      (**(code **)(*(int *)param_1[0x34] + 0x1d0))();
     }
     local_4 = local_4 & 0xffffff00;
     ReleaseOrCacheQuickDrawSurface();
@@ -2203,107 +1903,82 @@ void __thiscall TCivDescription::UpdateHexGridHoverCursorAndHighlight(TCivDescri
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA670
 // GHIDRA_NAME TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-// GHIDRA_PROTO ushort __thiscall ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int tacticalView, int tileIndex)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes sprite orientation index from hex-neighbor occupancy pattern around the unit tile (type-1 occupancy checks).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy()
 
-/* Computes sprite orientation index from hex-neighbor occupancy pattern around the unit tile
-   (type-1 occupancy checks). */
-
-ushort __thiscall
+undefined2 __thiscall
 TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-          (TCivDescription *this,int tacticalView,int tileIndex)
+          (int param_1,int param_2)
 
 {
   int iVar1;
-  int in_EDX;
-  int local_38;
+  int local_38 [2];
   int local_30;
   int local_2c;
   int local_24;
-  ushort local_20 [16];
+  undefined4 local_20 [8];
   
-  iVar1._0_2_ = this->field1_0x60;
-  iVar1._2_2_ = this->field62;
   local_20[0] = 6;
-  local_20[1] = 0;
-  local_20[2] = 3;
-  local_20[3] = 0;
-  local_20[4] = 5;
+  local_20[1] = 3;
+  local_20[2] = 5;
+  local_20[3] = 1;
+  local_20[4] = 6;
   local_20[5] = 0;
-  local_20[6] = 1;
-  local_20[7] = 0;
-  local_20[8] = 6;
-  local_20[9] = 0;
-  local_20[10] = 0;
-  local_20[0xb] = 0;
-  local_20[0xc] = 2;
-  local_20[0xd] = 0;
-  local_20[0xe] = 4;
-  local_20[0xf] = 0;
-  thunk_ComputeHexNeighborTileIndices_005A0420(iVar1,in_EDX,tacticalView);
-  if ((((char)(tacticalView / 0x1d) + (char)(tacticalView >> 0x1f)) -
-       (char)((longlong)tacticalView * 0x8d3dcb09 >> 0x3f) & 1U) == 0) {
+  local_20[6] = 2;
+  local_20[7] = 4;
+  thunk_ComputeHexNeighborTileIndices(param_2,local_38);
+  if ((((char)(param_2 / 0x1d) + (char)(param_2 >> 0x1f)) -
+       (char)((longlong)param_2 * 0x8d3dcb09 >> 0x3f) & 1U) == 0) {
     iVar1 = 4;
-    if ((local_38 != -1) &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + local_38 * 0x14) == 1)) {
+    if ((local_38[0] != -1) &&
+       (*(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 8 + local_38[0] * 0x14) == 1)) {
       iVar1 = 6;
     }
     if ((local_30 != -1) &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + local_30 * 0x14) == 1)) {
+       (*(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 8 + local_30 * 0x14) == 1)) {
       iVar1 = iVar1 + 1;
     }
   }
   else {
     iVar1 = 0;
     if ((local_24 != -1) &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + local_24 * 0x14) == 1)) {
+       (*(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 8 + local_24 * 0x14) == 1)) {
       iVar1 = 2;
     }
     if ((local_2c != -1) &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + local_2c * 0x14) == 1)) {
-      return local_20[(iVar1 + 1) * 2];
+       (*(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 8 + local_2c * 0x14) == 1)) {
+      return *(undefined2 *)(local_20 + iVar1 + 1);
     }
   }
-  return local_20[iVar1 * 2];
+  return *(undefined2 *)(local_20 + iVar1);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AA900
 // GHIDRA_NAME TCivDescription::RenderTacticalBattleSelectionAndUnitOverlayPass
-// GHIDRA_PROTO void __thiscall RenderTacticalBattleSelectionAndUnitOverlayPass(int param_1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Render tactical battle selection overlays and unit visual pass for the active viewport.
-// GHIDRA_COMMENT_END
-
-/* Render tactical battle selection overlays and unit visual pass for the active viewport. */
+// GHIDRA_PROTO undefined RenderTacticalBattleSelectionAndUnitOverlayPass()
 
 void __thiscall
-TCivDescription::RenderTacticalBattleSelectionAndUnitOverlayPass(TCivDescription *this,int param_1)
+TCivDescription::RenderTacticalBattleSelectionAndUnitOverlayPass
+          (int param_1,int param_2,undefined4 param_3)
 
 {
   byte bVar1;
   bool bVar2;
-  char extraout_AL;
-  char extraout_AL_00;
-  char extraout_AL_01;
-  char extraout_AL_02;
-  char extraout_AL_03;
-  ushort uVar3;
+  char cVar3;
   short sVar4;
-  uint uVar5;
-  tagRECT *ptVar6;
-  char *pcVar7;
-  int *piVar8;
+  ushort uVar5;
+  short sVar6;
+  uint uVar7;
+  tagRECT *ptVar8;
   int iVar9;
-  code *pcVar10;
-  int iVar11;
-  int iVar12;
-  short sVar13;
-  void *unaff_EDI;
+  undefined4 uVar10;
+  char *pcVar11;
+  int *piVar12;
+  undefined2 extraout_var;
+  code *pcVar13;
   int iVar14;
-  int in_stack_00000008;
-  short sVar15;
+  int iVar15;
+  short sVar16;
+  int iVar17;
   astruct_16 aStack_148;
   char local_135;
   astruct_15 aStack_134;
@@ -2334,49 +2009,49 @@ TCivDescription::RenderTacticalBattleSelectionAndUnitOverlayPass(TCivDescription
   int iStack_ac;
   int iStack_a8;
   int iStack_a4;
-  short local_a0 [72];
-  undefined1 local_10 [16];
+  short local_a0 [80];
   
   local_e8 = 0;
   local_109 = '\0';
   bVar2 = false;
   local_135 = '\0';
   local_124 = 0;
-  local_11c.right = this->field88;
-  uVar5 = param_1 / this->field80;
-  local_11c.left = (param_1 % this->field80) * local_11c.right - (int)*(short *)&this->field78;
-  if ((uVar5 & 1) != 0) {
+  local_11c.right = *(int *)(param_1 + 0x88);
+  uVar7 = param_2 / *(int *)(param_1 + 0x80);
+  local_11c.left =
+       (param_2 % *(int *)(param_1 + 0x80)) * local_11c.right - (int)*(short *)(param_1 + 0x78);
+  if ((uVar7 & 1) != 0) {
     local_11c.left = local_11c.left + local_11c.right / 2;
   }
-  local_11c.top = uVar5 * this->field8c;
+  local_11c.top = uVar7 * *(int *)(param_1 + 0x8c);
   local_11c.right = local_11c.left + local_11c.right;
-  local_11c.bottom = local_11c.top + this->field8c;
-  IntersectRectWrapper((int)&local_11c,in_stack_00000008,(int)local_10);
-  if (extraout_AL == '\0') {
+  local_11c.bottom = local_11c.top + *(int *)(param_1 + 0x8c);
+  cVar3 = IntersectRectWrapper(&local_11c,param_3);
+  if (cVar3 == '\0') {
     return;
   }
-  if ((this->base).field14_0x34 < local_11c.right) {
+  if (*(int *)(param_1 + 0x34) < local_11c.right) {
     local_e0.top = local_11c.top;
     local_e0.left = local_11c.left;
-    local_e0.right = this->field88 / 2 + local_11c.left;
+    local_e0.right = *(int *)(param_1 + 0x88) / 2 + local_11c.left;
     local_e0.bottom = local_11c.bottom;
-    ptVar6 = &local_e0;
+    ptVar8 = &local_e0;
   }
   else {
-    ptVar6 = &local_11c;
+    ptVar8 = &local_11c;
   }
-  local_c8 = ptVar6->left;
-  local_c0 = ptVar6->right;
-  local_c4 = ptVar6->top;
-  local_bc = ptVar6->bottom;
-  uVar5 = param_1 / 0x1d;
-  local_fc = (char *)(uVar5 & 1);
-  local_e4 = local_fc + (param_1 % 0x1d) * 2;
-  if ((uVar5 & 1) == 0) {
-    if (0 < param_1) {
-      iVar11 = *(int *)(*(int *)&this->field1_0x60 + 4) + param_1 * 0x14;
-      if (*(int *)(iVar11 + 8) < 2) {
-        if (1 < *(int *)(iVar11 + -0xc)) {
+  local_c8 = ptVar8->left;
+  local_c0 = ptVar8->right;
+  local_c4 = ptVar8->top;
+  local_bc = ptVar8->bottom;
+  uVar7 = param_2 / 0x1d;
+  local_fc = (char *)(uVar7 & 1);
+  local_e4 = local_fc + (param_2 % 0x1d) * 2;
+  if ((uVar7 & 1) == 0) {
+    if (0 < param_2) {
+      iVar9 = *(int *)(*(int *)(param_1 + 0x60) + 4) + param_2 * 0x14;
+      if (*(int *)(iVar9 + 8) < 2) {
+        if (1 < *(int *)(iVar9 + -0xc)) {
           local_124 = 2;
         }
       }
@@ -2385,68 +2060,68 @@ TCivDescription::RenderTacticalBattleSelectionAndUnitOverlayPass(TCivDescription
       }
     }
 LAB_005aaa96:
-    sVar15 = (short)local_124;
-  }
-  else {
-    if (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + param_1 * 0x14) < 2)
-    goto LAB_005aaa96;
-    sVar15 = 3;
-    local_124 = 3;
-  }
-  if ((((sVar15 == 1) || (sVar15 == 3)) &&
-      (RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0(), extraout_AL_00 == '\0'))
-     || ((sVar15 == 2 &&
-         (RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0(), extraout_AL_01 == '\0')
-         ))) {
-    local_135 = '\x01';
-  }
-  sVar4 = 0;
-  if (sVar15 != 0) {
-    if (sVar15 == 1) {
-      iVar11 = param_1 + 0x1d;
-    }
-    else {
-      iVar11 = param_1 + 0x1c;
-      if (sVar15 != 2) {
-        iVar11 = param_1;
-      }
-    }
-    TArmyBattle::thunk_CreateTArmyBattleInstance(*(TArmyBattle **)&this->field1_0x60,iVar11);
-    if ((extraout_AL_02 != '\0') &&
-       (local_109 = '\x01',
-       *(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 4 + iVar11 * 0x14) != 0)) {
-      bVar2 = true;
-    }
     sVar4 = (short)local_124;
   }
-  if ((*(int *)(*(int *)&this->field1_0x60 + 0x10) == 0) && (0 < (int)uVar5)) {
-    (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
-    ApplyGridColumnSelectionGuard();
-    if ((extraout_AL_03 != '\0') &&
-       (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 4 + param_1 * 0x14) == 0)) {
+  else {
+    if (*(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 8 + param_2 * 0x14) < 2)
+    goto LAB_005aaa96;
+    sVar4 = 3;
+    local_124 = 3;
+  }
+  if ((((sVar4 == 1) || (sVar4 == 3)) &&
+      (cVar3 = RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0(), cVar3 == '\0')) ||
+     ((sVar4 == 2 &&
+      (cVar3 = RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0(), cVar3 == '\0'))))
+  {
+    local_135 = '\x01';
+  }
+  sVar6 = 0;
+  if (sVar4 != 0) {
+    if (sVar4 == 1) {
+      iVar9 = param_2 + 0x1d;
+    }
+    else {
+      iVar9 = param_2 + 0x1c;
+      if (sVar4 != 2) {
+        iVar9 = param_2;
+      }
+    }
+    cVar3 = TArmyBattle::CreateTArmyBattleInstance();
+    if ((cVar3 != '\0') &&
+       (local_109 = '\x01', *(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 4 + iVar9 * 0x14) != 0
+       )) {
+      bVar2 = true;
+    }
+    sVar6 = (short)local_124;
+  }
+  if ((*(int *)(*(int *)(param_1 + 0x60) + 0x10) == 0) && (0 < (int)uVar7)) {
+    (**(code **)(*g_pUiRuntimeContext + 0x34))();
+    cVar3 = ApplyGridColumnSelectionGuard();
+    if ((cVar3 != '\0') &&
+       (*(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 4 + param_2 * 0x14) == 0)) {
       local_108 = &stack0xfffffea0;
-      iVar14 = this->field8c / 2 + local_11c.top;
-      iVar11 = this->field88 / 2 + local_11c.left;
-      SetQuickDrawFillColor(0);
-      thunk_SetQuickDrawTextOriginWithContextOffset((short)iVar11 + -2,(short)iVar14);
-      thunk_DrawCenteredGuideLineOnMapDc(iVar11 + 2,iVar14);
-      local_108 = (undefined1 *)(iVar14 + 1);
-      sVar15 = (short)iVar11 + -1;
-      thunk_SetQuickDrawTextOriginWithContextOffset(sVar15,(short)local_108);
-      iVar11 = iVar11 + 1;
-      thunk_DrawCenteredGuideLineOnMapDc(iVar11,(int)local_108);
-      (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
-      local_108 = (undefined1 *)(iVar14 + -1);
-      thunk_SetQuickDrawTextOriginWithContextOffset(sVar15,(short)local_108);
-      thunk_DrawCenteredGuideLineOnMapDc(iVar11,(int)local_108);
-      thunk_SetQuickDrawTextOriginWithContextOffset(sVar15,(short)iVar14);
-      thunk_DrawCenteredGuideLineOnMapDc(iVar11,iVar14);
-      sVar4 = (short)local_124;
+      iVar17 = *(int *)(param_1 + 0x8c) / 2 + local_11c.top;
+      iVar14 = *(int *)(param_1 + 0x88) / 2 + local_11c.left;
+      SetQuickDrawFillColor();
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar14 + -2);
+      thunk_DrawCenteredGuideLineOnMapDc(iVar14 + 2);
+      local_108 = (undefined1 *)(iVar17 + 1);
+      iVar9 = iVar14 + -1;
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar9);
+      iVar14 = iVar14 + 1;
+      thunk_DrawCenteredGuideLineOnMapDc(iVar14);
+      (**(code **)(*g_pUiRuntimeContext + 0x34))();
+      local_108 = (undefined1 *)(iVar17 + -1);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar9);
+      thunk_DrawCenteredGuideLineOnMapDc(iVar14);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar9);
+      thunk_DrawCenteredGuideLineOnMapDc(iVar14);
+      sVar6 = (short)local_124;
     }
   }
-  local_108 = (undefined1 *)(param_1 * 0x14);
-  pcVar7 = local_e4;
-  if (*(char *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 0x10 + (int)local_108) != '\0') {
+  local_108 = (undefined1 *)(param_2 * 0x14);
+  pcVar11 = local_e4;
+  if (*(char *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 0x10 + (int)local_108) != '\0') {
     local_a0[0] = 0;
     local_a0[1] = 0;
     local_a0[0xe] = 0;
@@ -2531,171 +2206,161 @@ LAB_005aaa96:
     aStack_148.field2_0x8 = local_11c.right;
     aStack_148.field1_0x4 = local_11c.top;
     aStack_148.field3_0xc = local_11c.bottom;
-    if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-      iVar11 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8)
-      ;
-      if (iVar11 < 1) {
-        iVar11 = -iVar11;
+    if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+      iVar9 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
+      if (iVar9 < 1) {
+        iVar9 = -iVar9;
       }
-      OffsetRect((LPRECT)&aStack_148,0,(iVar11 - local_11c.top) - local_11c.bottom);
+      OffsetRect((LPRECT)&aStack_148,0,(iVar9 - local_11c.top) - local_11c.bottom);
     }
-    iVar11 = -1;
-    iVar9 = 0;
-    bVar1 = *(byte *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 0x10 + (int)local_108);
+    iVar9 = -1;
+    iVar17 = 0;
+    bVar1 = *(byte *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 0x10 + (int)local_108);
     uStack_120 = (undefined1 *)CONCAT31(uStack_120._1_3_,bVar1);
     iVar14 = -1;
     do {
-      iVar12 = iVar14;
-      if ((((uint)bVar1 & 1 << ((byte)iVar9 & 0x1f)) != 0) && (iVar12 = iVar9, iVar11 == -1)) {
-        iVar11 = iVar9;
-        iVar12 = iVar14;
+      iVar15 = iVar14;
+      if ((((uint)bVar1 & 1 << ((byte)iVar17 & 0x1f)) != 0) && (iVar15 = iVar17, iVar9 == -1)) {
+        iVar9 = iVar17;
+        iVar15 = iVar14;
       }
-      iVar9 = iVar9 + 1;
-      iVar14 = iVar12;
-    } while (iVar9 < 6);
+      iVar17 = iVar17 + 1;
+      iVar14 = iVar15;
+    } while (iVar17 < 6);
     if ((bVar1 & 0x80) == 0) {
-      if (iVar12 == -1) {
-        sVar15 = (short)(&local_e0.left)[iVar11];
+      if (iVar15 == -1) {
+        sVar4 = (short)(&local_e0.left)[iVar9];
       }
       else {
-        sVar15 = local_a0[(iVar12 + iVar11 * 6) * 2];
+        sVar4 = local_a0[(iVar15 + iVar9 * 6) * 2];
       }
     }
     else {
-      sVar15 = (short)iVar11 + 1;
+      sVar4 = (short)iVar9 + 1;
     }
-    uVar3 = sVar15 * (short)this->field88;
+    uVar5 = sVar4 * *(short *)(param_1 + 0x88);
     if ((bVar1 & 0x80) != 0) {
-      aStack_134.field2_0x8 = this->field88;
-      aStack_134.field3_0xc = this->field8c;
+      aStack_134.field2_0x8 = *(int *)(param_1 + 0x88);
+      aStack_134.field3_0xc = *(int *)(param_1 + 0x8c);
       aStack_134.field0_0x0 = 0;
       aStack_134.field1_0x4 = 0;
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)((int)this->field74 + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+                ((astruct_17 *)(*(int *)(param_1 + 0x74) + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                  (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     }
-    aStack_134.field0_0x0 = (int)(short)uVar3;
-    aStack_134.field3_0xc = this->field8c;
-    aStack_134.field2_0x8 = this->field88 + aStack_134.field0_0x0;
+    aStack_134.field0_0x0 = (int)(short)uVar5;
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x8c);
+    aStack_134.field2_0x8 = *(int *)(param_1 + 0x88) + aStack_134.field0_0x0;
     aStack_134.field1_0x4 = 0;
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)((int)this->field74 + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+              ((astruct_17 *)(*(int *)(param_1 + 0x74) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     uStack_120 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
-    sVar4 = (short)local_124;
-    pcVar7 = (char *)(uint)uVar3;
+    sVar6 = (short)local_124;
+    pcVar11 = (char *)(uint)uVar5;
   }
-  sVar15 = (short)pcVar7;
-  iVar11._0_2_ = this->field1_0x60;
-  iVar11._2_2_ = this->field62;
-  thunk_ComputeHexNeighborTileIndices_005A0420(iVar11,(int)&iStack_b8,param_1);
-  if (*(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + (int)local_108) == 1) {
-    uVar3 = thunk_ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-                      (this,param_1,(int)unaff_EDI);
-    iVar14 = (int)(short)uVar3;
+  sVar4 = (short)pcVar11;
+  thunk_ComputeHexNeighborTileIndices(param_2);
+  if (*(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 8 + (int)local_108) == 1) {
+    sVar4 = ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy();
+    iVar14 = (int)sVar4;
     local_e8 = iVar14 * 3;
     aStack_134.field1_0x4 = 0;
-    sVar15 = (short)local_e8;
-    aStack_134.field0_0x0 = (int)(short)(sVar15 * (short)this->field90);
-    aStack_134.field2_0x8 = aStack_134.field0_0x0 + this->field90;
-    aStack_134.field3_0xc = this->field8c;
+    sVar4 = (short)local_e8;
+    aStack_134.field0_0x0 = (int)(short)(sVar4 * *(short *)(param_1 + 0x90));
+    aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)(param_1 + 0x90);
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x8c);
     aStack_148.field0_0x0 = local_11c.left;
     aStack_148.field1_0x4 = local_11c.top;
     aStack_148.field2_0x8 = local_11c.right;
     aStack_148.field3_0xc = local_11c.bottom;
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    iVar11 = *(int *)(this->field6c + 0x20);
-    if (iVar11 != 0) {
-      iVar11 = *(int *)(*(int *)(iVar11 + 0x10) + 8);
-      if (iVar11 < 1) {
-        iVar11 = -iVar11;
+    iVar9 = *(int *)(*(int *)(param_1 + 0x6c) + 0x20);
+    if (iVar9 != 0) {
+      iVar9 = *(int *)(*(int *)(iVar9 + 0x10) + 8);
+      if (iVar9 < 1) {
+        iVar9 = -iVar9;
       }
-      OffsetRect((LPRECT)&aStack_134,0,(iVar11 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
+      OffsetRect((LPRECT)&aStack_134,0,(iVar9 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
     }
-    if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-      iVar11 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8)
-      ;
-      if (iVar11 < 1) {
-        iVar11 = -iVar11;
+    if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+      iVar9 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
+      if (iVar9 < 1) {
+        iVar9 = -iVar9;
       }
-      OffsetRect((LPRECT)&aStack_148,0,(iVar11 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
+      OffsetRect((LPRECT)&aStack_148,0,(iVar9 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
     }
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(this->field6c + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+              ((astruct_17 *)(*(int *)(param_1 + 0x6c) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     uStack_120 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
-    iVar11 = 0;
+    iVar9 = 0;
     if (local_fc == (char *)0x0) {
 LAB_005ab0ac:
-      iVar9 = iStack_b8;
+      iVar17 = iStack_b8;
       if ((iVar14 == 2) || (iVar14 == 4)) {
 LAB_005ab0bd:
-        iVar11 = *(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 4 + iVar9 * 0x14);
+        iVar9 = *(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 4 + iVar17 * 0x14);
       }
     }
     else {
-      iVar9 = iStack_a4;
+      iVar17 = iStack_a4;
       if ((iVar14 == 1) || (iVar14 == 5)) goto LAB_005ab0bd;
       if (local_fc == (char *)0x0) goto LAB_005ab0ac;
     }
-    if (iVar11 != 0) {
-      sVar4 = (short)*(undefined4 *)(iVar11 + 0xc) * (short)this->field90;
-      if (*(int *)(iVar11 + 0x20) == 0) {
-        sVar13 = 0;
+    if (iVar9 != 0) {
+      sVar6 = (short)*(undefined4 *)(iVar9 + 0xc) * *(short *)(param_1 + 0x90);
+      if (*(int *)(iVar9 + 0x20) == 0) {
+        sVar16 = 0;
       }
       else {
-        sVar13 = (short)this->field94;
+        sVar16 = (short)*(undefined4 *)(param_1 + 0x94);
       }
       if (local_fc != (char *)0x0) {
-        sVar4 = sVar4 + (short)(this->field90 / 2);
+        sVar6 = sVar6 + (short)(*(int *)(param_1 + 0x90) / 2);
       }
-      aStack_134.field0_0x0 = (int)sVar4;
-      aStack_134.field1_0x4 = (int)sVar13;
-      aStack_134.field2_0x8 = aStack_134.field0_0x0 + this->field90;
-      aStack_134.field3_0xc = this->field94 + aStack_134.field1_0x4;
-      TacticalBattleView::thunk_ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-                ((TacticalBattleView *)this,iVar11,(int)&aStack_148,unaff_EDI);
+      aStack_134.field0_0x0 = (int)sVar6;
+      aStack_134.field1_0x4 = (int)sVar16;
+      aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)(param_1 + 0x90);
+      aStack_134.field3_0xc = *(int *)(param_1 + 0x94) + aStack_134.field1_0x4;
+      TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(iVar9);
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      iVar11 = TacticalBattleView::ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148)
-      ;
-      if ((char)iVar11 != '\0') {
-        iVar11 = *(int *)(this->field68 + 0x20);
-        if (iVar11 != 0) {
-          iVar11 = *(int *)(*(int *)(iVar11 + 0x10) + 8);
-          if (iVar11 < 1) {
-            iVar11 = -iVar11;
+      uVar10 = ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
+      if ((char)uVar10 != '\0') {
+        iVar9 = *(int *)(*(int *)(param_1 + 0x68) + 0x20);
+        if (iVar9 != 0) {
+          iVar9 = *(int *)(*(int *)(iVar9 + 0x10) + 8);
+          if (iVar9 < 1) {
+            iVar9 = -iVar9;
           }
-          OffsetRect((LPRECT)&aStack_134,0,(iVar11 - aStack_134.field1_0x4) - aStack_134.field3_0xc)
-          ;
+          OffsetRect((LPRECT)&aStack_134,0,(iVar9 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
         }
-        if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-          iVar11 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10)
-                           + 8);
-          if (iVar11 < 1) {
-            iVar11 = -iVar11;
+        if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+          iVar9 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
+          if (iVar9 < 1) {
+            iVar9 = -iVar9;
           }
-          OffsetRect((LPRECT)&aStack_148,0,(iVar11 - aStack_148.field1_0x4) - aStack_148.field3_0xc)
-          ;
+          OffsetRect((LPRECT)&aStack_148,0,(iVar9 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
         }
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(this->field68 + 4),
-                   (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+                  ((astruct_17 *)(*(int *)(param_1 + 0x68) + 4),
+                   (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                    (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
       }
       uStack_120 = &stack0xfffffea0;
       SetQuickDrawStrokeColor();
     }
-    sVar15 = (sVar15 + 1) * (short)this->field90;
-    aStack_134.field3_0xc = this->field8c;
-    aStack_134.field0_0x0 = (int)sVar15;
-    aStack_134.field2_0x8 = aStack_134.field0_0x0 + this->field90;
+    sVar4 = (sVar4 + 1) * *(short *)(param_1 + 0x90);
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x8c);
+    aStack_134.field0_0x0 = (int)sVar4;
+    aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)(param_1 + 0x90);
     aStack_134.field1_0x4 = 0;
     aStack_148.field0_0x0 = local_11c.left;
     aStack_148.field1_0x4 = local_11c.top;
@@ -2703,108 +2368,106 @@ LAB_005ab0bd:
     aStack_148.field3_0xc = local_11c.bottom;
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    iVar11 = *(int *)(this->field6c + 0x20);
-    if (iVar11 != 0) {
-      iVar11 = *(int *)(*(int *)(iVar11 + 0x10) + 8);
-      if (iVar11 < 1) {
-        iVar11 = -iVar11;
+    iVar9 = *(int *)(*(int *)(param_1 + 0x6c) + 0x20);
+    if (iVar9 != 0) {
+      iVar9 = *(int *)(*(int *)(iVar9 + 0x10) + 8);
+      if (iVar9 < 1) {
+        iVar9 = -iVar9;
       }
-      OffsetRect((LPRECT)&aStack_134,0,(iVar11 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
+      OffsetRect((LPRECT)&aStack_134,0,(iVar9 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
     }
-    if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-      iVar11 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8)
-      ;
-      if (iVar11 < 1) {
-        iVar11 = -iVar11;
+    if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+      iVar9 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
+      if (iVar9 < 1) {
+        iVar9 = -iVar9;
       }
-      OffsetRect((LPRECT)&aStack_148,0,(iVar11 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
+      OffsetRect((LPRECT)&aStack_148,0,(iVar9 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
     }
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(this->field6c + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+              ((astruct_17 *)(*(int *)(param_1 + 0x6c) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
 LAB_005ab40d:
     uStack_120 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
   }
-  else if ((((bVar2) || (local_135 != '\0')) || (sVar4 == 2)) && (sVar4 != 0)) {
-    sVar15 = 0xb;
+  else if ((((bVar2) || (local_135 != '\0')) || (sVar6 == 2)) && (sVar6 != 0)) {
+    sVar4 = 0xb;
     if (local_135 == '\0') {
-      sVar15 = 5;
+      sVar4 = 5;
     }
-    sVar15 = (sVar4 + sVar15) * (short)this->field88;
+    sVar4 = (sVar6 + sVar4) * (short)*(int *)(param_1 + 0x88);
     if ((!bVar2) && (local_135 == '\0')) {
-      sVar15 = (short)this->field88;
+      sVar4 = *(short *)(param_1 + 0x88);
     }
-    aStack_134.field0_0x0 = (int)sVar15;
-    aStack_134.field2_0x8 = aStack_134.field0_0x0 + this->field88;
-    aStack_134.field3_0xc = this->field8c;
+    aStack_134.field0_0x0 = (int)sVar4;
+    aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)(param_1 + 0x88);
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x8c);
     aStack_134.field1_0x4 = 0;
     aStack_148.field0_0x0 = local_11c.left;
     aStack_148.field1_0x4 = local_11c.top;
     aStack_148.field2_0x8 = local_11c.right;
     aStack_148.field3_0xc = local_11c.bottom;
-    iVar11 = *(int *)(this->field6c + 0x20);
-    if (iVar11 != 0) {
-      iVar11 = *(int *)(*(int *)(iVar11 + 0x10) + 8);
-      if (iVar11 < 1) {
-        iVar11 = -iVar11;
+    iVar9 = *(int *)(*(int *)(param_1 + 0x6c) + 0x20);
+    if (iVar9 != 0) {
+      iVar9 = *(int *)(*(int *)(iVar9 + 0x10) + 8);
+      if (iVar9 < 1) {
+        iVar9 = -iVar9;
       }
-      OffsetRect((LPRECT)&aStack_134,0,iVar11 - aStack_134.field3_0xc);
+      OffsetRect((LPRECT)&aStack_134,0,iVar9 - aStack_134.field3_0xc);
     }
-    if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-      iVar11 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8)
-      ;
-      if (iVar11 < 1) {
-        iVar11 = -iVar11;
+    if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+      iVar9 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
+      if (iVar9 < 1) {
+        iVar9 = -iVar9;
       }
-      OffsetRect((LPRECT)&aStack_148,0,(iVar11 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
+      OffsetRect((LPRECT)&aStack_148,0,(iVar9 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
     }
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(this->field6c + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+              ((astruct_17 *)(*(int *)(param_1 + 0x6c) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     goto LAB_005ab40d;
   }
   uStack_120 = (undefined1 *)0x0;
   if (((local_fc == (char *)0x0) && (iStack_a8 != -1)) &&
-     (iVar11 = *(int *)(*(int *)&this->field1_0x60 + 4),
-     *(int *)(iVar11 + 8 + iStack_a8 * 0x14) == 1)) {
-    if ((iStack_a4 != -1) && (*(int *)(iVar11 + 8 + iStack_a4 * 0x14) == 1)) {
+     (iVar9 = *(int *)(*(int *)(param_1 + 0x60) + 4), *(int *)(iVar9 + 8 + iStack_a8 * 0x14) == 1))
+  {
+    if ((iStack_a4 != -1) && (*(int *)(iVar9 + 8 + iStack_a4 * 0x14) == 1)) {
       uStack_120 = (undefined1 *)0x10000;
     }
-    if ((iStack_ac != -1) && (*(int *)(iVar11 + 8 + iStack_ac * 0x14) == 1)) {
+    if ((iStack_ac != -1) && (*(int *)(iVar9 + 8 + iStack_ac * 0x14) == 1)) {
       uStack_120 = (undefined1 *)CONCAT31(uStack_120._1_3_,1);
     }
   }
   if (((local_fc != (char *)0x0) && (iStack_b4 != -1)) &&
-     (iVar11 = *(int *)(*(int *)&this->field1_0x60 + 4),
-     *(int *)(iVar11 + 8 + iStack_b4 * 0x14) == 1)) {
-    if ((iStack_b8 != -1) && (*(int *)(iVar11 + 8 + iStack_b8 * 0x14) == 1)) {
+     (iVar9 = *(int *)(*(int *)(param_1 + 0x60) + 4), *(int *)(iVar9 + 8 + iStack_b4 * 0x14) == 1))
+  {
+    if ((iStack_b8 != -1) && (*(int *)(iVar9 + 8 + iStack_b8 * 0x14) == 1)) {
       uStack_120 = (undefined1 *)CONCAT13(1,(undefined3)uStack_120);
     }
-    if ((iStack_b0 != -1) && (*(int *)(iVar11 + 8 + iStack_b0 * 0x14) == 1)) {
+    if ((iStack_b0 != -1) && (*(int *)(iVar9 + 8 + iStack_b0 * 0x14) == 1)) {
       uStack_120._0_2_ = CONCAT11(1,(undefined1)uStack_120);
     }
   }
-  pcVar7 = &local_135;
-  local_fc = pcVar7;
-  iVar11 = 0x15;
+  pcVar11 = &local_135;
+  local_fc = pcVar11;
+  iVar9 = 0x15;
   do {
-    if (pcVar7[iVar11] != '\0') {
+    if (pcVar11[iVar9] != '\0') {
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithDefaultFallback(0x10);
-      aStack_134.field0_0x0 = iVar11 * this->field88;
-      aStack_134.field2_0x8 = (iVar11 + 1) * this->field88;
-      aStack_134.field3_0xc = this->field8c;
+      aStack_134.field0_0x0 = iVar9 * *(int *)(param_1 + 0x88);
+      aStack_134.field2_0x8 = (iVar9 + 1) * *(int *)(param_1 + 0x88);
+      aStack_134.field3_0xc = *(int *)(param_1 + 0x8c);
       aStack_148.field0_0x0 = local_11c.left;
       aStack_148.field1_0x4 = local_11c.top;
       aStack_148.field2_0x8 = local_11c.right;
       aStack_134.field1_0x4 = 0;
       aStack_148.field3_0xc = local_11c.bottom;
-      iVar14 = *(int *)(this->field6c + 0x20);
+      iVar14 = *(int *)(*(int *)(param_1 + 0x6c) + 0x20);
       if (iVar14 != 0) {
         iVar14 = *(int *)(*(int *)(iVar14 + 0x10) + 8);
         if (iVar14 < 1) {
@@ -2812,67 +2475,57 @@ LAB_005ab40d:
         }
         OffsetRect((LPRECT)&aStack_134,0,iVar14 - aStack_134.field3_0xc);
       }
-      if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-        iVar14 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) +
-                         8);
+      if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+        iVar14 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
         if (iVar14 < 1) {
           iVar14 = -iVar14;
         }
         OffsetRect((LPRECT)&aStack_148,0,(iVar14 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
       }
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(this->field6c + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+                ((astruct_17 *)(*(int *)(param_1 + 0x6c) + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                  (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
       puStack_104 = &stack0xfffffea0;
       SetQuickDrawStrokeColor();
-      pcVar7 = local_fc;
+      pcVar11 = local_fc;
     }
-    iVar14 = iVar11 + -0x14;
-    iVar11 = iVar11 + 1;
+    iVar14 = iVar9 + -0x14;
+    iVar9 = iVar9 + 1;
   } while (iVar14 < 4);
-  iVar11 = *(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 4 + (int)local_108);
-  if (iVar11 != 0) {
-    if (iVar11 == *(int *)(*(int *)&this->field1_0x60 + 0x1c)) {
+  iVar9 = *(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 4 + (int)local_108);
+  if (iVar9 != 0) {
+    if (iVar9 == *(int *)(*(int *)(param_1 + 0x60) + 0x1c)) {
       local_fc = (char *)0x13;
-      piVar8 = TCivAnimation2::thunk_FindLinkedListNodeByIdFieldAt18
-                         ((TCivAnimation2 *)g_pUiTransientObjectRegistry,0x2711);
+      TCivAnimation2::FindLinkedListNodeByIdFieldAt18();
       iStack_f8 = local_11c.left;
       iStack_f4 = local_11c.top;
       iStack_f0 = local_11c.right;
       iStack_ec = local_11c.bottom;
-      if (piVar8 == (int *)0x0) {
-        iVar14 = 0x13;
-      }
-      else {
-        iVar14 = CONCAT22((short)((uint)piVar8 >> 0x10),
-                          *(undefined2 *)((int)&local_fc + (short)piVar8[2] * 2));
-      }
-      SetQuickDrawFillColorFromPaletteIndex(iVar14);
-      DrawHexSelectionOutlineSegments((int)&iStack_f8);
+      SetQuickDrawFillColorFromPaletteIndex();
+      DrawHexSelectionOutlineSegments();
       iStack_f4 = iStack_f4 + 1;
       iStack_f8 = iStack_f8 + 1;
-      SetQuickDrawFillColorFromPaletteIndex(0);
-      DrawHexSelectionOutlineSegments((int)&iStack_f8);
+      SetQuickDrawFillColorFromPaletteIndex();
+      DrawHexSelectionOutlineSegments();
     }
-    if (*(int *)(iVar11 + 0x20) == 0) {
-      sVar4 = 0;
+    if (*(int *)(iVar9 + 0x20) == 0) {
+      sVar6 = 0;
     }
     else {
-      sVar4 = (short)this->field94;
+      sVar6 = (short)*(undefined4 *)(param_1 + 0x94);
     }
     aStack_134.field0_0x0 =
-         (int)(short)((short)*(undefined4 *)(iVar11 + 0xc) * (short)this->field90);
-    aStack_134.field1_0x4 = (int)sVar4;
-    aStack_134.field2_0x8 = aStack_134.field0_0x0 + this->field90;
-    aStack_134.field3_0xc = this->field94 + aStack_134.field1_0x4;
-    TacticalBattleView::thunk_ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-              ((TacticalBattleView *)this,iVar11,(int)&aStack_148,unaff_EDI);
+         (int)(short)((short)*(undefined4 *)(iVar9 + 0xc) * *(short *)(param_1 + 0x90));
+    aStack_134.field1_0x4 = (int)sVar6;
+    aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)(param_1 + 0x90);
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x94) + aStack_134.field1_0x4;
+    TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(iVar9);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    iVar14 = TacticalBattleView::ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
-    if ((char)iVar14 != '\0') {
-      iVar14 = *(int *)(this->field68 + 0x20);
+    uVar10 = ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
+    if ((char)uVar10 != '\0') {
+      iVar14 = *(int *)(*(int *)(param_1 + 0x68) + 0x20);
       if (iVar14 != 0) {
         iVar14 = *(int *)(*(int *)(iVar14 + 0x10) + 8);
         if (iVar14 < 1) {
@@ -2880,47 +2533,46 @@ LAB_005ab40d:
         }
         OffsetRect((LPRECT)&aStack_134,0,(iVar14 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
       }
-      if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-        iVar14 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) +
-                         8);
+      if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+        iVar14 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
         if (iVar14 < 1) {
           iVar14 = -iVar14;
         }
         OffsetRect((LPRECT)&aStack_148,0,(iVar14 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
       }
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(this->field68 + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+                ((astruct_17 *)(*(int *)(param_1 + 0x68) + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                  (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     }
     puStack_104 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
   }
-  sVar4 = (short)local_124;
-  iVar14 = *(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 8 + (int)local_108);
-  if ((iVar14 == 1) || (((sVar4 != 0 && (!bVar2)) && (sVar4 != 2)))) {
-    if (sVar4 == 0) {
+  sVar6 = (short)local_124;
+  iVar14 = *(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 8 + (int)local_108);
+  if ((iVar14 == 1) || (((sVar6 != 0 && (!bVar2)) && (sVar6 != 2)))) {
+    if (sVar6 == 0) {
       if (iVar14 == 1) {
-        sVar15 = (short)this->field90 * ((short)local_e8 + 2);
+        sVar4 = *(short *)(param_1 + 0x90) * ((short)local_e8 + 2);
       }
     }
     else if (local_135 == '\0') {
       if (local_109 == '\0') {
-        sVar15 = (sVar4 + -1) * (short)this->field88;
+        sVar4 = (sVar6 + -1) * *(short *)(param_1 + 0x88);
       }
       else if (bVar2) {
-        sVar15 = (sVar4 + 8) * (short)this->field88;
+        sVar4 = (sVar6 + 8) * *(short *)(param_1 + 0x88);
       }
       else {
-        sVar15 = (sVar4 + 2) * (short)this->field88;
+        sVar4 = (sVar6 + 2) * *(short *)(param_1 + 0x88);
       }
     }
     else {
-      sVar15 = (sVar4 + 0xe) * (short)this->field88;
+      sVar4 = (sVar6 + 0xe) * *(short *)(param_1 + 0x88);
     }
-    aStack_134.field3_0xc = this->field8c;
-    aStack_134.field0_0x0 = (int)sVar15;
-    aStack_134.field2_0x8 = this->field88 + aStack_134.field0_0x0;
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x8c);
+    aStack_134.field0_0x0 = (int)sVar4;
+    aStack_134.field2_0x8 = *(int *)(param_1 + 0x88) + aStack_134.field0_0x0;
     aStack_148.field2_0x8 = local_11c.right;
     aStack_148.field0_0x0 = local_11c.left;
     aStack_134.field1_0x4 = 0;
@@ -2930,7 +2582,7 @@ LAB_005ab40d:
       aStack_134.field1_0x4 = -local_11c.top;
       aStack_148.field1_0x4 = 0;
     }
-    iVar14 = *(int *)(this->field6c + 0x20);
+    iVar14 = *(int *)(*(int *)(param_1 + 0x6c) + 0x20);
     if (iVar14 != 0) {
       iVar14 = *(int *)(*(int *)(iVar14 + 0x10) + 8);
       if (iVar14 < 1) {
@@ -2938,9 +2590,8 @@ LAB_005ab40d:
       }
       OffsetRect((LPRECT)&aStack_134,0,(iVar14 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
     }
-    if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-      iVar14 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8)
-      ;
+    if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+      iVar14 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
       if (iVar14 < 1) {
         iVar14 = -iVar14;
       }
@@ -2949,40 +2600,40 @@ LAB_005ab40d:
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(this->field6c + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+              ((astruct_17 *)(*(int *)(param_1 + 0x6c) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     puStack_104 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
-    sVar4 = (short)local_124;
+    sVar6 = (short)local_124;
   }
-  if (iVar11 == 0) {
+  if (iVar9 == 0) {
 LAB_005abc46:
-    if (sVar4 == 0) goto LAB_005abc78;
+    if (sVar6 == 0) goto LAB_005abc78;
   }
   else {
-    iStack_f0 = this->field88 / 2 + local_11c.left;
+    iStack_f0 = *(int *)(param_1 + 0x88) / 2 + local_11c.left;
     iStack_f8 = iStack_f0 + -9;
     iStack_f0 = iStack_f0 + 0xb;
     iStack_f4 = local_11c.bottom + -4;
     iStack_ec = local_11c.bottom + -1;
     puStack_104 = &stack0xfffffea0;
-    SetQuickDrawFillColor(0);
-    thunk_FillRectWithQuickDrawBrushAndContextOffset(&iStack_f8);
-    (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
+    SetQuickDrawFillColor();
+    thunk_FillRectWithQuickDrawBrushAndContextOffset();
+    (**(code **)(*g_pUiRuntimeContext + 0x34))();
     iStack_f4 = iStack_f4 + -1;
     local_fc = local_fc + -1;
     iStack_f8 = iStack_f8 + -1;
     iStack_f0 = iStack_f0 + -1;
-    thunk_FillRectWithQuickDrawBrushAndContextOffset((int *)&local_fc);
-    (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))(6);
-    iStack_f8 = (*(int *)(iVar11 + 4) + 0x18) / 0x19 + iStack_100;
+    thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_fc);
+    (**(code **)(*g_pUiRuntimeContext + 0x34))(6);
+    iStack_f8 = (*(int *)(iVar9 + 4) + 0x18) / 0x19 + iStack_100;
     thunk_FillRectWithQuickDrawBrushAndContextOffset(&iStack_100);
-    (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))(0x34);
-    local_fc = puStack_104 + (*(int *)(iVar11 + 0x34) + 0x18) / 0x19;
-    thunk_FillRectWithQuickDrawBrushAndContextOffset((int *)&puStack_104);
-    sVar15 = (**(code **)(*(int *)g_pGlobalMapState + 0x110))(*(undefined4 *)(iVar11 + 0x14));
-    aStack_134.field0_0x0 = (int)sVar15;
+    (**(code **)(*g_pUiRuntimeContext + 0x34))(0x34);
+    local_fc = puStack_104 + (*(int *)(iVar9 + 0x34) + 0x18) / 0x19;
+    thunk_FillRectWithQuickDrawBrushAndContextOffset(&puStack_104);
+    sVar4 = (**(code **)(*g_pGlobalMapState + 0x110))(*(undefined4 *)(iVar9 + 0x14));
+    aStack_134.field0_0x0 = (int)sVar4;
     aStack_134.field2_0x8 = aStack_134.field0_0x0 + 9;
     aStack_134.field1_0x4 = 0;
     aStack_148.field0_0x0 = iStack_f8 + -0xc;
@@ -2994,147 +2645,136 @@ LAB_005abc46:
     local_e0.left = aStack_148.field0_0x0;
     local_e0.top = aStack_148.field1_0x4;
     local_e0.right = aStack_148.field2_0x8;
-    if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-      iVar14 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8)
-      ;
+    if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+      iVar14 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
       if (iVar14 < 1) {
         iVar14 = -iVar14;
       }
       OffsetRect(&local_e0,0,(iVar14 - aStack_148.field1_0x4) - iStack_ec);
     }
     puStack_104 = &stack0xfffffea0;
-    SetQuickDrawFillColor(0);
+    SetQuickDrawFillColor();
     puStack_104 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)((int)g_pStrategicMapViewSystem + 0x6b8) + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
-               &local_e0,0,(astruct_19 *)0x0);
-    if (*(char *)(iVar11 + 0x18) == '\0') {
-      iVar14 = 0;
-    }
-    else {
-      iVar14 = 0xffffff;
-    }
+              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6b8) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,&local_e0,0,
+               (astruct_19 *)0x0);
     puStack_104 = &stack0xfffffea0;
-    SetQuickDrawFillColor(iVar14);
+    SetQuickDrawFillColor();
     aStack_148.field1_0x4 = aStack_148.field1_0x4 + -1;
     aStack_148.field0_0x0 = aStack_148.field0_0x0 + -1;
     aStack_148.field3_0xc = aStack_148.field3_0xc + 1;
     aStack_148.field2_0x8 = aStack_148.field2_0x8 + 1;
     DrawFrameRectOrUpdateClipRegion();
-    if (*(char *)(iVar11 + 0x18) != '\0') {
+    if (*(char *)(iVar9 + 0x18) != '\0') {
       puStack_104 = &stack0xfffffea0;
-      SetQuickDrawFillColor(0);
+      SetQuickDrawFillColor();
       aStack_148.field1_0x4 = aStack_148.field1_0x4 + -1;
       aStack_148.field0_0x0 = aStack_148.field0_0x0 + -1;
       aStack_148.field3_0xc = aStack_148.field3_0xc + 1;
       aStack_148.field2_0x8 = aStack_148.field2_0x8 + 1;
       DrawFrameRectOrUpdateClipRegion();
     }
-    if (g_bTacticalBattleIntroDispatchGate != 0) {
+    if (DAT_006a4758 != '\0') {
       puStack_104 = &stack0xfffffea0;
-      SetQuickDrawFillColor(0);
+      SetQuickDrawFillColor();
       thunk_SetQuickDrawTextOriginWithContextOffset
-                ((short)local_11c.left + (short)this->field88 + -8,(short)local_11c.bottom + -2);
+                (CONCAT22(extraout_var,(short)local_11c.left + *(short *)(param_1 + 0x88)) + -8);
       RenderTacticalBattleSelectionAndUnitOverlayPass_Impl();
     }
-    sVar4 = (short)local_124;
-    if (iVar11 == 0) goto LAB_005abc46;
+    sVar6 = (short)local_124;
+    if (iVar9 == 0) goto LAB_005abc46;
   }
-  piVar8 = TCivAnimation2::thunk_FindLinkedListNodeByIdFieldAt18
-                     ((TCivAnimation2 *)g_pUiTransientObjectRegistry,param_1);
-  if (piVar8 != (int *)0x0) {
+  piVar12 = (int *)TCivAnimation2::FindLinkedListNodeByIdFieldAt18();
+  if (piVar12 != (int *)0x0) {
     puStack_104 = (undefined1 *)0x0;
     iStack_100 = 0;
-    (**(code **)(*piVar8 + 0x2c))();
+    (**(code **)(*piVar12 + 0x2c))();
   }
 LAB_005abc78:
-  pcVar10 = OffsetRect_exref;
+  pcVar13 = OffsetRect_exref;
   if ((iStack_ac != -1) &&
-     (iVar11 = *(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 4 + iStack_ac * 0x14),
-     iVar11 != 0)) {
-    if (*(int *)(iVar11 + 0x20) == 0) {
-      sVar15 = 0;
+     (iVar9 = *(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 4 + iStack_ac * 0x14), iVar9 != 0))
+  {
+    if (*(int *)(iVar9 + 0x20) == 0) {
+      sVar4 = 0;
     }
     else {
-      sVar15 = (short)this->field94;
+      sVar4 = (short)*(undefined4 *)(param_1 + 0x94);
     }
     aStack_134.field0_0x0 =
-         (int)(short)((short)*(undefined4 *)(iVar11 + 0xc) * (short)this->field90);
-    aStack_134.field1_0x4 = (int)sVar15;
-    aStack_134.field2_0x8 = aStack_134.field0_0x0 + this->field90;
-    aStack_134.field3_0xc = this->field94 + aStack_134.field1_0x4;
-    TacticalBattleView::thunk_ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-              ((TacticalBattleView *)this,iVar11,(int)&aStack_148,unaff_EDI);
+         (int)(short)((short)*(undefined4 *)(iVar9 + 0xc) * *(short *)(param_1 + 0x90));
+    aStack_134.field1_0x4 = (int)sVar4;
+    aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)(param_1 + 0x90);
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x94) + aStack_134.field1_0x4;
+    TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(iVar9);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    iVar11 = TacticalBattleView::ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
-    pcVar10 = OffsetRect_exref;
-    if ((char)iVar11 != '\0') {
-      iVar11 = *(int *)(this->field68 + 0x20);
-      if (iVar11 != 0) {
-        iVar11 = *(int *)(*(int *)(iVar11 + 0x10) + 8);
-        if (iVar11 < 1) {
-          iVar11 = -iVar11;
+    uVar10 = ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
+    pcVar13 = OffsetRect_exref;
+    if ((char)uVar10 != '\0') {
+      iVar9 = *(int *)(*(int *)(param_1 + 0x68) + 0x20);
+      if (iVar9 != 0) {
+        iVar9 = *(int *)(*(int *)(iVar9 + 0x10) + 8);
+        if (iVar9 < 1) {
+          iVar9 = -iVar9;
         }
-        OffsetRect((LPRECT)&aStack_134,0,(iVar11 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
+        OffsetRect((LPRECT)&aStack_134,0,(iVar9 - aStack_134.field1_0x4) - aStack_134.field3_0xc);
       }
-      if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-        iVar11 = *(int *)(*(int *)(*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) +
-                         8);
-        if (iVar11 < 1) {
-          iVar11 = -iVar11;
+      if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+        iVar9 = *(int *)(*(int *)(*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) + 0x10) + 8);
+        if (iVar9 < 1) {
+          iVar9 = -iVar9;
         }
-        OffsetRect((LPRECT)&aStack_148,0,(iVar11 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
+        OffsetRect((LPRECT)&aStack_148,0,(iVar9 - aStack_148.field1_0x4) - aStack_148.field3_0xc);
       }
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(this->field68 + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+                ((astruct_17 *)(*(int *)(param_1 + 0x68) + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                  (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     }
     puStack_104 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
   }
   if ((iStack_b0 != -1) &&
-     (iVar11 = *(int *)(*(int *)(*(int *)&this->field1_0x60 + 4) + 4 + iStack_b0 * 0x14),
-     iVar11 != 0)) {
-    if (*(int *)(iVar11 + 0x20) == 0) {
-      sVar15 = 0;
+     (iVar9 = *(int *)(*(int *)(*(int *)(param_1 + 0x60) + 4) + 4 + iStack_b0 * 0x14), iVar9 != 0))
+  {
+    if (*(int *)(iVar9 + 0x20) == 0) {
+      sVar4 = 0;
     }
     else {
-      sVar15 = (short)this->field94;
+      sVar4 = (short)*(undefined4 *)(param_1 + 0x94);
     }
     aStack_134.field0_0x0 =
-         (int)(short)((short)*(undefined4 *)(iVar11 + 0xc) * (short)this->field90);
-    aStack_134.field1_0x4 = (int)sVar15;
-    aStack_134.field2_0x8 = aStack_134.field0_0x0 + this->field90;
-    aStack_134.field3_0xc = this->field94 + aStack_134.field1_0x4;
-    TacticalBattleView::thunk_ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-              ((TacticalBattleView *)this,iVar11,(int)&aStack_148,unaff_EDI);
+         (int)(short)((short)*(undefined4 *)(iVar9 + 0xc) * *(short *)(param_1 + 0x90));
+    aStack_134.field1_0x4 = (int)sVar4;
+    aStack_134.field2_0x8 = aStack_134.field0_0x0 + *(int *)(param_1 + 0x90);
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x94) + aStack_134.field1_0x4;
+    TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(iVar9);
     ResetQuickDrawStrokeState();
     UpdatePaletteIndexWithDefaultFallback(0x10);
-    iVar11 = TacticalBattleView::ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
-    if ((char)iVar11 != '\0') {
-      if (*(int *)(this->field68 + 0x20) != 0) {
-        (*pcVar10)(&aStack_134,0);
+    uVar10 = ClipRect_AdjustOffset_Validate(&local_c8,&aStack_134,&aStack_148);
+    if ((char)uVar10 != '\0') {
+      if (*(int *)(*(int *)(param_1 + 0x68) + 0x20) != 0) {
+        (*pcVar13)(&aStack_134,0);
       }
-      if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-        (*pcVar10)(&aStack_148,0);
+      if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+        (*pcVar13)(&aStack_148,0);
       }
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(this->field68 + 4),
-                 (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+                ((astruct_17 *)(*(int *)(param_1 + 0x68) + 4),
+                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                  (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     }
     puStack_104 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
   }
-  sVar15 = (short)local_124;
-  if (((sVar15 != 0) && (bVar2)) && (sVar15 != 2)) {
-    aStack_134.field3_0xc = this->field8c;
-    aStack_134.field0_0x0 = (int)(short)((sVar15 + 8) * (short)this->field88);
-    aStack_134.field2_0x8 = this->field88 + aStack_134.field0_0x0;
+  sVar4 = (short)local_124;
+  if (((sVar4 != 0) && (bVar2)) && (sVar4 != 2)) {
+    aStack_134.field3_0xc = *(int *)(param_1 + 0x8c);
+    aStack_134.field0_0x0 = (int)(short)((sVar4 + 8) * *(short *)(param_1 + 0x88));
+    aStack_134.field2_0x8 = *(int *)(param_1 + 0x88) + aStack_134.field0_0x0;
     aStack_148.field0_0x0 = local_11c.left;
     aStack_148.field2_0x8 = local_11c.right;
     aStack_148.field3_0xc = local_11c.bottom + 1;
@@ -3144,79 +2784,66 @@ LAB_005abc78:
       aStack_134.field1_0x4 = -local_11c.top;
       aStack_148.field1_0x4 = 0;
     }
-    if (*(int *)(this->field6c + 0x20) != 0) {
-      (*pcVar10)(&aStack_134,0);
+    if (*(int *)(*(int *)(param_1 + 0x6c) + 0x20) != 0) {
+      (*pcVar13)(&aStack_134,0);
     }
-    if (*(int *)((int)g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
-      (*pcVar10)(&aStack_148,0);
+    if (*(int *)(g_pActiveQuickDrawSurfaceContext + 0x20) != 0) {
+      (*pcVar13)(&aStack_148,0);
     }
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(this->field6c + 4),
-               (astruct_18 *)((int)g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
+              ((astruct_17 *)(*(int *)(param_1 + 0x6c) + 4),
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)&aStack_134,
                (RECT *)&aStack_148,0x24,(astruct_19 *)0x0);
     puStack_104 = &stack0xfffffea0;
     SetQuickDrawStrokeColor();
   }
-  if (0 < *(short *)(*(int *)(*(int *)&this->field1_0x60 + 0x24) + param_1 * 2)) {
-    iVar11 = this->field8c / 2 + local_11c.top;
+  if (0 < *(short *)(*(int *)(*(int *)(param_1 + 0x60) + 0x24) + param_2 * 2)) {
     puStack_104 = &stack0xfffffea0;
-    iVar14 = this->field88 / 2 + local_11c.left;
-    SetQuickDrawFillColor(0);
-    thunk_SetQuickDrawTextOriginWithContextOffset((short)iVar14 + -2,(short)iVar11);
-    thunk_DrawCenteredGuideLineOnMapDc(iVar14 + 2,iVar11);
-    local_e8 = iVar14 + -1;
-    thunk_SetQuickDrawTextOriginWithContextOffset((short)local_e8,(short)(iVar11 + 1));
-    iVar14 = iVar14 + 1;
-    thunk_DrawCenteredGuideLineOnMapDc(iVar14,iVar11 + 1);
-    if ((((int)local_e4 < 2) && (*(int *)(*(int *)&this->field1_0x60 + 0xc) == 0)) ||
-       ((iVar9 = *(int *)&this->field1_0x60, (int)local_e4 / 2 == *(int *)(iVar9 + 0x34) + -1 &&
-        (*(int *)(iVar9 + 0xc) == 1)))) {
-      SetQuickDrawFillColorFromPaletteIndex(0x13);
+    iVar9 = *(int *)(param_1 + 0x88) / 2 + local_11c.left;
+    SetQuickDrawFillColor();
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar9 + -2);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar9 + 2);
+    local_e8 = iVar9 + -1;
+    thunk_SetQuickDrawTextOriginWithContextOffset(local_e8);
+    iVar9 = iVar9 + 1;
+    thunk_DrawCenteredGuideLineOnMapDc(iVar9);
+    if ((((int)local_e4 < 2) && (*(int *)(*(int *)(param_1 + 0x60) + 0xc) == 0)) ||
+       ((iVar14 = *(int *)(param_1 + 0x60), (int)local_e4 / 2 == *(int *)(iVar14 + 0x34) + -1 &&
+        (*(int *)(iVar14 + 0xc) == 1)))) {
+      SetQuickDrawFillColorFromPaletteIndex();
     }
-    else if (*(char *)(*(int *)(iVar9 + 0x28) + param_1) == '\0') {
-      (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
+    else if (*(char *)(*(int *)(iVar14 + 0x28) + param_2) == '\0') {
+      (**(code **)(*g_pUiRuntimeContext + 0x34))();
     }
     else {
-      (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
+      (**(code **)(*g_pUiRuntimeContext + 0x34))();
     }
-    sVar15 = (short)local_e8;
-    thunk_SetQuickDrawTextOriginWithContextOffset(sVar15,(short)(iVar11 + -1));
-    thunk_DrawCenteredGuideLineOnMapDc(iVar14,iVar11 + -1);
-    thunk_SetQuickDrawTextOriginWithContextOffset(sVar15,(short)iVar11);
-    thunk_DrawCenteredGuideLineOnMapDc(iVar14,iVar11);
+    iVar14 = local_e8;
+    thunk_SetQuickDrawTextOriginWithContextOffset(local_e8);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar9);
+    thunk_SetQuickDrawTextOriginWithContextOffset(iVar14);
+    thunk_DrawCenteredGuideLineOnMapDc(iVar9);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061274C
 // GHIDRA_NAME TCivDescription::AttachHdcToDcWrapper
-// GHIDRA_PROTO bool __thiscall AttachHdcToDcWrapper(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Attaches an HDC to wrapper state, tracks ownership chain, and updates wrapper virtual state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined AttachHdcToDcWrapper()
 
-/* Attaches an HDC to wrapper state, tracks ownership chain, and updates wrapper virtual state. */
-
-bool __thiscall TCivDescription::AttachHdcToDcWrapper(TCivDescription *this)
+bool __thiscall TCivDescription::AttachHdcToDcWrapper(int *param_1,int param_2)
 
 {
-  undefined4 uVar1;
-  TNetMgr *this_00;
-  int *piVar2;
-  undefined1 uStack00000004;
-  undefined3 uStack00000005;
+  undefined4 *puVar1;
   
-  if (_uStack00000004 != 0) {
-    this_00 = afxMapHDC();
-    (this->base).field1_0x4 = uStack00000004;
-    (this->base).field2_0x5 = uStack00000005;
-    piVar2 = TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00);
-    *piVar2 = (int)this;
-    uVar1._0_1_ = (this->base).field1_0x4;
-    uVar1._1_3_ = (this->base).field2_0x5;
-    (**(code **)((int)(this->base).pVtable + 0x14))(uVar1);
+  if (param_2 != 0) {
+    afxMapHDC(1);
+    param_1[1] = param_2;
+    puVar1 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(param_2);
+    *puVar1 = param_1;
+    (**(code **)(*param_1 + 0x14))(param_1[1]);
   }
-  return _uStack00000004 != 0;
+  return param_2 != 0;
 }
 

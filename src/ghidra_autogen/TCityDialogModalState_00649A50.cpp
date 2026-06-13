@@ -3,228 +3,123 @@
 // Program: Imperialism.exe
 // Bucket: TCityDialogModalState_00649A50.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004017AD
-// GHIDRA_NAME TCityDialogModalState_00649A50::thunk_CopyCityDialogStateFromSourceAndCloneChildLinks
-// GHIDRA_PROTO void __thiscall thunk_CopyCityDialogStateFromSourceAndCloneChildLinks(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CopyCityDialogStateFromSourceAndCloneChildLinks
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CopyCityDialogStateFromSourceAndCloneChildLinks */
-
-void __thiscall
-TCityDialogModalState_00649A50::thunk_CopyCityDialogStateFromSourceAndCloneChildLinks
-          (TCityDialogModalState_00649A50 *this,int arg1)
-
-{
-  undefined4 *puVar1;
-  int iVar2;
-  int *piVar3;
-  undefined4 *puVar4;
-  int extraout_EAX;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  puStack_8 = &LAB_0062ec93;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->pVtable = &g_vtblRefCountedObjectBase;
-  this->field1_0x4 = *(undefined4 *)(arg1 + 4);
-  this->field2_0x8 = *(undefined4 *)(arg1 + 8);
-  this->field3_0xc = *(undefined4 *)(arg1 + 0xc);
-  this->field16_0x1c = *(undefined4 *)(arg1 + 0x1c);
-  this->pVtable = &PTR_thunk_GetTEventHandlerClassNamePointer_006497a0;
-  this->field17_0x20 = (void *)0x0;
-  this->field18_0x24 = *(undefined4 *)(arg1 + 0x24);
-  this->field19_0x28 = *(undefined4 *)(arg1 + 0x28);
-  this->field20_0x2c = *(undefined4 *)(arg1 + 0x2c);
-  this->field21_0x30 = *(undefined4 *)(arg1 + 0x30);
-  this->field22_0x34 = *(undefined4 *)(arg1 + 0x34);
-  this->field23_0x38 = *(undefined4 *)(arg1 + 0x38);
-  this->field24_0x3c = *(undefined4 *)(arg1 + 0x3c);
-  this->field29_0x44 = (undefined4 *)0x0;
-  this->field30_0x48 = 0;
-  this->field31_0x4c = *(undefined1 *)(arg1 + 0x4c);
-  this->field32_0x4d = *(undefined1 *)(arg1 + 0x4d);
-  this->field35_0x50 = *(undefined4 *)(arg1 + 0x50);
-  uStack_4 = 0;
-  this->field36_0x54 = *(undefined2 *)(arg1 + 0x54);
-  InitializeSharedStringRefFromEmpty();
-  this->field43_0x5c = 0;
-  this->pVtable = &g_vtblTView;
-  uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  if (*(int *)(arg1 + 0x44) != 0) {
-    puVar4 = *(undefined4 **)(*(int *)(arg1 + 0x44) + 4);
-    while (puVar4 != (undefined4 *)0x0) {
-      puVar1 = (undefined4 *)*puVar4;
-      piVar3 = (int *)(**(code **)(*(int *)puVar4[2] + 0x20))();
-      piVar3[8] = (int)this;
-      piVar3[3] = (int)this;
-      if (this->field29_0x44 == (undefined4 *)0x0) {
-        puVar4 = AllocateWithFallbackHandler();
-        if (puVar4 == (undefined4 *)0x0) {
-          puVar4 = (undefined4 *)0x0;
-        }
-        else {
-          puVar4[3] = 0;
-          puVar4[4] = 0;
-          puVar4[2] = 0;
-          puVar4[1] = 0;
-          puVar4[5] = 0;
-          puVar4[6] = 10;
-          *puVar4 = &PTR_GetCObjectRuntimeClass_CityDialogModalState_00649A50;
-        }
-        this->field29_0x44 = puVar4;
-      }
-      puVar4 = this->field29_0x44;
-      WrapperFor_AllocateAndLinkBlockHead_At00492a40();
-      *(int **)(extraout_EAX + 8) = piVar3;
-      if (puVar4[1] == 0) {
-        puVar4[2] = extraout_EAX;
-      }
-      else {
-        *(int *)(puVar4[1] + 4) = extraout_EAX;
-      }
-      iVar2 = *piVar3;
-      puVar4[1] = extraout_EAX;
-      (**(code **)(iVar2 + 0x164))();
-      puVar4 = puVar1;
-    }
-  }
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ABE0
 // GHIDRA_NAME TCityDialogModalState_00649A50::RunNationInfoModalAndReturnNonCancel_Impl
-// GHIDRA_PROTO void __thiscall RunNationInfoModalAndReturnNonCancel_Impl(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkBridge] promoted from thunk_FUN_0048abe0 with single named caller RunNationInfoModalAndReturnNonCancel@0x005d5d30
-// GHIDRA_COMMENT_END
-
-/* [ThunkBridge] promoted from thunk_FUN_0048abe0 with single named caller
-   RunNationInfoModalAndReturnNonCancel@0x005d5d30 */
+// GHIDRA_PROTO undefined RunNationInfoModalAndReturnNonCancel_Impl()
 
 void __thiscall
 TCityDialogModalState_00649A50::RunNationInfoModalAndReturnNonCancel_Impl
-          (TCityDialogModalState_00649A50 *this,int arg1,int arg2)
+          (int param_1,int *param_2,int param_3)
 
 {
-  undefined4 uVar1;
-  undefined4 *puVar2;
-  void *pvVar3;
-  undefined4 *puVar4;
+  int iVar1;
+  undefined4 uVar2;
+  undefined4 *puVar3;
+  int iVar4;
   int iVar5;
   
-  *(TCityDialogModalState_00649A50 **)(arg1 + 0x20) = this;
-  *(TCityDialogModalState_00649A50 **)(arg1 + 0xc) = this;
-  if (this->field29_0x44 == (undefined4 *)0x0) {
-    puVar2 = AllocateWithFallbackHandler();
-    if (puVar2 == (undefined4 *)0x0) {
-      puVar2 = (undefined4 *)0x0;
+  param_2[8] = param_1;
+  param_2[3] = param_1;
+  if (*(int *)(param_1 + 0x44) == 0) {
+    puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+    if (puVar3 == (undefined4 *)0x0) {
+      puVar3 = (undefined4 *)0x0;
     }
     else {
-      puVar2[3] = 0;
-      puVar2[4] = 0;
-      puVar2[2] = 0;
-      puVar2[1] = 0;
-      puVar2[5] = 0;
-      puVar2[6] = 10;
-      *puVar2 = &PTR_GetCObjectRuntimeClass_CityDialogModalState_00649A50;
+      puVar3[3] = 0;
+      puVar3[4] = 0;
+      puVar3[2] = 0;
+      puVar3[1] = 0;
+      puVar3[5] = 0;
+      puVar3[6] = 10;
+      *puVar3 = &PTR_GetCObjectRuntimeClass_00649a50;
     }
-    this->field29_0x44 = puVar2;
+    *(undefined4 **)(param_1 + 0x44) = puVar3;
   }
-  puVar2 = this->field29_0x44;
-  if (arg2 == 0) {
-    uVar1 = puVar2[1];
-    if (puVar2[4] == 0) {
-      pvVar3 = AllocateAndLinkBlockHead();
-      iVar5 = puVar2[6];
-      puVar4 = (undefined4 *)((int)pvVar3 + iVar5 * 0xc + -8);
+  iVar1 = *(int *)(param_1 + 0x44);
+  if (param_3 == 0) {
+    uVar2 = *(undefined4 *)(iVar1 + 4);
+    if (*(int *)(iVar1 + 0x10) == 0) {
+      iVar4 = AllocateAndLinkBlockHead(iVar1 + 0x14,*(undefined4 *)(iVar1 + 0x18),0xc);
+      iVar5 = *(int *)(iVar1 + 0x18);
+      puVar3 = (undefined4 *)(iVar4 + -8 + iVar5 * 0xc);
       if (-1 < iVar5 + -1) {
         do {
-          *puVar4 = puVar2[4];
-          puVar2[4] = puVar4;
-          puVar4 = puVar4 + -3;
+          *puVar3 = *(undefined4 *)(iVar1 + 0x10);
+          *(undefined4 **)(iVar1 + 0x10) = puVar3;
+          puVar3 = puVar3 + -3;
           iVar5 = iVar5 + -1;
         } while (iVar5 != 0);
       }
     }
-    puVar4 = (undefined4 *)puVar2[4];
-    puVar2[4] = *puVar4;
-    puVar4[1] = 0;
-    *puVar4 = uVar1;
-    puVar2[3] = puVar2[3] + 1;
-    puVar4[2] = 0;
-    puVar4[2] = arg1;
-    if (puVar2[1] == 0) {
-      puVar2[2] = puVar4;
+    puVar3 = *(undefined4 **)(iVar1 + 0x10);
+    *(undefined4 *)(iVar1 + 0x10) = *puVar3;
+    puVar3[1] = 0;
+    *puVar3 = uVar2;
+    *(int *)(iVar1 + 0xc) = *(int *)(iVar1 + 0xc) + 1;
+    puVar3[2] = 0;
+    puVar3[2] = param_2;
+    if (*(int *)(iVar1 + 4) == 0) {
+      *(undefined4 **)(iVar1 + 8) = puVar3;
     }
     else {
-      *(undefined4 **)(puVar2[1] + 4) = puVar4;
+      *(undefined4 **)(*(int *)(iVar1 + 4) + 4) = puVar3;
     }
-    iVar5 = *(int *)arg1;
-    puVar2[1] = puVar4;
+    iVar5 = *param_2;
+    *(undefined4 **)(iVar1 + 4) = puVar3;
     (**(code **)(iVar5 + 0x164))();
     return;
   }
-  uVar1 = puVar2[2];
-  if (puVar2[4] == 0) {
-    pvVar3 = AllocateAndLinkBlockHead();
-    iVar5 = puVar2[6];
-    puVar4 = (undefined4 *)((int)pvVar3 + iVar5 * 0xc + -8);
+  uVar2 = *(undefined4 *)(iVar1 + 8);
+  if (*(int *)(iVar1 + 0x10) == 0) {
+    iVar4 = AllocateAndLinkBlockHead(iVar1 + 0x14,*(undefined4 *)(iVar1 + 0x18),0xc);
+    iVar5 = *(int *)(iVar1 + 0x18);
+    puVar3 = (undefined4 *)(iVar4 + -8 + iVar5 * 0xc);
     if (-1 < iVar5 + -1) {
       do {
-        *puVar4 = puVar2[4];
-        puVar2[4] = puVar4;
-        puVar4 = puVar4 + -3;
+        *puVar3 = *(undefined4 *)(iVar1 + 0x10);
+        *(undefined4 **)(iVar1 + 0x10) = puVar3;
+        puVar3 = puVar3 + -3;
         iVar5 = iVar5 + -1;
       } while (iVar5 != 0);
     }
   }
-  puVar4 = (undefined4 *)puVar2[4];
-  puVar2[4] = *puVar4;
-  puVar4[1] = uVar1;
-  *puVar4 = 0;
-  puVar2[3] = puVar2[3] + 1;
-  puVar4[2] = 0;
-  puVar4[2] = arg1;
-  if ((undefined4 *)puVar2[2] == (undefined4 *)0x0) {
-    iVar5 = *(int *)arg1;
-    puVar2[1] = puVar4;
-    puVar2[2] = puVar4;
+  puVar3 = *(undefined4 **)(iVar1 + 0x10);
+  *(undefined4 *)(iVar1 + 0x10) = *puVar3;
+  puVar3[1] = uVar2;
+  *puVar3 = 0;
+  *(int *)(iVar1 + 0xc) = *(int *)(iVar1 + 0xc) + 1;
+  puVar3[2] = 0;
+  puVar3[2] = param_2;
+  if (*(undefined4 **)(iVar1 + 8) == (undefined4 *)0x0) {
+    iVar5 = *param_2;
+    *(undefined4 **)(iVar1 + 4) = puVar3;
+    *(undefined4 **)(iVar1 + 8) = puVar3;
     (**(code **)(iVar5 + 0x164))();
     return;
   }
-  iVar5 = *(int *)arg1;
-  *(undefined4 *)puVar2[2] = puVar4;
-  puVar2[2] = puVar4;
+  iVar5 = *param_2;
+  **(undefined4 **)(iVar1 + 8) = puVar3;
+  *(undefined4 **)(iVar1 + 8) = puVar3;
   (**(code **)(iVar5 + 0x164))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048BD30
 // GHIDRA_NAME TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
-// GHIDRA_PROTO void __thiscall CopyCityDialogStateFromSourceAndCloneChildLinks(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Copies base CityDialog controller state from source object into destination and deep-clones child link/list nodes, rebinding child-parent pointers to the destination instance.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CopyCityDialogStateFromSourceAndCloneChildLinks()
 
-/* Copies base CityDialog controller state from source object into destination and deep-clones child
-   link/list nodes, rebinding child-parent pointers to the destination instance. */
-
-void __thiscall
+undefined4 * __thiscall
 TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
-          (TCityDialogModalState_00649A50 *this,int arg1)
+          (undefined4 *param_1,int param_2)
 
 {
   undefined4 *puVar1;
   int iVar2;
-  int *piVar3;
-  undefined4 *puVar4;
-  int extraout_EAX;
+  int iVar3;
+  int *piVar4;
+  undefined4 *puVar5;
+  int iVar6;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -233,70 +128,70 @@ TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
   puStack_8 = &LAB_0062ec93;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->pVtable = &g_vtblRefCountedObjectBase;
-  this->field1_0x4 = *(undefined4 *)(arg1 + 4);
-  this->field2_0x8 = *(undefined4 *)(arg1 + 8);
-  this->field3_0xc = *(undefined4 *)(arg1 + 0xc);
-  this->field16_0x1c = *(undefined4 *)(arg1 + 0x1c);
-  this->pVtable = &PTR_thunk_GetTEventHandlerClassNamePointer_006497a0;
-  this->field17_0x20 = (void *)0x0;
-  this->field18_0x24 = *(undefined4 *)(arg1 + 0x24);
-  this->field19_0x28 = *(undefined4 *)(arg1 + 0x28);
-  this->field20_0x2c = *(undefined4 *)(arg1 + 0x2c);
-  this->field21_0x30 = *(undefined4 *)(arg1 + 0x30);
-  this->field22_0x34 = *(undefined4 *)(arg1 + 0x34);
-  this->field23_0x38 = *(undefined4 *)(arg1 + 0x38);
-  this->field24_0x3c = *(undefined4 *)(arg1 + 0x3c);
-  this->field29_0x44 = (undefined4 *)0x0;
-  this->field30_0x48 = 0;
-  this->field31_0x4c = *(undefined1 *)(arg1 + 0x4c);
-  this->field32_0x4d = *(undefined1 *)(arg1 + 0x4d);
-  this->field35_0x50 = *(undefined4 *)(arg1 + 0x50);
+  *param_1 = &RefCountedObjectBase::_vftable_;
+  param_1[1] = *(undefined4 *)(param_2 + 4);
+  param_1[2] = *(undefined4 *)(param_2 + 8);
+  param_1[3] = *(undefined4 *)(param_2 + 0xc);
+  param_1[7] = *(undefined4 *)(param_2 + 0x1c);
+  *param_1 = &TEventHandler::_vftable_;
+  param_1[8] = 0;
+  param_1[9] = *(undefined4 *)(param_2 + 0x24);
+  param_1[10] = *(undefined4 *)(param_2 + 0x28);
+  param_1[0xb] = *(undefined4 *)(param_2 + 0x2c);
+  param_1[0xc] = *(undefined4 *)(param_2 + 0x30);
+  param_1[0xd] = *(undefined4 *)(param_2 + 0x34);
+  param_1[0xe] = *(undefined4 *)(param_2 + 0x38);
+  param_1[0xf] = *(undefined4 *)(param_2 + 0x3c);
+  param_1[0x11] = 0;
+  param_1[0x12] = 0;
+  *(undefined1 *)(param_1 + 0x13) = *(undefined1 *)(param_2 + 0x4c);
+  *(undefined1 *)((int)param_1 + 0x4d) = *(undefined1 *)(param_2 + 0x4d);
+  param_1[0x14] = *(undefined4 *)(param_2 + 0x50);
   local_4 = 0;
-  this->field36_0x54 = *(undefined2 *)(arg1 + 0x54);
+  *(undefined2 *)(param_1 + 0x15) = *(undefined2 *)(param_2 + 0x54);
   InitializeSharedStringRefFromEmpty();
-  this->field43_0x5c = 0;
-  this->pVtable = &g_vtblTView;
+  param_1[0x17] = 0;
+  *param_1 = &TView::_vftable_;
   local_4 = CONCAT31(local_4._1_3_,1);
-  if (*(int *)(arg1 + 0x44) != 0) {
-    puVar4 = *(undefined4 **)(*(int *)(arg1 + 0x44) + 4);
-    while (puVar4 != (undefined4 *)0x0) {
-      puVar1 = (undefined4 *)*puVar4;
-      piVar3 = (int *)(**(code **)(*(int *)puVar4[2] + 0x20))();
-      piVar3[8] = (int)this;
-      piVar3[3] = (int)this;
-      if (this->field29_0x44 == (undefined4 *)0x0) {
-        puVar4 = AllocateWithFallbackHandler();
-        if (puVar4 == (undefined4 *)0x0) {
-          puVar4 = (undefined4 *)0x0;
+  if (*(int *)(param_2 + 0x44) != 0) {
+    puVar5 = *(undefined4 **)(*(int *)(param_2 + 0x44) + 4);
+    while (puVar5 != (undefined4 *)0x0) {
+      puVar1 = (undefined4 *)*puVar5;
+      piVar4 = (int *)(**(code **)(*(int *)puVar5[2] + 0x20))();
+      piVar4[8] = (int)param_1;
+      piVar4[3] = (int)param_1;
+      if (param_1[0x11] == 0) {
+        puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+        if (puVar5 == (undefined4 *)0x0) {
+          puVar5 = (undefined4 *)0x0;
         }
         else {
-          puVar4[3] = 0;
-          puVar4[4] = 0;
-          puVar4[2] = 0;
-          puVar4[1] = 0;
-          puVar4[5] = 0;
-          puVar4[6] = 10;
-          *puVar4 = &PTR_GetCObjectRuntimeClass_CityDialogModalState_00649A50;
+          puVar5[3] = 0;
+          puVar5[4] = 0;
+          puVar5[2] = 0;
+          puVar5[1] = 0;
+          puVar5[5] = 0;
+          puVar5[6] = 10;
+          *puVar5 = &PTR_GetCObjectRuntimeClass_00649a50;
         }
-        this->field29_0x44 = puVar4;
+        param_1[0x11] = puVar5;
       }
-      puVar4 = this->field29_0x44;
-      WrapperFor_AllocateAndLinkBlockHead_At00492a40();
-      *(int **)(extraout_EAX + 8) = piVar3;
-      if (puVar4[1] == 0) {
-        puVar4[2] = extraout_EAX;
+      iVar2 = param_1[0x11];
+      iVar6 = WrapperFor_AllocateAndLinkBlockHead_At00492a40(0,*(undefined4 *)(iVar2 + 4));
+      *(int **)(iVar6 + 8) = piVar4;
+      if (*(int *)(iVar2 + 4) == 0) {
+        *(int *)(iVar2 + 8) = iVar6;
       }
       else {
-        *(int *)(puVar4[1] + 4) = extraout_EAX;
+        *(int *)(*(int *)(iVar2 + 4) + 4) = iVar6;
       }
-      iVar2 = *piVar3;
-      puVar4[1] = extraout_EAX;
-      (**(code **)(iVar2 + 0x164))();
-      puVar4 = puVar1;
+      iVar3 = *piVar4;
+      *(int *)(iVar2 + 4) = iVar6;
+      (**(code **)(iVar3 + 0x164))();
+      puVar5 = puVar1;
     }
   }
   *unaff_FS_OFFSET = local_c;
-  return;
+  return param_1;
 }
 

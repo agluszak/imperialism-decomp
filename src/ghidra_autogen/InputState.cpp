@@ -3,206 +3,18 @@
 // Program: Imperialism.exe
 // Bucket: InputState.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040107D
-// GHIDRA_NAME InputState::thunk_SetMapTileStateByteAndNotifyObserver
-// GHIDRA_PROTO void __cdecl thunk_SetMapTileStateByteAndNotifyObserver(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetMapTileStateByteAndNotifyObserver
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetMapTileStateByteAndNotifyObserver */
-
-void __cdecl InputState::thunk_SetMapTileStateByteAndNotifyObserver(int arg1,int arg2)
-
-{
-  int in_ECX;
-  
-  *(undefined1 *)(*(int *)(in_ECX + 0xc) + 0x16 + (short)arg1 * 0x24) = (undefined1)arg2;
-  if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
-    (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))(arg1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040547F
-// GHIDRA_NAME InputState::thunk_InitializeMapActionContextsForNationCountUsingCostField
-// GHIDRA_PROTO void __thiscall thunk_InitializeMapActionContextsForNationCountUsingCostField(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeMapActionContextsForNationCountUsingCostField
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeMapActionContextsForNationCountUsingCostField */
-
-void __thiscall
-InputState::thunk_InitializeMapActionContextsForNationCountUsingCostField(InputState *this,int arg1)
-
-{
-  int *piVar1;
-  undefined4 *arg1_00;
-  int extraout_EAX;
-  int extraout_EAX_00;
-  int arg2;
-  int iVar2;
-  int iVar3;
-  int arg3;
-  int *arg1_01;
-  undefined4 *puVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063589b;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  this->field04 = (short)arg1;
-  if (this->pField08 != (int *)0x0) {
-    (**(code **)(*(int *)this->pField08 + 4))(3);
-  }
-  arg3 = (int)(short)arg1;
-  piVar1 = AllocateWithFallbackHandler();
-  uStack_4 = 0;
-  if (piVar1 == (int *)0x0) {
-    arg1_01 = (int *)0x0;
-  }
-  else {
-    arg1_01 = piVar1 + 1;
-    *piVar1 = arg3;
-    CallCallbackRepeatedly((int)arg1_01,0x48,arg3,0x40405c,0x407775);
-  }
-  uStack_4 = 0xffffffff;
-  this->pField08 = arg1_01;
-  if (arg1_01 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-  }
-  arg1_00 = AllocateWithFallbackHandler();
-  puVar4 = arg1_00;
-  for (iVar2 = 0xca8; iVar2 != 0; iVar2 = iVar2 + -1) {
-    *puVar4 = 0;
-    puVar4 = puVar4 + 1;
-  }
-  thunk_RelaxMapTileCostFieldByNeighborTerrain((int)arg1_00);
-  iVar2 = extraout_EAX;
-  while (iVar2 != 0) {
-    thunk_RelaxMapTileCostFieldByNeighborTerrain((int)arg1_00);
-    iVar2 = extraout_EAX_00;
-  }
-  iVar2 = 0;
-  if (0 < arg3) {
-    iVar3 = 0;
-    do {
-      thunk_SelectBestSeedTileForNationFromCostField((int)arg1_00,iVar2 + 0x17);
-      thunk_SetMapActionContextTargetTileAndRefreshMarkers
-                ((InputState *)((int)this->pField08 + iVar3),iVar2 + 0x17,arg2);
-      iVar2 = iVar2 + 1;
-      iVar3 = iVar3 + 0x48;
-    } while (iVar2 < arg3);
-  }
-  FreeHeapBufferIfNotNull();
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040982C
-// GHIDRA_NAME InputState::thunk_SetMapActionContextTargetTileAndRefreshMarkers
-// GHIDRA_PROTO void __thiscall thunk_SetMapActionContextTargetTileAndRefreshMarkers(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetMapActionContextTargetTileAndRefreshMarkers
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetMapActionContextTargetTileAndRefreshMarkers */
-
-void __thiscall
-InputState::thunk_SetMapActionContextTargetTileAndRefreshMarkers(InputState *this,int arg1,int arg2)
-
-{
-  ushort uVar1;
-  undefined4 uVar2;
-  int arg1_00;
-  undefined2 extraout_var;
-  int arg1_01;
-  undefined2 extraout_var_00;
-  undefined2 extraout_var_01;
-  
-  uVar1 = (ushort)arg2;
-  this->field12 = (short)arg1;
-  if (uVar1 == 0xffff) {
-    uVar1 = thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias();
-  }
-  this->field0c = (int)(short)uVar1;
-  this->field20 = (short)this->field0c;
-  uVar2 = (**(code **)(this->field0_0x0 + 0x38))();
-  if ((char)uVar2 != '\0') {
-    thunk_SetMapTileStateByteAndNotifyObserver
-              (CONCAT22((short)((uint)uVar2 >> 0x10),this->field20),-0xe);
-    return;
-  }
-  thunk_SetMapTileStateByteAndNotifyObserver(CONCAT22(extraout_var_00,this->field20),-0x10);
-  thunk_StepHexTileIndexByDirectionWithWrapRules(CONCAT22(extraout_var_01,this->field20),5);
-  thunk_SetMapTileStateByteAndNotifyObserver(arg1_00,-0x12);
-  thunk_StepHexTileIndexByDirectionWithWrapRules(CONCAT22(extraout_var,this->field20),0);
-  thunk_SetMapTileStateByteAndNotifyObserver(arg1_01,-0x14);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00515E00
 // GHIDRA_NAME InputState::SetMapTileStateByteAndNotifyObserver
-// GHIDRA_PROTO void __cdecl SetMapTileStateByteAndNotifyObserver(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Writes per-tile state byte at map-tile+0x16 and notifies observer via global view callback when available.
-// GHIDRA_COMMENT_END
-
-/* Writes per-tile state byte at map-tile+0x16 and notifies observer via global view callback when
-   available. */
-
-void __cdecl InputState::SetMapTileStateByteAndNotifyObserver(int arg1,int arg2)
-
-{
-  int in_ECX;
-  
-  *(undefined1 *)(*(int *)(in_ECX + 0xc) + 0x16 + (short)arg1 * 0x24) = (undefined1)arg2;
-  if (*(int **)((int)g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
-    (**(code **)(**(int **)((int)g_pUiRuntimeContext + 0xf0) + 0x1d8))(arg1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0055FB60
-// GHIDRA_NAME InputState::SetMapActionContextTargetTileAndRefreshMarkers
-// GHIDRA_PROTO void __thiscall SetMapActionContextTargetTileAndRefreshMarkers(int arg1, int arg2)
+// GHIDRA_PROTO undefined SetMapTileStateByteAndNotifyObserver()
 
 void __thiscall
-InputState::SetMapActionContextTargetTileAndRefreshMarkers(InputState *this,int arg1,int arg2)
+InputState::SetMapTileStateByteAndNotifyObserver(int param_1,undefined4 param_2,undefined1 param_3)
 
 {
-  ushort uVar1;
-  undefined4 uVar2;
-  int arg1_00;
-  undefined2 extraout_var;
-  int arg1_01;
-  undefined2 extraout_var_00;
-  undefined2 extraout_var_01;
-  
-  uVar1 = (ushort)arg2;
-  this->field12 = (short)arg1;
-  if (uVar1 == 0xffff) {
-    uVar1 = thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias();
+  *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x16 + (short)param_2 * 0x24) = param_3;
+  if (*(int **)(g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
+    (**(code **)(**(int **)(g_pUiRuntimeContext + 0xf0) + 0x1d8))(param_2);
   }
-  this->field0c = (int)(short)uVar1;
-  this->field20 = (short)this->field0c;
-  uVar2 = (**(code **)(this->field0_0x0 + 0x38))();
-  if ((char)uVar2 != '\0') {
-    thunk_SetMapTileStateByteAndNotifyObserver
-              (CONCAT22((short)((uint)uVar2 >> 0x10),this->field20),-0xe);
-    return;
-  }
-  thunk_SetMapTileStateByteAndNotifyObserver(CONCAT22(extraout_var_00,this->field20),-0x10);
-  thunk_StepHexTileIndexByDirectionWithWrapRules(CONCAT22(extraout_var_01,this->field20),5);
-  thunk_SetMapTileStateByteAndNotifyObserver(arg1_00,-0x12);
-  thunk_StepHexTileIndexByDirectionWithWrapRules(CONCAT22(extraout_var,this->field20),0);
-  thunk_SetMapTileStateByteAndNotifyObserver(arg1_01,-0x14);
   return;
 }
 
@@ -214,28 +26,26 @@ void __thiscall InputState::HandleKeyDown(InputState *this,int key_id)
 
 {
   short slot_id;
-  short extraout_AX;
-  short extraout_AX_00;
   astruct *controller_id;
   uint slot_index;
-  int slot_handle;
-  void *iVar1;
+  undefined4 slot_handle;
+  int iVar1;
   undefined4 *slot_entry_ptr;
   int slots_remaining;
   bool slot_is_active;
   uint slot_count;
   
-  if ((byte)((byte)this->field10 & '\x01' << ((byte)key_id & 0x1f)) == 0) {
-    this->field10 = this->field10 | (ushort)(1 << ((byte)key_id & 0x1f));
-    thunk_GetActiveNationId();
+  if (((byte)this[0x10] & '\x01' << ((byte)key_id & 0x1f)) == 0) {
+    *(ushort *)(this + 0x10) = *(ushort *)(this + 0x10) | (ushort)(1 << ((byte)key_id & 0x1f));
+    controller_id = (astruct *)UiRuntimeContext::GetActiveNationId();
     slot_id = (short)controller_id;
-    if ((byte)((byte)this->field10 & '\x01' << ((byte)controller_id & 0x1f)) == 0) {
-      slot_count = this->field40;
+    if (((byte)this[0x10] & '\x01' << ((byte)controller_id & 0x1f)) == 0) {
+      slot_count = *(uint *)(this + 0x40);
       slot_index = 0;
       if (slot_count != 0) {
         do {
           if (slot_index < slot_count) {
-            slot_entry_ptr = (undefined4 *)((int)this->pField38 + slot_index * 4);
+            slot_entry_ptr = (undefined4 *)(*(int *)(this + 0x38) + slot_index * 4);
           }
           else {
             slot_entry_ptr = (undefined4 *)0x0;
@@ -252,125 +62,62 @@ LAB_0055fcae:
     }
     if (slot_is_active) {
       if (slot_id == (short)key_id) {
-        slot_handle = this->field0_0x0;
-        (**(code **)(slot_handle + 0x58))(1);
+        iVar1 = *(int *)this;
+        (**(code **)(iVar1 + 0x58))(1);
         key_id = slot_id + 1;
         slots_remaining = 6;
         do {
-          if ((byte)((byte)this->field10 & '\x01' << ((byte)(key_id % 7) & 0x1f)) != 0) {
-            slot_id = (**(code **)(slot_handle + 0x50))();
-            thunk_SetMapTileStateByteAndNotifyObserver((int)slot_id,key_id % 7 + 7);
-            *(undefined2 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1a + slot_id * 0x24) = 0xffff
-            ;
+          if (((byte)this[0x10] & '\x01' << ((byte)(key_id % 7) & 0x1f)) != 0) {
+            slot_id = (**(code **)(iVar1 + 0x50))();
+            SetMapTileStateByteAndNotifyObserver((int)slot_id,key_id % 7 + 7);
+            *(undefined2 *)(*(int *)(g_pGlobalMapState + 0xc) + 0x1a + slot_id * 0x24) = 0xffff;
           }
           key_id = key_id + 1;
           slots_remaining = slots_remaining + -1;
         } while (slots_remaining != 0);
       }
       else {
-        slot_handle = (**(code **)(this->field0_0x0 + 0x50))();
-        thunk_SetMapTileStateByteAndNotifyObserver(slot_handle,(int)&controller_id->field_0x7);
-        *(undefined2 *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1a + (short)slot_handle * 0x24) =
+        slot_handle = (**(code **)(*(int *)this + 0x50))();
+        SetMapTileStateByteAndNotifyObserver(slot_handle,&controller_id->field_0x7);
+        *(undefined2 *)(*(int *)(g_pGlobalMapState + 0xc) + 0x1a + (short)slot_handle * 0x24) =
              0xffff;
       }
     }
   }
-  thunk_GetActiveNationId();
-  slot_id = extraout_AX;
-  if (extraout_AX == -1) {
-    thunk_GetActiveNationId();
-    slot_id = extraout_AX_00;
+  slot_id = UiRuntimeContext::GetActiveNationId();
+  if (slot_id == -1) {
+    slot_id = UiRuntimeContext::GetActiveNationId();
   }
-  if ((byte)((byte)this->field10 & '\x01' << ((byte)slot_id & 0x1f)) != 0) {
-    for (iVar1 = thunk_GetNavyPrimaryOrderListHead(); iVar1 != (void *)0x0;
-        iVar1 = *(void **)((int)iVar1 + 0x24)) {
-      if (((*(InputState **)((int)iVar1 + 8) == this) && (*(short *)((int)iVar1 + 0x14) == slot_id))
-         && (*(int *)((int)iVar1 + 0xc) == 0)) {
+  if (((byte)this[0x10] & '\x01' << ((byte)slot_id & 0x1f)) != 0) {
+    for (iVar1 = thunk_GetNavyPrimaryOrderListHead(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
+      if (((*(InputState **)(iVar1 + 8) == this) && (*(short *)(iVar1 + 0x14) == slot_id)) &&
+         (*(int *)(iVar1 + 0xc) == 0)) {
         key_id = CONCAT31(key_id._1_3_,1);
-        (**(code **)(this->field0_0x0 + 0x58))(key_id);
+        (**(code **)(*(int *)this + 0x58))(key_id);
         return;
       }
     }
   }
   key_id = (uint)key_id._1_3_ << 8;
-  (**(code **)(this->field0_0x0 + 0x58))(key_id);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00560580
-// GHIDRA_NAME InputState::UpdatePortZoneTileOverlayMarkersForStateToggle
-// GHIDRA_PROTO void __thiscall UpdatePortZoneTileOverlayMarkersForStateToggle(void)
-
-void __thiscall InputState::UpdatePortZoneTileOverlayMarkersForStateToggle(InputState *this)
-
-{
-  int *piVar1;
-  code *pcVar2;
-  char cVar3;
-  undefined4 uVar4;
-  undefined2 uVar5;
-  undefined2 extraout_var;
-  int arg1;
-  undefined2 extraout_var_00;
-  int arg1_00;
-  undefined2 extraout_var_01;
-  undefined2 extraout_var_02;
-  undefined2 extraout_var_03;
-  undefined4 unaff_EDI;
-  int iVar6;
-  char in_stack_00000004;
-  
-  piVar1 = *(int **)((int)g_pUiRuntimeContext + 0xf0);
-  if (((bool)in_stack_00000004 !=
-       -1 < *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x16 + this->field20 * 0x24)) &&
-     (piVar1 != (int *)0x0)) {
-    cVar3 = (-(in_stack_00000004 != '\0') & 2U) - 1;
-    uVar4 = (**(code **)(this->field0_0x0 + 0x38))();
-    uVar5 = (undefined2)((uint)uVar4 >> 0x10);
-    if ((char)uVar4 != '\0') {
-      thunk_SetMapTileStateByteAndNotifyObserver
-                (CONCAT22(extraout_var_02,this->field20),CONCAT22(uVar5,(short)cVar3) * 0xe);
-      (**(code **)(*piVar1 + 0x1d8))(CONCAT22(extraout_var_01,this->field20));
-      return;
-    }
-    iVar6 = CONCAT22((short)((uint)unaff_EDI >> 0x10),(short)cVar3);
-    thunk_SetMapTileStateByteAndNotifyObserver(CONCAT22(uVar5,this->field20),iVar6 << 4);
-    pcVar2 = *(code **)(*piVar1 + 0x1d8);
-    (*pcVar2)(CONCAT22(extraout_var_03,this->field20));
-    thunk_StepHexTileIndexByDirectionWithWrapRules(CONCAT22(extraout_var,this->field20),5);
-    thunk_SetMapTileStateByteAndNotifyObserver(arg1,iVar6 * 0x12);
-    (*pcVar2)(arg1);
-    thunk_StepHexTileIndexByDirectionWithWrapRules(CONCAT22(extraout_var_00,this->field20),0);
-    thunk_SetMapTileStateByteAndNotifyObserver(arg1_00,iVar6 * 0x14);
-    (*pcVar2)(arg1_00);
-  }
+  (**(code **)(*(int *)this + 0x58))(key_id);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00562D90
 // GHIDRA_NAME InputState::InitializeMapActionContextsForNationCountUsingCostField
-// GHIDRA_PROTO void __thiscall InitializeMapActionContextsForNationCountUsingCostField(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes map-action contexts for nation count and assigns nation seeds using iterative cost-field generation.
-// GHIDRA_COMMENT_END
-
-/* Initializes map-action contexts for nation count and assigns nation seeds using iterative
-   cost-field generation. */
+// GHIDRA_PROTO undefined InitializeMapActionContextsForNationCountUsingCostField()
 
 void __thiscall
-InputState::InitializeMapActionContextsForNationCountUsingCostField(InputState *this,int arg1)
+InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,short param_2)
 
 {
   int *piVar1;
-  undefined4 *arg1_00;
-  int extraout_EAX;
-  int extraout_EAX_00;
-  int arg2;
-  int iVar2;
-  int iVar3;
-  int arg3;
-  int *arg1_01;
-  undefined4 *puVar4;
+  undefined4 *puVar2;
+  undefined4 uVar3;
+  int iVar4;
+  int iteration_count;
+  int *piVar5;
+  undefined4 *puVar6;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -380,51 +127,48 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(InputState *
   puStack_8 = &LAB_0063589b;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this->field04 = (short)arg1;
-  if (this->pField08 != (int *)0x0) {
-    (**(code **)(*(int *)this->pField08 + 4))(3);
+  *(short *)(param_1 + 4) = param_2;
+  if (*(int **)(param_1 + 8) != (int *)0x0) {
+    (**(code **)(**(int **)(param_1 + 8) + 4))(3);
   }
-  arg3 = (int)(short)arg1;
-  piVar1 = AllocateWithFallbackHandler();
+  iteration_count = (int)param_2;
+  piVar1 = (int *)AllocateWithFallbackHandler(iteration_count * 0x48 + 4);
   uStack_4 = 0;
   if (piVar1 == (int *)0x0) {
-    arg1_01 = (int *)0x0;
+    piVar5 = (int *)0x0;
   }
   else {
-    arg1_01 = piVar1 + 1;
-    *piVar1 = arg3;
-    CallCallbackRepeatedly((int)arg1_01,0x48,arg3,0x40405c,0x407775);
+    piVar5 = piVar1 + 1;
+    *piVar1 = iteration_count;
+    CallCallbackRepeatedly
+              (piVar5,0x48,iteration_count,
+               TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList);
   }
   uStack_4 = 0xffffffff;
-  this->pField08 = arg1_01;
-  if (arg1_01 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
+  *(int **)(param_1 + 8) = piVar5;
+  if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x87f);
   }
-  arg1_00 = AllocateWithFallbackHandler();
-  puVar4 = arg1_00;
-  for (iVar2 = 0xca8; iVar2 != 0; iVar2 = iVar2 + -1) {
-    *puVar4 = 0;
-    puVar4 = puVar4 + 1;
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x32a0);
+  puVar6 = puVar2;
+  for (iVar4 = 0xca8; iVar4 != 0; iVar4 = iVar4 + -1) {
+    *puVar6 = 0;
+    puVar6 = puVar6 + 1;
   }
-  thunk_RelaxMapTileCostFieldByNeighborTerrain((int)arg1_00);
-  iVar2 = extraout_EAX;
-  while (iVar2 != 0) {
-    thunk_RelaxMapTileCostFieldByNeighborTerrain((int)arg1_00);
-    iVar2 = extraout_EAX_00;
+  iVar4 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar2);
+  while (iVar4 != 0) {
+    iVar4 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar2);
   }
-  iVar2 = 0;
-  if (0 < arg3) {
-    iVar3 = 0;
+  iVar4 = 0;
+  if (0 < iteration_count) {
     do {
-      thunk_SelectBestSeedTileForNationFromCostField((int)arg1_00,iVar2 + 0x17);
-      thunk_SetMapActionContextTargetTileAndRefreshMarkers
-                ((InputState *)((int)this->pField08 + iVar3),iVar2 + 0x17,arg2);
-      iVar2 = iVar2 + 1;
-      iVar3 = iVar3 + 0x48;
-    } while (iVar2 < arg3);
+      uVar3 = thunk_SelectBestSeedTileForNationFromCostField(puVar2,iVar4 + 0x17);
+      TZone::SetMapActionContextTargetTileAndRefreshMarkers(iVar4 + 0x17,uVar3);
+      iVar4 = iVar4 + 1;
+    } while (iVar4 < iteration_count);
   }
-  FreeHeapBufferIfNotNull();
+  FreeHeapBufferIfNotNull(puVar2);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

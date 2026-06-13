@@ -3,84 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: T2PictToggleButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040358F
-// GHIDRA_NAME T2PictToggleButton::T2PictToggleButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl T2PictToggleButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetT2PictToggleButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetT2PictToggleButtonClassNamePointer */
-
-void * __cdecl T2PictToggleButton::T2PictToggleButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetT2PictToggleButtonClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403C7E
-// GHIDRA_NAME T2PictToggleButton::T2PictToggleButton_VtblSlot001
-// GHIDRA_PROTO T2PictToggleButton * __thiscall T2PictToggleButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructT2PictToggleButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructT2PictToggleButtonAndMaybeFree */
-
-T2PictToggleButton * __thiscall
-T2PictToggleButton::T2PictToggleButton_VtblSlot001(T2PictToggleButton *this,byte freeSelfFlag)
-
-{
-  T2PictToggleButton *pTVar1;
-  
-  pTVar1 = DestructT2PictToggleButtonAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004060FA
-// GHIDRA_NAME T2PictToggleButton::T2PictToggleButton_VtblSlot115
-// GHIDRA_PROTO void __cdecl T2PictToggleButton_VtblSlot115(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to IsField3cWithinShortLimit84
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to IsField3cWithinShortLimit84 */
-
-void __cdecl T2PictToggleButton::T2PictToggleButton_VtblSlot115(void)
-
-{
-  IsField3cWithinShortLimit84();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408E59
-// GHIDRA_NAME T2PictToggleButton::T2PictToggleButton_VtblSlot116
-// GHIDRA_PROTO void __thiscall T2PictToggleButton_VtblSlot116(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SyncField0fTowardsField21ByDirectionAndRefresh
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SyncField0fTowardsField21ByDirectionAndRefresh */
-
-void __thiscall T2PictToggleButton::T2PictToggleButton_VtblSlot116(T2PictToggleButton *this)
-
-{
-  SyncField0fTowardsField21ByDirectionAndRefresh(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00584890
 // GHIDRA_NAME T2PictToggleButton::CreateT2PictToggleButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateT2PictToggleButtonInstance(void)
+// GHIDRA_PROTO undefined CreateT2PictToggleButtonInstance()
 
-void * __cdecl T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
+undefined4 * T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
 
 {
-  TToggleButton *this;
-  TToggleButton *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -90,118 +21,86 @@ void * __cdecl T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
   puStack_8 = &LAB_0063762a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  pTVar1 = (TToggleButton *)0x0;
-  if (this != (TToggleButton *)0x0) {
-    TToggleButton::ConstructTToggleButtonBaseState(this);
-    this->field0_0x0 = &g_vtblT2PictToggleButton;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TToggleButton::ConstructTToggleButtonBaseState();
+    *puVar1 = &PTR_LAB_00664470;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584910
 // GHIDRA_NAME T2PictToggleButton::GetT2PictToggleButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetT2PictToggleButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for T2PictToggleButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetT2PictToggleButtonClassNamePointer()
 
-/* Returns class descriptor pointer for T2PictToggleButton. */
-
-void * __cdecl T2PictToggleButton::GetT2PictToggleButtonClassNamePointer(void)
+undefined ** T2PictToggleButton::GetT2PictToggleButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescT2PictToggleButton;
+  return &PTR_s_T2PictToggleButton_00662e78;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584930
 // GHIDRA_NAME T2PictToggleButton::ConstructT2PictToggleButtonBaseState
-// GHIDRA_PROTO T2PictToggleButton * __thiscall ConstructT2PictToggleButtonBaseState(void)
+// GHIDRA_PROTO undefined ConstructT2PictToggleButtonBaseState()
 
-T2PictToggleButton * __thiscall
-T2PictToggleButton::ConstructT2PictToggleButtonBaseState(T2PictToggleButton *this)
-
-{
-  TToggleButton::ConstructTToggleButtonBaseState((TToggleButton *)this);
-  this->field0_0x0 = &g_vtblT2PictToggleButton;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00584960
-// GHIDRA_NAME T2PictToggleButton::DestructT2PictToggleButtonAndMaybeFree
-// GHIDRA_PROTO T2PictToggleButton * __thiscall DestructT2PictToggleButtonAndMaybeFree(byte freeSelfFlag)
-
-T2PictToggleButton * __thiscall
-T2PictToggleButton::DestructT2PictToggleButtonAndMaybeFree
-          (T2PictToggleButton *this,byte freeSelfFlag)
+undefined4 * __fastcall
+T2PictToggleButton::ConstructT2PictToggleButtonBaseState(undefined4 *param_1)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return this;
+  TToggleButton::ConstructTToggleButtonBaseState();
+  *param_1 = &PTR_LAB_00664470;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005849B0
 // GHIDRA_NAME T2PictToggleButton::IsField3cWithinShortLimit84
-// GHIDRA_PROTO void __cdecl IsField3cWithinShortLimit84(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns whether field at +0x3C is within short limit at +0x84.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined IsField3cWithinShortLimit84()
 
-/* Returns whether field at +0x3C is within short limit at +0x84. */
-
-void __cdecl T2PictToggleButton::IsField3cWithinShortLimit84(void)
+undefined4 __fastcall T2PictToggleButton::IsField3cWithinShortLimit84(int param_1)
 
 {
-  return;
+  return CONCAT31((int3)(char)((ushort)*(short *)(param_1 + 0x84) >> 8),
+                  *(int *)(param_1 + 0x3c) <= (int)*(short *)(param_1 + 0x84));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005849D0
 // GHIDRA_NAME T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh
-// GHIDRA_PROTO void __thiscall SyncField0fTowardsField21ByDirectionAndRefresh(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Adjusts field +0x0F toward short at +0x21 depending on direction flag and refreshes dependent view state.
-// GHIDRA_COMMENT_END
-
-/* Adjusts field +0x0F toward short at +0x21 depending on direction flag and refreshes dependent
-   view state. */
+// GHIDRA_PROTO undefined SyncField0fTowardsField21ByDirectionAndRefresh()
 
 void __thiscall
-T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh(T2PictToggleButton *this)
+T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh(int *param_1,char param_2)
 
 {
   short sVar1;
-  undefined **ppuVar2;
-  char in_stack_00000004;
+  int iVar2;
   
-  sVar1 = this->field84;
-  if (((in_stack_00000004 == '\0') && (this->field3c < (int)sVar1)) ||
-     ((in_stack_00000004 == '\x01' && ((int)sVar1 < this->field3c)))) {
-    (*(code *)this->field0_0x0[0x72])((short)this->field3c,0);
-    this->field3c = (int)sVar1;
+  sVar1 = (short)param_1[0x21];
+  if (((param_2 == '\0') && (param_1[0xf] < (int)sVar1)) ||
+     ((param_2 == '\x01' && ((int)sVar1 < param_1[0xf])))) {
+    (**(code **)(*param_1 + 0x1c8))((short)param_1[0xf],0);
+    param_1[0xf] = (int)sVar1;
   }
-  ppuVar2 = this->field0_0x0;
-  (*(code *)ppuVar2[0x3e])();
-  (*(code *)ppuVar2[0x45])(0);
+  iVar2 = *param_1;
+  (**(code **)(iVar2 + 0xf8))();
+  (**(code **)(iVar2 + 0x114))(0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584B70
 // GHIDRA_NAME T2PictToggleButton::DispatchUiMouseMoveThenClearTurnEvent
-// GHIDRA_PROTO void __stdcall DispatchUiMouseMoveThenClearTurnEvent(int arg1, int arg2, int arg3, int arg4)
+// GHIDRA_PROTO undefined DispatchUiMouseMoveThenClearTurnEvent()
 
-void T2PictToggleButton::DispatchUiMouseMoveThenClearTurnEvent(int arg1,int arg2,int arg3,int arg4)
+undefined4
+T2PictToggleButton::DispatchUiMouseMoveThenClearTurnEvent
+          (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  TControl *in_ECX;
-  
-  TControl::thunk_DispatchUiMouseMoveToChildren(in_ECX,arg1,arg2,arg3,arg4);
-  (**(code **)(*(int *)g_pUiRuntimeContext + 0x4c))(0,0);
-  return;
+  TControl::thunk_DispatchUiMouseMoveToChildren(param_1,param_2,param_3,param_4);
+  (**(code **)(*g_pUiRuntimeContext + 0x4c))(0,0);
+  return 1;
 }
 

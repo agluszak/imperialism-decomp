@@ -3,64 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TOnOffRadioButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402B67
-// GHIDRA_NAME TOnOffRadioButton::TOnOffRadioButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TOnOffRadioButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTOnOffRadioButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTOnOffRadioButtonAndMaybeFree */
-
-void * __thiscall
-TOnOffRadioButton::TOnOffRadioButton_VtblSlot001(TOnOffRadioButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTOnOffRadioButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004087F6
-// GHIDRA_NAME TOnOffRadioButton::TOnOffRadioButton_VtblSlot015
-// GHIDRA_PROTO void __thiscall TOnOffRadioButton_VtblSlot015(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80 */
-
-void __thiscall TOnOffRadioButton::TOnOffRadioButton_VtblSlot015(TOnOffRadioButton *this)
-
-{
-  WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409A25
-// GHIDRA_NAME TOnOffRadioButton::TOnOffRadioButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TOnOffRadioButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTOnOffRadioButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTOnOffRadioButtonClassNamePointer */
-
-void * __cdecl TOnOffRadioButton::TOnOffRadioButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTOnOffRadioButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00571930
 // GHIDRA_NAME TOnOffRadioButton::CreateTOnOffRadioButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTOnOffRadioButtonInstance(void)
+// GHIDRA_PROTO undefined CreateTOnOffRadioButtonInstance()
 
-void * __cdecl TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
+undefined4 * TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
 
 {
   undefined4 *puVar1;
@@ -73,98 +20,86 @@ void * __cdecl TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
   puStack_8 = &LAB_0063644a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
+    thunk_TPictureButton::TPictureButton();
     *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    *puVar1 = &g_vtblTOnOffRadioButton;
+    *puVar1 = &PTR_LAB_0065f8a8;
     puVar1[0x18] = 0xc;
     *(undefined1 *)(puVar1 + 0x25) = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005719D0
 // GHIDRA_NAME TOnOffRadioButton::GetTOnOffRadioButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTOnOffRadioButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TOnOffRadioButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTOnOffRadioButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TOnOffRadioButton. */
-
-void * __cdecl TOnOffRadioButton::GetTOnOffRadioButtonClassNamePointer(void)
+undefined ** TOnOffRadioButton::GetTOnOffRadioButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTOnOffRadioButton;
+  return &PTR_s_TOnOffRadioButton_0065e5f8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005719F0
 // GHIDRA_NAME TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTOnOffRadioButtonBaseState(void)
+// GHIDRA_PROTO undefined ConstructTOnOffRadioButtonBaseState()
 
-void * __thiscall TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState(TOnOffRadioButton *this)
+undefined4 * __fastcall TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState(undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field92 = 7000;
-  this->field0_0x0 = &g_vtblTOnOffRadioButton;
-  this->field60 = 0xc;
-  this->field141_0x94 = 0;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *(undefined2 *)((int)param_1 + 0x92) = 7000;
+  *param_1 = &PTR_LAB_0065f8a8;
+  param_1[0x18] = 0xc;
+  *(undefined1 *)(param_1 + 0x25) = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A30
 // GHIDRA_NAME TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTOnOffRadioButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTOnOffRadioButtonAndMaybeFree()
 
-void * __thiscall
-TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree(TOnOffRadioButton *this,byte freeSelfFlag)
+undefined4 __thiscall
+TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A80
 // GHIDRA_NAME TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogToggleCommandOrForward.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper for HandleCityDialogToggleCommandOrForward. */
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80()
 
 void __thiscall
 TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
-          (TOnOffRadioButton *this)
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  int in_stack_00000004;
-  
-  if (in_stack_00000004 == 0xc) {
-    if (this->field64 == 0) {
-      (*(code *)this->field0_0x0[0x74])(1,1);
+  if (param_2 == 0xc) {
+    if ((char)param_1[0x19] == '\0') {
+      (**(code **)(*param_1 + 0x1d0))(1,1);
     }
-    thunk_HandleCityDialogToggleCommandOrForward();
+    thunk_HandleCityDialogToggleCommandOrForward(0xc,param_3,param_4);
     return;
   }
-  if (in_stack_00000004 != 0x1f) {
-    if (in_stack_00000004 != 0x20) {
-      thunk_HandleCityDialogToggleCommandOrForward();
+  if (param_2 != 0x1f) {
+    if (param_2 != 0x20) {
+      thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
       return;
     }
-    (*(code *)this->field0_0x0[0x74])(0,1);
+    (**(code **)(*param_1 + 0x1d0))(0,1);
     return;
   }
-  (*(code *)this->field0_0x0[0x74])(1,1);
+  (**(code **)(*param_1 + 0x1d0))(1,1);
   return;
 }
 

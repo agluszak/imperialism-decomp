@@ -3,149 +3,70 @@
 // Program: Imperialism.exe
 // Bucket: TRailheadDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403B70
-// GHIDRA_NAME TRailheadDialog::thunk_GetTRailheadDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTRailheadDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRailheadDialogClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRailheadDialogClassNamePointer */
-
-void * __cdecl TRailheadDialog::thunk_GetTRailheadDialogClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRailheadDialogClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403D91
-// GHIDRA_NAME TRailheadDialog::thunk_ConstructTRailheadDialogBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTRailheadDialogBaseState(int * pSelectionRecord)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConfigureRailheadDialogForSelectionRecord [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConfigureRailheadDialogForSelectionRecord [FID:thunk_target_sync] */
-
-void __thiscall
-TRailheadDialog::thunk_ConstructTRailheadDialogBaseState
-          (TRailheadDialog *this,int *pSelectionRecord)
-
-{
-  ConstructTRailheadDialogBaseState(this,pSelectionRecord);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004049B7
-// GHIDRA_NAME TRailheadDialog::thunk_scalar_deleting_destructor_004049B7
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004049B7(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TRailheadDialog::thunk_scalar_deleting_destructor_004049B7(TRailheadDialog *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407301
-// GHIDRA_NAME TRailheadDialog::thunk_DestructTRailheadDialogAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTRailheadDialogAndMaybeFree(EControlTagFourCC controlTag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleRailheadDialogOkaySelection [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleRailheadDialogOkaySelection [FID:thunk_target_sync] */
-
-void __thiscall
-TRailheadDialog::thunk_DestructTRailheadDialogAndMaybeFree
-          (TRailheadDialog *this,EControlTagFourCC controlTag)
-
-{
-  DestructTRailheadDialogAndMaybeFree(this,controlTag);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD020
 // GHIDRA_NAME TRailheadDialog::GetTRailheadDialogClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTRailheadDialogClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TRailheadDialog.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTRailheadDialogClassNamePointer()
 
-/* Returns class descriptor pointer for TRailheadDialog. */
-
-void * __cdecl TRailheadDialog::GetTRailheadDialogClassNamePointer(void)
+undefined ** TRailheadDialog::GetTRailheadDialogClassNamePointer(void)
 
 {
-  return &g_pClassDescTRailheadDialog;
+  return &PTR_s_TRailheadDialog_0064fb78;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD040
 // GHIDRA_NAME TRailheadDialog::ConstructTRailheadDialogBaseState
-// GHIDRA_PROTO void __thiscall ConstructTRailheadDialogBaseState(int * pSelectionRecord)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Configures railhead dialog controls based on selected railhead record state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTRailheadDialogBaseState()
 
-/* Configures railhead dialog controls based on selected railhead record state. */
-
-void __thiscall
-TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int *pSelectionRecord)
+void __thiscall TRailheadDialog::ConstructTRailheadDialogBaseState(int *param_1,int param_2)
 
 {
   int iVar1;
   code *pcVar2;
   int *piVar3;
   
-  this->pField60 = pSelectionRecord;
-  piVar3 = (int *)(**(code **)(this->field0_0x0 + 0x94))(0x63686f69);
+  param_1[0x18] = param_2;
+  piVar3 = (int *)(**(code **)(*param_1 + 0x94))(0x63686f69);
   if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x732);
   }
   iVar1 = *piVar3;
   (**(code **)(iVar1 + 0x1c8))(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._40_4_);
-  if (*(short *)((int)pSelectionRecord + 10) == 0) {
+  if (*(short *)(param_2 + 10) == 0) {
     pcVar2 = *(code **)(iVar1 + 0x94);
     piVar3 = (int *)(*pcVar2)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._52_4_);
     if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73a);
     }
     iVar1 = *piVar3;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
     piVar3 = (int *)(*pcVar2)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._56_4_);
     if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73f);
     }
     iVar1 = *piVar3;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
     piVar3 = (int *)(*pcVar2)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._128_4_);
     if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x744);
     }
     iVar1 = *piVar3;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
     piVar3 = (int *)(*pcVar2)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._64_4_);
     if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x749);
     }
     iVar1 = *piVar3;
     (**(code **)(iVar1 + 0xa8))(0,1);
@@ -156,28 +77,21 @@ TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this,int *pS
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD260
 // GHIDRA_NAME TRailheadDialog::DestructTRailheadDialogAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTRailheadDialogAndMaybeFree(EControlTagFourCC controlTag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [LowHanging] TRailheadDialog handler for 'okay' control tag; resolves selected option and dispatches selected railhead mode/index.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTRailheadDialogAndMaybeFree()
 
-/* [LowHanging] TRailheadDialog handler for 'okay' control tag; resolves selected option and
-   dispatches selected railhead mode/index. */
-
-void __thiscall
-TRailheadDialog::DestructTRailheadDialogAndMaybeFree
-          (TRailheadDialog *this,EControlTagFourCC controlTag)
+void __thiscall TRailheadDialog::DestructTRailheadDialogAndMaybeFree(int *param_1,int param_2)
 
 {
   int *piVar1;
   int iVar2;
   int iVar3;
   
-  if (controlTag == CONTROL_TAG_TAG_YAKO) {
-    piVar1 = (int *)(**(code **)(this->field0_0x0 + 0x94))(0x63686f69);
+  if (param_2 == 0x6f6b6179) {
+    piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x63686f69);
     if (piVar1 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x75e);
     }
     iVar2 = (**(code **)(*piVar1 + 0x1c4))();
     iVar3 = 0;
@@ -186,7 +100,7 @@ TRailheadDialog::DestructTRailheadDialogAndMaybeFree
       break;
       iVar3 = iVar3 + 1;
     } while ((short)iVar3 < 0x17);
-    (**(code **)(*(int *)this->pField60 + 0x40))(iVar3);
+    (**(code **)(*(int *)param_1[0x18] + 0x40))(iVar3);
   }
   return;
 }

@@ -3,72 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTradeOfferNationLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401FB4
-// GHIDRA_NAME TTradeOfferNationLine::thunk_GetTTradeOfferNationLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTradeOfferNationLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTradeOfferNationLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTradeOfferNationLineClassNamePointer */
-
-void * __cdecl TTradeOfferNationLine::thunk_GetTTradeOfferNationLineClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTradeOfferNationLineClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402121
-// GHIDRA_NAME TTradeOfferNationLine::thunk_ConstructTTradeOfferNationLineBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTTradeOfferNationLineBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTTradeOfferNationLineBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTTradeOfferNationLineBaseState */
-
-void * __thiscall
-TTradeOfferNationLine::thunk_ConstructTTradeOfferNationLineBaseState(TTradeOfferNationLine *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ConstructTTradeOfferNationLineBaseState(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408166
-// GHIDRA_NAME TTradeOfferNationLine::thunk_DestructTTradeOfferNationLineAndMaybeFree_At00408166
-// GHIDRA_PROTO void * __thiscall thunk_DestructTTradeOfferNationLineAndMaybeFree_At00408166(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTTradeOfferNationLineAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTTradeOfferNationLineAndMaybeFree */
-
-void * __thiscall
-TTradeOfferNationLine::thunk_DestructTTradeOfferNationLineAndMaybeFree_At00408166
-          (TTradeOfferNationLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTTradeOfferNationLineAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005BCFC0
 // GHIDRA_NAME TTradeOfferNationLine::CreateTTradeOfferNationLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTTradeOfferNationLineInstance(void)
+// GHIDRA_PROTO undefined CreateTTradeOfferNationLineInstance()
 
-void * __cdecl TTradeOfferNationLine::CreateTTradeOfferNationLineInstance(void)
+undefined4 * TTradeOfferNationLine::CreateTTradeOfferNationLineInstance(void)
 
 {
-  TLineData *pThis;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -78,48 +21,43 @@ void * __cdecl TTradeOfferNationLine::CreateTTradeOfferNationLineInstance(void)
   puStack_8 = &LAB_0063933a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (pThis != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(pThis);
-    pThis->field0_0x0 = &PTR_thunk_GetTTradeOfferNationLineClassNamePointer_0066e2b8;
-    pTVar1 = pThis;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TLineData::ConstructTLineDataBaseState();
+    *puVar1 = &PTR_LAB_0066e2b8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD030
 // GHIDRA_NAME TTradeOfferNationLine::GetTTradeOfferNationLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTradeOfferNationLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTradeOfferNationLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTradeOfferNationLineClassNamePointer()
 
-/* Returns class descriptor pointer for TTradeOfferNationLine. */
-
-void * __cdecl TTradeOfferNationLine::GetTTradeOfferNationLineClassNamePointer(void)
+undefined ** TTradeOfferNationLine::GetTTradeOfferNationLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTTradeOfferNationLine;
+  return &PTR_s_TTradeOfferNationLine_0066dc00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD090
 // GHIDRA_NAME TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTradeOfferNationLineBaseState(void)
+// GHIDRA_PROTO undefined ConstructTTradeOfferNationLineBaseState()
 
-void * __thiscall
-TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState(TTradeOfferNationLine *this)
+void __thiscall
+TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState
+          (int param_1,int param_2,undefined4 param_3)
 
 {
-  short sVar1;
-  short sVar2;
-  undefined *puVar3;
-  short extraout_AX;
-  TView *this_00;
-  void *pvVar4;
-  void *extraout_EAX;
+  undefined2 uVar1;
+  undefined2 uVar2;
+  int iVar3;
+  char cVar4;
+  short sVar5;
+  undefined4 *puVar6;
   undefined4 unaff_EBX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
@@ -130,45 +68,44 @@ TTradeOfferNationLine::ConstructTTradeOfferNationLineBaseState(TTradeOfferNation
   puStack_8 = &LAB_0063935a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  this_00 = AllocateWithFallbackHandler();
+  puVar6 = (undefined4 *)AllocateWithFallbackHandler(100);
   local_4 = 0;
-  if (this_00 == (TView *)0x0) {
-    this_00 = (TView *)0x0;
+  if (puVar6 == (undefined4 *)0x0) {
+    puVar6 = (undefined4 *)0x0;
   }
   else {
-    TView::thunk_ConstructTViewBaseState(this_00);
-    this_00->pVtable = &g_vtblTTradeOfferNationLine;
+    TView::thunk_ConstructTViewBaseState();
+    *puVar6 = &PTR_LAB_0066e2f8;
   }
-  sVar1 = this->field10;
-  sVar2 = this->field12;
+  uVar1 = *(undefined2 *)(param_1 + 0x10);
+  uVar2 = *(undefined2 *)(param_1 + 0x12);
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent();
-  *(short *)((int)&this_00[1].pVtable + 2) = sVar2;
-  *(short *)&this_00[1].pVtable = sVar1;
-  puVar3 = g_pNationInteractionStateManager->vftable;
-  thunk_GetActiveNationId();
-  pvVar4 = (void *)(**(code **)(puVar3 + 0x78))((int)this->field10,(int)extraout_AX);
-  if ((char)pvVar4 != '\0') {
-    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2740,3,this_00);
-    pvVar4 = extraout_EAX;
+  thunk_InitializeUiResourceEntryFrameAndParent
+            (*(undefined4 *)(param_2 + 0x40),param_2,param_3,param_1 + 8,5,5,0);
+  *(undefined2 *)((int)puVar6 + 0x62) = uVar2;
+  *(undefined2 *)(puVar6 + 0x18) = uVar1;
+  iVar3 = *(int *)g_pNationInteractionStateManager;
+  sVar5 = UiRuntimeContext::GetActiveNationId();
+  cVar4 = (**(code **)(iVar3 + 0x78))((int)*(short *)(param_1 + 0x10),(int)sVar5);
+  if (cVar4 != '\0') {
+    LoadUiStringByGroupAndIndexToControlObject(0x2740,3,puVar6);
   }
   *unaff_FS_OFFSET = unaff_EBX;
-  return pvVar4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD1A0
 // GHIDRA_NAME TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTTradeOfferNationLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTTradeOfferNationLineAndMaybeFree()
 
-void * __thiscall
-TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree
-          (TTradeOfferNationLine *this,byte freeSelfFlag)
+undefined4 __thiscall
+TTradeOfferNationLine::DestructTTradeOfferNationLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -3,53 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TStream.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404467
-// GHIDRA_NAME TStream::thunk_DestructTStreamAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTStreamAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTStreamRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTStreamRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TStream::thunk_DestructTStreamAndMaybeFree(TStream *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004095FC
-// GHIDRA_NAME TStream::thunk_GetTStreamClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTStreamClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTStreamClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTStreamClassNamePointer */
-
-void * __cdecl TStream::thunk_GetTStreamClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTStreamClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00488920
 // GHIDRA_NAME TStream::CreateTStreamInstance
-// GHIDRA_PROTO void __thiscall CreateTStreamInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around DestructCPtrListBaseState; instructions=16, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTStreamInstance()
 
-/* [WrapperShape] small wrapper around DestructCPtrListBaseState; instructions=16, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TStream::CreateTStreamInstance(TStream *this)
+void __fastcall TStream::CreateTStreamInstance(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -61,64 +19,44 @@ void __thiscall TStream::CreateTStreamInstance(TStream *this)
   puStack_8 = &LAB_0062ebb8;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  DestructCPtrListBaseState(&this->field1_0x4);
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  DestructCPtrListBaseState();
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004889D0
 // GHIDRA_NAME TStream::GetTStreamClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTStreamClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TStream.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTStreamClassNamePointer()
 
-/* Returns class descriptor pointer for TStream. */
-
-void * __cdecl TStream::GetTStreamClassNamePointer(void)
+undefined ** TStream::GetTStreamClassNamePointer(void)
 
 {
-  return &g_pClassDescTStream;
+  return &PTR_s_TStream_006490c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488A10
 // GHIDRA_NAME TStream::ConstructTStreamBaseState
-// GHIDRA_PROTO void __thiscall ConstructTStreamBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTStreamBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TStream::ConstructTStreamBaseState(TStream *this)
+undefined4 __thiscall TStream::ConstructTStreamBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTStreamAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTStreamAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488A40
 // GHIDRA_NAME TStream::DestructTStreamAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTStreamAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TStream runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTStreamAndMaybeFree()
 
-/* Returns TStream runtime class descriptor pointer. */
-
-void * __thiscall TStream::DestructTStreamAndMaybeFree(TStream *this)
+void __fastcall TStream::DestructTStreamAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

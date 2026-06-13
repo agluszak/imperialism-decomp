@@ -3,110 +3,25 @@
 // Program: Imperialism.exe
 // Bucket: TTacNavyToolbar.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040267B
-// GHIDRA_NAME TTacNavyToolbar::thunk_HandleNavyTacticalToolbarModeAndCommandTags
-// GHIDRA_PROTO void __thiscall thunk_HandleNavyTacticalToolbarModeAndCommandTags(int arg1, int arg2, int arg3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleNavyTacticalToolbarModeAndCommandTags
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleNavyTacticalToolbarModeAndCommandTags */
-
-void __thiscall
-TTacNavyToolbar::thunk_HandleNavyTacticalToolbarModeAndCommandTags
-          (TTacNavyToolbar *this,int arg1,int arg2,int arg3)
-
-{
-  TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags
-            ((TacticalBattleView *)this,arg1,arg2,arg3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403A99
-// GHIDRA_NAME TTacNavyToolbar::thunk_GetTTacNavyToolbarClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTacNavyToolbarClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTacNavyToolbarClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTacNavyToolbarClassNamePointer */
-
-void * __cdecl TTacNavyToolbar::thunk_GetTTacNavyToolbarClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTacNavyToolbarClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405C36
-// GHIDRA_NAME TTacNavyToolbar::thunk_ConstructTTacNavyToolbarBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTacNavyToolbarBaseState(int lifecycleContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeTacticalNavyToolbarCommandEntries [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeTacticalNavyToolbarCommandEntries [FID:thunk_target_sync] */
-
-void __thiscall
-TTacNavyToolbar::thunk_ConstructTTacNavyToolbarBaseState(TTacNavyToolbar *this,int lifecycleContext)
-
-{
-  ConstructTTacNavyToolbarBaseState(this,lifecycleContext);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407770
-// GHIDRA_NAME TTacNavyToolbar::thunk_scalar_deleting_destructor_00407770
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407770(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTacNavyToolbar::thunk_scalar_deleting_destructor_00407770(TTacNavyToolbar *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD160
 // GHIDRA_NAME TTacNavyToolbar::GetTTacNavyToolbarClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTacNavyToolbarClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTacNavyToolbar.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTacNavyToolbarClassNamePointer()
 
-/* Returns class descriptor pointer for TTacNavyToolbar. */
-
-void * __cdecl TTacNavyToolbar::GetTTacNavyToolbarClassNamePointer(void)
+undefined ** TTacNavyToolbar::GetTTacNavyToolbarClassNamePointer(void)
 
 {
-  return &g_pClassDescTTacNavyToolbar;
+  return &PTR_s_TTacNavyToolbar_0066a2c8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD180
 // GHIDRA_NAME TTacNavyToolbar::ConstructTTacNavyToolbarBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTacNavyToolbarBaseState(int lifecycleContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Calls InitializeTacticalToolbarCommandEntries then registers hull command tag (0x68756c6c) on toolbar slot +0x1c8.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTacNavyToolbarBaseState()
 
-/* Calls InitializeTacticalToolbarCommandEntries then registers hull command tag (0x68756c6c) on
-   toolbar slot +0x1c8. */
-
-void __thiscall
-TTacNavyToolbar::ConstructTTacNavyToolbarBaseState(TTacNavyToolbar *this,int lifecycleContext)
+void __thiscall TTacNavyToolbar::ConstructTTacNavyToolbarBaseState(int *param_1,undefined4 param_2)
 
 {
-  TTacticalToolbar::ConstructTTacticalToolbarBaseState((TTacticalToolbar *)this);
-  (**(code **)((int)this->field0_0x0 + 0x1c8))(0x68756c6c);
+  TTacticalToolbar::ConstructTTacticalToolbarBaseState(param_2);
+  (**(code **)(*param_1 + 0x1c8))(0x68756c6c);
   return;
 }
 

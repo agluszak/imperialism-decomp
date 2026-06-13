@@ -3,507 +3,26 @@
 // Program: Imperialism.exe
 // Bucket: TDisplayMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004012A3
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80 */
-
-void __cdecl
-TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)
-
-{
-  WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401460
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot014
-// GHIDRA_PROTO void __cdecl TDisplayMgr_VtblSlot014(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00 */
-
-void __cdecl TDisplayMgr::TDisplayMgr_VtblSlot014(void)
-
-{
-  WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004018AC
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot018
-// GHIDRA_PROTO void __stdcall TDisplayMgr_VtblSlot018(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AssertUDisplayMgrLine495
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AssertUDisplayMgrLine495 */
-
-void TDisplayMgr::TDisplayMgr_VtblSlot018(void)
-
-{
-  AssertUDisplayMgrLine495();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402437
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot021
-// GHIDRA_PROTO void __cdecl TDisplayMgr_VtblSlot021(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetMapTileIconVariantTriplet
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetMapTileIconVariantTriplet */
-
-void __cdecl TDisplayMgr::TDisplayMgr_VtblSlot021(int arg1)
-
-{
-  SetMapTileIconVariantTriplet(arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004028B0
-// GHIDRA_NAME TDisplayMgr::thunk_CreateTFuzzyVarInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTFuzzyVarInstance(int * pRect)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BlitGWorldPeekerRectToCachedSurface [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BlitGWorldPeekerRectToCachedSurface [FID:thunk_target_sync] */
-
-void __thiscall TDisplayMgr::thunk_CreateTFuzzyVarInstance(TDisplayMgr *this,int *pRect)
-
-{
-  TFuzzyVar::CreateTFuzzyVarInstance((TFuzzyVar *)this,pRect);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402991
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990 */
-
-void __cdecl
-TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(void)
-
-{
-  WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402CC0
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot007
-// GHIDRA_PROTO void __thiscall TDisplayMgr_VtblSlot007(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReleasePrimaryRenderSurfaceContextAndCloseOwnerView
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReleasePrimaryRenderSurfaceContextAndCloseOwnerView */
-
-void __thiscall TDisplayMgr::TDisplayMgr_VtblSlot007(TDisplayMgr *this)
-
-{
-  ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403A0D
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TDisplayMgr_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDisplayMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDisplayMgrClassNamePointer */
-
-void * __cdecl TDisplayMgr::TDisplayMgr_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDisplayMgrClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404395
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot011
-// GHIDRA_PROTO void __cdecl TDisplayMgr_VtblSlot011(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0 */
-
-void __cdecl TDisplayMgr::TDisplayMgr_VtblSlot011(void)
-
-{
-  Helper_Uses_thunk_Cluster_GameplayHint_004962c0_At004feab0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404773
-// GHIDRA_NAME TDisplayMgr::thunk_AssertUDisplayMgrLine730
-// GHIDRA_PROTO void __stdcall thunk_AssertUDisplayMgrLine730(void)
-
-void TDisplayMgr::thunk_AssertUDisplayMgrLine730(void)
-
-{
-  AssertUDisplayMgrLine730();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004049B2
-// GHIDRA_NAME TDisplayMgr::thunk_scalar_deleting_destructor_004049B2
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004049B2(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TDisplayMgr::thunk_scalar_deleting_destructor_004049B2(TDisplayMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404B51
-// GHIDRA_NAME TDisplayMgr::thunk_GetTColorFillClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTColorFillClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTColorFillClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTColorFillClassNamePointer */
-
-void * __cdecl TDisplayMgr::thunk_GetTColorFillClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TColorFill::GetTColorFillClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404C7D
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900 */
-
-void __cdecl
-TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(void)
-
-{
-  WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404FA2
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TDisplayMgr_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDisplayMgrAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDisplayMgrAndMaybeFree */
-
-void * __thiscall TDisplayMgr::TDisplayMgr_VtblSlot001(TDisplayMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDisplayMgrAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404FE3
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot012
-// GHIDRA_PROTO void __thiscall TDisplayMgr_VtblSlot012(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to EnsurePrimaryRenderSurfaceContextAllocated
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to EnsurePrimaryRenderSurfaceContextAllocated */
-
-void __thiscall TDisplayMgr::TDisplayMgr_VtblSlot012(TDisplayMgr *this)
-
-{
-  EnsurePrimaryRenderSurfaceContextAllocated(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405187
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004ff150
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_FreeHeapBufferIfNotNull_At004ff150(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004ff150
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At004ff150 */
-
-void __cdecl TDisplayMgr::thunk_WrapperFor_FreeHeapBufferIfNotNull_At004ff150(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At004ff150();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040544D
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot020
-// GHIDRA_PROTO void __thiscall TDisplayMgr_VtblSlot020(ushort stateWord)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to LoadMainViewClipSnapshotIntoQuickDrawState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to LoadMainViewClipSnapshotIntoQuickDrawState */
-
-void __thiscall TDisplayMgr::TDisplayMgr_VtblSlot020(TDisplayMgr *this,ushort stateWord)
-
-{
-  LoadMainViewClipSnapshotIntoQuickDrawState(this,stateWord);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405F2E
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot013
-// GHIDRA_PROTO void __cdecl TDisplayMgr_VtblSlot013(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0 */
-
-void __cdecl TDisplayMgr::TDisplayMgr_VtblSlot013(void)
-
-{
-  WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004064DD
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot010
-// GHIDRA_PROTO void __thiscall TDisplayMgr_VtblSlot010(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeTurnOrderNavigationDialogByViewportSize
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeTurnOrderNavigationDialogByViewportSize */
-
-void __thiscall TDisplayMgr::TDisplayMgr_VtblSlot010(TDisplayMgr *this)
-
-{
-  TToolBarCluster::InitializeTurnOrderNavigationDialogByViewportSize((TToolBarCluster *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004066B8
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50 */
-
-void __cdecl
-TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)
-
-{
-  WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406AF0
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930 */
-
-void __cdecl
-TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(void)
-
-{
-  WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406EAB
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot019
-// GHIDRA_PROTO void __thiscall TDisplayMgr_VtblSlot019(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DispatchDisplayManagerControlStringMessage
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DispatchDisplayManagerControlStringMessage */
-
-void __thiscall TDisplayMgr::TDisplayMgr_VtblSlot019(TDisplayMgr *this)
-
-{
-  DispatchDisplayManagerControlStringMessage(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407081
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot016
-// GHIDRA_PROTO void __thiscall TDisplayMgr_VtblSlot016(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AssertUDisplayMgrLines614And616
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AssertUDisplayMgrLines614And616 */
-
-void __thiscall TDisplayMgr::TDisplayMgr_VtblSlot016(TDisplayMgr *this)
-
-{
-  AssertUDisplayMgrLines614And616(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004072E3
-// GHIDRA_NAME TDisplayMgr::TDisplayMgr_VtblSlot017
-// GHIDRA_PROTO void __stdcall TDisplayMgr_VtblSlot017(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to AssertUDisplayMgrLine471
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to AssertUDisplayMgrLine471 */
-
-void TDisplayMgr::TDisplayMgr_VtblSlot017(void)
-
-{
-  AssertUDisplayMgrLine471();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407937
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0 */
-
-void __cdecl
-TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(void)
-
-{
-  WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408CCE
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20 */
-
-void __cdecl
-TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)
-
-{
-  WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408EA4
-// GHIDRA_NAME TDisplayMgr::thunk_CreateTDisplayMgrInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTDisplayMgrInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderScoreGraphSeriesAndLabels [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderScoreGraphSeriesAndLabels [FID:thunk_target_sync] */
-
-void __thiscall TDisplayMgr::thunk_CreateTDisplayMgrInstance(TDisplayMgr *this)
-
-{
-  CreateTDisplayMgrInstance(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409219
-// GHIDRA_NAME TDisplayMgr::thunk_GetTGWorldPeekerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGWorldPeekerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGWorldPeekerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGWorldPeekerClassNamePointer */
-
-void * __cdecl TDisplayMgr::thunk_GetTGWorldPeekerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TGWorldPeeker::GetTGWorldPeekerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409232
-// GHIDRA_NAME TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960 */
-
-void __cdecl
-TDisplayMgr::thunk_WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)
-
-{
-  WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE390
 // GHIDRA_NAME TDisplayMgr::CreateTDisplayMgrInstance
-// GHIDRA_PROTO void __thiscall CreateTDisplayMgrInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Renders score-graph series bars/labels using diplomacy/terrain state snapshots.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTDisplayMgrInstance()
 
-/* Renders score-graph series bars/labels using diplomacy/terrain state snapshots. */
-
-void __thiscall TDisplayMgr::CreateTDisplayMgrInstance(TDisplayMgr *this)
+void TDisplayMgr::CreateTDisplayMgrInstance(void)
 
 {
   int iVar1;
   int *piVar2;
   int iVar3;
-  THQButton *this_00;
-  short sVar4;
+  int iVar4;
   int iVar5;
-  int iVar6;
   undefined4 *unaff_FS_OFFSET;
+  int *local_48;
   int local_34;
   int local_30;
+  int local_2c;
+  undefined4 uStack_28;
   int local_24;
+  undefined1 *local_20;
   int local_1c;
   int local_18;
   int local_14;
@@ -516,51 +35,65 @@ void __thiscall TDisplayMgr::CreateTDisplayMgrInstance(TDisplayMgr *this)
   puStack_8 = &LAB_00633228;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  sVar4 = 0;
-  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  local_48 = (int *)0x2b67;
+  local_2c = 0;
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
   local_24 = 0;
   local_34 = 0;
   do {
-    if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_34) != 0) {
+    iVar4 = local_24;
+    if (*(int *)((int)&g_apTerrainTypeDescriptorTable + local_34) != 0) {
       local_30 = 0;
-      iVar6 = 0;
-      piVar2 = (int *)(&g_pDiplomacyTurnStateManager->field_0x1824 + local_24);
+      iVar5 = 0;
+      piVar2 = (int *)(g_pDiplomacyTurnStateManager + 0x1824 + local_24);
       iVar3 = 4;
       do {
-        iVar5 = *piVar2;
+        iVar1 = *piVar2;
         piVar2 = piVar2 + 1;
-        iVar6 = iVar6 + iVar5;
+        iVar5 = iVar5 + iVar1;
         iVar3 = iVar3 + -1;
       } while (iVar3 != 0);
-      SetQuickDrawFillColor(0);
-      iVar5 = (int)sVar4;
-      local_18 = iVar5 + 2;
-      local_14 = (short)iVar6 + 2;
-      local_10 = iVar5 + 0x26;
+      local_20 = (undefined1 *)&local_48;
+      local_48 = (int *)0x0;
+      SetQuickDrawFillColor();
+      iVar3 = (int)(short)local_2c;
+      local_18 = iVar3 + 2;
+      local_48 = &local_1c;
+      local_14 = (short)iVar5 + 2;
+      local_10 = iVar3 + 0x26;
       local_1c = 2;
-      thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_1c);
-      iVar6 = 0;
-      iVar3 = local_24 + 0x1824;
+      thunk_FillRectWithQuickDrawBrushAndContextOffset();
+      iVar5 = 0;
+      iVar4 = iVar4 + 0x1824;
       do {
         local_1c = (int)(short)local_30;
-        iVar1 = *(int *)((int)g_pDiplomacyTurnStateManager->relationCodeMatrix17x17 + iVar3 + -4);
+        iVar1 = *(int *)(g_pDiplomacyTurnStateManager + iVar4);
         local_14 = (short)iVar1 + local_1c;
-        local_10 = iVar5 + 0x24;
-        local_18 = iVar5;
-        (**(code **)(*(int *)g_pUiRuntimeContext + 0x34))();
-        thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_1c);
+        local_10 = iVar3 + 0x24;
+        local_48 = (int *)(iVar5 + 3);
+        local_18 = iVar3;
+        (**(code **)(*g_pUiRuntimeContext + 0x34))();
+        local_48 = &local_1c;
+        thunk_FillRectWithQuickDrawBrushAndContextOffset();
         local_30 = local_30 + iVar1;
-        iVar6 = iVar6 + 1;
-        iVar3 = iVar3 + 4;
-      } while (iVar6 < 4);
+        iVar5 = iVar5 + 1;
+        iVar4 = iVar4 + 4;
+      } while (iVar5 < 4);
+      local_48 = (int *)0x4fe4a6;
       InitializeSharedStringRefFromEmpty();
+      local_48 = &uStack_28;
       uStack_4 = 0;
       FormatOverlayTerrainLabelText();
-      SetQuickDrawFillColor(0);
-      thunk_SetQuickDrawTextOriginWithContextOffset(0,sVar4 + 0x30);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(this_00);
-      sVar4 = sVar4 + 0x34;
+      local_20 = (undefined1 *)&local_48;
+      local_48 = (int *)0x0;
+      SetQuickDrawFillColor();
+      local_48 = (int *)(local_2c + 0x30);
+      thunk_SetQuickDrawTextOriginWithContextOffset(0);
+      local_48 = &uStack_28;
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      local_2c = local_2c + 0x34;
       uStack_4 = 0xffffffff;
+      local_48 = (int *)0x4fe50e;
       ReleaseSharedStringRefIfNotEmpty();
     }
     local_24 = local_24 + 0x10;
@@ -572,22 +105,17 @@ void __thiscall TDisplayMgr::CreateTDisplayMgrInstance(TDisplayMgr *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE780
 // GHIDRA_NAME TDisplayMgr::GetTDisplayMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDisplayMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDisplayMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDisplayMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TDisplayMgr. */
-
-void * __cdecl TDisplayMgr::GetTDisplayMgrClassNamePointer(void)
+undefined ** TDisplayMgr::GetTDisplayMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTDisplayMgr;
+  return &PTR_s_TDisplayMgr_00656600;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE7A0
 // GHIDRA_NAME TDisplayMgr::InitializeMapTileRuntimeStateEntry
-// GHIDRA_PROTO void __thiscall InitializeMapTileRuntimeStateEntry(void)
+// GHIDRA_PROTO undefined InitializeMapTileRuntimeStateEntry()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes one map tile runtime-state entry with default icon/overlay bytes.
 // GHIDRA_COMMENT Key defaults:
@@ -602,73 +130,62 @@ void * __cdecl TDisplayMgr::GetTDisplayMgrClassNamePointer(void)
    - activity overlay byte (+0x18) set to 0xFF.
    Returns: void. */
 
-void __thiscall TDisplayMgr::InitializeMapTileRuntimeStateEntry(TDisplayMgr *this)
+void __fastcall TDisplayMgr::InitializeMapTileRuntimeStateEntry(undefined4 *param_1)
 
 {
-  this->field10 = 0;
-  this->field11 = 0;
-  this->field12 = 0;
-  this->field10_0x13 = 0;
-  this->field11_0x14 = 0;
-  this->field12_0x15 = 0;
-  this->field13_0x16 = 0;
-  this->field14_0x17 = 0;
-  this->field0_0x0 = &g_vtblTDisplayMgr;
-  this->field2_0x8 = 8;
-  this->pField04 = (void *)0x0;
-  this->field0a = 0;
-  this->field4_0xc = 0;
-  this->field15_0x18 = 0;
-  this->pField20 = (void *)0x0;
+  *(undefined1 *)(param_1 + 4) = 0;
+  *(undefined1 *)((int)param_1 + 0x11) = 0;
+  *(undefined1 *)((int)param_1 + 0x12) = 0;
+  *(undefined1 *)((int)param_1 + 0x13) = 0;
+  *(undefined1 *)(param_1 + 5) = 0;
+  *(undefined1 *)((int)param_1 + 0x15) = 0;
+  *(undefined1 *)((int)param_1 + 0x16) = 0;
+  *(undefined1 *)((int)param_1 + 0x17) = 0;
+  *param_1 = &PTR_LAB_00656680;
+  *(undefined2 *)(param_1 + 2) = 8;
+  param_1[1] = 0;
+  *(undefined2 *)((int)param_1 + 10) = 0;
+  *(undefined1 *)(param_1 + 3) = 0;
+  param_1[6] = 0;
+  param_1[8] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE7F0
 // GHIDRA_NAME TDisplayMgr::DestructTDisplayMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDisplayMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDisplayMgrAndMaybeFree()
 
-void * __thiscall TDisplayMgr::DestructTDisplayMgrAndMaybeFree(TDisplayMgr *this,byte freeSelfFlag)
+undefined4 __thiscall TDisplayMgr::DestructTDisplayMgrAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTDisplayMgrAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEA60
 // GHIDRA_NAME TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView
-// GHIDRA_PROTO void __thiscall ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Releases primary render surface context, clears global pointer, and closes owner view lifecycle.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ReleasePrimaryRenderSurfaceContextAndCloseOwnerView()
 
-/* Releases primary render surface context, clears global pointer, and closes owner view lifecycle.
-    */
-
-void __thiscall TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(TDisplayMgr *this)
+void __fastcall TDisplayMgr::ReleasePrimaryRenderSurfaceContextAndCloseOwnerView(int *param_1)
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At00496420();
-  g_pPrimaryRenderSurfaceContext = (void *)0x0;
-  (**(code **)(*(int *)this->pField20 + 0x28))();
-  if (this != (TDisplayMgr *)0x0) {
-    (**(code **)((int)this->field0_0x0 + 4))(1);
+  WrapperFor_FreeHeapBufferIfNotNull_At00496420(g_pPrimaryRenderSurfaceContext);
+  g_pPrimaryRenderSurfaceContext = 0;
+  (**(code **)(*(int *)param_1[8] + 0x28))();
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEB80
 // GHIDRA_NAME TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated
-// GHIDRA_PROTO void __thiscall EnsurePrimaryRenderSurfaceContextAllocated(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Lazily allocates the primary render surface context if missing.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined EnsurePrimaryRenderSurfaceContextAllocated()
 
-/* Lazily allocates the primary render surface context if missing. */
-
-void __thiscall TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated(TDisplayMgr *this)
+void __fastcall TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated(int *param_1)
 
 {
   undefined4 local_10;
@@ -676,30 +193,26 @@ void __thiscall TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated(TDisplay
   undefined4 local_8;
   undefined4 local_4;
   
-  if (g_pPrimaryRenderSurfaceContext == (void *)0x0) {
+  if (g_pPrimaryRenderSurfaceContext == 0) {
     local_10 = 0xffffffc0;
     local_c = 0xffffffc0;
     local_8 = 0x280;
     local_4 = 0x220;
-    (**(code **)((int)this->field0_0x0 + 0x2c))(&g_pPrimaryRenderSurfaceContext,8,&local_10);
+    (**(code **)(*param_1 + 0x2c))(&g_pPrimaryRenderSurfaceContext,8,&local_10);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEC80
 // GHIDRA_NAME TDisplayMgr::DispatchDisplayManagerControlStringMessage
-// GHIDRA_PROTO void __thiscall DispatchDisplayManagerControlStringMessage(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Build temporary shared string and dispatch display manager localized control message.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DispatchDisplayManagerControlStringMessage()
 
-/* Build temporary shared string and dispatch display manager localized control message. */
-
-void __thiscall TDisplayMgr::DispatchDisplayManagerControlStringMessage(TDisplayMgr *this)
+void TDisplayMgr::DispatchDisplayManagerControlStringMessage(undefined4 param_1,undefined1 *param_2)
 
 {
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000008;
+  undefined1 auStack_14 [4];
+  undefined4 uStack_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -707,11 +220,13 @@ void __thiscall TDisplayMgr::DispatchDisplayManagerControlStringMessage(TDisplay
   local_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00633288;
   *unaff_FS_OFFSET = &local_c;
+  uStack_10 = param_2;
+  param_2 = auStack_14;
   local_4 = 0;
-  thunk_AssignStringSharedRefAndReturnThis();
-  TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
-            (g_pUiRuntimeContext,(int)this,in_stack_00000008);
+  thunk_AssignStringSharedRefAndReturnThis(&param_1);
+  TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage();
   local_4 = 0xffffffff;
+  uStack_10 = 0x4feccf;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_c;
   return;
@@ -719,96 +234,86 @@ void __thiscall TDisplayMgr::DispatchDisplayManagerControlStringMessage(TDisplay
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FED70
 // GHIDRA_NAME TDisplayMgr::AssertUDisplayMgrLines614And616
-// GHIDRA_PROTO void __thiscall AssertUDisplayMgrLines614And616(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Assertion helper anchored to D:\Ambit\Cross\UDisplayMgr.cpp lines 614 and 616.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined AssertUDisplayMgrLines614And616()
 
-/* Assertion helper anchored to D:\Ambit\Cross\UDisplayMgr.cpp lines 614 and 616. */
-
-void __thiscall TDisplayMgr::AssertUDisplayMgrLines614And616(TDisplayMgr *this)
+void __thiscall TDisplayMgr::AssertUDisplayMgrLines614And616(int param_1,char param_2)
 
 {
-  char in_stack_00000004;
-  
-  if (this->field0a != 0) {
-    if (in_stack_00000004 != '\0') {
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  if (*(short *)(param_1 + 10) != 0) {
+    if (param_2 != '\0') {
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x266);
       return;
     }
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x268);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FEDC0
 // GHIDRA_NAME TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState
-// GHIDRA_PROTO void __thiscall LoadMainViewClipSnapshotIntoQuickDrawState(ushort stateWord)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds quick-draw clip state from resolved main view clip bounds and stores caller-provided state word at +0x1C
-// GHIDRA_COMMENT_END
-
-/* Builds quick-draw clip state from resolved main view clip bounds and stores caller-provided state
-   word at +0x1C */
+// GHIDRA_PROTO undefined LoadMainViewClipSnapshotIntoQuickDrawState()
 
 void __thiscall
-TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(TDisplayMgr *this,ushort stateWord)
+TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(int param_1,undefined2 param_2)
 
 {
   int iVar1;
-  void *pvVar2;
+  undefined4 uVar2;
   int *piVar3;
   undefined4 *unaff_FS_OFFSET;
-  int local_38;
-  int local_34;
-  int *local_30;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  undefined4 uStack_30;
   undefined4 uStack_2c;
   undefined4 uStack_28;
-  int iStack_24;
-  int *piStack_20;
+  undefined4 uStack_24;
+  undefined4 uStack_20;
   undefined4 uStack_1c;
   undefined4 uStack_18;
-  undefined4 local_c;
+  undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  undefined4 uStack_4;
   
-  pvVar2 = g_pPrimaryRenderSurfaceContext;
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
+  iVar1 = g_pPrimaryRenderSurfaceContext;
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006332a8;
-  *unaff_FS_OFFSET = &local_c;
-  if (pvVar2 != (void *)0x0) {
-    local_38 = 0;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (iVar1 != 0) {
+    uStack_38 = 0;
     AcquireReusableQuickDrawSurface();
-    local_4 = 0;
-    ApplyHitRegionToClipState(local_34);
-    thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_30,&local_38);
-    thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_38);
-    thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    thunk_ReturnConstantTrueQuickDrawFlag();
-    piVar3 = (int *)(**(code **)(*(int *)this->pField04 + 0x94))(0x6d61696e);
+    uStack_4 = 0;
+    ApplyHitRegionToClipState(uStack_34);
+    thunk_GetActiveQuickDrawSurfaceContextAndFlags(&uStack_30,&uStack_38);
+    thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,uStack_38);
+    uVar2 = thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+    thunk_ReturnConstantTrueQuickDrawFlag(uVar2);
+    piVar3 = (int *)(**(code **)(**(int **)(param_1 + 4) + 0x94))(0x6d61696e);
     if (piVar3 == (int *)0x0) {
-                    /* WARNING: Subroutine does not return */
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x28a);
     }
     iVar1 = *piVar3;
-    (**(code **)(iVar1 + 300))(&local_30);
-    iStack_24 = local_34;
-    piStack_20 = local_30;
+    (**(code **)(iVar1 + 300))(&uStack_30);
+    uStack_24 = uStack_34;
+    uStack_20 = uStack_30;
     uStack_1c = uStack_2c;
     uStack_18 = uStack_28;
     thunk_SetGlobalQuickDrawOrigin((short)piVar3[0xb],(short)piVar3[0xc]);
-    thunk_ApplyRectClipRegionToGlobalClipState(&iStack_24);
-    (**(code **)(iVar1 + 0x110))(&local_34);
-    thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    thunk_NoOpQuickDrawLifecycleHookB();
-    thunk_SetActiveQuickDrawSurfaceContext(local_30,local_38);
-    SnapshotHitRegionToClipCache();
-    this->field1c = stateWord;
-    local_4 = 0xffffffff;
+    thunk_ApplyRectClipRegionToGlobalClipState(&uStack_24);
+    (**(code **)(iVar1 + 0x110))(&uStack_34);
+    uVar2 = thunk_GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
+    thunk_NoOpQuickDrawLifecycleHookB(uVar2);
+    thunk_SetActiveQuickDrawSurfaceContext(uStack_30,uStack_38);
+    SnapshotHitRegionToClipCache(uStack_34);
+    *(undefined2 *)(param_1 + 0x1c) = param_2;
+    uStack_4 = 0xffffffff;
     ReleaseOrCacheQuickDrawSurface();
   }
-  *unaff_FS_OFFSET = local_c;
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 

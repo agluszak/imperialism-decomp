@@ -3,88 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TFlagOptionsPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401D5C
-// GHIDRA_NAME TFlagOptionsPicture::thunk_DestructTFlagOptionsPictureAndMaybeFree
-// GHIDRA_PROTO void __cdecl thunk_DestructTFlagOptionsPictureAndMaybeFree(TFlagOptionsPicture * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTFlagOptionsPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTFlagOptionsPictureAndMaybeFree */
-
-void __cdecl
-TFlagOptionsPicture::thunk_DestructTFlagOptionsPictureAndMaybeFree(TFlagOptionsPicture *pThis)
-
-{
-  DestructTFlagOptionsPictureAndMaybeFree(pThis);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004046BA
-// GHIDRA_NAME TFlagOptionsPicture::thunk_GetTFlagOptionsPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTFlagOptionsPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTFlagOptionsPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTFlagOptionsPictureClassNamePointer */
-
-void * __cdecl TFlagOptionsPicture::thunk_GetTFlagOptionsPictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTFlagOptionsPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405574
-// GHIDRA_NAME TFlagOptionsPicture::thunk_HandleDialogCommandTagSaveLoadPrefQuitCred
-// GHIDRA_PROTO void __thiscall thunk_HandleDialogCommandTagSaveLoadPrefQuitCred(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleDialogCommandTagSaveLoadPrefQuitCred
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleDialogCommandTagSaveLoadPrefQuitCred */
-
-void __thiscall
-TFlagOptionsPicture::thunk_HandleDialogCommandTagSaveLoadPrefQuitCred(TFlagOptionsPicture *this)
-
-{
-  HandleDialogCommandTagSaveLoadPrefQuitCred(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406F87
-// GHIDRA_NAME TFlagOptionsPicture::thunk_scalar_deleting_destructor_00406F87
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00406F87(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TFlagOptionsPicture::thunk_scalar_deleting_destructor_00406F87
-          (TFlagOptionsPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B210
 // GHIDRA_NAME TFlagOptionsPicture::CreateTFlagOptionsPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTFlagOptionsPictureInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TFlagOptionsPicture; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTFlagOptionsPictureInstance()
 
-/* [ClassQuad] create inferred for TFlagOptionsPicture; alloc factory pattern. */
-
-void * __cdecl TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(void)
+undefined4 * TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(void)
 
 {
   undefined4 *puVar1;
@@ -98,12 +21,12 @@ void * __cdecl TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(void)
   puStack_8 = &LAB_00635d2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTFlagOptionsPictureClassNamePointer_00642490;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00642490;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -112,31 +35,21 @@ void * __cdecl TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B290
 // GHIDRA_NAME TFlagOptionsPicture::GetTFlagOptionsPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTFlagOptionsPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TFlagOptionsPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTFlagOptionsPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TFlagOptionsPicture. */
-
-void * __cdecl TFlagOptionsPicture::GetTFlagOptionsPictureClassNamePointer(void)
+undefined ** TFlagOptionsPicture::GetTFlagOptionsPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTFlagOptionsPicture;
+  return &PTR_s_TFlagOptionsPicture_0065de10;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B2B0
 // GHIDRA_NAME TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
-// GHIDRA_PROTO void __thiscall HandleDialogCommandTagSaveLoadPrefQuitCred(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles dialog command tags including cred/newg/load/pref/quit/save paths, then forwards fallback handling via city-dialog toggle command dispatcher.
-// GHIDRA_COMMENT_END
-
-/* Handles dialog command tags including cred/newg/load/pref/quit/save paths, then forwards fallback
-   handling via city-dialog toggle command dispatcher. */
+// GHIDRA_PROTO undefined HandleDialogCommandTagSaveLoadPrefQuitCred()
 
 void __thiscall
-TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred(TFlagOptionsPicture *this)
+TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
+          (int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
   uint uVar1;
@@ -144,8 +57,6 @@ TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred(TFlagOptionsPict
   int *piVar3;
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
-  int in_stack_00000004;
-  int in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
@@ -154,84 +65,84 @@ TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred(TFlagOptionsPict
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635d50;
   *unaff_FS_OFFSET = &local_c;
-  if (in_stack_00000004 != 10) {
+  if (param_2 != 10) {
     thunk_HandleCityDialogToggleCommandOrForward();
     *unaff_FS_OFFSET = local_c;
     return;
   }
   InitializeSharedStringRefFromEmpty();
   local_4 = 0;
-  uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
+  uVar1 = *(uint *)(param_3 + 0x1c);
   if (uVar1 < 0x676f777a) {
     if (uVar1 == 0x676f7779) {
-      piVar3 = (int *)(**(code **)((int)this->pVtable + 0x58))();
+      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x63726564) {
-      piVar3 = (int *)(**(code **)((int)this->pVtable + 0x58))();
+      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
-      (**(code **)(*(int *)g_pLocalizationTable + 0x48))();
+      (**(code **)(*g_pLocalizationTable + 0x48))();
       goto LAB_0056b529;
     }
   }
   else if (uVar1 < 0x6e657768) {
     if (uVar1 == 0x6e657767) {
 LAB_0056b474:
-      cVar2 = thunk_DispatchGameStateEventIfLocalizedPromptAccepted();
+      cVar2 = DispatchGameStateEventIfLocalizedPromptAccepted();
       if (cVar2 != '\0') {
-        piVar3 = (int *)(**(code **)((int)this->pVtable + 0x58))();
+        piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
         (**(code **)(*piVar3 + 0x1b4))();
-        if (*(int *)((int)g_pLocalizationTable + 0x44) == 1) {
+        if (g_pLocalizationTable[0x11] == 1) {
           if (*(char *)((int)g_pGameFlowState + 0xf4) != '\0') {
             thunk_TrySaveGameAndMaybeShowFailureDialog();
           }
           thunk_DispatchTaggedGameStateEvent1F20();
         }
-        else if (*(int *)(in_stack_00000008 + 0x1c) == 0x71756974) {
+        else if (*(int *)(param_3 + 0x1c) == 0x71756974) {
           PostWmCloseToMainThreadWindow();
         }
         else {
-          thunk_CreateAndQueueTurnEventPacketTagGWEN();
+          CreateAndQueueTurnEventPacketTagGWEN();
         }
       }
       goto LAB_0056b529;
     }
     if (uVar1 == 0x6c6f6164) {
-      if (*(int *)((int)g_pLocalizationTable + 0x44) != 0) {
+      if (g_pLocalizationTable[0x11] != 0) {
         thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
         goto LAB_0056b529;
       }
-      piVar3 = (int *)(**(code **)((int)this->pVtable + 0x58))();
+      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
-      iVar4 = *(int *)g_pLocalizationTable;
+      iVar4 = *g_pLocalizationTable;
       goto LAB_0056b526;
     }
   }
   else {
     if (uVar1 == 0x70726566) {
-      piVar3 = (int *)(**(code **)((int)this->pVtable + 0x58))();
+      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
-      iVar4 = *(int *)g_pLocalizationTable;
+      iVar4 = *g_pLocalizationTable;
 LAB_0056b526:
       (**(code **)(iVar4 + 0x48))();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x71756974) goto LAB_0056b474;
     if (uVar1 == 0x73617665) {
-      piVar3 = (int *)(**(code **)((int)this->pVtable + 0x58))();
+      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
       (**(code **)(*piVar3 + 0x1b4))();
-      if (*(int *)((int)g_pLocalizationTable + 0x44) == 2) {
+      if (g_pLocalizationTable[0x11] == 2) {
         InitializeSharedStringRefFromEmpty();
         local_4._0_1_ = 1;
         thunk_LoadUiStringResourceByGroupAndIndex();
-        thunk_AssignStringSharedRefAndReturnThis();
+        thunk_AssignStringSharedRefAndReturnThis(&param_4);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4 = (uint)local_4._1_3_ << 8;
         ReleaseSharedStringRefIfNotEmpty();
       }
       else {
-        (**(code **)(*(int *)g_pLocalizationTable + 0x48))();
+        (**(code **)(*g_pLocalizationTable + 0x48))();
       }
       goto LAB_0056b529;
     }
@@ -246,26 +157,19 @@ LAB_0056b529:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B640
 // GHIDRA_NAME TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree
-// GHIDRA_PROTO void __cdecl DestructTFlagOptionsPictureAndMaybeFree(TFlagOptionsPicture * pThis)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes localized text rows and style flags for the flag-options picture controls (iterates 8 rows).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTFlagOptionsPictureAndMaybeFree()
 
-/* Initializes localized text rows and style flags for the flag-options picture controls (iterates 8
-   rows). */
-
-void __cdecl
-TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree(TFlagOptionsPicture *pThis)
+void TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree(undefined4 param_1)
 
 {
   int iVar1;
-  int *pControl;
+  int *piVar2;
   code *unaff_ESI;
-  int iVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  int nStyleArgA;
-  int nStyleArgB;
-  int nStyleArgC;
+  undefined4 uVar4;
+  undefined4 uVar5;
+  undefined4 uVar6;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -274,30 +178,30 @@ TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree(TFlagOptionsPicture
   puStack_8 = &LAB_00635d68;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_NoOpUiLifecycleHook();
+  TView::thunk_NoOpUiLifecycleHook(param_1);
   InitializeSharedStringRefFromEmpty();
-  iVar2 = 0;
+  iVar3 = 0;
   local_4 = 0;
   do {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2743,iVar2,&pThis);
-    pControl = (int *)(*unaff_ESI)(iVar2 + 0x74787430);
-    iVar1 = *pControl;
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2743,iVar3,&param_1);
+    piVar2 = (int *)(*unaff_ESI)(iVar3 + 0x74787430);
+    iVar1 = *piVar2;
     (**(code **)(iVar1 + 0xc))();
-    if (iVar2 == 0) {
-      nStyleArgC = 0x2b6c;
-      nStyleArgB = 0x2b6b;
-      nStyleArgA = 0xe;
+    if (iVar3 == 0) {
+      uVar6 = 0x2b6c;
+      uVar5 = 0x2b6b;
+      uVar4 = 0xe;
     }
     else {
-      nStyleArgC = 0x2b6a;
-      nStyleArgB = 0x2b6c;
-      nStyleArgA = 0xc;
+      uVar6 = 0x2b6a;
+      uVar5 = 0x2b6c;
+      uVar4 = 0xc;
     }
-    thunk_ApplyUiTextStyleAndThemeFlags(pControl,0,nStyleArgA,nStyleArgB,nStyleArgC);
-    (**(code **)(iVar1 + 0x1c4))(((1 < iVar2) - 1 & 3) - 2,0);
+    ApplyUiTextStyleAndThemeFlags(piVar2,0,uVar4,uVar5,uVar6);
+    (**(code **)(iVar1 + 0x1c4))(((1 < iVar3) - 1 & 3) - 2,0);
     (**(code **)(iVar1 + 0x1c8))(&stack0xffffffec,0);
-    iVar2 = iVar2 + 1;
-  } while (iVar2 < 8);
+    iVar3 = iVar3 + 1;
+  } while (iVar3 < 8);
   local_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;

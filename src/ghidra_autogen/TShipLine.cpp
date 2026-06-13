@@ -3,148 +3,30 @@
 // Program: Imperialism.exe
 // Bucket: TShipLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402086
-// GHIDRA_NAME TShipLine::thunk_HandleEngineerOrderDialogCheckOrNameCommandAndForward_At00402086
-// GHIDRA_PROTO void __thiscall thunk_HandleEngineerOrderDialogCheckOrNameCommandAndForward_At00402086(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleEngineerOrderDialogCheckOrNameCommandAndForward
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleEngineerOrderDialogCheckOrNameCommandAndForward */
-
-void __thiscall
-TShipLine::thunk_HandleEngineerOrderDialogCheckOrNameCommandAndForward_At00402086(TShipLine *this)
-
-{
-  HandleEngineerOrderDialogCheckOrNameCommandAndForward(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004021AD
-// GHIDRA_NAME TShipLine::thunk_ConstructTShipLineBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTShipLineBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTShipLineBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTShipLineBaseState */
-
-void * __thiscall TShipLine::thunk_ConstructTShipLineBaseState(TShipLine *this,int arg1)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ConstructTShipLineBaseState(this,arg1);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004044AD
-// GHIDRA_NAME TShipLine::thunk_GetTShipViewClassNamePointer_At004044ad
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipViewClassNamePointer_At004044ad(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTShipViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTShipViewClassNamePointer */
-
-void * __cdecl TShipLine::thunk_GetTShipViewClassNamePointer_At004044ad(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TShipView::GetTShipViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404FAC
-// GHIDRA_NAME TShipLine::thunk_DestructTShipLineAndMaybeFree_At00404fac
-// GHIDRA_PROTO void * __thiscall thunk_DestructTShipLineAndMaybeFree_At00404fac(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTShipLineAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTShipLineAndMaybeFree */
-
-void * __thiscall
-TShipLine::thunk_DestructTShipLineAndMaybeFree_At00404fac(TShipLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTShipLineAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004066D6
-// GHIDRA_NAME TShipLine::thunk_GetTShipLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTShipLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTShipLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTShipLineClassNamePointer */
-
-void * __cdecl TShipLine::thunk_GetTShipLineClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTShipLineClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040803A
-// GHIDRA_NAME TShipLine::thunk_RenderAdmiralSummaryAndNavyNormalizationGauge_At0040803a
-// GHIDRA_PROTO void __thiscall thunk_RenderAdmiralSummaryAndNavyNormalizationGauge_At0040803a(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderAdmiralSummaryAndNavyNormalizationGauge
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderAdmiralSummaryAndNavyNormalizationGauge */
-
-void __thiscall
-TShipLine::thunk_RenderAdmiralSummaryAndNavyNormalizationGauge_At0040803a(TShipLine *this)
-
-{
-  TCivDescription::RenderAdmiralSummaryAndNavyNormalizationGauge((TCivDescription *)this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA360
 // GHIDRA_NAME TShipLine::SetArmyUnitLineActiveFlagAndNotify
-// GHIDRA_PROTO void __thiscall SetArmyUnitLineActiveFlagAndNotify(byte isActive, void * notifyContext)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Updates army-unit-line active flag and emits change notification only when state actually changed.
-// GHIDRA_COMMENT_END
-
-/* Updates army-unit-line active flag and emits change notification only when state actually
-   changed. */
+// GHIDRA_PROTO undefined SetArmyUnitLineActiveFlagAndNotify()
 
 void __thiscall
-TShipLine::SetArmyUnitLineActiveFlagAndNotify(TShipLine *this,byte isActive,void *notifyContext)
+TShipLine::SetArmyUnitLineActiveFlagAndNotify(int *param_1,char param_2,undefined4 param_3)
 
 {
-  if (this[1].field_0x1c != isActive) {
-    this[1].field_0x1c = isActive;
-    (*(code *)this->field0_0x0[0x73])(notifyContext);
+  if ((char)param_1[0x21] != param_2) {
+    *(char *)(param_1 + 0x21) = param_2;
+    (**(code **)(*param_1 + 0x1cc))(param_3);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565030
 // GHIDRA_NAME TShipLine::CreateTShipLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTShipLineInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TShipLine; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTShipLineInstance()
 
-/* [ClassQuad] create inferred for TShipLine; alloc factory pattern. */
-
-void * __cdecl TShipLine::CreateTShipLineInstance(void)
+undefined4 * TShipLine::CreateTShipLineInstance(void)
 
 {
-  TLineData *pThis;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -154,166 +36,188 @@ void * __cdecl TShipLine::CreateTShipLineInstance(void)
   puStack_8 = &LAB_0063593a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (pThis != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(pThis);
-    pThis->field0_0x0 = &PTR_thunk_GetTShipLineClassNamePointer_0065cde8;
-    pTVar1 = pThis;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TLineData::ConstructTLineDataBaseState();
+    *puVar1 = &PTR_LAB_0065cde8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005650A0
 // GHIDRA_NAME TShipLine::GetTShipLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTShipLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TShipLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTShipLineClassNamePointer()
 
-/* Returns class descriptor pointer for TShipLine. */
-
-void * __cdecl TShipLine::GetTShipLineClassNamePointer(void)
+undefined ** TShipLine::GetTShipLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTShipLine;
+  return &PTR_s_TShipLine_0065c868;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565100
 // GHIDRA_NAME TShipLine::ConstructTShipLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTShipLineBaseState(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] ctor inferred for TShipLine from in-body g_vtblTShipLine assignment/use.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTShipLineBaseState()
 
-/* [ClassQuad] ctor inferred for TShipLine from in-body g_vtblTShipLine assignment/use. */
-
-void * __thiscall TShipLine::ConstructTShipLineBaseState(TShipLine *this,int arg1)
+void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,undefined4 param_3)
 
 {
-  void *pvVar1;
-  undefined1 uVar2;
-  undefined3 uVar3;
-  TView *this_00;
-  TControl *this_01;
-  int extraout_EAX;
-  void *extraout_EAX_00;
+  undefined4 *puVar1;
+  undefined4 **ppuVar2;
+  int *piVar3;
   int iVar4;
+  undefined4 extraout_ECX;
   undefined4 *unaff_FS_OFFSET;
-  TView *local_24;
+  undefined4 **ppuStack_54;
+  undefined4 *puStack_50;
+  undefined4 **ppuStack_4c;
+  int iStack_48;
+  undefined1 *puStack_44;
+  undefined4 uStack_40;
+  int iStack_3c;
+  undefined4 *local_24;
   undefined4 local_20;
-  int local_1c;
+  undefined4 local_1c;
   undefined4 local_18;
   undefined4 local_14;
   undefined1 *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  TClickZone *local_4;
+  int local_4;
   
-  local_4 = (TClickZone *)0xffffffff;
+  local_4 = 0xffffffff;
   puStack_8 = &LAB_00635976;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_1c = *(int *)(arg1 + 0x84);
-  this_00 = AllocateWithFallbackHandler();
-  local_4 = (TClickZone *)0x0;
-  if (this_00 == (TView *)0x0) {
-    this_00 = (TView *)0x0;
+  local_1c = *(undefined4 *)(param_2 + 0x84);
+  iStack_3c = 0x68;
+  uStack_40 = 0x565133;
+  ppuVar2 = (undefined4 **)AllocateWithFallbackHandler();
+  local_4 = 0;
+  if (ppuVar2 == (undefined4 **)0x0) {
+    ppuVar2 = (undefined4 **)0x0;
   }
   else {
-    local_24 = this_00;
-    TView::thunk_ConstructTViewBaseState(this_00);
-    this_00->pVtable = &g_vtblTShipLine;
+    iStack_3c = 0x56514d;
+    local_24 = ppuVar2;
+    TView::thunk_ConstructTViewBaseState();
+    *ppuVar2 = &PTR_LAB_0065ce28;
   }
-  local_24 = this->pField10;
-  uVar2 = *(undefined1 *)&this->field18;
-  uVar3 = *(undefined3 *)((int)&this->field18 + 1);
-  local_4 = (TClickZone *)0xffffffff;
+  local_24 = *(undefined4 **)(param_1 + 0x10);
+  puVar1 = *(undefined4 **)(param_1 + 0x18);
+  iStack_3c = 0;
+  uStack_40 = 5;
+  iStack_48 = param_1 + 8;
+  puStack_44 = (undefined1 *)0x5;
+  ppuStack_4c = (undefined4 **)param_3;
+  puStack_50 = (undefined4 *)param_2;
+  ppuStack_54 = (undefined4 **)0x0;
+  local_4 = 0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  this_00[1].pVtable = local_24;
-  this_00[1].field1_0x4 = uVar2;
-  this_00[1].field2_0x5 = uVar3;
-  this_01 = AllocateWithFallbackHandler();
-  local_4 = (TClickZone *)0x1;
-  if (this_01 == (TControl *)0x0) {
-    this_01 = (TControl *)0x0;
+  iStack_3c = 0x94;
+  ppuVar2[0x18] = local_24;
+  ppuVar2[0x19] = puVar1;
+  uStack_40 = 0x565199;
+  piVar3 = (int *)AllocateWithFallbackHandler();
+  local_4 = 1;
+  if (piVar3 == (int *)0x0) {
+    piVar3 = (int *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_01);
-    (this_01->base).pVtable = &PTR_thunk_GetTArmyCheckBoxClassNamePointer_0064cec0;
-    *(undefined4 *)&this_01->field_0x88 = 0;
-    this_01->field90 = (byte *)0x0;
-    *(undefined4 *)&this_01->field_0x8c = 0;
-    this_01->field_0x84 = 0;
+    iStack_3c = 0x5651b5;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *piVar3 = (int)&PTR_LAB_0064cec0;
+    piVar3[0x22] = 0;
+    piVar3[0x24] = 0;
+    piVar3[0x23] = 0;
+    *(undefined1 *)(piVar3 + 0x21) = 0;
   }
-  local_4 = (TClickZone *)0xffffffff;
-  local_24 = (TView *)0x50;
+  local_4 = 0xffffffff;
+  local_24 = (undefined4 *)0x50;
   local_20 = 0x2d;
+  iStack_3c = (int)*(short *)(&DAT_006985e8 + *(short *)(*(int *)(param_1 + 0x10) + 4) * 2);
+  uStack_40 = local_1c;
+  puStack_44 = (undefined1 *)0x5;
+  ppuStack_4c = &local_24;
+  iStack_48 = 5;
+  puStack_50 = &local_14;
   local_14 = 0;
   local_10 = (undefined1 *)0x0;
-  TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-            ((TArmyCheckBox *)this_01,(int)this_00,(int)&local_14,(int)&local_24,5,5,local_1c,
-             (int)*(short *)((int)&g_TShip_Line_Base_Value_006985E8 +
-                            *(short *)((int)this->pField10 + 4) * 2));
-  pvVar1 = (this_01->base).pVtable;
-  (this_01->base).field8_0x1c = 0x63686563;
-  this_01->hasCommandTagResource60 = &DAT_00000004;
-  (**(code **)((int)pvVar1 + 0x1c8))();
+  ppuStack_54 = ppuVar2;
+  TArmyCheckBox::ConstructTArmyCheckBoxBaseState();
+  piVar3[7] = 0x63686563;
+  piVar3[0x18] = 4;
+  iStack_3c = 0;
+  uStack_40 = CONCAT31((int3)((uint)extraout_ECX >> 8),
+                       *(undefined1 *)(*(int *)(param_1 + 0x14) + 0xc));
+  puStack_44 = (undefined1 *)0x565245;
+  (**(code **)(*piVar3 + 0x1c8))();
+  puStack_44 = (undefined1 *)0x56524e;
   InitializeSharedStringRefFromEmpty();
+  puStack_44 = (undefined1 *)0x88;
   uStack_c = 2;
+  iStack_48 = 0x565260;
   local_4 = AllocateWithFallbackHandler();
   uStack_c._0_1_ = 3;
-  if (local_4 == (TClickZone *)0x0) {
+  if (local_4 == 0) {
     iVar4 = 0;
   }
   else {
-    TClickZone::thunk_ConstructUiCommandTagResourceEntry(local_4);
-    iVar4 = extraout_EAX;
+    puStack_44 = (undefined1 *)0x565277;
+    iVar4 = TClickZone::thunk_ConstructUiCommandTagResourceEntry();
   }
+  puStack_44 = (undefined1 *)0x0;
+  iStack_48 = 4;
+  puStack_50 = &local_1c;
+  ppuStack_4c = (undefined4 **)0x4;
+  ppuStack_54 = &local_24;
   uStack_c = CONCAT31(uStack_c._1_3_,2);
   local_1c = 0x80;
   local_18 = 0x18;
-  local_24 = (TView *)0x40;
+  local_24 = (undefined4 *)0x40;
   local_20 = 0;
-  thunk_InitializeUiResourceEntryFrameAndParent();
+  thunk_InitializeUiResourceEntryFrameAndParent(0,ppuVar2);
   *(undefined4 *)(iVar4 + 0x1c) = 0x6e616d65;
-  (**(code **)(*(int *)g_pLocalizationTable + 0x84))();
-  local_10 = &stack0xffffffac;
-  thunk_AssignStringSharedRefAndReturnThis();
-  TToolBarCluster::InitializeAndRunMainRoutine();
+  puStack_44 = &stack0xffffffd0;
+  iStack_48 = 4;
+  ppuStack_4c = (undefined4 **)0x2746;
+  puStack_50 = (undefined4 *)0x5652d7;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
+  local_10 = (undefined1 *)&ppuStack_54;
+  puStack_50 = (undefined4 *)iVar4;
+  thunk_AssignStringSharedRefAndReturnThis(&iStack_3c);
+  InitializeAndRunMainRoutine();
   local_18 = 0xffffffff;
+  puStack_50 = (undefined4 *)0x565302;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = local_20;
-  return extraout_EAX_00;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005653B0
 // GHIDRA_NAME TShipLine::DestructTShipLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTShipLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTShipLineAndMaybeFree()
 
-void * __thiscall TShipLine::DestructTShipLineAndMaybeFree(TShipLine *this,byte freeSelfFlag)
+undefined4 __thiscall TShipLine::DestructTShipLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005658D0
 // GHIDRA_NAME TShipLine::HandleEngineerOrderDialogCheckOrNameCommandAndForward
-// GHIDRA_PROTO void __thiscall HandleEngineerOrderDialogCheckOrNameCommandAndForward(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles engineer-order dialog command tags (check/name): toggles selected mission-node state, updates per-resource selection count, and forwards command to child handler.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined HandleEngineerOrderDialogCheckOrNameCommandAndForward()
 
-/* Handles engineer-order dialog command tags (check/name): toggles selected mission-node state,
-   updates per-resource selection count, and forwards command to child handler. */
-
-void __thiscall TShipLine::HandleEngineerOrderDialogCheckOrNameCommandAndForward(TShipLine *this)
+void __thiscall
+TShipLine::HandleEngineerOrderDialogCheckOrNameCommandAndForward
+          (int param_1,undefined4 param_2,int param_3,undefined4 param_4)
 
 {
   int *piVar1;
@@ -323,24 +227,23 @@ void __thiscall TShipLine::HandleEngineerOrderDialogCheckOrNameCommandAndForward
   undefined2 extraout_var;
   int iVar5;
   short sVar6;
-  int in_stack_00000008;
   
-  if (*(int *)(in_stack_00000008 + 0x1c) == 0x63686563) {
-    pvVar3 = ObjectPool::thunk_FindMissionOrderNodeById
-                       (*(ObjectPool **)(this->field64 + 0x10),this->field60);
+  if (*(int *)(param_3 + 0x1c) == 0x63686563) {
+    pvVar3 = ObjectPool::FindMissionOrderNodeById
+                       (*(ObjectPool **)(*(int *)(param_1 + 100) + 0x10),*(int *)(param_1 + 0x60));
     if (*(char *)((int)pvVar3 + 0xc) == '\0') {
-      thunk_SetTaskForceOrderSelectionByNodeId();
+      SetTaskForceOrderSelectionByNodeId(*(undefined4 *)(param_1 + 0x60),1);
       sVar6 = 1;
     }
     else {
-      thunk_SetTaskForceOrderSelectionByNodeId();
+      SetTaskForceOrderSelectionByNodeId(*(undefined4 *)(param_1 + 0x60),0);
       sVar6 = -1;
     }
-    piVar1 = *(int **)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0xb0 +
-                      *(short *)(*(int *)((int)g_pUiRuntimeContext + 0xf0) + 0x96) * 4);
+    piVar1 = *(int **)(*(int *)(g_pUiRuntimeContext + 0xf0) + 0xb0 +
+                      *(short *)(*(int *)(g_pUiRuntimeContext + 0xf0) + 0x96) * 4);
     if (piVar1 != (int *)0x0) {
       iVar4 = *piVar1;
-      sVar2 = thunk_GetOrderNodeDescriptorWord20ByResourceType();
+      sVar2 = GetOrderNodeDescriptorWord20ByResourceType();
       iVar4 = (**(code **)(iVar4 + 0x94))(sVar2 + 0x636c7330);
       if (sVar6 < 1) {
         if ((sVar6 < 0) && (0 < *(short *)(iVar4 + 0x94))) {
@@ -356,10 +259,10 @@ void __thiscall TShipLine::HandleEngineerOrderDialogCheckOrNameCommandAndForward
       }
     }
   }
-  else if (*(int *)(in_stack_00000008 + 0x1c) == 0x6e616d65) {
-    thunk_RunEngineerOrderNameEditDialogAndApply();
+  else if (*(int *)(param_3 + 0x1c) == 0x6e616d65) {
+    RunEngineerOrderNameEditDialogAndApply();
   }
-  TMultiplayerMgr::thunk_ForwardEngineerDialogCommandToChildSlot40();
+  thunk_ForwardEngineerDialogCommandToChildSlot40(param_2,param_3,param_4);
   return;
 }
 

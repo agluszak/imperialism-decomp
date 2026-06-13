@@ -3,265 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TBlockadePortMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401924
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot005
-// GHIDRA_PROTO void __thiscall TBlockadePortMission_VtblSlot005(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SerializeTBlockadePortMission
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SerializeTBlockadePortMission */
-
-void __thiscall TBlockadePortMission::TBlockadePortMission_VtblSlot005(TBlockadePortMission *this)
-
-{
-  SerializeTBlockadePortMission(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401FDC
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TBlockadePortMission_VtblSlot001(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTBlockadePortMission
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestroyTBlockadePortMission */
-
-void * __thiscall TBlockadePortMission::TBlockadePortMission_VtblSlot001(TBlockadePortMission *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestroyTBlockadePortMission(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004024B9
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot018
-// GHIDRA_PROTO void __thiscall TBlockadePortMission_VtblSlot018(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ValidateBlockadePortMissionContextAndRefreshChild
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ValidateBlockadePortMissionContextAndRefreshChild */
-
-void __thiscall TBlockadePortMission::TBlockadePortMission_VtblSlot018(TBlockadePortMission *this)
-
-{
-  ValidateBlockadePortMissionContextAndRefreshChild(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004027FC
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot013
-// GHIDRA_PROTO void __thiscall TBlockadePortMission_VtblSlot013(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetBlockadePortMissionStateByte8To3
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to SetBlockadePortMissionStateByte8To3 */
-
-void __thiscall TBlockadePortMission::TBlockadePortMission_VtblSlot013(TBlockadePortMission *this)
-
-{
-  SetBlockadePortMissionStateByte8To3(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403567
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot015
-// GHIDRA_PROTO void __thiscall TBlockadePortMission_VtblSlot015(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateBlockadePortMissionResourceWeightsFromNavyContext
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to PopulateBlockadePortMissionResourceWeightsFromNavyContext */
-
-void __thiscall TBlockadePortMission::TBlockadePortMission_VtblSlot015(TBlockadePortMission *this)
-
-{
-  PopulateBlockadePortMissionResourceWeightsFromNavyContext(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403BB1
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot039
-// GHIDRA_PROTO void __cdecl TBlockadePortMission_VtblSlot039(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to QueueMapOrderType6FromContextPointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to QueueMapOrderType6FromContextPointer */
-
-void __cdecl TBlockadePortMission::TBlockadePortMission_VtblSlot039(int arg1)
-
-{
-  QueueMapOrderType6FromContextPointer(arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404813
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot006
-// GHIDRA_PROTO void __thiscall TBlockadePortMission_VtblSlot006(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeserializeTBlockadePortMission
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DeserializeTBlockadePortMission */
-
-void __thiscall TBlockadePortMission::TBlockadePortMission_VtblSlot006(TBlockadePortMission *this)
-
-{
-  DeserializeTBlockadePortMission(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405722
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot040
-// GHIDRA_PROTO void __cdecl TBlockadePortMission_VtblSlot040(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ResolveAndCacheMissionPortZoneContextForNationTarget
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ResolveAndCacheMissionPortZoneContextForNationTarget */
-
-void __cdecl TBlockadePortMission::TBlockadePortMission_VtblSlot040(void)
-
-{
-  ResolveAndCacheMissionPortZoneContextForNationTarget();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405D3A
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TBlockadePortMission_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBlockadePortMissionClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBlockadePortMissionClassNamePointer */
-
-void * __cdecl TBlockadePortMission::TBlockadePortMission_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBlockadePortMissionClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406064
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot024
-// GHIDRA_PROTO bool __stdcall TBlockadePortMission_VtblSlot024(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForBlockadePortMissionCapabilityFlagB
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForBlockadePortMissionCapabilityFlagB */
-
-bool TBlockadePortMission::TBlockadePortMission_VtblSlot024(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForBlockadePortMissionCapabilityFlagB();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040787E
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot014
-// GHIDRA_PROTO void __cdecl TBlockadePortMission_VtblSlot014(void)
-
-void __cdecl TBlockadePortMission::TBlockadePortMission_VtblSlot014(void)
-
-{
-  ComputeMissionScoreUsingPortZoneContextAverage();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407CED
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot012
-// GHIDRA_PROTO void __thiscall TBlockadePortMission_VtblSlot012(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB */
-
-void __thiscall TBlockadePortMission::TBlockadePortMission_VtblSlot012(TBlockadePortMission *this)
-
-{
-  RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407FE0
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot019
-// GHIDRA_PROTO bool __thiscall TBlockadePortMission_VtblSlot019(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleBlockadePortMissionActionType4ForTargetPort
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleBlockadePortMissionActionType4ForTargetPort */
-
-bool __thiscall TBlockadePortMission::TBlockadePortMission_VtblSlot019(TBlockadePortMission *this)
-
-{
-  bool bVar1;
-  
-  bVar1 = HandleBlockadePortMissionActionType4ForTargetPort(this);
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408981
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot017
-// GHIDRA_PROTO void __cdecl TBlockadePortMission_VtblSlot017(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ProcessMapOrderEntryContextMode
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ProcessMapOrderEntryContextMode */
-
-void __cdecl TBlockadePortMission::TBlockadePortMission_VtblSlot017(void)
-
-{
-  ProcessMapOrderEntryContextMode();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004096A6
-// GHIDRA_NAME TBlockadePortMission::TBlockadePortMission_VtblSlot025
-// GHIDRA_PROTO bool __stdcall TBlockadePortMission_VtblSlot025(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForBlockadePortMissionCapabilityFlagA
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForBlockadePortMissionCapabilityFlagA */
-
-bool TBlockadePortMission::TBlockadePortMission_VtblSlot025(void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForBlockadePortMissionCapabilityFlagA();
-  return bVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A990
 // GHIDRA_NAME TBlockadePortMission::CreateTBlockadePortMission
-// GHIDRA_PROTO TBlockadePortMission * __cdecl CreateTBlockadePortMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and constructs TBlockadePortMission object (0x40 bytes) and installs g_vtblTBlockadePortMission.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTBlockadePortMission()
 
-/* Allocates and constructs TBlockadePortMission object (0x40 bytes) and installs
-   g_vtblTBlockadePortMission. */
-
-TBlockadePortMission * __cdecl TBlockadePortMission::CreateTBlockadePortMission(void)
+undefined4 * TBlockadePortMission::CreateTBlockadePortMission(void)
 
 {
-  TBlockadePortMission *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -271,415 +20,356 @@ TBlockadePortMission * __cdecl TBlockadePortMission::CreateTBlockadePortMission(
   puStack_8 = &LAB_006343aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x40);
   local_4 = 0;
-  if (this != (TBlockadePortMission *)0x0) {
-    TMission::thunk_ConstructTMission((TMission *)this);
-    this->field14 = (void *)0x0;
-    this->pField18 = (undefined4 *)0x0;
-    this->pField1c = (void *)0x0;
-    this->pField20 = (void *)0x0;
-    this->pField24 = (void *)0x0;
-    this->field28 = 0;
-    this->field2c = (void *)0x0;
-    this->pField30 = (void *)0x0;
-    this->pField34 = (undefined *)0x0;
-    this->pField38 = (void *)0x0;
-    this->field0_0x0 = (int)&g_vtblTBlockadePortMission;
+  if (puVar1 != (undefined4 *)0x0) {
+    TMission::ConstructTMission();
+    puVar1[5] = 0;
+    puVar1[6] = 0;
+    puVar1[7] = 0;
+    puVar1[8] = 0;
+    puVar1[9] = 0;
+    puVar1[10] = 0;
+    puVar1[0xb] = 0;
+    puVar1[0xc] = 0;
+    puVar1[0xd] = 0;
+    puVar1[0xe] = 0;
+    *puVar1 = &g_vtblTBlockadePortMission;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TBlockadePortMission *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AA90
 // GHIDRA_NAME TBlockadePortMission::DestroyTBlockadePortMission
-// GHIDRA_PROTO void * __thiscall DestroyTBlockadePortMission(void)
+// GHIDRA_PROTO undefined DestroyTBlockadePortMission()
 
-void * __thiscall TBlockadePortMission::DestroyTBlockadePortMission(TBlockadePortMission *this)
+undefined4 __thiscall
+TBlockadePortMission::DestroyTBlockadePortMission(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_ResetTBlockadePortMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  ResetTBlockadePortMissionToSentinelVtable();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AAE0
 // GHIDRA_NAME TBlockadePortMission::GetTBlockadePortMissionClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBlockadePortMissionClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBlockadePortMission.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBlockadePortMissionClassNamePointer()
 
-/* Returns class descriptor pointer for TBlockadePortMission. */
-
-void * __cdecl TBlockadePortMission::GetTBlockadePortMissionClassNamePointer(void)
+undefined ** TBlockadePortMission::GetTBlockadePortMissionClassNamePointer(void)
 
 {
-  return &g_pClassDescTBlockadePortMission;
+  return &PTR_s_TBlockadePortMission_006979f8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AC60
 // GHIDRA_NAME TBlockadePortMission::SerializeTBlockadePortMission
-// GHIDRA_PROTO void __thiscall SerializeTBlockadePortMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Serialize TBlockadePortMission-specific field (+0x3c) after shared navy-mission common serialization.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SerializeTBlockadePortMission()
 
-/* Serialize TBlockadePortMission-specific field (+0x3c) after shared navy-mission common
-   serialization. */
-
-void __thiscall TBlockadePortMission::SerializeTBlockadePortMission(TBlockadePortMission *this)
+void TBlockadePortMission::SerializeTBlockadePortMission(int *param_1)
 
 {
   int iVar1;
-  undefined4 extraout_EAX;
-  int *in_stack_00000004;
+  undefined4 uVar2;
   
-  thunk_SerializeTNavyMissionCommon();
-  iVar1 = *in_stack_00000004;
-  thunk_GetShortAtOffset14OrInvalid();
-  (**(code **)(iVar1 + 0x88))(extraout_EAX);
+  SerializeTNavyMissionCommon(param_1);
+  iVar1 = *param_1;
+  uVar2 = thunk_GetShortAtOffset14OrInvalid();
+  (**(code **)(iVar1 + 0x88))(uVar2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053ACA0
 // GHIDRA_NAME TBlockadePortMission::DeserializeTBlockadePortMission
-// GHIDRA_PROTO void __thiscall DeserializeTBlockadePortMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Deserialize TBlockadePortMission-specific field (+0x3c) after shared navy-mission common deserialization.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DeserializeTBlockadePortMission()
 
-/* Deserialize TBlockadePortMission-specific field (+0x3c) after shared navy-mission common
-   deserialization. */
-
-void __thiscall TBlockadePortMission::DeserializeTBlockadePortMission(TBlockadePortMission *this)
+void __thiscall TBlockadePortMission::DeserializeTBlockadePortMission(int param_1,int *param_2)
 
 {
-  int arg1;
-  int extraout_EAX;
-  int in_EDX;
-  int *in_stack_00000004;
+  undefined4 uVar1;
   
-  thunk_DeserializeTNavyMissionCommon((int)this,in_EDX);
-  arg1 = (**(code **)(*in_stack_00000004 + 0x4c))();
-  thunk_FindMapActionContextByNodeId(arg1);
-  this->field3c = extraout_EAX;
+  DeserializeTNavyMissionCommon(param_2);
+  uVar1 = (**(code **)(*param_2 + 0x4c))();
+  uVar1 = FindMapActionContextByNodeId(uVar1);
+  *(undefined4 *)(param_1 + 0x3c) = uVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053ACE0
 // GHIDRA_NAME TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB
-// GHIDRA_PROTO void __thiscall RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Same scoring pattern as 0x005387f0 in a second mission-class variant; clears state byte +0x11.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* Same scoring pattern as 0x005387f0 in a second mission-class variant; clears state byte +0x11. */
 
-void __thiscall
-TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB
-          (TBlockadePortMission *this)
+void __fastcall
+TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB(int param_1)
 
 {
-  TGreatPower *this_00;
-  double dVar1;
-  short sVar2;
-  uint uVar3;
+  int iVar1;
+  double dVar2;
+  short sVar3;
+  int iVar4;
   void *pCurrentPortZone;
-  void *pvVar4;
-  float local_4;
+  undefined4 uVar5;
+  float fStack_4;
   
-  this_00 = this->field14;
-  uVar3 = TGreatPower::thunk_ComputeMapActionContextNodeValueAverage(this_00);
-  local_4 = (float)(int)uVar3;
+  iVar1 = *(int *)(param_1 + 0x14);
+  iVar4 = TGreatPower::ComputeMapActionContextNodeValueAverage();
+  fStack_4 = (float)iVar4;
   for (pCurrentPortZone = GetFirstPortZone(); pCurrentPortZone != (void *)0x0;
       pCurrentPortZone = GetNextPortZone(pCurrentPortZone)) {
     if (*(int *)((int)pCurrentPortZone + 0x2c) == 0) {
-      pvVar4 = ReallocateHeapBlockWithAllocatorTracking(*(int *)((int)pCurrentPortZone + 0x28),8);
-      if (pvVar4 == (void *)0x0) {
-        pvVar4 = ReallocateHeapBlockWithAllocatorTracking(*(int *)((int)pCurrentPortZone + 0x28),4);
-        *(void **)((int)pCurrentPortZone + 0x28) = pvVar4;
+      iVar4 = ReallocateHeapBlockWithAllocatorTracking
+                        (*(undefined4 *)((int)pCurrentPortZone + 0x28),8);
+      if (iVar4 == 0) {
+        uVar5 = ReallocateHeapBlockWithAllocatorTracking
+                          (*(undefined4 *)((int)pCurrentPortZone + 0x28),4);
+        *(undefined4 *)((int)pCurrentPortZone + 0x28) = uVar5;
         *(undefined4 *)((int)pCurrentPortZone + 0x2c) = 1;
       }
       else {
-        *(void **)((int)pCurrentPortZone + 0x28) = pvVar4;
+        *(int *)((int)pCurrentPortZone + 0x28) = iVar4;
         *(undefined4 *)((int)pCurrentPortZone + 0x2c) = 2;
       }
     }
     if (*(int *)((int)pCurrentPortZone + 0x30) == 0) {
       *(undefined4 *)((int)pCurrentPortZone + 0x30) = 1;
     }
-    if ((TGreatPower *)**(undefined4 **)((int)pCurrentPortZone + 0x28) == this_00) {
-      sVar2 = thunk_GetPortZoneOwnerNationCodeFromMissionField48();
-      dVar1 = _g_Compute_Mission_Score_LookupTable_0065AA18;
-      if (sVar2 == this->field04) {
-        dVar1 = _g_Compute_Mission_Score_LookupTable_0065AA10;
+    if (**(int **)((int)pCurrentPortZone + 0x28) == iVar1) {
+      sVar3 = GetPortZoneOwnerNationCodeFromMissionField48();
+      dVar2 = _DAT_0065aa18;
+      if (sVar3 == *(short *)(param_1 + 4)) {
+        dVar2 = _DAT_0065aa10;
       }
-      local_4 = local_4 * (float)dVar1;
+      fStack_4 = fStack_4 * (float)dVar2;
     }
   }
-  local_4 = local_4 / _g_Try_Resolve_Attack_LookupTable_0065A9C0;
-  *(undefined1 *)((int)&this->pField10 + 1) = 0;
-  this->field0c = local_4;
+  fStack_4 = fStack_4 / _DAT_0065a9c0;
+  *(undefined1 *)(param_1 + 0x11) = 0;
+  *(float *)(param_1 + 0xc) = fStack_4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053ADF0
 // GHIDRA_NAME TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild
-// GHIDRA_PROTO void __thiscall ValidateBlockadePortMissionContextAndRefreshChild(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Validates blockade context against nation/owner relation and refreshes child context pointer in field +0x18 when invalid.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ValidateBlockadePortMissionContextAndRefreshChild()
 
-/* Validates blockade context against nation/owner relation and refreshes child context pointer in
-   field +0x18 when invalid. */
-
-void __thiscall
-TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild(TBlockadePortMission *this)
+uint __fastcall
+TBlockadePortMission::ValidateBlockadePortMissionContextAndRefreshChild(int *param_1)
 
 {
   int *piVar1;
   char cVar2;
   short sVar3;
-  void *pvVar4;
+  int iVar4;
   undefined2 extraout_var;
+  undefined4 uVar5;
   
-  piVar1 = g_apNationStates[this->field04];
+  piVar1 = (int *)(&g_apNationStates)[(short)param_1[1]];
   (**(code **)(*piVar1 + 0xc))();
-  sVar3 = thunk_GetPortZoneOwnerNationCodeFromMissionField48();
+  sVar3 = GetPortZoneOwnerNationCodeFromMissionField48();
   if (*(char *)(sVar3 + 0x8a0 + (int)piVar1) == '\0') {
-    thunk_GetShortAtOffset14OrInvalid();
-    SetByteFlagAtOffsetAF0ByIndex();
-    return;
+    uVar5 = 0;
+    sVar3 = thunk_GetShortAtOffset14OrInvalid(0);
+    SetByteFlagAtOffsetAF0ByIndex((int)sVar3,uVar5);
+    return 0;
   }
-  if (this->pField18 != (int *)0x0) {
-    cVar2 = (**(code **)(*(int *)this->pField18 + 0x38))();
+  if ((int *)param_1[6] != (int *)0x0) {
+    cVar2 = (**(code **)(*(int *)param_1[6] + 0x38))();
     if (cVar2 != '\0') {
-      cVar2 = (**(code **)(*(int *)this->pField18 + 0x40))(CONCAT22(extraout_var,this->field04));
+      cVar2 = (**(code **)(*(int *)param_1[6] + 0x40))(CONCAT22(extraout_var,(short)param_1[1]));
       if (cVar2 == '\0') {
-        pvVar4 = (void *)(**(code **)(this->field0_0x0 + 0xa0))();
-        this->pField18 = pvVar4;
+        iVar4 = (**(code **)(*param_1 + 0xa0))();
+        param_1[6] = iVar4;
       }
     }
   }
-  return;
+  return -(uint)(param_1[6] != 0) & (uint)param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AE90
 // GHIDRA_NAME TBlockadePortMission::SetBlockadePortMissionStateByte8To3
-// GHIDRA_PROTO void __thiscall SetBlockadePortMissionStateByte8To3(void)
+// GHIDRA_PROTO undefined SetBlockadePortMissionStateByte8To3()
 
-void __thiscall
-TBlockadePortMission::SetBlockadePortMissionStateByte8To3(TBlockadePortMission *this)
+void __fastcall TBlockadePortMission::SetBlockadePortMissionStateByte8To3(int param_1)
 
 {
-  *(undefined1 *)&this->field08 = 3;
+  *(undefined1 *)(param_1 + 8) = 3;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053AEB0
 // GHIDRA_NAME TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
-// GHIDRA_PROTO void __thiscall PopulateBlockadePortMissionResourceWeightsFromNavyContext(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds blockade-port mission resource-weight vector from navy context, then blends owner/ally support scoring.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined PopulateBlockadePortMissionResourceWeightsFromNavyContext()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* Builds blockade-port mission resource-weight vector from navy context, then blends owner/ally
-   support scoring. */
 
-void __thiscall
-TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext
-          (TBlockadePortMission *this)
+void __fastcall
+TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext(int param_1)
 
 {
-  ushort uVar1;
+  undefined2 uVar1;
   float fVar2;
   float fVar3;
   float fVar4;
   char cVar5;
-  char extraout_AL;
-  char extraout_AL_00;
-  short extraout_AX;
   short sVar6;
-  short extraout_AX_00;
-  short extraout_AX_01;
-  void *ecxArg;
-  uint uVar7;
-  float *pfVar8;
-  ushort *puVar9;
-  void *pvVar10;
+  short sVar7;
+  int iVar8;
+  float *pfVar9;
+  short *psVar10;
   int iVar11;
-  int arg1;
-  int arg1_00;
-  void **ppvVar12;
-  void **ppvVar13;
-  float10 extraout_ST0;
-  float10 extraout_ST0_00;
+  float *pfVar12;
+  int *piVar13;
+  float10 fVar14;
   float fStack_30;
   float local_20 [8];
   
   local_20[0] = 0.0;
   local_20[1] = 0.0;
   local_20[2] = 0.0;
-  pvVar10 = this->field14;
-  sVar6 = this->field04;
+  iVar11 = *(int *)(param_1 + 0x14);
+  uVar1 = *(undefined2 *)(param_1 + 4);
   local_20[3] = 0.0;
-  for (ecxArg = thunk_GetNavyPrimaryOrderListHead(); ecxArg != (void *)0x0;
-      ecxArg = *(void **)((int)ecxArg + 0x24)) {
-    if ((*(void **)((int)ecxArg + 8) == pvVar10) &&
-       (cVar5 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x44))
-                          (sVar6,*(undefined2 *)((int)ecxArg + 0x14)), cVar5 != '\0')) {
-      thunk_GetNavyOrderNormalizationBaseByNationType();
-      fVar2 = (float)((int)*(short *)((int)ecxArg + 0x1c) / (int)extraout_AX);
-      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory
-                        ((int)ecxArg,(int)*(short *)((int)ecxArg + 0x1c) % (int)extraout_AX);
-      local_20[0] = (float)(int)(short)uVar7 * fVar2 + local_20[0];
-      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory
-                        ((int)ecxArg,(int)(short)uVar7);
-      local_20[1] = (float)(int)(short)uVar7 * fVar2 + local_20[1];
-      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory((int)ecxArg,arg1);
-      local_20[2] = (float)(int)(short)uVar7 * fVar2 + local_20[2];
-      uVar7 = thunk_ComputeNavyOrderPriorityContributionPercentByCategory((int)ecxArg,arg1_00);
-      local_20[3] = (float)(int)(short)uVar7 + local_20[3];
+  for (iVar8 = thunk_GetNavyPrimaryOrderListHead(); iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)) {
+    if ((*(int *)(iVar8 + 8) == iVar11) &&
+       (cVar5 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x44))
+                          (uVar1,*(undefined2 *)(iVar8 + 0x14)), cVar5 != '\0')) {
+      sVar6 = GetNavyOrderNormalizationBaseByNationType();
+      fVar2 = (float)((int)*(short *)(iVar8 + 0x1c) / (int)sVar6);
+      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(0);
+      local_20[0] = (float)(int)sVar6 * fVar2 + local_20[0];
+      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(1);
+      local_20[1] = (float)(int)sVar6 * fVar2 + local_20[1];
+      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(2);
+      local_20[2] = (float)(int)sVar6 * fVar2 + local_20[2];
+      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(3);
+      local_20[3] = (float)(int)sVar6 + local_20[3];
     }
   }
-  pfVar8 = local_20;
+  pfVar9 = local_20;
   iVar11 = 4;
-  fVar2 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  fVar2 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   do {
-    fVar2 = fVar2 + *pfVar8;
-    pfVar8 = pfVar8 + 1;
+    fVar2 = fVar2 + *pfVar9;
+    pfVar9 = pfVar9 + 1;
     iVar11 = iVar11 + -1;
   } while (iVar11 != 0);
-  fVar3 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  if (fVar2 != (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    puVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-    pfVar8 = local_20;
+  fVar3 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  if (fVar2 != (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    psVar10 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
+    pfVar9 = local_20;
     do {
-      fVar4 = *pfVar8 / fVar2 -
-              (float)(int)(short)*puVar9 * (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
-      if (fVar4 <= (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+      fVar4 = *pfVar9 / fVar2 -
+              (float)(int)*psVar10 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
+      if (fVar4 <= (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
         fVar4 = -fVar4;
       }
       fVar3 = fVar3 + fVar4;
-      puVar9 = puVar9 + 1;
-      pfVar8 = pfVar8 + 1;
-    } while ((int)puVar9 < 0x697960);
-    fVar3 = fVar2 * ((float)_g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                    fVar3 * (float)_g_Recompute_Nation_Order_LookupTable_0065AA00);
+      psVar10 = psVar10 + 1;
+      pfVar9 = pfVar9 + 1;
+    } while ((int)psVar10 < 0x697960);
+    fVar3 = fVar2 * ((float)g_Recompute_Nation_Order_LookupTable_0065AA08 -
+                    fVar3 * (float)g_Recompute_Nation_Order_LookupTable_0065AA00);
   }
-  fVar2 = fVar3 * _g_Populate_Beachhead_Mission_Value_0065A8FC;
-  if (fVar3 * _g_Populate_Beachhead_Mission_Value_0065A8FC ==
-      (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    fVar2 = _g_Populate_Beachhead_Mission_Value_0065AA24;
+  fVar2 = fVar3 * _DAT_0065a8fc;
+  if (fVar3 * _DAT_0065a8fc == (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    fVar2 = _DAT_0065aa24;
   }
-  ppvVar12 = &this->field2c;
-  puVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-  ppvVar13 = ppvVar12;
+  pfVar9 = (float *)(param_1 + 0x2c);
+  psVar10 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
+  pfVar12 = pfVar9;
   do {
-    uVar1 = *puVar9;
-    puVar9 = puVar9 + 1;
-    *ppvVar13 = (void *)((float)(int)(short)uVar1 * fVar2 *
-                        (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8);
-    ppvVar13 = ppvVar13 + 1;
-  } while ((int)puVar9 < 0x697960);
+    sVar6 = *psVar10;
+    psVar10 = psVar10 + 1;
+    *pfVar12 = (float)(int)sVar6 * fVar2 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    pfVar12 = pfVar12 + 1;
+  } while ((int)psVar10 < 0x697960);
   fStack_30 = 0.0;
-  sVar6 = thunk_GetPortZoneOwnerNationCodeFromMissionField48();
+  sVar6 = GetPortZoneOwnerNationCodeFromMissionField48();
   if (sVar6 < 7) {
-    sVar6 = thunk_GetPortZoneOwnerNationCodeFromMissionField48();
+    sVar6 = GetPortZoneOwnerNationCodeFromMissionField48();
     local_20[0] = 0.0;
     local_20[1] = 0.0;
     local_20[2] = 0.0;
     local_20[3] = 0.0;
-    for (pvVar10 = thunk_GetNavyPrimaryOrderListHead(); pvVar10 != (void *)0x0;
-        pvVar10 = *(void **)((int)pvVar10 + 0x24)) {
-      if (((*(short *)((int)pvVar10 + 0x14) == sVar6) &&
-          (thunk_InvokeOrderNodeOwnerVfunc38(), extraout_AL != '\0')) &&
-         (thunk_GetNavyOrderNormalizationBaseByNationType(),
-         extraout_AX_00 <= *(short *)((int)pvVar10 + 0x1c))) {
-        thunk_AccumulateNavyOrderCategoryVectorWithScale((int)pvVar10,(int)local_20,0x3f800000);
+    for (iVar11 = thunk_GetNavyPrimaryOrderListHead(); iVar11 != 0; iVar11 = *(int *)(iVar11 + 0x24)
+        ) {
+      if (((*(short *)(iVar11 + 0x14) == sVar6) &&
+          (cVar5 = InvokeOrderNodeOwnerVfunc38(), cVar5 != '\0')) &&
+         (sVar7 = GetNavyOrderNormalizationBaseByNationType(), sVar7 <= *(short *)(iVar11 + 0x1c)))
+      {
+        AccumulateNavyOrderCategoryVectorWithScale(iVar11,local_20,0x3f800000);
       }
     }
-    thunk_ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile();
-    fStack_30 = (float)extraout_ST0;
+    fVar14 = (float10)ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
+                                (local_20,&DAT_00697978,4);
+    fStack_30 = (float)fVar14;
   }
   else {
     iVar11 = 0;
-    ppvVar13 = g_apNationStates;
+    piVar13 = &g_apNationStates;
     do {
-      if ((*ppvVar13 != (void *)0x0) &&
-         (cVar5 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x44))
-                            (this->field04,iVar11), cVar5 != '\0')) {
-        sVar6 = thunk_GetPortZoneOwnerNationCodeFromMissionField48();
+      if ((*piVar13 != 0) &&
+         (cVar5 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x44))
+                            (*(undefined2 *)(param_1 + 4),iVar11), cVar5 != '\0')) {
+        sVar6 = GetPortZoneOwnerNationCodeFromMissionField48();
         local_20[4] = 0.0;
         local_20[5] = 0.0;
         local_20[6] = 0.0;
         local_20[7] = 0.0;
-        for (pvVar10 = thunk_GetNavyPrimaryOrderListHead(); pvVar10 != (void *)0x0;
-            pvVar10 = *(void **)((int)pvVar10 + 0x24)) {
-          if (((*(short *)((int)pvVar10 + 0x14) == sVar6) &&
-              (thunk_InvokeOrderNodeOwnerVfunc38(), extraout_AL_00 != '\0')) &&
-             (thunk_GetNavyOrderNormalizationBaseByNationType(),
-             extraout_AX_01 <= *(short *)((int)pvVar10 + 0x1c))) {
-            thunk_AccumulateNavyOrderCategoryVectorWithScale
-                      ((int)pvVar10,(int)(local_20 + 4),0x3f800000);
+        for (iVar8 = thunk_GetNavyPrimaryOrderListHead(); iVar8 != 0; iVar8 = *(int *)(iVar8 + 0x24)
+            ) {
+          if (((*(short *)(iVar8 + 0x14) == sVar6) &&
+              (cVar5 = InvokeOrderNodeOwnerVfunc38(), cVar5 != '\0')) &&
+             (sVar7 = GetNavyOrderNormalizationBaseByNationType(), sVar7 <= *(short *)(iVar8 + 0x1c)
+             )) {
+            AccumulateNavyOrderCategoryVectorWithScale(iVar8,local_20 + 4,0x3f800000);
           }
         }
-        thunk_ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile();
-        if ((float10)fStack_30 < extraout_ST0_00) {
-          fStack_30 = (float)extraout_ST0_00;
+        fVar14 = (float10)ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
+                                    (local_20 + 4,&DAT_00697978,4);
+        if ((float10)fStack_30 < fVar14) {
+          fStack_30 = (float)fVar14;
         }
       }
-      ppvVar13 = ppvVar13 + 1;
+      piVar13 = piVar13 + 1;
       iVar11 = iVar11 + 1;
-    } while ((int)ppvVar13 < 0x6a438c);
+    } while ((int)piVar13 < 0x6a438c);
   }
-  fVar2 = _g_Populate_Blockade_Port_Value_0065A904 * fStack_30;
-  if (_g_Populate_Blockade_Port_Value_0065A904 * fStack_30 <=
-      _g_Populate_Blockade_Port_Value_0065A900) {
-    fVar2 = _g_Populate_Blockade_Port_Value_0065A900;
+  fVar2 = _DAT_0065a904 * fStack_30;
+  if (_DAT_0065a904 * fStack_30 <= _DAT_0065a900) {
+    fVar2 = _DAT_0065a900;
   }
-  puVar9 = &g_Populate_Blockade_Port_LookupTable_00697960;
+  psVar10 = &DAT_00697960;
   do {
-    pvVar10 = (void *)((float)(int)(short)*puVar9 * fVar2 *
-                      (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8);
-    if ((float)*ppvVar12 < (float)pvVar10) {
-      *ppvVar12 = pvVar10;
+    fVar3 = (float)(int)*psVar10 * fVar2 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    if (*pfVar9 < fVar3) {
+      *pfVar9 = fVar3;
     }
-    puVar9 = puVar9 + 1;
-    ppvVar12 = ppvVar12 + 1;
-  } while ((int)puVar9 < 0x697968);
+    psVar10 = psVar10 + 1;
+    pfVar9 = pfVar9 + 1;
+  } while ((int)psVar10 < 0x697968);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053BA10
 // GHIDRA_NAME TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort
-// GHIDRA_PROTO bool __thiscall HandleBlockadePortMissionActionType4ForTargetPort(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns true only when action type 4 targets the mission's current blockade target port id (+0x14).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined HandleBlockadePortMissionActionType4ForTargetPort()
 
-/* Returns true only when action type 4 targets the mission's current blockade target port id
-   (+0x14). */
-
-bool __thiscall
-TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort(TBlockadePortMission *this)
+undefined4 __thiscall
+TBlockadePortMission::HandleBlockadePortMissionActionType4ForTargetPort
+          (int param_1,int param_2,undefined4 param_3,int param_4)
 
 {
-  int in_stack_00000004;
-  void *in_stack_0000000c;
-  
-  if ((in_stack_00000004 == 4) && (in_stack_0000000c == this->field14)) {
-    return true;
+  if ((param_2 == 4) && (param_4 == *(int *)(param_1 + 0x14))) {
+    return 1;
   }
-  return false;
+  return 0;
 }
 

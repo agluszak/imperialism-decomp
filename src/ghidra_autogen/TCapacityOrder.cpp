@@ -3,161 +3,82 @@
 // Program: Imperialism.exe
 // Bucket: TCapacityOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401C0D
-// GHIDRA_NAME TCapacityOrder::thunk_DestructTCapacityOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTCapacityOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTCapacityOrderRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTCapacityOrderRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TCapacityOrder::thunk_DestructTCapacityOrderAndMaybeFree(TCapacityOrder *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404093
-// GHIDRA_NAME TCapacityOrder::thunk_CreateTCapacityOrderInstance
-// GHIDRA_PROTO void __thiscall thunk_CreateTCapacityOrderInstance(int * pTargetOrder)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ComputeCapacityOrderResourceCostsFromIndustryWeights [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ComputeCapacityOrderResourceCostsFromIndustryWeights [FID:thunk_target_sync]
-    */
-
-void __thiscall
-TCapacityOrder::thunk_CreateTCapacityOrderInstance(TCapacityOrder *this,int *pTargetOrder)
-
-{
-  CreateTCapacityOrderInstance(this,pTargetOrder);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405AB5
-// GHIDRA_NAME TCapacityOrder::thunk_GetTCapacityOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCapacityOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCapacityOrderClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCapacityOrderClassNamePointer */
-
-void * __cdecl TCapacityOrder::thunk_GetTCapacityOrderClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCapacityOrderClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8B80
 // GHIDRA_NAME TCapacityOrder::CreateTCapacityOrderInstance
-// GHIDRA_PROTO void __thiscall CreateTCapacityOrderInstance(int * pTargetOrder)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes capacity-order per-resource costs using industry action weight tables and quantity.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTCapacityOrderInstance()
 
-/* Computes capacity-order per-resource costs using industry action weight tables and quantity. */
-
-void __thiscall TCapacityOrder::CreateTCapacityOrderInstance(TCapacityOrder *this,int *pTargetOrder)
+void __thiscall TCapacityOrder::CreateTCapacityOrderInstance(int *param_1,int param_2)
 
 {
   short sVar1;
   
-  (**(code **)((int)this->pVtable + 0x3c))(pTargetOrder);
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode09 + this->field69_0x48 * 2);
-  *(short *)((int)pTargetOrder + 0x12) = sVar1 * (short)pTargetOrder;
-  if ((short)(sVar1 * (short)pTargetOrder) < 0) {
-    *(undefined2 *)((int)pTargetOrder + 0x12) = 0;
+  (**(code **)(*param_1 + 0x3c))(param_2);
+  sVar1 = *(short *)(&g_industryActionCostWeightResCode09 + (short)param_1[0x12] * 2);
+  *(short *)(param_2 + 0x12) = sVar1 * (short)param_2;
+  if ((short)(sVar1 * (short)param_2) < 0) {
+    *(undefined2 *)(param_2 + 0x12) = 0;
   }
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode08 + this->field69_0x48 * 2);
-  *(short *)(pTargetOrder + 4) = sVar1 * (short)pTargetOrder;
-  if ((short)(sVar1 * (short)pTargetOrder) < 0) {
-    *(undefined2 *)(pTargetOrder + 4) = 0;
+  sVar1 = *(short *)(&g_industryActionCostWeightResCode08 + (short)param_1[0x12] * 2);
+  *(short *)(param_2 + 0x10) = sVar1 * (short)param_2;
+  if ((short)(sVar1 * (short)param_2) < 0) {
+    *(undefined2 *)(param_2 + 0x10) = 0;
   }
-  *(short *)(pTargetOrder + 8) =
-       *(short *)(&g_industryActionCostWeightResCode10 + this->field69_0x48 * 2) *
-       (short)pTargetOrder;
-  if (*(short *)((int)pTargetOrder + 0x12) < 0) {
-    *(undefined2 *)((int)pTargetOrder + 0x12) = 0;
+  *(short *)(param_2 + 0x20) =
+       *(short *)(&g_industryActionCostWeightResCode10 + (short)param_1[0x12] * 2) * (short)param_2;
+  if (*(short *)(param_2 + 0x12) < 0) {
+    *(undefined2 *)(param_2 + 0x12) = 0;
   }
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode0B + this->field69_0x48 * 2);
-  *(short *)((int)pTargetOrder + 0x16) = sVar1 * (short)pTargetOrder;
-  if ((short)(sVar1 * (short)pTargetOrder) < 0) {
-    *(undefined2 *)((int)pTargetOrder + 0x16) = 0;
+  sVar1 = *(short *)(&g_industryActionCostWeightResCode0B + (short)param_1[0x12] * 2);
+  *(short *)(param_2 + 0x16) = sVar1 * (short)param_2;
+  if ((short)(sVar1 * (short)param_2) < 0) {
+    *(undefined2 *)(param_2 + 0x16) = 0;
   }
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode03 + this->field69_0x48 * 2);
-  *(short *)((int)pTargetOrder + 6) = sVar1 * (short)pTargetOrder;
-  if ((short)(sVar1 * (short)pTargetOrder) < 0) {
-    *(undefined2 *)((int)pTargetOrder + 6) = 0;
+  sVar1 = *(short *)(&g_industryActionCostWeightResCode03 + (short)param_1[0x12] * 2);
+  *(short *)(param_2 + 6) = sVar1 * (short)param_2;
+  if ((short)(sVar1 * (short)param_2) < 0) {
+    *(undefined2 *)(param_2 + 6) = 0;
   }
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode0C + this->field69_0x48 * 2);
-  *(short *)(pTargetOrder + 6) = sVar1 * (short)pTargetOrder;
-  if ((short)(sVar1 * (short)pTargetOrder) < 0) {
-    *(undefined2 *)(pTargetOrder + 6) = 0;
+  sVar1 = *(short *)(&g_industryActionCostWeightResCode0C + (short)param_1[0x12] * 2);
+  *(short *)(param_2 + 0x18) = sVar1 * (short)param_2;
+  if ((short)(sVar1 * (short)param_2) < 0) {
+    *(undefined2 *)(param_2 + 0x18) = 0;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8CC0
 // GHIDRA_NAME TCapacityOrder::GetTCapacityOrderClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCapacityOrderClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCapacityOrder.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCapacityOrderClassNamePointer()
 
-/* Returns class descriptor pointer for TCapacityOrder. */
-
-void * __cdecl TCapacityOrder::GetTCapacityOrderClassNamePointer(void)
+char * TCapacityOrder::GetTCapacityOrderClassNamePointer(void)
 
 {
-  return &g_pClassDescTCapacityOrder;
+  return "XZi";
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D00
 // GHIDRA_NAME TCapacityOrder::ConstructTCapacityOrderBaseState
-// GHIDRA_PROTO void __thiscall ConstructTCapacityOrderBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTCapacityOrderBaseState()
 
-/* [WrapperShape] small wrapper around FreeHeapBufferIfNotNull; instructions=11, call_insns=2,
-   internal_calls=1, unique_internal=1 */
-
-void __thiscall TCapacityOrder::ConstructTCapacityOrderBaseState(TCapacityOrder *this)
+undefined4 __thiscall
+TCapacityOrder::ConstructTCapacityOrderBaseState(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_DestructTCapacityOrderAndMaybeFree(this);
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  DestructTCapacityOrderAndMaybeFree();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D30
 // GHIDRA_NAME TCapacityOrder::DestructTCapacityOrderAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCapacityOrderAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TCapacityOrder runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTCapacityOrderAndMaybeFree()
 
-/* Returns TCapacityOrder runtime class descriptor pointer. */
-
-void * __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(TCapacityOrder *this)
+void __fastcall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

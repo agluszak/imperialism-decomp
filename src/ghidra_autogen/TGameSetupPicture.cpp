@@ -3,85 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TGameSetupPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405FB5
-// GHIDRA_NAME TGameSetupPicture::TGameSetupPicture_VtblSlot055
-// GHIDRA_PROTO void __cdecl TGameSetupPicture_VtblSlot055(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0 */
-
-void __cdecl TGameSetupPicture::TGameSetupPicture_VtblSlot055(void)
-
-{
-  WrapperFor_thunk_NoOpUiLifecycleHook_At005758e0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040872E
-// GHIDRA_NAME TGameSetupPicture::TGameSetupPicture_VtblSlot015
-// GHIDRA_PROTO void __stdcall TGameSetupPicture_VtblSlot015(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleMainMenuCommandAction
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleMainMenuCommandAction */
-
-void TGameSetupPicture::TGameSetupPicture_VtblSlot015
-               (int nDialogEventCode,int pMenuCommandEvent,int nDispatchFlags)
-
-{
-  HandleMainMenuCommandAction(nDialogEventCode,pMenuCommandEvent,nDispatchFlags);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408963
-// GHIDRA_NAME TGameSetupPicture::TGameSetupPicture_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TGameSetupPicture_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTGameSetupPictureAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTGameSetupPictureAndMaybeFree */
-
-void * __thiscall
-TGameSetupPicture::TGameSetupPicture_VtblSlot001(TGameSetupPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTGameSetupPictureAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004098BD
-// GHIDRA_NAME TGameSetupPicture::TGameSetupPicture_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TGameSetupPicture_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGameSetupPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGameSetupPictureClassNamePointer */
-
-void * __cdecl TGameSetupPicture::TGameSetupPicture_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTGameSetupPictureClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005757C0
 // GHIDRA_NAME TGameSetupPicture::CreateTGameSetupPictureInstance
-// GHIDRA_PROTO void * __cdecl CreateTGameSetupPictureInstance(void)
+// GHIDRA_PROTO undefined CreateTGameSetupPictureInstance()
 
-void * __cdecl TGameSetupPicture::CreateTGameSetupPictureInstance(void)
+undefined4 * TGameSetupPicture::CreateTGameSetupPictureInstance(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -91,57 +21,52 @@ void * __cdecl TGameSetupPicture::CreateTGameSetupPictureInstance(void)
   puStack_8 = &LAB_006367ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    this->field0_0x0 = &g_vtblTGameSetupPicture;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    *puVar1 = &PTR_LAB_00661b50;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575840
 // GHIDRA_NAME TGameSetupPicture::GetTGameSetupPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTGameSetupPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TGameSetupPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTGameSetupPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TGameSetupPicture. */
-
-void * __cdecl TGameSetupPicture::GetTGameSetupPictureClassNamePointer(void)
+undefined ** TGameSetupPicture::GetTGameSetupPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTGameSetupPicture;
+  return &PTR_s_TGameSetupPicture_00661980;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575860
 // GHIDRA_NAME TGameSetupPicture::ConstructTGameSetupPictureBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTGameSetupPictureBaseState(void)
+// GHIDRA_PROTO undefined ConstructTGameSetupPictureBaseState()
 
-void * __thiscall TGameSetupPicture::ConstructTGameSetupPictureBaseState(TGameSetupPicture *this)
+undefined4 * __fastcall TGameSetupPicture::ConstructTGameSetupPictureBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field0_0x0 = &g_vtblTGameSetupPicture;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_00661b50;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575890
 // GHIDRA_NAME TGameSetupPicture::DestructTGameSetupPictureAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTGameSetupPictureAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTGameSetupPictureAndMaybeFree()
 
-void * __thiscall
-TGameSetupPicture::DestructTGameSetupPictureAndMaybeFree(TGameSetupPicture *this,byte freeSelfFlag)
+undefined4 __thiscall
+TGameSetupPicture::DestructTGameSetupPictureAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

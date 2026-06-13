@@ -3,107 +3,55 @@
 // Program: Imperialism.exe
 // Bucket: TPageView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00405786
-// GHIDRA_NAME TPageView::thunk_DestructTPageViewAndMaybeFree_At00405786
-// GHIDRA_PROTO void * __thiscall thunk_DestructTPageViewAndMaybeFree_At00405786(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTPageViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTPageViewAndMaybeFree */
-
-void * __thiscall
-TPageView::thunk_DestructTPageViewAndMaybeFree_At00405786(TPageView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTPageViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406ADC
-// GHIDRA_NAME TPageView::thunk_GetTPageViewClassNamePointer_At00406adc
-// GHIDRA_PROTO void * __cdecl thunk_GetTPageViewClassNamePointer_At00406adc(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTPageViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTPageViewClassNamePointer */
-
-void * __cdecl TPageView::thunk_GetTPageViewClassNamePointer_At00406adc(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTPageViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00435590
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590
-// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTPageViewBaseState_At00435590(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_ConstructTPageViewBaseState_At00435590()
 
-/* [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=8, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590(TPageView *this)
+undefined4 * __fastcall
+TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590(undefined4 *param_1)
 
 {
-  ConstructTPageViewBaseState(this);
-  (this->base).pVtable = &PTR_thunk_GetTTradePageSellViewClassNamePointer_00640f58;
-  this->field84 = -1;
-  return this;
+  ConstructTPageViewBaseState();
+  *param_1 = &PTR_LAB_00640f58;
+  *(undefined2 *)(param_1 + 0x21) = 0xffff;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00435610
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610
-// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTPageViewBaseState_At00435610(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=8, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_ConstructTPageViewBaseState_At00435610()
 
-/* [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=8, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610(TPageView *this)
+undefined4 * __fastcall
+TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610(undefined4 *param_1)
 
 {
-  ConstructTPageViewBaseState(this);
-  (this->base).pVtable = &PTR_thunk_GetTTradePageBuyViewClassNamePointer_00640d48;
-  this->field84 = -1;
-  return this;
+  ConstructTPageViewBaseState();
+  *param_1 = &PTR_LAB_00640d48;
+  *(undefined2 *)(param_1 + 0x21) = 0xffff;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004600C0
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0
-// GHIDRA_PROTO void * __thiscall WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_ConstructTPageViewBaseState_At004600c0()
 
-/* [WrapperShape] small wrapper around ConstructTPageViewBaseState; instructions=7, call_insns=1,
-   internal_calls=1, unique_internal=1 */
-
-void * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0(TPageView *this)
+undefined4 * __fastcall
+TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0(undefined4 *param_1)
 
 {
-  ConstructTPageViewBaseState(this);
-  (this->base).pVtable = &PTR_thunk_GetTTechStorePageClassNamePointer_00645ca8;
-  return this;
+  ConstructTPageViewBaseState();
+  *param_1 = &PTR_LAB_00645ca8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F8E0
 // GHIDRA_NAME TPageView::CreateTPageViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTPageViewInstance(void)
+// GHIDRA_PROTO undefined CreateTPageViewInstance()
 
-void * __cdecl TPageView::CreateTPageViewInstance(void)
+undefined4 * TPageView::CreateTPageViewInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -113,64 +61,59 @@ void * __cdecl TPageView::CreateTPageViewInstance(void)
   puStack_8 = &LAB_0063623a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTPageView;
-    this[1].field8_0x1c = 0;
-    this[1].pChildMapView20 = (void *)0x0;
-    *(undefined2 *)((int)&this[1].pVtable + 2) = 0xffff;
-    *(undefined2 *)&this[1].field1_0x4 = 1;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_0065e270;
+    puVar1[0x1f] = 0;
+    puVar1[0x20] = 0;
+    *(undefined2 *)((int)puVar1 + 0x62) = 0xffff;
+    *(undefined2 *)(puVar1 + 0x19) = 1;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F9A0
 // GHIDRA_NAME TPageView::GetTPageViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTPageViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TPageView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTPageViewClassNamePointer()
 
-/* Returns class descriptor pointer for TPageView. */
-
-void * __cdecl TPageView::GetTPageViewClassNamePointer(void)
+undefined ** TPageView::GetTPageViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTPageView;
+  return &PTR_s_TPageView_0065e1a0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F9C0
 // GHIDRA_NAME TPageView::ConstructTPageViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTPageViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTPageViewBaseState()
 
-void * __thiscall TPageView::ConstructTPageViewBaseState(TPageView *this)
+undefined4 * __fastcall TPageView::ConstructTPageViewBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTPageView;
-  this->field7c = 0;
-  this->field80 = 0;
-  this->field62 = -1;
-  this->field64 = 1;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_0065e270;
+  param_1[0x1f] = 0;
+  param_1[0x20] = 0;
+  *(undefined2 *)((int)param_1 + 0x62) = 0xffff;
+  *(undefined2 *)(param_1 + 0x19) = 1;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056FA00
 // GHIDRA_NAME TPageView::DestructTPageViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTPageViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTPageViewAndMaybeFree()
 
-void * __thiscall TPageView::DestructTPageViewAndMaybeFree(TPageView *this,byte freeSelfFlag)
+undefined4 __thiscall TPageView::DestructTPageViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

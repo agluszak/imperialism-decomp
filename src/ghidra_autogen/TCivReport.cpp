@@ -3,67 +3,13 @@
 // Program: Imperialism.exe
 // Bucket: TCivReport.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004018A2
-// GHIDRA_NAME TCivReport::TCivReport_VtblSlot115
-// GHIDRA_PROTO void __thiscall TCivReport_VtblSlot115(void * arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk to BuildCivReportNationEntryDetailTextBlock
-// GHIDRA_COMMENT_END
-
-/* Thunk to BuildCivReportNationEntryDetailTextBlock */
-
-void __thiscall TCivReport::TCivReport_VtblSlot115(TCivReport *this,void *arg1)
-
-{
-  _BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z__imperialism_src_game_TCivReport_cpp234212302__HPAX_Z
-            (this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004079D7
-// GHIDRA_NAME TCivReport::TCivReport_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TCivReport_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCivReportAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCivReportAndMaybeFree */
-
-void * __thiscall TCivReport::TCivReport_VtblSlot001(TCivReport *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = _DestructTCivReportAndMaybeFree__YIPAUCivReportState___Z__imperialism_src_game_TCivReport_cpp234212302__PAU12_HE_Z
-                     (this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407BC6
-// GHIDRA_NAME TCivReport::TCivReport_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TCivReport_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCivReportClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCivReportClassNamePointer */
-
-void * __cdecl TCivReport::TCivReport_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCivReportClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00590B90
-// GHIDRA_NAME TCivReport::?CreateTCivReportInstance@@YAPAUCivReportState@?%Z:\imperialism\src\game\TCivReport.cpp234212302@@XZ
-// GHIDRA_PROTO void * __cdecl ?CreateTCivReportInstance@@YAPAUCivReportState@?%Z:\imperialism\src\game\TCivReport.cpp234212302@@XZ(void)
+// GHIDRA_NAME TCivReport::?CreateTCivReportInstance@@YAPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@XZ
+// GHIDRA_PROTO undefined ?CreateTCivReportInstance@@YAPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@XZ()
 
-void * __cdecl
+undefined4 *
 TCivReport::
-_CreateTCivReportInstance__YAPAUCivReportState___Z__imperialism_src_game_TCivReport_cpp234212302__XZ
+_CreateTCivReportInstance__YAPAUCivReportState___Z_imperialismsrcgameTCivReport_cpp234212302__XZ
           (void)
 
 {
@@ -78,12 +24,12 @@ _CreateTCivReportInstance__YAPAUCivReportState___Z__imperialism_src_game_TCivRep
   puStack_8 = &LAB_00637f1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTCivReport;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00668128;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -92,48 +38,40 @@ _CreateTCivReportInstance__YAPAUCivReportState___Z__imperialism_src_game_TCivRep
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C10
 // GHIDRA_NAME TCivReport::GetTCivReportClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCivReportClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCivReport.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCivReportClassNamePointer()
 
-/* Returns class descriptor pointer for TCivReport. */
-
-void * __cdecl TCivReport::GetTCivReportClassNamePointer(void)
+undefined ** TCivReport::GetTCivReportClassNamePointer(void)
 
 {
-  return &g_pClassDescTCivReport;
+  return &PTR_s_TCivReport_00663130;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C30
-// GHIDRA_NAME TCivReport::?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:\imperialism\src\game\TCivReport.cpp234212302@@PAU12@@Z
-// GHIDRA_PROTO void * __thiscall ?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:\imperialism\src\game\TCivReport.cpp234212302@@PAU12@@Z(void)
+// GHIDRA_NAME TCivReport::?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z
+// GHIDRA_PROTO undefined ?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z()
 
-void * __thiscall
+undefined4 * __fastcall
 TCivReport::
-_ConstructTCivReportBaseState__YIPAUCivReportState___Z__imperialism_src_game_TCivReport_cpp234212302__PAU12__Z
-          (TCivReport *this)
+_ConstructTCivReportBaseState__YIPAUCivReportState___Z_imperialismsrcgameTCivReport_cpp234212302__PAU12__Z
+          (undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTCivReport;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_00668128;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C60
-// GHIDRA_NAME TCivReport::?DestructTCivReportAndMaybeFree@@YIPAUCivReportState@?%Z:\imperialism\src\game\TCivReport.cpp234212302@@PAU12@HE@Z
-// GHIDRA_PROTO void * __thiscall ?DestructTCivReportAndMaybeFree@@YIPAUCivReportState@?%Z:\imperialism\src\game\TCivReport.cpp234212302@@PAU12@HE@Z(byte freeSelfFlag)
+// GHIDRA_NAME TCivReport::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall
-TCivReport::
-_DestructTCivReportAndMaybeFree__YIPAUCivReportState___Z__imperialism_src_game_TCivReport_cpp234212302__PAU12_HE_Z
-          (TCivReport *this,byte freeSelfFlag)
+undefined4 __thiscall TCivReport::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

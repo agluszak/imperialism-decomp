@@ -3,35 +3,12 @@
 // Program: Imperialism.exe
 // Bucket: Family_BuildingExpansionViewCore_Root.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401113
-// GHIDRA_NAME Family_BuildingExpansionViewCore_Root::thunk_GetTBuildingExpansionViewClassNamePointer_At00401113
-// GHIDRA_PROTO void * __cdecl thunk_GetTBuildingExpansionViewClassNamePointer_At00401113(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBuildingExpansionViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBuildingExpansionViewClassNamePointer */
-
-void * __cdecl
-Family_BuildingExpansionViewCore_Root::thunk_GetTBuildingExpansionViewClassNamePointer_At00401113
-          (void)
-
-{
-  return &g_pClassDescTBuildingExpansionView;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0040154B
 // GHIDRA_NAME Family_BuildingExpansionViewCore_Root::thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b
-// GHIDRA_PROTO void __cdecl thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructBuildingExpansionViewAndMaybeFree
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b()
 
-/* Single-JMP thunk to DestructBuildingExpansionViewAndMaybeFree */
-
-void __cdecl
-Family_BuildingExpansionViewCore_Root::thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b
-          (void)
+void Family_BuildingExpansionViewCore_Root::
+     thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b(void)
 
 {
   DestructBuildingExpansionViewAndMaybeFree();

@@ -3,72 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: THelpWindow.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404BF1
-// GHIDRA_NAME THelpWindow::THelpWindow_VtblSlot040
-// GHIDRA_PROTO void __cdecl THelpWindow_VtblSlot040(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70 */
-
-void __cdecl THelpWindow::THelpWindow_VtblSlot040(void)
-
-{
-  WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406131
-// GHIDRA_NAME THelpWindow::THelpWindow_VtblSlot000
-// GHIDRA_PROTO void * __cdecl THelpWindow_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTHelpWindowClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTHelpWindowClassNamePointer */
-
-void * __cdecl THelpWindow::THelpWindow_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTHelpWindowClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406BEA
-// GHIDRA_NAME THelpWindow::THelpWindow_VtblSlot001
-// GHIDRA_PROTO void * __thiscall THelpWindow_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTHelpWindowAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTHelpWindowAndMaybeFree */
-
-void * __thiscall THelpWindow::THelpWindow_VtblSlot001(THelpWindow *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTHelpWindowAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00504B50
 // GHIDRA_NAME THelpWindow::CreateTHelpWindowInstance
-// GHIDRA_PROTO void * __cdecl CreateTHelpWindowInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for THelpWindow; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTHelpWindowInstance()
 
-/* [ClassQuad] create inferred for THelpWindow; alloc factory pattern. */
-
-void * __cdecl THelpWindow::CreateTHelpWindowInstance(void)
+undefined4 * THelpWindow::CreateTHelpWindowInstance(void)
 
 {
-  TControl *this;
-  TControl *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -78,36 +21,31 @@ void * __cdecl THelpWindow::CreateTHelpWindowInstance(void)
   puStack_8 = &LAB_0063366a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  pTVar1 = (TControl *)0x0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
-    (this->base).pVtable = &g_vtblTHelpWindow;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryType4B340();
+    *puVar1 = &PTR_LAB_006572c0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BD0
 // GHIDRA_NAME THelpWindow::GetTHelpWindowClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTHelpWindowClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for THelpWindow.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTHelpWindowClassNamePointer()
 
-/* Returns class descriptor pointer for THelpWindow. */
-
-void * __cdecl THelpWindow::GetTHelpWindowClassNamePointer(void)
+undefined ** THelpWindow::GetTHelpWindowClassNamePointer(void)
 
 {
-  return &g_pClassDescTHelpWindow;
+  return &PTR_s_THelpWindow_00656f98;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BF0
 // GHIDRA_NAME THelpWindow::ConstructUiWindowResourceEntryType572C0
-// GHIDRA_PROTO void __thiscall ConstructUiWindowResourceEntryType572C0(void)
+// GHIDRA_PROTO undefined ConstructUiWindowResourceEntryType572C0()
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing vtable PTR_LAB_006572c0.
 // GHIDRA_COMMENT_END
@@ -115,25 +53,25 @@ void * __cdecl THelpWindow::GetTHelpWindowClassNamePointer(void)
 /* Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing
    vtable PTR_LAB_006572c0. */
 
-void __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
+undefined4 * __fastcall THelpWindow::ConstructUiWindowResourceEntryType572C0(undefined4 *param_1)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
-  this->field0_0x0 = &g_vtblTHelpWindow;
-  return;
+  TControl::thunk_ConstructUiWindowResourceEntryType4B340();
+  *param_1 = &PTR_LAB_006572c0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504C20
 // GHIDRA_NAME THelpWindow::DestructTHelpWindowAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTHelpWindowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTHelpWindowAndMaybeFree()
 
-void * __thiscall THelpWindow::DestructTHelpWindowAndMaybeFree(THelpWindow *this,byte freeSelfFlag)
+undefined4 __thiscall THelpWindow::DestructTHelpWindowAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTWindowViewAndUnlinkGlobalLists();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

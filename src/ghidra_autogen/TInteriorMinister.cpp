@@ -3,359 +3,83 @@
 // Program: Imperialism.exe
 // Bucket: TInteriorMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040181B
-// GHIDRA_NAME TInteriorMinister::thunk_OrphanCallChain_C1_I30_004be520_At0040181b
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C1_I30_004be520_At0040181b(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanCallChain_C1_I30_004be520
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanCallChain_C1_I30_004be520 */
-
-void __cdecl TInteriorMinister::thunk_OrphanCallChain_C1_I30_004be520_At0040181b(void)
-
-{
-  OrphanCallChain_C1_I30_004be520();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401B95
-// GHIDRA_NAME TInteriorMinister::thunk_GetTInteriorMinisterClassNamePointer_At00401b95
-// GHIDRA_PROTO void * __cdecl thunk_GetTInteriorMinisterClassNamePointer_At00401b95(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTInteriorMinisterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTInteriorMinisterClassNamePointer */
-
-void * __cdecl TInteriorMinister::thunk_GetTInteriorMinisterClassNamePointer_At00401b95(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTInteriorMinisterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402E96
-// GHIDRA_NAME TInteriorMinister::thunk_MapPreferenceRankToTerrainType
-// GHIDRA_PROTO void __thiscall thunk_MapPreferenceRankToTerrainType(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to MapPreferenceRankToTerrainType
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to MapPreferenceRankToTerrainType */
-
-void __thiscall
-TInteriorMinister::thunk_MapPreferenceRankToTerrainType(TInteriorMinister *this,int arg1)
-
-{
-  MapPreferenceRankToTerrainType(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004030B7
-// GHIDRA_NAME TInteriorMinister::thunk_OrphanCallChain_C2_I17_004be650_At004030b7
-// GHIDRA_PROTO byte __cdecl thunk_OrphanCallChain_C2_I17_004be650_At004030b7(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanCallChain_C2_I17_004be650
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanCallChain_C2_I17_004be650 */
-
-byte __cdecl TInteriorMinister::thunk_OrphanCallChain_C2_I17_004be650_At004030b7(void)
-
-{
-  byte bVar1;
-  
-  bVar1 = OrphanCallChain_C2_I17_004be650();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403C3D
-// GHIDRA_NAME TInteriorMinister::thunk_OrphanLeaf_NoCall_Ins11_004be480_At00403c3d
-// GHIDRA_PROTO int __cdecl thunk_OrphanLeaf_NoCall_Ins11_004be480_At00403c3d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanLeaf_NoCall_Ins11_004be480
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanLeaf_NoCall_Ins11_004be480 */
-
-int __cdecl TInteriorMinister::thunk_OrphanLeaf_NoCall_Ins11_004be480_At00403c3d(void)
-
-{
-  int iVar1;
-  
-  iVar1 = OrphanLeaf_NoCall_Ins11_004be480();
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004047E6
-// GHIDRA_NAME TInteriorMinister::thunk_OrphanCallChain_C7_I57_004be5b0_At004047e6
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C7_I57_004be5b0_At004047e6(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C7_I57_004be5b0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanCallChain_C7_I57_004be5b0 */
-
-void __cdecl TInteriorMinister::thunk_OrphanCallChain_C7_I57_004be5b0_At004047e6(void)
-
-{
-  OrphanCallChain_C7_I57_004be5b0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040543E
-// GHIDRA_NAME TInteriorMinister::thunk_OrphanLeaf_NoCall_Ins07_004be4f0_At0040543e
-// GHIDRA_PROTO void __cdecl thunk_OrphanLeaf_NoCall_Ins07_004be4f0_At0040543e(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanLeaf_NoCall_Ins07_004be4f0
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanLeaf_NoCall_Ins07_004be4f0 */
-
-void __cdecl TInteriorMinister::thunk_OrphanLeaf_NoCall_Ins07_004be4f0_At0040543e(void)
-
-{
-  OrphanLeaf_NoCall_Ins07_004be4f0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406181
-// GHIDRA_NAME TInteriorMinister::thunk_DestructTInteriorMinisterAndMaybeFree_At00406181
-// GHIDRA_PROTO void * __thiscall thunk_DestructTInteriorMinisterAndMaybeFree_At00406181(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTInteriorMinisterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTInteriorMinisterAndMaybeFree */
-
-void * __thiscall
-TInteriorMinister::thunk_DestructTInteriorMinisterAndMaybeFree_At00406181
-          (TInteriorMinister *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTInteriorMinisterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040643D
-// GHIDRA_NAME TInteriorMinister::thunk_OrphanLeaf_NoCall_Ins06_004be4c0_At0040643d
-// GHIDRA_PROTO void __cdecl thunk_OrphanLeaf_NoCall_Ins06_004be4c0_At0040643d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanLeaf_NoCall_Ins06_004be4c0
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanLeaf_NoCall_Ins06_004be4c0 */
-
-void __cdecl TInteriorMinister::thunk_OrphanLeaf_NoCall_Ins06_004be4c0_At0040643d(void)
-
-{
-  OrphanLeaf_NoCall_Ins06_004be4c0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406F4B
-// GHIDRA_NAME TInteriorMinister::thunk_WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290_At00406f4b
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290_At00406f4b(void * pSerializedStream)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290 */
-
-void __thiscall
-TInteriorMinister::thunk_WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290_At00406f4b
-          (TInteriorMinister *this,void *pSerializedStream)
-
-{
-  WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290(this,pSerializedStream);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407171
-// GHIDRA_NAME TInteriorMinister::thunk_OrphanLeaf_NoCall_Ins05_004be450_At00407171
-// GHIDRA_PROTO void __cdecl thunk_OrphanLeaf_NoCall_Ins05_004be450_At00407171(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanLeaf_NoCall_Ins05_004be450
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanLeaf_NoCall_Ins05_004be450 */
-
-void __cdecl TInteriorMinister::thunk_OrphanLeaf_NoCall_Ins05_004be450_At00407171(void)
-
-{
-  OrphanLeaf_NoCall_Ins05_004be450();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004078BA
-// GHIDRA_NAME TInteriorMinister::thunk_CreateTInteriorMinisterInstance_At004078ba
-// GHIDRA_PROTO ushort __thiscall thunk_CreateTInteriorMinisterInstance_At004078ba(ushort arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateTInteriorMinisterInstance
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateTInteriorMinisterInstance */
-
-ushort __thiscall
-TInteriorMinister::thunk_CreateTInteriorMinisterInstance_At004078ba
-          (TInteriorMinister *this,ushort arg1)
-
-{
-  ushort uVar1;
-  
-  uVar1 = CreateTInteriorMinisterInstance(this,arg1);
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408201
-// GHIDRA_NAME TInteriorMinister::thunk_MapTerrainTypeToPreferenceRank
-// GHIDRA_PROTO void __thiscall thunk_MapTerrainTypeToPreferenceRank(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to MapTerrainTypeToPreferenceRank
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to MapTerrainTypeToPreferenceRank */
-
-void __thiscall
-TInteriorMinister::thunk_MapTerrainTypeToPreferenceRank(TInteriorMinister *this,int arg1)
-
-{
-  MapTerrainTypeToPreferenceRank(this,arg1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408F08
-// GHIDRA_NAME TInteriorMinister::thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320_At00408f08
-// GHIDRA_PROTO void __thiscall thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320_At00408f08(void * pSerializedStream)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320 */
-
-void __thiscall
-TInteriorMinister::thunk_WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320_At00408f08
-          (TInteriorMinister *this,void *pSerializedStream)
-
-{
-  WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(this,pSerializedStream);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040924B
-// GHIDRA_NAME TInteriorMinister::thunk_OrphanCallChain_C1_I13_004be690_At0040924b
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C1_I13_004be690_At0040924b(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ThunkJmp] single JMP thunk to OrphanCallChain_C1_I13_004be690
-// GHIDRA_COMMENT_END
-
-/* [ThunkJmp] single JMP thunk to OrphanCallChain_C1_I13_004be690 */
-
-void __cdecl TInteriorMinister::thunk_OrphanCallChain_C1_I13_004be690_At0040924b(void)
-
-{
-  OrphanCallChain_C1_I13_004be690();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE170
 // GHIDRA_NAME TInteriorMinister::CreateTInteriorMinisterInstance
-// GHIDRA_PROTO ushort __thiscall CreateTInteriorMinisterInstance(ushort arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Pass-through hook returning provided value unchanged.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTInteriorMinisterInstance()
 
-/* Pass-through hook returning provided value unchanged. */
-
-ushort __thiscall
-TInteriorMinister::CreateTInteriorMinisterInstance(TInteriorMinister *this,ushort arg1)
+undefined2 TInteriorMinister::CreateTInteriorMinisterInstance(undefined2 param_1)
 
 {
-  return arg1;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE1B0
 // GHIDRA_NAME TInteriorMinister::GetTInteriorMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTInteriorMinisterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TInteriorMinister.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTInteriorMinisterClassNamePointer()
 
-/* Returns class descriptor pointer for TInteriorMinister. */
-
-void * __cdecl TInteriorMinister::GetTInteriorMinisterClassNamePointer(void)
+undefined ** TInteriorMinister::GetTInteriorMinisterClassNamePointer(void)
 
 {
-  return &g_pClassDescTInteriorMinister;
+  return &PTR_s_TInteriorMinister_006506b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE1D0
 // GHIDRA_NAME TInteriorMinister::ConstructTInteriorMinisterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTInteriorMinisterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTInteriorMinisterBaseState()
 
-void * __thiscall TInteriorMinister::ConstructTInteriorMinisterBaseState(TInteriorMinister *this)
+undefined4 * __fastcall TInteriorMinister::ConstructTInteriorMinisterBaseState(undefined4 *param_1)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  this->field0_0x0 = &g_vtblTInteriorMinister;
-  *(undefined2 *)&this->pField14 = 1;
-  *(undefined2 *)((int)&this->pField14 + 2) = 1;
-  return this;
+  TMinister::ConstructTMinister();
+  *param_1 = &PTR_LAB_00650808;
+  *(undefined2 *)(param_1 + 5) = 1;
+  *(undefined2 *)((int)param_1 + 0x16) = 1;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE200
 // GHIDRA_NAME TInteriorMinister::DestructTInteriorMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTInteriorMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTInteriorMinisterAndMaybeFree()
 
-void * __thiscall
-TInteriorMinister::DestructTInteriorMinisterAndMaybeFree(TInteriorMinister *this,byte freeSelfFlag)
+undefined4 __thiscall
+TInteriorMinister::DestructTInteriorMinisterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTInteriorMinisterAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE290
 // GHIDRA_NAME TInteriorMinister::WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290
-// GHIDRA_PROTO void __thiscall WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290(void * pSerializedStream)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper with local state handling.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper with local state handling. */
+// GHIDRA_PROTO undefined WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290()
 
 void __thiscall
 TInteriorMinister::WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290
-          (TInteriorMinister *this,void *pSerializedStream)
+          (int param_1,int *param_2)
 
 {
   undefined1 uVar1;
   code *pcVar2;
-  void **ppvVar3;
+  undefined1 *puVar3;
   int iVar4;
   
-  thunk_DeserializeTMinisterBaseOrderArrayHeader();
-  pcVar2 = *(code **)(*(int *)pSerializedStream + 0x3c);
-  (*pcVar2)(&this->pField10,2);
-  (*pcVar2)((undefined1 *)((int)&this->pField10 + 2),2);
-  (*pcVar2)(&this->pField14,2);
-  (*pcVar2)((undefined1 *)((int)&this->pField14 + 2),2);
-  ppvVar3 = &this->pField18;
-  (*pcVar2)(ppvVar3,0xe);
+  DeserializeTMinisterBaseOrderArrayHeader(param_2);
+  pcVar2 = *(code **)(*param_2 + 0x3c);
+  (*pcVar2)(param_1 + 0x10,2);
+  (*pcVar2)(param_1 + 0x12,2);
+  (*pcVar2)(param_1 + 0x14,2);
+  (*pcVar2)(param_1 + 0x16,2);
+  puVar3 = (undefined1 *)(param_1 + 0x18);
+  (*pcVar2)(puVar3,0xe);
   iVar4 = 7;
   do {
-    uVar1 = *(undefined1 *)ppvVar3;
-    *(undefined1 *)ppvVar3 = *(undefined1 *)((int)ppvVar3 + 1);
-    *(undefined1 *)((int)ppvVar3 + 1) = uVar1;
-    ppvVar3 = (void **)((int)ppvVar3 + 2);
+    uVar1 = *puVar3;
+    *puVar3 = puVar3[1];
+    puVar3[1] = uVar1;
+    puVar3 = puVar3 + 2;
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
   return;
@@ -363,16 +87,11 @@ TInteriorMinister::WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be29
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE320
 // GHIDRA_NAME TInteriorMinister::WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
-// GHIDRA_PROTO void __thiscall WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void * pSerializedStream)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper with local state handling.
-// GHIDRA_COMMENT_END
-
-/* Single-callee wrapper with local state handling. */
+// GHIDRA_PROTO undefined WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320()
 
 void __thiscall
 TInteriorMinister::WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
-          (TInteriorMinister *this,void *pSerializedStream)
+          (int param_1,int *param_2)
 
 {
   code *pcVar1;
@@ -380,33 +99,33 @@ TInteriorMinister::WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
   undefined4 uVar2;
   undefined4 extraout_EDX_00;
   int iVar3;
-  void **ppvVar4;
+  undefined2 *puVar4;
   undefined4 uStack_1c;
-  void **ppvStack_18;
-  void *pvStack_14;
+  int iStack_18;
+  int *piStack_14;
   
-  pvStack_14 = pSerializedStream;
-  ppvStack_18 = (void **)0x4be330;
-  thunk_SerializeTMinisterBaseOrderArrayHeader();
-  ppvStack_18 = &this->pField10;
-  pvStack_14 = (void *)0x2;
-  pcVar1 = *(code **)(*(int *)pSerializedStream + 0x78);
+  piStack_14 = param_2;
+  iStack_18 = 0x4be330;
+  SerializeTMinisterBaseOrderArrayHeader();
+  iStack_18 = param_1 + 0x10;
+  piStack_14 = (int *)0x2;
+  pcVar1 = *(code **)(*param_2 + 0x78);
   uStack_1c = 0x4be33f;
   (*pcVar1)();
   uStack_1c = 2;
-  (*pcVar1)((undefined1 *)((int)&this->pField10 + 2));
-  (*pcVar1)(&this->pField14,2);
-  (*pcVar1)((undefined1 *)((int)&this->pField14 + 2),2);
-  ppvVar4 = &this->pField18;
+  (*pcVar1)(param_1 + 0x12);
+  (*pcVar1)(param_1 + 0x14,2);
+  (*pcVar1)(param_1 + 0x16,2);
+  puVar4 = (undefined2 *)(param_1 + 0x18);
   iVar3 = 7;
   uVar2 = extraout_EDX;
   do {
-    uStack_1c._1_1_ = (undefined1)((ushort)*(undefined2 *)ppvVar4 >> 8);
-    uStack_1c._0_1_ = (undefined1)*(undefined2 *)ppvVar4;
+    uStack_1c._1_1_ = (undefined1)((ushort)*puVar4 >> 8);
+    uStack_1c._0_1_ = (undefined1)*puVar4;
     uStack_1c._0_2_ = CONCAT11((undefined1)uStack_1c,uStack_1c._1_1_);
     uStack_1c = CONCAT22((short)((uint)uVar2 >> 0x10),(undefined2)uStack_1c);
     (*pcVar1)(&uStack_1c,2);
-    ppvVar4 = (void **)((int)ppvVar4 + 2);
+    puVar4 = puVar4 + 1;
     iVar3 = iVar3 + -1;
     uVar2 = extraout_EDX_00;
   } while (iVar3 != 0);
@@ -415,55 +134,61 @@ TInteriorMinister::WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EE20
 // GHIDRA_NAME TInteriorMinister::MapTerrainTypeToPreferenceRank
-// GHIDRA_PROTO void __thiscall MapTerrainTypeToPreferenceRank(int arg1)
+// GHIDRA_PROTO undefined MapTerrainTypeToPreferenceRank()
 
-void __thiscall TInteriorMinister::MapTerrainTypeToPreferenceRank(TInteriorMinister *this,int arg1)
+short __thiscall TInteriorMinister::MapTerrainTypeToPreferenceRank(int param_1,short param_2)
 
 {
   short *psVar1;
   int *piVar2;
-  int iVar3;
+  short sVar3;
+  int iVar4;
   
-  iVar3 = 1;
-  piVar2 = this->pField08;
-  if (0 < piVar2[2]) {
-    do {
-      psVar1 = (short *)(**(code **)(*piVar2 + 0x2c))((int)(short)iVar3);
-      if (*psVar1 == (short)arg1) {
-        iVar3 = *(int *)((int)this->pField08 + 8) + 10;
-      }
-      piVar2 = this->pField08;
-      iVar3 = iVar3 + 1;
-    } while ((int)(short)iVar3 <= piVar2[2]);
-    return;
+  iVar4 = 1;
+  piVar2 = *(int **)(param_1 + 8);
+  sVar3 = param_2;
+  if (piVar2[2] < 1) {
+    return param_2;
   }
-  return;
+  do {
+    psVar1 = (short *)(**(code **)(*piVar2 + 0x2c))((int)(short)iVar4);
+    if (*psVar1 == param_2) {
+      sVar3 = psVar1[2];
+      iVar4 = *(int *)(*(int *)(param_1 + 8) + 8) + 10;
+    }
+    piVar2 = *(int **)(param_1 + 8);
+    iVar4 = iVar4 + 1;
+  } while ((int)(short)iVar4 <= piVar2[2]);
+  return sVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EEA0
 // GHIDRA_NAME TInteriorMinister::MapPreferenceRankToTerrainType
-// GHIDRA_PROTO void __thiscall MapPreferenceRankToTerrainType(int arg1)
+// GHIDRA_PROTO undefined MapPreferenceRankToTerrainType()
 
-void __thiscall TInteriorMinister::MapPreferenceRankToTerrainType(TInteriorMinister *this,int arg1)
+short __thiscall TInteriorMinister::MapPreferenceRankToTerrainType(int param_1,short param_2)
 
 {
-  int iVar1;
+  short *psVar1;
   int *piVar2;
-  int iVar3;
+  short sVar3;
+  int iVar4;
   
-  iVar3 = 1;
-  piVar2 = this->pField08;
-  if (0 < piVar2[2]) {
-    do {
-      iVar1 = (**(code **)(*piVar2 + 0x2c))((int)(short)iVar3);
-      if (*(short *)(iVar1 + 4) == (short)arg1) {
-        iVar3 = *(int *)((int)this->pField08 + 8) + 10;
-      }
-      piVar2 = this->pField08;
-      iVar3 = iVar3 + 1;
-    } while ((int)(short)iVar3 <= piVar2[2]);
-    return;
+  iVar4 = 1;
+  piVar2 = *(int **)(param_1 + 8);
+  sVar3 = param_2;
+  if (piVar2[2] < 1) {
+    return param_2;
   }
-  return;
+  do {
+    psVar1 = (short *)(**(code **)(*piVar2 + 0x2c))((int)(short)iVar4);
+    if (psVar1[2] == param_2) {
+      sVar3 = *psVar1;
+      iVar4 = *(int *)(*(int *)(param_1 + 8) + 8) + 10;
+    }
+    piVar2 = *(int **)(param_1 + 8);
+    iVar4 = iVar4 + 1;
+  } while ((int)(short)iVar4 <= piVar2[2]);
+  return sVar3;
 }
 

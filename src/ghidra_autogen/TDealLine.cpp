@@ -3,52 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TDealLine.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401686
-// GHIDRA_NAME TDealLine::thunk_GetTDealLineClassNamePointer_At00401686
-// GHIDRA_PROTO void * __cdecl thunk_GetTDealLineClassNamePointer_At00401686(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDealLineClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDealLineClassNamePointer */
-
-void * __cdecl TDealLine::thunk_GetTDealLineClassNamePointer_At00401686(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDealLineClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404444
-// GHIDRA_NAME TDealLine::thunk_DestructTDealLineAndMaybeFree_At00404444
-// GHIDRA_PROTO void * __thiscall thunk_DestructTDealLineAndMaybeFree_At00404444(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDealLineAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDealLineAndMaybeFree */
-
-void * __thiscall
-TDealLine::thunk_DestructTDealLineAndMaybeFree_At00404444(TDealLine *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDealLineAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0CF0
 // GHIDRA_NAME TDealLine::CreateTDealLineInstance
-// GHIDRA_PROTO void * __cdecl CreateTDealLineInstance(void)
+// GHIDRA_PROTO undefined CreateTDealLineInstance()
 
-void * __cdecl TDealLine::CreateTDealLineInstance(void)
+undefined4 * TDealLine::CreateTDealLineInstance(void)
 
 {
-  TLineData *pThis;
-  TLineData *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,56 +21,51 @@ void * __cdecl TDealLine::CreateTDealLineInstance(void)
   puStack_8 = &LAB_0063971a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pThis = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
-  pTVar1 = (TLineData *)0x0;
-  if (pThis != (TLineData *)0x0) {
-    TLineData::ConstructTLineDataBaseState(pThis);
-    pThis->field0_0x0 = &g_vtblTDealLine;
-    pTVar1 = pThis;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TLineData::ConstructTLineDataBaseState();
+    *puVar1 = &PTR_LAB_0066e238;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0D60
 // GHIDRA_NAME TDealLine::GetTDealLineClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDealLineClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDealLine.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDealLineClassNamePointer()
 
-/* Returns class descriptor pointer for TDealLine. */
-
-void * __cdecl TDealLine::GetTDealLineClassNamePointer(void)
+undefined ** TDealLine::GetTDealLineClassNamePointer(void)
 
 {
-  return &g_pClassDescTDealLine;
+  return &PTR_s_TDealLine_0066dca8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0D80
 // GHIDRA_NAME TDealLine::ConstructTDealLineBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTDealLineBaseState(void)
+// GHIDRA_PROTO undefined ConstructTDealLineBaseState()
 
-void * __thiscall TDealLine::ConstructTDealLineBaseState(TDealLine *this)
+undefined4 * __fastcall TDealLine::ConstructTDealLineBaseState(undefined4 *param_1)
 
 {
-  TLineData::ConstructTLineDataBaseState((TLineData *)this);
-  this->field0_0x0 = &g_vtblTDealLine;
-  return this;
+  TLineData::ConstructTLineDataBaseState();
+  *param_1 = &PTR_LAB_0066e238;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0DB0
 // GHIDRA_NAME TDealLine::DestructTDealLineAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDealLineAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDealLineAndMaybeFree()
 
-void * __thiscall TDealLine::DestructTDealLineAndMaybeFree(TDealLine *this,byte freeSelfFlag)
+undefined4 __thiscall TDealLine::DestructTDealLineAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTDealLineAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

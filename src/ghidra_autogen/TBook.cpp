@@ -3,116 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TBook.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004042A5
-// GHIDRA_NAME TBook::thunk_scalar_deleting_destructor_004042A5
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_004042A5(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall TBook::thunk_scalar_deleting_destructor_004042A5(TBook *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404570
-// GHIDRA_NAME TBook::TBook_HandleArmyNavyPageNavigationCommand
-// GHIDRA_PROTO void __thiscall TBook_HandleArmyNavyPageNavigationCommand(int nCommand, int pControl, int a4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles army/navy book paging commands and forwards dialog toggle flow
-// GHIDRA_COMMENT_END
-
-/* Handles army/navy book paging commands and forwards dialog toggle flow */
-
-void __thiscall
-TBook::TBook_HandleArmyNavyPageNavigationCommand(TBook *this,int nCommand,int pControl,int a4)
-
-{
-  code *pcVar1;
-  int *piVar2;
-  int extraout_EDX;
-  int extraout_EDX_00;
-  int iVar3;
-  uint uVar4;
-  
-  if (nCommand == 10) {
-    pcVar1 = *(code **)((int)this->pVtable + 0x94);
-    uVar4 = 0x70616765;
-    do {
-      piVar2 = (int *)(*pcVar1)(uVar4);
-      if (piVar2 != (int *)0x0) {
-        iVar3 = *piVar2;
-        (**(code **)(iVar3 + 0xc))();
-        if (*(int *)(pControl + 0x1c) == 0x72636f72) {
-          (**(code **)(iVar3 + 0x1b0))
-                    (CONCAT22(0x7263,(short)piVar2[0x19] + *(short *)((int)piVar2 + 0x62)));
-          iVar3 = extraout_EDX;
-        }
-        else {
-          if (*(int *)(pControl + 0x1c) != 0x6c636f72) goto LAB_0056f65f;
-          (**(code **)(iVar3 + 0x1b0))(*(short *)((int)piVar2 + 0x62) - (short)piVar2[0x19]);
-          iVar3 = extraout_EDX_00;
-        }
-        thunk_UpdatePagedListNavigationButtonState(this,iVar3);
-      }
-LAB_0056f65f:
-      uVar4 = uVar4 + 1;
-    } while (uVar4 < 0x70616767);
-  }
-  thunk_HandleCityDialogToggleCommandOrForward();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040560F
-// GHIDRA_NAME TBook::thunk_GetTBookClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTBookClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTBookClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTBookClassNamePointer */
-
-void * __cdecl TBook::thunk_GetTBookClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTBookClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407C2F
-// GHIDRA_NAME TBook::thunk_ConstructTBookBaseState_At00407c2f
-// GHIDRA_PROTO void __thiscall thunk_ConstructTBookBaseState_At00407c2f(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTBookBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTBookBaseState */
-
-void __thiscall TBook::thunk_ConstructTBookBaseState_At00407c2f(TBook *this)
-
-{
-  ConstructTBookBaseState(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F4A0
 // GHIDRA_NAME TBook::CreateTBookInstance
-// GHIDRA_PROTO void * __cdecl CreateTBookInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TBook; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTBookInstance()
 
-/* [ClassQuad] create inferred for TBook; alloc factory pattern. */
-
-void * __cdecl TBook::CreateTBookInstance(void)
+undefined4 * TBook::CreateTBookInstance(void)
 
 {
   undefined4 *puVar1;
@@ -125,106 +20,90 @@ void * __cdecl TBook::CreateTBookInstance(void)
   puStack_8 = &LAB_006361fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &PTR_thunk_GetTBookClassNamePointer_0063f650;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_0063f650;
     puVar1[0x24] = 0;
     puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F540
 // GHIDRA_NAME TBook::GetTBookClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTBookClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TBook.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTBookClassNamePointer()
 
-/* Returns class descriptor pointer for TBook. */
-
-void * __cdecl TBook::GetTBookClassNamePointer(void)
+undefined ** TBook::GetTBookClassNamePointer(void)
 
 {
-  return &g_pClassDescTBook;
+  return &PTR_s_TBook_0065e170;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F560
 // GHIDRA_NAME TBook::ConstructTBookBaseState
-// GHIDRA_PROTO void __thiscall ConstructTBookBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes book dialog control handles and loads localized label strings.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTBookBaseState()
 
-/* Initializes book dialog control handles and loads localized label strings. */
-
-void __thiscall TBook::ConstructTBookBaseState(TBook *this)
+void __thiscall TBook::ConstructTBookBaseState(int *param_1,undefined4 param_2)
 
 {
   code *pcVar1;
-  int *piVar2;
+  int iVar2;
   
-  thunk_NoOpUiLifecycleHook();
-  pcVar1 = *(code **)((int)this->pVtable + 0x94);
-  piVar2 = (int *)(*pcVar1)(0x6c636f72);
-  this->field141_0x90 = piVar2;
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0xc,piVar2);
-  piVar2 = (int *)(*pcVar1)(0x72636f72);
-  this->field142_0x94 = piVar2;
-  thunk_LoadUiStringByGroupAndIndexToControlObject(0x2730,0xb,piVar2);
+  TView::thunk_NoOpUiLifecycleHook(param_2);
+  pcVar1 = *(code **)(*param_1 + 0x94);
+  iVar2 = (*pcVar1)(0x6c636f72);
+  param_1[0x24] = iVar2;
+  LoadUiStringByGroupAndIndexToControlObject(0x2730,0xc,iVar2);
+  iVar2 = (*pcVar1)(0x72636f72);
+  param_1[0x25] = iVar2;
+  LoadUiStringByGroupAndIndexToControlObject(0x2730,0xb,iVar2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F5E0
 // GHIDRA_NAME TBook::DestructTBookAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTBookAndMaybeFree(int nCommand, int pControl, int a4)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Handles left/right page-arrow commands across page-tagged controls and updates nav button state
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTBookAndMaybeFree()
 
-/* Handles left/right page-arrow commands across page-tagged controls and updates nav button state
-    */
-
-void __thiscall TBook::DestructTBookAndMaybeFree(TBook *this,int nCommand,int pControl,int a4)
+void __thiscall
+TBook::DestructTBookAndMaybeFree(int *param_1,int param_2,int param_3,undefined4 param_4)
 
 {
-  code *pcVar1;
-  int *piVar2;
-  int extraout_EDX;
-  int extraout_EDX_00;
+  short sVar1;
+  code *pcVar2;
   int iVar3;
-  uint uVar4;
+  int *piVar4;
+  uint uVar5;
   
-  if (nCommand == 10) {
-    pcVar1 = *(code **)((int)this->pVtable + 0x94);
-    uVar4 = 0x70616765;
+  if (param_2 == 10) {
+    pcVar2 = *(code **)(*param_1 + 0x94);
+    uVar5 = 0x70616765;
     do {
-      piVar2 = (int *)(*pcVar1)(uVar4);
-      if (piVar2 != (int *)0x0) {
-        iVar3 = *piVar2;
+      piVar4 = (int *)(*pcVar2)(uVar5);
+      if (piVar4 != (int *)0x0) {
+        iVar3 = *piVar4;
         (**(code **)(iVar3 + 0xc))();
-        if (*(int *)(pControl + 0x1c) == 0x72636f72) {
+        if (*(int *)(param_3 + 0x1c) == 0x72636f72) {
           (**(code **)(iVar3 + 0x1b0))
-                    (CONCAT22(0x7263,(short)piVar2[0x19] + *(short *)((int)piVar2 + 0x62)));
-          iVar3 = extraout_EDX;
+                    (CONCAT22(0x7263,(short)piVar4[0x19] + *(short *)((int)piVar4 + 0x62)));
+          sVar1 = *(short *)((int)piVar4 + 0x62);
         }
         else {
-          if (*(int *)(pControl + 0x1c) != 0x6c636f72) goto LAB_0056f65f;
-          (**(code **)(iVar3 + 0x1b0))(*(short *)((int)piVar2 + 0x62) - (short)piVar2[0x19]);
-          iVar3 = extraout_EDX_00;
+          if (*(int *)(param_3 + 0x1c) != 0x6c636f72) goto LAB_0056f65f;
+          (**(code **)(iVar3 + 0x1b0))(*(short *)((int)piVar4 + 0x62) - (short)piVar4[0x19]);
+          sVar1 = *(short *)((int)piVar4 + 0x62);
         }
-        thunk_UpdatePagedListNavigationButtonState(this,iVar3);
+        UpdatePagedListNavigationButtonState((int)sVar1);
       }
 LAB_0056f65f:
-      uVar4 = uVar4 + 1;
-    } while (uVar4 < 0x70616767);
+      uVar5 = uVar5 + 1;
+    } while (uVar5 < 0x70616767);
   }
-  thunk_HandleCityDialogToggleCommandOrForward();
+  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
   return;
 }
 

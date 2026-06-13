@@ -3,90 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TSidewaysArrow.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401B3B
-// GHIDRA_NAME TSidewaysArrow::TSidewaysArrow_VtblSlot104
-// GHIDRA_PROTO void __thiscall TSidewaysArrow_VtblSlot104(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleTradeArrowAutoRepeatTickAndDispatch
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleTradeArrowAutoRepeatTickAndDispatch */
-
-void __thiscall
-TSidewaysArrow::TSidewaysArrow_VtblSlot104
-          (TSidewaysArrow *this,int nEventType,void *pEventSender,void *pEventDataA,
-          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
-
-{
-  HandleTradeArrowAutoRepeatTickAndDispatch
-            (this,nEventType,pEventSender,pEventDataA,pHitPayload,pRepeatArg);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404331
-// GHIDRA_NAME TSidewaysArrow::thunk_ConstructTSidewaysArrowBaseState
-// GHIDRA_PROTO TSidewaysArrow * __thiscall thunk_ConstructTSidewaysArrowBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* [FID:thunk_target_sync] */
-
-TSidewaysArrow * __thiscall
-TSidewaysArrow::thunk_ConstructTSidewaysArrowBaseState(TSidewaysArrow *this)
-
-{
-  TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
-  this->field0_0x0 = &g_vtblTSidewaysArrow;
-  this->field94 = 0;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406C80
-// GHIDRA_NAME TSidewaysArrow::TSidewaysArrow_VtblSlot001
-// GHIDRA_PROTO TSidewaysArrow * __thiscall TSidewaysArrow_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTSidewaysArrowAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTSidewaysArrowAndMaybeFree */
-
-TSidewaysArrow * __thiscall
-TSidewaysArrow::TSidewaysArrow_VtblSlot001(TSidewaysArrow *this,byte freeSelfFlag)
-
-{
-  TSidewaysArrow *pTVar1;
-  
-  pTVar1 = DestructTSidewaysArrowAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407847
-// GHIDRA_NAME TSidewaysArrow::TSidewaysArrow_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TSidewaysArrow_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTSidewaysArrowClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTSidewaysArrowClassNamePointer */
-
-void * __cdecl TSidewaysArrow::TSidewaysArrow_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTSidewaysArrowClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00583A90
 // GHIDRA_NAME TSidewaysArrow::CreateTSidewaysArrowInstance
-// GHIDRA_PROTO void * __cdecl CreateTSidewaysArrowInstance(void)
+// GHIDRA_PROTO undefined CreateTSidewaysArrowInstance()
 
-void * __cdecl TSidewaysArrow::CreateTSidewaysArrowInstance(void)
+undefined4 * TSidewaysArrow::CreateTSidewaysArrowInstance(void)
 
 {
-  TUpDownPictureButton *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -96,29 +20,24 @@ void * __cdecl TSidewaysArrow::CreateTSidewaysArrowInstance(void)
   puStack_8 = &LAB_0063754a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (this != (TUpDownPictureButton *)0x0) {
-    TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry(this);
-    this->field0_0x0 = &g_vtblTSidewaysArrow;
-    this[1].field0_0x0 = (undefined **)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+    *puVar1 = &PTR_LAB_00663540;
+    puVar1[0x25] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B30
 // GHIDRA_NAME TSidewaysArrow::GetTSidewaysArrowClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTSidewaysArrowClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TSidewaysArrow.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTSidewaysArrowClassNamePointer()
 
-/* Returns class descriptor pointer for TSidewaysArrow. */
-
-void * __cdecl TSidewaysArrow::GetTSidewaysArrowClassNamePointer(void)
+char * TSidewaysArrow::GetTSidewaysArrowClassNamePointer(void)
 
 {
   return &g_pClassDescTSidewaysArrow;
@@ -126,77 +45,62 @@ void * __cdecl TSidewaysArrow::GetTSidewaysArrowClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B50
 // GHIDRA_NAME TSidewaysArrow::ConstructTSidewaysArrowBaseState
-// GHIDRA_PROTO TSidewaysArrow * __thiscall ConstructTSidewaysArrowBaseState(void)
+// GHIDRA_PROTO undefined ConstructTSidewaysArrowBaseState()
 
-TSidewaysArrow * __thiscall TSidewaysArrow::ConstructTSidewaysArrowBaseState(TSidewaysArrow *this)
+undefined4 * __fastcall TSidewaysArrow::ConstructTSidewaysArrowBaseState(undefined4 *param_1)
 
 {
-  TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry((TUpDownPictureButton *)this);
-  this->field0_0x0 = &g_vtblTSidewaysArrow;
-  this->field94 = 0;
-  return this;
+  TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  *param_1 = &PTR_LAB_00663540;
+  param_1[0x25] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B80
 // GHIDRA_NAME TSidewaysArrow::DestructTSidewaysArrowAndMaybeFree
-// GHIDRA_PROTO TSidewaysArrow * __thiscall DestructTSidewaysArrowAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTSidewaysArrowAndMaybeFree()
 
-TSidewaysArrow * __thiscall
-TSidewaysArrow::DestructTSidewaysArrowAndMaybeFree(TSidewaysArrow *this,byte freeSelfFlag)
+undefined4 __thiscall
+TSidewaysArrow::DestructTSidewaysArrowAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583BD0
 // GHIDRA_NAME TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch
-// GHIDRA_PROTO void __thiscall HandleTradeArrowAutoRepeatTickAndDispatch(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Trade auto-repeat dispatcher. Uses TradeControl vslots:
-// GHIDRA_COMMENT - slot +0x16c (CtrlSlot91): readiness gate using dispatchArg
-// GHIDRA_COMMENT - slot +0x40 (CtrlSlot16): emits split-arrow command dispatch
-// GHIDRA_COMMENT Command IDs observed: LEFT=0x64, RIGHT=0x65, synthetic tick path uses 100.
-// GHIDRA_COMMENT_END
-
-/* Trade auto-repeat dispatcher. Uses TradeControl vslots:
-   - slot +0x16c (CtrlSlot91): readiness gate using dispatchArg
-   - slot +0x40 (CtrlSlot16): emits split-arrow command dispatch
-   Command IDs observed: LEFT=0x64, RIGHT=0x65, synthetic tick path uses 100. */
+// GHIDRA_PROTO undefined HandleTradeArrowAutoRepeatTickAndDispatch()
 
 void __thiscall
 TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch
-          (TSidewaysArrow *this,int nEventType,void *pEventSender,void *pEventDataA,
-          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+          (TControl *param_1,int param_2,void *param_3,void *param_4,void *param_5)
 
 {
-  undefined **ppuVar1;
-  char cVar2;
-  uint extraout_EAX;
-  int extraout_EAX_00;
+  char cVar1;
+  uint uVar2;
+  int iVar3;
   
-  TControl::thunk_DispatchPictureResourceCommand
-            ((TControl *)this,(void *)nEventType,pEventSender,pEventDataA,
-             (PanelEventPayload *)pHitPayload);
-  if (nEventType != 2) {
-    thunk_GetTickCountDiv16();
-    if (this->field94 + 5U <= extraout_EAX) {
-      thunk_GetTickCountDiv16();
-      this->field94 = extraout_EAX_00;
-      if (nEventType == 0) {
-        this->field94 = extraout_EAX_00 + 10;
+  TControl::thunk_DispatchPictureResourceCommand(param_1,param_2,param_3,param_4,param_5);
+  if (param_2 != 2) {
+    uVar2 = thunk_GetTickCountDiv16();
+    if (*(int *)(param_1 + 0x94) + 5U <= uVar2) {
+      iVar3 = thunk_GetTickCountDiv16();
+      *(int *)(param_1 + 0x94) = iVar3;
+      if (param_2 == 0) {
+        *(int *)(param_1 + 0x94) = iVar3 + 10;
       }
-      ppuVar1 = this->field0_0x0;
-      cVar2 = (*(code *)ppuVar1[0x5b])(pHitPayload);
-      if (cVar2 != '\0') {
-        if (this->field1c == 0x72676874) {
-          (*(code *)ppuVar1[0x10])(100);
+      iVar3 = *(int *)param_1;
+      cVar1 = (**(code **)(iVar3 + 0x16c))(param_5);
+      if (cVar1 != '\0') {
+        if (*(int *)(param_1 + 0x1c) == 0x72676874) {
+          (**(code **)(iVar3 + 0x40))(100);
           return;
         }
-        (*(code *)ppuVar1[0x10])(0x65,this,0);
+        (**(code **)(iVar3 + 0x40))(0x65,param_1,0);
       }
     }
   }

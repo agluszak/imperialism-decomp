@@ -3,152 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: THelpMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402865
-// GHIDRA_NAME THelpMgr::THelpMgr_VtblSlot006
-// GHIDRA_PROTO void __thiscall THelpMgr_VtblSlot006(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At00500f50
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot18_At00500f50 */
-
-void __thiscall THelpMgr::THelpMgr_VtblSlot006(THelpMgr *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403657
-// GHIDRA_NAME THelpMgr::THelpMgr_VtblSlot005
-// GHIDRA_PROTO void __thiscall THelpMgr_VtblSlot005(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0 */
-
-void __thiscall THelpMgr::THelpMgr_VtblSlot005(THelpMgr *this,void *pMessage)
-
-{
-  WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(this,pMessage);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004046C4
-// GHIDRA_NAME THelpMgr::THelpMgr_VtblSlot000
-// GHIDRA_PROTO void * __cdecl THelpMgr_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTHelpMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTHelpMgrClassNamePointer */
-
-void * __cdecl THelpMgr::THelpMgr_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTHelpMgrClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004053B2
-// GHIDRA_NAME THelpMgr::THelpMgr_VtblSlot001
-// GHIDRA_PROTO void * __thiscall THelpMgr_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTHelpMgrAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTHelpMgrAndMaybeFree */
-
-void * __thiscall THelpMgr::THelpMgr_VtblSlot001(THelpMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTHelpMgrAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004069DD
-// GHIDRA_NAME THelpMgr::THelpMgr_VtblSlot010
-// GHIDRA_PROTO void __thiscall THelpMgr_VtblSlot010(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeHelpManagerIndexArrayAndState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeHelpManagerIndexArrayAndState */
-
-void __thiscall THelpMgr::THelpMgr_VtblSlot010(THelpMgr *this)
-
-{
-  InitializeHelpManagerIndexArrayAndState(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005005C0
 // GHIDRA_NAME THelpMgr::GetTHelpMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTHelpMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for THelpMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTHelpMgrClassNamePointer()
 
-/* Returns class descriptor pointer for THelpMgr. */
-
-void * __cdecl THelpMgr::GetTHelpMgrClassNamePointer(void)
+undefined ** THelpMgr::GetTHelpMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTHelpMgr;
+  return &PTR_s_THelpMgr_00656f68;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005005E0
 // GHIDRA_NAME THelpMgr::ConstructTHelpMgrBaseState
-// GHIDRA_PROTO void __fastcall ConstructTHelpMgrBaseState(THelpMgr * pThis)
+// GHIDRA_PROTO undefined ConstructTHelpMgrBaseState()
 
-void __fastcall THelpMgr::ConstructTHelpMgrBaseState(THelpMgr *pThis)
+void __fastcall THelpMgr::ConstructTHelpMgrBaseState(undefined4 *param_1)
 
 {
-  *(undefined ***)pThis = &g_vtblTHelpMgr;
-  pThis->field08 = 0;
-  pThis->field0c = 0;
-  pThis->field2e = 0;
-  pThis->field1a = 0;
-  pThis->field1e = 0;
-  pThis->field22 = 0;
-  pThis->field26 = 0;
-  pThis->field2a = 0;
-  pThis->field_0x2c = 0;
-  pThis->field10 = (int *)0x0;
-  pThis->field14 = 0;
-  pThis->field18 = 0;
+  *param_1 = &PTR_LAB_00657040;
+  param_1[2] = 0;
+  param_1[3] = 0;
+  *(undefined2 *)((int)param_1 + 0x2e) = 0;
+  *(undefined4 *)((int)param_1 + 0x1a) = 0;
+  *(undefined4 *)((int)param_1 + 0x1e) = 0;
+  *(undefined4 *)((int)param_1 + 0x22) = 0;
+  *(undefined4 *)((int)param_1 + 0x26) = 0;
+  *(undefined2 *)((int)param_1 + 0x2a) = 0;
+  *(undefined1 *)(param_1 + 0xb) = 0;
+  param_1[4] = 0;
+  param_1[5] = 0;
+  *(undefined2 *)(param_1 + 6) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500630
 // GHIDRA_NAME THelpMgr::DestructTHelpMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTHelpMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTHelpMgrAndMaybeFree()
 
-void * __thiscall THelpMgr::DestructTHelpMgrAndMaybeFree(THelpMgr *this,byte freeSelfFlag)
+undefined4 __thiscall THelpMgr::DestructTHelpMgrAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTHelpMgrAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500680
 // GHIDRA_NAME THelpMgr::InitializeHelpManagerIndexArrayAndState
-// GHIDRA_PROTO void __thiscall InitializeHelpManagerIndexArrayAndState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initialize help manager object array and internal index state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeHelpManagerIndexArrayAndState()
 
-/* Initialize help manager object array and internal index state. */
-
-void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this)
+void __fastcall THelpMgr::InitializeHelpManagerIndexArrayAndState(int param_1)
 
 {
   TIndexAndRankList *pTVar1;
@@ -194,9 +100,9 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   uStack_34 = (undefined2 *)0x18;
-  this->field2e = 1;
+  *(undefined2 *)(param_1 + 0x2e) = 1;
   uStack_38 = (undefined4 *)0x5006ae;
-  pTVar1 = AllocateWithFallbackHandler();
+  pTVar1 = (TIndexAndRankList *)AllocateWithFallbackHandler();
   local_4 = 0;
   local_20 = pTVar1;
   if (pTVar1 == (TIndexAndRankList *)0x0) {
@@ -205,12 +111,12 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
   else {
     uStack_34 = (undefined2 *)0x5006c8;
     TIndexAndRankList::CPtrArray(pTVar1);
-    pTVar1->pVtable = &PTR_thunk_GetTPtrListClassNamePointer_00649068;
+    *(undefined ***)pTVar1 = &TSortedPtrList::_vftable_;
   }
-  *(undefined2 *)&pTVar1->field_0x14 = 0xe;
-  this->pField04 = pTVar1;
+  *(undefined2 *)(pTVar1 + 0x14) = 0xe;
+  *(TIndexAndRankList **)(param_1 + 4) = pTVar1;
   local_4 = 0xffffffff;
-  if (g_bScenarioSetupModeActive == 0) {
+  if (DAT_006a43f0 == '\0') {
     uStack_34 = &local_1c;
     local_1c = 0xbc2;
     local_1a = 0;
@@ -220,7 +126,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     local_12 = 0;
     local_10 = 5;
     uStack_38 = (undefined4 *)0x50072a;
-    (**(code **)((int)pTVar1->pVtable + 0x38))();
+    (**(code **)(*(int *)pTVar1 + 0x38))();
     uStack_38 = &local_20;
     local_20 = (TIndexAndRankList *)0xbc20bcc;
     local_1c = 0xc94;
@@ -229,7 +135,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     local_16 = local_16 & 0xff00;
     local_14 = 5;
     uStack_3c = (undefined1 *)0x500763;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_3c = &stack0xffffffdc;
     local_20._0_2_ = 0xc44;
     local_20._2_2_ = 0x7db;
@@ -237,36 +143,36 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     local_1a = local_1a & 0xff00;
     local_18 = 5;
     uStack_40 = (undefined1 *)0x500798;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_40 = &stack0xffffffd8;
     local_20 = (TIndexAndRankList *)CONCAT13(local_20._3_1_,1);
     local_1c = 5;
     uStack_44 = (undefined1 *)0x5007cd;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_44 = &stack0xffffffd4;
     local_20 = (TIndexAndRankList *)CONCAT22(local_20._2_2_,4);
     uStack_48 = (undefined1 *)0x500806;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_48 = &stack0xffffffd0;
     uStack_4c = (undefined4 *)0x50083b;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_34 = (undefined2 *)0xc08;
     uStack_4c = &uStack_34;
     uStack_50 = (undefined4 *)0x500870;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_50 = &uStack_38;
     uStack_38 = (undefined4 *)0xc12;
     uStack_34._0_2_ = 0xc1c;
     uStack_34._2_2_ = 0x1a0a;
     uStack_54 = (undefined4 *)0x5008a5;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_54 = &uStack_3c;
     uStack_3c = (undefined1 *)0xc120c1c;
     uStack_38._0_2_ = 0xcc6;
     uStack_38._2_2_ = 0x1a0a;
     uStack_34 = (undefined2 *)CONCAT13(uStack_34._3_1_,1);
     uStack_58 = (undefined4 *)0x5008dc;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_58 = &uStack_40;
     uStack_40 = (undefined1 *)0xbfe0c26;
     uStack_3c._0_2_ = 0;
@@ -274,7 +180,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_38 = (undefined4 *)CONCAT13(uStack_38._3_1_,2);
     uStack_34 = (undefined2 *)CONCAT22(uStack_34._2_2_,5);
     uStack_5c = (undefined4 *)0x500913;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_5c = &uStack_44;
     uStack_44 = (undefined1 *)0xc30;
     uStack_40._0_2_ = 0;
@@ -282,7 +188,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_3c = (undefined1 *)CONCAT13(uStack_3c._3_1_,1);
     uStack_38 = (undefined4 *)CONCAT22(uStack_38._2_2_,4);
     uStack_60 = (undefined4 *)0x500948;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_60 = &uStack_48;
     uStack_48 = (undefined1 *)0xc3a;
     uStack_44._0_2_ = 0;
@@ -290,7 +196,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_40 = (undefined1 *)CONCAT13(uStack_40._3_1_,1);
     uStack_3c = (undefined1 *)CONCAT22(uStack_3c._2_2_,5);
     uStack_64 = (undefined4 *)0x50097b;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_64 = &uStack_4c;
     uStack_4c = (undefined4 *)0xbd60c44;
     uStack_48._0_2_ = 0xc4e;
@@ -298,7 +204,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_44 = (undefined1 *)CONCAT13(uStack_44._3_1_,2);
     uStack_40 = (undefined1 *)CONCAT22(uStack_40._2_2_,5);
     uStack_68 = (undefined4 *)0x5009b4;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_50 = (undefined4 *)0xc440c4e;
     uStack_4c._0_2_ = 0;
     uStack_4c._2_2_ = 0x7db;
@@ -306,7 +212,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_68 = &uStack_50;
     uStack_44 = (undefined1 *)CONCAT22(uStack_44._2_2_,5);
     uStack_6c = (undefined4 *)0x5009eb;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_6c = &uStack_54;
     uStack_54 = (undefined4 *)0xc62;
     uStack_50._0_2_ = 0;
@@ -314,7 +220,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_4c = (undefined4 *)CONCAT13(uStack_4c._3_1_,1);
     uStack_48 = (undefined1 *)CONCAT22(uStack_48._2_2_,3);
     uStack_70 = (undefined4 *)0x500a20;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_70 = &uStack_58;
     uStack_58 = (undefined4 *)0xc6c;
     uStack_54._0_2_ = 0;
@@ -322,7 +228,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_50 = (undefined4 *)CONCAT13(uStack_50._3_1_,1);
     uStack_4c = (undefined4 *)CONCAT22(uStack_4c._2_2_,5);
     uStack_74 = (undefined4 *)0x500a53;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_74 = &uStack_5c;
     uStack_5c = (undefined4 *)0xc76;
     uStack_58._0_2_ = 0;
@@ -330,7 +236,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_54 = (undefined4 *)CONCAT13(uStack_54._3_1_,1);
     uStack_50 = (undefined4 *)CONCAT22(uStack_50._2_2_,5);
     uStack_78 = (undefined4 *)0x500a86;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_78 = &uStack_60;
     uStack_60 = (undefined4 *)0xc8a;
     uStack_5c._0_2_ = 0;
@@ -338,7 +244,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_58 = (undefined4 *)CONCAT13(uStack_58._3_1_,1);
     uStack_54 = (undefined4 *)CONCAT22(uStack_54._2_2_,4);
     uStack_7c = (undefined4 *)0x500abb;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_7c = &uStack_64;
     uStack_64 = (undefined4 *)0xbcc0c94;
     uStack_60._0_2_ = 0xc9e;
@@ -346,7 +252,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_5c = (undefined4 *)CONCAT13(uStack_5c._3_1_,3);
     uStack_58 = (undefined4 *)CONCAT22(uStack_58._2_2_,5);
     uStack_80 = (undefined4 *)0x500af4;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_5c = (undefined4 *)CONCAT22(uStack_5c._2_2_,4);
     uStack_80 = &uStack_68;
     uStack_68 = (undefined4 *)0xc940c9e;
@@ -354,7 +260,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_64._2_2_ = 0x7dd;
     uStack_60 = (undefined4 *)CONCAT13(uStack_60._3_1_,4);
     uStack_84 = (undefined4 *)0x500b30;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_6c = (undefined4 *)0xc9e0ca8;
     uStack_84 = &uStack_6c;
     uStack_68._0_2_ = 0;
@@ -362,7 +268,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_64 = (undefined4 *)CONCAT13(uStack_64._3_1_,5);
     uStack_60 = (undefined4 *)CONCAT22(uStack_60._2_2_,5);
     uStack_88 = (undefined4 *)0x500b65;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_88 = &uStack_70;
     uStack_70 = (undefined4 *)0xcb2;
     uStack_6c._0_2_ = 0;
@@ -370,7 +276,7 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_68 = (undefined4 *)((uint)uStack_68._3_1_ << 0x18);
     uStack_64 = (undefined4 *)CONCAT22(uStack_64._2_2_,3);
     puStack_8c = (undefined4 *)0x500b9a;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     puStack_8c = &uStack_74;
     uStack_74 = (undefined4 *)0xcbc;
     uStack_70._0_2_ = 0;
@@ -378,49 +284,49 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
     uStack_6c = (undefined4 *)CONCAT13(uStack_6c._3_1_,1);
     uStack_68 = (undefined4 *)CONCAT22(uStack_68._2_2_,5);
     puStack_90 = (undefined4 *)0x500bcd;
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     puStack_90 = &uStack_78;
     uStack_78 = (undefined4 *)0xc1c0cc6;
     uStack_74._0_2_ = 0;
     uStack_74._2_2_ = 0x1a0a;
     uStack_70 = (undefined4 *)CONCAT13(uStack_70._3_1_,1);
     uStack_6c = (undefined4 *)CONCAT22(uStack_6c._2_2_,2);
-    (**(code **)(*(int *)this->pField04 + 0x38))();
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))();
     uStack_7c = (undefined4 *)0xcd0;
     uStack_78._0_2_ = 0;
     uStack_78._2_2_ = 0x3b8;
     uStack_74 = (undefined4 *)CONCAT13(uStack_74._3_1_,1);
     uStack_70 = (undefined4 *)CONCAT22(uStack_70._2_2_,5);
-    (**(code **)(*(int *)this->pField04 + 0x38))(&uStack_7c);
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))(&uStack_7c);
     uStack_80 = (undefined4 *)0xcda;
     uStack_7c._0_2_ = 0;
     uStack_7c._2_2_ = 0x10cc;
     uStack_78 = (undefined4 *)CONCAT13(uStack_78._3_1_,1);
     uStack_74 = (undefined4 *)CONCAT22(uStack_74._2_2_,2);
-    (**(code **)(*(int *)this->pField04 + 0x38))(&uStack_80);
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))(&uStack_80);
     uStack_84 = (undefined4 *)0xcee;
     uStack_80._0_2_ = 0;
     uStack_80._2_2_ = 0x1a0b;
     uStack_7c = (undefined4 *)CONCAT13(uStack_7c._3_1_,1);
     uStack_78 = (undefined4 *)CONCAT22(uStack_78._2_2_,1);
-    (**(code **)(*(int *)this->pField04 + 0x38))(&uStack_84);
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))(&uStack_84);
     uStack_88 = (undefined4 *)0xd0c;
     uStack_84._0_2_ = 0;
     uStack_84._2_2_ = 0x1a0c;
     uStack_80 = (undefined4 *)CONCAT13(uStack_80._3_1_,1);
     uStack_7c = (undefined4 *)CONCAT22(uStack_7c._2_2_,1);
-    (**(code **)(*(int *)this->pField04 + 0x38))(&uStack_88);
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))(&uStack_88);
     puStack_8c = (undefined4 *)0xd16;
     uStack_88._0_2_ = 0;
     uStack_88._2_2_ = 0x1a0d;
     uStack_84 = (undefined4 *)CONCAT13(uStack_84._3_1_,1);
     uStack_80 = (undefined4 *)CONCAT22(uStack_80._2_2_,1);
-    (**(code **)(*(int *)this->pField04 + 0x38))(&puStack_8c);
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))(&puStack_8c);
     puStack_90 = (undefined4 *)0x0;
     puStack_8c = (undefined4 *)0xbb9;
     uStack_88 = (undefined4 *)((uint)uStack_88._3_1_ << 0x18);
     uStack_84 = (undefined4 *)CONCAT22(uStack_84._2_2_,3);
-    (**(code **)(*(int *)this->pField04 + 0x38))(&puStack_90);
+    (**(code **)(**(int **)(param_1 + 4) + 0x38))(&puStack_90);
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -428,63 +334,51 @@ void __thiscall THelpMgr::InitializeHelpManagerIndexArrayAndState(THelpMgr *this
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500F50
 // GHIDRA_NAME THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot18.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At00500f50()
 
-/* Single-callee wrapper for HandleCityDialogNoOpSlot18. */
-
-void __thiscall
-THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(THelpMgr *this,void *pMessage)
+void __thiscall THelpMgr::WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(int param_1,int *param_2)
 
 {
   undefined1 uVar1;
-  int **ppiVar2;
+  undefined1 *puVar2;
   int iVar3;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  (**(code **)(*(int *)this->pField04 + 0x20))();
-  (**(code **)(*(int *)this->pField04 + 0x18))(pMessage);
-  if (0x2a < g_Advance_Turn_Machine_State_00695278) {
-    ppiVar2 = &this->field10;
-    (**(code **)(*(int *)pMessage + 0x3c))(ppiVar2,10);
+  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  (**(code **)(**(int **)(param_1 + 4) + 0x20))();
+  (**(code **)(**(int **)(param_1 + 4) + 0x18))(param_2);
+  if (0x2a < DAT_00695278) {
+    puVar2 = (undefined1 *)(param_1 + 0x10);
+    (**(code **)(*param_2 + 0x3c))(puVar2,10);
     iVar3 = 5;
     do {
-      uVar1 = *(undefined1 *)ppiVar2;
-      *(undefined1 *)ppiVar2 = *(undefined1 *)((int)ppiVar2 + 1);
-      *(undefined1 *)((int)ppiVar2 + 1) = uVar1;
-      ppiVar2 = (int **)((int)ppiVar2 + 2);
+      uVar1 = *puVar2;
+      *puVar2 = puVar2[1];
+      puVar2[1] = uVar1;
+      puVar2 = puVar2 + 2;
       iVar3 = iVar3 + -1;
     } while (iVar3 != 0);
   }
-  if (0x36 < g_Advance_Turn_Machine_State_00695278) {
-    (**(code **)(*(int *)pMessage + 0x3c))(&this->field2e,2);
+  if (0x36 < DAT_00695278) {
+    (**(code **)(*param_2 + 0x3c))(param_1 + 0x2e,2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00500FE0
 // GHIDRA_NAME THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0
-// GHIDRA_PROTO void __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(void * pMessage)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-callee wrapper for HandleCityDialogNoOpSlot14.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0()
 
-/* Single-callee wrapper for HandleCityDialogNoOpSlot14. */
-
-void __thiscall
-THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(THelpMgr *this,void *pMessage)
+void __thiscall THelpMgr::WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(int param_1,int *param_2)
 
 {
   code *pcVar1;
   int unaff_EBX;
   int iVar2;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  (**(code **)(*(int *)this->pField04 + 0x14))(pMessage);
+  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
+  (**(code **)(**(int **)(param_1 + 4) + 0x14))(param_2);
   iVar2 = 5;
-  pcVar1 = *(code **)(*(int *)pMessage + 0x78);
+  pcVar1 = *(code **)(*param_2 + 0x78);
   do {
     (*pcVar1)(&stack0x00000000,2);
     iVar2 = iVar2 + -1;

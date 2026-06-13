@@ -3,173 +3,70 @@
 // Program: Imperialism.exe
 // Bucket: THandleStream.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403E40
-// GHIDRA_NAME THandleStream::thunk_DestructTHandleStreamAndMaybeFree_At00403e40
-// GHIDRA_PROTO void * __thiscall thunk_DestructTHandleStreamAndMaybeFree_At00403e40(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTHandleStreamAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTHandleStreamAndMaybeFree */
-
-void * __thiscall
-THandleStream::thunk_DestructTHandleStreamAndMaybeFree_At00403e40
-          (THandleStream *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTHandleStreamAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405E52
-// GHIDRA_NAME THandleStream::thunk_OrphanCallChain_C1_I16_00489760_At00405e52
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C1_I16_00489760_At00405e52(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C1_I16_00489760
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanCallChain_C1_I16_00489760 */
-
-void __cdecl THandleStream::thunk_OrphanCallChain_C1_I16_00489760_At00405e52(void)
-
-{
-  OrphanCallChain_C1_I16_00489760();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406483
-// GHIDRA_NAME THandleStream::thunk_OrphanCallChain_C3_I20_004896a0_At00406483
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C3_I20_004896a0_At00406483(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C3_I20_004896a0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanCallChain_C3_I20_004896a0 */
-
-void __cdecl THandleStream::thunk_OrphanCallChain_C3_I20_004896a0_At00406483(void)
-
-{
-  OrphanCallChain_C3_I20_004896a0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406CC1
-// GHIDRA_NAME THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0_At00406cc1
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0_At00406cc1(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_MoveMemoryOverlapSafe_At004897a0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_MoveMemoryOverlapSafe_At004897a0 */
-
-void __cdecl THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At004897a0_At00406cc1(void)
-
-{
-  WrapperFor_MoveMemoryOverlapSafe_At004897a0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004075F4
-// GHIDRA_NAME THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At00489810_At004075f4
-// GHIDRA_PROTO void __cdecl thunk_WrapperFor_MoveMemoryOverlapSafe_At00489810_At004075f4(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_MoveMemoryOverlapSafe_At00489810
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to WrapperFor_MoveMemoryOverlapSafe_At00489810 */
-
-void __cdecl THandleStream::thunk_WrapperFor_MoveMemoryOverlapSafe_At00489810_At004075f4(void)
-
-{
-  WrapperFor_MoveMemoryOverlapSafe_At00489810();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407B03
-// GHIDRA_NAME THandleStream::thunk_GetTHandleStreamClassNamePointer_At00407b03
-// GHIDRA_PROTO void * __cdecl thunk_GetTHandleStreamClassNamePointer_At00407b03(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTHandleStreamClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTHandleStreamClassNamePointer */
-
-void * __cdecl THandleStream::thunk_GetTHandleStreamClassNamePointer_At00407b03(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTHandleStreamClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00489550
 // GHIDRA_NAME THandleStream::CreateTHandleStreamInstance
-// GHIDRA_PROTO void __thiscall CreateTHandleStreamInstance(int handle, int delta)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Advances handle-stream position and updates max extent watermark.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTHandleStreamInstance()
 
-/* Advances handle-stream position and updates max extent watermark. */
-
-void __thiscall THandleStream::CreateTHandleStreamInstance(THandleStream *this,int handle,int delta)
+void __thiscall
+THandleStream::CreateTHandleStreamInstance(int param_1,undefined4 param_2,int param_3)
 
 {
-  int iVar1;
-  
-  iVar1 = this->field04 + delta;
-  this->field04 = iVar1;
-  if (this->field08 < iVar1) {
-    this->field08 = iVar1;
+  param_3 = *(int *)(param_1 + 4) + param_3;
+  *(int *)(param_1 + 4) = param_3;
+  if (*(int *)(param_1 + 8) < param_3) {
+    *(int *)(param_1 + 8) = param_3;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004895C0
 // GHIDRA_NAME THandleStream::GetTHandleStreamClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTHandleStreamClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for THandleStream.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTHandleStreamClassNamePointer()
 
-/* Returns class descriptor pointer for THandleStream. */
-
-void * __cdecl THandleStream::GetTHandleStreamClassNamePointer(void)
+char * THandleStream::GetTHandleStreamClassNamePointer(void)
 
 {
-  return &g_pClassDescTHandleStream;
+  return "hOi";
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004895E0
 // GHIDRA_NAME THandleStream::ConstructTHandleStreamBaseState
-// GHIDRA_PROTO void __fastcall ConstructTHandleStreamBaseState(THandleStream * pThis)
+// GHIDRA_PROTO undefined ConstructTHandleStreamBaseState()
 
-void __fastcall THandleStream::ConstructTHandleStreamBaseState(THandleStream *pThis)
+void __fastcall THandleStream::ConstructTHandleStreamBaseState(undefined4 *param_1)
 
 {
-  *(undefined ***)pThis = &g_vtblTHandleStream;
-  pThis->field10 = 1;
-  pThis->field04 = 0;
-  pThis->field08 = 0;
-  *(undefined1 *)(pThis + 1) = 0;
-  pThis->field0c = 0;
+  *param_1 = &_vftable_;
+  param_1[4] = 1;
+  param_1[1] = 0;
+  param_1[2] = 0;
+  *(undefined1 *)(param_1 + 5) = 0;
+  param_1[3] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489610
-// GHIDRA_NAME THandleStream::DestructTHandleStreamAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTHandleStreamAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_NAME THandleStream::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall
-THandleStream::DestructTHandleStreamAndMaybeFree(THandleStream *this,byte freeSelfFlag)
+undefined4 __thiscall THandleStream::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
-  DestructTHandleStreamAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  ~THandleStream();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489640
+// GHIDRA_NAME THandleStream::~THandleStream
+// GHIDRA_PROTO undefined ~THandleStream()
+
+void __fastcall THandleStream::~THandleStream(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

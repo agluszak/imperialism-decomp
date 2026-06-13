@@ -3,83 +3,13 @@
 // Program: Imperialism.exe
 // Bucket: TArmyInfoView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040379C
-// GHIDRA_NAME TArmyInfoView::thunk_ConstructTArmyInfoViewBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTArmyInfoViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTArmyInfoViewBaseState
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTArmyInfoViewBaseState */
-
-void * __thiscall TArmyInfoView::thunk_ConstructTArmyInfoViewBaseState(TArmyInfoView *this)
-
-{
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTArmyInfoView;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403A49
-// GHIDRA_NAME TArmyInfoView::TArmyInfoView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TArmyInfoView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTArmyInfoViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTArmyInfoViewAndMaybeFree */
-
-void * __thiscall TArmyInfoView::TArmyInfoView_VtblSlot001(TArmyInfoView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = _DestructTArmyInfoViewAndMaybeFree__YIPAUArmyInfoViewState___Z__imperialism_src_game_TArmyInfoView_cpp234212302__PAU12_HE_Z
-                     (this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405849
-// GHIDRA_NAME TArmyInfoView::TArmyInfoView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TArmyInfoView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTArmyInfoViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTArmyInfoViewClassNamePointer */
-
-void * __cdecl TArmyInfoView::TArmyInfoView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTArmyInfoViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004091EC
-// GHIDRA_NAME TArmyInfoView::TArmyInfoView_VtblSlot115
-// GHIDRA_PROTO void __thiscall TArmyInfoView_VtblSlot115(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshArmyInfoViewTextAndStyleDescriptors
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshArmyInfoViewTextAndStyleDescriptors */
-
-void __thiscall TArmyInfoView::TArmyInfoView_VtblSlot115(TArmyInfoView *this)
-
-{
-  TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors((TToolBarCluster *)this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00591500
-// GHIDRA_NAME TArmyInfoView::?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@XZ
-// GHIDRA_PROTO void * __cdecl ?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@XZ(void)
+// GHIDRA_NAME TArmyInfoView::?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@XZ
+// GHIDRA_PROTO undefined ?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@XZ()
 
-void * __cdecl
+undefined4 *
 TArmyInfoView::
-_CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z__imperialism_src_game_TArmyInfoView_cpp234212302__XZ
+_CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z_imperialismsrcgameTArmyInfoView_cpp234212302__XZ
           (void)
 
 {
@@ -94,12 +24,12 @@ _CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z__imperialism_src_game_T
   puStack_8 = &LAB_00637fca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
-    *puVar1 = &g_vtblTArmyInfoView;
+    thunk_TPictureButton::TPictureButton();
+    *puVar1 = &PTR_LAB_00668358;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -108,48 +38,40 @@ _CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z__imperialism_src_game_T
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591580
 // GHIDRA_NAME TArmyInfoView::GetTArmyInfoViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTArmyInfoViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TArmyInfoView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTArmyInfoViewClassNamePointer()
 
-/* Returns class descriptor pointer for TArmyInfoView. */
-
-void * __cdecl TArmyInfoView::GetTArmyInfoViewClassNamePointer(void)
+undefined ** TArmyInfoView::GetTArmyInfoViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTArmyInfoView;
+  return &PTR_s_TArmyInfoView_00663148;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005915A0
-// GHIDRA_NAME TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@@Z
-// GHIDRA_PROTO void * __thiscall ?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@@Z(void)
+// GHIDRA_NAME TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z
+// GHIDRA_PROTO undefined ?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z()
 
-void * __thiscall
+undefined4 * __fastcall
 TArmyInfoView::
-_ConstructTArmyInfoViewBaseState__YIPAUArmyInfoViewState___Z__imperialism_src_game_TArmyInfoView_cpp234212302__PAU12__Z
-          (TArmyInfoView *this)
+_ConstructTArmyInfoViewBaseState__YIPAUArmyInfoViewState___Z_imperialismsrcgameTArmyInfoView_cpp234212302__PAU12__Z
+          (undefined4 *param_1)
 
 {
-  thunk_ConstructPictureResourceEntryBase();
-  this->field0_0x0 = &g_vtblTArmyInfoView;
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *param_1 = &PTR_LAB_00668358;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005915D0
-// GHIDRA_NAME TArmyInfoView::?DestructTArmyInfoViewAndMaybeFree@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@HE@Z
-// GHIDRA_PROTO void * __thiscall ?DestructTArmyInfoViewAndMaybeFree@@YIPAUArmyInfoViewState@?%Z:\imperialism\src\game\TArmyInfoView.cpp234212302@@PAU12@HE@Z(byte freeSelfFlag)
+// GHIDRA_NAME TArmyInfoView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-void * __thiscall
-TArmyInfoView::
-_DestructTArmyInfoViewAndMaybeFree__YIPAUArmyInfoViewState___Z__imperialism_src_game_TArmyInfoView_cpp234212302__PAU12_HE_Z
-          (TArmyInfoView *this,byte freeSelfFlag)
+undefined4 __thiscall TArmyInfoView::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

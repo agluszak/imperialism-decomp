@@ -3,202 +3,74 @@
 // Program: Imperialism.exe
 // Bucket: TDefenseMinister.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401ACD
-// GHIDRA_NAME TDefenseMinister::TDefenseMinister_VtblSlot017
-// GHIDRA_PROTO void __cdecl TDefenseMinister_VtblSlot017(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to NoOpForeignMinisterUtilityStub
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to NoOpForeignMinisterUtilityStub */
-
-void __cdecl TDefenseMinister::TDefenseMinister_VtblSlot017(void)
-
-{
-  NoOpForeignMinisterUtilityStub();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401B59
-// GHIDRA_NAME TDefenseMinister::TDefenseMinister_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TDefenseMinister_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTDefenseMinisterAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTDefenseMinisterAndMaybeFree */
-
-void * __thiscall
-TDefenseMinister::TDefenseMinister_VtblSlot001(TDefenseMinister *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTDefenseMinisterAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404A48
-// GHIDRA_NAME TDefenseMinister::TDefenseMinister_VtblSlot024
-// GHIDRA_PROTO TDefenseMinister * __cdecl TDefenseMinister_VtblSlot024(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CreateTDefenseMinisterInstance
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to CreateTDefenseMinisterInstance */
-
-TDefenseMinister * __cdecl TDefenseMinister::TDefenseMinister_VtblSlot024(void)
-
-{
-  TDefenseMinister *pTVar1;
-  
-  pTVar1 = CreateTDefenseMinisterInstance();
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004071D0
-// GHIDRA_NAME TDefenseMinister::thunk_BuildTileRingPriorityMapForNationTileList
-// GHIDRA_PROTO byte * __thiscall thunk_BuildTileRingPriorityMapForNationTileList(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BuildTileRingPriorityMapForNationTileList
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BuildTileRingPriorityMapForNationTileList */
-
-byte * __thiscall
-TDefenseMinister::thunk_BuildTileRingPriorityMapForNationTileList(TDefenseMinister *this,int arg1)
-
-{
-  byte *pbVar1;
-  
-  pbVar1 = BuildTileRingPriorityMapForNationTileList(this,arg1);
-  return pbVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00407CD9
 // GHIDRA_NAME TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTDefenseMinisterBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTDefenseMinisterBaseState
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_ConstructTDefenseMinisterBaseState()
 
-/* Single-JMP thunk to ConstructTDefenseMinisterBaseState */
-
-void * __thiscall TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
+undefined4 * __fastcall
+TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState(undefined4 *param_1)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  this->field0_0x0 = &g_vtblTDefenseMinister;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004084A4
-// GHIDRA_NAME TDefenseMinister::TDefenseMinister_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TDefenseMinister_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTDefenseMinisterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTDefenseMinisterClassNamePointer */
-
-void * __cdecl TDefenseMinister::TDefenseMinister_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTDefenseMinisterClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004097BE
-// GHIDRA_NAME TDefenseMinister::thunk_BuildTileIndexListsForSelectedTerrainClass
-// GHIDRA_PROTO void __thiscall thunk_BuildTileIndexListsForSelectedTerrainClass(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for BuildTileIndexListsForSelectedTerrainClass.
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for BuildTileIndexListsForSelectedTerrainClass. */
-
-void __thiscall
-TDefenseMinister::thunk_BuildTileIndexListsForSelectedTerrainClass(TDefenseMinister *this)
-
-{
-  TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass((TArmyPlayer *)this);
-  return;
+  TMinister::ConstructTMinister();
+  *param_1 = &PTR_LAB_006549b0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC0A0
 // GHIDRA_NAME TDefenseMinister::CreateTDefenseMinisterInstance
-// GHIDRA_PROTO TDefenseMinister * __cdecl CreateTDefenseMinisterInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns defense minister neutral preference scalar constant.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTDefenseMinisterInstance()
 
-/* Returns defense minister neutral preference scalar constant. */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-TDefenseMinister * __cdecl TDefenseMinister::CreateTDefenseMinisterInstance(void)
+float10 TDefenseMinister::CreateTDefenseMinisterInstance(void)
 
 {
-  TDefenseMinister *in_EAX;
-  
-  return in_EAX;
+  return (float10)_DAT_006548e0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC0C0
 // GHIDRA_NAME TDefenseMinister::GetTDefenseMinisterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDefenseMinisterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDefenseMinister.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDefenseMinisterClassNamePointer()
 
-/* Returns class descriptor pointer for TDefenseMinister. */
-
-void * __cdecl TDefenseMinister::GetTDefenseMinisterClassNamePointer(void)
+undefined ** TDefenseMinister::GetTDefenseMinisterClassNamePointer(void)
 
 {
-  return &g_pClassDescTDefenseMinister;
+  return &PTR_s_TDefenseMinister_00654838;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC0E0
 // GHIDRA_NAME TDefenseMinister::ConstructTDefenseMinisterBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTDefenseMinisterBaseState(void)
+// GHIDRA_PROTO undefined ConstructTDefenseMinisterBaseState()
 
-void * __thiscall TDefenseMinister::ConstructTDefenseMinisterBaseState(TDefenseMinister *this)
+undefined4 * __fastcall TDefenseMinister::ConstructTDefenseMinisterBaseState(undefined4 *param_1)
 
 {
-  TMinister::thunk_ConstructTMinister((TMinister *)this);
-  this->field0_0x0 = &g_vtblTDefenseMinister;
-  return this;
+  TMinister::ConstructTMinister();
+  *param_1 = &PTR_LAB_006549b0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EC110
 // GHIDRA_NAME TDefenseMinister::DestructTDefenseMinisterAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDefenseMinisterAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDefenseMinisterAndMaybeFree()
 
-void * __thiscall
-TDefenseMinister::DestructTDefenseMinisterAndMaybeFree(TDefenseMinister *this,byte freeSelfFlag)
+undefined4 __thiscall
+TDefenseMinister::DestructTDefenseMinisterAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTDefenseMinisterAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ECBB0
 // GHIDRA_NAME TDefenseMinister::BuildTileRingPriorityMapForNationTileList
-// GHIDRA_PROTO byte * __thiscall BuildTileRingPriorityMapForNationTileList(int arg1)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Builds a per-tile ring-priority byte map around a nation tile list. Uses multiple neighbor-expansion passes and prospecting-candidate boosts; used by land-sale event strategy tables.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined BuildTileRingPriorityMapForNationTileList()
 
-/* Builds a per-tile ring-priority byte map around a nation tile list. Uses multiple
-   neighbor-expansion passes and prospecting-candidate boosts; used by land-sale event strategy
-   tables. */
-
-byte * __thiscall
-TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TDefenseMinister *this,int arg1)
+undefined4 * __thiscall
+TDefenseMinister::BuildTileRingPriorityMapForNationTileList(int param_1,int *param_2)
 
 {
   char cVar1;
@@ -207,132 +79,125 @@ TDefenseMinister::BuildTileRingPriorityMapForNationTileList(TDefenseMinister *th
   short nTileIndex;
   short sVar4;
   int iVar5;
-  byte *pbVar6;
+  undefined4 *puVar6;
   short *psVar7;
   int iVar8;
   int iVar9;
   int iVar10;
-  byte *pbVar11;
+  undefined4 *puVar11;
   int local_10;
   short asStack_c [6];
   
-  sVar4 = *(short *)(this->field04 + 0xc);
-  iVar9 = *(int *)arg1;
+  sVar4 = *(short *)(*(int *)(param_1 + 4) + 0xc);
+  iVar9 = *param_2;
   iVar5 = (**(code **)(iVar9 + 0x28))();
-  pbVar6 = AllocateWithFallbackHandler();
-  if (pbVar6 != (byte *)0x0) {
-    pbVar11 = pbVar6;
-    for (iVar8 = 0x654; iVar8 != 0; iVar8 = iVar8 + -1) {
-      pbVar11[0] = 0;
-      pbVar11[1] = 0;
-      pbVar11[2] = 0;
-      pbVar11[3] = 0;
-      pbVar11 = pbVar11 + 4;
-    }
-    iVar8 = 1;
-    if (0 < iVar5) {
-      do {
-        nTileIndex = (**(code **)(iVar9 + 0x24))(iVar8);
-        thunk_ComputeHexNeighborTileIndices
-                  (nTileIndex,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
-        psVar7 = asStack_c;
-        iVar10 = 6;
-        do {
-          cVar1 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + *psVar7 * 0x24);
-          if (('\0' < cVar1) && (cVar1 != sVar4)) {
-            pbVar6[nTileIndex] = 4;
-          }
-          psVar7 = psVar7 + 1;
-          iVar10 = iVar10 + -1;
-        } while (iVar10 != 0);
-        iVar8 = iVar8 + 1;
-      } while (iVar8 <= iVar5);
-    }
-    iVar8 = 1;
-    if (0 < iVar5) {
-      pcVar2 = *(code **)(iVar9 + 0x24);
-      do {
-        sVar4 = (*pcVar2)(iVar8);
-        thunk_ComputeHexNeighborTileIndices
-                  (sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
-        psVar7 = asStack_c;
-        iVar10 = 6;
-        do {
-          if (pbVar6[*psVar7] == 4) {
-            pbVar6[sVar4] = 3;
-          }
-          psVar7 = psVar7 + 1;
-          iVar10 = iVar10 + -1;
-        } while (iVar10 != 0);
-        iVar8 = iVar8 + 1;
-      } while (iVar8 <= iVar5);
-    }
-    local_10 = 1;
-    if (0 < iVar5) {
-      do {
-        sVar4 = (**(code **)(iVar9 + 0x24))(local_10);
-        thunk_ComputeHexNeighborTileIndices
-                  (sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
-        psVar7 = asStack_c;
-        iVar8 = 6;
-        do {
-          if ((pbVar6[*psVar7] == 3) ||
-             (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + *psVar7 * 0x24) == '\x05')) {
-            pbVar6[sVar4] = 2;
-          }
-          psVar7 = psVar7 + 1;
-          iVar8 = iVar8 + -1;
-        } while (iVar8 != 0);
-        local_10 = local_10 + 1;
-      } while (local_10 <= iVar5);
-    }
-    iVar8 = 1;
-    if (0 < iVar5) {
-      pcVar2 = *(code **)(iVar9 + 0x24);
-      do {
-        sVar4 = (*pcVar2)(iVar8);
-        thunk_ComputeHexNeighborTileIndices
-                  (sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
-        psVar7 = asStack_c;
-        iVar10 = 6;
-        do {
-          if (pbVar6[*psVar7] == 2) {
-            pbVar6[sVar4] = 1;
-          }
-          psVar7 = psVar7 + 1;
-          iVar10 = iVar10 + -1;
-        } while (iVar10 != 0);
-        iVar8 = iVar8 + 1;
-      } while (iVar8 <= iVar5);
-    }
-    iVar8 = 1;
-    if (0 < iVar5) {
-      pcVar2 = *(code **)(iVar9 + 0x24);
-      do {
-        sVar4 = (*pcVar2)(iVar8);
-        iVar9 = (int)sVar4;
-        if (((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + iVar9 * 0x24) & 3) != 0) &&
-           (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar9 * 0x24 + 0x13) != '\0')) {
-          pbVar6[iVar9] = pbVar6[iVar9] + 3;
-          thunk_ComputeHexNeighborTileIndices
-                    (sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
-          psVar7 = asStack_c;
-          iVar9 = 6;
-          do {
-            bVar3 = thunk_CheckTileProspectingDiscoveryCandidate(g_pGlobalMapState,*psVar7);
-            if (bVar3 != 0) {
-              pbVar6[*psVar7] = pbVar6[*psVar7] + 1;
-            }
-            psVar7 = psVar7 + 1;
-            iVar9 = iVar9 + -1;
-          } while (iVar9 != 0);
-        }
-        iVar8 = iVar8 + 1;
-      } while (iVar8 <= iVar5);
-    }
-    return pbVar6;
+  puVar6 = (undefined4 *)AllocateWithFallbackHandler(0x1950);
+  if (puVar6 == (undefined4 *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UDefenseMinister__00696860,0x1a9);
   }
-                    /* WARNING: Subroutine does not return */
-  MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+  puVar11 = puVar6;
+  for (iVar8 = 0x654; iVar8 != 0; iVar8 = iVar8 + -1) {
+    *puVar11 = 0;
+    puVar11 = puVar11 + 1;
+  }
+  iVar8 = 1;
+  if (0 < iVar5) {
+    do {
+      nTileIndex = (**(code **)(iVar9 + 0x24))(iVar8);
+      ComputeHexNeighborTileIndices(nTileIndex,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+      psVar7 = asStack_c;
+      iVar10 = 6;
+      do {
+        cVar1 = *(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + 4 + *psVar7 * 0x24);
+        if (('\0' < cVar1) && (cVar1 != sVar4)) {
+          *(undefined1 *)((int)nTileIndex + (int)puVar6) = 4;
+        }
+        psVar7 = psVar7 + 1;
+        iVar10 = iVar10 + -1;
+      } while (iVar10 != 0);
+      iVar8 = iVar8 + 1;
+    } while (iVar8 <= iVar5);
+  }
+  iVar8 = 1;
+  if (0 < iVar5) {
+    pcVar2 = *(code **)(iVar9 + 0x24);
+    do {
+      sVar4 = (*pcVar2)(iVar8);
+      ComputeHexNeighborTileIndices(sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+      psVar7 = asStack_c;
+      iVar10 = 6;
+      do {
+        if (*(char *)((int)puVar6 + (int)*psVar7) == '\x04') {
+          *(undefined1 *)((int)sVar4 + (int)puVar6) = 3;
+        }
+        psVar7 = psVar7 + 1;
+        iVar10 = iVar10 + -1;
+      } while (iVar10 != 0);
+      iVar8 = iVar8 + 1;
+    } while (iVar8 <= iVar5);
+  }
+  local_10 = 1;
+  if (0 < iVar5) {
+    do {
+      sVar4 = (**(code **)(iVar9 + 0x24))(local_10);
+      ComputeHexNeighborTileIndices(sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+      psVar7 = asStack_c;
+      iVar8 = 6;
+      do {
+        if ((*(char *)((int)puVar6 + (int)*psVar7) == '\x03') ||
+           (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + *psVar7 * 0x24) == '\x05')) {
+          *(undefined1 *)((int)sVar4 + (int)puVar6) = 2;
+        }
+        psVar7 = psVar7 + 1;
+        iVar8 = iVar8 + -1;
+      } while (iVar8 != 0);
+      local_10 = local_10 + 1;
+    } while (local_10 <= iVar5);
+  }
+  iVar8 = 1;
+  if (0 < iVar5) {
+    pcVar2 = *(code **)(iVar9 + 0x24);
+    do {
+      sVar4 = (*pcVar2)(iVar8);
+      ComputeHexNeighborTileIndices(sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+      psVar7 = asStack_c;
+      iVar10 = 6;
+      do {
+        if (*(char *)((int)puVar6 + (int)*psVar7) == '\x02') {
+          *(undefined1 *)((int)sVar4 + (int)puVar6) = 1;
+        }
+        psVar7 = psVar7 + 1;
+        iVar10 = iVar10 + -1;
+      } while (iVar10 != 0);
+      iVar8 = iVar8 + 1;
+    } while (iVar8 <= iVar5);
+  }
+  iVar8 = 1;
+  if (0 < iVar5) {
+    pcVar2 = *(code **)(iVar9 + 0x24);
+    do {
+      sVar4 = (*pcVar2)(iVar8);
+      iVar9 = (int)sVar4;
+      if (((*(byte *)(*(int *)((int)g_pGlobalMapState + 0xc) + 0x1c + iVar9 * 0x24) & 3) != 0) &&
+         (*(char *)(*(int *)((int)g_pGlobalMapState + 0xc) + iVar9 * 0x24 + 0x13) != '\0')) {
+        *(char *)((int)puVar6 + iVar9) = *(char *)((int)puVar6 + iVar9) + '\x03';
+        ComputeHexNeighborTileIndices(sVar4,asStack_c,*(char *)((int)g_pGlobalMapState + 0x20));
+        psVar7 = asStack_c;
+        iVar9 = 6;
+        do {
+          bVar3 = CheckTileProspectingDiscoveryCandidate(g_pGlobalMapState,*psVar7);
+          if (bVar3 != 0) {
+            *(char *)((int)puVar6 + (int)*psVar7) = *(char *)((int)puVar6 + (int)*psVar7) + '\x01';
+          }
+          psVar7 = psVar7 + 1;
+          iVar9 = iVar9 + -1;
+        } while (iVar9 != 0);
+      }
+      iVar8 = iVar8 + 1;
+    } while (iVar8 <= iVar5);
+  }
+  return puVar6;
 }
 

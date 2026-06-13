@@ -3,109 +3,64 @@
 // Program: Imperialism.exe
 // Bucket: TIdleMeAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040155F
-// GHIDRA_NAME TIdleMeAnimation::thunk_CreateTIdleMeAnimationInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTIdleMeAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTIdleMeAnimationRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTIdleMeAnimationRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TIdleMeAnimation::thunk_CreateTIdleMeAnimationInstance(TIdleMeAnimation *this)
-
-{
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC980
 // GHIDRA_NAME TIdleMeAnimation::CreateTIdleMeAnimationInstance
-// GHIDRA_PROTO void * __thiscall CreateTIdleMeAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TIdleMeAnimation runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTIdleMeAnimationInstance()
 
-/* Returns TIdleMeAnimation runtime class descriptor pointer. */
-
-void * __thiscall TIdleMeAnimation::CreateTIdleMeAnimationInstance(TIdleMeAnimation *this)
+void __fastcall TIdleMeAnimation::CreateTIdleMeAnimationInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC9A0
 // GHIDRA_NAME TIdleMeAnimation::GetTIdleMeAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTIdleMeAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TIdleMeAnimation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTIdleMeAnimationClassNamePointer()
 
-/* Returns class descriptor pointer for TIdleMeAnimation. */
-
-void * __cdecl TIdleMeAnimation::GetTIdleMeAnimationClassNamePointer(void)
+undefined * TIdleMeAnimation::GetTIdleMeAnimationClassNamePointer(void)
 
 {
-  return &g_pClassDescTIdleMeAnimation;
+  return &DAT_0064dc68;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC9C0
 // GHIDRA_NAME TIdleMeAnimation::ConstructTIdleMeAnimationBaseState
-// GHIDRA_PROTO void __thiscall ConstructTIdleMeAnimationBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_AddObjectToUiTransientRegistry; instructions=28, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTIdleMeAnimationBaseState()
 
-/* [WrapperShape] small wrapper around thunk_AddObjectToUiTransientRegistry; instructions=28,
-   call_insns=2, internal_calls=1, unique_internal=1 */
-
-void __thiscall TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TIdleMeAnimation *this)
+void __thiscall
+TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(undefined4 param_1,undefined4 param_2)
 
 {
-  undefined4 arg6;
-  int in_stack_00000004;
+  undefined4 uVar1;
   undefined4 local_10;
   undefined4 local_c;
   undefined4 local_8;
   undefined4 local_4;
   
-  arg6 = s_0TUATIdleMeAnimation_00695934._0_4_;
+  uVar1 = s_0TUATIdleMeAnimation_00695934._0_4_;
   s_0TUATIdleMeAnimation_00695934._0_4_ = s_0TUATIdleMeAnimation_00695934._0_4_ + 1;
   local_10 = 0;
   local_c = 0;
   local_8 = 0;
   local_4 = 0;
-  TAnimation::thunk_ConstructTAnimationBaseState
-            ((TAnimation *)this,in_stack_00000004,(int)&local_10,0,0,0,arg6);
-  TCivAnimation2::thunk_AddObjectToUiTransientRegistry
-            ((TCivAnimation2 *)g_pUiTransientObjectRegistry,(undefined *)this);
+  TAnimation::ConstructTAnimationBaseState(param_2,&local_10,0,0,0,uVar1);
+  TCivAnimation2::AddObjectToUiTransientRegistry(param_1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004ACA60
 // GHIDRA_NAME TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTIdleMeAnimationAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around thunk_RemoveUiTransientRegistryObjectByTag; instructions=16, call_insns=2, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTIdleMeAnimationAndMaybeFree()
 
-/* [WrapperShape] small wrapper around thunk_RemoveUiTransientRegistryObjectByTag; instructions=16,
-   call_insns=2, internal_calls=1, unique_internal=1 */
-
-void __thiscall TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree(TIdleMeAnimation *this)
+void __fastcall TIdleMeAnimation::DestructTIdleMeAnimationAndMaybeFree(int param_1)
 
 {
   char cVar1;
   
-  cVar1 = (**(code **)(*(int *)this->field1_0x4 + 0x4c))(1);
-  if ((cVar1 != '\0') && (this != (TIdleMeAnimation *)0x0)) {
-    TacticalBattleView::thunk_RemoveUiTransientRegistryObjectByTag
-              ((TacticalBattleView *)g_pUiTransientObjectRegistry,(sdword)this->field9_0x18);
+  cVar1 = (**(code **)(**(int **)(param_1 + 4) + 0x4c))(1);
+  if ((cVar1 != '\0') && (param_1 != 0)) {
+    TBattleReportView::RemoveUiTransientRegistryObjectByTag(*(undefined4 *)(param_1 + 0x18));
   }
   return;
 }

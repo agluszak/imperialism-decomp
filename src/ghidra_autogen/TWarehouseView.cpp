@@ -3,66 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TWarehouseView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004035B2
-// GHIDRA_NAME TWarehouseView::TWarehouseView_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TWarehouseView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTWarehouseViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTWarehouseViewAndMaybeFree */
-
-void * __thiscall TWarehouseView::TWarehouseView_VtblSlot001(TWarehouseView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTWarehouseViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406DCA
-// GHIDRA_NAME TWarehouseView::TWarehouseView_VtblSlot117
-// GHIDRA_PROTO void __thiscall TWarehouseView_VtblSlot117(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshCityViewProductionSummaryPanelTextsAndFlags
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RefreshCityViewProductionSummaryPanelTextsAndFlags */
-
-void __thiscall TWarehouseView::TWarehouseView_VtblSlot117(TWarehouseView *this)
-
-{
-  TToolBarCluster::RefreshCityViewProductionSummaryPanelTextsAndFlags((TToolBarCluster *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407EAA
-// GHIDRA_NAME TWarehouseView::TWarehouseView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TWarehouseView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTWarehouseViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTWarehouseViewClassNamePointer */
-
-void * __cdecl TWarehouseView::TWarehouseView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTWarehouseViewClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004C71F0
 // GHIDRA_NAME TWarehouseView::CreateTWarehouseViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTWarehouseViewInstance(void)
+// GHIDRA_PROTO undefined CreateTWarehouseViewInstance()
 
-void * __cdecl TWarehouseView::CreateTWarehouseViewInstance(void)
+undefined4 * TWarehouseView::CreateTWarehouseViewInstance(void)
 
 {
-  TNoHilitePicture *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -72,59 +20,54 @@ void * __cdecl TWarehouseView::CreateTWarehouseViewInstance(void)
   puStack_8 = &LAB_0063158a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x104);
   local_4 = 0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    *(undefined4 *)((int)&this[1].field0_0x0 + 3) = 0;
-    this->field0_0x0 = &g_vtblTWarehouseView;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    puVar1[0x25] = 0;
+    *puVar1 = &PTR_LAB_006516a0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7290
 // GHIDRA_NAME TWarehouseView::GetTWarehouseViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTWarehouseViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TWarehouseView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTWarehouseViewClassNamePointer()
 
-/* Returns class descriptor pointer for TWarehouseView. */
-
-void * __cdecl TWarehouseView::GetTWarehouseViewClassNamePointer(void)
+undefined ** TWarehouseView::GetTWarehouseViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTWarehouseView;
+  return &PTR_s_TWarehouseView_00651248;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C72B0
 // GHIDRA_NAME TWarehouseView::ConstructTWarehouseViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTWarehouseViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTWarehouseViewBaseState()
 
-void * __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(TWarehouseView *this)
+undefined4 * __fastcall TWarehouseView::ConstructTWarehouseViewBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field94 = 0;
-  this->field0_0x0 = &g_vtblTWarehouseView;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  param_1[0x25] = 0;
+  *param_1 = &PTR_LAB_006516a0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C72E0
 // GHIDRA_NAME TWarehouseView::DestructTWarehouseViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTWarehouseViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTWarehouseViewAndMaybeFree()
 
-void * __thiscall
-TWarehouseView::DestructTWarehouseViewAndMaybeFree(TWarehouseView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TWarehouseView::DestructTWarehouseViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

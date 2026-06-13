@@ -3,115 +3,49 @@
 // Program: Imperialism.exe
 // Bucket: TFuzzySet.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403148
-// GHIDRA_NAME TFuzzySet::TFuzzySet_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TFuzzySet_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTFuzzySetClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTFuzzySetClassNamePointer */
-
-void * __cdecl TFuzzySet::TFuzzySet_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTFuzzySetClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004057BD
-// GHIDRA_NAME TFuzzySet::thunk_CreateTFuzzySetInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTFuzzySetInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTFuzzyVarRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTFuzzyVarRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall TFuzzySet::thunk_CreateTFuzzySetInstance(TFuzzySet *this)
-
-{
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004058B7
-// GHIDRA_NAME TFuzzySet::TFuzzySet_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TFuzzySet_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTFuzzySetAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTFuzzySetAndMaybeFree */
-
-void * __thiscall TFuzzySet::TFuzzySet_VtblSlot001(TFuzzySet *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTFuzzySetAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF500
 // GHIDRA_NAME TFuzzySet::CreateTFuzzySetInstance
-// GHIDRA_PROTO void * __thiscall CreateTFuzzySetInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TFuzzyVar runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTFuzzySetInstance()
 
-/* Returns TFuzzyVar runtime class descriptor pointer. */
-
-void * __thiscall TFuzzySet::CreateTFuzzySetInstance(TFuzzySet *this)
+void __fastcall TFuzzySet::CreateTFuzzySetInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF6C0
 // GHIDRA_NAME TFuzzySet::GetTFuzzySetClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTFuzzySetClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TFuzzySet.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTFuzzySetClassNamePointer()
 
-/* Returns class descriptor pointer for TFuzzySet. */
-
-void * __cdecl TFuzzySet::GetTFuzzySetClassNamePointer(void)
+undefined ** TFuzzySet::GetTFuzzySetClassNamePointer(void)
 
 {
-  return &g_pClassDescTFuzzySet;
+  return &PTR_s_TFuzzySet_00656958;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF6E0
 // GHIDRA_NAME TFuzzySet::ConstructTFuzzySetBaseState
-// GHIDRA_PROTO void __fastcall ConstructTFuzzySetBaseState(TFuzzySet * pThis)
+// GHIDRA_PROTO undefined ConstructTFuzzySetBaseState()
 
-void __fastcall TFuzzySet::ConstructTFuzzySetBaseState(TFuzzySet *pThis)
+void __fastcall TFuzzySet::ConstructTFuzzySetBaseState(undefined4 *param_1)
 
 {
-  pThis->field0_0x0 = &g_vtblTFuzzySet;
+  *param_1 = &PTR_LAB_006569c8;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF700
 // GHIDRA_NAME TFuzzySet::DestructTFuzzySetAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTFuzzySetAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTFuzzySetAndMaybeFree()
 
-void * __thiscall TFuzzySet::DestructTFuzzySetAndMaybeFree(TFuzzySet *this,byte freeSelfFlag)
+undefined4 __thiscall TFuzzySet::DestructTFuzzySetAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTFuzzySetAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

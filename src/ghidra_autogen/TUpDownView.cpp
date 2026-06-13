@@ -3,70 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TUpDownView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004041C4
-// GHIDRA_NAME TUpDownView::TUpDownView_VtblSlot001
-// GHIDRA_PROTO TUpDownView * __thiscall TUpDownView_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTUpDownViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTUpDownViewAndMaybeFree */
-
-TUpDownView * __thiscall TUpDownView::TUpDownView_VtblSlot001(TUpDownView *this,byte freeSelfFlag)
-
-{
-  TUpDownView *pTVar1;
-  
-  pTVar1 = DestructTUpDownViewAndMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408977
-// GHIDRA_NAME TUpDownView::TUpDownView_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TUpDownView_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTUpDownViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTUpDownViewClassNamePointer */
-
-void * __cdecl TUpDownView::TUpDownView_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTUpDownViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409A4D
-// GHIDRA_NAME TUpDownView::TUpDownView_VtblSlot104
-// GHIDRA_PROTO void __thiscall TUpDownView_VtblSlot104(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleSplitArrowAutoRepeatTickAndDispatch_Offset84 */
-
-void __thiscall
-TUpDownView::TUpDownView_VtblSlot104
-          (TUpDownView *this,int nEventType,void *pEventSender,void *pEventDataA,
-          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
-
-{
-  HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
-            (this,nEventType,pEventSender,pEventDataA,pHitPayload,pRepeatArg);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00583C90
 // GHIDRA_NAME TUpDownView::CreateTUpDownViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTUpDownViewInstance(void)
+// GHIDRA_PROTO undefined CreateTUpDownViewInstance()
 
-void * __cdecl TUpDownView::CreateTUpDownViewInstance(void)
+undefined4 * TUpDownView::CreateTUpDownViewInstance(void)
 
 {
-  TControl *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -76,99 +20,85 @@ void * __cdecl TUpDownView::CreateTUpDownViewInstance(void)
   puStack_8 = &LAB_0063756a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (this != (TControl *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
-    (this->base).pVtable = &g_vtblTUpDownView;
-    *(undefined4 *)&this->field_0x84 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    *puVar1 = &PTR_LAB_00663770;
+    puVar1[0x21] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D30
 // GHIDRA_NAME TUpDownView::GetTUpDownViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTUpDownViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TUpDownView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTUpDownViewClassNamePointer()
 
-/* Returns class descriptor pointer for TUpDownView. */
-
-void * __cdecl TUpDownView::GetTUpDownViewClassNamePointer(void)
+undefined ** TUpDownView::GetTUpDownViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTUpDownView;
+  return &PTR_s_TUpDownView_00662de8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D50
 // GHIDRA_NAME TUpDownView::ConstructTUpDownViewBaseState
-// GHIDRA_PROTO TUpDownView * __thiscall ConstructTUpDownViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTUpDownViewBaseState()
 
-TUpDownView * __thiscall TUpDownView::ConstructTUpDownViewBaseState(TUpDownView *this)
+undefined4 * __fastcall TUpDownView::ConstructTUpDownViewBaseState(undefined4 *param_1)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
-  this->field0_0x0 = &g_vtblTUpDownView;
-  this->field84 = 0;
-  return this;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  *param_1 = &PTR_LAB_00663770;
+  param_1[0x21] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583D80
 // GHIDRA_NAME TUpDownView::DestructTUpDownViewAndMaybeFree
-// GHIDRA_PROTO TUpDownView * __thiscall DestructTUpDownViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTUpDownViewAndMaybeFree()
 
-TUpDownView * __thiscall
-TUpDownView::DestructTUpDownViewAndMaybeFree(TUpDownView *this,byte freeSelfFlag)
+undefined4 __thiscall TUpDownView::DestructTUpDownViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructTViewBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583DD0
 // GHIDRA_NAME TUpDownView::HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
-// GHIDRA_PROTO void __thiscall HandleSplitArrowAutoRepeatTickAndDispatch_Offset84(int nEventType, void * pEventSender, void * pEventDataA, SplitArrowDispatchPayload * pHitPayload, void * pRepeatArg)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Enum] Auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x84 timer state).
-// GHIDRA_COMMENT_END
-
-/* [Enum] Auto-repeat split-arrow dispatcher for EArrowSplitCommandId::LEFT/RIGHT (offset 0x84 timer
-   state). */
+// GHIDRA_PROTO undefined HandleSplitArrowAutoRepeatTickAndDispatch_Offset84()
 
 void __thiscall
 TUpDownView::HandleSplitArrowAutoRepeatTickAndDispatch_Offset84
-          (TUpDownView *this,int nEventType,void *pEventSender,void *pEventDataA,
-          SplitArrowDispatchPayload *pHitPayload,void *pRepeatArg)
+          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,int param_5)
 
 {
-  undefined **ppuVar1;
-  char cVar2;
-  uint extraout_EAX;
-  int extraout_EAX_00;
+  char cVar1;
+  uint uVar2;
+  int iVar3;
   
-  if (nEventType != 2) {
-    thunk_GetTickCountDiv16();
-    if (this->field84 + 5U <= extraout_EAX) {
-      thunk_GetTickCountDiv16();
-      this->field84 = extraout_EAX_00;
-      if (nEventType == 0) {
-        this->field84 = extraout_EAX_00 + 10;
+  if (param_2 != 2) {
+    uVar2 = thunk_GetTickCountDiv16();
+    if (param_1[0x21] + 5U <= uVar2) {
+      iVar3 = thunk_GetTickCountDiv16();
+      param_1[0x21] = iVar3;
+      if (param_2 == 0) {
+        param_1[0x21] = iVar3 + 10;
       }
-      ppuVar1 = this->field0_0x0;
-      cVar2 = (*(code *)ppuVar1[0x5b])(pHitPayload);
-      if (cVar2 != '\0') {
-        if ((int)pHitPayload->axisCoord4 <= this->field38 / 2) {
-          (*(code *)ppuVar1[0x10])(100);
+      iVar3 = *param_1;
+      cVar1 = (**(code **)(iVar3 + 0x16c))(param_5);
+      if (cVar1 != '\0') {
+        if (*(int *)(param_5 + 4) <= param_1[0xe] / 2) {
+          (**(code **)(iVar3 + 0x40))(100);
           return;
         }
-        (*(code *)ppuVar1[0x10])(0x65,this,0);
+        (**(code **)(iVar3 + 0x40))(0x65,param_1,0);
       }
     }
   }

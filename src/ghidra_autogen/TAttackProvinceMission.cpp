@@ -3,647 +3,37 @@
 // Program: Imperialism.exe
 // Bucket: TAttackProvinceMission.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401E10
-// GHIDRA_NAME TAttackProvinceMission::thunk_GetTAttackProvinceMissionClassNamePointer_At00401e10
-// GHIDRA_PROTO void * __cdecl thunk_GetTAttackProvinceMissionClassNamePointer_At00401e10(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTAttackProvinceMissionClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTAttackProvinceMissionClassNamePointer */
-
-void * __cdecl
-TAttackProvinceMission::thunk_GetTAttackProvinceMissionClassNamePointer_At00401e10(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTAttackProvinceMissionClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004028C9
-// GHIDRA_NAME TAttackProvinceMission::thunk_RefreshAttackProvinceMissionTargetAndMaybeQueueUnits_At004028c9
-// GHIDRA_PROTO void __thiscall thunk_RefreshAttackProvinceMissionTargetAndMaybeQueueUnits_At004028c9(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RefreshAttackProvinceMissionTargetAndMaybeQueueUnits
-// GHIDRA_COMMENT_END
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to RefreshAttackProvinceMissionTargetAndMaybeQueueUnits */
-
-void __thiscall
-TAttackProvinceMission::thunk_RefreshAttackProvinceMissionTargetAndMaybeQueueUnits_At004028c9
-          (TAttackProvinceMission *this)
-
-{
-  float fVar1;
-  short sVar2;
-  float fVar3;
-  float fVar4;
-  int *piVar5;
-  char cVar6;
-  bool bVar7;
-  void **ppvVar8;
-  int *extraout_EAX;
-  undefined3 extraout_var;
-  int *extraout_EAX_00;
-  undefined3 extraout_var_00;
-  int *extraout_EAX_01;
-  undefined3 extraout_var_01;
-  int *extraout_EAX_02;
-  undefined3 extraout_var_02;
-  float *pfVar9;
-  int iVar10;
-  float fStack_14;
-  undefined4 *puStack_10;
-  
-  if ((short)(this->base).field14_0x14 == -1) {
-    (**(code **)((int)(this->base).pVtable + 0xa0))();
-  }
-  (**(code **)((int)(this->base).pVtable + 0x9c))(0);
-  thunk_AccumulateMissionUnitPriorityVectorWithOptionalFilter();
-  fVar3 = 0.0;
-  fVar4 = 0.0;
-  pfVar9 = &fStack_14;
-  iVar10 = 5;
-  ppvVar8 = &(this->base).field16_0x1c;
-  do {
-    fVar1 = *pfVar9;
-    pfVar9 = pfVar9 + 1;
-    iVar10 = iVar10 + -1;
-    fVar4 = fVar4 + (float)*ppvVar8;
-    fVar3 = fVar3 + SQRT(fVar1 * (float)*ppvVar8);
-    ppvVar8 = ppvVar8 + 1;
-  } while (iVar10 != 0);
-  if (ram0x0065a8f0 < fVar3 / fVar4) {
-    iVar10 = (int)*(short *)&(this->base).field21_0x30;
-    cVar6 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x48))
-                      (CONCAT22((short)((uint)*(int *)((int)g_pGlobalMapState + 0x10) >> 0x10),
-                                *(undefined2 *)&(this->base).field_0x4),
-                       CONCAT22((short)((uint)(iVar10 * 0x15) >> 0x10),
-                                (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) +
-                                                iVar10 * 0xa8)));
-    if (cVar6 == '\0') {
-      iVar10 = (int)*(short *)&(this->base).field21_0x30;
-      cVar6 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x44))
-                        (CONCAT22((short)((uint)*(int *)((int)g_pGlobalMapState + 0x10) >> 0x10),
-                                  *(undefined2 *)&(this->base).field_0x4),
-                         CONCAT22((short)((uint)(iVar10 * 0x15) >> 0x10),
-                                  (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) +
-                                                  iVar10 * 0xa8)));
-      if (cVar6 == '\0') {
-        cVar6 = *(char *)(*(int *)((int)g_pGlobalMapState + 0x10) +
-                         *(short *)&(this->base).field21_0x30 * 0xa8);
-        if (*(short *)((int)g_apNationStates[*(short *)&(this->base).field_0x4] +
-                      (short)cVar6 * 2 + 0xb2) != 0x131) {
-          (**(code **)(*(int *)g_apNationStates[*(short *)&(this->base).field_0x4] + 0x1d0))
-                    ((int)cVar6,0x131);
-        }
-      }
-    }
-    else {
-      thunk_InitializeLinkedListCursorFromOwnerHead();
-      bVar7 = thunk_LinkedListCursorHasCurrent();
-      iVar10 = CONCAT31(extraout_var,bVar7);
-      piVar5 = extraout_EAX;
-      while (iVar10 != 0) {
-        if (*(short *)((int)piVar5 + 6) == (short)(this->base).field14_0x14) {
-          (**(code **)(*piVar5 + 0x34))
-                    (1,CONCAT22((short)((uint)iVar10 >> 0x10),
-                                *(undefined2 *)&(this->base).field21_0x30));
-        }
-        thunk_AdvanceLinkedListCursor();
-        bVar7 = thunk_LinkedListCursorHasCurrent();
-        piVar5 = extraout_EAX_00;
-        iVar10 = CONCAT31(extraout_var_00,bVar7);
-      }
-    }
-  }
-  puStack_10 = (this->base).field15_0x18;
-  sVar2 = (short)(this->base).field14_0x14;
-  thunk_InitializeLinkedListCursorFromOwnerHead();
-  bVar7 = thunk_LinkedListCursorHasCurrent();
-  iVar10 = CONCAT31(extraout_var_01,bVar7);
-  piVar5 = extraout_EAX_01;
-  while (iVar10 != 0) {
-    if (*(short *)((int)piVar5 + 6) != sVar2) {
-      (**(code **)(*piVar5 + 0x34))(1,sVar2);
-    }
-    thunk_AdvanceLinkedListCursor();
-    bVar7 = thunk_LinkedListCursorHasCurrent();
-    piVar5 = extraout_EAX_02;
-    iVar10 = CONCAT31(extraout_var_02,bVar7);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004042D7
-// GHIDRA_NAME TAttackProvinceMission::thunk_PopulateDefendProvinceMissionResourceWeightsFromTargetProvince
-// GHIDRA_PROTO void __thiscall thunk_PopulateDefendProvinceMissionResourceWeightsFromTargetProvince(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to PopulateDefendProvinceMissionResourceWeightsFromTargetProvince
-// GHIDRA_COMMENT_END
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to PopulateDefendProvinceMissionResourceWeightsFromTargetProvince */
-
-void __thiscall
-TAttackProvinceMission::thunk_PopulateDefendProvinceMissionResourceWeightsFromTargetProvince
-          (TAttackProvinceMission *this)
-
-{
-  float fVar1;
-  char cVar2;
-  short sVar3;
-  ushort uVar4;
-  float fVar5;
-  float fVar6;
-  short extraout_AX;
-  float *pfVar7;
-  ushort *puVar8;
-  int iVar9;
-  void **ppvVar10;
-  float afStack_14 [5];
-  
-  afStack_14[0] = 0.0;
-  afStack_14[1] = 0.0;
-  afStack_14[2] = 0.0;
-  afStack_14[3] = 0.0;
-  afStack_14[4] = 0.0;
-  NoOpRuntimeCallback_005184e0();
-  sVar3 = *(short *)&(this->base).field21_0x30;
-  if ((sVar3 < 0) || (0x17f < sVar3)) {
-    iVar9 = 0;
-  }
-  else {
-    iVar9 = *(int *)(*(int *)((int)g_pGlobalMapState + 0x10) + 0x98 + sVar3 * 0xa8);
-  }
-  for (; iVar9 != 0; iVar9 = *(int *)(iVar9 + 0x14)) {
-    thunk_AccumulateUnitOrderPriorityVectorContribution
-              (iVar9,(int)afStack_14,0x3f800000,(int)(float)(int)extraout_AX);
-  }
-  cVar2 = *(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 3 +
-                   *(short *)&(this->base).field21_0x30 * 0xa8);
-  pfVar7 = afStack_14;
-  iVar9 = 5;
-  fVar1 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  do {
-    fVar1 = fVar1 + *pfVar7;
-    pfVar7 = pfVar7 + 1;
-    iVar9 = iVar9 + -1;
-  } while (iVar9 != 0);
-  fVar5 = _g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  if (fVar1 != (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    pfVar7 = afStack_14;
-    iVar9 = 5;
-    puVar8 = &g_Recompute_Nation_Order_LookupTable_00697870 + ((cVar2 < '\x01') - 1 & 3) * 5;
-    do {
-      fVar6 = *pfVar7 / fVar1 -
-              (float)(int)(short)*puVar8 * (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8;
-      if (fVar6 <= (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-        fVar6 = -fVar6;
-      }
-      fVar5 = fVar5 + fVar6;
-      puVar8 = puVar8 + 1;
-      pfVar7 = pfVar7 + 1;
-      iVar9 = iVar9 + -1;
-    } while (iVar9 != 0);
-    fVar5 = fVar1 * ((float)_g_Recompute_Nation_Order_LookupTable_0065AA08 -
-                    fVar5 * (float)_g_Recompute_Nation_Order_LookupTable_0065AA00);
-  }
-  if (fVar5 == (float)_g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    fVar5 = (float)g_Compute_Best_Nation_LookupTable_0065A9B8;
-  }
-  fVar1 = *(float *)(&g_Populate_Defend_Province_Value_0065A968 +
-                    ((int)cVar2 + *(int *)((int)g_pLocalizationTable + 0x40) * 4) * 4);
-  if (cVar2 < '\x01') {
-    puVar8 = &g_Recompute_Nation_Order_LookupTable_0069787A;
-    ppvVar10 = &(this->base).field16_0x1c;
-    do {
-      uVar4 = *puVar8;
-      puVar8 = puVar8 + 1;
-      *ppvVar10 = (void *)((float)(int)(short)uVar4 * fVar1 * fVar5 *
-                          (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8);
-      ppvVar10 = ppvVar10 + 1;
-    } while ((int)puVar8 < 0x697884);
-    return;
-  }
-  puVar8 = &g_Populate_Defend_Province_LookupTable_00697884;
-  ppvVar10 = &(this->base).field16_0x1c;
-  do {
-    uVar4 = *puVar8;
-    puVar8 = puVar8 + 1;
-    *ppvVar10 = (void *)((float)(int)(short)uVar4 * fVar1 * fVar5 *
-                        (float)_g_Recompute_Nation_Order_LookupTable_0065A9F8);
-    ppvVar10 = ppvVar10 + 1;
-  } while ((int)puVar8 < 0x69788e);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404926
-// GHIDRA_NAME TAttackProvinceMission::thunk_DeserializeTAttackProvinceMission_At00404926
-// GHIDRA_PROTO void __thiscall thunk_DeserializeTAttackProvinceMission_At00404926(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DeserializeTAttackProvinceMission
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to DeserializeTAttackProvinceMission */
-
-void __thiscall
-TAttackProvinceMission::thunk_DeserializeTAttackProvinceMission_At00404926
-          (TAttackProvinceMission *this)
-
-{
-  DeserializeTAttackProvinceMission(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404EEE
-// GHIDRA_NAME TAttackProvinceMission::thunk_ReturnFalseForAttackProvinceMissionCapabilityFlag_At00404eee
-// GHIDRA_PROTO bool __stdcall thunk_ReturnFalseForAttackProvinceMissionCapabilityFlag_At00404eee(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ReturnFalseForAttackProvinceMissionCapabilityFlag
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ReturnFalseForAttackProvinceMissionCapabilityFlag */
-
-bool TAttackProvinceMission::thunk_ReturnFalseForAttackProvinceMissionCapabilityFlag_At00404eee
-               (void)
-
-{
-  bool bVar1;
-  
-  bVar1 = ReturnFalseForAttackProvinceMissionCapabilityFlag();
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040558D
-// GHIDRA_NAME TAttackProvinceMission::thunk_InitializeDefendProvinceMissionMovementClassFromTargetProvince_At0040558d
-// GHIDRA_PROTO void __thiscall thunk_InitializeDefendProvinceMissionMovementClassFromTargetProvince_At0040558d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeDefendProvinceMissionMovementClassFromTargetProvince
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to InitializeDefendProvinceMissionMovementClassFromTargetProvince */
-
-void __thiscall
-TAttackProvinceMission::
-thunk_InitializeDefendProvinceMissionMovementClassFromTargetProvince_At0040558d
-          (TAttackProvinceMission *this)
-
-{
-  InitializeDefendProvinceMissionMovementClassFromTargetProvince(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004057FE
-// GHIDRA_NAME TAttackProvinceMission::thunk_TryValidateOrRetargetDefendProvinceMissionTarget_At004057fe
-// GHIDRA_PROTO void __thiscall thunk_TryValidateOrRetargetDefendProvinceMissionTarget_At004057fe(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to TryValidateOrRetargetDefendProvinceMissionTarget
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to TryValidateOrRetargetDefendProvinceMissionTarget */
-
-void __thiscall
-TAttackProvinceMission::thunk_TryValidateOrRetargetDefendProvinceMissionTarget_At004057fe
-          (TAttackProvinceMission *this)
-
-{
-  undefined1 *puVar1;
-  short sVar2;
-  void *pvVar3;
-  char cVar4;
-  short extraout_AX;
-  int iVar5;
-  
-  if ((short)(this->base).field14_0x14 == -1) {
-    (**(code **)((int)(this->base).pVtable + 0xa0))();
-  }
-  if ((short)(this->base).field14_0x14 == -1) {
-    return;
-  }
-  puVar1 = &(this->base).field_0x4;
-  iVar5 = (int)*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) +
-                        *(short *)&(this->base).field21_0x30 * 0xa8);
-  if (iVar5 == *(short *)puVar1) {
-    sVar2 = *(short *)((int)&(this->base).field21_0x30 + 2);
-    if ((sVar2 != -1) &&
-       (*(short *)&(this->base).field_0x6 ==
-        (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + sVar2 * 0xa8))) {
-      *(short *)&(this->base).field21_0x30 = sVar2;
-      pvVar3 = (this->base).pVtable;
-      *(undefined2 *)((int)&(this->base).field21_0x30 + 2) = 0xffff;
-      (**(code **)((int)pvVar3 + 0xa0))();
-      goto LAB_0053e101;
-    }
-  }
-  else if ((iVar5 == *(short *)&(this->base).field_0x6) &&
-          ((thunk_GetTileNormalizedMovementClassId(), extraout_AX == *(short *)puVar1 ||
-           (cVar4 = (**(code **)((int)(this->base).pVtable + 0xa0))(), cVar4 != '\0'))))
-  goto LAB_0053e101;
-  this = (TAttackProvinceMission *)0x0;
-LAB_0053e101:
-  if ((this != (TAttackProvinceMission *)0x0) &&
-     (cVar4 = (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x4c))
-                        (*(undefined2 *)puVar1), cVar4 != '\0')) {
-    (**(code **)((int)g_pDiplomacyTurnStateManager->vftable + 0x44))(*(undefined2 *)puVar1,iVar5);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405C8B
-// GHIDRA_NAME TAttackProvinceMission::thunk_ConstructTAttackProvinceMission
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTAttackProvinceMission(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTAttackProvinceMission
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to ConstructTAttackProvinceMission */
-
-void * __thiscall
-TAttackProvinceMission::thunk_ConstructTAttackProvinceMission
-          (TAttackProvinceMission *this,int arg1,int arg2)
-
-{
-  TMission::thunk_ConstructTArmyMissionWithNodeKey(&this->base,-1);
-  *(undefined2 *)&(this->base).field21_0x30 = (undefined2)arg1;
-  *(undefined2 *)((int)&(this->base).field21_0x30 + 2) = (undefined2)arg2;
-  (this->base).pVtable = &g_vtblTAttackProvinceMission;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405EF7
-// GHIDRA_NAME TAttackProvinceMission::thunk_SerializeTAttackProvinceMission
-// GHIDRA_PROTO void __thiscall thunk_SerializeTAttackProvinceMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SerializeTAttackProvinceMission
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to SerializeTAttackProvinceMission */
-
-void __thiscall
-TAttackProvinceMission::thunk_SerializeTAttackProvinceMission(TAttackProvinceMission *this)
-
-{
-  SerializeTAttackProvinceMission(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406C8F
-// GHIDRA_NAME TAttackProvinceMission::thunk_SetDefendProvinceMissionStateFlag8ToPending_At00406c8f
-// GHIDRA_PROTO void __thiscall thunk_SetDefendProvinceMissionStateFlag8ToPending_At00406c8f(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to SetDefendProvinceMissionStateFlag8ToPending
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to SetDefendProvinceMissionStateFlag8ToPending */
-
-void __thiscall
-TAttackProvinceMission::thunk_SetDefendProvinceMissionStateFlag8ToPending_At00406c8f
-          (TAttackProvinceMission *this)
-
-{
-  SetDefendProvinceMissionStateFlag8ToPending(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406E6A
-// GHIDRA_NAME TAttackProvinceMission::thunk_DestroyTAttackProvinceMission_At00406e6a
-// GHIDRA_PROTO void * __thiscall thunk_DestroyTAttackProvinceMission_At00406e6a(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestroyTAttackProvinceMission
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to DestroyTAttackProvinceMission */
-
-void * __thiscall
-TAttackProvinceMission::thunk_DestroyTAttackProvinceMission_At00406e6a(TAttackProvinceMission *this)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestroyTAttackProvinceMission(this);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004076D5
-// GHIDRA_NAME TAttackProvinceMission::thunk_HandleDefendProvinceMissionActionType01ForTargetTile_At004076d5
-// GHIDRA_PROTO bool __thiscall thunk_HandleDefendProvinceMissionActionType01ForTargetTile_At004076d5(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleDefendProvinceMissionActionType01ForTargetTile
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to HandleDefendProvinceMissionActionType01ForTargetTile */
-
-bool __thiscall
-TAttackProvinceMission::thunk_HandleDefendProvinceMissionActionType01ForTargetTile_At004076d5
-          (TAttackProvinceMission *this)
-
-{
-  bool bVar1;
-  
-  bVar1 = HandleDefendProvinceMissionActionType01ForTargetTile(this);
-  return bVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408427
-// GHIDRA_NAME TAttackProvinceMission::thunk_TryResolveAttackProvinceMissionTargetTerrainClass_At00408427
-// GHIDRA_PROTO void __thiscall thunk_TryResolveAttackProvinceMissionTargetTerrainClass_At00408427(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to TryResolveAttackProvinceMissionTargetTerrainClass
-// GHIDRA_COMMENT_END
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to TryResolveAttackProvinceMissionTargetTerrainClass */
-
-void __thiscall
-TAttackProvinceMission::thunk_TryResolveAttackProvinceMissionTargetTerrainClass_At00408427
-          (TAttackProvinceMission *this)
-
-{
-  int iVar1;
-  char cVar2;
-  short sVar3;
-  short sVar4;
-  int iVar5;
-  short extraout_AX;
-  short extraout_AX_00;
-  short extraout_AX_01;
-  int iVar6;
-  int iVar7;
-  int iVar8;
-  float fStack_20;
-  float fStack_1c;
-  short *psStack_18;
-  float fStack_10;
-  int iStack_c;
-  
-  fStack_10 = 0.0;
-  iVar6 = (int)*(short *)&(this->base).field21_0x30;
-  *(undefined2 *)&(this->base).field14_0x14 = 0xffff;
-  iStack_c = 0;
-  iVar1 = *(int *)((int)g_pGlobalMapState + 0x10) + iVar6 * 0xa8;
-  if ('\0' < *(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + 8 + iVar6 * 0xa8)) {
-    psStack_18 = (short *)(iVar1 + 10);
-    do {
-      sVar3 = *(short *)&(this->base).field_0x4;
-      sVar4 = *psStack_18;
-      thunk_GetTileNormalizedMovementClassId();
-      if (extraout_AX == sVar3) {
-        if ((short)(this->base).field14_0x14 != -1) {
-          iVar7 = (int)sVar4;
-          iVar8 = 0;
-          fStack_20 = 0.0;
-          iVar5 = *(int *)((int)g_pGlobalMapState + 0x10);
-          fStack_1c = (float)*(int *)(iVar5 + 0x9c + iVar7 * 0xa8);
-          iVar6 = iVar5 + iVar7 * 0xa8;
-          if ('\0' < *(char *)(iVar5 + 8 + iVar7 * 0xa8)) {
-            do {
-              thunk_GetTileNormalizedMovementClassId();
-              if (sVar3 == extraout_AX_00) {
-                fStack_20 = (float)((int)fStack_20 + 1);
-              }
-              iVar8 = iVar8 + 1;
-            } while (iVar8 < *(char *)(iVar6 + 8));
-          }
-          cVar2 = *(char *)(iVar6 + 8);
-          if ('\0' < cVar2) {
-            fStack_1c = ((float)(int)fStack_20 / (float)(int)cVar2 -
-                        (float)_g_Try_Resolve_Attack_LookupTable_0065A9E0) * fStack_1c;
-          }
-          if (fStack_1c / _g_Try_Resolve_Attack_LookupTable_0065A9C0 <= fStack_10)
-          goto LAB_0053dd2c;
-        }
-        iVar7 = (int)sVar4;
-        *(short *)&(this->base).field14_0x14 = sVar4;
-        sVar3 = *(short *)&(this->base).field_0x4;
-        iVar8 = 0;
-        iVar5 = *(int *)((int)g_pGlobalMapState + 0x10);
-        fStack_1c = 0.0;
-        fStack_20 = (float)*(int *)(iVar5 + 0x9c + iVar7 * 0xa8);
-        iVar6 = iVar5 + iVar7 * 0xa8;
-        if ('\0' < *(char *)(iVar5 + 8 + iVar7 * 0xa8)) {
-          do {
-            thunk_GetTileNormalizedMovementClassId();
-            if (sVar3 == extraout_AX_01) {
-              fStack_1c = (float)((int)fStack_1c + 1);
-            }
-            iVar8 = iVar8 + 1;
-          } while (iVar8 < *(char *)(iVar6 + 8));
-        }
-        cVar2 = *(char *)(iVar6 + 8);
-        if ('\0' < cVar2) {
-          fStack_20 = ((float)(int)fStack_1c / (float)(int)cVar2 -
-                      (float)_g_Try_Resolve_Attack_LookupTable_0065A9E0) * fStack_20;
-        }
-        fStack_10 = fStack_20 / _g_Try_Resolve_Attack_LookupTable_0065A9C0;
-      }
-LAB_0053dd2c:
-      iStack_c = iStack_c + 1;
-      psStack_18 = psStack_18 + 1;
-    } while (iStack_c < *(char *)(iVar1 + 8));
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408599
-// GHIDRA_NAME TAttackProvinceMission::thunk_CleanupTAttackProvinceMissionAndReleaseChildContext_At00408599
-// GHIDRA_PROTO void __thiscall thunk_CleanupTAttackProvinceMissionAndReleaseChildContext_At00408599(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to CleanupTAttackProvinceMissionAndReleaseChildContext
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to CleanupTAttackProvinceMissionAndReleaseChildContext */
-
-void __thiscall
-TAttackProvinceMission::thunk_CleanupTAttackProvinceMissionAndReleaseChildContext_At00408599
-          (TAttackProvinceMission *this)
-
-{
-  CleanupTAttackProvinceMissionAndReleaseChildContext(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004094FD
-// GHIDRA_NAME TAttackProvinceMission::thunk_EvaluateAttackProvinceMissionAndQueueEligibleUnits_At004094fd
-// GHIDRA_PROTO bool __thiscall thunk_EvaluateAttackProvinceMissionAndQueueEligibleUnits_At004094fd(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to EvaluateAttackProvinceMissionAndQueueEligibleUnits
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Single-JMP thunk to EvaluateAttackProvinceMissionAndQueueEligibleUnits */
-
-bool __thiscall
-TAttackProvinceMission::thunk_EvaluateAttackProvinceMissionAndQueueEligibleUnits_At004094fd
-          (TAttackProvinceMission *this)
-
-{
-  bool bVar1;
-  
-  bVar1 = EvaluateAttackProvinceMissionAndQueueEligibleUnits(this);
-  return bVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004E8B50
 // GHIDRA_NAME TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-// GHIDRA_PROTO void __thiscall SetMapStateByteFlag970WithRuntimeGate(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Set map-state byte flag array entry at +0x970 with optional runtime gating check.
-// GHIDRA_COMMENT_END
-
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Set map-state byte flag array entry at +0x970 with optional runtime gating check. */
+// GHIDRA_PROTO undefined SetMapStateByteFlag970WithRuntimeGate()
 
 void __thiscall
-TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-          (TAttackProvinceMission *this,int arg1,int arg2)
+TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate(int param_1,int param_2,int param_3)
 
 {
   char cVar1;
   undefined1 uVar2;
   
-  uVar2 = (undefined1)arg2;
-  if (arg2 == 1) {
-    cVar1 = (**(code **)(*(int *)g_pGlobalMapState + 0x58))
-                      (arg1,*(undefined2 *)&(this->base).pField0c);
+  uVar2 = (undefined1)param_3;
+  if (param_3 == 1) {
+    cVar1 = (**(code **)(*g_pGlobalMapState + 0x58))(param_2,*(undefined2 *)(param_1 + 0xc));
     if (cVar1 != '\0') {
       uVar2 = 0;
     }
   }
-  (&this[0xe].field_0x78)[arg1] = uVar2;
+  *(undefined1 *)(param_1 + 0x970 + param_2) = uVar2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D670
 // GHIDRA_NAME TAttackProvinceMission::CreateTAttackProvinceMission
-// GHIDRA_PROTO void * __stdcall CreateTAttackProvinceMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates 0x34 mission object, runs ConstructTArmyMissionWithNodeKey, then installs g_vtblTAttackProvinceMission.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTAttackProvinceMission()
 
-/* Allocates 0x34 mission object, runs ConstructTArmyMissionWithNodeKey, then installs
-   g_vtblTAttackProvinceMission. */
-
-void * TAttackProvinceMission::CreateTAttackProvinceMission(void)
+undefined4 * TAttackProvinceMission::CreateTAttackProvinceMission(void)
 
 {
-  TMission *this;
-  TMission *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -653,456 +43,308 @@ void * TAttackProvinceMission::CreateTAttackProvinceMission(void)
   puStack_8 = &LAB_0063445a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x34);
   local_4 = 0;
-  pTVar1 = (TMission *)0x0;
-  if (this != (TMission *)0x0) {
-    TMission::thunk_ConstructTArmyMissionWithNodeKey(this,-1);
-    *(undefined2 *)&this->field21_0x30 = 0xffff;
-    *(undefined2 *)((int)&this->field21_0x30 + 2) = 0xffff;
-    this->pVtable = &g_vtblTAttackProvinceMission;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TMission::ConstructTArmyMissionWithNodeKey(0xffffffff);
+    *(undefined2 *)(puVar1 + 0xc) = 0xffff;
+    *(undefined2 *)((int)puVar1 + 0x32) = 0xffff;
+    *puVar1 = &PTR_LAB_0065adf8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D710
 // GHIDRA_NAME TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTAttackProvinceMissionClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TAttackProvinceMission.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTAttackProvinceMissionClassNamePointer()
 
-/* Returns class descriptor pointer for TAttackProvinceMission. */
-
-void * __cdecl TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer(void)
+undefined ** TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer(void)
 
 {
-  return &g_pClassDescTAttackProvinceMission;
+  return &PTR_s_TAttackProvinceMission_00697a40;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D780
 // GHIDRA_NAME TAttackProvinceMission::ConstructTAttackProvinceMission
-// GHIDRA_PROTO void * __thiscall ConstructTAttackProvinceMission(int arg1, int arg2)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Constructs army-mission variant (vtable 0x65adf8) with node key and optional aux short key.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTAttackProvinceMission()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Constructs army-mission variant (vtable 0x65adf8) with node key and optional aux short key. */
-
-void * __thiscall
+undefined4 * __thiscall
 TAttackProvinceMission::ConstructTAttackProvinceMission
-          (TAttackProvinceMission *this,int arg1,int arg2)
+          (undefined4 *param_1,undefined2 param_2,undefined2 param_3)
 
 {
-  TMission::thunk_ConstructTArmyMissionWithNodeKey(&this->base,-1);
-  *(undefined2 *)&(this->base).field21_0x30 = (undefined2)arg1;
-  *(undefined2 *)((int)&(this->base).field21_0x30 + 2) = (undefined2)arg2;
-  (this->base).pVtable = &g_vtblTAttackProvinceMission;
-  return this;
+  TMission::ConstructTArmyMissionWithNodeKey(0xffffffff);
+  *(undefined2 *)(param_1 + 0xc) = param_2;
+  *(undefined2 *)((int)param_1 + 0x32) = param_3;
+  *param_1 = &PTR_LAB_0065adf8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D7C0
 // GHIDRA_NAME TAttackProvinceMission::DestroyTAttackProvinceMission
-// GHIDRA_PROTO void * __thiscall DestroyTAttackProvinceMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Scalar deleting destructor pattern: reset vtable via class-specific helper, then free self if deleteFlag bit0 is set.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestroyTAttackProvinceMission()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Scalar deleting destructor pattern: reset vtable via class-specific helper, then free self if
-   deleteFlag bit0 is set. */
-
-void * __thiscall
-TAttackProvinceMission::DestroyTAttackProvinceMission(TAttackProvinceMission *this)
+undefined4 __thiscall
+TAttackProvinceMission::DestroyTAttackProvinceMission(undefined4 param_1,byte param_2)
 
 {
-  byte in_stack_00000004;
-  
-  thunk_ResetTAttackProvinceMissionToSentinelVtable();
-  if ((in_stack_00000004 & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  ResetTAttackProvinceMissionToSentinelVtable();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D810
 // GHIDRA_NAME TAttackProvinceMission::SerializeTAttackProvinceMission
-// GHIDRA_PROTO void __thiscall SerializeTAttackProvinceMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Serialize attack-province mission fields (+0x30/+0x32) on top of TArmyMission serialization.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SerializeTAttackProvinceMission()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Serialize attack-province mission fields (+0x30/+0x32) on top of TArmyMission serialization. */
-
-void __thiscall
-TAttackProvinceMission::SerializeTAttackProvinceMission(TAttackProvinceMission *this)
+void __thiscall TAttackProvinceMission::SerializeTAttackProvinceMission(int param_1,int *param_2)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
-  TDefendProvinceMission::TDefendProvinceMission_VtblSlot005();
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
-  (*pcVar1)(&(this->base).field21_0x30,2);
-  (*pcVar1)((undefined1 *)((int)&(this->base).field21_0x30 + 2),2);
+  SerializeTArmyMission(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x78);
+  (*pcVar1)(param_1 + 0x30,2);
+  (*pcVar1)(param_1 + 0x32,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D850
 // GHIDRA_NAME TAttackProvinceMission::DeserializeTAttackProvinceMission
-// GHIDRA_PROTO void __thiscall DeserializeTAttackProvinceMission(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Deserialize attack-province mission fields (+0x30/+0x32) on top of TArmyMission deserialization.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DeserializeTAttackProvinceMission()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Deserialize attack-province mission fields (+0x30/+0x32) on top of TArmyMission deserialization.
-    */
-
-void __thiscall
-TAttackProvinceMission::DeserializeTAttackProvinceMission(TAttackProvinceMission *this)
+void __thiscall TAttackProvinceMission::DeserializeTAttackProvinceMission(int param_1,int *param_2)
 
 {
   code *pcVar1;
-  int *in_stack_00000004;
   
-  TDefendProvinceMission::TDefendProvinceMission_VtblSlot006();
-  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
-  (*pcVar1)(&(this->base).field21_0x30,2);
-  (*pcVar1)((undefined1 *)((int)&(this->base).field21_0x30 + 2),2);
+  DeserializeTArmyMission(param_2);
+  pcVar1 = *(code **)(*param_2 + 0x3c);
+  (*pcVar1)(param_1 + 0x30,2);
+  (*pcVar1)(param_1 + 0x32,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D890
 // GHIDRA_NAME TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
-// GHIDRA_PROTO void __thiscall CleanupTAttackProvinceMissionAndReleaseChildContext(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Cleanup path for TAttackProvinceMission: clears transient unit/link state, releases child context, and destroys self when requested.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CleanupTAttackProvinceMissionAndReleaseChildContext()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Cleanup path for TAttackProvinceMission: clears transient unit/link state, releases child
-   context, and destroys self when requested. */
-
-void __thiscall
-TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
-          (TAttackProvinceMission *this)
+void __fastcall
+TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext(int *param_1)
 
 {
-  TAttackProvinceMission *this_00;
-  int *piVar1;
+  int iVar1;
   int iVar2;
-  bool bVar3;
-  int extraout_EAX;
-  undefined3 extraout_var;
-  int extraout_EAX_00;
-  undefined3 extraout_var_00;
-  int iVar4;
   
-  this_00 = g_apNationStates[*(short *)&(this->base).field_0x4];
-  (**(code **)((int)(this_00->base).pVtable + 0xc))();
-  SetMapStateByteFlag970WithRuntimeGate(this_00,(int)*(short *)&(this->base).field21_0x30,0);
-  thunk_InitializeLinkedListCursorFromOwnerHead();
-  bVar3 = thunk_LinkedListCursorHasCurrent();
-  iVar4 = CONCAT31(extraout_var,bVar3);
-  iVar2 = extraout_EAX;
-  while (iVar4 != 0) {
-    *(undefined4 *)(iVar2 + 0x40) = 0;
-    thunk_AdvanceLinkedListCursor();
-    bVar3 = thunk_LinkedListCursorHasCurrent();
-    iVar2 = extraout_EAX_00;
-    iVar4 = CONCAT31(extraout_var_00,bVar3);
+  (**(code **)(*(int *)(&g_apNationStates)[(short)param_1[1]] + 0xc))();
+  SetMapStateByteFlag970WithRuntimeGate((int)(short)param_1[0xc],0);
+  iVar1 = InitializeLinkedListCursorFromOwnerHead();
+  iVar2 = LinkedListCursorHasCurrent();
+  while (iVar2 != 0) {
+    *(undefined4 *)(iVar1 + 0x40) = 0;
+    iVar1 = AdvanceLinkedListCursor();
+    iVar2 = LinkedListCursorHasCurrent();
   }
-  (**(code **)(*(this->base).field15_0x18 + 0x5c))();
-  piVar1 = (this->base).field15_0x18;
-  if (piVar1 != (int *)0x0) {
-    (**(code **)(*piVar1 + 0x58))();
+  (**(code **)(*(int *)param_1[6] + 0x5c))();
+  if ((int *)param_1[6] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[6] + 0x58))();
   }
-  (this->base).field15_0x18 = (undefined4 *)0x0;
-  if (this != (TAttackProvinceMission *)0x0) {
-    (**(code **)((int)(this->base).pVtable + 4))(1);
+  param_1[6] = 0;
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D950
 // GHIDRA_NAME TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
-// GHIDRA_PROTO bool __thiscall EvaluateAttackProvinceMissionAndQueueEligibleUnits(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Evaluates attack mission viability from composition score and queues eligible units when threshold/constraints pass.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined EvaluateAttackProvinceMissionAndQueueEligibleUnits()
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Evaluates attack mission viability from composition score and queues eligible units when
-   threshold/constraints pass. */
 
-bool __thiscall
-TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
-          (TAttackProvinceMission *this)
+undefined4 __fastcall
+TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits(int *param_1)
 
 {
   float fVar1;
-  void *pvVar2;
+  float fVar2;
   float fVar3;
-  float fVar4;
-  bool bVar5;
-  short extraout_AX;
-  short extraout_AX_00;
-  void **ppvVar6;
-  int extraout_EAX;
-  undefined3 extraout_var;
-  int extraout_EAX_00;
-  undefined3 extraout_var_00;
-  undefined4 extraout_EAX_01;
-  undefined3 extraout_var_01;
-  undefined4 extraout_EAX_02;
-  undefined3 extraout_var_02;
-  undefined4 extraout_EAX_03;
-  undefined3 extraout_var_03;
-  undefined4 extraout_EAX_04;
-  undefined3 extraout_var_04;
-  float *pfVar8;
-  int iVar9;
-  undefined4 uVar10;
-  float local_14;
-  undefined4 *local_10;
+  short sVar4;
+  undefined4 uVar5;
+  float *pfVar6;
   int iVar7;
+  int iVar8;
+  float *pfVar9;
+  int iVar10;
+  undefined4 uVar11;
+  float local_14;
+  int local_10;
   
-  if ((this->base).field_0x10 == '\0') {
-    pvVar2 = (this->base).pVtable;
-    (**(code **)((int)pvVar2 + 0x9c))(0);
-    thunk_AccumulateMissionUnitPriorityVectorWithOptionalFilter();
+  if ((char)param_1[4] == '\0') {
+    iVar8 = *param_1;
+    uVar11 = 0;
+    uVar5 = (**(code **)(iVar8 + 0x9c))(0);
+    AccumulateMissionUnitPriorityVectorWithOptionalFilter(&local_14,uVar5,uVar11);
+    fVar2 = 0.0;
     fVar3 = 0.0;
-    fVar4 = 0.0;
-    pfVar8 = &local_14;
-    iVar9 = 5;
-    ppvVar6 = &(this->base).field16_0x1c;
+    pfVar9 = &local_14;
+    iVar10 = 5;
+    pfVar6 = (float *)(param_1 + 7);
     do {
-      fVar1 = *pfVar8;
-      pfVar8 = pfVar8 + 1;
-      iVar9 = iVar9 + -1;
-      fVar4 = fVar4 + (float)*ppvVar6;
-      fVar3 = fVar3 + SQRT((float)*ppvVar6 * fVar1);
-      ppvVar6 = ppvVar6 + 1;
-    } while (iVar9 != 0);
-    if (ram0x0065a8f0 < fVar3 / fVar4) {
-      thunk_InitializeLinkedListCursorFromOwnerHead();
-      bVar5 = thunk_LinkedListCursorHasCurrent();
-      iVar7 = CONCAT31(extraout_var,bVar5);
-      iVar9 = extraout_EAX;
+      fVar1 = *pfVar9;
+      pfVar9 = pfVar9 + 1;
+      iVar10 = iVar10 + -1;
+      fVar3 = fVar3 + *pfVar6;
+      fVar2 = fVar2 + SQRT(*pfVar6 * fVar1);
+      pfVar6 = pfVar6 + 1;
+    } while (iVar10 != 0);
+    if (_DAT_0065a8f0 < fVar2 / fVar3) {
+      iVar10 = InitializeLinkedListCursorFromOwnerHead();
+      iVar7 = LinkedListCursorHasCurrent();
       while( true ) {
         if (iVar7 == 0) {
-          return false;
+          return 0;
         }
-        if ((double)(int)*(short *)(iVar9 + 0x34) * _g_Accumulate_Unit_Order_Value_0065AA48 <
-            (double)_g_Compute_Army_Mission_Value_0065AA20) break;
-        thunk_AdvanceLinkedListCursor();
-        bVar5 = thunk_LinkedListCursorHasCurrent();
-        iVar7 = CONCAT31(extraout_var_00,bVar5);
-        iVar9 = extraout_EAX_00;
+        if ((double)(int)*(short *)(iVar10 + 0x34) * _DAT_0065aa48 < (double)_DAT_0065aa20) break;
+        iVar10 = AdvanceLinkedListCursor();
+        iVar7 = LinkedListCursorHasCurrent();
       }
-      local_10 = (this->base).field15_0x18;
-      thunk_InitializeLinkedListCursorFromOwnerHead();
-      bVar5 = thunk_LinkedListCursorHasCurrent();
-      uVar10 = extraout_EAX_01;
-      if (CONCAT31(extraout_var_01,bVar5) == 0) {
-        return true;
+      local_10 = param_1[6];
+      uVar5 = InitializeLinkedListCursorFromOwnerHead();
+      iVar10 = LinkedListCursorHasCurrent();
+      if (iVar10 == 0) {
+        return 1;
       }
       do {
-        thunk_GetUnitMovementClassId();
-        if (extraout_AX != 0) {
-          (**(code **)((int)pvVar2 + 0x88))(uVar10,1);
+        sVar4 = thunk_GetUnitMovementClassId();
+        if (sVar4 != 0) {
+          (**(code **)(iVar8 + 0x88))(uVar5,1);
         }
-        thunk_AdvanceLinkedListCursor();
-        bVar5 = thunk_LinkedListCursorHasCurrent();
-        uVar10 = extraout_EAX_02;
-      } while (CONCAT31(extraout_var_02,bVar5) != 0);
-      return true;
+        uVar5 = AdvanceLinkedListCursor();
+        iVar10 = LinkedListCursorHasCurrent();
+      } while (iVar10 != 0);
+      return 1;
     }
   }
-  local_10 = (this->base).field15_0x18;
-  thunk_InitializeLinkedListCursorFromOwnerHead();
-  bVar5 = thunk_LinkedListCursorHasCurrent();
-  iVar9 = CONCAT31(extraout_var_03,bVar5);
-  uVar10 = extraout_EAX_03;
-  while (iVar9 != 0) {
-    thunk_GetUnitMovementClassId();
-    if (extraout_AX_00 != 0) {
-      (**(code **)((int)(this->base).pVtable + 0x88))(uVar10,1);
+  local_10 = param_1[6];
+  uVar5 = InitializeLinkedListCursorFromOwnerHead();
+  iVar8 = LinkedListCursorHasCurrent();
+  while (iVar8 != 0) {
+    sVar4 = thunk_GetUnitMovementClassId();
+    if (sVar4 != 0) {
+      (**(code **)(*param_1 + 0x88))(uVar5,1);
     }
-    thunk_AdvanceLinkedListCursor();
-    bVar5 = thunk_LinkedListCursorHasCurrent();
-    uVar10 = extraout_EAX_04;
-    iVar9 = CONCAT31(extraout_var_04,bVar5);
+    uVar5 = AdvanceLinkedListCursor();
+    iVar8 = LinkedListCursorHasCurrent();
   }
-  return true;
+  return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E180
 // GHIDRA_NAME TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending
-// GHIDRA_PROTO void __thiscall SetDefendProvinceMissionStateFlag8ToPending(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sets defend mission state byte at +0x8 to value 2 (pending/transition state).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined SetDefendProvinceMissionStateFlag8ToPending()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Sets defend mission state byte at +0x8 to value 2 (pending/transition state). */
-
-void __thiscall
-TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending(TAttackProvinceMission *this)
+void __fastcall TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending(int param_1)
 
 {
-  (this->base).field5_0x8 = 2;
+  *(undefined1 *)(param_1 + 8) = 2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E570
 // GHIDRA_NAME TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince
-// GHIDRA_PROTO void __thiscall InitializeDefendProvinceMissionMovementClassFromTargetProvince(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes defend mission state and movement-class field from target province id (+0x30).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeDefendProvinceMissionMovementClassFromTargetProvince()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Initializes defend mission state and movement-class field from target province id (+0x30). */
-
-void __thiscall
-TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince
-          (TAttackProvinceMission *this)
+void __fastcall
+TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince(int param_1)
 
 {
-  short sVar1;
-  
-  sVar1 = *(short *)&(this->base).field21_0x30;
-  (this->base).field11_0x11 = 1;
-  if (sVar1 != -1) {
-    *(short *)&(this->base).field_0x6 =
-         (short)*(char *)(*(int *)((int)g_pGlobalMapState + 0x10) + sVar1 * 0xa8);
+  *(undefined1 *)(param_1 + 0x11) = 1;
+  if (*(short *)(param_1 + 0x30) != -1) {
+    *(short *)(param_1 + 6) =
+         (short)*(char *)(*(int *)(g_pGlobalMapState + 0x10) + *(short *)(param_1 + 0x30) * 0xa8);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E5B0
 // GHIDRA_NAME TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
-// GHIDRA_PROTO bool __thiscall HandleDefendProvinceMissionActionType01ForTargetTile(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns true for action types 0/1 when requested target tile equals mission target tile (+0x30).
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined HandleDefendProvinceMissionActionType01ForTargetTile()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Returns true for action types 0/1 when requested target tile equals mission target tile (+0x30).
-    */
-
-bool __thiscall
+undefined4 __thiscall
 TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
-          (TAttackProvinceMission *this)
+          (int param_1,int param_2,int param_3)
 
 {
-  int in_stack_00000004;
-  int in_stack_00000008;
-  
-  if (((in_stack_00000004 == 0) || (in_stack_00000004 == 1)) &&
-     (in_stack_00000008 == *(short *)&(this->base).field21_0x30)) {
-    return true;
+  if (((param_2 == 0) || (param_2 == 1)) && (param_3 == *(short *)(param_1 + 0x30))) {
+    return 1;
   }
-  return false;
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F610
 // GHIDRA_NAME TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState
-// GHIDRA_PROTO void __thiscall UpdateInvadeMissionAndBeachheadChildState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Runs invade mission update and forwards update to beachhead child mission object.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined UpdateInvadeMissionAndBeachheadChildState()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Runs invade mission update and forwards update to beachhead child mission object. */
-
-void __thiscall
-TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState(TAttackProvinceMission *this)
+void __fastcall TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState(int param_1)
 
 {
-  thunk_PopulateDefendProvinceMissionResourceWeightsFromTargetProvince(this);
-  (**(code **)(*(int *)(this->base).field22_0x34 + 0x3c))();
+  PopulateDefendProvinceMissionResourceWeightsFromTargetProvince();
+  (**(code **)(**(int **)(param_1 + 0x34) + 0x3c))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F780
 // GHIDRA_NAME TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath
-// GHIDRA_PROTO void __thiscall RefreshInvadeMissionBeachheadNodeAndMaybeRepath(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Refreshes beachhead child mission node state and conditionally triggers route/path recalculation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RefreshInvadeMissionBeachheadNodeAndMaybeRepath()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Refreshes beachhead child mission node state and conditionally triggers route/path recalculation.
-    */
-
-void __thiscall
-TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath
-          (TAttackProvinceMission *this)
+void __fastcall TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath(int param_1)
 
 {
-  (**(code **)(*(int *)(this->base).field22_0x34 + 0x44))();
-  if ((*(byte *)(*(int *)((int)g_pGlobalMapState + 0x10) + 0xa1 +
-                *(short *)&(this->base).field21_0x30 * 0xa8) &
-      '\x01' << ((byte)*(undefined2 *)&(this->base).field_0x4 & 0x1f)) != 0) {
-    thunk_RefreshAttackProvinceMissionTargetAndMaybeQueueUnits_At004028c9(this);
+  (**(code **)(**(int **)(param_1 + 0x34) + 0x44))();
+  if ((*(byte *)(*(int *)(g_pGlobalMapState + 0x10) + 0xa1 + *(short *)(param_1 + 0x30) * 0xa8) &
+      '\x01' << ((byte)*(undefined2 *)(param_1 + 4) & 0x1f)) != 0) {
+    RefreshAttackProvinceMissionTargetAndMaybeQueueUnits();
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FDC0
 // GHIDRA_NAME TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass
-// GHIDRA_PROTO bool __thiscall TryResolveInvadeMissionTargetTerrainClass(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Resolves and caches target terrain class at +0x14 or returns failure when target cannot be resolved.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined TryResolveInvadeMissionTargetTerrainClass()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Resolves and caches target terrain class at +0x14 or returns failure when target cannot be
-   resolved. */
-
-bool __thiscall
-TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass(TAttackProvinceMission *this)
+undefined4 __fastcall TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass(int param_1)
 
 {
-  char extraout_AL;
-  undefined2 uVar1;
+  char cVar1;
+  undefined2 uVar2;
   
-  *(undefined2 *)&(this->base).field14_0x14 = 0xffff;
-  thunk_TryResolveAttackProvinceMissionTargetTerrainClass_At00408427(this);
-  if (extraout_AL != '\0') {
-    *(undefined2 *)&(this->base).field14_0x14 = 0xffff;
-    return false;
+  *(undefined2 *)(param_1 + 0x14) = 0xffff;
+  cVar1 = TryResolveAttackProvinceMissionTargetTerrainClass();
+  if (cVar1 != '\0') {
+    *(undefined2 *)(param_1 + 0x14) = 0xffff;
+    return 0;
   }
-  uVar1 = (**(code **)(*(int *)g_apTerrainTypeDescriptorTable[*(short *)&(this->base).field_0x4] +
-                      0x40))();
-  *(undefined2 *)&(this->base).field14_0x14 = uVar1;
-  return true;
+  uVar2 = (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[*(short *)(param_1 + 4)] + 0x40))()
+  ;
+  *(undefined2 *)(param_1 + 0x14) = uVar2;
+  return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FE10
 // GHIDRA_NAME TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh
-// GHIDRA_PROTO void __thiscall ResetInvadeMissionTargetTerrainClassAndRefresh(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Clears cached target terrain class and refreshes dependent invade mission path/state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ResetInvadeMissionTargetTerrainClassAndRefresh()
 
-/* WARNING: Struct "TAttackProvinceMission": ignoring multiple overlapping fields */
-/* Clears cached target terrain class and refreshes dependent invade mission path/state. */
-
-void __thiscall
-TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh(TAttackProvinceMission *this)
+void __fastcall TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh(int param_1)
 
 {
-  *(undefined2 *)&(this->base).field14_0x14 = 0xffff;
-  thunk_TryValidateOrRetargetDefendProvinceMissionTarget_At004057fe(this);
+  *(undefined2 *)(param_1 + 0x14) = 0xffff;
+  TryValidateOrRetargetDefendProvinceMissionTarget();
   return;
 }
 

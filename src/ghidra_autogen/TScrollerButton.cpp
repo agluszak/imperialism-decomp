@@ -3,52 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TScrollerButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00404A02
-// GHIDRA_NAME TScrollerButton::TScrollerButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TScrollerButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTScrollerButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTScrollerButtonAndMaybeFree */
-
-void * __thiscall
-TScrollerButton::TScrollerButton_VtblSlot001(TScrollerButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTScrollerButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404CEB
-// GHIDRA_NAME TScrollerButton::TScrollerButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TScrollerButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTScrollerButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTScrollerButtonClassNamePointer */
-
-void * __cdecl TScrollerButton::TScrollerButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTScrollerButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00574EA0
 // GHIDRA_NAME TScrollerButton::CreateTScrollerButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTScrollerButtonInstance(void)
+// GHIDRA_PROTO undefined CreateTScrollerButtonInstance()
 
-void * __cdecl TScrollerButton::CreateTScrollerButtonInstance(void)
+undefined4 * TScrollerButton::CreateTScrollerButtonInstance(void)
 
 {
-  TPictureButton *this;
-  TPictureButton *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,57 +21,52 @@ void * __cdecl TScrollerButton::CreateTScrollerButtonInstance(void)
   puStack_8 = &LAB_0063671a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TPictureButton *)0x0;
-  if (this != (TPictureButton *)0x0) {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
-    this->field0_0x0 = &g_vtblTScrollerButton;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
+    *puVar1 = &PTR_LAB_006616e8;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574F20
 // GHIDRA_NAME TScrollerButton::GetTScrollerButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTScrollerButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TScrollerButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTScrollerButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TScrollerButton. */
-
-void * __cdecl TScrollerButton::GetTScrollerButtonClassNamePointer(void)
+undefined ** TScrollerButton::GetTScrollerButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTScrollerButton;
+  return &PTR_s_TScrollerButton_00661478;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574F40
 // GHIDRA_NAME TScrollerButton::ConstructTScrollerButtonBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTScrollerButtonBaseState(void)
+// GHIDRA_PROTO undefined ConstructTScrollerButtonBaseState()
 
-void * __thiscall TScrollerButton::ConstructTScrollerButtonBaseState(TScrollerButton *this)
+undefined4 * __fastcall TScrollerButton::ConstructTScrollerButtonBaseState(undefined4 *param_1)
 
 {
-  TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
-  this->field0_0x0 = &g_vtblTScrollerButton;
-  return this;
+  TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
+  *param_1 = &PTR_LAB_006616e8;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574F70
 // GHIDRA_NAME TScrollerButton::DestructTScrollerButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTScrollerButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTScrollerButtonAndMaybeFree()
 
-void * __thiscall
-TScrollerButton::DestructTScrollerButtonAndMaybeFree(TScrollerButton *this,byte freeSelfFlag)
+undefined4 __thiscall
+TScrollerButton::DestructTScrollerButtonAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

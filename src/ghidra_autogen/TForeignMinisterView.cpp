@@ -3,87 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TForeignMinisterView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401C49
-// GHIDRA_NAME TForeignMinisterView::thunk_GetTForeignMinisterViewClassNamePointer_At00401c49
-// GHIDRA_PROTO void * __cdecl thunk_GetTForeignMinisterViewClassNamePointer_At00401c49(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTForeignMinisterViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTForeignMinisterViewClassNamePointer */
-
-void * __cdecl TForeignMinisterView::thunk_GetTForeignMinisterViewClassNamePointer_At00401c49(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTForeignMinisterViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040411F
-// GHIDRA_NAME TForeignMinisterView::thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f
-// GHIDRA_PROTO void __cdecl thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to OrphanCallChain_C3_I22_004f31d0
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to OrphanCallChain_C3_I22_004f31d0 */
-
-void __cdecl TForeignMinisterView::thunk_OrphanCallChain_C3_I22_004f31d0_At0040411f(void)
-
-{
-  OrphanCallChain_C3_I22_004f31d0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406B63
-// GHIDRA_NAME TForeignMinisterView::thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay_At00406b63
-// GHIDRA_PROTO void __thiscall thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay_At00406b63(InterNationEventCode eventCode, PanelEventPayload * pPanelEvent)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to HandleDialogEvent14ActionTagsAndEvent10BackOkay
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to HandleDialogEvent14ActionTagsAndEvent10BackOkay */
-
-void __thiscall
-TForeignMinisterView::thunk_HandleDialogEvent14ActionTagsAndEvent10BackOkay_At00406b63
-          (TForeignMinisterView *this,InterNationEventCode eventCode,PanelEventPayload *pPanelEvent)
-
-{
-  TCivDescription::HandleDialogEvent14ActionTagsAndEvent10BackOkay
-            ((TCivDescription *)this,eventCode,pPanelEvent);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040795F
-// GHIDRA_NAME TForeignMinisterView::thunk_DestructTForeignMinisterViewAndMaybeFree_At0040795f
-// GHIDRA_PROTO void * __thiscall thunk_DestructTForeignMinisterViewAndMaybeFree_At0040795f(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTForeignMinisterViewAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTForeignMinisterViewAndMaybeFree */
-
-void * __thiscall
-TForeignMinisterView::thunk_DestructTForeignMinisterViewAndMaybeFree_At0040795f
-          (TForeignMinisterView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTForeignMinisterViewAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2F20
 // GHIDRA_NAME TForeignMinisterView::CreateTForeignMinisterViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTForeignMinisterViewInstance(void)
+// GHIDRA_PROTO undefined CreateTForeignMinisterViewInstance()
 
-void * __cdecl TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
+undefined4 * TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -93,61 +20,55 @@ void * __cdecl TForeignMinisterView::CreateTForeignMinisterViewInstance(void)
   puStack_8 = &LAB_00632a2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &g_vtblTForeignMinisterView;
-    this[1].pVtable = (void *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00655308;
+    puVar1[0x18] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2FB0
 // GHIDRA_NAME TForeignMinisterView::GetTForeignMinisterViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTForeignMinisterViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TForeignMinisterView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTForeignMinisterViewClassNamePointer()
 
-/* Returns class descriptor pointer for TForeignMinisterView. */
-
-void * __cdecl TForeignMinisterView::GetTForeignMinisterViewClassNamePointer(void)
+undefined ** TForeignMinisterView::GetTForeignMinisterViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTForeignMinisterView;
+  return &PTR_s_TForeignMinisterView_00654ee8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2FD0
 // GHIDRA_NAME TForeignMinisterView::ConstructTForeignMinisterViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTForeignMinisterViewBaseState(void)
+// GHIDRA_PROTO undefined ConstructTForeignMinisterViewBaseState()
 
-void * __thiscall
-TForeignMinisterView::ConstructTForeignMinisterViewBaseState(TForeignMinisterView *this)
+undefined4 * __fastcall
+TForeignMinisterView::ConstructTForeignMinisterViewBaseState(undefined4 *param_1)
 
 {
-  TView::thunk_ConstructTViewBaseState(&this->base);
-  (this->base).pVtable = &g_vtblTForeignMinisterView;
-  this->field60 = 0;
-  return this;
+  TView::thunk_ConstructTViewBaseState();
+  *param_1 = &PTR_LAB_00655308;
+  param_1[0x18] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3000
 // GHIDRA_NAME TForeignMinisterView::DestructTForeignMinisterViewAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTForeignMinisterViewAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTForeignMinisterViewAndMaybeFree()
 
-void * __thiscall
-TForeignMinisterView::DestructTForeignMinisterViewAndMaybeFree
-          (TForeignMinisterView *this,byte freeSelfFlag)
+undefined4 __thiscall
+TForeignMinisterView::DestructTForeignMinisterViewAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState(&this->base);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructEngineerDialogBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

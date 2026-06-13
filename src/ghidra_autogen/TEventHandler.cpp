@@ -3,92 +3,45 @@
 // Program: Imperialism.exe
 // Bucket: TEventHandler.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040370B
-// GHIDRA_NAME TEventHandler::thunk_GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTEventHandlerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTEventHandlerClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTEventHandlerClassNamePointer */
-
-void * __cdecl TEventHandler::thunk_GetTEventHandlerClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTEventHandlerClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004094CB
-// GHIDRA_NAME TEventHandler::thunk_DestructTEventHandlerAndMaybeFree
-// GHIDRA_PROTO void * __thiscall thunk_DestructTEventHandlerAndMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTEventHandlerAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTEventHandlerAndMaybeFree */
-
-void * __thiscall
-TEventHandler::thunk_DestructTEventHandlerAndMaybeFree(TEventHandler *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTEventHandlerAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A070
 // GHIDRA_NAME TEventHandler::CreateTEventHandlerInstance
-// GHIDRA_PROTO void __thiscall CreateTEventHandlerInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Drains event-handler queue by repeatedly dispatching pending queued events.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTEventHandlerInstance()
 
-/* Drains event-handler queue by repeatedly dispatching pending queued events. */
-
-void __thiscall TEventHandler::CreateTEventHandlerInstance(TEventHandler *this)
+void __fastcall TEventHandler::CreateTEventHandlerInstance(int param_1)
 
 {
   int iVar1;
   
-  iVar1 = this->field0c;
+  iVar1 = *(int *)(param_1 + 0xc);
   while (iVar1 != 0) {
-    (**(code **)(**(int **)(this->field04 + 8) + 0x1c))();
-    iVar1 = this->field0c;
+    (**(code **)(**(int **)(*(int *)(param_1 + 4) + 8) + 0x1c))();
+    iVar1 = *(int *)(param_1 + 0xc);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A0E0
 // GHIDRA_NAME TEventHandler::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTEventHandlerClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TEventHandler.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTEventHandlerClassNamePointer()
 
-/* Returns class descriptor pointer for TEventHandler. */
-
-void * __cdecl TEventHandler::GetTEventHandlerClassNamePointer(void)
+undefined ** TEventHandler::GetTEventHandlerClassNamePointer(void)
 
 {
-  return &g_pClassDescTEventHandler;
+  return &PTR_s_TEventHandler_00649588;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A130
 // GHIDRA_NAME TEventHandler::DestructTEventHandlerAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTEventHandlerAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTEventHandlerAndMaybeFree()
 
-void * __thiscall
-TEventHandler::DestructTEventHandlerAndMaybeFree(TEventHandler *this,byte freeSelfFlag)
+undefined4 __thiscall
+TEventHandler::DestructTEventHandlerAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   DestructTEventHandlerAndMaybeFree_Impl();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

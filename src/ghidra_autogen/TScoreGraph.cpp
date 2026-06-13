@@ -3,107 +3,42 @@
 // Program: Imperialism.exe
 // Bucket: TScoreGraph.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402964
-// GHIDRA_NAME TScoreGraph::thunk_scalar_deleting_destructor_00402964
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00402964(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TScoreGraph::thunk_scalar_deleting_destructor_00402964(TScoreGraph *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00402D01
-// GHIDRA_NAME TScoreGraph::thunk_GetTScoreGraphClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTScoreGraphClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTScoreGraphClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTScoreGraphClassNamePointer */
-
-void * __cdecl TScoreGraph::thunk_GetTScoreGraphClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTScoreGraphClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040329C
-// GHIDRA_NAME TScoreGraph::thunk_ConstructTScoreGraphBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTScoreGraphBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeScoreGraphNationLabelsAndCursorPanel. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for InitializeScoreGraphNationLabelsAndCursorPanel. [FID:thunk_target_sync] */
-
-void __thiscall TScoreGraph::thunk_ConstructTScoreGraphBaseState(TScoreGraph *this)
-
-{
-  ConstructTScoreGraphBaseState(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE290
 // GHIDRA_NAME TScoreGraph::GetTScoreGraphClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTScoreGraphClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TScoreGraph.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTScoreGraphClassNamePointer()
 
-/* Returns class descriptor pointer for TScoreGraph. */
-
-void * __cdecl TScoreGraph::GetTScoreGraphClassNamePointer(void)
+undefined ** TScoreGraph::GetTScoreGraphClassNamePointer(void)
 
 {
-  return &g_pClassDescTScoreGraph;
+  return &PTR_s_TScoreGraph_00655068;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE2B0
 // GHIDRA_NAME TScoreGraph::ConstructTScoreGraphBaseState
-// GHIDRA_PROTO void __thiscall ConstructTScoreGraphBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initialize score graph nation labels and cursor control panel state.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTScoreGraphBaseState()
 
-/* Initialize score graph nation labels and cursor control panel state. */
-
-void __thiscall TScoreGraph::ConstructTScoreGraphBaseState(TScoreGraph *this)
+void __fastcall TScoreGraph::ConstructTScoreGraphBaseState(int *param_1)
 
 {
   int *piVar1;
   int iVar2;
-  undefined1 *puStack00000004;
   
-  thunk_NoOpUiLifecycleHook();
-  thunk_RecomputeNationComparativePowerMetrics(g_pDiplomacyTurnStateManager);
+  TView::thunk_NoOpUiLifecycleHook();
+  RecomputeNationComparativePowerMetrics();
   iVar2 = 0;
   do {
-    piVar1 = (int *)(**(code **)(*(int *)this->field29_0x20 + 0x94))();
+    piVar1 = (int *)(**(code **)(*(int *)param_1[8] + 0x94))();
     (**(code **)(*piVar1 + 0xc))();
-    thunk_LoadUiStringByGroupAndIndexToControlObject(0x2757,iVar2 + 9,piVar1);
+    LoadUiStringByGroupAndIndexToControlObject(0x2757);
     iVar2 = iVar2 + 1;
   } while (iVar2 < 7);
-  puStack00000004 = &stack0xffffffec;
-  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-            ((TToolBarCluster *)&stack0xffffffec);
-  TToolBarCluster::InitializeAndRunMainRoutine();
-  piVar1 = (int *)(**(code **)((int)this->pVtable + 0x58))();
-  g_pCursorControlPanel = (void *)(**(code **)(*piVar1 + 0x94))();
-  (**(code **)(*(int *)g_pCursorControlPanel + 0xc))();
-  (**(code **)(*(int *)g_pCursorControlPanel + 0x204))(0x2b6c);
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(&g_szEmptyString)
+  ;
+  InitializeAndRunMainRoutine();
+  piVar1 = (int *)(**(code **)(*param_1 + 0x58))();
+  g_pCursorControlPanel = (int *)(**(code **)(*piVar1 + 0x94))();
+  (**(code **)(*g_pCursorControlPanel + 0xc))();
+  (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6c);
   return;
 }
 

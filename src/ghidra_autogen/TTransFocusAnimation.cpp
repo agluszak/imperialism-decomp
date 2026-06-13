@@ -3,157 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TTransFocusAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402248
-// GHIDRA_NAME TTransFocusAnimation::thunk_BlitUiFrameToTransientSurfaceWithOptionalOverlay_At00402248
-// GHIDRA_PROTO void __thiscall thunk_BlitUiFrameToTransientSurfaceWithOptionalOverlay_At00402248(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BlitUiFrameToTransientSurfaceWithOptionalOverlay
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BlitUiFrameToTransientSurfaceWithOptionalOverlay */
-
-void __thiscall
-TTransFocusAnimation::thunk_BlitUiFrameToTransientSurfaceWithOptionalOverlay_At00402248
-          (TTransFocusAnimation *this)
-
-{
-  TCivDescription::BlitUiFrameToTransientSurfaceWithOptionalOverlay((TCivDescription *)this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004033B9
-// GHIDRA_NAME TTransFocusAnimation::thunk_DestructTTransFocusAnimationAndMaybeFree
-// GHIDRA_PROTO void __thiscall thunk_DestructTTransFocusAnimationAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [Thunk] Direct JMP thunk to DestructTTransFocusAnimation. [FID:stale_thunk]
-// GHIDRA_COMMENT_END
-
-/* [Thunk] Direct JMP thunk to DestructTTransFocusAnimation. [FID:stale_thunk] */
-
-void __thiscall
-TTransFocusAnimation::thunk_DestructTTransFocusAnimationAndMaybeFree(TTransFocusAnimation *this)
-
-{
-  DestructTTransFocusAnimationAndMaybeFree(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403666
-// GHIDRA_NAME TTransFocusAnimation::thunk_CreateTTransFocusAnimationInstance
-// GHIDRA_PROTO void * __thiscall thunk_CreateTTransFocusAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk forwarding to GetTTransFocusAnimationRuntimeClass. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk forwarding to GetTTransFocusAnimationRuntimeClass. [FID:thunk_target_sync] */
-
-void * __thiscall
-TTransFocusAnimation::thunk_CreateTTransFocusAnimationInstance(TTransFocusAnimation *this)
-
-{
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00403D41
-// GHIDRA_NAME TTransFocusAnimation::thunk_GetTTransFocusAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTransFocusAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTransFocusAnimationClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTransFocusAnimationClassNamePointer */
-
-void * __cdecl TTransFocusAnimation::thunk_GetTTransFocusAnimationClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTransFocusAnimationClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004052EA
-// GHIDRA_NAME TTransFocusAnimation::thunk_RenderFocusAnimationFrameWithScopedQuickDraw
-// GHIDRA_PROTO void __thiscall thunk_RenderFocusAnimationFrameWithScopedQuickDraw(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Direct thunk
-// GHIDRA_COMMENT_END
-
-/* Direct thunk */
-
-void __thiscall
-TTransFocusAnimation::thunk_RenderFocusAnimationFrameWithScopedQuickDraw(TTransFocusAnimation *this)
-
-{
-  RenderFocusAnimationFrameWithScopedQuickDraw(this);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406799
-// GHIDRA_NAME TTransFocusAnimation::thunk_ConstructTTransFocusAnimationBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTTransFocusAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeTransFocusAnimationBoundsAndLoadBitmapSurface. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for InitializeTransFocusAnimationBoundsAndLoadBitmapSurface.
-   [FID:thunk_target_sync] */
-
-void __thiscall
-TTransFocusAnimation::thunk_ConstructTTransFocusAnimationBaseState
-          (TTransFocusAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
-
-{
-  int iVar1;
-  void *pvVar2;
-  undefined4 uStack_10;
-  undefined4 uStack_c;
-  int iStack_8;
-  int iStack_4;
-  
-  this->field04 = (int *)arg1;
-  this->field1c = *(int *)arg2;
-  this->field20 = *(int *)(arg2 + 4);
-  this->field24 = *(int *)(arg2 + 8);
-  iVar1 = *(int *)(arg2 + 0xc);
-  this->field0c = (short)arg4;
-  this->field28 = iVar1;
-  this->field0a = (short)arg3;
-  this->field14 = arg5;
-  this->field18 = arg6;
-  this->field08 = 0;
-  this->field10 = 0;
-  uStack_10 = 0;
-  uStack_c = 0;
-  iStack_8 = *(int *)(arg2 + 8) - *(int *)arg2;
-  iStack_4 = *(int *)(arg2 + 0xc) - *(int *)(arg2 + 4);
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->field30,8,&uStack_10);
-  pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(arg4);
-  this->pField34 = pvVar2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004085F8
-// GHIDRA_NAME TTransFocusAnimation::thunk_BlitTransientSurfaceToPrimaryRenderContextWithClip_At004085f8
-// GHIDRA_PROTO void __thiscall thunk_BlitTransientSurfaceToPrimaryRenderContextWithClip_At004085f8(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to BlitTransientSurfaceToPrimaryRenderContextWithClip
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to BlitTransientSurfaceToPrimaryRenderContextWithClip */
-
-void __thiscall
-TTransFocusAnimation::thunk_BlitTransientSurfaceToPrimaryRenderContextWithClip_At004085f8
-          (TTransFocusAnimation *this)
-
-{
-  BlitTransientSurfaceToPrimaryRenderContextWithClip(this);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0047C3D0
 // GHIDRA_NAME TTransFocusAnimation::Sprite__CollectNonTransparentPixels
 // GHIDRA_PROTO int * __thiscall Sprite__CollectNonTransparentPixels(uint this_ptr)
@@ -182,10 +31,10 @@ TTransFocusAnimation::Sprite__CollectNonTransparentPixels(TTransFocusAnimation *
   int pair_count;
   byte *row_ptr;
   
-  header_ptr = this->field10;
+  header_ptr = *(int *)(this + 0x10);
   if (*(short *)(header_ptr + 0xe) != 1) {
     width = *(int *)(header_ptr + 4);
-    pixel_ptr = *(byte **)&this->field0c;
+    pixel_ptr = *(byte **)(this + 0xc);
     uVar6 = width + 3U & 0xfffffffc;
     if (this_ptr == 0xffffffff) {
       this_ptr = (uint)*pixel_ptr;
@@ -202,14 +51,14 @@ LAB_0047c603:
         col_idx = -header_ptr;
       }
       if (col_idx <= scan_offset) {
-        out_pairs = AllocateWithFallbackHandler();
+        out_pairs = (int *)AllocateWithFallbackHandler((row_idx + 1) * 0x10);
         *out_pairs = row_idx * 2 + 1;
         pair_count = 1;
         header_ptr = 0;
         out_iter = out_pairs + 2;
         row_ptr = pixel_ptr;
         do {
-          width = *(int *)(this->field10 + 8);
+          width = *(int *)(*(int *)(this + 0x10) + 8);
           row_idx = width;
           if (width < 1) {
             row_idx = -width;
@@ -220,12 +69,12 @@ LAB_0047c603:
               out_iter = out_pairs + pair_count * 2;
               pixel_ptr = pixel_ptr + header_ptr * uVar6;
               do {
-                width = *(int *)(this->field10 + 4);
+                width = *(int *)(*(int *)(this + 0x10) + 4);
                 do {
                   width = width + -1;
                   if (width < 0) goto LAB_0047c72a;
                 } while (pixel_ptr[width] == this_ptr);
-                row_stride = *(int *)(this->field10 + 8);
+                row_stride = *(int *)(*(int *)(this + 0x10) + 8);
                 if (row_stride < 1) {
                   row_stride = -row_stride;
                 }
@@ -242,7 +91,7 @@ LAB_0047c72a:
             out_pairs[pair_count * 2 + 1] = out_pairs[3];
             return out_pairs;
           }
-          row_idx = *(int *)(this->field10 + 4);
+          row_idx = *(int *)(*(int *)(this + 0x10) + 4);
           scan_offset = 0;
           if (0 < row_idx) {
             do {
@@ -286,7 +135,7 @@ LAB_0047c631:
   bit_row = 0;
   this_ptr = 0;
   scan_offset = (int)(width + 0x1f + (width + 0x1f >> 0x1f & 0x1fU)) >> 5;
-  row_stride = *(int *)&this->field0c;
+  row_stride = *(int *)(this + 0xc);
   col_idx = scan_offset * 0x20;
   row_idx = row_stride;
   while( true ) {
@@ -314,7 +163,7 @@ LAB_0047c453:
       row_idx = row_idx + col_idx;
     }
   }
-  out_pairs = AllocateWithFallbackHandler();
+  out_pairs = (int *)AllocateWithFallbackHandler((this_ptr + 1) * 0x10);
   width = 0;
   *out_pairs = this_ptr * 2 + 1;
   this_ptr = 1;
@@ -322,7 +171,7 @@ LAB_0047c453:
   out_iter = out_pairs + 2;
 LAB_0047c48c:
   do {
-    row_idx = *(int *)(this->field10 + 8);
+    row_idx = *(int *)(*(int *)(this + 0x10) + 8);
     bit_row = row_idx;
     if (row_idx < 1) {
       bit_row = -row_idx;
@@ -333,7 +182,7 @@ LAB_0047c48c:
         header_ptr = width * scan_offset * 4;
         out_iter = out_pairs + this_ptr * 2;
         do {
-          row_idx = *(int *)(this->field10 + 4);
+          row_idx = *(int *)(*(int *)(this + 0x10) + 4);
           row_idx = ((int)(row_idx + (row_idx >> 0x1f & 7U)) >> 3) + -1;
           if (-1 < row_idx) {
 LAB_0047c55c:
@@ -343,7 +192,7 @@ LAB_0047c55c:
                 cVar9 = cVar9 << 1) {
               cVar10 = cVar10 + '\x01';
             }
-            col_idx = *(int *)(this->field10 + 8);
+            col_idx = *(int *)(*(int *)(this + 0x10) + 8);
             if (col_idx < 1) {
               col_idx = -col_idx;
             }
@@ -361,7 +210,7 @@ LAB_0047c5a0:
       out_pairs[this_ptr * 2 + 1] = out_pairs[3];
       return out_pairs;
     }
-    bit_row = *(int *)(this->field10 + 4);
+    bit_row = *(int *)(*(int *)(this + 0x10) + 4);
     byte_idx = 0;
     bit_row = (int)(bit_row + (bit_row >> 0x1f & 7U)) >> 3;
     if (0 < bit_row) {
@@ -398,125 +247,94 @@ code_r0x0047c4c9:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0460
 // GHIDRA_NAME TTransFocusAnimation::CreateTTransFocusAnimationInstance
-// GHIDRA_PROTO void * __thiscall CreateTTransFocusAnimationInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns TTransFocusAnimation runtime class descriptor pointer.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTransFocusAnimationInstance()
 
-/* Returns TTransFocusAnimation runtime class descriptor pointer. */
-
-void * __thiscall
-TTransFocusAnimation::CreateTTransFocusAnimationInstance(TTransFocusAnimation *this)
+void __fastcall TTransFocusAnimation::CreateTTransFocusAnimationInstance(undefined4 *param_1)
 
 {
-  void *in_EAX;
-  
-  this->field0_0x0 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return in_EAX;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0480
 // GHIDRA_NAME TTransFocusAnimation::GetTTransFocusAnimationClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTransFocusAnimationClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTransFocusAnimation.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTransFocusAnimationClassNamePointer()
 
-/* Returns class descriptor pointer for TTransFocusAnimation. */
-
-void * __cdecl TTransFocusAnimation::GetTTransFocusAnimationClassNamePointer(void)
+undefined ** TTransFocusAnimation::GetTTransFocusAnimationClassNamePointer(void)
 
 {
-  return &g_pClassDescTTransFocusAnimation;
+  return &PTR_s_TTransFocusAnimation_0064c280;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A04A0
 // GHIDRA_NAME TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
-// GHIDRA_PROTO void __thiscall ConstructTTransFocusAnimationBaseState(int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes trans-focus animation bounds/rect fields and loads bitmap surface for current resource id.
-// GHIDRA_COMMENT_END
-
-/* Initializes trans-focus animation bounds/rect fields and loads bitmap surface for current
-   resource id. */
+// GHIDRA_PROTO undefined ConstructTTransFocusAnimationBaseState()
 
 void __thiscall
 TTransFocusAnimation::ConstructTTransFocusAnimationBaseState
-          (TTransFocusAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5,int arg6)
+          (int param_1,undefined4 param_2,int *param_3,undefined2 param_4,undefined4 param_5,
+          undefined4 param_6,undefined4 param_7)
 
 {
   int iVar1;
-  void *pvVar2;
+  undefined4 uVar2;
   undefined4 local_10;
   undefined4 local_c;
   int local_8;
   int local_4;
   
-  this->field04 = (int *)arg1;
-  this->field1c = *(int *)arg2;
-  this->field20 = *(int *)(arg2 + 4);
-  this->field24 = *(int *)(arg2 + 8);
-  iVar1 = *(int *)(arg2 + 0xc);
-  this->field0c = (short)arg4;
-  this->field28 = iVar1;
-  this->field0a = (short)arg3;
-  this->field14 = arg5;
-  this->field18 = arg6;
-  this->field08 = 0;
-  this->field10 = 0;
+  *(undefined4 *)(param_1 + 4) = param_2;
+  *(int *)(param_1 + 0x1c) = *param_3;
+  *(int *)(param_1 + 0x20) = param_3[1];
+  *(int *)(param_1 + 0x24) = param_3[2];
+  iVar1 = param_3[3];
+  *(short *)(param_1 + 0xc) = (short)param_5;
+  *(int *)(param_1 + 0x28) = iVar1;
+  *(undefined2 *)(param_1 + 10) = param_4;
+  *(undefined4 *)(param_1 + 0x14) = param_6;
+  *(undefined4 *)(param_1 + 0x18) = param_7;
+  *(undefined2 *)(param_1 + 8) = 0;
+  *(undefined4 *)(param_1 + 0x10) = 0;
   local_10 = 0;
   local_c = 0;
-  local_8 = *(int *)(arg2 + 8) - *(int *)arg2;
-  local_4 = *(int *)(arg2 + 0xc) - *(int *)(arg2 + 4);
-  (**(code **)(*(int *)g_pDisplayManager + 0x2c))(&this->field30,8,&local_10);
-  pvVar2 = thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(arg4);
-  this->pField34 = pvVar2;
+  local_8 = param_3[2] - *param_3;
+  local_4 = param_3[3] - param_3[1];
+  (**(code **)(*DAT_006a2158 + 0x2c))(param_1 + 0x30,8,&local_10);
+  uVar2 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_5);
+  *(undefined4 *)(param_1 + 0x34) = uVar2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0570
 // GHIDRA_NAME TTransFocusAnimation::DestructTTransFocusAnimationAndMaybeFree
-// GHIDRA_PROTO void __thiscall DestructTTransFocusAnimationAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassMethod] Releases transition focus animation buffers and forwards to base destructor slot.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTransFocusAnimationAndMaybeFree()
 
-/* [ClassMethod] Releases transition focus animation buffers and forwards to base destructor slot.
-    */
-
-void __thiscall
-TTransFocusAnimation::DestructTTransFocusAnimationAndMaybeFree(TTransFocusAnimation *this)
+void __fastcall TTransFocusAnimation::DestructTTransFocusAnimationAndMaybeFree(int *param_1)
 
 {
-  if (this->field30 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (param_1[0xc] != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0xc);
   }
-  if (this->pField34 != (void *)0x0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004010e6();
+  if (param_1[0xd] != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0xd);
   }
-  if (this != (TTransFocusAnimation *)0x0) {
-    (**(code **)((int)this->field0_0x0 + 4))(1);
+  if (param_1 != (int *)0x0) {
+    (**(code **)(*param_1 + 4))(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A05C0
 // GHIDRA_NAME TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip
-// GHIDRA_PROTO void __thiscall BlitTransientSurfaceToPrimaryRenderContextWithClip(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Copies transient-surface rect into primary render context with clip + y-flip handling for active surface geometry.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined BlitTransientSurfaceToPrimaryRenderContextWithClip()
 
-/* Copies transient-surface rect into primary render context with clip + y-flip handling for active
-   surface geometry. */
-
-void __thiscall
-TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip(TTransFocusAnimation *this)
+void __fastcall
+TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip(int param_1)
 
 {
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
-  int local_30;
+  undefined4 local_30;
   tagRECT local_2c;
   tagRECT local_1c;
   undefined4 local_c;
@@ -532,24 +350,24 @@ TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip(TTransF
   ApplyHitRegionToClipState(local_30);
   local_2c.left = 0;
   local_2c.top = 0;
-  local_1c.left = this->field1c;
-  local_1c.top = this->field20;
-  local_1c.right = this->field24;
+  local_1c.left = *(int *)(param_1 + 0x1c);
+  local_1c.top = *(int *)(param_1 + 0x20);
+  local_1c.right = *(int *)(param_1 + 0x24);
   local_2c.right = local_1c.right - local_1c.left;
-  local_1c.bottom = this->field28;
+  local_1c.bottom = *(int *)(param_1 + 0x28);
   local_2c.bottom = local_1c.bottom - local_1c.top;
-  thunk_ApplyRectClipRegionToGlobalClipState(&local_2c.left);
+  thunk_ApplyRectClipRegionToGlobalClipState(&local_2c);
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithDefaultFallback(0x13);
   SetQuickDrawFillColorFromPaletteIndex(0);
-  if (*(int *)((int)g_pPrimaryRenderSurfaceContext + 0x20) != 0) {
-    iVar1 = *(int *)(*(int *)(*(int *)((int)g_pPrimaryRenderSurfaceContext + 0x20) + 0x10) + 8);
+  if (*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) != 0) {
+    iVar1 = *(int *)(*(int *)(*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) + 0x10) + 8);
     if (iVar1 < 1) {
       iVar1 = -iVar1;
     }
     OffsetRect(&local_1c,0,(iVar1 - local_1c.top) - local_1c.bottom);
   }
-  iVar1 = *(int *)(this->field30 + 0x20);
+  iVar1 = *(int *)(*(int *)(param_1 + 0x30) + 0x20);
   if (iVar1 != 0) {
     iVar1 = *(int *)(*(int *)(iVar1 + 0x10) + 8);
     if (iVar1 < 1) {
@@ -558,9 +376,9 @@ TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip(TTransF
     OffsetRect(&local_2c,0,(iVar1 - local_2c.top) - local_2c.bottom);
   }
   BlitRectWithOptionalTransparency
-            ((astruct_17 *)((int)g_pPrimaryRenderSurfaceContext + 4),
-             (astruct_18 *)(this->field30 + 4),&local_1c,&local_2c,0,(astruct_19 *)0x0);
-  SnapshotHitRegionToClipCache();
+            ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
+             (astruct_18 *)(*(int *)(param_1 + 0x30) + 4),&local_1c,&local_2c,0,(astruct_19 *)0x0);
+  SnapshotHitRegionToClipCache(local_30);
   local_4 = 0xffffffff;
   ReleaseOrCacheQuickDrawSurface();
   *unaff_FS_OFFSET = local_c;
@@ -569,21 +387,14 @@ TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip(TTransF
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0770
 // GHIDRA_NAME TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw
-// GHIDRA_PROTO void __thiscall RenderFocusAnimationFrameWithScopedQuickDraw(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Focus animation render pass with scoped quickdraw context
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined RenderFocusAnimationFrameWithScopedQuickDraw()
 
-/* Focus animation render pass with scoped quickdraw context */
-
-void __thiscall
-TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw(TTransFocusAnimation *this)
+void __fastcall TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw(int *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_2c;
   undefined4 uStack_28;
-  undefined1 local_24 [20];
   undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -593,12 +404,12 @@ TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw(TTransFocusAn
   puStack_8 = &LAB_0062fe98;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_ConstructScopedMapQuickDrawContext(local_24,(int)this->field04);
+  ConstructScopedMapQuickDrawContext(param_1[1]);
   local_4 = 0;
-  (**(code **)(*this->field04 + 0xf8))();
+  (**(code **)(*(int *)param_1[1] + 0xf8))();
   uStack_2c = 0;
   uStack_28 = 0;
-  (**(code **)((int)this->field0_0x0 + 0x2c))(&uStack_2c);
+  (**(code **)(*param_1 + 0x2c))(&uStack_2c);
   puStack_8 = (undefined1 *)0xffffffff;
   thunk_DestroyScopedMapQuickDrawContext();
   *unaff_FS_OFFSET = uStack_10;
@@ -634,70 +445,203 @@ TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw(TTransFocusAn
 // GHIDRA_COMMENT 14 Railyard
 // GHIDRA_COMMENT 15 Capitol.
 // GHIDRA_COMMENT_END
-/* DECOMPILATION FAILED: Exception while decompiling 004ba3b0: process: timeout */
+
+/* Initialize city-screen clickable building controls.
+   Algorithm:
+   1) For slotId 0..15, query building level and create hit region control.
+   2) Control/icon resource formula: 7100 + (level * 16) + slotId.
+   3) Position controls with g_anCityBuildingSlotCoords + slot offset indices.
+   4) Build action controls from g_aCityBuildingActionRects and g_awCityBuildingActionResourceIds.
+   
+   SlotId to building type:
+   0 Textile Mill
+   1 Clothing Factory
+   2 Steel Mill
+   3 Metalworks
+   4 Lumber Mill
+   5 Furniture Factory
+   6 Oil Refinery
+   7 Shipyard
+   8 Armory
+   9 Trade School
+   10 University
+   11 Power Plant
+   12 Food Processing
+   13 Warehouse
+   14 Railyard
+   15 Capitol. */
+
+void __thiscall
+TTransFocusAnimation::InitializeCityBuildingControlRegions
+          (TTransFocusAnimation *this,void *pInitContext)
+
+{
+  undefined2 uVar1;
+  short sVar2;
+  undefined4 uVar3;
+  int iVar4;
+  TTransFocusAnimation *this_00;
+  int *piVar5;
+  HRGN pHVar6;
+  LONG *pLVar7;
+  undefined4 *puVar8;
+  undefined4 *puVar9;
+  int iVar10;
+  TTransFocusAnimation *pTVar11;
+  int iVar12;
+  undefined2 *puStack_28;
+  int iStack_24;
+  int iStack_1c;
+  tagRECT tStack_10;
+  
+  TView::thunk_NoOpUiLifecycleHook(pInitContext);
+  *(undefined4 *)((int)g_pGlobalUiRootController + 0x28) = 1;
+  sVar2 = UiRuntimeContext::GetActiveNationId();
+  iVar10 = 0;
+  if ((&g_apNationStates)[sVar2] == 0) {
+    pInitContext = (void *)0x0;
+  }
+  else {
+    pInitContext = *(void **)((&g_apNationStates)[sVar2] + 0x894);
+  }
+  pTVar11 = this + 0xec;
+  do {
+    uVar3 = CreateClipStateRegionWrapperObject();
+    *(undefined4 *)pTVar11 = uVar3;
+    sVar2 = UiRuntimeContext::GetActiveNationId();
+    if ((&g_apNationStates)[sVar2] == 0) {
+      piVar5 = (int *)0x0;
+    }
+    else {
+      piVar5 = *(int **)((&g_apNationStates)[sVar2] + 0x894);
+    }
+    iVar4 = (**(code **)(*piVar5 + 0x5c))(iVar10);
+    this_00 = (TTransFocusAnimation *)
+              thunk_LoadBmpResourceByIdCached(iVar4 * 0x10 + 0x1bbc + iVar10);
+    piVar5 = Sprite__CollectNonTransparentPixels(this_00,0xffffffff);
+    DeleteObject();
+    pHVar6 = CreatePolygonRgn((POINT *)(piVar5 + 2),*piVar5,2);
+    CBrush::AttachRegionHandleToClipStateAndRegister(pHVar6);
+    FreeHeapBufferIfNotNull(piVar5);
+    thunk_ReleaseHashIndexedRecordByHandle(this_00);
+    InitializeCityBuildingControlRegions_Impl
+              (*(undefined4 *)pTVar11,
+               (int)(short)(&g_anCityBuildingSlotCoords)
+                           [(int)g_nCityBuildingSlotXOffsetIndex + iVar10 * 2],
+               (int)(short)(&g_anCityBuildingSlotCoords)
+                           [(int)g_nCityBuildingSlotYOffsetIndex + iVar10 * 2]);
+    iVar10 = iVar10 + 1;
+    pTVar11 = pTVar11 + 4;
+  } while (iVar10 < 0x10);
+  (**(code **)(*(int *)this + 0x58))();
+  ModifyStyle(0,0x2000000,0);
+  iStack_1c = 0;
+  iStack_24 = 0;
+  do {
+    if (iStack_24 < 0x15) {
+      iVar10 = (**(code **)(*(int *)pInitContext + 0x5c))(iStack_1c);
+    }
+    else {
+      iVar10 = (**(code **)(*(int *)pInitContext + 0x5c))(0xb);
+    }
+    if (0 < (short)iVar10) {
+      iVar12 = 0;
+      iVar4 = (short)(iVar10 + -1) + iStack_24;
+      puStack_28 = (undefined2 *)(&g_awCityBuildingActionResourceIds + iVar4 * 6);
+      pLVar7 = (LONG *)(&g_aCityBuildingActionRects + iVar4 * 0x30);
+      do {
+        tStack_10.left = *pLVar7;
+        tStack_10.top = pLVar7[1];
+        tStack_10.right = pLVar7[2];
+        tStack_10.bottom = pLVar7[3];
+        if (tStack_10.right < 1) {
+          *(undefined4 *)(this + (iVar12 + iStack_24) * 4 + 300) = 0;
+        }
+        else {
+          OffsetRect(&tStack_10,0x32,0x23);
+          iVar4 = (iVar10 + -1) * 3 + iVar12 + (iStack_1c + 0x5dc) * 10;
+          uVar1 = *puStack_28;
+          puVar8 = (undefined4 *)AllocateWithFallbackHandler(0x38);
+          puVar9 = (undefined4 *)0x0;
+          if (puVar8 != (undefined4 *)0x0) {
+            puVar8[0xc] = 0;
+            puVar8[0xd] = 0;
+            *(undefined1 *)(puVar8 + 0xb) = 1;
+            *puVar8 = &PTR_LAB_0064c498;
+            puVar9 = puVar8;
+          }
+          ConstructTTransFocusAnimationBaseState
+                    (this,&tStack_10,uVar1,iVar4,(-(iStack_1c != 7) & 2U) + 5,(int)(short)iVar4);
+          TCivAnimation2::AddObjectToUiTransientRegistry(puVar9);
+          *(undefined4 **)(this + (iVar12 + iStack_24) * 4 + 300) = puVar9;
+          thunk_InvalidateCityDialogRectRegion(&tStack_10,1);
+          this[0xa6] = (TTransFocusAnimation)0x1;
+        }
+        iVar12 = iVar12 + 1;
+        pLVar7 = pLVar7 + 4;
+        puStack_28 = puStack_28 + 1;
+      } while (iVar12 < 3);
+    }
+    iStack_24 = iStack_24 + 3;
+    iStack_1c = iStack_1c + 1;
+  } while (iStack_24 < 0x18);
+  return;
+}
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607840
 // GHIDRA_NAME TTransFocusAnimation::WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840
-// GHIDRA_PROTO void __thiscall WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840(int arg1, int arg2, int arg3, int arg4, int arg5)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around UpdateWindowLongMaskedAndRefresh; instructions=7, call_insns=1, internal_calls=1, unique_internal=1
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840()
 
-/* [WrapperShape] small wrapper around UpdateWindowLongMaskedAndRefresh; instructions=7,
-   call_insns=1, internal_calls=1, unique_internal=1 */
-
-void __thiscall
-TTransFocusAnimation::WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840
-          (TTransFocusAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5)
+void TTransFocusAnimation::WrapperFor_UpdateWindowLongMaskedAndRefresh_At00607840
+               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  AfxModifyStyle(this,arg1,-0x10,arg2,arg3,arg4);
+  AfxModifyStyle(param_1,0xfffffff0,param_2,param_3,param_4);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060785A
 // GHIDRA_NAME TTransFocusAnimation::AfxModifyStyle
-// GHIDRA_PROTO void __thiscall AfxModifyStyle(int arg1, int arg2, int arg3, int arg4, int arg5)
+// GHIDRA_PROTO undefined AfxModifyStyle()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Updates a window long field using clear/set masks, and optionally forces non-client refresh via SetWindowPos with SWP_NOSIZE/NOMOVE/NOZORDER frame flags. [FID:FID_single_match_phase1_nodebug]
+// GHIDRA_COMMENT Updates a window long field using clear/set masks, and optionally forces non-client refresh via SetWindowPos with SWP_NOSIZE/NOMOVE/NOZORDER frame flags.
 // GHIDRA_COMMENT_END
 
 /* Updates a window long field using clear/set masks, and optionally forces non-client refresh via
-   SetWindowPos with SWP_NOSIZE/NOMOVE/NOZORDER frame flags. [FID:FID_single_match_phase1_nodebug]
-    */
+   SetWindowPos with SWP_NOSIZE/NOMOVE/NOZORDER frame flags. */
 
-void __thiscall
+undefined4
 TTransFocusAnimation::AfxModifyStyle
-          (TTransFocusAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5)
+          (HWND param_1,int param_2,uint param_3,uint param_4,uint param_5)
 
 {
   uint uVar1;
-  uint dwNewLong;
+  undefined4 uVar2;
   
-  uVar1 = GetWindowLongA((HWND)arg1,arg2);
-  dwNewLong = ~arg3 & uVar1 | arg4;
-  if ((uVar1 != dwNewLong) && (SetWindowLongA((HWND)arg1,arg2,dwNewLong), arg5 != 0)) {
-    SetWindowPos((HWND)arg1,(HWND)0x0,0,0,0,0,arg5 | 0x17);
+  uVar1 = GetWindowLongA(param_1,param_2);
+  param_4 = ~param_3 & uVar1 | param_4;
+  if (uVar1 == param_4) {
+    uVar2 = 0;
   }
-  return;
+  else {
+    SetWindowLongA(param_1,param_2,param_4);
+    if (param_5 != 0) {
+      SetWindowPos(param_1,(HWND)0x0,0,0,0,0,param_5 | 0x17);
+    }
+    uVar2 = 1;
+  }
+  return uVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006078A9
 // GHIDRA_NAME TTransFocusAnimation::ModifyStyleEx_6078a9
-// GHIDRA_PROTO void __thiscall ModifyStyleEx_6078a9(int arg1, int arg2, int arg3, int arg4, int arg5)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [WrapperShape] small wrapper around UpdateWindowLongMaskedAndRefresh; instructions=7, call_insns=1, internal_calls=1, unique_internal=1 [FID:FID_single_match_phase1_nodebug]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ModifyStyleEx_6078a9()
 
-/* [WrapperShape] small wrapper around UpdateWindowLongMaskedAndRefresh; instructions=7,
-   call_insns=1, internal_calls=1, unique_internal=1 [FID:FID_single_match_phase1_nodebug] */
-
-void __thiscall
-TTransFocusAnimation::ModifyStyleEx_6078a9
-          (TTransFocusAnimation *this,int arg1,int arg2,int arg3,int arg4,int arg5)
+void TTransFocusAnimation::ModifyStyleEx_6078a9
+               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
-  AfxModifyStyle(this,arg1,-0x14,arg2,arg3,arg4);
+  AfxModifyStyle(param_1,0xffffffec,param_2,param_3,param_4);
   return;
 }
 

@@ -3,67 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TShipPlacard.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00403A08
-// GHIDRA_NAME TShipPlacard::TShipPlacard_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TShipPlacard_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTShipPlacardClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTShipPlacardClassNamePointer */
-
-void * __cdecl TShipPlacard::TShipPlacard_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTShipPlacardClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00404584
-// GHIDRA_NAME TShipPlacard::TShipPlacard_VtblSlot068
-// GHIDRA_PROTO void __cdecl TShipPlacard_VtblSlot068(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to RenderCenteredPositiveCountLabelAtFixedOrigin
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to RenderCenteredPositiveCountLabelAtFixedOrigin */
-
-void __cdecl TShipPlacard::TShipPlacard_VtblSlot068(void)
-
-{
-  RenderCenteredPositiveCountLabelAtFixedOrigin();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040674E
-// GHIDRA_NAME TShipPlacard::TShipPlacard_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TShipPlacard_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTShipPlacardAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTShipPlacardAndMaybeFree */
-
-void * __thiscall TShipPlacard::TShipPlacard_VtblSlot001(TShipPlacard *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTShipPlacardAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005691D0
 // GHIDRA_NAME TShipPlacard::CreateTShipPlacardInstance
-// GHIDRA_PROTO void * __cdecl CreateTShipPlacardInstance(void)
+// GHIDRA_PROTO undefined CreateTShipPlacardInstance()
 
-void * __cdecl TShipPlacard::CreateTShipPlacardInstance(void)
+undefined4 * TShipPlacard::CreateTShipPlacardInstance(void)
 
 {
-  TNoHilitePicture *this;
-  TNoHilitePicture *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -73,57 +21,52 @@ void * __cdecl TShipPlacard::CreateTShipPlacardInstance(void)
   puStack_8 = &LAB_00635b5a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  pTVar1 = (TNoHilitePicture *)0x0;
-  if (this != (TNoHilitePicture *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
-    this->field0_0x0 = &g_vtblTShipPlacard;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+    *puVar1 = &PTR_LAB_0065d4b0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569250
 // GHIDRA_NAME TShipPlacard::GetTShipPlacardClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTShipPlacardClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TShipPlacard.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTShipPlacardClassNamePointer()
 
-/* Returns class descriptor pointer for TShipPlacard. */
-
-void * __cdecl TShipPlacard::GetTShipPlacardClassNamePointer(void)
+undefined ** TShipPlacard::GetTShipPlacardClassNamePointer(void)
 
 {
-  return &g_pClassDescTShipPlacard;
+  return &PTR_s_TShipPlacard_0065c8e0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569270
 // GHIDRA_NAME TShipPlacard::ConstructTShipPlacardBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTShipPlacardBaseState(void)
+// GHIDRA_PROTO undefined ConstructTShipPlacardBaseState()
 
-void * __thiscall TShipPlacard::ConstructTShipPlacardBaseState(TShipPlacard *this)
+undefined4 * __fastcall TShipPlacard::ConstructTShipPlacardBaseState(undefined4 *param_1)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
-  this->field0_0x0 = &g_vtblTShipPlacard;
-  return this;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
+  *param_1 = &PTR_LAB_0065d4b0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005692A0
 // GHIDRA_NAME TShipPlacard::DestructTShipPlacardAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTShipPlacardAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTShipPlacardAndMaybeFree()
 
-void * __thiscall
-TShipPlacard::DestructTShipPlacardAndMaybeFree(TShipPlacard *this,byte freeSelfFlag)
+undefined4 __thiscall
+TShipPlacard::DestructTShipPlacardAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

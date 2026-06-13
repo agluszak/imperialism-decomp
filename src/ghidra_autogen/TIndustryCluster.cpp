@@ -3,76 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TIndustryCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401AA0
-// GHIDRA_NAME TIndustryCluster::thunk_DestructTIndustryClusterMaybeFree_At00401aa0
-// GHIDRA_PROTO TIndustryCluster * __thiscall thunk_DestructTIndustryClusterMaybeFree_At00401aa0(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTIndustryClusterMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTIndustryClusterMaybeFree */
-
-TIndustryCluster * __thiscall
-TIndustryCluster::thunk_DestructTIndustryClusterMaybeFree_At00401aa0
-          (TIndustryCluster *this,byte freeSelfFlag)
-
-{
-  TIndustryCluster *pTVar1;
-  
-  pTVar1 = DestructTIndustryClusterMaybeFree(this,freeSelfFlag);
-  return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00401D11
-// GHIDRA_NAME TIndustryCluster::thunk_ConstructTradeMoveStepControlPanel
-// GHIDRA_PROTO TIndustryCluster * __thiscall thunk_ConstructTradeMoveStepControlPanel(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to ConstructTradeMoveStepControlPanel
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to ConstructTradeMoveStepControlPanel */
-
-TIndustryCluster * __thiscall
-TIndustryCluster::thunk_ConstructTradeMoveStepControlPanel(TIndustryCluster *this)
-
-{
-  TUberCluster::ConstructTUberClusterBaseState(&this->base);
-  (this->base).field0_0x0 = &g_vtblTAmtBar_Slot130_Slot0208;
-  this->selectedMetric88 = 0;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0040535D
-// GHIDRA_NAME TIndustryCluster::thunk_GetTIndustryClusterClassNamePointer_At0040535d
-// GHIDRA_PROTO void * __cdecl thunk_GetTIndustryClusterClassNamePointer_At0040535d(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTIndustryClusterClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTIndustryClusterClassNamePointer */
-
-void * __cdecl TIndustryCluster::thunk_GetTIndustryClusterClassNamePointer_At0040535d(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTIndustryClusterClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00588A30
 // GHIDRA_NAME TIndustryCluster::CreateTradeMoveStepControlPanel
-// GHIDRA_PROTO TIndustryCluster * __cdecl CreateTradeMoveStepControlPanel(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled factory helper name
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTradeMoveStepControlPanel()
 
-/* demangled from mangled factory helper name */
-
-TIndustryCluster * __cdecl TIndustryCluster::CreateTradeMoveStepControlPanel(void)
+undefined4 * TIndustryCluster::CreateTradeMoveStepControlPanel(void)
 
 {
-  TIndustryCluster *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -82,70 +20,54 @@ TIndustryCluster * __cdecl TIndustryCluster::CreateTradeMoveStepControlPanel(voi
   puStack_8 = &LAB_0063793a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  if (this != (TIndustryCluster *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState(&this->base);
-    (this->base).field0_0x0 = &g_vtblTAmtBar_Slot130_Slot0208;
-    this->selectedMetric88 = 0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState();
+    *puVar1 = &PTR_LAB_00665ed0;
+    puVar1[0x22] = 0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (TIndustryCluster *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588AD0
 // GHIDRA_NAME TIndustryCluster::GetTIndustryClusterClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTIndustryClusterClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TIndustryCluster.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTIndustryClusterClassNamePointer()
 
-/* Returns class descriptor pointer for TIndustryCluster. */
-
-void * __cdecl TIndustryCluster::GetTIndustryClusterClassNamePointer(void)
+undefined ** TIndustryCluster::GetTIndustryClusterClassNamePointer(void)
 
 {
-  return &g_pClassDescTIndustryCluster;
+  return &PTR_s_TIndustryCluster_00662f98;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588AF0
 // GHIDRA_NAME TIndustryCluster::ConstructTradeMoveStepControlPanel
-// GHIDRA_PROTO TIndustryCluster * __thiscall ConstructTradeMoveStepControlPanel(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT imported from redecomp:src/game/trade_screen.cpp
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTradeMoveStepControlPanel()
 
-/* imported from redecomp:src/game/trade_screen.cpp */
-
-TIndustryCluster * __thiscall
-TIndustryCluster::ConstructTradeMoveStepControlPanel(TIndustryCluster *this)
+undefined4 * __fastcall TIndustryCluster::ConstructTradeMoveStepControlPanel(undefined4 *param_1)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState(&this->base);
-  (this->base).field0_0x0 = &g_vtblTAmtBar_Slot130_Slot0208;
-  this->selectedMetric88 = 0;
-  return this;
+  TUberCluster::ConstructTUberClusterBaseState();
+  *param_1 = &PTR_LAB_00665ed0;
+  param_1[0x22] = 0;
+  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588B20
-// GHIDRA_NAME TIndustryCluster::DestructTIndustryClusterMaybeFree
-// GHIDRA_PROTO TIndustryCluster * __thiscall DestructTIndustryClusterMaybeFree(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT demangled from mangled destructor helper name
-// GHIDRA_COMMENT_END
+// GHIDRA_NAME TIndustryCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
 
-/* demangled from mangled destructor helper name */
-
-TIndustryCluster * __thiscall
-TIndustryCluster::DestructTIndustryClusterMaybeFree(TIndustryCluster *this,byte freeSelfFlag)
+undefined4 __thiscall
+TIndustryCluster::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
 
 {
-  TView::thunk_DestructTViewBaseState((TView *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TView::thunk_DestructTViewBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

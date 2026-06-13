@@ -3,104 +3,54 @@
 // Program: Imperialism.exe
 // Bucket: TRuntimeHeapBufferOwnerState_0066FA68.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406DA7
-// GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7
-// GHIDRA_PROTO void __thiscall thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeRuntimeClassVtablePointer_0066FA68_State
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeRuntimeClassVtablePointer_0066FA68_State */
-
-void __thiscall
-TRuntimeHeapBufferOwnerState_0066FA68::
-thunk_InitializeRuntimeClassVtablePointer_0066FA68_State_At00406da7
-          (TRuntimeHeapBufferOwnerState_0066FA68 *this)
-
-{
-  this->pVtable = &PTR_GetCObjectRuntimeClass_HeapBufferOwnerState_0066FA68;
-  this->pOwnedBuffer_04 = (void *)0x0;
-  this->dwOwnerFlags_10 = 0;
-  this->nBufferCapacity_0C = 0;
-  this->nBufferSize_08 = 0;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2755
 // GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO void __thiscall thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005e47b0 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005e47b0 [FID:thunk_target_sync] */
-
-void __thiscall
-TRuntimeHeapBufferOwnerState_0066FA68::
-thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-          (TRuntimeHeapBufferOwnerState_0066FA68 *this)
+void TRuntimeHeapBufferOwnerState_0066FA68::
+     thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
 {
-  DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
+  DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E27A5
 // GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO void __thiscall thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005e47b0 [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 
-/* Single-JMP thunk to WrapperFor_FreeHeapBufferIfNotNull_At005e47b0 [FID:thunk_target_sync] */
-
-void __thiscall
-TRuntimeHeapBufferOwnerState_0066FA68::
-thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-          (TRuntimeHeapBufferOwnerState_0066FA68 *this)
+void TRuntimeHeapBufferOwnerState_0066FA68::
+     thunk_DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
 
 {
-  DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
+  DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4780
 // GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066FA68_State
-// GHIDRA_PROTO void __thiscall InitializeRuntimeClassVtablePointer_0066FA68_State(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes object state fields to zero and sets runtime class/vtable pointer root at 0x0066FA68.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined InitializeRuntimeClassVtablePointer_0066FA68_State()
 
-/* Initializes object state fields to zero and sets runtime class/vtable pointer root at 0x0066FA68.
-    */
-
-void __thiscall
+void __fastcall
 TRuntimeHeapBufferOwnerState_0066FA68::InitializeRuntimeClassVtablePointer_0066FA68_State
-          (TRuntimeHeapBufferOwnerState_0066FA68 *this)
+          (undefined4 *param_1)
 
 {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_HeapBufferOwnerState_0066FA68;
-  this->pOwnedBuffer_04 = (void *)0x0;
-  this->dwOwnerFlags_10 = 0;
-  this->nBufferCapacity_0C = 0;
-  this->nBufferSize_08 = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_0066fa68;
+  param_1[1] = 0;
+  param_1[4] = 0;
+  param_1[3] = 0;
+  param_1[2] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E47B0
 // GHIDRA_NAME TRuntimeHeapBufferOwnerState_0066FA68::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-// GHIDRA_PROTO void __thiscall DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [RuntimePtrWrapper] Sets runtime ptr 0066FA68, frees owned heap buffer, restores base runtime ptr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0()
 
-/* [RuntimePtrWrapper] Sets runtime ptr 0066FA68, frees owned heap buffer, restores base runtime
-   ptr. */
-
-void __thiscall
+void __fastcall
 TRuntimeHeapBufferOwnerState_0066FA68::
-DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
-          (TRuntimeHeapBufferOwnerState_0066FA68 *this)
+DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(undefined4 *param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -111,12 +61,12 @@ DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
   puStack_8 = &LAB_0063aa78;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this->pVtable = &PTR_GetCObjectRuntimeClass_HeapBufferOwnerState_0066FA68;
+  *param_1 = &PTR_GetCObjectRuntimeClass_0066fa68;
   local_4 = 0;
-  if (this->pOwnedBuffer_04 != (void *)0x0) {
-    FreeHeapBufferIfNotNull();
+  if (param_1[1] != 0) {
+    FreeHeapBufferIfNotNull(param_1[1]);
   }
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

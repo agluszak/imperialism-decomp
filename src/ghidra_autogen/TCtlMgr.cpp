@@ -3,68 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TCtlMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402FB3
-// GHIDRA_NAME TCtlMgr::TCtlMgr_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TCtlMgr_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTCtlMgrAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTCtlMgrAndMaybeFree */
-
-void * __thiscall TCtlMgr::TCtlMgr_VtblSlot001(TCtlMgr *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTCtlMgrAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405588
-// GHIDRA_NAME TCtlMgr::thunk_GetTCtlMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTCtlMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTCtlMgrClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTCtlMgrClassNamePointer */
-
-void * __cdecl TCtlMgr::thunk_GetTCtlMgrClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTCtlMgrClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00405957
-// GHIDRA_NAME TCtlMgr::TCtlMgr_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TCtlMgr_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTButtonClassNamePointer */
-
-void * __cdecl TCtlMgr::TCtlMgr_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = TButton::GetTButtonClassNamePointer();
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EA00
 // GHIDRA_NAME TCtlMgr::CreateTCtlMgrInstance
-// GHIDRA_PROTO void * __cdecl CreateTCtlMgrInstance(void)
+// GHIDRA_PROTO undefined CreateTCtlMgrInstance()
 
-void * __cdecl TCtlMgr::CreateTCtlMgrInstance(void)
+undefined4 * TCtlMgr::CreateTCtlMgrInstance(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -74,57 +20,47 @@ void * __cdecl TCtlMgr::CreateTCtlMgrInstance(void)
   puStack_8 = &LAB_0062ee92;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this[1].field1_0x4 = 0;
-    this[1].pVtable = (void *)0x1;
-    this[1].field3_0x8 = 0;
-    this[1].dialogValueDwordC = 0;
-    this[1].dialogValueDword10 = 0;
-    this[1].viewStateDword14 = 0;
-    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
-    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)&this[1].pChildMapView20 = g_wUiResourceEntryDefaultParam2;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *(undefined1 *)(puVar1 + 0x19) = 0;
+    puVar1[0x18] = 1;
+    puVar1[0x1a] = 0;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->pVtable = &g_vtblTButton;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    *puVar1 = &PTR_LAB_0064a2b8;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EAF0
 // GHIDRA_NAME TCtlMgr::GetTCtlMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTCtlMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TCtlMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTCtlMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TCtlMgr. */
-
-void * __cdecl TCtlMgr::GetTCtlMgrClassNamePointer(void)
+undefined ** TCtlMgr::GetTCtlMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTCtlMgr;
+  return &PTR_s_TCtlMgr_00649618;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EB10
 // GHIDRA_NAME TCtlMgr::ConstructTCtlMgrBaseState
-// GHIDRA_PROTO void * __cdecl ConstructTCtlMgrBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [InheritanceEvidence] TCtlMgr derives from TButton (decomp_vtbl_seq_ctor, medium)
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTCtlMgrBaseState()
 
-/* [InheritanceEvidence] TCtlMgr derives from TButton (decomp_vtbl_seq_ctor, medium) */
-
-void * __cdecl TCtlMgr::ConstructTCtlMgrBaseState(void)
+undefined4 * TCtlMgr::ConstructTCtlMgrBaseState(void)
 
 {
-  TView *this;
+  undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -134,41 +70,41 @@ void * __cdecl TCtlMgr::ConstructTCtlMgrBaseState(void)
   puStack_8 = &LAB_0062eec2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this[1].field1_0x4 = 0;
-    this[1].pVtable = (void *)0x1;
-    this[1].field3_0x8 = 0;
-    this[1].dialogValueDwordC = 0;
-    this[1].dialogValueDword10 = 0;
-    this[1].viewStateDword14 = 0;
-    this[1].pUiOwner18 = (void *)g_nUiResourceEntryDefaultParam0;
-    this[1].field8_0x1c = g_nUiResourceEntryDefaultParam1;
-    *(ushort *)&this[1].pChildMapView20 = g_wUiResourceEntryDefaultParam2;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *(undefined1 *)(puVar1 + 0x19) = 0;
+    puVar1[0x18] = 1;
+    puVar1[0x1a] = 0;
+    puVar1[0x1b] = 0;
+    puVar1[0x1c] = 0;
+    puVar1[0x1d] = 0;
+    puVar1[0x1e] = g_nUiResourceEntryDefaultParam0;
+    puVar1[0x1f] = g_nUiResourceEntryDefaultParam1;
+    *(ushort *)(puVar1 + 0x20) = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->pVtable = &g_vtblTButton;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    this->pVtable = &g_vtblTCtlMgr;
+    *puVar1 = &PTR_LAB_0064a2b8;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+    *puVar1 = &PTR_LAB_0064a4e0;
     *unaff_FS_OFFSET = local_c;
-    return this;
+    return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EC00
 // GHIDRA_NAME TCtlMgr::DestructTCtlMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTCtlMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTCtlMgrAndMaybeFree()
 
-void * __thiscall TCtlMgr::DestructTCtlMgrAndMaybeFree(TCtlMgr *this,byte freeSelfFlag)
+undefined4 __thiscall TCtlMgr::DestructTCtlMgrAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
-  TButton::thunk_CreateTButtonInstance((TButton *)this);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  TButton::CreateTButtonInstance();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

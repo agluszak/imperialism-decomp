@@ -5,60 +5,47 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE5E0
 // GHIDRA_NAME TDiplomacyMgr::CreateTDiplomacyMgrInstance
-// GHIDRA_PROTO int __cdecl CreateTDiplomacyMgrInstance(int entryA, int entryB)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Comparator helper: orders records by signed short at +0x2, using thread-local random tie-break when equal
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTDiplomacyMgrInstance()
 
-/* Comparator helper: orders records by signed short at +0x2, using thread-local random tie-break
-   when equal */
-
-int __cdecl TDiplomacyMgr::CreateTDiplomacyMgrInstance(int entryA,int entryB)
+int TDiplomacyMgr::CreateTDiplomacyMgrInstance(int param_1,int param_2)
 
 {
-  undefined2 uVar2;
   uint uVar1;
-  uint uVar3;
+  uint uVar2;
   
-  uVar2 = (undefined2)((uint)entryA >> 0x10);
-  if (*(short *)(entryB + 2) < *(short *)(entryA + 2)) {
-    return CONCAT22(uVar2,1);
+  if (*(short *)(param_2 + 2) < *(short *)(param_1 + 2)) {
+    return 1;
   }
-  if (*(short *)(entryA + 2) < *(short *)(entryB + 2)) {
-    return CONCAT22(uVar2,0xffff);
+  if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
+    return 0xffff;
   }
   uVar1 = GenerateThreadLocalRandom15();
-  uVar3 = (int)uVar1 >> 0x1f;
-  return (-(uint)(((uVar1 ^ uVar3) - uVar3 & 1 ^ uVar3) != uVar3) & 2) - 1;
+  uVar2 = (int)uVar1 >> 0x1f;
+  return (-(uint)(((uVar1 ^ uVar2) - uVar2 & 1 ^ uVar2) != uVar2) & 2) - 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE6A0
 // GHIDRA_NAME TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTDiplomacyMgrClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TDiplomacyMgr.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTDiplomacyMgrClassNamePointer()
 
-/* Returns class descriptor pointer for TDiplomacyMgr. */
-
-void * __cdecl TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer(void)
+undefined ** TDiplomacyMgr::GetTDiplomacyMgrClassNamePointer(void)
 
 {
-  return &g_pClassDescTDiplomacyMgr;
+  return &PTR_s_TDiplomacyMgr_00654cd0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE700
 // GHIDRA_NAME TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTDiplomacyMgrAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_PROTO undefined DestructTDiplomacyMgrAndMaybeFree()
 
-void * __thiscall
-TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(TDiplomacyMgr *this,byte freeSelfFlag)
+undefined4 __thiscall
+TDiplomacyMgr::DestructTDiplomacyMgrAndMaybeFree(undefined4 param_1,byte param_2)
 
 {
   WrapperFor_FreeHeapBufferIfNotNull_At004ee730();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
   }
-  return this;
+  return param_1;
 }
 

@@ -3,53 +3,11 @@
 // Program: Imperialism.exe
 // Bucket: TRadioPictureButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00401217
-// GHIDRA_NAME TRadioPictureButton::TRadioPictureButton_VtblSlot000
-// GHIDRA_PROTO void * __cdecl TRadioPictureButton_VtblSlot000(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTRadioPictureButtonClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTRadioPictureButtonClassNamePointer */
-
-void * __cdecl TRadioPictureButton::TRadioPictureButton_VtblSlot000(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTRadioPictureButtonClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00406893
-// GHIDRA_NAME TRadioPictureButton::TRadioPictureButton_VtblSlot001
-// GHIDRA_PROTO void * __thiscall TRadioPictureButton_VtblSlot001(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to DestructTRadioPictureButtonAndMaybeFree
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to DestructTRadioPictureButtonAndMaybeFree */
-
-void * __thiscall
-TRadioPictureButton::TRadioPictureButton_VtblSlot001(TRadioPictureButton *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DestructTRadioPictureButtonAndMaybeFree(this,freeSelfFlag);
-  return pvVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00571700
 // GHIDRA_NAME TRadioPictureButton::CreateTRadioPictureButtonInstance
-// GHIDRA_PROTO void * __cdecl CreateTRadioPictureButtonInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TRadioPictureButton; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTRadioPictureButtonInstance()
 
-/* [ClassQuad] create inferred for TRadioPictureButton; alloc factory pattern. */
-
-void * __cdecl TRadioPictureButton::CreateTRadioPictureButtonInstance(void)
+undefined4 * TRadioPictureButton::CreateTRadioPictureButtonInstance(void)
 
 {
   undefined4 *puVar1;
@@ -62,49 +20,49 @@ void * __cdecl TRadioPictureButton::CreateTRadioPictureButtonInstance(void)
   puStack_8 = &LAB_0063642a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructPictureResourceEntryBase();
+    thunk_TPictureButton::TPictureButton();
     *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    *puVar1 = &g_vtblTRadioPictureButton;
+    *puVar1 = &PTR_LAB_0065f670;
     puVar1[0x18] = 0xc;
     *(undefined1 *)(puVar1 + 0x25) = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return (void *)0x0;
+  return (undefined4 *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005717A0
 // GHIDRA_NAME TRadioPictureButton::GetTRadioPictureButtonClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTRadioPictureButtonClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TRadioPictureButton.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTRadioPictureButtonClassNamePointer()
 
-/* Returns class descriptor pointer for TRadioPictureButton. */
-
-void * __cdecl TRadioPictureButton::GetTRadioPictureButtonClassNamePointer(void)
+undefined ** TRadioPictureButton::GetTRadioPictureButtonClassNamePointer(void)
 
 {
-  return &g_pClassDescTRadioPictureButton;
+  return &PTR_s_TRadioPictureButton_0065e5e0;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00571800
-// GHIDRA_NAME TRadioPictureButton::DestructTRadioPictureButtonAndMaybeFree
-// GHIDRA_PROTO void * __thiscall DestructTRadioPictureButtonAndMaybeFree(byte freeSelfFlag)
+// GHIDRA_FUNCTION IMPERIALISM 0x005717C0
+// GHIDRA_NAME TRadioPictureButton::TRadioPictureButton
+// GHIDRA_PROTO undefined TRadioPictureButton()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command icon slots in multiple UI builders.
+// GHIDRA_COMMENT_END
 
-void * __thiscall
-TRadioPictureButton::DestructTRadioPictureButtonAndMaybeFree
-          (TRadioPictureButton *this,byte freeSelfFlag)
+/* Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command
+   icon slots in multiple UI builders. */
+
+undefined4 * __fastcall TRadioPictureButton::TRadioPictureButton(undefined4 *param_1)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull();
-  }
-  return this;
+  thunk_TPictureButton::TPictureButton();
+  *(undefined2 *)((int)param_1 + 0x92) = 7000;
+  *param_1 = &PTR_LAB_0065f670;
+  param_1[0x18] = 0xc;
+  *(undefined1 *)(param_1 + 0x25) = 0;
+  return param_1;
 }
 

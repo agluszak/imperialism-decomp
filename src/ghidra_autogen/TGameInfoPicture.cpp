@@ -3,87 +3,22 @@
 // Program: Imperialism.exe
 // Bucket: TGameInfoPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0040151E
-// GHIDRA_NAME TGameInfoPicture::thunk_scalar_deleting_destructor_0040151E
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_0040151E(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TGameInfoPicture::thunk_scalar_deleting_destructor_0040151E
-          (TGameInfoPicture *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004046D8
-// GHIDRA_NAME TGameInfoPicture::thunk_GetTGameInfoPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTGameInfoPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTGameInfoPictureClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTGameInfoPictureClassNamePointer */
-
-void * __cdecl TGameInfoPicture::thunk_GetTGameInfoPictureClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTGameInfoPictureClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408733
-// GHIDRA_NAME TGameInfoPicture::thunk_ConstructTGameInfoPictureBaseState
-// GHIDRA_PROTO void __thiscall thunk_ConstructTGameInfoPictureBaseState(int labelSeed)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to InitializeGameInfoPictureLocalizedLabels [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to InitializeGameInfoPictureLocalizedLabels [FID:thunk_target_sync] */
-
-void __thiscall
-TGameInfoPicture::thunk_ConstructTGameInfoPictureBaseState(TGameInfoPicture *this,int labelSeed)
-
-{
-  ConstructTGameInfoPictureBaseState(this,labelSeed);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B850
 // GHIDRA_NAME TGameInfoPicture::GetTGameInfoPictureClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTGameInfoPictureClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TGameInfoPicture.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTGameInfoPictureClassNamePointer()
 
-/* Returns class descriptor pointer for TGameInfoPicture. */
-
-void * __cdecl TGameInfoPicture::GetTGameInfoPictureClassNamePointer(void)
+undefined ** TGameInfoPicture::GetTGameInfoPictureClassNamePointer(void)
 
 {
-  return &g_pClassDescTGameInfoPicture;
+  return &PTR_s_TGameInfoPicture_0065de28;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B870
 // GHIDRA_NAME TGameInfoPicture::ConstructTGameInfoPictureBaseState
-// GHIDRA_PROTO void __thiscall ConstructTGameInfoPictureBaseState(int labelSeed)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes game-info picture labels and applies localized text across info controls.
-// GHIDRA_COMMENT_END
-
-/* Initializes game-info picture labels and applies localized text across info controls. */
+// GHIDRA_PROTO undefined ConstructTGameInfoPictureBaseState()
 
 void __thiscall
-TGameInfoPicture::ConstructTGameInfoPictureBaseState(TGameInfoPicture *this,int labelSeed)
+TGameInfoPicture::ConstructTGameInfoPictureBaseState(int *param_1,undefined4 param_2)
 
 {
   code *pcVar1;
@@ -92,31 +27,31 @@ TGameInfoPicture::ConstructTGameInfoPictureBaseState(TGameInfoPicture *this,int 
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 local_4;
+  undefined4 uStack_4;
   
   uStack_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
+  uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635da8;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_NoOpUiLifecycleHook();
+  TView::thunk_NoOpUiLifecycleHook(param_2);
   InitializeSharedStringRefFromEmpty();
-  local_4 = 0;
+  uStack_4 = 0;
   iVar3 = 0;
   do {
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2757,iVar3 + 0xf,&labelSeed);
-    thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2757,iVar3 + 0xf,&param_2);
+    RefreshActiveControlThenApplyThemeStyleAndCaption(iVar3 + 0x68647230,0,0xc,0x2b67,1,param_2);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 5);
   iVar3 = 0;
-  pcVar1 = *(code **)((int)this->pVtable + 0x94);
+  pcVar1 = *(code **)(*param_1 + 0x94);
   do {
     piVar2 = (int *)(*pcVar1)(iVar3 + 0x74787461);
     (**(code **)(*piVar2 + 0xc))();
-    (**(code **)(*(int *)g_pLocalizationTable + 0x84))(0x2757,iVar3,&stack0x00000000);
-    thunk_RefreshActiveControlThenApplyThemeStyleAndCaption();
+    (**(code **)(*g_pLocalizationTable + 0x84))(0x2757,iVar3,&stack0x00000000);
+    RefreshActiveControlThenApplyThemeStyleAndCaption(iVar3 + 0x74787461,0,10,0x2b67,1,param_2);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0xe);
-  local_4 = 0xffffffff;
+  uStack_4 = 0xffffffff;
   ReleaseSharedStringRefIfNotEmpty();
   *unaff_FS_OFFSET = uStack_c;
   return;

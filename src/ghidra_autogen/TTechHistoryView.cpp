@@ -3,184 +3,15 @@
 // Program: Imperialism.exe
 // Bucket: TTechHistoryView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004034C2
-// GHIDRA_NAME TTechHistoryView::thunk_GetTTechHistoryViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl thunk_GetTTechHistoryViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to GetTTechHistoryViewClassNamePointer
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to GetTTechHistoryViewClassNamePointer */
-
-void * __cdecl TTechHistoryView::thunk_GetTTechHistoryViewClassNamePointer(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = GetTTechHistoryViewClassNamePointer();
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00407711
-// GHIDRA_NAME TTechHistoryView::thunk_scalar_deleting_destructor_00407711
-// GHIDRA_PROTO void * __thiscall thunk_scalar_deleting_destructor_00407711(byte freeSelfFlag)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Single-JMP thunk to `scalar_deleting_destructor'
-// GHIDRA_COMMENT_END
-
-/* Single-JMP thunk to `scalar_deleting_destructor' */
-
-void * __thiscall
-TTechHistoryView::thunk_scalar_deleting_destructor_00407711
-          (TTechHistoryView *this,byte freeSelfFlag)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = ::_scalar_deleting_destructor_(this,freeSelfFlag);
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00408DA5
-// GHIDRA_NAME TTechHistoryView::thunk_ConstructTTechHistoryViewBaseState
-// GHIDRA_PROTO void * __thiscall thunk_ConstructTTechHistoryViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Thunk wrapper for InitializeTechHistoryViewTitleAndMapKeyControls. [FID:thunk_target_sync]
-// GHIDRA_COMMENT_END
-
-/* Thunk wrapper for InitializeTechHistoryViewTitleAndMapKeyControls. [FID:thunk_target_sync] */
-
-void * __thiscall TTechHistoryView::thunk_ConstructTTechHistoryViewBaseState(TTechHistoryView *this)
-
-{
-  code *pcVar1;
-  int iVar2;
-  undefined4 uVar3;
-  int *piVar4;
-  TTEView *this_00;
-  undefined4 *extraout_EAX;
-  int iVar5;
-  void *pvVar6;
-  undefined4 *unaff_FS_OFFSET;
-  int unaff_retaddr;
-  int iStack_70;
-  undefined1 uStack_54;
-  undefined1 uStack_53;
-  undefined1 uStack_52;
-  undefined1 uStack_51;
-  undefined1 uStack_50;
-  undefined1 uStack_4f;
-  undefined1 uStack_4e;
-  undefined1 uStack_4d;
-  undefined4 uStack_4c;
-  undefined4 uStack_48;
-  undefined4 uStack_44;
-  int aiStack_40 [2];
-  int iStack_38;
-  undefined1 uStack_32;
-  undefined1 uStack_31;
-  undefined1 uStack_30;
-  undefined1 uStack_2f;
-  undefined4 uStack_24;
-  int iStack_1c;
-  int iStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00638b52;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  pvVar6 = this->pVtable;
-  uStack_32 = 0;
-  uStack_31 = 0;
-  uStack_30 = 0;
-  uStack_2f = 0;
-  uStack_54 = 0;
-  uStack_53 = 0;
-  uStack_52 = 0;
-  uStack_51 = 0;
-  uStack_50 = 0;
-  uStack_4f = 0;
-  uStack_4e = 0;
-  uStack_4d = 0;
-  uStack_44 = (**(code **)((int)pvVar6 + 0x58))();
-  iStack_70 = 0x5b2328;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6a,(int)&uStack_54);
-  iStack_70 = 0x5b233a;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&uStack_50);
-  iStack_70 = 0;
-  thunk_BuildUiTextStyleDescriptor();
-  pcVar1 = *(code **)((int)pvVar6 + 0x94);
-  piVar4 = (int *)(*pcVar1)();
-  (**(code **)(*piVar4 + 0xc))();
-  iStack_70 = unaff_retaddr + 1;
-  (**(code **)(*piVar4 + 0x1cc))();
-  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0x12,0x2b6a,0x2b68);
-  piVar4 = (int *)(*pcVar1)(0x70696374);
-  iVar2 = *piVar4;
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1c8))(iStack_10 + 0x944,1);
-  piVar4 = (int *)(*pcVar1)(0x73637677);
-  (**(code **)(*piVar4 + 0xc))();
-  this_00 = AllocateWithFallbackHandler();
-  uStack_24 = 0;
-  if (this_00 == (TTEView *)0x0) {
-    this_00 = (TTEView *)0x0;
-  }
-  else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this_00);
-    ((TView *)&this_00->field0_0x0)->pVtable = &g_vtblTMapKey;
-    uStack_24 = CONCAT31(uStack_24._1_3_,1);
-    this_00->field_0x98 = 0;
-    this_00->field_0x99 = 0;
-    this_00->field_0x9a = 0;
-    this_00->field_0x9b = 0;
-    thunk_ClearColorRgbaBytes();
-    ((TView *)&this_00->field0_0x0)->pVtable = &g_vtblTMapKey;
-    thunk_SetColorRgbAndClearAlphaByte();
-    uVar3 = *extraout_EAX;
-    this_00->field_0xa0 = 0;
-    *(undefined4 *)&this_00->field_0x98 = uVar3;
-  }
-  uStack_24 = 0xffffffff;
-  uStack_4c = 0;
-  uStack_48 = 0;
-  uStack_44 = 0;
-  aiStack_40[0] = 0;
-  TDeluxeText::thunk_ConstructTDeluxeTextBaseState
-            ((TDeluxeText *)this_00,(int)piVar4,(int)&stack0xffffffa0,(int)&stack0xffffff94,
-             (int)&uStack_4c,(int)&stack0xffffffa8,-2);
-  iVar2 = this_00->field0_0x0;
-  *(undefined4 *)&this_00->field_0x98 = 0x2712;
-  (**(code **)(iVar2 + 0x1dc))(iStack_1c + 0x8fc);
-  iVar5 = TTEView::thunk_DestructTTEViewAndMaybeFree(this_00);
-  (**(code **)(iVar2 + 300))(aiStack_40);
-  iStack_38 = aiStack_40[0] + (short)iVar5;
-  (**(code **)(iVar2 + 0x168))(&uStack_44,1);
-  piVar4[0x18] = (int)this_00;
-  SyncBoundedValueAndToggleControlStates();
-  iStack_70 = 0x8c;
-  pvVar6 = (void *)(**(code **)(iRam00002712 + 0xf0))(&iStack_70,1);
-  *unaff_FS_OFFSET = uStack_44;
-  return pvVar6;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2230
 // GHIDRA_NAME TTechHistoryView::CreateTTechHistoryViewInstance
-// GHIDRA_PROTO void * __cdecl CreateTTechHistoryViewInstance(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT [ClassQuad] create inferred for TTechHistoryView; alloc factory pattern.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined CreateTTechHistoryViewInstance()
 
-/* [ClassQuad] create inferred for TTechHistoryView; alloc factory pattern. */
-
-void * __cdecl TTechHistoryView::CreateTTechHistoryViewInstance(void)
+undefined4 * TTechHistoryView::CreateTTechHistoryViewInstance(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -190,57 +21,47 @@ void * __cdecl TTechHistoryView::CreateTTechHistoryViewInstance(void)
   puStack_8 = &LAB_00638b2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->pVtable = &PTR_thunk_GetTTechHistoryViewClassNamePointer_00645ab0;
-    pTVar1 = this;
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
+    *puVar1 = &PTR_LAB_00645ab0;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B22A0
 // GHIDRA_NAME TTechHistoryView::GetTTechHistoryViewClassNamePointer
-// GHIDRA_PROTO void * __cdecl GetTTechHistoryViewClassNamePointer(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns class descriptor pointer for TTechHistoryView.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined GetTTechHistoryViewClassNamePointer()
 
-/* Returns class descriptor pointer for TTechHistoryView. */
-
-void * __cdecl TTechHistoryView::GetTTechHistoryViewClassNamePointer(void)
+undefined ** TTechHistoryView::GetTTechHistoryViewClassNamePointer(void)
 
 {
-  return &g_pClassDescTTechHistoryView;
+  return &PTR_s_TTechHistoryView_0066ae58;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B22C0
 // GHIDRA_NAME TTechHistoryView::ConstructTTechHistoryViewBaseState
-// GHIDRA_PROTO void * __thiscall ConstructTTechHistoryViewBaseState(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes tech-history view title text and map-key control objects, styles, and layout rect updates.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined ConstructTTechHistoryViewBaseState()
 
-/* Initializes tech-history view title text and map-key control objects, styles, and layout rect
-   updates. */
-
-void * __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHistoryView *this)
+void __fastcall TTechHistoryView::ConstructTTechHistoryViewBaseState(int *param_1)
 
 {
-  code *pcVar1;
-  int iVar2;
-  undefined4 uVar3;
+  int iVar1;
+  code *pcVar2;
+  short sVar3;
   int *piVar4;
-  TTEView *this_00;
-  undefined4 *extraout_EAX;
-  int iVar5;
-  void *pvVar6;
+  int *piVar5;
+  int *piVar6;
   undefined4 *unaff_FS_OFFSET;
   int unaff_retaddr;
+  int *piVar7;
   int iStack_70;
+  int *piStack_6c;
+  undefined1 *puStack_68;
   undefined1 local_54;
   undefined1 local_53;
   undefined1 local_52;
@@ -269,7 +90,7 @@ void * __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHist
   puStack_8 = &LAB_00638b52;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  pvVar6 = this->pVtable;
+  iVar1 = *param_1;
   local_32 = 0;
   local_31 = 0;
   local_30 = 0;
@@ -282,82 +103,92 @@ void * __thiscall TTechHistoryView::ConstructTTechHistoryViewBaseState(TTechHist
   local_4f = 0;
   local_4e = 0;
   local_4d = 0;
-  uStack_44 = (**(code **)((int)pvVar6 + 0x58))();
+  puStack_68 = (undefined1 *)0x5b2315;
+  uStack_44 = (**(code **)(iVar1 + 0x58))();
+  puStack_68 = &local_54;
+  piStack_6c = (int *)0x2b6a;
   iStack_70 = 0x5b2328;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b6a,(int)&local_54);
+  thunk_MapUiThemeCodeToStyleFlags();
+  puStack_68 = &local_50;
+  piStack_6c = (int *)0x2b68;
   iStack_70 = 0x5b233a;
-  thunk_MapUiThemeCodeToStyleFlags(0x2b68,(int)&local_50);
+  thunk_MapUiThemeCodeToStyleFlags();
+  puStack_68 = (undefined1 *)0x2b6a;
+  piStack_6c = (int *)0xc;
   iStack_70 = 0;
-  thunk_BuildUiTextStyleDescriptor();
-  pcVar1 = *(code **)((int)pvVar6 + 0x94);
-  piVar4 = (int *)(*pcVar1)();
+  thunk_BuildUiTextStyleDescriptor(&iStack_38);
+  pcVar2 = *(code **)(iVar1 + 0x94);
+  puStack_68 = (undefined1 *)0x7469746c;
+  piStack_6c = (int *)0x5b2361;
+  piVar4 = (int *)(*pcVar2)();
+  piStack_6c = (int *)0x5b236a;
   (**(code **)(*piVar4 + 0xc))();
+  piStack_6c = (int *)0x1;
   iStack_70 = unaff_retaddr + 1;
+  piVar7 = (int *)0x2712;
   (**(code **)(*piVar4 + 0x1cc))();
-  thunk_ApplyUiTextStyleAndThemeFlags(piVar4,0,0x12,0x2b6a,0x2b68);
-  piVar4 = (int *)(*pcVar1)(0x70696374);
-  iVar2 = *piVar4;
-  (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1c8))(iStack_10 + 0x944,1);
-  piVar4 = (int *)(*pcVar1)(0x73637677);
+  ApplyUiTextStyleAndThemeFlags(piVar4,0,0x12,0x2b6a,0x2b68);
+  piVar4 = (int *)(*pcVar2)(0x70696374);
+  iVar1 = *piVar4;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0x1c8))(iStack_10 + 0x944,1);
+  piVar4 = (int *)(*pcVar2)(0x73637677);
   (**(code **)(*piVar4 + 0xc))();
-  this_00 = AllocateWithFallbackHandler();
+  piVar5 = (int *)AllocateWithFallbackHandler(0xa4);
   uStack_24 = 0;
-  if (this_00 == (TTEView *)0x0) {
-    this_00 = (TTEView *)0x0;
+  if (piVar5 == (int *)0x0) {
+    piVar5 = (int *)0x0;
   }
   else {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this_00);
-    ((TView *)&this_00->field0_0x0)->pVtable = &g_vtblTMapKey;
+    piStack_6c = piVar5;
+    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+    *piVar5 = (int)&PTR_LAB_00644308;
     uStack_24 = CONCAT31(uStack_24._1_3_,1);
-    this_00->field_0x98 = 0;
-    this_00->field_0x99 = 0;
-    this_00->field_0x9a = 0;
-    this_00->field_0x9b = 0;
-    thunk_ClearColorRgbaBytes();
-    ((TView *)&this_00->field0_0x0)->pVtable = &g_vtblTMapKey;
-    thunk_SetColorRgbAndClearAlphaByte();
-    uVar3 = *extraout_EAX;
-    this_00->field_0xa0 = 0;
-    *(undefined4 *)&this_00->field_0x98 = uVar3;
+    *(undefined1 *)(piVar5 + 0x26) = 0;
+    *(undefined1 *)((int)piVar5 + 0x99) = 0;
+    *(undefined1 *)((int)piVar5 + 0x9a) = 0;
+    *(undefined1 *)((int)piVar5 + 0x9b) = 0;
+    ClearColorRgbaBytes();
+    *piVar5 = (int)&PTR_LAB_006406d8;
+    piVar6 = (int *)SetColorRgbAndClearAlphaByte(0,0,0);
+    iVar1 = *piVar6;
+    *(undefined1 *)(piVar5 + 0x28) = 0;
+    piVar5[0x26] = iVar1;
   }
+  puStack_68 = (undefined1 *)param_1[0xe];
+  piStack_6c = (int *)(piVar4[0xd] + -0x19);
   uStack_24 = 0xffffffff;
   uStack_4c = 0;
   uStack_48 = 0;
   uStack_44 = 0;
   aiStack_40[0] = 0;
-  TDeluxeText::thunk_ConstructTDeluxeTextBaseState
-            ((TDeluxeText *)this_00,(int)piVar4,(int)&stack0xffffffa0,(int)&stack0xffffff94,
-             (int)&uStack_4c,(int)&stack0xffffffa8,-2);
-  iVar2 = this_00->field0_0x0;
-  *(undefined4 *)&this_00->field_0x98 = 0x2712;
-  (**(code **)(iVar2 + 0x1dc))(iStack_1c + 0x8fc);
-  iVar5 = TTEView::thunk_DestructTTEViewAndMaybeFree(this_00);
-  (**(code **)(iVar2 + 300))(aiStack_40);
-  iStack_38 = aiStack_40[0] + (short)iVar5;
-  (**(code **)(iVar2 + 0x168))(&uStack_44,1);
-  piVar4[0x18] = (int)this_00;
+  TDeluxeText::ConstructTDeluxeTextBaseState
+            (piVar4,&stack0xffffffa0,&piStack_6c,&uStack_4c,&stack0xffffffa8,0xfffffffe);
+  iVar1 = *piVar5;
+  piVar5[0x26] = (int)piVar7;
+  (**(code **)(iVar1 + 0x1dc))(iStack_1c + 0x8fc);
+  sVar3 = TTEView::DestructTTEViewAndMaybeFree();
+  (**(code **)(iVar1 + 300))(aiStack_40);
+  iStack_38 = aiStack_40[0] + sVar3;
+  (**(code **)(iVar1 + 0x168))(&uStack_44,1);
+  piVar4[0x18] = (int)piVar5;
   SyncBoundedValueAndToggleControlStates();
   iStack_70 = 0x8c;
-  pvVar6 = (void *)(**(code **)(iRam00002712 + 0xf0))(&iStack_70,1);
+  piStack_6c = (int *)(0xf0 - piVar7[0xe] / 2);
+  (**(code **)(*piVar7 + 0xf0))(&iStack_70,1);
   *unaff_FS_OFFSET = uStack_44;
-  return pvVar6;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2740
 // GHIDRA_NAME TTechHistoryView::DestructTTechHistoryViewAndMaybeFree
-// GHIDRA_PROTO void * __cdecl DestructTTechHistoryViewAndMaybeFree(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Allocates and constructs tech-history view adorner/view instance.
-// GHIDRA_COMMENT_END
+// GHIDRA_PROTO undefined DestructTTechHistoryViewAndMaybeFree()
 
-/* Allocates and constructs tech-history view adorner/view instance. */
-
-void * __cdecl TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
+undefined4 * TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
 
 {
-  TView *this;
-  TView *pTVar1;
+  undefined4 *puVar1;
+  undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -367,18 +198,18 @@ void * __cdecl TTechHistoryView::DestructTTechHistoryViewAndMaybeFree(void)
   puStack_8 = &LAB_00638b82;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = AllocateWithFallbackHandler();
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x60);
   local_4 = 0;
-  pTVar1 = (TView *)0x0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    TView::thunk_ConstructTViewBaseState();
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->pVtable = &g_vtblTAdorner;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
-    this->pVtable = &PTR_thunk_GetTGameSetupDialogClassNamePointer_0066b380;
-    pTVar1 = this;
+    *puVar1 = &PTR_LAB_0064be28;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    *puVar1 = &PTR_LAB_0066b380;
+    puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
-  return pTVar1;
+  return puVar2;
 }
 
