@@ -9085,6 +9085,7 @@ address|name|size|type|prototype
 6a141c|g_pUiResourceHead||global|
 6a1420|g_pUiResourceContext||global|
 6a18e0|g_pApplicationUiRootController||global|
+6a1ae0|g_McAppUiFlag_006A1AE0||global|
 6a1af8|g_McAppUiDrawGate_006A1AF8||global|
 6a1c98|g_pReusableQuickDrawSurfaceListHead||global|
 6a1d08|g_nQuickDrawStrokeStylePrimary||global|

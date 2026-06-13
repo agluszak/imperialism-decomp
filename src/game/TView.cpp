@@ -23,27 +23,7 @@ undefined4 NoOpQuickDrawContextSelectionHook(void);
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-namespace {
-
-// TView::field44 holds a CObList-style child-control container: a vtable-bearing list
-// object whose head/tail node pointers thread the child TView elements. Typed view so
-// the child-walk reads as real field accesses instead of cast-helper indirection.
-struct TChildListNode {
-  TChildListNode* next;     // +0x00
-  TChildListNode* prev;     // +0x04
-  TView* element;           // +0x08
-};
-
-struct TChildList {
-  void* vftable;            // +0x00
-  TChildListNode* head;     // +0x04
-  TChildListNode* tail;     // +0x08
-  int count;                // +0x0c
-  TChildListNode* freeList; // +0x10
-  int field14;              // +0x14
-};
-
-} // namespace
+// TView::childList44 is an MFC CPtrList of child-control TView* pointers (node->data).
 
 // Real ctor. The scalar fields are member-initializers (not body assignments) so
 // they are emitted in declaration order *before* the CString member sharedStringRef
@@ -54,12 +34,12 @@ struct TChildList {
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
     : field10(0x7fffffff), field14(0), field18(0), ownerContext(0), field2c(0), field30(0),
-      field3c(0), field44(0), field48(0), flag4c(1), flag4d(1), field4e(0xffff), nativeWindow50(0),
+      field3c(0), childList44(0), field48(0), flag4c(1), flag4d(1), field4e(0xffff), nativeWindow50(0),
       field54(1), sharedStringRef(), field5c(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
-  delete reinterpret_cast<TView*>(field44);
+  delete childList44;
   FreeHeapBufferIfNotNull(field48);
 }
 
@@ -128,7 +108,7 @@ class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
 // selection (slots 0x5d/0x5c) and refresh the newly active child.
 // FUNCTION: IMPERIALISM 0x0048af80
 void TView::SwitchActiveChildAndNotify(class TView* child) {
-  if (field44 != 0 && reinterpret_cast<TChildList*>(field44)->tail->element != child) {
+  if (childList44 != 0 && childList44->tailNode->data != child) {
     vmethod_0093(child);
     vmethod_0092(child, 1);
     child->RefreshControl();
@@ -138,18 +118,18 @@ void TView::SwitchActiveChildAndNotify(class TView* child) {
 // Walk the field44 child list and forward slot-0x27 to each linked child.
 // FUNCTION: IMPERIALISM 0x0048c820
 void TView::DispatchSlot9CToLinkedChildren() {
-  TChildListNode* node;
-  if (field44 == 0) {
+  CPtrListNode* node;
+  if (childList44 == 0) {
     node = 0;
   } else {
-    node = reinterpret_cast<TChildList*>(field44)->head;
+    node = childList44->headNode;
   }
   TView* child;
   if (node == 0) {
     child = 0;
     node = 0;
   } else {
-    child = node->element;
+    child = reinterpret_cast<TView*>(node->data);
     node = node->next;
   }
   while (child != 0) {
@@ -158,7 +138,7 @@ void TView::DispatchSlot9CToLinkedChildren() {
       child = 0;
       node = 0;
     } else {
-      child = node->element;
+      child = reinterpret_cast<TView*>(node->data);
       node = node->next;
     }
   }
@@ -204,7 +184,7 @@ char TView::EvaluateControlInputGate() {
 
 // FUNCTION: IMPERIALISM 0x0048c050
 char TView::HasRenderableParentAndContent() {
-  if (flag4d != 0 && field44 != 0 && reinterpret_cast<TChildList*>(field44)->count != 0) {
+  if (flag4d != 0 && childList44 != 0 && childList44->nodeCount != 0) {
     return 1;
   }
   return 0;
@@ -214,18 +194,18 @@ void TView::vmethod_0053() {}
 // child's slot-0x36, then invoke this view's own slot-0x37 handler.
 // FUNCTION: IMPERIALISM 0x0048aaf0
 void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
-  TChildListNode* node;
-  if (field44 == 0) {
+  CPtrListNode* node;
+  if (childList44 == 0) {
     node = 0;
   } else {
-    node = reinterpret_cast<TChildList*>(field44)->head;
+    node = childList44->headNode;
   }
   TView* child;
   if (node == 0) {
     child = 0;
     node = 0;
   } else {
-    child = node->element;
+    child = reinterpret_cast<TView*>(node->data);
     node = node->next;
   }
   while (child != 0) {
@@ -234,7 +214,7 @@ void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
       child = 0;
       node = 0;
     } else {
-      child = node->element;
+      child = reinterpret_cast<TView*>(node->data);
       node = node->next;
     }
   }
@@ -340,7 +320,64 @@ char TView::vmethod_0091(void* arg1) {
   return 0;
 }
 void TView::vmethod_0092(class TView* child, int flag) {}
-void TView::vmethod_0093(class TView* child) {}
+// Find the child whose controlTag matches, unlink it from childList44 (inlined
+// CPtrList::RemoveAt; when the list empties, free its block chain), delete the now-empty
+// list, and clear the child's back-reference to this owner.
+// FUNCTION: IMPERIALISM 0x0048ae60
+void TView::vmethod_0093(class TView* child) {
+  CPtrList* list = childList44;
+  int tag = child->controlTag;
+  CPtrListNode* head = list->headNode;
+  CPtrListNode* node = head;
+  CPtrListNode* cur;
+  int newCount;
+  while (node != 0) {
+    cur = node;
+    node = cur->next;
+    if (tag == reinterpret_cast<TView*>(cur->data)->controlTag) {
+      goto unlink;
+    }
+  }
+  if (g_McAppUiFlag_006A1AE0 == 0) {
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+        g_szMcAppUiSourcePath_006950B0, 0x152);
+  }
+  goto tail;
+
+unlink:
+  if (cur == head) {
+    list->headNode = cur->next;
+  } else {
+    cur->prev->next = cur->next;
+  }
+  if (cur == list->tailNode) {
+    list->tailNode = cur->prev;
+  } else {
+    cur->next->prev = cur->prev;
+  }
+  cur->next = list->freeNodeList;
+  newCount = list->nodeCount - 1;
+  list->freeNodeList = cur;
+  list->nodeCount = newCount;
+  if (newCount == 0) {
+    for (CPtrListNode* p = list->headNode; p != 0; p = p->next) {
+    }
+    void* chain = list->blockChain;
+    list->nodeCount = 0;
+    list->freeNodeList = 0;
+    list->tailNode = 0;
+    list->headNode = 0;
+    FreeLinkedBlockChain(chain);
+    list->blockChain = 0;
+  }
+
+tail:
+  if (childList44->nodeCount == 0) {
+    delete childList44;
+    childList44 = 0;
+  }
+  child->ownerContext = 0;
+}
 void TView::vmethod_0094() {}
 void TView::vmethod_0095() {}
 // FUNCTION: IMPERIALISM 0x0048c9e0

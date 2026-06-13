@@ -3323,14 +3323,6 @@ undefined4 DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
   return 0;
 }
 
-// ghidra_name TControl::DetachUiElementFromOwnerListAndClearBackref
-// ghidra_proto undefined DetachUiElementFromOwnerListAndClearBackref()
-// FUNCTION: IMPERIALISM 0x0048ae60
-undefined4 DetachUiElementFromOwnerListAndClearBackref(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::FindUiChildControlByWindowHandleRecursive
 // ghidra_proto undefined FindUiChildControlByWindowHandleRecursive()
 // FUNCTION: IMPERIALISM 0x0048afd0

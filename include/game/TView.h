@@ -4,6 +4,7 @@
 #include "game/TEventHandler.h"
 #include "game/CString.h"
 #include "game/TViewNativeWindow.h"
+#include "game/CPtrList.h"
 
 // VTABLE: IMPERIALISM 0x649858
 class TView : public TEventHandler {
@@ -21,7 +22,7 @@ public:
   int field38;
   int field3c;
   unsigned char padding_40_to_43[0x04];
-  int field44;
+  CPtrList* childList44;     // 0x44 — child-control list (CObList/CPtrList)
   int field48;
   unsigned char flag4c;
   unsigned char flag4d;
