@@ -1,5 +1,10 @@
 # Worklog
 
+- **Timestamp:** 2026-06-14 (cont. 4) — CPtrList recovery, detach, field08, more slots (committed)
+- **Command:** Recover `field44`→`CPtrList*` and `TEventHandler::field08`; port detach + 11 more slots; commits 23d6fe2, fec5f20, 81a11b1.
+- **Score Delta:** `0x0048ae60` DetachUiElementFromOwnerList (vmethod_0093, 215B) **30%→55%** (goto-structured inlined `CPtrList::RemoveAt`/RemoveAll + real `delete`; assert block pairs exactly via typed globals); `0x0048b200` IsActionable **95%**; `0x0048a4d0` SetUiResourceOwner **100%**; `0x0048b7b0`/`0x0048b7e0` Bind/ReleaseMapQuickDrawDc **100%** (cdecl `this`+arg forwarders — RET 4 means they take an arg); `0x0048bac0` SubtractPosAndDispatchToOwnerSlot19C **67%**; six NoOp slots (vmethod_0033/0073/0096-0099) **100%**. Canaries 8/8; gate pass.
+- **Description:** `TView::field44` is a real MFC `CPtrList` of child `TView*` (node->data); re-typed from int (childList44), dropped the ad-hoc TChildList view, dtor now `delete childList44`. `TEventHandler::field08` promoted from base padding. Lesson: ILT-wrapper slots whose `RET n` is non-zero take stack args even when the decompiler shows `(void)` — match the arg count and pass `this` first for the cdecl `(this,arg)` forwarders. Remaining hard targets: 0x48b4b0 (EH frame + GDI region, decompiler loses the region handle), 0x48a5e0 (multi-class vtable dispatch via g_pApplicationUiRootController), and several struct-return/`unaff_retaddr` slots.
+
 - **Timestamp:** 2026-06-14 (cont. 3) — typed globals + class recovery
 - **Command:** Recover `field50` window-host + McAppUI typed globals; port 4 more TView slots; `just sync-ownership`→`regen-stubs`→`build`→`compare`→`compare-canaries`.
 - **Score Delta:** `0x0048af80` `SwitchActiveChildAndNotify` **100%**; `0x0048b250` `CaptureLayoutF0` **72%**; `0x0048c820` `DispatchSlot9CToLinkedChildren` **37%** (child-walk recursion); `0x0048b810` `EnsureField48Buffer` **43%**. Retrofit raised `DrawRectangleInCurrentUiContext` **90.5%→95.2%** (typed string global) and held `ValidateControlRectIfWindowActive` **75%**. Canaries 8/8.

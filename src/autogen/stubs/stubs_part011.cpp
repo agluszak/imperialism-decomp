@@ -43,30 +43,6 @@ undefined4 OffsetRectByControlPosition_Impl(void)
   return 0;
 }
 
-// ghidra_name TControl::CtrlSlot82_TransformPointViaSlot138_Impl
-// ghidra_proto undefined CtrlSlot82_TransformPointViaSlot138_Impl()
-// FUNCTION: IMPERIALISM 0x0048bb60
-undefined4 CtrlSlot82_TransformPointViaSlot138_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CtrlSlot83_TransformRectViaSlot148_Impl
-// ghidra_proto undefined CtrlSlot83_TransformRectViaSlot148_Impl()
-// FUNCTION: IMPERIALISM 0x0048bbb0
-undefined4 CtrlSlot83_TransformRectViaSlot148_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl
-// ghidra_proto undefined CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl()
-// FUNCTION: IMPERIALISM 0x0048bce0
-undefined4 CtrlSlot88_BuildRectFromSlot158AndCachedSize_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
 // ghidra_proto undefined CopyCityDialogStateFromSourceAndCloneChildLinks()
 // FUNCTION: IMPERIALISM 0x0048bd30
@@ -147,14 +123,6 @@ undefined4 DispatchUiMouseEventToChildrenOrSelf_Impl(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C3_I32_0048c6d0
-// ghidra_proto undefined OrphanCallChain_C3_I32_0048c6d0()
-// FUNCTION: IMPERIALISM 0x0048c6d0
-undefined4 OrphanCallChain_C3_I32_0048c6d0(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::AssertMcAppUILine1914
 // ghidra_proto undefined AssertMcAppUILine1914()
 // FUNCTION: IMPERIALISM 0x0048c7a0
@@ -191,14 +159,6 @@ undefined4 PropagateUiResourceContextRecursive(void)
 // ghidra_proto undefined CtrlSlot94_GetWordField54_Impl()
 // FUNCTION: IMPERIALISM 0x0048c970
 undefined4 CtrlSlot94_GetWordField54_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CtrlSlot95_TestPointInBoundsFromSlot128_Impl
-// ghidra_proto undefined CtrlSlot95_TestPointInBoundsFromSlot128_Impl()
-// FUNCTION: IMPERIALISM 0x0048c990
-undefined4 CtrlSlot95_TestPointInBoundsFromSlot128_Impl(void)
 {
   return 0;
 }

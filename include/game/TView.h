@@ -5,6 +5,8 @@
 #include "game/CString.h"
 #include "game/TViewNativeWindow.h"
 #include "game/CPtrList.h"
+#include "game/Point32.h"
+#include "game/win_rect.h"
 
 // VTABLE: IMPERIALISM 0x649858
 class TView : public TEventHandler {
@@ -111,24 +113,24 @@ public:
   virtual void QueryBounds(int* boundsBuffer);
   virtual void vmethod_0076();
   virtual void vmethod_0077();
-  virtual void vmethod_0078();
+  virtual void vmethod_0078(int* point = 0);
   virtual void InvokeSlot13C();
   virtual void vmethod_0080();
   virtual void vmethod_0081();
-  virtual void vmethod_0082();
-  virtual void vmethod_0083();
+  virtual Point32 TransformPointViaSlot138(Point32* inPoint);
+  virtual struct RECT TransformRectViaSlot148(struct RECT* inRect);
   virtual void AddControlPosToPoint(int x, int y, int* outPoint);
   virtual void OffsetRectByCachedPos(struct RECT* inRect, struct RECT* outRect);
-  virtual void GetCachedPosPoint(int* outPoint);
+  virtual int* GetCachedPosPoint(int* outPoint);
   virtual void vmethod_0087();
-  virtual void vmethod_0088();
+  virtual struct RECT BuildRectFromSlot158();
   virtual void vmethod_0089();
   virtual void ApplyBounds(int* boundsBuffer, int modeFlag);
-  virtual char vmethod_0091(void* arg1);
+  virtual char PointInBoundsAndActionable(void* point);
   virtual void vmethod_0092(class TView* child, int flag);
   virtual void vmethod_0093(class TView* child);
   virtual void vmethod_0094();
-  virtual void vmethod_0095();
+  virtual char TestPointInBounds(int* point);
   virtual void vmethod_0096(int arg);
   virtual void vmethod_0097(int arg);
   virtual void vmethod_0098(int arg);

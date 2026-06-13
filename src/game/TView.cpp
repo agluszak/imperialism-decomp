@@ -15,6 +15,7 @@
 
 extern "C" int __stdcall ValidateRect(void* hWnd, const struct RECT* rect);
 extern "C" int __stdcall Rectangle(void* hdc, int left, int top, int right, int bottom);
+extern "C" __declspec(dllimport) int __stdcall PtInRect(const struct RECT* rect, Point32 pt);
 
 // Generic thunk/hook decls kept in repo form (rule 9): typed function-pointer casts at
 // the callsite rather than changing the thunk declaration signature.
@@ -302,12 +303,38 @@ void TView::QueryContentBounds(int* boundsBuffer) {}
 void TView::QueryBounds(int* boundsBuffer) {}
 void TView::vmethod_0076() {}
 void TView::vmethod_0077() {}
-void TView::vmethod_0078() {}
+void TView::vmethod_0078(int* point) {}
 void TView::InvokeSlot13C() {}
 void TView::vmethod_0080() {}
 void TView::vmethod_0081() {}
-void TView::vmethod_0082() {}
-void TView::vmethod_0083() {}
+
+// Copy a point, transform it in place through slot 0x4e, and return the result by value.
+// FUNCTION: IMPERIALISM 0x0048bb60
+Point32 TView::TransformPointViaSlot138(Point32* inPoint) {
+  Point32 local;
+  local.x = inPoint->x;
+  local.y = inPoint->y;
+  vmethod_0078(reinterpret_cast<int*>(&local));
+  return local;
+}
+
+// Transform a rect: carry its width/height, map its top-left corner through slot 0x52,
+// and rebuild the rect at the transformed origin.
+// FUNCTION: IMPERIALISM 0x0048bbb0
+struct RECT TView::TransformRectViaSlot148(struct RECT* inRect) {
+  int width = inRect->right - inRect->left;
+  int height = inRect->bottom - inRect->top;
+  Point32 corner;
+  corner.x = inRect->left;
+  corner.y = inRect->top;
+  Point32 mapped = TransformPointViaSlot138(&corner);
+  RECT result;
+  result.left = mapped.x;
+  result.top = mapped.y;
+  result.right = mapped.x + width;
+  result.bottom = mapped.y + height;
+  return result;
+}
 // FUNCTION: IMPERIALISM 0x0048bc30
 void TView::AddControlPosToPoint(int x, int y, int* outPoint) {
   int posY = field30;
@@ -330,16 +357,47 @@ void TView::OffsetRectByCachedPos(struct RECT* inRect, struct RECT* outRect) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb30
-void TView::GetCachedPosPoint(int* outPoint) {
+int* TView::GetCachedPosPoint(int* outPoint) {
   int posY = field30;
   outPoint[0] = field2c;
   outPoint[1] = posY;
+  return outPoint;
 }
 void TView::vmethod_0087() {}
-void TView::vmethod_0088() {}
+
+// Build a rect from the slot-0x56 cached position (top-left) plus the cached size held
+// in field34/field38.
+// FUNCTION: IMPERIALISM 0x0048bce0
+struct RECT TView::BuildRectFromSlot158() {
+  int width = field34;
+  int height = field38;
+  Point32 origin;
+  int* pt = GetCachedPosPoint(reinterpret_cast<int*>(&origin));
+  RECT result;
+  result.left = pt[0];
+  result.top = pt[1];
+  result.right = width + pt[0];
+  result.bottom = height + pt[1];
+  return result;
+}
+
 void TView::vmethod_0089() {}
 void TView::ApplyBounds(int* boundsBuffer, int modeFlag) {}
-char TView::vmethod_0091(void* arg1) {
+
+// True (3) iff this view is actionable and the point falls inside its content bounds.
+// FUNCTION: IMPERIALISM 0x0048c6d0
+char TView::PointInBoundsAndActionable(void* point) {
+  RECT bounds;
+  QueryContentBounds(reinterpret_cast<int*>(&bounds));
+  if (IsActionable() != 0) {
+    int* pt = reinterpret_cast<int*>(point);
+    Point32 p;
+    p.x = pt[0];
+    p.y = pt[1];
+    if (PtInRect(&bounds, p) != 0) {
+      return 1;
+    }
+  }
   return 0;
 }
 void TView::vmethod_0092(class TView* child, int flag) {}
@@ -402,7 +460,16 @@ tail:
   child->ownerContext = 0;
 }
 void TView::vmethod_0094() {}
-void TView::vmethod_0095() {}
+// True (3) iff the point falls inside this view's content bounds.
+// FUNCTION: IMPERIALISM 0x0048c990
+char TView::TestPointInBounds(int* point) {
+  RECT bounds;
+  QueryContentBounds(reinterpret_cast<int*>(&bounds));
+  Point32 p;
+  p.x = point[0];
+  p.y = point[1];
+  return -(PtInRect(&bounds, p) != 0) & 3;
+}
 // FUNCTION: IMPERIALISM 0x0048c9e0
 void TView::vmethod_0096(int arg) {}
 // FUNCTION: IMPERIALISM 0x0048ca00
