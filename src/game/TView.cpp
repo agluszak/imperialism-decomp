@@ -8,8 +8,8 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 
+#include "game/ApplicationUiRootController.h"
 #include "game/TView.h"
-#include "game/CString.h"
 #include "game/mcappui_globals.h"
 #include "game/generated/vcall_facades.h"
 
@@ -94,17 +94,46 @@ TView* TView::OwnerPanel() {
   return 0;
 }
 void TView::vmethod_0023() {}
-void TView::vmethod_0024() {}
+// FUNCTION: IMPERIALISM 0x0048a550
+char TView::vmethod_0024() {
+  return 0;
+}
+// FUNCTION: IMPERIALISM 0x0048a690
 void TView::vmethod_0025() {}
-void TView::vmethod_0026() {}
+// FUNCTION: IMPERIALISM 0x0048a6b0
+void TView::vmethod_0026(int gate) {
+  (void)gate;
+}
 void TView::vmethod_0027() {}
 void TView::vmethod_0028() {}
 void TView::vmethod_0029() {}
 void TView::vmethod_0030() {}
 void TView::vmethod_0031() {}
-void TView::vmethod_0032() {}
+// FUNCTION: IMPERIALISM 0x0048a5e0
+char TView::vmethod_0080() {
+  if (g_pApplicationUiRootController == 0) {
+    return 0;
+  }
+  TView* activeView = g_pApplicationUiRootController->GetActiveView();
+  if (activeView == 0) {
+    return 0;
+  }
+  char gate = activeView->vmethod_0024();
+  if (gate == 0) {
+    activeView->vmethod_0025();
+    g_pApplicationUiRootController->SetActiveView(
+        reinterpret_cast<TView*>(g_pApplicationUiRootController));
+    return 1;
+  }
+  activeView->vmethod_0026(gate);
+  return 0;
+}
 // FUNCTION: IMPERIALISM 0x0048a710
-void TView::vmethod_0033(int arg) {}
+void TView::vmethod_0081() {}
+void TView::vmethod_0032() {}
+void TView::vmethod_0033(int arg) {
+  (void)arg;
+}
 void TView::vmethod_0034() {}
 void TView::vmethod_0035() {}
 // Link this view to a resource-owner object and set the owner's back-pointer to this.
@@ -337,8 +366,6 @@ void TView::vmethod_0076() {}
 void TView::vmethod_0077() {}
 void TView::vmethod_0078(int* point) {}
 void TView::InvokeSlot13C() {}
-void TView::vmethod_0080() {}
-void TView::vmethod_0081() {}
 
 // Copy a point, transform it in place through slot 0x4e, and return the result by value.
 // FUNCTION: IMPERIALISM 0x0048bb60

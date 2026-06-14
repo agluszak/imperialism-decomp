@@ -1875,58 +1875,10 @@ undefined4 ConstructTCommandHandlerBaseState(void)
   return 0;
 }
 
-// ghidra_name TApplicationUiRootControllerState_00648CA8::CreateTApplicationInstance
-// ghidra_proto undefined CreateTApplicationInstance()
-// FUNCTION: IMPERIALISM 0x00486680
-undefined4 CreateTApplicationInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TApplication::GetTApplicationClassNamePointer
-// ghidra_proto undefined GetTApplicationClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00486740
-undefined4 GetTApplicationClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TApplicationUiRootControllerState_00648CA8::ConstructGlobalUiRootControllerState
-// ghidra_proto undefined ConstructGlobalUiRootControllerState()
-// FUNCTION: IMPERIALISM 0x00486760
-undefined4 ConstructGlobalUiRootControllerState(void)
-{
-  return 0;
-}
-
 // ghidra_name TApplication::DestructTApplicationAndMaybeFree
 // ghidra_proto undefined DestructTApplicationAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004867b0
 undefined4 DestructTApplicationAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TApplicationUiRootControllerState_00648CA8::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
-// ghidra_proto undefined DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0()
-// FUNCTION: IMPERIALISM 0x004867e0
-undefined4 DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_SetDwordEcxOffset_20_00486880
-// ghidra_proto undefined OrphanTiny_SetDwordEcxOffset_20_00486880()
-// FUNCTION: IMPERIALISM 0x00486880
-undefined4 OrphanTiny_SetDwordEcxOffset_20_00486880(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_GetDwordEcxOffset_20_004868a0
-// ghidra_proto undefined OrphanTiny_GetDwordEcxOffset_20_004868a0()
-// FUNCTION: IMPERIALISM 0x004868a0
-undefined4 OrphanTiny_GetDwordEcxOffset_20_004868a0(void)
 {
   return 0;
 }
@@ -2007,14 +1959,6 @@ undefined4 CreateTBehaviorInstance(void)
 // ghidra_proto undefined WrapperFor_ftol_At00487150()
 // FUNCTION: IMPERIALISM 0x00487150
 undefined4 WrapperFor_ftol_At00487150(void)
-{
-  return 0;
-}
-
-// ghidra_name TBehavior::GetTBehaviorClassNamePointer
-// ghidra_proto undefined GetTBehaviorClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004871c0
-undefined4 GetTBehaviorClassNamePointer(void)
 {
   return 0;
 }
@@ -3187,14 +3131,6 @@ undefined4 CanStartCityProductionActionFalse(void)
   return 0;
 }
 
-// ghidra_name TradeControl::GetCityDialogZeroValue
-// ghidra_proto undefined GetCityDialogZeroValue()
-// FUNCTION: IMPERIALISM 0x0048a550
-undefined4 GetCityDialogZeroValue(void)
-{
-  return 0;
-}
-
 // ghidra_name ActivateCityProductionViewIfAllowed
 // ghidra_proto undefined ActivateCityProductionViewIfAllowed()
 // FUNCTION: IMPERIALISM 0x0048a570
@@ -3203,26 +3139,10 @@ undefined4 ActivateCityProductionViewIfAllowed(void)
   return 0;
 }
 
-// ghidra_name TControl::CtrlSlot32_RootControllerGateDispatch_Impl
-// ghidra_proto undefined CtrlSlot32_RootControllerGateDispatch_Impl()
-// FUNCTION: IMPERIALISM 0x0048a5e0
-undefined4 CtrlSlot32_RootControllerGateDispatch_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::DispatchCityProductionAction1A
 // ghidra_proto undefined DispatchCityProductionAction1A()
 // FUNCTION: IMPERIALISM 0x0048a670
 undefined4 DispatchCityProductionAction1A(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::NoOpUiSetControlVisibleFlag
-// ghidra_proto undefined NoOpUiSetControlVisibleFlag()
-// FUNCTION: IMPERIALISM 0x0048a6b0
-undefined4 NoOpUiSetControlVisibleFlag(void)
 {
   return 0;
 }

@@ -141,7 +141,13 @@ unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 #include "game/ApplicationUiRootController.h"
 
 // GLOBAL: IMPERIALISM 0x006a18e0
-ApplicationUiRootControllerState* g_pApplicationUiRootController = 0;
+ApplicationUiRootController* g_pApplicationUiRootController = 0;
+
+// GLOBAL: IMPERIALISM 0x00648cf8
+extern "C" char g_pClassDescTBehavior = 0;
+
+// GLOBAL: IMPERIALISM 0x00648af8
+extern "C" char PTR_s_TApplication_00648af8 = 0;
 
 // GLOBAL: IMPERIALISM 0x006a44b0
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;

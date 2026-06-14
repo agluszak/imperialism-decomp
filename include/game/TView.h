@@ -59,14 +59,16 @@ public:
   virtual void vmethod_0021();
   virtual class TView* OwnerPanel();
   virtual void vmethod_0023();
-  virtual void vmethod_0024();
+  virtual char vmethod_0024();
   virtual void vmethod_0025();
-  virtual void vmethod_0026();
+  virtual void vmethod_0026(int gate);
   virtual void vmethod_0027();
   virtual void vmethod_0028();
   virtual void vmethod_0029();
   virtual void vmethod_0030();
   virtual void vmethod_0031();
+  virtual char vmethod_0080();
+  virtual void vmethod_0081();
   virtual void vmethod_0032();
   virtual void vmethod_0033(int arg);
   virtual void vmethod_0034();
@@ -115,8 +117,6 @@ public:
   virtual void vmethod_0077();
   virtual void vmethod_0078(int* point = 0);
   virtual void InvokeSlot13C();
-  virtual void vmethod_0080();
-  virtual void vmethod_0081();
   virtual Point32 TransformPointViaSlot138(Point32* inPoint);
   virtual struct RECT TransformRectViaSlot148(struct RECT* inRect);
   virtual void AddControlPosToPoint(int x, int y, int* outPoint);

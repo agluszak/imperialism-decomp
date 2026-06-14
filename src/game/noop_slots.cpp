@@ -24,11 +24,6 @@ void HandleCityProductionNoOp(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0048a690
-void HandleCityDialogNoOpA(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004b5140
 void ResetCityOrderItemDerivedStateNoop(void) {
   return;

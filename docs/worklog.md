@@ -3649,3 +3649,15 @@ Follow-up scan after the TClosePicture extraction:
 - **Timestamp:** 2026-06-10 (cont.)
 - **Command:** Merge `TStreamView` into `TStream` (ReadBytes/ReadInteger/ReadShort/ReadByte at verified vtable slots); delete `TStreamView.h`; port navy distribution scores to `TNavyMission`; retire Stream_* preamble wrappers in core-state serialize pair; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare-canaries`.
 - **Score Delta:** build clean; canaries 8/8.
+
+## 2026-06-14 — ApplicationUiRootController class recovery
+
+- **Timestamp:** 2026-06-14
+- **Command:** Fix `TView.h` vtable slot order (`vmethod_0080`/`0081` at 0x20/0x21); add `UiDialogHandlerPrefix` shared base (slots 0x00–0x25 out-of-line); model `ApplicationUiRootController::ApplicationUiRootController` at 0x486760, `~ApplicationUiRootController` at 0x4867e0, slim `CreateTApplicationInstance` to allocate+placement-new; remove duplicate `ConstructGlobalUiRootControllerState`; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` on 0x48a5e0/0x486760/0x4867e0/0x486880/0x4868a0.
+- **Score Delta:** 0x48a5e0 **85.25%** (was mis-slotted at 0x50); 0x4868a0 **100%**; 0x486880 **100%** (FPO `#pragma optimize("y")`); 0x486760 **43%** (real ctor vs inlined init helper); 0x4867e0 **38%** (compiler base-dtor epilogue vs manual vptr restore). Blockers: ctor/dtor EH/vptr-restore shape; shared 0x48a5e0 body owned only on `TView::vmethod_0080`.
+
+## 2026-06-14 — ApplicationUiRootController class recovery
+
+- **Timestamp:** 2026-06-14
+- **Command:** Fix `TView.h` vtable slot order (`vmethod_0080`/`0081` at 0x20/0x21); add `UiDialogHandlerPrefix` shared base (slots 0x00–0x25 out-of-line); model `ApplicationUiRootController::ApplicationUiRootController` at 0x486760, `~ApplicationUiRootController` at 0x4867e0, slim `CreateTApplicationInstance` to allocate+placement-new; remove duplicate `ConstructGlobalUiRootControllerState`; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` on 0x48a5e0/0x486760/0x4867e0/0x486880/0x4868a0.
+- **Score Delta:** 0x48a5e0 **85.25%** (was mis-slotted at 0x50); 0x4868a0 **100%**; 0x486880 **44%** (FPO frame on out-of-line slot); 0x486760 **43%** (real ctor vs inlined init helper + EH); 0x4867e0 **38%** (compiler base-dtor epilogue vs manual vptr restore). Blockers: ctor/dtor still differ from Ghidra’s manual vptr writes and SEH prologue; shared slot 0x20 ILT target owned only on `TView::vmethod_0080`.
