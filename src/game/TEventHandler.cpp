@@ -5,17 +5,20 @@
 
 #pragma optimize("y", on)
 #include "game/TEventHandler.h"
+#include "game/TEvent.h"
 #include "game/TView.h"
 #include "game/ApplicationUiRootController.h"
 
 extern "C" char PTR_s_TEventHandler_00649588;
+
+extern ApplicationUiRootController* g_pApplicationUiRootController;
 
 // Drain the linked command/event list rooted at handler+0x04 until field0c reaches zero.
 // FUNCTION: IMPERIALISM 0x0048a070
 void TEventHandler::CreateTEventHandlerInstance(TEventHandler* handler) {
   while (handler->field0c != 0) {
     TEventHandler* entry = *reinterpret_cast<TEventHandler**>(handler->field04 + 8);
-    entry->CallVoidSlot1C();
+    entry->ReleaseRuntimeSelectionOwnerAndDestroyObject();
   }
 }
 
@@ -29,10 +32,38 @@ TEventHandler::~TEventHandler() {}
 void TEventHandler::vmethod_0002() {}
 void TEventHandler::vmethod_0003() {}
 void TEventHandler::vmethod_0004() {}
-void TEventHandler::vmethod_0005() {}
-void TEventHandler::vmethod_0006() {}
+// FUNCTION: IMPERIALISM 0x00485f70
+void TEventHandler::HandleCityDialogNoOpSlot14(int arg) {
+  (void)arg;
+}
+// FUNCTION: IMPERIALISM 0x00485f90
+void TEventHandler::HandleCityDialogNoOpSlot18(int arg) {
+  (void)arg;
+}
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
-void TEventHandler::CallVoidSlot1C() {}
+// FUNCTION: IMPERIALISM 0x0048a1b0
+void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
+  if (g_pApplicationUiRootController != 0 &&
+      g_pApplicationUiRootController != reinterpret_cast<ApplicationUiRootController*>(this)) {
+    TView* activeView = g_pApplicationUiRootController->GetActiveView();
+    if (activeView == reinterpret_cast<TView*>(this)) {
+      TView* replacement = reinterpret_cast<TView*>(QueryStepValue());
+      if (replacement == 0) {
+        g_pApplicationUiRootController->SetActiveView(
+            reinterpret_cast<TView*>(g_pApplicationUiRootController));
+      } else {
+        g_pApplicationUiRootController->SetActiveView(replacement);
+      }
+    }
+  }
+  field0c = 0;
+  if (field18 != 0) {
+    reinterpret_cast<TEventHandler*>(field18)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+  }
+  field18 = 0;
+  delete this;
+}
+
 void TEventHandler::vmethod_0008() {}
 void TEventHandler::vmethod_0009() {}
 
@@ -56,10 +87,10 @@ int TEventHandler::QueryStepValue() {
 // is released via slot 0x07.
 // FUNCTION: IMPERIALISM 0x0048a3b0
 void TEventHandler::vmethod_0013(int* cmd) {
-  reinterpret_cast<TView*>(cmd[4])->DispatchEvent(cmd[2], reinterpret_cast<void*>(cmd[3]),
-                                                  reinterpret_cast<int>(cmd));
+  reinterpret_cast<TView*>(cmd[4])
+      ->DispatchEvent(cmd[2], reinterpret_cast<TEventHandler*>(cmd[3]), reinterpret_cast<TEvent*>(cmd));
   if (cmd != 0) {
-    reinterpret_cast<TView*>(cmd)->CallVoidSlot1C();
+    reinterpret_cast<TView*>(cmd)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
   }
 }
 
@@ -68,19 +99,19 @@ void TEventHandler::vmethod_0014(int command) {
   vmethod_0013(reinterpret_cast<int*>(command));
 }
 
-// Forward an event triplet to the child object returned by slot 0x0c (QueryStepValue),
-// if any. Derived classes override slot 0x0c to return the active child control.
+// Forward a UI command triplet to the child returned by slot 0x0c (QueryStepValue), if any.
 // FUNCTION: IMPERIALISM 0x0048a280
-void TEventHandler::vmethod_0015(int arg1, void* arg2, int arg3) {
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+void TEventHandler::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TEventHandler* child = reinterpret_cast<TEventHandler*>(QueryStepValue());
   if (child != 0) {
-    child->DispatchEvent(arg1, arg2, arg3);
+    child->DispatchEvent(commandId, sourceHandler, event);
   }
 }
 
+// Bubble a UI command triplet into this handler chain (forwards to HandleEvent at slot 0x0f).
 // FUNCTION: IMPERIALISM 0x0048a2e0
-void TEventHandler::DispatchEvent(int arg1, void* arg2, int arg3) {
-  vmethod_0015(arg1, arg2, arg3);
+void TEventHandler::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  HandleEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x0048a310
@@ -100,12 +131,20 @@ void TEventHandler::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a480
-char TEventHandler::vmethod_0019() {
+char TEventHandler::CanHandleCityDialogActionFalse(int action) {
+  (void)action;
   return 0;
 }
 
-void TEventHandler::vmethod_0020() {}
-void TEventHandler::vmethod_0021() {}
+// FUNCTION: IMPERIALISM 0x00415d50
+int TEventHandler::GetCityDialogValueDword10() {
+  return field10;
+}
+
+// FUNCTION: IMPERIALISM 0x00415d70
+void TEventHandler::SetCityDialogValueDword10(int value) {
+  field10 = value;
+}
 
 // Slot 0x16: base implementation (TView overrides with the owner-chain walk).
 class TView* TEventHandler::OwnerPanel() {
@@ -130,15 +169,28 @@ void TEventHandler::vmethod_0026(int gate) {
   (void)gate;
 }
 
-void TEventHandler::vmethod_0027() {}
-void TEventHandler::vmethod_0028() {}
-void TEventHandler::vmethod_0029() {}
-void TEventHandler::vmethod_0030() {}
+// FUNCTION: IMPERIALISM 0x0048a650
+void TEventHandler::HandleCityProductionNoOp() {}
+
+// FUNCTION: IMPERIALISM 0x0048a6d0
+void TEventHandler::DispatchUiCommand19ToParent() {
+  DispatchEvent(0x19, this, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0048a670
+void TEventHandler::DispatchCityProductionAction1A() {
+  DispatchEvent(0x1a, this, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0048a6f0
+void TEventHandler::DispatchCityProductionAction1B() {
+  DispatchEvent(0x1b, this, 0);
+}
 
 // Make this view the active view if allowed: already-active short-circuits to true;
 // otherwise the current active view must agree (slot 0x20) before we take over.
 // FUNCTION: IMPERIALISM 0x0048a570
-char TEventHandler::vmethod_0031() {
+char TEventHandler::ActivateCityProductionViewIfAllowed() {
   TView* active = g_pApplicationUiRootController->GetActiveView();
   if (this == active) {
     return 1;

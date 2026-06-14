@@ -39,7 +39,7 @@ const int kControlTagClos = 0x436c6f73;
 // FUNCTION: IMPERIALISM 0x00586400
 void TStatusButton::HandleCityDialogSelectionAndBackControlReset(int selectedIndex) {
   if (selectedIndex == QuerySelectedIndexSlotBC() && GetBoolSlot28() != '\0') {
-    if (GetBoolSlot1BC() == '\0') {
+    if (LogUnhandledDialogMethodAndReturnFalse() == '\0') {
       if (g_pActiveCityDialogLegendSelectionOwner != 0) {
         reinterpret_cast<TView*>(g_pActiveCityDialogLegendSelectionOwner)->CallVoidSlotA0();
         g_pActiveCityDialogLegendSelectionOwner = 0;
@@ -49,7 +49,7 @@ void TStatusButton::HandleCityDialogSelectionAndBackControlReset(int selectedInd
       TAmtBar* backControl = reinterpret_cast<TAmtBar*>(
           reinterpret_cast<TView*>(OwnerPanel())->ResolveControlByTag(kControlTagBack));
       if (backControl != 0) {
-        reinterpret_cast<TView*>(backControl)->CallVoidSlot1C();
+        reinterpret_cast<TView*>(backControl)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
         reinterpret_cast<TView*>(OwnerPanel())->RefreshControl();
       }
 

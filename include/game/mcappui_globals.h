@@ -46,4 +46,12 @@ extern unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC;
 // UI invalidation-flag assert/log helper.
 extern char g_szMcAppUiSourcePath_006950B0[];
 
+// Header path string ("D:\\Ambit\\McAppUI.h") passed with a line number to city-production
+// dialog assert/log helpers on the TControl branch.
+extern char g_szMcAppUiHeaderPath_006943CC[];
+
+// Gate checked by TControl::AssertCityProductionGlobalStateInitialized before the
+// McAppUI.h line-0x56f assert path runs.
+extern int g_McAppUiFlag_006A143C;
+
 } // extern "C"

@@ -65,7 +65,40 @@ void TView::thunk_NoOpUiLifecycleHook(int passthroughArg) {
 
 // Base-slot overrides (slots 0x07/0x08). Bodies differ from TEventHandler's; still
 // unported stubs.
-void TView::CallVoidSlot1C() {}
+// FUNCTION: IMPERIALISM 0x0048b0b0
+void TView::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
+  while (childList44 != 0) {
+    int* listWords = reinterpret_cast<int*>(childList44);
+    TEventHandler* child = *reinterpret_cast<TEventHandler**>(
+        reinterpret_cast<char*>(*reinterpret_cast<int*>(reinterpret_cast<char*>(listWords) + 4)) +
+        8);
+    child->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+  }
+  if (ownerContext != 0) {
+    ownerContext->vmethod_0093(this);
+    ownerContext = 0;
+  }
+  if (g_pApplicationUiRootController != 0 &&
+      g_pApplicationUiRootController != reinterpret_cast<ApplicationUiRootController*>(this)) {
+    TView* activeView = g_pApplicationUiRootController->GetActiveView();
+    if (activeView == this) {
+      TEventHandler* replacement = reinterpret_cast<TEventHandler*>(QueryStepValue());
+      if (replacement == 0) {
+        g_pApplicationUiRootController->SetActiveView(
+            reinterpret_cast<TView*>(g_pApplicationUiRootController));
+      } else {
+        g_pApplicationUiRootController->SetActiveView(reinterpret_cast<TView*>(replacement));
+      }
+    }
+  }
+  field0c = 0;
+  if (field18 != 0) {
+    reinterpret_cast<TEventHandler*>(field18)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+  }
+  field18 = 0;
+  delete this;
+}
+
 void TView::vmethod_0008() {}
 // Walk up the owner chain: forward to the owner context's own slot-0x16 query, or 0
 // at the root. (One level above QueryOwnerContextPanel, which only hops once.) Slot 0x16
@@ -77,8 +110,10 @@ TView* TView::OwnerPanel() {
   }
   return ownerContext->OwnerPanel();
 }
-// TView-introduced placeholder slots 0x2b/0x2c.
-void TView::vmethod_0034() {}
+// FUNCTION: IMPERIALISM 0x00427200
+unsigned short TView::GetField4E() {
+  return field4e;
+}
 void TView::HandleCursorHoverFallback(Point32* point, int hitArg) {
   (void)point;
   (void)hitArg;
@@ -223,11 +258,19 @@ void TView::PaintVisibleChildrenIntersectingClipRect(struct RECT* clipRect, int 
   (void)clipRect;
   (void)bindArg;
 }
+// FUNCTION: IMPERIALISM 0x00430bd0
 int TView::QuerySelectedIndexSlotBC() {
   return 0;
 }
+// FUNCTION: IMPERIALISM 0x0048b860
 void TView::vmethod_0048(int arg) {
-  (void)arg;
+  if (arg != 0) {
+    RECT rect;
+    QueryContentBounds(reinterpret_cast<int*>(&rect));
+    PaintVisibleChildrenIntersectingClipRect(&rect, arg);
+    return;
+  }
+  reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(0, 0);
 }
 // Forward a map-view notification (slot 0x31) up to the owning view, if any.
 // FUNCTION: IMPERIALISM 0x0048ab90
@@ -292,10 +335,11 @@ void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
       node = node->next;
     }
   }
-  vmethod_0055(eventArg);
+  NoOpUiLifecycleHook(eventArg);
 }
-void TView::vmethod_0055(unsigned int styleSeed) {
-  (void)styleSeed;
+// FUNCTION: IMPERIALISM 0x0048ab70
+void TView::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
 }
 // FUNCTION: IMPERIALISM 0x0048abc0
 void TView::NoOpUiCallback() {}
@@ -366,6 +410,7 @@ char TView::Refresh() {
   }
   return 1;
 }
+// FUNCTION: IMPERIALISM 0x00427220
 void TView::PostRenderSlotFC() {}
 // FUNCTION: IMPERIALISM 0x0048b7b0
 int TView::BindMapQuickDrawDc(int arg) {
@@ -425,8 +470,32 @@ void TView::vmethod_0072(int arg1, int arg2, int arg3, int arg4) {
 }
 // FUNCTION: IMPERIALISM 0x0048c1c0
 void TView::vmethod_0073(int arg1, int arg2) {}
-void TView::QueryContentBounds(int* boundsBuffer) {}
-void TView::QueryBounds(int* boundsBuffer) {}
+// FUNCTION: IMPERIALISM 0x00427260
+void TView::QueryContentBounds(int* boundsBuffer) {
+  int width;
+  int height;
+  width = field34;
+  height = field38;
+  boundsBuffer[0] = 0;
+  boundsBuffer[1] = 0;
+  boundsBuffer[2] = width;
+  boundsBuffer[3] = height;
+}
+// FUNCTION: IMPERIALISM 0x00427290
+void TView::QueryBounds(int* boundsBuffer) {
+  int width;
+  int left;
+  int height;
+  int top;
+  width = field34;
+  left = ownerOffsetX;
+  height = field38;
+  top = ownerOffsetY;
+  boundsBuffer[0] = left;
+  boundsBuffer[1] = top;
+  boundsBuffer[2] = width + left;
+  boundsBuffer[3] = height + top;
+}
 // Translate a point into the owner's space (add this view's owner offset) and forward up
 // the owner chain via slot 0x4d. Mirror of vmethod_0078 (slot 0x4e) but on this slot.
 // FUNCTION: IMPERIALISM 0x0048ba80

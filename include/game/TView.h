@@ -12,7 +12,7 @@
 //
 // TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
 // from TEventHandler. It overrides only the few base slots whose vtable bodies differ
-// (0x07 CallVoidSlot1C, 0x08 vmethod_0008, 0x16 OwnerPanel) and introduces its own
+// (0x07 ReleaseRuntimeSelectionOwnerAndDestroyObject, 0x08 vmethod_0008, 0x16 OwnerPanel) and introduces its own
 // virtuals at slot 0x25+ (declared below in exact vtable slot order). See
 // include/game/TEventHandler.h and memory tview-vtable-slot-scramble.
 class TView : public TEventHandler {
@@ -44,7 +44,7 @@ public:
   void PropagateUiResourceContextRecursive(TViewNativeWindow* nativeWindow);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
-  virtual void CallVoidSlot1C();                                     // 0x07
+  virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject();         // 0x07
   virtual void vmethod_0008();                                       // 0x08
   virtual class TView* OwnerPanel();                                 // 0x16 0x48b180
 
@@ -58,7 +58,7 @@ public:
   virtual void CallVoidSlotA0();                                     // 0x28 0x48c890
   virtual void SetEnabled(int enabledState, int refreshFlag);        // 0x29 0x48b1c0
   virtual void SetState(int state, int refreshFlag);                 // 0x2a 0x48b070
-  virtual void vmethod_0034();                                       // 0x2b
+  virtual unsigned short GetField4E();                               // 0x2b 0x427200
   virtual void HandleCursorHoverFallback(Point32* point, int hitArg); // 0x2c
   virtual void vmethod_0073(int arg1, int arg2);                     // 0x2d 0x48c1c0
   virtual void vmethod_0043();                                       // 0x2e
@@ -71,7 +71,7 @@ public:
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point,
                                                                    int hitArg); // 0x35 0x48c080
   virtual void DispatchControlEventToChildrenAndSelf(int eventArg);  // 0x36 0x48aaf0
-  virtual void vmethod_0055(unsigned int styleSeed = 0);             // 0x37 0x48ab70
+  virtual void NoOpUiLifecycleHook(int arg);                         // 0x37 0x48ab70
   virtual void NoOpUiCallback();                                     // 0x38 0x48abc0
   virtual void RefreshControl();                                     // 0x39 0x48b6d0
   virtual class TView* QueryOwnerContextPanel();                     // 0x3a 0x48b1a0

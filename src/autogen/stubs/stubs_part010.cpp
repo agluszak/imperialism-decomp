@@ -1699,22 +1699,6 @@ undefined4 DestructTObjectAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name TradeControl::HandleCityDialogNoOpSlot14
-// ghidra_proto undefined HandleCityDialogNoOpSlot14()
-// FUNCTION: IMPERIALISM 0x00485f70
-undefined4 HandleCityDialogNoOpSlot14(void)
-{
-  return 0;
-}
-
-// ghidra_name TradeControl::HandleCityDialogNoOpSlot18
-// ghidra_proto undefined HandleCityDialogNoOpSlot18()
-// FUNCTION: IMPERIALISM 0x00485f90
-undefined4 HandleCityDialogNoOpSlot18(void)
-{
-  return 0;
-}
-
 // ghidra_name TTEView::CreateTTEViewInstance
 // ghidra_proto undefined CreateTTEViewInstance()
 // FUNCTION: IMPERIALISM 0x00485fb0
@@ -3019,42 +3003,10 @@ undefined4 InitializePacketHeaderFields_Tag20202020(void)
   return 0;
 }
 
-// ghidra_name ReleaseRuntimeSelectionOwnerAndDestroyObject
-// ghidra_proto undefined ReleaseRuntimeSelectionOwnerAndDestroyObject()
-// FUNCTION: IMPERIALISM 0x0048a1b0
-undefined4 ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_GetTickCountDiv16_At0048a410
 // ghidra_proto undefined WrapperFor_thunk_GetTickCountDiv16_At0048a410()
 // FUNCTION: IMPERIALISM 0x0048a410
 undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DispatchCityProductionAction1A
-// ghidra_proto undefined DispatchCityProductionAction1A()
-// FUNCTION: IMPERIALISM 0x0048a670
-undefined4 DispatchCityProductionAction1A(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DispatchUiCommand19ToParent
-// ghidra_proto undefined DispatchUiCommand19ToParent()
-// FUNCTION: IMPERIALISM 0x0048a6d0
-undefined4 DispatchUiCommand19ToParent(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchCityProductionAction1B
-// ghidra_proto undefined DispatchCityProductionAction1B()
-// FUNCTION: IMPERIALISM 0x0048a6f0
-undefined4 DispatchCityProductionAction1B(void)
 {
   return 0;
 }
@@ -3119,14 +3071,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0048ada0(void)
 // ghidra_proto undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()
 // FUNCTION: IMPERIALISM 0x0048add0
 undefined4 DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CloseCityDialogChildrenAndReleaseSelf
-// ghidra_proto undefined CloseCityDialogChildrenAndReleaseSelf()
-// FUNCTION: IMPERIALISM 0x0048b0b0
-undefined4 CloseCityDialogChildrenAndReleaseSelf(void)
 {
   return 0;
 }

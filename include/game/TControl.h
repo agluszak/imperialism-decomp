@@ -28,7 +28,7 @@ public:
   void WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
       int* cursorPoint, int hitArg);
 
-  virtual void vmethod_0015(int command = 0, void* eventDataA = 0, int eventDataB = 0);
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg);
   virtual char DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4);
   virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point);
@@ -39,13 +39,13 @@ public:
   // TControl-branch slots 0x1A0-0x1BC (104-111), formerly mis-declared on TView.
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
                                               void* eventDataB);
-  virtual void SwitchTab(int arg1 = 0, int arg2 = 0, int arg3 = 0);
-  virtual void InvokeSlot1A8();
-  virtual void vmethod_0107();
-  virtual void vmethod_0108();
+  virtual void SwitchTab(int* boundsBuffer);
+  virtual void AssertCityProductionGlobalStateInitialized(int arg1, int arg2);
+  virtual void NoOpCityProductionDialogMethod(int arg1, int arg2);
+  virtual void NoOpCityProductionDialogPictureHook(int arg);
   virtual void SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
                                                                  char refreshNow);
   virtual void SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool refreshNow);
-  virtual char GetBoolSlot1BC();
+  virtual char LogUnhandledDialogMethodAndReturnFalse();
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow);
 };

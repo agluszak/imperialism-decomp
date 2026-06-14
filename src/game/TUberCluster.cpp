@@ -60,7 +60,7 @@ void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   if (barControl == 0) {
     FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
   }
-  barControl->vmethod_0055(styleDescriptor);
+  barControl->NoOpUiLifecycleHook(styleDescriptor);
   this->thunk_NoOpUiLifecycleHook();
 }
 

@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_InvalidateCityDialogRectRegion_At0048b860
-// ghidra_proto undefined WrapperFor_InvalidateCityDialogRectRegion_At0048b860()
-// FUNCTION: IMPERIALISM 0x0048b860
-undefined4 WrapperFor_InvalidateCityDialogRectRegion_At0048b860(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
 // ghidra_proto undefined CopyCityDialogStateFromSourceAndCloneChildLinks()
 // FUNCTION: IMPERIALISM 0x0048bd30
@@ -447,30 +439,6 @@ undefined4 CreateTControlInstance(void)
 // ghidra_proto undefined CtrlSlot91_PtInRectWithBoundsFromSlot128_Impl()
 // FUNCTION: IMPERIALISM 0x0048e940
 undefined4 CtrlSlot91_PtInRectWithBoundsFromSlot128_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::WrapperFor_ApplyRectMarginsInPlace_At0048e980
-// ghidra_proto undefined WrapperFor_ApplyRectMarginsInPlace_At0048e980()
-// FUNCTION: IMPERIALISM 0x0048e980
-undefined4 WrapperFor_ApplyRectMarginsInPlace_At0048e980(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::NoOpUiViewSlotHandler
-// ghidra_proto undefined NoOpUiViewSlotHandler()
-// FUNCTION: IMPERIALISM 0x0048e9c0
-undefined4 NoOpUiViewSlotHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name TradeControl::NoOpCityProductionDialogPictureHook
-// ghidra_proto undefined NoOpCityProductionDialogPictureHook()
-// FUNCTION: IMPERIALISM 0x0048e9e0
-undefined4 NoOpCityProductionDialogPictureHook(void)
 {
   return 0;
 }

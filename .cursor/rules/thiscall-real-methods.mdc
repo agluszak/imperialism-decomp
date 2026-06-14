@@ -1,0 +1,31 @@
+---
+description: Never fake __thiscall with casts — model as real C++ methods
+alwaysApply: true
+---
+
+# __thiscall: real methods only
+
+**Never** use `reinterpret_cast` to a `__thiscall` function pointer. MSVC500 rejects it (`C4234: '__thiscall' keyword reserved for future use`) and it corrupts the source model.
+
+When disassembly shows `mov ecx, this` before a call:
+
+1. Declare the callee as a **real method** on the owning class (or a grounded view/base).
+2. Call `obj->Method(args)` — not a typed pointer cast.
+3. For vtable dispatch, use a **real `virtual` method** (or migrate to one), not `VCall_*` facades long-term.
+
+**Forbidden:**
+```cpp
+reinterpret_cast<void(__thiscall*)(TView*, RECT*, int)>(thunk)(this, rect, flag);
+reinterpret_cast<void(__fastcall*)(T*, int, ...)>(fn)(this, 0, ...); // fake edx dummy
+```
+
+**Required:**
+```cpp
+void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) { ... }
+// callsite:
+InvalidateCityDialogRectRegion(0, 0);
+```
+
+`__stdcall`/`__cdecl` thunk casts are fine only for **genuine free-function thunks** where no class owns the call. If the callee uses `ecx` as `this`, it is not a free function.
+
+See also `AGENTS.md` MSVC500 calling-convention guardrail and `decomp-loop/heuristics.md` #101.

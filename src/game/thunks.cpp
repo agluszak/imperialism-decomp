@@ -3,6 +3,7 @@
 
 #include "decomp_types.h"
 #include "game/CString.h"
+#include "game/mcappui_globals.h"
 
 undefined4 RefreshStrategicMapStatusIconsForActiveNation(void);
 undefined4 HandleTurnEventDialogFactorySlotB4(void);
@@ -14,8 +15,9 @@ undefined4 HandleStartupCommand100(void);
 undefined4 SetNumericEntryCheckedState(void);
 undefined4 ApplyCityDialogMinisterValues(void);
 undefined4 NoOpTurnEventStateVtableSlot8C(void);
-undefined4 AssertCityProductionGlobalStateInitialized(void);
 undefined4 InvokeStrategicMapViewMethod5C(void);
+
+undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 // These two targets are not yet exported as user-defined symbols from Ghidra.
 // Keep temporary local placeholders so thunk wrappers remain linkable.
@@ -96,7 +98,10 @@ void thunk_NoOpTurnEventStateVtableSlot8C(void) {
 
 // FUNCTION: IMPERIALISM 0x00401e2e
 void thunk_AssertCityProductionGlobalStateInitialized(void) {
-  AssertCityProductionGlobalStateInitialized();
+  if (g_McAppUiFlag_006A143C == 0) {
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+        g_szMcAppUiHeaderPath_006943CC, 0x56f);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00401ed8

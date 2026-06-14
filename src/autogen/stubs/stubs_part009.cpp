@@ -491,22 +491,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl(void)
   return 0;
 }
 
-// ghidra_name TradeControl::GetCityDialogValueDword10
-// ghidra_proto int __fastcall GetCityDialogValueDword10(CityDialogController * pDialog)
-// FUNCTION: IMPERIALISM 0x00415d50
-undefined4 GetCityDialogValueDword10(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::SetCityDialogValueDword10
-// ghidra_proto void __thiscall SetCityDialogValueDword10(int value)
-// FUNCTION: IMPERIALISM 0x00415d70
-undefined4 SetCityDialogValueDword10(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00415df0
 // ghidra_proto undefined WrapperFor_ftol_At00415df0()
 // FUNCTION: IMPERIALISM 0x00415df0
@@ -739,42 +723,10 @@ undefined4 SetUiResourcePairValues(void)
   return 0;
 }
 
-// ghidra_name TControl::CtrlSlot43_GetWordField4E_Impl
-// ghidra_proto undefined CtrlSlot43_GetWordField4E_Impl()
-// FUNCTION: IMPERIALISM 0x00427200
-undefined4 CtrlSlot43_GetWordField4E_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::NoOpCommandHandler
-// ghidra_proto undefined NoOpCommandHandler()
-// FUNCTION: IMPERIALISM 0x00427220
-undefined4 NoOpCommandHandler(void)
-{
-  return 0;
-}
-
 // ghidra_name TradeControl::NoOpControlCallback_Impl
 // ghidra_proto undefined NoOpControlCallback_Impl()
 // FUNCTION: IMPERIALISM 0x00427240
 undefined4 NoOpControlCallback_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::BuildRectFromControlDimensions_Impl
-// ghidra_proto undefined BuildRectFromControlDimensions_Impl()
-// FUNCTION: IMPERIALISM 0x00427260
-undefined4 BuildRectFromControlDimensions_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::BuildRectFromControlPositionAndSizeFields
-// ghidra_proto undefined BuildRectFromControlPositionAndSizeFields()
-// FUNCTION: IMPERIALISM 0x00427290
-undefined4 BuildRectFromControlPositionAndSizeFields(void)
 {
   return 0;
 }
@@ -831,22 +783,6 @@ undefined4 CtrlSlot87_CopyRectFromSlot160_Impl(void)
 // ghidra_proto undefined GetCityProductionControllerField60()
 // FUNCTION: IMPERIALISM 0x00429450
 undefined4 GetCityProductionControllerField60(void)
-{
-  return 0;
-}
-
-// ghidra_name TradeControl::AssertCityProductionGlobalStateInitialized
-// ghidra_proto undefined AssertCityProductionGlobalStateInitialized()
-// FUNCTION: IMPERIALISM 0x00429470
-undefined4 AssertCityProductionGlobalStateInitialized(void)
-{
-  return 0;
-}
-
-// ghidra_name TradeControl::LogUnhandledDialogMethodAndReturnFalse
-// ghidra_proto bool __cdecl LogUnhandledDialogMethodAndReturnFalse(void)
-// FUNCTION: IMPERIALISM 0x004294a0
-undefined4 LogUnhandledDialogMethodAndReturnFalse(void)
 {
   return 0;
 }
@@ -1063,14 +999,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00430a30_Impl(void)
 // ghidra_proto undefined ConstructUiResourceEntry_Vtbl00640940()
 // FUNCTION: IMPERIALISM 0x00430b50
 undefined4 ConstructUiResourceEntry_Vtbl00640940(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnZeroStatus
-// ghidra_proto undefined ReturnZeroStatus()
-// FUNCTION: IMPERIALISM 0x00430bd0
-undefined4 ReturnZeroStatus(void)
 {
   return 0;
 }

@@ -50,7 +50,8 @@ void DispatchOverlayEvent78Common(TWorldView* self, int stridedRecord) {
   eventBlock[4] = reinterpret_cast<undefined4>(self);
   *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(self) + 0x7a) =
       static_cast<unsigned short>(stridedRecord);
-  self->DispatchEvent(reinterpret_cast<int>(eventBlock), eventBlock, 0);
+  self->DispatchEvent(reinterpret_cast<int>(eventBlock),
+                      reinterpret_cast<TEventHandler*>(eventBlock), 0);
 }
 
 } // namespace
@@ -290,7 +291,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, i
   eventPtr[1] = 0x79;
   eventPtr[3] = reinterpret_cast<undefined4>(this);
   eventPtr[4] = reinterpret_cast<undefined4>(this);
-  DispatchEvent(reinterpret_cast<int>(eventPtr), eventPtr, 0);
+  DispatchEvent(reinterpret_cast<int>(eventPtr), reinterpret_cast<TEventHandler*>(eventPtr), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005963d0

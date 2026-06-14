@@ -347,9 +347,10 @@ void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
   if (selectedClass == kCivilianClass_Prospector) {
     this->DispatchPictureResourceCommand(0, 0, 0, 0);
   } else if (selectedClass == kCivilianClass_Engineer) {
-    this->SwitchTab();
+    int boundsBuffer[4];
+    this->SwitchTab(boundsBuffer);
   } else if (selectedClass != kCivilianClass_Developer) {
-    this->InvokeSlot1A8();
+    this->AssertCityProductionGlobalStateInitialized(0, 0);
   }
 
   this->legendInitialized = 1;

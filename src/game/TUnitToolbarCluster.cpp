@@ -66,7 +66,7 @@ void TUnitToolbarCluster::DispatchEvent(int eventClass, void* eventPayload, int 
     return;
   }
 
-  mainControl->vmethod_0015();
+  mainControl->HandleEvent(0, 0, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00586150

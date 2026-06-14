@@ -9051,6 +9051,7 @@ address|name|size|type|prototype
 672eac|TIndexAndRankList::'vftable'||global|
 672eec|CPtrList::'vftable'||global|
 69430c|g_szDecimalFormat||global|
+6943cc|g_szMcAppUiHeaderPath_006943CC||global|
 6950ac|g_McAppUiActiveFlag_006950AC||global|
 6950b0|g_szMcAppUiSourcePath_006950B0||global|
 6950fc|g_Quick_Draw_Color_State_006950FC||global|
@@ -9095,6 +9096,7 @@ address|name|size|type|prototype
 6a1a78|g_McAppUiMouseCaptureCurrentPoint_006A1A78||global|
 6a1a80|g_McAppUiMouseCaptureControl_006A1A80||global|
 6a1adc|g_McAppUiMouseCaptureTimerId_006A1ADC||global|
+6a143c|g_McAppUiFlag_006A143C||global|
 6a1ae0|g_McAppUiFlag_006A1AE0||global|
 6a1af0|g_McAppUiUpdateWindowRecursionGuard_006A1AF0||global|
 6a1af4|g_McAppUiActiveRenderContext_006A1AF4||global|

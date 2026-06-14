@@ -19,11 +19,6 @@ void __stdcall NoOpTurnEventStateVtableSlot10(int unused) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0048a650
-void HandleCityProductionNoOp(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004b5140
 void ResetCityOrderItemDerivedStateNoop(void) {
   return;
@@ -80,11 +75,6 @@ void __stdcall NoOpTextPostLayoutHook(int) {
 
 // FUNCTION: IMPERIALISM 0x00487f90
 void __stdcall NoOpLinkedValueListHook20(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0048ab70
-void __stdcall NoOpUiLifecycleHook(int) {
   return;
 }
 

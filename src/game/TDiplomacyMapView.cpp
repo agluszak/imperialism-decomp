@@ -524,8 +524,7 @@ void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, v
   reinterpret_cast<void(__stdcall*)(int)>(
       thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
   TControl* child = *reinterpret_cast<TControl**>(reinterpret_cast<char*>(this) + 0xb4);
-  child->SwitchTab(reinterpret_cast<int>(arg1), reinterpret_cast<int>(arg2),
-                   reinterpret_cast<int>(arg3));
+  child->SwitchTab(reinterpret_cast<int*>(arg1));
 }
 
 // FUNCTION: IMPERIALISM 0x004f7130

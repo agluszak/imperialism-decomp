@@ -1,5 +1,15 @@
 # Worklog
 
+- **Timestamp:** 2026-06-14 (cont. 9) — TEventHandler DoEvent/HandleEvent signature fix + noop slots
+- **Command:** Fix `vmethod_0015`/`DispatchEvent` to Mac `(commandId, TEventHandler*, TEvent*)`; rename to `HandleEvent`/`DispatchEvent`; port `CanHandleCityDialogActionFalse` + city-dialog noop slots 0x05/0x06; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare`.
+- **Score Delta:** `0x0048a280`/`0x0048a2e0` **100%** (unchanged); `0x00485f70`/`0x00485f90` **100%** (claimed from stubs); `0x0048a480` **100%** with `int action` arg + rename.
+- **Description:** Added `include/game/TEvent.h` opaque forward decl. `HandleEvent` forwards to child `DispatchEvent`; `DispatchEvent` calls virtual `HandleEvent` (slot 0x0f). TControl override updated at `0x0048e710`. Next: slot 0x08 `AllocateUiResourceEntryHeaderCopyFromSource`, slot 0x02 turn-event conditional dispatch.
+
+- **Timestamp:** 2026-06-14 (cont. 8) — TEventHandler semantic rename + slot batch
+- **Command:** Rename/port shared base slots with Ghidra/cluster names; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` on new addresses.
+- **Score Delta:** `0x0048a1b0` `ReleaseRuntimeSelectionOwnerAndDestroyObject` **100%** (renamed from `CallVoidSlot1C`); `0x00415d50`/`0x00415d70` `GetCityDialogValueDword10`/`SetCityDialogValueDword10` **100%**; `0x0048a650`/`670`/`6d0`/`6f0` dispatch wrappers **100%**; `0x0048a570` `ActivateCityProductionViewIfAllowed` **85.19%** (renamed from `vmethod_0031`). Build green.
+- **Description:** Ported slot 0x07 release/destroy (active-view handoff + owner chain + `delete this`), field10 accessors at `0x415d50`/`0x415d70`, and city-production command wrappers (0x19/0x1a/0x1b → `DispatchEvent`). Deferred slot 0x08 `AllocateUiResourceEntryHeaderCopyFromSource` (`0x48a7c0`) — 0x20-byte heap header with manual vptr write needs a dedicated mini-type.
+
 - **Timestamp:** 2026-06-14 (cont. 6) — TEventHandler + TControl branch batch
 - **Command:** Port TEventHandler class-name/list-drain methods plus TControl mouse-capture and picture/state branch slots; recover McAppUI mouse-capture globals; `just sync-ownership` → `just regen-stubs` → `just build` → `just detect` → targeted compare → `just compare-canaries` → `just stats`.
 - **Score Delta:** `0x0048a070` `TEventHandler::CreateTEventHandlerInstance` **92.86%**; `0x0048a0e0` `GetTEventHandlerClassNamePointer` **100%**. `0x0048e640` `TControl::BeginMouseCaptureAndStartRepeatTimer` **53.93%**; `0x0048e7a0` `SetControlPictureEntryAndMaybeRefresh` **60.87%**; `0x0048e7d0` `SetCityProductionDialogPictureRectAndMaybeRefresh` **23.53%**; `0x0048e810` `SetControlStateFlagAndMaybeRefresh` **56.00%**; `0x0048e850` `DispatchPictureResourceCommand` **37.50%**. Canaries: below_floor=0, existing parse_error=1 (`0x005C2940`). `just stats` after the final rebuild/detect: paired **+30**, aligned **+11**, coverage **+0.34 pp**, average similarity **+0.31 pp** vs the current baseline.
@@ -3728,3 +3738,19 @@ Follow-up scan after the TClosePicture extraction:
   aligned **+6** to 472, paired globals **+2** to 427, imports **+1**, average
   similarity **+0.09 pp** to 21.48%, paired functions stable at 8788. Existing duplicate
   address noise remains 3.
+
+## 2026-06-14 (cont.) — TView/TControl slot batch (GetField4E, bounds, TControl branch)
+
+- **Timestamp:** 2026-06-14
+- **Command:** Port TView slots GetField4E (0x427200), QuerySelectedIndexSlotBC
+  (0x430bd0), PostRenderSlotFC (0x427220), QueryContentBounds (0x427260), QueryBounds
+  (0x427290), vmethod_0048 (0x48b860), NoOpUiLifecycleHook (0x48ab70 moved from
+  noop_slots.cpp). Port TControl branch: SwitchTab (0x48e980), AssertCityProductionGlobalStateInitialized
+  (0x429470), NoOpCityProductionDialogMethod (0x48e9c0), NoOpCityProductionDialogPictureHook
+  (0x48e9e0), LogUnhandledDialogMethodAndReturnFalse (0x4294a0). Added McAppUI.h globals
+  `g_szMcAppUiHeaderPath_006943CC` / `g_McAppUiFlag_006A143C`. Fixed call sites in
+  TCivDescription, TDiplomacyMapView, TStatusButton, TUberCluster. `just sync-ownership`
+  → `just regen-stubs` → `just build` → `just compare` batch.
+- **Score Delta:** **100%:** 0x427200, 0x430bd0, 0x427220, 0x48ab70, 0x48e980, 0x429470,
+  0x48e9c0, 0x48e9e0, 0x4294a0. **98.31%:** 0x48b860. **18.18% / 31.25%:** 0x427260 /
+  0x427290 (semantics correct; register/FPO scheduling delta). Build green.

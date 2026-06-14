@@ -1,6 +1,10 @@
 // Manual decompilation file.
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
 #include "game/TControl.h"
 #include "game/ClipStateRegion.h"
 #include "game/TTEView.h"
@@ -27,6 +31,7 @@ extern unsigned int __stdcall SetTimer(void* hWnd, unsigned int eventId, unsigne
 
 undefined4 FromHandle(void);
 undefined4 GetRegionBoxToRectIfPresent(void);
+undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 extern "C" char LAB_00409a9d;
 
 // FUNCTION: IMPERIALISM 0x0048e500
@@ -56,32 +61,63 @@ void TControl::InvalidateCityDialogRectRegion(struct RECT* rect, int flag) {
                                                                                               flag);
 }
 
-// Dummy methods
-void TControl::SwitchTab(int arg1, int arg2, int arg3) {}
-void TControl::InvokeSlot1A8() {}
-void TControl::vmethod_0107() {}
-void TControl::vmethod_0108() {}
-char TControl::GetBoolSlot1BC() {
+// FUNCTION: IMPERIALISM 0x0048e980
+void TControl::SwitchTab(int* boundsBuffer) {
+  QueryContentBounds(boundsBuffer);
+  reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(&contentMargins68);
+}
+
+void TControl::WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer) {
+  SwitchTab(boundsBuffer);
+}
+
+// FUNCTION: IMPERIALISM 0x00429470
+void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
+  if (g_McAppUiFlag_006A143C == 0) {
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+        g_szMcAppUiHeaderPath_006943CC, 0x56f);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0048e9c0
+void TControl::NoOpCityProductionDialogMethod(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
+}
+
+// FUNCTION: IMPERIALISM 0x0048e9e0
+void TControl::NoOpCityProductionDialogPictureHook(int arg) {
+  (void)arg;
+}
+
+// FUNCTION: IMPERIALISM 0x004294a0
+char TControl::LogUnhandledDialogMethodAndReturnFalse() {
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+      g_szMcAppUiHeaderPath_006943CC, 0x58f);
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048e710
-void TControl::vmethod_0015(int command, void* eventDataA, int eventDataB) {
-  if (command == 0x1f) {
+void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  (void)sourceHandler;
+  (void)event;
+  if (commandId == 0x1f) {
     SetControlStateFlagAndMaybeRefresh(1, 1);
     return;
   }
-  if (command == 0x20) {
+  if (commandId == 0x20) {
     SetControlStateFlagAndMaybeRefresh(0, 1);
     return;
   }
-  if (command == 0x21) {
+  if (commandId == 0x21) {
     SetControlStateFlagAndMaybeRefresh(commandTagResourceByte == 0, 1);
     return;
   }
   TView* child = reinterpret_cast<TView*>(QueryStepValue());
   if (child != 0) {
-    child->DispatchEvent(command, eventDataA, eventDataB);
+    child->DispatchEvent(commandId, sourceHandler, event);
   }
 }
 
@@ -296,11 +332,6 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
     DispatchEvent(0x1f, this, 0);
     DispatchEvent(hasCommandTagResource, this, 0);
   }
-}
-
-void TControl::WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer) {
-  QueryContentBounds(boundsBuffer);
-  reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(&contentMargins68);
 }
 
 // FUNCTION: IMPERIALISM 0x0058e440
