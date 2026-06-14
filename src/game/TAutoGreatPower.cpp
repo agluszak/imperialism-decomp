@@ -74,6 +74,8 @@ public:
   virtual void dummy1d() = 0;
   virtual void dummy1e() = 0;
   virtual void QueueProposalRowSlot7C(int queueIndex) = 0;
+protected:
+  ~TMinisterProposalReplayView() {}
 };
 
 static __inline int ProposalQueue_ReadCount(void* queue) {

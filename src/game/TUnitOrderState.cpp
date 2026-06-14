@@ -21,6 +21,8 @@ struct TUnitOrderOwnerManagerView {
   virtual void s10() = 0;
   virtual void s11() = 0;
   virtual void VTableSlot12(TUnitOrderState* order) = 0; // slot 12 at 0x30
+protected:
+  ~TUnitOrderOwnerManagerView() {}
 };
 
 // FUNCTION: IMPERIALISM 0x00402eeb

@@ -17,6 +17,8 @@ public:
   virtual void Slot14(void);
   virtual void Slot18(void);
   virtual void Slot1C(void);
+protected:
+  ~TaskForceOrderVirtual() {}
 };
 
 } // namespace

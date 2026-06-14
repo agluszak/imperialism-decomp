@@ -20,5 +20,7 @@ struct TTurnEventQueue {
   virtual void teq_slot12() = 0;
   virtual void teq_slot13() = 0;
   virtual void EnqueueSlot38(void* packet) = 0; // 14 (0x38)
+protected:
+  ~TTurnEventQueue() {}
 };
 

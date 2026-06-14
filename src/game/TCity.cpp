@@ -125,6 +125,8 @@ public:
   short pendingCount04;
   unsigned char pad06[0x48 - 0x06];
   short tileId48;
+protected:
+  ~TCityOrderEntryView() {}
 };
 
 // FUNCTION: IMPERIALISM 0x004b3e70

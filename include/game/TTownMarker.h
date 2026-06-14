@@ -34,4 +34,6 @@ public:
   void operator delete(void* ptr) {
     (void)ptr;
   }
+protected:
+  ~TTownMarker() {}
 };

@@ -23,6 +23,8 @@ public:
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
   }
   void operator delete(void*) {}
+protected:
+  ~TNextTradeCommand() {}
 };
 
 ASSERT_SIZE(TNextTradeCommand, 0x18);

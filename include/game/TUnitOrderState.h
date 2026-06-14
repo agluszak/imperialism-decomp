@@ -71,4 +71,6 @@ public:
 
   void RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                          short nOrderOwnerNationId, short arg3);
+protected:
+  ~TUnitOrderState() {}
 };

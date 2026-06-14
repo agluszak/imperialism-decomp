@@ -33,4 +33,6 @@ public:
   virtual void dummy68() = 0;
   virtual void dummy6C() = 0;
   virtual void NotifyViewListChangedSlot70() = 0; // 0x70
+protected:
+  ~CDocument_Virtuals() {}
 };

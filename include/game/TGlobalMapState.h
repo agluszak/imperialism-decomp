@@ -162,6 +162,8 @@ public:
   class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
+protected:
+  ~TGlobalMapState() {}
 };
 
 extern "C" TGlobalMapState* g_pGlobalMapState;

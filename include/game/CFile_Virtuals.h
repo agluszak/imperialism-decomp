@@ -27,4 +27,6 @@ public:
   virtual void dummy50() = 0;
   virtual void dummy54() = 0;
   virtual void GetBufferPtrSlot58(int arg1, int arg2, void* arg3, void* arg4) = 0; // 0x58
+protected:
+  ~CFile_Virtuals() {}
 };

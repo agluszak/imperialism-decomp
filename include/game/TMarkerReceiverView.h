@@ -21,4 +21,6 @@ public:
   virtual void r15() = 0;
   virtual void r16() = 0;
   virtual void AdoptMarkerSlot44(void* marker) = 0;
+protected:
+  ~TMarkerReceiverView() {}
 };

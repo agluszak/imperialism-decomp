@@ -63,4 +63,6 @@ public:
   // 0x114 — nonzero switches TGreatPower seeding/home-region resolution to the
   // direct-map path (0x004d71b0 / 0x004dfae0 / 0x004df810).
   short stateFlag114;
+protected:
+  ~TLocalizationRuntime() {}
 };

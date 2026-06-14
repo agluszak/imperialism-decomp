@@ -37,6 +37,8 @@ public:
 
   unsigned char pad04[0x1c - 0x04];
   short stockLevel1c; // +0x1c — slot 0x0b derives lowSummaryFlag7d from it
+protected:
+  ~TCitySummaryObject() {}
 };
 
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).

@@ -118,10 +118,11 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         -Wall
         -Wextra
         # High-value vtable checks — the reason for this second compiler.
-        -Winconsistent-missing-override
+        -Werror=inconsistent-missing-override
         -Werror=suggest-override
         -Werror=suggest-destructor-override
-        -Woverloaded-virtual
+        -Werror=non-virtual-dtor
+        -Werror=overloaded-virtual
         # Decomp noise that is inherent and not actionable.
         -Wno-unused-parameter
         -Wno-unused-variable

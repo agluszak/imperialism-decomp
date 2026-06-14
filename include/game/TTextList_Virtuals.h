@@ -84,4 +84,6 @@ public:
   virtual void dummy_134() = 0;
   virtual void dummy_138() = 0;
   virtual void OnSelectionConfirmedSlot13C() = 0;
+protected:
+  ~TTextList_Virtuals() {}
 };

@@ -46,4 +46,6 @@ public:
                                      int promptCode) = 0; // slot 94
   virtual void DispatchDecisionSlot98(int sourceNation, int arg2, int arg3,
                                       int targetNation) = 0; // slot 98
+protected:
+  ~TUiRuntimeContext() {}
 };

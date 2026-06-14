@@ -57,6 +57,8 @@ struct TDiplomacyMapViewLayout {
   void ForwardCityDialogParamToActiveChildOrBase(void* param);
   void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3);
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
+protected:
+  ~TDiplomacyMapViewLayout() {}
 };
 
 undefined4 thunk_GetActiveQuickDrawSurfaceContextAndFlags(void);

@@ -80,6 +80,8 @@ public:
   virtual void Slot20(void);
   virtual int GetByOrdinal(int provinceOrdinal);
   virtual int GetCount(void);
+protected:
+  ~ProvinceCollectionVirtualShape() {}
 };
 
 typedef int(__fastcall* ProvinceCollectionGetCountFn)(void* thisCollection, int unusedEdx);

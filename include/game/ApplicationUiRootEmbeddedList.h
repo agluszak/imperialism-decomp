@@ -16,4 +16,7 @@ public:
   int blockSize;    // +0x18 (global 0x44) — ctor writes 10
 
   ApplicationUiRootEmbeddedList();
+protected:
+  ~ApplicationUiRootEmbeddedList() {}
+  friend class ApplicationUiRootController;
 };

@@ -52,4 +52,6 @@ public:
   virtual void dummy43() = 0;
   virtual void dummy44() = 0;
   virtual void WriteEntrySlotB4(int value, int flags) = 0; // slot B4
+protected:
+  ~TMessageObject() {}
 };

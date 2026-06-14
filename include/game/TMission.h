@@ -22,4 +22,6 @@ public:
   virtual void s08() = 0;
   virtual void s09() = 0;
   virtual void DispatchSlot28() = 0;
+protected:
+  ~TMissionNodeCallback() {}
 };

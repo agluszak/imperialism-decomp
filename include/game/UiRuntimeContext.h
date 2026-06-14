@@ -41,6 +41,8 @@ struct UiRuntimeContext {
 
   short GetActiveNationId(void);
   int MapTurnEventCodeToPaletteIndex(int eventCode);
+protected:
+  ~UiRuntimeContext() {}
 };
 
 extern "C" UiRuntimeContext* g_pUiRuntimeContext;

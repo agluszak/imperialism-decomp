@@ -1301,6 +1301,8 @@ struct TCommodityRecordStepView {
   virtual void s10() = 0;
   virtual void s11() = 0;
   virtual short GetStepValueSlot30() = 0;
+protected:
+  ~TCommodityRecordStepView() {}
 };
 
 // FUNCTION: IMPERIALISM 0x004dc440

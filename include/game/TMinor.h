@@ -74,6 +74,8 @@ public:
 
 private:
   unsigned char minorObjectTail[0x2cc - (0x94 - 0x10)];
+protected:
+  ~TMinor() {}
 };
 
 #undef TMINOR_VTABLE_SLOT
