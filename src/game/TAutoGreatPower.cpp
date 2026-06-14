@@ -132,7 +132,7 @@ void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
 
 // FUNCTION: IMPERIALISM 0x004e7550
 void TAutoGreatPower::VTableIndex54_Provisional(void) {
-  if (this->relationManager != 0) {
+  if (this->city != 0) {
     this->VTableIndex77_Provisional();
     this->VTableIndex78_Provisional();
   }
@@ -211,14 +211,14 @@ char TAutoGreatPower::DispatchOrQueueDiplomacyRequestSlot88_Provisional(int targ
 
 // FUNCTION: IMPERIALISM 0x004e7590
 void TAutoGreatPower::VTableIndex56_Provisional(void) {
-  if (this->relationManager != 0) {
+  if (this->city != 0) {
     this->interiorMinister->Call54();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e7a50
 void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
-  if (this->relationManager != 0) {
+  if (this->city != 0) {
     this->foreignMinister->RecomputeOrderStateSlot9C();
     short* pendingMetric = this->actionMetricByQuarter;
     for (short needSlot = 7; needSlot < 0x0d; ++needSlot) {
@@ -231,7 +231,7 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
         } else {
           remaining = static_cast<short>(current - pending);
         }
-        this->SetRelationManagerFieldB6AndRefresh(needSlot, remaining);
+        this->SetCityFieldB6AndRefresh(needSlot, remaining);
       }
       *pendingMetric = 0;
       ++pendingMetric;
@@ -242,7 +242,7 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
 
 // FUNCTION: IMPERIALISM 0x004e7af0
 void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
-  if (this->relationManager != 0) {
+  if (this->city != 0) {
     this->foreignMinister->Call58();
   }
 }
@@ -601,7 +601,7 @@ void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(voi
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
     short resourceWeight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(resourceType));
     short relationWeight = *reinterpret_cast<short*>(
-        reinterpret_cast<unsigned char*>(this->relationManager) + 0x5C + resourceType * 2);
+        reinterpret_cast<unsigned char*>(this->city) + 0x5C + resourceType * 2);
     total += static_cast<short>(resourceWeight * relationWeight);
   }
 
@@ -621,7 +621,7 @@ void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(voi
 
 // FUNCTION: IMPERIALISM 0x004e7be0
 void TAutoGreatPower::ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void) {
-  if (this->relationManager == 0) {
+  if (this->city == 0) {
     return;
   }
 

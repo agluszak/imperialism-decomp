@@ -49,7 +49,7 @@ src/game/TDiplomacyTurnStateManager.cpp|VCall_TerrainDescriptor_NotifyRelationCo
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag28|void|0x28 / 4|int,int,int|high|set flag28
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot4C|void|0x4C / 4|int,int|high|terrain slot4C
 src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot38|void|0x38 / 4|int|high|terrain slot38
-src/game/TGreatPower.cpp|VCall_RelationManager_RefreshSlot80|void|0x80 / 4||high|relation refresh
+src/game/TGreatPower.cpp|VCall_TCity_RefreshSlot80|void|0x80 / 4||high|city refresh
 src/game/TGreatPower.cpp|VCall_MapActionContext_AssignDisplayRefFromSlot2C|void|0x2C / 4|int*|high|context display ref
 src/game/TGreatPower.cpp|VCall_SecondaryState_HasNationFlag5C|short|0x5C / 4|int|high|secondary flag
 src/game/TGreatPower.cpp|VCall_SecondaryState_SetPolicyValue48|void|0x48 / 4|int,int|high|secondary set policy

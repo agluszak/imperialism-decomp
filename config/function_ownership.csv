@@ -318,6 +318,7 @@ address|target_cpp|ownership|note
 49d620|src/game/ui_invalidation_guard.cpp|manual|marker_sync
 49e660|src/game/noop_slots.cpp|manual|marker_sync
 49e680|src/game/noop_slots.cpp|manual|marker_sync
+49eb00|src/game/CString.cpp|manual|marker_sync
 49fde0|src/game/TOneTimeAnimation.cpp|manual|marker_sync
 4a0190|src/game/TFocusAnimation.cpp|manual|marker_sync
 4a05c0|src/game/TTransFocusAnimation.cpp|manual|marker_sync
@@ -635,6 +636,7 @@ address|target_cpp|ownership|note
 4ee570|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee6c0|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
 4ee7a0|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
+4eef50|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
 4ef540|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
 4ef590|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
 4ef600|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync

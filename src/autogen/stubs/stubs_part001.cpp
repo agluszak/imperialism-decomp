@@ -35,26 +35,10 @@ undefined4 thunk_InvalidateMapRegionForOrderEntry(void)
   return 0;
 }
 
-// ghidra_name thunk_GetInt32Field30
-// ghidra_proto undefined thunk_GetInt32Field30()
-// FUNCTION: IMPERIALISM 0x00401b86
-undefined4 thunk_GetInt32Field30(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_InitializeCityModel
 // ghidra_proto undefined thunk_InitializeCityModel()
 // FUNCTION: IMPERIALISM 0x00401ba4
 undefined4 thunk_InitializeCityModel(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetEventPayloadNationIdFromSlotIndex
-// ghidra_proto undefined thunk_SetEventPayloadNationIdFromSlotIndex()
-// FUNCTION: IMPERIALISM 0x00401bfe
-undefined4 thunk_SetEventPayloadNationIdFromSlotIndex(void)
 {
   return 0;
 }
@@ -235,14 +219,6 @@ undefined4 thunk_StepHexTileIndexByDirectionWithWrapRules(void)
   return 0;
 }
 
-// ghidra_name thunk_DispatchJoinEmpireModeEventPacket24_27
-// ghidra_proto undefined thunk_DispatchJoinEmpireModeEventPacket24_27()
-// FUNCTION: IMPERIALISM 0x00403b07
-undefined4 thunk_DispatchJoinEmpireModeEventPacket24_27(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DispatchCityRedrawInvalidateEvent
 // ghidra_proto void __cdecl thunk_DispatchCityRedrawInvalidateEvent(short nCityId)
 // FUNCTION: IMPERIALISM 0x00403b34
@@ -263,14 +239,6 @@ undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void)
 // ghidra_proto undefined thunk_DrawCenteredGuideLineOnMapDc()
 // FUNCTION: IMPERIALISM 0x00403bb6
 undefined4 thunk_DrawCenteredGuideLineOnMapDc(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_IsTurnCooldownCounterActiveOrResetFlag
-// ghidra_proto undefined thunk_IsTurnCooldownCounterActiveOrResetFlag()
-// FUNCTION: IMPERIALISM 0x00403c2e
-undefined4 thunk_IsTurnCooldownCounterActiveOrResetFlag(void)
 {
   return 0;
 }
@@ -307,22 +275,6 @@ undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
   return 0;
 }
 
-// ghidra_name thunk_IsNationSlotEligibleForEventProcessing
-// ghidra_proto undefined thunk_IsNationSlotEligibleForEventProcessing()
-// FUNCTION: IMPERIALISM 0x004044b7
-undefined4 thunk_IsNationSlotEligibleForEventProcessing(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_IsOrderEntryTransportLinkedAndEnabled
-// ghidra_proto undefined thunk_IsOrderEntryTransportLinkedAndEnabled()
-// FUNCTION: IMPERIALISM 0x0040454d
-undefined4 thunk_IsOrderEntryTransportLinkedAndEnabled(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_HandleCityDialogToggleCommandOrForward
 // ghidra_proto undefined thunk_HandleCityDialogToggleCommandOrForward()
 // FUNCTION: IMPERIALISM 0x00404566
@@ -355,14 +307,6 @@ undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void)
   return 0;
 }
 
-// ghidra_name thunk_GetResourceDescriptorWeightWord0ByType
-// ghidra_proto undefined thunk_GetResourceDescriptorWeightWord0ByType()
-// FUNCTION: IMPERIALISM 0x00404d36
-undefined4 thunk_GetResourceDescriptorWeightWord0ByType(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry
 // ghidra_proto undefined thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry()
 // FUNCTION: IMPERIALISM 0x00404e30
@@ -375,14 +319,6 @@ undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void)
 // ghidra_proto undefined thunk_CreateMissionObjectByKindAndNodeContext()
 // FUNCTION: IMPERIALISM 0x00404e99
 undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_ComputeGlobalMapActionContextNodeValueAverage
-// ghidra_proto undefined thunk_ComputeGlobalMapActionContextNodeValueAverage()
-// FUNCTION: IMPERIALISM 0x00404f07
-undefined4 thunk_ComputeGlobalMapActionContextNodeValueAverage(void)
 {
   return 0;
 }
@@ -467,14 +403,6 @@ undefined4 thunk_RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(void)
   return 0;
 }
 
-// ghidra_name thunk_EnqueueOrSendTurnEventPacketToNation
-// ghidra_proto undefined thunk_EnqueueOrSendTurnEventPacketToNation()
-// FUNCTION: IMPERIALISM 0x00405a5b
-undefined4 thunk_EnqueueOrSendTurnEventPacketToNation(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_MeasureTextExtentWithCachedQuickDrawStyle
 // ghidra_proto undefined thunk_MeasureTextExtentWithCachedQuickDrawStyle()
 // FUNCTION: IMPERIALISM 0x00405b7d
@@ -503,14 +431,6 @@ undefined4 thunk_RenderTerrainAndMinorNationLegendLabels(void)
 // ghidra_proto undefined thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter()
 // FUNCTION: IMPERIALISM 0x0040638e
 undefined4 thunk_ComputeNavyOrderDistributionSimilarityScoreWithDiplomacyFilter(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_SetGlobalRegionDevelopmentStageByte
-// ghidra_proto undefined thunk_SetGlobalRegionDevelopmentStageByte()
-// FUNCTION: IMPERIALISM 0x004063bb
-undefined4 thunk_SetGlobalRegionDevelopmentStageByte(void)
 {
   return 0;
 }

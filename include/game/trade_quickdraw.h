@@ -70,6 +70,7 @@ extern const int kTradeSellPropagationTags[17];
 extern const int kControlTagBar;
 extern const int kAssertLineMoveBarInitNil;
 class TGreatPower;
+class TCity;
 extern TGreatPower* GetNationStateBySlot(short slot);
 extern short QueryNationMetricBySlot(TGreatPower* state, short metricSlot);
 extern int QueryUiScreenModeRaw(struct UiRuntimeContext* context);
@@ -133,9 +134,17 @@ const unsigned int kAddrClassDescTRailAmtBar = 0x00662fe0;
 const unsigned int kAddrClassDescTShipAmtBar = 0x00663010; // Guessed based on pattern
 const unsigned int kAddrGlobalNationStates = 0x006A4370;
 
+#include "game/TGreatPower.h"
+
 static __inline TGreatPower* GetActiveNationState(void) {
   return reinterpret_cast<TGreatPower**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
+}
+
+// Trade UI overlay on the same TCity object at TGreatPower+0x894.
+static __inline NationCityTradeState* GetNationTradeCityState(TGreatPower* nation) {
+  TCity* city = nation == 0 ? 0 : nation->GetCityState();
+  return reinterpret_cast<NationCityTradeState*>(city);
 }
 
 struct TradeSummarySelectionMap {

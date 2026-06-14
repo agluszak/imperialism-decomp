@@ -112,6 +112,11 @@ double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
 // TAutoGreatPower slot 0x9d / 0xa7 scoring constants: -100.0f and 0.5 (double).
 float g_Compute_Advisory_Map_Value_00653FD4 = -100.0f;
 double g_Evaluate_Advisory_Case11_Value_00653FD8 = 0.5;
+float g_Compute_Advisory_Zero_00653FD0 = 0.0f;
+double g_Compute_Advisory_MinusSix_00653FE8 = -6.0;
+double g_Compute_Advisory_MinusHundred_00653FF0 = -100.0;
+double g_Compute_Advisory_Hundred_00654000 = 100.0;
+double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 
 // Scenario-level relation preset rows (0x17 shorts per row, stride 0x2e), loaded into
 // the relation manager's fieldB6 block by TGreatPower slot 0x39 (0x004df810).

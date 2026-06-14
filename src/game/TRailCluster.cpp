@@ -75,7 +75,7 @@ void TRailCluster::SelectTradeCommodityPresetBySummaryTagAndInitControls(short r
   short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   NationCityTradeState* cityState =
-      activeNationState == 0 ? 0 : activeNationState->GetCityState();
+      activeNationState == 0 ? 0 : GetNationTradeCityState(activeNationState);
 
   unsigned int summaryTag = (unsigned int)this->controlTag;
   int scenarioDescriptor = *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + 0x1d8);

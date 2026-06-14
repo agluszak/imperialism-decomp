@@ -2,8 +2,9 @@
 
 #include "decomp_types.h"
 
-// DirectPlay session manager singleton (DAT_006a5f64). TrySendNetworkPacketViaManagerContext
-// is a real __thiscall method on this object.
+// DirectPlay session manager. Lives as a global object embedded at fixed address 0x006a5f60
+// (not a pointer-to-object); the original loads `MOV ECX, 0x6a5f60` directly. TrySendNetworkPacket
+// is `__thiscall` on this object.
 class TWNetSessionManager {
 public:
   unsigned char pad00[4];
@@ -17,4 +18,5 @@ public:
   bool TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount);
 };
 
-extern TWNetSessionManager* g_pNetworkSessionContext006a5f64;
+// The global instance itself. `&g_NetworkSessionManager006a5f60` resolves to 0x006a5f60.
+extern TWNetSessionManager g_NetworkSessionManager006a5f60;

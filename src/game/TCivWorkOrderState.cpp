@@ -1,4 +1,9 @@
 #include "game/TCivWorkOrderState.h"
+#include "game/TUnitOrderState.h"
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 
 // FUNCTION: IMPERIALISM 0x005c28c0
 // Civilian work-order ctor: the inlined base init (TUnitOrderState) sets the
@@ -7,11 +12,15 @@
 // InitializeCivWorkOrderState).
 TCivWorkOrderState::TCivWorkOrderState() {}
 
-// FUNCTION: IMPERIALISM 0x00404b33
+// FUNCTION: IMPERIALISM 0x005c2940
 void TCivWorkOrderState::InitializeCivWorkOrderState(int nOrderType, int pOwnerContext,
                                                      int nOrderOwnerNationId) {
-  this->RegisterUnitOrderWithOwnerManager(nOrderType, pOwnerContext, nOrderOwnerNationId, 0);
+  this->RegisterUnitOrderWithOwnerManager(static_cast<short>(nOrderType), pOwnerContext,
+                                          static_cast<short>(nOrderOwnerNationId), 0);
   this->remainingTurns24 = 0;
   this->completionMarker26 = static_cast<short>(-1);
 }
+
+#if defined(_MSC_VER)
 #pragma optimize("", on)
+#endif

@@ -26,7 +26,7 @@ static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
   if (nationState == 0) {
     return 0;
   }
-  return nationState->GetCityState();
+  return GetNationTradeCityState(nationState);
 }
 
 // FUNCTION: IMPERIALISM 0x0058a4d0

@@ -52,3 +52,5 @@ public:
   int Length() const;
   int Capacity() const;
 };
+
+CString* AssignStringSharedRefAndReturnThis(CString* dest, const CString* src);

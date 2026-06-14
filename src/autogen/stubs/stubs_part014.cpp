@@ -835,14 +835,6 @@ undefined4 RemoveNationSlotAndNotifyPeers_Impl(void)
   return 0;
 }
 
-// ghidra_name ResetTerrainAdjacencyMatrixRowAndSymmetricLink
-// ghidra_proto undefined ResetTerrainAdjacencyMatrixRowAndSymmetricLink()
-// FUNCTION: IMPERIALISM 0x004eef50
-undefined4 ResetTerrainAdjacencyMatrixRowAndSymmetricLink(void)
-{
-  return 0;
-}
-
 // ghidra_name DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy
 // ghidra_proto undefined DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy()
 // FUNCTION: IMPERIALISM 0x004ef040

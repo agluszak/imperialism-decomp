@@ -42,8 +42,8 @@ void TGreatPower::CreateMilitaryRecruitOrderForNode(int nodeContext) {
 // FUNCTION: IMPERIALISM 0x004dab20
 #pragma optimize("y", on)
 void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
-  TCity* relationManager = this->relationManager;
-  relationManager->RefreshOrderStateSlot0C();
+  TCity* cityPtr = this->city;
+  cityPtr->RefreshOrderStateSlot0C();
 
   short nationSlot = this->nationSlot;
 
@@ -67,7 +67,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
         thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(zoneIndex, portZone, nationSlot, 0);
 
-    ++relationManager->recruitZoneCount5c[CityOrderActiveZoneIndex()];
+    ++cityPtr->recruitZoneCount5c[CityOrderActiveZoneIndex()];
 
     void* secondaryNode = new TAdmiral(nationSlot);
     reinterpret_cast<void(__fastcall*)(void*)>(
@@ -122,7 +122,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
   // Final pending-action flush (serializedStatusFlags[0x0a] == '2').
   if (this->serializedStatusFlags[0x0a] == 0x32) {
-    relationManager->navySecondaryCount68 += 2;
+    cityPtr->navySecondaryCount68 += 2;
     this->DispatchTurnOrderActionSlotB0(1, 6, 2);
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();

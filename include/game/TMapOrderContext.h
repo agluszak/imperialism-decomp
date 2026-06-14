@@ -25,7 +25,7 @@ public:
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.
-  void* FindPortZoneBySelectedTile(TCity* relationManager);
+  void* FindPortZoneBySelectedTile(TCity* city);
 };
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);

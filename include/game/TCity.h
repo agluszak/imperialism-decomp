@@ -39,7 +39,7 @@ public:
   short stockLevel1c; // +0x1c — slot 0x0b derives lowSummaryFlag7d from it
 };
 
-// The per-nation city/production model ("relation manager" at TGreatPower+0x894).
+// The per-nation city/production model at TGreatPower+0x894 (field `city`).
 // RTTI: g_pClassDescTCity @ 0x0064f338; created by CreateTCityInstance (0x004b2340).
 // Like TGreatPower, the destructor restores the RefCountedObjectBase vtable
 // (0x0066fec4) — real base inheritance is still future work.

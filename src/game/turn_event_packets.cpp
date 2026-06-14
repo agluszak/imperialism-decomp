@@ -37,23 +37,22 @@ void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation, 
   packet.sourceNationSlot = sourceNation;
   packet.targetNationSlot = targetNation;
   packet.modeValue = mode;
-  EnqueueOrSendTurnEventPacketToNation(&packet.routing, 0);
+  packet.routing.EnqueueOrSendTurnEventPacketToNation(0);
 }
 
 // FUNCTION: IMPERIALISM 0x005e3d40
-undefined4 EnqueueOrSendTurnEventPacketToNation(TTurnEventPacketRoutingPrefix* packet,
-                                              char queueOnly) {
-  unsigned int sizeBytes = static_cast<unsigned int>(packet->payloadSize);
-  packet->defaultNationId = g_NetworkDefaultNationId006a5fc0;
-  int nationId = packet->targetNationId;
-  if (packet->targetNationId == -1) {
+undefined4 TTurnEventPacketRoutingPrefix::EnqueueOrSendTurnEventPacketToNation(char queueOnly) {
+  unsigned int sizeBytes = static_cast<unsigned int>(this->payloadSize);
+  this->defaultNationId = g_NetworkDefaultNationId006a5fc0;
+  int nationId = this->targetNationId;
+  if (this->targetNationId == -1) {
     nationId = g_NetworkBroadcastNationId006a5fc4;
   }
 
   if (queueOnly != 0 || nationId == g_NetworkDefaultNationId006a5fc0) {
     undefined4* heapCopy =
         reinterpret_cast<undefined4*>(GlobalAlloc(0, static_cast<DWORD>(sizeBytes)));
-    undefined4* src = reinterpret_cast<undefined4*>(packet);
+    undefined4* src = reinterpret_cast<undefined4*>(this);
     undefined4* dst = heapCopy;
     unsigned int dwordCount = sizeBytes >> 2;
     while (dwordCount != 0) {
@@ -70,33 +69,37 @@ undefined4 EnqueueOrSendTurnEventPacketToNation(TTurnEventPacketRoutingPrefix* p
       tailBytes = tailBytes - 1;
     }
 
-    void** queueNode = reinterpret_cast<void**>(g_pNetworkPacketQueueHead006a5f50);
+    undefined4* queueNode = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueHead006a5f50);
     if (g_pNetworkPacketQueueHead006a5f50 == 0) {
       int blockBase = reinterpret_cast<int>(AllocateAndLinkBlockHead(
           reinterpret_cast<void**>(&g_pNetworkPacketBlockChain006a5f54),
           g_NetworkPacketBlockCount006a5f58, 0xc));
-      queueNode = reinterpret_cast<void**>(blockBase + -8 + g_NetworkPacketBlockCount006a5f58 * 0xc);
+      queueNode = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueHead006a5f50);
+      undefined4* freeListNode =
+          reinterpret_cast<undefined4*>(blockBase + -8 + g_NetworkPacketBlockCount006a5f58 * 0xc);
       int remaining = g_NetworkPacketBlockCount006a5f58;
       if (-1 < g_NetworkPacketBlockCount006a5f58 + -1) {
         do {
-          *queueNode = g_pNetworkPacketQueueHead006a5f50;
+          queueNode = freeListNode;
+          *queueNode = reinterpret_cast<undefined4>(g_pNetworkPacketQueueHead006a5f50);
           remaining = remaining + -1;
           g_pNetworkPacketQueueHead006a5f50 = queueNode;
-          queueNode = reinterpret_cast<void**>(reinterpret_cast<char*>(queueNode) + -0xc);
+          freeListNode = queueNode + -3;
         } while (remaining != 0);
       }
     }
+    g_pNetworkPacketQueueHead006a5f50 = *reinterpret_cast<void**>(queueNode);
 
-    g_pNetworkPacketQueueHead006a5f50 = *queueNode;
-    queueNode[1] = reinterpret_cast<void*>(g_pNetworkPacketQueueTail006a5f48);
+    queueNode[1] = reinterpret_cast<undefined4>(g_pNetworkPacketQueueTail006a5f48);
     queueNode[0] = 0;
     g_NetworkPacketQueueCount006a5f4c = g_NetworkPacketQueueCount006a5f4c + 1;
     queueNode[2] = 0;
-    queueNode[2] = heapCopy;
-    void** queueRoot = queueNode;
+    queueNode[2] = reinterpret_cast<undefined4>(heapCopy);
+
+    undefined4* queueRoot = queueNode;
     if (g_pNetworkPacketQueueTail006a5f48 != 0) {
-      *reinterpret_cast<void**>(g_pNetworkPacketQueueTail006a5f48) = queueNode;
-      queueRoot = reinterpret_cast<void**>(g_pNetworkPacketQueueRoot006a5f44);
+      *reinterpret_cast<undefined4**>(g_pNetworkPacketQueueTail006a5f48) = queueNode;
+      queueRoot = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueRoot006a5f44);
     }
     g_pNetworkPacketQueueRoot006a5f44 = queueRoot;
     g_pNetworkPacketQueueTail006a5f48 = queueNode;
@@ -105,12 +108,10 @@ undefined4 EnqueueOrSendTurnEventPacketToNation(TTurnEventPacketRoutingPrefix* p
     }
   }
 
-  if (g_pNetworkSessionContext006a5f64 != 0) {
-    if (g_pNetworkSessionContext006a5f64->TrySendNetworkPacket(nationId, packet, sizeBytes)) {
-      return 1;
-    }
-    g_NetworkManagerLastError006a5f6c = g_pNetworkSessionContext006a5f64->lastErrorCode0c;
+  if (g_NetworkSessionManager006a5f60.TrySendNetworkPacket(nationId, this, sizeBytes)) {
+    return 1;
   }
+  g_NetworkManagerLastError006a5f6c = g_NetworkSessionManager006a5f60.lastErrorCode0c;
   ReportWNetManagerErrorCodeAndNotifyUi(g_NetworkManagerLastError006a5f6c);
   return 0;
 }

@@ -9,7 +9,7 @@ extern "C" {
 TMinor* g_apTerrainTypeDescriptorTable[23] = {0};
 TMinor* g_apSecondaryNationStateSlots[36] = {0};
 TGreatPower* g_apNationStates[7] = {0};
-void* g_apNationStates_End = 0;
+void* g_apNationStates_End = reinterpret_cast<void*>(g_apNationStates + 7);
 TLocalizationRuntime* g_pLocalizationTable = 0;
 TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
 void* g_pGlobalUiRootController = 0;

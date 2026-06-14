@@ -121,6 +121,7 @@ struct TDiplomacyTurnStateManager {
   void ProcessQueuedWarTransitions();
   void ApplyDiplomacyInterNationStatesForTurn();
   void thunk_ApplyDiplomacyInterNationStatesForTurn();
+  void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot);
 };
 
 #include "game/diplomacy_globals.h"

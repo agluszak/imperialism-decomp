@@ -7,84 +7,204 @@
 
 extern "C" {
 extern int DAT_006a601c;
-extern char g_szEmptyString[];
 }
+
 undefined4 thunk_AssignStringSharedRefAndReturnThis(void);
 undefined4 thunk_RunControlStringProviderAndDispatchLocalizedMessage(void);
 
-static bool IsBenignWNetManagerErrorCode(int errorCode) {
+static const char kDirectPlayErrorTitle[] = "DirectPlay Error";
+static const char kNetworkErrorGeneric[] = "A network error has occurred.";
+static const char kDirectPlayOk[] = "DirectPlay OK";
+
+static const char* LookupDirectPlayErrorDetailText(int errorCode) {
   if (errorCode < -0x7ff8fff1) {
-    return errorCode == -0x7ff8fff2 || errorCode == -0x7fffbfff || errorCode == -0x7fffbffe ||
-           errorCode == -0x7fffbffb;
+    if (errorCode == -0x7ff8fff2) {
+      return "Not enough memory available.";
+    }
+    if (errorCode == -0x7fffbfff) {
+      return "This function is not supported on this system.";
+    }
+    if (errorCode == -0x7fffbffe) {
+      return "No such interface supported.";
+    }
+    if (errorCode == -0x7fffbffb) {
+      return "An undefined error code was returned from a DirectPlay function.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788fffa) {
-    return errorCode == -0x7788fffb || errorCode == -0x7ff8ffa9;
+    if (errorCode == -0x7788fffb) {
+      return "This object is already initialized.";
+    }
+    if (errorCode == -0x7ff8ffa9) {
+      return "One or more parameters were invalid.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ffeb) {
-    return errorCode == -0x7788ffec || errorCode == -0x7788fff6;
+    if (errorCode == -0x7788ffec) {
+      return "There are active players in the session.";
+    }
+    if (errorCode == -0x7788fff6) {
+      return "Access to the object is denied.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ffd7) {
-    return errorCode == -0x7788ffd8 || errorCode == -0x7788ffe2;
+    if (errorCode == -0x7788ffd8) {
+      return "Can't add player.";
+    }
+    if (errorCode == -0x7788ffe2) {
+      return "The buffer supplied is too small.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ffc3) {
-    return errorCode == -0x7788ffc4 || errorCode == -0x7788ffce;
+    if (errorCode == -0x7788ffc4) {
+      return "Can't create player.";
+    }
+    if (errorCode == -0x7788ffce) {
+      return "Can't create group.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ffaf) {
-    return errorCode == -0x7788ffb0 || errorCode == -0x7788ffba;
+    if (errorCode == -0x7788ffb0) {
+      return "The capabilities requested are not yet available.";
+    }
+    if (errorCode == -0x7788ffba) {
+      return "Can't create session.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ff87) {
-    return errorCode == -0x7788ff88 || errorCode == -0x7788ffa6;
+    if (errorCode == -0x7788ff88) {
+      return "Invalid flags were specified.";
+    }
+    if (errorCode == -0x7788ffa6) {
+      return "An exception occurred.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ff69) {
-    return errorCode == -0x7788ff6a || errorCode == -0x7788ff7e;
+    if (errorCode == -0x7788ff6a) {
+      return "Invalid player.";
+    }
+    if (errorCode == -0x7788ff7e) {
+      return "Invalid object.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ff55) {
-    return errorCode == -0x7788ff56 || errorCode == -0x7788ff60;
+    if (errorCode == -0x7788ff56) {
+      return "No connection.";
+    }
+    if (errorCode == -0x7788ff60) {
+      return "The required capabilities are not available.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ff37) {
-    return errorCode == -0x7788ff38 || errorCode == -0x7788ff42;
+    if (errorCode == -0x7788ff38) {
+      return "No name server found.";
+    }
+    if (errorCode == -0x7788ff42) {
+      return "There are no messages waiting.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ff23) {
-    return errorCode == -0x7788ff24 || errorCode == -0x7788ff2e;
+    if (errorCode == -0x7788ff24) {
+      return "There are no sessions available.";
+    }
+    if (errorCode == -0x7788ff2e) {
+      return "There are no players available.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788ff0f) {
-    return errorCode == -0x7788ff10 || errorCode == -0x7788ff1a;
+    if (errorCode == -0x7788ff10) {
+      return "The operation timed out.";
+    }
+    if (errorCode == -0x7788ff1a) {
+      return "The message is too large to send.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788fef1) {
-    return errorCode == -0x7788fef2 || errorCode == -0x7788ff06;
+    if (errorCode == -0x7788fef2) {
+      return "The message queue is full.";
+    }
+    if (errorCode == -0x7788ff06) {
+      return "The service is unavailable.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788fedd) {
-    return errorCode == -0x7788fede || errorCode == -0x7788fee8;
+    if (errorCode == -0x7788fede) {
+      return "Can't create server.";
+    }
+    if (errorCode == -0x7788fee8) {
+      return "The user canceled the operation.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788fec9) {
-    return errorCode == -0x7788feca || errorCode == -0x7788fed4;
+    if (errorCode == -0x7788feca) {
+      return "The session was lost.";
+    }
+    if (errorCode == -0x7788fed4) {
+      return "The player was lost.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788fc0d) {
-    return errorCode == -0x7788fc0e || errorCode == -0x7788fc18;
+    if (errorCode == -0x7788fc0e) {
+      return "Can't create process.";
+    }
+    if (errorCode == -0x7788fc18) {
+      return "The buffer is too large.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788fbf9) {
-    return errorCode == -0x7788fbfa || errorCode == -0x7788fc04;
+    if (errorCode == -0x7788fbfa) {
+      return "Invalid interface.";
+    }
+    if (errorCode == -0x7788fc04) {
+      return "The application is not started.";
+    }
+    return 0;
   }
   if (errorCode < -0x7788fbe5) {
-    return errorCode == -0x7788fbe6 || errorCode == -0x7788fbf0;
+    if (errorCode == -0x7788fbe6) {
+      return "Unknown application.";
+    }
+    if (errorCode == -0x7788fbf0) {
+      return "No service provider available.";
+    }
+    return 0;
   }
-  return errorCode == -0x7788fbd2 || errorCode == 0;
+  if (errorCode == -0x7788fbd2) {
+    return "Not lobbied.";
+  }
+  if (errorCode == 0) {
+    return kDirectPlayOk;
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e34f0
 void ReportWNetManagerErrorCodeAndNotifyUi(int errorCode) {
-  CString scratchMessage(g_szEmptyString);
-  CString formattedMessage;
-
-  if (IsBenignWNetManagerErrorCode(errorCode)) {
-    formattedMessage = CString(g_szEmptyString);
+  CString message(kDirectPlayErrorTitle);
+  const char* detailText = LookupDirectPlayErrorDetailText(errorCode);
+  if (detailText == 0) {
+    CString genericMessage(kNetworkErrorGeneric);
+    message.AssignFromPtr(genericMessage);
   } else {
-    char errorText[16];
-    wsprintfA(errorText, "%d", errorCode);
-    formattedMessage = CString(errorText);
+    message.AssignFromCStr(detailText);
   }
 
-  scratchMessage.AssignFromPtr(formattedMessage);
   thunk_AssignStringSharedRefAndReturnThis();
   thunk_RunControlStringProviderAndDispatchLocalizedMessage();
   if (DAT_006a601c == 0) {

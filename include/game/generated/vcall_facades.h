@@ -410,13 +410,6 @@ static __inline void* VCall_ProposalQueue_GetEntryAt1Based(void* object, int arg
   return fn(object, 0, arg0);
 }
 
-// relation refresh; status=provisional
-static __inline void VCall_RelationManager_RefreshSlot80(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x80 / 4)));
-  fn(object, 0);
-}
-
 // secondary slot4C; status=provisional
 static __inline void VCall_SecondaryState_CallSlot4C(void* object, int arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, int, int);
@@ -471,6 +464,13 @@ static __inline void VCall_Stream_ReadRawAtSlot00(void* object, void* arg0, int 
   typedef void (__fastcall * Fn)(void*, int, void*, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0)));
   fn(object, 0, arg0, arg1);
+}
+
+// city refresh; status=provisional
+static __inline void VCall_TCity_RefreshSlot80(void* object) {
+  typedef void (__fastcall * Fn)(void*, int);
+  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x80 / 4)));
+  fn(object, 0);
 }
 
 // TMinor aux runtime clear grant slot c4; class=TMinor; status=provisional

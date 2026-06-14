@@ -73,7 +73,7 @@ void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControl
   short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   NationCityTradeState* cityState =
-      activeNationState == 0 ? 0 : activeNationState->GetCityState();
+      activeNationState == 0 ? 0 : GetNationTradeCityState(activeNationState);
 
   int mappedSummaryTag = GetTradeSummarySelectionTagByIndex(0);
   while (mappedSummaryTag != this->controlTag) {
@@ -84,7 +84,7 @@ void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControl
   TradeCommodityMetricRecord* selectedMetricRecord = reinterpret_cast<TradeCommodityMetricRecord*>(
       *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + (int)tagIndex * 4 + 0xe4));
   this->selectedMetricControl = reinterpret_cast<TAmtBar*>(selectedMetricRecord);
-  this->selectedMetricValue = static_cast<short>(reinterpret_cast<TCity*>(cityState)
+  this->selectedMetricValue = static_cast<short>(activeNationState->GetCityState()
                                                     ->GetBuildingProductionValueBySlot(
       *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52)));
 

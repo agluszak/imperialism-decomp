@@ -5,7 +5,6 @@
 #include "game/TPtrList.h"
 
 class TMinister;
-class NationCityTradeState;
 class TQueueObject;
 class TCity;
 
@@ -133,11 +132,11 @@ public:
   // first eligible neighbor tail-iterated).
   virtual void MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId);
   TGREATPOWER_VTABLE_SLOT(54);
-  // slot 0x37 — body 0x004dca60: forwards to relationManager slot 0x2c when present.
-  virtual void NotifyRelationManagerSlot2C(void);
+  // slot 0x37 — body 0x004dca60: forwards to city slot 0x2c when present.
+  virtual void NotifyCitySlot2C(void);
   TGREATPOWER_VTABLE_SLOT(56);
   // slot 0x39 — body 0x004df810: loads the scenario-level preset row (table 0x653570)
-  // into the manager's fieldB6 relation deltas, maxes six production-order entries to
+  // into the city's fieldB6 relation deltas, maxes six production-order entries to
   // 999, notifies the manager's 0x1d8 sink, then spawns the Frog City marker through
   // slot 0x3a or 0x3b.
   virtual void ApplyScenarioRelationPresetAndSpawnFrogCity(class TCity* mgr);
@@ -160,8 +159,8 @@ public:
   // reduced by 2 when the interaction manager maps the code into an active minister
   // capability category (4/5/3), or by 1 for the code-3 special case.
   virtual unsigned int GetEffectiveDiplomacyCounterA2ForCode(int proposalCode);
-  virtual void ApplyDiplomacyState222ToRelationManagerAndClear(void);      // slot 0x41
-  virtual void ApplyRelationDeltaToRelationManagerAndUpdateState1f4(void); // slot 0x42
+  virtual void ApplyDiplomacyState222ToCityFieldB6AndClear(void);      // slot 0x41
+  virtual void ApplyRelationDeltaToCityFieldB6AndUpdateState1f4(void); // slot 0x42
   virtual void VTableIndex67_Provisional(void) {}                          // slot 0x43
   TGREATPOWER_VTABLE_SLOT(68);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
@@ -206,11 +205,11 @@ public:
   TGREATPOWER_VTABLE_SLOT(96);
   TGREATPOWER_VTABLE_SLOT(97);
   TGREATPOWER_VTABLE_SLOT(98);
-  virtual void SetRelationManagerFieldB6AndRefresh(short targetSlot, short value);   // slot 0x63
-  virtual void AddToRelationManagerFieldB6AndRefresh(short targetSlot, short value); // slot 0x64
+  virtual void SetCityFieldB6AndRefresh(short targetSlot, short value);   // slot 0x63
+  virtual void AddToCityFieldB6AndRefresh(short targetSlot, short value); // slot 0x64
   // slot 0x65 — body 0x004dd7f0: per-order-kind production metric (city building
   // production doubled per kind; kind 7 sums the city summary record minus four
-  // relation-manager counters, clamped at 0).
+  // city fieldB6 counters, clamped at 0).
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta);                          // slot 0x66
   virtual void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) {}     // slot 0x19c
@@ -274,7 +273,7 @@ public:
   virtual double ComputeMinisterSkillFloatSlot8A(void);                              // slot 0x8a
   virtual double ComputeMinisterSkillFloatSlot8B(void);                              // slot 0x8b
   virtual double ComputeMinisterSkillFloatSlot8C(void);                              // slot 0x8c
-  virtual int GetCityBuildingProductionViaRelationManagerSlot8D(short buildingSlot); // slot 0x8d
+  virtual int GetCityBuildingProductionSlot8D(short buildingSlot); // slot 0x8d
   // Relative military/naval power score family (bodies 0x004e07b0..0x004e1c20).
   // slot 0x8e — min(production-capped army commit budget, metric 0x10, armyPower/2).
   virtual int ComputeArmyCommitBudgetSlot8E(void);
@@ -406,7 +405,7 @@ public:
   TQueueObject* proposalQueue;
   TQueueObject* diplomacyTrackedSlots[0x11];
   // 0x894 — city production state; same object used as TCity in diplomacy paths.
-  TCity* relationManager;
+  TCity* city;
   TPtrList* townMarkerList;
   TPtrList* trackedObjectList;
   unsigned char candidateNationFlags[0x17];
@@ -525,9 +524,7 @@ public:
   void DispatchNationField9CCallback4C(void);
   void DispatchNationField94Callbacks90And94(void);
 
-  NationCityTradeState* GetCityState(void) {
-    return reinterpret_cast<NationCityTradeState*>(relationManager);
-  }
+  TCity* GetCityState(void) { return city; }
 };
 
 #undef TGREATPOWER_VTABLE_SLOT

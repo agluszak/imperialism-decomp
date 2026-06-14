@@ -17,4 +17,4 @@ bool TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsig
   return sendResult >= 0;
 }
 
-TWNetSessionManager* g_pNetworkSessionContext006a5f64 = 0;
+TWNetSessionManager g_NetworkSessionManager006a5f60;

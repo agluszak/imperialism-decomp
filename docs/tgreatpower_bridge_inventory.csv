@@ -40,8 +40,8 @@ GlobalMapState_CallMetricC4,411,TGlobalMapState,direct CallMetricSlotC4,,P3,done
 TerrainDescriptor_CallSlot4C,438,TTerrainDescriptor,direct CallSlot4C,,P3,done
 TerrainDescriptor_CallSlot38,443,TTerrainDescriptor,direct CallSlot38,,P3,done
 TerrainDescriptor_SetResetLevel,394,TTerrainDescriptor,direct SetResetLevelSlot68,,P3,done
-RelationManager_ClearNeedSlotE0,488,TCity,direct fieldB6+Refresh80,,P3,done
-RelationManager_ClearNeedSlotE2,493,TCity,direct fieldB6+Refresh80,,P3,done
+City_ClearNeedSlotE0,488,TCity,direct fieldB6+Refresh80,,P3,done
+City_ClearNeedSlotE2,493,TCity,direct fieldB6+Refresh80,,P3,done
 SecondaryState_HasNationFlag5C,589,TMinor,direct HasMinorStandingLinkSlot5C,,P3,done
 SecondaryState_SetPolicyValue48,593,TMinor,direct SetDiplomacyStandingSlot48,,P3,done
 SecondaryState_CallSlot4C,598,TMinor,direct VTableSlot4C_Provisional,,P3,done

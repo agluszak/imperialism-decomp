@@ -8984,6 +8984,11 @@ address|name|size|type|prototype
 653fc0|g_DAT_00653fc0_Value_00653FC0||global|
 653fc8|g_DAT_00653fc8_Value_00653FC8||global|
 653fd4|g_Compute_Advisory_Map_Value_00653FD4||global|
+653fd0|g_Compute_Advisory_Zero_00653FD0||global|
+653fe8|g_Compute_Advisory_MinusSix_00653FE8||global|
+653ff0|g_Compute_Advisory_MinusHundred_00653FF0||global|
+654000|g_Compute_Advisory_Hundred_00654000||global|
+654008|g_Compute_Advisory_OnePointFive_00654008||global|
 653fd8|g_Evaluate_Advisory_Case11_Value_00653FD8||global|
 654088|TAutoGreatPower::'vftable'||global|
 6549b0|TDefenseMinister::'vftable'||global|

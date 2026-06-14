@@ -1077,6 +1077,50 @@ void TDiplomacyTurnStateManager::thunk_ProcessQueuedWarTransitions() {
   ProcessQueuedWarTransitions();
 }
 
+namespace {
+
+short DecodeTerrainDescriptorNationSlotForAdjacency(int terrainRecord) {
+  short encodedSlot = *reinterpret_cast<short*>(terrainRecord + 0xe);
+  if (encodedSlot < 200) {
+    if (encodedSlot < 100) {
+      return *reinterpret_cast<short*>(terrainRecord + 0xc);
+    }
+    return encodedSlot - 100;
+  }
+  return encodedSlot - 200;
+}
+
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x004eef50
+void TDiplomacyTurnStateManager::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot) {
+  int row = nationSlot;
+  int remaining = kNationSlotCount;
+  short* rowCursor = &relationSideEffectMatrix1402[row * kNationSlotCount];
+  short* colCursor = &relationSideEffectMatrix1402[row];
+  do {
+    *rowCursor = 0;
+    *colCursor = 0;
+    ++rowCursor;
+    colCursor += kNationSlotCount;
+    --remaining;
+  } while (remaining != 0);
+
+  int terrainRecord = reinterpret_cast<int>(g_apTerrainTypeDescriptorTable[row]);
+  if (terrainRecord == 0) {
+    return;
+  }
+  if (*reinterpret_cast<short*>(terrainRecord + 0xe) <= 199) {
+    return;
+  }
+
+  short decodedSlot = DecodeTerrainDescriptorNationSlotForAdjacency(terrainRecord);
+  relationSideEffectMatrix1402[row * kNationSlotCount + decodedSlot] = 2;
+
+  decodedSlot = DecodeTerrainDescriptorNationSlotForAdjacency(terrainRecord);
+  relationSideEffectMatrix1402[decodedSlot * kNationSlotCount + row] = 2;
+}
+
 // FUNCTION: IMPERIALISM 0x004f0db0
 void DispatchProcessQueuedWarTransitions() {
   ReadGlobalTDiplomacyTurnStateManager()->thunk_ProcessQueuedWarTransitions();

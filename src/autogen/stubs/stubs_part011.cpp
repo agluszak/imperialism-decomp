@@ -2684,7 +2684,7 @@ undefined4 PopulateListBoxFromDelimitedText(void)
 }
 
 // ghidra_name thunk_ReleaseSharedStringRefIfNotEmpty
-// ghidra_proto undefined thunk_ReleaseSharedStringRefIfNotEmpty()
+// ghidra_proto void __thiscall thunk_ReleaseSharedStringRefIfNotEmpty(void)
 // FUNCTION: IMPERIALISM 0x0049bf45
 undefined4 thunk_ReleaseSharedStringRefIfNotEmpty(void)
 {
@@ -3319,14 +3319,6 @@ undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(void)
 // ghidra_proto void __cdecl LoadGlobalSystemsFromSave(void * pLoadContext)
 // FUNCTION: IMPERIALISM 0x0049e6a0
 undefined4 LoadGlobalSystemsFromSave(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignStringSharedRefAndReturnThis
-// ghidra_proto undefined AssignStringSharedRefAndReturnThis()
-// FUNCTION: IMPERIALISM 0x0049eb00
-undefined4 AssignStringSharedRefAndReturnThis(void)
 {
   return 0;
 }

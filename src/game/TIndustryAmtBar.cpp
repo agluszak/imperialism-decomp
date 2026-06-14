@@ -52,7 +52,8 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   // ORIG_CALLCONV: __thiscall
   TGreatPower* nationState = reinterpret_cast<TGreatPower**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState = nationState != 0 ? nationState->GetCityState() : 0;
+  NationCityTradeState* cityState =
+      nationState != 0 ? GetNationTradeCityState(nationState) : 0;
   short summaryTagIndex = 0;
   int mappedTag = GetTradeSummarySelectionTagByIndex(summaryTagIndex);
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
@@ -62,7 +63,7 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   }
 
   selectedMetricRecord = cityState->tradeCommodityRecordPtrs[summaryTagIndex];
-  int productionValue = reinterpret_cast<TCity*>(cityState)->GetBuildingProductionValueBySlot(
+  int productionValue = nationState->GetCityState()->GetBuildingProductionValueBySlot(
       selectedMetricRecord->buildingSlot);
 
   short stepValue = selectedMetricRecord->QueryStepValue();

@@ -381,3 +381,9 @@ void CString::SetLengthAndTerminator(int new_length) {
   Header()->text_length = new_length;
   reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
 }
+
+// FUNCTION: IMPERIALISM 0x0049eb00
+CString* AssignStringSharedRefAndReturnThis(CString* dest, const CString* src) {
+  dest->StringSharedRef_AssignFromPtr(*src);
+  return dest;
+}

@@ -206,13 +206,13 @@ void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(i
 
 
 // FUNCTION: IMPERIALISM 0x005634a0
-void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* relationManager) {
+void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId;
-  if (relationManager->selectedOrderB0 == 0) {
+  if (city->selectedOrderB0 == 0) {
     selectedTileId = 1;
   } else {
     selectedTileId = *reinterpret_cast<short*>(
-        reinterpret_cast<char*>(relationManager->selectedOrderB0) + 0x14);
+        reinterpret_cast<char*>(city->selectedOrderB0) + 0x14);
   }
   MapActionNodeView* node =
       reinterpret_cast<MapActionNodeView*>(g_pMapActionContextListHead);

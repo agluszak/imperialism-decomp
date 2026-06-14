@@ -13,6 +13,9 @@ struct TTurnEventPacketRoutingPrefix {
 
   // FUNCTION: IMPERIALISM 0x005420a0
   void SetPayloadNationIdFromSlotIndex(int nationSlot);
+
+  // FUNCTION: IMPERIALISM 0x005e3d40
+  undefined4 EnqueueOrSendTurnEventPacketToNation(char queueOnly);
 };
 
 // Join-empire packet body built on the stack in DispatchJoinEmpireModeEventPacket24_27.

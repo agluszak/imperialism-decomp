@@ -16,7 +16,7 @@ public:
   // Overrides of TGreatPower virtuals:
   // slot 0x07 — 0x004e7230: drain autoTrackedListB60 then run the base release.
   void ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void);
-  // slot 0x36 — 0x004e7550: forward to slots 0x4d/0x4e when a relation manager exists.
+  // slot 0x36 — 0x004e7550: forward to slots 0x4d/0x4e when city exists.
   void VTableIndex54_Provisional(void);
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.
   void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation);
@@ -29,11 +29,11 @@ public:
   // slot 0x22 — 0x004e79d0: forward to the foreign minister or queue a tracked entry.
   char DispatchOrQueueDiplomacyRequestSlot88_Provisional(int targetNation, int arg2, int arg3,
                                                          int slotIndex);
-  // slot 0x38 — 0x004e7590: interior-minister slot 0x54 when a relation manager exists.
+  // slot 0x38 — 0x004e7590: interior-minister slot 0x54 when city exists.
   void VTableIndex56_Provisional(void);
-  // slot 0x71 — 0x004e7a50: flush actionMetricByQuarter into relation-manager fieldB6.
+  // slot 0x71 — 0x004e7a50: flush actionMetricByQuarter into city fieldB6.
   void ClearDiplomacyState1c6Block(void);
-  // slot 0x72 — 0x004e7af0: foreign-minister slot 0x58 when a relation manager exists.
+  // slot 0x72 — 0x004e7af0: foreign-minister slot 0x58 when city exists.
   void BeginTurnDiplomacyPrePassSlot1c8();
   // slot 0x83 — 0x004e9f10: prune candidateNationFlags; true while any stays active.
   char VTableSlot20C_Provisional(void);

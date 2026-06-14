@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name TControl::DispatchUiMouseEventToChildrenOrSelf
-// ghidra_proto undefined DispatchUiMouseEventToChildrenOrSelf()
-// FUNCTION: IMPERIALISM 0x00406429
-undefined4 DispatchUiMouseEventToChildrenOrSelf(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_FillRectWithQuickDrawBrushAndContextOffset
 // ghidra_proto undefined thunk_FillRectWithQuickDrawBrushAndContextOffset()
 // FUNCTION: IMPERIALISM 0x00406546
