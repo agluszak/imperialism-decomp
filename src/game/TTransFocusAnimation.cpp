@@ -66,8 +66,8 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
   sourceRect.bottom = sourceBottom;
   destinationRect.bottom = sourceRect.bottom - sourceRect.top;
 
-  reinterpret_cast<void(__cdecl*)(int*)>(thunk_ApplyRectClipRegionToGlobalClipState)(
-      &destinationRect.left);
+  reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_ApplyRectClipRegionToGlobalClipState)(
+      &destinationRect);
   ResetQuickDrawStrokeState();
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
   reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(0);

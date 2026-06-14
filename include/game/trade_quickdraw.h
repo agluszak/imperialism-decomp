@@ -32,8 +32,8 @@ static __inline void SetQuickDrawStylePair(short styleA, short styleB) {
       thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty)(styleA, styleB);
 }
 
-static __inline void ApplyRectClipRegion(int* rectBuffer) {
-  reinterpret_cast<void(__cdecl*)(int*)>(thunk_ApplyRectClipRegionToGlobalClipState)(rectBuffer);
+static __inline void ApplyRectClipRegion(RECT* rectBuffer) {
+  reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_ApplyRectClipRegionToGlobalClipState)(rectBuffer);
 }
 
 // SetQuickDrawFillColor(int) is the real global at 0x495000, declared in

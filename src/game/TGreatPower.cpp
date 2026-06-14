@@ -88,8 +88,8 @@ extern short g_Classify_Nation_Military_LookupTable_00695CD4[][7];
 extern short g_DAT_006966d0_Value_006966D0[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern short g_awTacticalUnitCategoryCodeBySlot[];
-extern TZone* g_pMapActionContextListHead;
 }
+extern TZone* g_pMapActionContextListHead;
 
 // Abstract View Classes for Native Virtual Method Dispatches (MSVC 5.0 compatible __thiscall
 // dispatches)

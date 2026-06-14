@@ -18,8 +18,8 @@ extern int g_nUiResourceEntryDefaultParam0;
 extern int g_nUiResourceEntryDefaultParam1;
 extern unsigned short g_wUiResourceEntryDefaultParam2;
 extern CRuntimeClass PTR_s_TControl_00649600;
-extern int __stdcall IntersectRect(struct RECT* dest, const struct RECT* src1,
-                                   const struct RECT* src2);
+extern int __stdcall IntersectRect(RECT* dest, const RECT* src1,
+                                   const RECT* src2);
 extern int __stdcall CombineRgn(void* destRegion, void* sourceRegion1, void* sourceRegion2,
                                 int combineMode);
 extern int __stdcall OffsetRgn(void* region, int dx, int dy);
@@ -207,7 +207,7 @@ char TControl::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg
 }
 
 // FUNCTION: IMPERIALISM 0x0048b8d0
-void TControl::PaintVisibleChildrenIntersectingClipRect(struct RECT* clipRect, int bindArg) {
+void TControl::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) {
   if (g_McAppUiActiveFlag_006950AC == 0 || IsActionable() == 0 || Refresh() == 0) {
     return;
   }
@@ -219,7 +219,7 @@ void TControl::PaintVisibleChildrenIntersectingClipRect(struct RECT* clipRect, i
   }
 
   if (BindMapQuickDrawDc(bindArg) != 0) {
-    ApplyRectSlot110(reinterpret_cast<int*>(&clippedRect));
+    ApplyRectSlot110(&clippedRect);
     if (field18 != 0) {
       reinterpret_cast<TEventHandler*>(field18)->vmethod_0013(reinterpret_cast<int*>(&clippedRect));
     }

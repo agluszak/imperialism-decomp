@@ -18,14 +18,14 @@ public:
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   void InitializeTradeSellControlState(unsigned int styleSeed);
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);
-  virtual int GetBoolSlot1DC();
-  virtual void DoControlAction();
-  virtual void SetTradeBidControlBitmap();
-  virtual void SetTradeOfferControlBitmap();
-  virtual void SetTradeOfferSecondaryBitmap();
-  virtual int vmethod_0115();
-  virtual void ApplyMoveValue(int value);
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
+  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0) override;
+  virtual int GetBoolSlot1DC() override;
+  virtual void DoControlAction() override;
+  virtual void SetTradeBidControlBitmap() override;
+  virtual void SetTradeOfferControlBitmap() override;
+  virtual void SetTradeOfferSecondaryBitmap() override;
+  virtual int vmethod_0115() override;
+  virtual void ApplyMoveValue(int value) override;
   void SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag);
 };

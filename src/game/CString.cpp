@@ -24,7 +24,7 @@ static SharedStringHeader* GetSharedStringHeader(int data_ptr) {
   return reinterpret_cast<SharedStringHeader*>(data_ptr - kSharedStringHeaderSize);
 }
 
-static __inline int PtrToInt(const void* ptr) {
+static __inline int LocalPtrToInt(const void* ptr) {
   return static_cast<int>(reinterpret_cast<unsigned long>(ptr));
 }
 
@@ -63,7 +63,7 @@ void CString::AllocateBufferForLength(int text_length) {
   header->text_length = text_length;
   header->capacity = text_length;
   reinterpret_cast<char*>(header)[kSharedStringHeaderSize + text_length] = '\0';
-  data_ptr = PtrToInt(header + 1);
+  data_ptr = LocalPtrToInt(header + 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00605791
@@ -96,7 +96,7 @@ void __stdcall DecrementSharedStringRefCountAndFree(LONG* ref_count_ptr) {
   if (ref_count_ptr != reinterpret_cast<LONG*>(kSharedEmptyHeaderAddr)) {
     LONG ref_count = InterlockedDecrement(ref_count_ptr);
     if (ref_count < 1) {
-      FreeHeapBufferIfNotNull(PtrToInt(ref_count_ptr));
+      FreeHeapBufferIfNotNull(LocalPtrToInt(ref_count_ptr));
     }
   }
 }
@@ -106,7 +106,7 @@ void __stdcall DecrementSharedStringRefCountAndFree(LONG* ref_count_ptr) {
 // FUNCTION: IMPERIALISM 0x0060588b
 void CString::EnsureUniqueSharedStringBuffer() {
   int old_data_ptr = data_ptr;
-  SharedStringHeader* old_header = Header;
+  SharedStringHeader* old_header = Header();
   if (old_header->ref_count > 1) {
     int old_text_length = old_header->text_length;
     this->~CString();
@@ -119,7 +119,7 @@ void CString::EnsureUniqueSharedStringBuffer() {
 
 // FUNCTION: IMPERIALISM 0x006058b9
 void CString::EnsureCapacityOrAllocate(int required_capacity) {
-  SharedStringHeader* header = Header;
+  SharedStringHeader* header = Header();
   if ((header->ref_count > 1) || (header->capacity < required_capacity)) {
     this->~CString();
     AllocateBufferForLength(required_capacity);
@@ -132,7 +132,7 @@ CString::~CString() {
   if (ref_count_ptr != reinterpret_cast<LONG*>(kSharedEmptyHeaderAddr)) {
     LONG ref_count = InterlockedDecrement(ref_count_ptr);
     if (ref_count < 1) {
-      FreeHeapBufferIfNotNull(PtrToInt(ref_count_ptr));
+      FreeHeapBufferIfNotNull(LocalPtrToInt(ref_count_ptr));
     }
   }
 }
@@ -169,7 +169,7 @@ void CString::CopyBufferAndSetLength(int new_length, const char* src_text) {
   reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
       data_ptr, src_text, new_length);
 
-  SharedStringHeader* header = Header;
+  SharedStringHeader* header = Header();
   header->text_length = new_length;
   reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
 }
@@ -287,12 +287,12 @@ void CString::AppendBuffer(int append_len, const char* append_text) {
   }
 
   int old_data_ptr = data_ptr;
-  SharedStringHeader* header = Header;
+  SharedStringHeader* header = Header();
 
   if ((header->ref_count < 2) && (append_len + header->text_length <= header->capacity)) {
     reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
         data_ptr + header->text_length, append_text, append_len);
-    header = Header;
+    header = Header();
     header->text_length += append_len;
     reinterpret_cast<char*>(data_ptr)[header->text_length] = '\0';
     return;
@@ -337,7 +337,7 @@ CString* CString::AssignFromSharedRef(const CString& src_ref) {
 // FUNCTION: IMPERIALISM 0x00605d22
 int CString::EnsureCapacityPreserveLength(int min_capacity) {
   int old_data_ptr = data_ptr;
-  SharedStringHeader* old_header = Header;
+  SharedStringHeader* old_header = Header();
 
   if ((old_header->ref_count > 1) || (old_header->capacity < min_capacity)) {
     int old_length = old_header->text_length;

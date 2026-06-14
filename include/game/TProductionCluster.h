@@ -6,7 +6,6 @@
 
 struct CRuntimeClass;
 struct PanelEventPayload;
-enum EArrowSplitCommandId;
 
 // VTABLE: IMPERIALISM 0x6653c8
 class TProductionCluster : public TUberCluster {
@@ -21,9 +20,9 @@ public:
   virtual ~TProductionCluster();
   CRuntimeClass* GetRuntimeClass() override;
 
-  virtual void ApplyMoveValue(int value);
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
-  virtual int GetControlFlag(int value90 = 0, int value94 = 0);
+  virtual void ApplyMoveValue(int value) override;
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
+  virtual int GetControlFlag(int value90 = 0, int value94 = 0) override;
   void HandleValuePanelSplitArrowCommand(int commandId, void* eventArg, int eventExtra);
 };
 

@@ -17,7 +17,7 @@ public:
   CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
-  virtual void ApplyMoveValue(int value);
+  virtual void ApplyMoveValue(int value) override;
 
   void SelectTradeSpecialCommodityAndInitializeControls();
   void HandleTradeMoveArrowControlEvent(int commandId, TAmtBar* sourceControl, int eventExtra);

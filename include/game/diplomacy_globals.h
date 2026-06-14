@@ -27,5 +27,4 @@ extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
 extern void* g_pGlobalUiRootController;
 extern void* g_pGameFlowState;
 extern TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager;
-extern TDealList* g_pNationInteractionStateManager;
 }

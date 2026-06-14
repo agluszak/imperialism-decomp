@@ -150,7 +150,7 @@ void TTwoPicSlider::TrackTwoPicSliderMouseAndRefresh(int inputPhase, void* param
       sliderRect.top = 0;
       sliderRect.right = slider->field34;
       sliderRect.bottom = slider->field38;
-      slider->ApplyRectSlot110(&sliderRect.left);
+      slider->ApplyRectSlot110(&sliderRect);
 
       if (slider->mode == 1) {
         int volumeScalar = SliderScaledValue(slider, 0xff);

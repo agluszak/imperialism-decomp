@@ -53,7 +53,7 @@ void TOneTimeAnimation::AdvanceOneTimeAnimationFrameAndInvalidateTargetRect() {
 
       RECT renderRect;
       CopyRect(&renderRect, &targetRect);
-      reinterpret_cast<TView*>(scopedRenderTarget)->ApplyRectSlot110(&renderRect.left);
+      reinterpret_cast<TView*>(scopedRenderTarget)->ApplyRectSlot110(&renderRect);
 
       frameTick = 0;
       if (currentFrame < frameCount - 1) {

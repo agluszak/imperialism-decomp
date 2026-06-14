@@ -66,7 +66,7 @@ void TShipAmtBar::DrawAmt() {
     if (control->IsActionable() != 0) {
       RECT boundsRect = {0, 0, 0, 0};
       control->QueryBounds(&boundsRect);
-      ApplyRectClipRegion(reinterpret_cast<int*>(&boundsRect));
+      ApplyRectClipRegion(&boundsRect);
       control->QueryBounds(&boundsRect);
       control->vmethod_0078();
 

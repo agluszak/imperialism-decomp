@@ -82,7 +82,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   }
 
   this->QueryContentBounds(&contentBounds);
-  ApplyRectClipRegion(reinterpret_cast<int*>(&contentBounds));
+  ApplyRectClipRegion(&contentBounds);
 
   this->QueryBounds(&frameBounds);
 

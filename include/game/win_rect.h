@@ -1,14 +1,17 @@
 #pragma once
 
-// Win32 RECT plus the two USER32 rect helpers used throughout the widget code.
-// Extracted from ui_widget_shared.h.
+#define NOGDI
+#define NOUSER
+#include <windows.h>
+#undef NOGDI
+#undef NOUSER
 
-struct RECT {
-  int left;
-  int top;
-  int right;
-  int bottom;
-};
+#ifdef CopyMemory
+#undef CopyMemory
+#endif
+#ifdef MoveMemory
+#undef MoveMemory
+#endif
 
 extern "C" int __stdcall CopyRect(RECT* destination, const RECT* source);
 extern "C" int __stdcall OffsetRect(RECT* rect, int dx, int dy);

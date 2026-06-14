@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TCommand.h"
+#include <stddef.h>
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 

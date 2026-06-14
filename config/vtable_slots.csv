@@ -61,10 +61,10 @@ src/game/TView.cpp|VCall_TView_DeleteSelfSlot01|void|1|int|high|TView delete sel
 src/game/TTransFocusAnimation.cpp|VCall_FocusAnimationView_RenderSlotF8|void|0xF8 / 4||medium|trans-focus scoped render target slot|index|thiscall|none||provisional|FocusAnimationRenderTarget
 src/game/TFocusAnimation.cpp|VCall_FocusAnimation_CallSlot2C|void|0x2C / 4|int*|medium|focus animation completion/update slot|index|thiscall|none||provisional|TFocusAnimation
 src/game/TFocusAnimation.cpp|VCall_FocusAnimationView_PostRenderSlotFC|void|0xFC / 4||medium|focus animation scoped render post slot|index|thiscall|none||provisional|FocusAnimationRenderTarget
-src/game/TOneTimeAnimation.cpp|VCall_FocusAnimationView_ApplyRectSlot110|void|0x110 / 4|int*|medium|focus animation render target rect apply slot|index|thiscall|none||provisional|FocusAnimationRenderTarget
+src/game/TOneTimeAnimation.cpp|VCall_FocusAnimationView_ApplyRectSlot110|void|0x110 / 4|RECT*|medium|focus animation render target rect apply slot|index|thiscall|none||provisional|FocusAnimationRenderTarget
 src/game/TTransFocusAnimation.cpp|VCall_TransFocusAnimation_CallSlot2C|void|0x2C / 4|int*|medium|trans-focus completion/update slot|index|thiscall|none||provisional|TTransFocusAnimation
 src/game/TCityProductionView.cpp|VCall_QuickDrawTarget_QueryBoundsSlot12C|void|0x12C / 4|int*|medium|temporary-surface target bounds query|index|thiscall|none||provisional|QuickDrawRenderTarget
-src/game/TCityProductionView.cpp|VCall_QuickDrawTarget_ApplyRectSlot110|void|0x110 / 4|int*|medium|temporary-surface target rect apply|index|thiscall|none||provisional|QuickDrawRenderTarget
+src/game/TCityProductionView.cpp|VCall_QuickDrawTarget_ApplyRectSlot110|void|0x110 / 4|RECT*|medium|temporary-surface target rect apply|index|thiscall|none||provisional|QuickDrawRenderTarget
 src/game/TDiplomacyMapView.cpp|VCall_DiplomacyLegend_DrawTerrainSlot1E0|void|0x1E0 / 4|int,int|medium|diplomacy legend terrain/minor draw slot with index and label selector|index|thiscall|none||provisional|TDiplomacyMapView
 src/game/TDiplomacyMapView.cpp|VCall_UiRuntime_ApplyLegendSplitSlot34|void|0x34 / 4|int|medium|runtime legend split/update slot selector|index|thiscall|none|||UiRuntimeContext
 src/game/TDiplomacyMapView.cpp|VCall_StrategicMap_GetFrameRegionSlot98|void*|0x98 / 4|int|medium|strategic map frame region query by view selector|index|thiscall|none||provisional|StrategicMapViewSystem

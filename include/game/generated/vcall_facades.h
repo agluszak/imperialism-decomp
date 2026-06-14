@@ -3,6 +3,7 @@
 #pragma once
 
 #include "game/vcall_runtime.h"
+#include "game/win_rect.h"
 
 // class=TBoycottButton; status=provisional
 static __inline void VCall_TBoycottButton_Slot1C8(void* object, int arg0, int arg1) {
@@ -26,8 +27,8 @@ static __inline void* VCall_TBoycottButton_Slot94(void* object, int arg0, int ar
 }
 
 // temporary-surface target rect apply; class=QuickDrawRenderTarget; status=provisional
-static __inline void VCall_QuickDrawTarget_ApplyRectSlot110(void* object, int* arg0) {
-  typedef void (__fastcall * Fn)(void*, int*);
+static __inline void VCall_QuickDrawTarget_ApplyRectSlot110(void* object, RECT* arg0) {
+  typedef void (__fastcall * Fn)(void*, RECT*);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x110 / 4)));
   fn(object, arg0);
 }
@@ -523,8 +524,8 @@ static __inline char VCall_UiRuntime_RequestDiplomacyDecisionSlot90(void* object
 }
 
 // focus animation render target rect apply slot; class=FocusAnimationRenderTarget; status=provisional
-static __inline void VCall_FocusAnimationView_ApplyRectSlot110(void* object, int* arg0) {
-  typedef void (__fastcall * Fn)(void*, int*);
+static __inline void VCall_FocusAnimationView_ApplyRectSlot110(void* object, RECT* arg0) {
+  typedef void (__fastcall * Fn)(void*, RECT*);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x110 / 4)));
   fn(object, arg0);
 }

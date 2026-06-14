@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "decomp_types.h"
 #include "game/TEventHandler.h"
 #include "game/CString.h"
@@ -38,7 +39,7 @@ public:
   int field5c;
 
   TView();
-  void InvalidateCityDialogRectRegion(struct RECT* rect, int flag);
+  void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyCityDialogStateFromSource(TView* source);
   void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
   void RefreshCityProductionViewStateFromContext(int* clipRegionWrapper);
@@ -46,10 +47,10 @@ public:
   void PropagateUiResourceContextRecursive(TViewNativeWindow* nativeWindow);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
-  virtual CRuntimeClass* GetRuntimeClass();                       // 0x00 0x48a8c0 (override)
-  virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject();    // 0x07
+  virtual CRuntimeClass* GetRuntimeClass() override;                       // 0x00 0x48a8c0 (override)
+  virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject() override;    // 0x07
   virtual void* CloneEngineerDialogStateToNewInstance() override; // 0x08 0x48bfd0
-  virtual class TView* OwnerPanel();                              // 0x16 0x48b180
+  virtual class TView* OwnerPanel() override;                              // 0x16 0x48b180
 
   // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
   // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
@@ -68,7 +69,7 @@ public:
   virtual int QuerySelectedIndexSlotBC();                               // 0x2f
   virtual void vmethod_0044();                                          // 0x30
   virtual void ForwardMapViewVirtualC4IfPresent(int param);             // 0x31 0x48ab90
-  virtual void ValidateControlRectIfWindowActive(struct RECT* rect);    // 0x32 0x48b690
+  virtual void ValidateControlRectIfWindowActive(RECT* rect);    // 0x32 0x48b690
   virtual char EvaluateControlInputGate();                              // 0x33 0x48c000
   virtual char HasRenderableParentAndContent();                         // 0x34 0x48c050
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point,
@@ -86,9 +87,9 @@ public:
   virtual int BindMapQuickDrawDc(int arg);                                      // 0x40 0x48b7b0
   virtual void ReleaseMapQuickDrawDc(int arg);                                  // 0x41 0x48b7e0
   virtual void EnsureField48Buffer();                                           // 0x42 0x48b810
-  virtual void PaintVisibleChildrenIntersectingClipRect(struct RECT* clipRect,
+  virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect,
                                                         int bindArg); // 0x43 0x48b8d0
-  virtual void ApplyRectSlot110(int* rectBuffer);                     // 0x44
+  virtual void ApplyRectSlot110(RECT* rectBuffer);                     // 0x44
   virtual void vmethod_0048(int arg = 0);                             // 0x45
   virtual char DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3,
                                              int arg4);              // 0x46 0x48c450
@@ -98,19 +99,19 @@ public:
   virtual char vmethod_0071(Point32* point, int arg2, int arg3, int arg4);   // 0x49
   virtual void QueryContentBounds(RECT* boundsOut);                          // 0x4a 0x427260
   virtual void QueryBounds(RECT* boundsOut);                                 // 0x4b 0x427290
-  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(struct RECT* rect); // 0x4c 0x4272d0
+  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect); // 0x4c 0x4272d0
   virtual void vmethod_0076(int* point = 0);                                 // 0x4d 0x48ba80
   virtual void vmethod_0078(int* point = 0);                                 // 0x4e 0x48ba40
   virtual void InvokeSlot13C();                                              // 0x4f 0x48b700
-  virtual void OffsetRectByControlPosition(struct RECT* rect);               // 0x50 0x48bb00
+  virtual void OffsetRectByControlPosition(RECT* rect);               // 0x50 0x48bb00
   virtual void UpdateAfterBitmapChange(int unknownFlag);                     // 0x51
   virtual Point32 TransformPointViaSlot138(Point32* inPoint);
-  virtual struct RECT TransformRectViaSlot148(struct RECT* inRect);
+  virtual RECT TransformRectViaSlot148(RECT* inRect);
   virtual void AddControlPosToPoint(int x, int y, int* outPoint);
-  virtual void OffsetRectByCachedPos(struct RECT* inRect, struct RECT* outRect);
+  virtual void OffsetRectByCachedPos(RECT* inRect, RECT* outRect);
   virtual int* GetCachedPosPoint(int* outPoint);
   virtual void CopyRectFromBuildRectFromSlot158(RECT* rectOut); // 0x57 0x429410
-  virtual struct RECT BuildRectFromSlot158();
+  virtual RECT BuildRectFromSlot158();
   virtual void vmethod_0089();
   virtual void ApplyBounds(RECT* newBounds, int modeFlag);
   virtual char PointInBoundsAndActionable(Point32* point);

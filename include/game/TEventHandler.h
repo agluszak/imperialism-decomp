@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "decomp_types.h"
 #include "game/CRuntimeClass.h"
 #include "game/TObject.h"
@@ -35,7 +36,7 @@ public:
   // hierarchy is MFC DECLARE_DYNAMIC rooted at CObject). Every descendant overrides it
   // to return its own CRuntimeClass descriptor. See CRuntimeClass chain
   // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
-  virtual CRuntimeClass* GetRuntimeClass();                    // 0x00 0x48a0e0
+  virtual CRuntimeClass* GetRuntimeClass() override;                    // 0x00 0x48a0e0
   virtual ~TEventHandler();                                    // 0x01
   void Serialize(CArchive* archive) override;                  // 0x02 0x485e90
   virtual void HandleCityDialogNoOpSlot14(int arg);            // 0x05 0x485f70

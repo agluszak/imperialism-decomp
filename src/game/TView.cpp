@@ -14,16 +14,16 @@
 #include "game/mcappui_globals.h"
 #include "game/generated/vcall_facades.h"
 
-extern "C" int __stdcall ValidateRect(void* hWnd, const struct RECT* rect);
+extern "C" int __stdcall ValidateRect(void* hWnd, const RECT* rect);
 extern "C" __declspec(dllimport) int __stdcall UpdateWindow(void* hWnd);
 extern "C" int __stdcall Rectangle(void* hdc, int left, int top, int right, int bottom);
-extern "C" __declspec(dllimport) int __stdcall PtInRect(const struct RECT* rect, Point32 pt);
-extern "C" __declspec(dllimport) int __stdcall UnionRect(struct RECT* dest, const struct RECT* src1,
-                                                         const struct RECT* src2);
-extern "C" __declspec(dllimport) int __stdcall InvalidateRect(void* hWnd, const struct RECT* rect,
+extern "C" __declspec(dllimport) int __stdcall PtInRect(const RECT* rect, Point32 pt);
+extern "C" __declspec(dllimport) int __stdcall UnionRect(RECT* dest, const RECT* src1,
+                                                         const RECT* src2);
+extern "C" __declspec(dllimport) int __stdcall InvalidateRect(void* hWnd, const RECT* rect,
                                                               int erase);
-extern "C" __declspec(dllimport) int __stdcall EqualRect(const struct RECT* rect1,
-                                                         const struct RECT* rect2);
+extern "C" __declspec(dllimport) int __stdcall EqualRect(const RECT* rect1,
+                                                         const RECT* rect2);
 
 // Generic thunk/hook decls kept in repo form (rule 9): typed function-pointer casts at
 // the callsite rather than changing the thunk declaration signature.
@@ -269,7 +269,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, 
   (void)point;
   (void)hitArg;
 }
-void TView::PaintVisibleChildrenIntersectingClipRect(struct RECT* clipRect, int bindArg) {
+void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) {
   (void)clipRect;
   (void)bindArg;
 }
@@ -296,7 +296,7 @@ void TView::ForwardMapViewVirtualC4IfPresent(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048b690
-void TView::ValidateControlRectIfWindowActive(struct RECT* rect) {
+void TView::ValidateControlRectIfWindowActive(RECT* rect) {
   if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
     ValidateRect(nativeWindow50->hwnd, rect);
   }
@@ -453,7 +453,7 @@ void TView::EnsureField48Buffer() {
 void TView::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
   (void)point;
 }
-void TView::ApplyRectSlot110(int* rectBuffer) {}
+void TView::ApplyRectSlot110(RECT* rectBuffer) {}
 void TView::UpdateAfterBitmapChange(int unknownFlag) {}
 char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4) {
   (void)point;
@@ -478,12 +478,12 @@ char TView::vmethod_0071(Point32* point, int arg2, int arg3, int arg4) {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x004272d0
-void TView::DispatchVslot134WithRectAndRectPlus8_Impl(struct RECT* rect) {
+void TView::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {
   vmethod_0076(reinterpret_cast<int*>(&rect->left));
   vmethod_0076(reinterpret_cast<int*>(&rect->right));
 }
 // FUNCTION: IMPERIALISM 0x0048b5f0
-void TView::InvalidateCityDialogRectRegion(struct RECT* rect, int flag) {
+void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
   (void)flag;
   if (nativeWindow50 == 0 || nativeWindow50->hwnd == 0) {
     return;
@@ -530,7 +530,7 @@ void TView::vmethod_0076(int* point) {
 }
 // Offset a rect by this control's owner offset (its position within the owner).
 // FUNCTION: IMPERIALISM 0x0048bb00
-void TView::OffsetRectByControlPosition(struct RECT* rect) {
+void TView::OffsetRectByControlPosition(RECT* rect) {
   OffsetRect(rect, ownerOffsetX, ownerOffsetY);
 }
 // Translate a point into the owner's space (add this view's owner offset) and forward up
@@ -586,7 +586,7 @@ Point32 TView::TransformPointViaSlot138(Point32* inPoint) {
 // Transform a rect: carry its width/height, map its top-left corner through slot 0x52,
 // and rebuild the rect at the transformed origin.
 // FUNCTION: IMPERIALISM 0x0048bbb0
-struct RECT TView::TransformRectViaSlot148(struct RECT* inRect) {
+RECT TView::TransformRectViaSlot148(RECT* inRect) {
   int width = inRect->right - inRect->left;
   int height = inRect->bottom - inRect->top;
   Point32 corner;
@@ -608,7 +608,7 @@ void TView::AddControlPosToPoint(int x, int y, int* outPoint) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048bc60
-void TView::OffsetRectByCachedPos(struct RECT* inRect, struct RECT* outRect) {
+void TView::OffsetRectByCachedPos(RECT* inRect, RECT* outRect) {
   RECT local;
   local.left = inRect->left;
   local.top = inRect->top;
@@ -669,7 +669,7 @@ void TView::CopyRectFromBuildRectFromSlot158(RECT* rectOut) {
 // Build a rect from the slot-0x56 cached position (top-left) plus the cached size held
 // in field34/field38.
 // FUNCTION: IMPERIALISM 0x0048bce0
-struct RECT TView::BuildRectFromSlot158() {
+RECT TView::BuildRectFromSlot158() {
   int width = field34;
   int height = field38;
   Point32 origin;

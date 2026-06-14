@@ -17,9 +17,9 @@ public:
   CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
-  virtual void ApplyMoveValue(int value);
-  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
-  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);
+  virtual void ApplyMoveValue(int value) override;
+  virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
+  virtual int GetControlFlag(int arg1 = 0, int arg2 = 0) override;
 
   void SelectTradeCommodityPresetBySummaryTagAndInitControls(short recordIndex);
 };

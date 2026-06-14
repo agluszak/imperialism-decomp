@@ -18,6 +18,7 @@ public:
   int commandTagDefaultParam0;
   int commandTagDefaultParam1;
   unsigned short commandTagDefaultParam2;
+  unsigned char padding_82[2];
 
   TControl();
   virtual CRuntimeClass* GetRuntimeClass(); // 0x00 0x48e500 (override)
@@ -34,7 +35,7 @@ public:
   virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point);
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
                                                          int arg4);
-  virtual void PaintVisibleChildrenIntersectingClipRect(struct RECT* clipRect, int bindArg);
+  virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg);
 
   // TControl-branch slots 0x1A0-0x1BC (104-111), formerly mis-declared on TView.
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
