@@ -2,8 +2,8 @@
 
 #define TLOCALIZATION_VTABLE_SLOT(n) virtual void LocalizationDummy##n(void) = 0
 
-// VTABLE: IMPERIALISM 0x00662a58
 // Ghidra class TSimMgr; global instance g_pLocalizationTable @ 0x6a20f8.
+// VTABLE: IMPERIALISM 0x00662a58
 class TLocalizationRuntime {
 public:
   virtual void* GetClassDescDynamic() = 0;

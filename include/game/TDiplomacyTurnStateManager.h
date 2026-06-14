@@ -4,19 +4,18 @@
 
 class TSortedPtrList;
 
-// VTABLE: IMPERIALISM 0x00654d90
-// MFC-style diplomacy backend. The global TTDiplomacyTurnStateManager (vtable
-// 0x00654d90) holds the per-nation-pair relation / standing / propagation
-// matrices and the per-turn relationship-processing logic. Concrete virtual
-// slots model its native vtable; the non-virtual methods are the recovered
-// behaviour. Constructed once and reached via g_pTDiplomacyTurnStateManager.
-
 enum {
   kDiplomacyPairMatrixEntries = 0x180,
   kNationSlotCount = 0x17,
   kNationPairMatrixEntries = kNationSlotCount * kNationSlotCount
 };
 
+// MFC-style diplomacy backend. The global TTDiplomacyTurnStateManager (vtable
+// 0x00654d90) holds the per-nation-pair relation / standing / propagation
+// matrices and the per-turn relationship-processing logic. Concrete virtual
+// slots model its native vtable; the non-virtual methods are the recovered
+// behaviour. Constructed once and reached via g_pTDiplomacyTurnStateManager.
+// VTABLE: IMPERIALISM 0x00654d90
 struct TDiplomacyTurnStateManager {
   // Native virtual functions layout
   virtual void slot_00(); // 0 (0x00)

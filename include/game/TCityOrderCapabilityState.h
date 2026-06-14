@@ -2,8 +2,8 @@
 
 #include "decomp_types.h"
 
-// VTABLE: IMPERIALISM 0x0066ad28
 // Global city-order capability table (singleton g_pCityOrderCapabilityState @ 0x006A43D8).
+// VTABLE: IMPERIALISM 0x0066ad28
 class TCityOrderCapabilityState {
 public:
   unsigned char pad000[0x193];

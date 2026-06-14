@@ -9,13 +9,13 @@
 #include "game/Point32.h"
 #include "game/win_rect.h"
 
-// VTABLE: IMPERIALISM 0x649858
 //
 // TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
 // from TEventHandler. It overrides only the few base slots whose vtable bodies differ
 // (0x07 ReleaseRuntimeSelectionOwnerAndDestroyObject, 0x08 CloneEngineerDialogStateToNewInstance,
 // 0x16 OwnerPanel) and introduces its own virtuals at slot 0x25+ (declared below in exact vtable
 // slot order). See include/game/TEventHandler.h and memory tview-vtable-slot-scramble.
+// VTABLE: IMPERIALISM 0x649858
 class TView : public TEventHandler {
 public:
   class TView* ownerContext; // 0x20

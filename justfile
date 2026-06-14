@@ -131,6 +131,10 @@ normalize-markers:
 marker-gate:
   uv run python -m tools.workflow.check_marker_hygiene --paths src include
 
+# Ensure every `// VTABLE:` annotation is immediately followed by its class/struct.
+vtable-annotation-gate:
+  uv run python -m tools.workflow.check_vtable_annotations --paths src include
+
 antipattern-gate:
   uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}"
 
@@ -144,6 +148,7 @@ gates:
   just vtable-gate
   just antipattern-gate
   just marker-gate
+  just vtable-annotation-gate
 
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
@@ -196,8 +201,19 @@ compare *args:
   fi
 
 # Compare vtable layouts against the original.
+#   just vtable          -> all vtables
+#   just vtable TSound   -> only vtables whose name contains "TSound"
+#   just vtable -v        -> pass through reccmp-vtable flags (e.g. --verbose)
 vtable *args:
-  (cd "{{build_dir}}" && uv run reccmp-vtable --target "{{target}}" {{args}})
+  #!/usr/bin/env bash
+  set -euo pipefail
+  args=({{args}})
+  extra=()
+  if [[ ${#args[@]} -gt 0 && "${args[0]}" != -* ]]; then
+    extra=(--filter "${args[0]}")
+    args=("${args[@]:1}")
+  fi
+  (cd "{{build_dir}}" && uv run reccmp-vtable --target "{{target}}" "${extra[@]}" "${args[@]}")
 
 compare-canaries:
   uv run python -m tools.reccmp.compare_canaries --target "{{target}}" --build-dir "{{build_dir}}" --canary-csv "{{canary_targets}}"

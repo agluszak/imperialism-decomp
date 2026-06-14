@@ -3,7 +3,6 @@
 #include "compat.h"
 #include "decomp_types.h"
 
-// VTABLE: IMPERIALISM 0x00648e28
 // TObject-family command base (its MFC RTTI classdesc follows the vtable in
 // .rdata). Modeled as a standalone polymorphic class because its constructor
 // (0x00487820) is self-contained: it installs the 0x648e28 vtable and zeroes its
@@ -11,6 +10,7 @@
 // slots model the native vtable shape (0x00-0x2c); slots 2-10 are shared with the
 // TNextTradeCommand override, which only replaces slots 0/1/11. Bodies are
 // vtable-shape placeholders.
+// VTABLE: IMPERIALISM 0x00648e28
 class TCommand {
 public:
   int field04; // 0x04

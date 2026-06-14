@@ -5,12 +5,12 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-// VTABLE: IMPERIALISM 0x00654e50
 // The 'NeXT' (0x4E655854) turn-event command enqueued onto the UI root
 // controller. Real inheritance from TCommand: the base constructor installs the
 // 0x648e28 vtable, then this class's constructor installs 0x654e50 — reproducing
 // the original two-stage vptr write without any manual vtable store. It overrides
 // only slots 0, 1 and 11 (0x2c); slots 2-10 are inherited from TCommand.
+// VTABLE: IMPERIALISM 0x00654e50
 class TNextTradeCommand : public TCommand {
 public:
   TNextTradeCommand();

@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TPictureButton.h"
 
-// VTABLE: IMPERIALISM 0x663540
 // TEMP: recover TUpDownPictureButton as the real base before ctor/SYNTHETIC dtor work.
+// VTABLE: IMPERIALISM 0x663540
 class TSidewaysArrow : public TPictureButton {
 public:
   int repeatDeadlineTick; // 0x94

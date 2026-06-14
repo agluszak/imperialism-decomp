@@ -8,8 +8,9 @@ class TCity;
 
 // Map-order runtime singleton (g_pActiveMapOrderContext @ 0x6a3fbc).
 // Ghidra historically labeled this InputState for container-level methods.
-// VTABLE: IMPERIALISM 0x0065c7c8 (stub installed at allocation; full zone family
-// uses TZone vtable 0x0065c6d8 on constructed nodes).
+// Vtable 0x0065c7c8 is a stub installed at allocation; the full zone family
+// uses TZone vtable 0x0065c6d8 on constructed nodes.
+// VTABLE: IMPERIALISM 0x0065c7c8
 class TMapOrderContext {
 public:
   short nationCount;           // +0x04

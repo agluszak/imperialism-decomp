@@ -11,9 +11,9 @@ class TCity;
 #define TGREATPOWER_VTABLE_SLOT(n)                                                                 \
   virtual void VTableIndex##n##_Provisional(void) {}
 
-// VTABLE: IMPERIALISM 0x00653938
 // Runtime vtable is standalone (slots 0–4 are nation-specific; slots 3–4 share
 // CObject no-op thunks). Dtor @ 0x004d8c50 restores 0x0066fec4 for EH only.
+// VTABLE: IMPERIALISM 0x00653938
 class TGreatPower {
 public:
   TGREATPOWER_VTABLE_SLOT(00);

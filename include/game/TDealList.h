@@ -8,8 +8,8 @@ struct CArchive;
 
 #define TDEALLIST_VTABLE_SLOT(n) virtual void VTableIndex##n##_Provisional(void) {}
 
-// VTABLE: IMPERIALISM 0x0066d990
 // Mac oracle: TDealList (nation interaction / proposal weight manager).
+// VTABLE: IMPERIALISM 0x0066d990
 class TDealList : public CObject {
 public:
   struct NationMetricCategoryRow {

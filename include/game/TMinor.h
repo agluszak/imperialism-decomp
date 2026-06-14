@@ -8,10 +8,10 @@ struct TPtrList;
 #define TMINOR_VTABLE_SLOT(n)                                                                      \
   virtual void TMinorDummy##n(void) {}
 
-// VTABLE: IMPERIALISM 0x00653c90
 // Mac TMinor / Windows terrain+minor rows (g_apTerrainTypeDescriptorTable,
 // g_apSecondaryNationStateSlots). RTTI: g_pClassDescTMinor @ 0x006536a0. No separate g_vtblTMinor —
 // this vtable is the only one.
+// VTABLE: IMPERIALISM 0x00653c90
 class TMinor {
 public:
   TMinor();
