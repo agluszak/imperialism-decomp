@@ -3099,14 +3099,6 @@ undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void)
   return 0;
 }
 
-// ghidra_name TradeControl::CanHandleCityDialogActionFalse
-// ghidra_proto undefined CanHandleCityDialogActionFalse()
-// FUNCTION: IMPERIALISM 0x0048a480
-undefined4 CanHandleCityDialogActionFalse(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::DetachActiveCityProductionChildIfMatches
 // ghidra_proto undefined DetachActiveCityProductionChildIfMatches()
 // FUNCTION: IMPERIALISM 0x0048a4a0
@@ -3119,22 +3111,6 @@ undefined4 DetachActiveCityProductionChildIfMatches(void)
 // ghidra_proto undefined IsCurrentActiveCityProductionView()
 // FUNCTION: IMPERIALISM 0x0048a500
 undefined4 IsCurrentActiveCityProductionView(void)
-{
-  return 0;
-}
-
-// ghidra_name TradeControl::CanStartCityProductionActionFalse
-// ghidra_proto undefined CanStartCityProductionActionFalse()
-// FUNCTION: IMPERIALISM 0x0048a530
-undefined4 CanStartCityProductionActionFalse(void)
-{
-  return 0;
-}
-
-// ghidra_name ActivateCityProductionViewIfAllowed
-// ghidra_proto undefined ActivateCityProductionViewIfAllowed()
-// FUNCTION: IMPERIALISM 0x0048a570
-undefined4 ActivateCityProductionViewIfAllowed(void)
 {
   return 0;
 }
@@ -3247,14 +3223,6 @@ undefined4 SetUiControlVisibleFlagAndMaybeRefreshWindow(void)
 // ghidra_proto undefined CloseCityDialogChildrenAndReleaseSelf()
 // FUNCTION: IMPERIALISM 0x0048b0b0
 undefined4 CloseCityDialogChildrenAndReleaseSelf(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::GetCityDialogValueViaChildSlot58
-// ghidra_proto undefined GetCityDialogValueViaChildSlot58()
-// FUNCTION: IMPERIALISM 0x0048b180
-undefined4 GetCityDialogValueViaChildSlot58(void)
 {
   return 0;
 }

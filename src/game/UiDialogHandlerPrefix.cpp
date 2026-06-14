@@ -45,13 +45,17 @@ void UiDialogHandlerPrefix::vmethod_0017() {}
 void UiDialogHandlerPrefix::ForwardParam(int param) {
   (void)param;
 }
-void UiDialogHandlerPrefix::vmethod_0019() {}
+char UiDialogHandlerPrefix::vmethod_0019() {
+  return 0;
+}
 void UiDialogHandlerPrefix::vmethod_0020() {}
 void UiDialogHandlerPrefix::vmethod_0021() {}
 TView* UiDialogHandlerPrefix::OwnerPanel() {
   return 0;
 }
-void UiDialogHandlerPrefix::vmethod_0023() {}
+char UiDialogHandlerPrefix::vmethod_0023() {
+  return 0;
+}
 char UiDialogHandlerPrefix::vmethod_0024() {
   return 0;
 }
@@ -63,7 +67,9 @@ void UiDialogHandlerPrefix::vmethod_0027() {}
 void UiDialogHandlerPrefix::vmethod_0028() {}
 void UiDialogHandlerPrefix::vmethod_0029() {}
 void UiDialogHandlerPrefix::vmethod_0030() {}
-void UiDialogHandlerPrefix::vmethod_0031() {}
+char UiDialogHandlerPrefix::vmethod_0031() {
+  return 0;
+}
 char UiDialogHandlerPrefix::vmethod_0080() {
   return 0;
 }

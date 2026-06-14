@@ -14,7 +14,6 @@ undefined4 HandleStartupCommand100(void);
 undefined4 SetNumericEntryCheckedState(void);
 undefined4 ApplyCityDialogMinisterValues(void);
 undefined4 NoOpTurnEventStateVtableSlot8C(void);
-undefined4 ActivateCityProductionViewIfAllowed(void);
 undefined4 AssertCityProductionGlobalStateInitialized(void);
 undefined4 InvokeStrategicMapViewMethod5C(void);
 
@@ -93,11 +92,6 @@ void thunk_ApplyCityDialogMinisterValues(void) {
 // FUNCTION: IMPERIALISM 0x00401cdf
 void thunk_NoOpTurnEventStateVtableSlot8C(void) {
   NoOpTurnEventStateVtableSlot8C();
-}
-
-// FUNCTION: IMPERIALISM 0x00401e1f
-void thunk_ActivateCityProductionViewIfAllowed(void) {
-  ActivateCityProductionViewIfAllowed();
 }
 
 // FUNCTION: IMPERIALISM 0x00401e2e

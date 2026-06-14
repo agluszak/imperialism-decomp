@@ -87,13 +87,25 @@ void TView::vmethod_0015() {}
 void TView::DispatchEvent(int arg1, void* arg2, int arg3) {}
 void TView::vmethod_0017() {}
 void TView::ForwardParam(int param) {}
-void TView::vmethod_0019() {}
-void TView::vmethod_0020() {}
-void TView::vmethod_0021() {}
-TView* TView::OwnerPanel() {
+// FUNCTION: IMPERIALISM 0x0048a480
+char TView::vmethod_0019() {
   return 0;
 }
-void TView::vmethod_0023() {}
+void TView::vmethod_0020() {}
+void TView::vmethod_0021() {}
+// Walk up the owner chain: forward to the owner context's own slot-0x16 query, or 0
+// at the root. (One level above QueryOwnerContextPanel, which only hops once.)
+// FUNCTION: IMPERIALISM 0x0048b180
+TView* TView::OwnerPanel() {
+  if (ownerContext == 0) {
+    return 0;
+  }
+  return ownerContext->OwnerPanel();
+}
+// FUNCTION: IMPERIALISM 0x0048a530
+char TView::vmethod_0023() {
+  return 0;
+}
 // FUNCTION: IMPERIALISM 0x0048a550
 char TView::vmethod_0024() {
   return 0;
@@ -108,7 +120,20 @@ void TView::vmethod_0027() {}
 void TView::vmethod_0028() {}
 void TView::vmethod_0029() {}
 void TView::vmethod_0030() {}
-void TView::vmethod_0031() {}
+// Make this view the active view if allowed: already-active short-circuits to true;
+// otherwise the current active view must agree (slot 0x20) before we take over.
+// FUNCTION: IMPERIALISM 0x0048a570
+char TView::vmethod_0031() {
+  TView* active = g_pApplicationUiRootController->GetActiveView();
+  if (this == active) {
+    return 1;
+  }
+  if (active != 0 && active->vmethod_0080() != 0) {
+    g_pApplicationUiRootController->SetActiveView(this);
+    return 1;
+  }
+  return 0;
+}
 // FUNCTION: IMPERIALISM 0x0048a5e0
 char TView::vmethod_0080() {
   if (g_pApplicationUiRootController == 0) {

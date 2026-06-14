@@ -38,11 +38,11 @@ public:
   virtual void DispatchEvent(int arg1, void* arg2, int arg3);
   virtual void vmethod_0017();
   virtual void ForwardParam(int param);
-  virtual void vmethod_0019();
+  virtual char vmethod_0019();
   virtual void vmethod_0020();
   virtual void vmethod_0021();
   virtual TView* OwnerPanel();
-  virtual void vmethod_0023();
+  virtual char vmethod_0023();
   virtual char vmethod_0024();
   virtual void vmethod_0025();
   virtual void vmethod_0026(int gate);
@@ -50,7 +50,7 @@ public:
   virtual void vmethod_0028();
   virtual void vmethod_0029();
   virtual void vmethod_0030();
-  virtual void vmethod_0031();
+  virtual char vmethod_0031();
   virtual char vmethod_0080();
   virtual void vmethod_0081();
   virtual void vmethod_0032();
