@@ -17,6 +17,7 @@ extern TMinor* g_apTerrainTypeDescriptorTable[23];
 extern TMinor* g_apSecondaryNationStateSlots[36];
 // Parallel to g_apMinorNationCapabilityObjects[16] — aux runtime terrain rows.
 extern TMinor* g_apNationAuxRuntimeStateSlots[16];
+extern TMinor* g_apMinorNationCapabilityObjects[16];
 extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
 extern TLocalizationRuntime* g_pLocalizationTable;

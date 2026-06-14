@@ -1,6 +1,12 @@
 #include "game/TShip.h"
 
+#include "game/TAdmiral.h"
 #include "game/TGreatPower.h"
+#include "game/TZone.h"
+#include "game/GameAssert.h"
+#include "game/diplomacy_globals.h"
+#include "game/ui_invalidation_guard.h"
+#include "game/CString.h"
 
 #include <new>
 
@@ -66,6 +72,8 @@ void TShip::ConstructAndLinkNavyPrimaryOrderNode() {
   quantityFlag10 = 1;
   ownerNationSlot14 = static_cast<short>(-1);
   new (&displayName18) CString();
+  stockLevel1c = 0;
+  pad1e = 0;
   field20 = 0;
   nextOlder24 = g_pNavyPrimaryOrderListHead;
   prevNewer28 = 0;
@@ -108,13 +116,99 @@ int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
   int navyTerm = quantityTerm + 5 + g_Navy_Order_Priority_LookupTable_00698118[resourceType * 9] * 10;
   int resolveTerm =
       quantityTerm + 5 + g_Resolve_Map_Order_LookupTable_00698108[resourceType * 9] * 10;
-  short stockAt1c = *reinterpret_cast<short*>(reinterpret_cast<char*>(node) + 0x1c);
+  short stockAt1c = node->stockLevel1c;
   return (SignedDiv10(resolveTerm) +
           (SignedDiv10(navyTerm) + g_Calculate_Mission_Order_LookupTable_0069810C[resourceType * 9]) *
               100 +
           (int)stockAt1c) /
          (int)*(short*)(reinterpret_cast<char*>(&g_Task_Force_Order_LookupTable_00698110) +
                         resourceType * 0x24);
+}
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
+static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex) {
+  return reinterpret_cast<int*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
+                                  static_cast<int>(zoneIndex) * 0x24 + 0x10);
+}
+
+static short* NavyZoneOrderDescriptorStockCapPtr(short zoneIndex) {
+  return reinterpret_cast<short*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
+                                    static_cast<int>(zoneIndex) * 0x24 + 4);
+}
+
+// FUNCTION: IMPERIALISM 0x0054fbf0
+void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
+  do {
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
+        g_apTerrainTypeDescriptorTable[shipNode->resourceType04], &shipNode->displayName18);
+    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
+         existing = existing->nextOlder24) {
+      if (existing == shipNode) {
+        continue;
+      }
+      if (CompareAnsiStringsWithMbcsAwareness(
+              reinterpret_cast<unsigned char*>(existing->displayName18.data_ptr),
+              reinterpret_cast<unsigned char*>(shipNode->displayName18.data_ptr)) == 0) {
+        goto retry;
+      }
+    }
+    return;
+  retry:;
+  } while (1);
+}
+
+// FUNCTION: IMPERIALISM 0x0054f8e0
+TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* portZoneContext,
+                                                      int nationSlot, char* displayNameOverride) {
+  if (*NavyZoneOrderDescriptorEnabledFlagPtr(zoneIndex) < 0) {
+    return 0;
+  }
+
+  void* alloc = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x38));
+  TShip* shipNode = 0;
+  if (alloc != 0) {
+    shipNode = reinterpret_cast<TShip*>(alloc);
+    shipNode->ConstructAndLinkNavyPrimaryOrderNode();
+  }
+
+  if (shipNode == 0) {
+    GAME_FAIL_NIL_POINTER();
+    TemporarilyClearAndRestoreUiInvalidationFlag();
+    return 0;
+  }
+
+  shipNode->field08 = portZoneContext;
+  shipNode->resourceType04 = zoneIndex;
+  shipNode->ownerNationSlot14 = static_cast<short>(nationSlot);
+
+  if (displayNameOverride == 0) {
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
+        g_apTerrainTypeDescriptorTable[zoneIndex], &shipNode->displayName18);
+    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
+         existing = existing->nextOlder24) {
+      if (existing != shipNode &&
+          CompareAnsiStringsWithMbcsAwareness(
+              reinterpret_cast<unsigned char*>(existing->displayName18.data_ptr),
+              reinterpret_cast<unsigned char*>(shipNode->displayName18.data_ptr)) == 0) {
+        RegenerateNavyPrimaryOrderDisplayNameUntilUnique(shipNode);
+        break;
+      }
+    }
+  } else {
+    CString temp(displayNameOverride);
+    shipNode->displayName18.AssignFromPtr(temp);
+  }
+
+  shipNode->stockLevel1c = *NavyZoneOrderDescriptorStockCapPtr(zoneIndex);
+
+  if (portZoneContext != 0) {
+    portZoneContext->HandleKeyDown(nationSlot);
+  }
+
+  return shipNode;
 }
 
 #if defined(_MSC_VER)

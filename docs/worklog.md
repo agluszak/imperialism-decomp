@@ -1,5 +1,14 @@
 # Worklog
 
+- **Timestamp:** 2026-06-14 (cont.) — Navy primary order factory + flavor/string helpers
+- **Command:** Promoted `CreateNavyPrimaryOrderNodeAndAssignDisplayName` (`0x0054f8e0`), `RegenerateNavyPrimaryOrderDisplayNameUntilUnique` (`0x0054fbf0`), `TAdmiral::GenerateMappedFlavorTextByNationSlotField0C` (`0x004d7eb0`), `GenerateMappedFlavorTextByTableSlot` / `GenerateMappedFlavorTextUntilValidationPasses`, and `CompareAnsiStringsWithMbcsAwareness`. Removed `TGreatPower_internal.h` ILT wrapper; typed `TShip::stockLevel1c`. `just sync-ownership` → `just regen-stubs` → `just build` → `just compare`.
+- **Score Delta:** `0x0054f8e0` **38.96% → 35.96%**; `0x0054fbf0` **67.80%**; `0x005d46b0` **87.50%**; `0x005d4720` **87.43%**; `0x005e7980` **11.48%** (initial shape pass).
+- **Description:** Navy-primary call sites now use real cdecl/`__fastcall` helpers; variant generators inside `GenerateMappedFlavorTextUntilValidationPasses` remain stubs.
+
+- **Timestamp:** 2026-06-14 (cont.) — Pending-action FSM typed cleanup @ 0x004dab20
+- **Command:** De-reinterpret_cast pass on `ExecuteNationPendingActionStateMachine`: typed `TDiplomacyTurnStateManager::relationStandingScoreMatrix79c` + `TMinor` owner tags, direct `TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks`, `TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset`; promoted `0x00552250` + `0x00514c80`. Fixed `class`/`struct TPtrList` mangling break (`CIterator.h`, `TTerrainDescriptor.h`). `just build` → `just compare 0x004dab20`.
+- **Score Delta:** `0x004dab20` **~59% → 51.17%** (residual EH/stack-spill vs typed call shape; no pragma chase).
+
 - **Timestamp:** 2026-06-14 (cont.) — TGreatPower `relationManager` → `city` rename
 - **Command:** Renamed `TGreatPower::relationManager` → `city` (offset `0x894` unchanged); `GetCityState()` now returns `TCity*`. Trade UI uses new `GetNationTradeCityState()` cast-view helper in `trade_quickdraw.h`. Updated `TAutoGreatPower`, pending-action, map-order, and trade cluster/bar call sites. `just build` → `just compare-canaries`.
 - **Score Delta:** Rename-only; no targeted reccmp runs. Canaries unchanged (**below_floor=2**, same pre-existing `0x004e9060` / `0x004e9ed0` gaps).

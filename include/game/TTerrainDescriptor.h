@@ -1,4 +1,7 @@
 #pragma once
+
+#include "game/TPtrList.h"
+
 class TTerrainDescriptor {
 public:
   virtual void dummy0() = 0;
@@ -36,7 +39,7 @@ public:
   short encodedNationSlot0e;
   unsigned char pad10[0x90 - 0x10];
   // +0x90 — TPtrList of linked map nodes (region development sweep, 0x004e72c0).
-  class TPtrList* linkedNodeList90;
+  TPtrList* linkedNodeList90;
 };
 
 int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain, short encodedNationSlot);

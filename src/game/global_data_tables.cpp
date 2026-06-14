@@ -95,6 +95,12 @@ short g_Calculate_Mission_Order_LookupTable_0069810C[9 * 64] = {0};
 short g_Task_Force_Order_LookupTable_00698110[0x24 * 32] = {0};
 short g_Navy_Order_Priority_LookupTable_00698118[9 * 64] = {0};
 
+struct MappedFlavorTextNationVariantEntry {
+  short variantIndex;
+  short pad;
+};
+MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
+
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
 float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
 double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
@@ -171,7 +177,7 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {0};
 // Minor-nation capability object table at 0x006a432c, iterated as a pointer array. The
 // slot-0x32 loop scans entries [0..15] inclusive (`cmp edx, 0x6a4368` == &table[15]); sizing
 // the array to 16 lets MSVC emit the sentinel as `g_apMinorNationCapabilityObjects + 0x3c`.
-void* g_apMinorNationCapabilityObjects[16] = {0};
+TMinor* g_apMinorNationCapabilityObjects[16] = {0};
 
 // GLOBAL: IMPERIALISM 0x006a429c — scanned with g_apMinorNationCapabilityObjects[16].
 TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};

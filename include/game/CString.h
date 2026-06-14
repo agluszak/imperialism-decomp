@@ -54,3 +54,5 @@ public:
 };
 
 CString* AssignStringSharedRefAndReturnThis(CString* dest, const CString* src);
+
+int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs);

@@ -23,7 +23,7 @@ public:
 
   short terrainType;      // 0x04 (index into g_apTerrainTypeDescriptorTable; 0xffff = none)
   unsigned char pad06[2]; // 0x06
-  int field_8;            // 0x08
+  int field_8;            // 0x08 — linked navy primary-order node (0x00552250)
   CString displayName;    // 0x0c
   short field_10;         // 0x10
   unsigned char pad12[2]; // 0x12
@@ -32,6 +32,11 @@ public:
 
   TAdmiral(short terrainTypeIndex);
   virtual ~TAdmiral();
+
+  void SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primaryOrderNode);
+
+  static void __fastcall GenerateMappedFlavorTextByNationSlotField0C(void* terrainDescriptor,
+                                                                     CString* dest);
 
   static void* GetTAdmiralClassNamePointer();
 

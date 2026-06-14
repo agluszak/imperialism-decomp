@@ -398,6 +398,7 @@ address|target_cpp|ownership|note
 4d7d20|src/game/TGreatPower.cpp|manual|marker_sync
 4d7d50|src/game/TGreatPower.cpp|manual|marker_sync
 4d7e90|src/game/noop_slots.cpp|manual|marker_sync
+4d7eb0|src/game/TAdmiral.cpp|manual|marker_sync
 4d7ee0|src/game/noop_slots.cpp|manual|marker_sync
 4d7f00|src/game/noop_slots.cpp|manual|marker_sync
 4d7f20|src/game/noop_slots.cpp|manual|marker_sync
@@ -686,6 +687,7 @@ address|target_cpp|ownership|note
 503400|src/game/noop_slots.cpp|manual|marker_sync
 512b50|src/game/TGlobalMapState.cpp|manual|marker_sync
 512cc0|src/game/TGlobalMapState.cpp|manual|marker_sync
+514c80|src/game/TGlobalMapState.cpp|manual|marker_sync
 515de0|src/game/noop_slots.cpp|manual|marker_sync
 515e00|src/game/TMapOrderContext.cpp|manual|marker_sync
 517c30|src/game/TGlobalMapState.cpp|manual|marker_sync
@@ -792,6 +794,8 @@ address|target_cpp|ownership|note
 54c680|src/game/noop_slots.cpp|manual|marker_sync
 54c6a0|src/game/noop_slots.cpp|manual|marker_sync
 54f500|src/game/TShip.cpp|manual|marker_sync
+54f8e0|src/game/TShip.cpp|manual|marker_sync
+54fbf0|src/game/TShip.cpp|manual|marker_sync
 5505c0|src/game/TShip.cpp|manual|marker_sync
 550670|src/game/TMapOrderEntry.cpp|manual|marker_sync
 550970|src/game/TShip.cpp|manual|marker_sync
@@ -803,6 +807,7 @@ address|target_cpp|ownership|note
 551430|src/game/TAdmiral.cpp|manual|marker_sync
 551550|src/game/TAdmiral.cpp|manual|marker_sync
 551580|src/game/TAdmiral.cpp|manual|marker_sync
+552250|src/game/TAdmiral.cpp|manual|marker_sync
 552510|src/game/TMapOrderEntry.cpp|manual|marker_sync
 552590|src/game/TMapOrderEntry.cpp|manual|marker_sync
 5525d0|src/game/TMapOrderEntry.cpp|manual|marker_sync
@@ -1133,6 +1138,8 @@ address|target_cpp|ownership|note
 5c2f50|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c3190|src/game/TMilitaryUnitOrderState.cpp|manual|marker_sync
 5c3490|src/game/TStationedUnitNode.cpp|manual|marker_sync
+5d46b0|src/game/mapped_flavor_text.cpp|manual|marker_sync
+5d4720|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d7190|src/game/noop_slots.cpp|manual|marker_sync
 5dbd10|src/game/noop_slots.cpp|manual|marker_sync
 5dee80|src/game/noop_slots.cpp|manual|marker_sync
@@ -1159,6 +1166,7 @@ address|target_cpp|ownership|note
 5e6ea2|src/game/CBrush.cpp|manual|marker_sync
 5e717b|src/game/noop_slots.cpp|manual|marker_sync
 5e7370|src/game/noop_slots.cpp|manual|marker_sync
+5e7980|src/game/CString.cpp|manual|marker_sync
 601b74|src/game/CPtrList.cpp|manual|marker_sync
 601b94|src/game/CPtrList.cpp|manual|marker_sync
 601baa|src/game/TIndexAndRankList.cpp|manual|marker_sync

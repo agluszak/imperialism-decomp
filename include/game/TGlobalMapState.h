@@ -16,13 +16,16 @@ struct TTerrainStateRecordView {
   signed char ownerNationTag04; // 0x04 — owning nation code (flood fill 0x004dbac0)
   unsigned char pad05;
   signed char adjacencyBits06; // 0x06 — 6-direction neighbor-link bitmask
-  unsigned char pad07[0x11 - 0x07];
+  unsigned char pad07[0x0e - 0x07];
+  unsigned char recruitSearchVisited0e; // 0x0e — cleared by 0x00514c80 flood pass
+  unsigned char pad0f[0x11 - 0x0f];
   signed char resourceTypeByEdge[2];
   unsigned char gateFlag;
   short cityRecordIndex;
   unsigned char pad16[0x1c - 0x16];
   unsigned char activeFlags1c; // bit 0 tested by 0x004d71b0 / 0x004dfae0 region scans
-  unsigned char pad1d[0x24 - 0x1d];
+  unsigned char pad1d[0x20 - 0x1d];
+  class TCivilianOrderState* firstCivilianOrder20; // 0x20 — recruit-tile scan (0x00514cd0)
 };
 
 struct TGlobalMapCityScoreRecord {
@@ -141,6 +144,7 @@ public:
   unsigned char pad14[4];
   int cityScoreTotal;
   char* scenarioTagText1c; // 0x1c — first char '+' enables extra seeding in 0x004d71b0
+  char hexNeighborWrapHorizontally20; // 0x20 — horizontal wrap for hex neighbor walks
 
   // True when any region owned by nationA has a neighboring region owned by nationB.
   // Walks g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList90 against the
@@ -153,9 +157,10 @@ public:
 
   void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
 
+  short FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex, char allowActiveFlag2);
+
   class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
-    return reinterpret_cast<struct GlobalMapTileRecord*>(terrainStateTable)[tileIndex]
-        .firstCivilianOrder;
+    return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
 };
 

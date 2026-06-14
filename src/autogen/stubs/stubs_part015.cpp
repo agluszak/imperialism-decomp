@@ -723,14 +723,6 @@ undefined4 SetTileTransportFlagsTo0x37AndRefreshNeighbors(void)
   return 0;
 }
 
-// ghidra_name FindReachableRecruitSpawnTileWithVisitedReset
-// ghidra_proto undefined FindReachableRecruitSpawnTileWithVisitedReset()
-// FUNCTION: IMPERIALISM 0x00514c80
-undefined4 FindReachableRecruitSpawnTileWithVisitedReset(void)
-{
-  return 0;
-}
-
 // ghidra_name FindReachableRecruitSpawnTileRecursive
 // ghidra_proto undefined FindReachableRecruitSpawnTileRecursive()
 // FUNCTION: IMPERIALISM 0x00514cd0

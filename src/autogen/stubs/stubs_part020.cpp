@@ -811,26 +811,10 @@ undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextByTableSlot
-// ghidra_proto undefined GenerateMappedFlavorTextByTableSlot()
-// FUNCTION: IMPERIALISM 0x005d46b0
-undefined4 GenerateMappedFlavorTextByTableSlot(void)
-{
-  return 0;
-}
-
 // ghidra_name GenerateMappedFlavorTextByCurrentContextNation
 // ghidra_proto undefined GenerateMappedFlavorTextByCurrentContextNation()
 // FUNCTION: IMPERIALISM 0x005d46e0
 undefined4 GenerateMappedFlavorTextByCurrentContextNation(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextUntilValidationPasses
-// ghidra_proto undefined GenerateMappedFlavorTextUntilValidationPasses()
-// FUNCTION: IMPERIALISM 0x005d4720
-undefined4 GenerateMappedFlavorTextUntilValidationPasses(void)
 {
   return 0;
 }
@@ -3647,14 +3631,6 @@ undefined4 AppendPointerToGlobalVectorLocked(void)
 // ghidra_proto undefined AppendPointerToGlobalVectorAsStatus()
 // FUNCTION: IMPERIALISM 0x005e7920
 undefined4 AppendPointerToGlobalVectorAsStatus(void)
-{
-  return 0;
-}
-
-// ghidra_name CompareAnsiStringsWithMbcsAwareness
-// ghidra_proto undefined CompareAnsiStringsWithMbcsAwareness()
-// FUNCTION: IMPERIALISM 0x005e7980
-undefined4 CompareAnsiStringsWithMbcsAwareness(void)
 {
   return 0;
 }

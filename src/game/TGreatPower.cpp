@@ -183,14 +183,12 @@ undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 undefined4 thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void);
 undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void);
-undefined4 thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(void);
 
 // EH-body order/state globals (defined in global_data_tables.cpp). Direct absolute
 // loads in the original; declaring them as real symbols lets reccmp pair the loads.
 extern "C" {
 extern void* g_pActiveMapOrderContext;
 
-extern void* g_apMinorNationCapabilityObjects[];
 extern TMinor* g_apNationAuxRuntimeStateSlots[];
 }
 
@@ -1752,9 +1750,8 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
           TCity* cityForPort = (nation != 0) ? nation->city : 0;
           void* portZone = ActiveMapOrderContext()->FindPortZoneBySelectedTile(cityForPort);
-          reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
-              thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(3, portZone, this->nationSlot,
-                                                                    0);
+          CreateNavyPrimaryOrderNodeAndAssignDisplayName(3, static_cast<TZone*>(portZone),
+                                                         this->nationSlot, 0);
         }
         if (this->nationSlot < 7) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
@@ -1779,9 +1776,8 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
             if (portZone->portZoneActiveEntryCount30 == 0) {
               portZone->portZoneActiveEntryCount30 = 1;
             }
-            reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
-                thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(
-                3, reinterpret_cast<void*>(portZone->portZoneEntries28[0]), this->nationSlot, 0);
+            CreateNavyPrimaryOrderNodeAndAssignDisplayName(
+                3, reinterpret_cast<TZone*>(portZone->portZoneEntries28[0]), this->nationSlot, 0);
           }
         }
       }

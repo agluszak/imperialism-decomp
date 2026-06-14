@@ -1,8 +1,7 @@
 #pragma once
 
 #include "game/CPtrList.h"
-
-class TPtrList;
+#include "game/TPtrList.h"
 
 // Mac CodeWarrior evidence names this class CIterator (Reset/More/Advance).
 // 12-byte stack cursor over a TPtrList-backed game list: the inline constructor

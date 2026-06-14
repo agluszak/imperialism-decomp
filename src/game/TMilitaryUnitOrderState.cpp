@@ -1,5 +1,7 @@
 #include "game/TMilitaryUnitOrderState.h"
 
+#include "game/TAdmiral.h"
+
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
@@ -43,9 +45,8 @@ void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int no
   field_36 = static_cast<short>(
       (static_cast<int>(capValue) + (static_cast<int>(capValue) >> 31 & 7)) >> 3);
   if (capValue > 0x1b) {
-    void* terrain = g_apTerrainTypeDescriptorTable[nationSlot];
-    reinterpret_cast<void(__fastcall*)(void*, CString*)>(
-        thunk_GenerateMappedFlavorTextByNationSlotField0C)(terrain, &name24);
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
+        g_apTerrainTypeDescriptorTable[nationSlot], &name24);
   }
   CopyUnitCurrentTileIntoOrderTargets();
 }

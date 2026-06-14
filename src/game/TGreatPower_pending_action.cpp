@@ -6,17 +6,14 @@
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
 #include "game/TZone.h"
+#include "game/TMinor.h"
+#include "game/TShip.h"
+#include "game/diplomacy_globals.h"
 #include "game/TDiplomacyTurnStateManager.h"
 
 #include "decomp_types.h"
 
-extern "C" void* g_pActiveMapOrderContext;
-extern "C" void* g_apMinorNationCapabilityObjects[];
-
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName(void);
-undefined4 thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void);
-undefined4 thunk_FindReachableRecruitSpawnTileWithVisitedReset(void);
 
 // FUNCTION: IMPERIALISM 0x004d7770
 #pragma optimize("y", on)
@@ -63,15 +60,14 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Navy primary/secondary order (serializedStatusFlags[0] == '2').
   if (this->serializedStatusFlags[0] == 0x32) {
     short zoneIndex = CityOrderActiveZoneIndex();
-    void* portZone = TZone::FindFirstPortZoneContextByNation(nationSlot);
-    reinterpret_cast<void*(__cdecl*)(int, void*, int, int)>(
-        thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName)(zoneIndex, portZone, nationSlot, 0);
+    TZone* portZone = TZone::FindFirstPortZoneContextByNation(nationSlot);
+    TShip* primaryOrder =
+        CreateNavyPrimaryOrderNodeAndAssignDisplayName(zoneIndex, portZone, nationSlot, 0);
 
     ++cityPtr->recruitZoneCount5c[CityOrderActiveZoneIndex()];
 
-    void* secondaryNode = new TAdmiral(nationSlot);
-    reinterpret_cast<void(__fastcall*)(void*)>(
-        thunk_SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks)(secondaryNode);
+    TAdmiral* secondaryNode = new TAdmiral(nationSlot);
+    secondaryNode->SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(primaryOrder);
 
     this->DispatchTurnOrderActionSlotB0(3, 0x2508, 1);
     this->DispatchTurnOrderActionSlotB0(0, CityOrderActiveZoneIndex(), 1);
@@ -80,41 +76,31 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Civil work order (serializedStatusFlags[2] < '3').
   if (this->serializedStatusFlags[2] < 0x33) {
     bool needsCivOrder = false;
-    void** minorNationEntry = g_apMinorNationCapabilityObjects;
+    TMinor** minorEntry = g_apMinorNationCapabilityObjects;
     short zoneCursor = 7;
     do {
-      if (*reinterpret_cast<short*>(reinterpret_cast<char*>(g_pDiplomacyTurnStateManager) +
-                                    (zoneCursor + nationSlot * 0x17) * 2 + 0x79c) > 0xa9) {
-        void* entry = *minorNationEntry;
-        short matchTag;
-        if (entry != 0 &&
-            (matchTag = *reinterpret_cast<short*>(reinterpret_cast<char*>(entry) + 0xe)) > 99 &&
-            matchTag < 200) {
-          if (matchTag < 200) {
-            if (matchTag < 100) {
-              matchTag = *reinterpret_cast<short*>(reinterpret_cast<char*>(entry) + 0xc);
-            } else {
-              matchTag = matchTag - 100;
-            }
-          } else {
-            matchTag = matchTag - 200;
-          }
-          if (matchTag == nationSlot) {
-            goto nextEntry;
+      if (g_pDiplomacyTurnStateManager
+              ->relationStandingScoreMatrix79c[zoneCursor + nationSlot * kNationSlotCount] >
+          0xa9) {
+        TMinor* minor = *minorEntry;
+        if (minor != 0) {
+          short ownerTag = minor->ownerNationSlot0e;
+          if (ownerTag > 99 && ownerTag < 200 &&
+              ResolveMinorCapabilityOwnerNationSlot(minor) == nationSlot) {
+            goto nextMinorEntry;
           }
         }
         needsCivOrder = true;
       }
-    nextEntry:
-      ++minorNationEntry;
+    nextMinorEntry:
+      ++minorEntry;
       ++zoneCursor;
-    } while (minorNationEntry <= &g_apMinorNationCapabilityObjects[15]);
+    } while (minorEntry <= &g_apMinorNationCapabilityObjects[15]);
 
     if (needsCivOrder) {
       TCivWorkOrderState* civOrder = new TCivWorkOrderState();
-      int spawnTile = reinterpret_cast<int(__fastcall*)(void*, int, int, int)>(
-          thunk_FindReachableRecruitSpawnTileWithVisitedReset)(
-          g_pGlobalMapState, this->ownerNationSlot, 0, nationSlot);
+      short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->ownerNationSlot, 0);
       civOrder->InitializeCivWorkOrderState(7, spawnTile, nationSlot);
       this->SetNationPendingActionStateAndPayload(2, -1);
     }

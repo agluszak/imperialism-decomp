@@ -2931,14 +2931,6 @@ undefined4 DestroyAndUnlinkNavyPrimaryOrderNode(void)
   return 0;
 }
 
-// ghidra_name CreateNavyPrimaryOrderNodeAndAssignDisplayName
-// ghidra_proto undefined CreateNavyPrimaryOrderNodeAndAssignDisplayName()
-// FUNCTION: IMPERIALISM 0x0054f8e0
-undefined4 CreateNavyPrimaryOrderNodeAndAssignDisplayName(void)
-{
-  return 0;
-}
-
 // ghidra_name TShip::SerializeNavyPrimaryOrderNodeToStream
 // ghidra_proto undefined SerializeNavyPrimaryOrderNodeToStream()
 // FUNCTION: IMPERIALISM 0x0054fab0
@@ -2951,14 +2943,6 @@ undefined4 SerializeNavyPrimaryOrderNodeToStream(void)
 // ghidra_proto undefined DeserializeNavyPrimaryOrderNodeFromStream()
 // FUNCTION: IMPERIALISM 0x0054fb50
 undefined4 DeserializeNavyPrimaryOrderNodeFromStream(void)
-{
-  return 0;
-}
-
-// ghidra_name RegenerateNavyPrimaryOrderDisplayNameUntilUnique
-// ghidra_proto undefined RegenerateNavyPrimaryOrderDisplayNameUntilUnique()
-// FUNCTION: IMPERIALISM 0x0054fbf0
-undefined4 RegenerateNavyPrimaryOrderDisplayNameUntilUnique(void)
 {
   return 0;
 }
@@ -3247,14 +3231,6 @@ undefined4 AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner(void)
 // ghidra_proto undefined BuildNavyOrderResourceDeltaSummaryText()
 // FUNCTION: IMPERIALISM 0x00551be0
 undefined4 BuildNavyOrderResourceDeltaSummaryText(void)
-{
-  return 0;
-}
-
-// ghidra_name SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks
-// ghidra_proto undefined SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks()
-// FUNCTION: IMPERIALISM 0x00552250
-undefined4 SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void)
 {
   return 0;
 }

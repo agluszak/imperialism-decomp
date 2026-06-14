@@ -2403,14 +2403,6 @@ undefined4 SetNationPercentFieldByModeAndDescriptorLinks(void)
   return 0;
 }
 
-// ghidra_name TAdmiral::GenerateMappedFlavorTextByNationSlotField0C
-// ghidra_proto undefined GenerateMappedFlavorTextByNationSlotField0C()
-// FUNCTION: IMPERIALISM 0x004d7eb0
-undefined4 GenerateMappedFlavorTextByNationSlotField0C(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeSelectedMilitaryPowerScore
 // ghidra_proto undefined ComputeSelectedMilitaryPowerScore()
 // FUNCTION: IMPERIALISM 0x004d8430

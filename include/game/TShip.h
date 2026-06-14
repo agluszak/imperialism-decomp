@@ -21,6 +21,8 @@ public:
   int quantityFlag10;
   short ownerNationSlot14;
   CString displayName18;
+  short stockLevel1c;
+  short pad1e;
   void* field20;
   TShip* nextOlder24;
   TShip* prevNewer28;
@@ -41,3 +43,8 @@ short GetResourceDescriptorWeightWord0ByType(short resourceType);
 int ComputeOrderNodeCompositeEconomicScore(TShip* node);
 int SumNavyOrderPriorityForNation(TGreatPower* nationObj);
 int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType);
+
+class TZone;
+TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* portZoneContext,
+                                                      int nationSlot, char* displayNameOverride);
+void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);

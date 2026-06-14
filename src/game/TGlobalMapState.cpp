@@ -2,6 +2,7 @@
 
 #include "game/TPtrList.h"
 #include "game/TMinor.h"
+#include "game/TCivilianOrderState.h"
 #include "game/diplomacy_globals.h"
 
 #pragma optimize("y", on) // omit frame pointer, as in the original bodies
@@ -151,4 +152,68 @@ short TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(short tileIndex
     return -1;
   }
   return static_cast<short>(result);
+}
+
+namespace {
+
+const int kGlobalMapTileCount = 0x1950;
+
+short FindReachableRecruitSpawnTileRecursiveImpl(TGlobalMapState* mapState, short tileIndex,
+                                                 short ownerNationTag, char allowActiveFlag2) {
+  TTerrainStateRecordView* tile = &mapState->terrainStateTable[tileIndex];
+  if (tile->recruitSearchVisited0e != 0) {
+    return -1;
+  }
+  tile->recruitSearchVisited0e = 1;
+  if (tile->ownerNationTag04 != ownerNationTag) {
+    return -1;
+  }
+
+  TCivilianOrderState* civilianOrder = tile->firstCivilianOrder20;
+  bool noMatchingCivilian = civilianOrder == 0;
+  if (!noMatchingCivilian) {
+    while (civilianOrder->ownerNationSlot18 != ownerNationTag) {
+      civilianOrder = civilianOrder->nextOnTile;
+      if (civilianOrder == 0) {
+        noMatchingCivilian = true;
+        break;
+      }
+    }
+  }
+  if (noMatchingCivilian) {
+    if ((tile->activeFlags1c & 2) == 0) {
+      return tileIndex;
+    }
+    if (allowActiveFlag2 != 0) {
+      return tileIndex;
+    }
+  }
+
+  short neighborTiles[6];
+  TGlobalMapState::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
+                                                 mapState->hexNeighborWrapHorizontally20);
+  for (short neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+    if (neighborTiles[neighborIndex] == -1) {
+      continue;
+    }
+    short foundTile = FindReachableRecruitSpawnTileRecursiveImpl(
+        mapState, neighborTiles[neighborIndex], ownerNationTag, allowActiveFlag2);
+    if (foundTile != -1) {
+      return foundTile;
+    }
+  }
+  return -1;
+}
+
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x00514c80
+short TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
+                                                                      char allowActiveFlag2) {
+  signed char ownerNationTag = terrainStateTable[startTileIndex].ownerNationTag04;
+  for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
+    terrainStateTable[tileIndex].recruitSearchVisited0e = 0;
+  }
+  return FindReachableRecruitSpawnTileRecursiveImpl(this, startTileIndex, ownerNationTag,
+                                                    allowActiveFlag2);
 }
