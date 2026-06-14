@@ -3680,3 +3680,25 @@ Follow-up scan after the TClosePicture extraction:
 - **Timestamp:** 2026-06-14 (cont.)
 - **Command:** Port 6 now-correctly-slotted TView virtuals (bodies match well now that dispatch offsets are right post-reorder): `CallVoidSlotA0` (0x28/0x48c890), `SetEnabled` (0x29/0x48b1c0, field08 enabled-state + slot-0x39 refresh), `SetState` (0x2a/0x48b070, SetControlValue + refresh), `RefreshControl` (0x39/0x48b6d0, InvalidateCityDialogRect when active+windowed), `vmethod_0032` (0x22/0x48a500, is-active-view; void→char + mirror), `vmethod_0033` (0x23/0x48a4a0, detach field18 target).
 - **Score Delta:** 0x48b1c0/0x48b6d0/0x48a500/0x48a4a0 **100%**; 0x48b070 SetState 70%; 0x48c890 CallVoidSlotA0 37% (CPtrList walk). Also ported vmethod_0078 (0x4e/0x48ba40, owner-forward point offset) 100%. Deferred InvokeSlot13C (0x4f) — needs new DAT_006a1af0 global + UpdateWindow import.
+
+## TEventHandler base recovery — delete UiDialogHandlerPrefix (2026-06-14 cont.)
+
+- **Timestamp:** 2026-06-14
+- **Finding:** Proved (via vtable comparison) that `UiDialogHandlerPrefix` was an
+  incomplete duplicate of the REAL `TEventHandler` base. `TEventHandler`'s vtable
+  `0x6497a0` has 37 real slots (0x00-0x24), not the 2-slot stub we modeled. TView
+  (`0x649858`) and ApplicationUiRootController (`0x648bd8`) both inherit those bodies,
+  each overriding only a few: TView overrides 0x07/0x08/0x16; AppRoot overrides
+  0x07/0x08/0x0d/0x11. Shared slots point to identical body addresses in both vtables.
+- **Change:** Promoted `TEventHandler` to the full 37-slot shared base (fields 0x10-0x1c
+  + the 0x02-0x24 virtuals). Moved ~31 shared method bodies (0x48a240/260/2c0/280/2e0/
+  310/380/3b0/3f0/480/500/4a0/4d0/530/550/570/5e0/690/6b0/710 ...) from `TView.cpp` to
+  new `TEventHandler.cpp`. `TView` now inherits, keeping only its 3 base-slot overrides
+  (CallVoidSlot1C/vmethod_0008/OwnerPanel) + introduced slots 0x25-0x67. Repointed
+  `ApplicationUiRootController : TEventHandler`, added its real slot-0x25 placeholder
+  (vmethod_0037) so SetActiveView stays at 0x26, moved its RTTI getter (0x486740) onto
+  AppRoot. Deleted `include/game/UiDialogHandlerPrefix.{h,cpp}`.
+- **Score Delta:** Net aligned count delta 0 (465). Moved base bodies still pair (many
+  ✨OK✨, e.g. 0x48a240, 0x486740). AppRoot SetActiveView/GetActiveView 100%. TView ctor
+  0x48a8e0 87.5% (field0c/10/14/18 now correctly written BEFORE the base vftable as in
+  the original; residual = minor eax=1/lea scheduling). Build green, canaries clean.

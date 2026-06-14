@@ -9,12 +9,14 @@
 #include "game/win_rect.h"
 
 // VTABLE: IMPERIALISM 0x649858
+//
+// TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
+// from TEventHandler. It overrides only the few base slots whose vtable bodies differ
+// (0x07 CallVoidSlot1C, 0x08 vmethod_0008, 0x16 OwnerPanel) and introduces its own
+// virtuals at slot 0x25+ (declared below in exact vtable slot order). See
+// include/game/TEventHandler.h and memory tview-vtable-slot-scramble.
 class TView : public TEventHandler {
 public:
-  int field10;
-  int field14;
-  int field18;
-  int controlTag;            // 0x1c
   class TView* ownerContext; // 0x20
   int ownerOffsetX;          // 0x24
   int ownerOffsetY;          // 0x28
@@ -37,47 +39,16 @@ public:
 
   TView();
   void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
-  virtual void vmethod_0002();
-  virtual void vmethod_0003();
-  virtual void vmethod_0004();
-  virtual void vmethod_0005();
-  virtual void vmethod_0006();
-  virtual void CallVoidSlot1C();
-  virtual void vmethod_0008();
-  virtual void vmethod_0009();
-  virtual char GetBoolSlot28();
-  virtual void SetControlValue(int value);
-  virtual int QueryStepValue();
-  virtual void vmethod_0013(int* cmd);
-  virtual void vmethod_0014(int command);
-  virtual void vmethod_0015(int arg1 = 0, void* arg2 = 0, int arg3 = 0);
-  virtual void DispatchEvent(int arg1, void* arg2, int arg3);
-  virtual void vmethod_0017(int param);
-  virtual void ForwardParam(int param);
-  virtual char vmethod_0019();
-  virtual void vmethod_0020();
-  virtual void vmethod_0021();
-  virtual class TView* OwnerPanel();
-  virtual char vmethod_0023();
-  virtual char vmethod_0024();
-  virtual void vmethod_0025();
-  virtual void vmethod_0026(int gate);
-  virtual void vmethod_0027();
-  virtual void vmethod_0028();
-  virtual void vmethod_0029();
-  virtual void vmethod_0030();
-  virtual char vmethod_0031();
-  virtual char vmethod_0080();
-  virtual void vmethod_0081();
-  // Slots 0x22-0x51 below are declared in EXACT vtable slot order (header declaration
-  // order == emitted vtable order). Slot assignments are pinned by FUNCTION-marker
-  // addresses, original-binary call offsets, and the byte-offset encoded in "SlotXX"
-  // names. See memory tview-vtable-slot-scramble. vmethod_00NN placeholders fill the
-  // remaining (body-owned-elsewhere / unported) slots; their exact position is
-  // immaterial (base+derived stay name-consistent).
-  virtual char vmethod_0032();                                       // 0x22 0x48a500
-  virtual void vmethod_0033(int arg);                                // 0x23 0x48a4a0
-  virtual void SetUiResourceOwner(int owner);                        // 0x24 0x48a4d0
+
+  // Base-slot overrides (vtable bodies differ from TEventHandler's).
+  virtual void CallVoidSlot1C();                                     // 0x07
+  virtual void vmethod_0008();                                       // 0x08
+  virtual class TView* OwnerPanel();                                 // 0x16 0x48b180
+
+  // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
+  // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
+  // and the byte-offset encoded in "SlotXX" names. vmethod_00NN placeholders fill the
+  // remaining (body-owned-elsewhere / unported) slots.
   virtual class TControl* ResolveControlByTag(unsigned int controlTag); // 0x25 0x48afd0
   virtual void SwitchActiveChildAndNotify(class TView* child);       // 0x26 0x48af80
   virtual void DispatchSlot9CToLinkedChildren();                     // 0x27 0x48c820
@@ -145,10 +116,8 @@ public:
   virtual void AssertMcAppUiLine1914();
   virtual void AssertMcAppUiLine1922();
   virtual void SubtractPosAndDispatchToOwnerSlot19C(int* point);
-  // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ (formerly declared here
-  // as vmethod_0104..0110, SwitchTab, GetBoolSlot1BC) belong to the sibling branches
-  // (TControl, TCivDescription, TAmtBar, ...) that each introduce their own virtuals
-  // there. See memory ui-vtable-hierarchy-ground-truth. The destructor is slot 1
+  // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
+  // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
   // (TEventHandler override), so its declaration position is irrelevant.
   virtual ~TView();
 };

@@ -34,15 +34,15 @@ undefined4 ReleaseScopedMapQuickDrawDcHandle(void);
 
 // TView::childList44 is an MFC CPtrList of child-control TView* pointers (node->data).
 
-// Real ctor. The scalar fields are member-initializers (not body assignments) so
-// they are emitted in declaration order *before* the CString member sharedStringRef
-// is constructed (-> 0x00605797), matching the original phase split. The inlined
-// TEventHandler base ctor writes the base vptr (0x006497a0) + field0c; MSVC writes
-// this class's vptr (0x00649858) last. No manual vtable writes — the // VTABLE:
-// annotation owns it.
+// Real ctor. The TEventHandler base ctor (inlined) writes the base vptr (0x006497a0)
+// and the base scalar fields (field0c/field10/field14/field18); MSVC then writes this
+// class's vptr (0x00649858) and constructs TView's own members in declaration order.
+// The scalar fields are member-initializers (not body assignments) so they are emitted
+// before the CString member sharedStringRef is constructed (-> 0x00605797). No manual
+// vtable writes — the // VTABLE: annotation owns it.
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : field10(0x7fffffff), field14(0), field18(0), ownerContext(0), field2c(0), field30(0),
+    : TEventHandler(), ownerContext(0), field2c(0), field30(0),
       field3c(0), childList44(0), field48(0), flag4c(1), flag4d(1), field4e(0xffff), nativeWindow50(0),
       field54(1), sharedStringRef(), field5c(0) {}
 
@@ -60,79 +60,13 @@ void TView::thunk_NoOpUiLifecycleHook(int passthroughArg) {
   (void)passthroughArg;
 }
 
-// Dummy methods
-void TView::vmethod_0002() {}
-void TView::vmethod_0003() {}
-void TView::vmethod_0004() {}
-void TView::vmethod_0005() {}
-void TView::vmethod_0006() {}
+// Base-slot overrides (slots 0x07/0x08). Bodies differ from TEventHandler's; still
+// unported stubs.
 void TView::CallVoidSlot1C() {}
 void TView::vmethod_0008() {}
-void TView::vmethod_0009() {}
-// FUNCTION: IMPERIALISM 0x0048a240
-char TView::GetBoolSlot28() {
-  return (char)field04;
-}
-
-// FUNCTION: IMPERIALISM 0x0048a260
-void TView::SetControlValue(int value) {
-  field04 = (signed char)value;
-}
-
-// FUNCTION: IMPERIALISM 0x0048a2c0
-int TView::QueryStepValue() {
-  return field0c;
-}
-// Dispatch a queued command record: the command's stored handler (cmd+0x10) receives the
-// command's payload words (cmd+0x08, cmd+0x0c) plus the command itself, then the command
-// is released via slot 0x07.
-// FUNCTION: IMPERIALISM 0x0048a3b0
-void TView::vmethod_0013(int* cmd) {
-  reinterpret_cast<TView*>(cmd[4])->DispatchEvent(cmd[2], reinterpret_cast<void*>(cmd[3]),
-                                                  reinterpret_cast<int>(cmd));
-  if (cmd != 0) {
-    reinterpret_cast<TView*>(cmd)->CallVoidSlot1C();
-  }
-}
-// FUNCTION: IMPERIALISM 0x0048a3f0
-void TView::vmethod_0014(int command) {
-  vmethod_0013(reinterpret_cast<int*>(command));
-}
-// Forward an event triplet to the child object returned by slot 0x0c (QueryStepValue),
-// if any. Derived classes override slot 0x0c to return the active child control.
-// FUNCTION: IMPERIALISM 0x0048a280
-void TView::vmethod_0015(int arg1, void* arg2, int arg3) {
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
-  if (child != 0) {
-    child->DispatchEvent(arg1, arg2, arg3);
-  }
-}
-// FUNCTION: IMPERIALISM 0x0048a2e0
-void TView::DispatchEvent(int arg1, void* arg2, int arg3) {
-  vmethod_0015(arg1, arg2, arg3);
-}
-// FUNCTION: IMPERIALISM 0x0048a310
-void TView::vmethod_0017(int param) {
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
-  if (child != 0) {
-    child->vmethod_0017(param);
-  }
-}
-// FUNCTION: IMPERIALISM 0x0048a380
-void TView::ForwardParam(int param) {
-  TView* child = reinterpret_cast<TView*>(QueryStepValue());
-  if (child != 0) {
-    child->ForwardParam(param);
-  }
-}
-// FUNCTION: IMPERIALISM 0x0048a480
-char TView::vmethod_0019() {
-  return 0;
-}
-void TView::vmethod_0020() {}
-void TView::vmethod_0021() {}
 // Walk up the owner chain: forward to the owner context's own slot-0x16 query, or 0
-// at the root. (One level above QueryOwnerContextPanel, which only hops once.)
+// at the root. (One level above QueryOwnerContextPanel, which only hops once.) Slot 0x16
+// override (TEventHandler's base body differs).
 // FUNCTION: IMPERIALISM 0x0048b180
 TView* TView::OwnerPanel() {
   if (ownerContext == 0) {
@@ -140,82 +74,9 @@ TView* TView::OwnerPanel() {
   }
   return ownerContext->OwnerPanel();
 }
-// FUNCTION: IMPERIALISM 0x0048a530
-char TView::vmethod_0023() {
-  return 0;
-}
-// FUNCTION: IMPERIALISM 0x0048a550
-char TView::vmethod_0024() {
-  return 0;
-}
-// FUNCTION: IMPERIALISM 0x0048a690
-void TView::vmethod_0025() {}
-// FUNCTION: IMPERIALISM 0x0048a6b0
-void TView::vmethod_0026(int gate) {
-  (void)gate;
-}
-void TView::vmethod_0027() {}
-void TView::vmethod_0028() {}
-void TView::vmethod_0029() {}
-void TView::vmethod_0030() {}
-// Make this view the active view if allowed: already-active short-circuits to true;
-// otherwise the current active view must agree (slot 0x20) before we take over.
-// FUNCTION: IMPERIALISM 0x0048a570
-char TView::vmethod_0031() {
-  TView* active = g_pApplicationUiRootController->GetActiveView();
-  if (this == active) {
-    return 1;
-  }
-  if (active != 0 && active->vmethod_0080() != 0) {
-    g_pApplicationUiRootController->SetActiveView(this);
-    return 1;
-  }
-  return 0;
-}
-// FUNCTION: IMPERIALISM 0x0048a5e0
-char TView::vmethod_0080() {
-  if (g_pApplicationUiRootController == 0) {
-    return 0;
-  }
-  TView* activeView = g_pApplicationUiRootController->GetActiveView();
-  if (activeView == 0) {
-    return 0;
-  }
-  char gate = activeView->vmethod_0024();
-  if (gate == 0) {
-    activeView->vmethod_0025();
-    g_pApplicationUiRootController->SetActiveView(
-        reinterpret_cast<TView*>(g_pApplicationUiRootController));
-    return 1;
-  }
-  activeView->vmethod_0026(gate);
-  return 0;
-}
-// FUNCTION: IMPERIALISM 0x0048a710
-void TView::vmethod_0081() {}
-// True iff this view is the root controller's current active view.
-// FUNCTION: IMPERIALISM 0x0048a500
-char TView::vmethod_0032() {
-  return this == g_pApplicationUiRootController->GetActiveView();
-}
-// If the given object is our currently-linked field18 target, detach it both ways.
-// FUNCTION: IMPERIALISM 0x0048a4a0
-void TView::vmethod_0033(int arg) {
-  if (field18 != 0 && field18 == arg) {
-    field18 = 0;
-    *reinterpret_cast<int*>(arg + 8) = 0;
-  }
-}
+// TView-introduced placeholder slots 0x2b/0x2c.
 void TView::vmethod_0034() {}
 void TView::vmethod_0035() {}
-// Link this view to a resource-owner object and set the owner's back-pointer to this.
-// FUNCTION: IMPERIALISM 0x0048a4d0
-void TView::SetUiResourceOwner(int owner) {
-  if (owner != 0) {
-    field18 = owner;
-    *reinterpret_cast<int*>(owner + 8) = reinterpret_cast<int>(this);
-  }
-}
 // Find the descendant control whose controlTag matches: scan the direct child list
 // first, then recurse into each child via slot 0x25 (ResolveControlByTag). Returns the
 // matching control, or null. The own-tag case short-circuits (callers exclude self).

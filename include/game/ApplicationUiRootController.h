@@ -2,20 +2,27 @@
 
 #include "decomp_types.h"
 #include "game/ApplicationUiRootEmbeddedList.h"
-#include "game/UiDialogHandlerPrefix.h"
+#include "game/TEventHandler.h"
 
 class TView;
 
 // Application UI root controller — global modal-view gatekeeper installed at startup.
-// Shares the city-dialog vtable prefix (indices 0x00-0x25) with TView/TControl; introduces
-// active-view get/set at vtable indices 0x26/0x27 (byte offsets 0x98/0x9c). An embedded
-// CObList-like sub-object lives at +0x2c (secondary vtable 0x00648ca8). Size 0x48.
+// Inherits the shared 37-slot base interface (indices 0x00-0x24) and fields through +0x1c
+// from TEventHandler (the same base TView derives from). Introduces its own slot 0x25,
+// then active-view get/set at vtable indices 0x26/0x27 (byte offsets 0x98/0x9c). An
+// embedded CObList-like sub-object lives at +0x2c (secondary vtable 0x00648ca8). Size 0x48.
 // VTABLE: IMPERIALISM 0x00648bd8
-class ApplicationUiRootController : public UiDialogHandlerPrefix {
+class ApplicationUiRootController : public TEventHandler {
 public:
   ApplicationUiRootController();
   ~ApplicationUiRootController();
 
+  // vtable index 0x00 override (0x00486740): returns the TApplication RTTI name pointer.
+  virtual void* GetTEventHandlerClassNamePointer();
+
+  // vtable index 0x25: AppRoot-introduced slot (unported placeholder; TEventHandler's
+  // base vtable is null here, so this is a new virtual, not an inherited one).
+  virtual void vmethod_0037();
   // vtable index 0x26 (0x00486880): store the active modal view pointer.
   virtual void SetActiveView(TView* view);
   // vtable index 0x27 (0x004868a0): load the active modal view pointer.

@@ -11,9 +11,17 @@
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void __fastcall FreeLinkedBlockChain(void* blockChainHead);
 
+extern "C" char PTR_s_TApplication_00648af8;
+
+// vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
+// FUNCTION: IMPERIALISM 0x00486740
+void* ApplicationUiRootController::GetTEventHandlerClassNamePointer() {
+  return &PTR_s_TApplication_00648af8;
+}
+
 // FUNCTION: IMPERIALISM 0x00486760
 ApplicationUiRootController::ApplicationUiRootController()
-    : UiDialogHandlerPrefix(),
+    : TEventHandler(),
       activeView(0),
       screenModeAt24(0),
       field28(0),
@@ -45,6 +53,7 @@ TView* ApplicationUiRootController::GetActiveView() {
   return this->activeView;
 }
 
+void ApplicationUiRootController::vmethod_0037() {}
 void ApplicationUiRootController::vmethod_0038() {}
 void ApplicationUiRootController::vmethod_0039() {}
 void ApplicationUiRootController::vmethod_003a() {}
