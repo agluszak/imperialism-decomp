@@ -3195,66 +3195,10 @@ undefined4 DestructTShipOrderAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins25_004b85a0
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins25_004b85a0()
-// FUNCTION: IMPERIALISM 0x004b85a0
-undefined4 OrphanLeaf_NoCall_Ins25_004b85a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins39_004b8630
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins39_004b8630()
-// FUNCTION: IMPERIALISM 0x004b8630
-undefined4 OrphanLeaf_NoCall_Ins39_004b8630(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins78_004b86d0
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins78_004b86d0()
-// FUNCTION: IMPERIALISM 0x004b86d0
-undefined4 OrphanLeaf_NoCall_Ins78_004b86d0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C8_I73_004b8800
-// ghidra_proto undefined OrphanCallChain_C8_I73_004b8800()
-// FUNCTION: IMPERIALISM 0x004b8800
-undefined4 OrphanCallChain_C8_I73_004b8800(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004b8970
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins07_004b8970()
-// FUNCTION: IMPERIALISM 0x004b8970
-undefined4 OrphanLeaf_NoCall_Ins07_004b8970(void)
-{
-  return 0;
-}
-
 // ghidra_name CommitQueuedNavyOrdersAndUpdateTierByCapability
 // ghidra_proto undefined CommitQueuedNavyOrdersAndUpdateTierByCapability()
 // FUNCTION: IMPERIALISM 0x004b89a0
 undefined4 CommitQueuedNavyOrdersAndUpdateTierByCapability(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCityProductionState_Impl_At004b8d50
-// ghidra_proto undefined InitializeCityProductionState_Impl_At004b8d50()
-// FUNCTION: IMPERIALISM 0x004b8d50
-undefined4 InitializeCityProductionState_Impl_At004b8d50(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyCityProductionSlotDelta
-// ghidra_proto undefined ApplyCityProductionSlotDelta()
-// FUNCTION: IMPERIALISM 0x004b8dd0
-undefined4 ApplyCityProductionSlotDelta(void)
 {
   return 0;
 }

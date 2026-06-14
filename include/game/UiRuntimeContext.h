@@ -33,6 +33,24 @@ struct UiRuntimeContext {
   virtual void dummy60() = 0;
   virtual void dummy64() = 0;
   virtual void ApplyUiRuntimeSlot68(int modeValue) = 0; // 0x68
+  virtual void dummy6c() = 0;
+  virtual void dummy70() = 0;
+  virtual void dummy74() = 0;
+  virtual void dummy78() = 0;
+  virtual void dummy7c() = 0;
+  virtual void dummy80() = 0;
+  virtual void dummy84() = 0;
+  virtual void dummy88() = 0;
+  virtual void dummy8c() = 0;
+  virtual void dummy90() = 0;
+  virtual void dummy94() = 0;
+  virtual void dummy98() = 0;
+  virtual void dummy9c() = 0;
+  virtual void dummya0() = 0;
+  virtual void dummya4() = 0;
+  virtual void dummya8() = 0;
+  // slot 0xac — city production UI refresh after order quantity change.
+  virtual void RefreshCityProductionUiSlotAc() = 0;
 
   // Data layout. The C++ vptr occupies offset 0, matching the native object's
   // vtable pointer; explicit fields follow.

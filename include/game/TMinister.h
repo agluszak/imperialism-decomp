@@ -69,5 +69,3 @@ public:
   short capabilityFlag26;
   short capabilityFlag28;
 };
-
-void DestructTMinister(TMinister* minister);

@@ -16,10 +16,7 @@ extern "C" {
 CRuntimeClass g_pClassDescTMinister = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 // FUNCTION: IMPERIALISM 0x0052eb60
 CRuntimeClass* TMinister::GetRuntimeClass() {
@@ -42,23 +39,9 @@ void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
   this->field_8 = new (storage) TMinisterBaseOrderArray();
 }
 
-// FUNCTION: IMPERIALISM 0x0052ebd0
-#pragma optimize("y", on)
-void DestructTMinister(TMinister* minister) {
-  *reinterpret_cast<void**>(minister) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-}
-#pragma optimize("", on)
-
-// FUNCTION: IMPERIALISM 0x0052eba0
-TMinister* __fastcall DestructTMinisterAndMaybeFree(TMinister* minister, int unusedEdx,
-                                                    unsigned char freeSelfFlag) {
-  (void)unusedEdx;
-  DestructTMinister(minister);
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull((undefined4)minister);
-  }
-  return minister;
-}
+// Destructors are compiler-generated (implicit) from real CObject inheritance.
+// SYNTHETIC: IMPERIALISM 0x0052eba0
+// TMinister::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0052ecf0
 void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {

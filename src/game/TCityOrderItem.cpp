@@ -20,18 +20,29 @@ void TCityOrderItem::Produce(void* orderSheet) {
   *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(orderSheet) + 0x7c) = 0;
 }
 
-CRuntimeClass* TCityOrderItem::GetRuntimeClass() {
-  return CObject::GetRuntimeClass();
+short TCityOrderItem::MaxOrder() {
+  return 0;
 }
 
-void TCityOrderItem::Serialize(CArchive* ar) {
-  CObject::Serialize(ar);
+bool TCityOrderItem::SetQuantity(short quantity) {
+  (void)quantity;
+  return false;
 }
 
-void TCityOrderItem::AssertValidOrSlot0c() {
-  CObject::AssertValidOrSlot0c();
+void TCityOrderItem::CommitIfPending() {}
+
+void TCityOrderItem::FillOrderSheet(void* orderSheet, short quantity) {
+  (void)orderSheet;
+  (void)quantity;
 }
 
-void TCityOrderItem::DumpOrSlot10(int unused) {
-  CObject::DumpOrSlot10(unused);
+bool TCityOrderItem::CanMakeFromCityStock() {
+  return false;
 }
+
+bool TCityOrderItem::CanFillOrderSheet(void* orderSheet) {
+  (void)orderSheet;
+  return false;
+}
+
+void TCityOrderItem::ApplyCityProductionSlotDelta() {}

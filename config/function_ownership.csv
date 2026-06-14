@@ -361,9 +361,16 @@ address|target_cpp|ownership|note
 4b7c20|src/game/noop_slots.cpp|manual|marker_sync
 4b80a0|src/game/noop_slots.cpp|manual|marker_sync
 4b8420|src/game/noop_slots.cpp|manual|marker_sync
+4b85a0|src/game/TCapacityOrder.cpp|manual|marker_sync
+4b8630|src/game/TCapacityOrder.cpp|manual|marker_sync
+4b86d0|src/game/TCapacityOrder.cpp|manual|marker_sync
+4b8800|src/game/TCapacityOrder.cpp|manual|marker_sync
+4b8970|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8b80|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8cc0|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8d00|src/game/TCapacityOrder.cpp|manual|marker_sync
+4b8d50|src/game/TCapacityOrder.cpp|manual|marker_sync
+4b8dd0|src/game/TCapacityOrder.cpp|manual|marker_sync
 4badd0|src/game/TCityProductionView.cpp|manual|marker_sync
 4bc9b0|src/game/TCityProductionView.cpp|manual|marker_sync
 4be190|src/game/noop_slots.cpp|manual|marker_sync
