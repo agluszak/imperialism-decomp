@@ -1,21 +1,25 @@
 set shell := ["bash", "-eu", "-o", "pipefail", "-c"]
 set dotenv-load := true
 
-target := env_var_or_default("TARGET", "IMPERIALISM")
-build_dir := env_var_or_default("BUILD_DIR", "build-msvc500")
-docker_image := env_var_or_default("DOCKER_IMAGE", "imperialism-msvc500")
-cmake_flags := env_var_or_default("CMAKE_FLAGS", "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy-,/Ob1")
+# Project constants. These are not machine-specific; edit here if they ever change.
+target := "IMPERIALISM"
+build_dir := "build-msvc500"
+docker_image := "imperialism-msvc500"
+cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy-,/Ob1"
+name_overrides := "config/function_name_overrides.csv"
+function_ownership := "config/function_ownership.csv"
+vtable_gate_baseline := "config/vtable_gate_baseline.csv"
+construction_gate_baseline := "config/construction_gate_baseline.csv"
+canary_targets := "config/canary_targets_tgreatpower.csv"
+class_discovery_classes := "TGreatPower,TAutoGreatPower"
+
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
 # Exported so every recipe (and the pyghidra tools) use the vendored project authoritatively.
+# Do NOT set GHIDRA_PROJECT_DIR/NAME/PROGRAM_NAME in .env — these exports are the source of truth.
 export GHIDRA_PROGRAM_NAME := "Imperialism.exe"
 export GHIDRA_PROJECT_DIR := justfile_directory() / "vendor/ghidra"
 export GHIDRA_PROJECT_NAME := "imperialism-decomp"
-name_overrides := env_var_or_default("NAME_OVERRIDES", "config/function_name_overrides.csv")
-function_ownership := env_var_or_default("FUNCTION_OWNERSHIP", "config/function_ownership.csv")
-vtable_gate_baseline := env_var_or_default("VTABLE_GATE_BASELINE", "config/vtable_gate_baseline.csv")
-construction_gate_baseline := env_var_or_default("CONSTRUCTION_GATE_BASELINE", "config/construction_gate_baseline.csv")
-canary_targets := env_var_or_default("CANARY_TARGETS", "config/canary_targets_tgreatpower.csv")
-class_discovery_classes := env_var_or_default("CLASS_DISCOVERY_CLASSES", "TGreatPower,TAutoGreatPower")
+
 # External, machine-specific: the extracted macOS CodeWarrior dump dir. Only needed to
 # REGENERATE Mac evidence (already vendored under vendor/macos_codewarrior/evidence).
 macos_dump := env_var_or_default("MACOS_IMPERIALISM_DUMP", "")
@@ -28,18 +32,20 @@ default:
 tooling-check:
   uv run python -m tools.workflow.check_tooling_surface
 
-# One-time / fresh clone: recreate the live Ghidra working project from the vendored .gzf.
-restore-project *args:
+# Private: fail fast (with a clear message) if the machine-specific Ghidra install
+# path is missing. Ghidra recipes depend on this instead of repeating the guard.
+_require-ghidra-install:
   : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+
+# One-time / fresh clone: recreate the live Ghidra working project from the vendored .gzf.
+restore-project *args: _require-ghidra-install
   uv run python -m tools.ghidra.restore_project {{args}}
 
 # Refresh the committed .gzf archive (LFS) from the live project after Ghidra-side changes.
-export-project *args:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+export-project *args: _require-ghidra-install
   uv run python -m tools.ghidra.export_project {{args}}
 
-sync-ghidra:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+sync-ghidra: _require-ghidra-install
   uv run python -m tools.ghidra.sync_exports \
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
     --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
@@ -53,8 +59,7 @@ sync-ghidra:
 prune-ilt-thunks *args:
   uv run python -m tools.workflow.prune_ilt_thunks {{args}}
 
-import-ghidra *args:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+import-ghidra *args: _require-ghidra-install
   file_in_project="{{GHIDRA_PROGRAM_NAME}}"; \
   [[ "$file_in_project" == /* ]] || file_in_project="/$file_in_project"; \
   (cd "{{build_dir}}" && GHIDRA_INSTALL_DIR="$GHIDRA_INSTALL_DIR" uv run reccmp-ghidra-import \
@@ -64,35 +69,28 @@ import-ghidra *args:
     --file "$file_in_project" \
     {{args}})
 
-ghidra-listing *args:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+ghidra-listing *args: _require-ghidra-install
   uv run python -m tools.ghidra.listing_one {{args}}
 
-ghidra-function-slice *args:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+ghidra-function-slice *args: _require-ghidra-install
   uv run python -m tools.ghidra.function_slice {{args}}
 
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
-scan-cdecl-thiscall *args:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+scan-cdecl-thiscall *args: _require-ghidra-install
   uv run python -m tools.ghidra.scan_cdecl_thiscall {{args}}
 
-ghidra-vtable-dump class vtable *args:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+ghidra-vtable-dump class vtable *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
 
-apply-source-datatypes *args:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+apply-source-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes {{args}}
 
-apply-tview-datatype:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+apply-tview-datatype: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes --classes CString,TEventHandler,TView
 
-w32dasm-report:
+w32dasm-report: _require-ghidra-install
   uv run python -m tools.w32dasm.parse_alf
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
   uv run python -m tools.w32dasm.compare_alf_ghidra
   uv run python -m tools.w32dasm.inspect_wpj
   uv run python -m tools.w32dasm.rank_report
@@ -216,8 +214,7 @@ mac-evidence-check:
     --workspace "{{macos_workspace}}" \
     --check
 
-import-macos-pef:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+import-macos-pef: _require-ghidra-install
   : "${MACOS_IMPERIALISM_DUMP:?Set MACOS_IMPERIALISM_DUMP in .env (extracted macOS dump dir holding Imperialism.datafork)}"
   mkdir -p "{{macos_workspace}}/ghidra"
   "$GHIDRA_INSTALL_DIR/support/analyzeHeadless" "{{macos_workspace}}/ghidra" imperialism-macos \
@@ -259,6 +256,5 @@ format *paths:
 format-check *paths:
   uv run python -m tools.workflow.format_cpp --check {{paths}}
 
-class-owner-probe address *args:
-  : "${GHIDRA_INSTALL_DIR:?Set GHIDRA_INSTALL_DIR in .env}"
+class-owner-probe address *args: _require-ghidra-install
   uv run python -m tools.ghidra.class_owner_probe "{{address}}" {{args}}

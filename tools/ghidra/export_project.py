@@ -21,11 +21,9 @@ from pathlib import Path
 
 import pyghidra
 
+from tools.common import ghidra_env
+
 _VENDOR_GHIDRA = Path(__file__).resolve().parents[2] / "vendor" / "ghidra"
-PROJECT_DIR = os.getenv("GHIDRA_PROJECT_DIR", str(_VENDOR_GHIDRA))
-PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
-PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
 DEFAULT_OUT = _VENDOR_GHIDRA / "exports" / "Imperialism.gzf"
 
 
@@ -33,12 +31,11 @@ def main() -> int:
     out = Path(sys.argv[1] if len(sys.argv) > 1 else DEFAULT_OUT)
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)
+    project = ghidra_env.open_project(create=False)
     from java.io import File as JavaFile
 
-    project = pyghidra.open_project(PROJECT_DIR, PROJECT_NAME, create=False)
     try:
-        prog_leaf = PROGRAM_NAME.lstrip("/")
+        prog_leaf = ghidra_env.program_name().lstrip("/")
         df = project.getProjectData().getRootFolder().getFile(prog_leaf)
         if df is None:
             print(f"ERROR: program not found in project: /{prog_leaf}", file=sys.stderr)

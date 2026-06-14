@@ -8,16 +8,10 @@ Prints CSV: slot,byte_off,thunk,target,name,size,owned
 
 from __future__ import annotations
 
-import os
 import sys
 from pathlib import Path
 
-import pyghidra
-
-PROJECT_LOCATION = os.getenv("GHIDRA_PROJECT_DIR", str(Path(__file__).resolve().parents[2] / "vendor" / "ghidra"))
-PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
-PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
+from tools.common import ghidra_env
 
 
 def main() -> int:
@@ -27,16 +21,11 @@ def main() -> int:
   if len(sys.argv) > 3:
     owned = {int(line.strip(), 16) for line in Path(sys.argv[3]).read_text().splitlines() if line.strip()}
 
-  pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)
-  project = pyghidra.open_project(PROJECT_LOCATION, PROJECT_NAME, create=False)
-
-  from java.lang import Object as JavaObject
-
-  consumer = JavaObject()
+  project = ghidra_env.open_project()
+  consumer = None
   program = None
   try:
-    domain_file = project.getProjectData().getFile(f"/{PROGRAM_NAME}")
-    program = domain_file.getReadOnlyDomainObject(consumer, -1, pyghidra.task_monitor())
+    consumer, program = ghidra_env.open_program(project)
     af = program.getAddressFactory().getDefaultAddressSpace()
     fm = program.getFunctionManager()
     listing = program.getListing()

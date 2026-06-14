@@ -9,16 +9,9 @@ usage: xrefs_to 0xADDR [0xADDR ...]
 
 from __future__ import annotations
 
-import os
 import sys
-from pathlib import Path
 
-import pyghidra
-
-PROJECT_LOCATION = os.getenv("GHIDRA_PROJECT_DIR", str(Path(__file__).resolve().parents[2] / "vendor" / "ghidra"))
-PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
-PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
+from tools.common import ghidra_env
 
 
 def main() -> int:
@@ -27,14 +20,8 @@ def main() -> int:
     return 2
   targets = [int(a, 16) for a in sys.argv[1:]]
 
-  pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)
-  project = pyghidra.open_project(PROJECT_LOCATION, PROJECT_NAME, create=False)
-  from java.lang import Object as JavaObject
-
-  consumer = JavaObject()
-  program_path = PROGRAM_NAME if PROGRAM_NAME.startswith("/") else f"/{PROGRAM_NAME}"
-  domain_file = project.getProjectData().getFile(program_path)
-  program = domain_file.getReadOnlyDomainObject(consumer, -1, pyghidra.task_monitor())
+  project = ghidra_env.open_project()
+  consumer, program = ghidra_env.open_program(project)
   try:
     af = program.getAddressFactory().getDefaultAddressSpace()
     fm = program.getFunctionManager()

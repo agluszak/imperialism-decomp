@@ -12,6 +12,7 @@ import tomllib
 from pathlib import Path
 
 import pyghidra
+from tools.common import ghidra_env
 from tools.common.name_overrides import parse_name_overrides
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
@@ -21,7 +22,6 @@ from tools.workflow.function_ownership import (
 )
 
 REPO_CONFIG_PATH = "ghidra.toml"
-EXPECTED_PYGHIDRA_VERSION = "3.1.0"
 WS_RE = re.compile(r"\s")
 
 
@@ -91,27 +91,6 @@ def read_repo_config(repo_root: Path) -> dict:
         raise FileNotFoundError(f"Missing {config_path}")
     with config_path.open("rb") as fd:
         return tomllib.load(fd)
-
-
-def read_ghidra_props(ghidra_install_dir: Path) -> tuple[str, str]:
-    props_path = ghidra_install_dir / "Ghidra" / "application.properties"
-    if not props_path.is_file():
-        raise FileNotFoundError(f"Missing Ghidra application.properties: {props_path}")
-
-    version = None
-    release = None
-    for raw in props_path.read_text(encoding="utf-8").splitlines():
-        line = raw.strip()
-        if not line or line.startswith("#") or line.startswith("!"):
-            continue
-        if line.startswith("application.version="):
-            version = line.split("=", 1)[1].strip()
-        elif line.startswith("application.release.name="):
-            release = line.split("=", 1)[1].strip()
-
-    if not version or not release:
-        raise RuntimeError(f"Could not read version/release from {props_path}")
-    return version, release
 
 
 def apply_overrides_to_symbols_csv(path: Path, overrides: dict[int, tuple[str, str]]) -> tuple[int, int]:
@@ -239,13 +218,6 @@ def main() -> int:
                 f"{REPO_CONFIG_PATH} must define [ghidra].version and [ghidra].release"
             )
 
-        pyghidra_version = getattr(pyghidra, "__version__", "unknown")
-        if pyghidra_version != EXPECTED_PYGHIDRA_VERSION:
-            raise RuntimeError(
-                f"Unsupported pyghidra runtime: {pyghidra_version}. "
-                f"Expected {EXPECTED_PYGHIDRA_VERSION}."
-            )
-
         ghidra_install_dir = Path(require(args.ghidra_install_dir, "--ghidra-install-dir"))
         ghidra_project_dir = Path(require(args.ghidra_project_dir, "--ghidra-project-dir"))
         ghidra_project_name = require(args.ghidra_project_name, "--ghidra-project-name")
@@ -260,12 +232,7 @@ def main() -> int:
             else default_max_per_file
         )
 
-        actual_version, actual_release = read_ghidra_props(ghidra_install_dir)
-        if actual_version != expected_version or actual_release != expected_release:
-            raise RuntimeError(
-                f"Unsupported Ghidra runtime: {actual_version} {actual_release}. "
-                f"Expected {expected_version} {expected_release}."
-            )
+        ghidra_env.enforce_versions(ghidra_install_dir)
 
         output_dir.mkdir(parents=True, exist_ok=True)
         decomp_output_dir.mkdir(parents=True, exist_ok=True)

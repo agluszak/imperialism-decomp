@@ -6,6 +6,9 @@ workflow guides (those are in `.claude/skills/`) and not the execution log
 
 ## Decompilation / layout contracts
 
+- `construction.md` — long-form "real C++ construction and inheritance" rules: the full
+  examples, recipes, and rationale behind the crisp principles in `AGENTS.md` (the
+  mechanically-checkable parts are enforced by `just antipattern-gate` / `marker-gate`).
 - `imperialism-decomp.md` — master function reference: startup entry chain
   (PE entry → MFC app lifecycle → main loop) and city-screen building/icon mappings,
   with confirmed code addresses.

@@ -20,14 +20,12 @@ This script is read-only.
 from __future__ import annotations
 
 import argparse
-import os
 import re
 from collections.abc import Iterable, Iterator, Sequence
 from dataclasses import dataclass
-from pathlib import Path
 from typing import TYPE_CHECKING, Any, TypeAlias, cast
 
-import pyghidra
+from tools.common import ghidra_env
 
 if TYPE_CHECKING:
     from ghidra.framework.model import DomainFile, DomainObject, Project
@@ -52,13 +50,6 @@ else:
     Symbol: TypeAlias = Any
     SymbolTable: TypeAlias = Any
 
-
-PROJECT_LOCATION = os.getenv(
-    "GHIDRA_PROJECT_DIR", str(Path(__file__).resolve().parents[2] / "vendor" / "ghidra")
-)
-PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
-PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
 
 THIS_MEM_RE = re.compile(r"\[(E(?:AX|BX|CX|DX|SI|DI|BP|SP))(?: \+ (0x[0-9a-fA-F]+))?\]")
 VTABLE_CALL_RE = re.compile(r"CALL dword ptr \[(E[A-Z]{2}) \+ (0x[0-9a-fA-F]+)\]")
@@ -564,16 +555,8 @@ def print_function_metadata(fn: Function | None) -> None:
 
 
 def load_program(project: Project):
-    from java.lang import Object as JavaObject
-
-    consumer = JavaObject()
-    program_path = PROGRAM_NAME if PROGRAM_NAME.startswith("/") else f"/{PROGRAM_NAME}"
-    domain_file = cast(DomainFile | None, project.getProjectData().getFile(program_path))
-    if domain_file is None:
-        raise FileNotFoundError(f'Program "{PROGRAM_NAME}" not found in project.')
-
-    program = cast(Program, domain_file.getReadOnlyDomainObject(consumer, -1, pyghidra.task_monitor()))
-    return consumer, program
+    consumer, program = ghidra_env.open_program(project)
+    return consumer, cast(Program, program)
 
 
 def main() -> int:
@@ -584,8 +567,7 @@ def main() -> int:
     parser.add_argument("--listing-after", type=int, default=28)
     args = parser.parse_args()
 
-    pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)
-    project = cast(Project, pyghidra.open_project(PROJECT_LOCATION, PROJECT_NAME, create=False))
+    project = cast(Project, ghidra_env.open_project())
 
     consumer: Any | None = None
     program: Program | None = None

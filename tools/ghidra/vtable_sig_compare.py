@@ -14,16 +14,8 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import os
-import sys
-from pathlib import Path
 
-import pyghidra
-
-PROJECT_LOCATION = os.getenv("GHIDRA_PROJECT_DIR", str(Path(__file__).resolve().parents[2] / "vendor" / "ghidra"))
-PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
-PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
+from tools.common import ghidra_env
 
 
 def parse_int(value: str) -> int:
@@ -86,15 +78,11 @@ def main() -> int:
         addr_s, _, name = v.partition(":")
         specs.append((parse_int(addr_s), name or addr_s))
 
-    pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)
-    project = pyghidra.open_project(PROJECT_LOCATION, PROJECT_NAME, create=False)
-    from java.lang import Object as JavaObject
-    consumer = JavaObject()
+    project = ghidra_env.open_project()
+    consumer = None
     program = None
     try:
-        program_path = PROGRAM_NAME if PROGRAM_NAME.startswith("/") else f"/{PROGRAM_NAME}"
-        domain_file = project.getProjectData().getFile(program_path)
-        program = domain_file.getReadOnlyDomainObject(consumer, -1, pyghidra.task_monitor())
+        consumer, program = ghidra_env.open_program(project)
         af = program.getAddressFactory().getDefaultAddressSpace()
         memory = program.getMemory()
 

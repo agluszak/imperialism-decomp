@@ -12,17 +12,14 @@ Usage:
 
 from __future__ import annotations
 
-import os
 import sys
 from pathlib import Path
 
 import pyghidra
 
+from tools.common import ghidra_env
+
 _VENDOR_GHIDRA = Path(__file__).resolve().parents[2] / "vendor" / "ghidra"
-PROJECT_DIR = os.getenv("GHIDRA_PROJECT_DIR", str(_VENDOR_GHIDRA))
-PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
-PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
 EXPORTS_DIR = _VENDOR_GHIDRA / "exports"
 DEFAULT_GZF = EXPORTS_DIR / "Imperialism.gzf"
 
@@ -43,14 +40,13 @@ def main() -> int:
         print(f"ERROR: no .gzf export found in {EXPORTS_DIR}", file=sys.stderr)
         return 2
 
-    pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)
+    project = ghidra_env.open_project(create=True)
     from java.io import File as JavaFile
 
-    project = pyghidra.open_project(PROJECT_DIR, PROJECT_NAME, create=True)
     try:
         pdata = project.getProjectData()
         root = pdata.getRootFolder()
-        prog_leaf = PROGRAM_NAME.lstrip("/")
+        prog_leaf = ghidra_env.program_name().lstrip("/")
 
         existing = root.getFile(prog_leaf)
         if existing is not None:

@@ -11,20 +11,13 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
-import os
 import sys
-from pathlib import Path
 
 import jpype
 import pyghidra
 
-PROJECT_LOCATION = os.getenv(
-    "GHIDRA_PROJECT_DIR",
-    str(Path(__file__).resolve().parents[2] / "vendor" / "ghidra"),
-)
-PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
-PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
+from tools.common import ghidra_env
+
 DEFAULT_CLASSES = ("CString", "TEventHandler", "TView")
 
 
@@ -190,12 +183,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def require_env(value: str | None, name: str) -> str:
-    if value:
-        return value
-    raise ValueError(f"{name} is not set")
-
-
 def parse_class_list(raw: str) -> list[str]:
     classes = [part.strip() for part in raw.split(",") if part.strip()]
     unknown = [name for name in classes if name not in SOURCE_CLASS_MODELS]
@@ -352,18 +339,12 @@ def apply_function_signatures(program, selected_classes: set[str], created) -> i
 
 
 def open_program():
-    install_dir = Path(require_env(INSTALL_DIR, "GHIDRA_INSTALL_DIR"))
-    pyghidra.start(install_dir=install_dir)
-    from java.lang import Object as JavaObject
-
-    project = pyghidra.open_project(PROJECT_LOCATION, PROJECT_NAME, create=False)
-    consumer = JavaObject()
-    program_path = PROGRAM_NAME if PROGRAM_NAME.startswith("/") else f"/{PROGRAM_NAME}"
-    domain_file = project.getProjectData().getFile(program_path)
-    if domain_file is None:
+    project = ghidra_env.open_project()
+    try:
+        consumer, program = ghidra_env.open_program(project, writable=True)
+    except FileNotFoundError:
         project.close()
-        raise FileNotFoundError(f'Program "{PROGRAM_NAME}" not found in project.')
-    program = domain_file.getDomainObject(consumer, True, False, pyghidra.task_monitor())
+        raise
     return project, consumer, program
 
 

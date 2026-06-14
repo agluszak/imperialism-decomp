@@ -6,21 +6,17 @@ CreateFunctionCmd where no function exists yet, so the bodies can be decompiled 
 paired by reccmp. Writable open + save. Run via:
   GHIDRA_INSTALL_DIR=... uv run python -m tools.ghidra.create_vtable_body_functions
 """
-import os, csv, sys
-from pathlib import Path
+import csv, sys
 import pyghidra
 
-VTABLE_CSV = sys.argv[1] if len(sys.argv) > 1 else "/tmp/gp_vtable.csv"
-PROJECT_DIR = os.getenv("GHIDRA_PROJECT_DIR", str(Path("vendor/ghidra").resolve()))
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
+from tools.common import ghidra_env
 
-pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)
-project = pyghidra.open_project(PROJECT_DIR, "imperialism-decomp", create=False)
-from java.lang import Object as JO
+VTABLE_CSV = sys.argv[1] if len(sys.argv) > 1 else "/tmp/gp_vtable.csv"
+
+project = ghidra_env.open_project()
 from ghidra.app.cmd.function import CreateFunctionCmd
-consumer = JO()
-df = project.getProjectData().getFile("/Imperialism.exe")
-program = df.getDomainObject(consumer, True, False, pyghidra.task_monitor())
+consumer, program = ghidra_env.open_program(project, writable=True)
+df = program.getDomainFile()
 try:
     af = program.getAddressFactory().getDefaultAddressSpace()
     fm = program.getFunctionManager()

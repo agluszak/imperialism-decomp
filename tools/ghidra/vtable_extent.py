@@ -11,16 +11,9 @@ usage: vtable_extent 0xADDR [max_slots]
 
 from __future__ import annotations
 
-import os
 import sys
-from pathlib import Path
 
-import pyghidra
-
-PROJECT_LOCATION = os.getenv("GHIDRA_PROJECT_DIR", str(Path(__file__).resolve().parents[2] / "vendor" / "ghidra"))
-PROJECT_NAME = os.getenv("GHIDRA_PROJECT_NAME", "imperialism-decomp")
-PROGRAM_NAME = os.getenv("GHIDRA_PROGRAM_NAME", "Imperialism.exe")
-INSTALL_DIR = os.getenv("GHIDRA_INSTALL_DIR")
+from tools.common import ghidra_env
 
 
 def main() -> int:
@@ -30,14 +23,8 @@ def main() -> int:
   start = int(sys.argv[1], 16)
   max_slots = int(sys.argv[2]) if len(sys.argv) > 2 else 200
 
-  pyghidra.start(install_dir=Path(INSTALL_DIR) if INSTALL_DIR else None)
-  project = pyghidra.open_project(PROJECT_LOCATION, PROJECT_NAME, create=False)
-  from java.lang import Object as JavaObject
-
-  consumer = JavaObject()
-  program_path = PROGRAM_NAME if PROGRAM_NAME.startswith("/") else f"/{PROGRAM_NAME}"
-  domain_file = project.getProjectData().getFile(program_path)
-  program = domain_file.getReadOnlyDomainObject(consumer, -1, pyghidra.task_monitor())
+  project = ghidra_env.open_project()
+  consumer, program = ghidra_env.open_program(project)
   try:
     mem = program.getMemory()
     af = program.getAddressFactory().getDefaultAddressSpace()
