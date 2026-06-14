@@ -3933,6 +3933,30 @@ Follow-up scan after the TClosePicture extraction:
 - **Still open:** full `Call8C`/`Call94`/`DispatchProposalSlot98` bodies; personality vtable size
   warnings; `InitializeCityInteriorMinister` thunk.
 
+## 2026-06-14 — Add modern lint compiler (clang/MinGW-w64 i686)
+
+- **Goal:** second compiler purely for early error catching (missing `override`,
+  narrowing, layout asserts) — never used for reccmp. Modeled on isle decomp.
+- **Commands:** `just build-lint-image`; `just lint`
+- **Added:** `docker/clang-mingw/{Dockerfile,entrypoint.py}` (clang + mingw-w64,
+  Ninja, no Wine; keep-going `-k 0`), `cmake/clang-mingw-i686.cmake` cross
+  toolchain (C++14 so real `override`/`static_assert` activate; compile-only via
+  `IMPERIALISM_LINT_COMPILE_ONLY`), `justfile` `build-lint-image` + `lint` recipes
+  and `lint_build_dir`/`lint_docker_image` constants.
+- **CMakeLists.txt:** target becomes an OBJECT library under
+  `IMPERIALISM_LINT_COMPILE_ONLY` (default OFF, MSVC path untouched); new
+  `elseif(Clang)` branch with `-fms-extensions -Wall -Wextra
+  -Winconsistent-missing-override -Woverloaded-virtual`, decomp-noise
+  suppressions, and `-Werror` gated behind `IMPERIALISM_LINT_WERROR` (default OFF).
+- **Result:** all 118 TUs traverse; clang parses `windows.h` via MinGW. Surfaced
+  backlog = ~300 inconsistent-missing-override + 42 hard errors across 7 files
+  (27× wrong global language linkage in `diplomacy_globals.h`, `CString::Header`
+  used without `()`, 2× `TCivDescription` size `static_assert`). NB: dropping
+  `-fms-compatibility` was required — it defines `_MSC_VER` and breaks MinGW's
+  `windows.h` (VARARGS / `__buildmemorybarrier`).
+- **Follow-up (plan step 5):** clear the backlog incrementally, re-verifying each
+  matching-sensitive fix against reccmp, then flip `IMPERIALISM_LINT_WERROR=ON`.
+
 ## 2026-06-14 — Diplomacy manager + city-order typing for foreign minister ports
 
 - **Commands:** `just sync-ownership`; `just regen-stubs`; `just build`; `just compare` on minister/deal-list targets; `just compare-canaries`

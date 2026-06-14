@@ -2,6 +2,31 @@
 
 This document tracks evidence for the compiler/linker used by Imperialism (1997), and the current reproduction strategy.
 
+## Lint compiler (clang/MinGW) — NOT for reccmp
+
+A second, modern compiler runs purely as a linter to catch errors MSVC 5.0
+silently accepts (missing `override`, narrowing, wrong vtable signatures, bad
+global linkage, layout `static_assert` failures). It is **never** used for
+reccmp matching and must not influence the MSVC500 build.
+
+- Toolchain: `clang` targeting `i686-w64-mingw32` (MinGW-w64 supplies
+  `<windows.h>`, gdi32/user32, and the MSVC calling conventions). Packaged in
+  `docker/clang-mingw/`; CMake cross-toolchain in `cmake/clang-mingw-i686.cmake`.
+- Run with `just build-lint-image` (one-time) then `just lint`. It compiles all
+  sources (no link, `IMPERIALISM_LINT_COMPILE_ONLY`) and keeps going past errors
+  so one pass reports the whole tree.
+- The C++ standard is C++14, which activates the real `override`/`static_assert`
+  that `include/compat.h` stubs out for MSVC 5.0 — this is what makes the
+  missing-override checks fire.
+- `-fms-compatibility` is intentionally **omitted**: it defines `_MSC_VER`, which
+  sends MinGW's `windows.h` down an unsupported MSVC path.
+- Strictness is phased: warnings are reported but non-fatal until the backlog is
+  cleared, then flip `IMPERIALISM_LINT_WERROR=ON` (pass via
+  `just lint -DIMPERIALISM_LINT_WERROR=ON`). Initial backlog: ~300
+  inconsistent-missing-override warnings + ~42 hard errors (wrong global
+  language linkage, `CString::Header` missing `()`, two `TCivDescription`
+  layout assertions).
+
 ## Current Hypothesis
 
 - Architecture: 32-bit x86 PE

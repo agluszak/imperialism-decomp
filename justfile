@@ -5,6 +5,8 @@ set dotenv-load := true
 target := "IMPERIALISM"
 build_dir := "build-msvc500"
 docker_image := "imperialism-msvc500"
+lint_build_dir := "build-clang"
+lint_docker_image := "imperialism-clang-mingw"
 cmake_flags := "-DCMAKE_BUILD_TYPE=RelWithDebInfo -DIMPERIALISM_MATCH_FLAGS_CSV=/Oy-,/Ob1"
 name_overrides := "config/function_name_overrides.csv"
 function_ownership := "config/function_ownership.csv"
@@ -145,6 +147,21 @@ gates:
 
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
+
+# Build the lint image (clang + MinGW-w64 i686). One-time / on Dockerfile change.
+build-lint-image:
+  docker build --network host -t "{{lint_docker_image}}" -f docker/clang-mingw/Dockerfile docker/clang-mingw
+
+# Modern second compiler (clang/MinGW) used ONLY to catch errors early — never
+# for reccmp. Compile-only; does not touch the MSVC build, gates, or reccmp
+# config. Pass FLAGS=-DIMPERIALISM_LINT_WERROR=ON to fail on warnings.
+lint flags="":
+  mkdir -p "{{lint_build_dir}}"
+  docker run --rm --network none \
+    -e CMAKE_FLAGS="{{flags}}" \
+    -v "$PWD":/imperialism \
+    -v "$PWD/{{lint_build_dir}}":/build \
+    "{{lint_docker_image}}"
 
 build:
   just gen-vcall-facades
