@@ -4,7 +4,6 @@
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-// VTABLE: IMPERIALISM 0x00659c00 (base minister table until interior slots are recovered)
 class TCityInteriorMinister : public TMinister {
 public:
   TCityInteriorMinister();

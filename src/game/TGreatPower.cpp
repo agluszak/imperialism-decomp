@@ -5470,10 +5470,16 @@ void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e9ed0
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 void TGreatPower::QueueWarTransitionFromAdvisoryAction(int arg1, int arg2, int arg3) {
   this->VTableSlot84_Provisional(arg1);
-  this->TGreatPower::ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(arg1, arg2, arg3);
+  this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(arg1, arg2, arg3);
 }
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
 
 // FUNCTION: IMPERIALISM 0x004ea150
 void TGreatPower::ApplyJoinEmpireResetAndClearDiplomacyCaches(int arg1) {

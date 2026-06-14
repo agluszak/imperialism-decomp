@@ -1,60 +1,36 @@
-// TSoundPlayer wrapper block extracted from Ghidra autogen.
-
-#include "decomp_types.h"
-#include "game/CRuntimeClass.h"
 #include "game/TSoundPlayer.h"
+
+#include "game/CRuntimeClass.h"
+
+#include <new>
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00668a18
 CRuntimeClass g_pClassDescTSoundPlayer = {0};
 }
 
+extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-undefined4 thunk_InitializeUiResourceEntryBaseHeaderDefaults(void);
+undefined4 InitializeUiResourceEntryBaseHeaderDefaults(void);
 
-namespace {
-
-// GLOBAL: IMPERIALISM 0x668a60
-char g_vtblTSoundPlayer;char PTR_GetCObjectRuntimeClass_0066fec4;
-
-struct SoundPlayerState {
-  void* vftable;
-  char pad_04[0x68];
-  void* runtimePeerAt6c;
-  void* runtimePeerAt70;
-  char pad_74[4];
-  unsigned char stateByte78;
-  unsigned char stateByte79;
-  unsigned char stateByte7a;
-  unsigned char pad_7b;
-  int stateDword7c;
-  char pad_80[4];
-};
-
-static __inline void ConstructUiResourceEntryBaseHeaderDefaults(void* self) {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeUiResourceEntryBaseHeaderDefaults)(
-      self, 0);
+// FUNCTION: IMPERIALISM 0x00593370
+TSoundPlayer* __fastcall ConstructTSoundPlayerBaseState(TSoundPlayer* storage) {
+  return new (storage) TSoundPlayer();
 }
 
-} // namespace
-
-void __fastcall DestructTSoundPlayerBaseState(SoundPlayerState* player);
-
 // FUNCTION: IMPERIALISM 0x005932b0
-SoundPlayerState* __cdecl CreateTSoundPlayerInstance(void) {
-  SoundPlayerState* player = reinterpret_cast<SoundPlayerState*>(AllocateWithFallbackHandler(0x84));
-  if (player != 0) {
-    ConstructUiResourceEntryBaseHeaderDefaults(player);
-    player->vftable = reinterpret_cast<void*>(&g_vtblTSoundPlayer);
-    player->runtimePeerAt6c = 0;
-    player->runtimePeerAt70 = 0;
-    player->stateByte78 = 0;
-    player->stateByte79 = 0;
-    player->stateByte7a = 0;
-    player->stateDword7c = 0;
+TSoundPlayer* CreateTSoundPlayerInstance(void) {
+  void* storage = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x84));
+  if (storage == 0) {
+    return 0;
   }
-  return player;
+  return new (storage) TSoundPlayer();
 }
 
 // FUNCTION: IMPERIALISM 0x00593350
@@ -62,23 +38,37 @@ CRuntimeClass* TSoundPlayer::GetRuntimeClass() {
   return &g_pClassDescTSoundPlayer;
 }
 
-// FUNCTION: IMPERIALISM 0x00593370
-SoundPlayerState* __fastcall ConstructTSoundPlayerBaseState(SoundPlayerState* player) {
-  ConstructUiResourceEntryBaseHeaderDefaults(player);
-  player->vftable = reinterpret_cast<void*>(&g_vtblTSoundPlayer);
-  player->runtimePeerAt6c = 0;
-  player->runtimePeerAt70 = 0;
-  player->stateByte78 = 0;
-  player->stateByte79 = 0;
-  player->stateByte7a = 0;
-  player->stateDword7c = 0;
-  return player;
+// Fork-class construction: the binary calls InitializeUiResourceEntryBaseHeaderDefaults
+// (TEventHandler field defaults) then installs the TSoundPlayer vptr — same pattern as
+// ApplicationUiRootController @ 0x00486760, not TControl::TControl().
+TSoundPlayer::TSoundPlayer() {
+  typedef void(__fastcall * InitHeader)(undefined4* self);
+  reinterpret_cast<InitHeader>(InitializeUiResourceEntryBaseHeaderDefaults)(
+      reinterpret_cast<undefined4*>(this));
+  this->runtimePeerAt6c = 0;
+  this->runtimePeerAt70 = 0;
+  this->stateByte78 = 0;
+  this->stateByte79 = 0;
+  this->stateByte7a = 0;
+  this->stateDword7c = 0;
+}
+
+void TSoundPlayer::SoundPlayerSlot25_Provisional() {}
+void TSoundPlayer::SoundPlayerSlot26_Provisional() {}
+void TSoundPlayer::SoundPlayerSlot27_Provisional() {}
+void TSoundPlayer::SoundPlayerSlot28_Provisional() {}
+void TSoundPlayer::SoundPlayerSlot29_Provisional() {}
+
+// Partial teardown writes the runtime-object base vptr, symmetric with header-only
+// construction (InitializeUiResourceEntryBaseHeaderDefaults, not ~TEventHandler()).
+// FUNCTION: IMPERIALISM 0x005933e0
+void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
+  *reinterpret_cast<void**>(player) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 }
 
 // FUNCTION: IMPERIALISM 0x005933b0
-SoundPlayerState* __fastcall DestructTSoundPlayerAndMaybeFree(SoundPlayerState* player,
-                                                              int unusedEdx,
-                                                              unsigned char freeSelfFlag) {
+TSoundPlayer* __fastcall DestructTSoundPlayerAndMaybeFree(TSoundPlayer* player, int unusedEdx,
+                                                           unsigned char freeSelfFlag) {
   (void)unusedEdx;
   DestructTSoundPlayerBaseState(player);
   if ((freeSelfFlag & 1) != 0) {
@@ -87,7 +77,6 @@ SoundPlayerState* __fastcall DestructTSoundPlayerAndMaybeFree(SoundPlayerState* 
   return player;
 }
 
-// FUNCTION: IMPERIALISM 0x005933e0
-void __fastcall DestructTSoundPlayerBaseState(SoundPlayerState* player) {
-  player->vftable = reinterpret_cast<void*>(&PTR_GetCObjectRuntimeClass_0066fec4);
-}
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

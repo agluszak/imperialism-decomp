@@ -34,8 +34,6 @@ undefined4 ShowCivilianLedgerDialogAndSelectUnit(void);
 
 namespace {
 
-// GLOBAL: IMPERIALISM 0x667f00
-char g_vtblTCivToolbar;
 const unsigned int kTagStackSlotMin = 0x73746B30;
 const unsigned int kTagStackSlotMax = 0x73746B35;
 const unsigned int kTagDone = 0x646F6E65;
