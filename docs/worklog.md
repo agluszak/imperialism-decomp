@@ -1,5 +1,10 @@
 # Worklog
 
+- **Timestamp:** 2026-06-10 — TGreatPower structural cleanup (phases 1–6)
+- **Command:** Retired preamble bridges (NavyMission, TPtrList, TQueueObject, NationState wrappers); deleted DiplomacyManagerVtbl/NationStateVtbl/TerrainDescriptorVtbl; ported `0x00518960` to `TGlobalMapState::SetRegionDevelopmentStageByte`; relocated `0x004b73b0` to `TCityRecruitmentOrderContext`; moved terrain scoring to `TTerrainDescriptor.cpp`; drained view structs (TMissionNodeCallback, TMilitaryUnit, STurnInstructionCiviCursor); `TGreatPower : public CObject`; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just stats`.
+- **Score Delta:** `0x00518960` **100%**; `0x004df010` **45% → 51.38%**; `0x004b73b0` **5% → 12.98%**; `0x004d8c50` **58.33%** (CObject dtor tail); `0x004d8390`/`0x004d83c0` ~30% (terrain scoring, still thunk-forwarded).
+- **Description:** Diplomacy proposal acceptance now calls `g_pDiplomacyTurnStateManager` and `g_apNationStates` directly. Region development writes use `g_pGlobalMapState`. Minister skill floats inlined at five slot bodies.
+
 - **Timestamp:** 2026-06-14 (cont. 9) — TEventHandler DoEvent/HandleEvent signature fix + noop slots
 - **Command:** Fix `vmethod_0015`/`DispatchEvent` to Mac `(commandId, TEventHandler*, TEvent*)`; rename to `HandleEvent`/`DispatchEvent`; port `CanHandleCityDialogActionFalse` + city-dialog noop slots 0x05/0x06; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare`.
 - **Score Delta:** `0x0048a280`/`0x0048a2e0` **100%** (unchanged); `0x00485f70`/`0x00485f90` **100%** (claimed from stubs); `0x0048a480` **100%** with `int action` arg + rename.
@@ -3812,3 +3817,25 @@ Follow-up scan after the TClosePicture extraction:
   0 below, 0 missing**. Stats: aligned +15, not-aligned -15, paired globals +18,
   average similarity +0.18 pp. Canaries: below_floor=0 with existing 0x005C2940
   parse_error.
+
+## 2026-06-14 — TGreatPower structural cleanup (6 phases)
+
+- **Timestamp:** 2026-06-14 (session)
+- **Commands:** `just sync-ownership` → `just regen-stubs` → `just build` →
+  `just compare 0x004df010` / `0x004d8c50` / `0x00518960` / `0x004b73b0`
+- **Changes:** Retired preamble bridges (navy scores, proposal/tracked-list accessors,
+  nation-state notify helpers, MinisterSkillFloat, unused Message/List helpers).
+  Deleted vtable-view structs in favor of typed manager/nation/terrain calls.
+  Moved `SetRegionDevelopmentStageByte` to `TGlobalMapState::SetRegionDevelopmentStageByte`
+  (100%). Relocated `CommitCityRecruitmentOrderDelta` to `TCityRecruitmentOrderContext`,
+  terrain scoring to `TTerrainDescriptor.cpp`, `STurnInstructionCiviCursor` to header,
+  `TMissionNodeCallback` / `TMilitaryUnit` field model. Added `TGreatPower : public CObject`.
+- **Score Delta:**
+  - `0x00518960` `TGlobalMapState::SetRegionDevelopmentStageByte`: **100%** (new)
+  - `0x004b73b0` `TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta`: **12.98%** (was ~5.10%)
+  - `0x004df010` `ApplyAcceptedDiplomacyProposalCode`: **51.38%** (vtable slot shift from CObject base)
+  - `0x004d8c50` `TGreatPower::~TGreatPower`: **58.33%** (CObject dtor chain vs manual vptr restore)
+- **Blockers:** CObject inheritance enlarges/shifts TGreatPower vtable slots; MFC base slots
+  need explicit mapping before proposal/dtor bodies re-match. `CommitCityRecruitmentOrderDelta`
+  body still simplified vs Ghidra (specialist branch / notification callback not ported).
+

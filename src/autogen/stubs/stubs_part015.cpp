@@ -1139,14 +1139,6 @@ undefined4 LoadScenarioMapStateFromTableResource_Impl(void)
   return 0;
 }
 
-// ghidra_name SetGlobalRegionDevelopmentStageByte
-// ghidra_proto undefined SetGlobalRegionDevelopmentStageByte()
-// FUNCTION: IMPERIALISM 0x00518960
-undefined4 SetGlobalRegionDevelopmentStageByte(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTileToBaseTransportFlag
 // ghidra_proto undefined ResetTileToBaseTransportFlag()
 // FUNCTION: IMPERIALISM 0x00518990

@@ -6,6 +6,11 @@
 
 #pragma optimize("y", on) // omit frame pointer, as in the original bodies
 
+// FUNCTION: IMPERIALISM 0x00518960
+void TGlobalMapState::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
+  cityScoreTable[regionId].developmentStage = stage;
+}
+
 // FUNCTION: IMPERIALISM 0x00517c30
 char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
   TPtrList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList90;

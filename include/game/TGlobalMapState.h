@@ -151,6 +151,8 @@ public:
                                             char wrapHorizontally);
   static short GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction);
 
+  void SetRegionDevelopmentStageByte(short regionId, unsigned char stage);
+
   class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
     return reinterpret_cast<struct GlobalMapTileRecord*>(terrainStateTable)[tileIndex]
         .firstCivilianOrder;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/CObject.h"
 #include "game/CString.h"
 #include "game/TPtrList.h"
 
@@ -13,7 +14,8 @@ class TCity;
   virtual void VTableIndex##n##_Provisional(void) {}
 
 // VTABLE: IMPERIALISM 0x00653938
-class TGreatPower {
+// MFC CObject base (vtable 0x0066fec4 restored during ~TGreatPower teardown).
+class TGreatPower : public CObject {
 public:
   TGREATPOWER_VTABLE_SLOT(00);
   // slot 0x01 — scalar deleting destructor 0x004d8c20 (SYNTHETIC); real dtor body
@@ -514,7 +516,6 @@ public:
   void TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2, int arg3, int arg4);
   void ProcessPendingDiplomacyThenDispatchTurnEvent29A(void);
   void ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2);
-  void CommitCityRecruitmentOrderDelta(void);
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,

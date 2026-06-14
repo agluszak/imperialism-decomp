@@ -1,5 +1,5 @@
 bridge_name,line,blocked_by_class,recovery_method,facade_rows,priority,status
-MinisterSkillFloat,89,TMinister,skill table lookup,,P3,pending
+MinisterSkillFloat,89,TMinister,skill table lookup,,P3,done
 QueueObject_WritePackedIntAtSlot38,589,TIndexAndRankList,AddEntrySlot38,VCall_QueueObject_WritePackedIntAtSlot38,P2,done
 Queue_ApplyMessageSlot14,828,TPtrList,ResetSlot14(void* message),VCall_Queue_ApplyMessageSlot14,P1,done
 Queue_GetCountSlot48,833,TPtrList,GetCountSlot48(),VCall_Queue_RefreshSlot48,P1,done
@@ -26,15 +26,19 @@ ReadNationStateSlot,288,diplomacy_globals,g_apNationStates[slot],,P3,done
 ReadTerrainDescriptorSlot,296,diplomacy_globals,g_apTerrainTypeDescriptorTable,,P3,done
 Stream_ReadAtSlot3C,395,TStreamView,direct ReadAt3C in minister/map paths,,P3,partial
 Stream_WriteRawAtSlot78,1426,TStreamView,WriteRaw78,,P3,pending
-List_ResetSlot14,415,TPtrList,direct ResetSlot14,,P3,partial
-List_GetCountSlot28,419,TPtrList,GetCountOrReleaseSlot28,,P3,partial
-List_GetIntByOrdinalSlot24,424,TPtrList,GetIntByOrdinalSlot24,,P3,partial
-List_GetCountSlot48,428,TPtrList,GetCountSlot48,,P3,partial
-List_GetTrackedEntrySlot4C,432,TPtrList,GetTrackedEntrySlot4C,,P3,partial
-Message_AppendBytesSlot78,819,TMessageObject,direct AppendBytesSlot78,,P3,partial
-Message_WriteEntrySlotB4,823,TMessageObject,WriteEntrySlotB4,,P3,pending
+List_ResetSlot14,415,TPtrList,direct ResetSlot14,,P3,done
+List_GetCountSlot28,419,TPtrList,GetCountOrReleaseSlot28,,P3,done
+List_GetIntByOrdinalSlot24,424,TPtrList,GetIntByOrdinalSlot24,,P3,done
+List_GetCountSlot48,428,TPtrList,GetCountSlot48,,P3,done
+List_GetTrackedEntrySlot4C,432,TPtrList,GetTrackedEntrySlot4C,,P3,done
+Message_AppendBytesSlot78,819,TMessageObject,direct AppendBytesSlot78,,P3,done
+Message_WriteEntrySlotB4,823,TMessageObject,WriteEntrySlotB4,,P3,done
 TTrackedObjectListEntryView,210,TPtrList,TTrackedObjectListEntry.h,,P3,done
 TProposalQueueCountView,205,TQueueObject,GetEntryCount(),,P3,done
 TMarkerReceiverView,2026,TMarkerReceiver,TMarkerReceiverView.h,,P3,done
 TPortZoneRefitView,2092,TZone,use TZone port fields,,P3,done
-CallEligibilityThunkWithManager,5826,TDiplomacyTurnStateManager,IsNationSlotEligibleForEventProcessing,,P3,pending
+CallEligibilityThunkWithManager,5826,TDiplomacyTurnStateManager,IsNationSlotEligibleForEventProcessingFast,,P3,done
+SetGlobalRegionDevelopmentStageByte,680,TGlobalMapState,SetRegionDevelopmentStageByte,,P3,done
+DiplomacyManagerVtbl,4161,TDiplomacyTurnStateManager,direct manager methods,,P2,done
+NationStateVtbl,4223,TGreatPower,NotifyActionSlot94,,P2,done
+TerrainDescriptorVtbl,4200,TTerrainDescriptor,CallSlot4C,,P2,done
