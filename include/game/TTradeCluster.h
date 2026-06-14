@@ -5,7 +5,8 @@
 
 class TAmtBar;
 
-extern "C" char g_pClassDescTTradeCluster;
+struct CRuntimeClass;
+extern "C" CRuntimeClass g_pClassDescTTradeCluster;
 
 // VTABLE: IMPERIALISM 0x665a70
 class TTradeCluster : public TUberCluster {
@@ -13,6 +14,7 @@ public:
   short tradeMetricSlot; // 0x88
 
   TTradeCluster();
+  CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   void InitializeTradeSellControlState(unsigned int styleSeed);

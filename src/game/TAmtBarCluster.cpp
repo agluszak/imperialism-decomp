@@ -4,6 +4,7 @@
 #include "game/GameAssert.h"
 #include "game/UiRuntimeContext.h"
 #include "game/trade_quickdraw.h"
+#include "game/CRuntimeClass.h"
 
 struct TGreatPower;
 
@@ -20,7 +21,7 @@ const int kAssertLineTradeSellIncSell = 0x816;
 const int kAssertLineTradeSellIncCap = 0x81d;
 
 extern "C" {
-char g_pClassDescTAmtBarCluster = 0;
+CRuntimeClass g_pClassDescTAmtBarCluster = {0};
 }
 
 // FUNCTION: IMPERIALISM 0x00586c40
@@ -29,7 +30,7 @@ TAmtBarCluster* TAmtBarCluster::CreateInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586cc0
-void* TAmtBarCluster::GetClassNamePointer() {
+CRuntimeClass* TAmtBarCluster::GetRuntimeClass() {
   return &g_pClassDescTAmtBarCluster;
 }
 

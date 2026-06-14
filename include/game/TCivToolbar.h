@@ -4,12 +4,14 @@
 #include "game/TPanelEventPayload.h"
 
 // VTABLE: IMPERIALISM 0x667f00
+struct CRuntimeClass;
 class TCivToolbar : public TCluster {
 public:
   short civilianClassId; // 0x88
   short pad_8a;
 
   TCivToolbar();
+  CRuntimeClass* GetRuntimeClass() override;
 
   void
   RefreshCivilianCommandPanelForSelection(class TCivilianOrderState* selectedCivilianOrderEntry);

@@ -1,7 +1,7 @@
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/TNumberedArrowButton.h"
-int g_pClassDescTNumberedArrowButton;
+CRuntimeClass g_pClassDescTNumberedArrowButton = {0};
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/win_rect.h"
@@ -18,8 +18,8 @@ TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c280
-void* __cdecl GetTNumberedArrowButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTNumberedArrowButton);
+CRuntimeClass* TNumberedArrowButton::GetRuntimeClass() {
+  return &g_pClassDescTNumberedArrowButton;
 }
 
 // FUNCTION: IMPERIALISM 0x0058c2a0
@@ -34,6 +34,7 @@ TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0
 #endif
 
 #include "game/TAmtBar.h"
+#include "game/CRuntimeClass.h"
 
 // FUNCTION: IMPERIALISM 0x0058b750
 void TNumberedArrowButton::OrphanCallChain_C3_I43_0058b750(char mode, char refreshParent) {

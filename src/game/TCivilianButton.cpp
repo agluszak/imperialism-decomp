@@ -1,7 +1,8 @@
 #include "game/TCivilianButton.h"
 #include "game/generated/vcall_facades.h"
+#include "game/CRuntimeClass.h"
 
-int g_pClassDescTCivilianButton;
+CRuntimeClass g_pClassDescTCivilianButton = {0};
 
 // FUNCTION: IMPERIALISM 0x0058b340
 void* __cdecl CreateTCivilianButtonInstance(void) {
@@ -9,8 +10,8 @@ void* __cdecl CreateTCivilianButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b3c0
-void* __cdecl GetTCivilianButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTCivilianButton);
+CRuntimeClass* TCivilianButton::GetRuntimeClass() {
+  return &g_pClassDescTCivilianButton;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b3e0

@@ -17,6 +17,7 @@
 #include "game/ui_widget_thunks.h"
 #include "game/win_rect.h"
 #include <new>
+#include "game/CRuntimeClass.h"
 
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
@@ -27,7 +28,7 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 namespace {
 
-extern "C" char g_pClassDescTTraderAmtBar = 0;
+extern "C" CRuntimeClass g_pClassDescTTraderAmtBar = {0};
 extern "C" char g_vtblTTraderAmtBar = 0;
 
 const int kScenarioRecordTags[] = {
@@ -50,8 +51,8 @@ TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058aed0
-void* __cdecl GetTTraderAmtBarClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTTraderAmtBar);
+CRuntimeClass* TTraderAmtBar::GetRuntimeClass() {
+  return &g_pClassDescTTraderAmtBar;
 }
 
 // FUNCTION: IMPERIALISM 0x0058af30

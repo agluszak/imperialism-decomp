@@ -1,13 +1,12 @@
 #include "game/T2PictureButton.h"
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x0065e568
+CRuntimeClass g_pClassDescT2PictureButton = {0};
+}
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-
-namespace {
-
-// GLOBAL: IMPERIALISM 0x65e568
-char g_pClassDescT2PictureButton;
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00570b10
 T2PictureButton* __cdecl CreateT2PictureButtonInstance(void) {
@@ -15,8 +14,8 @@ T2PictureButton* __cdecl CreateT2PictureButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00570b90
-void* __cdecl GetT2PictureButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescT2PictureButton);
+CRuntimeClass* T2PictureButton::GetRuntimeClass() {
+  return &g_pClassDescT2PictureButton;
 }
 
 // FUNCTION: IMPERIALISM 0x00570bb0

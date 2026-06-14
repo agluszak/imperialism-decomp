@@ -9,12 +9,13 @@
 #include "game/ui_widget_thunks.h"
 #include "game/TUberCluster.h"
 #include "game/win_rect.h"
+#include "game/CRuntimeClass.h"
 
 #pragma optimize("y", on)
 
 undefined4 ftol(void);
 
-extern "C" char g_pClassDescTAmtBar = 0;
+extern "C" CRuntimeClass g_pClassDescTAmtBar = {0};
 
 // FUNCTION: IMPERIALISM 0x005884c0
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {
@@ -26,7 +27,7 @@ TAmtBar* __cdecl CreateTAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00588560
-void* __cdecl GetTAmtBarClassNamePointer(void) {
+CRuntimeClass* TAmtBar::GetRuntimeClass() {
   return &g_pClassDescTAmtBar;
 }
 

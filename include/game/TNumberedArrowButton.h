@@ -3,7 +3,8 @@
 #include "game/TControl.h"
 
 extern "C" int g_vtblTNumberedArrowButton;
-extern "C" int g_pClassDescTNumberedArrowButton;
+struct CRuntimeClass;
+extern "C" CRuntimeClass g_pClassDescTNumberedArrowButton;
 
 // VTABLE: IMPERIALISM 0x667678
 class TNumberedArrowButton : public TControl {
@@ -12,6 +13,7 @@ public:
   short value86;
 
   TNumberedArrowButton();
+  CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor).
 
   void OrphanCallChain_C3_I43_0058b750(char mode, char refreshParent);

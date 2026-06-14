@@ -4,6 +4,7 @@
 #include "game/TView.h"
 
 // VTABLE: IMPERIALISM 0x665cc8
+struct CRuntimeClass;
 class TAmtBar : public TView {
 public:
   short rangeOrMaxValue;    // 0x60
@@ -12,6 +13,7 @@ public:
   short auxValueB;          // 0x66
 
   TAmtBar();
+  CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor from TView).
 
   void RenderPrimarySurfaceOverlayPanelWithClipCache();

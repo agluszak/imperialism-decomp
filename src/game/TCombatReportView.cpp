@@ -1,6 +1,7 @@
 #include "game/TCombatReportView.h"
+#include "game/CRuntimeClass.h"
 
-int g_pClassDescTCombatReportView;
+CRuntimeClass g_pClassDescTCombatReportView = {0};
 
 // FUNCTION: IMPERIALISM 0x0058c830
 void* __cdecl CreateTCombatReportViewInstance(void) {
@@ -8,8 +9,8 @@ void* __cdecl CreateTCombatReportViewInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c8b0
-void* __cdecl GetTCombatReportViewClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTCombatReportView);
+CRuntimeClass* TCombatReportView::GetRuntimeClass() {
+  return &g_pClassDescTCombatReportView;
 }
 
 // FUNCTION: IMPERIALISM 0x0058c8d0

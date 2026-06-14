@@ -2,12 +2,14 @@
 
 #include "game/TButton.h"
 
-extern "C" int g_pClassDescTStatusButton;
+struct CRuntimeClass;
+extern "C" CRuntimeClass g_pClassDescTStatusButton;
 
 // VTABLE: IMPERIALISM 0x664f68
 class TStatusButton : public TButton {
 public:
   TStatusButton();
+  CRuntimeClass* GetRuntimeClass() override;
 
   int ControlTag() const;
   void* OwnerPanel() const;
@@ -16,4 +18,3 @@ public:
 };
 
 TStatusButton* __cdecl CreateTStatusButtonInstance(void);
-void* __cdecl GetTStatusButtonClassNamePointer(void);

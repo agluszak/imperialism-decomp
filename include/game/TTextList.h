@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "game/TView.h"
 
+struct CRuntimeClass;
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 struct TTextListItem {
@@ -12,6 +13,7 @@ struct TTextListItem {
 // VTABLE: IMPERIALISM 0x00644778
 class TTextList : public TView {
 public:
+  CRuntimeClass* GetRuntimeClass() override;
   TTextListItem items[64];
   int totalItems;
   int scrollOffset;
@@ -33,7 +35,6 @@ public:
   }
 
   static TTextList* CreateTTextListInstance();
-  static void* GetTTextListClassNamePointer();
 
   void RenderTextListRowsWithSelectionHighlight();
   void HandleTextListScrollSelectionChange(int* pScrollData);

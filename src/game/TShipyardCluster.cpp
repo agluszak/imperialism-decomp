@@ -12,6 +12,13 @@
 
 #include <new>
 
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00662ff8
+CRuntimeClass g_pClassDescTShipyardCluster = {0};
+}
+
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 static __inline NationCityTradeState* GetNationCityStateBySlot(short slotId) {
@@ -33,8 +40,8 @@ TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a570
-void* __cdecl GetTShipyardClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(0x00662ff8);
+CRuntimeClass* TShipyardCluster::GetRuntimeClass() {
+  return &g_pClassDescTShipyardCluster;
 }
 
 // FUNCTION: IMPERIALISM 0x0058a590

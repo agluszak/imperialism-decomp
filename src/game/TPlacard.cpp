@@ -1,6 +1,7 @@
 #include "game/TPlacard.h"
+#include "game/CRuntimeClass.h"
 
-int g_pClassDescTPlacard;
+CRuntimeClass g_pClassDescTPlacard = {0};
 
 // FUNCTION: IMPERIALISM 0x0058b960
 void* __cdecl CreateTPlacardInstance(void) {
@@ -8,8 +9,8 @@ void* __cdecl CreateTPlacardInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b9f0
-void* __cdecl GetTPlacardClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTPlacard);
+CRuntimeClass* TPlacard::GetRuntimeClass() {
+  return &g_pClassDescTPlacard;
 }
 
 // FUNCTION: IMPERIALISM 0x0058ba10

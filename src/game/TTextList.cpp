@@ -6,13 +6,14 @@
 #include "game/UiRuntimeContext.h"
 #include "game/trade_quickdraw.h"
 #include "game/win_rect.h"
+#include "game/CRuntimeClass.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 
 extern "C" {
-char g_pClassDescTTextList = 0;
+CRuntimeClass g_pClassDescTTextList = {0};
 char g_vtblTTextList = 0;
 }
 
@@ -27,7 +28,7 @@ TTextList* TTextList::CreateTTextListInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057ac30
-void* TTextList::GetTTextListClassNamePointer() {
+CRuntimeClass* TTextList::GetRuntimeClass() {
   return &g_pClassDescTTextList;
 }
 

@@ -4,9 +4,11 @@
 #include "game/TPictureResourceEntryBase.h"
 
 // VTABLE: IMPERIALISM 0x668358
+struct CRuntimeClass;
 class TArmyInfoView : public TPictureResourceEntryBase {
 public:
   TArmyInfoView();
+  CRuntimeClass* GetRuntimeClass() override;
   // ~TArmyInfoView is compiler-generated (implicit virtual dtor).
 };
 

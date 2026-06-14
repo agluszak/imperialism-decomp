@@ -1,14 +1,13 @@
 #include "game/TToggleButton.h"
 #include "game/generated/vcall_facades.h"
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x0065e598
+CRuntimeClass g_pClassDescTToggleButton = {0};
+}
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-
-namespace {
-
-// GLOBAL: IMPERIALISM 0x65e598
-char g_pClassDescTToggleButton;
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00571050
 TToggleButton* __cdecl CreateTToggleButtonInstance(void) {
@@ -16,8 +15,8 @@ TToggleButton* __cdecl CreateTToggleButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005710d0
-void* __cdecl GetTToggleButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTToggleButton);
+CRuntimeClass* TToggleButton::GetRuntimeClass() {
+  return &g_pClassDescTToggleButton;
 }
 
 // FUNCTION: IMPERIALISM 0x005710f0

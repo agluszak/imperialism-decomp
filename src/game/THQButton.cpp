@@ -7,8 +7,9 @@
 #include "game/win_rect.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
+#include "game/CRuntimeClass.h"
 
-int g_pClassDescTHQButton;
+CRuntimeClass g_pClassDescTHQButton = {0};
 
 // FUNCTION: IMPERIALISM 0x0058b5c0
 void* __cdecl CreateTHQButtonInstance(void) {
@@ -16,8 +17,8 @@ void* __cdecl CreateTHQButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b640
-void* __cdecl GetTHQButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTHQButton);
+CRuntimeClass* THQButton::GetRuntimeClass() {
+  return &g_pClassDescTHQButton;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b660

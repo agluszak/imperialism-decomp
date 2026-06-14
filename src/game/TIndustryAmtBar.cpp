@@ -19,6 +19,13 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00662fb0
+CRuntimeClass g_pClassDescTIndustryAmtBar = {0};
+}
+
 // FUNCTION: IMPERIALISM 0x00589110
 TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
   TIndustryAmtBar* amountBar =
@@ -30,8 +37,8 @@ TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005891b0
-void* __cdecl GetTIndustryAmtBarClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTIndustryAmtBar);
+CRuntimeClass* TIndustryAmtBar::GetRuntimeClass() {
+  return &g_pClassDescTIndustryAmtBar;
 }
 
 // FUNCTION: IMPERIALISM 0x005891d0

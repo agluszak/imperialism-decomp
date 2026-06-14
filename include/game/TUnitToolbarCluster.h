@@ -3,15 +3,16 @@
 #include "game/TUberCluster.h"
 
 // VTABLE: IMPERIALISM 0x00664d38
+struct CRuntimeClass;
 class TUnitToolbarCluster : public TUberCluster {
 public:
   TUnitToolbarCluster();
+  CRuntimeClass* GetRuntimeClass() override;
 
   virtual void DispatchEvent(int eventClass, void* eventPayload, int eventFlags);
 
   // We'll declare the static creation methods.
   static TUnitToolbarCluster* CreateInstance();
-  static void* GetClassNamePointer();
   void* DestructAndMaybeFree(int freeSelfFlag);
 
   // Actually, we don't know UpdateTradeResourceSelectionByIndex's slot yet.

@@ -7,7 +7,7 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
-extern "C" char g_pClassDescTTradeCluster = 0;
+extern "C" CRuntimeClass g_pClassDescTTradeCluster = {0};
 extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 
 // TTradeCluster (VTABLE 0x665a70): the trade-screen sell/bid/offer cluster.
@@ -22,6 +22,7 @@ extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 #include "game/TPictureResourceEntryBase.h"
 #include "game/TGreatPower.h"
 #include "game/trade_quickdraw.h"
+#include "game/CRuntimeClass.h"
 
 // Bid/Offer picture-button bitmap states (enabled / row-selected variants).
 const short kTradeBitmapBidStateA = 0x083f;
@@ -80,8 +81,8 @@ static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
 #endif
 
 // FUNCTION: IMPERIALISM 0x00587090
-void* GetTTradeClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTTradeCluster);
+CRuntimeClass* TTradeCluster::GetRuntimeClass() {
+  return &g_pClassDescTTradeCluster;
 }
 
 // Initializes Sell/Bar/Arrow control style and enabled state for the current

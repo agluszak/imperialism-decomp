@@ -1,13 +1,12 @@
 #include "game/TTransportPicture.h"
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00663160
+CRuntimeClass g_pClassDescTTransportPicture = {0};
+}
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-
-namespace {
-
-// GLOBAL: IMPERIALISM 0x663160
-char g_pClassDescTTransportPicture;
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00591d90
 TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {
@@ -15,8 +14,8 @@ TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00591e50
-void* __cdecl GetTTransportPictureClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTTransportPicture);
+CRuntimeClass* TTransportPicture::GetRuntimeClass() {
+  return &g_pClassDescTTransportPicture;
 }
 
 // FUNCTION: IMPERIALISM 0x00591e70

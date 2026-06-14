@@ -1,13 +1,12 @@
 #include "game/T2PictToggleButton.h"
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00662e78
+CRuntimeClass g_pClassDescT2PictToggleButton = {0};
+}
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-
-namespace {
-
-// GLOBAL: IMPERIALISM 0x662e78
-char g_pClassDescT2PictToggleButton;
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00584890
 T2PictToggleButton* __cdecl CreateT2PictToggleButtonInstance(void) {
@@ -15,8 +14,8 @@ T2PictToggleButton* __cdecl CreateT2PictToggleButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00584910
-void* __cdecl GetT2PictToggleButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescT2PictToggleButton);
+CRuntimeClass* T2PictToggleButton::GetRuntimeClass() {
+  return &g_pClassDescT2PictToggleButton;
 }
 
 // FUNCTION: IMPERIALISM 0x00584930

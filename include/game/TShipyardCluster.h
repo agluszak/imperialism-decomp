@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "game/TUberCluster.h"
 
+struct CRuntimeClass;
 class TAmtBar;
 
 // VTABLE: IMPERIALISM 0x666760
@@ -13,6 +14,7 @@ public:
   short field_8e;
 
   TShipyardCluster();
+  CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   virtual void ApplyMoveValue(int value);
@@ -24,4 +26,3 @@ public:
 ASSERT_SIZE(TShipyardCluster, 0x90);
 
 TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void);
-void* __cdecl GetTShipyardClusterClassNamePointer(void);

@@ -3799,3 +3799,16 @@ Follow-up scan after the TClosePicture extraction:
   absent from `compare_batch` output. Stats: aligned +2, average similarity +0.04 pp,
   paired count -1 from the synthetic destructor ownership; canaries below_floor=0 with
   existing 0x005C2940 parse_error.
+
+## 2026-06-14 (cont.) — T-framework GetRuntimeClass collapse batch
+
+- **Timestamp:** 2026-06-14 15:43 CEST
+- **Command:** Converted 38 already-modeled CObject-backed T-framework classes from
+  free/static `Get*ClassNamePointer` accessors to real slot-0 `GetRuntimeClass()`
+  overrides, with `CRuntimeClass` descriptor globals and matching `config/symbols.csv`
+  names. Skipped classes not yet on a real CObject inheritance backbone.
+  `just sync-ownership` -> `just regen-stubs` -> `just build` -> `just detect` passed.
+- **Score Delta:** Batched compare for the 38 converted accessors was **38 at 100%,
+  0 below, 0 missing**. Stats: aligned +15, not-aligned -15, paired globals +18,
+  average similarity +0.18 pp. Canaries: below_floor=0 with existing 0x005C2940
+  parse_error.

@@ -9,6 +9,14 @@
 #include "game/quickdraw_guards.h"
 
 #include "game/ui_widget_thunks.h"
+
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x0065e5b0
+CRuntimeClass g_pClassDescTUberCluster = {0};
+}
+
 extern void FailNilPointerInUSmallViews(int line);
 extern const int kAssertLineMoveBarInitNil;
 undefined4 thunk_BuildUiTextStyleDescriptor(void);
@@ -75,8 +83,8 @@ TUberCluster* __cdecl CreateTUberClusterInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00571440
-void* __cdecl GetTUberClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(0x0065e5b0);
+CRuntimeClass* TUberCluster::GetRuntimeClass() {
+  return &g_pClassDescTUberCluster;
 }
 
 // FUNCTION: IMPERIALISM 0x00586e70

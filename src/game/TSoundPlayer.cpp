@@ -1,6 +1,13 @@
 // TSoundPlayer wrapper block extracted from Ghidra autogen.
 
 #include "decomp_types.h"
+#include "game/CRuntimeClass.h"
+#include "game/TSoundPlayer.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00668a18
+CRuntimeClass g_pClassDescTSoundPlayer = {0};
+}
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
@@ -9,10 +16,7 @@ undefined4 thunk_InitializeUiResourceEntryBaseHeaderDefaults(void);
 namespace {
 
 // GLOBAL: IMPERIALISM 0x668a60
-char g_vtblTSoundPlayer;
-// GLOBAL: IMPERIALISM 0x668a18
-char g_pClassDescTSoundPlayer;
-char PTR_GetCObjectRuntimeClass_0066fec4;
+char g_vtblTSoundPlayer;char PTR_GetCObjectRuntimeClass_0066fec4;
 
 struct SoundPlayerState {
   void* vftable;
@@ -54,8 +58,8 @@ SoundPlayerState* __cdecl CreateTSoundPlayerInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00593350
-void* __cdecl GetTSoundPlayerClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTSoundPlayer);
+CRuntimeClass* TSoundPlayer::GetRuntimeClass() {
+  return &g_pClassDescTSoundPlayer;
 }
 
 // FUNCTION: IMPERIALISM 0x00593370

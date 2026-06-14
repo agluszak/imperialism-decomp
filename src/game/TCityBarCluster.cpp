@@ -13,9 +13,10 @@
 #include "game/TCityBarCluster.h"
 #include "game/GameAssert.h"
 #include <new>
+#include "game/CRuntimeClass.h"
 
 extern "C" {
-char g_pClassDescTCityBarCluster = 0;
+CRuntimeClass g_pClassDescTCityBarCluster = {0};
 char g_vtblTCityBarCluster = 0;
 }
 
@@ -33,8 +34,8 @@ TCityBarCluster* TCityBarCluster::CreateInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586610
-void* TCityBarCluster::GetClassNamePointer() {
-  return reinterpret_cast<void*>(&g_pClassDescTCityBarCluster);
+CRuntimeClass* TCityBarCluster::GetRuntimeClass() {
+  return &g_pClassDescTCityBarCluster;
 }
 
 // FUNCTION: IMPERIALISM 0x00586630

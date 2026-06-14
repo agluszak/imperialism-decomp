@@ -3,7 +3,8 @@
 #include "game/TPictureButton.h"
 
 extern "C" int g_vtblTHQButton;
-extern "C" int g_pClassDescTHQButton;
+struct CRuntimeClass;
+extern "C" CRuntimeClass g_pClassDescTHQButton;
 
 // VTABLE: IMPERIALISM 0x666fe0
 class THQButton : public TPictureButton {
@@ -15,4 +16,5 @@ public:
 
   THQButton();
   virtual ~THQButton();
+  CRuntimeClass* GetRuntimeClass() override;
 };

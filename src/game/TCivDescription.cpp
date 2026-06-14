@@ -11,9 +11,15 @@
 #include "game/TView.h"
 #include "game/CString.h"
 
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00663118
+CRuntimeClass g_pClassDescTCivDescription = {0};
+}
+
 extern "C" void* g_apTerrainTypeDescriptorTable[];
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 #include "game/CString.h"
+#include "game/CRuntimeClass.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
@@ -32,11 +38,7 @@ undefined4 SetQuickDrawColorAndSyncGlobals(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 
-namespace {
-
-// GLOBAL: IMPERIALISM 0x663118
-char g_pClassDescTCivDescription;
-const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;
+namespace {const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrGlobalUiRootController = 0x006A1344;
 const unsigned int kAddrLocalizationTable = 0x006A20F8;
@@ -108,8 +110,8 @@ TCivDescription::TCivDescription() : TControl() {
 // TCivDescription::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058f0f0
-void* __cdecl GetTCivDescriptionClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTCivDescription);
+CRuntimeClass* TCivDescription::GetRuntimeClass() {
+  return &g_pClassDescTCivDescription;
 }
 
 /* Caches civilian class changes and refreshes target tile counts for supported civilian classes. */

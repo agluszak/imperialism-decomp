@@ -16,11 +16,12 @@
 #include <new>
 
 extern "C" {
-char g_pClassDescTUnitToolbarCluster = 0;
+CRuntimeClass g_pClassDescTUnitToolbarCluster = {0};
 char g_vtblTUnitToolbarCluster = 0;
 }
 
 #include "game/ApplicationUiRootController.h"
+#include "game/CRuntimeClass.h"
 
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 undefined4 thunk_DispatchPanelControlEvent(void);
@@ -31,8 +32,8 @@ TUnitToolbarCluster* TUnitToolbarCluster::CreateInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00585ff0
-void* TUnitToolbarCluster::GetClassNamePointer() {
-  return reinterpret_cast<void*>(&g_pClassDescTUnitToolbarCluster);
+CRuntimeClass* TUnitToolbarCluster::GetRuntimeClass() {
+  return &g_pClassDescTUnitToolbarCluster;
 }
 
 // FUNCTION: IMPERIALISM 0x00586010

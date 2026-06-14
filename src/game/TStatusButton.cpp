@@ -1,8 +1,9 @@
 #include "game/TStatusButton.h"
 #include "game/ui_widget_thunks.h"
 #include "game/TAmtBar.h"
+#include "game/CRuntimeClass.h"
 
-int g_pClassDescTStatusButton;
+CRuntimeClass g_pClassDescTStatusButton = {0};
 
 // FUNCTION: IMPERIALISM 0x00586330
 TStatusButton::TStatusButton() : TButton() {}
@@ -21,8 +22,8 @@ TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00586310
-void* __cdecl GetTStatusButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTStatusButton);
+CRuntimeClass* TStatusButton::GetRuntimeClass() {
+  return &g_pClassDescTStatusButton;
 }
 
 // Destructor is compiler-generated (implicit) from real TButton inheritance.

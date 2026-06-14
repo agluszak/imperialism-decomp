@@ -13,10 +13,11 @@
 #include "game/ui_widget_thunks.h"
 #include "game/quickdraw_guards.h"
 #include <new>
+#include "game/CRuntimeClass.h"
 
 #pragma optimize("y", on)
 
-extern "C" char g_pClassDescTShipAmtBar = 0;
+extern "C" CRuntimeClass g_pClassDescTShipAmtBar = {0};
 
 // FUNCTION: IMPERIALISM 0x0058aaa0
 TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
@@ -28,8 +29,8 @@ TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ab40
-void* __cdecl GetTShipAmtBarClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTShipAmtBar);
+CRuntimeClass* TShipAmtBar::GetRuntimeClass() {
+  return &g_pClassDescTShipAmtBar;
 }
 
 // FUNCTION: IMPERIALISM 0x0058ab60

@@ -1,13 +1,12 @@
 #include "game/TAlwaysPictureButton.h"
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x0065e550
+CRuntimeClass g_pClassDescTAlwaysPictureButton = {0};
+}
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-
-namespace {
-
-// GLOBAL: IMPERIALISM 0x65e550
-char g_pClassDescTAlwaysPictureButton;
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00570950
 TAlwaysPictureButton* __cdecl CreateTAlwaysPictureButtonInstance(void) {
@@ -15,8 +14,8 @@ TAlwaysPictureButton* __cdecl CreateTAlwaysPictureButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005709d0
-void* __cdecl GetTAlwaysPictureButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTAlwaysPictureButton);
+CRuntimeClass* TAlwaysPictureButton::GetRuntimeClass() {
+  return &g_pClassDescTAlwaysPictureButton;
 }
 
 // FUNCTION: IMPERIALISM 0x005709f0

@@ -14,6 +14,13 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00662fe0
+CRuntimeClass g_pClassDescTRailAmtBar = {0};
+}
+
 // FUNCTION: IMPERIALISM 0x00589ed0
 TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {
   TRailAmtBar* amountBar = reinterpret_cast<TRailAmtBar*>(AllocateWithFallbackHandler(0x6c));
@@ -24,8 +31,8 @@ TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589f70
-void* __cdecl GetTRailAmtBarClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTRailAmtBar);
+CRuntimeClass* TRailAmtBar::GetRuntimeClass() {
+  return &g_pClassDescTRailAmtBar;
 }
 
 // FUNCTION: IMPERIALISM 0x00589f90

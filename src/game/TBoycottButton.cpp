@@ -1,12 +1,13 @@
 #include "game/TBoycottButton.h"
 #include "game/GameAssert.h"
 #include "game/generated/vcall_facades.h"
+#include "game/CRuntimeClass.h"
 
 void FreeHeapBufferIfNotNull(unsigned int ptr_value);
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x662e60
-char g_pClassDescTBoycottButton;
+CRuntimeClass g_pClassDescTBoycottButton = {0};
 }
 
 // FUNCTION: IMPERIALISM 0x005846e0
@@ -15,8 +16,8 @@ TBoycottButton* __cdecl CreateTBoycottButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00584760
-void* __cdecl GetTBoycottButtonClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTBoycottButton);
+CRuntimeClass* TBoycottButton::GetRuntimeClass() {
+  return &g_pClassDescTBoycottButton;
 }
 
 // FUNCTION: IMPERIALISM 0x00584780

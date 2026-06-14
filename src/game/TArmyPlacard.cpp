@@ -1,6 +1,6 @@
 #include "game/TArmyPlacard.h"
 
-int g_pClassDescTArmyPlacard;
+CRuntimeClass g_pClassDescTArmyPlacard = {0};
 
 // FUNCTION: IMPERIALISM 0x0058be30
 void* __cdecl CreateTArmyPlacardInstance(void) {
@@ -8,8 +8,8 @@ void* __cdecl CreateTArmyPlacardInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058beb0
-void* __cdecl GetTArmyPlacardClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTArmyPlacard);
+CRuntimeClass* TArmyPlacard::GetRuntimeClass() {
+  return &g_pClassDescTArmyPlacard;
 }
 
 // FUNCTION: IMPERIALISM 0x0058bed0
@@ -25,6 +25,7 @@ TArmyPlacard::~TArmyPlacard() {}
 
 #include "game/CString.h"
 #include "game/trade_quickdraw.h"
+#include "game/CRuntimeClass.h"
 
 undefined4 FormatStringWithVarArgsToSharedRef(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);

@@ -1,11 +1,12 @@
 #include "game/TProvinceDesirabilityList.h"
+#include "game/CRuntimeClass.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 
 extern "C" {
-char g_pClassDescTProvinceDesirabilityList = 0;
+CRuntimeClass g_pClassDescTProvinceDesirabilityList = {0};
 }
 
 // FUNCTION: IMPERIALISM 0x004d6500
@@ -14,7 +15,7 @@ TProvinceDesirabilityList* TProvinceDesirabilityList::CreateTProvinceDesirabilit
 }
 
 // FUNCTION: IMPERIALISM 0x004d6570
-void* TProvinceDesirabilityList::GetTProvinceDesirabilityListClassNamePointer() {
+CRuntimeClass* TProvinceDesirabilityList::GetRuntimeClass() {
   return &g_pClassDescTProvinceDesirabilityList;
 }
 

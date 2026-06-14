@@ -16,6 +16,13 @@
 
 #include <new>
 
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00662f20
+CRuntimeClass g_pClassDescTProductionCluster = {0};
+}
+
 undefined4 thunk_DispatchPanelControlEvent(void);
 
 // FUNCTION: IMPERIALISM 0x00586920
@@ -66,8 +73,8 @@ TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00586900
-void* __cdecl GetTProductionClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(0x00662f20);
+CRuntimeClass* TProductionCluster::GetRuntimeClass() {
+  return &g_pClassDescTProductionCluster;
 }
 
 TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster) {

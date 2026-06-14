@@ -4,6 +4,7 @@
 #include "game/TPictureResourceEntryBase.h"
 
 // VTABLE: IMPERIALISM 0x668588
+struct CRuntimeClass;
 class TTransportPicture : public TPictureResourceEntryBase {
 public:
   short gaugeMetricId90;
@@ -14,6 +15,7 @@ public:
 
   TTransportPicture();
   virtual ~TTransportPicture();
+  CRuntimeClass* GetRuntimeClass() override;
 };
 
 ASSERT_SIZE(TTransportPicture, 0x9c);

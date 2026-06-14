@@ -1,11 +1,10 @@
 #include "game/TCivReport.h"
+#include "game/CRuntimeClass.h"
 
-namespace {
-
-// GLOBAL: IMPERIALISM 0x663130
-char g_pClassDescTCivReport;
-
-} // namespace
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00663130
+CRuntimeClass g_pClassDescTCivReport = {0};
+}
 
 // FUNCTION: IMPERIALISM 0x00590b90
 TCivReport* __cdecl CreateTCivReportInstance(void) {
@@ -13,8 +12,8 @@ TCivReport* __cdecl CreateTCivReportInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00590c10
-void* __cdecl GetTCivReportClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTCivReport);
+CRuntimeClass* TCivReport::GetRuntimeClass() {
+  return &g_pClassDescTCivReport;
 }
 
 // FUNCTION: IMPERIALISM 0x00590c30

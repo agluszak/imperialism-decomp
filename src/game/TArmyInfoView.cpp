@@ -1,13 +1,12 @@
 #include "game/TArmyInfoView.h"
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00663148
+CRuntimeClass g_pClassDescTArmyInfoView = {0};
+}
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-
-namespace {
-
-// GLOBAL: IMPERIALISM 0x663148
-char g_pClassDescTArmyInfoView;
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00591500
 TArmyInfoView* __cdecl CreateTArmyInfoViewInstance(void) {
@@ -15,8 +14,8 @@ TArmyInfoView* __cdecl CreateTArmyInfoViewInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00591580
-void* __cdecl GetTArmyInfoViewClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTArmyInfoView);
+CRuntimeClass* TArmyInfoView::GetRuntimeClass() {
+  return &g_pClassDescTArmyInfoView;
 }
 
 // FUNCTION: IMPERIALISM 0x005915a0

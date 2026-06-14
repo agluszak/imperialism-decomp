@@ -3,6 +3,7 @@
 #include "game/TUberCluster.h"
 
 // VTABLE: IMPERIALISM 0x00665838
+struct CRuntimeClass;
 class TAmtBarCluster : public TUberCluster {
 public:
   void HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra);
@@ -11,10 +12,10 @@ public:
   short valueAt8c;
   short valueAt8e;
   TAmtBarCluster();
+  CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor) from TUberCluster.
 
   static TAmtBarCluster* CreateInstance();
-  static void* GetClassNamePointer();
 
   // We use the original struct name for parameters until we verify the method signature.
   void HandleTradeSellControlCommand(int commandId, void* eventArg, int eventExtra);

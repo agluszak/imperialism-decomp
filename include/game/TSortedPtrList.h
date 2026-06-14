@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "game/TIndexAndRankList.h"
 
+struct CRuntimeClass;
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // VTABLE: IMPERIALISM 0x00649068
@@ -14,8 +15,7 @@ public:
   // Compiler emits the 0x649068 vtable write.
   TSortedPtrList();
   virtual ~TSortedPtrList();
-
-  static void* GetTSortedPtrListClassNamePointer();
+  CRuntimeClass* GetRuntimeClass() override;
   static TSortedPtrList* ConstructTSortedPtrListBaseState();
   void ResetPtrListAndShrinkCapacity();
   void* GetPtrListEntryByOneBasedIndex(int oneBasedIndex);

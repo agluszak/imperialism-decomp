@@ -3,11 +3,13 @@
 #include "game/TCluster.h"
 
 // VTABLE: IMPERIALISM 0x65f210
+struct CRuntimeClass;
 class TUberCluster : public TCluster {
 public:
   void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
   TUberCluster();
   virtual ~TUberCluster();
+  CRuntimeClass* GetRuntimeClass() override;
 
   // Slots 0x1CC - 0x1EC (0x73 - 0x7B)
   virtual int vmethod_0115();

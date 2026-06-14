@@ -4,11 +4,13 @@
 #include "game/TPictureResourceEntryBase.h"
 
 // VTABLE: IMPERIALISM 0x6687b8
+struct CRuntimeClass;
 class TWarningView : public TPictureResourceEntryBase {
 public:
   char pad_90_to_93[0x04];
 
   TWarningView();
+  CRuntimeClass* GetRuntimeClass() override;
   // ~TWarningView is compiler-generated (implicit virtual dtor).
 };
 

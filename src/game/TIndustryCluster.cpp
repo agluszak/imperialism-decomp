@@ -13,6 +13,13 @@
 
 #include <new>
 
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00662f98
+CRuntimeClass g_pClassDescTIndustryCluster = {0};
+}
+
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 const int kAssertLineRatioB = 0xb73;
@@ -48,8 +55,8 @@ TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00588ad0
-void* __cdecl GetTIndustryClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(0x00662f98);
+CRuntimeClass* TIndustryCluster::GetRuntimeClass() {
+  return &g_pClassDescTIndustryCluster;
 }
 
 // FUNCTION: IMPERIALISM 0x00588af0
@@ -57,6 +64,7 @@ TIndustryCluster::TIndustryCluster()
     : TUberCluster(), selectedMetricControl(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00588b20
+
 // TIndustryCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00588b70

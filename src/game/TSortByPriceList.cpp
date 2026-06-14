@@ -1,11 +1,12 @@
 #include "game/TSortByPriceList.h"
+#include "game/CRuntimeClass.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 
 extern "C" {
-char g_pClassDescTSortByPriceList = 0;
+CRuntimeClass g_pClassDescTSortByPriceList = {0};
 }
 
 // FUNCTION: IMPERIALISM 0x00534680
@@ -14,7 +15,7 @@ TSortByPriceList* TSortByPriceList::AllocateAndConstructTSortByPriceList() {
 }
 
 // FUNCTION: IMPERIALISM 0x005346f0
-void* TSortByPriceList::GetTSortByPriceListClassNamePointer() {
+CRuntimeClass* TSortByPriceList::GetRuntimeClass() {
   return &g_pClassDescTSortByPriceList;
 }
 

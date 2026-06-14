@@ -15,6 +15,13 @@
 #include "game/TView.h"
 #include "game/TUberCluster.h"
 
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00662fc8
+CRuntimeClass g_pClassDescTRailCluster = {0};
+}
+
 undefined4 thunk_InvalidateCityDialogRectRegion(void);
 
 const int kAssertLineRatioA = 0xd1d;
@@ -50,8 +57,8 @@ TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589700
-void* __cdecl GetTRailClusterClassNamePointer(void) {
-  return reinterpret_cast<void*>(0x00662fc8);
+CRuntimeClass* TRailCluster::GetRuntimeClass() {
+  return &g_pClassDescTRailCluster;
 }
 
 // FUNCTION: IMPERIALISM 0x00589720

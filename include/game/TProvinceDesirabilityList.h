@@ -4,14 +4,14 @@
 #include "game/TIndexAndRankList.h"
 
 // VTABLE: IMPERIALISM 0x00653810
+struct CRuntimeClass;
 class TProvinceDesirabilityList : public TIndexAndRankList {
 public:
   short relationType;
   short pad16;
 
   TProvinceDesirabilityList();
-
-  static void* GetTProvinceDesirabilityListClassNamePointer();
+  CRuntimeClass* GetRuntimeClass() override;
   static TProvinceDesirabilityList* CreateTProvinceDesirabilityListInstance();
 };
 

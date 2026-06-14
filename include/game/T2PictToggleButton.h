@@ -4,10 +4,12 @@
 #include "game/TToggleButton.h"
 
 // VTABLE: IMPERIALISM 0x664470
+struct CRuntimeClass;
 class T2PictToggleButton : public TToggleButton {
 public:
   T2PictToggleButton();
   virtual ~T2PictToggleButton();
+  CRuntimeClass* GetRuntimeClass() override;
 
   virtual void IsField3cWithinShortLimit84();
   virtual void SyncField0fTowardsField21ByDirectionAndRefresh(char direction);

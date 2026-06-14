@@ -4,6 +4,7 @@
 #include "decomp_types.h"
 #include "game/TUberCluster.h"
 
+struct CRuntimeClass;
 struct PanelEventPayload;
 enum EArrowSplitCommandId;
 
@@ -18,6 +19,7 @@ public:
 
   TProductionCluster();
   virtual ~TProductionCluster();
+  CRuntimeClass* GetRuntimeClass() override;
 
   virtual void ApplyMoveValue(int value);
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0);
@@ -28,7 +30,6 @@ public:
 ASSERT_SIZE(TProductionCluster, 0x98);
 
 TProductionCluster* __cdecl CreateTProductionClusterInstance(void);
-void* __cdecl GetTProductionClusterClassNamePointer(void);
 TProductionCluster* ConstructTProductionClusterBaseState(TProductionCluster* cluster);
 TProductionCluster* DestructTProductionClusterAndMaybeFree(TProductionCluster* cluster,
                                                            unsigned char freeSelfFlag);

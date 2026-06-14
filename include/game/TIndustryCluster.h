@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "game/TUberCluster.h"
 
+struct CRuntimeClass;
 class TAmtBar;
 
 // VTABLE: IMPERIALISM 0x665ed0
@@ -13,6 +14,7 @@ public:
   short selectedMetricStep;       // 0x8e
 
   TIndustryCluster();
+  CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   virtual void ApplyMoveValue(int value);
@@ -25,4 +27,3 @@ public:
 ASSERT_SIZE(TIndustryCluster, 0x90);
 
 TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void);
-void* __cdecl GetTIndustryClusterClassNamePointer(void);

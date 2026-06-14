@@ -12,6 +12,12 @@
 
 #include "game/TControl.h"
 #include "game/GameAssert.h"
+#include "game/CRuntimeClass.h"
+
+extern "C" {
+// GLOBAL: IMPERIALISM 0x00663100
+CRuntimeClass g_pClassDescTCivToolbar = {0};
+}
 
 extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
@@ -30,9 +36,6 @@ namespace {
 
 // GLOBAL: IMPERIALISM 0x667f00
 char g_vtblTCivToolbar;
-// GLOBAL: IMPERIALISM 0x663100
-char g_pClassDescTCivToolbar;
-
 const unsigned int kTagStackSlotMin = 0x73746B30;
 const unsigned int kTagStackSlotMax = 0x73746B35;
 const unsigned int kTagDone = 0x646F6E65;
@@ -48,8 +51,8 @@ TCivToolbar* __cdecl CreateTCivToolbarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ea80
-void* __cdecl GetTCivToolbarClassNamePointer(void) {
-  return reinterpret_cast<void*>(&g_pClassDescTCivToolbar);
+CRuntimeClass* TCivToolbar::GetRuntimeClass() {
+  return &g_pClassDescTCivToolbar;
 }
 
 // FUNCTION: IMPERIALISM 0x0058eaa0

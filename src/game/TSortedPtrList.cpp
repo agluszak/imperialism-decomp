@@ -1,11 +1,12 @@
 #include "game/TSortedPtrList.h"
+#include "game/CRuntimeClass.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 
 extern "C" {
-char g_pClassDescTSortedPtrList = 0;
+CRuntimeClass g_pClassDescTSortedPtrList = {0};
 }
 
 // FUNCTION: IMPERIALISM TODO
@@ -15,7 +16,7 @@ TSortedPtrList::TSortedPtrList() : TIndexAndRankList() {}
 TSortedPtrList::~TSortedPtrList() {}
 
 // FUNCTION: IMPERIALISM 0x004883e0
-void* TSortedPtrList::GetTSortedPtrListClassNamePointer() {
+CRuntimeClass* TSortedPtrList::GetRuntimeClass() {
   return &g_pClassDescTSortedPtrList;
 }
 

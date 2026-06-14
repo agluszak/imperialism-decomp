@@ -1,11 +1,12 @@
 #include "game/TSortedByRelationshipList.h"
+#include "game/CRuntimeClass.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
 
 extern "C" {
-char g_pClassDescTSortedByRelationshipList = 0;
+CRuntimeClass g_pClassDescTSortedByRelationshipList = {0};
 }
 
 // FUNCTION: IMPERIALISM 0x004ee4b0
@@ -14,7 +15,7 @@ TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshi
 }
 
 // FUNCTION: IMPERIALISM 0x004ee520
-void* TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer() {
+CRuntimeClass* TSortedByRelationshipList::GetRuntimeClass() {
   return &g_pClassDescTSortedByRelationshipList;
 }
 
