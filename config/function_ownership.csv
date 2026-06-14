@@ -807,7 +807,9 @@ address|target_cpp|ownership|note
 551430|src/game/TAdmiral.cpp|manual|marker_sync
 551550|src/game/TAdmiral.cpp|manual|marker_sync
 551580|src/game/TAdmiral.cpp|manual|marker_sync
+5515d0|src/game/TAdmiral.cpp|manual|marker_sync
 552250|src/game/TAdmiral.cpp|manual|marker_sync
+552450|src/game/TAdmiral.cpp|manual|marker_sync
 552510|src/game/TMapOrderEntry.cpp|manual|marker_sync
 552590|src/game/TMapOrderEntry.cpp|manual|marker_sync
 5525d0|src/game/TMapOrderEntry.cpp|manual|marker_sync

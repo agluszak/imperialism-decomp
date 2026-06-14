@@ -3179,14 +3179,6 @@ undefined4 CreateNavySecondaryOrderNodeWithSentinelNation(void)
   return 0;
 }
 
-// ghidra_name DestroyAndUnlinkNavySecondaryOrderNode
-// ghidra_proto undefined DestroyAndUnlinkNavySecondaryOrderNode()
-// FUNCTION: IMPERIALISM 0x005515d0
-undefined4 DestroyAndUnlinkNavySecondaryOrderNode(void)
-{
-  return 0;
-}
-
 // ghidra_name SerializeNavyOrderSelectionStateToStream
 // ghidra_proto undefined SerializeNavyOrderSelectionStateToStream()
 // FUNCTION: IMPERIALISM 0x00551670
@@ -3255,14 +3247,6 @@ undefined4 OrphanRecovered_00552340_OverlappingStub(void)
 // ghidra_proto undefined RecomputeNavyOrderSelectionPriorityChain_00552349()
 // FUNCTION: IMPERIALISM 0x00552349
 undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveDuplicateNavySecondaryOrdersByDisplayName
-// ghidra_proto undefined RemoveDuplicateNavySecondaryOrdersByDisplayName()
-// FUNCTION: IMPERIALISM 0x00552450
-undefined4 RemoveDuplicateNavySecondaryOrdersByDisplayName(void)
 {
   return 0;
 }

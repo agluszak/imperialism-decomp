@@ -1,7 +1,9 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/CObject.h"
 #include "game/CString.h"
+#include "game/TMinor.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
@@ -13,13 +15,12 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // class — does NOT derive from RefCountedObjectBase (the transient 0x6485c0 write in the
 // original ctor is MSVC EH sentinel glue, not list-wrapper inheritance).
 // VTABLE: IMPERIALISM 0x0065c498
-class TAdmiral {
+class TAdmiral : public CObject {
 public:
-  // Mac oracle: NameThyself (slot 1), Free/ReadFrom/WriteTo (slots 5-7 region).
-  virtual void VMethod01() {}
+  virtual CRuntimeClass* GetRuntimeClass();
   virtual void VMethod05() {}
-  virtual void VMethod06() {}
-  virtual void VMethod07() {}
+  virtual void DeserializeNavyOrderSelectionStateFromStream() {}
+  virtual void DestroyAndUnlinkNavySecondaryOrderNode();
 
   short terrainType;      // 0x04 (index into g_apTerrainTypeDescriptorTable; 0xffff = none)
   unsigned char pad06[2]; // 0x06
@@ -35,15 +36,8 @@ public:
 
   void SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primaryOrderNode);
 
-  static void __fastcall GenerateMappedFlavorTextByNationSlotField0C(void* terrainDescriptor,
+  static void __fastcall GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
                                                                      CString* dest);
 
-  static void* GetTAdmiralClassNamePointer();
-
-  void* operator new(unsigned int size) {
-    return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
-  }
-  void operator delete(void* ptr) {
-    (void)ptr;
-  }
+  void RemoveDuplicateNavySecondaryOrdersByDisplayName();
 };

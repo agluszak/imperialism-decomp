@@ -6,27 +6,20 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" void* g_apTerrainTypeDescriptorTable[];
+#include "game/diplomacy_globals.h"
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 extern "C" char g_pClassDescTAdmiral = 0;
 
-extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-
 #include "game/CString.h"
 
-undefined4
-thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName(void);
-
 // FUNCTION: IMPERIALISM 0x004d7eb0
-void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(void* terrainDescriptor,
-                                                                        CString* dest) {
-  short nationSlot =
-      *reinterpret_cast<short*>(reinterpret_cast<char*>(terrainDescriptor) + 0xc);
-  GenerateMappedFlavorTextByTableSlot(dest, nationSlot);
+void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
+                                                                      CString* dest) {
+  GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->fallbackNationSlot0c);
 }
 // FUNCTION: IMPERIALISM 0x00551410
-void* TAdmiral::GetTAdmiralClassNamePointer() {
-  return &g_pClassDescTAdmiral;
+CRuntimeClass* TAdmiral::GetRuntimeClass() {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTAdmiral);
 }
 
 // FUNCTION: IMPERIALISM 0x00551430
@@ -47,16 +40,42 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
       if (CompareAnsiStringsWithMbcsAwareness(
               reinterpret_cast<unsigned char*>(node->displayName.data_ptr),
               reinterpret_cast<unsigned char*>(this->displayName.data_ptr)) == 0) {
-        reinterpret_cast<void(__fastcall*)(TAdmiral*)>(
-            thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName)(this);
+        this->DestroyAndUnlinkNavySecondaryOrderNode();
       }
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00551580
-TAdmiral::~TAdmiral() {
-  *reinterpret_cast<void**>(this) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+TAdmiral::~TAdmiral() {}
+
+// FUNCTION: IMPERIALISM 0x00552450
+void TAdmiral::RemoveDuplicateNavySecondaryOrdersByDisplayName() {
+  GenerateMappedFlavorTextByNationSlotField0C(g_apTerrainTypeDescriptorTable[this->terrainType],
+                                              &this->displayName);
+  for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
+    if (node == this) {
+      continue;
+    }
+    if (CompareAnsiStringsWithMbcsAwareness(
+            reinterpret_cast<unsigned char*>(node->displayName.data_ptr),
+            reinterpret_cast<unsigned char*>(this->displayName.data_ptr)) == 0) {
+      this->RemoveDuplicateNavySecondaryOrdersByDisplayName();
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005515d0
+void TAdmiral::DestroyAndUnlinkNavySecondaryOrderNode() {
+  if (this->prev != 0) {
+    this->prev->next = this->next;
+  } else {
+    g_pNavySecondaryOrderListHead = this->next;
+  }
+  if (this->next != 0) {
+    this->next->prev = this->prev;
+  }
+  delete this;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00551550
@@ -82,9 +101,8 @@ static void ClearPrimaryOrderBacklink(void* primaryOrderNode) {
     return;
   }
   *reinterpret_cast<void**>(reinterpret_cast<char*>(primaryOrderNode) + 0x20) = 0;
-  TMapOrderEntryOwnerContext* ownerContext =
-      *reinterpret_cast<TMapOrderEntryOwnerContext**>(reinterpret_cast<char*>(primaryOrderNode) +
-                                                      0xc);
+  TMapOrderEntryOwnerContext* ownerContext = *reinterpret_cast<TMapOrderEntryOwnerContext**>(
+      reinterpret_cast<char*>(primaryOrderNode) + 0xc);
   RecomputeMapOrderOwnerActiveSelection(ownerContext);
 }
 
@@ -96,9 +114,8 @@ void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primar
   this->field_8 = reinterpret_cast<int>(primaryOrderNode);
   if (primaryOrderNode != 0) {
     *reinterpret_cast<void**>(reinterpret_cast<char*>(primaryOrderNode) + 0x20) = this;
-    TMapOrderEntryOwnerContext* ownerContext =
-        *reinterpret_cast<TMapOrderEntryOwnerContext**>(reinterpret_cast<char*>(primaryOrderNode) +
-                                                        0xc);
+    TMapOrderEntryOwnerContext* ownerContext = *reinterpret_cast<TMapOrderEntryOwnerContext**>(
+        reinterpret_cast<char*>(primaryOrderNode) + 0xc);
     RecomputeMapOrderOwnerActiveSelection(ownerContext);
   }
 }
