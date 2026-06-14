@@ -5,9 +5,11 @@
 
 #include "game/diplomacy_globals.h"
 
+
 // FUNCTION: IMPERIALISM 0x005b6c60
 // Bare vptr-write constructor; all field state comes from InitializeTownMarker.
 TTownMarker::TTownMarker() {}
+
 
 // FUNCTION: IMPERIALISM 0x005b6cd0
 #pragma optimize("y", on)
@@ -28,3 +30,20 @@ void TTownMarker::InitializeTownMarker(const char* markerName, short regionId, c
   memset(this->payload1e, 0, sizeof(this->payload1e));
 }
 #pragma optimize("", on)
+
+
+extern undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void);
+
+// FUNCTION: IMPERIALISM 0x005b7830
+char TTownMarker::IsTransportLinkedAndEnabled(void) {
+  if (this->enabledFlag4d == 0) {
+    return 0;
+  }
+  char(__cdecl * hasReachableSeaTile)(short) =
+      reinterpret_cast<char(__cdecl*)(short)>(HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask);
+  if (hasReachableSeaTile(this->regionId14) == 0) {
+    return 0;
+  }
+  return 1;
+}
+

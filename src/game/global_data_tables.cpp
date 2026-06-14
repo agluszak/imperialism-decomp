@@ -117,12 +117,30 @@ double g_Evaluate_Advisory_Case11_Value_00653FD8 = 0.5;
 // the relation manager's fieldB6 block by TGreatPower slot 0x39 (0x004df810).
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 
+} // extern "C"
+
+#include "game/TZone.h"
+
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
-void* g_pMapActionContextListHead = 0;
+TZone* g_pMapActionContextListHead = 0;
+
+extern "C" {
 int g_nMapActionContextCount = 0;
 void* g_pMapActionContextDistanceCache = 0;
 void* g_pNationInteractionStateManager = 0; // 0x6a43cc
+
+int g_NetworkDefaultNationId006a5fc0 = 0;
+int g_NetworkBroadcastNationId006a5fc4 = 0;
+void* g_pNetworkPacketQueueHead006a5f50 = 0;
+void* g_pNetworkPacketQueueTail006a5f48 = 0;
+void* g_pNetworkPacketQueueRoot006a5f44 = 0;
+int g_NetworkPacketQueueCount006a5f4c = 0;
+int g_NetworkPacketBlockCount006a5f58 = 0;
+void* g_pNetworkPacketBlockChain006a5f54 = 0;
+int g_NetworkManagerLastError006a5f6c = 0;
+undefined4 DAT_0066ac88 = 0;
+int DAT_006a601c = 0;
 
 // Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
 // compares). Defined so reccmp pairs the address reference as a DATA symbol.
@@ -135,7 +153,6 @@ char g_szEmptyString[1] = {0};
 // EH-body order/state globals (referenced by TGreatPower vtable slots 0x05/0x0c/0x32
 // "pending action" state machines). Defined as real symbols so reccmp pairs the direct
 // absolute loads (`mov reg, [g_pX]`) instead of bare immediates.
-void* g_pCityOrderCapabilityState = 0;
 void* g_pActiveMapOrderContext = 0;
 class TGlobalMapState* g_pGlobalMapState = 0;
 class TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;
@@ -153,6 +170,12 @@ void* g_apMinorNationCapabilityObjects[16] = {0};
 
 // GLOBAL: IMPERIALISM 0x006a429c — scanned with g_apMinorNationCapabilityObjects[16].
 TMinor* g_apNationAuxRuntimeStateSlots[16] = {0};
+
+// Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
+// GLOBAL: IMPERIALISM 0x006a43c4
+short g_nTurnCooldownDeferCounter006A43C4 = 0;
+// GLOBAL: IMPERIALISM 0x00698b10
+short g_nTurnCooldownSideFlag00698B10 = 0;
 
 // UI command-tag default params copied into every TControl (offsets 0x78/0x7c/0x80).
 // Named so reccmp pairs the direct absolute loads in the TControl ctor.

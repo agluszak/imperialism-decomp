@@ -1,21 +1,44 @@
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/diplomacy_globals.h"
+#include "game/nation_slot_eligibility.h"
 #include "game/TLocalizationRuntime.h"
 #include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedPtrList.h"
 #include "game/CString.h"
-#include "game/diplomacy_globals.h"
 #include "game/TGreatPower.h"
 #include "game/TMinor.h"
 #include "game/TNextTradeCommand.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TTurnEventQueue.h"
+#include "game/TTerrainDescriptor.h"
 #include <new>
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
+
+// FUNCTION: IMPERIALISM 0x00581280
+char IsNationSlotEligibleForEventProcessing(short nationSlot) {
+  if (nationSlot == -1) {
+    return 0;
+  }
+
+  TTerrainDescriptor* terrainDescriptor =
+      reinterpret_cast<TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[nationSlot]);
+  if (terrainDescriptor == 0) {
+    return 0;
+  }
+
+  if (nationSlot < 7) {
+    short profileType = terrainDescriptor->encodedNationSlot0e;
+    if (profileType >= 100 && profileType <= 199) {
+      return 0;
+    }
+  }
+
+  return 1;
+}
 
 namespace {
 const unsigned int kTurnEventTagNext = 0x4E655854;
@@ -26,12 +49,6 @@ struct ScratchSharedString {
 } // namespace
 
 undefined4 thunk_EmitTurnEvent3Mode18WithActiveNation(void);
-undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
-
-static __inline char IsNationSlotEligibleForEventProcessingFast(int nationSlot) {
-  return reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(
-      nationSlot);
-}
 
 static __inline void InitializeRangePairAndResetCursor(TNextTradeCommand* packet, int rangeStart,
                                                        int rangeEnd) {
@@ -519,7 +536,7 @@ void TDiplomacyTurnStateManager::PropagateRelationSideEffectSlot80(int sourceNat
   TMinor** terrainCursor = g_apTerrainTypeDescriptorTable;
   do {
     TMinor* candidateTerrain = *terrainCursor;
-    if (IsNationSlotEligibleForEventProcessingFast(candidateNationSlot) != 0 &&
+    if (IsNationSlotEligibleForEventProcessing(candidateNationSlot) != 0 &&
         static_cast<short>(candidateNationSlot) != static_cast<short>(sourceNationSlot) &&
         static_cast<short>(candidateNationSlot) != static_cast<short>(targetNationSlot) &&
         candidateTerrain->ownerNationSlot0e == -1) {

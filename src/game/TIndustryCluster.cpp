@@ -6,7 +6,7 @@
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
 #include "game/trade_quickdraw.h"
-#include "game/ui_widget_thunks.h"
+#include "game/UiRuntimeContext.h"
 #include "game/win_rect.h"
 #include "game/quickdraw_guards.h"
 #include "game/GameAssert.h"
@@ -70,7 +70,7 @@ TIndustryCluster::TIndustryCluster()
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControls(int styleSeed) {
   short tagIndex = 0;
-  short activeNationId = thunk_GetActiveNationId();
+  short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   NationCityTradeState* cityState =
       activeNationState == 0 ? 0 : activeNationState->GetCityState();

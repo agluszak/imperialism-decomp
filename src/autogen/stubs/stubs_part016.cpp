@@ -1915,14 +1915,6 @@ undefined4 WrapperFor_ftol_At00541f60(void)
   return 0;
 }
 
-// ghidra_name SetEventPayloadNationIdFromSlotIndex
-// ghidra_proto undefined SetEventPayloadNationIdFromSlotIndex()
-// FUNCTION: IMPERIALISM 0x005420a0
-undefined4 SetEventPayloadNationIdFromSlotIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name SetEventPayloadNationIdFromSlotIndexWithSentinelHandling
 // ghidra_proto undefined SetEventPayloadNationIdFromSlotIndexWithSentinelHandling()
 // FUNCTION: IMPERIALISM 0x005420d0
@@ -2619,14 +2611,6 @@ undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
   return 0;
 }
 
-// ghidra_name DispatchJoinEmpireModeEventPacket24_27
-// ghidra_proto undefined DispatchJoinEmpireModeEventPacket24_27()
-// FUNCTION: IMPERIALISM 0x0054c5a0
-undefined4 DispatchJoinEmpireModeEventPacket24_27(void)
-{
-  return 0;
-}
-
 // ghidra_name SetDialogModeTagInitAndInvokeNoOpHook
 // ghidra_proto undefined SetDialogModeTagInitAndInvokeNoOpHook()
 // FUNCTION: IMPERIALISM 0x0054c630
@@ -3151,14 +3135,6 @@ undefined4 GetResourceDescriptorWord14ByType(void)
 // ghidra_proto undefined GetResourceDescriptorWord18ByType()
 // FUNCTION: IMPERIALISM 0x00550e40
 undefined4 GetResourceDescriptorWord18ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWeightWord0ByType
-// ghidra_proto undefined GetResourceDescriptorWeightWord0ByType()
-// FUNCTION: IMPERIALISM 0x00550e70
-undefined4 GetResourceDescriptorWeightWord0ByType(void)
 {
   return 0;
 }

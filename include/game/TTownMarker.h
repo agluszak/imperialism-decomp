@@ -26,6 +26,7 @@ public:
   TTownMarker();
   void InitializeTownMarker(const char* markerName, short regionId, char enabledFlag,
                             short ownerNation);
+  char IsTransportLinkedAndEnabled(void);
 
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));

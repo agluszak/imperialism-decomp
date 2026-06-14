@@ -651,14 +651,6 @@ undefined4 ReportDirectPlayAssertionStub(void)
   return 0;
 }
 
-// ghidra_name TrySendNetworkPacketViaManagerContext
-// ghidra_proto undefined TrySendNetworkPacketViaManagerContext()
-// FUNCTION: IMPERIALISM 0x00480850
-undefined4 TrySendNetworkPacketViaManagerContext(void)
-{
-  return 0;
-}
-
 // ghidra_name TryReceiveNetworkPacketIntoResizableBuffer
 // ghidra_proto undefined TryReceiveNetworkPacketIntoResizableBuffer()
 // FUNCTION: IMPERIALISM 0x004808a0
@@ -2687,14 +2679,6 @@ undefined4 WrapperFor_MoveMemoryOverlapSafe_At00489810(void)
 // ghidra_proto undefined WrapperFor_ftol_At00489a20()
 // FUNCTION: IMPERIALISM 0x00489a20
 undefined4 WrapperFor_ftol_At00489a20(void)
-{
-  return 0;
-}
-
-// ghidra_name SetGlobalUiInvalidationFlagAndReturnPrevious
-// ghidra_proto undefined SetGlobalUiInvalidationFlagAndReturnPrevious()
-// FUNCTION: IMPERIALISM 0x00489a50
-undefined4 SetGlobalUiInvalidationFlagAndReturnPrevious(void)
 {
   return 0;
 }

@@ -32,6 +32,11 @@ void TLocalizationRuntime::GetString(short codeGroup, short offset, void* destSt
       codeGroup, offset, destString);
 }
 
+// FUNCTION: IMPERIALISM 0x005811e0
+int TLocalizationRuntime::GetField30(void) {
+  return field30;
+}
+
 // FUNCTION: IMPERIALISM 0x00581200
 #pragma optimize("y", on)
 void TLocalizationRuntime::DecrementField30Value() {

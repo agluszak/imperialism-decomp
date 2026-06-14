@@ -1779,14 +1779,6 @@ undefined4 GetTTechMgrClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name ConstructCityOrderCapabilityStateVtable
-// ghidra_proto undefined ConstructCityOrderCapabilityStateVtable()
-// FUNCTION: IMPERIALISM 0x005aef80
-undefined4 ConstructCityOrderCapabilityStateVtable(void)
-{
-  return 0;
-}
-
 // ghidra_name TTechMgr::DestructTTechMgrAndMaybeFree
 // ghidra_proto undefined DestructTTechMgrAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005aefa0
@@ -1799,14 +1791,6 @@ undefined4 DestructTTechMgrAndMaybeFree(void)
 // ghidra_proto undefined DestructTTechMgrAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005aefd0
 undefined4 DestructTTechMgrAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCityOrderCapabilityStateDefaults
-// ghidra_proto undefined InitializeCityOrderCapabilityStateDefaults()
-// FUNCTION: IMPERIALISM 0x005aeff0
-undefined4 InitializeCityOrderCapabilityStateDefaults(void)
 {
   return 0;
 }
@@ -2895,14 +2879,6 @@ undefined4 IncrementProductionDerivedCountersWithTurnParityRules(void)
 // ghidra_proto undefined OrphanLeaf_NoCall_Ins29_005b77e0()
 // FUNCTION: IMPERIALISM 0x005b77e0
 undefined4 OrphanLeaf_NoCall_Ins29_005b77e0(void)
-{
-  return 0;
-}
-
-// ghidra_name IsOrderEntryTransportLinkedAndEnabled
-// ghidra_proto undefined IsOrderEntryTransportLinkedAndEnabled()
-// FUNCTION: IMPERIALISM 0x005b7830
-undefined4 IsOrderEntryTransportLinkedAndEnabled(void)
 {
   return 0;
 }

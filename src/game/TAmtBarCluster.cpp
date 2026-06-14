@@ -60,7 +60,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
       }
 
       int sellValue = sellControl->QueryValue();
-      short activeNationSlot = thunk_GetActiveNationId();
+      short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
       TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
       short maxByNationMetric = 0;
       if (activeNationState != 0) {
@@ -128,7 +128,7 @@ void TAmtBarCluster::HandleTradeSellControlCommand(int commandId, void* eventArg
     }
     break;
   case 0x69: {
-    short activeNationSlot = thunk_GetActiveNationId();
+    short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
     TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
     short maxByNationMetric = 0;
     if (activeNationState != 0) {

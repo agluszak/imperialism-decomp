@@ -4,6 +4,7 @@
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/TGlobalMapState.h"
 #include "game/TPtrList.h"
+#include "game/nation_slot_eligibility.h"
 #include "game/TLocalizationRuntime.h"
 #include "game/TMinister.h"
 #include "game/TMinor.h"
@@ -18,9 +19,8 @@
 #pragma optimize("y", on)
 #endif
 
-undefined4 thunk_GetResourceDescriptorWeightWord0ByType(void);
+#include "game/TShip.h"
 undefined4 thunk_DispatchTaggedGameStateEvent1F20(void); // 0x00406efb -> 0x0054a340
-undefined4 thunk_IsNationSlotEligibleForEventProcessing(void);
 undefined4 GenerateThreadLocalRandom15(void);
 undefined4 thunk_GetShortAtOffset14OrInvalid(void);
 
@@ -423,7 +423,7 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
   int peerSlot = 0;
   TGreatPower** peerCursor = g_apNationStates;
   do {
-    if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(
+    if (IsNationSlotEligibleForEventProcessing(
             peerSlot) != 0) {
       float peerArmy = (*peerCursor)->GetScoreFactorSlot23C();
       if (strongestPeer < peerArmy) {
@@ -543,7 +543,7 @@ int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) 
     if (nation > 6) {
       break;
     }
-    if (reinterpret_cast<char(__cdecl*)(int)>(thunk_IsNationSlotEligibleForEventProcessing)(
+    if (IsNationSlotEligibleForEventProcessing(
             nation) != 0 &&
         nation != static_cast<short>(this->nationSlot)) {
       if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, nation) == 0 &&
@@ -599,8 +599,7 @@ int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) 
 void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void) {
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
-    short resourceWeight = reinterpret_cast<short(__cdecl*)(int)>(
-        thunk_GetResourceDescriptorWeightWord0ByType)(resourceType);
+    short resourceWeight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(resourceType));
     short relationWeight = *reinterpret_cast<short*>(
         reinterpret_cast<unsigned char*>(this->relationManager) + 0x5C + resourceType * 2);
     total += static_cast<short>(resourceWeight * relationWeight);

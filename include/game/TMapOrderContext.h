@@ -29,3 +29,4 @@ public:
 };
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
+int ComputeGlobalMapActionContextNodeValueAverage(void);

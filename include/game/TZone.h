@@ -74,6 +74,8 @@ public:
   static TZone* FindFirstPortZoneContextByNation(short nationSlot);
 };
 
+extern TZone* g_pMapActionContextListHead;
+
 // Nation-sized map-action context embedded in TMapOrderContext::contextArray (stride 0x48).
 struct TMapNationActionContext {
   char storage[0x48];

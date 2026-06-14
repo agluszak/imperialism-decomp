@@ -931,14 +931,6 @@ undefined4 WrapperFor_ftol_At0057b8b0(void)
   return 0;
 }
 
-// ghidra_name IsTurnCooldownCounterActiveOrResetFlag
-// ghidra_proto undefined IsTurnCooldownCounterActiveOrResetFlag()
-// FUNCTION: IMPERIALISM 0x0057b900
-undefined4 IsTurnCooldownCounterActiveOrResetFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateTurnFlowStateManager
 // ghidra_proto undefined CreateTurnFlowStateManager()
 // FUNCTION: IMPERIALISM 0x0057b940
@@ -1315,14 +1307,6 @@ undefined4 FormatDiplomacyNoticeTextByPolicyOrGrantCode(void)
   return 0;
 }
 
-// ghidra_name GetInt32Field30
-// ghidra_proto undefined GetInt32Field30()
-// FUNCTION: IMPERIALISM 0x005811e0
-undefined4 GetInt32Field30(void)
-{
-  return 0;
-}
-
 // ghidra_name GetSumField34PlusField30
 // ghidra_proto undefined GetSumField34PlusField30()
 // FUNCTION: IMPERIALISM 0x00581240
@@ -1335,14 +1319,6 @@ undefined4 GetSumField34PlusField30(void)
 // ghidra_proto undefined GetActiveNationId()
 // FUNCTION: IMPERIALISM 0x00581260
 undefined4 GetActiveNationId(void)
-{
-  return 0;
-}
-
-// ghidra_name IsNationSlotEligibleForEventProcessing
-// ghidra_proto undefined IsNationSlotEligibleForEventProcessing()
-// FUNCTION: IMPERIALISM 0x00581280
-undefined4 IsNationSlotEligibleForEventProcessing(void)
 {
   return 0;
 }

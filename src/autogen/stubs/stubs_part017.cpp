@@ -1251,14 +1251,6 @@ undefined4 HandleNavyOrderNodeRemovalAndSelectionRefresh(void)
   return 0;
 }
 
-// ghidra_name ComputeGlobalMapActionContextNodeValueAverage
-// ghidra_proto undefined ComputeGlobalMapActionContextNodeValueAverage()
-// FUNCTION: IMPERIALISM 0x00564530
-undefined4 ComputeGlobalMapActionContextNodeValueAverage(void)
-{
-  return 0;
-}
-
 // ghidra_name FindMapActionContextContainingNodeByIndex
 // ghidra_proto undefined FindMapActionContextContainingNodeByIndex()
 // FUNCTION: IMPERIALISM 0x00564570

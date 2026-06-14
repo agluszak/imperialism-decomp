@@ -43,6 +43,7 @@ public:
   TLOCALIZATION_VTABLE_SLOT(32);
   virtual void GetString(short codeGroup, short offset, void* destString) = 0; // 33 (0x84)
 
+  int GetField30(void);
   void DecrementField30Value();
 
   unsigned char pad04[4];

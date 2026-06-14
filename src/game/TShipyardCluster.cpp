@@ -5,7 +5,7 @@
 #include "game/TView.h"
 #include "game/TGreatPower.h"
 #include "game/trade_quickdraw.h"
-#include "game/ui_widget_thunks.h"
+#include "game/UiRuntimeContext.h"
 #include "game/win_rect.h"
 #include "game/quickdraw_guards.h"
 #include "game/GameAssert.h"
@@ -52,7 +52,7 @@ TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0),
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls() {
-  NationCityTradeState* cityState = GetNationCityStateBySlot(thunk_GetActiveNationId());
+  NationCityTradeState* cityState = GetNationCityStateBySlot(g_pUiRuntimeContext->GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
   field_8c = 999;
   this->InitializeTradeMoveAndBarControls();

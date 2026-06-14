@@ -11,8 +11,9 @@
 #pragma optimize("y", on)
 #endif
 
+extern TZone* g_pMapActionContextListHead;
+
 extern "C" {
-extern void* g_pMapActionContextListHead;
 extern int g_nMapActionContextCount;
 extern void* g_pMapActionContextDistanceCache;
 extern void* g_pActiveMapOrderContext;

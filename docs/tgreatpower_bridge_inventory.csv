@@ -46,7 +46,19 @@ SecondaryState_HasNationFlag5C,589,TMinor,direct HasMinorStandingLinkSlot5C,,P3,
 SecondaryState_SetPolicyValue48,593,TMinor,direct SetDiplomacyStandingSlot48,,P3,done
 SecondaryState_CallSlot4C,598,TMinor,direct VTableSlot4C_Provisional,,P3,done
 CityOrderCapabilityByte277,1136,TCityOrderCapabilityState,direct orderCapRows277 lookup,,P3,done
-IsNationSlotEligibleForEventProcessingFast,325,TDiplomacyTurnStateManager,direct thunk at call sites,,P3,done
+IsNationSlotEligibleForEventProcessingFast,325,TDiplomacyTurnStateManager,nation_slot_eligibility.h direct call,,P3,done
+CallGetField30ThunkWithManager,REMOVED,TLocalizationRuntime,GetField30() method,,P3,done
+TownMarker_IsTransportLinkedAndEnabled,REMOVED,TTownMarker,IsTransportLinkedAndEnabled() @ 0x5b7830,,P3,done
+IsTurnCooldownCounterActiveOrResetFlagAsChar,343,turn_flow_cooldown.h,IsTurnCooldownCounterActiveOrResetFlag,,P3,done
+TemporarilyClearAndRestoreUiInvalidationFlag,533,ui_invalidation_guard.h,direct call (path/line ignored),,P3,done
+SumMilitaryUnitPowerWeights,4214,TGreatPower_power_score.cpp,file-level helpers,,P3,done
+SumAlliedArmyScoreFactors,4226,TGreatPower_power_score.cpp,file-level helpers,,P3,done
+SumAlliedNavyScoreFactors,4242,TGreatPower_power_score.cpp,file-level helpers,,P3,done
+GetRelationStandingRowForNation,4258,TGreatPower_power_score.cpp,file-level helpers,,P3,done
+GetClampedQuarterYearTerm,4264,TGreatPower_power_score.cpp,file-level helpers,,P3,done
+TruncatedScoreFactorToFloat,4273,TGreatPower_power_score.cpp,file-level helpers,,P3,done
+CallComputeGlobalMapActionContextNodeValueAverage,REMOVED,TMapOrderContext,ComputeGlobalMapActionContextNodeValueAverage,,P3,done
+thunk_GetActiveNationId,REMOVED,UiRuntimeContext,g_pUiRuntimeContext->GetActiveNationId(),,P3,done
 List_ResetSlot14,415,TPtrList,direct ResetSlot14,,P3,done
 List_GetCountSlot28,419,TPtrList,GetCountOrReleaseSlot28,,P3,done
 List_GetIntByOrdinalSlot24,424,TPtrList,GetIntByOrdinalSlot24,,P3,done

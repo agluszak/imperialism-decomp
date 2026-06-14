@@ -3019,14 +3019,6 @@ undefined4 WrapperFor_CleanupDialogModalCreateState_At0049d510(void)
   return 0;
 }
 
-// ghidra_name TemporarilyClearAndRestoreUiInvalidationFlag
-// ghidra_proto undefined TemporarilyClearAndRestoreUiInvalidationFlag()
-// FUNCTION: IMPERIALISM 0x0049d620
-undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name TAdorner::CreateTAdornerInstance
 // ghidra_proto undefined CreateTAdornerInstance()
 // FUNCTION: IMPERIALISM 0x0049d650

@@ -72,7 +72,7 @@ TRailCluster::TRailCluster() : TUberCluster() {
 
 // FUNCTION: IMPERIALISM 0x005897b0
 void TRailCluster::SelectTradeCommodityPresetBySummaryTagAndInitControls(short recordIndex) {
-  short activeNationId = thunk_GetActiveNationId();
+  short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   NationCityTradeState* cityState =
       activeNationState == 0 ? 0 : activeNationState->GetCityState();

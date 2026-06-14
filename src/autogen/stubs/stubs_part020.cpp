@@ -2467,14 +2467,6 @@ undefined4 ResetRuntimeSelectionRecordBufferAndReturnTrue(void)
   return 0;
 }
 
-// ghidra_name ReportWNetManagerErrorCodeAndNotifyUi
-// ghidra_proto undefined ReportWNetManagerErrorCodeAndNotifyUi()
-// FUNCTION: IMPERIALISM 0x005e34f0
-undefined4 ReportWNetManagerErrorCodeAndNotifyUi(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetRuntimeProtocolOptionsAndRebuildSelectionSource
 // ghidra_proto undefined ResetRuntimeProtocolOptionsAndRebuildSelectionSource()
 // FUNCTION: IMPERIALISM 0x005e39a0
@@ -2503,14 +2495,6 @@ undefined4 OpenRuntimeSelectionSourceAndApplyActiveNationState(void)
 // ghidra_proto undefined OpenJoinGameRuntimeSelectionAndStartSession()
 // FUNCTION: IMPERIALISM 0x005e3c20
 undefined4 OpenJoinGameRuntimeSelectionAndStartSession(void)
-{
-  return 0;
-}
-
-// ghidra_name EnqueueOrSendTurnEventPacketToNation
-// ghidra_proto undefined EnqueueOrSendTurnEventPacketToNation()
-// FUNCTION: IMPERIALISM 0x005e3d40
-undefined4 EnqueueOrSendTurnEventPacketToNation(void)
 {
   return 0;
 }

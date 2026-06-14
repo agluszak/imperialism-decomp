@@ -37,6 +37,7 @@ extern "C" TShip* g_pNavyPrimaryOrderListHead;
 
 void* GetNavyPrimaryOrderListHead(void);
 short GetIndustryActionCostWeightByResourceType(short resourceType);
+short GetResourceDescriptorWeightWord0ByType(short resourceType);
 int ComputeOrderNodeCompositeEconomicScore(TShip* node);
 int SumNavyOrderPriorityForNation(TGreatPower* nationObj);
 int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType);

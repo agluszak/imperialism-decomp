@@ -7,6 +7,8 @@
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
 #include "game/TZone.h"
+#include "game/TGreatPower.h"
+#include "game/diplomacy_globals.h"
 #include "game/UiRuntimeContext.h"
 
 #if defined(_MSC_VER)
@@ -14,7 +16,6 @@
 #endif
 
 extern "C" {
-extern void* g_pMapActionContextListHead;
 extern char g_pClassDescTPortZone;
 }
 
@@ -22,7 +23,6 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 CallCallbackRepeatedly(void);
 undefined4 thunk_RelaxMapTileCostFieldByNeighborTerrain(void);
 undefined4 thunk_SelectBestSeedTileForNationFromCostField(void);
-undefined4 thunk_GetActiveNationId(void);
 undefined4 thunk_GetNavyPrimaryOrderListHead(void);
 
 namespace {
@@ -42,6 +42,7 @@ struct MapActionNodeView : public CObject {
 
 } // namespace
 
+
 // FUNCTION: IMPERIALISM 0x00515e00
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
   char* tileArrayBase =
@@ -56,6 +57,7 @@ void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
     }
   }
 }
+
 
 // FUNCTION: IMPERIALISM 0x0055fc40
 void TZone::HandleKeyDown(int key_id) {
@@ -72,7 +74,7 @@ void TZone::HandleKeyDown(int key_id) {
 
   if ((field10 & (1U << ((unsigned char)key_id & 0x1f))) == 0) {
     field10 = static_cast<unsigned short>(field10 | (1U << ((unsigned char)key_id & 0x1f)));
-    sVarSlotId = static_cast<short>(reinterpret_cast<unsigned int(__cdecl*)(void)>(thunk_GetActiveNationId)());
+    sVarSlotId = g_pUiRuntimeContext->GetActiveNationId();
 
     if ((field10 & (1U << ((unsigned char)sVarSlotId & 0x1f))) == 0) {
       uSlotCountLocal = slotCount;
@@ -122,9 +124,9 @@ void TZone::HandleKeyDown(int key_id) {
     }
   }
 
-  sVarActiveSlot = static_cast<short>(reinterpret_cast<unsigned int(__cdecl*)(void)>(thunk_GetActiveNationId)());
+  sVarActiveSlot = g_pUiRuntimeContext->GetActiveNationId();
   if (sVarActiveSlot == -1) {
-    sVarActiveSlot = static_cast<short>(reinterpret_cast<unsigned int(__cdecl*)(void)>(thunk_GetActiveNationId)());
+    sVarActiveSlot = g_pUiRuntimeContext->GetActiveNationId();
   }
 
   if ((field10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
@@ -140,6 +142,7 @@ void TZone::HandleKeyDown(int key_id) {
   }
   SetMapOrderUiFlag(0);
 }
+
 
 // FUNCTION: IMPERIALISM 0x00562d90
 void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
@@ -201,6 +204,7 @@ void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(i
   FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(costField));
 }
 
+
 // FUNCTION: IMPERIALISM 0x005634a0
 void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* relationManager) {
   short selectedTileId;
@@ -210,7 +214,8 @@ void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* relationManager) {
     selectedTileId = *reinterpret_cast<short*>(
         reinterpret_cast<char*>(relationManager->selectedOrderB0) + 0x14);
   }
-  MapActionNodeView* node = static_cast<MapActionNodeView*>(g_pMapActionContextListHead);
+  MapActionNodeView* node =
+      reinterpret_cast<MapActionNodeView*>(g_pMapActionContextListHead);
   while (node != 0 &&
          node->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
     node = node->next18;
@@ -235,4 +240,19 @@ void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* relationManager) {
     }
   }
   return node;
+}
+
+
+// FUNCTION: IMPERIALISM 0x00564530
+int ComputeGlobalMapActionContextNodeValueAverage(void) {
+  int sum = 0;
+  int count = 0;
+
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    TGreatPower* nationState = g_apNationStates[zone->field12];
+    sum += static_cast<int>(nationState->ComputeMapActionContextNodeValueAverage());
+    ++count;
+  }
+
+  return sum / count;
 }
