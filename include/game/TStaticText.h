@@ -12,7 +12,7 @@ public:
   int field90;
 
   TStaticText();
-  virtual ~TStaticText();
+  virtual ~TStaticText() override;
 
   virtual CRuntimeClass* GetRuntimeClass() override; // 0x00 0x48f870 (override)
 

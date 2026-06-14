@@ -6,5 +6,5 @@
 class TRadioPictureButton : public TPictureButton {
 public:
   TRadioPictureButton();
-  virtual ~TRadioPictureButton();
+  virtual ~TRadioPictureButton() override;
 };

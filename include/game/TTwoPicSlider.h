@@ -13,7 +13,7 @@ public:
   int mode; // 0x94
 
   TTwoPicSlider();
-  virtual ~TTwoPicSlider();
+  virtual ~TTwoPicSlider() override;
 
   void DrawTwoPicSliderSplitOverlayAndCenteredStatusText();
   void TrackTwoPicSliderMouseAndRefresh(int inputPhase, void* param2, int pointRecord);

@@ -13,7 +13,7 @@ public:
   int m_hWnd;
 
   CDC();
-  virtual ~CDC();
+  virtual ~CDC() override;
 
   bool AttachOutput(int hdc);
 

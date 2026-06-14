@@ -19,7 +19,7 @@ public:
     this->capacity = 0;
     this->count = 0;
   }
-  virtual ~CPtrArray();
+  virtual ~CPtrArray() override;
 
   void SetSize(int nNewSize, int nGrowBy = -1);
   void SetAtGrow(int nIndex, void* newElement);

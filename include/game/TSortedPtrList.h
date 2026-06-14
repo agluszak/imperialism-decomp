@@ -14,7 +14,7 @@ public:
 
   // Compiler emits the 0x649068 vtable write.
   TSortedPtrList();
-  virtual ~TSortedPtrList();
+  virtual ~TSortedPtrList() override;
   CRuntimeClass* GetRuntimeClass() override;
   static TSortedPtrList* ConstructTSortedPtrListBaseState();
   void ResetPtrListAndShrinkCapacity();

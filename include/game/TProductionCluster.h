@@ -17,7 +17,7 @@ public:
   int field94;
 
   TProductionCluster();
-  virtual ~TProductionCluster();
+  virtual ~TProductionCluster() override;
   CRuntimeClass* GetRuntimeClass() override;
 
   virtual void ApplyMoveValue(int value) override;

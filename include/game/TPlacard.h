@@ -10,7 +10,7 @@ extern "C" CRuntimeClass g_pClassDescTPlacard;
 class TPlacard : public TPictureButton {
 public:
   TPlacard();
-  virtual ~TPlacard();
+  virtual ~TPlacard() override;
   CRuntimeClass* GetRuntimeClass() override;
 
   void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0();

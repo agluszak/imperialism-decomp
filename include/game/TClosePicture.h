@@ -8,7 +8,7 @@
 class TClosePicture : public TPictureButton {
 public:
   TClosePicture();
-  virtual ~TClosePicture();
+  virtual ~TClosePicture() override;
 
   virtual CRuntimeClass* GetRuntimeClass() override; // 0x00 0x586b50 (override)
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,

@@ -10,7 +10,7 @@ public:
   TradeCommodityMetricRecord* selectedMetricRecord;
 
   TIndustryAmtBar();
-  virtual ~TIndustryAmtBar();
+  virtual ~TIndustryAmtBar() override;
   CRuntimeClass* GetRuntimeClass() override;
 
   void DoPostCreate(struct TDocument* document);

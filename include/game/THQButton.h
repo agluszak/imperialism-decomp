@@ -15,6 +15,6 @@ public:
   char pad_9a[2];
 
   THQButton();
-  virtual ~THQButton();
+  virtual ~THQButton() override;
   CRuntimeClass* GetRuntimeClass() override;
 };

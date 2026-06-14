@@ -26,7 +26,7 @@ public:
   int blockSize;
 
   CPtrList(int blockSize = 10);
-  virtual ~CPtrList();
+  virtual ~CPtrList() override;
 
   void RemoveAll();
   CPtrListNode* NewNode(CPtrListNode* prev, CPtrListNode* next);

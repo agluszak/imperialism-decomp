@@ -7,7 +7,7 @@ struct CRuntimeClass;
 class TRailAmtBar : public TIndustryAmtBar {
 public:
   TRailAmtBar();
-  virtual ~TRailAmtBar();
+  virtual ~TRailAmtBar() override;
   CRuntimeClass* GetRuntimeClass() override;
 
   void DoPostCreate(struct TDocument* document);

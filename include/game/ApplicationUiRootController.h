@@ -15,7 +15,7 @@ class TView;
 class ApplicationUiRootController : public TEventHandler {
 public:
   ApplicationUiRootController();
-  ~ApplicationUiRootController();
+  ~ApplicationUiRootController() override;
 
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
   virtual CRuntimeClass* GetRuntimeClass() override;

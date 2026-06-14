@@ -7,5 +7,5 @@
 class CClientDC : public CDC {
 public:
   explicit CClientDC(void* windowParent);
-  virtual ~CClientDC();
+  virtual ~CClientDC() override;
 };

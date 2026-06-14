@@ -32,7 +32,7 @@ public:
   TAdmiral* prev;         // 0x18 (toward newer entries)
 
   TAdmiral(short terrainTypeIndex);
-  virtual ~TAdmiral();
+  virtual ~TAdmiral() override;
 
   void SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primaryOrderNode);
 

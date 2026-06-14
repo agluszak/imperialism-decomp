@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class T2PictureButton : public TPictureButton {
 public:
   T2PictureButton();
-  virtual ~T2PictureButton();
+  virtual ~T2PictureButton() override;
   CRuntimeClass* GetRuntimeClass() override;
 };
 

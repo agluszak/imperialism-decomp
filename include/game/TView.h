@@ -130,5 +130,5 @@ public:
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
   // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
   // (TEventHandler override), so its declaration position is irrelevant.
-  virtual ~TView();
+  virtual ~TView() override;
 };

@@ -15,7 +15,7 @@ public:
   int field8C;
 
   TPictureResourceEntryBase();
-  virtual ~TPictureResourceEntryBase();
+  virtual ~TPictureResourceEntryBase() override;
 
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));

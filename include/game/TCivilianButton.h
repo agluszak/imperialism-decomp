@@ -13,7 +13,7 @@ public:
   short selectedValue9c;
 
   TCivilianButton();
-  virtual ~TCivilianButton();
+  virtual ~TCivilianButton() override;
   CRuntimeClass* GetRuntimeClass() override;
 
   void SetSelectionAndEnableByMappedValue(int selectedValue);

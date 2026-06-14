@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class T2PictToggleButton : public TToggleButton {
 public:
   T2PictToggleButton();
-  virtual ~T2PictToggleButton();
+  virtual ~T2PictToggleButton() override;
   CRuntimeClass* GetRuntimeClass() override;
 
   virtual void IsField3cWithinShortLimit84();

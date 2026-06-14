@@ -9,7 +9,7 @@ public:
   short timingWord92;
 
   TPictureButton();
-  virtual ~TPictureButton();
+  virtual ~TPictureButton() override;
 };
 
 ASSERT_SIZE(TPictureButton, 0x94);

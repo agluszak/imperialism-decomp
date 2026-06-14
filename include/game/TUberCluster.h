@@ -8,7 +8,7 @@ class TUberCluster : public TCluster {
 public:
   void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
   TUberCluster();
-  virtual ~TUberCluster();
+  virtual ~TUberCluster() override;
   CRuntimeClass* GetRuntimeClass() override;
 
   // Slots 0x1CC - 0x1EC (0x73 - 0x7B)

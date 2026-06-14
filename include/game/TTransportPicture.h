@@ -14,7 +14,7 @@ public:
   short splitLimit98;
 
   TTransportPicture();
-  virtual ~TTransportPicture();
+  virtual ~TTransportPicture() override;
   CRuntimeClass* GetRuntimeClass() override;
 };
 
