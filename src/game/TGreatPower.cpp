@@ -695,7 +695,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
     this->foreignMinister = foreignMinister;
 
     TCityInteriorMinister* interiorMinister = new TCityInteriorMinister();
-    reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeCityInteriorMinister)();
+    interiorMinister->InitializeCityInteriorState();
     this->interiorMinister = interiorMinister;
 
     TDefenseMinister* defenseMinister = new TDefenseMinister();
@@ -900,7 +900,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
       TMinister* interiorMinister = this->interiorMinister;
       if (interiorMinister == 0) {
         TCityInteriorMinister* created = new TCityInteriorMinister();
-        reinterpret_cast<void(__cdecl*)(void)>(thunk_InitializeCityInteriorMinister)();
+        created->InitializeCityInteriorState();
         this->interiorMinister = created;
         interiorMinister = created;
       }
@@ -1972,7 +1972,8 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   TLocalizationRuntime* localization = g_pLocalizationTable;
   int homeRegionIndex = -1;
   if (localization->stateFlag114 == 0) {
-    homeRegionIndex = this->interiorMinister->GetHomeCityRecordIndexSlotC0();
+    homeRegionIndex =
+        static_cast<TCityInteriorMinister*>(this->interiorMinister)->GetHomeCityRecordIndexSlotC0();
   } else {
     TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
     for (int regionId = 0; regionId < 0x1950; ++regionId) {
@@ -5079,7 +5080,7 @@ void TGreatPower::WrapperFor_TGreatPower_VtblSlot32_At004e7630(int arg1, int arg
 
 // FUNCTION: IMPERIALISM 0x004e78d0
 void TGreatPower::DispatchNationField98CallbackD4(void) {
-  this->interiorMinister->CallD4();
+  static_cast<TCityInteriorMinister*>(this->interiorMinister)->CallD4();
 }
 
 // FUNCTION: IMPERIALISM 0x004e78f0

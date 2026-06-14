@@ -9003,6 +9003,8 @@ address|name|size|type|prototype
 6588f0|g_apfnMapImprovementOperationHandlers||global|
 658964|g_anMapActionClassToImprovementOpIndex||global|
 659b40|g_pClassDescTSortByPriceList||global|
+659c00|TMinister::'vftable'||global|
+659c58|TMinisterBaseOrderArray::'vftable'||global|
 659cb0|TForeignMinister::'vftable'||global|
 659ef0|TSortByPriceList::'vftable'||global|
 65a650|g_vtblMissionOrderPrioritizerDefendProvince||global|
@@ -9090,7 +9092,7 @@ address|name|size|type|prototype
 66eea8|TMilitaryUnitOrderState::'vftable'||global|
 66f508|g_vtblUiViewManager||global|
 66f978|g_pClassDescTNetMgr||global|
-66fec4|PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4||global|
+66fec4|CObject::'vftable'||global|
 6706e0|classCObject||global|
 67106c|CBrush::'vftable'||global|
 67241c|CDC::'vftable'||global|

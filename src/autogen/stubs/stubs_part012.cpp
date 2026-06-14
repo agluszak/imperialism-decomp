@@ -3659,14 +3659,6 @@ undefined4 GetTInteriorMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TInteriorMinister::ConstructTInteriorMinisterBaseState
-// ghidra_proto undefined ConstructTInteriorMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004be1d0
-undefined4 ConstructTInteriorMinisterBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TInteriorMinister::DestructTInteriorMinisterAndMaybeFree
 // ghidra_proto undefined DestructTInteriorMinisterAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004be200

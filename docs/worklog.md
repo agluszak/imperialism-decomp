@@ -3880,3 +3880,51 @@ Follow-up scan after the TClosePicture extraction:
   need explicit mapping before proposal/dtor bodies re-match. `CommitCityRecruitmentOrderDelta`
   body still simplified vs Ghidra (specialist branch / notification callback not ported).
 
+## 2026-06-14 — TMinister virtual port (phases 0–4)
+
+- **Timestamp:** 2026-06-14 (session)
+- **Commands:** `just ghidra-vtable-dump` (20 minister classes) →
+  `docs/tminister_vtable_evidence.csv`; `just slice-discovery TMinister 0x0052eb80`;
+  `just sync-ownership` → `just regen-stubs` → `just build` →
+  `just compare 0x0052eb80 … 0x0052ecf0`; `just compare-canaries`
+- **Ground truth:** `TMinister` vftable @ `0x659c00` = **44 slots** (ends `0x659cb0`);
+  slots 2–4 are turn-event fork thunks, not `CObject::Serialize`/`AssertValid`/`Dump`.
+- **Changes:** Rebuilt `TMinister.h` with 44 ordered virtuals; fork ctor/dtor
+  (`DestructTMinister` + `DestructTMinisterAndMaybeFree`); promoted
+  `InitializeBaseOrderArray` + `TMinisterBaseOrderArray`; registered `0x659c00`/`0x659c58`
+  in `symbols.csv`. Branch classes: `TInteriorMinister`, extended `TCityInteriorMinister`
+  (slots 44–53 incl. `GetHomeCityRecordIndexSlotC0`/`CallD4`), personality headers/cpp
+  (14 AI subclasses). Retired minister init thunks in `TForeignMinister`/`TDefenseMinister`/
+  `TGreatPower` (typed `InitializeCityInteriorState` / `InitializeBaseOrderArray`).
+- **Score delta (TMinister batch):**
+  - `0x0052ecc0` Deserialize: **93.33%**
+  - `0x0052ecf0` Serialize: **93.33%**
+  - `0x0052eba0` scalar deleting dtor: **80.00%**
+  - `0x0052eb80` ctor: **36.36%** (FPO added; residual compiler init)
+  - `0x0052ebd0` partial dtor: **40.00%**
+  - `0x0052ebf0` InitializeBaseOrderArray: **25.00%** (EH frame)
+  - `0x0052ec80` Call1C: pairing missing (investigate `delete this` emission)
+- **Canaries:** below_floor=2 (pre-existing `0x004E9060`, `0x004E9ED0`); no new regressions
+  from minister edits.
+- **Follow-up:** Port remaining foreign minister bodies (Call8C/94/DispatchProposalSlot98 full
+  shapes); defense `Call4C` iterate loop; personality vtable size warnings need branch-specific
+  slot-count model (defense binary 30 vs declared 44).
+
+## 2026-06-14 — TMinister follow-up: high-traffic virtuals + CObject slot alignment
+
+- **Commands:** `just build`; `just compare` on `0x0052ec80` `0x0052efb0` `0x0052f940` `0x0052fcc0` `0x004ec4c0`
+- **Changes:**
+  - `DeleteForeignMinisterAndReleaseOrderArray`: `delete minister` with null guard → **100%** (batch compare still intermittently "missing"; single-target compare pairs).
+  - `NoOpForeignMinisterUtilityStub` (`0x0052efb0`): moved back to `noop_slots.cpp` (file-level FPO) → **100%**.
+  - `TForeignMinister::Call90`: owner `foreignMinister->MinisterSlot1A` path + control-flow fix.
+  - `TDefenseMinister::Call4C`: `CIterator` over `owner->missionQueue` + `TTrackedObject::MissionSlot44` → **100%**.
+  - `TMinister` fork slots 2–4 now override `CObject::Serialize` / `AssertValidOrSlot0c` / `DumpOrSlot10` (vtable index alignment).
+- **Score delta:**
+  - `0x0052ec80` Call1C: **100%** (single compare)
+  - `0x0052efb0` Notify stub: **100%**
+  - `0x004ec4c0` defense Call4C: **100%**
+  - `0x0052f940` Call90: **48% → 61.54%**
+  - `0x0052fcc0` RecomputeOrderStateSlot9C: **76.19%**
+- **Still open:** full `Call8C`/`Call94`/`DispatchProposalSlot98` bodies; personality vtable size
+  warnings; `InitializeCityInteriorMinister` thunk.
+

@@ -229,3 +229,6 @@ recovery for TGreatPower's pending-action slots is the related lever — see
 - `just sync-ownership` is **additive only** — when you delete a function from source,
   hand-prune its `config/function_ownership.csv` row before `regen-stubs`, or the stale
   `manual` row blocks stub regeneration. See [[stub-regen-thunks-alias-collision]].
+- After a vtable-dump correction, verify **every** declared virtual sits at the intended
+  slot index — a skipped slot in the header shifts all later entries. Details belong in
+  `docs/*_vtable_evidence.csv` / worklog, not here.

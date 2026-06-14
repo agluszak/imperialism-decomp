@@ -20,7 +20,8 @@ public:
   virtual void dummy15() = 0;
   // slot 0x40 — per-turn refresh (0x004eae70 sweeps the mission queue with it).
   virtual void RefreshSlot40() = 0;
-  virtual void dummy17() = 0;
+  // slot 0x44 — defense minister mission-queue sweep (0x004ec4c0).
+  virtual void MissionSlot44() = 0;
   // slot 0x48 — replacement mission; returning anything other than `this` makes the
   // pruner (0x004eb0d0) swap the entry out of the queue.
   virtual TTrackedObject* GetReplacementSlot48() = 0;

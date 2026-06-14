@@ -131,14 +131,6 @@ undefined4 DestroyTCityInteriorMinister_Impl(void)
   return 0;
 }
 
-// ghidra_name InitializeCityInteriorMinister
-// ghidra_proto undefined InitializeCityInteriorMinister()
-// FUNCTION: IMPERIALISM 0x004be8d0
-undefined4 InitializeCityInteriorMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructLinkedValueListMaybeFree
 // ghidra_proto undefined DestructLinkedValueListMaybeFree()
 // FUNCTION: IMPERIALISM 0x004bec10
@@ -611,14 +603,6 @@ undefined4 GetTSteelCityMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TSteelCityMinister::ConstructTSteelCityMinisterBaseState
-// ghidra_proto undefined ConstructTSteelCityMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004c59e0
-undefined4 ConstructTSteelCityMinisterBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TSteelCityMinister::DestructTSteelCityMinisterAndMaybeFree
 // ghidra_proto undefined DestructTSteelCityMinisterAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004c5a20
@@ -663,14 +647,6 @@ undefined4 CreateTShipBuilderCityMinisterInstance(void)
 // ghidra_proto undefined GetTShipBuilderCityMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004c5cc0
 undefined4 GetTShipBuilderCityMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState
-// ghidra_proto undefined ConstructTShipBuilderCityMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004c5ce0
-undefined4 ConstructTShipBuilderCityMinisterBaseState(void)
 {
   return 0;
 }
@@ -723,14 +699,6 @@ undefined4 GetTEvenCityMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TEvenCityMinister::ConstructTEvenCityMinisterBaseState
-// ghidra_proto undefined ConstructTEvenCityMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004c5fe0
-undefined4 ConstructTEvenCityMinisterBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TEvenCityMinister::DestructTEvenCityMinisterAndMaybeFree
 // ghidra_proto undefined DestructTEvenCityMinisterAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004c6020
@@ -775,14 +743,6 @@ undefined4 CreateTRailCityMinisterInstance(void)
 // ghidra_proto undefined GetTRailCityMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004c62d0
 undefined4 GetTRailCityMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TRailCityMinister::ConstructTRailCityMinisterBaseState
-// ghidra_proto undefined ConstructTRailCityMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004c62f0
-undefined4 ConstructTRailCityMinisterBaseState(void)
 {
   return 0;
 }

@@ -403,14 +403,6 @@ undefined4 WrapperFor_GenerateThreadLocalRandom15_At004ec450(void)
   return 0;
 }
 
-// ghidra_name IterateLinkedListCursorEntries_004ec4c0
-// ghidra_proto undefined IterateLinkedListCursorEntries_004ec4c0()
-// FUNCTION: IMPERIALISM 0x004ec4c0
-undefined4 IterateLinkedListCursorEntries_004ec4c0(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass
 // ghidra_proto undefined BuildTileIndexListsForSelectedTerrainClass()
 // FUNCTION: IMPERIALISM 0x004ec540
@@ -463,14 +455,6 @@ undefined4 CreateTNapoleonMinisterInstance(void)
 // ghidra_proto undefined GetTNapoleonMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004ed4c0
 undefined4 GetTNapoleonMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNapoleonMinister::ConstructTNapoleonMinisterBaseState
-// ghidra_proto undefined ConstructTNapoleonMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004ed4e0
-undefined4 ConstructTNapoleonMinisterBaseState(void)
 {
   return 0;
 }
@@ -531,14 +515,6 @@ undefined4 GetTBismarckMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TBismarckMinister::ConstructTBismarckMinisterBaseState
-// ghidra_proto undefined ConstructTBismarckMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004ed810
-undefined4 ConstructTBismarckMinisterBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TBismarckMinister::DestructTBismarckMinisterAndMaybeFree
 // ghidra_proto undefined DestructTBismarckMinisterAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004ed840
@@ -591,14 +567,6 @@ undefined4 CreateTPirateMinisterInstance(void)
 // ghidra_proto undefined GetTPirateMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004edae0
 undefined4 GetTPirateMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TPirateMinister::ConstructTPirateMinisterBaseState
-// ghidra_proto undefined ConstructTPirateMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004edb00
-undefined4 ConstructTPirateMinisterBaseState(void)
 {
   return 0;
 }
@@ -659,14 +627,6 @@ undefined4 GetTDefenderMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TDefenderMinister::ConstructTDefenderMinisterBaseState
-// ghidra_proto undefined ConstructTDefenderMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004edde0
-undefined4 ConstructTDefenderMinisterBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TDefenderMinister::DestructTDefenderMinisterAndMaybeFree
 // ghidra_proto undefined DestructTDefenderMinisterAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004ede10
@@ -719,14 +679,6 @@ undefined4 CreateTBullyMinisterInstance(void)
 // ghidra_proto undefined GetTBullyMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x004ee0b0
 undefined4 GetTBullyMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TBullyMinister::ConstructTBullyMinisterBaseState
-// ghidra_proto undefined ConstructTBullyMinisterBaseState()
-// FUNCTION: IMPERIALISM 0x004ee0d0
-undefined4 ConstructTBullyMinisterBaseState(void)
 {
   return 0;
 }

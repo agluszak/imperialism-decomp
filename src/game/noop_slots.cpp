@@ -112,11 +112,6 @@ void NoOpForeignMinisterSlot25Handler(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00531110
-void NoOpForeignMinisterSlot32Handler(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x00531af0
 void NoOpTedForeignMinisterSlot25Handler(void) {
   return;

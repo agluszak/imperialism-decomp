@@ -2539,62 +2539,6 @@ undefined4 WrapperFor_ftol_At0052eb00(void)
   return 0;
 }
 
-// ghidra_name TMinister::GetTMinisterClassNamePointer
-// ghidra_proto undefined GetTMinisterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0052eb60
-undefined4 GetTMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinister::DeletingDestructTMinister
-// ghidra_proto undefined DeletingDestructTMinister()
-// FUNCTION: IMPERIALISM 0x0052eba0
-undefined4 DeletingDestructTMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name TMinister::DestructTMinister
-// ghidra_proto undefined DestructTMinister()
-// FUNCTION: IMPERIALISM 0x0052ebd0
-undefined4 DestructTMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTMinisterBaseOrderArray
-// ghidra_proto undefined InitializeTMinisterBaseOrderArray()
-// FUNCTION: IMPERIALISM 0x0052ebf0
-undefined4 InitializeTMinisterBaseOrderArray(void)
-{
-  return 0;
-}
-
-// ghidra_name DeleteForeignMinisterAndReleaseOrderArray
-// ghidra_proto undefined DeleteForeignMinisterAndReleaseOrderArray()
-// FUNCTION: IMPERIALISM 0x0052ec80
-undefined4 DeleteForeignMinisterAndReleaseOrderArray(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeTMinisterBaseOrderArrayHeader
-// ghidra_proto undefined DeserializeTMinisterBaseOrderArrayHeader()
-// FUNCTION: IMPERIALISM 0x0052ecc0
-undefined4 DeserializeTMinisterBaseOrderArrayHeader(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeTMinisterBaseOrderArrayHeader
-// ghidra_proto undefined SerializeTMinisterBaseOrderArrayHeader()
-// FUNCTION: IMPERIALISM 0x0052ecf0
-undefined4 SerializeTMinisterBaseOrderArrayHeader(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchNationStateEventCode10
 // ghidra_proto undefined DispatchNationStateEventCode10()
 // FUNCTION: IMPERIALISM 0x0052ed20
@@ -2747,46 +2691,6 @@ undefined4 HasAnyOptionDToFMeetingNationThreshold(void)
   return 0;
 }
 
-// ghidra_name DispatchForeignMinisterPrimaryAndFallbackNationActions
-// ghidra_proto undefined DispatchForeignMinisterPrimaryAndFallbackNationActions()
-// FUNCTION: IMPERIALISM 0x0052f7b0
-undefined4 DispatchForeignMinisterPrimaryAndFallbackNationActions(void)
-{
-  return 0;
-}
-
-// ghidra_name RunForeignMinisterVtableSlot90Base
-// ghidra_proto undefined RunForeignMinisterVtableSlot90Base()
-// FUNCTION: IMPERIALISM 0x0052f940
-undefined4 RunForeignMinisterVtableSlot90Base(void)
-{
-  return 0;
-}
-
-// ghidra_name RunForeignMinisterVtableSlot94Shared
-// ghidra_proto undefined RunForeignMinisterVtableSlot94Shared()
-// FUNCTION: IMPERIALISM 0x0052f9d0
-undefined4 RunForeignMinisterVtableSlot94Shared(void)
-{
-  return 0;
-}
-
-// ghidra_name RunForeignMinisterAmountDispatchShared
-// ghidra_proto undefined RunForeignMinisterAmountDispatchShared()
-// FUNCTION: IMPERIALISM 0x0052fba0
-undefined4 RunForeignMinisterAmountDispatchShared(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetForeignMinisterVtableSlot9CSharedState
-// ghidra_proto undefined ResetForeignMinisterVtableSlot9CSharedState()
-// FUNCTION: IMPERIALISM 0x0052fcc0
-undefined4 ResetForeignMinisterVtableSlot9CSharedState(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshForeignMinisterStateByLocalizationMode
 // ghidra_proto undefined RefreshForeignMinisterStateByLocalizationMode()
 // FUNCTION: IMPERIALISM 0x0052fd10
@@ -2859,14 +2763,6 @@ undefined4 GetTTedForeignMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TTedForeignMinister::ConstructTTedForeignMinister
-// ghidra_proto undefined ConstructTTedForeignMinister()
-// FUNCTION: IMPERIALISM 0x005311d0
-undefined4 ConstructTTedForeignMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name TTedForeignMinister::DeletingDestructTTedForeignMinister
 // ghidra_proto undefined DeletingDestructTTedForeignMinister()
 // FUNCTION: IMPERIALISM 0x00531240
@@ -2927,14 +2823,6 @@ undefined4 SetTedCounter60ToThree(void)
 // ghidra_proto undefined GetTBillForeignMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x00531bc0
 undefined4 GetTBillForeignMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TBillForeignMinister::ConstructTBillForeignMinister
-// ghidra_proto undefined ConstructTBillForeignMinister()
-// FUNCTION: IMPERIALISM 0x00531be0
-undefined4 ConstructTBillForeignMinister(void)
 {
   return 0;
 }
@@ -3027,14 +2915,6 @@ undefined4 GetTDiplomatForeignMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TDiplomatForeignMinister::ConstructTDiplomatForeignMinister
-// ghidra_proto undefined ConstructTDiplomatForeignMinister()
-// FUNCTION: IMPERIALISM 0x00532780
-undefined4 ConstructTDiplomatForeignMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomatForeignMinister::DeletingDestructTDiplomatForeignMinister
 // ghidra_proto undefined DeletingDestructTDiplomatForeignMinister()
 // FUNCTION: IMPERIALISM 0x005327f0
@@ -3099,14 +2979,6 @@ undefined4 GetTTextileForeignMinisterClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TTextileForeignMinister::ConstructTTextileForeignMinister
-// ghidra_proto undefined ConstructTTextileForeignMinister()
-// FUNCTION: IMPERIALISM 0x00533110
-undefined4 ConstructTTextileForeignMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name TTextileForeignMinister::DeletingDestructTTextileForeignMinister
 // ghidra_proto undefined DeletingDestructTTextileForeignMinister()
 // FUNCTION: IMPERIALISM 0x00533180
@@ -3159,14 +3031,6 @@ undefined4 UpdateTextileProgressFromProductionSlots1And2(void)
 // ghidra_proto undefined GetTTraderForeignMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x00533880
 undefined4 GetTTraderForeignMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TTraderForeignMinister::ConstructTTraderForeignMinister
-// ghidra_proto undefined ConstructTTraderForeignMinister()
-// FUNCTION: IMPERIALISM 0x005338a0
-undefined4 ConstructTTraderForeignMinister(void)
 {
   return 0;
 }
@@ -3231,14 +3095,6 @@ undefined4 IncrementTraderCounter60ByThree(void)
 // ghidra_proto undefined GetTArmsForeignMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x00533ff0
 undefined4 GetTArmsForeignMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmsForeignMinister::ConstructTArmsForeignMinister
-// ghidra_proto undefined ConstructTArmsForeignMinister()
-// FUNCTION: IMPERIALISM 0x00534010
-undefined4 ConstructTArmsForeignMinister(void)
 {
   return 0;
 }

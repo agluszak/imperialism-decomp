@@ -12,7 +12,7 @@ struct CRuntimeClass;
 class CObject {
 public:
   virtual CRuntimeClass* GetRuntimeClass();
-  virtual ~CObject();
+  virtual ~CObject() {}
   virtual void Serialize(CArchive* ar);
   virtual void AssertValidOrSlot0c();
   virtual void DumpOrSlot10(int unused = 0);
