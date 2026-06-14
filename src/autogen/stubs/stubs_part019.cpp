@@ -2899,14 +2899,6 @@ undefined4 GetTTradeMgrClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name ConstructNationInteractionStateManager_Vtbl0066d990
-// ghidra_proto undefined ConstructNationInteractionStateManager_Vtbl0066d990()
-// FUNCTION: IMPERIALISM 0x005b7a20
-undefined4 ConstructNationInteractionStateManager_Vtbl0066d990(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradeMgr::DestructTTradeMgrAndMaybeFree
 // ghidra_proto undefined DestructTTradeMgrAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b7a40
@@ -2919,14 +2911,6 @@ undefined4 DestructTTradeMgrAndMaybeFree(void)
 // ghidra_proto undefined DestructTTradeMgrAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005b7a70
 undefined4 DestructTTradeMgrAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TDealList::InitializeNationInteractionStateManagerDefaults
-// ghidra_proto undefined InitializeNationInteractionStateManagerDefaults()
-// FUNCTION: IMPERIALISM 0x005b7a90
-undefined4 InitializeNationInteractionStateManagerDefaults(void)
 {
   return 0;
 }
@@ -3003,14 +2987,6 @@ undefined4 GetNationMetricWeightedScoreForSlot(void)
   return 0;
 }
 
-// ghidra_name TTradeMgr::GetNationMetricAuxWordForSlot
-// ghidra_proto undefined GetNationMetricAuxWordForSlot()
-// FUNCTION: IMPERIALISM 0x005b8d70
-undefined4 GetNationMetricAuxWordForSlot(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeNationMetricDispatchScoreAndResolveScale
 // ghidra_proto undefined ComputeNationMetricDispatchScoreAndResolveScale()
 // FUNCTION: IMPERIALISM 0x005b8da0
@@ -3031,14 +3007,6 @@ undefined4 GetNationMetricRosterWordAtOffset0E(void)
 // ghidra_proto undefined GetNationMetricRosterWordAtOffset0C()
 // FUNCTION: IMPERIALISM 0x005b8fb0
 undefined4 GetNationMetricRosterWordAtOffset0C(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeMgr::ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A
-// ghidra_proto undefined ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A()
-// FUNCTION: IMPERIALISM 0x005b8fe0
-undefined4 ResolveNationMetricScaleFromCodeOrRosterWordAtOffset0A(void)
 {
   return 0;
 }
@@ -3087,14 +3055,6 @@ undefined4 RefreshNationStateAndEmitTurnEvent3Mode18(void)
 // ghidra_proto undefined RebuildNationMetricPassesAndClampRowsByBaseline()
 // FUNCTION: IMPERIALISM 0x005b9410
 undefined4 RebuildNationMetricPassesAndClampRowsByBaseline(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C
-// ghidra_proto undefined ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C()
-// FUNCTION: IMPERIALISM 0x005b94d0
-undefined4 ApplyDiplomacyTransferEffectsAndMaybeEmitTurnEvent1C(void)
 {
   return 0;
 }
@@ -3167,14 +3127,6 @@ undefined4 IsNationMetricCellPositive(void)
 // ghidra_proto undefined AllocateAndPopulateLinkedValueCollectionFromRosterFilter()
 // FUNCTION: IMPERIALISM 0x005b9fd0
 undefined4 AllocateAndPopulateLinkedValueCollectionFromRosterFilter(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectPreferredNationMetricCodeFromLookup
-// ghidra_proto undefined SelectPreferredNationMetricCodeFromLookup()
-// FUNCTION: IMPERIALISM 0x005ba090
-undefined4 SelectPreferredNationMetricCodeFromLookup(void)
 {
   return 0;
 }

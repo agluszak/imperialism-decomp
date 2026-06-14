@@ -139,7 +139,7 @@ TZone* g_pMapActionContextListHead = 0;
 extern "C" {
 int g_nMapActionContextCount = 0;
 void* g_pMapActionContextDistanceCache = 0;
-void* g_pNationInteractionStateManager = 0; // 0x6a43cc
+// g_pNationInteractionStateManager is defined in TDealList.cpp (0x6a43cc).
 
 int g_NetworkDefaultNationId006a5fc0 = 0;
 int g_NetworkBroadcastNationId006a5fc4 = 0;

@@ -27,6 +27,9 @@ static __inline short CityOrderCapForNation(short nationSlot) {
 static __inline short CityOrderActiveZoneIndex(void) {
   return g_pCityOrderCapabilityState->activeZoneIndex1d4;
 }
+static __inline int IsRecruitTier2EnabledForNation(short nationSlot) {
+  return g_pCityOrderCapabilityState->orderCapRows277[nationSlot].recruitTierFlag27b == 2;
+}
 
 // Decode minor-capability row owner tag (0x004dab20 civ-work branch).
 static __inline short ResolveMinorCapabilityOwnerNationSlot(const TMinor* minor) {

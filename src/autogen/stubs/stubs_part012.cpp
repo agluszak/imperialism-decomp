@@ -2539,14 +2539,6 @@ undefined4 OrphanCallChain_C1_I16_004b5100(void)
   return 0;
 }
 
-// ghidra_name InitializeCityOrderItemWorkingBuffers
-// ghidra_proto undefined InitializeCityOrderItemWorkingBuffers()
-// FUNCTION: IMPERIALISM 0x004b5180
-undefined4 InitializeCityOrderItemWorkingBuffers(void)
-{
-  return 0;
-}
-
 // ghidra_name TItemOrder::CreateTItemOrderInstance
 // ghidra_proto undefined CreateTItemOrderInstance()
 // FUNCTION: IMPERIALISM 0x004b51b0

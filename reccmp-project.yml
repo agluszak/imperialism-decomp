@@ -473,8 +473,6 @@ targets:
       - TCViewOwnedBufferChainState_00648578::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20
       - TCViewOwnedBufferChainState_00648578::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0
       - TCViewOwnedBufferChainState_00648578::WrapperFor_FreeHeapBufferIfNotNull_At004829f0
-      - TCapacityOrder::DestructTCapacityOrderAndMaybeFree
-      - TCapacityOrder::thunk_DestructTCapacityOrderAndMaybeFree
       - TCheater::DestructTCheaterAndMaybeFree
       - TCity::DestructTCityAndMaybeFree
       - TCity::thunk_DestructTCityAndMaybeFree

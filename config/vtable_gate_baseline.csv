@@ -1,6 +1,6 @@
 file|raw_vtable_index|fn_typedef_cast|vftable_index|vcall_facade|total
 include/game/trade_quickdraw.h|3|0|0|0|3
-src/game/TCapacityOrder.cpp|0|1|0|0|1
+src/game/TCapacityOrder.cpp|0|0|0|0|0
 src/game/TCityProductionView.cpp|0|0|0|3|3
 src/game/TCivDescription.cpp|0|2|0|0|2
 src/game/TCivilianButton.cpp|0|0|0|3|3
@@ -17,5 +17,6 @@ src/game/TWorldView.cpp|0|5|0|0|5
 src/game/TZone.cpp|0|0|0|0|0
 src/game/CBrush.cpp|0|1|0|0|1
 src/game/ScopedMapQuickDrawContext.cpp|0|0|0|0|0
+src/game/TDealList.cpp|0|3|0|0|3
 src/game/CDC.cpp|0|1|0|0|1
 src/game/CClientDC.cpp|0|0|0|0|0

@@ -1,5 +1,10 @@
 # Worklog
 
+- **Timestamp:** 2026-06-14 (cont.) — TCapacityOrder class-model cleanup
+- **Command:** Replaced fake local class / `__fastcall` vtable cast / manual `Construct*`+`Destruct*` bridges with `TCityOrderItem` base (`VTABLE 0x0064fa18`, real `Produce` @ `0x004b5180`) + `TCapacityOrder` header (`FillOrderSheet`, typed `resourceTypeIndex48`). SYNTHETIC scalar-deleting marker @ `0x004b8d00`; moved `CObject` vtable anchor to `CObject.cpp`; fixed `g_industryActionCostWeightResCode03` write offset (`+0x06` not `+0x18`). `just sync-ownership` → `just regen-stubs` → `just build` → `just detect` → `just compare`.
+- **Score Delta:** `0x004b8cc0` **100%**; `0x004b5180` **78.26%**; `0x004b8b80` **50.47%**; `0x004b8d00` / `0x004b8d30` not emitted yet (no ctor/delete users in rebuild — need `TCapacityOrder` ctor/`ICapacityOrder` port for compiler-generated dtors).
+- **Description:** vtable/construction gate baselines for `TCapacityOrder.cpp` zeroed. Residual shape work on `FillOrderSheet` and pairing of compiler-generated deleting destructor after ctor recovery.
+
 - **Timestamp:** 2026-06-14 (cont.) — Navy primary order factory + flavor/string helpers
 - **Command:** Promoted `CreateNavyPrimaryOrderNodeAndAssignDisplayName` (`0x0054f8e0`), `RegenerateNavyPrimaryOrderDisplayNameUntilUnique` (`0x0054fbf0`), `TAdmiral::GenerateMappedFlavorTextByNationSlotField0C` (`0x004d7eb0`), `GenerateMappedFlavorTextByTableSlot` / `GenerateMappedFlavorTextUntilValidationPasses`, and `CompareAnsiStringsWithMbcsAwareness`. Removed `TGreatPower_internal.h` ILT wrapper; typed `TShip::stockLevel1c`. `just sync-ownership` → `just regen-stubs` → `just build` → `just compare`.
 - **Score Delta:** `0x0054f8e0` **38.96% → 35.96%**; `0x0054fbf0` **67.80%**; `0x005d46b0` **87.50%**; `0x005d4720` **87.43%**; `0x005e7980` **11.48%** (initial shape pass).
@@ -3927,4 +3932,26 @@ Follow-up scan after the TClosePicture extraction:
   - `0x0052fcc0` RecomputeOrderStateSlot9C: **76.19%**
 - **Still open:** full `Call8C`/`Call94`/`DispatchProposalSlot98` bodies; personality vtable size
   warnings; `InitializeCityInteriorMinister` thunk.
+
+## 2026-06-14 — Diplomacy manager + city-order typing for foreign minister ports
+
+- **Commands:** `just sync-ownership`; `just regen-stubs`; `just build`; `just compare` on minister/deal-list targets; `just compare-canaries`
+- **Changes:**
+  - `TCityOrderCapabilityState`: `OrderCapRow.recruitTierFlag27b` at per-nation `0x1d` stride; `IsRecruitTier2EnabledForNation()` helper in `TGreatPower_internal.h`.
+  - New `TDealList` (`vtable 0x0066d990`): CObject fork slots, typed `g_pNationInteractionStateManager`, init + virtuals `IsCapabilityCategoryActiveSlot3C` (`0x005b8d70`), `QueryProposalWeightSlot4C` (`0x005b8fe0`), `DispatchProposalAmountSlot60` (`0x005b94d0`), `ResolveProposalCodeForCategorySlot84` (`0x005ba090`).
+  - `TGreatPower::ClearDiplomacyState1c6ForTarget` (`0x004ddd20`, slot `0x1ac`) replaces wrong orphan stub body; `GetEffectiveDiplomacyCounterA2ForCode` wired as slot `0x100` for `DispatchProposalSlot98`.
+  - `TForeignMinister`: ported `Call8C` (`0x0052f7b0`), `Call94` (`0x0052f9d0`), `DispatchProposalSlot98` (`0x0052fba0`) with typed manager/great-power calls.
+  - `vtable_gate_baseline.csv`: added `TDealList.cpp` fn_typedef_cast baseline.
+- **Score delta (first pass):**
+  - `0x0052f9d0` Call94: **33.33%**
+  - `0x0052fba0` DispatchProposalSlot98: **19.88%**
+  - `0x0052f7b0` Call8C: **45.99%**
+  - `0x005b7a90` init: **43.75%**
+  - `0x005b8d70` slot 3c: **60.00%**
+  - `0x005b8fe0` slot 4c: **37.04%**
+  - `0x005b94d0` slot 60: **34.50%**
+  - `0x005ba090` slot 84: **6.25%**
+  - `0x004ddd20` ClearDiplomacyState1c6ForTarget: **44.44%**
+- **Canaries:** below_floor=2 (pre-existing `0x004E9060`, `0x004E9ED0`); no new regressions.
+- **Follow-up:** EH frame on `Call8C`; populate `kNationMetricCategoryPresetValues` / `kNationMetricCodeLookup` from binary data; iterate `DispatchProposalSlot98` and `ApplyDiplomacyTransferEffects` argument/shape residuals.
 

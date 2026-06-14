@@ -4,7 +4,7 @@
 
 class TGreatPower;
 
-int AllocateWithFallbackHandler(undefined4 size_bytes);
+int AllocateWithFallbackHandler(undefined4 size);
 
 // VTABLE: IMPERIALISM 0x00659cb0
 class TForeignMinister : public TMinister {
@@ -18,6 +18,8 @@ public:
   void Call94() override;
   void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) override;
   void RecomputeOrderStateSlot9C() override;
+
+  unsigned char foreignState48[0x80 - 0x48];
 
   void* operator new(unsigned int size) {
     (void)size;

@@ -1,40 +1,27 @@
-// TCapacityOrder class wrappers promoted from ghidra_autogen.
+#include "game/TCapacityOrder.h"
 
-#include "decomp_types.h"
+#include "game/CRuntimeClass.h"
 
-void FreeHeapBufferIfNotNull(undefined4 ptrValue);
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 
-// GLOBAL: IMPERIALISM 0x64f440
-char g_pClassDescTCapacityOrder;
-// Runtime-object base vtable placeholder. The address annotation lives on
-// TEventHandler's VTABLE declaration to avoid duplicate reccmp global ownership.
-char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-// GLOBAL: IMPERIALISM 0x695b50
+// GLOBAL: IMPERIALISM 0x0064f440
+CRuntimeClass g_pClassDescTCapacityOrder = {0};
+// GLOBAL: IMPERIALISM 0x00695b50
 char g_industryActionCostWeightResCode09;
-// GLOBAL: IMPERIALISM 0x695b70
+// GLOBAL: IMPERIALISM 0x00695b70
 char g_industryActionCostWeightResCode08;
-// GLOBAL: IMPERIALISM 0x695b90
+// GLOBAL: IMPERIALISM 0x00695b90
 char g_industryActionCostWeightResCode10;
-// GLOBAL: IMPERIALISM 0x695bb0
+// GLOBAL: IMPERIALISM 0x00695bb0
 char g_industryActionCostWeightResCode0B;
-// GLOBAL: IMPERIALISM 0x695bd0
+// GLOBAL: IMPERIALISM 0x00695bd0
 char g_industryActionCostWeightResCode03;
-// GLOBAL: IMPERIALISM 0x695bf0
+// GLOBAL: IMPERIALISM 0x00695bf0
 char g_industryActionCostWeightResCode0C;
 
-class TCapacityOrder {
-public:
-  void* pVtable;
-  unsigned char pad_04[0x44];
-  unsigned char field69_0x48;
-
-  void CreateTCapacityOrderInstance(void* pTargetOrder);
-  static void* __cdecl GetTCapacityOrderClassNamePointer(void);
-  TCapacityOrder* ConstructTCapacityOrderBaseState(unsigned char freeSelfFlag);
-  void DestructTCapacityOrderAndMaybeFree(void);
-};
-
-static __inline short ReadWeight(const char* tableBase, unsigned char index) {
+static __inline short ReadWeight(const char* tableBase, short index) {
   return *reinterpret_cast<const short*>(tableBase + static_cast<unsigned int>(index) * 2);
 }
 
@@ -47,71 +34,59 @@ static __inline short ReadShort(void* base, int offset) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b8b80
-void TCapacityOrder::CreateTCapacityOrderInstance(void* pTargetOrder) {
-  typedef void(__fastcall * Slot3CFn)(TCapacityOrder * self, int unusedEdx, void* arg);
-  const short quantity = static_cast<short>(reinterpret_cast<unsigned int>(pTargetOrder));
+void TCapacityOrder::FillOrderSheet(void* orderSheet) {
+  const short quantity = static_cast<short>(reinterpret_cast<unsigned int>(orderSheet));
   short value = 0;
 
-  (reinterpret_cast<Slot3CFn>(reinterpret_cast<int*>(this->pVtable)[0x0f]))(this, 0, pTargetOrder);
+  this->Produce(orderSheet);
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode09, this->field69_0x48) *
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode09, this->resourceTypeIndex48) *
                              quantity);
-  WriteShort(pTargetOrder, 0x12, value);
+  WriteShort(orderSheet, 0x12, value);
   if (value < 0) {
-    WriteShort(pTargetOrder, 0x12, 0);
+    WriteShort(orderSheet, 0x12, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode08, this->field69_0x48) *
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode08, this->resourceTypeIndex48) *
                              quantity);
-  WriteShort(pTargetOrder, 0x10, value);
+  WriteShort(orderSheet, 0x10, value);
   if (value < 0) {
-    WriteShort(pTargetOrder, 0x10, 0);
+    WriteShort(orderSheet, 0x10, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode10, this->field69_0x48) *
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode10, this->resourceTypeIndex48) *
                              quantity);
-  WriteShort(pTargetOrder, 0x20, value);
-  if (ReadShort(pTargetOrder, 0x12) < 0) {
-    WriteShort(pTargetOrder, 0x12, 0);
+  WriteShort(orderSheet, 0x20, value);
+  if (ReadShort(orderSheet, 0x12) < 0) {
+    WriteShort(orderSheet, 0x12, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0B, this->field69_0x48) *
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) *
                              quantity);
-  WriteShort(pTargetOrder, 0x16, value);
+  WriteShort(orderSheet, 0x16, value);
   if (value < 0) {
-    WriteShort(pTargetOrder, 0x16, 0);
+    WriteShort(orderSheet, 0x16, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode03, this->field69_0x48) *
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode03, this->resourceTypeIndex48) *
                              quantity);
-  WriteShort(pTargetOrder, 0x18, value);
+  WriteShort(orderSheet, 0x06, value);
   if (value < 0) {
-    WriteShort(pTargetOrder, 0x18, 0);
+    WriteShort(orderSheet, 0x06, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0C, this->field69_0x48) *
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) *
                              quantity);
-  WriteShort(pTargetOrder, 0x18, value);
+  WriteShort(orderSheet, 0x18, value);
   if (value < 0) {
-    WriteShort(pTargetOrder, 0x18, 0);
+    WriteShort(orderSheet, 0x18, 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004b8cc0
-void* __cdecl TCapacityOrder::GetTCapacityOrderClassNamePointer(void) {
+CRuntimeClass* TCapacityOrder::GetRuntimeClass() {
   return &g_pClassDescTCapacityOrder;
 }
 
-// FUNCTION: IMPERIALISM 0x004b8d00
-TCapacityOrder* TCapacityOrder::ConstructTCapacityOrderBaseState(unsigned char freeSelfFlag) {
-  this->DestructTCapacityOrderAndMaybeFree();
-  if ((freeSelfFlag & 1) != 0) {
-    FreeHeapBufferIfNotNull(static_cast<undefined4>(reinterpret_cast<unsigned int>(this)));
-  }
-  return this;
-}
-
-// FUNCTION: IMPERIALISM 0x004b8d30
-void TCapacityOrder::DestructTCapacityOrderAndMaybeFree(void) {
-  this->pVtable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-}
+// SYNTHETIC: IMPERIALISM 0x004b8d00
+// TCapacityOrder::`scalar deleting destructor'

@@ -12,6 +12,9 @@
 // GLOBAL: IMPERIALISM 0x006706e0
 CRuntimeClass classCObject = {0};
 
+// GLOBAL: IMPERIALISM 0x0066fec4
+char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+
 // FUNCTION: IMPERIALISM 0x00606fba
 CRuntimeClass* CObject::GetRuntimeClass() {
   return &classCObject;

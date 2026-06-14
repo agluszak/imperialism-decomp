@@ -20,7 +20,7 @@ src/game/CDocument.cpp|0|0|0|0|1|0|1
 src/game/CString.cpp|0|1|0|0|0|0|1
 src/game/TArmyToolbar.cpp|0|0|0|0|1|0|1
 src/game/TAutoGreatPower.cpp|0|1|0|0|0|0|1
-src/game/TCapacityOrder.cpp|0|0|0|0|3|0|3
+src/game/TCapacityOrder.cpp|0|0|0|0|0|0|0
 src/game/TCityBarCluster.cpp|0|0|0|0|1|0|1
 src/game/TFocusAnimation.cpp|0|0|0|0|2|0|2
 src/game/TProductionCluster.cpp|0|0|0|0|1|0|1

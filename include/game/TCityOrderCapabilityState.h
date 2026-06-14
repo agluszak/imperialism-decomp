@@ -23,7 +23,9 @@ public:
   unsigned char pad274[0x277 - 0x274];
   struct OrderCapRow {
     unsigned char flag;
-    unsigned char pad01[0x1d - 0x01];
+    unsigned char pad01[3];
+    unsigned char recruitTierFlag27b;
+    unsigned char pad05[0x1d - 0x05];
   };
   OrderCapRow orderCapRows277[7];
   unsigned char pad342[0x39d - 0x342];

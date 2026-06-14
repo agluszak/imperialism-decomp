@@ -256,7 +256,6 @@ enum {
   kTGreatPowerOffset_actionMetricByQuarter = offsetof(TGreatPower, actionMetricByQuarter),
 };
 
-extern "C" void* g_pNationInteractionStateManager;
 extern "C" UiRuntimeContext* g_pUiRuntimeContext;
 
 static __inline TGlobalMapCityScoreRecord*
@@ -1682,7 +1681,6 @@ extern float g_Classify_Nation_Military_Value_00653708; // 2.0f
 extern float g_Classify_Nation_Military_Value_0065370C; // 1.0f
 extern float g_Classify_Nation_Military_Value_00653710; // -2.0f
 extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
-extern void* g_pNationInteractionStateManager; // 0x6a43cc
 }
 
 undefined4 thunk_GenerateMappedFlavorTextByTableSlot(void);   // 0x00405312 -> 0x005d46b0
@@ -2012,14 +2010,12 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
 #pragma optimize("y", on)
 unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode) {
   if (this->foreignMinister->capabilityFlag26 != 0) {
-    if (static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
-            ->IsCapabilityCategoryActiveSlot3C(4) != 0) {
+    if (g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(4) != 0) {
       if (static_cast<short>(proposalCode) == 4) {
         return static_cast<unsigned short>(this->diplomacyCounterA2);
       }
       short resolvedCode =
-          static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
-              ->ResolveProposalCodeForCategorySlot84(proposalCode, 4);
+          g_pNationInteractionStateManager->ResolveProposalCodeForCategorySlot84(proposalCode, 4);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->diplomacyCounterA2) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
@@ -2028,14 +2024,12 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
     }
   }
   if (this->foreignMinister->capabilityFlag28 != 0) {
-    if (static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
-            ->IsCapabilityCategoryActiveSlot3C(5) != 0) {
+    if (g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(5) != 0) {
       if (static_cast<short>(proposalCode) == 5) {
         return static_cast<unsigned short>(this->diplomacyCounterA2);
       }
       short resolvedCode =
-          static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
-              ->ResolveProposalCodeForCategorySlot84(proposalCode, 5);
+          g_pNationInteractionStateManager->ResolveProposalCodeForCategorySlot84(proposalCode, 5);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->diplomacyCounterA2) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
@@ -2044,12 +2038,10 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
     }
   }
   if (this->foreignMinister->capabilityFlag24 != 0 &&
-      static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
-              ->IsCapabilityCategoryActiveSlot3C(3) != 0) {
+      g_pNationInteractionStateManager->IsCapabilityCategoryActiveSlot3C(3) != 0) {
     if (static_cast<short>(proposalCode) != 3) {
       short resolvedCode =
-          static_cast<TNationInteractionStateManager*>(g_pNationInteractionStateManager)
-              ->ResolveProposalCodeForCategorySlot84(proposalCode, 3);
+          g_pNationInteractionStateManager->ResolveProposalCodeForCategorySlot84(proposalCode, 3);
       if (resolvedCode == static_cast<short>(proposalCode)) {
         int reducedCounter = static_cast<int>(this->diplomacyCounterA2) - 2;
         return reducedCounter & (static_cast<int>(reducedCounter < 1) - 1);
@@ -2178,7 +2170,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       void* nationInteractionState = g_pNationInteractionStateManager;
       if (nationInteractionState != 0) {
         interactionScore =
-            static_cast<TNationInteractionStateManager*>(nationInteractionState)->QueryInt4C();
+            g_pNationInteractionStateManager->QueryProposalWeightSlot4C(nationSlot);
       }
     }
 
@@ -3252,8 +3244,8 @@ void TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceInd
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004ddd20
-void TGreatPower::OrphanVtableAssignStub_004ddd20(void) {
-  this->diplomacyState1c6[0] = 0;
+void TGreatPower::ClearDiplomacyState1c6ForTarget(short targetSlot) {
+  this->diplomacyState1c6[targetSlot] = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004ddd50

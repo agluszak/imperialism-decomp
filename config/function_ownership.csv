@@ -355,6 +355,7 @@ address|target_cpp|ownership|note
 4b50e0|src/game/noop_slots.cpp|manual|marker_sync
 4b5140|src/game/noop_slots.cpp|manual|marker_sync
 4b5160|src/game/noop_slots.cpp|manual|marker_sync
+4b5180|src/game/TCityOrderItem.cpp|manual|marker_sync
 4b6f00|src/game/noop_slots.cpp|manual|marker_sync
 4b73b0|src/game/TCityRecruitmentOrderContext.cpp|manual|marker_sync
 4b7c20|src/game/noop_slots.cpp|manual|marker_sync
@@ -363,7 +364,6 @@ address|target_cpp|ownership|note
 4b8b80|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8cc0|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8d00|src/game/TCapacityOrder.cpp|manual|marker_sync
-4b8d30|src/game/TCapacityOrder.cpp|manual|marker_sync
 4badd0|src/game/TCityProductionView.cpp|manual|marker_sync
 4bc9b0|src/game/TCityProductionView.cpp|manual|marker_sync
 4be190|src/game/noop_slots.cpp|manual|marker_sync
@@ -1161,6 +1161,12 @@ address|target_cpp|ownership|note
 5b6c60|src/game/TTownMarker.cpp|manual|marker_sync
 5b6cd0|src/game/TTownMarker.cpp|manual|marker_sync
 5b7830|src/game/TTownMarker.cpp|manual|marker_sync
+5b7a20|src/game/TDealList.cpp|manual|marker_sync
+5b7a90|src/game/TDealList.cpp|manual|marker_sync
+5b8d70|src/game/TDealList.cpp|manual|marker_sync
+5b8fe0|src/game/TDealList.cpp|manual|marker_sync
+5b94d0|src/game/TDealList.cpp|manual|marker_sync
+5ba090|src/game/TDealList.cpp|manual|marker_sync
 5c2470|src/game/noop_slots.cpp|manual|marker_sync
 5c2530|src/game/TUnitOrderState.cpp|manual|marker_sync
 5c2610|src/game/noop_slots.cpp|manual|marker_sync

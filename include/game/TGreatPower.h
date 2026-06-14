@@ -216,7 +216,8 @@ public:
   virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
-  TGREATPOWER_VTABLE_SLOT(107);
+  // slot 0x6b / 0x1ac — body 0x004ddd20: clears diplomacyState1c6[targetSlot].
+  virtual void ClearDiplomacyState1c6ForTarget(short targetSlot);
   // slot 0x6c — body 0x004ddd90: packs {kind, targetNation, value, eligibility,
   // payload} and appends it to diplomacyTrackedSlots[slotIndex] via [vt+0x38];
   // eligibility = kind==1, or kind==0 and manager slot 0x84 reports no flag.
@@ -483,7 +484,6 @@ public:
   void ResetNationDiplomacyProposalQueue(void);
   void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
                                                                     int isBoycottEnabled);
-  void OrphanVtableAssignStub_004ddd20(void);
   void RebuildNationResourceYieldsAndRollField134Into136(void);
   void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   void InitializeMapActionCandidateStateAndQueueMission(int arg1);
