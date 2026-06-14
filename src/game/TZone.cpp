@@ -48,10 +48,10 @@ CRuntimeClass* TZone::GetRuntimeClass() {
 
 // FUNCTION: IMPERIALISM 0x0055e700
 TZone::TZone()
-    : displayName(), field04(-1), field0c(-1), field10(0), field12(-1), field14(0),
+    : field04(-1), field0c(-1), field10(0), field12(-1), field14(0),
       prev18(static_cast<TZone*>(g_pMapActionContextListHead)), next1c(0), field20(-1),
       portZoneEntries28(0), portZoneEntryCount2c(0), portZoneActiveEntryCount30(0), field44(0),
-      field48(0) {
+      field48(0), displayName() {
   field24 = reinterpret_cast<void*>(0x0065c74c);
   field38 = 0;
   field3c = 0;

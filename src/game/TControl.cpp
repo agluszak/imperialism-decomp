@@ -18,15 +18,6 @@ extern int g_nUiResourceEntryDefaultParam0;
 extern int g_nUiResourceEntryDefaultParam1;
 extern unsigned short g_wUiResourceEntryDefaultParam2;
 extern CRuntimeClass PTR_s_TControl_00649600;
-extern int __stdcall IntersectRect(RECT* dest, const RECT* src1,
-                                   const RECT* src2);
-extern int __stdcall CombineRgn(void* destRegion, void* sourceRegion1, void* sourceRegion2,
-                                int combineMode);
-extern int __stdcall OffsetRgn(void* region, int dx, int dy);
-extern int __stdcall InvalidateRgn(void* hWnd, void* region, int erase);
-extern void* __stdcall SetCapture(void* hWnd);
-extern unsigned int __stdcall SetTimer(void* hWnd, unsigned int eventId, unsigned int elapsedMs,
-                                       void* timerProc);
 }
 
 undefined4 FromHandle(void);
@@ -117,8 +108,8 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 // FUNCTION: IMPERIALISM 0x0048e640
 void TControl::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
   g_McAppUiMouseCaptureControl_006A1A80 = this;
-  void* capturedWindow = SetCapture(nativeWindow50->hwnd);
-  reinterpret_cast<undefined4(__cdecl*)(void*)>(FromHandle)(capturedWindow);
+  void* capturedWindow = reinterpret_cast<void*>(SetCapture(reinterpret_cast<HWND>(nativeWindow50->hwnd)));
+  reinterpret_cast<void(__cdecl*)(void*)>(FromHandle)(capturedWindow);
   g_McAppUiMouseCaptureStartPoint_006A1A68[0] = point->x;
   g_McAppUiMouseCaptureStartPoint_006A1A68[1] = point->y;
   g_McAppUiMouseCaptureLastPoint_006A1A70[0] = point->x;
@@ -130,7 +121,7 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
                                  g_McAppUiMouseCaptureCurrentPoint_006A1A78);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
     g_McAppUiMouseCaptureTimerId_006A1ADC =
-        SetTimer(nativeWindow50->hwnd, 0xef, 0x11, reinterpret_cast<void*>(&LAB_00409a9d));
+        SetTimer(reinterpret_cast<HWND>(nativeWindow50->hwnd), 0xef, 0x11, reinterpret_cast<TIMERPROC>(&LAB_00409a9d));
   }
 }
 
@@ -256,14 +247,14 @@ void TControl::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
     sourceRegion = *reinterpret_cast<void**>(*regionWrapper + 0x18);
   }
   void* destRegion = *reinterpret_cast<void**>(*localRegion + 0x18);
-  CombineRgn(destRegion, sourceRegion, 0, 5);
+  CombineRgn(reinterpret_cast<HRGN>(destRegion), reinterpret_cast<HRGN>(sourceRegion), nullptr, 5);
 
   Point32 cachedPos;
   Point32* pos = reinterpret_cast<Point32*>(GetCachedPosPoint(reinterpret_cast<int*>(&cachedPos)));
-  OffsetRgn(destRegion, -pos->x, -pos->y);
+  OffsetRgn(reinterpret_cast<HRGN>(destRegion), -pos->x, -pos->y);
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRgn(nativeWindow50->hwnd, destRegion, 0);
+    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->hwnd), reinterpret_cast<HRGN>(destRegion), 0);
   }
 
   reinterpret_cast<void(__cdecl*)(int*)>(DestroyClipStateRegionWrapperObject)(localRegion);

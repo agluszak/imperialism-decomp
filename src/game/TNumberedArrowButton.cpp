@@ -1,7 +1,7 @@
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/TNumberedArrowButton.h"
-CRuntimeClass g_pClassDescTNumberedArrowButton = {0};
+CRuntimeClass g_pClassDescTNumberedArrowButton = {nullptr, 0, 0, nullptr, nullptr};
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/win_rect.h"

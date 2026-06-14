@@ -15,7 +15,7 @@
 
 undefined4 ftol(void);
 
-extern "C" CRuntimeClass g_pClassDescTAmtBar = {0};
+extern "C" CRuntimeClass g_pClassDescTAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x005884c0
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {

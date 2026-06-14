@@ -7,7 +7,7 @@
 #endif
 
 // GLOBAL: IMPERIALISM 0x0064f440
-CRuntimeClass g_pClassDescTCapacityOrder = {0};
+CRuntimeClass g_pClassDescTCapacityOrder = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00695b50
 char g_industryActionCostWeightResCode09;
 // GLOBAL: IMPERIALISM 0x00695b70

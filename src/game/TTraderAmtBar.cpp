@@ -28,7 +28,7 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 namespace {
 
-extern "C" CRuntimeClass g_pClassDescTTraderAmtBar = {0};
+extern "C" CRuntimeClass g_pClassDescTTraderAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 extern "C" char g_vtblTTraderAmtBar = 0;
 
 const int kScenarioRecordTags[] = {

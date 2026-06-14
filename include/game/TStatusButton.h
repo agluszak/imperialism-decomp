@@ -8,6 +8,10 @@ extern "C" CRuntimeClass g_pClassDescTStatusButton;
 // VTABLE: IMPERIALISM 0x664f68
 class TStatusButton : public TButton {
 public:
+#ifdef __clang__
+  using TView::OwnerPanel;
+#endif
+
   TStatusButton();
   CRuntimeClass* GetRuntimeClass() override;
 

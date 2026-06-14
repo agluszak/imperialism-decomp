@@ -10,7 +10,7 @@
 // MFC CRuntimeClass descriptor for CObject itself (0x6706e0), root of the m_pBaseClass
 // chain. Reccmp pairs by symbol registration (the GLOBAL marker), not by value.
 // GLOBAL: IMPERIALISM 0x006706e0
-CRuntimeClass classCObject = {0};
+CRuntimeClass classCObject = {nullptr, 0, 0, nullptr, nullptr};
 
 // GLOBAL: IMPERIALISM 0x0066fec4
 char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;

@@ -7,7 +7,7 @@
 #include "game/quickdraw_guards.h"
 #include <new>
 
-extern "C" CRuntimeClass g_pClassDescTTradeCluster = {0};
+extern "C" CRuntimeClass g_pClassDescTTradeCluster = {nullptr, 0, 0, nullptr, nullptr};
 extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 
 // TTradeCluster (VTABLE 0x665a70): the trade-screen sell/bid/offer cluster.

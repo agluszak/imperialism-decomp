@@ -1,8 +1,5 @@
 #include "game/quickdraw_globals.h"
 
-extern "C" int __stdcall CombineRgn(void* hrgnDest, void* hrgnSrc1, void* hrgnSrc2,
-                                    int fnCombineMode);
-
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
@@ -55,12 +52,12 @@ void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short style
 
 // FUNCTION: IMPERIALISM 0x00495a30
 void SnapshotHitRegionToClipCache(int* clipDescriptor) {
-  void** clipRegionHandle =
-      reinterpret_cast<void**>(g_pGlobalClipRegionHandleObject + 4);
+  HRGN* clipRegionHandle =
+      reinterpret_cast<HRGN*>(g_pGlobalClipRegionHandleObject + 4);
   int descriptorHead = *clipDescriptor;
   if (descriptorHead + 0x14 == 0) {
-    CombineRgn(*clipRegionHandle, 0, 0, 5);
+    CombineRgn(*clipRegionHandle, nullptr, nullptr, 5);
     return;
   }
-  CombineRgn(*clipRegionHandle, *reinterpret_cast<void**>(descriptorHead + 0x18), 0, 5);
+  CombineRgn(*clipRegionHandle, *reinterpret_cast<HRGN*>(descriptorHead + 0x18), nullptr, 5);
 }

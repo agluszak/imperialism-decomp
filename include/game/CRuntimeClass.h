@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "decomp_types.h"
 
 struct CArchive;

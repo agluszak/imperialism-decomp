@@ -18,7 +18,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00662fe0
-CRuntimeClass g_pClassDescTRailAmtBar = {0};
+CRuntimeClass g_pClassDescTRailAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x00589ed0

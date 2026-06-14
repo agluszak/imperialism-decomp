@@ -13,7 +13,7 @@ void __stdcall NoOpForeignMinisterUtilityStub(int);
 #endif
 
 extern "C" {
-CRuntimeClass g_pClassDescTMinister = {0};
+CRuntimeClass g_pClassDescTMinister = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;

@@ -6,7 +6,7 @@
 #endif
 
 extern "C" {
-CRuntimeClass g_pClassDescTSortedPtrList = {0};
+CRuntimeClass g_pClassDescTSortedPtrList = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM TODO

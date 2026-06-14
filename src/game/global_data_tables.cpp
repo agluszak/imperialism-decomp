@@ -39,10 +39,10 @@ char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 int g_McAppUiFlag_006A143C = 0;
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
 // symbol name, so the zero-initialized contents are irrelevant to matching.
-CRuntimeClass PTR_s_TEventHandler_00649588 = {0};
+CRuntimeClass PTR_s_TEventHandler_00649588 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x006495a0
-CRuntimeClass PTR_s_TView_006495a0 = {0};
-CRuntimeClass PTR_s_TControl_00649600 = {0};
+CRuntimeClass PTR_s_TView_006495a0 = {nullptr, 0, 0, nullptr, nullptr};
+CRuntimeClass PTR_s_TControl_00649600 = {nullptr, 0, 0, nullptr, nullptr};
 char LAB_00409a9d = 0;
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
@@ -205,7 +205,7 @@ ApplicationUiRootController* g_pApplicationUiRootController = 0;
 extern "C" char g_pClassDescTBehavior = 0;
 
 // GLOBAL: IMPERIALISM 0x00648af8
-extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {0};
+extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {nullptr, 0, 0, nullptr, nullptr};
 
 // GLOBAL: IMPERIALISM 0x006a44b0
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;

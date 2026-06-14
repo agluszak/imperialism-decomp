@@ -6,7 +6,7 @@
 #endif
 
 extern "C" {
-CRuntimeClass g_pClassDescTProvinceDesirabilityList = {0};
+CRuntimeClass g_pClassDescTProvinceDesirabilityList = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x004d6500

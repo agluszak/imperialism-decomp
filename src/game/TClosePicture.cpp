@@ -4,7 +4,7 @@
 namespace {
 
 // GLOBAL: IMPERIALISM 0x662f38
-extern "C" CRuntimeClass g_pClassDescTClosePicture = {0};
+extern "C" CRuntimeClass g_pClassDescTClosePicture = {nullptr, 0, 0, nullptr, nullptr};
 
 } // namespace
 

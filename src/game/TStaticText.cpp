@@ -7,7 +7,7 @@
 #include "game/win_rect.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
-CRuntimeClass g_pClassDescTStaticText = {0};
+CRuntimeClass g_pClassDescTStaticText = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x0048F710
 void* __cdecl CreateTStaticTextInstance(void) {

@@ -16,7 +16,7 @@
 #include "game/CRuntimeClass.h"
 
 extern "C" {
-CRuntimeClass g_pClassDescTCityBarCluster = {0};
+CRuntimeClass g_pClassDescTCityBarCluster = {nullptr, 0, 0, nullptr, nullptr};
 char g_vtblTCityBarCluster = 0;
 }
 

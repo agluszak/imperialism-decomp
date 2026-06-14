@@ -38,5 +38,5 @@ static __inline void BlitQuickDrawSurfaces(TQuickDrawBlitSurface* srcSurface,
                                            TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
                                            RECT* dstRect, unsigned char blitFlags) {
   reinterpret_cast<void(__cdecl*)(void*, void*, RECT*, RECT*, int, int)>(
-      BlitRectWithOptionalTransparency)(srcSurface, dstSurface, srcRect, dstRect, (int)blitFlags, 0);
+      reinterpret_cast<void(*)()>(BlitRectWithOptionalTransparency))(srcSurface, dstSurface, srcRect, dstRect, (int)blitFlags, 0);
 }

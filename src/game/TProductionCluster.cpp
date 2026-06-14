@@ -20,7 +20,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00662f20
-CRuntimeClass g_pClassDescTProductionCluster = {0};
+CRuntimeClass g_pClassDescTProductionCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 undefined4 thunk_DispatchPanelControlEvent(void);

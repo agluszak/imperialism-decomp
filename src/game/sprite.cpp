@@ -133,7 +133,7 @@ int* Sprite__CollectNonTransparentPixels(void* this_obj, uint this_ptr) {
   header_ptr = *(int*)(header_ptr + 8);
   bit_row = 0;
   this_ptr = 0;
-  scan_offset = (int)(width + 0x1f + (width + 0x1f >> 0x1f & 0x1fU)) >> 5;
+  scan_offset = (int)(width + 0x1f + ((width + 0x1f) >> 0x1f & 0x1fU)) >> 5;
   row_stride = *(int*)((int)this_obj + 0xc);
   col_idx = scan_offset * 0x20;
   row_idx = row_stride;

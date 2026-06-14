@@ -1,14 +1,10 @@
+#include <string.h>
 #include "game/CMapPtrToPtr.h"
 
 // MFC collection code was compiled favor-size in the original.
 #if defined(_MSC_VER)
 #pragma optimize("ys", on)
 #endif
-
-// The original clears the bucket array with a real `call memset` (the project's
-// owned memset at 0x5e9a90), not the inlined rep-stosd intrinsic; use the repo
-// thunk form + a typed callsite cast so it links/pairs against that symbol.
-undefined4 memset(void);
 
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
@@ -23,7 +19,7 @@ void CMapPtrToPtr::InitHashTable(unsigned int nHashSize, int bAllocNow) {
   }
   if (bAllocNow != 0) {
     m_pHashTable = reinterpret_cast<CAssoc**>(AllocateWithFallbackHandler(nHashSize << 2));
-    reinterpret_cast<void(__cdecl*)(void*, int, int)>(::memset)(m_pHashTable, 0, nHashSize << 2);
+    memset(m_pHashTable, 0, nHashSize << 2);
   }
   m_nHashTableSize = nHashSize;
 }

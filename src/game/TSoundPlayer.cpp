@@ -10,7 +10,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00668a18
-CRuntimeClass g_pClassDescTSoundPlayer = {0};
+CRuntimeClass g_pClassDescTSoundPlayer = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;

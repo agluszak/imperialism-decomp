@@ -17,7 +17,7 @@
 
 #pragma optimize("y", on)
 
-extern "C" CRuntimeClass g_pClassDescTShipAmtBar = {0};
+extern "C" CRuntimeClass g_pClassDescTShipAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x0058aaa0
 TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {

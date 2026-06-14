@@ -6,7 +6,7 @@
 #endif
 
 extern "C" {
-CRuntimeClass g_pClassDescTSortByPriceList = {0};
+CRuntimeClass g_pClassDescTSortByPriceList = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x00534680

@@ -2,7 +2,7 @@
 #include "game/generated/vcall_facades.h"
 #include "game/CRuntimeClass.h"
 
-CRuntimeClass g_pClassDescTCivilianButton = {0};
+CRuntimeClass g_pClassDescTCivilianButton = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x0058b340
 void* __cdecl CreateTCivilianButtonInstance(void) {

@@ -1,7 +1,7 @@
 #include "game/TPlacard.h"
 #include "game/CRuntimeClass.h"
 
-CRuntimeClass g_pClassDescTPlacard = {0};
+CRuntimeClass g_pClassDescTPlacard = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x0058b960
 void* __cdecl CreateTPlacardInstance(void) {

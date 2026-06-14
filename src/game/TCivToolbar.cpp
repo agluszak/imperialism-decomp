@@ -16,10 +16,10 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663100
-CRuntimeClass g_pClassDescTCivToolbar = {0};
+CRuntimeClass g_pClassDescTCivToolbar = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
+
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 #define GAME_ASSERT(cond, line)                                                                    \
@@ -196,8 +196,8 @@ void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass,
 
   TSelectedCivilianOrderState* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
   if (eventClass == 0xc) {
-    if ((kTagStackSlotMin <= eventPayload->controlTag) &&
-        (eventPayload->controlTag <= kTagStackSlotMax)) {
+    if ((kTagStackSlotMin <= static_cast<unsigned int>(eventPayload->controlTag)) &&
+        (static_cast<unsigned int>(eventPayload->controlTag) <= kTagStackSlotMax)) {
       selectedCivilianOrderState->SetActiveCivilianSelection(eventPayload->selectedEntryContext, 0);
       this->DispatchPanelControlEvent(0xc, eventPayload, eventFlags);
       return;

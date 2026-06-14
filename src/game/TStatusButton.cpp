@@ -3,7 +3,7 @@
 #include "game/TAmtBar.h"
 #include "game/CRuntimeClass.h"
 
-CRuntimeClass g_pClassDescTStatusButton = {0};
+CRuntimeClass g_pClassDescTStatusButton = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x00586330
 TStatusButton::TStatusButton() : TButton() {}

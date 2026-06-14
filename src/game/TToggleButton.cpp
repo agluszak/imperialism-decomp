@@ -4,7 +4,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e598
-CRuntimeClass g_pClassDescTToggleButton = {0};
+CRuntimeClass g_pClassDescTToggleButton = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);

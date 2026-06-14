@@ -23,7 +23,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00662fb0
-CRuntimeClass g_pClassDescTIndustryAmtBar = {0};
+CRuntimeClass g_pClassDescTIndustryAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x00589110

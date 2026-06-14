@@ -9,7 +9,7 @@
 #include <new>
 #include "game/CRuntimeClass.h"
 
-CRuntimeClass g_pClassDescTHQButton = {0};
+CRuntimeClass g_pClassDescTHQButton = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x0058b5c0
 void* __cdecl CreateTHQButtonInstance(void) {

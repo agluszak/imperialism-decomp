@@ -6,6 +6,8 @@
 struct CRuntimeClass;
 class TUnitToolbarCluster : public TUberCluster {
 public:
+  using TUberCluster::DispatchEvent;
+
   TUnitToolbarCluster();
   CRuntimeClass* GetRuntimeClass() override;
 

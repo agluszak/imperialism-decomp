@@ -13,7 +13,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663118
-CRuntimeClass g_pClassDescTCivDescription = {0};
+CRuntimeClass g_pClassDescTCivDescription = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 extern "C" void* g_apTerrainTypeDescriptorTable[];
@@ -66,9 +66,6 @@ struct CivilianClassCacheContext {
   short targetTileCountsBySlot[5];
   unsigned char pad_6e_to_6f[0x02];
 };
-
-extern "C" __declspec(dllimport) int __stdcall PtInRect(const struct Rect32* rect,
-                                                        struct Point32 point);
 
 class ProvinceCollectionVirtualShape {
 public:
@@ -186,7 +183,7 @@ void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int ar
   int slotIndex = 0;
 
   do {
-    if (PtInRect(legendRect, *point) != 0) {
+    if (PtInRect(reinterpret_cast<const RECT*>(legendRect), *reinterpret_cast<POINT*>(point)) != 0) {
       ProvinceCollectionVirtualShape* ownerNationProvinceCollection =
           *reinterpret_cast<ProvinceCollectionVirtualShape**>(
               *reinterpret_cast<int*>(reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable) +

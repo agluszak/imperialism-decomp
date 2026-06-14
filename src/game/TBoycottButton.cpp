@@ -7,7 +7,7 @@ void FreeHeapBufferIfNotNull(unsigned int ptr_value);
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x662e60
-CRuntimeClass g_pClassDescTBoycottButton = {0};
+CRuntimeClass g_pClassDescTBoycottButton = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x005846e0

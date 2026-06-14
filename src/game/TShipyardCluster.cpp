@@ -16,7 +16,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00662ff8
-CRuntimeClass g_pClassDescTShipyardCluster = {0};
+CRuntimeClass g_pClassDescTShipyardCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 undefined4 thunk_InvalidateCityDialogRectRegion(void);

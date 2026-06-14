@@ -14,16 +14,7 @@
 #include "game/mcappui_globals.h"
 #include "game/generated/vcall_facades.h"
 
-extern "C" int __stdcall ValidateRect(void* hWnd, const RECT* rect);
-extern "C" __declspec(dllimport) int __stdcall UpdateWindow(void* hWnd);
-extern "C" int __stdcall Rectangle(void* hdc, int left, int top, int right, int bottom);
-extern "C" __declspec(dllimport) int __stdcall PtInRect(const RECT* rect, Point32 pt);
-extern "C" __declspec(dllimport) int __stdcall UnionRect(RECT* dest, const RECT* src1,
-                                                         const RECT* src2);
-extern "C" __declspec(dllimport) int __stdcall InvalidateRect(void* hWnd, const RECT* rect,
-                                                              int erase);
-extern "C" __declspec(dllimport) int __stdcall EqualRect(const RECT* rect1,
-                                                         const RECT* rect2);
+
 
 // Generic thunk/hook decls kept in repo form (rule 9): typed function-pointer casts at
 // the callsite rather than changing the thunk declaration signature.
@@ -139,7 +130,7 @@ void TView::HandleCursorHoverFallback(Point32* point, int hitArg) {
 // FUNCTION: IMPERIALISM 0x0048afd0
 class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
   TView* match = 0;
-  if (controlTag != this->controlTag && childList44 != 0) {
+  if (controlTag != static_cast<unsigned int>(this->controlTag) && childList44 != 0) {
     CPtrListNode* node = childList44->headNode;
     while (true) {
       if (node == 0) {
@@ -148,7 +139,7 @@ class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
       }
       match = reinterpret_cast<TView*>(node->data);
       node = node->next;
-      if (controlTag == match->controlTag) {
+      if (controlTag == static_cast<unsigned int>(match->controlTag)) {
         break;
       }
     }
@@ -298,7 +289,7 @@ void TView::ForwardMapViewVirtualC4IfPresent(int param) {
 // FUNCTION: IMPERIALISM 0x0048b690
 void TView::ValidateControlRectIfWindowActive(RECT* rect) {
   if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
-    ValidateRect(nativeWindow50->hwnd, rect);
+    ValidateRect(reinterpret_cast<HWND>(nativeWindow50->hwnd), rect);
   }
 }
 
@@ -408,7 +399,7 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {
     RECT unionRect;
     UnionRect(&unionRect, &newRect, &oldRect);
     if (g_McAppUiActiveFlag_006950AC != 0) {
-      InvalidateRect(nativeWindow50->hwnd, &unionRect, 0);
+      InvalidateRect(reinterpret_cast<HWND>(nativeWindow50->hwnd), &unionRect, 0);
     }
   } else {
     field34 = buffer[0];
@@ -419,7 +410,8 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {
 // FUNCTION: IMPERIALISM 0x0048b770
 char TView::Refresh() {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
-    reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetGlobalQuickDrawOrigin)(
+    reinterpret_cast<void(__cdecl*)(short, short)>(
+        reinterpret_cast<void(*)()>(thunk_SetGlobalQuickDrawOrigin))(
         static_cast<short>(field2c), static_cast<short>(field30));
     g_McAppUiActiveRenderContext_006A1AF4 = this;
   }
@@ -429,12 +421,14 @@ char TView::Refresh() {
 void TView::PostRenderSlotFC() {}
 // FUNCTION: IMPERIALISM 0x0048b7b0
 int TView::BindMapQuickDrawDc(int arg) {
-  return reinterpret_cast<int(__cdecl*)(TView*, int)>(BindScopedMapQuickDrawDcHandle)(this, arg);
+  return reinterpret_cast<int(__cdecl*)(TView*, int)>(
+      reinterpret_cast<void(*)()>(BindScopedMapQuickDrawDcHandle))(this, arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b7e0
 void TView::ReleaseMapQuickDrawDc(int arg) {
-  reinterpret_cast<void(__cdecl*)(TView*, int)>(ReleaseScopedMapQuickDrawDcHandle)(this, arg);
+  reinterpret_cast<void(__cdecl*)(TView*, int)>(
+      reinterpret_cast<void(*)()>(ReleaseScopedMapQuickDrawDcHandle))(this, arg);
 }
 // Lazily allocate the 8-byte auxiliary buffer stored at field48 (freed in the dtor).
 // FUNCTION: IMPERIALISM 0x0048b810
@@ -496,7 +490,7 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
     DispatchVslot134WithRectAndRectPlus8_Impl(&localRect);
   }
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRect(nativeWindow50->hwnd, &localRect, 0);
+    InvalidateRect(reinterpret_cast<HWND>(nativeWindow50->hwnd), &localRect, 0);
   }
 }
 // FUNCTION: IMPERIALISM 0x0048c1c0
@@ -553,7 +547,7 @@ void TView::InvokeSlot13C() {
   if (g_McAppUiUpdateWindowRecursionGuard_006A1AF0 == 0) {
     g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 1;
     if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
-      UpdateWindow(nativeWindow50->hwnd);
+      UpdateWindow(reinterpret_cast<HWND>(nativeWindow50->hwnd));
     }
     g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
   }
@@ -563,7 +557,8 @@ void TView::InvokeSlot13C() {
 void TView::RefreshCityProductionViewStateFromContext(int* clipRegionWrapper) {
   RECT rect;
   CopyRectFromBuildRectFromSlot158(&rect);
-  reinterpret_cast<void(__cdecl*)(int*, RECT*)>(ReplaceClipStateRegionHandleFromRect)(
+  reinterpret_cast<void(__cdecl*)(int*, RECT*)>(
+      reinterpret_cast<void(*)()>(ReplaceClipStateRegionHandleFromRect))(
       clipRegionWrapper, &rect);
 }
 
@@ -746,7 +741,7 @@ char TView::PointInBoundsAndActionable(Point32* point) {
   RECT bounds;
   QueryContentBounds(&bounds);
   if (IsActionable() != 0) {
-    Point32 p;
+    POINT p;
     p.x = point->x;
     p.y = point->y;
     if (PtInRect(&bounds, p) != 0) {
@@ -776,7 +771,8 @@ void TView::vmethod_0093(class TView* child) {
   }
   if (g_McAppUiFlag_006A1AE0 == 0) {
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x152);
+        reinterpret_cast<void(*)()>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(
+        g_szMcAppUiSourcePath_006950B0, 0x152);
   }
   goto tail;
 
@@ -853,7 +849,7 @@ unsigned short TView::GetField54() {
 char TView::TestPointInBounds(Point32* point) {
   RECT bounds;
   QueryContentBounds(&bounds);
-  Point32 p;
+  POINT p;
   p.x = point->x;
   p.y = point->y;
   return -(PtInRect(&bounds, p) != 0) & 3;
@@ -871,17 +867,19 @@ void TView::vmethod_0099(int arg1, int arg2) {}
 void TView::DrawRectangleInCurrentUiContext(int* rect) {
   if (g_McAppUiDrawGate_006A1AF8 == 0) {
     typedef void(__cdecl * UiInvalidationFlagThunk)(const char*, int);
-    reinterpret_cast<UiInvalidationFlagThunk>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+    reinterpret_cast<UiInvalidationFlagThunk>(
+        reinterpret_cast<void(*)()>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(
         g_szMcAppUiSourcePath_006950B0, 0x772);
   }
   int context = NoOpQuickDrawContextSelectionHook();
-  Rectangle(*reinterpret_cast<void**>(context + 4), rect[0], rect[1], rect[2], rect[3]);
+  Rectangle(reinterpret_cast<HDC>(*reinterpret_cast<void**>(context + 4)), rect[0], rect[1], rect[2], rect[3]);
 }
 // FUNCTION: IMPERIALISM 0x0048c7a0
 void TView::AssertMcAppUiLine1914() {
   if (g_McAppUiFlag_006A1AFC == 0) {
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x77a);
+        reinterpret_cast<void(*)()>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(
+        g_szMcAppUiSourcePath_006950B0, 0x77a);
   }
 }
 
@@ -889,7 +887,8 @@ void TView::AssertMcAppUiLine1914() {
 void TView::AssertMcAppUiLine1922() {
   if (g_McAppUiFlag_006A1B00 == 0) {
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x782);
+        reinterpret_cast<void(*)()>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(
+        g_szMcAppUiSourcePath_006950B0, 0x782);
   }
   RECT rectStorage;
   CopyRectFromBuildRectFromSlot158(&rectStorage);

@@ -6,7 +6,7 @@
 #endif
 
 extern "C" {
-CRuntimeClass g_pClassDescTSortedByRelationshipList = {0};
+CRuntimeClass g_pClassDescTSortedByRelationshipList = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x004ee4b0

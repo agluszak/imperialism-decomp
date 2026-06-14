@@ -19,21 +19,23 @@ undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
 
 static __inline void SetQuickDrawTextOrigin(short x, short y) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_SetQuickDrawTextOriginWithContextOffset)(x,
-                                                                                                y);
+  reinterpret_cast<void(__cdecl*)(short, short)>(
+      reinterpret_cast<void(*)()>(thunk_SetQuickDrawTextOriginWithContextOffset))(x, y);
 }
 
 static __inline void DrawCenteredGuideLine(short x, short y) {
-  reinterpret_cast<void(__cdecl*)(short, short)>(thunk_DrawCenteredGuideLineOnMapDc)(x, y);
+  reinterpret_cast<void(__cdecl*)(short, short)>(
+      reinterpret_cast<void(*)()>(thunk_DrawCenteredGuideLineOnMapDc))(x, y);
 }
 
 static __inline void SetQuickDrawStylePair(short styleA, short styleB) {
   reinterpret_cast<void(__cdecl*)(short, short)>(
-      thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty)(styleA, styleB);
+      reinterpret_cast<void(*)()>(thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty))(styleA, styleB);
 }
 
 static __inline void ApplyRectClipRegion(RECT* rectBuffer) {
-  reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_ApplyRectClipRegionToGlobalClipState)(rectBuffer);
+  reinterpret_cast<void(__cdecl*)(RECT*)>(
+      reinterpret_cast<void(*)()>(thunk_ApplyRectClipRegionToGlobalClipState))(rectBuffer);
 }
 
 // SetQuickDrawFillColor(int) is the real global at 0x495000, declared in
@@ -80,8 +82,8 @@ extern void FailNilPointerInUSmallViews(int line);
 // per-file wrappers (e.g. FailNilPointerInUSmallViews) forward through here.
 static __inline void FailNilPointerWithAssert(const char* sourcePath, int line) {
   GAME_FAIL_NIL_POINTER();
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_DestructTShipAndFreeIfOwned)(sourcePath,
-                                                                                        line);
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(
+      reinterpret_cast<void(*)()>(thunk_DestructTShipAndFreeIfOwned))(sourcePath, line);
 }
 
 struct CityTradeProductionSlots {

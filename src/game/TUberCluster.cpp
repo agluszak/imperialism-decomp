@@ -14,7 +14,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e5b0
-CRuntimeClass g_pClassDescTUberCluster = {0};
+CRuntimeClass g_pClassDescTUberCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 extern void FailNilPointerInUSmallViews(int line);

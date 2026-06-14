@@ -1,6 +1,6 @@
 #include "game/TArmyPlacard.h"
 
-CRuntimeClass g_pClassDescTArmyPlacard = {0};
+CRuntimeClass g_pClassDescTArmyPlacard = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x0058be30
 void* __cdecl CreateTArmyPlacardInstance(void) {

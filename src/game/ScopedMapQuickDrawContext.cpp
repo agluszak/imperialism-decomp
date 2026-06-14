@@ -4,9 +4,6 @@
 typedef void* hwnd_t;
 typedef void* hdc_t;
 
-extern "C" hdc_t __stdcall GetDC(hwnd_t hwnd);
-extern "C" int __stdcall ReleaseDC(hwnd_t hwnd, hdc_t hdc);
-extern "C" int __stdcall IntersectClipRect(hdc_t hdc, int left, int top, int right, int bottom);
 undefined4 FromHandle_612736(void);
 
 extern void* g_pScopedMapQuickDrawDcHandleObject;
@@ -41,7 +38,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(void* renderTargetArg)
     if (viewContext->nativeWindow50 == 0) {
       g_pScopedMapQuickDrawDcHandleObject = 0;
     } else {
-      GetDC(viewContext->nativeWindow50->hwnd);
+      GetDC(reinterpret_cast<HWND>(viewContext->nativeWindow50->hwnd));
       reinterpret_cast<void(__cdecl*)()>(FromHandle_612736)();
     }
   }
@@ -52,8 +49,8 @@ ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext() {
   if (this == 0) {
     TView* viewContext = this->renderTarget;
     ReleaseDC(
-        viewContext->nativeWindow50->hwnd,
-        *reinterpret_cast<hdc_t*>(reinterpret_cast<char*>(g_pScopedMapQuickDrawDcHandleObject) + 4));
+        reinterpret_cast<HWND>(viewContext->nativeWindow50->hwnd),
+        reinterpret_cast<HDC>(*reinterpret_cast<hdc_t*>(reinterpret_cast<char*>(g_pScopedMapQuickDrawDcHandleObject) + 4)));
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;
   g_pScopedMapQuickDrawViewContext = 0;
@@ -62,13 +59,13 @@ ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext() {
 // FUNCTION: IMPERIALISM 0x00612fd8
 int* ScopedMapQuickDrawContext::IntersectClipRectOnPrimaryAndSecondaryDc(int* clipRect) {
   if (clientDc.m_hDC != clientDc.m_hAttribDC) {
-    clipRect = reinterpret_cast<int*>(IntersectClipRect(reinterpret_cast<hdc_t>(clientDc.m_hDC),
+    clipRect = reinterpret_cast<int*>(IntersectClipRect(reinterpret_cast<HDC>(clientDc.m_hDC),
                                                         clipRect[0], clipRect[1], clipRect[2],
                                                         clipRect[3]));
   }
   if (clientDc.m_hAttribDC != 0) {
     clipRect = reinterpret_cast<int*>(IntersectClipRect(
-        reinterpret_cast<hdc_t>(clientDc.m_hAttribDC), clipRect[0], clipRect[1], clipRect[2],
+        reinterpret_cast<HDC>(clientDc.m_hAttribDC), clipRect[0], clipRect[1], clipRect[2],
         clipRect[3]));
   }
   return clipRect;

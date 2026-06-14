@@ -17,13 +17,13 @@ namespace {
 
 // CDataExchange::PrepareCtrl(nIDC) -> HWND of the control (thiscall).
 inline HWND PrepareDdxControl(CDataExchange* pDX, undefined4 nIDC) {
-  return reinterpret_cast<HWND(__fastcall*)(CDataExchange*, int, undefined4)>(::PrepareCtrl)(pDX, 0,
-                                                                                             nIDC);
+  return reinterpret_cast<HWND(__fastcall*)(CDataExchange*, int, undefined4)>(
+      reinterpret_cast<void(*)()>(::PrepareCtrl))(pDX, 0, nIDC);
 }
 
 // CString::Empty() (thiscall).
 inline void StringEmpty(CString* value) {
-  reinterpret_cast<void(__fastcall*)(CString*)>(::Empty)(value);
+  reinterpret_cast<void(__fastcall*)(CString*)>(reinterpret_cast<void(*)()>(::Empty))(value);
 }
 
 } // namespace

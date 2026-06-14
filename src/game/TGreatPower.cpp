@@ -1091,53 +1091,54 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
 // FUNCTION: IMPERIALISM 0x004da8a0
 #pragma optimize("y", on)
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
-  char flag5Handled = static_cast<signed char>(this->serializedStatusFlags[5]) >= 0x33;
+  unsigned char* flags = this->serializedStatusFlags;
+  char flag5Handled = static_cast<signed char>(flags[5]) >= 0x33;
   if (!flag5Handled &&
       CityOrderCapabilityState()->orderCapRows277[this->nationSlot].flag == 2) {
-    this->serializedStatusFlags[5] = 0x33;
+    flags[5] = 0x33;
   }
-  if (this->serializedStatusFlags[6] == 0x32) {
-    this->serializedStatusFlags[6] = 0x33;
+  if (flags[6] == 0x32) {
+    flags[6] = 0x33;
   }
-  if (this->serializedStatusFlags[7] == 0x32) {
+  if (flags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
-      this->serializedStatusFlags[7] = 0x33;
+      flags[7] = 0x33;
     } else if (this->field8d6[7] == 3) {
-      this->serializedStatusFlags[7] = 0x34;
+      flags[7] = 0x34;
       this->field8d6[7] = -1;
     }
   }
-  if (this->serializedStatusFlags[8] == 0x32) {
-    this->serializedStatusFlags[8] = 0x33;
+  if (flags[8] == 0x32) {
+    flags[8] = 0x33;
   }
-  if (this->serializedStatusFlags[9] == 0x32) {
-    this->serializedStatusFlags[9] = 0x33;
+  if (flags[9] == 0x32) {
+    flags[9] = 0x33;
   }
-  if (this->serializedStatusFlags[10] == 0x32) {
-    this->serializedStatusFlags[10] = 0x33;
+  if (flags[10] == 0x32) {
+    flags[10] = 0x33;
   }
-  if (this->serializedStatusFlags[11] == 0x32) {
-    this->serializedStatusFlags[11] = 0x33;
+  if (flags[11] == 0x32) {
+    flags[11] = 0x33;
   }
-  if (this->serializedStatusFlags[12] == 0x32) {
-    this->serializedStatusFlags[12] = 0x33;
+  if (flags[12] == 0x32) {
+    flags[12] = 0x33;
   }
-  if (this->serializedStatusFlags[0] == 0x32) {
-    this->serializedStatusFlags[0] =
+  if (flags[0] == 0x32) {
+    flags[0] =
         static_cast<unsigned char>(*reinterpret_cast<char*>(&this->field8d6[0]) + 0x33);
   }
-  if (this->serializedStatusFlags[1] == 0x32) {
-    this->serializedStatusFlags[1] =
+  if (flags[1] == 0x32) {
+    flags[1] =
         static_cast<unsigned char>(*reinterpret_cast<char*>(&this->field8d6[1]) + 0x33);
   }
-  if (this->serializedStatusFlags[2] == 0x32) {
-    this->serializedStatusFlags[2] = 0x33;
+  if (flags[2] == 0x32) {
+    flags[2] = 0x33;
   }
-  if (this->serializedStatusFlags[3] == 0x32) {
-    this->serializedStatusFlags[3] = 0;
+  if (flags[3] == 0x32) {
+    flags[3] = 0;
   }
-  if (this->serializedStatusFlags[4] == 0x32) {
-    this->serializedStatusFlags[4] = 0;
+  if (flags[4] == 0x32) {
+    flags[4] = 0;
   }
 }
 #pragma optimize("", on)
@@ -1151,15 +1152,16 @@ static __inline void UiRuntime_QueueTurnStatusPrompt(int promptIndex, int payloa
 // FUNCTION: IMPERIALISM 0x004da5e0
 #pragma optimize("y", on)
 void TGreatPower::DispatchPendingStatusPrompts(void) {
-  char flag5Handled = static_cast<signed char>(this->serializedStatusFlags[5]) >= 0x33;
+  unsigned char* flags = this->serializedStatusFlags;
+  char flag5Handled = static_cast<signed char>(flags[5]) >= 0x33;
   if (!flag5Handled &&
       CityOrderCapabilityState()->orderCapRows277[this->nationSlot].flag == 2) {
     UiRuntime_QueueTurnStatusPrompt(5, this->field8d6[5]);
   }
-  if (this->serializedStatusFlags[6] == 0x32) {
+  if (flags[6] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(6, this->field8d6[6]);
   }
-  if (this->serializedStatusFlags[7] == 0x32) {
+  if (flags[7] == 0x32) {
     if (this->field8d6[7] == 2) {
       TCity* cityPtr = this->city;
       cityPtr->fieldB6[10] = cityPtr->fieldB6[10] + 10;
@@ -1172,34 +1174,34 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
       UiRuntime_QueueTurnStatusPrompt(7, -1);
     }
   }
-  if (this->serializedStatusFlags[8] == 0x32) {
+  if (flags[8] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(8, this->field8d6[8]);
   }
-  if (this->serializedStatusFlags[9] == 0x32) {
+  if (flags[9] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(9, this->field8d6[9]);
   }
-  if (this->serializedStatusFlags[10] == 0x32) {
+  if (flags[10] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(10, this->field8d6[10]);
   }
-  if (this->serializedStatusFlags[11] == 0x32) {
+  if (flags[11] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(11, this->field8d6[11]);
   }
-  if (this->serializedStatusFlags[12] == 0x32) {
+  if (flags[12] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(12, this->field8d6[12]);
   }
-  if (this->serializedStatusFlags[0] == 0x32) {
+  if (flags[0] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(0, CityOrderActiveZoneIndex());
   }
-  if (this->serializedStatusFlags[1] == 0x32) {
+  if (flags[1] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(1, this->field8d6[1]);
   }
-  if (this->serializedStatusFlags[2] == 0x32) {
+  if (flags[2] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(2, this->field8d6[2]);
   }
-  if (this->serializedStatusFlags[3] == 0x32) {
+  if (flags[3] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(3, this->field8d6[3]);
   }
-  if (this->serializedStatusFlags[4] == 0x32) {
+  if (flags[4] == 0x32) {
     UiRuntime_QueueTurnStatusPrompt(4, this->field8d6[4]);
   }
 }

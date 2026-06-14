@@ -3,7 +3,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e568
-CRuntimeClass g_pClassDescT2PictureButton = {0};
+CRuntimeClass g_pClassDescT2PictureButton = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);

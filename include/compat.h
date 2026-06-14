@@ -16,9 +16,10 @@
 
 // We use `override` so newer compilers can tell us our vtables are valid,
 // however this keyword was added in C++11, so we define it as empty for
-// compatibility with older compilers.
+// compatibility with older compilers. Also define `nullptr` as `0`.
 #if __cplusplus < 201103L
 #define override
+#define nullptr 0
 
 // Pre-C++11 `static_assert` polyfill. C++11's static_assert does not exist on
 // MSVC 5.0, so emulate it with the classic negative-size-array trick: a failing

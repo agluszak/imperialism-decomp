@@ -3,7 +3,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663130
-CRuntimeClass g_pClassDescTCivReport = {0};
+CRuntimeClass g_pClassDescTCivReport = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x00590b90

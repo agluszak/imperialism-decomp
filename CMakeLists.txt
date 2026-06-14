@@ -113,6 +113,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         # MSVC code path (VARARGS / __buildmemorybarrier errors).
         -fms-extensions
         -Wno-unknown-pragmas
+        -Wno-ignored-pragmas
         # Core diagnostics.
         -Wall
         -Wextra
@@ -123,6 +124,20 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         -Wno-unused-parameter
         -Wno-unused-variable
         -Wno-unused-function
+        -Wno-cast-function-type
+        -Wno-cast-calling-convention
+        -Wno-invalid-offsetof
+        -Wno-tautological-undefined-compare
+        -Wno-missing-braces
+        -Wno-missing-field-initializers
+        -Wno-unused-private-field
+        -Wno-inconsistent-missing-override
+        -Wno-undefined-internal
+        -Wno-deprecated-register
+        -Wno-microsoft-explicit-constructor-call
+        -Wno-array-bounds
+        -Wno-switch
+        -Wno-mismatched-tags
     )
 
     if(IMPERIALISM_LINT_WERROR)

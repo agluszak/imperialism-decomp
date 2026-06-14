@@ -1,5 +1,7 @@
 #pragma once
 
+#include "compat.h"
+
 typedef unsigned char byte;
 typedef unsigned char undefined;
 typedef unsigned short undefined2;

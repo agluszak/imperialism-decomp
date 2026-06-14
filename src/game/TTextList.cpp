@@ -13,7 +13,7 @@
 #endif
 
 extern "C" {
-CRuntimeClass g_pClassDescTTextList = {0};
+CRuntimeClass g_pClassDescTTextList = {nullptr, 0, 0, nullptr, nullptr};
 char g_vtblTTextList = 0;
 }
 

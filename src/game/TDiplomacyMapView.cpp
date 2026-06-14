@@ -18,8 +18,7 @@
 #pragma optimize("y", on)
 #endif
 
-extern "C" int __stdcall PtInRect(const RECT* rect, Point32 point);
-extern "C" void* __stdcall SetCursor(void* hCursor);
+
 
 #define DUMMY_VIRTUAL(n) virtual void Dummy##n() = 0;
 
@@ -632,7 +631,7 @@ void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(P
   }
 
   if (applyCursor) {
-    SetCursor(hCursor);
+    SetCursor(reinterpret_cast<HCURSOR>(hCursor));
   }
 
   reinterpret_cast<void(__fastcall*)(void*, int, void*, void*)>(
@@ -655,7 +654,7 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Poin
         reinterpret_cast<void*>(kAddrResolveDiplomacyActionValue));
   }
 
-  if (PtInRect(reinterpret_cast<RECT*>(kAddrDiplomacyHitBounds), *clickPoint) == 0) {
+  if (PtInRect(reinterpret_cast<const RECT*>(kAddrDiplomacyHitBounds), *reinterpret_cast<const POINT*>(clickPoint)) == 0) {
     return 0;
   }
   if (*reinterpret_cast<int*>(self + 0x94) == 5) {

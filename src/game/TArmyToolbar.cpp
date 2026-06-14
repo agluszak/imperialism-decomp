@@ -6,8 +6,6 @@
 
 #include <new>
 
-extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
-
 #include "game/TView.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);

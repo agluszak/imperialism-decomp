@@ -26,7 +26,7 @@ bool CDC::AttachOutput(int hdc) {
     return false;
   }
   CMapPtrToPtr* hdcMap =
-      reinterpret_cast<CMapPtrToPtr*>(reinterpret_cast<void*(__cdecl*)()>(afxMapHDC)());
+      reinterpret_cast<CMapPtrToPtr*>(reinterpret_cast<void*(__cdecl*)()>(reinterpret_cast<void(*)()>(afxMapHDC))());
   m_hDC = hdc;
   m_hAttribDC = hdc;
   void** valueSlot = hdcMap->GetOrCreateValueSlot(reinterpret_cast<void*>(hdc));
@@ -39,7 +39,7 @@ bool CDC::AttachOutput(int hdc) {
 void CDC::DetachOutput() {
   if (m_hDC != 0) {
     CMapPtrToPtr* hdcMap =
-      reinterpret_cast<CMapPtrToPtr*>(reinterpret_cast<void*(__cdecl*)()>(afxMapHDC)());
+      reinterpret_cast<CMapPtrToPtr*>(reinterpret_cast<void*(__cdecl*)()>(reinterpret_cast<void(*)()>(afxMapHDC))());
     if (hdcMap != 0) {
       hdcMap->RemoveKey(reinterpret_cast<void*>(m_hDC));
     }

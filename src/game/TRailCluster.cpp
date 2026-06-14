@@ -19,7 +19,7 @@
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00662fc8
-CRuntimeClass g_pClassDescTRailCluster = {0};
+CRuntimeClass g_pClassDescTRailCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 undefined4 thunk_InvalidateCityDialogRectRegion(void);

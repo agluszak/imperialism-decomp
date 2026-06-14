@@ -1,7 +1,7 @@
 #include "game/TCombatReportView.h"
 #include "game/CRuntimeClass.h"
 
-CRuntimeClass g_pClassDescTCombatReportView = {0};
+CRuntimeClass g_pClassDescTCombatReportView = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x0058c830
 void* __cdecl CreateTCombatReportViewInstance(void) {

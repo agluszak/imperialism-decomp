@@ -6,7 +6,6 @@
 #include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
 
-extern "C" short __stdcall GetAsyncKeyState(int virtual_key_code);
 extern "C" long _ftol(void);
 
 undefined4 thunk_NormalizeWrappedMapCoord108x60(void);

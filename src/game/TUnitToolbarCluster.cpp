@@ -16,7 +16,7 @@
 #include <new>
 
 extern "C" {
-CRuntimeClass g_pClassDescTUnitToolbarCluster = {0};
+CRuntimeClass g_pClassDescTUnitToolbarCluster = {nullptr, 0, 0, nullptr, nullptr};
 char g_vtblTUnitToolbarCluster = 0;
 }
 
