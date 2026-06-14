@@ -1019,14 +1019,6 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760
-// ghidra_proto undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760()
-// FUNCTION: IMPERIALISM 0x00435760
-undefined4 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTurnEventDialogUiByCode
 // ghidra_proto int * __fastcall BuildTurnEventDialogUiByCode(int nContextSlot, int nEventCode)
 // FUNCTION: IMPERIALISM 0x004357b0

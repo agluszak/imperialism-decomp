@@ -13,6 +13,7 @@
 #include "game/TView.h"
 #include "game/ApplicationUiRootController.h"
 #include "game/mcappui_globals.h"
+#include <string.h>
 
 extern "C" {
 extern CRuntimeClass PTR_s_TEventHandler_00649588;
@@ -119,7 +120,11 @@ void* TEventHandler::CloneEngineerDialogStateToNewInstance() {
   return header;
 }
 
-// Shared vtable slot 0x09 body (also referenced from TZone vtable).
+// Shared vtable slot 0x09 body (also referenced from TZone vtable). Creates a new object
+// of the same runtime class via CRuntimeClass::CreateObject, then memcpy's the payload
+// (m_nObjectSize bytes from `this`) into it. The original emits rep movsd / rep movsb
+// (memcpy intrinsic); the explicit GetRuntimeClass reload matches the redundant call in
+// the original prologue.
 // FUNCTION: IMPERIALISM 0x00415ce0
 void* TEventHandler::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   CRuntimeClass* runtimeClass = GetRuntimeClass();
@@ -129,23 +134,7 @@ void* TEventHandler::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   if (destObject == 0) {
     return 0;
   }
-  unsigned int* destCursor = reinterpret_cast<unsigned int*>(destObject);
-  unsigned int* sourceCursor = reinterpret_cast<unsigned int*>(this);
-  unsigned int dwordCount = payloadSize >> 2;
-  unsigned int byteRemainder = payloadSize & 3;
-  unsigned int dwordIndex;
-  for (dwordIndex = dwordCount; dwordIndex != 0; dwordIndex = dwordIndex - 1) {
-    *destCursor = *sourceCursor;
-    sourceCursor = sourceCursor + 1;
-    destCursor = destCursor + 1;
-  }
-  unsigned char* destByteCursor = reinterpret_cast<unsigned char*>(destCursor);
-  unsigned char* sourceByteCursor = reinterpret_cast<unsigned char*>(sourceCursor);
-  for (; byteRemainder != 0; byteRemainder = byteRemainder - 1) {
-    *destByteCursor = *sourceByteCursor;
-    sourceByteCursor = sourceByteCursor + 1;
-    destByteCursor = destByteCursor + 1;
-  }
+  memcpy(destObject, this, payloadSize);
   return destObject;
 }
 

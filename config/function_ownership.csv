@@ -66,6 +66,7 @@ address|target_cpp|ownership|note
 430bd0|src/game/TView.cpp|manual|marker_sync
 430bf0|src/game/noop_slots.cpp|manual|marker_sync
 430c10|src/game/noop_slots.cpp|manual|marker_sync
+435760|src/game/TControl.cpp|manual|marker_sync
 43d9f0|src/game/noop_slots.cpp|manual|marker_sync
 45acb0|src/game/noop_slots.cpp|manual|marker_sync
 45ada0|src/game/noop_slots.cpp|manual|marker_sync
@@ -104,7 +105,9 @@ address|target_cpp|ownership|note
 4867e0|src/game/ApplicationUiRootController.cpp|manual|marker_sync
 486880|src/game/ApplicationUiRootController.cpp|manual|marker_sync
 4868a0|src/game/ApplicationUiRootController.cpp|manual|marker_sync
-486990|src/game/noop_slots.cpp|manual|marker_sync
+486990|src/game/ApplicationUiRootController.cpp|manual|marker_sync
+4869b0|src/game/ApplicationUiRootController.cpp|manual|marker_sync
+486b10|src/game/ApplicationUiRootController.cpp|manual|marker_sync
 4871c0|src/game/ApplicationUiRootEmbeddedList.cpp|manual|marker_sync
 4872e0|src/game/noop_slots.cpp|manual|marker_sync
 487820|src/game/TCommand.cpp|manual|marker_sync

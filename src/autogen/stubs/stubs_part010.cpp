@@ -1851,22 +1851,6 @@ undefined4 InvokeAfxThreadAndCallSecondaryRefresh(void)
   return 0;
 }
 
-// ghidra_name Helper_Uses_AllocateAndLinkBlockHead_At004869b0
-// ghidra_proto undefined Helper_Uses_AllocateAndLinkBlockHead_At004869b0()
-// FUNCTION: IMPERIALISM 0x004869b0
-undefined4 Helper_Uses_AllocateAndLinkBlockHead_At004869b0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_GetTickCountDiv16_At00486b10
-// ghidra_proto undefined WrapperFor_thunk_GetTickCountDiv16_At00486b10()
-// FUNCTION: IMPERIALISM 0x00486b10
-undefined4 WrapperFor_thunk_GetTickCountDiv16_At00486b10(void)
-{
-  return 0;
-}
-
 // ghidra_name PostCustomMessageBC0ToMainWindow
 // ghidra_proto undefined PostCustomMessageBC0ToMainWindow()
 // FUNCTION: IMPERIALISM 0x00486b50

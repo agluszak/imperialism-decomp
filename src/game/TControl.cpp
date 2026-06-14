@@ -30,6 +30,15 @@ CRuntimeClass* TControl::GetRuntimeClass() {
   return &PTR_s_TControl_00649600;
 }
 
+// Slot 0x08 override (0x00435760): TControl cannot be cloned. The original asserts via
+// the McAppUI invalidation thunk (file header path, line 0x594) and returns null.
+// FUNCTION: IMPERIALISM 0x00435760
+void* TControl::CloneEngineerDialogStateToNewInstance() {
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x594);
+  return 0;
+}
+
 // Real ctor: the TView base ctor runs first (constructs the TView subobject +
 // its CString member), then MSVC writes this class's vptr (0x0064a098). Fields
 // are member-initializers so they emit in declaration order. No manual vtable

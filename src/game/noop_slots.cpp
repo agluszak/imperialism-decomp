@@ -1123,11 +1123,6 @@ void __stdcall ExecuteNoOpNewGameCommand(int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00486990
-void __stdcall HandleTurnEventViewportEdgeAutoScroll_Impl(int, int, int) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x00489490
 void DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void) {
   return;

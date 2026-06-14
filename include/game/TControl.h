@@ -22,6 +22,9 @@ public:
 
   TControl();
   virtual CRuntimeClass* GetRuntimeClass() override; // 0x00 0x48e500 (override)
+  // Slot 0x08 override (0x00435760): controls cannot be cloned (no engineer-dialog
+  // state); assert via the McAppUI invalidation thunk and return null.
+  virtual void* CloneEngineerDialogStateToNewInstance() override;
   void WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer);
   void InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper);
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
