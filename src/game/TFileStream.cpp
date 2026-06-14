@@ -42,6 +42,11 @@ TFileStream::TFileStream() {
   backingArchiveOrStream = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00489160
+void TFileStream::SetBackingArchive(void* backingArchive) {
+  backingArchiveOrStream = backingArchive;
+}
+
 // Destructors are compiler-generated (implicit) from real TStream inheritance.
 // SYNTHETIC: IMPERIALISM 0x00489130
 // TFileStream::`scalar deleting destructor'

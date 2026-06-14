@@ -3782,3 +3782,20 @@ Follow-up scan after the TClosePicture extraction:
   Stats unchanged for alignment/coverage (recomp-only -3 from deleting the helper
   bodies). `just compare-canaries` had `below_floor=0`; existing parse_error remains on
   0x005C2940.
+
+## 2026-06-14 (cont.) — TObject backbone and TEventHandler Serialize
+
+- **Timestamp:** 2026-06-14 15:29 CEST
+- **Command:** Add real `TObject : CObject` with slot-0 `GetRuntimeClass` at 0x485e20
+  and a synthetic scalar deleting destructor marker at 0x485f50; re-parent
+  `TEventHandler : TObject`; replace placeholder slots 2/3/4 with real MFC inheritance
+  (`TEventHandler::Serialize` override at 0x485e90, inherited CObject AssertValid/Dump).
+  Ported the Serialize dispatcher as a stack `TFileStream` over the archive adapter and
+  claimed `TFileStream::SetBackingArchive` at 0x489160. `just sync-ownership` ->
+  `just regen-stubs` -> `just build` -> `just detect` passed.
+- **Score Delta:** Batch compare: 0x485e20, 0x489160, 0x48a0e0, 0x48a1b0,
+  0x485f70, 0x485f90 all **100%**; 0x485e90 **76.54%** (real class/slot shape, residual
+  EH/local destructor cleanup and scheduling); 0x485f50 is synthetic and therefore
+  absent from `compare_batch` output. Stats: aligned +2, average similarity +0.04 pp,
+  paired count -1 from the synthetic destructor ownership; canaries below_floor=0 with
+  existing 0x005C2940 parse_error.

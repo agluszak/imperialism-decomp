@@ -1667,34 +1667,10 @@ undefined4 CreateTObjectInstance(void)
   return 0;
 }
 
-// ghidra_name TObject::GetTObjectClassNamePointer
-// ghidra_proto undefined GetTObjectClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00485e20
-undefined4 GetTObjectClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At00485e40
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At00485e40()
 // FUNCTION: IMPERIALISM 0x00485e40
 undefined4 WrapperFor_AFX_CLASSINIT_At00485e40(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::HandleTurnEventVtableSlot08ConditionalDispatch
-// ghidra_proto undefined HandleTurnEventVtableSlot08ConditionalDispatch()
-// FUNCTION: IMPERIALISM 0x00485e90
-undefined4 HandleTurnEventVtableSlot08ConditionalDispatch(void)
-{
-  return 0;
-}
-
-// ghidra_name TObject::DestructTObjectAndMaybeFree
-// ghidra_proto undefined DestructTObjectAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x00485f50
-undefined4 DestructTObjectAndMaybeFree(void)
 {
   return 0;
 }
@@ -2535,14 +2511,6 @@ undefined4 OrphanCallChain_C2_I18_00488ff0(void)
 // ghidra_proto undefined CreateTFileStreamWithAllocFallback()
 // FUNCTION: IMPERIALISM 0x004890c0
 undefined4 CreateTFileStreamWithAllocFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name SetObjectField04
-// ghidra_proto undefined SetObjectField04()
-// FUNCTION: IMPERIALISM 0x00489160
-undefined4 SetObjectField04(void)
 {
   return 0;
 }

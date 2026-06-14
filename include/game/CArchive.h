@@ -13,7 +13,8 @@ struct CArchive {
   char pad_0c[0x04];
   // Passed as the name/context argument to AfxThrowArchiveException.
   void* m_pExceptionContext;
-  char pad_14[0x08];
+  int m_nMode;
+  char pad_18[0x04];
   int m_nBufSize;
   void* m_pFile;
   unsigned char* m_lpBufCur;

@@ -18,6 +18,8 @@ public:
   TFileStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
+  void SetBackingArchive(void* backingArchive);
+
   // 0x00489220 / 0x00489290: forward raw byte read/write to the backing
   // CArchive, asserting the backing pointer is non-null first.
   int ReadBytesFromBackingArchive(void* destination, unsigned int requestedCount);

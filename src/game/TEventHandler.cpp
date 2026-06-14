@@ -6,8 +6,10 @@
 #pragma optimize("y", on)
 #include "game/CRuntimeClass.h"
 #include "game/CObject.h"
+#include "game/CArchive.h"
 #include "game/TEventHandler.h"
 #include "game/TEvent.h"
+#include "game/TFileStream.h"
 #include "game/TView.h"
 #include "game/ApplicationUiRootController.h"
 #include "game/mcappui_globals.h"
@@ -21,6 +23,15 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 undefined4 CreateObject_606ff2(void);
 
 extern ApplicationUiRootController* g_pApplicationUiRootController;
+
+namespace {
+
+struct ArchiveStreamAdapter {
+  void* vtable;
+  CArchive* archive;
+};
+
+} // namespace
 
 // Drain the linked command/event list rooted at handler+0x04 until field0c reaches zero.
 // FUNCTION: IMPERIALISM 0x0048a070
@@ -38,9 +49,22 @@ CRuntimeClass* TEventHandler::GetRuntimeClass() {
 
 TEventHandler::~TEventHandler() {}
 
-void TEventHandler::vmethod_0002() {}
-void TEventHandler::vmethod_0003() {}
-void TEventHandler::vmethod_0004() {}
+// FUNCTION: IMPERIALISM 0x00485e90
+void TEventHandler::Serialize(CArchive* archive) {
+  ArchiveStreamAdapter adapter;
+  adapter.vtable = reinterpret_cast<void*>(0x00645f98);
+  adapter.archive = archive;
+
+  TFileStream stream;
+  stream.SetBackingArchive(&adapter);
+
+  if ((~archive->m_nMode & 1) != 0) {
+    HandleCityDialogNoOpSlot14(reinterpret_cast<int>(&stream));
+  } else {
+    HandleCityDialogNoOpSlot18(reinterpret_cast<int>(&stream));
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00485f70
 void TEventHandler::HandleCityDialogNoOpSlot14(int arg) {
   (void)arg;

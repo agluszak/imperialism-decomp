@@ -2,7 +2,9 @@
 
 #include "decomp_types.h"
 #include "game/CRuntimeClass.h"
+#include "game/TObject.h"
 
+struct CArchive;
 class TView;
 class TEvent;
 
@@ -15,7 +17,7 @@ class TEvent;
 // most of slots 0x02-0x24, overriding only a handful. Methods kept with their TView-era
 // vmethod_* / semantic names so existing by-name callers/overrides keep resolving.
 // VTABLE: IMPERIALISM 0x006497a0
-class TEventHandler {
+class TEventHandler : public TObject {
 public:
   int field04;
   int field08;
@@ -35,9 +37,7 @@ public:
   // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
   virtual CRuntimeClass* GetRuntimeClass();                    // 0x00 0x48a0e0
   virtual ~TEventHandler();                                    // 0x01
-  virtual void vmethod_0002();                                 // 0x02
-  virtual void vmethod_0003();                                 // 0x03
-  virtual void vmethod_0004();                                 // 0x04
+  void Serialize(CArchive* archive) override;                  // 0x02 0x485e90
   virtual void HandleCityDialogNoOpSlot14(int arg);            // 0x05 0x485f70
   virtual void HandleCityDialogNoOpSlot18(int arg);            // 0x06 0x485f90
   virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject(); // 0x07 0x48a1b0

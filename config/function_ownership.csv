@@ -89,6 +89,9 @@ address|target_cpp|ownership|note
 482010|src/game/noop_slots.cpp|manual|marker_sync
 4822e0|src/game/noop_slots.cpp|manual|marker_sync
 482420|src/game/noop_slots.cpp|manual|marker_sync
+485e20|src/game/TObject.cpp|manual|marker_sync
+485e90|src/game/TEventHandler.cpp|manual|marker_sync
+485f50|src/game/TObject.cpp|manual|marker_sync
 485f70|src/game/TEventHandler.cpp|manual|marker_sync
 485f90|src/game/TEventHandler.cpp|manual|marker_sync
 486300|src/game/noop_slots.cpp|manual|marker_sync
@@ -160,6 +163,7 @@ address|target_cpp|ownership|note
 4890f0|src/game/TFileStream.cpp|manual|marker_sync
 489110|src/game/TFileStream.cpp|manual|marker_sync
 489130|src/game/TFileStream.cpp|manual|marker_sync
+489160|src/game/TFileStream.cpp|manual|marker_sync
 489220|src/game/TFileStream.cpp|manual|marker_sync
 489290|src/game/TFileStream.cpp|manual|marker_sync
 489300|src/game/TFileStream.cpp|manual|marker_sync
