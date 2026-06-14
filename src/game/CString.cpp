@@ -1,3 +1,5 @@
+#include <string.h>
+
 #include "game/CString.h"
 
 #include <new>
@@ -11,7 +13,6 @@
 #endif
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 CopyMemoryPossiblyOverlapping(void);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
 namespace {
@@ -112,8 +113,7 @@ void CString::EnsureUniqueSharedStringBuffer() {
     this->~CString();
     AllocateBufferForLength(old_text_length);
 
-    reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
-        data_ptr, reinterpret_cast<const char*>(old_data_ptr), old_text_length + 1);
+    memcpy(reinterpret_cast<void*>(data_ptr), reinterpret_cast<const void*>(old_data_ptr), old_text_length + 1);
   }
 }
 
@@ -156,8 +156,7 @@ CString::CString(const char* text_or_resource_id) {
   }
   if (text_len != 0) {
     AllocateBufferForLength(text_len);
-    reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
-        data_ptr, text_or_resource_id, text_len);
+    memcpy(reinterpret_cast<void*>(data_ptr), text_or_resource_id, text_len);
   }
 }
 
@@ -166,8 +165,7 @@ CString::CString(const char* text_or_resource_id) {
 // FUNCTION: IMPERIALISM 0x006059fc
 void CString::CopyBufferAndSetLength(int new_length, const char* src_text) {
   EnsureCapacityOrAllocate(new_length);
-  reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
-      data_ptr, src_text, new_length);
+  memcpy(reinterpret_cast<void*>(data_ptr), src_text, new_length);
 
   SharedStringHeader* header = Header();
   header->text_length = new_length;
@@ -213,10 +211,8 @@ void CString::ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len,
                                  const char* rhs_text) {
   if ((lhs_len + rhs_len) != 0) {
     AllocateBufferForLength(lhs_len + rhs_len);
-    reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
-        data_ptr, lhs_text, lhs_len);
-    reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
-        data_ptr + lhs_len, rhs_text, rhs_len);
+    memcpy(reinterpret_cast<void*>(data_ptr), lhs_text, lhs_len);
+    memcpy(reinterpret_cast<void*>(data_ptr + lhs_len), rhs_text, rhs_len);
   }
 }
 
@@ -290,8 +286,7 @@ void CString::AppendBuffer(int append_len, const char* append_text) {
   SharedStringHeader* header = Header();
 
   if ((header->ref_count < 2) && (append_len + header->text_length <= header->capacity)) {
-    reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
-        data_ptr + header->text_length, append_text, append_len);
+    memcpy(reinterpret_cast<void*>(data_ptr + header->text_length), append_text, append_len);
     header = Header();
     header->text_length += append_len;
     reinterpret_cast<char*>(data_ptr)[header->text_length] = '\0';
@@ -345,8 +340,7 @@ int CString::EnsureCapacityPreserveLength(int min_capacity) {
       min_capacity = old_length;
     }
     AllocateBufferForLength(min_capacity);
-    reinterpret_cast<void(__cdecl*)(int, const char*, int)>(CopyMemoryPossiblyOverlapping)(
-        data_ptr, reinterpret_cast<const char*>(old_data_ptr), old_length + 1);
+    memcpy(reinterpret_cast<void*>(data_ptr), reinterpret_cast<const void*>(old_data_ptr), old_length + 1);
     Header()->text_length = old_length;
     DecrementSharedStringRefCountAndFree(
         reinterpret_cast<LONG*>(old_data_ptr - kSharedStringHeaderSize));

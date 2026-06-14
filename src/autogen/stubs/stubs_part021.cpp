@@ -75,13 +75,6 @@ undefined4 GenerateThreadLocalRandom15(void)
   return 0;
 }
 
-// ghidra_name MoveMemoryOverlapSafe
-// ghidra_proto undefined MoveMemoryOverlapSafe()
-// FUNCTION: IMPERIALISM 0x005e8420
-undefined4 MoveMemoryOverlapSafe(void)
-{
-  return 0;
-}
 
 // ghidra_name ParseSignedIntFromAsciiWithWhitespaceSkip
 // ghidra_proto undefined ParseSignedIntFromAsciiWithWhitespaceSkip()
@@ -371,13 +364,6 @@ undefined4 InvokeNonNullFunctionPointerRange(void)
   return 0;
 }
 
-// ghidra_name CopyMemoryPossiblyOverlapping
-// ghidra_proto undefined CopyMemoryPossiblyOverlapping()
-// FUNCTION: IMPERIALISM 0x005e9cf0
-undefined4 CopyMemoryPossiblyOverlapping(void)
-{
-  return 0;
-}
 
 // ghidra_name ComputeWideStringLength
 // ghidra_proto undefined ComputeWideStringLength()

@@ -7,13 +7,13 @@
 #include "game/generated/vcall_facades.h"
 
 // MFC CArchive code was compiled favor-size in the original.
+#include <string.h>
+
 #if defined(_MSC_VER)
 #pragma optimize("ys", on)
 #endif
 
 undefined4 Flush(void);
-undefined4 CopyMemoryPossiblyOverlapping(void);
-undefined4 MoveMemoryOverlapSafe(void);
 undefined4 AfxThrowArchiveException(void);
 undefined4 AfxThrowNotSupportedException(void);
 
@@ -24,13 +24,11 @@ inline void FlushArchive(CArchive* archive) {
 }
 
 inline void CopyMemory(void* dst, const void* src, int size) {
-  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::CopyMemoryPossiblyOverlapping)(
-      dst, src, size);
+  memcpy(dst, src, size);
 }
 
 inline void MoveMemory(void* dst, const void* src, int size) {
-  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::MoveMemoryOverlapSafe)(dst, src,
-                                                                                     size);
+  memmove(dst, src, size);
 }
 
 inline void ThrowArchiveException(int errorCode, void* context) {

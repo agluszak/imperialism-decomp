@@ -1,3 +1,4 @@
+#include <string.h>
 #include "game/CPtrArray.h"
 
 #if defined(_MSC_VER)
@@ -6,24 +7,19 @@
 
 void FreeHeapBufferIfNotNull(undefined4 ptrValue);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 memset(void);
-undefined4 CopyMemoryPossiblyOverlapping(void);
-undefined4 MoveMemoryOverlapSafe(void);
 
 namespace {
 
 inline void FillMemory(void* dst, int value, int size) {
-  reinterpret_cast<void(__cdecl*)(void*, int, int)>(::memset)(dst, value, size);
+  memset(dst, value, size);
 }
 
 inline void CopyMemory(void* dst, const void* src, int size) {
-  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::CopyMemoryPossiblyOverlapping)(
-      dst, src, size);
+  memcpy(dst, src, size);
 }
 
 inline void MoveMemory(void* dst, const void* src, int size) {
-  reinterpret_cast<void(__cdecl*)(void*, const void*, int)>(::MoveMemoryOverlapSafe)(dst, src,
-                                                                                     size);
+  memmove(dst, src, size);
 }
 
 } // namespace
