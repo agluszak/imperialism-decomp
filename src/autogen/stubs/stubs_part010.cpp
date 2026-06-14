@@ -2427,14 +2427,6 @@ undefined4 DestructTStreamAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C2_I15_00488a80
-// ghidra_proto undefined OrphanCallChain_C2_I15_00488a80()
-// FUNCTION: IMPERIALISM 0x00488a80
-undefined4 OrphanCallChain_C2_I15_00488a80(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I06_00488ab0
 // ghidra_proto undefined OrphanCallChain_C1_I06_00488ab0()
 // FUNCTION: IMPERIALISM 0x00488ab0
@@ -2483,26 +2475,10 @@ undefined4 OrphanCallChain_C1_I09_00488b90(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I08_00488bc0
-// ghidra_proto undefined OrphanCallChain_C1_I08_00488bc0()
-// FUNCTION: IMPERIALISM 0x00488bc0
-undefined4 OrphanCallChain_C1_I08_00488bc0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I09_00488bf0
 // ghidra_proto undefined OrphanCallChain_C1_I09_00488bf0()
 // FUNCTION: IMPERIALISM 0x00488bf0
 undefined4 OrphanCallChain_C1_I09_00488bf0(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadDwordFromStreamViaVtableSlot3C
-// ghidra_proto undefined ReadDwordFromStreamViaVtableSlot3C()
-// FUNCTION: IMPERIALISM 0x00488c20
-undefined4 ReadDwordFromStreamViaVtableSlot3C(void)
 {
   return 0;
 }
@@ -2523,54 +2499,6 @@ undefined4 OrphanCallChain_C2_I19_00488ca0(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I13_00488ce0
-// ghidra_proto undefined OrphanCallChain_C1_I13_00488ce0()
-// FUNCTION: IMPERIALISM 0x00488ce0
-undefined4 OrphanCallChain_C1_I13_00488ce0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488d20
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488d20()
-// FUNCTION: IMPERIALISM 0x00488d20
-undefined4 OrphanCallChain_C1_I06_00488d20(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488d40
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488d40()
-// FUNCTION: IMPERIALISM 0x00488d40
-undefined4 OrphanCallChain_C1_I06_00488d40(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488d60
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488d60()
-// FUNCTION: IMPERIALISM 0x00488d60
-undefined4 OrphanCallChain_C1_I06_00488d60(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488d80
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488d80()
-// FUNCTION: IMPERIALISM 0x00488d80
-undefined4 OrphanCallChain_C1_I06_00488d80(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I09_00488da0
-// ghidra_proto undefined OrphanCallChain_C1_I09_00488da0()
-// FUNCTION: IMPERIALISM 0x00488da0
-undefined4 OrphanCallChain_C1_I09_00488da0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C2_I17_00488dd0
 // ghidra_proto undefined OrphanCallChain_C2_I17_00488dd0()
 // FUNCTION: IMPERIALISM 0x00488dd0
@@ -2587,90 +2515,10 @@ undefined4 AssertMcAppStreamLine596(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I06_00488e90
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488e90()
-// FUNCTION: IMPERIALISM 0x00488e90
-undefined4 OrphanCallChain_C1_I06_00488e90(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488eb0
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488eb0()
-// FUNCTION: IMPERIALISM 0x00488eb0
-undefined4 OrphanCallChain_C1_I06_00488eb0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I06_00488ed0
 // ghidra_proto undefined OrphanCallChain_C1_I06_00488ed0()
 // FUNCTION: IMPERIALISM 0x00488ed0
 undefined4 OrphanCallChain_C1_I06_00488ed0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488ef0
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488ef0()
-// FUNCTION: IMPERIALISM 0x00488ef0
-undefined4 OrphanCallChain_C1_I06_00488ef0(void)
-{
-  return 0;
-}
-
-// ghidra_name WriteDwordToStreamViaVtableSlot78
-// ghidra_proto undefined WriteDwordToStreamViaVtableSlot78()
-// FUNCTION: IMPERIALISM 0x00488f10
-undefined4 WriteDwordToStreamViaVtableSlot78(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488f30
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488f30()
-// FUNCTION: IMPERIALISM 0x00488f30
-undefined4 OrphanCallChain_C1_I06_00488f30(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488f50
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488f50()
-// FUNCTION: IMPERIALISM 0x00488f50
-undefined4 OrphanCallChain_C1_I06_00488f50(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488f70
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488f70()
-// FUNCTION: IMPERIALISM 0x00488f70
-undefined4 OrphanCallChain_C1_I06_00488f70(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488f90
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488f90()
-// FUNCTION: IMPERIALISM 0x00488f90
-undefined4 OrphanCallChain_C1_I06_00488f90(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488fb0
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488fb0()
-// FUNCTION: IMPERIALISM 0x00488fb0
-undefined4 OrphanCallChain_C1_I06_00488fb0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488fd0
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488fd0()
-// FUNCTION: IMPERIALISM 0x00488fd0
-undefined4 OrphanCallChain_C1_I06_00488fd0(void)
 {
   return 0;
 }
