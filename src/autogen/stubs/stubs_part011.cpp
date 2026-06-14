@@ -19,22 +19,6 @@ undefined4 PaintVisibleChildrenIntersectingClipRect(void)
   return 0;
 }
 
-// ghidra_name TControl::OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl
-// ghidra_proto undefined OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl()
-// FUNCTION: IMPERIALISM 0x0048ba80
-undefined4 OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::OffsetRectByControlPosition_Impl
-// ghidra_proto undefined OffsetRectByControlPosition_Impl()
-// FUNCTION: IMPERIALISM 0x0048bb00
-undefined4 OffsetRectByControlPosition_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
 // ghidra_proto undefined CopyCityDialogStateFromSourceAndCloneChildLinks()
 // FUNCTION: IMPERIALISM 0x0048bd30
@@ -87,14 +71,6 @@ undefined4 EnableAndProcessFlag(void)
 // ghidra_proto undefined UpdateMapCursorFromSelectionContext()
 // FUNCTION: IMPERIALISM 0x0048c250
 undefined4 UpdateMapCursorFromSelectionContext(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::UpdateRectCacheIfChangedAndInvalidateCityDialog
-// ghidra_proto undefined UpdateRectCacheIfChangedAndInvalidateCityDialog()
-// FUNCTION: IMPERIALISM 0x0048c380
-undefined4 UpdateRectCacheIfChangedAndInvalidateCityDialog(void)
 {
   return 0;
 }

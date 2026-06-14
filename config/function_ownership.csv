@@ -174,12 +174,14 @@ address|target_cpp|ownership|note
 48abc0|src/game/TView.cpp|manual|marker_sync
 48ae60|src/game/TView.cpp|manual|marker_sync
 48af80|src/game/TView.cpp|manual|marker_sync
+48afd0|src/game/TView.cpp|manual|marker_sync
 48b070|src/game/TView.cpp|manual|marker_sync
 48b180|src/game/TView.cpp|manual|marker_sync
 48b1a0|src/game/TView.cpp|manual|marker_sync
 48b1c0|src/game/TView.cpp|manual|marker_sync
 48b200|src/game/TView.cpp|manual|marker_sync
 48b250|src/game/TView.cpp|manual|marker_sync
+48b2d0|src/game/TView.cpp|manual|marker_sync
 48b3f0|src/game/TView.cpp|manual|marker_sync
 48b690|src/game/TView.cpp|manual|marker_sync
 48b6d0|src/game/TView.cpp|manual|marker_sync
@@ -187,7 +189,9 @@ address|target_cpp|ownership|note
 48b7e0|src/game/TView.cpp|manual|marker_sync
 48b810|src/game/TView.cpp|manual|marker_sync
 48ba40|src/game/TView.cpp|manual|marker_sync
+48ba80|src/game/TView.cpp|manual|marker_sync
 48bac0|src/game/TView.cpp|manual|marker_sync
+48bb00|src/game/TView.cpp|manual|marker_sync
 48bb30|src/game/TView.cpp|manual|marker_sync
 48bb60|src/game/TView.cpp|manual|marker_sync
 48bbb0|src/game/TView.cpp|manual|marker_sync
@@ -197,6 +201,7 @@ address|target_cpp|ownership|note
 48c000|src/game/TView.cpp|manual|marker_sync
 48c050|src/game/TView.cpp|manual|marker_sync
 48c1c0|src/game/TView.cpp|manual|marker_sync
+48c380|src/game/TView.cpp|manual|marker_sync
 48c6d0|src/game/TView.cpp|manual|marker_sync
 48c750|src/game/TView.cpp|manual|marker_sync
 48c7a0|src/game/TView.cpp|manual|marker_sync

@@ -118,10 +118,10 @@ public:
   virtual void QueryContentBounds(int* boundsBuffer);                // 0x4a 0x427260
   virtual void QueryBounds(int* boundsBuffer);                       // 0x4b 0x427290
   virtual void vmethod_0072(int arg1, int arg2, int arg3, int arg4); // 0x4c
-  virtual void vmethod_0076();                                       // 0x4d
+  virtual void vmethod_0076(int* point = 0);                         // 0x4d 0x48ba80
   virtual void vmethod_0078(int* point = 0);                         // 0x4e 0x48ba40
   virtual void InvokeSlot13C();                                      // 0x4f 0x48b700
-  virtual void vmethod_0077();                                       // 0x50
+  virtual void OffsetRectByControlPosition(struct RECT* rect);       // 0x50 0x48bb00
   virtual void UpdateAfterBitmapChange(int unknownFlag);             // 0x51
   virtual Point32 TransformPointViaSlot138(Point32* inPoint);
   virtual struct RECT TransformRectViaSlot148(struct RECT* inRect);

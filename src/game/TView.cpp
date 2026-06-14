@@ -20,6 +20,8 @@ extern "C" __declspec(dllimport) int __stdcall UnionRect(struct RECT* dest, cons
                                                          const struct RECT* src2);
 extern "C" __declspec(dllimport) int __stdcall InvalidateRect(void* hWnd, const struct RECT* rect,
                                                               int erase);
+extern "C" __declspec(dllimport) int __stdcall EqualRect(const struct RECT* rect1,
+                                                         const struct RECT* rect2);
 
 // Generic thunk/hook decls kept in repo form (rule 9): typed function-pointer casts at
 // the callsite rather than changing the thunk declaration signature.
@@ -214,8 +216,49 @@ void TView::SetUiResourceOwner(int owner) {
     *reinterpret_cast<int*>(owner + 8) = reinterpret_cast<int>(this);
   }
 }
+// Find the descendant control whose controlTag matches: scan the direct child list
+// first, then recurse into each child via slot 0x25 (ResolveControlByTag). Returns the
+// matching control, or null. The own-tag case short-circuits (callers exclude self).
+// FUNCTION: IMPERIALISM 0x0048afd0
 class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
-  return 0;
+  TView* match = 0;
+  if (controlTag != this->controlTag && childList44 != 0) {
+    CPtrListNode* node = childList44->headNode;
+    while (true) {
+      if (node == 0) {
+        match = 0;
+        break;
+      }
+      match = reinterpret_cast<TView*>(node->data);
+      node = node->next;
+      if (controlTag == match->controlTag) {
+        break;
+      }
+    }
+    if (match == 0) {
+      CPtrListNode* walk = childList44->headNode;
+      TView* child;
+      if (walk == 0) {
+        child = 0;
+      } else {
+        child = reinterpret_cast<TView*>(walk->data);
+        walk = walk->next;
+      }
+      while (child != 0) {
+        match = reinterpret_cast<TView*>(child->ResolveControlByTag(controlTag));
+        if (match != 0) {
+          break;
+        }
+        if (walk == 0) {
+          child = 0;
+        } else {
+          child = reinterpret_cast<TView*>(walk->data);
+          walk = walk->next;
+        }
+      }
+    }
+  }
+  return reinterpret_cast<class TControl*>(match);
 }
 // If the child list's tail element is not already the given child, notify the old/new
 // selection (slots 0x5d/0x5c) and refresh the newly active child.
@@ -481,8 +524,20 @@ void TView::vmethod_0072(int arg1, int arg2, int arg3, int arg4) {
 void TView::vmethod_0073(int arg1, int arg2) {}
 void TView::QueryContentBounds(int* boundsBuffer) {}
 void TView::QueryBounds(int* boundsBuffer) {}
-void TView::vmethod_0076() {}
-void TView::vmethod_0077() {}
+// Translate a point into the owner's space (add this view's owner offset) and forward up
+// the owner chain via slot 0x4d. Mirror of vmethod_0078 (slot 0x4e) but on this slot.
+// FUNCTION: IMPERIALISM 0x0048ba80
+void TView::vmethod_0076(int* point) {
+  int offY = ownerOffsetY;
+  point[0] += ownerOffsetX;
+  point[1] += offY;
+  ownerContext->vmethod_0076(point);
+}
+// Offset a rect by this control's owner offset (its position within the owner).
+// FUNCTION: IMPERIALISM 0x0048bb00
+void TView::OffsetRectByControlPosition(struct RECT* rect) {
+  OffsetRect(rect, ownerOffsetX, ownerOffsetY);
+}
 // Translate a point into the owner's space (add this view's owner offset) and forward up
 // the owner chain via slot 0x4e. Mirror of SubtractPosAndDispatchToOwnerSlot19C (which
 // subtracts); recurses until the root owner.
@@ -567,8 +622,64 @@ struct RECT TView::BuildRectFromSlot158() {
   return result;
 }
 
-void TView::vmethod_0089() {}
-void TView::ApplyBounds(int* boundsBuffer, int modeFlag) {}
+// Recompute this control's absolute position (field2c/field30) from the owner's absolute
+// position plus this control's owner offset (default position when no owner). If it
+// moved, propagate the recompute to every child via slot 0x59.
+// FUNCTION: IMPERIALISM 0x0048b2d0
+void TView::vmethod_0089() {
+  TView* owner = ownerContext;
+  int oldX = field2c;
+  int oldY = field30;
+  int newX = g_McAppUiDefaultPosX_006A1A60;
+  int newY = g_McAppUiDefaultPosY_006A1A64;
+  if (owner != 0) {
+    newX = owner->field2c + ownerOffsetX;
+    newY = owner->field30 + ownerOffsetY;
+  }
+  field2c = newX;
+  field30 = newY;
+  if (field2c != oldX || newY != oldY) {
+    CPtrListNode* node = (childList44 != 0) ? childList44->headNode : 0;
+    TView* child;
+    if (node == 0) {
+      child = 0;
+    } else {
+      child = reinterpret_cast<TView*>(node->data);
+      node = node->next;
+    }
+    while (child != 0) {
+      child->vmethod_0089();
+      if (node == 0) {
+        child = 0;
+      } else {
+        child = reinterpret_cast<TView*>(node->data);
+        node = node->next;
+      }
+    }
+  }
+}
+// Recompute and store this control's bounds (owner offset + cached size) from a new rect;
+// if it changed, optionally bracket the layout pass with city-dialog invalidations and
+// propagate the absolute-position recompute (slot 0x59).
+// FUNCTION: IMPERIALISM 0x0048c380
+void TView::ApplyBounds(int* boundsBuffer, int modeFlag) {
+  RECT current;
+  QueryBounds(reinterpret_cast<int*>(&current));
+  struct RECT* newBounds = reinterpret_cast<struct RECT*>(boundsBuffer);
+  if (EqualRect(newBounds, &current) == 0) {
+    if (modeFlag != 0 && IsActionable() != 0) {
+      reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(0, 1);
+    }
+    ownerOffsetX = newBounds->left;
+    ownerOffsetY = newBounds->top;
+    field34 = newBounds->right - newBounds->left;
+    field38 = newBounds->bottom - newBounds->top;
+    vmethod_0089();
+    if (modeFlag != 0 && IsActionable() != 0) {
+      reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(0, 0);
+    }
+  }
+}
 
 // True (3) iff this view is actionable and the point falls inside its content bounds.
 // FUNCTION: IMPERIALISM 0x0048c6d0

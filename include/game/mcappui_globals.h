@@ -24,6 +24,11 @@ extern int g_McAppUiFlag_006A1AE0;
 extern int g_McAppUiFlag_006A1AFC;
 extern int g_McAppUiFlag_006A1B00;
 
+// Default absolute layout position (x, y) used when a control has no owner context, in
+// the position-propagation pass (TView::vmethod_0089).
+extern int g_McAppUiDefaultPosX_006A1A60;
+extern int g_McAppUiDefaultPosY_006A1A64;
+
 // Source-file path string ("D:\\Ambit\\McAppUI.cpp") passed with a line number to the
 // UI invalidation-flag assert/log helper.
 extern char g_szMcAppUiSourcePath_006950B0[];

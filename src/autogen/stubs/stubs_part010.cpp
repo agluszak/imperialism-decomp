@@ -3139,26 +3139,10 @@ undefined4 DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
   return 0;
 }
 
-// ghidra_name TControl::FindUiChildControlByWindowHandleRecursive
-// ghidra_proto undefined FindUiChildControlByWindowHandleRecursive()
-// FUNCTION: IMPERIALISM 0x0048afd0
-undefined4 FindUiChildControlByWindowHandleRecursive(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::CloseCityDialogChildrenAndReleaseSelf
 // ghidra_proto undefined CloseCityDialogChildrenAndReleaseSelf()
 // FUNCTION: IMPERIALISM 0x0048b0b0
 undefined4 CloseCityDialogChildrenAndReleaseSelf(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0
-// ghidra_proto undefined WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0()
-// FUNCTION: IMPERIALISM 0x0048b2d0
-undefined4 WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0(void)
 {
   return 0;
 }
