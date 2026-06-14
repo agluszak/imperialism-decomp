@@ -483,7 +483,15 @@ void TView::QueryContentBounds(int* boundsBuffer) {}
 void TView::QueryBounds(int* boundsBuffer) {}
 void TView::vmethod_0076() {}
 void TView::vmethod_0077() {}
-void TView::vmethod_0078(int* point) {}
+// Translate a point into the owner's space (add this view's owner offset) and forward up
+// the owner chain via slot 0x4e. Mirror of SubtractPosAndDispatchToOwnerSlot19C (which
+// subtracts); recurses until the root owner.
+// FUNCTION: IMPERIALISM 0x0048ba40
+void TView::vmethod_0078(int* point) {
+  point[1] += ownerOffsetY;
+  point[0] += ownerOffsetX;
+  ownerContext->vmethod_0078(point);
+}
 void TView::InvokeSlot13C() {}
 
 // Copy a point, transform it in place through slot 0x4e, and return the result by value.

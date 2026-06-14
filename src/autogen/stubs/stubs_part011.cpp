@@ -19,14 +19,6 @@ undefined4 PaintVisibleChildrenIntersectingClipRect(void)
   return 0;
 }
 
-// ghidra_name TControl::OffsetRectByControlPositionAndDispatchVslot138_Impl
-// ghidra_proto undefined OffsetRectByControlPositionAndDispatchVslot138_Impl()
-// FUNCTION: IMPERIALISM 0x0048ba40
-undefined4 OffsetRectByControlPositionAndDispatchVslot138_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl
 // ghidra_proto undefined OffsetRectByControlPositionAndDispatchVslot138_EcxBridge_Impl()
 // FUNCTION: IMPERIALISM 0x0048ba80

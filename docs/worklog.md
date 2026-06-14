@@ -3679,4 +3679,4 @@ Follow-up scan after the TClosePicture extraction:
 
 - **Timestamp:** 2026-06-14 (cont.)
 - **Command:** Port 6 now-correctly-slotted TView virtuals (bodies match well now that dispatch offsets are right post-reorder): `CallVoidSlotA0` (0x28/0x48c890), `SetEnabled` (0x29/0x48b1c0, field08 enabled-state + slot-0x39 refresh), `SetState` (0x2a/0x48b070, SetControlValue + refresh), `RefreshControl` (0x39/0x48b6d0, InvalidateCityDialogRect when active+windowed), `vmethod_0032` (0x22/0x48a500, is-active-view; void→char + mirror), `vmethod_0033` (0x23/0x48a4a0, detach field18 target).
-- **Score Delta:** 0x48b1c0/0x48b6d0/0x48a500/0x48a4a0 **100%**; 0x48b070 SetState 70%; 0x48c890 CallVoidSlotA0 37% (CPtrList walk, same partial as DispatchSlot9C).
+- **Score Delta:** 0x48b1c0/0x48b6d0/0x48a500/0x48a4a0 **100%**; 0x48b070 SetState 70%; 0x48c890 CallVoidSlotA0 37% (CPtrList walk). Also ported vmethod_0078 (0x4e/0x48ba40, owner-forward point offset) 100%. Deferred InvokeSlot13C (0x4f) — needs new DAT_006a1af0 global + UpdateWindow import.
