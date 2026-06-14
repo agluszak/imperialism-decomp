@@ -17,7 +17,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // VTABLE: IMPERIALISM 0x0065c498
 class TAdmiral : public CObject {
 public:
-  virtual CRuntimeClass* GetRuntimeClass();
+  virtual CRuntimeClass* GetRuntimeClass() override;
   virtual void VMethod05() {}
   virtual void DeserializeNavyOrderSelectionStateFromStream() {}
   virtual void DestroyAndUnlinkNavySecondaryOrderNode();

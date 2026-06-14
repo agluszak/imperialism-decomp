@@ -15,9 +15,9 @@ class TNextTradeCommand : public TCommand {
 public:
   TNextTradeCommand();
 
-  void cmd_slot0();  // override 0 (0x00)
-  void cmd_slot1();  // override 1 (0x04)
-  void cmd_slot11(); // override 11 (0x2c)
+  void cmd_slot0() override;  // override 0 (0x00)
+  void cmd_slot1() override;  // override 1 (0x04)
+  void cmd_slot11() override; // override 11 (0x2c)
 
   void* operator new(size_t size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));

@@ -10,10 +10,10 @@ struct CArchive;
 // VTABLE: IMPERIALISM 0x0064fa18
 class TCityOrderItem : public CObject {
 public:
-  virtual CRuntimeClass* GetRuntimeClass();
-  virtual void Serialize(CArchive* ar);
-  virtual void AssertValidOrSlot0c();
-  virtual void DumpOrSlot10(int unused = 0);
+  virtual CRuntimeClass* GetRuntimeClass() override;
+  virtual void Serialize(CArchive* ar) override;
+  virtual void AssertValidOrSlot0c() override;
+  virtual void DumpOrSlot10(int unused = 0) override;
   TCITYORDERITEM_VTABLE_SLOT(05);
   TCITYORDERITEM_VTABLE_SLOT(06);
   TCITYORDERITEM_VTABLE_SLOT(07);

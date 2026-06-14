@@ -9,7 +9,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // +4 through TPtrList, and the TList virtual interface (vtable 0x648f78).
 // VTABLE: IMPERIALISM 0x00648f78
 struct TList : public TPtrList {
-  virtual void GetClassDescDynamicSlot00() {}
+  virtual void GetClassDescDynamicSlot00() override {}
   TList() {}
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));

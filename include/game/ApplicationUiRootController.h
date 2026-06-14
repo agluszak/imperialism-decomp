@@ -18,7 +18,7 @@ public:
   ~ApplicationUiRootController();
 
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
-  virtual CRuntimeClass* GetRuntimeClass();
+  virtual CRuntimeClass* GetRuntimeClass() override;
 
   // vtable index 0x25: AppRoot-introduced slot (unported placeholder; TEventHandler's
   // base vtable is null here, so this is a new virtual, not an inherited one).

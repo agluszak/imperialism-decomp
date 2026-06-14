@@ -11,9 +11,9 @@
 //
 // Slots 0x28..0x60 are the list-engine dispatch surface (TList vtable 0x648f78).
 struct TPtrList : public RefCountedObjectBase {
-  virtual void ResetSlot14(void* message = 0) { (void)message; }
-  virtual void Call18(int arg1 = 0) { (void)arg1; }
-  virtual void Release1C();
+  virtual void ResetSlot14(void* message = 0) override { (void)message; }
+  virtual void Call18(int arg1 = 0) override { (void)arg1; }
+  virtual void Release1C() override;
 
   virtual int GetCountOrReleaseSlot28();
   virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal);

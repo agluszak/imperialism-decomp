@@ -7,7 +7,7 @@ struct CRuntimeClass;
 // Mac oracle: TCapacityOrder (capacity / industry production order).
 class TCapacityOrder : public TCityOrderItem {
 public:
-  virtual CRuntimeClass* GetRuntimeClass();
+  virtual CRuntimeClass* GetRuntimeClass() override;
   // Ghidra: CreateTCapacityOrderInstance — Mac: FillOrderSheet(OrderSheet*, short).
   void FillOrderSheet(void* orderSheet);
 

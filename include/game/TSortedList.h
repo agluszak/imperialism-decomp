@@ -10,7 +10,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // constructor write to 0x00648ee0.
 // VTABLE: IMPERIALISM 0x00648ee0
 struct TSortedList : public TPtrList {
-  virtual void GetClassDescDynamicSlot00() {}
+  virtual void GetClassDescDynamicSlot00() override {}
   TSortedList() {}
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));

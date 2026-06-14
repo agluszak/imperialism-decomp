@@ -21,7 +21,7 @@ public:
   unsigned char padding_82[2];
 
   TControl();
-  virtual CRuntimeClass* GetRuntimeClass(); // 0x00 0x48e500 (override)
+  virtual CRuntimeClass* GetRuntimeClass() override; // 0x00 0x48e500 (override)
   void WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer);
   void InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper);
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
@@ -29,13 +29,13 @@ public:
   WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(int* cursorPoint,
                                                                                   int hitArg);
 
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg);
-  virtual char DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4);
-  virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point);
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg) override;
+  virtual char DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4) override;
+  virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point) override;
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
-                                                         int arg4);
-  virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg);
+                                                         int arg4) override;
+  virtual void PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) override;
 
   // TControl-branch slots 0x1A0-0x1BC (104-111), formerly mis-declared on TView.
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
