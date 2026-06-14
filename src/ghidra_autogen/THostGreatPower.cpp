@@ -19,9 +19,9 @@ void __fastcall THostGreatPower::DestructTHostGreatPower(undefined4 *param_1)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 2);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 1);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;

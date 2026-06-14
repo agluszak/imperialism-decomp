@@ -40,13 +40,13 @@ _CreateTTransportPictureInstance__YAPAUTransportPictureState___Z_imperialismsrcg
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591E50
-// GHIDRA_NAME TTransportPicture::GetTTransportPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTTransportPictureClassNamePointer()
+// GHIDRA_NAME TTransportPicture::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TTransportPicture::GetTTransportPictureClassNamePointer(void)
+undefined ** TTransportPicture::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TTransportPicture_00663160;
+  return &g_pClassDescTTransportPicture;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591E70
@@ -65,6 +65,21 @@ _ConstructTTransportPictureBaseState__YIPAUTransportPictureState___Z_imperialism
   *(undefined2 *)((int)param_1 + 0x96) = 0;
   *(undefined2 *)(param_1 + 0x24) = 0x3a;
   *(undefined2 *)(param_1 + 0x26) = 0xffff;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00591EC0
+// GHIDRA_NAME TTransportPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall
+TTransportPicture::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
   return param_1;
 }
 
@@ -177,6 +192,7 @@ void __fastcall TTransportPicture::RenderTransportPictureGaugeAndLabels(int *par
   short sVar5;
   undefined4 uVar6;
   int *piVar7;
+  CString *src_ref;
   int iVar8;
   int iVar9;
   undefined4 *unaff_FS_OFFSET;
@@ -185,7 +201,7 @@ void __fastcall TTransportPicture::RenderTransportPictureGaugeAndLabels(int *par
   undefined4 *puStack_5c;
   undefined1 local_4c [4];
   int local_48;
-  int local_44;
+  CString local_44;
   undefined1 local_40 [4];
   float local_3c;
   undefined1 *local_38;
@@ -211,13 +227,13 @@ void __fastcall TTransportPicture::RenderTransportPictureGaugeAndLabels(int *par
   AcquireReusableQuickDrawSurface();
   local_4 = 0;
   puStack_5c = (undefined4 *)0x5921f7;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_40);
   local_4._0_1_ = 1;
   puStack_5c = (undefined4 *)0x592205;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_44);
   local_4._0_1_ = 2;
   puStack_5c = (undefined4 *)0x592213;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_4c);
   local_4 = CONCAT31(local_4._1_3_,3);
   sVar5 = 0x61;
   if (200 < param_1[9]) {
@@ -316,17 +332,17 @@ LAB_00592373:
   FormatStringWithVarArgsToSharedRef(&stack0xffffffb0);
   AssignSharedStringConcatRefAndCStr(local_40);
   local_10._0_1_ = 4;
-  AssignSharedStringConcatRefAndRef(&local_48);
+  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&local_48);
   local_10._0_1_ = 5;
-  TToolBarCluster::StringSharedRef_AssignFromPtr();
+  TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&local_44,src_ref);
   local_10._0_1_ = 6;
   AssignFromPtr(&stack0xffffffa8,&local_44);
   local_10._0_1_ = 5;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_44);
   local_10._0_1_ = 4;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_48);
   local_10 = CONCAT31(local_10._1_3_,3);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_40);
   (**(code **)(*piVar7 + 0x1c8))();
   if (*(short *)((int)param_1 + 0x92) == 0x16) {
     piVar7 = (int *)(*pcVar1)(0x76616c75);
@@ -372,11 +388,11 @@ LAB_005925fa:
     (**(code **)(local_48 + 0xf8))();
   }
   local_18._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&puStack_60);
   local_18._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffa8);
   local_18 = (uint)local_18._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffac);
   local_18 = 0xffffffff;
   ReleaseOrCacheQuickDrawSurface();
   *unaff_FS_OFFSET = uStack_20;

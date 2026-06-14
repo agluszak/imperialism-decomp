@@ -84,7 +84,7 @@ void __thiscall TView::ConstructTViewBaseState(TView *this)
   this->field4e = -1;
   this->field50 = 0;
   this->field54 = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&this->sharedStringRef);
   this->field5c = 0;
   this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
@@ -127,7 +127,7 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
   }
   FreeHeapBufferIfNotNull(this->field48);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&this->sharedStringRef);
   this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;

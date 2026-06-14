@@ -11,6 +11,8 @@ TView * TEditText::CreateTEditTextInstance(void)
 
 {
   TView *this;
+  void *this_00;
+  int extraout_EAX;
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -41,13 +43,14 @@ TView * TEditText::CreateTEditTextInstance(void)
     *(undefined2 *)&this[1].field30 = 0;
     this->vftable = &TStaticText::_vftable_;
     this[1].vftable = (void *)0xd;
-    iVar1 = AllocateWithFallbackHandler(4);
+    this_00 = (void *)AllocateWithFallbackHandler(4);
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (iVar1 == 0) {
+    if (this_00 == (void *)0x0) {
       iVar1 = 0;
     }
     else {
-      iVar1 = InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(this_00);
+      iVar1 = extraout_EAX;
     }
     this[1].ownerOffsetX = iVar1;
     this[1].field34 = 0;
@@ -86,6 +89,8 @@ undefined ** TEditText::GetTEditTextClassNamePointer(void)
 TView * __fastcall TEditText::ConstructUiNumericTextEntryBase(TView *param_1)
 
 {
+  void *this;
+  int extraout_EAX;
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -113,13 +118,14 @@ TView * __fastcall TEditText::ConstructUiNumericTextEntryBase(TView *param_1)
   *(undefined2 *)&param_1[1].field30 = 0;
   param_1->vftable = &TStaticText::_vftable_;
   param_1[1].vftable = (void *)0xd;
-  iVar1 = AllocateWithFallbackHandler(4);
+  this = (void *)AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,1);
-  if (iVar1 == 0) {
+  if (this == (void *)0x0) {
     iVar1 = 0;
   }
   else {
-    iVar1 = InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(this);
+    iVar1 = extraout_EAX;
   }
   param_1[1].ownerOffsetX = iVar1;
   param_1[1].field34 = 0;

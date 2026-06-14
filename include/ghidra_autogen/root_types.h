@@ -212,6 +212,11 @@ typedef struct TCityProductionView TCityProductionView, *PTCityProductionView;
 struct TCityProductionView { // PlaceHolder Class Structure
 };
 
+typedef struct TCityRecruitmentOrderContext TCityRecruitmentOrderContext, *PTCityRecruitmentOrderContext;
+
+struct TCityRecruitmentOrderContext { // PlaceHolder Class Structure
+};
+
 typedef struct TCityTask TCityTask, *PTCityTask;
 
 struct TCityTask { // PlaceHolder Class Structure

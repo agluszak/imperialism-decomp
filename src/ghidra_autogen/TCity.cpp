@@ -189,10 +189,11 @@ void __fastcall TCity::RefreshOrderStateSlot0C(int param_1)
   undefined2 uVar2;
   short sVar3;
   int *piVar4;
-  int *piVar5;
-  int iVar6;
+  int iVar5;
   undefined4 *unaff_FS_OFFSET;
   int local_18;
+  undefined1 local_14 [4];
+  int *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -201,12 +202,12 @@ void __fastcall TCity::RefreshOrderStateSlot0C(int param_1)
   puStack_8 = &LAB_00630f08;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  piVar5 = (int *)(param_1 + 400);
+  piVar4 = (int *)(param_1 + 400);
   local_18 = 8;
-  piVar4 = piVar5;
+  local_10 = piVar4;
   do {
     if (*piVar4 != 0) {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(local_14);
       local_4 = 0;
       sVar1 = *(short *)(*piVar4 + 4);
       uVar2 = *(undefined2 *)(*piVar4 + 0x48);
@@ -220,28 +221,29 @@ void __fastcall TCity::RefreshOrderStateSlot0C(int param_1)
         }
       }
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(local_14);
     }
     piVar4 = piVar4 + 1;
     local_18 = local_18 + -1;
   } while (local_18 != 0);
   piVar4 = (int *)(param_1 + 0x148);
-  iVar6 = 0x12;
+  iVar5 = 0x12;
   do {
     if ((int *)*piVar4 != (int *)0x0) {
       (**(code **)(*(int *)*piVar4 + 0x34))();
     }
     piVar4 = piVar4 + 1;
-    iVar6 = iVar6 + -1;
-  } while (iVar6 != 0);
-  iVar6 = 8;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  iVar5 = 8;
+  piVar4 = local_10;
   do {
-    if ((int *)*piVar5 != (int *)0x0) {
-      (**(code **)(*(int *)*piVar5 + 0x34))();
+    if ((int *)*piVar4 != (int *)0x0) {
+      (**(code **)(*(int *)*piVar4 + 0x34))();
     }
-    piVar5 = piVar5 + 1;
-    iVar6 = iVar6 + -1;
-  } while (iVar6 != 0);
+    piVar4 = piVar4 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

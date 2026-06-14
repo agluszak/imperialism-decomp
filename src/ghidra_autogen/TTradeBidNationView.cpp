@@ -51,7 +51,7 @@ void __fastcall TTradeBidNationView::ConstructTTradeBidNationViewBaseState(int p
 
 {
   short sVar1;
-  int *dst_ref_ptr;
+  CString *src_ref;
   undefined2 extraout_var;
   undefined4 *unaff_FS_OFFSET;
   undefined1 local_34 [4];
@@ -81,13 +81,13 @@ void __fastcall TTradeBidNationView::ConstructTTradeBidNationViewBaseState(int p
              (astruct_19 *)0x0);
   local_30 = &stack0xffffffc0;
   SetQuickDrawStrokeColor();
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_34);
   local_4 = 0;
-  dst_ref_ptr = (int *)AssignNormalizedCredentialTokenToIndexedSlot(&local_30);
+  src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(&local_30);
   local_4._0_1_ = 1;
-  AssignFromPtr(local_34,dst_ref_ptr);
+  AssignFromPtr(local_34,src_ref);
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_30);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x28);
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
@@ -100,7 +100,7 @@ void __fastcall TTradeBidNationView::ConstructTTradeBidNationViewBaseState(int p
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   }
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_34);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

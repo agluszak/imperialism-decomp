@@ -172,10 +172,10 @@ TIndexAndRankList * TSortedByRelationshipList::CreateTSortedByRelationshipListIn
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EE520
-// GHIDRA_NAME TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer
-// GHIDRA_PROTO undefined GetTSortedByRelationshipListClassNamePointer()
+// GHIDRA_NAME TSortedByRelationshipList::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer(void)
+char * TSortedByRelationshipList::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTSortedByRelationshipList;
@@ -876,6 +876,10 @@ void __fastcall TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTur
   int iStack_2c;
   int iStack_28;
   int iStack_24;
+  undefined1 auStack_1c [4];
+  undefined1 auStack_18 [4];
+  undefined1 auStack_14 [4];
+  undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int iStack_4;
@@ -896,14 +900,14 @@ void __fastcall TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTur
       iVar7 = iVar7 + -1;
     } while (iVar7 != 0);
   }
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   iVar7 = 0;
   iStack_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(auStack_14);
   iStack_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(auStack_18);
   iStack_4._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(auStack_1c);
   iStack_4 = CONCAT31(iStack_4._1_3_,3);
   if (*(int *)(g_pLocalizationTable + 0x44) == 2) {
     piVar5 = &DAT_006a4388;
@@ -987,13 +991,13 @@ void __fastcall TSortedByRelationshipList::ApplyDiplomacyInterNationStatesForTur
     } while ((short)iStack_30 < 7);
   }
   iStack_4._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(auStack_1c);
   iStack_4._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(auStack_18);
   iStack_4 = (uint)iStack_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(auStack_14);
   iStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

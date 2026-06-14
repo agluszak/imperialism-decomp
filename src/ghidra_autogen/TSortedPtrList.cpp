@@ -19,10 +19,10 @@ void __fastcall TSortedPtrList::ResetPtrListAndShrinkCapacity(int *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004883E0
-// GHIDRA_NAME TSortedPtrList::GetTSortedPtrListClassNamePointer
-// GHIDRA_PROTO undefined GetTSortedPtrListClassNamePointer()
+// GHIDRA_NAME TSortedPtrList::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TSortedPtrList::GetTSortedPtrListClassNamePointer(void)
+char * TSortedPtrList::GetRuntimeClass(void)
 
 {
   return "<Oi";

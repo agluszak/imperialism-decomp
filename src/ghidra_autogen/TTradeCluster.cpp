@@ -34,10 +34,10 @@ undefined4 * TTradeCluster::CreateTradeSellControlPanel(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00587090
-// GHIDRA_NAME TTradeCluster::GetTTradeClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTTradeClusterClassNamePointer()
+// GHIDRA_NAME TTradeCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TTradeCluster::GetTTradeClusterClassNamePointer(void)
+char * TTradeCluster::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTTradeCluster;

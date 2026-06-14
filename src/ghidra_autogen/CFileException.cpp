@@ -19,7 +19,7 @@ undefined4 * CFileException::ConstructCFileException(void)
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(extraout_ECX + 3);
   extraout_ECX[1] = 0xffffffff;
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
   extraout_ECX[2] = 0;
@@ -65,7 +65,7 @@ void CFileException::DestructCFileException(void)
     CloseFileHandleAndThrowMfcExceptionOnError();
   }
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(extraout_ECX + 3);
   uVar2 = *(undefined4 *)(unaff_EBP + -0xc);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uVar2;
@@ -79,12 +79,13 @@ void CFileException::DestructCFileException(void)
 void CFileException::DestructFileExceptionAndReleaseMessageString(void)
 
 {
+  int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(extraout_ECX + 0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   DestructCFileException();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);

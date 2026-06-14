@@ -798,7 +798,7 @@ LAB_00566ad9:
           iVar8 = *piVar1;
           cVar5 = (**(code **)(iVar8 + 0x38))();
           SetQuickDrawFillColorFromPaletteIndex((-(uint)(cVar5 != '\0') & 0xffffffed) + 0x13);
-          InitializeSharedStringRefFromEmpty();
+          InitializeSharedStringRefFromEmpty(&iStack_118);
           puStack_8._0_1_ = 3;
           (**(code **)(iVar8 + 0x2c))(&iStack_118);
           sVar6 = WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20
@@ -806,7 +806,7 @@ LAB_00566ad9:
           thunk_SetQuickDrawTextOriginWithContextOffset(iVar15 - (int)sVar6 / 2);
           THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&iStack_118);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
-          ReleaseSharedStringRefIfNotEmpty();
+          ReleaseSharedStringRefIfNotEmpty(&iStack_118);
         }
       }
     }
@@ -826,7 +826,7 @@ LAB_00566ad9:
                  ((int)(char)(iVar15 / 0x6c) & 1U) * 8;
         if (((*unaff_retaddr <= iVar15) && (iVar15 <= unaff_retaddr[2])) &&
            ((unaff_retaddr[1] <= iVar8 && (iVar8 <= unaff_retaddr[3])))) {
-          InitializeSharedStringRefFromEmpty();
+          InitializeSharedStringRefFromEmpty(&iStack_118);
           puStack_8._0_1_ = 4;
           FormatOverlayTerrainLabelText(&iStack_118);
           sVar6 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&iStack_118);
@@ -838,7 +838,7 @@ LAB_00566ad9:
           thunk_SetQuickDrawTextOriginWithContextOffset(iVar15,iVar8);
           THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&iStack_118);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
-          ReleaseSharedStringRefIfNotEmpty();
+          ReleaseSharedStringRefIfNotEmpty(&iStack_118);
         }
       }
       uStack_104 = uStack_104 + 1;

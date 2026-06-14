@@ -51,11 +51,14 @@ void __fastcall TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(int
 
 {
   int *piVar1;
-  undefined4 *puVar2;
+  int iVar2;
   int iVar3;
-  int iVar4;
   undefined4 *unaff_FS_OFFSET;
   short unaff_retaddr;
+  undefined4 *puStack_84;
+  undefined4 uStack_80;
+  undefined4 *puStack_7c;
+  undefined4 *puStack_78;
   undefined4 uStack_74;
   undefined4 uStack_70;
   undefined4 uStack_6c;
@@ -90,9 +93,9 @@ void __fastcall TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(int
   puStack_8 = &LAB_00633728;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar4 = *param_1;
+  iVar3 = *param_1;
   uStack_4c = 0x5057c3;
-  (**(code **)(iVar4 + 0x58))();
+  (**(code **)(iVar3 + 0x58))();
   uStack_4c = 3;
   uStack_50 = 0x2b6d;
   uStack_54 = 0xc;
@@ -128,47 +131,55 @@ void __fastcall TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(int
   thunk_InitializeUiTextStyleDescriptor();
   uStack_4c = 0x6974656d;
   uStack_50 = 0x50584f;
-  piVar1 = (int *)(**(code **)(iVar4 + 0x94))();
+  piVar1 = (int *)(**(code **)(iVar3 + 0x94))();
   uStack_50 = 1;
-  iVar4 = *piVar1;
+  iVar3 = *piVar1;
   uStack_54 = CONCAT22(unaff_retaddr >> 0xf,*(undefined2 *)((int)param_1 + unaff_retaddr * 2 + 0x94)
                       );
   uStack_58 = 0x2755;
   psStack_5c = (short *)0x505870;
-  (**(code **)(iVar4 + 0x1cc))();
+  (**(code **)(iVar3 + 0x1cc))();
   psStack_5c = (short *)0x1;
   uStack_60 = 1;
   pcStack_64 = (code *)0x50587c;
-  (**(code **)(iVar4 + 0xa4))();
+  (**(code **)(iVar3 + 0xa4))();
   pcStack_64 = (code *)0x1;
   uStack_68 = 0;
   uStack_6c = 0x505887;
-  (**(code **)(iVar4 + 0xa8))();
+  (**(code **)(iVar3 + 0xa8))();
   uStack_6c = 0;
   uStack_70 = 1;
   uStack_74 = 0x505892;
-  (**(code **)(iVar4 + 0x1c4))();
+  (**(code **)(iVar3 + 0x1c4))();
+  puStack_78 = &uStack_58;
   uStack_74 = 0;
-  (**(code **)(iVar4 + 0x1b4))(&uStack_58);
-  iVar4 = 0;
+  puStack_7c = (undefined4 *)0x5058a0;
+  (**(code **)(iVar3 + 0x1b4))();
+  iVar3 = 0;
   do {
-    piVar1 = (int *)(*pcStack_64)(iVar4 + 0x69303061);
-    iVar3 = (int)asStack_30[0];
-    puVar2 = &uStack_58;
-    if (iVar3 != iVar4) {
-      puVar2 = &uStack_4c;
+    puStack_7c = (undefined4 *)(iVar3 + 0x69303061);
+    uStack_80 = 0x5058af;
+    piVar1 = (int *)(*pcStack_64)();
+    iVar2 = (int)asStack_30[0];
+    uStack_80 = 1;
+    puStack_84 = &uStack_58;
+    if (iVar2 != iVar3) {
+      puStack_84 = &uStack_4c;
     }
-    (**(code **)(*piVar1 + 0x1b4))(puVar2,1);
-    iVar4 = iVar4 + 1;
-  } while (iVar4 < 0xc);
-  InitializeSharedStringRefFromEmpty();
-  (**(code **)(*g_pLocalizationTable + 0x84))
-            (0x2756,CONCAT22((short)((uint)&uStack_68 >> 0x10),
-                             *(short *)((int)param_1 + iVar3 * 2 + 0x94) + -1),&uStack_68);
+    (**(code **)(*piVar1 + 0x1b4))();
+    iVar3 = iVar3 + 1;
+  } while (iVar3 < 0xc);
+  puStack_7c = (undefined4 *)0x5058dc;
+  InitializeSharedStringRefFromEmpty(&uStack_68);
+  puStack_7c = &uStack_68;
+  uStack_80 = CONCAT22((short)((uint)puStack_7c >> 0x10),
+                       *(short *)((int)param_1 + iVar2 * 2 + 0x94) + -1);
+  puStack_84 = (undefined4 *)0x2756;
+  (**(code **)(*g_pLocalizationTable + 0x84))();
   (**(code **)(*(int *)param_1[0x24] + 0x1ec))(&uStack_74,1);
   (**(code **)(*(int *)param_1[0x24] + 0xa4))(1,1);
   uStack_50 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&puStack_84);
   *unaff_FS_OFFSET = uStack_58;
   return;
 }

@@ -71,6 +71,7 @@ void __fastcall TTradePanelView::DestructTTradePanelViewAndMaybeFree(int param_1
   undefined1 local_41;
   short asStack_40 [2];
   undefined1 *local_3c;
+  undefined1 local_38 [4];
   short local_34 [10];
   short local_20 [4];
   undefined4 local_18;
@@ -86,10 +87,10 @@ void __fastcall TTradePanelView::DestructTTradePanelViewAndMaybeFree(int param_1
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   ppuStack_60 = (undefined1 **)0x4f8967;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_4c);
   local_4 = 0;
   ppuStack_60 = (undefined1 **)0x4f8978;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_38);
   puVar5 = (undefined1 *)CONCAT22((short)((uint)unaff_EDI >> 0x10),*(undefined2 *)(param_1 + 0x28));
   sVar1 = *(short *)(param_1 + 0x24);
   iVar2 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
@@ -200,10 +201,10 @@ void __fastcall TTradePanelView::DestructTTradePanelViewAndMaybeFree(int param_1
   SetQuickDrawFillColor();
   local_10 = local_10 & 0xffffff00;
   puStack_6c = (undefined1 *)0x4f8c4d;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_44);
   local_10 = 0xffffffff;
   puStack_6c = (undefined1 *)0x4f8c5e;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffa8);
   *unaff_FS_OFFSET = local_18;
   return;
 }

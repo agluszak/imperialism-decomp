@@ -300,7 +300,7 @@ undefined1 __fastcall TArmyTacUnit::TArmyTacUnit_VtblSlot09(int param_1)
   *unaff_FS_OFFSET = &uStack_c;
   if (*(char *)(param_1 + 0xe) != '\0') {
     puStack_1c = (undefined1 *)0x59ea89;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_14);
     puStack_1c = auStack_14;
     uStack_20 = 0;
     uStack_24 = 0x273d;
@@ -315,7 +315,7 @@ undefined1 __fastcall TArmyTacUnit::TArmyTacUnit_VtblSlot09(int param_1)
     uVar1 = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
     uStack_10 = 0xffffffff;
     uStack_28 = 0x59eae3;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&uStack_20);
     *unaff_FS_OFFSET = unaff_EBX;
     return uVar1;
   }

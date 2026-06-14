@@ -35,13 +35,13 @@ undefined4 * T2PictureButton::CreateT2PictureButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570B90
-// GHIDRA_NAME T2PictureButton::GetT2PictureButtonClassNamePointer
-// GHIDRA_PROTO undefined GetT2PictureButtonClassNamePointer()
+// GHIDRA_NAME T2PictureButton::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** T2PictureButton::GetT2PictureButtonClassNamePointer(void)
+undefined ** T2PictureButton::GetRuntimeClass(void)
 
 {
-  return &PTR_s_T2PictureButton_0065e568;
+  return &g_pClassDescT2PictureButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570BB0
@@ -60,6 +60,20 @@ undefined4 * __fastcall T2PictureButton::ConstructUiBattleTabPictureEntry(undefi
   thunk_TPictureButton::TPictureButton();
   *(undefined2 *)((int)param_1 + 0x92) = 7000;
   *param_1 = &PTR_LAB_0065eb60;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570BE0
+// GHIDRA_NAME T2PictureButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall T2PictureButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
   return param_1;
 }
 

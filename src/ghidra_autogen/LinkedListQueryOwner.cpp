@@ -465,12 +465,13 @@ switchD_005d72b4_default:
     piVar5 = (int *)TControl::thunk_ConstructTurnEventUiEntryBase();
   }
   uStack_c = 0xffffffff;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&stack0x00000000,(char *)&g_szEmptyString);
   uStack_c = 1;
   TCViewOwnedBufferRegistryState_00648560::thunk_BuildTurnEventFactoryPacket
             (0,piVar4,uStack_4,&stack0xffffffd8,&stack0x00000000,1);
   uStack_c = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0x00000000);
   iVar3 = *piVar5;
   (**(code **)(iVar3 + 0xdc))(0);
   piVar5[7] = 0x496e636c;

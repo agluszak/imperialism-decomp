@@ -79,7 +79,7 @@ TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage
   thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   uStack_4 = 0xffffffff;
   uStack_14 = 0x5d5ac6;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -166,9 +166,11 @@ bool __thiscall TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short 
   int nTickNowDiv16;
   undefined4 unaff_EBX;
   uint *unaff_FS_OFFSET;
+  undefined2 in_stack_00000006;
   char *pszFormattedText;
   char *pszTemplateText;
   int *pThisAlias;
+  TViewMgr *local_14;
   uint dwSavedSehFrame;
   uint dwPrevSehFrame;
   undefined1 *puStack_8;
@@ -178,6 +180,7 @@ bool __thiscall TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short 
   ushort wActionFinalizeFlags;
   uint dwSfxToken;
   
+  sVar2 = nTileIndex;
   wActionFinalizeFlags = (ushort)((uint)unaff_EBX >> 0x10);
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00631cf0;
@@ -186,34 +189,36 @@ bool __thiscall TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short 
   pSelectedCivilianOrderEntry = *(int **)(g_pSelectedCivilianOrderState + 4);
   pszFormattedText._0_3_ = (uint3)pszFormattedText & 0xffff;
   pszFormattedText = (char *)(uint)(uint3)pszFormattedText;
+  local_14 = this;
   if (nTileIndex == *(short *)(*(int *)(this + 4) + 6)) {
     nActionTagOrStartTick = (**(code **)(*g_pUiRuntimeContext + 0xdc))();
     if (nActionTagOrStartTick == 0x666f7274) {
       sVar2 = *(short *)(&g_awEngineerFortBuildCostByLevel +
                         *(char *)(*(int *)(g_pGlobalMapState + 0x10) + 3 +
-                                 *(short *)(*(int *)(g_pGlobalMapState + 0xc) + 0x14 +
-                                           nTileIndex * 0x24) * 0xa8) * 2);
+                                 *(short *)(*(int *)(g_pGlobalMapState + 0xc) + 0x14 + sVar2 * 0x24)
+                                 * 0xa8) * 2);
       nNationId = UiRuntimeContext::GetActiveNationId();
       uVar1 = *(int *)((&g_apNationStates)[nNationId] + 0x8f0) / 100 +
               *(int *)((&g_apNationStates)[nNationId] + 0x10);
       if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < (int)sVar2) {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&pszFormattedText);
         puStack_8 = (undefined1 *)0x6;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&pszTemplateText);
         puStack_8._0_1_ = 7;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&stack0x00000000);
         puStack_8._0_1_ = 8;
         (**(code **)(*g_pLocalizationTable + 0x74))();
         (**(code **)(*g_pLocalizationTable + 0x84))(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText);
+        local_14 = (TViewMgr *)&stack0xffffffbc;
         thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 7;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&stack0x00000000);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&pszTemplateText);
         puStack_8 = (undefined1 *)0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&pszFormattedText);
         this = (TViewMgr *)pThisAlias;
                     /* Same-tile depot/port/fort handling branch after affordability checks. */
         goto finalize_engineer_action_and_refresh;
@@ -231,24 +236,25 @@ bool __thiscall TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short 
       uVar1 = *(int *)((&g_apNationStates)[sVar2] + 0x8f0) / 100 +
               *(int *)((&g_apNationStates)[sVar2] + 0x10);
       if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 3000) {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&pszFormattedText);
         puStack_8 = (undefined1 *)0x3;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&pszTemplateText);
         puStack_8._0_1_ = 4;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&stack0x00000000);
         puStack_8._0_1_ = 5;
         (**(code **)(*g_pLocalizationTable + 0x74))();
         (**(code **)(*g_pLocalizationTable + 0x84))(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText);
+        local_14 = (TViewMgr *)&stack0xffffffbc;
         thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 4;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&stack0x00000000);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&pszTemplateText);
                     /* Alternate same-tile option affordability/cancel branch. */
         puStack_8 = (undefined1 *)0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&pszFormattedText);
         this = (TViewMgr *)pThisAlias;
         goto finalize_engineer_action_and_refresh;
       }
@@ -268,26 +274,27 @@ bool __thiscall TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short 
            *(int *)((&g_apNationStates)[nCostOrNationId] + 0x8f0) / 100 +
            *(int *)((&g_apNationStates)[nCostOrNationId] + 0x10);
       if ((int)(dwAvailableNationCash & ((int)dwAvailableNationCash < 1) - 1) < 2000) {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&pszTemplateText);
         puStack_8 = (undefined1 *)0x0;
                     /* Construction-option affordability failure path (selected same-tile action).
                         */
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&pszFormattedText);
         puStack_8._0_1_ = 1;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&stack0x00000000);
         puStack_8._0_1_ = 2;
         (**(code **)(*g_pLocalizationTable + 0x74))();
         (**(code **)(*g_pLocalizationTable + 0x84))(0x2745);
         scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszFormattedText);
+        pThisAlias = (int *)&stack0xffffffbc;
         thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_8._0_1_ = 1;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&stack0x00000000);
         puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&pszFormattedText);
         puStack_8 = (undefined1 *)0xffffffff;
                     /* Abort branch for unaffordable or canceled same-tile construction option. */
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&pszTemplateText);
         goto finalize_engineer_action_and_refresh;
       }
       sVar2 = UiRuntimeContext::GetActiveNationId();
@@ -308,23 +315,24 @@ bool __thiscall TViewMgr::HandleEngineerConstructionAction(TViewMgr *this,short 
             *(int *)((&g_apNationStates)[sVar2] + 0x10);
     if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < iVar4) {
                     /* Adjacent-tile rail branch affordability check and warning path. */
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&pszTemplateText);
       local_4 = 9;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&pThisAlias);
       local_4 = CONCAT31(local_4._1_3_,10);
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&nTileIndex);
       local_4 = CONCAT31(local_4._1_3_,0xb);
       (**(code **)(*g_pLocalizationTable + 0x74))();
       (**(code **)(*g_pLocalizationTable + 0x84))();
       scanBracketExpressions(g_pLocalizationTable,&stack0x00000000,pszTemplateText);
+      local_14 = (TViewMgr *)&stack0xffffffbc;
       thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       puStack_8._0_1_ = 10;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&stack0x00000000);
       puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,9);
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&pszTemplateText);
       puStack_8 = (undefined1 *)0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&pszFormattedText);
       this = (TViewMgr *)pThisAlias;
       goto finalize_engineer_action_and_refresh;
     }
@@ -362,50 +370,53 @@ finalize_engineer_action_and_refresh:
 // GHIDRA_NAME TViewMgr::CreateTViewMgrInstance
 // GHIDRA_PROTO undefined CreateTViewMgrInstance()
 
-void TViewMgr::CreateTViewMgrInstance(int *param_1,int param_2)
+void TViewMgr::CreateTViewMgrInstance(CString param_1,CString param_2)
 
 {
-  int *this;
+  CString this;
   short sVar1;
   short sVar2;
-  int *dst_ref_ptr;
+  CString *src_ref;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
-  this = param_1;
+  this.data_ptr = param_1.data_ptr;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00639f88;
   *unaff_FS_OFFSET = &local_c;
-  sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(param_1);
-  sVar1 = (short)param_2;
-  if ((short)param_2 < sVar2) {
-    InitializeSharedStringRefFromEmpty();
+  sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(param_1.data_ptr);
+  sVar1 = (short)param_2.data_ptr;
+  if ((short)param_2.data_ptr < sVar2) {
+    InitializeSharedStringRefFromEmpty(&param_2);
     local_4._0_1_ = 0;
     local_4._1_3_ = 0;
     do {
-      dst_ref_ptr = (int *)AssignSharedStringFromMidSubstring(&param_1,1,*(int *)(*this + -8) + -1);
+                    /* WARNING: Load size is inaccurate */
+      src_ref = (CString *)
+                AssignSharedStringFromMidSubstring(&param_1,1,*(int *)(*this.data_ptr + -8) + -1);
       local_4._0_1_ = 1;
-      AssignFromPtr(&param_2,dst_ref_ptr);
+      AssignFromPtr(&param_2,src_ref);
       local_4._0_1_ = 0;
-      ReleaseSharedStringRefIfNotEmpty();
-      AssignFromPtr(this,&param_2);
-      AssignStringSharedFromCStr(&DAT_0069587c);
+      ReleaseSharedStringRefIfNotEmpty(&param_1);
+      AssignFromPtr((void *)this.data_ptr,&param_2);
+      AssignStringSharedFromCStr(&param_2,&DAT_0069587c);
       sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&param_2);
       if (sVar2 <= sVar1) break;
-    } while (4 < *(int *)(param_2 + -8));
-    if (*(int *)(param_2 + -8) < 5) {
-      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(PTR_g_szEmptyString_0066ef28);
+    } while (4 < *(int *)(param_2.data_ptr + -8));
+    if (*(int *)(param_2.data_ptr + -8) < 5) {
+      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+                ((TToolBarCluster *)&param_1,PTR_g_szEmptyString_0066ef28);
       local_4._0_1_ = 2;
-      AssignFromPtr(&param_2,(int *)&param_1);
+      AssignFromPtr(&param_2,&param_1);
       local_4._0_1_ = 0;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&param_1);
     }
-    AssignFromPtr(this,&param_2);
+    AssignFromPtr((void *)this.data_ptr,&param_2);
     local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&param_2);
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -535,7 +546,7 @@ TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage
   thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
   local_4 = 0xffffffff;
   uStack_14 = 0x5d5ac6;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -779,12 +790,13 @@ void TViewMgr::InvokeMainWidgetMethod1CCWithArgs
 /* Event 0x5DE handler: minimal main-view refresh (resolve 'main' widget and invoke refresh vfunc).
     */
 
-void __fastcall TViewMgr::HandleTurnEvent5DE_RefreshMainView(undefined4 param_1)
+void TViewMgr::HandleTurnEvent5DE_RefreshMainView(void)
 
 {
   int iVar1;
   int *piVar2;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -794,15 +806,15 @@ void __fastcall TViewMgr::HandleTurnEvent5DE_RefreshMainView(undefined4 param_1)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piVar2 = *(int **)(DAT_006a2158 + 4);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = 0;
   piVar2 = (int *)(**(code **)(*piVar2 + 0x94))(0x6d61696e);
   iVar1 = *piVar2;
   (**(code **)(iVar1 + 0xc))();
   (**(code **)(iVar1 + 0xe4))();
   puStack_8 = (undefined1 *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = param_1;
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffec);
+  *unaff_FS_OFFSET = local_10;
   return;
 }
 
@@ -813,6 +825,7 @@ void __fastcall TViewMgr::HandleTurnEvent5DE_RefreshMainView(undefined4 param_1)
 // GHIDRA_COMMENT TurnEventState vtable slot +0xD0 handler. Builds multi-part text/context payload using TOOL/GOLD/MAIN resources and commits through UI runtime path.
 // GHIDRA_COMMENT_END
 
+/* WARNING: Type propagation algorithm not settling */
 /* TurnEventState vtable slot +0xD0 handler. Builds multi-part text/context payload using
    TOOL/GOLD/MAIN resources and commits through UI runtime path. */
 
@@ -824,7 +837,7 @@ void __fastcall TViewMgr::HandleTurnEventDialogFactorySlotD0(int param_1)
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 unaff_retaddr;
-  undefined4 **ppuStack_74;
+  int **ppiStack_74;
   undefined1 auStack_70 [4];
   undefined4 *puStack_6c;
   undefined4 uStack_68;
@@ -834,13 +847,12 @@ void __fastcall TViewMgr::HandleTurnEventDialogFactorySlotD0(int param_1)
   undefined4 *puStack_58;
   undefined4 uStack_54;
   undefined4 uStack_50;
-  undefined4 *puStack_4c;
+  int *piStack_4c;
   undefined1 *puStack_48;
   undefined4 uStack_44;
   undefined4 uStack_40;
   undefined4 uStack_3c;
-  int iStack_38;
-  undefined4 uStack_34;
+  int aiStack_38 [2];
   undefined1 *puStack_30;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -852,14 +864,14 @@ void __fastcall TViewMgr::HandleTurnEventDialogFactorySlotD0(int param_1)
   *unaff_FS_OFFSET = &uStack_c;
   puStack_30 = (undefined1 *)0x746f6f6c;
   pcVar1 = *(code **)(**(int **)(DAT_006a2158 + 4) + 0x94);
-  uStack_34 = 0x5dc219;
+  aiStack_38[1] = 0x5dc219;
   piVar2 = (int *)(*pcVar1)();
   iVar3 = *piVar2;
-  uStack_34 = 0x5dc226;
+  aiStack_38[1] = 0x5dc226;
   (**(code **)(iVar3 + 0xc))();
-  iStack_38 = 0x5dc237;
+  aiStack_38[0] = 0x5dc237;
   (**(code **)(iVar3 + 0x1d0))();
-  iStack_38 = 0x444c4f47;
+  aiStack_38[0] = 0x444c4f47;
   uStack_3c = 0x5dc240;
   piVar2 = (int *)(*pcVar1)();
   puStack_8 = (undefined1 *)*piVar2;
@@ -880,18 +892,18 @@ void __fastcall TViewMgr::HandleTurnEventDialogFactorySlotD0(int param_1)
   puStack_48 = (undefined1 *)0x5dc296;
   (**(code **)(param_1 + 0x1e0))();
   puStack_48 = (undefined1 *)0x6d61696e;
-  puStack_4c = (undefined4 *)0x5dc29f;
+  piStack_4c = (int *)0x5dc29f;
   piVar2 = (int *)(*pcVar1)();
   iVar3 = *piVar2;
-  puStack_4c = (undefined4 *)0x5dc2a8;
+  piStack_4c = (int *)0x5dc2a8;
   (**(code **)(iVar3 + 0xc))();
-  puStack_4c = (undefined4 *)0x5dc2b0;
+  piStack_4c = (int *)0x5dc2b0;
   (**(code **)(iVar3 + 500))();
-  puStack_4c = (undefined4 *)0x5dc2b9;
-  InitializeSharedStringRefFromEmpty();
-  puStack_4c = (undefined4 *)0x5dc2ca;
-  InitializeSharedStringRefFromEmpty();
-  puStack_4c = &uStack_34;
+  piStack_4c = (int *)0x5dc2b9;
+  InitializeSharedStringRefFromEmpty(aiStack_38 + 1);
+  piStack_4c = (int *)0x5dc2ca;
+  InitializeSharedStringRefFromEmpty(aiStack_38);
+  piStack_4c = aiStack_38 + 1;
   uStack_50 = 4;
   uStack_54 = 0x273f;
   puStack_58 = (undefined4 *)0x5dc2ea;
@@ -905,19 +917,19 @@ void __fastcall TViewMgr::HandleTurnEventDialogFactorySlotD0(int param_1)
   uStack_68 = 2;
   puStack_6c = &DAT_006a5b58;
   puStack_30 = auStack_70;
-  ppuStack_74 = &puStack_4c;
+  ppiStack_74 = &piStack_4c;
   thunk_AssignStringSharedRefAndReturnThis();
-  puStack_48 = (undefined1 *)&ppuStack_74;
-  iStack_38._0_1_ = 2;
+  puStack_48 = (undefined1 *)&ppiStack_74;
+  aiStack_38[0]._0_1_ = 2;
   thunk_AssignStringSharedRefAndReturnThis(&uStack_50);
-  iStack_38._0_1_ = 1;
+  aiStack_38[0]._0_1_ = 1;
   thunk_DispatchLocalizedUiMessageWithTemplate(4);
-  iStack_38 = (uint)iStack_38._1_3_ << 8;
+  aiStack_38[0] = (uint)aiStack_38[0]._1_3_ << 8;
   uStack_64 = 0x5dc351;
-  ReleaseSharedStringRefIfNotEmpty();
-  iStack_38 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty(&uStack_50);
+  aiStack_38[0] = -1;
   uStack_64 = 0x5dc362;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&piStack_4c);
   *unaff_FS_OFFSET = uStack_40;
   return;
 }

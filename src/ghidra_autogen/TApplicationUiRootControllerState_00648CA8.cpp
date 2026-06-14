@@ -26,14 +26,14 @@ undefined4 * TApplicationUiRootControllerState_00648CA8::CreateTApplicationInsta
     thunk_InitializeUiResourceEntryBaseHeaderDefaults();
     puVar1[8] = 0;
     puVar1[9] = 0;
-    puVar1[0xb] = &PTR_GetCObjectRuntimeClass_00648ca8;
+    puVar1[0xb] = &ApplicationUiRootEmbeddedList::_vftable_;
     puVar1[0xe] = 0;
     puVar1[0xf] = 0;
     puVar1[0xd] = 0;
     puVar1[0xc] = 0;
     puVar1[0x10] = 0;
     puVar1[0x11] = 10;
-    *puVar1 = &PTR_LAB_00648bd8;
+    *puVar1 = &ApplicationUiRootController::_vftable_;
     g_pApplicationUiRootController = puVar1;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
@@ -54,14 +54,14 @@ TApplicationUiRootControllerState_00648CA8::ConstructGlobalUiRootControllerState
   thunk_InitializeUiResourceEntryBaseHeaderDefaults();
   param_1[8] = 0;
   param_1[9] = 0;
-  param_1[0xb] = &PTR_GetCObjectRuntimeClass_00648ca8;
+  param_1[0xb] = &ApplicationUiRootEmbeddedList::_vftable_;
   param_1[0xe] = 0;
   param_1[0xf] = 0;
   param_1[0xd] = 0;
   param_1[0xc] = 0;
   param_1[0x10] = 0;
   param_1[0x11] = 10;
-  *param_1 = &PTR_LAB_00648bd8;
+  *param_1 = &ApplicationUiRootController::_vftable_;
   g_pApplicationUiRootController = param_1;
   return param_1;
 }
@@ -84,9 +84,9 @@ DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(undefi
   puStack_8 = &LAB_0062eac0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_LAB_00648bd8;
+  *param_1 = &ApplicationUiRootController::_vftable_;
   g_pApplicationUiRootController = 0;
-  param_1[0xb] = &PTR_GetCObjectRuntimeClass_00648ca8;
+  param_1[0xb] = &ApplicationUiRootEmbeddedList::_vftable_;
   puVar1 = (undefined4 *)param_1[0xc];
   local_4 = 1;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {

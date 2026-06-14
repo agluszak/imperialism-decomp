@@ -25,7 +25,7 @@ void __fastcall TScroller::CreateTScrollerInstance(undefined4 *param_1)
   }
   FreeHeapBufferIfNotNull(param_1[0x12]);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -80,7 +80,7 @@ TView * TScroller::DestructTScrollerAndMaybeFree(void)
 {
   TView *this;
   undefined4 *unaff_FS_OFFSET;
-  int local_14;
+  CString local_14;
   TView *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -96,17 +96,18 @@ TView * TScroller::DestructTScrollerAndMaybeFree(void)
     local_10 = this;
     TView::thunk_ConstructTViewBaseState(this);
     local_4._0_1_ = 1;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&this[1].field0c);
     this[1].field04 = 0;
     this[1].padding_08_to_0b = 0;
     local_4._0_1_ = 2;
     this->vftable = &PTR_LAB_00649c60;
     *(undefined2 *)&this[1].vftable = 0xffff;
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+              ((TToolBarCluster *)&local_14,(char *)&g_szEmptyString);
     local_4._0_1_ = 3;
     AssignFromPtr(&this[1].field0c,&local_14);
     local_4 = CONCAT31(local_4._1_3_,2);
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_14);
     *(undefined2 *)&this[1].field10 = 1;
     this->field04 = 0;
     *unaff_FS_OFFSET = local_c;

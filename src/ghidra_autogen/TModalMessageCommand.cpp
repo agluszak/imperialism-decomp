@@ -43,7 +43,7 @@ void __fastcall TModalMessageCommand::CreateTModalMessageCommandInstance(undefin
   puStack_8 = &LAB_0063a448;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 6);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;

@@ -3,6 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: TEventHandler.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00485E90
+// GHIDRA_NAME TEventHandler::Serialize
+// GHIDRA_PROTO undefined Serialize()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Vtable slot +0x08 handler.
+// GHIDRA_COMMENT Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot +0x14 (clear) or +0x18 (set).
+// GHIDRA_COMMENT_END
+
+/* Vtable slot +0x08 handler.
+   Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
+   +0x14 (clear) or +0x18 (set). */
+
+void __thiscall TEventHandler::Serialize(int *param_1,int param_2)
+
+{
+  int *unaff_FS_OFFSET;
+  undefined1 local_1c [8];
+  undefined **local_14;
+  int local_10;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062ea00;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  local_10 = param_2;
+  local_14 = &PTR_LAB_00645f98;
+  local_4 = 0;
+  TFileStream::ConstructTFileStreamBaseState();
+  local_4 = CONCAT31(local_4._1_3_,1);
+  TFileStream::SetBackingArchive(&local_14);
+  if ((~*(uint *)(param_2 + 0x14) & 1) != 0) {
+    (**(code **)(*param_1 + 0x14))();
+    *unaff_FS_OFFSET = local_10;
+    return;
+  }
+  (**(code **)(*param_1 + 0x18))(local_1c);
+  *unaff_FS_OFFSET = local_10;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A070
 // GHIDRA_NAME TEventHandler::CreateTEventHandlerInstance
 // GHIDRA_PROTO undefined CreateTEventHandlerInstance()
@@ -43,5 +85,30 @@ TEventHandler::DestructTEventHandlerAndMaybeFree(undefined4 param_1,byte param_2
     FreeHeapBufferIfNotNull(param_1);
   }
   return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A7C0
+// GHIDRA_NAME TEventHandler::CloneEngineerDialogStateToNewInstance
+// GHIDRA_PROTO undefined CloneEngineerDialogStateToNewInstance()
+
+undefined4 * __fastcall TEventHandler::CloneEngineerDialogStateToNewInstance(int param_1)
+
+{
+  undefined4 *puVar1;
+  
+  if (DAT_006a1ae4 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x2ef);
+  }
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &RefCountedObjectBase::_vftable_;
+    puVar1[1] = *(undefined4 *)(param_1 + 4);
+    puVar1[2] = *(undefined4 *)(param_1 + 8);
+    puVar1[3] = *(undefined4 *)(param_1 + 0xc);
+    puVar1[7] = *(undefined4 *)(param_1 + 0x1c);
+    *puVar1 = &_vftable_;
+    return puVar1;
+  }
+  return (undefined4 *)0x0;
 }
 

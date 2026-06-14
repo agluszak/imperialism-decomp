@@ -25,13 +25,19 @@ void __fastcall TNavyBoyView::ConstructTNavyBoyViewBaseState(int param_1)
   int iVar3;
   undefined1 *this;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_d4;
   undefined1 *puStack_d0;
   undefined1 *puStack_cc;
   undefined4 uStack_c8;
-  RECT RStack_b4;
-  int iStack_a4;
-  int local_74 [2];
+  undefined1 auStack_b4 [4];
+  CString CStack_b0;
+  undefined1 *puStack_ac;
+  LONG LStack_a8;
+  CString CStack_a4;
+  CString local_74;
+  undefined1 local_70 [4];
   undefined4 uStack_6c;
+  undefined1 local_68 [4];
   int iStack_64;
   undefined1 auStack_5c [4];
   undefined1 auStack_58 [16];
@@ -48,9 +54,9 @@ void __fastcall TNavyBoyView::ConstructTNavyBoyViewBaseState(int param_1)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_70);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_68);
   local_4._0_1_ = 1;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
   CallCallbackRepeatedly(local_44,4,0xe,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
@@ -58,63 +64,68 @@ void __fastcall TNavyBoyView::ConstructTNavyBoyViewBaseState(int param_1)
   this = local_44;
   iVar3 = 3;
   do {
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId();
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+              ((TToolBarCluster *)&local_74,PTR_g_szEmptyString_0064dc30);
     local_4._0_1_ = 3;
-    AssignFromPtr(this,local_74);
+    AssignFromPtr(this,&local_74);
     local_4._0_1_ = 2;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_74);
     this = this + 4;
     iVar3 = iVar3 + -1;
   } while (iVar3 != 0);
   (**(code **)(*g_pLocalizationTable + 0x84))();
   (**(code **)(*g_pLocalizationTable + 0x84))();
-  iStack_a4 = 0x4af1c0;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId();
+  CStack_a4.data_ptr = 0x4af1c0;
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&stack0xffffff74,PTR_g_szEmptyString_0064dc30);
   uStack_1c = 4;
-  iStack_a4 = 0x4af1d6;
-  AssignFromPtr(auStack_48,(int *)&stack0xffffff74);
+  CStack_a4.data_ptr = 0x4af1d6;
+  AssignFromPtr(auStack_48,(CString *)&stack0xffffff74);
   uStack_1c = 2;
-  ReleaseSharedStringRefIfNotEmpty();
-  iStack_a4 = 0x4af1f6;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffff74);
+  CStack_a4.data_ptr = 0x4af1f6;
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&stack0xffffff74,PTR_g_szEmptyString_0064dc30);
   uStack_1c = 5;
-  iStack_a4 = 0x4af20c;
-  AssignFromPtr(local_44,(int *)&stack0xffffff74);
+  CStack_a4.data_ptr = 0x4af20c;
+  AssignFromPtr(local_44,(CString *)&stack0xffffff74);
   uStack_1c = 2;
-  ReleaseSharedStringRefIfNotEmpty();
-  iStack_a4 = 2;
-  RStack_b4.bottom = 0x2760;
-  RStack_b4.right = 0x4af235;
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffff74);
+  CStack_a4.data_ptr = 2;
+  LStack_a8 = 0x2760;
+  puStack_ac = (undefined1 *)0x4af235;
   (**(code **)(*g_pLocalizationTable + 0x84))();
-  RStack_b4.right = (LONG)auStack_48;
-  RStack_b4.top = 3;
-  RStack_b4.left = 0x2760;
+  puStack_ac = auStack_48;
+  CStack_b0.data_ptr = 3;
+  auStack_b4 = (undefined1  [4])0x2760;
   (**(code **)(*g_pLocalizationTable + 0x84))();
   (**(code **)(*g_pLocalizationTable + 0x84))();
   uStack_c8 = 0x4af279;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId();
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&CStack_b0,PTR_g_szEmptyString_0064dc30);
   uStack_40 = 6;
   uStack_c8 = 0x4af28f;
-  AssignFromPtr(auStack_58,&RStack_b4.top);
+  AssignFromPtr(auStack_58,&CStack_b0);
   uStack_40 = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&CStack_b0);
   uStack_c8 = 5;
   puStack_cc = (undefined1 *)0x2760;
   puStack_d0 = (undefined1 *)0x4af2b9;
   (**(code **)(*g_pLocalizationTable + 0x84))();
   puStack_d0 = auStack_5c;
+  uStack_d4 = 6;
   (**(code **)(*g_pLocalizationTable + 0x84))();
   (**(code **)(*g_pLocalizationTable + 0x84))();
-  AssignFromPtr(&puStack_d0,&iStack_a4 + **(short **)(param_1 + 0x60));
+  AssignFromPtr(&puStack_d0,&CStack_a4 + **(short **)(param_1 + 0x60));
   InitializeOutSharedStringWithEmptyRefAndCopyBuffer();
   iStack_64._0_1_ = 7;
   AssignSharedStringConcatCStrAndRef(&puStack_cc,g_Build_Map_Order_LookupTable_00695794);
   iStack_64._0_1_ = 8;
   AssignStringSharedFromRef();
   iStack_64._0_1_ = 7;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&puStack_cc);
   iStack_64._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_d4);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   iVar3 = *(int *)(param_1 + 0x60);
@@ -129,26 +140,26 @@ void __fastcall TNavyBoyView::ConstructTNavyBoyViewBaseState(int param_1)
   else {
     sVar2 = ((0xe < sVar1) - 1 & 8) + 10;
   }
-  RStack_b4.top = (LONG)sVar2;
-  RStack_b4.bottom = RStack_b4.top + 7;
-  RStack_b4.right = sVar1 * 4 + -1;
-  RStack_b4.left = 0;
+  CStack_b0.data_ptr = (int)sVar2;
+  LStack_a8 = CStack_b0.data_ptr + 7;
+  puStack_ac = (undefined1 *)(sVar1 * 4 + -1);
+  auStack_b4 = (undefined1  [4])0x0;
   if (*(short *)(iVar3 + 2) < 1) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&uStack_d4);
     iStack_64._0_1_ = 9;
     (**(code **)(*g_pLocalizationTable + 0x84))(0x273c,0x1b);
     sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     thunk_SetQuickDrawTextOriginWithContextOffset(0x88 - (int)sVar1 / 2);
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
     iStack_64._0_1_ = 2;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&uStack_d4);
   }
   else {
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
-               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_b4,
+               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)auStack_b4,
                (RECT *)&stack0xffffff3c,0x24,(astruct_19 *)0x0);
   }
   puStack_cc = &stack0xffffff18;
@@ -158,11 +169,11 @@ void __fastcall TNavyBoyView::ConstructTNavyBoyViewBaseState(int param_1)
   thunk_DrawCenteredGuideLineOnMapDc(0xa2);
   thunk_DrawCenteredGuideLineOnMapDc(0xa2);
   iStack_64._0_1_ = 1;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&iStack_a4,4,0xe);
+  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&CStack_a4,4,0xe);
   iStack_64 = (uint)iStack_64._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_c8);
   iStack_64 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&puStack_d0);
   *unaff_FS_OFFSET = uStack_6c;
   return;
 }

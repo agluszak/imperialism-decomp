@@ -3,6 +3,158 @@
 // Program: Imperialism.exe
 // Bucket: TGreatPower.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6BF0
+// GHIDRA_NAME TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders
+// GHIDRA_PROTO undefined DeserializeRecruitScenarioAndInstantiateOrders()
+
+void __thiscall
+TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(int param_1,int *param_2)
+
+{
+  undefined1 uVar1;
+  code *pcVar2;
+  undefined1 *puVar3;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar4;
+  int iVar5;
+  int *piVar6;
+  int iVar7;
+  int *unaff_FS_OFFSET;
+  undefined4 uStack_7c;
+  int *piStack_78;
+  undefined1 *puStack_74;
+  int iStack_70;
+  int iStack_6c;
+  undefined4 uStack_68;
+  int iStack_64;
+  undefined4 uStack_60;
+  int iStack_5c;
+  int iStack_58;
+  int iStack_54;
+  undefined4 uStack_50;
+  undefined1 *puStack_4c;
+  undefined4 uStack_48;
+  int iStack_44;
+  undefined4 uStack_40;
+  int iStack_3c;
+  undefined4 uStack_38;
+  int iStack_34;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  iStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00631e2a;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  TradeControl::thunk_HandleCityDialogNoOpSlot18();
+  iVar5 = *param_2;
+  (**(code **)(iVar5 + 0x70))();
+  iStack_34 = 0x4d6c3d;
+  AssignFromPtr((void *)(g_pLocalizationTable + 0x7c + *(short *)(param_1 + 0xc) * 4),
+                (CString *)(param_1 + 4));
+  iStack_34 = param_1 + 8;
+  uStack_38 = 0x4d6c4b;
+  (**(code **)(iVar5 + 0x70))();
+  pcVar2 = *(code **)(iVar5 + 0x3c);
+  iStack_3c = param_1 + 0xc;
+  uStack_38 = 2;
+  uStack_40 = 0x4d6c58;
+  (*pcVar2)();
+  iStack_44 = param_1 + 0xe;
+  uStack_40 = 2;
+  uStack_48 = 0x4d6c62;
+  (*pcVar2)();
+  puVar3 = (undefined1 *)(param_1 + 0x48);
+  uStack_48 = 0x3c;
+  uStack_50 = 0x4d6c6c;
+  puStack_4c = puVar3;
+  (*pcVar2)();
+  iVar5 = 0x1e;
+  do {
+    uVar1 = *puVar3;
+    *puVar3 = puVar3[1];
+    puVar3[1] = uVar1;
+    puVar3 = puVar3 + 2;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  iStack_54 = param_1 + 0x84;
+  uStack_50 = 2;
+  iStack_58 = 0x4d6c90;
+  (*pcVar2)();
+  iStack_5c = param_1 + 0x10;
+  iStack_58 = 4;
+  uStack_60 = 0x4d6c9a;
+  (*pcVar2)();
+  iStack_64 = param_1 + 0x88;
+  uStack_60 = 4;
+  uStack_68 = 0x4d6ca7;
+  (*pcVar2)();
+  iStack_6c = param_1 + 0x8c;
+  uStack_68 = 4;
+  iStack_70 = 0x4d6cb4;
+  (*pcVar2)();
+  puVar3 = (undefined1 *)(param_1 + 0x14);
+  iStack_70 = 0x2e;
+  piStack_78 = (int *)0x4d6cbe;
+  puStack_74 = puVar3;
+  (*pcVar2)();
+  iVar5 = 0x17;
+  do {
+    uVar1 = *puVar3;
+    *puVar3 = puVar3[1];
+    puVar3[1] = uVar1;
+    puVar3 = puVar3 + 2;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  piStack_78 = (int *)0x4d6cdd;
+  iVar5 = (**(code **)(**(int **)(param_1 + 0x44) + 0x48))();
+  if (iVar5 != 0) {
+    piStack_78 = (int *)0x4d6ce9;
+    (**(code **)(**(int **)(param_1 + 0x44) + 0x54))();
+  }
+  piStack_78 = param_2;
+  uStack_7c = 0x4d6cf2;
+  (**(code **)(**(int **)(param_1 + 0x44) + 0x18))();
+  uStack_7c = 4;
+  (*pcVar2)(&uStack_50);
+  iStack_70 = 1;
+  if (0 < iStack_58) {
+    do {
+      iStack_6c = AllocateWithFallbackHandler(0x44);
+      piVar6 = (int *)0x0;
+      uStack_60 = 0;
+      uVar4 = extraout_var;
+      if (iStack_6c != 0) {
+        piVar6 = (int *)TMilitaryUnitOrderState::TMilitaryUnitOrderState();
+        uVar4 = extraout_var_00;
+      }
+      uStack_60 = 0xffffffff;
+      TMilitaryUnitOrderState::InitializeRecruitOrderState
+                (0,0xffffffff,CONCAT22(uVar4,*(undefined2 *)(param_1 + 0xc)),0);
+      (**(code **)(*piVar6 + 0x18))(param_2);
+      iStack_70 = iStack_70 + 1;
+    } while (iStack_70 <= iStack_58);
+  }
+  iVar7 = 1;
+  iVar5 = (**(code **)(**(int **)(param_1 + 0x90) + 0x28))();
+  if (iVar5 != 0) {
+    (**(code **)(**(int **)(param_1 + 0x90) + 0x30))();
+  }
+  (**(code **)(**(int **)(param_1 + 0x90) + 0x20))(param_2);
+  (*pcVar2)(&iStack_5c,4);
+  if (0 < iStack_64) {
+    do {
+      (*pcVar2)(&uStack_7c,4);
+      (**(code **)(**(int **)(param_1 + 0x90) + 0x14))(param_2);
+      iVar7 = iVar7 + 1;
+    } while (iVar7 <= iStack_64);
+  }
+  *unaff_FS_OFFSET = (int)puStack_74;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004D7AE0
 // GHIDRA_NAME TGreatPower::AddToNationMetricAtField10
 // GHIDRA_PROTO undefined AddToNationMetricAtField10()
@@ -114,10 +266,10 @@ undefined4 * __fastcall TGreatPower::TGreatPower(undefined4 *param_1)
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 1);
   local_4 = CONCAT31(local_4._1_3_,1);
-  InitializeSharedStringRefFromEmpty();
-  *param_1 = &PTR_LAB_00653938;
+  InitializeSharedStringRefFromEmpty(param_1 + 2);
+  *param_1 = &_vftable_;
   param_1[4] = 0;
   *(undefined2 *)((int)param_1 + 0xa6) = 0;
   *(undefined2 *)(param_1 + 0x2a) = 0;
@@ -213,9 +365,9 @@ void __fastcall TGreatPower::~TGreatPower(undefined4 *param_1)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 2);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 1);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -897,20 +1049,16 @@ TGreatPower::SetNationPendingActionStateAndPayload(int param_1,int param_2,undef
 void __fastcall TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(int *param_1)
 
 {
-  int iVar1;
-  short sVar2;
-  char cVar3;
-  short sVar4;
+  short sVar1;
+  char cVar2;
+  short sVar3;
+  int iVar4;
   int iVar5;
-  int iVar6;
   short **extraout_ECX;
-  undefined *puVar7;
-  int *piVar8;
+  int *piVar6;
   undefined4 *unaff_FS_OFFSET;
   short **ppsStack_f0;
   int *piStack_ec;
-  int **ppiStack_e8;
-  int *piStack_e4;
   undefined1 auStack_d0 [4];
   int *local_cc;
   int iStack_c8;
@@ -931,15 +1079,15 @@ void __fastcall TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchM
   *unaff_FS_OFFSET = &uStack_c;
   local_c0 = *param_1;
   local_cc = param_1;
-  cVar3 = (**(code **)(local_c0 + 0xa0))();
-  if ((cVar3 == '\0') &&
+  cVar2 = (**(code **)(local_c0 + 0xa0))();
+  if ((cVar2 == '\0') &&
      (*(int *)(&DAT_00653528 + g_pLocalizationTable[0x10] * 4) <= (int)(char)param_1[0x23f])) {
-    piVar8 = aiStack_68;
-    for (iVar6 = 0x17; iVar6 != 0; iVar6 = iVar6 + -1) {
-      *piVar8 = 0;
-      piVar8 = piVar8 + 1;
+    piVar6 = aiStack_68;
+    for (iVar5 = 0x17; iVar5 != 0; iVar5 = iVar5 + -1) {
+      *piVar6 = 0;
+      piVar6 = piVar6 + 1;
     }
-    iVar6 = 0;
+    iVar5 = 0;
     asStack_b0[0] = 0xf;
     asStack_b0[1] = 0;
     asStack_b0[2] = 0xe;
@@ -977,121 +1125,88 @@ void __fastcall TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchM
     asStack_b0[0x22] = -1;
     asStack_b0[0x23] = -1;
     iStack_c4 = 0;
-    piStack_e4 = (int *)0x4db02f;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&iStack_c8);
     psStack_bc = asStack_b0;
     uStack_4 = 0;
     do {
-      if (-1 < iVar6 + param_1[4]) break;
-      sVar4 = *psStack_bc;
-      puVar7 = (undefined *)CONCAT22((short)((uint)param_1 >> 0x10),sVar4);
-      piVar8 = (int *)local_cc[0x225];
-      iVar1 = sVar4 * 2 + 0xb6;
-      if (0 < *(short *)((int)piVar8 + iVar1)) {
-        sVar2 = *(short *)((int)piVar8 + iVar1);
-        *(undefined2 *)((int)piVar8 + iVar1) = 0;
-        iVar6 = *piVar8;
-        aiStack_68[sVar4] = (int)sVar2;
-        piStack_e4 = (int *)0x4db082;
-        (**(code **)(iVar6 + 0x80))();
-        iVar1 = aiStack_68[sVar4];
+      if (-1 < iVar5 + param_1[4]) break;
+      sVar1 = *psStack_bc;
+      piVar6 = (int *)local_cc[0x225];
+      iVar4 = sVar1 * 2 + 0xb6;
+      if (0 < *(short *)((int)piVar6 + iVar4)) {
+        sVar3 = *(short *)((int)piVar6 + iVar4);
+        *(undefined2 *)((int)piVar6 + iVar4) = 0;
+        iVar5 = *piVar6;
+        aiStack_68[sVar1] = (int)sVar3;
+        (**(code **)(iVar5 + 0x80))();
+        iVar5 = aiStack_68[sVar1];
         fStack_b4 = (float)iStack_c4;
-        ppiStack_e8 = (int **)0x4db098;
-        piStack_e4 = (int *)puVar7;
-        sVar4 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x4c))();
-        iStack_c8 = sVar4 * iVar1;
-        ppiStack_e8 = (int **)0x4db0b5;
-        iVar6 = ftol();
-        ppiStack_e8 = (int **)&g_szEmptyString;
+        sVar3 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x4c))();
+        iStack_c8 = sVar3 * iVar5;
+        iVar5 = ftol();
         piStack_ec = local_cc;
         ppsStack_f0 = (short **)0x4db0ca;
-        iStack_c8 = iVar6;
-        iVar5 = CompareAnsiStringsWithMbcsAwareness();
-        if (iVar5 != 0) {
-          ppiStack_e8 = (int **)&DAT_00695760;
+        iStack_c8 = iVar5;
+        iVar4 = CompareAnsiStringsWithMbcsAwareness();
+        if (iVar4 != 0) {
           piStack_ec = (int *)0x4db0e5;
-          AssignStringSharedFromCStr();
+          AssignStringSharedFromCStr(&local_cc,&DAT_00695760);
         }
-        ppiStack_e8 = (int **)0x4db0ee;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&stack0xffffff2c);
         ppsStack_f0 = (short **)&stack0xffffff2c;
         piStack_ec = (int *)&g_szDecimalFormat;
         puStack_8._0_1_ = 1;
-        ppiStack_e8 = (int **)iVar1;
         FormatStringWithVarArgsToSharedRef();
         piStack_ec = (int *)&stack0xffffff2c;
         ppsStack_f0 = &psStack_bc;
-        ppiStack_e8 = (int **)g_Build_Map_Order_LookupTable_00695794;
-        ppiStack_e8 = (int **)AssignSharedStringConcatRefAndCStr();
+        AssignSharedStringConcatRefAndCStr();
         puStack_8._0_1_ = 2;
         piStack_ec = (int *)0x4db12f;
         AssignStringSharedFromRef();
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
-        ppiStack_e8 = (int **)0x4db140;
-        ReleaseSharedStringRefIfNotEmpty();
-        ppiStack_e8 = (int **)&stack0xffffff2c;
+        ReleaseSharedStringRefIfNotEmpty(&psStack_bc);
         ppsStack_f0 = (short **)0x4db151;
-        piStack_ec = (int *)puVar7;
+        piStack_ec = (int *)CONCAT22((short)((uint)param_1 >> 0x10),sVar1);
         (**(code **)(*g_pLocalizationTable + 0x7c))();
-        piStack_e4 = (int *)auStack_d0;
-        ppiStack_e8 = (int **)0x4db15f;
         AssignStringSharedFromRef();
         uStack_4 = uStack_4 & 0xffffff00;
-        piStack_e4 = (int *)0x4db16f;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(auStack_d0);
       }
-      piVar8 = (int *)(psStack_bc + 2);
+      piVar6 = (int *)(psStack_bc + 2);
       psStack_bc = psStack_bc + 2;
       param_1 = local_cc;
-    } while (*piVar8 != -1);
-    ppiStack_e8 = (int **)0x4db194;
-    piStack_e4 = (int *)iVar6;
+    } while (*piVar6 != -1);
     (**(code **)(local_c0 + 0x38))();
-    if (0 < iVar6) {
-      piStack_e4 = (int *)0x4db1a5;
-      InitializeSharedStringRefFromEmpty();
+    if (0 < iVar5) {
+      InitializeSharedStringRefFromEmpty(&local_cc);
       uStack_4._0_1_ = 3;
-      piStack_e4 = (int *)0x4db1b6;
-      InitializeSharedStringRefFromEmpty();
-      piStack_e4 = (int *)auStack_d0;
-      ppiStack_e8 = (int **)0x0;
+      InitializeSharedStringRefFromEmpty(auStack_d0);
       piStack_ec = (int *)0x274b;
       uStack_4._0_1_ = 4;
       ppsStack_f0 = (short **)0x4db1d7;
       (**(code **)(*g_pLocalizationTable + 0x84))();
       ppsStack_f0 = (short **)&stack0xffffff28;
-      (**(code **)(*g_pLocalizationTable + 0x74))(iVar6);
-      ppiStack_e8 = &local_cc;
-      piStack_e4 = (int *)&DAT_00696724;
+      (**(code **)(*g_pLocalizationTable + 0x74))(iVar5);
       piStack_ec = &local_c0;
       ppsStack_f0 = (short **)0x4db1fc;
-      piStack_e4 = (int *)AssignSharedStringConcatRefAndCStr();
+      AssignSharedStringConcatRefAndCStr();
       uStack_4._0_1_ = 5;
-      ppiStack_e8 = (int **)0x4db20e;
       AssignStringSharedFromRef();
       uStack_4._0_1_ = 4;
-      piStack_e4 = (int *)0x4db21f;
-      ReleaseSharedStringRefIfNotEmpty();
-      piStack_e4 = &iStack_c8;
-      ppiStack_e8 = (int **)0x4db22d;
+      ReleaseSharedStringRefIfNotEmpty(&local_c0);
       AssignStringSharedFromRef();
-      piStack_e4 = (int *)0x0;
-      ppiStack_e8 = (int **)0x2;
       piStack_ec = (int *)&DAT_006a2df0;
       puStack_b8 = (undefined1 *)&ppsStack_f0;
       ppsStack_f0 = extraout_ECX;
       thunk_AssignStringSharedRefAndReturnThis(auStack_d0);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       uStack_4._0_1_ = 3;
-      piStack_e4 = (int *)0x4db262;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_d0);
       uStack_4 = (uint)uStack_4._1_3_ << 8;
-      piStack_e4 = (int *)0x4db272;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&local_cc);
     }
     uStack_4 = 0xffffffff;
-    piStack_e4 = (int *)0x4db286;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&iStack_c8);
   }
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -1153,7 +1268,7 @@ TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(int *para
     }
     else {
       puStack_24 = (undefined1 *)0x4db4e3;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(auStack_14);
       cVar3 = (char)param_1[0x23d] + (&DAT_00653510)[iVar1 * 4];
       uStack_4 = 0;
       *(char *)(param_1 + 0x23d) = cVar3;
@@ -1178,7 +1293,7 @@ TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(int *para
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         puStack_10 = (undefined4 *)0xffffffff;
         uStack_30 = 0x4db596;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&stack0xffffffe0);
         *unaff_FS_OFFSET = unaff_EBP;
         return 1;
       }
@@ -1221,7 +1336,7 @@ TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(int *para
       }
       uStack_4 = 0xffffffff;
       puStack_24 = (undefined1 *)0x4db67d;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_14);
     }
   }
   else {
@@ -1470,7 +1585,7 @@ void __fastcall TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEve
             }
           }
           if (*(char *)(g_pGlobalMapState[4] + 2 + (short)iVar11 * 0xa8) < (char)uStack_84) {
-            thunk_SetGlobalRegionDevelopmentStageByte(iVar11,uStack_84);
+            TGlobalMapState::thunk_SetGlobalRegionDevelopmentStageByte(iVar11,uStack_84);
             if ((char)uStack_84 == '\x02') {
               (**(code **)(*param_1 + 0xb8))(4,iVar11);
             }
@@ -1618,18 +1733,18 @@ TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(int param_1)
               ((*(byte *)(piVar2 + 4) & '\x01' << ((byte)iVar5 & 0x1f)) != 0)) &&
              ((*(byte *)(piVar2 + 4) & '\x01' << ((byte)*(undefined2 *)(param_1 + 0xc) & 0x1f)) == 0
              )) {
-            InitializeSharedStringRefFromEmpty();
+            InitializeSharedStringRefFromEmpty(&stack0x00000004);
             iStack_4 = 0;
             (**(code **)(*piVar2 + 0x2c))(&stack0x00000004);
             uVar4 = AssignSharedStringConcatCStrAndRef(auStack_10,s__0069674c,&stack0x00000004);
             iStack_4._0_1_ = 1;
             AssignStringSharedFromRef(uVar4);
             iStack_4 = (uint)iStack_4._1_3_ << 8;
-            ReleaseSharedStringRefIfNotEmpty();
+            ReleaseSharedStringRefIfNotEmpty(auStack_10);
             local_15 = 1;
             bVar1 = true;
             iStack_4 = 0xffffffff;
-            ReleaseSharedStringRefIfNotEmpty();
+            ReleaseSharedStringRefIfNotEmpty(&stack0x00000004);
           }
           iVar5 = iVar5 + 1;
         } while (!bVar1);
@@ -1686,7 +1801,7 @@ TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(int param_
     while (uVar1 = 0, iVar2 != 0) {
       if ((*(char *)(iVar3 + 0x4d) != '\0') && (*(char *)(iVar3 + 0x4c) == '\0')) {
         local_1d = 1;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&stack0x00000004);
         iStack_4 = 0;
         thunk_AssignSharedStringFromIndexedA8EntryNameField
                   ((int)*(short *)(*(int *)(g_pGlobalMapState + 0xc) + 0x14 +
@@ -1695,9 +1810,9 @@ TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(int param_
         iStack_4._0_1_ = 1;
         AssignStringSharedFromRef(uVar1);
         iStack_4 = (uint)iStack_4._1_3_ << 8;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(auStack_1c);
         iStack_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&stack0x00000004);
       }
       iVar3 = AdvanceLinkedListCursor();
       iVar2 = LinkedListCursorHasCurrent();
@@ -2345,7 +2460,7 @@ TGreatPower::ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(int *par
 
 char __thiscall
 TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury
-          (int *param_1,short param_2,undefined4 param_3)
+          (int *param_1,undefined4 param_2,undefined4 param_3)
 
 {
   ushort uVar1;
@@ -2355,7 +2470,6 @@ TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury
   int iVar5;
   ushort uVar6;
   undefined4 *unaff_FS_OFFSET;
-  char local_18;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int iStack_4;
@@ -2364,19 +2478,19 @@ TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury
   puStack_8 = &LAB_00632288;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar5 = (int)param_2;
-  local_18 = '\x01';
+  iVar5 = (int)(short)param_2;
+  cVar3 = '\x01';
   uVar1 = *(ushort *)((int)param_1 + iVar5 * 2 + 0xe0);
   uVar6 = (ushort)param_3;
   if (uVar6 != uVar1) {
     if (uVar6 != 0xffff) {
       cVar3 = (**(code **)(*param_1 + 0x1dc))();
       if (cVar3 == '\0') {
-        local_18 = '\0';
+        cVar3 = '\0';
         goto LAB_004de3ef;
       }
     }
-    local_18 = '\x01';
+    cVar3 = '\x01';
     if (uVar1 != 0xffff) {
       param_1[0x2b] = param_1[0x2b] - (int)(short)(uVar1 & 0x3fff);
       (**(code **)(*param_1 + 0x38))();
@@ -2390,8 +2504,8 @@ TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury
 LAB_004de3ef:
   if ((char)param_1[0x28] != '\0') {
     thunk_NoOpDiplomacyPolicyStateChangedHook();
-    if (((((char)param_1[0x28] != '\0') && (local_18 != '\0')) && (uVar6 != 0xffff)) &&
-       (6 < param_2)) {
+    if (((((char)param_1[0x28] != '\0') && (cVar3 != '\0')) && (uVar6 != 0xffff)) &&
+       (6 < (short)param_2)) {
       bVar2 = false;
       iVar4 = 0;
       do {
@@ -2404,9 +2518,9 @@ LAB_004de3ef:
         iVar4 = iVar4 + 1;
       } while (!bVar2);
       if (bVar2) {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&param_3);
         iStack_4 = 0;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&param_2);
         iStack_4._0_1_ = 1;
         (**(code **)(*g_pLocalizationTable + 0x84))();
         (**(code **)(*g_pLocalizationTable + 0x84))(0x2753);
@@ -2416,14 +2530,14 @@ LAB_004de3ef:
         iStack_4._0_1_ = 1;
         thunk_DispatchLocalizedUiMessageWithTemplate(5);
         iStack_4 = (uint)iStack_4._1_3_ << 8;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&param_2);
         iStack_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&param_3);
       }
     }
   }
   *unaff_FS_OFFSET = uStack_c;
-  return local_18;
+  return cVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004DE5E0
@@ -2798,7 +2912,9 @@ void __thiscall TGreatPower::ApplyAcceptedDiplomacyProposalCode(int *param_1,sho
   int iVar7;
   int *unaff_FS_OFFSET;
   undefined4 uVar8;
+  undefined1 local_18 [4];
   int local_14;
+  undefined1 local_10 [4];
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -2807,11 +2923,11 @@ void __thiscall TGreatPower::ApplyAcceptedDiplomacyProposalCode(int *param_1,sho
   puStack_8 = &LAB_006322b8;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_14);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_18);
   local_4 = CONCAT31(local_4._1_3_,2);
   psVar4 = (short *)(**(code **)(*(int *)param_1[0x213] + 0x2c))((int)param_2);
   uVar5 = (undefined2)((uint)(*psVar4 + -0x12d) >> 0x10);
@@ -2886,11 +3002,11 @@ LAB_004df210:
     (**(code **)(*(int *)(&g_apNationStates)[psVar4[1]] + 0x94))((short)param_1[3],*psVar4);
   }
   iStack_c._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffe0);
   iStack_c = (uint)iStack_c._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffe4);
   iStack_c = -1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_18);
   *unaff_FS_OFFSET = local_14;
   return;
 }
@@ -2980,6 +3096,8 @@ void __fastcall TGreatPower::ProcessPendingDiplomacyProposalQueue(int *param_1)
   undefined4 *unaff_FS_OFFSET;
   int local_20;
   int local_1c;
+  undefined1 local_14 [4];
+  undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   int local_4;
@@ -2988,9 +3106,9 @@ void __fastcall TGreatPower::ProcessPendingDiplomacyProposalQueue(int *param_1)
   puStack_8 = &LAB_006322e0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_14);
   local_4._0_1_ = 1;
   sVar4 = (short)*(undefined4 *)(param_1[0x213] + 8);
   if ((sVar4 != 0) && (local_20 = 1, 0 < sVar4)) {
@@ -3055,9 +3173,9 @@ LAB_004df73c:
   }
   (**(code **)(*param_1 + 0x1cc))();
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_14);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -3072,6 +3190,7 @@ TGreatPower::ApplyJoinEmpireAcceptanceSideEffectsForTargetNation
 
 {
   undefined4 *unaff_FS_OFFSET;
+  int local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -3080,14 +3199,15 @@ TGreatPower::ApplyJoinEmpireAcceptanceSideEffectsForTargetNation
   puStack_8 = &LAB_006323a8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  local_10 = param_1;
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = 0;
   ApplyJoinEmpireModeForTargetNation(param_2,param_3);
   if (*(char *)((int)(&g_apNationStates)[param_2] + 0x8d1) < '3') {
     (**(code **)(*(int *)(&g_apNationStates)[param_2] + 0xb8))(9,(int)*(short *)(param_1 + 0xc));
   }
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -3302,7 +3422,10 @@ void __fastcall TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(undefi
   undefined1 local_2c [4];
   undefined1 local_28 [4];
   char *local_24;
-  int aiStack_1c [3];
+  undefined1 auStack_20 [4];
+  int iStack_1c;
+  undefined1 local_18 [4];
+  undefined1 auStack_14 [4];
   undefined1 *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -3313,16 +3436,16 @@ void __fastcall TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(undefi
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_10 = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_18);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_28);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_2c);
   local_4 = CONCAT31(local_4._1_3_,2);
   local_24 = (char *)0x0;
   bVar2 = false;
-  aiStack_1c[0] = (**(code **)(*g_pLocalizationTable + 0x3c))();
-  aiStack_1c[0] = aiStack_1c[0] + -1;
+  iStack_1c = (**(code **)(*g_pLocalizationTable + 0x3c))();
+  iStack_1c = iStack_1c + -1;
   if (0 < *(int *)(*(int *)(param_1 + 0x908) + 8)) {
     (**(code **)(*g_pLocalizationTable + 0x84))();
     piVar5 = *(int **)(param_1 + 0x908);
@@ -3330,10 +3453,10 @@ void __fastcall TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(undefi
     if (0 < piVar5[2]) {
       do {
         psVar3 = (short *)(**(code **)(*piVar5 + 0x2c))();
-        if (*psVar3 != (short)aiStack_1c[0]) goto LAB_004e2de0;
+        if (*psVar3 != (short)iStack_1c) goto LAB_004e2de0;
         bVar2 = true;
         AppendSingleByteToSharedStringFromArg();
-        AssignStringSharedFromCStr();
+        AssignStringSharedFromCStr(local_28,s__00696790);
         FormatStringWithVarArgsToSharedRef();
         switch(psVar3[1]) {
         case 0:
@@ -3373,9 +3496,9 @@ switchD_004e2c6d_default:
         local_4._0_1_ = 4;
         AssignStringSharedFromRef();
         local_4._0_1_ = 3;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(auStack_20);
         local_4 = CONCAT31(local_4._1_3_,2);
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(auStack_14);
         param_1 = local_10;
 LAB_004e2de0:
         piVar5 = *(int **)(param_1 + 0x908);
@@ -3383,24 +3506,24 @@ LAB_004e2de0:
       } while (iVar6 <= piVar5[2]);
     }
     if ((short)local_24 != 0) {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&iStack_1c);
       local_4._0_1_ = 5;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(auStack_20);
       local_4._0_1_ = 6;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&local_24);
       local_4._0_1_ = 7;
       FormatStringWithVarArgsToSharedRef();
       (**(code **)(*g_pLocalizationTable + 0x84))();
-      scanBracketExpressions(g_pLocalizationTable,aiStack_1c,local_24);
+      scanBracketExpressions(g_pLocalizationTable,&iStack_1c,local_24);
       AppendSingleByteToSharedStringFromArg();
       AppendSingleByteToSharedStringFromArg();
       AssignStringSharedFromRef();
       local_4._0_1_ = 6;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&local_24);
       local_4._0_1_ = 5;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_20);
       local_4 = CONCAT31(local_4._1_3_,2);
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&iStack_1c);
     }
     if (bVar2) {
       (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
@@ -3410,11 +3533,11 @@ LAB_004e2de0:
     }
   }
   local_4._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_2c);
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_28);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_18);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

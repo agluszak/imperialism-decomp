@@ -24,7 +24,7 @@ undefined4 * TShipyardCluster::CreateTradeMoveArrowControlPanel(void)
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState();
-    *puVar1 = &PTR_LAB_00666760;
+    *puVar1 = &_vftable_;
     puVar1[0x22] = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
@@ -34,13 +34,13 @@ undefined4 * TShipyardCluster::CreateTradeMoveArrowControlPanel(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A570
-// GHIDRA_NAME TShipyardCluster::GetTShipyardClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTShipyardClusterClassNamePointer()
+// GHIDRA_NAME TShipyardCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TShipyardCluster::GetTShipyardClusterClassNamePointer(void)
+undefined ** TShipyardCluster::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TShipyardCluster_00662ff8;
+  return &g_pClassDescTShipyardCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058A590
@@ -51,7 +51,7 @@ undefined4 * __fastcall TShipyardCluster::ConstructTradeMoveArrowControlPanel(un
 
 {
   TUberCluster::ConstructTUberClusterBaseState();
-  *param_1 = &PTR_LAB_00666760;
+  *param_1 = &_vftable_;
   param_1[0x22] = 0;
   return param_1;
 }

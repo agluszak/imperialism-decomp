@@ -21,13 +21,15 @@ void __fastcall TInterruptusView::ConstructTInterruptusViewBaseState(int param_1
 
 {
   undefined4 *unaff_FS_OFFSET;
-  char *input_str;
+  char *pcStack_34;
   undefined1 **ppuStack_30;
   undefined4 uStack_2c;
   undefined1 *puStack_28;
-  undefined4 auStack_20 [2];
+  undefined4 uStack_20;
+  undefined1 local_1c [4];
   int local_18;
-  undefined1 local_14 [8];
+  undefined1 local_14 [4];
+  undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -37,16 +39,16 @@ void __fastcall TInterruptusView::ConstructTInterruptusViewBaseState(int param_1
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   puStack_28 = (undefined1 *)0x4afdc4;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4 = 0;
   puStack_28 = (undefined1 *)0x4afdd5;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_14);
   local_4._0_1_ = 1;
   puStack_28 = (undefined1 *)0x4afde3;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_18);
   local_4._0_1_ = 2;
   puStack_28 = (undefined1 *)0x4afdf1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_1c);
   puStack_28 = local_14;
   local_4 = CONCAT31(local_4._1_3_,3);
   uStack_2c = CONCAT22((short)((uint)*(undefined2 **)(param_1 + 0x60) >> 0x10),
@@ -54,27 +56,28 @@ void __fastcall TInterruptusView::ConstructTInterruptusViewBaseState(int param_1
   ppuStack_30 = (undefined1 **)0x4afe0d;
   (**(code **)(*g_pLocalizationTable + 0x7c))();
   ppuStack_30 = (undefined1 **)(int)*(short *)(*(int *)(param_1 + 0x60) + 2);
-  FormatStringWithVarArgsToSharedRef(auStack_20,&g_szDecimalFormat);
+  pcStack_34 = &g_szDecimalFormat;
+  FormatStringWithVarArgsToSharedRef(&uStack_20);
   ppuStack_30 = (undefined1 **)0x4afe30;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&puStack_28);
   ppuStack_30 = &puStack_28;
-  input_str = (char *)0x1e;
+  pcStack_34 = (char *)0x1e;
   uStack_c = CONCAT31(uStack_c._1_3_,4);
   (**(code **)(*g_pLocalizationTable + 0x84))(0x273c);
   FormatOverlayTerrainLabelText(&ppuStack_30);
-  scanBracketExpressions(g_pLocalizationTable,&stack0xffffffdc,input_str);
+  scanBracketExpressions(g_pLocalizationTable,&stack0xffffffdc,pcStack_34);
   TItemBoyView::DestructTItemBoyViewAndMaybeFree(&stack0xffffffdc);
   local_18._0_1_ = 3;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&pcStack_34);
   local_18._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&ppuStack_30);
   local_18._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_2c);
   local_18 = (uint)local_18._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
-  local_18 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = auStack_20[0];
+  ReleaseSharedStringRefIfNotEmpty(&puStack_28);
+  local_18 = -1;
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffdc);
+  *unaff_FS_OFFSET = uStack_20;
   return;
 }
 

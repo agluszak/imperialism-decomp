@@ -4,10 +4,10 @@
 // Bucket: TSortByPriceList.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005346F0
-// GHIDRA_NAME TSortByPriceList::GetTSortByPriceListClassNamePointer
-// GHIDRA_PROTO undefined GetTSortByPriceListClassNamePointer()
+// GHIDRA_NAME TSortByPriceList::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TSortByPriceList::GetTSortByPriceListClassNamePointer(void)
+char * TSortByPriceList::GetRuntimeClass(void)
 
 {
   return "Xwi";

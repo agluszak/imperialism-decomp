@@ -149,7 +149,7 @@ TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
   param_1[0x14] = *(undefined4 *)(param_2 + 0x50);
   local_4 = 0;
   *(undefined2 *)(param_1 + 0x15) = *(undefined2 *)(param_2 + 0x54);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x16);
   param_1[0x17] = 0;
   *param_1 = &TView::_vftable_;
   local_4 = CONCAT31(local_4._1_3_,1);

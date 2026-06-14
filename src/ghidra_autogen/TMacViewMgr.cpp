@@ -1560,7 +1560,7 @@ undefined4 * TMacViewMgr::CFrameWnd(void)
   *(undefined4 *)(unaff_EBP + -4) = 0;
   TGreatPower::CPtrList(10);
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(extraout_ECX + 0x2b);
   extraout_ECX[0x10] = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 2;
   *extraout_ECX = &PTR_LAB_0067039c;
@@ -1609,7 +1609,7 @@ void TMacViewMgr::DestroyTMacViewMgrBase(void)
     FreeHeapBufferIfNotNull(*(int *)(this + 0xa4));
   }
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(this + 0xac);
   *(undefined1 *)(unaff_EBP + -4) = 0;
   DestructCPtrListBaseState();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
@@ -1902,7 +1902,7 @@ undefined4 TMacViewMgr::LoadFrame(void)
   EstablishSehFrameProlog();
   uVar1 = *(uint *)(unaff_EBP + 8);
   *(uint *)(extraout_ECX + 0x8c) = uVar1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   iVar2 = LoadStringA(uVar1);
   if (iVar2 != 0) {
@@ -1929,13 +1929,13 @@ undefined4 TMacViewMgr::LoadFrame(void)
         SendMessageToDescendants(*(undefined4 *)(extraout_ECX + 0x1c),0x364,0,0,1,1);
       }
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + 8));
       uVar3 = 1;
       goto LAB_0061d0f8;
     }
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + 8));
   uVar3 = 0;
 LAB_0061d0f8:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -2012,22 +2012,22 @@ undefined4 TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
 // GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot051
 // GHIDRA_PROTO undefined TMacViewMgr_VtblSlot051()
 
-void TMacViewMgr::TMacViewMgr_VtblSlot051(undefined4 param_1)
+void TMacViewMgr::TMacViewMgr_VtblSlot051(undefined4 param_1,TToolBarCluster *param_2)
 
 {
-  undefined4 uVar1;
+  int iVar1;
   int iVar2;
   undefined1 *puVar3;
   
-  uVar1 = TToolBarCluster::GetBuffer(0xff);
-  iVar2 = AfxLoadString(param_1,uVar1,0x100);
+  iVar1 = TToolBarCluster::GetBuffer(param_2,0xff);
+  iVar2 = AfxLoadString(param_1,iVar1,0x100);
   if (iVar2 != 0) {
-    puVar3 = (undefined1 *)FindCharWithMbcsLeadByteSupport(uVar1,10);
+    puVar3 = (undefined1 *)FindCharWithMbcsLeadByteSupport(iVar1,10);
     if (puVar3 != (undefined1 *)0x0) {
       *puVar3 = 0;
     }
   }
-  ReleaseBuffer(0xffffffff);
+  ReleaseBuffer(param_2,-1);
   return;
 }
 

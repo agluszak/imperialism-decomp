@@ -11,7 +11,8 @@ TView * TStaticText::CreateTStaticTextInstance(void)
 
 {
   TView *this;
-  int iVar1;
+  void *this_00;
+  int extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -44,11 +45,11 @@ TView * TStaticText::CreateTStaticTextInstance(void)
   *(undefined2 *)&this[1].field30 = 0;
   this->vftable = &_vftable_;
   this[1].vftable = (void *)0xd;
-  iVar1 = AllocateWithFallbackHandler(4);
+  this_00 = (void *)AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,2);
-  if (iVar1 != 0) {
-    iVar1 = InitializeSharedStringRefFromEmpty();
-    this[1].ownerOffsetX = iVar1;
+  if (this_00 != (void *)0x0) {
+    InitializeSharedStringRefFromEmpty(this_00);
+    this[1].ownerOffsetX = extraout_EAX;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -97,6 +98,8 @@ int * TStaticText::GetTStaticTextClassNamePointer(void)
 TView * __fastcall TStaticText::TStaticText(TView *param_1)
 
 {
+  void *this;
+  int extraout_EAX;
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -124,13 +127,14 @@ TView * __fastcall TStaticText::TStaticText(TView *param_1)
   *(undefined2 *)&param_1[1].field30 = 0;
   param_1->vftable = &_vftable_;
   param_1[1].vftable = (void *)0xd;
-  iVar1 = AllocateWithFallbackHandler(4);
+  this = (void *)AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,1);
-  if (iVar1 == 0) {
+  if (this == (void *)0x0) {
     iVar1 = 0;
   }
   else {
-    iVar1 = InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(this);
+    iVar1 = extraout_EAX;
   }
   param_1[1].ownerOffsetX = iVar1;
   *unaff_FS_OFFSET = local_c;
@@ -158,7 +162,7 @@ undefined4 __thiscall TStaticText::_scalar_deleting_destructor_(undefined4 param
 void __fastcall TStaticText::~TStaticText(undefined4 *param_1)
 
 {
-  int iVar1;
+  void *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -168,11 +172,11 @@ void __fastcall TStaticText::~TStaticText(undefined4 *param_1)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   *param_1 = &_vftable_;
-  iVar1 = param_1[0x21];
+  this = (void *)param_1[0x21];
   local_4 = 0;
-  if (iVar1 != 0) {
-    ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull(iVar1);
+  if (this != (void *)0x0) {
+    ReleaseSharedStringRefIfNotEmpty(this);
+    FreeHeapBufferIfNotNull(this);
   }
   *param_1 = &TView::_vftable_;
   local_4 = 2;
@@ -181,7 +185,7 @@ void __fastcall TStaticText::~TStaticText(undefined4 *param_1)
   }
   FreeHeapBufferIfNotNull(param_1[0x12]);
   local_4 = CONCAT31(local_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;

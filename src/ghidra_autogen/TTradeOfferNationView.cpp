@@ -52,6 +52,7 @@ void __fastcall TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(i
 {
   int iVar1;
   short sVar2;
+  CString *src_ref;
   int *piVar3;
   int iVar4;
   char *unaff_ESI;
@@ -69,22 +70,22 @@ void __fastcall TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(i
   puStack_8 = &LAB_006393b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_40);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_40.right);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_40.top);
   local_4._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_40.bottom);
   local_4._0_1_ = 3;
   sVar2 = *(short *)((int)g_pNationInteractionStateManager +
                     (*(short *)(param_1 + 0x60) * 0x50 + (int)*(short *)(param_1 + 0x62)) * 2 + 0x1c
                     );
-  piVar3 = (int *)AssignNormalizedCredentialTokenToIndexedSlot();
+  src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot();
   local_4._0_1_ = 4;
-  AssignFromPtr(&local_40.top,piVar3);
+  AssignFromPtr(&local_40.top,src_ref);
   local_4 = CONCAT31(local_4._1_3_,3);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_30);
   if (sVar2 == 1) {
     (**(code **)(*g_pLocalizationTable + 0x84))();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
@@ -122,13 +123,13 @@ void __fastcall TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(i
   SetQuickDrawStrokeColor();
   (**(code **)(iVar1 + 0x38))();
   iStack_18._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb8);
   iStack_18._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb0);
   iStack_18 = (uint)iStack_18._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb4);
   iStack_18 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffac);
   *unaff_FS_OFFSET = uStack_20;
   return;
 }

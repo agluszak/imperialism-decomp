@@ -29,11 +29,11 @@ undefined ** TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer(void)
 // GHIDRA_PROTO undefined InitializeMultiplayerManagerForSessionContext()
 
 void __thiscall
-TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int param_1,int param_2)
+TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int param_1,CString param_2)
 
 {
   undefined4 *this;
-  int *dst_ref_ptr;
+  CString *src_ref;
   int iVar1;
   void *this_00;
   undefined4 *unaff_FS_OFFSET;
@@ -46,14 +46,14 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int param_1,int p
   puStack_8 = &LAB_0063487a;
   *unaff_FS_OFFSET = &local_c;
   InitializePacketHeaderFields_Tag20202020(0);
-  *(int *)(param_1 + 0x10) = param_2;
+  *(int *)(param_1 + 0x10) = param_2.data_ptr;
   *(undefined4 *)(param_1 + 0x44) = 0;
   *(undefined1 *)(param_1 + 0xe4) = 0;
   *(undefined1 *)(param_1 + 0x68) = 1;
   *(undefined1 *)(param_1 + 0x69) = 1;
-  param_2 = AllocateWithFallbackHandler(4);
+  param_2.data_ptr = AllocateWithFallbackHandler(4);
   local_4 = 0;
-  if (param_2 == 0) {
+  if (param_2.data_ptr == 0) {
     DAT_006a6014 = 0;
   }
   else {
@@ -61,7 +61,7 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int param_1,int p
   }
   local_4 = 0xffffffff;
   NoOpInitializeGlobalTurnEventQueueManager();
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_2);
   local_4 = 1;
   thunk_LoadUiStringResourceByGroupAndIndex(&param_2,0x2759,1);
   this_00 = (void *)(param_1 + 0x94);
@@ -79,20 +79,20 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int param_1,int p
   *(undefined4 *)(param_1 + 0xf0) = 0xffffffff;
   ResetTurnEventQueueRuntimeRecordBuffer();
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  InitializeSharedStringRefFromEmpty();
-  dst_ref_ptr = (int *)(param_1 + 0xb0);
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
+  InitializeSharedStringRefFromEmpty(&param_2);
+  src_ref = (CString *)(param_1 + 0xb0);
   local_4 = 2;
-  GenerateMappedFlavorTextByCurrentContextNation(dst_ref_ptr);
-  LoadProfileStringAndAssignSharedRef(&param_2,s_PlayerName_0069801c,*dst_ref_ptr);
-  AssignFromPtr(dst_ref_ptr,&param_2);
-  AssignFromPtr((void *)(param_1 + 0xb4),dst_ref_ptr);
+  GenerateMappedFlavorTextByCurrentContextNation(src_ref);
+  LoadProfileStringAndAssignSharedRef(&param_2,s_PlayerName_0069801c,src_ref->data_ptr);
+  AssignFromPtr(src_ref,&param_2);
+  AssignFromPtr((void *)(param_1 + 0xb4),src_ref);
   this = (undefined4 *)(param_1 + 0x74);
   GenerateMappedFlavorTextByCurrentContextNation(this);
   LoadProfileStringAndAssignSharedRef(&param_2,s_GameName_00698010,*this);
   AssignFromPtr(this,&param_2);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -121,6 +121,8 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   undefined4 *puVar11;
   code **ppcVar12;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_6c;
+  int *piStack_68;
   int *piStack_64;
   int *local_50;
   code *local_4c;
@@ -137,6 +139,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piStack_64 = param_2;
+  piStack_68 = (int *)0x542c0c;
   local_44 = param_1;
   TradeControl::thunk_HandleCityDialogNoOpSlot18();
   local_50 = &g_apNationStates;
@@ -146,7 +149,9 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   do {
     piVar1 = puVar11 + -0x1d;
     piStack_64 = (int *)0x4;
-    (*local_4c)(piVar1);
+    uStack_6c = 0x542c3a;
+    piStack_68 = piVar1;
+    (*local_4c)();
     if (*piVar1 == 0) {
       *puVar11 = 0x756e6173;
     }
@@ -158,22 +163,28 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
       *puVar11 = 0x64656164;
     }
     else {
-      cVar4 = thunk_IsNationSlotEligibleForEventProcessing(uStack_4);
+      uStack_6c = uStack_4;
+      cVar4 = thunk_IsNationSlotEligibleForEventProcessing();
       if (cVar4 == '\0') {
         *puVar11 = 0x64656361;
       }
     }
-    (*pcVar2)(puVar11 + -0x11,0x20);
+    uStack_6c = 0x20;
+    (*pcVar2)(puVar11 + -0x11);
     (*pcVar2)(puVar11 + -10,0x20);
     iVar3 = local_44;
     local_50 = unaff_EBP + 1;
     puVar11 = puVar11 + 1;
   } while ((int)local_50 < 0x6a438c);
   piStack_64 = (int *)0x20;
-  (*pcVar2)(local_44 + 0xb0);
-  InitializeSharedStringRefFromEmpty();
+  piStack_68 = (int *)(local_44 + 0xb0);
+  uStack_6c = 0x542cbe;
+  (*pcVar2)();
+  uStack_6c = 0x542cc7;
+  InitializeSharedStringRefFromEmpty(&local_50);
+  uStack_6c = 0x20;
   uStack_c = 0;
-  (*pcVar2)(&local_50,0x20);
+  (*pcVar2)(&local_50);
   (*unaff_ESI)(iVar3 + 100,4);
   (*unaff_ESI)(iVar3 + 0xe4,1);
   (**(code **)(*DAT_006a6014 + 0x18))(param_2);
@@ -218,7 +229,7 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   iStack_48 = 0xffffffff;
   thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,sVar6 == -3);
   uStack_28 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_6c);
   *unaff_FS_OFFSET = uStack_30;
   return;
 }

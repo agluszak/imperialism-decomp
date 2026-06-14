@@ -17,8 +17,6 @@ undefined ** TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer(void)
 // GHIDRA_NAME TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState
 // GHIDRA_PROTO undefined ConstructTAutomatedPlayDialogBaseState()
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
 void __fastcall TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState(int *param_1)
 
 {
@@ -30,9 +28,9 @@ void __fastcall TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState(int
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x34e);
   }
-  DAT_006a43c4 = (**(code **)(*piVar1 + 0x1e8))();
-  _DAT_00698b10 = (undefined2)g_pLocalizationTable[2];
-  if (0 < DAT_006a43c4) {
+  g_nTurnCooldownDeferCounter006A43C4 = (**(code **)(*piVar1 + 0x1e8))();
+  g_nTurnCooldownSideFlag00698B10 = (short)g_pLocalizationTable[2];
+  if (0 < g_nTurnCooldownDeferCounter006A43C4) {
     (**(code **)(*g_pLocalizationTable + 0x44))();
   }
   TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44();

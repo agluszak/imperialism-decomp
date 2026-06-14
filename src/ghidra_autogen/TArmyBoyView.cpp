@@ -24,6 +24,9 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
   short sVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar3;
+  undefined1 *local_38;
+  undefined1 local_34 [4];
+  undefined1 local_30 [4];
   RECT local_2c;
   RECT local_1c;
   undefined4 local_c;
@@ -34,18 +37,21 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
   puStack_8 = &LAB_00630970;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_30);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_34);
   local_4._0_1_ = 1;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
+  local_38 = (undefined1 *)0x1c474b;
   SetQuickDrawColorAndSyncGlobals();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x40);
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId();
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&local_38,(char *)(*(int *)(param_1 + 0x60) + 4));
   local_4._0_1_ = 2;
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   local_4._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_38);
+  local_38 = &stack0xffffffb8;
   SetQuickDrawFillColor();
   sVar1 = *(short *)(*(int *)(param_1 + 0x60) + 2) / 0x19 + 1;
   if (0x14 < sVar1) {
@@ -67,7 +73,7 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
   local_2c.bottom = 0x26;
   if (*(short *)(*(int *)(param_1 + 0x60) + 2) < 1) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&local_38);
     local_4._0_1_ = 3;
     if (*(short *)(*(int *)(param_1 + 0x60) + 2) == -0x56) {
       uVar3 = 0x20;
@@ -80,7 +86,7 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
     thunk_SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2);
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
     local_4._0_1_ = 1;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_38);
   }
   else {
     UpdatePaletteIndexWithDefaultFallback(0x10);
@@ -89,7 +95,9 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
                (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_2c,0x24,
                (astruct_19 *)0x0);
   }
+  local_38 = &stack0xffffffb8;
   SetQuickDrawFillColor();
+  local_38 = &stack0xffffffb8;
   SetQuickDrawStrokeColor();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x41);
   thunk_DrawCenteredGuideLineOnMapDc(0x41);
@@ -114,12 +122,13 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
               ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
                (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_2c,0x24,
                (astruct_19 *)0x0);
+    local_38 = &stack0xffffffb8;
     SetQuickDrawStrokeColor();
   }
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_34);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_30);
   *unaff_FS_OFFSET = local_c;
   return;
 }

@@ -84,7 +84,7 @@ TInfoBarText::ConstructTInfoBarTextBaseState(int *param_1,undefined4 param_2,REC
     (**(code **)(iVar1 + 0x1f8))(1);
   }
   uStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -115,7 +115,7 @@ void __fastcall TInfoBarText::DestructTInfoBarTextAndMaybeFree(int *param_1)
   (**(code **)(iVar1 + 0x1f0))(&stack0x00000004);
   (**(code **)(iVar1 + 0x1f8))(1);
   uStack_c = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_4);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }

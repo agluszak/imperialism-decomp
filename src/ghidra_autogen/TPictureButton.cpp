@@ -75,7 +75,7 @@ undefined4 * TPictureButton::CreateTPictureButtonInstance(void)
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_0065e6f8;
+    *puVar1 = &TPictureResourceEntryBase::_vftable_;
     *(undefined2 *)((int)puVar1 + 0x92) = 7000;
     puVar2 = puVar1;
   }
@@ -107,8 +107,22 @@ undefined4 * __fastcall TPictureButton::ConstructUiTabCursorPictureEntry(undefin
 
 {
   thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_0065e6f8;
+  *param_1 = &TPictureResourceEntryBase::_vftable_;
   *(undefined2 *)((int)param_1 + 0x92) = 7000;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570820
+// GHIDRA_NAME TPictureButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall TPictureButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
   return param_1;
 }
 

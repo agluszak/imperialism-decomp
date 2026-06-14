@@ -93,6 +93,7 @@ TDropShadowNumberText::RenderDropShadowNumberTextValue(int *param_1,undefined4 p
   int iVar1;
   int unaff_EDI;
   int *unaff_FS_OFFSET;
+  undefined1 auStack_14 [8];
   int iStack_c;
   undefined1 *puStack_8;
   int local_4;
@@ -103,7 +104,7 @@ TDropShadowNumberText::RenderDropShadowNumberTextValue(int *param_1,undefined4 p
   *unaff_FS_OFFSET = (int)&iStack_c;
   InitializeDialogWindowAndRefreshSelectedNationHeaderStatus(param_2);
   SetQuickDrawColorAndPropagateIfChanged(param_1[0x2b]);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_2);
   iVar1 = *param_1;
   local_4 = 0;
   (**(code **)(iVar1 + 0x1dc))(&param_2);
@@ -111,7 +112,7 @@ TDropShadowNumberText::RenderDropShadowNumberTextValue(int *param_1,undefined4 p
   (**(code **)(iVar1 + 0x1d4))
             (local_4,*(undefined4 *)(local_4 + -8),&stack0xffffffdc,
              CONCAT22((short)((uint)(unaff_EDI + -1) >> 0x10),(short)param_1[0x24]));
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(auStack_14);
   *unaff_FS_OFFSET = unaff_EDI + -1;
   return;
 }

@@ -139,13 +139,13 @@ TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch
   else if (iVar1 == 0x75706772) {
     cVar2 = ApplyEraCapabilityCostAndSetSelection();
     if (cVar2 == '\0') {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&param_3);
       local_4 = 0;
       (**(code **)(*g_pLocalizationTable + 0x84))();
       thunk_AssignStringSharedRefAndReturnThis(&param_3);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&param_3);
     }
     else {
       (**(code **)(*piVar4 + 0xa4))();

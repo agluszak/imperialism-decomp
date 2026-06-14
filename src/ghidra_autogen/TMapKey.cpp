@@ -126,7 +126,7 @@ void __thiscall TMapKey::ConstructTMapKeyBaseState(int param_1,undefined4 param_
   local_4c[0xd] = 0x1a0;
   local_68 = 0x46;
   local_64 = 0x19;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_84);
   local_4 = 0;
   local_52 = 0;
   local_51 = 0;
@@ -194,7 +194,7 @@ void __thiscall TMapKey::ConstructTMapKeyBaseState(int param_1,undefined4 param_
     param_1 = local_7c;
   } while ((int)local_80 < 0x6a432c);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_84);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

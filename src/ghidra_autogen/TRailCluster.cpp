@@ -24,7 +24,7 @@ undefined4 * TRailCluster::CreateTradeMoveScaledControlPanel(void)
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState();
-    *puVar1 = &PTR_LAB_00666318;
+    *puVar1 = &_vftable_;
     puVar1[0x22] = 0;
     *(undefined2 *)((int)puVar1 + 0x8e) = 0;
     *unaff_FS_OFFSET = local_c;
@@ -35,13 +35,13 @@ undefined4 * TRailCluster::CreateTradeMoveScaledControlPanel(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589700
-// GHIDRA_NAME TRailCluster::GetTRailClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTRailClusterClassNamePointer()
+// GHIDRA_NAME TRailCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TRailCluster::GetTRailClusterClassNamePointer(void)
+undefined ** TRailCluster::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TRailCluster_00662fc8;
+  return &g_pClassDescTRailCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589720
@@ -52,7 +52,7 @@ undefined4 * __fastcall TRailCluster::TRailCluster(undefined4 *param_1)
 
 {
   TUberCluster::ConstructTUberClusterBaseState();
-  *param_1 = &PTR_LAB_00666318;
+  *param_1 = &_vftable_;
   param_1[0x22] = 0;
   *(undefined2 *)((int)param_1 + 0x8e) = 0;
   return param_1;

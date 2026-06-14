@@ -130,6 +130,14 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   code *pcVar8;
   short unaff_SI;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_184;
+  undefined4 uStack_180;
+  undefined4 *puStack_17c;
+  undefined4 uStack_178;
+  undefined4 uStack_174;
+  undefined4 uStack_170;
+  undefined4 *puStack_16c;
+  undefined1 *puStack_168;
   undefined4 uStack_164;
   undefined1 *puStack_160;
   undefined4 uStack_15c;
@@ -143,6 +151,8 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   code *pcStack_13c;
   code *pcVar9;
   short sVar10;
+  char **ppcStack_f8;
+  undefined4 uStack_f4;
   undefined1 *puStack_f0;
   undefined4 uStack_ec;
   undefined4 uStack_e8;
@@ -157,10 +167,20 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined4 uStack_c0;
   undefined4 uStack_bc;
   undefined1 **ppuStack_b8;
-  undefined1 *apuStack_a4 [2];
+  undefined1 *puStack_a4;
+  undefined4 uStack_a0;
   undefined4 uStack_9c;
   undefined4 uStack_98;
   undefined4 uVar14;
+  undefined1 local_40 [4];
+  undefined1 local_3c [4];
+  undefined4 uStack_38;
+  undefined1 local_34 [8];
+  undefined1 local_2c [10];
+  undefined1 local_22;
+  undefined1 local_21;
+  uint local_20;
+  int iStack_18;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -169,13 +189,16 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   puStack_8 = &LAB_00631778;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  local_22 = 0;
+  local_21 = 0;
+  local_20 = local_20 & 0xffff0000;
+  InitializeSharedStringRefFromEmpty(local_40);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_3c);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_34);
   local_4._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_2c);
                     /* Persist dialog context (city ptr, slot id, caller flags) into object fields.
                         */
   iVar5 = *pCityState;
@@ -221,6 +244,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   iVar5 = *piVar4;
   (**(code **)(iVar5 + 0x1b4))();
   (**(code **)(iVar5 + 0x1c4))();
+  iStack_18 = local_20 + 0x2422;
   (**(code **)(iVar5 + 0x1cc))();
   piVar4 = (int *)(*pcVar8)();
   if (piVar4 == (int *)0x0) {
@@ -234,16 +258,17 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   (**(code **)(iVar5 + 0x1c4))();
   uStack_98 = 1;
   uStack_9c = 2;
-  apuStack_a4[0] = (undefined1 *)0x4ca0ac;
+  uStack_a0 = uStack_38;
+  puStack_a4 = (undefined1 *)0x4ca0ac;
   (**(code **)(iVar5 + 0x1cc))();
   if (unaff_SI == 0xb) {
-    apuStack_a4[0] = &stack0xffffff94;
+    puStack_a4 = &stack0xffffff94;
     (**(code **)(iVar5 + 300))();
     (**(code **)(iVar5 + 0x168))();
   }
-  apuStack_a4[0] = (undefined1 *)0x2b67;
+  puStack_a4 = (undefined1 *)0x2b67;
   thunk_BuildUiTextStyleDescriptor();
-  apuStack_a4[0] = (undefined1 *)0x6e616d65;
+  puStack_a4 = (undefined1 *)0x6e616d65;
   piVar4 = (int *)(*pcVar8)();
   if (piVar4 == (int *)0x0) {
     ppuStack_b8 = (undefined1 **)0x4ca121;
@@ -255,7 +280,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   ppuStack_b8 = (undefined1 **)0x4ca150;
   uStack_bc = uVar14;
   (**(code **)(iVar5 + 0x1c4))();
-  ppuStack_b8 = apuStack_a4;
+  ppuStack_b8 = &puStack_a4;
   uStack_c0 = 0x2719;
   uStack_c4 = 0x4ca16d;
   (**(code **)(*g_pLocalizationTable + 0x84))();
@@ -271,7 +296,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   iVar5 = *piVar4;
-  ppuVar11 = apuStack_a4;
+  ppuVar11 = &puStack_a4;
   iVar12 = 0;
   (**(code **)(iVar5 + 0x1b4))();
   puStack_e0 = (undefined4 *)0x4ca1cd;
@@ -283,16 +308,27 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   (**(code **)(*g_pLocalizationTable + 0x84))();
   puStack_f0 = &stack0xffffff28;
   uStack_ec = 0;
+  uStack_f4 = 0x4ca1f6;
   (**(code **)(iVar5 + 0x1c8))();
+  uStack_f4 = 0x63617054;
+  ppcStack_f8 = (char **)0x4ca1ff;
   piVar4 = (int *)(*pcVar8)();
   sVar10 = *(short *)(this + 0x94);
                     /* Slot-dependent cost/description format mode selection. */
-  if ((((sVar10 == 0) || (sVar10 == 2)) || (sVar10 == 4)) || ((sVar10 == 6 || (sVar10 != 0xb)))) {
-    FormatStringWithVarArgsToSharedRef();
+  if ((((sVar10 == 0) || (sVar10 == 2)) || (sVar10 == 4)) || (sVar10 == 6)) {
+    ppcStack_f8 = (char **)0x2;
   }
   else {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    if (sVar10 == 0xb) {
+      ppcStack_f8 = &pcStack_e4;
+      (**(code **)(*g_pLocalizationTable + 0x84))();
+      goto LAB_004ca263;
+    }
+    ppcStack_f8 = (char **)0x1;
   }
+  FormatStringWithVarArgsToSharedRef();
+LAB_004ca263:
+  ppcStack_f8 = (char **)&stack0xffffff28;
   (**(code **)(*g_pLocalizationTable + 0x84))();
   scanBracketExpressions(g_pLocalizationTable,&puStack_f0,pcStack_e4);
   iVar5 = *piVar4;
@@ -353,7 +389,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   }
                     /* Compute OK-button availability for University slot 11. */
   if ((short)ppuVar11 == 0xb) {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&uStack_cc);
     uVar1 = *(int *)(*(int *)(iVar12 + 0xac) + 0x10) +
             *(int *)(*(int *)(iVar12 + 0xac) + 0x8f0) / 100;
     cVar3 = 4999 < (int)(uVar1 & ((int)uVar1 < 1) - 1);
@@ -380,7 +416,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     uStack_158 = 0x4ca4f7;
     (**(code **)(iVar5 + 0x1c8))();
     uStack_158 = 0x4ca505;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&ppcStack_f8);
   }
   else {
     piVar6 = *(int **)(*(int *)(this + 0x90) + 0xe4 + (short)(*(short *)(this + 0x94) + 0x35) * 4);
@@ -407,18 +443,31 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   if (cVar3 == '\0') {
     uStack_15c = 0x2b69;
     puStack_160 = (undefined1 *)0xc;
+    puStack_168 = &stack0xfffffed0;
     uStack_164 = 0;
-    thunk_BuildUiTextStyleDescriptor(&stack0xfffffed0);
+    puStack_16c = (undefined4 *)0x4ca5d4;
+    thunk_BuildUiTextStyleDescriptor();
     iVar5 = *piVar4;
     puStack_160 = &stack0xfffffed0;
     uStack_15c = 0;
     uStack_164 = 0x4ca5e9;
     (**(code **)(iVar5 + 0x1b4))();
     uStack_164 = 0;
-    (**(code **)(iVar5 + 0x1c4))(1);
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2738,0x17,&uStack_158);
-    (**(code **)(iVar5 + 0x1c8))(&uStack_164,0);
-    (**(code **)(iVar5 + 0xa4))(1,0);
+    puStack_168 = (undefined1 *)0x1;
+    puStack_16c = (undefined4 *)0x4ca5f5;
+    (**(code **)(iVar5 + 0x1c4))();
+    puStack_16c = &uStack_158;
+    uStack_170 = 0x17;
+    uStack_174 = 0x2738;
+    uStack_178 = 0x4ca61b;
+    (**(code **)(*g_pLocalizationTable + 0x84))();
+    puStack_17c = &uStack_164;
+    uStack_178 = 0;
+    uStack_180 = 0x4ca62a;
+    (**(code **)(iVar5 + 0x1c8))();
+    uStack_180 = 0;
+    uStack_184 = 1;
+    (**(code **)(iVar5 + 0xa4))();
     iVar5 = *piVar6;
     (**(code **)(iVar5 + 0xa4))(0,0);
     (**(code **)(iVar5 + 0xa8))(0,0);
@@ -431,13 +480,13 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     *(undefined2 *)((int)piVar6 + 0x92) = 0xbc7;
   }
   puStack_148._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_170);
   puStack_148._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_178);
   puStack_148 = (undefined4 *)((uint)puStack_148._1_3_ << 8);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_180);
   puStack_148 = (undefined4 *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_184);
   *unaff_FS_OFFSET = uStack_150;
   return;
 }

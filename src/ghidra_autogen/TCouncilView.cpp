@@ -58,9 +58,15 @@ TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(int *param_1,undefi
   int *piVar5;
   undefined4 uVar6;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar7;
+  int *piStack_40;
+  undefined4 uStack_3c;
+  undefined1 *puStack_38;
+  undefined4 uStack_34;
   undefined4 uStack_30;
   char *pcStack_2c;
+  undefined1 local_18 [4];
+  undefined1 local_14 [4];
+  undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -70,13 +76,13 @@ TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(int *param_1,undefi
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   pcStack_2c = (char *)0x4fba97;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4 = 0;
   pcStack_2c = (char *)0x4fbaa6;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_14);
   local_4._0_1_ = 1;
   pcStack_2c = (char *)0x4fbab4;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_18);
   pcStack_2c = (char *)param_2;
   local_4 = CONCAT31(local_4._1_3_,2);
   uStack_30 = 0x4fbac5;
@@ -98,13 +104,23 @@ TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(int *param_1,undefi
   uStack_30 = 0x4fbb18;
   (**(code **)(iVar3 + 0xc))();
   uStack_30 = 0x2b67;
-  ApplyUiTextStyleAndThemeFlags(piVar5,0,0x10,0x2b6c);
+  uStack_34 = 0x2b6c;
+  puStack_38 = (undefined1 *)0x10;
+  uStack_3c = 0;
+  piStack_40 = piVar5;
+  ApplyUiTextStyleAndThemeFlags();
   uStack_30 = 0;
-  uVar7 = 0xfffffffe;
+  uStack_34 = 0xfffffffe;
+  puStack_38 = (undefined1 *)0x4fbb3b;
   (**(code **)(iVar3 + 0x1c4))();
   if (((short)g_pLocalizationTable[2] == 0x17) || ((short)g_pLocalizationTable[2] == 0x16)) {
-    FormatOverlayTerrainLabelText(&stack0xffffffe4);
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x275d,3,&stack0xffffffe0);
+    puStack_38 = &stack0xffffffe4;
+    uStack_3c = 0x4fbbdc;
+    FormatOverlayTerrainLabelText();
+    puStack_38 = &stack0xffffffe0;
+    uStack_3c = 3;
+    piStack_40 = (int *)0x275d;
+    (**(code **)(*g_pLocalizationTable + 0x84))();
     scanBracketExpressions(g_pLocalizationTable,&uStack_30,pcStack_2c);
     (**(code **)(iVar3 + 0x1c8))(&uStack_30,0);
     BuildDiplomacyMapHintOverlayTextAndMetrics();
@@ -118,7 +134,10 @@ TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(int *param_1,undefi
     }
   }
   else {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,0x5e,&stack0xffffffdc);
+    puStack_38 = &stack0xffffffdc;
+    uStack_3c = 0x5e;
+    piStack_40 = (int *)0x2733;
+    (**(code **)(*g_pLocalizationTable + 0x84))();
     (**(code **)(iVar3 + 0x1c8))(&uStack_30,0);
     InitializeMainRoutineContextAndRun(PTR_g_szEmptyString_00654ec8,0x6d61696e);
     uVar6 = (*pcVar2)(0x656e6420);
@@ -127,12 +146,12 @@ TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels(int *param_1,undefi
     LoadUiStringByGroupAndIndexToControlObject(0x2730,3,uVar6);
   }
   pcStack_2c._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&piStack_40);
   pcStack_2c = (char *)((uint)pcStack_2c._1_3_ << 8);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_3c);
   pcStack_2c = (char *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uVar7;
+  ReleaseSharedStringRefIfNotEmpty(&puStack_38);
+  *unaff_FS_OFFSET = uStack_34;
   return;
 }
 

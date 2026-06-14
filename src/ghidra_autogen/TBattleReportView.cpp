@@ -667,6 +667,8 @@ void TBattleReportView::WrapperFor_thunk_RefreshMapContextSelectionPanelAndInfoL
 // GHIDRA_NAME TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
 // GHIDRA_PROTO undefined RefreshMapContextSelectionPanelAndInfoLabels()
 
+/* WARNING: Removing unreachable block (ram,0x004ae440) */
+
 void __thiscall
 TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(int *param_1,char *param_2)
 
@@ -674,31 +676,30 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(int *param_1,cha
   code *pcVar1;
   short sVar2;
   int *piVar3;
-  code **ppcVar4;
+  undefined1 *puVar4;
   int iVar5;
   int extraout_ECX;
   undefined2 uVar6;
   undefined2 extraout_var;
-  undefined2 extraout_var_00;
+  undefined4 uVar7;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 *puVar7;
-  char cVar8;
-  undefined4 uVar9;
-  code **ppcStack_84;
+  undefined4 *puVar8;
+  char cVar9;
+  undefined4 uStack_8c;
+  undefined1 *puStack_88;
+  undefined1 *puStack_84;
   undefined4 uStack_80;
   int *piStack_7c;
   undefined4 uStack_78;
   undefined4 uStack_74;
-  code *pcStack_60;
-  int *piStack_5c;
-  int iStack_58;
-  undefined4 uStack_54;
   int iStack_50;
+  undefined4 uStack_3c;
   undefined1 auStack_38 [4];
   int iStack_34;
-  int aiStack_30 [2];
-  short sStack_28;
+  int iStack_30;
+  undefined1 auStack_2c [4];
+  short asStack_28 [2];
   int iStack_24;
   int iStack_20;
   int iStack_1c;
@@ -717,15 +718,12 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(int *param_1,cha
   iStack_50 = param_1[0x932];
   if (iStack_50 == iVar5) goto LAB_004ae762;
   if (iStack_50 != 0) {
-    uStack_54 = (int *)0x4ae00a;
     iVar5 = (**(code **)(**(int **)(g_pMapContextActionManager + 4) + 0x2c))();
     iStack_18 = *(int *)(iVar5 + 0x25c);
     iStack_1c = *(int *)(iVar5 + 600);
     uStack_14 = iStack_1c + 0x12;
     iStack_10 = iStack_18 + 0x12;
-    uStack_54 = &iStack_1c;
     iStack_50 = 1;
-    iStack_58 = 0x4ae03a;
     thunk_InvalidateCityDialogRectRegion();
     iVar5 = extraout_ECX;
   }
@@ -733,15 +731,12 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(int *param_1,cha
   iStack_50 = (int)*(short *)(param_2 + 0x264);
   param_1[0x932] = iStack_50;
   if (iStack_50 != 0) {
-    uStack_54 = (int *)0x4ae05a;
     iVar5 = (**(code **)(**(int **)(g_pMapContextActionManager + 4) + 0x2c))();
     iStack_18 = *(int *)(iVar5 + 0x25c);
     iStack_1c = *(int *)(iVar5 + 600);
     uStack_14 = iStack_1c + 0x12;
     iStack_10 = iStack_18 + 0x12;
-    uStack_54 = &iStack_1c;
     iStack_50 = 1;
-    iStack_58 = 0x4ae08a;
     thunk_InvalidateCityDialogRectRegion();
     uVar6 = extraout_var;
   }
@@ -754,74 +749,50 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(int *param_1,cha
     UiRuntimeContext::GetActiveNationId();
   }
   iStack_50 = 0x4ae0f6;
-  UiRuntimeContext::GetActiveNationId();
+  sVar2 = UiRuntimeContext::GetActiveNationId();
+  uStack_3c._0_3_ = CONCAT12(param_2[param_2[3]] == sVar2,(undefined2)uStack_3c);
   switch(*(undefined4 *)(param_2 + 4)) {
   case 0:
   case 3:
   case 4:
     iStack_50 = 0x6c6f6361;
-    uStack_54 = (int *)0x4ae12d;
     piVar3 = (int *)(**(code **)(*param_1 + 0x94))();
     iVar5 = *piVar3;
-    uStack_54 = (int *)0x4ae136;
     (**(code **)(iVar5 + 0xc))();
-    uStack_54 = (int *)0x4ae13f;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&iStack_30);
     puStack_8 = (undefined1 *)0x0;
-    uStack_54 = (int *)0x4ae150;
-    InitializeSharedStringRefFromEmpty();
-    iStack_58 = *(int *)(param_2 + 8);
-    uStack_54 = aiStack_30;
+    InitializeSharedStringRefFromEmpty(&iStack_34);
     puStack_8._0_1_ = 1;
-    piStack_5c = (int *)0x4ae169;
     thunk_AssignSharedStringFromIndexedA8EntryNameField();
-    uStack_54 = &iStack_34;
-    iStack_58 = 0x4ae194;
     FormatOverlayTerrainLabelText();
-    uStack_54 = (int *)0x4ae19d;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_38);
     puStack_8._0_1_ = 2;
-    uStack_54 = (int *)0x4ae1ab;
-    InitializeSharedStringRefFromEmpty();
-    uStack_54 = (int *)auStack_38;
-    iStack_58 = 7;
-    piStack_5c = (int *)0x273d;
+    InitializeSharedStringRefFromEmpty(&uStack_3c);
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
-    pcStack_60 = (code *)0x4ae1ca;
     (**(code **)(*g_pLocalizationTable + 0x84))();
     uStack_74 = 0x4ae1ea;
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffb8,unaff_EDI);
-    pcStack_60 = g_Build_Map_Order_LookupTable_00695794;
-    AssignStringSharedFromCStr();
-    pcStack_60 = (code *)0x1;
+    AssignStringSharedFromCStr(&stack0xffffffb8,(char *)g_Build_Map_Order_LookupTable_00695794);
     (**(code **)(iVar5 + 0x1c8))();
     iStack_4._0_1_ = 2;
     iStack_50 = 0x4ae218;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_38);
     iStack_4._0_1_ = 1;
     iStack_50 = 0x4ae226;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&iStack_34);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
     iStack_50 = 0x4ae234;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&iStack_30);
     break;
   case 1:
   case 2:
     iStack_50 = 0x6c6f6361;
-    uStack_54 = (int *)0x4ae251;
     piVar3 = (int *)(**(code **)(*param_1 + 0x94))();
     iVar5 = *piVar3;
-    uStack_54 = (int *)0x4ae25a;
     (**(code **)(iVar5 + 0xc))();
-    uStack_54 = (int *)0x4ae263;
-    InitializeSharedStringRefFromEmpty();
-    uStack_54 = aiStack_30;
+    InitializeSharedStringRefFromEmpty(&iStack_30);
     puStack_8 = (undefined1 *)0x4;
-    iStack_58 = 0x4ae278;
     (**(code **)(**(int **)(param_2 + 8) + 0x2c))();
-    piStack_5c = &iStack_34;
-    iStack_58 = 1;
-    pcStack_60 = (code *)0x4ae287;
     (**(code **)(iVar5 + 0x1c8))();
     break;
   default:
@@ -829,28 +800,19 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels(int *param_1,cha
   }
   iStack_4 = 0xffffffff;
   iStack_50 = 0x4ae298;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(auStack_2c);
 switchD_004ae117_default:
   iStack_50 = 0x66666c67;
   pcVar1 = *(code **)(*param_1 + 0x94);
-  uStack_54 = (int *)0x4ae2a9;
   piVar3 = (int *)(*pcVar1)();
-  aiStack_30[0] = *piVar3;
-  uStack_54 = (int *)0x4ae2b6;
-  (**(code **)(aiStack_30[0] + 0xc))();
-  iStack_34 = (int)sStack_28;
-  uStack_54 = (int *)0x1;
-  iStack_58 = CONCAT22(extraout_var_00,(short)param_2[iStack_34]) + 0x1130;
-  piStack_5c = (int *)0x4ae2d9;
-  (**(code **)(aiStack_30[0] + 0x1c8))();
-  piStack_5c = (int *)0x65666c67;
-  pcStack_60 = (code *)0x4ae2e2;
+  iStack_30 = *piVar3;
+  (**(code **)(iStack_30 + 0xc))();
+  iStack_34 = (int)asStack_28[0];
+  (**(code **)(iStack_30 + 0x1c8))();
   piVar3 = (int *)(*pcVar1)();
-  iVar5 = *piVar3;
-  pcStack_60 = (code *)0x4ae2ef;
-  (**(code **)(iVar5 + 0xc))();
-  pcStack_60 = (code *)0x1;
-  (**(code **)(iVar5 + 0x1c8))();
+  uStack_3c = *piVar3;
+  (**(code **)(uStack_3c + 0xc))();
+  (**(code **)(uStack_3c + 0x1c8))();
   iVar5 = *(int *)(param_2 + 4);
   if (iVar5 == 2) {
     iStack_50 = 0x273c;
@@ -865,11 +827,9 @@ switchD_004ae117_default:
     iStack_50 = 0x273d;
     if (iVar5 != 4) {
       sVar2 = UiRuntimeContext::GetActiveNationId();
-      iVar5 = (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[sVar2] + 0x40))();
-      uStack_54._0_2_ = CONCAT11(iVar5 == *(int *)(param_2 + 8),(char)uStack_54);
+      (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[sVar2] + 0x40))();
       uStack_14 = CONCAT31(uStack_14._1_3_,uStack_14 != 0);
       sVar2 = UiRuntimeContext::GetActiveNationId();
-      uStack_54 = (int *)CONCAT13(param_2[param_2[2]] == sVar2,(undefined3)uStack_54);
       if ((char)uStack_14 == '\0') {
 LAB_004ae3ee:
         uStack_14 = uStack_14 & 0xffffff00;
@@ -878,16 +838,15 @@ LAB_004ae3ee:
         uStack_14 = CONCAT31(uStack_14._1_3_,1);
         if (param_2[param_2[2]] == sVar2) goto LAB_004ae3ee;
       }
-      uStack_54 = (int *)CONCAT31(uStack_54._1_3_,*param_2);
+      cVar9 = *param_2;
       sVar2 = UiRuntimeContext::GetActiveNationId();
-      cVar8 = (char)uStack_54;
-      if (sVar2 == (char)uStack_54) {
-        cVar8 = param_2[1];
+      if (sVar2 == cVar9) {
+        cVar9 = param_2[1];
       }
-      (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[cVar8] + 0x40))();
+      (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[cVar9] + 0x40))();
     }
   }
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&stack0xffffffc0);
   iStack_1c = 5;
   uStack_74 = 0x4ae4da;
   (**(code **)(*g_pLocalizationTable + 0x84))();
@@ -902,71 +861,70 @@ LAB_004ae3ee:
   uStack_80 = 0x4ae503;
   (**(code **)(iStack_24 + 0x1c8))();
   uStack_80 = 0x6661646d;
-  ppcStack_84 = (code **)0x4ae50c;
+  puStack_84 = (undefined1 *)0x4ae50c;
   piVar3 = (int *)(*pcVar1)();
-  aiStack_30[0] = *piVar3;
-  ppcStack_84 = (code **)0x4ae519;
-  (**(code **)(aiStack_30[0] + 0xc))();
-  ppcStack_84 = &pcStack_60;
+  iStack_30 = *piVar3;
+  puStack_84 = (undefined1 *)0x4ae519;
+  (**(code **)(iStack_30 + 0xc))();
+  puStack_84 = &stack0xffffffa0;
+  puStack_88 = (undefined1 *)0x4ae52e;
   InitializeOutSharedStringWithEmptyRefAndCopyBuffer();
-  ppcStack_84 = (code **)0x1;
+  puStack_88 = &stack0xffffffa0;
+  puStack_84 = (undefined1 *)0x1;
   auStack_38[0] = 6;
-  (**(code **)(aiStack_30[0] + 0x1c8))(&pcStack_60);
-  ReleaseSharedStringRefIfNotEmpty();
-  uVar9 = 0x66736870;
-  piVar3 = (int *)(*pcVar1)(0x66736870);
-  iVar5 = *piVar3;
-  (**(code **)(iVar5 + 0xc))();
+  uStack_8c = 0x4ae546;
+  (**(code **)(iStack_30 + 0x1c8))();
+  uStack_8c = 0x4ae554;
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffff98);
+  uStack_8c = 0x66736870;
+  piVar3 = (int *)(*pcVar1)();
+  uStack_3c = *piVar3;
+  (**(code **)(uStack_3c + 0xc))();
   RefreshMapContextSelectionPanelAndInfoLabels_Impl(&stack0xffffff94);
-  (**(code **)(iVar5 + 0x1c8))(&stack0xffffff94,1);
-  ReleaseSharedStringRefIfNotEmpty();
+  (**(code **)(uStack_3c + 0x1c8))(&stack0xffffff94,1);
+  ReleaseSharedStringRefIfNotEmpty(&uStack_74);
   piVar3 = (int *)(*pcVar1)(0x6561646d);
   iVar5 = *piVar3;
   (**(code **)(iVar5 + 0xc))();
   InitializeOutSharedStringWithEmptyRefAndCopyBuffer(&uStack_78);
-  puVar7 = &uStack_78;
+  puVar8 = &uStack_78;
   iStack_50 = CONCAT31(iStack_50._1_3_,8);
-  (**(code **)(iVar5 + 0x1c8))(puVar7,1);
-  cVar8 = (char)((uint)puVar7 >> 0x18);
-  iStack_58 = CONCAT31(iStack_58._1_3_,5);
-  ReleaseSharedStringRefIfNotEmpty();
-  uStack_54 = (int *)(*pcVar1)();
-  uStack_54 = (int *)*uStack_54;
-  (**(code **)((int)uStack_54 + 0xc))();
-  RefreshMapContextSelectionPanelAndInfoLabels_Impl(&ppcStack_84);
-  piStack_5c._0_1_ = 9;
-  (**(code **)((int)uStack_54 + 0x1c8))(&ppcStack_84,1);
-  ReleaseSharedStringRefIfNotEmpty();
-  piStack_5c = (int *)CONCAT31(piStack_5c._1_3_,
-                               param_1[0x932] <
-                               *(int *)(*(int *)(g_pMapContextActionManager + 4) + 8));
+  (**(code **)(iVar5 + 0x1c8))(puVar8,1);
+  cVar9 = (char)((uint)puVar8 >> 0x18);
+  ReleaseSharedStringRefIfNotEmpty(&uStack_80);
+  piVar3 = (int *)(*pcVar1)();
+  iVar5 = *piVar3;
+  (**(code **)(iVar5 + 0xc))();
+  RefreshMapContextSelectionPanelAndInfoLabels_Impl(&puStack_84);
+  (**(code **)(iVar5 + 0x1c8))(&puStack_84,1);
+  ReleaseSharedStringRefIfNotEmpty(&uStack_8c);
   piVar3 = (int *)(*pcVar1)(0x70726576);
   iVar5 = *piVar3;
   (**(code **)(iVar5 + 0xc))();
-  ppcVar4 = (code **)(int)cVar8;
-  ppcStack_84 = ppcVar4;
-  (**(code **)(iVar5 + 0xa8))(ppcVar4,0);
-  (*pcRam65736914)(uVar9,1);
+  puVar4 = (undefined1 *)(int)cVar9;
+  puStack_84 = puVar4;
+  (**(code **)(iVar5 + 0xa8))(puVar4,0);
+  (*pcRam65736914)(uStack_8c,1);
   piVar3 = (int *)(*pcVar1)(0x6e657874);
   iVar5 = *piVar3;
   (**(code **)(iVar5 + 0xc))();
   (**(code **)(iVar5 + 0xa8))((int)(char)uStack_74,0);
-  (*ppcVar4[0x29])((int)(char)piStack_7c,1);
+  (**(code **)(puVar4 + 0xa4))((int)(char)piStack_7c,1);
   sVar2 = UiRuntimeContext::GetActiveNationId();
   if ((*param_2 == sVar2) || (sVar2 = UiRuntimeContext::GetActiveNationId(), param_2[1] == sVar2)) {
-    uVar9 = 1;
+    uVar7 = 1;
   }
   else {
-    uVar9 = 0;
+    uVar7 = 0;
   }
   piVar3 = (int *)(*pcVar1)(0x696e666f);
   iVar5 = *piVar3;
   (**(code **)(iVar5 + 0xc))();
-  (**(code **)(iVar5 + 0xa8))(uVar9,0);
-  (**(code **)(iVar5 + 0xa4))(uVar9,1);
+  (**(code **)(iVar5 + 0xa8))(uVar7,0);
+  (**(code **)(iVar5 + 0xa4))(uVar7,1);
   iStack_4 = 0xffffffff;
   iStack_50 = 0x4ae760;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(asStack_28);
 LAB_004ae762:
   *unaff_FS_OFFSET = local_c;
   return;

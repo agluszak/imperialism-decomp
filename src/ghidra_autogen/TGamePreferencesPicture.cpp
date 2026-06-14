@@ -47,6 +47,8 @@ undefined ** TGamePreferencesPicture::GetTGamePreferencesPictureClassNamePointer
 // GHIDRA_NAME TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState
 // GHIDRA_PROTO undefined ConstructTGamePreferencesPictureBaseState()
 
+/* WARNING: Type propagation algorithm not settling */
+
 void __thiscall
 TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(int *param_1,undefined4 param_2)
 
@@ -61,6 +63,12 @@ TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(int *param_1,
   code *pcVar8;
   code *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 *puStack_cc;
+  undefined4 uStack_c8;
+  undefined4 *puStack_c4;
+  undefined4 *puStack_c0;
+  undefined4 uStack_bc;
+  undefined4 uStack_b8;
   undefined4 uStack_b4;
   int ***pppiStack_b0;
   code *pcStack_ac;
@@ -79,7 +87,7 @@ TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(int *param_1,
   int *piStack_78;
   int *piStack_74;
   undefined4 *puStack_70;
-  int *piStack_6c;
+  uint *puStack_6c;
   int *piStack_68;
   code *pcStack_64;
   undefined4 uStack_60;
@@ -88,8 +96,7 @@ TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(int *param_1,
   undefined4 uStack_54;
   int *piVar9;
   short sStack_3c;
-  undefined4 uStack_34;
-  int iStack_30;
+  uint local_38 [3];
   int iStack_2c;
   uint uStack_28;
   undefined4 uStack_24;
@@ -107,7 +114,7 @@ TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(int *param_1,
   *unaff_FS_OFFSET = &uStack_c;
   piVar9 = (int *)DAT_006a2158[1];
   uStack_54 = 0x56a5df;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_38);
   local_4 = 0;
   uStack_54 = param_2;
   uStack_58 = 0x56a5f3;
@@ -130,13 +137,13 @@ TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(int *param_1,
   pcStack_64 = (code *)0x56a64f;
   pcStack_64 = (code *)(*pcVar8)();
   piStack_68 = (int *)0x25;
-  piStack_6c = (int *)0x2743;
+  puStack_6c = (uint *)0x2743;
   puStack_70 = (undefined4 *)0x56a65c;
   LoadUiStringByGroupAndIndexToControlObject();
   pcStack_64 = (code *)0x71756572;
   piStack_68 = (int *)0x56a668;
   piStack_68 = (int *)(*pcVar8)();
-  piStack_6c = (int *)0x3;
+  puStack_6c = (uint *)0x3;
   puStack_70 = (undefined4 *)0x2730;
   piStack_74 = (int *)0x56a675;
   LoadUiStringByGroupAndIndexToControlObject();
@@ -145,9 +152,9 @@ TGamePreferencesPicture::ConstructTGamePreferencesPictureBaseState(int *param_1,
   do {
     iVar5 = *piVar9;
     piStack_68 = piVar6 + -0x1420000;
-    piStack_6c = (int *)0x56a6a0;
+    puStack_6c = (uint *)0x56a6a0;
     iVar2 = (*pcVar8)();
-    piStack_6c = piVar6;
+    puStack_6c = (uint *)piVar6;
     if (iVar2 == 0) {
       puStack_70 = (undefined4 *)0x56a6a9;
       piVar3 = (int *)(*pcVar8)();
@@ -209,7 +216,7 @@ LAB_0056a843:
       piStack_88 = (int *)uStack_60;
       uStack_8c = 0x56a79b;
       (**(code **)(iVar2 + 0xa8))();
-      piStack_6c = (int *)((int)piVar6 + -0x743b);
+      puStack_6c = (uint *)((int)piVar6 + -0x743b);
       puStack_70 = (undefined4 *)0x2743;
       piStack_74 = (int *)0x56a7ad;
       piStack_68 = piVar3;
@@ -217,9 +224,9 @@ LAB_0056a843:
       if (cStack_10 != '\0') {
         sStack_3c = (short)iVar5;
         piStack_68 = (int *)0x0;
-        piStack_6c = (int *)CONCAT22(sStack_3c >> 0xf,
-                                     *(undefined2 *)
-                                      ((int)g_pLocalizationTable + sStack_3c * 2 + 0x48));
+        puStack_6c = (uint *)CONCAT22(sStack_3c >> 0xf,
+                                      *(undefined2 *)
+                                       ((int)g_pLocalizationTable + sStack_3c * 2 + 0x48));
         puStack_70 = (undefined4 *)0x56a7d7;
         (**(code **)(iVar2 + 0x1d4))();
         puStack_70 = (undefined4 *)0x56a7df;
@@ -258,28 +265,28 @@ LAB_0056a843:
     if (4 < (int)piVar3) {
       piStack_68 = (int *)0x6d757369;
       *(undefined2 *)(param_1 + 0x24) = *(undefined2 *)((int)g_pLocalizationTable + 0x4e);
-      piStack_6c = (int *)0x56a886;
+      puStack_6c = (uint *)0x56a886;
       piVar9 = (int *)(*unaff_EDI)();
-      piStack_6c = (int *)0x56a88f;
+      puStack_6c = (uint *)0x56a88f;
       (**(code **)(*piVar9 + 0xc))();
       iStack_14 = 1;
       DAT_006a1890 = DAT_006a1890 + 1;
-      piStack_6c = (int *)0x1037;
+      puStack_6c = (uint *)0x1037;
       uStack_1c = 1;
       puStack_70 = (undefined4 *)0x56a8b3;
       iVar5 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext();
       piVar9[0x21] = iVar5;
-      piStack_6c = (int *)0x1036;
+      puStack_6c = (uint *)0x1036;
       puStack_70 = (undefined4 *)0x56a8c6;
       iVar5 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext();
       uStack_28 = piVar9[0xe];
       piVar9[0x22] = iVar5;
       iStack_2c = piVar9[0xd];
-      piStack_6c = &uStack_34;
+      puStack_6c = local_38 + 1;
       piStack_74 = piVar9 + 0x23;
       puStack_70 = (undefined4 *)0x8;
-      uStack_34 = 0;
-      iStack_30 = 0;
+      local_38[1] = 0;
+      local_38[2] = 0;
       piStack_78 = (int *)0x56a900;
       (**(code **)(*DAT_006a2158 + 0x2c))();
       uStack_28 = uStack_28 & 0xffffff00;
@@ -316,12 +323,14 @@ LAB_0056a843:
       piStack_7c = (int *)0x1038;
       uStack_80 = 0x56a9b3;
       iVar5 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext();
+      local_38[0] = piVar9[0xe];
       piVar9[0x22] = iVar5;
       piStack_7c = (int *)&stack0xffffffbc;
       piStack_84 = piVar9 + 0x23;
       uStack_80 = 8;
       piStack_88 = (int *)0x56a9eb;
       (**(code **)(*DAT_006a2158 + 0x2c))();
+      local_38[0] = local_38[0] & 0xffffff00;
       DAT_006a1890 = DAT_006a1890 + -1;
       iVar5 = (int)(short)g_pLocalizationTable[0x13] * (int)(short)((short)piVar9[0xe] + -0xc);
       sVar7 = ((short)(iVar5 / 100) + (short)(iVar5 >> 0x1f)) -
@@ -342,14 +351,16 @@ LAB_0056a843:
       if (DAT_006a21b8 == (int *)0x0) {
         piStack_88 = (int *)0x30;
         uStack_8c = 0x56aa66;
-        iStack_30 = AllocateWithFallbackHandler();
-        if (iStack_30 == 0) {
+        local_38[2] = AllocateWithFallbackHandler();
+        local_38[0]._0_1_ = 3;
+        if (local_38[2] == 0) {
           DAT_006a21b8 = (int *)0x0;
         }
         else {
           piStack_88 = (int *)0x56aa7d;
           DAT_006a21b8 = (int *)THelpMgr::ConstructTHelpMgrBaseState();
         }
+        local_38[0] = (uint)local_38[0]._1_3_ << 8;
         piStack_88 = (int *)0x56aa92;
         (**(code **)(*DAT_006a21b8 + 0x28))();
       }
@@ -369,7 +380,7 @@ LAB_0056a843:
       ppiStack_98 = (int **)0x56aac3;
       (**(code **)(iVar5 + 0xa4))();
       ppiStack_98 = (int **)0x56aacc;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&piStack_84);
       ppiStack_98 = (int **)0x18;
       ppiStack_a0 = &piStack_84;
       uStack_9c = 0x2763;
@@ -389,18 +400,39 @@ LAB_0056a843:
       uStack_b4 = 0x56ab11;
       (**(code **)(iVar5 + 0x1ec))();
       uStack_b4 = 0;
+      uStack_b8 = 0x56ab1b;
       (**(code **)(iVar5 + 0x1f8))();
-      piVar6 = (int *)(*(code *)ppiStack_a0)(0x79657373);
+      uStack_b8 = 0x79657373;
+      uStack_bc = 0x56ab26;
+      piVar6 = (int *)(*(code *)ppiStack_a0)();
       iVar5 = *piVar6;
+      uStack_bc = 0x56ab2f;
       (**(code **)(iVar5 + 0xc))();
-      thunk_LoadUiStringResourceByGroupAndIndex(&uStack_a8,0x2763,0x16);
-      (**(code **)(iVar5 + 0x1c8))(&uStack_a8,0);
-      ApplyUiTextStyleAndThemeFlags(piVar6,0,0xc,0x2b6a,0x2b6c);
-      piVar6 = (int *)(*pcStack_ac)(0x6e6f6f6f);
+      uStack_bc = 0x16;
+      puStack_c4 = &uStack_a8;
+      puStack_c0 = (undefined4 *)0x2763;
+      uStack_c8 = 0x56ab46;
+      thunk_LoadUiStringResourceByGroupAndIndex();
+      puStack_c0 = &uStack_a8;
+      uStack_bc = 0;
+      puStack_c4 = (undefined4 *)0x56ab55;
+      (**(code **)(iVar5 + 0x1c8))();
+      puStack_c4 = (undefined4 *)0x2b6c;
+      uStack_c8 = 0x2b6a;
+      puStack_cc = (undefined4 *)0xc;
+      ApplyUiTextStyleAndThemeFlags(piVar6,0);
+      puStack_c4 = (undefined4 *)0x6e6f6f6f;
+      uStack_c8 = 0x56ab77;
+      piVar6 = (int *)(*pcStack_ac)();
       iVar5 = *piVar6;
+      uStack_c8 = 0x56ab80;
       (**(code **)(iVar5 + 0xc))();
-      thunk_LoadUiStringResourceByGroupAndIndex(&uStack_b4,0x2763,0x17);
-      (**(code **)(iVar5 + 0x1c8))(&uStack_b4,0);
+      uStack_c8 = 0x17;
+      puStack_cc = (undefined4 *)0x2763;
+      thunk_LoadUiStringResourceByGroupAndIndex(&uStack_b4);
+      puStack_cc = &uStack_b4;
+      uStack_c8 = 0;
+      (**(code **)(iVar5 + 0x1c8))();
       ApplyUiTextStyleAndThemeFlags(piVar6,0,0xc,0x2b6a,0x2b6c);
       iVar5 = *piVar9;
       *(undefined2 *)(piVar9 + 0x24) = 0x2b6c;
@@ -411,9 +443,9 @@ LAB_0056a843:
       thunk_SetSelectedTextOptionByTag
                 ((-(uint)(pcStack_ac != (code *)0x0) & 0xaf60404) + 0x6e6f6f6f,0);
       uStack_90 = uStack_90 & 0xffffff00;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&puStack_cc);
       uStack_90 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&puStack_c4);
       *unaff_FS_OFFSET = ppiStack_98;
       return;
     }

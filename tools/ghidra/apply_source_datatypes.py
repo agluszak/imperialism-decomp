@@ -154,6 +154,22 @@ FUNCTION_MODELS: tuple[FunctionSpec, ...] = (
         (("pSource", "TView *"),),
         "Setting prototype: void CopyCityDialogStateFromSource(TView *this, TView *pSource)",
     ),
+    FunctionSpec(0x00605797, "CString", "CString", "void"),
+    FunctionSpec(0x00605950, "CString", "CString", "void", (("text_or_resource_id", "char *"),)),
+    FunctionSpec(0x006058e2, "CString", "~CString", "void"),
+    FunctionSpec(0x006057de, "CString", "AllocateBufferForLength", "void", (("text_length", "int"),)),
+    FunctionSpec(0x006058b9, "CString", "EnsureCapacityOrAllocate", "void", (("required_capacity", "int"),)),
+    FunctionSpec(0x006059fc, "CString", "CopyBufferAndSetLength", "void", (("new_length", "int"), ("src_text", "char *"))),
+    FunctionSpec(0x006057a7, "CString", "StringSharedRef_AssignFromPtr", "CString *", (("src_ref", "CString *"),)),
+    FunctionSpec(0x00605a29, "CString", "AssignFromPtr", "CString *", (("src_ref", "CString *"),)),
+    FunctionSpec(0x00605a78, "CString", "CopyFromCStr", "CString *", (("src_text", "char *"),)),
+    FunctionSpec(0x00605ae0, "CString", "ConcatenateBuffers", "void", (("lhs_len", "int"), ("lhs_text", "char *"), ("rhs_len", "int"), ("rhs_text", "char *"))),
+    FunctionSpec(0x0060588b, "CString", "EnsureUniqueSharedStringBuffer", "void"),
+    FunctionSpec(0x00605c6f, "CString", "AppendBuffer", "void", (("append_len", "int"), ("append_text", "char *"))),
+    FunctionSpec(0x00605cce, "CString", "AssignFromCStr", "undefined4", (("text", "char *"),)),
+    FunctionSpec(0x00605d22, "CString", "EnsureCapacityPreserveLength", "int", (("min_capacity", "int"),)),
+    FunctionSpec(0x00605d99, "CString", "EnsureCapacityAndSetLength", "int", (("new_length", "int"),)),
+    FunctionSpec(0x00605d71, "CString", "SetLengthAndTerminator", "void", (("new_length", "int"),)),
 )
 
 

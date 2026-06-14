@@ -38,10 +38,10 @@ TView * TTextList::CreateTTextListInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AC30
-// GHIDRA_NAME TTextList::GetTTextListClassNamePointer
-// GHIDRA_PROTO undefined GetTTextListClassNamePointer()
+// GHIDRA_NAME TTextList::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TTextList::GetTTextListClassNamePointer(void)
+char * TTextList::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTTextList;
@@ -61,9 +61,9 @@ void __fastcall TTextList::ConstructTTextListBaseState(int param_1)
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_30;
   undefined4 local_2c;
-  undefined1 local_28 [4];
+  TToolBarCluster local_28 [4];
   int local_24;
-  int local_20;
+  char *local_20;
   undefined4 uStack_1c;
   int iStack_18;
   undefined4 uStack_14;
@@ -85,10 +85,10 @@ void __fastcall TTextList::ConstructTTextListBaseState(int param_1)
   thunk_MapUiThemeCodeToStyleFlags(0x2b6a,&local_30);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6c);
   if ((int)*(short *)(param_1 + 0x106c) < *(int *)(param_1 + 0x38)) {
-    local_20 = iVar3 * 0x40 + 0x60 + param_1;
+    local_20 = (char *)(iVar3 * 0x40 + 0x60 + param_1);
     do {
       if (*(int *)(param_1 + 0x1060) <= iVar3) break;
-      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(local_20);
+      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(local_28,local_20);
       local_4 = 0;
       if (iVar3 == *(int *)(param_1 + 0x1068)) {
         (**(code **)(*g_pUiRuntimeContext + 0x34))(5);
@@ -110,7 +110,7 @@ void __fastcall TTextList::ConstructTTextListBaseState(int param_1)
       local_24 = local_24 + 1;
       local_20 = local_20 + 0x40;
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(local_28);
       iVar3 = local_24;
     } while ((int)(short)iVar2 + (int)*(short *)(param_1 + 0x106c) < *(int *)(param_1 + 0x38));
   }

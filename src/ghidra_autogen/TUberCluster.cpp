@@ -34,13 +34,13 @@ undefined4 * TUberCluster::CreateTUberClusterInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571440
-// GHIDRA_NAME TUberCluster::GetTUberClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTUberClusterClassNamePointer()
+// GHIDRA_NAME TUberCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TUberCluster::GetTUberClusterClassNamePointer(void)
+undefined ** TUberCluster::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TUberCluster_0065e5b0;
+  return &g_pClassDescTUberCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571460

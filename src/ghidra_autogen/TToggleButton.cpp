@@ -53,13 +53,13 @@ undefined4 * TToggleButton::CreateTToggleButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005710D0
-// GHIDRA_NAME TToggleButton::GetTToggleButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTToggleButtonClassNamePointer()
+// GHIDRA_NAME TToggleButton::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TToggleButton::GetTToggleButtonClassNamePointer(void)
+undefined ** TToggleButton::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TToggleButton_0065e598;
+  return &g_pClassDescTToggleButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005710F0

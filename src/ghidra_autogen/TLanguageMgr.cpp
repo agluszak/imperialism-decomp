@@ -50,7 +50,7 @@ undefined4 * __fastcall TLanguageMgr::ConstructTLanguageMgrBaseState(undefined4 
 
 {
   undefined4 *unaff_FS_OFFSET;
-  int local_14;
+  CString local_14;
   undefined4 *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -62,9 +62,9 @@ undefined4 * __fastcall TLanguageMgr::ConstructTLanguageMgrBaseState(undefined4 
   *param_1 = &RefCountedObjectBase::_vftable_;
   local_4 = 0;
   local_10 = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 10);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0xb);
   local_4._0_1_ = 2;
   *param_1 = &PTR_LAB_006585a8;
   param_1[4] = 0;
@@ -72,16 +72,18 @@ undefined4 * __fastcall TLanguageMgr::ConstructTLanguageMgrBaseState(undefined4 
   param_1[7] = 0;
   param_1[8] = 0;
   *(undefined1 *)(param_1 + 9) = 0;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(s_news_tab_00696d04);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&local_14,s_news_tab_00696d04);
   local_4._0_1_ = 3;
   AssignFromPtr(param_1 + 0xb,&local_14);
   local_4._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(s_news_tex_00696cf8);
+  ReleaseSharedStringRefIfNotEmpty(&local_14);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&local_14,s_news_tex_00696cf8);
   local_4._0_1_ = 4;
   AssignFromPtr(param_1 + 10,&local_14);
   local_4 = CONCAT31(local_4._1_3_,2);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_14);
   *(undefined1 *)((int)param_1 + 0x25) = 0x20;
   param_1[0xc] = 6;
   *unaff_FS_OFFSET = local_c;

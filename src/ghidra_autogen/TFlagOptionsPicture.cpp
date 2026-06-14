@@ -49,13 +49,14 @@ undefined ** TFlagOptionsPicture::GetTFlagOptionsPictureClassNamePointer(void)
 
 void __thiscall
 TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
-          (int *param_1,int param_2,int param_3,undefined4 param_4)
+          (int *param_1,int param_2,undefined1 *param_3,undefined4 param_4)
 
 {
   uint uVar1;
-  char cVar2;
-  int *piVar3;
-  int iVar4;
+  undefined1 *puVar2;
+  char cVar3;
+  int *piVar4;
+  int iVar5;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -70,18 +71,19 @@ TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
     *unaff_FS_OFFSET = local_c;
     return;
   }
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_2);
+  puVar2 = param_3;
   local_4 = 0;
   uVar1 = *(uint *)(param_3 + 0x1c);
   if (uVar1 < 0x676f777a) {
     if (uVar1 == 0x676f7779) {
-      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar3 + 0x1b4))();
+      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
+      (**(code **)(*piVar4 + 0x1b4))();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x63726564) {
-      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar3 + 0x1b4))();
+      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
+      (**(code **)(*piVar4 + 0x1b4))();
       (**(code **)(*g_pLocalizationTable + 0x48))();
       goto LAB_0056b529;
     }
@@ -89,17 +91,17 @@ TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
   else if (uVar1 < 0x6e657768) {
     if (uVar1 == 0x6e657767) {
 LAB_0056b474:
-      cVar2 = DispatchGameStateEventIfLocalizedPromptAccepted();
-      if (cVar2 != '\0') {
-        piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
-        (**(code **)(*piVar3 + 0x1b4))();
+      cVar3 = DispatchGameStateEventIfLocalizedPromptAccepted();
+      if (cVar3 != '\0') {
+        piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
+        (**(code **)(*piVar4 + 0x1b4))();
         if (g_pLocalizationTable[0x11] == 1) {
           if (*(char *)((int)g_pGameFlowState + 0xf4) != '\0') {
             thunk_TrySaveGameAndMaybeShowFailureDialog();
           }
           thunk_DispatchTaggedGameStateEvent1F20();
         }
-        else if (*(int *)(param_3 + 0x1c) == 0x71756974) {
+        else if (*(int *)(puVar2 + 0x1c) == 0x71756974) {
           PostWmCloseToMainThreadWindow();
         }
         else {
@@ -113,33 +115,34 @@ LAB_0056b474:
         thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
         goto LAB_0056b529;
       }
-      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar3 + 0x1b4))();
-      iVar4 = *g_pLocalizationTable;
+      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
+      (**(code **)(*piVar4 + 0x1b4))();
+      iVar5 = *g_pLocalizationTable;
       goto LAB_0056b526;
     }
   }
   else {
     if (uVar1 == 0x70726566) {
-      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar3 + 0x1b4))();
-      iVar4 = *g_pLocalizationTable;
+      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
+      (**(code **)(*piVar4 + 0x1b4))();
+      iVar5 = *g_pLocalizationTable;
 LAB_0056b526:
-      (**(code **)(iVar4 + 0x48))();
+      (**(code **)(iVar5 + 0x48))();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x71756974) goto LAB_0056b474;
     if (uVar1 == 0x73617665) {
-      piVar3 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar3 + 0x1b4))();
+      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
+      (**(code **)(*piVar4 + 0x1b4))();
       if (g_pLocalizationTable[0x11] == 2) {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&param_4);
         local_4._0_1_ = 1;
         thunk_LoadUiStringResourceByGroupAndIndex();
+        param_3 = &stack0xffffffdc;
         thunk_AssignStringSharedRefAndReturnThis(&param_4);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4 = (uint)local_4._1_3_ << 8;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&param_4);
       }
       else {
         (**(code **)(*g_pLocalizationTable + 0x48))();
@@ -150,7 +153,7 @@ LAB_0056b526:
   thunk_HandleCityDialogToggleCommandOrForward();
 LAB_0056b529:
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -179,7 +182,7 @@ void TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree(undefined4 par
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   TView::thunk_NoOpUiLifecycleHook(param_1);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_1);
   iVar3 = 0;
   local_4 = 0;
   do {
@@ -203,7 +206,7 @@ void TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree(undefined4 par
     iVar3 = iVar3 + 1;
   } while (iVar3 < 8);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

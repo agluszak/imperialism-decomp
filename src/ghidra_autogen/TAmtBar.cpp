@@ -47,10 +47,10 @@ TView * TAmtBar::CreateTAmtBarInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588560
-// GHIDRA_NAME TAmtBar::GetTAmtBarClassNamePointer
-// GHIDRA_PROTO undefined GetTAmtBarClassNamePointer()
+// GHIDRA_NAME TAmtBar::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TAmtBar::GetTAmtBarClassNamePointer(void)
+char * TAmtBar::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTAmtBar;

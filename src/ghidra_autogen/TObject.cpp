@@ -40,10 +40,10 @@ void TObject::CreateTObjectInstance(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485E20
-// GHIDRA_NAME TObject::GetTObjectClassNamePointer
-// GHIDRA_PROTO undefined GetTObjectClassNamePointer()
+// GHIDRA_NAME TObject::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TObject::GetTObjectClassNamePointer(void)
+undefined ** TObject::GetRuntimeClass(void)
 
 {
   return &PTR_s_TObject_00694eb8;
@@ -121,11 +121,11 @@ TObject::InvokeDialogFactoryFromPacket
 
 {
   int iVar1;
-  undefined4 uVar2;
+  int iVar2;
   int *piVar3;
   
-  uVar2 = DAT_006950ac;
-  DAT_006950ac = 0;
+  iVar2 = g_McAppUiActiveFlag_006950AC;
+  g_McAppUiActiveFlag_006950AC = 0;
   piVar3 = (int *)(**(code **)(*(int *)this + 0x30))
                             (nContextId,pEventPacket,nEventCode,pAnchorPoint);
   if (piVar3 != (int *)0x0) {
@@ -133,7 +133,7 @@ TObject::InvokeDialogFactoryFromPacket
     (**(code **)(iVar1 + 0xd8))(nContextId);
     (**(code **)(iVar1 + 0xe0))();
   }
-  DAT_006950ac = uVar2;
+  g_McAppUiActiveFlag_006950AC = iVar2;
   return piVar3;
 }
 

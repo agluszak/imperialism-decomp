@@ -17,7 +17,7 @@ undefined ** TMinorTreatyDialog::GetTMinorTreatyDialogClassNamePointer(void)
 // GHIDRA_NAME TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState
 // GHIDRA_PROTO undefined ConstructTMinorTreatyDialogBaseState()
 
-void __fastcall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(int *param_1)
+void __fastcall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(code *param_1)
 
 {
   int iVar1;
@@ -25,15 +25,16 @@ void __fastcall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(int *pa
   undefined4 uVar3;
   short sVar4;
   int *piVar5;
-  code *pcVar6;
-  int *piVar7;
+  int *piVar6;
+  int iVar7;
   int iVar8;
-  int iVar9;
   int *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   int local_44;
   int *local_40;
-  int *local_3c [3];
+  int *local_3c;
+  code *local_38;
+  int *piStack_34;
   code *pcStack_30;
   undefined4 local_2c;
   undefined4 local_28;
@@ -51,7 +52,8 @@ void __fastcall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(int *pa
   puStack_8 = &LAB_00638d18;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  local_38 = param_1;
+  InitializeSharedStringRefFromEmpty(&local_44);
   local_4 = 0;
   local_2c = 0x6e616d30;
   local_28 = 0x6e616d31;
@@ -62,116 +64,119 @@ void __fastcall TMinorTreatyDialog::ConstructTMinorTreatyDialogBaseState(int *pa
   local_14 = 0x6e616d36;
   local_10 = 0x6e616d37;
   local_40 = (int *)0x7;
-  local_3c[0] = (int *)0x0;
+  local_3c = (int *)0x0;
   do {
-    if (local_3c[0][0x1a90cb] != 0) {
-      piVar5 = (int *)(**(code **)(*param_1 + 0x94))();
-      local_3c[2] = piVar5;
+    piVar6 = local_40;
+    if (local_3c[0x1a90cb] != 0) {
+      piVar5 = (int *)(**(code **)(*(int *)param_1 + 0x94))();
+      piStack_34 = piVar5;
       if (piVar5 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
       }
+      iVar7 = 0;
       iVar8 = 0;
-      iVar9 = 0;
       do {
-        if (*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar9) != 0) {
-          piVar5 = (int *)(**(code **)(*piVar5 + 0x94))();
-          if (piVar5 == (int *)0x0) {
+        if (*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar8) != 0) {
+          piVar6 = (int *)(**(code **)(*piVar5 + 0x94))();
+          if (piVar6 == (int *)0x0) {
             MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
             thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                       (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
           }
-          sVar4 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x70))(iVar8);
-          iVar1 = *piVar5;
+          sVar4 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x70))(iVar7);
+          iVar1 = *piVar6;
           (**(code **)(iVar1 + 0x1e4))((int)sVar4,0);
           (**(code **)(iVar1 + 0xa8))(0,0);
-          piVar5 = local_3c[2];
+          piVar5 = piStack_34;
+          piVar6 = local_40;
         }
-        iVar8 = iVar8 + 1;
-        iVar9 = iVar9 + 4;
-      } while ((short)iVar8 < 7);
+        iVar7 = iVar7 + 1;
+        iVar8 = iVar8 + 4;
+        param_1 = local_38;
+      } while ((short)iVar7 < 7);
     }
-    local_40 = (int *)((int)local_40 + 1);
-    local_3c[0] = local_3c[0] + 1;
+    local_40 = (int *)((int)piVar6 + 1);
+    local_3c = local_3c + 1;
   } while ((short)local_40 < 0x17);
-  pcVar2 = *(code **)(*param_1 + 0x94);
+  pcVar2 = *(code **)(*(int *)param_1 + 0x94);
   pcStack_30 = pcVar2;
-  pcVar6 = (code *)(*pcVar2)();
-  if (pcVar6 == (code *)0x0) {
+  local_38 = (code *)(*pcVar2)();
+  if (local_38 == (code *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
-  iVar8 = (*pcVar2)();
-  if (iVar8 == 0) {
+  iVar7 = (*pcVar2)();
+  if (iVar7 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x30e);
   }
-  iVar8 = 0;
+  iVar7 = 0;
   local_44 = 7;
   do {
-    if (*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar8) != 0) {
+    if (*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar7) != 0) {
       FormatOverlayTerrainLabelText(&stack0xffffffb4);
-      uVar3 = *(undefined4 *)((int)local_3c + iVar8 + 8);
-      piVar5 = (int *)(**(code **)(*local_3c[0] + 0x94))(uVar3);
-      if (piVar5 == (int *)0x0) {
+      uVar3 = *(undefined4 *)((int)&piStack_34 + iVar7);
+      piVar6 = (int *)(**(code **)(*local_3c + 0x94))(uVar3);
+      if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x316);
       }
-      (**(code **)(*piVar5 + 0x1c8))(&stack0xffffffb0,0);
-      piVar5 = (int *)(**(code **)(*unaff_EDI + 0x94))(uVar3);
-      if (piVar5 == (int *)0x0) {
+      (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffb0,0);
+      piVar6 = (int *)(**(code **)(*unaff_EDI + 0x94))(uVar3);
+      if (piVar6 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x319);
       }
-      (**(code **)(*piVar5 + 0x1c8))(&stack0xffffffa4,0);
+      (**(code **)(*piVar6 + 0x1c8))(&stack0xffffffa4,0);
     }
-    iVar8 = iVar8 + 4;
+    pcVar2 = local_38;
+    iVar7 = iVar7 + 4;
     local_44 = local_44 + -1;
   } while (local_44 != 0);
-  iVar8 = (*pcVar6)(0x636f6c31);
-  if (iVar8 == 0) {
+  local_3c = (int *)(*local_38)(0x636f6c31);
+  if (local_3c == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x31e);
   }
-  piVar5 = (int *)(*pcVar6)(0x636f6c32);
-  if (piVar5 == (int *)0x0) {
+  piVar6 = (int *)(*pcVar2)(0x636f6c32);
+  if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,800);
   }
-  iVar9 = 0x1c;
-  iVar8 = 8;
+  iVar8 = 0x1c;
+  iVar7 = 8;
   do {
-    if (*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar9) != 0) {
+    if (*(int *)((int)&g_apTerrainTypeDescriptorTable + iVar8) != 0) {
       FormatOverlayTerrainLabelText(&stack0xffffffac);
-      piVar7 = (int *)(**(code **)(*local_40 + 0x94))
-                                (*(undefined4 *)((int)local_3c + iVar9 + -0x1c));
-      if (piVar7 == (int *)0x0) {
+      piVar5 = (int *)(**(code **)(*local_40 + 0x94))(*(undefined4 *)(&stack0xffffffa8 + iVar8));
+      if (piVar5 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x329);
       }
-      (**(code **)(*piVar7 + 0x1c8))(&stack0xffffffa8,0);
+      (**(code **)(*piVar5 + 0x1c8))(&stack0xffffffa8,0);
     }
-    if (*(int *)((int)&DAT_006a4330 + iVar9) != 0) {
+    if (*(int *)((int)&DAT_006a4330 + iVar8) != 0) {
       FormatOverlayTerrainLabelText(&stack0xffffffac);
-      piVar7 = (int *)(**(code **)(*piVar5 + 0x94))(*(undefined4 *)((int)local_3c + iVar9 + -0x1c));
-      if (piVar7 == (int *)0x0) {
+      piVar5 = (int *)(**(code **)(*piVar6 + 0x94))(*(undefined4 *)(&stack0xffffffa8 + iVar8));
+      if (piVar5 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x331);
       }
-      (**(code **)(*piVar7 + 0x1c8))(&stack0xffffffa8,0);
+      (**(code **)(*piVar5 + 0x1c8))(&stack0xffffffa8,0);
     }
-    iVar9 = iVar9 + 4;
-    iVar8 = iVar8 + -1;
-  } while (iVar8 != 0);
+    iVar8 = iVar8 + 4;
+    iVar7 = iVar7 + -1;
+  } while (iVar7 != 0);
   local_14 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffac);
   *unaff_FS_OFFSET = local_1c;
   return;
 }

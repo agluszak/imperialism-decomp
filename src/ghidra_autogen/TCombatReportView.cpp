@@ -37,10 +37,10 @@ _CreateTCombatReportViewInstance__YAPAUCombatReportViewState___Z_imperialismincl
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C8B0
-// GHIDRA_NAME TCombatReportView::GetTCombatReportViewClassNamePointer
-// GHIDRA_PROTO undefined GetTCombatReportViewClassNamePointer()
+// GHIDRA_NAME TCombatReportView::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-int * TCombatReportView::GetTCombatReportViewClassNamePointer(void)
+int * TCombatReportView::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTCombatReportView;

@@ -49,6 +49,10 @@ bool __thiscall TMapMgr::QueueCivilianWorkOrderWithCostCheck(TMapMgr *this,short
   int nFeedbackNowTickDiv16;
   bool fOrderQueued;
   uint *unaff_FS_OFFSET;
+  undefined2 in_stack_00000006;
+  char *pcStack_48;
+  undefined4 uStack_44;
+  undefined1 *puStack_40;
   uint dwSavedSehFrame;
   undefined1 awOrderQueuedSfxByClass [4];
   ushort wQueuedOrderMessageId;
@@ -56,11 +60,13 @@ bool __thiscall TMapMgr::QueueCivilianWorkOrderWithCostCheck(TMapMgr *this,short
   undefined1 *puStack_8;
   undefined4 uStack_4;
   uint dwAvailableNationCash;
+  undefined4 uVar1;
   
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00631c18;
   *unaff_FS_OFFSET = (uint)&uStack_c;
+  puStack_40 = (undefined1 *)0x4d3339;
   nActiveNationId = UiRuntimeContext::GetActiveNationId();
   fOrderQueued = false;
   dwAvailableNationCash =
@@ -70,29 +76,39 @@ bool __thiscall TMapMgr::QueueCivilianWorkOrderWithCostCheck(TMapMgr *this,short
      (dwSavedSehFrame = dwSavedSehFrame & 0xffffff00, *(short *)(*(int *)(this + 4) + 4) == 8)) {
     dwSavedSehFrame = CONCAT31(dwSavedSehFrame._1_3_,1);
   }
-  bTileWorkOrderCostClass = (**(code **)(*g_pGlobalMapState + 200))();
+  puStack_40 = (undefined1 *)dwSavedSehFrame;
+  uStack_44 = _nTileIndex;
+  pcStack_48 = (char *)0x4d33a1;
+  uVar1 = (**(code **)(*g_pGlobalMapState + 200))();
                     /* Cost class from GlobalMapState::GetTileCivilianWorkOrderCostClassNibble(tile,
                        class==0||8). */
                     /* If available cash is below cost table entry, show insufficient-funds warning.
                         */
   if ((int)(((int)dwAvailableNationCash < 1) - 1 & dwAvailableNationCash) <
-      *(int *)(&g_adwCivilianWorkOrderCostByClass + (char)bTileWorkOrderCostClass * 4)) {
-    InitializeSharedStringRefFromEmpty();
+      *(int *)(&g_adwCivilianWorkOrderCostByClass + (char)uVar1 * 4)) {
+    pcStack_48 = (char *)0x4d349f;
+    InitializeSharedStringRefFromEmpty(&stack0xffffffd0);
     uStack_c = 0;
-    InitializeSharedStringRefFromEmpty();
+    pcStack_48 = (char *)0x4d34ac;
+    InitializeSharedStringRefFromEmpty(&stack0xffffffcc);
     uStack_c._0_1_ = 1;
-    InitializeSharedStringRefFromEmpty();
+    pcStack_48 = (char *)0x4d34ba;
+    InitializeSharedStringRefFromEmpty(&uStack_4);
+    pcStack_48 = &stack0xffffffd0;
     uStack_c = CONCAT31(uStack_c._1_3_,2);
     (**(code **)(*g_pLocalizationTable + 0x74))();
     (**(code **)(*g_pLocalizationTable + 0x84))();
-    scanBracketExpressions(g_pLocalizationTable,awOrderQueuedSfxByClass,&stack0xffffffd0);
+    scanBracketExpressions(g_pLocalizationTable,awOrderQueuedSfxByClass,pcStack_48);
+    puStack_40 = &stack0xffffff98;
     thunk_AssignStringSharedRefAndReturnThis(awOrderQueuedSfxByClass);
     thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-    ReleaseSharedStringRefIfNotEmpty();
-    ReleaseSharedStringRefIfNotEmpty();
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(awOrderQueuedSfxByClass);
+    ReleaseSharedStringRefIfNotEmpty(&pcStack_48);
+    ReleaseSharedStringRefIfNotEmpty(&uStack_44);
   }
   else {
+    pcStack_48 = (char *)CONCAT22((short)((uint)uVar1 >> 0x10),
+                                  *(undefined2 *)((int)*(int **)(this + 4) + 6));
     (**(code **)(**(int **)(this + 4) + 0x34))();
     (**(code **)(*(int *)this + 0x30))();
     dwSavedSehFrame = CONCAT22(dwSavedSehFrame._2_2_,0x2339);
@@ -148,7 +164,7 @@ undefined4 * TMapMgr::CreateTMapMgrInstance(void)
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
     puVar1[4] = 0;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(puVar1 + 7);
     *puVar1 = &g_vtblGlobalMapState;
     *(undefined1 *)(puVar1 + 2) = 0;
     *(undefined1 *)(puVar1 + 1) = 0;

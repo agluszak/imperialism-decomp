@@ -14,36 +14,6 @@ void TradeControl::thunk_AssertCityProductionGlobalStateInitialized(void)
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00412BF0
-// GHIDRA_NAME TradeControl::NoOpTurnEventStateVtableSlot0C
-// GHIDRA_PROTO undefined NoOpTurnEventStateVtableSlot0C()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
-// GHIDRA_COMMENT_END
-
-/* No-op virtual slot stub (returns immediately). */
-
-void TradeControl::NoOpTurnEventStateVtableSlot0C(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00412C10
-// GHIDRA_NAME TradeControl::NoOpTurnEventStateVtableSlot10
-// GHIDRA_PROTO undefined NoOpTurnEventStateVtableSlot10()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
-// GHIDRA_COMMENT_END
-
-/* No-op virtual slot stub (returns immediately). */
-
-void TradeControl::NoOpTurnEventStateVtableSlot10(void)
-
-{
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00415D50
 // GHIDRA_NAME TradeControl::GetCityDialogValueDword10
 // GHIDRA_PROTO int __fastcall GetCityDialogValueDword10(CityDialogController * pDialog)
@@ -86,8 +56,8 @@ undefined4 __fastcall TradeControl::GetCityProductionControllerField60(int param
 void TradeControl::AssertCityProductionGlobalStateInitialized(void)
 
 {
-  if (DAT_006a143c == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x56f);
+  if (g_McAppUiFlag_006A143C == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x56f);
   }
   return;
 }
@@ -104,7 +74,7 @@ void TradeControl::AssertCityProductionGlobalStateInitialized(void)
 bool __cdecl TradeControl::LogUnhandledDialogMethodAndReturnFalse(void)
 
 {
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x58f);
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x58f);
   return false;
 }
 

@@ -64,6 +64,7 @@ void __fastcall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(int param
   undefined1 local_1a;
   undefined1 local_19;
   undefined4 local_18;
+  undefined1 local_14 [4];
   int local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -73,11 +74,11 @@ void __fastcall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(int param
   puStack_8 = &LAB_00632fd8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_20);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_14);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = CONCAT31(local_4._1_3_,2);
   local_18 = 0;
   local_1c = 0;
@@ -117,7 +118,7 @@ void __fastcall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(int param
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_1c);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b68);
     FormatOverlayTerrainLabelText(&stack0xffffffd4);
-    AssignStringSharedFromCStr(&DAT_00696b10);
+    AssignStringSharedFromCStr(&stack0xffffffd4,&DAT_00696b10);
     iVar4 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar4) + 1,0x3d);
@@ -135,7 +136,7 @@ void __fastcall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(int param
     thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,0x3c);
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
     FormatOverlayTerrainLabelText(&stack0xffffffd4);
-    AssignStringSharedFromCStr(&DAT_00696b10);
+    AssignStringSharedFromCStr(&stack0xffffffd4,&DAT_00696b10);
     iVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
     SetQuickDrawColorAndSyncGlobals(unaff_ESI);
     thunk_SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar2) + 1,0x4d);
@@ -169,11 +170,11 @@ void __fastcall TCouncilPanelView::ConstructTCouncilPanelViewBaseState(int param
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
   }
   local_10._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_1c);
   local_10 = (uint)local_10._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
-  local_10 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_20);
+  local_10 = -1;
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffd4);
   *unaff_FS_OFFSET = local_18;
   return;
 }

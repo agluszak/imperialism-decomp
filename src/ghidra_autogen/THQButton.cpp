@@ -476,7 +476,7 @@ THQButton::RenderCityViewProductionDialogMetrics
   puStack_8 = &LAB_006316bb;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_84);
   local_28[1] = 0x19;
   local_28[6] = 0x19;
   local_48 = *(undefined4 *)pDialogState;
@@ -618,7 +618,7 @@ switchD_004c9540_default:
   }
   UpdatePaletteIndexWithDefaultFallback(0x13);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_84);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -698,7 +698,7 @@ THQButton::RenderUniversityRecruitmentRequirementGrid(THQButton *this,RECT *pCli
     puStack_8 = (undefined1 *)0x0;
     nRequirementRowBottomY = 0x12e;
     do {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&stack0xffffff9c);
       uStack_10 = 0;
       if (*(short *)(&g_anUniversityRequirementIdByRecruitRow +
                     (int)(puStack_8 + *(short *)(this + 0xa4) * 4) * 4) != -1) {
@@ -741,7 +741,7 @@ THQButton::RenderUniversityRecruitmentRequirementGrid(THQButton *this,RECT *pCli
         }
       }
       uStack_10 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&stack0xffffff9c);
       nRequirementRowBottomY = nRequirementRowBottomY + 0x19;
       puStack_8 = puStack_8 + 1;
     } while (nRequirementRowBottomY < 0x192);
@@ -913,7 +913,7 @@ undefined4 * THQButton::CreateTHQButtonInstance(void)
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00666fe0;
+    *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -921,10 +921,10 @@ undefined4 * THQButton::CreateTHQButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B640
-// GHIDRA_NAME THQButton::GetTHQButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTHQButtonClassNamePointer()
+// GHIDRA_NAME THQButton::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-int * THQButton::GetTHQButtonClassNamePointer(void)
+int * THQButton::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTHQButton;
@@ -938,7 +938,21 @@ undefined4 * __fastcall THQButton::THQButton(undefined4 *param_1)
 
 {
   thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00666fe0;
+  *param_1 = &_vftable_;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058B690
+// GHIDRA_NAME THQButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall THQButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
   return param_1;
 }
 

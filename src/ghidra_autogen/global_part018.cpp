@@ -3,242 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part018.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005E7690
-// GHIDRA_NAME ExecuteCrtHandlerWithOptionalRtlUnwind
-// GHIDRA_PROTO undefined ExecuteCrtHandlerWithOptionalRtlUnwind()
-
-undefined4 ExecuteCrtHandlerWithOptionalRtlUnwind(int param_1,int param_2,undefined4 param_3)
-
-{
-  undefined4 uVar1;
-  
-  if ((*(uint *)(param_1 + 4) & 0x66) != 0) {
-    *(undefined4 *)(param_2 + 0x24) = 1;
-    return 1;
-  }
-  DispatchStructuredExceptionThroughFrameInfo
-            (param_1,*(undefined4 *)(param_2 + 0xc),param_3,0,*(undefined4 *)(param_2 + 8),
-             *(undefined4 *)(param_2 + 0x10),*(undefined4 *)(param_2 + 0x14),1);
-  if (*(int *)(param_2 + 0x24) == 0) {
-    WrapperFor_RtlUnwind_At005e7470(param_2,param_1);
-  }
-                    /* WARNING: Could not recover jumptable at 0x005e7704. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-  uVar1 = (**(code **)(param_2 + 0x18))();
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E7720
-// GHIDRA_NAME FindFrameRecordRangeByPcAndDepth
-// GHIDRA_PROTO undefined FindFrameRecordRangeByPcAndDepth()
-
-int FindFrameRecordRangeByPcAndDepth
-              (int param_1,int param_2,int param_3,uint *param_4,uint *param_5)
-
-{
-  int iVar1;
-  int iVar2;
-  uint uVar3;
-  uint uVar4;
-  uint uVar5;
-  
-  iVar2 = *(int *)(param_1 + 0x10);
-  uVar5 = *(uint *)(param_1 + 0xc);
-  uVar3 = uVar5;
-  uVar4 = uVar5;
-  while (-1 < param_2) {
-    if (uVar5 == 0xffffffff) {
-      AbortOnRuntimeInvariantViolation();
-    }
-    uVar5 = uVar5 - 1;
-    iVar1 = iVar2 + uVar5 * 0x14;
-    if (((*(int *)(iVar1 + 4) < param_3) && (param_3 <= *(int *)(iVar1 + 8))) ||
-       (uVar5 == 0xffffffff)) {
-      param_2 = param_2 + -1;
-      uVar3 = uVar4;
-      uVar4 = uVar5;
-    }
-  }
-  uVar5 = uVar5 + 1;
-  *param_4 = uVar5;
-  *param_5 = uVar3;
-  if ((*(uint *)(param_1 + 0xc) < uVar3) || (uVar3 < uVar5)) {
-    AbortOnRuntimeInvariantViolation();
-  }
-  return iVar2 + uVar5 * 0x14;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E77A0
-// GHIDRA_NAME global_unwind2
-// GHIDRA_PROTO undefined global_unwind2()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  __global_unwind2
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: Visual Studio
-// GHIDRA_COMMENT_END
-
-/* Library Function - Single Match
-    __global_unwind2
-   
-   Library: Visual Studio */
-
-void global_unwind2(PVOID param_1)
-
-{
-  RtlUnwind(param_1,(PVOID)0x5e77b8,(PEXCEPTION_RECORD)0x0,(PVOID)0x0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E77E2
-// GHIDRA_NAME local_unwind2
-// GHIDRA_PROTO undefined local_unwind2()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  __local_unwind2
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Libraries: Visual Studio 1998 Debug, Visual Studio 1998 Release, Visual Studio 2003 Debug, Visual Studio 2003 Release
-// GHIDRA_COMMENT_END
-
-/* Library Function - Single Match
-    __local_unwind2
-   
-   Libraries: Visual Studio 1998 Debug, Visual Studio 1998 Release, Visual Studio 2003 Debug, Visual
-   Studio 2003 Release */
-
-void local_unwind2(int param_1,int param_2)
-
-{
-  int iVar1;
-  int iVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_1c;
-  undefined1 *puStack_18;
-  undefined4 local_14;
-  int iStack_10;
-  
-  iStack_10 = param_1;
-  puStack_18 = &LAB_005e77c0;
-  uStack_1c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_1c;
-  while( true ) {
-    iVar1 = *(int *)(param_1 + 8);
-    iVar2 = *(int *)(param_1 + 0xc);
-    if ((iVar2 == -1) || (iVar2 == param_2)) break;
-    local_14 = *(undefined4 *)(iVar1 + iVar2 * 0xc);
-    *(undefined4 *)(param_1 + 0xc) = local_14;
-    if (*(int *)(iVar1 + 4 + iVar2 * 0xc) == 0) {
-      CaptureExceptionContextToGlobalSlots(0x101);
-      (**(code **)(iVar1 + 8 + iVar2 * 0xc))();
-    }
-  }
-  *unaff_FS_OFFSET = uStack_1c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E784A
-// GHIDRA_NAME abnormal_termination
-// GHIDRA_PROTO int __cdecl abnormal_termination(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  __abnormal_termination
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Library: Visual Studio
-// GHIDRA_COMMENT_END
-
-/* Library Function - Single Match
-    __abnormal_termination
-   
-   Library: Visual Studio */
-
-int __cdecl abnormal_termination(void)
-
-{
-  int iVar1;
-  int iVar2;
-  int *unaff_FS_OFFSET;
-  
-  iVar2 = 0;
-  iVar1 = *unaff_FS_OFFSET;
-  if ((*(undefined1 **)(iVar1 + 4) == &LAB_005e77c0) &&
-     (*(int *)(iVar1 + 8) == *(int *)(*(int *)(iVar1 + 0xc) + 0xc))) {
-    iVar2 = 1;
-  }
-  return iVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E786D
-// GHIDRA_NAME NLG_Notify1
-// GHIDRA_PROTO undefined NLG_Notify1()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Library Function - Single Match
-// GHIDRA_COMMENT  __NLG_Notify1
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Libraries: Visual Studio 2017 Debug, Visual Studio 2017 Release, Visual Studio 2019 Debug, Visual Studio 2019 Release
-// GHIDRA_COMMENT_END
-
-/* Library Function - Single Match
-    __NLG_Notify1
-   
-   Libraries: Visual Studio 2017 Debug, Visual Studio 2017 Release, Visual Studio 2019 Debug, Visual
-   Studio 2019 Release */
-
-void __fastcall NLG_Notify1(undefined4 param_1)
-
-{
-  undefined4 in_EAX;
-  undefined4 unaff_EBP;
-  
-  DAT_0069c71c = param_1;
-  DAT_0069c718 = in_EAX;
-  DAT_0069c720 = unaff_EBP;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E7876
-// GHIDRA_NAME CaptureExceptionContextToGlobalSlots
-// GHIDRA_PROTO undefined CaptureExceptionContextToGlobalSlots()
-
-void CaptureExceptionContextToGlobalSlots(void)
-
-{
-  undefined4 in_EAX;
-  int unaff_EBP;
-  
-  DAT_0069c71c = *(undefined4 *)(unaff_EBP + 8);
-  DAT_0069c718 = in_EAX;
-  DAT_0069c720 = unaff_EBP;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005E7890
-// GHIDRA_NAME AppendPointerToGlobalVectorLocked
-// GHIDRA_PROTO undefined AppendPointerToGlobalVectorLocked()
-
-undefined4 AppendPointerToGlobalVectorLocked(undefined4 param_1)
-
-{
-  uint uVar1;
-  int iVar2;
-  
-  WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005e9cb0();
-  uVar1 = QueryAllocationSizeWithCustomAllocatorFallback(DAT_006a993c);
-  if (uVar1 < (uint)((int)DAT_006a992c + (4 - DAT_006a993c))) {
-    iVar2 = QueryAllocationSizeWithCustomAllocatorFallback(DAT_006a993c);
-    iVar2 = ReallocateHeapBlockWithAllocatorTracking(DAT_006a993c,iVar2 + 0x10);
-    if (iVar2 == 0) {
-      WrapperFor_LeaveIndexedCriticalSection_At005e9cc0();
-      return 0;
-    }
-    DAT_006a992c = (undefined4 *)(iVar2 + ((int)DAT_006a992c - DAT_006a993c >> 2) * 4);
-    DAT_006a993c = iVar2;
-  }
-  *DAT_006a992c = param_1;
-  DAT_006a992c = DAT_006a992c + 1;
-  WrapperFor_LeaveIndexedCriticalSection_At005e9cc0();
-  return param_1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005E7920
 // GHIDRA_NAME AppendPointerToGlobalVectorAsStatus
 // GHIDRA_PROTO undefined AppendPointerToGlobalVectorAsStatus()
@@ -11874,6 +11638,165 @@ void ConvertFpMantissaTo96BitIntegerAndExponent(uint *param_1,uint *param_2)
     *param_1 = *param_1 * 2;
   }
   *(ushort *)(param_1 + 2) = uVar5 | uVar1 & 0x8000;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005F4B40
+// GHIDRA_NAME WrapperFor_amsg_exit_At005f4b40
+// GHIDRA_PROTO undefined WrapperFor_amsg_exit_At005f4b40()
+
+void WrapperFor_amsg_exit_At005f4b40(void)
+
+{
+  amsg_exit(2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005F4B50
+// GHIDRA_NAME IsReadablePointerRangeViaIsBadReadPtr
+// GHIDRA_PROTO undefined IsReadablePointerRangeViaIsBadReadPtr()
+
+bool IsReadablePointerRangeViaIsBadReadPtr(void *param_1,UINT_PTR param_2)
+
+{
+  BOOL BVar1;
+  
+  BVar1 = IsBadReadPtr(param_1,param_2);
+  return BVar1 == 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005F4B70
+// GHIDRA_NAME IsWritablePointerRangeViaIsBadWritePtr
+// GHIDRA_PROTO undefined IsWritablePointerRangeViaIsBadWritePtr()
+
+bool IsWritablePointerRangeViaIsBadWritePtr(LPVOID param_1,UINT_PTR param_2)
+
+{
+  BOOL BVar1;
+  
+  BVar1 = IsBadWritePtr(param_1,param_2);
+  return BVar1 == 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005F4B90
+// GHIDRA_NAME IsCodePointerCallableViaIsBadCodePtr
+// GHIDRA_PROTO undefined IsCodePointerCallableViaIsBadCodePtr()
+
+bool IsCodePointerCallableViaIsBadCodePtr(FARPROC param_1)
+
+{
+  BOOL BVar1;
+  
+  BVar1 = IsBadCodePtr(param_1);
+  return BVar1 == 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005F4BB0
+// GHIDRA_NAME abort
+// GHIDRA_PROTO void __cdecl abort(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Library Function - Single Match
+// GHIDRA_COMMENT  _abort
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Library: Visual Studio 1998 Release
+// GHIDRA_COMMENT_END
+
+/* Library Function - Single Match
+    _abort
+   
+   Library: Visual Studio 1998 Release */
+
+void __cdecl abort(void)
+
+{
+  ReportCrtRuntimeErrorByCode(10);
+  RaiseRuntimeSignalAndInvokeHandler(0x16);
+                    /* WARNING: Subroutine does not return */
+  exit(3);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005F4CB0
+// GHIDRA_NAME SeekFileDescriptorWithLock
+// GHIDRA_PROTO undefined SeekFileDescriptorWithLock()
+
+undefined4 SeekFileDescriptorWithLock(uint param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  undefined4 uVar1;
+  undefined4 *puVar2;
+  
+  if ((param_1 < DAT_006a991c) &&
+     ((*(byte *)((&DAT_006a97e0)[(int)param_1 >> 5] + 4 + (param_1 & 0x1f) * 0x24) & 1) != 0)) {
+    EnterFileDescriptorCriticalSection(param_1);
+    uVar1 = SeekFileDescriptorAndClearEofFlag(param_1,param_2,param_3);
+    LeaveFileDescriptorCriticalSection(param_1);
+    return uVar1;
+  }
+  puVar2 = (undefined4 *)WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eada0();
+  *puVar2 = 9;
+  puVar2 = (undefined4 *)WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0();
+  *puVar2 = 0;
+  return 0xffffffff;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005F4D30
+// GHIDRA_NAME SeekFileDescriptorAndClearEofFlag
+// GHIDRA_PROTO undefined SeekFileDescriptorAndClearEofFlag()
+
+DWORD SeekFileDescriptorAndClearEofFlag(uint param_1,LONG param_2,DWORD param_3)
+
+{
+  HANDLE hFile;
+  undefined4 *puVar1;
+  DWORD DVar2;
+  DWORD DVar3;
+  
+  hFile = (HANDLE)GetOsHandleFromFileDescriptor(param_1);
+  if (hFile == (HANDLE)0xffffffff) {
+    puVar1 = (undefined4 *)WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eada0();
+    *puVar1 = 9;
+    return 0xffffffff;
+  }
+  DVar2 = SetFilePointer(hFile,param_2,(PLONG)0x0,param_3);
+  if (DVar2 == 0xffffffff) {
+    DVar3 = GetLastError();
+  }
+  else {
+    DVar3 = 0;
+  }
+  if (DVar3 != 0) {
+    MapWin32ErrorToCrtErrno(DVar3);
+    return 0xffffffff;
+  }
+  *(byte *)((&DAT_006a97e0)[(int)param_1 >> 5] + 4 + (param_1 & 0x1f) * 0x24) =
+       *(byte *)((&DAT_006a97e0)[(int)param_1 >> 5] + 4 + (param_1 & 0x1f) * 0x24) & 0xfd;
+  return DVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005F4DB0
+// GHIDRA_NAME InitializeFileStreamBufferWithAllocFallback
+// GHIDRA_PROTO undefined InitializeFileStreamBufferWithAllocFallback()
+
+void InitializeFileStreamBufferWithAllocFallback(int *param_1)
+
+{
+  int iVar1;
+  
+  DAT_006a83e8 = DAT_006a83e8 + 1;
+  iVar1 = AllocateWithGlobalNewMode(0x1000);
+  param_1[2] = iVar1;
+  if (iVar1 != 0) {
+    param_1[3] = param_1[3] | 8;
+    param_1[6] = 0x1000;
+    *param_1 = param_1[2];
+    param_1[1] = 0;
+    return;
+  }
+  param_1[6] = 2;
+  param_1[3] = param_1[3] | 4;
+  param_1[2] = (int)(param_1 + 5);
+  *param_1 = (int)(param_1 + 5);
+  param_1[1] = 0;
   return;
 }
 

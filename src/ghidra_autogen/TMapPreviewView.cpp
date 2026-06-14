@@ -106,7 +106,7 @@ void __thiscall TMapPreviewView::HandleTurnEventPaletteClickSelection(int param_
   iVar6 = 0;
   bVar1 = *(byte *)((*(ushort *)(*piVar5 + 4) & 0x3fff) * param_2[1] + iVar4 + *param_2);
   do {
-    uVar2 = thunk_MapTurnEventCodeToPaletteIndex(iVar6);
+    uVar2 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(iVar6);
     if (uVar2 == bVar1) {
       iVar4 = **(int **)(param_1 + 0x20);
       *(int *)(param_1 + 0x6c) = iVar6;

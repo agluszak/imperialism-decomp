@@ -10,7 +10,7 @@
 void __fastcall TSelectoText::CreateTSelectoTextInstance(undefined4 *param_1)
 
 {
-  int iVar1;
+  void *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -20,11 +20,11 @@ void __fastcall TSelectoText::CreateTSelectoTextInstance(undefined4 *param_1)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   *param_1 = &TStaticText::_vftable_;
-  iVar1 = param_1[0x21];
+  this = (void *)param_1[0x21];
   uStack_4 = 0;
-  if (iVar1 != 0) {
-    ReleaseSharedStringRefIfNotEmpty();
-    FreeHeapBufferIfNotNull(iVar1);
+  if (this != (void *)0x0) {
+    ReleaseSharedStringRefIfNotEmpty(this);
+    FreeHeapBufferIfNotNull(this);
   }
   *param_1 = &TView::_vftable_;
   uStack_4 = 2;
@@ -33,7 +33,7 @@ void __fastcall TSelectoText::CreateTSelectoTextInstance(undefined4 *param_1)
   }
   FreeHeapBufferIfNotNull(param_1[0x12]);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;

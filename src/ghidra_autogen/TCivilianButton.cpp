@@ -42,7 +42,7 @@ undefined4 * TCivilianButton::CreateTCivilianButtonInstance(void)
   puVar2 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     thunk_ConstructUiClickablePictureResourceEntry();
-    *puVar1 = &PTR_LAB_00666da8;
+    *puVar1 = &_vftable_;
     puVar1[0x18] = 0xc;
     puVar2 = puVar1;
   }
@@ -51,10 +51,10 @@ undefined4 * TCivilianButton::CreateTCivilianButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B3C0
-// GHIDRA_NAME TCivilianButton::GetTCivilianButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTCivilianButtonClassNamePointer()
+// GHIDRA_NAME TCivilianButton::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-int * TCivilianButton::GetTCivilianButtonClassNamePointer(void)
+int * TCivilianButton::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTCivilianButton;
@@ -68,8 +68,22 @@ undefined4 * __fastcall TCivilianButton::TCivilianButton(undefined4 *param_1)
 
 {
   thunk_ConstructUiClickablePictureResourceEntry();
-  *param_1 = &PTR_LAB_00666da8;
+  *param_1 = &_vftable_;
   param_1[0x18] = 0xc;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058B410
+// GHIDRA_NAME TCivilianButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall TCivilianButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
   return param_1;
 }
 

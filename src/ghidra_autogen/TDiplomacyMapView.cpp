@@ -559,7 +559,7 @@ void __fastcall TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMask
     }
     WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0
               (pLVar15,g_pPrimaryRenderSurfaceContext,1);
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_c0);
     piVar13 = piStack_c4;
     uStack_4 = 0;
     if (*piStack_c4 != 0) {
@@ -653,7 +653,7 @@ LAB_004f4159:
     piVar16 = piStack_cc;
 LAB_004f4343:
     uStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_c0);
     iVar11 = local_d4;
     iStack_e0 = iStack_e0 + 1;
     lprcDst = (LPRECT)&ptStack_e4[1].top;
@@ -710,6 +710,7 @@ TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill(int *param_1,u
   undefined4 uStack_24;
   uint uStack_20;
   undefined4 uStack_1c;
+  int *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined1 *local_4;
@@ -719,7 +720,8 @@ TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill(int *param_1,u
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_1c = 0x4f48e3;
-  InitializeSharedStringRefFromEmpty();
+  local_10 = param_1;
+  InitializeSharedStringRefFromEmpty(&local_10);
   iVar1 = param_1[0x25];
   local_4 = (undefined1 *)0x0;
   if (iVar1 == 1) {
@@ -764,7 +766,7 @@ TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill(int *param_1,u
   }
   uStack_c = 0xffffffff;
   uStack_24 = 0x4f49c0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffe8);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
@@ -1297,12 +1299,12 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
       uVar6 = 1;
       local_18 = 0;
       local_14 = 0;
-      sVar2 = thunk_MapTurnEventCodeToPaletteIndex(uVar3);
+      sVar2 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(uVar3);
       uVar3 = extraout_ECX;
       thunk_SetUiResourceContextTagWord((int)sVar2);
       BlitMonochromeMaskBytePatternToSurface
                 (g_pActiveQuickDrawSurfaceContext + 4,uVar3,puVar5,uVar6);
-      uVar3 = thunk_MapTurnEventCodeToPaletteIndex(0x3f);
+      uVar3 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(0x3f);
       thunk_AppendPackedColorDwordToMaskBuffers
                 (*(undefined4 *)(g_pActiveQuickDrawSurfaceContext + 4),uVar3);
       iVar1 = local_20;
@@ -1419,7 +1421,10 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit
   int *local_44;
   undefined4 local_40;
   int local_3c;
-  undefined4 local_38 [5];
+  undefined4 local_38 [2];
+  undefined1 local_30 [4];
+  undefined1 local_2c [4];
+  undefined1 local_28 [4];
   undefined4 uStack_24;
   undefined4 uStack_20;
   RECT local_1c;
@@ -1432,11 +1437,11 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_3c = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_28);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_2c);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_30);
   local_4._0_1_ = 2;
   AcquireReusableQuickDrawSurface();
   *(undefined2 *)(param_1 + 0x98) = (undefined2)param_2;
@@ -1459,12 +1464,12 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit
         uVar6 = 1;
         uStack_24 = 0;
         uStack_20 = 0;
-        sVar1 = thunk_MapTurnEventCodeToPaletteIndex(iVar3 + 200);
+        sVar1 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(iVar3 + 200);
         uVar2 = extraout_ECX;
         thunk_SetUiResourceContextTagWord((int)sVar1);
         BlitMonochromeMaskBytePatternToSurface
                   (g_pActiveQuickDrawSurfaceContext + 4,uVar2,puVar5,uVar6);
-        uVar2 = thunk_MapTurnEventCodeToPaletteIndex(0x3f);
+        uVar2 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(0x3f);
         thunk_AppendPackedColorDwordToMaskBuffers
                   (*(undefined4 *)(g_pActiveQuickDrawSurfaceContext + 4),uVar2);
       }
@@ -1485,11 +1490,11 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit
   local_4._0_1_ = 2;
   ReleaseOrCacheQuickDrawSurface();
   local_4._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_30);
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_2c);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_28);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -1513,11 +1518,11 @@ void TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers(undefined4 param_1,u
   local_4 = 0;
   puVar3 = &local_8;
   uVar4 = 1;
-  sVar1 = thunk_MapTurnEventCodeToPaletteIndex(param_2);
+  sVar1 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(param_2);
   uVar2 = extraout_ECX;
   thunk_SetUiResourceContextTagWord((int)sVar1);
   BlitMonochromeMaskBytePatternToSurface(g_pActiveQuickDrawSurfaceContext + 4,uVar2,puVar3,uVar4);
-  uVar2 = thunk_MapTurnEventCodeToPaletteIndex(0x3f);
+  uVar2 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(0x3f);
   thunk_AppendPackedColorDwordToMaskBuffers
             (*(undefined4 *)(g_pActiveQuickDrawSurfaceContext + 4),uVar2);
   return;
@@ -1610,7 +1615,7 @@ TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface
     }
   }
   thunk_ReleaseHashIndexedRecordByHandle(iVar8);
-  uVar10 = thunk_MapTurnEventCodeToPaletteIndex(0x3f);
+  uVar10 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(0x3f);
   thunk_AppendPackedColorDwordToMaskBuffers
             (*(undefined4 *)(g_pActiveQuickDrawSurfaceContext + 4),uVar10);
   return;

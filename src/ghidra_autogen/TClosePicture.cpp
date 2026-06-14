@@ -55,6 +55,20 @@ undefined4 * __fastcall TClosePicture::ConstructTClosePictureBaseState(undefined
   return param_1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00586BA0
+// GHIDRA_NAME TClosePicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall TClosePicture::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00586BF0
 // GHIDRA_NAME TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
 // GHIDRA_PROTO undefined WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0()

@@ -45,6 +45,9 @@ address|name|prototype|file|status
 5e6aa4|CImageList::WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4|undefined WrapperFor_GetOrCreateHandleMapEntryValueByKey_At005e6aa4()|CImageList.cpp|ok
 4883c0|CObArray::thunk_DestructCObArray|undefined thunk_DestructCObArray()|CObArray.cpp|ok
 601bdd|CObArray::DestructCObArray|undefined DestructCObArray()|CObArray.cpp|ok
+412bd0|CObject::Serialize|undefined Serialize()|CObject.cpp|ok
+412bf0|CObject::AssertValidOrSlot0c|undefined AssertValidOrSlot0c()|CObject.cpp|ok
+412c10|CObject::DumpOrSlot10|undefined DumpOrSlot10()|CObject.cpp|ok
 606fc0|CObject::IsKindOf|undefined IsKindOf()|CObject.cpp|ok
 622aac|CProcessLocalObject::thunk_CProcessLocalObject|void __thiscall thunk_CProcessLocalObject(void)|CProcessLocalObject.cpp|ok
 6244ce|CProcessLocalObject::thunk_~CProcessLocalObject|void __thiscall thunk_~CProcessLocalObject(void)|CProcessLocalObject.cpp|ok
@@ -90,14 +93,16 @@ address|name|prototype|file|status
 552510|ObjectPool::FindMissionOrderNodeById|void * __thiscall FindMissionOrderNodeById(int nChildNodeId)|ObjectPool.cpp|ok
 553d40|ObjectPool::RemoveTaskForceOrderNodeById|undefined RemoveTaskForceOrderNodeById()|ObjectPool.cpp|ok
 584890|T2PictToggleButton::CreateT2PictToggleButtonInstance|undefined CreateT2PictToggleButtonInstance()|T2PictToggleButton.cpp|ok
-584910|T2PictToggleButton::GetT2PictToggleButtonClassNamePointer|undefined GetT2PictToggleButtonClassNamePointer()|T2PictToggleButton.cpp|ok
+584910|T2PictToggleButton::GetRuntimeClass|undefined GetRuntimeClass()|T2PictToggleButton.cpp|ok
 584930|T2PictToggleButton::ConstructT2PictToggleButtonBaseState|undefined ConstructT2PictToggleButtonBaseState()|T2PictToggleButton.cpp|ok
+584960|T2PictToggleButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|T2PictToggleButton.cpp|ok
 5849b0|T2PictToggleButton::IsField3cWithinShortLimit84|undefined IsField3cWithinShortLimit84()|T2PictToggleButton.cpp|ok
 5849d0|T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh|undefined SyncField0fTowardsField21ByDirectionAndRefresh()|T2PictToggleButton.cpp|ok
 584b70|T2PictToggleButton::DispatchUiMouseMoveThenClearTurnEvent|undefined DispatchUiMouseMoveThenClearTurnEvent()|T2PictToggleButton.cpp|ok
 570b10|T2PictureButton::CreateT2PictureButtonInstance|undefined CreateT2PictureButtonInstance()|T2PictureButton.cpp|ok
-570b90|T2PictureButton::GetT2PictureButtonClassNamePointer|undefined GetT2PictureButtonClassNamePointer()|T2PictureButton.cpp|ok
+570b90|T2PictureButton::GetRuntimeClass|undefined GetRuntimeClass()|T2PictureButton.cpp|ok
 570bb0|T2PictureButton::ConstructUiBattleTabPictureEntry|undefined ConstructUiBattleTabPictureEntry()|T2PictureButton.cpp|ok
+570be0|T2PictureButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|T2PictureButton.cpp|ok
 40231a|TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C|undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()|TAdmiral.cpp|ok
 4d7eb0|TAdmiral::GenerateMappedFlavorTextByNationSlotField0C|undefined GenerateMappedFlavorTextByNationSlotField0C()|TAdmiral.cpp|ok
 551410|TAdmiral::GetTAdmiralClassNamePointer|undefined GetTAdmiralClassNamePointer()|TAdmiral.cpp|ok
@@ -108,7 +113,7 @@ address|name|prototype|file|status
 49d6d0|TAdorner::GetTAdornerClassNamePointer|undefined GetTAdornerClassNamePointer()|TAdorner.cpp|ok
 49d6f0|TAdorner::ConstructTAdornerBaseState|undefined ConstructTAdornerBaseState()|TAdorner.cpp|ok
 570950|TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance|undefined CreateTAlwaysPictureButtonInstance()|TAlwaysPictureButton.cpp|ok
-5709d0|TAlwaysPictureButton::GetTAlwaysPictureButtonClassNamePointer|undefined GetTAlwaysPictureButtonClassNamePointer()|TAlwaysPictureButton.cpp|ok
+5709d0|TAlwaysPictureButton::GetRuntimeClass|undefined GetRuntimeClass()|TAlwaysPictureButton.cpp|ok
 5709f0|TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState|undefined ConstructTAlwaysPictureButtonBaseState()|TAlwaysPictureButton.cpp|ok
 570a20|TAlwaysPictureButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TAlwaysPictureButton.cpp|ok
 570ae0|TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0|undefined WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0()|TAlwaysPictureButton.cpp|ok
@@ -118,7 +123,7 @@ address|name|prototype|file|status
 49e610|TAmbitFileBasedDocument::DestructTAmbitFileBasedDocumentAndMaybeFree|undefined DestructTAmbitFileBasedDocumentAndMaybeFree()|TAmbitFileBasedDocument.cpp|ok
 586e50|TAmtBar::ApplyMoveClamp|undefined ApplyMoveClamp()|TAmtBar.cpp|ok
 5884c0|TAmtBar::CreateTAmtBarInstance|undefined CreateTAmtBarInstance()|TAmtBar.cpp|ok
-588560|TAmtBar::GetTAmtBarClassNamePointer|undefined GetTAmtBarClassNamePointer()|TAmtBar.cpp|ok
+588560|TAmtBar::GetRuntimeClass|undefined GetRuntimeClass()|TAmtBar.cpp|ok
 588580|TAmtBar::ConstructBaseState|undefined ConstructBaseState()|TAmtBar.cpp|ok
 5885c0|TAmtBar::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TAmtBar.cpp|ok
 588610|TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610|undefined WrapperFor_thunk_NoOpUiLifecycleHook_At00588610()|TAmtBar.cpp|ok
@@ -134,7 +139,7 @@ address|name|prototype|file|status
 586a80|TAmtBarCluster::OrphanLeaf_NoCall_Ins05_00586a80|undefined OrphanLeaf_NoCall_Ins05_00586a80()|TAmtBarCluster.cpp|ok
 586ab0|TAmtBarCluster::SetTAmtBarClusterWordField8e|undefined SetTAmtBarClusterWordField8e()|TAmtBarCluster.cpp|ok
 586c40|TAmtBarCluster::CreateTradeMoveControlPanelBasic|undefined CreateTradeMoveControlPanelBasic()|TAmtBarCluster.cpp|ok
-586cc0|TAmtBarCluster::GetTAmtBarClusterClassNamePointer|undefined GetTAmtBarClusterClassNamePointer()|TAmtBarCluster.cpp|ok
+586cc0|TAmtBarCluster::GetRuntimeClass|undefined GetRuntimeClass()|TAmtBarCluster.cpp|ok
 586ce0|TAmtBarCluster::ConstructTradeMoveControlPanelBasic|undefined ConstructTradeMoveControlPanelBasic()|TAmtBarCluster.cpp|ok
 586d10|TAmtBarCluster::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TAmtBarCluster.cpp|ok
 586d60|TAmtBarCluster::InitializeTradeMoveAndBarControls|undefined InitializeTradeMoveAndBarControls()|TAmtBarCluster.cpp|ok
@@ -179,7 +184,7 @@ address|name|prototype|file|status
 4a9fe0|TArmyCheckBox::ConstructTArmyCheckBoxBaseState|undefined ConstructTArmyCheckBoxBaseState()|TArmyCheckBox.cpp|ok
 4aa030|TArmyCheckBox::DestructTArmyCheckBoxAndMaybeFree|undefined DestructTArmyCheckBoxAndMaybeFree()|TArmyCheckBox.cpp|ok
 591500|TArmyInfoView::?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@XZ|undefined ?CreateTArmyInfoViewInstance@@YAPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@XZ()|TArmyInfoView.cpp|ok
-591580|TArmyInfoView::GetTArmyInfoViewClassNamePointer|undefined GetTArmyInfoViewClassNamePointer()|TArmyInfoView.cpp|ok
+591580|TArmyInfoView::GetRuntimeClass|undefined GetRuntimeClass()|TArmyInfoView.cpp|ok
 5915a0|TArmyInfoView::?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z|undefined ?ConstructTArmyInfoViewBaseState@@YIPAUArmyInfoViewState@?%Z:imperialismsrcgameTArmyInfoView.cpp234212302@@PAU12@@Z()|TArmyInfoView.cpp|ok
 5915d0|TArmyInfoView::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TArmyInfoView.cpp|ok
 4a1640|TArmyMgr::CreateTArmyMgrInstance|undefined CreateTArmyMgrInstance()|TArmyMgr.cpp|ok
@@ -195,8 +200,9 @@ address|name|prototype|file|status
 53c1d0|TArmyMission::DestroyTArmyMission|undefined DestroyTArmyMission()|TArmyMission.cpp|ok
 53c220|TArmyMission::CleanupTArmyMissionAndReleaseChildContext|undefined CleanupTArmyMissionAndReleaseChildContext()|TArmyMission.cpp|ok
 58be30|TArmyPlacard::CreateTArmyPlacardInstance|undefined CreateTArmyPlacardInstance()|TArmyPlacard.cpp|ok
-58beb0|TArmyPlacard::GetTArmyPlacardClassNamePointer|undefined GetTArmyPlacardClassNamePointer()|TArmyPlacard.cpp|ok
+58beb0|TArmyPlacard::GetRuntimeClass|undefined GetRuntimeClass()|TArmyPlacard.cpp|ok
 58bed0|TArmyPlacard::TArmyPlacard|undefined TArmyPlacard()|TArmyPlacard.cpp|ok
+58bf00|TArmyPlacard::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TArmyPlacard.cpp|ok
 58bf50|TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50|undefined WrapperFor_GetActiveNationId_At0058bf50()|TArmyPlacard.cpp|ok
 58bfe0|TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow|undefined RenderRightAlignedNumericOverlayWithShadow()|TArmyPlacard.cpp|ok
 58c140|TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC|undefined HandlePlusMinusCommandAndInvokeVslot1CC()|TArmyPlacard.cpp|ok
@@ -384,7 +390,7 @@ address|name|prototype|file|status
 56f560|TBook::ConstructTBookBaseState|undefined ConstructTBookBaseState()|TBook.cpp|ok
 56f5e0|TBook::DestructTBookAndMaybeFree|undefined DestructTBookAndMaybeFree()|TBook.cpp|ok
 5846e0|TBoycottButton::CreateTBoycottButtonInstance|undefined CreateTBoycottButtonInstance()|TBoycottButton.cpp|ok
-584760|TBoycottButton::GetTBoycottButtonClassNamePointer|undefined GetTBoycottButtonClassNamePointer()|TBoycottButton.cpp|ok
+584760|TBoycottButton::GetRuntimeClass|undefined GetRuntimeClass()|TBoycottButton.cpp|ok
 584780|TBoycottButton::ConstructTBoycottButtonBaseState|undefined ConstructTBoycottButtonBaseState()|TBoycottButton.cpp|ok
 5847b0|TBoycottButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TBoycottButton.cpp|ok
 584800|TBoycottButton::HandleNonzeroEventAndClearControlTag636c7573ThenForward|undefined HandleNonzeroEventAndClearControlTag636c7573ThenForward()|TBoycottButton.cpp|ok
@@ -445,7 +451,7 @@ address|name|prototype|file|status
 4b48a0|TCity::GetBuildingCapacityTierSlot58|undefined GetBuildingCapacityTierSlot58()|TCity.cpp|ok
 4b4d00|TCity::IsBasicResourceSlot78|undefined IsBasicResourceSlot78()|TCity.cpp|ok
 586590|TCityBarCluster::CreateTCityBarClusterInstance|undefined CreateTCityBarClusterInstance()|TCityBarCluster.cpp|ok
-586610|TCityBarCluster::GetTCityBarClusterClassNamePointer|undefined GetTCityBarClusterClassNamePointer()|TCityBarCluster.cpp|ok
+586610|TCityBarCluster::GetRuntimeClass|undefined GetRuntimeClass()|TCityBarCluster.cpp|ok
 586630|TCityBarCluster::ConstructTCityBarClusterBaseState|undefined ConstructTCityBarClusterBaseState()|TCityBarCluster.cpp|ok
 586660|TCityBarCluster::DestructTCityBarClusterAndMaybeFree|undefined DestructTCityBarClusterAndMaybeFree()|TCityBarCluster.cpp|ok
 5866b0|TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord|undefined UpdateTradeSummaryMetricControlsFromRecord()|TCityBarCluster.cpp|ok
@@ -460,6 +466,7 @@ address|name|prototype|file|status
 4badd0|TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh|undefined RenderNationHeaderDateLabelWithPeriodicRefresh()|TCityProductionView.cpp|ok
 4bc660|TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction|undefined HandleCityBuildingSlotClickAndDispatchAction()|TCityProductionView.cpp|ok
 4bc9b0|TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip|undefined RenderViewIntoPrimaryRenderContextWithTemporaryClip()|TCityProductionView.cpp|ok
+4b73b0|TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta|void __thiscall CommitCityRecruitmentOrderDelta(void)|TCityRecruitmentOrderContext.cpp|ok
 51bd60|TCitySiteView::CreateTCitySiteViewInstance|undefined CreateTCitySiteViewInstance()|TCitySiteView.cpp|ok
 51be90|TCitySiteView::GetTCitySiteViewClassNamePointer|undefined GetTCitySiteViewClassNamePointer()|TCitySiteView.cpp|ok
 51bfa0|TCitySiteView::DestructTCitySiteViewAndMaybeFree|undefined DestructTCitySiteViewAndMaybeFree()|TCitySiteView.cpp|ok
@@ -481,6 +488,7 @@ address|name|prototype|file|status
 4a0d30|TCivAnimation2::FindLinkedListNodeByIdFieldAt18|undefined FindLinkedListNodeByIdFieldAt18()|TCivAnimation2.cpp|ok
 51e260|TCivAnimation2::RenderMapInteractionPreviewSlotsAndTransientSprites|undefined RenderMapInteractionPreviewSlotsAndTransientSprites()|TCivAnimation2.cpp|ok
 523640|TCivAnimation2::RenderMapOrderEntryTilePreview|undefined RenderMapOrderEntryTilePreview()|TCivAnimation2.cpp|ok
+407f4a|TCivDescription::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TCivDescription.cpp|ok
 44a770|TCivDescription::ConstructTCivDescriptionBaseState|undefined ConstructTCivDescriptionBaseState()|TCivDescription.cpp|ok
 4a0810|TCivDescription::BlitUiFrameToTransientSurfaceWithOptionalOverlay|undefined BlitUiFrameToTransientSurfaceWithOptionalOverlay()|TCivDescription.cpp|ok
 4f3050|TCivDescription::HandleDialogEvent14ActionTagsAndEvent10BackOkay|undefined HandleDialogEvent14ActionTagsAndEvent10BackOkay()|TCivDescription.cpp|ok
@@ -489,7 +497,7 @@ address|name|prototype|file|status
 5654e0|TCivDescription::RenderAdmiralSummaryAndNavyNormalizationGauge|undefined RenderAdmiralSummaryAndNavyNormalizationGauge()|TCivDescription.cpp|ok
 5665e0|TCivDescription::RenderStrategicViewportOverlayBadgeIfVisible|undefined RenderStrategicViewportOverlayBadgeIfVisible()|TCivDescription.cpp|ok
 58f050|TCivDescription::CreateTCivDescriptionInstance|undefined CreateTCivDescriptionInstance()|TCivDescription.cpp|ok
-58f0f0|TCivDescription::GetTCivDescriptionClassNamePointer|undefined GetTCivDescriptionClassNamePointer()|TCivDescription.cpp|ok
+58f0f0|TCivDescription::GetRuntimeClass|undefined GetRuntimeClass()|TCivDescription.cpp|ok
 58f110|TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts|undefined UpdateCivilianOrderClassAndRefreshTargetCounts()|TCivDescription.cpp|ok
 58f1a0|TCivDescription::HandleCivilianLegendHitTestAndSelectOrder|undefined HandleCivilianLegendHitTestAndSelectOrder()|TCivDescription.cpp|ok
 58f3c0|TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation|void __thiscall UpdateCivilianOrderTargetTileCountsForOwnerNation(int * pCivilianOrderEntry)|TCivDescription.cpp|ok
@@ -502,7 +510,7 @@ address|name|prototype|file|status
 61274c|TCivDescription::AttachHdcToDcWrapper|undefined AttachHdcToDcWrapper()|TCivDescription.cpp|ok
 4d2030|TCivMgr::GetTCivMgrClassNamePointer|undefined GetTCivMgrClassNamePointer()|TCivMgr.cpp|ok
 590b90|TCivReport::?CreateTCivReportInstance@@YAPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@XZ|undefined ?CreateTCivReportInstance@@YAPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@XZ()|TCivReport.cpp|ok
-590c10|TCivReport::GetTCivReportClassNamePointer|undefined GetTCivReportClassNamePointer()|TCivReport.cpp|ok
+590c10|TCivReport::GetRuntimeClass|undefined GetRuntimeClass()|TCivReport.cpp|ok
 590c30|TCivReport::?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z|undefined ?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z()|TCivReport.cpp|ok
 590c60|TCivReport::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TCivReport.cpp|ok
 40187f|TCivToolbar::thunk_ShowDisbandCivilianConfirmationDialog|void __thiscall thunk_ShowDisbandCivilianConfirmationDialog(void)|TCivToolbar.cpp|ok
@@ -525,7 +533,7 @@ address|name|prototype|file|status
 518b40|TCivToolbar::CalculateDeveloperTilePurchaseCost|int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)|TCivToolbar.cpp|ok
 560b00|TCivToolbar::CanDisplayMapOrderEntryInCurrentContext|undefined CanDisplayMapOrderEntryInCurrentContext()|TCivToolbar.cpp|ok
 58ea00|TCivToolbar::CreateTCivToolbarInstance|undefined CreateTCivToolbarInstance()|TCivToolbar.cpp|ok
-58ea80|TCivToolbar::GetTCivToolbarClassNamePointer|undefined GetTCivToolbarClassNamePointer()|TCivToolbar.cpp|ok
+58ea80|TCivToolbar::GetRuntimeClass|undefined GetRuntimeClass()|TCivToolbar.cpp|ok
 58eaa0|TCivToolbar::ConstructTCivToolbarBaseState|undefined ConstructTCivToolbarBaseState()|TCivToolbar.cpp|ok
 58ead0|TCivToolbar::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TCivToolbar.cpp|ok
 58eb20|TCivToolbar::RefreshCivilianCommandPanelForSelection|void __thiscall RefreshCivilianCommandPanelForSelection(int * pSelectedCivilianOrderEntry)|TCivToolbar.cpp|ok
@@ -539,8 +547,9 @@ address|name|prototype|file|status
 5c28c0|TCivWorkOrderState::TCivWorkOrderState|undefined TCivWorkOrderState()|TCivWorkOrderState.cpp|ok
 409980|TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry|undefined thunk_ConstructUiClickablePictureResourceEntry()|TCivilianButton.cpp|ok
 58b340|TCivilianButton::CreateTCivilianButtonInstance|undefined CreateTCivilianButtonInstance()|TCivilianButton.cpp|ok
-58b3c0|TCivilianButton::GetTCivilianButtonClassNamePointer|undefined GetTCivilianButtonClassNamePointer()|TCivilianButton.cpp|ok
+58b3c0|TCivilianButton::GetRuntimeClass|undefined GetRuntimeClass()|TCivilianButton.cpp|ok
 58b3e0|TCivilianButton::TCivilianButton|undefined TCivilianButton()|TCivilianButton.cpp|ok
+58b410|TCivilianButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TCivilianButton.cpp|ok
 58b460|TCivilianButton::SetSelectionAndEnableByMappedValue|undefined SetSelectionAndEnableByMappedValue()|TCivilianButton.cpp|ok
 572350|TClickZone::CreateTClickZoneInstance|undefined CreateTClickZoneInstance()|TClickZone.cpp|ok
 5723f0|TClickZone::GetTClickZoneClassNamePointer|undefined GetTClickZoneClassNamePointer()|TClickZone.cpp|ok
@@ -561,6 +570,7 @@ address|name|prototype|file|status
 586ad0|TClosePicture::CreateTClosePictureInstance|undefined CreateTClosePictureInstance()|TClosePicture.cpp|ok
 586b50|TClosePicture::GetTClosePictureClassNamePointer|undefined GetTClosePictureClassNamePointer()|TClosePicture.cpp|ok
 586b70|TClosePicture::ConstructTClosePictureBaseState|undefined ConstructTClosePictureBaseState()|TClosePicture.cpp|ok
+586ba0|TClosePicture::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TClosePicture.cpp|ok
 586bf0|TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0|undefined WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0()|TClosePicture.cpp|ok
 491300|TCluster::CreateTClusterInstance|undefined CreateTClusterInstance()|TCluster.cpp|ok
 4913e0|TCluster::GetTClusterClassNamePointer|undefined GetTClusterClassNamePointer()|TCluster.cpp|ok
@@ -578,7 +588,7 @@ address|name|prototype|file|status
 572de0|TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48|undefined ConstructPictureResourceEntry_Vtbl00660b48()|TColorKeyPicture.cpp|ok
 572e10|TColorKeyPicture::DestructTColorKeyPictureAndMaybeFree|undefined DestructTColorKeyPictureAndMaybeFree()|TColorKeyPicture.cpp|ok
 58c830|TCombatReportView::?CreateTCombatReportViewInstance@@YAPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@XZ|undefined ?CreateTCombatReportViewInstance@@YAPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@XZ()|TCombatReportView.cpp|ok
-58c8b0|TCombatReportView::GetTCombatReportViewClassNamePointer|undefined GetTCombatReportViewClassNamePointer()|TCombatReportView.cpp|ok
+58c8b0|TCombatReportView::GetRuntimeClass|undefined GetRuntimeClass()|TCombatReportView.cpp|ok
 58c8d0|TCombatReportView::?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@PAU12@@Z|undefined ?ConstructTCombatReportViewBaseState@@YIPAUCombatReportViewState@?%Z:imperialismincludegame/ui_widget_shared.h29086985@@PAU12@@Z()|TCombatReportView.cpp|ok
 58c900|TCombatReportView::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TCombatReportView.cpp|ok
 484080|TCommand::RunCommandModalLoopAndFinalizeState_Impl|undefined RunCommandModalLoopAndFinalizeState_Impl()|TCommand.cpp|ok
@@ -618,7 +628,6 @@ address|name|prototype|file|status
 481b30|TControl::InitializeDialogTemplateABWithDualTextState|undefined InitializeDialogTemplateABWithDualTextState()|TControl.cpp|ok
 481dc0|TControl::InitializeDialogTemplateAEWithDualTextState|undefined InitializeDialogTemplateAEWithDualTextState()|TControl.cpp|ok
 482050|TControl::InitializeDialogTemplateB1WithSharedText|undefined InitializeDialogTemplateB1WithSharedText()|TControl.cpp|ok
-485e90|TControl::HandleTurnEventVtableSlot08ConditionalDispatch|undefined HandleTurnEventVtableSlot08ConditionalDispatch()|TControl.cpp|ok
 48a260|TControl::SetCityDialogFlagByte4|void __thiscall SetCityDialogFlagByte4(char flagValue)|TControl.cpp|ok
 48a2e0|TControl::DispatchUiCommandToHandler|undefined DispatchUiCommandToHandler()|TControl.cpp|ok
 48a310|TControl::ForwardNotifyParamToPrimaryChildSlot44|undefined ForwardNotifyParamToPrimaryChildSlot44()|TControl.cpp|ok
@@ -763,7 +772,6 @@ address|name|prototype|file|status
 4d67d0|TCountry::ConstructTCountryBaseState|undefined ConstructTCountryBaseState()|TCountry.cpp|ok
 4d6850|TCountry::DestructTCountryAndMaybeFree|undefined DestructTCountryAndMaybeFree()|TCountry.cpp|ok
 4d6ba0|TCountry::DestroyNationStateOwnedRegionListAndRelease|undefined DestroyNationStateOwnedRegionListAndRelease()|TCountry.cpp|ok
-4d6bf0|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders|void __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int streamState)|TCountry.cpp|ok
 4d6e60|TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60()|TCountry.cpp|ok
 4d7c00|TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers|undefined SetNationTransferTargetCodeAndNotifyEligiblePeers()|TCountry.cpp|ok
 4d7d70|TCountry::RemoveRegionIdFromNationOwnedRegionList|undefined RemoveRegionIdFromNationOwnedRegionList()|TCountry.cpp|ok
@@ -939,9 +947,11 @@ address|name|prototype|file|status
 4c6020|TEvenCityMinister::DestructTEvenCityMinisterAndMaybeFree|undefined DestructTEvenCityMinisterAndMaybeFree()|TEvenCityMinister.cpp|ok
 489ee0|TEvent::CreateTEventInstance|undefined CreateTEventInstance()|TEvent.cpp|ok
 489f40|TEvent::GetTEventClassNamePointer|undefined GetTEventClassNamePointer()|TEvent.cpp|ok
+485e90|TEventHandler::Serialize|undefined Serialize()|TEventHandler.cpp|ok
 48a070|TEventHandler::CreateTEventHandlerInstance|undefined CreateTEventHandlerInstance()|TEventHandler.cpp|ok
 48a0e0|TEventHandler::GetTEventHandlerClassNamePointer|undefined GetTEventHandlerClassNamePointer()|TEventHandler.cpp|ok
 48a130|TEventHandler::DestructTEventHandlerAndMaybeFree|undefined DestructTEventHandlerAndMaybeFree()|TEventHandler.cpp|ok
+48a7c0|TEventHandler::CloneEngineerDialogStateToNewInstance|undefined CloneEngineerDialogStateToNewInstance()|TEventHandler.cpp|ok
 4b8f80|TExpansionOrder::GetTExpansionOrderClassNamePointer|undefined GetTExpansionOrderClassNamePointer()|TExpansionOrder.cpp|ok
 4b8fc0|TExpansionOrder::ConstructTExpansionOrderBaseState|undefined ConstructTExpansionOrderBaseState()|TExpansionOrder.cpp|ok
 4b8ff0|TExpansionOrder::DestructTExpansionOrderAndMaybeFree|undefined DestructTExpansionOrderAndMaybeFree()|TExpansionOrder.cpp|ok
@@ -953,6 +963,7 @@ address|name|prototype|file|status
 4890f0|TFileStream::GetTFileStreamClassNamePointer|undefined GetTFileStreamClassNamePointer()|TFileStream.cpp|ok
 489110|TFileStream::ConstructTFileStreamBaseState|undefined ConstructTFileStreamBaseState()|TFileStream.cpp|ok
 489130|TFileStream::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TFileStream.cpp|ok
+489160|TFileStream::SetBackingArchive|undefined SetBackingArchive()|TFileStream.cpp|ok
 489220|TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220|undefined WrapperFor_ReadBytesFromSerializedBuffer_At00489220()|TFileStream.cpp|ok
 489290|TFileStream::WrapperFor_WriteBytesToSerializedBuffer_At00489290|undefined WrapperFor_WriteBytesToSerializedBuffer_At00489290()|TFileStream.cpp|ok
 489300|TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300|undefined WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300()|TFileStream.cpp|ok
@@ -1037,10 +1048,12 @@ address|name|prototype|file|status
 4a8810|TGarrisonView::ConstructTGarrisonViewBaseState|undefined ConstructTGarrisonViewBaseState()|TGarrisonView.cpp|ok
 4a8840|TGarrisonView::DestructTGarrisonViewAndMaybeFree|undefined DestructTGarrisonViewAndMaybeFree()|TGarrisonView.cpp|ok
 4a8a20|TGarrisonView::HandleSelectedTileSpecialOrderPromptAndCleanup|undefined HandleSelectedTileSpecialOrderPromptAndCleanup()|TGarrisonView.cpp|ok
+518960|TGlobalMapState::SetRegionDevelopmentStageByte|undefined SetRegionDevelopmentStageByte()|TGlobalMapState.cpp|ok
 4f7fd0|TGrantsView::CreateTGrantsViewInstance|undefined CreateTGrantsViewInstance()|TGrantsView.cpp|ok
 4f8060|TGrantsView::GetTGrantsViewClassNamePointer|undefined GetTGrantsViewClassNamePointer()|TGrantsView.cpp|ok
 4f8080|TGrantsView::ConstructTGrantsViewBaseState|undefined ConstructTGrantsViewBaseState()|TGrantsView.cpp|ok
 4f81c0|TGrantsView::RenderDiplomacyGrantTotalsAndStyledText|undefined RenderDiplomacyGrantTotalsAndStyledText()|TGrantsView.cpp|ok
+4d6bf0|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders|void __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int streamState)|TGreatPower.cpp|ok
 4d7ae0|TGreatPower::AddToNationMetricAtField10|undefined AddToNationMetricAtField10()|TGreatPower.cpp|ok
 4d7b20|TGreatPower::ApplyJoinEmpireModeForTargetNation|void __thiscall ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode)|TGreatPower.cpp|ok
 4d8950|TGreatPower::CreateTGreatPowerInstance|undefined CreateTGreatPowerInstance()|TGreatPower.cpp|ok
@@ -1137,8 +1150,9 @@ address|name|prototype|file|status
 572d00|THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00|undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00572d00()|THQButton.cpp|ok
 573aa0|THQButton::WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0|undefined WrapperFor_thunk_RenderHintHelperWithCtrlModifierOverlay_At00573aa0()|THQButton.cpp|ok
 58b5c0|THQButton::CreateTHQButtonInstance|undefined CreateTHQButtonInstance()|THQButton.cpp|ok
-58b640|THQButton::GetTHQButtonClassNamePointer|undefined GetTHQButtonClassNamePointer()|THQButton.cpp|ok
+58b640|THQButton::GetRuntimeClass|undefined GetRuntimeClass()|THQButton.cpp|ok
 58b660|THQButton::THQButton|undefined THQButton()|THQButton.cpp|ok
+58b690|THQButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|THQButton.cpp|ok
 58b6e0|THQButton::WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0|undefined WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0()|THQButton.cpp|ok
 58b750|THQButton::SetModeAndBitmapBySelectionState|undefined SetModeAndBitmapBySelectionState()|THQButton.cpp|ok
 58b7f0|THQButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0|undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0()|THQButton.cpp|ok
@@ -1201,7 +1215,7 @@ address|name|prototype|file|status
 601baa|TIndexAndRankList::CPtrArray|undefined __thiscall CPtrArray(void)|TIndexAndRankList.cpp|ok
 601bc1|TIndexAndRankList::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TIndexAndRankList.cpp|ok
 589110|TIndustryAmtBar::CreateTIndustryAmtBarInstance|undefined CreateTIndustryAmtBarInstance()|TIndustryAmtBar.cpp|ok
-5891b0|TIndustryAmtBar::GetTIndustryAmtBarClassNamePointer|undefined GetTIndustryAmtBarClassNamePointer()|TIndustryAmtBar.cpp|ok
+5891b0|TIndustryAmtBar::GetRuntimeClass|undefined GetRuntimeClass()|TIndustryAmtBar.cpp|ok
 5891d0|TIndustryAmtBar::ConstructBaseState|undefined ConstructBaseState()|TIndustryAmtBar.cpp|ok
 589210|TIndustryAmtBar::DestructAndMaybeFree|undefined DestructAndMaybeFree()|TIndustryAmtBar.cpp|ok
 589260|TIndustryAmtBar::DoPostCreate|undefined DoPostCreate()|TIndustryAmtBar.cpp|ok
@@ -1212,7 +1226,7 @@ address|name|prototype|file|status
 589d10|TIndustryAmtBar::UpdateTradeBarFromSelectedMetricRatio_A|undefined UpdateTradeBarFromSelectedMetricRatio_A()|TIndustryAmtBar.cpp|ok
 589da0|TIndustryAmtBar::HandleTradeMovePageStepCommand|undefined HandleTradeMovePageStepCommand()|TIndustryAmtBar.cpp|ok
 588a30|TIndustryCluster::CreateTradeMoveStepControlPanel|undefined CreateTradeMoveStepControlPanel()|TIndustryCluster.cpp|ok
-588ad0|TIndustryCluster::GetTIndustryClusterClassNamePointer|undefined GetTIndustryClusterClassNamePointer()|TIndustryCluster.cpp|ok
+588ad0|TIndustryCluster::GetRuntimeClass|undefined GetRuntimeClass()|TIndustryCluster.cpp|ok
 588af0|TIndustryCluster::ConstructTradeMoveStepControlPanel|undefined ConstructTradeMoveStepControlPanel()|TIndustryCluster.cpp|ok
 588b20|TIndustryCluster::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TIndustryCluster.cpp|ok
 4cc770|TIndustryView::GetTIndustryViewClassNamePointer|undefined GetTIndustryViewClassNamePointer()|TIndustryView.cpp|ok
@@ -1488,6 +1502,8 @@ address|name|prototype|file|status
 5c2cb0|TMilitaryUnit::CreateTMilitaryUnitInstance|undefined CreateTMilitaryUnitInstance()|TMilitaryUnit.cpp|ok
 5c2dd0|TMilitaryUnit::GetTMilitaryUnitClassNamePointer|undefined GetTMilitaryUnitClassNamePointer()|TMilitaryUnit.cpp|ok
 5c2df0|TMilitaryUnitOrderState::TMilitaryUnitOrderState|undefined TMilitaryUnitOrderState()|TMilitaryUnitOrderState.cpp|ok
+5c2f50|TMilitaryUnitOrderState::InitializeRecruitOrderState|void __thiscall InitializeRecruitOrderState(short capValue,int nodeContext,short nationSlot)|TMilitaryUnitOrderState.cpp|ok
+5c3190|TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets|void __thiscall CopyUnitCurrentTileIntoOrderTargets(void)|TMilitaryUnitOrderState.cpp|ok
 4aa890|TMiniArmyLine::CreateTMiniArmyLineInstance|undefined CreateTMiniArmyLineInstance()|TMiniArmyLine.cpp|ok
 4aa900|TMiniArmyLine::GetTMiniArmyLineClassNamePointer|undefined GetTMiniArmyLineClassNamePointer()|TMiniArmyLine.cpp|ok
 4aa960|TMiniArmyLine::ConstructTMiniArmyLineBaseState|undefined ConstructTMiniArmyLineBaseState()|TMiniArmyLine.cpp|ok
@@ -1702,7 +1718,7 @@ address|name|prototype|file|status
 491060|TNumberText::ConstructTNumberTextBaseState|undefined ConstructTNumberTextBaseState()|TNumberText.cpp|ok
 4910e0|TNumberText::DestructTNumberTextAndMaybeFree|undefined DestructTNumberTextAndMaybeFree()|TNumberText.cpp|ok
 58c1e0|TNumberedArrowButton::CreateTNumberedArrowButtonInstance|undefined CreateTNumberedArrowButtonInstance()|TNumberedArrowButton.cpp|ok
-58c280|TNumberedArrowButton::GetTNumberedArrowButtonClassNamePointer|undefined GetTNumberedArrowButtonClassNamePointer()|TNumberedArrowButton.cpp|ok
+58c280|TNumberedArrowButton::GetRuntimeClass|undefined GetRuntimeClass()|TNumberedArrowButton.cpp|ok
 58c2a0|TNumberedArrowButton::TNumberedArrowButton|undefined TNumberedArrowButton()|TNumberedArrowButton.cpp|ok
 58c2e0|TNumberedArrowButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TNumberedArrowButton.cpp|ok
 58c640|TNumberedArrowButton::HandleSplitArrowMousePhaseStateAndDispatchCommand64or65|undefined HandleSplitArrowMousePhaseStateAndDispatchCommand64or65()|TNumberedArrowButton.cpp|ok
@@ -1718,7 +1734,7 @@ address|name|prototype|file|status
 507800|TNumberedItem::DestructTNumberedItemAndMaybeFree|undefined DestructTNumberedItemAndMaybeFree()|TNumberedItem.cpp|ok
 479ed0|TObject::OrphanVtableAssignStub_00479ed0|undefined OrphanVtableAssignStub_00479ed0()|TObject.cpp|ok
 485c90|TObject::CreateTObjectInstance|undefined CreateTObjectInstance()|TObject.cpp|ok
-485e20|TObject::GetTObjectClassNamePointer|undefined GetTObjectClassNamePointer()|TObject.cpp|ok
+485e20|TObject::GetRuntimeClass|undefined GetRuntimeClass()|TObject.cpp|ok
 485f50|TObject::DestructTObjectAndMaybeFree|undefined DestructTObjectAndMaybeFree()|TObject.cpp|ok
 491cc0|TObject::RunRegisteredDialogFactoriesByEventCode|int * __thiscall RunRegisteredDialogFactoriesByEventCode(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)|TObject.cpp|ok
 491d80|TObject::InvokeDialogFactoryFromPacket|int * __thiscall InvokeDialogFactoryFromPacket(int nContextId, int * pEventPacket, int nEventCode, int * pAnchorPoint)|TObject.cpp|ok
@@ -1789,6 +1805,7 @@ address|name|prototype|file|status
 570750|TPictureButton::CreateTPictureButtonInstance|undefined CreateTPictureButtonInstance()|TPictureButton.cpp|ok
 5707d0|TPictureButton::GetTPictureButtonClassNamePointer|undefined GetTPictureButtonClassNamePointer()|TPictureButton.cpp|ok
 5707f0|TPictureButton::ConstructUiTabCursorPictureEntry|undefined ConstructUiTabCursorPictureEntry()|TPictureButton.cpp|ok
+570820|TPictureButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TPictureButton.cpp|ok
 570060|TPictureLine::GetTPictureLineClassNamePointer|undefined GetTPictureLineClassNamePointer()|TPictureLine.cpp|ok
 5700a0|TPictureLine::ConstructTPictureLineBaseState|undefined ConstructTPictureLineBaseState()|TPictureLine.cpp|ok
 5700d0|TPictureLine::DestructTPictureLineAndMaybeFree|undefined DestructTPictureLineAndMaybeFree()|TPictureLine.cpp|ok
@@ -1811,8 +1828,9 @@ address|name|prototype|file|status
 4edb30|TPirateMinister::DestructTPirateMinisterAndMaybeFree|undefined DestructTPirateMinisterAndMaybeFree()|TPirateMinister.cpp|ok
 4edc40|TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3|undefined InitializeRecruitQueuePatternC_Mode2_Type2x3()|TPirateMinister.cpp|ok
 58b960|TPlacard::CreateTPlacardInstance|undefined CreateTPlacardInstance()|TPlacard.cpp|ok
-58b9f0|TPlacard::GetTPlacardClassNamePointer|undefined GetTPlacardClassNamePointer()|TPlacard.cpp|ok
+58b9f0|TPlacard::GetRuntimeClass|undefined GetRuntimeClass()|TPlacard.cpp|ok
 58ba10|TPlacard::TPlacard|undefined TPlacard()|TPlacard.cpp|ok
+58ba40|TPlacard::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TPlacard.cpp|ok
 58bab0|TPlacard::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0|undefined WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0()|TPlacard.cpp|ok
 58bb50|TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50|undefined WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50()|TPlacard.cpp|ok
 58bc60|TPlacard::RenderPlacardValueTextWithShadow|undefined RenderPlacardValueTextWithShadow()|TPlacard.cpp|ok
@@ -1841,14 +1859,15 @@ address|name|prototype|file|status
 4b7cc0|TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b7cc0()|TPowerPlantOrder.cpp|ok
 4b7d40|TPowerPlantOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40|undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b7d40()|TPowerPlantOrder.cpp|ok
 586840|TProductionCluster::CreateTProductionClusterInstance|undefined CreateTProductionClusterInstance()|TProductionCluster.cpp|ok
-586900|TProductionCluster::GetTProductionClusterClassNamePointer|undefined GetTProductionClusterClassNamePointer()|TProductionCluster.cpp|ok
+586900|TProductionCluster::GetRuntimeClass|undefined GetRuntimeClass()|TProductionCluster.cpp|ok
 586920|TProductionCluster::ConstructTProductionClusterBaseState|undefined ConstructTProductionClusterBaseState()|TProductionCluster.cpp|ok
+586970|TProductionCluster::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TProductionCluster.cpp|ok
 5869c0|TProductionCluster::HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward|undefined HandleProductionClusterValuePanelSplitArrowCommand64or65AndForward()|TProductionCluster.cpp|ok
 4b4ee0|TProductionOrder::GetTProductionOrderClassNamePointer|undefined GetTProductionOrderClassNamePointer()|TProductionOrder.cpp|ok
 4b4f00|TProductionOrder::ConstructTProductionOrderBaseState|undefined ConstructTProductionOrderBaseState()|TProductionOrder.cpp|ok
 4b4f20|TProductionOrder::DestructTProductionOrderAndMaybeFree|undefined DestructTProductionOrderAndMaybeFree()|TProductionOrder.cpp|ok
 4d6500|TProvinceDesirabilityList::CreateTProvinceDesirabilityListInstance|undefined CreateTProvinceDesirabilityListInstance()|TProvinceDesirabilityList.cpp|ok
-4d6570|TProvinceDesirabilityList::GetTProvinceDesirabilityListClassNamePointer|undefined GetTProvinceDesirabilityListClassNamePointer()|TProvinceDesirabilityList.cpp|ok
+4d6570|TProvinceDesirabilityList::GetRuntimeClass|undefined GetRuntimeClass()|TProvinceDesirabilityList.cpp|ok
 4d65c0|TProvinceDesirabilityList::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TProvinceDesirabilityList.cpp|ok
 540970|TProxyGreatPower::DestructTProxyGreatPower|undefined DestructTProxyGreatPower()|TProxyGreatPower.cpp|ok
 5409e0|TProxyGreatPower::GetTProxyGreatPowerClassNamePointer|undefined GetTProxyGreatPowerClassNamePointer()|TProxyGreatPower.cpp|ok
@@ -1882,6 +1901,7 @@ address|name|prototype|file|status
 571700|TRadioPictureButton::CreateTRadioPictureButtonInstance|undefined CreateTRadioPictureButtonInstance()|TRadioPictureButton.cpp|ok
 5717a0|TRadioPictureButton::GetTRadioPictureButtonClassNamePointer|undefined GetTRadioPictureButtonClassNamePointer()|TRadioPictureButton.cpp|ok
 5717c0|TRadioPictureButton::TRadioPictureButton|undefined TRadioPictureButton()|TRadioPictureButton.cpp|ok
+571800|TRadioPictureButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TRadioPictureButton.cpp|ok
 579470|TRadioText::GetTRadioTextClassNamePointer|undefined GetTRadioTextClassNamePointer()|TRadioText.cpp|ok
 579490|TRadioText::ConstructTRadioTextBaseState|undefined ConstructTRadioTextBaseState()|TRadioText.cpp|ok
 577030|TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext|undefined InitializeSetupRandomMapPictureDialogFromGameContext()|TRadioTextCluster.cpp|ok
@@ -1890,7 +1910,7 @@ address|name|prototype|file|status
 5796f0|TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree|undefined DestructTRadioTextClusterAndMaybeFree()|TRadioTextCluster.cpp|ok
 579770|TRadioTextCluster::HandleSelectableTextOptionEventDispatch|undefined HandleSelectableTextOptionEventDispatch()|TRadioTextCluster.cpp|ok
 589ed0|TRailAmtBar::CreateTRailAmtBarInstance|undefined CreateTRailAmtBarInstance()|TRailAmtBar.cpp|ok
-589f70|TRailAmtBar::GetTRailAmtBarClassNamePointer|undefined GetTRailAmtBarClassNamePointer()|TRailAmtBar.cpp|ok
+589f70|TRailAmtBar::GetRuntimeClass|undefined GetRuntimeClass()|TRailAmtBar.cpp|ok
 589f90|TRailAmtBar::ConstructBaseState|undefined ConstructBaseState()|TRailAmtBar.cpp|ok
 589fd0|TRailAmtBar::DestructAndMaybeFree|undefined DestructAndMaybeFree()|TRailAmtBar.cpp|ok
 58a020|TRailAmtBar::DoPostCreate|undefined DoPostCreate()|TRailAmtBar.cpp|ok
@@ -1901,7 +1921,7 @@ address|name|prototype|file|status
 4c62f0|TRailCityMinister::ConstructTRailCityMinisterBaseState|undefined ConstructTRailCityMinisterBaseState()|TRailCityMinister.cpp|ok
 4c6330|TRailCityMinister::DestructTRailCityMinisterAndMaybeFree|undefined DestructTRailCityMinisterAndMaybeFree()|TRailCityMinister.cpp|ok
 589660|TRailCluster::CreateTradeMoveScaledControlPanel|undefined CreateTradeMoveScaledControlPanel()|TRailCluster.cpp|ok
-589700|TRailCluster::GetTRailClusterClassNamePointer|undefined GetTRailClusterClassNamePointer()|TRailCluster.cpp|ok
+589700|TRailCluster::GetRuntimeClass|undefined GetRuntimeClass()|TRailCluster.cpp|ok
 589720|TRailCluster::TRailCluster|undefined TRailCluster()|TRailCluster.cpp|ok
 589760|TRailCluster::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TRailCluster.cpp|ok
 5897b0|TRailCluster::SelectTradeCommodityPresetBySummaryTagAndInitControls|undefined SelectTradeCommodityPresetBySummaryTagAndInitControls()|TRailCluster.cpp|ok
@@ -1989,7 +2009,7 @@ address|name|prototype|file|status
 552b90|TShip::SerializeTaskForceToBinaryStream|undefined SerializeTaskForceToBinaryStream()|TShip.cpp|ok
 552d10|TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers|undefined DeserializeTaskForceFromBinaryStreamAndRefreshMarkers()|TShip.cpp|ok
 58aaa0|TShipAmtBar::CreateTShipAmtBarInstance|undefined CreateTShipAmtBarInstance()|TShipAmtBar.cpp|ok
-58ab40|TShipAmtBar::GetTShipAmtBarClassNamePointer|undefined GetTShipAmtBarClassNamePointer()|TShipAmtBar.cpp|ok
+58ab40|TShipAmtBar::GetRuntimeClass|undefined GetRuntimeClass()|TShipAmtBar.cpp|ok
 58ab60|TShipAmtBar::ConstructBaseState|undefined ConstructBaseState()|TShipAmtBar.cpp|ok
 58aba0|TShipAmtBar::DestructAndMaybeFree|undefined DestructAndMaybeFree()|TShipAmtBar.cpp|ok
 58abf0|TShipAmtBar::DoPostCreate|undefined DoPostCreate()|TShipAmtBar.cpp|ok
@@ -2025,7 +2045,7 @@ address|name|prototype|file|status
 565400|TShipView::CreateTShipViewInstance|undefined CreateTShipViewInstance()|TShipView.cpp|ok
 565470|TShipView::GetTShipViewClassNamePointer|undefined GetTShipViewClassNamePointer()|TShipView.cpp|ok
 58a4d0|TShipyardCluster::CreateTradeMoveArrowControlPanel|undefined CreateTradeMoveArrowControlPanel()|TShipyardCluster.cpp|ok
-58a570|TShipyardCluster::GetTShipyardClusterClassNamePointer|undefined GetTShipyardClusterClassNamePointer()|TShipyardCluster.cpp|ok
+58a570|TShipyardCluster::GetRuntimeClass|undefined GetRuntimeClass()|TShipyardCluster.cpp|ok
 58a590|TShipyardCluster::ConstructTradeMoveArrowControlPanel|undefined ConstructTradeMoveArrowControlPanel()|TShipyardCluster.cpp|ok
 58a5c0|TShipyardCluster::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TShipyardCluster.cpp|ok
 58a610|TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls|undefined SelectTradeSpecialCommodityAndInitializeControls()|TShipyardCluster.cpp|ok
@@ -2069,7 +2089,7 @@ address|name|prototype|file|status
 573a00|TSliderPicture::GetTSliderPictureClassNamePointer|undefined GetTSliderPictureClassNamePointer()|TSliderPicture.cpp|ok
 573a20|TSliderPicture::ConstructTSliderPictureBaseState|undefined ConstructTSliderPictureBaseState()|TSliderPicture.cpp|ok
 573a50|TSliderPicture::DestructTSliderPictureAndMaybeFree|undefined DestructTSliderPictureAndMaybeFree()|TSliderPicture.cpp|ok
-5346f0|TSortByPriceList::GetTSortByPriceListClassNamePointer|undefined GetTSortByPriceListClassNamePointer()|TSortByPriceList.cpp|ok
+5346f0|TSortByPriceList::GetRuntimeClass|undefined GetRuntimeClass()|TSortByPriceList.cpp|ok
 534710|TSortByPriceList::ConstructTSortByPriceList|undefined ConstructTSortByPriceList()|TSortByPriceList.cpp|ok
 534740|TSortByPriceList::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TSortByPriceList.cpp|ok
 534770|TSortByPriceList::~TSortByPriceList|undefined ~TSortByPriceList()|TSortByPriceList.cpp|ok
@@ -2077,7 +2097,7 @@ address|name|prototype|file|status
 403837|TSortedByRelationshipList::thunk_InitializeDiplomacyTurnStateManagerDefaults|undefined thunk_InitializeDiplomacyTurnStateManagerDefaults()|TSortedByRelationshipList.cpp|ok
 413250|TSortedByRelationshipList::WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250|undefined WrapperFor_IsNationSlotEligibleForEventProcessing_At00413250()|TSortedByRelationshipList.cpp|ok
 4ee4b0|TSortedByRelationshipList::CreateTSortedByRelationshipListInstance|undefined CreateTSortedByRelationshipListInstance()|TSortedByRelationshipList.cpp|ok
-4ee520|TSortedByRelationshipList::GetTSortedByRelationshipListClassNamePointer|undefined GetTSortedByRelationshipListClassNamePointer()|TSortedByRelationshipList.cpp|ok
+4ee520|TSortedByRelationshipList::GetRuntimeClass|undefined GetRuntimeClass()|TSortedByRelationshipList.cpp|ok
 4ee540|TSortedByRelationshipList::ConstructObArrayWithVtable654D38|undefined ConstructObArrayWithVtable654D38()|TSortedByRelationshipList.cpp|ok
 4ee570|TSortedByRelationshipList::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TSortedByRelationshipList.cpp|ok
 4ee7a0|TSortedByRelationshipList::InitializeDiplomacyTurnStateManagerDefaults|undefined InitializeDiplomacyTurnStateManagerDefaults()|TSortedByRelationshipList.cpp|ok
@@ -2110,10 +2130,10 @@ address|name|prototype|file|status
 487b30|TSortedList::ConstructTSortedListBaseState|undefined ConstructTSortedListBaseState()|TSortedList.cpp|ok
 487b60|TSortedList::DestructTSortedListAndMaybeFree|undefined DestructTSortedListAndMaybeFree()|TSortedList.cpp|ok
 488110|TSortedPtrList::ResetPtrListAndShrinkCapacity|undefined ResetPtrListAndShrinkCapacity()|TSortedPtrList.cpp|ok
-4883e0|TSortedPtrList::GetTSortedPtrListClassNamePointer|undefined GetTSortedPtrListClassNamePointer()|TSortedPtrList.cpp|ok
+4883e0|TSortedPtrList::GetRuntimeClass|undefined GetRuntimeClass()|TSortedPtrList.cpp|ok
 488400|TSortedPtrList::ConstructTSortedPtrListBaseState|undefined ConstructTSortedPtrListBaseState()|TSortedPtrList.cpp|ok
 5932b0|TSoundPlayer::?CreateTSoundPlayerInstance@@YAPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@XZ|undefined ?CreateTSoundPlayerInstance@@YAPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@XZ()|TSoundPlayer.cpp|ok
-593350|TSoundPlayer::GetTSoundPlayerClassNamePointer|undefined GetTSoundPlayerClassNamePointer()|TSoundPlayer.cpp|ok
+593350|TSoundPlayer::GetRuntimeClass|undefined GetRuntimeClass()|TSoundPlayer.cpp|ok
 593370|TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z|undefined ?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z()|TSoundPlayer.cpp|ok
 5933b0|TSoundPlayer::?DestructTSoundPlayerAndMaybeFree@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@HE@Z|undefined ?DestructTSoundPlayerAndMaybeFree@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@HE@Z()|TSoundPlayer.cpp|ok
 5933e0|TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z|undefined ?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z()|TSoundPlayer.cpp|ok
@@ -2140,7 +2160,7 @@ address|name|prototype|file|status
 48f9a0|TStaticText::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TStaticText.cpp|ok
 48fc30|TStaticText::~TStaticText|undefined ~TStaticText()|TStaticText.cpp|ok
 586280|TStatusButton::CreateTStatusButtonInstance|undefined CreateTStatusButtonInstance()|TStatusButton.cpp|ok
-586310|TStatusButton::GetTStatusButtonClassNamePointer|undefined GetTStatusButtonClassNamePointer()|TStatusButton.cpp|ok
+586310|TStatusButton::GetRuntimeClass|undefined GetRuntimeClass()|TStatusButton.cpp|ok
 586330|TStatusButton::ConstructTStatusButtonBaseState|undefined ConstructTStatusButtonBaseState()|TStatusButton.cpp|ok
 5863b0|TStatusButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TStatusButton.cpp|ok
 586400|TStatusButton::HandleCityDialogSelectionAndBackControlReset|undefined HandleCityDialogSelectionAndBackControlReset()|TStatusButton.cpp|ok
@@ -2259,7 +2279,7 @@ address|name|prototype|file|status
 570290|TTextLine::ConstructTTextLineBaseState|undefined ConstructTTextLineBaseState()|TTextLine.cpp|ok
 570310|TTextLine::DestructTTextLineAndMaybeFree|undefined DestructTTextLineAndMaybeFree()|TTextLine.cpp|ok
 57ab70|TTextList::CreateTTextListInstance|undefined CreateTTextListInstance()|TTextList.cpp|ok
-57ac30|TTextList::GetTTextListClassNamePointer|undefined GetTTextListClassNamePointer()|TTextList.cpp|ok
+57ac30|TTextList::GetRuntimeClass|undefined GetRuntimeClass()|TTextList.cpp|ok
 57acc0|TTextList::ConstructTTextListBaseState|undefined ConstructTTextListBaseState()|TTextList.cpp|ok
 57af20|TTextList::DestructTTextListAndMaybeFree|undefined DestructTTextListAndMaybeFree()|TTextList.cpp|ok
 5725b0|TTextPictureButton::GetTTextPictureButtonClassNamePointer|undefined GetTTextPictureButtonClassNamePointer()|TTextPictureButton.cpp|ok
@@ -2270,7 +2290,7 @@ address|name|prototype|file|status
 5331b0|TTextileForeignMinister::DestructTTextileForeignMinister|undefined DestructTTextileForeignMinister()|TTextileForeignMinister.cpp|ok
 405f8d|TToggleButton::TToggleButton_VtblSlot116|undefined TToggleButton_VtblSlot116()|TToggleButton.cpp|ok
 571050|TToggleButton::CreateTToggleButtonInstance|undefined CreateTToggleButtonInstance()|TToggleButton.cpp|ok
-5710d0|TToggleButton::GetTToggleButtonClassNamePointer|undefined GetTToggleButtonClassNamePointer()|TToggleButton.cpp|ok
+5710d0|TToggleButton::GetRuntimeClass|undefined GetRuntimeClass()|TToggleButton.cpp|ok
 5710f0|TToggleButton::ConstructTToggleButtonBaseState|undefined ConstructTToggleButtonBaseState()|TToggleButton.cpp|ok
 571120|TToggleButton::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TToggleButton.cpp|ok
 408995|TToolBarCluster::thunk_RefreshMapOrderEntryPanel|void __thiscall thunk_RefreshMapOrderEntryPanel(void * pMapOrderEntry)|TToolBarCluster.cpp|ok
@@ -2336,9 +2356,9 @@ address|name|prototype|file|status
 5d6480|TToolBarCluster::BuildAndShowTurnOverlayByMode|undefined BuildAndShowTurnOverlayByMode()|TToolBarCluster.cpp|ok
 60038d|TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d|undefined WrapperFor_ConstructSharedStringFromCStrOrResourceId_At0060038d()|TToolBarCluster.cpp|ok
 6003de|TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de|undefined WrapperFor_ConstructSharedStringFromCStrOrResourceId_At006003de()|TToolBarCluster.cpp|ok
-6057a7|TToolBarCluster::StringSharedRef_AssignFromPtr|undefined StringSharedRef_AssignFromPtr()|TToolBarCluster.cpp|ok
-605950|TToolBarCluster::ConstructSharedStringFromCStrOrResourceId|undefined ConstructSharedStringFromCStrOrResourceId()|TToolBarCluster.cpp|ok
-605d22|TToolBarCluster::GetBuffer|undefined GetBuffer()|TToolBarCluster.cpp|ok
+6057a7|TToolBarCluster::StringSharedRef_AssignFromPtr|CString * __thiscall StringSharedRef_AssignFromPtr(CString * src_ref)|TToolBarCluster.cpp|ok
+605950|TToolBarCluster::ConstructSharedStringFromCStrOrResourceId|void __thiscall ConstructSharedStringFromCStrOrResourceId(char * text_or_resource_id)|TToolBarCluster.cpp|ok
+605d22|TToolBarCluster::GetBuffer|int __thiscall GetBuffer(int min_capacity)|TToolBarCluster.cpp|ok
 60b8e1|TToolBarCluster::GetFilePath|undefined GetFilePath()|TToolBarCluster.cpp|ok
 612132|TToolBarCluster::ReadString_612132|undefined ReadString_612132()|TToolBarCluster.cpp|ok
 5e5bd7|TTooltipRelayWindowState::WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7|undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7()|TTooltipRelayWindowState.cpp|ok
@@ -2385,7 +2405,7 @@ address|name|prototype|file|status
 5bded0|TTradeBookView::GetTTradeBookViewClassNamePointer|undefined GetTTradeBookViewClassNamePointer()|TTradeBookView.cpp|ok
 5bdef0|TTradeBookView::SetupSceneResources_005BDEF0|void __thiscall SetupSceneResources_005BDEF0(uint this_obj)|TTradeBookView.cpp|ok
 587010|TTradeCluster::CreateTradeSellControlPanel|undefined CreateTradeSellControlPanel()|TTradeCluster.cpp|ok
-587090|TTradeCluster::GetTTradeClusterClassNamePointer|undefined GetTTradeClusterClassNamePointer()|TTradeCluster.cpp|ok
+587090|TTradeCluster::GetRuntimeClass|undefined GetRuntimeClass()|TTradeCluster.cpp|ok
 5870b0|TTradeCluster::ConstructTradeSellControlPanel|undefined ConstructTradeSellControlPanel()|TTradeCluster.cpp|ok
 5870e0|TTradeCluster::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TTradeCluster.cpp|ok
 587130|TTradeCluster::InitializeTradeSellControlState|undefined InitializeTradeSellControlState()|TTradeCluster.cpp|ok
@@ -2459,7 +2479,7 @@ address|name|prototype|file|status
 5c1b10|TTradeTotalsView::ConstructTTradeTotalsViewBaseState|undefined ConstructTTradeTotalsViewBaseState()|TTradeTotalsView.cpp|ok
 5c1b40|TTradeTotalsView::DestructTTradeTotalsViewAndMaybeFree|undefined DestructTTradeTotalsViewAndMaybeFree()|TTradeTotalsView.cpp|ok
 58ae30|TTraderAmtBar::CreateTTraderAmtBarInstance|undefined CreateTTraderAmtBarInstance()|TTraderAmtBar.cpp|ok
-58aed0|TTraderAmtBar::GetTTraderAmtBarClassNamePointer|undefined GetTTraderAmtBarClassNamePointer()|TTraderAmtBar.cpp|ok
+58aed0|TTraderAmtBar::GetRuntimeClass|undefined GetRuntimeClass()|TTraderAmtBar.cpp|ok
 58aef0|TTraderAmtBar::ConstructBaseState|undefined ConstructBaseState()|TTraderAmtBar.cpp|ok
 58af30|TTraderAmtBar::DestructAndMaybeFree|undefined DestructAndMaybeFree()|TTraderAmtBar.cpp|ok
 58af80|TTraderAmtBar::DoPostCreate|undefined DoPostCreate()|TTraderAmtBar.cpp|ok
@@ -2487,8 +2507,9 @@ address|name|prototype|file|status
 60785a|TTransFocusAnimation::AfxModifyStyle|undefined AfxModifyStyle()|TTransFocusAnimation.cpp|ok
 6078a9|TTransFocusAnimation::ModifyStyleEx_6078a9|undefined ModifyStyleEx_6078a9()|TTransFocusAnimation.cpp|ok
 591d90|TTransportPicture::?CreateTTransportPictureInstance@@YAPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@XZ|undefined ?CreateTTransportPictureInstance@@YAPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@XZ()|TTransportPicture.cpp|ok
-591e50|TTransportPicture::GetTTransportPictureClassNamePointer|undefined GetTTransportPictureClassNamePointer()|TTransportPicture.cpp|ok
+591e50|TTransportPicture::GetRuntimeClass|undefined GetRuntimeClass()|TTransportPicture.cpp|ok
 591e70|TTransportPicture::?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z|undefined ?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z()|TTransportPicture.cpp|ok
+591ec0|TTransportPicture::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TTransportPicture.cpp|ok
 591f10|TTransportPicture::HandleTransportPictureSplitArrowCommand64or65|undefined HandleTransportPictureSplitArrowCommand64or65()|TTransportPicture.cpp|ok
 5921c0|TTransportPicture::RenderTransportPictureGaugeAndLabels|undefined RenderTransportPictureGaugeAndLabels()|TTransportPicture.cpp|ok
 4bd3c0|TTransportView::GetTTransportViewClassNamePointer|undefined GetTTransportViewClassNamePointer()|TTransportView.cpp|ok
@@ -2509,7 +2530,7 @@ address|name|prototype|file|status
 56e370|TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText|undefined RenderSplitOverlaySurfaceAndCenteredStatusText()|TTwoPicSlider.cpp|ok
 56e640|TTwoPicSlider::HandleMapOverlaySliderInputAndRefresh|undefined HandleMapOverlaySliderInputAndRefresh()|TTwoPicSlider.cpp|ok
 5713c0|TUberCluster::CreateTUberClusterInstance|undefined CreateTUberClusterInstance()|TUberCluster.cpp|ok
-571440|TUberCluster::GetTUberClusterClassNamePointer|undefined GetTUberClusterClassNamePointer()|TUberCluster.cpp|ok
+571440|TUberCluster::GetRuntimeClass|undefined GetRuntimeClass()|TUberCluster.cpp|ok
 571460|TUberCluster::ConstructTUberClusterBaseState|undefined ConstructTUberClusterBaseState()|TUberCluster.cpp|ok
 571490|TUberCluster::DestructTUberClusterAndMaybeFree|undefined DestructTUberClusterAndMaybeFree()|TUberCluster.cpp|ok
 586e70|TUberCluster::HandleTradeMoveControlAdjustment|undefined HandleTradeMoveControlAdjustment()|TUberCluster.cpp|ok
@@ -2533,7 +2554,7 @@ address|name|prototype|file|status
 402eeb|TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager|undefined thunk_RegisterUnitOrderWithOwnerManager()|TUnitOrderState.cpp|ok
 5c2530|TUnitOrderState::RegisterUnitOrderWithOwnerManager|undefined RegisterUnitOrderWithOwnerManager()|TUnitOrderState.cpp|ok
 585f70|TUnitToolbarCluster::CreateTUnitToolbarClusterInstance|undefined CreateTUnitToolbarClusterInstance()|TUnitToolbarCluster.cpp|ok
-585ff0|TUnitToolbarCluster::GetTUnitToolbarClusterClassNamePointer|undefined GetTUnitToolbarClusterClassNamePointer()|TUnitToolbarCluster.cpp|ok
+585ff0|TUnitToolbarCluster::GetRuntimeClass|undefined GetRuntimeClass()|TUnitToolbarCluster.cpp|ok
 586010|TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState|undefined ConstructTUnitToolbarClusterBaseState()|TUnitToolbarCluster.cpp|ok
 586040|TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree|undefined DestructTUnitToolbarClusterAndMaybeFree()|TUnitToolbarCluster.cpp|ok
 586090|TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090|undefined WrapperFor_thunk_DispatchPanelControlEvent_At00586090()|TUnitToolbarCluster.cpp|ok
@@ -2599,7 +2620,7 @@ address|name|prototype|file|status
 4c72b0|TWarehouseView::ConstructTWarehouseViewBaseState|undefined ConstructTWarehouseViewBaseState()|TWarehouseView.cpp|ok
 4c72e0|TWarehouseView::DestructTWarehouseViewAndMaybeFree|undefined DestructTWarehouseViewAndMaybeFree()|TWarehouseView.cpp|ok
 592860|TWarningView::?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@XZ|undefined ?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@XZ()|TWarningView.cpp|ok
-5928e0|TWarningView::GetTWarningViewClassNamePointer|undefined GetTWarningViewClassNamePointer()|TWarningView.cpp|ok
+5928e0|TWarningView::GetRuntimeClass|undefined GetRuntimeClass()|TWarningView.cpp|ok
 592900|TWarningView::?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@PAU12@@Z|undefined ?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@PAU12@@Z()|TWarningView.cpp|ok
 592930|TWarningView::'scalar_deleting_destructor'|undefined 'scalar_deleting_destructor'()|TWarningView.cpp|ok
 48d090|TWindow::CreateTWindowInstance|undefined CreateTWindowInstance()|TWindow.cpp|ok
@@ -2661,8 +2682,6 @@ address|name|prototype|file|status
 5aec00|TaskList::DestructTaskListAndMaybeFree|undefined DestructTaskListAndMaybeFree()|TaskList.cpp|ok
 5aec30|TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30|undefined WrapperFor_DestructCPtrListBaseState_At005aec30()|TaskList.cpp|ok
 401e2e|TradeControl::thunk_AssertCityProductionGlobalStateInitialized|undefined thunk_AssertCityProductionGlobalStateInitialized()|TradeControl.cpp|ok
-412bf0|TradeControl::NoOpTurnEventStateVtableSlot0C|undefined NoOpTurnEventStateVtableSlot0C()|TradeControl.cpp|ok
-412c10|TradeControl::NoOpTurnEventStateVtableSlot10|undefined NoOpTurnEventStateVtableSlot10()|TradeControl.cpp|ok
 415d50|TradeControl::GetCityDialogValueDword10|int __fastcall GetCityDialogValueDword10(CityDialogController * pDialog)|TradeControl.cpp|ok
 427240|TradeControl::NoOpControlCallback_Impl|undefined NoOpControlCallback_Impl()|TradeControl.cpp|ok
 429450|TradeControl::GetCityProductionControllerField60|undefined GetCityProductionControllerField60()|TradeControl.cpp|ok
@@ -2683,6 +2702,7 @@ address|name|prototype|file|status
 5ba750|TradeScreenPicture::DestructTradeScreenPictureAndMaybeFree|undefined DestructTradeScreenPictureAndMaybeFree()|TradeScreenPicture.cpp|ok
 5ba7a0|TradeScreenPicture::RenderTradeScreenCommoditySummaryRows|undefined RenderTradeScreenCommoditySummaryRows()|TradeScreenPicture.cpp|ok
 403b16|UiRuntimeContext::GetActiveNationId|short __thiscall GetActiveNationId(void)|UiRuntimeContext.cpp|ok
+409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex|int __thiscall MapTurnEventCodeToPaletteIndex(int eventCode)|UiRuntimeContext.cpp|ok
 401023|thunk_FinalizeTacticalTurnStateAndQueueEvent232A|void __thiscall thunk_FinalizeTacticalTurnStateAndQueueEvent232A(void)|global_part001.cpp|ok
 401073|thunk_HandleMapClickByInteractionMode|void __thiscall thunk_HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)|global_part001.cpp|ok
 40108c|thunk_RefreshNationCivilianWorkOrdersForTurn|undefined thunk_RefreshNationCivilianWorkOrdersForTurn()|global_part001.cpp|ok
@@ -3217,7 +3237,6 @@ address|name|prototype|file|status
 409165|thunk_QueueNationPairWarTransition|undefined thunk_QueueNationPairWarTransition()|global_part003.cpp|ok
 40918d|thunk_AssignSharedStringFromIndexedA8EntryNameField|undefined thunk_AssignSharedStringFromIndexedA8EntryNameField()|global_part003.cpp|ok
 4091ce|thunk_HandleTradeMovePageStepCommand|undefined thunk_HandleTradeMovePageStepCommand()|global_part003.cpp|ok
-409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex|int __thiscall MapTurnEventCodeToPaletteIndex(int eventCode)|global_part003.cpp|ok
 409237|thunk_DestructEngineerDialogAndMaybeFree|undefined thunk_DestructEngineerDialogAndMaybeFree()|global_part003.cpp|ok
 40923c|thunk_ConstructSfxPlaybackSystemState|undefined thunk_ConstructSfxPlaybackSystemState()|global_part003.cpp|ok
 40928c|thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh|undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()|global_part003.cpp|ok
@@ -3263,7 +3282,6 @@ address|name|prototype|file|status
 412a70|InvokeAfxThreadVslot7CAndGetValueAtOffset98|undefined InvokeAfxThreadVslot7CAndGetValueAtOffset98()|global_part003.cpp|ok
 412aa0|NoOpThunkTargetHandler|undefined NoOpThunkTargetHandler()|global_part003.cpp|ok
 412ac0|ConstructImperialismApplicationSingleton|undefined ConstructImperialismApplicationSingleton()|global_part003.cpp|ok
-412bd0|TMacViewMgr_Slot02_NoOpRet4|undefined TMacViewMgr_Slot02_NoOpRet4()|global_part003.cpp|ok
 412c30|ReleaseImperialismApplicationSingleton|undefined ReleaseImperialismApplicationSingleton()|global_part003.cpp|ok
 412c60|DestroyImperialismApplicationSingleton|undefined DestroyImperialismApplicationSingleton()|global_part003.cpp|ok
 412d40|InitializeImperialismAppSingletonGlobal|undefined InitializeImperialismAppSingletonGlobal()|global_part003.cpp|ok
@@ -3433,8 +3451,8 @@ address|name|prototype|file|status
 45e0b0|BuildTurnEventDialogResourcesForEvent8FC|undefined BuildTurnEventDialogResourcesForEvent8FC()|global_part003.cpp|ok
 4601b0|InitializeTradeScreenBitmapControls|undefined InitializeTradeScreenBitmapControls()|global_part003.cpp|failed
 46503c|BuildTradeBoardDialogUiLayoutVariantA|undefined BuildTradeBoardDialogUiLayoutVariantA()|global_part003.cpp|ok
-46620f|InitializeUiResourceEntries|int * __cdecl InitializeUiResourceEntries(void)|global_part004.cpp|ok
-46baa7|BuildTradeBoardDialogUiLayoutVariantB|undefined BuildTradeBoardDialogUiLayoutVariantB()|global_part004.cpp|ok
+46620f|InitializeUiResourceEntries|int * __cdecl InitializeUiResourceEntries(void)|global_part003.cpp|ok
+46baa7|BuildTradeBoardDialogUiLayoutVariantB|undefined BuildTradeBoardDialogUiLayoutVariantB()|global_part003.cpp|ok
 46fd10|BuildTurnEventDialogResourcesForEvent7DE|undefined BuildTurnEventDialogResourcesForEvent7DE()|global_part004.cpp|ok
 4749a0|BuildUniversityDialogShell|int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)|global_part004.cpp|ok
 474ac5|BuildUniversityDialogControls|undefined BuildUniversityDialogControls()|global_part004.cpp|ok
@@ -3683,8 +3701,8 @@ address|name|prototype|file|status
 4839e0|WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0|undefined WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0()|global_part004.cpp|ok
 483ab0|WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl|undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl()|global_part004.cpp|ok
 483ad0|WrapperFor_FreeHeapBufferIfNotNull_At00483ad0|undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0()|global_part004.cpp|ok
-483ba0|WrapperFor_AllocateAndLinkBlockHead_At00483ba0|undefined WrapperFor_AllocateAndLinkBlockHead_At00483ba0()|global_part005.cpp|ok
-483db0|RegisterAmbitGameWindowClass|undefined RegisterAmbitGameWindowClass()|global_part005.cpp|ok
+483ba0|WrapperFor_AllocateAndLinkBlockHead_At00483ba0|undefined WrapperFor_AllocateAndLinkBlockHead_At00483ba0()|global_part004.cpp|ok
+483db0|RegisterAmbitGameWindowClass|undefined RegisterAmbitGameWindowClass()|global_part004.cpp|ok
 483e80|WrapperFor_RouteCommandByIdWithUiProbe_At00483e80|undefined WrapperFor_RouteCommandByIdWithUiProbe_At00483e80()|global_part005.cpp|ok
 484060|InvokeAfxThreadAndCallSecondaryRefresh_Impl|undefined InvokeAfxThreadAndCallSecondaryRefresh_Impl()|global_part005.cpp|ok
 4840d0|WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0|undefined WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0()|global_part005.cpp|ok
@@ -3831,7 +3849,6 @@ address|name|prototype|file|status
 488ff0|OrphanCallChain_C2_I18_00488ff0|undefined OrphanCallChain_C2_I18_00488ff0()|global_part005.cpp|ok
 489030|OrphanCallChain_C2_I21_00489030|undefined OrphanCallChain_C2_I21_00489030()|global_part005.cpp|ok
 4890c0|CreateTFileStreamWithAllocFallback|undefined CreateTFileStreamWithAllocFallback()|global_part005.cpp|ok
-489160|SetObjectField04|undefined SetObjectField04()|global_part005.cpp|ok
 489180|OrphanLeaf_NoCall_Ins05_00489180|undefined OrphanLeaf_NoCall_Ins05_00489180()|global_part005.cpp|ok
 4891a0|OrphanLeaf_NoCall_Ins05_004891a0|undefined OrphanLeaf_NoCall_Ins05_004891a0()|global_part005.cpp|ok
 4891c0|OrphanCallChain_C1_I09_004891c0|undefined OrphanCallChain_C1_I09_004891c0()|global_part005.cpp|ok
@@ -3876,7 +3893,6 @@ address|name|prototype|file|status
 48a650|HandleCityProductionNoOp|undefined HandleCityProductionNoOp()|global_part005.cpp|ok
 48a6f0|DispatchCityProductionAction1B|undefined DispatchCityProductionAction1B()|global_part005.cpp|ok
 48a730|OrphanTiny_ReturnZero_0048a730|undefined OrphanTiny_ReturnZero_0048a730()|global_part005.cpp|ok
-48a7c0|AllocateUiResourceEntryHeaderCopyFromSource|undefined AllocateUiResourceEntryHeaderCopyFromSource()|global_part005.cpp|ok
 48aa60|InitializeUiResourceEntryFrameAndParent|undefined InitializeUiResourceEntryFrameAndParent()|global_part005.cpp|ok
 48ab70|NoOpUiLifecycleHook|undefined NoOpUiLifecycleHook()|global_part005.cpp|ok
 48ada0|WrapperFor_FreeHeapBufferIfNotNull_At0048ada0|undefined WrapperFor_FreeHeapBufferIfNotNull_At0048ada0()|global_part005.cpp|ok
@@ -3933,10 +3949,10 @@ address|name|prototype|file|status
 48fb10|CopyExtendedCityDialogControllerState|undefined CopyExtendedCityDialogControllerState()|global_part005.cpp|ok
 48fc00|DispatchVslot24ThenCopyExtendedCityDialogControllerState|undefined DispatchVslot24ThenCopyExtendedCityDialogControllerState()|global_part005.cpp|ok
 48fd00|InitializeTextEntryBaseAndOptionalStringResource|undefined InitializeTextEntryBaseAndOptionalStringResource()|global_part005.cpp|ok
-48fe60|AssignTextSharedRefIfChangedAndMaybeInvalidate|undefined AssignTextSharedRefIfChangedAndMaybeInvalidate()|global_part006.cpp|ok
-48fed0|LoadUiStringAndDispatchViaVslot1C8|undefined LoadUiStringAndDispatchViaVslot1C8()|global_part006.cpp|ok
-48ff70|OrphanCallChain_C1_I09_0048ff70|undefined OrphanCallChain_C1_I09_0048ff70()|global_part006.cpp|ok
-48ffb0|RefreshSelectedNationHeaderStatus|undefined RefreshSelectedNationHeaderStatus()|global_part006.cpp|ok
+48fe60|AssignTextSharedRefIfChangedAndMaybeInvalidate|undefined AssignTextSharedRefIfChangedAndMaybeInvalidate()|global_part005.cpp|ok
+48fed0|LoadUiStringAndDispatchViaVslot1C8|undefined LoadUiStringAndDispatchViaVslot1C8()|global_part005.cpp|ok
+48ff70|OrphanCallChain_C1_I09_0048ff70|undefined OrphanCallChain_C1_I09_0048ff70()|global_part005.cpp|ok
+48ffb0|RefreshSelectedNationHeaderStatus|undefined RefreshSelectedNationHeaderStatus()|global_part005.cpp|ok
 4904d0|DestructTEditTextAndMaybeFree|undefined DestructTEditTextAndMaybeFree()|global_part006.cpp|ok
 4905e0|WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0|undefined WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0()|global_part006.cpp|ok
 490650|OrphanCallChain_C2_I18_00490650|undefined OrphanCallChain_C2_I18_00490650()|global_part006.cpp|ok
@@ -4173,7 +4189,7 @@ address|name|prototype|file|status
 49bca0|ResetGlobalDword6A1E68|undefined ResetGlobalDword6A1E68()|global_part006.cpp|ok
 49bcd0|InitializeDialogTemplateD0WithTextState|undefined InitializeDialogTemplateD0WithTextState()|global_part006.cpp|ok
 49bd90|PopulateListBoxFromDelimitedText|undefined PopulateListBoxFromDelimitedText()|global_part006.cpp|ok
-49bf45|thunk_ReleaseSharedStringRefIfNotEmpty|undefined thunk_ReleaseSharedStringRefIfNotEmpty()|global_part006.cpp|ok
+49bf45|thunk_ReleaseSharedStringRefIfNotEmpty|void __thiscall thunk_ReleaseSharedStringRefIfNotEmpty(void)|global_part006.cpp|ok
 49bf60|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60()|global_part006.cpp|ok
 49bf90|OrphanVtableAssignStub_0049bf90|undefined OrphanVtableAssignStub_0049bf90()|global_part006.cpp|ok
 49bfb0|OrphanRetStub_0049bfb0|undefined OrphanRetStub_0049bfb0()|global_part006.cpp|ok
@@ -4183,10 +4199,10 @@ address|name|prototype|file|status
 49c030|ResetGlobalQuad6A1F88To6A1F94|undefined ResetGlobalQuad6A1F88To6A1F94()|global_part006.cpp|ok
 49c060|ResetGlobalQuad6A1F98To6A1FA4|undefined ResetGlobalQuad6A1F98To6A1FA4()|global_part006.cpp|ok
 49c090|ResetGlobalDword6A1F70|undefined ResetGlobalDword6A1F70()|global_part006.cpp|ok
-49c0c0|InitializeGlobalPair6A1FE8And6A1FECDefault|undefined InitializeGlobalPair6A1FE8And6A1FECDefault()|global_part007.cpp|ok
-49c0f0|InitializeGlobalPair6A1FC0And6A1FC4Default|undefined InitializeGlobalPair6A1FC0And6A1FC4Default()|global_part007.cpp|ok
-49c120|UpdateGlobalWord6A2008FromScaled6A1FC0|undefined UpdateGlobalWord6A2008FromScaled6A1FC0()|global_part007.cpp|ok
-49c150|InitializeDirectSoundDeviceAndChannels_Impl|undefined InitializeDirectSoundDeviceAndChannels_Impl()|global_part007.cpp|ok
+49c0c0|InitializeGlobalPair6A1FE8And6A1FECDefault|undefined InitializeGlobalPair6A1FE8And6A1FECDefault()|global_part006.cpp|ok
+49c0f0|InitializeGlobalPair6A1FC0And6A1FC4Default|undefined InitializeGlobalPair6A1FC0And6A1FC4Default()|global_part006.cpp|ok
+49c120|UpdateGlobalWord6A2008FromScaled6A1FC0|undefined UpdateGlobalWord6A2008FromScaled6A1FC0()|global_part006.cpp|ok
+49c150|InitializeDirectSoundDeviceAndChannels_Impl|undefined InitializeDirectSoundDeviceAndChannels_Impl()|global_part006.cpp|ok
 49c240|UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl|undefined UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState_Impl()|global_part007.cpp|ok
 49c290|Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290|undefined Helper_Uses_thunk_LoadWaveDataAndFormatFromFilePath_At00402bb2_At0049c290()|global_part007.cpp|ok
 49c430|LoadWaveResourceByNumericIdAndBuildBuffer|undefined LoadWaveResourceByNumericIdAndBuildBuffer()|global_part007.cpp|ok
@@ -4433,11 +4449,10 @@ address|name|prototype|file|status
 4b6de0|OrphanCallChain_C1_I21_004b6de0|undefined OrphanCallChain_C1_I21_004b6de0()|global_part007.cpp|ok
 4b6f00|OrphanRetStub_004b6f00|undefined OrphanRetStub_004b6f00()|global_part007.cpp|ok
 4b7320|AccumulateCityEntryCostsByAmount|undefined AccumulateCityEntryCostsByAmount()|global_part007.cpp|ok
-4b73b0|CommitCityRecruitmentOrderDelta|void __thiscall CommitCityRecruitmentOrderDelta(void)|global_part008.cpp|ok
-4b77e0|UIState_ActivateSlotAndUpdateUI_Impl|undefined UIState_ActivateSlotAndUpdateUI_Impl()|global_part008.cpp|ok
-4b7ab0|InitializeCityProductionState_Impl|undefined InitializeCityProductionState_Impl()|global_part008.cpp|ok
-4b7b00|OrphanLeaf_NoCall_Ins06_004b7b00|undefined OrphanLeaf_NoCall_Ins06_004b7b00()|global_part008.cpp|ok
-4b7b30|OrphanCallChain_C3_I63_004b7b30|undefined OrphanCallChain_C3_I63_004b7b30()|global_part008.cpp|ok
+4b77e0|UIState_ActivateSlotAndUpdateUI_Impl|undefined UIState_ActivateSlotAndUpdateUI_Impl()|global_part007.cpp|ok
+4b7ab0|InitializeCityProductionState_Impl|undefined InitializeCityProductionState_Impl()|global_part007.cpp|ok
+4b7b00|OrphanLeaf_NoCall_Ins06_004b7b00|undefined OrphanLeaf_NoCall_Ins06_004b7b00()|global_part007.cpp|ok
+4b7b30|OrphanCallChain_C3_I63_004b7b30|undefined OrphanCallChain_C3_I63_004b7b30()|global_part007.cpp|ok
 4b7c20|OrphanRetStub_004b7c20|undefined OrphanRetStub_004b7c20()|global_part008.cpp|ok
 4b7c40|OrphanCallChain_C3_I25_004b7c40|undefined OrphanCallChain_C3_I25_004b7c40()|global_part008.cpp|ok
 4b7c90|OrphanCallChain_C1_I11_004b7c90|undefined OrphanCallChain_C1_I11_004b7c90()|global_part008.cpp|ok
@@ -4683,11 +4698,11 @@ address|name|prototype|file|status
 4d71b0|SeedRecruitAndNavyOrdersForEligibleCoastalCities|undefined SeedRecruitAndNavyOrdersForEligibleCoastalCities()|global_part008.cpp|ok
 4d7770|CreateAndDispatchMilitaryRecruitOrderForNationSlot|undefined CreateAndDispatchMilitaryRecruitOrderForNationSlot()|global_part008.cpp|ok
 4d7860|FormatOverlayTerrainLabelText|undefined FormatOverlayTerrainLabelText()|global_part008.cpp|ok
-4d7930|AssignSharedStringFromDescriptorNameOrDefault|undefined AssignSharedStringFromDescriptorNameOrDefault()|global_part009.cpp|ok
-4d7a00|SetNationDisplayNameAndLocalizationSlotRef|undefined SetNationDisplayNameAndLocalizationSlotRef()|global_part009.cpp|ok
-4d7a40|LoadNationDisplayNameSharedRefFromField8|undefined LoadNationDisplayNameSharedRefFromField8()|global_part009.cpp|ok
-4d7b00|ReturnFalseNationStateActionStub|undefined ReturnFalseNationStateActionStub()|global_part009.cpp|ok
-4d7c90|ApplyJoinEmpireMode1TargetTransition|undefined ApplyJoinEmpireMode1TargetTransition()|global_part009.cpp|ok
+4d7930|AssignSharedStringFromDescriptorNameOrDefault|undefined AssignSharedStringFromDescriptorNameOrDefault()|global_part008.cpp|ok
+4d7a00|SetNationDisplayNameAndLocalizationSlotRef|undefined SetNationDisplayNameAndLocalizationSlotRef()|global_part008.cpp|ok
+4d7a40|LoadNationDisplayNameSharedRefFromField8|undefined LoadNationDisplayNameSharedRefFromField8()|global_part008.cpp|ok
+4d7b00|ReturnFalseNationStateActionStub|undefined ReturnFalseNationStateActionStub()|global_part008.cpp|ok
+4d7c90|ApplyJoinEmpireMode1TargetTransition|undefined ApplyJoinEmpireMode1TargetTransition()|global_part008.cpp|ok
 4d7d20|IsDiplomacyTargetClassCode200Match|undefined IsDiplomacyTargetClassCode200Match()|global_part009.cpp|ok
 4d7d50|ApplyJoinEmpireMode2FinalizeNationNameState|undefined ApplyJoinEmpireMode2FinalizeNationNameState()|global_part009.cpp|ok
 4d7e90|OrphanRetStub_004d7e90|undefined OrphanRetStub_004d7e90()|global_part009.cpp|ok
@@ -4933,11 +4948,11 @@ address|name|prototype|file|status
 4f2a60|DeserializeRelationshipSortedListBuffersFromStreamSwapBytes_Impl|undefined DeserializeRelationshipSortedListBuffersFromStreamSwapBytes_Impl()|global_part009.cpp|ok
 4f2b10|WrapperFor_ftol_At004f2b10|undefined WrapperFor_ftol_At004f2b10()|global_part009.cpp|ok
 4f2ce0|OrphanLeaf_NoCall_Ins04_004f2ce0|undefined OrphanLeaf_NoCall_Ins04_004f2ce0()|global_part009.cpp|ok
-4f2ea0|OrphanLeaf_NoCall_Ins03_004f2ea0|undefined OrphanLeaf_NoCall_Ins03_004f2ea0()|global_part010.cpp|ok
-4f2ec0|OrphanCallChain_C2_I08_004f2ec0|undefined OrphanCallChain_C2_I08_004f2ec0()|global_part010.cpp|ok
-4f2ef0|OrphanCallChain_C1_I09_004f2ef0|undefined OrphanCallChain_C1_I09_004f2ef0()|global_part010.cpp|ok
-4f31d0|OrphanCallChain_C3_I22_004f31d0|undefined OrphanCallChain_C3_I22_004f31d0()|global_part010.cpp|ok
-4f3220|OrphanRetStub_004f3220|undefined OrphanRetStub_004f3220()|global_part010.cpp|ok
+4f2ea0|OrphanLeaf_NoCall_Ins03_004f2ea0|undefined OrphanLeaf_NoCall_Ins03_004f2ea0()|global_part009.cpp|ok
+4f2ec0|OrphanCallChain_C2_I08_004f2ec0|undefined OrphanCallChain_C2_I08_004f2ec0()|global_part009.cpp|ok
+4f2ef0|OrphanCallChain_C1_I09_004f2ef0|undefined OrphanCallChain_C1_I09_004f2ef0()|global_part009.cpp|ok
+4f31d0|OrphanCallChain_C3_I22_004f31d0|undefined OrphanCallChain_C3_I22_004f31d0()|global_part009.cpp|ok
+4f3220|OrphanRetStub_004f3220|undefined OrphanRetStub_004f3220()|global_part009.cpp|ok
 4f3a50|BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50|undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50()|global_part010.cpp|ok
 4f3e60|WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004f3e60|undefined WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004f3e60()|global_part010.cpp|ok
 4f4a30|RenderTerrainAndMinorNationLegendLabels|undefined RenderTerrainAndMinorNationLegendLabels()|global_part010.cpp|ok
@@ -5181,14 +5196,13 @@ address|name|prototype|file|status
 518540|LoadScenarioMapStateFromTableResource|undefined LoadScenarioMapStateFromTableResource()|global_part010.cpp|ok
 5187f0|LoadScenarioMetadataByIndexIntoUiControlCore_Impl|undefined LoadScenarioMetadataByIndexIntoUiControlCore_Impl()|global_part010.cpp|ok
 518840|LoadScenarioMapStateFromTableResource_Impl|undefined LoadScenarioMapStateFromTableResource_Impl()|global_part010.cpp|ok
-518960|SetGlobalRegionDevelopmentStageByte|undefined SetGlobalRegionDevelopmentStageByte()|global_part010.cpp|ok
 518990|ResetTileToBaseTransportFlag|undefined ResetTileToBaseTransportFlag()|global_part010.cpp|ok
-518a20|AreAllLinkedEntriesTerrainFlagBit2Clear|undefined AreAllLinkedEntriesTerrainFlagBit2Clear()|global_part011.cpp|ok
-518aa0|WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0|undefined WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0()|global_part011.cpp|ok
-518bd0|MarkAdjacentHexOrderDirectionAndSelectTile|undefined MarkAdjacentHexOrderDirectionAndSelectTile()|global_part011.cpp|ok
-518d90|MarkDirectionalMapOverlayFlagsForNationOrders|undefined MarkDirectionalMapOverlayFlagsForNationOrders()|global_part011.cpp|ok
-519010|CreateTacticalBattleViewAndInitializeBattleSetup_Impl|undefined CreateTacticalBattleViewAndInitializeBattleSetup_Impl()|global_part011.cpp|ok
-519140|DumpAndResetMapScriptState|void __fastcall DumpAndResetMapScriptState(void * pMapState)|global_part011.cpp|ok
+518a20|AreAllLinkedEntriesTerrainFlagBit2Clear|undefined AreAllLinkedEntriesTerrainFlagBit2Clear()|global_part010.cpp|ok
+518aa0|WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0|undefined WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0()|global_part010.cpp|ok
+518bd0|MarkAdjacentHexOrderDirectionAndSelectTile|undefined MarkAdjacentHexOrderDirectionAndSelectTile()|global_part010.cpp|ok
+518d90|MarkDirectionalMapOverlayFlagsForNationOrders|undefined MarkDirectionalMapOverlayFlagsForNationOrders()|global_part010.cpp|ok
+519010|CreateTacticalBattleViewAndInitializeBattleSetup_Impl|undefined CreateTacticalBattleViewAndInitializeBattleSetup_Impl()|global_part010.cpp|ok
+519140|DumpAndResetMapScriptState|void __fastcall DumpAndResetMapScriptState(void * pMapState)|global_part010.cpp|ok
 519610|RebuildNationStateSlotsAndAvailability_Impl|undefined RebuildNationStateSlotsAndAvailability_Impl()|global_part011.cpp|ok
 519970|WrapperFor_ftol_At00519970|undefined WrapperFor_ftol_At00519970()|global_part011.cpp|ok
 519af0|OrphanTiny_ReturnMinusOneWord_00519af0|undefined OrphanTiny_ReturnMinusOneWord_00519af0()|global_part011.cpp|ok
@@ -5433,12 +5447,12 @@ address|name|prototype|file|status
 536470|WrapperFor_AFX_CLASSINIT_At00536470|undefined WrapperFor_AFX_CLASSINIT_At00536470()|global_part011.cpp|ok
 5364c0|CleanupTMissionAndReleaseOwnedOrders|undefined CleanupTMissionAndReleaseOwnedOrders()|global_part011.cpp|ok
 536530|SerializeTNavyMissionCommon|undefined SerializeTNavyMissionCommon()|global_part011.cpp|ok
-536650|DeserializeTNavyMissionCommon|undefined DeserializeTNavyMissionCommon()|global_part012.cpp|ok
-536740|ClearMissionQueuedOrderLinksAndOwnerPointers|undefined ClearMissionQueuedOrderLinksAndOwnerPointers()|global_part012.cpp|ok
-536780|AttachMissionOrderAsQueuedChildAndNotify|undefined AttachMissionOrderAsQueuedChildAndNotify()|global_part012.cpp|ok
-5367d0|DetachMissionOrderChildAndClearPrimaryIfMatch|undefined DetachMissionOrderChildAndClearPrimaryIfMatch()|global_part012.cpp|ok
-536810|ClearMissionSecondaryOrderIfMatch|undefined ClearMissionSecondaryOrderIfMatch()|global_part012.cpp|ok
-536840|BuildMissionQueuedOrderCategoryWeightsAndReturnTotal|undefined BuildMissionQueuedOrderCategoryWeightsAndReturnTotal()|global_part012.cpp|ok
+536650|DeserializeTNavyMissionCommon|undefined DeserializeTNavyMissionCommon()|global_part011.cpp|ok
+536740|ClearMissionQueuedOrderLinksAndOwnerPointers|undefined ClearMissionQueuedOrderLinksAndOwnerPointers()|global_part011.cpp|ok
+536780|AttachMissionOrderAsQueuedChildAndNotify|undefined AttachMissionOrderAsQueuedChildAndNotify()|global_part011.cpp|ok
+5367d0|DetachMissionOrderChildAndClearPrimaryIfMatch|undefined DetachMissionOrderChildAndClearPrimaryIfMatch()|global_part011.cpp|ok
+536810|ClearMissionSecondaryOrderIfMatch|undefined ClearMissionSecondaryOrderIfMatch()|global_part011.cpp|ok
+536840|BuildMissionQueuedOrderCategoryWeightsAndReturnTotal|undefined BuildMissionQueuedOrderCategoryWeightsAndReturnTotal()|global_part011.cpp|ok
 536b30|UpdateMissionOrderSelectionStateByNationSimilarityThresholds|undefined UpdateMissionOrderSelectionStateByNationSimilarityThresholds()|global_part012.cpp|ok
 536d60|RebuildMapOrderEntryChildrenForContext|undefined RebuildMapOrderEntryChildrenForContext()|global_part012.cpp|ok
 536e40|ProcessMapOrderEntryContextMode|undefined ProcessMapOrderEntryContextMode()|global_part012.cpp|ok
@@ -5683,12 +5697,12 @@ address|name|prototype|file|status
 54d3d0|CreateAndSendTurnEvent2D_TableRowShortArray|undefined CreateAndSendTurnEvent2D_TableRowShortArray()|global_part012.cpp|ok
 54d4e0|TrySaveGameAndMaybeShowFailureDialog|undefined TrySaveGameAndMaybeShowFailureDialog()|global_part012.cpp|ok
 54d620|WrapperFor_ftol_At0054d620|undefined WrapperFor_ftol_At0054d620()|global_part012.cpp|ok
-54d650|AllocateAndConstructTLoungeDialog|undefined AllocateAndConstructTLoungeDialog()|global_part013.cpp|ok
-54d6f0|CloseTLoungeDialogAndReleaseChildren|undefined CloseTLoungeDialogAndReleaseChildren()|global_part013.cpp|ok
-54dfc0|TryInvokeNationStateReplacementForSlot|undefined TryInvokeNationStateReplacementForSlot()|global_part013.cpp|ok
-54e4c0|RefreshMapAndMessageControlsForCurrentContext|undefined RefreshMapAndMessageControlsForCurrentContext()|global_part013.cpp|ok
-54e690|AllocateAndConstructTJoinSelectorDialog|undefined AllocateAndConstructTJoinSelectorDialog()|global_part013.cpp|ok
-54e730|InitializeDialogEditControlsAndLimits|undefined InitializeDialogEditControlsAndLimits()|global_part013.cpp|ok
+54d650|AllocateAndConstructTLoungeDialog|undefined AllocateAndConstructTLoungeDialog()|global_part012.cpp|ok
+54d6f0|CloseTLoungeDialogAndReleaseChildren|undefined CloseTLoungeDialogAndReleaseChildren()|global_part012.cpp|ok
+54dfc0|TryInvokeNationStateReplacementForSlot|undefined TryInvokeNationStateReplacementForSlot()|global_part012.cpp|ok
+54e4c0|RefreshMapAndMessageControlsForCurrentContext|undefined RefreshMapAndMessageControlsForCurrentContext()|global_part012.cpp|ok
+54e690|AllocateAndConstructTJoinSelectorDialog|undefined AllocateAndConstructTJoinSelectorDialog()|global_part012.cpp|ok
+54e730|InitializeDialogEditControlsAndLimits|undefined InitializeDialogEditControlsAndLimits()|global_part012.cpp|ok
 54e8e0|AddJoinableGameOptionEntry|undefined AddJoinableGameOptionEntry()|global_part013.cpp|ok
 54e970|GetSelectedJoinableGameTag|undefined GetSelectedJoinableGameTag()|global_part013.cpp|ok
 54e9a0|HandleTJoinSelectorDialogCommand|undefined HandleTJoinSelectorDialogCommand()|global_part013.cpp|ok
@@ -5933,12 +5947,12 @@ address|name|prototype|file|status
 5688d0|Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005688d0|undefined Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005688d0()|global_part013.cpp|ok
 5689f0|OrphanCallChain_C1_I23_005689f0|undefined OrphanCallChain_C1_I23_005689f0()|global_part013.cpp|ok
 568ab0|ComputeWrappedTileIndexFromObjectOffset7C7E|undefined ComputeWrappedTileIndexFromObjectOffset7C7E()|global_part013.cpp|ok
-568c40|OrphanCallChain_C2_I24_00568c40|undefined OrphanCallChain_C2_I24_00568c40()|global_part014.cpp|ok
-568c90|OrphanCallChain_C2_I18_00568c90|undefined OrphanCallChain_C2_I18_00568c90()|global_part014.cpp|ok
-5690d0|WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At005690d0|undefined WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At005690d0()|global_part014.cpp|ok
-569150|WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At00569150|undefined WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At00569150()|global_part014.cpp|ok
-5692f0|RenderCenteredPositiveCountLabelAtFixedOrigin|undefined RenderCenteredPositiveCountLabelAtFixedOrigin()|global_part014.cpp|ok
-5696f0|UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel|undefined UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel()|global_part014.cpp|ok
+568c40|OrphanCallChain_C2_I24_00568c40|undefined OrphanCallChain_C2_I24_00568c40()|global_part013.cpp|ok
+568c90|OrphanCallChain_C2_I18_00568c90|undefined OrphanCallChain_C2_I18_00568c90()|global_part013.cpp|ok
+5690d0|WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At005690d0|undefined WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At005690d0()|global_part013.cpp|ok
+569150|WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At00569150|undefined WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At00569150()|global_part013.cpp|ok
+5692f0|RenderCenteredPositiveCountLabelAtFixedOrigin|undefined RenderCenteredPositiveCountLabelAtFixedOrigin()|global_part013.cpp|ok
+5696f0|UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel|undefined UpdateSelectableTextOptionSelectionAndNotifyGoodTagPanel()|global_part013.cpp|ok
 5697d0|Helper_Uses_ConstructTPageViewBaseState_At005697d0|undefined Helper_Uses_ConstructTPageViewBaseState_At005697d0()|global_part014.cpp|ok
 5698e0|PopulateNavyOrderPageEntriesByMapContext|undefined PopulateNavyOrderPageEntriesByMapContext()|global_part014.cpp|ok
 569b90|DestructTSuperNavyRosterAndMaybeFree_Impl|undefined DestructTSuperNavyRosterAndMaybeFree_Impl()|global_part014.cpp|ok
@@ -6183,12 +6197,12 @@ address|name|prototype|file|status
 58a5f0|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
 58abd0|thunk_DestructTViewBaseState|void __thiscall thunk_DestructTViewBaseState(void)|global_part014.cpp|ok
 58af60|thunk_DestructTViewBaseState_0058AF60|void __fastcall thunk_DestructTViewBaseState_0058AF60(TView* amountBar)|global_part014.cpp|ok
-58c330|?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z|undefined ?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z()|global_part015.cpp|ok
-58c360|?OrphanCallChain_C2_I23_0058c360@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z|undefined ?OrphanCallChain_C2_I23_0058c360@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z()|global_part015.cpp|ok
-58c3d0|RenderLeftRightIndicatorIconsAndValueText|undefined RenderLeftRightIndicatorIconsAndValueText()|global_part015.cpp|ok
-58c950|BuildCombatReportLossesSummaryText|undefined BuildCombatReportLossesSummaryText()|global_part015.cpp|ok
-58d2b0|RenderBoundedValueProgressWithStyledOverlayText|undefined RenderBoundedValueProgressWithStyledOverlayText()|global_part015.cpp|ok
-58df60|Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60|undefined Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60()|global_part015.cpp|ok
+58c330|?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z|undefined ?OrphanCallChain_C1_I08_0058c330@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z()|global_part014.cpp|ok
+58c360|?OrphanCallChain_C2_I23_0058c360@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z|undefined ?OrphanCallChain_C2_I23_0058c360@@YIXPAUNumberedArrowButtonState@?%Z:imperialismincludegame/ui_widget_shared.h141796978@@HFD@Z()|global_part014.cpp|ok
+58c3d0|RenderLeftRightIndicatorIconsAndValueText|undefined RenderLeftRightIndicatorIconsAndValueText()|global_part014.cpp|ok
+58c950|BuildCombatReportLossesSummaryText|undefined BuildCombatReportLossesSummaryText()|global_part014.cpp|ok
+58d2b0|RenderBoundedValueProgressWithStyledOverlayText|undefined RenderBoundedValueProgressWithStyledOverlayText()|global_part014.cpp|ok
+58df60|Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60|undefined Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60()|global_part014.cpp|ok
 58e1c0|?HandleMapContextActionArmyRatioAndModeCommands@@YGXHPAUArmyCommandPayload@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@@Z|undefined ?HandleMapContextActionArmyRatioAndModeCommands@@YGXHPAUArmyCommandPayload@?%Z:imperialismsrcgameTArmyToolbar.cpp126722299@@@Z()|global_part015.cpp|ok
 58e440|OrphanTiny_SetDwordEcxOffset_60_0058e440|undefined OrphanTiny_SetDwordEcxOffset_60_0058e440()|global_part015.cpp|ok
 58e460|RenderBattleOutcomeHeaderWinnerLoserLines|undefined RenderBattleOutcomeHeaderWinnerLoserLines()|global_part015.cpp|ok
@@ -6433,12 +6447,12 @@ address|name|prototype|file|status
 5acc90|WrapperFor_InvalidateCityDialogRectRegion_At005acc90|undefined WrapperFor_InvalidateCityDialogRectRegion_At005acc90()|global_part015.cpp|ok
 5acf90|HandleArmyTacticalToolbarCommandTags|undefined HandleArmyTacticalToolbarCommandTags()|global_part015.cpp|ok
 5ad030|Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030|undefined Helper_Uses_thunk_ConstructUiResourceEntryType4B0C0_At005ad030()|global_part015.cpp|ok
-5ad0d0|OrphanRetStub_005ad0d0|undefined OrphanRetStub_005ad0d0()|global_part016.cpp|ok
-5ad0f0|OrphanRetStub_005ad0f0|undefined OrphanRetStub_005ad0f0()|global_part016.cpp|ok
-5ad650|WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650|undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650()|global_part016.cpp|ok
-5adb10|WrapperFor_ftol_At005adb10|undefined WrapperFor_ftol_At005adb10()|global_part016.cpp|ok
-5adc30|OrphanLeaf_NoCall_Ins04_005adc30|undefined OrphanLeaf_NoCall_Ins04_005adc30()|global_part016.cpp|ok
-5add20|InitializeCityOrderCommandVtable|undefined InitializeCityOrderCommandVtable()|global_part016.cpp|ok
+5ad0d0|OrphanRetStub_005ad0d0|undefined OrphanRetStub_005ad0d0()|global_part015.cpp|ok
+5ad0f0|OrphanRetStub_005ad0f0|undefined OrphanRetStub_005ad0f0()|global_part015.cpp|ok
+5ad650|WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650|undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At005ad650()|global_part015.cpp|ok
+5adb10|WrapperFor_ftol_At005adb10|undefined WrapperFor_ftol_At005adb10()|global_part015.cpp|ok
+5adc30|OrphanLeaf_NoCall_Ins04_005adc30|undefined OrphanLeaf_NoCall_Ins04_005adc30()|global_part015.cpp|ok
+5add20|InitializeCityOrderCommandVtable|undefined InitializeCityOrderCommandVtable()|global_part015.cpp|ok
 5add70|DestroyTCityTask_Impl|undefined DestroyTCityTask_Impl()|global_part016.cpp|ok
 5add90|InitializeCityProductionQueueCommand|void __thiscall InitializeCityProductionQueueCommand(short nCityEntryIndex, void * pCityState, short nRequestedAmount)|global_part016.cpp|ok
 5adde0|ExecuteDeferredCityOrderCommand|bool __thiscall ExecuteDeferredCityOrderCommand(void)|global_part016.cpp|ok
@@ -6552,10 +6566,8 @@ address|name|prototype|file|status
 5c2c60|ResetCivWorkOrderAndRefreshCounters|void __fastcall ResetCivWorkOrderAndRefreshCounters(int * pCivUnitOrderState)|global_part016.cpp|ok
 5c2ed0|DestroyMilitaryUnitOrderObject|undefined DestroyMilitaryUnitOrderObject()|global_part016.cpp|ok
 5c2f00|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005c2f00()|global_part016.cpp|ok
-5c2f50|TMilitaryUnitOrderState::InitializeRecruitOrderState|void __thiscall InitializeRecruitOrderState(short capValue,int nodeContext,short nationSlot)|global_part016.cpp|ok
 5c2fd0|DeserializeMilitaryUnitOrderState|undefined DeserializeMilitaryUnitOrderState()|global_part016.cpp|ok
 5c30a0|SerializeMilitaryUnitOrderState|undefined SerializeMilitaryUnitOrderState()|global_part016.cpp|ok
-5c3190|TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets|void __thiscall CopyUnitCurrentTileIntoOrderTargets(void)|global_part016.cpp|ok
 5c31c0|DetachUnitOrderFromOwnerAndReset|undefined DetachUnitOrderFromOwnerAndReset()|global_part016.cpp|ok
 5c3200|RelinkMilitaryUnitByTileIndex|undefined RelinkMilitaryUnitByTileIndex()|global_part016.cpp|ok
 5c3400|GetCityActionGateValueFromOrderTemplate|undefined GetCityActionGateValueFromOrderTemplate()|global_part016.cpp|ok
@@ -6683,14 +6695,14 @@ address|name|prototype|file|status
 5dc180|InvokeStrategicMapViewMethod68|undefined InvokeStrategicMapViewMethod68()|global_part016.cpp|ok
 5dc1a0|InvokeStrategicMapViewMethod74|undefined InvokeStrategicMapViewMethod74()|global_part016.cpp|ok
 5dc1c0|InvokeStrategicMapViewMethod70|undefined InvokeStrategicMapViewMethod70()|global_part016.cpp|ok
-5dc3f0|HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14|undefined HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14()|global_part017.cpp|ok
-5dc430|HandleTurnEventDialogFactorySlotB8|undefined HandleTurnEventDialogFactorySlotB8()|global_part017.cpp|ok
-5dc560|DispatchUiRuntimeMessage102CAndRefreshActiveView|undefined DispatchUiRuntimeMessage102CAndRefreshActiveView()|global_part017.cpp|ok
-5dc690|HandleTurnEventF3D_PopulateRecentTurnMessages|undefined HandleTurnEventF3D_PopulateRecentTurnMessages()|global_part017.cpp|ok
-5dcaa0|HandleTurnEventVtableSlot2CInitializeHotKeyDialog|undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog()|global_part017.cpp|ok
-5dcc60|WrapperFor_ftol_At005dcc60|undefined WrapperFor_ftol_At005dcc60()|global_part017.cpp|ok
-5dcc90|Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90|undefined Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90()|global_part017.cpp|ok
-5dcd50|WrapperFor_FreeHeapBufferIfNotNull_At005dcd50|undefined WrapperFor_FreeHeapBufferIfNotNull_At005dcd50()|global_part017.cpp|ok
+5dc3f0|HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14|undefined HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14()|global_part016.cpp|ok
+5dc430|HandleTurnEventDialogFactorySlotB8|undefined HandleTurnEventDialogFactorySlotB8()|global_part016.cpp|ok
+5dc560|DispatchUiRuntimeMessage102CAndRefreshActiveView|undefined DispatchUiRuntimeMessage102CAndRefreshActiveView()|global_part016.cpp|ok
+5dc690|HandleTurnEventF3D_PopulateRecentTurnMessages|undefined HandleTurnEventF3D_PopulateRecentTurnMessages()|global_part016.cpp|ok
+5dcaa0|HandleTurnEventVtableSlot2CInitializeHotKeyDialog|undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog()|global_part016.cpp|ok
+5dcc60|WrapperFor_ftol_At005dcc60|undefined WrapperFor_ftol_At005dcc60()|global_part016.cpp|ok
+5dcc90|Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90|undefined Helper_Uses_thunk_ConstructTurnEventPacketBase_At005dcc90()|global_part016.cpp|ok
+5dcd50|WrapperFor_FreeHeapBufferIfNotNull_At005dcd50|undefined WrapperFor_FreeHeapBufferIfNotNull_At005dcd50()|global_part016.cpp|ok
 5dd450|RunMapOrderPageSelectionDialogAndApplyResult|undefined RunMapOrderPageSelectionDialogAndApplyResult()|global_part017.cpp|ok
 5dda30|OpenSuperArmyRosterPageAndActivateProvinceSelection|undefined OpenSuperArmyRosterPageAndActivateProvinceSelection()|global_part017.cpp|ok
 5ddd20|ShowCivilianLedgerDialogAndSelectUnit|void ShowCivilianLedgerDialogAndSelectUnit(void)|global_part017.cpp|ok
@@ -6933,14 +6945,14 @@ address|name|prototype|file|status
 5e7530|WrapperFor_CallSettingFrame_12_At005e7530|undefined WrapperFor_CallSettingFrame_12_At005e7530()|global_part017.cpp|ok
 5e7590|DispatchStructuredExceptionThroughFrameStateContext|undefined DispatchStructuredExceptionThroughFrameStateContext()|global_part017.cpp|ok
 5e75c0|DispatchExceptionThroughCrtThreadHandlerFrame|undefined DispatchExceptionThroughCrtThreadHandlerFrame()|global_part017.cpp|ok
-5e7690|ExecuteCrtHandlerWithOptionalRtlUnwind|undefined ExecuteCrtHandlerWithOptionalRtlUnwind()|global_part018.cpp|ok
-5e7720|FindFrameRecordRangeByPcAndDepth|undefined FindFrameRecordRangeByPcAndDepth()|global_part018.cpp|ok
-5e77a0|global_unwind2|undefined global_unwind2()|global_part018.cpp|ok
-5e77e2|local_unwind2|undefined local_unwind2()|global_part018.cpp|ok
-5e784a|abnormal_termination|int __cdecl abnormal_termination(void)|global_part018.cpp|ok
-5e786d|NLG_Notify1|undefined NLG_Notify1()|global_part018.cpp|ok
-5e7876|CaptureExceptionContextToGlobalSlots|undefined CaptureExceptionContextToGlobalSlots()|global_part018.cpp|ok
-5e7890|AppendPointerToGlobalVectorLocked|undefined AppendPointerToGlobalVectorLocked()|global_part018.cpp|ok
+5e7690|ExecuteCrtHandlerWithOptionalRtlUnwind|undefined ExecuteCrtHandlerWithOptionalRtlUnwind()|global_part017.cpp|ok
+5e7720|FindFrameRecordRangeByPcAndDepth|undefined FindFrameRecordRangeByPcAndDepth()|global_part017.cpp|ok
+5e77a0|global_unwind2|undefined global_unwind2()|global_part017.cpp|ok
+5e77e2|local_unwind2|undefined local_unwind2()|global_part017.cpp|ok
+5e784a|abnormal_termination|int __cdecl abnormal_termination(void)|global_part017.cpp|ok
+5e786d|NLG_Notify1|undefined NLG_Notify1()|global_part017.cpp|ok
+5e7876|CaptureExceptionContextToGlobalSlots|undefined CaptureExceptionContextToGlobalSlots()|global_part017.cpp|ok
+5e7890|AppendPointerToGlobalVectorLocked|undefined AppendPointerToGlobalVectorLocked()|global_part017.cpp|ok
 5e7920|AppendPointerToGlobalVectorAsStatus|undefined AppendPointerToGlobalVectorAsStatus()|global_part018.cpp|ok
 5e7980|CompareAnsiStringsWithMbcsAwareness|undefined CompareAnsiStringsWithMbcsAwareness()|global_part018.cpp|ok
 5e7a80|SetGlobalCallback6A7FACAndReturnPrevious|undefined SetGlobalCallback6A7FACAndReturnPrevious()|global_part018.cpp|ok
@@ -7183,14 +7195,14 @@ address|name|prototype|file|status
 5f4950|RoundAndTrimDecimalDigitBuffer|undefined RoundAndTrimDecimalDigitBuffer()|global_part018.cpp|ok
 5f49f0|BuildDecimalConversionStateFromFpInput|undefined BuildDecimalConversionStateFromFpInput()|global_part018.cpp|ok
 5f4a80|ConvertFpMantissaTo96BitIntegerAndExponent|undefined ConvertFpMantissaTo96BitIntegerAndExponent()|global_part018.cpp|ok
-5f4b40|WrapperFor_amsg_exit_At005f4b40|undefined WrapperFor_amsg_exit_At005f4b40()|global_part019.cpp|ok
-5f4b50|IsReadablePointerRangeViaIsBadReadPtr|undefined IsReadablePointerRangeViaIsBadReadPtr()|global_part019.cpp|ok
-5f4b70|IsWritablePointerRangeViaIsBadWritePtr|undefined IsWritablePointerRangeViaIsBadWritePtr()|global_part019.cpp|ok
-5f4b90|IsCodePointerCallableViaIsBadCodePtr|undefined IsCodePointerCallableViaIsBadCodePtr()|global_part019.cpp|ok
-5f4bb0|abort|void __cdecl abort(void)|global_part019.cpp|ok
-5f4cb0|SeekFileDescriptorWithLock|undefined SeekFileDescriptorWithLock()|global_part019.cpp|ok
-5f4d30|SeekFileDescriptorAndClearEofFlag|undefined SeekFileDescriptorAndClearEofFlag()|global_part019.cpp|ok
-5f4db0|InitializeFileStreamBufferWithAllocFallback|undefined InitializeFileStreamBufferWithAllocFallback()|global_part019.cpp|ok
+5f4b40|WrapperFor_amsg_exit_At005f4b40|undefined WrapperFor_amsg_exit_At005f4b40()|global_part018.cpp|ok
+5f4b50|IsReadablePointerRangeViaIsBadReadPtr|undefined IsReadablePointerRangeViaIsBadReadPtr()|global_part018.cpp|ok
+5f4b70|IsWritablePointerRangeViaIsBadWritePtr|undefined IsWritablePointerRangeViaIsBadWritePtr()|global_part018.cpp|ok
+5f4b90|IsCodePointerCallableViaIsBadCodePtr|undefined IsCodePointerCallableViaIsBadCodePtr()|global_part018.cpp|ok
+5f4bb0|abort|void __cdecl abort(void)|global_part018.cpp|ok
+5f4cb0|SeekFileDescriptorWithLock|undefined SeekFileDescriptorWithLock()|global_part018.cpp|ok
+5f4d30|SeekFileDescriptorAndClearEofFlag|undefined SeekFileDescriptorAndClearEofFlag()|global_part018.cpp|ok
+5f4db0|InitializeFileStreamBufferWithAllocFallback|undefined InitializeFileStreamBufferWithAllocFallback()|global_part018.cpp|ok
 5f4e10|IsCrtStreamFlag40SetByIndex|undefined IsCrtStreamFlag40SetByIndex()|global_part019.cpp|ok
 5f4e40|GetOrCreateCrtThreadDataWithRefCountGate|undefined GetOrCreateCrtThreadDataWithRefCountGate()|global_part019.cpp|ok
 5f4eb0|WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f4eb0|undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At005f4eb0()|global_part019.cpp|ok
@@ -7367,26 +7379,26 @@ address|name|prototype|file|status
 60564e|thunk_DispatchVirtualSlot18OnImplicitObject|undefined thunk_DispatchVirtualSlot18OnImplicitObject()|global_part019.cpp|ok
 605665|DispatchVirtualSlot18OnImplicitObject|undefined DispatchVirtualSlot18OnImplicitObject()|global_part019.cpp|ok
 605791|GetSharedEmptyStringRef|undefined GetSharedEmptyStringRef()|global_part019.cpp|ok
-605797|InitializeSharedStringRefFromEmpty|undefined InitializeSharedStringRefFromEmpty()|global_part019.cpp|ok
-6057de|AllocBuffer|undefined AllocBuffer()|global_part019.cpp|ok
+605797|InitializeSharedStringRefFromEmpty|void __thiscall InitializeSharedStringRefFromEmpty(void)|global_part019.cpp|ok
+6057de|AllocBuffer|void __thiscall AllocBuffer(int text_length)|global_part019.cpp|ok
 60584a|DecrementSharedStringRefCountAndFree|undefined DecrementSharedStringRefCountAndFree()|global_part019.cpp|ok
 60586d|Empty|undefined Empty()|global_part019.cpp|ok
-60588b|CopyBeforeWrite|undefined CopyBeforeWrite()|global_part019.cpp|ok
-6058b9|AllocBeforeWrite|undefined AllocBeforeWrite()|global_part019.cpp|ok
-6058e2|ReleaseSharedStringRefIfNotEmpty|undefined ReleaseSharedStringRefIfNotEmpty()|global_part019.cpp|ok
-6059fc|AssignCopy|undefined AssignCopy()|global_part019.cpp|ok
-605a29|AssignFromPtr|int * __thiscall AssignFromPtr(int * dst_ref_ptr)|global_part019.cpp|ok
-605a78|WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78|undefined WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78()|global_part019.cpp|ok
-605ae0|ConcatCopy|undefined ConcatCopy()|global_part019.cpp|ok
+60588b|CopyBeforeWrite|void __thiscall CopyBeforeWrite(void)|global_part019.cpp|ok
+6058b9|AllocBeforeWrite|void __thiscall AllocBeforeWrite(int required_capacity)|global_part019.cpp|ok
+6058e2|ReleaseSharedStringRefIfNotEmpty|void __thiscall ReleaseSharedStringRefIfNotEmpty(void)|global_part019.cpp|ok
+6059fc|AssignCopy|void __thiscall AssignCopy(int new_length, char * src_text)|global_part019.cpp|ok
+605a29|AssignFromPtr|CString * __thiscall AssignFromPtr(CString * src_ref)|global_part019.cpp|ok
+605a78|WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78|CString * __thiscall WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(char * src_text)|global_part019.cpp|ok
+605ae0|ConcatCopy|void __thiscall ConcatCopy(int lhs_len, char * lhs_text, int rhs_len, char * rhs_text)|global_part019.cpp|ok
 605b21|AssignSharedStringConcatRefAndRef|undefined AssignSharedStringConcatRefAndRef()|global_part019.cpp|ok
 605b87|AssignSharedStringConcatRefAndCStr|undefined AssignSharedStringConcatRefAndCStr()|global_part019.cpp|ok
 605bfb|AssignSharedStringConcatCStrAndRef|undefined AssignSharedStringConcatCStrAndRef()|global_part019.cpp|ok
-605c6f|ConcatInPlace|undefined ConcatInPlace()|global_part019.cpp|ok
-605cce|AssignStringSharedFromCStr|undefined AssignStringSharedFromCStr()|global_part019.cpp|ok
+605c6f|ConcatInPlace|void __thiscall ConcatInPlace(int append_len, char * append_text)|global_part019.cpp|ok
+605cce|AssignStringSharedFromCStr|undefined4 __thiscall AssignStringSharedFromCStr(char * text)|global_part019.cpp|ok
 605cf5|AppendSingleByteToSharedStringFromArg|undefined AppendSingleByteToSharedStringFromArg()|global_part019.cpp|ok
 605d0a|AssignStringSharedFromRef|undefined AssignStringSharedFromRef()|global_part019.cpp|ok
-605d71|ReleaseBuffer|undefined ReleaseBuffer()|global_part019.cpp|ok
-605d99|GetBufferSetLength|undefined GetBufferSetLength()|global_part019.cpp|ok
+605d71|ReleaseBuffer|void __thiscall ReleaseBuffer(int new_length)|global_part019.cpp|ok
+605d99|GetBufferSetLength|int __thiscall GetBufferSetLength(int new_length)|global_part019.cpp|ok
 605dec|LockBuffer|undefined LockBuffer()|global_part019.cpp|ok
 605e52|WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52|undefined WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52()|global_part019.cpp|ok
 605e64|WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64|undefined WrapperFor_EnsureUniqueSharedStringBuffer_At00605e64()|global_part019.cpp|ok
@@ -7433,14 +7445,14 @@ address|name|prototype|file|status
 606ddd|SetCheck|undefined SetCheck()|global_part019.cpp|ok
 606f4e|WrapperFor_ThrowMfcResourceException_At00606f4e|undefined WrapperFor_ThrowMfcResourceException_At00606f4e()|global_part019.cpp|ok
 606f5f|AfxSetNewHandler|undefined AfxSetNewHandler()|global_part019.cpp|ok
-606f73|AllocateWithFallbackHandler|undefined AllocateWithFallbackHandler()|global_part020.cpp|ok
-606faf|FreeHeapBufferIfNotNull|undefined FreeHeapBufferIfNotNull()|global_part020.cpp|ok
-606fd2|AfxDynamicDownCast|undefined AfxDynamicDownCast()|global_part020.cpp|ok
-606ff2|CreateObject_606ff2|undefined CreateObject_606ff2()|global_part020.cpp|ok
-607090|TMacViewMgr_Slot39_Target|undefined TMacViewMgr_Slot39_Target()|global_part020.cpp|ok
-607111|GetDlgItem|undefined GetDlgItem()|global_part020.cpp|ok
-60713b|GetDlgItem_60713b|undefined GetDlgItem_60713b()|global_part020.cpp|ok
-60719b|GetDlgItemTextOrDelegateHandler|undefined GetDlgItemTextOrDelegateHandler()|global_part020.cpp|ok
+606f73|AllocateWithFallbackHandler|undefined AllocateWithFallbackHandler()|global_part019.cpp|ok
+606faf|FreeHeapBufferIfNotNull|undefined FreeHeapBufferIfNotNull()|global_part019.cpp|ok
+606fd2|AfxDynamicDownCast|undefined AfxDynamicDownCast()|global_part019.cpp|ok
+606ff2|CreateObject_606ff2|undefined CreateObject_606ff2()|global_part019.cpp|ok
+607090|TMacViewMgr_Slot39_Target|undefined TMacViewMgr_Slot39_Target()|global_part019.cpp|ok
+607111|GetDlgItem|undefined GetDlgItem()|global_part019.cpp|ok
+60713b|GetDlgItem_60713b|undefined GetDlgItem_60713b()|global_part019.cpp|ok
+60719b|GetDlgItemTextOrDelegateHandler|undefined GetDlgItemTextOrDelegateHandler()|global_part019.cpp|ok
 6071d0|SendDlgItemMessageOrDelegateHandler|undefined SendDlgItemMessageOrDelegateHandler()|global_part020.cpp|ok
 6072e5|WrapperFor_GetOrCreateMfcModuleThreadState_At006072e5|undefined WrapperFor_GetOrCreateMfcModuleThreadState_At006072e5()|global_part020.cpp|ok
 607318|GetStyle|undefined GetStyle()|global_part020.cpp|ok
@@ -7683,14 +7695,14 @@ address|name|prototype|file|status
 613de1|AdjustWindowRectForClientAndScrollStyles|undefined AdjustWindowRectForClientAndScrollStyles()|global_part020.cpp|ok
 613e36|thunk_NoOpVirtualStub_00613e44|undefined thunk_NoOpVirtualStub_00613e44()|global_part020.cpp|ok
 613e44|NoOpVirtualStub_00613e44|undefined NoOpVirtualStub_00613e44()|global_part020.cpp|ok
-613f04|InvokeVslotF4WithZeroArgs|undefined InvokeVslotF4WithZeroArgs()|global_part021.cpp|ok
-613f12|InvalidateWindowRectFromHandleField1C|undefined InvalidateWindowRectFromHandleField1C()|global_part021.cpp|ok
-613f22|DispatchVirtualSlotF8_WithArg|undefined DispatchVirtualSlotF8_WithArg()|global_part021.cpp|ok
-613f39|OnActivateView|undefined OnActivateView()|global_part021.cpp|ok
-613f5a|OnMouseActivate|undefined OnMouseActivate()|global_part021.cpp|ok
-61419f|OnEndPrintPreview|undefined OnEndPrintPreview()|global_part021.cpp|ok
-6142c0|WrapperFor_FreeHeapBufferIfNotNull_At006142c0|undefined WrapperFor_FreeHeapBufferIfNotNull_At006142c0()|global_part021.cpp|ok
-614331|AfxCustomLogFont|undefined AfxCustomLogFont()|global_part021.cpp|ok
+613f04|InvokeVslotF4WithZeroArgs|undefined InvokeVslotF4WithZeroArgs()|global_part020.cpp|ok
+613f12|InvalidateWindowRectFromHandleField1C|undefined InvalidateWindowRectFromHandleField1C()|global_part020.cpp|ok
+613f22|DispatchVirtualSlotF8_WithArg|undefined DispatchVirtualSlotF8_WithArg()|global_part020.cpp|ok
+613f39|OnActivateView|undefined OnActivateView()|global_part020.cpp|ok
+613f5a|OnMouseActivate|undefined OnMouseActivate()|global_part020.cpp|ok
+61419f|OnEndPrintPreview|undefined OnEndPrintPreview()|global_part020.cpp|ok
+6142c0|WrapperFor_FreeHeapBufferIfNotNull_At006142c0|undefined WrapperFor_FreeHeapBufferIfNotNull_At006142c0()|global_part020.cpp|ok
+614331|AfxCustomLogFont|undefined AfxCustomLogFont()|global_part020.cpp|ok
 6143a9|AfxIsComboBoxControl|undefined AfxIsComboBoxControl()|global_part021.cpp|ok
 6143f3|AfxCompareClassName|undefined AfxCompareClassName()|global_part021.cpp|ok
 61441e|AfxChildWindowFromPoint|undefined AfxChildWindowFromPoint()|global_part021.cpp|ok
@@ -7933,14 +7945,14 @@ address|name|prototype|file|status
 6245df|AfxUnlockGlobals|undefined AfxUnlockGlobals()|global_part021.cpp|ok
 624606|AfxDeleteRegKey|undefined AfxDeleteRegKey()|global_part021.cpp|ok
 624693|CDocManager|undefined CDocManager()|global_part021.cpp|ok
-6246cd|WrapperFor_FreeHeapBufferIfNotNull_At006246cd|undefined WrapperFor_FreeHeapBufferIfNotNull_At006246cd()|global_part022.cpp|ok
-6246e9|UnregisterShellFileTypes|undefined UnregisterShellFileTypes()|global_part022.cpp|ok
-624e73|AfxWinInit|undefined AfxWinInit()|global_part022.cpp|ok
-624ed6|SetCurrentHandles|undefined SetCurrentHandles()|global_part022.cpp|ok
-624ff3|AfxGetFileName|undefined AfxGetFileName()|global_part022.cpp|ok
-626b59|FinalizeTurnStateObjectMfcDeleteResources|undefined FinalizeTurnStateObjectMfcDeleteResources()|global_part022.cpp|ok
-626c02|WrapperFor_AfxDeleteObject_At00626c02|undefined WrapperFor_AfxDeleteObject_At00626c02()|global_part022.cpp|ok
-626c7d|AfxWinTerm|undefined AfxWinTerm()|global_part022.cpp|ok
+6246cd|WrapperFor_FreeHeapBufferIfNotNull_At006246cd|undefined WrapperFor_FreeHeapBufferIfNotNull_At006246cd()|global_part021.cpp|ok
+6246e9|UnregisterShellFileTypes|undefined UnregisterShellFileTypes()|global_part021.cpp|ok
+624e73|AfxWinInit|undefined AfxWinInit()|global_part021.cpp|ok
+624ed6|SetCurrentHandles|undefined SetCurrentHandles()|global_part021.cpp|ok
+624ff3|AfxGetFileName|undefined AfxGetFileName()|global_part021.cpp|ok
+626b59|FinalizeTurnStateObjectMfcDeleteResources|undefined FinalizeTurnStateObjectMfcDeleteResources()|global_part021.cpp|ok
+626c02|WrapperFor_AfxDeleteObject_At00626c02|undefined WrapperFor_AfxDeleteObject_At00626c02()|global_part021.cpp|ok
+626c7d|AfxWinTerm|undefined AfxWinTerm()|global_part021.cpp|ok
 627dd4|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00627dd4|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00627dd4()|global_part022.cpp|ok
 627e51|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00627e51|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00627e51()|global_part022.cpp|ok
 627ed1|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00627ed1|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00627ed1()|global_part022.cpp|ok
@@ -8183,14 +8195,14 @@ address|name|prototype|file|status
 62febf|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062febf|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062febf()|global_part022.cpp|ok
 62fee7|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fee7|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fee7()|global_part022.cpp|ok
 62ff10|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff10|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff10()|global_part022.cpp|ok
-62ff41|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff41|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff41()|global_part023.cpp|ok
-62ff60|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff60|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff60()|global_part023.cpp|ok
-62ff9d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff9d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff9d()|global_part023.cpp|ok
-62fff7|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fff7|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fff7()|global_part023.cpp|ok
-63001f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063001f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063001f()|global_part023.cpp|ok
-630055|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630055|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630055()|global_part023.cpp|ok
-6300bd|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006300bd|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006300bd()|global_part023.cpp|ok
-6300ef|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006300ef|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006300ef()|global_part023.cpp|ok
+62ff41|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff41|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff41()|global_part022.cpp|ok
+62ff60|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff60|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff60()|global_part022.cpp|ok
+62ff9d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff9d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062ff9d()|global_part022.cpp|ok
+62fff7|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fff7|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0062fff7()|global_part022.cpp|ok
+63001f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063001f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063001f()|global_part022.cpp|ok
+630055|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630055|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630055()|global_part022.cpp|ok
+6300bd|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006300bd|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006300bd()|global_part022.cpp|ok
+6300ef|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006300ef|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006300ef()|global_part022.cpp|ok
 630175|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630175|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630175()|global_part023.cpp|ok
 6301dd|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006301dd|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006301dd()|global_part023.cpp|ok
 630217|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630217|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00630217()|global_part023.cpp|ok
@@ -8433,14 +8445,14 @@ address|name|prototype|file|status
 632e95|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632e95|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632e95()|global_part023.cpp|ok
 632ec5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632ec5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632ec5()|global_part023.cpp|ok
 632f05|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f05|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f05()|global_part023.cpp|ok
-632f2f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f2f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f2f()|global_part024.cpp|ok
-632f55|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f55|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f55()|global_part024.cpp|ok
-632f85|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f85|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f85()|global_part024.cpp|ok
-632faf|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632faf|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632faf()|global_part024.cpp|ok
-632fdd|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632fdd|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632fdd()|global_part024.cpp|ok
-632fff|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632fff|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632fff()|global_part024.cpp|ok
-63301d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063301d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063301d()|global_part024.cpp|ok
-63303f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063303f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063303f()|global_part024.cpp|ok
+632f2f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f2f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f2f()|global_part023.cpp|ok
+632f55|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f55|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f55()|global_part023.cpp|ok
+632f85|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f85|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632f85()|global_part023.cpp|ok
+632faf|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632faf|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632faf()|global_part023.cpp|ok
+632fdd|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632fdd|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632fdd()|global_part023.cpp|ok
+632fff|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632fff|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00632fff()|global_part023.cpp|ok
+63301d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063301d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063301d()|global_part023.cpp|ok
+63303f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063303f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063303f()|global_part023.cpp|ok
 63306d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063306d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063306d()|global_part024.cpp|ok
 633095|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00633095|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00633095()|global_part024.cpp|ok
 6330ad|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006330ad|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006330ad()|global_part024.cpp|ok
@@ -8683,14 +8695,14 @@ address|name|prototype|file|status
 635fad|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00635fad|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00635fad()|global_part024.cpp|ok
 635fe0|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00635fe0|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00635fe0()|global_part024.cpp|ok
 63600d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063600d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063600d()|global_part024.cpp|ok
-636045|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636045|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636045()|global_part025.cpp|ok
-6360ad|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006360ad|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006360ad()|global_part025.cpp|ok
-6360f5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006360f5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006360f5()|global_part025.cpp|ok
-63611f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063611f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063611f()|global_part025.cpp|ok
-63613d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063613d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063613d()|global_part025.cpp|ok
-63615d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063615d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063615d()|global_part025.cpp|ok
-63617d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063617d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063617d()|global_part025.cpp|ok
-63619f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063619f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063619f()|global_part025.cpp|ok
+636045|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636045|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00636045()|global_part024.cpp|ok
+6360ad|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006360ad|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006360ad()|global_part024.cpp|ok
+6360f5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006360f5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006360f5()|global_part024.cpp|ok
+63611f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063611f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063611f()|global_part024.cpp|ok
+63613d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063613d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063613d()|global_part024.cpp|ok
+63615d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063615d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063615d()|global_part024.cpp|ok
+63617d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063617d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063617d()|global_part024.cpp|ok
+63619f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063619f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063619f()|global_part024.cpp|ok
 6361bd|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006361bd|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006361bd()|global_part025.cpp|ok
 6361df|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006361df|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006361df()|global_part025.cpp|ok
 6361ff|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006361ff|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At006361ff()|global_part025.cpp|ok
@@ -8933,14 +8945,14 @@ address|name|prototype|file|status
 638d8d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d8d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638d8d()|global_part025.cpp|ok
 638db5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638db5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638db5()|global_part025.cpp|ok
 638dcf|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638dcf|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638dcf()|global_part025.cpp|ok
-638ded|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ded|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ded()|global_part026.cpp|ok
-638e0f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e0f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e0f()|global_part026.cpp|ok
-638e2f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e2f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e2f()|global_part026.cpp|ok
-638e4f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e4f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e4f()|global_part026.cpp|ok
-638e6f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e6f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e6f()|global_part026.cpp|ok
-638e9d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e9d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e9d()|global_part026.cpp|ok
-638ebf|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ebf|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ebf()|global_part026.cpp|ok
-638edd|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638edd|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638edd()|global_part026.cpp|ok
+638ded|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ded|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ded()|global_part025.cpp|ok
+638e0f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e0f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e0f()|global_part025.cpp|ok
+638e2f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e2f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e2f()|global_part025.cpp|ok
+638e4f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e4f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e4f()|global_part025.cpp|ok
+638e6f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e6f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e6f()|global_part025.cpp|ok
+638e9d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e9d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638e9d()|global_part025.cpp|ok
+638ebf|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ebf|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638ebf()|global_part025.cpp|ok
+638edd|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638edd|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638edd()|global_part025.cpp|ok
 638eff|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638eff|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638eff()|global_part026.cpp|ok
 638f1d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f1d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f1d()|global_part026.cpp|ok
 638f3d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f3d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At00638f3d()|global_part026.cpp|ok
@@ -9183,14 +9195,14 @@ address|name|prototype|file|status
 63b345|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b345|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b345()|global_part026.cpp|ok
 63b36f|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b36f|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b36f()|global_part026.cpp|ok
 63b3a2|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3a2|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3a2()|global_part026.cpp|ok
-63b3c5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3c5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3c5()|global_part027.cpp|ok
-63b3e1|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3e1|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3e1()|global_part027.cpp|ok
-63b3f5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3f5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3f5()|global_part027.cpp|ok
-63b409|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b409|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b409()|global_part027.cpp|ok
-63b41d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b41d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b41d()|global_part027.cpp|ok
-63b43a|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b43a|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b43a()|global_part027.cpp|ok
-63b44d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b44d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b44d()|global_part027.cpp|ok
-63b499|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b499|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b499()|global_part027.cpp|ok
+63b3c5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3c5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3c5()|global_part026.cpp|ok
+63b3e1|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3e1|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3e1()|global_part026.cpp|ok
+63b3f5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3f5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b3f5()|global_part026.cpp|ok
+63b409|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b409|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b409()|global_part026.cpp|ok
+63b41d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b41d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b41d()|global_part026.cpp|ok
+63b43a|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b43a|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b43a()|global_part026.cpp|ok
+63b44d|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b44d|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b44d()|global_part026.cpp|ok
+63b499|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b499|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b499()|global_part026.cpp|ok
 63b4e5|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b4e5|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b4e5()|global_part027.cpp|ok
 63b4fc|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b4fc|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b4fc()|global_part027.cpp|ok
 63b514|thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b514|undefined thunk_ForwardStructuredExceptionDispatchThroughFrameInfo_At0063b514()|global_part027.cpp|ok

@@ -65,6 +65,17 @@ undefined4 __thiscall TFileStream::_scalar_deleting_destructor_(undefined4 param
   return param_1;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00489160
+// GHIDRA_NAME TFileStream::SetBackingArchive
+// GHIDRA_PROTO undefined SetBackingArchive()
+
+void __thiscall TFileStream::SetBackingArchive(int param_1,undefined4 param_2)
+
+{
+  *(undefined4 *)(param_1 + 4) = param_2;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00489220
 // GHIDRA_NAME TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
 // GHIDRA_PROTO undefined WrapperFor_ReadBytesFromSerializedBuffer_At00489220()

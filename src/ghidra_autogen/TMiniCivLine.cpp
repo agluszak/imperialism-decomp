@@ -66,7 +66,7 @@ TMiniCivLine::ConstructTMiniCivLineBaseState(int param_1,undefined4 param_2,unde
   if (puVar1 != (undefined4 *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase();
     local_4 = CONCAT31(local_4._1_3_,1);
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(puVar1 + 0x22);
     *puVar1 = &PTR_LAB_0064d9d0;
   }
   local_4 = 0xffffffff;

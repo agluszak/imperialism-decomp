@@ -94,7 +94,7 @@ void __fastcall TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(int
   local_30[9] = (int *)*unaff_FS_OFFSET;
   *unaff_FS_OFFSET = local_30 + 9;
   local_30[0] = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_44);
   local_30[2] = (int *)0x6e616d30;
   local_4 = 0;
   local_30[3] = (int *)0x6e616d31;
@@ -147,12 +147,13 @@ void __fastcall TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(int
   } while ((short)local_3c < 7);
   pcVar2 = *(code **)(*param_1 + 0x94);
   piVar4 = (int *)(*pcVar2)();
+  local_38 = piVar4;
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8);
   }
-  iVar7 = (*pcVar2)();
-  if (iVar7 == 0) {
+  local_34 = (*pcVar2)();
+  if (local_34 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x1fe);
@@ -183,7 +184,7 @@ void __fastcall TRelationshipDialog::DestructTRelationshipDialogAndMaybeFree(int
     local_38 = (int *)((int)local_38 + -1);
   } while (local_38 != (int *)0x0);
   local_30[9] = (int *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb4);
   *unaff_FS_OFFSET = local_30[7];
   return;
 }

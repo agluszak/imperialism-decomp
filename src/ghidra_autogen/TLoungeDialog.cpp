@@ -118,16 +118,20 @@ uint __fastcall TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage(in
   int iVar2;
   code *pcVar3;
   char cVar4;
-  int *piVar5;
-  int *dst_ref_ptr;
-  int iVar6;
-  uint uVar7;
+  uint uVar5;
+  int *piVar6;
+  CString *src_ref;
+  int iVar7;
+  uint extraout_EAX;
   undefined2 extraout_var;
   int iVar8;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar9;
   undefined4 uVar10;
+  undefined1 auStack_30 [2];
   char cStack_2e;
+  char local_2d;
+  int *local_2c;
   int iStack_28;
   int local_24;
   undefined4 uStack_20;
@@ -144,9 +148,11 @@ uint __fastcall TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage(in
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_14 = *param_1;
+  local_2d = '\0';
   local_18 = *(code **)(local_14 + 0x94);
   local_1c = (code *)0x0;
   local_24 = 0x48;
+  local_2c = param_1;
   do {
     pcVar3 = local_1c;
     iVar8 = 0;
@@ -157,55 +163,56 @@ uint __fastcall TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage(in
       iVar8 = 3;
     }
     else {
-      uVar7 = GetNationStatusCodeForSlotOrActiveNation(local_1c);
-      if (uVar7 < 0x6275737a) {
-        if (uVar7 == 0x62757379) {
+      uVar5 = GetNationStatusCodeForSlotOrActiveNation(local_1c);
+      if (uVar5 < 0x6275737a) {
+        if (uVar5 == 0x62757379) {
           iVar8 = 0;
         }
-        else if (uVar7 == 0x61776f6c) {
+        else if (uVar5 == 0x61776f6c) {
           iVar8 = 3;
         }
       }
-      else if (uVar7 < 0x64656362) {
-        if (uVar7 == 0x64656361) {
+      else if (uVar5 < 0x64656362) {
+        if (uVar5 == 0x64656361) {
           iVar8 = 4;
         }
-        else if (uVar7 == 0x64656164) {
+        else if (uVar5 == 0x64656164) {
           iVar8 = 4;
         }
       }
-      else if (uVar7 == 0x72656479) {
+      else if (uVar5 == 0x72656479) {
         iVar8 = 1;
       }
-      else if (uVar7 == 0x756e6173) {
+      else if (uVar5 == 0x756e6173) {
         iVar8 = 2;
       }
     }
-    piVar5 = (int *)(*local_18)(pcVar3 + 0x72616430);
-    iVar1 = *piVar5;
+    piVar6 = (int *)(*local_18)(pcVar3 + 0x72616430);
+    iVar1 = *piVar6;
     (**(code **)(iVar1 + 0xc))();
-    if ((int)(short)piVar5[0x21] != *(int *)(&UNK_0065c168 + iVar8 * 4)) {
+    if ((int)(short)piVar6[0x21] != *(int *)(&UNK_0065c168 + iVar8 * 4)) {
       (**(code **)(iVar1 + 0x1c8))
                 (CONCAT22(extraout_var,*(undefined2 *)(&UNK_0065c168 + iVar8 * 4)),1);
     }
     TouchSessionActiveNationId();
-    piVar5 = (int *)(*local_1c)(pcVar3 + 0x6e616d30);
-    iVar1 = *piVar5;
+    piVar6 = (int *)(*local_1c)(pcVar3 + 0x6e616d30);
+    iVar1 = *piVar6;
     (**(code **)(iVar1 + 0xc))();
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_30);
     uStack_c = 0;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&iStack_28);
     uStack_c = CONCAT31(uStack_c._1_3_,1);
     (**(code **)(iVar1 + 0x1d0))(&iStack_28);
     iVar2 = local_24;
-    dst_ref_ptr = (int *)NormalizeRuntimeCredentialNameToken
-                                   (&uStack_10,(int)g_pGameFlowState + local_24 + 0x30);
+    src_ref = (CString *)
+              NormalizeRuntimeCredentialNameToken
+                        (&uStack_10,(int)g_pGameFlowState + local_24 + 0x30);
     uStack_4._0_1_ = 2;
-    AssignFromPtr(&iStack_28,dst_ref_ptr);
+    AssignFromPtr(&iStack_28,src_ref);
     uStack_4 = CONCAT31(uStack_4._1_3_,1);
-    ReleaseSharedStringRefIfNotEmpty();
-    iVar6 = CompareAnsiStringsWithMbcsAwareness(uStack_20,iStack_28);
-    if (iVar6 != 0) {
+    ReleaseSharedStringRefIfNotEmpty(&uStack_10);
+    iVar7 = CompareAnsiStringsWithMbcsAwareness(uStack_20,iStack_28);
+    if (iVar7 != 0) {
       (**(code **)(iVar1 + 0x1c8))(&iStack_28,1);
       if (iVar8 == 4) {
         uVar10 = 0x2b6a;
@@ -219,18 +226,18 @@ uint __fastcall TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage(in
         uVar10 = 0x2b6b;
         uVar9 = 0x2b6c;
       }
-      ApplyUiTextStyleAndThemeFlags(piVar5,0,0xe,uVar9,uVar10);
+      ApplyUiTextStyleAndThemeFlags(piVar6,0,0xe,uVar9,uVar10);
     }
     uStack_4 = uStack_4 & 0xffffff00;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&uStack_20);
     uStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&iStack_28);
     local_24 = iVar2 + 4;
     local_1c = local_1c + 1;
   } while (local_24 < 100);
   cVar4 = IsSpecialNationDialogModeActive();
   if (cVar4 == '\0') {
-    if (*(int *)(g_pLocalizationTable + 0x44) == 1) {
+    if ((*(int *)(g_pLocalizationTable + 0x44) == 1) || (local_2d != '\0')) {
       cVar4 = '\x10';
     }
     else {
@@ -241,28 +248,28 @@ uint __fastcall TLoungeDialog::RefreshNationStatusDialogRowsAndSummaryMessage(in
     iVar8 = GetNationStatusCodeForSlotOrActiveNation(0xffffffff);
     if ((iVar8 == 0x62757379) && (*(char *)((int)g_pGameFlowState + 0xf4) != '\0')) {
       cVar4 = '$';
-      if ((short)param_1[0x21] != 0x11f8) {
+      if ((short)local_2c[0x21] != 0x11f8) {
         (**(code **)(local_14 + 0x1c8))(0x11f8,1);
       }
     }
     else {
       cVar4 = '\x10';
-      if ((short)param_1[0x21] != 0x11f9) {
+      if ((short)local_2c[0x21] != 0x11f9) {
         (**(code **)(local_14 + 0x1c8))(0x11f9,1);
       }
     }
   }
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_1c);
   uStack_4 = 3;
   thunk_LoadUiStringResourceByGroupAndIndex(&local_1c,0x2742,cVar4);
-  piVar5 = (int *)(*local_18)(0x6d657373);
-  iVar8 = *piVar5;
+  piVar6 = (int *)(*local_18)(0x6d657373);
+  iVar8 = *piVar6;
   (**(code **)(iVar8 + 0xc))();
   (**(code **)(iVar8 + 0x1c8))(&uStack_20,1);
   uStack_10 = 0xffffffff;
-  uVar7 = ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&iStack_28);
   *unaff_FS_OFFSET = local_18;
-  return uVar7 & 0xffffff00;
+  return extraout_EAX & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054E1F0

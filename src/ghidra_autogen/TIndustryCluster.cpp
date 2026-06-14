@@ -24,7 +24,7 @@ undefined4 * TIndustryCluster::CreateTradeMoveStepControlPanel(void)
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     TUberCluster::ConstructTUberClusterBaseState();
-    *puVar1 = &PTR_LAB_00665ed0;
+    *puVar1 = &_vftable_;
     puVar1[0x22] = 0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
@@ -34,13 +34,13 @@ undefined4 * TIndustryCluster::CreateTradeMoveStepControlPanel(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588AD0
-// GHIDRA_NAME TIndustryCluster::GetTIndustryClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTIndustryClusterClassNamePointer()
+// GHIDRA_NAME TIndustryCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TIndustryCluster::GetTIndustryClusterClassNamePointer(void)
+undefined ** TIndustryCluster::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TIndustryCluster_00662f98;
+  return &g_pClassDescTIndustryCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588AF0
@@ -51,7 +51,7 @@ undefined4 * __fastcall TIndustryCluster::ConstructTradeMoveStepControlPanel(und
 
 {
   TUberCluster::ConstructTUberClusterBaseState();
-  *param_1 = &PTR_LAB_00665ed0;
+  *param_1 = &_vftable_;
   param_1[0x22] = 0;
   return param_1;
 }

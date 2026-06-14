@@ -19,7 +19,7 @@ void __fastcall TBehavior::CreateTBehaviorInstance(undefined4 *param_1)
   puStack_8 = &LAB_0062ead8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_GetCObjectRuntimeClass_00648ca8;
+  *param_1 = &ApplicationUiRootEmbeddedList::_vftable_;
   puVar1 = (undefined4 *)param_1[1];
   local_4 = 0;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
@@ -39,10 +39,10 @@ void __fastcall TBehavior::CreateTBehaviorInstance(undefined4 *param_1)
 // GHIDRA_NAME TBehavior::GetTBehaviorClassNamePointer
 // GHIDRA_PROTO undefined GetTBehaviorClassNamePointer()
 
-undefined ** TBehavior::GetTBehaviorClassNamePointer(void)
+char * TBehavior::GetTBehaviorClassNamePointer(void)
 
 {
-  return &PTR_s_TBehavior_00648cf8;
+  return "\x18Oi";
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871E0

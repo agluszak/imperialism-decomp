@@ -91,7 +91,7 @@ TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(int 
       TMilitaryUnitOrderState::TMilitaryUnitOrderState();
       uVar2 = extraout_var_00;
     }
-    InitializeMilitaryRecruitOrderState
+    TMilitaryUnitOrderState::InitializeRecruitOrderState
               (2,0,CONCAT22(uVar2,*(undefined2 *)(*(int *)(param_1 + 4) + 0xc)),0);
     *(short *)(param_1 + 0x18) = *(short *)(param_1 + 0x18) + 1;
     iVar3 = iVar3 + -1;
@@ -104,7 +104,7 @@ TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(int 
       TMilitaryUnitOrderState::TMilitaryUnitOrderState();
       uVar2 = extraout_var_02;
     }
-    InitializeMilitaryRecruitOrderState
+    TMilitaryUnitOrderState::InitializeRecruitOrderState
               (4,0,CONCAT22(uVar2,*(undefined2 *)(*(int *)(param_1 + 4) + 0xc)),0);
     *(short *)(param_1 + 0x1c) = *(short *)(param_1 + 0x1c) + 1;
     iVar3 = iVar3 + -1;

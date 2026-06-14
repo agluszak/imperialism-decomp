@@ -80,7 +80,7 @@ void TDisplayMgr::CreateTDisplayMgrInstance(void)
         iVar4 = iVar4 + 4;
       } while (iVar5 < 4);
       local_48 = (int *)0x4fe4a6;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&uStack_28);
       local_48 = &uStack_28;
       uStack_4 = 0;
       FormatOverlayTerrainLabelText();
@@ -94,7 +94,7 @@ void TDisplayMgr::CreateTDisplayMgrInstance(void)
       local_2c = local_2c + 0x34;
       uStack_4 = 0xffffffff;
       local_48 = (int *)0x4fe50e;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&uStack_28);
     }
     local_24 = local_24 + 0x10;
     local_34 = local_34 + 4;
@@ -227,7 +227,7 @@ void TDisplayMgr::DispatchDisplayManagerControlStringMessage(undefined4 param_1,
   TViewMgr::thunk_RunControlStringProviderAndDispatchLocalizedMessage();
   local_4 = 0xffffffff;
   uStack_10 = 0x4feccf;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_1);
   *unaff_FS_OFFSET = local_c;
   return;
 }

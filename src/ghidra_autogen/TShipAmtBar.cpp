@@ -37,10 +37,10 @@ TView * TShipAmtBar::CreateTShipAmtBarInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AB40
-// GHIDRA_NAME TShipAmtBar::GetTShipAmtBarClassNamePointer
-// GHIDRA_PROTO undefined GetTShipAmtBarClassNamePointer()
+// GHIDRA_NAME TShipAmtBar::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TShipAmtBar::GetTShipAmtBarClassNamePointer(void)
+char * TShipAmtBar::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTShipAmtBar;

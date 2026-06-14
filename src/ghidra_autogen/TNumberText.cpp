@@ -11,6 +11,8 @@ TView * TNumberText::CreateTNumberTextInstance(void)
 
 {
   TView *this;
+  void *this_00;
+  int extraout_EAX;
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -41,13 +43,14 @@ TView * TNumberText::CreateTNumberTextInstance(void)
     *(undefined2 *)&this[1].field30 = 0;
     this->vftable = &TStaticText::_vftable_;
     this[1].vftable = (void *)0xd;
-    iVar1 = AllocateWithFallbackHandler(4);
+    this_00 = (void *)AllocateWithFallbackHandler(4);
     local_4 = CONCAT31(local_4._1_3_,2);
-    if (iVar1 == 0) {
+    if (this_00 == (void *)0x0) {
       iVar1 = 0;
     }
     else {
-      iVar1 = InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(this_00);
+      iVar1 = extraout_EAX;
     }
     this[1].ownerOffsetX = iVar1;
     this[1].field34 = 0;
@@ -101,10 +104,10 @@ TNumberText::ConstructTNumberTextBaseState
 // GHIDRA_PROTO undefined DestructTNumberTextAndMaybeFree()
 
 void __thiscall
-TNumberText::DestructTNumberTextAndMaybeFree(int *param_1,int param_2,undefined4 param_3)
+TNumberText::DestructTNumberTextAndMaybeFree(int *param_1,CString param_2,undefined4 param_3)
 
 {
-  int iVar1;
+  CString CVar1;
   uint unaff_ESI;
   uint *unaff_FS_OFFSET;
   int *local_10;
@@ -112,23 +115,23 @@ TNumberText::DestructTNumberTextAndMaybeFree(int *param_1,int param_2,undefined4
   undefined1 *puStack_8;
   undefined4 local_4;
   
-  iVar1 = param_2;
+  CVar1.data_ptr = param_2.data_ptr;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_0062f250;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (uint)&uStack_c;
-  param_1[0x28] = param_2;
+  param_1[0x28] = param_2.data_ptr;
   local_10 = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_2);
   local_4 = 0;
-  FormatStringWithVarArgsToSharedRef(&param_2,&g_szDecimalFormat,iVar1);
-  TToolBarCluster::StringSharedRef_AssignFromPtr(&param_2);
+  FormatStringWithVarArgsToSharedRef(&param_2,&g_szDecimalFormat,CVar1.data_ptr);
+  TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&local_10,&param_2);
   local_4 = CONCAT31(local_4._1_3_,1);
   (**(code **)(*param_1 + 0x1e0))(&local_10,param_3);
   uStack_c = uStack_c & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffe8);
   uStack_c = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_4);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }

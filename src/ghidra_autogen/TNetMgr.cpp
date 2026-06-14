@@ -603,7 +603,7 @@ undefined4 * __fastcall TNetMgr::CreateTNetMgrInstance(undefined4 *param_1)
   param_1[2] = 0;
   *param_1 = &PTR_LAB_0066f9c0;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x2a);
   *param_1 = &PTR_LAB_0066f9f0;
   *unaff_FS_OFFSET = local_c;
   return param_1;
@@ -760,7 +760,7 @@ undefined4 * __thiscall TNetMgr::GetOrCreateHandleMapEntryValueByKey(int param_1
 undefined ** TNetMgr::GetCObjectRuntimeClass(void)
 
 {
-  return &PTR_s_CObject_006706e0;
+  return &classCObject;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611D18

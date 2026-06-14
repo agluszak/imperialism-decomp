@@ -263,7 +263,7 @@ TToolBarCluster::thunk_QueueDepotConstructionOrder
 void __thiscall
 TCViewOwnedBufferRegistryState_00648560::thunk_BuildTurnEventFactoryPacket
           (int param_1,undefined4 param_2,int *param_3,undefined2 param_4,undefined4 *param_5,
-          int *param_6,undefined2 param_7)
+          CString *param_6,undefined2 param_7)
 
 {
   if (param_3 != (int *)0x0) {
@@ -696,14 +696,14 @@ void __thiscall TControl::thunk_SetCityDialogValueDword10(TControl *this,int val
 // GHIDRA_NAME thunk_SetGlobalUiInvalidationFlagAndReturnPrevious
 // GHIDRA_PROTO undefined thunk_SetGlobalUiInvalidationFlagAndReturnPrevious()
 
-undefined4 thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(undefined4 param_1)
+int thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(int param_1)
 
 {
-  undefined4 uVar1;
+  int iVar1;
   
-  uVar1 = DAT_006950ac;
-  DAT_006950ac = param_1;
-  return uVar1;
+  iVar1 = g_McAppUiActiveFlag_006950AC;
+  g_McAppUiActiveFlag_006950AC = param_1;
+  return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409115
@@ -721,10 +721,10 @@ void thunk_HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary(void)
 // GHIDRA_NAME thunk_BuildSavePathStringForMode
 // GHIDRA_PROTO undefined thunk_BuildSavePathStringForMode()
 
-void thunk_BuildSavePathStringForMode(void *param_1,int param_2,undefined *param_3)
+void thunk_BuildSavePathStringForMode(void *param_1,CString param_2,char *param_3)
 
 {
-  undefined *puVar1;
+  char *text;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -734,33 +734,35 @@ void thunk_BuildSavePathStringForMode(void *param_1,int param_2,undefined *param
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_00636008;
   *unaff_FS_OFFSET = &uStack_c;
-  puVar1 = param_3;
-  if ((param_3 == (undefined *)0x0) &&
-     (puVar1 = PTR_DAT_0065ddd4, *(int *)(g_pLocalizationTable + 0x44) == 0)) {
-    puVar1 = PTR_DAT_0065ddd0;
+  text = param_3;
+  if ((param_3 == (char *)0x0) &&
+     (text = PTR_DAT_0065ddd4, *(int *)(g_pLocalizationTable + 0x44) == 0)) {
+    text = PTR_DAT_0065ddd0;
   }
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_3);
   iStack_4 = 0;
-  if (param_2 == 0xa1) {
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&DAT_0069872c);
+  if (param_2.data_ptr == 0xa1) {
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+              ((TToolBarCluster *)&param_2,&DAT_0069872c);
     iStack_4._0_1_ = 1;
     AssignFromPtr(&param_3,&param_2);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&param_2);
   }
   else {
-    FormatStringWithVarArgsToSharedRef(&param_3,&g_szDecimalFormat,param_2);
+    FormatStringWithVarArgsToSharedRef(&param_3,&g_szDecimalFormat,param_2.data_ptr);
   }
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(s_Save__00698724);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&param_2,s_Save__00698724);
   iStack_4._0_1_ = 2;
   AssignFromPtr(param_1,&param_2);
   iStack_4 = (uint)iStack_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
-  AssignStringSharedFromCStr(puVar1);
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
+  AssignStringSharedFromCStr(param_1,text);
   AssignStringSharedFromRef(&param_3);
-  AssignStringSharedFromCStr(PTR_DAT_0065ddd8);
+  AssignStringSharedFromCStr(param_1,PTR_DAT_0065ddd8);
   iStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_3);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -840,6 +842,8 @@ void __fastcall thunk_SelectAndScheduleRandomAudioCue(int param_1)
 TView * __fastcall TEditText::thunk_ConstructUiNumericTextEntryBase(TView *param_1)
 
 {
+  void *this;
+  int extraout_EAX;
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
@@ -867,13 +871,14 @@ TView * __fastcall TEditText::thunk_ConstructUiNumericTextEntryBase(TView *param
   *(undefined2 *)&param_1[1].field30 = 0;
   param_1->vftable = &TStaticText::_vftable_;
   param_1[1].vftable = (void *)0xd;
-  iVar1 = AllocateWithFallbackHandler(4);
+  this = (void *)AllocateWithFallbackHandler(4);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  if (iVar1 == 0) {
+  if (this == (void *)0x0) {
     iVar1 = 0;
   }
   else {
-    iVar1 = InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(this);
+    iVar1 = extraout_EAX;
   }
   param_1[1].ownerOffsetX = iVar1;
   param_1[1].field34 = 0;
@@ -913,7 +918,7 @@ void __thiscall
 thunk_AssignSharedStringFromIndexedA8EntryNameField(int param_1,int param_2,void *param_3)
 
 {
-  AssignFromPtr(param_3,(int *)(*(int *)(param_1 + 0x10) + 0xa4 + param_2 * 0xa8));
+  AssignFromPtr(param_3,(CString *)(*(int *)(param_1 + 0x10) + 0xa4 + param_2 * 0xa8));
   return;
 }
 
@@ -926,175 +931,6 @@ void TIndustryAmtBar::thunk_HandleTradeMovePageStepCommand(void)
 {
   HandleTradeMovePageStepCommand();
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00409205
-// GHIDRA_NAME thunk_MapTurnEventCodeToPaletteIndex
-// GHIDRA_PROTO undefined thunk_MapTurnEventCodeToPaletteIndex()
-
-undefined4 thunk_MapTurnEventCodeToPaletteIndex(short param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = (int)param_1;
-  if (200 < iVar1) {
-    if (iVar1 < 0x2b68) {
-      if (iVar1 == 0x2b67) {
-        return 0;
-      }
-      switch(iVar1) {
-      case 0xc9:
-        goto switchD_005d5297_caseD_33;
-      case 0xca:
-        return 0x30;
-      case 0xcb:
-        goto switchD_005d5297_caseD_6;
-      case 0xcc:
-        goto switchD_005d5297_caseD_3b;
-      case 0xcd:
-        return 0x24;
-      case 0xce:
-        return 0x26;
-      case 0xcf:
-        goto switchD_005d5297_caseD_34;
-      case 0xd0:
-        return 0x14;
-      }
-    }
-    else {
-      switch(iVar1) {
-      case 0x2b68:
-        return 0x13;
-      case 0x2b69:
-        return 0xcb;
-      case 0x2b6a:
-        return 0x5c;
-      case 0x2b6b:
-        return 0xd2;
-      case 0x2b6c:
-        return 0x28;
-      case 0x2b6d:
-        return 1;
-      }
-    }
-switchD_005d5297_caseD_17:
-    return 0xff;
-  }
-  if (iVar1 != 200) {
-    switch(iVar1) {
-    case 0:
-      return 0x16;
-    case 1:
-      return 0x2a;
-    case 2:
-    case 0x40:
-      return 0x22;
-    case 3:
-    case 0x3c:
-    case 0x4e:
-      return 0x1c;
-    case 4:
-      return 0x2b;
-    case 5:
-      return 0x1e;
-    case 6:
-switchD_005d5297_caseD_6:
-      return 0x2e;
-    case 7:
-    case 0x35:
-      return 10;
-    case 8:
-    case 0x3d:
-      return 0xb;
-    case 9:
-      return 0xd;
-    case 10:
-    case 0x43:
-      return 0x29;
-    case 0xb:
-      return 0xde;
-    case 0xc:
-    case 0x47:
-      return 0xdf;
-    case 0xd:
-    case 0x49:
-      return 0xfa;
-    case 0xe:
-    case 0x38:
-      return 0x2c;
-    case 0xf:
-    case 0x4a:
-      return 0x31;
-    case 0x10:
-      return 0x33;
-    case 0x11:
-      return 0x41;
-    case 0x12:
-      return 0x48;
-    case 0x13:
-      return 0xd0;
-    case 0x14:
-      return 0xcd;
-    case 0x15:
-      return 0xce;
-    case 0x16:
-      return 0xcf;
-    default:
-      goto switchD_005d5297_caseD_17;
-    case 0x25:
-    case 0x3f:
-      break;
-    case 0x32:
-      return 0x1a;
-    case 0x33:
-switchD_005d5297_caseD_33:
-      return 0x2d;
-    case 0x34:
-switchD_005d5297_caseD_34:
-      return 0x18;
-    case 0x37:
-      return 0xbd;
-    case 0x3a:
-      return 0xc6;
-    case 0x3b:
-switchD_005d5297_caseD_3b:
-      return 0x27;
-    case 0x3e:
-      return 0x15;
-    case 0x41:
-      return 0x1b;
-    case 0x42:
-      return 0x21;
-    case 0x44:
-      return 0x17;
-    case 0x45:
-      return 0x5f;
-    case 0x46:
-      return 0xbe;
-    case 0x48:
-      return 100;
-    case 0x4b:
-      return 0x66;
-    case 0x4c:
-      return 0x89;
-    case 0x4d:
-      return 0xad;
-    case 0x4f:
-      return 0xe7;
-    case 0x50:
-      return 0xe6;
-    case 0x51:
-      return 0xf6;
-    case 0x52:
-      return 0xc;
-    case 0x53:
-      return 0xef;
-    case 0x54:
-      return 0xf9;
-    }
-  }
-  return 0x20;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409237
@@ -1280,7 +1116,7 @@ thunk_TryResolveMapOrderEntryPairExecution(int *param_1,int *param_2,undefined4 
 // GHIDRA_PROTO undefined thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName()
 
 int thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName
-              (int param_1,undefined4 param_2,int param_3,int param_4)
+              (CString param_1,undefined4 param_2,int param_3,char *param_4)
 
 {
   int iVar1;
@@ -1298,15 +1134,15 @@ int thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName
   puStack_8 = &LAB_00635092;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  sVar2 = (short)param_1;
-  iVar3 = (int)(short)param_1;
+  sVar2 = (short)param_1.data_ptr;
+  iVar3 = (int)(short)param_1.data_ptr;
   if (*(int *)(&DAT_00698120 + iVar3 * 0x24) < 0) {
     *unaff_FS_OFFSET = uStack_c;
     return 0;
   }
-  param_1 = AllocateWithFallbackHandler(0x38);
+  param_1.data_ptr = AllocateWithFallbackHandler(0x38);
   uStack_4 = 0;
-  if (param_1 == 0) {
+  if (param_1.data_ptr == 0) {
     iVar4 = 0;
   }
   else {
@@ -1321,7 +1157,7 @@ int thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName
   *(undefined4 *)(iVar4 + 8) = param_2;
   *(short *)(iVar4 + 4) = sVar2;
   *(short *)(iVar4 + 0x14) = (short)param_3;
-  if (param_4 == 0) {
+  if (param_4 == (char *)0x0) {
     TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C((undefined4 *)(iVar4 + 0x18));
     for (iVar1 = g_pNavyPrimaryOrderListHead; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
       if ((iVar1 != iVar4) &&
@@ -1334,11 +1170,11 @@ int thunk_CreateNavyPrimaryOrderNodeAndAssignDisplayName
     }
   }
   else {
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_4);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&param_1,param_4);
     uStack_4 = 1;
     AssignFromPtr((void *)(iVar4 + 0x18),&param_1);
     uStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&param_1);
   }
   *(undefined2 *)(iVar4 + 0x1c) = *(undefined2 *)(&DAT_00698114 + iVar3 * 0x24);
   if (*(InputState **)(iVar4 + 8) != (InputState *)0x0) {
@@ -1432,12 +1268,12 @@ thunk_TrySaveGameAndMaybeShowFailureDialog(undefined4 param_1,undefined4 param_2
   }
   uVar2 = (undefined3)((uint)iVar1 >> 8);
   if ((param_3 != '\0') && (cVar3 == '\0')) {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&param_3);
     uStack_4 = 0;
     thunk_LoadUiStringResourceByGroupAndIndex(&param_3,0x2742,0x28);
     CreateModalMessageCommandAndQueue(&param_3,0);
     uStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&param_3);
     uVar2 = extraout_var;
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -1581,7 +1417,7 @@ thunk_DispatchLocalizedUiMessageWithTemplateA13A0
   uVar1 = thunk_DispatchLocalizedUiMessageWithTemplate(3);
   iStack_4 = 0xffffffff;
   uStack_18 = 0x5d5b75;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_1);
   *unaff_FS_OFFSET = uStack_c;
   return uVar1;
 }
@@ -1862,13 +1698,13 @@ void __fastcall thunk_HandleTurnResumeStateTelemetry(int param_1)
     uStack_34 = CONCAT11(uStack_34._1_1_,cVar1);
     uStack_32 = (undefined2)((int *)(&g_apTerrainTypeDescriptorTable)[cVar1])[0x22];
     uVar8 = (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[cVar1] + 0x40))();
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&pcStack_54);
     uStack_4 = 0;
     thunk_AssignSharedStringFromIndexedA8EntryNameField(uVar8,&pcStack_54);
     strncpy(acStack_30,pcStack_54,0x21);
     thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_50,0);
     uStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&pcStack_54);
   default:
     goto switchD_005433b3_caseD_3;
   case 5:
@@ -1999,15 +1835,17 @@ void __fastcall thunk_RefreshNationAdvisorLabelStrings(int *param_1)
 
 {
   int *piVar1;
-  short sVar2;
-  int *piVar3;
+  int *piVar2;
+  short sVar3;
+  CString *src_ref;
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
   char *pcStack_2c;
-  undefined1 auStack_28 [4];
+  CString CStack_28;
   undefined1 auStack_24 [4];
   undefined1 auStack_20 [4];
-  int aiStack_1c [2];
+  CString CStack_1c;
+  undefined1 auStack_18 [4];
   int *piStack_14;
   undefined1 auStack_10 [4];
   undefined4 uStack_c;
@@ -2021,56 +1859,56 @@ void __fastcall thunk_RefreshNationAdvisorLabelStrings(int *param_1)
   iVar4 = 0;
   piStack_14 = &g_apTerrainTypeDescriptorTable;
   do {
-    piVar1 = piStack_14;
-    InitializeSharedStringRefFromEmpty();
+    piVar2 = piStack_14;
+    InitializeSharedStringRefFromEmpty(auStack_18);
     iStack_4 = 0;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_20);
     iStack_4._0_1_ = 1;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_24);
     iStack_4._0_1_ = 2;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&CStack_28);
     iStack_4._0_1_ = 3;
-    InitializeSharedStringRefFromEmpty();
-    piVar3 = (int *)*piVar1;
+    InitializeSharedStringRefFromEmpty(&pcStack_2c);
+    piVar1 = (int *)*piVar2;
     iStack_4._0_1_ = 4;
-    if (piVar3 == (int *)0x0) {
+    if (piVar1 == (int *)0x0) {
       iStack_4._0_1_ = 3;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&pcStack_2c);
       iStack_4._0_1_ = 2;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&CStack_28);
       iStack_4._0_1_ = 1;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_24);
       iStack_4 = (uint)iStack_4._1_3_ << 8;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_20);
       iStack_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
-      piStack_14 = piVar1;
+      ReleaseSharedStringRefIfNotEmpty(auStack_18);
+      piStack_14 = piVar2;
     }
     else {
-      sVar2 = (**(code **)(*piVar3 + 0x40))();
+      sVar3 = (**(code **)(*piVar1 + 0x40))();
       (**(code **)(*param_1 + 0x84))(0x272a,0,&pcStack_2c);
-      piVar3 = (int *)AssignNormalizedCredentialTokenToIndexedSlot(auStack_10,iVar4);
+      src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot(auStack_10,iVar4);
       iStack_4._0_1_ = 5;
-      AssignFromPtr(auStack_20,piVar3);
+      AssignFromPtr(auStack_20,src_ref);
       iStack_4._0_1_ = 4;
-      ReleaseSharedStringRefIfNotEmpty();
-      scanBracketExpressions(param_1,auStack_28,pcStack_2c);
-      TToolBarCluster::StringSharedRef_AssignFromPtr(auStack_28);
+      ReleaseSharedStringRefIfNotEmpty(auStack_10);
+      scanBracketExpressions(param_1,&CStack_28,pcStack_2c);
+      TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&CStack_1c,&CStack_28);
       iStack_4._0_1_ = 6;
-      AssignFromPtr(auStack_24,aiStack_1c);
+      AssignFromPtr(auStack_24,&CStack_1c);
       iStack_4._0_1_ = 4;
-      ReleaseSharedStringRefIfNotEmpty();
-      SetGlobalMapCellSharedLabel((int)sVar2,auStack_24);
+      ReleaseSharedStringRefIfNotEmpty(&CStack_1c);
+      SetGlobalMapCellSharedLabel((int)sVar3,auStack_24);
       iStack_4._0_1_ = 3;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&pcStack_2c);
       iStack_4._0_1_ = 2;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&CStack_28);
       iStack_4._0_1_ = 1;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_24);
       iStack_4 = (uint)iStack_4._1_3_ << 8;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_20);
       iStack_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_18);
     }
     piStack_14 = piStack_14 + 1;
     iVar4 = iVar4 + 1;
@@ -2282,10 +2120,10 @@ undefined4 OrphanCallChain_C7_I93_00412720(LPCSTR param_1,LPCSTR param_2,LPCSTR 
 // GHIDRA_NAME ReadOrCreateRegistryStringValueWithFallback
 // GHIDRA_PROTO undefined ReadOrCreateRegistryStringValueWithFallback()
 
-undefined4
+TToolBarCluster *
 ReadOrCreateRegistryStringValueWithFallback
-          (undefined4 param_1,LPCSTR param_2,LPCSTR param_3,LPCSTR param_4,LPCSTR param_5,
-          undefined4 param_6)
+          (TToolBarCluster *param_1,LPCSTR param_2,LPCSTR param_3,LPCSTR param_4,LPCSTR param_5,
+          char *param_6)
 
 {
   LPCSTR lpValueName;
@@ -2294,7 +2132,7 @@ ReadOrCreateRegistryStringValueWithFallback
   HKEY pHVar2;
   undefined4 *unaff_FS_OFFSET;
   DWORD *lpcbData;
-  undefined1 local_30 [4];
+  CString local_30;
   HKEY local_2c;
   HKEY local_28;
   HKEY local_24;
@@ -2338,29 +2176,29 @@ ReadOrCreateRegistryStringValueWithFallback
     pHVar2 = local_20;
   }
   if (pHVar2 == (HKEY)0x0) {
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_6);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_1,param_6);
   }
   else {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&local_30);
     lpValueName = param_5;
     local_4 = 1;
     LVar1 = RegQueryValueExA(pHVar2,param_5,(LPDWORD)0x0,local_1c + 2,(LPBYTE)0x0,local_1c);
     if (LVar1 == 0) {
       lpcbData = local_1c;
-      lpData = (LPBYTE)TToolBarCluster::GetBuffer(local_1c[0]);
+      lpData = (LPBYTE)TToolBarCluster::GetBuffer((TToolBarCluster *)&local_30,local_1c[0]);
       LVar1 = RegQueryValueExA(pHVar2,lpValueName,(LPDWORD)0x0,local_1c + 2,lpData,lpcbData);
-      ReleaseBuffer(0xffffffff);
+      ReleaseBuffer(&local_30,-1);
     }
     RegCloseKey(pHVar2);
     if (LVar1 == 0) {
-      TToolBarCluster::StringSharedRef_AssignFromPtr(local_30);
+      TToolBarCluster::StringSharedRef_AssignFromPtr(param_1,&local_30);
     }
     else {
-      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_6);
+      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_1,param_6);
     }
     local_1c[1] = 1;
     local_4 = local_4 & 0xffffff00;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_30);
   }
   *unaff_FS_OFFSET = local_c;
   return param_1;
@@ -2423,33 +2261,23 @@ undefined4 * __fastcall ConstructImperialismApplicationSingleton(undefined4 *par
   CWinThread::CWinApp(0);
   local_4 = 0;
   param_1[0x30] = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x31);
   local_4._0_1_ = 1;
   param_1[0x32] = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x33);
   local_4._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x34);
   local_4._0_1_ = 3;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x35);
   local_4._0_1_ = 4;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x36);
   local_4._0_1_ = 5;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x37);
   local_4 = CONCAT31(local_4._1_3_,6);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x38);
   *param_1 = &PTR_LAB_0063e2d0;
   *unaff_FS_OFFSET = local_c;
   return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00412BD0
-// GHIDRA_NAME TMacViewMgr_Slot02_NoOpRet4
-// GHIDRA_PROTO undefined TMacViewMgr_Slot02_NoOpRet4()
-
-void TMacViewMgr_Slot02_NoOpRet4(void)
-
-{
-  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00412C30
@@ -2470,7 +2298,7 @@ undefined4 __thiscall ReleaseImperialismApplicationSingleton(undefined4 param_1,
 // GHIDRA_NAME DestroyImperialismApplicationSingleton
 // GHIDRA_PROTO undefined DestroyImperialismApplicationSingleton()
 
-void DestroyImperialismApplicationSingleton(void)
+void __fastcall DestroyImperialismApplicationSingleton(int param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2482,19 +2310,19 @@ void DestroyImperialismApplicationSingleton(void)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 6;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0xe0));
   local_4._0_1_ = 5;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0xdc));
   local_4._0_1_ = 4;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0xd8));
   local_4._0_1_ = 3;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0xd4));
   local_4._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0xd0));
   local_4._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0xcc));
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0xc4));
   local_4 = 0xffffffff;
   FUN_006228de();
   *unaff_FS_OFFSET = local_c;
@@ -2584,6 +2412,7 @@ undefined4 __fastcall InitializeImperialismApplicationInstance(int param_1)
   undefined4 local_24;
   undefined4 local_20;
   int local_1c;
+  undefined1 local_18 [4];
   undefined4 local_14;
   undefined4 local_10;
   undefined4 local_c;
@@ -2596,7 +2425,7 @@ undefined4 __fastcall InitializeImperialismApplicationInstance(int param_1)
   *unaff_FS_OFFSET = &local_c;
   _DAT_006a1354 = SetGlobalCallback6A7FACAndReturnPrevious(&LAB_004025f9);
   TControl::SetRegistryKey(PTR_DAT_0063e038);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_5c);
   local_4 = 0;
   TCommandLineParseContextState_0066FEA4::CCommandLineInfo();
   local_2c = local_5c;
@@ -2605,7 +2434,7 @@ undefined4 __fastcall InitializeImperialismApplicationInstance(int param_1)
   local_24 = 0;
   local_20 = 0;
   local_1c = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_18);
   local_14 = 0;
   local_10 = 0;
   local_50 = &PTR_GetCObjectRuntimeClass_0063e478;
@@ -2725,11 +2554,11 @@ undefined4 __fastcall InitializeImperialismApplicationInstance(int param_1)
                   }
                   PostMessageA(*(HWND *)(*(int *)(DAT_006a1348 + 0x1c) + 0x1c),0x111,100,0);
                   puStack_8._0_1_ = 0x10;
-                  ReleaseSharedStringRefIfNotEmpty();
+                  ReleaseSharedStringRefIfNotEmpty(&local_1c);
                   puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
                   TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext();
                   puStack_8 = (undefined1 *)0xffffffff;
-                  ReleaseSharedStringRefIfNotEmpty();
+                  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffa0);
                   *unaff_FS_OFFSET = local_10;
                   return 1;
                 }
@@ -2774,11 +2603,11 @@ undefined4 __fastcall InitializeImperialismApplicationInstance(int param_1)
     RegCloseKey(pHVar1);
     local_4._0_1_ = 4;
   }
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_18);
   local_4 = (uint)local_4._1_3_ << 8;
   TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext();
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_5c);
   *unaff_FS_OFFSET = local_c;
   return 0;
 }
@@ -2803,46 +2632,51 @@ void __thiscall
 ParseDirectionTokenAndSetMovementFlags(int param_1,char *param_2,int param_3,undefined4 param_4)
 
 {
-  int iVar1;
+  char *pcVar1;
+  int iVar2;
+  int iVar3;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
+  pcVar1 = param_2;
   local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00627fc8;
   *unaff_FS_OFFSET = &local_c;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_2);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&param_2,param_2);
   local_4 = 0;
   WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52();
+  iVar2 = param_3;
   if (param_3 != 0) {
-    iVar1 = CompareAnsiStringsWithMbcsAwareness(param_2,&DAT_00694254);
-    if (iVar1 == 0) {
+    iVar3 = CompareAnsiStringsWithMbcsAwareness(param_2,&DAT_00694254);
+    if (iVar3 == 0) {
       *(undefined4 *)(param_1 + 0x2c) = 1;
       *(undefined4 *)(param_1 + 0x30) = 1;
       goto LAB_004134c8;
     }
-    if ((param_3 != 0) &&
-       (iVar1 = CompareAnsiStringsWithMbcsAwareness(param_2,&DAT_00694250), iVar1 == 0)) {
+    if ((iVar2 != 0) &&
+       (iVar3 = CompareAnsiStringsWithMbcsAwareness(param_2,&DAT_00694250), iVar3 == 0)) {
       *(undefined4 *)(param_1 + 0x30) = 1;
       goto LAB_004134c8;
     }
   }
-  if ((param_3 == 0) || (*param_2 != 'L')) {
-    if (param_3 != 0) {
+  if ((iVar2 == 0) || (*param_2 != 'L')) {
+    if (iVar2 != 0) {
       if (*param_2 == 'R') {
         *(undefined4 *)(param_1 + 0x3c) = 1;
       }
-      else if (param_3 != 0) {
+      else if (iVar2 != 0) {
         if (*param_2 == 'S') {
           *(undefined4 *)(param_1 + 0x40) = 1;
         }
-        else if (param_3 != 0) {
+        else if (iVar2 != 0) {
           if (*param_2 == 'T') {
-            WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(param_2 + 1);
+            WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78
+                      ((void *)(param_1 + 0x38),param_2 + 1);
           }
-          else if ((param_3 != 0) && (*param_2 == 'C')) {
+          else if ((iVar2 != 0) && (*param_2 == 'C')) {
             *(undefined4 *)(param_1 + 0x34) = 1;
           }
         }
@@ -2850,12 +2684,12 @@ ParseDirectionTokenAndSetMovementFlags(int param_1,char *param_2,int param_3,und
     }
   }
   else {
-    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(param_2 + 1);
+    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(*(void **)(param_1 + 0x24),pcVar1 + 1);
   }
 LAB_004134c8:
-  ParseParam(param_2,param_3,param_4);
+  ParseParam(pcVar1,iVar2,param_4);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -2878,7 +2712,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00413550(undefined4 p
 // GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl
 // GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl()
 
-void WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(void)
+void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(int param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -2890,7 +2724,7 @@ void WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl(void)
   puStack_8 = &LAB_00627fe8;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0x38));
   local_4 = 0xffffffff;
   TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext();
   *unaff_FS_OFFSET = local_c;
@@ -3155,7 +2989,7 @@ void ShowSelectedDibInTemplateDDDialog(undefined4 param_1,undefined4 param_2)
   local_4 = (uint)local_4._1_3_ << 8;
   CDialog::~CDialog((CDialog *)local_a0);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -3342,7 +3176,6 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl(CDialog *para
 // GHIDRA_COMMENT If dialog result is accepted (thunk_FUN_0049d450 == 1), it restores DAT_006a43c4, snapshots g_pLocalizationTable+0x08 into DAT_00698b10, then posts WM_COMMAND id 100 to main window (PostMessageA(hwnd,0x111,100,0)).
 // GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 /* Modal-dialog accept path that re-queues the same startup/turn-advance trigger message.
    If dialog result is accepted (thunk_FUN_0049d450 == 1), it restores DAT_006a43c4, snapshots
    g_pLocalizationTable+0x08 into DAT_00698b10, then posts WM_COMMAND id 100 to main window
@@ -3367,11 +3200,11 @@ void __fastcall HandleDialogResultAndPostCommand100(int param_1)
   thunk_InitializeDialogTemplateDCBaseState(0);
   local_4 = 0;
   PrepareAndCreateDialogFromTemplateResource();
-  local_10 = (int)DAT_006a43c4;
+  local_10 = (int)g_nTurnCooldownDeferCounter006A43C4;
   iVar1 = TControl::FinalizeModalDialogAndRestoreOwnerFocus();
   if (iVar1 == 1) {
-    DAT_006a43c4 = (short)local_10;
-    _DAT_00698b10 = *(undefined2 *)(g_pLocalizationTable + 8);
+    g_nTurnCooldownDeferCounter006A43C4 = (short)local_10;
+    g_nTurnCooldownSideFlag00698B10 = *(short *)(g_pLocalizationTable + 8);
     PostMessageA(*(HWND *)(*(int *)(param_1 + 0x1c) + 0x1c),0x111,100,0);
   }
   local_84[0] = &PTR_LAB_0063e5a0;
@@ -3741,7 +3574,7 @@ undefined4 __fastcall DetectImperialismInstallDriveAndSetPathPrefix(int param_1)
     do {
       cVar2 = QueryDriveTypeByDriveIndex(iVar3);
       if (cVar2 != '\0') {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&local_14);
         local_4 = 0;
         cVar2 = QueryVolumeInformationForDriveIndex(iVar3,&local_14,local_10);
         if ((cVar2 != '\0') &&
@@ -3749,13 +3582,13 @@ undefined4 __fastcall DetectImperialismInstallDriveAndSetPathPrefix(int param_1)
            iVar4 == 0)) {
           WrapperFor_CopyMemoryPossiblyOverlapping_At005feba9
                     (CONCAT31((int3)((uint)iVar3 >> 8),(char)iVar3 + 'A'));
-          AssignStringSharedFromCStr(&DAT_006942b0);
+          AssignStringSharedFromCStr((undefined4 *)(param_1 + 0xc4),&DAT_006942b0);
           local_4 = 0xffffffff;
-          ReleaseSharedStringRefIfNotEmpty();
+          ReleaseSharedStringRefIfNotEmpty(&local_14);
           break;
         }
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&local_14);
       }
       iVar3 = iVar3 + 1;
     } while ((short)iVar3 < 0x1a);
@@ -3794,9 +3627,9 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
   undefined4 *unaff_FS_OFFSET;
   bool bVar6;
   int iVar7;
-  int local_17c;
+  CString local_17c;
   undefined4 local_178;
-  undefined1 local_174 [4];
+  TToolBarCluster local_174 [4];
   undefined1 local_170 [4];
   undefined **local_16c [9];
   undefined4 *local_148;
@@ -3804,6 +3637,7 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
   int local_140;
   undefined4 local_13c;
   undefined4 local_138;
+  undefined1 local_134 [4];
   undefined4 local_130;
   undefined4 local_12c;
   int local_128;
@@ -3826,7 +3660,7 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
   local_140 = 0;
   local_13c = 0;
   local_138 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_134);
   local_130 = 0;
   local_12c = 0;
   local_16c[0] = &PTR_GetCObjectRuntimeClass_0063e478;
@@ -3834,7 +3668,7 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
   ParseCommandLine(local_16c);
   local_128 = -1;
   local_4._0_1_ = 3;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(s_Data__006942a8);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(local_174,s_Data__006942a8);
   local_4 = CONCAT31(local_4._1_3_,4);
   puVar3 = (undefined4 *)AssignSharedStringConcatRefAndCStr(&local_17c,local_174,s___irg_006942fc);
   uVar1 = *puVar3;
@@ -3843,22 +3677,22 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
     local_128 = -1;
   }
   local_128 = FindFirstFileAndPopulateFileInfoRecord(uVar1,local_124);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_17c);
   if (local_128 == -1) {
     WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
               (s_No_language_files_are_present__U_006942b4,0,0);
     local_4 = CONCAT31(local_4._1_3_,3);
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(local_174);
     if (local_128 != -1) {
       WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(local_128);
       local_128 = -1;
     }
     local_4._0_1_ = 7;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(local_134);
     local_4 = (uint)local_4._1_3_ << 8;
     TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext();
     local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_178);
     bVar6 = false;
   }
   else {
@@ -3866,17 +3700,17 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
     local_4._0_1_ = 5;
     pHVar4 = LoadLibraryA((LPCSTR)*puVar3);
     local_4._0_1_ = 4;
-    ReleaseSharedStringRefIfNotEmpty();
-    InitializeSharedStringRefFromEmpty();
+    ReleaseSharedStringRefIfNotEmpty(local_170);
+    InitializeSharedStringRefFromEmpty(&local_17c);
     iVar7 = 0x20;
     local_4._0_1_ = 6;
-    pCVar5 = (LPSTR)GetBufferSetLength(0x21);
+    pCVar5 = (LPSTR)GetBufferSetLength(&local_17c,0x21);
     LoadStringA(pHVar4,0x1e36,pCVar5,iVar7);
-    ReleaseBuffer(0xffffffff);
+    ReleaseBuffer(&local_17c,-1);
     FreeLibrary(pHVar4);
     AssignFromPtr(&local_178,&local_17c);
     local_4 = CONCAT31(local_4._1_3_,4);
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_17c);
     WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52();
     puVar3 = (undefined4 *)AssignSharedStringConcatRefAndCStr(local_170,local_174,s___irg_006942fc);
     uVar1 = *puVar3;
@@ -3885,54 +3719,55 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
       local_128 = -1;
     }
     local_128 = FindFirstFileAndPopulateFileInfoRecord(uVar1,local_124);
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(local_170);
     while (local_128 != -1) {
       puVar3 = (undefined4 *)AssignSharedStringConcatRefAndCStr(local_170,local_174,local_110);
       local_4._0_1_ = 8;
       pHVar4 = LoadLibraryA((LPCSTR)*puVar3);
       local_4._0_1_ = 4;
-      ReleaseSharedStringRefIfNotEmpty();
-      InitializeSharedStringRefFromEmpty();
+      ReleaseSharedStringRefIfNotEmpty(local_170);
+      InitializeSharedStringRefFromEmpty(&local_17c);
       iVar7 = 0x20;
       local_4 = CONCAT31(local_4._1_3_,9);
-      pCVar5 = (LPSTR)GetBufferSetLength(0x21);
+      pCVar5 = (LPSTR)GetBufferSetLength(&local_17c,0x21);
       LoadStringA(pHVar4,0x1e36,pCVar5,iVar7);
-      ReleaseBuffer(0xffffffff);
+      ReleaseBuffer(&local_17c,-1);
       WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52();
-      iVar7 = CompareAnsiStringsWithMbcsAwareness(local_178,local_17c);
+      iVar7 = CompareAnsiStringsWithMbcsAwareness(local_178,local_17c.data_ptr);
       if (iVar7 == 0) {
         FUN_00618884(PTR_s_Settings_0063e040,PTR_s_Language_0063e04c,local_178);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)GetBufferSetLength(0x21);
+        pCVar5 = (LPSTR)GetBufferSetLength((void *)(param_1 + 0xcc),0x21);
         LoadStringA(pHVar4,0x1e36,pCVar5,iVar7);
-        ReleaseBuffer(0xffffffff);
+        ReleaseBuffer((void *)(param_1 + 0xcc),-1);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)GetBufferSetLength(0x21);
+        pCVar5 = (LPSTR)GetBufferSetLength((void *)(param_1 + 0xd0),0x21);
         LoadStringA(pHVar4,0x2c6,pCVar5,iVar7);
-        ReleaseBuffer(0xffffffff);
+        ReleaseBuffer((void *)(param_1 + 0xd0),-1);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)GetBufferSetLength(0x21);
+        pCVar5 = (LPSTR)GetBufferSetLength((void *)(param_1 + 0xd4),0x21);
         LoadStringA(pHVar4,0x840,pCVar5,iVar7);
-        ReleaseBuffer(0xffffffff);
+        ReleaseBuffer((void *)(param_1 + 0xd4),-1);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)GetBufferSetLength(0x21);
+        pCVar5 = (LPSTR)GetBufferSetLength((void *)(param_1 + 0xd8),0x21);
         LoadStringA(pHVar4,0x297,pCVar5,iVar7);
-        ReleaseBuffer(0xffffffff);
+        ReleaseBuffer((void *)(param_1 + 0xd8),-1);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)GetBufferSetLength(0x21);
+        pCVar5 = (LPSTR)GetBufferSetLength((void *)(param_1 + 0xdc),0x21);
         LoadStringA(pHVar4,0x80,pCVar5,iVar7);
-        ReleaseBuffer(0xffffffff);
+        ReleaseBuffer((void *)(param_1 + 0xdc),-1);
+        puVar3 = (undefined4 *)(param_1 + 0xe0);
         iVar7 = 0x20;
-        pCVar5 = (LPSTR)GetBufferSetLength(0x21);
+        pCVar5 = (LPSTR)GetBufferSetLength(puVar3,0x21);
         LoadStringA(pHVar4,0x323,pCVar5,iVar7);
-        ReleaseBuffer(0xffffffff);
-        pbVar2 = *(byte **)(param_1 + 0xe0);
+        ReleaseBuffer(puVar3,-1);
+        pbVar2 = (byte *)*puVar3;
         *(uint *)(param_1 + 0xe4) =
              ((uint)pbVar2[2] * 0x100 + (uint)pbVar2[1]) * 0x100 + (uint)*pbVar2;
       }
       FreeLibrary(pHVar4);
       local_4 = CONCAT31(local_4._1_3_,4);
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&local_17c);
       if (local_128 == -1) break;
       iVar7 = FindNextFileAndPopulateFileInfoRecord(local_128,local_124);
       if (iVar7 == -1) {
@@ -3943,17 +3778,17 @@ bool __fastcall LoadLanguageResourcesFromIrgFiles(int param_1)
     }
     bVar6 = local_140 == 0;
     local_4 = CONCAT31(local_4._1_3_,3);
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(local_174);
     if (local_128 != -1) {
       WrapperFor_GetOrCreateCrtThreadDataFromTls_At005e7d30(local_128);
       local_128 = -1;
     }
     local_4._0_1_ = 10;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(local_134);
     local_4 = (uint)local_4._1_3_ << 8;
     TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext();
     local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_178);
   }
   *unaff_FS_OFFSET = local_c;
   return bVar6;
@@ -4038,6 +3873,7 @@ int ShowAutoResolutionDialogIfNeeded(void)
   undefined4 local_114;
   int local_110;
   undefined4 local_10c;
+  undefined1 local_108 [4];
   int local_104;
   int local_100;
   undefined **local_fc [25];
@@ -4052,7 +3888,7 @@ int ShowAutoResolutionDialogIfNeeded(void)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   iVar1 = FUN_006231a6(PTR_s_Settings_0063e040,PTR_s_AutoRes_0063e048,0x29a);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_144);
   local_4 = 0;
   TCommandLineParseContextState_0066FEA4::CCommandLineInfo();
   local_11c = local_144;
@@ -4061,7 +3897,7 @@ int ShowAutoResolutionDialogIfNeeded(void)
   local_114 = 0;
   local_110 = 0;
   local_10c = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_108);
   local_104 = 0;
   local_100 = 0;
   local_140[0] = &PTR_GetCObjectRuntimeClass_0063e478;
@@ -4095,11 +3931,11 @@ int ShowAutoResolutionDialogIfNeeded(void)
   }
   FUN_0061880f(PTR_s_Settings_0063e040,PTR_s_AutoRes_0063e048,iVar1);
   local_4._0_1_ = 7;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_108);
   local_4 = (uint)local_4._1_3_ << 8;
   TCommandLineParseContextState_0066FEA4::DestructCommandLineParseContext();
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_144);
   *unaff_FS_OFFSET = local_c;
   return iVar1;
 }
@@ -4163,12 +3999,12 @@ undefined4 ReadSettingsPrefIntByIndex(undefined4 param_1,undefined4 param_2)
   puStack_8 = &LAB_00628398;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = 0;
   FormatStringWithVarArgsToSharedRef(&local_10,s_Pref_d_00694304,param_1);
   uVar1 = FUN_006231a6(PTR_s_Settings_0063e044,local_10,param_2);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_10);
   *unaff_FS_OFFSET = local_c;
   return uVar1;
 }
@@ -4190,12 +4026,12 @@ void WriteSettingsPrefIntByIndex(undefined4 param_1,undefined4 param_2)
   puStack_8 = &LAB_006283b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = 0;
   FormatStringWithVarArgsToSharedRef(&local_10,s_Pref_d_00694304,param_1);
   FUN_0061880f(PTR_s_Settings_0063e044,local_10,param_2);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -4312,7 +4148,7 @@ undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
   undefined4 *unaff_FS_OFFSET;
   LPCSTR local_138;
   DWORD local_134;
-  DWORD local_130 [2];
+  CString local_130 [2];
   DWORD local_128 [2];
   char *local_120 [2];
   undefined **appuStack_118 [25];
@@ -4330,11 +4166,11 @@ undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
   iVar4 = 0;
   uSize = GetWindowsDirectoryA((LPSTR)0x0,0);
   if (uSize != 0) {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&local_138);
     local_4 = 0;
-    lpBuffer = (LPSTR)TToolBarCluster::GetBuffer(uSize);
+    lpBuffer = (LPSTR)TToolBarCluster::GetBuffer((TToolBarCluster *)&local_138,uSize);
     GetWindowsDirectoryA(lpBuffer,uSize);
-    ReleaseBuffer(0xffffffff);
+    ReleaseBuffer(&local_138,-1);
     local_a0.dwOSVersionInfoSize = 0x94;
     GetVersionExA(&local_a0);
     if ((1000 < (ushort)local_a0.dwBuildNumber) &&
@@ -4349,24 +4185,25 @@ undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
       }
     }
     if (((iVar4 != 0) ||
-        ((BVar2 = GetDiskFreeSpaceA(local_138,&local_134,local_130,(LPDWORD)local_120,local_128),
-         BVar2 != 0 && (BVar2 != 0)))) && (iVar4 = aullshr(), iVar4 < 0x19)) {
-      InitializeSharedStringRefFromEmpty();
+        ((BVar2 = GetDiskFreeSpaceA(local_138,&local_134,(LPDWORD)local_130,(LPDWORD)local_120,
+                                    local_128), BVar2 != 0 && (BVar2 != 0)))) &&
+       (iVar4 = aullshr(), iVar4 < 0x19)) {
+      InitializeSharedStringRefFromEmpty(local_130);
       local_4._0_1_ = 1;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(local_120);
       local_4._0_1_ = 2;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&local_134);
       local_4._0_1_ = 3;
       thunk_LoadUiStringResourceByGroupAndIndex(local_120,0x2763,0x19);
       FormatStringWithVarArgsToSharedRef(&local_134,&g_szDecimalFormat,iVar4);
       scanBracketExpressions(g_pLocalizationTable,local_130,local_120[0]);
       thunk_InitializeDialogTemplate98WithSharedText(0);
       local_4._0_1_ = 4;
-      AssignFromPtr(auStack_a4,(int *)local_130);
+      AssignFromPtr(auStack_a4,local_130);
       iVar4 = TControl::FinalizeModalDialogAndRestoreOwnerFocus();
       if (iVar4 != 1) {
         local_4._0_1_ = 5;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(auStack_a4);
         appuStack_118[0] = &PTR_LAB_0063e5a0;
         local_4._0_1_ = 6;
         if (iStack_b4 != 0) {
@@ -4375,18 +4212,18 @@ undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
         local_4._0_1_ = 3;
         CDialog::~CDialog((CDialog *)appuStack_118);
         local_4._0_1_ = 2;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&local_134);
         local_4._0_1_ = 1;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(local_120);
         local_4 = (uint)local_4._1_3_ << 8;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(local_130);
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&local_138);
         uVar3 = 0;
         goto LAB_00415a87;
       }
       local_4._0_1_ = 7;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(auStack_a4);
       appuStack_118[0] = &PTR_LAB_0063e5a0;
       local_4._0_1_ = 8;
       if (iStack_b4 != 0) {
@@ -4395,14 +4232,14 @@ undefined4 WarnLowDiskSpaceAndConfirmContinue(void)
       local_4._0_1_ = 3;
       CDialog::~CDialog((CDialog *)appuStack_118);
       local_4._0_1_ = 2;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&local_134);
       local_4._0_1_ = 1;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(local_120);
       local_4 = (uint)local_4._1_3_ << 8;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(local_130);
     }
     local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_138);
   }
   uVar3 = 1;
 LAB_00415a87:
@@ -4426,7 +4263,7 @@ void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl(CDialog *para
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x74);
   *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
   local_4 = 1;
   if (*(int *)(param_1 + 100) != 0) {
@@ -6943,7 +6780,7 @@ void SetUiResourceLayoutValues(int param_1,int param_2,int param_3,int param_4,i
    style/geometry helper slots. */
 
 void BindUiResourceTextAndStyle
-               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
+               (undefined4 param_1,undefined2 param_2,char *param_3,undefined4 param_4,
                undefined4 param_5)
 
 {
@@ -6960,13 +6797,13 @@ void BindUiResourceTextAndStyle
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   piVar2 = g_pUiResourceContext;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_3);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId((TToolBarCluster *)&param_3,param_3);
   iVar1 = *piVar2;
   uVar3 = 0;
   local_4 = 0;
   (**(code **)(iVar1 + 0x1c8))(&param_3);
   uStack_c = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_1);
   (**(code **)(iVar1 + 0x1b4))(&stack0xffffffe0,0);
   (**(code **)(iVar1 + 0x1c4))(param_4,0);
   *unaff_FS_OFFSET = uVar3;
@@ -11519,7 +11356,7 @@ undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004293c0(undefined4 p
 void __thiscall AssignSharedStringFromField84(int param_1,void *param_2)
 
 {
-  AssignFromPtr(param_2,*(int **)(param_1 + 0x84));
+  AssignFromPtr(param_2,*(CString **)(param_1 + 0x84));
   return;
 }
 
@@ -18194,7 +18031,7 @@ WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(undefined4 *param_
 undefined4 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00435760(void)
 
 {
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x594);
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x594);
   return 0;
 }
 
@@ -30615,7 +30452,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     }
     else {
       TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry();
-      *piVar3 = (int)&PTR_LAB_00643a40;
+      *piVar3 = (int)&TRadioPictureButton::_vftable_;
       piVar3[0x26] = 0;
     }
     uStack_40 = 0xffffffff;
@@ -30827,7 +30664,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     }
     else {
       TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry();
-      *piVar3 = (int)&PTR_LAB_00643a40;
+      *piVar3 = (int)&TRadioPictureButton::_vftable_;
       piVar3[0x26] = 0;
     }
     piVar4 = piVar3;
@@ -31042,7 +30879,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     }
     else {
       TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry();
-      *piVar3 = (int)&PTR_LAB_00643a40;
+      *piVar3 = (int)&TRadioPictureButton::_vftable_;
       piVar3[0x26] = 0;
     }
     piVar4 = piVar3;
@@ -31257,7 +31094,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     }
     else {
       TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry();
-      *piVar3 = (int)&PTR_LAB_00643a40;
+      *piVar3 = (int)&TRadioPictureButton::_vftable_;
       piVar3[0x26] = 0;
     }
     piVar4 = piVar3;
@@ -31472,7 +31309,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     }
     else {
       TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry();
-      *piVar3 = (int)&PTR_LAB_00643a40;
+      *piVar3 = (int)&TRadioPictureButton::_vftable_;
       piVar3[0x26] = 0;
     }
     piVar4 = piVar3;
@@ -31687,7 +31524,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     }
     else {
       TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry();
-      *piVar3 = (int)&PTR_LAB_00643a40;
+      *piVar3 = (int)&TRadioPictureButton::_vftable_;
       piVar3[0x26] = 0;
     }
     piVar4 = piVar3;
@@ -31892,7 +31729,7 @@ int * BuildUiResourceTreeByTemplateIdAndBindScreenContext(undefined4 param_1,sho
     puVar5 = (undefined4 *)AllocateWithFallbackHandler();
     if (puVar5 != (undefined4 *)0x0) {
       TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry();
-      *puVar5 = &PTR_LAB_00643a40;
+      *puVar5 = &TRadioPictureButton::_vftable_;
       puVar5[0x26] = 0;
     }
     thunk_RegisterUiResourceEntry();
@@ -32124,7 +31961,7 @@ undefined4 * __fastcall ConstructUiClickablePictureResourceEntry_Vtbl643A40(unde
 
 {
   TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry();
-  *param_1 = &PTR_LAB_00643a40;
+  *param_1 = &TRadioPictureButton::_vftable_;
   param_1[0x26] = 0;
   return param_1;
 }
@@ -40780,6 +40617,602 @@ int * BuildTradeBoardDialogUiLayoutVariantA(void)
   }
   piVar1 = g_pUiResourceHead;
   *unaff_FS_OFFSET = uVar3;
+  return piVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0046620F
+// GHIDRA_NAME InitializeUiResourceEntries
+// GHIDRA_PROTO int * __cdecl InitializeUiResourceEntries(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes and registers a large batch of UI resource entries, then returns the global resource-head pointer.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Reset g_pUiResourceContext and invoke pre-initialization helpers.
+// GHIDRA_COMMENT 2. Allocate an entry object using size-class constants (for example 0x88/0x94/0xB4/0x60/0x90).
+// GHIDRA_COMMENT 3. If allocation succeeds, call a type-specific factory/initializer; otherwise use 0 as constructor result.
+// GHIDRA_COMMENT 4. Register the entry with tag constants and layout/slot constants through the common registration call chain.
+// GHIDRA_COMMENT 5. Finalize each entry with post-registration helpers and optional virtual callback at vtable offset +0x1C8.
+// GHIDRA_COMMENT 6. Repeat the same build pattern for multiple resource variants with different constant IDs.
+// GHIDRA_COMMENT 7. Branch to shared tail cleanup at 0x0046CA6E for final synchronization calls.
+// GHIDRA_COMMENT 8. If g_pUiResourceHead is non-null, invoke cleanup/finalization helper before return.
+// GHIDRA_COMMENT 9. Restore saved FS exception-frame value and return g_pUiResourceHead.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - (none explicit in prototype)
+// GHIDRA_COMMENT - IMPLICIT int nOwnerId (EBX), propagated into entry state.
+// GHIDRA_COMMENT - IMPLICIT uint dwCleanupContext (EDI), forwarded to final cleanup helper.
+// GHIDRA_COMMENT - IMPLICIT int* pNull (ESI), null baseline for allocation checks and argument pushes.
+// GHIDRA_COMMENT - IMPLICIT uint* pdwFsExceptionFrame (FS:[0]), exception-chain head pointer.
+// GHIDRA_COMMENT - IMPLICIT uint dwSavedExceptionFrame (stack spill), restored on exit.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - int* pResourceHead: g_pUiResourceHead after batch initialization.
+// GHIDRA_COMMENT - If no valid head exists, returned value may equal the null baseline pointer.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - Allocation failure path explicitly zeroes constructor/factory result before registration.
+// GHIDRA_COMMENT - A shared jump-to-tail path (0x00466566 -> 0x0046CA6E) consolidates final cleanup logic.
+// GHIDRA_COMMENT - Many blocks are template-like and differ primarily by immediate constants/callback targets.
+// GHIDRA_COMMENT - One residual assembly-derived temporary may reappear as generic uVar1 after decompiler refreshes; treat as EAX register-reuse artifact.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Magic Numbers Reference:
+// GHIDRA_COMMENT - 0x88, 0x94, 0xB4, 0x60, 0x90: object allocation sizes.
+// GHIDRA_COMMENT - 0x1C8: virtual callback slot offset used for post-build notifications.
+// GHIDRA_COMMENT - 0x52D, 0x52F and nearby constants: resource/control identifiers.
+// GHIDRA_COMMENT - 0x14B and nearby constants: per-entry slot/index identifiers.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Error Handling:
+// GHIDRA_COMMENT - Each allocation is followed by CMP EAX,ESI and JZ fallback handling.
+// GHIDRA_COMMENT - Fallback path preserves control-flow continuity by passing zero constructor result.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Structure Layout (Inferred):
+// GHIDRA_COMMENT Offset | Size | Field | Type | Description
+// GHIDRA_COMMENT +0x84  | 4    | nOwnerId | int | Entry-owner/state value propagated from EBX.
+// GHIDRA_COMMENT +0x1C8 | 4    | pfnPostBuildCallback | code* | Virtual callback invoked after registration.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Flag Bits:
+// GHIDRA_COMMENT - No explicit bitmask decode identified in this function body; behavior is driven mainly by immediate IDs and callback dispatch.
+// GHIDRA_COMMENT_END
+
+/* Initializes and registers a large batch of UI resource entries, then returns the global
+   resource-head pointer.
+   
+   Algorithm:
+   1. Reset g_pUiResourceContext and invoke pre-initialization helpers.
+   2. Allocate an entry object using size-class constants (for example 0x88/0x94/0xB4/0x60/0x90).
+   3. If allocation succeeds, call a type-specific factory/initializer; otherwise use 0 as
+   constructor result.
+   4. Register the entry with tag constants and layout/slot constants through the common
+   registration call chain.
+   5. Finalize each entry with post-registration helpers and optional virtual callback at vtable
+   offset +0x1C8.
+   6. Repeat the same build pattern for multiple resource variants with different constant IDs.
+   7. Branch to shared tail cleanup at 0x0046CA6E for final synchronization calls.
+   8. If g_pUiResourceHead is non-null, invoke cleanup/finalization helper before return.
+   9. Restore saved FS exception-frame value and return g_pUiResourceHead.
+   
+   Parameters:
+   - (none explicit in prototype)
+   - IMPLICIT int nOwnerId (EBX), propagated into entry state.
+   - IMPLICIT uint dwCleanupContext (EDI), forwarded to final cleanup helper.
+   - IMPLICIT int* pNull (ESI), null baseline for allocation checks and argument pushes.
+   - IMPLICIT uint* pdwFsExceptionFrame (FS:[0]), exception-chain head pointer.
+   - IMPLICIT uint dwSavedExceptionFrame (stack spill), restored on exit.
+   
+   Returns:
+   - int* pResourceHead: g_pUiResourceHead after batch initialization.
+   - If no valid head exists, returned value may equal the null baseline pointer.
+   
+   Special Cases:
+   - Allocation failure path explicitly zeroes constructor/factory result before registration.
+   - A shared jump-to-tail path (0x00466566 -> 0x0046CA6E) consolidates final cleanup logic.
+   - Many blocks are template-like and differ primarily by immediate constants/callback targets.
+   - One residual assembly-derived temporary may reappear as generic uVar1 after decompiler
+   refreshes; treat as EAX register-reuse artifact.
+   
+   Magic Numbers Reference:
+   - 0x88, 0x94, 0xB4, 0x60, 0x90: object allocation sizes.
+   - 0x1C8: virtual callback slot offset used for post-build notifications.
+   - 0x52D, 0x52F and nearby constants: resource/control identifiers.
+   - 0x14B and nearby constants: per-entry slot/index identifiers.
+   
+   Error Handling:
+   - Each allocation is followed by CMP EAX,ESI and JZ fallback handling.
+   - Fallback path preserves control-flow continuity by passing zero constructor result.
+   
+   Structure Layout (Inferred):
+   Offset | Size | Field | Type | Description
+   +0x84  | 4    | nOwnerId | int | Entry-owner/state value propagated from EBX.
+   +0x1C8 | 4    | pfnPostBuildCallback | code* | Virtual callback invoked after registration.
+   
+   Flag Bits:
+   - No explicit bitmask decode identified in this function body; behavior is driven mainly by
+   immediate IDs and callback dispatch. */
+
+int * __cdecl InitializeUiResourceEntries(void)
+
+{
+  int *pResourceEntryTemp;
+  uint dwFactoryResult;
+  uint dwCtorResult;
+  uint dwCtorResultAlt;
+  uint dwCtorResultFallback;
+  uint dwCtorResultResidual;
+  undefined4 uVar1;
+  int nOwnerId;
+  int *pNull;
+  uint dwCleanupContext;
+  uint *pdwFsExceptionFrame;
+  uint dwSavedExceptionFrame;
+  int *pResourceEntryOverview;
+  int *pResourceEntryTrade;
+  int *pResourceEntryCity;
+  int *pResourceEntryNation;
+  int *pResourceEntryPrimary;
+  int *pResourceHead;
+  
+  g_pUiResourceContext = pNull;
+  thunk_PopUiResourcePoolNode();
+  thunk_PopUiResourcePoolNode();
+                    /* Allocate entry object for the next UI resource template. */
+  pResourceEntryTemp = (int *)AllocateWithFallbackHandler(0x88);
+                    /* If allocation failed, force factory result to zero and continue shared
+                       registration flow. */
+  if (pResourceEntryTemp == pNull) {
+    dwFactoryResult = 0;
+  }
+  else {
+    dwFactoryResult = TToolBarCluster::thunk_ConstructUiResourceEntryTypeB();
+  }
+                    /* Primary registration dispatcher: binds constructor output and immediate IDs
+                       into the shared resource registry. */
+  thunk_RegisterUiResourceEntry(0x636c7573,0x746f7042,dwFactoryResult,0x10b,5,0x69,0x1a);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(5);
+  g_pUiResourceContext[0x21] = nOwnerId;
+  g_pUiResourceContext = pNull;
+  pResourceEntryTemp = (int *)AllocateWithFallbackHandler(0x94);
+  if (pResourceEntryTemp == pNull) {
+    dwCtorResult = 0;
+  }
+  else {
+    dwCtorResult = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x7472616e,dwCtorResult,3,3,0xe,0x12,1,1,0x746f7042);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+                    /* Virtual post-build callback through entry vtable slot +0x1C8 using per-entry
+                       resource ID. */
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ef);
+  g_pUiResourceContext = pNull;
+  thunk_PopUiResourcePoolNode();
+  pResourceEntryTemp = (int *)AllocateWithFallbackHandler(0x94);
+  if (pResourceEntryTemp == pNull) {
+    dwCtorResultAlt = 0;
+  }
+  else {
+    dwCtorResultAlt = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry
+            (0x70696374,0x63697479,dwCtorResultAlt,0x1f,3,0xe,0x12,1,1,0x746f7042);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+                    /* Pushes icon ID 0x24ED (9453), confirmed as the icon used to open the city
+                       screen. */
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ed);
+  g_pUiResourceContext = pNull;
+  thunk_PopUiResourcePoolNode();
+  pResourceEntryTemp = (int *)AllocateWithFallbackHandler(0x94);
+  if (pResourceEntryTemp == pNull) {
+    dwCtorResultFallback = 0;
+  }
+  else {
+    dwCtorResultFallback = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry
+            (0x70696374,0x74726164,dwCtorResultFallback,0x3b,3,0xe,0x12,1,1,0x746f7042);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24eb);
+  g_pUiResourceContext = pNull;
+  thunk_PopUiResourcePoolNode();
+  pResourceEntryTemp = (int *)AllocateWithFallbackHandler(0x94);
+  if (pResourceEntryTemp == pNull) {
+    dwCtorResultResidual = 0;
+  }
+  else {
+    dwCtorResultResidual = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry
+            (0x70696374,0x6469706c,dwCtorResultResidual,0x58,3,0xe,0x12,1,1,0x746f7042);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24e9);
+  thunk_PopUiResourcePoolNode();
+  thunk_PopUiResourcePoolNode();
+  pResourceEntryTemp = (int *)AllocateWithFallbackHandler(0xb4);
+  if (pResourceEntryTemp == pNull) {
+    uVar1 = 0;
+  }
+  else {
+    uVar1 = thunk_ConstructUiCursorTextResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry(0x74657677,0x63757273,uVar1,0x182,5,0xc9,0x1e);
+  thunk_SetUiResourceStateFlags(1);
+  g_pUiResourceContext = pNull;
+                    /* Template path jumps to the common cleanup tail to avoid duplicating
+                       finalization epilogue. */
+  thunk_PopUiResourcePoolNode();
+  thunk_PopUiResourcePoolNode();
+  if (g_pUiResourceHead != pNull) {
+    thunk_PropagateUiResourceContextRecursive(dwCleanupContext);
+  }
+  pResourceHead = g_pUiResourceHead;
+  *pdwFsExceptionFrame = dwSavedExceptionFrame;
+  return pResourceHead;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0046BAA7
+// GHIDRA_NAME BuildTradeBoardDialogUiLayoutVariantB
+// GHIDRA_PROTO undefined BuildTradeBoardDialogUiLayoutVariantB()
+
+int * BuildTradeBoardDialogUiLayoutVariantB(void)
+
+{
+  int *piVar1;
+  undefined4 uVar2;
+  int unaff_EBX;
+  int *unaff_ESI;
+  undefined4 unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  
+  thunk_RegisterUiResourceEntry();
+  thunk_SetUiResourceStateFlags();
+  ReplaceUiResourceContextPairBuffer();
+  thunk_SetUiResourceLayoutValues();
+  g_pUiResourceContext[0x21] = unaff_EBX;
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 != unaff_ESI) {
+    TMyNumberText::ConstructTMyNumberTextBaseState();
+  }
+  thunk_RegisterUiResourceEntry();
+  thunk_SetUiResourceStateFlags();
+  ReplaceUiResourceContextPairBuffer();
+  thunk_SetUiResourceLayoutValues();
+  thunk_SetUiResourceContextTagWord();
+  thunk_BindUiResourceTextAndStyle();
+  thunk_UpdateUiResourceContextMetricWord27();
+  DispatchUiResourceContextVslot1E4WithCoords();
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 != unaff_ESI) {
+    TTradeOrderPicture::ConstructTTradeOrderPictureBaseState();
+  }
+  thunk_RegisterUiResourceEntry();
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues();
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 != unaff_ESI) {
+    TTradeOrderPicture::ConstructTTradeOrderPictureBaseState();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues();
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TSidewaysArrow::ConstructTSidewaysArrowBaseState();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x6c656674,uVar2);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues();
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TSliderPicture::ConstructTSliderPictureBaseState();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x67726565,uVar2,399,6);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues();
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TSidewaysArrow::ConstructTSidewaysArrowBaseState();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x72676874,uVar2,0x1f2,5,0xf,0xb);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TTraderAmtBar::ConstructBaseState();
+  }
+  thunk_RegisterUiResourceEntry(0x76696577,0x62617220,uVar2,399,7,100,7,1,1);
+  thunk_SetUiResourceStateFlags();
+  thunk_PopUiResourcePoolNode();
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase();
+  }
+  thunk_RegisterUiResourceEntry(0x73746174,0x746f7054,uVar2,0x36,0x25,0x215,0x14);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(0xd);
+  thunk_SetUiResourceContextTagWord(unaff_ESI);
+  thunk_BindUiResourceTextAndStyle(0x5e5,1,s_Board_of_Trade_00694af8);
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase();
+  }
+  thunk_RegisterUiResourceEntry(0x73746174,0x636f6d54,uVar2,0x30,0x49,0x5a,0x17);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(0xd);
+  thunk_SetUiResourceContextTagWord(unaff_ESI);
+  thunk_BindUiResourceTextAndStyle(0x5e5,2,s_Commodity_00694aec);
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase();
+  }
+  thunk_RegisterUiResourceEntry(0x73746174,0x6f726454,uVar2,0x8a,0x49,0x5a,0x17);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(0xd);
+  thunk_SetUiResourceContextTagWord(unaff_ESI);
+  thunk_BindUiResourceTextAndStyle(0x5e5,3,s_Orders_006948a4);
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  }
+  thunk_RegisterUiResourceEntry(0x73746174,0x70726954,uVar2,0xf0,0x49,0x43,0x17);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(0xd);
+  thunk_SetUiResourceContextTagWord(unaff_ESI);
+  thunk_BindUiResourceTextAndStyle(0x5e5,4,s_Price_00694ae4);
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  }
+  thunk_RegisterUiResourceEntry(0x73746174,0x61766154,uVar2,0x136,0x49,0x48,0x15);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(0xd);
+  thunk_SetUiResourceContextTagWord(unaff_ESI);
+  thunk_BindUiResourceTextAndStyle(0x5e5,5,s_Available_00694ad8);
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  }
+  thunk_RegisterUiResourceEntry(0x73746174,0x71747954,uVar2,0x182,0x49,0xb5,0x15);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(0xd);
+  thunk_SetUiResourceContextTagWord(unaff_ESI);
+  thunk_BindUiResourceTextAndStyle(0x5e5,6,s_Quantity_to_Offer_00694ac0);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TToolBarCluster::thunk_ConstructUiResourceEntryTypeB();
+  }
+  thunk_RegisterUiResourceEntry(0x636c7573,0x746f7042,uVar2,0x10b,5,0x69,0x1a);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(5);
+  g_pUiResourceContext[0x21] = unaff_EBX;
+  g_pUiResourceContext = unaff_ESI;
+  piVar1 = (int *)AllocateWithFallbackHandler();
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x7472616e,uVar2,3,3,0xe,0x12,1,1);
+  thunk_SetUiResourceStateFlags();
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))();
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x94);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x63697479,uVar2,0x1f,3,0xe,0x12,1,1,0x746f7042);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+                    /* Pushes icon ID 0x24ED (9453), confirmed as the icon used to open the city
+                       screen. */
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24ed);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x94);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x74726164,uVar2,0x3b,3,0xe,0x12,1,1,0x746f7042);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24eb);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x94);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = TUpDownPictureButton::thunk_ConstructPictureScreenResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x6469706c,uVar2,0x58,3,0xe,0x12,1,1,0x746f7042);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x24e9);
+  thunk_PopUiResourcePoolNode();
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0xb4);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = thunk_ConstructUiCursorTextResourceEntry();
+  }
+  thunk_RegisterUiResourceEntry(0x74657677,0x63757273,uVar2,0x182,5,0xc9,0x1e);
+  thunk_SetUiResourceStateFlags(1);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x90);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = thunk_TPictureButton::TPictureButton();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x74696d62,uVar2,5,0xe7,0x2a,0x18);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x528);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x90);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = thunk_TPictureButton::TPictureButton();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x636f616c,uVar2,5,0x110,0x2a,0x18);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x529);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x90);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = thunk_TPictureButton::TPictureButton();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x69726f6e,uVar2,5,0x13c,0x2a,0x18);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52a);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x90);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = thunk_TPictureButton::TPictureButton();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x6f696c20,uVar2,5,0x164,0x2a,0x18);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52b);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x90);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = thunk_TPictureButton::TPictureButton();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x66616272,uVar2,0x251,0xe6,0x2a,0x18);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52d);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x90);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = thunk_TPictureButton::TPictureButton();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x6c756d62,uVar2,0x251,0x112,0x2a,0x18);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52e);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+  piVar1 = (int *)AllocateWithFallbackHandler(0x90);
+  if (piVar1 == unaff_ESI) {
+    uVar2 = 0;
+  }
+  else {
+    uVar2 = thunk_TPictureButton::TPictureButton();
+  }
+  thunk_RegisterUiResourceEntry(0x70696374,0x73746565,uVar2,0x251,0x138,0x2a,0x18);
+  thunk_SetUiResourceStateFlags(1,1);
+  thunk_SetUiResourceLayoutValues(10);
+  (**(code **)(*g_pUiResourceContext + 0x1c8))(0x52f);
+  g_pUiResourceContext = unaff_ESI;
+  thunk_PopUiResourcePoolNode();
+                    /* Shared cleanup tail reached by multiple templates before final head-pointer
+                       return. */
+  thunk_PopUiResourcePoolNode();
+  thunk_PopUiResourcePoolNode();
+                    /* Load global resource-head pointer used as the function return value. */
+  if (g_pUiResourceHead != unaff_ESI) {
+                    /* Conditional final cleanup for non-null global head before epilogue restore.
+                        */
+    thunk_PropagateUiResourceContextRecursive(unaff_EDI);
+  }
+  piVar1 = g_pUiResourceHead;
+  *unaff_FS_OFFSET = 0x848;
   return piVar1;
 }
 

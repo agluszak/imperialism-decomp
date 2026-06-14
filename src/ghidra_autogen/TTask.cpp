@@ -7,8 +7,6 @@
 // GHIDRA_NAME TTask::CreateTTaskInstance
 // GHIDRA_PROTO undefined CreateTTaskInstance()
 
-/* WARNING: Type propagation algorithm not settling */
-
 void __fastcall TTask::CreateTTaskInstance(int *param_1)
 
 {
@@ -17,11 +15,17 @@ void __fastcall TTask::CreateTTaskInstance(int *param_1)
   int *piVar3;
   int *unaff_FS_OFFSET;
   int unaff_retaddr;
-  int iVar4;
-  undefined4 uStack_40;
+  int **ppiStack_58;
+  int **ppiStack_54;
+  undefined4 uStack_50;
+  int iStack_4c;
+  undefined4 **ppuStack_48;
+  undefined1 *puStack_44;
+  undefined4 **ppuStack_40;
   char *pcStack_3c;
-  int aiStack_38 [3];
-  undefined4 uStack_14;
+  undefined4 **ppuStack_38;
+  undefined4 *puStack_34;
+  undefined4 *puStack_30;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -30,57 +34,82 @@ void __fastcall TTask::CreateTTaskInstance(int *param_1)
   puStack_8 = &LAB_006388b0;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  aiStack_38[2] = 0x61636f61;
+  puStack_30 = (undefined4 *)0x61636f61;
   pcVar1 = *(code **)(*param_1 + 0x94);
-  aiStack_38[1] = 0x5ad78d;
+  puStack_34 = (undefined4 *)0x5ad78d;
   piVar3 = (int *)(*pcVar1)();
-  iVar4 = *piVar3;
-  aiStack_38[1] = 0x5ad796;
-  (**(code **)(iVar4 + 0xc))();
-  aiStack_38[1] = 1;
-  aiStack_38[0] = unaff_retaddr + 0xea6;
+  iVar2 = *piVar3;
+  puStack_34 = (undefined4 *)0x5ad796;
+  (**(code **)(iVar2 + 0xc))();
+  puStack_34 = (undefined4 *)0x1;
+  ppuStack_38 = (undefined4 **)(unaff_retaddr + 0xea6);
   pcStack_3c = (char *)0x5ad7ab;
-  (**(code **)(iVar4 + 0x1c8))();
+  (**(code **)(iVar2 + 0x1c8))();
   pcStack_3c = (char *)0x64636f61;
-  uStack_40 = 0x5ad7b4;
+  ppuStack_40 = (undefined4 **)0x5ad7b4;
   piVar3 = (int *)(*pcVar1)();
-  iVar4 = *piVar3;
-  uStack_40 = 0x5ad7bd;
-  (**(code **)(iVar4 + 0xc))();
-  uStack_40 = 1;
-  (**(code **)(iVar4 + 0x1c8))(puStack_8 + 0xea6);
-  InitializeSharedStringRefFromEmpty();
-  InitializeSharedStringRefFromEmpty();
-  InitializeSharedStringRefFromEmpty();
-  InitializeSharedStringRefFromEmpty();
+  iVar2 = *piVar3;
+  ppuStack_40 = (undefined4 **)0x5ad7bd;
+  (**(code **)(iVar2 + 0xc))();
+  ppuStack_40 = (int **)0x1;
+  puStack_44 = puStack_8 + 0xea6;
+  ppuStack_48 = (undefined4 **)0x5ad7d2;
+  (**(code **)(iVar2 + 0x1c8))();
+  ppuStack_48 = (undefined4 **)0x5ad7db;
+  InitializeSharedStringRefFromEmpty(&puStack_30);
+  ppuStack_48 = (undefined4 **)0x5ad7ec;
+  InitializeSharedStringRefFromEmpty(&stack0xffffffd8);
+  ppuStack_48 = (undefined4 **)0x5ad7fa;
+  InitializeSharedStringRefFromEmpty(&puStack_34);
+  ppuStack_48 = (undefined4 **)0x5ad808;
+  InitializeSharedStringRefFromEmpty(&stack0xffffffd4);
   if (iStack_c == 0) {
-    iVar4 = 0xd;
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x273d,0xd,aiStack_38 + 2);
+    ppuStack_48 = &puStack_30;
+    iStack_4c = 0xd;
+    uStack_50 = 0x273d;
+    ppiStack_54 = (int **)0x5ad855;
+    (**(code **)(*g_pLocalizationTable + 0x84))();
   }
   else {
-    iVar4 = 0xc;
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x273d,0xc,aiStack_38 + 2);
+    ppuStack_48 = &puStack_30;
+    iStack_4c = 0xc;
+    uStack_50 = 0x273d;
+    ppiStack_54 = (int **)0x5ad82f;
+    (**(code **)(*g_pLocalizationTable + 0x84))();
   }
-  FormatOverlayTerrainLabelText(&uStack_40);
-  thunk_AssignSharedStringFromIndexedA8EntryNameField(uStack_14,aiStack_38);
-  scanBracketExpressions(g_pLocalizationTable,aiStack_38 + 1,pcStack_3c);
-  piVar3 = (int *)(*pcVar1)(0x696e666f);
+  ppiStack_54 = (int **)&ppuStack_40;
+  ppiStack_58 = (int **)0x5ad86a;
+  FormatOverlayTerrainLabelText();
+  ppiStack_54 = (int **)&ppuStack_38;
+  thunk_AssignSharedStringFromIndexedA8EntryNameField();
+  ppiStack_54 = ppuStack_40;
+  ppiStack_58 = ppuStack_38;
+  scanBracketExpressions(g_pLocalizationTable,&puStack_34,pcStack_3c);
+  ppiStack_54 = (int **)0x696e666f;
+  ppiStack_58 = (int **)0x5ad8aa;
+  piVar3 = (int *)(*pcVar1)();
   iVar2 = *piVar3;
+  ppiStack_58 = (int **)0x5ad8b3;
   (**(code **)(iVar2 + 0xc))();
-  (**(code **)(iVar2 + 0x1f0))(aiStack_38);
-  (**(code **)(iVar2 + 0x1e0))(0,0xc,0x2b6a);
+  ppiStack_58 = (int **)&ppuStack_38;
+  (**(code **)(iVar2 + 0x1f0))();
+  (**(code **)(iVar2 + 0x1e0))(0,0xc);
   (**(code **)(iVar2 + 0x1f8))(1);
   piVar3 = (int *)(*pcVar1)(0x706d6170);
   iVar2 = *piVar3;
   (**(code **)(iVar2 + 0xc))();
   TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(0);
-  piVar3[0x19] = aiStack_38[2];
+  piVar3[0x19] = (int)puStack_30;
   (**(code **)(iVar2 + 0xe4))();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = iVar4;
+  puStack_44._0_1_ = 2;
+  ReleaseSharedStringRefIfNotEmpty(&ppiStack_54);
+  puStack_44._0_1_ = 1;
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffa4);
+  puStack_44 = (undefined1 *)((uint)puStack_44._1_3_ << 8);
+  ReleaseSharedStringRefIfNotEmpty(&uStack_50);
+  puStack_44 = (undefined1 *)0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty(&ppiStack_58);
+  *unaff_FS_OFFSET = iStack_4c;
   return;
 }
 

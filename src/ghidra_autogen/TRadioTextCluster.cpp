@@ -17,13 +17,14 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   int iVar2;
   int *piVar3;
   undefined4 *puVar4;
-  int *piVar5;
-  int iVar6;
+  CString *pCVar5;
+  int *piVar6;
+  int iVar7;
   undefined4 *unaff_FS_OFFSET;
-  bool bVar7;
-  code *pcVar8;
+  bool bVar8;
   code *pcVar9;
-  undefined4 uVar10;
+  code *pcVar10;
+  undefined4 uVar11;
   undefined4 uStack_98;
   undefined4 **ppuStack_94;
   undefined4 **ppuStack_90;
@@ -67,11 +68,11 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   }
   else {
     uStack_34 = 0x5770b8;
-    AssignFromPtr(param_1 + 0x25,(int *)(g_pGlobalMapState + 0x1c));
+    AssignFromPtr(param_1 + 0x25,(CString *)(g_pGlobalMapState + 0x1c));
     *(undefined1 *)(param_1 + 0x26) = *(undefined1 *)(g_pGlobalMapState + 0x20);
-    bVar7 = DAT_00698ab0 == -1;
+    bVar8 = DAT_00698ab0 == -1;
     *(short *)((int)param_1 + 0x9a) = DAT_00698ab0;
-    if (bVar7) {
+    if (bVar8) {
       iVar2 = GenerateThreadLocalRandom15();
       *(short *)((int)param_1 + 0x9a) = (short)(iVar2 % 7);
     }
@@ -88,9 +89,9 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   uStack_44 = 0x636f756e;
   uStack_48 = 0x57712a;
   RefreshActiveControlThenApplyThemeStyleAndCaption();
-  pcVar8 = *(code **)(*param_1 + 0x94);
+  pcVar9 = *(code **)(*param_1 + 0x94);
   uStack_34 = 0x577142;
-  piVar3 = (int *)(*pcVar8)();
+  piVar3 = (int *)(*pcVar9)();
   uStack_34 = 0x57714b;
   (**(code **)(*piVar3 + 0xc))();
   *(undefined2 *)(piVar3 + 0x27) = 0xc;
@@ -100,7 +101,7 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   RebuildGlobalOrderManagersAndCapabilityState();
   uStack_34 = 0x686f7421;
   uStack_38 = 0x577171;
-  g_pCursorControlPanel = (int *)(*pcVar8)();
+  g_pCursorControlPanel = (int *)(*pcVar9)();
   uStack_38 = 0x57717d;
   (**(code **)(*g_pCursorControlPanel + 0xc))();
   uStack_38 = 0x2b6b;
@@ -189,7 +190,7 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
   uStack_54 = 0x74636f75;
   puStack_58 = (undefined4 *)0x5772f1;
-  piVar3 = (int *)(*pcVar8)();
+  piVar3 = (int *)(*pcVar9)();
   iVar2 = *piVar3;
   puStack_58 = (undefined4 *)0x5772fa;
   (**(code **)(iVar2 + 0xc))();
@@ -207,7 +208,7 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   (**(code **)(iVar2 + 0x1cc))();
   aiStack_64[0] = 0x6d617020;
   piStack_68 = (int *)0x57732b;
-  piVar3 = (int *)(*pcVar8)();
+  piVar3 = (int *)(*pcVar9)();
   piStack_68 = (int *)0x577334;
   (**(code **)(*piVar3 + 0xc))();
   piStack_68 = (int *)0x20;
@@ -238,7 +239,7 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   aiStack_70[1] = 0;
   aiStack_70[0] = 1;
   (**(code **)(*g_pCursorControlPanel + 0x1c4))();
-  piVar3 = (int *)(*pcVar8)();
+  piVar3 = (int *)(*pcVar9)();
   (**(code **)(*piVar3 + 0xc))();
   piVar3[0x18] = *(int *)(g_pStrategicMapViewSystem + 0x680);
   sVar1 = *(short *)((int)param_1 + 0x9a);
@@ -248,7 +249,7 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   piVar3[0x1c] = piVar3[0xe];
   if (*(int *)(g_pLocalizationTable + 0x44) == 0) {
     *(char *)(g_pLocalizationTable + 0x68) = (char)*(undefined2 *)(g_pLocalizationTable + 0x62);
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(aiStack_64);
     puStack_4c = (undefined4 *)0x2;
     pcStack_7c = (code *)0x57746e;
     GenerateMappedFlavorTextByCurrentContextNation();
@@ -258,23 +259,23 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
     LoadProfileStringAndAssignSharedRef();
     pcStack_7c = (code *)(aiStack_64 + 1);
     piStack_80 = (int *)0x5774a2;
-    piVar3 = (int *)NormalizeRuntimeCredentialNameToken();
+    pCVar5 = (CString *)NormalizeRuntimeCredentialNameToken();
     puStack_4c._0_1_ = 3;
     pcStack_7c = (code *)0x5774b2;
-    AssignFromPtr(&DAT_006a4220,piVar3);
+    AssignFromPtr(&DAT_006a4220,pCVar5);
     puStack_4c = (undefined4 *)CONCAT31(puStack_4c._1_3_,2);
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(aiStack_64 + 1);
   }
   else {
     pcStack_7c = (code *)aiStack_64;
     piStack_80 = (int *)0x577428;
-    piVar3 = (int *)NormalizeRuntimeCredentialNameToken();
+    pCVar5 = (CString *)NormalizeRuntimeCredentialNameToken();
     puStack_4c = (undefined4 *)0x1;
     pcStack_7c = (code *)0x57743b;
-    AssignFromPtr(&DAT_006a4220,piVar3);
+    AssignFromPtr(&DAT_006a4220,pCVar5);
   }
   puStack_4c = (undefined4 *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(aiStack_64);
   pcStack_7c = (code *)0x1;
   piStack_80 = (int *)0x2b6b;
   ppuStack_84 = (undefined4 **)0xc;
@@ -283,7 +284,7 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   ppuStack_90 = (undefined4 **)0x5774ed;
   RefreshActiveControlThenApplyThemeStyleAndCaption();
   pcStack_7c = (code *)0x5774f9;
-  piVar3 = (int *)(*pcVar8)();
+  piVar3 = (int *)(*pcVar9)();
   pcStack_7c = (code *)0x577502;
   (**(code **)(*piVar3 + 0xc))();
   pcStack_7c = (code *)0x0;
@@ -293,8 +294,8 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   pcStack_7c = (code *)0x64696674;
   *(undefined2 *)(piVar3 + 0x24) = 0x2b6b;
   piStack_80 = (int *)0x57752d;
-  piVar5 = (int *)(*pcVar8)();
-  aiStack_64[0] = *piVar5;
+  piVar6 = (int *)(*pcVar9)();
+  aiStack_64[0] = *piVar6;
   piStack_80 = (int *)0x57753b;
   (**(code **)(aiStack_64[0] + 0xc))();
   piStack_80 = (int *)0x2b6c;
@@ -302,10 +303,10 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   ppuStack_88 = (undefined4 **)0xe;
   uStack_8c = 0;
   ppuStack_94 = (undefined4 **)0x57754f;
-  ppuStack_90 = (undefined4 **)piVar5;
+  ppuStack_90 = (undefined4 **)piVar6;
   ApplyUiTextStyleAndThemeFlags();
   piStack_80 = (int *)0x57755b;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&puStack_4c);
   piStack_80 = (int *)0x2;
   ppuStack_88 = &puStack_4c;
   ppuStack_84 = (undefined4 **)0x2758;
@@ -318,15 +319,15 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   (**(code **)(aiStack_64[0] + 0x1c8))();
   ppuStack_88 = (undefined4 **)0x746e616d;
   uStack_8c = 0x577596;
-  piVar5 = (int *)(*pcVar8)();
-  aiStack_70[0] = *piVar5;
+  piVar6 = (int *)(*pcVar9)();
+  aiStack_70[0] = *piVar6;
   uStack_8c = 0x5775a4;
   (**(code **)(aiStack_70[0] + 0xc))();
   uStack_8c = 0x2b6c;
   ppuStack_90 = (undefined4 **)0x2b6a;
   ppuStack_94 = (undefined4 **)0xe;
   uStack_98 = 0;
-  ApplyUiTextStyleAndThemeFlags(piVar5);
+  ApplyUiTextStyleAndThemeFlags(piVar6);
   ppuStack_94 = &puStack_58;
   uStack_8c = 3;
   ppuStack_90 = (undefined4 **)0x2758;
@@ -338,8 +339,8 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
   (**(code **)(aiStack_70[0] + 0x1c8))();
   ppuStack_94 = (undefined4 **)0x6e616d65;
   uStack_98 = 0x5775ee;
-  piVar5 = (int *)(*pcVar8)();
-  iVar2 = *piVar5;
+  piVar6 = (int *)(*pcVar9)();
+  iVar2 = *piVar6;
   uStack_98 = 0x5775f7;
   (**(code **)(iVar2 + 0xc))();
   uStack_98 = 0;
@@ -347,44 +348,44 @@ TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *par
             ((-(uint)(*(short *)(g_pLocalizationTable + 0x62) != 0) & 0xf6080510) + 0x72616e64);
   pcStack_7c = *(code **)(iVar2 + 0x94);
   uStack_98 = 0x68697374;
-  *(undefined2 *)(piVar5 + 0x24) = 0x2b6b;
-  piVar5 = (int *)(*pcStack_7c)();
-  (**(code **)(*piVar5 + 0xc))();
-  ApplyUiTextStyleAndThemeFlags(piVar5,0,0xc,0x2b6b,0x2b6c);
-  uVar10 = 0;
-  pcVar9 = (code *)0x1;
-  (**(code **)(*piVar5 + 0x1c4))();
+  *(undefined2 *)(piVar6 + 0x24) = 0x2b6b;
+  piVar6 = (int *)(*pcStack_7c)();
+  (**(code **)(*piVar6 + 0xc))();
+  ApplyUiTextStyleAndThemeFlags(piVar6,0,0xc,0x2b6b,0x2b6c);
+  uVar11 = 0;
+  pcVar10 = (code *)0x1;
+  (**(code **)(*piVar6 + 0x1c4))();
   thunk_LoadUiStringResourceByGroupAndIndex(aiStack_70,0x2758,4);
-  (**(code **)(*piVar5 + 0x1c8))(aiStack_70,0);
-  piVar5[0xf] = 0x68697374;
-  piVar5 = (int *)(*(code *)ppuStack_90)(0x72616e64);
-  iVar2 = *piVar5;
+  (**(code **)(*piVar6 + 0x1c8))(aiStack_70,0);
+  piVar6[0xf] = 0x68697374;
+  piVar6 = (int *)(*(code *)ppuStack_90)(0x72616e64);
+  iVar2 = *piVar6;
   (**(code **)(iVar2 + 0xc))();
-  ApplyUiTextStyleAndThemeFlags(piVar5,0,0xc,0x2b6b,0x2b6c);
+  ApplyUiTextStyleAndThemeFlags(piVar6,0,0xc,0x2b6b,0x2b6c);
   (**(code **)(iVar2 + 0x1c4))(1,0);
   thunk_LoadUiStringResourceByGroupAndIndex(&ppuStack_84,0x2758,5);
   (**(code **)(iVar2 + 0x1c8))(&ppuStack_84,0);
   iVar2 = *piVar3;
-  piVar5[0xf] = 0x72616e64;
-  iVar6 = 0;
-  pcVar8 = *(code **)(iVar2 + 0x94);
+  piVar6[0xf] = 0x72616e64;
+  iVar7 = 0;
+  pcVar9 = *(code **)(iVar2 + 0x94);
   do {
-    piVar3 = (int *)(*pcVar8)(iVar6 + 0x64696630);
+    piVar3 = (int *)(*pcVar9)(iVar7 + 0x64696630);
     (**(code **)(*piVar3 + 0xc))();
     ApplyUiTextStyleAndThemeFlags(piVar3,0,0xc,0x2b6b,0x2b6c);
     (**(code **)(*piVar3 + 0x1c4))(1,0);
-    thunk_LoadUiStringResourceByGroupAndIndex(&uStack_98,0x2737,iVar6 + 0xe);
+    thunk_LoadUiStringResourceByGroupAndIndex(&uStack_98,0x2737,iVar7 + 0xe);
     (**(code **)(*piVar3 + 0x1c8))(&uStack_98,0);
-    piVar3[0xf] = iVar6;
-    iVar6 = iVar6 + 1;
-  } while (iVar6 < 5);
+    piVar3[0xf] = iVar7;
+    iVar7 = iVar7 + 1;
+  } while (iVar7 < 5);
   if (((char)param_1[0x29] == '\0') && (*(int *)(g_pLocalizationTable + 0x44) == 0)) {
-    piVar3 = (int *)(*pcVar9)(0x636f756e);
+    piVar3 = (int *)(*pcVar10)(0x636f756e);
     (**(code **)(*piVar3 + 0xc))();
   }
   ppuStack_94 = (undefined4 **)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = uVar10;
+  ReleaseSharedStringRefIfNotEmpty(&uStack_8c);
+  *unaff_FS_OFFSET = uVar11;
   return;
 }
 

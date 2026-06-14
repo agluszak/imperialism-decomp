@@ -25,7 +25,7 @@ void __fastcall TButton::CreateTButtonInstance(undefined4 *param_1)
   }
   FreeHeapBufferIfNotNull(param_1[0x12]);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -72,8 +72,8 @@ TView * TButton::ConstructTButtonBaseState(void)
     this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = &PTR_LAB_0064a2b8;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+    this->vftable = &_vftable_;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     this->vftable = &PTR_LAB_0064a708;
     *unaff_FS_OFFSET = local_c;
     return this;

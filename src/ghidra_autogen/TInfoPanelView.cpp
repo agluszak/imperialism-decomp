@@ -47,7 +47,7 @@ undefined ** TInfoPanelView::GetTInfoPanelViewClassNamePointer(void)
 // GHIDRA_NAME TInfoPanelView::ConstructTInfoPanelViewBaseState
 // GHIDRA_PROTO undefined ConstructTInfoPanelViewBaseState()
 
-void __thiscall TInfoPanelView::ConstructTInfoPanelViewBaseState(int *param_1,code *param_2)
+void __thiscall TInfoPanelView::ConstructTInfoPanelViewBaseState(int *param_1,CString param_2)
 
 {
   int iVar1;
@@ -67,7 +67,7 @@ void __thiscall TInfoPanelView::ConstructTInfoPanelViewBaseState(int *param_1,co
   puStack_8 = &LAB_00632f50;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_1c);
   iVar1 = 0;
   local_4 = 0;
   local_14 = 0;
@@ -77,10 +77,10 @@ void __thiscall TInfoPanelView::ConstructTInfoPanelViewBaseState(int *param_1,co
   puStack_34 = (undefined1 *)0x4fa063;
   TView::thunk_NoOpUiLifecycleHook();
   param_1[0x18] = param_1[8];
-  param_2 = *(code **)(*param_1 + 0x94);
+  param_2.data_ptr = *(undefined4 *)(*param_1 + 0x94);
   do {
     puStack_34 = (undefined1 *)0x4fa08a;
-    (*param_2)();
+    (*(code *)param_2.data_ptr)();
     puStack_34 = &stack0xffffffe0;
     (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,iVar1 + 0x4e);
     puStack_18 = (undefined1 *)&puStack_34;
@@ -89,17 +89,18 @@ void __thiscall TInfoPanelView::ConstructTInfoPanelViewBaseState(int *param_1,co
     iVar1 = iVar1 + 1;
   } while (iVar1 < 4);
   puStack_34 = (undefined1 *)0x4fa0d9;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId();
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&param_2,(char *)&g_szEmptyString);
   local_4._0_1_ = 1;
   puStack_34 = (undefined1 *)0x4fa0ec;
-  AssignFromPtr(local_1c,(int *)&param_2);
+  AssignFromPtr(local_1c,&param_2);
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   puStack_18 = (undefined1 *)&puStack_34;
   thunk_AssignStringSharedRefAndReturnThis(local_1c);
   InitializeAndRunMainRoutine();
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_1c);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -134,10 +135,12 @@ void __fastcall TInfoPanelView::DestructTInfoPanelViewAndMaybeFree(int param_1)
   int local_34;
   int local_30;
   int local_2c;
+  undefined1 local_28 [4];
   undefined4 local_24;
   int iStack_20;
   int local_1c;
   int local_18;
+  undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -148,16 +151,16 @@ void __fastcall TInfoPanelView::DestructTInfoPanelViewAndMaybeFree(int param_1)
   *unaff_FS_OFFSET = &uStack_c;
   piStack_4c = (int *)0x4fa1bb;
   local_1c = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_38);
   local_4 = 0;
   piStack_4c = (int *)0x4fa1cc;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4._0_1_ = 1;
   piStack_4c = (int *)0x4fa1da;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_28);
   local_4._0_1_ = 2;
   piStack_4c = (int *)0x4fa1e8;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_2c);
   sVar3 = *(short *)(param_1 + 0x28);
   iVar10 = CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar3);
   sVar1 = *(short *)(param_1 + 0x24);
@@ -356,13 +359,13 @@ void __fastcall TInfoPanelView::DestructTInfoPanelViewAndMaybeFree(int param_1)
   }
 LAB_004faa26:
   local_1c._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffbc);
   local_1c._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffc0);
   local_1c = (uint)local_1c._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_28);
   local_1c = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_50);
   *unaff_FS_OFFSET = local_24;
   return;
 }

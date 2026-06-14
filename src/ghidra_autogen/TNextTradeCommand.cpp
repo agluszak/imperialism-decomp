@@ -144,11 +144,13 @@ void __fastcall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(int *pa
   undefined2 extraout_var;
   int extraout_EDX;
   int iVar7;
-  undefined2 uVar9;
   undefined1 *puVar8;
   int unaff_EBP;
   int *unaff_FS_OFFSET;
-  int iVar10;
+  undefined4 uStack_58;
+  undefined4 uStack_54;
+  int iVar9;
+  char *pcStack_2c;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -157,6 +159,7 @@ void __fastcall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(int *pa
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006396f2;
   *unaff_FS_OFFSET = (int)&iStack_c;
+  pcStack_2c = (char *)0x636c7573;
   pcVar1 = *(code **)(*param_1 + 0x94);
   piVar5 = (int *)(*pcVar1)();
   if (piVar5 == (int *)0x0) {
@@ -170,7 +173,7 @@ void __fastcall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(int *pa
   }
   cVar3 = (**(code **)(*piVar5 + 0x1cc))();
   *(short *)((int)param_1 + 0x9a) = (short)cVar3;
-  iVar10 = 0x70757263;
+  iVar9 = 0x70757263;
   piVar5 = (int *)(*pcVar1)();
   if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -186,39 +189,47 @@ void __fastcall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(int *pa
   else {
     iVar7 = (int)sVar4;
     if ((piVar5[0x2a] < iVar7) || (sVar4 < 0)) {
-      InitializeSharedStringRefFromEmpty();
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&puStack_8);
+      InitializeSharedStringRefFromEmpty(&stack0xffffffdc);
       if (*(char *)((int)param_1 + 0x9d) == '\0') {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&stack0xffffffe0);
         FormatStringWithVarArgsToSharedRef();
         (**(code **)(*g_pLocalizationTable + 0x84))();
-        scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd0,(char *)0x636c7573);
-        ReleaseSharedStringRefIfNotEmpty();
+        uStack_54 = 0x5c07bd;
+        scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd0,pcStack_2c);
+        ReleaseSharedStringRefIfNotEmpty(&pcStack_2c);
       }
       else {
         (**(code **)(*g_pLocalizationTable + 0x84))();
       }
-      thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffd0);
+      thunk_AssignStringSharedRefAndReturnThis();
       (**(code **)(*DAT_006a2158 + 0x4c))();
       puVar8 = &stack0xffffffe4;
       (**(code **)(iVar2 + 0x1dc))();
-      (**(code **)(iVar2 + 0x1d8))(0,*(undefined4 *)(unaff_EBP + -8),1);
-      ReleaseSharedStringRefIfNotEmpty();
-      ReleaseSharedStringRefIfNotEmpty();
+      uStack_54 = *(undefined4 *)(unaff_EBP + -8);
+      uStack_58 = 0;
+      (**(code **)(iVar2 + 0x1d8))();
+      ReleaseSharedStringRefIfNotEmpty(&uStack_58);
+      ReleaseSharedStringRefIfNotEmpty(&stack0xffffffc4);
       goto LAB_005c082f;
     }
   }
-  uVar9 = (undefined2)((uint)iVar7 >> 0x10);
-  puVar8 = (undefined1 *)CONCAT22(uVar9,*(undefined2 *)((int)param_1 + 0x92));
-  (**(code **)(*(int *)g_pNationInteractionStateManager + 0x60))
-            (CONCAT22(uVar9,(short)param_1[0x24]));
-  piVar5 = (int *)(*pcVar1)(0x61636365);
+  puVar8 = (undefined1 *)CONCAT22((short)((uint)iVar7 >> 0x10),*(undefined2 *)((int)param_1 + 0x92))
+  ;
+  uStack_54 = 0x5c0644;
+  (**(code **)(*(int *)g_pNationInteractionStateManager + 0x60))();
+  uStack_54 = 0x61636365;
+  uStack_58 = 0x5c064d;
+  piVar5 = (int *)(*pcVar1)();
   iVar2 = *piVar5;
+  uStack_58 = 0x5c0656;
   (**(code **)(iVar2 + 0xc))();
-  piVar5 = (int *)(*pcVar1)(0x72656a65);
-  (**(code **)(*piVar5 + 0xc))();
+  uStack_58 = 0x72656a65;
+  piVar5 = (int *)(*pcVar1)();
+  pcStack_2c = (char *)*piVar5;
+  (**(code **)(pcStack_2c + 0xc))();
   (**(code **)(iVar2 + 0xa8))(0,0);
-  (**(code **)(iVar10 + 0xa8))(0,0);
+  (**(code **)(iVar9 + 0xa8))(0,0);
   if ((short)param_1[0x26] != 0) {
     piVar5 = (int *)(**(code **)(*(int *)DAT_006a2158[1] + 0x94))(0x746f6f6c);
     if (piVar5 != (int *)0x0) {
@@ -226,8 +237,8 @@ void __fastcall TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt(int *pa
     }
   }
   if (g_pLocalizationTable[0x11] != 2) {
-    iVar10 = AllocateWithFallbackHandler(0x18);
-    if (iVar10 == 0) {
+    iVar9 = AllocateWithFallbackHandler(0x18);
+    if (iVar9 == 0) {
       uVar6 = 0;
     }
     else {

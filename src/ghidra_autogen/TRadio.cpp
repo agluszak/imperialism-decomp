@@ -25,7 +25,7 @@ void __fastcall TRadio::CreateTRadioInstance(undefined4 *param_1)
   }
   FreeHeapBufferIfNotNull(param_1[0x12]);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;

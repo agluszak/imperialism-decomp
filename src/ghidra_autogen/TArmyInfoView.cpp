@@ -37,13 +37,13 @@ _CreateTArmyInfoViewInstance__YAPAUArmyInfoViewState___Z_imperialismsrcgameTArmy
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591580
-// GHIDRA_NAME TArmyInfoView::GetTArmyInfoViewClassNamePointer
-// GHIDRA_PROTO undefined GetTArmyInfoViewClassNamePointer()
+// GHIDRA_NAME TArmyInfoView::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TArmyInfoView::GetTArmyInfoViewClassNamePointer(void)
+undefined ** TArmyInfoView::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TArmyInfoView_00663148;
+  return &g_pClassDescTArmyInfoView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005915A0

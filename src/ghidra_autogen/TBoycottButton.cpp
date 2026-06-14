@@ -34,10 +34,10 @@ undefined4 * TBoycottButton::CreateTBoycottButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584760
-// GHIDRA_NAME TBoycottButton::GetTBoycottButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTBoycottButtonClassNamePointer()
+// GHIDRA_NAME TBoycottButton::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TBoycottButton::GetTBoycottButtonClassNamePointer(void)
+char * TBoycottButton::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTBoycottButton;

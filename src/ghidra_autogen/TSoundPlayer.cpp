@@ -42,13 +42,13 @@ _CreateTSoundPlayerInstance__YAPAUSoundPlayerState___Z_imperialismsrcgameTSoundP
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593350
-// GHIDRA_NAME TSoundPlayer::GetTSoundPlayerClassNamePointer
-// GHIDRA_PROTO undefined GetTSoundPlayerClassNamePointer()
+// GHIDRA_NAME TSoundPlayer::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TSoundPlayer::GetTSoundPlayerClassNamePointer(void)
+undefined ** TSoundPlayer::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TSoundPlayer_00668a18;
+  return &g_pClassDescTSoundPlayer;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00593370

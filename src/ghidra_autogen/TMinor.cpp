@@ -37,10 +37,10 @@ undefined4 * TMinor::CreateTMinorInstance(void)
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4._0_1_ = 1;
     local_4._1_3_ = 0;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(puVar1 + 1);
     local_4 = CONCAT31(local_4._1_3_,2);
-    InitializeSharedStringRefFromEmpty();
-    *puVar1 = &PTR_thunk_GetTMinorClassNamePointer_At00406ee7_00653c90;
+    InitializeSharedStringRefFromEmpty(puVar1 + 2);
+    *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -74,10 +74,10 @@ undefined4 * __fastcall TMinor::TMinor(undefined4 *param_1)
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 1);
   local_4 = CONCAT31(local_4._1_3_,1);
-  InitializeSharedStringRefFromEmpty();
-  *param_1 = &PTR_thunk_GetTMinorClassNamePointer_At00406ee7_00653c90;
+  InitializeSharedStringRefFromEmpty(param_1 + 2);
+  *param_1 = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }

@@ -38,13 +38,13 @@ undefined4 * TProductionCluster::CreateTProductionClusterInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586900
-// GHIDRA_NAME TProductionCluster::GetTProductionClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTProductionClusterClassNamePointer()
+// GHIDRA_NAME TProductionCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TProductionCluster::GetTProductionClusterClassNamePointer(void)
+undefined ** TProductionCluster::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TProductionCluster_00662f20;
+  return &g_pClassDescTProductionCluster;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586920
@@ -62,6 +62,20 @@ TProductionCluster::ConstructTProductionClusterBaseState(undefined4 *param_1)
   param_1[0x22] = 0;
   *(undefined2 *)(param_1 + 0x23) = 0;
   *(undefined2 *)((int)param_1 + 0x8e) = 0;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00586970
+// GHIDRA_NAME TProductionCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+TView * __thiscall TProductionCluster::_scalar_deleting_destructor_(TView *param_1,byte param_2)
+
+{
+  TView::thunk_DestructTViewBaseState(param_1);
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
   return param_1;
 }
 

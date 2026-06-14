@@ -34,10 +34,10 @@ undefined4 * TPlacard::CreateTPlacardInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B9F0
-// GHIDRA_NAME TPlacard::GetTPlacardClassNamePointer
-// GHIDRA_PROTO undefined GetTPlacardClassNamePointer()
+// GHIDRA_NAME TPlacard::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-int * TPlacard::GetTPlacardClassNamePointer(void)
+int * TPlacard::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTPlacard;
@@ -53,6 +53,20 @@ undefined4 * __fastcall TPlacard::TPlacard(undefined4 *param_1)
   thunk_TPictureButton::TPictureButton();
   *param_1 = &PTR_LAB_00667218;
   *(undefined2 *)(param_1 + 0x24) = 0;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058BA40
+// GHIDRA_NAME TPlacard::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall TPlacard::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
   return param_1;
 }
 
@@ -123,7 +137,7 @@ void __fastcall TPlacard::RenderPlacardValueTextWithShadow(int param_1)
   puStack_8 = &LAB_00637b58;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4 = 0;
   THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay();
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
@@ -147,7 +161,7 @@ void __fastcall TPlacard::RenderPlacardValueTextWithShadow(int param_1)
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawFillColor();
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }

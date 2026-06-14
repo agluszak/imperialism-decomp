@@ -1,6 +1,6 @@
 {
   "failed_count": 1,
-  "function_count": 9287,
+  "function_count": 9299,
   "generated_cpp_files": [
     "CArchive.cpp",
     "CBrush.cpp",
@@ -91,6 +91,7 @@
     "TCityDialogModalState_00649A50.cpp",
     "TCityInteriorMinister.cpp",
     "TCityProductionView.cpp",
+    "TCityRecruitmentOrderContext.cpp",
     "TCitySiteView.cpp",
     "TCityTask.cpp",
     "TCivAnimation.cpp",
@@ -180,6 +181,7 @@
     "TGameSetupPicture.cpp",
     "TGameWindow.cpp",
     "TGarrisonView.cpp",
+    "TGlobalMapState.cpp",
     "TGrantsView.cpp",
     "TGreatPower.cpp",
     "THQButton.cpp",

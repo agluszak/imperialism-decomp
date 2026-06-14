@@ -32,7 +32,7 @@ TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState(undefined4 *par
   *unaff_FS_OFFSET = &local_c;
   TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 0x25);
   *(undefined1 *)(param_1 + 0x26) = 0;
   *(undefined1 *)(param_1 + 0x29) = 0;
   *param_1 = &PTR_LAB_006621e0;
@@ -59,7 +59,7 @@ TSetupRandomMapPicture::DestructTSetupRandomMapPictureAndMaybeFree(undefined4 pa
 // GHIDRA_NAME TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState
 // GHIDRA_PROTO undefined DestructTSetupRandomMapPictureBaseState()
 
-void TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(void)
+void __fastcall TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(int param_1)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -71,7 +71,7 @@ void TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState(void)
   puStack_8 = &LAB_00636938;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(param_1 + 0x94));
   local_4 = 0xffffffff;
   thunk_DestructCityDialogSharedBaseState();
   *unaff_FS_OFFSET = local_c;

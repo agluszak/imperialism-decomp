@@ -88,6 +88,7 @@ TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
   char cVar2;
   int *piVar3;
   undefined4 uVar4;
+  CString *src_ref;
   int iVar5;
   LONG LVar6;
   char *unaff_EDI;
@@ -97,7 +98,7 @@ TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
   LONG LStack_84;
   undefined1 *puStack_80;
   undefined4 uStack_7c;
-  int iStack_78;
+  CString CStack_78;
   LONG *pLStack_74;
   LONG LStack_70;
   LONG LStack_58;
@@ -122,13 +123,13 @@ TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
          0 < (short)param_1[0x25])) {
         LStack_70 = CONCAT22(0x6c63,(short)param_1[0x24]);
         pLStack_74 = (LONG *)((int)pLStack_74 + -1);
-        iStack_78 = 0x5bbf66;
+        CStack_78.data_ptr = 0x5bbf66;
         (**(code **)(*param_1 + 0x1cc))();
       }
       else if ((iVar5 == 0x72636f72) && ((short)param_1[0x25] < *(short *)((int)param_1 + 0x92))) {
         LStack_70 = CONCAT22(0x7263,(short)param_1[0x24]);
         pLStack_74 = (LONG *)(CONCAT22((short)((uint)pLStack_74 >> 0x10),(short)param_1[0x25]) + 1);
-        iStack_78 = 0x5bbf94;
+        CStack_78.data_ptr = 0x5bbf94;
         (**(code **)(*param_1 + 0x1cc))();
       }
       else if ((iVar5 == 0x6d61726b) && (*(char *)((int)param_1 + 0xb1) != '\0')) {
@@ -163,15 +164,15 @@ TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
     pLStack_74 = (LONG *)0x5bbcd4;
     (**(code **)(iVar5 + 0xc))();
     pLStack_74 = (LONG *)0x5bbcdd;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&RStack_54.top);
     puStack_8 = (undefined1 *)0x0;
     pLStack_74 = (LONG *)0x5bbcee;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&RStack_54);
     puStack_8._0_1_ = 1;
     pLStack_74 = (LONG *)0x5bbcfc;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&LStack_58);
     pLStack_74 = &LStack_58;
-    iStack_78 = 3;
+    CStack_78.data_ptr = 3;
     uStack_7c = 0x2741;
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
     puStack_80 = (undefined1 *)0x5bbd1b;
@@ -195,9 +196,9 @@ TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
     cVar2 = (**(code **)(iVar5 + 0xec))();
     if (cVar2 == '\0') {
       ApplyUiTextStyleAndThemeFlags(piVar3,0,0x12,0x2b6b,0x2b6c);
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&uStack_88);
       uStack_30 = 3;
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&LStack_84);
       uStack_30 = 4;
       FormatStringWithVarArgsToSharedRef
                 (&LStack_84,&g_szDecimalFormat,
@@ -207,38 +208,38 @@ TDealBookPicture::HandleDealBookTradeCommandAndRefreshNationLines
       uVar4 = AssignSharedStringConcatRefAndCStr
                         (&LStack_70,&LStack_8c,g_Build_Map_Order_LookupTable_00695794);
       uStack_34 = 5;
-      uVar4 = AssignSharedStringConcatRefAndRef(&pLStack_74,uVar4,&uStack_88);
+      src_ref = (CString *)AssignSharedStringConcatRefAndRef(&pLStack_74,uVar4,&uStack_88);
       uStack_34 = 6;
-      TToolBarCluster::StringSharedRef_AssignFromPtr(uVar4);
+      TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&CStack_78,src_ref);
       uStack_34 = 7;
-      AssignFromPtr(&LStack_8c,&iStack_78);
+      AssignFromPtr(&LStack_8c,&CStack_78);
       uStack_34 = 6;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&CStack_78);
       uStack_34 = 5;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&pLStack_74);
       uStack_34 = 4;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&LStack_70);
       (**(code **)(iVar5 + 0x1c8))(&LStack_8c,0);
       (**(code **)(iVar5 + 0xa4))(1,1);
       uStack_30 = 3;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&LStack_84);
       uStack_30 = 2;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&uStack_88);
     }
     (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x13f0,0,1);
     iStack_4._0_1_ = 1;
     LStack_70 = 0x5bbf14;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&RStack_54);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
     LStack_70 = 0x5bbf22;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&RStack_54.top);
     iStack_4 = 0xffffffff;
     LStack_70 = 0x5bbf33;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&RStack_54.right);
   }
   LStack_70 = param_4;
   pLStack_74 = param_3;
-  iStack_78 = param_2;
+  CStack_78.data_ptr = param_2;
   uStack_7c = 0x5bbfc1;
   thunk_HandleCityDialogToggleCommandOrForward();
 LAB_005bbfc1:

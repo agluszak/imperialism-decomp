@@ -12,7 +12,7 @@ undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
 {
   undefined4 *puVar1;
   undefined4 *unaff_FS_OFFSET;
-  int local_14;
+  CString local_14;
   undefined4 *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -32,7 +32,7 @@ undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
     local_4._0_1_ = 1;
     local_4._1_3_ = 0;
     local_10 = puVar1;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(puVar1 + 9);
     local_4._0_1_ = 2;
     *(undefined2 *)(puVar1 + 0xe) = 0;
     *(undefined2 *)((int)puVar1 + 0x3a) = 0;
@@ -42,11 +42,12 @@ undefined4 * TMilitaryUnit::CreateTMilitaryUnitInstance(void)
     *(undefined1 *)(puVar1 + 7) = 1;
     *(undefined2 *)(puVar1 + 0xd) = 500;
     *(undefined2 *)((int)puVar1 + 0x36) = 0;
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+              ((TToolBarCluster *)&local_14,(char *)&g_szEmptyString);
     local_4._0_1_ = 3;
     AssignFromPtr(puVar1 + 9,&local_14);
     local_4 = CONCAT31(local_4._1_3_,2);
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_14);
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }

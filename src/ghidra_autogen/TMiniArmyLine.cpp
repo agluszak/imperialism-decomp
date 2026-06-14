@@ -127,15 +127,15 @@ TMiniArmyLine::ConstructTMiniArmyLineBaseState(int param_1,undefined4 param_2,un
     ppuStack_48 = (undefined1 **)0x1;
     (**(code **)(*piVar4 + 0xa8))();
     piVar4[7] = 0x75706772;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&uStack_2c);
     local_c = 2;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&stack0xffffffc8);
     local_c._0_1_ = 3;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&pcStack_30);
     local_c._0_1_ = 4;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_34);
     local_c._0_1_ = 5;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&local_20);
     local_c = CONCAT31(local_c._1_3_,6);
     WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840
               (&stack0xffffffc6,&local_4,&stack0xffffffc4,&stack0x00000000);
@@ -148,7 +148,7 @@ TMiniArmyLine::ConstructTMiniArmyLineBaseState(int param_1,undefined4 param_2,un
       scanBracketExpressions(g_pLocalizationTable,auStack_24,pcStack_30);
     }
     else {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&pcStack_30);
       local_14 = (undefined1 *)CONCAT31(local_14._1_3_,7);
       FormatStringWithVarArgsToSharedRef(&pcStack_30,&g_szDecimalFormat,(int)(short)puStack_8);
       (**(code **)(*g_pLocalizationTable + 0x84))(0x2746,6,&stack0xffffffc0);
@@ -157,7 +157,7 @@ TMiniArmyLine::ConstructTMiniArmyLineBaseState(int param_1,undefined4 param_2,un
       scanBracketExpressions(g_pLocalizationTable,auStack_24,pcStack_30);
       local_4 = CONCAT31(local_4._1_3_,6);
       piStack_44 = (int *)0x4aabda;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&local_20);
     }
     local_14 = (undefined1 *)&ppuStack_48;
     piStack_44 = piVar4;
@@ -165,19 +165,19 @@ TMiniArmyLine::ConstructTMiniArmyLineBaseState(int param_1,undefined4 param_2,un
     InitializeAndRunMainRoutine();
     local_4._0_1_ = 5;
     piStack_44 = (int *)0x4aac02;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_18);
     local_4._0_1_ = 4;
     piStack_44 = (int *)0x4aac10;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&uStack_2c);
     local_4._0_1_ = 3;
     piStack_44 = (int *)0x4aac1e;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&puStack_28);
     local_4 = CONCAT31(local_4._1_3_,2);
     piStack_44 = (int *)0x4aac2c;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&pcStack_30);
     local_4 = 0xffffffff;
     piStack_44 = (int *)0x4aac3d;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_24);
   }
   *unaff_FS_OFFSET = local_c;
   return;

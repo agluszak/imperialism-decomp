@@ -101,12 +101,14 @@ void __thiscall TCitySiteView::HandleTileClickForHomeSelectionOrPortBuild(int pa
 
 {
   int iVar1;
+  int nTileIndex;
   char cVar2;
   char cVar3;
   short sVar4;
   undefined4 uVar5;
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
+  int iStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -117,12 +119,14 @@ void __thiscall TCitySiteView::HandleTileClickForHomeSelectionOrPortBuild(int pa
   *unaff_FS_OFFSET = &uStack_c;
   cVar3 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + (short)param_2 * 0x24);
   cVar2 = *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 4 + (short)param_2 * 0x24);
+  iStack_10 = param_1;
   sVar4 = UiRuntimeContext::GetActiveNationId();
+  nTileIndex = param_2;
   if (cVar2 == sVar4) {
     if (((((cVar3 == '\0') || (cVar3 == '\a')) || (cVar3 == '\x01')) || (cVar3 == '\x06')) &&
        (cVar2 = IsValidSecondaryNationHomeTileCandidate(), cVar2 != '\0')) {
-      *(short *)(*(int *)(param_1 + 0x364) + 0x14) = (short)param_2;
-      InitializeSharedStringRefFromEmpty();
+      *(short *)(*(int *)(param_1 + 0x364) + 0x14) = (short)nTileIndex;
+      InitializeSharedStringRefFromEmpty(&param_2);
       local_4 = 3;
       thunk_AssignSharedStringFromIndexedA8EntryNameField();
       (**(code **)(**(int **)(param_1 + 0x364) + 0x38))();
@@ -133,22 +137,22 @@ void __thiscall TCitySiteView::HandleTileClickForHomeSelectionOrPortBuild(int pa
       else {
         iVar1 = *(int *)g_pGlobalMapState;
         uVar5 = UiRuntimeContext::GetActiveNationId();
-        (**(code **)(iVar1 + 0x134))(param_2,uVar5);
+        (**(code **)(iVar1 + 0x134))(nTileIndex,uVar5);
         (**(code **)(*g_pLocalizationTable + 0x44))();
       }
     }
     else {
       PlayDefaultMessageBeep();
       if ((((cVar3 == '\0') || (cVar3 == '\a')) || ((cVar3 == '\x01' || (cVar3 == '\x06')))) &&
-         (cVar3 = TDeluxeText::CanBuildPortAtTile(g_pGlobalMapState,param_2), cVar3 != '\0')) {
-        InitializeSharedStringRefFromEmpty();
+         (cVar3 = TDeluxeText::CanBuildPortAtTile(g_pGlobalMapState,nTileIndex), cVar3 != '\0')) {
+        InitializeSharedStringRefFromEmpty(&param_2);
         local_4 = 2;
         (**(code **)(*g_pLocalizationTable + 0x84))();
         thunk_AssignStringSharedRefAndReturnThis(&puStack_8);
         (**(code **)(*DAT_006a2158 + 0x4c))();
       }
       else {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&param_2);
         local_4 = 1;
         (**(code **)(*g_pLocalizationTable + 0x84))();
         thunk_AssignStringSharedRefAndReturnThis(&puStack_8);
@@ -158,13 +162,13 @@ void __thiscall TCitySiteView::HandleTileClickForHomeSelectionOrPortBuild(int pa
   }
   else {
     PlayDefaultMessageBeep();
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&param_2);
     local_4 = 0;
     (**(code **)(*g_pLocalizationTable + 0x84))();
     thunk_AssignStringSharedRefAndReturnThis(&puStack_8);
     (**(code **)(*DAT_006a2158 + 0x4c))();
   }
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&iStack_10);
   *unaff_FS_OFFSET = unaff_EDI;
   return;
 }

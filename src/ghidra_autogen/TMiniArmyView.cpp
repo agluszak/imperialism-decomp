@@ -51,12 +51,12 @@ void __fastcall TMiniArmyView::ConstructTMiniArmyViewBaseState(int param_1)
 
 {
   short sVar1;
-  int *dst_ref_ptr;
+  CString *src_ref;
   short sVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined1 local_40 [4];
-  int local_3c;
-  int local_38;
+  CString local_3c;
+  CString local_38;
   undefined1 local_34 [4];
   undefined1 *local_30;
   RECT local_2c;
@@ -69,30 +69,30 @@ void __fastcall TMiniArmyView::ConstructTMiniArmyViewBaseState(int param_1)
   puStack_8 = &LAB_006305d0;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_40);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_38);
   local_4._0_1_ = 1;
-  AssignFromPtr(&local_38,(int *)(*(int *)(param_1 + 0x84) + 0x24));
+  AssignFromPtr(&local_38,(CString *)(*(int *)(param_1 + 0x84) + 0x24));
   AssignFromPtr(local_40,&local_38);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xc,0x2b6a);
   sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
   if (100 < sVar1) {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&local_3c);
     local_4._0_1_ = 2;
     do {
-      dst_ref_ptr = (int *)AssignSharedStringFromMidSubstring(local_34,1);
+      src_ref = (CString *)AssignSharedStringFromMidSubstring(local_34,1);
       local_4._0_1_ = 3;
-      AssignFromPtr(&local_3c,dst_ref_ptr);
+      AssignFromPtr(&local_3c,src_ref);
       local_4._0_1_ = 2;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(local_34);
       AssignFromPtr(local_40,&local_3c);
-      AssignStringSharedFromCStr();
+      AssignStringSharedFromCStr(&local_3c,&DAT_0069587c);
       sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     } while (100 < sVar1);
     AssignFromPtr(local_40,&local_3c);
     local_4._0_1_ = 1;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_3c);
   }
   thunk_SetQuickDrawTextOriginWithContextOffset(10);
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
@@ -126,9 +126,9 @@ void __fastcall TMiniArmyView::ConstructTMiniArmyViewBaseState(int param_1)
   thunk_DrawCenteredGuideLineOnMapDc(0xdc);
   thunk_DrawCenteredGuideLineOnMapDc(0xdc);
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_38);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_40);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -158,13 +158,13 @@ TMiniArmyView::DestructTMiniArmyViewAndMaybeFree
   if (param_3[7] == 0x75706772) {
     cVar2 = ApplyEraCapabilityCostAndSetSelection();
     if (cVar2 == '\0') {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&param_3);
       local_4 = 0;
       (**(code **)(*g_pLocalizationTable + 0x84))();
       thunk_AssignStringSharedRefAndReturnThis(&param_3);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&param_3);
     }
     else {
       (**(code **)(*piVar3 + 0xa4))();

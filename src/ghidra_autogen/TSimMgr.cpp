@@ -93,9 +93,9 @@ undefined4 __fastcall TSimMgr::ValidateAndPrepareGameFlowNameForDispatch(int par
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = 0;
-  AssignFromPtr(&local_10,(int *)(param_1 + 0x74));
+  AssignFromPtr(&local_10,(CString *)(param_1 + 0x74));
   SaveSettingValueFromPointerByKey(&local_10,s_GameName_00698010);
   do {
     iVar2 = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
@@ -107,12 +107,12 @@ undefined4 __fastcall TSimMgr::ValidateAndPrepareGameFlowNameForDispatch(int par
     *(undefined4 *)(param_1 + 0x40) = 0;
     local_4 = 0xffffffff;
     *(undefined4 *)(g_pLocalizationTable + 0x44) = 1;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_10);
     *unaff_FS_OFFSET = local_c;
     return 1;
   }
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_10);
   *unaff_FS_OFFSET = local_c;
   return 0;
 }
@@ -351,7 +351,7 @@ undefined4 * __fastcall TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(und
   undefined4 *puVar3;
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
-  int local_14;
+  CString local_14;
   undefined4 *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -375,11 +375,12 @@ undefined4 * __fastcall TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(und
   *(undefined1 *)(param_1 + 5) = 0;
   do {
     *(undefined1 *)(iVar4 + 0x15 + (int)param_1) = 1;
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+              ((TToolBarCluster *)&local_14,(char *)&g_szEmptyString);
     local_4._0_1_ = 2;
     AssignFromPtr(puVar3,&local_14);
     local_4._0_1_ = 1;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_14);
     iVar4 = iVar4 + 1;
     puVar3 = puVar3 + 1;
   } while (iVar4 < 0x17);
@@ -582,7 +583,7 @@ TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(int *param_1,int *
   undefined4 uStack_78;
   int *piStack_74;
   undefined4 uStack_70;
-  int *piStack_6c;
+  CString CStack_6c;
   undefined4 uStack_68;
   int *piStack_64;
   undefined4 uStack_60;
@@ -653,7 +654,7 @@ TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(int *param_1,int *
   uStack_60 = 1;
   uStack_68 = 0x57bf42;
   (*pcVar6)();
-  piStack_6c = param_1 + 0xc;
+  CStack_6c.data_ptr = (int)(param_1 + 0xc);
   uStack_68 = 4;
   uStack_70 = 0x57bf4c;
   (*pcVar6)();
@@ -695,9 +696,9 @@ TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(int *param_1,int *
     *(ushort *)((int)param_1 + 0x6a) = uVar2;
   }
   else {
-    (*pcVar6)(&piStack_6c,2);
-    *(ushort *)((int)param_1 + 0x6a) = (ushort)piStack_6c;
-    uVar2 = (ushort)piStack_6c;
+    (*pcVar6)(&CStack_6c,2);
+    *(ushort *)((int)param_1 + 0x6a) = (ushort)CStack_6c.data_ptr;
+    uVar2 = (ushort)CStack_6c.data_ptr;
   }
   EnsurePictWvDataGobLoadedBySlot((int)(short)uVar2);
   ReloadBitmap244AndRefreshUiCaches();
@@ -718,11 +719,12 @@ TSimMgr::InitializeSimMgrScenarioStateAndRebuildNationSystems(int *param_1,int *
   piVar5 = param_1 + 0x1f;
   iVar4 = 0x17;
   do {
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+              ((TToolBarCluster *)&CStack_6c,(char *)&g_szEmptyString);
     piStack_74 = (int *)0x0;
-    AssignFromPtr(piVar5,(int *)&piStack_6c);
+    AssignFromPtr(piVar5,&CStack_6c);
     piStack_74 = (int *)0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&CStack_6c);
     piVar5 = piVar5 + 1;
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
@@ -835,7 +837,7 @@ void __thiscall TSimMgr::RebuildSecondaryNationStateForSlot(int param_1,undefine
               piVar9 = (int *)TMilitaryUnitOrderState::TMilitaryUnitOrderState();
             }
             uStack_4 = 0xffffffff;
-            InitializeMilitaryRecruitOrderState
+            TMilitaryUnitOrderState::InitializeRecruitOrderState
                       (2,CONCAT22((short)((uint)iVar2 >> 0x10),uVar1),param_2,0);
             (**(code **)(*piVar9 + 0x34))(2,0xffffffff);
             iVar8 = iVar8 + -1;

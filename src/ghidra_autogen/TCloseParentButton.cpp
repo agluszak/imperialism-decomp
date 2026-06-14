@@ -27,8 +27,8 @@ undefined4 * TCloseParentButton::CreateTCloseParentButtonInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase();
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &PTR_LAB_0064a2b8;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+    *puVar1 = &TButton::_vftable_;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     *puVar1 = &PTR_LAB_006648d8;
     puVar2 = puVar1;
   }
@@ -65,8 +65,8 @@ TCloseParentButton::ConstructTCloseParentButtonBaseState(undefined4 *param_1)
   *unaff_FS_OFFSET = &local_c;
   TControl::thunk_ConstructUiCommandTagResourceEntryBase();
   local_4 = 0;
-  *param_1 = &PTR_LAB_0064a2b8;
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+  *param_1 = &TButton::_vftable_;
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
   *param_1 = &PTR_LAB_006648d8;
   *unaff_FS_OFFSET = local_c;
   return param_1;

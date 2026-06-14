@@ -18,10 +18,10 @@ undefined ** TCheater::GetTCheaterClassNamePointer(void)
 // GHIDRA_PROTO undefined ConstructTCheaterBaseState()
 
 void __thiscall
-TCheater::ConstructTCheaterBaseState(int param_1,undefined4 param_2,undefined4 param_3)
+TCheater::ConstructTCheaterBaseState(int param_1,undefined4 *param_2,undefined4 param_3)
 
 {
-  int iVar1;
+  undefined4 uVar1;
   undefined4 *puVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_24;
@@ -45,35 +45,38 @@ TCheater::ConstructTCheaterBaseState(int param_1,undefined4 param_2,undefined4 p
   local_14 = 0x80;
   local_10 = 0x20;
   thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,&local_24,&local_1c,5,5,0);
-  iVar1 = AllocateWithFallbackHandler(0x94);
+  param_2 = (undefined4 *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (iVar1 != 0) {
+  if (param_2 != (undefined4 *)0x0) {
     TStaticText::thunk_ConstructUiTextResourceEntryBase();
   }
+  uVar1 = param_3;
   local_4 = 0xffffffff;
   InitializeTextEntryBaseAndOptionalStringResource(param_1,&local_24,&local_14,5,5,param_3,1);
   puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x84);
   local_4 = 1;
+  param_2 = puVar2;
   if (puVar2 == (undefined4 *)0x0) {
     puVar2 = (undefined4 *)0x0;
   }
   else {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase();
     local_4 = CONCAT31(local_4._1_3_,2);
-    *puVar2 = &PTR_LAB_0064a2b8;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+    *puVar2 = &TButton::_vftable_;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     *puVar2 = &PTR_LAB_0064a4e0;
   }
   local_4 = 0xffffffff;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&DAT_00695a18);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&param_2,&DAT_00695a18);
   local_4 = 3;
   if (DAT_006a2480 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5b7);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5b7);
   }
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   puVar2[0x18] = 0x22;
-  *(short *)(param_1 + 0x60) = (short)param_3;
+  *(short *)(param_1 + 0x60) = (short)uVar1;
   *unaff_FS_OFFSET = local_c;
   return;
 }

@@ -69,10 +69,10 @@ undefined4 * TAmtBarCluster::CreateTradeMoveControlPanelBasic(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586CC0
-// GHIDRA_NAME TAmtBarCluster::GetTAmtBarClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTAmtBarClusterClassNamePointer()
+// GHIDRA_NAME TAmtBarCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TAmtBarCluster::GetTAmtBarClusterClassNamePointer(void)
+char * TAmtBarCluster::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTAmtBarCluster;

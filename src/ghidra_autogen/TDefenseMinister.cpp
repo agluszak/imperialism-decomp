@@ -12,7 +12,7 @@ TDefenseMinister::thunk_ConstructTDefenseMinisterBaseState(undefined4 *param_1)
 
 {
   TMinister::ConstructTMinister();
-  *param_1 = &PTR_LAB_006549b0;
+  *param_1 = &_vftable_;
   return param_1;
 }
 
@@ -46,7 +46,7 @@ undefined4 * __fastcall TDefenseMinister::ConstructTDefenseMinisterBaseState(und
 
 {
   TMinister::ConstructTMinister();
-  *param_1 = &PTR_LAB_006549b0;
+  *param_1 = &_vftable_;
   return param_1;
 }
 

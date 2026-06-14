@@ -20,8 +20,13 @@ undefined ** TMerchantBoyView::GetTMerchantBoyViewClassNamePointer(void)
 void __fastcall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(int param_1)
 
 {
+  undefined2 extraout_var;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_24;
+  undefined4 *puStack_20;
   undefined4 local_18;
+  undefined1 local_14 [4];
+  uint uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -30,19 +35,34 @@ void __fastcall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(int param_1
   puStack_8 = &LAB_00630a60;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
+  puStack_20 = (undefined4 *)0x2b6a;
+  uStack_24 = 10;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  InitializeSharedStringRefFromEmpty();
+  puStack_20 = (undefined4 *)0x4af7b5;
+  InitializeSharedStringRefFromEmpty(&local_18);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  puStack_20 = (undefined4 *)0x4af7c6;
+  InitializeSharedStringRefFromEmpty(local_14);
+  puStack_20 = (undefined4 *)0x3;
+  uStack_24 = 0x2b6a;
   local_4 = CONCAT31(local_4._1_3_,1);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
+  uStack_24 = CONCAT22(extraout_var,**(undefined2 **)(param_1 + 0x60));
+  puStack_20 = (undefined4 *)0xffffffff;
   FormatLocalizedCommodityCountLabelByIndex();
+  puStack_20 = (undefined4 *)0x18;
+  uStack_24 = 0x50;
   thunk_SetQuickDrawTextOriginWithContextOffset();
+  puStack_20 = &local_18;
+  uStack_24 = 0x4af80a;
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  puStack_20 = &local_18;
   if (*(short *)(*(int *)(param_1 + 0x60) + 2) == 0) {
+    uStack_24 = 0x1b;
     (**(code **)(*g_pLocalizationTable + 0x84))();
   }
   else {
+    uStack_24 = 0x1c;
     (**(code **)(*g_pLocalizationTable + 0x84))();
   }
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
@@ -50,8 +70,10 @@ void __fastcall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(int param_1
   thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawStrokeColor();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
+  uStack_10 = uStack_10 & 0xffffff00;
+  ReleaseSharedStringRefIfNotEmpty(&puStack_20);
+  uStack_10 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty(&uStack_24);
   *unaff_FS_OFFSET = local_18;
   return;
 }

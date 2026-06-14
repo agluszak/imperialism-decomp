@@ -60,7 +60,7 @@ TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(undefined4 *param_1)
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 2);
   param_1[10] = 0;
   param_1[0xb] = 0;
   param_1[0xc] = 0;
@@ -69,7 +69,7 @@ TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(undefined4 *param_1)
   param_1[0xf] = 0;
   param_1[0x10] = 0;
   param_1[0xd] = &PTR_LAB_0065c748;
-  *param_1 = &PTR_LAB_0065c6d8;
+  *param_1 = &_vftable_;
   *(undefined2 *)((int)param_1 + 0x12) = 0xffff;
   *(undefined2 *)(param_1 + 5) = (undefined2)g_nMapActionContextCount;
   g_nMapActionContextCount = g_nMapActionContextCount + 1;
@@ -346,7 +346,7 @@ void __thiscall TZone::SerializeZoneToBinaryStream(int param_1,int *param_2)
 void __thiscall TZone::AssignZoneDisplayNameToOutputRef(int param_1,void *param_2)
 
 {
-  AssignFromPtr(param_2,(int *)(param_1 + 8));
+  AssignFromPtr(param_2,(CString *)(param_1 + 8));
   return;
 }
 
@@ -357,7 +357,7 @@ void __thiscall TZone::AssignZoneDisplayNameToOutputRef(int param_1,void *param_
 void __thiscall TZone::AssignZoneDisplayNameAliasToOutputRef(int param_1,void *param_2)
 
 {
-  AssignFromPtr(param_2,(int *)(param_1 + 8));
+  AssignFromPtr(param_2,(CString *)(param_1 + 8));
   return;
 }
 
@@ -366,7 +366,7 @@ void __thiscall TZone::AssignZoneDisplayNameAliasToOutputRef(int param_1,void *p
 // GHIDRA_PROTO undefined GenerateMapActionContextDisplayNameAndHeadline()
 
 void __thiscall
-TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1,int param_2,int param_3)
+TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1,int param_2,CString param_3)
 
 {
   int iVar1;
@@ -377,14 +377,14 @@ TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1,int param_2,in
   int aiStack_1c [3];
   undefined4 uStack_10;
   undefined4 uStack_c;
-  undefined1 *puStack_8;
+  CString CStack_8;
   undefined4 uStack_4;
   
   uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_00635740;
+  CStack_8.data_ptr = (int)&LAB_00635740;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  if (param_3 == 0) {
+  if ((char *)param_3.data_ptr == (char *)0x0) {
     iVar1 = -1;
     if ((param_2 != 0) && (*(int *)(param_1 + 0x40) != 0)) {
       DAT_006a5aec = DAT_006a5aec * 0x15a4e35 + 1;
@@ -420,7 +420,7 @@ TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1,int param_2,in
           uStack_10 = 0x17;
           DAT_006984bc = aiStack_1c[DAT_006a5aec >> 0xc & 3];
         }
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&param_3);
         uStack_4 = 1;
         (**(code **)(*g_pLocalizationTable + 0x84))
                   (0x275b,CONCAT22((short)((uint)&param_3 >> 0x10),(undefined2)DAT_006984b8),
@@ -431,7 +431,7 @@ TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1,int param_2,in
           DAT_006984b8 = DAT_006984b8 - 0x25;
         }
         uStack_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&param_3);
       }
     }
     else {
@@ -439,25 +439,26 @@ TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1,int param_2,in
     }
   }
   else {
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_3);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+              ((TToolBarCluster *)&param_3,(char *)param_3.data_ptr);
     uStack_4 = 0;
     AssignFromPtr((void *)(param_1 + 8),&param_3);
     uStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&param_3);
   }
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(auStack_20);
   uStack_4 = 2;
   (**(code **)(*g_pLocalizationTable + 0x84))
             (0x275a,CONCAT22((short)((uint)auStack_20 >> 0x10),*(undefined2 *)(param_1 + 4)),
              auStack_20);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&CStack_8);
   uStack_10._0_1_ = 3;
-  scanBracketExpressions(g_pLocalizationTable,&puStack_8,unaff_ESI);
-  AssignFromPtr((void *)(param_1 + 8),(int *)&puStack_8);
+  scanBracketExpressions(g_pLocalizationTable,&CStack_8,unaff_ESI);
+  AssignFromPtr((void *)(param_1 + 8),&CStack_8);
   uStack_10 = CONCAT31(uStack_10._1_3_,2);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&CStack_8);
   uStack_10 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffd4);
   *unaff_FS_OFFSET = aiStack_1c[1];
   return;
 }

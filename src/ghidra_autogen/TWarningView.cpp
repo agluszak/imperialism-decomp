@@ -37,13 +37,13 @@ _CreateTWarningViewInstance__YAPAUWarningViewState___Z_imperialismsrcgameTWarnin
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005928E0
-// GHIDRA_NAME TWarningView::GetTWarningViewClassNamePointer
-// GHIDRA_PROTO undefined GetTWarningViewClassNamePointer()
+// GHIDRA_NAME TWarningView::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TWarningView::GetTWarningViewClassNamePointer(void)
+undefined ** TWarningView::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TWarningView_00663178;
+  return &g_pClassDescTWarningView;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592900

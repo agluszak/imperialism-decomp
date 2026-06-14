@@ -116,7 +116,7 @@ TradeScreenPicture::RenderTradeScreenCommoditySummaryRows(int *param_1,LONG *par
     pcVar4 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
     local_30 = *(code **)(*param_1 + 0x94);
     do {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(&param_2);
       local_4 = 0;
       iVar3 = (*local_30)(*(undefined4 *)pcVar4);
       if (iVar3 == 0) {
@@ -134,11 +134,12 @@ TradeScreenPicture::RenderTradeScreenCommoditySummaryRows(int *param_1,LONG *par
         sVar2 = UiRuntimeContext::GetActiveNationId();
         sVar2 = (**(code **)(*(int *)(&g_apNationStates)[sVar2] + 0x78))(iVar5);
         if (sVar2 == 0) {
-          TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&DAT_0069aa90);
+          TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+                    ((TToolBarCluster *)&stack0xffffffc4,&DAT_0069aa90);
           puStack_8._0_1_ = 1;
-          AssignFromPtr(&stack0x00000000,(int *)&stack0xffffffc4);
+          AssignFromPtr(&stack0x00000000,(CString *)&stack0xffffffc4);
           puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-          ReleaseSharedStringRefIfNotEmpty();
+          ReleaseSharedStringRefIfNotEmpty(&stack0xffffffc4);
         }
         else {
           sVar2 = UiRuntimeContext::GetActiveNationId();
@@ -161,7 +162,7 @@ TradeScreenPicture::RenderTradeScreenCommoditySummaryRows(int *param_1,LONG *par
         RenderTradeScreenCommoditySummaryRows_Impl(&param_2,&iStack_2c,0xffffffff,0);
       }
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&param_2);
       pcVar4 = pcVar4 + 4;
       iVar5 = iVar5 + 1;
     } while ((int)pcVar4 < 0x66db14);

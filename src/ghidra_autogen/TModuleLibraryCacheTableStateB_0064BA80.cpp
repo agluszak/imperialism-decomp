@@ -224,13 +224,13 @@ TModuleLibraryCacheTableStateB_0064BA80::LoadModuleLibrarySlotWithErrorDialog
   pHVar2 = LoadLibraryExA(param_2,(HANDLE)0x0,2);
   *(HMODULE *)(param_1 + 0x3c + iVar1 * 4) = pHVar2;
   if (pHVar2 == (HMODULE)0x0) {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(&param_3);
     local_4 = 0;
     FormatStringWithVarArgsToSharedRef
               (&param_3,s_A_file_required_by_the_program____00695188,param_2);
     WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(param_3,0,0);
     local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&param_3);
   }
   iVar1 = *(int *)(param_1 + 0x3c + iVar1 * 4);
   *unaff_FS_OFFSET = local_c;

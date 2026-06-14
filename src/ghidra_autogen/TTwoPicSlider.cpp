@@ -176,7 +176,7 @@ void __fastcall TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText(in
                (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_1c,0,
                (astruct_19 *)0x0);
     if (*(short *)(param_1 + 0x90) < 0xc) {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty(local_20);
       local_4 = 0;
       (**(code **)(*g_pLocalizationTable + 0x84))(0x2743,0x3b,local_20);
       ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6c);
@@ -194,7 +194,7 @@ void __fastcall TTwoPicSlider::RenderSplitOverlaySurfaceAndCenteredStatusText(in
       thunk_SetQuickDrawTextOriginWithContextOffset(iVar2,iVar3 + 4);
       THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_20);
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(local_20);
     }
   }
   *unaff_FS_OFFSET = local_c;

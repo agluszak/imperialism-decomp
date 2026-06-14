@@ -110,9 +110,11 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   short unaff_retaddr;
-  undefined1 auStack_28 [8];
+  undefined4 uStack_54;
+  undefined1 auStack_28 [4];
+  undefined1 auStack_24 [4];
   code *pcStack_20;
-  code *local_1c;
+  code *local_1c [2];
   int *local_14;
   int local_10;
   undefined4 uStack_c;
@@ -126,16 +128,16 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   bVar1 = false;
   local_10 = *param_1;
   pcVar10 = *(code **)(local_10 + 0x94);
-  local_1c = pcVar10;
+  local_1c[0] = pcVar10;
   local_14 = param_1;
   (*pcVar10)();
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&stack0xffffffd4);
   puStack_8 = (undefined1 *)0x0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(auStack_28);
   puStack_8._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(auStack_24);
   puStack_8._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_1c);
   puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,3);
   FormatOverlayTerrainLabelText();
   FormatOverlayTerrainLabelText();
@@ -143,12 +145,12 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   iVar4 = (int)param_3;
   if (iVar4 < 0x29b) {
     if (iVar4 == 0x29a) {
-      (**(code **)(*g_pLocalizationTable + 0x84))(0x2742);
+      (**(code **)(*g_pLocalizationTable + 0x84))();
     }
     else {
       switch(iVar4) {
       case 0x12d:
-        (**(code **)(*g_pLocalizationTable + 0x84))(0x274a);
+        (**(code **)(*g_pLocalizationTable + 0x84))();
         scanBracketExpressions(g_pLocalizationTable,auStack_28,unaff_EBX);
         break;
       case 0x12e:
@@ -163,18 +165,18 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
           iVar4 = iVar4 + 1;
         } while (!bVar1);
         if (bVar1) {
-          (**(code **)(*g_pLocalizationTable + 0x84))(0x274a);
+          (**(code **)(*g_pLocalizationTable + 0x84))();
           scanBracketExpressions(g_pLocalizationTable,auStack_28,unaff_EBX);
           pcVar10 = pcStack_20;
         }
         else {
-          (**(code **)(*g_pLocalizationTable + 0x84))(0x274a);
+          (**(code **)(*g_pLocalizationTable + 0x84))();
           scanBracketExpressions(g_pLocalizationTable,auStack_28,unaff_EBX);
           pcVar10 = pcStack_20;
         }
         break;
       case 0x12f:
-        (**(code **)(*g_pLocalizationTable + 0x84))(0x274a);
+        (**(code **)(*g_pLocalizationTable + 0x84))();
         scanBracketExpressions(g_pLocalizationTable,auStack_28,unaff_EBX);
         break;
       case 0x130:
@@ -189,18 +191,19 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
           iVar4 = iVar4 + 1;
         } while (!bVar1);
         if (bVar1) {
-          (**(code **)(*g_pLocalizationTable + 0x84))(0x274a);
+          (**(code **)(*g_pLocalizationTable + 0x84))();
           scanBracketExpressions(g_pLocalizationTable,auStack_28,unaff_EBX);
           pcVar10 = pcStack_20;
         }
         else {
-          (**(code **)(*g_pLocalizationTable + 0x84))(0x274a);
+          (**(code **)(*g_pLocalizationTable + 0x84))();
           scanBracketExpressions(g_pLocalizationTable,auStack_28,unaff_EBX);
           pcVar10 = pcStack_20;
         }
         break;
       case 0x132:
-        (**(code **)(*g_pLocalizationTable + 0x84))(0x274a);
+        (**(code **)(*g_pLocalizationTable + 0x84))();
+        uStack_54 = 0x4f975b;
         scanBracketExpressions(g_pLocalizationTable,auStack_28,unaff_EBX);
       }
     }
@@ -208,20 +211,23 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
   piVar5 = (int *)(*pcVar10)();
   piVar6 = (int *)(*pcVar10)();
   if ((char)unaff_retaddr == '\0') {
-    piVar7 = (int *)(*pcVar10)(0x70726f70);
+    piVar7 = (int *)(*pcVar10)();
     iVar4 = *piVar7;
     (**(code **)(iVar4 + 0xc))();
-    (**(code **)(*piVar6 + 0xf0))(&DAT_006a3020,1);
+    uStack_54 = 0x4f97fc;
+    (**(code **)(*piVar6 + 0xf0))();
     iVar8 = *piVar5;
   }
   else {
-    piVar7 = (int *)(*pcVar10)(0x74657874);
+    piVar7 = (int *)(*pcVar10)();
     iVar4 = *piVar7;
     (**(code **)(iVar4 + 0xc))();
-    (**(code **)(*piVar5 + 0xf0))(&DAT_006a3020,1);
+    uStack_54 = 0x4f97cc;
+    (**(code **)(*piVar5 + 0xf0))();
     iVar8 = *piVar6;
   }
-  (**(code **)(iVar8 + 0xf0))(&DAT_006a2fe0,1);
+  uStack_54 = 1;
+  (**(code **)(iVar8 + 0xf0))(&DAT_006a2fe0);
   (**(code **)(iVar4 + 0x1ec))(&stack0xffffffbc,1);
   (**(code **)(iVar4 + 0x1f8))(1);
   (*pcRam6f666756)();
@@ -232,18 +238,18 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
       thunk_PumpUiMessagesAndBackgroundTasks(1);
     } while (iRam736865c9 == 0);
     if (iRam736865c9 == 0x61636365) {
-      ReleaseSharedStringRefIfNotEmpty();
-      ReleaseSharedStringRefIfNotEmpty();
-      ReleaseSharedStringRefIfNotEmpty();
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty(&stack0xffffffbc);
+      ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb4);
+      ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb0);
+      ReleaseSharedStringRefIfNotEmpty(&uStack_54);
       uVar9 = 1;
       goto LAB_004f98e5;
     }
   }
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffbc);
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb4);
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb0);
+  ReleaseSharedStringRefIfNotEmpty(&uStack_54);
   uVar9 = 0;
 LAB_004f98e5:
   *unaff_FS_OFFSET = unaff_EDI;

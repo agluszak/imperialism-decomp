@@ -34,10 +34,10 @@ TIndexAndRankList * TProvinceDesirabilityList::CreateTProvinceDesirabilityListIn
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6570
-// GHIDRA_NAME TProvinceDesirabilityList::GetTProvinceDesirabilityListClassNamePointer
-// GHIDRA_PROTO undefined GetTProvinceDesirabilityListClassNamePointer()
+// GHIDRA_NAME TProvinceDesirabilityList::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TProvinceDesirabilityList::GetTProvinceDesirabilityListClassNamePointer(void)
+char * TProvinceDesirabilityList::GetRuntimeClass(void)
 
 {
   return "\x04gi";

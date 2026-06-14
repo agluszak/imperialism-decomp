@@ -27,7 +27,7 @@ undefined4 * TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     TBehavior::ConstructTBehaviorBaseState();
     local_4 = CONCAT31(local_4._1_3_,1);
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(puVar1 + 4);
     *puVar1 = &PTR_LAB_0064eb10;
     puVar2 = puVar1;
   }
@@ -63,7 +63,7 @@ undefined4 * __fastcall TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(und
   *unaff_FS_OFFSET = &local_c;
   TBehavior::ConstructTBehaviorBaseState();
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 4);
   *param_1 = &PTR_LAB_0064eb10;
   *unaff_FS_OFFSET = local_c;
   return param_1;

@@ -11,7 +11,7 @@ undefined4 * __fastcall TMilitaryUnitOrderState::TMilitaryUnitOrderState(undefin
 
 {
   undefined4 *unaff_FS_OFFSET;
-  int local_14;
+  CString local_14;
   undefined4 *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -27,7 +27,7 @@ undefined4 * __fastcall TMilitaryUnitOrderState::TMilitaryUnitOrderState(undefin
   *(undefined1 *)(param_1 + 7) = 0;
   local_4 = 0;
   local_10 = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 9);
   local_4._0_1_ = 1;
   *(undefined2 *)(param_1 + 0xe) = 0;
   *(undefined2 *)((int)param_1 + 0x3a) = 0;
@@ -37,12 +37,76 @@ undefined4 * __fastcall TMilitaryUnitOrderState::TMilitaryUnitOrderState(undefin
   *(undefined1 *)(param_1 + 7) = 1;
   *(undefined2 *)(param_1 + 0xd) = 500;
   *(undefined2 *)((int)param_1 + 0x36) = 0;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(&g_szEmptyString);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&local_14,(char *)&g_szEmptyString);
   local_4._0_1_ = 2;
   AssignFromPtr(param_1 + 9,&local_14);
   local_4 = CONCAT31(local_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_14);
   *unaff_FS_OFFSET = local_c;
   return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2F50
+// GHIDRA_NAME TMilitaryUnitOrderState::InitializeRecruitOrderState
+// GHIDRA_PROTO undefined InitializeRecruitOrderState()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes military recruit order object state after allocation.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Calls base registration/owner insertion path.
+// GHIDRA_COMMENT - Sets group/index-derived fields (+0x36) and initialization defaults.
+// GHIDRA_COMMENT - Triggers object vfunc +0x38 post-init hook.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Used by recruitment commit path for non-civilian branch.
+// GHIDRA_COMMENT_END
+
+/* Initializes military recruit order object state after allocation.
+   
+   Behavior:
+   - Calls base registration/owner insertion path.
+   - Sets group/index-derived fields (+0x36) and initialization defaults.
+   - Triggers object vfunc +0x38 post-init hook.
+   
+   Used by recruitment commit path for non-civilian branch. */
+
+void __thiscall
+TMilitaryUnitOrderState::InitializeRecruitOrderState
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  short sVar1;
+  
+  *(undefined1 *)(param_1 + 7) = 1;
+  *(undefined2 *)((int)param_1 + 6) = 0xffff;
+  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(param_2,param_3,param_4,param_5);
+  sVar1 = (short)param_2;
+  *(short *)((int)param_1 + 0x36) = (short)((int)((int)sVar1 + ((int)sVar1 >> 0x1f & 7U)) >> 3);
+  if (0x1a < sVar1) {
+    TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C(param_1 + 9);
+  }
+  (**(code **)(*param_1 + 0x38))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C3190
+// GHIDRA_NAME TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets
+// GHIDRA_PROTO undefined CopyUnitCurrentTileIntoOrderTargets()
+
+void __fastcall TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets(int param_1)
+
+{
+  undefined2 *puVar1;
+  int iVar2;
+  
+  puVar1 = (undefined2 *)(param_1 + 0x2e);
+  iVar2 = 3;
+  do {
+    puVar1[-3] = *(undefined2 *)(param_1 + 6);
+    *puVar1 = *(undefined2 *)(param_1 + 6);
+    puVar1 = puVar1 + 1;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
+  return;
 }
 

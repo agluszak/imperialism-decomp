@@ -36,7 +36,7 @@ THighScoresPicture::ConstructTHighScoresPictureBaseState(int param_1,undefined4 
   puStack_8 = &LAB_00636778;
   *unaff_FS_OFFSET = &local_c;
   TView::thunk_NoOpUiLifecycleHook(param_2);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_2);
   local_4 = 0;
   thunk_ResetDualAudioCuePools();
   thunk_PushCueToDualAudioCuePools(0xb);
@@ -69,7 +69,7 @@ THighScoresPicture::ConstructTHighScoresPictureBaseState(int param_1,undefined4 
     CloseBufferedStreamAndReleaseResources(iVar1);
   }
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -89,8 +89,9 @@ THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(int param_1,undefined
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_20;
   undefined4 local_1c;
-  int local_18;
-  int local_14 [2];
+  char *local_18;
+  CString local_14;
+  undefined1 local_10 [4];
   undefined4 local_c;
   undefined1 *puStack_8;
   uint local_4;
@@ -102,22 +103,22 @@ THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(int param_1,undefined
   THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
   local_1c = 0;
   local_20 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_2);
   iVar3 = 0;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4 = CONCAT31(local_4._1_3_,1);
   thunk_MapUiThemeCodeToStyleFlags(0x2b68,&local_1c);
   thunk_MapUiThemeCodeToStyleFlags(0x2b67,&local_20);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0x18,0x2b68);
   piVar2 = (int *)(param_1 + 0x94);
-  local_18 = param_1 + 0xbc;
+  local_18 = (char *)(param_1 + 0xbc);
   iVar4 = 100;
   do {
     if (*piVar2 < 1) break;
     iVar3 = iVar3 + 1;
     FormatStringWithVarArgsToSharedRef(&param_2,&g_szDecimalFormat,iVar3);
-    AssignStringSharedFromCStr(&DAT_00698ab4);
+    AssignStringSharedFromCStr(&param_2,&DAT_00698ab4);
     SetQuickDrawColorAndSyncGlobals(local_20);
     iVar1 = iVar4 + 1;
     thunk_SetQuickDrawTextOriginWithContextOffset(0x97,iVar1);
@@ -125,11 +126,12 @@ THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(int param_1,undefined
     SetQuickDrawColorAndSyncGlobals(local_1c);
     thunk_SetQuickDrawTextOriginWithContextOffset(0x96,iVar4);
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&param_2);
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(local_18);
+    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+              ((TToolBarCluster *)&local_14,local_18);
     local_4._0_1_ = 2;
-    AssignFromPtr(&param_2,local_14);
+    AssignFromPtr(&param_2,&local_14);
     local_4 = CONCAT31(local_4._1_3_,1);
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&local_14);
     SetQuickDrawColorAndSyncGlobals(local_20);
     thunk_SetQuickDrawTextOriginWithContextOffset(0xbf,iVar1);
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&param_2);
@@ -148,9 +150,9 @@ THighScoresPicture::DestructTHighScoresPictureAndMaybeFree(int param_1,undefined
     local_18 = local_18 + 0x20;
   } while (iVar3 < 10);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_10);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = local_c;
   return;
 }

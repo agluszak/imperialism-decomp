@@ -37,13 +37,13 @@ TView * TIndustryAmtBar::CreateTIndustryAmtBarInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005891B0
-// GHIDRA_NAME TIndustryAmtBar::GetTIndustryAmtBarClassNamePointer
-// GHIDRA_PROTO undefined GetTIndustryAmtBarClassNamePointer()
+// GHIDRA_NAME TIndustryAmtBar::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TIndustryAmtBar::GetTIndustryAmtBarClassNamePointer(void)
+undefined ** TIndustryAmtBar::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TIndustryAmtBar_00662fb0;
+  return &g_pClassDescTIndustryAmtBar;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005891D0

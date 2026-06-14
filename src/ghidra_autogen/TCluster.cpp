@@ -34,7 +34,7 @@ TView * TCluster::CreateTClusterInstance(void)
     this[1].field18 = g_nUiResourceEntryDefaultParam0;
     this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    this->vftable = &PTR_LAB_0064b0c0;
+    this->vftable = &_vftable_;
     this[1].ownerOffsetX = 0x20202020;
     *(ushort *)&this[1].ownerContext = uVar1;
     this[1].vftable = (void *)0x5;
@@ -74,7 +74,7 @@ TView * __fastcall TCluster::ConstructUiResourceEntryType4B0C0(TView *param_1)
   param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
   param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  param_1->vftable = &PTR_LAB_0064b0c0;
+  param_1->vftable = &_vftable_;
   param_1[1].ownerOffsetX = 0x20202020;
   *(ushort *)&param_1[1].ownerContext = uVar1;
   param_1[1].vftable = (void *)0x5;

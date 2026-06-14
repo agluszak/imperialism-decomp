@@ -19,7 +19,7 @@ undefined ** TSuperArmyRoster::GetTSuperArmyRosterClassNamePointer(void)
 
 void __thiscall
 TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
-          (int *param_1,int param_2,undefined4 param_3,int param_4)
+          (int *param_1,int param_2,undefined4 param_3,CString param_4)
 
 {
   code *pcVar1;
@@ -41,7 +41,7 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
   puStack_8 = &LAB_006304e4;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_4,5,5,0);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_4.data_ptr,5,5,0);
   param_1[7] = 0x70616765;
   TControl::InitializeRosterPageLineCollectionsAndBounds(0);
   sVar2 = UiRuntimeContext::GetActiveNationId();
@@ -57,9 +57,9 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
         iVar4 = *(int *)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + sVar3 * 0xa8);
       }
       if (iVar4 != 0) {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&param_3);
         local_4 = 0;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&param_4);
         local_4._0_1_ = 1;
         iVar4 = AllocateWithFallbackHandler(0x20);
         local_4._0_1_ = 2;
@@ -102,9 +102,9 @@ TSuperArmyRoster::ConstructTSuperArmyRosterBaseState
           (*pcVar1)(puVar6);
         }
         local_4 = local_4 & 0xffffff00;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&param_4);
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&param_3);
       }
     }
     param_2 = param_2 + 1;

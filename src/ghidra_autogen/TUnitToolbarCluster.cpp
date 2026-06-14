@@ -34,10 +34,10 @@ undefined4 * TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00585FF0
-// GHIDRA_NAME TUnitToolbarCluster::GetTUnitToolbarClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTUnitToolbarClusterClassNamePointer()
+// GHIDRA_NAME TUnitToolbarCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TUnitToolbarCluster::GetTUnitToolbarClusterClassNamePointer(void)
+char * TUnitToolbarCluster::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTUnitToolbarCluster;

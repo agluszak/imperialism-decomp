@@ -296,7 +296,7 @@ TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotify
 void __thiscall
 TCViewOwnedBufferRegistryState_00648560::BuildTurnEventFactoryPacket
           (int param_1,undefined4 param_2,int *param_3,undefined2 param_4,undefined4 *param_5,
-          int *param_6,undefined2 param_7)
+          CString *param_6,undefined2 param_7)
 
 {
   if (param_3 != (int *)0x0) {

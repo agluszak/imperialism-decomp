@@ -66,6 +66,7 @@ void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
   undefined2 local_38;
   undefined1 local_36;
   undefined1 local_35;
+  undefined1 local_34 [8];
   undefined2 local_2c;
   undefined2 local_2a;
   short local_28 [8];
@@ -82,11 +83,11 @@ void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   ppuStack_54 = (undefined1 **)0x4f7c27;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_40);
   iVar2 = 0;
   local_4 = 0;
   ppuStack_54 = (undefined1 **)0x4f7c36;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_34);
   ppuStack_54 = (undefined1 **)0x1;
   local_28[6] = 0x83;
   local_28[7] = 0x83;
@@ -168,10 +169,10 @@ void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
   SetQuickDrawFillColor();
   local_10 = local_10 & 0xffffff00;
   puStack_60 = (undefined1 *)0x4f7e43;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_40);
   local_10 = 0xffffffff;
   puStack_60 = (undefined1 *)0x4f7e54;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb4);
   *unaff_FS_OFFSET = local_18;
   return;
 }

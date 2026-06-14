@@ -212,13 +212,13 @@ TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(int *p
   }
   (**(code **)(iVar2 + 0xa4))(param_2 != (int *)0x0,1);
   thunk_InvalidateCityDialogRectRegion(&stack0xffffffd8,1);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&puStack_8);
   if (param_2 != (int *)0x0) {
     (**(code **)(*param_2 + 0xc))();
-    AssignFromPtr(&puStack_8,(int *)(param_2[0xe] + 0x24));
+    AssignFromPtr(&puStack_8,(CString *)(param_2[0xe] + 0x24));
   }
   AssignSharedStringToTaggedControlAndProcessState(puStack_8,0x444c4f47);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&puStack_8);
   *unaff_FS_OFFSET = uStack_18;
   return;
 }

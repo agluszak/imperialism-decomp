@@ -23,7 +23,7 @@ undefined4 * __fastcall Config::InitDefaults(astruct_11 *this_obj)
   uStack_4 = 0;
   CallCallbackRepeatedly(&this_obj->field29_0x20,8,4,&LAB_00405209);
   uStack_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&this_obj->field_0x74);
   uStack_4._0_1_ = 2;
   CallCallbackRepeatedly
             (&this_obj->field105_0x78,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
@@ -31,11 +31,11 @@ undefined4 * __fastcall Config::InitDefaults(astruct_11 *this_obj)
   CallCallbackRepeatedly
             (&this_obj->field130_0x94,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
   uStack_4._0_1_ = 4;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&this_obj->field_0xb0);
   uStack_4._0_1_ = 5;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&this_obj->field_0xb4);
   uStack_4 = CONCAT31(uStack_4._1_3_,6);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&this_obj->field_0xb8);
   this_obj->field0_0x0 = &PTR_LAB_0065c030;
   this_obj->field58_0x40 = 0;
   this_obj->field99_0x6c = 0;

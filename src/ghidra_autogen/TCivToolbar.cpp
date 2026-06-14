@@ -35,10 +35,10 @@ void __thiscall TCivToolbar::thunk_ShowDisbandCivilianConfirmationDialog(TCivToo
   *unaff_FS_OFFSET = &uStack_c;
   if (*(int *)(this + 4) != 0) {
     puStack_28 = (undefined1 *)0x4d2d60;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_18);
     uStack_4 = 0;
     puStack_28 = (undefined1 *)0x4d2d71;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_1c);
     puStack_28 = auStack_18;
     uStack_2c = 3;
     puStack_30 = (undefined *)0x274d;
@@ -91,10 +91,10 @@ void __thiscall TCivToolbar::thunk_ShowDisbandCivilianConfirmationDialog(TCivToo
     }
     uStack_4 = uStack_4 & 0xffffff00;
     puStack_28 = (undefined1 *)0x4d2e6c;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_1c);
     uStack_4 = 0xffffffff;
     puStack_28 = (undefined1 *)0x4d2e7d;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_18);
   }
   *unaff_FS_OFFSET = uStack_c;
   return;
@@ -130,10 +130,12 @@ void __thiscall TCivToolbar::thunk_SetMapInteractionMode(TCivToolbar *this,short
   int iVar2;
   int *piVar3;
   int *piVar4;
+  CString *src_ref;
   short sVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_20 [8];
-  int iStack_18;
+  undefined1 auStack_20 [4];
+  undefined1 auStack_1c [4];
+  CString CStack_18;
   undefined1 auStack_14 [4];
   undefined1 *puStack_10;
   undefined4 uStack_c;
@@ -160,36 +162,36 @@ void __thiscall TCivToolbar::thunk_SetMapInteractionMode(TCivToolbar *this,short
         piVar4 = (int *)(**(code **)(*piVar3 + 0x94))();
         (**(code **)(*piVar4 + 0xc))();
         piVar4[7] = 0x73656173;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(auStack_20);
         puStack_8 = (undefined1 *)0x0;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&stack0xffffffdc);
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
         (**(code **)(*g_pLocalizationTable + 0x84))(0x2730,0x12);
         (**(code **)(*g_pLocalizationTable + 0x84))(0x2730,8,&stack0xffffffd0);
         AssignSharedStringConcatRefAndCStr(&puStack_10);
         iStack_4._0_1_ = 2;
-        AssignSharedStringConcatRefAndRef(auStack_14);
+        src_ref = (CString *)AssignSharedStringConcatRefAndRef(auStack_14);
         iStack_4._0_1_ = 3;
-        TToolBarCluster::StringSharedRef_AssignFromPtr();
+        TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&CStack_18,src_ref);
         iStack_4._0_1_ = 4;
-        AssignFromPtr(auStack_20,&iStack_18);
+        AssignFromPtr(auStack_20,&CStack_18);
         iStack_4._0_1_ = 3;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&CStack_18);
         iStack_4._0_1_ = 2;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(auStack_14);
         iStack_4._0_1_ = 1;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&puStack_10);
         puStack_10 = &stack0xffffffc8;
         thunk_AssignStringSharedRefAndReturnThis(auStack_20);
         EnableAndProcessFlagWithSharedStringCleanup();
         iStack_4 = (uint)iStack_4._1_3_ << 8;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(auStack_20);
         iStack_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(auStack_1c);
         sVar5 = nMode;
       }
       else if (sVar5 == 1) {
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&nMode);
         iStack_4 = 5;
         piVar4 = (int *)(**(code **)(*piVar3 + 0x94))();
         (**(code **)(*piVar4 + 0xc))();
@@ -199,7 +201,7 @@ void __thiscall TCivToolbar::thunk_SetMapInteractionMode(TCivToolbar *this,short
         thunk_AssignStringSharedRefAndReturnThis(&nMode);
         EnableAndProcessFlagWithSharedStringCleanup();
         iStack_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&nMode);
       }
       iVar2 = *piVar3;
       UiRuntimeContext::GetActiveNationId();
@@ -1030,10 +1032,10 @@ void __thiscall TCivToolbar::ShowDisbandCivilianConfirmationDialog(TCivToolbar *
   *unaff_FS_OFFSET = &local_c;
   if (*(int *)(this + 4) != 0) {
     puStack_28 = (undefined1 *)0x4d2d60;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(local_18);
     local_4 = 0;
     puStack_28 = (undefined1 *)0x4d2d71;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(local_1c);
     puStack_28 = local_18;
     uStack_2c = 3;
     puStack_30 = (undefined *)0x274d;
@@ -1086,10 +1088,10 @@ void __thiscall TCivToolbar::ShowDisbandCivilianConfirmationDialog(TCivToolbar *
     }
     local_4 = local_4 & 0xffffff00;
     puStack_28 = (undefined1 *)0x4d2e6c;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(local_1c);
     local_4 = 0xffffffff;
     puStack_28 = (undefined1 *)0x4d2e7d;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(local_18);
   }
   *unaff_FS_OFFSET = local_c;
   return;
@@ -1429,7 +1431,9 @@ TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(TCivToolbar *this,short nT
   uint dwSavedSehFrame;
   undefined1 abDialogFormatBuffer [4];
   uint dwDialogStateMarker;
+  undefined1 local_20 [4];
   undefined1 *pbDialogScratch;
+  undefined1 local_18 [12];
   uint dwPrevSehFrame;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -1446,15 +1450,15 @@ TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(TCivToolbar *this,short nT
        *(int *)((&g_apNationStates)[nActiveNationId] + 0x10);
   szTemplateString = (char *)0x4d3680;
   nRailBuildCost = thunk_CalculateEngineerRailBuildCost(g_pGlobalMapState,nTileIndex);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_18);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&dwDialogStateMarker);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(abDialogFormatBuffer);
   local_4._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&pbDialogScratch);
   local_4._0_1_ = 3;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_20);
   local_4 = CONCAT31(local_4._1_3_,4);
   szTemplateString =
        (char *)(int)*(short *)(*(int *)(g_pGlobalMapState + 0xc) + 0x14 + nTileIndex * 0x24);
@@ -1509,15 +1513,15 @@ TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(TCivToolbar *this,short nT
     }
   }
   dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,3);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffc0);
   dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,2);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffc4);
   dwDialogStateMarker = CONCAT31(dwDialogStateMarker._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&dwLocalizationToken);
   dwDialogStateMarker = dwDialogStateMarker & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&szTemplateString);
   dwDialogStateMarker = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffc8);
   *unaff_FS_OFFSET = dwSavedSehFrame;
   return fOrderQueued;
 }
@@ -1685,13 +1689,13 @@ undefined4 * TCivToolbar::CreateTCivToolbarInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058EA80
-// GHIDRA_NAME TCivToolbar::GetTCivToolbarClassNamePointer
-// GHIDRA_PROTO undefined GetTCivToolbarClassNamePointer()
+// GHIDRA_NAME TCivToolbar::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TCivToolbar::GetTCivToolbarClassNamePointer(void)
+undefined ** TCivToolbar::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TCivToolbar_00663100;
+  return &g_pClassDescTCivToolbar;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058EAA0
@@ -2377,21 +2381,28 @@ bool __thiscall TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
 {
   code *pcVar1;
   short sVar2;
-  short sVar3;
-  int *piVar4;
-  int iVar5;
-  int *piVar6;
-  code *pcVar7;
-  TView *this;
+  int *piVar3;
+  int iVar4;
+  int *piVar5;
+  code *pcVar6;
+  TView *pTVar7;
   int iVar8;
-  code *pcVar9;
+  undefined1 uVar9;
+  code *pcVar10;
   undefined4 *unaff_FS_OFFSET;
   int *in_stack_00000014;
+  undefined4 uStack_bc;
+  undefined4 uStack_b8;
+  undefined4 uVar11;
+  uint local_60;
   code *local_5c;
   int iStack_58;
+  undefined1 auStack_54 [4];
+  TView *pTStack_50;
   undefined4 uStack_48;
-  undefined2 uStack_40;
-  uint local_3c;
+  int local_44;
+  uint uStack_40;
+  undefined4 local_3c;
   int iStack_1c;
   undefined4 uStack_c;
   int *piStack_8;
@@ -2401,9 +2412,10 @@ bool __thiscall TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_60);
   local_4 = CONCAT31(local_4._1_3_,1);
-  local_3c = local_3c & 0xffff0000;
+  uStack_40 = (uint)(ushort)uStack_40;
+  local_3c = (uint)local_3c._2_2_ << 0x10;
   local_5c = (code *)0x0;
   if (*in_stack_00000014 == -1000) {
     local_5c = (code *)(uint)*(ushort *)(in_stack_00000014 + 1);
@@ -2416,117 +2428,131 @@ bool __thiscall TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
     (**(code **)(*g_pUiViewManager + 0x30))();
     iVar8 = *g_pUiViewManager;
   }
-  piVar4 = (int *)(**(code **)(iVar8 + 0x28))();
-  if (piVar4 == (int *)0x0) {
+  piVar3 = (int *)(**(code **)(iVar8 + 0x28))();
+  if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  iVar8 = *piVar4;
+  iVar8 = *piVar3;
   (**(code **)(iVar8 + 0x1a0))();
-  iVar5 = (**(code **)(iVar8 + 0x1b8))();
-  if (iVar5 != 0) {
-    *(undefined4 *)(iVar5 + 0x14) = 0x6f6b6179;
+  iVar4 = (**(code **)(iVar8 + 0x1b8))();
+  if (iVar4 != 0) {
+    *(undefined4 *)(iVar4 + 0x14) = 0x6f6b6179;
   }
   (**(code **)(*param_1 + 0x44))();
   (**(code **)(iVar8 + 0xf0))();
   pcVar1 = *(code **)(iVar8 + 0x94);
-  piVar6 = (int *)(*pcVar1)();
-  iVar8 = *piVar6;
-  piStack_8 = piVar6;
+  piVar5 = (int *)(*pcVar1)();
+  iVar8 = *piVar5;
+  piStack_8 = piVar5;
   (**(code **)(iVar8 + 0xc))();
-  if (piVar6 == (int *)0x0) {
+  if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   (**(code **)(iVar8 + 0x1c8))();
-  piVar6 = (int *)(*pcVar1)();
-  iVar8 = *piVar6;
+  piVar5 = (int *)(*pcVar1)();
+  iVar8 = *piVar5;
   (**(code **)(iVar8 + 0xc))();
-  if (piVar6 == (int *)0x0) {
+  if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   sVar2 = UiRuntimeContext::GetActiveNationId();
   if ((sVar2 < 0) || (sVar2 = UiRuntimeContext::GetActiveNationId(), 6 < sVar2)) {
-    sVar2 = 0;
+    uVar11 = 0;
     (**(code **)(iVar8 + 0xa4))();
   }
   else {
-    sVar2 = 0;
+    uVar11 = 0;
     UiRuntimeContext::GetActiveNationId();
     (**(code **)(iVar8 + 0x1c8))();
   }
-  piVar6 = (int *)(*pcVar1)();
-  iVar8 = *piVar6;
+  piVar5 = (int *)(*pcVar1)();
+  iVar8 = *piVar5;
   (**(code **)(iVar8 + 0xc))();
-  pcVar7 = (code *)(iStack_1c + 0x252a);
-  (**(code **)(iVar8 + 0x1c8))(pcVar7,0);
-  piVar6 = (int *)(*pcVar1)(0x72657761);
-  iVar8 = *piVar6;
-  (**(code **)(iVar8 + 0xc))();
-  iVar5 = 0;
+  pcVar6 = (code *)(iStack_1c + 0x252a);
   (**(code **)(iVar8 + 0x1c8))();
-  piVar6 = (int *)(*pcVar1)(0x696e666f);
-  iVar8 = *piVar6;
+  piVar5 = (int *)(*pcVar1)();
+  iVar8 = *piVar5;
+  uStack_b8 = uVar11;
+  (**(code **)(iVar8 + 0xc))();
+  iVar4 = 0;
+  uStack_bc = 0x5d6041;
+  (**(code **)(iVar8 + 0x1c8))();
+  uStack_bc = 0x696e666f;
+  piVar5 = (int *)(*pcVar1)();
+  iVar8 = *piVar5;
   (**(code **)(iVar8 + 0xc))();
   (**(code **)(iVar8 + 500))(uStack_40,local_3c);
   (**(code **)(iVar8 + 0x1e4))(&stack0xffffff68,0);
-  sVar3 = TTEView::DestructTTEViewAndMaybeFree();
-  pcVar9 = pcVar1;
-  if (piVar6[0xe] < (int)sVar3) {
+  sVar2 = TTEView::DestructTTEViewAndMaybeFree();
+  local_44 = (int)sVar2;
+  pcVar10 = pcVar1;
+  if (piVar5[0xe] < (int)sVar2) {
     (**(code **)(iVar8 + 300))(&stack0xffffff6c);
-    (**(code **)(iVar8 + 0x168))(&stack0xffffff68,0);
-    if (piVar6[0xe] < (int)sVar3) {
-      this = (TView *)AllocateWithFallbackHandler(0x68);
-      if (this == (TView *)0x0) {
-        this = (TView *)0x0;
-        pcVar9 = pcVar7;
+    pTStack_50 = *(TView **)(iVar8 + 0x168);
+    (*(code *)pTStack_50)(&stack0xffffff68,0);
+    if (piVar5[0xe] < local_44) {
+      pTVar7 = (TView *)AllocateWithFallbackHandler(0x68);
+      local_60._0_1_ = 2;
+      pTStack_50 = pTVar7;
+      if (pTVar7 == (TView *)0x0) {
+        pTVar7 = (TView *)0x0;
+        pcVar10 = pcVar6;
       }
       else {
-        TView::thunk_ConstructTViewBaseState(this);
-        this->vftable = &PTR_LAB_006417e0;
-        pcVar9 = pcVar7;
+        TView::thunk_ConstructTViewBaseState(pTVar7);
+        pTVar7->vftable = &PTR_LAB_006417e0;
+        pcVar10 = pcVar6;
       }
-      TScrollView::ConstructTScrollViewBaseState(uStack_48,piVar6 + 9,piVar6 + 0xd);
-      (**(code **)((int)this->vftable + 0xdc))(0);
-      (**(code **)(iVar5 + 0x174))(piVar6);
-      (**(code **)((int)this->vftable + 0x170))(piVar6,0);
+      local_60 = CONCAT31(local_60._1_3_,1);
+      TScrollView::ConstructTScrollViewBaseState(uStack_48,piVar5 + 9,piVar5 + 0xd);
+      (**(code **)((int)pTVar7->vftable + 0xdc))(0);
+      (**(code **)(iVar4 + 0x174))(piVar5);
+      (**(code **)((int)pTVar7->vftable + 0x170))(piVar5,0);
       (*local_5c)(&stack0xffffff5c,0);
-      this[1].vftable = piVar6;
+      pTVar7[1].vftable = piVar5;
       SyncBoundedValueAndToggleControlStates();
     }
   }
   if ((char)uStack_40 != '\0') {
-    piVar6 = (int *)(*pcVar9)(0x636e636c);
-    iVar8 = *piVar6;
+    piVar5 = (int *)(*pcVar10)(0x636e636c);
+    iVar8 = *piVar5;
     (**(code **)(iVar8 + 0xc))();
     (**(code **)(iVar8 + 0xa4))(1,1);
     (**(code **)(iVar8 + 0xa8))(1,0);
   }
-  if (*(int *)(g_pLocalizationTable + 0x44) != 0) {
-    uStack_40._0_1_ = *(char *)((int)g_pGameFlowState + 0x68);
+  if (*(int *)(g_pLocalizationTable + 0x44) == 0) {
+    uVar9 = (char)uStack_40;
+  }
+  else {
+    uVar9 = *(undefined1 *)((int)g_pGameFlowState + 0x68);
     *(undefined1 *)((int)g_pGameFlowState + 0x68) = 0;
   }
-  if (sVar2 != 0) {
+  if ((short)uStack_b8 != 0) {
     (**(code **)(*g_pSfxPlaybackSystem + 0xb8))
               (*(undefined2 *)(&stack0xffffff7c + iStack_58 * 2),0,1);
   }
-  iVar8 = *piVar4;
-  iVar5 = (**(code **)(iVar8 + 0x1ac))();
+  iVar8 = *piVar3;
+  iVar4 = (**(code **)(iVar8 + 0x1ac))();
   (**(code **)(iVar8 + 0xa0))();
   (**(code **)(iVar8 + 0x1c))();
   if (*(int *)(g_pLocalizationTable + 0x44) != 0) {
-    *(char *)((int)g_pGameFlowState + 0x68) = (char)uStack_40;
+    *(undefined1 *)((int)g_pGameFlowState + 0x68) = uVar9;
   }
-  if (iVar5 != 0x636e636c) {
-    ReleaseSharedStringRefIfNotEmpty();
-    ReleaseSharedStringRefIfNotEmpty();
+  local_60 = local_60 & 0xffffff00;
+  if (iVar4 != 0x636e636c) {
+    ReleaseSharedStringRefIfNotEmpty(&uStack_bc);
+    local_60 = 0xffffffff;
+    ReleaseSharedStringRefIfNotEmpty(auStack_54);
   }
   else {
-    ReleaseSharedStringRefIfNotEmpty();
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&uStack_bc);
+    local_60 = 0xffffffff;
+    ReleaseSharedStringRefIfNotEmpty(auStack_54);
   }
   *unaff_FS_OFFSET = pcVar1;
-  return iVar5 != 0x636e636c;
+  return iVar4 != 0x636e636c;
 }
 

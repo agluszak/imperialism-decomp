@@ -37,10 +37,10 @@ TView * TTraderAmtBar::CreateTTraderAmtBarInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AED0
-// GHIDRA_NAME TTraderAmtBar::GetTTraderAmtBarClassNamePointer
-// GHIDRA_PROTO undefined GetTTraderAmtBarClassNamePointer()
+// GHIDRA_NAME TTraderAmtBar::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TTraderAmtBar::GetTTraderAmtBarClassNamePointer(void)
+char * TTraderAmtBar::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTTraderAmtBar;

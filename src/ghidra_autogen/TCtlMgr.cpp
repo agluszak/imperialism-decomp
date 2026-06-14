@@ -34,8 +34,8 @@ TView * TCtlMgr::CreateTCtlMgrInstance(void)
     this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = &PTR_LAB_0064a2b8;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+    this->vftable = &TButton::_vftable_;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -84,8 +84,8 @@ TView * TCtlMgr::ConstructTCtlMgrBaseState(void)
     this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = &PTR_LAB_0064a2b8;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
+    this->vftable = &TButton::_vftable_;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
     this->vftable = &PTR_LAB_0064a4e0;
     *unaff_FS_OFFSET = local_c;
     return this;

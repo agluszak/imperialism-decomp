@@ -35,7 +35,6 @@ void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBatt
   int *unaff_FS_OFFSET;
   int unaff_retaddr;
   undefined1 *puVar8;
-  LONG LVar9;
   int iStack_70;
   int iStack_6c;
   undefined4 uStack_68;
@@ -43,7 +42,6 @@ void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBatt
   RECT RStack_50;
   tagRECT local_40;
   undefined4 uStack_24;
-  int iStack_10;
   int iStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -53,13 +51,13 @@ void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBatt
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
   LStack_64 = 0x4c8d97;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_40);
   local_4 = 0;
   LStack_64 = 0x4c8da6;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&RStack_50.bottom);
   local_4._0_1_ = 1;
   LStack_64 = 0x4c8db4;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&RStack_50.right);
   LStack_64 = 0x73706963;
   local_4 = CONCAT31(local_4._1_3_,2);
   RStack_50.top = *(LONG *)(g_pActiveQuickDrawSurfaceContext + 0x2c);
@@ -75,15 +73,13 @@ void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBatt
   (**(code **)(iVar4 + 0x1c8))();
   iStack_70 = 0x38;
   (**(code **)(*g_pUiRuntimeContext + 0x30))();
-  LVar9 = 0x736e616d;
-  piVar3 = (int *)(*pcVar2)(0x736e616d);
+  piVar3 = (int *)(*pcVar2)();
   if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
-              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x325);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   LStack_64 = *piVar3;
-  (**(code **)(LStack_64 + 0x1cc))(0x2716,iStack_10 + 1,0);
+  (**(code **)(LStack_64 + 0x1cc))();
   puVar8 = &stack0xffffffa4;
   (**(code **)(iStack_70 + 300))(puVar8);
   RStack_50.bottom = iVar4;
@@ -94,7 +90,7 @@ void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBatt
   (**(code **)(iVar4 + 0xc))();
   (**(code **)(iVar4 + 0x1cc))(0x2752,uStack_24,0);
   (**(code **)(iVar4 + 300))(&iStack_70);
-  LStack_64 = LVar9;
+  LStack_64 = 0x736e616d;
   CopyRect((LPRECT)&stack0xffffffac,(RECT *)&LStack_64);
   thunk_InvalidateCityDialogRectRegion(&stack0xffffffac,1);
   iVar4 = (short)local_40.bottom * 2;
@@ -144,11 +140,11 @@ void __thiscall TacticalBattleView::InitializeCityViewActionButtons(TacticalBatt
   thunk_InvalidateCityDialogRectRegion(&LStack_64,1);
   thunk_SetGlobalBlitTransparentColorRaw(puVar8);
   local_40.top._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffff80);
   local_40.top = (uint)local_40.top._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffff84);
   local_40.top = -1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffff88);
   *unaff_FS_OFFSET = RStack_50.bottom;
   return;
 }

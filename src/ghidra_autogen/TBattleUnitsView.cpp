@@ -19,9 +19,9 @@ TBattleUnitsView::HandleMapContextPrevNextInfoCommands(int param_1,int param_2,i
   int *piVar6;
   undefined4 *puVar7;
   int iVar8;
-  int iVar9;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
+  int iStack_7c;
   int aiStack_78 [5];
   undefined4 uStack_64;
   int iStack_60;
@@ -29,6 +29,7 @@ TBattleUnitsView::HandleMapContextPrevNextInfoCommands(int param_1,int param_2,i
   undefined4 uStack_58;
   undefined4 uStack_54;
   int iStack_50;
+  int iVar9;
   int iStack_18;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -55,13 +56,13 @@ TBattleUnitsView::HandleMapContextPrevNextInfoCommands(int param_1,int param_2,i
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
           thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
         }
-        iVar8 = *piVar4;
-        (**(code **)(iVar8 + 0x1a0))();
-        piVar4 = (int *)(**(code **)(iVar8 + 0x94))();
-        iVar8 = *piVar4;
-        (**(code **)(iVar8 + 0xc))();
+        iVar9 = *piVar4;
+        (**(code **)(iVar9 + 0x1a0))();
+        piVar4 = (int *)(**(code **)(iVar9 + 0x94))();
+        iVar9 = *piVar4;
+        (**(code **)(iVar9 + 0xc))();
         uVar5 = (**(code **)(**(int **)(g_pMapContextActionManager + 4) + 0x2c))();
-        pcVar2 = *(code **)(iVar8 + 0x94);
+        pcVar2 = *(code **)(iVar9 + 0x94);
         iStack_50 = 0x4ad87d;
         uStack_4 = uVar5;
         piVar4 = (int *)(*pcVar2)();
@@ -98,18 +99,18 @@ TBattleUnitsView::HandleMapContextPrevNextInfoCommands(int param_1,int param_2,i
         uStack_58 = 0x666c6752;
         uStack_5c = 0x4ad8f0;
         piVar4 = (int *)(*pcVar2)();
-        iVar8 = *piVar4;
+        iVar9 = *piVar4;
         uStack_5c = 0x4ad8fe;
-        (**(code **)(iVar8 + 0xc))();
+        (**(code **)(iVar9 + 0xc))();
         uStack_5c = 0;
-        iVar9 = pcVar3[1] + 0x114e;
+        iVar8 = pcVar3[1] + 0x114e;
         iStack_60 = *pcVar3 + 0x1147;
         uStack_64 = 0x4ad927;
         (**(code **)(iStack_18 + 0x1c8))();
         uStack_64 = 0;
         aiStack_78[4] = iStack_50;
         aiStack_78[3] = 0x4ad93a;
-        (**(code **)(iVar9 + 0x1c8))();
+        (**(code **)(iVar8 + 0x1c8))();
         aiStack_78[3] = 0x6e61744c;
         aiStack_78[2] = 0x4ad943;
         piVar4 = (int *)(*pcVar2)();
@@ -123,37 +124,42 @@ TBattleUnitsView::HandleMapContextPrevNextInfoCommands(int param_1,int param_2,i
         (**(code **)(iStack_60 + 0xc))();
         aiStack_78[1] = 0x2b6c;
         aiStack_78[0] = 0x2b6b;
+        iStack_7c = 0xe;
         ApplyUiTextStyleAndThemeFlags();
         aiStack_78[1] = 0x2b6c;
         aiStack_78[0] = 0x2b6b;
+        iStack_7c = 0xe;
         ApplyUiTextStyleAndThemeFlags();
         aiStack_78[1] = 0;
         aiStack_78[0] = 1;
+        iStack_7c = 0x4ad9a5;
         (**(code **)(unaff_EBP + 0x1c4))();
+        iStack_7c = 0;
         (**(code **)(aiStack_78[4] + 0x1c4))();
         InitializeOutSharedStringWithEmptyRefAndCopyBuffer();
-        (**(code **)(iVar8 + 0x1c8))();
+        (**(code **)(iVar9 + 0x1c8))();
         uStack_54 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb4);
         InitializeOutSharedStringWithEmptyRefAndCopyBuffer();
         uStack_54 = 1;
         (**(code **)(aiStack_78[0] + 0x1c8))();
         uStack_5c = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&iStack_7c);
         TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
                   (PTR_g_szEmptyString_0064dc30);
         InitializeAndRunMainRoutine();
         (*pcVar2)();
         LoadUiStringByGroupAndIndexToControlObject(0x2730,0x22);
         (**(code **)(*g_pUiRuntimeContext + 0x44))(aiStack_78[0]);
-        (*pcRam000000f0)(aiStack_78,0);
-        iVar8 = (*pcRam000001b8)();
+        iVar9 = iStack_7c;
+        (**(code **)(iStack_7c + 0xf0))(aiStack_78,0);
+        iVar8 = (**(code **)(iVar9 + 0x1b8))();
         if (iVar8 != 0) {
           *(undefined4 *)(iVar8 + 0x14) = 0x6f6b6179;
         }
-        (*pcRam000001ac)();
-        (*pcRam000000a0)();
-        (*pcRam0000001c)();
+        (**(code **)(iVar9 + 0x1ac))();
+        (**(code **)(iVar9 + 0xa0))();
+        (**(code **)(iVar9 + 0x1c))();
         goto LAB_004adb34;
       }
     }
@@ -231,6 +237,9 @@ TBattleUnitsView::ConstructTBattleUnitsViewBaseState(int *param_1,int param_2,in
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar5;
+  undefined1 local_20 [4];
+  undefined1 local_1c [4];
+  undefined4 *local_18;
   undefined4 local_14;
   undefined4 local_10;
   undefined4 uStack_c;
@@ -262,10 +271,10 @@ TBattleUnitsView::ConstructTBattleUnitsViewBaseState(int *param_1,int param_2,in
   iVar3 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0xdba);
   param_1[0x22] = iVar3;
 switchD_004b071e_default:
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_1c);
   iVar4 = 0;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_20);
   iVar3 = 0;
   local_4._0_1_ = 1;
   if (0 < *(short *)(param_2 + 0x24a + param_3 * 2)) {
@@ -273,6 +282,7 @@ switchD_004b071e_default:
     do {
       puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x18);
       local_4._0_1_ = 2;
+      local_18 = puVar2;
       if (puVar2 == (undefined4 *)0x0) {
         puVar2 = (undefined4 *)0x0;
       }
@@ -292,9 +302,9 @@ switchD_004b071e_default:
     } while (iVar3 < *(short *)(param_2 + 0x24a + param_3 * 2));
   }
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_20);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_1c);
   iVar3 = *param_1;
   *(undefined2 *)(param_1 + 0x19) = 1;
   (**(code **)(iVar3 + 0x1ac))();

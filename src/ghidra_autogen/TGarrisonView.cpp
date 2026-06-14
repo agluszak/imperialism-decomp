@@ -128,12 +128,12 @@ LAB_004a8aa3:
         while (piVar2 != (int *)0x0) {
           if (piVar2[2] == 0xe) {
             piVar1 = (int *)piVar2[5];
-            InitializeSharedStringRefFromEmpty();
+            InitializeSharedStringRefFromEmpty(&local_14);
             local_4 = 0;
-            AssignFromPtr(&local_14,piVar2 + 9);
+            AssignFromPtr(&local_14,(CString *)(piVar2 + 9));
             iVar5 = CompareAnsiStringsWithMbcsAwareness(local_14,s_Snidely_0069584c);
             if (iVar5 == 0) {
-              InitializeSharedStringRefFromEmpty();
+              InitializeSharedStringRefFromEmpty(&local_18);
               puVar6 = &local_18;
               local_4 = CONCAT31(local_4._1_3_,1);
               UiRuntimeContext::GetActiveNationId(puVar6);
@@ -147,13 +147,13 @@ LAB_004a8aa3:
                 }
               }
               local_4 = local_4 & 0xffffff00;
-              ReleaseSharedStringRefIfNotEmpty();
+              ReleaseSharedStringRefIfNotEmpty(&local_18);
             }
             iVar5 = *piVar2;
             (**(code **)(iVar5 + 0x30))();
             (**(code **)(iVar5 + 0x1c))();
             local_4 = 0xffffffff;
-            ReleaseSharedStringRefIfNotEmpty();
+            ReleaseSharedStringRefIfNotEmpty(&local_14);
             piVar2 = piVar1;
             param_1 = local_10;
           }

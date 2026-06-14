@@ -37,13 +37,13 @@ _CreateTCivReportInstance__YAPAUCivReportState___Z_imperialismsrcgameTCivReport_
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C10
-// GHIDRA_NAME TCivReport::GetTCivReportClassNamePointer
-// GHIDRA_PROTO undefined GetTCivReportClassNamePointer()
+// GHIDRA_NAME TCivReport::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TCivReport::GetTCivReportClassNamePointer(void)
+undefined ** TCivReport::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TCivReport_00663130;
+  return &g_pClassDescTCivReport;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C30

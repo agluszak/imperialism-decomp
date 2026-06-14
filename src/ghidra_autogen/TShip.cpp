@@ -35,7 +35,7 @@ undefined4 * __fastcall TShip::ConstructAndLinkNavyPrimaryOrderNode(undefined4 *
   param_1[3] = 0;
   param_1[4] = 1;
   *(undefined2 *)(param_1 + 5) = 0xffff;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 6);
   *(undefined2 *)(param_1 + 7) = 0;
   param_1[8] = 0;
   param_1[10] = 0;
@@ -82,7 +82,7 @@ void __fastcall TShip::DestructTShip(undefined4 *param_1)
   puStack_8 = &LAB_00635048;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 6);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;

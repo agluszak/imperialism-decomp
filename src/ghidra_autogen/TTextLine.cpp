@@ -24,7 +24,7 @@ undefined4 * TTextLine::CreateTTextLineInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &PTR_LAB_0065e230;
     local_4 = 1;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(puVar1 + 4);
     *(undefined1 *)((int)puVar1 + 0x1a) = 0;
     *(undefined1 *)((int)puVar1 + 0x1b) = 0;
     *(undefined1 *)(puVar1 + 7) = 0;
@@ -64,7 +64,7 @@ undefined4 * __fastcall TTextLine::ConstructTTextLineBaseState(undefined4 *param
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &PTR_LAB_0065e230;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(param_1 + 4);
   *(undefined1 *)((int)param_1 + 0x1a) = 0;
   *(undefined1 *)((int)param_1 + 0x1b) = 0;
   *(undefined1 *)(param_1 + 7) = 0;

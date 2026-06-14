@@ -54,7 +54,8 @@ void __fastcall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(int param
   undefined4 unaff_ESI;
   char *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
-  uint *puStack_20;
+  CString CStack_20;
+  undefined1 local_14 [4];
   uint local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -64,21 +65,22 @@ void __fastcall TPortZone::RefreshTPortZoneDisplayNameFromLocalization(int param
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635830;
   *unaff_FS_OFFSET = &uStack_c;
-  puStack_20 = (uint *)0x561907;
-  InitializeSharedStringRefFromEmpty();
+  CStack_20.data_ptr = 0x561907;
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = 0;
-  puStack_20 = (uint *)0x561918;
-  InitializeSharedStringRefFromEmpty();
-  puStack_20 = &local_10;
+  CStack_20.data_ptr = 0x561918;
+  InitializeSharedStringRefFromEmpty(local_14);
+  CStack_20.data_ptr = (int)&local_10;
   local_4 = CONCAT31(local_4._1_3_,1);
   (**(code **)(*g_pLocalizationTable + 0x84))
-            (0x275a,CONCAT22((short)((uint)puStack_20 >> 0x10),*(undefined2 *)(param_1 + 4)));
-  scanBracketExpressions(g_pLocalizationTable,&puStack_20,unaff_EDI);
-  AssignFromPtr((void *)(param_1 + 8),(int *)&puStack_20);
+            (0x275a,CONCAT22((short)((uint)CStack_20.data_ptr >> 0x10),*(undefined2 *)(param_1 + 4))
+            );
+  scanBracketExpressions(g_pLocalizationTable,&CStack_20,unaff_EDI);
+  AssignFromPtr((void *)(param_1 + 8),&CStack_20);
   local_10 = local_10 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&CStack_20);
   local_10 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffe4);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }

@@ -34,7 +34,7 @@ TGameInfoPicture::ConstructTGameInfoPictureBaseState(int *param_1,undefined4 par
   puStack_8 = &LAB_00635da8;
   *unaff_FS_OFFSET = &uStack_c;
   TView::thunk_NoOpUiLifecycleHook(param_2);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_2);
   uStack_4 = 0;
   iVar3 = 0;
   do {
@@ -52,7 +52,7 @@ TGameInfoPicture::ConstructTGameInfoPictureBaseState(int *param_1,undefined4 par
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0xe);
   uStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

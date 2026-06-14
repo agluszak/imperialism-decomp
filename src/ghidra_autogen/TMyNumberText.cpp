@@ -12,8 +12,8 @@ TMyNumberText::CloneCityDialogStateWithSharedStringInit(undefined4 *param_1,int 
 
 {
   undefined2 uVar1;
-  int iVar2;
-  void *this;
+  void *pvVar2;
+  void *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -41,17 +41,18 @@ TMyNumberText::CloneCityDialogStateWithSharedStringInit(undefined4 *param_1,int 
   local_4 = 0;
   *(undefined2 *)(param_1 + 0x24) = *(undefined2 *)(param_2 + 0x90);
   *param_1 = &TStaticText::_vftable_;
-  iVar2 = AllocateWithFallbackHandler(4);
+  pvVar2 = (void *)AllocateWithFallbackHandler(4);
   local_4._0_1_ = 1;
-  if (iVar2 == 0) {
-    this = (void *)0x0;
+  if (pvVar2 == (void *)0x0) {
+    pvVar2 = (void *)0x0;
   }
   else {
-    this = (void *)InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(pvVar2);
+    pvVar2 = extraout_EAX;
   }
-  param_1[0x21] = this;
+  param_1[0x21] = pvVar2;
   local_4 = (uint)local_4._1_3_ << 8;
-  AssignFromPtr(this,*(int **)(param_2 + 0x84));
+  AssignFromPtr(pvVar2,*(CString **)(param_2 + 0x84));
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -149,7 +150,7 @@ undefined4 __fastcall TMyNumberText::UpdateMyNumberTextFromTownValueString(int *
   *unaff_FS_OFFSET = &uStack_c;
   local_14 = (undefined1 *)0x0;
   puStack_20 = (undefined4 *)0x5b507c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_18);
   puStack_20 = &local_18;
   local_4 = 0;
   puStack_24 = (undefined4 *)0x5b5093;
@@ -162,7 +163,7 @@ undefined4 __fastcall TMyNumberText::UpdateMyNumberTextFromTownValueString(int *
   }
   puStack_8 = (undefined1 *)0xffffffff;
   puStack_24 = (undefined4 *)0x5b50d1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffe4);
   *unaff_FS_OFFSET = uStack_10;
   return local_18;
 }

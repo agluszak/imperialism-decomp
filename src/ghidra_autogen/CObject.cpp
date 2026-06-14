@@ -3,6 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: CObject.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00412BD0
+// GHIDRA_NAME CObject::Serialize
+// GHIDRA_PROTO undefined Serialize()
+
+void CObject::Serialize(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412BF0
+// GHIDRA_NAME CObject::AssertValidOrSlot0c
+// GHIDRA_PROTO undefined AssertValidOrSlot0c()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
+// GHIDRA_COMMENT_END
+
+/* No-op virtual slot stub (returns immediately). */
+
+void CObject::AssertValidOrSlot0c(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412C10
+// GHIDRA_NAME CObject::DumpOrSlot10
+// GHIDRA_PROTO undefined DumpOrSlot10()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
+// GHIDRA_COMMENT_END
+
+/* No-op virtual slot stub (returns immediately). */
+
+void CObject::DumpOrSlot10(void)
+
+{
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00606FC0
 // GHIDRA_NAME CObject::IsKindOf
 // GHIDRA_PROTO undefined IsKindOf()

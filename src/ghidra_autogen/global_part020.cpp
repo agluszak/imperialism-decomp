@@ -3,159 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part020.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00606F73
-// GHIDRA_NAME AllocateWithFallbackHandler
-// GHIDRA_PROTO undefined AllocateWithFallbackHandler()
-
-int AllocateWithFallbackHandler(undefined4 param_1)
-
-{
-  int iVar1;
-  AFX_MODULE_THREAD_STATE *pAVar2;
-  code *pcVar3;
-  
-  pcVar3 = DAT_006706dc;
-  while( true ) {
-    iVar1 = AllocateWithGlobalNewMode(param_1);
-    if (iVar1 != 0) {
-      return iVar1;
-    }
-    if (pcVar3 == DAT_006706dc) {
-      pAVar2 = AfxGetModuleThreadState();
-      pcVar3 = *(code **)(pAVar2 + 0x28);
-    }
-    if (pcVar3 == (code *)0x0) break;
-    iVar1 = (*pcVar3)(param_1);
-    if (iVar1 == 0) {
-      return 0;
-    }
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606FAF
-// GHIDRA_NAME FreeHeapBufferIfNotNull
-// GHIDRA_PROTO undefined FreeHeapBufferIfNotNull()
-
-void FreeHeapBufferIfNotNull(undefined4 param_1)
-
-{
-  FreeHeapBlockWithAllocatorTracking(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606FD2
-// GHIDRA_NAME AfxDynamicDownCast
-// GHIDRA_PROTO undefined AfxDynamicDownCast()
-
-int AfxDynamicDownCast(undefined4 param_1,int param_2)
-
-{
-  int iVar1;
-  
-  if (param_2 != 0) {
-    iVar1 = CObject::IsKindOf(param_1);
-    if (iVar1 != 0) {
-      return param_2;
-    }
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606FF2
-// GHIDRA_NAME CreateObject_606ff2
-// GHIDRA_PROTO undefined CreateObject_606ff2()
-
-undefined4 CreateObject_606ff2(void)
-
-{
-  int iVar1;
-  undefined4 uVar2;
-  int extraout_ECX;
-  int unaff_EBP;
-  undefined4 *unaff_FS_OFFSET;
-  
-  EstablishSehFrameProlog();
-  uVar2 = 0;
-  iVar1 = *(int *)(extraout_ECX + 0xc);
-  *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;
-  if (iVar1 != 0) {
-    *(undefined4 *)(unaff_EBP + -0x14) = 0;
-    *(undefined4 *)(unaff_EBP + -4) = 0;
-    uVar2 = (**(code **)(extraout_ECX + 0xc))();
-    *(undefined4 *)(unaff_EBP + -0x14) = uVar2;
-    uVar2 = *(undefined4 *)(unaff_EBP + -0x14);
-  }
-  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00607090
-// GHIDRA_NAME TMacViewMgr_Slot39_Target
-// GHIDRA_PROTO undefined TMacViewMgr_Slot39_Target()
-
-void __thiscall
-TMacViewMgr_Slot39_Target(int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  (**(code **)(**(int **)(param_1 + 0x34) + 0x5c))(param_2,param_3,param_4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00607111
-// GHIDRA_NAME GetDlgItem
-// GHIDRA_PROTO undefined GetDlgItem()
-
-void __thiscall GetDlgItem(int param_1,int param_2)
-
-{
-  HWND pHVar1;
-  
-  if (*(int **)(param_1 + 0x34) == (int *)0x0) {
-    pHVar1 = GetDlgItem(*(HWND *)(param_1 + 0x1c),param_2);
-    FromHandle(pHVar1);
-  }
-  else {
-    (**(code **)(**(int **)(param_1 + 0x34) + 0x78))(param_2);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060713B
-// GHIDRA_NAME GetDlgItem_60713b
-// GHIDRA_PROTO undefined GetDlgItem_60713b()
-
-void __thiscall GetDlgItem_60713b(int param_1,int param_2,undefined4 *param_3)
-
-{
-  HWND pHVar1;
-  
-  if (*(int **)(param_1 + 0x34) == (int *)0x0) {
-    pHVar1 = GetDlgItem(*(HWND *)(param_1 + 0x1c),param_2);
-    *param_3 = pHVar1;
-  }
-  else {
-    (**(code **)(**(int **)(param_1 + 0x34) + 0x74))(param_2,param_3);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0060719B
-// GHIDRA_NAME GetDlgItemTextOrDelegateHandler
-// GHIDRA_PROTO undefined GetDlgItemTextOrDelegateHandler()
-
-void __thiscall GetDlgItemTextOrDelegateHandler(int param_1,int param_2,LPSTR param_3,int param_4)
-
-{
-  if (*(int **)(param_1 + 0x34) == (int *)0x0) {
-    GetDlgItemTextA(*(HWND *)(param_1 + 0x1c),param_2,param_3,param_4);
-  }
-  else {
-    (**(code **)(**(int **)(param_1 + 0x34) + 0x80))(param_2,param_3,param_4);
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x006071D0
 // GHIDRA_NAME SendDlgItemMessageOrDelegateHandler
 // GHIDRA_PROTO undefined SendDlgItemMessageOrDelegateHandler()
@@ -3521,17 +3368,17 @@ undefined4 * ConstructAndOpenCFileWithFlagsOrThrow(void)
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(extraout_ECX + 3);
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *extraout_ECX = &PTR_LAB_006727e4;
   ConstructSerializedDataExceptionBase();
   *(undefined1 *)(unaff_EBP + -4) = 2;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x14));
   *(undefined4 *)(unaff_EBP + -0x1c) = 0;
   *(undefined4 *)(unaff_EBP + -0x18) = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 3;
   *(undefined ***)(unaff_EBP + -0x24) = &PTR_GetCFileExceptionRuntimeClass_00672234;
-  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(0);
+  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78((void *)(unaff_EBP + -0x14),(char *)0x0);
   *(undefined1 *)(unaff_EBP + -4) = 4;
   iVar1 = OpenFileHandleWithMfcFlags
                     (*(undefined4 *)(unaff_EBP + 8),*(undefined4 *)(unaff_EBP + 0xc),
@@ -3543,7 +3390,7 @@ undefined4 * ConstructAndOpenCFileWithFlagsOrThrow(void)
   }
   *(undefined ***)(unaff_EBP + -0x24) = &PTR_GetCFileExceptionRuntimeClass_00672234;
   *(undefined1 *)(unaff_EBP + -4) = 5;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x14));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return extraout_ECX;
 }
@@ -3619,7 +3466,7 @@ LPCSTR __thiscall OpenFileHandleWithMfcFlags(int param_1,LPCSTR param_2,uint par
   uint uVar6;
   DWORD DVar7;
   LPCSTR dwShareMode;
-  undefined1 local_114 [260];
+  char local_114 [260];
   _SECURITY_ATTRIBUTES local_10;
   
   uVar1 = param_3;
@@ -3628,7 +3475,7 @@ LPCSTR __thiscall OpenFileHandleWithMfcFlags(int param_1,LPCSTR param_2,uint par
   uVar6 = param_3 & 0xffff7fff;
   Empty();
   AfxFullPath(local_114,param_2);
-  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(local_114);
+  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78((void *)(param_1 + 0xc),local_114);
   uVar2 = param_3 & 3;
   if (uVar2 == 0) {
     param_3 = 0x80000000;
@@ -3674,7 +3521,7 @@ LPCSTR __thiscall OpenFileHandleWithMfcFlags(int param_1,LPCSTR param_2,uint par
       *(DWORD *)(param_4 + 0xc) = DVar7;
       uVar4 = OsErrorToException(DVar7);
       *(undefined4 *)(param_4 + 8) = uVar4;
-      WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(param_2);
+      WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78((void *)(param_4 + 0x10),param_2);
     }
     pCVar5 = (LPCSTR)0x0;
   }
@@ -3918,7 +3765,7 @@ void DeleteFileOrReportLastError(LPCSTR param_1)
 // GHIDRA_NAME AfxStringFromCLSID
 // GHIDRA_PROTO undefined AfxStringFromCLSID()
 
-undefined4 AfxStringFromCLSID(undefined4 param_1,undefined4 *param_2)
+TToolBarCluster * AfxStringFromCLSID(TToolBarCluster *param_1,undefined4 *param_2)
 
 {
   CHAR local_108 [256];
@@ -3931,7 +3778,7 @@ undefined4 AfxStringFromCLSID(undefined4 param_1,undefined4 *param_2)
             (uint)*(byte *)((int)param_2 + 10),(uint)*(byte *)((int)param_2 + 0xb),
             (uint)*(byte *)(param_2 + 3),(uint)*(byte *)((int)param_2 + 0xd),
             (uint)*(byte *)((int)param_2 + 0xe),(uint)*(byte *)((int)param_2 + 0xf));
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(local_108);
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(param_1,local_108);
   return param_1;
 }
 
@@ -3939,7 +3786,7 @@ undefined4 AfxStringFromCLSID(undefined4 param_1,undefined4 *param_2)
 // GHIDRA_NAME AfxGetInProcServer
 // GHIDRA_PROTO undefined AfxGetInProcServer()
 
-bool AfxGetInProcServer(HKEY param_1)
+bool AfxGetInProcServer(HKEY param_1,TToolBarCluster *param_2)
 
 {
   LSTATUS LVar1;
@@ -3959,11 +3806,11 @@ bool AfxGetInProcServer(HKEY param_1)
       param_1 = (HKEY)0x0;
       LVar1 = RegOpenKeyA(local_8,"InProcServer32",&param_1);
       if (LVar1 == 0) {
-        lpData = (LPBYTE)TToolBarCluster::GetBuffer(0x104);
+        lpData = (LPBYTE)TToolBarCluster::GetBuffer(param_2,0x104);
         local_14[1] = 0x104;
         LVar1 = RegQueryValueExA(param_1,(LPCSTR)&g_szEmptyString,(LPDWORD)0x0,local_14,lpData,
                                  local_14 + 1);
-        ReleaseBuffer(0xffffffff);
+        ReleaseBuffer(param_2,-1);
         bVar2 = LVar1 == 0;
         RegCloseKey(param_1);
       }
@@ -4066,7 +3913,7 @@ undefined4 AfxFullPath(void)
     lstrcpynA(lpBuffer,*(LPCSTR *)(unaff_EBP + 0xc),0x104);
   }
   else {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + 8));
     *(undefined4 *)(unaff_EBP + -4) = 0;
     AfxGetRoot(lpBuffer,unaff_EBP + 8);
     BVar2 = GetVolumeInformationA
@@ -4085,12 +3932,12 @@ undefined4 AfxFullPath(void)
         }
       }
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + 8));
       uVar3 = 1;
       goto LAB_0060b594;
     }
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + 8));
   }
   uVar3 = 0;
 LAB_0060b594:
@@ -4102,7 +3949,7 @@ LAB_0060b594:
 // GHIDRA_NAME AfxGetRoot
 // GHIDRA_PROTO undefined AfxGetRoot()
 
-void AfxGetRoot(LPCSTR param_1)
+void AfxGetRoot(LPCSTR param_1,TToolBarCluster *param_2)
 
 {
   char cVar1;
@@ -4110,7 +3957,7 @@ void AfxGetRoot(LPCSTR param_1)
   LPSTR pCVar2;
   CHAR CVar3;
   
-  lpString1 = (char *)TToolBarCluster::GetBuffer(0x104);
+  lpString1 = (char *)TToolBarCluster::GetBuffer(param_2,0x104);
   CDocTemplate::memset(lpString1,0,0x104);
   lstrcpynA(lpString1,param_1,0x104);
   CVar3 = *lpString1;
@@ -4142,7 +3989,7 @@ LAB_0060b625:
   if (*lpString1 != '\0') {
     lpString1[1] = '\0';
   }
-  ReleaseBuffer(0xffffffff);
+  ReleaseBuffer(param_2,-1);
   return;
 }
 
@@ -4229,7 +4076,7 @@ int AfxGetFileTitle(LPCSTR param_1,LPCSTR param_2,undefined4 param_3)
 // GHIDRA_NAME AfxGetModuleShortFileName
 // GHIDRA_PROTO undefined AfxGetModuleShortFileName()
 
-void AfxGetModuleShortFileName(HMODULE param_1)
+void AfxGetModuleShortFileName(HMODULE param_1,TToolBarCluster *param_2)
 
 {
   LPSTR lpszShortPath;
@@ -4238,12 +4085,12 @@ void AfxGetModuleShortFileName(HMODULE param_1)
   
   GetModuleFileNameA(param_1,local_108,0x104);
   DVar1 = 0x104;
-  lpszShortPath = (LPSTR)TToolBarCluster::GetBuffer(0x104);
+  lpszShortPath = (LPSTR)TToolBarCluster::GetBuffer(param_2,0x104);
   DVar1 = GetShortPathNameA(local_108,lpszShortPath,DVar1);
   if (DVar1 == 0) {
-    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(local_108);
+    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(param_2,local_108);
   }
-  ReleaseBuffer(0xffffffff);
+  ReleaseBuffer(param_2,-1);
   return;
 }
 
@@ -4254,7 +4101,7 @@ void AfxGetModuleShortFileName(HMODULE param_1)
 undefined4 GetFileName_60b7dd(void)
 
 {
-  undefined4 uVar1;
+  int iVar1;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar2;
@@ -4262,19 +4109,20 @@ undefined4 GetFileName_60b7dd(void)
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   CDocTemplate::GetStatus(unaff_EBP + -300);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x10));
   uVar2 = 0x100;
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  uVar1 = TToolBarCluster::GetBuffer(0x100);
-  AfxGetFileName(unaff_EBP + -0x11a,uVar1,uVar2);
-  ReleaseBuffer(0xffffffff);
-  TToolBarCluster::StringSharedRef_AssignFromPtr(unaff_EBP + -0x10);
+  iVar1 = TToolBarCluster::GetBuffer((TToolBarCluster *)(unaff_EBP + -0x10),0x100);
+  AfxGetFileName(unaff_EBP + -0x11a,iVar1,uVar2);
+  ReleaseBuffer((void *)(unaff_EBP + -0x10),-1);
+  TToolBarCluster::StringSharedRef_AssignFromPtr
+            (*(TToolBarCluster **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -0x14) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  ReleaseSharedStringRefIfNotEmpty();
-  uVar1 = *(undefined4 *)(unaff_EBP + 8);
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x10));
+  uVar2 = *(undefined4 *)(unaff_EBP + 8);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar1;
+  return uVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060B85F
@@ -4284,7 +4132,7 @@ undefined4 GetFileName_60b7dd(void)
 undefined4 GetFileTitle_60b85f(void)
 
 {
-  undefined4 uVar1;
+  int iVar1;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar2;
@@ -4292,19 +4140,20 @@ undefined4 GetFileTitle_60b85f(void)
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   CDocTemplate::GetStatus(unaff_EBP + -300);
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x10));
   uVar2 = 0x100;
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  uVar1 = TToolBarCluster::GetBuffer(0x100);
-  AfxGetFileTitle(unaff_EBP + -0x11a,uVar1,uVar2);
-  ReleaseBuffer(0xffffffff);
-  TToolBarCluster::StringSharedRef_AssignFromPtr(unaff_EBP + -0x10);
+  iVar1 = TToolBarCluster::GetBuffer((TToolBarCluster *)(unaff_EBP + -0x10),0x100);
+  AfxGetFileTitle(unaff_EBP + -0x11a,iVar1,uVar2);
+  ReleaseBuffer((void *)(unaff_EBP + -0x10),-1);
+  TToolBarCluster::StringSharedRef_AssignFromPtr
+            (*(TToolBarCluster **)(unaff_EBP + 8),(CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -0x14) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  ReleaseSharedStringRefIfNotEmpty();
-  uVar1 = *(undefined4 *)(unaff_EBP + 8);
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x10));
+  uVar2 = *(undefined4 *)(unaff_EBP + 8);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar1;
+  return uVar2;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060B9EA
@@ -4496,9 +4345,10 @@ undefined4 GetErrorMessage(void)
   if (*(int **)(unaff_EBP + 0x10) != (int *)0x0) {
     **(int **)(unaff_EBP + 0x10) = *(int *)(extraout_ECX + 8) + 0xf1a0;
   }
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  TToolBarCluster::StringSharedRef_AssignFromPtr(extraout_ECX + 0x10);
+  TToolBarCluster::StringSharedRef_AssignFromPtr
+            ((TToolBarCluster *)(unaff_EBP + 0x10),(CString *)(extraout_ECX + 0x10));
   *(undefined1 *)(unaff_EBP + -4) = 1;
   if (*(int *)(*(int *)(unaff_EBP + 0x10) + -8) == 0) {
     LoadStringA(0xf006);
@@ -4507,9 +4357,9 @@ undefined4 GetErrorMessage(void)
                    *(undefined4 *)(unaff_EBP + 0x10));
   lstrcpynA(*(LPSTR *)(unaff_EBP + 8),*(LPCSTR *)(unaff_EBP + -0x10),*(int *)(unaff_EBP + 0xc));
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + 0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x10));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return 1;
 }
@@ -4521,33 +4371,33 @@ undefined4 GetErrorMessage(void)
 void AfxThrowFileException(void)
 
 {
+  char *src_text;
   undefined4 uVar1;
-  undefined4 uVar2;
-  undefined4 *puVar3;
+  undefined4 *puVar2;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  puVar3 = (undefined4 *)AllocateWithFallbackHandler(0x14);
-  *(undefined4 **)(unaff_EBP + -0x14) = puVar3;
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  *(undefined4 **)(unaff_EBP + -0x14) = puVar2;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  if (puVar3 == (undefined4 *)0x0) {
-    puVar3 = (undefined4 *)0x0;
+  if (puVar2 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
   }
   else {
     ConstructSerializedDataExceptionBase();
     *(undefined1 *)(unaff_EBP + -4) = 1;
-    InitializeSharedStringRefFromEmpty();
-    uVar1 = *(undefined4 *)(unaff_EBP + 0x10);
-    puVar3[2] = *(undefined4 *)(unaff_EBP + 8);
-    uVar2 = *(undefined4 *)(unaff_EBP + 0xc);
+    InitializeSharedStringRefFromEmpty(puVar2 + 4);
+    src_text = *(char **)(unaff_EBP + 0x10);
+    puVar2[2] = *(undefined4 *)(unaff_EBP + 8);
+    uVar1 = *(undefined4 *)(unaff_EBP + 0xc);
     *(undefined1 *)(unaff_EBP + -4) = 2;
-    *puVar3 = &PTR_GetCFileExceptionRuntimeClass_00672234;
-    puVar3[3] = uVar2;
-    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(uVar1);
+    *puVar2 = &PTR_GetCFileExceptionRuntimeClass_00672234;
+    puVar2[3] = uVar1;
+    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(puVar2 + 4,src_text);
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  *(undefined4 **)(unaff_EBP + -0x10) = puVar3;
+  *(undefined4 **)(unaff_EBP + -0x10) = puVar2;
   RaiseMfcSehExceptionWithArgs(unaff_EBP + -0x10,&DAT_0068e210);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
@@ -4828,7 +4678,7 @@ void __thiscall RemoveSharedStringEntryAndShiftLeft(int param_1,int param_2)
   Empty();
   for (; param_2 < *(int *)(param_1 + 4) + -1; param_2 = param_2 + 1) {
     AssignFromPtr((void *)(*(int *)(param_1 + 8) + param_2 * 4),
-                  (int *)(*(int *)(param_1 + 8) + 4 + param_2 * 4));
+                  (CString *)(*(int *)(param_1 + 8) + 4 + param_2 * 4));
   }
   Empty();
   return;
@@ -4842,25 +4692,25 @@ bool LoadStringA(undefined4 param_1)
 
 {
   int iVar1;
-  undefined4 uVar2;
+  int iVar2;
   int iVar3;
-  int iVar4;
-  undefined1 local_108 [260];
+  char local_108 [256];
+  TToolBarCluster *local_8;
   
   iVar1 = AfxLoadString(param_1,local_108,0x100);
   if (0x100U - iVar1 < 3) {
-    iVar3 = 0x100;
+    iVar2 = 0x100;
     do {
-      iVar4 = iVar3 + 0x100;
-      iVar1 = iVar4;
-      uVar2 = TToolBarCluster::GetBuffer(iVar3 + 0xff);
-      iVar1 = AfxLoadString(param_1,uVar2,iVar1);
-      iVar3 = iVar4;
-    } while (iVar4 - iVar1 < 3);
-    ReleaseBuffer(0xffffffff);
+      iVar3 = iVar2 + 0x100;
+      iVar1 = iVar3;
+      iVar2 = TToolBarCluster::GetBuffer(local_8,iVar2 + 0xff);
+      iVar1 = AfxLoadString(param_1,iVar2,iVar1);
+      iVar2 = iVar3;
+    } while (iVar3 - iVar1 < 3);
+    ReleaseBuffer(local_8,-1);
   }
   else {
-    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(local_108);
+    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(local_8,local_108);
   }
   return 0 < iVar1;
 }
@@ -4886,15 +4736,16 @@ void AfxLoadString(UINT param_1,LPSTR param_2,int param_3)
 // GHIDRA_NAME AfxExtractSubString
 // GHIDRA_PROTO undefined AfxExtractSubString()
 
-undefined4 AfxExtractSubString(undefined4 param_1,LPCSTR param_2,int param_3,char param_4)
+undefined4 AfxExtractSubString(void *param_1,LPCSTR param_2,int param_3,char param_4)
 
 {
   int iVar1;
-  undefined4 uVar2;
+  int iVar2;
+  undefined4 uVar3;
   
   if (param_2 == (LPCSTR)0x0) {
 LAB_0060cfa4:
-    uVar2 = 0;
+    uVar3 = 0;
   }
   else {
     if (param_3 != 0) {
@@ -4915,11 +4766,11 @@ LAB_0060cfa4:
     else {
       iVar1 = iVar1 - (int)param_2;
     }
-    uVar2 = GetBufferSetLength(iVar1);
-    CopyMemoryPossiblyOverlapping(uVar2,param_2,iVar1);
-    uVar2 = 1;
+    iVar2 = GetBufferSetLength(param_1,iVar1);
+    CopyMemoryPossiblyOverlapping(iVar2,param_2,iVar1);
+    uVar3 = 1;
   }
-  return uVar2;
+  return uVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060D044
@@ -5406,7 +5257,7 @@ void SetDefaultTitle(void)
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x10));
   iVar1 = *extraout_ECX;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   iVar1 = (**(code **)(iVar1 + 0x6c))(unaff_EBP + -0x10,1);
@@ -5415,7 +5266,7 @@ void SetDefaultTitle(void)
   }
   (**(code **)(**(int **)(unaff_EBP + 8) + 0x58))(*(undefined4 *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x10));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -5461,10 +5312,10 @@ void __fastcall DispatchViaVtableSlot84FromSlot06(int *param_1)
 // GHIDRA_NAME WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80
 // GHIDRA_PROTO undefined WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80()
 
-void __thiscall WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80(int *param_1,undefined4 param_2)
+void __thiscall WrapperFor_CopyMemoryPossiblyOverlapping_At00610a80(int *param_1,char *param_2)
 
 {
-  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(param_2);
+  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(param_1 + 7,param_2);
   (**(code **)(*param_1 + 0xa8))();
   return;
 }
@@ -5543,6 +5394,7 @@ undefined4 ReturnZeroStub_00610f87(void)
 undefined4 CopyFilePreserveTimesAndSecurity(void)
 
 {
+  TToolBarCluster *this;
   int iVar1;
   BOOL BVar2;
   LPSTR lpTempFileName;
@@ -5553,11 +5405,12 @@ undefined4 CopyFilePreserveTimesAndSecurity(void)
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
+  this = (TToolBarCluster *)(extraout_ECX + 0x10);
   Empty();
   if ((*(byte *)(unaff_EBP + 0xd) & 0x10) != 0) {
     iVar1 = GetStatus_60b9ea(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x148);
     if (iVar1 != 0) {
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x10));
       iVar1 = 0;
       *(undefined4 *)(unaff_EBP + -4) = 0;
       AfxGetRoot(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x10);
@@ -5572,20 +5425,21 @@ undefined4 CopyFilePreserveTimesAndSecurity(void)
         GetFullPathNameA(*(LPCSTR *)(unaff_EBP + 8),0x104,(LPSTR)(unaff_EBP + -0x24c),
                          (LPSTR *)(unaff_EBP + -0x1c));
         **(undefined1 **)(unaff_EBP + -0x1c) = 0;
-        lpTempFileName = (LPSTR)TToolBarCluster::GetBuffer(0x105);
+        lpTempFileName = (LPSTR)TToolBarCluster::GetBuffer(this,0x105);
         GetTempFileNameA((LPCSTR)(unaff_EBP + -0x24c),"MFC",0,lpTempFileName);
-        ReleaseBuffer(0xffffffff);
+        ReleaseBuffer(this,-1);
       }
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x10));
     }
   }
-  iVar1 = *(int *)(extraout_ECX + 0x10);
-  if (*(int *)(iVar1 + -8) != 0) {
+  if (*(int *)(*(int *)this + -8) != 0) {
     iVar1 = OpenFileHandleWithMfcFlags
-                      (iVar1,*(undefined4 *)(unaff_EBP + 0xc),*(undefined4 *)(unaff_EBP + 0x10));
+                      (*(int *)this,*(undefined4 *)(unaff_EBP + 0xc),
+                       *(undefined4 *)(unaff_EBP + 0x10));
     if (iVar1 != 0) {
-      WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(*(undefined4 *)(unaff_EBP + 8));
+      WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78
+                ((void *)(extraout_ECX + 0xc),*(char **)(unaff_EBP + 8));
       BVar2 = GetFileTime(*(HANDLE *)(extraout_ECX + 4),(LPFILETIME)(unaff_EBP + -0x28),
                           (LPFILETIME)(unaff_EBP + -0x18),(LPFILETIME)(unaff_EBP + -0x20));
       if (BVar2 != 0) {
@@ -5602,7 +5456,7 @@ undefined4 CopyFilePreserveTimesAndSecurity(void)
         BVar2 = GetFileSecurityA(*(LPCSTR *)(unaff_EBP + 8),4,pSecurityDescriptor,
                                  *(DWORD *)(unaff_EBP + 0xc),(LPDWORD)(unaff_EBP + 0xc));
         if (BVar2 != 0) {
-          SetFileSecurityA(*(LPCSTR *)(extraout_ECX + 0x10),4,pSecurityDescriptor);
+          SetFileSecurityA(*(LPCSTR *)this,4,pSecurityDescriptor);
         }
         FreeHeapBufferIfNotNull(pSecurityDescriptor);
       }
@@ -5645,7 +5499,8 @@ void CloseFileAndDeleteOnFailureThenThrow(void)
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  TToolBarCluster::StringSharedRef_AssignFromPtr(extraout_ECX + 0xc);
+  TToolBarCluster::StringSharedRef_AssignFromPtr
+            ((TToolBarCluster *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 0xc));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CloseFileHandleAndThrowMfcExceptionOnError();
   if (*(int *)(*(int *)(extraout_ECX + 0x10) + -8) != 0) {
@@ -5654,7 +5509,7 @@ void CloseFileAndDeleteOnFailureThenThrow(void)
               (*(undefined4 *)(extraout_ECX + 0x10),*(undefined4 *)(unaff_EBP + -0x10));
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x10));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -7024,5 +6879,175 @@ void NoOpVirtualStub_00613e44(void)
 
 {
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F04
+// GHIDRA_NAME InvokeVslotF4WithZeroArgs
+// GHIDRA_PROTO undefined InvokeVslotF4WithZeroArgs()
+
+void __fastcall InvokeVslotF4WithZeroArgs(int *param_1)
+
+{
+  (**(code **)(*param_1 + 0xf4))(0,0,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F12
+// GHIDRA_NAME InvalidateWindowRectFromHandleField1C
+// GHIDRA_PROTO undefined InvalidateWindowRectFromHandleField1C()
+
+void __fastcall InvalidateWindowRectFromHandleField1C(int param_1)
+
+{
+  InvalidateRect(*(HWND *)(param_1 + 0x1c),(RECT *)0x0,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F22
+// GHIDRA_NAME DispatchVirtualSlotF8_WithArg
+// GHIDRA_PROTO undefined DispatchVirtualSlotF8_WithArg()
+
+void __thiscall DispatchVirtualSlotF8_WithArg(int *param_1,undefined4 param_2)
+
+{
+  (**(code **)(*param_1 + 0xf8))(param_2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F39
+// GHIDRA_NAME OnActivateView
+// GHIDRA_PROTO undefined OnActivateView()
+
+void OnActivateView(int param_1)
+
+{
+  int iVar1;
+  
+  if (param_1 != 0) {
+    iVar1 = FUN_00609382();
+    if (iVar1 != 0) {
+      SetFocus();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00613F5A
+// GHIDRA_NAME OnMouseActivate
+// GHIDRA_PROTO undefined OnMouseActivate()
+
+int __fastcall OnMouseActivate(CView *param_1)
+
+{
+  int iVar1;
+  CFrameWnd *this;
+  CView *pCVar2;
+  HWND hWnd;
+  BOOL BVar3;
+  
+  iVar1 = CWnd::Default();
+  if (((iVar1 != 3) && (iVar1 != 4)) &&
+     (this = (CFrameWnd *)GetParentFrame(), this != (CFrameWnd *)0x0)) {
+    pCVar2 = (CView *)GetObjectValueAtOffset98();
+    hWnd = GetFocus();
+    if (((pCVar2 == param_1) && (*(HWND *)(param_1 + 0x1c) != hWnd)) &&
+       (BVar3 = IsChild(*(HWND *)(param_1 + 0x1c),hWnd), BVar3 == 0)) {
+      (**(code **)(*(int *)param_1 + 0xec))(1,param_1,param_1);
+      return iVar1;
+    }
+    CFrameWnd::SetActiveView(this,param_1,1);
+  }
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061419F
+// GHIDRA_NAME OnEndPrintPreview
+// GHIDRA_PROTO undefined OnEndPrintPreview()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Activates target view in frame context, updates active view focus/state, sends WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update.
+// GHIDRA_COMMENT_END
+
+/* Activates target view in frame context, updates active view focus/state, sends
+   WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update. */
+
+void __thiscall
+OnEndPrintPreview(int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,
+                 undefined4 param_5,int *param_6)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  CFrameWnd *this;
+  BOOL BVar3;
+  CWinThread *pCVar4;
+  CFrameWnd *pCVar5;
+  
+  if ((int *)param_6[0x1c] != (int *)0x0) {
+    (**(code **)(*(int *)param_6[0x1c] + 0x108))(param_2,param_3);
+  }
+  uVar2 = GetParentFrame();
+  this = (CFrameWnd *)AfxDynamicDownCast(&PTR_s_CFrameWnd_00670320,uVar2);
+  if (this != (CFrameWnd *)0x0) {
+    BVar3 = IsIconic(*(HWND *)(this + 0x1c));
+    if (BVar3 == 0) goto LAB_006141f0;
+  }
+  pCVar4 = AfxGetThread();
+  this = *(CFrameWnd **)(pCVar4 + 0x1c);
+LAB_006141f0:
+  iVar1 = *(int *)this;
+  (**(code **)(iVar1 + 0xd8))(0,param_6[0x22]);
+  CFrameWnd::SetActiveView(this,*(CView **)(param_6[0x22] + 0xc),1);
+  pCVar5 = (CFrameWnd *)GetParentFrame();
+  if (this != pCVar5) {
+    (**(code **)(*param_1 + 0xec))(1,param_1,param_1);
+  }
+  (**(code **)(*param_6 + 0x60))();
+  (**(code **)(iVar1 + 0xd0))(1);
+  SendMessageA(*(HWND *)(this + 0x1c),0x362,0xe001,0);
+  UpdateWindow(*(HWND *)(this + 0x1c));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x006142C0
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At006142c0
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At006142c0()
+
+undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At006142c0(undefined4 param_1,byte param_2)
+
+{
+  FUN_005e709d();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00614331
+// GHIDRA_NAME AfxCustomLogFont
+// GHIDRA_PROTO undefined AfxCustomLogFont()
+
+undefined4 AfxCustomLogFont(undefined4 param_1,int *param_2)
+
+{
+  int iVar1;
+  undefined1 *puVar2;
+  undefined4 uVar3;
+  CHAR local_104 [256];
+  
+  iVar1 = AfxLoadString(param_1,local_104,0x100);
+  uVar3 = 0;
+  if (iVar1 != 0) {
+    puVar2 = (undefined1 *)FindCharWithMbcsLeadByteSupport(local_104,10);
+    if (puVar2 != (undefined1 *)0x0) {
+      iVar1 = ParseSignedIntAndDiscardResult(puVar2 + 1);
+      *param_2 = iVar1;
+      iVar1 = MulDiv(iVar1,DAT_006a7d1c,0x48);
+      *param_2 = iVar1;
+      *puVar2 = 0;
+    }
+    lstrcpynA((LPSTR)(param_2 + 7),local_104,0x20);
+    uVar3 = 1;
+  }
+  return uVar3;
 }
 

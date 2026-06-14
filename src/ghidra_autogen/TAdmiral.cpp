@@ -44,6 +44,7 @@ char * TAdmiral::GetTAdmiralClassNamePointer(void)
 undefined4 * __thiscall TAdmiral::TAdmiral(undefined4 *param_1,undefined2 param_2)
 
 {
+  undefined4 *this;
   undefined4 *puVar1;
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
@@ -55,10 +56,11 @@ undefined4 * __thiscall TAdmiral::TAdmiral(undefined4 *param_1,undefined2 param_
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   *param_1 = &RefCountedObjectBase::_vftable_;
+  this = param_1 + 3;
   local_4 = 0;
   *(undefined2 *)(param_1 + 1) = param_2;
   param_1[2] = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(this);
   *(undefined2 *)(param_1 + 4) = 0;
   param_1[5] = g_pNavySecondaryOrderListHead;
   param_1[6] = 0;
@@ -69,11 +71,11 @@ undefined4 * __thiscall TAdmiral::TAdmiral(undefined4 *param_1,undefined2 param_
     *(undefined4 **)(param_1[5] + 0x18) = param_1;
   }
   if (*(short *)(param_1 + 1) != -1) {
-    thunk_GenerateMappedFlavorTextByNationSlotField0C(param_1 + 3);
+    thunk_GenerateMappedFlavorTextByNationSlotField0C(this);
     for (puVar1 = g_pNavySecondaryOrderListHead; puVar1 != (undefined4 *)0x0;
         puVar1 = (undefined4 *)puVar1[5]) {
       if ((puVar1 != param_1) &&
-         (iVar2 = CompareAnsiStringsWithMbcsAwareness(puVar1[3],param_1[3]), iVar2 == 0)) {
+         (iVar2 = CompareAnsiStringsWithMbcsAwareness(puVar1[3],*this), iVar2 == 0)) {
         thunk_RemoveDuplicateNavySecondaryOrdersByDisplayName();
       }
     }
@@ -112,7 +114,7 @@ void __fastcall TAdmiral::DestructTAdmiral(undefined4 *param_1)
   puStack_8 = &LAB_00635158;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(param_1 + 3);
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;

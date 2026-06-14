@@ -12,6 +12,7 @@ category|datatype|kind|header
 /|/TArmyStackList|structure|root_types.h
 /|/TBuildingConstructionView|structure|root_types.h
 /|/TCityProductionView|structure|root_types.h
+/|/TCityRecruitmentOrderContext|structure|root_types.h
 /|/TCityTask|structure|root_types.h
 /|/TCivDescription|structure|root_types.h
 /|/TCivToolbar|structure|root_types.h

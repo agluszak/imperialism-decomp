@@ -25,32 +25,29 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,int param_2)
   puStack_8 = &LAB_00630e08;
   *unaff_FS_OFFSET = &uStack_c;
   iVar1 = (&g_apNationStates)[param_2];
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&param_2);
   local_4 = 0;
   pcVar2 = *(code **)(*param_1 + 0x94);
-  piVar4 = (int *)(*pcVar2)(0x6e616d65);
+  piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xec)
-    ;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  FormatOverlayTerrainLabelText(&stack0x00000000);
-  (**(code **)(*piVar4 + 0x1c8))(&stack0x00000000,1);
-  piVar4 = (int *)(*pcVar2)(0x74726561);
+  FormatOverlayTerrainLabelText();
+  (**(code **)(*piVar4 + 0x1c8))();
+  piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xf2)
-    ;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)(iVar1 + 0x10),1);
-  piVar4 = (int *)(*pcVar2)(0x6d657263);
+  (**(code **)(*piVar4 + 0x1e4))();
+  piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xf5)
-    ;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  (**(code **)(*piVar4 + 0x1e4))((int)*(short *)(iVar1 + 0xa4),1);
-  piVar4 = (int *)(*pcVar2)(0x74636170);
+  (**(code **)(*piVar4 + 0x1e4))();
+  piVar4 = (int *)(*pcVar2)();
   if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCheaters_cpp_00695a20,0xf8)
@@ -78,7 +75,7 @@ void __thiscall TLaborPool::CreateTLaborPoolInstance(int *param_1,int param_2)
     ;
   }
   (**(code **)(*piVar4 + 0x1e4))(*(undefined4 *)(iVar1 + 0x844),1);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffbc);
   *unaff_FS_OFFSET = uVar5;
   return;
 }

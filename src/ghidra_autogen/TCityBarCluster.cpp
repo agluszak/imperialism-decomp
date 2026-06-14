@@ -34,10 +34,10 @@ undefined4 * TCityBarCluster::CreateTCityBarClusterInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586610
-// GHIDRA_NAME TCityBarCluster::GetTCityBarClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTCityBarClusterClassNamePointer()
+// GHIDRA_NAME TCityBarCluster::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-char * TCityBarCluster::GetTCityBarClusterClassNamePointer(void)
+char * TCityBarCluster::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTCityBarCluster;

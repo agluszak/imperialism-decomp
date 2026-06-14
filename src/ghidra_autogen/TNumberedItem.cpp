@@ -20,6 +20,8 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(int *param_1,int *param
   code *unaff_EDI;
   int iVar8;
   int *unaff_FS_OFFSET;
+  undefined1 *puStack_cc;
+  undefined1 *puStack_c8;
   short **ppsStack_c4;
   undefined4 uStack_c0;
   char *input_str;
@@ -39,9 +41,9 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(int *param_1,int *param
   puStack_8 = &LAB_00631baa;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&tStack_4c.right);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&tStack_4c.top);
   sVar6 = 0;
   local_4 = CONCAT31(local_4._1_3_,1);
   iVar5 = *param_2;
@@ -146,9 +148,9 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(int *param_1,int *param
       psStack_78 = (short *)((int)psStack_78 + -1);
     } while (psStack_78 != (short *)0x0);
   }
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&stack0xffffff74);
   tStack_3c.left._0_1_ = 3;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&stack0xffffff7c);
   tStack_3c.left = CONCAT31(tStack_3c.left._1_3_,4);
   FormatStringWithVarArgsToSharedRef();
   FormatStringWithVarArgsToSharedRef();
@@ -160,6 +162,7 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(int *param_1,int *param
   (**(code **)(iVar5 + 0x1c8))();
   ppsStack_c4 = &psStack_78;
   uStack_c0 = 0;
+  puStack_c8 = (undefined1 *)0x4d1c49;
   thunk_BuildUiTextStyleDescriptor();
   uStack_c0 = 0x4d1c5b;
   (**(code **)(iVar5 + 0x1b4))();
@@ -170,15 +173,20 @@ void __thiscall TNumberedItem::BuildCityViewResourceRows(int *param_1,int *param
   ppsStack_c4 = (short **)0x4d1c6d;
   (**(code **)(iVar5 + 0xc))();
   ppsStack_c4 = (short **)0x2b6a;
-  thunk_BuildUiTextStyleDescriptor(&stack0xffffff7c,0,0xe);
+  puStack_c8 = (undefined1 *)0xe;
+  puStack_cc = (undefined1 *)0x0;
+  thunk_BuildUiTextStyleDescriptor(&stack0xffffff7c);
+  puStack_c8 = &stack0xffffff7c;
   ppsStack_c4 = (short **)0x0;
-  (**(code **)(iVar5 + 0x1b4))(&stack0xffffff7c);
-  (**(code **)(*g_pLocalizationTable + 0x84))(0x273f,7,&stack0xffffff48);
+  puStack_cc = (undefined1 *)0x4d1c92;
+  (**(code **)(iVar5 + 0x1b4))();
+  puStack_cc = &stack0xffffff48;
+  (**(code **)(*g_pLocalizationTable + 0x84))(0x273f,7);
   (**(code **)(iVar5 + 0x1c8))(&ppsStack_c4,1);
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&ppsStack_c4);
+  ReleaseSharedStringRefIfNotEmpty(&puStack_cc);
+  ReleaseSharedStringRefIfNotEmpty(&uStack_c0);
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffff44);
   *unaff_FS_OFFSET = (int)pLVar9;
   return;
 }

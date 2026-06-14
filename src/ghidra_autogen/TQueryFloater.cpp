@@ -132,7 +132,7 @@ TQueryFloater::HandleTurnEventInterNationSummaryDialogCommand(int *param_1,int p
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_10 = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = 0;
   if (param_2 != 10) goto LAB_0056ecbe;
   uVar1 = *(uint *)(param_3 + 0x1c);
@@ -206,7 +206,7 @@ LAB_0056ec87:
   (**(code **)(iVar5 + 0x48))();
 LAB_0056ecbe:
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

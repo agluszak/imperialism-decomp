@@ -37,13 +37,13 @@ TView * TRailAmtBar::CreateTRailAmtBarInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589F70
-// GHIDRA_NAME TRailAmtBar::GetTRailAmtBarClassNamePointer
-// GHIDRA_PROTO undefined GetTRailAmtBarClassNamePointer()
+// GHIDRA_NAME TRailAmtBar::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TRailAmtBar::GetTRailAmtBarClassNamePointer(void)
+undefined ** TRailAmtBar::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TRailAmtBar_00662fe0;
+  return &g_pClassDescTRailAmtBar;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00589F90

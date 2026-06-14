@@ -24,7 +24,7 @@ undefined4 * TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_LAB_00667678;
+    *puVar1 = &_vftable_;
     *(undefined2 *)(puVar1 + 0x21) = 0;
     *(undefined2 *)((int)puVar1 + 0x86) = 0;
     *unaff_FS_OFFSET = local_c;
@@ -35,10 +35,10 @@ undefined4 * TNumberedArrowButton::CreateTNumberedArrowButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C280
-// GHIDRA_NAME TNumberedArrowButton::GetTNumberedArrowButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTNumberedArrowButtonClassNamePointer()
+// GHIDRA_NAME TNumberedArrowButton::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-int * TNumberedArrowButton::GetTNumberedArrowButtonClassNamePointer(void)
+int * TNumberedArrowButton::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTNumberedArrowButton;
@@ -52,7 +52,7 @@ undefined4 * __fastcall TNumberedArrowButton::TNumberedArrowButton(undefined4 *p
 
 {
   TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-  *param_1 = &PTR_LAB_00667678;
+  *param_1 = &_vftable_;
   *(undefined2 *)(param_1 + 0x21) = 0;
   *(undefined2 *)((int)param_1 + 0x86) = 0;
   return param_1;
@@ -144,12 +144,13 @@ TNumberedArrowButton::HandleCombatReportPageNavigationAndRefreshText
   code *pcVar2;
   int *piVar3;
   undefined4 uVar4;
+  CString *src_ref;
   int iVar5;
   char *pcVar6;
   undefined4 *unaff_FS_OFFSET;
   undefined1 auStack_40 [4];
   undefined1 auStack_3c [4];
-  int iStack_38;
+  CString CStack_38;
   undefined1 auStack_34 [4];
   undefined1 auStack_30 [4];
   RECT RStack_2c;
@@ -247,32 +248,32 @@ LAB_0058dbdf:
   }
   piVar3 = (int *)(**(code **)(*param_1 + 0x94))(0x70616765);
   if (piVar3 != (int *)0x0) {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_3c);
     iStack_4 = 0;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(auStack_40);
     iStack_4._0_1_ = 1;
     FormatStringWithVarArgsToSharedRef(auStack_40,&g_szDecimalFormat,(short)param_1[0x25] + 1);
     uVar4 = AssignSharedStringConcatCStrAndRef(auStack_30,s_Page_00699318,auStack_40);
     iStack_4._0_1_ = 2;
-    uVar4 = AssignSharedStringConcatRefAndCStr(auStack_34,uVar4,&DAT_00698448);
+    src_ref = (CString *)AssignSharedStringConcatRefAndCStr(auStack_34,uVar4,&DAT_00698448);
     iStack_4._0_1_ = 3;
-    TToolBarCluster::StringSharedRef_AssignFromPtr(uVar4);
+    TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&CStack_38,src_ref);
     iStack_4._0_1_ = 4;
-    AssignFromPtr(auStack_3c,&iStack_38);
+    AssignFromPtr(auStack_3c,&CStack_38);
     iStack_4._0_1_ = 3;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(&CStack_38);
     iStack_4._0_1_ = 2;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_34);
     iStack_4._0_1_ = 1;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_30);
     FormatStringWithVarArgsToSharedRef
               (auStack_40,&g_szDecimalFormat,*(short *)((int)param_1 + 0x96) + 1);
     AssignStringSharedFromRef(auStack_40);
     (**(code **)(*piVar3 + 0x1c8))(auStack_3c,1);
     iStack_4 = (uint)iStack_4._1_3_ << 8;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_40);
     iStack_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty(auStack_3c);
   }
 LAB_0058dd08:
   thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);

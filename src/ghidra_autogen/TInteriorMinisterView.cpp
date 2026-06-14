@@ -42,7 +42,7 @@ TInteriorMinisterView::DispatchEngineerDialogCommandTagsByEventCode
       cVar2 = ScanMapContextActionEntriesForCodeMatch();
       if (cVar2 == '\0') {
         puStack_18 = (undefined4 *)0x4f34a4;
-        InitializeSharedStringRefFromEmpty();
+        InitializeSharedStringRefFromEmpty(&param_4);
         puStack_18 = &param_4;
         iStack_1c = 0x12;
         iStack_20 = 0x273d;
@@ -56,7 +56,7 @@ TInteriorMinisterView::DispatchEngineerDialogCommandTagsByEventCode
         thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         uStack_24 = 0x4f34fc;
-        ReleaseSharedStringRefIfNotEmpty();
+        ReleaseSharedStringRefIfNotEmpty(&stack0x00000000);
         *unaff_FS_OFFSET = (int)puStack_18;
         return;
       }

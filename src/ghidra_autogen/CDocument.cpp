@@ -19,9 +19,9 @@ undefined4 * CDocument::CDocument(void)
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   CCmdTarget();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(extraout_ECX + 7);
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(extraout_ECX + 8);
   *(undefined1 *)(unaff_EBP + -4) = 2;
   TGreatPower::CPtrList(10);
   extraout_ECX[9] = 0;
@@ -56,9 +56,9 @@ void CDocument::DestructCDocumentBaseState(void)
   *(undefined1 *)(unaff_EBP + -4) = 2;
   DestructCPtrListBaseState();
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(extraout_ECX + 8);
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(extraout_ECX + 7);
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   WrapperFor_EstablishSehFrameProlog_At006069cb();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -170,18 +170,19 @@ undefined4 CDocument::DoSaveDocumentWithPromptAndReplace(void)
   
   EstablishSehFrameProlog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(*(undefined4 *)(unaff_EBP + 8));
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)(unaff_EBP + -0x14),*(char **)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0) {
     piVar1 = (int *)extraout_ECX[9];
-    AssignFromPtr((void *)(unaff_EBP + -0x14),extraout_ECX + 8);
+    AssignFromPtr((void *)(unaff_EBP + -0x14),(CString *)(extraout_ECX + 8));
     if ((*(int *)(unaff_EBP + 0xc) != 0) && (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0)) {
-      AssignFromPtr((void *)(unaff_EBP + -0x14),extraout_ECX + 7);
+      AssignFromPtr((void *)(unaff_EBP + -0x14),(CString *)(extraout_ECX + 7));
       iVar2 = FUN_00605e33(" #%;/\\");
       if (iVar2 != -1) {
-        ReleaseBuffer(iVar2);
+        ReleaseBuffer((void *)(unaff_EBP + -0x14),iVar2);
       }
-      InitializeSharedStringRefFromEmpty();
+      InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x18));
       iVar2 = *piVar1;
       *(undefined1 *)(unaff_EBP + -4) = 1;
       iVar2 = (**(code **)(iVar2 + 0x6c))(unaff_EBP + -0x18,4);
@@ -189,7 +190,7 @@ undefined4 CDocument::DoSaveDocumentWithPromptAndReplace(void)
         AssignStringSharedFromRef(unaff_EBP + -0x18);
       }
       *(undefined1 *)(unaff_EBP + -4) = 0;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x18));
     }
     AfxGetModuleState();
     iVar2 = FUN_0061844a(unaff_EBP + -0x14,
@@ -212,7 +213,7 @@ LAB_00610dc4:
       AfxGetModuleState();
       EndWaitCursor();
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x14));
       uVar4 = 1;
       goto LAB_00610e5e;
     }
@@ -226,7 +227,7 @@ LAB_00610dc4:
     EndWaitCursor();
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x14));
   uVar4 = 0;
 LAB_00610e5e:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -241,37 +242,37 @@ undefined4 CDocument::SaveModified(void)
 
 {
   int iVar1;
-  undefined4 uVar2;
+  int iVar2;
+  undefined4 uVar3;
   int *extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar3;
   
   EstablishSehFrameProlog();
   iVar1 = *extraout_ECX;
   *(int *)(unaff_EBP + -0x18) = iVar1;
   iVar1 = (**(code **)(iVar1 + 0x60))();
   if (iVar1 != 0) {
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x10));
     iVar1 = *(int *)(extraout_ECX[8] + -8);
     *(undefined4 *)(unaff_EBP + -4) = 0;
     if (iVar1 == 0) {
-      AssignFromPtr((void *)(unaff_EBP + -0x10),extraout_ECX + 7);
+      AssignFromPtr((void *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 7));
       if (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0) {
         LoadStringA(0xf003);
       }
     }
     else {
-      AssignFromPtr((void *)(unaff_EBP + -0x10),extraout_ECX + 8);
+      AssignFromPtr((void *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 8));
       if (DAT_006a7d68 != 0) {
-        iVar1 = extraout_ECX[8];
+        iVar1 = ((CString *)(extraout_ECX + 8))->data_ptr;
         uVar3 = 0x104;
-        uVar2 = TToolBarCluster::GetBuffer(0x104);
-        AfxGetFileTitle(iVar1,uVar2,uVar3);
-        ReleaseBuffer(0xffffffff);
+        iVar2 = TToolBarCluster::GetBuffer((TToolBarCluster *)(unaff_EBP + -0x10),0x104);
+        AfxGetFileTitle(iVar1,iVar2,uVar3);
+        ReleaseBuffer((void *)(unaff_EBP + -0x10),-1);
       }
     }
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x14));
     *(undefined1 *)(unaff_EBP + -4) = 1;
     AfxFormatString1(unaff_EBP + -0x14,0xf103,*(undefined4 *)(unaff_EBP + -0x10));
     iVar1 = WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
@@ -279,10 +280,10 @@ undefined4 CDocument::SaveModified(void)
     if (iVar1 == 2) {
 LAB_00610f5c:
       *(undefined1 *)(unaff_EBP + -4) = 0;
-      ReleaseSharedStringRefIfNotEmpty();
+      ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x14));
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty();
-      uVar2 = 0;
+      ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x10));
+      uVar3 = 0;
       goto LAB_00610f75;
     }
     if (iVar1 == 6) {
@@ -290,14 +291,14 @@ LAB_00610f5c:
       if (iVar1 == 0) goto LAB_00610f5c;
     }
     *(undefined1 *)(unaff_EBP + -4) = 0;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x14));
     *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x10));
   }
-  uVar2 = 1;
+  uVar3 = 1;
 LAB_00610f75:
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
-  return uVar2;
+  return uVar3;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610F8A
@@ -309,15 +310,14 @@ void CDocument::ReportSaveLoadException(void)
 {
   int *piVar1;
   int iVar2;
-  undefined4 uVar3;
-  int iVar4;
+  int iVar3;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
   EstablishSehFrameProlog();
-  iVar4 = *(int *)(unaff_EBP + 0x14);
-  *(int *)(unaff_EBP + -0x10) = iVar4;
-  InitializeSharedStringRefFromEmpty();
+  iVar3 = *(int *)(unaff_EBP + 0x14);
+  *(int *)(unaff_EBP + -0x10) = iVar3;
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + 0x14));
   piVar1 = *(int **)(unaff_EBP + 0xc);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (piVar1 != (int *)0x0) {
@@ -328,28 +328,28 @@ void CDocument::ReportSaveLoadException(void)
       iVar2 = CObject::IsKindOf(&PTR_s_CFileException_00672f28);
       if (iVar2 != 0) {
         if (*(int *)(piVar1[4] + -8) == 0) {
-          WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(*(undefined4 *)(unaff_EBP + 8));
+          WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(piVar1 + 4,*(char **)(unaff_EBP + 8));
         }
-        uVar3 = TToolBarCluster::GetBuffer(0xff);
-        iVar2 = (**(code **)(*piVar1 + 0x14))(uVar3,0x100,unaff_EBP + -0x10);
+        iVar2 = TToolBarCluster::GetBuffer((TToolBarCluster *)(unaff_EBP + 0x14),0xff);
+        iVar2 = (**(code **)(*piVar1 + 0x14))(iVar2,0x100,unaff_EBP + -0x10);
         if (((iVar2 == 0) && (iVar2 = piVar1[2], iVar2 != 1)) && (1 < iVar2)) {
           if (iVar2 < 4) {
-            iVar4 = 0xf121;
+            iVar3 = 0xf121;
           }
           else if (iVar2 == 5) {
-            iVar4 = (*(int *)(unaff_EBP + 0x10) != 0) + 0xf123;
+            iVar3 = (*(int *)(unaff_EBP + 0x10) != 0) + 0xf123;
           }
           else if (iVar2 == 0xd) {
-            iVar4 = 0xf122;
+            iVar3 = 0xf122;
           }
         }
-        ReleaseBuffer(0xffffffff);
+        ReleaseBuffer((void *)(unaff_EBP + 0x14),-1);
       }
     }
     else {
       iVar2 = piVar1[2];
       if ((iVar2 == 3) || ((4 < iVar2 && (iVar2 < 8)))) {
-        iVar4 = 0xf120;
+        iVar3 = 0xf120;
       }
     }
   }
@@ -360,13 +360,13 @@ void CDocument::ReportSaveLoadException(void)
     else {
       AfxGetFileTitle(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x114,0x104);
     }
-    AfxFormatString1(unaff_EBP + 0x14,iVar4,unaff_EBP + -0x114);
+    AfxFormatString1(unaff_EBP + 0x14,iVar3,unaff_EBP + -0x114);
   }
   WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
             (*(undefined4 *)(unaff_EBP + 0x14),0x30,*(undefined4 *)(unaff_EBP + -0x10));
 LAB_006110dd:
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + 0x14));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }
@@ -394,7 +394,7 @@ int * CDocument::GetFile(void)
   else {
     CFileException::ConstructCFileException();
     *(undefined1 *)(unaff_EBP + -4) = 1;
-    InitializeSharedStringRefFromEmpty();
+    InitializeSharedStringRefFromEmpty(piVar2 + 4);
     *piVar2 = (int)&PTR_LAB_006721d4;
   }
   iVar1 = *piVar2;
@@ -456,12 +456,12 @@ undefined4 CDocument::OnOpenDocument(void)
   (**(code **)(iVar1 + 0x60))();
   ConstructSerializedDataExceptionBase();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x24));
   *(undefined4 *)(unaff_EBP + -0x2c) = 0;
   *(undefined4 *)(unaff_EBP + -0x28) = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
-  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(0);
+  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78((void *)(unaff_EBP + -0x24),(char *)0x0);
   *(undefined4 *)(unaff_EBP + -4) = 2;
   iVar3 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x20,unaff_EBP + -0x34);
   *(int *)(unaff_EBP + -0x14) = iVar3;
@@ -469,7 +469,7 @@ undefined4 CDocument::OnOpenDocument(void)
     (**(code **)(iVar1 + 0x88))(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x34,0,0xf101);
     *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 3;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x24));
     uVar4 = 0;
   }
   else {
@@ -499,7 +499,7 @@ undefined4 CDocument::OnOpenDocument(void)
     ReleaseSerializedArchiveBufferState();
     *(undefined ***)(unaff_EBP + -0x34) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 0xb;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x24));
     uVar4 = 1;
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -524,12 +524,12 @@ bool CDocument::OnSaveDocument(void)
   *(int **)(unaff_EBP + -0x18) = extraout_ECX;
   ConstructSerializedDataExceptionBase();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty((void *)(unaff_EBP + -0x20));
   *(undefined4 *)(unaff_EBP + -0x24) = 0xffffffff;
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *(undefined ***)(unaff_EBP + -0x30) = &PTR_GetCFileExceptionRuntimeClass_00672234;
   *(undefined4 *)(unaff_EBP + -0x28) = 0;
-  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(0);
+  WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78((void *)(unaff_EBP + -0x20),(char *)0x0);
   iVar1 = *extraout_ECX;
   *(undefined4 *)(unaff_EBP + -4) = 2;
   iVar2 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x1012,unaff_EBP + -0x30);
@@ -554,13 +554,13 @@ bool CDocument::OnSaveDocument(void)
     ReleaseSerializedArchiveBufferState();
     *(undefined ***)(unaff_EBP + -0x30) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 0xb;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x20));
   }
   else {
     (**(code **)(iVar1 + 0x88))(*(undefined4 *)(unaff_EBP + 8),unaff_EBP + -0x30,1,0xf100);
     *(undefined ***)(unaff_EBP + -0x30) = &PTR_GetCFileExceptionRuntimeClass_00672234;
     *(undefined4 *)(unaff_EBP + -4) = 3;
-    ReleaseSharedStringRefIfNotEmpty();
+    ReleaseSharedStringRefIfNotEmpty((void *)(unaff_EBP + -0x20));
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return iVar2 != 0;
@@ -675,7 +675,7 @@ void CDocument::ReleaseSerializedArchiveBufferState(void)
   }
   Abort_611cd6();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty((void *)(extraout_ECX + 0x10));
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }

@@ -27,9 +27,9 @@ undefined4 * TStatusButton::CreateTStatusButtonInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     TControl::thunk_ConstructUiCommandTagResourceEntryBase();
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &PTR_LAB_0064a2b8;
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
-    *puVar1 = &PTR_LAB_00664f68;
+    *puVar1 = &TButton::_vftable_;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+    *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -37,10 +37,10 @@ undefined4 * TStatusButton::CreateTStatusButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586310
-// GHIDRA_NAME TStatusButton::GetTStatusButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTStatusButtonClassNamePointer()
+// GHIDRA_NAME TStatusButton::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-int * TStatusButton::GetTStatusButtonClassNamePointer(void)
+int * TStatusButton::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTStatusButton;
@@ -64,9 +64,9 @@ undefined4 * __fastcall TStatusButton::ConstructTStatusButtonBaseState(undefined
   *unaff_FS_OFFSET = &local_c;
   TControl::thunk_ConstructUiCommandTagResourceEntryBase();
   local_4 = 0;
-  *param_1 = &PTR_LAB_0064a2b8;
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppUI_h_006943cc,0x5a6);
-  *param_1 = &PTR_LAB_00664f68;
+  *param_1 = &TButton::_vftable_;
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
+  *param_1 = &_vftable_;
   *unaff_FS_OFFSET = local_c;
   return param_1;
 }
@@ -101,6 +101,8 @@ TStatusButton::HandleCityDialogSelectionAndBackControlReset
   int iVar3;
   int *piVar4;
   undefined4 *unaff_FS_OFFSET;
+  undefined1 local_14 [4];
+  undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
@@ -109,9 +111,9 @@ TStatusButton::HandleCityDialogSelectionAndBackControlReset
   puStack_8 = &LAB_00637840;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_14);
   iVar1 = *param_1;
   local_4 = CONCAT31(local_4._1_3_,1);
   iVar3 = (**(code **)(iVar1 + 0xbc))();
@@ -142,9 +144,9 @@ TStatusButton::HandleCityDialogSelectionAndBackControlReset
   thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
 LAB_0058650a:
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_14);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

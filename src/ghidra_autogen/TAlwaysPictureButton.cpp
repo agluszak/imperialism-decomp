@@ -35,13 +35,13 @@ undefined4 * TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005709D0
-// GHIDRA_NAME TAlwaysPictureButton::GetTAlwaysPictureButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTAlwaysPictureButtonClassNamePointer()
+// GHIDRA_NAME TAlwaysPictureButton::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-undefined ** TAlwaysPictureButton::GetTAlwaysPictureButtonClassNamePointer(void)
+undefined ** TAlwaysPictureButton::GetRuntimeClass(void)
 
 {
-  return &PTR_s_TAlwaysPictureButton_0065e550;
+  return &g_pClassDescTAlwaysPictureButton;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005709F0

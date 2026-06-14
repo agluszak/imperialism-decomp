@@ -155,7 +155,7 @@ void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,u
   puStack_44 = (undefined1 *)0x565245;
   (**(code **)(*piVar1 + 0x1c8))();
   puStack_44 = (undefined1 *)0x56524e;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&stack0xffffffd0);
   puStack_44 = (undefined1 *)0x88;
   uStack_c = 2;
   iStack_48 = 0x565260;
@@ -191,7 +191,7 @@ void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,u
   InitializeAndRunMainRoutine();
   local_18 = 0xffffffff;
   puStack_50 = (undefined4 *)0x565302;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&iStack_3c);
   *unaff_FS_OFFSET = local_20;
   return;
 }

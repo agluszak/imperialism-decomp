@@ -14,7 +14,7 @@ void TTown::CreateTTownInstance(undefined4 param_1,undefined4 *param_2)
   
   uVar1 = ParseSignedIntAndDiscardResult(param_1);
   *param_2 = uVar1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_1);
   return;
 }
 

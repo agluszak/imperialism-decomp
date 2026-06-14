@@ -50,6 +50,8 @@ void __fastcall TUnit::CreateTUnitInstance(int param_1)
   undefined1 local_17;
   undefined1 local_16;
   undefined1 local_15;
+  undefined1 local_14 [4];
+  undefined1 local_10 [4];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -59,7 +61,7 @@ void __fastcall TUnit::CreateTUnitInstance(int param_1)
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   puStack_34 = (undefined1 *)0x5c1bf7;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_20);
   local_4 = 0;
   local_18 = 0;
   local_17 = 0;
@@ -70,10 +72,10 @@ void __fastcall TUnit::CreateTUnitInstance(int param_1)
   local_1a = 0;
   local_19 = 0;
   puStack_34 = (undefined1 *)0x5c1c26;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_10);
   local_4._0_1_ = 1;
   puStack_34 = (undefined1 *)0x5c1c34;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_14);
   puStack_34 = local_20;
   uStack_38 = 0x17;
   uStack_3c = 0x2740;
@@ -289,11 +291,11 @@ void __fastcall TUnit::CreateTUnitInstance(int param_1)
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&uStack_8c);
   SetQuickDrawFillColorFromPaletteIndex(0);
   ppuStack_7c._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&uStack_8c);
   ppuStack_7c = (undefined4 **)((uint)ppuStack_7c._1_3_ << 8);
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&ppuStack_88);
   ppuStack_7c = (undefined4 **)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&ppuStack_98);
   *unaff_FS_OFFSET = uStack_84;
   return;
 }

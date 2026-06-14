@@ -47,7 +47,7 @@ undefined ** TGrantsView::GetTGrantsViewClassNamePointer(void)
 // GHIDRA_NAME TGrantsView::ConstructTGrantsViewBaseState
 // GHIDRA_PROTO undefined ConstructTGrantsViewBaseState()
 
-void __thiscall TGrantsView::ConstructTGrantsViewBaseState(int *param_1,undefined1 **param_2)
+void __thiscall TGrantsView::ConstructTGrantsViewBaseState(int *param_1,CString param_2)
 
 {
   code *pcVar1;
@@ -64,7 +64,7 @@ void __thiscall TGrantsView::ConstructTGrantsViewBaseState(int *param_1,undefine
   puStack_8 = &LAB_00632dc0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(local_14);
   iVar2 = 0;
   local_4 = 0;
   puStack_2c = (undefined1 *)0x4f80b9;
@@ -76,23 +76,24 @@ void __thiscall TGrantsView::ConstructTGrantsViewBaseState(int *param_1,undefine
     (*pcVar1)();
     puStack_2c = &stack0xffffffe8;
     (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,iVar2 + 0x3e);
-    param_2 = &puStack_2c;
+    param_2.data_ptr = (int)&puStack_2c;
     thunk_AssignStringSharedRefAndReturnThis(local_14);
     InitializeAndRunMainRoutine();
     iVar2 = iVar2 + 1;
   } while (iVar2 < 8);
   puStack_2c = (undefined1 *)0x4f811f;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId();
+  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
+            ((TToolBarCluster *)&param_2,(char *)&g_szEmptyString);
   local_4._0_1_ = 1;
   puStack_2c = (undefined1 *)0x4f8132;
-  AssignFromPtr(local_14,(int *)&param_2);
+  AssignFromPtr(local_14,&param_2);
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&param_2);
   puStack_10 = (undefined1 *)&puStack_2c;
   thunk_AssignStringSharedRefAndReturnThis(local_14);
   InitializeAndRunMainRoutine();
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(local_14);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -104,11 +105,38 @@ void __thiscall TGrantsView::ConstructTGrantsViewBaseState(int *param_1,undefine
 void __fastcall TGrantsView::RenderDiplomacyGrantTotalsAndStyledText(int param_1)
 
 {
-  undefined2 uVar1;
-  int iVar2;
+  short sVar1;
+  undefined4 unaff_EBX;
   undefined4 unaff_EBP;
-  int iVar3;
+  int iVar2;
+  undefined1 *puVar3;
+  int iVar4;
   undefined4 *unaff_FS_OFFSET;
+  undefined1 *puStack_64;
+  undefined4 uStack_60;
+  undefined4 uStack_5c;
+  int *piStack_58;
+  int local_44;
+  undefined2 local_40;
+  undefined1 local_3e;
+  undefined1 local_3d;
+  int local_3c;
+  short local_38 [2];
+  int local_34;
+  undefined4 local_2c;
+  undefined2 local_28;
+  undefined2 local_26;
+  int local_24;
+  undefined2 local_20;
+  undefined2 local_1e;
+  undefined2 local_1c;
+  undefined2 local_1a;
+  undefined2 local_18;
+  undefined2 local_16;
+  undefined2 local_14;
+  undefined2 local_12;
+  undefined2 local_10;
+  undefined2 local_e;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -117,54 +145,110 @@ void __fastcall TGrantsView::RenderDiplomacyGrantTotalsAndStyledText(int param_1
   puStack_8 = &LAB_00632de8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty();
+  piStack_58 = (int *)0x4f81e7;
+  InitializeSharedStringRefFromEmpty(&local_44);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty();
-  uVar1 = *(undefined2 *)(param_1 + 0x24);
+  piStack_58 = (int *)0x4f81f8;
+  InitializeSharedStringRefFromEmpty(local_38);
+  iVar4 = CONCAT22((short)((uint)unaff_EBP >> 0x10),*(undefined2 *)(param_1 + 0x24));
+  sVar1 = *(short *)(param_1 + 0x28);
+  piStack_58 = (int *)0x2b68;
+  local_28 = 0x180;
+  uStack_5c = 0xe;
+  uStack_60 = 0;
   local_4 = CONCAT31(local_4._1_3_,1);
+  local_3c = 0;
+  local_40 = 0;
+  local_3e = 0;
+  local_3d = 0;
+  local_1c = 0xe7;
+  local_1a = 0x14d;
+  local_18 = 0x1f1;
+  local_16 = 0x48;
+  local_14 = 0x5e;
+  local_12 = 0xe8;
+  local_10 = 0x173;
+  local_e = 0x1f7;
+  local_2c = 0x180016f;
+  local_26 = 0x187;
+  local_24 = 0x1d501d5;
+  local_20 = 0x1d5;
+  local_1e = 0x1d5;
+  puStack_64 = (undefined1 *)0x4f82b3;
+  local_34 = iVar4;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  piStack_58 = &local_3c;
+  uStack_5c = 0x2b6b;
+  uStack_60 = 0x4f82c5;
   thunk_MapUiThemeCodeToStyleFlags();
+  piStack_58 = (int *)&local_40;
+  uStack_5c = 0x2b68;
+  uStack_60 = 0x4f82d7;
   thunk_MapUiThemeCodeToStyleFlags();
+  piStack_58 = &local_44;
+  uStack_5c = 0x21;
+  uStack_60 = 0x2733;
+  puStack_64 = (undefined1 *)0x4f82f4;
   (**(code **)(*g_pLocalizationTable + 0x84))();
-  iVar2 = -CONCAT22((short)((uint)unaff_EBP >> 0x10),uVar1);
+  iVar4 = 0x48 - iVar4;
+  iVar2 = -CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
+  puVar3 = (undefined1 *)(iVar2 + 0x16f);
+  local_3c = iVar4;
   SetQuickDrawColorAndSyncGlobals();
+  puStack_64 = (undefined1 *)(iVar2 + 0x170);
   thunk_SetQuickDrawTextOriginWithContextOffset();
+  puStack_64 = &stack0xffffffb0;
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawColorAndSyncGlobals();
+  puStack_64 = puVar3;
   thunk_SetQuickDrawTextOriginWithContextOffset();
+  puStack_64 = &stack0xffffffb0;
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  puStack_64 = (undefined1 *)0x2b68;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  iVar3 = 0;
+  iVar2 = 0;
   do {
-    if (iVar3 != 3) {
+    if (iVar2 != 3) {
+      puStack_64 = &stack0xffffffb0;
       (**(code **)(*g_pLocalizationTable + 0x84))();
+      puVar3 = (undefined1 *)CONCAT22((short)((uint)puVar3 >> 0x10),local_38[iVar2] - sVar1);
       SetQuickDrawColorAndSyncGlobals();
+      puStack_64 = puVar3 + 1;
       thunk_SetQuickDrawTextOriginWithContextOffset();
+      puStack_64 = &stack0xffffffb0;
       THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
       SetQuickDrawColorAndSyncGlobals();
+      puStack_64 = puVar3;
       thunk_SetQuickDrawTextOriginWithContextOffset();
+      puStack_64 = &stack0xffffffb0;
       THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      iVar4 = local_3c;
     }
-    iVar3 = iVar3 + 1;
-  } while (iVar3 < 8);
+    iVar2 = iVar2 + 1;
+  } while (iVar2 < 8);
+  puStack_64 = &stack0xffffffb0;
   (**(code **)(*g_pLocalizationTable + 0x84))();
-  iVar3 = *g_pLocalizationTable;
+  iVar2 = *g_pLocalizationTable;
   UiRuntimeContext::GetActiveNationId();
   SumDiplomacyGrantEntriesMaskedToValueBits();
-  (**(code **)(iVar3 + 0x74))();
+  (**(code **)(iVar2 + 0x74))();
   AssignSharedStringConcatCStrAndRef(&stack0xffffffb0,g_Build_Map_Order_LookupTable_00695794);
+  local_24._0_1_ = 2;
   AssignStringSharedFromRef();
-  ReleaseSharedStringRefIfNotEmpty();
+  local_24._0_1_ = 1;
+  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb0);
   SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar2 + 0x49);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4 + 1);
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawColorAndSyncGlobals();
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar2 + 0x48);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4);
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawFillColor();
-  ReleaseSharedStringRefIfNotEmpty();
-  ReleaseSharedStringRefIfNotEmpty();
-  *unaff_FS_OFFSET = 0x180016f;
+  local_24 = (uint)local_24._1_3_ << 8;
+  ReleaseSharedStringRefIfNotEmpty(&piStack_58);
+  local_24 = 0xffffffff;
+  ReleaseSharedStringRefIfNotEmpty(&puStack_64);
+  *unaff_FS_OFFSET = local_2c;
   return;
 }
 

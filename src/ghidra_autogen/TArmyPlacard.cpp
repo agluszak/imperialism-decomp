@@ -35,10 +35,10 @@ undefined4 * TArmyPlacard::CreateTArmyPlacardInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BEB0
-// GHIDRA_NAME TArmyPlacard::GetTArmyPlacardClassNamePointer
-// GHIDRA_PROTO undefined GetTArmyPlacardClassNamePointer()
+// GHIDRA_NAME TArmyPlacard::GetRuntimeClass
+// GHIDRA_PROTO undefined GetRuntimeClass()
 
-int * TArmyPlacard::GetTArmyPlacardClassNamePointer(void)
+int * TArmyPlacard::GetRuntimeClass(void)
 
 {
   return &g_pClassDescTArmyPlacard;
@@ -54,6 +54,20 @@ undefined4 * __fastcall TArmyPlacard::TArmyPlacard(undefined4 *param_1)
   thunk_TPictureButton::TPictureButton();
   *param_1 = &PTR_LAB_00667448;
   *(undefined2 *)(param_1 + 0x24) = 0xffff;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058BF00
+// GHIDRA_NAME TArmyPlacard::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+
+undefined4 __thiscall TArmyPlacard::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+
+{
+  thunk_DestructCityDialogSharedBaseState();
+  if ((param_2 & 1) != 0) {
+    FreeHeapBufferIfNotNull(param_1);
+  }
   return param_1;
 }
 
@@ -107,7 +121,7 @@ TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow(int param_1,undefined4 
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_10 = param_1;
-  InitializeSharedStringRefFromEmpty();
+  InitializeSharedStringRefFromEmpty(&local_10);
   local_4 = 0;
   THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
   if (*(short *)(param_1 + 0x90) != 0) {
@@ -125,7 +139,7 @@ TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow(int param_1,undefined4 
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_10);
   }
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty();
+  ReleaseSharedStringRefIfNotEmpty(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
