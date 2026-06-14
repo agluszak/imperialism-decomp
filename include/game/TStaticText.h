@@ -14,7 +14,7 @@ public:
   TStaticText();
   virtual ~TStaticText();
 
-  virtual void* GetTEventHandlerClassNamePointer();
+  virtual CRuntimeClass* GetTEventHandlerClassNamePointer();
 
   void DestroyStaticTextAndReleaseOwnedResources();
 };

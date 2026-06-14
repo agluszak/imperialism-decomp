@@ -63,7 +63,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
 
   RECT invalidateRect;
   RECT moveRect;
-  moveControl->QueryBounds(reinterpret_cast<int*>(&moveRect));
+  moveControl->QueryBounds(&moveRect);
   OffsetRect(&moveRect, this->ownerOffsetX, this->ownerOffsetY);
   CopyRect(&invalidateRect, &moveRect);
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
@@ -87,7 +87,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
       reinterpret_cast<TAmtBar*>(this->ownerContext->ResolveControlByTag(0x7475726e));
   if (turnControl != 0) {
     turnControl->SetControlValueSlot1E4(0, 0);
-    turnControl->QueryBounds(reinterpret_cast<int*>(&moveRect));
+    turnControl->QueryBounds(&moveRect);
     CopyRect(&invalidateRect, &moveRect);
     reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
         (int)&invalidateRect, 1);

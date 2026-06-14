@@ -937,7 +937,7 @@ address|name|size|type|prototype
 48a6f0|DispatchCityProductionAction1B|11|function|undefined DispatchCityProductionAction1B()
 48a710|TControl::CtrlSlot33_NoOp_Impl|3|function|undefined CtrlSlot33_NoOp_Impl()
 48a730|OrphanTiny_ReturnZero_0048a730|3|function|undefined OrphanTiny_ReturnZero_0048a730()
-48a7c0|AllocateUiResourceEntryHeaderCopyFromSource|86|function|undefined AllocateUiResourceEntryHeaderCopyFromSource()
+48a7c0|TEventHandler::CloneEngineerDialogStateToNewInstance|86|function|undefined CloneEngineerDialogStateToNewInstance()
 48a840|TView::CreateTViewInstance|87|function|undefined CreateTViewInstance()
 48a8c0|TView::GetTViewClassNamePointer|6|function|undefined GetTViewClassNamePointer()
 48a8e0|TView::ConstructTViewBaseState|136|function|void __thiscall ConstructTViewBaseState(void)

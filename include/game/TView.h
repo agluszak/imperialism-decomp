@@ -12,7 +12,7 @@
 //
 // TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c
 // from TEventHandler. It overrides only the few base slots whose vtable bodies differ
-// (0x07 ReleaseRuntimeSelectionOwnerAndDestroyObject, 0x08 vmethod_0008, 0x16 OwnerPanel) and introduces its own
+// (0x07 ReleaseRuntimeSelectionOwnerAndDestroyObject, 0x08 CloneEngineerDialogStateToNewInstance, 0x16 OwnerPanel) and introduces its own
 // virtuals at slot 0x25+ (declared below in exact vtable slot order). See
 // include/game/TEventHandler.h and memory tview-vtable-slot-scramble.
 class TView : public TEventHandler {
@@ -38,14 +38,17 @@ public:
   int field5c;
 
   TView();
+  void InvalidateCityDialogRectRegion(struct RECT* rect, int flag);
+  void CopyCityDialogStateFromSource(TView* source);
   void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
   void RefreshCityProductionViewStateFromContext(int* clipRegionWrapper);
   void EnableAndProcessFlag(const CString& sharedString);
   void PropagateUiResourceContextRecursive(TViewNativeWindow* nativeWindow);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
+  virtual CRuntimeClass* GetTEventHandlerClassNamePointer(); // 0x00 0x48a8c0
   virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject();         // 0x07
-  virtual void vmethod_0008();                                       // 0x08
+  virtual void* CloneEngineerDialogStateToNewInstance() override;   // 0x08 0x48bfd0
   virtual class TView* OwnerPanel();                                 // 0x16 0x48b180
 
   // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
@@ -93,9 +96,9 @@ public:
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
                                                          int arg4);  // 0x48 0x48c590
   virtual char vmethod_0071(Point32* point, int arg2, int arg3, int arg4); // 0x49
-  virtual void QueryContentBounds(int* boundsBuffer);                // 0x4a 0x427260
-  virtual void QueryBounds(int* boundsBuffer);                       // 0x4b 0x427290
-  virtual void vmethod_0072(int arg1, int arg2, int arg3, int arg4); // 0x4c
+  virtual void QueryContentBounds(RECT* boundsOut);                    // 0x4a 0x427260
+  virtual void QueryBounds(RECT* boundsOut);                           // 0x4b 0x427290
+  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(struct RECT* rect); // 0x4c 0x4272d0
   virtual void vmethod_0076(int* point = 0);                         // 0x4d 0x48ba80
   virtual void vmethod_0078(int* point = 0);                         // 0x4e 0x48ba40
   virtual void InvokeSlot13C();                                      // 0x4f 0x48b700
@@ -106,10 +109,10 @@ public:
   virtual void AddControlPosToPoint(int x, int y, int* outPoint);
   virtual void OffsetRectByCachedPos(struct RECT* inRect, struct RECT* outRect);
   virtual int* GetCachedPosPoint(int* outPoint);
-  virtual void vmethod_0087(int* rectOut);
+  virtual void CopyRectFromBuildRectFromSlot158(RECT* rectOut);       // 0x57 0x429410
   virtual struct RECT BuildRectFromSlot158();
   virtual void vmethod_0089();
-  virtual void ApplyBounds(int* boundsBuffer, int modeFlag);
+  virtual void ApplyBounds(RECT* newBounds, int modeFlag);
   virtual char PointInBoundsAndActionable(Point32* point);
   virtual void vmethod_0092(class TView* child, int flag);
   virtual void vmethod_0093(class TView* child);

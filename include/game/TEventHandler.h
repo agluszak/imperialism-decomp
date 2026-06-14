@@ -1,6 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/CRuntimeClass.h"
 
 class TView;
 class TEvent;
@@ -28,7 +29,7 @@ public:
 
   static void CreateTEventHandlerInstance(TEventHandler* handler);
 
-  virtual void* GetTEventHandlerClassNamePointer(); // 0x00
+  virtual CRuntimeClass* GetTEventHandlerClassNamePointer(); // 0x00 — MFC runtime class
   virtual ~TEventHandler();                         // 0x01
   virtual void vmethod_0002();                      // 0x02
   virtual void vmethod_0003();                      // 0x03
@@ -36,8 +37,8 @@ public:
   virtual void HandleCityDialogNoOpSlot14(int arg); // 0x05 0x485f70
   virtual void HandleCityDialogNoOpSlot18(int arg); // 0x06 0x485f90
   virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject(); // 0x07 0x48a1b0
-  virtual void vmethod_0008();                      // 0x08 0x48a7c0 AllocateUiResourceEntryHeaderCopyFromSource (TView overrides)
-  virtual void vmethod_0009();                      // 0x09
+  virtual void* CloneEngineerDialogStateToNewInstance();               // 0x08 0x48a7c0 base; TView override 0x48bfd0
+  virtual void* HandleTurnEventVtableSlot24CopyPayloadBuffer();      // 0x09 0x415ce0
   virtual char GetBoolSlot28();                     // 0x0a 0x48a240 GetCityDialogFlagByte4
   virtual void SetControlValue(int value);          // 0x0b 0x48a260 SetCityDialogFlagByte4
   virtual int QueryStepValue();                     // 0x0c 0x48a2c0 GetCityDialogValueDwordC

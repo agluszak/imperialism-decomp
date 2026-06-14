@@ -20,6 +20,9 @@ extern int g_McAppUiDrawGate_006A1AF8;
 // Gate checked before the invalidation-flag assert/log call in the child-detach path.
 extern int g_McAppUiFlag_006A1AE0;
 
+// Gate checked before the UI resource-entry allocation assert in TEventHandler slot 0x08.
+extern int g_McAppUiFlag_006A1AE4;
+
 // Further invalidation-flag assert gates (McAppUI.cpp lines 1914 / 1922).
 extern int g_McAppUiFlag_006A1AFC;
 extern int g_McAppUiFlag_006A1B00;

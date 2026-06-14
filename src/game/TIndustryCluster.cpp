@@ -113,7 +113,7 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
 
   RECT moveBoundsRect;
   RECT moveInvalidRect;
-  moveControl->QueryBounds(reinterpret_cast<int*>(&moveBoundsRect));
+  moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, this->ownerOffsetX, this->ownerOffsetY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(

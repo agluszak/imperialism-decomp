@@ -91,14 +91,16 @@ void TTradeCluster::InitializeTradeSellControlState(unsigned int styleSeed) {
   TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl != 0) {
     int styleDescriptor[5];
-    int boundsBuffer[2] = {0, 0};
     reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
         thunk_InitializeUiTextStyleDescriptor)(0, styleDescriptor, 0xe, 0x2b68, 2);
     sellControl->ApplyStyleDescriptor(styleDescriptor, 0);
     sellControl->SetStyleState(-1, 0);
-    sellControl->QueryBounds(boundsBuffer);
-    boundsBuffer[1] = boundsBuffer[1] - 2;
-    sellControl->ApplyBounds(boundsBuffer, 1);
+    RECT boundsBuffer;
+    boundsBuffer.left = 0;
+    boundsBuffer.top = 0;
+    sellControl->QueryBounds(&boundsBuffer);
+    boundsBuffer.top = boundsBuffer.top - 2;
+    sellControl->ApplyBounds(&boundsBuffer, 1);
     sellControl->SetState(-1, 0);
   }
 

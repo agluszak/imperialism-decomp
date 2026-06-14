@@ -113,20 +113,22 @@ void TZone::InvokeObjectVtableMethod24() {
   HandleTurnEventVtableSlot24CopyPayloadBuffer();
 }
 
-// FUNCTION: IMPERIALISM 0x00415ce0
-void TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
-  void* sourceCursor = this;
-  void* classDesc = GetRuntimeClass();
-  unsigned int payloadSize =
-      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(classDesc) + 4);
+void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
+  CRuntimeClass* runtimeClass = static_cast<CRuntimeClass*>(GetRuntimeClass());
+  unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
   GetRuntimeClass();
-  unsigned int* destCursor = reinterpret_cast<unsigned int*>(CreateObject_606ff2());
+  CObject* destObject = reinterpret_cast<CObject*>(CreateObject_606ff2());
+  if (destObject == 0) {
+    return 0;
+  }
+  unsigned int* destCursor = reinterpret_cast<unsigned int*>(destObject);
+  unsigned int* sourceCursor = reinterpret_cast<unsigned int*>(this);
   unsigned int dwordCount = payloadSize >> 2;
   unsigned int byteRemainder = payloadSize & 3;
   unsigned int dwordIndex;
   for (dwordIndex = dwordCount; dwordIndex != 0; dwordIndex = dwordIndex - 1) {
-    *destCursor = *reinterpret_cast<unsigned int*>(sourceCursor);
-    sourceCursor = reinterpret_cast<unsigned char*>(sourceCursor) + 4;
+    *destCursor = *sourceCursor;
+    sourceCursor = sourceCursor + 1;
     destCursor = destCursor + 1;
   }
   unsigned char* destByteCursor = reinterpret_cast<unsigned char*>(destCursor);
@@ -136,6 +138,7 @@ void TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
     sourceByteCursor = sourceByteCursor + 1;
     destByteCursor = destByteCursor + 1;
   }
+  return destObject;
 }
 
 void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {

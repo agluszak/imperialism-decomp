@@ -21,7 +21,6 @@ public:
 
   TControl();
   void* GetTControlClassNamePointer();
-  void InvalidateCityDialogRectRegion(struct RECT* rect, int flag);
   void WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer);
   void InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper);
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);

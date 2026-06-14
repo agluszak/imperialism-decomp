@@ -143,8 +143,7 @@ void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColo
 // FUNCTION: IMPERIALISM 0x004f6170
 void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
   QuickDrawSurfaceGuard surface;
-  reinterpret_cast<TView*>(this)->QueryBounds(
-      reinterpret_cast<int*>(const_cast<RECT*>(presentRect)));
+  reinterpret_cast<TView*>(this)->QueryBounds(const_cast<RECT*>(presentRect));
 
   if (legendSurfaceModeAt524 != 0) {
     int savedTransparentColor = g_pActiveQuickDrawSurfaceContext->transparentBlitColor;

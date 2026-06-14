@@ -19,8 +19,8 @@ void* __cdecl GetTStaticTextClassNamePointer(void) {
   return &g_pClassDescTStaticText;
 }
 
-void* TStaticText::GetTEventHandlerClassNamePointer() {
-  return GetTStaticTextClassNamePointer();
+CRuntimeClass* TStaticText::GetTEventHandlerClassNamePointer() {
+  return reinterpret_cast<CRuntimeClass*>(GetTStaticTextClassNamePointer());
 }
 
 // FUNCTION: IMPERIALISM 0x0048F890

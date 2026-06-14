@@ -99,10 +99,10 @@ void TRailAmtBar::DrawAmt() {
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
     if (control->IsActionable() != 0) {
-      int boundsRect[4] = {0, 0, 0, 0};
-      control->QueryBounds(boundsRect);
-      ApplyRectClipRegion(boundsRect);
-      control->QueryBounds(boundsRect);
+      RECT boundsRect = {0, 0, 0, 0};
+      control->QueryBounds(&boundsRect);
+      ApplyRectClipRegion(reinterpret_cast<int*>(&boundsRect));
+      control->QueryBounds(&boundsRect);
       control->vmethod_0078();
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);
@@ -143,17 +143,17 @@ void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TAmtBar* control, i
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
     if (control->IsActionable() != 0) {
-      int boundsRect[4] = {0, 0, 0, 0};
-      control->QueryBounds(boundsRect);
+      RECT boundsRect = {0, 0, 0, 0};
+      control->QueryBounds(&boundsRect);
       control->vmethod_0078();
 
       RECT invalidRect;
-      invalidRect.left = boundsRect[0];
-      invalidRect.top = boundsRect[1];
+      invalidRect.left = boundsRect.left;
+      invalidRect.top = boundsRect.top;
       invalidRect.right =
-          boundsRect[0] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
+          boundsRect.left + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
       invalidRect.bottom =
-          boundsRect[1] + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+          boundsRect.top + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
       reinterpret_cast<void(__stdcall*)(RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(
           &invalidRect, 1);
     }

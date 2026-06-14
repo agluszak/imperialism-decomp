@@ -731,14 +731,6 @@ undefined4 NoOpControlCallback_Impl(void)
   return 0;
 }
 
-// ghidra_name TControl::DispatchVslot134WithRectAndRectPlus8_Impl
-// ghidra_proto undefined DispatchVslot134WithRectAndRectPlus8_Impl()
-// FUNCTION: IMPERIALISM 0x004272d0
-undefined4 DispatchVslot134WithRectAndRectPlus8_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::CtrlSlot81_SubtractControlPosFromPoint_Impl
 // ghidra_proto undefined CtrlSlot81_SubtractControlPosFromPoint_Impl()
 // FUNCTION: IMPERIALISM 0x00427330
@@ -767,14 +759,6 @@ undefined4 ConstructUiCursorTextResourceEntry(void)
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004293c0()
 // FUNCTION: IMPERIALISM 0x004293c0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004293c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CtrlSlot87_CopyRectFromSlot160_Impl
-// ghidra_proto undefined CtrlSlot87_CopyRectFromSlot160_Impl()
-// FUNCTION: IMPERIALISM 0x00429410
-undefined4 CtrlSlot87_CopyRectFromSlot160_Impl(void)
 {
   return 0;
 }

@@ -19,7 +19,7 @@ public:
   virtual void DeserializeZoneFromBinaryStream(int streamState);
   virtual void RemoveZoneFromGlobalListAndRelease();
   virtual void InvokeObjectVtableMethod24();
-  virtual void HandleTurnEventVtableSlot24CopyPayloadBuffer();
+  virtual void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
   virtual void GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2);
   virtual void AssignZoneDisplayNameToOutputRef(void* outputRef);
   virtual void AssignZoneDisplayNameAliasToOutputRef(void* outputRef);

@@ -62,10 +62,10 @@ void TShipAmtBar::DrawAmt() {
   if (control != 0 && control->IsActionable() != 0) {
     control->Refresh();
     if (control->IsActionable() != 0) {
-      int boundsRect[4] = {0, 0, 0, 0};
-      control->QueryBounds(boundsRect);
-      ApplyRectClipRegion(boundsRect);
-      control->QueryBounds(boundsRect);
+      RECT boundsRect = {0, 0, 0, 0};
+      control->QueryBounds(&boundsRect);
+      ApplyRectClipRegion(reinterpret_cast<int*>(&boundsRect));
+      control->QueryBounds(&boundsRect);
       control->vmethod_0078();
 
       short styleValueAt60 = *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x60);

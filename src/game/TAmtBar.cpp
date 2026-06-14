@@ -65,8 +65,8 @@ void TAmtBar::InvokeSlot1A8NoArg() {
 void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   short barRange = rangeOrMaxValue;
-  int contentBounds[4];
-  int frameBounds[4];
+  RECT contentBounds;
+  RECT frameBounds;
   short controlWidth;
   short controlHeight;
   RECT panelRect;
@@ -80,25 +80,25 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
     return;
   }
 
-  this->QueryContentBounds(contentBounds);
-  ApplyRectClipRegion(contentBounds);
+  this->QueryContentBounds(&contentBounds);
+  ApplyRectClipRegion(reinterpret_cast<int*>(&contentBounds));
 
-  this->QueryBounds(frameBounds);
+  this->QueryBounds(&frameBounds);
 
   this->vmethod_0078();
 
   controlWidth = (short)this->field34;
   controlHeight = (short)this->field38;
 
-  panelRect.left = frameBounds[0];
-  panelRect.top = frameBounds[1];
-  panelRect.right = frameBounds[0] + (int)controlWidth;
-  panelRect.bottom = frameBounds[1] + (int)controlHeight;
+  panelRect.left = frameBounds.left;
+  panelRect.top = frameBounds.top;
+  panelRect.right = frameBounds.left + (int)controlWidth;
+  panelRect.bottom = frameBounds.top + (int)controlHeight;
 
-  contentRect.left = contentBounds[0];
-  contentRect.top = contentBounds[1];
-  contentRect.right = contentBounds[2];
-  contentRect.bottom = contentBounds[3];
+  contentRect.left = contentBounds.left;
+  contentRect.top = contentBounds.top;
+  contentRect.right = contentBounds.right;
+  contentRect.bottom = contentBounds.bottom;
 
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &panelRect,

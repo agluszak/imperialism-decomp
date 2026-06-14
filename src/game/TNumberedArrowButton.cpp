@@ -88,11 +88,11 @@ void TNumberedArrowButton::OrphanCallChain_C1_I08_0058c330(short value84Arg, cha
 
 // FUNCTION: IMPERIALISM 0x0058c360
 void TNumberedArrowButton::OrphanCallChain_C2_I23_0058c360(short value86Arg, char refreshFlag) {
-  int bounds[4];
+  RECT bounds;
   if (value86 != value86Arg) {
     if (refreshFlag != '\0') {
       RefreshControl();
-      QueryBounds(bounds);
+      QueryBounds(&bounds);
     }
     value86 = value86Arg;
   }

@@ -29,9 +29,9 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(void* renderTargetArg)
       renderTarget(reinterpret_cast<TView*>(renderTargetArg)) {
   if (renderTarget != 0) {
     renderTarget->Refresh();
-    int clipRect[4];
-    renderTarget->ApplyBounds(clipRect, 0);
-    IntersectClipRectOnPrimaryAndSecondaryDc(clipRect);
+    RECT clipRect;
+    renderTarget->ApplyBounds(&clipRect, 0);
+    IntersectClipRectOnPrimaryAndSecondaryDc(reinterpret_cast<int*>(&clipRect));
   }
   g_pScopedMapQuickDrawViewContext = this->renderTarget;
   if (this != 0) {

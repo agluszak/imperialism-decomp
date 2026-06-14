@@ -61,14 +61,14 @@ void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryC
 
   QuickDrawSurfaceGuard surface;
 
-  int boundsRecord[4];
-  reinterpret_cast<TView*>(this)->QueryBounds(boundsRecord);
+  RECT boundsRecord;
+  reinterpret_cast<TView*>(this)->QueryBounds(&boundsRecord);
 
   int clipRect[4];
-  clipRect[0] = boundsRecord[0];
-  clipRect[1] = boundsRecord[1];
-  clipRect[2] = boundsRecord[2];
-  clipRect[3] = boundsRecord[3];
+  clipRect[0] = boundsRecord.left;
+  clipRect[1] = boundsRecord.top;
+  clipRect[2] = boundsRecord.right;
+  clipRect[3] = boundsRecord.bottom;
 
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(0);
 
@@ -82,7 +82,7 @@ void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryC
   reinterpret_cast<void(__cdecl*)(int*)>(thunk_ApplyRectClipRegionToGlobalClipState)(clipRect);
 
   needsRefreshAtA6 = 1;
-  reinterpret_cast<TView*>(this)->ApplyRectSlot110(&boundsRecord[1]);
+  reinterpret_cast<TView*>(this)->ApplyRectSlot110(reinterpret_cast<int*>(&boundsRecord) + 1);
 
   reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
       previousSurface, contextFlags);

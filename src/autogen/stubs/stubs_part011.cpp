@@ -11,22 +11,6 @@ undefined4 CopyCityDialogStateFromSourceAndCloneChildLinks(void)
   return 0;
 }
 
-// ghidra_name TView::CopyCityDialogStateFromSource
-// ghidra_proto void __thiscall CopyCityDialogStateFromSource(TView * pSource)
-// FUNCTION: IMPERIALISM 0x0048bef0
-undefined4 CopyCityDialogStateFromSource(void)
-{
-  return 0;
-}
-
-// ghidra_name CloneEngineerDialogStateToNewInstance
-// ghidra_proto undefined CloneEngineerDialogStateToNewInstance()
-// FUNCTION: IMPERIALISM 0x0048bfd0
-undefined4 CloneEngineerDialogStateToNewInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateMapCursorFromSelectionContext
 // ghidra_proto undefined UpdateMapCursorFromSelectionContext()
 // FUNCTION: IMPERIALISM 0x0048c250

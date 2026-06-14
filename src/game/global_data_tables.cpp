@@ -20,6 +20,7 @@ extern "C" {
 int g_McAppUiActiveFlag_006950AC = 0;
 int g_McAppUiDrawGate_006A1AF8 = 0;
 int g_McAppUiFlag_006A1AE0 = 0;
+int g_McAppUiFlag_006A1AE4 = 0;
 int g_McAppUiFlag_006A1AFC = 0;
 int g_McAppUiFlag_006A1B00 = 0;
 int g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
@@ -35,6 +36,7 @@ char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 int g_McAppUiFlag_006A143C = 0;
 char PTR_s_TEventHandler_00649588 = 0;
+char PTR_s_TView_006495a0 = 0;
 char PTR_s_TControl_00649600 = 0;
 char LAB_00409a9d = 0;
 

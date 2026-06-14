@@ -4,12 +4,21 @@
 // TView/AppRoot override only the few slots where their vtable bodies differ.
 
 #pragma optimize("y", on)
+#include "game/CRuntimeClass.h"
+#include "game/CObject.h"
 #include "game/TEventHandler.h"
 #include "game/TEvent.h"
 #include "game/TView.h"
 #include "game/ApplicationUiRootController.h"
+#include "game/mcappui_globals.h"
 
-extern "C" char PTR_s_TEventHandler_00649588;
+extern "C" {
+extern char PTR_s_TEventHandler_00649588;
+}
+
+undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
+int AllocateWithFallbackHandler(undefined4 size_bytes);
+undefined4 CreateObject_606ff2(void);
 
 extern ApplicationUiRootController* g_pApplicationUiRootController;
 
@@ -23,8 +32,8 @@ void TEventHandler::CreateTEventHandlerInstance(TEventHandler* handler) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a0e0
-void* TEventHandler::GetTEventHandlerClassNamePointer() {
-  return &PTR_s_TEventHandler_00649588;
+CRuntimeClass* TEventHandler::GetTEventHandlerClassNamePointer() {
+  return reinterpret_cast<CRuntimeClass*>(&PTR_s_TEventHandler_00649588);
 }
 
 TEventHandler::~TEventHandler() {}
@@ -64,8 +73,57 @@ void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
   delete this;
 }
 
-void TEventHandler::vmethod_0008() {}
-void TEventHandler::vmethod_0009() {}
+// Slot 0x08 base body: allocates a 0x20-byte UI resource entry header (0x48a7c0). TView
+// overrides at 0x48bfd0 with CloneEngineerDialogStateToNewInstance.
+// FUNCTION: IMPERIALISM 0x0048a7c0
+void* TEventHandler::CloneEngineerDialogStateToNewInstance() {
+  if (g_McAppUiFlag_006A1AE4 == 0) {
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
+        g_szMcAppUiSourcePath_006950B0, 0x2ef);
+  }
+  TEventHandler* header = reinterpret_cast<TEventHandler*>(AllocateWithFallbackHandler(0x20));
+  if (header == 0) {
+    return 0;
+  }
+  // MSVC EH partial-construction sentinel sequence (McAppUI.cpp); not ctor emission.
+  *reinterpret_cast<void**>(header) = reinterpret_cast<void*>(0x006485c0);
+  header->field04 = field04;
+  header->field08 = field08;
+  header->field0c = field0c;
+  header->controlTag = controlTag;
+  *reinterpret_cast<void**>(header) = reinterpret_cast<void*>(0x006497a0);
+  return header;
+}
+
+// Shared vtable slot 0x09 body (also referenced from TZone vtable).
+// FUNCTION: IMPERIALISM 0x00415ce0
+void* TEventHandler::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
+  CRuntimeClass* runtimeClass = GetTEventHandlerClassNamePointer();
+  unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
+  GetTEventHandlerClassNamePointer();
+  CObject* destObject = reinterpret_cast<CObject*>(CreateObject_606ff2());
+  if (destObject == 0) {
+    return 0;
+  }
+  unsigned int* destCursor = reinterpret_cast<unsigned int*>(destObject);
+  unsigned int* sourceCursor = reinterpret_cast<unsigned int*>(this);
+  unsigned int dwordCount = payloadSize >> 2;
+  unsigned int byteRemainder = payloadSize & 3;
+  unsigned int dwordIndex;
+  for (dwordIndex = dwordCount; dwordIndex != 0; dwordIndex = dwordIndex - 1) {
+    *destCursor = *sourceCursor;
+    sourceCursor = sourceCursor + 1;
+    destCursor = destCursor + 1;
+  }
+  unsigned char* destByteCursor = reinterpret_cast<unsigned char*>(destCursor);
+  unsigned char* sourceByteCursor = reinterpret_cast<unsigned char*>(sourceCursor);
+  for (; byteRemainder != 0; byteRemainder = byteRemainder - 1) {
+    *destByteCursor = *sourceByteCursor;
+    sourceByteCursor = sourceByteCursor + 1;
+    destByteCursor = destByteCursor + 1;
+  }
+  return destObject;
+}
 
 // FUNCTION: IMPERIALISM 0x0048a240
 char TEventHandler::GetBoolSlot28() {

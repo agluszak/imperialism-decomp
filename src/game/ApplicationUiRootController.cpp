@@ -15,8 +15,8 @@ extern "C" char PTR_s_TApplication_00648af8;
 
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
 // FUNCTION: IMPERIALISM 0x00486740
-void* ApplicationUiRootController::GetTEventHandlerClassNamePointer() {
-  return &PTR_s_TApplication_00648af8;
+CRuntimeClass* ApplicationUiRootController::GetTEventHandlerClassNamePointer() {
+  return reinterpret_cast<CRuntimeClass*>(&PTR_s_TApplication_00648af8);
 }
 
 // FUNCTION: IMPERIALISM 0x00486760

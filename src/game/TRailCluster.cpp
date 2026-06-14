@@ -168,7 +168,7 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
 
   RECT moveBoundsRect;
   RECT moveInvalidRect;
-  moveControl->QueryBounds(reinterpret_cast<int*>(&moveBoundsRect));
+  moveControl->QueryBounds(&moveBoundsRect);
   OffsetRect(&moveBoundsRect, ctx->ownerOffsetX, ctx->ownerOffsetY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
   reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(

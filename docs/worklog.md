@@ -3754,3 +3754,17 @@ Follow-up scan after the TClosePicture extraction:
 - **Score Delta:** **100%:** 0x427200, 0x430bd0, 0x427220, 0x48ab70, 0x48e980, 0x429470,
   0x48e9c0, 0x48e9e0, 0x4294a0. **98.31%:** 0x48b860. **18.18% / 31.25%:** 0x427260 /
   0x427290 (semantics correct; register/FPO scheduling delta). Build green.
+
+## 2026-06-14 (cont.) — InvalidateCityDialogRectRegion as real TView method
+
+- **Timestamp:** 2026-06-14
+- **Command:** Port `InvalidateCityDialogRectRegion` (0x48b5f0), slot helpers
+  `DispatchVslot134WithRectAndRectPlus8_Impl` (0x4272d0) and
+  `CopyRectFromBuildRectFromSlot158` (0x429410); replace all TView
+  `thunk_InvalidateCityDialogRectRegion` stdcall casts with member calls; fix
+  `TClosePicture` mis-slotted `vmethod_0072` → `DispatchUiMouseEventToChildrenOrSelf_Impl`
+  (0x586bf0). `just sync-ownership` → `just regen-stubs` → `just build` → `just compare`.
+- **Score Delta:** **100%:** 0x4272d0. **96.67%:** 0x48b860 (real
+  `InvalidateCityDialogRectRegion(0,0)` — no thiscall cast). **92.86%:** 0x586bf0.
+  **57.14%:** 0x429410. **43.37%:** 0x48b5f0 (logic correct; vtable-dispatch + stack
+  layout delta). Build green.

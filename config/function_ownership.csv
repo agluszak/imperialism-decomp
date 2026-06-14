@@ -49,7 +49,7 @@ address|target_cpp|ownership|note
 4136c0|src/game/noop_slots.cpp|manual|marker_sync
 414770|src/game/noop_slots.cpp|manual|marker_sync
 415030|src/game/noop_slots.cpp|manual|marker_sync
-415ce0|src/game/TZone.cpp|manual|marker_sync
+415ce0|src/game/TEventHandler.cpp|manual|marker_sync
 415d50|src/game/TEventHandler.cpp|manual|marker_sync
 415d70|src/game/TEventHandler.cpp|manual|marker_sync
 426f80|src/game/noop_slots.cpp|manual|marker_sync
@@ -57,6 +57,8 @@ address|target_cpp|ownership|note
 427220|src/game/TView.cpp|manual|marker_sync
 427260|src/game/TView.cpp|manual|marker_sync
 427290|src/game/TView.cpp|manual|marker_sync
+4272d0|src/game/TView.cpp|manual|marker_sync
+429410|src/game/TView.cpp|manual|marker_sync
 429470|src/game/TControl.cpp|manual|marker_sync
 4294a0|src/game/TControl.cpp|manual|marker_sync
 430550|src/game/noop_slots.cpp|manual|marker_sync
@@ -182,6 +184,8 @@ address|target_cpp|ownership|note
 48a6d0|src/game/TEventHandler.cpp|manual|marker_sync
 48a6f0|src/game/TEventHandler.cpp|manual|marker_sync
 48a710|src/game/TEventHandler.cpp|manual|marker_sync
+48a7c0|src/game/TEventHandler.cpp|manual|marker_sync
+48a8c0|src/game/TView.cpp|manual|marker_sync
 48a8e0|src/game/TView.cpp|manual|marker_sync
 48a9a0|src/game/TView.cpp|manual|marker_sync
 48a9d0|src/game/TView.cpp|manual|marker_sync
@@ -202,6 +206,7 @@ address|target_cpp|ownership|note
 48b2d0|src/game/TView.cpp|manual|marker_sync
 48b3f0|src/game/TView.cpp|manual|marker_sync
 48b4b0|src/game/TControl.cpp|manual|marker_sync
+48b5f0|src/game/TView.cpp|manual|marker_sync
 48b690|src/game/TView.cpp|manual|marker_sync
 48b6d0|src/game/TView.cpp|manual|marker_sync
 48b700|src/game/TView.cpp|manual|marker_sync
@@ -221,6 +226,8 @@ address|target_cpp|ownership|note
 48bc30|src/game/TView.cpp|manual|marker_sync
 48bc60|src/game/TView.cpp|manual|marker_sync
 48bce0|src/game/TView.cpp|manual|marker_sync
+48bef0|src/game/TView.cpp|manual|marker_sync
+48bfd0|src/game/TView.cpp|manual|marker_sync
 48c000|src/game/TView.cpp|manual|marker_sync
 48c050|src/game/TView.cpp|manual|marker_sync
 48c080|src/game/TControl.cpp|manual|marker_sync

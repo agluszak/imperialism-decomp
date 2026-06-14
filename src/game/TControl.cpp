@@ -54,16 +54,9 @@ TControl::TControl()
 // SYNTHETIC: IMPERIALISM 0x0048e590
 // TControl::`scalar deleting destructor'
 
-undefined4 thunk_InvalidateCityDialogRectRegion(void);
-
-void TControl::InvalidateCityDialogRectRegion(struct RECT* rect, int flag) {
-  reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(rect,
-                                                                                              flag);
-}
-
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::SwitchTab(int* boundsBuffer) {
-  QueryContentBounds(boundsBuffer);
+  QueryContentBounds(reinterpret_cast<RECT*>(boundsBuffer));
   reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(&contentMargins68);
 }
 
@@ -220,7 +213,7 @@ void TControl::PaintVisibleChildrenIntersectingClipRect(struct RECT* clipRect, i
   }
 
   RECT clippedRect;
-  QueryContentBounds(reinterpret_cast<int*>(&clippedRect));
+  QueryContentBounds(&clippedRect);
   if (IntersectRect(&clippedRect, &clippedRect, clipRect) == 0) {
     return;
   }

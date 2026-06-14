@@ -3019,26 +3019,10 @@ undefined4 OrphanTiny_ReturnZero_0048a730(void)
   return 0;
 }
 
-// ghidra_name AllocateUiResourceEntryHeaderCopyFromSource
-// ghidra_proto undefined AllocateUiResourceEntryHeaderCopyFromSource()
-// FUNCTION: IMPERIALISM 0x0048a7c0
-undefined4 AllocateUiResourceEntryHeaderCopyFromSource(void)
-{
-  return 0;
-}
-
 // ghidra_name TView::CreateTViewInstance
 // ghidra_proto undefined CreateTViewInstance()
 // FUNCTION: IMPERIALISM 0x0048a840
 undefined4 CreateTViewInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TView::GetTViewClassNamePointer
-// ghidra_proto undefined GetTViewClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0048a8c0
-undefined4 GetTViewClassNamePointer(void)
 {
   return 0;
 }
@@ -3071,14 +3055,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0048ada0(void)
 // ghidra_proto undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()
 // FUNCTION: IMPERIALISM 0x0048add0
 undefined4 DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
-{
-  return 0;
-}
-
-// ghidra_name InvalidateCityDialogRectRegion
-// ghidra_proto undefined InvalidateCityDialogRectRegion()
-// FUNCTION: IMPERIALISM 0x0048b5f0
-undefined4 InvalidateCityDialogRectRegion(void)
 {
   return 0;
 }
