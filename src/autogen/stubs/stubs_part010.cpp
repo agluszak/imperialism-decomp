@@ -2987,22 +2987,6 @@ undefined4 RemoveUiListEntryByOwnerIdAndRecycleStorage(void)
   return 0;
 }
 
-// ghidra_name TEventHandler::CreateTEventHandlerInstance
-// ghidra_proto undefined CreateTEventHandlerInstance()
-// FUNCTION: IMPERIALISM 0x0048a070
-undefined4 CreateTEventHandlerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TEventHandler::GetTEventHandlerClassNamePointer
-// ghidra_proto undefined GetTEventHandlerClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0048a0e0
-undefined4 GetTEventHandlerClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeUiResourceEntryBaseHeaderDefaults
 // ghidra_proto undefined InitializeUiResourceEntryBaseHeaderDefaults()
 // FUNCTION: IMPERIALISM 0x0048a100
@@ -3147,34 +3131,10 @@ undefined4 CloseCityDialogChildrenAndReleaseSelf(void)
   return 0;
 }
 
-// ghidra_name TControl::InvalidateOffsetRegionUsingChildClipRect
-// ghidra_proto undefined InvalidateOffsetRegionUsingChildClipRect()
-// FUNCTION: IMPERIALISM 0x0048b4b0
-undefined4 InvalidateOffsetRegionUsingChildClipRect(void)
-{
-  return 0;
-}
-
 // ghidra_name InvalidateCityDialogRectRegion
 // ghidra_proto undefined InvalidateCityDialogRectRegion()
 // FUNCTION: IMPERIALISM 0x0048b5f0
 undefined4 InvalidateCityDialogRectRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ResetUiInputCaptureState
-// ghidra_proto undefined ResetUiInputCaptureState()
-// FUNCTION: IMPERIALISM 0x0048b700
-undefined4 ResetUiInputCaptureState(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::SetGlobalUiSelectionIfChangedAndNotify
-// ghidra_proto undefined SetGlobalUiSelectionIfChangedAndNotify()
-// FUNCTION: IMPERIALISM 0x0048b770
-undefined4 SetGlobalUiSelectionIfChangedAndNotify(void)
 {
   return 0;
 }

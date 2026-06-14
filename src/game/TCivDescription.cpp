@@ -345,7 +345,7 @@ void TCivDescription::RefreshCivilianTargetLegendBySelectedClass() {
 
   selectedClass = this->selectedCivilianClass;
   if (selectedClass == kCivilianClass_Prospector) {
-    this->vmethod_0104();
+    this->DispatchPictureResourceCommand(0, 0, 0, 0);
   } else if (selectedClass == kCivilianClass_Engineer) {
     this->SwitchTab();
   } else if (selectedClass != kCivilianClass_Developer) {

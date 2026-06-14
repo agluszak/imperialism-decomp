@@ -11,14 +11,6 @@ undefined4 WrapperFor_InvalidateCityDialogRectRegion_At0048b860(void)
   return 0;
 }
 
-// ghidra_name TControl::PaintVisibleChildrenIntersectingClipRect
-// ghidra_proto undefined PaintVisibleChildrenIntersectingClipRect()
-// FUNCTION: IMPERIALISM 0x0048b8d0
-undefined4 PaintVisibleChildrenIntersectingClipRect(void)
-{
-  return 0;
-}
-
 // ghidra_name TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks
 // ghidra_proto undefined CopyCityDialogStateFromSourceAndCloneChildLinks()
 // FUNCTION: IMPERIALISM 0x0048bd30
@@ -43,58 +35,10 @@ undefined4 CloneEngineerDialogStateToNewInstance(void)
   return 0;
 }
 
-// ghidra_name TControl::HandleCursorHoverSelectionByChildHitTestAndFallback
-// ghidra_proto undefined HandleCursorHoverSelectionByChildHitTestAndFallback()
-// FUNCTION: IMPERIALISM 0x0048c080
-undefined4 HandleCursorHoverSelectionByChildHitTestAndFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::RefreshCityProductionViewStateFromContext
-// ghidra_proto undefined RefreshCityProductionViewStateFromContext()
-// FUNCTION: IMPERIALISM 0x0048c1e0
-undefined4 RefreshCityProductionViewStateFromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name EnableAndProcessFlag
-// ghidra_proto void __thiscall EnableAndProcessFlag(undefined4 this_ptr)
-// FUNCTION: IMPERIALISM 0x0048c220
-undefined4 EnableAndProcessFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateMapCursorFromSelectionContext
 // ghidra_proto undefined UpdateMapCursorFromSelectionContext()
 // FUNCTION: IMPERIALISM 0x0048c250
 undefined4 UpdateMapCursorFromSelectionContext(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DispatchUiMouseMoveToChildren
-// ghidra_proto undefined DispatchUiMouseMoveToChildren()
-// FUNCTION: IMPERIALISM 0x0048c450
-undefined4 DispatchUiMouseMoveToChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DispatchUiMouseEventToChildrenOrSelf_Impl
-// ghidra_proto undefined DispatchUiMouseEventToChildrenOrSelf_Impl()
-// FUNCTION: IMPERIALISM 0x0048c590
-undefined4 DispatchUiMouseEventToChildrenOrSelf_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name PropagateUiResourceContextRecursive
-// ghidra_proto undefined PropagateUiResourceContextRecursive()
-// FUNCTION: IMPERIALISM 0x0048c900
-undefined4 PropagateUiResourceContextRecursive(void)
 {
   return 0;
 }
@@ -495,62 +439,6 @@ undefined4 DestroyChildResourceWindowAndDetach(void)
 // ghidra_proto undefined CreateTControlInstance()
 // FUNCTION: IMPERIALISM 0x0048e430
 undefined4 CreateTControlInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::GetTControlClassNamePointer
-// ghidra_proto undefined GetTControlClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0048e500
-undefined4 GetTControlClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::BeginMouseCaptureAndStartRepeatTimer
-// ghidra_proto undefined BeginMouseCaptureAndStartRepeatTimer()
-// FUNCTION: IMPERIALISM 0x0048e640
-undefined4 BeginMouseCaptureAndStartRepeatTimer(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleCityDialogToggleCommandOrForward
-// ghidra_proto undefined HandleCityDialogToggleCommandOrForward()
-// FUNCTION: IMPERIALISM 0x0048e710
-undefined4 HandleCityDialogToggleCommandOrForward(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::SetControlPictureEntryAndMaybeRefresh
-// ghidra_proto void __thiscall SetControlPictureEntryAndMaybeRefresh(int * pPictureEntryRef, bool fRefreshNow)
-// FUNCTION: IMPERIALISM 0x0048e7a0
-undefined4 SetControlPictureEntryAndMaybeRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::SetCityProductionDialogPictureRectAndMaybeRefresh
-// ghidra_proto undefined SetCityProductionDialogPictureRectAndMaybeRefresh()
-// FUNCTION: IMPERIALISM 0x0048e7d0
-undefined4 SetCityProductionDialogPictureRectAndMaybeRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::SetControlStateFlagAndMaybeRefresh
-// ghidra_proto void __thiscall SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow)
-// FUNCTION: IMPERIALISM 0x0048e810
-undefined4 SetControlStateFlagAndMaybeRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DispatchPictureResourceCommand
-// ghidra_proto void __thiscall DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB)
-// FUNCTION: IMPERIALISM 0x0048e850
-undefined4 DispatchPictureResourceCommand(void)
 {
   return 0;
 }

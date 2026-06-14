@@ -13,7 +13,7 @@ void TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, 
                                                                void* argC, void* dispatchArg,
                                                                void* arg14) {
   reinterpret_cast<TControl*>(this)->DispatchPictureResourceCommand(
-      reinterpret_cast<void*>(repeatState), arg8, argC, arg14);
+      repeatState, arg8, argC, arg14);
 
   if (repeatState == 2) {
     return;

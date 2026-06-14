@@ -39,6 +39,9 @@ public:
 
   TView();
   void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
+  void RefreshCityProductionViewStateFromContext(int* clipRegionWrapper);
+  void EnableAndProcessFlag(const CString& sharedString);
+  void PropagateUiResourceContextRecursive(TViewNativeWindow* nativeWindow);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   virtual void CallVoidSlot1C();                                     // 0x07
@@ -56,7 +59,7 @@ public:
   virtual void SetEnabled(int enabledState, int refreshFlag);        // 0x29 0x48b1c0
   virtual void SetState(int state, int refreshFlag);                 // 0x2a 0x48b070
   virtual void vmethod_0034();                                       // 0x2b
-  virtual void vmethod_0035();                                       // 0x2c
+  virtual void HandleCursorHoverFallback(Point32* point, int hitArg); // 0x2c
   virtual void vmethod_0073(int arg1, int arg2);                     // 0x2d 0x48c1c0
   virtual void vmethod_0043();                                       // 0x2e
   virtual int QuerySelectedIndexSlotBC();                            // 0x2f
@@ -65,7 +68,8 @@ public:
   virtual void ValidateControlRectIfWindowActive(struct RECT* rect); // 0x32 0x48b690
   virtual char EvaluateControlInputGate();                           // 0x33 0x48c000
   virtual char HasRenderableParentAndContent();                      // 0x34 0x48c050
-  virtual void vmethod_0045();                                       // 0x35
+  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point,
+                                                                   int hitArg); // 0x35 0x48c080
   virtual void DispatchControlEventToChildrenAndSelf(int eventArg);  // 0x36 0x48aaf0
   virtual void vmethod_0055(unsigned int styleSeed = 0);             // 0x37 0x48ab70
   virtual void NoOpUiCallback();                                     // 0x38 0x48abc0
@@ -76,16 +80,19 @@ public:
   virtual void CaptureLayout(int* buffer, int modeFlag);             // 0x3d 0x48b3f0
   virtual char Refresh();                                            // 0x3e 0x48b770
   virtual void PostRenderSlotFC();                                   // 0x3f
-  virtual void BindMapQuickDrawDc(int arg);                          // 0x40 0x48b7b0
+  virtual int BindMapQuickDrawDc(int arg);                           // 0x40 0x48b7b0
   virtual void ReleaseMapQuickDrawDc(int arg);                       // 0x41 0x48b7e0
   virtual void EnsureField48Buffer();                                // 0x42 0x48b810
-  virtual void vmethod_0046();                                       // 0x43
+  virtual void PaintVisibleChildrenIntersectingClipRect(struct RECT* clipRect,
+                                                        int bindArg); // 0x43 0x48b8d0
   virtual void ApplyRectSlot110(int* rectBuffer);                    // 0x44
-  virtual void vmethod_0048();                                       // 0x45
-  virtual void vmethod_0053();                                       // 0x46
-  virtual void vmethod_0067();                                       // 0x47
-  virtual void vmethod_0070();                                       // 0x48
-  virtual void vmethod_0071();                                       // 0x49
+  virtual void vmethod_0048(int arg = 0);                            // 0x45
+  virtual char DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3,
+                                             int arg4);              // 0x46 0x48c450
+  virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point); // 0x47
+  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
+                                                         int arg4);  // 0x48 0x48c590
+  virtual char vmethod_0071(Point32* point, int arg2, int arg3, int arg4); // 0x49
   virtual void QueryContentBounds(int* boundsBuffer);                // 0x4a 0x427260
   virtual void QueryBounds(int* boundsBuffer);                       // 0x4b 0x427290
   virtual void vmethod_0072(int arg1, int arg2, int arg3, int arg4); // 0x4c

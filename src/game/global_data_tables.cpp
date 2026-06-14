@@ -10,6 +10,9 @@
 // Symbol names below are taken verbatim from config/symbols.csv (including the few
 // historically double-named float tables) so the address mapping resolves.
 
+class TControl;
+class TView;
+
 extern "C" {
 
 // McAppUI.cpp module globals referenced by TView/TControl widget code. See
@@ -19,9 +22,19 @@ int g_McAppUiDrawGate_006A1AF8 = 0;
 int g_McAppUiFlag_006A1AE0 = 0;
 int g_McAppUiFlag_006A1AFC = 0;
 int g_McAppUiFlag_006A1B00 = 0;
+int g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
+TView* g_McAppUiActiveRenderContext_006A1AF4 = 0;
 int g_McAppUiDefaultPosX_006A1A60 = 0;
 int g_McAppUiDefaultPosY_006A1A64 = 0;
+int g_McAppUiMouseCaptureStartPoint_006A1A68[2] = {0, 0};
+int g_McAppUiMouseCaptureLastPoint_006A1A70[2] = {0, 0};
+int g_McAppUiMouseCaptureCurrentPoint_006A1A78[2] = {0, 0};
+TControl* g_McAppUiMouseCaptureControl_006A1A80 = 0;
+unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
+char PTR_s_TEventHandler_00649588 = 0;
+char PTR_s_TControl_00649600 = 0;
+char LAB_00409a9d = 0;
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.

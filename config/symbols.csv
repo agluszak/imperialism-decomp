@@ -146,6 +146,7 @@ address|name|size|type|prototype
 409980|TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry|5|function|undefined thunk_ConstructUiClickablePictureResourceEntry()
 409985|thunk_InitializeCivUnitOrderObject|5|function|undefined thunk_InitializeCivUnitOrderObject()
 409a11|thunk_SetGlobalQuickDrawOrigin|5|function|undefined thunk_SetGlobalQuickDrawOrigin()
+409a9d|LAB_00409a9d||global|
 4125d0|WrapperFor_ftol_At004125d0|30|function|undefined WrapperFor_ftol_At004125d0()
 412600|InvokeCallbackForRecordRangeWithStride|42|function|undefined InvokeCallbackForRecordRangeWithStride()
 412640|OrphanCallChain_C5_I60_00412640|173|function|undefined OrphanCallChain_C5_I60_00412640()
@@ -8931,6 +8932,8 @@ address|name|size|type|prototype
 649410|THandleStream::'vftable'||global|
 649678|g_pClassDescTStaticText||global|
 6497a0|TEventHandler::'vftable'||global|
+649588|PTR_s_TEventHandler_00649588||global|
+649600|PTR_s_TControl_00649600||global|
 649858|TView::'vftable'||global|
 64a098|TControl::'vftable'||global|
 64ab58|TStaticText::'vftable'||global|
@@ -9087,7 +9090,14 @@ address|name|size|type|prototype
 6a18e0|g_pApplicationUiRootController||global|
 6a1a60|g_McAppUiDefaultPosX_006A1A60||global|
 6a1a64|g_McAppUiDefaultPosY_006A1A64||global|
+6a1a68|g_McAppUiMouseCaptureStartPoint_006A1A68||global|
+6a1a70|g_McAppUiMouseCaptureLastPoint_006A1A70||global|
+6a1a78|g_McAppUiMouseCaptureCurrentPoint_006A1A78||global|
+6a1a80|g_McAppUiMouseCaptureControl_006A1A80||global|
+6a1adc|g_McAppUiMouseCaptureTimerId_006A1ADC||global|
 6a1ae0|g_McAppUiFlag_006A1AE0||global|
+6a1af0|g_McAppUiUpdateWindowRecursionGuard_006A1AF0||global|
+6a1af4|g_McAppUiActiveRenderContext_006A1AF4||global|
 6a1af8|g_McAppUiDrawGate_006A1AF8||global|
 6a1afc|g_McAppUiFlag_006A1AFC||global|
 6a1b00|g_McAppUiFlag_006A1B00||global|

@@ -8,8 +8,20 @@
 #include "game/TView.h"
 #include "game/ApplicationUiRootController.h"
 
+extern "C" char PTR_s_TEventHandler_00649588;
+
+// Drain the linked command/event list rooted at handler+0x04 until field0c reaches zero.
+// FUNCTION: IMPERIALISM 0x0048a070
+void TEventHandler::CreateTEventHandlerInstance(TEventHandler* handler) {
+  while (handler->field0c != 0) {
+    TEventHandler* entry = *reinterpret_cast<TEventHandler**>(handler->field04 + 8);
+    entry->CallVoidSlot1C();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0048a0e0
 void* TEventHandler::GetTEventHandlerClassNamePointer() {
-  return 0;
+  return &PTR_s_TEventHandler_00649588;
 }
 
 TEventHandler::~TEventHandler() {}

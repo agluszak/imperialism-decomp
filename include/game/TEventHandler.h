@@ -25,6 +25,8 @@ public:
 
   TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), field18(0) {}
 
+  static void CreateTEventHandlerInstance(TEventHandler* handler);
+
   virtual void* GetTEventHandlerClassNamePointer(); // 0x00
   virtual ~TEventHandler();                         // 0x01
   virtual void vmethod_0002();                      // 0x02

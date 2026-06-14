@@ -1,5 +1,15 @@
 # Worklog
 
+- **Timestamp:** 2026-06-14 (cont. 6) — TEventHandler + TControl branch batch
+- **Command:** Port TEventHandler class-name/list-drain methods plus TControl mouse-capture and picture/state branch slots; recover McAppUI mouse-capture globals; `just sync-ownership` → `just regen-stubs` → `just build` → `just detect` → targeted compare → `just compare-canaries` → `just stats`.
+- **Score Delta:** `0x0048a070` `TEventHandler::CreateTEventHandlerInstance` **92.86%**; `0x0048a0e0` `GetTEventHandlerClassNamePointer` **100%**. `0x0048e640` `TControl::BeginMouseCaptureAndStartRepeatTimer` **53.93%**; `0x0048e7a0` `SetControlPictureEntryAndMaybeRefresh` **60.87%**; `0x0048e7d0` `SetCityProductionDialogPictureRectAndMaybeRefresh` **23.53%**; `0x0048e810` `SetControlStateFlagAndMaybeRefresh` **56.00%**; `0x0048e850` `DispatchPictureResourceCommand` **37.50%**. Canaries: below_floor=0, existing parse_error=1 (`0x005C2940`). `just stats` after the final rebuild/detect: paired **+30**, aligned **+11**, coverage **+0.34 pp**, average similarity **+0.31 pp** vs the current baseline.
+- **Description:** Added typed McAppUI mouse-capture globals (`0x006a1a68`..`0x006a1adc`) and address-mapped the timer callback label (`LAB_00409a9d`) instead of inventing a source callback. TControl branch slots now have semantic virtual names and real bodies; `TCivDescription` and `TSidewaysArrow` call the recovered signatures. The inherited TView slot `0x114` is now modeled as a one-arg virtual because widget-family callsites pass `0`. Watch this area next: the broader stats check is the required guard after any TView/TControl vtable signature change.
+
+- **Timestamp:** 2026-06-14 (cont. 7) — TControl input/render traversal batch
+- **Command:** Port the meaningful TControl sibling methods around child hit-test, mouse dispatch, paint recursion, and region invalidation; correct TView slot `0x40` to return a bind result and slot `0x43` to the render traversal signature; add `TTEView::DeflateRect` helper for content-margin application. One batched `just sync-ownership` → `just regen-stubs` → `just build` → targeted compare, then final `just stats`.
+- **Score Delta:** targeted compare: `0x0048b4b0` **17.65%**, `0x0048b8d0` **54.08%**, `0x0048c080` **40.91%**, `0x0048c450` **35.16%**, `0x0048c590` **41.62%**, existing layout controls `0x0048b3f0` **75.00%**, `0x0048c380` **49.56%**. Final stats vs current baseline: paired **8788** (delta 0), aligned **466** (delta 0), coverage **99.55%** (delta 0.00 pp), average similarity **21.38%** (delta +0.02 pp); duplicate-address noise remains 3.
+- **Description:** Kept the batch on real virtuals instead of raw vtable calls: slot `0x35` hover recursion, slot `0x46` mouse-move recursion, slot `0x48` mouse-event recursion, slot `0x43` paint recursion. `0x0048b4b0` intentionally uses the existing clip-region wrapper helpers rather than reconstructing the original stack-local CBrush/EH shape in this pass.
+
 - **Timestamp:** 2026-06-14 (cont. 5) — geometry-slot family via struct-return ABI; McAppUI globals (committed 9612730, 0ad305b, 0fceb70)
 - **Command:** Batch-model the TView rect/point transform vtable family with correct thiscall struct-return ABI; port asserts + position update; build/compare per batch.
 - **Score Delta:** `0x0048bb30` GetCachedPosPoint **17%→100%** (returns the out-ptr — the unlock); `0x0048bb60` TransformPointViaSlot138 **100%**; `0x0048c990` TestPointInBounds **95%**; `0x0048c6d0` PointInBoundsAndActionable **84%**; `0x0048bbb0` TransformRectViaSlot148 **41%**; `0x0048bce0` BuildRectFromSlot158 **58%**; `0x0048c7d0` AssertMcAppUiLine1922 **100%**; `0x0048c7a0` AssertMcAppUiLine1914 **88%**; `0x0048b3f0` CaptureLayout/UpdateControlPosition **75%**. Canaries 8/8; gate pass.
@@ -3702,3 +3712,19 @@ Follow-up scan after the TClosePicture extraction:
   ✨OK✨, e.g. 0x48a240, 0x486740). AppRoot SetActiveView/GetActiveView 100%. TView ctor
   0x48a8e0 87.5% (field0c/10/14/18 now correctly written BEFORE the base vftable as in
   the original; residual = minor eax=1/lea scheduling). Build green, canaries clean.
+
+## 2026-06-14 (cont.) — TView McAppUI runtime slot batch
+
+- **Timestamp:** 2026-06-14
+- **Command:** Port deferred/meaty TView-layout McAppUI helpers as real methods: slot
+  0x4f `InvokeSlot13C` (0x48b700, owner tail-dispatch / guarded `UpdateWindow`),
+  slot 0x3e `Refresh` (0x48b770, QuickDraw origin selection), clip-region refresh
+  helper (0x48c1e0), shared-string enable helper (0x48c220), and recursive native-window
+  context propagation (0x48c900). Added typed McAppUI globals at 0x6a1af0/0x6a1af4 and
+  used `UpdateWindow` as a dllimport. `just sync-ownership` → `just regen-stubs` →
+  `just build` → targeted `just compare` batch → `just stats`.
+- **Score Delta:** 0x48b700/0x48b770/0x48c1e0/0x48c220 **100%**; 0x48c900
+  **65.71%** (correct recursive CPtrList semantics, residual iterator codegen). Stats:
+  aligned **+6** to 472, paired globals **+2** to 427, imports **+1**, average
+  similarity **+0.09 pp** to 21.48%, paired functions stable at 8788. Existing duplicate
+  address noise remains 3.
