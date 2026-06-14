@@ -1176,6 +1176,7 @@ address|target_cpp|ownership|note
 606ddd|src/game/CCmdUI.cpp|manual|marker_sync
 606f73|src/game/MfcRuntime.cpp|manual|marker_sync
 606faf|src/game/MfcRuntime.cpp|manual|marker_sync
+606fba|src/game/CObject.cpp|manual|marker_sync
 606fc0|src/game/CObject.cpp|manual|marker_sync
 606fd2|src/game/CObject.cpp|manual|marker_sync
 607077|src/game/CRuntimeClass.cpp|manual|marker_sync

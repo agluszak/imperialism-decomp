@@ -9,8 +9,8 @@ char g_pClassDescTCountingStream = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004893f0
-void* TCountingStream::GetRuntimeClass() {
-  return &g_pClassDescTCountingStream;
+CRuntimeClass* TCountingStream::GetRuntimeClass() {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTCountingStream);
 }
 
 // FUNCTION: IMPERIALISM 0x00489410

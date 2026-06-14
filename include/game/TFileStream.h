@@ -14,7 +14,7 @@ public:
   // backing CArchive used by the serialization wrappers below.
   void* backingArchiveOrStream; // name only after grounding
 
-  void* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() override;
   TFileStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 

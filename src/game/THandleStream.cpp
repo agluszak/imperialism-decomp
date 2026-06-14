@@ -9,8 +9,8 @@ char g_pClassDescTHandleStream = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004895c0
-void* THandleStream::GetRuntimeClass() {
-  return &g_pClassDescTHandleStream;
+CRuntimeClass* THandleStream::GetRuntimeClass() {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTHandleStream);
 }
 
 // FUNCTION: IMPERIALISM 0x004895e0

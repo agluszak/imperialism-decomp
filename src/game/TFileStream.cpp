@@ -22,8 +22,8 @@ char g_pClassDescTFileStream = 0;
 // reporter with the source path and line.
 static __inline void FailNilPointer(int line) {
   GAME_FAIL_NIL_POINTER();
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
-      "D:\\Ambit\\McAppStream.cpp", line);
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\McAppStream.cpp", line);
 }
 
 // The backing pointer references a wrapper object whose +4 field holds the
@@ -33,8 +33,8 @@ static __inline CArchive* BackingArchive(void* backingArchiveOrStream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004890f0
-void* TFileStream::GetRuntimeClass() {
-  return &g_pClassDescTFileStream;
+CRuntimeClass* TFileStream::GetRuntimeClass() {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTFileStream);
 }
 
 // FUNCTION: IMPERIALISM 0x00489110

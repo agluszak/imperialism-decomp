@@ -39,8 +39,8 @@ void DeleteUnlinkedZone(TZone* zone) {
 } // namespace
 
 // FUNCTION: IMPERIALISM 0x0055e6e0
-void* TZone::GetRuntimeClass() {
-  return &g_pClassDescTZone;
+CRuntimeClass* TZone::GetRuntimeClass() {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTZone);
 }
 
 // Destructors are compiler-generated (implicit virtual dtor).
@@ -114,7 +114,7 @@ void TZone::InvokeObjectVtableMethod24() {
 }
 
 void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
-  CRuntimeClass* runtimeClass = static_cast<CRuntimeClass*>(GetRuntimeClass());
+  CRuntimeClass* runtimeClass = GetRuntimeClass();
   unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
   GetRuntimeClass();
   CObject* destObject = reinterpret_cast<CObject*>(CreateObject_606ff2());
@@ -282,7 +282,8 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
         short neighborSubtype = static_cast<short>(neighborRecord[0x16]);
         if ((neighborSubtype == 3) || (neighborSubtype == 0x0e)) {
           TZone* portZone = static_cast<TZone*>(g_pMapActionContextListHead);
-          while (portZone != 0 && portZone->GetRuntimeClass() != &g_pClassDescTPortZone) {
+          while (portZone != 0 && portZone->GetRuntimeClass() !=
+                                      reinterpret_cast<CRuntimeClass*>(&g_pClassDescTPortZone)) {
             portZone = portZone->prev18;
           }
           while (portZone != 0) {
@@ -536,8 +537,7 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
     int tileIndex = static_cast<int>(static_cast<short>(eax->field48));
     tileIndex = tileIndex + tileIndex * 8;
     char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
-    short ownerTag = static_cast<short>(
-        static_cast<signed char>(terrainTable[tileIndex * 4 + 3]));
+    short ownerTag = static_cast<short>(static_cast<signed char>(terrainTable[tileIndex * 4 + 3]));
     if (ownerTag == nationSlot) {
       return eax;
     }

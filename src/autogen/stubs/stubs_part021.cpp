@@ -3723,14 +3723,6 @@ undefined4 AfxSetNewHandler(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::GetCObjectRuntimeClass
-// ghidra_proto undefined GetCObjectRuntimeClass()
-// FUNCTION: IMPERIALISM 0x00606fba
-undefined4 GetCObjectRuntimeClass(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateObject_606ff2
 // ghidra_proto undefined CreateObject_606ff2()
 // FUNCTION: IMPERIALISM 0x00606ff2

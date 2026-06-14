@@ -11,7 +11,7 @@ public:
 
   TPortZone();
 
-  void* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() override;
 
   bool QueryZoneCapabilityFlagA();
   bool QueryPortZoneCapability();

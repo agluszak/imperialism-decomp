@@ -7,10 +7,16 @@
 #pragma optimize("ys", on)
 #endif
 
+// MFC CRuntimeClass descriptor for CObject itself (0x6706e0), root of the m_pBaseClass
+// chain. Reccmp pairs by symbol registration (the GLOBAL marker), not by value.
+// GLOBAL: IMPERIALISM 0x006706e0
+CRuntimeClass classCObject = {0};
+
 CObject::~CObject() {}
 
-void* CObject::GetRuntimeClass() {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00606fba
+CRuntimeClass* CObject::GetRuntimeClass() {
+  return &classCObject;
 }
 void CObject::Serialize(CArchive*) {}
 int CObject::AssertValidOrSlot0c() {
@@ -20,7 +26,7 @@ void CObject::DumpOrSlot10() {}
 
 // FUNCTION: IMPERIALISM 0x00606fc0
 int CObject::IsKindOf(const CRuntimeClass* pClass) {
-  CRuntimeClass* pRuntimeClass = reinterpret_cast<CRuntimeClass*>(GetRuntimeClass());
+  CRuntimeClass* pRuntimeClass = GetRuntimeClass();
   return pRuntimeClass->IsDerivedFrom(pClass);
 }
 

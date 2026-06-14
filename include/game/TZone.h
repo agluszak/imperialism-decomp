@@ -4,13 +4,15 @@
 
 #include "game/CString.h"
 
+struct CRuntimeClass;
+
 // Map zone / map-action context node (Mac: TZone, TPortZone, TOcean hierarchy).
 // Per-nation seed contexts in TMapOrderContext use the first 0x48 bytes of this layout.
 // VTABLE: IMPERIALISM 0x0065c6d8
 class TZone {
 public:
   // vtable 0x0065c6d8 slots 0x00..0x58
-  virtual void* GetRuntimeClass();
+  virtual CRuntimeClass* GetRuntimeClass();
   // slot 0x04 — scalar deleting destructor @ 0x562880 (SYNTHETIC; see TZone.cpp)
   virtual void HandleTurnEventVtableSlot08(int arg1);
   virtual void AssertValidOrSlot0c();
