@@ -131,7 +131,6 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         -Wno-missing-braces
         -Wno-missing-field-initializers
         -Wno-unused-private-field
-        -Wno-inconsistent-missing-override
         -Wno-undefined-internal
         -Wno-deprecated-register
         -Wno-microsoft-explicit-constructor-call

@@ -13,7 +13,7 @@ public:
 
   CRuntimeClass* GetRuntimeClass() override;
 
-  bool QueryZoneCapabilityFlagA();
-  bool QueryPortZoneCapability();
-  bool QueryZoneCapabilityFlagC();
+  bool QueryZoneCapabilityFlagA() override;
+  bool QueryPortZoneCapability() override;
+  bool QueryZoneCapabilityFlagC() override;
 };
