@@ -7,20 +7,17 @@
 #include "game/win_rect.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
-int g_pClassDescTStaticText;
+CRuntimeClass g_pClassDescTStaticText = {0};
 
 // FUNCTION: IMPERIALISM 0x0048F710
 void* __cdecl CreateTStaticTextInstance(void) {
   return new TStaticText();
 }
 
+// MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x649678).
 // FUNCTION: IMPERIALISM 0x0048F870
-void* __cdecl GetTStaticTextClassNamePointer(void) {
+CRuntimeClass* TStaticText::GetRuntimeClass() {
   return &g_pClassDescTStaticText;
-}
-
-CRuntimeClass* TStaticText::GetTEventHandlerClassNamePointer() {
-  return reinterpret_cast<CRuntimeClass*>(GetTStaticTextClassNamePointer());
 }
 
 // FUNCTION: IMPERIALISM 0x0048F890

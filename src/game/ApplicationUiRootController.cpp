@@ -11,21 +11,17 @@
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void __fastcall FreeLinkedBlockChain(void* blockChainHead);
 
-extern "C" char PTR_s_TApplication_00648af8;
+extern "C" CRuntimeClass PTR_s_TApplication_00648af8;
 
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
 // FUNCTION: IMPERIALISM 0x00486740
-CRuntimeClass* ApplicationUiRootController::GetTEventHandlerClassNamePointer() {
-  return reinterpret_cast<CRuntimeClass*>(&PTR_s_TApplication_00648af8);
+CRuntimeClass* ApplicationUiRootController::GetRuntimeClass() {
+  return &PTR_s_TApplication_00648af8;
 }
 
 // FUNCTION: IMPERIALISM 0x00486760
 ApplicationUiRootController::ApplicationUiRootController()
-    : TEventHandler(),
-      activeView(0),
-      screenModeAt24(0),
-      field28(0),
-      embeddedList() {
+    : TEventHandler(), activeView(0), screenModeAt24(0), field28(0), embeddedList() {
   g_pApplicationUiRootController = this;
 }
 

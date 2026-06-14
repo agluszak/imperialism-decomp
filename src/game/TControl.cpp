@@ -17,7 +17,7 @@ extern "C" {
 extern int g_nUiResourceEntryDefaultParam0;
 extern int g_nUiResourceEntryDefaultParam1;
 extern unsigned short g_wUiResourceEntryDefaultParam2;
-extern char PTR_s_TControl_00649600;
+extern CRuntimeClass PTR_s_TControl_00649600;
 extern int __stdcall IntersectRect(struct RECT* dest, const struct RECT* src1,
                                    const struct RECT* src2);
 extern int __stdcall CombineRgn(void* destRegion, void* sourceRegion1, void* sourceRegion2,
@@ -26,7 +26,7 @@ extern int __stdcall OffsetRgn(void* region, int dx, int dy);
 extern int __stdcall InvalidateRgn(void* hWnd, void* region, int erase);
 extern void* __stdcall SetCapture(void* hWnd);
 extern unsigned int __stdcall SetTimer(void* hWnd, unsigned int eventId, unsigned int elapsedMs,
-                                      void* timerProc);
+                                       void* timerProc);
 }
 
 undefined4 FromHandle(void);
@@ -35,7 +35,7 @@ undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 extern "C" char LAB_00409a9d;
 
 // FUNCTION: IMPERIALISM 0x0048e500
-void* TControl::GetTControlClassNamePointer() {
+CRuntimeClass* TControl::GetRuntimeClass() {
   return &PTR_s_TControl_00649600;
 }
 
@@ -69,8 +69,8 @@ void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
   if (g_McAppUiFlag_006A143C == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
-        g_szMcAppUiHeaderPath_006943CC, 0x56f);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x56f);
   }
 }
 
@@ -87,8 +87,8 @@ void TControl::NoOpCityProductionDialogPictureHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x004294a0
 char TControl::LogUnhandledDialogMethodAndReturnFalse() {
-  reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
-      g_szMcAppUiHeaderPath_006943CC, 0x58f);
+  reinterpret_cast<void(__cdecl*)(const char*, int)>(
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x58f);
   return 0;
 }
 
@@ -307,8 +307,8 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
     return;
   }
   if (eventType == 1) {
-    SetControlStateFlagAndMaybeRefresh(PointInBoundsAndActionable(reinterpret_cast<Point32*>(eventDataB)),
-                                       1);
+    SetControlStateFlagAndMaybeRefresh(
+        PointInBoundsAndActionable(reinterpret_cast<Point32*>(eventDataB)), 1);
     return;
   }
   if (eventType == 2 && PointInBoundsAndActionable(reinterpret_cast<Point32*>(eventDataB)) != 0) {

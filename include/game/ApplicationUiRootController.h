@@ -17,8 +17,8 @@ public:
   ApplicationUiRootController();
   ~ApplicationUiRootController();
 
-  // vtable index 0x00 override (0x00486740): returns the TApplication RTTI name pointer.
-  virtual CRuntimeClass* GetTEventHandlerClassNamePointer();
+  // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
+  virtual CRuntimeClass* GetRuntimeClass();
 
   // vtable index 0x25: AppRoot-introduced slot (unported placeholder; TEventHandler's
   // base vtable is null here, so this is a new virtual, not an inherited one).
@@ -32,9 +32,9 @@ public:
   virtual void vmethod_0039();
   virtual void vmethod_003a();
 
-  TView* activeView;           // 0x20
-  int screenModeAt24;          // 0x24
-  int field28;                 // 0x28
+  TView* activeView;                          // 0x20
+  int screenModeAt24;                         // 0x24
+  int field28;                                // 0x28
   ApplicationUiRootEmbeddedList embeddedList; // 0x2c
 };
 

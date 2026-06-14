@@ -13,7 +13,7 @@
 #include "game/mcappui_globals.h"
 
 extern "C" {
-extern char PTR_s_TEventHandler_00649588;
+extern CRuntimeClass PTR_s_TEventHandler_00649588;
 }
 
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
@@ -32,8 +32,8 @@ void TEventHandler::CreateTEventHandlerInstance(TEventHandler* handler) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a0e0
-CRuntimeClass* TEventHandler::GetTEventHandlerClassNamePointer() {
-  return reinterpret_cast<CRuntimeClass*>(&PTR_s_TEventHandler_00649588);
+CRuntimeClass* TEventHandler::GetRuntimeClass() {
+  return &PTR_s_TEventHandler_00649588;
 }
 
 TEventHandler::~TEventHandler() {}
@@ -78,8 +78,8 @@ void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
 // FUNCTION: IMPERIALISM 0x0048a7c0
 void* TEventHandler::CloneEngineerDialogStateToNewInstance() {
   if (g_McAppUiFlag_006A1AE4 == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
-        g_szMcAppUiSourcePath_006950B0, 0x2ef);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x2ef);
   }
   TEventHandler* header = reinterpret_cast<TEventHandler*>(AllocateWithFallbackHandler(0x20));
   if (header == 0) {
@@ -98,9 +98,9 @@ void* TEventHandler::CloneEngineerDialogStateToNewInstance() {
 // Shared vtable slot 0x09 body (also referenced from TZone vtable).
 // FUNCTION: IMPERIALISM 0x00415ce0
 void* TEventHandler::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
-  CRuntimeClass* runtimeClass = GetTEventHandlerClassNamePointer();
+  CRuntimeClass* runtimeClass = GetRuntimeClass();
   unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
-  GetTEventHandlerClassNamePointer();
+  GetRuntimeClass();
   CObject* destObject = reinterpret_cast<CObject*>(CreateObject_606ff2());
   if (destObject == 0) {
     return 0;
@@ -145,8 +145,8 @@ int TEventHandler::QueryStepValue() {
 // is released via slot 0x07.
 // FUNCTION: IMPERIALISM 0x0048a3b0
 void TEventHandler::vmethod_0013(int* cmd) {
-  reinterpret_cast<TView*>(cmd[4])
-      ->DispatchEvent(cmd[2], reinterpret_cast<TEventHandler*>(cmd[3]), reinterpret_cast<TEvent*>(cmd));
+  reinterpret_cast<TView*>(cmd[4])->DispatchEvent(cmd[2], reinterpret_cast<TEventHandler*>(cmd[3]),
+                                                  reinterpret_cast<TEvent*>(cmd));
   if (cmd != 0) {
     reinterpret_cast<TView*>(cmd)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
   }

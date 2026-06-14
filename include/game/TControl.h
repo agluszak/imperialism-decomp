@@ -20,12 +20,13 @@ public:
   unsigned short commandTagDefaultParam2;
 
   TControl();
-  void* GetTControlClassNamePointer();
+  virtual CRuntimeClass* GetRuntimeClass(); // 0x00 0x48e500 (override)
   void WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer);
   void InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper);
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
-  void WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
-      int* cursorPoint, int hitArg);
+  void
+  WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(int* cursorPoint,
+                                                                                  int hitArg);
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event);
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg);

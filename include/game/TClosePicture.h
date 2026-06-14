@@ -10,7 +10,7 @@ public:
   TClosePicture();
   virtual ~TClosePicture();
 
-  virtual CRuntimeClass* GetTEventHandlerClassNamePointer();
+  virtual CRuntimeClass* GetRuntimeClass(); // 0x00 0x586b50 (override)
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
                                                          int arg4);
 };

@@ -37,12 +37,12 @@ undefined4 ReplaceClipStateRegionHandleFromRect(void);
 
 // TView::childList44 is an MFC CPtrList of child-control TView* pointers (node->data).
 
-extern "C" char PTR_s_TView_006495a0;
+extern "C" CRuntimeClass PTR_s_TView_006495a0;
 
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
 // FUNCTION: IMPERIALISM 0x0048a8c0
-CRuntimeClass* TView::GetTEventHandlerClassNamePointer() {
-  return reinterpret_cast<CRuntimeClass*>(&PTR_s_TView_006495a0);
+CRuntimeClass* TView::GetRuntimeClass() {
+  return &PTR_s_TView_006495a0;
 }
 
 // Real ctor. The TEventHandler base ctor (inlined) writes the base vptr (0x006497a0)
@@ -53,9 +53,9 @@ CRuntimeClass* TView::GetTEventHandlerClassNamePointer() {
 // vtable writes — the // VTABLE: annotation owns it.
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : TEventHandler(), ownerContext(0), field2c(0), field30(0),
-      field3c(0), childList44(0), field48(0), flag4c(1), flag4d(1), field4e(0xffff), nativeWindow50(0),
-      field54(1), sharedStringRef(), field5c(0) {}
+    : TEventHandler(), ownerContext(0), field2c(0), field30(0), field3c(0), childList44(0),
+      field48(0), flag4c(1), flag4d(1), field4e(0xffff), nativeWindow50(0), field54(1),
+      sharedStringRef(), field5c(0) {}
 
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
@@ -775,8 +775,8 @@ void TView::vmethod_0093(class TView* child) {
     }
   }
   if (g_McAppUiFlag_006A1AE0 == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
-        g_szMcAppUiSourcePath_006950B0, 0x152);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x152);
   }
   goto tail;
 
@@ -870,7 +870,7 @@ void TView::vmethod_0099(int arg1, int arg2) {}
 // FUNCTION: IMPERIALISM 0x0048c750
 void TView::DrawRectangleInCurrentUiContext(int* rect) {
   if (g_McAppUiDrawGate_006A1AF8 == 0) {
-    typedef void(__cdecl* UiInvalidationFlagThunk)(const char*, int);
+    typedef void(__cdecl * UiInvalidationFlagThunk)(const char*, int);
     reinterpret_cast<UiInvalidationFlagThunk>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
         g_szMcAppUiSourcePath_006950B0, 0x772);
   }
@@ -880,16 +880,16 @@ void TView::DrawRectangleInCurrentUiContext(int* rect) {
 // FUNCTION: IMPERIALISM 0x0048c7a0
 void TView::AssertMcAppUiLine1914() {
   if (g_McAppUiFlag_006A1AFC == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
-        g_szMcAppUiSourcePath_006950B0, 0x77a);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x77a);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048c7d0
 void TView::AssertMcAppUiLine1922() {
   if (g_McAppUiFlag_006A1B00 == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
-        g_szMcAppUiSourcePath_006950B0, 0x782);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x782);
   }
   RECT rectStorage;
   CopyRectFromBuildRectFromSlot158(&rectStorage);

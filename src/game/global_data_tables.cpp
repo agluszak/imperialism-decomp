@@ -13,6 +13,8 @@
 class TControl;
 class TView;
 
+#include "game/CRuntimeClass.h"
+
 extern "C" {
 
 // McAppUI.cpp module globals referenced by TView/TControl widget code. See
@@ -35,9 +37,12 @@ unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 int g_McAppUiFlag_006A143C = 0;
-char PTR_s_TEventHandler_00649588 = 0;
-char PTR_s_TView_006495a0 = 0;
-char PTR_s_TControl_00649600 = 0;
+// MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
+// symbol name, so the zero-initialized contents are irrelevant to matching.
+CRuntimeClass PTR_s_TEventHandler_00649588 = {0};
+// GLOBAL: IMPERIALISM 0x006495a0
+CRuntimeClass PTR_s_TView_006495a0 = {0};
+CRuntimeClass PTR_s_TControl_00649600 = {0};
 char LAB_00409a9d = 0;
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
@@ -166,7 +171,7 @@ ApplicationUiRootController* g_pApplicationUiRootController = 0;
 extern "C" char g_pClassDescTBehavior = 0;
 
 // GLOBAL: IMPERIALISM 0x00648af8
-extern "C" char PTR_s_TApplication_00648af8 = 0;
+extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {0};
 
 // GLOBAL: IMPERIALISM 0x006a44b0
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
