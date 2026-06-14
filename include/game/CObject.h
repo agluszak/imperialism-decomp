@@ -14,8 +14,8 @@ public:
   virtual CRuntimeClass* GetRuntimeClass();
   virtual ~CObject();
   virtual void Serialize(CArchive* ar);
-  virtual int AssertValidOrSlot0c();
-  virtual void DumpOrSlot10();
+  virtual void AssertValidOrSlot0c();
+  virtual void DumpOrSlot10(int unused = 0);
 
   int IsKindOf(const CRuntimeClass* pClass);
 };

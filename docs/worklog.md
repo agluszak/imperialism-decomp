@@ -3768,3 +3768,17 @@ Follow-up scan after the TClosePicture extraction:
   `InvalidateCityDialogRectRegion(0,0)` — no thiscall cast). **92.86%:** 0x586bf0.
   **57.14%:** 0x429410. **43.37%:** 0x48b5f0 (logic correct; vtable-dispatch + stack
   layout delta). Build green.
+
+## 2026-06-14 (cont.) — CObject default slot ownership
+
+- **Timestamp:** 2026-06-14 15:19 CEST
+- **Command:** Move shared MFC default slots 2/3/4 from generic NoOp ownership to real
+  `CObject` virtuals: `Serialize(CArchive*)` at 0x412bd0, `AssertValidOrSlot0c()` at
+  0x412bf0, and one-argument `DumpOrSlot10(int)` at 0x412c10. Removed the old
+  `noop_slots.cpp` owners, updated `config/symbols.csv` and `function_ownership.csv`,
+  and kept `TZone`'s local empty slot behavior without depending on the moved helpers.
+  `just sync-ownership` -> `just regen-stubs` -> `just build` -> `just detect` passed.
+- **Score Delta:** 0x412bd0/0x412bf0/0x412c10 all **100%** under the `CObject` names.
+  Stats unchanged for alignment/coverage (recomp-only -3 from deleting the helper
+  bodies). `just compare-canaries` had `below_floor=0`; existing parse_error remains on
+  0x005C2940.

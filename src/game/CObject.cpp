@@ -18,11 +18,17 @@ CObject::~CObject() {}
 CRuntimeClass* CObject::GetRuntimeClass() {
   return &classCObject;
 }
+
+// FUNCTION: IMPERIALISM 0x00412bd0
 void CObject::Serialize(CArchive*) {}
-int CObject::AssertValidOrSlot0c() {
-  return 0;
+
+// FUNCTION: IMPERIALISM 0x00412bf0
+void CObject::AssertValidOrSlot0c() {}
+
+// FUNCTION: IMPERIALISM 0x00412c10
+void CObject::DumpOrSlot10(int unused) {
+  (void)unused;
 }
-void CObject::DumpOrSlot10() {}
 
 // FUNCTION: IMPERIALISM 0x00606fc0
 int CObject::IsKindOf(const CRuntimeClass* pClass) {

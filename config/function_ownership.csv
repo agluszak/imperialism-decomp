@@ -43,9 +43,9 @@ address|target_cpp|ownership|note
 409205|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 409868|src/game/TSortedPtrList.cpp|manual|marker_sync
 409944|src/game/TDiplomacyTurnStateManager.cpp|manual|marker_sync
-412bd0|src/game/noop_slots.cpp|manual|marker_sync
-412bf0|src/game/noop_slots.cpp|manual|marker_sync
-412c10|src/game/noop_slots.cpp|manual|marker_sync
+412bd0|src/game/CObject.cpp|manual|marker_sync
+412bf0|src/game/CObject.cpp|manual|marker_sync
+412c10|src/game/CObject.cpp|manual|marker_sync
 4136c0|src/game/noop_slots.cpp|manual|marker_sync
 414770|src/game/noop_slots.cpp|manual|marker_sync
 415030|src/game/noop_slots.cpp|manual|marker_sync

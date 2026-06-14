@@ -20,8 +20,6 @@ char g_pClassDescTZone = 0;
 extern char g_pClassDescTPortZone;
 }
 
-void NoOpTurnEventStateVtableSlot0C(void);
-void __stdcall NoOpTurnEventStateVtableSlot10(int unused);
 undefined4 thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(void);
 undefined4 thunk_StepHexTileIndexByDirectionWithWrapRules(void);
 undefined4 thunk_FindPortZoneByTile(void);
@@ -77,11 +75,12 @@ void TZone::HandleTurnEventVtableSlot08(int arg1) {
 }
 
 void TZone::AssertValidOrSlot0c() {
-  NoOpTurnEventStateVtableSlot0C();
+  return;
 }
 
 void TZone::DumpOrSlot10(int unused) {
-  NoOpTurnEventStateVtableSlot10(unused);
+  (void)unused;
+  return;
 }
 
 void TZone::SerializeZoneToBinaryStream(void* streamState) {

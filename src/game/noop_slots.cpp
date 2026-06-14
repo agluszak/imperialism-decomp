@@ -8,17 +8,6 @@
 #pragma optimize("y", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00412bf0
-void NoOpTurnEventStateVtableSlot0C(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00412c10
-void __stdcall NoOpTurnEventStateVtableSlot10(int unused) {
-  (void)unused;
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004b5140
 void ResetCityOrderItemDerivedStateNoop(void) {
   return;
@@ -57,11 +46,6 @@ void NoOpJoinGameSelectionVtableSlotB(void) {
 // --- Empty vtable-slot / callback no-ops (batch port). Each is a single
 //     `ret` (or `ret N` for callee-cleaned stack args); modeled here as empty
 //     bodies so MSVC emits the identical epilogue. ---
-
-// FUNCTION: IMPERIALISM 0x00412bd0
-void __stdcall TMacViewMgr_Slot02_NoOpRet4(int) {
-  return;
-}
 
 // FUNCTION: IMPERIALISM 0x00426f80
 void NoOpRuntimeCallback_00426f80(void) {
