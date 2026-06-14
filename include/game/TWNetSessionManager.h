@@ -14,7 +14,6 @@ public:
   unsigned char pad10[0x60 - 0x10];
   int localPlayerId60;
 
-  // FUNCTION: IMPERIALISM 0x00480850
   bool TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount);
 };
 

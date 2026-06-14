@@ -6,8 +6,8 @@
 #include "game/diplomacy_globals.h"
 
 
-// FUNCTION: IMPERIALISM 0x005b6c60
 // Bare vptr-write constructor; all field state comes from InitializeTownMarker.
+// FUNCTION: IMPERIALISM 0x005b6c60
 TTownMarker::TTownMarker() {}
 
 

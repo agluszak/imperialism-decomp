@@ -8,6 +8,8 @@ module|tools.workflow.annotate_strings_from_symbols|just:annotate-strings|String
 module|tools.workflow.generate_vcall_facades|just:gen-vcall-facades|Generate typed vcall wrappers
 module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
 module|tools.workflow.normalize_reccmp_markers|just:normalize-markers|Marker normalization utility
+module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)
+module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
 module|tools.workflow.class_discovery|just:class-discovery|Read-only class/vtable discovery pipeline
 module|tools.workflow.slice_discovery|just:slice-discovery|Local vertical-slice evidence report
 module|tools.workflow.macos_evidence|just:mac-evidence|Persistent Mac CodeWarrior evidence extraction and validation
@@ -24,6 +26,15 @@ module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdec
 module|tools.ghidra.vtable_dump|just:ghidra-vtable-dump|Dump a class vtable slot->function map
 module|tools.ghidra.restore_project|just:restore-project|Recreate the live Ghidra project from the vendored .gzf
 module|tools.ghidra.export_project|just:export-project|Repack the live Ghidra project into the vendored .gzf
+module|tools.workflow.prune_ilt_thunks|just:prune-ilt-thunks|Prune unannotated ILT jmp thunks from the reccmp report
+module|tools.ghidra.apply_source_datatypes|just:apply-source-datatypes|Apply recovered source datatypes into Ghidra
+module|tools.ghidra.class_owner_probe|just:class-owner-probe|Probe likely class owner for an address
+module|tools.ghidra.function_slice|just:ghidra-function-slice|Read-only Ghidra function slice report
+module|tools.reccmp.compare_batch|just:compare|Batch reccmp compare over multiple targets
+module|tools.w32dasm.parse_alf|just:w32dasm-report|Parse W32Dasm ALF disassembly export
+module|tools.w32dasm.compare_alf_ghidra|just:w32dasm-report|Compare W32Dasm ALF against Ghidra
+module|tools.w32dasm.inspect_wpj|just:w32dasm-report|Inspect W32Dasm project file
+module|tools.w32dasm.rank_report|just:w32dasm-report|Rank W32Dasm report findings
 module|tools.reccmp.core_impact_ranking|dependency:tools.reccmp.session_loop|Imported by session loop
 module|tools.workflow.impk_compat|dependency:tools.workflow.class_discovery|In-repo class-discovery evidence CLI (formerly external impk)
 file|tools/ghidra/SyncExports_Ghidra.py|dependency:tools.ghidra.sync_exports|PyGhidra script used by sync wrapper

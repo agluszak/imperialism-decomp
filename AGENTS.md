@@ -30,19 +30,24 @@ starting that kind of task.
 
 ## Hard Rules
 
-1. No inline assembly.
+1. No inline assembly. (enforced by `just antipattern-gate`)
 2. Use `just` targets for normal workflow (`tooling-check`, `build`, `detect`,
    `compare`, `stats`, `promote`, `sync-ownership`, `regen-stubs`). Do not run raw
    `docker` or `uv run reccmp-*` when a `just` target exists; if no target exists,
    keep the direct command minimal and add a target afterward.
 3. `// FUNCTION: IMPERIALISM 0x...` must be immediately followed by the function
-   declaration — no comment or blank line between them.
+   declaration — no comment or blank line between them. (enforced by `just marker-gate`)
 4. One owned implementation per address in manual source; no duplicate `// FUNCTION`
-   for the same address across manual files and stubs.
+   for the same address across manual files and stubs. (enforced by `just marker-gate`)
 5. After editing markers/ownership, run `just sync-ownership` → `just regen-stubs` →
-   `just build`.
+   `just build`, and `just gates` before committing (raw-vtable + construction
+   anti-pattern + marker-hygiene gates; run `just format-check <touched paths>`
+   separately on files you edited).
 6. Keep naming from Ghidra unless there is a concrete semantic reason to rename; never
-   rename for style only.
+   rename for style only. But treat Ghidra class/method/field names as **provisional** —
+   they may be auto-generated placeholders, even entirely random. reccmp pairs by the
+   `// FUNCTION:` address marker, not by name, so drive matching and field naming from
+   observed behavior in the disassembly, and keep tentative names hedged.
 7. Keep class-owned functions in `src/game/<ClassName>.cpp`; shared trade helpers in
    `src/game/trade_helpers.cpp` and `include/game/trade_quickdraw.h`. Do not hand-edit
    generated files under
@@ -107,7 +112,7 @@ TDerived::TDerived()
 
 not by explicitly constructing the base subobject inside the body.
 
-### 2. No manual vtable writes
+### 2. No manual vtable writes (enforced by `just antipattern-gate`)
 
 Never write vtable pointers by hand in source:
 
@@ -197,7 +202,7 @@ Do not use placement-new, function-pointer casts, or artificial wrapper calls so
 
 Instead, mark the thunk as a known linker artifact and focus on reconstructing the real target function and the real class hierarchy.
 
-### 7. Placement-new is not a substitute for base construction
+### 7. Placement-new is not a substitute for base construction (enforced by `just antipattern-gate`)
 
 Placement-new is forbidden for constructing a base class at `this` when real inheritance can express the relationship.
 
@@ -218,7 +223,7 @@ public:
 
 Placement-new is only acceptable for actual placement-new semantics: object pools, custom allocators, explicit reconstruction into storage, or code where the original program really constructs a separate object into a buffer.
 
-### 8. Retire bridge helpers as classes become understood
+### 8. Retire bridge helpers as classes become understood (count baseline-tracked by `just antipattern-gate`)
 
 Any helper named like:
 
@@ -393,6 +398,26 @@ is not, recover the real inheritance first rather than hand-writing the destruct
 Watch for false positives: a `Destruct*AndMaybeFree` NAME is not proof — read the body
 before converting.
 
+### 17. No `operator new`/`operator delete` factories or `__cdecl` factory helpers (baseline-tracked by `just antipattern-gate`)
+
+Class-declared `operator new`/`operator delete` and `__cdecl` free-function factory /
+class-name helpers (e.g. `CreateTViewInstance`, `GetTViewClassNamePointer`) are a
+**banned porting approach**. They are decompiler/codegen artifacts, not faithful source
+reconstruction.
+
+Do not add them — not even when an existing factory elsewhere already uses the inline
+`operator new` + `new T()` shape (that older "EH-new factory" pattern is retired; do not
+use it as a template for new work).
+
+Instead, port the real thing: resolve the class's vtable-slot ILT thunks
+(`0x40xxxx JMP`) to their real bodies, give the dummy `vmethod_*` stubs real bodies with
+`// FUNCTION:` markers, and let real C++ inheritance own construction and the vtable.
+"Port more methods to class X" means real virtual methods on the real class — not a
+factory and not `operator new`.
+
+The existing `operator new`/`operator delete` sites are baseline-tracked so they ratchet
+down; new occurrences fail the gate.
+
 
 ## MSVC500 calling-convention guardrail
 
@@ -403,7 +428,8 @@ before converting.
   `ecx`/`edx`, who cleans the stack), never as ground truth.
 - **Model real classes with real methods/virtuals — do not fake calling conventions
   with `reinterpret_cast` to paper over Ghidra's labels.** This is the single most
-  repeated correction.
+  repeated correction. (`reinterpret_cast` to a `__thiscall` function pointer is
+  enforced against by `just antipattern-gate`.)
   - If a call is `thiscall`, the callee is a class method: declare it as a real method
     on the real class and call `obj->Method(args)`. Do NOT cast a free-function pointer
     to a fake `__fastcall(void*, int /*edx*/, ...)` shape with a dummy `edx`.

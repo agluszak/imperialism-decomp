@@ -95,8 +95,9 @@ Keep vtable-call plumbing centralized while layouts evolve.
 **Facade vs real virtual**: for *unknown/unstable* receivers, use generated facades.
 For *grounded* receivers (slot byte-offset, signature, return usage, and owning class
 all confirmed), prefer real `__thiscall` virtual dispatch via a typed view class — it
-drops the spurious `edx=0` the facades emit (heuristics.md #77, #81). Keep address
-ownership/annotations unchanged across the migration and `just compare` before/after.
+drops the spurious `edx=0` the facades emit (heuristics.md "Vtable dispatch as real
+virtuals"). Keep address ownership/annotations unchanged across the migration and
+`just compare` before/after.
 
 ## Guardrails
 
@@ -107,6 +108,9 @@ ownership/annotations unchanged across the migration and `just compare` before/a
 4. No raw vtable indexing in gameplay code — add facade metadata instead.
 5. Treat both Ghidra recovered-class output and Mac symbols as oracles to compare
    against, not source of truth.
+6. The real-C++-construction Hard Rules (no manual vptr writes, no `new (this)` base
+   construction, no `__thiscall` reinterpret_cast, retire bridge helpers) are enforced
+   by `just antipattern-gate`. Run `just gates` before committing a recovery change.
 
 ## C++-inheritance migration (EH-framed base destructors)
 

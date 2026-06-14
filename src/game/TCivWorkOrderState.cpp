@@ -5,11 +5,11 @@
 #pragma optimize("y", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x005c28c0
 // Civilian work-order ctor: the inlined base init (TUnitOrderState) sets the
 // base fields and MSVC emits the single derived vptr write to 0x0066ee60. No
 // derived field init here (remainingTurns24/completionMarker26 are set later by
 // InitializeCivWorkOrderState).
+// FUNCTION: IMPERIALISM 0x005c28c0
 TCivWorkOrderState::TCivWorkOrderState() {}
 
 // FUNCTION: IMPERIALISM 0x005c2940

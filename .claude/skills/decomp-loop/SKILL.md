@@ -32,9 +32,12 @@ live in `heuristics.md` next to this file — read it before tuning a body.
 5. **Compare** the touched function: `just compare 0xADDR --verbose`.
 6. **Data pass** — only after the shape matches: align local `short`/`int` widths,
    clamp behavior, float/int conversion order, hidden stack args, return contracts.
-7. **Verify neighbors**: `just compare-canaries` to confirm no regression on tracked
-   anchors. If a readability cleanup drops the score, restore the higher-scoring body
-   and keep the cleanup in helpers/typed views.
+7. **Verify**: run `just gates` for the mechanical source-policy gates (raw-vtable,
+   construction anti-patterns, marker hygiene). Run `just compare-canaries` only when the
+   edit's blast radius could reach the tracked anchors (shared headers, common helpers,
+   build flags, or a canary itself) — skip it for self-contained work. If a readability
+   cleanup drops the score, restore the higher-scoring body and keep the cleanup in
+   helpers/typed views.
 8. **Keep or move on**: if the score improved, keep it; if stuck, record what you
    learned and move to the next function.
 9. **Record the lesson**: append a numbered note to `heuristics.md` (this skill) and
@@ -49,6 +52,8 @@ live in `heuristics.md` next to this file — read it before tuning a body.
   across manual files and stubs.
 - Whenever you edit markers/ownership: `just sync-ownership` → `just regen-stubs` →
   `just build`.
+- Both rules above are enforced mechanically by `just marker-gate` (part of
+  `just gates`). Run `just gates` before committing.
 
 ## When a compare fails to pair
 

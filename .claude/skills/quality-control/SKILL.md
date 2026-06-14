@@ -19,7 +19,11 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
 - `just stats` — aggregate progress (aligned function count, average similarity).
   Treat this as a macro trend only; per-function `compare` is the real gate.
 - `just compare-canaries` — compare the tracked anchor set
-  (`config/canary_targets_*.csv`); run after every accepted iteration. A non-zero
+  (`config/canary_targets_*.csv`). Do NOT run reflexively after every change; run it only
+  when the edit's blast radius could plausibly reach the canaries — broadly-included
+  shared headers, common helpers/macros, build/optimization flags, or a canary function
+  itself. Self-contained work (porting one unrelated function, splitting a class into
+  per-class files) cannot reach the set, so skip it there. When you do run it, a non-zero
   `below_floor` is a real regression — fix or revert before moving on.
 
 ## Export-sync sequence (run whenever markers/ownership change)
@@ -32,11 +36,23 @@ just build
 
 ## Gates & formatting
 
+- `just gates` — run all mechanical source-policy gates (the pre-commit check):
+  `vtable-gate` + `antipattern-gate` + `marker-gate`. Run this before committing.
 - `just vtable-gate` — must pass; do not introduce new raw `vftable[...]` patterns in
   files not already baseline-tracked. `just vtable-gate-update` rewrites the baseline
   after an intentional refactor.
-- `just format` / `just format-check` — clang-format C++.
-- `just normalize-markers` — normalize `// FUNCTION` / reccmp markers.
+- `just antipattern-gate` — enforces the mechanically-checkable real-C++-construction
+  Hard Rules (no inline asm, no `new (this)`, no manual vptr writes, no `__thiscall`
+  reinterpret_cast; temporary bridge-helper names are baseline-tracked so they ratchet
+  down). `just antipattern-gate-update` rewrites the baseline after an intentional,
+  reviewed change (e.g. retiring bridges — counts should only go down).
+- `just marker-gate` — enforces marker Hard Rules 3 (marker immediately precedes the
+  declaration) and 4 (one owned implementation per address across manual files + stubs).
+- `just format` / `just format-check <paths>` — clang-format C++. The tree is not fully
+  formatted, so run `format-check` on the files you touched, not whole-tree (it is not
+  part of `just gates`).
+- `just normalize-markers` — reformat `// FUNCTION` / reccmp markers (cosmetic;
+  `marker-gate` is the policy check).
 
 ## reccmp specifics
 

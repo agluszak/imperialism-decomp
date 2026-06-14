@@ -13,6 +13,7 @@ export GHIDRA_PROJECT_NAME := "imperialism-decomp"
 name_overrides := env_var_or_default("NAME_OVERRIDES", "config/function_name_overrides.csv")
 function_ownership := env_var_or_default("FUNCTION_OWNERSHIP", "config/function_ownership.csv")
 vtable_gate_baseline := env_var_or_default("VTABLE_GATE_BASELINE", "config/vtable_gate_baseline.csv")
+construction_gate_baseline := env_var_or_default("CONSTRUCTION_GATE_BASELINE", "config/construction_gate_baseline.csv")
 canary_targets := env_var_or_default("CANARY_TARGETS", "config/canary_targets_tgreatpower.csv")
 class_discovery_classes := env_var_or_default("CLASS_DISCOVERY_CLASSES", "TGreatPower,TAutoGreatPower")
 # External, machine-specific: the extracted macOS CodeWarrior dump dir. Only needed to
@@ -126,6 +127,23 @@ vtable-gate-update:
 
 normalize-markers:
   uv run python -m tools.workflow.normalize_reccmp_markers --paths src include --write
+
+marker-gate:
+  uv run python -m tools.workflow.check_marker_hygiene --paths src include
+
+antipattern-gate:
+  uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}"
+
+antipattern-gate-update:
+  uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
+
+# Run all mechanical source-policy gates (the pre-commit check).
+# Run `just format-check <touched paths>` separately on files you edited; the tree
+# is not fully clang-formatted, so format-check is per-path, not whole-tree.
+gates:
+  just vtable-gate
+  just antipattern-gate
+  just marker-gate
 
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500

@@ -11,10 +11,8 @@ struct TTurnEventPacketRoutingPrefix {
   int targetNationId;
   int payloadSize;
 
-  // FUNCTION: IMPERIALISM 0x005420a0
   void SetPayloadNationIdFromSlotIndex(int nationSlot);
 
-  // FUNCTION: IMPERIALISM 0x005e3d40
   undefined4 EnqueueOrSendTurnEventPacketToNation(char queueOnly);
 };
 

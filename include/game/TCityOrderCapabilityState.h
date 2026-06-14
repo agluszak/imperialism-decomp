@@ -35,9 +35,7 @@ public:
   };
   MilitaryCapRow militaryCapRows39d[7];
 
-  // FUNCTION: IMPERIALISM 0x005aef80
   void ConstructCityOrderCapabilityStateVtable();
-  // FUNCTION: IMPERIALISM 0x005aeff0
   void InitializeCityOrderCapabilityStateDefaults();
 };
 
