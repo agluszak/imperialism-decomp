@@ -1225,6 +1225,8 @@ address|target_cpp|ownership|note
 5e3c00|src/game/noop_slots.cpp|manual|marker_sync
 5e3d40|src/game/turn_event_packets.cpp|manual|marker_sync
 5e42a0|src/game/noop_slots.cpp|manual|marker_sync
+5e4f60|src/game/TSoundPlayer.cpp|manual|marker_sync
+5e4fb0|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e50a0|src/game/noop_slots.cpp|manual|marker_sync
 5e6d04|src/game/CArchive.cpp|manual|marker_sync
 5e6d27|src/game/CArchive.cpp|manual|marker_sync

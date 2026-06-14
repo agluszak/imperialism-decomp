@@ -3984,3 +3984,21 @@ Follow-up scan after the TClosePicture extraction:
 - **Canaries:** below_floor=2 (pre-existing `0x004E9060`, `0x004E9ED0`); no new regressions.
 - **Follow-up:** EH frame on `Call8C`; populate `kNationMetricCategoryPresetValues` / `kNationMetricCodeLookup` from binary data; iterate `DispatchProposalSlot98` and `ApplyDiplomacyTransferEffects` argument/shape residuals.
 
+
+## 2026-06-15 — TSoundPlayer introduced vtable slots (predicates)
+
+- **reccmp fork:** added thunk resolution to vtable slot comparison (`_compare_vtable`
+  follows `THUNK` entities through their ref to the target `FUNCTION`), so a slot
+  pointing through an ILT jmp thunk compares equal to a direct slot. Pushed to
+  `agluszak/reccmp` master `e47e40cf`; bumped the project pin + `uv.lock`.
+- **TSoundPlayer:** ported the two constant-predicate virtuals as real members:
+  - `0x5e4f60` `ReturnConstantTrue_SoundPredicate` (slot 0x26) — 100%.
+  - `0x5e4fb0` `ReturnConstantFalse_SoundPredicate(int,int)` (slot 0x27) — 100%.
+  Both vtable slots (0x98/0x9c) now pair and drop out of the `just vtable` diff.
+  Added the `directSoundInitPendingAt21` field (0x21); qualified both names in
+  `config/symbols.csv`; re-ran sync-ownership/regen-stubs.
+- **Still provisional (follow-up):** slot 0x25 Init (`0x5e4e70`) allocates two inline
+  list nodes — needs the list class recovered (inline `operator new` is banned);
+  slots 0x28/0x29 Request/Clear (`0x5e4f80`/`0x5e4fd0`) dispatch to the unmodeled
+  sound-device global at `0x6a60c0`. Slot 0x04 is a scalar-deleting-dtor conversion;
+  0x1c is an override of an inherited slot.

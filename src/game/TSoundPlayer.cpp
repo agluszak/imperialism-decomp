@@ -42,7 +42,7 @@ CRuntimeClass* TSoundPlayer::GetRuntimeClass() {
 // (TEventHandler field defaults) then installs the TSoundPlayer vptr — same pattern as
 // ApplicationUiRootController @ 0x00486760, not TControl::TControl().
 TSoundPlayer::TSoundPlayer() {
-  typedef void(__fastcall * InitHeader)(undefined4* self);
+  typedef void(__fastcall * InitHeader)(undefined4 * self);
   reinterpret_cast<InitHeader>(InitializeUiResourceEntryBaseHeaderDefaults)(
       reinterpret_cast<undefined4*>(this));
   this->runtimePeerAt6c = 0;
@@ -54,10 +54,20 @@ TSoundPlayer::TSoundPlayer() {
 }
 
 void TSoundPlayer::SoundPlayerSlot25_Provisional() {}
-void TSoundPlayer::SoundPlayerSlot26_Provisional() {}
-void TSoundPlayer::SoundPlayerSlot27_Provisional() {}
 void TSoundPlayer::SoundPlayerSlot28_Provisional() {}
 void TSoundPlayer::SoundPlayerSlot29_Provisional() {}
+
+// FUNCTION: IMPERIALISM 0x005e4f60
+unsigned char TSoundPlayer::ReturnConstantTrue_SoundPredicate() {
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x005e4fb0
+unsigned char TSoundPlayer::ReturnConstantFalse_SoundPredicate(int a, int b) {
+  (void)a;
+  (void)b;
+  return 0;
+}
 
 // Partial teardown writes the runtime-object base vptr, symmetric with header-only
 // construction (InitializeUiResourceEntryBaseHeaderDefaults, not ~TEventHandler()).
@@ -68,7 +78,7 @@ void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
 
 // FUNCTION: IMPERIALISM 0x005933b0
 TSoundPlayer* __fastcall DestructTSoundPlayerAndMaybeFree(TSoundPlayer* player, int unusedEdx,
-                                                           unsigned char freeSelfFlag) {
+                                                          unsigned char freeSelfFlag) {
   (void)unusedEdx;
   DestructTSoundPlayerBaseState(player);
   if ((freeSelfFlag & 1) != 0) {

@@ -195,6 +195,10 @@ compare *args:
     uv run python -m tools.reccmp.compare_batch --target "{{target}}" --build-dir "{{build_dir}}" {{args}}
   fi
 
+# Compare vtable layouts against the original.
+vtable *args:
+  (cd "{{build_dir}}" && uv run reccmp-vtable --target "{{target}}" {{args}})
+
 compare-canaries:
   uv run python -m tools.reccmp.compare_canaries --target "{{target}}" --build-dir "{{build_dir}}" --canary-csv "{{canary_targets}}"
 

@@ -2659,26 +2659,10 @@ undefined4 InitializeSoundSubsystemAndAllocateChannelLists(void)
   return 0;
 }
 
-// ghidra_name ReturnConstantTrue_SoundPredicate
-// ghidra_proto undefined ReturnConstantTrue_SoundPredicate()
-// FUNCTION: IMPERIALISM 0x005e4f60
-undefined4 ReturnConstantTrue_SoundPredicate(void)
-{
-  return 0;
-}
-
 // ghidra_name RequestDirectSoundInitIfAllowed
 // ghidra_proto undefined RequestDirectSoundInitIfAllowed()
 // FUNCTION: IMPERIALISM 0x005e4f80
 undefined4 RequestDirectSoundInitIfAllowed(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnConstantFalse_SoundPredicate
-// ghidra_proto undefined ReturnConstantFalse_SoundPredicate()
-// FUNCTION: IMPERIALISM 0x005e4fb0
-undefined4 ReturnConstantFalse_SoundPredicate(void)
 {
   return 0;
 }
