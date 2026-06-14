@@ -84,7 +84,9 @@ char UiDialogHandlerPrefix::vmethod_0080() {
   return 0;
 }
 void UiDialogHandlerPrefix::vmethod_0081() {}
-void UiDialogHandlerPrefix::vmethod_0032() {}
+char UiDialogHandlerPrefix::vmethod_0032() {
+  return 0;
+}
 void UiDialogHandlerPrefix::vmethod_0033(int arg) {
   (void)arg;
 }

@@ -53,7 +53,7 @@ public:
   virtual char vmethod_0031();
   virtual char vmethod_0080();
   virtual void vmethod_0081();
-  virtual void vmethod_0032();
+  virtual char vmethod_0032();
   virtual void vmethod_0033(int arg);
   virtual void vmethod_0034();
   virtual void vmethod_0035();

@@ -123,14 +123,6 @@ undefined4 DispatchUiMouseEventToChildrenOrSelf_Impl(void)
   return 0;
 }
 
-// ghidra_name TControl::DispatchVfuncA0ToLinkedChildListSlot44
-// ghidra_proto undefined DispatchVfuncA0ToLinkedChildListSlot44()
-// FUNCTION: IMPERIALISM 0x0048c890
-undefined4 DispatchVfuncA0ToLinkedChildListSlot44(void)
-{
-  return 0;
-}
-
 // ghidra_name PropagateUiResourceContextRecursive
 // ghidra_proto undefined PropagateUiResourceContextRecursive()
 // FUNCTION: IMPERIALISM 0x0048c900

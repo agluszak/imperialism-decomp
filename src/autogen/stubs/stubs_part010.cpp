@@ -3051,22 +3051,6 @@ undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void)
   return 0;
 }
 
-// ghidra_name TControl::DetachActiveCityProductionChildIfMatches
-// ghidra_proto undefined DetachActiveCityProductionChildIfMatches()
-// FUNCTION: IMPERIALISM 0x0048a4a0
-undefined4 DetachActiveCityProductionChildIfMatches(void)
-{
-  return 0;
-}
-
-// ghidra_name TradeControl::IsCurrentActiveCityProductionView
-// ghidra_proto undefined IsCurrentActiveCityProductionView()
-// FUNCTION: IMPERIALISM 0x0048a500
-undefined4 IsCurrentActiveCityProductionView(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::DispatchCityProductionAction1A
 // ghidra_proto undefined DispatchCityProductionAction1A()
 // FUNCTION: IMPERIALISM 0x0048a670
@@ -3163,26 +3147,10 @@ undefined4 FindUiChildControlByWindowHandleRecursive(void)
   return 0;
 }
 
-// ghidra_name TControl::SetUiControlVisibleFlagAndMaybeRefreshWindow
-// ghidra_proto undefined SetUiControlVisibleFlagAndMaybeRefreshWindow()
-// FUNCTION: IMPERIALISM 0x0048b070
-undefined4 SetUiControlVisibleFlagAndMaybeRefreshWindow(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::CloseCityDialogChildrenAndReleaseSelf
 // ghidra_proto undefined CloseCityDialogChildrenAndReleaseSelf()
 // FUNCTION: IMPERIALISM 0x0048b0b0
 undefined4 CloseCityDialogChildrenAndReleaseSelf(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::SetControlActiveFlagAndRefreshIfChanged
-// ghidra_proto undefined SetControlActiveFlagAndRefreshIfChanged()
-// FUNCTION: IMPERIALISM 0x0048b1c0
-undefined4 SetControlActiveFlagAndRefreshIfChanged(void)
 {
   return 0;
 }
@@ -3207,14 +3175,6 @@ undefined4 InvalidateOffsetRegionUsingChildClipRect(void)
 // ghidra_proto undefined InvalidateCityDialogRectRegion()
 // FUNCTION: IMPERIALISM 0x0048b5f0
 undefined4 InvalidateCityDialogRectRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0
-// ghidra_proto undefined WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0()
-// FUNCTION: IMPERIALISM 0x0048b6d0
-undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(void)
 {
   return 0;
 }

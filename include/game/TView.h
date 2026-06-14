@@ -75,7 +75,7 @@ public:
   // names. See memory tview-vtable-slot-scramble. vmethod_00NN placeholders fill the
   // remaining (body-owned-elsewhere / unported) slots; their exact position is
   // immaterial (base+derived stay name-consistent).
-  virtual void vmethod_0032();                                       // 0x22 0x48a500
+  virtual char vmethod_0032();                                       // 0x22 0x48a500
   virtual void vmethod_0033(int arg);                                // 0x23 0x48a4a0
   virtual void SetUiResourceOwner(int owner);                        // 0x24 0x48a4d0
   virtual class TControl* ResolveControlByTag(unsigned int controlTag); // 0x25 0x48afd0

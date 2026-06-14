@@ -191,9 +191,18 @@ char TView::vmethod_0080() {
 }
 // FUNCTION: IMPERIALISM 0x0048a710
 void TView::vmethod_0081() {}
-void TView::vmethod_0032() {}
+// True iff this view is the root controller's current active view.
+// FUNCTION: IMPERIALISM 0x0048a500
+char TView::vmethod_0032() {
+  return this == g_pApplicationUiRootController->GetActiveView();
+}
+// If the given object is our currently-linked field18 target, detach it both ways.
+// FUNCTION: IMPERIALISM 0x0048a4a0
 void TView::vmethod_0033(int arg) {
-  (void)arg;
+  if (field18 != 0 && field18 == arg) {
+    field18 = 0;
+    *reinterpret_cast<int*>(arg + 8) = 0;
+  }
 }
 void TView::vmethod_0034() {}
 void TView::vmethod_0035() {}
@@ -247,9 +256,53 @@ void TView::DispatchSlot9CToLinkedChildren() {
     }
   }
 }
-void TView::CallVoidSlotA0() {}
-void TView::SetEnabled(int enabledState, int refreshFlag) {}
-void TView::SetState(int state, int refreshFlag) {}
+// Walk the field44 child list and forward slot-0x28 (CallVoidSlotA0) to each child.
+// FUNCTION: IMPERIALISM 0x0048c890
+void TView::CallVoidSlotA0() {
+  CPtrListNode* node;
+  if (childList44 == 0) {
+    node = 0;
+  } else {
+    node = childList44->headNode;
+  }
+  TView* child;
+  if (node == 0) {
+    child = 0;
+    node = 0;
+  } else {
+    child = reinterpret_cast<TView*>(node->data);
+    node = node->next;
+  }
+  while (child != 0) {
+    child->CallVoidSlotA0();
+    if (node == 0) {
+      child = 0;
+      node = 0;
+    } else {
+      child = reinterpret_cast<TView*>(node->data);
+      node = node->next;
+    }
+  }
+}
+// If the enabled-state field (field08) changes, store it and optionally refresh.
+// FUNCTION: IMPERIALISM 0x0048b1c0
+void TView::SetEnabled(int enabledState, int refreshFlag) {
+  if (enabledState != field08) {
+    field08 = enabledState;
+    if (refreshFlag != 0) {
+      RefreshControl();
+    }
+  }
+}
+// Push the control value through slot 0x0b, then refresh when it is non-zero.
+// FUNCTION: IMPERIALISM 0x0048b070
+void TView::SetState(int state, int refreshFlag) {
+  (void)refreshFlag;
+  SetControlValue(state);
+  if (state != 0) {
+    RefreshControl();
+  }
+}
 void TView::vmethod_0043() {}
 void TView::vmethod_0044() {}
 void TView::vmethod_0045() {}
@@ -329,7 +382,12 @@ void TView::vmethod_0055(unsigned int styleSeed) {
 }
 // FUNCTION: IMPERIALISM 0x0048abc0
 void TView::NoOpUiCallback() {}
-void TView::RefreshControl() {}
+// FUNCTION: IMPERIALISM 0x0048b6d0
+void TView::RefreshControl() {
+  if (g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0) {
+    reinterpret_cast<void(__stdcall*)(struct RECT*, int)>(thunk_InvalidateCityDialogRectRegion)(0, 1);
+  }
+}
 // Forward to the owner context's panel query (slot 0x16), or 0 if no owner.
 // FUNCTION: IMPERIALISM 0x0048b1a0
 TView* TView::QueryOwnerContextPanel() {
