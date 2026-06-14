@@ -3567,7 +3567,7 @@ address|name|size|type|prototype
 534fb0|TMission::GetTMissionClassNamePointer|6|function|undefined GetTMissionClassNamePointer()
 534fd0|WrapperFor_AFX_CLASSINIT_At00534fd0|16|function|undefined WrapperFor_AFX_CLASSINIT_At00534fd0()
 535020|TMission::ConstructTMission|24|function|undefined ConstructTMission()
-535050|TMission::DeletingDestructTMission|30|function|undefined DeletingDestructTMission()
+535050|TMission::'scalar deleting destructor'|30|function|undefined 'scalar deleting destructor'()
 535080|TMission::DestructTMission|7|function|undefined DestructTMission()
 5350a0|InitializeMissionWithNationIdAndResetPathMarker|23|function|undefined InitializeMissionWithNationIdAndResetPathMarker()
 5350d0|CreateMissionObjectByKindAndNodeContext|698|function|undefined CreateMissionObjectByKindAndNodeContext()

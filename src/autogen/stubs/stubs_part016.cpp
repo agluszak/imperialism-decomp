@@ -59,22 +59,6 @@ undefined4 ResetTDefendProvinceMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name SerializeTMission
-// ghidra_proto undefined SerializeTMission()
-// FUNCTION: IMPERIALISM 0x00535820
-undefined4 SerializeTMission(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeTMission
-// ghidra_proto undefined DeserializeTMission()
-// FUNCTION: IMPERIALISM 0x005358a0
-undefined4 DeserializeTMission(void)
-{
-  return 0;
-}
-
 // ghidra_name FindFirstTrackedHandlerMatchingModeAndShortKey
 // ghidra_proto undefined FindFirstTrackedHandlerMatchingModeAndShortKey()
 // FUNCTION: IMPERIALISM 0x00535940

@@ -1,3 +1,4 @@
 - [pyghidra version gate](pyghidra-version-gate.md) — sync-ghidra aborts on a hard-coded pyghidra version that drifts from pyproject
 - [knowledge DB / impk external](knowledge-db-impk-external.md) — RESOLVED: class-discovery now runs in-repo via impk_compat, no sibling repo
 - [repo layout: skills + vendor](repo-layout-skills-and-vendor.md) — docs consolidated into AGENTS.md + .claude/skills/; Ghidra/Mac assets vendored; imperialism_knowledge dropped
+- [TMission vtable layout ground truth](tmission-vtable-layout-ground-truth.md) — 48-slot abstract base + paired MissionOrderPrioritizer companion vtables; exact rdata order; inheritance confirmed

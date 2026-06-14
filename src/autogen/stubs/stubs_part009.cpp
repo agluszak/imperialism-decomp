@@ -1611,14 +1611,6 @@ undefined4 InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(void)
   return 0;
 }
 
-// ghidra_name DeleteObjectIfNonNullViaVslot04
-// ghidra_proto undefined DeleteObjectIfNonNullViaVslot04()
-// FUNCTION: IMPERIALISM 0x004798b0
-undefined4 DeleteObjectIfNonNullViaVslot04(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004798f0
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0()
 // FUNCTION: IMPERIALISM 0x004798f0

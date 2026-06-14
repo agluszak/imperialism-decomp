@@ -117,46 +117,6 @@ void NoOpTedForeignMinisterSlot25Handler(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00534c40
-void NoOpMissionVtableSlot30(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00534ca0
-void NoOpMissionVtableSlot3C(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00534cf0
-void NoOpMissionVtableSlot44(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00534ed0
-void __stdcall NoOpMissionVtableSlot84(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00534ef0
-void __stdcall NoOpMissionVtableSlot80Ret8(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00534f10
-void __stdcall NoOpMissionVtableSlot8CRet8(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00534f30
-void __stdcall NoOpMissionVtableSlot88Ret8(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00534f50
-void __stdcall NoOpMissionVtableSlot90Ret4(int) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x00541a00
 void __stdcall NoOpDiplomacyTargetTransitionCallbackAlt(int) {
   return;
@@ -701,11 +661,6 @@ void OrphanRetStub_005328d0(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00534c20
-int __stdcall ReturnZeroMissionVtableSlot2C(int, int) {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x005354c0
 void __stdcall OrphanRetStub_005354c0(int) {
   return;
@@ -917,41 +872,6 @@ bool __stdcall ReturnFalseNationStateActionStub(int, int, int, int) {
 
 // FUNCTION: IMPERIALISM 0x004d7f60
 bool __stdcall ReturnFalseNationStateCapabilityFlag90(int) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x00534c00
-bool ReturnFalseMissionVtableSlot28(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x00534d30
-bool __stdcall ReturnFalseMissionVtableSlot4C(int, int, int) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x00534d50
-bool ReturnFalseMissionVtableSlot50(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x00534d70
-bool ReturnFalseMissionVtableSlot54(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x00534dd0
-bool ReturnFalseMissionVtableSlot60(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x00534df0
-bool ReturnFalseMissionVtableSlot64(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x00534f90
-bool ReturnFalseMissionVtableSlot98(void) {
   return false;
 }
 
