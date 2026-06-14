@@ -33,15 +33,25 @@ void UiDialogHandlerPrefix::SetControlValue(int value) {
 int UiDialogHandlerPrefix::QueryStepValue() {
   return field0c;
 }
-void UiDialogHandlerPrefix::vmethod_0013() {}
-void UiDialogHandlerPrefix::vmethod_0014() {}
-void UiDialogHandlerPrefix::vmethod_0015() {}
+void UiDialogHandlerPrefix::vmethod_0013(int* cmd) {
+  (void)cmd;
+}
+void UiDialogHandlerPrefix::vmethod_0014(int command) {
+  (void)command;
+}
+void UiDialogHandlerPrefix::vmethod_0015(int arg1, void* arg2, int arg3) {
+  (void)arg1;
+  (void)arg2;
+  (void)arg3;
+}
 void UiDialogHandlerPrefix::DispatchEvent(int arg1, void* arg2, int arg3) {
   (void)arg1;
   (void)arg2;
   (void)arg3;
 }
-void UiDialogHandlerPrefix::vmethod_0017() {}
+void UiDialogHandlerPrefix::vmethod_0017(int param) {
+  (void)param;
+}
 void UiDialogHandlerPrefix::ForwardParam(int param) {
   (void)param;
 }

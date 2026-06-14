@@ -48,11 +48,11 @@ public:
   virtual char GetBoolSlot28();
   virtual void SetControlValue(int value);
   virtual int QueryStepValue();
-  virtual void vmethod_0013();
-  virtual void vmethod_0014();
-  virtual void vmethod_0015();
+  virtual void vmethod_0013(int* cmd);
+  virtual void vmethod_0014(int command);
+  virtual void vmethod_0015(int arg1 = 0, void* arg2 = 0, int arg3 = 0);
   virtual void DispatchEvent(int arg1, void* arg2, int arg3);
-  virtual void vmethod_0017();
+  virtual void vmethod_0017(int param);
   virtual void ForwardParam(int param);
   virtual char vmethod_0019();
   virtual void vmethod_0020();

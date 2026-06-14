@@ -3043,54 +3043,6 @@ undefined4 ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
   return 0;
 }
 
-// ghidra_name ForwardEngineerDialogCommandToChildSlot40
-// ghidra_proto undefined ForwardEngineerDialogCommandToChildSlot40()
-// FUNCTION: IMPERIALISM 0x0048a280
-undefined4 ForwardEngineerDialogCommandToChildSlot40(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DispatchUiCommandToHandler
-// ghidra_proto undefined DispatchUiCommandToHandler()
-// FUNCTION: IMPERIALISM 0x0048a2e0
-undefined4 DispatchUiCommandToHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ForwardNotifyParamToPrimaryChildSlot44
-// ghidra_proto undefined ForwardNotifyParamToPrimaryChildSlot44()
-// FUNCTION: IMPERIALISM 0x0048a310
-undefined4 ForwardNotifyParamToPrimaryChildSlot44(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::ForwardCityDialogParamToChildSlot48
-// ghidra_proto undefined ForwardCityDialogParamToChildSlot48()
-// FUNCTION: IMPERIALISM 0x0048a380
-undefined4 ForwardCityDialogParamToChildSlot48(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DispatchQueuedUiCommandAndRelease
-// ghidra_proto undefined DispatchQueuedUiCommandAndRelease()
-// FUNCTION: IMPERIALISM 0x0048a3b0
-undefined4 DispatchQueuedUiCommandAndRelease(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::DispatchUiSelectionToHandler
-// ghidra_proto undefined DispatchUiSelectionToHandler()
-// FUNCTION: IMPERIALISM 0x0048a3f0
-undefined4 DispatchUiSelectionToHandler(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_GetTickCountDiv16_At0048a410
 // ghidra_proto undefined WrapperFor_thunk_GetTickCountDiv16_At0048a410()
 // FUNCTION: IMPERIALISM 0x0048a410

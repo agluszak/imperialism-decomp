@@ -81,12 +81,48 @@ void TView::SetControlValue(int value) {
 int TView::QueryStepValue() {
   return field0c;
 }
-void TView::vmethod_0013() {}
-void TView::vmethod_0014() {}
-void TView::vmethod_0015() {}
-void TView::DispatchEvent(int arg1, void* arg2, int arg3) {}
-void TView::vmethod_0017() {}
-void TView::ForwardParam(int param) {}
+// Dispatch a queued command record: the command's stored handler (cmd+0x10) receives the
+// command's payload words (cmd+0x08, cmd+0x0c) plus the command itself, then the command
+// is released via slot 0x07.
+// FUNCTION: IMPERIALISM 0x0048a3b0
+void TView::vmethod_0013(int* cmd) {
+  reinterpret_cast<TView*>(cmd[4])->DispatchEvent(cmd[2], reinterpret_cast<void*>(cmd[3]),
+                                                  reinterpret_cast<int>(cmd));
+  if (cmd != 0) {
+    reinterpret_cast<TView*>(cmd)->CallVoidSlot1C();
+  }
+}
+// FUNCTION: IMPERIALISM 0x0048a3f0
+void TView::vmethod_0014(int command) {
+  vmethod_0013(reinterpret_cast<int*>(command));
+}
+// Forward an event triplet to the child object returned by slot 0x0c (QueryStepValue),
+// if any. Derived classes override slot 0x0c to return the active child control.
+// FUNCTION: IMPERIALISM 0x0048a280
+void TView::vmethod_0015(int arg1, void* arg2, int arg3) {
+  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  if (child != 0) {
+    child->DispatchEvent(arg1, arg2, arg3);
+  }
+}
+// FUNCTION: IMPERIALISM 0x0048a2e0
+void TView::DispatchEvent(int arg1, void* arg2, int arg3) {
+  vmethod_0015(arg1, arg2, arg3);
+}
+// FUNCTION: IMPERIALISM 0x0048a310
+void TView::vmethod_0017(int param) {
+  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  if (child != 0) {
+    child->vmethod_0017(param);
+  }
+}
+// FUNCTION: IMPERIALISM 0x0048a380
+void TView::ForwardParam(int param) {
+  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  if (child != 0) {
+    child->ForwardParam(param);
+  }
+}
 // FUNCTION: IMPERIALISM 0x0048a480
 char TView::vmethod_0019() {
   return 0;
