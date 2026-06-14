@@ -1,7 +1,6 @@
 #pragma once
 
 #include "decomp_types.h"
-#include "game/CObject.h"
 #include "game/CString.h"
 #include "game/TPtrList.h"
 
@@ -14,8 +13,9 @@ class TCity;
   virtual void VTableIndex##n##_Provisional(void) {}
 
 // VTABLE: IMPERIALISM 0x00653938
-// MFC CObject base (vtable 0x0066fec4 restored during ~TGreatPower teardown).
-class TGreatPower : public CObject {
+// Runtime vtable is standalone (slots 0–4 are nation-specific; slots 3–4 share
+// CObject no-op thunks). Dtor @ 0x004d8c50 restores 0x0066fec4 for EH only.
+class TGreatPower {
 public:
   TGREATPOWER_VTABLE_SLOT(00);
   // slot 0x01 — scalar deleting destructor 0x004d8c20 (SYNTHETIC); real dtor body

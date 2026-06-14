@@ -1,6 +1,15 @@
 # Worklog
 
-- **Timestamp:** 2026-06-10 — TGreatPower structural cleanup (phases 1–6)
+- **Timestamp:** 2026-06-14 (cont.) — TGreatPower preamble bridge drain (phase 7)
+- **Command:** Inlined/removed 21 `static __inline` preamble bridges (TStream ReadBytes/WriteBytesSlot78 call sites, TPtrList ResetSlot14/Call18, TMinor/TTerrainDescriptor/TGlobalMapState/TCity direct methods, dead GlobalMapState_GetTerrainRecord + unused ReleaseAndClear24/58 templates). Updated `docs/tgreatpower_bridge_inventory.csv`. `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just compare-canaries`.
+- **Score Delta:** preamble `static __inline` **70 → 49**; `0x004d7ae0` **100%**; `0x004df010` **51.83%** (canary stretch_met); `0x004de860` **37.09%** (canary stretch_met); canaries **below_floor=0**. Build green.
+- **Description:** Stream serialization pair now calls `TStream::ReadBytes`/`WriteBytesSlot78` and `TPtrList::ResetSlot14`/`Call18` directly. No `public CObject` on TGreatPower. Next targets: thunk-only wrappers (`CallGetField30ThunkWithManager`, `UiRuntime_QueueTurnStatusPrompt`, `TownMarker_IsTransportLinkedAndEnabled`), score-helper cluster (~0x004e8750 family), and `CreateMissionObjectByKindAndNodeContext` once TMission ownership is stable.
+
+- **Timestamp:** 2026-06-10 (cont.) — TGreatPower follow-up: revert CObject, terrain scoring port
+- **Command:** Ghidra vtable dump `0x653938` shows slots 0–2 are nation-specific (not MFC `GetRuntimeClass`/`Serialize`); reverted `TGreatPower : public CObject`. Ported `0x004a5aa0` `ComputeWeightedNeighborLinkScoreForNodeIndex` into `TTerrainDescriptor.cpp`; moved terrain nation-slot decode helpers there. Inlined `LookupOrderCompatibility` preamble bridges. `just build` → `just compare`.
+- **Score Delta:** `0x004d7ae0` **100%** (restored after CObject revert); `0x004df010` **51.83%**; `0x004a5aa0` **57.69%**; preamble `static __inline` count **72 → 67**.
+- **Description:** CObject inheritance was incorrect for this vtable — slots 3–4 share CObject no-op thunks but 0–2 are not MFC base slots. EH dtor tail `0x66fec4` restore remains a future matching target without faking `public CObject`.
+
 - **Command:** Retired preamble bridges (NavyMission, TPtrList, TQueueObject, NationState wrappers); deleted DiplomacyManagerVtbl/NationStateVtbl/TerrainDescriptorVtbl; ported `0x00518960` to `TGlobalMapState::SetRegionDevelopmentStageByte`; relocated `0x004b73b0` to `TCityRecruitmentOrderContext`; moved terrain scoring to `TTerrainDescriptor.cpp`; drained view structs (TMissionNodeCallback, TMilitaryUnit, STurnInstructionCiviCursor); `TGreatPower : public CObject`; `just sync-ownership` → `just regen-stubs` → `just build` → `just compare` → `just stats`.
 - **Score Delta:** `0x00518960` **100%**; `0x004df010` **45% → 51.38%**; `0x004b73b0` **5% → 12.98%**; `0x004d8c50` **58.33%** (CObject dtor tail); `0x004d8390`/`0x004d83c0` ~30% (terrain scoring, still thunk-forwarded).
 - **Description:** Diplomacy proposal acceptance now calls `g_pDiplomacyTurnStateManager` and `g_apNationStates` directly. Region development writes use `g_pGlobalMapState`. Minister skill floats inlined at five slot bodies.

@@ -319,6 +319,7 @@ address|target_cpp|ownership|note
 4a0190|src/game/TFocusAnimation.cpp|manual|marker_sync
 4a05c0|src/game/TTransFocusAnimation.cpp|manual|marker_sync
 4a0770|src/game/TTransFocusAnimation.cpp|manual|marker_sync
+4a5aa0|src/game/TTerrainDescriptor.cpp|manual|marker_sync
 4aad20|src/game/noop_slots.cpp|manual|marker_sync
 4ab800|src/game/noop_slots.cpp|manual|marker_sync
 4b1410|src/game/noop_slots.cpp|manual|marker_sync

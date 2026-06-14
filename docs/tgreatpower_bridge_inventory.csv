@@ -24,8 +24,29 @@ ReadGlobalPointer,274,diplomacy_globals,g_p* typed globals,,P3,done
 ReadGlobalPointerArray,278,diplomacy_globals,g_apNationStates,,P3,done
 ReadNationStateSlot,288,diplomacy_globals,g_apNationStates[slot],,P3,done
 ReadTerrainDescriptorSlot,296,diplomacy_globals,g_apTerrainTypeDescriptorTable,,P3,done
-Stream_ReadAtSlot3C,395,TStreamView,direct ReadAt3C in minister/map paths,,P3,partial
-Stream_WriteRawAtSlot78,1426,TStreamView,WriteRaw78,,P3,pending
+Stream_ReadAtSlot3C,395,TStream,direct ReadBytes in minister/map paths,,P3,done
+Stream_WriteRawAtSlot78,1426,TStream,WriteBytesSlot78,,P3,done
+List_WriteToStreamSlot14,1142,TPtrList,direct ResetSlot14,,P3,done
+List_ReadFromStreamSlot18,1146,TPtrList,direct Call18,,P3,done
+GlobalMapState_GetTerrainRecord,264,TGlobalMapState,unused dead bridge removed,,P3,done
+ReleaseAndClear24,337,TPtrList,unused template removed,,P3,done
+ReleaseAndClear58,344,TPtrList,unused template removed,,P3,done
+LocalizationRuntime_GetTurnTick,294,TLocalizationRuntime,direct GetTurnTickSlot3C,,P3,done
+ReleaseObjectAtSlot1C,382,TTrackedObject,direct Release1C,,P3,done
+Object_CallSlot30NoArgs,388,TTrackedObject,direct Call30,,P3,done
+Object_CallSlot8CNoArgs,400,TMinister,direct Call8C,,P3,done
+SecondaryState_ResetDiplomacyLevel,406,TMinor,direct SetDiplomacyStandingSlot48,,P3,done
+GlobalMapState_CallMetricC4,411,TGlobalMapState,direct CallMetricSlotC4,,P3,done
+TerrainDescriptor_CallSlot4C,438,TTerrainDescriptor,direct CallSlot4C,,P3,done
+TerrainDescriptor_CallSlot38,443,TTerrainDescriptor,direct CallSlot38,,P3,done
+TerrainDescriptor_SetResetLevel,394,TTerrainDescriptor,direct SetResetLevelSlot68,,P3,done
+RelationManager_ClearNeedSlotE0,488,TCity,direct fieldB6+Refresh80,,P3,done
+RelationManager_ClearNeedSlotE2,493,TCity,direct fieldB6+Refresh80,,P3,done
+SecondaryState_HasNationFlag5C,589,TMinor,direct HasMinorStandingLinkSlot5C,,P3,done
+SecondaryState_SetPolicyValue48,593,TMinor,direct SetDiplomacyStandingSlot48,,P3,done
+SecondaryState_CallSlot4C,598,TMinor,direct VTableSlot4C_Provisional,,P3,done
+CityOrderCapabilityByte277,1136,TCityOrderCapabilityState,direct orderCapRows277 lookup,,P3,done
+IsNationSlotEligibleForEventProcessingFast,325,TDiplomacyTurnStateManager,direct thunk at call sites,,P3,done
 List_ResetSlot14,415,TPtrList,direct ResetSlot14,,P3,done
 List_GetCountSlot28,419,TPtrList,GetCountOrReleaseSlot28,,P3,done
 List_GetIntByOrdinalSlot24,424,TPtrList,GetIntByOrdinalSlot24,,P3,done

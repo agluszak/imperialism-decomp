@@ -39,5 +39,8 @@ public:
   class TPtrList* linkedNodeList90;
 };
 
+int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain, short encodedNationSlot);
+int ResolveTerrainNationSlotFromTarget(int targetNationSlot);
 int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
+int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
 int SumWeightedNeighborLinkScoreForLinkedNodes(TTerrainDescriptor* terrain);

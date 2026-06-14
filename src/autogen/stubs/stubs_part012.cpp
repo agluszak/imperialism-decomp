@@ -803,14 +803,6 @@ undefined4 SetActiveProvinceAndBuildDirectionalOrderOverlays(void)
   return 0;
 }
 
-// ghidra_name ComputeWeightedNeighborLinkScoreForNodeIndex
-// ghidra_proto undefined ComputeWeightedNeighborLinkScoreForNodeIndex()
-// FUNCTION: IMPERIALISM 0x004a5aa0
-undefined4 ComputeWeightedNeighborLinkScoreForNodeIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateTacticalBattleViewAndInitializeBattleSetup
 // ghidra_proto undefined CreateTacticalBattleViewAndInitializeBattleSetup()
 // FUNCTION: IMPERIALISM 0x004a5b10

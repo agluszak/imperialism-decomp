@@ -1,13 +1,45 @@
 #include "game/TTerrainDescriptor.h"
 
+#include "game/TGlobalMapState.h"
 #include "game/TPtrList.h"
+#include "game/TStationedUnitNode.h"
+#include "game/diplomacy_globals.h"
 
-undefined4 ComputeWeightedNeighborLinkScoreForNodeIndex(void);
+int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain, short encodedNationSlot) {
+  if (encodedNationSlot < 200) {
+    if (encodedNationSlot < 100) {
+      return terrain->fallbackNationSlot0c;
+    }
+    return encodedNationSlot - 100;
+  }
+  return encodedNationSlot - 200;
+}
+
+int ResolveTerrainNationSlotFromTarget(int targetNationSlot) {
+  const TTerrainDescriptor* terrain =
+      reinterpret_cast<const TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[targetNationSlot]);
+  return DecodeTerrainNationSlotFromDescriptor(terrain, terrain->encodedNationSlot0e);
+}
+
+static const unsigned int kAddrWeightedNeighborScoreByUnitType = 0x006955F0;
+
+// FUNCTION: IMPERIALISM 0x004a5aa0
+int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
+  if (nodeIndex < 0 || nodeIndex > 0x17f) {
+    return 0;
+  }
+  TStationedUnitNode* chain =
+      g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98;
+  int sum = 0;
+  for (; chain != 0; chain = chain->next14) {
+    sum += *reinterpret_cast<int*>(kAddrWeightedNeighborScoreByUnitType + chain->unitTypeId04 * 4);
+  }
+  return sum;
+}
 
 // FUNCTION: IMPERIALISM 0x004d8390
 int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
-  return reinterpret_cast<int(__cdecl*)(int)>(ComputeWeightedNeighborLinkScoreForNodeIndex)(
-      nodeIndex);
+  return ComputeWeightedNeighborLinkScoreForNodeIndex(static_cast<short>(nodeIndex));
 }
 
 // FUNCTION: IMPERIALISM 0x004d83c0
@@ -26,8 +58,7 @@ int SumWeightedNeighborLinkScoreForLinkedNodes(TTerrainDescriptor* terrain) {
 
   do {
     int nodeId = linkedList->GetIntByOrdinalSlot24(index);
-    sum += reinterpret_cast<int(__cdecl*)(int)>(ComputeWeightedNeighborLinkScoreForNodeIndex)(
-        nodeId);
+    sum += ComputeWeightedNeighborLinkScoreForNodeIndex(static_cast<short>(nodeId));
     ++index;
     count = linkedList->GetCountOrReleaseSlot28();
   } while (index <= count);
