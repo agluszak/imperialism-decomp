@@ -169,7 +169,6 @@ undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void);
 undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void);
 undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void);
 undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
-undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr);
 
 // Legacy global helper still referenced by thunks/call-through wrappers.
 unsigned int __cdecl GetTGreatPowerClassNamePointer(void) {
@@ -1824,12 +1823,9 @@ void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         localization->FormatOrdinalString(*nameOrdinalCounter, &ordinalText);
         localization->GetString(0x2717, unitType, &typeName);
         CString withSeparator;
-        AssignSharedStringConcatRefAndCStr(reinterpret_cast<int*>(&withSeparator),
-                                           reinterpret_cast<int*>(&ordinalText), " ");
+        AssignSharedStringConcatRefAndCStr(&withSeparator, &ordinalText, " ");
         CString fullName;
-        AssignSharedStringConcatRefAndRef(reinterpret_cast<int*>(&fullName),
-                                          reinterpret_cast<int*>(&withSeparator),
-                                          reinterpret_cast<int*>(&typeName));
+        AssignSharedStringConcatRefAndRef(&fullName, &withSeparator, &typeName);
         composedName.AssignFromPtr(fullName);
         unit->displayName24.AssignFromPtr(composedName);
         unit->nameTag1a = this->unitNameCounter84;
@@ -1844,12 +1840,9 @@ void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
               &flavorName, this->nationSlot);
         } while (flavorName.Length() > 0xf - flavorBase.Length());
         CString withSeparator;
-        AssignSharedStringConcatRefAndCStr(reinterpret_cast<int*>(&withSeparator),
-                                           reinterpret_cast<int*>(&flavorBase), " ");
+        AssignSharedStringConcatRefAndCStr(&withSeparator, &flavorBase, " ");
         CString fullName;
-        AssignSharedStringConcatRefAndRef(reinterpret_cast<int*>(&fullName),
-                                          reinterpret_cast<int*>(&withSeparator),
-                                          reinterpret_cast<int*>(&flavorName));
+        AssignSharedStringConcatRefAndRef(&fullName, &withSeparator, &flavorName);
         flavorName.AssignFromPtr(fullName);
         unit->displayName24.AssignFromPtr(flavorName);
         unit->nameTag1a = this->unitNameCounter84;
@@ -1995,8 +1988,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
         CString prefix("GP#");
         message.AssignFromPtr(prefix);
       }
-      AppendSingleByteToSharedStringFromArg(reinterpret_cast<int*>(&message), 0,
-                                            '0' + static_cast<char>(this->nationSlot));
+      message.AppendSingleByte('0' + static_cast<char>(this->nationSlot));
       message.AssignFromCStr(" is missing capitol site");
       thunk_AssignStringSharedRefAndReturnThis();
       thunk_RunControlStringProviderAndDispatchLocalizedMessage();
@@ -2699,8 +2691,7 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
       CString scratchRef;
       thunk_AssignSharedStringFromIndexedA8EntryNameField();
       scratchRef.AssignConcatCStrAndRef("\n", messageRef);
-      AssignStringSharedFromRef(reinterpret_cast<undefined4>(&scratchRef),
-                                reinterpret_cast<int*>(&messageRef));
+      scratchRef.AssignFromSharedRef(messageRef);
     }
     cursor.Advance();
   }

@@ -8,17 +8,20 @@ struct SharedStringHeader {
   int capacity;
 };
 
-// Free functions that own original addresses (CString globals / operator+ /
-// DDV helpers). The C-style explicit-pointer forwarder shims that used to sit
-// here were unused and have been removed in favour of the CString methods.
+class CString;
+
+// Global operator+ helpers (own the original addresses). These are real
+// __stdcall free functions: the destination is the hidden return slot (passed
+// as the first stack argument, returned in EAX) and the callee cleans all three
+// dwords (RET 0xc).
 undefined** GetSharedEmptyStringRef(void);
-void __cdecl DecrementSharedStringRefCountAndFree(long* ref_count_ptr);
-void AssignSharedStringConcatRefAndRef(int* dst_ref_ptr, int* lhs_ref_ptr, int* rhs_ref_ptr);
-void __stdcall AssignSharedStringConcatRefAndCStr(int* dst_ref_ptr, int* lhs_ref_ptr,
-                                                  const char* rhs_text);
-void AssignSharedStringConcatCStrAndRef(int* dst_ref_ptr, const char* lhs_text, int* rhs_ref_ptr);
-int __fastcall AppendSingleByteToSharedStringFromArg(int* ref_ptr, int unused_edx, int append_byte);
-undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr);
+void __stdcall DecrementSharedStringRefCountAndFree(long* ref_count_ptr);
+CString* __stdcall AssignSharedStringConcatRefAndRef(CString* dst, const CString* lhs,
+                                                     const CString* rhs);
+CString* __stdcall AssignSharedStringConcatRefAndCStr(CString* dst, const CString* lhs,
+                                                      const char* rhs_text);
+CString* __stdcall AssignSharedStringConcatCStrAndRef(CString* dst, const char* lhs_text,
+                                                      const CString* rhs);
 
 class CString {
 public:
@@ -37,12 +40,11 @@ public:
   CString* CopyFromCStr(const char* src_text);
   void ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len, const char* rhs_text);
   void EnsureUniqueSharedStringBuffer();
-  void AssignConcatRefAndRef(const CString& lhs_ref, const CString& rhs_ref);
-  void AssignConcatRefAndCStr(const CString& lhs_ref, const char* rhs_text);
   void AssignConcatCStrAndRef(const char* lhs_text, const CString& rhs_ref);
   void AppendBuffer(int append_len, const char* append_text);
-  undefined4 AssignFromCStr(const char* text);
-  undefined4 AssignFromSharedRef(const CString& src_ref);
+  CString* AppendSingleByte(char append_byte);   // 0x00605cf5 (operator+= one char)
+  CString* AssignFromCStr(const char* text);     // 0x00605cce (operator+= C-string)
+  CString* AssignFromSharedRef(const CString& src_ref); // 0x00605d0a (operator+= CString)
   int EnsureCapacityPreserveLength(int min_capacity);
   int EnsureCapacityAndSetLength(int new_length);
   void SetLengthAndTerminator(int new_length);

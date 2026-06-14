@@ -92,7 +92,7 @@ CString* CString::StringSharedRef_AssignFromPtr(const CString& src_ref) {
 }
 
 // FUNCTION: IMPERIALISM 0x0060584a
-void __cdecl DecrementSharedStringRefCountAndFree(LONG* ref_count_ptr) {
+void __stdcall DecrementSharedStringRefCountAndFree(LONG* ref_count_ptr) {
   if (ref_count_ptr != reinterpret_cast<LONG*>(kSharedEmptyHeaderAddr)) {
     LONG ref_count = InterlockedDecrement(ref_count_ptr);
     if (ref_count < 1) {
@@ -220,25 +220,6 @@ void CString::ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len,
   }
 }
 
-void CString::AssignConcatRefAndRef(const CString& lhs_ref, const CString& rhs_ref) {
-  CString concat_ref;
-
-  concat_ref.ConcatenateBuffers(lhs_ref.Length(), lhs_ref.Text(), rhs_ref.Length(), rhs_ref.Text());
-  AssignFromRef(concat_ref);
-}
-
-void CString::AssignConcatRefAndCStr(const CString& lhs_ref, const char* rhs_text) {
-  CString concat_ref;
-
-  int rhs_length = 0;
-  if (rhs_text != 0) {
-    rhs_length = lstrlenA(rhs_text);
-  }
-
-  concat_ref.ConcatenateBuffers(lhs_ref.Length(), lhs_ref.Text(), rhs_length, rhs_text);
-  AssignFromRef(concat_ref);
-}
-
 void CString::AssignConcatCStrAndRef(const char* lhs_text, const CString& rhs_ref) {
   CString concat_ref;
 
@@ -255,27 +236,44 @@ void CString::AssignConcatCStrAndRef(const char* lhs_text, const CString& rhs_re
 #pragma optimize("", on)
 #endif
 
+// These are the global MFC `operator+` overloads. Each builds the result in an
+// SEH-guarded temporary CString, then hands it to the destination (the hidden
+// return slot) via StringSharedRef_AssignFromPtr. The temporary's destructor
+// runs on the EH path, which is what emits the SEH frame.
+
 // FUNCTION: IMPERIALISM 0x00605b21
-void AssignSharedStringConcatRefAndRef(int* dst_ref_ptr, int* lhs_ref_ptr, int* rhs_ref_ptr) {
-  CString* dst_ref = reinterpret_cast<CString*>(dst_ref_ptr);
-  CString* lhs_ref = reinterpret_cast<CString*>(lhs_ref_ptr);
-  CString* rhs_ref = reinterpret_cast<CString*>(rhs_ref_ptr);
-  dst_ref->AssignConcatRefAndRef(*lhs_ref, *rhs_ref);
+CString* __stdcall AssignSharedStringConcatRefAndRef(CString* dst, const CString* lhs,
+                                                     const CString* rhs) {
+  CString result;
+  result.ConcatenateBuffers(lhs->Length(), lhs->Text(), rhs->Length(), rhs->Text());
+  dst->StringSharedRef_AssignFromPtr(result);
+  return dst;
 }
 
 // FUNCTION: IMPERIALISM 0x00605b87
-void __stdcall AssignSharedStringConcatRefAndCStr(int* dst_ref_ptr, int* lhs_ref_ptr,
-                                                  const char* rhs_text) {
-  CString* dst_ref = reinterpret_cast<CString*>(dst_ref_ptr);
-  CString* lhs_ref = reinterpret_cast<CString*>(lhs_ref_ptr);
-  dst_ref->AssignConcatRefAndCStr(*lhs_ref, rhs_text);
+CString* __stdcall AssignSharedStringConcatRefAndCStr(CString* dst, const CString* lhs,
+                                                      const char* rhs_text) {
+  CString result;
+  int rhs_len = 0;
+  if (rhs_text != 0) {
+    rhs_len = lstrlenA(rhs_text);
+  }
+  result.ConcatenateBuffers(lhs->Length(), lhs->Text(), rhs_len, rhs_text);
+  dst->StringSharedRef_AssignFromPtr(result);
+  return dst;
 }
 
 // FUNCTION: IMPERIALISM 0x00605bfb
-void AssignSharedStringConcatCStrAndRef(int* dst_ref_ptr, const char* lhs_text, int* rhs_ref_ptr) {
-  CString* dst_ref = reinterpret_cast<CString*>(dst_ref_ptr);
-  CString* rhs_ref = reinterpret_cast<CString*>(rhs_ref_ptr);
-  dst_ref->AssignConcatCStrAndRef(lhs_text, *rhs_ref);
+CString* __stdcall AssignSharedStringConcatCStrAndRef(CString* dst, const char* lhs_text,
+                                                      const CString* rhs) {
+  CString result;
+  int lhs_len = 0;
+  if (lhs_text != 0) {
+    lhs_len = lstrlenA(lhs_text);
+  }
+  result.ConcatenateBuffers(lhs_len, lhs_text, rhs->Length(), rhs->Text());
+  dst->StringSharedRef_AssignFromPtr(result);
+  return dst;
 }
 
 #if defined(_MSC_VER)
@@ -307,22 +305,19 @@ void CString::AppendBuffer(int append_len, const char* append_text) {
 }
 
 // FUNCTION: IMPERIALISM 0x00605cce
-undefined4 CString::AssignFromCStr(const char* text) {
+CString* CString::AssignFromCStr(const char* text) {
   int text_len = 0;
   if (text != 0) {
     text_len = lstrlenA(text);
   }
   AppendBuffer(text_len, text);
-  return reinterpret_cast<undefined4>(this);
+  return this;
 }
 
 // FUNCTION: IMPERIALISM 0x00605cf5
-int __fastcall AppendSingleByteToSharedStringFromArg(int* ref_ptr, int, int append_byte) {
-  char append_text[2];
-  append_text[0] = static_cast<char>(append_byte);
-  append_text[1] = '\0';
-  reinterpret_cast<CString*>(ref_ptr)->AppendBuffer(1, append_text);
-  return PtrToInt(ref_ptr);
+CString* CString::AppendSingleByte(char append_byte) {
+  AppendBuffer(1, &append_byte);
+  return this;
 }
 
 #if defined(_MSC_VER)
@@ -330,14 +325,9 @@ int __fastcall AppendSingleByteToSharedStringFromArg(int* ref_ptr, int, int appe
 #endif
 
 // FUNCTION: IMPERIALISM 0x00605d0a
-undefined4 AssignStringSharedFromRef(undefined4 this_ptr, int* src_ref_ptr) {
-  return reinterpret_cast<CString*>(this_ptr)->AssignFromSharedRef(
-      *reinterpret_cast<const CString*>(src_ref_ptr));
-}
-
-undefined4 CString::AssignFromSharedRef(const CString& src_ref) {
+CString* CString::AssignFromSharedRef(const CString& src_ref) {
   AppendBuffer(src_ref.Length(), src_ref.Text());
-  return reinterpret_cast<undefined4>(this);
+  return this;
 }
 
 #if defined(_MSC_VER)
