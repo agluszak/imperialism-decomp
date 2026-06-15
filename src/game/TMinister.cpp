@@ -55,20 +55,19 @@ void __fastcall DeleteForeignMinisterAndReleaseOrderArray(TMinister* minister) {
   }
 }
 
-void TMinister::Call1C() { DeleteForeignMinisterAndReleaseOrderArray(this); }
+void TMinister::Call1C() {
+  DeleteForeignMinisterAndReleaseOrderArray(this);
+}
 
-void TMinister::Serialize(CArchive* ar) { (void)ar; }
+void TMinister::Serialize(CArchive* ar) {
+  (void)ar;
+}
 void TMinister::AssertValidOrSlot0c() {}
-void TMinister::DumpOrSlot10(int unused) { (void)unused; }
+void TMinister::DumpOrSlot10(int unused) {
+  (void)unused;
+}
 void TMinister::InvokeObjectSlot20() {}
 void TMinister::CopyPayloadSlot24() {}
-void TMinister::MinisterSlot0A() {}
-void TMinister::MinisterSlot0B() {}
-void TMinister::MinisterSlot0C() {}
-void TMinister::MinisterSlot0D() {}
-void TMinister::MinisterSlot0E() {}
-void TMinister::MinisterSlot0F() {}
-void TMinister::MinisterSlot10() {}
 void TMinister::NotifySlot44(void* receiver) {
   NoOpForeignMinisterUtilityStub(reinterpret_cast<int>(receiver));
 }
@@ -80,7 +79,9 @@ void TMinister::Call58() {}
 void TMinister::MinisterSlot17() {}
 void TMinister::MinisterSlot18() {}
 void TMinister::MinisterSlot19() {}
-void TMinister::MinisterSlot1A(short arg) { (void)arg; }
+void TMinister::MinisterSlot1A(short arg) {
+  (void)arg;
+}
 void TMinister::MinisterSlot1B() {}
 void TMinister::MinisterSlot1C() {}
 void TMinister::MinisterSlot1D() {}
@@ -88,7 +89,9 @@ void TMinister::MinisterSlot1E() {}
 void TMinister::MinisterSlot1F() {}
 void TMinister::Call80() {}
 void TMinister::MinisterSlot21() {}
-char TMinister::MinisterSlot22() { return 0; }
+char TMinister::MinisterSlot22() {
+  return 0;
+}
 void TMinister::Call8C() {}
 void TMinister::Call90() {}
 void TMinister::Call94() {}
@@ -120,3 +123,27 @@ void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {
   TMinister::Serialize(reinterpret_cast<CArchive*>(archive));
   archive->WriteBytesSlot78(&this->skillIndexC, 2);
 }
+
+// Base-vtable slots 0x28-0x40. These were autogen stubs (slots left empty); the orig
+// TMinister vtable points at these addresses, so they belong to the base class' own
+// virtual methods. Bodies are honest placeholders pending full reconstruction.
+// FUNCTION: IMPERIALISM 0x0052ed20
+void TMinister::MinisterSlot0A() {}
+
+// FUNCTION: IMPERIALISM 0x0052ed50
+void TMinister::MinisterSlot0B() {}
+
+// FUNCTION: IMPERIALISM 0x0052ee20
+void TMinister::MinisterSlot0C() {}
+
+// FUNCTION: IMPERIALISM 0x0052eea0
+void TMinister::MinisterSlot0D() {}
+
+// FUNCTION: IMPERIALISM 0x0052ef20
+void TMinister::MinisterSlot0F() {}
+
+// FUNCTION: IMPERIALISM 0x0052ef50
+void TMinister::MinisterSlot10() {}
+
+// FUNCTION: IMPERIALISM 0x0052ef80
+void TMinister::MinisterSlot0E() {}

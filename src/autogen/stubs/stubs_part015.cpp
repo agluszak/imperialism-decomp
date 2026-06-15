@@ -2539,62 +2539,6 @@ undefined4 WrapperFor_ftol_At0052eb00(void)
   return 0;
 }
 
-// ghidra_name DispatchNationStateEventCode10
-// ghidra_proto undefined DispatchNationStateEventCode10()
-// FUNCTION: IMPERIALISM 0x0052ed20
-undefined4 DispatchNationStateEventCode10(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildTerrainPreferenceEntriesAndAssignRanks
-// ghidra_proto undefined RebuildTerrainPreferenceEntriesAndAssignRanks()
-// FUNCTION: IMPERIALISM 0x0052ed50
-undefined4 RebuildTerrainPreferenceEntriesAndAssignRanks(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::MapTerrainTypeToPreferenceRank
-// ghidra_proto undefined MapTerrainTypeToPreferenceRank()
-// FUNCTION: IMPERIALISM 0x0052ee20
-undefined4 MapTerrainTypeToPreferenceRank(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::MapPreferenceRankToTerrainType
-// ghidra_proto undefined MapPreferenceRankToTerrainType()
-// FUNCTION: IMPERIALISM 0x0052eea0
-undefined4 MapPreferenceRankToTerrainType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetPreferenceGroupRankByEntryIndex
-// ghidra_proto undefined GetPreferenceGroupRankByEntryIndex()
-// FUNCTION: IMPERIALISM 0x0052ef20
-undefined4 GetPreferenceGroupRankByEntryIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name GetPreferenceScoreByEntryIndex
-// ghidra_proto undefined GetPreferenceScoreByEntryIndex()
-// FUNCTION: IMPERIALISM 0x0052ef50
-undefined4 GetPreferenceScoreByEntryIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name GetPreferenceTerrainTypeByEntryIndex
-// ghidra_proto undefined GetPreferenceTerrainTypeByEntryIndex()
-// FUNCTION: IMPERIALISM 0x0052ef80
-undefined4 GetPreferenceTerrainTypeByEntryIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name TForeignMinister::GetTForeignMinisterClassNamePointer
 // ghidra_proto undefined GetTForeignMinisterClassNamePointer()
 // FUNCTION: IMPERIALISM 0x0052f050

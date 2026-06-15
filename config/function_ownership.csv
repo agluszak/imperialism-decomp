@@ -775,6 +775,13 @@ address|target_cpp|ownership|note
 52ec80|src/game/TMinister.cpp|manual|marker_sync
 52ecc0|src/game/TMinister.cpp|manual|marker_sync
 52ecf0|src/game/TMinister.cpp|manual|marker_sync
+52ed20|src/game/TMinister.cpp|manual|marker_sync
+52ed50|src/game/TMinister.cpp|manual|marker_sync
+52ee20|src/game/TMinister.cpp|manual|marker_sync
+52eea0|src/game/TMinister.cpp|manual|marker_sync
+52ef20|src/game/TMinister.cpp|manual|marker_sync
+52ef50|src/game/TMinister.cpp|manual|marker_sync
+52ef80|src/game/TMinister.cpp|manual|marker_sync
 52efb0|src/game/noop_slots.cpp|manual|marker_sync
 52f070|src/game/TForeignMinister.cpp|manual|marker_sync
 52f130|src/game/TForeignMinister.cpp|manual|marker_sync

@@ -4182,3 +4182,35 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
     report one mismatch each, but the concrete stream-specific slots now pair. Remaining
     failures are structural: shared prefix slots `0x08`, `0x14`, `0x18`, `0x20`, `0x24`,
     plus tail/overread entries around `0xa8+` (and `0x70`/`0x78` for counting/handle).
+
+## 2026-06-15 — Minister family vtable: base slots 0x28–0x40 promoted
+
+- Goal: Start the minister vtable family (`TMinister` and the foreign/defense/interior
+  subclasses) after the stream batch.
+- Findings (ground truth via `just ghidra-vtable-dump`):
+  - The orig `TMinister` vtable `0x659c00` is only **22 slots**: slots `0x00`–`0x44`
+    populated (18), slots `0x48`–`0x54` NULL, then `TMinisterBaseOrderArray`'s vtable
+    begins at `0x659c58`.
+  - Derived ministers have their **own, differently-sized** vtables with extra slots:
+    `TForeignMinister` (`0x659cb0`) = 40 slots (0x28–0x2f NULL tail), `TDefenseMinister`
+    (`0x6549b0`) = 32 slots (internal NULLs 0x64–0x74), `TCityInteriorMinister`
+    (`0x6508a8`) extends past slot 0x44 with real entries through 0xb0+.
+  - This means the current source over-declares ~22 extra virtuals on the BASE
+    `TMinister` (slots 0x48–0xac) to make derived overrides land at the right slot
+    indices. That hoisting is the repeated structural cause of the family-wide
+    "recomp vtable larger than orig" warnings; properly fixing it requires moving the
+    per-derived virtual extensions down into each subclass and reproducing the NULL
+    base slots (abstract). Left for a dedicated reconstruction pass (risky/high-effort).
+- Change made (safe, verifiable):
+  - Promoted 7 real base-vtable functions that were sitting as empty autogen stubs into
+    `TMinister`'s own virtual methods (markers moved onto `MinisterSlot0A`,`0B`,`0C`,
+    `0D`,`0E`,`0F`,`10` at `0x52ed20`,`0x52ed50`,`0x52ee20`,`0x52eea0`,`0x52ef80`,
+    `0x52ef20`,`0x52ef50`). No manual callers — only autogen references.
+- Verification:
+  - `just sync-ownership`/`regen-stubs`/`build`/`detect` clean; `just gates` exit 0;
+    format-check clean.
+  - `just vtable TMinister`: slots `0x28`–`0x40` now PAIR (were orig-only). Remaining
+    `TMinister` mismatches: slots `0x08`/`0x0c`/`0x10` (orig reuses
+    `TEventHandler::Serialize`/`CObject` slots — inheritance/thunk), slot `0x44`
+    (`NotifySlot44` vs `NoOpForeignMinisterUtilityStub` owned in `noop_slots.cpp`), and
+    the oversized `0x48`+ tail (the base-hoisting issue above).
