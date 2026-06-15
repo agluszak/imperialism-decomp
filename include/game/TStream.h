@@ -16,6 +16,7 @@
 // VTABLE: IMPERIALISM 0x00649140
 class TStream : public CObject {
 public:
+  virtual ~TStream();
   virtual void streamSlot14();                           // 5 (0x14)  TODO: shared-NoOp default
   virtual void streamSlot18();                           // 6 (0x18)  TODO
   virtual void streamSlot1c();                           // 7 (0x1c)  TODO: 0x00488ab0

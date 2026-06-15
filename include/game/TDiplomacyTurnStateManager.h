@@ -122,7 +122,7 @@ struct TDiplomacyTurnStateManager {
   void thunk_ApplyDiplomacyInterNationStatesForTurn();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot);
 protected:
-  ~TDiplomacyTurnStateManager() {}
+  ~TDiplomacyTurnStateManager();
 };
 
 #include "game/diplomacy_globals.h"
