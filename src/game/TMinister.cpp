@@ -43,20 +43,15 @@ void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
   this->field_8 = new (storage) TMinisterBaseOrderArray();
 }
 
+// Slot 7 (0x1c): release the order array then delete self. This is the real base
+// virtual body at 0x52ec80 (was a __fastcall free wrapper); inherited by every minister.
 // FUNCTION: IMPERIALISM 0x0052ec80
-void __fastcall DeleteForeignMinisterAndReleaseOrderArray(TMinister* minister) {
-  TIndexAndRankList* orderArray = minister->field_8;
-  if (orderArray != 0) {
-    orderArray->ReleaseSlot24();
-  }
-  minister->field_8 = 0;
-  if (minister != 0) {
-    delete minister;
-  }
-}
-
 void TMinister::Call1C() {
-  DeleteForeignMinisterAndReleaseOrderArray(this);
+  if (this->field_8 != 0) {
+    this->field_8->ReleaseSlot24();
+  }
+  this->field_8 = 0;
+  delete this;
 }
 
 void TMinister::Serialize(CArchive* ar) {
