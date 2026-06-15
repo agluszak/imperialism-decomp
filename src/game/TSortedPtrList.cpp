@@ -15,16 +15,6 @@ TSortedPtrList::TSortedPtrList() : TIndexAndRankList() {}
 // FUNCTION: IMPERIALISM TODO
 TSortedPtrList::~TSortedPtrList() {}
 
-// FUNCTION: IMPERIALISM 0x004883e0
-CRuntimeClass* TSortedPtrList::GetRuntimeClass() {
-  return &g_pClassDescTSortedPtrList;
-}
-
-// FUNCTION: IMPERIALISM 0x00488400
-TSortedPtrList* TSortedPtrList::ConstructTSortedPtrListBaseState() {
-  return new TSortedPtrList();
-}
-
 // FUNCTION: IMPERIALISM 0x00488110
 void TSortedPtrList::ResetPtrListAndShrinkCapacity() {
   this->ResetPtrListRecordsSlot1C();
@@ -41,4 +31,14 @@ void* __fastcall GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int, int o
 
 void* TSortedPtrList::GetPtrListEntryByOneBasedIndex(int oneBasedIndex) {
   return ::GetPtrListEntryByOneBasedIndex(this, 0, oneBasedIndex);
+}
+
+// FUNCTION: IMPERIALISM 0x004883e0
+CRuntimeClass* TSortedPtrList::GetRuntimeClass() {
+  return &g_pClassDescTSortedPtrList;
+}
+
+// FUNCTION: IMPERIALISM 0x00488400
+TSortedPtrList* TSortedPtrList::ConstructTSortedPtrListBaseState() {
+  return new TSortedPtrList();
 }

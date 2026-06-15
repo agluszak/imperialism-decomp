@@ -10,6 +10,7 @@
 // ported in a follow-up). These make TStream concrete so the typed accessors
 // below — and the concrete stream subclasses — can be instantiated.
 // ---------------------------------------------------------------------------
+TStream::~TStream() {}
 void TStream::streamSlot14() {} // TODO: shared-NoOp default
 void TStream::streamSlot18() {} // TODO
 void TStream::streamSlot1c() {} // TODO: 0x00488ab0

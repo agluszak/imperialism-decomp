@@ -20,41 +20,8 @@ undefined4 thunk_InvalidateCityDialogRectRegion(void);
 #pragma optimize("y", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00596100
-void TMapDialog::RenderWrappedMapQuickDrawOverlayFromStridedRecords(int overlayRecord) {
-  QuickDrawSurfaceGuard surface;
-
-  short tileRow = 0;
-  unsigned short tileCol = 0;
-  short regionBand = 0;
-  ComputeWrappedMapCellAndRegionBandFromScreenCoord(overlayRecord, &tileRow, &tileCol, &regionBand);
-  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
-      &tileRow, reinterpret_cast<short*>(&tileCol));
-
-  int stridedRecord = reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)(
-      (int)tileRow, (int)tileCol);
-  if (*reinterpret_cast<int*>(overlayRecord + 0x24) == 1) {
-    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
-    return;
-  }
-
-  if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
-    InvokeDialogHooks1D8ThenE4(stridedRecord, regionBand);
-    return;
-  }
-
-  if (((unsigned short)GetAsyncKeyState(0x10) & 0x8000) != 0) {
-    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
-    return;
-  }
-
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x24) < 2) {
-    HandleMapClickByInteractionModeFromStridedRecord(stridedRecord, regionBand);
-    return;
-  }
-
-  DispatchOverlayEvent78RootHighFromStridedRecord(stridedRecord, regionBand);
-}
+// FUNCTION: IMPERIALISM 0x00519e00
+void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {}
 
 // FUNCTION: IMPERIALISM 0x0051a990
 void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
@@ -100,6 +67,27 @@ void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRe
     return;
   }
   *outBand = static_cast<short>((0x1f < bandRow) + 3);
+}
+
+// FUNCTION: IMPERIALISM 0x0051ac40
+void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
+  int tileRowOutput[5] = {0};
+  reinterpret_cast<void(__fastcall*)(TMapDialog*, int, int, int*, int*)>(
+      thunk_SplitTileIndexToRowAndColumn)(this, 0, arg1, reinterpret_cast<int*>(&arg1),
+                                         reinterpret_cast<int*>(&tileRowOutput[0]));
+  ForwardMapDialogTileCoordUpdateToDerivedHandler(
+      tileRowOutput[0] - static_cast<int>(g_wMapDialogTileRowMarker) / 2, arg1 - 3);
+  int invalidateRect[3] = {0, 0x1ff, 0x1bf};
+  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
+      reinterpret_cast<int>(&invalidateRect[0]), 1);
+}
+
+// FUNCTION: IMPERIALISM 0x0051adc0
+void TMapDialog::ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY) {
+  typedef void(__fastcall * TileCoordHandlerFn)(TView* self, int unusedEdx, int x, int y, int mode);
+  TView* view = this;
+  int* vtable = *reinterpret_cast<int**>(view);
+  reinterpret_cast<TileCoordHandlerFn>(vtable[0x28c / 4])(view, 0, tileX, tileY, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00523640
@@ -177,9 +165,6 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
 }
 
-// FUNCTION: IMPERIALISM 0x00519e00
-void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {}
-
 // FUNCTION: IMPERIALISM 0x00525730
 void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
                                                                      int arg4, int arg5) {
@@ -188,23 +173,38 @@ void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, i
       reinterpret_cast<TMapDialog*>(arg1), 0, arg1, arg2, arg3, arg4, arg5);
 }
 
-// FUNCTION: IMPERIALISM 0x0051adc0
-void TMapDialog::ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY) {
-  typedef void(__fastcall * TileCoordHandlerFn)(TView* self, int unusedEdx, int x, int y, int mode);
-  TView* view = this;
-  int* vtable = *reinterpret_cast<int**>(view);
-  reinterpret_cast<TileCoordHandlerFn>(vtable[0x28c / 4])(view, 0, tileX, tileY, 0);
-}
+// FUNCTION: IMPERIALISM 0x00596100
+void TMapDialog::RenderWrappedMapQuickDrawOverlayFromStridedRecords(int overlayRecord) {
+  QuickDrawSurfaceGuard surface;
 
-// FUNCTION: IMPERIALISM 0x0051ac40
-void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
-  int tileRowOutput[5] = {0};
-  reinterpret_cast<void(__fastcall*)(TMapDialog*, int, int, int*, int*)>(
-      thunk_SplitTileIndexToRowAndColumn)(this, 0, arg1, reinterpret_cast<int*>(&arg1),
-                                         reinterpret_cast<int*>(&tileRowOutput[0]));
-  ForwardMapDialogTileCoordUpdateToDerivedHandler(
-      tileRowOutput[0] - static_cast<int>(g_wMapDialogTileRowMarker) / 2, arg1 - 3);
-  int invalidateRect[3] = {0, 0x1ff, 0x1bf};
-  reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-      reinterpret_cast<int>(&invalidateRect[0]), 1);
+  short tileRow = 0;
+  unsigned short tileCol = 0;
+  short regionBand = 0;
+  ComputeWrappedMapCellAndRegionBandFromScreenCoord(overlayRecord, &tileRow, &tileCol, &regionBand);
+  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
+      &tileRow, reinterpret_cast<short*>(&tileCol));
+
+  int stridedRecord = reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)(
+      (int)tileRow, (int)tileCol);
+  if (*reinterpret_cast<int*>(overlayRecord + 0x24) == 1) {
+    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
+    return;
+  }
+
+  if (((unsigned short)GetAsyncKeyState(0x11) & 0x8000) != 0) {
+    InvokeDialogHooks1D8ThenE4(stridedRecord, regionBand);
+    return;
+  }
+
+  if (((unsigned short)GetAsyncKeyState(0x10) & 0x8000) != 0) {
+    DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
+    return;
+  }
+
+  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalUiRootController) + 0x24) < 2) {
+    HandleMapClickByInteractionModeFromStridedRecord(stridedRecord, regionBand);
+    return;
+  }
+
+  DispatchOverlayEvent78RootHighFromStridedRecord(stridedRecord, regionBand);
 }

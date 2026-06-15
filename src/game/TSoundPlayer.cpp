@@ -18,11 +18,7 @@ extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 undefined4 InitializeUiResourceEntryBaseHeaderDefaults(void);
-
-// FUNCTION: IMPERIALISM 0x00593370
-TSoundPlayer* __fastcall ConstructTSoundPlayerBaseState(TSoundPlayer* storage) {
-  return new (storage) TSoundPlayer();
-}
+void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
 
 // FUNCTION: IMPERIALISM 0x005932b0
 TSoundPlayer* CreateTSoundPlayerInstance(void) {
@@ -57,23 +53,9 @@ void TSoundPlayer::SoundPlayerSlot25_Provisional() {}
 void TSoundPlayer::SoundPlayerSlot28_Provisional() {}
 void TSoundPlayer::SoundPlayerSlot29_Provisional() {}
 
-// FUNCTION: IMPERIALISM 0x005e4f60
-unsigned char TSoundPlayer::ReturnConstantTrue_SoundPredicate() {
-  return 1;
-}
-
-// FUNCTION: IMPERIALISM 0x005e4fb0
-unsigned char TSoundPlayer::ReturnConstantFalse_SoundPredicate(int a, int b) {
-  (void)a;
-  (void)b;
-  return 0;
-}
-
-// Partial teardown writes the runtime-object base vptr, symmetric with header-only
-// construction (InitializeUiResourceEntryBaseHeaderDefaults, not ~TEventHandler()).
-// FUNCTION: IMPERIALISM 0x005933e0
-void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
-  *reinterpret_cast<void**>(player) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+// FUNCTION: IMPERIALISM 0x00593370
+TSoundPlayer* __fastcall ConstructTSoundPlayerBaseState(TSoundPlayer* storage) {
+  return new (storage) TSoundPlayer();
 }
 
 // FUNCTION: IMPERIALISM 0x005933b0
@@ -90,3 +72,22 @@ TSoundPlayer* __fastcall DestructTSoundPlayerAndMaybeFree(TSoundPlayer* player, 
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// Partial teardown writes the runtime-object base vptr, symmetric with header-only
+// construction (InitializeUiResourceEntryBaseHeaderDefaults, not ~TEventHandler()).
+// FUNCTION: IMPERIALISM 0x005933e0
+void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
+  *reinterpret_cast<void**>(player) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+}
+
+// FUNCTION: IMPERIALISM 0x005e4f60
+unsigned char TSoundPlayer::ReturnConstantTrue_SoundPredicate() {
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x005e4fb0
+unsigned char TSoundPlayer::ReturnConstantFalse_SoundPredicate(int a, int b) {
+  (void)a;
+  (void)b;
+  return 0;
+}

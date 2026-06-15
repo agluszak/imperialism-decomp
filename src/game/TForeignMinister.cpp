@@ -55,9 +55,6 @@ void TForeignMinister::InitializeStateAndCounters() {
   *reinterpret_cast<unsigned int*>(raw + 0x44) = 0xfff6fff6;
 }
 
-// FUNCTION: IMPERIALISM 0x00531110
-void TForeignMinister::Call80() {}
-
 // FUNCTION: IMPERIALISM 0x0052f7b0
 void TForeignMinister::Call8C() {
   char* raw = reinterpret_cast<char*>(this);
@@ -236,3 +233,6 @@ void TForeignMinister::RecomputeOrderStateSlot9C() {
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// FUNCTION: IMPERIALISM 0x00531110
+void TForeignMinister::Call80() {}

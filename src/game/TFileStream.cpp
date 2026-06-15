@@ -32,6 +32,21 @@ static __inline CArchive* BackingArchive(void* backingArchiveOrStream) {
   return *reinterpret_cast<CArchive**>(reinterpret_cast<char*>(backingArchiveOrStream) + 4);
 }
 
+// FUNCTION: IMPERIALISM 0x00489030
+void TFileStream::WriteCString(const CString& text) {
+  int length = reinterpret_cast<SharedStringHeader*>(text.data_ptr - sizeof(SharedStringHeader))
+                   ->text_length;
+  this->WriteCountSlot88(length);
+  this->WriteBytesSlot78(reinterpret_cast<void*>(text.data_ptr), length);
+}
+
+// FUNCTION: IMPERIALISM 0x00489070
+void TFileStream::WriteLengthPrefixedCString(char* text) {
+  unsigned int length = strlen(text);
+  this->WriteCountSlot88(length);
+  this->WriteBytesSlot78(text, length);
+}
+
 // FUNCTION: IMPERIALISM 0x004890f0
 CRuntimeClass* TFileStream::GetRuntimeClass() {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTFileStream);
@@ -42,14 +57,14 @@ TFileStream::TFileStream() {
   backingArchiveOrStream = 0;
 }
 
+// Destructors are compiler-generated (implicit) from real TStream inheritance.
+// SYNTHETIC: IMPERIALISM 0x00489130
+// TFileStream::`scalar deleting destructor'
+
 // FUNCTION: IMPERIALISM 0x00489160
 void TFileStream::SetBackingArchive(void* backingArchive) {
   backingArchiveOrStream = backingArchive;
 }
-
-// Destructors are compiler-generated (implicit) from real TStream inheritance.
-// SYNTHETIC: IMPERIALISM 0x00489130
-// TFileStream::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00489220
 int TFileStream::ReadBytesFromBackingArchive(void* destination, unsigned int requestedCount) {
@@ -78,19 +93,4 @@ char TFileStream::ReadObjectFromBackingArchive(void* outObject) {
 // FUNCTION: IMPERIALISM 0x00489330
 void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
   BackingArchive(this->backingArchiveOrStream)->WriteObject(objectRef);
-}
-
-// FUNCTION: IMPERIALISM 0x00489070
-void TFileStream::WriteLengthPrefixedCString(char* text) {
-  unsigned int length = strlen(text);
-  this->WriteCountSlot88(length);
-  this->WriteBytesSlot78(text, length);
-}
-
-// FUNCTION: IMPERIALISM 0x00489030
-void TFileStream::WriteCString(const CString& text) {
-  int length = reinterpret_cast<SharedStringHeader*>(text.data_ptr - sizeof(SharedStringHeader))
-                   ->text_length;
-  this->WriteCountSlot88(length);
-  this->WriteBytesSlot78(reinterpret_cast<void*>(text.data_ptr), length);
 }

@@ -14,6 +14,17 @@ undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void);
 
 extern "C" CRuntimeClass PTR_s_TApplication_00648af8;
 
+// FUNCTION: IMPERIALISM 0x00486680
+void* __cdecl CreateTApplicationInstance(void) {
+  ApplicationUiRootController* controller =
+      reinterpret_cast<ApplicationUiRootController*>(AllocateWithFallbackHandler(0x48));
+  if (controller == 0) {
+    return 0;
+  }
+  new (controller) ApplicationUiRootController();
+  return controller;
+}
+
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
 // FUNCTION: IMPERIALISM 0x00486740
 CRuntimeClass* ApplicationUiRootController::GetRuntimeClass() {
@@ -153,15 +164,4 @@ void ApplicationUiRootController::TickEachTrackedEntry(int arg) {
         node[2], 0, arg);
     node = next;
   }
-}
-
-// FUNCTION: IMPERIALISM 0x00486680
-void* __cdecl CreateTApplicationInstance(void) {
-  ApplicationUiRootController* controller =
-      reinterpret_cast<ApplicationUiRootController*>(AllocateWithFallbackHandler(0x48));
-  if (controller == 0) {
-    return 0;
-  }
-  new (controller) ApplicationUiRootController();
-  return controller;
 }

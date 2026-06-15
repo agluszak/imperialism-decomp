@@ -35,6 +35,8 @@ static short SignedDiv10(int value) {
                  (short)(((__int64)value * 0x66666667) >> 0x3f));
 }
 
+static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex);
+static short* NavyZoneOrderDescriptorStockCapPtr(short zoneIndex);
 
 // FUNCTION: IMPERIALISM 0x004e0460
 int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType) {
@@ -90,76 +92,6 @@ void TShip::ConstructAndLinkNavyPrimaryOrderNode() {
 #pragma optimize("", on)
 #endif
 
-
-// FUNCTION: IMPERIALISM 0x005505c0
-void* GetNavyPrimaryOrderListHead(void) {
-  return g_pNavyPrimaryOrderListHead;
-}
-
-
-// FUNCTION: IMPERIALISM 0x00550970
-short GetIndustryActionCostWeightByResourceType(short resourceType) {
-  return *reinterpret_cast<short*>(&g_industryActionCostWeightResCode10 + resourceType * 2);
-}
-
-// FUNCTION: IMPERIALISM 0x00550e70
-short GetResourceDescriptorWeightWord0ByType(short resourceType) {
-  return *reinterpret_cast<short*>(&g_ResourceDescriptorWeightWord0Base0069811c +
-                                   resourceType * 0x24);
-}
-
-// FUNCTION: IMPERIALISM 0x00550b60
-int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
-  int resourceType = (int)node->resourceType04;
-  short quantityField = node->field30;
-  int quantityTerm = (int)SignedMod100(quantityField);
-  int navyTerm = quantityTerm + 5 + g_Navy_Order_Priority_LookupTable_00698118[resourceType * 9] * 10;
-  int resolveTerm =
-      quantityTerm + 5 + g_Resolve_Map_Order_LookupTable_00698108[resourceType * 9] * 10;
-  short stockAt1c = node->stockLevel1c;
-  return (SignedDiv10(resolveTerm) +
-          (SignedDiv10(navyTerm) + g_Calculate_Mission_Order_LookupTable_0069810C[resourceType * 9]) *
-              100 +
-          (int)stockAt1c) /
-         (int)*(short*)(reinterpret_cast<char*>(&g_Task_Force_Order_LookupTable_00698110) +
-                        resourceType * 0x24);
-}
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
-static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex) {
-  return reinterpret_cast<int*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
-                                  static_cast<int>(zoneIndex) * 0x24 + 0x10);
-}
-
-static short* NavyZoneOrderDescriptorStockCapPtr(short zoneIndex) {
-  return reinterpret_cast<short*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
-                                    static_cast<int>(zoneIndex) * 0x24 + 4);
-}
-
-// FUNCTION: IMPERIALISM 0x0054fbf0
-void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
-  do {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        g_apTerrainTypeDescriptorTable[shipNode->resourceType04], &shipNode->displayName18);
-    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
-         existing = existing->nextOlder24) {
-      if (existing == shipNode) {
-        continue;
-      }
-      if (CompareAnsiStringsWithMbcsAwareness(
-              reinterpret_cast<unsigned char*>(existing->displayName18.data_ptr),
-              reinterpret_cast<unsigned char*>(shipNode->displayName18.data_ptr)) == 0) {
-        goto retry;
-      }
-    }
-    return;
-  retry:;
-  } while (1);
-}
-
 // FUNCTION: IMPERIALISM 0x0054f8e0
 TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* portZoneContext,
                                                       int nationSlot, char* displayNameOverride) {
@@ -214,3 +146,73 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// FUNCTION: IMPERIALISM 0x0054fbf0
+void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
+  do {
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
+        g_apTerrainTypeDescriptorTable[shipNode->resourceType04], &shipNode->displayName18);
+    for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
+         existing = existing->nextOlder24) {
+      if (existing == shipNode) {
+        continue;
+      }
+      if (CompareAnsiStringsWithMbcsAwareness(
+              reinterpret_cast<unsigned char*>(existing->displayName18.data_ptr),
+              reinterpret_cast<unsigned char*>(shipNode->displayName18.data_ptr)) == 0) {
+        goto retry;
+      }
+    }
+    return;
+  retry:;
+  } while (1);
+}
+
+
+// FUNCTION: IMPERIALISM 0x005505c0
+void* GetNavyPrimaryOrderListHead(void) {
+  return g_pNavyPrimaryOrderListHead;
+}
+
+
+// FUNCTION: IMPERIALISM 0x00550970
+short GetIndustryActionCostWeightByResourceType(short resourceType) {
+  return *reinterpret_cast<short*>(&g_industryActionCostWeightResCode10 + resourceType * 2);
+}
+
+// FUNCTION: IMPERIALISM 0x00550b60
+int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
+  int resourceType = (int)node->resourceType04;
+  short quantityField = node->field30;
+  int quantityTerm = (int)SignedMod100(quantityField);
+  int navyTerm = quantityTerm + 5 + g_Navy_Order_Priority_LookupTable_00698118[resourceType * 9] * 10;
+  int resolveTerm =
+      quantityTerm + 5 + g_Resolve_Map_Order_LookupTable_00698108[resourceType * 9] * 10;
+  short stockAt1c = node->stockLevel1c;
+  return (SignedDiv10(resolveTerm) +
+          (SignedDiv10(navyTerm) + g_Calculate_Mission_Order_LookupTable_0069810C[resourceType * 9]) *
+              100 +
+          (int)stockAt1c) /
+         (int)*(short*)(reinterpret_cast<char*>(&g_Task_Force_Order_LookupTable_00698110) +
+                        resourceType * 0x24);
+}
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
+static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex) {
+  return reinterpret_cast<int*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
+                                  static_cast<int>(zoneIndex) * 0x24 + 0x10);
+}
+
+static short* NavyZoneOrderDescriptorStockCapPtr(short zoneIndex) {
+  return reinterpret_cast<short*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
+                                    static_cast<int>(zoneIndex) * 0x24 + 4);
+}
+
+// FUNCTION: IMPERIALISM 0x00550e70
+short GetResourceDescriptorWeightWord0ByType(short resourceType) {
+  return *reinterpret_cast<short*>(&g_ResourceDescriptorWeightWord0Base0069811c +
+                                   resourceType * 0x24);
+}

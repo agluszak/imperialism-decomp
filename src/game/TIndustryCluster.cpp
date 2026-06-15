@@ -64,8 +64,8 @@ TIndustryCluster::TIndustryCluster()
     : TUberCluster(), selectedMetricControl(0), selectedMetricValue(0), selectedMetricStep(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00588b20
-
 // TIndustryCluster::`scalar deleting destructor'
+
 
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControls(int styleSeed) {

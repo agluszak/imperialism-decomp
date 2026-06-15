@@ -23,6 +23,135 @@ protected:
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00550670
+int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* candidate,
+                                                                 int compareAttachedFlag) {
+  if ((char)compareAttachedFlag != '\0') {
+    if (attachment != 0) {
+      return reinterpret_cast<int>(candidate);
+    }
+    if (candidate == 0) {
+      return reinterpret_cast<int>(this);
+    }
+    if (candidate->attached_entity != 0) {
+      return reinterpret_cast<int>(this);
+    }
+  }
+  if (candidate == 0) {
+    return reinterpret_cast<int>(this);
+  }
+  if (this != 0) {
+    int selfAttachment = attachment;
+    int candidateAttachment = candidate->attached_entity;
+    bool preferSelf = false;
+    if (selfAttachment == 0) {
+      preferSelf = false;
+    } else if (candidateAttachment == 0) {
+      preferSelf = true;
+    } else {
+      preferSelf = *reinterpret_cast<short*>(candidateAttachment + 0x10) <
+                   *reinterpret_cast<short*>(selfAttachment + 0x10);
+    }
+    if (preferSelf) {
+      return reinterpret_cast<int>(this);
+    }
+
+    bool preferCandidate = false;
+    if (candidateAttachment == 0) {
+      preferCandidate = false;
+    } else if (selfAttachment == 0) {
+      preferCandidate = true;
+    } else {
+      preferCandidate = *reinterpret_cast<short*>(selfAttachment + 0x10) <
+                        *reinterpret_cast<short*>(candidateAttachment + 0x10);
+    }
+    if (!preferCandidate) {
+      if (order_type != candidate->order_type) {
+        if (candidate->order_type <= order_type) {
+          return reinterpret_cast<int>(this);
+        }
+        return reinterpret_cast<int>(candidate);
+      }
+      short selfBucket = (order_strength / 100 + (order_strength >> 15)) -
+                         static_cast<short>((static_cast<__int64>(static_cast<int>(order_strength)) *
+                                             0x51eb851f) >>
+                                            63);
+      short candidateBucket =
+          (candidate->tiebreak_strength / 100 + (candidate->tiebreak_strength >> 15)) -
+          static_cast<short>((static_cast<__int64>(static_cast<int>(candidate->tiebreak_strength)) *
+                              0x51eb851f) >>
+                             63);
+      if (selfBucket != candidateBucket) {
+        if (candidateBucket <= selfBucket) {
+          return reinterpret_cast<int>(this);
+        }
+        return reinterpret_cast<int>(candidate);
+      }
+      if (candidate->required_count < required_count) {
+        return reinterpret_cast<int>(this);
+      }
+    }
+  }
+  return reinterpret_cast<int>(candidate);
+}
+
+// FUNCTION: IMPERIALISM 0x00550f80
+void TMapOrderEntry::DecrementRequiredCount(short decrement) {
+  required_count = static_cast<s16>(required_count - decrement);
+}
+
+// FUNCTION: IMPERIALISM 0x00550ff0
+void TMapOrderEntry::RemoveNode(int self) {
+  TMapOrderEntryOwnerContext* owner_ctx = owner;
+  if (owner_ctx != 0) {
+    TMapOrderChildLinkNode* list_head = owner_ctx->head;
+
+    if ((list_head != 0) && (this != reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr))) {
+      list_head = FindMissionOrderNodeById(list_head->next, reinterpret_cast<int>(this));
+    }
+
+    if (list_head != 0) {
+      list_head = owner_ctx->head;
+      if (list_head != 0) {
+        if (this == reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr)) {
+          list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
+        } else {
+          RemoveLinkedOrderNodeByValueRecursive(list_head->next, reinterpret_cast<int>(this));
+        }
+      }
+
+      owner_ctx->head = list_head;
+
+      const short* order_type_to_bucket_offset =
+          reinterpret_cast<const short*>(kOrderTypeToBucketOffsetTableAddr + order_type * 0x24);
+      short bucket_offset = *order_type_to_bucket_offset;
+      short* bucket_counter = reinterpret_cast<short*>(
+          reinterpret_cast<char*>(owner_ctx) + kOwnerBucketCountsBaseOffset + bucket_offset * 2);
+      *bucket_counter = *bucket_counter - 1;
+    }
+
+    if (this == reinterpret_cast<TMapOrderEntry*>(owner_ctx->active_node)) {
+      list_head = owner_ctx->head;
+      owner_ctx->active_node = 0;
+      for (; list_head != 0; list_head = list_head->next) {
+        int new_head =
+            reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr)
+                ->SelectPreferredMapOrderEntryByPriorityRules(
+                    reinterpret_cast<TMapOrderEntry*>(owner_ctx->active_node), 0);
+        owner_ctx->active_node = new_head;
+      }
+    }
+
+    owner = 0;
+  }
+
+  if (self != 0) {
+    DestroyOrderNodeFn destroy_node =
+        reinterpret_cast<DestroyOrderNodeFn>(static_cast<unsigned int>(0x00553bc0));
+    destroy_node(this);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00552510
 TMapOrderChildLinkNode* TMapOrderEntry::FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
                                                                int child_node_id) {
@@ -147,134 +276,5 @@ void TMapOrderEntry::RelinkMapOrderQueueNodeBetween(TMapOrderEntry* prev_node,
   }
   if (queue_next != 0) {
     queue_next->queue_prev = this;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x00550f80
-void TMapOrderEntry::DecrementRequiredCount(short decrement) {
-  required_count = static_cast<s16>(required_count - decrement);
-}
-
-// FUNCTION: IMPERIALISM 0x00550670
-int TMapOrderEntry::SelectPreferredMapOrderEntryByPriorityRules(TMapOrderEntry* candidate,
-                                                                 int compareAttachedFlag) {
-  if ((char)compareAttachedFlag != '\0') {
-    if (attachment != 0) {
-      return reinterpret_cast<int>(candidate);
-    }
-    if (candidate == 0) {
-      return reinterpret_cast<int>(this);
-    }
-    if (candidate->attached_entity != 0) {
-      return reinterpret_cast<int>(this);
-    }
-  }
-  if (candidate == 0) {
-    return reinterpret_cast<int>(this);
-  }
-  if (this != 0) {
-    int selfAttachment = attachment;
-    int candidateAttachment = candidate->attached_entity;
-    bool preferSelf = false;
-    if (selfAttachment == 0) {
-      preferSelf = false;
-    } else if (candidateAttachment == 0) {
-      preferSelf = true;
-    } else {
-      preferSelf = *reinterpret_cast<short*>(candidateAttachment + 0x10) <
-                   *reinterpret_cast<short*>(selfAttachment + 0x10);
-    }
-    if (preferSelf) {
-      return reinterpret_cast<int>(this);
-    }
-
-    bool preferCandidate = false;
-    if (candidateAttachment == 0) {
-      preferCandidate = false;
-    } else if (selfAttachment == 0) {
-      preferCandidate = true;
-    } else {
-      preferCandidate = *reinterpret_cast<short*>(selfAttachment + 0x10) <
-                        *reinterpret_cast<short*>(candidateAttachment + 0x10);
-    }
-    if (!preferCandidate) {
-      if (order_type != candidate->order_type) {
-        if (candidate->order_type <= order_type) {
-          return reinterpret_cast<int>(this);
-        }
-        return reinterpret_cast<int>(candidate);
-      }
-      short selfBucket = (order_strength / 100 + (order_strength >> 15)) -
-                         static_cast<short>((static_cast<__int64>(static_cast<int>(order_strength)) *
-                                             0x51eb851f) >>
-                                            63);
-      short candidateBucket =
-          (candidate->tiebreak_strength / 100 + (candidate->tiebreak_strength >> 15)) -
-          static_cast<short>((static_cast<__int64>(static_cast<int>(candidate->tiebreak_strength)) *
-                              0x51eb851f) >>
-                             63);
-      if (selfBucket != candidateBucket) {
-        if (candidateBucket <= selfBucket) {
-          return reinterpret_cast<int>(this);
-        }
-        return reinterpret_cast<int>(candidate);
-      }
-      if (candidate->required_count < required_count) {
-        return reinterpret_cast<int>(this);
-      }
-    }
-  }
-  return reinterpret_cast<int>(candidate);
-}
-
-// FUNCTION: IMPERIALISM 0x00550ff0
-void TMapOrderEntry::RemoveNode(int self) {
-  TMapOrderEntryOwnerContext* owner_ctx = owner;
-  if (owner_ctx != 0) {
-    TMapOrderChildLinkNode* list_head = owner_ctx->head;
-
-    if ((list_head != 0) && (this != reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr))) {
-      list_head = FindMissionOrderNodeById(list_head->next, reinterpret_cast<int>(this));
-    }
-
-    if (list_head != 0) {
-      list_head = owner_ctx->head;
-      if (list_head != 0) {
-        if (this == reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr)) {
-          list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
-        } else {
-          RemoveLinkedOrderNodeByValueRecursive(list_head->next, reinterpret_cast<int>(this));
-        }
-      }
-
-      owner_ctx->head = list_head;
-
-      const short* order_type_to_bucket_offset =
-          reinterpret_cast<const short*>(kOrderTypeToBucketOffsetTableAddr + order_type * 0x24);
-      short bucket_offset = *order_type_to_bucket_offset;
-      short* bucket_counter = reinterpret_cast<short*>(
-          reinterpret_cast<char*>(owner_ctx) + kOwnerBucketCountsBaseOffset + bucket_offset * 2);
-      *bucket_counter = *bucket_counter - 1;
-    }
-
-    if (this == reinterpret_cast<TMapOrderEntry*>(owner_ctx->active_node)) {
-      list_head = owner_ctx->head;
-      owner_ctx->active_node = 0;
-      for (; list_head != 0; list_head = list_head->next) {
-        int new_head =
-            reinterpret_cast<TMapOrderEntry*>(list_head->object_ptr)
-                ->SelectPreferredMapOrderEntryByPriorityRules(
-                    reinterpret_cast<TMapOrderEntry*>(owner_ctx->active_node), 0);
-        owner_ctx->active_node = new_head;
-      }
-    }
-
-    owner = 0;
-  }
-
-  if (self != 0) {
-    DestroyOrderNodeFn destroy_node =
-        reinterpret_cast<DestroyOrderNodeFn>(static_cast<unsigned int>(0x00553bc0));
-    destroy_node(this);
   }
 }

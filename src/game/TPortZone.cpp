@@ -26,11 +26,6 @@ TPortZone::TPortZone() : TZone() {
   field48 = -1;
 }
 
-// FUNCTION: IMPERIALISM 0x005617d0
-CRuntimeClass* TPortZone::GetRuntimeClass() {
-  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTPortZone);
-}
-
 // FUNCTION: IMPERIALISM 0x00561660
 bool TPortZone::QueryZoneCapabilityFlagA() {
   return true;
@@ -44,4 +39,9 @@ bool TPortZone::QueryPortZoneCapability() {
 // FUNCTION: IMPERIALISM 0x005616a0
 bool TPortZone::QueryZoneCapabilityFlagC() {
   return false;
+}
+
+// FUNCTION: IMPERIALISM 0x005617d0
+CRuntimeClass* TPortZone::GetRuntimeClass() {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTPortZone);
 }

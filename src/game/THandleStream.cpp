@@ -8,6 +8,15 @@ extern "C" {
 char g_pClassDescTHandleStream = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00489550
+void THandleStream::AdvanceExtent(int handle, int delta) {
+  (void)handle;
+  this->currentExtent += delta;
+  if (this->currentExtent > this->highWatermark) {
+    this->highWatermark = this->currentExtent;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004895c0
 CRuntimeClass* THandleStream::GetRuntimeClass() {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTHandleStream);
@@ -22,18 +31,9 @@ THandleStream::THandleStream() {
   this->handleOrBuffer = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00489550
-void THandleStream::AdvanceExtent(int handle, int delta) {
-  (void)handle;
-  this->currentExtent += delta;
-  if (this->currentExtent > this->highWatermark) {
-    this->highWatermark = this->currentExtent;
-  }
-}
+// SYNTHETIC: IMPERIALISM 0x00489610
+// THandleStream::`scalar deleting destructor'
 
 // Destructors are compiler-generated (implicit) from real TStream inheritance.
 // SYNTHETIC: IMPERIALISM 0x00489640
 // THandleStream::~THandleStream
-
-// SYNTHETIC: IMPERIALISM 0x00489610
-// THandleStream::`scalar deleting destructor'

@@ -123,21 +123,6 @@ short TDealList::QueryProposalWeightSlot4C(int metricSlot) {
   return this->categoryRows[metricSlot].proposalWeightScale0a;
 }
 
-// FUNCTION: IMPERIALISM 0x005BA090
-short TDealList::ResolveProposalCodeForCategorySlot84(int proposalCode, int category) {
-  short* lookupCursor = kNationMetricCodeLookup;
-  short resolvedCode = static_cast<short>(proposalCode);
-  while ((*lookupCursor != static_cast<short>(proposalCode)) &&
-         (resolvedCode = static_cast<short>(category), *lookupCursor != static_cast<short>(category))) {
-    lookupCursor = lookupCursor + 1;
-    if (reinterpret_cast<int>(lookupCursor) >
-        reinterpret_cast<int>(kNationMetricCodeLookup + 0x20)) {
-      return static_cast<short>(proposalCode);
-    }
-  }
-  return resolvedCode;
-}
-
 // FUNCTION: IMPERIALISM 0x005B94D0
 void TDealList::DispatchProposalAmountSlot60(short ownerNation, int sourceContext, int amount,
                                              int maxAmount, int targetNation, char emitEventFlag,
@@ -198,3 +183,18 @@ void TDealList::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// FUNCTION: IMPERIALISM 0x005BA090
+short TDealList::ResolveProposalCodeForCategorySlot84(int proposalCode, int category) {
+  short* lookupCursor = kNationMetricCodeLookup;
+  short resolvedCode = static_cast<short>(proposalCode);
+  while ((*lookupCursor != static_cast<short>(proposalCode)) &&
+         (resolvedCode = static_cast<short>(category), *lookupCursor != static_cast<short>(category))) {
+    lookupCursor = lookupCursor + 1;
+    if (reinterpret_cast<int>(lookupCursor) >
+        reinterpret_cast<int>(kNationMetricCodeLookup + 0x20)) {
+      return static_cast<short>(proposalCode);
+    }
+  }
+  return resolvedCode;
+}

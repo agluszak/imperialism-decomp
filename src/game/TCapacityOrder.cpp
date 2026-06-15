@@ -80,72 +80,6 @@ TCapacityOrder* TCapacityOrder::NewForCity(TCity* city) {
   return new (storage) TCapacityOrder(city);
 }
 
-// FUNCTION: IMPERIALISM 0x004b8d50
-void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short trackingIndex4eInit,
-                                    short trackingIndex50Init, short field52Init) {
-  this->cityField08 = city;
-  this->summaryField0c = city->productionSummary1d8;
-  this->resourceTypeIndex48 = resourceType;
-  this->quantityField04 = 0;
-  ZeroTrackingSlots(this);
-  this->field44 = 0;
-  this->trackingIndex4e = trackingIndex4eInit;
-  this->field40 = 0;
-  this->field3e = 0;
-  this->field4c = 0;
-  this->trackingIndex50 = trackingIndex50Init;
-  this->field52 = field52Init;
-}
-
-// FUNCTION: IMPERIALISM 0x004b8b80
-void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
-  short value = 0;
-
-  this->Produce(orderSheet);
-
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode09, this->resourceTypeIndex48) *
-                             quantity);
-  WriteShort(orderSheet, 0x12, value);
-  if (value < 0) {
-    WriteShort(orderSheet, 0x12, 0);
-  }
-
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode08, this->resourceTypeIndex48) *
-                             quantity);
-  WriteShort(orderSheet, 0x10, value);
-  if (value < 0) {
-    WriteShort(orderSheet, 0x10, 0);
-  }
-
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode10, this->resourceTypeIndex48) *
-                             quantity);
-  WriteShort(orderSheet, 0x20, value);
-  if (ReadShort(orderSheet, 0x12) < 0) {
-    WriteShort(orderSheet, 0x12, 0);
-  }
-
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) *
-                             quantity);
-  WriteShort(orderSheet, 0x16, value);
-  if (value < 0) {
-    WriteShort(orderSheet, 0x16, 0);
-  }
-
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode03, this->resourceTypeIndex48) *
-                             quantity);
-  WriteShort(orderSheet, 0x06, value);
-  if (value < 0) {
-    WriteShort(orderSheet, 0x06, 0);
-  }
-
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) *
-                             quantity);
-  WriteShort(orderSheet, 0x18, value);
-  if (value < 0) {
-    WriteShort(orderSheet, 0x18, 0);
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x004b85a0
 bool TCapacityOrder::CanMakeFromCityStock() {
   TCity* city = this->cityField08;
@@ -296,6 +230,80 @@ void TCapacityOrder::CommitIfPending() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004b8b80
+void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
+  short value = 0;
+
+  this->Produce(orderSheet);
+
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode09, this->resourceTypeIndex48) *
+                             quantity);
+  WriteShort(orderSheet, 0x12, value);
+  if (value < 0) {
+    WriteShort(orderSheet, 0x12, 0);
+  }
+
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode08, this->resourceTypeIndex48) *
+                             quantity);
+  WriteShort(orderSheet, 0x10, value);
+  if (value < 0) {
+    WriteShort(orderSheet, 0x10, 0);
+  }
+
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode10, this->resourceTypeIndex48) *
+                             quantity);
+  WriteShort(orderSheet, 0x20, value);
+  if (ReadShort(orderSheet, 0x12) < 0) {
+    WriteShort(orderSheet, 0x12, 0);
+  }
+
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) *
+                             quantity);
+  WriteShort(orderSheet, 0x16, value);
+  if (value < 0) {
+    WriteShort(orderSheet, 0x16, 0);
+  }
+
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode03, this->resourceTypeIndex48) *
+                             quantity);
+  WriteShort(orderSheet, 0x06, value);
+  if (value < 0) {
+    WriteShort(orderSheet, 0x06, 0);
+  }
+
+  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) *
+                             quantity);
+  WriteShort(orderSheet, 0x18, value);
+  if (value < 0) {
+    WriteShort(orderSheet, 0x18, 0);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004b8cc0
+CRuntimeClass* TCapacityOrder::GetRuntimeClass() {
+  return &g_pClassDescTCapacityOrder;
+}
+
+// SYNTHETIC: IMPERIALISM 0x004b8d00
+// TCapacityOrder::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004b8d50
+void TCapacityOrder::ICapacityOrder(TCity* city, short resourceType, short trackingIndex4eInit,
+                                    short trackingIndex50Init, short field52Init) {
+  this->cityField08 = city;
+  this->summaryField0c = city->productionSummary1d8;
+  this->resourceTypeIndex48 = resourceType;
+  this->quantityField04 = 0;
+  ZeroTrackingSlots(this);
+  this->field44 = 0;
+  this->trackingIndex4e = trackingIndex4eInit;
+  this->field40 = 0;
+  this->field3e = 0;
+  this->field4c = 0;
+  this->trackingIndex50 = trackingIndex50Init;
+  this->field52 = field52Init;
+}
+
 // FUNCTION: IMPERIALISM 0x004b8dd0
 void TCapacityOrder::ApplyCityProductionSlotDelta() {
   TCity* city = this->cityField08;
@@ -346,11 +354,3 @@ apply_done:
   this->trackingSlots10[this->trackingIndex50] = 0;
   this->field3e = 0;
 }
-
-// FUNCTION: IMPERIALISM 0x004b8cc0
-CRuntimeClass* TCapacityOrder::GetRuntimeClass() {
-  return &g_pClassDescTCapacityOrder;
-}
-
-// SYNTHETIC: IMPERIALISM 0x004b8d00
-// TCapacityOrder::`scalar deleting destructor'

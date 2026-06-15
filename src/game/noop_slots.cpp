@@ -8,239 +8,6 @@
 #pragma optimize("y", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x004b5140
-void ResetCityOrderItemDerivedStateNoop(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00500200
-void NoOpTurnOrderNavigationVtableSlotA(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00500220
-void NoOpTurnOrderNavigationVtableSlotB(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00572bb0
-void UniversityDialogMethod_00405623(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005dbd10
-void NoOpTurnEventStateVtableSlotFC(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e2b50
-void NoOpJoinGameSelectionVtableSlotA(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e2b70
-void NoOpJoinGameSelectionVtableSlotB(void) {
-  return;
-}
-
-// --- Empty vtable-slot / callback no-ops (batch port). Each is a single
-//     `ret` (or `ret N` for callee-cleaned stack args); modeled here as empty
-//     bodies so MSVC emits the identical epilogue. ---
-
-// FUNCTION: IMPERIALISM 0x00426f80
-void NoOpRuntimeCallback_00426f80(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00486300
-void __stdcall NoOpTextPostLayoutHook(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00487f90
-void __stdcall NoOpLinkedValueListHook20(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004972e0
-void NoOpQuickDrawLifecycleHookB(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00498ca0
-void NoOpCallback_00498ca0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004d6790
-void __stdcall NoOpNationSelectedRegionAndMapCellLabelHook(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004da5c0
-void NoOpNationPendingActionHook(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004dab00
-void NoOpNationQueuedOrderHook(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005033e0
-void __stdcall NoOpDiplomacyPolicyStateChangedHook(int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00503400
-void __stdcall HandlePostPendingEventActivationNoOp(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0052efb0
-void __stdcall NoOpForeignMinisterUtilityStub(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0052fd80
-void NoOpForeignMinisterSlot24Handler(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0052fda0
-void NoOpForeignMinisterSlot25Handler(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00531af0
-void NoOpTedForeignMinisterSlot25Handler(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541a00
-void __stdcall NoOpDiplomacyTargetTransitionCallbackAlt(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541a20
-void __stdcall NoOpGreatPowerCommandHandlerRet4(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0054c660
-void __stdcall NoOpCallbackRet4(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0054c680
-void __stdcall NoOpCallbackRet10(int, int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0054c6a0
-void __stdcall NoOpCallbackRet18(int, int, int, int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0057c390
-void NoOpVirtualStub_0057c390(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005d7190
-void __stdcall NoOpTurnEventStateVtableSlotD4(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005dee80
-void __stdcall NoOpRuntimeUiCallback_005dee80(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005df3f0
-void __stdcall NoOpRuntimeUiCallback_005df3f0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005df410
-void __stdcall NoOpRuntimeUiCallback_005df410(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005df780
-void __stdcall NoOpRuntimeUiCallback_005df780(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e2490
-void __stdcall NoOpRuntimeUiCallback_005e2490(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e3450
-void NoOpInitializeGlobalTurnEventQueueManager(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e42a0
-void __stdcall NoOpDialogModeTagChangedHook(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e50a0
-void __stdcall NoOpAudioTickCallback_005e50a0(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e717b
-void __stdcall NoOpRuntimeCallback_005e717b(int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e7370
-void NoOpCrtThreadLifecycleHook(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00610c08
-void __stdcall NoOpVirtualStub_00610c08(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0061180f
-void NoOpVirtualStub_0061180f(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00618753
-void __stdcall NoOpVirtualStub_00618753(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0061ec02
-void NoOpVirtualStub_0061ec02(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00622a95
-void NoOpThreadInitializationStub(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00624491
-void NoOpPaddingStub_00624491(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x006244b7
-void NoOpPaddingStub_006244b7(void) {
-  return;
-}
-
-// --- Trivial empty stubs (Stub/Return/Dummy-named free functions whose original
-//     is a bare `ret` or callee-cleaned `ret N`). Batch port; FPO pragma above
-//     keeps the `ret N` epilogues frameless. ---
-
 // FUNCTION: IMPERIALISM 0x004136c0
 void __stdcall OrphanRetStub_004136c0(int) {
   return;
@@ -248,6 +15,20 @@ void __stdcall OrphanRetStub_004136c0(int) {
 
 // FUNCTION: IMPERIALISM 0x00414770
 void OrphanRetStub_00414770(void) {
+  return;
+}
+
+// --- More trivial stubs found by scanning autogen bodies (beyond the Stub/NoOp
+//     names): bare ret / ret N, plus 8-bit (bool) and 16-bit (short) zero returns. ---
+
+// FUNCTION: IMPERIALISM 0x00415030
+void __stdcall ExecuteNoOpNewGameCommand(int) {
+  return;
+}
+//     bodies so MSVC emits the identical epilogue. ---
+
+// FUNCTION: IMPERIALISM 0x00426f80
+void NoOpRuntimeCallback_00426f80(void) {
   return;
 }
 
@@ -371,6 +152,11 @@ void __stdcall OrphanRetStub_00482420(int) {
   return;
 }
 
+// FUNCTION: IMPERIALISM 0x00486300
+void __stdcall NoOpTextPostLayoutHook(int) {
+  return;
+}
+
 // FUNCTION: IMPERIALISM 0x00486530
 void __stdcall OrphanRetStub_00486530(int, int) {
   return;
@@ -393,6 +179,11 @@ void OrphanRetStub_00487a00(void) {
 
 // FUNCTION: IMPERIALISM 0x00487f70
 void __stdcall OrphanRetStub_00487f70(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00487f90
+void __stdcall NoOpLinkedValueListHook20(int) {
   return;
 }
 
@@ -426,6 +217,16 @@ void __stdcall OrphanRetStub_00488e70(int, int) {
   return;
 }
 
+// FUNCTION: IMPERIALISM 0x00489490
+void DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00489980
+bool __stdcall OrphanLeaf_NoCall_Ins02_00489980(int) {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004899a0
 void __stdcall OrphanRetStub_004899a0(int, int) {
   return;
@@ -448,6 +249,26 @@ void __stdcall OrphanRetStub_00492d40(int) {
 
 // FUNCTION: IMPERIALISM 0x00492d60
 void __stdcall OrphanRetStub_00492d60(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004972e0
+void NoOpQuickDrawLifecycleHookB(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00498c60
+void RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00498c80
+void RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00498ca0
+void NoOpCallback_00498ca0(void) {
   return;
 }
 
@@ -488,6 +309,16 @@ void OrphanRetStub_004b1990(void) {
 
 // FUNCTION: IMPERIALISM 0x004b4210
 void OrphanRetStub_004b4210(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004b50e0
+unsigned short OrphanLeaf_NoCall_Ins02_004b50e0(void) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004b5140
+void ResetCityOrderItemDerivedStateNoop(void) {
   return;
 }
 
@@ -561,9 +392,70 @@ void __stdcall OrphanRetStub_004cc470(int, int, int, int) {
   return;
 }
 
+// FUNCTION: IMPERIALISM 0x004d20c0
+void NoOpCivilianMapInteractionManagerVirtualHook(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d4bd0
+void __stdcall DiscardTileTokenArgumentAndReturn(int) {
+  return;
+}
+//     al-width load; FPO pragma above keeps ret N frameless. ---
+
+// FUNCTION: IMPERIALISM 0x004d6730
+bool ReturnFalseNationStateCapabilityFlag98(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x004d6750
+bool ReturnFalseNationStateCapabilityFlag9C(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x004d6770
+bool ReturnFalseNationStateCapabilityFlagA0(void) {
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x004d6790
+void __stdcall NoOpNationSelectedRegionAndMapCellLabelHook(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7b00
+bool __stdcall ReturnFalseNationStateActionStub(int, int, int, int) {
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x004d7e90
 void __stdcall OrphanRetStub_004d7e90(int) {
   return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7ee0
+unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7ee0(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f00
+unsigned short OrphanLeaf_NoCall_Ins02_004d7f00(void) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f20
+unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f20(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f40
+unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f40(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7f60
+bool __stdcall ReturnFalseNationStateCapabilityFlag90(int) {
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f80
@@ -574,6 +466,11 @@ void __stdcall OrphanRetStub_004d7f80(int, int) {
 // FUNCTION: IMPERIALISM 0x004d7fa0
 void __stdcall OrphanRetStub_004d7fa0(int, int, int) {
   return;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7fc0
+bool __stdcall OrphanLeaf_NoCall_Ins02_004d7fc0(int) {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7fe0
@@ -591,6 +488,16 @@ void __stdcall OrphanRetStub_004d8be0(int) {
   return;
 }
 
+// FUNCTION: IMPERIALISM 0x004da5c0
+void NoOpNationPendingActionHook(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x004dab00
+void NoOpNationQueuedOrderHook(void) {
+  return;
+}
+
 // FUNCTION: IMPERIALISM 0x004dca80
 void __stdcall OrphanRetStub_004dca80(int) {
   return;
@@ -604,6 +511,11 @@ void OrphanRetStub_004dcc30(void) {
 // FUNCTION: IMPERIALISM 0x004de2b0
 void OrphanRetStub_004de2b0(void) {
   return;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0400
+bool OrphanLeaf_NoCall_Ins02_004e0400(void) {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004e6610
@@ -651,8 +563,48 @@ void __stdcall OrphanRetStub_004fed50(int) {
   return;
 }
 
+// FUNCTION: IMPERIALISM 0x00500200
+void NoOpTurnOrderNavigationVtableSlotA(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00500220
+void NoOpTurnOrderNavigationVtableSlotB(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005033e0
+void __stdcall NoOpDiplomacyPolicyStateChangedHook(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00503400
+void __stdcall HandlePostPendingEventActivationNoOp(int) {
+  return;
+}
+
 // FUNCTION: IMPERIALISM 0x00515de0
 void __stdcall OrphanRetStub_00515de0(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0052efb0
+void __stdcall NoOpForeignMinisterUtilityStub(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0052fd80
+void NoOpForeignMinisterSlot24Handler(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0052fda0
+void NoOpForeignMinisterSlot25Handler(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00531af0
+void NoOpTedForeignMinisterSlot25Handler(void) {
   return;
 }
 
@@ -664,215 +616,6 @@ void OrphanRetStub_005328d0(void) {
 // FUNCTION: IMPERIALISM 0x005354c0
 void __stdcall OrphanRetStub_005354c0(int) {
   return;
-}
-
-// FUNCTION: IMPERIALISM 0x00540aa0
-void OrphanRetStub_00540aa0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00540b80
-void OrphanRetStub_00540b80(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541880
-void OrphanRetStub_00541880(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005418a0
-void OrphanRetStub_005418a0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005418c0
-void OrphanRetStub_005418c0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005418e0
-void OrphanRetStub_005418e0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541900
-void OrphanRetStub_00541900(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541920
-void OrphanRetStub_00541920(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541940
-void __stdcall OrphanRetStub_00541940(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541960
-void OrphanRetStub_00541960(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541980
-void OrphanRetStub_00541980(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005419a0
-void OrphanRetStub_005419a0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005419c0
-void OrphanRetStub_005419c0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541a40
-void OrphanRetStub_00541a40(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541a60
-void __stdcall OrphanRetStub_00541a60(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00541cb0
-void __stdcall OrphanRetStub_00541cb0(int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00569d50
-void OrphanRetStub_00569d50(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0056f460
-void __stdcall OrphanRetStub_0056f460(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0056f480
-void OrphanRetStub_0056f480(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005723d0
-void OrphanRetStub_005723d0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00574fc0
-void __stdcall OrphanRetStub_00574fc0(int, int, int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0057b760
-void OrphanRetStub_0057b760(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00596680
-void __stdcall OrphanRetStub_00596680(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005966a0
-void __stdcall OrphanRetStub_005966a0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005966c0
-void __stdcall OrphanRetStub_005966c0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0059ad70
-void OrphanRetStub_0059ad70(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0059ad90
-void OrphanRetStub_0059ad90(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0059add0
-void __stdcall OrphanRetStub_0059add0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0059ae10
-void OrphanRetStub_0059ae10(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0059f710
-void __stdcall OrphanRetStub_0059f710(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005a83c0
-void __stdcall OrphanRetStub_005a83c0(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005ad0d0
-void __stdcall OrphanRetStub_005ad0d0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005ad0f0
-void __stdcall OrphanRetStub_005ad0f0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005b2860
-void OrphanRetStub_005b2860(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005c2470
-void OrphanRetStub_005c2470(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005c2610
-void __stdcall OrphanRetStub_005c2610(int) {
-  return;
-}
-
-// --- Constant-bool stubs: original is `xor al,al; ret[ N]` (return false) or
-//     `mov al,1; ret[ N]` (return true). 1-byte bool return reproduces the
-//     al-width load; FPO pragma above keeps ret N frameless. ---
-
-// FUNCTION: IMPERIALISM 0x004d6730
-bool ReturnFalseNationStateCapabilityFlag98(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x004d6750
-bool ReturnFalseNationStateCapabilityFlag9C(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x004d6770
-bool ReturnFalseNationStateCapabilityFlagA0(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7b00
-bool __stdcall ReturnFalseNationStateActionStub(int, int, int, int) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7f60
-bool __stdcall ReturnFalseNationStateCapabilityFlag90(int) {
-  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005354e0
@@ -995,6 +738,16 @@ bool ReturnFalseProxyGreatPowerCapabilityStub(void) {
   return false;
 }
 
+// FUNCTION: IMPERIALISM 0x00540aa0
+void OrphanRetStub_00540aa0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00540b80
+void OrphanRetStub_00540b80(void) {
+  return;
+}
+
 // FUNCTION: IMPERIALISM 0x00540f20
 bool ReturnTrueNationStateCapabilityFlag9C(void) {
   return true;
@@ -1020,9 +773,290 @@ bool ReturnFalseRemoteGreatPowerCapabilityStub(void) {
   return false;
 }
 
+// FUNCTION: IMPERIALISM 0x00541880
+void OrphanRetStub_00541880(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005418a0
+void OrphanRetStub_005418a0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005418c0
+void OrphanRetStub_005418c0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005418e0
+void OrphanRetStub_005418e0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541900
+void OrphanRetStub_00541900(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541920
+void OrphanRetStub_00541920(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541940
+void __stdcall OrphanRetStub_00541940(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541960
+void OrphanRetStub_00541960(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541980
+void OrphanRetStub_00541980(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005419a0
+void OrphanRetStub_005419a0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005419c0
+void OrphanRetStub_005419c0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541a00
+void __stdcall NoOpDiplomacyTargetTransitionCallbackAlt(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541a20
+void __stdcall NoOpGreatPowerCommandHandlerRet4(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541a40
+void OrphanRetStub_00541a40(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00541a60
+void __stdcall OrphanRetStub_00541a60(int) {
+  return;
+}
+
 // FUNCTION: IMPERIALISM 0x00541c90
 bool ReturnTrueRemoteMinorCapabilityStub(void) {
   return true;
+}
+
+// FUNCTION: IMPERIALISM 0x00541cb0
+void __stdcall OrphanRetStub_00541cb0(int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0054c660
+void __stdcall NoOpCallbackRet4(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0054c680
+void __stdcall NoOpCallbackRet10(int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0054c6a0
+void __stdcall NoOpCallbackRet18(int, int, int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00569d50
+void OrphanRetStub_00569d50(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0056f460
+void __stdcall OrphanRetStub_0056f460(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0056f480
+void OrphanRetStub_0056f480(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005723d0
+void OrphanRetStub_005723d0(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00572bb0
+void UniversityDialogMethod_00405623(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00574fc0
+void __stdcall OrphanRetStub_00574fc0(int, int, int, int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0057b760
+void OrphanRetStub_0057b760(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0057c390
+void NoOpVirtualStub_0057c390(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00596680
+void __stdcall OrphanRetStub_00596680(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005966a0
+void __stdcall OrphanRetStub_005966a0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005966c0
+void __stdcall OrphanRetStub_005966c0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005966e0
+bool __stdcall OrphanLeaf_NoCall_Ins02_005966e0(int) {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0059ad70
+void OrphanRetStub_0059ad70(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059ad90
+void OrphanRetStub_0059ad90(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059adb0
+void __stdcall TArmyTacUnit_VtblSlot00(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059add0
+void __stdcall OrphanRetStub_0059add0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059ae10
+void OrphanRetStub_0059ae10(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0059f710
+void __stdcall OrphanRetStub_0059f710(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005a83c0
+void __stdcall OrphanRetStub_005a83c0(int, int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005ad0d0
+void __stdcall OrphanRetStub_005ad0d0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005ad0f0
+void __stdcall OrphanRetStub_005ad0f0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005aec80
+void InitializeCityProductionState_Impl_At005aec80(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005b2860
+void OrphanRetStub_005b2860(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005c2470
+void OrphanRetStub_005c2470(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005c2610
+void __stdcall OrphanRetStub_005c2610(int) {
+  return;
+}
+
+// --- Constant-bool stubs: original is `xor al,al; ret[ N]` (return false) or
+//     `mov al,1; ret[ N]` (return true). 1-byte bool return reproduces the
+
+// FUNCTION: IMPERIALISM 0x005d7190
+void __stdcall NoOpTurnEventStateVtableSlotD4(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005dbd10
+void NoOpTurnEventStateVtableSlotFC(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005dee80
+void __stdcall NoOpRuntimeUiCallback_005dee80(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005df3f0
+void __stdcall NoOpRuntimeUiCallback_005df3f0(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005df410
+void __stdcall NoOpRuntimeUiCallback_005df410(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005df780
+void __stdcall NoOpRuntimeUiCallback_005df780(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005e2490
+void __stdcall NoOpRuntimeUiCallback_005e2490(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005e2b50
+void NoOpJoinGameSelectionVtableSlotA(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005e2b70
+void NoOpJoinGameSelectionVtableSlotB(void) {
+  return;
+}
+
+// --- Empty vtable-slot / callback no-ops (batch port). Each is a single
+//     `ret` (or `ret N` for callee-cleaned stack args); modeled here as empty
+
+// FUNCTION: IMPERIALISM 0x005e3450
+void NoOpInitializeGlobalTurnEventQueueManager(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x005e3490
+bool __stdcall DefaultUnhandledTurnEventHookReturnsFalse(int) {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005e34b0
@@ -1035,100 +1069,66 @@ bool ReturnTrueRuntimeCredentialFinalizeStub(void) {
   return true;
 }
 
-// --- More trivial stubs found by scanning autogen bodies (beyond the Stub/NoOp
-//     names): bare ret / ret N, plus 8-bit (bool) and 16-bit (short) zero returns. ---
-
-// FUNCTION: IMPERIALISM 0x00415030
-void __stdcall ExecuteNoOpNewGameCommand(int) {
+// FUNCTION: IMPERIALISM 0x005e42a0
+void __stdcall NoOpDialogModeTagChangedHook(int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00489490
-void DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void) {
+// FUNCTION: IMPERIALISM 0x005e50a0
+void __stdcall NoOpAudioTickCallback_005e50a0(int, int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00489980
-bool __stdcall OrphanLeaf_NoCall_Ins02_00489980(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00498c60
-void RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void) {
+// FUNCTION: IMPERIALISM 0x005e717b
+void __stdcall NoOpRuntimeCallback_005e717b(int, int, int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00498c80
-void RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void) {
+// FUNCTION: IMPERIALISM 0x005e7370
+void NoOpCrtThreadLifecycleHook(void) {
   return;
-}
-
-// FUNCTION: IMPERIALISM 0x004b50e0
-unsigned short OrphanLeaf_NoCall_Ins02_004b50e0(void) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d20c0
-void NoOpCivilianMapInteractionManagerVirtualHook(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004d4bd0
-void __stdcall DiscardTileTokenArgumentAndReturn(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7ee0
-unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7ee0(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7f00
-unsigned short OrphanLeaf_NoCall_Ins02_004d7f00(void) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7f20
-unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f20(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7f40
-unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f40(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7fc0
-bool __stdcall OrphanLeaf_NoCall_Ins02_004d7fc0(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004e0400
-bool OrphanLeaf_NoCall_Ins02_004e0400(void) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x005966e0
-bool __stdcall OrphanLeaf_NoCall_Ins02_005966e0(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x0059adb0
-void __stdcall TArmyTacUnit_VtblSlot00(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005aec80
-void InitializeCityProductionState_Impl_At005aec80(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005e3490
-bool __stdcall DefaultUnhandledTurnEventHookReturnsFalse(int) {
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00607bda
 void TMacViewMgr_Slot22_Target(void) {
   return;
 }
+
+// FUNCTION: IMPERIALISM 0x00610c08
+void __stdcall NoOpVirtualStub_00610c08(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0061180f
+void NoOpVirtualStub_0061180f(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00618753
+void __stdcall NoOpVirtualStub_00618753(int) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x0061ec02
+void NoOpVirtualStub_0061ec02(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00622a95
+void NoOpThreadInitializationStub(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x00624491
+void NoOpPaddingStub_00624491(void) {
+  return;
+}
+
+// FUNCTION: IMPERIALISM 0x006244b7
+void NoOpPaddingStub_006244b7(void) {
+  return;
+}
+
+// --- Trivial empty stubs (Stub/Return/Dummy-named free functions whose original
+//     is a bare `ret` or callee-cleaned `ret N`). Batch port; FPO pragma above
+//     keeps the `ret N` epilogues frameless. ---

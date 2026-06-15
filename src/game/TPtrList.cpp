@@ -30,11 +30,6 @@ void* TPtrList::GetNodeByOrdinalSlot2C(int mode, int ordinal) {
   return this->listState.GetDataAtOneBasedIndex(ordinal);
 }
 
-// FUNCTION: IMPERIALISM 0x00488790
-void TPtrList::Release1C() {
-  this->DeleteSelfSlot04(1);
-}
-
 // FUNCTION: IMPERIALISM 0x00488610
 void TPtrList::AddTail30(void* item) {
   this->listState.AddTail(item);
@@ -69,6 +64,11 @@ void TPtrList::Call54() {
       static_cast<TTrackedObject*>(payload)->Release1C();
     }
   } while (*(reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(this) + 0x10)) != 0);
+}
+
+// FUNCTION: IMPERIALISM 0x00488790
+void TPtrList::Release1C() {
+  this->DeleteSelfSlot04(1);
 }
 
 // FUNCTION: IMPERIALISM 0x004887b0

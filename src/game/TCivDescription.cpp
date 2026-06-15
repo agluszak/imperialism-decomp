@@ -93,6 +93,11 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 
 } // namespace
 
+// The ordinary destructor and the scalar deleting destructor below are both
+// compiler-generated (implicit) from real inheritance — never hand-written.
+// SYNTHETIC: IMPERIALISM 0x00407f4a
+// TCivDescription::`scalar deleting destructor'
+
 // FUNCTION: IMPERIALISM 0x0058f050
 CivDescriptionState* __cdecl CreateTCivDescriptionInstance(void) {
   return new TCivDescription();
@@ -102,11 +107,6 @@ TCivDescription::TCivDescription() : TControl() {
   selectedCivilianClass = -1;
   legendInitialized = 0;
 }
-
-// The ordinary destructor and the scalar deleting destructor below are both
-// compiler-generated (implicit) from real inheritance — never hand-written.
-// SYNTHETIC: IMPERIALISM 0x00407f4a
-// TCivDescription::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058f0f0
 CRuntimeClass* TCivDescription::GetRuntimeClass() {

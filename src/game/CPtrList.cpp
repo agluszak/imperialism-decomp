@@ -36,11 +36,6 @@ CPtrList::CPtrList(int blockSize) {
   this->blockSize = blockSize;
 }
 
-// FUNCTION: IMPERIALISM 0x00601f7c
-CPtrList::~CPtrList() {
-  RemoveAll();
-}
-
 // The scalar deleting destructor is compiler-generated from the virtual dtor.
 // SYNTHETIC: IMPERIALISM 0x00601f40
 // CPtrList::`scalar deleting destructor'
@@ -54,6 +49,11 @@ void CPtrList::RemoveAll() {
   this->headNode = 0;
   FreeLinkedBlockChain(chain);
   this->blockChain = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00601f7c
+CPtrList::~CPtrList() {
+  RemoveAll();
 }
 
 // FUNCTION: IMPERIALISM 0x00601faf

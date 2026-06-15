@@ -95,6 +95,12 @@ void TTraderAmtBar::DoPostCreate(TDocument* document) {
   reinterpret_cast<TView*>(this)->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
 
+// FUNCTION: IMPERIALISM 0x0058b040
+void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
+  this->field34 = scaleValue;
+  this->field38 = ratioValue;
+}
+
 // FUNCTION: IMPERIALISM 0x0058b070
 short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
   short result = priorResult;
@@ -113,12 +119,6 @@ short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
     }
   }
   return result;
-}
-
-// FUNCTION: IMPERIALISM 0x0058b040
-void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
-  this->field34 = scaleValue;
-  this->field38 = ratioValue;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b0f0

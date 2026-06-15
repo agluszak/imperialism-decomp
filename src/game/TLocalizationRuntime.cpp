@@ -6,11 +6,6 @@ undefined4 GetTSimMgrClassNamePointer(void);
 undefined4 PostMainWindowCommand100ForTurnFlow(void);
 undefined4 LoadUiStringByCodeGroupAndOffset(void);
 
-// FUNCTION: IMPERIALISM 0x0040853f
-void* TLocalizationRuntime::GetClassDescDynamic() {
-  return reinterpret_cast<void*(__cdecl*)(void)>(GetTSimMgrClassNamePointer)();
-}
-
 // FUNCTION: IMPERIALISM 0x004021ee
 short TLocalizationRuntime::GetTurnTickSlot3C() {
   return quarterGateTick2c;
@@ -30,6 +25,11 @@ void TLocalizationRuntime::CallSlot44() {
 void TLocalizationRuntime::GetString(short codeGroup, short offset, void* destString) {
   reinterpret_cast<void(__cdecl*)(short, short, void*)>(LoadUiStringByCodeGroupAndOffset)(
       codeGroup, offset, destString);
+}
+
+// FUNCTION: IMPERIALISM 0x0040853f
+void* TLocalizationRuntime::GetClassDescDynamic() {
+  return reinterpret_cast<void*(__cdecl*)(void)>(GetTSimMgrClassNamePointer)();
 }
 
 // FUNCTION: IMPERIALISM 0x005811e0

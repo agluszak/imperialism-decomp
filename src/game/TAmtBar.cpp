@@ -17,6 +17,21 @@ undefined4 ftol(void);
 
 extern "C" CRuntimeClass g_pClassDescTAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 
+// FUNCTION: IMPERIALISM 0x00401e65
+void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar) {
+  amountBar->~TView();
+}
+
+// FUNCTION: IMPERIALISM 0x00586e50
+int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
+  (void)requestedValue;
+  return (int)(short)baseValue;
+}
+
+void TAmtBar::SetBarMetric(int value, int range) {
+  UpdateBarValuesAndRefresh(static_cast<short>(value), static_cast<short>(range));
+}
+
 // FUNCTION: IMPERIALISM 0x005884c0
 TAmtBar* __cdecl CreateTAmtBarInstance(void) {
   TAmtBar* amountBar = reinterpret_cast<TAmtBar*>(AllocateWithFallbackHandler(0x68));
@@ -38,11 +53,6 @@ TAmtBar::TAmtBar()
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x005885c0
 // TAmtBar::`scalar deleting destructor'
-
-// FUNCTION: IMPERIALISM 0x00401e65
-void __fastcall thunk_DestructTViewBaseState_005885F0(TView* amountBar) {
-  amountBar->~TView();
-}
 
 // FUNCTION: IMPERIALISM 0x00588610
 void __cdecl WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(void) {
@@ -124,16 +134,6 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   DrawCenteredGuideLine((short)(stepOrCurrentValue - 1), controlHeight);
   int clipDescriptorHead = 0;
   SnapshotHitRegionToClipCache(&clipDescriptorHead);
-}
-
-// FUNCTION: IMPERIALISM 0x00586e50
-int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
-  (void)requestedValue;
-  return (int)(short)baseValue;
-}
-
-void TAmtBar::SetBarMetric(int value, int range) {
-  UpdateBarValuesAndRefresh(static_cast<short>(value), static_cast<short>(range));
 }
 
 // FUNCTION: IMPERIALISM 0x00588950

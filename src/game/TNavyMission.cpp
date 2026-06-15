@@ -71,25 +71,6 @@ void AccumulateNavyOrderVectorFromNode(NavyPrimaryOrderNode* orderNode, float* v
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x00538bf0
-float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
-                                                                                int nodeContext) {
-  float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-  for (NavyPrimaryOrderNode* orderNode =
-           reinterpret_cast<NavyPrimaryOrderNode*>(thunk_GetNavyPrimaryOrderListHead());
-       orderNode != 0; orderNode = reinterpret_cast<NavyPrimaryOrderNode*>(orderNode->next24)) {
-    if (orderNode->nodeContext08 == nodeContext &&
-        static_cast<short>(sourceNation) == orderNode->sourceNation14) {
-      AccumulateNavyOrderVectorFromNode(orderNode, vector);
-    }
-  }
-  float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
-    sum += vector[componentIndex];
-  }
-  return NormalizeFourComponentNavyVector(vector, sum);
-}
-
 // FUNCTION: IMPERIALISM 0x005389f0
 float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
                                                                                int nodeContext) {
@@ -100,6 +81,25 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
     if (orderNode->nodeContext08 == nodeContext &&
         g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
             static_cast<short>(sourceNation), orderNode->sourceNation14) != 0) {
+      AccumulateNavyOrderVectorFromNode(orderNode, vector);
+    }
+  }
+  float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+    sum += vector[componentIndex];
+  }
+  return NormalizeFourComponentNavyVector(vector, sum);
+}
+
+// FUNCTION: IMPERIALISM 0x00538bf0
+float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
+                                                                                int nodeContext) {
+  float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+  for (NavyPrimaryOrderNode* orderNode =
+           reinterpret_cast<NavyPrimaryOrderNode*>(thunk_GetNavyPrimaryOrderListHead());
+       orderNode != 0; orderNode = reinterpret_cast<NavyPrimaryOrderNode*>(orderNode->next24)) {
+    if (orderNode->nodeContext08 == nodeContext &&
+        static_cast<short>(sourceNation) == orderNode->sourceNation14) {
       AccumulateNavyOrderVectorFromNode(orderNode, vector);
     }
   }

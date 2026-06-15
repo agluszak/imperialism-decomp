@@ -28,6 +28,36 @@ void TInterNationEventQueueManager::thunk_QueueInterNationEventRecordDeduped(
   QueueInterNationEventRecordDeduped(eventCode, nationA, nationB, isReplayBypass);
 }
 
+// FUNCTION: IMPERIALISM 0x0055c970
+void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int eventCode,
+                                                                          int payloadOrNation,
+                                                                          char isReplayBypass) {
+  if (g_pLocalizationTable == 0) {
+    return;
+  }
+  if (g_pLocalizationTable->gateFlag7a != 0) {
+    return;
+  }
+
+  if (isReplayBypass != '\0' || g_pLocalizationTable->redrawEnabled == 0) {
+    TQueueObject* interNationQueue = perNationEventBuckets[eventCode];
+    if (interNationQueue != 0) {
+      interNationQueue->AddEntrySlot38(&payloadOrNation);
+    }
+    return;
+  }
+
+  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_CreateAndSendTurnEvent13_NationAndNineDwords)(
+      eventCode, payloadOrNation);
+}
+
+struct TInterNationEventType0FMergePayload {
+  int eventMarker0;
+  int eventCode4;
+  int nationMask8;
+  int nationB12;
+};
+
 // FUNCTION: IMPERIALISM 0x0055c9f0
 void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int eventCode, int nationA,
                                                                        int nationB,
@@ -104,36 +134,6 @@ TQueueObject* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int 
   }
   return 0;
 }
-
-// FUNCTION: IMPERIALISM 0x0055c970
-void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int eventCode,
-                                                                          int payloadOrNation,
-                                                                          char isReplayBypass) {
-  if (g_pLocalizationTable == 0) {
-    return;
-  }
-  if (g_pLocalizationTable->gateFlag7a != 0) {
-    return;
-  }
-
-  if (isReplayBypass != '\0' || g_pLocalizationTable->redrawEnabled == 0) {
-    TQueueObject* interNationQueue = perNationEventBuckets[eventCode];
-    if (interNationQueue != 0) {
-      interNationQueue->AddEntrySlot38(&payloadOrNation);
-    }
-    return;
-  }
-
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_CreateAndSendTurnEvent13_NationAndNineDwords)(
-      eventCode, payloadOrNation);
-}
-
-struct TInterNationEventType0FMergePayload {
-  int eventMarker0;
-  int eventCode4;
-  int nationMask8;
-  int nationB12;
-};
 
 // FUNCTION: IMPERIALISM 0x0055cbd0
 void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(int eventCode,

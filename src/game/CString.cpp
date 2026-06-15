@@ -51,20 +51,78 @@ int CString::Capacity() const {
   return Header()->capacity;
 }
 
-// FUNCTION: IMPERIALISM 0x006057de
-void CString::AllocateBufferForLength(int text_length) {
-  if (text_length == 0) {
-    new (this) CString(); // re-init this (already released by caller) -> 0x00605797
-    return;
+// FUNCTION: IMPERIALISM 0x0049eb00
+CString* AssignStringSharedRefAndReturnThis(CString* dest, const CString* src) {
+  dest->StringSharedRef_AssignFromPtr(*src);
+  return dest;
+}
+
+extern "C" unsigned char g_MbcsCharTypeTable_006A8018[512] = {0};
+extern "C" int g_fMbcsEnabledForStringCompare_006A811C = 0;
+
+undefined4 EnterIndexedCriticalSectionWithLazyInit(void);
+undefined4 LeaveIndexedCriticalSection(void);
+
+// FUNCTION: IMPERIALISM 0x005e7980
+int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs) {
+  if (g_fMbcsEnabledForStringCompare_006A811C != 0) {
+    reinterpret_cast<void(__cdecl*)(int)>(EnterIndexedCriticalSectionWithLazyInit)(0x19);
+    while (1) {
+      unsigned short lhsUnit = (unsigned short)*lhs;
+      unsigned char* lhsNext = lhs + 1;
+      if ((g_MbcsCharTypeTable_006A8018[lhsUnit + 1] & 4) != 0) {
+        unsigned char trailByte = *lhsNext;
+        if (trailByte == 0) {
+          lhsUnit = 0;
+        } else {
+          lhsNext = lhs + 2;
+          lhsUnit = (unsigned short)(((unsigned short)*lhs << 8) | (unsigned short)trailByte);
+        }
+      }
+      unsigned short rhsUnit = (unsigned short)*rhs;
+      unsigned char* rhsNext = rhs + 1;
+      if ((g_MbcsCharTypeTable_006A8018[rhsUnit + 1] & 4) != 0) {
+        unsigned char trailByte = *rhsNext;
+        if (trailByte == 0) {
+          rhsUnit = 0;
+        } else {
+          rhsNext = rhs + 2;
+          rhsUnit = (unsigned short)(((unsigned short)*rhs << 8) | (unsigned short)trailByte);
+        }
+      }
+      if (lhsUnit != rhsUnit) {
+        reinterpret_cast<void(__cdecl*)(int)>(LeaveIndexedCriticalSection)(0x19);
+        return (int)((-(unsigned int)(rhsUnit < lhsUnit) & 2) - 1);
+      }
+      rhs = rhsNext;
+      lhs = lhsNext;
+      if (lhsUnit == 0) {
+        reinterpret_cast<void(__cdecl*)(int)>(LeaveIndexedCriticalSection)(0x19);
+        return 0;
+      }
+    }
   }
 
-  SharedStringHeader* header = reinterpret_cast<SharedStringHeader*>(
-      AllocateWithFallbackHandler(text_length + kSharedStringHeaderSize + 1));
-  header->ref_count = 1;
-  header->text_length = text_length;
-  header->capacity = text_length;
-  reinterpret_cast<char*>(header)[kSharedStringHeaderSize + text_length] = '\0';
-  data_ptr = LocalPtrToInt(header + 1);
+  while (1) {
+    unsigned char lhsByte = *lhs;
+    int lhsLess = (int)(lhsByte < *rhs);
+    if (lhsByte != *rhs) {
+      return (1 - (unsigned int)lhsLess) - (unsigned int)(lhsLess != 0);
+    }
+    if (lhsByte == 0) {
+      return 0;
+    }
+    lhsByte = lhs[1];
+    lhsLess = (int)(lhsByte < rhs[1]);
+    if (lhsByte != rhs[1]) {
+      return (1 - (unsigned int)lhsLess) - (unsigned int)(lhsLess != 0);
+    }
+    lhs = lhs + 2;
+    rhs = rhs + 2;
+    if (lhsByte == 0) {
+      return 0;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00605791
@@ -90,6 +148,22 @@ CString* CString::StringSharedRef_AssignFromPtr(const CString& src_ref) {
     InterlockedIncrement(reinterpret_cast<LONG*>(src_data_ptr - kSharedStringHeaderSize));
   }
   return this;
+}
+
+// FUNCTION: IMPERIALISM 0x006057de
+void CString::AllocateBufferForLength(int text_length) {
+  if (text_length == 0) {
+    new (this) CString(); // re-init this (already released by caller) -> 0x00605797
+    return;
+  }
+
+  SharedStringHeader* header = reinterpret_cast<SharedStringHeader*>(
+      AllocateWithFallbackHandler(text_length + kSharedStringHeaderSize + 1));
+  header->ref_count = 1;
+  header->text_length = text_length;
+  header->capacity = text_length;
+  reinterpret_cast<char*>(header)[kSharedStringHeaderSize + text_length] = '\0';
+  data_ptr = LocalPtrToInt(header + 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0060584a
@@ -348,14 +422,6 @@ int CString::EnsureCapacityPreserveLength(int min_capacity) {
   return data_ptr;
 }
 
-// FUNCTION: IMPERIALISM 0x00605d99
-int CString::EnsureCapacityAndSetLength(int new_length) {
-  EnsureCapacityPreserveLength(new_length);
-  Header()->text_length = new_length;
-  reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
-  return data_ptr;
-}
-
 // FUNCTION: IMPERIALISM 0x00605d71
 void CString::SetLengthAndTerminator(int new_length) {
   EnsureUniqueSharedStringBuffer();
@@ -366,76 +432,10 @@ void CString::SetLengthAndTerminator(int new_length) {
   reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
 }
 
-// FUNCTION: IMPERIALISM 0x0049eb00
-CString* AssignStringSharedRefAndReturnThis(CString* dest, const CString* src) {
-  dest->StringSharedRef_AssignFromPtr(*src);
-  return dest;
-}
-
-extern "C" unsigned char g_MbcsCharTypeTable_006A8018[512] = {0};
-extern "C" int g_fMbcsEnabledForStringCompare_006A811C = 0;
-
-undefined4 EnterIndexedCriticalSectionWithLazyInit(void);
-undefined4 LeaveIndexedCriticalSection(void);
-
-// FUNCTION: IMPERIALISM 0x005e7980
-int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs) {
-  if (g_fMbcsEnabledForStringCompare_006A811C != 0) {
-    reinterpret_cast<void(__cdecl*)(int)>(EnterIndexedCriticalSectionWithLazyInit)(0x19);
-    while (1) {
-      unsigned short lhsUnit = (unsigned short)*lhs;
-      unsigned char* lhsNext = lhs + 1;
-      if ((g_MbcsCharTypeTable_006A8018[lhsUnit + 1] & 4) != 0) {
-        unsigned char trailByte = *lhsNext;
-        if (trailByte == 0) {
-          lhsUnit = 0;
-        } else {
-          lhsNext = lhs + 2;
-          lhsUnit = (unsigned short)(((unsigned short)*lhs << 8) | (unsigned short)trailByte);
-        }
-      }
-      unsigned short rhsUnit = (unsigned short)*rhs;
-      unsigned char* rhsNext = rhs + 1;
-      if ((g_MbcsCharTypeTable_006A8018[rhsUnit + 1] & 4) != 0) {
-        unsigned char trailByte = *rhsNext;
-        if (trailByte == 0) {
-          rhsUnit = 0;
-        } else {
-          rhsNext = rhs + 2;
-          rhsUnit = (unsigned short)(((unsigned short)*rhs << 8) | (unsigned short)trailByte);
-        }
-      }
-      if (lhsUnit != rhsUnit) {
-        reinterpret_cast<void(__cdecl*)(int)>(LeaveIndexedCriticalSection)(0x19);
-        return (int)((-(unsigned int)(rhsUnit < lhsUnit) & 2) - 1);
-      }
-      rhs = rhsNext;
-      lhs = lhsNext;
-      if (lhsUnit == 0) {
-        reinterpret_cast<void(__cdecl*)(int)>(LeaveIndexedCriticalSection)(0x19);
-        return 0;
-      }
-    }
-  }
-
-  while (1) {
-    unsigned char lhsByte = *lhs;
-    int lhsLess = (int)(lhsByte < *rhs);
-    if (lhsByte != *rhs) {
-      return (1 - (unsigned int)lhsLess) - (unsigned int)(lhsLess != 0);
-    }
-    if (lhsByte == 0) {
-      return 0;
-    }
-    lhsByte = lhs[1];
-    lhsLess = (int)(lhsByte < rhs[1]);
-    if (lhsByte != rhs[1]) {
-      return (1 - (unsigned int)lhsLess) - (unsigned int)(lhsLess != 0);
-    }
-    lhs = lhs + 2;
-    rhs = rhs + 2;
-    if (lhsByte == 0) {
-      return 0;
-    }
-  }
+// FUNCTION: IMPERIALISM 0x00605d99
+int CString::EnsureCapacityAndSetLength(int new_length) {
+  EnsureCapacityPreserveLength(new_length);
+  Header()->text_length = new_length;
+  reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
+  return data_ptr;
 }

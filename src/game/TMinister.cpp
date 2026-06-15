@@ -28,6 +28,10 @@ CRuntimeClass* TMinister::GetRuntimeClass() {
 TMinister::TMinister() : ownerContextAt04(0), field_8(0), skillIndexC(0) {}
 #pragma optimize("", on)
 
+// Destructors are compiler-generated (implicit) from real CObject inheritance.
+// SYNTHETIC: IMPERIALISM 0x0052eba0
+// TMinister::`scalar deleting destructor'
+
 // FUNCTION: IMPERIALISM 0x0052ebf0
 void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
   this->ownerContextAt04 = ownerContext;
@@ -37,23 +41,6 @@ void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
     return;
   }
   this->field_8 = new (storage) TMinisterBaseOrderArray();
-}
-
-// Destructors are compiler-generated (implicit) from real CObject inheritance.
-// SYNTHETIC: IMPERIALISM 0x0052eba0
-// TMinister::`scalar deleting destructor'
-
-// FUNCTION: IMPERIALISM 0x0052ecf0
-void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {
-  TMinister::Serialize(reinterpret_cast<CArchive*>(archive));
-  archive->WriteBytesSlot78(&this->skillIndexC, 2);
-}
-
-// FUNCTION: IMPERIALISM 0x0052ecc0
-void TMinister::Call18(int arg1) {
-  TStream* archive = reinterpret_cast<TStream*>(arg1);
-  TMinister::Serialize(reinterpret_cast<CArchive*>(archive));
-  archive->ReadBytes(&this->skillIndexC, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ec80
@@ -120,3 +107,16 @@ void TMinister::MinisterSlot2B() {}
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// FUNCTION: IMPERIALISM 0x0052ecc0
+void TMinister::Call18(int arg1) {
+  TStream* archive = reinterpret_cast<TStream*>(arg1);
+  TMinister::Serialize(reinterpret_cast<CArchive*>(archive));
+  archive->ReadBytes(&this->skillIndexC, 2);
+}
+
+// FUNCTION: IMPERIALISM 0x0052ecf0
+void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {
+  TMinister::Serialize(reinterpret_cast<CArchive*>(archive));
+  archive->WriteBytesSlot78(&this->skillIndexC, 2);
+}

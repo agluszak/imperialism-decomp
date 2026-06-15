@@ -24,18 +24,16 @@ void CMapPtrToPtr::InitHashTable(unsigned int nHashSize, int bAllocNow) {
   m_nHashTableSize = nHashSize;
 }
 
-// FUNCTION: IMPERIALISM 0x006034e4
-CMapPtrToPtr::CAssoc* CMapPtrToPtr::GetAssocAt(void* key, unsigned int* pHashOut) {
-  unsigned int hash = (reinterpret_cast<unsigned int>(key) >> 4) % m_nHashTableSize;
-  *pHashOut = hash;
+// FUNCTION: IMPERIALISM 0x00603423
+void CMapPtrToPtr::RemoveAll() {
   if (m_pHashTable != 0) {
-    for (CAssoc* p = m_pHashTable[hash]; p != 0; p = p->pNext) {
-      if (p->key == key) {
-        return p;
-      }
-    }
+    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(m_pHashTable));
+    m_pHashTable = 0;
   }
-  return 0;
+  m_nCount = 0;
+  m_pFreeList = 0;
+  FreeLinkedBlockChain(m_pBlocks);
+  m_pBlocks = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00603481
@@ -58,6 +56,30 @@ CMapPtrToPtr::CAssoc* CMapPtrToPtr::NewAssoc() {
   return result;
 }
 
+// FUNCTION: IMPERIALISM 0x006034cb
+void CMapPtrToPtr::FreeAssoc(CAssoc* p) {
+  p->pNext = m_pFreeList;
+  m_pFreeList = p;
+  --m_nCount;
+  if (m_nCount == 0) {
+    RemoveAll();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x006034e4
+CMapPtrToPtr::CAssoc* CMapPtrToPtr::GetAssocAt(void* key, unsigned int* pHashOut) {
+  unsigned int hash = (reinterpret_cast<unsigned int>(key) >> 4) % m_nHashTableSize;
+  *pHashOut = hash;
+  if (m_pHashTable != 0) {
+    for (CAssoc* p = m_pHashTable[hash]; p != 0; p = p->pNext) {
+      if (p->key == key) {
+        return p;
+      }
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0060356b
 void** CMapPtrToPtr::GetOrCreateValueSlot(void* key) {
   unsigned int hash;
@@ -72,28 +94,6 @@ void** CMapPtrToPtr::GetOrCreateValueSlot(void* key) {
     m_pHashTable[hash] = p;
   }
   return &p->value;
-}
-
-// FUNCTION: IMPERIALISM 0x00603423
-void CMapPtrToPtr::RemoveAll() {
-  if (m_pHashTable != 0) {
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(m_pHashTable));
-    m_pHashTable = 0;
-  }
-  m_nCount = 0;
-  m_pFreeList = 0;
-  FreeLinkedBlockChain(m_pBlocks);
-  m_pBlocks = 0;
-}
-
-// FUNCTION: IMPERIALISM 0x006034cb
-void CMapPtrToPtr::FreeAssoc(CAssoc* p) {
-  p->pNext = m_pFreeList;
-  m_pFreeList = p;
-  --m_nCount;
-  if (m_nCount == 0) {
-    RemoveAll();
-  }
 }
 
 // FUNCTION: IMPERIALISM 0x006035bb

@@ -28,6 +28,21 @@ undefined4 thunk_DispatchPanelControlEvent(void);
 
 #include <new>
 
+// FUNCTION: IMPERIALISM 0x005713c0
+TUberCluster* __cdecl CreateTUberClusterInstance(void) {
+  TUberCluster* cluster =
+      reinterpret_cast<TUberCluster*>(AllocateWithFallbackHandler(sizeof(TUberCluster)));
+  if (cluster != 0) {
+    new (cluster) TUberCluster();
+  }
+  return cluster;
+}
+
+// FUNCTION: IMPERIALISM 0x00571440
+CRuntimeClass* TUberCluster::GetRuntimeClass() {
+  return &g_pClassDescTUberCluster;
+}
+
 // FUNCTION: IMPERIALISM 0x00571460
 TUberCluster::TUberCluster() : TCluster() {}
 
@@ -70,21 +85,6 @@ void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   }
   barControl->NoOpUiLifecycleHook(styleDescriptor);
   this->thunk_NoOpUiLifecycleHook();
-}
-
-// FUNCTION: IMPERIALISM 0x005713c0
-TUberCluster* __cdecl CreateTUberClusterInstance(void) {
-  TUberCluster* cluster =
-      reinterpret_cast<TUberCluster*>(AllocateWithFallbackHandler(sizeof(TUberCluster)));
-  if (cluster != 0) {
-    new (cluster) TUberCluster();
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x00571440
-CRuntimeClass* TUberCluster::GetRuntimeClass() {
-  return &g_pClassDescTUberCluster;
 }
 
 // FUNCTION: IMPERIALISM 0x00586e70

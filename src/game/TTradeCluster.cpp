@@ -80,10 +80,37 @@ static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
 #pragma optimize("y", off)
 #endif
 
+// FUNCTION: IMPERIALISM 0x004032fb
+void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TTradeCluster* self, int unusedEdx,
+                                                               unsigned char enabledFlag) {
+  (void)unusedEdx;
+  self->SetTradeToolSubcontrolEnabledStateByFlag(enabledFlag);
+}
+
+// FUNCTION: IMPERIALISM 0x00587010
+void* CreateTradeSellControlPanel(void) {
+  TTradeCluster* cluster =
+      reinterpret_cast<TTradeCluster*>(AllocateWithFallbackHandler(sizeof(TTradeCluster)));
+  if (cluster != 0) {
+    new (cluster) TTradeCluster();
+  }
+  return cluster;
+}
+
 // FUNCTION: IMPERIALISM 0x00587090
 CRuntimeClass* TTradeCluster::GetRuntimeClass() {
   return &g_pClassDescTTradeCluster;
 }
+
+// FUNCTION: IMPERIALISM 0x005870b0
+TTradeCluster::TTradeCluster() : TUberCluster() {}
+
+// SYNTHETIC: IMPERIALISM 0x005870e0
+// TTradeCluster::`scalar deleting destructor'
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 
 // Initializes Sell/Bar/Arrow control style and enabled state for the current
 // nation/resource context, then initializes the move/bar controls baseline.
@@ -462,33 +489,6 @@ void TTradeCluster::SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabl
 #pragma optimize("y", on)
 #pragma auto_inline(on)
 #endif
-
-#if defined(_MSC_VER)
-#pragma optimize("y", on)
-#endif
-
-// FUNCTION: IMPERIALISM 0x004032fb
-void __fastcall thunk_SetTradeToolSubcontrolEnabledStateByFlag(TTradeCluster* self, int unusedEdx,
-                                                               unsigned char enabledFlag) {
-  (void)unusedEdx;
-  self->SetTradeToolSubcontrolEnabledStateByFlag(enabledFlag);
-}
-
-// FUNCTION: IMPERIALISM 0x00587010
-void* CreateTradeSellControlPanel(void) {
-  TTradeCluster* cluster =
-      reinterpret_cast<TTradeCluster*>(AllocateWithFallbackHandler(sizeof(TTradeCluster)));
-  if (cluster != 0) {
-    new (cluster) TTradeCluster();
-  }
-  return cluster;
-}
-
-// FUNCTION: IMPERIALISM 0x005870b0
-TTradeCluster::TTradeCluster() : TUberCluster() {}
-
-// SYNTHETIC: IMPERIALISM 0x005870e0
-// TTradeCluster::`scalar deleting destructor'
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

@@ -53,42 +53,6 @@ struct RuntimeLocalTime {
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 undefined4 ConvertEpochSecondsToLocalTmWithDstAdjust(void);
 
-// FUNCTION: IMPERIALISM 0x004bc9b0
-void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryClip(
-    int unusedArg1, int unusedArg2) {
-  (void)unusedArg1;
-  (void)unusedArg2;
-
-  QuickDrawSurfaceGuard surface;
-
-  RECT boundsRecord;
-  reinterpret_cast<TView*>(this)->QueryBounds(&boundsRecord);
-
-  RECT clipRect;
-  clipRect.left = boundsRecord.left;
-  clipRect.top = boundsRecord.top;
-  clipRect.right = boundsRecord.right;
-  clipRect.bottom = boundsRecord.bottom;
-
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(0);
-
-  int* previousSurface = 0;
-  int contextFlags = 0;
-  reinterpret_cast<void(__cdecl*)(int**, int*)>(thunk_GetActiveQuickDrawSurfaceContextAndFlags)(
-      &previousSurface, &contextFlags);
-
-  reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-      reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext), contextFlags);
-  reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_ApplyRectClipRegionToGlobalClipState)(&clipRect);
-
-  needsRefreshAtA6 = 1;
-  reinterpret_cast<TView*>(this)->ApplyRectSlot110(reinterpret_cast<RECT*>(&boundsRecord.top));
-
-  reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
-      previousSurface, contextFlags);
-  SnapshotHitRegionToClipCache(0);
-}
-
 // FUNCTION: IMPERIALISM 0x004badd0
 void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   TGreatPower* nationState = g_apNationStates[g_pUiRuntimeContext->GetActiveNationId()];
@@ -145,4 +109,40 @@ void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh()
   short offset_y2 = g_Render_Nation_Header_Value_00696228[currentWeekAtAa];
   reinterpret_cast<void(__cdecl*)(short, short)>(thunk_DrawCenteredGuideLineOnMapDc)(
       static_cast<short>(offset_x2 + originX), static_cast<short>(offset_y2 + sVar2));
+}
+
+// FUNCTION: IMPERIALISM 0x004bc9b0
+void TCityProductionViewLayout::RenderViewIntoPrimaryRenderContextWithTemporaryClip(
+    int unusedArg1, int unusedArg2) {
+  (void)unusedArg1;
+  (void)unusedArg2;
+
+  QuickDrawSurfaceGuard surface;
+
+  RECT boundsRecord;
+  reinterpret_cast<TView*>(this)->QueryBounds(&boundsRecord);
+
+  RECT clipRect;
+  clipRect.left = boundsRecord.left;
+  clipRect.top = boundsRecord.top;
+  clipRect.right = boundsRecord.right;
+  clipRect.bottom = boundsRecord.bottom;
+
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(0);
+
+  int* previousSurface = 0;
+  int contextFlags = 0;
+  reinterpret_cast<void(__cdecl*)(int**, int*)>(thunk_GetActiveQuickDrawSurfaceContextAndFlags)(
+      &previousSurface, &contextFlags);
+
+  reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
+      reinterpret_cast<int*>(g_pPrimaryRenderSurfaceContext), contextFlags);
+  reinterpret_cast<void(__cdecl*)(RECT*)>(thunk_ApplyRectClipRegionToGlobalClipState)(&clipRect);
+
+  needsRefreshAtA6 = 1;
+  reinterpret_cast<TView*>(this)->ApplyRectSlot110(reinterpret_cast<RECT*>(&boundsRecord.top));
+
+  reinterpret_cast<void(__cdecl*)(int*, int)>(thunk_SetActiveQuickDrawSurfaceContext)(
+      previousSurface, contextFlags);
+  SnapshotHitRegionToClipCache(0);
 }

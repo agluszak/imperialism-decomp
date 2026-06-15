@@ -1,6 +1,8 @@
 // UI wrapper class quads extracted from trade_screen.
 
 #include "game/TNumberedArrowButton.h"
+#include "game/TAmtBar.h"
+#include "game/CRuntimeClass.h"
 CRuntimeClass g_pClassDescTNumberedArrowButton = {nullptr, 0, 0, nullptr, nullptr};
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -11,30 +13,6 @@ CRuntimeClass g_pClassDescTNumberedArrowButton = {nullptr, 0, 0, nullptr, nullpt
 #if defined(_MSC_VER)
 #pragma auto_inline(off)
 #endif
-
-// FUNCTION: IMPERIALISM 0x0058c1e0
-TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
-  return new TNumberedArrowButton();
-}
-
-// FUNCTION: IMPERIALISM 0x0058c280
-CRuntimeClass* TNumberedArrowButton::GetRuntimeClass() {
-  return &g_pClassDescTNumberedArrowButton;
-}
-
-// FUNCTION: IMPERIALISM 0x0058c2a0
-TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}
-
-// Destructors are compiler-generated (implicit) from real inheritance.
-// SYNTHETIC: IMPERIALISM 0x0058c2e0
-// TNumberedArrowButton::`scalar deleting destructor'
-
-#if defined(_MSC_VER)
-#pragma auto_inline(on)
-#endif
-
-#include "game/TAmtBar.h"
-#include "game/CRuntimeClass.h"
 
 // FUNCTION: IMPERIALISM 0x0058b750
 void TNumberedArrowButton::OrphanCallChain_C3_I43_0058b750(char mode, char refreshParent) {
@@ -78,6 +56,27 @@ void TNumberedArrowButton::OrphanCallChain_C2_I37_0058b8d0(short mode) {
   reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
   reinterpret_cast<TAmtBar*>(this)->SetState(mode != 2, 0);
 }
+
+// FUNCTION: IMPERIALISM 0x0058c1e0
+TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
+  return new TNumberedArrowButton();
+}
+
+// FUNCTION: IMPERIALISM 0x0058c280
+CRuntimeClass* TNumberedArrowButton::GetRuntimeClass() {
+  return &g_pClassDescTNumberedArrowButton;
+}
+
+// FUNCTION: IMPERIALISM 0x0058c2a0
+TNumberedArrowButton::TNumberedArrowButton() : TControl(), value84(0), value86(0) {}
+
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058c2e0
+// TNumberedArrowButton::`scalar deleting destructor'
+
+#if defined(_MSC_VER)
+#pragma auto_inline(on)
+#endif
 
 // FUNCTION: IMPERIALISM 0x0058c330
 void TNumberedArrowButton::OrphanCallChain_C1_I08_0058c330(short value84Arg, char refreshFlag) {

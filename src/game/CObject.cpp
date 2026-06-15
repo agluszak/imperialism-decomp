@@ -18,11 +18,6 @@ CRuntimeClass classCObject = {nullptr, 0, 0, nullptr, nullptr};
 // referenced by not-yet-ported autogen vptr writes; it carries no reccmp address.
 char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 
-// FUNCTION: IMPERIALISM 0x00606fba
-CRuntimeClass* CObject::GetRuntimeClass() {
-  return &classCObject;
-}
-
 // FUNCTION: IMPERIALISM 0x00412bd0
 void CObject::Serialize(CArchive*) {}
 
@@ -32,6 +27,11 @@ void CObject::AssertValidOrSlot0c() {}
 // FUNCTION: IMPERIALISM 0x00412c10
 void CObject::DumpOrSlot10(int unused) {
   (void)unused;
+}
+
+// FUNCTION: IMPERIALISM 0x00606fba
+CRuntimeClass* CObject::GetRuntimeClass() {
+  return &classCObject;
 }
 
 // FUNCTION: IMPERIALISM 0x00606fc0

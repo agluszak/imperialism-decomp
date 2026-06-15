@@ -23,19 +23,6 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   name24.AssignFromPtr(empty);    // -> 0x00605a29
 }
 
-// FUNCTION: IMPERIALISM 0x005c3190
-void TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets() {
-  short tile = field_6;
-  short* cursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x2e);
-  int remaining = 3;
-  do {
-    cursor[-3] = tile;
-    *cursor = tile;
-    ++cursor;
-    --remaining;
-  } while (remaining != 0);
-}
-
 // FUNCTION: IMPERIALISM 0x005c2f50
 void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int nodeContext,
                                                             short nationSlot) {
@@ -54,3 +41,16 @@ void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int no
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// FUNCTION: IMPERIALISM 0x005c3190
+void TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets() {
+  short tile = field_6;
+  short* cursor = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x2e);
+  int remaining = 3;
+  do {
+    cursor[-3] = tile;
+    *cursor = tile;
+    ++cursor;
+    --remaining;
+  } while (remaining != 0);
+}

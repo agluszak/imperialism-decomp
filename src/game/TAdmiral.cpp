@@ -46,38 +46,6 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00551580
-TAdmiral::~TAdmiral() {}
-
-// FUNCTION: IMPERIALISM 0x00552450
-void TAdmiral::RemoveDuplicateNavySecondaryOrdersByDisplayName() {
-  GenerateMappedFlavorTextByNationSlotField0C(g_apTerrainTypeDescriptorTable[this->terrainType],
-                                              &this->displayName);
-  for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
-    if (node == this) {
-      continue;
-    }
-    if (CompareAnsiStringsWithMbcsAwareness(
-            reinterpret_cast<unsigned char*>(node->displayName.data_ptr),
-            reinterpret_cast<unsigned char*>(this->displayName.data_ptr)) == 0) {
-      this->RemoveDuplicateNavySecondaryOrdersByDisplayName();
-    }
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x005515d0
-void TAdmiral::DestroyAndUnlinkNavySecondaryOrderNode() {
-  if (this->prev != 0) {
-    this->prev->next = this->next;
-  } else {
-    g_pNavySecondaryOrderListHead = this->next;
-  }
-  if (this->next != 0) {
-    this->next->prev = this->prev;
-  }
-  delete this;
-}
-
 // SYNTHETIC: IMPERIALISM 0x00551550
 // TAdmiral::`scalar deleting destructor'
 
@@ -106,6 +74,22 @@ static void ClearPrimaryOrderBacklink(void* primaryOrderNode) {
   RecomputeMapOrderOwnerActiveSelection(ownerContext);
 }
 
+// FUNCTION: IMPERIALISM 0x00551580
+TAdmiral::~TAdmiral() {}
+
+// FUNCTION: IMPERIALISM 0x005515d0
+void TAdmiral::DestroyAndUnlinkNavySecondaryOrderNode() {
+  if (this->prev != 0) {
+    this->prev->next = this->next;
+  } else {
+    g_pNavySecondaryOrderListHead = this->next;
+  }
+  if (this->next != 0) {
+    this->next->prev = this->prev;
+  }
+  delete this;
+}
+
 // FUNCTION: IMPERIALISM 0x00552250
 void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primaryOrderNode) {
   if (this->field_8 != 0) {
@@ -117,5 +101,21 @@ void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primar
     TMapOrderEntryOwnerContext* ownerContext = *reinterpret_cast<TMapOrderEntryOwnerContext**>(
         reinterpret_cast<char*>(primaryOrderNode) + 0xc);
     RecomputeMapOrderOwnerActiveSelection(ownerContext);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00552450
+void TAdmiral::RemoveDuplicateNavySecondaryOrdersByDisplayName() {
+  GenerateMappedFlavorTextByNationSlotField0C(g_apTerrainTypeDescriptorTable[this->terrainType],
+                                              &this->displayName);
+  for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
+    if (node == this) {
+      continue;
+    }
+    if (CompareAnsiStringsWithMbcsAwareness(
+            reinterpret_cast<unsigned char*>(node->displayName.data_ptr),
+            reinterpret_cast<unsigned char*>(this->displayName.data_ptr)) == 0) {
+      this->RemoveDuplicateNavySecondaryOrdersByDisplayName();
+    }
   }
 }

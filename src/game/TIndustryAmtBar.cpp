@@ -26,6 +26,11 @@ extern "C" {
 CRuntimeClass g_pClassDescTIndustryAmtBar = {nullptr, 0, 0, nullptr, nullptr};
 }
 
+undefined4 thunk_InvalidateCityDialogRectRegion(void);
+
+const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
+const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
+
 // FUNCTION: IMPERIALISM 0x00589110
 TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
   TIndustryAmtBar* amountBar =
@@ -78,6 +83,31 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
 
+// FUNCTION: IMPERIALISM 0x00589540
+void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, int unusedEdx,
+                                                             short selectedValue) {
+  (void)unusedEdx;
+  QuickDrawSurfaceGuard surface;
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
+  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
+
+  if (control != 0 && control->IsActionable() != 0) {
+    control->Refresh();
+    if (control->IsActionable() != 0) {
+      int cachedX = ReadIntAt(kAddrOverlayClipCacheParamX);
+      int cachedY = ReadIntAt(kAddrOverlayClipCacheParamY);
+      int invalidRect[4] = {cachedX, cachedY, 0, 0};
+      control->vmethod_0078();
+      invalidRect[2] =
+          cachedX + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
+      invalidRect[3] =
+          cachedY + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
+      reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
+          (int)invalidRect, 1);
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00589dd0
 void TIndustryAmtBar::DrawAmt() {
   QuickDrawSurfaceGuard surface;
@@ -114,36 +144,6 @@ void TIndustryAmtBar::DrawAmt() {
       if (owner != 0) {
         owner->InvokeSlot13C();
       }
-    }
-  }
-}
-
-undefined4 thunk_InvalidateCityDialogRectRegion(void);
-
-const unsigned int kAddrOverlayClipCacheParamX = 0x006A4450;
-const unsigned int kAddrOverlayClipCacheParamY = 0x006A4454;
-
-// FUNCTION: IMPERIALISM 0x00589540
-void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, int unusedEdx,
-                                                             short selectedValue) {
-  (void)unusedEdx;
-  QuickDrawSurfaceGuard surface;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
-  reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
-
-  if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
-    if (control->IsActionable() != 0) {
-      int cachedX = ReadIntAt(kAddrOverlayClipCacheParamX);
-      int cachedY = ReadIntAt(kAddrOverlayClipCacheParamY);
-      int invalidRect[4] = {cachedX, cachedY, 0, 0};
-      control->vmethod_0078();
-      invalidRect[2] =
-          cachedX + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
-      invalidRect[3] =
-          cachedY + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<void(__stdcall*)(int, int)>(thunk_InvalidateCityDialogRectRegion)(
-          (int)invalidRect, 1);
     }
   }
 }

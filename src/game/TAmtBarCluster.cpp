@@ -41,6 +41,9 @@ TAmtBarCluster::TAmtBarCluster() : TUberCluster() {}
 // SYNTHETIC: IMPERIALISM 0x00586d10
 // TAmtBarCluster::`scalar deleting destructor'
 
+// FUNCTION: IMPERIALISM 0x00586ff0
+void __cdecl OrphanRetStub_00586ff0(void) {}
+
 // QueryValue() reads vtable slot 0x1E8, which is populated only on the concrete
 // trade-control classes (TAmtBar, ...) and is NULL on others (e.g. this cluster's
 // own vtable). It is therefore not a uniform TControl virtual, so the controls it
@@ -201,6 +204,3 @@ void TAmtBarCluster::HandleTradeMoveStepCommand(int commandId, void* eventArg, i
   int moveValue = moveControl->QueryValue();
   this->ApplyMoveValue(moveValue - 1);
 }
-
-// FUNCTION: IMPERIALISM 0x00586ff0
-void __cdecl OrphanRetStub_00586ff0(void) {}

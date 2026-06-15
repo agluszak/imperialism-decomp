@@ -5,6 +5,16 @@
 
 CRuntimeClass g_pClassDescTStatusButton = {nullptr, 0, 0, nullptr, nullptr};
 
+// FUNCTION: IMPERIALISM 0x00586280
+TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
+  return new TStatusButton();
+}
+
+// FUNCTION: IMPERIALISM 0x00586310
+CRuntimeClass* TStatusButton::GetRuntimeClass() {
+  return &g_pClassDescTStatusButton;
+}
+
 // FUNCTION: IMPERIALISM 0x00586330
 TStatusButton::TStatusButton() : TButton() {}
 
@@ -14,16 +24,6 @@ int TStatusButton::ControlTag() const {
 
 void* TStatusButton::OwnerPanel() const {
   return *reinterpret_cast<void* const*>(reinterpret_cast<const char*>(this) + 0x20);
-}
-
-// FUNCTION: IMPERIALISM 0x00586280
-TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
-  return new TStatusButton();
-}
-
-// FUNCTION: IMPERIALISM 0x00586310
-CRuntimeClass* TStatusButton::GetRuntimeClass() {
-  return &g_pClassDescTStatusButton;
 }
 
 // Destructor is compiler-generated (implicit) from real TButton inheritance.

@@ -19,9 +19,9 @@ TCountingStream::TCountingStream() {
   this->positionOrByteCount = 0;
 }
 
+// SYNTHETIC: IMPERIALISM 0x00489440
+// TCountingStream::`scalar deleting destructor'
+
 // Destructors are compiler-generated (implicit) from real TStream inheritance.
 // SYNTHETIC: IMPERIALISM 0x00489470
 // TCountingStream::~TCountingStream
-
-// SYNTHETIC: IMPERIALISM 0x00489440
-// TCountingStream::`scalar deleting destructor'

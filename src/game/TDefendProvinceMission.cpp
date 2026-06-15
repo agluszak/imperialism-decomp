@@ -70,24 +70,6 @@ void AccumulatePriorityVectorFromStationedUnit(void* unitNode, float* vector) {
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x0053ea70
-float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
-  float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
-  reinterpret_cast<void(__cdecl*)(void)>(NoOpRuntimeCallback_005184e0)();
-
-  for (TStationedUnitNode* unit = StationedUnitChainAt(nodeContext); unit != 0;
-       unit = unit->next14) {
-    AccumulatePriorityVectorFromStationedUnit(unit, vector);
-  }
-
-  float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
-  for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
-    sum += vector[componentIndex];
-  }
-
-  return NormalizeFiveComponentPriorityVector(vector, sum, g_Recompute_Nation_Order_LookupTable_00697870);
-}
-
 // FUNCTION: IMPERIALISM 0x0053e6e0
 float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeContext) {
   float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
@@ -165,4 +147,22 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   const unsigned short* lookupTable =
       g_Recompute_Nation_Order_LookupTable_00697870 + lookupGroup * 5;
   return NormalizeFiveComponentPriorityVector(vector, sum, lookupTable);
+}
+
+// FUNCTION: IMPERIALISM 0x0053ea70
+float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
+  float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  reinterpret_cast<void(__cdecl*)(void)>(NoOpRuntimeCallback_005184e0)();
+
+  for (TStationedUnitNode* unit = StationedUnitChainAt(nodeContext); unit != 0;
+       unit = unit->next14) {
+    AccumulatePriorityVectorFromStationedUnit(unit, vector);
+  }
+
+  float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
+    sum += vector[componentIndex];
+  }
+
+  return NormalizeFiveComponentPriorityVector(vector, sum, g_Recompute_Nation_Order_LookupTable_00697870);
 }

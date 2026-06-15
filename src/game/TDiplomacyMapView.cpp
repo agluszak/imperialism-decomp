@@ -141,6 +141,143 @@ void DiplomacyPackedColorRun::AppendPackedColorDword(int surface, int packedColo
       this, surface, packedColor);
 }
 
+// FUNCTION: IMPERIALISM 0x00409205
+int UiRuntimeContext::MapTurnEventCodeToPaletteIndex(int eventCode) {
+  return reinterpret_cast<int(__cdecl*)(int)>(::MapTurnEventCodeToPaletteIndex)(eventCode);
+}
+
+// FUNCTION: IMPERIALISM 0x004f5e00
+int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Point32* clickPoint) {
+  char* self = reinterpret_cast<char*>(this);
+  char initFlags = *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized);
+  if ((initFlags & 1) == 0) {
+    *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized) = static_cast<char>(initFlags | 1);
+    RECT initRect;
+    initRect.left = 0x31;
+    initRect.top = 0x2d;
+    initRect.right = 0x24d;
+    initRect.bottom = 0x159;
+    CopyRect(reinterpret_cast<RECT*>(kAddrDiplomacyHitBounds), &initRect);
+    reinterpret_cast<int(__cdecl*)(void*)>(AppendPointerToGlobalVectorAsStatus)(
+        reinterpret_cast<void*>(kAddrResolveDiplomacyActionValue));
+  }
+
+  if (PtInRect(reinterpret_cast<const RECT*>(kAddrDiplomacyHitBounds), *reinterpret_cast<const POINT*>(clickPoint)) == 0) {
+    return 0;
+  }
+  if (*reinterpret_cast<int*>(self + 0x94) == 5) {
+    return 0;
+  }
+
+  Point32 localPoint;
+  VCall_DiplomacyMapView_TransformPointToLocalSlot148(this, reinterpret_cast<int>(&localPoint),
+                                                      reinterpret_cast<int>(clickPoint));
+
+  int terrainIndex = 0;
+  int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
+  do {
+    if (*terrainDescriptors != 0) {
+      char hit = VCall_StrategicMap_HitTestPointSlot90(
+          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem),
+          reinterpret_cast<int>(&localPoint), terrainIndex);
+      if (hit != 0) {
+        break;
+      }
+    }
+    terrainDescriptors += 1;
+    terrainIndex += 1;
+  } while (reinterpret_cast<unsigned int>(terrainDescriptors) < 0x6a436c);
+
+  int actionCode = 0;
+  if (terrainIndex < 0x17) {
+    actionCode = *reinterpret_cast<int*>(self + 0xbc);
+    *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(terrainIndex);
+    if (actionCode != 0xd && terrainIndex == *reinterpret_cast<short*>(self + 0x90)) {
+      return 1;
+    }
+  } else {
+    *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(0xffff);
+  }
+  return actionCode;
+}
+
+// FUNCTION: IMPERIALISM 0x004f5fb0
+void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(Point32* clickPoint,
+                                                                               void* dispatchArg) {
+  char* self = reinterpret_cast<char*>(this);
+  Point32 localPoint;
+  localPoint.x = clickPoint->x;
+  localPoint.y = clickPoint->y;
+
+  short cursorTable[16];
+  cursorTable[0] = 0x41b;
+  cursorTable[1] = 0x41b;
+  cursorTable[2] = 0x408;
+  cursorTable[3] = 0x407;
+  cursorTable[4] = 0x406;
+  cursorTable[5] = 0x404;
+  cursorTable[6] = 0x405;
+  cursorTable[7] = 0x411;
+  cursorTable[8] = 0x415;
+  cursorTable[9] = 0x409;
+  cursorTable[10] = 0x41b;
+  cursorTable[11] = 0x40f;
+  cursorTable[12] = 0x410;
+  cursorTable[13] = 0x3f3;
+  cursorTable[14] = 0x419;
+  cursorTable[15] = 0x41a;
+
+  void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+  int hitIndex = 0;
+  bool hit = false;
+  do {
+    if (terrainDescriptors[static_cast<short>(hitIndex)] != 0) {
+      char regionHit = VCall_StrategicMap_HitTestPointSlot90(
+          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem),
+          reinterpret_cast<int>(&localPoint), hitIndex);
+      if (regionHit != 0) {
+        hit = true;
+        break;
+      }
+    }
+    hitIndex += 1;
+  } while (static_cast<short>(hitIndex) < 0x17);
+
+  void* hCursor;
+  bool applyCursor = false;
+  if (hit) {
+    int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
+    char valid = VCall_DiplomacyTurnState_ValidateActionSlot5C(
+        g_pDiplomacyTurnStateManager, *reinterpret_cast<short*>(self + 0x90),
+        *reinterpret_cast<short*>(self + 0xc2), actionCode);
+
+    short cursorId;
+    if (valid == 0) {
+      cursorId = 0x41b;
+    } else {
+      cursorId = cursorTable[actionCode];
+      if (actionCode == 9 || actionCode == 7 || actionCode == 8) {
+        cursorId = static_cast<short>(cursorId + *reinterpret_cast<short*>(self + 0xc0));
+      }
+    }
+    *reinterpret_cast<short*>(self + 0x52a) = cursorId;
+    hCursor = *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) - 0xf8c +
+                                        cursorId * 4);
+    applyCursor = true;
+  } else if (*reinterpret_cast<short*>(self + 0x52a) != 0x41b) {
+    *reinterpret_cast<short*>(self + 0x52a) = 0x41b;
+    hCursor = *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xe0);
+    applyCursor = true;
+  }
+
+  if (applyCursor) {
+    SetCursor(reinterpret_cast<HCURSOR>(hCursor));
+  }
+
+  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*)>(
+      thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(this, 0, clickPoint, dispatchArg);
+}
+
 // FUNCTION: IMPERIALISM 0x004f6170
 void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT* presentRect) {
   QuickDrawSurfaceGuard surface;
@@ -221,6 +358,27 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
   reinterpret_cast<void(__fastcall*)(void*, int, void*)>(FrameRegionOnHdcAndReleaseBrushState)(
       this, 0, frameRegion);
   SetQuickDrawFillColor(0);
+}
+
+// FUNCTION: IMPERIALISM 0x004f6440
+void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
+  void* region = reinterpret_cast<void*(__cdecl*)()>(CreateClipStateRegionWrapperObject)();
+
+  short terrainIndex = 0;
+  void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
+  do {
+    if (*terrainDescriptors != 0) {
+      void* frameRegion = VCall_StrategicMap_GetFrameRegionSlot98(
+          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem), terrainIndex);
+      reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
+          CombineTwoRegionsIntoDestinationAndUpdateBox)(region, frameRegion, region);
+    }
+    terrainIndex = static_cast<short>(terrainIndex + 1);
+    terrainDescriptors = terrainDescriptors + 1;
+  } while (terrainIndex < 0x17);
+
+  this->ApplyClipRegionSlotC4(reinterpret_cast<int>(region));
+  reinterpret_cast<void(__cdecl*)(void*)>(DestroyClipStateRegionWrapperObject)(region);
 }
 
 // FUNCTION: IMPERIALISM 0x004f64c0
@@ -435,6 +593,25 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
   (void)presentRect;
 }
 
+// FUNCTION: IMPERIALISM 0x004f6b10
+void TDiplomacyMapViewLayout::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode) {
+  int maskState[2];
+  maskState[0] = 0;
+  maskState[1] = 0;
+  int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
+  reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
+  DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
+      reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
+  maskRun->BlitMonochromeMaskBytePatternToSurface(reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
+                                                  paletteIndex, maskState, 1);
+
+  int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
+  DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
+      reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
+  packedRun->AppendPackedColorDword(
+      reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), packedColor);
+}
+
 // FUNCTION: IMPERIALISM 0x004f6bd0
 void TDiplomacyMapViewLayout::BlitDiplomacyMapEventPaletteMaskToSurface(short maskIndex,
                                                                         int bmpId) {
@@ -527,18 +704,6 @@ void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, v
   child->SwitchTab(reinterpret_cast<int*>(arg1));
 }
 
-// FUNCTION: IMPERIALISM 0x004f7130
-void TDiplomacyMapViewLayout::ForwardCityDialogParamToActiveChildOrBase(void* param) {
-  char* self = reinterpret_cast<char*>(this);
-  if (*reinterpret_cast<int*>(self + 0xb8) == 5) {
-    TControl* child = *reinterpret_cast<TControl**>(self + 0xb4);
-    child->ForwardParam(reinterpret_cast<int>(param));
-    return;
-  }
-  reinterpret_cast<void(__fastcall*)(void*, int, void*)>(thunk_ForwardCityDialogParamToChildSlot48)(
-      this, 0, param);
-}
-
 // FUNCTION: IMPERIALISM 0x004f70c0
 void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId, int panelEvent,
                                                            void* extra) {
@@ -563,136 +728,16 @@ void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId, int pa
   }
 }
 
-// FUNCTION: IMPERIALISM 0x004f5fb0
-void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(Point32* clickPoint,
-                                                                               void* dispatchArg) {
+// FUNCTION: IMPERIALISM 0x004f7130
+void TDiplomacyMapViewLayout::ForwardCityDialogParamToActiveChildOrBase(void* param) {
   char* self = reinterpret_cast<char*>(this);
-  Point32 localPoint;
-  localPoint.x = clickPoint->x;
-  localPoint.y = clickPoint->y;
-
-  short cursorTable[16];
-  cursorTable[0] = 0x41b;
-  cursorTable[1] = 0x41b;
-  cursorTable[2] = 0x408;
-  cursorTable[3] = 0x407;
-  cursorTable[4] = 0x406;
-  cursorTable[5] = 0x404;
-  cursorTable[6] = 0x405;
-  cursorTable[7] = 0x411;
-  cursorTable[8] = 0x415;
-  cursorTable[9] = 0x409;
-  cursorTable[10] = 0x41b;
-  cursorTable[11] = 0x40f;
-  cursorTable[12] = 0x410;
-  cursorTable[13] = 0x3f3;
-  cursorTable[14] = 0x419;
-  cursorTable[15] = 0x41a;
-
-  void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
-  int hitIndex = 0;
-  bool hit = false;
-  do {
-    if (terrainDescriptors[static_cast<short>(hitIndex)] != 0) {
-      char regionHit = VCall_StrategicMap_HitTestPointSlot90(
-          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem),
-          reinterpret_cast<int>(&localPoint), hitIndex);
-      if (regionHit != 0) {
-        hit = true;
-        break;
-      }
-    }
-    hitIndex += 1;
-  } while (static_cast<short>(hitIndex) < 0x17);
-
-  void* hCursor;
-  bool applyCursor = false;
-  if (hit) {
-    int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
-    char valid = VCall_DiplomacyTurnState_ValidateActionSlot5C(
-        g_pDiplomacyTurnStateManager, *reinterpret_cast<short*>(self + 0x90),
-        *reinterpret_cast<short*>(self + 0xc2), actionCode);
-
-    short cursorId;
-    if (valid == 0) {
-      cursorId = 0x41b;
-    } else {
-      cursorId = cursorTable[actionCode];
-      if (actionCode == 9 || actionCode == 7 || actionCode == 8) {
-        cursorId = static_cast<short>(cursorId + *reinterpret_cast<short*>(self + 0xc0));
-      }
-    }
-    *reinterpret_cast<short*>(self + 0x52a) = cursorId;
-    hCursor = *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) - 0xf8c +
-                                        cursorId * 4);
-    applyCursor = true;
-  } else if (*reinterpret_cast<short*>(self + 0x52a) != 0x41b) {
-    *reinterpret_cast<short*>(self + 0x52a) = 0x41b;
-    hCursor = *reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xe0);
-    applyCursor = true;
+  if (*reinterpret_cast<int*>(self + 0xb8) == 5) {
+    TControl* child = *reinterpret_cast<TControl**>(self + 0xb4);
+    child->ForwardParam(reinterpret_cast<int>(param));
+    return;
   }
-
-  if (applyCursor) {
-    SetCursor(reinterpret_cast<HCURSOR>(hCursor));
-  }
-
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*)>(
-      thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(this, 0, clickPoint, dispatchArg);
-}
-
-// FUNCTION: IMPERIALISM 0x004f5e00
-int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Point32* clickPoint) {
-  char* self = reinterpret_cast<char*>(this);
-  char initFlags = *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized);
-  if ((initFlags & 1) == 0) {
-    *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized) = static_cast<char>(initFlags | 1);
-    RECT initRect;
-    initRect.left = 0x31;
-    initRect.top = 0x2d;
-    initRect.right = 0x24d;
-    initRect.bottom = 0x159;
-    CopyRect(reinterpret_cast<RECT*>(kAddrDiplomacyHitBounds), &initRect);
-    reinterpret_cast<int(__cdecl*)(void*)>(AppendPointerToGlobalVectorAsStatus)(
-        reinterpret_cast<void*>(kAddrResolveDiplomacyActionValue));
-  }
-
-  if (PtInRect(reinterpret_cast<const RECT*>(kAddrDiplomacyHitBounds), *reinterpret_cast<const POINT*>(clickPoint)) == 0) {
-    return 0;
-  }
-  if (*reinterpret_cast<int*>(self + 0x94) == 5) {
-    return 0;
-  }
-
-  Point32 localPoint;
-  VCall_DiplomacyMapView_TransformPointToLocalSlot148(this, reinterpret_cast<int>(&localPoint),
-                                                      reinterpret_cast<int>(clickPoint));
-
-  int terrainIndex = 0;
-  int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
-  do {
-    if (*terrainDescriptors != 0) {
-      char hit = VCall_StrategicMap_HitTestPointSlot90(
-          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem),
-          reinterpret_cast<int>(&localPoint), terrainIndex);
-      if (hit != 0) {
-        break;
-      }
-    }
-    terrainDescriptors += 1;
-    terrainIndex += 1;
-  } while (reinterpret_cast<unsigned int>(terrainDescriptors) < 0x6a436c);
-
-  int actionCode = 0;
-  if (terrainIndex < 0x17) {
-    actionCode = *reinterpret_cast<int*>(self + 0xbc);
-    *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(terrainIndex);
-    if (actionCode != 0xd && terrainIndex == *reinterpret_cast<short*>(self + 0x90)) {
-      return 1;
-    }
-  } else {
-    *reinterpret_cast<short*>(self + 0xc2) = static_cast<short>(0xffff);
-  }
-  return actionCode;
+  reinterpret_cast<void(__fastcall*)(void*, int, void*)>(thunk_ForwardCityDialogParamToChildSlot48)(
+      this, 0, param);
 }
 
 // FUNCTION: IMPERIALISM 0x004f71a0
@@ -763,49 +808,4 @@ void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
   } while (policyIndex < 0x180);
 
   reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
-}
-
-// FUNCTION: IMPERIALISM 0x004f6440
-void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
-  void* region = reinterpret_cast<void*(__cdecl*)()>(CreateClipStateRegionWrapperObject)();
-
-  short terrainIndex = 0;
-  void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
-  do {
-    if (*terrainDescriptors != 0) {
-      void* frameRegion = VCall_StrategicMap_GetFrameRegionSlot98(
-          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem), terrainIndex);
-      reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
-          CombineTwoRegionsIntoDestinationAndUpdateBox)(region, frameRegion, region);
-    }
-    terrainIndex = static_cast<short>(terrainIndex + 1);
-    terrainDescriptors = terrainDescriptors + 1;
-  } while (terrainIndex < 0x17);
-
-  this->ApplyClipRegionSlotC4(reinterpret_cast<int>(region));
-  reinterpret_cast<void(__cdecl*)(void*)>(DestroyClipStateRegionWrapperObject)(region);
-}
-
-// FUNCTION: IMPERIALISM 0x004f6b10
-void TDiplomacyMapViewLayout::BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode) {
-  int maskState[2];
-  maskState[0] = 0;
-  maskState[1] = 0;
-  int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
-  reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
-  DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
-      reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
-  maskRun->BlitMonochromeMaskBytePatternToSurface(reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-                                                  paletteIndex, maskState, 1);
-
-  int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
-  DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
-      reinterpret_cast<char*>(this) + 0x2078 + maskIndex * 0x30);
-  packedRun->AppendPackedColorDword(
-      reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), packedColor);
-}
-
-// FUNCTION: IMPERIALISM 0x00409205
-int UiRuntimeContext::MapTurnEventCodeToPaletteIndex(int eventCode) {
-  return reinterpret_cast<int(__cdecl*)(int)>(::MapTurnEventCodeToPaletteIndex)(eventCode);
 }

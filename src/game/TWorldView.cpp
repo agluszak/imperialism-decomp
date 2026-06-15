@@ -60,6 +60,11 @@ void DispatchOverlayEvent78Common(TWorldView* self, int stridedRecord) {
 #pragma optimize("y", on)
 #endif
 
+// FUNCTION: IMPERIALISM 0x00594fc0
+void TWorldView::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
+  (void)arg1;
+}
+
 // FUNCTION: IMPERIALISM 0x00595c40
 void TWorldView::SetFlagByteAndInvokeVslot1A4(unsigned char flagByte) {
   *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x74) = flagByte;
@@ -206,16 +211,6 @@ void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
 // FUNCTION: IMPERIALISM 0x00596080
 void TWorldView::RenderStrategicTileSelectionAndNeighborHighlights() {}
 
-// FUNCTION: IMPERIALISM 0x005960e0
-void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
-                                                                     int arg4, int arg5) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  (void)arg5;
-}
-
 // FUNCTION: IMPERIALISM 0x005960a0
 short TWorldView::QueryMinusOneWordSlot1BC() {
   return -1;
@@ -229,6 +224,16 @@ void TWorldView::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRe
   (void)outRow;
   (void)outCol;
   (void)outBand;
+}
+
+// FUNCTION: IMPERIALISM 0x005960e0
+void TWorldView::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
+                                                                     int arg4, int arg5) {
+  (void)arg1;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+  (void)arg5;
 }
 
 // FUNCTION: IMPERIALISM 0x00596270
@@ -313,9 +318,4 @@ void TWorldView::HandleMapClickByInteractionModeFromStridedRecord(int stridedRec
   reinterpret_cast<void(__fastcall*)(TWorldView*, int, short, int)>(
       thunk_HandleMapClickByInteractionMode)(this, 0, static_cast<short>(stridedRecord),
                                              dispatchContext);
-}
-
-// FUNCTION: IMPERIALISM 0x00594fc0
-void TWorldView::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
-  (void)arg1;
 }

@@ -33,6 +33,16 @@ undefined4 BuildMapContextStatusStringVariantD(void);
 undefined4 BuildMapContextStatusStringVariantA(void);
 undefined4 ShouldRetryMappedFlavorTextGeneration(void);
 
+// FUNCTION: IMPERIALISM 0x005d46b0
+void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot) {
+  GenerateMappedFlavorTextUntilValidationPasses(
+      dest, g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex);
+}
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x005d4720
 void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantIndex) {
   char retry;
@@ -98,13 +108,3 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
         reinterpret_cast<char(__cdecl*)(CString*)>(ShouldRetryMappedFlavorTextGeneration)(dest);
   } while (retry != 0);
 }
-
-// FUNCTION: IMPERIALISM 0x005d46b0
-void GenerateMappedFlavorTextByTableSlot(CString* dest, short tableSlot) {
-  GenerateMappedFlavorTextUntilValidationPasses(
-      dest, g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex);
-}
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif

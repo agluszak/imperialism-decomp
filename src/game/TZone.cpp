@@ -37,14 +37,48 @@ void DeleteUnlinkedZone(TZone* zone) {
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x004798d0
+void TZone::InvokeObjectVtableMethod24() {
+  HandleTurnEventVtableSlot24CopyPayloadBuffer();
+}
+
+void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
+  CRuntimeClass* runtimeClass = GetRuntimeClass();
+  unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
+  GetRuntimeClass();
+  CObject* destObject = reinterpret_cast<CObject*>(CreateObject_606ff2());
+  if (destObject == 0) {
+    return 0;
+  }
+  unsigned int* destCursor = reinterpret_cast<unsigned int*>(destObject);
+  unsigned int* sourceCursor = reinterpret_cast<unsigned int*>(this);
+  unsigned int dwordCount = payloadSize >> 2;
+  unsigned int byteRemainder = payloadSize & 3;
+  unsigned int dwordIndex;
+  for (dwordIndex = dwordCount; dwordIndex != 0; dwordIndex = dwordIndex - 1) {
+    *destCursor = *sourceCursor;
+    sourceCursor = sourceCursor + 1;
+    destCursor = destCursor + 1;
+  }
+  unsigned char* destByteCursor = reinterpret_cast<unsigned char*>(destCursor);
+  unsigned char* sourceByteCursor = reinterpret_cast<unsigned char*>(sourceCursor);
+  for (; byteRemainder != 0; byteRemainder = byteRemainder - 1) {
+    *destByteCursor = *sourceByteCursor;
+    sourceByteCursor = sourceByteCursor + 1;
+    destByteCursor = destByteCursor + 1;
+  }
+  return destObject;
+}
+
+void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {
+  (void)arg1;
+  (void)arg2;
+}
+
 // FUNCTION: IMPERIALISM 0x0055e6e0
 CRuntimeClass* TZone::GetRuntimeClass() {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTZone);
 }
-
-// Destructors are compiler-generated (implicit virtual dtor).
-// SYNTHETIC: IMPERIALISM 0x00562880
-// TZone::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0055e700
 TZone::TZone()
@@ -92,70 +126,6 @@ void TZone::DeserializeZoneFromBinaryStream(int streamState) {
   (void)streamState;
 }
 
-// FUNCTION: IMPERIALISM 0x0055ec60
-void TZone::RemoveZoneFromGlobalListAndRelease() {
-  if (g_pMapActionContextListHead == this) {
-    g_pMapActionContextListHead = prev18;
-  }
-  if (prev18 != 0) {
-    prev18->next1c = next1c;
-  }
-  if (next1c != 0) {
-    next1c->prev18 = prev18;
-  }
-  next1c = 0;
-  prev18 = 0;
-  DeleteUnlinkedZone(this);
-}
-
-// FUNCTION: IMPERIALISM 0x004798d0
-void TZone::InvokeObjectVtableMethod24() {
-  HandleTurnEventVtableSlot24CopyPayloadBuffer();
-}
-
-void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
-  CRuntimeClass* runtimeClass = GetRuntimeClass();
-  unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
-  GetRuntimeClass();
-  CObject* destObject = reinterpret_cast<CObject*>(CreateObject_606ff2());
-  if (destObject == 0) {
-    return 0;
-  }
-  unsigned int* destCursor = reinterpret_cast<unsigned int*>(destObject);
-  unsigned int* sourceCursor = reinterpret_cast<unsigned int*>(this);
-  unsigned int dwordCount = payloadSize >> 2;
-  unsigned int byteRemainder = payloadSize & 3;
-  unsigned int dwordIndex;
-  for (dwordIndex = dwordCount; dwordIndex != 0; dwordIndex = dwordIndex - 1) {
-    *destCursor = *sourceCursor;
-    sourceCursor = sourceCursor + 1;
-    destCursor = destCursor + 1;
-  }
-  unsigned char* destByteCursor = reinterpret_cast<unsigned char*>(destCursor);
-  unsigned char* sourceByteCursor = reinterpret_cast<unsigned char*>(sourceCursor);
-  for (; byteRemainder != 0; byteRemainder = byteRemainder - 1) {
-    *destByteCursor = *sourceByteCursor;
-    sourceByteCursor = sourceByteCursor + 1;
-    destByteCursor = destByteCursor + 1;
-  }
-  return destObject;
-}
-
-void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2) {
-  (void)arg1;
-  (void)arg2;
-}
-
-// FUNCTION: IMPERIALISM 0x0055f070
-void TZone::AssignZoneDisplayNameToOutputRef(void* outputRef) {
-  (void)outputRef;
-}
-
-// FUNCTION: IMPERIALISM 0x0055f090
-void TZone::AssignZoneDisplayNameAliasToOutputRef(void* outputRef) {
-  (void)outputRef;
-}
-
 // FUNCTION: IMPERIALISM 0x0055e820
 bool TZone::QueryZoneCapabilityFlagA() {
   return true;
@@ -187,6 +157,55 @@ bool TZone::QueryZoneCapabilityFlagE(int unused) {
 bool TZone::HasZoneActiveChildCount(int unused) {
   (void)unused;
   return field44 > 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0055ec60
+void TZone::RemoveZoneFromGlobalListAndRelease() {
+  if (g_pMapActionContextListHead == this) {
+    g_pMapActionContextListHead = prev18;
+  }
+  if (prev18 != 0) {
+    prev18->next1c = next1c;
+  }
+  if (next1c != 0) {
+    next1c->prev18 = prev18;
+  }
+  next1c = 0;
+  prev18 = 0;
+  DeleteUnlinkedZone(this);
+}
+
+// FUNCTION: IMPERIALISM 0x0055f070
+void TZone::AssignZoneDisplayNameToOutputRef(void* outputRef) {
+  (void)outputRef;
+}
+
+// FUNCTION: IMPERIALISM 0x0055f090
+void TZone::AssignZoneDisplayNameAliasToOutputRef(void* outputRef) {
+  (void)outputRef;
+}
+
+// FUNCTION: IMPERIALISM 0x0055fb60
+void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex) {
+  field12 = static_cast<short>(nationSeedId);
+  unsigned short resolvedTile = static_cast<unsigned short>(tileIndex);
+  if (resolvedTile == 0xffff) {
+    resolvedTile = static_cast<unsigned short>(reinterpret_cast<short(__cdecl*)(void)>(
+        thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias)());
+  }
+  field0c = static_cast<int>(static_cast<short>(resolvedTile));
+  field20 = static_cast<short>(field0c);
+  if (QueryPortZoneCapability() != 0) {
+    SetMapTileStateByteAndNotifyObserver(field20, -0xe);
+    return;
+  }
+  SetMapTileStateByteAndNotifyObserver(field20, -0x10);
+  field20 = reinterpret_cast<short(__cdecl*)(short, int)>(
+      thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 5);
+  SetMapTileStateByteAndNotifyObserver(field20, -0x12);
+  field20 = reinterpret_cast<short(__cdecl*)(short, int)>(
+      thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 0);
+  SetMapTileStateByteAndNotifyObserver(field20, -0x14);
 }
 
 // FUNCTION: IMPERIALISM 0x0055fe60
@@ -446,29 +465,6 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
   return bestTile;
 }
 
-// FUNCTION: IMPERIALISM 0x0055fb60
-void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex) {
-  field12 = static_cast<short>(nationSeedId);
-  unsigned short resolvedTile = static_cast<unsigned short>(tileIndex);
-  if (resolvedTile == 0xffff) {
-    resolvedTile = static_cast<unsigned short>(reinterpret_cast<short(__cdecl*)(void)>(
-        thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias)());
-  }
-  field0c = static_cast<int>(static_cast<short>(resolvedTile));
-  field20 = static_cast<short>(field0c);
-  if (QueryPortZoneCapability() != 0) {
-    SetMapTileStateByteAndNotifyObserver(field20, -0xe);
-    return;
-  }
-  SetMapTileStateByteAndNotifyObserver(field20, -0x10);
-  field20 = reinterpret_cast<short(__cdecl*)(short, int)>(
-      thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 5);
-  SetMapTileStateByteAndNotifyObserver(field20, -0x12);
-  field20 = reinterpret_cast<short(__cdecl*)(short, int)>(
-      thunk_StepHexTileIndexByDirectionWithWrapRules)(field20, 0);
-  SetMapTileStateByteAndNotifyObserver(field20, -0x14);
-}
-
 // FUNCTION: IMPERIALISM 0x00560580
 void TZone::SetMapOrderUiFlag(int flag) {
   void** uiObserverSlot =
@@ -515,6 +511,10 @@ int ZoneIsPortKind(TZone* node) {
 }
 
 } // namespace
+
+// Destructors are compiler-generated (implicit virtual dtor).
+// SYNTHETIC: IMPERIALISM 0x00562880
+// TZone::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00563540
 TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {

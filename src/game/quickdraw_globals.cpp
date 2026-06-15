@@ -35,18 +35,18 @@ void SetQuickDrawFillColor(int fillColor) {
   g_uQuickDrawCurrentColor = fillColor;
 }
 
+// FUNCTION: IMPERIALISM 0x00495310
+void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB) {
+  g_nQuickDrawStrokeStylePrimary = (int)styleParamA;
+  g_nQuickDrawStrokeStyleSecondary = (int)styleParamB;
+  g_bQuickDrawStrokePairDirty = 1;
+}
+
 // FUNCTION: IMPERIALISM 0x004953a0
 void ResetQuickDrawStrokeState() {
   g_nQuickDrawStrokeStylePrimary = g_Reset_Quick_Draw_Value_0064B8F0;
   g_nQuickDrawStrokeStyleSecondary = g_Reset_Quick_Draw_Value_0064B8F4;
   g_Reset_Quick_Draw_State_006A1D10 = g_Reset_Quick_Draw_WordState_0064B8F8;
-  g_bQuickDrawStrokePairDirty = 1;
-}
-
-// FUNCTION: IMPERIALISM 0x00495310
-void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short styleParamA, short styleParamB) {
-  g_nQuickDrawStrokeStylePrimary = (int)styleParamA;
-  g_nQuickDrawStrokeStyleSecondary = (int)styleParamB;
   g_bQuickDrawStrokePairDirty = 1;
 }
 
