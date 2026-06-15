@@ -2179,14 +2179,6 @@ undefined4 thunk_DestructTViewBaseState_00589240(void)
   return 0;
 }
 
-// ghidra_name TIndustryAmtBar::DrawAmt
-// ghidra_proto undefined DrawAmt()
-// FUNCTION: IMPERIALISM 0x00589340
-undefined4 DrawAmt(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructTViewBaseState
 // ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x00589790
@@ -2207,14 +2199,6 @@ undefined4 HandleTradeMovePageStepCommand(void)
 // ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x0058a000
 undefined4 thunk_DestructTViewBaseState_0058A000(void)
-{
-  return 0;
-}
-
-// ghidra_name TRailAmtBar::DrawAmt
-// ghidra_proto undefined DrawAmt()
-// FUNCTION: IMPERIALISM 0x0058a1b0
-undefined4 DrawAmt_0058A1B0(void)
 {
   return 0;
 }

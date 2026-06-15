@@ -43,11 +43,10 @@ TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 // TRailAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a020
-void TRailAmtBar::DoPostCreate(TDocument* document) {
+void TRailAmtBar::NoOpUiLifecycleHook(int arg) {
   TGreatPower* nationState = reinterpret_cast<TGreatPower**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState =
-      nationState != 0 ? GetNationTradeCityState(nationState) : 0;
+  NationCityTradeState* cityState = nationState != 0 ? GetNationTradeCityState(nationState) : 0;
   int summaryTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
 
   short recordIndex = 0;
@@ -96,11 +95,11 @@ void TRailAmtBar::DoPostCreate(TDocument* document) {
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;
-  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(reinterpret_cast<int>(document));
+  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(arg);
 }
 
-// FUNCTION: IMPERIALISM 0x0058a1c0
-void TRailAmtBar::DrawAmt() {
+// FUNCTION: IMPERIALISM 0x0058a1b0
+void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);

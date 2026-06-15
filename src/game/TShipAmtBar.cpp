@@ -41,11 +41,10 @@ TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {}
 // TShipAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058abf0
-void TShipAmtBar::DoPostCreate(TDocument* document) {
+void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
   TGreatPower* nationState = reinterpret_cast<TGreatPower**>(
       kAddrGlobalNationStates)[g_pUiRuntimeContext->GetActiveNationId()];
-  NationCityTradeState* cityState =
-      nationState != 0 ? GetNationTradeCityState(nationState) : 0;
+  NationCityTradeState* cityState = nationState != 0 ? GetNationTradeCityState(nationState) : 0;
   selectedMetricRecord = cityState->specialCommodityRecordAt190;
   short productionCap =
       *(short*)(reinterpret_cast<char*>(cityState->scenarioTradeDescriptor) + 0x1c);
@@ -53,11 +52,11 @@ void TShipAmtBar::DoPostCreate(TDocument* document) {
   auxValueA = productionCap;
   auxValueB = 0x3a;
   rangeOrMaxValue = (short)(0 / (int)productionCap);
-  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(reinterpret_cast<int>(document));
+  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0058ac80
-void TShipAmtBar::DrawAmt() {
+void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);

@@ -1055,6 +1055,7 @@ address|target_cpp|ownership|note
 5891d0|src/game/TIndustryAmtBar.cpp|manual|marker_sync
 589210|src/game/TIndustryAmtBar.cpp|manual|marker_sync
 589260|src/game/TIndustryAmtBar.cpp|manual|marker_sync
+589340|src/game/TIndustryAmtBar.cpp|manual|marker_sync
 589540|src/game/TIndustryAmtBar.cpp|manual|marker_sync
 589660|src/game/TRailCluster.cpp|manual|marker_sync
 589700|src/game/TRailCluster.cpp|manual|marker_sync
@@ -1070,6 +1071,7 @@ address|target_cpp|ownership|note
 589f90|src/game/TRailAmtBar.cpp|manual|marker_sync
 589fd0|src/game/TRailAmtBar.cpp|manual|marker_sync
 58a020|src/game/TRailAmtBar.cpp|manual|marker_sync
+58a1b0|src/game/TRailAmtBar.cpp|manual|marker_sync
 58a1c0|src/game/TRailAmtBar.cpp|manual|marker_sync
 58a3b0|src/game/TRailAmtBar.cpp|manual|marker_sync
 58a4d0|src/game/TShipyardCluster.cpp|manual|marker_sync

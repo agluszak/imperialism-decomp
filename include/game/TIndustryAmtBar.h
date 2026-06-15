@@ -13,6 +13,6 @@ public:
   // ~TIndustryAmtBar is compiler-generated (implicit virtual dtor).
   CRuntimeClass* GetRuntimeClass() override;
 
-  void DoPostCreate(struct TDocument* document);
-  void DrawAmt();
+  void NoOpUiLifecycleHook(int arg) override;
+  void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
 };
