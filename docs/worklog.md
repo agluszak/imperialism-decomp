@@ -4268,3 +4268,33 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
   expressible via normal C++ inheritance since TMinister is a 22-slot CObject subclass,
   not a TEventHandler), and slots 0x20/0x24 (shared InvokeObjectVtableMethod24 /
   HandleTurnEventVtableSlot24CopyPayloadBuffer). Same fork-vtable nature; left for later.
+
+## 2026-06-16 — Experiment: link real retail MFC (nafxcw.lib) instead of hand-rolling
+
+- Motivation: our hand-rolled CObject/CString/CPtrList/CArchive reconstruct MFC by hand.
+  The MSVC500 Docker toolchain (archaic-msvc/msvc500) ships full MFC 4.2:
+  `C:\msvc\mfc\include\afxwin.h` + `C:\msvc\mfc\lib\nafxcw.lib` (static, retail, ANSI),
+  and INCLUDE/LIB already point at them (set in docker/msvc500/entrypoint.py).
+- Feasibility (contained test, not committed):
+  - `<afx.h>` compiles under MSVC5 (cl 11.00.7022) with our flags (/GX /GR- /MT).
+  - Static MFC `nafxcw.lib` links into a minimal exe; needs the standard Win32 import
+    libs added: advapi32, shell32, comctl32, comdlg32, winspool, ole32, oleaut32, uuid.
+  - **Byte-identity confirmed**: `CObject::IsKindOf` from our nafxcw.lib is opcode-for-
+    opcode identical to the original Imperialism.exe @ 0x606fc0, differing only in the one
+    relocated `call` displacement (which reccmp normalizes). Our nafxcw.lib IS the retail
+    MFC 4.2 the game shipped with. (The "favor-size MFC" worry is moot — original linked
+    the retail lib, didn't recompile MFC source.)
+- Measured payoff (proxy over the 50 MFC-named functions in symbols.csv): 7 at 100%,
+  6 partial (8-91%), **37 "missing"/unpaired**. So ~43/50 named MFC functions would
+  improve with real MFC, plus the larger unnamed MFC surface (CString/CArchive/collection
+  internals). isle uses this exact approach: link mfc42 + `// LIBRARY:` annotations
+  (see isle/CONFIG/StdAfx.h).
+- Cost: monolithic migration. `afx.h` defines CObject/CString/CPtrList/CArchive/
+  CMapPtrToPtr together, colliding with our 16 hand-rolled C* headers; signatures have
+  diverged (our `CObject::Serialize(CArchive*)` vs MFC's `CArchive&`; AssertValidOrSlot0c
+  vs AssertValid). CObject included by 16 files, CRuntimeClass by 59, CString by 25.
+  Needs: link nafxcw + import libs (mind link order vs libcmt), drop hand-rolled C*
+  classes, retarget all overrides to MFC signatures, `// LIBRARY:` annotations, reccmp
+  project config for the MFC module. High blast radius — warrants a dedicated effort.
+- Status: experiment only; no source changes committed. Recommendation: pursue as a
+  focused migration given the quantified payoff.
