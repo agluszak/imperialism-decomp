@@ -25,7 +25,7 @@ public:
   virtual void SetTradeBidControlBitmap() override;
   virtual void SetTradeOfferControlBitmap() override;
   virtual void SetTradeOfferSecondaryBitmap() override;
-  virtual int vmethod_0115() override;
+  virtual int IsTradeControlAtMinimum() override;
   virtual void ApplyMoveValue(int value) override;
   void SetTradeToolSubcontrolEnabledStateByFlag(unsigned char enabledFlag);
 };

@@ -2,3 +2,5 @@
 - [knowledge DB / impk external](knowledge-db-impk-external.md) — RESOLVED: class-discovery now runs in-repo via impk_compat, no sibling repo
 - [repo layout: skills + vendor](repo-layout-skills-and-vendor.md) — docs consolidated into AGENTS.md + .claude/skills/; Ghidra/Mac assets vendored; imperialism_knowledge dropped
 - [TMission vtable layout ground truth](tmission-vtable-layout-ground-truth.md) — 48-slot abstract base + paired MissionOrderPrioritizer companion vtables; exact rdata order; inheritance confirmed
+- [vtable easy-wins session 2026-06-15](vtable-easy-wins-session.md) — 8 classes to 100% (84→76); GetRuntimeClass/scalar-dtor/non-virtual-override patterns + remaining-work map
+- [TUberCluster vtable reconstruction](tubercluster-vtable-reconstruction.md) — NOT bloated; abstract NULL tail 0x1d0-0x22c + 3 entangled mismatches; open MSVC500 NULL-slot question

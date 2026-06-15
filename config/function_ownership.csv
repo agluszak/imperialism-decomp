@@ -310,8 +310,10 @@ address|target_cpp|ownership|note
 48f870|src/game/TStaticText.cpp|manual|marker_sync
 48f890|src/game/TStaticText.cpp|manual|marker_sync
 48f9a0|src/game/TStaticText.cpp|manual|marker_sync
+4913e0|src/game/TCluster.cpp|manual|marker_sync
 491400|src/game/TCluster.cpp|manual|marker_sync
 491480|src/game/TCluster.cpp|manual|marker_sync
+491650|src/game/TCluster.cpp|manual|marker_sync
 491770|src/game/TCluster.cpp|manual|marker_sync
 491790|src/game/TCluster.cpp|manual|marker_sync
 4918a0|src/game/TCluster.cpp|manual|marker_sync
@@ -948,6 +950,7 @@ address|target_cpp|ownership|note
 571440|src/game/TUberCluster.cpp|manual|marker_sync
 571460|src/game/TUberCluster.cpp|manual|marker_sync
 571490|src/game/TUberCluster.cpp|manual|marker_sync
+5714e0|src/game/TUberCluster.cpp|manual|marker_sync
 571620|src/game/TCivilianButton.cpp|manual|marker_sync
 5716b0|src/game/TCivilianButton.cpp|manual|marker_sync
 5717c0|src/game/TRadioPictureButton.cpp|manual|marker_sync

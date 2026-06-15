@@ -843,14 +843,6 @@ undefined4 CreateTClusterInstance(void)
   return 0;
 }
 
-// ghidra_name TCluster::GetTClusterClassNamePointer
-// ghidra_proto undefined GetTClusterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004913e0
-undefined4 GetTClusterClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTClusterAndMaybeFree_Impl
 // ghidra_proto undefined DestructTClusterAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004914b0
@@ -863,14 +855,6 @@ undefined4 DestructTClusterAndMaybeFree_Impl(void)
 // ghidra_proto undefined OrphanCallChain_C1_I31_004915d0()
 // FUNCTION: IMPERIALISM 0x004915d0
 undefined4 OrphanCallChain_C1_I31_004915d0(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapEditCluster::DispatchPanelControlEvent
-// ghidra_proto void __thiscall DispatchPanelControlEvent(int nEventClass, void * pEventPayload, int nEventFlags)
-// FUNCTION: IMPERIALISM 0x00491650
-undefined4 DispatchPanelControlEvent(void)
 {
   return 0;
 }

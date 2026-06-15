@@ -170,7 +170,7 @@ void TTradeCluster::InitializeTradeSellControlState(unsigned int styleSeed) {
 // Returns early if UI mode is outside trade range (>3); otherwise reports
 // whether the current Sell control quantity is at its minimum.
 // FUNCTION: IMPERIALISM 0x00587900
-int TTradeCluster::vmethod_0115() {
+int TTradeCluster::IsTradeControlAtMinimum() {
   if (QueryUiScreenModeRaw(g_pUiRuntimeContext) > 3) {
     return 0;
   }

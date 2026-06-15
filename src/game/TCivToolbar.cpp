@@ -19,15 +19,14 @@ extern "C" {
 CRuntimeClass g_pClassDescTCivToolbar = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 #define GAME_ASSERT(cond, line)                                                                    \
   if (!(cond)) {                                                                                   \
     GAME_FAIL_NIL_POINTER();                                                                       \
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(                                           \
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(                                         \
-        "D:\\Ambit\\Cross\\USmallViews.cpp", line);                                                \
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(                                            \
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\Cross\\USmallViews.cpp",   \
+                                                            line);                                 \
   }
 
 undefined4 ShowCivilianLedgerDialogAndSelectUnit(void);
@@ -200,7 +199,8 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
     if ((kTagStackSlotMin <= static_cast<unsigned int>(eventPayload->controlTag)) &&
         (static_cast<unsigned int>(eventPayload->controlTag) <= kTagStackSlotMax)) {
       selectedCivilianOrderState->SetActiveCivilianSelection(eventPayload->selectedEntryContext, 0);
-      this->DispatchPanelControlEvent(0xc, eventPayload, eventFlags);
+      this->TCluster::HandleEvent(0xc, reinterpret_cast<TEventHandler*>(eventPayload),
+                                  reinterpret_cast<TEvent*>(eventFlags));
       return;
     }
   } else if (commandId == 10) {
@@ -208,12 +208,14 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
     if (controlTag < 0x646f6e6f) {
       if (controlTag == kTagDone) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(4);
-        this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
+        this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
+                                    reinterpret_cast<TEvent*>(eventFlags));
         return;
       }
       if (controlTag == kTagDefend) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(2);
-        this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
+        this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
+                                    reinterpret_cast<TEvent*>(eventFlags));
         return;
       }
     } else {
@@ -221,26 +223,28 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
         unsigned short ctrlState = (unsigned short)GetAsyncKeyState(0x11);
         if ((ctrlState & 0x8000) != 0) {
           ShowCivilianLedgerDialogAndSelectUnit();
-          this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
+          this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
+                                      reinterpret_cast<TEvent*>(eventFlags));
           return;
         }
         selectedCivilianOrderState->ShowDisbandCivilianConfirmationDialog();
       } else if (controlTag == kTagLater) {
         selectedCivilianOrderState->QueueImmediateCivilianCommandAndCycleSelection(3);
-        this->DispatchPanelControlEvent(10, eventPayload, eventFlags);
+        this->TCluster::HandleEvent(10, reinterpret_cast<TEventHandler*>(eventPayload),
+                                    reinterpret_cast<TEvent*>(eventFlags));
         return;
       }
     }
   }
-  this->DispatchPanelControlEvent(commandId, eventPayload, eventFlags);
+  this->TCluster::HandleEvent(commandId, reinterpret_cast<TEventHandler*>(eventPayload),
+                              reinterpret_cast<TEvent*>(eventFlags));
 }
 
 undefined4 CycleMapInteractionSelectionAfterHandledClick(void);
 
 void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick() {
   typedef void (*CycleMapInteractionDispatch)(TCivToolbar*);
-  CycleMapInteractionDispatch dispatch =
-      reinterpret_cast<CycleMapInteractionDispatch>(
-          ::CycleMapInteractionSelectionAfterHandledClick);
+  CycleMapInteractionDispatch dispatch = reinterpret_cast<CycleMapInteractionDispatch>(
+      ::CycleMapInteractionSelectionAfterHandledClick);
   dispatch(this);
 }

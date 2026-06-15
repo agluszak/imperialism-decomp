@@ -23,8 +23,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTProductionCluster = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-undefined4 thunk_DispatchPanelControlEvent(void);
-
 // FUNCTION: IMPERIALISM 0x00586840
 TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {
   TProductionCluster* cluster = reinterpret_cast<TProductionCluster*>(
@@ -69,8 +67,8 @@ void TProductionCluster::HandleValuePanelSplitArrowCommand(int commandId, void* 
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      this, commandId, eventArg, eventExtra);
+  this->TCluster::HandleEvent(commandId, reinterpret_cast<TEventHandler*>(eventArg),
+                              reinterpret_cast<TEvent*>(eventExtra));
 }
 
 // FUNCTION: IMPERIALISM 0x00586a60

@@ -24,7 +24,6 @@ char g_vtblTUnitToolbarCluster = 0;
 #include "game/CRuntimeClass.h"
 
 undefined4 thunk_DestructEngineerDialogBaseState(void);
-undefined4 thunk_DispatchPanelControlEvent(void);
 
 // FUNCTION: IMPERIALISM 0x00585f70
 TUnitToolbarCluster* TUnitToolbarCluster::CreateInstance() {
@@ -52,8 +51,8 @@ void* TUnitToolbarCluster::DestructAndMaybeFree(int freeSelfFlag) {
 
 // FUNCTION: IMPERIALISM 0x00586090
 void TUnitToolbarCluster::DispatchEvent(int eventClass, void* eventPayload, int eventFlags) {
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      this, eventClass, eventPayload, eventFlags);
+  this->TCluster::HandleEvent(eventClass, reinterpret_cast<TEventHandler*>(eventPayload),
+                              reinterpret_cast<TEvent*>(eventFlags));
 
   if (!(((g_pApplicationUiRootController->screenModeAt24 == 1) && (eventClass == 0x68)) ||
         (eventClass == 0x67) || (eventClass == 10) || (eventClass == 0x0c))) {

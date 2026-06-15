@@ -67,14 +67,6 @@ undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void)
   return 0;
 }
 
-// ghidra_name TMapEditCluster::thunk_DispatchPanelControlEvent
-// ghidra_proto void __thiscall thunk_DispatchPanelControlEvent(int nEventClass, void * pEventPayload, int nEventFlags)
-// FUNCTION: IMPERIALISM 0x004023ab
-undefined4 thunk_DispatchPanelControlEvent(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_InitializeCityProductionState
 // ghidra_proto undefined thunk_InitializeCityProductionState()
 // FUNCTION: IMPERIALISM 0x004023d3

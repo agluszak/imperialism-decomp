@@ -17,7 +17,12 @@
 
 #include "decomp_types.h"
 
-undefined4 thunk_DispatchPanelControlEvent(void);
+extern "C" CRuntimeClass PTR_s_TCluster_006496c0;
+
+// FUNCTION: IMPERIALISM 0x004913e0
+CRuntimeClass* TCluster::GetRuntimeClass() {
+  return &PTR_s_TCluster_006496c0;
+}
 
 // FUNCTION: IMPERIALISM 0x00491400
 TCluster::TCluster() {
@@ -27,6 +32,42 @@ TCluster::TCluster() {
 
 // SYNTHETIC: IMPERIALISM 0x00491480
 // TCluster::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00491650
+void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0xc &&
+      reinterpret_cast<TView*>(sourceHandler)->ownerContext == reinterpret_cast<TView*>(this)) {
+    CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
+    while (node != 0) {
+      TControl* sibling = reinterpret_cast<TControl*>(node->data);
+      node = node->next;
+      if (sibling == 0) {
+        break;
+      }
+      if (reinterpret_cast<TEventHandler*>(sibling) != sourceHandler) {
+        sibling->DispatchEvent(0x20, this, 0);
+      }
+    }
+    field84 = sourceHandler->controlTag;
+  }
+
+  if (commandId == 0x1f) {
+    SetControlStateFlagAndMaybeRefresh(true, true);
+    return;
+  }
+  if (commandId == 0x20) {
+    SetControlStateFlagAndMaybeRefresh(false, true);
+    return;
+  }
+  if (commandId == 0x21) {
+    SetControlStateFlagAndMaybeRefresh(commandTagResourceByte == 0, true);
+    return;
+  }
+  TView* child = reinterpret_cast<TView*>(QueryStepValue());
+  if (child != 0) {
+    child->DispatchEvent(commandId, sourceHandler, event);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00491770
 int TCluster::GetField84() {
@@ -60,9 +101,4 @@ void* TCluster::CloneEngineerDialogStateToNewInstance() {
   clone->CopyCityDialogStateFromSource(this);
   clone->field84 = this->field84;
   return clone;
-}
-
-void TCluster::DispatchPanelControlEvent(int eventClass, void* eventPayload, int eventFlags) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      this, 0, eventClass, eventPayload, eventFlags);
 }

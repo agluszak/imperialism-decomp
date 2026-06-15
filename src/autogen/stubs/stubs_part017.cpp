@@ -2803,14 +2803,6 @@ undefined4 HandleToggleButtonStateChangeAndRefresh(void)
   return 0;
 }
 
-// ghidra_name OrphanVtableAssignStub_005714e0
-// ghidra_proto undefined OrphanVtableAssignStub_005714e0()
-// FUNCTION: IMPERIALISM 0x005714e0
-undefined4 OrphanVtableAssignStub_005714e0(void)
-{
-  return 0;
-}
-
 // ghidra_name CreatePictureScreenResourceEntry
 // ghidra_proto undefined CreatePictureScreenResourceEntry()
 // FUNCTION: IMPERIALISM 0x00571500

@@ -20,7 +20,6 @@ CRuntimeClass g_pClassDescTUberCluster = {nullptr, 0, 0, nullptr, nullptr};
 extern void FailNilPointerInUSmallViews(int line);
 extern const int kAssertLineMoveBarInitNil;
 undefined4 thunk_BuildUiTextStyleDescriptor(void);
-undefined4 thunk_DispatchPanelControlEvent(void);
 #include "game/TAmtBar.h"
 #include "game/ui_widget_thunks.h"
 #include "game/TUberCluster.h"
@@ -46,11 +45,13 @@ CRuntimeClass* TUberCluster::GetRuntimeClass() {
 // FUNCTION: IMPERIALISM 0x00571460
 TUberCluster::TUberCluster() : TCluster() {}
 
-// FUNCTION: IMPERIALISM 0x00571490
-TUberCluster::~TUberCluster() {}
+// The scalar deleting destructor is compiler-generated from the inherited virtual dtor.
+// SYNTHETIC: IMPERIALISM 0x00571490
+// TUberCluster::`scalar deleting destructor'
 
-int TUberCluster::vmethod_0115() {
-  return 0;
+// FUNCTION: IMPERIALISM 0x005714e0
+int TUberCluster::IsTradeControlAtMinimum() {
+  return 1;
 }
 void TUberCluster::ApplyMoveValue(int value) {}
 int TUberCluster::NotifyControlSelectionChange(void* boundEntry, int arg2) {
@@ -69,12 +70,11 @@ void TUberCluster::SetTradeOfferSecondaryBitmap() {}
 
 // FUNCTION: IMPERIALISM 0x00586d60
 void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
-  TAmtBar* moveControl =
-      reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   unsigned int styleDescriptor = styleSeed & 0xffff0000U;
   if (moveControl != 0) {
-    reinterpret_cast<void(__cdecl*)(int, unsigned int*, int, int)>(thunk_BuildUiTextStyleDescriptor)(
-        0, &styleDescriptor, 0xa, 0x2b67);
+    reinterpret_cast<void(__cdecl*)(int, unsigned int*, int, int)>(
+        thunk_BuildUiTextStyleDescriptor)(0, &styleDescriptor, 0xa, 0x2b67);
     moveControl->ApplyStyleDescriptor(&styleDescriptor, 0);
     moveControl->SetStyleState(-2, 0);
   }
@@ -117,6 +117,6 @@ void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventAr
       this->ApplyMoveValue(moveValue - 1);
     }
   }
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, int)>(thunk_DispatchPanelControlEvent)(
-      this, commandId, eventArg, eventExtra);
+  this->TCluster::HandleEvent(commandId, reinterpret_cast<TEventHandler*>(eventArg),
+                              reinterpret_cast<TEvent*>(eventExtra));
 }
