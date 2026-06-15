@@ -115,7 +115,7 @@ TTradeCluster::TTradeCluster() : TUberCluster() {}
 // Initializes Sell/Bar/Arrow control style and enabled state for the current
 // nation/resource context, then initializes the move/bar controls baseline.
 // FUNCTION: IMPERIALISM 0x00587130
-void TTradeCluster::InitializeTradeSellControlState(unsigned int styleSeed) {
+void TTradeCluster::NoOpUiLifecycleHook(int styleSeed) {
   TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl != 0) {
     int styleDescriptor[5];

@@ -34,11 +34,12 @@ undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 const unsigned int kAddrDecimalFormat = 0x0069430C;
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
-void TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow() {
+void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
   CString sharedStringRef;
   int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
 
-  ApplyRectSlot110(nullptr);
+  TPictureResourceEntryBase::ApplyRectSlot110(nullptr);
 
   if (this->glyph90 != 0) {
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
@@ -48,9 +49,8 @@ void TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow() {
 
     short textWidth = static_cast<short>(
         reinterpret_cast<int(__cdecl*)()>(thunk_MeasureTextExtentWithCachedQuickDrawStyle)());
-    short textX =
-        static_cast<short>(*reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x34) -
-                           textWidth);
+    short textX = static_cast<short>(
+        *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x34) - textWidth);
     short textY =
         static_cast<short>(*reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x38) - 2);
 

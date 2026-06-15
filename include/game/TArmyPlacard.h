@@ -15,5 +15,5 @@ public:
 
   void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bc20();
   void RenderArmyPlacardWithShadow();
-  void RenderRightAlignedNumericOverlayWithShadow();
+  void ApplyRectSlot110(RECT* rectBuffer) override; // 0x110 0x58bfe0
 };
