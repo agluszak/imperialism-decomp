@@ -2235,46 +2235,6 @@ undefined4 thunk_DestructTViewBaseState_0058AF60(void)
   return 0;
 }
 
-// ghidra_name THQButton::InvokeSlot1CCIfSlot28Enabled
-// ghidra_proto undefined InvokeSlot1CCIfSlot28Enabled()
-// FUNCTION: IMPERIALISM 0x0058b890
-undefined4 InvokeSlot1CCIfSlot28Enabled(void)
-{
-  return 0;
-}
-
-// ghidra_name TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
-// ghidra_proto undefined WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50()
-// FUNCTION: IMPERIALISM 0x0058bb50
-undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildCombatReportLossesSummaryText
-// ghidra_proto undefined BuildCombatReportLossesSummaryText()
-// FUNCTION: IMPERIALISM 0x0058c950
-undefined4 BuildCombatReportLossesSummaryText(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderBoundedValueProgressWithStyledOverlayText
-// ghidra_proto undefined RenderBoundedValueProgressWithStyledOverlayText()
-// FUNCTION: IMPERIALISM 0x0058d2b0
-undefined4 RenderBoundedValueProgressWithStyledOverlayText(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberedArrowButton::HandleCombatReportPageNavigationAndRefreshText
-// ghidra_proto undefined HandleCombatReportPageNavigationAndRefreshText()
-// FUNCTION: IMPERIALISM 0x0058d950
-undefined4 HandleCombatReportPageNavigationAndRefreshText(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60
 // ghidra_proto undefined Helper_Uses_WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650_At0058df60()
 // FUNCTION: IMPERIALISM 0x0058df60
@@ -2295,22 +2255,6 @@ undefined4 RenderBattleOutcomeHeaderWinnerLoserLines(void)
 // ghidra_proto void __fastcall RenderCivilianTargetProfilePanel(int * pPanelContext)
 // FUNCTION: IMPERIALISM 0x005903c0
 undefined4 RenderCivilianTargetProfilePanel(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::RefreshArmyInfoViewTextAndStyleDescriptors
-// ghidra_proto undefined RefreshArmyInfoViewTextAndStyleDescriptors()
-// FUNCTION: IMPERIALISM 0x00591620
-undefined4 RefreshArmyInfoViewTextAndStyleDescriptors(void)
-{
-  return 0;
-}
-
-// ghidra_name TTransportPicture::RenderTransportPictureGaugeAndLabels
-// ghidra_proto undefined RenderTransportPictureGaugeAndLabels()
-// FUNCTION: IMPERIALISM 0x005921c0
-undefined4 RenderTransportPictureGaugeAndLabels(void)
 {
   return 0;
 }

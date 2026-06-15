@@ -1,14 +1,16 @@
 #pragma once
 
-#include "game/TPictureButton.h"
+#include "game/TPictureResourceEntryBase.h"
 
 extern "C" int g_vtblTHQButton;
 struct CRuntimeClass;
 extern "C" CRuntimeClass g_pClassDescTHQButton;
 
 // VTABLE: IMPERIALISM 0x666fe0
-class THQButton : public TPictureButton {
+class THQButton : public TPictureResourceEntryBase {
 public:
+  short glyph90;
+  short timingWord92;
   short glyph94;
   short glyph96;
   short glyph98;
@@ -21,4 +23,5 @@ public:
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void NoOpUiLifecycleHook(int arg) override;
   void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
+  bool IsSelected(short value = -1, bool refreshNow = true) override;
 };

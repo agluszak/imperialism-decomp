@@ -24,9 +24,8 @@ TCivReport::TCivReport() : TPictureResourceEntryBase() {}
 // TCivReport::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00590cb0
-void __fastcall BuildCivReportNationEntryDetailTextBlock(TCivReport* context, int unusedEdx,
-                                                         void* arg1) {
-  (void)unusedEdx;
-  (void)context;
-  (void)arg1;
+bool TCivReport::IsSelected(short value, bool refreshNow) {
+  (void)value;
+  (void)refreshNow;
+  return false;
 }

@@ -4139,3 +4139,24 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
     null abstract tail, and picture-resource slot-0x1cc overrides.
   - `just gates` and `just format-check include/game/TTextList.h src/game/TTextList.cpp
     include/game/TCombatReportView.h` pass.
+
+## 2026-06-15 — Picture-resource vtable slot batch
+
+- Goal: Tackle picture-resource vtable failures as a family before moving to stream classes.
+- Changes:
+  - Promoted class-specific slot `0x1cc` bodies to real `IsSelected(short,bool)`
+    overrides for `THQButton`, `TPlacard`, `TCombatReportView`, `TCivReport`,
+    `TArmyInfoView`, and `TTransportPicture`, with matching `symbols.csv` renames.
+  - Corrected `THQButton`, `TPlacard`, and `TCombatReportView` to inherit directly from
+    `TPictureResourceEntryBase` with local fields preserving the `0x90+` layout. Ghidra
+    constructor evidence shows these classes call the picture-resource base constructor
+    (`0x00401122` -> `0x0048efc0`) and then install their own vtables, so inheriting
+    `TPictureButton` was incorrectly forcing slots `0x11c` and `0x1c0`.
+- Verification:
+  - `just build` and `just detect` pass.
+  - `just vtable THQButton`, `TPlacard`, `TCombatReportView`, `TCivReport`,
+    `TArmyInfoView`, and `TTransportPicture` are 100%.
+  - Full `just vtable` improves to 99 found / 65 not matching. `TWarningView` remains
+    as a separate null-tail case: original slot `0x1cc` is null while normal C++ inheritance
+    emits `TPictureResourceEntryBase::IsSelected`.
+  - `just gates` and format-check for touched picture-resource files pass.

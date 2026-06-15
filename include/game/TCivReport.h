@@ -10,6 +10,7 @@ public:
   TCivReport();
   CRuntimeClass* GetRuntimeClass() override;
   // ~TCivReport is compiler-generated (implicit virtual dtor).
+  bool IsSelected(short value = -1, bool refreshNow = true) override;
 };
 
 ASSERT_SIZE(TCivReport, 0x90);

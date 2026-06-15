@@ -19,6 +19,7 @@ public:
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
+  bool IsSelected(short value = -1, bool refreshNow = true) override;
 };
 
 ASSERT_SIZE(TTransportPicture, 0x9c);

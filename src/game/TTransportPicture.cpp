@@ -56,8 +56,7 @@ void TTransportPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
     }
     bool changed = false;
     if (commandId == 100) {
-      if (metricA < metricB &&
-          *reinterpret_cast<short*>(nationBytes + 0xa6) != metricA) {
+      if (metricA < metricB && *reinterpret_cast<short*>(nationBytes + 0xa6) != metricA) {
         splitValue94 = (short)(metricA + 1);
         changed = true;
       }
@@ -71,6 +70,13 @@ void TTransportPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
     return;
   }
   TControl::HandleEvent(commandId, sourceHandler, event);
+}
+
+// FUNCTION: IMPERIALISM 0x005921c0
+bool TTransportPicture::IsSelected(short value, bool refreshNow) {
+  (void)value;
+  (void)refreshNow;
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x00592830

@@ -22,7 +22,7 @@ CRuntimeClass* THQButton::GetRuntimeClass() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b660
-THQButton::THQButton() : TPictureButton() {}
+THQButton::THQButton() : TPictureResourceEntryBase() {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x0058b690
@@ -92,6 +92,14 @@ void THQButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent*
     return;
   }
   control->InvokeSlot1CC(1, 1);
+}
+
+// FUNCTION: IMPERIALISM 0x0058b890
+bool THQButton::IsSelected(short value, bool refreshNow) {
+  if (GetBoolSlot28()) {
+    SetControlStateFlagAndMaybeRefresh(value != 0, refreshNow);
+  }
+  return commandTagResourceByte != 0;
 }
 
 #if defined(_MSC_VER)

@@ -17,7 +17,7 @@ CRuntimeClass* TPlacard::GetRuntimeClass() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ba10
-TPlacard::TPlacard() : TPictureButton() {
+TPlacard::TPlacard() : TPictureResourceEntryBase() {
   this->glyph90 = 0;
 }
 
@@ -35,12 +35,33 @@ void TPlacard::NoOpUiLifecycleHook(int arg) {
   SetState(1, 1);
 }
 
+// FUNCTION: IMPERIALISM 0x0058bb50
+bool TPlacard::IsSelected(short value, bool refreshNow) {
+  if (value != glyph90) {
+    if (value == 0) {
+      SetState(0, refreshNow);
+    } else if (glyph90 == 0) {
+      SetState(1, refreshNow);
+    }
+    glyph90 = value;
+    if (refreshNow) {
+      RECT rect;
+      rect.top = field38 - 0xc;
+      rect.left = static_cast<short>((field34 / 2) - 10);
+      rect.right = rect.left + 0x14;
+      rect.bottom = field38 - 1;
+      InvalidateCityDialogRectRegion(&rect, 1);
+    }
+  }
+  return glyph90 != 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0058bc60
 void TPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   TPictureResourceEntryBase::ApplyRectSlot110(nullptr);
   reinterpret_cast<void(__cdecl*)(int, int)>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0,
-                                                                                                 10);
+                                                                                                10);
   if (glyph90 < 10) {
     SetQuickDrawTextOrigin(field34 / 2 - 2, 0);
   } else if (glyph90 < 100) {
