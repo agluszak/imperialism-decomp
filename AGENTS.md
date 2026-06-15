@@ -44,6 +44,23 @@ starting that kind of task.
   `__cdecl`/`__fastcall`/`__thiscall` label as a hypothesis to verify against the
   assembly, never as ground truth.
 
+### reccmp verification & comparison commands
+
+Each wraps a `uv run reccmp-*` tool via a `just` target (Hard Rule 2 — prefer the
+target). They need a built binary + reccmp DB.
+
+- `just gates` — the pre-commit mechanical source-policy gates. Now also runs
+  `uv run reccmp-decomplint` (annotation linting: marker syntax, duplicate addresses,
+  stray markers) via the `just decomplint` target.
+- `just vtable [Name]` (`uv run reccmp-vtable`) — assert virtual-table correctness
+  against the original; optionally filter by class-name substring.
+- `just datacmp [-a]` (`uv run reccmp-datacmp`) — compare global data values between
+  the original and the recompiled binary.
+- `just roadmap` (`uv run reccmp-roadmap`) — compare symbol locations (functions,
+  vtables, data) between original and recompiled.
+- `just stackcmp 0xADDR` (`uv run reccmp-stackcmp`) — compare the stack layout of a
+  single near-matching function.
+
 ## Hard Rules
 
 1. No inline assembly. (enforced by `just antipattern-gate`)

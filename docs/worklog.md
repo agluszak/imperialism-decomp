@@ -4061,3 +4061,25 @@ fails on any unmatched. Also fixed the same leading-zero bug in the
 `annotate_globals_from_symbols.py` VTABLE-address guard.
 
 Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/bugs.
+
+## 2026-06-15 — Add reccmp tooling to gates; pragma-safe reorder of TGreatPower
+
+- justfile: added `decomplint`, `datacmp`, `roadmap`, `stackcmp` targets (wrapping
+  `reccmp-decomplint/-datacmp/-roadmap/-stackcmp`); wired `decomplint` into `just gates`.
+  Documented all in AGENTS.md/CLAUDE.md.
+- `just gates` then surfaced 20 `function_out_of_order` errors in `src/game/TGreatPower.cpp`
+  (markers not in ascending-address order; decomplint skips folded fns).
+- Fix: hoisted interleaved file-scope helpers/types/`extern`/thunk decls
+  (`UiRuntime_QueueTurnStatusPrompt`, `TCommodityRecordStepView`, `TrackedSlotEntryPacket`,
+  `IsRecruitQuarterTickGate`, `ActiveMapOrderContext`, `GreatPower_HomeRegionIndex88`,
+  `kUCountryCppPath`, `kOne`, the Classify/Rebuild externs, `TMapOrderContext.h`) into the
+  pre-marker preamble so block reordering can't move a definition below its use.
+- Upgraded `tools/workflow/reorder_marked_functions.py` to be **pragma-aware**: it now
+  tracks the ambient `#pragma optimize("y"/"" , on)` state and re-emits boundary pragmas in
+  the sorted output. The old naive reorder broke section-spanning optimize regions, making
+  ~3 functions lose frame-pointer omission (real regressions). With the fix, FPO is
+  preserved.
+- Result: gates pass; build OK; decomplint clean. Score delta vs HEAD on TGreatPower:
+  34→33 raw 100% — the single move is reccmp pairing/credit reshuffle within the identical-
+  shaped ComputeMinisterSkillFloatSlot88–8C sibling cluster (no FPO/correctness change);
+  `0x004dbac0` differs only by a commutative `cmp [a+b]`/`[b+a]` flip = 100% effective.

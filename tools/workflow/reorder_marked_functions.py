@@ -18,6 +18,15 @@ MARKER_RE = re.compile(
     r"^\s*// (?P<kind>FUNCTION|SYNTHETIC|STUB|LIBRARY|TEMPLATE): (?P<module>\w+) 0x(?P<offset>[0-9a-fA-F]+)"
 )
 
+# `#pragma optimize("...", on)` lines establish the governing optimization state
+# (notably "y" = frame-pointer omission) for every function that follows until the
+# next such pragma. Section-spanning regions would otherwise be silently broken by
+# reordering — moving a function out of its region changes its codegen (e.g. it
+# regains a frame pointer and stops matching). We track this "ambient" state so each
+# function keeps the exact optimize state it had, by re-emitting boundary pragmas in
+# the sorted output.
+PRAGMA_RE = re.compile(r'^\s*#pragma optimize\("(?P<arg>[^"]*)", on\)\s*$')
+
 
 @dataclass(frozen=True)
 class FunctionBlock:
@@ -25,6 +34,8 @@ class FunctionBlock:
     offset: int
     ordinal: int
     lines: tuple[str, ...]
+    entry_state: str = ""
+    exit_state: str = ""
 
 
 def split_markers(lines: list[str]) -> list[tuple[str, int, int, str]] | None:
@@ -117,6 +128,19 @@ def reorder_file(path: Path, *, dry_run: bool) -> bool:
     block_starts = find_block_starts(lines, marker_indexes)
     prefix = lines[: block_starts[0]]
 
+    # Prefix sum of the optimize state after each line, so we can read the ambient
+    # state at any block boundary in O(1).
+    ambient_after: list[str] = []
+    state = ""
+    for line in lines:
+        match = PRAGMA_RE.match(line)
+        if match is not None:
+            state = match.group("arg")
+        ambient_after.append(state)
+
+    def ambient_at(index: int) -> str:
+        return ambient_after[index - 1] if index > 0 else ""
+
     blocks: list[FunctionBlock] = []
     normalized = False
     for ordinal, ((module, offset, _marker_index, kind), start) in enumerate(zip(markers, block_starts)):
@@ -130,6 +154,8 @@ def reorder_file(path: Path, *, dry_run: bool) -> bool:
                 offset=offset,
                 ordinal=ordinal,
                 lines=normalized_lines,
+                entry_state=ambient_at(start),
+                exit_state=ambient_at(end),
             )
         )
 
@@ -139,8 +165,13 @@ def reorder_file(path: Path, *, dry_run: bool) -> bool:
         return False
 
     new_lines: list[str] = list(prefix)
+    running_state = ambient_at(block_starts[0])
     for block in sorted_blocks:
+        if running_state != block.entry_state:
+            new_lines.append('#pragma optimize("%s", on)\n' % block.entry_state)
+            running_state = block.entry_state
         new_lines.extend(block.lines)
+        running_state = block.exit_state
 
     new_text = "".join(new_lines)
     if new_text == text:

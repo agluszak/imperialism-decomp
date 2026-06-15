@@ -162,6 +162,12 @@ gates:
   just marker-gate
   just vtable-annotation-gate
   just vtable-collision-gate
+  just decomplint
+
+# Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)
+# for syntax errors, duplicate addresses, and stray markers.
+decomplint:
+  (cd "{{build_dir}}" && uv run reccmp-decomplint --target "{{target}}")
 
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500
@@ -227,6 +233,23 @@ vtable *args:
     args=("${args[@]:1}")
   fi
   (cd "{{build_dir}}" && uv run reccmp-vtable --target "{{target}}" "${extra[@]}" "${args[@]}")
+
+# Compare global data values against the original.
+#   just datacmp          -> all globals (only ones with a problem)
+#   just datacmp -a       -> include matching globals; pass through reccmp-datacmp flags
+datacmp *args:
+  (cd "{{build_dir}}" && uv run reccmp-datacmp --target "{{target}}" {{args}})
+
+# Compare symbol locations (functions, vtables, data) between original and recompiled.
+#   just roadmap          -> full roadmap
+#   just roadmap -v       -> pass through reccmp-roadmap flags
+roadmap *args:
+  (cd "{{build_dir}}" && uv run reccmp-roadmap --target "{{target}}" {{args}})
+
+# Compare the stack layout of a single near-matching function.
+#   just stackcmp 0xADDR
+stackcmp addr *args:
+  (cd "{{build_dir}}" && uv run reccmp-stackcmp --target "{{target}}" {{args}} "{{addr}}")
 
 compare-canaries:
   uv run python -m tools.reccmp.compare_canaries --target "{{target}}" --build-dir "{{build_dir}}" --canary-csv "{{canary_targets}}"
