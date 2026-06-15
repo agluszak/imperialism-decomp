@@ -1555,14 +1555,6 @@ undefined4 CDocument(void)
   return 0;
 }
 
-// ghidra_name CDocument::DestructCDocumentBaseState
-// ghidra_proto undefined DestructCDocumentBaseState()
-// FUNCTION: IMPERIALISM 0x006109eb
-undefined4 DestructCDocumentBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchViaVtableSlot84FromSlot06
 // ghidra_proto undefined DispatchViaVtableSlot84FromSlot06()
 // FUNCTION: IMPERIALISM 0x00610a57
@@ -2007,14 +1999,6 @@ undefined4 afxMapHIMAGELIST_6139c6(void)
 // ghidra_proto undefined FromHandle_613a36()
 // FUNCTION: IMPERIALISM 0x00613a36
 undefined4 FromHandle_613a36(void)
-{
-  return 0;
-}
-
-// ghidra_name CBrush::AttachRegionHandleToClipStateAndRegister
-// ghidra_proto undefined AttachRegionHandleToClipStateAndRegister()
-// FUNCTION: IMPERIALISM 0x00613a4c
-undefined4 AttachRegionHandleToClipStateAndRegister(void)
 {
   return 0;
 }

@@ -23,8 +23,8 @@ void TSortedPtrList::ResetPtrListAndShrinkCapacity() {
 
 // FUNCTION: IMPERIALISM 0x00488160
 void* __fastcall GetPtrListEntryByOneBasedIndex(TSortedPtrList* self, int, int oneBasedIndex) {
-  if (oneBasedIndex <= self->count) {
-    return self->entries[oneBasedIndex - 1];
+  if (oneBasedIndex <= self->GetSize()) {
+    return self->GetAt(oneBasedIndex - 1);
   }
   return 0;
 }

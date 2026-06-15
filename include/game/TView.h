@@ -4,7 +4,7 @@
 #include "decomp_types.h"
 #include "game/TEventHandler.h"
 #include "game/CString.h"
-#include "game/TViewNativeWindow.h"
+#include "game/mfc.h"
 #include "game/CPtrList.h"
 #include "game/Point32.h"
 #include "game/win_rect.h"
@@ -32,7 +32,7 @@ public:
   unsigned char flag4c;
   unsigned char flag4d;
   unsigned short field4e;
-  TViewNativeWindow* nativeWindow50; // 0x50 — host window (HWND at +0x1c)
+  CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
   unsigned short field54;
   unsigned char padding_56_to_57[0x02];
   CString sharedStringRef;
@@ -42,7 +42,7 @@ public:
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyCityDialogStateFromSource(TView* source);
   void EnableAndProcessFlag(const CString& sharedString);
-  void PropagateUiResourceContextRecursive(TViewNativeWindow* nativeWindow);
+  void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   virtual CRuntimeClass* GetRuntimeClass() const override;              // 0x00 0x48a8c0 (override)

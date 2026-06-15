@@ -319,7 +319,7 @@ template <typename T> static __inline void ReleaseAndClear1C(T** slot) {
 }
 
 static __inline int CPtrArray_GetCount(const CPtrArray* list) {
-  return list->count;
+  return list->GetSize();
 }
 
 static __inline short IndexAndRankList_GetShortValueByOrdinal1Based(TIndexAndRankList* list,
@@ -845,7 +845,7 @@ void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         do {
           reinterpret_cast<void(__cdecl*)(void*, int)>(thunk_GenerateMappedFlavorTextByTableSlot)(
               &flavorName, this->nationSlot);
-        } while (flavorName.Length() > 0xf - flavorBase.Length());
+        } while (flavorName.GetLength() > 0xf - flavorBase.GetLength());
         CString withSeparator = flavorBase + CString(" ");
         CString fullName = withSeparator + flavorName;
         flavorName = fullName;

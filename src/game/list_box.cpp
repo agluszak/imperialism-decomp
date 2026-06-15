@@ -23,7 +23,8 @@ inline HWND PrepareDdxControl(CDataExchange* pDX, undefined4 nIDC) {
 void __stdcall DDX_LBString(CDataExchange* pDX, undefined4 nIDC, CString* value) {
   HWND listbox = PrepareDdxControl(pDX, nIDC);
   if (pDX->m_bSaveAndValidate == 0) {
-    SendMessageA(listbox, 0x18c, static_cast<WPARAM>(0xffffffff), value->data_ptr);
+    SendMessageA(listbox, 0x18c, static_cast<WPARAM>(0xffffffff),
+                 reinterpret_cast<LPARAM>(static_cast<LPCSTR>(*value)));
   } else {
     WPARAM selection = SendMessageA(listbox, 0x188, 0, 0);
     if (selection == static_cast<WPARAM>(0xffffffff)) {
@@ -42,7 +43,8 @@ void __stdcall DDX_LBString(CDataExchange* pDX, undefined4 nIDC, CString* value)
 void __stdcall DDX_LBStringExact(CDataExchange* pDX, undefined4 nIDC, CString* value) {
   HWND target = PrepareDdxControl(pDX, nIDC);
   if (pDX->m_bSaveAndValidate == 0) {
-    WPARAM index = SendMessageA(target, 0x1a2, static_cast<WPARAM>(0xffffffff), value->data_ptr);
+    WPARAM index = SendMessageA(target, 0x1a2, static_cast<WPARAM>(0xffffffff),
+                                reinterpret_cast<LPARAM>(static_cast<LPCSTR>(*value)));
     if (index != static_cast<WPARAM>(0xffffffff)) {
       SendMessageA(target, 0x186, index, 0);
     }

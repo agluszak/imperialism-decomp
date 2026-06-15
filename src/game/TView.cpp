@@ -9,7 +9,7 @@
 #include <new>
 
 #include "game/ApplicationUiRootController.h"
-#include "game/CPlex.h"
+#include "game/mfc.h"
 #include "game/CRuntimeClass.h"
 #include "game/TView.h"
 #include "game/TCursorControlPanel.h"
@@ -144,28 +144,11 @@ TView::~TView() {
 // child's slot-0x36, then invoke this view's own slot-0x37 handler.
 // FUNCTION: IMPERIALISM 0x0048aaf0
 void TView::DispatchControlEventToChildrenAndSelf(int eventArg) {
-  CPtrListNode* node;
-  if (childList44 == 0) {
-    node = 0;
-  } else {
-    node = childList44->headNode;
-  }
-  TView* child;
-  if (node == 0) {
-    child = 0;
-    node = 0;
-  } else {
-    child = reinterpret_cast<TView*>(node->data);
-    node = node->next;
-  }
-  while (child != 0) {
-    child->DispatchControlEventToChildrenAndSelf(eventArg);
-    if (node == 0) {
-      child = 0;
-      node = 0;
-    } else {
-      child = reinterpret_cast<TView*>(node->data);
-      node = node->next;
+  if (childList44 != 0) {
+    POSITION pos = childList44->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      child->DispatchControlEventToChildrenAndSelf(eventArg);
     }
   }
   NoOpUiLifecycleHook(eventArg);
@@ -208,55 +191,27 @@ void TView::vmethod_0092(class TView* child, int flag) {
 // FUNCTION: IMPERIALISM 0x0048ae60
 void TView::vmethod_0093(class TView* child) {
   CPtrList* list = childList44;
+  if (list == 0) {
+    child->ownerContext = 0;
+    return;
+  }
   int tag = child->controlTag;
-  CPtrListNode* head = list->headNode;
-  CPtrListNode* node = head;
-  CPtrListNode* cur;
-  int newCount;
-  while (node != 0) {
-    cur = node;
-    node = cur->next;
-    if (tag == reinterpret_cast<TView*>(cur->data)->controlTag) {
-      goto unlink;
+  POSITION pos = list->GetHeadPosition();
+  while (pos != NULL) {
+    POSITION cur = pos;
+    TView* entry = static_cast<TView*>(list->GetNext(pos));
+    if (tag == entry->controlTag) {
+      list->RemoveAt(cur);
+      goto tail;
     }
   }
   if (g_McAppUiFlag_006A1AE0 == 0) {
     reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x152);
   }
-  goto tail;
-
-unlink:
-  if (cur == head) {
-    list->headNode = cur->next;
-  } else {
-    cur->prev->next = cur->next;
-  }
-  if (cur == list->tailNode) {
-    list->tailNode = cur->prev;
-  } else {
-    cur->next->prev = cur->prev;
-  }
-  cur->next = list->freeNodeList;
-  newCount = list->nodeCount - 1;
-  list->freeNodeList = cur;
-  list->nodeCount = newCount;
-  if (newCount == 0) {
-    for (CPtrListNode* p = list->headNode; p != 0; p = p->next) {
-    }
-    void* chain = list->blockChain;
-    list->nodeCount = 0;
-    list->freeNodeList = 0;
-    list->tailNode = 0;
-    list->headNode = 0;
-    if (chain != 0) {
-      reinterpret_cast<CPlex*>(chain)->FreeDataChain();
-    }
-    list->blockChain = 0;
-  }
 
 tail:
-  if (childList44->nodeCount == 0) {
+  if (childList44->IsEmpty()) {
     delete childList44;
     childList44 = 0;
   }
@@ -266,7 +221,7 @@ tail:
 // selection (slots 0x5d/0x5c) and refresh the newly active child.
 // FUNCTION: IMPERIALISM 0x0048af80
 void TView::SwitchActiveChildAndNotify(class TView* child) {
-  if (childList44 != 0 && childList44->tailNode->data != child) {
+  if (childList44 != 0 && childList44->GetTail() != child) {
     vmethod_0093(child);
     vmethod_0092(child, 1);
     child->RefreshControl();
@@ -279,37 +234,22 @@ void TView::SwitchActiveChildAndNotify(class TView* child) {
 class TControl* TView::ResolveControlByTag(unsigned int controlTag) {
   TView* match = 0;
   if (controlTag != static_cast<unsigned int>(this->controlTag) && childList44 != 0) {
-    CPtrListNode* node = childList44->headNode;
-    while (true) {
-      if (node == 0) {
-        match = 0;
-        break;
-      }
-      match = reinterpret_cast<TView*>(node->data);
-      node = node->next;
+    POSITION pos = childList44->GetHeadPosition();
+    while (pos != NULL) {
+      POSITION cur = pos;
+      match = static_cast<TView*>(childList44->GetNext(pos));
       if (controlTag == static_cast<unsigned int>(match->controlTag)) {
         break;
       }
+      match = 0;
     }
     if (match == 0) {
-      CPtrListNode* walk = childList44->headNode;
-      TView* child;
-      if (walk == 0) {
-        child = 0;
-      } else {
-        child = reinterpret_cast<TView*>(walk->data);
-        walk = walk->next;
-      }
-      while (child != 0) {
-        match = reinterpret_cast<TView*>(child->ResolveControlByTag(controlTag));
+      pos = childList44->GetHeadPosition();
+      while (pos != NULL) {
+        TView* child = static_cast<TView*>(childList44->GetNext(pos));
+        match = static_cast<TView*>(child->ResolveControlByTag(controlTag));
         if (match != 0) {
           break;
-        }
-        if (walk == 0) {
-          child = 0;
-        } else {
-          child = reinterpret_cast<TView*>(walk->data);
-          walk = walk->next;
         }
       }
     }
@@ -430,21 +370,11 @@ void TView::vmethod_0089() {
   field2c = newX;
   field30 = newY;
   if (field2c != oldX || newY != oldY) {
-    CPtrListNode* node = (childList44 != 0) ? childList44->headNode : 0;
-    TView* child;
-    if (node == 0) {
-      child = 0;
-    } else {
-      child = reinterpret_cast<TView*>(node->data);
-      node = node->next;
-    }
-    while (child != 0) {
-      child->vmethod_0089();
-      if (node == 0) {
-        child = 0;
-      } else {
-        child = reinterpret_cast<TView*>(node->data);
-        node = node->next;
+    if (childList44 != 0) {
+      POSITION pos = childList44->GetHeadPosition();
+      while (pos != NULL) {
+        TView* child = static_cast<TView*>(childList44->GetNext(pos));
+        child->vmethod_0089();
       }
     }
   }
@@ -463,7 +393,7 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {
     RECT unionRect;
     UnionRect(&unionRect, &newRect, &oldRect);
     if (g_McAppUiActiveFlag_006950AC != 0) {
-      InvalidateRect(reinterpret_cast<HWND>(nativeWindow50->hwnd), &unionRect, 0);
+      InvalidateRect(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), &unionRect, 0);
     }
   } else {
     field34 = buffer[0];
@@ -495,7 +425,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
   OffsetRgn(reinterpret_cast<HRGN>(destRegion), -pos->x, -pos->y);
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->hwnd), reinterpret_cast<HRGN>(destRegion),
+    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), reinterpret_cast<HRGN>(destRegion),
                   0);
   }
 
@@ -505,7 +435,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
 // FUNCTION: IMPERIALISM 0x0048b5f0
 void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
   (void)flag;
-  if (nativeWindow50 == 0 || nativeWindow50->hwnd == 0) {
+  if (nativeWindow50 == 0 || nativeWindow50->m_hWnd == 0) {
     return;
   }
   RECT localRect;
@@ -516,14 +446,14 @@ void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
     DispatchVslot134WithRectAndRectPlus8_Impl(&localRect);
   }
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRect(reinterpret_cast<HWND>(nativeWindow50->hwnd), &localRect, 0);
+    InvalidateRect(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), &localRect, 0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048b690
 void TView::ValidateControlRectIfWindowActive(RECT* rect) {
   if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
-    ValidateRect(reinterpret_cast<HWND>(nativeWindow50->hwnd), rect);
+    ValidateRect(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), rect);
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b6d0
@@ -543,7 +473,7 @@ void TView::InvokeSlot13C() {
   if (g_McAppUiUpdateWindowRecursionGuard_006A1AF0 == 0) {
     g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 1;
     if (nativeWindow50 != 0 && g_McAppUiActiveFlag_006950AC != 0) {
-      UpdateWindow(reinterpret_cast<HWND>(nativeWindow50->hwnd));
+      UpdateWindow(reinterpret_cast<HWND>(nativeWindow50->m_hWnd));
     }
     g_McAppUiUpdateWindowRecursionGuard_006A1AF0 = 0;
   }
@@ -614,16 +544,17 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg
     ReleaseMapQuickDrawDc(bindArg);
   }
 
-  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-  while (node != 0) {
-    CPtrListNode* next = node->next;
-    TView* child = reinterpret_cast<TView*>(node->data);
-    RECT childClip = clippedRect;
-    OffsetRect(&childClip, -child->ownerOffsetX, -child->ownerOffsetY);
-    RECT childPaintRect;
-    CopyRect(&childPaintRect, &childClip);
-    child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, bindArg);
-    node = next;
+  CPtrList* list = childList44;
+  if (list != 0) {
+    POSITION pos = list->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(list->GetNext(pos));
+      RECT childClip = clippedRect;
+      OffsetRect(&childClip, -child->ownerOffsetX, -child->ownerOffsetY);
+      RECT childPaintRect;
+      CopyRect(&childPaintRect, &childClip);
+      child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, bindArg);
+    }
   }
 }
 
@@ -754,13 +685,11 @@ void TView::CopyCityDialogStateFromSource(TView* source) {
   flag4c = source->flag4c;
   flag4d = source->flag4d;
   if (source->childList44 != 0) {
-    CPtrListNode* node = source->childList44->headNode;
-    while (node != 0) {
-      CPtrListNode* next = node->next;
-      TView* child = reinterpret_cast<TView*>(node->data);
-      TView* childClone = reinterpret_cast<TView*>(child->CloneEngineerDialogStateToNewInstance());
+    POSITION pos = source->childList44->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(source->childList44->GetNext(pos));
+      TView* childClone = static_cast<TView*>(child->CloneEngineerDialogStateToNewInstance());
       vmethod_0092(childClone, 0);
-      node = next;
     }
   }
 }
@@ -788,7 +717,7 @@ char TView::EvaluateControlInputGate() {
 
 // FUNCTION: IMPERIALISM 0x0048c050
 char TView::HasRenderableParentAndContent() {
-  if (flag4d != 0 && childList44 != 0 && childList44->nodeCount != 0) {
+  if (flag4d != 0 && childList44 != 0 && !childList44->IsEmpty()) {
     return 1;
   }
   return 0;
@@ -797,17 +726,18 @@ char TView::HasRenderableParentAndContent() {
 // FUNCTION: IMPERIALISM 0x0048c080
 void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg) {
   if (HasRenderableParentAndContent() != 0) {
-    CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-    while (node != 0) {
-      TView* child = reinterpret_cast<TView*>(node->data);
-      node = node->next;
+    if (childList44 != 0) {
+      POSITION pos = childList44->GetHeadPosition();
+      while (pos != NULL) {
+        TView* child = static_cast<TView*>(childList44->GetNext(pos));
 
-      Point32 childPoint = *point;
-      child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
-      if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-          child->EvaluateControlInputGate() != 0) {
-        child->HandleCursorHoverSelectionByChildHitTestAndFallback(&childPoint, hitArg);
-        return;
+        Point32 childPoint = *point;
+        child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+        if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
+            child->EvaluateControlInputGate() != 0) {
+          child->HandleCursorHoverSelectionByChildHitTestAndFallback(&childPoint, hitArg);
+          return;
+        }
       }
     }
   }
@@ -881,16 +811,17 @@ void TView::ApplyBounds(RECT* newBounds, int modeFlag) {
 
 // FUNCTION: IMPERIALISM 0x0048c450
 char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4) {
-  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-  while (node != 0) {
-    TView* child = reinterpret_cast<TView*>(node->data);
-    node = node->next;
+  if (childList44 != 0) {
+    POSITION pos = childList44->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(childList44->GetNext(pos));
 
-    Point32 childPoint = *point;
-    child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
-    if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-        child->DispatchUiMouseMoveToChildren(&childPoint, arg2, arg3, arg4) != 0) {
-      return 1;
+      Point32 childPoint = *point;
+      child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+      if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
+          child->DispatchUiMouseMoveToChildren(&childPoint, arg2, arg3, arg4) != 0) {
+        return 1;
+      }
     }
   }
 
@@ -905,16 +836,17 @@ char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, in
 // FUNCTION: IMPERIALISM 0x0048c590
 char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
                                                       int arg4) {
-  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-  while (node != 0) {
-    TView* child = reinterpret_cast<TView*>(node->data);
-    node = node->next;
+  if (childList44 != 0) {
+    POSITION pos = childList44->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(childList44->GetNext(pos));
 
-    Point32 childPoint = *point;
-    child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
-    if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-        child->DispatchUiMouseEventToChildrenOrSelf_Impl(&childPoint, arg2, arg3, arg4) != 0) {
-      return 1;
+      Point32 childPoint = *point;
+      child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+      if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
+          child->DispatchUiMouseEventToChildrenOrSelf_Impl(&childPoint, arg2, arg3, arg4) != 0) {
+        return 1;
+      }
     }
   }
 
@@ -975,86 +907,35 @@ void TView::AssertMcAppUiLine1922() {
 // Walk the field44 child list and forward slot-0x27 to each linked child.
 // FUNCTION: IMPERIALISM 0x0048c820
 void TView::DispatchSlot9CToLinkedChildren() {
-  CPtrListNode* node;
-  if (childList44 == 0) {
-    node = 0;
-  } else {
-    node = childList44->headNode;
-  }
-  TView* child;
-  if (node == 0) {
-    child = 0;
-    node = 0;
-  } else {
-    child = reinterpret_cast<TView*>(node->data);
-    node = node->next;
-  }
-  while (child != 0) {
-    child->DispatchSlot9CToLinkedChildren();
-    if (node == 0) {
-      child = 0;
-      node = 0;
-    } else {
-      child = reinterpret_cast<TView*>(node->data);
-      node = node->next;
+  if (childList44 != 0) {
+    POSITION pos = childList44->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      child->DispatchSlot9CToLinkedChildren();
     }
   }
 }
 // Walk the field44 child list and forward slot-0x28 (CallVoidSlotA0) to each child.
 // FUNCTION: IMPERIALISM 0x0048c890
 void TView::CallVoidSlotA0() {
-  CPtrListNode* node;
-  if (childList44 == 0) {
-    node = 0;
-  } else {
-    node = childList44->headNode;
-  }
-  TView* child;
-  if (node == 0) {
-    child = 0;
-    node = 0;
-  } else {
-    child = reinterpret_cast<TView*>(node->data);
-    node = node->next;
-  }
-  while (child != 0) {
-    child->CallVoidSlotA0();
-    if (node == 0) {
-      child = 0;
-      node = 0;
-    } else {
-      child = reinterpret_cast<TView*>(node->data);
-      node = node->next;
+  if (childList44 != 0) {
+    POSITION pos = childList44->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      child->CallVoidSlotA0();
     }
   }
 }
 
 // Propagate the native-window/resource context through this subtree.
 // FUNCTION: IMPERIALISM 0x0048c900
-void TView::PropagateUiResourceContextRecursive(TViewNativeWindow* nativeWindow) {
+void TView::PropagateUiResourceContextRecursive(CWnd* nativeWindow) {
   nativeWindow50 = nativeWindow;
-  CPtrListNode* node;
-  if (childList44 == 0) {
-    node = 0;
-  } else {
-    node = childList44->headNode;
-  }
-  int child;
-  if (node == 0) {
-    child = 0;
-  } else {
-    CPtrListNode* current = node;
-    node = current->next;
-    child = reinterpret_cast<int>(current->data);
-  }
-  while (child != 0) {
-    reinterpret_cast<TView*>(child)->PropagateUiResourceContextRecursive(nativeWindow);
-    if (node == 0) {
-      child = 0;
-    } else {
-      CPtrListNode* current = node;
-      node = current->next;
-      child = reinterpret_cast<int>(current->data);
+  if (childList44 != 0) {
+    POSITION pos = childList44->GetHeadPosition();
+    while (pos != NULL) {
+      TView* child = static_cast<TView*>(childList44->GetNext(pos));
+      child->PropagateUiResourceContextRecursive(nativeWindow);
     }
   }
 }

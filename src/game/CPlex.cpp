@@ -1,4 +1,4 @@
-#include "game/CPlex.h"
+#include "game/mfc.h"
 
 // LIBRARY: IMPERIALISM 0x00601b74
 // CPlex::Create

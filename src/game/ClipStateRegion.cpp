@@ -4,7 +4,9 @@
 #include <new>
 
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);
-extern "C" int __stdcall CreateRectRgn(int left, int top, int right, int bottom);
+undefined4 afxMapHIMAGELIST_6139c6(void);
+
+static int RegisterClipRegionHandle(CBrush* brush, HRGN region);
 
 // FUNCTION: IMPERIALISM 0x00495610
 undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject) {
@@ -27,12 +29,25 @@ undefined4 CreateClipStateRegionWrapperObject(void) {
   }
 
   new (innerObject) ClipStateRegionInner();
-  CreateRectRgn(0, 0, 0, 0);
-  innerObject->attachRegistered =
-      innerObject->brush.AttachRegionHandleToClipStateAndRegister() ? 1 : 0;
+  HRGN region = CreateRectRgn(0, 0, 0, 0);
+  innerObject->attachRegistered = RegisterClipRegionHandle(&innerObject->brush, region) ? 1 : 0;
 
   if (outerWrapper != 0) {
     *outerWrapper = reinterpret_cast<int>(innerObject);
   }
   return reinterpret_cast<int>(outerWrapper);
+}
+
+// Ghidra mislabels this as CBrush::; clip-state registration over retail MFC CBrush.
+// FUNCTION: IMPERIALISM 0x00613a4c
+static int RegisterClipRegionHandle(CBrush* brush, HRGN region) {
+  if (region == NULL) {
+    return 0;
+  }
+  CMapPtrToPtr* handleMap = reinterpret_cast<CMapPtrToPtr*>(
+      reinterpret_cast<void*(__cdecl*)(int)>(afxMapHIMAGELIST_6139c6)(1));
+  brush->Attach(region);
+  void*& slot = (*handleMap)[reinterpret_cast<void*>(region)];
+  slot = brush;
+  return 1;
 }

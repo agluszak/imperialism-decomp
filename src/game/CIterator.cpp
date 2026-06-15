@@ -6,13 +6,13 @@
 
 // FUNCTION: IMPERIALISM 0x00487ef0
 void* CIterator::Reset() {
-  CPtrListNode* head = reinterpret_cast<TPtrList*>(ownerList)->listState.headNode;
-  nextNode = head;
-  if (head != 0) {
-    nextNode = head->next;
-    current = head->data;
+  POSITION pos = reinterpret_cast<TPtrList*>(ownerList)->listState.GetHeadPosition();
+  if (pos != NULL) {
+    current = reinterpret_cast<TPtrList*>(ownerList)->listState.GetNext(pos);
+    nextPos = pos;
     return current;
   }
+  nextPos = NULL;
   current = 0;
   return 0;
 }
@@ -24,10 +24,8 @@ int CIterator::More() {
 
 // FUNCTION: IMPERIALISM 0x00487f40
 void* CIterator::Advance() {
-  CPtrListNode* node = nextNode;
-  if (node != 0) {
-    nextNode = node->next;
-    current = node->data;
+  if (nextPos != NULL) {
+    current = reinterpret_cast<TPtrList*>(ownerList)->listState.GetNext(nextPos);
     return current;
   }
   current = 0;

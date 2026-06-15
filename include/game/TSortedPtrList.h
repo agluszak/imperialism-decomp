@@ -1,6 +1,7 @@
 #pragma once
 
 #include "compat.h"
+#include "decomp_types.h"
 #include "game/TIndexAndRankList.h"
 
 struct CRuntimeClass;

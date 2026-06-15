@@ -15,7 +15,7 @@ public:
   int More();
   void* Advance();
 
-  CPtrListNode* nextNode; // +0x00 — node to visit next
-  TPtrList* ownerList;    // +0x04 — list wrapper (CPtrList state at +4)
-  void* current;          // +0x08 — payload of the current node
+  POSITION nextPos;  // +0x00 — list position to visit next
+  TPtrList* ownerList; // +0x04 — list wrapper (CPtrList state at +4)
+  void* current;     // +0x08 — payload of the current node
 };

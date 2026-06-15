@@ -1,6 +1,6 @@
 #pragma once
 
-#include <windows.h>
+#include "game/mfc.h"
 
 #ifdef CopyMemory
 #undef CopyMemory

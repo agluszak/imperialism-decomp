@@ -1,6 +1,6 @@
 #include "game/ApplicationUiRootController.h"
 
-#include "game/CPlex.h"
+#include "game/mfc.h"
 #include "game/CPtrList.h"
 #include "game/TView.h"
 #include "game/ui_widget_thunks.h"

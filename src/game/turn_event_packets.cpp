@@ -1,14 +1,12 @@
 #include "game/turn_event_packets.h"
 
-#include "game/CPlex.h"
+#include "game/mfc.h"
 #include "game/CPtrList.h"
 #include "game/TTurnEventPacket.h"
 #include "game/TWNetSessionManager.h"
 #include "game/UiRuntimeContext.h"
 #include "game/diplomacy_globals.h"
 #include "game/network_error_reporting.h"
-
-#include <windows.h>
 
 extern "C" {
 extern int g_NetworkDefaultNationId006a5fc0;

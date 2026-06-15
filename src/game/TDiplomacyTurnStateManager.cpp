@@ -739,7 +739,7 @@ void TDiplomacyTurnStateManager::QueueNationPairWarTransition(int sourceNationSl
 
 // FUNCTION: IMPERIALISM 0x004f0a10
 void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
-  if (pendingWarTransitionQueue18d4->count != 0) {
+  if (pendingWarTransitionQueue18d4->GetSize() != 0) {
     char propagatedTransition = 0;
     WarTransitionPair* pair =
         static_cast<WarTransitionPair*>(pendingWarTransitionQueue18d4->PeekFirstPairSlot34());
@@ -1059,12 +1059,12 @@ int TDiplomacyTurnStateManager::SelectNationSlotFromCollectedStandingEntriesSlot
   TSortedByRelationshipList* list = new TSortedByRelationshipList();
   list->relationType = 4;
   BuildRelationshipListSlot88(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
-  if (list->count < 1) {
+  if (list->GetSize() < 1) {
     return -1;
   }
 
   RelationshipRankEntry* entry =
-      static_cast<RelationshipRankEntry*>(list->GetEntrySlot2C(list->count));
+      static_cast<RelationshipRankEntry*>(list->GetEntrySlot2C(list->GetSize()));
   int nationSlot = entry->nationSlot;
   if (list != 0) {
     list->ReleaseSlot24();
@@ -1082,7 +1082,7 @@ int TDiplomacyTurnStateManager::SelectDiplomacyTargetNationFromCandidateSetSlot9
   TSortedByRelationshipList* list = new TSortedByRelationshipList();
   list->relationType = 4;
   BuildRelationshipListSlot88(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
-  int entryIndex = list->count;
+  int entryIndex = list->GetSize();
   if (entryIndex < 1) {
     return -1;
   }

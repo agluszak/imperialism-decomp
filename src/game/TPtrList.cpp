@@ -27,7 +27,8 @@ int TPtrList::GetCountOrReleaseSlot28() {
 // FUNCTION: IMPERIALISM 0x004885f0
 void* TPtrList::GetNodeByOrdinalSlot2C(int mode, int ordinal) {
   (void)mode;
-  return this->listState.GetDataAtOneBasedIndex(ordinal);
+  POSITION pos = this->listState.FindIndex(ordinal - 1);
+  return pos != NULL ? this->listState.GetAt(pos) : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00488610
@@ -42,7 +43,8 @@ int TPtrList::GetCountSlot48() {
 
 // FUNCTION: IMPERIALISM 0x004886f0
 void* TPtrList::GetTrackedEntrySlot4C(int ordinal) {
-  return this->listState.GetDataAtOneBasedIndex(ordinal);
+  POSITION pos = this->listState.FindIndex(ordinal - 1);
+  return pos != NULL ? this->listState.GetAt(pos) : 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00488720
@@ -80,9 +82,9 @@ void TPtrList::Call58() {
 // FUNCTION: IMPERIALISM 0x00488840
 void TPtrList::SetEntryDataAtSlot60(int ordinal, void** entryPtr, int unusedFlag) {
   (void)unusedFlag;
-  CPtrListNode* node = NodeFromPosition(this->listState.FindIndex(ordinal - 1));
-  if (node != 0) {
-    node->data = *entryPtr;
+  POSITION pos = this->listState.FindIndex(ordinal - 1);
+  if (pos != NULL) {
+    this->listState.SetAt(pos, *entryPtr);
   }
 }
 

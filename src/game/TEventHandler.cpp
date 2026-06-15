@@ -67,7 +67,7 @@ void TEventHandler::Serialize(CArchive& archive) {
   TFileStream stream;
   stream.SetBackingArchive(&adapter);
 
-  if ((~archive.m_nMode & 1) != 0) {
+  if (archive.IsLoading()) {
     HandleCityDialogNoOpSlot14(reinterpret_cast<int>(&stream));
   } else {
     HandleCityDialogNoOpSlot18(reinterpret_cast<int>(&stream));

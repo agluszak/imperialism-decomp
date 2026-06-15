@@ -1407,6 +1407,7 @@ address|target_cpp|ownership|note
 607077|src/game/CRuntimeClass.cpp|manual|marker_sync
 607bda|src/game/noop_slots.cpp|manual|marker_sync
 6109cf|src/game/CDocument.cpp|manual|marker_sync
+6109eb|src/game/CDocument.cpp|manual|marker_sync
 610a5f|src/game/CDocument.cpp|manual|marker_sync
 610c08|src/game/noop_slots.cpp|manual|marker_sync
 61180f|src/game/noop_slots.cpp|manual|marker_sync
@@ -1429,6 +1430,7 @@ address|target_cpp|ownership|note
 612fd8|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 613791|src/game/CClientDC.cpp|manual|marker_sync
 613803|src/game/CClientDC.cpp|manual|marker_sync
+613a4c|src/game/ClipStateRegion.cpp|manual|marker_sync
 618753|src/game/noop_slots.cpp|manual|marker_sync
 618df2|src/game/list_box.cpp|manual|marker_sync
 618e72|src/game/list_box.cpp|manual|marker_sync

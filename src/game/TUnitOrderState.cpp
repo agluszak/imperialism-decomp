@@ -1,5 +1,4 @@
 #include "game/TUnitOrderState.h"
-#include <windows.h>
 #include "decomp_types.h"
 #include "game/GameAssert.h"
 

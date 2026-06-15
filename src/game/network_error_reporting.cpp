@@ -3,8 +3,6 @@
 #include "game/CString.h"
 #include "game/ui_invalidation_guard.h"
 
-#include <windows.h>
-
 extern "C" {
 extern int DAT_006a601c;
 }

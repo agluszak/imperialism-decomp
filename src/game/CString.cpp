@@ -2,8 +2,6 @@
 
 #include <string.h>
 
-#include <windows.h>
-
 extern "C" unsigned char g_MbcsCharTypeTable_006A8018[512] = {0};
 extern "C" int g_fMbcsEnabledForStringCompare_006A811C = 0;
 

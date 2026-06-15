@@ -70,7 +70,7 @@ void TForeignMinister::Call8C() {
       g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 1,
                                                                 relationshipList);
       short* nationSlotPtr =
-          static_cast<short*>(relationshipList->GetEntrySlot2C(relationshipList->count));
+          static_cast<short*>(relationshipList->GetEntrySlot2C(relationshipList->GetSize()));
       g_apNationStates[*nationSlotPtr]->AssignNeedSlotFromSourceSlot19C(
           *reinterpret_cast<short*>(raw + 0x10), owner->nationSlot);
       relationshipList->ReleaseSlot24();

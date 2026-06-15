@@ -1,5 +1,6 @@
 #include "game/TCityOrderItem.h"
 
+#include "decomp_types.h"
 #include "game/CRuntimeClass.h"
 
 #if defined(_MSC_VER)

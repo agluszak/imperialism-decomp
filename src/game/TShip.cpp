@@ -123,8 +123,8 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
          existing = existing->nextOlder24) {
       if (existing != shipNode &&
           CompareAnsiStringsWithMbcsAwareness(
-              reinterpret_cast<unsigned char*>(existing->displayName18.data_ptr),
-              reinterpret_cast<unsigned char*>(shipNode->displayName18.data_ptr)) == 0) {
+              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->displayName18)),
+              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
         RegenerateNavyPrimaryOrderDisplayNameUntilUnique(shipNode);
         break;
       }
@@ -158,8 +158,8 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
         continue;
       }
       if (CompareAnsiStringsWithMbcsAwareness(
-              reinterpret_cast<unsigned char*>(existing->displayName18.data_ptr),
-              reinterpret_cast<unsigned char*>(shipNode->displayName18.data_ptr)) == 0) {
+              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->displayName18)),
+              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
         goto retry;
       }
     }

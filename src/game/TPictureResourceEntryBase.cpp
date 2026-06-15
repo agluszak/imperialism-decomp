@@ -116,6 +116,7 @@ bool TPictureResourceEntryBase::IsSelected(short value, bool refreshNow) {
   (void)value;
   (void)refreshNow;
   RECT rect = this->BuildRectFromSlot158();
-  return RedrawWindow(this->nativeWindow50->hwnd, &rect, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+  return RedrawWindow(reinterpret_cast<HWND>(this->nativeWindow50->m_hWnd), &rect, NULL,
+                      RDW_INVALIDATE | RDW_UPDATENOW);
 }
 

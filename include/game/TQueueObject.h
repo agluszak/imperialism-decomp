@@ -26,5 +26,5 @@ public:
   void Call24() { ReleaseSlot24(); }
 
   // Legacy name for CPtrArray::count at +0x8 on list-backed queues.
-  int GetEntryCount() const { return static_cast<const CPtrArray*>(this)->count; }
+  int GetEntryCount() const { return static_cast<const CPtrArray*>(this)->GetSize(); }
 };

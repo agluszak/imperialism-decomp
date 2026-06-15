@@ -1,5 +1,4 @@
 #include "game/CPtrList.h"
-#include "game/CRuntimeClass.h"
 
 // LIBRARY: IMPERIALISM 0x00601f1d
 // CPtrList::CPtrList
@@ -45,10 +44,6 @@
 
 // LIBRARY: IMPERIALISM 0x006021d6
 // CPtrList::Find
-
-// MFC CRuntimeClass descriptor for CPtrList (0x00672ec0).
-// GLOBAL: IMPERIALISM 0x00672ec0
-CRuntimeClass classCPtrList = {nullptr, 0, 0, nullptr, nullptr};
 
 // LIBRARY: IMPERIALISM 0x00623b3a
 // CPtrList::GetRuntimeClass

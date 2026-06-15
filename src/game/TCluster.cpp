@@ -37,10 +37,9 @@ TCluster::TCluster() {
 void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0xc &&
       reinterpret_cast<TView*>(sourceHandler)->ownerContext == reinterpret_cast<TView*>(this)) {
-    CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-    while (node != 0) {
-      TControl* sibling = reinterpret_cast<TControl*>(node->data);
-      node = node->next;
+    POSITION pos = childList44 != 0 ? childList44->GetHeadPosition() : NULL;
+    while (pos != NULL) {
+      TControl* sibling = reinterpret_cast<TControl*>(childList44->GetNext(pos));
       if (sibling == 0) {
         break;
       }
@@ -81,9 +80,9 @@ void TCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
   if (childList44 == 0) {
     return;
   }
-  CPtrListNode* node = childList44->headNode;
-  while (node != 0) {
-    TControl* child = reinterpret_cast<TControl*>(node->data);
+  POSITION pos = childList44->GetHeadPosition();
+  while (pos != NULL) {
+    TControl* child = reinterpret_cast<TControl*>(childList44->GetNext(pos));
     if (child != 0) {
       if (child->controlTag == static_cast<unsigned int>(classState)) {
         child->HandleEvent(0x1f, this, 0);
@@ -91,7 +90,6 @@ void TCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
         child->HandleEvent(0x20, this, 0);
       }
     }
-    node = node->next;
   }
 }
 

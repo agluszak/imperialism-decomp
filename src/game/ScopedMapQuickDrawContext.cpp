@@ -38,7 +38,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(void* renderTargetArg)
     if (viewContext->nativeWindow50 == 0) {
       g_pScopedMapQuickDrawDcHandleObject = 0;
     } else {
-      GetDC(reinterpret_cast<HWND>(viewContext->nativeWindow50->hwnd));
+      GetDC(reinterpret_cast<HWND>(viewContext->nativeWindow50->m_hWnd));
       reinterpret_cast<void(__cdecl*)()>(FromHandle_612736)();
     }
   }
@@ -49,7 +49,7 @@ ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext() {
   if (this == 0) {
     TView* viewContext = this->renderTarget;
     ReleaseDC(
-        reinterpret_cast<HWND>(viewContext->nativeWindow50->hwnd),
+        reinterpret_cast<HWND>(viewContext->nativeWindow50->m_hWnd),
         reinterpret_cast<HDC>(*reinterpret_cast<hdc_t*>(reinterpret_cast<char*>(g_pScopedMapQuickDrawDcHandleObject) + 4)));
   }
   g_pScopedMapQuickDrawDcHandleObject = 0;
