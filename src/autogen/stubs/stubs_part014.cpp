@@ -339,98 +339,10 @@ undefined4 Helper_Uses_thunk_ConstructTMinister_At004ec020(void)
   return 0;
 }
 
-// ghidra_name TDefenseMinister::CreateTDefenseMinisterInstance
-// ghidra_proto undefined CreateTDefenseMinisterInstance()
-// FUNCTION: IMPERIALISM 0x004ec0a0
-undefined4 CreateTDefenseMinisterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefenseMinister::GetTDefenseMinisterClassNamePointer
-// ghidra_proto undefined GetTDefenseMinisterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004ec0c0
-undefined4 GetTDefenseMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefenseMinister::DestructTDefenseMinisterAndMaybeFree
-// ghidra_proto undefined DestructTDefenseMinisterAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004ec110
-undefined4 DestructTDefenseMinisterAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTDefenseMinisterAndMaybeFree_Impl
 // ghidra_proto undefined DestructTDefenseMinisterAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004ec140
 undefined4 DestructTDefenseMinisterAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeTMinisterBaseOrderArrayMetrics
-// ghidra_proto undefined SerializeTMinisterBaseOrderArrayMetrics()
-// FUNCTION: IMPERIALISM 0x004ec1d0
-undefined4 SerializeTMinisterBaseOrderArrayMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeTMinisterBaseOrderArrayMetrics
-// ghidra_proto undefined DeserializeTMinisterBaseOrderArrayMetrics()
-// FUNCTION: IMPERIALISM 0x004ec2f0
-undefined4 DeserializeTMinisterBaseOrderArrayMetrics(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I38_004ec3d0
-// ghidra_proto undefined OrphanCallChain_C2_I38_004ec3d0()
-// FUNCTION: IMPERIALISM 0x004ec3d0
-undefined4 OrphanCallChain_C2_I38_004ec3d0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GenerateThreadLocalRandom15_At004ec450
-// ghidra_proto undefined WrapperFor_GenerateThreadLocalRandom15_At004ec450()
-// FUNCTION: IMPERIALISM 0x004ec450
-undefined4 WrapperFor_GenerateThreadLocalRandom15_At004ec450(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyPlayer::BuildTileIndexListsForSelectedTerrainClass
-// ghidra_proto undefined BuildTileIndexListsForSelectedTerrainClass()
-// FUNCTION: IMPERIALISM 0x004ec540
-undefined4 BuildTileIndexListsForSelectedTerrainClass(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefenseMinister::BuildTileRingPriorityMapForNationTileList
-// ghidra_proto undefined BuildTileRingPriorityMapForNationTileList()
-// FUNCTION: IMPERIALISM 0x004ecbb0
-undefined4 BuildTileRingPriorityMapForNationTileList(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildStrategicTilePriorityHeatmap
-// ghidra_proto undefined BuildStrategicTilePriorityHeatmap()
-// FUNCTION: IMPERIALISM 0x004ecf20
-undefined4 BuildStrategicTilePriorityHeatmap(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildHexAreaTileIndexListIntoAllocatedBuffer
-// ghidra_proto undefined BuildHexAreaTileIndexListIntoAllocatedBuffer()
-// FUNCTION: IMPERIALISM 0x004ed050
-undefined4 BuildHexAreaTileIndexListIntoAllocatedBuffer(void)
 {
   return 0;
 }
@@ -447,22 +359,6 @@ undefined4 Helper_Uses_thunk_ConstructTMinister_At004ed400(void)
 // ghidra_proto undefined CreateTNapoleonMinisterInstance()
 // FUNCTION: IMPERIALISM 0x004ed490
 undefined4 CreateTNapoleonMinisterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TNapoleonMinister::GetTNapoleonMinisterClassNamePointer
-// ghidra_proto undefined GetTNapoleonMinisterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004ed4c0
-undefined4 GetTNapoleonMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TNapoleonMinister::DestructTNapoleonMinisterAndMaybeFree
-// ghidra_proto undefined DestructTNapoleonMinisterAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004ed510
-undefined4 DestructTNapoleonMinisterAndMaybeFree(void)
 {
   return 0;
 }

@@ -2618,7 +2618,7 @@ address|name|size|type|prototype
 4ec0a0|TDefenseMinister::CreateTDefenseMinisterInstance|9|function|undefined CreateTDefenseMinisterInstance()
 4ec0c0|TDefenseMinister::GetTDefenseMinisterClassNamePointer|6|function|undefined GetTDefenseMinisterClassNamePointer()
 4ec0e0|TDefenseMinister::ConstructTDefenseMinisterBaseState|18|function|undefined ConstructTDefenseMinisterBaseState()
-4ec110|TDefenseMinister::DestructTDefenseMinisterAndMaybeFree|30|function|undefined DestructTDefenseMinisterAndMaybeFree()
+4ec110|TDefenseMinister::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4ec140|DestructTDefenseMinisterAndMaybeFree_Impl|7|function|undefined DestructTDefenseMinisterAndMaybeFree_Impl()
 4ec160|InitializeTMinisterBaseOrderArrayMetrics|76|function|undefined InitializeTMinisterBaseOrderArrayMetrics()
 4ec1d0|SerializeTMinisterBaseOrderArrayMetrics|210|function|undefined SerializeTMinisterBaseOrderArrayMetrics()
