@@ -6,4 +6,5 @@
 class TButton : public TControl {
 public:
   TButton();
+  CRuntimeClass* GetRuntimeClass() override;
 };

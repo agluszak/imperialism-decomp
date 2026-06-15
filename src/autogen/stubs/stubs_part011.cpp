@@ -419,14 +419,6 @@ undefined4 CreateTCtlMgrInstance(void)
   return 0;
 }
 
-// ghidra_name TCtlMgr::GetTCtlMgrClassNamePointer
-// ghidra_proto undefined GetTCtlMgrClassNamePointer()
-// FUNCTION: IMPERIALISM 0x0048eaf0
-undefined4 GetTCtlMgrClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TCtlMgr::ConstructTCtlMgrBaseState
 // ghidra_proto undefined ConstructTCtlMgrBaseState()
 // FUNCTION: IMPERIALISM 0x0048eb10
@@ -1215,14 +1207,6 @@ undefined4 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492
 // ghidra_proto undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0()
 // FUNCTION: IMPERIALISM 0x00492db0
 undefined4 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00492de0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00492de0()
-// FUNCTION: IMPERIALISM 0x00492de0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492de0(void)
 {
   return 0;
 }

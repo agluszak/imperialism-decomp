@@ -300,6 +300,7 @@ address|target_cpp|ownership|note
 48e980|src/game/TControl.cpp|manual|marker_sync
 48e9c0|src/game/TControl.cpp|manual|marker_sync
 48e9e0|src/game/TControl.cpp|manual|marker_sync
+48eaf0|src/game/TButton.cpp|manual|marker_sync
 48ece0|src/game/TButton.cpp|manual|marker_sync
 48efc0|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
 48f250|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
@@ -318,6 +319,7 @@ address|target_cpp|ownership|note
 492d20|src/game/noop_slots.cpp|manual|marker_sync
 492d40|src/game/noop_slots.cpp|manual|marker_sync
 492d60|src/game/noop_slots.cpp|manual|marker_sync
+492de0|src/game/TButton.cpp|manual|marker_sync
 494700|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 4948b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 495000|src/game/quickdraw_globals.cpp|manual|marker_sync
@@ -1214,6 +1216,7 @@ address|target_cpp|ownership|note
 5aef80|src/game/TCityOrderCapabilityState.cpp|manual|marker_sync
 5aeff0|src/game/TCityOrderCapabilityState.cpp|manual|marker_sync
 5b2860|src/game/noop_slots.cpp|manual|marker_sync
+5b6c40|src/game/TTownMarker.cpp|manual|marker_sync
 5b6c60|src/game/TTownMarker.cpp|manual|marker_sync
 5b6cd0|src/game/TTownMarker.cpp|manual|marker_sync
 5b7830|src/game/TTownMarker.cpp|manual|marker_sync

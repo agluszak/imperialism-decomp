@@ -43,8 +43,10 @@ CRuntimeClass PTR_s_TEventHandler_00649588 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x006495a0
 CRuntimeClass PTR_s_TView_006495a0 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TControl_00649600 = {nullptr, 0, 0, nullptr, nullptr};
+CRuntimeClass PTR_s_TButton_00649618 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00697848
 CRuntimeClass PTR_s_TMission_00697848 = {nullptr, 0, 0, nullptr, nullptr};
+CRuntimeClass PTR_s_TTownMarker_0066d780 = {nullptr, 0, 0, nullptr, nullptr};
 char LAB_00409a9d = 0;
 
 // Default mission score constant (0.0), loaded by the TMission slot 0x68-0x7C float

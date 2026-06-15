@@ -2803,14 +2803,6 @@ undefined4 WrapperFor_ftol_At005b6be0(void)
   return 0;
 }
 
-// ghidra_name TTown::GetTTownClassNamePointer
-// ghidra_proto undefined GetTTownClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005b6c40
-undefined4 GetTTownClassNamePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name TTown::DestructTTownAndMaybeFree
 // ghidra_proto undefined DestructTTownAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b6c80
