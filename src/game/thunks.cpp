@@ -34,13 +34,6 @@ void thunk_RefreshStrategicMapStatusIconsForActiveNation(void) {
   RefreshStrategicMapStatusIconsForActiveNation();
 }
 
-// ghidra_name thunk_NoOpTurnEventStateVtableSlot0C
-// ghidra_proto undefined thunk_NoOpTurnEventStateVtableSlot0C()
-// FUNCTION: IMPERIALISM 0x004010a0
-void thunk_NoOpTurnEventStateVtableSlot0C(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004011a9
 void thunk_HandleTurnEventDialogFactorySlotDC(void) {
   Missing_HandleTurnEventDialogFactorySlotDC();
@@ -99,8 +92,8 @@ void thunk_NoOpTurnEventStateVtableSlot8C(void) {
 // FUNCTION: IMPERIALISM 0x00401e2e
 void thunk_AssertCityProductionGlobalStateInitialized(void) {
   if (g_McAppUiFlag_006A143C == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(
-        g_szMcAppUiHeaderPath_006943CC, 0x56f);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x56f);
   }
 }
 

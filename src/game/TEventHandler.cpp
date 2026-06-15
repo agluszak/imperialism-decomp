@@ -58,11 +58,6 @@ void TEventHandler::SetCityDialogValueDword10(int value) {
   field10 = value;
 }
 
-// Slot 0x16: base implementation (TView overrides with the owner-chain walk).
-class TView* TEventHandler::OwnerPanel() {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00485e90
 void TEventHandler::Serialize(CArchive* archive) {
   ArchiveStreamAdapter adapter;
@@ -293,6 +288,12 @@ void TEventHandler::DispatchCityProductionAction1B() {
 
 // FUNCTION: IMPERIALISM 0x0048a710
 void TEventHandler::vmethod_0081() {}
+
+// Slot 0x16: base implementation (TView overrides with the owner-chain walk).
+// FUNCTION: IMPERIALISM 0x0048a730
+class TView* TEventHandler::OwnerPanel() {
+  return 0;
+}
 
 // Slot 0x08 base body: allocates a 0x20-byte UI resource entry header (0x48a7c0). TView
 // overrides at 0x48bfd0 with CloneEngineerDialogStateToNewInstance.

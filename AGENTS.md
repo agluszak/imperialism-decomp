@@ -19,6 +19,10 @@ starting that kind of task.
   formatting, and reccmp pairing-failure diagnosis.
 - **`class-recovery`** — class/vtable reconstruction, Mac evidence, the vcall facade
   registry, and facade→virtual migration.
+- **`vtable-matching`** — drive `just vtable <Class>` to 100%: read the reccmp vtable
+  diff and fix per-slot mismatches (inherited-base, scalar-deleting-dtor, missing
+  override, stub-in-slot, imported-thunk). Separate from `class-recovery`, which
+  reconstructs an unknown layout/inheritance in the first place.
 
 ## Docs (the durable record)
 

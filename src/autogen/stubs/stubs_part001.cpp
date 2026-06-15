@@ -43,14 +43,6 @@ undefined4 thunk_InitializeCityModel(void)
   return 0;
 }
 
-// ghidra_name TControl::thunk_ForwardCityDialogParamToChildSlot48
-// ghidra_proto undefined thunk_ForwardCityDialogParamToChildSlot48()
-// FUNCTION: IMPERIALISM 0x00401d61
-undefined4 thunk_ForwardCityDialogParamToChildSlot48(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ReleaseHashIndexedRecordByHandle
 // ghidra_proto undefined thunk_ReleaseHashIndexedRecordByHandle()
 // FUNCTION: IMPERIALISM 0x004020fe

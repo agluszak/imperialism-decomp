@@ -2651,30 +2651,6 @@ undefined4 thunk_SendMciCommand804IfDeviceOpenAndClearHandle(void)
   return 0;
 }
 
-// ghidra_name TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists
-// ghidra_proto undefined InitializeSoundSubsystemAndAllocateChannelLists()
-// FUNCTION: IMPERIALISM 0x005e4e70
-undefined4 InitializeSoundSubsystemAndAllocateChannelLists(void)
-{
-  return 0;
-}
-
-// ghidra_name RequestDirectSoundInitIfAllowed
-// ghidra_proto undefined RequestDirectSoundInitIfAllowed()
-// FUNCTION: IMPERIALISM 0x005e4f80
-undefined4 RequestDirectSoundInitIfAllowed(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearDirectSoundInitPendingAndResetState
-// ghidra_proto undefined ClearDirectSoundInitPendingAndResetState()
-// FUNCTION: IMPERIALISM 0x005e4fd0
-undefined4 ClearDirectSoundInitPendingAndResetState(void)
-{
-  return 0;
-}
-
 // ghidra_name NotifyGlobalAudioObjectsViaVslot48
 // ghidra_proto undefined NotifyGlobalAudioObjectsViaVslot48()
 // FUNCTION: IMPERIALISM 0x005e4ff0
@@ -2727,14 +2703,6 @@ undefined4 ReturnConstantZero_005e5190(void)
 // ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0()
 // FUNCTION: IMPERIALISM 0x005e51b0
 undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005e51b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TSoundPlayer::ReleaseRuntimeSelectionPeersAndResetOwner
-// ghidra_proto undefined ReleaseRuntimeSelectionPeersAndResetOwner()
-// FUNCTION: IMPERIALISM 0x005e51d0
-undefined4 ReleaseRuntimeSelectionPeersAndResetOwner(void)
 {
   return 0;
 }

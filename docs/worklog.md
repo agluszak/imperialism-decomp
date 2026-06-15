@@ -4083,3 +4083,29 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
   34→33 raw 100% — the single move is reccmp pairing/credit reshuffle within the identical-
   shaped ComputeMinisterSkillFloatSlot88–8C sibling cluster (no FPO/correctness change);
   `0x004dbac0` differs only by a commutative `cmp [a+b]`/`[b+a]` flip = 100% effective.
+
+## 2026-06-15 — TSoundPlayer vtable to spec (slots all paired bar ILT-thunk artifact)
+- Goal: `just vtable TSoundPlayer` → 100%. Promoted 5 stub funcs to real TSoundPlayer
+  virtuals occupying their correct slots, and paired the scalar deleting destructor.
+- Slot 0x04: deleted the banned `DestructTSoundPlayerAndMaybeFree` __fastcall bridge;
+  symbols.csv 0x5933b0 → `` TSoundPlayer::`scalar deleting destructor' `` + `// SYNTHETIC`
+  marker so the compiler-generated dtor pairs.
+- Overrides: 0x1c → `ReleaseRuntimeSelectionOwnerAndDestroyObject` (0x5e51d0),
+  0x4c → `CanHandleCityDialogActionFalse` (0x593400, UpdateAudioPlaybackState body).
+- Introduced slots: 0x25 Init (0x5e4e70), 0x28 Request (0x5e4f80), 0x29 Clear (0x5e4fd0)
+  given real bodies (self-virtual calls; peer-channel class @vtable 0x650a08 still
+  unrecovered → those few dispatches via vcall_runtime with provisional comments).
+- Base win: `TEventHandler::OwnerPanel` (slot 0x16, returns 0) claimed orig 0x48a730
+  (OrphanTiny_ReturnZero) — fixes slot 0x58 family-wide.
+- Slots 0x0c / 0x48: NOT an unfixable artifact. reccmp DOES auto-resolve ILT `jmp`
+  thunks — but only when the thunk address is NOT annotated as a function. We had
+  *imported* the two thunks as functions: 0x4010a0 (`JMP 0x412bf0`) had a fake no-op
+  body in `thunks.cpp`; 0x401d61 (`JMP 0x48a380`) had an autogen stub + a callsite.
+  Fix: removed both symbols.csv rows; deleted the fake `thunks.cpp` body (no callers);
+  rewrote the lone 0x401d61 callsite (`TDiplomacyMapView.cpp` ForwardCityDialogParam…)
+  to a qualified non-virtual call `reinterpret_cast<TEventHandler*>(this)->
+  TEventHandler::ForwardParam(...)` so the thunk symbol is unreferenced and stubgen
+  drops it. reccmp then resolves orig 0x4010a0/0x401d61 → 0x412bf0/0x48a380, matching
+  our direct refs. Fixes these slots family-wide (TControl/TEventHandler too).
+- Result: `just vtable TSoundPlayer` = **100% match**. gates pass, build OK, format
+  clean, decomplint clean, canaries unchanged.

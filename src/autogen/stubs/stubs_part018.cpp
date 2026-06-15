@@ -2427,14 +2427,6 @@ undefined4 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void)
   return 0;
 }
 
-// ghidra_name UpdateAudioPlaybackStateAndScheduleRandomCue
-// ghidra_proto undefined UpdateAudioPlaybackStateAndScheduleRandomCue()
-// FUNCTION: IMPERIALISM 0x00593400
-undefined4 UpdateAudioPlaybackStateAndScheduleRandomCue(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateTurnAudioPlaybackStateAndScheduleCue
 // ghidra_proto undefined UpdateTurnAudioPlaybackStateAndScheduleCue()
 // FUNCTION: IMPERIALISM 0x005935c0

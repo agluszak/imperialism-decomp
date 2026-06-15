@@ -2795,14 +2795,6 @@ undefined4 WrapperFor_thunk_GetTickCountDiv16_At0048a410(void)
   return 0;
 }
 
-// ghidra_name OrphanTiny_ReturnZero_0048a730
-// ghidra_proto undefined OrphanTiny_ReturnZero_0048a730()
-// FUNCTION: IMPERIALISM 0x0048a730
-undefined4 OrphanTiny_ReturnZero_0048a730(void)
-{
-  return 0;
-}
-
 // ghidra_name TView::CreateTViewInstance
 // ghidra_proto undefined CreateTViewInstance()
 // FUNCTION: IMPERIALISM 0x0048a840

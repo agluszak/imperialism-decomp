@@ -213,6 +213,7 @@ address|target_cpp|ownership|note
 48a6d0|src/game/TEventHandler.cpp|manual|marker_sync
 48a6f0|src/game/TEventHandler.cpp|manual|marker_sync
 48a710|src/game/TEventHandler.cpp|manual|marker_sync
+48a730|src/game/TEventHandler.cpp|manual|marker_sync
 48a7c0|src/game/TEventHandler.cpp|manual|marker_sync
 48a8c0|src/game/TView.cpp|manual|marker_sync
 48a8e0|src/game/TView.cpp|manual|marker_sync
@@ -1154,6 +1155,7 @@ address|target_cpp|ownership|note
 593370|src/game/TSoundPlayer.cpp|manual|marker_sync
 5933b0|src/game/TSoundPlayer.cpp|manual|marker_sync
 5933e0|src/game/TSoundPlayer.cpp|manual|marker_sync
+593400|src/game/TSoundPlayer.cpp|manual|marker_sync
 594fc0|src/game/TWorldView.cpp|manual|marker_sync
 595c40|src/game/TWorldView.cpp|manual|marker_sync
 595c70|src/game/TWorldView.cpp|manual|marker_sync
@@ -1225,9 +1227,13 @@ address|target_cpp|ownership|note
 5e3c00|src/game/noop_slots.cpp|manual|marker_sync
 5e3d40|src/game/turn_event_packets.cpp|manual|marker_sync
 5e42a0|src/game/noop_slots.cpp|manual|marker_sync
+5e4e70|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e4f60|src/game/TSoundPlayer.cpp|manual|marker_sync
+5e4f80|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e4fb0|src/game/TSoundPlayer.cpp|manual|marker_sync
+5e4fd0|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e50a0|src/game/noop_slots.cpp|manual|marker_sync
+5e51d0|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e6d04|src/game/CArchive.cpp|manual|marker_sync
 5e6d27|src/game/CArchive.cpp|manual|marker_sync
 5e6d4e|src/game/CArchive.cpp|manual|marker_sync

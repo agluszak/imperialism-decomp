@@ -17,26 +17,28 @@ public:
   void* runtimePeerAt6c;
   void* runtimePeerAt70;
   unsigned short fieldShort74;
-  char pad76[0x02];
+  unsigned short fieldShort76;
   unsigned char stateByte78;
   unsigned char stateByte79;
   unsigned char stateByte7a;
   unsigned char pad7b;
   int stateDword7c;
-  char pad80[0x04];
+  unsigned char stateByte80;
+  char pad81[0x03];
 
   TSoundPlayer();
   CRuntimeClass* GetRuntimeClass() override;
 
+  // TSoundPlayer overrides of TEventHandler slots.
+  void ReleaseRuntimeSelectionOwnerAndDestroyObject() override; // 0x07 -> 0x5e51d0
+  char CanHandleCityDialogActionFalse(int action) override;     // 0x13 -> 0x593400
+
   // TSoundPlayer-introduced slots (0x25+), matching ApplicationUiRootController fork layout.
-  // Slot 0x25 (Init 0x5e4e70) and slots 0x28/0x29 (Request/Clear 0x5e4f80/0x5e4fd0) still
-  // provisional: Init allocates two inline list nodes (needs the list class recovered) and
-  // Request/Clear dispatch to the unmodeled sound-device global at 0x6a60c0.
-  virtual void SoundPlayerSlot25_Provisional();                           // 0x25 -> 0x5e4e70
-  virtual unsigned char ReturnConstantTrue_SoundPredicate();              // 0x26 -> 0x5e4f60
-  virtual unsigned char ReturnConstantFalse_SoundPredicate(int a, int b); // 0x27 -> 0x5e4fb0
-  virtual void SoundPlayerSlot28_Provisional();                           // 0x28 -> 0x5e4f80
-  virtual void SoundPlayerSlot29_Provisional();                           // 0x29 -> 0x5e4fd0
+  virtual void InitializeSoundSubsystemAndAllocateChannelLists(int param_1); // 0x25 -> 0x5e4e70
+  virtual unsigned char ReturnConstantTrue_SoundPredicate();                 // 0x26 -> 0x5e4f60
+  virtual unsigned char ReturnConstantFalse_SoundPredicate(int a, int b);    // 0x27 -> 0x5e4fb0
+  virtual void RequestDirectSoundInitIfAllowed();                            // 0x28 -> 0x5e4f80
+  virtual void ClearDirectSoundInitPendingAndResetState();                   // 0x29 -> 0x5e4fd0
 };
 
 TSoundPlayer* CreateTSoundPlayerInstance(void);

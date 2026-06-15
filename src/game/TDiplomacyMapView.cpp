@@ -736,8 +736,9 @@ void TDiplomacyMapViewLayout::ForwardCityDialogParamToActiveChildOrBase(void* pa
     child->ForwardParam(reinterpret_cast<int>(param));
     return;
   }
-  reinterpret_cast<void(__fastcall*)(void*, int, void*)>(thunk_ForwardCityDialogParamToChildSlot48)(
-      this, 0, param);
+  // Non-virtual call to TEventHandler::ForwardParam's body (orig routes through the
+  // ILT thunk at 0x401d61 -> 0x48a380); the qualified call forces static dispatch.
+  reinterpret_cast<TEventHandler*>(this)->TEventHandler::ForwardParam(reinterpret_cast<int>(param));
 }
 
 // FUNCTION: IMPERIALISM 0x004f71a0
