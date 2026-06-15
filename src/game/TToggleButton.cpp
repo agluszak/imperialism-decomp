@@ -98,7 +98,7 @@ void TToggleButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
 }
 
 // FUNCTION: IMPERIALISM 0x005712a0
-char TToggleButton::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4) {
+char TToggleButton::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
   (void)point;
   (void)arg2;
   (void)arg3;

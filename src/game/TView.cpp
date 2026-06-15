@@ -4,7 +4,7 @@
 #pragma optimize("y", on)
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
 
@@ -45,14 +45,14 @@ extern "C" TCursorControlPanel* g_pCursorControlPanel;
 extern "C" {
 void* AssertQuickDrawFlag6A1DCCNonZero(int index);
 void AssertQuickDrawFlag6A1DC8NonZero(void* ptr);
-int IsPointInsideHitRegion(Point32* point, int hitArg);
+int IsPointInsideHitRegion(CPoint* point, int hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x00427220
 void TView::PostRenderSlotFC() {}
 
 // FUNCTION: IMPERIALISM 0x00427240
-char TView::vmethod_0071(Point32* point, int arg2, int arg3, int arg4) {
+char TView::vmethod_0071(CPoint* point, int arg2, int arg3, int arg4) {
   (void)point;
   (void)arg2;
   (void)arg3;
@@ -86,7 +86,7 @@ void TView::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {
 
 // FUNCTION: IMPERIALISM 0x00427330
 void TView::UpdateAfterBitmapChange(int unknownFlag) {
-  Point32* point = reinterpret_cast<Point32*>(unknownFlag);
+  CPoint* point = reinterpret_cast<CPoint*>(unknownFlag);
   point->x -= ownerOffsetX;
   point->y -= ownerOffsetY;
 }
@@ -107,7 +107,7 @@ void TView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00430c10
-void TView::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
+void TView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
   (void)point;
   (void)arg2;
   (void)arg3;
@@ -420,8 +420,8 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
   void* destRegion = *reinterpret_cast<void**>(*localRegion + 0x18);
   CombineRgn(reinterpret_cast<HRGN>(destRegion), reinterpret_cast<HRGN>(sourceRegion), nullptr, 5);
 
-  Point32 cachedPos;
-  Point32* pos = reinterpret_cast<Point32*>(GetCachedPosPoint(reinterpret_cast<int*>(&cachedPos)));
+  CPoint cachedPos;
+  CPoint* pos = reinterpret_cast<CPoint*>(GetCachedPosPoint(reinterpret_cast<int*>(&cachedPos)));
   OffsetRgn(reinterpret_cast<HRGN>(destRegion), -pos->x, -pos->y);
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
@@ -603,8 +603,8 @@ int* TView::GetCachedPosPoint(int* outPoint) {
 
 // Copy a point, transform it in place through slot 0x4e, and return the result by value.
 // FUNCTION: IMPERIALISM 0x0048bb60
-Point32 TView::TransformPointViaSlot138(Point32* inPoint) {
-  Point32 local;
+CPoint TView::TransformPointViaSlot138(CPoint* inPoint) {
+  CPoint local;
   local.x = inPoint->x;
   local.y = inPoint->y;
   vmethod_0078(reinterpret_cast<int*>(&local));
@@ -617,10 +617,10 @@ Point32 TView::TransformPointViaSlot138(Point32* inPoint) {
 RECT TView::TransformRectViaSlot148(RECT* inRect) {
   int width = inRect->right - inRect->left;
   int height = inRect->bottom - inRect->top;
-  Point32 corner;
+  CPoint corner;
   corner.x = inRect->left;
   corner.y = inRect->top;
-  Point32 mapped = TransformPointViaSlot138(&corner);
+  CPoint mapped = TransformPointViaSlot138(&corner);
   RECT result;
   result.left = mapped.x;
   result.top = mapped.y;
@@ -655,7 +655,7 @@ void TView::OffsetRectByCachedPos(RECT* inRect, RECT* outRect) {
 RECT TView::BuildRectFromSlot158() {
   int width = field34;
   int height = field38;
-  Point32 origin;
+  CPoint origin;
   int* pt = GetCachedPosPoint(reinterpret_cast<int*>(&origin));
   RECT result;
   result.left = pt[0];
@@ -724,14 +724,14 @@ char TView::HasRenderableParentAndContent() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c080
-void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg) {
+void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) {
   if (HasRenderableParentAndContent() != 0) {
     if (childList44 != 0) {
       POSITION pos = childList44->GetHeadPosition();
       while (pos != NULL) {
         TView* child = static_cast<TView*>(childList44->GetNext(pos));
 
-        Point32 childPoint = *point;
+        CPoint childPoint = *point;
         child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
         if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
             child->EvaluateControlInputGate() != 0) {
@@ -766,7 +766,7 @@ void TView::EnableAndProcessFlag(const CString& sharedString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c250
-void TView::HandleCursorHoverFallback(Point32* point, int hitArg) {
+void TView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
   if (field5c != 0) {
     RECT rect = BuildRectFromSlot158();
     RECT parentRect;
@@ -777,7 +777,7 @@ void TView::HandleCursorHoverFallback(Point32* point, int hitArg) {
     }
   }
   if (GetField4E() != 0xffff) {
-    Point32 transformedPoint = TransformPointViaSlot138(point);
+    CPoint transformedPoint = TransformPointViaSlot138(point);
     if (IsPointInsideHitRegion(&transformedPoint, hitArg)) {
       void* ptr = AssertQuickDrawFlag6A1DCCNonZero(GetField4E());
       AssertQuickDrawFlag6A1DC8NonZero(*reinterpret_cast<void**>(ptr));
@@ -810,13 +810,13 @@ void TView::ApplyBounds(RECT* newBounds, int modeFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c450
-char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4) {
+char TView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetNext(pos));
 
-      Point32 childPoint = *point;
+      CPoint childPoint = *point;
       child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
           child->DispatchUiMouseMoveToChildren(&childPoint, arg2, arg3, arg4) != 0) {
@@ -826,7 +826,7 @@ char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, in
   }
 
   if (Refresh() != 0 && GetBoolSlot28() != 0) {
-    Point32 localPoint = *point;
+    CPoint localPoint = *point;
     BeginMouseCaptureAndStartRepeatTimer(&localPoint, arg2, arg3, arg4);
     return 1;
   }
@@ -834,14 +834,14 @@ char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, in
 }
 
 // FUNCTION: IMPERIALISM 0x0048c590
-char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
+char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
                                                       int arg4) {
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(childList44->GetNext(pos));
 
-      Point32 childPoint = *point;
+      CPoint childPoint = *point;
       child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
       if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
           child->DispatchUiMouseEventToChildrenOrSelf_Impl(&childPoint, arg2, arg3, arg4) != 0) {
@@ -851,7 +851,7 @@ char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, 
   }
 
   if (Refresh() != 0) {
-    Point32 localPoint = *point;
+    CPoint localPoint = *point;
     if (GetBoolSlot28() != 0) {
       return vmethod_0071(&localPoint, arg2, arg3, arg4) != 0;
     }
@@ -861,7 +861,7 @@ char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, 
 
 // True (3) iff this view is actionable and the point falls inside its content bounds.
 // FUNCTION: IMPERIALISM 0x0048c6d0
-char TView::PointInBoundsAndActionable(Point32* point) {
+char TView::PointInBoundsAndActionable(CPoint* point) {
   RECT bounds;
   QueryContentBounds(&bounds);
   if (IsActionable() != 0) {
@@ -945,7 +945,7 @@ unsigned short TView::GetField54() {
 }
 // True (3) iff the point falls inside this view's content bounds.
 // FUNCTION: IMPERIALISM 0x0048c990
-char TView::TestPointInBounds(Point32* point) {
+char TView::TestPointInBounds(CPoint* point) {
   RECT bounds;
   QueryContentBounds(&bounds);
   POINT p;

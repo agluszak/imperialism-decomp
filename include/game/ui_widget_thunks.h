@@ -6,7 +6,7 @@
 // ui_widget_shared.h.
 
 #include "decomp_types.h"
-#include "game/MfcRuntime.h"
+#include "game/mfc.h"
 unsigned int __cdecl thunk_GetActiveNationId(void);
 undefined4 thunk_NoOpUiLifecycleHook(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);

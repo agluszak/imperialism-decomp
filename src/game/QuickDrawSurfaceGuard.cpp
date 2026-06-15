@@ -1,7 +1,7 @@
 #include "game/QuickDrawSurfaceGuard.h"
 #include "game/ClipStateRegion.h"
 #include "game/GameAssert.h"
-#include "game/MfcRuntime.h"
+#include "game/mfc.h"
 
 undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00495520(void);

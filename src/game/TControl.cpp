@@ -81,7 +81,7 @@ TControl::TControl()
 // TControl::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0048e640
-void TControl::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
+void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
   (void)arg2;
   (void)arg3;
   (void)arg4;
@@ -166,10 +166,10 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
   }
   if (eventType == 1) {
     SetControlStateFlagAndMaybeRefresh(
-        PointInBoundsAndActionable(reinterpret_cast<Point32*>(eventDataB)), 1);
+        PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)), 1);
     return;
   }
-  if (eventType == 2 && PointInBoundsAndActionable(reinterpret_cast<Point32*>(eventDataB)) != 0) {
+  if (eventType == 2 && PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)) != 0) {
     if (hasCommandTagResource == 4) {
       DispatchEvent(0x21, this, 0);
       DispatchEvent(hasCommandTagResource, this, 0);
@@ -186,7 +186,7 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
 }
 
 // FUNCTION: IMPERIALISM 0x0048e940
-char TControl::PointInBoundsAndActionable(Point32* point) {
+char TControl::PointInBoundsAndActionable(CPoint* point) {
   RECT rect;
   QueryContentBounds(&rect);
   POINT p;

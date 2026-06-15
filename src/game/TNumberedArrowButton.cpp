@@ -8,7 +8,7 @@
 CRuntimeClass g_pClassDescTNumberedArrowButton = {nullptr, 0, 0, nullptr, nullptr};
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
 
@@ -155,7 +155,7 @@ void TNumberedArrowButton::DispatchPictureResourceCommand(int eventType, void* e
 }
 
 // FUNCTION: IMPERIALISM 0x0058c7c0
-void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* cursorPoint,
+void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
                                                                                int hitArg) {
   if (IsActionable() != '\0') {
     if (cursorPoint->y < field38 / 2) {

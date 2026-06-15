@@ -3,7 +3,7 @@
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
 #include "game/TGreatPower.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 

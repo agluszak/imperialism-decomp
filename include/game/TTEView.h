@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/win_rect.h"
+#include "game/mfc.h"
 
 class TTEView {
 public:

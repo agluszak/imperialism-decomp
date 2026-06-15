@@ -4,7 +4,7 @@
 
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
 CRuntimeClass g_pClassDescTStaticText = {nullptr, 0, 0, nullptr, nullptr};

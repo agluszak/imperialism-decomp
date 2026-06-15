@@ -3,7 +3,7 @@
 #pragma once
 
 #include "game/vcall_runtime.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 
 // class=TBoycottButton; status=provisional
 static __inline void VCall_TBoycottButton_Slot1C8(void* object, int arg0, int arg1) {

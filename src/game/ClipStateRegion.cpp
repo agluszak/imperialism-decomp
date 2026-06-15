@@ -1,5 +1,5 @@
 #include "game/ClipStateRegion.h"
-#include "game/MfcRuntime.h"
+#include "game/mfc.h"
 
 #include <new>
 

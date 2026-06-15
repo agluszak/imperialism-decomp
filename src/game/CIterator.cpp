@@ -1,18 +1,26 @@
 #include "game/CIterator.h"
 
-#include "game/TPtrList.h"
-
 #pragma optimize("y", on) // omit frame pointer, as in the original bodies
+
+namespace {
+
+CPtrListNodeLink* GetEmbeddedListHead(TPtrList* owner) {
+  // TPtrList: RefCountedObjectBase (+0) then CPtrList (+4); m_pNodeHead at CPtrList+4.
+  return *reinterpret_cast<CPtrListNodeLink**>(reinterpret_cast<char*>(owner) + 8);
+}
+
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x00487ef0
 void* CIterator::Reset() {
-  POSITION pos = reinterpret_cast<TPtrList*>(ownerList)->listState.GetHeadPosition();
-  if (pos != NULL) {
-    current = reinterpret_cast<TPtrList*>(ownerList)->listState.GetNext(pos);
-    nextPos = pos;
+  CPtrListNodeLink* node = GetEmbeddedListHead(ownerList);
+  nextNode = node;
+  if (node != 0) {
+    nextNode = node->pNext;
+    current = node->data;
     return current;
   }
-  nextPos = NULL;
+  nextNode = 0;
   current = 0;
   return 0;
 }
@@ -24,8 +32,10 @@ int CIterator::More() {
 
 // FUNCTION: IMPERIALISM 0x00487f40
 void* CIterator::Advance() {
-  if (nextPos != NULL) {
-    current = reinterpret_cast<TPtrList*>(ownerList)->listState.GetNext(nextPos);
+  CPtrListNodeLink* node = nextNode;
+  if (node != 0) {
+    nextNode = node->pNext;
+    current = node->data;
     return current;
   }
   current = 0;

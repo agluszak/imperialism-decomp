@@ -1,7 +1,7 @@
 #include "game/TPictureResourceEntryBase.h"
 
 #include "game/TView.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 
 undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void);
 undefined4 thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(void);

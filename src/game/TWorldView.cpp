@@ -1,5 +1,5 @@
 #include "game/TWorldView.h"
-#include "game/MfcRuntime.h"
+#include "game/mfc.h"
 #include "game/QuickDrawSurfaceGuard.h"
 #include "game/TGlobalMapState.h"
 #include "game/TSelectedCivilianOrderState.h"

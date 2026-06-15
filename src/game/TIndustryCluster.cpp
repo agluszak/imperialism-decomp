@@ -7,7 +7,7 @@
 #include "game/TCity.h"
 #include "game/trade_quickdraw.h"
 #include "game/UiRuntimeContext.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 #include "game/quickdraw_guards.h"
 #include "game/GameAssert.h"
 

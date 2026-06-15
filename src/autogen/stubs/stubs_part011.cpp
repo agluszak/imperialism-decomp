@@ -1724,9 +1724,9 @@ undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl(void)
 }
 
 // ghidra_name IsPointInsideHitRegion
-// ghidra_proto int __cdecl IsPointInsideHitRegion(Point32* point, int hitArg)
+// ghidra_proto int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg)
 // FUNCTION: IMPERIALISM 0x00495650
-int __cdecl IsPointInsideHitRegion(Point32* point, int hitArg)
+int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg)
 {
   return 0;
 }

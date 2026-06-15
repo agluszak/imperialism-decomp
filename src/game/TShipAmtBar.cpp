@@ -2,7 +2,7 @@
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 
 #include "game/TAmtBar.h"
 #include "game/TShipAmtBar.h"

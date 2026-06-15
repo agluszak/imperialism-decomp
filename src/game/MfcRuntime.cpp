@@ -1,11 +1,4 @@
-#include "game/MfcRuntime.h"
-
-typedef unsigned int u32;
-typedef void* hwnd_t;
-typedef u32 hmenu_t;
-
-extern "C" u32 __stdcall SendMessageA(hwnd_t hWnd, u32 msg, u32 wParam, int lParam);
-extern "C" u32 __stdcall CheckMenuItem(hmenu_t hMenu, u32 itemId, u32 flags);
+#include "game/mfc.h"
 
 typedef void(__cdecl* TempMapLockCallback)(int);
 typedef int(__cdecl* AllocFallbackCallback)(undefined4);
@@ -21,23 +14,11 @@ static TempMapLockCallback ResolveTempMapLockCallback(int module_thread_state) {
   return *(TempMapLockCallback*)(module_state + 0x98);
 }
 
-// FUNCTION: IMPERIALISM 0x00606c67
-void BeginWaitCursor(void) {
-  int module_thread_state = (int)GetOrCreateMfcModuleThreadState();
-  TempMapLockCallback callback = ResolveTempMapLockCallback(module_thread_state);
-  if (callback != 0) {
-    callback(1);
-  }
-}
+// LIBRARY: IMPERIALISM 0x00606c67
+// AfxGetApp()->BeginWaitCursor (BeginWaitCursor)
 
-// FUNCTION: IMPERIALISM 0x00606c7c
-void EndWaitCursor(void) {
-  int module_thread_state = (int)GetOrCreateMfcModuleThreadState();
-  TempMapLockCallback callback = ResolveTempMapLockCallback(module_thread_state);
-  if (callback != 0) {
-    callback(-1);
-  }
-}
+// LIBRARY: IMPERIALISM 0x00606c7c
+// EndWaitCursor
 
 // FUNCTION: IMPERIALISM 0x00606f73
 int AllocateWithFallbackHandler(undefined4 size_bytes) {

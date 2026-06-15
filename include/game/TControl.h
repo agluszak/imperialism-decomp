@@ -29,10 +29,10 @@ public:
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
+  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4) override;
   virtual int QuerySelectedIndexSlotBC() override;
-  virtual char PointInBoundsAndActionable(Point32* point) override;
+  virtual char PointInBoundsAndActionable(CPoint* point) override;
 
   // TControl-branch slots 0x1A0-0x1BC (104-111), formerly mis-declared on TView.
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,

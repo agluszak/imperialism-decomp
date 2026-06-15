@@ -1,7 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 
 // Nested blit target at parent+0x4 (astruct_18 / Ghidra). Passed as the first two
 // operands to BlitRectWithOptionalTransparency.

@@ -31,7 +31,7 @@ void TPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool 
 }
 
 // FUNCTION: IMPERIALISM 0x00570900
-void TPictureButton::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
+void TPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                           int arg4) {
   int sfxSystem = *reinterpret_cast<int*>(kAddrSfxPlaybackSystem);
   reinterpret_cast<void(__cdecl*)(int, int, int)>(

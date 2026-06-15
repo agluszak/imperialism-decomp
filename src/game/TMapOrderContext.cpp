@@ -3,7 +3,7 @@
 #include "game/CObject.h"
 #include "game/CRuntimeClass.h"
 #include "game/GameAssert.h"
-#include "game/MfcRuntime.h"
+#include "game/mfc.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
 #include "game/TZone.h"

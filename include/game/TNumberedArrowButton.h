@@ -15,7 +15,7 @@ public:
   TNumberedArrowButton();
   CRuntimeClass* GetRuntimeClass() const override;
 
-  void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* cursorPoint,
+  void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
                                                            int hitArg) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
   void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,

@@ -44,10 +44,14 @@ typedef unsigned long long u64;
 #endif
 
 #ifdef __cplusplus
+class CPoint;
 extern "C" {
 #endif
-struct Point32;
-int __cdecl IsPointInsideHitRegion(struct Point32* point, int hitArg);
+#ifdef __cplusplus
+int __cdecl IsPointInsideHitRegion(CPoint* point, int hitArg);
+#else
+int __cdecl IsPointInsideHitRegion(void* point, int hitArg);
+#endif
 void* __cdecl AssertQuickDrawFlag6A1DCCNonZero(int index);
 void __cdecl AssertQuickDrawFlag6A1DC8NonZero(void* ptr);
 #ifdef __cplusplus

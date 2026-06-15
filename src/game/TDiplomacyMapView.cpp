@@ -2,12 +2,12 @@
 
 #include "decomp_types.h"
 #include "game/TView.h"
-#include "game/Point32.h"
+#include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_globals.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
 #include "game/generated/vcall_facades.h"
@@ -52,8 +52,8 @@ struct TDiplomacyMapViewLayout {
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
   void BuildCombinedTerrainTypeRegionMaskAndDispatch();
   void RenderDiplomacyPendingPolicyIconsAndFrames();
-  int ResolveDiplomacyActionFromClickAndUpdateTarget(Point32* clickPoint);
-  void UpdateDiplomacyMapHoverCursorFromActionSelection(Point32* clickPoint, void* dispatchArg);
+  int ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint);
+  void UpdateDiplomacyMapHoverCursorFromActionSelection(CPoint* clickPoint, void* dispatchArg);
   void ForwardCityDialogParamToActiveChildOrBase(void* param);
   void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3);
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
@@ -147,7 +147,7 @@ int UiRuntimeContext::MapTurnEventCodeToPaletteIndex(int eventCode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00
-int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Point32* clickPoint) {
+int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* clickPoint) {
   char* self = reinterpret_cast<char*>(this);
   char initFlags = *reinterpret_cast<char*>(kAddrDiplomacyHitRectInitialized);
   if ((initFlags & 1) == 0) {
@@ -169,7 +169,7 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Poin
     return 0;
   }
 
-  Point32 localPoint;
+  CPoint localPoint;
   VCall_DiplomacyMapView_TransformPointToLocalSlot148(this, reinterpret_cast<int>(&localPoint),
                                                       reinterpret_cast<int>(clickPoint));
 
@@ -202,10 +202,10 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(Poin
 }
 
 // FUNCTION: IMPERIALISM 0x004f5fb0
-void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(Point32* clickPoint,
+void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(CPoint* clickPoint,
                                                                                void* dispatchArg) {
   char* self = reinterpret_cast<char*>(this);
-  Point32 localPoint;
+  CPoint localPoint;
   localPoint.x = clickPoint->x;
   localPoint.y = clickPoint->y;
 

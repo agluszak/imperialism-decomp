@@ -234,7 +234,7 @@ def build_header(rows: list[dict[str, str]]) -> str:
     out.append("#pragma once")
     out.append("")
     out.append('#include "game/vcall_runtime.h"')
-    out.append('#include "game/win_rect.h"')
+    out.append('#include "game/mfc.h"')
     out.append("")
 
     seen_wrappers: set[str] = set()

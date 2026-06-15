@@ -2,7 +2,7 @@
 
 #include <new.h>
 
-#include "game/MfcRuntime.h"
+#include "game/mfc.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

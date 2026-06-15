@@ -37,7 +37,7 @@ public:
   static TTextList* CreateTTextListInstance();
 
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) override;
+  void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) override;
 };
 
 ASSERT_SIZE(TTextList, 0x1070);

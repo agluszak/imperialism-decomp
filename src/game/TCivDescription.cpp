@@ -3,7 +3,7 @@
 #include <new>
 
 #include "decomp_types.h"
-#include "game/Point32.h"
+#include "game/mfc.h"
 #include "game/TCivDescription.h"
 #include <string.h>
 #include "game/TCivilianOrderState.h"
@@ -173,7 +173,7 @@ void TCivDescription::UpdateCivilianOrderClassAndRefreshTargetCounts(
 
 // FUNCTION: IMPERIALISM 0x0058f1a0
 #pragma optimize("y", on)
-void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, Point32* point,
+void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, CPoint* point,
                                                                 int arg4) {
   int candidateOrdinal = 0;
   int provinceCount;

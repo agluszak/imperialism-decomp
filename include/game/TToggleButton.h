@@ -16,7 +16,7 @@ public:
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // slot 0x3c 0x571170
-  char DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3,
+  char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
                                      int arg4) override; // slot 0x118 0x5712a0
 };
 

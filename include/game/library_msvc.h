@@ -1,9 +1,5 @@
-#if 0
+#pragma once
 
-// LIBRARY: IMPERIALISM 0x5e9cf0
-// memcpy
-
-// LIBRARY: IMPERIALISM 0x5e8420
-// memmove
-
-#endif
+// CRT mem helpers at 0x005e8420 / 0x005e9cf0 are linked from the MSVC runtime,
+// not reimplemented here. Do not add reccmp LIBRARY markers for them in this
+// header — that duplicates the autogen stub markers and breaks reccmp-roadmap.

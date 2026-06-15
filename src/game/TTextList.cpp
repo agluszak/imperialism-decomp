@@ -5,7 +5,7 @@
 #include "game/TTextList_Virtuals.h"
 #include "game/UiRuntimeContext.h"
 #include "game/trade_quickdraw.h"
-#include "game/win_rect.h"
+#include "game/mfc.h"
 #include "game/CRuntimeClass.h"
 
 #if defined(_MSC_VER)
@@ -98,7 +98,7 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057af20
-void TTextList::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
+void TTextList::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) {
   (void)arg2;
   (void)arg3;
   (void)arg4;

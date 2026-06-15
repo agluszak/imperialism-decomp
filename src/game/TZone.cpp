@@ -2,7 +2,7 @@
 
 #include "game/CObject.h"
 #include "game/CRuntimeClass.h"
-#include "game/MfcRuntime.h"
+#include "game/mfc.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapOrderContext.h"
 #include "game/UiRuntimeContext.h"

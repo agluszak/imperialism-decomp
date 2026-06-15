@@ -36,7 +36,7 @@ public:
   // the SYNTHETIC scalar deleting destructor in the .cpp.
 
   void UpdateCivilianOrderClassAndRefreshTargetCounts(class TCivilianOrderState* orderState);
-  void HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, struct Point32* point,
+  void HandleCivilianLegendHitTestAndSelectOrder(int arg1, int arg2, CPoint* point,
                                                  int arg4);
   void RefreshCivilianTargetLegendBySelectedClass();
   void RenderCivilianTargetLegendVariantA();
