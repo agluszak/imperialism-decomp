@@ -523,14 +523,6 @@ undefined4 InitializePictureEntryBaseAndRefresh(void)
   return 0;
 }
 
-// ghidra_name THQButton::RenderHintHelperWithCtrlModifierOverlay
-// ghidra_proto undefined RenderHintHelperWithCtrlModifierOverlay()
-// FUNCTION: IMPERIALISM 0x0048f3c0
-undefined4 RenderHintHelperWithCtrlModifierOverlay(void)
-{
-  return 0;
-}
-
 // ghidra_name TTwoPicSlider::ResetPictureResourceEntry
 // ghidra_proto void __thiscall ResetPictureResourceEntry(void)
 // FUNCTION: IMPERIALISM 0x0048f520
@@ -551,14 +543,6 @@ undefined4 SetPictureResourceIdAndRefresh(void)
 // ghidra_proto undefined SetPictureResourceIdAndRefresh_Impl()
 // FUNCTION: IMPERIALISM 0x0048f610
 undefined4 SetPictureResourceIdAndRefresh_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name CloneCityDialogExtendedStateToNewInstance
-// ghidra_proto CityDialogController * __fastcall CloneCityDialogExtendedStateToNewInstance(CityDialogController * pSource)
-// FUNCTION: IMPERIALISM 0x0048f640
-undefined4 CloneCityDialogExtendedStateToNewInstance(void)
 {
   return 0;
 }

@@ -38,8 +38,7 @@ void TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow() {
   CString sharedStringRef;
   int* sharedStringRefPtr = reinterpret_cast<int*>(&sharedStringRef);
 
-  reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
-      this, 0);
+  ApplyRectSlot110(nullptr);
 
   if (this->glyph90 != 0) {
     reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();

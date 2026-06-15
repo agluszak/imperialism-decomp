@@ -6,7 +6,7 @@ extern "C" int g_vtblTPlacard;
 struct CRuntimeClass;
 extern "C" CRuntimeClass g_pClassDescTPlacard;
 
-// VTABLE: IMPERIALISM 0x667238
+// VTABLE: IMPERIALISM 0x667218
 class TPlacard : public TPictureButton {
 public:
   TPlacard();

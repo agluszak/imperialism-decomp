@@ -4,6 +4,7 @@
 #include "game/TTradeCluster.h"
 
 #include "game/TAmtBar.h"
+#include "game/TPictureResourceEntryBase.h"
 #include "game/trade_quickdraw.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/TGreatPower.h"
@@ -161,8 +162,7 @@ const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 // FUNCTION: IMPERIALISM 0x0058b4f0
 void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
   if (*reinterpret_cast<int*>(reinterpret_cast<char*>(control) + 4) != 0) {
-    reinterpret_cast<void(__fastcall*)(void*)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
-        control);
+    reinterpret_cast<TPictureResourceEntryBase*>(control)->ApplyRectSlot110(nullptr);
   }
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
 

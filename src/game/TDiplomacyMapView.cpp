@@ -67,7 +67,6 @@ undefined4 thunk_SetActiveQuickDrawSurfaceContext(void);
 undefined4 thunk_GetSurfaceObjectAtContextOffset24(void);
 undefined4 thunk_ReturnConstantTrueQuickDrawFlag(void);
 undefined4 thunk_NoOpQuickDrawLifecycleHookB(void);
-undefined4 thunk_RenderHintHelperWithCtrlModifierOverlay(void);
 undefined4 thunk_RenderTerrainAndMinorNationLegendLabels(void);
 undefined4 SetQuickDrawColorAndSyncGlobals(void);
 undefined4 thunk_SetGlobalBlitTransparentColorRaw(void);
@@ -301,8 +300,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
       reinterpret_cast<void(__cdecl*)()>(thunk_ReturnConstantTrueQuickDrawFlag)();
     }
 
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_RenderHintHelperWithCtrlModifierOverlay)(
-        this, 0);
+    reinterpret_cast<TView*>(this)->ApplyRectSlot110(nullptr);
 
     void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
     short terrainIndex = 0;

@@ -302,6 +302,8 @@ address|target_cpp|ownership|note
 48ece0|src/game/TButton.cpp|manual|marker_sync
 48efc0|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
 48f250|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
+48f3c0|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
+48f640|src/game/TPictureResourceEntryBase.cpp|manual|marker_sync
 48f710|src/game/TStaticText.cpp|manual|marker_sync
 48f870|src/game/TStaticText.cpp|manual|marker_sync
 48f890|src/game/TStaticText.cpp|manual|marker_sync
