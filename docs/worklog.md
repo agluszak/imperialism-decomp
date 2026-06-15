@@ -4120,3 +4120,22 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
 - Goal: Fix function ordering in `src/game/TView.cpp` so that `just gates` (which runs `decomplint`) passes cleanly.
 - Fix: Moved `TView::HandleCursorHoverFallback` (`0x0048c250`) from line 52 to its correct sorted address order position (between `0x0048c220` and `0x0048c380` at line 857).
 - Result: `just gates` passes cleanly, `just build` compiles successfully, and `just detect` is fully up to date.
+
+## 2026-06-15 — Vtable failure pattern triage
+
+- Goal: Classify the remaining `just vtable` failures by repeated structural cause rather
+  than fixing each class independently.
+- Fixes made while triaging:
+  - `TTextList`: paired the compiler-generated scalar deleting destructor at `0x0045af30`
+    and moved `0x0057acc0` / `0x0057af20` into the inherited slot signatures
+    `ApplyRectSlot110` and `BeginMouseCaptureAndStartRepeatTimer`.
+  - `TCombatReportView`: corrected the `// VTABLE:` marker from `0x006676f8` to
+    `0x006678a0`; the old marker pointed into an adjacent control/picture tail region.
+- Verification:
+  - `just sync-ownership`, `just regen-stubs`, `just build`, and `just detect` pass.
+  - `just vtable TTextList` is 100%.
+  - Full `just vtable` still reports 99 found / 71 not matching, now dominated by shared
+    families: minister hierarchy/tail layout, stream base placeholder slots, TUberCluster
+    null abstract tail, and picture-resource slot-0x1cc overrides.
+  - `just gates` and `just format-check include/game/TTextList.h src/game/TTextList.cpp
+    include/game/TCombatReportView.h` pass.

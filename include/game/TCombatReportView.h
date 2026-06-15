@@ -6,7 +6,7 @@ extern "C" int g_vtblTCombatReportView;
 struct CRuntimeClass;
 extern "C" CRuntimeClass g_pClassDescTCombatReportView;
 
-// VTABLE: IMPERIALISM 0x6676f8
+// VTABLE: IMPERIALISM 0x6678a0
 class TCombatReportView : public TPictureButton {
 public:
   short reportValue;

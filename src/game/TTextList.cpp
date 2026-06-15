@@ -22,6 +22,10 @@ undefined4 thunk_FillRectWithQuickDrawBrushAndContextOffset(void);
 undefined4 thunk_MeasureTextExtentWithCachedQuickDrawStyle(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 undefined4 SetQuickDrawColorAndSyncGlobals(void);
+
+// SYNTHETIC: IMPERIALISM 0x0045af30
+// TTextList::`scalar deleting destructor'
+
 // FUNCTION: IMPERIALISM 0x0057ab70
 TTextList* TTextList::CreateTTextListInstance() {
   return new TTextList();
@@ -33,15 +37,15 @@ CRuntimeClass* TTextList::GetRuntimeClass() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057acc0
-void TTextList::RenderTextListRowsWithSelectionHighlight() {
+void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+
   int styleFlags1 = 0;
   int styleFlags2 = 0;
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6C,
-                                                                                reinterpret_cast<int>(
-                                                                                    &styleFlags1));
-  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(0x2B6A,
-                                                                                reinterpret_cast<int>(
-                                                                                    &styleFlags2));
+  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
+      0x2B6C, reinterpret_cast<int>(&styleFlags1));
+  reinterpret_cast<void(__cdecl*)(int, int)>(thunk_MapUiThemeCodeToStyleFlags)(
+      0x2B6A, reinterpret_cast<int>(&styleFlags2));
 
   reinterpret_cast<void(__cdecl*)()>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)();
 
@@ -94,7 +98,12 @@ void TTextList::RenderTextListRowsWithSelectionHighlight() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057af20
-void TTextList::HandleTextListScrollSelectionChange(int* pScrollData) {
+void TTextList::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+
+  int* pScrollData = reinterpret_cast<int*>(point);
   int index = (pScrollData[1] / itemHeight) + scrollOffset;
   if (index < totalItems) {
     selectedIndex = index;

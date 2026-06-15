@@ -74,6 +74,7 @@ address|target_cpp|ownership|note
 43d9f0|src/game/noop_slots.cpp|manual|marker_sync
 45acb0|src/game/noop_slots.cpp|manual|marker_sync
 45ada0|src/game/noop_slots.cpp|manual|marker_sync
+45af30|src/game/TTextList.cpp|manual|marker_sync
 45d2a0|src/game/noop_slots.cpp|manual|marker_sync
 4798b0|src/game/TMission.cpp|manual|marker_sync
 4798d0|src/game/TZone.cpp|manual|marker_sync

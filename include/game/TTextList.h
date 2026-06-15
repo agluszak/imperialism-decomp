@@ -36,8 +36,8 @@ public:
 
   static TTextList* CreateTTextListInstance();
 
-  void RenderTextListRowsWithSelectionHighlight();
-  void HandleTextListScrollSelectionChange(int* pScrollData);
+  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) override;
 };
 
 ASSERT_SIZE(TTextList, 0x1070);
