@@ -451,14 +451,6 @@ undefined4 thunk_InitializeRuntimeClassVtablePointer_0066FEC4_VariantD(void)
   return 0;
 }
 
-// ghidra_name GetCPtrListRuntimeClass
-// ghidra_proto undefined GetCPtrListRuntimeClass()
-// FUNCTION: IMPERIALISM 0x00623b3a
-undefined4 GetCPtrListRuntimeClass(void)
-{
-  return 0;
-}
-
 // ghidra_name GetCFileExceptionRuntimeClass
 // ghidra_proto undefined GetCFileExceptionRuntimeClass()
 // FUNCTION: IMPERIALISM 0x00623b40

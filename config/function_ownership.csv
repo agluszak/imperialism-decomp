@@ -52,6 +52,7 @@ address|target_cpp|ownership|note
 415ce0|src/game/TEventHandler.cpp|manual|marker_sync
 415d50|src/game/TEventHandler.cpp|manual|marker_sync
 415d70|src/game/TEventHandler.cpp|manual|marker_sync
+415f00|src/game/CObject.cpp|manual|marker_sync
 426f80|src/game/noop_slots.cpp|manual|marker_sync
 427200|src/game/TView.cpp|manual|marker_sync
 427220|src/game/TView.cpp|manual|marker_sync
@@ -1359,5 +1360,6 @@ address|target_cpp|ownership|note
 61ec02|src/game/noop_slots.cpp|manual|marker_sync
 61f342|src/game/TTEView.cpp|manual|marker_sync
 622a95|src/game/noop_slots.cpp|manual|marker_sync
+623b3a|src/game/CPtrList.cpp|manual|marker_sync
 624491|src/game/noop_slots.cpp|manual|marker_sync
 6244b7|src/game/noop_slots.cpp|manual|marker_sync

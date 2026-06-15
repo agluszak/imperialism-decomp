@@ -531,14 +531,6 @@ undefined4 DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00415f00
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00415f00()
-// FUNCTION: IMPERIALISM 0x00415f00
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00415f00(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeUiResourcePoolRuntimeClassFields
 // ghidra_proto undefined InitializeUiResourcePoolRuntimeClassFields()
 // FUNCTION: IMPERIALISM 0x00415f50

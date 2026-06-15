@@ -18,6 +18,10 @@ CRuntimeClass classCObject = {nullptr, 0, 0, nullptr, nullptr};
 // referenced by not-yet-ported autogen vptr writes; it carries no reccmp address.
 char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 
+// The scalar deleting destructor is compiler-generated from the virtual dtor.
+// SYNTHETIC: IMPERIALISM 0x00415f00
+// CObject::`scalar deleting destructor'
+
 // FUNCTION: IMPERIALISM 0x00412bd0
 void CObject::Serialize(CArchive*) {}
 

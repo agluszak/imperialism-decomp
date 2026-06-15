@@ -5,6 +5,8 @@
 #include "game/CObject.h"
 
 // MFC CPtrList CNode (m_pNext, m_pPrev, data) — 12 bytes.
+struct CRuntimeClass;
+
 struct CPtrListNode {
   CPtrListNode* next;
   CPtrListNode* prev;
@@ -26,6 +28,7 @@ public:
   int blockSize;
 
   CPtrList(int blockSize = 10);
+  virtual CRuntimeClass* GetRuntimeClass() override;
   virtual ~CPtrList() override;
 
   void RemoveAll();

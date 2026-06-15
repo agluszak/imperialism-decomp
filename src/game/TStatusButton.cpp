@@ -38,7 +38,7 @@ const int kControlTagArms = 0x41726d73;
 const int kControlTagClos = 0x436c6f73;
 
 // FUNCTION: IMPERIALISM 0x00586400
-void TStatusButton::HandleCityDialogSelectionAndBackControlReset(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {
+void TStatusButton::HandleEvent(int selectedIndex, TEventHandler* sourceHandler, TEvent* event) {
   if (selectedIndex == QuerySelectedIndexSlotBC() && GetBoolSlot28() != '\0') {
     if (LogUnhandledDialogMethodAndReturnFalse() == '\0') {
       if (g_pActiveCityDialogLegendSelectionOwner != 0) {

@@ -1,4 +1,5 @@
 #include "game/CPtrList.h"
+#include "game/CRuntimeClass.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("ys", on)
@@ -226,4 +227,13 @@ CPtrListNode* CPtrList::Find(void* searchValue, CPtrListNode* startAfter) {
     node = node->next;
   }
   return 0;
+}
+
+// MFC CRuntimeClass descriptor for CPtrList (0x00672ec0).
+// GLOBAL: IMPERIALISM 0x00672ec0
+CRuntimeClass classCPtrList = {nullptr, 0, 0, nullptr, nullptr};
+
+// FUNCTION: IMPERIALISM 0x00623b3a
+CRuntimeClass* CPtrList::GetRuntimeClass() {
+  return &classCPtrList;
 }
