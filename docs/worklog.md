@@ -4247,3 +4247,24 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
     personalities). Only base `TMinister` retains a 4-slot warning (slots 18-21 abstract/
     NULL — irreducible under MSVC500, cluster precedent).
   - `just vtable TForeignMinister`: implemented slots 0x80/0x8c/0x90/0x94/0x98/0x9c pair.
+
+## 2026-06-15 — Minister vtable per-class porting (defense cascade + base Call1C)
+
+- TDefenseMinister (commit b9423b6): promoted its class-specific vtable slots from autogen
+  stubs to real overrides/virtuals — GetRuntimeClass (0), scalar deleting dtor (1,
+  SYNTHETIC @ 0x4ec110), serialize/deserialize metrics (5/6), slots 10/18/20/21, and the
+  introduced extension slots 22-24 (0x58-0x60, BuildStrategicTilePriorityHeatmap etc.).
+  Complex AI bodies are honest stubs (slot pairing is by marker) pending a defense
+  field-layout data pass. Vtable ends at slot 29 (TNapoleonMinister begins 0x654a28);
+  trailing NULL slots 25-29 are NOT declared (reccmp drops them — declaring them re-adds
+  the "larger than orig" warning). Cascades to TNapoleon/TBismarck/TPirate/TDefender/TBully.
+- Base TMinister::Call1C (commit 3086379): slot 7 (0x1c) was a __fastcall free wrapper +
+  separate virtual, so the slot pointed at the wrapper. Folded the body into
+  TMinister::Call1C (`delete this`), removing the __fastcall bridge. Slot 0x1c now pairs
+  for TMinister + all inheriting subclasses. TCityInteriorMinister overrides it (0x4becd0,
+  multi-object city cleanup) and still needs its own port (needs city field layout).
+- Remaining shared base-TMinister mismatches (all ministers): slots 0x08/0x0c/0x10
+  (orig reuses TEventHandler::Serialize / CObject via hand-built fork-vtable thunks — not
+  expressible via normal C++ inheritance since TMinister is a 22-slot CObject subclass,
+  not a TEventHandler), and slots 0x20/0x24 (shared InvokeObjectVtableMethod24 /
+  HandleTurnEventVtableSlot24CopyPayloadBuffer). Same fork-vtable nature; left for later.
