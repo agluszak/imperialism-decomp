@@ -10,7 +10,7 @@ public:
   TradeCommodityMetricRecord* selectedMetricRecord;
 
   TIndustryAmtBar();
-  virtual ~TIndustryAmtBar() override;
+  // ~TIndustryAmtBar is compiler-generated (implicit virtual dtor).
   CRuntimeClass* GetRuntimeClass() override;
 
   void DoPostCreate(struct TDocument* document);

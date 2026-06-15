@@ -38,8 +38,9 @@ CRuntimeClass* TRailAmtBar::GetRuntimeClass() {
 // FUNCTION: IMPERIALISM 0x00589f90
 TRailAmtBar::TRailAmtBar() : TIndustryAmtBar() {}
 
-// FUNCTION: IMPERIALISM 0x00589fd0
-TRailAmtBar::~TRailAmtBar() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00589fd0
+// TRailAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a020
 void TRailAmtBar::DoPostCreate(TDocument* document) {

@@ -55,8 +55,9 @@ CRuntimeClass* TTraderAmtBar::GetRuntimeClass() {
   return &g_pClassDescTTraderAmtBar;
 }
 
-// FUNCTION: IMPERIALISM 0x0058af30
-TTraderAmtBar::~TTraderAmtBar() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058af30
+// TTraderAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058af80
 void TTraderAmtBar::DoPostCreate(TDocument* document) {

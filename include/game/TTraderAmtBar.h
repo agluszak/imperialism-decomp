@@ -7,7 +7,7 @@ struct CRuntimeClass;
 class TTraderAmtBar : public TAmtBar {
 public:
   TTraderAmtBar();
-  virtual ~TTraderAmtBar() override;
+  // ~TTraderAmtBar is compiler-generated (implicit virtual dtor).
   CRuntimeClass* GetRuntimeClass() override;
 
   void DoPostCreate(struct TDocument* document);

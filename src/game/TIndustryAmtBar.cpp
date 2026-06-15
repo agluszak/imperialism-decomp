@@ -49,8 +49,9 @@ CRuntimeClass* TIndustryAmtBar::GetRuntimeClass() {
 // FUNCTION: IMPERIALISM 0x005891d0
 TIndustryAmtBar::TIndustryAmtBar() : TAmtBar(), selectedMetricRecord(0) {}
 
-// FUNCTION: IMPERIALISM 0x00589210
-TIndustryAmtBar::~TIndustryAmtBar() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x00589210
+// TIndustryAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00589260
 void TIndustryAmtBar::DoPostCreate(TDocument* document) {

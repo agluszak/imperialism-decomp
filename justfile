@@ -61,6 +61,12 @@ sync-ghidra: _require-ghidra-install
 prune-ilt-thunks *args:
   uv run python -m tools.workflow.prune_ilt_thunks {{args}}
 
+# Canonicalize scalar-deleting-destructor spellings in config/symbols.csv and
+# `// SYNTHETIC:` source comments to the MSVC500-mangled form. Pass --dry-run
+# to preview. `just synthetic-gate` is the mechanical check that the names agree.
+correct-scalar-dtors *args:
+  uv run python -m tools.workflow.correct_scalar_dtors {{args}}
+
 import-ghidra *args: _require-ghidra-install
   file_in_project="{{GHIDRA_PROGRAM_NAME}}"; \
   [[ "$file_in_project" == /* ]] || file_in_project="/$file_in_project"; \
@@ -141,6 +147,10 @@ vtable-annotation-gate:
 vtable-collision-gate:
   uv run python -m tools.workflow.check_vtable_address_collisions --paths src include
 
+# Ensure synthetic symbol names in source comments match symbols.csv.
+synthetic-gate:
+  uv run python -m tools.workflow.check_synthetic_names --paths src include
+
 # Report `// VTABLE:` annotations that reccmp does not turn into a matched vtable
 # (needs a built binary + reccmp DB, so it is not part of `just gates`). Pass --strict
 # to also fail on annotations whose recompiled vtable is missing.
@@ -162,6 +172,7 @@ gates:
   just marker-gate
   just vtable-annotation-gate
   just vtable-collision-gate
+  just synthetic-gate
   just decomplint
 
 # Check the decompilation annotations (// FUNCTION / // VTABLE / // GLOBAL etc.)

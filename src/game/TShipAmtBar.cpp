@@ -36,8 +36,9 @@ CRuntimeClass* TShipAmtBar::GetRuntimeClass() {
 // FUNCTION: IMPERIALISM 0x0058ab60
 TShipAmtBar::TShipAmtBar() : TIndustryAmtBar() {}
 
-// FUNCTION: IMPERIALISM 0x0058aba0
-TShipAmtBar::~TShipAmtBar() {}
+// Destructors are compiler-generated (implicit) from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0058aba0
+// TShipAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058abf0
 void TShipAmtBar::DoPostCreate(TDocument* document) {
