@@ -80,3 +80,12 @@ comparison reads the freshly built `Imperialism.exe`/`.pdb`.
   durable renames belong in Ghidra / `config/function_name_overrides.csv`.
 - Model real virtuals/overrides, not `VCall_*` facades or `__thiscall` reinterpret_casts,
   when occupying a slot (the calling-convention guardrail in `AGENTS.md`).
+
+## Troubleshooting & Common Gotchas
+
+1. **Linker Errors for External/QuickDraw Helpers**: When promoting functions, you may encounter linkage failures (e.g., `unresolved external symbol`) for external helpers (like `IsPointInsideHitRegion`). To resolve:
+   - Wrap declarations in `extern "C"` blocks.
+   - Match implementation signatures exactly (e.g., using `int*` instead of `void` if the wrapper/helper expects a pointer).
+   - If stubgen generates colliding dummy stubs for them, whitelist/add the symbol to the ignore list in `tools/stubgen.py`.
+2. **Substring Filter Collisions**: The `reccmp-vtable` filter (e.g., `--filter "TView::"`) matches case-insensitively. This can cause unexpected classes to be included in the comparison (e.g., `"TView::"` matches `TCombatReportView` because `t` + `View::` matches `tview::`). Analyze the output carefully to identify which class is the actual mismatch.
+3. **Override Signatures**: Ensure derived overrides match the base class virtual signature exactly. Mismatched signatures can cause MSVC to treat them as new virtual functions (shifting the vtable layout) rather than overrides.
