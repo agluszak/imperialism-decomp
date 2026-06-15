@@ -51,6 +51,19 @@ if(WIN32 AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
     target_link_libraries(Imperialism PRIVATE gdi32 user32)
 endif()
 
+# Groundwork for the retail-MFC migration (see docs/worklog.md 2026-06-16 and
+# tools/mfc/gen_library_annotations.py). When ON, link the statically-linked retail
+# MFC (nafxcw.lib, byte-identical to the original) plus the Win32 import libs MFC
+# needs; the toolchain's INCLUDE/LIB already point at C:\msvc\mfc\{include,lib}.
+# nafxcw must precede the static CRT (libcmt) on the link line — verified to link a
+# minimal exe. OFF until the hand-rolled MFC C* classes are swapped for <afx.h>.
+option(IMPERIALISM_LINK_MFC "Link retail static MFC (nafxcw.lib) instead of hand-rolled MFC" OFF)
+if(IMPERIALISM_LINK_MFC AND MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
+    target_link_libraries(Imperialism PRIVATE
+        nafxcw.lib
+        advapi32 shell32 comctl32 comdlg32 winspool ole32 oleaut32 uuid)
+endif()
+
 target_include_directories(Imperialism PRIVATE include)
 target_compile_definitions(Imperialism PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
 
