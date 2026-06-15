@@ -57,6 +57,7 @@ struct TDiplomacyMapViewLayout {
   void ForwardCityDialogParamToActiveChildOrBase(void* param);
   void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3);
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
+  void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId, TEventHandler* panelEvent, void* extra);
 protected:
   ~TDiplomacyMapViewLayout() {}
 };
@@ -274,8 +275,8 @@ void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(P
     SetCursor(reinterpret_cast<HCURSOR>(hCursor));
   }
 
-  reinterpret_cast<void(__fastcall*)(void*, int, void*, void*)>(
-      thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(this, 0, clickPoint, dispatchArg);
+  reinterpret_cast<TControl*>(this)->TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(
+      clickPoint, reinterpret_cast<int>(dispatchArg));
 }
 
 // FUNCTION: IMPERIALISM 0x004f6170
@@ -705,13 +706,14 @@ void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, v
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0
-void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId, int panelEvent,
-                                                           void* extra) {
+void __stdcall TDiplomacyMapViewLayout::HandleDiplomacyMapControlTagToggleOrForward(int commandId,
+                                                                                    TEventHandler* panelEvent,
+                                                                                    void* extra) {
   if (commandId == 0x14) {
     int tabIndex = 0;
     int* tagTable = reinterpret_cast<int*>(0x00696978);
     do {
-      if (*reinterpret_cast<int*>(panelEvent + 0x1c) == *tagTable) {
+      if (panelEvent->controlTag == *tagTable) {
         break;
       }
       tagTable += 1;
@@ -723,8 +725,7 @@ void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId, int pa
       return;
     }
   } else {
-    reinterpret_cast<void(__stdcall*)(int, int, void*)>(
-        thunk_HandleCityDialogToggleCommandOrForward)(commandId, panelEvent, extra);
+    reinterpret_cast<TControl*>(this)->TControl::HandleEvent(commandId, panelEvent, reinterpret_cast<TEvent*>(extra));
   }
 }
 

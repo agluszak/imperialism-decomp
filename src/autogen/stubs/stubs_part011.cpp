@@ -11,14 +11,6 @@ undefined4 CopyCityDialogStateFromSourceAndCloneChildLinks(void)
   return 0;
 }
 
-// ghidra_name UpdateMapCursorFromSelectionContext
-// ghidra_proto undefined UpdateMapCursorFromSelectionContext()
-// FUNCTION: IMPERIALISM 0x0048c250
-undefined4 UpdateMapCursorFromSelectionContext(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60
 // ghidra_proto undefined Helper_Uses_thunk_ConstructTViewBaseState_At0048ca60()
 // FUNCTION: IMPERIALISM 0x0048ca60
@@ -415,14 +407,6 @@ undefined4 DestroyChildResourceWindowAndDetach(void)
 // ghidra_proto undefined CreateTControlInstance()
 // FUNCTION: IMPERIALISM 0x0048e430
 undefined4 CreateTControlInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CtrlSlot91_PtInRectWithBoundsFromSlot128_Impl
-// ghidra_proto undefined CtrlSlot91_PtInRectWithBoundsFromSlot128_Impl()
-// FUNCTION: IMPERIALISM 0x0048e940
-undefined4 CtrlSlot91_PtInRectWithBoundsFromSlot128_Impl(void)
 {
   return 0;
 }
@@ -1828,9 +1812,9 @@ undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl(void)
 }
 
 // ghidra_name IsPointInsideHitRegion
-// ghidra_proto undefined IsPointInsideHitRegion()
+// ghidra_proto int __cdecl IsPointInsideHitRegion(Point32* point, int hitArg)
 // FUNCTION: IMPERIALISM 0x00495650
-undefined4 IsPointInsideHitRegion(void)
+int __cdecl IsPointInsideHitRegion(Point32* point, int hitArg)
 {
   return 0;
 }
@@ -2228,17 +2212,17 @@ undefined4 ProbeRectEmptyAfterCopyToLocal(void)
 }
 
 // ghidra_name AssertQuickDrawFlag6A1DC8NonZero
-// ghidra_proto undefined AssertQuickDrawFlag6A1DC8NonZero()
+// ghidra_proto void __cdecl AssertQuickDrawFlag6A1DC8NonZero(void* ptr)
 // FUNCTION: IMPERIALISM 0x00498b50
-undefined4 AssertQuickDrawFlag6A1DC8NonZero(void)
+void __cdecl AssertQuickDrawFlag6A1DC8NonZero(void* ptr)
 {
-  return 0;
+  return;
 }
 
 // ghidra_name AssertQuickDrawFlag6A1DCCNonZero
-// ghidra_proto undefined AssertQuickDrawFlag6A1DCCNonZero()
+// ghidra_proto void* __cdecl AssertQuickDrawFlag6A1DCCNonZero(int index)
 // FUNCTION: IMPERIALISM 0x00498b80
-undefined4 AssertQuickDrawFlag6A1DCCNonZero(void)
+void* __cdecl AssertQuickDrawFlag6A1DCCNonZero(int index)
 {
   return 0;
 }

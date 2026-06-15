@@ -95,7 +95,7 @@ void TRailAmtBar::DoPostCreate(TDocument* document) {
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;
-  this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
+  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
 
 // FUNCTION: IMPERIALISM 0x0058a1c0

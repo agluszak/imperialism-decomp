@@ -723,22 +723,6 @@ undefined4 SetUiResourcePairValues(void)
   return 0;
 }
 
-// ghidra_name TradeControl::NoOpControlCallback_Impl
-// ghidra_proto undefined NoOpControlCallback_Impl()
-// FUNCTION: IMPERIALISM 0x00427240
-undefined4 NoOpControlCallback_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::CtrlSlot81_SubtractControlPosFromPoint_Impl
-// ghidra_proto undefined CtrlSlot81_SubtractControlPosFromPoint_Impl()
-// FUNCTION: IMPERIALISM 0x00427330
-undefined4 CtrlSlot81_SubtractControlPosFromPoint_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeIndustryOverviewPlacardsAndTradeStatusTags
 // ghidra_proto undefined InitializeIndustryOverviewPlacardsAndTradeStatusTags()
 // FUNCTION: IMPERIALISM 0x00427360
@@ -759,14 +743,6 @@ undefined4 ConstructUiCursorTextResourceEntry(void)
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004293c0()
 // FUNCTION: IMPERIALISM 0x004293c0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004293c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TradeControl::GetCityProductionControllerField60
-// ghidra_proto undefined GetCityProductionControllerField60()
-// FUNCTION: IMPERIALISM 0x00429450
-undefined4 GetCityProductionControllerField60(void)
 {
   return 0;
 }

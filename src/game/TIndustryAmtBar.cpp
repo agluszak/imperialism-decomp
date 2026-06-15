@@ -80,7 +80,7 @@ void TIndustryAmtBar::DoPostCreate(TDocument* document) {
   auxValueB = 0x3a;
   rangeOrMaxValue = (short)((selectedMetricRecord->controlValue * rangeRaw) / productionCap);
 
-  this->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
+  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
 
 // FUNCTION: IMPERIALISM 0x00589540

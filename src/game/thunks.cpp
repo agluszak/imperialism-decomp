@@ -89,14 +89,6 @@ void thunk_NoOpTurnEventStateVtableSlot8C(void) {
   NoOpTurnEventStateVtableSlot8C();
 }
 
-// FUNCTION: IMPERIALISM 0x00401e2e
-void thunk_AssertCityProductionGlobalStateInitialized(void) {
-  if (g_McAppUiFlag_006A143C == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x56f);
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x00401ed8
 void thunk_InvokeStrategicMapViewMethod5C(void) {
   InvokeStrategicMapViewMethod5C();

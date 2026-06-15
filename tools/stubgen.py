@@ -191,7 +191,9 @@ def prototype_usable(proto: str) -> bool:
 
 
 def build_signature(ident: str, prototype: str, use_prototypes: bool) -> str:
-    if use_prototypes and prototype and prototype_usable(prototype):
+    whitelist = {"IsPointInsideHitRegion", "AssertQuickDrawFlag6A1DCCNonZero", "AssertQuickDrawFlag6A1DC8NonZero"}
+    force_prototype = ident in whitelist or function_name_from_prototype(prototype) in whitelist
+    if (use_prototypes or force_prototype) and prototype and prototype_usable(prototype):
         candidate = prototype.rstrip().rstrip(";")
         # Replace trailing function-name token if present.
         candidate = re.sub(r"\b[A-Za-z_][A-Za-z0-9_]*\s*\(", "{}(".format(ident), candidate, count=1)

@@ -32,30 +32,12 @@ void NoOpRuntimeCallback_00426f80(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00430550
-void OrphanRetStub_00430550(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004305c0
 void OrphanRetStub_004305c0(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00430bf0
-void __stdcall OrphanRetStub_00430bf0(int) {
-  return;
-}
 
-// FUNCTION: IMPERIALISM 0x00430c10
-void __stdcall OrphanRetStub_00430c10(int, int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0043d9f0
-void OrphanRetStub_0043d9f0(void) {
-  return;
-}
 
 // FUNCTION: IMPERIALISM 0x0045acb0
 void OrphanRetStub_0045acb0(void) {

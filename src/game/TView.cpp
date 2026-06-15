@@ -11,6 +11,7 @@
 #include "game/ApplicationUiRootController.h"
 #include "game/CRuntimeClass.h"
 #include "game/TView.h"
+#include "game/TCursorControlPanel.h"
 #include "game/mcappui_globals.h"
 #include "game/generated/vcall_facades.h"
 
@@ -25,6 +26,9 @@ undefined4 BindScopedMapQuickDrawDcHandle(void);
 undefined4 ReleaseScopedMapQuickDrawDcHandle(void);
 undefined4 thunk_SetGlobalQuickDrawOrigin(void);
 undefined4 ReplaceClipStateRegionHandleFromRect(void);
+undefined4 CreateClipStateRegionWrapperObject(void);
+undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject);
+undefined4 GetRegionBoxToRectIfPresent(void);
 
 // TView::childList44 is an MFC CPtrList of child-control TView* pointers (node->data).
 
@@ -34,20 +38,29 @@ void __fastcall ConstructTViewBaseStateThunk(TView* self) {
   new (self) TView();
 }
 
-// FUNCTION: IMPERIALISM 0x00406ba9
-void TView::thunk_NoOpUiLifecycleHook(int passthroughArg) {
-  (void)passthroughArg;
-}
 // FUNCTION: IMPERIALISM 0x00427200
 unsigned short TView::GetField4E() {
   return field4e;
 }
-void TView::HandleCursorHoverFallback(Point32* point, int hitArg) {
-  (void)point;
-  (void)hitArg;
+extern "C" TCursorControlPanel* g_pCursorControlPanel;
+extern "C" {
+void* AssertQuickDrawFlag6A1DCCNonZero(int index);
+void AssertQuickDrawFlag6A1DC8NonZero(void* ptr);
+int IsPointInsideHitRegion(Point32* point, int hitArg);
 }
+
 // FUNCTION: IMPERIALISM 0x00427220
 void TView::PostRenderSlotFC() {}
+
+// FUNCTION: IMPERIALISM 0x00427240
+char TView::vmethod_0071(Point32* point, int arg2, int arg3, int arg4) {
+  (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00427260
 void TView::QueryContentBounds(RECT* boundsOut) {
   boundsOut->left = 0;
@@ -72,6 +85,13 @@ void TView::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {
   vmethod_0076(reinterpret_cast<int*>(&rect->right));
 }
 
+// FUNCTION: IMPERIALISM 0x00427330
+void TView::UpdateAfterBitmapChange(int unknownFlag) {
+  Point32* point = reinterpret_cast<Point32*>(unknownFlag);
+  point->x -= ownerOffsetX;
+  point->y -= ownerOffsetY;
+}
+
 // FUNCTION: IMPERIALISM 0x00429410
 void TView::CopyRectFromBuildRectFromSlot158(RECT* rectOut) {
   RECT built = BuildRectFromSlot158();
@@ -80,6 +100,16 @@ void TView::CopyRectFromBuildRectFromSlot158(RECT* rectOut) {
 // FUNCTION: IMPERIALISM 0x00430bd0
 int TView::QuerySelectedIndexSlotBC() {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00430bf0
+void TView::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+}
+
+// FUNCTION: IMPERIALISM 0x00430c10
+void TView::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
+  (void)point;
 }
 
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
@@ -151,6 +181,25 @@ void TView::ForwardMapViewVirtualC4IfPresent(int param) {
 }
 // FUNCTION: IMPERIALISM 0x0048abc0
 void TView::NoOpUiCallback() {}
+
+// FUNCTION: IMPERIALISM 0x0048abe0
+void TView::vmethod_0092(class TView* child, int flag) {
+  child->ownerContext = this;
+  child->field0c = reinterpret_cast<int>(this);
+
+  if (childList44 == nullptr) {
+    childList44 = new CPtrList();
+  }
+
+  if (flag == 0) {
+    childList44->AddHead(child);
+  } else {
+    childList44->AddTail(child);
+  }
+
+  child->vmethod_0089();
+}
+
 // Find the child whose controlTag matches, unlink it from childList44 (inlined
 // CPtrList::RemoveAt; when the list empties, free its block chain), delete the now-empty
 // list, and clear the child's back-reference to this owner.
@@ -272,16 +321,6 @@ void TView::SetState(int state, int refreshFlag) {
   if (state != 0) {
     RefreshControl();
   }
-}
-void TView::vmethod_0043() {}
-void TView::vmethod_0044() {}
-void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg) {
-  (void)point;
-  (void)hitArg;
-}
-void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) {
-  (void)clipRect;
-  (void)bindArg;
 }
 
 // Base-slot overrides (slots 0x07/0x08). Bodies differ from TEventHandler's; still
@@ -428,6 +467,37 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {
     field38 = buffer[1];
   }
 }
+
+// FUNCTION: IMPERIALISM 0x0048b4b0
+void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
+  if (nativeWindow50 == 0) {
+    return;
+  }
+
+  int* localRegion = reinterpret_cast<int*>(
+      reinterpret_cast<int(__cdecl*)()>(CreateClipStateRegionWrapperObject)());
+  if (localRegion == 0 || *localRegion == 0) {
+    return;
+  }
+
+  void* sourceRegion = 0;
+  if (regionWrapper != 0 && *regionWrapper != -0x14) {
+    sourceRegion = *reinterpret_cast<void**>(*regionWrapper + 0x18);
+  }
+  void* destRegion = *reinterpret_cast<void**>(*localRegion + 0x18);
+  CombineRgn(reinterpret_cast<HRGN>(destRegion), reinterpret_cast<HRGN>(sourceRegion), nullptr, 5);
+
+  Point32 cachedPos;
+  Point32* pos = reinterpret_cast<Point32*>(GetCachedPosPoint(reinterpret_cast<int*>(&cachedPos)));
+  OffsetRgn(reinterpret_cast<HRGN>(destRegion), -pos->x, -pos->y);
+
+  if (g_McAppUiActiveFlag_006950AC != 0) {
+    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->hwnd), reinterpret_cast<HRGN>(destRegion), 0);
+  }
+
+  reinterpret_cast<void(__cdecl*)(int*)>(DestroyClipStateRegionWrapperObject)(localRegion);
+}
+
 // FUNCTION: IMPERIALISM 0x0048b5f0
 void TView::InvalidateCityDialogRectRegion(RECT* rect, int flag) {
   (void)flag;
@@ -510,33 +580,6 @@ void TView::EnsureField48Buffer() {
     field48 = 0;
   }
 }
-void TView::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
-  (void)point;
-}
-void TView::ApplyRectSlot110(RECT* rectBuffer) {}
-void TView::UpdateAfterBitmapChange(int unknownFlag) {}
-char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4) {
-  (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  return 0;
-}
-char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
-                                                      int arg4) {
-  (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  return 0;
-}
-char TView::vmethod_0071(Point32* point, int arg2, int arg3, int arg4) {
-  (void)point;
-  (void)arg2;
-  (void)arg3;
-  (void)arg4;
-  return 0;
-}
 // FUNCTION: IMPERIALISM 0x0048b860
 void TView::vmethod_0048(int arg) {
   if (arg != 0) {
@@ -547,6 +590,40 @@ void TView::vmethod_0048(int arg) {
   }
   InvalidateCityDialogRectRegion(0, 0);
 }
+
+// FUNCTION: IMPERIALISM 0x0048b8d0
+void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) {
+  if (g_McAppUiActiveFlag_006950AC == 0 || IsActionable() == 0 || Refresh() == 0) {
+    return;
+  }
+
+  RECT clippedRect;
+  QueryContentBounds(&clippedRect);
+  if (IntersectRect(&clippedRect, &clippedRect, clipRect) == 0) {
+    return;
+  }
+
+  if (BindMapQuickDrawDc(bindArg) != 0) {
+    ApplyRectSlot110(&clippedRect);
+    if (field18 != 0) {
+      reinterpret_cast<TEventHandler*>(field18)->vmethod_0013(reinterpret_cast<int*>(&clippedRect));
+    }
+    ReleaseMapQuickDrawDc(bindArg);
+  }
+
+  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
+  while (node != 0) {
+    CPtrListNode* next = node->next;
+    TView* child = reinterpret_cast<TView*>(node->data);
+    RECT childClip = clippedRect;
+    OffsetRect(&childClip, -child->ownerOffsetX, -child->ownerOffsetY);
+    RECT childPaintRect;
+    CopyRect(&childPaintRect, &childClip);
+    child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, bindArg);
+    node = next;
+  }
+}
+
 // Translate a point into the owner's space (add this view's owner offset) and forward up
 // the owner chain via slot 0x4e. Mirror of SubtractPosAndDispatchToOwnerSlot19C (which
 // subtracts); recurses until the root owner.
@@ -713,6 +790,31 @@ char TView::HasRenderableParentAndContent() {
   }
   return 0;
 }
+
+// FUNCTION: IMPERIALISM 0x0048c080
+void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg) {
+  if (HasRenderableParentAndContent() != 0) {
+    CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
+    while (node != 0) {
+      TView* child = reinterpret_cast<TView*>(node->data);
+      node = node->next;
+
+      Point32 childPoint = *point;
+      child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+      if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
+          child->EvaluateControlInputGate() != 0) {
+        child->HandleCursorHoverSelectionByChildHitTestAndFallback(&childPoint, hitArg);
+        return;
+      }
+    }
+  }
+
+  if (reinterpret_cast<char(__cdecl*)(int)>(GetRegionBoxToRectIfPresent)(hitArg) != 0 &&
+      Refresh() != 0) {
+    HandleCursorHoverFallback(point, hitArg);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0048c1c0
 void TView::vmethod_0073(int arg1, int arg2) {}
 
@@ -729,6 +831,29 @@ void TView::RefreshCityProductionViewStateFromContext(int* clipRegionWrapper) {
 void TView::EnableAndProcessFlag(const CString& sharedString) {
   field5c = 1;
   sharedStringRef.AssignFromPtr(sharedString);
+}
+
+// FUNCTION: IMPERIALISM 0x0048c250
+void TView::HandleCursorHoverFallback(Point32* point, int hitArg) {
+  if (field5c != 0) {
+    RECT rect = BuildRectFromSlot158();
+    RECT parentRect;
+    CopyRect(&parentRect, &rect);
+    if (g_pCursorControlPanel != nullptr) {
+      g_pCursorControlPanel->sharedStringRef.AssignFromPtr(sharedStringRef);
+      g_pCursorControlPanel->UpdateCursorState();
+    }
+  }
+  if (GetField4E() != 0xffff) {
+    Point32 transformedPoint = TransformPointViaSlot138(point);
+    if (IsPointInsideHitRegion(&transformedPoint, hitArg)) {
+      void* ptr = AssertQuickDrawFlag6A1DCCNonZero(GetField4E());
+      AssertQuickDrawFlag6A1DC8NonZero(*reinterpret_cast<void**>(ptr));
+      return;
+    }
+  }
+  HCURSOR hCursor = LoadCursorA(nullptr, IDC_ARROW);
+  SetCursor(hCursor);
 }
 // Recompute and store this control's bounds (owner offset + cached size) from a new rect;
 // if it changed, optionally bracket the layout pass with city-dialog invalidations and
@@ -752,6 +877,54 @@ void TView::ApplyBounds(RECT* newBounds, int modeFlag) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0048c450
+char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4) {
+  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
+  while (node != 0) {
+    TView* child = reinterpret_cast<TView*>(node->data);
+    node = node->next;
+
+    Point32 childPoint = *point;
+    child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+    if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
+        child->DispatchUiMouseMoveToChildren(&childPoint, arg2, arg3, arg4) != 0) {
+      return 1;
+    }
+  }
+
+  if (Refresh() != 0 && GetBoolSlot28() != 0) {
+    Point32 localPoint = *point;
+    BeginMouseCaptureAndStartRepeatTimer(&localPoint);
+    return 1;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0048c590
+char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
+                                                         int arg4) {
+  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
+  while (node != 0) {
+    TView* child = reinterpret_cast<TView*>(node->data);
+    node = node->next;
+
+    Point32 childPoint = *point;
+    child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
+    if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
+        child->DispatchUiMouseEventToChildrenOrSelf_Impl(&childPoint, arg2, arg3, arg4) != 0) {
+      return 1;
+    }
+  }
+
+  if (Refresh() != 0) {
+    Point32 localPoint = *point;
+    if (GetBoolSlot28() != 0) {
+      return vmethod_0071(&localPoint, arg2, arg3, arg4) != 0;
+    }
+  }
+  return 0;
+}
+
 // True (3) iff this view is actionable and the point falls inside its content bounds.
 // FUNCTION: IMPERIALISM 0x0048c6d0
 char TView::PointInBoundsAndActionable(Point32* point) {
@@ -767,7 +940,6 @@ char TView::PointInBoundsAndActionable(Point32* point) {
   }
   return 0;
 }
-void TView::vmethod_0092(class TView* child, int flag) {}
 // Draw this control's rect into the current QuickDraw/GDI context.
 // FUNCTION: IMPERIALISM 0x0048c750
 void TView::DrawRectangleInCurrentUiContext(int* rect) {

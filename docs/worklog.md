@@ -4109,3 +4109,9 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
   our direct refs. Fixes these slots family-wide (TControl/TEventHandler too).
 - Result: `just vtable TSoundPlayer` = **100% match**. gates pass, build OK, format
   clean, decomplint clean, canaries unchanged.
+
+## 2026-06-15 — Relocated TView::HandleCursorHoverFallback function order
+
+- Goal: Fix function ordering in `src/game/TView.cpp` so that `just gates` (which runs `decomplint`) passes cleanly.
+- Fix: Moved `TView::HandleCursorHoverFallback` (`0x0048c250`) from line 52 to its correct sorted address order position (between `0x0048c220` and `0x0048c380` at line 857).
+- Result: `just gates` passes cleanly, `just build` compiles successfully, and `just detect` is fully up to date.

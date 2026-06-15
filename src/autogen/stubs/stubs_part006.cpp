@@ -19,14 +19,6 @@ undefined4 thunk_InitializeTMinisterBaseOrderArrayMetrics(void)
   return 0;
 }
 
-// ghidra_name TControl::thunk_WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0
-// ghidra_proto undefined thunk_WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0()
-// FUNCTION: IMPERIALISM 0x00406604
-undefined4 thunk_WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_InitializeTMinisterBaseOrderArray
 // ghidra_proto undefined thunk_InitializeTMinisterBaseOrderArray()
 // FUNCTION: IMPERIALISM 0x0040670d
@@ -231,14 +223,6 @@ undefined4 thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void)
 // ghidra_proto undefined thunk_InvalidateCityDialogRectRegion()
 // FUNCTION: IMPERIALISM 0x00408a03
 undefined4 thunk_InvalidateCityDialogRectRegion(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback
-// ghidra_proto undefined thunk_HandleCursorHoverSelectionByChildHitTestAndFallback()
-// FUNCTION: IMPERIALISM 0x00408b07
-undefined4 thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(void)
 {
   return 0;
 }

@@ -84,7 +84,7 @@ void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
     FailNilPointerInUSmallViews(kAssertLineMoveBarInitNil);
   }
   barControl->NoOpUiLifecycleHook(styleDescriptor);
-  this->thunk_NoOpUiLifecycleHook();
+  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(0);
 }
 
 // FUNCTION: IMPERIALISM 0x00586e70

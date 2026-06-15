@@ -29,6 +29,11 @@ void __fastcall ConstructTControlBaseStateThunk(TControl* self) {
   new (self) TControl();
 }
 
+// FUNCTION: IMPERIALISM 0x00429450
+int TControl::QuerySelectedIndexSlotBC() {
+  return hasCommandTagResource;
+}
+
 // FUNCTION: IMPERIALISM 0x00429470
 void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
   (void)arg1;
@@ -55,140 +60,10 @@ void* TControl::CloneEngineerDialogStateToNewInstance() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x0048b4b0
-void TControl::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
-  if (nativeWindow50 == 0) {
-    return;
-  }
 
-  int* localRegion = reinterpret_cast<int*>(
-      reinterpret_cast<int(__cdecl*)()>(CreateClipStateRegionWrapperObject)());
-  if (localRegion == 0 || *localRegion == 0) {
-    return;
-  }
 
-  void* sourceRegion = 0;
-  if (regionWrapper != 0 && *regionWrapper != -0x14) {
-    sourceRegion = *reinterpret_cast<void**>(*regionWrapper + 0x18);
-  }
-  void* destRegion = *reinterpret_cast<void**>(*localRegion + 0x18);
-  CombineRgn(reinterpret_cast<HRGN>(destRegion), reinterpret_cast<HRGN>(sourceRegion), nullptr, 5);
 
-  Point32 cachedPos;
-  Point32* pos = reinterpret_cast<Point32*>(GetCachedPosPoint(reinterpret_cast<int*>(&cachedPos)));
-  OffsetRgn(reinterpret_cast<HRGN>(destRegion), -pos->x, -pos->y);
 
-  if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->hwnd), reinterpret_cast<HRGN>(destRegion), 0);
-  }
-
-  reinterpret_cast<void(__cdecl*)(int*)>(DestroyClipStateRegionWrapperObject)(localRegion);
-}
-
-// FUNCTION: IMPERIALISM 0x0048b8d0
-void TControl::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, int bindArg) {
-  if (g_McAppUiActiveFlag_006950AC == 0 || IsActionable() == 0 || Refresh() == 0) {
-    return;
-  }
-
-  RECT clippedRect;
-  QueryContentBounds(&clippedRect);
-  if (IntersectRect(&clippedRect, &clippedRect, clipRect) == 0) {
-    return;
-  }
-
-  if (BindMapQuickDrawDc(bindArg) != 0) {
-    ApplyRectSlot110(&clippedRect);
-    if (field18 != 0) {
-      reinterpret_cast<TEventHandler*>(field18)->vmethod_0013(reinterpret_cast<int*>(&clippedRect));
-    }
-    ReleaseMapQuickDrawDc(bindArg);
-  }
-
-  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-  while (node != 0) {
-    CPtrListNode* next = node->next;
-    TView* child = reinterpret_cast<TView*>(node->data);
-    RECT childClip = clippedRect;
-    OffsetRect(&childClip, -child->ownerOffsetX, -child->ownerOffsetY);
-    RECT childPaintRect;
-    CopyRect(&childPaintRect, &childClip);
-    child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, bindArg);
-    node = next;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x0048c080
-void TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* point, int hitArg) {
-  if (HasRenderableParentAndContent() != 0) {
-    CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-    while (node != 0) {
-      TView* child = reinterpret_cast<TView*>(node->data);
-      node = node->next;
-
-      Point32 childPoint = *point;
-      child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
-      if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-          child->EvaluateControlInputGate() != 0) {
-        child->HandleCursorHoverSelectionByChildHitTestAndFallback(&childPoint, hitArg);
-        return;
-      }
-    }
-  }
-
-  if (reinterpret_cast<char(__cdecl*)(int)>(GetRegionBoxToRectIfPresent)(hitArg) != 0 &&
-      Refresh() != 0) {
-    HandleCursorHoverFallback(point, hitArg);
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x0048c450
-char TControl::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, int arg4) {
-  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-  while (node != 0) {
-    TView* child = reinterpret_cast<TView*>(node->data);
-    node = node->next;
-
-    Point32 childPoint = *point;
-    child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
-    if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-        child->DispatchUiMouseMoveToChildren(&childPoint, arg2, arg3, arg4) != 0) {
-      return 1;
-    }
-  }
-
-  if (Refresh() != 0 && GetBoolSlot28() != 0) {
-    Point32 localPoint = *point;
-    BeginMouseCaptureAndStartRepeatTimer(&localPoint);
-    return 1;
-  }
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x0048c590
-char TControl::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
-                                                         int arg4) {
-  CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
-  while (node != 0) {
-    TView* child = reinterpret_cast<TView*>(node->data);
-    node = node->next;
-
-    Point32 childPoint = *point;
-    child->UpdateAfterBitmapChange(reinterpret_cast<int>(&childPoint));
-    if (child->PointInBoundsAndActionable(&childPoint) != 0 &&
-        child->DispatchUiMouseEventToChildrenOrSelf_Impl(&childPoint, arg2, arg3, arg4) != 0) {
-      return 1;
-    }
-  }
-
-  if (Refresh() != 0) {
-    Point32 localPoint = *point;
-    if (GetBoolSlot28() != 0) {
-      return vmethod_0071(&localPoint, arg2, arg3, arg4) != 0;
-    }
-  }
-  return 0;
-}
 
 // FUNCTION: IMPERIALISM 0x0048e500
 CRuntimeClass* TControl::GetRuntimeClass() {
@@ -310,6 +185,16 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0048e940
+char TControl::PointInBoundsAndActionable(Point32* point) {
+  RECT rect;
+  QueryContentBounds(&rect);
+  POINT p;
+  p.x = point->x;
+  p.y = point->y;
+  return PtInRect(&rect, p);
+}
+
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::SwitchTab(int* boundsBuffer) {
   QueryContentBounds(reinterpret_cast<RECT*>(boundsBuffer));
@@ -337,14 +222,14 @@ void TControl::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallb
   if (IsActionable() != '\0') {
     if (cursorPoint[1] < field38 / 2) {
       field4e = 0x100;
-      reinterpret_cast<void(__fastcall*)(TControl*, int, int*, int)>(
-          thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(this, 0, cursorPoint, hitArg);
+      this->TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(
+          reinterpret_cast<Point32*>(cursorPoint), hitArg);
       return;
     }
     field4e = (short)0xffff;
   }
-  reinterpret_cast<void(__fastcall*)(TControl*, int, int*, int)>(
-      thunk_HandleCursorHoverSelectionByChildHitTestAndFallback)(this, 0, cursorPoint, hitArg);
+  this->TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(
+      reinterpret_cast<Point32*>(cursorPoint), hitArg);
 }
 
 // KNOWN LINKER ARTIFACT: 0x004087fb is `jmp TControl::TControl`.

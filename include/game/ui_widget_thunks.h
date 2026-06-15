@@ -9,8 +9,6 @@
 #include "game/MfcRuntime.h"
 unsigned int __cdecl thunk_GetActiveNationId(void);
 undefined4 thunk_NoOpUiLifecycleHook(void);
-undefined4 thunk_HandleCityDialogToggleCommandOrForward(void);
-undefined4 thunk_HandleCursorHoverSelectionByChildHitTestAndFallback(void);
 undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
 undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void);

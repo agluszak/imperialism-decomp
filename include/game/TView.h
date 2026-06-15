@@ -41,8 +41,6 @@ public:
   TView();
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
   void CopyCityDialogStateFromSource(TView* source);
-  void thunk_NoOpUiLifecycleHook(int passthroughArg = 0);
-  void RefreshCityProductionViewStateFromContext(int* clipRegionWrapper);
   void EnableAndProcessFlag(const CString& sharedString);
   void PropagateUiResourceContextRecursive(TViewNativeWindow* nativeWindow);
 
@@ -65,9 +63,9 @@ public:
   virtual unsigned short GetField4E();                                  // 0x2b 0x427200
   virtual void HandleCursorHoverFallback(Point32* point, int hitArg);   // 0x2c
   virtual void vmethod_0073(int arg1, int arg2);                        // 0x2d 0x48c1c0
-  virtual void vmethod_0043();                                          // 0x2e
+  virtual void RefreshCityProductionViewStateFromContext(int* clipRegionWrapper); // 0x2e 0x48c1e0
   virtual int QuerySelectedIndexSlotBC();                               // 0x2f
-  virtual void vmethod_0044();                                          // 0x30
+  virtual void InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper); // 0x30 0x48b4b0
   virtual void ForwardMapViewVirtualC4IfPresent(int param);             // 0x31 0x48ab90
   virtual void ValidateControlRectIfWindowActive(RECT* rect);    // 0x32 0x48b690
   virtual char EvaluateControlInputGate();                              // 0x33 0x48c000

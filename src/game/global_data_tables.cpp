@@ -219,3 +219,6 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 
 // GLOBAL: IMPERIALISM 0x006a44b4
 unsigned char g_bCityDialogLegendSelectionInitialized = 0;
+
+// GLOBAL: IMPERIALISM 0x006a590c
+extern "C" void* g_pCursorControlPanel = nullptr;

@@ -2763,14 +2763,6 @@ undefined4 InitializeUiResourceEntryBaseHeaderDefaults(void)
   return 0;
 }
 
-// ghidra_name TEventHandler::DestructTEventHandlerAndMaybeFree
-// ghidra_proto undefined DestructTEventHandlerAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0048a130
-undefined4 DestructTEventHandlerAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTEventHandlerAndMaybeFree_Impl
 // ghidra_proto undefined DestructTEventHandlerAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0048a160
@@ -2807,14 +2799,6 @@ undefined4 CreateTViewInstance(void)
 // ghidra_proto undefined InitializeUiResourceEntryFrameAndParent()
 // FUNCTION: IMPERIALISM 0x0048aa60
 undefined4 InitializeUiResourceEntryFrameAndParent(void)
-{
-  return 0;
-}
-
-// ghidra_name TCityDialogModalState_00649A50::RunNationInfoModalAndReturnNonCancel_Impl
-// ghidra_proto undefined RunNationInfoModalAndReturnNonCancel_Impl()
-// FUNCTION: IMPERIALISM 0x0048abe0
-undefined4 RunNationInfoModalAndReturnNonCancel_Impl(void)
 {
   return 0;
 }

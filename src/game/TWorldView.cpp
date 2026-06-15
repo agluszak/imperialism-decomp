@@ -7,7 +7,6 @@
 #include "game/quickdraw_globals.h"
 #include "game/trade_quickdraw.h"
 
-undefined4 thunk_WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0(void);
 undefined4 thunk_HandleMapClickByInteractionMode(void);
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 undefined4 thunk_InvalidateMapRegionForOrderEntry(void);
@@ -241,8 +240,7 @@ void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchConte
   (void)stridedRecord;
   (void)dispatchContext;
   UpdateMapDialogTileRowColumnMarkerAndInvalidate(0);
-  reinterpret_cast<void(__fastcall*)(TWorldView*, int)>(
-      thunk_WrapperFor_thunk_InvalidateCityDialogRectRegion_At0048b6d0)(this, 0);
+  reinterpret_cast<TView*>(this)->TView::RefreshControl();
 }
 
 // FUNCTION: IMPERIALISM 0x005962a0

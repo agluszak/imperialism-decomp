@@ -97,6 +97,11 @@ CRuntimeClass* TEventHandler::GetRuntimeClass() {
   return &PTR_s_TEventHandler_00649588;
 }
 
+// Destructor is compiler-generated (implicit virtual dtor); the scalar deleting
+// destructor at 0x0048a130 is emitted by the compiler from real inheritance.
+// SYNTHETIC: IMPERIALISM 0x0048a130
+// TEventHandler::`scalar deleting destructor'
+
 TEventHandler::~TEventHandler() {}
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
 // FUNCTION: IMPERIALISM 0x0048a1b0

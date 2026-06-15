@@ -47,19 +47,21 @@ void __fastcall WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(THQButton* butto
 // FUNCTION: IMPERIALISM 0x0058b7f0
 void __fastcall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(THQButton* button,
                                                                              int unusedEdx,
-                                                                             int commandId) {
+                                                                             int commandId,
+                                                                             TEventHandler* sourceHandler,
+                                                                             TEvent* event) {
   (void)unusedEdx;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(button);
   if (commandId == 0xc) {
     if (button->commandTagResourceByte == 0) { // toggleStateAt64
       control->InvokeSlot1CC(1, 1);
     }
-    thunk_HandleCityDialogToggleCommandOrForward();
+    reinterpret_cast<TControl*>(button)->TControl::HandleEvent(commandId, sourceHandler, event);
     return;
   }
   if (commandId != 0x1f) {
     if (commandId != 0x20) {
-      thunk_HandleCityDialogToggleCommandOrForward();
+      reinterpret_cast<TControl*>(button)->TControl::HandleEvent(commandId, sourceHandler, event);
       return;
     }
     control->InvokeSlot1CC(0, 1);

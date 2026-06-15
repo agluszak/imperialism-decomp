@@ -267,14 +267,6 @@ undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
   return 0;
 }
 
-// ghidra_name thunk_HandleCityDialogToggleCommandOrForward
-// ghidra_proto undefined thunk_HandleCityDialogToggleCommandOrForward()
-// FUNCTION: IMPERIALISM 0x00404566
-undefined4 thunk_HandleCityDialogToggleCommandOrForward(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_CreateAndSendTurnEvent13_NationAndNineDwords
 // ghidra_proto undefined thunk_CreateAndSendTurnEvent13_NationAndNineDwords()
 // FUNCTION: IMPERIALISM 0x004048d6

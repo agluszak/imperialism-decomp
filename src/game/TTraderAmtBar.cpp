@@ -92,7 +92,7 @@ void TTraderAmtBar::DoPostCreate(TDocument* document) {
 
   auxValueA = tradeCapacity;
   auxValueB = 0x37;
-  reinterpret_cast<TView*>(this)->thunk_NoOpUiLifecycleHook(reinterpret_cast<int>(document));
+  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(reinterpret_cast<int>(document));
 }
 
 // FUNCTION: IMPERIALISM 0x0058b040
