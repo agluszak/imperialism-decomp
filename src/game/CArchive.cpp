@@ -105,11 +105,8 @@ CArchive* CArchive::ReadDwordFromSerializedBuffer(void* outDword) {
 // the archive can no longer be written through. (Ghidra named this
 // "FlushSerializedArchiveBufferAndResetStreamCount"; the zeroed field at +0x20
 // is m_pFile, not a count.)
-// FUNCTION: IMPERIALISM 0x00611d18
-void CArchive::Close() {
-  FlushArchive(this);
-  m_pFile = 0;
-}
+// LIBRARY: IMPERIALISM 0x00611d18
+// CArchive::Close
 
 // FUNCTION: IMPERIALISM 0x00611d26
 int CArchive::ReadBytesFromSerializedBuffer(void* destination, unsigned int requestedCount) {
@@ -208,45 +205,8 @@ void CArchive::WriteBytesToSerializedBuffer(const void* src, unsigned int nCount
   m_lpBufCur += nCount;
 }
 
-// FUNCTION: IMPERIALISM 0x00611f3e
-void CArchive::FillBuffer(unsigned int requiredBytes) {
-  unsigned int avail = static_cast<unsigned int>(m_lpBufMax - m_lpBufCur);
-  unsigned int wanted = requiredBytes + avail;
-  if (m_bDirect == 0) {
-    unsigned char* dst = m_lpBufStart;
-    if (dst < m_lpBufCur) {
-      if (static_cast<int>(avail) > 0) {
-        MoveMemory(dst, m_lpBufCur, static_cast<int>(avail));
-        dst = m_lpBufStart;
-        m_lpBufCur = dst;
-        m_lpBufMax = dst + avail;
-      }
-      int room = m_nBufSize - static_cast<int>(avail);
-      dst = dst + avail;
-      do {
-        int got = reinterpret_cast<CFile_Virtuals*>(m_pFile)->ReadBytesSlot3C(dst, room);
-        avail += got;
-        dst += got;
-        room -= got;
-        if (got == 0 || room == 0) {
-          break;
-        }
-      } while (avail < requiredBytes);
-      m_lpBufCur = m_lpBufStart;
-      m_lpBufMax = m_lpBufStart + avail;
-    }
-  } else {
-    if (avail != 0) {
-      reinterpret_cast<CFile_Virtuals*>(m_pFile)->SeekSlot30(-static_cast<int>(avail), 1);
-    }
-    reinterpret_cast<CFile_Virtuals*>(m_pFile)->GetBufferPtrSlot58(0, m_nBufSize, &m_lpBufStart,
-                                                                   &m_lpBufMax);
-    m_lpBufCur = m_lpBufStart;
-  }
-  if (static_cast<unsigned int>(m_lpBufMax - m_lpBufCur) < wanted) {
-    ThrowArchiveException(3, 0);
-  }
-}
+// LIBRARY: IMPERIALISM 0x00611f3e
+// CArchive::FillBuffer
 
 // FUNCTION: IMPERIALISM 0x00612000
 void CArchive::WriteCount(unsigned int count) {
@@ -295,7 +255,7 @@ void CArchive::WriteObject(void* objectRef) {
     CheckCount();
     *reinterpret_cast<unsigned int*>(m_pStoreMap->GetOrCreateValueSlot(pOb)) = m_nMapCount;
     m_nMapCount = m_nMapCount + 1;
-    pOb->Serialize(this);
+    pOb->Serialize(*this);
     return;
   }
 

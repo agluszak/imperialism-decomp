@@ -1,10 +1,11 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/CDumpContext.h"
 #include "game/CObject.h"
 #include "game/TIndexAndRankList.h"
 
-struct CArchive;
+class CArchive;
 
 #define TDEALLIST_VTABLE_SLOT(n)                                                                   \
   virtual void VTableIndex##n##_Provisional(void) {}
@@ -25,9 +26,9 @@ public:
   void InitializeNationInteractionStateManagerDefaults();
 
   virtual CRuntimeClass* GetRuntimeClass() const override;
-  virtual void Serialize(CArchive* ar) override;
-  virtual void AssertValidOrSlot0c() override;
-  virtual void DumpOrSlot10(int unused = 0) override;
+  virtual void Serialize(CArchive& ar) override;
+  virtual void AssertValid() const override;
+  virtual void Dump(CDumpContext& unused) const override;
   TDEALLIST_VTABLE_SLOT(05);
   TDEALLIST_VTABLE_SLOT(06);
   TDEALLIST_VTABLE_SLOT(07);

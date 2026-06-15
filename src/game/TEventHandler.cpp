@@ -59,15 +59,15 @@ void TEventHandler::SetCityDialogValueDword10(int value) {
 }
 
 // FUNCTION: IMPERIALISM 0x00485e90
-void TEventHandler::Serialize(CArchive* archive) {
+void TEventHandler::Serialize(CArchive& archive) {
   ArchiveStreamAdapter adapter;
   adapter.vtable = reinterpret_cast<void*>(0x00645f98);
-  adapter.archive = archive;
+  adapter.archive = &archive;
 
   TFileStream stream;
   stream.SetBackingArchive(&adapter);
 
-  if ((~archive->m_nMode & 1) != 0) {
+  if ((~archive.m_nMode & 1) != 0) {
     HandleCityDialogNoOpSlot14(reinterpret_cast<int>(&stream));
   } else {
     HandleCityDialogNoOpSlot18(reinterpret_cast<int>(&stream));

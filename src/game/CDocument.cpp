@@ -20,15 +20,8 @@ void* CDocument::DestructCDocumentBaseStateAndMaybeFree(byte freeSelfFlag) {
   return this;
 }
 
-// FUNCTION: IMPERIALISM 0x00610a5f
-void CDocument::DisconnectViews() {
-  if (m_viewList.nodeCount != 0) {
-    do {
-      CView* view = reinterpret_cast<CView*>(m_viewList.RemoveHead());
-      view->m_pDocument = 0;
-    } while (m_viewList.nodeCount != 0);
-  }
-}
+// LIBRARY: IMPERIALISM 0x00610a5f
+// CDocument::DisconnectViews
 
 // FUNCTION: IMPERIALISM 0x00611810
 void CDocument::AddView(CView* view) {

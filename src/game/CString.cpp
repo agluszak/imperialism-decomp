@@ -1,61 +1,8 @@
-#include <string.h>
-
 #include "game/CString.h"
 
-#include <new>
+#include <string.h>
+
 #include <windows.h>
-
-// Most CString shared-buffer routines match best favor-size + FPO ("ys"); a
-// few (the concat-assign wrappers and the ref-assign path) regress badly under
-// it and are bracketed back to the build default below.
-#if defined(_MSC_VER)
-#pragma optimize("ys", on)
-#endif
-
-int AllocateWithFallbackHandler(undefined4 size_bytes);
-void FreeHeapBufferIfNotNull(undefined4 ptr_value);
-
-namespace {
-
-static const int kSharedStringHeaderSize = 0x0c;
-static const unsigned int kSharedEmptyStringRefAddr = 0x0069be0c;
-static const unsigned int kSharedEmptyHeaderAddr = 0x0069be08;
-
-static SharedStringHeader* GetSharedStringHeader(int data_ptr) {
-  return reinterpret_cast<SharedStringHeader*>(data_ptr - kSharedStringHeaderSize);
-}
-
-static __inline int LocalPtrToInt(const void* ptr) {
-  return static_cast<int>(reinterpret_cast<unsigned long>(ptr));
-}
-
-} // namespace
-
-SharedStringHeader* CString::Header() {
-  return GetSharedStringHeader(data_ptr);
-}
-
-const SharedStringHeader* CString::Header() const {
-  return GetSharedStringHeader(data_ptr);
-}
-
-const char* CString::Text() const {
-  return reinterpret_cast<const char*>(data_ptr);
-}
-
-int CString::Length() const {
-  return Header()->text_length;
-}
-
-int CString::Capacity() const {
-  return Header()->capacity;
-}
-
-// FUNCTION: IMPERIALISM 0x0049eb00
-CString* AssignStringSharedRefAndReturnThis(CString* dest, const CString* src) {
-  dest->StringSharedRef_AssignFromPtr(*src);
-  return dest;
-}
 
 extern "C" unsigned char g_MbcsCharTypeTable_006A8018[512] = {0};
 extern "C" int g_fMbcsEnabledForStringCompare_006A811C = 0;
@@ -125,317 +72,80 @@ int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs) 
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00605791
-undefined** GetSharedEmptyStringRef(void) {
-  return reinterpret_cast<undefined**>(kSharedEmptyStringRefAddr);
-}
+// LIBRARY: IMPERIALISM 0x0049eb00
+// AssignStringSharedRefAndReturnThis
 
-// FUNCTION: IMPERIALISM 0x00605797
-CString::CString() {
-  int* shared_empty_ref = reinterpret_cast<int*>(GetSharedEmptyStringRef());
-  data_ptr = *shared_empty_ref;
-}
+// LIBRARY: IMPERIALISM 0x00605791
+// GetSharedEmptyStringRef
 
-// FUNCTION: IMPERIALISM 0x006057a7
-CString* CString::StringSharedRef_AssignFromPtr(const CString& src_ref) {
-  int src_data_ptr = src_ref.data_ptr;
-  if (GetSharedStringHeader(src_data_ptr)->ref_count < 0) {
-    int* shared_empty_ref = reinterpret_cast<int*>(GetSharedEmptyStringRef());
-    data_ptr = *shared_empty_ref;
-    CopyFromCStr(reinterpret_cast<const char*>(src_data_ptr));
-  } else {
-    data_ptr = src_data_ptr;
-    InterlockedIncrement(reinterpret_cast<LONG*>(src_data_ptr - kSharedStringHeaderSize));
-  }
-  return this;
-}
+// LIBRARY: IMPERIALISM 0x00605797
+// CString::CString
 
-// FUNCTION: IMPERIALISM 0x006057de
-void CString::AllocateBufferForLength(int text_length) {
-  if (text_length == 0) {
-    new (this) CString(); // re-init this (already released by caller) -> 0x00605797
-    return;
-  }
+// LIBRARY: IMPERIALISM 0x006057a7
+// CString::StringSharedRef_AssignFromPtr
 
-  SharedStringHeader* header = reinterpret_cast<SharedStringHeader*>(
-      AllocateWithFallbackHandler(text_length + kSharedStringHeaderSize + 1));
-  header->ref_count = 1;
-  header->text_length = text_length;
-  header->capacity = text_length;
-  reinterpret_cast<char*>(header)[kSharedStringHeaderSize + text_length] = '\0';
-  data_ptr = LocalPtrToInt(header + 1);
-}
+// LIBRARY: IMPERIALISM 0x006057de
+// CString::AllocBuffer
 
-// FUNCTION: IMPERIALISM 0x0060584a
-void __stdcall DecrementSharedStringRefCountAndFree(LONG* ref_count_ptr) {
-  if (ref_count_ptr != reinterpret_cast<LONG*>(kSharedEmptyHeaderAddr)) {
-    LONG ref_count = InterlockedDecrement(ref_count_ptr);
-    if (ref_count < 1) {
-      FreeHeapBufferIfNotNull(LocalPtrToInt(ref_count_ptr));
-    }
-  }
-}
+// LIBRARY: IMPERIALISM 0x0060584a
+// DecrementSharedStringRefCountAndFree
 
-// GHIDRA comment: small wrapper around "release + allocate" branch for shared strings.
+// LIBRARY: IMPERIALISM 0x0060586d
+// CString::Empty
 
-// FUNCTION: IMPERIALISM 0x0060588b
-void CString::EnsureUniqueSharedStringBuffer() {
-  int old_data_ptr = data_ptr;
-  SharedStringHeader* old_header = Header();
-  if (old_header->ref_count > 1) {
-    int old_text_length = old_header->text_length;
-    this->~CString();
-    AllocateBufferForLength(old_text_length);
+// LIBRARY: IMPERIALISM 0x0060588b
+// CString::CopyBeforeWrite
 
-    memcpy(reinterpret_cast<void*>(data_ptr), reinterpret_cast<const void*>(old_data_ptr), old_text_length + 1);
-  }
-}
+// LIBRARY: IMPERIALISM 0x006058b9
+// CString::AllocBeforeWrite
 
-// FUNCTION: IMPERIALISM 0x006058b9
-void CString::EnsureCapacityOrAllocate(int required_capacity) {
-  SharedStringHeader* header = Header();
-  if ((header->ref_count > 1) || (header->capacity < required_capacity)) {
-    this->~CString();
-    AllocateBufferForLength(required_capacity);
-  }
-}
+// LIBRARY: IMPERIALISM 0x006058e2
+// CString::~CString
 
-// FUNCTION: IMPERIALISM 0x006058e2
-CString::~CString() {
-  LONG* ref_count_ptr = reinterpret_cast<LONG*>(data_ptr - kSharedStringHeaderSize);
-  if (ref_count_ptr != reinterpret_cast<LONG*>(kSharedEmptyHeaderAddr)) {
-    LONG ref_count = InterlockedDecrement(ref_count_ptr);
-    if (ref_count < 1) {
-      FreeHeapBufferIfNotNull(LocalPtrToInt(ref_count_ptr));
-    }
-  }
-}
+// LIBRARY: IMPERIALISM 0x00605950
+// CString::CString
 
-// GHIDRA comment: Initializes from either C-string or low-word resource-id.
-// FUNCTION: IMPERIALISM 0x00605950
-CString::CString(const char* text_or_resource_id) {
-  int* shared_empty_ref = reinterpret_cast<int*>(GetSharedEmptyStringRef());
-  data_ptr = *shared_empty_ref;
+// LIBRARY: IMPERIALISM 0x006059fc
+// CString::AssignCopy
 
-  unsigned int text_ptr =
-      static_cast<unsigned int>(reinterpret_cast<unsigned long>(text_or_resource_id));
-  if ((text_ptr != 0) && ((text_ptr >> 16) == 0)) {
-    LoadResourceStringToSharedBuffer(text_ptr & 0xffff);
-    return;
-  }
+// LIBRARY: IMPERIALISM 0x00605a29
+// CString::operator=
 
-  int text_len = 0;
-  if (text_or_resource_id != 0) {
-    text_len = lstrlenA(text_or_resource_id);
-  }
-  if (text_len != 0) {
-    AllocateBufferForLength(text_len);
-    memcpy(reinterpret_cast<void*>(data_ptr), text_or_resource_id, text_len);
-  }
-}
+// LIBRARY: IMPERIALISM 0x00605a78
+// CString::operator=
 
-// GHIDRA [WrapperShape]: small wrapper around copy + length/terminator update.
+// LIBRARY: IMPERIALISM 0x00605ae0
+// CString::ConcatCopy
 
-// FUNCTION: IMPERIALISM 0x006059fc
-void CString::CopyBufferAndSetLength(int new_length, const char* src_text) {
-  EnsureCapacityOrAllocate(new_length);
-  memcpy(reinterpret_cast<void*>(data_ptr), src_text, new_length);
+// LIBRARY: IMPERIALISM 0x00605b21
+// AssignSharedStringConcatRefAndRef
 
-  SharedStringHeader* header = Header();
-  header->text_length = new_length;
-  reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
-}
+// LIBRARY: IMPERIALISM 0x00605b87
+// AssignSharedStringConcatRefAndCStr
 
-// FUNCTION: IMPERIALISM 0x00605a29
-CString* CString::AssignFromPtr(const CString& src_ref) {
-  int new_data_ptr = src_ref.data_ptr;
-  if (data_ptr != new_data_ptr) {
-    SharedStringHeader* old_header = GetSharedStringHeader(data_ptr);
-    if (((old_header->ref_count < 0) &&
-         (old_header != reinterpret_cast<SharedStringHeader*>(kSharedEmptyHeaderAddr))) ||
-        (GetSharedStringHeader(new_data_ptr)->ref_count < 0)) {
-      CopyBufferAndSetLength(GetSharedStringHeader(new_data_ptr)->text_length,
-                             reinterpret_cast<const char*>(new_data_ptr));
-    } else {
-      this->~CString();
-      new_data_ptr = src_ref.data_ptr;
-      data_ptr = new_data_ptr;
-      InterlockedIncrement(reinterpret_cast<LONG*>(new_data_ptr - kSharedStringHeaderSize));
-    }
-  }
-  return this;
-}
+// LIBRARY: IMPERIALISM 0x00605bfb
+// AssignSharedStringConcatCStrAndRef
 
-CString* CString::AssignFromRef(const CString& src_ref) {
-  return AssignFromPtr(src_ref);
-}
+// LIBRARY: IMPERIALISM 0x00605c6f
+// CString::ConcatInPlace
 
-// FUNCTION: IMPERIALISM 0x00605a78
-CString* CString::CopyFromCStr(const char* src_text) {
-  int text_len = 0;
-  if (src_text != 0) {
-    text_len = lstrlenA(src_text);
-  }
-  CopyBufferAndSetLength(text_len, src_text);
-  return this;
-}
+// LIBRARY: IMPERIALISM 0x00605cce
+// CString::operator+=
 
-// FUNCTION: IMPERIALISM 0x00605ae0
-void CString::ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len,
-                                 const char* rhs_text) {
-  if ((lhs_len + rhs_len) != 0) {
-    AllocateBufferForLength(lhs_len + rhs_len);
-    memcpy(reinterpret_cast<void*>(data_ptr), lhs_text, lhs_len);
-    memcpy(reinterpret_cast<void*>(data_ptr + lhs_len), rhs_text, rhs_len);
-  }
-}
+// LIBRARY: IMPERIALISM 0x00605cf5
+// CString::operator+=
 
-void CString::AssignConcatCStrAndRef(const char* lhs_text, const CString& rhs_ref) {
-  CString concat_ref;
+// LIBRARY: IMPERIALISM 0x00605d0a
+// CString::operator+=
 
-  int lhs_length = 0;
-  if (lhs_text != 0) {
-    lhs_length = lstrlenA(lhs_text);
-  }
+// LIBRARY: IMPERIALISM 0x00605d22
+// CString::GetBuffer
 
-  concat_ref.ConcatenateBuffers(lhs_length, lhs_text, rhs_ref.Length(), rhs_ref.Text());
-  AssignFromRef(concat_ref);
-}
+// LIBRARY: IMPERIALISM 0x00605d71
+// CString::ReleaseBuffer
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
+// LIBRARY: IMPERIALISM 0x00605d99
+// CString::GetBufferSetLength
 
-// These are the global MFC `operator+` overloads. Each builds the result in an
-// SEH-guarded temporary CString, then hands it to the destination (the hidden
-// return slot) via StringSharedRef_AssignFromPtr. The temporary's destructor
-// runs on the EH path, which is what emits the SEH frame.
-
-// FUNCTION: IMPERIALISM 0x00605b21
-CString* __stdcall AssignSharedStringConcatRefAndRef(CString* dst, const CString* lhs,
-                                                     const CString* rhs) {
-  CString result;
-  result.ConcatenateBuffers(lhs->Length(), lhs->Text(), rhs->Length(), rhs->Text());
-  dst->StringSharedRef_AssignFromPtr(result);
-  return dst;
-}
-
-// FUNCTION: IMPERIALISM 0x00605b87
-CString* __stdcall AssignSharedStringConcatRefAndCStr(CString* dst, const CString* lhs,
-                                                      const char* rhs_text) {
-  CString result;
-  int rhs_len = 0;
-  if (rhs_text != 0) {
-    rhs_len = lstrlenA(rhs_text);
-  }
-  result.ConcatenateBuffers(lhs->Length(), lhs->Text(), rhs_len, rhs_text);
-  dst->StringSharedRef_AssignFromPtr(result);
-  return dst;
-}
-
-// FUNCTION: IMPERIALISM 0x00605bfb
-CString* __stdcall AssignSharedStringConcatCStrAndRef(CString* dst, const char* lhs_text,
-                                                      const CString* rhs) {
-  CString result;
-  int lhs_len = 0;
-  if (lhs_text != 0) {
-    lhs_len = lstrlenA(lhs_text);
-  }
-  result.ConcatenateBuffers(lhs_len, lhs_text, rhs->Length(), rhs->Text());
-  dst->StringSharedRef_AssignFromPtr(result);
-  return dst;
-}
-
-#if defined(_MSC_VER)
-#pragma optimize("ys", on)
-#endif
-
-// FUNCTION: IMPERIALISM 0x00605c6f
-void CString::AppendBuffer(int append_len, const char* append_text) {
-  if (append_len == 0) {
-    return;
-  }
-
-  int old_data_ptr = data_ptr;
-  SharedStringHeader* header = Header();
-
-  if ((header->ref_count < 2) && (append_len + header->text_length <= header->capacity)) {
-    memcpy(reinterpret_cast<void*>(data_ptr + header->text_length), append_text, append_len);
-    header = Header();
-    header->text_length += append_len;
-    reinterpret_cast<char*>(data_ptr)[header->text_length] = '\0';
-    return;
-  }
-
-  ConcatenateBuffers(header->text_length, reinterpret_cast<const char*>(old_data_ptr), append_len,
-                     append_text);
-  DecrementSharedStringRefCountAndFree(
-      reinterpret_cast<LONG*>(old_data_ptr - kSharedStringHeaderSize));
-}
-
-// FUNCTION: IMPERIALISM 0x00605cce
-CString* CString::AssignFromCStr(const char* text) {
-  int text_len = 0;
-  if (text != 0) {
-    text_len = lstrlenA(text);
-  }
-  AppendBuffer(text_len, text);
-  return this;
-}
-
-// FUNCTION: IMPERIALISM 0x00605cf5
-CString* CString::AppendSingleByte(char append_byte) {
-  AppendBuffer(1, &append_byte);
-  return this;
-}
-
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
-// FUNCTION: IMPERIALISM 0x00605d0a
-CString* CString::AssignFromSharedRef(const CString& src_ref) {
-  AppendBuffer(src_ref.Length(), src_ref.Text());
-  return this;
-}
-
-#if defined(_MSC_VER)
-#pragma optimize("ys", on)
-#endif
-
-// FUNCTION: IMPERIALISM 0x00605d22
-int CString::EnsureCapacityPreserveLength(int min_capacity) {
-  int old_data_ptr = data_ptr;
-  SharedStringHeader* old_header = Header();
-
-  if ((old_header->ref_count > 1) || (old_header->capacity < min_capacity)) {
-    int old_length = old_header->text_length;
-    if (min_capacity < old_length) {
-      min_capacity = old_length;
-    }
-    AllocateBufferForLength(min_capacity);
-    memcpy(reinterpret_cast<void*>(data_ptr), reinterpret_cast<const void*>(old_data_ptr), old_length + 1);
-    Header()->text_length = old_length;
-    DecrementSharedStringRefCountAndFree(
-        reinterpret_cast<LONG*>(old_data_ptr - kSharedStringHeaderSize));
-  }
-  return data_ptr;
-}
-
-// FUNCTION: IMPERIALISM 0x00605d71
-void CString::SetLengthAndTerminator(int new_length) {
-  EnsureUniqueSharedStringBuffer();
-  if (new_length == -1) {
-    new_length = lstrlenA(Text());
-  }
-  Header()->text_length = new_length;
-  reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
-}
-
-// FUNCTION: IMPERIALISM 0x00605d99
-int CString::EnsureCapacityAndSetLength(int new_length) {
-  EnsureCapacityPreserveLength(new_length);
-  Header()->text_length = new_length;
-  reinterpret_cast<char*>(data_ptr)[new_length] = '\0';
-  return data_ptr;
-}
+// LIBRARY: IMPERIALISM 0x00605dec
+// CString::LockBuffer

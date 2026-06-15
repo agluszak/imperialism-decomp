@@ -2,18 +2,21 @@
 
 #include "decomp_types.h"
 
-struct SharedStringHeader {
-  long ref_count;
-  int text_length;
-  int capacity;
+#include <windows.h>
+
+// MFC CStringData header immediately before the character buffer (layout at +0x0c).
+struct CStringData {
+  long nRefs;
+  int nDataLength;
+  int nAllocLength;
 };
+
+// Legacy alias used by TFileStream and other layout-sensitive callers.
+typedef CStringData SharedStringHeader;
 
 class CString;
 
-// Global operator+ helpers (own the original addresses). These are real
-// __stdcall free functions: the destination is the hidden return slot (passed
-// as the first stack argument, returned in EAX) and the callee cleans all three
-// dwords (RET 0xc).
+// Global helpers (stdcall where noted in the original).
 undefined** GetSharedEmptyStringRef(void);
 void __stdcall DecrementSharedStringRefCountAndFree(long* ref_count_ptr);
 CString* __stdcall AssignSharedStringConcatRefAndRef(CString* dst, const CString* lhs,
@@ -22,39 +25,54 @@ CString* __stdcall AssignSharedStringConcatRefAndCStr(CString* dst, const CStrin
                                                       const char* rhs_text);
 CString* __stdcall AssignSharedStringConcatCStrAndRef(CString* dst, const char* lhs_text,
                                                       const CString* rhs);
-
-class CString {
-public:
-  int data_ptr;
-
-  CString();                                // 0x00605797 (init to the shared empty buffer)
-  CString(const char* text_or_resource_id); // 0x00605950 (from C-string or low-word resource id)
-  ~CString();                               // 0x006058e2
-  undefined4 LoadResourceStringToSharedBuffer(unsigned int resource_id);
-  void AllocateBufferForLength(int text_length);
-  void EnsureCapacityOrAllocate(int required_capacity);
-  void CopyBufferAndSetLength(int new_length, const char* src_text);
-  CString* StringSharedRef_AssignFromPtr(const CString& src_ref);
-  CString* AssignFromPtr(const CString& src_ref);
-  CString* AssignFromRef(const CString& src_ref);
-  CString* CopyFromCStr(const char* src_text);
-  void ConcatenateBuffers(int lhs_len, const char* lhs_text, int rhs_len, const char* rhs_text);
-  void EnsureUniqueSharedStringBuffer();
-  void AssignConcatCStrAndRef(const char* lhs_text, const CString& rhs_ref);
-  void AppendBuffer(int append_len, const char* append_text);
-  CString* AppendSingleByte(char append_byte);   // 0x00605cf5 (operator+= one char)
-  CString* AssignFromCStr(const char* text);     // 0x00605cce (operator+= C-string)
-  CString* AssignFromSharedRef(const CString& src_ref); // 0x00605d0a (operator+= CString)
-  int EnsureCapacityPreserveLength(int min_capacity);
-  int EnsureCapacityAndSetLength(int new_length);
-  void SetLengthAndTerminator(int new_length);
-  SharedStringHeader* Header();
-  const SharedStringHeader* Header() const;
-  const char* Text() const;
-  int Length() const;
-  int Capacity() const;
-};
-
 CString* AssignStringSharedRefAndReturnThis(CString* dest, const CString* src);
 
 int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs);
+
+class CString {
+public:
+  int data_ptr; // m_pchData
+
+  CString();
+  CString(const CString& stringSrc);
+  CString(const char* lpsz);
+  ~CString();
+
+  BOOL LoadString(UINT nIDResource);
+
+  void AllocBuffer(int nLen);
+  void AllocBeforeWrite(int nLen);
+  void AssignCopy(int nSrcLen, const char* lpszSrcData);
+  void ConcatCopy(int nSrcLen1, const char* lpszSrcData1, int nSrcLen2, const char* lpszSrcData2);
+  void ConcatInPlace(int nSrcLen, const char* lpszSrcData);
+  void CopyBeforeWrite();
+  void Empty();
+  char* GetBuffer(int nMinBufLength);
+  char* GetBufferSetLength(int nNewLength);
+  char* LockBuffer();
+  void ReleaseBuffer(int nNewLength = -1);
+
+  const CString& operator=(const CString& stringSrc);
+  const CString& operator=(const char* lpsz);
+  const CString& operator+=(const CString& string);
+  const CString& operator+=(const char* lpsz);
+  const CString& operator+=(char ch);
+
+  // Internal helper used by operator+ / EH return-slot assignment paths.
+  const CString& StringSharedRef_AssignFromPtr(const CString& src_ref);
+
+  operator const char*() const { return reinterpret_cast<const char*>(data_ptr); }
+  const char* Text() const { return *this; }
+  int Length() const { return GetData()->nDataLength; }
+  int Capacity() const { return GetData()->nAllocLength; }
+
+  CStringData* GetData() { return reinterpret_cast<CStringData*>(data_ptr - sizeof(CStringData)); }
+  const CStringData* GetData() const {
+    return reinterpret_cast<const CStringData*>(data_ptr - sizeof(CStringData));
+  }
+};
+
+// MFC stdcall operator+ overloads (hidden return slot is the destination CString).
+CString __stdcall operator+(const CString& string1, const CString& string2);
+CString __stdcall operator+(const CString& string1, const char* lpsz);
+CString __stdcall operator+(const char* lpsz, const CString& string2);

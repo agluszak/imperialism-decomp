@@ -20,7 +20,7 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   field_34 = 0x1f4;
   field_36 = 0;
   CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
-  name24.AssignFromPtr(empty);    // -> 0x00605a29
+  name24 = empty;    // -> 0x00605a29 CString::operator=
 }
 
 // FUNCTION: IMPERIALISM 0x005c2f50

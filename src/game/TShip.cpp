@@ -131,7 +131,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
     }
   } else {
     CString temp(displayNameOverride);
-    shipNode->displayName18.AssignFromPtr(temp);
+    shipNode->displayName18 = temp;
   }
 
   shipNode->stockLevel1c = *NavyZoneOrderDescriptorStockCapPtr(zoneIndex);

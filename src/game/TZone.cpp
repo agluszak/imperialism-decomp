@@ -109,11 +109,11 @@ void TZone::HandleTurnEventVtableSlot08(int arg1) {
   (void)arg1;
 }
 
-void TZone::AssertValidOrSlot0c() {
+void TZone::AssertValid() const {
   return;
 }
 
-void TZone::DumpOrSlot10(int unused) {
+void TZone::Dump(CDumpContext& unused) const {
   (void)unused;
   return;
 }

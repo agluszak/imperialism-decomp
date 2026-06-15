@@ -3339,22 +3339,6 @@ undefined4 DispatchVirtualSlot18OnImplicitObject(void)
   return 0;
 }
 
-// ghidra_name Empty
-// ghidra_proto undefined Empty()
-// FUNCTION: IMPERIALISM 0x0060586d
-undefined4 Empty(void)
-{
-  return 0;
-}
-
-// ghidra_name LockBuffer
-// ghidra_proto undefined LockBuffer()
-// FUNCTION: IMPERIALISM 0x00605dec
-undefined4 LockBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::Find_605e12
 // ghidra_proto undefined Find_605e12()
 // FUNCTION: IMPERIALISM 0x00605e12

@@ -200,9 +200,9 @@ void ReportWNetManagerErrorCodeAndNotifyUi(int errorCode) {
   const char* detailText = LookupDirectPlayErrorDetailText(errorCode);
   if (detailText == 0) {
     CString genericMessage(kNetworkErrorGeneric);
-    message.AssignFromPtr(genericMessage);
+    message = genericMessage;
   } else {
-    message.AssignFromCStr(detailText);
+    message += detailText;
   }
 
   thunk_AssignStringSharedRefAndReturnThis();

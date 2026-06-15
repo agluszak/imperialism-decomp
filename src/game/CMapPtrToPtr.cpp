@@ -11,30 +11,11 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 void* __stdcall AllocateAndLinkBlockHead(void** blockChainPtr, int blockCount, int elementSize);
 void __fastcall FreeLinkedBlockChain(void* blockChainHead);
 
-// FUNCTION: IMPERIALISM 0x006033dd
-void CMapPtrToPtr::InitHashTable(unsigned int nHashSize, int bAllocNow) {
-  if (m_pHashTable != 0) {
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(m_pHashTable));
-    m_pHashTable = 0;
-  }
-  if (bAllocNow != 0) {
-    m_pHashTable = reinterpret_cast<CAssoc**>(AllocateWithFallbackHandler(nHashSize << 2));
-    memset(m_pHashTable, 0, nHashSize << 2);
-  }
-  m_nHashTableSize = nHashSize;
-}
+// LIBRARY: IMPERIALISM 0x006033dd
+// CMapPtrToPtr::InitHashTable
 
-// FUNCTION: IMPERIALISM 0x00603423
-void CMapPtrToPtr::RemoveAll() {
-  if (m_pHashTable != 0) {
-    FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(m_pHashTable));
-    m_pHashTable = 0;
-  }
-  m_nCount = 0;
-  m_pFreeList = 0;
-  FreeLinkedBlockChain(m_pBlocks);
-  m_pBlocks = 0;
-}
+// LIBRARY: IMPERIALISM 0x00603423
+// CMapPtrToPtr::RemoveAll
 
 // FUNCTION: IMPERIALISM 0x00603481
 CMapPtrToPtr::CAssoc* CMapPtrToPtr::NewAssoc() {
@@ -96,20 +77,5 @@ void** CMapPtrToPtr::GetOrCreateValueSlot(void* key) {
   return &p->value;
 }
 
-// FUNCTION: IMPERIALISM 0x006035bb
-int CMapPtrToPtr::RemoveKey(void* key) {
-  if (m_pHashTable == 0) {
-    return 0;
-  }
-  unsigned int hash = (reinterpret_cast<unsigned int>(key) >> 4) % m_nHashTableSize;
-  CAssoc** link = &m_pHashTable[hash];
-  for (CAssoc* p = *link; p != 0; p = p->pNext) {
-    if (p->key == key) {
-      *link = p->pNext;
-      FreeAssoc(p);
-      return 1;
-    }
-    link = &p->pNext;
-  }
-  return 0;
-}
+// LIBRARY: IMPERIALISM 0x006035bb
+// CMapPtrToPtr::RemoveKey

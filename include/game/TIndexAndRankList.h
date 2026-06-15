@@ -11,8 +11,8 @@ public:
   // the SYNTHETIC scalar deleting destructor in the .cpp.
 
   // Slot 0 (GetRuntimeClass) and the implicit virtual dtor (slot 1) are the only
-  // CObject slots this class overrides; slots 2-4 (Serialize/AssertValidOrSlot0c/
-  // DumpOrSlot10) are inherited from CObject unchanged (verified: vtable 0x672eac
+  // CObject slots this class overrides; slots 2-4 (Serialize/AssertValid/
+  // Dump) are inherited from CObject unchanged (verified: vtable 0x672eac
   // and CObject 0x66fec4 share 0x404aa7/0x4010a0/0x408625 at slots 2-4).
   virtual CRuntimeClass* GetRuntimeClass() const override;
 

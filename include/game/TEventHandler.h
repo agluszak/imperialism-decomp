@@ -5,7 +5,7 @@
 #include "game/CRuntimeClass.h"
 #include "game/TObject.h"
 
-struct CArchive;
+class CArchive;
 class TView;
 class TEvent;
 
@@ -38,7 +38,7 @@ public:
   // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
   virtual CRuntimeClass* GetRuntimeClass() const override;     // 0x00 0x48a0e0
   virtual ~TEventHandler() override;                           // 0x01
-  void Serialize(CArchive* archive) override;                  // 0x02 0x485e90
+  void Serialize(CArchive& archive) override;                  // 0x02 0x485e90
   virtual void HandleCityDialogNoOpSlot14(int arg);            // 0x05 0x485f70
   virtual void HandleCityDialogNoOpSlot18(int arg);            // 0x06 0x485f90
   virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject(); // 0x07 0x48a1b0

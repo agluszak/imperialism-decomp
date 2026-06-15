@@ -1,5 +1,62 @@
 # Worklog
 
+- **Timestamp:** 2026-06-16 — MFC duplicate-symbol cleanup: clean link without /FORCE:MULTIPLE
+- **Command:** Reclaimed 22 overlapping `nafxcw.lib` symbols via in-source `// LIBRARY:`
+  markers (CString ctor/dtor, CArchive Close/FillBuffer, CMapPtrToPtr InitHashTable/
+  RemoveAll/RemoveKey, CPtrList ctor/dtor/RemoveAll/RemoveHead/RemoveTail/GetRuntimeClass,
+  CDC/CClientDC/CGdiObject dtors, CDocument::DisconnectViews). Removed
+  `/FORCE:MULTIPLE`; added `oledlg.lib` for `_OleUIBusyA`. `just sync-ownership` →
+  `just regen-stubs` → `just build` → `just gates`.
+- **Score Delta:** Not measured this pass; goal was a clean link surface.
+- **Description:** Build now links retail MFC without duplicate-definition warnings or
+  forced-multiple. Remaining hand-rolled CString/CArchive/CPtrList internals stay local
+  until their bodies are individually verified byte-identical or swapped.
+
+- **Timestamp:** 2026-06-16 — CObject LIBRARY markers + migration-plan update
+- **Command:** Replaced deleted `CObject`/`CRuntimeClass` bodies with in-source
+  `// LIBRARY:` comment-only ownership (`CObject.cpp`, `CRuntimeClass.cpp`). Renamed
+  `symbols.csv` `606fba` row to `CObject::GetRuntimeClass`. Updated
+  `docs/reference/mfc-migration-plan.md` with progress table and LIBRARY-marker recipe.
+  `just sync-ownership` → `just regen-stubs` → `just build` → `just gates` →
+  `just compare` on the seven reclaimed addresses.
+- **Score Delta:** `0x00412bd0`/`0x00412bf0`/`0x00412c10`/`0x00606fc0`/`0x00606fd2`/
+  `0x00607077` **100%**; `0x00606fba` **50%** (immediate still points at `classCObject`
+  — global `0x6706e0` no longer anchored locally).
+- **Description:** Stage-2 CObject core swap is pairing through retail MFC. Next open item
+  for stage 2 is `classCObject` global/datacmp anchoring; then CString/CArchive staged
+  LIBRARY reclamation.
+
+- **Timestamp:** 2026-06-16 — Retail MFC linked for CObject core
+- **Command:** Enabled `IMPERIALISM_LINK_MFC` in the standard `just build` path and
+  linked `nafxcw.lib` plus its Win32 import libs. Removed local ownership bodies for the
+  byte-identical MFC core functions (`CObject::Serialize`, `CObject::AssertValid`,
+  `CObject::Dump`, `CObject::GetRuntimeClass`, `CObject::IsKindOf`,
+  `AfxDynamicDownCast`, `CRuntimeClass::IsDerivedFrom`) while keeping local archive
+  serialization (`CRuntimeClass::Store`). Fixed MSVC type-tag ABI drift by making
+  `CArchive` a `class`, and made `CObject::IsKindOf` `const`. Added `/FORCE:MULTIPLE`
+  as a temporary transition link option because pulling core MFC also pulls duplicate
+  `CString`/`CArchive`/collection/GDI/document object modules until those later stages
+  are migrated. `just build`.
+- **Score Delta:** Not measured; per instruction this pass stopped once the MFC-linked
+  build was green.
+- **Description:** This is the first real retail-MFC link stage. The binary now links
+  against `nafxcw.lib`; remaining hand-rolled MFC-like classes stay local for the next
+  staged removals.
+
+- **Timestamp:** 2026-06-16 — MFC CObject signature-alignment prep
+- **Command:** Aligned the hand-rolled `CObject` virtual prefix to retail MFC signatures
+  without enabling `IMPERIALISM_LINK_MFC`: `Serialize(CArchive&)`, `AssertValid() const`,
+  and `Dump(CDumpContext&) const`. Updated the current manual overrides/callers
+  (`TEventHandler`, `TMinister`, `TDealList`, `TZone`, `CArchive::WriteObject`), added a
+  temporary `CDumpContext` placeholder for the prep stage, and renamed the manual
+  `config/symbols.csv` rows for `CObject::AssertValid` / `CObject::Dump`.
+  `just sync-ownership` → `just regen-stubs` → `just build`.
+- **Score Delta:** Not measured; per instruction this pass stopped once the build was
+  green.
+- **Description:** This is stage-1 groundwork for the retail-MFC migration plan. It keeps
+  the current hand-rolled classes in place while removing the largest `CObject` signature
+  mismatch before the later `<afx.h>`/`nafxcw.lib` swap.
+
 - **Timestamp:** 2026-06-15 — Scalar-dtor naming normalization + synthetic-name gate
 - **Command:** Ran `tools/workflow/correct_scalar_dtors.py` over `config/symbols.csv` (canonicalized ~54 ``scalar deleting destructor'`` rows from Ghidra spellings like `'scalar_deleting_destructor'` to the MSVC500-mangled form, paired each with `undefined ScalarDeletingDestructor()` prototype). Replaced hand-written `~TAmtBar()` bodies in `TIndustryAmtBar`/`TRailAmtBar`/`TShipAmtBar`/`TTraderAmtBar` with `// SYNTHETIC:` markers (destructors are compiler-generated from real inheritance). Hardened both scripts: `correct_scalar_dtors.py` now uses shared `pipe_csv`/`file_scan`/`repo` helpers, supports `--dry-run` and mixed quote pairs, and is wired as `just correct-scalar-dtors`. `check_synthetic_names.py` now reads via `read_pipe_table`, takes `--symbols-csv`, and normalizes addresses canonically (so `00591ec0` matches `591ec0`). Added `just synthetic-gate` to `just gates`. `just build` → `just detect` → per-class `just vtable <Class>`.
 - **Score Delta:** vtable slot 0x04 (scalar deleting destructor) now matches for TWarningView/TTransportPicture/TCivReport/TCivToolbar/TNumberedArrowButton/TPlacard/THQButton/TCivilianButton/TTraderAmtBar/TIndustryAmtBar/TRailAmtBar/TShipAmtBar (and family-wide wherever the same class rows were touched). Coverage 99.92%; canaries unchanged (`below_floor=2`, pre-existing).

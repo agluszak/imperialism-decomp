@@ -9,8 +9,8 @@ extern "C" int __stdcall DeleteDC(void* hdc);
 #pragma optimize("y", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00612682
-CDC::CDC() : CObject(), m_hDC(0), m_hAttribDC(0), m_pHandleMapEntry(0), m_hWnd(0) {}
+// LIBRARY: IMPERIALISM 0x00612682
+// CDC::CDC
 
 void CDC::CdcSlot14OnAttach(int hdc) {
   (void)hdc;
@@ -48,10 +48,5 @@ void CDC::DetachOutput() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x006127ca
-CDC::~CDC() {
-  if (m_hDC != 0) {
-    DetachOutput();
-    DeleteDC(reinterpret_cast<void*>(m_hDC));
-  }
-}
+// LIBRARY: IMPERIALISM 0x006127ca
+// CDC::~CDC

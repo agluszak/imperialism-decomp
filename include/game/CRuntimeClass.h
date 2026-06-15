@@ -3,7 +3,7 @@
 #include "compat.h"
 #include "decomp_types.h"
 
-struct CArchive;
+class CArchive;
 class CObject;
 
 // MFC CRuntimeClass - the per-class RTTI/serialization descriptor. No vtable;

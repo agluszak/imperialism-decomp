@@ -4,22 +4,8 @@
 
 #include "game/CArchive.h"
 
-// MFC foundation code was compiled favor-size with frame-pointer omission.
-#if defined(_MSC_VER)
-#pragma optimize("ys", on)
-#endif
-
-// FUNCTION: IMPERIALISM 0x00607077
-int CRuntimeClass::IsDerivedFrom(const CRuntimeClass* pBaseClass) const {
-  const CRuntimeClass* cur = this;
-  while (cur != 0) {
-    if (cur == pBaseClass) {
-      return 1;
-    }
-    cur = cur->m_pBaseClass;
-  }
-  return 0;
-}
+// LIBRARY: IMPERIALISM 0x00607077
+// CRuntimeClass::IsDerivedFrom
 
 // Serialize the class identity ahead of an object: schema word, then the
 // length-prefixed class name. Called by CArchive::WriteClass the first time a

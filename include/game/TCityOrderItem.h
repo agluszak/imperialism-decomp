@@ -2,7 +2,7 @@
 
 #include "game/CObject.h"
 
-struct CArchive;
+class CArchive;
 
 #define TCITYORDERITEM_VTABLE_SLOT(n) virtual void VTableSlot##n##_Provisional(void) {}
 

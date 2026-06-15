@@ -831,12 +831,10 @@ void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
         short* nameOrdinalCounter = &this->unitNameOrdinalByType[unitType];
         localization->FormatOrdinalString(*nameOrdinalCounter, &ordinalText);
         localization->GetString(0x2717, unitType, &typeName);
-        CString withSeparator;
-        AssignSharedStringConcatRefAndCStr(&withSeparator, &ordinalText, " ");
-        CString fullName;
-        AssignSharedStringConcatRefAndRef(&fullName, &withSeparator, &typeName);
-        composedName.AssignFromPtr(fullName);
-        unit->displayName24.AssignFromPtr(composedName);
+        CString withSeparator = ordinalText + CString(" ");
+        CString fullName = withSeparator + typeName;
+        composedName = fullName;
+        unit->displayName24 = composedName;
         unit->nameTag1a = this->unitNameCounter84;
         ++this->unitNameCounter84;
         ++*nameOrdinalCounter;
@@ -848,12 +846,10 @@ void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
           reinterpret_cast<void(__cdecl*)(void*, int)>(thunk_GenerateMappedFlavorTextByTableSlot)(
               &flavorName, this->nationSlot);
         } while (flavorName.Length() > 0xf - flavorBase.Length());
-        CString withSeparator;
-        AssignSharedStringConcatRefAndCStr(&withSeparator, &flavorBase, " ");
-        CString fullName;
-        AssignSharedStringConcatRefAndRef(&fullName, &withSeparator, &flavorName);
-        flavorName.AssignFromPtr(fullName);
-        unit->displayName24.AssignFromPtr(flavorName);
+        CString withSeparator = flavorBase + CString(" ");
+        CString fullName = withSeparator + flavorName;
+        flavorName = fullName;
+        unit->displayName24 = flavorName;
         unit->nameTag1a = this->unitNameCounter84;
         ++this->unitNameCounter84;
       }
@@ -2288,8 +2284,8 @@ void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void)
       CString messageRef;
       CString scratchRef;
       thunk_AssignSharedStringFromIndexedA8EntryNameField();
-      scratchRef.AssignConcatCStrAndRef("\n", messageRef);
-      scratchRef.AssignFromSharedRef(messageRef);
+      scratchRef = CString("\n") + messageRef;
+      scratchRef += messageRef;
     }
     cursor.Advance();
   }
@@ -3963,10 +3959,10 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
       CString message;
       {
         CString prefix("GP#");
-        message.AssignFromPtr(prefix);
+        message = prefix;
       }
-      message.AppendSingleByte('0' + static_cast<char>(this->nationSlot));
-      message.AssignFromCStr(" is missing capitol site");
+      message += static_cast<char>('0' + static_cast<char>(this->nationSlot));
+      message += " is missing capitol site";
       thunk_AssignStringSharedRefAndReturnThis();
       thunk_RunControlStringProviderAndDispatchLocalizedMessage();
     }

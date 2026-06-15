@@ -5,7 +5,7 @@
 #include "game/CRuntimeClass.h"
 #include "game/TObject.h"
 
-struct CArchive;
+class CArchive;
 
 // Mac: TMission — base AI-mission class. Real polymorphic MFC object rooted at
 // CObject<-TObject (slot 0x00 RTTI, dtor resets vptr to the CObject sentinel
@@ -41,7 +41,7 @@ public:
   // --- MFC CObject prefix slots 0x00-0x04 ---
   virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x534fb0
   virtual ~TMission();                                     // 0x01 dtor 0x535080 / ??_G 0x535050
-  // 0x02 Serialize / 0x03 AssertValidOrSlot0c / 0x04 DumpOrSlot10 inherited from CObject.
+  // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---
   virtual void SerializeMissionState(CArchive* archive);   // 0x05 0x535820

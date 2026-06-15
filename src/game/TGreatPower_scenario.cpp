@@ -22,7 +22,7 @@ void TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(int streamState
 
   CString* nationNameSource = reinterpret_cast<CString*>(
       reinterpret_cast<char*>(g_pLocalizationTable) + this->nationSlot * 4 + 0x7c);
-  this->identitySharedString1.AssignFromPtr(*nationNameSource);
+  this->identitySharedString1 = *nationNameSource;
   stream->ReadBytes(&this->identitySharedString0, 4);
 
   stream->ReadBytes(&this->nationSlot, 2);

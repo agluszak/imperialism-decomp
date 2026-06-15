@@ -2,7 +2,9 @@
 
 #include "decomp_types.h"
 
-struct CArchive;
+#include "game/CDumpContext.h"
+
+class CArchive;
 struct CRuntimeClass;
 
 // MFC CObject - the 4-byte (vptr-only) root of the serialized-object hierarchy.
@@ -13,11 +15,11 @@ class CObject {
 public:
   virtual CRuntimeClass* GetRuntimeClass() const;
   virtual ~CObject() {}
-  virtual void Serialize(CArchive* ar);
-  virtual void AssertValidOrSlot0c();
-  virtual void DumpOrSlot10(int unused = 0);
+  virtual void Serialize(CArchive& ar);
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext& dc) const;
 
-  int IsKindOf(const CRuntimeClass* pClass);
+  int IsKindOf(const CRuntimeClass* pClass) const;
 };
 
 CObject* AfxDynamicDownCast(CRuntimeClass* pClass, CObject* pObject);

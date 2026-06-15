@@ -4,14 +4,10 @@
 // (ListBoxControlWindowResolver / ListBoxSharedStringRef) for these; the real
 // receivers are CDataExchange (the DDX cursor) and CString (our CString class).
 //
-// CString::GetBufferSetLength (0x605d99) and CString::ReleaseBuffer (0x605d71)
-// are the already-ported CString methods EnsureCapacityAndSetLength /
-// SetLengthAndTerminator and are called directly. CDataExchange::PrepareCtrl
-// (0x6189dc) and CString::Empty (0x60586d) are not yet ported, so they go
-// through __fastcall ABI bridges kept out of the function bodies.
+// CString::Empty (0x60586d) is linked from nafxcw.lib. CDataExchange::PrepareCtrl
+// (0x6189dc) is not yet ported, so it goes through a __fastcall ABI bridge.
 
 undefined4 PrepareCtrl(void);
-undefined4 Empty(void);
 
 namespace {
 
@@ -19,11 +15,6 @@ namespace {
 inline HWND PrepareDdxControl(CDataExchange* pDX, undefined4 nIDC) {
   return reinterpret_cast<HWND(__fastcall*)(CDataExchange*, int, undefined4)>(
       reinterpret_cast<void(*)()>(::PrepareCtrl))(pDX, 0, nIDC);
-}
-
-// CString::Empty() (thiscall).
-inline void StringEmpty(CString* value) {
-  reinterpret_cast<void(__fastcall*)(CString*)>(reinterpret_cast<void(*)()>(::Empty))(value);
 }
 
 } // namespace
@@ -36,13 +27,14 @@ void __stdcall DDX_LBString(CDataExchange* pDX, undefined4 nIDC, CString* value)
   } else {
     WPARAM selection = SendMessageA(listbox, 0x188, 0, 0);
     if (selection == static_cast<WPARAM>(0xffffffff)) {
-      StringEmpty(value);
+      value->Empty();
     } else {
       LRESULT rawItemData = SendMessageA(listbox, 0x18a, selection, 0);
-      LPARAM normalized = value->EnsureCapacityAndSetLength(static_cast<int>(rawItemData));
+      LPARAM normalized = reinterpret_cast<LPARAM>(
+          value->GetBufferSetLength(static_cast<int>(rawItemData)));
       SendMessageA(listbox, 0x189, selection, normalized);
     }
-    value->SetLengthAndTerminator(static_cast<int>(0xffffffff));
+    value->ReleaseBuffer(static_cast<int>(0xffffffff));
   }
 }
 

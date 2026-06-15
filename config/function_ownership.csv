@@ -1376,6 +1376,7 @@ address|target_cpp|ownership|note
 6057a7|src/game/CString.cpp|manual|marker_sync
 6057de|src/game/CString.cpp|manual|marker_sync
 60584a|src/game/CString.cpp|manual|marker_sync
+60586d|src/game/CString.cpp|manual|marker_sync
 60588b|src/game/CString.cpp|manual|marker_sync
 6058b9|src/game/CString.cpp|manual|marker_sync
 6058e2|src/game/CString.cpp|manual|marker_sync
@@ -1394,6 +1395,7 @@ address|target_cpp|ownership|note
 605d22|src/game/CString.cpp|manual|marker_sync
 605d71|src/game/CString.cpp|manual|marker_sync
 605d99|src/game/CString.cpp|manual|marker_sync
+605dec|src/game/CString.cpp|manual|marker_sync
 606c67|src/game/MfcRuntime.cpp|manual|marker_sync
 606c7c|src/game/MfcRuntime.cpp|manual|marker_sync
 606ddd|src/game/CCmdUI.cpp|manual|marker_sync

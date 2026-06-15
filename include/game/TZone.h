@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 
+#include "game/CDumpContext.h"
 #include "game/CString.h"
 
 struct CRuntimeClass;
@@ -15,8 +16,8 @@ public:
   virtual CRuntimeClass* GetRuntimeClass() const;
   // slot 0x04 — scalar deleting destructor @ 0x562880 (SYNTHETIC; see TZone.cpp)
   virtual void HandleTurnEventVtableSlot08(int arg1);
-  virtual void AssertValidOrSlot0c();
-  virtual void DumpOrSlot10(int unused = 0);
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext& unused) const;
   virtual void SerializeZoneToBinaryStream(void* streamState);
   virtual void DeserializeZoneFromBinaryStream(int streamState);
   virtual void RemoveZoneFromGlobalListAndRelease();

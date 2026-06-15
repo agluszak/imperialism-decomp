@@ -8,13 +8,8 @@ extern "C" int __stdcall DeleteObject(void*);
 
 CGdiObject::CGdiObject() : CObject(), gdiHandle(0) {}
 
-// FUNCTION: IMPERIALISM 0x0047d960
-CGdiObject::~CGdiObject() {
-  if (gdiHandle != 0) {
-    DeleteObject(reinterpret_cast<void*>(gdiHandle));
-    gdiHandle = 0;
-  }
-}
+// LIBRARY: IMPERIALISM 0x0047d960
+// CGdiObject::~CGdiObject
 
 CBrush::CBrush() : CGdiObject() {}
 

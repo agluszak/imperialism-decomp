@@ -1,5 +1,6 @@
 #include "game/TMinister.h"
 
+#include "game/CArchive.h"
 #include "game/CRuntimeClass.h"
 #include "game/TMinisterBaseOrderArray.h"
 #include "game/TStream.h"
@@ -54,11 +55,11 @@ void TMinister::Call1C() {
   delete this;
 }
 
-void TMinister::Serialize(CArchive* ar) {
+void TMinister::Serialize(CArchive& ar) {
   (void)ar;
 }
-void TMinister::AssertValidOrSlot0c() {}
-void TMinister::DumpOrSlot10(int unused) {
+void TMinister::AssertValid() const {}
+void TMinister::Dump(CDumpContext& unused) const {
   (void)unused;
 }
 void TMinister::InvokeObjectSlot20() {}
@@ -78,13 +79,13 @@ void TMinister::Call54() {}
 // FUNCTION: IMPERIALISM 0x0052ecc0
 void TMinister::Call18(int arg1) {
   TStream* archive = reinterpret_cast<TStream*>(arg1);
-  TMinister::Serialize(reinterpret_cast<CArchive*>(archive));
+  TMinister::Serialize(*reinterpret_cast<CArchive*>(archive));
   archive->ReadBytes(&this->skillIndexC, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ecf0
 void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {
-  TMinister::Serialize(reinterpret_cast<CArchive*>(archive));
+  TMinister::Serialize(*reinterpret_cast<CArchive*>(archive));
   archive->WriteBytesSlot78(&this->skillIndexC, 2);
 }
 

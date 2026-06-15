@@ -57,11 +57,11 @@ endif()
 # needs; the toolchain's INCLUDE/LIB already point at C:\msvc\mfc\{include,lib}.
 # nafxcw must precede the static CRT (libcmt) on the link line — verified to link a
 # minimal exe. OFF until the hand-rolled MFC C* classes are swapped for <afx.h>.
-option(IMPERIALISM_LINK_MFC "Link retail static MFC (nafxcw.lib) instead of hand-rolled MFC" OFF)
+option(IMPERIALISM_LINK_MFC "Link retail static MFC (nafxcw.lib) instead of hand-rolled MFC" ON)
 if(IMPERIALISM_LINK_MFC AND MSVC AND NOT IMPERIALISM_LINT_COMPILE_ONLY)
     target_link_libraries(Imperialism PRIVATE
         nafxcw.lib
-        advapi32 shell32 comctl32 comdlg32 winspool ole32 oleaut32 uuid)
+        advapi32 shell32 comctl32 comdlg32 winspool ole32 oleaut32 oledlg uuid)
 endif()
 
 target_include_directories(Imperialism PRIVATE include)

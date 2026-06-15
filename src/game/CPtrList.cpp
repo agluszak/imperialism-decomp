@@ -27,35 +27,18 @@ void __fastcall FreeLinkedBlockChain(void* blockChainHead) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00601f1d
-CPtrList::CPtrList(int blockSize) {
-  this->nodeCount = 0;
-  this->freeNodeList = 0;
-  this->tailNode = 0;
-  this->headNode = 0;
-  this->blockChain = 0;
-  this->blockSize = blockSize;
-}
+// LIBRARY: IMPERIALISM 0x00601f1d
+// CPtrList::CPtrList
 
 // The scalar deleting destructor is compiler-generated from the virtual dtor.
 // SYNTHETIC: IMPERIALISM 0x00601f40
 // CPtrList::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x00601f5c
-void CPtrList::RemoveAll() {
-  void* chain = this->blockChain;
-  this->nodeCount = 0;
-  this->freeNodeList = 0;
-  this->tailNode = 0;
-  this->headNode = 0;
-  FreeLinkedBlockChain(chain);
-  this->blockChain = 0;
-}
+// LIBRARY: IMPERIALISM 0x00601f5c
+// CPtrList::RemoveAll
 
-// FUNCTION: IMPERIALISM 0x00601f7c
-CPtrList::~CPtrList() {
-  RemoveAll();
-}
+// LIBRARY: IMPERIALISM 0x00601f7c
+// CPtrList::~CPtrList
 
 // FUNCTION: IMPERIALISM 0x00601faf
 CPtrListNode* CPtrList::NewNode(CPtrListNode* pPrev, CPtrListNode* pNext) {
@@ -113,35 +96,11 @@ CPtrListNode* CPtrList::AddTail(void* value) {
   return node;
 }
 
-// FUNCTION: IMPERIALISM 0x006020b9
-void* CPtrList::RemoveHead() {
-  CPtrListNode* oldHead = this->headNode;
-  CPtrListNode* newHead = oldHead->next;
-  void* payload = oldHead->data;
-  this->headNode = newHead;
-  if (newHead != 0) {
-    newHead->prev = 0;
-  } else {
-    this->tailNode = 0;
-  }
-  this->FreeNode(oldHead);
-  return payload;
-}
+// LIBRARY: IMPERIALISM 0x006020b9
+// CPtrList::RemoveHead
 
-// FUNCTION: IMPERIALISM 0x006020dd
-void* CPtrList::RemoveTail() {
-  CPtrListNode* oldTail = this->tailNode;
-  CPtrListNode* newTail = oldTail->prev;
-  void* payload = oldTail->data;
-  this->tailNode = newTail;
-  if (newTail != 0) {
-    newTail->next = 0;
-  } else {
-    this->headNode = 0;
-  }
-  this->FreeNode(oldTail);
-  return payload;
-}
+// LIBRARY: IMPERIALISM 0x006020dd
+// CPtrList::RemoveTail
 
 // FUNCTION: IMPERIALISM 0x00602101
 CPtrListNode* CPtrList::InsertBefore(CPtrListNode* position, void* value) {
@@ -233,7 +192,5 @@ CPtrListNode* CPtrList::Find(void* searchValue, CPtrListNode* startAfter) {
 // GLOBAL: IMPERIALISM 0x00672ec0
 CRuntimeClass classCPtrList = {nullptr, 0, 0, nullptr, nullptr};
 
-// FUNCTION: IMPERIALISM 0x00623b3a
-CRuntimeClass* CPtrList::GetRuntimeClass() const {
-  return &classCPtrList;
-}
+// LIBRARY: IMPERIALISM 0x00623b3a
+// CPtrList::GetRuntimeClass

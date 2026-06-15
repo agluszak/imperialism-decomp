@@ -1,6 +1,7 @@
 #include "decomp_types.h"
 #include "game/TDealList.h"
 
+#include "game/CArchive.h"
 #include "game/TGreatPower.h"
 #include "game/TLocalizationRuntime.h"
 #include "game/TSortedPtrList.h"
@@ -97,13 +98,13 @@ CRuntimeClass* TDealList::GetRuntimeClass() const {
   return 0;
 }
 
-void TDealList::Serialize(CArchive* ar) {
+void TDealList::Serialize(CArchive& ar) {
   (void)ar;
 }
 
-void TDealList::AssertValidOrSlot0c() {}
+void TDealList::AssertValid() const {}
 
-void TDealList::DumpOrSlot10(int unused) {
+void TDealList::Dump(CDumpContext& unused) const {
   (void)unused;
 }
 

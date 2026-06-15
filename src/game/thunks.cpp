@@ -101,11 +101,6 @@ undefined4 GetOrCreateMfcModuleThreadState(void) {
   return 0;
 }
 
-undefined4 CString::LoadResourceStringToSharedBuffer(unsigned int resource_id) {
-  (void)resource_id;
-  return 0;
-}
-
 // thunk_DestructEngineerDialogBaseState (0x405c72) and
 // thunk_InitializeTradeMoveAndBarControls (0x4080c6) are now provided by the autogen
 // stubs after the Ghidra autogen refresh; the legacy aliases here are removed to avoid

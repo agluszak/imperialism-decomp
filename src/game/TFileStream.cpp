@@ -34,8 +34,7 @@ static __inline CArchive* BackingArchive(void* backingArchiveOrStream) {
 
 // FUNCTION: IMPERIALISM 0x00489030
 void TFileStream::WriteCString(const CString& text) {
-  int length = reinterpret_cast<SharedStringHeader*>(text.data_ptr - sizeof(SharedStringHeader))
-                   ->text_length;
+  int length = text.Length();
   this->WriteCountSlot88(length);
   this->WriteBytesSlot78(reinterpret_cast<void*>(text.data_ptr), length);
 }

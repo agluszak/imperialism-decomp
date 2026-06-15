@@ -829,7 +829,7 @@ void TView::RefreshCityProductionViewStateFromContext(int* clipRegionWrapper) {
 // FUNCTION: IMPERIALISM 0x0048c220
 void TView::EnableAndProcessFlag(const CString& sharedString) {
   field5c = 1;
-  sharedStringRef.AssignFromPtr(sharedString);
+  sharedStringRef = sharedString;
 }
 
 // FUNCTION: IMPERIALISM 0x0048c250
@@ -839,7 +839,7 @@ void TView::HandleCursorHoverFallback(Point32* point, int hitArg) {
     RECT parentRect;
     CopyRect(&parentRect, &rect);
     if (g_pCursorControlPanel != nullptr) {
-      g_pCursorControlPanel->sharedStringRef.AssignFromPtr(sharedStringRef);
+      g_pCursorControlPanel->sharedStringRef = sharedStringRef;
       g_pCursorControlPanel->UpdateCursorState();
     }
   }

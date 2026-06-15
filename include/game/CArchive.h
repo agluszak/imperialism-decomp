@@ -7,7 +7,8 @@ struct CMapPtrToPtr;
 // MFC CArchive serialization buffer: a write cursor (m_lpBufCur at +0x24) into
 // a buffer whose end is m_lpBufMax (+0x28). The insertion operators flush when
 // the next write would overrun the buffer, then append and advance.
-struct CArchive {
+class CArchive {
+public:
   char pad_00[0x08];
   int m_bDirect;
   char pad_0c[0x04];

@@ -26,9 +26,5 @@ CClientDC::CClientDC(void* windowParent)
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00613803
-CClientDC::~CClientDC() {
-  hdc_t hdc = reinterpret_cast<hdc_t>(m_hDC);
-  DetachOutput();
-  ReleaseDC(reinterpret_cast<hwnd_t>(m_hWnd), hdc);
-}
+// LIBRARY: IMPERIALISM 0x00613803
+// CClientDC::~CClientDC
