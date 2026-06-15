@@ -91,7 +91,8 @@ public:
   virtual void vmethod_0048(int arg = 0);                             // 0x45
   virtual char DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3,
                                              int arg4);              // 0x46 0x48c450
-  virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point); // 0x47
+  virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
+                                                    int arg4); // 0x47
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
                                                          int arg4);          // 0x48 0x48c590
   virtual char vmethod_0071(Point32* point, int arg2, int arg3, int arg4);   // 0x49

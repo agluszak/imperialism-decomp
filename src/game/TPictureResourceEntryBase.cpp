@@ -4,20 +4,76 @@
 #include "game/win_rect.h"
 
 undefined4 IncrementDialogResourceRefCountByShortIdInRegistry(void);
+undefined4 thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(void);
+undefined4 thunk_LoadBmpResourceByIdCached(void);
+undefined4 BuildIndexedBmpResourceById(void);
+undefined4 SetPictureResourceIdAndRefresh_Impl(void);
+
+
+
+
 
 // FUNCTION: IMPERIALISM 0x0048efc0
 TPictureResourceEntryBase::TPictureResourceEntryBase() : TControl() {}
+
+
+
+
 
 // FUNCTION: IMPERIALISM 0x0048f250
 TPictureResourceEntryBase::~TPictureResourceEntryBase() {}
 
 // Slot 0x44 override (picture-resource branch): ctrl-key hint overlay helper.
+
+
+
+
 // FUNCTION: IMPERIALISM 0x0048f3c0
 void TPictureResourceEntryBase::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
 }
 
 // Slot 0x08 override: allocate via slot 0x09 then copy city-dialog and picture-resource tail.
+
+
+
+
+
+// FUNCTION: IMPERIALISM 0x0048f520
+void TPictureResourceEntryBase::ResetPictureResourceEntry() {
+  if (this->glyphBase84 != -1) {
+    reinterpret_cast<void(__cdecl*)(short)>(thunk_DecrementDialogResourceRefCountByShortIdAndCleanup)(
+        this->glyphBase84);
+  }
+  this->glyphBase84 = -1;
+  this->bitmapId = 0;
+  this->field8A = 0;
+  this->field8C = 0;
+}
+
+
+
+
+// FUNCTION: IMPERIALISM 0x0048f570
+void TPictureResourceEntryBase::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) {
+  this->ResetPictureResourceEntry();
+  this->glyphBase84 = nPictureId;
+  if (nPictureId != -1) {
+    this->field8C = reinterpret_cast<int(__cdecl*)(short)>(thunk_LoadBmpResourceByIdCached)(nPictureId);
+  }
+  if (this->field8C == 0) {
+    reinterpret_cast<void(__cdecl*)(int, int)>(SetPictureResourceIdAndRefresh_Impl)(
+        this->field34, this->field38);
+    this->field8C = reinterpret_cast<int(__cdecl*)(short)>(BuildIndexedBmpResourceById)(nPictureId);
+  }
+  if (fRefreshNow) {
+    this->RefreshControl();
+  }
+}
+
+
+
+
 // FUNCTION: IMPERIALISM 0x0048f640
 void* TPictureResourceEntryBase::CloneEngineerDialogStateToNewInstance() {
   TPictureResourceEntryBase* clone =
@@ -52,3 +108,14 @@ void* TPictureResourceEntryBase::CloneEngineerDialogStateToNewInstance() {
   }
   return clone;
 }
+
+
+
+// FUNCTION: IMPERIALISM 0x005708c0
+bool TPictureResourceEntryBase::IsSelected(short value, bool refreshNow) {
+  (void)value;
+  (void)refreshNow;
+  RECT rect = this->BuildRectFromSlot158();
+  return RedrawWindow(this->nativeWindow50->hwnd, &rect, NULL, RDW_INVALIDATE | RDW_UPDATENOW);
+}
+

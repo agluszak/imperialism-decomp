@@ -11,7 +11,7 @@ public:
   CRuntimeClass* GetRuntimeClass() override;
   // ~TBoycottButton is compiler-generated (implicit virtual dtor).
 
-  virtual void TToggleButton_VtblSlot116(int isPressed, int notifyParent) override;
+  void Select(bool isPressed, bool notifyParent) override; // slot 0x1d0
 };
 
 ASSERT_SIZE(TBoycottButton, 0x90);

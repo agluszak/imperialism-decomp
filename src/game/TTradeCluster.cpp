@@ -23,6 +23,7 @@ extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 #include "game/TGreatPower.h"
 #include "game/trade_quickdraw.h"
 #include "game/CRuntimeClass.h"
+#include "game/TEvent.h"
 
 // Bid/Offer picture-button bitmap states (enabled / row-selected variants).
 const short kTradeBitmapBidStateA = 0x083f;
@@ -59,6 +60,15 @@ const int kAssertLineUpdateSell = 0x9e0;
 const int kAssertLineUpdateBar = 0x9e4;
 const int kAssertLineUpdateGree = 0x9e7;
 const int kAssertLineToolSubcontrolToggle = 0xac7;
+
+const int kAssertLineTradeSellIncSell = 0x816;
+const int kAssertLineTradeSellIncCap = 0x81d;
+const int kAssertLineTradeSellDecSell = 0x82f;
+const int kAssertLineTradeSellMoveSell = 0x85a;
+const int kAssertLineTradeSellMoveBar = 0x874;
+const int kAssertLineTradeSellZeroBar = 0x896;
+
+extern const int kTradeSellPropagationTags[17];
 
 const char kUSuperMapCppPath[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 
@@ -165,6 +175,135 @@ void TTradeCluster::NoOpUiLifecycleHook(int styleSeed) {
   }
 
   this->InitializeTradeMoveAndBarControls(styleSeed);
+}
+
+// FUNCTION: IMPERIALISM 0x005873e0
+void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TView* ownerPanel = this->OwnerPanel();
+
+  switch (commandId) {
+  case 100: {
+    if (this->GetBoolSlot1DC() != '\0') {
+      TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+      if (sellControl == 0) {
+        FailNilPointerInUSmallViews(kAssertLineTradeSellIncSell);
+      }
+
+      int sellValue = sellControl->QueryValue();
+      short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
+      TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
+      short maxByNationMetric = 0;
+      if (activeNationState != 0) {
+        maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
+      }
+
+      TAmtBar* capacityControl =
+          reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(0x6d436170));
+      if (capacityControl == 0) {
+        FailNilPointerInUSmallViews(kAssertLineTradeSellIncCap);
+      }
+
+      if ((int)maxByNationMetric < sellValue) {
+        int capacityValue = capacityControl->QueryValue();
+        if ((int)maxByNationMetric < capacityValue) {
+          sellControl->SetEnabled(maxByNationMetric + 1 != 0, 1);
+          this->ApplyMoveValue(maxByNationMetric + 1);
+          return;
+        }
+      }
+    }
+    break;
+  }
+  case 0x65: {
+    TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
+    if (sellControl == 0) {
+      FailNilPointerInUSmallViews(kAssertLineTradeSellDecSell);
+    }
+    int sellValue = sellControl->QueryValue();
+    if (1 < sellValue) {
+      this->ApplyMoveValue(sellValue - 1);
+      return;
+    }
+    break;
+  }
+  case 0x67:
+    g_pUiRuntimeContext->ApplyUiRuntimeSlot68(-1);
+    if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 3) {
+      for (int i = 0;
+           i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
+           ++i) {
+        TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
+        if (rowControl != 0 &&
+            reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TUberCluster*>(rowControl)->DoControlAction();
+        }
+      }
+      return;
+    }
+    break;
+  case 0x68:
+    g_pUiRuntimeContext->ApplyUiRuntimeSlot68(1);
+    if (QueryUiScreenModeRaw(g_pUiRuntimeContext) == 4) {
+      for (int i = 0;
+           i < (int)(sizeof(kTradeSellPropagationTags) / sizeof(kTradeSellPropagationTags[0]));
+           ++i) {
+        TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
+        if (rowControl != 0 &&
+            reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TUberCluster*>(rowControl)->DoControlAction();
+        }
+      }
+      return;
+    }
+    break;
+  case 0x69: {
+    short activeNationSlot = g_pUiRuntimeContext->GetActiveNationId();
+    TGreatPower* activeNationState = GetNationStateBySlot(activeNationSlot);
+    short maxByNationMetric = 0;
+    if (activeNationState != 0) {
+      maxByNationMetric = QueryNationMetricBySlot(activeNationState, tradeMetricSlot);
+    }
+
+    TAmtBar* capacityControl =
+        reinterpret_cast<TAmtBar*>(ownerPanel->ResolveControlByTag(0x6d436170));
+    if (capacityControl == 0) {
+      FailNilPointerInUSmallViews(kAssertLineTradeSellMoveSell);
+    }
+    short cappedValue = (short)capacityControl->QueryValue();
+    int applyValue = (int)maxByNationMetric;
+    if ((int)cappedValue <= (int)maxByNationMetric) {
+      applyValue = (int)cappedValue;
+    }
+
+    TControl* sellControl = this->ResolveControlByTag(kControlTagSell);
+    sellControl->SetEnabled(1, 1);
+
+    TControl* barControl = this->ResolveControlByTag(kControlTagBar);
+    if (barControl == 0) {
+      FailNilPointerInUSmallViews(kAssertLineTradeSellMoveBar);
+    }
+    barControl->SetState(1, 0);
+    this->ApplyMoveValue(applyValue);
+    return;
+  }
+  case 0x6a: {
+    TControl* sellControl = this->ResolveControlByTag(kControlTagSell);
+    sellControl->SetEnabled(0, 1);
+
+    TControl* barControl = this->ResolveControlByTag(kControlTagBar);
+    if (barControl == 0) {
+      FailNilPointerInUSmallViews(kAssertLineTradeSellZeroBar);
+    }
+    barControl->SetState(0, 1);
+    this->ApplyMoveValue(0);
+    return;
+  }
+  default:
+    this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
+    return;
+  }
+
+  this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
 }
 
 // Returns early if UI mode is outside trade range (>3); otherwise reports

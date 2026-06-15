@@ -17,6 +17,8 @@ public:
   CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+
   void NoOpUiLifecycleHook(int styleSeed) override; // 0xdc 0x587130
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
   virtual int GetControlFlag(int arg1 = 0, int arg2 = 0) override;

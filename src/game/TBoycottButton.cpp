@@ -28,7 +28,7 @@ TBoycottButton::TBoycottButton() : TToggleButton() {}
 // TBoycottButton::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00584800
-void TBoycottButton::TToggleButton_VtblSlot116(int isPressed, int notifyParent) {
+void TBoycottButton::Select(bool isPressed, bool notifyParent) {
   if (static_cast<char>(isPressed) != '\0') {
     void* result1 = reinterpret_cast<void* (*)()>(reinterpret_cast<void***>(this)[0][0x16])();
     void* result2 = reinterpret_cast<void*(__fastcall*)(void*, int, int)>(
@@ -40,5 +40,5 @@ void TBoycottButton::TToggleButton_VtblSlot116(int isPressed, int notifyParent) 
     reinterpret_cast<void(__fastcall*)(void*, int, int)>(*reinterpret_cast<void**>(
         reinterpret_cast<char*>(result2) + 0x1c8))(result2, 0, 0x20202020);
   }
-  TToggleButton::TToggleButton_VtblSlot116(isPressed, notifyParent);
+  TToggleButton::Select(isPressed, notifyParent);
 }

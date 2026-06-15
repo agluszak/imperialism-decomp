@@ -16,7 +16,4 @@ public:
   // Destructor is compiler-generated (implicit virtual dtor) from TUberCluster.
 
   static TAmtBarCluster* CreateInstance();
-
-  // We use the original struct name for parameters until we verify the method signature.
-  void HandleTradeSellControlCommand(int commandId, void* eventArg, int eventExtra);
 };

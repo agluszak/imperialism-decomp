@@ -10,6 +10,8 @@ public:
   TAlwaysPictureButton();
   CRuntimeClass* GetRuntimeClass() override;
   // ~TAlwaysPictureButton is compiler-generated (implicit virtual dtor).
+  void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
+  virtual void Select(bool isPressed, bool notifyParent); // slot 0x1d0
 };
 
 ASSERT_SIZE(TAlwaysPictureButton, 0x94);

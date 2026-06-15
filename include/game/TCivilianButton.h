@@ -18,8 +18,10 @@ public:
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  void BeginMouseCaptureAndStartRepeatTimer(Point32* point) override;
+  void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
+                                            int arg4) override;
   void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
+  bool IsSelected(short value = -1, bool refreshNow = true) override;
 
   void SetSelectionAndEnableByMappedValue(int selectedValue);
 };

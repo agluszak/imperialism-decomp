@@ -108,8 +108,11 @@ void TView::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00430c10
-void TView::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
+void TView::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
   (void)point;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
 }
 
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
@@ -894,7 +897,7 @@ char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, in
 
   if (Refresh() != 0 && GetBoolSlot28() != 0) {
     Point32 localPoint = *point;
-    BeginMouseCaptureAndStartRepeatTimer(&localPoint);
+    BeginMouseCaptureAndStartRepeatTimer(&localPoint, arg2, arg3, arg4);
     return 1;
   }
   return 0;

@@ -86,7 +86,10 @@ TControl::TControl()
 // TControl::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0048e640
-void TControl::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
+void TControl::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   g_McAppUiMouseCaptureControl_006A1A80 = this;
   void* capturedWindow = reinterpret_cast<void*>(SetCapture(reinterpret_cast<HWND>(nativeWindow50->hwnd)));
   reinterpret_cast<void(__cdecl*)(void*)>(FromHandle)(capturedWindow);

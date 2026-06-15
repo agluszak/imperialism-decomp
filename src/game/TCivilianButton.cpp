@@ -30,13 +30,21 @@ void TCivilianButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00571690
+bool TCivilianButton::IsSelected(short value, bool refreshNow) {
+  (void)value;
+  (void)refreshNow;
+  OwnerPanel()->InvokeSlot13C();
+  return true;
+}
+
 // FUNCTION: IMPERIALISM 0x005716b0
-void TCivilianButton::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
+void TCivilianButton::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
   int sfxSystem = *reinterpret_cast<int*>(kAddrSfxPlaybackSystem);
   reinterpret_cast<void(__cdecl*)(int, int, int)>(
       *reinterpret_cast<void**>(*reinterpret_cast<int*>(sfxSystem) + 0xb8))(
       timingWord92, 0, 1);
-  TView::BeginMouseCaptureAndStartRepeatTimer(point);
+  TView::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x00571850

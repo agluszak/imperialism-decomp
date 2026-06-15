@@ -3,6 +3,7 @@
 #include "compat.h"
 #include "game/TPictureResourceEntryBase.h"
 
+// VTABLE: IMPERIALISM 0x65e6f8
 class TPictureButton : public TPictureResourceEntryBase {
 public:
   short glyph90;
@@ -10,6 +11,10 @@ public:
 
   TPictureButton();
   virtual ~TPictureButton() override;
+  CRuntimeClass* GetRuntimeClass() override;
+  void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
+                                            int arg4) override;
+  void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
 };
 
 ASSERT_SIZE(TPictureButton, 0x94);

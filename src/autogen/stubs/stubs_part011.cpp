@@ -515,22 +515,6 @@ undefined4 InitializePictureEntryBaseAndRefresh(void)
   return 0;
 }
 
-// ghidra_name TTwoPicSlider::ResetPictureResourceEntry
-// ghidra_proto void __thiscall ResetPictureResourceEntry(void)
-// FUNCTION: IMPERIALISM 0x0048f520
-undefined4 ResetPictureResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name SetPictureResourceIdAndRefresh
-// ghidra_proto void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)
-// FUNCTION: IMPERIALISM 0x0048f570
-undefined4 SetPictureResourceIdAndRefresh(void)
-{
-  return 0;
-}
-
 // ghidra_name SetPictureResourceIdAndRefresh_Impl
 // ghidra_proto undefined SetPictureResourceIdAndRefresh_Impl()
 // FUNCTION: IMPERIALISM 0x0048f610

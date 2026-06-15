@@ -16,8 +16,10 @@ public:
   short activeZoneIndex1d4;
   unsigned char pad1d6[0x1e8 - 0x1d6];
   struct NationCapRow {
-    short cap;
-    unsigned char pad02[0x14 - 0x02];
+    union {
+      short cap;
+      short caps[10];
+    };
   };
   NationCapRow nationCapRows1e8[7];
   unsigned char pad274[0x277 - 0x274];

@@ -2251,22 +2251,6 @@ undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(void)
   return 0;
 }
 
-// ghidra_name TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
-// ghidra_proto undefined WrapperFor_GetActiveNationId_At0058bf50()
-// FUNCTION: IMPERIALISM 0x0058bf50
-undefined4 WrapperFor_GetActiveNationId_At0058bf50(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC
-// ghidra_proto undefined HandlePlusMinusCommandAndInvokeVslot1CC()
-// FUNCTION: IMPERIALISM 0x0058c140
-undefined4 HandlePlusMinusCommandAndInvokeVslot1CC(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildCombatReportLossesSummaryText
 // ghidra_proto undefined BuildCombatReportLossesSummaryText()
 // FUNCTION: IMPERIALISM 0x0058c950

@@ -29,7 +29,8 @@ public:
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
-  virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point) override;
+  virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
+                                                    int arg4) override;
   virtual int QuerySelectedIndexSlotBC() override;
   virtual char PointInBoundsAndActionable(Point32* point) override;
 
@@ -46,3 +47,4 @@ public:
   virtual char LogUnhandledDialogMethodAndReturnFalse();
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow);
 };
+

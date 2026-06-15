@@ -2651,54 +2651,6 @@ undefined4 CreateTPictureButtonInstance(void)
   return 0;
 }
 
-// ghidra_name TPictureButton::GetTPictureButtonClassNamePointer
-// ghidra_proto undefined GetTPictureButtonClassNamePointer()
-// FUNCTION: IMPERIALISM 0x005707d0
-undefined4 GetTPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I24_00570870
-// ghidra_proto undefined OrphanCallChain_C2_I24_00570870()
-// FUNCTION: IMPERIALISM 0x00570870
-undefined4 OrphanCallChain_C2_I24_00570870(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I18_005708c0
-// ghidra_proto undefined OrphanCallChain_C2_I18_005708c0()
-// FUNCTION: IMPERIALISM 0x005708c0
-undefined4 OrphanCallChain_C2_I18_005708c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::PlayControlSoundAndBeginMouseCapture_Field92_A
-// ghidra_proto undefined PlayControlSoundAndBeginMouseCapture_Field92_A()
-// FUNCTION: IMPERIALISM 0x00570900
-undefined4 PlayControlSoundAndBeginMouseCapture_Field92_A(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I28_00570a70
-// ghidra_proto undefined OrphanCallChain_C2_I28_00570a70()
-// FUNCTION: IMPERIALISM 0x00570a70
-undefined4 OrphanCallChain_C2_I28_00570a70(void)
-{
-  return 0;
-}
-
-// ghidra_name TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
-// ghidra_proto undefined WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0()
-// FUNCTION: IMPERIALISM 0x00570ae0
-undefined4 WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C3_I43_00570c30
 // ghidra_proto undefined OrphanCallChain_C3_I43_00570c30()
 // FUNCTION: IMPERIALISM 0x00570c30
@@ -2771,30 +2723,6 @@ undefined4 OrphanCallChain_C7_I61_00570fb0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170
-// ghidra_proto undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170()
-// FUNCTION: IMPERIALISM 0x00571170
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571170(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C6_I52_005712a0
-// ghidra_proto undefined OrphanCallChain_C6_I52_005712a0()
-// FUNCTION: IMPERIALISM 0x005712a0
-undefined4 OrphanCallChain_C6_I52_005712a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_VcallForward_Slot_ec_00571330
-// ghidra_proto undefined OrphanTiny_VcallForward_Slot_ec_00571330()
-// FUNCTION: IMPERIALISM 0x00571330
-undefined4 OrphanTiny_VcallForward_Slot_ec_00571330(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleToggleButtonStateChangeAndRefresh
 // ghidra_proto undefined HandleToggleButtonStateChangeAndRefresh()
 // FUNCTION: IMPERIALISM 0x00571350
@@ -2831,14 +2759,6 @@ undefined4 ConstructPictureScreenResourceEntry(void)
 // ghidra_proto undefined DestructTUpDownPictureButtonAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005715d0
 undefined4 DestructTUpDownPictureButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I05_00571690
-// ghidra_proto undefined OrphanCallChain_C1_I05_00571690()
-// FUNCTION: IMPERIALISM 0x00571690
-undefined4 OrphanCallChain_C1_I05_00571690(void)
 {
   return 0;
 }

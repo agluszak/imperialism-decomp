@@ -259,6 +259,14 @@ undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
   return 0;
 }
 
+// ghidra_name thunk_DecrementDialogResourceRefCountByShortIdAndCleanup
+// ghidra_proto undefined thunk_DecrementDialogResourceRefCountByShortIdAndCleanup()
+// FUNCTION: IMPERIALISM 0x004046bf
+undefined4 thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(void)
+{
+  return 0;
+}
+
 // ghidra_name thunk_CreateAndSendTurnEvent13_NationAndNineDwords
 // ghidra_proto undefined thunk_CreateAndSendTurnEvent13_NationAndNineDwords()
 // FUNCTION: IMPERIALISM 0x004048d6

@@ -11,8 +11,8 @@ public:
   virtual ~T2PictToggleButton() override;
   CRuntimeClass* GetRuntimeClass() override;
 
-  virtual void IsField3cWithinShortLimit84();
-  virtual void SyncField0fTowardsField21ByDirectionAndRefresh(char direction);
+  bool IsSelected(short value = -1, bool refreshNow = true) override; // slot 0x1cc
+  void Select(bool isPressed, bool notifyParent) override; // slot 0x1d0
 };
 
 ASSERT_SIZE(T2PictToggleButton, 0x90);

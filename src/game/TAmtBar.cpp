@@ -139,7 +139,10 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 }
 
 // FUNCTION: IMPERIALISM 0x00588950
-void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
+void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
   ClampAndApplyTradeMoveValue(reinterpret_cast<int*>(point));
 }
 

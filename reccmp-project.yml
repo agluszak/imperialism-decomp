@@ -421,7 +421,7 @@ targets:
       - TArmyMgr::SelectMovableUnitOnCurrentTileAndPlaySfx
       - TArmyMgr::thunk_DestructTArmyMgrAndMaybeFree
       - TArmyMgr::thunk_SelectMovableUnitOnCurrentTileAndPlaySfx
-      - TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
+      - TArmyPlacard::vmethod_01cc
       - TArmyPlayer::DestructTArmyPlayerAndMaybeFree
       - TArmyPlayer::thunk_DestructTArmyPlayerAndMaybeFree_At00406f2d
       - TArmyStack::DestructTArmyStackAndMaybeFree
