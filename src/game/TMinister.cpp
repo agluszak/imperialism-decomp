@@ -75,37 +75,6 @@ void TMinister::MinisterSlot12() {}
 void TMinister::Call4C() {}
 void TMinister::MinisterSlot14() {}
 void TMinister::Call54() {}
-void TMinister::Call58() {}
-void TMinister::MinisterSlot17() {}
-void TMinister::MinisterSlot18() {}
-void TMinister::MinisterSlot19() {}
-void TMinister::MinisterSlot1A(short arg) {
-  (void)arg;
-}
-void TMinister::MinisterSlot1B() {}
-void TMinister::MinisterSlot1C() {}
-void TMinister::MinisterSlot1D() {}
-void TMinister::MinisterSlot1E() {}
-void TMinister::MinisterSlot1F() {}
-void TMinister::Call80() {}
-void TMinister::MinisterSlot21() {}
-char TMinister::MinisterSlot22() {
-  return 0;
-}
-void TMinister::Call8C() {}
-void TMinister::Call90() {}
-void TMinister::Call94() {}
-void TMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) {
-  (void)arg1;
-  (void)arg2;
-  (void)arg3;
-  (void)targetNation;
-}
-void TMinister::RecomputeOrderStateSlot9C() {}
-void TMinister::MinisterSlot28() {}
-void TMinister::MinisterSlot29() {}
-void TMinister::MinisterSlot2A() {}
-void TMinister::MinisterSlot2B() {}
 
 #if defined(_MSC_VER)
 #pragma optimize("", on)

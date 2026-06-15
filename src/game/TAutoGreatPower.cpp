@@ -7,6 +7,8 @@
 #include "game/nation_slot_eligibility.h"
 #include "game/TLocalizationRuntime.h"
 #include "game/TMinister.h"
+#include "game/TForeignMinister.h"
+#include "game/TCityInteriorMinister.h"
 #include "game/TMinor.h"
 #include "game/TPtrList.h"
 #include "game/TCity.h"
@@ -74,6 +76,7 @@ public:
   virtual void dummy1d() = 0;
   virtual void dummy1e() = 0;
   virtual void QueueProposalRowSlot7C(int queueIndex) = 0;
+
 protected:
   ~TMinisterProposalReplayView() {}
 };
@@ -161,10 +164,9 @@ void TAutoGreatPower::VTableIndex56_Provisional(void) {
 void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) {
   if (g_apNationStates[static_cast<short>(sourceNation)]->diplomacyEligibilityA0 != 0) {
     if (static_cast<short>(needSlot) != 5) {
-      short relationScore =
-          g_pDiplomacyTurnStateManager
-              ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
-                                               static_cast<short>(sourceNation)];
+      short relationScore = g_pDiplomacyTurnStateManager
+                                ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
+                                                                 static_cast<short>(sourceNation)];
       double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
       int roll = GenerateThreadLocalRandom15();
       if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
@@ -201,8 +203,8 @@ void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(voi
   int total = 0;
   for (int resourceType = 0; static_cast<short>(resourceType) < 0x0E; ++resourceType) {
     short resourceWeight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(resourceType));
-    short relationWeight = *reinterpret_cast<short*>(
-        reinterpret_cast<unsigned char*>(this->city) + 0x5C + resourceType * 2);
+    short relationWeight = *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(this->city) +
+                                                     0x5C + resourceType * 2);
     total += static_cast<short>(resourceWeight * relationWeight);
   }
 
@@ -223,8 +225,8 @@ void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(voi
 // FUNCTION: IMPERIALISM 0x004e79d0
 char TAutoGreatPower::DispatchOrQueueDiplomacyRequestSlot88_Provisional(int targetNation, int arg2,
                                                                         int arg3, int slotIndex) {
-  if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(
-          static_cast<short>(slotIndex)) != 0) {
+  if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(slotIndex)) !=
+      0) {
     this->foreignMinister->DispatchProposalSlot98(targetNation, arg2, arg3, slotIndex);
     return 0;
   }
@@ -294,8 +296,7 @@ int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) 
     if (nation > 6) {
       break;
     }
-    if (IsNationSlotEligibleForEventProcessing(
-            nation) != 0 &&
+    if (IsNationSlotEligibleForEventProcessing(nation) != 0 &&
         nation != static_cast<short>(this->nationSlot)) {
       if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, nation) == 0 &&
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(targetNation, nation) != 0) {
@@ -432,8 +433,7 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
   int peerSlot = 0;
   TGreatPower** peerCursor = g_apNationStates;
   do {
-    if (IsNationSlotEligibleForEventProcessing(
-            peerSlot) != 0) {
+    if (IsNationSlotEligibleForEventProcessing(peerSlot) != 0) {
       float peerArmy = (*peerCursor)->GetScoreFactorSlot23C();
       if (strongestPeer < peerArmy) {
         strongestPeer = peerArmy;
@@ -446,22 +446,20 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
     ++peerCursor;
     ++peerSlot;
   } while (peerCursor < g_apNationStates + 7);
-  int tickQuarter = static_cast<short>(
-      g_pLocalizationTable->quarterGateTick2c / 4);
+  int tickQuarter = static_cast<short>(g_pLocalizationTable->quarterGateTick2c / 4);
   if (tickQuarter >= 0x3c) {
     tickQuarter = 0x3c;
   }
-  short relationScore =
-      g_pDiplomacyTurnStateManager
-          ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
-                                           static_cast<short>(targetNation)];
+  short relationScore = g_pDiplomacyTurnStateManager
+                            ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
+                                                             static_cast<short>(targetNation)];
   float combinedStrength = ownStrengthScore + allyQuarterScore;
-  float combinedScore = static_cast<float>(
-      (strongestPeer / combinedStrength +
-       (static_cast<float>(relationScore) + ownStrengthScore) /
-           ((static_cast<float>(tickQuarter) + combinedStrength) -
-            g_Compute_Advisory_Map_Value_00653FD4)) *
-      g_Evaluate_Advisory_Case11_Value_00653FD8);
+  float combinedScore =
+      static_cast<float>((strongestPeer / combinedStrength +
+                          (static_cast<float>(relationScore) + ownStrengthScore) /
+                              ((static_cast<float>(tickQuarter) + combinedStrength) -
+                               g_Compute_Advisory_Map_Value_00653FD4)) *
+                         g_Evaluate_Advisory_Case11_Value_00653FD8);
   if (this->ComputeMinisterSkillFloatSlot8A() <= combinedScore) {
     return 1;
   }
@@ -586,9 +584,8 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
     void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
         ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 8);
     if (grownArray == 0) {
-      portZone->portZoneEntries28 = static_cast<int*>(
-          reinterpret_cast<void*(__cdecl*)(void*, int)>(
-              ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 4));
+      portZone->portZoneEntries28 = static_cast<int*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(portZone->portZoneEntries28, 4));
       portZone->portZoneEntryCount2c = 1;
     } else {
       portZone->portZoneEntries28 = static_cast<int*>(grownArray);

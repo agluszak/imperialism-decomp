@@ -5,6 +5,9 @@
 #include "game/TPtrList.h"
 
 class TMinister;
+class TForeignMinister;
+class TDefenseMinister;
+class TCityInteriorMinister;
 class TQueueObject;
 class TCity;
 
@@ -161,7 +164,7 @@ public:
   virtual unsigned int GetEffectiveDiplomacyCounterA2ForCode(int proposalCode);
   virtual void ApplyDiplomacyState222ToCityFieldB6AndClear(void);      // slot 0x41
   virtual void ApplyRelationDeltaToCityFieldB6AndUpdateState1f4(void); // slot 0x42
-  virtual void VTableIndex67_Provisional(void) {}                          // slot 0x43
+  virtual void VTableIndex67_Provisional(void) {}                      // slot 0x43
   TGREATPOWER_VTABLE_SLOT(68);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
   virtual bool IsNeedTargetEqualCurrent(short needIndex);                          // slot 0x46
@@ -268,12 +271,12 @@ public:
   virtual void NotifyAllianceSlot214(int targetNation);    // index 133 — body 0x004e0440
   // slot 0x86 — body 0x004e0500; navy order priority weights summed for this nation.
   virtual int SumNavyOrderPriorityForNationSlot86(void);
-  virtual int CountMapActionContextNodesWithNationBit(void);                         // slot 0x87
-  virtual double ComputeMinisterSkillFloatSlot88(void);                              // slot 0x88
-  virtual double ComputeMinisterSkillFloatSlot89(void);                              // slot 0x89
-  virtual double ComputeMinisterSkillFloatSlot8A(void);                              // slot 0x8a
-  virtual double ComputeMinisterSkillFloatSlot8B(void);                              // slot 0x8b
-  virtual double ComputeMinisterSkillFloatSlot8C(void);                              // slot 0x8c
+  virtual int CountMapActionContextNodesWithNationBit(void);       // slot 0x87
+  virtual double ComputeMinisterSkillFloatSlot88(void);            // slot 0x88
+  virtual double ComputeMinisterSkillFloatSlot89(void);            // slot 0x89
+  virtual double ComputeMinisterSkillFloatSlot8A(void);            // slot 0x8a
+  virtual double ComputeMinisterSkillFloatSlot8B(void);            // slot 0x8b
+  virtual double ComputeMinisterSkillFloatSlot8C(void);            // slot 0x8c
   virtual int GetCityBuildingProductionSlot8D(short buildingSlot); // slot 0x8d
   // Relative military/naval power score family (bodies 0x004e07b0..0x004e1c20).
   // slot 0x8e — min(production-capped army commit budget, metric 0x10, armyPower/2).
@@ -377,9 +380,9 @@ public:
   // 4 bytes at 0x88 (ownerNationSlot + pad).
   int serializedField8c;
   TPtrList* ownedRegionList;
-  TMinister* foreignMinister;
-  TMinister* interiorMinister;
-  TMinister* defenseMinister;
+  TForeignMinister* foreignMinister;
+  TCityInteriorMinister* interiorMinister;
+  TDefenseMinister* defenseMinister;
   unsigned char diplomacyEligibilityA0;
   unsigned char pad_a1;
   short diplomacyCounterA2;
@@ -524,7 +527,9 @@ public:
   void DispatchNationField9CCallback4C(void);
   void DispatchNationField94Callbacks90And94(void);
 
-  TCity* GetCityState(void) { return city; }
+  TCity* GetCityState(void) {
+    return city;
+  }
 };
 
 #undef TGREATPOWER_VTABLE_SLOT

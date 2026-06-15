@@ -68,7 +68,7 @@ void TForeignMinister::Call8C() {
     }
     if (relationshipList != 0) {
       g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 1,
-                                                              relationshipList);
+                                                                relationshipList);
       short* nationSlotPtr =
           static_cast<short*>(relationshipList->GetEntrySlot2C(relationshipList->count));
       g_apNationStates[*nationSlotPtr]->AssignNeedSlotFromSourceSlot19C(
@@ -88,7 +88,7 @@ void TForeignMinister::Call8C() {
       fallbackNationSlot = GenerateThreadLocalRandom15Value() % 7;
       if (IsNationSlotEligibleForEventProcessing(static_cast<short>(fallbackNationSlot)) != 0) {
         if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(fallbackNationSlot,
-                                                                  owner->nationSlot) == 0 &&
+                                                                    owner->nationSlot) == 0 &&
             fallbackNationSlot != owner->nationSlot) {
           foundFallbackNation = true;
         }
@@ -135,7 +135,8 @@ void TForeignMinister::Call94() {
     do {
       int roll = GenerateThreadLocalRandom15Value();
       short orderKind = *orderKindCursor;
-      short weightThreshold = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(orderKind);
+      short weightThreshold =
+          g_pNationInteractionStateManager->QueryProposalWeightSlot4C(orderKind);
       if (roll % 100 + 200 < static_cast<int>(weightThreshold)) {
         short metric = owner->QueryNationMetricBySlot78(orderKind);
         if (metric == 0) {
@@ -203,8 +204,8 @@ void TForeignMinister::DispatchProposalSlot98(int arg1, int arg2, int arg3, int 
     short availableAmount =
         static_cast<short>(owner->GetEffectiveDiplomacyCounterA2ForCode(targetNation));
     if (availableAmount < static_cast<short>(dispatchAmount)) {
-      dispatchAmount = static_cast<unsigned int>(
-          owner->GetEffectiveDiplomacyCounterA2ForCode(targetNation));
+      dispatchAmount =
+          static_cast<unsigned int>(owner->GetEffectiveDiplomacyCounterA2ForCode(targetNation));
     }
     *ledgerEntry = static_cast<short>(*ledgerEntry - static_cast<short>(dispatchAmount));
   }
@@ -236,3 +237,23 @@ void TForeignMinister::RecomputeOrderStateSlot9C() {
 
 // FUNCTION: IMPERIALISM 0x00531110
 void TForeignMinister::Call80() {}
+
+// Placeholder extension-slot virtuals (slots 22-31, 33-34). These occupy real orig
+// vtable slots whose bodies are not yet ported; honest empty stubs keep the vtable the
+// correct size and let the implemented slots (Call80/8C/90/94/98/9C) pair.
+void TForeignMinister::Call58() {}
+void TForeignMinister::MinisterSlot17() {}
+void TForeignMinister::MinisterSlot18() {}
+void TForeignMinister::MinisterSlot19() {}
+void TForeignMinister::MinisterSlot1A(short arg) {
+  (void)arg;
+}
+void TForeignMinister::MinisterSlot1B() {}
+void TForeignMinister::MinisterSlot1C() {}
+void TForeignMinister::MinisterSlot1D() {}
+void TForeignMinister::MinisterSlot1E() {}
+void TForeignMinister::MinisterSlot1F() {}
+void TForeignMinister::MinisterSlot21() {}
+char TForeignMinister::MinisterSlot22() {
+  return 0;
+}

@@ -4214,3 +4214,36 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
     `TEventHandler::Serialize`/`CObject` slots — inheritance/thunk), slot `0x44`
     (`NotifySlot44` vs `NoOpForeignMinisterUtilityStub` owned in `noop_slots.cpp`), and
     the oversized `0x48`+ tail (the base-hoisting issue above).
+
+## 2026-06-15 — Minister family vtable restructure (base trim + per-derived extensions)
+
+- Goal: Eliminate the family-wide "recomp vtable larger than orig" warnings by fixing the
+  inheritance model (the deeper restructure flagged in the previous entry).
+- Root cause (confirmed via `just ghidra-vtable-dump` across the family): the orig
+  `TMinister` vtable (0x659c00) is only 22 slots (0x00-0x54; slots 0x18-0x54 NULL), and
+  the next object's vtable begins at 0x659c58. Each derived minister has its OWN,
+  differently-sized vtable (TForeignMinister=40, TDefenseMinister=32, TCityInteriorMinister
+  larger). The source had hoisted ~22 derived-introduced virtuals onto the base so that
+  `TGreatPower::{foreign,interior,defense}Minister` (typed `TMinister*`) could call
+  slot-22+ methods through the base pointer.
+- Restructure:
+  - `TMinister.h`/`.cpp`: removed slots 22-43; base now declares only its real 0-21
+    (slots 18-21 stay as concrete no-op stubs — abstract/NULL in orig, the same
+    irreducible residue accepted for the cluster family).
+  - `TForeignMinister`: now introduces its own slots 22-39 (Call58…RecomputeOrderStateSlot9C),
+    no longer `override`s of the base. 6 implemented slots keep their markers/bodies.
+  - `TCityInteriorMinister`: introduces its own slots 22-53 (placeholders 22-43 then the
+    named city-policy slots) to preserve slot alignment for GetHomeCityRecordIndexSlotC0
+    (0xc0) / CallD4 (0xd4).
+  - `TGreatPower.h`: retyped the three minister fields to their concrete classes
+    (`TForeignMinister*`, `TCityInteriorMinister*`, `TDefenseMinister*`) so slot-22+ calls
+    resolve on the concrete vtables. `ReleaseAndClear1C` is a template, so the recreate/
+    release paths compile unchanged; added the two concrete includes to `TAutoGreatPower.cpp`.
+- Verification:
+  - `just build`/`detect` clean; `just gates` exit 0; format-check clean.
+  - "recomp vtable larger than orig" is GONE for the entire minister family
+    (TForeignMinister, TDefenseMinister, TInteriorMinister, TCityInteriorMinister, and all
+    Napoleon/Bismarck/Pirate/Defender/Bully + Ted/Bill/Diplomat/Textile/Trader/Arms
+    personalities). Only base `TMinister` retains a 4-slot warning (slots 18-21 abstract/
+    NULL — irreducible under MSVC500, cluster precedent).
+  - `just vtable TForeignMinister`: implemented slots 0x80/0x8c/0x90/0x94/0x98/0x9c pair.
