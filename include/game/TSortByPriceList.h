@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TIndexAndRankList.h"
 
-// VTABLE: IMPERIALISM 0x00659ef0
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x00659ef0
 class TSortByPriceList : public TIndexAndRankList {
 public:
   int reserved14;

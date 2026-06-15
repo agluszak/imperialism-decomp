@@ -131,9 +131,21 @@ normalize-markers:
 marker-gate:
   uv run python -m tools.workflow.check_marker_hygiene --paths src include
 
-# Ensure every `// VTABLE:` annotation is immediately followed by its class/struct.
+# Ensure every `// VTABLE:` annotation is immediately followed by its class/struct
+# (not a forward declaration, comment, or blank line).
 vtable-annotation-gate:
   uv run python -m tools.workflow.check_vtable_annotations --paths src include
+
+# Ensure no symbols.csv DATA row or `// GLOBAL:` marker collides with a `// VTABLE:`
+# address (which would make reccmp drop the vtable entity as a duplicate).
+vtable-collision-gate:
+  uv run python -m tools.workflow.check_vtable_address_collisions --paths src include
+
+# Report `// VTABLE:` annotations that reccmp does not turn into a matched vtable
+# (needs a built binary + reccmp DB, so it is not part of `just gates`). Pass --strict
+# to also fail on annotations whose recompiled vtable is missing.
+vtable-coverage *args:
+  uv run python -m tools.workflow.check_vtable_coverage --project-dir "{{build_dir}}" {{args}}
 
 antipattern-gate:
   uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}"
@@ -149,6 +161,7 @@ gates:
   just antipattern-gate
   just marker-gate
   just vtable-annotation-gate
+  just vtable-collision-gate
 
 docker-build:
   docker build --network host -t "{{docker_image}}" -f docker/msvc500/Dockerfile docker/msvc500

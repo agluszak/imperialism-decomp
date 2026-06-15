@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TIndexAndRankList.h"
 
-// VTABLE: IMPERIALISM 0x00653810
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x00653810
 class TProvinceDesirabilityList : public TIndexAndRankList {
 public:
   short relationType;

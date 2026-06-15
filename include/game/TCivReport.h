@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TPictureResourceEntryBase.h"
 
-// VTABLE: IMPERIALISM 0x668128
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x668128
 class TCivReport : public TPictureResourceEntryBase {
 public:
   TCivReport();

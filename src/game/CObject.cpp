@@ -12,7 +12,10 @@
 // GLOBAL: IMPERIALISM 0x006706e0
 CRuntimeClass classCObject = {nullptr, 0, 0, nullptr, nullptr};
 
-// GLOBAL: IMPERIALISM 0x0066fec4
+// The CObject vtable at 0x0066fec4 is owned by the `// VTABLE:` annotation in
+// CObject.h plus real inheritance -- do NOT add a `// GLOBAL:` marker here, or reccmp
+// drops the VTABLE entity as a duplicate address. This char is only a legacy stand-in
+// referenced by not-yet-ported autogen vptr writes; it carries no reccmp address.
 char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 
 // FUNCTION: IMPERIALISM 0x00606fba

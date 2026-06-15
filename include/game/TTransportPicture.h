@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TPictureResourceEntryBase.h"
 
-// VTABLE: IMPERIALISM 0x668588
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x668588
 class TTransportPicture : public TPictureResourceEntryBase {
 public:
   short gaugeMetricId90;

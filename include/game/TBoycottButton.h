@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TToggleButton.h"
 
-// VTABLE: IMPERIALISM 0x664238
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x664238
 class TBoycottButton : public TToggleButton {
 public:
   TBoycottButton();

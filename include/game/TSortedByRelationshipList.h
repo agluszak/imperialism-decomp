@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TSortedPtrList.h"
 
-// VTABLE: IMPERIALISM 0x00654d38
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x00654d38
 class TSortedByRelationshipList : public TSortedPtrList {
 public:
   TSortedByRelationshipList();

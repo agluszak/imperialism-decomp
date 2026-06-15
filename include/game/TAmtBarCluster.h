@@ -2,8 +2,8 @@
 
 #include "game/TUberCluster.h"
 
-// VTABLE: IMPERIALISM 0x00665838
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x00665838
 class TAmtBarCluster : public TUberCluster {
 public:
   void HandleTradeMoveStepCommand(int commandId, void* eventArg, int eventExtra);

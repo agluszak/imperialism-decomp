@@ -28,6 +28,13 @@ GLOBAL_ANNOT_RE = re.compile(
     r"^\s*//\s*GLOBAL:\s*(?P<target>[A-Za-z0-9_]+)\s+0x(?P<addr>[0-9a-f]+)\s*$"
 )
 
+# A vtable address is owned by its `// VTABLE:` annotation + real inheritance. Never emit
+# a `// GLOBAL:` there: reccmp keys entities by address and would drop the vtable as a
+# duplicate. See tools/workflow/check_vtable_address_collisions.py.
+VTABLE_ANNOT_RE = re.compile(
+    r"^\s*//\s*VTABLE:\s*[A-Za-z0-9_]+\s+0x(?P<addr>[0-9a-fA-F]+)"
+)
+
 HEX_LITERAL_RE = re.compile(r"0x([0-9a-fA-F]+)")
 NAME_ADDR_SUFFIX_RE = re.compile(r"_([0-9A-Fa-f]{6,8})$")
 
@@ -111,6 +118,22 @@ def has_nearby_global_annotation(lines: list[str], idx: int, target: str) -> boo
     return False
 
 
+def canonical_addr(addr: str) -> str:
+    """Strip 0x-prefix and leading zeros so `644778` == `0x00644778` on comparison."""
+    return (normalize_hex(addr).lstrip("0") or "0")
+
+
+def collect_vtable_addresses(paths: list) -> set[str]:
+    """Addresses owned by a `// VTABLE:` annotation -- never annotate these as GLOBAL."""
+    addrs: set[str] = set()
+    for path in paths:
+        for line in path.read_text(encoding="utf-8", errors="ignore").splitlines():
+            match = VTABLE_ANNOT_RE.match(line)
+            if match is not None:
+                addrs.add(canonical_addr(match.group("addr")))
+    return addrs
+
+
 def collect_file_hex_literals(lines: list[str]) -> set[int]:
     values: set[int] = set()
     for line in lines:
@@ -171,6 +194,7 @@ def main() -> int:
     files = iter_files(args.paths)
     unique_globals, duplicate_globals = load_global_symbols(symbols_csv)
     override_map = load_override_map(Path(args.overrides_csv))
+    vtable_addresses = collect_vtable_addresses(files)
 
     total_added = 0
     changed_files = 0
@@ -207,6 +231,7 @@ def main() -> int:
 
                 if (
                     addr is not None
+                    and canonical_addr(addr) not in vtable_addresses
                     and not has_nearby_global_annotation(lines, idx, args.target)
                 ):
                     output.append(f"// GLOBAL: {args.target} 0x{addr}\n")

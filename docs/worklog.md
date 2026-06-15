@@ -4002,3 +4002,62 @@ Follow-up scan after the TClosePicture extraction:
   slots 0x28/0x29 Request/Clear (`0x5e4f80`/`0x5e4fd0`) dispatch to the unmodeled
   sound-device global at `0x6a60c0`. Slot 0x04 is a scalar-deleting-dtor conversion;
   0x1c is an override of an inherited slot.
+
+## 2026-06-15 — Fix vtable address collisions hiding ~76 vtables from reccmp
+
+`just vtable <Class>` showed only 21 of 111 annotated vtables. Root cause: vtable
+addresses were double-claimed, so reccmp dropped the `// VTABLE:` entity as a duplicate.
+Three overlapping causes, all fixed:
+
+1. **22 forward-decl captures.** A `struct CRuntimeClass;` forward decl sat between the
+   `// VTABLE:` line and the real class, so reccmp named the vtable after the forward
+   decl. Moved each forward decl above the `// VTABLE:` line (22 headers). Tightened
+   `check_vtable_annotations.py` to reject forward declarations (require a real
+   definition, not a bare `;`).
+2. **60 stale `X::'vftable'` rows in `config/symbols.csv`, typed `global`.** reccmp
+   ingests symbols.csv as ORIG entities; `global`→`EntityType.DATA` pre-seeded DATA at
+   each vtable address, dropping the annotation. These rows were never consumed by
+   `annotate_vtables_from_symbols.py` (it reads `g_vtbl<Class>` rows only) — pure dead
+   weight. Deleted all 60.
+3. **1 colliding `// GLOBAL:` annotation** at 0x0066fec4 (CObject.cpp) on the legacy
+   `PTR_GetCObjectRuntimeClass…` vptr-write stand-in. Removed the marker (kept the char,
+   still referenced by not-yet-ported autogen); the `// VTABLE:` annotation owns it.
+
+Result: vtables paired/visible jumped 21 → 97; reccmp aligned count increased, dropped
+duplicate addresses fell to 2 (unrelated autogen FUNCTION dups). Build + all gates green.
+
+**Prevention gates added:**
+- `check_vtable_annotations.py` now rejects forward decls (FORWARD_DECL_RE).
+- New `tools/workflow/check_vtable_address_collisions.py` + `just vtable-collision-gate`
+  (wired into `just gates`): fails if any symbols.csv non-vtable row OR `// GLOBAL:`
+  marker sits at a `// VTABLE:` address.
+- `annotate_globals_from_symbols.py` now skips emitting `// GLOBAL:` at any address
+  owned by a `// VTABLE:` annotation.
+
+### Follow-up: close the gap to 99 + add a coverage gate
+
+User asked whether 97 was everything. It wasn't — 110 valid annotations, 97 paired. Built
+`check_vtable_coverage.py` (loads the live reccmp DB) to classify every annotation:
+
+- **Group B (2): TTextList 0x644778, TCityBarCluster 0x665190** — `g_vtblTTextList` /
+  `g_vtblTCityBarCluster` rows in symbols.csv, typed `global`, sat at the vtable address
+  and overrode the VTABLE entity to DATA (type 2), so `match_vtables` skipped them even
+  though the recomp vtable existed. The collision gate had *missed* these due to a
+  leading-zero normalization bug (`644778` vs `0x00644778`). Fixed the gate to compare by
+  integer value; it then flagged both; deleted the 2 rows. → now matched. **99 paired.**
+- **1 malformed annotation**: `TQueueObject.h` had a prose line written as
+  `// VTABLE: inherited from TIndexAndRankList (...)` — reccmp mis-parsed it into a bogus
+  entity at 0xf. TQueueObject adds no virtuals (inherits TIndexAndRankList's vtable), so
+  it has no vtable to annotate. Reworded to plain prose.
+- **Group A (11): genuinely recomp-missing** (TTwoPicSlider, TStream, TMapDialog,
+  TSidewaysArrow, TStratReportView, TWorldView, TDiplomacyTurnStateManager, TShip,
+  TMapOrderContext, TLocalizationRuntime, TCityOrderCapabilityState). The recompiled
+  binary emits no vtable for these — either old banned construction scaffolding or no
+  defined key virtual. Real class-modeling work, surfaced as a WARNING by the new gate.
+
+**New gate:** `just vtable-coverage` (needs build + reccmp DB; not in fast `just gates`).
+Fails on `overridden`/`not-ingested` annotations; warns on `recomp-missing`. `--strict`
+fails on any unmatched. Also fixed the same leading-zero bug in the
+`annotate_globals_from_symbols.py` VTABLE-address guard.
+
+Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/bugs.

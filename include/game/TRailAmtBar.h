@@ -2,8 +2,8 @@
 
 #include "game/TIndustryAmtBar.h"
 
-// VTABLE: IMPERIALISM 0x666558
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x666558
 class TRailAmtBar : public TIndustryAmtBar {
 public:
   TRailAmtBar();

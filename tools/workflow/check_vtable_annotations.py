@@ -27,8 +27,14 @@ VTABLE_MARKER_RE = re.compile(
     r"^\s*//\s*VTABLE\s*:\s*(?P<module>[A-Za-z0-9_]+)\s+(?P<offset>(?:0x)?[0-9a-fA-F]+)"
 )
 
-# Mirrors reccmp's parser/util.py class_decl_regex (a real definition, not a comment).
+# Mirrors reccmp's parser/util.py class_decl_regex: the next class/struct line after a
+# `// VTABLE:` annotation is captured as the owning class -- so a bare forward
+# declaration (`struct CRuntimeClass;`) would steal the annotation and name the vtable
+# after the forward-declared type. Require a *real definition*: the line must open a
+# body (`{`) or declare a base list (`:`) on the same line, and must not be a bare
+# forward declaration ending in `;`.
 CLASS_DECL_RE = re.compile(r"^\s*(?:class|struct)\s+\w")
+FORWARD_DECL_RE = re.compile(r"^\s*(?:class|struct)\s+\w[\w:<>,\s]*;\s*$")
 
 
 def parse_args() -> argparse.Namespace:
@@ -63,14 +69,20 @@ def main() -> int:
             total_markers += 1
             offset = normalize_offset(match.group("offset"))
 
-            # The very next line must be a class/struct definition.
+            # The very next line must be a real class/struct *definition* -- not a
+            # forward declaration, comment, or blank line.
             next_line = lines[idx + 1] if idx + 1 < len(lines) else ""
-            if not CLASS_DECL_RE.match(next_line):
+            if not CLASS_DECL_RE.match(next_line) or FORWARD_DECL_RE.match(next_line):
                 stripped = next_line.strip()
                 if not stripped:
                     reason = "blank line"
                 elif stripped.startswith("//"):
                     reason = "comment line (put it above the // VTABLE: line)"
+                elif FORWARD_DECL_RE.match(next_line):
+                    reason = (
+                        "forward declaration (reccmp would name the vtable after this "
+                        "type; move the forward decl above the // VTABLE: line)"
+                    )
                 else:
                     reason = f"found instead: {stripped[:60]!r}"
                 violations.append(

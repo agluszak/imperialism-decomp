@@ -3,8 +3,8 @@
 #include "game/TCluster.h"
 #include "game/TPanelEventPayload.h"
 
-// VTABLE: IMPERIALISM 0x667f00
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x667f00
 class TCivToolbar : public TCluster {
 public:
   short civilianClassId; // 0x88

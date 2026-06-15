@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TPictureResourceEntryBase.h"
 
-// VTABLE: IMPERIALISM 0x65efd8
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x65efd8
 class TToggleButton : public TPictureResourceEntryBase {
 public:
   TToggleButton();

@@ -3,8 +3,8 @@
 #include "compat.h"
 #include "game/TView.h"
 
-// VTABLE: IMPERIALISM 0x665cc8
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x665cc8
 class TAmtBar : public TView {
 public:
   short rangeOrMaxValue;    // 0x60

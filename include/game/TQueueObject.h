@@ -6,7 +6,8 @@
 // Recovered: nation turn/proposal/diplomacy queues are TSortedByRelationshipList
 // instances (TIndexAndRankList vtable 0x00654d38). Provisional slot names map to
 // the real TIndexAndRankList virtuals in TIndexAndRankList.h.
-// VTABLE: inherited from TIndexAndRankList (0x00672eac base / 0x00654d38 leaf)
+// Vtable is inherited from TIndexAndRankList (0x00672eac base / 0x00654d38 leaf);
+// TQueueObject adds no virtuals, so it has no vtable of its own to annotate.
 class TQueueObject : public TIndexAndRankList {
 public:
   void WritePackedIntSlot38(int* packedValue) { AddEntrySlot38(packedValue); }

@@ -2,8 +2,8 @@
 
 #include "game/TUberCluster.h"
 
-// VTABLE: IMPERIALISM 0x00665190
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x00665190
 class TCityBarCluster : public TUberCluster {
 public:
   TCityBarCluster();

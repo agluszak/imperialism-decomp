@@ -2,8 +2,8 @@
 
 #include "game/TUberCluster.h"
 
-// VTABLE: IMPERIALISM 0x00664d38
 struct CRuntimeClass;
+// VTABLE: IMPERIALISM 0x00664d38
 class TUnitToolbarCluster : public TUberCluster {
 public:
   using TUberCluster::DispatchEvent;
