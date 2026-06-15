@@ -11,14 +11,7 @@ public:
   int capacity;
   int growBy;
 
-  // Inline (MFC collection ctors are inline): derived ctors such as
-  // TIndexAndRankList inline this as a single vtable write + field zeroing.
-  CPtrArray() {
-    this->entries = 0;
-    this->growBy = 0;
-    this->capacity = 0;
-    this->count = 0;
-  }
+  CPtrArray();
   virtual ~CPtrArray() override;
 
   void SetSize(int nNewSize, int nGrowBy = -1);

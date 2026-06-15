@@ -2,17 +2,17 @@
 
 #include "decomp_types.h"
 
+#include "game/CObject.h"
+
+struct CRuntimeClass;
 struct CMapPtrToPtr;
 
-// MFC CArchive serialization buffer: a write cursor (m_lpBufCur at +0x24) into
-// a buffer whose end is m_lpBufMax (+0x28). The insertion operators flush when
-// the next write would overrun the buffer, then append and advance.
+// MFC CArchive serialization buffer.
 class CArchive {
 public:
   char pad_00[0x08];
   int m_bDirect;
   char pad_0c[0x04];
-  // Passed as the name/context argument to AfxThrowArchiveException.
   void* m_pExceptionContext;
   int m_nMode;
   char pad_18[0x04];
@@ -21,45 +21,24 @@ public:
   unsigned char* m_lpBufCur;
   unsigned char* m_lpBufMax;
   unsigned char* m_lpBufStart;
-  // Object-map reference counter; guarded by CheckCount before each growth.
   unsigned int m_nMapCount;
-  // Store side: CObject* -> serialized handle index. Lazily allocated by
-  // MapObject. (Read side reuses this slot for a CObArray; see MapObject.)
   CMapPtrToPtr* m_pStoreMap;
 
-  CArchive* WriteByteToSerializedBuffer(unsigned char value);
-  CArchive* WriteWordToSerializedBuffer(unsigned short value);
-  CArchive* WriteDwordToSerializedBuffer(unsigned int value);
-  void WriteBytesToSerializedBuffer(const void* src, unsigned int nCount);
+  CArchive& operator<<(unsigned char value);
+  CArchive& operator<<(unsigned short value);
+  CArchive& operator<<(unsigned long value);
+  CArchive& operator>>(unsigned short& value);
+  CArchive& operator>>(unsigned long& value);
 
-  // Read side (symmetric to the write cursor): refill the buffer from the
-  // backing CFile when the cursor would underrun, then extract and advance.
-  void FillBuffer(unsigned int requiredBytes);
-  CArchive* ReadWordFromSerializedBuffer(void* outWord);
-  CArchive* ReadDwordFromSerializedBuffer(void* outDword);
-  int ReadBytesFromSerializedBuffer(void* destination, unsigned int requestedCount);
+  unsigned int Read(void* lpBuf, unsigned int nMax);
+  void Write(const void* lpBuf, unsigned int nMax);
+  void FillBuffer(unsigned int nBytesRequired);
 
-  // Polymorphic object serialization (the autogen models these under the
-  // provisional class name "TNetMgr" / a free "ReadObject"; they belong to this
-  // same archive class). Bodies are still stub-owned; declared here so callers
-  // link against the 0x006121e1 / 0x0061225e addresses by name.
-  void WriteObject(void* objectRef);
-  void* ReadObject(void* runtimeClassOrFactory);
-
-  // Lazily allocate the store map / load array and register a reference.
-  // (0x00612315) Body still pending; declared so WriteObject/ReadObject link.
-  void MapObject(void* referenceNode);
-  // Serialize an object's class token via the store map. (0x0061240d) Pending.
-  void WriteClass(void* runtimeClass);
-
-  // Serialize a count: 16-bit fast path, with a 0xFFFF escape + dword for large
-  // values. (0x00612000)
-  void WriteCount(unsigned int count);
-
-  // Guards object-map counter growth; raises archive exception 5 once the
-  // counter reaches the safe ceiling. (0x006121cd)
+  void WriteCount(unsigned long count);
   void CheckCount();
-
-  // Flush the pending write buffer and detach the backing file. (0x00611d18)
+  void WriteObject(const CObject* object);
+  CObject* ReadObject(const CRuntimeClass* pClassRef);
+  void MapObject(const CObject* objectRef);
+  void WriteClass(const CRuntimeClass* pClassRef);
   void Close();
 };

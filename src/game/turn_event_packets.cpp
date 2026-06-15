@@ -1,5 +1,6 @@
 #include "game/turn_event_packets.h"
 
+#include "game/CPlex.h"
 #include "game/CPtrList.h"
 #include "game/TTurnEventPacket.h"
 #include "game/TWNetSessionManager.h"
@@ -71,9 +72,9 @@ undefined4 TTurnEventPacketRoutingPrefix::EnqueueOrSendTurnEventPacketToNation(c
 
     undefined4* queueNode = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueHead006a5f50);
     if (g_pNetworkPacketQueueHead006a5f50 == 0) {
-      int blockBase = reinterpret_cast<int>(AllocateAndLinkBlockHead(
-          reinterpret_cast<void**>(&g_pNetworkPacketBlockChain006a5f54),
-          g_NetworkPacketBlockCount006a5f58, 0xc));
+      CPlex*& chain = *reinterpret_cast<CPlex**>(&g_pNetworkPacketBlockChain006a5f54);
+      CPlex* block = CPlex::Create(chain, static_cast<unsigned int>(g_NetworkPacketBlockCount006a5f58), 0xc);
+      int blockBase = reinterpret_cast<int>(block);
       queueNode = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueHead006a5f50);
       undefined4* freeListNode =
           reinterpret_cast<undefined4*>(blockBase + -8 + g_NetworkPacketBlockCount006a5f58 * 0xc);

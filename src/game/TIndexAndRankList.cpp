@@ -4,7 +4,6 @@
 #pragma optimize("ys", on)
 #endif
 
-// FUNCTION: IMPERIALISM 0x00601baa
 TIndexAndRankList::TIndexAndRankList() : CPtrArray() {}
 
 // The ordinary destructor and the scalar deleting destructor below are both

@@ -21,7 +21,7 @@ void* g_pScopedMapQuickDrawViewContext = 0;
 // FUNCTION: IMPERIALISM 0x00494700
 ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(void* renderTargetArg)
     : clientDc(renderTargetArg != 0
-                   ? reinterpret_cast<void*>(reinterpret_cast<TView*>(renderTargetArg)->nativeWindow50)
+                   ? reinterpret_cast<CWnd*>(reinterpret_cast<TView*>(renderTargetArg)->nativeWindow50)
                    : 0),
       renderTarget(reinterpret_cast<TView*>(renderTargetArg)) {
   if (renderTarget != 0) {

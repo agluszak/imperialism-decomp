@@ -1340,9 +1340,9 @@ address|target_cpp|ownership|note
 5e717b|src/game/noop_slots.cpp|manual|marker_sync
 5e7370|src/game/noop_slots.cpp|manual|marker_sync
 5e7980|src/game/CString.cpp|manual|marker_sync
-601b74|src/game/CPtrList.cpp|manual|marker_sync
-601b94|src/game/CPtrList.cpp|manual|marker_sync
-601baa|src/game/TIndexAndRankList.cpp|manual|marker_sync
+601b74|src/game/CPlex.cpp|manual|marker_sync
+601b94|src/game/CPlex.cpp|manual|marker_sync
+601baa|src/game/CPtrArray.cpp|manual|marker_sync
 601bc1|src/game/TIndexAndRankList.cpp|manual|marker_sync
 601bdd|src/game/CPtrArray.cpp|manual|marker_sync
 601c14|src/game/CPtrArray.cpp|manual|marker_sync

@@ -1,5 +1,7 @@
 #include "game/TFileStream.h"
 #include "game/GameAssert.h"
+#include "game/CObject.h"
+#include "game/CRuntimeClass.h"
 #include "game/CString.h"
 
 #include "game/generated/vcall_facades.h"
@@ -87,7 +89,7 @@ void TFileStream::ReadBytes(void* destination, int requestedCount) {
     FailNilPointer(0x3cc);
   }
   BackingArchive(this->backingArchiveOrStream)
-      ->ReadBytesFromSerializedBuffer(destination, static_cast<unsigned int>(requestedCount));
+      ->Read(destination, static_cast<unsigned int>(requestedCount));
 }
 
 // FUNCTION: IMPERIALISM 0x00489290
@@ -96,19 +98,20 @@ void TFileStream::WriteBytesSlot78(void* source, int byteCount) {
     FailNilPointer(0x410);
   }
   BackingArchive(this->backingArchiveOrStream)
-      ->WriteBytesToSerializedBuffer(source, static_cast<unsigned int>(byteCount));
+      ->Write(source, static_cast<unsigned int>(byteCount));
 }
 
 // FUNCTION: IMPERIALISM 0x00489300
 char TFileStream::ReadObjectFromBackingArchive(void* outObject) {
-  *reinterpret_cast<void**>(outObject) =
-      BackingArchive(this->backingArchiveOrStream)->ReadObject(0);
+  *reinterpret_cast<void**>(outObject) = BackingArchive(this->backingArchiveOrStream)
+                                              ->ReadObject(static_cast<const CRuntimeClass*>(0));
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00489330
 void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
-  BackingArchive(this->backingArchiveOrStream)->WriteObject(objectRef);
+  BackingArchive(this->backingArchiveOrStream)
+      ->WriteObject(static_cast<const CObject*>(objectRef));
 }
 
 // FUNCTION: IMPERIALISM 0x00489360

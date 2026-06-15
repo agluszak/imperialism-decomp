@@ -9,6 +9,7 @@
 #include <new>
 
 #include "game/ApplicationUiRootController.h"
+#include "game/CPlex.h"
 #include "game/CRuntimeClass.h"
 #include "game/TView.h"
 #include "game/TCursorControlPanel.h"
@@ -248,7 +249,9 @@ unlink:
     list->freeNodeList = 0;
     list->tailNode = 0;
     list->headNode = 0;
-    FreeLinkedBlockChain(chain);
+    if (chain != 0) {
+      reinterpret_cast<CPlex*>(chain)->FreeDataChain();
+    }
     list->blockChain = 0;
   }
 

@@ -3,6 +3,8 @@
 #include "compat.h"
 #include "game/CObject.h"
 
+#include <windows.h>
+
 // MFC CDC wrapper (primary/attribute HDC pair + window handle).
 // VTABLE: IMPERIALISM 0x0067241c
 class CDC : public CObject {
@@ -15,10 +17,10 @@ public:
   CDC();
   virtual ~CDC() override;
 
-  bool AttachOutput(int hdc);
+  int Attach(HDC hdc);
 
 protected:
-  void DetachOutput();
+  void Detach();
 
   virtual void CdcSlot14OnAttach(int hdc);
   virtual void CdcSlot18Stub();

@@ -553,9 +553,9 @@ void TAutoGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) {
   while (missionCursor.More() != 0) {
     if (mission->MatchesMissionKeySlot4C(3, regionId, 0) != 0) {
       CPtrList* listState = &reinterpret_cast<TPtrList*>(this->missionQueue)->listState;
-      CPtrListNode* node = listState->Find(mission, 0);
-      if (node != 0) {
-        listState->RemoveAt(node);
+      POSITION pos = listState->Find(mission, 0);
+      if (pos != 0) {
+        listState->RemoveAt(pos);
       }
       mission->Release1C();
       break;
@@ -629,9 +629,9 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
       mission = static_cast<TTrackedObject*>(missionCursor.Advance());
     }
     CPtrList* listState = &reinterpret_cast<TPtrList*>(this->missionQueue)->listState;
-    CPtrListNode* node = listState->Find(mission, 0);
-    if (node != 0) {
-      listState->RemoveAt(node);
+    POSITION pos = listState->Find(mission, 0);
+    if (pos != 0) {
+      listState->RemoveAt(pos);
     }
     mission->Release1C();
     if (replacement != 0) {

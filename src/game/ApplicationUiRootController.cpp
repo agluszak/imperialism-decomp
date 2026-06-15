@@ -1,5 +1,6 @@
 #include "game/ApplicationUiRootController.h"
 
+#include "game/CPlex.h"
 #include "game/CPtrList.h"
 #include "game/TView.h"
 #include "game/ui_widget_thunks.h"
@@ -47,7 +48,9 @@ ApplicationUiRootController::~ApplicationUiRootController() {
   embeddedList.field08 = 0;
   embeddedList.field0c = 0;
   embeddedList.field10 = 0;
-  FreeLinkedBlockChain(reinterpret_cast<void*>(embeddedList.field14));
+  if (embeddedList.field14 != 0) {
+    reinterpret_cast<CPlex*>(embeddedList.field14)->FreeDataChain();
+  }
   embeddedList.field14 = 0;
 }
 
@@ -87,10 +90,11 @@ void ApplicationUiRootController::InsertOrRemoveTrackedEntry(int value, char ins
   if (insertFlag != 0) {
     int priorHead = reinterpret_cast<int>(embeddedList.head);
     if (embeddedList.field10 == 0) {
-      int newBlock = reinterpret_cast<int>(AllocateAndLinkBlockHead(
-          reinterpret_cast<void**>(&embeddedList.field14), embeddedList.blockSize, 0xc));
+      CPlex*& chain = *reinterpret_cast<CPlex**>(&embeddedList.field14);
+      CPlex* newBlock = CPlex::Create(chain, static_cast<unsigned int>(embeddedList.blockSize), 0xc);
+      int blockBase = reinterpret_cast<int>(newBlock);
       int entryCount = embeddedList.blockSize;
-      int* cursor = reinterpret_cast<int*>(newBlock + (entryCount * 0xc) - 8);
+      int* cursor = reinterpret_cast<int*>(blockBase + (entryCount * 0xc) - 8);
       for (entryCount = entryCount - 1; entryCount >= 0; entryCount = entryCount - 1) {
         *cursor = embeddedList.field10;
         embeddedList.field10 = reinterpret_cast<int>(cursor);
@@ -143,7 +147,9 @@ void ApplicationUiRootController::InsertOrRemoveTrackedEntry(int value, char ins
       embeddedList.field10 = 0;
       embeddedList.field08 = 0;
       embeddedList.head = 0;
-      FreeLinkedBlockChain(reinterpret_cast<void*>(embeddedList.field14));
+      if (embeddedList.field14 != 0) {
+        reinterpret_cast<CPlex*>(embeddedList.field14)->FreeDataChain();
+      }
       embeddedList.field14 = 0;
     }
   }
