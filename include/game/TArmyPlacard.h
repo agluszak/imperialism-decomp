@@ -13,7 +13,7 @@ public:
 
   TArmyPlacard();
   virtual ~TArmyPlacard() override;
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bc20();
   void RenderArmyPlacardWithShadow();

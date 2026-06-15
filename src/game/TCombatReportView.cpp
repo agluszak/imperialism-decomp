@@ -10,7 +10,7 @@ void* __cdecl CreateTCombatReportViewInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c8b0
-CRuntimeClass* TCombatReportView::GetRuntimeClass() {
+CRuntimeClass* TCombatReportView::GetRuntimeClass() const {
   return &g_pClassDescTCombatReportView;
 }
 

@@ -39,8 +39,8 @@ public:
                                           int arg4);
 
   // --- MFC CObject prefix slots 0x00-0x04 ---
-  virtual CRuntimeClass* GetRuntimeClass() override; // 0x00 0x534fb0
-  virtual ~TMission();                               // 0x01 dtor 0x535080 / ??_G 0x535050
+  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x534fb0
+  virtual ~TMission();                                     // 0x01 dtor 0x535080 / ??_G 0x535050
   // 0x02 Serialize / 0x03 AssertValidOrSlot0c / 0x04 DumpOrSlot10 inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---

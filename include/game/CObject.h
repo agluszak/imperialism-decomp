@@ -11,7 +11,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x0066fec4
 class CObject {
 public:
-  virtual CRuntimeClass* GetRuntimeClass();
+  virtual CRuntimeClass* GetRuntimeClass() const;
   virtual ~CObject() {}
   virtual void Serialize(CArchive* ar);
   virtual void AssertValidOrSlot0c();

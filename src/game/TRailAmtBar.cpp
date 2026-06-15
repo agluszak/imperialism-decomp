@@ -31,7 +31,7 @@ TRailAmtBar* __cdecl CreateTRailAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589f70
-CRuntimeClass* TRailAmtBar::GetRuntimeClass() {
+CRuntimeClass* TRailAmtBar::GetRuntimeClass() const {
   return &g_pClassDescTRailAmtBar;
 }
 

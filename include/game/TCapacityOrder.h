@@ -11,7 +11,7 @@ class TCity;
 class TCapacityOrder : public TCityOrderItem {
 public:
   explicit TCapacityOrder(TCity* city);
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   short MaxOrder() override;
   bool SetQuantity(short quantity) override;
   void CommitIfPending() override;

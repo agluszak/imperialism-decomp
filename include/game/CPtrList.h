@@ -28,7 +28,7 @@ public:
   int blockSize;
 
   CPtrList(int blockSize = 10);
-  virtual CRuntimeClass* GetRuntimeClass() override;
+  virtual CRuntimeClass* GetRuntimeClass() const override;
   virtual ~CPtrList() override;
 
   void RemoveAll();

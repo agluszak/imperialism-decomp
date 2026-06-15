@@ -13,7 +13,7 @@ public:
   short value86;
 
   TNumberedArrowButton();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* cursorPoint,
                                                            int hitArg) override;

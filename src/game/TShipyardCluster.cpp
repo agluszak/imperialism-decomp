@@ -40,7 +40,7 @@ TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a570
-CRuntimeClass* TShipyardCluster::GetRuntimeClass() {
+CRuntimeClass* TShipyardCluster::GetRuntimeClass() const {
   return &g_pClassDescTShipyardCluster;
 }
 
@@ -52,7 +52,8 @@ TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0),
 
 // FUNCTION: IMPERIALISM 0x0058a610
 void TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls() {
-  NationCityTradeState* cityState = GetNationCityStateBySlot(g_pUiRuntimeContext->GetActiveNationId());
+  NationCityTradeState* cityState =
+      GetNationCityStateBySlot(g_pUiRuntimeContext->GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
   field_8c = 999;
   this->InitializeTradeMoveAndBarControls();

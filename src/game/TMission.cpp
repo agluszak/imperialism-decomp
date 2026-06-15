@@ -154,7 +154,7 @@ char TMission::ReturnFalseSlot98() {
 }
 
 // FUNCTION: IMPERIALISM 0x00534fb0
-CRuntimeClass* TMission::GetRuntimeClass() {
+CRuntimeClass* TMission::GetRuntimeClass() const {
   return &PTR_s_TMission_00697848;
 }
 

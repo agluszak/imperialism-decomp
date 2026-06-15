@@ -55,7 +55,7 @@ TIndustryCluster* __cdecl CreateTradeMoveStepControlPanel(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00588ad0
-CRuntimeClass* TIndustryCluster::GetRuntimeClass() {
+CRuntimeClass* TIndustryCluster::GetRuntimeClass() const {
   return &g_pClassDescTIndustryCluster;
 }
 
@@ -65,7 +65,6 @@ TIndustryCluster::TIndustryCluster()
 
 // SYNTHETIC: IMPERIALISM 0x00588b20
 // TIndustryCluster::`scalar deleting destructor'
-
 
 // FUNCTION: IMPERIALISM 0x00588b70
 void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControls(int styleSeed) {
@@ -84,9 +83,9 @@ void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControl
   TradeCommodityMetricRecord* selectedMetricRecord = reinterpret_cast<TradeCommodityMetricRecord*>(
       *reinterpret_cast<int*>(reinterpret_cast<char*>(cityState) + (int)tagIndex * 4 + 0xe4));
   this->selectedMetricControl = reinterpret_cast<TAmtBar*>(selectedMetricRecord);
-  this->selectedMetricValue = static_cast<short>(activeNationState->GetCityState()
-                                                    ->GetBuildingProductionValueBySlot(
-      *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52)));
+  this->selectedMetricValue =
+      static_cast<short>(activeNationState->GetCityState()->GetBuildingProductionValueBySlot(
+          *reinterpret_cast<short*>(reinterpret_cast<char*>(selectedMetricRecord) + 0x52)));
 
   this->InitializeTradeMoveAndBarControls(styleSeed);
   this->NotifyControlSelectionChange(reinterpret_cast<void*>(*reinterpret_cast<short*>(

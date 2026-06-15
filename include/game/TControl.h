@@ -21,7 +21,7 @@ public:
   unsigned char padding_82[2];
 
   TControl();
-  virtual CRuntimeClass* GetRuntimeClass() override; // 0x00 0x48e500 (override)
+  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48e500 (override)
   // Slot 0x08 override (0x00435760): controls cannot be cloned (no engineer-dialog
   // state); assert via the McAppUI invalidation thunk and return null.
   virtual void* CloneEngineerDialogStateToNewInstance() override;
@@ -47,4 +47,3 @@ public:
   virtual char LogUnhandledDialogMethodAndReturnFalse();
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow);
 };
-

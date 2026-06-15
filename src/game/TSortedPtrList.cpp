@@ -34,7 +34,7 @@ void* TSortedPtrList::GetPtrListEntryByOneBasedIndex(int oneBasedIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004883e0
-CRuntimeClass* TSortedPtrList::GetRuntimeClass() {
+CRuntimeClass* TSortedPtrList::GetRuntimeClass() const {
   return &g_pClassDescTSortedPtrList;
 }
 

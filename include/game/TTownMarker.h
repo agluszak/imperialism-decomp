@@ -12,7 +12,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // VTABLE: IMPERIALISM 0x0066d7c8
 class TTownMarker {
 public:
-  virtual CRuntimeClass* GetRuntimeClass();
+  virtual CRuntimeClass* GetRuntimeClass() const;
 
   char name[0x10];                      // 0x04 — strcpy'd marker name
   short regionId14;                     // 0x14

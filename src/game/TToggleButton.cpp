@@ -31,7 +31,7 @@ TToggleButton* __cdecl CreateTToggleButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005710d0
-CRuntimeClass* TToggleButton::GetRuntimeClass() {
+CRuntimeClass* TToggleButton::GetRuntimeClass() const {
   return &g_pClassDescTToggleButton;
 }
 

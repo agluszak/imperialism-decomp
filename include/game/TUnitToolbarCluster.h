@@ -9,7 +9,7 @@ public:
   using TUberCluster::DispatchEvent;
 
   TUnitToolbarCluster();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   virtual void DispatchEvent(int eventClass, void* eventPayload, int eventFlags);
 

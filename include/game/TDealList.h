@@ -6,7 +6,8 @@
 
 struct CArchive;
 
-#define TDEALLIST_VTABLE_SLOT(n) virtual void VTableIndex##n##_Provisional(void) {}
+#define TDEALLIST_VTABLE_SLOT(n)                                                                   \
+  virtual void VTableIndex##n##_Provisional(void) {}
 
 // Mac oracle: TDealList (nation interaction / proposal weight manager).
 // VTABLE: IMPERIALISM 0x0066d990
@@ -23,7 +24,7 @@ public:
   TDealList();
   void InitializeNationInteractionStateManagerDefaults();
 
-  virtual CRuntimeClass* GetRuntimeClass() override;
+  virtual CRuntimeClass* GetRuntimeClass() const override;
   virtual void Serialize(CArchive* ar) override;
   virtual void AssertValidOrSlot0c() override;
   virtual void DumpOrSlot10(int unused = 0) override;

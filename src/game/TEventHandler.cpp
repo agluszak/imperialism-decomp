@@ -93,7 +93,7 @@ void TEventHandler::CreateTEventHandlerInstance(TEventHandler* handler) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048a0e0
-CRuntimeClass* TEventHandler::GetRuntimeClass() {
+CRuntimeClass* TEventHandler::GetRuntimeClass() const {
   return &PTR_s_TEventHandler_00649588;
 }
 

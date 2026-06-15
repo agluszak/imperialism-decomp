@@ -14,7 +14,7 @@ TAlwaysPictureButton* __cdecl CreateTAlwaysPictureButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005709d0
-CRuntimeClass* TAlwaysPictureButton::GetRuntimeClass() {
+CRuntimeClass* TAlwaysPictureButton::GetRuntimeClass() const {
   return &g_pClassDescTAlwaysPictureButton;
 }
 

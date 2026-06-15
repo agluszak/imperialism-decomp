@@ -8,14 +8,13 @@ CRuntimeClass g_pClassDescT2PictToggleButton = {nullptr, 0, 0, nullptr, nullptr}
 
 void FreeHeapBufferIfNotNull(undefined4 ptr_value);
 
-
 // FUNCTION: IMPERIALISM 0x00584890
 T2PictToggleButton* __cdecl CreateT2PictToggleButtonInstance(void) {
   return new T2PictToggleButton();
 }
 
 // FUNCTION: IMPERIALISM 0x00584910
-CRuntimeClass* T2PictToggleButton::GetRuntimeClass() {
+CRuntimeClass* T2PictToggleButton::GetRuntimeClass() const {
   return &g_pClassDescT2PictToggleButton;
 }
 

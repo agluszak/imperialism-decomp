@@ -14,7 +14,7 @@ public:
   // CObject slots this class overrides; slots 2-4 (Serialize/AssertValidOrSlot0c/
   // DumpOrSlot10) are inherited from CObject unchanged (verified: vtable 0x672eac
   // and CObject 0x66fec4 share 0x404aa7/0x4010a0/0x408625 at slots 2-4).
-  virtual CRuntimeClass* GetRuntimeClass() override;
+  virtual CRuntimeClass* GetRuntimeClass() const override;
 
   // List-operation virtuals introduced by this class (slots 5-16), shared by all
   // derived sorted-list classes — verified identical across vtables 0x659ef0

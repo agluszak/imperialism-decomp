@@ -15,8 +15,6 @@
 #include "game/mcappui_globals.h"
 #include "game/generated/vcall_facades.h"
 
-
-
 // Generic thunk/hook decls kept in repo form (rule 9): typed function-pointer casts at
 // the callsite rather than changing the thunk declaration signature.
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
@@ -117,7 +115,7 @@ void TView::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int a
 
 // TView slot 0x00 override: return this class's MFC CRuntimeClass descriptor.
 // FUNCTION: IMPERIALISM 0x0048a8c0
-CRuntimeClass* TView::GetRuntimeClass() {
+CRuntimeClass* TView::GetRuntimeClass() const {
   return &PTR_s_TView_006495a0;
 }
 
@@ -222,9 +220,8 @@ void TView::vmethod_0093(class TView* child) {
     }
   }
   if (g_McAppUiFlag_006A1AE0 == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        reinterpret_cast<void(*)()>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(
-        g_szMcAppUiSourcePath_006950B0, 0x152);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x152);
   }
   goto tail;
 
@@ -495,7 +492,8 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
   OffsetRgn(reinterpret_cast<HRGN>(destRegion), -pos->x, -pos->y);
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->hwnd), reinterpret_cast<HRGN>(destRegion), 0);
+    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->hwnd), reinterpret_cast<HRGN>(destRegion),
+                  0);
   }
 
   reinterpret_cast<void(__cdecl*)(int*)>(DestroyClipStateRegionWrapperObject)(localRegion);
@@ -551,9 +549,8 @@ void TView::InvokeSlot13C() {
 // FUNCTION: IMPERIALISM 0x0048b770
 char TView::Refresh() {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
-    reinterpret_cast<void(__cdecl*)(short, short)>(
-        reinterpret_cast<void(*)()>(thunk_SetGlobalQuickDrawOrigin))(
-        static_cast<short>(field2c), static_cast<short>(field30));
+    reinterpret_cast<void(__cdecl*)(short, short)>(reinterpret_cast<void (*)()>(
+        thunk_SetGlobalQuickDrawOrigin))(static_cast<short>(field2c), static_cast<short>(field30));
     g_McAppUiActiveRenderContext_006A1AF4 = this;
   }
   return 1;
@@ -561,13 +558,13 @@ char TView::Refresh() {
 // FUNCTION: IMPERIALISM 0x0048b7b0
 int TView::BindMapQuickDrawDc(int arg) {
   return reinterpret_cast<int(__cdecl*)(TView*, int)>(
-      reinterpret_cast<void(*)()>(BindScopedMapQuickDrawDcHandle))(this, arg);
+      reinterpret_cast<void (*)()>(BindScopedMapQuickDrawDcHandle))(this, arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0048b7e0
 void TView::ReleaseMapQuickDrawDc(int arg) {
   reinterpret_cast<void(__cdecl*)(TView*, int)>(
-      reinterpret_cast<void(*)()>(ReleaseScopedMapQuickDrawDcHandle))(this, arg);
+      reinterpret_cast<void (*)()>(ReleaseScopedMapQuickDrawDcHandle))(this, arg);
 }
 // Lazily allocate the 8-byte auxiliary buffer stored at field48 (freed in the dtor).
 // FUNCTION: IMPERIALISM 0x0048b810
@@ -826,8 +823,7 @@ void TView::RefreshCityProductionViewStateFromContext(int* clipRegionWrapper) {
   RECT rect;
   CopyRectFromBuildRectFromSlot158(&rect);
   reinterpret_cast<void(__cdecl*)(int*, RECT*)>(
-      reinterpret_cast<void(*)()>(ReplaceClipStateRegionHandleFromRect))(
-      clipRegionWrapper, &rect);
+      reinterpret_cast<void (*)()>(ReplaceClipStateRegionHandleFromRect))(clipRegionWrapper, &rect);
 }
 
 // FUNCTION: IMPERIALISM 0x0048c220
@@ -905,7 +901,7 @@ char TView::DispatchUiMouseMoveToChildren(Point32* point, int arg2, int arg3, in
 
 // FUNCTION: IMPERIALISM 0x0048c590
 char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(Point32* point, int arg2, int arg3,
-                                                         int arg4) {
+                                                      int arg4) {
   CPtrListNode* node = childList44 != 0 ? childList44->headNode : 0;
   while (node != 0) {
     TView* child = reinterpret_cast<TView*>(node->data);
@@ -948,28 +944,26 @@ char TView::PointInBoundsAndActionable(Point32* point) {
 void TView::DrawRectangleInCurrentUiContext(int* rect) {
   if (g_McAppUiDrawGate_006A1AF8 == 0) {
     typedef void(__cdecl * UiInvalidationFlagThunk)(const char*, int);
-    reinterpret_cast<UiInvalidationFlagThunk>(
-        reinterpret_cast<void(*)()>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(
-        g_szMcAppUiSourcePath_006950B0, 0x772);
+    reinterpret_cast<UiInvalidationFlagThunk>(reinterpret_cast<void (*)()>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x772);
   }
   int context = NoOpQuickDrawContextSelectionHook();
-  Rectangle(reinterpret_cast<HDC>(*reinterpret_cast<void**>(context + 4)), rect[0], rect[1], rect[2], rect[3]);
+  Rectangle(reinterpret_cast<HDC>(*reinterpret_cast<void**>(context + 4)), rect[0], rect[1],
+            rect[2], rect[3]);
 }
 // FUNCTION: IMPERIALISM 0x0048c7a0
 void TView::AssertMcAppUiLine1914() {
   if (g_McAppUiFlag_006A1AFC == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        reinterpret_cast<void(*)()>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(
-        g_szMcAppUiSourcePath_006950B0, 0x77a);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x77a);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048c7d0
 void TView::AssertMcAppUiLine1922() {
   if (g_McAppUiFlag_006A1B00 == 0) {
-    reinterpret_cast<void(__cdecl*)(const char*, int)>(
-        reinterpret_cast<void(*)()>(thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(
-        g_szMcAppUiSourcePath_006950B0, 0x782);
+    reinterpret_cast<void(__cdecl*)(const char*, int)>(reinterpret_cast<void (*)()>(
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag))(g_szMcAppUiSourcePath_006950B0, 0x782);
   }
   RECT rectStorage;
   CopyRectFromBuildRectFromSlot158(&rectStorage);

@@ -11,7 +11,7 @@ public:
 
   TPortZone();
 
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   bool QueryZoneCapabilityFlagA() override;
   bool QueryPortZoneCapability() override;

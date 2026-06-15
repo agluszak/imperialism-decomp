@@ -8,7 +8,7 @@ class TUberCluster : public TCluster {
 public:
   void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
   TUberCluster();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   // Slot 0x1CC (0x73) — concrete; default returns true. Subclasses (TTradeCluster) override.
   virtual int IsTradeControlAtMinimum();

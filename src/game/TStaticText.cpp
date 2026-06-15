@@ -16,7 +16,7 @@ void* __cdecl CreateTStaticTextInstance(void) {
 
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x649678).
 // FUNCTION: IMPERIALISM 0x0048F870
-CRuntimeClass* TStaticText::GetRuntimeClass() {
+CRuntimeClass* TStaticText::GetRuntimeClass() const {
   return &g_pClassDescTStaticText;
 }
 

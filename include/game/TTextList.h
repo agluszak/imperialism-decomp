@@ -13,7 +13,7 @@ struct TTextListItem {
 // VTABLE: IMPERIALISM 0x00644778
 class TTextList : public TView {
 public:
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   TTextListItem items[64];
   int totalItems;
   int scrollOffset;

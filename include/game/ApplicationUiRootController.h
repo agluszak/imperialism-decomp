@@ -19,7 +19,7 @@ public:
   ~ApplicationUiRootController() override;
 
   // vtable index 0x00 override (0x00486740): returns the TApplication CRuntimeClass.
-  virtual CRuntimeClass* GetRuntimeClass() override;
+  virtual CRuntimeClass* GetRuntimeClass() const override;
 
   // vtable index 0x25 (0x00486650): dispatch the queued command-handler argument by
   // calling its vtable slot 0x0b then its slot 0x07 (release/destroy). DEFERRED: the

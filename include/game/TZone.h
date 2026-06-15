@@ -12,7 +12,7 @@ struct CRuntimeClass;
 class TZone {
 public:
   // vtable 0x0065c6d8 slots 0x00..0x58
-  virtual CRuntimeClass* GetRuntimeClass();
+  virtual CRuntimeClass* GetRuntimeClass() const;
   // slot 0x04 — scalar deleting destructor @ 0x562880 (SYNTHETIC; see TZone.cpp)
   virtual void HandleTurnEventVtableSlot08(int arg1);
   virtual void AssertValidOrSlot0c();

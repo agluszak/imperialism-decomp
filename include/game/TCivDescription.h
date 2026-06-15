@@ -30,7 +30,7 @@ public:
   unsigned char pad_170_to_16f[0]; // legends end at 0x170
 
   TCivDescription();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   // ~TCivDescription is compiler-generated (implicit virtual dtor); see
   // the SYNTHETIC scalar deleting destructor in the .cpp.

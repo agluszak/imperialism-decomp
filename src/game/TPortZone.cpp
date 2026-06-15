@@ -42,6 +42,6 @@ bool TPortZone::QueryZoneCapabilityFlagC() {
 }
 
 // FUNCTION: IMPERIALISM 0x005617d0
-CRuntimeClass* TPortZone::GetRuntimeClass() {
+CRuntimeClass* TPortZone::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTPortZone);
 }

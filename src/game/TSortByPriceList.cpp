@@ -15,7 +15,7 @@ TSortByPriceList* TSortByPriceList::AllocateAndConstructTSortByPriceList() {
 }
 
 // FUNCTION: IMPERIALISM 0x005346f0
-CRuntimeClass* TSortByPriceList::GetRuntimeClass() {
+CRuntimeClass* TSortByPriceList::GetRuntimeClass() const {
   return &g_pClassDescTSortByPriceList;
 }
 

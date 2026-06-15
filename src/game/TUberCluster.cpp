@@ -38,7 +38,7 @@ TUberCluster* __cdecl CreateTUberClusterInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00571440
-CRuntimeClass* TUberCluster::GetRuntimeClass() {
+CRuntimeClass* TUberCluster::GetRuntimeClass() const {
   return &g_pClassDescTUberCluster;
 }
 

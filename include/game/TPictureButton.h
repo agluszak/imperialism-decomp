@@ -11,9 +11,8 @@ public:
 
   TPictureButton();
   virtual ~TPictureButton() override;
-  CRuntimeClass* GetRuntimeClass() override;
-  void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
-                                            int arg4) override;
+  CRuntimeClass* GetRuntimeClass() const override;
+  void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) override;
   void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
 };
 

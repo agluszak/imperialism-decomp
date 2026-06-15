@@ -15,7 +15,7 @@ public:
   int position;
   bool ownsHandleOrDirty;
 
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   THandleStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 

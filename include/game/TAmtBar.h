@@ -13,14 +13,13 @@ public:
   short auxValueB;          // 0x66
 
   TAmtBar();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor from TView).
 
   // TView-branch slot overrides (0xdc, 0x110, 0x11c).
   void NoOpUiLifecycleHook(int arg) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;
-  void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
-                                            int arg4) override;
+  void BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) override;
 
   // TAmtBar-introduced virtuals (slots 0x1a0–0x1a8 only; tail slots are NULL in orig).
   virtual int ApplyMoveClamp(int baseValue, int requestedValue);

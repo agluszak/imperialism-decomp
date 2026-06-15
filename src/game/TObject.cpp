@@ -8,7 +8,7 @@ CRuntimeClass PTR_s_TObject_00694eb8 = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x00485e20
-CRuntimeClass* TObject::GetRuntimeClass() {
+CRuntimeClass* TObject::GetRuntimeClass() const {
   return &PTR_s_TObject_00694eb8;
 }
 

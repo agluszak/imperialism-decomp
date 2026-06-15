@@ -34,7 +34,7 @@ TProductionCluster* __cdecl CreateTProductionClusterInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00586900
-CRuntimeClass* TProductionCluster::GetRuntimeClass() {
+CRuntimeClass* TProductionCluster::GetRuntimeClass() const {
   return &g_pClassDescTProductionCluster;
 }
 

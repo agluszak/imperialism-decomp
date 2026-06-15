@@ -14,7 +14,7 @@ public:
   TStaticText();
   virtual ~TStaticText() override;
 
-  virtual CRuntimeClass* GetRuntimeClass() override; // 0x00 0x48f870 (override)
+  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48f870 (override)
 
   void DestroyStaticTextAndReleaseOwnedResources();
 };

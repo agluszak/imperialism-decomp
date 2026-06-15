@@ -10,7 +10,7 @@ public:
   int positionOrByteCount;
   int maxExtentOrLimit;
 
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   TCountingStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 

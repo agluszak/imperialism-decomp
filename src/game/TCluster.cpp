@@ -20,7 +20,7 @@
 extern "C" CRuntimeClass PTR_s_TCluster_006496c0;
 
 // FUNCTION: IMPERIALISM 0x004913e0
-CRuntimeClass* TCluster::GetRuntimeClass() {
+CRuntimeClass* TCluster::GetRuntimeClass() const {
   return &PTR_s_TCluster_006496c0;
 }
 

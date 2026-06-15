@@ -108,7 +108,7 @@ void* CreateTradeSellControlPanel(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00587090
-CRuntimeClass* TTradeCluster::GetRuntimeClass() {
+CRuntimeClass* TTradeCluster::GetRuntimeClass() const {
   return &g_pClassDescTTradeCluster;
 }
 

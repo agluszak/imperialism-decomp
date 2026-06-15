@@ -15,12 +15,13 @@ TProvinceDesirabilityList* TProvinceDesirabilityList::CreateTProvinceDesirabilit
 }
 
 // FUNCTION: IMPERIALISM 0x004d6570
-CRuntimeClass* TProvinceDesirabilityList::GetRuntimeClass() {
+CRuntimeClass* TProvinceDesirabilityList::GetRuntimeClass() const {
   return &g_pClassDescTProvinceDesirabilityList;
 }
 
 // FUNCTION: IMPERIALISM 0x004d6590
-TProvinceDesirabilityList::TProvinceDesirabilityList() : TIndexAndRankList(), relationType(0), pad16(0) {}
+TProvinceDesirabilityList::TProvinceDesirabilityList()
+    : TIndexAndRankList(), relationType(0), pad16(0) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x004d65c0

@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class TSortedByRelationshipList : public TSortedPtrList {
 public:
   TSortedByRelationshipList();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor).
   static TSortedByRelationshipList* CreateTSortedByRelationshipListInstance();
 };

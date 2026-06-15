@@ -14,7 +14,7 @@ void* __cdecl CreateTArmyPlacardInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058beb0
-CRuntimeClass* TArmyPlacard::GetRuntimeClass() {
+CRuntimeClass* TArmyPlacard::GetRuntimeClass() const {
   return &g_pClassDescTArmyPlacard;
 }
 

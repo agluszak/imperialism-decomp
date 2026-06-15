@@ -11,7 +11,7 @@ public:
   short pad_8a;
 
   TCivToolbar();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
 

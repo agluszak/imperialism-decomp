@@ -29,7 +29,7 @@ TShipAmtBar* __cdecl CreateTShipAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ab40
-CRuntimeClass* TShipAmtBar::GetRuntimeClass() {
+CRuntimeClass* TShipAmtBar::GetRuntimeClass() const {
   return &g_pClassDescTShipAmtBar;
 }
 

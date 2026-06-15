@@ -12,7 +12,7 @@ TIndexAndRankList::TIndexAndRankList() : CPtrArray() {}
 // SYNTHETIC: IMPERIALISM 0x00601bc1
 // TIndexAndRankList::`scalar deleting destructor'
 
-CRuntimeClass* TIndexAndRankList::GetRuntimeClass() {
+CRuntimeClass* TIndexAndRankList::GetRuntimeClass() const {
   return 0;
 }
 

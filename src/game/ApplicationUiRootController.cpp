@@ -27,7 +27,7 @@ void* __cdecl CreateTApplicationInstance(void) {
 
 // vtable slot 0x00 (0x00486740 via ILT): return the TApplication RTTI name pointer.
 // FUNCTION: IMPERIALISM 0x00486740
-CRuntimeClass* ApplicationUiRootController::GetRuntimeClass() {
+CRuntimeClass* ApplicationUiRootController::GetRuntimeClass() const {
   return &PTR_s_TApplication_00648af8;
 }
 
@@ -87,9 +87,8 @@ void ApplicationUiRootController::InsertOrRemoveTrackedEntry(int value, char ins
   if (insertFlag != 0) {
     int priorHead = reinterpret_cast<int>(embeddedList.head);
     if (embeddedList.field10 == 0) {
-      int newBlock = reinterpret_cast<int>(
-          AllocateAndLinkBlockHead(reinterpret_cast<void**>(&embeddedList.field14),
-                                   embeddedList.blockSize, 0xc));
+      int newBlock = reinterpret_cast<int>(AllocateAndLinkBlockHead(
+          reinterpret_cast<void**>(&embeddedList.field14), embeddedList.blockSize, 0xc));
       int entryCount = embeddedList.blockSize;
       int* cursor = reinterpret_cast<int*>(newBlock + (entryCount * 0xc) - 8);
       for (entryCount = entryCount - 1; entryCount >= 0; entryCount = entryCount - 1) {
@@ -159,9 +158,8 @@ void ApplicationUiRootController::TickEachTrackedEntry(int arg) {
   int* node = reinterpret_cast<int*>(embeddedList.head);
   while (node != 0) {
     int* next = reinterpret_cast<int*>(node[0]);
-    reinterpret_cast<void(__fastcall*)(int, int, int)>(
-        reinterpret_cast<void(*)()>(WrapperFor_thunk_GetTickCountDiv16_At0048a410))(
-        node[2], 0, arg);
+    reinterpret_cast<void(__fastcall*)(int, int, int)>(reinterpret_cast<void (*)()>(
+        WrapperFor_thunk_GetTickCountDiv16_At0048a410))(node[2], 0, arg);
     node = next;
   }
 }

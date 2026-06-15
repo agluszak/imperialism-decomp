@@ -7,7 +7,7 @@ struct CRuntimeClass;
 class TCityBarCluster : public TUberCluster {
 public:
   TCityBarCluster();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   static TCityBarCluster* CreateInstance();
   void* DestructAndMaybeFree(int freeSelfFlag);

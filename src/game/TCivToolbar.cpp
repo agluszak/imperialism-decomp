@@ -48,7 +48,7 @@ TCivToolbar* __cdecl CreateTCivToolbarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058ea80
-CRuntimeClass* TCivToolbar::GetRuntimeClass() {
+CRuntimeClass* TCivToolbar::GetRuntimeClass() const {
   return &g_pClassDescTCivToolbar;
 }
 

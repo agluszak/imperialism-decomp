@@ -11,7 +11,7 @@ public:
   short pad16;
 
   TProvinceDesirabilityList();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   static TProvinceDesirabilityList* CreateTProvinceDesirabilityListInstance();
 };
 

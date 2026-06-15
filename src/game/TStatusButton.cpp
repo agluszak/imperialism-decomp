@@ -11,7 +11,7 @@ TStatusButton* __cdecl CreateTStatusButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00586310
-CRuntimeClass* TStatusButton::GetRuntimeClass() {
+CRuntimeClass* TStatusButton::GetRuntimeClass() const {
   return &g_pClassDescTStatusButton;
 }
 

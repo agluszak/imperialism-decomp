@@ -76,7 +76,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(int arg1, void* arg2)
 }
 
 // FUNCTION: IMPERIALISM 0x0055e6e0
-CRuntimeClass* TZone::GetRuntimeClass() {
+CRuntimeClass* TZone::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTZone);
 }
 

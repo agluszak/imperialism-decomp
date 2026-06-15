@@ -6,7 +6,7 @@ extern "C" CRuntimeClass PTR_s_TButton_00649618;
 undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void);
 
 // FUNCTION: IMPERIALISM 0x0048eaf0
-CRuntimeClass* TButton::GetRuntimeClass() {
+CRuntimeClass* TButton::GetRuntimeClass() const {
   return &PTR_s_TButton_00649618;
 }
 

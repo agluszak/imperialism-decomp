@@ -39,11 +39,11 @@ bool TCivilianButton::IsSelected(short value, bool refreshNow) {
 }
 
 // FUNCTION: IMPERIALISM 0x005716b0
-void TCivilianButton::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3, int arg4) {
+void TCivilianButton::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, int arg3,
+                                                           int arg4) {
   int sfxSystem = *reinterpret_cast<int*>(kAddrSfxPlaybackSystem);
   reinterpret_cast<void(__cdecl*)(int, int, int)>(
-      *reinterpret_cast<void**>(*reinterpret_cast<int*>(sfxSystem) + 0xb8))(
-      timingWord92, 0, 1);
+      *reinterpret_cast<void**>(*reinterpret_cast<int*>(sfxSystem) + 0xb8))(timingWord92, 0, 1);
   TView::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }
 
@@ -73,7 +73,7 @@ void* __cdecl CreateTCivilianButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b3c0
-CRuntimeClass* TCivilianButton::GetRuntimeClass() {
+CRuntimeClass* TCivilianButton::GetRuntimeClass() const {
   return &g_pClassDescTCivilianButton;
 }
 

@@ -48,7 +48,7 @@ void TFileStream::WriteLengthPrefixedCString(char* text) {
 }
 
 // FUNCTION: IMPERIALISM 0x004890f0
-CRuntimeClass* TFileStream::GetRuntimeClass() {
+CRuntimeClass* TFileStream::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTFileStream);
 }
 

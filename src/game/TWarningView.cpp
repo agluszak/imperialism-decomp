@@ -15,7 +15,7 @@ TWarningView* __cdecl CreateTWarningViewInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005928e0
-CRuntimeClass* TWarningView::GetRuntimeClass() {
+CRuntimeClass* TWarningView::GetRuntimeClass() const {
   return &g_pClassDescTWarningView;
 }
 
@@ -29,7 +29,8 @@ TWarningView::TWarningView() : TPictureResourceEntryBase() {}
 // FUNCTION: IMPERIALISM 0x00592980
 void TWarningView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 0x22 && event != 0) {
-    unsigned int controlTag = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(event) + 0x1c);
+    unsigned int controlTag =
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(event) + 0x1c);
     if (controlTag >= 0x70696331 && controlTag <= 0x70696335) {
       TControl::HandleEvent(commandId, sourceHandler, event);
       return;

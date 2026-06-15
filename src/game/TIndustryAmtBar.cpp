@@ -42,7 +42,7 @@ TIndustryAmtBar* __cdecl CreateTIndustryAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x005891b0
-CRuntimeClass* TIndustryAmtBar::GetRuntimeClass() {
+CRuntimeClass* TIndustryAmtBar::GetRuntimeClass() const {
   return &g_pClassDescTIndustryAmtBar;
 }
 

@@ -57,7 +57,7 @@ TRailCluster* __cdecl CreateTradeMoveScaledControlPanel(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00589700
-CRuntimeClass* TRailCluster::GetRuntimeClass() {
+CRuntimeClass* TRailCluster::GetRuntimeClass() const {
   return &g_pClassDescTRailCluster;
 }
 

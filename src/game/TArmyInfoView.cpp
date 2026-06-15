@@ -14,7 +14,7 @@ TArmyInfoView* __cdecl CreateTArmyInfoViewInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00591580
-CRuntimeClass* TArmyInfoView::GetRuntimeClass() {
+CRuntimeClass* TArmyInfoView::GetRuntimeClass() const {
   return &g_pClassDescTArmyInfoView;
 }
 

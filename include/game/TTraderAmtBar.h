@@ -8,7 +8,7 @@ class TTraderAmtBar : public TAmtBar {
 public:
   TTraderAmtBar();
   // ~TTraderAmtBar is compiler-generated (implicit virtual dtor).
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   void NoOpUiLifecycleHook(int arg) override;
   int ApplyMoveClamp(int baseValue, int requestedValue) override;

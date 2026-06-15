@@ -7,7 +7,7 @@
 // It has no fields beyond the inherited CObject vptr.
 class TObject : public CObject {
 public:
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 };
 
 ASSERT_SIZE(TObject, 0x4);

@@ -15,7 +15,7 @@ void TCountingStream::ReadBytes(void* buffer, int sizeBytes) {
 }
 
 // FUNCTION: IMPERIALISM 0x004893f0
-CRuntimeClass* TCountingStream::GetRuntimeClass() {
+CRuntimeClass* TCountingStream::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTCountingStream);
 }
 

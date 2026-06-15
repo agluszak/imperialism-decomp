@@ -14,7 +14,7 @@ public:
   short reportValue;
 
   TCombatReportView();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor).
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;

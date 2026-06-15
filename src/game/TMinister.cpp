@@ -19,7 +19,7 @@ CRuntimeClass g_pClassDescTMinister = {nullptr, 0, 0, nullptr, nullptr};
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // FUNCTION: IMPERIALISM 0x0052eb60
-CRuntimeClass* TMinister::GetRuntimeClass() {
+CRuntimeClass* TMinister::GetRuntimeClass() const {
   return &g_pClassDescTMinister;
 }
 

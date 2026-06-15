@@ -27,7 +27,7 @@ public:
   char pad81[0x03];
 
   TSoundPlayer();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   // TSoundPlayer overrides of TEventHandler slots.
   void ReleaseRuntimeSelectionOwnerAndDestroyObject() override; // 0x07 -> 0x5e51d0

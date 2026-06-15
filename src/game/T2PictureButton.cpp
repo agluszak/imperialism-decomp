@@ -14,7 +14,7 @@ T2PictureButton* __cdecl CreateT2PictureButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00570b90
-CRuntimeClass* T2PictureButton::GetRuntimeClass() {
+CRuntimeClass* T2PictureButton::GetRuntimeClass() const {
   return &g_pClassDescT2PictureButton;
 }
 

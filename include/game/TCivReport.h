@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class TCivReport : public TPictureResourceEntryBase {
 public:
   TCivReport();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // ~TCivReport is compiler-generated (implicit virtual dtor).
   bool IsSelected(short value = -1, bool refreshNow = true) override;
 };

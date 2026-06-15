@@ -32,7 +32,7 @@ TTextList* TTextList::CreateTTextListInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057ac30
-CRuntimeClass* TTextList::GetRuntimeClass() {
+CRuntimeClass* TTextList::GetRuntimeClass() const {
   return &g_pClassDescTTextList;
 }
 

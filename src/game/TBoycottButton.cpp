@@ -16,7 +16,7 @@ TBoycottButton* __cdecl CreateTBoycottButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00584760
-CRuntimeClass* TBoycottButton::GetRuntimeClass() {
+CRuntimeClass* TBoycottButton::GetRuntimeClass() const {
   return &g_pClassDescTBoycottButton;
 }
 

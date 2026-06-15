@@ -16,7 +16,7 @@ public:
   TMinister();
   void InitializeBaseOrderArray(undefined4 ownerContext);
 
-  virtual CRuntimeClass* GetRuntimeClass() override; // 0
+  virtual CRuntimeClass* GetRuntimeClass() const override; // 0
   // slot 1 — scalar deleting destructor @ 0x0052eba0 (SYNTHETIC)
   virtual void Serialize(CArchive* ar) override;                         // 2 (0x08) turn-event fork
   virtual void AssertValidOrSlot0c() override;                           // 3 (0x0c)

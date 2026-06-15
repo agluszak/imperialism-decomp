@@ -12,7 +12,7 @@ public:
   short valueAt8c;
   short valueAt8e;
   TAmtBarCluster();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor) from TUberCluster.
 
   static TAmtBarCluster* CreateInstance();

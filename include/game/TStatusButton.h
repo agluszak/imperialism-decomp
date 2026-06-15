@@ -13,7 +13,7 @@ public:
 #endif
 
   TStatusButton();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   int ControlTag() const;
   void* OwnerPanel() const;

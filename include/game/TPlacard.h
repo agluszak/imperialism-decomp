@@ -14,7 +14,7 @@ public:
 
   TPlacard();
   virtual ~TPlacard() override;
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   void NoOpUiLifecycleHook(int arg) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;

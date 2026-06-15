@@ -11,7 +11,7 @@ extern "C" CRuntimeClass PTR_s_TTownMarker_0066d780;
 // MFC-style GetRuntimeClass (slot 0): returns the class descriptor that precedes
 // the vtable at 0x0066d7c8.
 // FUNCTION: IMPERIALISM 0x005b6c40
-CRuntimeClass* TTownMarker::GetRuntimeClass() {
+CRuntimeClass* TTownMarker::GetRuntimeClass() const {
   return &PTR_s_TTownMarker_0066d780;
 }
 

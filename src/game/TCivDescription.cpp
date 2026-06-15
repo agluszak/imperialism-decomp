@@ -38,7 +38,8 @@ undefined4 SetQuickDrawColorAndSyncGlobals(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);
 undefined4 thunk_DrawTextWithCachedQuickDrawStyleState(void);
 
-namespace {const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;
+namespace {
+const unsigned int kAddrTargetTileProfileByCivilianClassAndSlot = 0x00698F58;
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
 const unsigned int kAddrGlobalUiRootController = 0x006A1344;
 const unsigned int kAddrLocalizationTable = 0x006A20F8;
@@ -80,6 +81,7 @@ public:
   virtual void Slot20(void);
   virtual int GetByOrdinal(int provinceOrdinal);
   virtual int GetCount(void);
+
 protected:
   ~ProvinceCollectionVirtualShape() {}
 };
@@ -109,7 +111,7 @@ TCivDescription::TCivDescription() : TControl() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058f0f0
-CRuntimeClass* TCivDescription::GetRuntimeClass() {
+CRuntimeClass* TCivDescription::GetRuntimeClass() const {
   return &g_pClassDescTCivDescription;
 }
 
@@ -185,7 +187,8 @@ void TCivDescription::HandleCivilianLegendHitTestAndSelectOrder(int arg1, int ar
   int slotIndex = 0;
 
   do {
-    if (PtInRect(reinterpret_cast<const RECT*>(legendRect), *reinterpret_cast<POINT*>(point)) != 0) {
+    if (PtInRect(reinterpret_cast<const RECT*>(legendRect), *reinterpret_cast<POINT*>(point)) !=
+        0) {
       ProvinceCollectionVirtualShape* ownerNationProvinceCollection =
           *reinterpret_cast<ProvinceCollectionVirtualShape**>(
               *reinterpret_cast<int*>(reinterpret_cast<char*>(g_apTerrainTypeDescriptorTable) +

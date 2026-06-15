@@ -11,7 +11,7 @@ public:
 
   // 0x00534710: real ctor; compiler emits the 0x659ef0 vtable write.
   TSortByPriceList();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor).
   static TSortByPriceList* AllocateAndConstructTSortByPriceList();
 };

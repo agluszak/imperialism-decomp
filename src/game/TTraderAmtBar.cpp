@@ -52,7 +52,7 @@ TTraderAmtBar* __cdecl CreateTTraderAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058aed0
-CRuntimeClass* TTraderAmtBar::GetRuntimeClass() {
+CRuntimeClass* TTraderAmtBar::GetRuntimeClass() const {
   return &g_pClassDescTTraderAmtBar;
 }
 

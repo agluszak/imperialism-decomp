@@ -14,7 +14,7 @@ public:
   short field_8e;
 
   TShipyardCluster();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   virtual void ApplyMoveValue(int value) override;

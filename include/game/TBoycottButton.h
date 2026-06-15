@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class TBoycottButton : public TToggleButton {
 public:
   TBoycottButton();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // ~TBoycottButton is compiler-generated (implicit virtual dtor).
 
   void Select(bool isPressed, bool notifyParent) override; // slot 0x1d0

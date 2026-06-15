@@ -42,7 +42,7 @@ TAmtBar* __cdecl CreateTAmtBarInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00588560
-CRuntimeClass* TAmtBar::GetRuntimeClass() {
+CRuntimeClass* TAmtBar::GetRuntimeClass() const {
   return &g_pClassDescTAmtBar;
 }
 
@@ -154,7 +154,7 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
     int fildField34 = static_cast<int>(field34);
     int fildAux = static_cast<int>(auxValueA);
     double ratio = static_cast<double>(fildRequested) /
-                     (static_cast<double>(fildField34) * static_cast<double>(fildAux));
+                   (static_cast<double>(fildField34) * static_cast<double>(fildAux));
     ratio = ratio - *reinterpret_cast<double*>(0x006631a0);
     volatile double ftolOperand = ratio;
     (void)ftolOperand;
@@ -169,8 +169,7 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
     TAmtBar* fallbackControl =
         reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagMove));
     if (fallbackControl == 0) {
-      fallbackControl =
-          reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagSell));
+      fallbackControl = reinterpret_cast<TAmtBar*>(owner->ResolveControlByTag(kControlTagSell));
     }
     if (fallbackControl != 0 && fallbackControl->QueryValue() == 0) {
       appliedValue = 1;

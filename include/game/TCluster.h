@@ -11,7 +11,7 @@ public:
 
   TCluster();
 
-  CRuntimeClass* GetRuntimeClass() override;              // 0x00
+  CRuntimeClass* GetRuntimeClass() const override;        // 0x00
   void* CloneEngineerDialogStateToNewInstance() override; // 0x20
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // 0x3c

@@ -8,7 +8,7 @@ class TShipAmtBar : public TIndustryAmtBar {
 public:
   TShipAmtBar();
   // ~TShipAmtBar is compiler-generated (implicit virtual dtor).
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   void NoOpUiLifecycleHook(int arg) override;
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;

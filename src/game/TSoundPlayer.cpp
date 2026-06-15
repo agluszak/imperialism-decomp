@@ -45,7 +45,7 @@ TSoundPlayer* CreateTSoundPlayerInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00593350
-CRuntimeClass* TSoundPlayer::GetRuntimeClass() {
+CRuntimeClass* TSoundPlayer::GetRuntimeClass() const {
   return &g_pClassDescTSoundPlayer;
 }
 

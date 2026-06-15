@@ -10,7 +10,7 @@ public:
   char pad_90_to_93[0x04];
 
   TWarningView();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void NoOpUiLifecycleHook(int arg) override;

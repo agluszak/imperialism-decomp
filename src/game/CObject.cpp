@@ -34,7 +34,7 @@ void CObject::DumpOrSlot10(int unused) {
 }
 
 // FUNCTION: IMPERIALISM 0x00606fba
-CRuntimeClass* CObject::GetRuntimeClass() {
+CRuntimeClass* CObject::GetRuntimeClass() const {
   return &classCObject;
 }
 

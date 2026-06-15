@@ -17,7 +17,7 @@ void* __cdecl CreateTHQButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b640
-CRuntimeClass* THQButton::GetRuntimeClass() {
+CRuntimeClass* THQButton::GetRuntimeClass() const {
   return &g_pClassDescTHQButton;
 }
 

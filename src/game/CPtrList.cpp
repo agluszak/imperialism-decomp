@@ -234,6 +234,6 @@ CPtrListNode* CPtrList::Find(void* searchValue, CPtrListNode* startAfter) {
 CRuntimeClass classCPtrList = {nullptr, 0, 0, nullptr, nullptr};
 
 // FUNCTION: IMPERIALISM 0x00623b3a
-CRuntimeClass* CPtrList::GetRuntimeClass() {
+CRuntimeClass* CPtrList::GetRuntimeClass() const {
   return &classCPtrList;
 }

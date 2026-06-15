@@ -9,7 +9,7 @@ class T2PictureButton : public TPictureButton {
 public:
   T2PictureButton();
   virtual ~T2PictureButton() override;
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 };
 
 ASSERT_SIZE(T2PictureButton, 0x94);

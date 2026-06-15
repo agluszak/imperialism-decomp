@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class TAlwaysPictureButton : public TPictureButton {
 public:
   TAlwaysPictureButton();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // ~TAlwaysPictureButton is compiler-generated (implicit virtual dtor).
   void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
   virtual void Select(bool isPressed, bool notifyParent); // slot 0x1d0

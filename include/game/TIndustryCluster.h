@@ -14,7 +14,7 @@ public:
   short selectedMetricStep;       // 0x8e
 
   TIndustryCluster();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   virtual void ApplyMoveValue(int value) override;

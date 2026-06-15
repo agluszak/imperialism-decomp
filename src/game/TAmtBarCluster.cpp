@@ -30,7 +30,7 @@ TAmtBarCluster* TAmtBarCluster::CreateInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586cc0
-CRuntimeClass* TAmtBarCluster::GetRuntimeClass() {
+CRuntimeClass* TAmtBarCluster::GetRuntimeClass() const {
   return &g_pClassDescTAmtBarCluster;
 }
 

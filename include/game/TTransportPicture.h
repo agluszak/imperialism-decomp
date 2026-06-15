@@ -15,7 +15,7 @@ public:
 
   TTransportPicture();
   virtual ~TTransportPicture() override;
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   void ApplyRectSlot110(RECT* rectBuffer) override;

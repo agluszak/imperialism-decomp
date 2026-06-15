@@ -12,7 +12,7 @@ TCivReport* __cdecl CreateTCivReportInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00590c10
-CRuntimeClass* TCivReport::GetRuntimeClass() {
+CRuntimeClass* TCivReport::GetRuntimeClass() const {
   return &g_pClassDescTCivReport;
 }
 

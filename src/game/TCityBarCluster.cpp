@@ -34,7 +34,7 @@ TCityBarCluster* TCityBarCluster::CreateInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00586610
-CRuntimeClass* TCityBarCluster::GetRuntimeClass() {
+CRuntimeClass* TCityBarCluster::GetRuntimeClass() const {
   return &g_pClassDescTCityBarCluster;
 }
 

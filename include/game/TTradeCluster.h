@@ -14,7 +14,7 @@ public:
   short tradeMetricSlot; // 0x88
 
   TTradeCluster();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;

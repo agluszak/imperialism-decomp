@@ -18,7 +18,7 @@ void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TMinor* te
   GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->fallbackNationSlot0c);
 }
 // FUNCTION: IMPERIALISM 0x00551410
-CRuntimeClass* TAdmiral::GetRuntimeClass() {
+CRuntimeClass* TAdmiral::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTAdmiral);
 }
 

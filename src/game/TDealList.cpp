@@ -27,12 +27,12 @@ static void InvokeCreateAndSendTurnEvent1C(int arg0, int arg1, int arg2, int arg
                                                                              arg4, arg5, arg6);
 }
 
-typedef void(__fastcall * MinorSlot80Fn)(TMinor * self, int unusedEdx, int arg1, int arg2, int arg3);
-typedef void(__fastcall * MinorSlot6CFn)(TMinor * self, int unusedEdx, int arg);
+typedef void(__fastcall* MinorSlot80Fn)(TMinor* self, int unusedEdx, int arg1, int arg2, int arg3);
+typedef void(__fastcall* MinorSlot6CFn)(TMinor* self, int unusedEdx, int arg);
 
 static void CallMinorSlot80(TMinor* self, int arg1, int arg2, int arg3) {
-  MinorSlot80Fn slotFn = reinterpret_cast<MinorSlot80Fn>(
-      reinterpret_cast<int*>(*reinterpret_cast<int**>(self))[0x20]);
+  MinorSlot80Fn slotFn =
+      reinterpret_cast<MinorSlot80Fn>(reinterpret_cast<int*>(*reinterpret_cast<int**>(self))[0x20]);
   slotFn(self, 0, arg1, arg2, arg3);
 }
 
@@ -93,7 +93,7 @@ void TDealList::InitializeNationInteractionStateManagerDefaults() {
   } while (rowCount != 0);
 }
 
-CRuntimeClass* TDealList::GetRuntimeClass() {
+CRuntimeClass* TDealList::GetRuntimeClass() const {
   return 0;
 }
 
@@ -140,13 +140,14 @@ void TDealList::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
   short ownerSlot = ownerNation;
   if (emitEventFlag != 0) {
     if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) != 0) {
-      g_apNationStates[ownerSlot]->ClearDiplomacyState1c6ForTarget(static_cast<short>(targetNation));
+      g_apNationStates[ownerSlot]->ClearDiplomacyState1c6ForTarget(
+          static_cast<short>(targetNation));
     }
   }
   if (static_cast<short>(amount) < 1) {
     if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) != 0) {
-      g_apNationStates[ownerSlot]->AppendTrackedSlotEntry(1, ownerNation, static_cast<short>(amount),
-                                                          static_cast<short>(targetNation), amount);
+      g_apNationStates[ownerSlot]->AppendTrackedSlotEntry(
+          1, ownerNation, static_cast<short>(amount), static_cast<short>(targetNation), amount);
     }
   } else {
     int ownerIndex = static_cast<int>(ownerSlot);
@@ -164,8 +165,8 @@ void TDealList::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
       int matrixIndex = ownerIndex * 0x17 + sourceContext;
       short standingScore =
           g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[matrixIndex];
-      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(
-          ownerNation, maxAmount, static_cast<short>(standingScore + 1));
+      g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(ownerNation, maxAmount,
+                                                           static_cast<short>(standingScore + 1));
     }
     short targetCode = static_cast<short>(maxAmount);
     if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(maxAmount) != 0) {
@@ -175,7 +176,8 @@ void TDealList::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
     }
     if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) != 0) {
       g_apNationStates[ownerIndex]->AppendTrackedSlotEntry(
-          1, targetNation, static_cast<short>(amount), static_cast<short>(targetNation), targetCode);
+          1, targetNation, static_cast<short>(amount), static_cast<short>(targetNation),
+          targetCode);
     }
   }
 }
@@ -189,7 +191,8 @@ short TDealList::ResolveProposalCodeForCategorySlot84(int proposalCode, int cate
   short* lookupCursor = kNationMetricCodeLookup;
   short resolvedCode = static_cast<short>(proposalCode);
   while ((*lookupCursor != static_cast<short>(proposalCode)) &&
-         (resolvedCode = static_cast<short>(category), *lookupCursor != static_cast<short>(category))) {
+         (resolvedCode = static_cast<short>(category),
+          *lookupCursor != static_cast<short>(category))) {
     lookupCursor = lookupCursor + 1;
     if (reinterpret_cast<int>(lookupCursor) >
         reinterpret_cast<int>(kNationMetricCodeLookup + 0x20)) {

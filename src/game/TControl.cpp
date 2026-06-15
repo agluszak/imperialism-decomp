@@ -60,13 +60,8 @@ void* TControl::CloneEngineerDialogStateToNewInstance() {
   return 0;
 }
 
-
-
-
-
-
 // FUNCTION: IMPERIALISM 0x0048e500
-CRuntimeClass* TControl::GetRuntimeClass() {
+CRuntimeClass* TControl::GetRuntimeClass() const {
   return &PTR_s_TControl_00649600;
 }
 
@@ -91,7 +86,8 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, in
   (void)arg3;
   (void)arg4;
   g_McAppUiMouseCaptureControl_006A1A80 = this;
-  void* capturedWindow = reinterpret_cast<void*>(SetCapture(reinterpret_cast<HWND>(nativeWindow50->hwnd)));
+  void* capturedWindow =
+      reinterpret_cast<void*>(SetCapture(reinterpret_cast<HWND>(nativeWindow50->hwnd)));
   reinterpret_cast<void(__cdecl*)(void*)>(FromHandle)(capturedWindow);
   g_McAppUiMouseCaptureStartPoint_006A1A68[0] = point->x;
   g_McAppUiMouseCaptureStartPoint_006A1A68[1] = point->y;
@@ -104,7 +100,8 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(Point32* point, int arg2, in
                                  g_McAppUiMouseCaptureCurrentPoint_006A1A78);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
     g_McAppUiMouseCaptureTimerId_006A1ADC =
-        SetTimer(reinterpret_cast<HWND>(nativeWindow50->hwnd), 0xef, 0x11, reinterpret_cast<TIMERPROC>(&LAB_00409a9d));
+        SetTimer(reinterpret_cast<HWND>(nativeWindow50->hwnd), 0xef, 0x11,
+                 reinterpret_cast<TIMERPROC>(&LAB_00409a9d));
   }
 }
 

@@ -18,7 +18,7 @@ void THandleStream::AdvanceExtent(int handle, int delta) {
 }
 
 // FUNCTION: IMPERIALISM 0x004895c0
-CRuntimeClass* THandleStream::GetRuntimeClass() {
+CRuntimeClass* THandleStream::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTHandleStream);
 }
 

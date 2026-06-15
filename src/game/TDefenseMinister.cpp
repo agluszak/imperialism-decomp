@@ -20,7 +20,7 @@ void TDefenseMinister::DefenseSlot18() {}
 
 // MFC RTTI slot 0x00 override: returns this class's CRuntimeClass descriptor (0x654838).
 // FUNCTION: IMPERIALISM 0x004ec0c0
-CRuntimeClass* TDefenseMinister::GetRuntimeClass() {
+CRuntimeClass* TDefenseMinister::GetRuntimeClass() const {
   return &g_pClassDescTDefenseMinister;
 }
 

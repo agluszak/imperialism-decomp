@@ -64,7 +64,7 @@ TNumberedArrowButton* __cdecl CreateTNumberedArrowButtonInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058c280
-CRuntimeClass* TNumberedArrowButton::GetRuntimeClass() {
+CRuntimeClass* TNumberedArrowButton::GetRuntimeClass() const {
   return &g_pClassDescTNumberedArrowButton;
 }
 
@@ -113,17 +113,19 @@ void TNumberedArrowButton::ApplyRectSlot110(RECT* rectBuffer) {
   int strategicMapViewSystem = *reinterpret_cast<int*>(kAddrStrategicMapViewSystem);
   TQuickDrawSurfaceContext* hintSource = reinterpret_cast<TQuickDrawSurfaceContext*>(
       *reinterpret_cast<int*>(strategicMapViewSystem + 0x6a4));
-  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(), g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                        &srcRect, &dstRect, 0x24);
+  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
+                        0x24);
   srcRect.left = (value86 != 1) ? 0x21 : 0x16;
   srcRect.right = srcRect.left + 0xb;
   dstRect.top = 0x19;
   dstRect.bottom = 0x29;
-  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(), g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
-                        &srcRect, &dstRect, 0x24);
+  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
+                        0x24);
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
   reinterpret_cast<void(__cdecl*)(int, int)>(ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor)(0,
-                                                                                                 10);
+                                                                                                10);
   SetQuickDrawTextOrigin(7, 0);
   RefreshControl();
 }

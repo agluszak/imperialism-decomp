@@ -12,7 +12,7 @@ void* __cdecl CreateTPlacardInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b9f0
-CRuntimeClass* TPlacard::GetRuntimeClass() {
+CRuntimeClass* TPlacard::GetRuntimeClass() const {
   return &g_pClassDescTPlacard;
 }
 

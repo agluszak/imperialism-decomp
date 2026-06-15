@@ -15,7 +15,7 @@ TSortedByRelationshipList* TSortedByRelationshipList::CreateTSortedByRelationshi
 }
 
 // FUNCTION: IMPERIALISM 0x004ee520
-CRuntimeClass* TSortedByRelationshipList::GetRuntimeClass() {
+CRuntimeClass* TSortedByRelationshipList::GetRuntimeClass() const {
   return &g_pClassDescTSortedByRelationshipList;
 }
 

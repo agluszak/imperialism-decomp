@@ -8,7 +8,7 @@ struct CRuntimeClass;
 class TArmyInfoView : public TPictureResourceEntryBase {
 public:
   TArmyInfoView();
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
   // ~TArmyInfoView is compiler-generated (implicit virtual dtor).
   bool IsSelected(short value = -1, bool refreshNow = true) override;
 };

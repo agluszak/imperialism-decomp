@@ -18,7 +18,7 @@ TTransportPicture* __cdecl CreateTTransportPictureInstance(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00591e50
-CRuntimeClass* TTransportPicture::GetRuntimeClass() {
+CRuntimeClass* TTransportPicture::GetRuntimeClass() const {
   return &g_pClassDescTTransportPicture;
 }
 

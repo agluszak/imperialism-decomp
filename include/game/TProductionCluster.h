@@ -18,7 +18,7 @@ public:
 
   TProductionCluster();
   virtual ~TProductionCluster() override;
-  CRuntimeClass* GetRuntimeClass() override;
+  CRuntimeClass* GetRuntimeClass() const override;
 
   virtual void ApplyMoveValue(int value) override;
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;

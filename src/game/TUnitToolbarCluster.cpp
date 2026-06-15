@@ -31,7 +31,7 @@ TUnitToolbarCluster* TUnitToolbarCluster::CreateInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00585ff0
-CRuntimeClass* TUnitToolbarCluster::GetRuntimeClass() {
+CRuntimeClass* TUnitToolbarCluster::GetRuntimeClass() const {
   return &g_pClassDescTUnitToolbarCluster;
 }
 

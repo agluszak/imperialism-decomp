@@ -58,16 +58,9 @@ static void ZeroTrackingSlots(TCapacityOrder* order) {
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 TCapacityOrder::TCapacityOrder(TCity* city)
-    : quantityField04(0),
-      cityField08(city),
-      summaryField0c(city != 0 ? city->productionSummary1d8 : 0),
-      field3e(0),
-      field40(0),
-      field44(0),
-      resourceTypeIndex48(0),
-      field4c(0),
-      trackingIndex4e(0),
-      trackingIndex50(0),
+    : quantityField04(0), cityField08(city),
+      summaryField0c(city != 0 ? city->productionSummary1d8 : 0), field3e(0), field40(0),
+      field44(0), resourceTypeIndex48(0), field4c(0), trackingIndex4e(0), trackingIndex50(0),
       field52(0) {
   ZeroTrackingSlots(this);
 }
@@ -236,43 +229,43 @@ void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
 
   this->Produce(orderSheet);
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode09, this->resourceTypeIndex48) *
-                             quantity);
+  value = static_cast<short>(
+      ReadWeight(&g_industryActionCostWeightResCode09, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x12, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x12, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode08, this->resourceTypeIndex48) *
-                             quantity);
+  value = static_cast<short>(
+      ReadWeight(&g_industryActionCostWeightResCode08, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x10, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x10, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode10, this->resourceTypeIndex48) *
-                             quantity);
+  value = static_cast<short>(
+      ReadWeight(&g_industryActionCostWeightResCode10, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x20, value);
   if (ReadShort(orderSheet, 0x12) < 0) {
     WriteShort(orderSheet, 0x12, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) *
-                             quantity);
+  value = static_cast<short>(
+      ReadWeight(&g_industryActionCostWeightResCode0B, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x16, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x16, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode03, this->resourceTypeIndex48) *
-                             quantity);
+  value = static_cast<short>(
+      ReadWeight(&g_industryActionCostWeightResCode03, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x06, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x06, 0);
   }
 
-  value = static_cast<short>(ReadWeight(&g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) *
-                             quantity);
+  value = static_cast<short>(
+      ReadWeight(&g_industryActionCostWeightResCode0C, this->resourceTypeIndex48) * quantity);
   WriteShort(orderSheet, 0x18, value);
   if (value < 0) {
     WriteShort(orderSheet, 0x18, 0);
@@ -280,7 +273,7 @@ void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b8cc0
-CRuntimeClass* TCapacityOrder::GetRuntimeClass() {
+CRuntimeClass* TCapacityOrder::GetRuntimeClass() const {
   return &g_pClassDescTCapacityOrder;
 }
 
@@ -342,8 +335,7 @@ void TCapacityOrder::ApplyCityProductionSlotDelta() {
     newValue = city->productionOrderTable1dc[slotIndex];
   }
   newValue = static_cast<short>(newValue + this->quantityField04);
-  deltaToAccum =
-      static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
+  deltaToAccum = static_cast<short>(newValue - city->productionOrderTable1dc[slotIndex]);
   city->productionAccum1fc[slotIndex] =
       static_cast<short>(city->productionAccum1fc[slotIndex] + deltaToAccum);
   city->productionOrderTable1dc[slotIndex] = newValue;
