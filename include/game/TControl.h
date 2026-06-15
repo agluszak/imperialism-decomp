@@ -27,9 +27,6 @@ public:
   virtual void* CloneEngineerDialogStateToNewInstance() override;
   void WrapperFor_ApplyRectMarginsInPlace_At0048e980(int* boundsBuffer);
   void OrphanTiny_SetDwordEcxOffset_60_0058e440(int value);
-  void
-  WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(int* cursorPoint,
-                                                                                  int hitArg);
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void BeginMouseCaptureAndStartRepeatTimer(Point32* point) override;

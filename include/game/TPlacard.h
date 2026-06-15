@@ -13,7 +13,6 @@ public:
   virtual ~TPlacard() override;
   CRuntimeClass* GetRuntimeClass() override;
 
-  void WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0();
-  void WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(int arg1, int arg2);
-  void RenderPlacardValueTextWithShadow();
+  void NoOpUiLifecycleHook(int arg) override;
+  void ApplyRectSlot110(RECT* rectBuffer) override;
 };

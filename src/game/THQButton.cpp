@@ -33,35 +33,59 @@ THQButton::THQButton() : TPictureButton() {}
 #endif
 
 // FUNCTION: IMPERIALISM 0x0058b6e0
-void __fastcall WrapperFor_thunk_NoOpUiLifecycleHook_At0058b6e0(THQButton* button) {
-  short glyph = button->glyphBase84;
+void THQButton::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
+  short glyph = glyphBase84;
   thunk_NoOpUiLifecycleHook();
-  button->glyph98 = 0;
-  button->glyph90 = glyph;
-  button->hasCommandTagResource = 0xc;
-  button->timingWord92 = (short)(glyph + 1); // wait, timingWord92 was glyph92!
-  button->glyph94 = (short)(glyph + 2);
-  button->glyph96 = (short)(glyph + 3);
+  glyph98 = 0;
+  glyph90 = glyph;
+  hasCommandTagResource = 0xc;
+  timingWord92 = (short)(glyph + 1);
+  glyph94 = (short)(glyph + 2);
+  glyph96 = (short)(glyph + 3);
+}
+
+// FUNCTION: IMPERIALISM 0x0058b750
+void THQButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
+  char mode = enabledState ? 1 : 0;
+  if (mode != static_cast<char>(commandTagResourceByte)) {
+    commandTagResourceByte = static_cast<unsigned char>(mode);
+    short bitmapId = 0;
+    short modeState = glyph98;
+    if (mode == 0) {
+      if (modeState == 0) {
+        bitmapId = glyph90;
+      } else if (modeState == 1) {
+        bitmapId = glyph94;
+      } else {
+        bitmapId = glyph96;
+      }
+    } else {
+      bitmapId = timingWord92;
+    }
+    reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);
+    if (refreshNow) {
+      TAmtBar* owner = reinterpret_cast<TAmtBar*>(OwnerPanel());
+      if (owner != 0) {
+        owner->InvokeSlot13C();
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0058b7f0
-void __fastcall WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0(THQButton* button,
-                                                                             int unusedEdx,
-                                                                             int commandId,
-                                                                             TEventHandler* sourceHandler,
-                                                                             TEvent* event) {
-  (void)unusedEdx;
-  TAmtBar* control = reinterpret_cast<TAmtBar*>(button);
+void THQButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   if (commandId == 0xc) {
-    if (button->commandTagResourceByte == 0) { // toggleStateAt64
+    if (commandTagResourceByte == 0) {
       control->InvokeSlot1CC(1, 1);
     }
-    reinterpret_cast<TControl*>(button)->TControl::HandleEvent(commandId, sourceHandler, event);
+    TControl::HandleEvent(commandId, sourceHandler, event);
     return;
   }
   if (commandId != 0x1f) {
     if (commandId != 0x20) {
-      reinterpret_cast<TControl*>(button)->TControl::HandleEvent(commandId, sourceHandler, event);
+      TControl::HandleEvent(commandId, sourceHandler, event);
       return;
     }
     control->InvokeSlot1CC(0, 1);

@@ -2843,26 +2843,10 @@ undefined4 DestructTUpDownPictureButtonAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name SetPressedStateAdjustPictureBitmapByOne
-// ghidra_proto undefined SetPressedStateAdjustPictureBitmapByOne()
-// FUNCTION: IMPERIALISM 0x00571620
-undefined4 SetPressedStateAdjustPictureBitmapByOne(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I05_00571690
 // ghidra_proto undefined OrphanCallChain_C1_I05_00571690()
 // FUNCTION: IMPERIALISM 0x00571690
 undefined4 OrphanCallChain_C1_I05_00571690(void)
-{
-  return 0;
-}
-
-// ghidra_name TControl::PlayControlSoundAndBeginMouseCapture_Field92_B
-// ghidra_proto undefined PlayControlSoundAndBeginMouseCapture_Field92_B()
-// FUNCTION: IMPERIALISM 0x005716b0
-undefined4 PlayControlSoundAndBeginMouseCapture_Field92_B(void)
 {
   return 0;
 }
@@ -2879,14 +2863,6 @@ undefined4 CreateTRadioPictureButtonInstance(void)
 // ghidra_proto undefined GetTRadioPictureButtonClassNamePointer()
 // FUNCTION: IMPERIALISM 0x005717a0
 undefined4 GetTRadioPictureButtonClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850
-// ghidra_proto undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850()
-// FUNCTION: IMPERIALISM 0x00571850
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00571850(void)
 {
   return 0;
 }

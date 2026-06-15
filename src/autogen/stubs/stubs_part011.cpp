@@ -883,30 +883,6 @@ undefined4 DispatchPanelControlEvent(void)
   return 0;
 }
 
-// ghidra_name OrphanTiny_GetDwordEcxOffset_84_00491770
-// ghidra_proto undefined OrphanTiny_GetDwordEcxOffset_84_00491770()
-// FUNCTION: IMPERIALISM 0x00491770
-undefined4 OrphanTiny_GetDwordEcxOffset_84_00491770(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I51_00491790
-// ghidra_proto undefined OrphanCallChain_C2_I51_00491790()
-// FUNCTION: IMPERIALISM 0x00491790
-undefined4 OrphanCallChain_C2_I51_00491790(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CopyCityDialogStateFromSource_At004918a0
-// ghidra_proto undefined WrapperFor_CopyCityDialogStateFromSource_At004918a0()
-// FUNCTION: IMPERIALISM 0x004918a0
-undefined4 WrapperFor_CopyCityDialogStateFromSource_At004918a0(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeSelectableTextOptionEntryIteratorContext
 // ghidra_proto undefined InitializeSelectableTextOptionEntryIteratorContext()
 // FUNCTION: IMPERIALISM 0x004919a0

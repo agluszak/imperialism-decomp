@@ -2259,26 +2259,10 @@ undefined4 InvokeSlot1CCIfSlot28Enabled(void)
   return 0;
 }
 
-// ghidra_name TPlacard::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0
-// ghidra_proto undefined WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0()
-// FUNCTION: IMPERIALISM 0x0058bab0
-undefined4 WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0(void)
-{
-  return 0;
-}
-
 // ghidra_name TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
 // ghidra_proto undefined WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50()
 // FUNCTION: IMPERIALISM 0x0058bb50
 undefined4 WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(void)
-{
-  return 0;
-}
-
-// ghidra_name TPlacard::RenderPlacardValueTextWithShadow
-// ghidra_proto undefined RenderPlacardValueTextWithShadow()
-// FUNCTION: IMPERIALISM 0x0058bc60
-undefined4 RenderPlacardValueTextWithShadow(void)
 {
   return 0;
 }
@@ -2295,22 +2279,6 @@ undefined4 WrapperFor_GetActiveNationId_At0058bf50(void)
 // ghidra_proto undefined HandlePlusMinusCommandAndInvokeVslot1CC()
 // FUNCTION: IMPERIALISM 0x0058c140
 undefined4 HandlePlusMinusCommandAndInvokeVslot1CC(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderLeftRightIndicatorIconsAndValueText
-// ghidra_proto undefined RenderLeftRightIndicatorIconsAndValueText()
-// FUNCTION: IMPERIALISM 0x0058c3d0
-undefined4 RenderLeftRightIndicatorIconsAndValueText(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberedArrowButton::HandleSplitArrowMousePhaseStateAndDispatchCommand64or65
-// ghidra_proto undefined HandleSplitArrowMousePhaseStateAndDispatchCommand64or65()
-// FUNCTION: IMPERIALISM 0x0058c640
-undefined4 HandleSplitArrowMousePhaseStateAndDispatchCommand64or65(void)
 {
   return 0;
 }
@@ -2371,42 +2339,10 @@ undefined4 RefreshArmyInfoViewTextAndStyleDescriptors(void)
   return 0;
 }
 
-// ghidra_name TTransportPicture::HandleTransportPictureSplitArrowCommand64or65
-// ghidra_proto undefined HandleTransportPictureSplitArrowCommand64or65()
-// FUNCTION: IMPERIALISM 0x00591f10
-undefined4 HandleTransportPictureSplitArrowCommand64or65(void)
-{
-  return 0;
-}
-
 // ghidra_name TTransportPicture::RenderTransportPictureGaugeAndLabels
 // ghidra_proto undefined RenderTransportPictureGaugeAndLabels()
 // FUNCTION: IMPERIALISM 0x005921c0
 undefined4 RenderTransportPictureGaugeAndLabels(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeVslot1CCAfterThunk48F3C0
-// ghidra_proto undefined InvokeVslot1CCAfterThunk48F3C0()
-// FUNCTION: IMPERIALISM 0x00592830
-undefined4 InvokeVslot1CCAfterThunk48F3C0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_HandleCityDialogToggleCommandOrForward_At00592980
-// ghidra_proto undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At00592980()
-// FUNCTION: IMPERIALISM 0x00592980
-undefined4 WrapperFor_HandleCityDialogToggleCommandOrForward_At00592980(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::InitializeWarningViewMinisterOrdersPrompt
-// ghidra_proto undefined InitializeWarningViewMinisterOrdersPrompt()
-// FUNCTION: IMPERIALISM 0x00592a70
-undefined4 InitializeWarningViewMinisterOrdersPrompt(void)
 {
   return 0;
 }

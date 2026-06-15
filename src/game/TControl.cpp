@@ -216,22 +216,6 @@ void TControl::NoOpCityProductionDialogPictureHook(int arg) {
   (void)arg;
 }
 
-// FUNCTION: IMPERIALISM 0x0058c7c0
-void TControl::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At0058c7c0(
-    int* cursorPoint, int hitArg) {
-  if (IsActionable() != '\0') {
-    if (cursorPoint[1] < field38 / 2) {
-      field4e = 0x100;
-      this->TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(
-          reinterpret_cast<Point32*>(cursorPoint), hitArg);
-      return;
-    }
-    field4e = (short)0xffff;
-  }
-  this->TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(
-      reinterpret_cast<Point32*>(cursorPoint), hitArg);
-}
-
 // KNOWN LINKER ARTIFACT: 0x004087fb is `jmp TControl::TControl`.
 
 // FUNCTION: IMPERIALISM 0x0058e440

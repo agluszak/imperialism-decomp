@@ -16,6 +16,9 @@ public:
   TTransportPicture();
   virtual ~TTransportPicture() override;
   CRuntimeClass* GetRuntimeClass() override;
+
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void ApplyRectSlot110(RECT* rectBuffer) override;
 };
 
 ASSERT_SIZE(TTransportPicture, 0x9c);

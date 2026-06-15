@@ -9,6 +9,7 @@ public:
 
   TCluster();
 
+  void* CloneEngineerDialogStateToNewInstance() override;
   void DispatchPanelControlEvent(int eventClass, void* eventPayload, int eventFlags);
 
   // Slots 0x1C4 - 0x1C8 (0x71, 0x72)

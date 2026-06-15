@@ -10,8 +10,9 @@ public:
   // ~TTraderAmtBar is compiler-generated (implicit virtual dtor).
   CRuntimeClass* GetRuntimeClass() override;
 
-  void DoPostCreate(struct TDocument* document);
-  short AdjustForZero(short priorResult, short requestedValue);
-  void DrawAmt();
+  void NoOpUiLifecycleHook(int arg) override;
+  int ApplyMoveClamp(int baseValue, int requestedValue) override;
+  void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
+
   void UpdateFromScaleOrRatio(int scaleValue, int ratioValue);
 };

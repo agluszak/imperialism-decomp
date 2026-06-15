@@ -16,5 +16,10 @@ public:
   virtual ~TCivilianButton() override;
   CRuntimeClass* GetRuntimeClass() override;
 
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void BeginMouseCaptureAndStartRepeatTimer(Point32* point) override;
+  void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
+
   void SetSelectionAndEnableByMappedValue(int selectedValue);
 };

@@ -89,3 +89,72 @@ comparison reads the freshly built `Imperialism.exe`/`.pdb`.
    - If stubgen generates colliding dummy stubs for them, whitelist/add the symbol to the ignore list in `tools/stubgen.py`.
 2. **Substring Filter Collisions**: The `reccmp-vtable` filter (e.g., `--filter "TView::"`) matches case-insensitively. This can cause unexpected classes to be included in the comparison (e.g., `"TView::"` matches `TCombatReportView` because `t` + `View::` matches `tview::`). Analyze the output carefully to identify which class is the actual mismatch.
 3. **Override Signatures**: Ensure derived overrides match the base class virtual signature exactly. Mismatched signatures can cause MSVC to treat them as new virtual functions (shifting the vtable layout) rather than overrides.
+
+## Branch-specific patterns (generalizable)
+
+### TAmtBar branch: TView slot reuse, not extra virtuals
+
+`TAmtBar` inherits `TView` directly (not `TControl`). The binary only has **three**
+TAmtBar-introduced tail slots (`0x1a0`–`0x1a8`: `ApplyMoveClamp`, `UpdateBarValuesAndRefresh`,
+`RenderPrimarySurfaceOverlayPanelWithClipCache`); slots `0x1ac`+ are NULL in orig. Do **not**
+declare the long `vmethod_011x` / `SetBitmap` list as `virtual` — that bloats the recomp vtable
+and leaves orig tail slots as `no orig`.
+
+Before those three tail slots, TAmtBar **reuses TView slot signatures** for unrelated bodies:
+
+| Slot | Base virtual | TAmtBar body at |
+|---|---|---|
+| `0xdc` | `NoOpUiLifecycleHook` | `0x588610` |
+| `0x110` | `ApplyRectSlot110` | `0x588670` (`InvokeSlot1A8NoArg`) |
+| `0x11c` | `BeginMouseCaptureAndStartRepeatTimer` | `0x588950` (`ClampAndApplyTradeMoveValue`) |
+
+Declare `override` with the **base signature**; put the real body + `// FUNCTION:` marker on the
+override. Derived amt bars (e.g. `TTraderAmtBar`) then override individual slots again
+(`NoOpUiLifecycleHook` → `DoPostCreate`, `ApplyMoveClamp` → `AdjustForZero`, etc.).
+
+### TPictureResourceEntryBase mid-branch
+
+Slot `0x20` needs `CloneEngineerDialogStateToNewInstance` (`0x48f640`), not `TControl`'s
+cannot-clone stub. Slot `0x110` needs `ApplyRectSlot110` (`0x48f3c0`), not `TView`'s empty stub.
+Fix once on the base; all picture-resource descendants inherit it.
+
+### TCluster branch
+
+`TCluster` overrides slot `0x20` with `WrapperFor_CopyCityDialogStateFromSource` (`0x4918a0`) —
+allocate via `HandleTurnEventVtableSlot24CopyPayloadBuffer()`, then `CopyCityDialogStateFromSource`
++ copy `field84`. Introduced slots `0x1c4`/`0x1c8` are `GetField84` (`0x491770`) and
+`SetControlClassAndRefresh` (`0x491790`). Fix on `TCluster`, not per-toolbar.
+
+### Free `__fastcall` wrappers → real overrides
+
+When a class-specific vtable slot points at a free function taking `(Class* this, …)` as its
+first argument (e.g. `WrapperFor_HandleCityDialogToggleCommandOrForward_At0058b7f0` on `THQButton`),
+promote to a **real `virtual override`** on the class (`HandleEvent`, `NoOpUiLifecycleHook`,
+`SetControlStateFlagAndMaybeRefresh`, …) with the base's exact virtual signature. Remove the
+free-function `__fastcall` wrapper and any duplicate `// FUNCTION:` marker elsewhere for that
+address.
+
+### Ported but non-virtual
+
+If reccmp shows `Class::MethodName` at a slot but the source has a plain method (no `virtual`),
+add `override` with the **base slot's virtual name/signature**, move the `// FUNCTION:` marker
+onto it, and keep the existing body (`TCivToolbar::HandleCivilianMapCommandPanelAction` →
+`HandleEvent`, `TTraderAmtBar::DoPostCreate` → `NoOpUiLifecycleHook`).
+
+### Marker address order vs. source layout
+
+`// FUNCTION:` markers must be **ascending by address within each file** (`just decomplint`
+`function_out_of_order`). When vtable overrides live at lower addresses than ctor/factory
+functions in the same `.cpp` (common for `0x571xxx` control handlers vs `0x58bxxx` class
+methods), put the low-address overrides **first** in the file, then factories/ctors/SYNTHETIC
+dtor, then higher-address methods.
+
+### Scalar deleting destructor tooling
+
+Canonical name: ``Class::`scalar deleting destructor'`` via `// SYNTHETIC:` + `config/symbols.csv`.
+Run `just correct-scalar-dtors` and `just synthetic-gate` (in `just gates`) after bulk renames.
+
+### ILT thunk un-import
+
+Remove claimed ILT thunk rows from `config/symbols.csv` and repoint callsites to the real method
+so reccmp can resolve `jmp` thunks in vtable slots (see [[imported-thunks-block-vtable-resolution]]).

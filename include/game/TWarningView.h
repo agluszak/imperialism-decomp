@@ -11,7 +11,9 @@ public:
 
   TWarningView();
   CRuntimeClass* GetRuntimeClass() override;
-  // ~TWarningView is compiler-generated (implicit virtual dtor).
+
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void NoOpUiLifecycleHook(int arg) override;
 };
 
 ASSERT_SIZE(TWarningView, 0x94);

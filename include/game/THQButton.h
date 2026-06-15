@@ -17,4 +17,8 @@ public:
   THQButton();
   virtual ~THQButton() override;
   CRuntimeClass* GetRuntimeClass() override;
+
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void NoOpUiLifecycleHook(int arg) override;
+  void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;
 };

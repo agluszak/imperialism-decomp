@@ -13,10 +13,10 @@ public:
   TCivToolbar();
   CRuntimeClass* GetRuntimeClass() override;
 
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+
   void
   RefreshCivilianCommandPanelForSelection(class TCivilianOrderState* selectedCivilianOrderEntry);
   void RefreshCivilianStackButtonsForTile(short tileIndex);
-  void HandleCivilianMapCommandPanelAction(int eventClass, TPanelEventPayload* eventPayload,
-                                           int eventFlags);
   void CycleMapInteractionSelectionAfterHandledClick();
 };

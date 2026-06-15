@@ -16,30 +16,35 @@ public:
   CRuntimeClass* GetRuntimeClass() override;
   // Destructor is compiler-generated (implicit virtual dtor from TView).
 
-  void RenderPrimarySurfaceOverlayPanelWithClipCache();
-  void UpdateBarValuesAndRefresh(short valueAt60, short valueAt62);
-  void InvokeSlot1A8NoArg();
+  // TView-branch slot overrides (0xdc, 0x110, 0x11c).
+  void NoOpUiLifecycleHook(int arg) override;
+  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void BeginMouseCaptureAndStartRepeatTimer(Point32* point) override;
 
+  // TAmtBar-introduced virtuals (slots 0x1a0–0x1a8 only; tail slots are NULL in orig).
   virtual int ApplyMoveClamp(int baseValue, int requestedValue);
+  virtual void UpdateBarValuesAndRefresh(short valueAt60, short valueAt62);
+  virtual void RenderPrimarySurfaceOverlayPanelWithClipCache();
+
+  void SetBarMetric(int value, int range);
   void ClampAndApplyTradeMoveValue(int* requestedValuePtr);
-  virtual void SetBarMetric(int value, int range);
-  virtual void InvokeSlot1A8();
-  virtual void SetBarMetricRatio(int value);
-  virtual void vmethod_0108();
-  virtual void ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag);
-  virtual void vmethod_0110();
-  virtual void vmethod_0111();
-  virtual void vmethod_0112();
-  virtual void SetStyleState(int stateValue, int modeFlag);
-  virtual void SetBitmap(int bitmapIdValue, int unknownFlag);
-  virtual void InvokeSlot1CC(int value, int modeFlag);
-  virtual void vmethod_0116();
-  virtual void vmethod_0117();
-  virtual void vmethod_0118();
-  virtual void vmethod_0119();
-  virtual void vmethod_0120();
-  virtual void SetControlValueSlot1E4(int value, int updateFlag);
-  virtual int QueryValue();
+  void InvokeSlot1A8();
+  void SetBarMetricRatio(int value);
+  void vmethod_0108();
+  void ApplyStyleDescriptor(void* descriptorBuffer, int modeFlag);
+  void vmethod_0110();
+  void vmethod_0111();
+  void vmethod_0112();
+  void SetStyleState(int stateValue, int modeFlag);
+  void SetBitmap(int bitmapIdValue, int unknownFlag);
+  void InvokeSlot1CC(int value, int modeFlag);
+  void vmethod_0116();
+  void vmethod_0117();
+  void vmethod_0118();
+  void vmethod_0119();
+  void vmethod_0120();
+  void SetControlValueSlot1E4(int value, int updateFlag);
+  int QueryValue();
 };
 
 ASSERT_SIZE(TAmtBar, 0x68);

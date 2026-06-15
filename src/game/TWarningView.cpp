@@ -1,5 +1,6 @@
 #include "game/TWarningView.h"
 #include "game/CRuntimeClass.h"
+#include "game/TControl.h"
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00663178
@@ -24,3 +25,29 @@ TWarningView::TWarningView() : TPictureResourceEntryBase() {}
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x00592930
 // TWarningView::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00592980
+void TWarningView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0x22 && event != 0) {
+    unsigned int controlTag = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(event) + 0x1c);
+    if (controlTag >= 0x70696331 && controlTag <= 0x70696335) {
+      TControl::HandleEvent(commandId, sourceHandler, event);
+      return;
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
+
+// FUNCTION: IMPERIALISM 0x00592a70
+void TWarningView::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
+  TView* titlePanel = QueryOwnerContextPanel();
+  if (titlePanel == 0) {
+    return;
+  }
+  TView* titleControl =
+      reinterpret_cast<TView*>(titlePanel->ResolveControlByTag(0x7469746c)); // 'titl'
+  if (titleControl != 0) {
+    titleControl->RefreshControl();
+  }
+}

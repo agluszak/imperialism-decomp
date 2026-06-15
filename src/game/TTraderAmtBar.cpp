@@ -61,7 +61,8 @@ CRuntimeClass* TTraderAmtBar::GetRuntimeClass() {
 // TTraderAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058af80
-void TTraderAmtBar::DoPostCreate(TDocument* document) {
+void TTraderAmtBar::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
   TGreatPower* nationState = GetActiveNationState();
   int scenarioTag = *reinterpret_cast<int*>(reinterpret_cast<char*>(this->ownerContext) + 0x1c);
 
@@ -94,7 +95,7 @@ void TTraderAmtBar::DoPostCreate(TDocument* document) {
 
   auxValueA = tradeCapacity;
   auxValueB = 0x37;
-  reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(reinterpret_cast<int>(document));
+  TView::NoOpUiLifecycleHook(arg);
 }
 
 // FUNCTION: IMPERIALISM 0x0058b040
@@ -104,7 +105,9 @@ void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058b070
-short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
+int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
+  short priorResult = static_cast<short>(baseValue);
+  short requested = static_cast<short>(requestedValue);
   short result = priorResult;
   if (requestedValue > 0) {
     TGreatPower* nationState = GetActiveNationState();
@@ -120,11 +123,11 @@ short TTraderAmtBar::AdjustForZero(short priorResult, short requestedValue) {
       }
     }
   }
-  return result;
+  return static_cast<int>(result);
 }
 
 // FUNCTION: IMPERIALISM 0x0058b0f0
-void TTraderAmtBar::DrawAmt() {
+void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
   QuickDrawSurfaceGuard surface;
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   reinterpret_cast<void(__cdecl*)(int)>(ApplyHitRegionToClipState)(surface.surfaceWrapper);
@@ -155,35 +158,4 @@ void TTraderAmtBar::DrawAmt() {
       }
     }
   }
-}
-
-const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
-
-// FUNCTION: IMPERIALISM 0x0058b4f0
-void __fastcall BlitHintOverlayRectWithCtrlModifierPalette(void* control) {
-  if (*reinterpret_cast<int*>(reinterpret_cast<char*>(control) + 4) != 0) {
-    reinterpret_cast<TPictureResourceEntryBase*>(control)->ApplyRectSlot110(nullptr);
-  }
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
-
-  RECT srcRect;
-  srcRect.left = (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x98);
-  srcRect.top = 0;
-  srcRect.right = srcRect.left + 0x40;
-  srcRect.bottom = 0x40;
-
-  RECT dstRect;
-  dstRect.left = 0;
-  dstRect.top = 2;
-  dstRect.right = 0x40;
-  dstRect.bottom = 0x42;
-
-  int strategicMapViewSystem = ReadIntAt(kAddrStrategicMapViewSystem);
-  TQuickDrawSurfaceContext* hintSource = reinterpret_cast<TQuickDrawSurfaceContext*>(
-      *reinterpret_cast<int*>(strategicMapViewSystem + 0x66c));
-  BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
-                        0x24);
-
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
 }

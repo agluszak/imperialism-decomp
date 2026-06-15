@@ -189,20 +189,21 @@ void TCivToolbar::RefreshCivilianStackButtonsForTile(short tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0058eed0
-void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass,
-                                                      TPanelEventPayload* eventPayload,
-                                                      int eventFlags) {
+void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TPanelEventPayload* eventPayload = reinterpret_cast<TPanelEventPayload*>(event);
+  int eventFlags = 0;
+  (void)sourceHandler;
   // ORIG_CALLCONV: __thiscall
 
   TSelectedCivilianOrderState* selectedCivilianOrderState = g_pSelectedCivilianOrderState;
-  if (eventClass == 0xc) {
+  if (commandId == 0xc) {
     if ((kTagStackSlotMin <= static_cast<unsigned int>(eventPayload->controlTag)) &&
         (static_cast<unsigned int>(eventPayload->controlTag) <= kTagStackSlotMax)) {
       selectedCivilianOrderState->SetActiveCivilianSelection(eventPayload->selectedEntryContext, 0);
       this->DispatchPanelControlEvent(0xc, eventPayload, eventFlags);
       return;
     }
-  } else if (eventClass == 10) {
+  } else if (commandId == 10) {
     unsigned int controlTag = eventPayload->controlTag;
     if (controlTag < 0x646f6e6f) {
       if (controlTag == kTagDone) {
@@ -231,7 +232,7 @@ void TCivToolbar::HandleCivilianMapCommandPanelAction(int eventClass,
       }
     }
   }
-  this->DispatchPanelControlEvent(eventClass, eventPayload, eventFlags);
+  this->DispatchPanelControlEvent(commandId, eventPayload, eventFlags);
 }
 
 undefined4 CycleMapInteractionSelectionAfterHandledClick(void);

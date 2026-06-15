@@ -55,7 +55,8 @@ TAmtBar::TAmtBar()
 // TAmtBar::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00588610
-void __cdecl WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(void) {
+void TAmtBar::NoOpUiLifecycleHook(int arg) {
+  (void)arg;
   thunk_NoOpUiLifecycleHook();
 }
 
@@ -68,8 +69,9 @@ void TAmtBar::UpdateBarValuesAndRefresh(short valueAt60, short valueAt62) {
 }
 
 // FUNCTION: IMPERIALISM 0x00588670
-void TAmtBar::InvokeSlot1A8NoArg() {
-  this->InvokeSlot1A8();
+void TAmtBar::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+  InvokeSlot1A8();
 }
 
 // FUNCTION: IMPERIALISM 0x00588690
@@ -137,6 +139,10 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 }
 
 // FUNCTION: IMPERIALISM 0x00588950
+void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(Point32* point) {
+  ClampAndApplyTradeMoveValue(reinterpret_cast<int*>(point));
+}
+
 void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
   int baseValue;
   if (auxValueA < 1 ||

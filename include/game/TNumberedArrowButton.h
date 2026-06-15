@@ -14,7 +14,12 @@ public:
 
   TNumberedArrowButton();
   CRuntimeClass* GetRuntimeClass() override;
-  // Destructor is compiler-generated (implicit virtual dtor).
+
+  void HandleCursorHoverSelectionByChildHitTestAndFallback(Point32* cursorPoint,
+                                                           int hitArg) override;
+  void ApplyRectSlot110(RECT* rectBuffer) override;
+  void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
+                                      void* eventDataB) override;
 
   void OrphanCallChain_C3_I43_0058b750(char mode, char refreshParent);
   void OrphanCallChain_C2_I37_0058b8d0(short mode);
