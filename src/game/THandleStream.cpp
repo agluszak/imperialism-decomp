@@ -37,3 +37,34 @@ THandleStream::THandleStream() {
 // Destructors are compiler-generated (implicit) from real TStream inheritance.
 // SYNTHETIC: IMPERIALISM 0x00489640
 // THandleStream::~THandleStream
+
+// FUNCTION: IMPERIALISM 0x004896a0
+void THandleStream::streamSlot1c() {}
+
+// FUNCTION: IMPERIALISM 0x004896e0
+int THandleStream::streamSlot28() {
+  return highWatermark;
+}
+
+// FUNCTION: IMPERIALISM 0x00489700
+int THandleStream::streamSlot30() {
+  return handleOrBuffer;
+}
+
+// FUNCTION: IMPERIALISM 0x00489740
+void THandleStream::streamSlot2c() {}
+
+// FUNCTION: IMPERIALISM 0x00489760
+void THandleStream::streamSlot34() {}
+
+// FUNCTION: IMPERIALISM 0x004897a0
+void THandleStream::ReadBytes(void* buffer, int sizeBytes) {
+  (void)buffer;
+  (void)sizeBytes;
+}
+
+// FUNCTION: IMPERIALISM 0x00489810
+void THandleStream::WriteBytesSlot78(void* data, int length) {
+  (void)data;
+  (void)length;
+}

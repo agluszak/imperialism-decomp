@@ -21,4 +21,12 @@ public:
 
   // 0x00489550: advance currentExtent by delta, raising highWatermark to match.
   void AdvanceExtent(int handle, int delta);
+
+  void streamSlot1c() override;
+  int streamSlot28() override;
+  void streamSlot2c() override;
+  int streamSlot30() override;
+  void streamSlot34() override;
+  void ReadBytes(void* buffer, int sizeBytes) override;
+  void WriteBytesSlot78(void* data, int length) override;
 };

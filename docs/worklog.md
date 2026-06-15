@@ -4160,3 +4160,25 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
     as a separate null-tail case: original slot `0x1cc` is null while normal C++ inheritance
     emits `TPictureResourceEntryBase::IsSelected`.
   - `just gates` and format-check for touched picture-resource files pass.
+
+## 2026-06-15 — Stream vtable slot batch
+
+- Goal: Tackle `TFileStream`, `TCountingStream`, and `THandleStream` as a shared vtable
+  family before moving to ministers.
+- Changes:
+  - Promoted stream slot bodies from placeholders/stubs into real `TStream`,
+    `TFileStream`, `TCountingStream`, and `THandleStream` virtual methods with matching
+    `symbols.csv` names, including concrete `ReadBytes` / `WriteBytesSlot78` slots.
+  - Moved `0x00488b40` out of the generic no-op slot file and into
+    `TCountingStream::ReadBytes`.
+  - Kept `TStream` fieldless: constructor evidence for `TCountingStream` and
+    `THandleStream` writes stream fields at `this+4`, so inheriting the storage layout
+    from `TEventHandler` would corrupt the class model even though several prefix vtable
+    slots reuse `TEventHandler` bodies.
+- Verification:
+  - `just build`, `just detect`, `just gates`, and format-check for touched stream files
+    pass.
+  - Targeted `just vtable TFileStream`, `TCountingStream`, and `THandleStream` still
+    report one mismatch each, but the concrete stream-specific slots now pair. Remaining
+    failures are structural: shared prefix slots `0x08`, `0x14`, `0x18`, `0x20`, `0x24`,
+    plus tail/overread entries around `0xa8+` (and `0x70`/`0x78` for counting/handle).

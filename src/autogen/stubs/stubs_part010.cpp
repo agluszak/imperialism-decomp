@@ -2379,14 +2379,6 @@ undefined4 DestructTStreamAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I06_00488ab0
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488ab0()
-// FUNCTION: IMPERIALISM 0x00488ab0
-undefined4 OrphanCallChain_C1_I06_00488ab0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanTiny_ReturnZero_00488ad0
 // ghidra_proto undefined OrphanTiny_ReturnZero_00488ad0()
 // FUNCTION: IMPERIALISM 0x00488ad0
@@ -2411,30 +2403,6 @@ undefined4 AssertMcAppStreamLine304(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I09_00488b60
-// ghidra_proto undefined OrphanCallChain_C1_I09_00488b60()
-// FUNCTION: IMPERIALISM 0x00488b60
-undefined4 OrphanCallChain_C1_I09_00488b60(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I09_00488b90
-// ghidra_proto undefined OrphanCallChain_C1_I09_00488b90()
-// FUNCTION: IMPERIALISM 0x00488b90
-undefined4 OrphanCallChain_C1_I09_00488b90(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I09_00488bf0
-// ghidra_proto undefined OrphanCallChain_C1_I09_00488bf0()
-// FUNCTION: IMPERIALISM 0x00488bf0
-undefined4 OrphanCallChain_C1_I09_00488bf0(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
 // ghidra_proto undefined Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50()
 // FUNCTION: IMPERIALISM 0x00488c50
@@ -2443,34 +2411,10 @@ undefined4 Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C2_I19_00488ca0
-// ghidra_proto undefined OrphanCallChain_C2_I19_00488ca0()
-// FUNCTION: IMPERIALISM 0x00488ca0
-undefined4 OrphanCallChain_C2_I19_00488ca0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C2_I17_00488dd0
-// ghidra_proto undefined OrphanCallChain_C2_I17_00488dd0()
-// FUNCTION: IMPERIALISM 0x00488dd0
-undefined4 OrphanCallChain_C2_I17_00488dd0(void)
-{
-  return 0;
-}
-
 // ghidra_name AssertMcAppStreamLine596
 // ghidra_proto undefined AssertMcAppStreamLine596()
 // FUNCTION: IMPERIALISM 0x00488e00
 undefined4 AssertMcAppStreamLine596(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488ed0
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488ed0()
-// FUNCTION: IMPERIALISM 0x00488ed0
-undefined4 OrphanCallChain_C1_I06_00488ed0(void)
 {
   return 0;
 }
@@ -2491,46 +2435,6 @@ undefined4 CreateTFileStreamWithAllocFallback(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins05_00489180
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins05_00489180()
-// FUNCTION: IMPERIALISM 0x00489180
-undefined4 OrphanLeaf_NoCall_Ins05_00489180(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins05_004891a0
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins05_004891a0()
-// FUNCTION: IMPERIALISM 0x004891a0
-undefined4 OrphanLeaf_NoCall_Ins05_004891a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I09_004891c0
-// ghidra_proto undefined OrphanCallChain_C1_I09_004891c0()
-// FUNCTION: IMPERIALISM 0x004891c0
-undefined4 OrphanCallChain_C1_I09_004891c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I08_004891f0
-// ghidra_proto undefined OrphanCallChain_C1_I08_004891f0()
-// FUNCTION: IMPERIALISM 0x004891f0
-undefined4 OrphanCallChain_C1_I08_004891f0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_operator_At00489360
-// ghidra_proto undefined WrapperFor_operator_At00489360()
-// FUNCTION: IMPERIALISM 0x00489360
-undefined4 WrapperFor_operator_At00489360(void)
-{
-  return 0;
-}
-
 // ghidra_name TCountingStream::CreateTCountingStreamInstance
 // ghidra_proto undefined CreateTCountingStreamInstance()
 // FUNCTION: IMPERIALISM 0x00489390
@@ -2543,38 +2447,6 @@ undefined4 CreateTCountingStreamInstance(void)
 // ghidra_proto undefined CreateTCountingStreamWithAllocFallback()
 // FUNCTION: IMPERIALISM 0x004893c0
 undefined4 CreateTCountingStreamWithAllocFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_GetDwordEcxOffset_4_004894b0
-// ghidra_proto undefined OrphanTiny_GetDwordEcxOffset_4_004894b0()
-// FUNCTION: IMPERIALISM 0x004894b0
-undefined4 OrphanTiny_GetDwordEcxOffset_4_004894b0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004894d0
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins07_004894d0()
-// FUNCTION: IMPERIALISM 0x004894d0
-undefined4 OrphanLeaf_NoCall_Ins07_004894d0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_GetDwordEcxOffset_8_00489500
-// ghidra_proto undefined OrphanTiny_GetDwordEcxOffset_8_00489500()
-// FUNCTION: IMPERIALISM 0x00489500
-undefined4 OrphanTiny_GetDwordEcxOffset_8_00489500(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_00489520
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins07_00489520()
-// FUNCTION: IMPERIALISM 0x00489520
-undefined4 OrphanLeaf_NoCall_Ins07_00489520(void)
 {
   return 0;
 }
@@ -2595,66 +2467,10 @@ undefined4 AttachGlobalMemoryHandleAndResetPosition(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C3_I20_004896a0
-// ghidra_proto undefined OrphanCallChain_C3_I20_004896a0()
-// FUNCTION: IMPERIALISM 0x004896a0
-undefined4 OrphanCallChain_C3_I20_004896a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_GetDwordEcxOffset_8_004896e0
-// ghidra_proto undefined OrphanTiny_GetDwordEcxOffset_8_004896e0()
-// FUNCTION: IMPERIALISM 0x004896e0
-undefined4 OrphanTiny_GetDwordEcxOffset_8_004896e0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_GetDwordEcxOffset_c_00489700
-// ghidra_proto undefined OrphanTiny_GetDwordEcxOffset_c_00489700()
-// FUNCTION: IMPERIALISM 0x00489700
-undefined4 OrphanTiny_GetDwordEcxOffset_c_00489700(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins06_00489720
 // ghidra_proto undefined OrphanLeaf_NoCall_Ins06_00489720()
 // FUNCTION: IMPERIALISM 0x00489720
 undefined4 OrphanLeaf_NoCall_Ins06_00489720(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_SetDwordEcxOffset_8_00489740
-// ghidra_proto undefined OrphanTiny_SetDwordEcxOffset_8_00489740()
-// FUNCTION: IMPERIALISM 0x00489740
-undefined4 OrphanTiny_SetDwordEcxOffset_8_00489740(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I16_00489760
-// ghidra_proto undefined OrphanCallChain_C1_I16_00489760()
-// FUNCTION: IMPERIALISM 0x00489760
-undefined4 OrphanCallChain_C1_I16_00489760(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_MoveMemoryOverlapSafe_At004897a0
-// ghidra_proto undefined WrapperFor_MoveMemoryOverlapSafe_At004897a0()
-// FUNCTION: IMPERIALISM 0x004897a0
-undefined4 WrapperFor_MoveMemoryOverlapSafe_At004897a0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_MoveMemoryOverlapSafe_At00489810
-// ghidra_proto undefined WrapperFor_MoveMemoryOverlapSafe_At00489810()
-// FUNCTION: IMPERIALISM 0x00489810
-undefined4 WrapperFor_MoveMemoryOverlapSafe_At00489810(void)
 {
   return 0;
 }

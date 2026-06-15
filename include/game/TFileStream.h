@@ -20,10 +20,16 @@ public:
 
   void SetBackingArchive(void* backingArchive);
 
+  int streamSlot28() override;
+  void streamSlot2c() override;
+  int streamSlot30() override;
+  void streamSlot34() override;
+  void ReadBytes(void* buffer, int sizeBytes) override;
+  void streamSlot70() override;
+  void WriteBytesSlot78(void* data, int length) override;
+
   // 0x00489220 / 0x00489290: forward raw byte read/write to the backing
   // CArchive, asserting the backing pointer is non-null first.
-  int ReadBytesFromBackingArchive(void* destination, unsigned int requestedCount);
-  void WriteBytesToBackingArchive(const void* source, unsigned int byteCount);
 
   // 0x00489300 / 0x00489330: forward polymorphic object read/write to the
   // backing CArchive. The read form stores the resolved object through its

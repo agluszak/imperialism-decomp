@@ -13,46 +13,33 @@
 TStream::~TStream() {}
 void TStream::streamSlot14() {} // TODO: shared-NoOp default
 void TStream::streamSlot18() {} // TODO
-void TStream::streamSlot1c() {} // TODO: 0x00488ab0
-void TStream::streamSlot20() {} // TODO
-void TStream::streamSlot24() {} // TODO
-int TStream::streamSlot28() {
-  return 0;
-}                               // TODO
-void TStream::streamSlot2c() {} // TODO
-int TStream::streamSlot30() {
-  return 0;
-}                                      // TODO
-void TStream::streamSlot34() {}        // TODO
-void TStream::ReadBytes(void*, int) {} // TODO: primitive (subclass overrides)
-int TStream::ReadInteger() {
-  return 0;
-}                               // TODO: 0x00488b60
-void TStream::streamSlot44() {} // TODO: 0x00488b90
-short TStream::ReadShort() {
-  return 0;
-}                                             // TODO: 0x00488bf0
-void TStream::streamSlot6c() {}               // TODO: 0x00488ca0
-void TStream::streamSlot70() {}               // TODO: 0x00489360
-void TStream::streamSlot74() {}               // TODO: 0x00488dd0
-void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)
-void TStream::streamSlot84() {}               // TODO: 0x00488ed0
-void TStream::streamSlotA8() {}               // TODO
-void TStream::streamSlotAc() {}               // TODO
-char TStream::ReadByte(void*) {
-  return 0;
-} // TODO: primitive 0x004892f0
-
-// ---------------------------------------------------------------------------
-// Typed read/write accessors: each delegates to a primitive vtable slot
-// (ReadBytes @0x3c / WriteBytesSlot78 @0x78). Default implementations on the
-// base, inherited by every concrete stream.
-// ---------------------------------------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x00488a80
 char TStream::streamSlot38() {
   return streamSlot28() >= streamSlot30();
 }
+
+// FUNCTION: IMPERIALISM 0x00488ab0
+void TStream::streamSlot1c() {} // TODO: 0x00488ab0
+void TStream::streamSlot20() {} // TODO
+void TStream::streamSlot24() {} // TODO
+int TStream::streamSlot28() {
+  return 0;
+} // TODO
+void TStream::streamSlot2c() {} // TODO
+int TStream::streamSlot30() {
+  return 0;
+} // TODO
+void TStream::streamSlot34() {}        // TODO
+void TStream::ReadBytes(void*, int) {} // TODO: primitive (subclass overrides)
+
+// FUNCTION: IMPERIALISM 0x00488b60
+int TStream::ReadInteger() {
+  return 0;
+} // TODO: 0x00488b60
+
+// FUNCTION: IMPERIALISM 0x00488b90
+void TStream::streamSlot44() {} // TODO: 0x00488b90
 
 // FUNCTION: IMPERIALISM 0x00488bc0
 void TStream::streamSlot48(void* out) {
@@ -60,12 +47,21 @@ void TStream::streamSlot48(void* out) {
   ReadBytes(reinterpret_cast<char*>(out) + 1, 1);
 }
 
+// FUNCTION: IMPERIALISM 0x00488bf0
+short TStream::ReadShort() {
+  return 0;
+} // TODO: 0x00488bf0
+
 // FUNCTION: IMPERIALISM 0x00488c20
 int TStream::streamSlot50() {
   int value;
   ReadBytes(&value, 4);
   return value;
 }
+
+// FUNCTION: IMPERIALISM 0x00488ca0
+void TStream::streamSlot6c() {} // TODO: 0x00488ca0
+void TStream::streamSlot70() {} // TODO: 0x00489360
 
 // FUNCTION: IMPERIALISM 0x00488ce0
 void TStream::streamSlot54(void* out) {
@@ -102,6 +98,10 @@ int TStream::streamSlot68() {
   return value;
 }
 
+// FUNCTION: IMPERIALISM 0x00488dd0
+void TStream::streamSlot74() {}               // TODO: 0x00488dd0
+void TStream::WriteBytesSlot78(void*, int) {} // TODO: primitive (subclass overrides)
+
 // FUNCTION: IMPERIALISM 0x00488e90
 void TStream::streamSlot7c(unsigned char value) {
   WriteBytesSlot78(&value, 1);
@@ -111,6 +111,20 @@ void TStream::streamSlot7c(unsigned char value) {
 void TStream::streamSlot80(unsigned char value) {
   WriteBytesSlot78(&value, 1);
 }
+
+// FUNCTION: IMPERIALISM 0x00488ed0
+void TStream::streamSlot84() {} // TODO: 0x00488ed0
+void TStream::streamSlotA8() {} // TODO
+void TStream::streamSlotAc() {} // TODO
+char TStream::ReadByte(void*) {
+  return 0;
+} // TODO: primitive 0x004892f0
+
+// ---------------------------------------------------------------------------
+// Typed read/write accessors: each delegates to a primitive vtable slot
+// (ReadBytes @0x3c / WriteBytesSlot78 @0x78). Default implementations on the
+// base, inherited by every concrete stream.
+// ---------------------------------------------------------------------------
 
 // FUNCTION: IMPERIALISM 0x00488ef0
 void TStream::WriteCountSlot88(int count) {

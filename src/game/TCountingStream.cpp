@@ -8,6 +8,12 @@ extern "C" {
 char g_pClassDescTCountingStream = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00488b40
+void TCountingStream::ReadBytes(void* buffer, int sizeBytes) {
+  (void)buffer;
+  (void)sizeBytes;
+}
+
 // FUNCTION: IMPERIALISM 0x004893f0
 CRuntimeClass* TCountingStream::GetRuntimeClass() {
   return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTCountingStream);
@@ -25,3 +31,19 @@ TCountingStream::TCountingStream() {
 // Destructors are compiler-generated (implicit) from real TStream inheritance.
 // SYNTHETIC: IMPERIALISM 0x00489470
 // TCountingStream::~TCountingStream
+
+// FUNCTION: IMPERIALISM 0x004894b0
+int TCountingStream::streamSlot28() {
+  return positionOrByteCount;
+}
+
+// FUNCTION: IMPERIALISM 0x004894d0
+void TCountingStream::streamSlot2c() {}
+
+// FUNCTION: IMPERIALISM 0x00489500
+int TCountingStream::streamSlot30() {
+  return maxExtentOrLimit;
+}
+
+// FUNCTION: IMPERIALISM 0x00489520
+void TCountingStream::streamSlot34() {}

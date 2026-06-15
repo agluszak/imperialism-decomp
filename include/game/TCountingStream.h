@@ -13,4 +13,10 @@ public:
   CRuntimeClass* GetRuntimeClass() override;
   TCountingStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
+
+  int streamSlot28() override;
+  void streamSlot2c() override;
+  int streamSlot30() override;
+  void streamSlot34() override;
+  void ReadBytes(void* buffer, int sizeBytes) override;
 };

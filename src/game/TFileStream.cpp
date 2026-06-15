@@ -66,21 +66,38 @@ void TFileStream::SetBackingArchive(void* backingArchive) {
   backingArchiveOrStream = backingArchive;
 }
 
+// FUNCTION: IMPERIALISM 0x00489180
+int TFileStream::streamSlot28() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004891a0
+int TFileStream::streamSlot30() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004891c0
+void TFileStream::streamSlot2c() {}
+
+// FUNCTION: IMPERIALISM 0x004891f0
+void TFileStream::streamSlot34() {}
+
 // FUNCTION: IMPERIALISM 0x00489220
-int TFileStream::ReadBytesFromBackingArchive(void* destination, unsigned int requestedCount) {
+void TFileStream::ReadBytes(void* destination, int requestedCount) {
   if (this->backingArchiveOrStream == 0) {
     FailNilPointer(0x3cc);
   }
-  return BackingArchive(this->backingArchiveOrStream)
-      ->ReadBytesFromSerializedBuffer(destination, requestedCount);
+  BackingArchive(this->backingArchiveOrStream)
+      ->ReadBytesFromSerializedBuffer(destination, static_cast<unsigned int>(requestedCount));
 }
 
 // FUNCTION: IMPERIALISM 0x00489290
-void TFileStream::WriteBytesToBackingArchive(const void* source, unsigned int byteCount) {
+void TFileStream::WriteBytesSlot78(void* source, int byteCount) {
   if (this->backingArchiveOrStream == 0) {
     FailNilPointer(0x410);
   }
-  BackingArchive(this->backingArchiveOrStream)->WriteBytesToSerializedBuffer(source, byteCount);
+  BackingArchive(this->backingArchiveOrStream)
+      ->WriteBytesToSerializedBuffer(source, static_cast<unsigned int>(byteCount));
 }
 
 // FUNCTION: IMPERIALISM 0x00489300
@@ -94,3 +111,6 @@ char TFileStream::ReadObjectFromBackingArchive(void* outObject) {
 void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
   BackingArchive(this->backingArchiveOrStream)->WriteObject(objectRef);
 }
+
+// FUNCTION: IMPERIALISM 0x00489360
+void TFileStream::streamSlot70() {}
