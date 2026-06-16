@@ -41,7 +41,6 @@ void TZone::InvokeObjectVtableMethod24() {
 void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   CRuntimeClass* runtimeClass = GetRuntimeClass();
   unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
-  GetRuntimeClass();
   runtimeClass = GetRuntimeClass();
   CObject* destObject = runtimeClass->CreateObject();
   if (destObject == 0) {

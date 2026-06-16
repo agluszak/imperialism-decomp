@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 #include "game/mfc.h"
+#include "game/TStream.h"
 
 extern "C" {
 // TMission RTTI descriptor (slot-0 GetRuntimeClass returns it). Defined in
@@ -164,12 +165,35 @@ TMission::TMission() {
 // FUNCTION: IMPERIALISM 0x00535080
 TMission::~TMission() {}
 
-// --- slot 0x05/0x06 serializers: TODO plan step 5 (currently own the slot only) ---
+// --- slot 0x05/0x06 serializers (TStream* fast-path; same vtable offsets as WriteTo/ReadFrom) ---
 // FUNCTION: IMPERIALISM 0x00535820
-void TMission::SerializeMissionState(CArchive* archive) {
-  (void)archive;
+void TMission::SerializeMissionState(TStream* stream) {
+  TObject::WriteTo(stream);
+  char* raw = reinterpret_cast<char*>(this);
+  stream->WriteBytesSlot78(raw + 0x04, 2);
+  stream->WriteBytesSlot78(raw + 0x08, 1);
+  stream->WriteBytesSlot78(raw + 0x0c, 4);
+  stream->WriteBytesSlot78(raw + 0x10, 1);
+  stream->WriteBytesSlot78(raw + 0x06, 2);
+  stream->WriteBytesSlot78(raw + 0x11, 1);
 }
+
 // FUNCTION: IMPERIALISM 0x005358a0
-void TMission::DeserializeMissionState(CArchive* archive) {
-  (void)archive;
+void TMission::DeserializeMissionState(TStream* stream) {
+  static const unsigned int kSaveFormatVersionAddr = 0x00695278;
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&nationId04, 2);
+  stream->ReadBytes(&state08, 1);
+  stream->ReadBytes(&value0c, 4);
+  stream->ReadBytes(&flag10, 1);
+  if (*reinterpret_cast<int*>(kSaveFormatVersionAddr) < 0x10) {
+    pathMarker06 = static_cast<short>(0xffff);
+  } else {
+    stream->ReadBytes(&pathMarker06, 2);
+  }
+  if (*reinterpret_cast<int*>(kSaveFormatVersionAddr) < 9) {
+    InvokeSlots34_38_3C();
+    return;
+  }
+  stream->ReadBytes(&marker11, 1);
 }

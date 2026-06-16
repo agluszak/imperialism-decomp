@@ -1,9 +1,10 @@
 #include "game/TObject.h"
 
-#include "game/ArchiveStreamAdapter.h"
-#include "game/TFileStream.h"
-
 #include <string.h>
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00694eb8
@@ -14,7 +15,6 @@ CRuntimeClass PTR_s_TObject_00694eb8 = {nullptr, 0, 0, nullptr, nullptr};
 TObject* TObject::ShallowFree() {
   CRuntimeClass* runtimeClass = GetRuntimeClass();
   unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
-  GetRuntimeClass();
   runtimeClass = GetRuntimeClass();
   CObject* destObject = runtimeClass->CreateObject();
   if (destObject == 0) {
@@ -26,6 +26,9 @@ TObject* TObject::ShallowFree() {
 
 // FUNCTION: IMPERIALISM 0x004798b0
 void TObject::Free() {
+  if (this == 0) {
+    return;
+  }
   delete this;
 }
 
@@ -41,21 +44,6 @@ CRuntimeClass* TObject::GetRuntimeClass() const {
 
 // SYNTHETIC: IMPERIALISM 0x00485f50
 // TObject::`scalar deleting destructor'
-
-// FUNCTION: IMPERIALISM 0x00485e90
-void TObject::Serialize(CArchive& archive) {
-  ArchiveStreamAdapter* adapter = new ArchiveStreamAdapter(&archive);
-  TFileStream stream;
-  stream.SetBackingArchive(adapter);
-
-  if (archive.IsLoading()) {
-    ReadFrom(&stream);
-  } else {
-    WriteTo(&stream);
-  }
-
-  adapter->Free();
-}
 
 // FUNCTION: IMPERIALISM 0x00485f70
 void TObject::WriteTo(TStream* stream) {

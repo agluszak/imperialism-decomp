@@ -52,16 +52,73 @@ void TDefenseMinister::InitializeBaseOrderArrayMetrics() {
 }
 
 // Slot 5 override (0x4ec1d0): serialize defense-minister order-array metrics.
-// Honest stub — body not yet ported (needs the defense field layout data pass).
 // FUNCTION: IMPERIALISM 0x004ec1d0
 void TDefenseMinister::WriteTo(TStream* stream) {
-  (void)stream;
+  TMinister::WriteTo(stream);
+  char* raw = reinterpret_cast<char*>(this);
+  stream->WriteBytesSlot78(raw + 0x10, 2);
+  stream->WriteBytesSlot78(raw + 0x12, 2);
+  short* cursor = reinterpret_cast<short*>(raw + 0x14);
+  int remaining = 0x1e;
+  do {
+    unsigned int stackWord = static_cast<unsigned int>(*cursor);
+    unsigned char* stackBytes = reinterpret_cast<unsigned char*>(&stackWord);
+    unsigned char lowByte = stackBytes[0];
+    stackBytes[0] = stackBytes[1];
+    stackBytes[1] = lowByte;
+    stream->WriteBytesSlot78(&stackWord, 2);
+    cursor = cursor + 1;
+    remaining = remaining - 1;
+  } while (remaining != 0);
+  cursor = reinterpret_cast<short*>(raw + 0x50);
+  remaining = 0x1e;
+  do {
+    unsigned int stackWord = static_cast<unsigned int>(*cursor);
+    unsigned char* stackBytes = reinterpret_cast<unsigned char*>(&stackWord);
+    unsigned char lowByte = stackBytes[0];
+    stackBytes[0] = stackBytes[1];
+    stackBytes[1] = lowByte;
+    stream->WriteBytesSlot78(&stackWord, 2);
+    cursor = cursor + 1;
+    remaining = remaining - 1;
+  } while (remaining != 0);
+  stream->WriteBytesSlot78(raw + 0x8c, 2);
+  stream->WriteBytesSlot78(raw + 0x8e, 2);
+  stream->WriteBytesSlot78(raw + 0x90, 2);
+  stream->WriteBytesSlot78(raw + 0x92, 2);
 }
 
 // Slot 6 override (0x4ec2f0): deserialize defense-minister order-array metrics.
 // FUNCTION: IMPERIALISM 0x004ec2f0
 void TDefenseMinister::ReadFrom(TStream* stream) {
-  (void)stream;
+  TMinister::ReadFrom(stream);
+  char* raw = reinterpret_cast<char*>(this);
+  stream->ReadBytes(raw + 0x10, 2);
+  stream->ReadBytes(raw + 0x12, 2);
+  stream->ReadBytes(raw + 0x14, 0x3c);
+  unsigned char* pairCursor = reinterpret_cast<unsigned char*>(raw + 0x14);
+  int pairCount = 0x1e;
+  do {
+    unsigned char highByte = pairCursor[0];
+    pairCursor[0] = pairCursor[1];
+    pairCursor[1] = highByte;
+    pairCursor = pairCursor + 2;
+    pairCount = pairCount - 1;
+  } while (pairCount != 0);
+  stream->ReadBytes(raw + 0x50, 0x3c);
+  pairCursor = reinterpret_cast<unsigned char*>(raw + 0x50);
+  pairCount = 0x1e;
+  do {
+    unsigned char highByte = pairCursor[0];
+    pairCursor[0] = pairCursor[1];
+    pairCursor[1] = highByte;
+    pairCursor = pairCursor + 2;
+    pairCount = pairCount - 1;
+  } while (pairCount != 0);
+  stream->ReadBytes(raw + 0x8c, 2);
+  stream->ReadBytes(raw + 0x8e, 2);
+  stream->ReadBytes(raw + 0x90, 2);
+  stream->ReadBytes(raw + 0x92, 2);
 }
 
 // Slot 10 override (0x4ec3d0).

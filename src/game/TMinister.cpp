@@ -68,6 +68,10 @@ void TMinister::Call54() {}
 #pragma optimize("", on)
 #endif
 
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
 // FUNCTION: IMPERIALISM 0x0052ecc0
 void TMinister::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
@@ -79,6 +83,10 @@ void TMinister::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytesSlot78(&this->skillIndexC, 2);
 }
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
 
 void TMinister::Call18(int arg1) {
   ReadFrom(reinterpret_cast<TStream*>(arg1));

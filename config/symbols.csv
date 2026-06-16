@@ -194,7 +194,7 @@ address|name|size|type|prototype
 4155b0|ApplyAutoResolutionModeAndPersist|321|function|undefined ApplyAutoResolutionModeAndPersist()
 415760|WarnLowDiskSpaceAndConfirmContinue|832|function|undefined WarnLowDiskSpaceAndConfirmContinue()
 415b70|WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl|104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl()
-415ce0|HandleTurnEventVtableSlot24CopyPayloadBuffer|47|function|undefined HandleTurnEventVtableSlot24CopyPayloadBuffer()
+415ce0|TObject::ShallowFree|47|function|TObject* __thiscall ShallowFree()
 415d50|TEventHandler::GetCityDialogValueDword10|4|function|int __fastcall GetCityDialogValueDword10(CityDialogController * pDialog)
 415d70|TControl::SetCityDialogValueDword10|10|function|void __thiscall SetCityDialogValueDword10(int value)
 415df0|WrapperFor_ftol_At00415df0|30|function|undefined WrapperFor_ftol_At00415df0()
@@ -357,7 +357,7 @@ address|name|size|type|prototype
 479710|DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory|109|function|undefined DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory()
 4797a0|WrapperFor_OnNewDocument_At004797a0|19|function|undefined WrapperFor_OnNewDocument_At004797a0()
 4797d0|InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock|165|function|undefined InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock()
-4798b0|DeleteObjectIfNonNullViaVslot04|12|function|undefined DeleteObjectIfNonNullViaVslot04()
+4798b0|TObject::Free|12|function|void __thiscall Free()
 4798d0|InvokeObjectVtableMethod24|5|function|undefined InvokeObjectVtableMethod24()
 4798f0|WrapperFor_FreeHeapBufferIfNotNull_At004798f0|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0()
 479920|WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl|7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl()
@@ -656,10 +656,10 @@ address|name|size|type|prototype
 485c90|TObject::CreateTObjectInstance|98|function|undefined CreateTObjectInstance()
 485e20|TObject::GetRuntimeClass|6|function|undefined GetRuntimeClass()
 485e40|WrapperFor_AFX_CLASSINIT_At00485e40|16|function|undefined WrapperFor_AFX_CLASSINIT_At00485e40()
-485e90|TEventHandler::Serialize|143|function|undefined Serialize()
+485e90|TObject::Serialize|143|function|void __thiscall Serialize(CArchive& archive)
 485f50|TObject::`scalar deleting destructor'|7|function|undefined ScalarDeletingDestructor()
-485f70|TEventHandler::HandleCityDialogNoOpSlot14|3|function|undefined HandleCityDialogNoOpSlot14()
-485f90|TEventHandler::HandleCityDialogNoOpSlot18|3|function|undefined HandleCityDialogNoOpSlot18()
+485f70|TObject::WriteTo|3|function|void __thiscall WriteTo(TStream* stream)
+485f90|TObject::ReadFrom|3|function|void __thiscall ReadFrom(TStream* stream)
 485fb0|TTEView::CreateTTEViewInstance|83|function|undefined CreateTTEViewInstance()
 486030|TTEView::GetTTEViewClassNamePointer|6|function|undefined GetTTEViewClassNamePointer()
 486050|TTEView::ConstructTTEViewBaseState|109|function|undefined ConstructTTEViewBaseState()
@@ -891,7 +891,7 @@ address|name|size|type|prototype
 48a130|TEventHandler::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 48a160|DestructTEventHandlerAndMaybeFree_Impl|7|function|undefined DestructTEventHandlerAndMaybeFree_Impl()
 48a180|InitializePacketHeaderFields_Tag20202020|28|function|undefined InitializePacketHeaderFields_Tag20202020()
-48a1b0|ReleaseRuntimeSelectionOwnerAndDestroyObject|107|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject()
+48a1b0|TEventHandler::Free|107|function|void __thiscall Free()
 48a240|TEventHandler::GetCityDialogFlagByte4|4|function|byte __fastcall GetCityDialogFlagByte4(CityDialogController * pDialog)
 48a260|TControl::SetCityDialogFlagByte4|11|function|void __thiscall SetCityDialogFlagByte4(char flagValue)
 48a280|ForwardEngineerDialogCommandToChildSlot40|34|function|undefined ForwardEngineerDialogCommandToChildSlot40()
@@ -918,7 +918,7 @@ address|name|size|type|prototype
 48a6f0|DispatchCityProductionAction1B|11|function|undefined DispatchCityProductionAction1B()
 48a710|TControl::CtrlSlot33_NoOp_Impl|3|function|undefined CtrlSlot33_NoOp_Impl()
 48a730|OrphanTiny_ReturnZero_0048a730|3|function|undefined OrphanTiny_ReturnZero_0048a730()
-48a7c0|TEventHandler::CloneEngineerDialogStateToNewInstance|86|function|undefined CloneEngineerDialogStateToNewInstance()
+48a7c0|TEventHandler::ShallowClone|86|function|TObject* __thiscall ShallowClone()
 48a840|TView::CreateTViewInstance|87|function|undefined CreateTViewInstance()
 48a8c0|TView::GetTViewClassNamePointer|6|function|undefined GetTViewClassNamePointer()
 48a8e0|TView::ConstructTViewBaseState|136|function|void __thiscall ConstructTViewBaseState(void)
@@ -2621,8 +2621,8 @@ address|name|size|type|prototype
 4ec110|TDefenseMinister::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4ec140|DestructTDefenseMinisterAndMaybeFree_Impl|7|function|undefined DestructTDefenseMinisterAndMaybeFree_Impl()
 4ec160|InitializeTMinisterBaseOrderArrayMetrics|76|function|undefined InitializeTMinisterBaseOrderArrayMetrics()
-4ec1d0|SerializeTMinisterBaseOrderArrayMetrics|210|function|undefined SerializeTMinisterBaseOrderArrayMetrics()
-4ec2f0|DeserializeTMinisterBaseOrderArrayMetrics|166|function|undefined DeserializeTMinisterBaseOrderArrayMetrics()
+4ec1d0|TDefenseMinister::WriteTo|210|function|void __thiscall WriteTo(TStream* stream)
+4ec2f0|TDefenseMinister::ReadFrom|166|function|void __thiscall ReadFrom(TStream* stream)
 4ec3d0|OrphanCallChain_C2_I38_004ec3d0|94|function|undefined OrphanCallChain_C2_I38_004ec3d0()
 4ec450|WrapperFor_GenerateThreadLocalRandom15_At004ec450|80|function|undefined WrapperFor_GenerateThreadLocalRandom15_At004ec450()
 4ec4c0|IterateLinkedListCursorEntries_004ec4c0|84|function|undefined IterateLinkedListCursorEntries_004ec4c0()
@@ -3418,9 +3418,9 @@ address|name|size|type|prototype
 52eba0|TMinister::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 52ebd0|TMinister::DestructTMinister|7|function|undefined DestructTMinister()
 52ebf0|InitializeTMinisterBaseOrderArray|105|function|undefined InitializeTMinisterBaseOrderArray()
-52ec80|DeleteForeignMinisterAndReleaseOrderArray|37|function|undefined DeleteForeignMinisterAndReleaseOrderArray()
-52ecc0|DeserializeTMinisterBaseOrderArrayHeader|32|function|undefined DeserializeTMinisterBaseOrderArrayHeader()
-52ecf0|SerializeTMinisterBaseOrderArrayHeader|32|function|undefined SerializeTMinisterBaseOrderArrayHeader()
+52ec80|TMinister::Free|37|function|void __thiscall Free()
+52ecc0|TMinister::ReadFrom|32|function|void __thiscall ReadFrom(TStream* stream)
+52ecf0|TMinister::WriteTo|32|function|void __thiscall WriteTo(TStream* stream)
 52ed20|DispatchNationStateEventCode10|22|function|undefined DispatchNationStateEventCode10()
 52ed50|RebuildTerrainPreferenceEntriesAndAssignRanks|156|function|undefined RebuildTerrainPreferenceEntriesAndAssignRanks()
 52ee20|TInteriorMinister::MapTerrainTypeToPreferenceRank|90|function|undefined MapTerrainTypeToPreferenceRank()
@@ -3591,8 +3591,8 @@ address|name|size|type|prototype
 5357b0|ReturnTrueForDefendProvinceMissionCapabilityFlagB|3|function|undefined ReturnTrueForDefendProvinceMissionCapabilityFlagB()
 5357d0|DestroyTDefendProvinceMission|30|function|undefined DestroyTDefendProvinceMission()
 535800|ResetTDefendProvinceMissionToSentinelVtable|7|function|undefined ResetTDefendProvinceMissionToSentinelVtable()
-535820|SerializeTMission|86|function|undefined SerializeTMission()
-5358a0|DeserializeTMission|125|function|undefined DeserializeTMission()
+535820|TMission::SerializeMissionState|86|function|void __thiscall SerializeMissionState(TStream* stream)
+5358a0|TMission::DeserializeMissionState|125|function|void __thiscall DeserializeMissionState(TStream* stream)
 535940|FindFirstTrackedHandlerMatchingModeAndShortKey|123|function|undefined FindFirstTrackedHandlerMatchingModeAndShortKey()
 5359e0|IsMapTileCompatibleWithCurrentTerrainOrActionContext|210|function|undefined IsMapTileCompatibleWithCurrentTerrainOrActionContext()
 535b00|SelectBestCityDevelopmentFromResourcePools|899|function|undefined SelectBestCityDevelopmentFromResourcePools()
@@ -8972,7 +8972,7 @@ address|name|size|type|prototype
 65a650|g_vtblMissionOrderPrioritizerDefendProvince||global|
 65a680|g_vtblTDefendProvinceMission||global|
 65a7e8|g_vtblMissionOrderPrioritizerNavy||global|
-65a818|g_vtblTNavyMission||global|
+65a818|TNavyMission::`vftable'||vtable|
 65a9e8|g_Recompute_Nation_Order_LookupTable_0065A9E8||global|
 65a9f0|g_Recompute_Nation_Order_LookupTable_0065A9F0||global|
 65a9f8|g_Recompute_Nation_Order_LookupTable_0065A9F8||global|
@@ -8983,7 +8983,7 @@ address|name|size|type|prototype
 65ac30|g_vtblMissionOrderPrioritizerBlockadePort||global|
 65ac60|g_vtblTBlockadePortMission||global|
 65ad08|g_vtblMissionOrderPrioritizerArmy||global|
-65ad38|g_vtblTArmyMission||global|
+65ad38|TArmyMission::`vftable'||vtable|
 65be50|g_apfnMapOrderUiDispatchHandlersBackup||global|
 65c2f0|g_awMapContextActionLabelTokenByCommand||global|
 65c330|g_pClassDescTAdmiral||global|
