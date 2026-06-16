@@ -4445,3 +4445,28 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
 - Validation: `just build`, `just sync-ownership`/`regen-stubs`, `just gates` all pass.
 - Follow-up: `WriteTo` (0x4d9c70) is still an empty stub (~0x770-byte serialization body);
   TPtrList/TList family lacks `// VTABLE` annotations to lock in the new alignment.
+
+## 2026-06-16 — TGreatPower::WriteTo serialization port (stub → 60.71%)
+
+- Ported the `TGreatPower::WriteTo` (0x4d9c70) stub to the full ~0x5ed-byte serializer
+  reconstructed from the disassembly: base `TObject::WriteTo`, the scalar block
+  (0xa0..0xb0), ten 0x17-short diplomacy arrays, budget pools + the 0x170-int aid matrix,
+  the 0xd-byte status-flag block + field8d6 shorts, the queue/tracked-slot members via
+  slot 0x14, a minister/city presence-flag byte (stream slot 0x7c) with conditional
+  per-member serialize, the townMarker/trackedObject lists, the scalar tail, the
+  missionNode queue via the new stream slot 0xb4, and the final scalars. Added
+  `#pragma optimize("y", on)` to match the original's FPO frame (this in `ebp`).
+- Supporting signature changes to expose the slot-0x14 serialize dispatch as real virtuals
+  (no reinterpret_cast convention fakes):
+  - `TStream`: added slot 0xb4 `WriteObjectSlotB4(void*, int)` (45th virtual; the original
+    vtable already has the slot — callers dispatch `[stream+0xb4]`).
+  - `TIndexAndRankList::slot14` and `TCity::ForwardQueueSlot20Slot50` gained an optional
+    `void* message = 0` so the serialize call can pass the stream through the real vtable
+    slot; existing no-arg callers/overrides are unaffected.
+  - Added file-scope `WriteShortArrayElems` / `WriteIntArrayElems` / `WriteTrackedListToStream`
+    inline helpers mirroring the WriteCoreState (0x4da500, 100%) idiom.
+- Result: 0x4d9c70 1.20% → 60.71%. Remaining gap is the per-element byte-swap temp
+  juggling in the array loops (a compiler-specific stack-slot pattern; an explicit
+  `SwapShortArrayBytes` per element regressed the match, so left as-is) plus minor
+  register-allocation/vtable-caching noise in the list tail.
+- Validation: `just build`, `just sync-ownership`/`regen-stubs`, `just gates` all pass.

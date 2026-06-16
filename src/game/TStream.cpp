@@ -120,6 +120,8 @@ char TStream::ReadByte(void*) {
   return 0;
 } // TODO: primitive 0x004892f0
 
+void TStream::WriteObjectSlotB4(void*, int) {} // TODO: primitive (subclass overrides)
+
 // ---------------------------------------------------------------------------
 // Typed read/write accessors: each delegates to a primitive vtable slot
 // (ReadBytes @0x3c / WriteBytesSlot78 @0x78). Default implementations on the

@@ -23,7 +23,7 @@ public:
   // implementations live at FUN_00488110/00488160/004881f0, but modeling these as
   // real virtuals lets callers dispatch through the native vtable at the correct
   // byte offsets instead of reinterpret_cast'ing to a provisional interface.
-  virtual void slot14();                           // 5  (0x14)
+  virtual void slot14(void* message = 0);          // 5  (0x14)
   virtual void slot18();                           // 6  (0x18)
   virtual void ResetPtrListRecordsSlot1C();        // 7  (0x1c)
   virtual void slot20();                           // 8  (0x20)

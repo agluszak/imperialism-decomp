@@ -97,7 +97,7 @@ public:
   // fieldB6 and push the new target (TGreatPower slot 0x45).
   virtual short AllocateNeedFromOwnerSlot4C(short needIndex, short amount);
   // slot 0x14 — body 0x004b46c0: forward to queue274 slot 0x20.
-  virtual void ForwardQueueSlot20Slot50();
+  virtual void ForwardQueueSlot20Slot50(void* message = 0);
   // slot 0x15 — thunk 0x00407464: building display capacity by slot.
   virtual short GetCityBuildingDisplayCapacityBySlot(int buildingSlot) {
     (void)buildingSlot;

@@ -19,7 +19,7 @@ CRuntimeClass* TIndexAndRankList::GetRuntimeClass() const {
 // implementations are at FUN_00488110/00488160/004881f0; these exist so callers
 // dispatch through the native vtable rather than reinterpret_cast to a provisional
 // interface.
-void TIndexAndRankList::slot14() {}
+void TIndexAndRankList::slot14(void*) {}
 void TIndexAndRankList::slot18() {}
 void TIndexAndRankList::ResetPtrListRecordsSlot1C() {}
 void TIndexAndRankList::slot20() {}

@@ -325,7 +325,7 @@ void TCity::WriteQueuePairSlot48(short low, short high) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b46c0
-void TCity::ForwardQueueSlot20Slot50() {
+void TCity::ForwardQueueSlot20Slot50(void*) {
   this->eventQueue274->Call20();
 }
 

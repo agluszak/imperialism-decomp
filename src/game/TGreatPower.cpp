@@ -512,6 +512,37 @@ static const char kUCountryCppPath[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 
 static const float kOne = 1.0f;
 
+// Serialization helpers: the original copies each array element into a stack temp
+// and writes that temp via the stream's primitive WriteBytesSlot78 (slot 0x78).
+static __inline void WriteShortArrayElems(TStream* stream, const short* values, int count) {
+  for (int remaining = count; remaining != 0; --remaining) {
+    short element = *values;
+    stream->WriteBytesSlot78(&element, 2);
+    ++values;
+  }
+}
+
+static __inline void WriteIntArrayElems(TStream* stream, const int* values, int count) {
+  for (int remaining = count; remaining != 0; --remaining) {
+    int element = *values;
+    stream->WriteBytesSlot78(&element, 4);
+    ++values;
+  }
+}
+
+// Writes a TPtrList's tracked entries: the list itself (slot 0x14), then the entry
+// count, then each 1-based entry through its own slot 0x14 serializer.
+static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
+  list->ResetSlot14(stream);
+  int entryCount = list->GetCountSlot48();
+  stream->WriteBytesSlot78(&entryCount, 4);
+  for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+    TUnitOrderState* entry =
+        reinterpret_cast<TUnitOrderState*>(list->GetTrackedEntrySlot4C(ordinal));
+    entry->WriteToStreamSlot14(stream);
+  }
+}
+
 extern "C" {
 extern float g_Classify_Nation_Military_Value_00653704; // -1.0f
 extern float g_Classify_Nation_Military_Value_00653708; // 2.0f
@@ -1369,9 +1400,94 @@ void TGreatPower::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d9c70
+#pragma optimize("y", on)
 void TGreatPower::WriteTo(TStream* stream) {
-  (void)stream;
+  TObject::WriteTo(stream);
+
+  stream->WriteBytesSlot78(&this->diplomacyEligibilityA0, 1);
+  stream->WriteBytesSlot78(&this->diplomacyCounterA2, 2);
+  stream->WriteBytesSlot78(&this->tradeCapacity, 2);
+  stream->WriteBytesSlot78(&this->needCapA6, 2);
+  stream->WriteBytesSlot78(&this->needsOverCapFlag, 2);
+  stream->WriteBytesSlot78(&this->grantTotalCost, 4);
+  stream->WriteBytesSlot78(&this->diplomacyCounterB0, 2);
+
+  WriteShortArrayElems(stream, this->diplomacyPolicyByNation, 0x17);
+  WriteShortArrayElems(stream, this->diplomacyGrantByNation, 0x17);
+  WriteShortArrayElems(stream, this->needCurrentByType, 0x17);
+  WriteShortArrayElems(stream, this->needTargetByType, 0x17);
+  WriteShortArrayElems(stream, this->relationDeltaCurrent, 0x17);
+  WriteShortArrayElems(stream, this->relationDeltaSnapshot, 0x17);
+  WriteShortArrayElems(stream, this->diplomacyState1c6, 0x17);
+  WriteShortArrayElems(stream, this->diplomacyState1f4, 0x17);
+  WriteShortArrayElems(stream, this->diplomacyState222, 0x17);
+  WriteShortArrayElems(stream, this->diplomacyState250, 0x17);
+
+  stream->WriteBytesSlot78(&this->budgetPoolBase, 4);
+  stream->WriteBytesSlot78(&this->budgetPoolDelta, 4);
+  WriteIntArrayElems(stream, this->aidAllocationMatrix, 0x170);
+
+  stream->WriteBytesSlot78(&this->serializedStatusFlags[0], 0xd);
+  WriteShortArrayElems(stream, this->field8d6, 0xd);
+
+  this->turnEventQueue->slot14(stream);
+  this->proposalQueue->slot14(stream);
+  for (int slotIndex = 0; slotIndex < kDiplomacyTrackedSlotCount; ++slotIndex) {
+    this->diplomacyTrackedSlots[slotIndex]->slot14(stream);
+  }
+
+  unsigned char presenceFlags = 0;
+  if (this->foreignMinister != 0) {
+    presenceFlags = 1;
+  }
+  if (this->interiorMinister != 0) {
+    presenceFlags = static_cast<unsigned char>(presenceFlags | 2);
+  }
+  if (this->defenseMinister != 0) {
+    presenceFlags = static_cast<unsigned char>(presenceFlags | 4);
+  }
+  if (this->city != 0) {
+    presenceFlags = static_cast<unsigned char>(presenceFlags | 8);
+  }
+  stream->streamSlot7c(presenceFlags);
+  if (this->foreignMinister != 0) {
+    this->foreignMinister->WriteTo(stream);
+  }
+  if (this->interiorMinister != 0) {
+    this->interiorMinister->WriteTo(stream);
+  }
+  if (this->defenseMinister != 0) {
+    this->defenseMinister->WriteTo(stream);
+  }
+  if (this->city != 0) {
+    this->city->ForwardQueueSlot20Slot50(stream);
+  }
+
+  WriteTrackedListToStream(stream, this->townMarkerList);
+  WriteTrackedListToStream(stream, this->trackedObjectList);
+
+  stream->WriteBytesSlot78(this->candidateNationFlags, 0x17);
+  stream->WriteBytesSlot78(&this->diplomacyBudgetBase, 4);
+  stream->WriteBytesSlot78(&this->escalationCounter, 1);
+  stream->WriteBytesSlot78(&this->pendingCommitmentCost, 4);
+  stream->WriteBytesSlot78(&this->pressureCounter, 1);
+  stream->WriteBytesSlot78(&this->field900, 4);
+  stream->WriteBytesSlot78(&this->field904, 1);
+
+  this->missionNodeQueue->ResetSlot14(stream);
+  int missionNodeCount = this->missionNodeQueue->GetCountSlot48();
+  stream->WriteBytesSlot78(&missionNodeCount, 4);
+  for (int nodeOrdinal = 1; nodeOrdinal <= missionNodeCount; ++nodeOrdinal) {
+    void* node = this->missionNodeQueue->GetTrackedEntrySlot4C(nodeOrdinal);
+    stream->WriteObjectSlotB4(node, 0);
+  }
+
+  stream->WriteBytesSlot78(&this->field910, 4);
+  stream->WriteBytesSlot78(&this->aidAllocationTotal, 4);
+  stream->WriteBytesSlot78(this->colonyBoycottFlags, 0x17);
+  stream->WriteBytesSlot78(&this->pendingAidTotal, 4);
 }
+#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004da3e0
 #pragma optimize("y", on)
