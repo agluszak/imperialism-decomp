@@ -24,12 +24,11 @@ into the Ghidra database so the decompiled code we promote is better:
   4. propagates virtual names base->derived: an anonymous override (a derived
      slot whose body differs from the base's but has only an auto/thunk name) is
      renamed ``<Class>::<BaseVirtualName>`` and filed under the class namespace.
-  5. builds/replaces ``/MFC/vtables/<Class>Vtbl`` and, for game classes,
-     ``/MFC/classes/<Class>`` so Ghidra can type ``this->vftable`` in virtual
-     call sites. Canonical MFC library classes reuse the root datatypes from
+  5. builds/replaces ``/MFC/vtables/<Class>Vtbl`` so Ghidra can type vtables,
+     while class structures stay canonical at root paths such as ``/<Class>``.
+     Canonical MFC library classes reuse the root datatypes from
      ``apply_mfc_datatypes`` instead of growing a second class hierarchy. The
-     pass also installs a root ``/<Class>`` structure when Ghidra's
-     class-namespace ``this`` type is only an empty placeholder.
+     pass removes stale ``/MFC/classes/<Class>`` duplicates left by older runs.
   6. applies high-confidence non-manual prototypes: per-slot function-pointer
      signatures from the live target function or matching Mac CodeWarrior method
      evidence, CreateObject factory return types, direct vtable-store methods,
@@ -121,6 +120,17 @@ def run(program, args) -> dict:
                 return ""
             bs.append(b)
         return bs.decode("latin1", "replace")
+
+    def clear_code_units_covering(start_addr, end_addr) -> None:
+        clear_start = start_addr
+        clear_end = end_addr
+        data = listing.getDataContaining(start_addr)
+        if data is not None:
+            if data.getMinAddress().compareTo(clear_start) < 0:
+                clear_start = data.getMinAddress()
+            if data.getMaxAddress().compareTo(clear_end) > 0:
+                clear_end = data.getMaxAddress()
+        listing.clearCodeUnits(clear_start, clear_end, False)
 
     # ------------------------------------------------------------------ #
     # 1. CRuntimeClass datatype
@@ -328,6 +338,7 @@ def run(program, args) -> dict:
         "class_vptr_mismatch": 0,
         "mfc_canonical_class_reused": 0,
         "mfc_class_duplicates_removed": 0,
+        "class_duplicates_removed": 0,
         "root_this_structs": 0,
         "root_this_replaced": 0,
         "root_this_preserved": 0,
@@ -374,7 +385,7 @@ def run(program, args) -> dict:
         if args.apply:
             try:
                 end = A(desc_addr + DESC_SIZE - 1)
-                listing.clearCodeUnits(A(desc_addr), end, False)
+                clear_code_units_covering(A(desc_addr), end)
                 listing.createData(A(desc_addr), rt_dt)
                 stats["typed"] += 1
             except Exception as exc:  # noqa: BLE001
@@ -555,11 +566,6 @@ def run(program, args) -> dict:
             if dt is not None:
                 return dt
             return dtm.getDataType(classes_cat, name)
-
-        def canonical_mfc_datatype(name: str):
-            if name not in MFC_LIBRARY_CLASS_NAMES:
-                return None
-            return dtm.getDataType(CategoryPath.ROOT, name)
 
         def datatype_for_mac_arg(type_text: str):
             t = " ".join(type_text.replace("&", " &").replace("*", " *").split())
@@ -753,36 +759,54 @@ def run(program, args) -> dict:
                 stats["vtable_data_failed"] += 1
                 changes.append(f"  !! vtable data {cls}@0x{vt:08x} failed: {exc}")
 
+        def remove_stale_class_duplicate(datatype, cls: str) -> None:
+            try:
+                if dtm.remove(datatype):
+                    stats["class_duplicates_removed"] += 1
+                    if cls in MFC_LIBRARY_CLASS_NAMES:
+                        stats["mfc_class_duplicates_removed"] += 1
+                else:
+                    changes.append(f"  !! duplicate /MFC/classes/{cls} could not be removed")
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! duplicate /MFC/classes/{cls} removal failed: {exc}")
+
+        def remove_stale_class_duplicates() -> None:
+            stale: list[tuple[object, str]] = []
+            it = dtm.getAllDataTypes()
+            while it.hasNext():
+                datatype = it.next()
+                path = datatype.getPathName()
+                if not path.startswith("/MFC/classes/"):
+                    continue
+                cls = datatype.getName()
+                if dtm.getDataType(CategoryPath.ROOT, cls) is not None:
+                    stale.append((datatype, cls))
+            for datatype, cls in stale:
+                remove_stale_class_duplicate(datatype, cls)
+
         def ensure_class_struct(cls: str, base_name: str | None, vtbl_dt, size: int):
-            canonical = canonical_mfc_datatype(cls)
-            if canonical is not None:
-                duplicate = dtm.getDataType(classes_cat, cls)
-                if duplicate is not None:
-                    try:
-                        if dtm.remove(duplicate):
-                            stats["mfc_class_duplicates_removed"] += 1
-                        else:
-                            changes.append(f"  !! canonical MFC duplicate {cls} could not be removed")
-                    except Exception as exc:  # noqa: BLE001
-                        changes.append(f"  !! canonical MFC duplicate {cls} removal failed: {exc}")
-                stats["mfc_canonical_class_reused"] += 1
-                return canonical, False, component0_type_name(canonical), "canonical MFC root type", True
-            vptr = PointerDataType(vtbl_dt, dtm) if vtbl_dt else PointerDataType()
-            s = build_class_struct(classes_cat, cls, base_name, vptr, size)
-            class_dt, replaced = replace_or_add_datatype(classes_cat, cls, s)
+            existing = dtm.getDataType(CategoryPath.ROOT, cls)
+            preserved = existing is not None and not is_generated_root_struct(existing)
+            if preserved:
+                class_dt = existing
+                replaced = False
+                if cls in MFC_LIBRARY_CLASS_NAMES:
+                    stats["mfc_canonical_class_reused"] += 1
+            else:
+                vptr = PointerDataType(vtbl_dt, dtm) if vtbl_dt else PointerDataType()
+                s = build_class_struct(CategoryPath.ROOT, cls, base_name, vptr, size)
+                class_dt, replaced = replace_or_add_datatype(CategoryPath.ROOT, cls, s)
+
+            duplicate = dtm.getDataType(classes_cat, cls)
+            if duplicate is not None:
+                remove_stale_class_duplicate(duplicate, cls)
+
             vptr_text = component0_type_name(class_dt)
+            if preserved:
+                return class_dt, replaced, preserved, vptr_text, "preserved canonical root type", True
             expected = f"{cls}Vtbl *" if vtbl_dt is not None else "pointer"
             verified = vtbl_dt is None or vptr_text == expected
-            return class_dt, replaced, vptr_text, expected, verified
-
-        def ensure_root_this_struct(cls: str, base_name: str | None, vtbl_dt, size: int):
-            vptr = PointerDataType(vtbl_dt, dtm) if vtbl_dt else PointerDataType()
-            existing = dtm.getDataType(CategoryPath.ROOT, cls)
-            if existing is not None and not is_generated_root_struct(existing):
-                return existing, False, True, component0_type_name(existing)
-            s = build_class_struct(CategoryPath.ROOT, cls, base_name, vptr, size)
-            root_dt, replaced = replace_or_add_datatype(CategoryPath.ROOT, cls, s)
-            return root_dt, replaced, False, component0_type_name(root_dt)
+            return class_dt, replaced, preserved, vptr_text, expected, verified
 
         def ecx_this_like(fn) -> bool:
             for ins in listing.getInstructions(fn.getBody(), True):
@@ -809,7 +833,7 @@ def run(program, args) -> dict:
                 vtbl_dt, slots = None, []
             apply_vtable_data(cls, vt, vtbl_dt, slots)
             try:
-                _class_dt, class_replaced, vptr_text, expected_vptr, verified = ensure_class_struct(
+                _class_dt, class_replaced, root_preserved, vptr_text, expected_vptr, verified = ensure_class_struct(
                     cls, base, vtbl_dt, info.get("size") or 4
                 )
                 stats["class_structs"] += 1
@@ -824,23 +848,17 @@ def run(program, args) -> dict:
                     )
                 if args.verbose:
                     changes.append(f"  {cls} class field0: {vptr_text}")
-            except Exception as exc:  # noqa: BLE001
-                changes.append(f"  !! class struct {cls} failed: {exc}")
-            try:
-                _root_dt, root_replaced, root_preserved, root_vptr_text = ensure_root_this_struct(
-                    cls, base, vtbl_dt, info.get("size") or 4
-                )
                 if root_preserved:
                     stats["root_this_preserved"] += 1
                 else:
                     stats["root_this_structs"] += 1
-                    if root_replaced:
+                    if class_replaced:
                         stats["root_this_replaced"] += 1
                 if args.verbose:
                     mode = "preserved" if root_preserved else "refreshed"
-                    changes.append(f"  {cls} root this type {mode}; field0: {root_vptr_text}")
+                    changes.append(f"  {cls} root this type {mode}; field0: {vptr_text}")
             except Exception as exc:  # noqa: BLE001
-                changes.append(f"  !! root this struct {cls} failed: {exc}")
+                changes.append(f"  !! class/root struct {cls} failed: {exc}")
 
             ctor = info.get("ctor")
             if ctor is not None:
@@ -930,6 +948,8 @@ def run(program, args) -> dict:
                     f"  !! namespace ecx this-type 0x{int(fn.getEntryPoint().getOffset()):08x} {cls} failed: {exc}"
                 )
 
+        remove_stale_class_duplicates()
+
     return {"stats": stats, "changes": changes}
 
 
@@ -964,7 +984,8 @@ def main() -> int:
             f"class_vptr_verified={s['class_vptr_verified']} "
             f"class_vptr_mismatch={s['class_vptr_mismatch']} "
             f"mfc_canonical_reused={s['mfc_canonical_class_reused']} "
-            f"mfc_duplicates_removed={s['mfc_class_duplicates_removed']}\n"
+            f"mfc_duplicates_removed={s['mfc_class_duplicates_removed']} "
+            f"class_duplicates_removed={s['class_duplicates_removed']}\n"
             f"          root_this_structs={s['root_this_structs']} "
             f"root_this_replaced={s['root_this_replaced']} "
             f"root_this_preserved={s['root_this_preserved']}\n"

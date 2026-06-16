@@ -26,6 +26,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Exit non-zero if an MFC library type exists both at root and under /MFC.",
     )
+    parser.add_argument(
+        "--fail-on-duplicates",
+        action="store_true",
+        help="Exit non-zero if any concrete structure name is duplicated under root or /MFC.",
+    )
     return parser.parse_args()
 
 
@@ -106,6 +111,12 @@ def main() -> int:
             suffix = f" fields={summary}" if summary else ""
             print(f"  {datatype.getPathName()} size={datatype.getLength()}{suffix}")
 
+    if args.fail_on_duplicates and duplicates:
+        print(
+            "\nERROR: concrete structure datatypes are duplicated under root or /MFC.",
+            file=sys.stderr,
+        )
+        return 1
     if args.fail_on_mfc_library_duplicates and mfc_library_duplicates:
         print(
             "\nERROR: canonical MFC library datatypes are duplicated under /MFC.",
