@@ -563,10 +563,6 @@ void __stdcall OrphanRetStub_00515de0(int, int, int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x0052efb0
-void __stdcall NoOpForeignMinisterUtilityStub(int) {
-  return;
-}
 
 // FUNCTION: IMPERIALISM 0x0052fd80
 void NoOpForeignMinisterSlot24Handler(void) {

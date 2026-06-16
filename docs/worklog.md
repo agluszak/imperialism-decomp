@@ -4355,3 +4355,21 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
   project config for the MFC module. High blast radius — warrants a dedicated effort.
 - Status: experiment only; no source changes committed. Recommendation: pursue as a
   focused migration given the quantified payoff.
+
+## 2026-06-16 — TMission cleanup & TMinister vtable 100% match
+
+- TMission cleanup:
+  - Renamed `DeleteSelfViaScalarDtor` to `ReleaseRuntimeSelectionOwnerAndDestroyObject` in `TMission.cpp` to align with `TMission.h`.
+  - Deleted the redundant implementations of `InvokeObjectVtableMethod24` and `CopyPayloadBuffer` from `TMission.cpp` as they are now cleanly inherited from `TObject`.
+- TEventHandler & TObject cleanup:
+  - Removed `HandleTurnEventVtableSlot24CopyPayloadBuffer` override declaration from `TEventHandler.h` and its implementation from `TEventHandler.cpp` to let it inherit cleanly from `TObject`.
+  - Reassigned ownership of `415ce0` and `4798d0` to `TObject.cpp` in `function_ownership.csv`.
+  - Removed `extern "C"` linkage from the `CreateObject_606ff2` declaration in `TObject.cpp` to match stub linkage.
+  - Reordered implemented functions in `TObject.cpp` by virtual address to satisfy sorting requirements.
+- TMinister vtable slot 17 alignment:
+  - Simplified `TMinister::NotifySlot44` to a direct no-op in `TMinister.cpp` and annotated it with address `0x0052efb0`.
+  - Removed `NoOpForeignMinisterUtilityStub` from `noop_slots.cpp`.
+  - Ascending address order of `TMinister.cpp` updated.
+- Verification:
+  - `just sync-ownership` -> `just regen-stubs` -> `just build` -> `just gates` all passed cleanly.
+  - `just vtable TMinister::` confirms slot 17 is now paired and matches 100%. Overall `aligned count` increased by 1.

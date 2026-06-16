@@ -1,8 +1,6 @@
 #include "game/TZone.h"
 
 #include "game/mfc.h"
-#include "game/mfc.h"
-#include "game/mfc.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapOrderContext.h"
 #include "game/UiRuntimeContext.h"
@@ -27,7 +25,6 @@ undefined4 thunk_FindPortZoneByTile(void);
 undefined4 GetNextPortZone(void);
 undefined4 thunk_AdvanceSpiralSearchStateAndStepHexCoordinates(void);
 undefined4 thunk_StepHexRowColByDirectionWithWrapRules(void);
-undefined4 CreateObject_606ff2(void);
 
 namespace {
 
@@ -37,7 +34,6 @@ void DeleteUnlinkedZone(TZone* zone) {
 
 } // namespace
 
-// FUNCTION: IMPERIALISM 0x004798d0
 void TZone::InvokeObjectVtableMethod24() {
   HandleTurnEventVtableSlot24CopyPayloadBuffer();
 }
@@ -46,7 +42,8 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   CRuntimeClass* runtimeClass = GetRuntimeClass();
   unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
   GetRuntimeClass();
-  CObject* destObject = reinterpret_cast<CObject*>(CreateObject_606ff2());
+  runtimeClass = GetRuntimeClass();
+  CObject* destObject = runtimeClass->CreateObject();
   if (destObject == 0) {
     return 0;
   }

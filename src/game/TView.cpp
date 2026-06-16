@@ -269,13 +269,13 @@ void TView::SetState(int state, int refreshFlag) {
 // Base-slot overrides (slots 0x07/0x08). Bodies differ from TEventHandler's; still
 // unported stubs.
 // FUNCTION: IMPERIALISM 0x0048b0b0
-void TView::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
+void TView::Free() {
   while (childList44 != 0) {
     int* listWords = reinterpret_cast<int*>(childList44);
     TEventHandler* child = *reinterpret_cast<TEventHandler**>(
         reinterpret_cast<char*>(*reinterpret_cast<int*>(reinterpret_cast<char*>(listWords) + 4)) +
         8);
-    child->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+    child->Free();
   }
   if (ownerContext != 0) {
     ownerContext->vmethod_0093(this);
@@ -296,7 +296,7 @@ void TView::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
   }
   field0c = 0;
   if (field18 != 0) {
-    reinterpret_cast<TEventHandler*>(field18)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+    reinterpret_cast<TEventHandler*>(field18)->Free();
   }
   field18 = 0;
   delete this;
@@ -688,7 +688,7 @@ void TView::CopyCityDialogStateFromSource(TView* source) {
     POSITION pos = source->childList44->GetHeadPosition();
     while (pos != NULL) {
       TView* child = static_cast<TView*>(source->childList44->GetNext(pos));
-      TView* childClone = static_cast<TView*>(child->CloneEngineerDialogStateToNewInstance());
+      TView* childClone = static_cast<TView*>(child->ShallowClone());
       vmethod_0092(childClone, 0);
     }
   }
@@ -696,8 +696,8 @@ void TView::CopyCityDialogStateFromSource(TView* source) {
 
 // TView slot 0x08 override: allocate via slot 0x09 then copy city-dialog fields.
 // FUNCTION: IMPERIALISM 0x0048bfd0
-void* TView::CloneEngineerDialogStateToNewInstance() {
-  TView* clone = static_cast<TView*>(HandleTurnEventVtableSlot24CopyPayloadBuffer());
+TObject* TView::ShallowClone() {
+  TView* clone = static_cast<TView*>(ShallowFree());
   clone->CopyCityDialogStateFromSource(this);
   return clone;
 }

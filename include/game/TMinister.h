@@ -7,25 +7,23 @@
 
 class TStream;
 
+#include "game/TObject.h"
+
 // Minister base — fork-class construction (ConstructTMinister writes skillIndexC + vptr only).
-// Vtable has 44 slots (indices 0x00–0x2b); slots 2–4 are turn-event fork thunks, not
-// CObject::Serialize/AssertValid/Dump.
 // VTABLE: IMPERIALISM 0x00659c00
-class TMinister : public CObject {
+class TMinister : public TObject {
 public:
   TMinister();
   void InitializeBaseOrderArray(undefined4 ownerContext);
 
   virtual CRuntimeClass* GetRuntimeClass() const override; // 0
   // slot 1 — scalar deleting destructor @ 0x0052eba0 (SYNTHETIC)
-  virtual void Serialize(CArchive& ar) override;                         // 2 (0x08) turn-event fork
-  virtual void AssertValid() const override;                             // 3 (0x0c)
-  virtual void Dump(CDumpContext& unused) const override;                // 4 (0x10)
-  virtual void SerializeTMinisterBaseOrderArrayHeader(TStream* archive); // 5 (0x14)
-  virtual void Call18(int arg1 = 0);         // 6 (0x18) DeserializeTMinisterBaseOrderArrayHeader
-  virtual void Call1C();                     // 7 (0x1c) DeleteForeignMinisterAndReleaseOrderArray
-  virtual void InvokeObjectSlot20();         // 8 (0x20)
-  virtual void CopyPayloadSlot24();          // 9 (0x24)
+  void WriteTo(TStream* stream) override;                     // 5 (0x14)
+  void ReadFrom(TStream* stream) override;                     // 6 (0x18)
+  void SerializeTMinisterBaseOrderArrayHeader(TStream* archive);         // non-virtual helper
+  void Call18(int arg1 = 0);                                             // non-virtual helper
+  void Free() override; // 7 (0x1c) DeleteForeignMinisterAndReleaseOrderArray
+  void Call1C();                                                         // non-virtual helper
   virtual void MinisterSlot0A();             // 10 (0x28)
   virtual void MinisterSlot0B();             // 11 (0x2c)
   virtual void MinisterSlot0C();             // 12 (0x30)

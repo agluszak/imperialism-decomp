@@ -50,7 +50,7 @@ void TStatusButton::HandleEvent(int selectedIndex, TEventHandler* sourceHandler,
       TAmtBar* backControl = reinterpret_cast<TAmtBar*>(
           reinterpret_cast<TView*>(OwnerPanel())->ResolveControlByTag(kControlTagBack));
       if (backControl != 0) {
-        reinterpret_cast<TView*>(backControl)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+        reinterpret_cast<TView*>(backControl)->Free();
         reinterpret_cast<TView*>(OwnerPanel())->RefreshControl();
       }
 

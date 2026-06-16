@@ -46,9 +46,6 @@ public:
   // --- TMission's own virtuals, exact vtable slot order ---
   virtual void SerializeMissionState(CArchive* archive);   // 0x05 0x535820
   virtual void DeserializeMissionState(CArchive* archive); // 0x06 0x5358a0
-  virtual void DeleteSelfViaScalarDtor();                  // 0x07 0x4798b0
-  virtual void* InvokeObjectVtableMethod24();              // 0x08 0x4798d0 (folds w/ TZone)
-  virtual void* CopyPayloadBuffer();                       // 0x09 0x415ce0 (folds w/ TEventHandler)
   virtual char ReturnFalseSlot28();                        // 0x0a 0x534c00
   virtual int ReturnZeroSlot2C(int a, int b);              // 0x0b 0x534c20 (ret 8)
   virtual void NoOpSlot30();                               // 0x0c 0x534c40

@@ -47,7 +47,7 @@ void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
 // Slot 7 (0x1c): release the order array then delete self. This is the real base
 // virtual body at 0x52ec80 (was a __fastcall free wrapper); inherited by every minister.
 // FUNCTION: IMPERIALISM 0x0052ec80
-void TMinister::Call1C() {
+void TMinister::Free() {
   if (this->field_8 != 0) {
     this->field_8->ReleaseSlot24();
   }
@@ -55,18 +55,10 @@ void TMinister::Call1C() {
   delete this;
 }
 
-void TMinister::Serialize(CArchive& ar) {
-  (void)ar;
+void TMinister::Call1C() {
+  Free();
 }
-void TMinister::AssertValid() const {}
-void TMinister::Dump(CDumpContext& unused) const {
-  (void)unused;
-}
-void TMinister::InvokeObjectSlot20() {}
-void TMinister::CopyPayloadSlot24() {}
-void TMinister::NotifySlot44(void* receiver) {
-  NoOpForeignMinisterUtilityStub(reinterpret_cast<int>(receiver));
-}
+
 void TMinister::MinisterSlot12() {}
 void TMinister::Call4C() {}
 void TMinister::MinisterSlot14() {}
@@ -77,16 +69,23 @@ void TMinister::Call54() {}
 #endif
 
 // FUNCTION: IMPERIALISM 0x0052ecc0
-void TMinister::Call18(int arg1) {
-  TStream* archive = reinterpret_cast<TStream*>(arg1);
-  TMinister::Serialize(*reinterpret_cast<CArchive*>(archive));
-  archive->ReadBytes(&this->skillIndexC, 2);
+void TMinister::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&this->skillIndexC, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0052ecf0
+void TMinister::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&this->skillIndexC, 2);
+}
+
+void TMinister::Call18(int arg1) {
+  ReadFrom(reinterpret_cast<TStream*>(arg1));
+}
+
 void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {
-  TMinister::Serialize(*reinterpret_cast<CArchive*>(archive));
-  archive->WriteBytesSlot78(&this->skillIndexC, 2);
+  WriteTo(archive);
 }
 
 // Base-vtable slots 0x28-0x40. These were autogen stubs (slots left empty); the orig
@@ -112,3 +111,8 @@ void TMinister::MinisterSlot10() {}
 
 // FUNCTION: IMPERIALISM 0x0052ef80
 void TMinister::MinisterSlot0E() {}
+
+// FUNCTION: IMPERIALISM 0x0052efb0
+void TMinister::NotifySlot44(void* receiver) {
+  (void)receiver;
+}

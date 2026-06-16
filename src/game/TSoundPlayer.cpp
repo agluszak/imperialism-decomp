@@ -204,7 +204,7 @@ void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
 
 // Slot 0x07 override — release the two channel peers, then run the base teardown.
 // FUNCTION: IMPERIALISM 0x005e51d0
-void TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
+void TSoundPlayer::Free() {
   if (this->runtimePeerAt70 != 0) {
     // Peer class (vtable 0x650a08) unrecovered — slot 0x38 release.
     vcall_runtime::fastcall0<int>(this->runtimePeerAt70, 0x0e);
@@ -216,5 +216,5 @@ void TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
   this->runtimePeerAt6c = 0;
   ReleaseRuntimeSelectionPeersAndResetOwner_Impl();
   ForwardMciCommand808ToDevice();
-  TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject();
+  TEventHandler::Free();
 }

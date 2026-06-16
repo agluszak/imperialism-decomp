@@ -54,7 +54,7 @@ char TControl::LogUnhandledDialogMethodAndReturnFalse() {
 // Slot 0x08 override (0x00435760): TControl cannot be cloned. The original asserts via
 // the McAppUI invalidation thunk (file header path, line 0x594) and returns null.
 // FUNCTION: IMPERIALISM 0x00435760
-void* TControl::CloneEngineerDialogStateToNewInstance() {
+TObject* TControl::ShallowClone() {
   reinterpret_cast<void(__cdecl*)(const char*, int)>(
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiHeaderPath_006943CC, 0x594);
   return 0;

@@ -11,9 +11,8 @@ public:
   void InitializeBaseOrderArrayMetrics();
 
   CRuntimeClass* GetRuntimeClass() const override; // slot 0 (0x4ec0c0)
-  // Class-specific overrides of TMinister base slots (5,6,10,18,19,20,21).
-  void SerializeTMinisterBaseOrderArrayHeader(TStream* archive) override; // 5 (0x4ec1d0)
-  void Call18(int arg1 = 0) override;                                     // 6 (0x4ec2f0)
+  void WriteTo(TStream* stream) override;                                 // 5 (0x4ec1d0)
+  void ReadFrom(TStream* stream) override;                                // 6 (0x4ec2f0)
   void MinisterSlot0A() override;                                         // 10 (0x4ec3d0)
   void MinisterSlot12() override;                                         // 18 (0x4ec450)
   void Call4C() override;                                                 // 19 (0x4ec4c0)

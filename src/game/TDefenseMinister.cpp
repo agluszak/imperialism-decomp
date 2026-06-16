@@ -54,14 +54,14 @@ void TDefenseMinister::InitializeBaseOrderArrayMetrics() {
 // Slot 5 override (0x4ec1d0): serialize defense-minister order-array metrics.
 // Honest stub — body not yet ported (needs the defense field layout data pass).
 // FUNCTION: IMPERIALISM 0x004ec1d0
-void TDefenseMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {
-  (void)archive;
+void TDefenseMinister::WriteTo(TStream* stream) {
+  (void)stream;
 }
 
 // Slot 6 override (0x4ec2f0): deserialize defense-minister order-array metrics.
 // FUNCTION: IMPERIALISM 0x004ec2f0
-void TDefenseMinister::Call18(int arg1) {
-  (void)arg1;
+void TDefenseMinister::ReadFrom(TStream* stream) {
+  (void)stream;
 }
 
 // Slot 10 override (0x4ec3d0).

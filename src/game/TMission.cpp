@@ -14,21 +14,6 @@ extern float g_MissionDefaultScore_0065a468;
 
 undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void);
 
-// Slot 0x07: delete-self via the scalar-deleting destructor (vtable slot 0x04/index 1).
-// FUNCTION: IMPERIALISM 0x004798b0
-void TMission::DeleteSelfViaScalarDtor() {
-  delete this;
-}
-
-// Slots 0x08/0x09 are generic, class-independent forwarders shared (linker-folded) with
-// other vtables (TZone 0x4798d0, TEventHandler 0x415ce0); no ownership marker — the
-// MSVC500 linker folds these identical bodies onto the shared addresses.
-void* TMission::InvokeObjectVtableMethod24() {
-  return CopyPayloadBuffer();
-}
-void* TMission::CopyPayloadBuffer() {
-  return this;
-}
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---
 // FUNCTION: IMPERIALISM 0x00534c00

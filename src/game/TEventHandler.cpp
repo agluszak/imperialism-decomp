@@ -4,9 +4,6 @@
 // TView/AppRoot override only the few slots where their vtable bodies differ.
 
 #pragma optimize("y", on)
-#include "game/mfc.h"
-#include "game/mfc.h"
-#include "game/mfc.h"
 #include "game/TEventHandler.h"
 #include "game/TEvent.h"
 #include "game/TFileStream.h"
@@ -21,32 +18,8 @@ extern CRuntimeClass PTR_s_TEventHandler_00649588;
 
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 CreateObject_606ff2(void);
 
 extern ApplicationUiRootController* g_pApplicationUiRootController;
-
-namespace {
-
-struct ArchiveStreamAdapter {
-  void* vtable;
-  CArchive* archive;
-};
-
-} // namespace
-// (memcpy intrinsic); the explicit GetRuntimeClass reload matches the redundant call in
-// the original prologue.
-// FUNCTION: IMPERIALISM 0x00415ce0
-void* TEventHandler::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
-  CRuntimeClass* runtimeClass = GetRuntimeClass();
-  unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
-  GetRuntimeClass();
-  CObject* destObject = reinterpret_cast<CObject*>(CreateObject_606ff2());
-  if (destObject == 0) {
-    return 0;
-  }
-  memcpy(destObject, this, payloadSize);
-  return destObject;
-}
 
 // FUNCTION: IMPERIALISM 0x00415d50
 int TEventHandler::GetCityDialogValueDword10() {
@@ -58,37 +31,12 @@ void TEventHandler::SetCityDialogValueDword10(int value) {
   field10 = value;
 }
 
-// FUNCTION: IMPERIALISM 0x00485e90
-void TEventHandler::Serialize(CArchive& archive) {
-  ArchiveStreamAdapter adapter;
-  adapter.vtable = reinterpret_cast<void*>(0x00645f98);
-  adapter.archive = &archive;
-
-  TFileStream stream;
-  stream.SetBackingArchive(&adapter);
-
-  if (archive.IsLoading()) {
-    HandleCityDialogNoOpSlot14(reinterpret_cast<int>(&stream));
-  } else {
-    HandleCityDialogNoOpSlot18(reinterpret_cast<int>(&stream));
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x00485f70
-void TEventHandler::HandleCityDialogNoOpSlot14(int arg) {
-  (void)arg;
-}
-// FUNCTION: IMPERIALISM 0x00485f90
-void TEventHandler::HandleCityDialogNoOpSlot18(int arg) {
-  (void)arg;
-}
-
 // Drain the linked command/event list rooted at handler+0x04 until field0c reaches zero.
 // FUNCTION: IMPERIALISM 0x0048a070
 void TEventHandler::CreateTEventHandlerInstance(TEventHandler* handler) {
   while (handler->field0c != 0) {
     TEventHandler* entry = *reinterpret_cast<TEventHandler**>(handler->field04 + 8);
-    entry->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+    entry->Free();
   }
 }
 
@@ -105,7 +53,7 @@ CRuntimeClass* TEventHandler::GetRuntimeClass() const {
 TEventHandler::~TEventHandler() {}
 // Slot 0x07/0x08: base implementations (overridden by TView and AppRoot).
 // FUNCTION: IMPERIALISM 0x0048a1b0
-void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
+void TEventHandler::Free() {
   if (g_pApplicationUiRootController != 0 &&
       g_pApplicationUiRootController != reinterpret_cast<ApplicationUiRootController*>(this)) {
     TView* activeView = g_pApplicationUiRootController->GetActiveView();
@@ -121,7 +69,7 @@ void TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject() {
   }
   field0c = 0;
   if (field18 != 0) {
-    reinterpret_cast<TEventHandler*>(field18)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+    reinterpret_cast<TEventHandler*>(field18)->Free();
   }
   field18 = 0;
   delete this;
@@ -181,7 +129,7 @@ void TEventHandler::vmethod_0013(int* cmd) {
   reinterpret_cast<TView*>(cmd[4])->DispatchEvent(cmd[2], reinterpret_cast<TEventHandler*>(cmd[3]),
                                                   reinterpret_cast<TEvent*>(cmd));
   if (cmd != 0) {
-    reinterpret_cast<TView*>(cmd)->ReleaseRuntimeSelectionOwnerAndDestroyObject();
+    reinterpret_cast<TView*>(cmd)->Free();
   }
 }
 
@@ -303,7 +251,7 @@ class TView* TEventHandler::OwnerPanel() {
 // Slot 0x08 base body: allocates a 0x20-byte UI resource entry header (0x48a7c0). TView
 // overrides at 0x48bfd0 with CloneEngineerDialogStateToNewInstance.
 // FUNCTION: IMPERIALISM 0x0048a7c0
-void* TEventHandler::CloneEngineerDialogStateToNewInstance() {
+TObject* TEventHandler::ShallowClone() {
   if (g_McAppUiFlag_006A1AE4 == 0) {
     reinterpret_cast<void(__cdecl*)(const char*, int)>(
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(g_szMcAppUiSourcePath_006950B0, 0x2ef);

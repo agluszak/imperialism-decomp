@@ -30,7 +30,7 @@ public:
   CRuntimeClass* GetRuntimeClass() const override;
 
   // TSoundPlayer overrides of TEventHandler slots.
-  void ReleaseRuntimeSelectionOwnerAndDestroyObject() override; // 0x07 -> 0x5e51d0
+  void Free() override; // 0x07 -> 0x5e51d0
   char CanHandleCityDialogActionFalse(int action) override;     // 0x13 -> 0x593400
 
   // TSoundPlayer-introduced slots (0x25+), matching ApplicationUiRootController fork layout.

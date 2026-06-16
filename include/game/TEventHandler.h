@@ -38,13 +38,8 @@ public:
   // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
   virtual CRuntimeClass* GetRuntimeClass() const override;     // 0x00 0x48a0e0
   virtual ~TEventHandler() override;                           // 0x01
-  void Serialize(CArchive& archive) override;                  // 0x02 0x485e90
-  virtual void HandleCityDialogNoOpSlot14(int arg);            // 0x05 0x485f70
-  virtual void HandleCityDialogNoOpSlot18(int arg);            // 0x06 0x485f90
-  virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject(); // 0x07 0x48a1b0
-  virtual void*
-  CloneEngineerDialogStateToNewInstance(); // 0x08 0x48a7c0 base; TView override 0x48bfd0
-  virtual void* HandleTurnEventVtableSlot24CopyPayloadBuffer(); // 0x09 0x415ce0
+  void Free() override; // 0x07 0x48a1b0
+  TObject* ShallowClone() override; // 0x08 0x48a7c0 base; TView override 0x48bfd0
   virtual char GetBoolSlot28();            // 0x0a 0x48a240 GetCityDialogFlagByte4
   virtual void SetControlValue(int value); // 0x0b 0x48a260 SetCityDialogFlagByte4
   virtual int QueryStepValue();            // 0x0c 0x48a2c0 GetCityDialogValueDwordC

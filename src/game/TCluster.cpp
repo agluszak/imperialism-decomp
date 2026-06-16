@@ -94,8 +94,8 @@ void TCluster::SetControlClassAndRefresh(int classState, int refreshFlag) {
 }
 
 // FUNCTION: IMPERIALISM 0x004918a0
-void* TCluster::CloneEngineerDialogStateToNewInstance() {
-  TCluster* clone = reinterpret_cast<TCluster*>(HandleTurnEventVtableSlot24CopyPayloadBuffer());
+TObject* TCluster::ShallowClone() {
+  TCluster* clone = static_cast<TCluster*>(ShallowFree());
   clone->CopyCityDialogStateFromSource(this);
   clone->field84 = this->field84;
   return clone;

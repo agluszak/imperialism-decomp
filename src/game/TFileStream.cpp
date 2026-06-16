@@ -1,6 +1,6 @@
 #include "game/TFileStream.h"
+#include "game/ArchiveStreamAdapter.h"
 #include "game/GameAssert.h"
-#include "game/mfc.h"
 #include "game/mfc.h"
 #include "game/CString.h"
 
@@ -28,10 +28,10 @@ static __inline void FailNilPointer(int line) {
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag)("D:\\Ambit\\McAppStream.cpp", line);
 }
 
-// The backing pointer references a wrapper object whose +4 field holds the
+// The backing pointer is an ArchiveStreamAdapter whose archive field holds the
 // CArchive that actually moves bytes.
-static __inline CArchive* BackingArchive(void* backingArchiveOrStream) {
-  return *reinterpret_cast<CArchive**>(reinterpret_cast<char*>(backingArchiveOrStream) + 4);
+static __inline CArchive* BackingArchive(ArchiveStreamAdapter* backingArchiveOrStream) {
+  return backingArchiveOrStream->archive;
 }
 
 // FUNCTION: IMPERIALISM 0x00489030
@@ -63,7 +63,7 @@ TFileStream::TFileStream() {
 // TFileStream::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00489160
-void TFileStream::SetBackingArchive(void* backingArchive) {
+void TFileStream::SetBackingArchive(ArchiveStreamAdapter* backingArchive) {
   backingArchiveOrStream = backingArchive;
 }
 
@@ -97,21 +97,19 @@ void TFileStream::WriteBytesSlot78(void* source, int byteCount) {
   if (this->backingArchiveOrStream == 0) {
     FailNilPointer(0x410);
   }
-  BackingArchive(this->backingArchiveOrStream)
-      ->Write(source, static_cast<unsigned int>(byteCount));
+  BackingArchive(this->backingArchiveOrStream)->Write(source, static_cast<unsigned int>(byteCount));
 }
 
 // FUNCTION: IMPERIALISM 0x00489300
 char TFileStream::ReadObjectFromBackingArchive(void* outObject) {
   *reinterpret_cast<void**>(outObject) = BackingArchive(this->backingArchiveOrStream)
-                                              ->ReadObject(static_cast<const CRuntimeClass*>(0));
+                                             ->ReadObject(static_cast<const CRuntimeClass*>(0));
   return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00489330
 void TFileStream::WriteObjectToBackingArchive(void* objectRef) {
-  BackingArchive(this->backingArchiveOrStream)
-      ->WriteObject(static_cast<const CObject*>(objectRef));
+  BackingArchive(this->backingArchiveOrStream)->WriteObject(static_cast<const CObject*>(objectRef));
 }
 
 // FUNCTION: IMPERIALISM 0x00489360

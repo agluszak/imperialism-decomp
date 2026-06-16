@@ -17,7 +17,7 @@ public:
   virtual ~TPictureResourceEntryBase() override;
   // Slot 0x08 override (0x0048f640): clone via slot 0x09 then copy extended picture-resource
   // fields (offsets 0x60-0x8c); TControl's cannot-clone stub is not used on this branch.
-  virtual void* CloneEngineerDialogStateToNewInstance() override;
+  TObject* ShallowClone() override;
   // Slot 0x44 override (0x0048f3c0): ctrl-modifier hint overlay blit used by picture controls.
   void ApplyRectSlot110(RECT* rectBuffer) override;
 

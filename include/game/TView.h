@@ -44,8 +44,8 @@ public:
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   virtual CRuntimeClass* GetRuntimeClass() const override;              // 0x00 0x48a8c0 (override)
-  virtual void ReleaseRuntimeSelectionOwnerAndDestroyObject() override; // 0x07
-  virtual void* CloneEngineerDialogStateToNewInstance() override;       // 0x08 0x48bfd0
+  void Free() override; // 0x07
+  TObject* ShallowClone() override;       // 0x08 0x48bfd0
   virtual class TView* OwnerPanel() override;                           // 0x16 0x48b180
 
   // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot

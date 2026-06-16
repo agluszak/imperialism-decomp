@@ -75,9 +75,9 @@ void TPictureResourceEntryBase::SetPictureResourceIdAndRefresh(short nPictureId,
 
 
 // FUNCTION: IMPERIALISM 0x0048f640
-void* TPictureResourceEntryBase::CloneEngineerDialogStateToNewInstance() {
+TObject* TPictureResourceEntryBase::ShallowClone() {
   TPictureResourceEntryBase* clone =
-      static_cast<TPictureResourceEntryBase*>(HandleTurnEventVtableSlot24CopyPayloadBuffer());
+      static_cast<TPictureResourceEntryBase*>(ShallowFree());
   clone->CopyCityDialogStateFromSource(this);
   *reinterpret_cast<int*>(reinterpret_cast<char*>(clone) + 0x60) =
       *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x60);

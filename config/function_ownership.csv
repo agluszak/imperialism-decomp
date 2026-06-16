@@ -49,7 +49,7 @@ address|target_cpp|ownership|note
 4136c0|src/game/noop_slots.cpp|manual|marker_sync
 414770|src/game/noop_slots.cpp|manual|marker_sync
 415030|src/game/noop_slots.cpp|manual|marker_sync
-415ce0|src/game/TEventHandler.cpp|manual|marker_sync
+415ce0|src/game/TObject.cpp|manual|marker_sync
 415d50|src/game/TEventHandler.cpp|manual|marker_sync
 415d70|src/game/TEventHandler.cpp|manual|marker_sync
 415f00|src/game/CObject.cpp|manual|marker_sync
@@ -76,8 +76,8 @@ address|target_cpp|ownership|note
 45ada0|src/game/noop_slots.cpp|manual|marker_sync
 45af30|src/game/TTextList.cpp|manual|marker_sync
 45d2a0|src/game/noop_slots.cpp|manual|marker_sync
-4798b0|src/game/TMission.cpp|manual|marker_sync
-4798d0|src/game/TZone.cpp|manual|marker_sync
+4798b0|src/game/TObject.cpp|manual|marker_sync
+4798d0|src/game/TObject.cpp|manual|marker_sync
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d5b0|src/game/noop_slots.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|manual|marker_sync
@@ -98,10 +98,10 @@ address|target_cpp|ownership|note
 4822e0|src/game/noop_slots.cpp|manual|marker_sync
 482420|src/game/noop_slots.cpp|manual|marker_sync
 485e20|src/game/TObject.cpp|manual|marker_sync
-485e90|src/game/TEventHandler.cpp|manual|marker_sync
+485e90|src/game/TObject.cpp|manual|marker_sync
 485f50|src/game/TObject.cpp|manual|marker_sync
-485f70|src/game/TEventHandler.cpp|manual|marker_sync
-485f90|src/game/TEventHandler.cpp|manual|marker_sync
+485f70|src/game/TObject.cpp|manual|marker_sync
+485f90|src/game/TObject.cpp|manual|marker_sync
 486300|src/game/noop_slots.cpp|manual|marker_sync
 486530|src/game/noop_slots.cpp|manual|marker_sync
 486550|src/game/noop_slots.cpp|manual|marker_sync
@@ -795,7 +795,7 @@ address|target_cpp|ownership|note
 52ef20|src/game/TMinister.cpp|manual|marker_sync
 52ef50|src/game/TMinister.cpp|manual|marker_sync
 52ef80|src/game/TMinister.cpp|manual|marker_sync
-52efb0|src/game/noop_slots.cpp|manual|marker_sync
+52efb0|src/game/TMinister.cpp|manual|marker_sync
 52f070|src/game/TForeignMinister.cpp|manual|marker_sync
 52f130|src/game/TForeignMinister.cpp|manual|marker_sync
 52f7b0|src/game/TForeignMinister.cpp|manual|marker_sync
@@ -1412,8 +1412,8 @@ address|target_cpp|ownership|note
 607782|src/game/MfcRuntime.cpp|manual|marker_sync
 6077c0|src/game/MfcRuntime.cpp|manual|marker_sync
 607a84|src/game/MfcRuntime.cpp|manual|marker_sync
-60d3fc|src/game/MfcRuntime.cpp|manual|marker_sync
 607bda|src/game/noop_slots.cpp|manual|marker_sync
+60d3fc|src/game/MfcRuntime.cpp|manual|marker_sync
 6109cf|src/game/CDocument.cpp|manual|marker_sync
 6109eb|src/game/CDocument.cpp|manual|marker_sync
 610a5f|src/game/CDocument.cpp|manual|marker_sync

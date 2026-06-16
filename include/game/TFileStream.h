@@ -2,6 +2,7 @@
 
 #include "game/mfc.h"
 #include "TStream.h"
+#include "game/ArchiveStreamAdapter.h"
 #include "compat.h"
 #include "decomp_types.h"
 
@@ -10,15 +11,13 @@ class CString;
 // VTABLE: IMPERIALISM 0x00649230
 class TFileStream : public TStream {
 public:
-  // Provisional name. Points at a wrapper object whose +4 field is the
-  // backing CArchive used by the serialization wrappers below.
-  void* backingArchiveOrStream; // name only after grounding
+  ArchiveStreamAdapter* backingArchiveOrStream;
 
   CRuntimeClass* GetRuntimeClass() const override;
   TFileStream();
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
-  void SetBackingArchive(void* backingArchive);
+  void SetBackingArchive(ArchiveStreamAdapter* backingArchive);
 
   int streamSlot28() override;
   void streamSlot2c() override;
