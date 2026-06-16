@@ -848,16 +848,6 @@ void OrphanRetStub_005b2860(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x005c2470
-void OrphanRetStub_005c2470(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005c2610
-void __stdcall OrphanRetStub_005c2610(int) {
-  return;
-}
-
 // --- Constant-bool stubs: original is `xor al,al; ret[ N]` (return false) or
 //     `mov al,1; ret[ N]` (return true). 1-byte bool return reproduces the
 

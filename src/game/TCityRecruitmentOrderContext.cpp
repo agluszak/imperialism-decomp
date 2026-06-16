@@ -7,7 +7,6 @@
 extern "C" TLocalizationRuntime* g_pLocalizationTable;
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-undefined4 thunk_InitializeCivUnitOrderObject(void);
 
 // FUNCTION: IMPERIALISM 0x004b73b0
 void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {
@@ -38,16 +37,13 @@ void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {
   }
 
   for (short i = 0; i < pendingDelta; ++i) {
-    void* orderObject = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x44));
-    if (orderObject == 0) {
+    TCivWorkOrderState* orderObject = new TCivWorkOrderState();
+    if (orderObject == nullptr) {
       continue;
     }
-    reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeCivUnitOrderObject)(orderObject,
-                                                                                        0);
 
     short packedOrderType = static_cast<short>(this->entryId);
-    reinterpret_cast<TCivWorkOrderState*>(orderObject)
-        ->InitializeCivWorkOrderState(packedOrderType, i, ownerNationSlot);
+    orderObject->InitializeCivWorkOrderState(packedOrderType, i, ownerNationSlot);
   }
 
   this->pendingDelta = 0;

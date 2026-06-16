@@ -1,18 +1,18 @@
 #include "game/TMilitaryUnitOrderState.h"
 
 #include "game/TAdmiral.h"
+#include "game/TStream.h"
+
+extern "C" char g_pClassDescTMilitaryUnitOrderState = 0;
+
+// FUNCTION: IMPERIALISM 0x005c2dd0
+CRuntimeClass* TMilitaryUnitOrderState::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTMilitaryUnitOrderState);
+}
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-// Military land-unit recruit-order ctor. The inlined TUnitOrderState base ctor writes
-// the base vptr (0x0066ee18) + base fields (incl. field_1C=0); the derived scalar fields
-// and the CString member name24 are member-initializers so they emit in declaration order
-// before the body, with MSVC writing the derived vptr (0x0066eea8) around them. The body
-// overrides field_1C=1 and assigns the empty string into name24. The non-trivial ~CString
-// on the member + the temporary are what make MSVC emit the EH unwind frame + uStack
-// partial-construction state markers.
 // FUNCTION: IMPERIALISM 0x005c2df0
 TMilitaryUnitOrderState::TMilitaryUnitOrderState()
     : name24(), field_38(0), field_3A(0), field_3C(0), field_40(0) {
@@ -22,7 +22,19 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
   name24 = empty;                 // -> 0x00605a29 CString::operator=
 }
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
 
+// SYNTHETIC: IMPERIALISM 0x005c2ed0
+// TMilitaryUnitOrderState::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005c2f00
+TMilitaryUnitOrderState::~TMilitaryUnitOrderState() {}
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
 // FUNCTION: IMPERIALISM 0x005c2f50
 void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int nodeContext,
                                                           short nationSlot) {
@@ -37,10 +49,19 @@ void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int no
   }
   CopyUnitCurrentTileIntoOrderTargets();
 }
-
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
+
+// FUNCTION: IMPERIALISM 0x005c2fd0
+void TMilitaryUnitOrderState::ReadFrom(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x005c30a0
+void TMilitaryUnitOrderState::WriteTo(TStream* stream) {
+  (void)stream;
+}
 
 // FUNCTION: IMPERIALISM 0x005c3190
 void TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets() {
@@ -53,4 +74,12 @@ void TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets() {
     ++cursor;
     --remaining;
   } while (remaining != 0);
+}
+
+// FUNCTION: IMPERIALISM 0x005c31c0
+void TMilitaryUnitOrderState::DetachUnitOrderFromOwnerAndReset() {}
+
+// FUNCTION: IMPERIALISM 0x005c3200
+void TMilitaryUnitOrderState::VTableSlot10(int pOwnerContext) {
+  (void)pOwnerContext;
 }

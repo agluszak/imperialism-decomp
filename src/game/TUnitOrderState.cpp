@@ -4,7 +4,13 @@
 
 #include "game/diplomacy_globals.h"
 #include "game/TLocalizationRuntime.h"
+#include "game/TStream.h"
+
 undefined4 thunk_TemporarilyClearAndRestoreUiInvalidationFlag(void);
+
+extern "C" char g_pClassDescTUnitOrderState = 0;
+
+static const unsigned int kAddrSaveFormatVersion = 0x00695278;
 
 struct TUnitOrderOwnerManagerView {
   virtual void s00() = 0;
@@ -31,6 +37,20 @@ void __fastcall thunk_RegisterUnitOrderWithOwnerManager(TUnitOrderState* order, 
   (void)unusedEdx;
   order->RegisterUnitOrderWithOwnerManager(nOrderType, pOwnerContext, nOrderOwnerNationId, arg3);
 }
+
+// FUNCTION: IMPERIALISM 0x005c2470
+void TUnitOrderState::DetachUnitOrderFromOwnerAndReset() {}
+
+// FUNCTION: IMPERIALISM 0x005c2490
+CRuntimeClass* TUnitOrderState::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(&g_pClassDescTUnitOrderState);
+}
+
+// SYNTHETIC: IMPERIALISM 0x005c24e0
+// TUnitOrderState::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005c2510
+TUnitOrderState::~TUnitOrderState() {}
 
 // Original is FPO (frame-pointer omitted); force /Oy to match the esp-relative
 // argument loads (heuristic 88).
@@ -72,10 +92,75 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
 }
 #pragma optimize("", on)
 
-// FUNCTION: IMPERIALISM 0x005c2b70
-void TUnitOrderState::RelinkCivUnitByTileIndex() {
+// FUNCTION: IMPERIALISM 0x005c2610
+void TUnitOrderState::VTableSlot10(int pOwnerContext) {
+  (void)pOwnerContext;
 }
 
-// FUNCTION: IMPERIALISM 0x005c31c0
-void TUnitOrderState::DetachUnitOrderFromOwnerAndReset() {
+// FUNCTION: IMPERIALISM 0x005c2630
+void TUnitOrderState::SetOrderModeSlot34(int mode, int payload) {
+  this->field_8 = mode;
+  this->field_C = static_cast<short>(payload);
+}
+
+// FUNCTION: IMPERIALISM 0x005c2660
+void TUnitOrderState::DispatchSlot2C() {
+  if (this->field_8 != 2) {
+    this->field_8 = 0;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005c2680
+void TUnitOrderState::Free() {
+  void* manager = nullptr;
+  if (this->field_1C == 0) {
+    void* nation = g_apNationStates[this->field_18];
+    manager = *reinterpret_cast<void**>(reinterpret_cast<char*>(nation) + 0x89c);
+  } else {
+    void* terrain = g_apTerrainTypeDescriptorTable[this->field_18];
+    manager = *reinterpret_cast<void**>(reinterpret_cast<char*>(terrain) + 0x44);
+  }
+  if (manager != nullptr) {
+    CPtrList* list = reinterpret_cast<CPtrList*>(reinterpret_cast<char*>(manager) + 4);
+    POSITION pos = list->Find(this);
+    if (pos != nullptr) {
+      list->RemoveAt(pos);
+    }
+  }
+  delete this;
+}
+
+// FUNCTION: IMPERIALISM 0x005c2700
+void TUnitOrderState::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&orderType, 2);
+  stream->ReadBytes(&field_6, 2);
+  stream->ReadBytes(&field_C, 2);
+  stream->ReadBytes(&field_18, 2);
+  stream->ReadBytes(&field_1A, 2);
+  stream->ReadBytes(&field_1C, 1);
+  stream->ReadBytes(&field_8, 4);
+  short savedField_6 = field_6;
+  if (savedField_6 != -1) {
+    short savedField_C = field_C;
+    field_6 = -1;
+    this->VTableSlot10(savedField_6);
+    field_C = savedField_C;
+  }
+  if (*reinterpret_cast<int*>(kAddrSaveFormatVersion) > 0x2d) {
+    stream->ReadBytes(&field_20, 4);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005c27d0
+void TUnitOrderState::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&orderType, 2);
+  stream->WriteBytesSlot78(&field_6, 2);
+  stream->WriteBytesSlot78(&field_C, 2);
+  stream->WriteBytesSlot78(&field_18, 2);
+  stream->WriteBytesSlot78(&field_1A, 2);
+  stream->WriteBytesSlot78(&field_1C, 1);
+  stream->WriteBytesSlot78(&field_8, 4);
+  stream->WriteBytesSlot78(&field_20, 4);
 }

@@ -46,11 +46,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
   // Land recruit order (serializedStatusFlags[1] == '2').
   if (this->serializedStatusFlags[1] == 0x32) {
-    void* raw = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x44));
-    TMilitaryUnitOrderState* militaryOrder = 0;
-    if (raw != 0) {
-      militaryOrder = new (raw) TMilitaryUnitOrderState();
-    }
+    TMilitaryUnitOrderState* militaryOrder = new TMilitaryUnitOrderState();
     int nodeContext = this->GetHomeRegionCityRecordIndex();
     short capValue = CityOrderCapForNation(nationSlot);
     militaryOrder->InitializeRecruitOrderState(capValue, nodeContext, nationSlot);

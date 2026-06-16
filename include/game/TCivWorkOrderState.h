@@ -16,6 +16,7 @@ public:
   short completionMarker26; // 0x26
 
   TCivWorkOrderState();
+  ~TCivWorkOrderState() override;
 
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
@@ -26,6 +27,15 @@ public:
 
   void InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId);
 
-protected:
-  ~TCivWorkOrderState() {}
+  // --- TObject/TUnitOrderState overrides ---
+  CRuntimeClass* GetRuntimeClass() const override;
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void VTableSlot10(int pOwnerContext) override;
+  void DispatchSlot2C() override;
+  void DetachUnitOrderFromOwnerAndReset() override;
+  void SetOrderModeSlot34(int mode, int payload) override;
+
+  // --- TCivWorkOrderState virtual functions ---
+  virtual void ResetCivWorkOrderAndRefreshCounters();
 };

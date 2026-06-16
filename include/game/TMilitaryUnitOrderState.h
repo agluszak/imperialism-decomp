@@ -28,9 +28,9 @@ public:
   int field_40;              // 0x40
 
   TMilitaryUnitOrderState();
+  ~TMilitaryUnitOrderState() override;
 
   void InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot);
-  virtual void CopyUnitCurrentTileIntoOrderTargets();
 
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));
@@ -43,6 +43,13 @@ public:
     (void)ptr;
   }
 
-protected:
-  ~TMilitaryUnitOrderState() {}
+  // --- TObject/TUnitOrderState overrides ---
+  CRuntimeClass* GetRuntimeClass() const override;
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void VTableSlot10(int pOwnerContext) override;
+  void DetachUnitOrderFromOwnerAndReset() override;
+
+  // --- TMilitaryUnitOrderState virtual functions ---
+  virtual void CopyUnitCurrentTileIntoOrderTargets();
 };

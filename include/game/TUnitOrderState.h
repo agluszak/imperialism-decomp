@@ -1,48 +1,34 @@
 #pragma once
 
+#include "game/TObject.h"
+
 // Base class for the per-nation pending unit-order objects (civilian work,
 // military recruit, navy task-force). The concrete subclasses each install their
 // own vtable in the packed 0x0066ee18 region:
 //   TUnitOrderState     -> 0x0066ee18 (this base, 18-slot table; 0x0e-0x11 null)
 //   TCivWorkOrderState  -> 0x0066ee60
 //   military recruit    -> 0x0066eea8
-// The slot functions (Serialize/Deserialize/turn-event handlers) live at fixed
-// addresses owned elsewhere; until each is migrated onto this class as a real
-// virtual, the base slot bodies are temporary structural placeholders (heuristic
-// 44). They exist only to give the subclasses a concrete, instantiable base so
-// the constructors emit a real compiler vptr write that reccmp pairs to the
-// `// VTABLE:` address.
 // VTABLE: IMPERIALISM 0x0066ee18
-class TUnitOrderState {
+class TUnitOrderState : public TObject {
 public:
-  virtual void s00() {}
-  virtual void s01() {}
-  virtual void s02() {}
-  virtual void s03() {}
-  virtual void s04() {}
-  // Slots 0x14/0x18 — stream serialization pair: TGreatPower 0x004da500 writes each
-  // tracked order via [vt+0x14](stream); 0x004da3e0 reads each via [vt+0x18](stream).
-  virtual void WriteToStreamSlot14(void* stream) {
-    (void)stream;
-  }
-  virtual void ReadFromStreamSlot18(void* stream) {
-    (void)stream;
-  }
-  virtual void RelinkCivUnitByTileIndex(); // slot 0x1c — body 0x005c2b70
-  virtual void s08() {}
-  virtual void s09() {}
-  virtual void VTableSlot10(int pOwnerContext) {
-    (void)pOwnerContext;
-  } // slot 0x28
-  // Slot 0x2c — per-order dispatch hook invoked by TGreatPower slot 0x4c (0x004e0220).
-  virtual void DispatchSlot2C() {}
-  virtual void DetachUnitOrderFromOwnerAndReset(); // slot 0x30 — body 0x005c31c0
-  // Slot 0x34 — TGreatPower slot 0x0d (0x004d7770) calls this on a fresh military
-  // recruit order with (2, -1).
-  virtual void SetOrderModeSlot34(int mode, int payload) {
-    (void)mode;
-    (void)payload;
-  }
+  // --- TObject overrides ---
+  CRuntimeClass* GetRuntimeClass() const override; // slot 0x00
+  ~TUnitOrderState() override; // slot 0x04
+
+  // slot 0x08 Serialize is inherited from TObject unchanged (0x485e90)
+
+  void WriteTo(TStream* stream) override; // slot 0x14
+  void ReadFrom(TStream* stream) override; // slot 0x18
+  void Free() override; // slot 0x1c
+
+  // slot 0x20 ShallowClone is inherited unchanged (0x4798d0)
+  // slot 0x24 ShallowFree is inherited unchanged (0x415ce0)
+
+  // --- TUnitOrderState virtual functions ---
+  virtual void VTableSlot10(int pOwnerContext); // slot 0x28
+  virtual void DispatchSlot2C(); // slot 0x2c
+  virtual void DetachUnitOrderFromOwnerAndReset(); // slot 0x30
+  virtual void SetOrderModeSlot34(int mode, int payload); // slot 0x34
 
   short orderType;        // 0x04
   short field_6;          // 0x06 (init 0xffff)
@@ -71,7 +57,4 @@ public:
 
   void RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContext,
                                          short nOrderOwnerNationId, short arg3);
-
-protected:
-  ~TUnitOrderState() {}
 };

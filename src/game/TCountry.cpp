@@ -165,12 +165,10 @@ void TCountry::ReadFrom(TStream* stream) {
   int recruitIndex = 1;
   if (recruitCount > 0) {
     do {
-      void* raw = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x44));
-      TMilitaryUnitOrderState* militaryOrder = 0;
-      if (raw != 0) {
-        militaryOrder = new (raw) TMilitaryUnitOrderState();
+      TMilitaryUnitOrderState* militaryOrder = new TMilitaryUnitOrderState();
+      if (militaryOrder != nullptr) {
         militaryOrder->InitializeRecruitOrderState(0, 0, this->nationSlot);
-        militaryOrder->ReadFromStreamSlot18(stream);
+        militaryOrder->ReadFrom(stream);
       }
       recruitIndex = recruitIndex + 1;
     } while (recruitIndex <= recruitCount);

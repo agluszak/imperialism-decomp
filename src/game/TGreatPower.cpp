@@ -160,8 +160,6 @@ undefined4 thunk_ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void);
 undefined4 thunk_SetTimeEmitPacketGameFlowTurnId(void);
 undefined4 thunk_CreateAndSendTurnEvent21_ThreeBytes(void);
 undefined4 thunk_AssignSharedStringFromIndexedA8EntryNameField(void);
-
-undefined4 thunk_InitializeCivUnitOrderObject(void);
 undefined4 thunk_DispatchCityRedrawInvalidateEvent(void);
 undefined4 GenerateThreadLocalRandom15(void);
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
@@ -996,13 +994,10 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   int orderOrdinal = 1;
   while (orderOrdinal < 5) {
-    void* civOrderObj = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
-    if (civOrderObj != 0) {
-      reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeCivUnitOrderObject)(
-          civOrderObj, 0);
-      static_cast<TCivWorkOrderState*>(civOrderObj)
-          ->InitializeCivWorkOrderState(0, -1, this->nationSlot);
-      static_cast<TPtrList*>(civOrderObj)->ReadFrom(stream);
+    TCivWorkOrderState* civOrderObj = new TCivWorkOrderState();
+    if (civOrderObj != nullptr) {
+      civOrderObj->InitializeCivWorkOrderState(0, -1, this->nationSlot);
+      civOrderObj->ReadFrom(stream);
     }
     ++orderOrdinal;
   }
@@ -1154,7 +1149,7 @@ void TGreatPower::ReadCoreStateAndRecreateCivOrdersFromStream(void* streamState,
   for (; orderCount > 0; --orderCount) {
     TCivWorkOrderState* civOrder = new TCivWorkOrderState();
     civOrder->InitializeCivWorkOrderState(0, -1, this->nationSlot);
-    civOrder->ReadFromStreamSlot18(stream);
+    civOrder->ReadFrom(stream);
   }
 }
 #pragma optimize("", on)
@@ -1176,7 +1171,7 @@ void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* streamState) {
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
     TUnitOrderState* order =
         reinterpret_cast<TUnitOrderState*>(this->trackedObjectList->GetTrackedEntrySlot4C(ordinal));
-    order->WriteToStreamSlot14(stream);
+    order->WriteTo(stream);
   }
 }
 #pragma optimize("", on)
@@ -3369,8 +3364,7 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short proposalIndex) {
 
   switch (static_cast<int>(proposal->proposalCode) - 0x12D) {
   case 0:
-    this->ApplyJoinEmpireModeForTargetNation(
-        static_cast<int>(proposal->targetNationSlot), 1);
+    this->ApplyJoinEmpireModeForTargetNation(static_cast<int>(proposal->targetNationSlot), 1);
     if (g_pInterNationEventQueueManager != 0) {
       g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
           3, this->nationSlot, static_cast<int>(proposal->targetNationSlot), '\0');
@@ -4437,7 +4431,7 @@ void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
 
 // FUNCTION: IMPERIALISM 0x004e2330
 void TGreatPower::SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot,
-                                                                   int policyCode) {
+                                                                int policyCode) {
   const int kPolicyDefensivePact = 500;
   const int kPolicyTradeAgreement = 200;
 
@@ -5414,15 +5408,12 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
     }
   }
 
-  void* orderObject = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x44));
-  if (orderObject == 0) {
+  TCivWorkOrderState* orderObject = new TCivWorkOrderState();
+  if (orderObject == nullptr) {
     return;
   }
-
-  reinterpret_cast<void(__fastcall*)(void*, int)>(thunk_InitializeCivUnitOrderObject)(orderObject,
-                                                                                      0);
-  reinterpret_cast<TCivWorkOrderState*>(orderObject)
-      ->InitializeCivWorkOrderState(workOrderType, ownerNationSlot, static_cast<int>(cityOwnerTag));
+  orderObject->InitializeCivWorkOrderState(workOrderType, ownerNationSlot,
+                                           static_cast<int>(cityOwnerTag));
 }
 
 int TGreatPower::GetMultiplierSlot21C(void) {

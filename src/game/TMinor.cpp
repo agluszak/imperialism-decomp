@@ -727,7 +727,7 @@ void DispatchCivilianOrderRelationMaskSlots(TUnitOrderState* orderNode) {
     return;
   }
   orderNode->DetachUnitOrderFromOwnerAndReset();
-  orderNode->RelinkCivUnitByTileIndex();
+  orderNode->VTableSlot10(-1);
 }
 
 void WalkTileCivilianOrdersForRelationMask(TTerrainStateRecordView* terrainTiles, short tileId,

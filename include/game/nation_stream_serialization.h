@@ -46,7 +46,7 @@ static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
     TUnitOrderState* entry =
         reinterpret_cast<TUnitOrderState*>(list->GetTrackedEntrySlot4C(ordinal));
-    entry->WriteToStreamSlot14(stream);
+    entry->WriteTo(stream);
   }
 }
 
