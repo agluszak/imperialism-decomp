@@ -117,7 +117,7 @@ void* TAutoGreatPower::ConstructTAutoGreatPowerBaseState(void) {
 // TAutoGreatPower::~TAutoGreatPower
 
 // FUNCTION: IMPERIALISM 0x004e7230
-void TAutoGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
+void TAutoGreatPower::Free(void) {
   if (this->missionQueue != 0) {
     int ordinal = this->missionQueue->GetCountSlot48();
     for (; ordinal > 0; --ordinal) {
@@ -132,7 +132,7 @@ void TAutoGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
     }
     this->missionQueue = 0;
   }
-  TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf();
+  TGreatPower::Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004e7510

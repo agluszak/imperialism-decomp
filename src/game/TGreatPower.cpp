@@ -934,31 +934,6 @@ CRuntimeClass* TGreatPower::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTGreatPower);
 }
 
-void TGreatPower::Serialize(CArchive& archive) {
-  (void)archive;
-}
-
-void TGreatPower::AssertValid() const {}
-
-void TGreatPower::Dump(CDumpContext& dc) const {
-  (void)dc;
-}
-
-void* TGreatPower::ShallowClone() {
-  return ShallowFree();
-}
-
-void* TGreatPower::ShallowFree() {
-  CRuntimeClass* runtimeClass = GetRuntimeClass();
-  unsigned int payloadSize = static_cast<unsigned int>(runtimeClass->m_nObjectSize);
-  CObject* destObject = runtimeClass->CreateObject();
-  if (destObject == 0) {
-    return 0;
-  }
-  memcpy(destObject, this, payloadSize);
-  return destObject;
-}
-
 char TGreatPower::ReturnFalseNationStateCapabilityFlag90(int arg) {
   (void)arg;
   return 0;
@@ -1052,10 +1027,8 @@ TGreatPower::TGreatPower(int arg1, int arg2) {
 // SYNTHETIC: IMPERIALISM 0x004d8c20
 // TGreatPower::`scalar deleting destructor'
 
-// Member release lives in ReleaseOwnedGreatPowerObjectsAndDeleteSelf (0x004d9160);
-// the real destructor only tears down the two identity CStrings (implicitly). The
-// original tail also restores the RefCountedObjectBase vtable (0x0066fec4) — that
-// write will come for free once TGreatPower is modeled with its real base class.
+// Member release lives in Free() (0x004d9160); the real destructor only tears down
+// the two identity CStrings (implicitly).
 // FUNCTION: IMPERIALISM 0x004d8c50
 TGreatPower::~TGreatPower() {}
 
@@ -1147,7 +1120,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d9160
-void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
+void TGreatPower::Free(void) {
   if (this->city != 0) {
     this->city->Call1C();
   }
@@ -1210,10 +1183,8 @@ void TGreatPower::ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d92e0
-void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
-  this->DeserializeRecruitScenarioAndInstantiateOrders(arg1);
-
-  TStream* stream = reinterpret_cast<TStream*>(arg1);
+void TGreatPower::ReadFrom(TStream* stream) {
+  this->DeserializeRecruitScenarioAndInstantiateOrders(reinterpret_cast<int>(stream));
   stream->ReadBytes(&this->diplomacyEligibilityA0, 1);
   stream->ReadBytes(&this->diplomacyCounterA2, 2);
   stream->ReadBytes(&this->tradeCapacity, 2);
@@ -1401,7 +1372,7 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
 
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) > 0x0E) {
     void* missionNodeQueue = this->missionNodeQueue;
-    static_cast<TPtrList*>(missionNodeQueue)->Call18(arg1);
+    static_cast<TPtrList*>(missionNodeQueue)->Call18(reinterpret_cast<int>(stream));
 
     int nodeCount = 0;
     static_cast<TStream*>(stream)->ReadBytes(&nodeCount, 4);
@@ -1431,8 +1402,8 @@ void TGreatPower::InitializeGreatPowerMinisterRosterAndScenarioState(int arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d9c70
-void TGreatPower::HandleCityDialogHintClusterUpdate(void* message) {
-  (void)message;
+void TGreatPower::WriteTo(TStream* stream) {
+  (void)stream;
 }
 
 // FUNCTION: IMPERIALISM 0x004da3e0
@@ -5061,9 +5032,8 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
 
 // FUNCTION: IMPERIALISM 0x004e72c0
 void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
-  this->InitializeGreatPowerMinisterRosterAndScenarioState(arg1);
-
   TStream* stream = reinterpret_cast<TStream*>(arg1);
+  this->ReadFrom(stream);
   stream->ReadBytes(this->actionMetricByQuarter, 0x0C);
   SwapShortArrayBytes(this->actionMetricByQuarter, 6);
 
@@ -5094,7 +5064,7 @@ void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
 // FUNCTION: IMPERIALISM 0x004e73f0
 #pragma optimize("y", on)
 void TGreatPower::WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* pMessage) {
-  this->HandleCityDialogHintClusterUpdate(pMessage);
+  this->WriteTo(static_cast<TStream*>(pMessage));
 
   TMessageObject* message = reinterpret_cast<TMessageObject*>(pMessage);
   short* quarterMetric = this->actionMetricByQuarter;

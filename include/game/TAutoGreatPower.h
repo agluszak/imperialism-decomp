@@ -15,8 +15,8 @@ public:
   // destructor 0x004e6b80 (both paired via symbols.csv names).
 
   // Overrides of TGreatPower virtuals:
-  // slot 0x07 — 0x004e7230: drain autoTrackedListB60 then run the base release.
-  void ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) override;
+  // slot 0x07 — 0x004e7230: drain missionQueue then run the base Free().
+  void Free() override;
   // slot 0x36 — 0x004e7550: forward to slots 0x4d/0x4e when city exists.
   void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.

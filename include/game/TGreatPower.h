@@ -2,11 +2,11 @@
 
 #include "decomp_types.h"
 #include "game/CString.h"
+#include "game/TObject.h"
 #include "game/TPtrList.h"
 
-class CArchive;
-class CDumpContext;
 class CRuntimeClass;
+class TStream;
 
 class TMinister;
 class TForeignMinister;
@@ -15,31 +15,21 @@ class TCityInteriorMinister;
 class TQueueObject;
 class TCity;
 
-// Runtime vtable is standalone (slots 0–4 are nation-specific; slots 3–4 share
-// CObject no-op thunks). Dtor @ 0x004d8c50 restores 0x0066fec4 for EH only.
+// Nation object: inherits TObject (CObject prefix slots 2–4 + ShallowClone/Free at 8–9).
 // VTABLE: IMPERIALISM 0x00653938
-class TGreatPower {
+class TGreatPower : public TObject {
 public:
   // slot 0x00 — body 0x004d89d0: returns TGreatPower CRuntimeClass descriptor.
-  virtual CRuntimeClass* GetRuntimeClass() const;
+  CRuntimeClass* GetRuntimeClass() const override;
   // slot 0x01 — scalar deleting destructor 0x004d8c20 (SYNTHETIC); real dtor body
-  // 0x004d8c50 releases the two identity CStrings then restores the base vtable.
-  virtual ~TGreatPower();
-  // slots 0x02–0x04 — MFC prefix thunks (Serialize / AssertValid / Dump); bodies
-  // resolve through ILT jmp targets, not claimed as FUNCTION markers here.
-  virtual void Serialize(CArchive& archive);
-  virtual void AssertValid() const;
-  virtual void Dump(CDumpContext& dc) const;
-  // slot 0x05 — body 0x004d9c70 (Ghidra misnames TCountry::…).
-  virtual void HandleCityDialogHintClusterUpdate(void* message);
-  // slot 0x06 — body 0x004d92e0: minister roster + scenario state wiring.
-  virtual void InitializeGreatPowerMinisterRosterAndScenarioState(int streamState);
-  // slot 0x07 — body 0x004d9160: releases every owned member object then `delete this`.
-  // TAutoGreatPower overrides it (0x004e7230) to drain autoTrackedListB60 first.
-  virtual void ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void);
-  // slots 0x08–0x09 — TObject ShallowClone / ShallowFree thunks at orig vtable.
-  virtual void* ShallowClone();
-  virtual void* ShallowFree();
+  // 0x004d8c50 tears down the two identity CStrings.
+  ~TGreatPower() override;
+  // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
+  void WriteTo(TStream* stream) override;  // body 0x004d9c70
+  void ReadFrom(TStream* stream) override; // body 0x004d92e0
+  // Releases every owned member object then `delete this`. TAutoGreatPower overrides
+  // (0x004e7230) to drain missionQueue first.
+  void Free() override; // body 0x004d9160
   // slot 0x0a — body 0x004da500: writes core scalars (0x0e/0x10/0x88/0x8c) then the
   // tracked-order list and each tracked order to the stream.
   virtual void WriteCoreStateAndTrackedOrdersToStream(void* stream);
@@ -445,7 +435,7 @@ public:
 
   // Semantic C++ wrappers:
   // - constructor behavior maps to 0x004D8CC0 InitializeNationStateRuntimeSubsystems
-  // - deleting destructor behavior maps to 0x004D9160 ReleaseOwnedGreatPowerObjectsAndDeleteSelf
+  // - TObject::Free override at 0x004D9160 releases owned members then deletes self
   TGreatPower();
   TGreatPower(int arg1, int arg2);
 

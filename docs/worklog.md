@@ -1,5 +1,16 @@
 # Worklog
 
+- **Timestamp:** 2026-06-16 — TGreatPower inherits TObject; rename stream lifecycle virtuals
+- **Command:** `just sync-ownership` → `just regen-stubs` → `just build` → `just vtable
+  TGreatPower` → `just vtable TAutoGreatPower` → `just gates`.
+- **Score Delta:** `just vtable TGreatPower` — prefix slots 0–0x64 now pair (diff starts at
+  0x68); ILT-thunk duplicate prefix bodies removed. `TAutoGreatPower::Free` pairs at 0x1c.
+  Layout asserts (`nationSlot` @ 0x0C, size ≥ 0x964) unchanged after inheritance.
+- **Description:** `class TGreatPower : public TObject`; dropped hand-declared
+  Serialize/AssertValid/Dump/ShallowClone/ShallowFree; renamed Ghidra mislabels to Mac names:
+  `WriteTo` (0x4d9c70), `ReadFrom` (0x4d92e0), `Free` (0x4d9160); `TAutoGreatPower` overrides
+  `Free()` instead of `ReleaseOwnedGreatPowerObjectsAndDeleteSelf`. symbols.csv updated.
+
 - **Timestamp:** 2026-06-16 — TGreatPower vtable skeleton + stub-to-virtual sweep
 - **Command:** `just sync-ownership` → `just regen-stubs` → `just build` → `just detect` →
   `just vtable TGreatPower` → `just vtable TAutoGreatPower` → `just compare` canaries →

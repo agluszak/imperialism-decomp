@@ -18,8 +18,8 @@ Scores and commands go in `docs/worklog.md`; structural blockers and decisions l
 |---------|--------|-------|
 | `0x4d89d0` | `GetTGreatPowerClassNamePointer` / slot 0 | 50% |
 | `0x4d8c20` | scalar deleting dtor | 72% |
-| `0x4d9160` | `ReleaseOwnedGreatPowerObjectsAndDeleteSelf` | 41% |
-| `0x4d92e0` | `InitializeGreatPowerMinisterRosterAndScenarioState` | 18% |
+| `0x4d9160` | `Free` | 41% |
+| `0x4d92e0` | `ReadFrom` | 18% |
 | `0x4da500` | `SerializeNationOrderStateToArchive` | 95% |
 | `0x4da3e0` | `DeserializeNationOrderStateFromArchive` | 89% |
 
