@@ -3,7 +3,7 @@
 #include "decomp_types.h"
 #include "game/CString.h"
 #include "game/nation_domain_types.h"
-#include "game/TObject.h"
+#include "game/TCountry.h"
 #include "game/TPtrList.h"
 
 struct CRuntimeClass;
@@ -16,9 +16,10 @@ class TCityInteriorMinister;
 class TQueueObject;
 class TCity;
 
-// Nation object: inherits TObject (CObject prefix slots 2–4 + ShallowClone/Free at 8–9).
+// Nation object: inherits the intermediate base TCountry (identity strings, nation-slot
+// metrics, military-unit + owned-region lists), itself a TObject.
 // VTABLE: IMPERIALISM 0x00653938
-class TGreatPower : public TObject {
+class TGreatPower : public TCountry {
 public:
   // ---- identity / serialization ----
   // slot 0x00 — body 0x004d89d0: returns TGreatPower CRuntimeClass descriptor.
@@ -28,10 +29,6 @@ public:
   ~TGreatPower() override;
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
   void WriteTo(TStream* stream) override;  // body 0x004d9c70
-  // TCountry base sub-object serializer (0x004d6e60); the base ctor is inlined into
-  // TGreatPower, so the intermediate base is modeled as a non-virtual member (symmetric
-  // with the reader DeserializeRecruitScenarioAndInstantiateOrders).
-  void WriteCountryBaseStateToStream(TStream* stream);
   void ReadFrom(TStream* stream) override; // body 0x004d92e0
   // Releases every owned member object then `delete this`. TAutoGreatPower overrides
   // (0x004e7230) to drain missionQueue first.
@@ -349,27 +346,8 @@ public:
   virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
   virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 
-  CString identitySharedString0;
-  CString identitySharedString1;
-  short nationSlot;
-  short encodedNationSlot;
-  int treasuryValue10;
-  short needLevelByNation[0x17];
-  short field42;
-  // 0x44 — military unit list; entries carry a unit-type short at +4 indexing
-  // g_Classify_Nation_Military_LookupTable_00695CD4 power weights.
-  TPtrList* militaryUnitList44;
-  // 0x48 — per-unit-type counter of names already issued (slot 0x0f increments the
-  // type's entry after assigning "<ordinal> <type name>").
-  short unitNameOrdinalByType[0x1e];
-  short unitNameCounter84; // 0x84 — monotonically increasing name tag (stored at +0x1a)
-  short pad_86;
-  short ownerNationSlot;
-  short pad_8a;
-  // 0x8c — serialized as a 4-byte block by slots 0x0a/0x0b together with the
-  // 4 bytes at 0x88 (ownerNationSlot + pad).
-  int serializedField8c;
-  TPtrList* ownedRegionList;
+  // 0x04..0x90 (identity strings, nation-slot metrics, militaryUnitList44,
+  // unitNameOrdinalByType, ownedRegionList) now live on the TCountry base.
   TForeignMinister* foreignMinister;
   TCityInteriorMinister* interiorMinister;
   TDefenseMinister* defenseMinister;
@@ -449,7 +427,6 @@ public:
   TGreatPower(int arg1, int arg2);
 
   static void* CreateTGreatPowerInstance(void);
-  void DeserializeRecruitScenarioAndInstantiateOrders(int streamState);
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
   void QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3, int arg4);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);

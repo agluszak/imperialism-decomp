@@ -554,18 +554,6 @@ static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
   }
 }
 
-// Writes a plain int list (e.g. ownedRegionList): the list write-header (slot 0x1c),
-// then the entry count, then each 1-based int value (slot 0x24).
-static __inline void WriteIntListToStream(TStream* stream, TPtrList* list) {
-  list->Release1C();
-  int entryCount = list->GetCountOrReleaseSlot28();
-  stream->WriteBytesSlot78(&entryCount, 4);
-  for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    int entryValue = list->GetIntByOrdinalSlot24(ordinal);
-    stream->WriteBytesSlot78(&entryValue, 4);
-  }
-}
-
 extern "C" {
 extern float g_Classify_Nation_Military_Value_00653704; // -1.0f
 extern float g_Classify_Nation_Military_Value_00653708; // 2.0f
@@ -649,33 +637,6 @@ void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
 // FUNCTION: IMPERIALISM 0x004d6770
 char TGreatPower::ShouldDispatchImmediatelySlot28(void) {
   return this->diplomacyEligibilityA0;
-}
-
-// Serializes the TCountry base sub-object (Ghidra: TCountry::WriteTo). TGreatPower
-// inlines its base ctor, so the intermediate base is modeled as a non-virtual member
-// here — symmetric with the reader DeserializeRecruitScenarioAndInstantiateOrders
-// (0x004d6bf0). Writes the identity strings, nation-slot metrics, the per-unit-type
-// name ordinals, the military unit list and the owned-region list. The leading
-// TObject::WriteTo is the no-op base-of-base (0x00485f70).
-#pragma optimize("y", on)
-// FUNCTION: IMPERIALISM 0x004d6e60
-void TGreatPower::WriteCountryBaseStateToStream(TStream* stream) {
-  TObject::WriteTo(stream);
-
-  stream->streamSlotAc(&this->identitySharedString0);
-  stream->streamSlotAc(&this->identitySharedString1);
-
-  stream->WriteBytesSlot78(&this->nationSlot, 2);
-  stream->WriteBytesSlot78(&this->encodedNationSlot, 2);
-  WriteShortArrayElems(stream, this->unitNameOrdinalByType, 0x1e);
-  stream->WriteBytesSlot78(&this->unitNameCounter84, 2);
-  stream->WriteBytesSlot78(&this->treasuryValue10, 4);
-  stream->WriteBytesSlot78(&this->ownerNationSlot, 4);
-  stream->WriteBytesSlot78(&this->serializedField8c, 4);
-  WriteShortArrayElems(stream, this->needLevelByNation, 0x17);
-
-  WriteTrackedListToStream(stream, this->militaryUnitList44);
-  WriteIntListToStream(stream, this->ownedRegionList);
 }
 
 // FUNCTION: IMPERIALISM 0x004d71b0
@@ -1014,15 +975,22 @@ void TGreatPower::OrphanRetStub_004dca80(void) {}
 
 // FUNCTION: IMPERIALISM 0x004d89f0
 TGreatPower::TGreatPower()
-    : identitySharedString0(), identitySharedString1(), nationSlot(0), encodedNationSlot(0),
-      treasuryValue10(0), field42(0), militaryUnitList44(0), ownerNationSlot(0), ownedRegionList(0),
-      foreignMinister(0), interiorMinister(0), defenseMinister(0), diplomacyEligibilityA0(0),
+    : foreignMinister(0), interiorMinister(0), defenseMinister(0), diplomacyEligibilityA0(0),
       diplomacyCounterA2(0), tradeCapacity(0), needCapA6(0), needsOverCapFlag(0), grantTotalCost(0),
       diplomacyCounterB0(0), budgetPoolBase(0), budgetPoolDelta(0), turnEventQueue(0),
       proposalQueue(0), city(0), townMarkerList(0), trackedObjectList(0),
       scenarioInitFlag(0), diplomacyBudgetBase(0), escalationCounter(0), pendingCommitmentCost(0),
       pressureCounter(0), field900(0), turnSummaryQueue(0), missionNodeQueue(0), field910(0),
       aidAllocationTotal(0), pendingAidTotal(0), missionQueue(0) {
+  // TCountry base scalars (identity strings constructed by the TCountry ctor).
+  this->nationSlot = 0;
+  this->encodedNationSlot = 0;
+  this->treasuryValue10 = 0;
+  this->field42 = 0;
+  this->militaryUnitList44 = 0;
+  this->ownerNationSlot = 0;
+  this->ownedRegionList = 0;
+
   int localeIndex = 0;
   if (g_pLocalizationTable != 0) {
     localeIndex = g_pLocalizationTable->runtimeSubsystemIndex;
@@ -1232,7 +1200,7 @@ void TGreatPower::Free(void) {
 
 // FUNCTION: IMPERIALISM 0x004d92e0
 void TGreatPower::ReadFrom(TStream* stream) {
-  this->DeserializeRecruitScenarioAndInstantiateOrders(reinterpret_cast<int>(stream));
+  TCountry::ReadFrom(stream);
   stream->ReadBytes(&this->diplomacyEligibilityA0, 1);
   stream->ReadBytes(&this->diplomacyCounterA2, 2);
   stream->ReadBytes(&this->tradeCapacity, 2);
@@ -1452,7 +1420,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x004d9c70
 #pragma optimize("y", on)
 void TGreatPower::WriteTo(TStream* stream) {
-  this->WriteCountryBaseStateToStream(stream);
+  TCountry::WriteTo(stream);
 
   stream->WriteBytesSlot78(&this->diplomacyEligibilityA0, 1);
   stream->WriteBytesSlot78(&this->diplomacyCounterA2, 2);

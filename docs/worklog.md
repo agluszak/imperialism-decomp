@@ -1,5 +1,30 @@
 # Worklog
 
+## 2026-06-16 — Extract TCountry intermediate base class (real inheritance)
+
+- Followed up the WriteTo base-call fix by **extracting `TCountry` as a real C++ class**:
+  `class TCountry : public TObject` (`include/game/TCountry.h` + `src/game/TCountry.cpp`),
+  and `class TGreatPower : public TCountry`. Moved fields 0x4..0x90 (identity CStrings,
+  nation-slot metrics, needLevelByNation, militaryUnitList44, unitNameOrdinalByType,
+  ownedRegionList) onto TCountry. Re-homed the TObject stream-lifecycle virtuals to
+  TCountry: WriteTo (0x4d6e60), ReadFrom (0x4d6bf0, was the non-virtual
+  DeserializeRecruitScenarioAndInstantiateOrders — TGreatPower_scenario.cpp deleted), Free
+  (0x4d6ba0). TGreatPower::WriteTo/ReadFrom now call `TCountry::WriteTo/ReadFrom`.
+- TCountry's vtable 0x00653868 (52-slot prefix of TGreatPower's 0x00653938) is deliberately
+  left unannotated: only the 3 stream virtuals are modeled, and slots 0x0a..0x29 stay
+  declared on TGreatPower, so TGreatPower's 178-slot vtable stays matching (only the
+  pre-existing slot-0xe8 ILT-thunk mismatch remains; verified via stash — no new diff).
+- **Ctor gotcha**: `: TCountry()` initially regressed the TGreatPower ctor (0x4d89f0)
+  46.08% → 18.95% because MSVC emitted an out-of-line `call TCountry::TCountry` and dropped
+  the EH frame, whereas the original *inlines* the base CString construction. Fixed by
+  defining `TCountry::TCountry() {}` **inline in the header** → MSVC inlines the base
+  construction (CString ctors + EH frame) back into the derived ctor; recovered to 45.10%.
+  Trade-off: standalone 0x4d67d0 is no longer emitted (was a 65% stub; acceptable).
+- Scores: **TCountry::Free 100%**, TCountry::WriteTo 34.19%, TCountry::ReadFrom 18.39%,
+  TGreatPower ctor 45.10% (≈ baseline), dtor 65.22%, Free 43.08%, WriteTo 73.90%, ReadFrom
+  18.29% — all unchanged except the newly-matched Free. No canary regression (below_floor=2
+  both before and after, confirmed via stash). `just build`/`gates`/`format-check` pass.
+
 ## 2026-06-16 — TGreatPower::WriteTo base-call fix + TCountry base WriteTo (0x4d6e60)
 
 - Diagnosed the remaining `TGreatPower::WriteTo` (0x4d9c70) gap: the leading

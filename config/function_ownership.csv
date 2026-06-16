@@ -449,8 +449,10 @@ address|target_cpp|ownership|note
 4d6750|src/game/noop_slots.cpp|manual|marker_sync
 4d6770|src/game/TGreatPower.cpp|manual|marker_sync
 4d6790|src/game/noop_slots.cpp|manual|marker_sync
-4d6bf0|src/game/TGreatPower_scenario.cpp|manual|marker_sync
-4d6e60|src/game/TGreatPower.cpp|manual|marker_sync
+4d67d0|src/game/TCountry.cpp|manual|marker_sync
+4d6ba0|src/game/TCountry.cpp|manual|marker_sync
+4d6bf0|src/game/TCountry.cpp|manual|marker_sync
+4d6e60|src/game/TCountry.cpp|manual|marker_sync
 4d71b0|src/game/TGreatPower.cpp|manual|marker_sync
 4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
 4d7ae0|src/game/TGreatPower.cpp|manual|marker_sync

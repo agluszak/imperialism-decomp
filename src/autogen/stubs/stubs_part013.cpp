@@ -2211,14 +2211,6 @@ undefined4 GetTCountryClassNamePointer(void)
   return 0;
 }
 
-// ghidra_name TCountry::ConstructTCountryBaseState
-// ghidra_proto undefined ConstructTCountryBaseState()
-// FUNCTION: IMPERIALISM 0x004d67d0
-undefined4 ConstructTCountryBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TCountry::DestructTCountryAndMaybeFree
 // ghidra_proto undefined DestructTCountryAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004d6850
@@ -2247,14 +2239,6 @@ undefined4 InitializeNationStateIdentityAndOwnedRegionList(void)
 // ghidra_proto undefined AssignStringSharedRefFromPointer()
 // FUNCTION: IMPERIALISM 0x004d6b70
 undefined4 AssignStringSharedRefFromPointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::DestroyNationStateOwnedRegionListAndRelease
-// ghidra_proto undefined DestroyNationStateOwnedRegionListAndRelease()
-// FUNCTION: IMPERIALISM 0x004d6ba0
-undefined4 DestroyNationStateOwnedRegionListAndRelease(void)
 {
   return 0;
 }
