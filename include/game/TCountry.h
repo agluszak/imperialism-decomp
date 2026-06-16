@@ -12,7 +12,8 @@ class TStream;
 // list, and serializes that sub-object via WriteTo (0x004d6e60) / ReadFrom (0x004d6bf0).
 // Its own vtable (0x00653868) is a 52-slot prefix of TGreatPower's 0x00653938; only the
 // TObject stream-lifecycle overrides are modeled here, so the vtable is intentionally
-// left unannotated (the 0x0a..0x29 nation virtuals are still declared on TGreatPower).
+// left partial (the 0x0a..0x29 nation virtuals are still declared on TGreatPower).
+// VTABLE: IMPERIALISM 0x00653868
 class TCountry : public TObject {
 public:
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).

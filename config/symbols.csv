@@ -1,7 +1,6 @@
 address|name|size|type|prototype
 401064|TViewMgr::TViewMgr_VtblSlot022|5|function|undefined TViewMgr_VtblSlot022()
 401073|thunk_HandleMapClickByInteractionMode|5|function|void __thiscall thunk_HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)
-40110e|TGreatPower::CreateFrogCityTownMarkerAndAttach|5|function|undefined CreateFrogCityTownMarkerAndAttach()
 401122|thunk_TPictureButton::TPictureButton|5|function|undefined TPictureButton()
 4011a9|TViewMgr::TViewMgr_VtblSlot055|5|function|undefined TViewMgr_VtblSlot055()
 401244|TViewMgr::TViewMgr_VtblSlot045|5|function|undefined TViewMgr_VtblSlot045()

@@ -4,48 +4,9 @@
 #include "game/TStream.h"
 #include "game/TUnitOrderState.h"
 #include "game/diplomacy_globals.h"
+#include "game/nation_stream_serialization.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
-
-// Serialization helpers (mirror the TGreatPower WriteCoreState idiom): the original
-// copies each element into a stack temp, byte-swaps it, and writes it through the
-// stream's primitive WriteBytesSlot78 (slot 0x78).
-static __inline void WriteShortArrayElems(TStream* stream, const short* values, int count) {
-  for (int remaining = count; remaining != 0; --remaining) {
-    short element = *values;
-    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
-    unsigned char low = elementBytes[0];
-    elementBytes[0] = elementBytes[1];
-    elementBytes[1] = low;
-    stream->WriteBytesSlot78(&element, 2);
-    ++values;
-  }
-}
-
-// Writes a TPtrList's tracked entries: the list itself (slot 0x14), then the entry
-// count (slot 0x48), then each 1-based entry through its own slot 0x14 serializer.
-static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
-  list->ResetSlot14(stream);
-  int entryCount = list->GetCountSlot48();
-  stream->WriteBytesSlot78(&entryCount, 4);
-  for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    TUnitOrderState* entry =
-        reinterpret_cast<TUnitOrderState*>(list->GetTrackedEntrySlot4C(ordinal));
-    entry->WriteToStreamSlot14(stream);
-  }
-}
-
-// Writes a plain int list (ownedRegionList): the list write-header (slot 0x1c), then the
-// entry count (slot 0x28), then each 1-based int value (slot 0x24).
-static __inline void WriteIntListToStream(TStream* stream, TPtrList* list) {
-  list->Release1C();
-  int entryCount = list->GetCountOrReleaseSlot28();
-  stream->WriteBytesSlot78(&entryCount, 4);
-  for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    int entryValue = list->GetIntByOrdinalSlot24(ordinal);
-    stream->WriteBytesSlot78(&entryValue, 4);
-  }
-}
 
 static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
   for (int i = 0; i < pairCount; ++i) {

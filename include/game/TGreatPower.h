@@ -78,8 +78,8 @@ public:
   virtual void DecrementDiplomacyCounterA2ByValue(int delta);
   virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot); // slot 0x1c
   virtual short GetDiplomacyCounterA2(void);                                  // slot 0x1d
-  virtual short GetDiplomacyExternalStateB6ByTarget(short nationSlot);         // slot 0x1e
-  virtual short QueryNationMetricBySlot7C(short metricSlot);                   // slot 0x1f
+  virtual short GetDiplomacyExternalStateB6ByTarget(short nationSlot);        // slot 0x1e
+  virtual short QueryNationMetricBySlot7C(short metricSlot);                  // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
   virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -90,8 +90,7 @@ public:
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
   virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                              int arg4);
-  virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
-                                                         short targetNationId);
+  virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
   virtual char ReturnFalseNationStateCapabilityFlag90(int arg);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode); // slot 0x94
   virtual char ReturnFalseNationStateCapabilityFlag98(void);
@@ -174,7 +173,7 @@ public:
   virtual short TryDecayRelationNeedScores9AndB(void); // slot 0x4a
   virtual short TryDecayRelationNeedScores9And8(void); // slot 0x4b
   // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
-  virtual void DispatchTrackedOrderSlot2CCallbacks(void);        // slot 0x4c
+  virtual void DispatchTrackedOrderSlot2CCallbacks(void); // slot 0x4c
   virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   virtual void AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void);
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
@@ -215,7 +214,7 @@ public:
   // city fieldB6 counters, clamped at 0).
   virtual unsigned int ComputeProductionMetricForOrderKind(short orderKind);
   virtual void DecrementDiplomacyCounterA2Slot66(int delta);                          // slot 0x66
-  virtual void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation);    // slot 0x19c
+  virtual void AssignNeedSlotFromSourceSlot19C(short needSlot, short sourceNation);   // slot 0x19c
   virtual char AreDiplomacyState1c6Slots13To16AllNonPositive(void);                   // slot 0x68
   virtual void SetDiplomacyState1c6ClampedToCounterA4(short targetSlot, short value); // slot 0x69
   virtual void SnapshotDiplomacyState1c6Into250(void);                                // slot 0x6a
@@ -267,7 +266,7 @@ public:
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
   virtual void SetCandidateNationFlagAndPortZoneState(int targetNation); // body 0x004e0420
-  virtual void NotifyAllianceSlot214(int targetNation);    // index 133 — body 0x004e0440
+  virtual void NotifyAllianceSlot214(int targetNation); // index 133 — body 0x004e0440
   // slot 0x86 — body 0x004e0500; navy order priority weights summed for this nation.
   virtual int SumNavyOrderPriorityForNationSlot86(void);
   virtual int CountMapActionContextNodesWithNationBit(void);       // slot 0x87
@@ -311,7 +310,8 @@ public:
   // threshold; propagates relation code 4 to tier-2 partners and queues event 0x1c.
   virtual char EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation);
   virtual int CheckTransitionSlot27C(int targetNation, int sourceNation); // slot 0x27c
-  virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode); // slot 0x280
+  virtual int PropagateWarTransitionSlot280(int targetNation, int sourceNation,
+                                            int mode); // slot 0x280
   // index 0xa1 / vtable+0x284 — body 0x004e27f0 (vtable holds ILT thunk 0x00406fe1).
   // Queues a nation-pair war transition and notifies the third-party minor nation
   // when the policy code is 1 or 0x132.

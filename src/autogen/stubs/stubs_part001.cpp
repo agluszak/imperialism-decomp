@@ -11,14 +11,6 @@ undefined4 thunk_HandleMapClickByInteractionMode(void)
   return 0;
 }
 
-// ghidra_name TGreatPower::CreateFrogCityTownMarkerAndAttach
-// ghidra_proto undefined CreateFrogCityTownMarkerAndAttach()
-// FUNCTION: IMPERIALISM 0x0040110e
-undefined4 CreateFrogCityTownMarkerAndAttach(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_TPictureButton::TPictureButton
 // ghidra_proto undefined TPictureButton()
 // FUNCTION: IMPERIALISM 0x00401122

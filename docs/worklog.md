@@ -1,5 +1,30 @@
 # Worklog
 
+## 2026-06-16 — TCountry follow-ups: dedup helpers, vtable annotation, TGreatPower vtable 100%
+
+- **Deduplicated** the write-side serialization helpers (WriteShortArrayElems,
+  WriteIntArrayElems, WriteTrackedListToStream, WriteIntListToStream) into a shared
+  `include/game/nation_stream_serialization.h` (`static __inline`, so each TU still inlines
+  them with no emitted symbol). Removed the copies duplicated across TGreatPower.cpp and
+  TCountry.cpp. Scores unchanged.
+- **TCountry vtable annotation**: added `// VTABLE: IMPERIALISM 0x00653868` to TCountry
+  (52-slot prefix of TGreatPower's 0x653938). Note: `just vtable TCountry` reports
+  "Vtables found: 0" — MSVC does **not emit** a standalone TCountry vtable in our build
+  because the inline `TCountry() {}` ctor's transient vptr-set is optimized away (TGreatPower
+  immediately overwrites it). So the annotation is correct metadata but not yet machine-
+  verified; making it verifiable needs the full 52-slot virtual reconstruction (declare
+  slots 0x0a..0x33 on TCountry with TGreatPower overriding the differing ones) — a separate
+  large task. Gates (VTABLE annotation/collision) pass.
+- **`just vtable TGreatPower` → 100%** (was 1 mismatch at slot 0xe8). Root cause: the
+  original setup named the ILT *thunk* 0x40110e as TGreatPower::CreateFrogCityTownMarker
+  AndAttach in symbols.csv, while the real body at 0x4dfa20 had **no `// FUNCTION:` marker**
+  (it was feature-grouped among the 0x4d6/0x4d7 functions). Fix: deleted the thunk's
+  symbols.csv row (un-import → reccmp auto-resolves the jmp), added the `// FUNCTION:
+  0x004dfa20` marker on the real body, and moved the function to its address-sorted home
+  (before 0x4dfae0). Body now pairs at 97.73% and the vtable slot resolves the thunk.
+- Validation: build, decomplint, gates, format-check (new files) all pass; no canary/score
+  regressions.
+
 ## 2026-06-16 — Extract TCountry intermediate base class (real inheritance)
 
 - Followed up the WriteTo base-call fix by **extracting `TCountry` as a real C++ class**:

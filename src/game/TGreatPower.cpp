@@ -187,6 +187,7 @@ extern TMinor* g_apNationAuxRuntimeStateSlots[];
 #include "game/TMessageObject.h"
 #include "game/TQueueObject.h"
 #include "game/TStream.h"
+#include "game/nation_stream_serialization.h"
 #include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TPtrList.h"
@@ -512,48 +513,6 @@ static const char kUCountryCppPath[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 
 static const float kOne = 1.0f;
 
-// Serialization helpers: the original copies each array element into a stack temp
-// and writes that temp via the stream's primitive WriteBytesSlot78 (slot 0x78).
-static __inline void WriteShortArrayElems(TStream* stream, const short* values, int count) {
-  for (int remaining = count; remaining != 0; --remaining) {
-    short element = *values;
-    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
-    unsigned char low = elementBytes[0];
-    elementBytes[0] = elementBytes[1];
-    elementBytes[1] = low;
-    stream->WriteBytesSlot78(&element, 2);
-    ++values;
-  }
-}
-
-static __inline void WriteIntArrayElems(TStream* stream, const int* values, int count) {
-  for (int remaining = count; remaining != 0; --remaining) {
-    int element = *values;
-    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
-    unsigned char b0 = elementBytes[0];
-    unsigned char b1 = elementBytes[1];
-    elementBytes[0] = elementBytes[3];
-    elementBytes[1] = elementBytes[2];
-    elementBytes[2] = b1;
-    elementBytes[3] = b0;
-    stream->WriteBytesSlot78(&element, 4);
-    ++values;
-  }
-}
-
-// Writes a TPtrList's tracked entries: the list itself (slot 0x14), then the entry
-// count, then each 1-based entry through its own slot 0x14 serializer.
-static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
-  list->ResetSlot14(stream);
-  int entryCount = list->GetCountSlot48();
-  stream->WriteBytesSlot78(&entryCount, 4);
-  for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    TUnitOrderState* entry =
-        reinterpret_cast<TUnitOrderState*>(list->GetTrackedEntrySlot4C(ordinal));
-    entry->WriteToStreamSlot14(stream);
-  }
-}
-
 extern "C" {
 extern float g_Classify_Nation_Military_Value_00653704; // -1.0f
 extern float g_Classify_Nation_Military_Value_00653708; // 2.0f
@@ -806,15 +765,6 @@ char TGreatPower::IsEncodedNationSlotMinus200Equal(int nationCode) {
 #pragma optimize("", on)
 
 // --- Scenario seeding / Frog City / influence-map family (slots 0x0c/0x0f/0x34/0x39/
-#pragma optimize("y", on)
-void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
-  TTownMarker* marker = new TTownMarker();
-  marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
-  static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
-  marker->activeFlag4f = 1;
-  this->townMarkerList->AddTail30(marker);
-}
-#pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7d50
 CString* TGreatPower::GetIdentitySharedString1Slot58(void) {
@@ -4075,6 +4025,17 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
     }
   }
   this->CreateFrogCityTownMarkerAndAttach(mgr);
+}
+#pragma optimize("", on)
+
+#pragma optimize("y", on)
+// FUNCTION: IMPERIALISM 0x004dfa20
+void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
+  TTownMarker* marker = new TTownMarker();
+  marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
+  static_cast<TMarkerReceiverView*>(receiver)->AdoptMarkerSlot44(marker);
+  marker->activeFlag4f = 1;
+  this->townMarkerList->AddTail30(marker);
 }
 #pragma optimize("", on)
 
