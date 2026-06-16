@@ -87,7 +87,6 @@ address|name|size|type|prototype
 406aaf|thunk_ProcessQueuedWarTransitions|5|function|undefined thunk_ProcessQueuedWarTransitions()
 406afa|thunk_BuildUiTextStyleDescriptor|5|function|undefined thunk_BuildUiTextStyleDescriptor()
 406c1c|TMapDialog::thunk_SplitTileIndexToRowAndColumn|5|function|undefined thunk_SplitTileIndexToRowAndColumn()
-406ee7|TMinor::thunk_GetTMinorClassNamePointer_At00406ee7|5|function|undefined thunk_GetTMinorClassNamePointer_At00406ee7()
 406efb|thunk_DispatchTaggedGameStateEvent1F20|5|function|undefined thunk_DispatchTaggedGameStateEvent1F20()
 406f5f|thunk_SetActiveQuickDrawSurfaceContext|5|function|undefined thunk_SetActiveQuickDrawSurfaceContext()
 4072ac|thunk_CreateAndSendTurnEvent21_ThreeBytes|5|function|undefined thunk_CreateAndSendTurnEvent21_ThreeBytes()

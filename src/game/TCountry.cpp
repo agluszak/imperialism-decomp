@@ -720,7 +720,6 @@ void TCountry::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int res
 
 undefined4 thunk_QueueInterNationEventRecordDeduped(void);
 
-// FUNCTION: IMPERIALISM 0x004e41c0
 void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   TGreatPower* nation = static_cast<TGreatPower*>(this);
   this->ReadFrom(stream);
@@ -745,7 +744,6 @@ void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   SwapAdjacentBytesInShortArray(reinterpret_cast<short*>(nation->serializedStatusFlags), 4);
 }
 
-// FUNCTION: IMPERIALISM 0x004e4390
 void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
   TGreatPower* nation = static_cast<TGreatPower*>(this);
   TObject::WriteTo(stream);
@@ -766,20 +764,16 @@ void TCountry::SerializeDiplomacyNationStateToStream(TStream* stream) {
   WriteShortArrayElems(stream, reinterpret_cast<short*>(nation->serializedStatusFlags), 4);
 }
 
-// FUNCTION: IMPERIALISM 0x004e45f0
 char IsPolicyCodeInSpecialNationPolicySet(short policyCode) {
   return (policyCode > 0xc && policyCode < 0x11) ? 1 : 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004e4630
 void OrphanLeaf_NoCall_Ins07_004e4630(void) {}
 
-// FUNCTION: IMPERIALISM 0x004e4660
 int OrphanLeaf_NoCall_Ins03_004e4660(void) {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004e4680
 int OrphanLeaf_NoCall_Ins03_004e4680(void) {
   return 0;
 }
@@ -804,7 +798,6 @@ void TCountry::RebuildDiplomacyEconomicPressureFromMapState(void) {
   nation->diplomacyCounterA2 = 2;
 }
 
-// FUNCTION: IMPERIALISM 0x004e49b0
 float Helper_Uses_ftol_At004e49b0(float value) {
   return static_cast<float>(static_cast<int>(value));
 }
@@ -814,7 +807,6 @@ int Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(void) {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004e4ee0
 char TCountry::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
                                                            short targetNationSlot) {
   if (policyCode <= 0xc || policyCode >= 0x11) {
@@ -830,7 +822,6 @@ char TCountry::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004e4f50
 char OrphanCallChain_C2_I27_004e4f50(int arg1, int arg2, int arg3, int arg4) {
   (void)arg1;
   (void)arg2;
@@ -839,7 +830,6 @@ char OrphanCallChain_C2_I27_004e4f50(int arg1, int arg2, int arg3, int arg4) {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004e4fa0
 void TCountry::SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot,
                                                            short policyValue) {
   if (targetNationSlot != this->nationSlot) {
@@ -861,7 +851,6 @@ char CanInitiateJoinEmpireProposalToTarget(TCountry* nation, short targetNationS
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004e50d0
 void TCountry::ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, short policyCode,
                                                         int mode) {
   (void)targetNationSlot;
@@ -869,13 +858,11 @@ void TCountry::ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, 
   (void)mode;
 }
 
-// FUNCTION: IMPERIALISM 0x004e5300
 void TriggerNationWarTransitionHandlersIfNeeded(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
 
-// FUNCTION: IMPERIALISM 0x004e5340
 void TCountry::ProcessTurnEventNationStateTransitionAndDiplomacy(int eventCode, int targetNationSlot,
                                                                  int payload) {
   (void)eventCode;
@@ -888,14 +875,12 @@ void TCountry::HandleNetworkPortConstructionOrder(int nationId) {
   (void)nationId;
 }
 
-// FUNCTION: IMPERIALISM 0x004e5840
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
   this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
   reinterpret_cast<void(__cdecl*)(int, int, int, int)>(thunk_QueueInterNationEventRecordDeduped)(
       0x1b, this->nationSlot, targetNationSlot, 0);
 }
 
-// FUNCTION: IMPERIALISM 0x004e59d0
 void OrphanCallChain_C2_I28_004e59d0(void) {}
 
 // FUNCTION: IMPERIALISM 0x004e5a40

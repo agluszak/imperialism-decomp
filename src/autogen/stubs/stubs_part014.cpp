@@ -19,22 +19,6 @@ undefined4 ReassignUnitOrdersForCountryTargetChange(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C4_I24_004e64a0
-// ghidra_proto undefined OrphanCallChain_C4_I24_004e64a0()
-// FUNCTION: IMPERIALISM 0x004e64a0
-undefined4 OrphanCallChain_C4_I24_004e64a0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_004e64f0
-// ghidra_proto undefined OrphanCallChain_C1_I06_004e64f0()
-// FUNCTION: IMPERIALISM 0x004e64f0
-undefined4 OrphanCallChain_C1_I06_004e64f0(void)
-{
-  return 0;
-}
-
 // ghidra_name RelinkTileUnitsToCountryOrderManager
 // ghidra_proto undefined RelinkTileUnitsToCountryOrderManager()
 // FUNCTION: IMPERIALISM 0x004e6520

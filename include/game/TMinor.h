@@ -11,19 +11,34 @@ public:
 
   static void* CreateTMinorInstance();
   static void* GetTMinorClassNamePointer();
-  static void* thunk_GetTMinorClassNamePointer_At00406ee7(void);
 
   CRuntimeClass* GetRuntimeClass() const override;
 
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
-  void Free() override;
+
+  void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) override;
+  void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override;
+  void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) override;
+  CString* GetIdentitySharedString1Slot58(void) override;
+  void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
+  void AddRegionIdToNationOwnedRegionList(int regionId) override;
+  int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override;
+  short GetDiplomacyExternalStateB6ByTarget(short nationSlot) override;
+  short QueryNationMetricBySlot7C(short metricSlot) override;
+  void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
+                                                      int multiplier) override;
+  bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) override;
+  char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
+                                                     int arg4) override;
+  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
+  char ReturnFalseNationStateCapabilityFlag90(int arg) override;
+  void NotifyActionSlot94(int sourceNation, int actionCode) override;
 
   void SetDiplomacyStandingSlot48(int targetNation, int standing);
   char HasMinorStandingLinkSlot5C(int sourceNation);
   void ApplyTerrainDiplomacyRelationFlagSlot8c(int sourceNation, int packedRelationCode);
   char HasStandingPropagationBridgeSlot90(int targetNation);
-  void NotifyActionSlot94(int sourceNation, int actionCode) override;
   void NotifyNationAuxRuntimeFinalizeSlotC0(void);
   void ClearNationAuxRuntimeGrantSlotC4(int grantValue);
 
