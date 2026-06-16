@@ -11,7 +11,6 @@
 #include "game/TStationedUnitNode.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
-#include "game/TTerrainDescriptor.h"
 #include "game/TUnitOrderState.h"
 #include "game/TZone.h"
 #include "game/diplomacy_globals.h"
@@ -55,6 +54,21 @@ static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
     bytes[0] = bytes[1];
     bytes[1] = tmp;
   }
+}
+
+static const unsigned int kAddrWeightedNeighborScoreByUnitType = 0x006955F0;
+
+// FUNCTION: IMPERIALISM 0x004a5aa0
+int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
+  if (nodeIndex < 0 || nodeIndex > 0x17f) {
+    return 0;
+  }
+  TStationedUnitNode* chain = g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98;
+  int sum = 0;
+  for (; chain != 0; chain = chain->next14) {
+    sum += *reinterpret_cast<int*>(kAddrWeightedNeighborScoreByUnitType + chain->unitTypeId04 * 4);
+  }
+  return sum;
 }
 
 
@@ -140,7 +154,7 @@ void TCountry::ReadFrom(TStream* stream) {
   if (this->militaryUnitList44->GetCountSlot48() != 0) {
     this->militaryUnitList44->Call54();
   }
-  this->militaryUnitList44->Call18(streamState);
+  this->militaryUnitList44->ReadFrom(reinterpret_cast<TStream*>(streamState));
 
   int recruitCount = 0;
   stream->ReadBytes(&recruitCount, 4);
@@ -161,7 +175,7 @@ void TCountry::ReadFrom(TStream* stream) {
   if (this->ownedRegionList->GetCountOrReleaseSlot28() != 0) {
     this->ownedRegionList->Call38();
   }
-  this->ownedRegionList->VTableSlot20();
+  this->ownedRegionList->ShallowClone();
   int regionDeserializeCount = 0;
   stream->ReadBytes(&regionDeserializeCount, 4);
   int regionIndex = 1;
@@ -169,7 +183,7 @@ void TCountry::ReadFrom(TStream* stream) {
     do {
       int entryValue = 0;
       stream->ReadBytes(&entryValue, 4);
-      this->ownedRegionList->ResetSlot14(stream);
+      this->ownedRegionList->WriteTo(stream);
       regionIndex = regionIndex + 1;
     } while (regionIndex <= regionDeserializeCount);
   }
@@ -342,6 +356,34 @@ char TCountry::TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2,
 
 
 
+// FUNCTION: IMPERIALISM 0x004d7b20
+void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
+  if (g_pLocalizationTable != 0 && g_pLocalizationTable->redrawEnabled == 1) {
+    DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot, mode);
+  }
+
+  if (mode == 1) {
+    g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, targetNationSlot, 5);
+    g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(targetNationSlot, this->nationSlot, 5);
+  }
+
+  if (this->nationSlot < 7) {
+    g_pLocalizationTable->DecrementField30Value();
+  }
+
+  if (mode == 0) {
+    this->SetNationTransferTargetCodeAndNotifyEligiblePeers(targetNationSlot);
+    return;
+  }
+  if (mode == 1) {
+    this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
+    return;
+  }
+  this->GetIdentitySharedString1Slot58();
+}
+
+
+
 // FUNCTION: IMPERIALISM 0x004d7c00
 void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
@@ -379,18 +421,6 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
   g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 }
 
-void TCountry::ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode) {
-  if (mode == 0) {
-    this->SetNationTransferTargetCodeAndNotifyEligiblePeers(targetNationSlot);
-    return;
-  }
-  if (mode == 1) {
-    this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
-    return;
-  }
-  this->GetIdentitySharedString1Slot58();
-}
-
 
 
 // FUNCTION: IMPERIALISM 0x004d7d20
@@ -422,7 +452,7 @@ void TCountry::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
 
 // FUNCTION: IMPERIALISM 0x004d7da0
 void TCountry::AddRegionIdToNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->ResetSlot14(reinterpret_cast<void*>(regionId));
+  this->ownedRegionList->WriteTo(reinterpret_cast<TStream*>(regionId));
 }
 
 
@@ -579,6 +609,50 @@ void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
   } while (ordinal <= this->militaryUnitList44->GetCountSlot48());
 }
 #pragma optimize("", on)
+
+int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot) {
+  if (encodedNationSlot < 200) {
+    if (encodedNationSlot < 100) {
+      return terrain->nationSlot;
+    }
+    return encodedNationSlot - 100;
+  }
+  return encodedNationSlot - 200;
+}
+
+int ResolveTerrainNationSlotFromTarget(int targetNationSlot) {
+  const TCountry* terrain = g_apTerrainTypeDescriptorTable[targetNationSlot];
+  return DecodeTerrainNationSlotFromDescriptor(terrain, terrain->encodedNationSlot);
+}
+
+// FUNCTION: IMPERIALISM 0x004d8390
+int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
+  return ComputeWeightedNeighborLinkScoreForNodeIndex(static_cast<short>(nodeIndex));
+}
+
+// FUNCTION: IMPERIALISM 0x004d83c0
+int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain) {
+  int sum = 0;
+  TPtrList* linkedList = terrain->ownedRegionList;
+  if (linkedList == 0) {
+    return 0;
+  }
+
+  int index = 1;
+  int count = linkedList->GetCountOrReleaseSlot28();
+  if (count <= 0) {
+    return 0;
+  }
+
+  do {
+    int nodeId = linkedList->GetIntByOrdinalSlot24(index);
+    sum += ComputeWeightedNeighborLinkScoreForNodeIndex(static_cast<short>(nodeId));
+    ++index;
+    count = linkedList->GetCountOrReleaseSlot28();
+  } while (index <= count);
+
+  return sum;
+}
 
 
 

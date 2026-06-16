@@ -44,22 +44,26 @@ TCity::TCity() {
 // SYNTHETIC: IMPERIALISM 0x004b2520
 // TCity::`scalar deleting destructor'
 
-// The original tail restores the RefCountedObjectBase vtable (0x0066fec4); that
+// The original tail restores the TObject EH sentinel vtable (0x0066fec4); that
 // write will come for free once TCity is modeled with its real base class.
 // FUNCTION: IMPERIALISM 0x004b2550
 TCity::~TCity() {}
 
+void TCity::ReadFrom(TStream* stream) {
+  (void)stream;
+}
+
 // FUNCTION: IMPERIALISM 0x004b3a60
-void TCity::Call1C() {
+void TCity::Free() {
   if (this->productionSummary1d8 != 0) {
-    this->productionSummary1d8->Release1C();
+    this->productionSummary1d8->Free();
   }
   this->productionSummary1d8 = 0;
   void** orderSlot = this->orderSlotsE4;
   int remaining = 0x3d;
   do {
     if (*orderSlot != 0) {
-      static_cast<TCitySummaryObject*>(*orderSlot)->Release1C();
+      static_cast<TCitySummaryObject*>(*orderSlot)->Free();
     }
     *orderSlot = 0;
     ++orderSlot;
@@ -70,7 +74,7 @@ void TCity::Call1C() {
   }
   this->trackedOrderList270 = 0;
   if (this->eventQueue274 != 0) {
-    this->eventQueue274->Call24();
+    this->eventQueue274->ReleaseSlot24();
   }
   this->eventQueue274 = 0;
   delete this;
@@ -325,7 +329,7 @@ void TCity::WriteQueuePairSlot48(short low, short high) {
 
 // FUNCTION: IMPERIALISM 0x004b46c0
 void TCity::ForwardQueueSlot20Slot50(void*) {
-  this->eventQueue274->Call20();
+  this->eventQueue274->slot20();
 }
 
 // FUNCTION: IMPERIALISM 0x004b48a0

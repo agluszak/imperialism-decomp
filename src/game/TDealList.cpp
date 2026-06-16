@@ -153,14 +153,14 @@ void TDealList::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
     }
   } else {
     int ownerIndex = static_cast<int>(ownerSlot);
-    CallMinorSlot80(reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[ownerIndex]), targetNation,
+    CallMinorSlot80(static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[ownerIndex]), targetNation,
                     amount, maxAmount);
     CallMinorSlot80(
-        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(sourceContext)]),
+        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(sourceContext)]),
         targetNation, -amount, ownerNation);
     if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(maxAmount) != 0) {
       if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) == 0) {
-        CallMinorSlot6C(reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceContext]),
+        CallMinorSlot6C(static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceContext]),
                         amount);
       }
     }

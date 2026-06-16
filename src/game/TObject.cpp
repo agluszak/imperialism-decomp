@@ -42,8 +42,13 @@ CRuntimeClass* TObject::GetRuntimeClass() const {
   return &PTR_s_TObject_00694eb8;
 }
 
-// SYNTHETIC: IMPERIALISM 0x00485f50
+// SYNTHETIC: IMPERIALISM 0x00484990
 // TObject::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00485f50
+void TObject::RestoreConstructionSentinelVtable() {
+  *reinterpret_cast<void**>(this) = reinterpret_cast<void*>(0x0066fec4);
+}
 
 // FUNCTION: IMPERIALISM 0x00485f70
 void TObject::WriteTo(TStream* stream) {

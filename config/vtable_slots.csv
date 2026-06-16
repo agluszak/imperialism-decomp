@@ -20,8 +20,6 @@ src/game/TDiplomacyTurnStateManager.cpp|VCall_Diplomacy_HasAllianceGuardSlot60|c
 src/game/TGreatPower.cpp|VCall_UiRuntime_RequestDiplomacyDecisionSlot90|char|0x90 / 4|int,int,int|high|ui decision request
 src/game/TGreatPower.cpp|VCall_UiRuntime_DispatchEventSlot4C|void|0x4C / 4|int,int|high|ui dispatch event
 src/game/TGreatPower.cpp|VCall_Diplomacy_HasFlag84ForNationSlot84|char|0x84 / 4|int|high|diplomacy flag gate
-src/game/TGreatPower.cpp|VCall_TerrainDescriptor_SetResetLevelSlot68|void|0x68 / 4|int,int|high|terrain reset
-src/game/TGreatPower.cpp|VCall_SecondaryState_ResetDiplomacyLevelSlot48|void|0x48 / 4|int,int|high|secondary reset
 src/game/TDiplomacyTurnStateManager.cpp|VCall_WarTransitionQueue_PushPairSlot40|void|0x40 / 4|void*|medium|pending war transition queue push pair record|index|thiscall|zero|||WarTransitionQueue
 src/game/TDiplomacyTurnStateManager.cpp|VCall_WarTransitionQueue_PeekFirstPairSlot34|void*|0x34 / 4||medium|pending war transition queue first pair record|index|thiscall|zero|||WarTransitionQueue
 src/game/TDiplomacyTurnStateManager.cpp|VCall_WarTransitionQueue_RemoveFirstPairSlot30|void|0x30 / 4|int|medium|pending war transition queue remove first record|index|thiscall|zero|||WarTransitionQueue
@@ -41,17 +39,9 @@ src/game/TDiplomacyTurnStateManager.cpp|VCall_Diplomacy_GetNthAlliedMajorNationS
 src/game/TDiplomacyTurnStateManager.cpp|VCall_RelationshipList_ReleaseSlot24|void|0x24 / 4||medium|release relationship candidate list storage|index|thiscall|zero|||TSortedByRelationshipList
 src/game/TDiplomacyTurnStateManager.cpp|VCall_RelationshipList_GetEntrySlot2C|void*|0x2C / 4|int|medium|get one-based relationship candidate entry|index|thiscall|zero|||TSortedByRelationshipList
 src/game/TDiplomacyTurnStateManager.cpp|VCall_RelationshipList_AddEntrySlot38|void|0x38 / 4|void*|medium|append/sort relationship candidate entry|index|thiscall|zero|||TSortedByRelationshipList
-src/game/TDiplomacyTurnStateManager.cpp|VCall_TerrainDescriptor_SetDiplomacyStandingSlot48|void|0x48 / 4|int,int|medium|set terrain diplomacy standing toward nation|index|thiscall|zero||provisional|TerrainDescriptor
-src/game/TDiplomacyTurnStateManager.cpp|VCall_TerrainDescriptor_HasStandingPropagationBridgeSlot90|char|0x90 / 4|int|medium|terrain standing propagation bridge query|index|thiscall|zero||provisional|TerrainDescriptor
-src/game/TDiplomacyTurnStateManager.cpp|VCall_TerrainDescriptor_NotifyRelationCode4TargetSlot94|void|0x94 / 4|int,int|medium|notify terrain target of relation-code-4 action|index|thiscall|zero||provisional|TerrainDescriptor
 src/game/TGreatPower.cpp|VCall_Diplomacy_SetFlag28|void|0x28 / 4|int,int,int|high|set flag28
-src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot4C|void|0x4C / 4|int,int|high|terrain slot4C
-src/game/TGreatPower.cpp|VCall_TerrainDescriptor_CallSlot38|void|0x38 / 4|int|high|terrain slot38
 src/game/TGreatPower.cpp|VCall_TCity_RefreshSlot80|void|0x80 / 4||high|city refresh
 src/game/TGreatPower.cpp|VCall_MapActionContext_AssignDisplayRefFromSlot2C|void|0x2C / 4|int*|high|context display ref
-src/game/TGreatPower.cpp|VCall_SecondaryState_HasNationFlag5C|short|0x5C / 4|int|high|secondary flag
-src/game/TGreatPower.cpp|VCall_SecondaryState_SetPolicyValue48|void|0x48 / 4|int,int|high|secondary set policy
-src/game/TGreatPower.cpp|VCall_SecondaryState_CallSlot4C|void|0x4C / 4|int,int|high|secondary slot4C
 src/game/TGreatPower.cpp|VCall_Message_AppendWordSlot78|void|0x78 / 4|const void*|high|message append word|||||
 src/game/TGreatPower.cpp|VCall_Message_AppendBytesSlot78|void|0x78 / 4|const void*,int|high|message append bytes|||||
 src/game/TGreatPower.cpp|VCall_Message_WriteEntrySlotB4|void|0xB4 / 4|int,int|high|message write entry|||||

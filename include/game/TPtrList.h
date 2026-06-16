@@ -2,22 +2,22 @@
 
 #include "compat.h"
 #include "decomp_types.h"
-#include "game/RefCountedObjectBase.h"
+#include "game/TObject.h"
 #include "game/mfc.h"
+
+class TStream;
 
 // Common state for the game list wrappers. Concrete leaves such as TList and
 // TSortedList install their own vtables, but this remains a real polymorphic
 // class because it owns storage and concrete virtual bodies.
 //
 // Slots 0x28..0x60 are the list-engine dispatch surface (TList vtable 0x648f78).
-struct TPtrList : public RefCountedObjectBase {
-  virtual void ResetSlot14(void* message = 0) override {
-    (void)message;
-  }
-  virtual void Call18(int arg1 = 0) override {
-    (void)arg1;
-  }
-  virtual void Release1C() override;
+struct TPtrList : public TObject {
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
+
+  int GetIntByOrdinalSlot24(int ordinal);
 
   virtual int GetCountOrReleaseSlot28();
   virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal);

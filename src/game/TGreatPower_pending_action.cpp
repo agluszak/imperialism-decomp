@@ -83,7 +83,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
               ->relationStandingScoreMatrix79c[zoneCursor + nationSlot * kNationSlotCount] > 0xa9) {
         TMinor* minor = *minorEntry;
         if (minor != 0) {
-          short ownerTag = minor->ownerNationSlot0e;
+          short ownerTag = minor->encodedNationSlot;
           if (ownerTag > 99 && ownerTag < 200 &&
               ResolveMinorCapabilityOwnerNationSlot(minor) == nationSlot) {
             goto nextMinorEntry;

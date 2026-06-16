@@ -5,7 +5,7 @@
 namespace {
 
 CPtrListNodeLink* GetEmbeddedListHead(TPtrList* owner) {
-  // TPtrList: RefCountedObjectBase (+0) then CPtrList (+4); m_pNodeHead at CPtrList+4.
+  // TPtrList: TObject (+0) then CPtrList (+4); m_pNodeHead at CPtrList+4.
   return *reinterpret_cast<CPtrListNodeLink**>(reinterpret_cast<char*>(owner) + 8);
 }
 

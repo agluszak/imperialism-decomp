@@ -215,27 +215,6 @@ static __inline void VCall_RelationshipList_ReleaseSlot24(void* object) {
   fn(object, 0);
 }
 
-// terrain standing propagation bridge query; class=TerrainDescriptor; status=provisional
-static __inline char VCall_TerrainDescriptor_HasStandingPropagationBridgeSlot90(void* object, int arg0) {
-  typedef char (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x90 / 4)));
-  return fn(object, 0, arg0);
-}
-
-// notify terrain target of relation-code-4 action; class=TerrainDescriptor; status=provisional
-static __inline void VCall_TerrainDescriptor_NotifyRelationCode4TargetSlot94(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x94 / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// set terrain diplomacy standing toward nation; class=TerrainDescriptor; status=provisional
-static __inline void VCall_TerrainDescriptor_SetDiplomacyStandingSlot48(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
 // enqueue constructed turn-event packet; class=TurnEventQueue; status=provisional
 static __inline void VCall_TurnEventQueue_EnqueueSlot38(void* object, void* arg0) {
   typedef void (__fastcall * Fn)(void*, int, void*);
@@ -411,34 +390,6 @@ static __inline void* VCall_ProposalQueue_GetEntryAt1Based(void* object, int arg
   return fn(object, 0, arg0);
 }
 
-// secondary slot4C; status=provisional
-static __inline void VCall_SecondaryState_CallSlot4C(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x4C / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// secondary flag; status=provisional
-static __inline short VCall_SecondaryState_HasNationFlag5C(void* object, int arg0) {
-  typedef short (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x5C / 4)));
-  return fn(object, 0, arg0);
-}
-
-// secondary reset; status=provisional
-static __inline void VCall_SecondaryState_ResetDiplomacyLevelSlot48(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// secondary set policy; status=provisional
-static __inline void VCall_SecondaryState_SetPolicyValue48(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x48 / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
 // stream read buffer; status=provisional
 static __inline void VCall_Stream_ReadAtSlot3C(void* object, void* arg0, int arg1) {
   typedef void (__fastcall * Fn)(void*, int, void*, int);
@@ -472,27 +423,6 @@ static __inline void VCall_TCity_RefreshSlot80(void* object) {
   typedef void (__fastcall * Fn)(void*, int);
   Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x80 / 4)));
   fn(object, 0);
-}
-
-// terrain slot38; status=provisional
-static __inline void VCall_TerrainDescriptor_CallSlot38(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x38 / 4)));
-  fn(object, 0, arg0);
-}
-
-// terrain slot4C; status=provisional
-static __inline void VCall_TerrainDescriptor_CallSlot4C(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x4C / 4)));
-  fn(object, 0, arg0, arg1);
-}
-
-// terrain reset; status=provisional
-static __inline void VCall_TerrainDescriptor_SetResetLevelSlot68(void* object, int arg0, int arg1) {
-  typedef void (__fastcall * Fn)(void*, int, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0x68 / 4)));
-  fn(object, 0, arg0, arg1);
 }
 
 // ui dispatch event; status=provisional

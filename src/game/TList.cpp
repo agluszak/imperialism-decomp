@@ -17,3 +17,7 @@ TList* TList::CreateTListInstance() {
 void* TList::GetTListClassNamePointer() {
   return &g_pClassDescTList;
 }
+
+CRuntimeClass* TList::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(GetTListClassNamePointer());
+}

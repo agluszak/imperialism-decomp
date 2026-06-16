@@ -38,14 +38,12 @@ extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount
 // src/game/diplomacy_globals.cpp (outside extern "C")
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 
-// TCountry-family virtual / field access (no TTerrainDescriptor view cast):
+// TCountry-family virtual / field access on table rows:
 g_apTerrainTypeDescriptorTable[slot]->SetNationPercentFieldByModeAndDescriptorLinks(nation, 100);
 
-// TMinor-only tail methods — reinterpret_cast until TMinor : public TCountry is wired:
-reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[slot])->SetDiplomacyStandingSlot48(...);
+// TMinor-only tail methods:
+static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[slot])->SetDiplomacyStandingSlot48(...);
 ```
-
-`TTerrainDescriptor` is a typed **view** over the TCountry prefix, not a real class and not the table element type.
 
 Never place typed C++ singleton definitions inside an `extern "C"` block in
 `global_data_tables.cpp` or `diplomacy_globals.cpp` — that emits C linkage and breaks

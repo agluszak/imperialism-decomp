@@ -55,10 +55,6 @@ void TMinister::Free() {
   delete this;
 }
 
-void TMinister::Call1C() {
-  Free();
-}
-
 void TMinister::MinisterSlot12() {}
 void TMinister::Call4C() {}
 void TMinister::MinisterSlot14() {}
@@ -87,10 +83,6 @@ void TMinister::WriteTo(TStream* stream) {
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
-
-void TMinister::Call18(int arg1) {
-  ReadFrom(reinterpret_cast<TStream*>(arg1));
-}
 
 void TMinister::SerializeTMinisterBaseOrderArrayHeader(TStream* archive) {
   WriteTo(archive);

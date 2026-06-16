@@ -9,7 +9,7 @@ public:
   virtual void dummy4() = 0;
   virtual void dummy5() = 0;
   virtual void dummy6() = 0;
-  virtual void Release1C() = 0; // slot 1C
+  virtual void Free() = 0;
   virtual void dummy8() = 0;
   virtual void dummy9() = 0;
   virtual void dummy10() = 0;

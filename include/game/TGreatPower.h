@@ -44,7 +44,7 @@ public:
   void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) override;
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
-  void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode) override;
+  void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) override;
   void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override; // slot 0x14
   // slot 0x18 — body 0x004e2270: drop regionId from ownedRegionList then fire the
   // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
@@ -416,7 +416,6 @@ public:
                                                       int relationTargetNation,
                                                       int selectedNationSlot);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
-  void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode);
   void SerializeGreatPowerTailStateToMessage(void* pMessage);
   void QueueDiplomacyProposalCodeWithAllianceGuards(int arg1, int arg2);
   void ApplyIndexedResourceDeltaWithNeedClamp(int arg1, int arg2, int arg3);

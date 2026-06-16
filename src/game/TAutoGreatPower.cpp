@@ -125,7 +125,7 @@ void TAutoGreatPower::Free(void) {
           static_cast<TTrackedObject*>(this->missionQueue->GetTrackedEntrySlot4C(ordinal));
       entry->NotifyDetachSlot0C();
       this->missionQueue->RemoveEntryAtSlot50(ordinal);
-      entry->Release1C();
+      entry->Free();
     }
     if (this->missionQueue != 0) {
       this->missionQueue->Call58();
@@ -331,10 +331,10 @@ int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) 
       }
     }
     TMinor* minor = g_apSecondaryNationStateSlots[targetNation];
-    short ownerSlot = minor->ownerNationSlot0e;
+    short ownerSlot = minor->encodedNationSlot;
     if (ownerSlot < 200) {
       if (ownerSlot < 100) {
-        ownerSlot = minor->fallbackNationSlot0c;
+        ownerSlot = minor->nationSlot;
       } else {
         ownerSlot = static_cast<short>(ownerSlot - 100);
       }
@@ -342,7 +342,7 @@ int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) 
       ownerSlot = static_cast<short>(ownerSlot - 200);
     }
     if (ownerSlot != this->nationSlot) {
-      minor->VTableSlot4C_Provisional(this->nationSlot, 1);
+      minor->ApplyJoinEmpireModeForTargetNation(this->nationSlot, 1);
     }
   }
   return 1;
@@ -485,7 +485,7 @@ char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
   TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
   do {
     if (this->candidateNationFlags[candidate] != 0) {
-      if ((*minorCursor)->ownedRegionList90->GetCountOrReleaseSlot28() == 0) {
+      if ((*minorCursor)->ownedRegionList->GetCountOrReleaseSlot28() == 0) {
         this->candidateNationFlags[candidate] = 0;
         if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, candidate) !=
             0) {
@@ -558,7 +558,7 @@ void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
       if (pos != 0) {
         listState->RemoveAt(pos);
       }
-      mission->Release1C();
+      mission->Free();
       break;
     }
     mission = static_cast<TTrackedObject*>(missionCursor.Advance());
@@ -640,7 +640,7 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
     if (pos != 0) {
       listState->RemoveAt(pos);
     }
-    mission->Release1C();
+    mission->Free();
     if (replacement != 0) {
       this->missionQueue->AddTail30(replacement);
     }

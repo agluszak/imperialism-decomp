@@ -1411,14 +1411,6 @@ undefined4 InitializeRefCountedObjectBaseVtable(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00484990
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00484990()
-// FUNCTION: IMPERIALISM 0x00484990
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00484990(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00484990_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00484990_Impl()
 // FUNCTION: IMPERIALISM 0x004849c0

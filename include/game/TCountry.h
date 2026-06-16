@@ -38,7 +38,7 @@ public:
   virtual int GetHomeRegionCityRecordIndex(void);
   virtual void QueueRecruitOrdersForUndergarrisonedRegions(void);
   virtual void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel);
-  virtual void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode);
+  virtual void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode);
   virtual void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot);
   virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);
   virtual CString* GetIdentitySharedString1Slot58(void);
@@ -111,5 +111,12 @@ public:
 // Nation terrain rows: major slots hold TGreatPower*, minor slots hold TMinor*.
 // GLOBAL: IMPERIALISM 0x006a4310
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
+
+// Nation-slot decode and linked-node scoring helpers (terrain table rows are TCountry*).
+int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot);
+int ResolveTerrainNationSlotFromTarget(int targetNationSlot);
+int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
+int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
+int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain);
 
 ASSERT_SIZE(TCountry, 0x94);

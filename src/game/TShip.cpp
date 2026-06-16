@@ -64,7 +64,7 @@ int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
 
 // FUNCTION: IMPERIALISM 0x0054f500
 void TShip::ConstructAndLinkNavyPrimaryOrderNode() {
-  new (this) RefCountedObjectBase();
+  new (this) TObject();
   resourceType04 = 0;
   field08 = 0;
   linkContext0c = 0;
@@ -116,7 +116,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
 
   if (displayNameOverride == 0) {
     TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[zoneIndex]), &shipNode->displayName18);
+        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[zoneIndex]), &shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
       if (existing != shipNode &&
@@ -150,7 +150,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
   do {
     TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[shipNode->resourceType04]),
+        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[shipNode->resourceType04]),
         &shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {

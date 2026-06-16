@@ -24,7 +24,7 @@ struct TMapOrderEntryOwnerContext {
 };
 
 // Map-order queue entry (0x34 bytes). Ghidra mislabels this slice as "ObjectPool";
-// it is unrelated to RefCountedObjectBase or keyboard/map-action InputState.
+// it is unrelated to TObject or keyboard/map-action InputState.
 class TMapOrderEntry {
 public:
   int field_00;

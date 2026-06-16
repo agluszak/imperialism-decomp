@@ -17,3 +17,7 @@ TSortedList* TSortedList::CreateTSortedListInstance() {
 void* TSortedList::GetTSortedListClassNamePointer() {
   return &g_pClassDescTSortedList;
 }
+
+CRuntimeClass* TSortedList::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(GetTSortedListClassNamePointer());
+}

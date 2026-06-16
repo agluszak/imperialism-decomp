@@ -33,9 +33,9 @@ static __inline int IsRecruitTier2EnabledForNation(short nationSlot) {
 
 // Decode minor-capability row owner tag (0x004dab20 civ-work branch).
 static __inline short ResolveMinorCapabilityOwnerNationSlot(const TMinor* minor) {
-  short ownerTag = minor->ownerNationSlot0e;
+  short ownerTag = minor->encodedNationSlot;
   if (ownerTag > 99 && ownerTag < 200) {
-    return ownerTag - 100;
+    return static_cast<short>(ownerTag - 100);
   }
   return ownerTag;
 }

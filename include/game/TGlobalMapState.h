@@ -147,7 +147,7 @@ public:
   char hexNeighborWrapHorizontally20; // 0x20 — horizontal wrap for hex neighbor walks
 
   // True when any region owned by nationA has a neighboring region owned by nationB.
-  // Walks g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList90 against the
+  // Walks g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList against the
   // 0xa8-stride region records in cityScoreTable.
   char AreNationsBorderLinked(int nationA, int nationB);
 

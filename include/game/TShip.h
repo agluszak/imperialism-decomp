@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game/CString.h"
-#include "game/RefCountedObjectBase.h"
+#include "game/TObject.h"
 
 class TGreatPower;
 
@@ -11,7 +11,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // ConstructAndLinkNavyPrimaryOrderNode prepends to the intrusive doubly-linked list;
 // SumNavyOrderPriorityForNation walks nextOlder24.
 // VTABLE: IMPERIALISM 0x0065c438
-class TShip : public RefCountedObjectBase {
+class TShip : public TObject {
 public:
   short resourceType04;
   short pad06;

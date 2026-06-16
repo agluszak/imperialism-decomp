@@ -4,7 +4,7 @@
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"
 #include "game/TView.h"
-#include "game/generated/vcall_facades.h"
+#include "game/TMinor.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_globals.h"
@@ -60,7 +60,7 @@ void TCityProductionViewLayout::RenderNationHeaderDateLabelWithPeriodicRefresh()
   if (nationState != 0) {
     subObject = *reinterpret_cast<void**>(reinterpret_cast<char*>(nationState) + 0x894);
   }
-  short sVar2_val = VCall_SecondaryState_HasNationFlag5C(subObject, 0xe);
+  short sVar2_val = static_cast<TMinor*>(subObject)->HasMinorStandingLinkSlot5C(0xe);
 
   int mask1 = -(sVar2_val == 2);
   int mask2 = -(sVar2_val == 2);

@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 
 struct TPtrList;
+class TStream;
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
@@ -18,7 +19,7 @@ public:
   virtual void s04() = 0;
   virtual void s05() = 0;
   virtual void s06() = 0;
-  virtual void Release1C() = 0; // slot 0x1c
+  virtual void Free() = 0;
   virtual void s08() = 0;
   virtual void s09() = 0;
   virtual void s0a() = 0;
@@ -43,7 +44,7 @@ protected:
 
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).
 // RTTI: g_pClassDescTCity @ 0x0064f338; created by CreateTCityInstance (0x004b2340).
-// Like TGreatPower, the destructor restores the RefCountedObjectBase vtable
+// Like TGreatPower, the destructor restores the TObject EH sentinel vtable
 // (0x0066fec4) — real base inheritance is still future work.
 // VTABLE: IMPERIALISM 0x0064f580
 class TCity {
@@ -61,11 +62,8 @@ public:
     (void)stream;
   }
   // slot 0x06 — body 0x004b30a0 (1044B, unported): deserialize production state.
-  virtual void Call18(int arg1 = 0) {
-    (void)arg1;
-  }
-  // slot 0x07 — body 0x004b3a60: release every owned order object then `delete this`.
-  virtual void Call1C();
+  virtual void ReadFrom(TStream* stream);
+  virtual void Free();
   virtual void TurnEventSlot20_Provisional() {}
   virtual void TurnEventSlot24_Provisional() {}
   // slot 0x0a — body 0x004b3b40 (528B, unported).

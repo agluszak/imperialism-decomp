@@ -11,7 +11,6 @@
 #include "game/TNextTradeCommand.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TTurnEventQueue.h"
-#include "game/TTerrainDescriptor.h"
 #include <new>
 
 #if defined(_MSC_VER)
@@ -495,7 +494,7 @@ void TDiplomacyTurnStateManager::SetStandingScoreSlot28(int sourceNationSlot, in
     int minorNationSlot = 7;
     TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[7];
     do {
-      TMinor* terrain = reinterpret_cast<TMinor*>(*terrainCursor);
+      TMinor* terrain = static_cast<TMinor*>(*terrainCursor);
       if (terrain != 0 && terrain->HasMinorStandingLinkSlot5C(sourceNationSlot) != 0) {
         CopyDiplomacyStandingMatrixRowAndColumnSlot2c(minorNationSlot, sourceNationSlot);
       }
@@ -509,7 +508,7 @@ void TDiplomacyTurnStateManager::SetStandingScoreSlot28(int sourceNationSlot, in
     int minorNationSlot = 7;
     TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[7];
     do {
-      TMinor* terrain = reinterpret_cast<TMinor*>(*terrainCursor);
+      TMinor* terrain = static_cast<TMinor*>(*terrainCursor);
       if (terrain != 0 && terrain->HasMinorStandingLinkSlot5C(targetNationSlot) != 0) {
         CopyDiplomacyStandingMatrixRowAndColumnSlot2c(minorNationSlot, targetNationSlot);
       }
@@ -552,7 +551,7 @@ void TDiplomacyTurnStateManager::ApplyRelationCode4AndQueueEvent18ForTargetNatio
   }
 
   TMinor* targetTerrain =
-      reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)]);
+      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)]);
   if (targetTerrain != 0) {
     targetTerrain->NotifyActionSlot94(sourceNationSlot, 0x139);
     g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
@@ -585,11 +584,11 @@ void TDiplomacyTurnStateManager::PropagateRelationSideEffectSlot80(int sourceNat
   int candidateOrdinal = 0;
   TCountry** terrainCursor = g_apTerrainTypeDescriptorTable;
   do {
-    TMinor* candidateTerrain = reinterpret_cast<TMinor*>(*terrainCursor);
+    TMinor* candidateTerrain = static_cast<TMinor*>(*terrainCursor);
     if (IsNationSlotEligibleForEventProcessing(candidateNationSlot) != 0 &&
         static_cast<short>(candidateNationSlot) != static_cast<short>(sourceNationSlot) &&
         static_cast<short>(candidateNationSlot) != static_cast<short>(targetNationSlot) &&
-        candidateTerrain->ownerNationSlot0e == -1) {
+        candidateTerrain->encodedNationSlot == -1) {
       int divisorTier;
       if (HasFlag84ForNationSlot84(targetNationSlot) == 0) {
         if (HasFlag84ForNationSlot84(candidateNationSlot) == 0) {
@@ -710,7 +709,7 @@ void TDiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
                       col, 4, -1);
                 }
               } else {
-                reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[col])
+                static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[col])
                     ->ApplyTerrainDiplomacyRelationFlagSlot8c(
                     row, relationCode);
               }
@@ -751,7 +750,7 @@ void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
       SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, 6, 0);
     }
 
-    reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot])
+    static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[targetNationSlot])
         ->NotifyActionSlot94(sourceNationSlot, 0x131);
 
     g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(1, targetNationSlot,
@@ -932,9 +931,9 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
         (HasFlag84ForNationSlot84(targetNationSlot) != 0)) {
       relationSideEffectMatrix1402[forwardIndex] = 2;
       relationSideEffectMatrix1402[reverseIndex] = 2;
-      reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[source])->SetDiplomacyStandingSlot48(
+      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[source])->SetDiplomacyStandingSlot48(
           targetNationSlot, 100);
-      reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[target])->SetDiplomacyStandingSlot48(
+      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[target])->SetDiplomacyStandingSlot48(
           sourceNationSlot, 100);
       return;
     }
@@ -943,9 +942,9 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
     SetStandingScoreSlot28(sourceNationSlot, targetNationSlot, 0xff);
     break;
   case 6: {
-    TMinor* sourceTerrain = reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[source]);
-    TMinor* targetTerrain = reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[target]);
-    if ((sourceTerrain->ownerNationSlot0e == -1) && (targetTerrain->ownerNationSlot0e < 200)) {
+    TMinor* sourceTerrain = static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[source]);
+    TMinor* targetTerrain = static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[target]);
+    if ((sourceTerrain->encodedNationSlot == -1) && (targetTerrain->encodedNationSlot < 200)) {
       g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x19, source, target, 0);
     }
     sourceTerrain->SetDiplomacyStandingSlot48(targetNationSlot, 300);

@@ -97,6 +97,7 @@ address|target_cpp|ownership|note
 482010|src/game/noop_slots.cpp|manual|marker_sync
 4822e0|src/game/noop_slots.cpp|manual|marker_sync
 482420|src/game/noop_slots.cpp|manual|marker_sync
+484990|src/game/TObject.cpp|manual|marker_sync
 485e20|src/game/TObject.cpp|manual|marker_sync
 485e90|src/game/TObjectSerialize.cpp|manual|marker_sync
 485f50|src/game/TObject.cpp|manual|marker_sync
@@ -371,7 +372,7 @@ address|target_cpp|ownership|note
 4a0190|src/game/TFocusAnimation.cpp|manual|marker_sync
 4a05c0|src/game/TTransFocusAnimation.cpp|manual|marker_sync
 4a0770|src/game/TTransFocusAnimation.cpp|manual|marker_sync
-4a5aa0|src/game/TTerrainDescriptor.cpp|manual|marker_sync
+4a5aa0|src/game/TCountry.cpp|manual|marker_sync
 4aad20|src/game/noop_slots.cpp|manual|marker_sync
 4ab800|src/game/noop_slots.cpp|manual|marker_sync
 4b1410|src/game/noop_slots.cpp|manual|marker_sync
@@ -461,7 +462,7 @@ address|target_cpp|ownership|note
 4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
 4d7ae0|src/game/TCountry.cpp|manual|marker_sync
 4d7b00|src/game/TCountry.cpp|manual|marker_sync
-4d7b20|src/game/TGreatPower.cpp|manual|marker_sync
+4d7b20|src/game/TCountry.cpp|manual|marker_sync
 4d7c00|src/game/TCountry.cpp|manual|marker_sync
 4d7c90|src/game/TCountry.cpp|manual|marker_sync
 4d7d20|src/game/TCountry.cpp|manual|marker_sync
@@ -481,8 +482,8 @@ address|target_cpp|ownership|note
 4d7fc0|src/game/TCountry.cpp|manual|marker_sync
 4d7fe0|src/game/TCountry.cpp|manual|marker_sync
 4d8000|src/game/TCountry.cpp|manual|marker_sync
-4d8390|src/game/TTerrainDescriptor.cpp|manual|marker_sync
-4d83c0|src/game/TTerrainDescriptor.cpp|manual|marker_sync
+4d8390|src/game/TCountry.cpp|manual|marker_sync
+4d83c0|src/game/TCountry.cpp|manual|marker_sync
 4d87b0|src/game/TCountry.cpp|manual|marker_sync
 4d87e0|src/game/TCountry.cpp|manual|marker_sync
 4d8920|src/game/TCountry.cpp|manual|marker_sync

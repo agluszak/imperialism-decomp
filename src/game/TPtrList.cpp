@@ -63,20 +63,34 @@ void TPtrList::Call54() {
   do {
     void* payload = this->listState.RemoveHead();
     if (payload != 0) {
-      static_cast<TTrackedObject*>(payload)->Release1C();
+      static_cast<TTrackedObject*>(payload)->Free();
     }
   } while (*(reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(this) + 0x10)) != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00488790
-void TPtrList::Release1C() {
-  this->DeleteSelfSlot04(1);
+void TPtrList::Free() {
+  delete this;
+}
+
+void TPtrList::WriteTo(TStream* stream) {
+  (void)stream;
+}
+
+void TPtrList::ReadFrom(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM TODO
+int TPtrList::GetIntByOrdinalSlot24(int ordinal) {
+  void* entry = GetNodeByOrdinalSlot2C(0, ordinal);
+  return reinterpret_cast<int>(entry);
 }
 
 // FUNCTION: IMPERIALISM 0x004887b0
 void TPtrList::Call58() {
   this->Call54();
-  this->Release1C();
+  this->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x00488840

@@ -12,7 +12,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 // doubly-linked list, then (for a real terrain-type index) generates a display name from
 // g_apTerrainTypeDescriptorTable[type] and removes earlier list entries with the same name.
 // EH-framed because the CString member at +0xc has a non-trivial dtor. Standalone polymorphic
-// class — does NOT derive from RefCountedObjectBase (the transient 0x6485c0 write in the
+// class — does NOT derive from TObject (the transient 0x6485c0 write in the
 // original ctor is MSVC EH sentinel glue, not list-wrapper inheritance).
 // VTABLE: IMPERIALISM 0x0065c498
 class TAdmiral : public CObject {

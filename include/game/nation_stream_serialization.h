@@ -40,7 +40,7 @@ static __inline void WriteIntArrayElems(TStream* stream, const int* values, int 
 // Writes a TPtrList's tracked entries: the list itself (slot 0x14), then the entry
 // count (slot 0x48), then each 1-based entry through its own slot 0x14 serializer.
 static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
-  list->ResetSlot14(stream);
+  list->WriteTo(stream);
   int entryCount = list->GetCountSlot48();
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
@@ -53,7 +53,7 @@ static __inline void WriteTrackedListToStream(TStream* stream, TPtrList* list) {
 // Writes a plain int list (ownedRegionList): the list write-header (slot 0x1c), then the
 // entry count (slot 0x28), then each 1-based int value (slot 0x24).
 static __inline void WriteIntListToStream(TStream* stream, TPtrList* list) {
-  list->Release1C();
+  list->WriteTo(stream);
   int entryCount = list->GetCountOrReleaseSlot28();
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {

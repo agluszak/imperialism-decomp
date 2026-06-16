@@ -16,7 +16,7 @@ extern "C" char g_pClassDescTAdmiral = 0;
 // FUNCTION: IMPERIALISM 0x004d7eb0
 void __fastcall TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(TMinor* terrainDescriptor,
                                                                       CString* dest) {
-  GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->fallbackNationSlot0c);
+  GenerateMappedFlavorTextByTableSlot(dest, terrainDescriptor->nationSlot);
 }
 // FUNCTION: IMPERIALISM 0x00551410
 CRuntimeClass* TAdmiral::GetRuntimeClass() const {
@@ -33,7 +33,7 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
   }
   if (static_cast<unsigned short>(terrainType) != 0xffff) {
     GenerateMappedFlavorTextByNationSlotField0C(
-        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[terrainType]),
+        static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[terrainType]),
                                                 &displayName);
     for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
       if (node == this) {
@@ -110,7 +110,7 @@ void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primar
 // FUNCTION: IMPERIALISM 0x00552450
 void TAdmiral::RemoveDuplicateNavySecondaryOrdersByDisplayName() {
   GenerateMappedFlavorTextByNationSlotField0C(
-      reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[this->terrainType]), &this->displayName);
+      static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[this->terrainType]), &this->displayName);
   for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
     if (node == this) {
       continue;
