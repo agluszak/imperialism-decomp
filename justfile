@@ -93,8 +93,11 @@ ghidra-vtable-dump class vtable *args: _require-ghidra-install
 
 # Scaffold a class+vtable port: resolve slots via Ghidra, then emit a reviewable
 # header/.cpp/CSV scaffold (dry-run by default; pass --write to apply).
-#   just bootstrap-class TUnitOrderState 0x0066ee18 TObject 0x00653868
-# base name+vtable are optional but recommended (drives inherited-vs-override).
+#   just bootstrap-class TUnitOrderState 0x0066ee18
+#   just bootstrap-class TUnitOrderState 0x0066ee18 TObject 0x00653868  # override
+# The base is auto-detected from the MFC CRuntimeClass chain (immediate base +
+# CObject-vs-TObject root + its vtable for the inherited-vs-override diff); pass
+# base name+vtable explicitly only to override the RTTI-recovered edge.
 bootstrap-class class vtable base='' base_vtable='' *args: _require-ghidra-install
   #!/usr/bin/env bash
   set -euo pipefail

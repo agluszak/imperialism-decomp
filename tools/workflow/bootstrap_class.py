@@ -233,15 +233,33 @@ def classify_slots(
 # --------------------------------------------------------------------------- #
 
 
-def render_header(class_name: str, base_name: str, vtable_addr: str, slots: list[ClassifiedSlot]) -> str:
+def render_header(
+    class_name: str,
+    base_name: str,
+    vtable_addr: str,
+    slots: list[ClassifiedSlot],
+    rtti: dict | None = None,
+) -> str:
+    rtti = rtti or {}
     base_header = f'#include "game/{base_name}.h"'
+    if rtti.get("immediate_base"):
+        # Inheritance recovered from the MFC CRuntimeClass chain — cite it.
+        edge_comment = (
+            f"// TODO(bootstrap): describe {class_name} and its role. Base edge "
+            f"({base_name}) recovered from RTTI CRuntimeClass chain: "
+            f"{' -> '.join(rtti.get('ancestry', [class_name, base_name]))}."
+        )
+    else:
+        edge_comment = (
+            f"// TODO(bootstrap): describe {class_name} and its role; confirm the base"
+            f" edge ({base_name}) from ctor/dtor sequencing + vtable layout evidence."
+        )
     lines = [
         "#pragma once",
         "",
         base_header,
         "",
-        f"// TODO(bootstrap): describe {class_name} and its role; confirm the base"
-        f" edge ({base_name}) from ctor/dtor sequencing + vtable layout evidence.",
+        edge_comment,
         f"// VTABLE: IMPERIALISM {vtable_addr}",
         f"class {class_name} : public {base_name} {{",
         "public:",
@@ -439,7 +457,15 @@ def build_scaffold(args, repo_root: Path) -> int:
     class_entry = data[args.cls]
     vtable_addr = class_entry["vtable_addr"]
     class_slots = class_entry["slots"]
-    base_slots = data.get(args.base, {}).get("slots", []) if args.base else []
+    rtti = class_entry.get("rtti") or {}
+
+    # Base resolution: an explicit --base wins; otherwise fall back to the
+    # immediate base recovered from the MFC CRuntimeClass chain (which also names
+    # the CObject-vs-TObject root branch). Only when neither is available do we
+    # emit the unverified ': public TObject' placeholder.
+    base_name = args.base or rtti.get("immediate_base")
+    base_via_rtti = not args.base and bool(rtti.get("immediate_base"))
+    base_slots = data.get(base_name, {}).get("slots", []) if base_name else []
 
     symbols_path = resolve_repo_path(repo_root, "config/symbols.csv")
     ownership_path = resolve_repo_path(repo_root, "config/function_ownership.csv")
@@ -453,7 +479,8 @@ def build_scaffold(args, repo_root: Path) -> int:
     cpp_path = resolve_repo_path(repo_root, f"src/game/{args.cls}.cpp")
     target_cpp = f"src/game/{args.cls}.cpp"
 
-    header_text = render_header(args.cls, args.base or "TObject", vtable_addr, slots)
+    effective_base = base_name or "TObject"
+    header_text = render_header(args.cls, effective_base, vtable_addr, slots, rtti=rtti)
     cpp_text = render_cpp(args.cls, slots)
     sym_plan = plan_symbols(symbols_path, owned, args.cls)
     own_plan = plan_ownership(ownership_path, owned, target_cpp)
@@ -462,7 +489,9 @@ def build_scaffold(args, repo_root: Path) -> int:
     counts: dict[str, int] = {}
     for s in slots:
         counts[s.kind] = counts.get(s.kind, 0) + 1
-    print(f"== bootstrap-class {args.cls} : public {args.base or 'TObject'} ({vtable_addr}) ==")
+    print(f"== bootstrap-class {args.cls} : public {effective_base} ({vtable_addr}) ==")
+    if rtti.get("ancestry"):
+        print(f"   RTTI {rtti.get('root', '?')}-branch: {' -> '.join(rtti['ancestry'])}")
     print(f"   slots: {len(slots)}  " + "  ".join(f"{k}={v}" for k, v in sorted(counts.items())))
     print(f"   new symbols.csv rows: {len(sym_plan.new_rows)}")
     print(f"   new function_ownership.csv rows: {len(own_plan.new_rows)}")
@@ -475,8 +504,14 @@ def build_scaffold(args, repo_root: Path) -> int:
                 "bridge — verify it isn't ??_G; if so, claim it SYNTHETIC (Hard Rule 9), "
                 "don't hand-write it."
             )
-    if not args.base:
-        print("   !! no --base supplied; emitted ': public TObject' as a TODO. Verify inheritance.")
+    if base_via_rtti:
+        print(f"   base '{base_name}' recovered from RTTI CRuntimeClass chain.")
+        if not base_slots:
+            print(f"   !! base '{base_name}' vtable not extracted; inherited/override diff "
+                  "is degraded — pass the base vtable explicitly.")
+    elif not args.base:
+        print("   !! no --base and no RTTI base; emitted ': public TObject' as a TODO. "
+              "Verify inheritance.")
 
     if not args.write:
         print("\n--- DRY RUN (pass --write to apply) ---")

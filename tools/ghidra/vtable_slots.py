@@ -73,6 +73,7 @@ def main() -> int:
         fm = program.getFunctionManager()
         listing = program.getListing()
         mem = program.getMemory()
+        refmgr = program.getReferenceManager()
 
         mon = None
         if decompile:
@@ -128,9 +129,105 @@ def main() -> int:
                 rec["ghidra_name"] = None
             return rec
 
-        out: dict = {}
-        for spec in specs:
-            name, vtable, count = parse_spec(spec)
+        IMG_LO, IMG_HI = 0x400000, 0x700000
+
+        def in_image(a: int) -> bool:
+            return IMG_LO <= a < IMG_HI
+
+        def read_cstr(addr: int, limit: int = 64) -> str:
+            bs = bytearray()
+            for i in range(limit):
+                try:
+                    b = mem.getByte(af.getAddress(addr + i)) & 0xFF
+                except Exception:
+                    break
+                if b == 0:
+                    break
+                bs.append(b)
+            return bs.decode("latin1", "replace")
+
+        def descriptor_from_getter(getter_entry: int) -> int | None:
+            """The slot-0 RTTI getter is `mov eax, &CRuntimeClass; ret`; return the
+            descriptor address it references."""
+            fn = fm.getFunctionContaining(af.getAddress(getter_entry))
+            if fn is None:
+                return None
+            it = listing.getInstructions(fn.getBody(), True)
+            while it.hasNext():
+                for ref in it.next().getReferencesFrom():
+                    to = int(ref.getToAddress().getOffset())
+                    if in_image(to) and ref.getReferenceType().isData():
+                        return to
+            return None
+
+        def walk_ancestry(desc: int) -> list[dict]:
+            """Follow MFC CRuntimeClass `m_pBaseClass` (+0x10), reading the class
+            name (+0x00 -> char*) at each link, until the root (base == 0)."""
+            chain: list[dict] = []
+            seen: set[int] = set()
+            cur = desc
+            while cur and in_image(cur) and cur not in seen:
+                seen.add(cur)
+                try:
+                    name = read_cstr(mem.getInt(af.getAddress(cur)) & 0xFFFFFFFF)
+                    base = mem.getInt(af.getAddress(cur + 0x10)) & 0xFFFFFFFF
+                except Exception:
+                    break
+                chain.append({"name": name, "descriptor": f"0x{cur:08x}"})
+                if base == 0:
+                    break
+                cur = base
+            return chain
+
+        def descriptor_to_vtable(desc: int) -> int | None:
+            """Find the vtable whose slot 0 dispatches to `desc`'s getter, via the
+            reference graph (descriptor <- getter <- [ILT thunk] <- vtable slot0)."""
+            for r in refmgr.getReferencesTo(af.getAddress(desc)):
+                fn = fm.getFunctionContaining(r.getFromAddress())
+                if fn is None:
+                    continue
+                getter = int(fn.getEntryPoint().getOffset())
+                for r2 in refmgr.getReferencesTo(af.getAddress(getter)):
+                    fa = int(r2.getFromAddress().getOffset())
+                    ins = listing.getInstructionAt(af.getAddress(fa))
+                    if ins is not None and ins.getMnemonicString().lower() == "jmp":
+                        for r3 in refmgr.getReferencesTo(af.getAddress(fa)):
+                            fa3 = int(r3.getFromAddress().getOffset())
+                            if listing.getInstructionAt(af.getAddress(fa3)) is None:
+                                return fa3  # data location == vtable slot 0
+                    elif ins is None:
+                        return fa  # direct (un-thunked) vtable slot 0
+            return None
+
+        def resolve_rtti(class_slots: list[dict]) -> dict | None:
+            """From a class's slot 0, recover its name, full ancestry, the
+            CObject-vs-TObject root branch, and the immediate base + its vtable."""
+            if not class_slots or class_slots[0].get("is_null"):
+                return None
+            getter = int(class_slots[0]["target_addr"], 16)
+            desc = descriptor_from_getter(getter)
+            if desc is None:
+                return None
+            chain = walk_ancestry(desc)
+            if not chain:
+                return None
+            names = [c["name"] for c in chain]
+            rtti: dict = {
+                "class_name": names[0],
+                "ancestry": names,
+                # CObject is the absolute root; a TObject in the chain marks the
+                # game-object branch, otherwise it is a direct-CObject (MFC) class.
+                "root": "TObject" if "TObject" in names[1:] else "CObject",
+            }
+            if len(chain) > 1:
+                rtti["immediate_base"] = names[1]
+                base_desc = int(chain[1]["descriptor"], 16)
+                base_vt = descriptor_to_vtable(base_desc)
+                if base_vt is not None:
+                    rtti["immediate_base_vtable"] = f"0x{base_vt:08x}"
+            return rtti
+
+        def extract(name: str, vtable: int, count: int | None) -> dict:
             slots: list[dict] = []
             limit = count if count is not None else MAX_SLOTS
             last_nonnull = -1  # index of the last resolvable (non-null) slot
@@ -172,7 +269,41 @@ def main() -> int:
                 if not rec["is_null"]:
                     last_nonnull = i
                 slots.append(rec)
-            out[name] = {"vtable_addr": f"0x{vtable:08x}", "slots": slots}
+            return {"vtable_addr": f"0x{vtable:08x}", "slots": slots}
+
+        out: dict = {}
+        parsed = [parse_spec(s) for s in specs]
+        for name, vtable, count in parsed:
+            out[name] = extract(name, vtable, count)
+
+        # Recover the inheritance edge of the first (class) spec from its MFC
+        # CRuntimeClass chain, and — when no base was supplied — auto-extract the
+        # immediate base's vtable so the codegen can diff inherited vs. override.
+        class_name = parsed[0][0]
+        rtti = resolve_rtti(out[class_name]["slots"])
+        if rtti is not None:
+            out[class_name]["rtti"] = rtti
+            chain_str = " -> ".join(rtti["ancestry"])
+            print(
+                f"[vtable_slots] {class_name}: {rtti['root']}-branch; ancestry {chain_str}",
+                file=sys.stderr,
+            )
+            base = rtti.get("immediate_base")
+            base_vt = rtti.get("immediate_base_vtable")
+            if base and base not in out:
+                if base_vt:
+                    out[base] = extract(base, int(base_vt, 16), None)
+                    print(
+                        f"[vtable_slots] auto-extracted base {base} @ {base_vt} "
+                        f"(from RTTI; pass it explicitly to override).",
+                        file=sys.stderr,
+                    )
+                else:
+                    print(
+                        f"[vtable_slots] {class_name}: immediate base {base} found via RTTI "
+                        "but its vtable could not be located; pass it explicitly.",
+                        file=sys.stderr,
+                    )
 
         json.dump(out, sys.stdout, indent=2)
         sys.stdout.write("\n")

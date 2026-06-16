@@ -146,6 +146,19 @@ def main() -> int:
         check("ownership skips collided addr", "5c2490" not in own_addrs)
         check("ownership adds 5c27d0", "5c27d0" in own_addrs)
 
+    # RTTI-recovered base edge is cited in the header (vs. unverified TODO)
+    rtti = {
+        "class_name": "TUnitOrderState",
+        "ancestry": ["TUnitOrderState", "TObject", "CObject"],
+        "root": "TObject",
+        "immediate_base": "TObject",
+    }
+    h_rtti = bc.render_header("TUnitOrderState", "TObject", "0x0066ee18", slots, rtti=rtti)
+    check("rtti header cites chain", "recovered from RTTI CRuntimeClass chain" in h_rtti)
+    check("rtti header shows ancestry", "TUnitOrderState -> TObject -> CObject" in h_rtti)
+    h_nortti = bc.render_header("TUnitOrderState", "TObject", "0x0066ee18", slots)
+    check("no-rtti header keeps verify TODO", "confirm the base edge" in h_nortti)
+
     # deleting-destructor-bridge detection (flag, don't reclassify)
     check("dtor suspect AndMaybeFree",
           bc.looks_like_deleting_dtor("TTransFocusAnimation::DestructTTransFocusAnimationAndMaybeFree"))
