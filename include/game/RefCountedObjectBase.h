@@ -16,7 +16,10 @@
 // 0x648f78. TPtrList overrides slots 5..7; TList/TSortedList override slot 1.
 // VTABLE: IMPERIALISM 0x006485c0
 struct RefCountedObjectBase {
-  virtual ~RefCountedObjectBase() {}
+  // No C++ virtual destructor: the original vtable starts at slot 0x00 with the
+  // GetRuntimeClass-equivalent and frees through DeleteSelfSlot04 (the scalar
+  // deleting destructor), so a leading virtual ~dtor would inject an extra slot
+  // and shift every named slot by 4 (matches the TObject 10-slot prefix).
   virtual void GetClassDescDynamicSlot00() {}
   virtual void DeleteSelfSlot04(int freeFlag) {}
   virtual void DispatchSlot08() {}

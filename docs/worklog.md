@@ -4422,3 +4422,26 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
   - `just gates` passes.
   - `just compare` confirms promoted symbols pair (scores unchanged/expected for early semantic renames).
   - `just vtable TAutoGreatPower` still reports drift, narrowed to TAuto-only tail extension (`0x2c8/0x2cc`) and adjacent auto bands; left for a dedicated TAuto pass.
+
+## 2026-06-16 — TGreatPower.cpp cleanup: RefCountedObjectBase off-by-one vtable fix
+
+- Root-caused several below-100% TGreatPower serialization/list functions to a defect in
+  `RefCountedObjectBase`: an explicit leading `virtual ~RefCountedObjectBase()` injected an
+  extra vtable slot, shifting every named slot (`ResetSlot14`, `GetCountSlot48`,
+  `GetTrackedEntrySlot4C`, …) +4. The original vtable maps 1:1 onto the TObject 10-slot
+  prefix (slot 0 = GetRuntimeClass-equivalent, slot 4 = scalar-deleting free). Build had
+  been emitting "Recomp vtable is larger than orig" for the whole TPtrList/TList family.
+- Removed the leading virtual destructor (frees through `DeleteSelfSlot04`); base vtable is
+  now 10/10 slots and the "larger than orig" warning is gone.
+- `src/game/TGreatPower.cpp` local cleanup:
+  - `ClassifyNationProductionTierVsPeers` (0x4e2880): loop bound `g_apNationStates + 7`
+    (resolved to `g_pLocalizationTable`, unsigned `jb`) → signed compare vs
+    `&g_apNationStates_End`; bound now matches exactly (`cmp ebx, g_apNationStates_End` / `jl`).
+  - Removed dead helpers `InitializeAndReleaseSharedMessageRefs`, `InitializeThreeSharedRefs`,
+    `ReleaseThreeSharedRefs` (definition-only, unused).
+- Results: TGreatPower.cpp 29→34 functions at 100% (e.g. `0x4da500` 94.83%→100%, `0x4da3e0`
+  89.16%→92.77%, `0x4e2270` 78.79%→84.85%); overall `just stats` average similarity
+  24.24%→24.29% (+0.05pp), aligned/paired +0.06pp. No regressions observed.
+- Validation: `just build`, `just sync-ownership`/`regen-stubs`, `just gates` all pass.
+- Follow-up: `WriteTo` (0x4d9c70) is still an empty stub (~0x770-byte serialization body);
+  TPtrList/TList family lacks `// VTABLE` annotations to lock in the new alignment.

@@ -448,11 +448,6 @@ static const int kAidAllocationColumnCount = 0x17;
 static const int kMajorNationCount = 7;
 static const int kDiplomacyTrackedSlotCount = 0x11;
 
-static __inline void InitializeAndReleaseSharedMessageRefs(void) {
-  CString messageRef;
-  CString scratchRef;
-}
-
 struct SharedRefPairScope {
   CString first;
   CString second;
@@ -461,16 +456,6 @@ struct SharedRefPairScope {
 
   ~SharedRefPairScope() {}
 };
-
-static __inline void InitializeThreeSharedRefs(CString* firstRef, CString* secondRef,
-                                               CString* thirdRef) {}
-
-static __inline void ReleaseThreeSharedRefs(CString* firstRef, CString* secondRef,
-                                            CString* thirdRef) {
-  thirdRef->~CString();
-  secondRef->~CString();
-  firstRef->~CString();
-}
 
 struct SharedRefTripleScope {
   CString first;
@@ -4945,7 +4930,7 @@ int TGreatPower::ClassifyNationProductionTierVsPeers(void) {
     }
     ++nationCursor;
     ++slot;
-  } while (nationCursor < g_apNationStates + 7);
+  } while (reinterpret_cast<int>(nationCursor) < reinterpret_cast<int>(&g_apNationStates_End));
   if (sampleCount < g_Classify_Nation_Military_Value_00653708) {
     return 2;
   }
