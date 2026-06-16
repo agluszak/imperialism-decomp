@@ -134,7 +134,7 @@ class ClassifiedSlot:
     byte_offset: int
     slot_label: str
     target_addr: str  # bare hex, no 0x
-    kind: str  # null | inherited | override | new | scalar_dtor
+    kind: str  # null | inherited | override | new | scalar_dtor | ilt_thunk
     sig: Signature | None
     qualified_name: str | None
     size: int
@@ -192,6 +192,11 @@ def classify_slots(
 
         if s.get("is_null"):
             kind = "null"
+        elif s.get("is_thunk"):
+            # An ILT/linker jmp stub that resolution could not escape. reccmp
+            # auto-resolves these; owning one would break pairing, so never emit
+            # a body/marker/CSV row for it.
+            kind = "ilt_thunk"
         elif is_scalar:
             kind = "scalar_dtor"
         elif base_target and target == base_target:
@@ -276,6 +281,12 @@ def render_header(
             )
         elif s.kind == "null":
             lines.append(f"  // slot {s.slot_label} (null in original table)")
+        elif s.kind == "ilt_thunk":
+            nm = unqualified(s.qualified_name) if s.qualified_name else "?"
+            lines.append(
+                f"  // slot {s.slot_label} {nm} -> ILT/linker thunk (0x{s.target_addr}); "
+                "reccmp auto-resolves, not owned here"
+            )
         elif s.kind == "scalar_dtor":
             lines.append(f"  ~{class_name}() override; // slot {s.slot_label} (scalar deleting destructor)")
         elif s.kind == "override":

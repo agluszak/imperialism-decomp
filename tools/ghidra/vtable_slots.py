@@ -87,13 +87,28 @@ def main() -> int:
             mon = ConsoleTaskMonitor()
 
         def resolve(entry: int) -> int:
-            """Follow up to 8 single-flow JMP thunks to the real body address."""
+            """Resolve a vtable entry to its real (non-thunk) body address.
+
+            The .text image opens with a dense incremental-link (ILT) table of
+            5-byte `jmp <body>` stubs; Ghidra marks these as thunks. We never want
+            to own/emit a thunk, so follow Ghidra's thunk chain first, then fall
+            back to chasing raw single-flow JMPs (for stubs Ghidra didn't mark)."""
             target = entry
             for _ in range(8):
-                fn = fm.getFunctionContaining(af.getAddress(target))
+                addr = af.getAddress(target)
+                fn = fm.getFunctionContaining(addr)
+                # Ghidra-recognized thunk (ILT or otherwise) -> jump to real body.
+                if fn is not None and fn.isThunk():
+                    tf = fn.getThunkedFunction(True)
+                    if tf is not None:
+                        nxt = int(tf.getEntryPoint().getOffset())
+                        if nxt == target:
+                            break
+                        target = nxt
+                        continue
                 if fn is not None and int(fn.getEntryPoint().getOffset()) == target:
                     break
-                ins = listing.getInstructionAt(af.getAddress(target))
+                ins = listing.getInstructionAt(addr)
                 if ins is None:
                     break
                 if ins.getMnemonicString().lower() == "jmp" and len(ins.getFlows()) == 1:
@@ -117,6 +132,9 @@ def main() -> int:
             rec["target_addr"] = f"0x{target:08x}"
             fn = fm.getFunctionContaining(af.getAddress(target))
             if fn is not None:
+                # True only if resolution could not escape a thunk (e.g. an
+                # un-analyzed ILT stub); the generator must not own such a slot.
+                rec["is_thunk"] = bool(fn.isThunk())
                 rec["ghidra_name"] = fn.getName()
                 rec["size"] = fn.getBody().getNumAddresses()
                 rec["prototype"] = fn.getSignature(True).getPrototypeString()

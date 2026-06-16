@@ -15,7 +15,7 @@ from tools.ghidra.vtable_slots import is_rtti_getter
 from tools.workflow import bootstrap_class as bc
 
 
-def slot(index, target, *, null=False, name=None, proto=None, size=0, decomp=None):
+def slot(index, target, *, null=False, name=None, proto=None, size=0, decomp=None, thunk=False):
     return {
         "index": index,
         "byte_offset": index * 4,
@@ -23,6 +23,7 @@ def slot(index, target, *, null=False, name=None, proto=None, size=0, decomp=Non
         "entry_addr": "0x00000000" if null else f"0x{target:08x}",
         "target_addr": "0x00000000" if null else f"0x{target:08x}",
         "is_null": null,
+        "is_thunk": thunk,
         "ghidra_name": name,
         "prototype": proto,
         "size": size,
@@ -145,6 +146,21 @@ def main() -> int:
         own_addrs = {r["address"] for r in own_plan.new_rows}
         check("ownership skips collided addr", "5c2490" not in own_addrs)
         check("ownership adds 5c27d0", "5c27d0" in own_addrs)
+
+    # ILT-thunk slots are never owned (no body / symbol / ownership row)
+    thunk_cls = [
+        slot(0, 0x5C2490, name="GetRuntimeClass",
+             proto="CRuntimeClass* __thiscall GetRuntimeClass() const"),
+        slot(1, 0x401234, name="thunk_Foo", proto="void __thiscall Foo()", thunk=True),
+    ]
+    tslots = bc.classify_slots(thunk_cls, [], {})
+    check("thunk slot classified ilt_thunk", tslots[1].kind == "ilt_thunk")
+    check("thunk slot not owned",
+          not any(s.kind in ("override", "new", "scalar_dtor") for s in tslots if s.index == 1))
+    t_cpp = bc.render_cpp("TFoo", tslots)
+    check("thunk slot no FUNCTION marker", "0x401234" not in t_cpp)
+    t_hdr = bc.render_header("TFoo", "TObject", "0x1", tslots)
+    check("thunk slot header comment", "ILT/linker thunk (0x401234)" in t_hdr)
 
     # RTTI-recovered base edge is cited in the header (vs. unverified TODO)
     rtti = {
