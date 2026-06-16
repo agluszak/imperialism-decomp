@@ -2,7 +2,7 @@
 
 #include "compat.h"
 #include "decomp_types.h"
-#include "game/CBrush.h"
+#include "game/mfc.h"
 
 struct ClipStateRegionInner {
   char prefix[0x10];

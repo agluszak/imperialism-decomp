@@ -19,7 +19,7 @@ CRuntimeClass g_pClassDescTCivDescription = {nullptr, 0, 0, nullptr, nullptr};
 extern "C" void* g_apTerrainTypeDescriptorTable[];
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 #include "game/CString.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 

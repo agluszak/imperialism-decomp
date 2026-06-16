@@ -1,7 +1,7 @@
 #include "game/TMinister.h"
 
-#include "game/CArchive.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
+#include "game/mfc.h"
 #include "game/TMinisterBaseOrderArray.h"
 #include "game/TStream.h"
 

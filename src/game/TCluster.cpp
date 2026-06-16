@@ -13,7 +13,7 @@
 
 #include "game/TCluster.h"
 #include "game/TControl.h"
-#include "game/CPtrList.h"
+#include "game/mfc.h"
 
 #include "decomp_types.h"
 

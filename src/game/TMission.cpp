@@ -1,8 +1,8 @@
 #include "game/TMission.h"
 
 #include "decomp_types.h"
-#include "game/CArchive.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
+#include "game/mfc.h"
 
 extern "C" {
 // TMission RTTI descriptor (slot-0 GetRuntimeClass returns it). Defined in

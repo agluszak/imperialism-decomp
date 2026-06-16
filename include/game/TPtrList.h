@@ -3,7 +3,7 @@
 #include "compat.h"
 #include "decomp_types.h"
 #include "game/RefCountedObjectBase.h"
-#include "game/CPtrList.h"
+#include "game/mfc.h"
 
 // Common state for the game list wrappers. Concrete leaves such as TList and
 // TSortedList install their own vtables, but this remains a real polymorphic

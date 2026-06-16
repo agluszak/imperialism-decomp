@@ -4,9 +4,9 @@
 // TView/AppRoot override only the few slots where their vtable bodies differ.
 
 #pragma optimize("y", on)
-#include "game/CRuntimeClass.h"
-#include "game/CObject.h"
-#include "game/CArchive.h"
+#include "game/mfc.h"
+#include "game/mfc.h"
+#include "game/mfc.h"
 #include "game/TEventHandler.h"
 #include "game/TEvent.h"
 #include "game/TFileStream.h"

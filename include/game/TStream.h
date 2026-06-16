@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CObject.h"
+#include "game/mfc.h"
 
 // Mac: TStream — serialization byte stream (ReadBytes, ReadInteger, WriteObjectSize, …).
 // VTABLE slots verified against IMPERIALISM.exe (e.g. minister roster 0x004d92e0 uses

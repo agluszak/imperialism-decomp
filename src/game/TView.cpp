@@ -10,7 +10,7 @@
 
 #include "game/ApplicationUiRootController.h"
 #include "game/mfc.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TView.h"
 #include "game/TCursorControlPanel.h"
 #include "game/mcappui_globals.h"

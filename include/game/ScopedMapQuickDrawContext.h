@@ -2,7 +2,7 @@
 
 #include "compat.h"
 #include "decomp_types.h"
-#include "game/CClientDC.h"
+#include "game/mfc.h"
 #include "game/TView.h"
 
 struct ScopedMapQuickDrawContext {

@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "game/diplomacy_globals.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" CRuntimeClass PTR_s_TTownMarker_0066d780;
 

@@ -1,5 +1,5 @@
 #include "game/TProvinceDesirabilityList.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

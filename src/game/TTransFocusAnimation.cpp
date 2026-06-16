@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/TView.h"
-#include "game/CObject.h"
+#include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/mfc.h"

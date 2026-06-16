@@ -1,5 +1,5 @@
 #include "game/T2PictureButton.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e568

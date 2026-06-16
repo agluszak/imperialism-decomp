@@ -1,4 +1,4 @@
-#include "game/CArchive.h"
+#include "game/mfc.h"
 
 extern "C" {
 char g_pClassDescTNetMgr = 0;

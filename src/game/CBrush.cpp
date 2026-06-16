@@ -1,4 +1,4 @@
-#include "game/CBrush.h"
+#include "game/mfc.h"
 
 // LIBRARY: IMPERIALISM 0x0047d960
 // CGdiObject::~CGdiObject

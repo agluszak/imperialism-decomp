@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 
-#include "CObject.h"
+#include "game/mfc.h"
 #include "game/TIndexAndRankList.h"
 
 class TStream;

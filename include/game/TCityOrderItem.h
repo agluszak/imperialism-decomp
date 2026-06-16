@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/CObject.h"
+#include "game/mfc.h"
 
 class CArchive;
 

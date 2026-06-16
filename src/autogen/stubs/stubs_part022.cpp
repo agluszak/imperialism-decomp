@@ -19,14 +19,6 @@ undefined4 SetFocus(void)
   return 0;
 }
 
-// ghidra_name CWnd::AttachControlSite_607673
-// ghidra_proto undefined AttachControlSite_607673()
-// FUNCTION: IMPERIALISM 0x00607673
-undefined4 AttachControlSite_607673(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_RegisterCommctrlDragListMessage
 // ghidra_proto undefined thunk_RegisterCommctrlDragListMessage()
 // FUNCTION: IMPERIALISM 0x006076b8
@@ -67,14 +59,6 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At006076e5(void)
   return 0;
 }
 
-// ghidra_name CWnd::CWnd
-// ghidra_proto void __thiscall CWnd(void)
-// FUNCTION: IMPERIALISM 0x00607706
-undefined4 CWnd(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_E367_At0060770c
 // ghidra_proto undefined WrapperFor_E367_At0060770c()
 // FUNCTION: IMPERIALISM 0x0060770c
@@ -95,14 +79,6 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723()
 // FUNCTION: IMPERIALISM 0x00607723
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607723(void)
-{
-  return 0;
-}
-
-// ghidra_name CWnd::CWnd_00607744
-// ghidra_proto void __thiscall CWnd_00607744(void)
-// FUNCTION: IMPERIALISM 0x00607744
-undefined4 CWnd_00607744(void)
 {
   return 0;
 }
@@ -131,14 +107,6 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00607761(void)
   return 0;
 }
 
-// ghidra_name CWnd::CWnd_00607782
-// ghidra_proto void __thiscall CWnd_00607782(void)
-// FUNCTION: IMPERIALISM 0x00607782
-undefined4 CWnd_00607782(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_E377_At00607788
 // ghidra_proto undefined WrapperFor_E377_At00607788()
 // FUNCTION: IMPERIALISM 0x00607788
@@ -159,14 +127,6 @@ undefined4 thunk_WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f()
 // FUNCTION: IMPERIALISM 0x0060779f
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At0060779f(void)
-{
-  return 0;
-}
-
-// ghidra_name CWnd::CWnd_006077C0
-// ghidra_proto void __thiscall CWnd_006077C0(void)
-// FUNCTION: IMPERIALISM 0x006077c0
-undefined4 CWnd_006077C0(void)
 {
   return 0;
 }
@@ -239,14 +199,6 @@ undefined4 AfxPostInitDialog(void)
 // ghidra_proto undefined GetCurrentMessage()
 // FUNCTION: IMPERIALISM 0x00607a4f
 undefined4 GetCurrentMessage(void)
-{
-  return 0;
-}
-
-// ghidra_name CWnd::Default
-// ghidra_proto undefined Default()
-// FUNCTION: IMPERIALISM 0x00607a84
-undefined4 Default(void)
 {
   return 0;
 }
@@ -1475,14 +1427,6 @@ undefined4 FromHandle_60d2c0(void)
   return 0;
 }
 
-// ghidra_name AfxWinMain
-// ghidra_proto undefined AfxWinMain()
-// FUNCTION: IMPERIALISM 0x0060d3fc
-undefined4 AfxWinMain(void)
-{
-  return 0;
-}
-
 // ghidra_name CSingleDocTemplate
 // ghidra_proto undefined CSingleDocTemplate()
 // FUNCTION: IMPERIALISM 0x006106bd
@@ -2603,14 +2547,6 @@ undefined4 OnFileNew(void)
   return 0;
 }
 
-// ghidra_name CWinApp::DoMessageBox
-// ghidra_proto undefined DoMessageBox()
-// FUNCTION: IMPERIALISM 0x0061852a
-undefined4 DoMessageBox(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4
 // ghidra_proto undefined WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4()
 // FUNCTION: IMPERIALISM 0x006185e4
@@ -2639,22 +2575,6 @@ undefined4 CallField80VirtualSlot28OrReturnTrue_006186a4(void)
 // ghidra_proto undefined DispatchNestedVirtualSlot24_FromField80()
 // FUNCTION: IMPERIALISM 0x006186f2
 undefined4 DispatchNestedVirtualSlot24_FromField80(void)
-{
-  return 0;
-}
-
-// ghidra_name CWinApp::CloseAllDocuments_618704
-// ghidra_proto undefined CloseAllDocuments_618704()
-// FUNCTION: IMPERIALISM 0x00618704
-undefined4 CloseAllDocuments_618704(void)
-{
-  return 0;
-}
-
-// ghidra_name CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
-// ghidra_proto undefined CallField80VirtualSlot38OrReturnFalse_0061873c()
-// FUNCTION: IMPERIALISM 0x0061873c
-undefined4 CallField80VirtualSlot38OrReturnFalse_0061873c(void)
 {
   return 0;
 }

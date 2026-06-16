@@ -1,7 +1,7 @@
 #include "game/TStatusButton.h"
 #include "game/ui_widget_thunks.h"
 #include "game/TAmtBar.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 CRuntimeClass g_pClassDescTStatusButton = {nullptr, 0, 0, nullptr, nullptr};
 

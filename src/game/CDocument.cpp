@@ -1,4 +1,4 @@
-#include "game/CDocument.h"
+#include "game/mfc.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("ys", on)

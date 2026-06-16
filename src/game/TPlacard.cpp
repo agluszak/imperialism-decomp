@@ -1,5 +1,5 @@
 #include "game/TPlacard.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TControl.h"
 #include "game/trade_quickdraw.h"
 #include "game/ui_widget_thunks.h"

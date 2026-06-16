@@ -1,7 +1,7 @@
 #include "game/TCityOrderItem.h"
 
 #include "decomp_types.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

@@ -1,4 +1,4 @@
-#include "game/CClientDC.h"
+#include "game/mfc.h"
 
 // LIBRARY: IMPERIALISM 0x00613791
 // CClientDC::CClientDC

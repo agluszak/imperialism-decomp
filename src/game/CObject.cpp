@@ -1,4 +1,4 @@
-#include "game/CObject.h"
+#include "game/mfc.h"
 
 // The CObject vtable at 0x0066fec4 is owned by the `// VTABLE:` annotation in
 // CObject.h plus real inheritance -- do NOT add a `// GLOBAL:` marker here, or reccmp

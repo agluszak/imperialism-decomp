@@ -43,14 +43,6 @@ undefined4 DestroyTurnStateObjectWithMfcDeleteFinalizer(void)
   return 0;
 }
 
-// ghidra_name CWinThread::CWinApp
-// ghidra_proto undefined CWinApp()
-// FUNCTION: IMPERIALISM 0x0062246c
-undefined4 CWinApp(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00622556
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00622556()
 // FUNCTION: IMPERIALISM 0x00622556
@@ -163,14 +155,6 @@ undefined4 thunk_CProcessLocalObject(void)
   return 0;
 }
 
-// ghidra_name CWinThread::CWinThread
-// ghidra_proto undefined CWinThread()
-// FUNCTION: IMPERIALISM 0x00622b58
-undefined4 CWinThread(void)
-{
-  return 0;
-}
-
 // ghidra_name AfxLoadDotBitmap
 // ghidra_proto undefined AfxLoadDotBitmap()
 // FUNCTION: IMPERIALISM 0x00622bcd
@@ -259,14 +243,6 @@ undefined4 WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At0062348e(void)
   return 0;
 }
 
-// ghidra_name AfxGetThreadState
-// ghidra_proto undefined AfxGetThreadState()
-// FUNCTION: IMPERIALISM 0x00623523
-undefined4 AfxGetThreadState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006235bd
 // ghidra_proto undefined WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At006235bd()
 // FUNCTION: IMPERIALISM 0x006235bd
@@ -303,14 +279,6 @@ undefined4 AllocateMfcModuleStateNode_1074(void)
 // ghidra_proto undefined WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623866()
 // FUNCTION: IMPERIALISM 0x00623866
 undefined4 WrapperFor_Cluster_TurnStateCalleeHint_00623bc8_At00623866(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxGetModuleState
-// ghidra_proto undefined AfxGetModuleState()
-// FUNCTION: IMPERIALISM 0x00623886
-undefined4 AfxGetModuleState(void)
 {
   return 0;
 }
@@ -767,14 +735,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006246cd(void)
 // ghidra_proto undefined UnregisterShellFileTypes()
 // FUNCTION: IMPERIALISM 0x006246e9
 undefined4 UnregisterShellFileTypes(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxWinInit
-// ghidra_proto undefined AfxWinInit()
-// FUNCTION: IMPERIALISM 0x00624e73
-undefined4 AfxWinInit(void)
 {
   return 0;
 }

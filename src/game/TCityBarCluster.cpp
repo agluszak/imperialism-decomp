@@ -13,7 +13,7 @@
 #include "game/TCityBarCluster.h"
 #include "game/GameAssert.h"
 #include <new>
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" {
 CRuntimeClass g_pClassDescTCityBarCluster = {nullptr, 0, 0, nullptr, nullptr};

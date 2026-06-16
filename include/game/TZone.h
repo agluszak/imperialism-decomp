@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 
-#include "game/CDumpContext.h"
+#include "game/mfc.h"
 #include "game/CString.h"
 
 struct CRuntimeClass;

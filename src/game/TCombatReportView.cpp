@@ -1,5 +1,5 @@
 #include "game/TCombatReportView.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TControl.h"
 
 CRuntimeClass g_pClassDescTCombatReportView = {nullptr, 0, 0, nullptr, nullptr};

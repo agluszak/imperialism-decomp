@@ -1,4 +1,4 @@
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 // LIBRARY: IMPERIALISM 0x00607077
 // CRuntimeClass::IsDerivedFrom

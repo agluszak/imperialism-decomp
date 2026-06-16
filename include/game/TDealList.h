@@ -1,8 +1,8 @@
 #pragma once
 
 #include "decomp_types.h"
-#include "game/CDumpContext.h"
-#include "game/CObject.h"
+#include "game/mfc.h"
+#include "game/mfc.h"
 #include "game/TIndexAndRankList.h"
 
 class CArchive;

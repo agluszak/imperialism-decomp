@@ -2,7 +2,7 @@
 
 #include "compat.h"
 #include "decomp_types.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TObject.h"
 
 class CArchive;

@@ -13,7 +13,7 @@
 class TControl;
 class TView;
 
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" {
 

@@ -1,7 +1,7 @@
 #include "game/TToggleButton.h"
 #include "game/TControl.h"
 #include "game/generated/vcall_facades.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e598

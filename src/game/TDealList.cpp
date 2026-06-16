@@ -1,7 +1,7 @@
 #include "decomp_types.h"
 #include "game/TDealList.h"
 
-#include "game/CArchive.h"
+#include "game/mfc.h"
 #include "game/TGreatPower.h"
 #include "game/TLocalizationRuntime.h"
 #include "game/TSortedPtrList.h"

@@ -1,7 +1,7 @@
 #include "game/TZone.h"
 
-#include "game/CObject.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
+#include "game/mfc.h"
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapOrderContext.h"

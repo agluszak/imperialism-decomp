@@ -1,5 +1,5 @@
 #include "game/TPictureButton.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" CRuntimeClass PTR_s_TPictureButton_0065e538;
 

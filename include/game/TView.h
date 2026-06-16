@@ -5,7 +5,7 @@
 #include "game/TEventHandler.h"
 #include "game/CString.h"
 #include "game/mfc.h"
-#include "game/CPtrList.h"
+#include "game/mfc.h"
 
 //
 // TView inherits the 37-slot shared interface (slots 0x00-0x24) and fields through +0x1c

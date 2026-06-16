@@ -7,7 +7,7 @@
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 CRuntimeClass g_pClassDescTHQButton = {nullptr, 0, 0, nullptr, nullptr};
 

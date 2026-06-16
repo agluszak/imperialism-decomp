@@ -1,5 +1,5 @@
 #include "game/TAlwaysPictureButton.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e550

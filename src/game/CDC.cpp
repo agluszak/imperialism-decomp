@@ -1,4 +1,4 @@
-#include "game/CDC.h"
+#include "game/mfc.h"
 
 // LIBRARY: IMPERIALISM 0x00612682
 // CDC::CDC

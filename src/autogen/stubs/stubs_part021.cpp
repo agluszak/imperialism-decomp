@@ -3027,10 +3027,10 @@ undefined4 AssignSharedStringFromLoadedResourceAlt(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::CMapPtrToPtr_ctor
-// ghidra_proto undefined CMapPtrToPtr_ctor()
+// ghidra_name CMapPtrToPtr::CMapPtrToPtr
+// ghidra_proto void CMapPtrToPtr(int nBlockSize)
 // FUNCTION: IMPERIALISM 0x0060339a
-undefined4 CMapPtrToPtr_ctor(void)
+undefined4 CMapPtrToPtr(void)
 {
   return 0;
 }
@@ -3043,18 +3043,18 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At006033c1(void)
   return 0;
 }
 
-// ghidra_name CWnd::GetValueAt
-// ghidra_proto undefined GetValueAt()
+// ghidra_name CMapPtrToPtr::GetValueAt
+// ghidra_proto void * GetValueAt(void * key) const
 // FUNCTION: IMPERIALISM 0x00603516
 undefined4 GetValueAt(void)
 {
   return 0;
 }
 
-// ghidra_name TryGetHandleMapEntryValueByKey
-// ghidra_proto undefined TryGetHandleMapEntryValueByKey()
+// ghidra_name CMapPtrToPtr::Lookup
+// ghidra_proto int Lookup(void * key, void *& rValue) const
 // FUNCTION: IMPERIALISM 0x00603549
-undefined4 TryGetHandleMapEntryValueByKey(void)
+undefined4 Lookup(void)
 {
   return 0;
 }
@@ -3067,18 +3067,18 @@ undefined4 CMapStringToPtr_ctor(void)
   return 0;
 }
 
-// ghidra_name CDocTemplate::InitHashTable_6036b2
-// ghidra_proto undefined InitHashTable_6036b2()
+// ghidra_name CMapStringToPtr::InitHashTable
+// ghidra_proto void InitHashTable(unsigned int hashSize, int bAllocNow)
 // FUNCTION: IMPERIALISM 0x006036b2
-undefined4 InitHashTable_6036b2(void)
+undefined4 InitHashTable(void)
 {
   return 0;
 }
 
-// ghidra_name RemoveAll_6036f8
-// ghidra_proto undefined RemoveAll_6036f8()
+// ghidra_name CMapStringToPtr::RemoveAll
+// ghidra_proto void RemoveAll()
 // FUNCTION: IMPERIALISM 0x006036f8
-undefined4 RemoveAll_6036f8(void)
+undefined4 RemoveAll(void)
 {
   return 0;
 }
@@ -3091,34 +3091,34 @@ undefined4 SehProlog_RemoveAllCollection_Wrapper(void)
   return 0;
 }
 
-// ghidra_name NewAssoc_60377d
-// ghidra_proto undefined NewAssoc_60377d()
+// ghidra_name CMapStringToPtr::NewAssoc
+// ghidra_proto void * NewAssoc()
 // FUNCTION: IMPERIALISM 0x0060377d
-undefined4 NewAssoc_60377d(void)
+undefined4 NewAssoc(void)
 {
   return 0;
 }
 
-// ghidra_name FreeAssoc_6037dd
-// ghidra_proto undefined FreeAssoc_6037dd()
+// ghidra_name CMapStringToPtr::FreeAssoc
+// ghidra_proto void FreeAssoc(void * pAssoc)
 // FUNCTION: IMPERIALISM 0x006037dd
-undefined4 FreeAssoc_6037dd(void)
+undefined4 FreeAssoc(void)
 {
   return 0;
 }
 
-// ghidra_name GetAssocAt_603806
-// ghidra_proto undefined GetAssocAt_603806()
+// ghidra_name CMapStringToPtr::GetAssocAt
+// ghidra_proto void * GetAssocAt(char const * key, unsigned int & nHashVal) const
 // FUNCTION: IMPERIALISM 0x00603806
-undefined4 GetAssocAt_603806(void)
+undefined4 GetAssocAt(void)
 {
   return 0;
 }
 
-// ghidra_name RemoveKey_603906
-// ghidra_proto undefined RemoveKey_603906()
+// ghidra_name CMapStringToPtr::RemoveKey
+// ghidra_proto int RemoveKey(char const * key)
 // FUNCTION: IMPERIALISM 0x00603906
-undefined4 RemoveKey_603906(void)
+undefined4 RemoveKey(void)
 {
   return 0;
 }
@@ -3339,10 +3339,10 @@ undefined4 DispatchVirtualSlot18OnImplicitObject(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr::Find_605e12
-// ghidra_proto undefined Find_605e12()
+// ghidra_name CString::Find
+// ghidra_proto int Find(char ch) const
 // FUNCTION: IMPERIALISM 0x00605e12
-undefined4 Find_605e12(void)
+undefined4 Find(void)
 {
   return 0;
 }
@@ -3371,8 +3371,8 @@ undefined4 WrapperFor_EnsureUniqueSharedStringBuffer_At00605e76(void)
   return 0;
 }
 
-// ghidra_name SetAt
-// ghidra_proto undefined SetAt()
+// ghidra_name CString::SetAt
+// ghidra_proto void SetAt(int nIndex, char ch)
 // FUNCTION: IMPERIALISM 0x00605e88
 undefined4 SetAt(void)
 {
@@ -3487,14 +3487,6 @@ undefined4 OnIdle_6064b0(void)
 // ghidra_proto undefined DispatchMfcMsgFilterHookProc()
 // FUNCTION: IMPERIALISM 0x0060674a
 undefined4 DispatchMfcMsgFilterHookProc(void)
-{
-  return 0;
-}
-
-// ghidra_name CWinApp::ProcessMessageFilter
-// ghidra_proto undefined ProcessMessageFilter()
-// FUNCTION: IMPERIALISM 0x006067a2
-undefined4 ProcessMessageFilter(void)
 {
   return 0;
 }

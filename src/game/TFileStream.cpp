@@ -1,7 +1,7 @@
 #include "game/TFileStream.h"
 #include "game/GameAssert.h"
-#include "game/CObject.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
+#include "game/mfc.h"
 #include "game/CString.h"
 
 #include "game/generated/vcall_facades.h"

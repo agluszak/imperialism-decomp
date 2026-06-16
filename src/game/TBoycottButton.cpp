@@ -1,7 +1,7 @@
 #include "game/TBoycottButton.h"
 #include "game/GameAssert.h"
 #include "game/generated/vcall_facades.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 void FreeHeapBufferIfNotNull(unsigned int ptr_value);
 

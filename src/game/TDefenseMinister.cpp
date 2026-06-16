@@ -1,7 +1,7 @@
 #include "game/TDefenseMinister.h"
 
 #include "game/CIterator.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TGreatPower.h"
 #include "game/TStream.h"
 #include "game/TTrackedObject.h"

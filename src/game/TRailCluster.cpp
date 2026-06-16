@@ -15,7 +15,7 @@
 #include "game/TView.h"
 #include "game/TUberCluster.h"
 
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x00662fc8

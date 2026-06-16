@@ -1,7 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
-#include "game/CObject.h"
+#include "game/mfc.h"
 #include "game/CString.h"
 #include "game/TMinor.h"
 

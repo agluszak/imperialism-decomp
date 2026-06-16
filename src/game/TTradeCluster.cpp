@@ -22,7 +22,7 @@ extern "C" char PTR_thunk_GetTTradeClusterClassNamePointer_00665a70 = 0;
 #include "game/TPictureResourceEntryBase.h"
 #include "game/TGreatPower.h"
 #include "game/trade_quickdraw.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TEvent.h"
 
 // Bid/Offer picture-button bitmap states (enabled / row-selected variants).

@@ -1,6 +1,6 @@
 #include "game/TCapacityOrder.h"
 
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TGreatPower.h"
 #include "game/TCity.h"
 #include "game/UiRuntimeContext.h"

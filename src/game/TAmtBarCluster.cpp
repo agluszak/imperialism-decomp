@@ -4,7 +4,7 @@
 #include "game/GameAssert.h"
 #include "game/UiRuntimeContext.h"
 #include "game/trade_quickdraw.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 struct TGreatPower;
 

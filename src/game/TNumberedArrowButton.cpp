@@ -2,7 +2,7 @@
 
 #include "game/TNumberedArrowButton.h"
 #include "game/TAmtBar.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/trade_quickdraw.h"
 CRuntimeClass g_pClassDescTNumberedArrowButton = {nullptr, 0, 0, nullptr, nullptr};

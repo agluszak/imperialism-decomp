@@ -1,5 +1,5 @@
 #include "game/TTransportPicture.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TControl.h"
 #include "game/TGreatPower.h"
 #include "game/UiRuntimeContext.h"

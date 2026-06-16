@@ -13,7 +13,7 @@
 #include "game/ui_widget_thunks.h"
 #include "game/quickdraw_guards.h"
 #include <new>
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 #pragma optimize("y", on)
 

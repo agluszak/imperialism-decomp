@@ -40,3 +40,52 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value) {
     reinterpret_cast<void(__cdecl*)()>(FreeHeapBlockWithAllocatorTracking)();
   }
 }
+
+// LIBRARY: IMPERIALISM 0x006067a2
+// CWinApp::ProcessMessageFilter
+
+// LIBRARY: IMPERIALISM 0x00607673
+// CWnd::AttachControlSite_607673
+
+// LIBRARY: IMPERIALISM 0x00607706
+// CWnd::CWnd
+
+// LIBRARY: IMPERIALISM 0x00607744
+// CWnd::CWnd_00607744
+
+// LIBRARY: IMPERIALISM 0x00607782
+// CWnd::CWnd_00607782
+
+// LIBRARY: IMPERIALISM 0x006077c0
+// CWnd::CWnd_006077C0
+
+// LIBRARY: IMPERIALISM 0x00607a84
+// CWnd::Default
+
+// LIBRARY: IMPERIALISM 0x0060d3fc
+// AfxWinMain
+
+// LIBRARY: IMPERIALISM 0x0061852a
+// CWinApp::DoMessageBox
+
+// LIBRARY: IMPERIALISM 0x00618704
+// CWinApp::CloseAllDocuments_618704
+
+// LIBRARY: IMPERIALISM 0x0061873c
+// CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
+
+// LIBRARY: IMPERIALISM 0x0062246c
+// CWinThread::CWinApp
+
+// LIBRARY: IMPERIALISM 0x00622b58
+// CWinThread::CWinThread
+
+// LIBRARY: IMPERIALISM 0x00623523
+// AfxGetThreadState
+
+// LIBRARY: IMPERIALISM 0x00623886
+// AfxGetModuleState
+
+// LIBRARY: IMPERIALISM 0x00624e73
+// AfxWinInit
+

@@ -1,5 +1,5 @@
 #include "game/TArmyPlacard.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/CString.h"
 #include "game/trade_quickdraw.h"
 #include "game/UiRuntimeContext.h"

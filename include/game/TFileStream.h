@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CArchive.h"
+#include "game/mfc.h"
 #include "TStream.h"
 #include "compat.h"
 #include "decomp_types.h"

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/TPictureButton.h"
 
 // VTABLE: IMPERIALISM 0x665608

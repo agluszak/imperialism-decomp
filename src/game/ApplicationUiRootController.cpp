@@ -1,7 +1,7 @@
 #include "game/ApplicationUiRootController.h"
 
 #include "game/mfc.h"
-#include "game/CPtrList.h"
+#include "game/mfc.h"
 #include "game/TView.h"
 #include "game/ui_widget_thunks.h"
 #include <new.h>

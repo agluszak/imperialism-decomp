@@ -18,7 +18,7 @@
 #include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 #include <new>
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 thunk_SetQuickDrawTextOriginWithContextOffset(void);

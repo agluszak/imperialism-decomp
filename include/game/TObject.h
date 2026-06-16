@@ -1,7 +1,7 @@
 #pragma once
 
 #include "compat.h"
-#include "game/CObject.h"
+#include "game/mfc.h"
 
 // MFC TObject: the root game object layer between CObject and TEventHandler.
 // It has no fields beyond the inherited CObject vptr.

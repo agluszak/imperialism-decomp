@@ -1,6 +1,6 @@
 #include "game/TSoundPlayer.h"
 
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 #include "game/diplomacy_globals.h"
 #include "game/vcall_runtime.h"
 

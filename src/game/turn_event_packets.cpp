@@ -1,7 +1,7 @@
 #include "game/turn_event_packets.h"
 
 #include "game/mfc.h"
-#include "game/CPtrList.h"
+#include "game/mfc.h"
 #include "game/TTurnEventPacket.h"
 #include "game/TWNetSessionManager.h"
 #include "game/UiRuntimeContext.h"

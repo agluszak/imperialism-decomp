@@ -1,4 +1,4 @@
-#include "game/CPtrList.h"
+#include "game/mfc.h"
 
 // LIBRARY: IMPERIALISM 0x00601f1d
 // CPtrList::CPtrList

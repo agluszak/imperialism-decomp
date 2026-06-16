@@ -9,7 +9,7 @@
 #include "game/ui_widget_thunks.h"
 #include "game/TUberCluster.h"
 #include "game/mfc.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 #pragma optimize("y", on)
 

@@ -10,7 +10,7 @@
 
 #include "game/ui_widget_thunks.h"
 
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 extern "C" {
 // GLOBAL: IMPERIALISM 0x0065e5b0

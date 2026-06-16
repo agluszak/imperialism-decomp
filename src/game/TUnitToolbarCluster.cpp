@@ -21,7 +21,7 @@ char g_vtblTUnitToolbarCluster = 0;
 }
 
 #include "game/ApplicationUiRootController.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 

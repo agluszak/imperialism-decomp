@@ -5,7 +5,7 @@
 #include "game/TControl.h"
 #include "game/trade_quickdraw.h"
 #include "game/UiRuntimeContext.h"
-#include "game/CRuntimeClass.h"
+#include "game/mfc.h"
 
 CRuntimeClass g_pClassDescTCivilianButton = {nullptr, 0, 0, nullptr, nullptr};
 

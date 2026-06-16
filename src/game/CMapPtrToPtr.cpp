@@ -1,4 +1,4 @@
-#include "game/CMapPtrToPtr.h"
+#include "game/mfc.h"
 
 // LIBRARY: IMPERIALISM 0x006033dd
 // CMapPtrToPtr::InitHashTable
