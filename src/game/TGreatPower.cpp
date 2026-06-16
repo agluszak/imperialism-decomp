@@ -517,6 +517,10 @@ static const float kOne = 1.0f;
 static __inline void WriteShortArrayElems(TStream* stream, const short* values, int count) {
   for (int remaining = count; remaining != 0; --remaining) {
     short element = *values;
+    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
+    unsigned char low = elementBytes[0];
+    elementBytes[0] = elementBytes[1];
+    elementBytes[1] = low;
     stream->WriteBytesSlot78(&element, 2);
     ++values;
   }
@@ -525,6 +529,13 @@ static __inline void WriteShortArrayElems(TStream* stream, const short* values, 
 static __inline void WriteIntArrayElems(TStream* stream, const int* values, int count) {
   for (int remaining = count; remaining != 0; --remaining) {
     int element = *values;
+    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
+    unsigned char b0 = elementBytes[0];
+    unsigned char b1 = elementBytes[1];
+    elementBytes[0] = elementBytes[3];
+    elementBytes[1] = elementBytes[2];
+    elementBytes[2] = b1;
+    elementBytes[3] = b0;
     stream->WriteBytesSlot78(&element, 4);
     ++values;
   }
