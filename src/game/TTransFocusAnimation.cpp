@@ -95,10 +95,10 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
                (transientFlipHeight - destinationRect.top) - destinationRect.bottom);
   }
 
-  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                        reinterpret_cast<TQuickDrawSurfaceContext*>(transientContext)
-                            ->GetBlitSurface(),
-                        &sourceRect, &destinationRect, 0);
+  BlitQuickDrawSurfaces(
+      g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+      reinterpret_cast<TQuickDrawSurfaceContext*>(transientContext)->GetBlitSurface(), &sourceRect,
+      &destinationRect, 0);
   reinterpret_cast<void(__cdecl*)(int)>(SnapshotHitRegionToClipCache)(surface.surfaceWrapper);
 }
 

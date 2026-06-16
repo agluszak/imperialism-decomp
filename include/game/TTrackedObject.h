@@ -41,6 +41,7 @@ public:
   virtual void dummy31() = 0;
   // slot 0x80 — adopt an unassigned military unit (0x004eae70).
   virtual void AdoptUnitSlot80(void* unit, int flag) = 0;
+
 protected:
   ~TTrackedObject() {}
 };

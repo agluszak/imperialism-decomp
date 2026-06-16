@@ -104,7 +104,6 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
       reinterpret_cast<void(__cdecl*)(CString*)>(BuildMapContextStatusStringVariantA)(dest);
       break;
     }
-    retry =
-        reinterpret_cast<char(__cdecl*)(CString*)>(ShouldRetryMappedFlavorTextGeneration)(dest);
+    retry = reinterpret_cast<char(__cdecl*)(CString*)>(ShouldRetryMappedFlavorTextGeneration)(dest);
   } while (retry != 0);
 }

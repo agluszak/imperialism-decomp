@@ -20,11 +20,15 @@ struct TQuickDrawSurfaceContext {
   char pad1c[4];
   int flipDescriptor; // +0x20
   char pad24[4];
-  int quickDrawColor; // +0x28
+  int quickDrawColor;       // +0x28
   int transparentBlitColor; // +0x2c
 
-  TQuickDrawBlitSurface* GetBlitSurface() { return &blitSurface; }
-  const TQuickDrawBlitSurface* GetBlitSurface() const { return &blitSurface; }
+  TQuickDrawBlitSurface* GetBlitSurface() {
+    return &blitSurface;
+  }
+  const TQuickDrawBlitSurface* GetBlitSurface() const {
+    return &blitSurface;
+  }
 };
 
 // GLOBAL: IMPERIALISM 0x006a1d60
@@ -38,5 +42,6 @@ static __inline void BlitQuickDrawSurfaces(TQuickDrawBlitSurface* srcSurface,
                                            TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
                                            RECT* dstRect, unsigned char blitFlags) {
   reinterpret_cast<void(__cdecl*)(void*, void*, RECT*, RECT*, int, int)>(
-      reinterpret_cast<void(*)()>(BlitRectWithOptionalTransparency))(srcSurface, dstSurface, srcRect, dstRect, (int)blitFlags, 0);
+      reinterpret_cast<void (*)()>(BlitRectWithOptionalTransparency))(
+      srcSurface, dstSurface, srcRect, dstRect, (int)blitFlags, 0);
 }

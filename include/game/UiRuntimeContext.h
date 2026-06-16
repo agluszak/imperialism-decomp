@@ -59,6 +59,7 @@ struct UiRuntimeContext {
 
   short GetActiveNationId(void);
   int MapTurnEventCodeToPaletteIndex(int eventCode);
+
 protected:
   ~UiRuntimeContext() {}
 };

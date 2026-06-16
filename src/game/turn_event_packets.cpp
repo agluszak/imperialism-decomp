@@ -22,8 +22,8 @@ extern int g_NetworkManagerLastError006a5f6c;
 
 // FUNCTION: IMPERIALISM 0x005420a0
 void TTurnEventPacketRoutingPrefix::SetPayloadNationIdFromSlotIndex(int nationSlot) {
-  this->targetNationId = *reinterpret_cast<int*>(
-      reinterpret_cast<char*>(g_pGameFlowState) + nationSlot * 4 + 0x48);
+  this->targetNationId =
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGameFlowState) + nationSlot * 4 + 0x48);
 }
 
 // FUNCTION: IMPERIALISM 0x0054c5a0
@@ -71,7 +71,8 @@ undefined4 TTurnEventPacketRoutingPrefix::EnqueueOrSendTurnEventPacketToNation(c
     undefined4* queueNode = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueHead006a5f50);
     if (g_pNetworkPacketQueueHead006a5f50 == 0) {
       CPlex*& chain = *reinterpret_cast<CPlex**>(&g_pNetworkPacketBlockChain006a5f54);
-      CPlex* block = CPlex::Create(chain, static_cast<unsigned int>(g_NetworkPacketBlockCount006a5f58), 0xc);
+      CPlex* block =
+          CPlex::Create(chain, static_cast<unsigned int>(g_NetworkPacketBlockCount006a5f58), 0xc);
       int blockBase = reinterpret_cast<int>(block);
       queueNode = reinterpret_cast<undefined4*>(g_pNetworkPacketQueueHead006a5f50);
       undefined4* freeListNode =

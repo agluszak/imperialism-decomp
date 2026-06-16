@@ -81,14 +81,14 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   short previewBand = -1;
 
   if (interactionMode == 0) {
-    int selectedOrder = *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSelectedCivilianOrderState) + 4);
+    int selectedOrder =
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pSelectedCivilianOrderState) + 4);
     if (selectedOrder != 0) {
       previewTileIndex = -1;
       previewBand = *reinterpret_cast<short*>(selectedOrder + 6);
     }
   } else if (interactionMode == 1) {
-    short actionIndex =
-        *reinterpret_cast<short*>(reinterpret_cast<char*>(0x006a3338) + 0x31c);
+    short actionIndex = *reinterpret_cast<short*>(reinterpret_cast<char*>(0x006a3338) + 0x31c);
     if (actionIndex != -1) {
       previewBand = -1;
       previewTileIndex = *reinterpret_cast<short*>(
@@ -138,7 +138,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   int childVtable = *reinterpret_cast<int*>(childMapView);
   typedef void(__fastcall * ChildSlot128Fn)(void* self, int unusedEdx, long* bottomOut);
   reinterpret_cast<ChildSlot128Fn>(*reinterpret_cast<int*>(childVtable + 0x128))(childMapView, 0,
-                                                                               &clipRect.bottom);
+                                                                                 &clipRect.bottom);
 
   char intersectScratch[16];
   char intersectPair[16];
@@ -259,10 +259,9 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, i
   short tileIndex = static_cast<short>(arg1);
   char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
   if (terrainTable[tileIndex * 0x24] == '\x05') {
-    void* orderContext = reinterpret_cast<void*(__cdecl*)(short)>(thunk_GetMapActionContextByTileIndex)(
-        tileIndex);
-    TToolBarClusterFields* toolbar =
-        reinterpret_cast<TToolBarClusterFields*>(ownerContext);
+    void* orderContext =
+        reinterpret_cast<void*(__cdecl*)(short)>(thunk_GetMapActionContextByTileIndex)(tileIndex);
+    TToolBarClusterFields* toolbar = reinterpret_cast<TToolBarClusterFields*>(ownerContext);
     typedef void(__fastcall * SetMapInteractionModeFn)(void* self, int unusedEdx, int mode);
     reinterpret_cast<SetMapInteractionModeFn>(thunk_SetMapInteractionMode)(toolbar, 0, 2);
     if (toolbar->field94 == 0) {
@@ -277,13 +276,12 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, i
     if (orderContext == 0) {
       orderContext = 0;
     } else {
-      orderContext =
-          reinterpret_cast<void*>(reinterpret_cast<int(__cdecl*)()>(
-              thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh)());
+      orderContext = reinterpret_cast<void*>(reinterpret_cast<int(__cdecl*)()>(
+          thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh)());
     }
     typedef void(__fastcall * RefreshMapOrderEntryPanelFn)(void* self, int unusedEdx, void* entry);
     reinterpret_cast<RefreshMapOrderEntryPanelFn>(thunk_RefreshMapOrderEntryPanel)(toolbar, 0,
-                                                                                 orderContext);
+                                                                                   orderContext);
   }
 
   *reinterpret_cast<int*>(kAddrActiveMapTileIndexStorage + 0x28) = tileIndex;

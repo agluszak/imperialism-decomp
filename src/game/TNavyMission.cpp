@@ -36,10 +36,9 @@ float NormalizeFourComponentNavyVector(const float* vector, float sum) {
   const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
   float accum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
-    float diff =
-        vector[componentIndex] / sum -
-        static_cast<float>(static_cast<short>(lookupTable[componentIndex])) *
-            static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    float diff = vector[componentIndex] / sum -
+                 static_cast<float>(static_cast<short>(lookupTable[componentIndex])) *
+                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
     if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
       diff = -diff;
     }
@@ -79,8 +78,8 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(i
            reinterpret_cast<NavyPrimaryOrderNode*>(thunk_GetNavyPrimaryOrderListHead());
        orderNode != 0; orderNode = reinterpret_cast<NavyPrimaryOrderNode*>(orderNode->next24)) {
     if (orderNode->nodeContext08 == nodeContext &&
-        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
-            static_cast<short>(sourceNation), orderNode->sourceNation14) != 0) {
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(static_cast<short>(sourceNation),
+                                                                orderNode->sourceNation14) != 0) {
       AccumulateNavyOrderVectorFromNode(orderNode, vector);
     }
   }

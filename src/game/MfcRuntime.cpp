@@ -88,4 +88,3 @@ void FreeHeapBufferIfNotNull(undefined4 ptr_value) {
 
 // LIBRARY: IMPERIALISM 0x00624e73
 // AfxWinInit
-

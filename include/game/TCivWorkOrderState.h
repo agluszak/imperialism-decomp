@@ -25,6 +25,7 @@ public:
   }
 
   void InitializeCivWorkOrderState(int nOrderType, int pOwnerContext, int nOrderOwnerNationId);
+
 protected:
   ~TCivWorkOrderState() {}
 };

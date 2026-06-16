@@ -42,9 +42,9 @@ void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRe
 
   int wrappedY = viewportOffsetY + tileOffset[1];
   unsigned short signY = static_cast<unsigned short>(wrappedY >> 31);
-  short bandRow =
-      static_cast<short>((((static_cast<unsigned short>(wrappedY) ^ signY) - signY) & 0x3f) ^ signY) -
-      static_cast<short>(signY);
+  short bandRow = static_cast<short>(
+                      (((static_cast<unsigned short>(wrappedY) ^ signY) - signY) & 0x3f) ^ signY) -
+                  static_cast<short>(signY);
 
   short bandCol = 0;
   if ((*outCol & 1) == 0) {
@@ -74,7 +74,7 @@ void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
   int tileRowOutput[5] = {0};
   reinterpret_cast<void(__fastcall*)(TMapDialog*, int, int, int*, int*)>(
       thunk_SplitTileIndexToRowAndColumn)(this, 0, arg1, reinterpret_cast<int*>(&arg1),
-                                         reinterpret_cast<int*>(&tileRowOutput[0]));
+                                          reinterpret_cast<int*>(&tileRowOutput[0]));
   ForwardMapDialogTileCoordUpdateToDerivedHandler(
       tileRowOutput[0] - static_cast<int>(g_wMapDialogTileRowMarker) / 2, arg1 - 3);
   int invalidateRect[3] = {0, 0x1ff, 0x1bf};
@@ -84,7 +84,8 @@ void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
 
 // FUNCTION: IMPERIALISM 0x0051adc0
 void TMapDialog::ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY) {
-  typedef void(__fastcall * TileCoordHandlerFn)(TView* self, int unusedEdx, int x, int y, int mode);
+  typedef void(__fastcall * TileCoordHandlerFn)(TView * self, int unusedEdx, int x, int y,
+                                                int mode);
   TView* view = this;
   int* vtable = *reinterpret_cast<int**>(view);
   reinterpret_cast<TileCoordHandlerFn>(vtable[0x28c / 4])(view, 0, tileX, tileY, 0);
@@ -128,9 +129,9 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
     reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
     int strategicBlitSource = *reinterpret_cast<int*>(0x006a21a8 + 0x690);
     reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
-        BlitRectWithOptionalTransparency)(
-        reinterpret_cast<void*>(strategicBlitSource + 4),
-        reinterpret_cast<char*>(surfaceContext) + 4, &srcRect, dstRect, 0x24, 0);
+        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(strategicBlitSource + 4),
+                                          reinterpret_cast<char*>(surfaceContext) + 4, &srcRect,
+                                          dstRect, 0x24, 0);
     reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
     return;
   }
@@ -159,9 +160,9 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
   int strategicBlitSource = *reinterpret_cast<int*>(0x006a21a8 + 0x690);
   reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
-      BlitRectWithOptionalTransparency)(
-      reinterpret_cast<void*>(strategicBlitSource + 4),
-      reinterpret_cast<char*>(surfaceContext) + 4, &srcRect, dstRect, 0x24, 0);
+      BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(strategicBlitSource + 4),
+                                        reinterpret_cast<char*>(surfaceContext) + 4, &srcRect,
+                                        dstRect, 0x24, 0);
   reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
 }
 
@@ -169,8 +170,8 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
 void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
                                                                      int arg4, int arg5) {
   reinterpret_cast<void(__fastcall*)(TMapDialog*, int, int, int, int, int, int)>(
-      thunk_ProjectTileIndexToWrappedScreenOffsetByScale)(
-      reinterpret_cast<TMapDialog*>(arg1), 0, arg1, arg2, arg3, arg4, arg5);
+      thunk_ProjectTileIndexToWrappedScreenOffsetByScale)(reinterpret_cast<TMapDialog*>(arg1), 0,
+                                                          arg1, arg2, arg3, arg4, arg5);
 }
 
 // FUNCTION: IMPERIALISM 0x00596100

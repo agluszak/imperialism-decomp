@@ -39,4 +39,3 @@ static __inline short ResolveMinorCapabilityOwnerNationSlot(const TMinor* minor)
   }
   return ownerTag;
 }
-

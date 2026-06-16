@@ -425,8 +425,8 @@ void TView::InvalidateOffsetRegionUsingChildClipRect(int* regionWrapper) {
   OffsetRgn(reinterpret_cast<HRGN>(destRegion), -pos->x, -pos->y);
 
   if (g_McAppUiActiveFlag_006950AC != 0) {
-    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), reinterpret_cast<HRGN>(destRegion),
-                  0);
+    InvalidateRgn(reinterpret_cast<HWND>(nativeWindow50->m_hWnd),
+                  reinterpret_cast<HRGN>(destRegion), 0);
   }
 
   reinterpret_cast<void(__cdecl*)(int*)>(DestroyClipStateRegionWrapperObject)(localRegion);
@@ -834,8 +834,7 @@ char TView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int
 }
 
 // FUNCTION: IMPERIALISM 0x0048c590
-char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                      int arg4) {
+char TView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) {
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {

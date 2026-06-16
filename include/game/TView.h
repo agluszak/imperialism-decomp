@@ -43,10 +43,10 @@ public:
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
-  virtual CRuntimeClass* GetRuntimeClass() const override;              // 0x00 0x48a8c0 (override)
-  void Free() override; // 0x07
-  TObject* ShallowClone() override;       // 0x08 0x48bfd0
-  virtual class TView* OwnerPanel() override;                           // 0x16 0x48b180
+  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48a8c0 (override)
+  void Free() override;                                    // 0x07
+  TObject* ShallowClone() override;                        // 0x08 0x48bfd0
+  virtual class TView* OwnerPanel() override;              // 0x16 0x48b180
 
   // TView-introduced virtuals (slots 0x25-0x67), in exact vtable slot order. Slot
   // assignments are pinned by FUNCTION-marker addresses, original-binary call offsets,
@@ -59,7 +59,7 @@ public:
   virtual void SetEnabled(int enabledState, int refreshFlag);                     // 0x29 0x48b1c0
   virtual void SetState(int state, int refreshFlag);                              // 0x2a 0x48b070
   virtual unsigned short GetField4E();                                            // 0x2b 0x427200
-  virtual void HandleCursorHoverFallback(CPoint* point, int hitArg);             // 0x2c
+  virtual void HandleCursorHoverFallback(CPoint* point, int hitArg);              // 0x2c
   virtual void vmethod_0073(int arg1, int arg2);                                  // 0x2d 0x48c1c0
   virtual void RefreshCityProductionViewStateFromContext(int* clipRegionWrapper); // 0x2e 0x48c1e0
   virtual int QuerySelectedIndexSlotBC();                                         // 0x2f
@@ -92,16 +92,16 @@ public:
   virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                     int arg4); // 0x47
   virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
-                                                         int arg4);        // 0x48 0x48c590
+                                                         int arg4);       // 0x48 0x48c590
   virtual char vmethod_0071(CPoint* point, int arg2, int arg3, int arg4); // 0x49
-  virtual void QueryContentBounds(RECT* boundsOut);                        // 0x4a 0x427260
-  virtual void QueryBounds(RECT* boundsOut);                               // 0x4b 0x427290
-  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect);      // 0x4c 0x4272d0
-  virtual void vmethod_0076(int* point = 0);                               // 0x4d 0x48ba80
-  virtual void vmethod_0078(int* point = 0);                               // 0x4e 0x48ba40
-  virtual void InvokeSlot13C();                                            // 0x4f 0x48b700
-  virtual void OffsetRectByControlPosition(RECT* rect);                    // 0x50 0x48bb00
-  virtual void UpdateAfterBitmapChange(int unknownFlag);                   // 0x51
+  virtual void QueryContentBounds(RECT* boundsOut);                       // 0x4a 0x427260
+  virtual void QueryBounds(RECT* boundsOut);                              // 0x4b 0x427290
+  virtual void DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect);     // 0x4c 0x4272d0
+  virtual void vmethod_0076(int* point = 0);                              // 0x4d 0x48ba80
+  virtual void vmethod_0078(int* point = 0);                              // 0x4e 0x48ba40
+  virtual void InvokeSlot13C();                                           // 0x4f 0x48b700
+  virtual void OffsetRectByControlPosition(RECT* rect);                   // 0x50 0x48bb00
+  virtual void UpdateAfterBitmapChange(int unknownFlag);                  // 0x51
   virtual CPoint TransformPointViaSlot138(CPoint* inPoint);
   virtual RECT TransformRectViaSlot148(RECT* inRect);
   virtual void AddControlPosToPoint(int x, int y, int* outPoint);

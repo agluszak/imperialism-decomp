@@ -5,7 +5,8 @@
 #include "game/TStationedUnitNode.h"
 #include "game/diplomacy_globals.h"
 
-int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain, short encodedNationSlot) {
+int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain,
+                                          short encodedNationSlot) {
   if (encodedNationSlot < 200) {
     if (encodedNationSlot < 100) {
       return terrain->fallbackNationSlot0c;
@@ -28,8 +29,7 @@ int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
   if (nodeIndex < 0 || nodeIndex > 0x17f) {
     return 0;
   }
-  TStationedUnitNode* chain =
-      g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98;
+  TStationedUnitNode* chain = g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98;
   int sum = 0;
   for (; chain != 0; chain = chain->next14) {
     sum += *reinterpret_cast<int*>(kAddrWeightedNeighborScoreByUnitType + chain->unitTypeId04 * 4);

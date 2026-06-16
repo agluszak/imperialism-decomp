@@ -23,8 +23,10 @@ struct TPlaybackWalkState {
 };
 
 // FUNCTION: IMPERIALISM 0x00406758
-void TInterNationEventQueueManager::thunk_QueueInterNationEventRecordDeduped(
-    int eventCode, int nationA, int nationB, char isReplayBypass) {
+void TInterNationEventQueueManager::thunk_QueueInterNationEventRecordDeduped(int eventCode,
+                                                                             int nationA,
+                                                                             int nationB,
+                                                                             char isReplayBypass) {
   QueueInterNationEventRecordDeduped(eventCode, nationA, nationB, isReplayBypass);
 }
 
@@ -71,9 +73,8 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
 
   if (isReplayBypass == 0 && g_pLocalizationTable->redrawEnabled != 0) {
     if (g_pLocalizationTable->redrawEnabled == 1) {
-      reinterpret_cast<void(__fastcall*)(void*, int, int, int)>(0x00405bd7)(g_pGameFlowState,
-                                                                              eventCode, nationA,
-                                                                              nationB);
+      reinterpret_cast<void(__fastcall*)(void*, int, int, int)>(0x00405bd7)(
+          g_pGameFlowState, eventCode, nationA, nationB);
       return;
     }
     return;
@@ -136,10 +137,8 @@ TQueueObject* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int 
 }
 
 // FUNCTION: IMPERIALISM 0x0055cbd0
-void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(int eventCode,
-                                                                                int nationA,
-                                                                                int nationB,
-                                                                                char isReplayBypass) {
+void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
+    int eventCode, int nationA, int nationB, char isReplayBypass) {
   if (g_pLocalizationTable == 0) {
     return;
   }

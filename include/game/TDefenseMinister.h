@@ -11,13 +11,13 @@ public:
   void InitializeBaseOrderArrayMetrics();
 
   CRuntimeClass* GetRuntimeClass() const override; // slot 0 (0x4ec0c0)
-  void WriteTo(TStream* stream) override;                                 // 5 (0x4ec1d0)
-  void ReadFrom(TStream* stream) override;                                // 6 (0x4ec2f0)
-  void MinisterSlot0A() override;                                         // 10 (0x4ec3d0)
-  void MinisterSlot12() override;                                         // 18 (0x4ec450)
-  void Call4C() override;                                                 // 19 (0x4ec4c0)
-  void MinisterSlot14() override;                                         // 20 (0x4ec540)
-  void Call54() override;                                                 // 21 (0x4ecbb0)
+  void WriteTo(TStream* stream) override;          // 5 (0x4ec1d0)
+  void ReadFrom(TStream* stream) override;         // 6 (0x4ec2f0)
+  void MinisterSlot0A() override;                  // 10 (0x4ec3d0)
+  void MinisterSlot12() override;                  // 18 (0x4ec450)
+  void Call4C() override;                          // 19 (0x4ec4c0)
+  void MinisterSlot14() override;                  // 20 (0x4ec540)
+  void Call54() override;                          // 21 (0x4ecbb0)
 
   // TDefenseMinister-introduced extension (vtable 0x6549b0 slots 22-24, byte 0x58-0x60).
   // Slots 25-29 are NULL/abstract trailing slots in orig (reccmp drops them); not declared.

@@ -72,8 +72,7 @@ void TGlobalMapState::ComputeHexNeighborTileIndices(short tileIndex, short* neig
 }
 
 // FUNCTION: IMPERIALISM 0x00512cc0
-short TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(short tileIndex,
-                                                                short direction) {
+short TGlobalMapState::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short direction) {
   int tile = static_cast<int>(tileIndex);
   int row = tile / 0x6c;
   int col = tile % 0x6c;
@@ -175,7 +174,7 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TGlobalMapState* mapState, shor
 
 // FUNCTION: IMPERIALISM 0x00514c80
 short TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
-                                                                      char allowActiveFlag2) {
+                                                                     char allowActiveFlag2) {
   signed char ownerNationTag = terrainStateTable[startTileIndex].ownerNationTag04;
   for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
     terrainStateTable[tileIndex].recruitSearchVisited0e = 0;

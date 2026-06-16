@@ -15,7 +15,6 @@ extern float g_MissionDefaultScore_0065a468;
 
 undefined4 thunk_CreateMissionObjectByKindAndNodeContext(void);
 
-
 // --- TMission default-mission virtual stubs (concrete missions override) ---
 // FUNCTION: IMPERIALISM 0x00534c00
 char TMission::ReturnFalseSlot28() {

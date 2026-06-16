@@ -20,12 +20,12 @@ TMilitaryUnitOrderState::TMilitaryUnitOrderState()
   field_34 = 0x1f4;
   field_36 = 0;
   CString empty(g_szEmptyString); // temp -> 0x00605950, ~ -> 0x006058e2
-  name24 = empty;    // -> 0x00605a29 CString::operator=
+  name24 = empty;                 // -> 0x00605a29 CString::operator=
 }
 
 // FUNCTION: IMPERIALISM 0x005c2f50
 void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int nodeContext,
-                                                            short nationSlot) {
+                                                          short nationSlot) {
   field_1C = 1;
   field_6 = static_cast<short>(-1);
   RegisterUnitOrderWithOwnerManager(capValue, nodeContext, nationSlot, 0);

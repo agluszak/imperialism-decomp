@@ -10,8 +10,12 @@
 // TQueueObject adds no virtuals, so it has no vtable of its own to annotate.
 class TQueueObject : public TIndexAndRankList {
 public:
-  void WritePackedIntSlot38(int* packedValue) { AddEntrySlot38(packedValue); }
-  void* GetEntryAt1BasedSlot2C(int index) { return GetEntrySlot2C(index); }
+  void WritePackedIntSlot38(int* packedValue) {
+    AddEntrySlot38(packedValue);
+  }
+  void* GetEntryAt1BasedSlot2C(int index) {
+    return GetEntrySlot2C(index);
+  }
   void ApplyMessageSlot14(void* message) {
     (void)message;
     slot14();
@@ -20,11 +24,21 @@ public:
     (void)arg1;
     slot18();
   }
-  void Call1C() { ResetPtrListRecordsSlot1C(); }
-  void Release1C() { ResetPtrListRecordsSlot1C(); }
-  void Call20() { slot20(); }
-  void Call24() { ReleaseSlot24(); }
+  void Call1C() {
+    ResetPtrListRecordsSlot1C();
+  }
+  void Release1C() {
+    ResetPtrListRecordsSlot1C();
+  }
+  void Call20() {
+    slot20();
+  }
+  void Call24() {
+    ReleaseSlot24();
+  }
 
   // Legacy name for CPtrArray::count at +0x8 on list-backed queues.
-  int GetEntryCount() const { return static_cast<const CPtrArray*>(this)->GetSize(); }
+  int GetEntryCount() const {
+    return static_cast<const CPtrArray*>(this)->GetSize();
+  }
 };

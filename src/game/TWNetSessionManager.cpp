@@ -7,12 +7,11 @@ bool TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsig
     return false;
   }
   typedef int(__stdcall * DirectPlaySendSlot1a)(int* self, int localPlayerId, int nationId,
-                                               int sendFlags, void* packetBytes,
-                                               unsigned int byteCount);
+                                                int sendFlags, void* packetBytes,
+                                                unsigned int byteCount);
   DirectPlaySendSlot1a sendSlot1a = reinterpret_cast<DirectPlaySendSlot1a>(
       reinterpret_cast<void**>(directPlay)[0x68 / sizeof(void*)]);
-  int sendResult =
-      sendSlot1a(directPlay, this->localPlayerId60, nationId, 1, packet, byteCount);
+  int sendResult = sendSlot1a(directPlay, this->localPlayerId60, nationId, 1, packet, byteCount);
   this->lastErrorCode0c = sendResult;
   return sendResult >= 0;
 }

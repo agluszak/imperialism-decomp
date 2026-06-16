@@ -26,13 +26,14 @@ public:
                                                                    int arg4, int arg5);
   virtual short QueryMinusOneWordSlot1BC();
   virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
-                                                                 unsigned short* outCol, short* outBand);
+                                                                 unsigned short* outCol,
+                                                                 short* outBand);
   virtual void InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchContext);
   virtual void HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2);
   virtual void DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext);
   virtual void DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,
                                                                int dispatchContext);
   virtual void HandleMapClickByInteractionModeFromStridedRecord(int stridedRecord,
-                                                              int dispatchContext);
+                                                                int dispatchContext);
   virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1);
 };

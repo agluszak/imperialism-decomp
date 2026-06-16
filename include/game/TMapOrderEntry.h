@@ -44,14 +44,14 @@ public:
 
   static TMapOrderChildLinkNode* FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
                                                           int child_node_id);
-  static TMapOrderChildLinkNode* DeleteMapOrderChildLinkAndReturnNext(
-      TMapOrderChildLinkNode* child_link_node);
+  static TMapOrderChildLinkNode*
+  DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node);
   static void RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
                                                     int child_node_id);
   static TMapOrderChildLinkNode* CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
                                                        int child_node_id);
-  static TMapOrderChildLinkNode* PruneDefeatedMapOrderChildrenAndReturnHead(
-      TMapOrderChildLinkNode* child_link_head);
+  static TMapOrderChildLinkNode*
+  PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* child_link_head);
 
   void RelinkMapOrderQueueNodeBetween(TMapOrderEntry* prev_node, TMapOrderEntry* next_node);
   void DecrementRequiredCount(short decrement);

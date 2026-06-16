@@ -269,8 +269,7 @@ char TDiplomacyTurnStateManager::IsNationPairRelationTurnStampOutOfDate(int sour
   if (HasPolicyWithNationSlot44(sourceNationSlot, targetNationSlot) == 0) {
     return 0;
   }
-  short currentTurn =
-      g_pLocalizationTable->GetTurnTickSlot3C();
+  short currentTurn = g_pLocalizationTable->GetTurnTickSlot3C();
   int source = static_cast<short>(sourceNationSlot);
   int target = static_cast<short>(targetNationSlot);
   return relationTurnStampMatrixFe0[source * kNationSlotCount + target] != currentTurn;
@@ -555,9 +554,8 @@ void TDiplomacyTurnStateManager::ApplyRelationCode4AndQueueEvent18ForTargetNatio
   TMinor* targetTerrain = g_apTerrainTypeDescriptorTable[static_cast<short>(targetNationSlot)];
   if (targetTerrain != 0) {
     targetTerrain->NotifyActionSlot94(sourceNationSlot, 0x139);
-    g_pInterNationEventQueueManager
-        ->QueueInterNationEventRecordDeduped(0x18, static_cast<short>(targetNationSlot),
-                                             static_cast<short>(sourceNationSlot), 0);
+    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
+        0x18, static_cast<short>(targetNationSlot), static_cast<short>(sourceNationSlot), 0);
   }
 }
 
@@ -698,13 +696,13 @@ void TDiplomacyTurnStateManager::ApplyDiplomacyInterNationStatesForTurn() {
               if (relationCode == 0x133) {
                 relationSideEffectMatrix1402[rowBase + col] = 1;
                 relationSideEffectMatrix1402[row + colBase] = 1;
-                g_pInterNationEventQueueManager
-                    ->QueueInterNationEventRecordDeduped(0x12, row, col, 0);
+                g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x12, row, col,
+                                                                                    0);
               } else if (relationCode == 0x134) {
                 relationSideEffectMatrix1402[rowBase + col] = 2;
                 relationSideEffectMatrix1402[row + colBase] = 2;
-                g_pInterNationEventQueueManager
-                    ->QueueInterNationEventRecordDeduped(0x14, row, col, 0);
+                g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x14, row, col,
+                                                                                    0);
               } else if (relationCode == 0x131) {
                 if (HasPolicyWithNationSlot44(row, col) == 0) {
                   g_apNationStates[row]->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(
@@ -753,10 +751,10 @@ void TDiplomacyTurnStateManager::ProcessQueuedWarTransitions() {
 
     g_apTerrainTypeDescriptorTable[targetNationSlot]->NotifyActionSlot94(sourceNationSlot, 0x131);
 
-    g_pInterNationEventQueueManager
-        ->QueueInterNationEventRecordDeduped(1, targetNationSlot, sourceNationSlot, 0);
-    g_pInterNationEventQueueManager
-        ->QueueInterNationEventRecordDeduped(0, sourceNationSlot, targetNationSlot, 0);
+    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(1, targetNationSlot,
+                                                                        sourceNationSlot, 0);
+    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0, sourceNationSlot,
+                                                                        targetNationSlot, 0);
 
     if (targetNationSlot < 7) {
       g_apNationStates[sourceNationSlot]->NotifyActionSlot94(targetNationSlot, 0xc8);
@@ -897,10 +895,8 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
   relationPropagationMatrixBbe[forwardIndex] = newRelationCode;
   int reverseIndex = target * kNationSlotCount + source;
   relationPropagationMatrixBbe[reverseIndex] = newRelationCode;
-  relationTurnStampMatrixFe0[forwardIndex] =
-      g_pLocalizationTable->GetTurnTickSlot3C();
-  relationTurnStampMatrixFe0[reverseIndex] =
-      g_pLocalizationTable->GetTurnTickSlot3C();
+  relationTurnStampMatrixFe0[forwardIndex] = g_pLocalizationTable->GetTurnTickSlot3C();
+  relationTurnStampMatrixFe0[reverseIndex] = g_pLocalizationTable->GetTurnTickSlot3C();
 
   if (HasFlag84ForNationSlot84(sourceNationSlot) != 0) {
     g_apNationStates[source]->DispatchNationDiplomacySlotActionByMode(target, relationCode);
@@ -914,8 +910,7 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
   case 1:
     break;
   case 2:
-    g_pInterNationEventQueueManager
-        ->QueueInterNationEventRecordDeduped(0x1a, source, target, 0);
+    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1a, source, target, 0);
     return;
   case 3:
     SetStandingScoreSlot28(sourceNationSlot, targetNationSlot,
@@ -947,8 +942,7 @@ void TDiplomacyTurnStateManager::SetNationPairDiplomacyRelationCode(int sourceNa
     TMinor* sourceTerrain = g_apTerrainTypeDescriptorTable[source];
     TMinor* targetTerrain = g_apTerrainTypeDescriptorTable[target];
     if ((sourceTerrain->ownerNationSlot0e == -1) && (targetTerrain->ownerNationSlot0e < 200)) {
-      g_pInterNationEventQueueManager
-          ->QueueInterNationEventRecordDeduped(0x19, source, target, 0);
+      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x19, source, target, 0);
     }
     sourceTerrain->SetDiplomacyStandingSlot48(targetNationSlot, 300);
     targetTerrain->SetDiplomacyStandingSlot48(sourceNationSlot, 300);

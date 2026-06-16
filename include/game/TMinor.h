@@ -56,9 +56,9 @@ public:
   } // 0x8c
   virtual char HasStandingPropagationBridgeSlot90(int targetNation) {
     return 0;
-  }                                                                    // 0x90
+  } // 0x90
   virtual void NotifyActionSlot94(int sourceNation, int actionCode) {} // 0x94
-  virtual void NotifyNationAuxRuntimeFinalizeSlotC0(void) {}            // 0xc0
+  virtual void NotifyNationAuxRuntimeFinalizeSlotC0(void) {}           // 0xc0
   virtual void ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
     (void)grantValue;
   } // 0xc4
@@ -78,6 +78,7 @@ public:
 
 private:
   unsigned char minorObjectTail[0x2cc - (0x94 - 0x10)];
+
 protected:
   ~TMinor() {}
 };

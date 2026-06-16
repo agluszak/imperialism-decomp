@@ -10,10 +10,9 @@ undefined4 ShowDisbandCivilianConfirmationDialog(void);
 namespace {
 
 void InvokeSetActiveCivilianSelection(TSelectedCivilianOrderState* self,
-                                      TCivilianOrderState* entryContext,
-                                      int refreshCommandPanel) {
+                                      TCivilianOrderState* entryContext, int refreshCommandPanel) {
   typedef void (*SetActiveCivilianSelectionDispatch)(TSelectedCivilianOrderState*,
-                                                   TCivilianOrderState*, int);
+                                                     TCivilianOrderState*, int);
   SetActiveCivilianSelectionDispatch dispatch =
       reinterpret_cast<SetActiveCivilianSelectionDispatch>(SetActiveCivilianSelection);
   dispatch(self, entryContext, refreshCommandPanel);

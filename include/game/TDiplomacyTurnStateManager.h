@@ -121,6 +121,7 @@ struct TDiplomacyTurnStateManager {
   void ApplyDiplomacyInterNationStatesForTurn();
   void thunk_ApplyDiplomacyInterNationStatesForTurn();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot);
+
 protected:
   ~TDiplomacyTurnStateManager();
 };

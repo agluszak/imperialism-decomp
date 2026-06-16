@@ -19,4 +19,3 @@ public:
 };
 
 ASSERT_SIZE(TObject, 0x4);
-

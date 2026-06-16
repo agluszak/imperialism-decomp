@@ -143,7 +143,7 @@ public:
   TGlobalMapCityScoreRecord* cityScoreTable;
   unsigned char pad14[4];
   int cityScoreTotal;
-  char* scenarioTagText1c; // 0x1c — first char '+' enables extra seeding in 0x004d71b0
+  char* scenarioTagText1c;            // 0x1c — first char '+' enables extra seeding in 0x004d71b0
   char hexNeighborWrapHorizontally20; // 0x20 — horizontal wrap for hex neighbor walks
 
   // True when any region owned by nationA has a neighboring region owned by nationB.
@@ -162,6 +162,7 @@ public:
   class TCivilianOrderState* GetFirstCivilianOrderOnTile(short tileIndex) {
     return terrainStateTable[tileIndex].firstCivilianOrder20;
   }
+
 protected:
   ~TGlobalMapState() {}
 };

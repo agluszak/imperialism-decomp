@@ -44,35 +44,35 @@ public:
   // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---
-  virtual void SerializeMissionState(TStream* stream);   // 0x05 0x535820
-  virtual void DeserializeMissionState(TStream* stream); // 0x06 0x5358a0
-  virtual char ReturnFalseSlot28();                        // 0x0a 0x534c00
-  virtual int ReturnZeroSlot2C(int a, int b);              // 0x0b 0x534c20 (ret 8)
-  virtual void NoOpSlot30();                               // 0x0c 0x534c40
-  virtual void SetStateByte8To2();                         // 0x0d 0x534c60
-  virtual void ResetValue0CToZero();                       // 0x0e 0x534c80
-  virtual void NoOpSlot3C();                               // 0x0f 0x534ca0
-  virtual void InvokeSlots34_38_3C();                      // 0x10 0x534cc0
-  virtual void NoOpSlot44();                               // 0x11 0x534cf0
-  virtual void* ReturnArgSlot48(void* arg);                // 0x12 0x534d10
-  virtual char ReturnFalseSlot4C(int a, int b, int c);     // 0x13 0x534d30 (ret 12)
-  virtual char ReturnFalseSlot50();                        // 0x14 0x534d50
-  virtual char ReturnFalseSlot54();                        // 0x15 0x534d70
-  virtual int ReturnZeroSlot58();                          // 0x16 0x534d90
-  virtual int ReturnZeroSlot5C();                          // 0x17 0x534db0
-  virtual char ReturnFalseSlot60();                        // 0x18 0x534dd0
-  virtual char ReturnFalseSlot64();                        // 0x19 0x534df0
-  virtual float ReturnZeroFloatSlot68();                   // 0x1a 0x534e10
-  virtual float ReturnZeroFloatSlot6C();                   // 0x1b 0x534e30
-  virtual float ReturnZeroFloatSlot70();                   // 0x1c 0x534e70
-  virtual float ReturnZeroFloatSlot74();                   // 0x1d 0x534e50
-  virtual float ReturnZeroFloatSlot78();                   // 0x1e 0x534eb0
-  virtual float ReturnZeroFloatSlot7C();                   // 0x1f 0x534e90
-  virtual void NoOpSlot80(int a, int b);                   // 0x20 0x534ef0
-  virtual void NoOpSlot84(int a, int b);                   // 0x21 0x534ed0 (ret 8)
-  virtual void NoOpSlot88(int a, int b);                   // 0x22 0x534f30
-  virtual void NoOpSlot8C(int a, int b);                   // 0x23 0x534f10
-  virtual void NoOpSlot90(int a);                          // 0x24 0x534f50
+  virtual void SerializeMissionState(TStream* stream);      // 0x05 0x535820
+  virtual void DeserializeMissionState(TStream* stream);    // 0x06 0x5358a0
+  virtual char ReturnFalseSlot28();                         // 0x0a 0x534c00
+  virtual int ReturnZeroSlot2C(int a, int b);               // 0x0b 0x534c20 (ret 8)
+  virtual void NoOpSlot30();                                // 0x0c 0x534c40
+  virtual void SetStateByte8To2();                          // 0x0d 0x534c60
+  virtual void ResetValue0CToZero();                        // 0x0e 0x534c80
+  virtual void NoOpSlot3C();                                // 0x0f 0x534ca0
+  virtual void InvokeSlots34_38_3C();                       // 0x10 0x534cc0
+  virtual void NoOpSlot44();                                // 0x11 0x534cf0
+  virtual void* ReturnArgSlot48(void* arg);                 // 0x12 0x534d10
+  virtual char ReturnFalseSlot4C(int a, int b, int c);      // 0x13 0x534d30 (ret 12)
+  virtual char ReturnFalseSlot50();                         // 0x14 0x534d50
+  virtual char ReturnFalseSlot54();                         // 0x15 0x534d70
+  virtual int ReturnZeroSlot58();                           // 0x16 0x534d90
+  virtual int ReturnZeroSlot5C();                           // 0x17 0x534db0
+  virtual char ReturnFalseSlot60();                         // 0x18 0x534dd0
+  virtual char ReturnFalseSlot64();                         // 0x19 0x534df0
+  virtual float ReturnZeroFloatSlot68();                    // 0x1a 0x534e10
+  virtual float ReturnZeroFloatSlot6C();                    // 0x1b 0x534e30
+  virtual float ReturnZeroFloatSlot70();                    // 0x1c 0x534e70
+  virtual float ReturnZeroFloatSlot74();                    // 0x1d 0x534e50
+  virtual float ReturnZeroFloatSlot78();                    // 0x1e 0x534eb0
+  virtual float ReturnZeroFloatSlot7C();                    // 0x1f 0x534e90
+  virtual void NoOpSlot80(int a, int b);                    // 0x20 0x534ef0
+  virtual void NoOpSlot84(int a, int b);                    // 0x21 0x534ed0 (ret 8)
+  virtual void NoOpSlot88(int a, int b);                    // 0x22 0x534f30
+  virtual void NoOpSlot8C(int a, int b);                    // 0x23 0x534f10
+  virtual void NoOpSlot90(int a);                           // 0x24 0x534f50
   virtual void SetFlag10FromArgSlot94(unsigned char value); // 0x25 0x534f70
   virtual char ReturnFalseSlot98();                         // 0x26 0x534f90
 

@@ -11,8 +11,7 @@ undefined4 RecomputeGlobalCapabilityAverages(void);
 TCityOrderCapabilityState* g_pCityOrderCapabilityState = 0;
 
 // FUNCTION: IMPERIALISM 0x005aef80
-void TCityOrderCapabilityState::ConstructCityOrderCapabilityStateVtable(void) {
-}
+void TCityOrderCapabilityState::ConstructCityOrderCapabilityStateVtable(void) {}
 
 // FUNCTION: IMPERIALISM 0x005aeff0
 void TCityOrderCapabilityState::InitializeCityOrderCapabilityStateDefaults(void) {

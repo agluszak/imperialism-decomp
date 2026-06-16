@@ -25,11 +25,15 @@ struct RefCountedObjectBase {
   virtual void DispatchSlot08() {}
   virtual void NoOpSlot0C() {}
   virtual void NoOpSlot10() {}
-  virtual void ResetSlot14(void* message = 0) { (void)message; }
+  virtual void ResetSlot14(void* message = 0) {
+    (void)message;
+  }
   virtual void Call18(int arg1 = 0) {}
   virtual void Release1C() {}
   virtual void VTableSlot20() {}
-  virtual int GetIntByOrdinalSlot24(int ordinal) { return 0; }
+  virtual int GetIntByOrdinalSlot24(int ordinal) {
+    return 0;
+  }
 
   RefCountedObjectBase() {}
 };

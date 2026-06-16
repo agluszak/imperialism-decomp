@@ -4,7 +4,8 @@
 
 class CArchive;
 
-#define TCITYORDERITEM_VTABLE_SLOT(n) virtual void VTableSlot##n##_Provisional(void) {}
+#define TCITYORDERITEM_VTABLE_SLOT(n)                                                              \
+  virtual void VTableSlot##n##_Provisional(void) {}
 
 // Shared city production order-item protocol (Mac: Produce/FillOrderSheet family).
 // Per-class fork vtables live in the 0x0064f714+ factory region; do not pin one

@@ -27,8 +27,7 @@ void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta() {
 
   short* cityQueueBase =
       reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(this->cityContext) + 0x4A);
-  cityQueueBase[this->entryId] =
-      static_cast<short>(cityQueueBase[this->entryId] + pendingDelta);
+  cityQueueBase[this->entryId] = static_cast<short>(cityQueueBase[this->entryId] + pendingDelta);
 
   int ownerState =
       *reinterpret_cast<int*>(reinterpret_cast<unsigned char*>(this->cityContext) + 0xAC);

@@ -18,12 +18,12 @@ public:
 
   virtual CRuntimeClass* GetRuntimeClass() const override; // 0
   // slot 1 — scalar deleting destructor @ 0x0052eba0 (SYNTHETIC)
-  void WriteTo(TStream* stream) override;                     // 5 (0x14)
-  void ReadFrom(TStream* stream) override;                     // 6 (0x18)
-  void SerializeTMinisterBaseOrderArrayHeader(TStream* archive);         // non-virtual helper
-  void Call18(int arg1 = 0);                                             // non-virtual helper
-  void Free() override; // 7 (0x1c) DeleteForeignMinisterAndReleaseOrderArray
-  void Call1C();                                                         // non-virtual helper
+  void WriteTo(TStream* stream) override;                        // 5 (0x14)
+  void ReadFrom(TStream* stream) override;                       // 6 (0x18)
+  void SerializeTMinisterBaseOrderArrayHeader(TStream* archive); // non-virtual helper
+  void Call18(int arg1 = 0);                                     // non-virtual helper
+  void Free() override;                      // 7 (0x1c) DeleteForeignMinisterAndReleaseOrderArray
+  void Call1C();                             // non-virtual helper
   virtual void MinisterSlot0A();             // 10 (0x28)
   virtual void MinisterSlot0B();             // 11 (0x2c)
   virtual void MinisterSlot0C();             // 12 (0x30)

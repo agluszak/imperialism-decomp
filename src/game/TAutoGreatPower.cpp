@@ -188,7 +188,8 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNa
     this->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(needSlot), metricCap);
     return;
   }
-  if (this->GetDiplomacyExternalStateB6ByTarget(5) != 0 && this->QueryNationMetricBySlot7C(5) != -1) {
+  if (this->GetDiplomacyExternalStateB6ByTarget(5) != 0 &&
+      this->QueryNationMetricBySlot7C(5) != -1) {
     short metric = this->GetDiplomacyExternalStateB6ByTarget(5);
     int assignAmount = (metric != 1) + 1;
     if (this->tradeCapacity < static_cast<short>(assignAmount)) {

@@ -50,7 +50,6 @@ int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeTyp
   return sum;
 }
 
-
 // FUNCTION: IMPERIALISM 0x004e04b0
 int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
   int sum = 0;
@@ -62,7 +61,6 @@ int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
   }
   return sum;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0054f500
 void TShip::ConstructAndLinkNavyPrimaryOrderNode() {
@@ -117,14 +115,15 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
   shipNode->ownerNationSlot14 = static_cast<short>(nationSlot);
 
   if (displayNameOverride == 0) {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        g_apTerrainTypeDescriptorTable[zoneIndex], &shipNode->displayName18);
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(g_apTerrainTypeDescriptorTable[zoneIndex],
+                                                          &shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
       if (existing != shipNode &&
           CompareAnsiStringsWithMbcsAwareness(
               reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->displayName18)),
-              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
+              reinterpret_cast<unsigned char*>(
+                  (char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
         RegenerateNavyPrimaryOrderDisplayNameUntilUnique(shipNode);
         break;
       }
@@ -159,7 +158,8 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
       }
       if (CompareAnsiStringsWithMbcsAwareness(
               reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->displayName18)),
-              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
+              reinterpret_cast<unsigned char*>(
+                  (char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {
         goto retry;
       }
     }
@@ -168,12 +168,10 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
   } while (1);
 }
 
-
 // FUNCTION: IMPERIALISM 0x005505c0
 void* GetNavyPrimaryOrderListHead(void) {
   return g_pNavyPrimaryOrderListHead;
 }
-
 
 // FUNCTION: IMPERIALISM 0x00550970
 short GetIndustryActionCostWeightByResourceType(short resourceType) {
@@ -185,12 +183,14 @@ int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
   int resourceType = (int)node->resourceType04;
   short quantityField = node->field30;
   int quantityTerm = (int)SignedMod100(quantityField);
-  int navyTerm = quantityTerm + 5 + g_Navy_Order_Priority_LookupTable_00698118[resourceType * 9] * 10;
+  int navyTerm =
+      quantityTerm + 5 + g_Navy_Order_Priority_LookupTable_00698118[resourceType * 9] * 10;
   int resolveTerm =
       quantityTerm + 5 + g_Resolve_Map_Order_LookupTable_00698108[resourceType * 9] * 10;
   short stockAt1c = node->stockLevel1c;
   return (SignedDiv10(resolveTerm) +
-          (SignedDiv10(navyTerm) + g_Calculate_Mission_Order_LookupTable_0069810C[resourceType * 9]) *
+          (SignedDiv10(navyTerm) +
+           g_Calculate_Mission_Order_LookupTable_0069810C[resourceType * 9]) *
               100 +
           (int)stockAt1c) /
          (int)*(short*)(reinterpret_cast<char*>(&g_Task_Force_Order_LookupTable_00698110) +
@@ -203,12 +203,12 @@ int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
 
 static int* NavyZoneOrderDescriptorEnabledFlagPtr(short zoneIndex) {
   return reinterpret_cast<int*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
-                                  static_cast<int>(zoneIndex) * 0x24 + 0x10);
+                                static_cast<int>(zoneIndex) * 0x24 + 0x10);
 }
 
 static short* NavyZoneOrderDescriptorStockCapPtr(short zoneIndex) {
   return reinterpret_cast<short*>(reinterpret_cast<char*>(g_Task_Force_Order_LookupTable_00698110) +
-                                    static_cast<int>(zoneIndex) * 0x24 + 4);
+                                  static_cast<int>(zoneIndex) * 0x24 + 4);
 }
 
 // FUNCTION: IMPERIALISM 0x00550e70

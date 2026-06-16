@@ -88,9 +88,9 @@ void TTwoPicSlider::DrawTwoPicSliderSplitOverlayAndCenteredStatusText() {
     blitRect.left = 0;
     blitRect.top = 0;
     reinterpret_cast<void(__stdcall*)(void*, void*, RECT*, RECT*, int, void*)>(
-        BlitRectWithOptionalTransparency)(
-        reinterpret_cast<void*>(slider->compositeSurface + 4),
-        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect, 0, 0);
+        BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(slider->compositeSurface + 4),
+                                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(),
+                                          &blitRect, &blitRect, 0, 0);
 
     if (slider->splitPosition < 0x0c) {
       CString statusText;

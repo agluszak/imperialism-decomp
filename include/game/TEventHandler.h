@@ -36,10 +36,10 @@ public:
   // hierarchy is MFC DECLARE_DYNAMIC rooted at CObject). Every descendant overrides it
   // to return its own CRuntimeClass descriptor. See CRuntimeClass chain
   // CObject<-TObject<-TEventHandler<-TView<-TControl<-...
-  virtual CRuntimeClass* GetRuntimeClass() const override;     // 0x00 0x48a0e0
-  virtual ~TEventHandler() override;                           // 0x01
-  void Free() override; // 0x07 0x48a1b0
-  TObject* ShallowClone() override; // 0x08 0x48a7c0 base; TView override 0x48bfd0
+  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x48a0e0
+  virtual ~TEventHandler() override;                       // 0x01
+  void Free() override;                                    // 0x07 0x48a1b0
+  TObject* ShallowClone() override;        // 0x08 0x48a7c0 base; TView override 0x48bfd0
   virtual char GetBoolSlot28();            // 0x0a 0x48a240 GetCityDialogFlagByte4
   virtual void SetControlValue(int value); // 0x0b 0x48a260 SetCityDialogFlagByte4
   virtual int QueryStepValue();            // 0x0c 0x48a2c0 GetCityDialogValueDwordC

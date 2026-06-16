@@ -42,22 +42,20 @@ struct MapActionNodeView : public CObject {
 
 } // namespace
 
-
 // FUNCTION: IMPERIALISM 0x00515e00
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
-  char* tileArrayBase =
-      reinterpret_cast<char*>(*reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc));
+  char* tileArrayBase = reinterpret_cast<char*>(
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc));
   tileArrayBase[0x16 + static_cast<short>(tileIndex) * 0x24] = static_cast<char>(stateByte);
   if (g_pUiRuntimeContext != 0) {
     void** observerSlot =
         reinterpret_cast<void**>(reinterpret_cast<char*>(g_pUiRuntimeContext) + 0xf0);
     if (*observerSlot != 0) {
-      reinterpret_cast<void(__fastcall*)(void*, int)>(
-          *reinterpret_cast<int*>(*reinterpret_cast<int*>(*observerSlot) + 0x1d8))(*observerSlot, tileIndex);
+      reinterpret_cast<void(__fastcall*)(void*, int)>(*reinterpret_cast<int*>(
+          *reinterpret_cast<int*>(*observerSlot) + 0x1d8))(*observerSlot, tileIndex);
     }
   }
 }
-
 
 // FUNCTION: IMPERIALISM 0x0055fc40
 void TZone::HandleKeyDown(int key_id) {
@@ -143,7 +141,6 @@ void TZone::HandleKeyDown(int key_id) {
   SetMapOrderUiFlag(0);
 }
 
-
 // FUNCTION: IMPERIALISM 0x00562d90
 void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
   int* countHeader;
@@ -166,8 +163,8 @@ void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(i
     contextBase = reinterpret_cast<TMapNationActionContext*>(countHeader + 1);
     *countHeader = static_cast<int>(static_cast<short>(nationCountArg));
     reinterpret_cast<void(__stdcall*)(int, int, int, int, int)>(CallCallbackRepeatedly)(
-        reinterpret_cast<int>(contextBase), 0x48, static_cast<int>(static_cast<short>(nationCountArg)),
-        0x0040405c, 0x00407775);
+        reinterpret_cast<int>(contextBase), 0x48,
+        static_cast<int>(static_cast<short>(nationCountArg)), 0x0040405c, 0x00407775);
   }
   contextArray = contextBase;
   if (contextBase == 0) {
@@ -181,13 +178,11 @@ void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(i
       clearCursor = clearCursor + 1;
     }
   }
-  relaxPassCount =
-      reinterpret_cast<int(__cdecl*)(int)>(thunk_RelaxMapTileCostFieldByNeighborTerrain)(
-          reinterpret_cast<int>(costField));
+  relaxPassCount = reinterpret_cast<int(__cdecl*)(int)>(
+      thunk_RelaxMapTileCostFieldByNeighborTerrain)(reinterpret_cast<int>(costField));
   while (relaxPassCount != 0) {
-    relaxPassCount =
-        reinterpret_cast<int(__cdecl*)(int)>(thunk_RelaxMapTileCostFieldByNeighborTerrain)(
-            reinterpret_cast<int>(costField));
+    relaxPassCount = reinterpret_cast<int(__cdecl*)(int)>(
+        thunk_RelaxMapTileCostFieldByNeighborTerrain)(reinterpret_cast<int>(costField));
   }
   nationIndex = 0;
   if (0 < static_cast<int>(static_cast<short>(nationCountArg))) {
@@ -204,18 +199,16 @@ void TMapOrderContext::InitializeMapActionContextsForNationCountUsingCostField(i
   FreeHeapBufferIfNotNull(reinterpret_cast<undefined4>(costField));
 }
 
-
 // FUNCTION: IMPERIALISM 0x005634a0
 void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId;
   if (city->selectedOrderB0 == 0) {
     selectedTileId = 1;
   } else {
-    selectedTileId = *reinterpret_cast<short*>(
-        reinterpret_cast<char*>(city->selectedOrderB0) + 0x14);
+    selectedTileId =
+        *reinterpret_cast<short*>(reinterpret_cast<char*>(city->selectedOrderB0) + 0x14);
   }
-  MapActionNodeView* node =
-      reinterpret_cast<MapActionNodeView*>(g_pMapActionContextListHead);
+  MapActionNodeView* node = reinterpret_cast<MapActionNodeView*>(g_pMapActionContextListHead);
   while (node != 0 &&
          node->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
     node = node->next18;
@@ -241,7 +234,6 @@ void* TMapOrderContext::FindPortZoneBySelectedTile(TCity* city) {
   }
   return node;
 }
-
 
 // FUNCTION: IMPERIALISM 0x00564530
 int ComputeGlobalMapActionContextNodeValueAverage(void) {

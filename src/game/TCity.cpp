@@ -130,6 +130,7 @@ public:
   short pendingCount04;
   unsigned char pad06[0x48 - 0x06];
   short tileId48;
+
 protected:
   ~TCityOrderEntryView() {}
 };
@@ -146,9 +147,8 @@ void TCity::RefreshOrderStateSlot0C() {
       short pendingCount = (*orderCursor)->pendingCount04;
       short tileId = (*orderCursor)->tileId48;
       if (pendingCount != 0) {
-        short blockFlag =
-            reinterpret_cast<short(__cdecl*)(int)>(thunk_GetResourceTypeRandomDrawBlockFlag)(
-                tileId);
+        short blockFlag = reinterpret_cast<short(__cdecl*)(int)>(
+            thunk_GetResourceTypeRandomDrawBlockFlag)(tileId);
         if (blockFlag == 0) {
           this->ownerNationAc->DispatchTurnOrderActionSlotB0(1, tileId, pendingCount);
         } else {
@@ -263,9 +263,8 @@ void TCity::Refresh80() {
   short* needCursor = this->fieldB6;
   do {
     if (*needCursor < 0) {
-  char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28();
-      if ((dispatchGate == 0 ||
-           g_pLocalizationTable->redrawEnabled != 2) &&
+      char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28();
+      if ((dispatchGate == 0 || g_pLocalizationTable->redrawEnabled != 2) &&
           g_Sanitize_City_Counter_Value_006A24D4 == 0) {
         reinterpret_cast<void(__cdecl*)(const char*, int)>(
             thunk_TemporarilyClearAndRestoreUiInvalidationFlag)(kUCityCppPath, 0x47f);

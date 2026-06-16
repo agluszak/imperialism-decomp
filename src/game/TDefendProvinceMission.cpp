@@ -43,10 +43,9 @@ float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
 
   float accum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   for (int componentIndex = 0; componentIndex < 5; ++componentIndex) {
-    float diff =
-        vector[componentIndex] / sum -
-        static_cast<float>(static_cast<short>(lookupTable[componentIndex])) *
-            static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    float diff = vector[componentIndex] / sum -
+                 static_cast<float>(static_cast<short>(lookupTable[componentIndex])) *
+                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
     if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
       diff = -diff;
     }
@@ -77,7 +76,8 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   reinterpret_cast<void(__cdecl*)(void)>(NoOpRuntimeCallback_005184e0)();
 
   char* nationContextTable = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable);
-  int sourceNation = static_cast<int>(static_cast<signed char>(nationContextTable[nodeContext * 0xa8]));
+  int sourceNation =
+      static_cast<int>(static_cast<signed char>(nationContextTable[nodeContext * 0xa8]));
   for (int nationIndex = 0; nationIndex < 7; ++nationIndex) {
     short navyBudget = reinterpret_cast<short(__cdecl*)(void)>(
         ComputeAggregateWeightedChildCostForMatchingType5NavyOrders)();
@@ -94,7 +94,8 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
       if (candidateNationIndex != sourceNation &&
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(candidateNation, sourceNation) !=
               0) {
-        char tileHasMovementClass = reinterpret_cast<char(__cdecl*)(void)>(TileHasMovementClassId)();
+        char tileHasMovementClass =
+            reinterpret_cast<char(__cdecl*)(void)>(TileHasMovementClassId)();
         if (tileHasMovementClass == 0) {
           if (remainingBudgetByNation[candidateNationIndex] > 0) {
             char linkedTerrainClear =
@@ -126,8 +127,8 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
                 reinterpret_cast<short(__cdecl*)(void*)>(thunk_GetUnitMovementClassId)(unit);
             if (movementClassId > 0) {
               reinterpret_cast<void(__cdecl*)(void*, float*, int, int)>(
-                  AccumulateUnitOrderPriorityVectorContribution)(
-                  unit, vector, 0x3f800000, static_cast<int>(movementClassId));
+                  AccumulateUnitOrderPriorityVectorContribution)(unit, vector, 0x3f800000,
+                                                                 static_cast<int>(movementClassId));
             }
           }
         }
@@ -164,5 +165,6 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
     sum += vector[componentIndex];
   }
 
-  return NormalizeFiveComponentPriorityVector(vector, sum, g_Recompute_Nation_Order_LookupTable_00697870);
+  return NormalizeFiveComponentPriorityVector(vector, sum,
+                                              g_Recompute_Nation_Order_LookupTable_00697870);
 }

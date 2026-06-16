@@ -12,8 +12,7 @@ undefined4 GetTickCountDiv16(void);
 void TSidewaysArrow::HandleTradeArrowAutoRepeatTickAndDispatch(int repeatState, void* arg8,
                                                                void* argC, void* dispatchArg,
                                                                void* arg14) {
-  reinterpret_cast<TControl*>(this)->DispatchPictureResourceCommand(
-      repeatState, arg8, argC, arg14);
+  reinterpret_cast<TControl*>(this)->DispatchPictureResourceCommand(repeatState, arg8, argC, arg14);
 
   if (repeatState == 2) {
     return;

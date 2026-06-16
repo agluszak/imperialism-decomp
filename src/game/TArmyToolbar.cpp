@@ -87,8 +87,7 @@ static __inline void InvokeActiveCivToolbarCycleMapInteractionSelection() {
   if (uiRuntime == 0) {
     return;
   }
-  reinterpret_cast<TCivToolbar*>(uiRuntime[0x3c])
-      ->CycleMapInteractionSelectionAfterHandledClick();
+  reinterpret_cast<TCivToolbar*>(uiRuntime[0x3c])->CycleMapInteractionSelectionAfterHandledClick();
 }
 
 static __inline void SetArmyPayloadRatioOrModeSelection(ArmyCommandPayload* payload, int value) {

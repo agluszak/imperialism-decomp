@@ -52,8 +52,7 @@ void ResetQuickDrawStrokeState() {
 
 // FUNCTION: IMPERIALISM 0x00495a30
 void SnapshotHitRegionToClipCache(int* clipDescriptor) {
-  HRGN* clipRegionHandle =
-      reinterpret_cast<HRGN*>(g_pGlobalClipRegionHandleObject + 4);
+  HRGN* clipRegionHandle = reinterpret_cast<HRGN*>(g_pGlobalClipRegionHandleObject + 4);
   int descriptorHead = *clipDescriptor;
   if (descriptorHead + 0x14 == 0) {
     CombineRgn(*clipRegionHandle, nullptr, nullptr, 5);

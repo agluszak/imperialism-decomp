@@ -21,9 +21,9 @@ public:
   // Slot 0x44 override (0x0048f3c0): ctrl-modifier hint overlay blit used by picture controls.
   void ApplyRectSlot110(RECT* rectBuffer) override;
 
-  virtual void ResetPictureResourceEntry(); // slot 0x1c4
+  virtual void ResetPictureResourceEntry();                                        // slot 0x1c4
   virtual void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow); // slot 0x1c8
-  virtual bool IsSelected(short value = -1, bool refreshNow = true); // slot 0x1cc
+  virtual bool IsSelected(short value = -1, bool refreshNow = true);               // slot 0x1cc
 
   void* operator new(unsigned int size) {
     return reinterpret_cast<void*>(AllocateWithFallbackHandler(size));

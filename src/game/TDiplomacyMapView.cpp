@@ -18,27 +18,25 @@
 #pragma optimize("y", on)
 #endif
 
-
-
 #define DUMMY_VIRTUAL(n) virtual void Dummy##n() = 0;
 
 struct TDiplomacyMapViewLayout {
   DUMMY_VIRTUAL(0)
   DUMMY_VIRTUAL(1)
-  DUMMY_VIRTUAL(2) DUMMY_VIRTUAL(3) DUMMY_VIRTUAL(4) DUMMY_VIRTUAL(5) DUMMY_VIRTUAL(
-      6) DUMMY_VIRTUAL(7) DUMMY_VIRTUAL(8) DUMMY_VIRTUAL(9) DUMMY_VIRTUAL(10) DUMMY_VIRTUAL(11)
-      DUMMY_VIRTUAL(12) DUMMY_VIRTUAL(13) DUMMY_VIRTUAL(14) DUMMY_VIRTUAL(15) DUMMY_VIRTUAL(16)
-          DUMMY_VIRTUAL(17) DUMMY_VIRTUAL(18) DUMMY_VIRTUAL(19) DUMMY_VIRTUAL(20) DUMMY_VIRTUAL(21)
-              DUMMY_VIRTUAL(22) DUMMY_VIRTUAL(23) DUMMY_VIRTUAL(24) DUMMY_VIRTUAL(25)
-                  DUMMY_VIRTUAL(26) DUMMY_VIRTUAL(27) DUMMY_VIRTUAL(28) DUMMY_VIRTUAL(29)
-                      DUMMY_VIRTUAL(30) DUMMY_VIRTUAL(31) DUMMY_VIRTUAL(32) DUMMY_VIRTUAL(33)
-                          DUMMY_VIRTUAL(34) DUMMY_VIRTUAL(35) DUMMY_VIRTUAL(36) DUMMY_VIRTUAL(37)
-                              DUMMY_VIRTUAL(38) DUMMY_VIRTUAL(39) DUMMY_VIRTUAL(40)
-                                  DUMMY_VIRTUAL(41) DUMMY_VIRTUAL(42) DUMMY_VIRTUAL(43)
-                                      DUMMY_VIRTUAL(44) DUMMY_VIRTUAL(45) DUMMY_VIRTUAL(46)
-                                          DUMMY_VIRTUAL(47)
-                                              DUMMY_VIRTUAL(48) virtual void ApplyClipRegionSlotC4(
-                                                  int region) = 0; // slot 49 (0xC4)
+  DUMMY_VIRTUAL(2)
+  DUMMY_VIRTUAL(3) DUMMY_VIRTUAL(4) DUMMY_VIRTUAL(5) DUMMY_VIRTUAL(6) DUMMY_VIRTUAL(
+      7) DUMMY_VIRTUAL(8) DUMMY_VIRTUAL(9) DUMMY_VIRTUAL(10) DUMMY_VIRTUAL(11) DUMMY_VIRTUAL(12)
+      DUMMY_VIRTUAL(13) DUMMY_VIRTUAL(14) DUMMY_VIRTUAL(15) DUMMY_VIRTUAL(16) DUMMY_VIRTUAL(17)
+          DUMMY_VIRTUAL(18) DUMMY_VIRTUAL(19) DUMMY_VIRTUAL(20) DUMMY_VIRTUAL(21) DUMMY_VIRTUAL(22)
+              DUMMY_VIRTUAL(23) DUMMY_VIRTUAL(24) DUMMY_VIRTUAL(25) DUMMY_VIRTUAL(26)
+                  DUMMY_VIRTUAL(27) DUMMY_VIRTUAL(28) DUMMY_VIRTUAL(29) DUMMY_VIRTUAL(30)
+                      DUMMY_VIRTUAL(31) DUMMY_VIRTUAL(32) DUMMY_VIRTUAL(33) DUMMY_VIRTUAL(34)
+                          DUMMY_VIRTUAL(35) DUMMY_VIRTUAL(36) DUMMY_VIRTUAL(37) DUMMY_VIRTUAL(38)
+                              DUMMY_VIRTUAL(39) DUMMY_VIRTUAL(40) DUMMY_VIRTUAL(41)
+                                  DUMMY_VIRTUAL(42) DUMMY_VIRTUAL(43) DUMMY_VIRTUAL(44)
+                                      DUMMY_VIRTUAL(45) DUMMY_VIRTUAL(46) DUMMY_VIRTUAL(47)
+                                          DUMMY_VIRTUAL(48) virtual void ApplyClipRegionSlotC4(
+                                              int region) = 0; // slot 49 (0xC4)
 
   char pad_04[0x94];
   short frameRegionSelectorAt98;
@@ -57,7 +55,10 @@ struct TDiplomacyMapViewLayout {
   void ForwardCityDialogParamToActiveChildOrBase(void* param);
   void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3);
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
-  void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId, TEventHandler* panelEvent, void* extra);
+  void __stdcall HandleDiplomacyMapControlTagToggleOrForward(int commandId,
+                                                             TEventHandler* panelEvent,
+                                                             void* extra);
+
 protected:
   ~TDiplomacyMapViewLayout() {}
 };
@@ -162,7 +163,8 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoi
         reinterpret_cast<void*>(kAddrResolveDiplomacyActionValue));
   }
 
-  if (PtInRect(reinterpret_cast<const RECT*>(kAddrDiplomacyHitBounds), *reinterpret_cast<const POINT*>(clickPoint)) == 0) {
+  if (PtInRect(reinterpret_cast<const RECT*>(kAddrDiplomacyHitBounds),
+               *reinterpret_cast<const POINT*>(clickPoint)) == 0) {
     return 0;
   }
   if (*reinterpret_cast<int*>(self + 0x94) == 5) {
@@ -347,8 +349,8 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
     RECT blitRect;
     CopyRect(&blitRect, presentRect);
     BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
-                          &blitRect, 0);
+                          g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect,
+                          0);
   }
 
   SetQuickDrawFillColor(0xffffff);
@@ -420,8 +422,9 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int acti
       int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode);
       reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
       reinterpret_cast<DiplomacyMaskBufferRun*>(maskCursor)
-          ->BlitMonochromeMaskBytePatternToSurface(reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-                                                   paletteIndex, maskState, 1);
+          ->BlitMonochromeMaskBytePatternToSurface(
+              reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
+              paletteIndex, maskState, 1);
 
       int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
       reinterpret_cast<void(__cdecl*)(void*, unsigned int, int)>(
@@ -446,8 +449,8 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode4AndBlit(int acti
   }
 
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
-                        &blitRect, 0);
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect,
+                        0);
 }
 
 // FUNCTION: IMPERIALISM 0x004f66c0
@@ -560,8 +563,9 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
         int paletteIndex = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(eventCode + 200);
         reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
         reinterpret_cast<DiplomacyMaskBufferRun*>(maskCursor)
-            ->BlitMonochromeMaskBytePatternToSurface(reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-                                                     paletteIndex, maskState, 1);
+            ->BlitMonochromeMaskBytePatternToSurface(
+                reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
+                paletteIndex, maskState, 1);
 
         int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
         reinterpret_cast<void(__cdecl*)(void*, unsigned int, int)>(
@@ -587,8 +591,8 @@ void TDiplomacyMapViewLayout::RebuildDiplomacyLegendPaletteMode1AndBlit(int acti
   }
 
   BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
-                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect,
-                        &blitRect, 0);
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &blitRect, &blitRect,
+                        0);
   (void)presentRect;
 }
 
@@ -601,8 +605,9 @@ void TDiplomacyMapViewLayout::BuildTurnEventMonochromeMaskBuffers(int maskIndex,
   reinterpret_cast<void(__cdecl*)()>(thunk_SetUiResourceContextTagWord)();
   DiplomacyMaskBufferRun* maskRun = reinterpret_cast<DiplomacyMaskBufferRun*>(
       reinterpret_cast<char*>(this) + 0x1eac + maskIndex * 0x14);
-  maskRun->BlitMonochromeMaskBytePatternToSurface(reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()),
-                                                  paletteIndex, maskState, 1);
+  maskRun->BlitMonochromeMaskBytePatternToSurface(
+      reinterpret_cast<int>(g_pActiveQuickDrawSurfaceContext->GetBlitSurface()), paletteIndex,
+      maskState, 1);
 
   int packedColor = g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(0x3f);
   DiplomacyPackedColorRun* packedRun = reinterpret_cast<DiplomacyPackedColorRun*>(
@@ -704,9 +709,8 @@ void TDiplomacyMapViewLayout::InvalidateAndForwardTabSwitchToChild(void* arg1, v
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0
-void __stdcall TDiplomacyMapViewLayout::HandleDiplomacyMapControlTagToggleOrForward(int commandId,
-                                                                                    TEventHandler* panelEvent,
-                                                                                    void* extra) {
+void __stdcall TDiplomacyMapViewLayout::HandleDiplomacyMapControlTagToggleOrForward(
+    int commandId, TEventHandler* panelEvent, void* extra) {
   if (commandId == 0x14) {
     int tabIndex = 0;
     int* tagTable = reinterpret_cast<int*>(0x00696978);
@@ -723,7 +727,8 @@ void __stdcall TDiplomacyMapViewLayout::HandleDiplomacyMapControlTagToggleOrForw
       return;
     }
   } else {
-    reinterpret_cast<TControl*>(this)->TControl::HandleEvent(commandId, panelEvent, reinterpret_cast<TEvent*>(extra));
+    reinterpret_cast<TControl*>(this)->TControl::HandleEvent(commandId, panelEvent,
+                                                             reinterpret_cast<TEvent*>(extra));
   }
 }
 

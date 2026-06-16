@@ -91,7 +91,8 @@ void ApplicationUiRootController::InsertOrRemoveTrackedEntry(int value, char ins
     int priorHead = reinterpret_cast<int>(embeddedList.head);
     if (embeddedList.field10 == 0) {
       CPlex*& chain = *reinterpret_cast<CPlex**>(&embeddedList.field14);
-      CPlex* newBlock = CPlex::Create(chain, static_cast<unsigned int>(embeddedList.blockSize), 0xc);
+      CPlex* newBlock =
+          CPlex::Create(chain, static_cast<unsigned int>(embeddedList.blockSize), 0xc);
       int blockBase = reinterpret_cast<int>(newBlock);
       int entryCount = embeddedList.blockSize;
       int* cursor = reinterpret_cast<int*>(blockBase + (entryCount * 0xc) - 8);

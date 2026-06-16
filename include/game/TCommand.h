@@ -38,6 +38,7 @@ public:
   // second argument is zero). Only the first two arguments are used; the native
   // signature is a five-argument thiscall (RET 0x14).
   void InitializeRangePair(int arg1, int arg2, int arg3, int arg4, int arg5);
+
 protected:
   ~TCommand() {}
 };

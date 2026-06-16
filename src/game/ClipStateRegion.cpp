@@ -20,8 +20,8 @@ undefined4 DestroyClipStateRegionWrapperObject(int* wrapperObject) {
 
 // FUNCTION: IMPERIALISM 0x00495820
 undefined4 CreateClipStateRegionWrapperObject(void) {
-  int* outerWrapper = reinterpret_cast<int*>(
-      AllocateWithFallbackHandler(static_cast<undefined4>(4)));
+  int* outerWrapper =
+      reinterpret_cast<int*>(AllocateWithFallbackHandler(static_cast<undefined4>(4)));
   ClipStateRegionInner* innerObject = reinterpret_cast<ClipStateRegionInner*>(
       AllocateWithFallbackHandler(static_cast<undefined4>(0x1c)));
   if (innerObject == 0) {

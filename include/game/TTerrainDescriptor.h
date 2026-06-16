@@ -40,11 +40,13 @@ public:
   unsigned char pad10[0x90 - 0x10];
   // +0x90 — TPtrList of linked map nodes (region development sweep, 0x004e72c0).
   TPtrList* linkedNodeList90;
+
 protected:
   ~TTerrainDescriptor() {}
 };
 
-int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain, short encodedNationSlot);
+int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain,
+                                          short encodedNationSlot);
 int ResolveTerrainNationSlotFromTarget(int targetNationSlot);
 int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
 int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
