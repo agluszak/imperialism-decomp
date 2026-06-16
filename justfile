@@ -91,6 +91,25 @@ scan-cdecl-thiscall *args: _require-ghidra-install
 ghidra-vtable-dump class vtable *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
 
+# Scaffold a class+vtable port: resolve slots via Ghidra, then emit a reviewable
+# header/.cpp/CSV scaffold (dry-run by default; pass --write to apply).
+#   just bootstrap-class TUnitOrderState 0x0066ee18 TObject 0x00653868
+# base name+vtable are optional but recommended (drives inherited-vs-override).
+bootstrap-class class vtable base='' base_vtable='' *args: _require-ghidra-install
+  #!/usr/bin/env bash
+  set -euo pipefail
+  slots_json="$(mktemp)"
+  trap 'rm -f "$slots_json"' EXIT
+  specs=("{{class}}={{vtable}}")
+  base_arg=()
+  if [[ -n "{{base}}" && -n "{{base_vtable}}" ]]; then
+    specs+=("{{base}}={{base_vtable}}")
+    base_arg=(--base "{{base}}")
+  fi
+  uv run python -m tools.ghidra.vtable_slots --decompile "${specs[@]}" > "$slots_json"
+  uv run python -m tools.workflow.bootstrap_class \
+    --class "{{class}}" "${base_arg[@]}" --slots-json "$slots_json" {{args}}
+
 apply-source-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes {{args}}
 

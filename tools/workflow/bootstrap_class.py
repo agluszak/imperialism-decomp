@@ -1,0 +1,484 @@
+#!/usr/bin/env python3
+"""Scaffold a class + vtable port from a resolved slot table.
+
+The pure-python codegen half of `just bootstrap-class`. It consumes the JSON
+emitted by ``tools.ghidra.vtable_slots`` (class vtable + optional base vtable),
+classifies each slot (null / inherited-unchanged / override / new-virtual /
+scalar-deleting-destructor), and emits a reviewable scaffold:
+
+  * ``include/game/<Class>.h``  — `// VTABLE:` + virtual decls in slot order
+  * ``src/game/<Class>.cpp``    — `// FUNCTION:` markers (ascending address) plus
+                                  the standalone `// SYNTHETIC:` dtor block
+  * new rows for ``config/symbols.csv`` and ``config/function_ownership.csv``
+
+By default it prints a dry-run preview; ``--write`` creates the source files and
+merges the CSV rows (in numeric-address position, never duplicating an address
+already owned elsewhere). It deliberately does NOT build/compare/commit and never
+claims a match — bodies are left as TODO seeds for the normal decomp loop.
+
+Usage:
+  uv run python -m tools.workflow.bootstrap_class \
+      --class TUnitOrderState --base TObject --slots-json /tmp/slots.json [--write]
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+from dataclasses import dataclass, field
+from pathlib import Path
+
+from tools.common.pipe_csv import normalize_hex, read_pipe_table
+from tools.common.repo import repo_root_from_file, resolve_repo_path
+
+SCALAR_DTOR_MARK = "scalar deleting destructor"
+
+
+def norm_addr(value: str) -> str:
+    """Normalize an address to bare lowercase hex, no 0x prefix, no leading zeros.
+
+    Matches the spelling used in config/symbols.csv (e.g. ``5c2490``) so lookups
+    work regardless of whether the input was ``0x005c2490`` or ``5c2490``.
+    """
+    raw = normalize_hex((value or "").strip())
+    if not raw:
+        return ""
+    try:
+        return f"{int(raw, 16):x}"
+    except ValueError:
+        return raw
+
+
+# --------------------------------------------------------------------------- #
+# Prototype parsing
+# --------------------------------------------------------------------------- #
+
+
+@dataclass
+class Signature:
+    ret: str
+    name: str
+    args: str
+    const: str  # "" or " const"
+
+    def decl(self, virtual: bool, override: bool) -> str:
+        prefix = "virtual " if virtual else ""
+        suffix = " override" if override else ""
+        return f"{prefix}{self.ret} {self.name}({self.args}){self.const}{suffix};"
+
+    def definition_head(self, class_name: str) -> str:
+        return f"{self.ret} {class_name}::{self.name}({self.args}){self.const}"
+
+
+def parse_prototype(proto: str | None, fallback_name: str) -> Signature:
+    """Parse a Ghidra/symbols prototype string into a C++ method Signature.
+
+    Handles forms like ``void __thiscall Foo(int a)``,
+    ``CRuntimeClass* __thiscall Bar() const`` and ``undefined Baz()``. Falls back
+    to ``void <fallback_name>()`` when the prototype is missing/unparseable.
+    """
+    proto = (proto or "").strip()
+    if "(" not in proto:
+        return Signature("void", fallback_name, "", "")
+
+    head, _, rest = proto.partition("(")
+    # const lives after the final ')'
+    args_part, _, tail = rest.rpartition(")")
+    const = " const" if "const" in tail else ""
+
+    args = args_part.strip()
+    if args in ("void", ""):
+        args = ""
+
+    tokens = head.replace("__thiscall", " ").replace("__cdecl", " ").split()
+    if not tokens:
+        return Signature("void", fallback_name, args, const)
+    name = tokens[-1]
+    ret = " ".join(tokens[:-1]).strip() or "void"
+    # Defend against backtick names (scalar dtor) leaking in.
+    if "`" in name or not re.match(r"^[A-Za-z_~][A-Za-z0-9_]*$", name):
+        name = fallback_name
+    return Signature(ret, name, args, const)
+
+
+# --------------------------------------------------------------------------- #
+# Slot classification
+# --------------------------------------------------------------------------- #
+
+
+@dataclass
+class ClassifiedSlot:
+    index: int
+    byte_offset: int
+    slot_label: str
+    target_addr: str  # bare hex, no 0x
+    kind: str  # null | inherited | override | new | scalar_dtor
+    sig: Signature | None
+    qualified_name: str | None
+    size: int
+    prototype: str | None
+    decompiled_c: str | None
+    base_target: str | None  # bare hex of base's slot target, for inherited comment
+
+
+@dataclass
+class SymbolRow:
+    name: str
+    size: str
+    type: str
+    prototype: str
+
+
+def index_symbols(symbol_rows: list[dict[str, str]]) -> dict[str, SymbolRow]:
+    out: dict[str, SymbolRow] = {}
+    for row in symbol_rows:
+        addr = norm_addr(row.get("address") or "")
+        if addr:
+            out[addr] = SymbolRow(
+                name=(row.get("name") or "").strip(),
+                size=(row.get("size") or "").strip(),
+                type=(row.get("type") or "").strip(),
+                prototype=(row.get("prototype") or "").strip(),
+            )
+    return out
+
+
+def unqualified(name: str) -> str:
+    return name.rsplit("::", 1)[-1] if name else name
+
+
+def classify_slots(
+    class_slots: list[dict],
+    base_slots: list[dict],
+    symbols: dict[str, SymbolRow],
+) -> list[ClassifiedSlot]:
+    base_targets = {s["index"]: norm_addr(s.get("target_addr", "")) for s in base_slots}
+    base_count = len(base_slots)
+
+    out: list[ClassifiedSlot] = []
+    for s in class_slots:
+        idx = s["index"]
+        target = norm_addr(s.get("target_addr", ""))
+        sym = symbols.get(target)
+        qualified = sym.name if sym else (s.get("ghidra_name") or None)
+        proto = sym.prototype if sym else s.get("prototype")
+        size = int(s.get("size") or (sym.size if sym and sym.size.isdigit() else 0) or 0)
+        base_target = base_targets.get(idx)
+
+        is_scalar = bool(qualified and SCALAR_DTOR_MARK in qualified)
+
+        if s.get("is_null"):
+            kind = "null"
+        elif is_scalar:
+            kind = "scalar_dtor"
+        elif base_target and target == base_target:
+            kind = "inherited"
+        elif idx < base_count:
+            kind = "override"
+        else:
+            kind = "new"
+
+        fallback = unqualified(qualified) if qualified else f"VTableSlot{idx:02X}"
+        sig = parse_prototype(proto, fallback) if kind in ("override", "new") else None
+
+        out.append(
+            ClassifiedSlot(
+                index=idx,
+                byte_offset=s["byte_offset"],
+                slot_label=s.get("slot_label", f"0x{s['byte_offset']:02x}"),
+                target_addr=target,
+                kind=kind,
+                sig=sig,
+                qualified_name=qualified,
+                size=size,
+                prototype=proto,
+                decompiled_c=s.get("decompiled_c"),
+                base_target=base_target,
+            )
+        )
+    return out
+
+
+# --------------------------------------------------------------------------- #
+# Code generation
+# --------------------------------------------------------------------------- #
+
+
+def render_header(class_name: str, base_name: str, vtable_addr: str, slots: list[ClassifiedSlot]) -> str:
+    base_header = f'#include "game/{base_name}.h"'
+    lines = [
+        "#pragma once",
+        "",
+        base_header,
+        "",
+        f"// TODO(bootstrap): describe {class_name} and its role; confirm the base"
+        f" edge ({base_name}) from ctor/dtor sequencing + vtable layout evidence.",
+        f"// VTABLE: IMPERIALISM {vtable_addr}",
+        f"class {class_name} : public {base_name} {{",
+        "public:",
+    ]
+
+    new_virtuals = [s for s in slots if s.kind == "new"]
+
+    lines.append(f"  // --- {base_name} overrides ---")
+    for s in slots:
+        if s.kind == "inherited":
+            nm = unqualified(s.qualified_name) if s.qualified_name else "?"
+            lines.append(
+                f"  // slot {s.slot_label} {nm} inherited from {base_name} unchanged (0x{s.target_addr})"
+            )
+        elif s.kind == "null":
+            lines.append(f"  // slot {s.slot_label} (null in original table)")
+        elif s.kind == "scalar_dtor":
+            lines.append(f"  ~{class_name}() override; // slot {s.slot_label} (scalar deleting destructor)")
+        elif s.kind == "override":
+            assert s.sig is not None
+            lines.append(f"  {s.sig.decl(virtual=False, override=True)} // slot {s.slot_label}")
+
+    if new_virtuals:
+        lines.append("")
+        lines.append(f"  // --- {class_name} virtual functions ---")
+        for s in new_virtuals:
+            assert s.sig is not None
+            lines.append(f"  {s.sig.decl(virtual=True, override=False)} // slot {s.slot_label}")
+
+    lines += [
+        "",
+        "  // TODO(bootstrap): add data members from the object slice"
+        " (`just slice-discovery " + class_name + " 0xCTOR`).",
+        "",
+        f"  {class_name}();",
+        "};",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def _body_seed(s: ClassifiedSlot) -> list[str]:
+    out: list[str] = []
+    if s.decompiled_c:
+        out.append("  // TODO(bootstrap): port/clean the Ghidra decompile below, then")
+        out.append("  // run the decomp loop (compare/vtable) before committing.")
+        out.append("  /* --- Ghidra decompile seed ---")
+        for line in s.decompiled_c.rstrip().splitlines():
+            out.append("  " + line)
+        out.append("  --- end seed --- */")
+    else:
+        out.append("  // TODO(bootstrap): port the body from Ghidra, then run the decomp loop.")
+    # Keep the scaffold compilable: non-void slots need a placeholder return.
+    if s.sig is not None and s.sig.ret.strip() not in ("void", ""):
+        out.append("  return 0; // TODO(bootstrap): real return value")
+    return out
+
+
+def render_cpp(class_name: str, slots: list[ClassifiedSlot]) -> str:
+    lines = [
+        f'#include "game/{class_name}.h"',
+        "",
+        f"// RTTI class descriptor placeholder (see GetRuntimeClass).",
+        f'extern "C" char g_pClassDesc{class_name} = 0;',
+        "",
+    ]
+
+    # Owned bodies emitted in ascending address order (decomplint requirement).
+    owned = sorted(
+        [s for s in slots if s.kind in ("override", "new", "scalar_dtor")],
+        key=lambda s: int(s.target_addr or "0", 16),
+    )
+
+    for s in owned:
+        if s.kind == "scalar_dtor":
+            lines.append(f"// SYNTHETIC: IMPERIALISM 0x{s.target_addr}")
+            lines.append(f"// {class_name}::`scalar deleting destructor'")
+            lines.append("")
+            lines.append(
+                "// TODO(bootstrap): emit the real ~" + class_name + "() with its own"
+            )
+            lines.append(
+                "// FUNCTION: IMPERIALISM 0x<dtor-addr> marker (find the destructor body in"
+            )
+            lines.append("// Ghidra; it is usually adjacent to the scalar deleting destructor).")
+            lines.append("")
+            continue
+        assert s.sig is not None
+        lines.append(f"// FUNCTION: IMPERIALISM 0x{s.target_addr}")
+        lines.append(f"{s.sig.definition_head(class_name)} {{")
+        lines += _body_seed(s)
+        lines.append("}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+# --------------------------------------------------------------------------- #
+# CSV merge
+# --------------------------------------------------------------------------- #
+
+
+@dataclass
+class CsvPlan:
+    path: Path
+    fieldnames: list[str]
+    rows: list[dict[str, str]]
+    new_rows: list[dict[str, str]] = field(default_factory=list)
+    collisions: list[str] = field(default_factory=list)
+
+    def render_new(self) -> str:
+        return "\n".join("|".join(r.get(f, "") for f in self.fieldnames) for r in self.new_rows)
+
+    def merged_text(self) -> str:
+        merged = list(self.rows)
+        for nr in self.new_rows:
+            key = int(norm_addr(nr["address"]) or "0", 16)
+            pos = len(merged)
+            for i, existing in enumerate(merged):
+                if int(norm_addr(existing.get("address", "")) or "0", 16) > key:
+                    pos = i
+                    break
+            merged.insert(pos, nr)
+        header = "|".join(self.fieldnames)
+        body = "\n".join("|".join(r.get(f, "") for f in self.fieldnames) for r in merged)
+        return header + "\n" + body + "\n"
+
+
+def plan_symbols(path: Path, owned: list[ClassifiedSlot], class_name: str) -> CsvPlan:
+    fieldnames, rows = read_pipe_table(path)
+    plan = CsvPlan(path=path, fieldnames=fieldnames, rows=rows)
+    existing = {norm_addr(r.get("address", "")) for r in rows}
+    for s in owned:
+        if not s.target_addr or s.target_addr in existing:
+            continue
+        if s.kind == "scalar_dtor":
+            name = f"{class_name}::`scalar deleting destructor'"
+            proto = "void* __thiscall `scalar deleting destructor'(unsigned int)"
+        else:
+            assert s.sig is not None
+            name = f"{class_name}::{s.sig.name}"
+            proto = s.prototype or f"{s.sig.ret} {s.sig.name}({s.sig.args})"
+        plan.new_rows.append(
+            {
+                "address": s.target_addr,
+                "name": name,
+                "size": str(s.size or 1),
+                "type": "function",
+                "prototype": proto,
+            }
+        )
+        existing.add(s.target_addr)
+    return plan
+
+
+def plan_ownership(path: Path, owned: list[ClassifiedSlot], target_cpp: str) -> CsvPlan:
+    fieldnames, rows = read_pipe_table(path)
+    plan = CsvPlan(path=path, fieldnames=fieldnames, rows=rows)
+    by_addr = {norm_addr(r.get("address", "")): r for r in rows}
+    for s in owned:
+        if not s.target_addr:
+            continue
+        existing = by_addr.get(s.target_addr)
+        if existing is not None:
+            owner = (existing.get("target_cpp") or "").strip()
+            if owner and owner != target_cpp:
+                plan.collisions.append(f"0x{s.target_addr} already owned by {owner}")
+            continue
+        plan.new_rows.append(
+            {
+                "address": s.target_addr,
+                "target_cpp": target_cpp,
+                "ownership": "manual",
+                "note": "marker_sync",
+            }
+        )
+        by_addr[s.target_addr] = plan.new_rows[-1]
+    return plan
+
+
+# --------------------------------------------------------------------------- #
+# Orchestration
+# --------------------------------------------------------------------------- #
+
+
+def build_scaffold(args, repo_root: Path) -> int:
+    data = json.loads(Path(args.slots_json).read_text())
+    if args.cls not in data:
+        raise SystemExit(f"slots JSON has no entry for class '{args.cls}' (keys: {list(data)})")
+    class_entry = data[args.cls]
+    vtable_addr = class_entry["vtable_addr"]
+    class_slots = class_entry["slots"]
+    base_slots = data.get(args.base, {}).get("slots", []) if args.base else []
+
+    symbols_path = resolve_repo_path(repo_root, "config/symbols.csv")
+    ownership_path = resolve_repo_path(repo_root, "config/function_ownership.csv")
+    _, symbol_rows = read_pipe_table(symbols_path)
+    symbols = index_symbols(symbol_rows)
+
+    slots = classify_slots(class_slots, base_slots, symbols)
+    owned = [s for s in slots if s.kind in ("override", "new", "scalar_dtor")]
+
+    header_path = resolve_repo_path(repo_root, f"include/game/{args.cls}.h")
+    cpp_path = resolve_repo_path(repo_root, f"src/game/{args.cls}.cpp")
+    target_cpp = f"src/game/{args.cls}.cpp"
+
+    header_text = render_header(args.cls, args.base or "TObject", vtable_addr, slots)
+    cpp_text = render_cpp(args.cls, slots)
+    sym_plan = plan_symbols(symbols_path, owned, args.cls)
+    own_plan = plan_ownership(ownership_path, owned, target_cpp)
+
+    # Summary
+    counts: dict[str, int] = {}
+    for s in slots:
+        counts[s.kind] = counts.get(s.kind, 0) + 1
+    print(f"== bootstrap-class {args.cls} : public {args.base or 'TObject'} ({vtable_addr}) ==")
+    print(f"   slots: {len(slots)}  " + "  ".join(f"{k}={v}" for k, v in sorted(counts.items())))
+    print(f"   new symbols.csv rows: {len(sym_plan.new_rows)}")
+    print(f"   new function_ownership.csv rows: {len(own_plan.new_rows)}")
+    for c in own_plan.collisions:
+        print(f"   !! ownership collision (skipped): {c}")
+    if not args.base:
+        print("   !! no --base supplied; emitted ': public TObject' as a TODO. Verify inheritance.")
+
+    if not args.write:
+        print("\n--- DRY RUN (pass --write to apply) ---")
+        print(f"\n=== {header_path} ===\n{header_text}")
+        print(f"\n=== {cpp_path} ===\n{cpp_text}")
+        if sym_plan.new_rows:
+            print(f"\n=== + config/symbols.csv ===\n{sym_plan.render_new()}")
+        if own_plan.new_rows:
+            print(f"\n=== + config/function_ownership.csv ===\n{own_plan.render_new()}")
+        return 0
+
+    for path in (header_path, cpp_path):
+        if path.exists():
+            print(f"   refusing to overwrite existing {path}")
+            return 1
+    header_path.write_text(header_text)
+    cpp_path.write_text(cpp_text)
+    if sym_plan.new_rows:
+        symbols_path.write_text(sym_plan.merged_text())
+    if own_plan.new_rows:
+        ownership_path.write_text(own_plan.merged_text())
+    print("\n   wrote:")
+    print(f"     {header_path}")
+    print(f"     {cpp_path}")
+    print("   merged CSV rows. Next: just sync-ownership -> regen-stubs -> build -> vtable "
+          f"{args.cls} -> gates.")
+    return 0
+
+
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Scaffold a class+vtable port from a resolved slot table.")
+    p.add_argument("--class", dest="cls", required=True, help="Class name (e.g. TUnitOrderState)")
+    p.add_argument("--base", default=None, help="Base class name (must also be a key in the slots JSON)")
+    p.add_argument("--slots-json", required=True, help="JSON from tools.ghidra.vtable_slots")
+    p.add_argument("--write", action="store_true", help="Apply changes (default: dry-run preview)")
+    return p.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    repo_root = repo_root_from_file(__file__)
+    return build_scaffold(args, repo_root)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
