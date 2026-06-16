@@ -24,6 +24,14 @@ into the Ghidra database so the decompiled code we promote is better:
   4. propagates virtual names base->derived: an anonymous override (a derived
      slot whose body differs from the base's but has only an auto/thunk name) is
      renamed ``<Class>::<BaseVirtualName>`` and filed under the class namespace.
+  5. builds/replaces ``/MFC/vtables/<Class>Vtbl`` and
+     ``/MFC/classes/<Class>`` so Ghidra can type ``this->vftable`` in virtual
+     call sites; also installs a root ``/<Class>`` structure when Ghidra's
+     class-namespace ``this`` type is only an empty placeholder.
+  6. applies high-confidence non-manual prototypes: per-slot function-pointer
+     signatures from the live target function or matching Mac CodeWarrior method
+     evidence, CreateObject factory return types, direct vtable-store methods,
+     and class-namespace ECX-this functions.
 
 Idempotent and re-runnable; it never overwrites a USER_DEFINED name. Dry-run by
 default — pass ``--apply`` to open the project writable and ``program.save()``.
@@ -35,11 +43,15 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
 import re
+from pathlib import Path
 
+import jpype
 import pyghidra
 
 from tools.common import ghidra_env
+from tools.common.repo import repo_root_from_file
 
 SCHEMA_MAGIC = 0xFFFF
 DESC_SIZE = 0x18
@@ -51,6 +63,8 @@ _PROVISIONAL = re.compile(
     r"(Slot[0-9A-Fa-f]{1,3}\b|_At[0-9A-Fa-f]{6}|VtableSlot|_Target\b|WrapperFor_|"
     r"NoOp|Unknown|Helper_|Maybe|Dummy)"
 )
+REPO_ROOT = repo_root_from_file(__file__)
+MAC_SYMBOLS_PATH = REPO_ROOT / "vendor" / "macos_codewarrior" / "evidence" / "symbols.csv"
 
 
 def parse_args() -> argparse.Namespace:
@@ -292,8 +306,23 @@ def run(program, args) -> dict:
         "slots_renamed": 0,
         "skipped_named": 0,
         "vtbl_structs": 0,
+        "vtbl_structs_replaced": 0,
         "class_structs": 0,
+        "class_structs_replaced": 0,
+        "class_vptr_verified": 0,
+        "class_vptr_mismatch": 0,
+        "root_this_structs": 0,
+        "root_this_replaced": 0,
+        "root_this_preserved": 0,
+        "vtable_data_typed": 0,
+        "vtable_data_failed": 0,
+        "slot_signatures": 0,
+        "slot_mac_signatures": 0,
         "ctors_named": 0,
+        "factory_typed": 0,
+        "vptr_store_methods_typed": 0,
+        "namespace_ecx_methods_typed": 0,
+        "mac_method_signatures": 0,
         "this_typed": 0,
     }
     changes: list[str] = []
@@ -418,10 +447,20 @@ def run(program, args) -> dict:
     if args.apply:
         from ghidra.program.model.data import (
             ArrayDataType,
+            ByteDataType,
             FunctionDefinitionDataType,
+            ParameterDefinitionImpl,
+            ShortDataType,
             StructureDataType as _SDT,
             Undefined1DataType,
+            Undefined4DataType,
+            VoidDataType,
         )
+        from ghidra.program.model.listing import ParameterImpl, ReturnParameterImpl
+        from java.util import ArrayList
+
+        FunctionUpdateType = jpype.JClass("ghidra.program.model.listing.Function$FunctionUpdateType")
+        ParameterDefinitionArray = jpype.JArray(ParameterDefinitionImpl)
 
         classes_cat = CategoryPath("/MFC/classes")
         vtbl_cat = CategoryPath("/MFC/vtables")
@@ -430,59 +469,340 @@ def run(program, args) -> dict:
             DataTypeConflictHandler.DEFAULT_HANDLER,
         )
         vfn_ptr_dt = PointerDataType(vfn)
+        vfn_sig_cat = CategoryPath("/MFC/vfn")
+        mac_methods: dict[tuple[str, str], list[dict[str, str]]] = {}
+        if MAC_SYMBOLS_PATH.exists():
+            with MAC_SYMBOLS_PATH.open("r", encoding="utf-8", newline="") as fd:
+                for row in csv.DictReader(fd):
+                    owner = (row.get("owner") or "").strip()
+                    method = (row.get("method") or "").strip()
+                    signature = (row.get("signature") or "").strip()
+                    confidence = (row.get("confidence") or "").strip()
+                    if owner and method and signature and confidence == "high":
+                        mac_methods.setdefault((owner, method), []).append(row)
+
+        def replace_or_add_datatype(cat, name: str, datatype):
+            existing = dtm.getDataType(cat, name)
+            if existing is not None:
+                return dtm.replaceDataType(existing, datatype, True), True
+            return dtm.addDataType(datatype, DataTypeConflictHandler.REPLACE_HANDLER), False
+
+        def is_generated_root_struct(dt) -> bool:
+            try:
+                n = dt.getNumComponents()
+            except Exception:  # noqa: BLE001
+                return False
+            if n == 0:
+                return True
+            for i in range(n):
+                comp = dt.getComponent(i)
+                name = comp.getFieldName() or ""
+                if name and name != "vftable" and not name.startswith("field_0x"):
+                    return False
+            return True
+
+        def split_args(args_text: str) -> list[str]:
+            text = args_text.strip()
+            if text.startswith("("):
+                text = text[1:]
+            suffixes = (" const", " volatile")
+            for suffix in suffixes:
+                if text.endswith(suffix):
+                    text = text[: -len(suffix)].strip()
+            if text.endswith(")"):
+                text = text[:-1]
+            if not text.strip() or text.strip() == "void":
+                return []
+            out: list[str] = []
+            cur: list[str] = []
+            depth = 0
+            for ch in text:
+                if ch in "(<[":
+                    depth += 1
+                elif ch in ")>]":
+                    depth = max(0, depth - 1)
+                if ch == "," and depth == 0:
+                    out.append("".join(cur).strip())
+                    cur = []
+                else:
+                    cur.append(ch)
+            if cur:
+                out.append("".join(cur).strip())
+            return out
+
+        def root_or_mfc_datatype(name: str):
+            dt = dtm.getDataType(CategoryPath.ROOT, name)
+            if dt is not None:
+                return dt
+            return dtm.getDataType(classes_cat, name)
+
+        def datatype_for_mac_arg(type_text: str):
+            t = " ".join(type_text.replace("&", " &").replace("*", " *").split())
+            if not t or t == "void":
+                return None
+            pointer_depth = t.count("*") + t.count("&")
+            base = t.replace("*", " ").replace("&", " ")
+            words = [w for w in base.split() if w not in {"const", "volatile", "register"}]
+            base = " ".join(words)
+            primitive = {
+                "char": CharDataType.dataType,
+                "signed char": CharDataType.dataType,
+                "unsigned char": ByteDataType.dataType,
+                "short": ShortDataType.dataType,
+                "signed short": ShortDataType.dataType,
+                "unsigned short": ShortDataType.dataType,
+                "int": IntegerDataType.dataType,
+                "signed int": IntegerDataType.dataType,
+                "unsigned int": IntegerDataType.dataType,
+                "long": IntegerDataType.dataType,
+                "signed long": IntegerDataType.dataType,
+                "unsigned long": IntegerDataType.dataType,
+                "bool": ByteDataType.dataType,
+            }.get(base)
+            if primitive is not None:
+                dt = primitive
+            else:
+                dt = root_or_mfc_datatype(base)
+                if dt is None:
+                    if pointer_depth == 0:
+                        return None
+                    dt = _SDT(CategoryPath.ROOT, base, 0)
+                    dt = dtm.addDataType(dt, DataTypeConflictHandler.DEFAULT_HANDLER)
+            if pointer_depth:
+                for _ in range(pointer_depth):
+                    dt = PointerDataType(dt, dtm)
+                return dt
+            return dt if primitive is not None else None
+
+        def mac_signature_for(cls: str, method: str) -> tuple[list[object], str] | None:
+            records = mac_methods.get((cls, method), [])
+            if len(records) != 1:
+                return None
+            signature = records[0].get("signature", "")
+            args = split_args(signature)
+            dts = []
+            for arg in args:
+                dt = datatype_for_mac_arg(arg)
+                if dt is None:
+                    return None
+                dts.append(dt)
+            return dts, signature
+
+        def parameter_definitions_for(fn, cls: str, method: str) -> tuple[object, bool]:
+            mac = mac_signature_for(cls, method)
+            explicit = []
+            for param in fn.getParameters():
+                try:
+                    if param.isAutoParameter():
+                        continue
+                except Exception:  # noqa: BLE001
+                    pass
+                explicit.append(param)
+            if mac is not None and (not explicit or len(explicit) == len(mac[0])):
+                params = [
+                    ParameterDefinitionImpl(f"param_{i + 1}", dt, None)
+                    for i, dt in enumerate(mac[0])
+                ]
+                return ParameterDefinitionArray(params), True
+            params = [
+                ParameterDefinitionImpl(param.getName(), param.getDataType(), None)
+                for param in explicit
+            ]
+            return ParameterDefinitionArray(params), False
+
+        def make_function_definition(cls: str, field: str, slot: int, fn):
+            name = re.sub(r"[^A-Za-z0-9_]", "_", f"{cls}_{field}_0x{slot * 4:02x}")
+            fdt = FunctionDefinitionDataType(vfn_sig_cat, name)
+            fdt.setReturnType(fn.getReturnType())
+            args, used_mac = parameter_definitions_for(fn, cls, field)
+            fdt.setArguments(args)
+            fdt = dtm.addDataType(fdt, DataTypeConflictHandler.REPLACE_HANDLER)
+            return fdt, used_mac
+
+        def build_class_struct(cat, cls: str, base_name: str | None, vptr, size: int):
+            s = _SDT(cat, cls, size, dtm)
+            s.replaceAtOffset(0, vptr, 4, "vftable", None)
+            base_dt = root_or_mfc_datatype(base_name) if base_name else None
+            if base_dt is not None and not is_generated_root_struct(base_dt):
+                for i in range(base_dt.getNumComponents()):
+                    comp = base_dt.getComponent(i)
+                    offset = comp.getOffset()
+                    length = comp.getLength()
+                    if offset < 4 or length <= 0 or offset + length > size:
+                        continue
+                    name = comp.getFieldName() or f"base_0x{offset:x}"
+                    if name == "vftable":
+                        continue
+                    s.replaceAtOffset(offset, comp.getDataType(), length, name, comp.getComment())
+            return s
+
+        def component0_type_name(dt) -> str:
+            try:
+                if dt is None or dt.getNumComponents() == 0:
+                    return "<missing>"
+                return str(dt.getComponent(0).getDataType())
+            except Exception as exc:  # noqa: BLE001
+                return f"<unavailable: {exc}>"
+
+        def refresh_thiscall_signature(fn):
+            params = ArrayList()
+            for param in fn.getParameters():
+                try:
+                    if param.isAutoParameter():
+                        continue
+                except Exception:  # noqa: BLE001
+                    pass
+                params.add(ParameterImpl(param.getName(), param.getDataType(), program))
+            fn.updateFunction(
+                "__thiscall",
+                ReturnParameterImpl(fn.getReturnType(), program),
+                params,
+                FunctionUpdateType.DYNAMIC_STORAGE_ALL_PARAMS,
+                True,
+                SourceType.USER_DEFINED,
+            )
+
+        def refresh_function_signature(fn, callconv: str, return_dt, param_dts: list[object]) -> None:
+            params = ArrayList()
+            for i, dt in enumerate(param_dts):
+                params.add(ParameterImpl(f"param_{i + 1}", dt, program))
+            fn.updateFunction(
+                callconv,
+                ReturnParameterImpl(return_dt, program),
+                params,
+                FunctionUpdateType.DYNAMIC_STORAGE_ALL_PARAMS,
+                True,
+                SourceType.USER_DEFINED,
+            )
+
+        def apply_mac_signature_if_safe(fn, cls: str, method: str) -> bool:
+            mac = mac_signature_for(cls, method)
+            if mac is None:
+                return False
+            explicit_count = 0
+            for param in fn.getParameters():
+                try:
+                    if param.isAutoParameter():
+                        continue
+                except Exception:  # noqa: BLE001
+                    pass
+                explicit_count += 1
+            if explicit_count and explicit_count != len(mac[0]):
+                return False
+            refresh_function_signature(fn, "__thiscall", fn.getReturnType(), mac[0])
+            return True
 
         def ensure_vtbl_struct(cls: str, vt: int):
             slots = vtable_extent(vt)
             name = f"{cls}Vtbl"
-            existing = dtm.getDataType(vtbl_cat, name)
-            if existing is not None:
-                return existing, slots
             if not slots:
-                return None, slots
+                return None, slots, False
             s = _SDT(vtbl_cat, name, 0)
             for i, tgt in enumerate(slots):
                 fld = f"slot_0x{i*4:02x}"
+                field_dt = vfn_ptr_dt
                 if tgt is not None:
                     fn = real_function(tgt)
                     if fn is not None:
                         fld = sanitize_field(fn.getName(), i)
-                s.add(vfn_ptr_dt, 4, fld, None)
-            return dtm.addDataType(s, DataTypeConflictHandler.DEFAULT_HANDLER), slots
+                        try:
+                            sig_dt, used_mac = make_function_definition(cls, fld, i, fn)
+                            field_dt = PointerDataType(sig_dt, dtm)
+                            stats["slot_signatures"] += 1
+                            if used_mac:
+                                stats["slot_mac_signatures"] += 1
+                        except Exception as exc:  # noqa: BLE001
+                            changes.append(f"  !! slot signature {cls} 0x{i*4:02x} failed: {exc}")
+                s.add(field_dt, 4, fld, None)
+            vtbl_dt, replaced = replace_or_add_datatype(vtbl_cat, name, s)
+            return vtbl_dt, slots, replaced
 
-        def ensure_class_struct(cls: str, vtbl_dt, size: int):
-            vptr = PointerDataType(vtbl_dt) if vtbl_dt else PointerDataType()
-            existing = dtm.getDataType(classes_cat, cls)
-            if existing is not None:
-                # Refresh a stale generic vftable pointer once the real Vtbl exists.
-                if vtbl_dt is not None and existing.getNumComponents() > 0:
-                    try:
-                        existing.replaceAtOffset(0, vptr, 4, "vftable", None)
-                    except Exception:  # noqa: BLE001
-                        pass
-                return existing
-            s = _SDT(classes_cat, cls, 0)
-            s.add(vptr, 4, "vftable", None)
-            pad = max(0, size - 4)
-            if pad:
-                s.add(ArrayDataType(Undefined1DataType.dataType, pad, 1), pad, "field_0x4", None)
-            return dtm.addDataType(s, DataTypeConflictHandler.DEFAULT_HANDLER)
+        def apply_vtable_data(cls: str, vt: int, vtbl_dt, slots: list[int | None]) -> None:
+            if vtbl_dt is None or not slots:
+                return
+            try:
+                listing.clearCodeUnits(A(vt), A(vt + len(slots) * 4 - 1), False)
+                listing.createData(A(vt), vtbl_dt)
+                stats["vtable_data_typed"] += 1
+            except Exception as exc:  # noqa: BLE001
+                stats["vtable_data_failed"] += 1
+                changes.append(f"  !! vtable data {cls}@0x{vt:08x} failed: {exc}")
+
+        def ensure_class_struct(cls: str, base_name: str | None, vtbl_dt, size: int):
+            vptr = PointerDataType(vtbl_dt, dtm) if vtbl_dt else PointerDataType()
+            s = build_class_struct(classes_cat, cls, base_name, vptr, size)
+            class_dt, replaced = replace_or_add_datatype(classes_cat, cls, s)
+            vptr_text = component0_type_name(class_dt)
+            expected = f"{cls}Vtbl *" if vtbl_dt is not None else "pointer"
+            verified = vtbl_dt is None or vptr_text == expected
+            return class_dt, replaced, vptr_text, expected, verified
+
+        def ensure_root_this_struct(cls: str, base_name: str | None, vtbl_dt, size: int):
+            vptr = PointerDataType(vtbl_dt, dtm) if vtbl_dt else PointerDataType()
+            existing = dtm.getDataType(CategoryPath.ROOT, cls)
+            if existing is not None and not is_generated_root_struct(existing):
+                return existing, False, True, component0_type_name(existing)
+            s = build_class_struct(CategoryPath.ROOT, cls, base_name, vptr, size)
+            root_dt, replaced = replace_or_add_datatype(CategoryPath.ROOT, cls, s)
+            return root_dt, replaced, False, component0_type_name(root_dt)
+
+        def ecx_this_like(fn) -> bool:
+            for ins in listing.getInstructions(fn.getBody(), True):
+                text = str(ins).upper()
+                if "[ECX]" in text or "(ECX)" in text:
+                    return True
+                if re.search(r"\bECX\s*,", text):
+                    return False
+            return False
 
         for cls, info in class_info.items():
             vt = info.get("vtable")
             if vt is None:
                 continue
+            base = info.get("base")
             try:
-                vtbl_dt, slots = ensure_vtbl_struct(cls, vt)
+                vtbl_dt, slots, vtbl_replaced = ensure_vtbl_struct(cls, vt)
                 if vtbl_dt is not None:
                     stats["vtbl_structs"] += 1
+                    if vtbl_replaced:
+                        stats["vtbl_structs_replaced"] += 1
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! vtbl struct {cls} failed: {exc}")
                 vtbl_dt, slots = None, []
+            apply_vtable_data(cls, vt, vtbl_dt, slots)
             try:
-                ensure_class_struct(cls, vtbl_dt, info.get("size") or 4)
+                _class_dt, class_replaced, vptr_text, expected_vptr, verified = ensure_class_struct(
+                    cls, base, vtbl_dt, info.get("size") or 4
+                )
                 stats["class_structs"] += 1
+                if class_replaced:
+                    stats["class_structs_replaced"] += 1
+                if verified:
+                    stats["class_vptr_verified"] += 1
+                else:
+                    stats["class_vptr_mismatch"] += 1
+                    changes.append(
+                        f"  !! class struct {cls} vftable type is {vptr_text}, expected {expected_vptr}"
+                    )
+                if args.verbose:
+                    changes.append(f"  {cls} class field0: {vptr_text}")
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! class struct {cls} failed: {exc}")
+            try:
+                _root_dt, root_replaced, root_preserved, root_vptr_text = ensure_root_this_struct(
+                    cls, base, vtbl_dt, info.get("size") or 4
+                )
+                if root_preserved:
+                    stats["root_this_preserved"] += 1
+                else:
+                    stats["root_this_structs"] += 1
+                    if root_replaced:
+                        stats["root_this_replaced"] += 1
+                if args.verbose:
+                    mode = "preserved" if root_preserved else "refreshed"
+                    changes.append(f"  {cls} root this type {mode}; field0: {root_vptr_text}")
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! root this struct {cls} failed: {exc}")
 
             ctor = info.get("ctor")
             if ctor is not None:
@@ -494,8 +814,15 @@ def run(program, args) -> dict:
                         stats["ctors_named"] += 1
                     except Exception as exc:  # noqa: BLE001
                         changes.append(f"  !! ctor {cls}@0x{ctor:08x} failed: {exc}")
+                if cfn is not None:
+                    try:
+                        class_dt = root_or_mfc_datatype(cls)
+                        if class_dt is not None:
+                            refresh_function_signature(cfn, "__cdecl", PointerDataType(class_dt, dtm), [])
+                            stats["factory_typed"] += 1
+                    except Exception as exc:  # noqa: BLE001
+                        changes.append(f"  !! factory type {cls}@0x{ctor:08x} failed: {exc}")
 
-            base = info.get("base")
             base_vt = descriptor_to_vtable(by_name[base]) if base and base in by_name else None
             for i, tgt in enumerate(slots):
                 if tgt is None:
@@ -510,10 +837,60 @@ def run(program, args) -> dict:
                     pns = fn.getParentNamespace()
                     if pns is None or pns.getName() == "Global":
                         fn.setParentNamespace(get_or_make_class(cls))
-                    fn.setCallingConvention("__thiscall")
+                    refresh_thiscall_signature(fn)
+                    method = fn.getName().split("::")[-1]
+                    if apply_mac_signature_if_safe(fn, cls, method):
+                        stats["mac_method_signatures"] += 1
                     stats["this_typed"] += 1
                 except Exception as exc:  # noqa: BLE001
                     changes.append(f"  !! this-type 0x{tgt:08x} {cls} failed: {exc}")
+
+            # Direct references to a class vtable from executable code are usually
+            # constructor/destructor vptr stores. Only type them when ECX is used as
+            # the incoming object pointer; do not infer names from this evidence.
+            for ref in refmgr.getReferencesTo(A(vt)):
+                fn = fm.getFunctionContaining(ref.getFromAddress())
+                if fn is None:
+                    continue
+                fn_addr = int(fn.getEntryPoint().getOffset())
+                if fn_addr in {t for t in slots if t is not None}:
+                    continue
+                try:
+                    pns = fn.getParentNamespace()
+                    if fn.getCallingConventionName() == "__thiscall" and pns is not None and pns.getName() == cls:
+                        continue
+                    if not ecx_this_like(fn):
+                        continue
+                    if pns is None or pns.getName() == "Global":
+                        fn.setParentNamespace(get_or_make_class(cls))
+                    refresh_thiscall_signature(fn)
+                    method = fn.getName().split("::")[-1]
+                    if apply_mac_signature_if_safe(fn, cls, method):
+                        stats["mac_method_signatures"] += 1
+                    stats["vptr_store_methods_typed"] += 1
+                except Exception as exc:  # noqa: BLE001
+                    changes.append(f"  !! vptr-store this-type 0x{fn_addr:08x} {cls} failed: {exc}")
+
+        class_names = set(class_info)
+        for fn in fm.getFunctions(True):
+            ns = fn.getParentNamespace()
+            if ns is None:
+                continue
+            cls = ns.getName()
+            if cls not in class_names or fn.getCallingConventionName() == "__thiscall":
+                continue
+            if not ecx_this_like(fn):
+                continue
+            try:
+                refresh_thiscall_signature(fn)
+                method = fn.getName().split("::")[-1]
+                if apply_mac_signature_if_safe(fn, cls, method):
+                    stats["mac_method_signatures"] += 1
+                stats["namespace_ecx_methods_typed"] += 1
+            except Exception as exc:  # noqa: BLE001
+                changes.append(
+                    f"  !! namespace ecx this-type 0x{int(fn.getEntryPoint().getOffset()):08x} {cls} failed: {exc}"
+                )
 
     return {"stats": stats, "changes": changes}
 
@@ -543,7 +920,22 @@ def main() -> int:
             f"named_desc={s['named_desc']} classes={s['classes']} vtables={s['vtables']} "
             f"overrides_renamed={s['slots_renamed']} skipped_already_named={s['skipped_named']}\n"
             f"          vtbl_structs={s['vtbl_structs']} class_structs={s['class_structs']} "
-            f"ctors_named={s['ctors_named']} this_typed={s['this_typed']}"
+            f"ctors_named={s['ctors_named']} this_typed={s['this_typed']}\n"
+            f"          vtbl_replaced={s['vtbl_structs_replaced']} "
+            f"class_replaced={s['class_structs_replaced']} "
+            f"class_vptr_verified={s['class_vptr_verified']} "
+            f"class_vptr_mismatch={s['class_vptr_mismatch']}\n"
+            f"          root_this_structs={s['root_this_structs']} "
+            f"root_this_replaced={s['root_this_replaced']} "
+            f"root_this_preserved={s['root_this_preserved']}\n"
+            f"          vtable_data_typed={s['vtable_data_typed']} "
+            f"vtable_data_failed={s['vtable_data_failed']} "
+            f"slot_signatures={s['slot_signatures']} "
+            f"slot_mac_signatures={s['slot_mac_signatures']}\n"
+            f"          factory_typed={s['factory_typed']} "
+            f"vptr_store_methods_typed={s['vptr_store_methods_typed']} "
+            f"namespace_ecx_methods_typed={s['namespace_ecx_methods_typed']} "
+            f"mac_method_signatures={s['mac_method_signatures']}"
         )
         if not args.apply:
             print("Re-run with --apply to write these changes to the Ghidra DB.")

@@ -61,6 +61,20 @@ def main() -> int:
             print(f"0x{addr_int:08x}  {fn.getName()}  entry={fn.getEntryPoint()}")
             print(f"  signature: {fn.getSignature(True).getPrototypeString()}")
             print(f"  size: {fn.getBody().getNumAddresses()} bytes  calling-conv: {fn.getCallingConventionName()}")
+            try:
+                all_params = fn.getAllParameters()
+            except Exception:  # noqa: BLE001
+                all_params = fn.getParameters()
+            if all_params:
+                print("  params:")
+                for param in all_params:
+                    auto = " auto" if getattr(param, "isAutoParameter", lambda: False)() else ""
+                    dt = param.getDataType()
+                    try:
+                        path = dt.getDataTypePath()
+                    except Exception:  # noqa: BLE001
+                        path = "<no path>"
+                    print(f"    {param.getName()}: {dt}{auto} [{dt.getClass().getName()} {path}]")
             res = ifc.decompileFunction(fn, 60, mon)
             if not res.decompileCompleted():
                 print(f"  DECOMP FAILED: {res.getErrorMessage()}")

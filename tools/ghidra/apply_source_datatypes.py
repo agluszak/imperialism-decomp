@@ -54,7 +54,7 @@ SOURCE_CLASS_MODELS: dict[str, ClassSpec] = {
         name="CString",
         size=0x04,
         source_path="include/game/CString.h",
-        fields=(FieldSpec(0x00, "data_ptr", "int", 4),),
+        fields=(FieldSpec(0x00, "m_pchData", "char *", 4),),
     ),
     "TEventHandler": ClassSpec(
         name="TEventHandler",
@@ -146,6 +146,13 @@ FUNCTION_MODELS: tuple[FunctionSpec, ...] = (
         "void",
         (("pSource", "TView *"),),
         "Setting prototype: void CopyCityDialogStateFromSource(TView *this, TView *pSource)",
+    ),
+    FunctionSpec(
+        0x0048C220,
+        "TView",
+        "EnableAndProcessFlag",
+        "void",
+        (("sharedString", "CString *"),),
     ),
     FunctionSpec(0x00605797, "CString", "CString", "void"),
     FunctionSpec(0x00605950, "CString", "CString", "void", (("text_or_resource_id", "char *"),)),

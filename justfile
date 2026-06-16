@@ -83,6 +83,9 @@ ghidra-listing *args: _require-ghidra-install
 ghidra-function-slice *args: _require-ghidra-install
   uv run python -m tools.ghidra.function_slice {{args}}
 
+ghidra-decompile *args: _require-ghidra-install
+  uv run python -m tools.ghidra.decompile_one {{args}}
+
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
 scan-cdecl-thiscall *args: _require-ghidra-install
@@ -115,6 +118,12 @@ bootstrap-class class vtable base='' base_vtable='' *args: _require-ghidra-insta
 
 apply-source-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes {{args}}
+
+apply-mfc-datatypes *args: _require-ghidra-install
+  uv run python -m tools.ghidra.apply_mfc_datatypes {{args}}
+
+apply-mfc-rtti *args: _require-ghidra-install
+  uv run python -m tools.ghidra.apply_mfc_rtti {{args}}
 
 apply-tview-datatype: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes --classes CString,TEventHandler,TView
