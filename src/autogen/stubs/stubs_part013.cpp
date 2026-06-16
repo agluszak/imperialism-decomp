@@ -2259,14 +2259,6 @@ undefined4 DestroyNationStateOwnedRegionListAndRelease(void)
   return 0;
 }
 
-// ghidra_name TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60
-// ghidra_proto undefined WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60()
-// FUNCTION: IMPERIALISM 0x004d6e60
-undefined4 WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C4_I31_004d7070
 // ghidra_proto undefined OrphanCallChain_C4_I31_004d7070()
 // FUNCTION: IMPERIALISM 0x004d7070

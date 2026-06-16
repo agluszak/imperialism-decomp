@@ -2279,7 +2279,7 @@ address|name|size|type|prototype
 4d6b70|AssignStringSharedRefFromPointer|19|function|undefined AssignStringSharedRefFromPointer()
 4d6ba0|TCountry::DestroyNationStateOwnedRegionListAndRelease|62|function|undefined DestroyNationStateOwnedRegionListAndRelease()
 4d6bf0|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders|487|function|void __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int streamState)
-4d6e60|TCountry::WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60|403|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60()
+4d6e60|TGreatPower::WriteCountryBaseStateToStream|403|function|void __thiscall WriteCountryBaseStateToStream(void *)
 4d7070|OrphanCallChain_C4_I31_004d7070|66|function|undefined OrphanCallChain_C4_I31_004d7070()
 4d70e0|OrphanCallChain_C4_I31_004d70e0|66|function|undefined OrphanCallChain_C4_I31_004d70e0()
 4d7150|SetWordField8cFromShort|14|function|undefined SetWordField8cFromShort()

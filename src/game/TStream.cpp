@@ -115,7 +115,9 @@ void TStream::streamSlot80(unsigned char value) {
 // FUNCTION: IMPERIALISM 0x00488ed0
 void TStream::streamSlot84() {} // TODO: 0x00488ed0
 void TStream::streamSlotA8() {} // TODO
-void TStream::streamSlotAc() {} // TODO
+void TStream::streamSlotAc(void* sharedString) {
+  (void)sharedString;
+} // TODO: writes a CString/shared-string ref to the stream
 char TStream::ReadByte(void*) {
   return 0;
 } // TODO: primitive 0x004892f0

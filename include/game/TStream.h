@@ -55,7 +55,7 @@ public:
   virtual void streamSlotA0(void* data);                 // 40 (0xa0) 0x00488fb0
   virtual void streamSlotA4(int value);                  // 41 (0xa4) 0x00488fd0
   virtual void streamSlotA8();                           // 42 (0xa8) TODO
-  virtual void streamSlotAc();                           // 43 (0xac) TODO
+  virtual void streamSlotAc(void* sharedString);         // 43 (0xac) writes a CString ref
   virtual char ReadByte(void* outByte);                  // 44 (0xb0) primitive TODO: 0x004892f0
   virtual void WriteObjectSlotB4(void* object, int flag); // 45 (0xb4) writes a polymorphic object
 };

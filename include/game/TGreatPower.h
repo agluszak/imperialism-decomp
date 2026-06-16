@@ -28,6 +28,10 @@ public:
   ~TGreatPower() override;
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
   void WriteTo(TStream* stream) override;  // body 0x004d9c70
+  // TCountry base sub-object serializer (0x004d6e60); the base ctor is inlined into
+  // TGreatPower, so the intermediate base is modeled as a non-virtual member (symmetric
+  // with the reader DeserializeRecruitScenarioAndInstantiateOrders).
+  void WriteCountryBaseStateToStream(TStream* stream);
   void ReadFrom(TStream* stream) override; // body 0x004d92e0
   // Releases every owned member object then `delete this`. TAutoGreatPower overrides
   // (0x004e7230) to drain missionQueue first.

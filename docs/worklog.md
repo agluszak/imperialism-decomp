@@ -1,5 +1,37 @@
 # Worklog
 
+## 2026-06-16 — TGreatPower::WriteTo base-call fix + TCountry base WriteTo (0x4d6e60)
+
+- Diagnosed the remaining `TGreatPower::WriteTo` (0x4d9c70) gap: the leading
+  `TObject::WriteTo(stream)` call resolved to the empty base-of-base (0x00485f70, `ret 4`)
+  instead of the real intermediate-base serializer **0x004d6e60**, which Ghidra attributes
+  to a class **`TCountry`** (vtable 0x00653868, a 0xD0/52-slot prefix of TGreatPower's
+  0x00653938). 0x4d6e60 writes the nation identity CStrings (0x4/0x8 via stream slot 0xac),
+  nation-slot metrics, the per-unit-type name ordinals (0x48[0x1e]), unit name counter,
+  treasury, owner slot, serializedField8c, needLevelByNation (0x14[0x17]), then the military
+  unit list (slots 0x14/0x48/0x4c) and owned-region int list (slots 0x1c/0x28/0x24).
+- The symmetric **reader** (0x4d6bf0) is already modeled as the non-virtual member
+  `TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders`, because the real
+  TGreatPower ctor (0x4d89f0) **inlines** the TCountry base ctor (sets vtable 0x6485c0 and
+  constructs the CStrings inline — no separate `TCountry::ctor` call). So a separate
+  `class TCountry` C++ type would regress the currently-matching ctor/vtable; instead the
+  base WriteTo is modeled the same way: a non-virtual member
+  `TGreatPower::WriteCountryBaseStateToStream` (0x4d6e60), and `WriteTo` now calls it
+  (direct call) in place of `TObject::WriteTo`.
+- Signature change: `TStream::streamSlotAc()` → `streamSlotAc(void* sharedString)` (slot
+  0xac is the CString writer; no existing callers). Added file-scope `WriteIntListToStream`
+  helper (slot 0x1c header + count + slot-0x24 int entries) mirroring `WriteTrackedListToStream`.
+- Result: `TGreatPower::WriteTo` 73.71% → **73.90%** (base call now correct; remaining gap is
+  the frame-size-sensitive `add esp,8` vs `add esp,0xc` displacement). New
+  `WriteCountryBaseStateToStream` (0x4d6e60) stub → **34.19%**; logic is structurally
+  identical to the original — remaining diff is purely register allocation (orig keeps
+  `this` in edi / stream-vtable in ebx; recomp uses ebp/edi) and stack-slot offsets from
+  helper-local frame coalescing.
+- Validation: `just build`, `just sync-ownership`/`regen-stubs`, `just gates` (decomplint
+  clean) pass. `just vtable TGreatPower` mismatch at slot 0xe8 is pre-existing (ILT-thunk
+  resolution, unrelated); confirmed via stash that the change introduces no vtable/score
+  regression.
+
 - **Timestamp:** 2026-06-16 — TGreatPower inherits TObject; rename stream lifecycle virtuals
 - **Command:** `just sync-ownership` → `just regen-stubs` → `just build` → `just vtable
   TGreatPower` → `just vtable TAutoGreatPower` → `just gates`.
