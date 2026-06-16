@@ -1,6 +1,10 @@
 #include "game/TCountry.h"
 
-#include "game/TAdmiral.h"
+#include "game/diplomacy_globals.h"
+#include "game/TGreatPower.h"
+
+#include "game/diplomacy_globals.h"
+#include "game/TInterNationEventQueueManager.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
@@ -716,9 +720,7 @@ void TCountry::ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int res
   (void)resetLevel;
 }
 
-// --- Diplomacy cluster (0x4E41C0+) — shape-pass stubs; tail-field bodies cast via TGreatPower*.
-
-undefined4 thunk_QueueInterNationEventRecordDeduped(void);
+// --- Diplomacy cluster (0x4E41C0+) — shape-pass stubs; tail-field bodies use TMinor/TGreatPower tail.
 
 void TCountry::DeserializeDiplomacyNationStateFromStream(TStream* stream) {
   TGreatPower* nation = static_cast<TGreatPower*>(this);
@@ -778,41 +780,13 @@ int OrphanLeaf_NoCall_Ins03_004e4680(void) {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004e46a0
-void TCountry::RebuildDiplomacyEconomicPressureFromMapState(void) {
-  TGreatPower* nation = static_cast<TGreatPower*>(this);
-  nation->needTargetByType[0x13] = -10;
-  nation->needTargetByType[0x14] = 0;
-  nation->needTargetByType[0x15] = 0;
-  for (int i = 0; i < 0x17; ++i) {
-    nation->needCurrentByType[i] = 0;
-    nation->diplomacyPolicyByNation[i] = 0;
-    nation->diplomacyGrantByNation[i] = 0;
-    nation->relationDeltaCurrent[i] = 0;
-    nation->relationDeltaSnapshot[i] = 0;
-    nation->diplomacyState1c6[i] = 0;
-    nation->diplomacyState1f4[i] = 0;
-    nation->diplomacyState222[i] = 0;
-    nation->diplomacyState250[i] = 0;
-  }
-  nation->diplomacyCounterA2 = 2;
-}
-
-float Helper_Uses_ftol_At004e49b0(float value) {
-  return static_cast<float>(static_cast<int>(value));
-}
-
-// FUNCTION: IMPERIALISM 0x004e4bd0
-int Helper_Uses_GenerateThreadLocalRandom15_At004e4bd0(void) {
-  return 0;
-}
-
 char TCountry::IsDiplomacyPolicyAllowedForTargetClassState(short policyCode,
                                                            short targetNationSlot) {
+  (void)targetNationSlot;
   if (policyCode <= 0xc || policyCode >= 0x11) {
     return 0;
   }
-  TGreatPower* nation = static_cast<TGreatPower*>(this);
+  TGreatPower* nation = reinterpret_cast<TGreatPower*>(this);
   if (policyCode == nation->field8d6[0]) {
     return nation->field8d6[1] == 0;
   }
@@ -842,15 +816,6 @@ void TCountry::SetNationTradePolicyValueForTargetAndNotify(short targetNationSlo
   }
 }
 
-// FUNCTION: IMPERIALISM 0x004e4ff0
-char CanInitiateJoinEmpireProposalToTarget(TCountry* nation, short targetNationSlot,
-                                            short proposalCode) {
-  (void)nation;
-  (void)targetNationSlot;
-  (void)proposalCode;
-  return 0;
-}
-
 void TCountry::ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, short policyCode,
                                                         int mode) {
   (void)targetNationSlot;
@@ -870,43 +835,10 @@ void TCountry::ProcessTurnEventNationStateTransitionAndDiplomacy(int eventCode, 
   (void)payload;
 }
 
-// FUNCTION: IMPERIALISM 0x004e5730
-void TCountry::HandleNetworkPortConstructionOrder(int nationId) {
-  (void)nationId;
-}
-
 void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
   this->ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
-  reinterpret_cast<void(__cdecl*)(int, int, int, int)>(thunk_QueueInterNationEventRecordDeduped)(
-      0x1b, this->nationSlot, targetNationSlot, 0);
+  g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1b, this->nationSlot,
+                                                                    targetNationSlot, 0);
 }
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}
-
-// FUNCTION: IMPERIALISM 0x004e5a40
-void TCountry::SetNationRowDisplayValueByDiplomacyPredicate(short nationSlot, short predicateCode) {
-  (void)nationSlot;
-  (void)predicateCode;
-}
-
-// FUNCTION: IMPERIALISM 0x004e5ac0
-void ClearTileActivityOverlayByProvinceId(int provinceId) {
-  (void)provinceId;
-}
-
-// FUNCTION: IMPERIALISM 0x004e5be0
-void TCountry::QueueInterNationEvent17ForState300AffectedNations(void) {
-  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    if (this->needLevelByNation[nationSlot] == 300) {
-      reinterpret_cast<void(__cdecl*)(int, int, int, int)>(thunk_QueueInterNationEventRecordDeduped)(
-          0x11, this->nationSlot, nationSlot, 0);
-    }
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004e5d90
-void TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId,
-                                                                 short relationMask) {
-  (void)provinceId;
-  (void)relationMask;
-}

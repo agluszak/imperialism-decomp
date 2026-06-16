@@ -718,16 +718,6 @@ void __stdcall OrphanRetStub_00541a60(int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00541c90
-bool ReturnTrueRemoteMinorCapabilityStub(void) {
-  return true;
-}
-
-// FUNCTION: IMPERIALISM 0x00541cb0
-void __stdcall OrphanRetStub_00541cb0(int, int, int) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x0054c660
 void __stdcall NoOpCallbackRet4(int) {
   return;

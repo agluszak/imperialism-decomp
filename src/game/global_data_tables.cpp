@@ -84,6 +84,7 @@ float g_Iterate_Linked_List_Value_00653718 = 0.25f;
 float g_Compute_City_Order_Value_0065371C = 0.5f;
 float g_Compute_Advisory_Handler_LookupTable_00653720 = -90.0f;
 float g_Compute_Advisory_Peer_LookupTable_00653724 = -0.5f;
+float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
 
 // Per-unit-type military power weights (0xe-byte records, weight short at +0).
 // Summed over militaryUnitList44 entries by the slot 0x8e-0x9c score family.

@@ -67,18 +67,13 @@ public:
   // Diplomacy / nation-state helpers (bodies may access TGreatPower tail via `this`).
   void DeserializeDiplomacyNationStateFromStream(TStream* stream);
   void SerializeDiplomacyNationStateToStream(TStream* stream);
-  void RebuildDiplomacyEconomicPressureFromMapState(void);
   char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   void SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot, short policyValue);
   void ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, short policyCode,
                                                 int mode);
   void ProcessTurnEventNationStateTransitionAndDiplomacy(int eventCode, int targetNationSlot,
                                                          int payload);
-  void HandleNetworkPortConstructionOrder(int nationId);
   void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
-  void SetNationRowDisplayValueByDiplomacyPredicate(short nationSlot, short predicateCode);
-  void QueueInterNationEvent17ForState300AffectedNations(void);
-  void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId, short relationMask);
 
   CString identitySharedString0;
   CString identitySharedString1;

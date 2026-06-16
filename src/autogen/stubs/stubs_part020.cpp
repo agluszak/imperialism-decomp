@@ -211,14 +211,6 @@ undefined4 SerializeCivUnitOrderState(void)
   return 0;
 }
 
-// ghidra_name RelinkCivUnitByTileIndex
-// ghidra_proto undefined RelinkCivUnitByTileIndex()
-// FUNCTION: IMPERIALISM 0x005c2b70
-undefined4 RelinkCivUnitByTileIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearCivUnitTileLink
 // ghidra_proto undefined ClearCivUnitTileLink()
 // FUNCTION: IMPERIALISM 0x005c2c40
@@ -279,14 +271,6 @@ undefined4 DeserializeMilitaryUnitOrderState(void)
 // ghidra_proto undefined SerializeMilitaryUnitOrderState()
 // FUNCTION: IMPERIALISM 0x005c30a0
 undefined4 SerializeMilitaryUnitOrderState(void)
-{
-  return 0;
-}
-
-// ghidra_name DetachUnitOrderFromOwnerAndReset
-// ghidra_proto undefined DetachUnitOrderFromOwnerAndReset()
-// FUNCTION: IMPERIALISM 0x005c31c0
-undefined4 DetachUnitOrderFromOwnerAndReset(void)
 {
   return 0;
 }

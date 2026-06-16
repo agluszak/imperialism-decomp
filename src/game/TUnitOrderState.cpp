@@ -71,3 +71,11 @@ void TUnitOrderState::RegisterUnitOrderWithOwnerManager(short nOrderType, int pO
   this->field_20 = uniqueId;
 }
 #pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x005c2b70
+void TUnitOrderState::RelinkCivUnitByTileIndex() {
+}
+
+// FUNCTION: IMPERIALISM 0x005c31c0
+void TUnitOrderState::DetachUnitOrderFromOwnerAndReset() {
+}

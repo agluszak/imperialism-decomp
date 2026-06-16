@@ -531,14 +531,6 @@ undefined4 SetTileTransportFlags(void)
   return 0;
 }
 
-// ghidra_name TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12
-// ghidra_proto undefined DispatchFormationEntryActionsAndMaybeCreateTurnEvent12()
-// FUNCTION: IMPERIALISM 0x00513290
-undefined4 DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(void)
-{
-  return 0;
-}
-
 // ghidra_name SetTileOwnerAndInvalidateNeighborState
 // ghidra_proto undefined SetTileOwnerAndInvalidateNeighborState()
 // FUNCTION: IMPERIALISM 0x005133f0

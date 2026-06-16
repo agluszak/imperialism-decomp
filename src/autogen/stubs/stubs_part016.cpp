@@ -1851,46 +1851,6 @@ undefined4 RemoveRemoteGreatPowerNationSlotAndNotifyPeers(void)
   return 0;
 }
 
-// ghidra_name AllocateAndConstructTRemoteMinor
-// ghidra_proto undefined AllocateAndConstructTRemoteMinor()
-// FUNCTION: IMPERIALISM 0x00541c10
-undefined4 AllocateAndConstructTRemoteMinor(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructTRemoteMinor
-// ghidra_proto undefined DeletingDestructTRemoteMinor()
-// FUNCTION: IMPERIALISM 0x00541cd0
-undefined4 DeletingDestructTRemoteMinor(void)
-{
-  return 0;
-}
-
-// ghidra_name TRemoteMinor::DestructTRemoteMinor
-// ghidra_proto undefined DestructTRemoteMinor()
-// FUNCTION: IMPERIALISM 0x00541d00
-undefined4 DestructTRemoteMinor(void)
-{
-  return 0;
-}
-
-// ghidra_name TRemoteMinor::GetTRemoteMinorClassNamePointer
-// ghidra_proto undefined GetTRemoteMinorClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00541d70
-undefined4 GetTRemoteMinorClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::SetNationSelectedRegionAndMapCellLabelAlt
-// ghidra_proto undefined SetNationSelectedRegionAndMapCellLabelAlt()
-// FUNCTION: IMPERIALISM 0x00541d90
-undefined4 SetNationSelectedRegionAndMapCellLabelAlt(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00541f60
 // ghidra_proto undefined WrapperFor_ftol_At00541f60()
 // FUNCTION: IMPERIALISM 0x00541f60

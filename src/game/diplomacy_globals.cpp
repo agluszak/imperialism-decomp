@@ -18,6 +18,7 @@ TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
 void* g_pGlobalUiRootController = 0;
 void* g_pGameFlowState = 0;
 TDiplomacyTurnStateManager* g_pDiplomacyTurnStateManager = 0;
+int* g_pMapContextActionManager = 0;
 char g_vtblTSortedByRelationshipList = 0;
 }
 

@@ -28,15 +28,15 @@ public:
   virtual void ReadFromStreamSlot18(void* stream) {
     (void)stream;
   }
-  virtual void s07() {}
+  virtual void RelinkCivUnitByTileIndex(); // slot 0x1c — body 0x005c2b70
   virtual void s08() {}
   virtual void s09() {}
   virtual void VTableSlot10(int pOwnerContext) {
     (void)pOwnerContext;
-  } // slot 10 at 0x28
+  } // slot 0x28
   // Slot 0x2c — per-order dispatch hook invoked by TGreatPower slot 0x4c (0x004e0220).
   virtual void DispatchSlot2C() {}
-  virtual void VTableSlot30_Provisional() {}
+  virtual void DetachUnitOrderFromOwnerAndReset(); // slot 0x30 — body 0x005c31c0
   // Slot 0x34 — TGreatPower slot 0x0d (0x004d7770) calls this on a fresh military
   // recruit order with (2, -1).
   virtual void SetOrderModeSlot34(int mode, int payload) {

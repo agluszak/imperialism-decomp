@@ -216,3 +216,10 @@ char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
 void TGlobalMapState::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   cityScoreTable[regionId].developmentStage = stage;
 }
+
+// FUNCTION: IMPERIALISM 0x00513290
+void TGlobalMapState::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
+    short regionIndex, int newOwnerNationSlot) {
+  (void)regionIndex;
+  (void)newOwnerNationSlot;
+}

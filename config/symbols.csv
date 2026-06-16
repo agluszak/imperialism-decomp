@@ -3860,13 +3860,13 @@ address|name|size|type|prototype
 541b20|TRemoteGreatPower::GetTRemoteGreatPowerClassNamePointer|6|function|undefined GetTRemoteGreatPowerClassNamePointer()
 541b40|TToolBarCluster::SetNationSelectedRegionAndMapCellLabel|127|function|undefined SetNationSelectedRegionAndMapCellLabel()
 541be0|RemoveRemoteGreatPowerNationSlotAndNotifyPeers|17|function|undefined RemoveRemoteGreatPowerNationSlotAndNotifyPeers()
-541c10|AllocateAndConstructTRemoteMinor|83|function|undefined AllocateAndConstructTRemoteMinor()
-541c90|ReturnTrueRemoteMinorCapabilityStub|3|function|undefined ReturnTrueRemoteMinorCapabilityStub()
-541cb0|OrphanRetStub_00541cb0|3|function|undefined OrphanRetStub_00541cb0()
-541cd0|DeletingDestructTRemoteMinor|30|function|undefined DeletingDestructTRemoteMinor()
-541d00|TRemoteMinor::DestructTRemoteMinor|80|function|undefined DestructTRemoteMinor()
+541c10|TRemoteMinor::AllocateAndConstructTRemoteMinor|83|function|undefined AllocateAndConstructTRemoteMinor()
+541c90|TRemoteMinor::ShouldDispatchImmediatelySlot28|3|function|undefined ShouldDispatchImmediatelySlot28()
+541cb0|TRemoteMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals|3|function|undefined ApplyIndexedResourceDeltaAndAdjustNationTotals()
+541cd0|TRemoteMinor::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
+541d00|TRemoteMinor::~TRemoteMinor|80|function|undefined ~TRemoteMinor()
 541d70|TRemoteMinor::GetTRemoteMinorClassNamePointer|6|function|undefined GetTRemoteMinorClassNamePointer()
-541d90|TToolBarCluster::SetNationSelectedRegionAndMapCellLabelAlt|127|function|undefined SetNationSelectedRegionAndMapCellLabelAlt()
+541d90|TRemoteMinor::NoOpNationSelectedRegionAndMapCellLabelHook|127|function|undefined NoOpNationSelectedRegionAndMapCellLabelHook()
 541f60|WrapperFor_ftol_At00541f60|30|function|undefined WrapperFor_ftol_At00541f60()
 5420a0|SetEventPayloadNationIdFromSlotIndex|20|function|undefined SetEventPayloadNationIdFromSlotIndex()
 5420d0|SetEventPayloadNationIdFromSlotIndexWithSentinelHandling|51|function|undefined SetEventPayloadNationIdFromSlotIndexWithSentinelHandling()
@@ -8949,6 +8949,7 @@ address|name|size|type|prototype
 65371c|g_Compute_City_Order_Value_0065371C||global|
 653720|g_Compute_Advisory_Handler_LookupTable_00653720||global|
 653724|g_Compute_Advisory_Peer_LookupTable_00653724||global|
+653728|g_ApplyIndexedResourceDeltaScale_00653728||global|
 653d00|g_apfnMapOrderUiDispatchHandlers||global|
 653fc0|g_DAT_00653fc0_Value_00653FC0||global|
 653fc8|g_DAT_00653fc8_Value_00653FC8||global|

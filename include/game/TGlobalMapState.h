@@ -103,7 +103,8 @@ public:
   TGLOBALMAPSTATE_VTABLE_SLOT(43);
   TGLOBALMAPSTATE_VTABLE_SLOT(44);
   TGLOBALMAPSTATE_VTABLE_SLOT(45);
-  TGLOBALMAPSTATE_VTABLE_SLOT(46);
+  virtual void DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short regionIndex,
+                                                                    int newOwnerNationSlot);
   TGLOBALMAPSTATE_VTABLE_SLOT(47);
   TGLOBALMAPSTATE_VTABLE_SLOT(48);
   virtual char CallMetricSlotC4(int regionIndex, int edgeIndex) = 0;
