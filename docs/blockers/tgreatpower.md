@@ -7,7 +7,7 @@ Scores and commands go in `docs/worklog.md`; structural blockers and decisions l
 
 | Check | Result |
 |-------|--------|
-| `just vtable TGreatPower` | Prefix/lifecycle architecture aligned (TObject-based); remaining drift starts deeper in table |
+| `just vtable TGreatPower` | **100% match** (deep-slot alignment complete, including `vtable+0xfc` and `vtable+0x2ac`) |
 | Orig vtable | `0x00653938`, slots `0x00`–`0xb7` (184); `0xb3`–`0xb7` NULL |
 | Recomp vtable | `0x00468648` |
 | Architecture | `TGreatPower : public TObject` |
@@ -38,7 +38,7 @@ Scores and commands go in `docs/worklog.md`; structural blockers and decisions l
 
 | ID | Blocker | Status | Unblocks |
 |----|---------|--------|----------|
-| B1 | **Deep-table drift** beyond lifecycle prefix (`vtable+0x68+` and selected auto overrides) | open | Full 100% vtable alignment |
+| B1 | **Deep-table drift** beyond lifecycle prefix (`vtable+0x68+` and selected auto overrides) | resolved on base | Full 100% `TGreatPower` vtable alignment |
 | B2 | **`TGREATPOWER_VTABLE_SLOT` macro** emitted competing empty bodies | resolved | macro deleted; slots promoted to named virtuals |
 | B3 | **NULL orig tail slots** (`0xb3`–`0xb7`): C++ virtuals inflate recomp vtable | resolved on base | TAutoGreatPower owns tail via `EscalateNeedSlot2C8`/`CallSlotB3` |
 | B4 | **Layout tail `0x964+`** — `missionQueue`/`mapNodeStateFlags` on base, alloc derived `0xb64` | open | `just stackcmp 0x4d89f0` shows ctor epilogue structural mismatch; `offsetof` probes pass, `ASSERT_SIZE(0x964)` deferred |
@@ -46,7 +46,7 @@ Scores and commands go in `docs/worklog.md`; structural blockers and decisions l
 | B6 | **TMission hierarchy** — mission queue slots need `TMission`/`TTrackedObject` recovery | open | Phase 4 / `PruneInvalidTrackedEntries` |
 | B7 | **Parallel nation vtables** (`TMinor` Model B) — same offset, different entries | open | Phase 2 per-class only |
 | B8 | **Duplicate slot 0** — cdecl global + static `GetTGreatPowerClassNamePointer` | resolved | `GetRuntimeClass()` virtual anchor retained |
-| B9 | **Declaration-order drift** — some virtuals (e.g. `AssignNeedSlotFromSourceSlot19C`) sit mid-table but map to high indices (`0x19c`); comment labels ≠ slot indices | open | Full 100% match after stub sweep |
+| B9 | **Declaration-order drift** — some virtuals (e.g. `AssignNeedSlotFromSourceSlot19C`) sit mid-table but map to high indices (`0x19c`); comment labels ≠ slot indices | resolved on base | Full 100% match after stub sweep |
 
 ---
 
@@ -67,9 +67,9 @@ Scores and commands go in `docs/worklog.md`; structural blockers and decisions l
 |-----------|--------|--------|
 | M1 | Recomp vtable same size as orig; prefix slots 0–9 match lifecycle contract | **done** |
 | M2 | ≥80% slot address match | in progress — major stub sweep done; declaration-order drift (B9) blocks full count |
-| M3 | 100% | pending |
+| M3 | 100% | **done (`just vtable TGreatPower`)** |
 | M4 | Canary bodies `0x4d9160`, `0x4d92e0`, `0x4da500` ≥90% | pending |
-| M5 | `just vtable TAutoGreatPower` 100% | pending |
+| M5 | `just vtable TAutoGreatPower` 100% | pending (remaining drift isolated to TAuto-only tail slots `0x2c8/0x2cc`) |
 
 ## Tail layout status
 

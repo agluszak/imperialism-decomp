@@ -600,11 +600,8 @@ static __inline int* GreatPower_HomeRegionIndex88(TGreatPower* self) {
   return reinterpret_cast<int*>(&self->ownerNationSlot);
 }
 
-// Slot 0x2ac base implementation. The original vtable slot holds the ILT thunk
-// 0x0040389b -> 0x004daf00; the real body 0x004daf00 is still an autogen stub, so
-// this virtual stays unannotated until that body is ported.
 void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
-  DispatchTurnEvent11F8WithNoPayload();
+  return;
 }
 
 // --- Scenario seeding / Frog City / influence-map family (slots 0x0c/0x0f/0x34/0x39/
@@ -941,11 +938,13 @@ void TGreatPower::NoOpNationQueuedOrderHook(void) {}
 
 void TGreatPower::OrphanRetStub_004dcc30(void) {}
 
-void TGreatPower::OrphanRetStub_004d8bc0(void) {}
+void TGreatPower::NoOpTailStateHookSlot2B4(void) {}
 
-void TGreatPower::OrphanRetStub_004d8be0(int arg) {
+void TGreatPower::NoOpTailStateHookSlot2B8(int arg) {
   (void)arg;
 }
+
+void TGreatPower::OrphanRetStub_004dca80(void) {}
 
 // FUNCTION: IMPERIALISM 0x004d89f0
 TGreatPower::TGreatPower()
@@ -2864,14 +2863,19 @@ int TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) 
 }
 
 // FUNCTION: IMPERIALISM 0x004dda90
-void TGreatPower::QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
-                                                                  short sourceNationSlot) {
+void TGreatPower::AssignNeedSlotFromSourceSlot19C(short targetNationSlot,
+                                                   short sourceNationSlot) {
   TInterNationEventQueueManager* queueManager =
       g_pInterNationEventQueueManager;
   if (queueManager != 0) {
     queueManager->QueueInterNationEventType0FWithBitmaskMerge(
         this->nationSlot, sourceNationSlot, targetNationSlot, '\0');
   }
+}
+
+void TGreatPower::QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
+                                                                   short sourceNationSlot) {
+  this->AssignNeedSlotFromSourceSlot19C(targetNationSlot, sourceNationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004ddad0
@@ -3258,11 +3262,13 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
   return accepted;
 }
 
+void TGreatPower::BeginTurnDiplomacyPrePassSlot1c8(void) {}
+
 // FUNCTION: IMPERIALISM 0x004de5e0
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-void TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1) {
+void TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int arg1) {
   short targetNation = static_cast<short>(arg1);
   int grantValue = DecodeActiveGrantValue(this->diplomacyGrantByNation[targetNation]);
   if (grantValue <= 0) {
@@ -3287,6 +3293,10 @@ void TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1) {
   int relationDelta = ComputeGrantInfluenceDelta(grantValue);
   g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(sourceNation, targetNation,
                                                        relationCode + relationDelta);
+}
+
+void TGreatPower::RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1) {
+  this->RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(arg1);
 }
 
 // FUNCTION: IMPERIALISM 0x004de700
@@ -4569,7 +4579,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e1d50
-bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
+int TGreatPower::CheckTransitionSlot27C(int arg1, int arg2) {
   char result = 0;
   TUiRuntimeContext* uiRuntimeContext =
       reinterpret_cast<TUiRuntimeContext*>(g_pUiRuntimeContext);
@@ -4595,6 +4605,16 @@ bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
     }
   }
   return result != 0;
+}
+
+bool TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2) {
+  return this->CheckTransitionSlot27C(arg1, arg2) != 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004e1e40
+int TGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) {
+  this->QueueWarTransitionFromAdvisoryAction(targetNation, sourceNation, mode);
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x004e1f20
@@ -4755,7 +4775,7 @@ void TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNat
 }
 
 // FUNCTION: IMPERIALISM 0x004e2500
-void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass) {
+void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
   TGlobalMapState* globalMapState = g_pGlobalMapState;
   TPtrList* filteredList = this->trackedObjectList;
   for (int index = filteredList->GetCountSlot48(); index != 0; --index) {
@@ -4788,6 +4808,18 @@ void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerC
       }
     }
   }
+}
+
+void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass) {
+  this->NotifyRegionEventSlot298(ownerClass);
+}
+
+char TGreatPower::HasActiveCandidateNationSlots(void) {
+  return 0;
+}
+
+void TGreatPower::AbsorbCityNeedVectorSlotFC(short* needVector) {
+  (void)needVector;
 }
 // FUNCTION: IMPERIALISM 0x004e25c0
 void TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
@@ -5047,7 +5079,7 @@ void TGreatPower::InitializeMapActionCandidateStateAndQueueMission(int arg1) {
 
 // FUNCTION: IMPERIALISM 0x004e73f0
 #pragma optimize("y", on)
-void TGreatPower::WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* pMessage) {
+void TGreatPower::SerializeGreatPowerTailStateToMessage(void* pMessage) {
   this->WriteTo(static_cast<TStream*>(pMessage));
 
   TMessageObject* message = reinterpret_cast<TMessageObject*>(pMessage);
@@ -5085,7 +5117,7 @@ void TGreatPower::WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* 
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e7630
-void TGreatPower::WrapperFor_TGreatPower_VtblSlot32_At004e7630(int arg1, int arg2, int arg3) {
+void TGreatPower::ApplyIndexedResourceDeltaWithNeedClamp(int arg1, int arg2, int arg3) {
   if (arg2 < 0 && arg1 > 6 && arg1 < 0x0D) {
     this->needCurrentByType[arg1] = static_cast<short>(this->needCurrentByType[arg1] + arg2);
   }

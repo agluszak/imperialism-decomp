@@ -2387,14 +2387,6 @@ undefined4 OrphanLeaf_NoCall_Ins07_004d8920(void)
   return 0;
 }
 
-// ghidra_name DispatchTurnEvent11F8WithNoPayload
-// ghidra_proto undefined DispatchTurnEvent11F8WithNoPayload()
-// FUNCTION: IMPERIALISM 0x004daf00
-undefined4 DispatchTurnEvent11F8WithNoPayload(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::BuildCityInfluenceLevelMap
 // ghidra_proto char * __thiscall BuildCityInfluenceLevelMap(void)
 // FUNCTION: IMPERIALISM 0x004dbbb0
@@ -2487,14 +2479,6 @@ undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
 // ghidra_proto undefined ComputeNationRuntimeAdvisoryMetricCase6()
 // FUNCTION: IMPERIALISM 0x004e0770
 undefined4 ComputeNationRuntimeAdvisoryMetricCase6(void)
-{
-  return 0;
-}
-
-// ghidra_name ExecuteAdvisoryPromptAndApplyActionType2OrFallback
-// ghidra_proto undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback()
-// FUNCTION: IMPERIALISM 0x004e1e40
-undefined4 ExecuteAdvisoryPromptAndApplyActionType2OrFallback(void)
 {
   return 0;
 }

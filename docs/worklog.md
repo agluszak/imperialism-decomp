@@ -4401,3 +4401,24 @@ Final: 110 annotations → 99 matched, 11 recomp-missing (warned), 0 collisions/
 - Verification:
   - `just sync-ownership` -> `just regen-stubs` -> `just build` -> `just gates` all passed cleanly.
   - `just vtable TMinister::` confirms slot 17 is now paired and matches 100%. Overall `aligned count` increased by 1.
+
+## 2026-06-16 — TGreatPower vtable 100 and tail-wrapper promotions
+
+- Completed the TGreatPower deep-slot cleanup loop and closed the remaining base-class vtable blockers:
+  - Slot `0xfc` now resolves to `TGreatPower::OrphanRetStub_004dca80` with aligned ownership/name mapping.
+  - Slot `0x2ac` remains owned by `0x004daf00` and is now mapped as `TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC`.
+  - `just vtable TGreatPower` now exits cleanly (100%).
+- Promoted/renamed tail and wrapper methods:
+  - `0x4d8bc0` -> `TGreatPower::NoOpTailStateHookSlot2B4`
+  - `0x4d8be0` -> `TGreatPower::NoOpTailStateHookSlot2B8`
+  - `0x4e73f0` -> `TGreatPower::SerializeGreatPowerTailStateToMessage`
+  - `0x4e7630` -> `TGreatPower::ApplyIndexedResourceDeltaWithNeedClamp`
+- Updated symbol/canary metadata to match promoted names:
+  - `config/symbols.csv` (including `0x40110e`, `0x4dca80`, `0x4daf00`, and promoted tail/wrapper addresses)
+  - `config/canary_targets_tgreatpower.csv` (`0x4e73f0` name refresh)
+- Validation:
+  - `just build` passes.
+  - `just vtable TGreatPower` passes.
+  - `just gates` passes.
+  - `just compare` confirms promoted symbols pair (scores unchanged/expected for early semantic renames).
+  - `just vtable TAutoGreatPower` still reports drift, narrowed to TAuto-only tail extension (`0x2c8/0x2cc`) and adjacent auto bands; left for a dedicated TAuto pass.

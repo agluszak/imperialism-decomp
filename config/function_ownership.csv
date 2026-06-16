@@ -498,6 +498,7 @@ address|target_cpp|ownership|note
 4dab00|src/game/noop_slots.cpp|manual|marker_sync
 4dab20|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
 4dae70|src/game/TGreatPower.cpp|manual|marker_sync
+4daf00|src/game/TGreatPower.cpp|manual|marker_sync
 4daf30|src/game/TGreatPower.cpp|manual|marker_sync
 4db380|src/game/TGreatPower.cpp|manual|marker_sync
 4db7d0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -512,7 +513,7 @@ address|target_cpp|ownership|note
 4dc840|src/game/TGreatPower.cpp|manual|marker_sync
 4dc9f0|src/game/TGreatPower.cpp|manual|marker_sync
 4dca60|src/game/TGreatPower.cpp|manual|marker_sync
-4dca80|src/game/noop_slots.cpp|manual|marker_sync
+4dca80|src/game/TGreatPower.cpp|manual|marker_sync
 4dcaa0|src/game/TGreatPower.cpp|manual|marker_sync
 4dcc30|src/game/noop_slots.cpp|manual|marker_sync
 4dcc50|src/game/TGreatPower.cpp|manual|marker_sync
@@ -561,7 +562,7 @@ address|target_cpp|ownership|note
 4ddf20|src/game/TGreatPower.cpp|manual|marker_sync
 4ddf90|src/game/TGreatPower.cpp|manual|marker_sync
 4ddfc0|src/game/TGreatPower.cpp|manual|marker_sync
-4de2b0|src/game/noop_slots.cpp|manual|marker_sync
+4de2b0|src/game/TGreatPower.cpp|manual|marker_sync
 4de2d0|src/game/TGreatPower.cpp|manual|marker_sync
 4de340|src/game/TGreatPower.cpp|manual|marker_sync
 4de5e0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -590,7 +591,7 @@ address|target_cpp|ownership|note
 4e0290|src/game/TGreatPower.cpp|manual|marker_sync
 4e03a0|src/game/TGreatPower.cpp|manual|marker_sync
 4e03d0|src/game/TGreatPower.cpp|manual|marker_sync
-4e0400|src/game/noop_slots.cpp|manual|marker_sync
+4e0400|src/game/TGreatPower.cpp|manual|marker_sync
 4e0420|src/game/TGreatPower.cpp|manual|marker_sync
 4e0440|src/game/TGreatPower.cpp|manual|marker_sync
 4e0460|src/game/TShip.cpp|manual|marker_sync
@@ -622,6 +623,7 @@ address|target_cpp|ownership|note
 4e1c00|src/game/TGreatPower.cpp|manual|marker_sync
 4e1c20|src/game/TGreatPower.cpp|manual|marker_sync
 4e1d50|src/game/TGreatPower.cpp|manual|marker_sync
+4e1e40|src/game/TGreatPower.cpp|manual|marker_sync
 4e1f20|src/game/TGreatPower.cpp|manual|marker_sync
 4e1f40|src/game/TGreatPower.cpp|manual|marker_sync
 4e2190|src/game/TGreatPower.cpp|manual|marker_sync

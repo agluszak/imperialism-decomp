@@ -428,17 +428,17 @@ void __stdcall OrphanRetStub_004d7fe0(int, int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x004dca80
+// Legacy free-function placeholder (address now owned by TGreatPower method).
 void __stdcall OrphanRetStub_004dca80(int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x004de2b0
+// Legacy free-function placeholder (address now owned by TGreatPower method).
 void OrphanRetStub_004de2b0(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x004e0400
+// Legacy free-function placeholder (address now owned by TGreatPower method).
 bool OrphanLeaf_NoCall_Ins02_004e0400(void) {
   return 0;
 }
