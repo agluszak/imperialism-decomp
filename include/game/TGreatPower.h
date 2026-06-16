@@ -2,10 +2,11 @@
 
 #include "decomp_types.h"
 #include "game/CString.h"
+#include "game/nation_domain_types.h"
 #include "game/TObject.h"
 #include "game/TPtrList.h"
 
-class CRuntimeClass;
+struct CRuntimeClass;
 class TStream;
 
 class TMinister;
@@ -19,6 +20,7 @@ class TCity;
 // VTABLE: IMPERIALISM 0x00653938
 class TGreatPower : public TObject {
 public:
+  // ---- identity / serialization ----
   // slot 0x00 — body 0x004d89d0: returns TGreatPower CRuntimeClass descriptor.
   CRuntimeClass* GetRuntimeClass() const override;
   // slot 0x01 — scalar deleting destructor 0x004d8c20 (SYNTHETIC); real dtor body
@@ -54,7 +56,9 @@ public:
   // slot 0x11 — body 0x004d87e0: on quarter ticks (tick/4 odd, tick%4 == 2), queue a
   // recruit order (slot 0x0d) for each owned region garrisoned below threshold.
   virtual void QueueRecruitOrdersForUndergarrisonedRegions(void);
-  virtual void ResetDiplomacyLevelForNationSlot12_Provisional(int nationSlot, int resetLevel);
+
+  // ---- diplomacy grants / policies / proposal queue ----
+  virtual void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel);
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
   virtual void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode);
@@ -91,9 +95,11 @@ public:
   virtual void NotifyActionSlot94(int sourceNation, int actionCode); // slot 0x94
   virtual char ReturnFalseNationStateCapabilityFlag98(void);
   virtual char ReturnFalseNationStateCapabilityFlag9C(void);
-  virtual char ShouldDispatchImmediatelySlot28_Provisional(void);
+  virtual char ShouldDispatchImmediatelySlot28(void);
   virtual void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2);
   virtual void NoOpNationPendingActionHook(void);
+
+  // ---- tracked orders / pending action state ----
   // slot 0x2b — body 0x004da860: marks status flag 5 handled when the city-order
   // capability byte (+0x277 row) is active.
   virtual void MarkStatusFlag5HandledIfCapabilityActive(void);
@@ -125,6 +131,8 @@ public:
   // regionId through same-owner neighbors (self-recursive through this slot, with the
   // first eligible neighbor tail-iterated).
   virtual void MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId);
+
+  // ---- turn-event message dispatch ----
   virtual void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
   virtual void NotifyCitySlot2C(void);
   virtual void OrphanRetStub_004dcc30(void);
@@ -145,7 +153,7 @@ public:
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(void);
   virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(void);
   // slot 0xfc — TCity::Call2C (0x004b3de0) pushes the city's fieldB6 need vector here.
-  virtual void AbsorbCityNeedVectorSlotFC_Provisional(short* needVector) {
+  virtual void AbsorbCityNeedVectorSlotFC(short* needVector) {
     (void)needVector;
   }
   // slot 0x40 — body 0x004dcaa0: effective diplomacyCounterA2 for a proposal code,
@@ -154,6 +162,8 @@ public:
   virtual unsigned int GetEffectiveDiplomacyCounterA2ForCode(int proposalCode);
   virtual void ApplyDiplomacyState222ToCityFieldB6AndClear(void);      // slot 0x41
   virtual void ApplyRelationDeltaToCityFieldB6AndUpdateState1f4(void); // slot 0x42
+
+  // ---- resource needs / aid allocation ----
   virtual void ApplyNationResourceNeedTargetsToOrderState(void);
   virtual void SetNationResourceNeedCurrentByType(int needType, int currentValue);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
@@ -249,14 +259,16 @@ public:
   // slot 0x82 — body 0x004e2880: ranks this nation's summed building production against
   // the mean/stddev across all eligible nations; returns tier 0..4.
   virtual int ClassifyNationProductionTierVsPeers(void);
+
+  // ---- map-action mission scoring ----
   // slot 0x20c — base is a no-op; TAutoGreatPower override 0x004e9f10 prunes
   // candidateNationFlags and reports whether any candidate remains active.
-  virtual char VTableSlot20C_Provisional(void) {
+  virtual char HasActiveCandidateNationSlots(void) {
     return 0;
   }
   // index 132 / vtable+0x210. Evidence: 0x004e9ed0 calls this on `this`
   // with one target-nation argument; return value ignored.
-  virtual void VTableSlot84_Provisional(int targetNation); // body 0x004e0420
+  virtual void SetCandidateNationFlagAndPortZoneState(int targetNation); // body 0x004e0420
   virtual void NotifyAllianceSlot214(int targetNation);    // index 133 — body 0x004e0440
   // slot 0x86 — body 0x004e0500; navy order priority weights summed for this nation.
   virtual int SumNavyOrderPriorityForNationSlot86(void);
@@ -267,6 +279,8 @@ public:
   virtual double ComputeMinisterSkillFloatSlot8B(void);            // slot 0x8b
   virtual double ComputeMinisterSkillFloatSlot8C(void);            // slot 0x8c
   virtual int GetCityBuildingProductionSlot8D(short buildingSlot); // slot 0x8d
+
+  // ---- relative military/naval power scoring ----
   // Relative military/naval power score family (bodies 0x004e07b0..0x004e1c20).
   // slot 0x8e — min(production-capped army commit budget, metric 0x10, armyPower/2).
   virtual int ComputeArmyCommitBudgetSlot8E(void);
@@ -313,18 +327,18 @@ public:
   virtual void NoOpSlotA2(void); // body 0x004e1f20
   // slot 0xa3 — body 0x004e1f40 (not yet ported); war-commitment threshold consumed by
   // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
-  virtual float ComputeWarThresholdSlotA3_Provisional(int targetNation);
+  virtual float ComputeWarThresholdSlotA3(int targetNation);
   virtual void NotifyWarResetSlot290(); // slot 0x290 — body 0x004e2190
-  virtual void CallSlotA5_Provisional(void);
+  virtual void NotifyWarResetSlotA5(void);
   // slot 0x298 — fired by RemoveRegionIdAndRunTrackedObjectCleanup (0x004e2270).
-  virtual void NotifyRegionEventSlot298_Provisional(int regionId) {
+  virtual void NotifyRegionEventSlot298(int regionId) {
     (void)regionId;
   }
   // slot 0x29c — body 0x004e25c0: reset diplomacy level/grants for targetNation and
   // fire slot 0x2a0 for every nation with an active policy link.
   virtual void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation);
-  virtual void CallSlotA8_Provisional(int targetNation);
-  virtual void CallSlotA9_Provisional(int targetNation);
+  virtual void CallSlotA8(int targetNation);
+  virtual void CallSlotA9(int targetNation);
   // slot 0x2a8 — body 0x004e27b0: mode-dispatched diplomacy slot action (mode 6 ->
   // slot 0xa8, etc.). TDiplomacyTurnStateManager notifies relation-code changes here.
   virtual void DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode);

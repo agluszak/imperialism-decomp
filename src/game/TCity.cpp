@@ -103,7 +103,7 @@ void TCity::Call2C() {
   } else {
     this->lowProductionFlag7c = 0;
   }
-  this->ownerNationAc->AbsorbCityNeedVectorSlotFC_Provisional(this->fieldB6);
+  this->ownerNationAc->AbsorbCityNeedVectorSlotFC(this->fieldB6);
 }
 
 undefined4 thunk_GetResourceTypeRandomDrawBlockFlag(void); // 0x004b3e70 -> 0x00550d80
@@ -263,7 +263,7 @@ void TCity::Refresh80() {
   short* needCursor = this->fieldB6;
   do {
     if (*needCursor < 0) {
-      char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28_Provisional();
+  char dispatchGate = this->ownerNationAc->ShouldDispatchImmediatelySlot28();
       if ((dispatchGate == 0 ||
            g_pLocalizationTable->redrawEnabled != 2) &&
           g_Sanitize_City_Counter_Value_006A24D4 == 0) {

@@ -12,6 +12,7 @@ name_overrides := "config/function_name_overrides.csv"
 function_ownership := "config/function_ownership.csv"
 vtable_gate_baseline := "config/vtable_gate_baseline.csv"
 construction_gate_baseline := "config/construction_gate_baseline.csv"
+tgreatpower_gate_baseline := "config/tgreatpower_gate_baseline.csv"
 canary_targets := "config/canary_targets_tgreatpower.csv"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
@@ -163,12 +164,19 @@ antipattern-gate:
 antipattern-gate-update:
   uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
 
+tgreatpower-gate:
+  uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}"
+
+tgreatpower-gate-update:
+  uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
+
 # Run all mechanical source-policy gates (the pre-commit check).
 # Run `just format-check <touched paths>` separately on files you edited; the tree
 # is not fully clang-formatted, so format-check is per-path, not whole-tree.
 gates:
   just vtable-gate
   just antipattern-gate
+  just tgreatpower-gate
   just marker-gate
   just vtable-annotation-gate
   just vtable-collision-gate

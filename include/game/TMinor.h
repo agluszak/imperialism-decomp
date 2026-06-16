@@ -58,6 +58,10 @@ public:
     return 0;
   }                                                                    // 0x90
   virtual void NotifyActionSlot94(int sourceNation, int actionCode) {} // 0x94
+  virtual void NotifyNationAuxRuntimeFinalizeSlotC0(void) {}            // 0xc0
+  virtual void ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
+    (void)grantValue;
+  } // 0xc4
 
   CString identitySharedString0;
   CString identitySharedString1;

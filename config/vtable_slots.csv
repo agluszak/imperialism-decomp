@@ -1,6 +1,4 @@
 owner_file|wrapper_name|return_type|slot_expr|arg_types|confidence|notes|slot_unit|callconv|edx_mode|edx_value|status|class_name
-src/game/TGreatPower.cpp|VCall_TMinor_NationAuxRuntimeFinalizeSlotC0|void|0xc0 / 4||high|TMinor aux runtime finalize slot c0|||||provisional|TMinor
-src/game/TGreatPower.cpp|VCall_TMinor_NationAuxRuntimeClearGrantSlotC4|void|0xc4 / 4|int|high|TMinor aux runtime clear grant slot c4|||||provisional|TMinor
 src/game/TGreatPower.cpp|VCall_Stream_ReadAtSlot3C|void|0x3C / 4|void*,int|high|stream read buffer|||||
 src/game/TGreatPower.cpp|VCall_Stream_ReadIntAtSlot40|int|0x40 / 4||high|stream read dword|||||
 src/game/TGreatPower.cpp|VCall_Stream_ReadRawAtSlot00|void|0|void*,int|high|stream raw read|||||

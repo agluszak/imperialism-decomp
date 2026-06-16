@@ -467,7 +467,7 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e9f10
-char TAutoGreatPower::VTableSlot20C_Provisional(void) {
+char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
   char anyActive = 0;
   int candidate = 0;
   TGreatPower** nationCursor = g_apNationStates;
@@ -501,8 +501,8 @@ char TAutoGreatPower::VTableSlot20C_Provisional(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e9ff0
-void TAutoGreatPower::VTableSlot84_Provisional(int targetNation) {
-  if (this->VTableSlot20C_Provisional() != 0) {
+void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
+  if (this->HasActiveCandidateNationSlots() != 0) {
     int nation = 0;
     TMinor** descriptorCursor = g_apTerrainTypeDescriptorTable;
     do {

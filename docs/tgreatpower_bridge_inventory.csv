@@ -75,3 +75,7 @@ SetGlobalRegionDevelopmentStageByte,680,TGlobalMapState,SetRegionDevelopmentStag
 DiplomacyManagerVtbl,4161,TDiplomacyTurnStateManager,direct manager methods,,P2,done
 NationStateVtbl,4223,TGreatPower,NotifyActionSlot94,,P2,done
 TerrainDescriptorVtbl,4200,TTerrainDescriptor,CallSlot4C,,P2,done
+VCall_TMinor_NationAuxRuntimeClearGrantSlotC4,4839,TMinor,direct virtual ClearNationAuxRuntimeGrantSlotC4(),VCall_TMinor_NationAuxRuntimeClearGrantSlotC4,P1,done
+VCall_TMinor_NationAuxRuntimeFinalizeSlotC0,4840,TMinor,direct virtual NotifyNationAuxRuntimeFinalizeSlotC0(),VCall_TMinor_NationAuxRuntimeFinalizeSlotC0,P1,done
+AllocateBattleListOwnerWithPtrListSentinel,409,TPtrList,replace manual vptr writes with real TPtrList construction,,P1,done
+AllocateBattleListOwnerWithLinkedSentinel,416,TPtrList,replace manual vptr writes with real TPtrList construction,,P1,done

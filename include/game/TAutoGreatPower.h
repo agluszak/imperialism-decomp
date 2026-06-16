@@ -37,9 +37,9 @@ public:
   // slot 0x72 — 0x004e7af0: foreign-minister slot 0x58 when city exists.
   void BeginTurnDiplomacyPrePassSlot1c8() override;
   // slot 0x83 — 0x004e9f10: prune candidateNationFlags; true while any stays active.
-  char VTableSlot20C_Provisional(void) override;
+  char HasActiveCandidateNationSlots(void) override;
   // slot 0x84 — 0x004e9ff0: mark a candidate nation (and its port zone) active.
-  void VTableSlot84_Provisional(int targetNation) override;
+  void SetCandidateNationFlagAndPortZoneState(int targetNation) override;
   // slot 0x85 — 0x004ea0e0: clear a candidate nation (and its port zone).
   void NotifyAllianceSlot214(int targetNation) override;
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.

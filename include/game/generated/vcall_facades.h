@@ -474,20 +474,6 @@ static __inline void VCall_TCity_RefreshSlot80(void* object) {
   fn(object, 0);
 }
 
-// TMinor aux runtime clear grant slot c4; class=TMinor; status=provisional
-static __inline void VCall_TMinor_NationAuxRuntimeClearGrantSlotC4(void* object, int arg0) {
-  typedef void (__fastcall * Fn)(void*, int, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xc4 / 4)));
-  fn(object, 0, arg0);
-}
-
-// TMinor aux runtime finalize slot c0; class=TMinor; status=provisional
-static __inline void VCall_TMinor_NationAuxRuntimeFinalizeSlotC0(void* object) {
-  typedef void (__fastcall * Fn)(void*, int);
-  Fn fn = reinterpret_cast<Fn>(vcall_runtime::resolve_slot(object, static_cast<unsigned int>(0xc0 / 4)));
-  fn(object, 0);
-}
-
 // terrain slot38; status=provisional
 static __inline void VCall_TerrainDescriptor_CallSlot38(void* object, int arg0) {
   typedef void (__fastcall * Fn)(void*, int, int);

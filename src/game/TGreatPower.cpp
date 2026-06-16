@@ -1,6 +1,4 @@
-#include "game/TStream.h"
 #include "game/TNavyMission.h"
-#include "game/TStream.h"
 #include "game/TTerrainDescriptor.h"
 #include "game/TMinor.h"
 #include "game/TTrackedObject.h"
@@ -34,28 +32,18 @@
 // Seeded from ghidra autogen and normalized into compile-safe wrappers.
 
 #include <math.h>
-#include <string.h>
-
 #include "decomp_types.h"
 #include "game/GameAssert.h"
-#include "game/generated/vcall_facades.h"
 #include "game/CString.h"
 #include "game/TGreatPower.h"
-
-#include <string.h>
 
 #include "game/mfc.h"
 #include "game/TObject.h"
 #include "game/TGreatPower_internal.h"
-#include "game/TGlobalMapState.h"
 #include "game/diplomacy_globals.h"
 #include "game/TDiplomacyTurnStateManager.h"
-#include "game/CIterator.h"
 #include "game/TInterNationEventQueueManager.h"
-#include "game/TShip.h"
-#include "game/TTerrainDescriptor.h"
 #include "game/TTurnEventQueue.h"
-#include "game/TTownMarker.h"
 #include "game/TradeCommodityMetricRecord.h"
 #include "game/trade_quickdraw.h"
 #include <stddef.h>
@@ -222,8 +210,6 @@ static const unsigned int kAddrGreatPowerPressureHardAlertThreshold = 0x00653540
 static const unsigned int kAddrNationRuntimeSubsystemCache = 0x00653558;
 static const unsigned int kAddrAdvanceTurnMachineState = 0x00695278;
 static const unsigned int kAddrNationStatesMajorEnd = 0x006A438C;
-static const unsigned int kAddrVtblRefCountedObjectBase = 0x006485C0;
-static const unsigned int kAddrVtblTArmyBattle = 0x00648F78;
 static const unsigned int kAddrClassDescTGreatPower = 0x00653688;
 static const unsigned int kAddrCPtrListRuntimeClassVtable = 0x00672EEC;
 static const char kUCountryAutoCppPath[] = "D:\\Ambit\\Cross\\UCountryAuto.cpp";
@@ -243,11 +229,17 @@ TG_LAYOUT_ASSERT(TGreatPower_Offset_aidAllocationMatrix_0x280,
 TG_LAYOUT_ASSERT(TGreatPower_Offset_city_0x894,
                  offsetof(TGreatPower, city) == 0x894);
 TG_LAYOUT_ASSERT(TGreatPower_Size_AtLeast_0x964, sizeof(TGreatPower) >= 0x964);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_actionMetricByQuarter_0x964,
+                 offsetof(TGreatPower, actionMetricByQuarter) == 0x964);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_mapNodeStateFlags_0x970,
+                 offsetof(TGreatPower, mapNodeStateFlags) == 0x970);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_portZoneStateFlags_0xAF0,
+                 offsetof(TGreatPower, portZoneStateFlags) == 0xAF0);
+TG_LAYOUT_ASSERT(TGreatPower_Offset_missionQueue_0xB60,
+                 offsetof(TGreatPower, missionQueue) == 0xB60);
 #undef TG_LAYOUT_ASSERT
 
-// Tail offsets are still fluid while mixed-method promotions are being merged.
-// Keep these as non-fatal probes until the class tail is stabilized.
-// Drift here is expected during iterative extraction and is not treated as a hard failure.
+// Keep a small runtime probe table for quick logging/inspection.
 enum {
   kTGreatPowerOffset_turnEventQueue = offsetof(TGreatPower, turnEventQueue),
   kTGreatPowerOffset_pendingAidTotal = offsetof(TGreatPower, pendingAidTotal),
@@ -408,25 +400,16 @@ static __inline char IsSpecialNationInteractionResource(short resourceIndex) {
       ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl)(resourceIndex);
 }
 
-static __inline void* AllocateBattleListOwnerWithPtrListSentinel(void) {
-  void* owner = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
-  if (owner != 0) {
-    TPtrList* ownerView = static_cast<TPtrList*>(owner);
-    *reinterpret_cast<void**>(ownerView) = reinterpret_cast<void*>(kAddrVtblRefCountedObjectBase);
-    new (&ownerView->listState) CPtrList(0);
-    *reinterpret_cast<void**>(ownerView) = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
-  }
-  return owner;
+static __inline TPtrList* AllocateBattleListOwnerWithPtrListSentinel(void) {
+  return new TPtrList();
 }
 
-static __inline void* AllocateBattleListOwnerWithLinkedSentinel(void) {
-  void* owner = reinterpret_cast<void*>(AllocateWithFallbackHandler(0x20));
+static __inline TPtrList* AllocateBattleListOwnerWithLinkedSentinel(void) {
+  TPtrList* owner = new TPtrList();
   if (owner != 0) {
-    TPtrList* ownerView = static_cast<TPtrList*>(owner);
     reinterpret_cast<void(__fastcall*)(void*, int)>(
         WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640)(
-        static_cast<void*>(&ownerView->listState), 0);
-    *reinterpret_cast<void**>(ownerView) = reinterpret_cast<void*>(kAddrVtblTArmyBattle);
+        static_cast<void*>(&owner->listState), 0);
   }
   return owner;
 }
@@ -628,7 +611,7 @@ void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
 // --- 0x3b/0x40/0x82) ---
 
 // FUNCTION: IMPERIALISM 0x004d6770
-char TGreatPower::ShouldDispatchImmediatelySlot28_Provisional(void) {
+char TGreatPower::ShouldDispatchImmediatelySlot28(void) {
   return this->diplomacyEligibilityA0;
 }
 
@@ -769,7 +752,7 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
 // FUNCTION: IMPERIALISM 0x004d7c90
 void TGreatPower::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
-  this->ResetDiplomacyLevelForNationSlot12_Provisional(targetNationSlot, 100);
+  this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(targetNationSlot), 100);
 
   int nationSlot = 0;
   do {
@@ -1240,7 +1223,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   if (*reinterpret_cast<int*>(kAddrAdvanceTurnMachineState) < 0x1D) {
     if (this->encodedNationSlot == -1) {
-      char gate = this->ShouldDispatchImmediatelySlot28_Provisional();
+      char gate = this->ShouldDispatchImmediatelySlot28();
       if (gate == 0) {
         this->foreignMinister->Call18();
         this->interiorMinister->Call18();
@@ -1627,7 +1610,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
   static const short kNationPriorityOrder[] = {0x0F, 0x0E, 0x0D, 0x10, 0x0C, 0x08, 0x0A, 0x09, 0x0B,
                                                0x06, 0x03, 0x04, 0x05, 0x00, 0x01, 0x02, 0x07, -1};
 
-  if (this->ShouldDispatchImmediatelySlot28_Provisional() != 0) {
+  if (this->ShouldDispatchImmediatelySlot28() != 0) {
     return;
   }
 
@@ -2523,8 +2506,7 @@ short TGreatPower::TryDecayRelationNeedScores9And8(void) {
 #pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004dd040
-void TGreatPower::ResetDiplomacyLevelForNationSlot12_Provisional(int targetNationSlot,
-                                                                 int resetLevel) {
+void TGreatPower::ResetDiplomacyLevelForNationSlot12(NationSlot targetNationSlot, int resetLevel) {
   short nation = static_cast<short>(targetNationSlot);
   if (nation != this->nationSlot &&
       static_cast<short>(resetLevel) != this->needLevelByNation[nation]) {
@@ -3342,7 +3324,7 @@ void TGreatPower::ApplyTurnDiplomacyStateSlot1e0(void) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004de810
-void TGreatPower::CallSlotA5_Provisional(void) {
+void TGreatPower::NotifyWarResetSlotA5(void) {
   TPtrList* trackedList = this->trackedObjectList;
   if (trackedList == 0) {
     return;
@@ -3446,7 +3428,7 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
   }
   this->city = 0;
 
-  this->CallSlotA5_Provisional();
+  this->NotifyWarResetSlotA5();
 
   for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
     if (nationSlot != this->nationSlot &&
@@ -3459,7 +3441,8 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
       if (nationState->diplomacyEligibilityA0 == 0) {
         nationState->NotifyActionSlot94(this->nationSlot, 0x131);
       }
-      this->ResetDiplomacyLevelForNationSlot12_Provisional(nationSlot, kResetDiplomacyLevel);
+      this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(nationSlot),
+                                               kResetDiplomacyLevel);
       this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(nationSlot, kResetPolicyCode);
     }
   }
@@ -3481,7 +3464,8 @@ void TGreatPower::ApplyJoinEmpireMode0GlobalDiplomacyReset(int arg1) {
                                                            kDipFlagPolicy);
     }
 
-    this->ResetDiplomacyLevelForNationSlot12_Provisional(secondarySlot, kResetDiplomacyLevel);
+    this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(secondarySlot),
+                                             kResetDiplomacyLevel);
     this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(secondarySlot, kResetPolicyCode);
 
     if (reinterpret_cast<TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[secondarySlot]) != 0) {
@@ -3548,7 +3532,7 @@ void TGreatPower::NotifyActionSlot94(int arg1, int arg2) {
     payload.marker1 = 1;
     payload.targetMask = 1 << (static_cast<unsigned char>(arg1) & 0x1F);
 
-    char immediateDispatch = this->ShouldDispatchImmediatelySlot28_Provisional();
+  char immediateDispatch = this->ShouldDispatchImmediatelySlot28();
     if (immediateDispatch == 0) {
       if (g_pInterNationEventQueueManager != 0) {
         g_pInterNationEventQueueManager
@@ -3955,7 +3939,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   TLocalizationRuntime* localization = g_pLocalizationTable;
   if (this->diplomacyEligibilityA0 == 0 || localization->runtimeSubsystemIndex < 2 ||
       localization->stateFlag114 != 0) {
-    if (this->ShouldDispatchImmediatelySlot28_Provisional() == 0 ||
+  if (this->ShouldDispatchImmediatelySlot28() == 0 ||
         localization->stateFlag114 != 0) {
       this->CreateFrogCityAtHomeRegionAndAttach(mgr);
       return;
@@ -4086,7 +4070,7 @@ void TGreatPower::ResetField900FromNeedCapA6(void) {
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004e0420
-void TGreatPower::VTableSlot84_Provisional(int targetNation) {
+void TGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
   (void)targetNation;
 }
 
@@ -4561,7 +4545,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int targetNation) {
   TGreatPower* targetState = g_apNationStates[targetNation];
   if (targetState->CompareMissionScoreVariantsByMode(0) == 0 &&
       targetState->CompareMissionScoreVariantsByMode(1) == 0) {
-    float warThreshold = this->ComputeWarThresholdSlotA3_Provisional(targetNation);
+  float warThreshold = this->ComputeWarThresholdSlotA3(targetNation);
     if (this->ComputeMinisterSkillFloatSlot8C() < warThreshold) {
       joinsWar = 1;
       for (int otherNation = 0; otherNation < 7; ++otherNation) {
@@ -4625,7 +4609,7 @@ void TGreatPower::NoOpSlotA2(void) {}
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-float TGreatPower::ComputeWarThresholdSlotA3_Provisional(int targetNation) {
+float TGreatPower::ComputeWarThresholdSlotA3(int targetNation) {
   float selfArmyScore = TruncatedScoreFactorToFloat(this->GetScoreFactorSlot23C());
   float selfNavyScore = TruncatedScoreFactorToFloat(this->GetScoreFactorSlot240());
   float alliedArmyForSelf = 0.0f;
@@ -4709,7 +4693,7 @@ void TGreatPower::ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int target
 // FUNCTION: IMPERIALISM 0x004e2270
 void TGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) {
   this->ownedRegionList->RemoveIntSlot34(regionId);
-  this->NotifyRegionEventSlot298_Provisional(regionId);
+  this->NotifyRegionEventSlot298(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004e22b0
@@ -4751,7 +4735,7 @@ void TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNat
   }
 
   if (policyCode != kPolicyTradeAgreement) {
-    this->VTableSlot84_Provisional(targetNation);
+    this->SetCandidateNationFlagAndPortZoneState(targetNation);
     return;
   }
 
@@ -4767,7 +4751,7 @@ void TGreatPower::ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNat
     }
   }
 
-  this->VTableSlot84_Provisional(targetNation);
+  this->SetCandidateNationFlagAndPortZoneState(targetNation);
 }
 
 // FUNCTION: IMPERIALISM 0x004e2500
@@ -4807,17 +4791,17 @@ void TGreatPower::ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerC
 }
 // FUNCTION: IMPERIALISM 0x004e25c0
 void TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
-  this->ResetDiplomacyLevelForNationSlot12_Provisional(targetNation, 100);
+  this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(targetNation), 100);
   this->SetDiplomacyGrantEntryForTargetAndUpdateTreasury(targetNation, -1);
   for (int nation = 0; nation < 0x17; ++nation) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, nation) != 0) {
-      this->CallSlotA8_Provisional(nation);
+      this->CallSlotA8(nation);
     }
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e2630
-void TGreatPower::CallSlotA8_Provisional(int targetNationSlot) {
+void TGreatPower::CallSlotA8(int targetNationSlot) {
   const int kMajorPolicyNation = 7;
   int tableIndex = 0;
   while (tableIndex < 16) {
@@ -4836,8 +4820,8 @@ void TGreatPower::CallSlotA8_Provisional(int targetNationSlot) {
             targetState->NotifyActionSlot94(kMajorPolicyNation, 0x131);
           }
         }
-        VCall_TMinor_NationAuxRuntimeClearGrantSlotC4(auxRuntimeState, -1);
-        VCall_TMinor_NationAuxRuntimeFinalizeSlotC0(auxRuntimeState);
+        auxRuntimeState->ClearNationAuxRuntimeGrantSlotC4(-1);
+        auxRuntimeState->NotifyNationAuxRuntimeFinalizeSlotC0();
       }
     }
     ++tableIndex;
@@ -4845,7 +4829,7 @@ void TGreatPower::CallSlotA8_Provisional(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e2720
-void TGreatPower::CallSlotA9_Provisional(int targetNationSlot) {
+void TGreatPower::CallSlotA9(int targetNationSlot) {
   const int kMajorPolicyNation = 7;
   int tableIndex = 0;
   while (tableIndex < 16) {
@@ -4867,11 +4851,11 @@ void TGreatPower::CallSlotA9_Provisional(int targetNationSlot) {
 // FUNCTION: IMPERIALISM 0x004e27b0
 void TGreatPower::DispatchNationDiplomacySlotActionByMode(int targetNationSlot, int mode) {
   if (static_cast<short>(mode) == 6) {
-    this->CallSlotA8_Provisional(targetNationSlot);
+    this->CallSlotA8(targetNationSlot);
     return;
   }
 
-  this->CallSlotA9_Provisional(targetNationSlot);
+  this->CallSlotA9(targetNationSlot);
 }
 
 // FUNCTION: IMPERIALISM 0x004e27f0
@@ -5160,7 +5144,7 @@ void TGreatPower::QueueDiplomacyProposalCodeWithAllianceGuards(int arg1, int arg
 // FUNCTION: IMPERIALISM 0x004e7c50
 void TGreatPower::ApplyImmediateDiplomacyPolicySideEffectsWithSelectionHook(int arg1, int arg2) {
   if (static_cast<short>(arg2) == 0x131) {
-    this->VTableSlot84_Provisional(static_cast<short>(arg1));
+    this->SetCandidateNationFlagAndPortZoneState(static_cast<short>(arg1));
   }
   this->TGreatPower::NotifyActionSlot94(arg1, arg2);
 }
@@ -5504,7 +5488,7 @@ void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
 #pragma optimize("y", on)
 #endif
 void TGreatPower::QueueWarTransitionFromAdvisoryAction(int arg1, int arg2, int arg3) {
-  this->VTableSlot84_Provisional(arg1);
+  this->SetCandidateNationFlagAndPortZoneState(arg1);
   this->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(arg1, arg2, arg3);
 }
 #if defined(_MSC_VER)
