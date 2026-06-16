@@ -3,8 +3,9 @@
 
 This is the generalized version of the focused TView datatype experiment. It
 keeps the importer intentionally conservative: only classes listed in
-SOURCE_CLASS_MODELS are eligible, and function signature changes are limited to
-explicitly listed methods.
+SOURCE_CLASS_MODELS can create source-owned datatypes, MFC library datatypes are
+external dependencies supplied by apply_mfc_datatypes, and function signature
+changes are limited to explicitly listed methods.
 """
 
 from __future__ import annotations
@@ -17,8 +18,10 @@ import jpype
 import pyghidra
 
 from tools.common import ghidra_env
+from tools.ghidra.apply_mfc_datatypes import MFC_MODELS
 
 DEFAULT_CLASSES = ("CString", "TEventHandler", "TView")
+MFC_EXTERNAL_TYPES = frozenset(MFC_MODELS)
 
 
 @dataclass(frozen=True)
@@ -50,12 +53,6 @@ class FunctionSpec:
 
 
 SOURCE_CLASS_MODELS: dict[str, ClassSpec] = {
-    "CString": ClassSpec(
-        name="CString",
-        size=0x04,
-        source_path="include/game/CString.h",
-        fields=(FieldSpec(0x00, "m_pchData", "char *", 4),),
-    ),
     "TEventHandler": ClassSpec(
         name="TEventHandler",
         size=0x10,
@@ -178,8 +175,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--classes",
         default=",".join(DEFAULT_CLASSES),
-        help="Comma-separated source class allowlist. Known: {}".format(
-            ",".join(SOURCE_CLASS_MODELS)
+        help="Comma-separated source class/signature allowlist. Source models: {}; MFC deps: {}".format(
+            ",".join(SOURCE_CLASS_MODELS),
+            ",".join(sorted(MFC_EXTERNAL_TYPES)),
         ),
     )
     parser.add_argument(
@@ -192,7 +190,8 @@ def parse_args() -> argparse.Namespace:
 
 def parse_class_list(raw: str) -> list[str]:
     classes = [part.strip() for part in raw.split(",") if part.strip()]
-    unknown = [name for name in classes if name not in SOURCE_CLASS_MODELS]
+    selectable = set(SOURCE_CLASS_MODELS) | MFC_EXTERNAL_TYPES
+    unknown = [name for name in classes if name not in selectable]
     if unknown:
         raise ValueError("unknown class model(s): {}".format(", ".join(unknown)))
     return classes
@@ -204,7 +203,7 @@ def class_dependencies(spec: ClassSpec) -> set[str]:
         base = field.type_name.removesuffix(" *")
         if "[" in base:
             base = base.split("[", 1)[0]
-        if base in SOURCE_CLASS_MODELS and base != spec.name:
+        if (base in SOURCE_CLASS_MODELS or base in MFC_EXTERNAL_TYPES) and base != spec.name:
             deps.add(base)
     return deps
 
@@ -217,8 +216,9 @@ def expand_with_dependencies(classes: list[str]) -> list[str]:
         if name in seen:
             return
         seen.add(name)
-        for dep in sorted(class_dependencies(SOURCE_CLASS_MODELS[name])):
-            visit(dep)
+        if name in SOURCE_CLASS_MODELS:
+            for dep in sorted(class_dependencies(SOURCE_CLASS_MODELS[name])):
+                visit(dep)
         ordered.append(name)
 
     for cls in classes:
@@ -257,7 +257,7 @@ def primitive_datatype(type_name: str):
 
 
 def datatype_for(type_name: str, dtm, created):
-    from ghidra.program.model.data import ArrayDataType, PointerDataType, VoidDataType
+    from ghidra.program.model.data import ArrayDataType, CategoryPath, PointerDataType, VoidDataType
 
     if type_name == "void *":
         return PointerDataType(VoidDataType.dataType, dtm)
@@ -275,6 +275,13 @@ def datatype_for(type_name: str, dtm, created):
         return primitive
     if type_name in created:
         return created[type_name]
+    if type_name in MFC_EXTERNAL_TYPES:
+        datatype = dtm.getDataType(CategoryPath.ROOT, type_name)
+        if datatype is None:
+            raise ValueError(
+                f"MFC datatype {type_name} is not available; run `just apply-mfc-datatypes --apply` first"
+            )
+        return datatype
     raise ValueError(f"datatype is not available yet: {type_name}")
 
 
@@ -282,11 +289,12 @@ def build_class_datatypes(program, class_names: list[str]) -> dict[str, object]:
     from ghidra.program.model.data import CategoryPath, StructureDataType
 
     dtm = program.getDataTypeManager()
+    source_class_names = [name for name in class_names if name in SOURCE_CLASS_MODELS]
     created: dict[str, object] = {
         name: StructureDataType(CategoryPath.ROOT, SOURCE_CLASS_MODELS[name].name, SOURCE_CLASS_MODELS[name].size, dtm)
-        for name in class_names
+        for name in source_class_names
     }
-    for class_name in class_names:
+    for class_name in source_class_names:
         spec = SOURCE_CLASS_MODELS[class_name]
         struct = created[class_name]
         for field in spec.fields:
@@ -363,8 +371,11 @@ def main() -> int:
 
     print("Selected source class models:")
     for class_name in selected:
-        spec = SOURCE_CLASS_MODELS[class_name]
-        print(f"  {class_name}: size=0x{spec.size:x} fields={len(spec.fields)} source={spec.source_path}")
+        if class_name in SOURCE_CLASS_MODELS:
+            spec = SOURCE_CLASS_MODELS[class_name]
+            print(f"  {class_name}: size=0x{spec.size:x} fields={len(spec.fields)} source={spec.source_path}")
+        elif class_name in MFC_EXTERNAL_TYPES:
+            print(f"  {class_name}: MFC dependency/signature-only")
     print("Function signatures in scope:")
     for spec in FUNCTION_MODELS:
         if spec.class_name in set(selected) & function_classes:

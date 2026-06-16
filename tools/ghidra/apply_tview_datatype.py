@@ -10,5 +10,5 @@ from tools.ghidra.apply_source_datatypes import main
 
 if __name__ == "__main__":
     if len(sys.argv) == 1:
-        sys.argv.extend(["--classes", "CString,TEventHandler,TView"])
+        sys.argv.extend(["--classes", "TEventHandler,TView"])
     raise SystemExit(main())

@@ -125,8 +125,11 @@ apply-mfc-datatypes *args: _require-ghidra-install
 apply-mfc-rtti *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_mfc_rtti {{args}}
 
+ghidra-datatype-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.datatype_audit {{args}}
+
 apply-tview-datatype: _require-ghidra-install
-  uv run python -m tools.ghidra.apply_source_datatypes --classes CString,TEventHandler,TView
+  uv run python -m tools.ghidra.apply_source_datatypes --classes TEventHandler,TView
 
 w32dasm-report: _require-ghidra-install
   uv run python -m tools.w32dasm.parse_alf
