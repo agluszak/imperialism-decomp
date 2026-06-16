@@ -34,6 +34,27 @@ from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 SCALAR_DTOR_MARK = "scalar deleting destructor"
 
+# Ghidra-name fragments that betray a deleting-destructor-shaped slot even when
+# the symbol isn't marked `??_G`/`??_E`. These are PROVISIONAL Ghidra names, so we
+# only *flag* such slots (never silently reclassify): a real compiler scalar
+# deleting destructor must be claimed via `// SYNTHETIC` + a symbols.csv backtick
+# name (Hard Rule 9) — never hand-written as a `Destruct*AndMaybeFree` bridge.
+_DTOR_NAME_FRAGMENTS = ("andmaybefree", "scalardeletingdestructor", "??_g", "??_e")
+
+
+def looks_like_deleting_dtor(name: str | None) -> bool:
+    """True if a slot's (provisional) name looks like a deleting-destructor bridge.
+
+    Catches the `Destruct<Class>AndMaybeFree` / `??_G` shapes that must become a
+    SYNTHETIC scalar-deleting destructor rather than a hand-ported method.
+    """
+    if not name:
+        return False
+    low = unqualified(name).lower()
+    if any(frag in low for frag in _DTOR_NAME_FRAGMENTS):
+        return True
+    return low.startswith("destruct") and low.endswith("andmaybefree")
+
 
 def norm_addr(value: str) -> str:
     """Normalize an address to bare lowercase hex, no 0x prefix, no leading zeros.
@@ -120,6 +141,7 @@ class ClassifiedSlot:
     prototype: str | None
     decompiled_c: str | None
     base_target: str | None  # bare hex of base's slot target, for inherited comment
+    dtor_suspect: bool = False  # name looks like a deleting-destructor bridge (verify SYNTHETIC)
 
 
 @dataclass
@@ -182,6 +204,11 @@ def classify_slots(
         fallback = unqualified(qualified) if qualified else f"VTableSlot{idx:02X}"
         sig = parse_prototype(proto, fallback) if kind in ("override", "new") else None
 
+        # Flag (don't reclassify) deleting-destructor-shaped slots that weren't
+        # already marked scalar in symbols.csv, so the porter claims them
+        # SYNTHETIC instead of hand-writing a banned bridge (Hard Rule 9).
+        dtor_suspect = kind in ("override", "new") and looks_like_deleting_dtor(qualified)
+
         out.append(
             ClassifiedSlot(
                 index=idx,
@@ -195,6 +222,7 @@ def classify_slots(
                 prototype=proto,
                 decompiled_c=s.get("decompiled_c"),
                 base_target=base_target,
+                dtor_suspect=dtor_suspect,
             )
         )
     return out
@@ -257,6 +285,12 @@ def render_header(class_name: str, base_name: str, vtable_addr: str, slots: list
 
 def _body_seed(s: ClassifiedSlot) -> list[str]:
     out: list[str] = []
+    if s.dtor_suspect:
+        out.append("  // WARNING(bootstrap): this slot's name looks like a deleting-destructor")
+        out.append("  // bridge. If it is the compiler scalar-deleting destructor (??_G/??_E),")
+        out.append("  // do NOT hand-write this body: delete it and claim the address with a")
+        out.append("  // standalone `// SYNTHETIC:` block + a symbols.csv backtick name (Hard")
+        out.append("  // Rule 9). Only keep a real method here if it is a genuine virtual.")
     if s.decompiled_c:
         out.append("  // TODO(bootstrap): port/clean the Ghidra decompile below, then")
         out.append("  // run the decomp loop (compare/vtable) before committing.")
@@ -434,6 +468,13 @@ def build_scaffold(args, repo_root: Path) -> int:
     print(f"   new function_ownership.csv rows: {len(own_plan.new_rows)}")
     for c in own_plan.collisions:
         print(f"   !! ownership collision (skipped): {c}")
+    for s in slots:
+        if s.dtor_suspect:
+            print(
+                f"   !! slot {s.slot_label} '{s.qualified_name}' looks like a deleting-destructor "
+                "bridge — verify it isn't ??_G; if so, claim it SYNTHETIC (Hard Rule 9), "
+                "don't hand-write it."
+            )
     if not args.base:
         print("   !! no --base supplied; emitted ': public TObject' as a TODO. Verify inheritance.")
 

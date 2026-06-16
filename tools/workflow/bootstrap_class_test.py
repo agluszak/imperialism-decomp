@@ -146,6 +146,20 @@ def main() -> int:
         check("ownership skips collided addr", "5c2490" not in own_addrs)
         check("ownership adds 5c27d0", "5c27d0" in own_addrs)
 
+    # deleting-destructor-bridge detection (flag, don't reclassify)
+    check("dtor suspect AndMaybeFree",
+          bc.looks_like_deleting_dtor("TTransFocusAnimation::DestructTTransFocusAnimationAndMaybeFree"))
+    check("dtor suspect ??_G", bc.looks_like_deleting_dtor("TFoo::??_G"))
+    check("dtor suspect rejects Serialize", not bc.looks_like_deleting_dtor("Serialize"))
+    check("dtor suspect rejects none", not bc.looks_like_deleting_dtor(None))
+    suspect_slots = [s for s in slots if s.dtor_suspect]
+    check("scalar_dtor slot not double-flagged", all(s.kind != "scalar_dtor" for s in suspect_slots))
+    cpp_warns = "WARNING(bootstrap): this slot's name looks like a deleting-destructor" in cpp
+    dtor_slot = next((s for s in slots if bc.looks_like_deleting_dtor(s.qualified_name)
+                      and s.kind in ("override", "new")), None)
+    check("dtor suspect warning emitted iff suspect present",
+          cpp_warns == (dtor_slot is not None))
+
     # auto-detect boundary helper (next-vtable RTTI getter)
     check("rtti getter ClassNamePointer", is_rtti_getter("GetTAnimatorClassNamePointer"))
     check("rtti getter GetRuntimeClass", is_rtti_getter("GetRuntimeClass"))
