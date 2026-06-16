@@ -170,15 +170,28 @@ def run(program, args) -> dict:
     # vtable discovery via the reference graph
     # ------------------------------------------------------------------ #
     def real_function(addr: int):
-        fn = fm.getFunctionContaining(A(addr))
-        seen = set()
-        while fn is not None and fn.isThunk():
-            ep = int(fn.getEntryPoint().getOffset())
-            if ep in seen:
-                break
-            seen.add(ep)
-            fn = fn.getThunkedFunction(True)
-        return fn
+        """Resolve to the real body, following Ghidra thunks AND raw single-flow
+        JMP stubs (ILT entries Ghidra never defined as functions)."""
+        target = addr
+        for _ in range(8):
+            a = A(target)
+            fn = fm.getFunctionContaining(a)
+            if fn is not None and fn.isThunk():
+                tf = fn.getThunkedFunction(True)
+                if tf is not None:
+                    nxt = int(tf.getEntryPoint().getOffset())
+                    if nxt == target:
+                        return fn
+                    target = nxt
+                    continue
+            if fn is not None:
+                return fn
+            ins = listing.getInstructionAt(a)
+            if ins is not None and ins.getMnemonicString().lower() == "jmp" and len(ins.getFlows()) == 1:
+                target = int(ins.getFlows()[0].getOffset())
+                continue
+            return None
+        return fm.getFunctionContaining(A(target))
 
     def descriptor_to_vtable(desc: int) -> int | None:
         for r in refmgr.getReferencesTo(A(desc)):
@@ -234,6 +247,42 @@ def run(program, args) -> dict:
             return existing
         return st.createClass(None, name, SourceType.USER_DEFINED)
 
+    def is_rtti_getter_fn(fn) -> bool:
+        nm = fn.getName() if fn is not None else ""
+        return nm == "GetRuntimeClass" or "ClassNamePointer" in nm
+
+    def vtable_extent(vt: int) -> list[int | None]:
+        """Return resolved slot targets (None = null/abstract) up to the table's
+        end: the next class's slot-0 RTTI getter, or a non-pointer slot. Trailing
+        nulls are trimmed (padding, not abstract slots, are ambiguous — we keep
+        the conservative shorter table)."""
+        out: list[int | None] = []
+        for i in range(300):
+            try:
+                entry = rd(vt + 4 * i)
+            except Exception:
+                break
+            if entry == 0:
+                out.append(None)
+                continue
+            if not in_image(entry):
+                break
+            fn = real_function(entry)
+            if fn is None:
+                break
+            if i > 0 and is_rtti_getter_fn(fn):
+                break  # next class's vtable begins here
+            out.append(int(fn.getEntryPoint().getOffset()))
+        while out and out[-1] is None:
+            out.pop()
+        return out
+
+    def sanitize_field(name: str, slot: int) -> str:
+        base = name.split("::")[-1]
+        if is_auto_name(base) or not base or not (base[0].isalpha() or base[0] == "_"):
+            return f"slot_0x{slot * 4:02x}"
+        return base
+
     stats = {
         "descriptors": 0,
         "typed": 0,
@@ -242,8 +291,14 @@ def run(program, args) -> dict:
         "vtables": 0,
         "slots_renamed": 0,
         "skipped_named": 0,
+        "vtbl_structs": 0,
+        "class_structs": 0,
+        "ctors_named": 0,
+        "this_typed": 0,
     }
     changes: list[str] = []
+    # collected per class for the struct-building pass
+    class_info: dict[str, dict] = {}
 
     rt_dt = ensure_runtime_class_dt() if args.apply else None
 
@@ -292,10 +347,19 @@ def run(program, args) -> dict:
                 f"  {cls} desc@0x{desc_addr:08x} base={base_nm or '<root>'}"
             )
 
+        # collect for the struct pass (ctor + size from the descriptor)
+        info = class_info.setdefault(cls, {})
+        info["desc"] = desc_addr
+        info["base"] = base_nm
+        info["size"] = rd(desc_addr + 4)
+        ctor = rd(desc_addr + 0x0C)
+        info["ctor"] = ctor if in_image(ctor) else None
+
         # ---- vtable + slot-name propagation ----
         vt = descriptor_to_vtable(desc_addr)
         if vt is None:
             continue
+        info["vtable"] = vt
         stats["vtables"] += 1
         if args.apply:
             try:
@@ -344,6 +408,113 @@ def run(program, args) -> dict:
                     f"    slot 0x{slot*4:02x}: override 0x{der:08x} -> {cls}::{new_name}"
                 )
 
+    # ------------------------------------------------------------------ #
+    # Struct pass: vtable structs + class structs (vptr) + DYNCREATE ctors +
+    # gated this-typing. Only the vtable-entry override methods are this-typed
+    # (they are genuinely this class's virtuals; inherited slots are typed when
+    # their owning base is processed), so we never rely on Ghidra's broad and
+    # frequently-wrong __thiscall labelling.
+    # ------------------------------------------------------------------ #
+    if args.apply:
+        from ghidra.program.model.data import (
+            ArrayDataType,
+            FunctionDefinitionDataType,
+            StructureDataType as _SDT,
+            Undefined1DataType,
+        )
+
+        classes_cat = CategoryPath("/MFC/classes")
+        vtbl_cat = CategoryPath("/MFC/vtables")
+        vfn = dtm.addDataType(
+            FunctionDefinitionDataType(CategoryPath("/MFC"), "vfn"),
+            DataTypeConflictHandler.DEFAULT_HANDLER,
+        )
+        vfn_ptr_dt = PointerDataType(vfn)
+
+        def ensure_vtbl_struct(cls: str, vt: int):
+            slots = vtable_extent(vt)
+            name = f"{cls}Vtbl"
+            existing = dtm.getDataType(vtbl_cat, name)
+            if existing is not None:
+                return existing, slots
+            if not slots:
+                return None, slots
+            s = _SDT(vtbl_cat, name, 0)
+            for i, tgt in enumerate(slots):
+                fld = f"slot_0x{i*4:02x}"
+                if tgt is not None:
+                    fn = real_function(tgt)
+                    if fn is not None:
+                        fld = sanitize_field(fn.getName(), i)
+                s.add(vfn_ptr_dt, 4, fld, None)
+            return dtm.addDataType(s, DataTypeConflictHandler.DEFAULT_HANDLER), slots
+
+        def ensure_class_struct(cls: str, vtbl_dt, size: int):
+            vptr = PointerDataType(vtbl_dt) if vtbl_dt else PointerDataType()
+            existing = dtm.getDataType(classes_cat, cls)
+            if existing is not None:
+                # Refresh a stale generic vftable pointer once the real Vtbl exists.
+                if vtbl_dt is not None and existing.getNumComponents() > 0:
+                    try:
+                        existing.replaceAtOffset(0, vptr, 4, "vftable", None)
+                    except Exception:  # noqa: BLE001
+                        pass
+                return existing
+            s = _SDT(classes_cat, cls, 0)
+            s.add(vptr, 4, "vftable", None)
+            pad = max(0, size - 4)
+            if pad:
+                s.add(ArrayDataType(Undefined1DataType.dataType, pad, 1), pad, "field_0x4", None)
+            return dtm.addDataType(s, DataTypeConflictHandler.DEFAULT_HANDLER)
+
+        for cls, info in class_info.items():
+            vt = info.get("vtable")
+            if vt is None:
+                continue
+            try:
+                vtbl_dt, slots = ensure_vtbl_struct(cls, vt)
+                if vtbl_dt is not None:
+                    stats["vtbl_structs"] += 1
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! vtbl struct {cls} failed: {exc}")
+                vtbl_dt, slots = None, []
+            try:
+                ensure_class_struct(cls, vtbl_dt, info.get("size") or 4)
+                stats["class_structs"] += 1
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! class struct {cls} failed: {exc}")
+
+            ctor = info.get("ctor")
+            if ctor is not None:
+                cfn = real_function(ctor)
+                if cfn is not None and is_auto_name(cfn.getName()):
+                    try:
+                        cfn.setParentNamespace(get_or_make_class(cls))
+                        cfn.setName("CreateObject", SourceType.USER_DEFINED)
+                        stats["ctors_named"] += 1
+                    except Exception as exc:  # noqa: BLE001
+                        changes.append(f"  !! ctor {cls}@0x{ctor:08x} failed: {exc}")
+
+            base = info.get("base")
+            base_vt = descriptor_to_vtable(by_name[base]) if base and base in by_name else None
+            for i, tgt in enumerate(slots):
+                if tgt is None:
+                    continue
+                base_t = vtable_target(base_vt, i) if base_vt is not None else None
+                if base_t is not None and base_t == tgt:
+                    continue  # inherited — owned by a base class
+                fn = real_function(tgt)
+                if fn is None:
+                    continue
+                try:
+                    pns = fn.getParentNamespace()
+                    if pns is None or pns.getName() == "Global":
+                        fn.setParentNamespace(get_or_make_class(cls))
+                    fn.setCallingConvention("__thiscall")
+                    stats["this_typed"] += 1
+                except Exception as exc:  # noqa: BLE001
+                    changes.append(f"  !! this-type 0x{tgt:08x} {cls} failed: {exc}")
+
     return {"stats": stats, "changes": changes}
 
 
@@ -370,7 +541,9 @@ def main() -> int:
         print(
             f"\n[{mode}] descriptors={s['descriptors']} typed={s['typed']} "
             f"named_desc={s['named_desc']} classes={s['classes']} vtables={s['vtables']} "
-            f"overrides_renamed={s['slots_renamed']} skipped_already_named={s['skipped_named']}"
+            f"overrides_renamed={s['slots_renamed']} skipped_already_named={s['skipped_named']}\n"
+            f"          vtbl_structs={s['vtbl_structs']} class_structs={s['class_structs']} "
+            f"ctors_named={s['ctors_named']} this_typed={s['this_typed']}"
         )
         if not args.apply:
             print("Re-run with --apply to write these changes to the Ghidra DB.")
