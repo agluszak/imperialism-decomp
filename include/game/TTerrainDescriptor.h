@@ -2,6 +2,10 @@
 
 #include "game/TPtrList.h"
 
+class TCountry;
+
+// Typed view over the TCountry prefix (+0x0c/+0x0e/+0x90 fields and slots 0x38/0x4c/0x68).
+// Not a real class — no vtable/ctor; table elements are TCountry* (TGreatPower* / TMinor*).
 class TTerrainDescriptor {
 public:
   virtual void dummy0() = 0;
@@ -45,9 +49,8 @@ protected:
   ~TTerrainDescriptor() {}
 };
 
-int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain,
-                                          short encodedNationSlot);
+int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot);
 int ResolveTerrainNationSlotFromTarget(int targetNationSlot);
 int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
 int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
-int SumWeightedNeighborLinkScoreForLinkedNodes(TTerrainDescriptor* terrain);
+int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain);

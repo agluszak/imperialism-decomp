@@ -26,7 +26,7 @@ public:
   // slot 0xab — 0x004e7510: 'lost' game-state event when redraw is enabled.
   void DispatchTurnEvent11F8NoPayloadSlot2AC(void) override;
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
-  void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) override;
+  void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
   // slot 0x22 — 0x004e79d0: forward to the foreign minister or queue a tracked entry.
   char TryDispatchNationActionViaUiContextOrFallback(int targetNation, int arg2, int arg3,
                                                      int slotIndex) override;

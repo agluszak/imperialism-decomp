@@ -8,6 +8,8 @@
 
 class TStream;
 
+enum { kTerrainTypeDescriptorTableCount = 23 };
+
 // Intermediate base between TObject and TGreatPower (Ghidra: TCountry). Owns the nation
 // identity strings, the nation-slot metrics, the military-unit list and the owned-region
 // list, and serializes that sub-object via WriteTo (0x004d6e60) / ReadFrom (0x004d6bf0).
@@ -37,14 +39,13 @@ public:
   virtual void QueueRecruitOrdersForUndergarrisonedRegions(void);
   virtual void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel);
   virtual void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode);
-  virtual void ApplyJoinEmpireMode0GlobalDiplomacyReset(int targetNationSlot);
+  virtual void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot);
   virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);
   virtual CString* GetIdentitySharedString1Slot58(void);
   virtual char IsEncodedNationSlotMinus200Equal(int nationCode);
-  virtual void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId);
-  virtual void AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
-  virtual void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot,
-                                                                int policyCode);
+  virtual void RemoveRegionIdFromNationOwnedRegionList(int regionId);
+  virtual void AddRegionIdToNationOwnedRegionList(int regionId);
+  virtual void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot, int policyCode);
   virtual void DecrementDiplomacyCounterA2ByValue(int delta);
   virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot);
   virtual short GetDiplomacyCounterA2(void);
@@ -62,6 +63,22 @@ public:
   virtual char ReturnFalseNationStateCapabilityFlag9C(void);
   virtual char ShouldDispatchImmediatelySlot28(void);
   virtual void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2);
+
+  // Diplomacy / nation-state helpers (bodies may access TGreatPower tail via `this`).
+  void DeserializeDiplomacyNationStateFromStream(TStream* stream);
+  void SerializeDiplomacyNationStateToStream(TStream* stream);
+  void RebuildDiplomacyEconomicPressureFromMapState(void);
+  char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
+  void SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot, short policyValue);
+  void ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, short policyCode,
+                                                int mode);
+  void ProcessTurnEventNationStateTransitionAndDiplomacy(int eventCode, int targetNationSlot,
+                                                         int payload);
+  void HandleNetworkPortConstructionOrder(int nationId);
+  void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
+  void SetNationRowDisplayValueByDiplomacyPredicate(short nationSlot, short predicateCode);
+  void QueueInterNationEvent17ForState300AffectedNations(void);
+  void ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId, short relationMask);
 
   CString identitySharedString0;
   CString identitySharedString1;
@@ -90,5 +107,9 @@ public:
   // which inlines the TCountry base construction rather than calling 0x004d67d0.
   TCountry() {}
 };
+
+// Nation terrain rows: major slots hold TGreatPower*, minor slots hold TMinor*.
+// GLOBAL: IMPERIALISM 0x006a4310
+extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 
 ASSERT_SIZE(TCountry, 0x94);

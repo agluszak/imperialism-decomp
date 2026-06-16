@@ -142,10 +142,18 @@ short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 } // extern "C"
 
 #include "game/TZone.h"
+#include "game/TMapOrderContext.h"
+#include "game/TGlobalMapState.h"
+#include "game/TMinor.h"
+#include "game/TSelectedCivilianOrderState.h"
 
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
+// Defined outside extern "C" so they keep C++ linkage and match typed header declarations.
 TZone* g_pMapActionContextListHead = 0;
+TMapOrderContext* g_pActiveMapOrderContext = 0;
+TGlobalMapState* g_pGlobalMapState = 0;
+TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;
 
 extern "C" {
 int g_nMapActionContextCount = 0;
@@ -167,17 +175,7 @@ int DAT_006a601c = 0;
 // Shared empty-string literal at 0x006a13a0 (the "" passed to CString ctors / string
 // compares). Defined so reccmp pairs the address reference as a DATA symbol.
 #include "decomp_types.h"
-#include "game/TGlobalMapState.h"
-#include "game/TMinor.h"
-#include "game/TSelectedCivilianOrderState.h"
 char g_szEmptyString[1] = {0};
-
-// EH-body order/state globals (referenced by TGreatPower vtable slots 0x05/0x0c/0x32
-// "pending action" state machines). Defined as real symbols so reccmp pairs the direct
-// absolute loads (`mov reg, [g_pX]`) instead of bare immediates.
-void* g_pActiveMapOrderContext = 0;
-class TGlobalMapState* g_pGlobalMapState = 0;
-class TSelectedCivilianOrderState* g_pSelectedCivilianOrderState = 0;
 
 // GLOBAL: IMPERIALISM 0x006a4490
 extern "C" unsigned short g_awCivilianLegendSelectionCountsBySlot[16] = {0};

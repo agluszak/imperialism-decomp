@@ -31,3 +31,6 @@ public:
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 int ComputeGlobalMapActionContextNodeValueAverage(void);
+
+// GLOBAL: IMPERIALISM 0x006a3fbc
+extern TMapOrderContext* g_pActiveMapOrderContext;

@@ -14,7 +14,6 @@ extern TZone* g_pMapActionContextListHead;
 extern "C" {
 extern int g_nMapActionContextCount;
 extern void* g_pMapActionContextDistanceCache;
-extern void* g_pActiveMapOrderContext;
 char g_pClassDescTZone = 0;
 extern char g_pClassDescTPortZone;
 }
@@ -219,7 +218,7 @@ short TZone::FindNearestActiveSeaContextTileFromOffset216() {
       if (nationId >= 0x17) {
         contextRecord =
             reinterpret_cast<int>(
-                static_cast<TMapOrderContext*>(g_pActiveMapOrderContext)->contextArray) +
+                g_pActiveMapOrderContext->contextArray) +
             (nationId - 0x17) * 0x48;
       }
       if (contextRecord != 0) {
@@ -250,7 +249,7 @@ short TZone::GetActiveNationSlotTile() {
       if (nationId >= 0x17) {
         contextRecord =
             reinterpret_cast<int>(
-                static_cast<TMapOrderContext*>(g_pActiveMapOrderContext)->contextArray) +
+                g_pActiveMapOrderContext->contextArray) +
             (nationId - 0x17) * 0x48;
       }
       if (contextRecord != 0) {
@@ -279,7 +278,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
   int zoneRecord = 0;
   if (nationId >= 0x17) {
     zoneRecord = reinterpret_cast<int>(
-                     static_cast<TMapOrderContext*>(g_pActiveMapOrderContext)->contextArray) +
+                     g_pActiveMapOrderContext->contextArray) +
                  (nationId - 0x17) * 0x48;
   }
   if (zoneRecord != reinterpret_cast<int>(contextZone)) {
@@ -340,7 +339,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
   unsigned int tileCandidate = 0;
   char* mapTileBase = reinterpret_cast<char*>(
       *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc));
-  TMapOrderContext* mapOrderContext = static_cast<TMapOrderContext*>(g_pActiveMapOrderContext);
+  TMapOrderContext* mapOrderContext = g_pActiveMapOrderContext;
 
   for (;;) {
     char* tileRecord = mapTileBase + static_cast<short>(tileCandidate) * 0x24;

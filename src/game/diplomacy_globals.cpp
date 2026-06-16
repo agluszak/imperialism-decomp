@@ -1,12 +1,15 @@
 #include "decomp_types.h"
+#include "game/TCountry.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TLocalizationRuntime.h"
 #include "game/TMinor.h"
 
+// Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
+TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
+
 extern "C" {
-TMinor* g_apTerrainTypeDescriptorTable[23] = {0};
 TMinor* g_apSecondaryNationStateSlots[36] = {0};
 TGreatPower* g_apNationStates[7] = {0};
 void* g_apNationStates_End = reinterpret_cast<void*>(g_apNationStates + 7);

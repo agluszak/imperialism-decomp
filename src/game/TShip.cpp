@@ -115,8 +115,8 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
   shipNode->ownerNationSlot14 = static_cast<short>(nationSlot);
 
   if (displayNameOverride == 0) {
-    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(g_apTerrainTypeDescriptorTable[zoneIndex],
-                                                          &shipNode->displayName18);
+    TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
+        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[zoneIndex]), &shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
       if (existing != shipNode &&
@@ -150,7 +150,8 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short zoneIndex, TZone* po
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode) {
   do {
     TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        g_apTerrainTypeDescriptorTable[shipNode->resourceType04], &shipNode->displayName18);
+        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[shipNode->resourceType04]),
+        &shipNode->displayName18);
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
       if (existing == shipNode) {

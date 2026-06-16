@@ -45,14 +45,14 @@ public:
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
   void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode) override;
-  void ApplyJoinEmpireMode0GlobalDiplomacyReset(int targetNationSlot) override; // slot 0x14
+  void SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) override; // slot 0x14
   // slot 0x18 — body 0x004e2270: drop regionId from ownedRegionList then fire the
   // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
   // matching mission from missionQueue and clear mapNodeStateFlags.
-  void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) override;
-  void AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void) override;
-  void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot,
-                                                        int policyCode) override;
+  void RemoveRegionIdFromNationOwnedRegionList(int regionId) override;
+  void AddRegionIdToNationOwnedRegionList(int regionId) override;
+  void SetNationPercentFieldByModeAndDescriptorLinks(int targetNationSlot,
+                                                     int policyCode) override;
   void DecrementDiplomacyCounterA2ByValue(int delta) override;
   int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
   short GetDiplomacyCounterA2(void) override;                                  // slot 0x1d

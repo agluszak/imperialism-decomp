@@ -7,6 +7,7 @@
 #endif
 
 #include "game/diplomacy_globals.h"
+#include "game/TMinor.h"
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead = 0;
 extern "C" char g_pClassDescTAdmiral = 0;
 
@@ -31,7 +32,8 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
     next->prev = this;
   }
   if (static_cast<unsigned short>(terrainType) != 0xffff) {
-    GenerateMappedFlavorTextByNationSlotField0C(g_apTerrainTypeDescriptorTable[terrainType],
+    GenerateMappedFlavorTextByNationSlotField0C(
+        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[terrainType]),
                                                 &displayName);
     for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
       if (node == this) {
@@ -107,8 +109,8 @@ void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primar
 
 // FUNCTION: IMPERIALISM 0x00552450
 void TAdmiral::RemoveDuplicateNavySecondaryOrdersByDisplayName() {
-  GenerateMappedFlavorTextByNationSlotField0C(g_apTerrainTypeDescriptorTable[this->terrainType],
-                                              &this->displayName);
+  GenerateMappedFlavorTextByNationSlotField0C(
+      reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[this->terrainType]), &this->displayName);
   for (TAdmiral* node = g_pNavySecondaryOrderListHead; node != 0; node = node->next) {
     if (node == this) {
       continue;

@@ -33,7 +33,7 @@ void TMilitaryUnitOrderState::InitializeRecruitOrderState(short capValue, int no
       (static_cast<int>(capValue) + (static_cast<int>(capValue) >> 31 & 7)) >> 3);
   if (capValue > 0x1b) {
     TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
-        g_apTerrainTypeDescriptorTable[nationSlot], &name24);
+        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[nationSlot]), &name24);
   }
   CopyUnitCurrentTileIntoOrderTargets();
 }

@@ -3,46 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name OrphanCallChain_C2_I33_004e59d0
-// ghidra_proto undefined OrphanCallChain_C2_I33_004e59d0()
-// FUNCTION: IMPERIALISM 0x004e59d0
-undefined4 OrphanCallChain_C2_I33_004e59d0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::SetNationRowDisplayValueByDiplomacyPredicate
-// ghidra_proto undefined SetNationRowDisplayValueByDiplomacyPredicate()
-// FUNCTION: IMPERIALISM 0x004e5a40
-undefined4 SetNationRowDisplayValueByDiplomacyPredicate(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearTileActivityOverlayByProvinceId
-// ghidra_proto undefined ClearTileActivityOverlayByProvinceId()
-// FUNCTION: IMPERIALISM 0x004e5ac0
-undefined4 ClearTileActivityOverlayByProvinceId(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::QueueInterNationEvent17ForState300AffectedNations
-// ghidra_proto undefined QueueInterNationEvent17ForState300AffectedNations()
-// FUNCTION: IMPERIALISM 0x004e5be0
-undefined4 QueueInterNationEvent17ForState300AffectedNations(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::ApplyDiplomacyRelationMaskToProvinceLinkedObjects
-// ghidra_proto undefined ApplyDiplomacyRelationMaskToProvinceLinkedObjects()
-// FUNCTION: IMPERIALISM 0x004e5d90
-undefined4 ApplyDiplomacyRelationMaskToProvinceLinkedObjects(void)
-{
-  return 0;
-}
-
 // ghidra_name ReassignTileObjectOwnerAndNotifyForSelectedCells
 // ghidra_proto undefined ReassignTileObjectOwnerAndNotifyForSelectedCells()
 // FUNCTION: IMPERIALISM 0x004e6040

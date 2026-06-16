@@ -29,21 +29,23 @@ g_pActiveMapOrderContext->FindPortZoneBySelectedTile(city);
 
 Apply the same pattern to other recovered singletons (`g_pGlobalMapState`, `g_pDiplomacyTurnStateManager`, etc.) once the owning class exists. Keep `void*` only while the target type is genuinely unknown.
 
-**Array globals** use the same rule — declare in the owning class header:
+**Array globals** use the common base type when slots hold derived instances:
 
 ```cpp
-// include/game/TTerrainDescriptor.h
-extern TTerrainDescriptor* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
+// include/game/TCountry.h
+extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 
 // src/game/diplomacy_globals.cpp (outside extern "C")
-TTerrainDescriptor* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
+TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 
-// terrain virtual / field access:
-g_apTerrainTypeDescriptorTable[slot]->SetResetLevelSlot68(nation, 100);
+// TCountry-family virtual / field access (no TTerrainDescriptor view cast):
+g_apTerrainTypeDescriptorTable[slot]->SetNationPercentFieldByModeAndDescriptorLinks(nation, 100);
 
-// TMinor-only tail methods — reinterpret_cast at the boundary (parallel vtables, not inheritance):
+// TMinor-only tail methods — reinterpret_cast until TMinor : public TCountry is wired:
 reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[slot])->SetDiplomacyStandingSlot48(...);
 ```
+
+`TTerrainDescriptor` is a typed **view** over the TCountry prefix, not a real class and not the table element type.
 
 Never place typed C++ singleton definitions inside an `extern "C"` block in
 `global_data_tables.cpp` or `diplomacy_globals.cpp` — that emits C linkage and breaks

@@ -3,6 +3,7 @@
 #include "decomp_types.h"
 
 #include "game/TDealList.h"
+#include "game/TCountry.h"
 
 struct NationState;
 struct TDiplomacyTurnStateManager;
@@ -12,8 +13,6 @@ class TInterNationEventQueueManager;
 extern "C" {
 class TGreatPower;
 class TMinor;
-
-extern TMinor* g_apTerrainTypeDescriptorTable[23];
 // 0x6a4280..0x6a4310 — secondary (minor-power) nation rows; TMinor layout
 // (military unit list at +0x44 summed by 0x004e0fe0/0x004e1300).
 extern TMinor* g_apSecondaryNationStateSlots[36];

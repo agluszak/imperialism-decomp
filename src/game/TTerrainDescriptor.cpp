@@ -1,15 +1,15 @@
 #include "game/TTerrainDescriptor.h"
 
+#include "game/TCountry.h"
 #include "game/TGlobalMapState.h"
 #include "game/TPtrList.h"
 #include "game/TStationedUnitNode.h"
 #include "game/diplomacy_globals.h"
 
-int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain,
-                                          short encodedNationSlot) {
+int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot) {
   if (encodedNationSlot < 200) {
     if (encodedNationSlot < 100) {
-      return terrain->fallbackNationSlot0c;
+      return terrain->nationSlot;
     }
     return encodedNationSlot - 100;
   }
@@ -17,9 +17,8 @@ int DecodeTerrainNationSlotFromDescriptor(const TTerrainDescriptor* terrain,
 }
 
 int ResolveTerrainNationSlotFromTarget(int targetNationSlot) {
-  const TTerrainDescriptor* terrain =
-      reinterpret_cast<const TTerrainDescriptor*>(g_apTerrainTypeDescriptorTable[targetNationSlot]);
-  return DecodeTerrainNationSlotFromDescriptor(terrain, terrain->encodedNationSlot0e);
+  const TCountry* terrain = g_apTerrainTypeDescriptorTable[targetNationSlot];
+  return DecodeTerrainNationSlotFromDescriptor(terrain, terrain->encodedNationSlot);
 }
 
 static const unsigned int kAddrWeightedNeighborScoreByUnitType = 0x006955F0;
@@ -43,9 +42,9 @@ int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d83c0
-int SumWeightedNeighborLinkScoreForLinkedNodes(TTerrainDescriptor* terrain) {
+int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain) {
   int sum = 0;
-  TPtrList* linkedList = terrain->linkedNodeList90;
+  TPtrList* linkedList = terrain->ownedRegionList;
   if (linkedList == 0) {
     return 0;
   }

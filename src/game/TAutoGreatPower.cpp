@@ -505,7 +505,7 @@ char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
 void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
   if (this->HasActiveCandidateNationSlots() != 0) {
     int nation = 0;
-    TMinor** descriptorCursor = g_apTerrainTypeDescriptorTable;
+    TCountry** descriptorCursor = g_apTerrainTypeDescriptorTable;
     do {
       if (*descriptorCursor != 0 && nation != static_cast<short>(this->nationSlot)) {
         if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
@@ -519,11 +519,11 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
   }
   this->candidateNationFlags[targetNation] = 1;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90->GetCountOrReleaseSlot28() >
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountOrReleaseSlot28() >
         0) {
       short ownerTag;
       if (g_apTerrainTypeDescriptorTable[targetNation] == 0 ||
-          (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->ownerNationSlot0e,
+          (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->encodedNationSlot,
            ownerTag < 100) ||
           199 < ownerTag) {
         TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
@@ -538,7 +538,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
 void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
   this->candidateNationFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90->GetCountOrReleaseSlot28() >
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountOrReleaseSlot28() >
         0) {
       TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
       short portZoneId = GetShortAtOffset14OrInvalidValue();
@@ -548,7 +548,7 @@ void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ea1c0
-void TAutoGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) {
+void TAutoGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   CIterator missionCursor(this->missionQueue);
   TTrackedObject* mission = static_cast<TTrackedObject*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {
@@ -564,14 +564,14 @@ void TAutoGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) {
     mission = static_cast<TTrackedObject*>(missionCursor.Advance());
   }
   this->mapNodeStateFlags[regionId] = 0;
-  TGreatPower::RemoveRegionIdAndRunTrackedObjectCleanup(regionId);
+  TGreatPower::RemoveRegionIdFromNationOwnedRegionList(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea300
 void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
   TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(targetNation);
   int ordinal = 1;
-  TPtrList* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList90;
+  TPtrList* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList;
   if (regionList->GetCountOrReleaseSlot28() > 0) {
     do {
       int regionId = regionList->GetIntByOrdinalSlot24(ordinal);

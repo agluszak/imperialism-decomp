@@ -7,6 +7,7 @@
 #include "game/TSortedPtrList.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/diplomacy_globals.h"
+#include "game/TMinor.h"
 #include "game/TForeignMinister.h"
 
 #if defined(_MSC_VER)
@@ -152,12 +153,15 @@ void TDealList::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
     }
   } else {
     int ownerIndex = static_cast<int>(ownerSlot);
-    CallMinorSlot80(g_apTerrainTypeDescriptorTable[ownerIndex], targetNation, amount, maxAmount);
-    CallMinorSlot80(g_apTerrainTypeDescriptorTable[static_cast<short>(sourceContext)], targetNation,
-                    -amount, ownerNation);
+    CallMinorSlot80(reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[ownerIndex]), targetNation,
+                    amount, maxAmount);
+    CallMinorSlot80(
+        reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[static_cast<short>(sourceContext)]),
+        targetNation, -amount, ownerNation);
     if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(maxAmount) != 0) {
       if (g_pDiplomacyTurnStateManager->HasFlag84ForNationSlot84(ownerNation) == 0) {
-        CallMinorSlot6C(g_apTerrainTypeDescriptorTable[sourceContext], amount);
+        CallMinorSlot6C(reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[sourceContext]),
+                        amount);
       }
     }
     short relationBump = g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(

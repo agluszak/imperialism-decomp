@@ -5,6 +5,7 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 #include "game/TCivDescription.h"
+#include "game/TCountry.h"
 #include <string.h>
 #include "game/TCivilianOrderState.h"
 #include "game/TGlobalMapState.h"
@@ -16,7 +17,6 @@ extern "C" {
 CRuntimeClass g_pClassDescTCivDescription = {nullptr, 0, 0, nullptr, nullptr};
 }
 
-extern "C" void* g_apTerrainTypeDescriptorTable[];
 extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[];
 #include "game/CString.h"
 #include "game/mfc.h"
