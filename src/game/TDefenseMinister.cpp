@@ -132,7 +132,7 @@ void TDefenseMinister::MinisterSlot12() {}
 // FUNCTION: IMPERIALISM 0x004ec4c0
 void TDefenseMinister::Call4C() {
   TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
-  owner->VTableIndex03_Provisional();
+  owner->AssertValid();
   CIterator missionCursor(owner->missionQueue);
   TTrackedObject* mission = static_cast<TTrackedObject*>(missionCursor.Reset());
   while (missionCursor.More() != 0) {

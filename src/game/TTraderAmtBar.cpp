@@ -78,7 +78,7 @@ void TTraderAmtBar::NoOpUiLifecycleHook(int arg) {
   if (tradeCapacity == 0) {
     stepOrCurrentValue = 0;
   } else {
-    short currentValue = nationState->QueryNationMetricBySlot78(recordIndex);
+    short currentValue = nationState->GetDiplomacyExternalStateB6ByTarget(recordIndex);
     stepOrCurrentValue =
         (short)((((int)tradeCapacity - (int)currentValue) * this->field34) / (int)tradeCapacity);
   }

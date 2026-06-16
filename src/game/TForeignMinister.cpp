@@ -138,7 +138,7 @@ void TForeignMinister::Call94() {
       short weightThreshold =
           g_pNationInteractionStateManager->QueryProposalWeightSlot4C(orderKind);
       if (roll % 100 + 200 < static_cast<int>(weightThreshold)) {
-        short metric = owner->QueryNationMetricBySlot78(orderKind);
+        short metric = owner->GetDiplomacyExternalStateB6ByTarget(orderKind);
         if (metric == 0) {
           owner->AssignNeedSlotFromSourceSlot19C(orderKind, 0);
         } else {
@@ -157,7 +157,7 @@ void TForeignMinister::Call94() {
   int roll = GenerateThreadLocalRandom15Value();
   short tradeWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(5);
   if (roll % 100 + 200 < static_cast<int>(tradeWeight)) {
-    short tradeMetric = owner->QueryNationMetricBySlot78(5);
+    short tradeMetric = owner->GetDiplomacyExternalStateB6ByTarget(5);
     if (tradeMetric != 0) {
       int assignAmount = static_cast<int>(tradeMetric) / 2;
       if (assignAmount > 4) {

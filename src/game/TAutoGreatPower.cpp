@@ -96,8 +96,8 @@ extern double g_Evaluate_Advisory_Case11_Value_00653FD8; // 0.5
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 // FUNCTION: IMPERIALISM 0x004e6b30
-void* __cdecl TAutoGreatPower::GetTAutoGreatPowerClassNamePointer(void) {
-  return reinterpret_cast<void*>(kAddrClassDescTAutoGreatPower);
+CRuntimeClass* TAutoGreatPower::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTAutoGreatPower);
 }
 
 TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
@@ -146,15 +146,15 @@ void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7550
-void TAutoGreatPower::VTableIndex54_Provisional(void) {
+void TAutoGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) {
   if (this->city != 0) {
-    this->VTableIndex77_Provisional();
-    this->VTableIndex78_Provisional();
+    this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+    this->AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e7590
-void TAutoGreatPower::VTableIndex56_Provisional(void) {
+void TAutoGreatPower::OrphanRetStub_004dcc30(void) {
   if (this->city != 0) {
     this->interiorMinister->Call54();
   }
@@ -170,14 +170,14 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNa
       double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
       int roll = GenerateThreadLocalRandom15();
       if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
-        this->EscalateNeedSlot2C8_Provisional(needSlot);
+        this->EscalateNeedSlot2C8(needSlot);
       }
       return;
     }
   } else if (static_cast<short>(needSlot) != 5) {
     short metricCap = 10;
-    if (this->QueryNationMetricBySlot78(static_cast<short>(needSlot)) < 10) {
-      metricCap = this->QueryNationMetricBySlot78(static_cast<short>(needSlot));
+    if (this->GetDiplomacyExternalStateB6ByTarget(static_cast<short>(needSlot)) < 10) {
+      metricCap = this->GetDiplomacyExternalStateB6ByTarget(static_cast<short>(needSlot));
     }
     if (this->tradeCapacity < metricCap) {
       metricCap = this->tradeCapacity;
@@ -188,8 +188,8 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNa
     this->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(needSlot), metricCap);
     return;
   }
-  if (this->QueryNationMetricBySlot78(5) != 0 && this->QueryNationMetricBySlot7C(5) != -1) {
-    short metric = this->QueryNationMetricBySlot78(5);
+  if (this->GetDiplomacyExternalStateB6ByTarget(5) != 0 && this->QueryNationMetricBySlot7C(5) != -1) {
+    short metric = this->GetDiplomacyExternalStateB6ByTarget(5);
     int assignAmount = (metric != 1) + 1;
     if (this->tradeCapacity < static_cast<short>(assignAmount)) {
       assignAmount = this->tradeCapacity;
@@ -223,8 +223,8 @@ void TAutoGreatPower::RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(voi
 }
 
 // FUNCTION: IMPERIALISM 0x004e79d0
-char TAutoGreatPower::DispatchOrQueueDiplomacyRequestSlot88_Provisional(int targetNation, int arg2,
-                                                                        int arg3, int slotIndex) {
+char TAutoGreatPower::TryDispatchNationActionViaUiContextOrFallback(int targetNation, int arg2,
+                                                                    int arg3, int slotIndex) {
   if (this->IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(static_cast<short>(slotIndex)) !=
       0) {
     this->foreignMinister->DispatchProposalSlot98(targetNation, arg2, arg3, slotIndex);
@@ -242,7 +242,7 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
     for (short needSlot = 7; needSlot < 0x0d; ++needSlot) {
       short pending = *pendingMetric;
       if (pending > 0) {
-        short current = this->QueryNationMetricBySlot78(needSlot);
+        short current = this->GetDiplomacyExternalStateB6ByTarget(needSlot);
         short remaining;
         if (current < pending) {
           remaining = 0;
@@ -610,7 +610,13 @@ void TAutoGreatPower::DispatchTurnOrderActionSlotB0(short orderKind, short paylo
 }
 
 // FUNCTION: IMPERIALISM 0x004ea450
-void TAutoGreatPower::VTableIndex177_Provisional(void) {}
+void TAutoGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {}
+
+void TAutoGreatPower::EscalateNeedSlot2C8(int needSlot) {
+  (void)needSlot;
+}
+
+void TAutoGreatPower::CallSlotB3(void) {}
 
 // FUNCTION: IMPERIALISM 0x004eb0d0
 void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {

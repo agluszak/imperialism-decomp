@@ -23,5 +23,5 @@ TGreatPower* GetNationStateBySlot(short slotId) {
 }
 
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot) {
-  return nationState->QueryNationMetricBySlot78(metricSlot);
+  return nationState->GetDiplomacyExternalStateB6ByTarget(metricSlot);
 }

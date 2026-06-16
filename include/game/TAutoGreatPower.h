@@ -5,6 +5,7 @@
 // VTABLE: IMPERIALISM 0x00654088
 class TAutoGreatPower : public TGreatPower {
 public:
+  virtual CRuntimeClass* GetRuntimeClass() const override;
   // The auto-tracked list lives at +0xb60 — that is the base header's tail field
   // `missionQueue` (the whole 0x964+ tail block is TAutoGreatPower-only data that is
   // still declared on TGreatPower; see worklog 2026-06-10).
@@ -17,7 +18,7 @@ public:
   // slot 0x07 — 0x004e7230: drain autoTrackedListB60 then run the base release.
   void ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void) override;
   // slot 0x36 — 0x004e7550: forward to slots 0x4d/0x4e when city exists.
-  void VTableIndex54_Provisional(void) override;
+  void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void) override;
   // slot 0x67 — 0x004e7680: need assignment with capability caps / escalation roll.
   void AssignNeedSlotFromSourceSlot19C(int needSlot, int sourceNation) override;
   // slot 0x9f — 0x004e7cc0: war-transition propagation across eligible allied nations.
@@ -27,10 +28,10 @@ public:
   // slot 0x18 — 0x004ea1c0: also drop the matching mission and map-node flag.
   void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) override;
   // slot 0x22 — 0x004e79d0: forward to the foreign minister or queue a tracked entry.
-  char DispatchOrQueueDiplomacyRequestSlot88_Provisional(int targetNation, int arg2, int arg3,
-                                                         int slotIndex) override;
+  char TryDispatchNationActionViaUiContextOrFallback(int targetNation, int arg2, int arg3,
+                                                     int slotIndex) override;
   // slot 0x38 — 0x004e7590: interior-minister slot 0x54 when city exists.
-  void VTableIndex56_Provisional(void) override;
+  void OrphanRetStub_004dcc30(void) override;
   // slot 0x71 — 0x004e7a50: flush actionMetricByQuarter into city fieldB6.
   void ClearDiplomacyState1c6Block(void) override;
   // slot 0x72 — 0x004e7af0: foreign-minister slot 0x58 when city exists.
@@ -53,13 +54,15 @@ public:
   void ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) override;
   // slots 0xb0/0xb1 — 0x004ea430/0x004ea450: no-op overrides for AI nations.
   void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags) override;
-  void VTableIndex177_Provisional(void) override;
+  void BuildGreatPowerTurnMessageSummaryAndDispatch(void) override;
+  // slots 0x2c8/0x2cc — base vtable NULL; TAutoGreatPower fills these entries.
+  virtual void EscalateNeedSlot2C8(int needSlot);
+  virtual void CallSlotB3(void);
 
   // 0x004eb0d0 — swap mission entries whose GetReplacementSlot48 differs from
   // themselves out of missionQueue (called by the slot 0xae turn pipeline).
   void PruneInvalidTrackedEntriesAndNotifyOwner(void);
 
-  static void* GetTAutoGreatPowerClassNamePointer(void);
   void* ConstructTAutoGreatPowerBaseState(void);
   void RecomputeDiplomacyAidBudgetAndResetNeedScoresAndMatrix(void);
   void ReplayQueuedDiplomacyProposalRowsAndProcessQueue(void);

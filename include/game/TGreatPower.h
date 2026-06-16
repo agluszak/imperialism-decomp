@@ -4,6 +4,10 @@
 #include "game/CString.h"
 #include "game/TPtrList.h"
 
+class CArchive;
+class CDumpContext;
+class CRuntimeClass;
+
 class TMinister;
 class TForeignMinister;
 class TDefenseMinister;
@@ -11,28 +15,31 @@ class TCityInteriorMinister;
 class TQueueObject;
 class TCity;
 
-#define TGREATPOWER_VTABLE_SLOT(n)                                                                 \
-  virtual void VTableIndex##n##_Provisional(void) {}
-
 // Runtime vtable is standalone (slots 0–4 are nation-specific; slots 3–4 share
 // CObject no-op thunks). Dtor @ 0x004d8c50 restores 0x0066fec4 for EH only.
 // VTABLE: IMPERIALISM 0x00653938
 class TGreatPower {
 public:
-  TGREATPOWER_VTABLE_SLOT(00);
+  // slot 0x00 — body 0x004d89d0: returns TGreatPower CRuntimeClass descriptor.
+  virtual CRuntimeClass* GetRuntimeClass() const;
   // slot 0x01 — scalar deleting destructor 0x004d8c20 (SYNTHETIC); real dtor body
   // 0x004d8c50 releases the two identity CStrings then restores the base vtable.
   virtual ~TGreatPower();
-  TGREATPOWER_VTABLE_SLOT(02);
-  TGREATPOWER_VTABLE_SLOT(03);
-  TGREATPOWER_VTABLE_SLOT(04);
-  TGREATPOWER_VTABLE_SLOT(05);
-  TGREATPOWER_VTABLE_SLOT(06);
+  // slots 0x02–0x04 — MFC prefix thunks (Serialize / AssertValid / Dump); bodies
+  // resolve through ILT jmp targets, not claimed as FUNCTION markers here.
+  virtual void Serialize(CArchive& archive);
+  virtual void AssertValid() const;
+  virtual void Dump(CDumpContext& dc) const;
+  // slot 0x05 — body 0x004d9c70 (Ghidra misnames TCountry::…).
+  virtual void HandleCityDialogHintClusterUpdate(void* message);
+  // slot 0x06 — body 0x004d92e0: minister roster + scenario state wiring.
+  virtual void InitializeGreatPowerMinisterRosterAndScenarioState(int streamState);
   // slot 0x07 — body 0x004d9160: releases every owned member object then `delete this`.
   // TAutoGreatPower overrides it (0x004e7230) to drain autoTrackedListB60 first.
   virtual void ReleaseOwnedGreatPowerObjectsAndDeleteSelf(void);
-  TGREATPOWER_VTABLE_SLOT(08);
-  TGREATPOWER_VTABLE_SLOT(09);
+  // slots 0x08–0x09 — TObject ShallowClone / ShallowFree thunks at orig vtable.
+  virtual void* ShallowClone();
+  virtual void* ShallowFree();
   // slot 0x0a — body 0x004da500: writes core scalars (0x0e/0x10/0x88/0x8c) then the
   // tracked-order list and each tracked order to the stream.
   virtual void WriteCoreStateAndTrackedOrdersToStream(void* stream);
@@ -70,15 +77,14 @@ public:
   // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
   // matching mission from missionQueue and clear mapNodeStateFlags.
   virtual void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId);
-  TGREATPOWER_VTABLE_SLOT(25);
-  TGREATPOWER_VTABLE_SLOT(26);
-  TGREATPOWER_VTABLE_SLOT(27);
+  virtual void AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
+  virtual void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot,
+                                                                int policyCode);
+  virtual void DecrementDiplomacyCounterA2ByValue(int delta);
   virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot); // slot 0x1c
   virtual short GetDiplomacyCounterA2(void);                                  // slot 0x1d
-  // index 0x1e / vtable+0x078. Evidence: 0x004dd1b0 and 0x004dd270 call this
-  // for each nation while recomputing diplomacy need baselines; returns AX.
-  virtual short QueryNationMetricBySlot78(short metricSlot); // slot 0x78
-  virtual short QueryNationMetricBySlot7C(short metricSlot); // slot 0x7c
+  virtual short GetDiplomacyExternalStateB6ByTarget(short nationSlot);         // slot 0x1e
+  virtual short QueryNationMetricBySlot7C(short metricSlot);                   // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
   virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
@@ -87,22 +93,17 @@ public:
   IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot); // slot 0x21
   // slot 0x22 — TAutoGreatPower override 0x004e79d0 either forwards to the foreign
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
-  virtual char DispatchOrQueueDiplomacyRequestSlot88_Provisional(int targetNation, int arg2,
-                                                                 int arg3, int slotIndex) {
-    (void)targetNation;
-    (void)arg2;
-    (void)arg3;
-    (void)slotIndex;
-    return 0;
-  }
-  TGREATPOWER_VTABLE_SLOT(35);
-  TGREATPOWER_VTABLE_SLOT(36);
+  virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
+                                                             int arg4);
+  virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode,
+                                                         short targetNationId);
+  virtual char ReturnFalseNationStateCapabilityFlag90(int arg);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode); // slot 0x94
-  TGREATPOWER_VTABLE_SLOT(38);
-  TGREATPOWER_VTABLE_SLOT(39);
+  virtual char ReturnFalseNationStateCapabilityFlag98(void);
+  virtual char ReturnFalseNationStateCapabilityFlag9C(void);
   virtual char ShouldDispatchImmediatelySlot28_Provisional(void);
-  TGREATPOWER_VTABLE_SLOT(41);
-  virtual void VTableIndex42_Provisional(void) {} // slot 0x2a
+  virtual void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2);
+  virtual void NoOpNationPendingActionHook(void);
   // slot 0x2b — body 0x004da860: marks status flag 5 handled when the city-order
   // capability byte (+0x277 row) is active.
   virtual void MarkStatusFlag5HandledIfCapabilityActive(void);
@@ -118,7 +119,7 @@ public:
   // slot 0x30 — body 0x004daa80: invokes [vt+0x28] on every mission node, then
   // clears missionNodeQueue.
   virtual void DispatchMissionNodeCallbacksAndClearQueue(void);
-  TGREATPOWER_VTABLE_SLOT(49);
+  virtual void NoOpNationQueuedOrderHook(void);
   // index 0x32 / vtable+0x0c8. Per-nation pending-action state machine that
   // constructs queued land/navy/civ order objects (body 0x004dab20).
   virtual void ExecuteNationPendingActionStateMachine(void);
@@ -134,10 +135,9 @@ public:
   // regionId through same-owner neighbors (self-recursive through this slot, with the
   // first eligible neighbor tail-iterated).
   virtual void MarkConnectedOwnedRegionsFrom(unsigned char* regionMap, short regionId);
-  TGREATPOWER_VTABLE_SLOT(54);
-  // slot 0x37 — body 0x004dca60: forwards to city slot 0x2c when present.
+  virtual void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
   virtual void NotifyCitySlot2C(void);
-  TGREATPOWER_VTABLE_SLOT(56);
+  virtual void OrphanRetStub_004dcc30(void);
   // slot 0x39 — body 0x004df810: loads the scenario-level preset row (table 0x653570)
   // into the city's fieldB6 relation deltas, maxes six production-order entries to
   // 999, notifies the manager's 0x1d8 sink, then spawns the Frog City marker through
@@ -151,9 +151,9 @@ public:
   // site" on failure), stores it at +0x88, creates the "FrogCity" marker, attaches it to
   // the receiver and the global map, and notifies the interior minister.
   virtual void CreateFrogCityAtHomeRegionAndAttach(void* receiver);
-  TGREATPOWER_VTABLE_SLOT(60);
-  TGREATPOWER_VTABLE_SLOT(61);
-  TGREATPOWER_VTABLE_SLOT(62);
+  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(void);
+  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(void);
+  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(void);
   // slot 0xfc — TCity::Call2C (0x004b3de0) pushes the city's fieldB6 need vector here.
   virtual void AbsorbCityNeedVectorSlotFC_Provisional(short* needVector) {
     (void)needVector;
@@ -164,19 +164,19 @@ public:
   virtual unsigned int GetEffectiveDiplomacyCounterA2ForCode(int proposalCode);
   virtual void ApplyDiplomacyState222ToCityFieldB6AndClear(void);      // slot 0x41
   virtual void ApplyRelationDeltaToCityFieldB6AndUpdateState1f4(void); // slot 0x42
-  virtual void VTableIndex67_Provisional(void) {}                      // slot 0x43
-  TGREATPOWER_VTABLE_SLOT(68);
+  virtual void ApplyNationResourceNeedTargetsToOrderState(void);
+  virtual void SetNationResourceNeedCurrentByType(int needType, int currentValue);
   virtual void UpdateNeedTargetAndAccumulateOverCap(short needIndex, short value); // slot 0x45
   virtual bool IsNeedTargetEqualCurrent(short needIndex);                          // slot 0x46
   virtual short GetNeedTargetByType(short needIndex);                              // slot 0x47
-  TGREATPOWER_VTABLE_SLOT(72);
-  TGREATPOWER_VTABLE_SLOT(73);
+  virtual void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
+  virtual void IsNationResourceNeedCurrentSumExceedingCapA6(void);
   virtual short TryDecayRelationNeedScores9AndB(void); // slot 0x4a
   virtual short TryDecayRelationNeedScores9And8(void); // slot 0x4b
   // slot 0x4c — body 0x004e0220: invokes [vt+0x2c] on every tracked order.
   virtual void DispatchTrackedOrderSlot2CCallbacks(void);        // slot 0x4c
-  virtual void VTableIndex77_Provisional(void) {}                // slot 0x4d
-  virtual void VTableIndex78_Provisional(void) {}                // slot 0x4e
+  virtual void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
+  virtual void AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void);
   virtual char AnyNeedCurrentExceedsTargetWhenCapMismatch(void); // slot 0x4f
   // slot 0x50 — body 0x004dc440: true when any city commodity record 8..0xc has its
   // control value below the record's step value (gated on scenario cap >= 2).
@@ -186,8 +186,8 @@ public:
   virtual short ComputeTreasuryStatusPromptCode(void);
   // slot 0x52 — 0x004e1c20 dispatches it on the target nation with mode 0/1.
   virtual char CompareMissionScoreVariantsByMode(int mode);
-  TGREATPOWER_VTABLE_SLOT(83);
-  TGREATPOWER_VTABLE_SLOT(84);
+  virtual void BuildGreatPowerMapContextTriggeredNationEventMessages(void);
+  virtual void BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void);
   // slot 0x55 — body 0x004e0290: selection-sorts trackedObjectList ascending by the
   // per-order-type priority table at 0x6966d0.
   virtual void SortTrackedOrdersByTypePriority(void);
@@ -195,19 +195,19 @@ public:
   virtual void RunSlot4CThenSortTrackedOrders(void);
   // slot 0x57 — body 0x004e03d0: field900 = needCapA6 / 5.
   virtual void ResetField900FromNeedCapA6(void);
-  TGREATPOWER_VTABLE_SLOT(88);
-  // index 0x59 / vtable+0x164. Evidence: 0x004dd1b0 invokes this before
-  // resetting diplomacy aid budget state; implementation at 0x004dd140.
+  virtual void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
+                                                                            int isBoycottEnabled);
   virtual void RecomputeDiplomacyAidBudgetScoreFromResourceWeights(void);
-  TGREATPOWER_VTABLE_SLOT(90);
-  TGREATPOWER_VTABLE_SLOT(91);
+  virtual void ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
+  virtual void RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
   virtual void ReleaseDiplomacyTrackedObjectSlots850(void); // slot 0x5c
-  TGREATPOWER_VTABLE_SLOT(93);
-  TGREATPOWER_VTABLE_SLOT(94);
+  virtual void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex,
+                                                          short rowIndex);
+  virtual int SumAidAllocationMatrixColumnForTarget(short targetNationId);
   virtual int SumAidAllocationMatrixAllCells(void); // slot 0x5f
-  TGREATPOWER_VTABLE_SLOT(96);
-  TGREATPOWER_VTABLE_SLOT(97);
-  TGREATPOWER_VTABLE_SLOT(98);
+  virtual int ComputeRemainingDiplomacyAidBudget(void);
+  virtual void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
+  virtual void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
   virtual void SetCityFieldB6AndRefresh(short targetSlot, short value);   // slot 0x63
   virtual void AddToCityFieldB6AndRefresh(short targetSlot, short value); // slot 0x64
   // slot 0x65 — body 0x004dd7f0: per-order-kind production metric (city building
@@ -252,11 +252,10 @@ public:
   // slot 0x7d — body 0x004df4b0: whether eventCode may target the nation given the
   // current relation tier (tiers 2..6 progressively restrict 0x12e-0x130).
   virtual char IsEventCodeAllowedForRelationTier(short eventCode, int targetNation);
-  TGREATPOWER_VTABLE_SLOT(126);
-  // slot 0x7f — body 0x004df5a0: releases the proposal queue (slot 0x1c).
+  virtual void ResetNationDiplomacyProposalQueue(void);
   virtual void ReleaseProposalQueueSlot7F(void);
-  TGREATPOWER_VTABLE_SLOT(128);
-  TGREATPOWER_VTABLE_SLOT(129);
+  virtual void DispatchTurnEvent2103WithNationFromRecord(void);
+  virtual void ProcessPendingDiplomacyProposalQueue(void);
   // slot 0x82 — body 0x004e2880: ranks this nation's summed building production against
   // the mean/stddev across all eligible nations; returns tier 0..4.
   virtual int ClassifyNationProductionTierVsPeers(void);
@@ -345,19 +344,11 @@ public:
   // slot 0xac — body 0x004e06d0: sums the accumulated value (+0x44) of city
   // commodity records 8..0xc.
   virtual int SumCommodityRecordAccumulatedValues(void);
-  TGREATPOWER_VTABLE_SLOT(173);
-  TGREATPOWER_VTABLE_SLOT(174);
-  // slot 0x2bc — body 0x004db380; TAutoGreatPower stubs it out (0x004e6b10).
+  virtual void OrphanRetStub_004d8bc0(void);
+  virtual void OrphanRetStub_004d8be0(int arg);
   virtual void UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
-  // index 0xb0 / vtable+0x2c0. Dispatches a queued turn-order action via the active
-  // map order context (body 0x004e2b00, RET 0xc -> three short args). Called from
-  // slot 0x32 to enqueue land/navy/civ orders.
   virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
-  TGREATPOWER_VTABLE_SLOT(177);
-  // slot 0x2c8 — escalation hook invoked by TAutoGreatPower::AssignNeedSlotFromSourceSlot19C
-  // (0x004e7680) when the random relation-score check passes.
-  virtual void EscalateNeedSlot2C8_Provisional(int needSlot) {}
-  virtual void CallSlotB3_Provisional(void) {}
+  virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 
   CString identitySharedString0;
   CString identitySharedString1;
@@ -459,51 +450,23 @@ public:
   TGreatPower(int arg1, int arg2);
 
   static void* CreateTGreatPowerInstance(void);
-  static void* GetTGreatPowerClassNamePointer(void);
-  void InitializeGreatPowerMinisterRosterAndScenarioState(int arg1);
   void DeserializeRecruitScenarioAndInstantiateOrders(int streamState);
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
-  void IsNationResourceNeedCurrentSumExceedingCapA6(void);
   void QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, int arg3, int arg4);
-  void AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
-  void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot, int policyCode);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
-  void BuildGreatPowerMapContextTriggeredNationEventMessages(void);
-  void BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void);
-  void ApplyNationResourceNeedTargetsToOrderState(void);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
-  void AssignFallbackNationsToUnfilledDiplomacyNeedSlots(void);
-  void ResetDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
-  void RefreshDiplomacyNeedScoresAndClearAidAllocationMatrix(void);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
-  void SetNationResourceNeedCurrentByType(int needType, int currentValue);
-  void TryIncrementNationResourceNeedTargetTowardCurrent(int needType);
   int GetMultiplierSlot21C(void);
-  void AddAmountToAidAllocationMatrixCellAndTotal(int amount, short columnIndex, short rowIndex);
-  int SumAidAllocationMatrixColumnForTarget(short targetNationId);
-  int ComputeRemainingDiplomacyAidBudget(void);
-  short GetDiplomacyExternalStateB6ByTarget(short targetNationSlot);
-  void DecrementDiplomacyCounterA2ByValue(int delta);
-  void ResetNationDiplomacyProposalQueue(void);
-  void SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(int targetNationSlot,
-                                                                    int isBoycottEnabled);
   void RebuildNationResourceYieldsAndRollField134Into136(void);
-  void RebuildNationResourceYieldCountersAndDevelopmentTargets(void);
   void InitializeMapActionCandidateStateAndQueueMission(int arg1);
   void SelectAndQueueAdvisoryMapMissionsCase16(void);
-  void RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary(void);
   float ComputeMapActionContextCompositeScoreForNation(int nodeType);
   unsigned int ComputeMapActionContextNodeValueAverage(void);
   float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
                                                       int relationTargetNation,
                                                       int selectedNationSlot);
-  void ProcessPendingDiplomacyProposalQueue(void);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
-  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
-  void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void);
-  void DispatchTurnEvent2103WithNationFromRecord(void);
   void ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode);
-  void AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void);
   void WrapperFor_HandleCityDialogHintClusterUpdate_At004e73f0(void* pMessage);
   void QueueDiplomacyProposalCodeWithAllianceGuards(int arg1, int arg2);
   void WrapperFor_TGreatPower_VtblSlot32_At004e7630(int arg1, int arg2, int arg3);
@@ -512,14 +475,12 @@ public:
   void QueueWarTransitionFromAdvisoryAction(int arg1, int arg2, int arg3);
   void ApplyJoinEmpireResetAndClearDiplomacyCaches(int arg1);
   void AddRegionToNationAndQueueMapActionMission(int arg1);
-  char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3, int arg4);
   void QueueDiplomacyProposalCodeForTargetNationAndDispatchTurnEvent16(int proposalCode,
                                                                        int targetNationId);
   void TryDispatchNationActionViaUiThenTurnEvent(int arg1, int arg2, int arg3, int arg4);
   void ProcessPendingDiplomacyThenDispatchTurnEvent29A(void);
   void ApplyClientGreatPowerCommand69AndEmitTurnEvent1E(int arg1, int arg2);
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
-  void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);
   void ConstructTurnOrderNavigationWindowEntryViewportAdaptive(void);
@@ -531,5 +492,3 @@ public:
     return city;
   }
 };
-
-#undef TGREATPOWER_VTABLE_SLOT

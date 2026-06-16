@@ -1,5 +1,22 @@
 # Worklog
 
+- **Timestamp:** 2026-06-16 — TGreatPower vtable skeleton + stub-to-virtual sweep
+- **Command:** `just sync-ownership` → `just regen-stubs` → `just build` → `just detect` →
+  `just vtable TGreatPower` → `just vtable TAutoGreatPower` → `just compare` canaries →
+  `just stackcmp 0x4d89f0` → `just gates`. Blockers in `docs/blockers/tgreatpower.md`.
+- **Score Delta:** `just vtable TGreatPower` — recomp vtable **size warning gone** (was
+  larger than orig); slot 0 `GetRuntimeClass`, slot 0x14 `HandleCityDialogHintClusterUpdate`,
+  slots 0x19–0x1b region/diplomacy trio, aid-matrix block, tail `0x2b4`/`0x2b8`/`0x2c4`
+  now pair. Canary compares: `0x4d89d0` 50%, `0x4d8c20` 72%, `0x4d9160` 41%, `0x4d92e0`
+  18%, `0x4da500` 95%, `0x4d9c70` 1% (stub body).
+- **Description:** Deleted `TGREATPOWER_VTABLE_SLOT` macro; wired ~23 provisional slots to
+  real virtuals; removed NULL-tail virtuals from base; moved `EscalateNeedSlot2C8`/
+  `CallSlotB3` to `TAutoGreatPower`; renamed `QueryNationMetricBySlot78` →
+  `GetDiplomacyExternalStateB6ByTarget`; `TAutoGreatPower` overrides renamed to match base
+  signatures (`RefreshGreatPowerRelationPanels…`, `TryDispatchNationAction…`,
+  `GetRuntimeClass`). Remaining gaps: ILT thunk slots 2–4/8–9 (B1), mid-table virtual
+  declaration drift (B9), minister roster / release bodies below 90% target.
+
 - **Timestamp:** 2026-06-16 — MFC duplicate-symbol cleanup: clean link without /FORCE:MULTIPLE
 - **Command:** Reclaimed 22 overlapping `nafxcw.lib` symbols via in-source `// LIBRARY:`
   markers (CString ctor/dtor, CArchive Close/FillBuffer, CMapPtrToPtr InitHashTable/

@@ -2387,14 +2387,6 @@ undefined4 OrphanLeaf_NoCall_Ins07_004d8920(void)
   return 0;
 }
 
-// ghidra_name TCountry::HandleCityDialogHintClusterUpdate
-// ghidra_proto undefined HandleCityDialogHintClusterUpdate()
-// FUNCTION: IMPERIALISM 0x004d9c70
-undefined4 HandleCityDialogHintClusterUpdate(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTurnEvent11F8WithNoPayload
 // ghidra_proto undefined DispatchTurnEvent11F8WithNoPayload()
 // FUNCTION: IMPERIALISM 0x004daf00

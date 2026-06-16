@@ -378,26 +378,6 @@ void __stdcall DiscardTileTokenArgumentAndReturn(int) {
 }
 //     al-width load; FPO pragma above keeps ret N frameless. ---
 
-// FUNCTION: IMPERIALISM 0x004d6730
-bool ReturnFalseNationStateCapabilityFlag98(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x004d6750
-bool ReturnFalseNationStateCapabilityFlag9C(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x004d6770
-bool ReturnFalseNationStateCapabilityFlagA0(void) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x004d6790
-void __stdcall NoOpNationSelectedRegionAndMapCellLabelHook(int, int) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004d7b00
 bool __stdcall ReturnFalseNationStateActionStub(int, int, int, int) {
   return false;
@@ -428,11 +408,6 @@ unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f40(int) {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004d7f60
-bool __stdcall ReturnFalseNationStateCapabilityFlag90(int) {
-  return false;
-}
-
 // FUNCTION: IMPERIALISM 0x004d7f80
 void __stdcall OrphanRetStub_004d7f80(int, int) {
   return;
@@ -453,33 +428,8 @@ void __stdcall OrphanRetStub_004d7fe0(int, int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x004d8bc0
-void OrphanRetStub_004d8bc0(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004d8be0
-void __stdcall OrphanRetStub_004d8be0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004da5c0
-void NoOpNationPendingActionHook(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004dab00
-void NoOpNationQueuedOrderHook(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004dca80
 void __stdcall OrphanRetStub_004dca80(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004dcc30
-void OrphanRetStub_004dcc30(void) {
   return;
 }
 
