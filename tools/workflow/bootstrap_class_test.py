@@ -11,6 +11,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
+from tools.ghidra.vtable_slots import is_rtti_getter
 from tools.workflow import bootstrap_class as bc
 
 
@@ -144,6 +145,12 @@ def main() -> int:
         own_addrs = {r["address"] for r in own_plan.new_rows}
         check("ownership skips collided addr", "5c2490" not in own_addrs)
         check("ownership adds 5c27d0", "5c27d0" in own_addrs)
+
+    # auto-detect boundary helper (next-vtable RTTI getter)
+    check("rtti getter ClassNamePointer", is_rtti_getter("GetTAnimatorClassNamePointer"))
+    check("rtti getter GetRuntimeClass", is_rtti_getter("GetRuntimeClass"))
+    check("rtti getter rejects method", not is_rtti_getter("Serialize"))
+    check("rtti getter rejects none", not is_rtti_getter(None))
 
     print("\nALL CHECKS PASSED")
     return 0

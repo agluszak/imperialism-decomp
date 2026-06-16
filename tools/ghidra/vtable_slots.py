@@ -12,9 +12,11 @@ Usage:
   uv run python -m tools.ghidra.vtable_slots [--decompile] \
       Class=0x0066ee18[:COUNT] [Base=0x00653868[:COUNT] ...]
 
-If :COUNT is omitted the extent is auto-detected (stop at the first slot that is
-neither a defined function, a thunk to one, nor null) and a warning is printed to
-stderr advising you to verify it. JSON is written to stdout.
+If :COUNT is omitted the extent is auto-detected — it stops at the next class's
+vtable boundary (a slot-0 RTTI/classname getter), or at the first slot that is
+neither a defined function, a thunk to one, nor null — and a warning is printed
+to stderr advising you to verify it (trailing nulls before a boundary are
+ambiguous: padding vs. abstract pure-virtual slots). JSON is written to stdout.
 """
 
 from __future__ import annotations
@@ -25,6 +27,19 @@ import sys
 from tools.common import ghidra_env
 
 MAX_SLOTS = 512
+
+
+def is_rtti_getter(name: str | None) -> bool:
+    """True if a slot target looks like a class's slot-0 classname/RTTI getter.
+
+    The T-tree is MFC-rooted at CObject, where slot 0 of every class vtable is a
+    ``GetRuntimeClass``-family getter (named ``Get<Class>ClassNamePointer`` here).
+    Encountering one at slot index > 0 means we have run off the end of this
+    vtable into the *next* class's table — a reliable auto-detect boundary.
+    """
+    if not name:
+        return False
+    return name == "GetRuntimeClass" or "ClassNamePointer" in name
 
 
 def parse_spec(spec: str) -> tuple[str, int, int | None]:
@@ -118,21 +133,44 @@ def main() -> int:
             name, vtable, count = parse_spec(spec)
             slots: list[dict] = []
             limit = count if count is not None else MAX_SLOTS
+            last_nonnull = -1  # index of the last resolvable (non-null) slot
             for i in range(limit):
                 try:
                     entry = mem.getInt(af.getAddress(vtable + 4 * i)) & 0xFFFFFFFF
                 except Exception:
                     break
                 rec = slot_record(i, entry)
-                # Auto-detect extent: stop at a slot that is neither null nor a
-                # resolvable function body (likely the start of trailing data).
-                if count is None and i > 0 and not rec["is_null"] and rec.get("ghidra_name") is None:
-                    print(
-                        f"[vtable_slots] {name}: auto-detected {i} slots at 0x{vtable:08x} "
-                        f"(stopped at unresolved 0x{entry:08x}); pass :COUNT to override.",
-                        file=sys.stderr,
-                    )
-                    break
+                if count is None and i > 0:
+                    # Auto-detect boundary 1: the next class's vtable begins here
+                    # (its slot-0 RTTI getter). Stop *before* it. This is the
+                    # common case where two vtables abut with no gap.
+                    if is_rtti_getter(rec.get("ghidra_name")):
+                        trailing = i - 1 - last_nonnull
+                        hint = (
+                            f"; {trailing} trailing null slot(s) before it may be "
+                            f"padding (likely real COUNT {last_nonnull + 1}) or abstract "
+                            f"pure-virtual slots (COUNT {i}) — verify"
+                            if trailing > 0
+                            else ""
+                        )
+                        print(
+                            f"[vtable_slots] {name}: stopped at slot 0x{i * 4:02x} — next "
+                            f"vtable '{rec['ghidra_name']}' starts here{hint}; pass :COUNT "
+                            f"to override.",
+                            file=sys.stderr,
+                        )
+                        break
+                    # Auto-detect boundary 2: a slot that is neither null nor a
+                    # resolvable function body (likely the start of trailing data).
+                    if not rec["is_null"] and rec.get("ghidra_name") is None:
+                        print(
+                            f"[vtable_slots] {name}: auto-detected {i} slots at 0x{vtable:08x} "
+                            f"(stopped at unresolved 0x{entry:08x}); pass :COUNT to override.",
+                            file=sys.stderr,
+                        )
+                        break
+                if not rec["is_null"]:
+                    last_nonnull = i
                 slots.append(rec)
             out[name] = {"vtable_addr": f"0x{vtable:08x}", "slots": slots}
 
