@@ -6,8 +6,8 @@ Primary workflow uses `just` wrappers:
 
 1. `just detect`
 2. `just compare 0xADDR` (or `just compare`)
-3. `just stats`
-4. `just compare-canaries`
+3. `just stats` (compare against the committed progress baseline)
+4. `just stats-commit` (update the committed progress baseline after accepting changes)
 5. `just session-loop`
 
 Bootstrap project metadata once:

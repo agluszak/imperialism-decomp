@@ -67,8 +67,8 @@ but only when the thunk address is **not** claimed as a function on our side. To
 After each fix: `just sync-ownership` → `just regen-stubs` → `just build` → `just detect`
 → `just vtable <Class>` (expect `100% match`). Then `just gates` (marker hygiene +
 decomplint ordering) and `just format-check <touched paths>`. If you changed a **base**
-class, re-run `just vtable` on a couple of derived classes and `just compare-canaries` —
-base edits touch the whole family. Build the binary before trusting the diff; the
+class, re-run `just vtable` on a couple of derived classes and `just stats` — base edits
+touch the whole family. Build the binary before trusting the diff; the
 comparison reads the freshly built `Imperialism.exe`/`.pdb`.
 
 ## Guardrails

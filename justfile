@@ -13,7 +13,6 @@ function_ownership := "config/function_ownership.csv"
 vtable_gate_baseline := "config/vtable_gate_baseline.csv"
 construction_gate_baseline := "config/construction_gate_baseline.csv"
 tgreatpower_gate_baseline := "config/tgreatpower_gate_baseline.csv"
-canary_targets := "config/canary_targets_tgreatpower.csv"
 class_discovery_classes := "TGreatPower,TAutoGreatPower"
 
 # The Ghidra project is vendored in-repo; only GHIDRA_INSTALL_DIR is machine-specific (.env).
@@ -270,11 +269,11 @@ roadmap *args:
 stackcmp addr *args:
   (cd "{{build_dir}}" && uv run reccmp-stackcmp --target "{{target}}" {{args}} "{{addr}}")
 
-compare-canaries:
-  uv run python -m tools.reccmp.compare_canaries --target "{{target}}" --build-dir "{{build_dir}}" --canary-csv "{{canary_targets}}"
-
 stats:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled
+
+stats-commit:
+  uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
 
 inventory:
   uv run python -m tools.reccmp.library_inventory --json-out "{{build_dir}}/library_inventory.json"

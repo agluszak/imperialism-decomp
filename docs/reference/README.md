@@ -1,8 +1,8 @@
 # Reference
 
 Durable layout contracts and game-domain knowledge. These are lookup references, not
-workflow guides (those are in `.claude/skills/`) and not the execution log
-(`docs/worklog.md`).
+workflow guides (those are in `.claude/skills/`) and not the change log (use clear git
+commit messages for change-specific commands, validation, and score deltas).
 
 ## Decompilation / layout contracts
 

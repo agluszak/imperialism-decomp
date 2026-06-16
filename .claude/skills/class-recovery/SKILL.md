@@ -43,7 +43,7 @@ tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36
    global/helper boundaries, and ctor/dtor/lifetime evidence. A helper *called from*
    a class method is not membership evidence.
 5. Only then edit source or vcall metadata. Verify with `just compare 0xADDR` and
-   `just compare-canaries`.
+   `just stats`.
 
 For a suspect class name, use a synthetic label with explicit anchors:
 
@@ -124,5 +124,5 @@ layouts (dumped via `just ghidra-vtable-dump`): `CObject` (`0x66fec4`, 5 slots),
 (`CObject` base → `TIndexAndRankList : CObject` → `CPtrList` → `TSortedPtrList :
 TIndexAndRankList` → `CDocument`), unify each manual ctor's vtable write onto the same
 DATA symbol the C++ vtable resolves to, and re-verify the whole family +
-`compare-canaries` (it touches ~20 already-100% functions). See heuristics.md #61–66
+`just stats` (it touches ~20 already-100% functions). See heuristics.md #61–66
 for the concrete ctor/factory recipes.

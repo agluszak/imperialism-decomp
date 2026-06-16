@@ -3,8 +3,8 @@
 The matching playbook: transferable tactics for raising `reccmp` scores on
 `Imperialism.exe`. These are **tactics, not rules** — the Hard Rules live in
 `AGENTS.md`, and mechanically-checkable rules are enforced by `just gates`
-(see `quality-control`). Per-function execution detail (timestamps, exact score
-deltas, dead ends) belongs in `docs/worklog.md`, not here.
+(see `quality-control`). Per-function execution detail, exact score deltas, and
+dead ends belong in commit messages, not here.
 
 When you learn a new transferable lesson (decomp-loop step 9), fold it into the
 relevant theme below — keep one short rule plus one or two `0xADDR (NN%→MM%)`

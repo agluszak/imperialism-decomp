@@ -1,6 +1,6 @@
 ---
 name: quality-control
-description: Build, measure, and gate the Imperialism decomp — rebuild with Docker MSVC500, run reccmp detect/compare/stats, check canaries for regressions, enforce the raw-vtable gate, format C++, and diagnose reccmp pairing failures. Use when building, checking similarity scores, guarding against regressions, or debugging why a function won't pair.
+description: Build, measure, and gate the Imperialism decomp — rebuild with Docker MSVC500, run reccmp detect/compare/stats, compare aggregate stats against baseline, enforce the raw-vtable gate, format C++, and diagnose reccmp pairing failures. Use when building, checking similarity scores, guarding against regressions, or debugging why a function won't pair.
 ---
 
 # Quality control
@@ -16,15 +16,11 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
 - `just detect` — re-run reccmp recompiled detection (do this after every rebuild).
 - `just compare 0xADDR` — targeted verbose compare of one function (the acceptance
   gate for a touched body). With no address, runs a full compare.
-- `just stats` — aggregate progress (aligned function count, average similarity).
-  Treat this as a macro trend only; per-function `compare` is the real gate.
-- `just compare-canaries` — compare the tracked anchor set
-  (`config/canary_targets_*.csv`). Do NOT run reflexively after every change; run it only
-  when the edit's blast radius could plausibly reach the canaries — broadly-included
-  shared headers, common helpers/macros, build/optimization flags, or a canary function
-  itself. Self-contained work (porting one unrelated function, splitting a class into
-  per-class files) cannot reach the set, so skip it there. When you do run it, a non-zero
-  `below_floor` is a real regression — fix or revert before moving on.
+- `just stats` — aggregate progress compared against the committed baseline. It reports
+  improved and worsened metrics separately.
+- `just stats-commit` — update the committed aggregate baseline after accepting the
+  current stats snapshot. Per-function `compare` remains the real gate for touched
+  bodies.
 
 ## Export-sync sequence (run whenever markers/ownership change)
 

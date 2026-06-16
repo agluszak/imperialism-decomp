@@ -15,7 +15,7 @@ starting that kind of task.
   pass → build → compare). Its `heuristics.md` is the 85-entry matching playbook.
 - **`ghidra`** — inspect `Imperialism.exe` via pyghidra (listing, decompile, vtable
   dump, cdecl/thiscall scan) and the interactive function-documentation methodology.
-- **`quality-control`** — build, reccmp detect/compare/stats, canaries, gates,
+- **`quality-control`** — build, reccmp detect/compare/stats, gates,
   formatting, and reccmp pairing-failure diagnosis.
 - **`class-recovery`** — class/vtable reconstruction, Mac evidence, the vcall facade
   registry, and facade→virtual migration.
@@ -26,8 +26,8 @@ starting that kind of task.
 
 ## Docs (the durable record)
 
-- `docs/worklog.md` — chronological execution log (timestamps, commands, score
-  deltas). The ground truth for what happened.
+- Git history — clear commit messages are the durable execution record for what
+  changed, how it was verified, and any score deltas.
 - `docs/toolchain.md` — compiler/linker forensics and reproduction decisions.
 - `docs/reference/` — layout/contract and game-domain references (struct layouts,
   function/entry-chain map, bitmap IDs, tech unlocks).
@@ -180,11 +180,12 @@ examples, and rationale: `docs/reference/construction.md`.
   `__fastcall` and keep the bridge out of primary method bodies — but first ask whether
   the right fix is to recover the owning class.
 
-## Logging policy
+## Commit-message policy
 
-- Keep execution detail in `docs/worklog.md` (one timestamped entry per session/change
-  with commands and score deltas).
+- Do not add routine execution entries to `docs/worklog.md`; keep `docs/worklog.md`
+  as historical context only.
+- Write clear commit messages that explain what changed, how it was verified, and
+  any relevant score deltas or accepted residual risks.
 - Don't duplicate the same long status across multiple files.
 - Persist transferable matching lessons as numbered notes in
   `.claude/skills/decomp-loop/heuristics.md`.
-

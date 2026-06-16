@@ -68,7 +68,7 @@ defaults and can be overridden via env if needed.
 - `tools/` Python tooling (`ghidra`, `workflow`, `reccmp`, shared helpers)
 - `vendor/` vendored binary assets (Ghidra `.gzf` archive via LFS, Mac CodeWarrior evidence)
 - `.claude/skills/` per-workflow guides (`decomp-loop`, `ghidra`, `quality-control`, `class-recovery`)
-- `docs/worklog.md` chronological execution log; `docs/toolchain.md` toolchain forensics; `docs/reference/` layout + game-domain references
+- Git commit messages are the durable change log; `docs/toolchain.md` toolchain forensics; `docs/reference/` layout + game-domain references
 
 ## Policy
 

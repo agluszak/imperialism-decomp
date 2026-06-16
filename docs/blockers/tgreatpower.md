@@ -1,7 +1,7 @@
 # TGreatPower blockers
 
 Living register for `TGreatPower::vftable` (orig `0x00653938`, 184 slots) recovery.
-Scores and commands go in `docs/worklog.md`; structural blockers and decisions live here.
+Scores and commands go in commit messages; structural blockers and decisions live here.
 
 ## Baseline (2026-06-16, refreshed after `2366322`)
 

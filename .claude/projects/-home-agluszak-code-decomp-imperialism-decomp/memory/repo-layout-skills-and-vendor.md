@@ -10,7 +10,7 @@ control_plane.md, class_recovery.md, vtable_strategy.md, vtable_migration_plan.m
 reccmp_fork.md) were collapsed into:
 
 - **`AGENTS.md`** (real file; `CLAUDE.md` → symlink): the contract — Hard Rules,
-  command policy, MSVC500 guardrail, logging policy, and a map to skills/docs.
+  command policy, MSVC500 guardrail, commit-message policy, and a map to skills/docs.
 - **`.claude/skills/`** (4 skills, each `SKILL.md` + supporting files):
   - `decomp-loop` — porting loop; `heuristics.md` = the 85 Similarity Improvement
     Notes (the former INSTRUCTIONS.md playbook; append new lessons here, not INSTRUCTIONS).
@@ -18,8 +18,8 @@ reccmp_fork.md) were collapsed into:
     Ghidra documentation methodology (migrated from imperialism_knowledge/instructions.md).
   - `quality-control` — build/compare/gates + reccmp failure modes.
   - `class-recovery` — slice/mac-evidence + vcall facade registry + vtable migration.
-- **`docs/`**: kept `worklog.md` (execution log — still the place for per-change
-  entries) + `toolchain.md`; new `docs/reference/` holds layout contracts +
+- **`docs/`**: kept historical `worklog.md` plus `toolchain.md`; new
+  `docs/reference/` holds layout contracts +
   game-domain docs (migrated from imperialism_knowledge).
 
 **Vendoring (the external sibling is no longer required):** Ghidra program is at
@@ -31,6 +31,7 @@ env still overrides. See [[knowledge-db-impk-external]].
 
 **Why:** info was duplicated 3–4× across files; the sibling `imperialism_knowledge`
 repo was an undeclared hard dependency. **How to apply:** put workflow guidance in the
-right skill, record matching lessons in `decomp-loop/heuristics.md`, keep timestamped
-work in `docs/worklog.md`, and never reintroduce a path to `../imperialism_knowledge`.
+right skill, record matching lessons in `decomp-loop/heuristics.md`, put change-specific
+commands and score deltas in clear commit messages, and never reintroduce a path to
+`../imperialism_knowledge`.
 Supersedes [[next-ui-widget-split-steps]] location refs that pointed at old docs.

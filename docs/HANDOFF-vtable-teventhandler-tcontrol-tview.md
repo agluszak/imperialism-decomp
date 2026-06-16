@@ -8,8 +8,7 @@ Plan file: `/home/agluszak/.claude/plans/bring-just-vtable-teventhandler-fancy-m
 Skill to follow: `vtable-matching` (slot classification + fixes). Template commit:
 `a98934a` (TSoundPlayer → 100%). Verify loop after every change:
 `just sync-ownership` → `just regen-stubs` → `just build` → `just detect` →
-`just vtable <Class>`; then `just gates` + `just format-check <files>` +
-`just compare-canaries` (base edits touch the whole TView/TControl/Application family).
+`just vtable <Class>`; then `just gates` + `just format-check <files>` + `just stats`.
 
 ## DONE so far (uncommitted working tree, on `main`)
 
@@ -41,7 +40,7 @@ Skill to follow: `vtable-matching` (slot classification + fixes). Template commi
     callers. **(Rebuild + recheck slot 0x1a8 — should resolve.)**
 
 - Builds clean and `just detect` OK after each step. **Not yet committed. Not yet
-  re-run `just gates` / `just format-check` / `just compare-canaries`** — do this before
+  re-run `just gates` / `just format-check` / `just stats`** — do this before
   committing.
 
 ## REMAINING WORK
@@ -128,8 +127,8 @@ Goal: `grep TradeControl config/symbols.csv` → empty; no fictitious class in a
 ### Verify / finish
 - `just vtable TEventHandler|TControl|TView` each = `100% match`.
 - `just gates` passes; `just format-check` on every touched file.
-- `just compare-canaries` unchanged.
-- Append a worklog entry to `docs/worklog.md` (commands + score deltas), update memory
+- `just stats` shows no unaccepted regressions.
+- Put commands, score deltas, and residual risks in the commit message. Update memory
   notes `teventhandler-real-base`, `tview-vtable-slot-scramble`,
   `ui-vtable-hierarchy-ground-truth` if slot maps change.
 - Commit directly on `main` (repo convention), no feature branch; end message with the

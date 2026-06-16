@@ -33,15 +33,14 @@ live in `heuristics.md` next to this file — read it before tuning a body.
 6. **Data pass** — only after the shape matches: align local `short`/`int` widths,
    clamp behavior, float/int conversion order, hidden stack args, return contracts.
 7. **Verify**: run `just gates` for the mechanical source-policy gates (raw-vtable,
-   construction anti-patterns, marker hygiene). Run `just compare-canaries` only when the
-   edit's blast radius could reach the tracked anchors (shared headers, common helpers,
-   build flags, or a canary itself) — skip it for self-contained work. If a readability
-   cleanup drops the score, restore the higher-scoring body and keep the cleanup in
-   helpers/typed views.
+   construction anti-patterns, marker hygiene). Run `just stats` when the edit's blast
+   radius could change aggregate progress. If a readability cleanup drops the score,
+   restore the higher-scoring body and keep the cleanup in helpers/typed views.
 8. **Keep or move on**: if the score improved, keep it; if stuck, record what you
    learned and move to the next function.
-9. **Record the lesson**: append a numbered note to `heuristics.md` (this skill) and
-   log the change in `docs/worklog.md` (timestamp, command, score delta).
+9. **Record the lesson**: append transferable tactics to `heuristics.md` (this skill)
+   and put change-specific details, commands, score deltas, and residual risks in the
+   commit message.
 10. **Repeat** with the next highest-impact mismatch.
 
 ## Marker hygiene (must hold every iteration)
