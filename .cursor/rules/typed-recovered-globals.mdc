@@ -1,0 +1,50 @@
+---
+description: Use typed declarations for recovered singleton globals — not void* + casts
+alwaysApply: true
+---
+
+# Typed recovered globals
+
+When a Ghidra global is a **known class singleton** (layout recovered, methods owned), declare and define it with the **real pointer type** — not `void*` with `static_cast` at every callsite.
+
+**Wrong (local cast helper or per-use cast):**
+```cpp
+extern void* g_pActiveMapOrderContext;
+static __inline TMapOrderContext* ActiveMapOrderContext(void) {
+  return static_cast<TMapOrderContext*>(g_pActiveMapOrderContext);
+}
+```
+
+**Required:**
+```cpp
+// include/game/TMapOrderContext.h
+extern TMapOrderContext* g_pActiveMapOrderContext;
+
+// src/game/global_data_tables.cpp
+TMapOrderContext* g_pActiveMapOrderContext = 0;
+
+// callsite:
+g_pActiveMapOrderContext->FindPortZoneBySelectedTile(city);
+```
+
+Apply the same pattern to other recovered singletons (`g_pGlobalMapState`, `g_pDiplomacyTurnStateManager`, etc.) once the owning class exists. Keep `void*` only while the target type is genuinely unknown.
+
+**Array globals** use the same rule — declare in the owning class header:
+
+```cpp
+// include/game/TTerrainDescriptor.h
+extern TTerrainDescriptor* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
+
+// src/game/diplomacy_globals.cpp (outside extern "C")
+TTerrainDescriptor* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
+
+// terrain virtual / field access:
+g_apTerrainTypeDescriptorTable[slot]->SetResetLevelSlot68(nation, 100);
+
+// TMinor-only tail methods — reinterpret_cast at the boundary (parallel vtables, not inheritance):
+reinterpret_cast<TMinor*>(g_apTerrainTypeDescriptorTable[slot])->SetDiplomacyStandingSlot48(...);
+```
+
+Never place typed C++ singleton definitions inside an `extern "C"` block in
+`global_data_tables.cpp` or `diplomacy_globals.cpp` — that emits C linkage and breaks
+the link against C++ `extern` declarations in headers.
