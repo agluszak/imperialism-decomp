@@ -594,13 +594,13 @@ void TGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC(void) {
 // --- 0x3b/0x40/0x82) ---
 
 // FUNCTION: IMPERIALISM 0x004d6770
-char TGreatPower::ShouldDispatchImmediatelySlot28(void) {
-  return this->diplomacyEligibilityA0;
+char TCountry::ShouldDispatchImmediatelySlot28(void) {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d71b0
 #pragma optimize("y", on)
-void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
+void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   TLocalizationRuntime* localization = g_pLocalizationTable;
   if (localization->stateFlag114 > 0) {
     g_pGlobalMapState->NotifyCityRecordSlot12C(
@@ -701,13 +701,13 @@ void TGreatPower::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
 
 // FUNCTION: IMPERIALISM 0x004d7ae0
 #pragma optimize("y", on)
-void TGreatPower::AddToNationMetricAtField10(int amount) {
+void TCountry::AddToNationMetricAtField10(int amount) {
   this->treasuryValue10 += amount;
 }
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d7b20
-void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
+void TCountry::ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode) {
   if (g_pLocalizationTable != 0 && g_pLocalizationTable->redrawEnabled == 1) {
     DispatchJoinEmpireModeEventPacket24_27(this->nationSlot, targetNationSlot, mode);
   }
@@ -732,8 +732,12 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
   this->GetIdentitySharedString1Slot58();
 }
 
+void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode) {
+  this->ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(targetNationSlot, mode);
+}
+
 // FUNCTION: IMPERIALISM 0x004d7c90
-void TGreatPower::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
+void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 200);
   this->ResetDiplomacyLevelForNationSlot12(static_cast<NationSlot>(targetNationSlot), 100);
 
@@ -755,7 +759,7 @@ void TGreatPower::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004d7d20
 #pragma optimize("y", on)
-char TGreatPower::IsEncodedNationSlotMinus200Equal(int nationCode) {
+char TCountry::IsEncodedNationSlotMinus200Equal(int nationCode) {
   int adjusted = static_cast<int>(static_cast<short>(this->encodedNationSlot)) - 0xc8;
   if (adjusted == nationCode) {
     return 1;
@@ -767,13 +771,13 @@ char TGreatPower::IsEncodedNationSlotMinus200Equal(int nationCode) {
 // --- Scenario seeding / Frog City / influence-map family (slots 0x0c/0x0f/0x34/0x39/
 
 // FUNCTION: IMPERIALISM 0x004d7d50
-CString* TGreatPower::GetIdentitySharedString1Slot58(void) {
+CString* TCountry::GetIdentitySharedString1Slot58(void) {
   return &this->identitySharedString1;
 }
 
 // FUNCTION: IMPERIALISM 0x004d8000
 #pragma optimize("y", on)
-void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
+void TCountry::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
   int ordinal = 1;
   if (this->militaryUnitList44->GetCountSlot48() < 1) {
     return;
@@ -827,14 +831,14 @@ void TGreatPower::AssignDisplayNamesToUnnamedMilitaryUnits(void) {
 
 // FUNCTION: IMPERIALISM 0x004d87b0
 #pragma optimize("y", on)
-int TGreatPower::GetHomeRegionCityRecordIndex(void) {
+int TCountry::GetHomeRegionCityRecordIndex(void) {
   return g_pGlobalMapState->terrainStateTable[this->ownerNationSlot].cityRecordIndex;
 }
 #pragma optimize("", on)
 
 // FUNCTION: IMPERIALISM 0x004d87e0
 #pragma optimize("y", on)
-void TGreatPower::QueueRecruitOrdersForUndergarrisonedRegions(void) {
+void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
   short tickRaw = g_pLocalizationTable->quarterGateTick2c;
   if (!IsRecruitQuarterTickGate(tickRaw)) {
     return;
@@ -889,24 +893,6 @@ void* __cdecl TGreatPower::CreateTGreatPowerInstance(void) {
 // FUNCTION: IMPERIALISM 0x004d89d0
 CRuntimeClass* TGreatPower::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTGreatPower);
-}
-
-char TGreatPower::ReturnFalseNationStateCapabilityFlag90(int arg) {
-  (void)arg;
-  return 0;
-}
-
-char TGreatPower::ReturnFalseNationStateCapabilityFlag98(void) {
-  return 0;
-}
-
-char TGreatPower::ReturnFalseNationStateCapabilityFlag9C(void) {
-  return 0;
-}
-
-void TGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
-  (void)arg1;
-  (void)arg2;
 }
 
 void TGreatPower::NoOpNationPendingActionHook(void) {}

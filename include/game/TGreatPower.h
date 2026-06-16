@@ -35,68 +35,41 @@ public:
   void Free() override; // body 0x004d9160
   // slot 0x0a — body 0x004da500: writes core scalars (0x0e/0x10/0x88/0x8c) then the
   // tracked-order list and each tracked order to the stream.
-  virtual void WriteCoreStateAndTrackedOrdersToStream(void* stream);
+  void WriteCoreStateAndTrackedOrdersToStream(void* stream) override;
   // slot 0x0b — body 0x004da3e0 (RET 0x8): reads the same scalar block, clears the
   // tracked-order list, then recreates one TCivWorkOrderState per stream count entry.
-  virtual void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg);
-  // slot 0x0c — body 0x004d71b0: scenario-start order seeding. For every owned region
-  // with an active terrain record, queues land recruit orders (kinds 2/2/7, plus 6/5 and
-  // a navy order at scenario level 4), then three slot-0x0d recruit orders per region,
-  // and finally assigns display names via slot 0x0f.
-  virtual void SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void);
-  // slot 0x0d — body 0x004d7770: creates a military recruit order for nodeContext
-  // with a capability bonus from the city-order table (+0x3a5/+0x39d rows).
-  virtual void CreateMilitaryRecruitOrderForNode(int nodeContext);
-  virtual void AddToNationMetricAtField10(int amount); // slot 0x0e
-  // slot 0x0f — body 0x004d8000: gives every unnamed military unit (nameTag1a == 0) a
-  // display name: "<ordinal> <unit-type string 0x2717>" for types < 0x1b, or a flavor
-  // name from table 0x2744 for types >= 0x1b.
-  virtual void AssignDisplayNamesToUnnamedMilitaryUnits(void);
-  // slot 0x10 — body 0x004d87b0: cityRecordIndex of the nation's home region.
-  virtual int GetHomeRegionCityRecordIndex(void);
-  // slot 0x11 — body 0x004d87e0: on quarter ticks (tick/4 odd, tick%4 == 2), queue a
-  // recruit order (slot 0x0d) for each owned region garrisoned below threshold.
-  virtual void QueueRecruitOrdersForUndergarrisonedRegions(void);
+  void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg) override;
 
   // ---- diplomacy grants / policies / proposal queue ----
-  virtual void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel);
+  void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel) override;
   // index 0x13 / vtable+0x04c. Evidence: 0x004df010 calls this on `this`
   // with (targetNationSlot, 1); return value ignored.
-  virtual void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode);
-  virtual void ApplyJoinEmpireMode0GlobalDiplomacyReset(int targetNationSlot); // slot 0x14
-  virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);     // slot 0x15
-  virtual CString* GetIdentitySharedString1Slot58(void);                       // slot 0x16
-  // slot 0x17 — body 0x004d7d20: encodedNationSlot - 200 == nationCode.
-  virtual char IsEncodedNationSlotMinus200Equal(int nationCode);
+  void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode) override;
+  void ApplyJoinEmpireMode0GlobalDiplomacyReset(int targetNationSlot) override; // slot 0x14
   // slot 0x18 — body 0x004e2270: drop regionId from ownedRegionList then fire the
   // slot 0x298 hook. TAutoGreatPower overrides it (0x004ea1c0) to also drop the
   // matching mission from missionQueue and clear mapNodeStateFlags.
-  virtual void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId);
-  virtual void AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
-  virtual void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot,
-                                                                int policyCode);
-  virtual void DecrementDiplomacyCounterA2ByValue(int delta);
-  virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot); // slot 0x1c
-  virtual short GetDiplomacyCounterA2(void);                                  // slot 0x1d
-  virtual short GetDiplomacyExternalStateB6ByTarget(short nationSlot);        // slot 0x1e
-  virtual short QueryNationMetricBySlot7C(short metricSlot);                  // slot 0x1f
+  void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId) override;
+  void AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void) override;
+  void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot,
+                                                        int policyCode) override;
+  void DecrementDiplomacyCounterA2ByValue(int delta) override;
+  int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) override; // slot 0x1c
+  short GetDiplomacyCounterA2(void) override;                                  // slot 0x1d
+  short GetDiplomacyExternalStateB6ByTarget(short nationSlot) override;        // slot 0x1e
+  short QueryNationMetricBySlot7C(short metricSlot) override;                  // slot 0x1f
   // index 0x20 / vtable+0x080. Evidence: base TGreatPower vtable entry
   // 0x00407392 thunks to body 0x004ddc30; TAutoGreatPower overrides this slot.
-  virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
-                                                              int multiplier);
-  virtual bool
-  IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot); // slot 0x21
+  void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
+                                                      int multiplier) override;
+  bool
+  IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot) override; // slot 0x21
   // slot 0x22 — TAutoGreatPower override 0x004e79d0 either forwards to the foreign
   // minister (slot 0x98) or appends a kind-1 tracked-slot entry; returns 0.
-  virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
-                                                             int arg4);
-  virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
-  virtual char ReturnFalseNationStateCapabilityFlag90(int arg);
-  virtual void NotifyActionSlot94(int sourceNation, int actionCode); // slot 0x94
-  virtual char ReturnFalseNationStateCapabilityFlag98(void);
-  virtual char ReturnFalseNationStateCapabilityFlag9C(void);
-  virtual char ShouldDispatchImmediatelySlot28(void);
-  virtual void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2);
+  char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
+                                                     int arg4) override;
+  void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
+  void NotifyActionSlot94(int sourceNation, int actionCode) override; // slot 0x94
   virtual void NoOpNationPendingActionHook(void);
 
   // ---- tracked orders / pending action state ----

@@ -2203,22 +2203,6 @@ undefined4 Helper_Uses_AllocateWithFallbackHandler_At004d66a0(void)
   return 0;
 }
 
-// ghidra_name TCountry::GetTCountryClassNamePointer
-// ghidra_proto undefined GetTCountryClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004d67b0
-undefined4 GetTCountryClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::DestructTCountryAndMaybeFree
-// ghidra_proto undefined DestructTCountryAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004d6850
-undefined4 DestructTCountryAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880
 // ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880()
 // FUNCTION: IMPERIALISM 0x004d6880
@@ -2239,22 +2223,6 @@ undefined4 InitializeNationStateIdentityAndOwnedRegionList(void)
 // ghidra_proto undefined AssignStringSharedRefFromPointer()
 // FUNCTION: IMPERIALISM 0x004d6b70
 undefined4 AssignStringSharedRefFromPointer(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C4_I31_004d7070
-// ghidra_proto undefined OrphanCallChain_C4_I31_004d7070()
-// FUNCTION: IMPERIALISM 0x004d7070
-undefined4 OrphanCallChain_C4_I31_004d7070(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C4_I31_004d70e0
-// ghidra_proto undefined OrphanCallChain_C4_I31_004d70e0()
-// FUNCTION: IMPERIALISM 0x004d70e0
-undefined4 OrphanCallChain_C4_I31_004d70e0(void)
 {
   return 0;
 }
@@ -2307,38 +2275,6 @@ undefined4 LoadNationDisplayNameSharedRefFromField8(void)
   return 0;
 }
 
-// ghidra_name TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers
-// ghidra_proto undefined SetNationTransferTargetCodeAndNotifyEligiblePeers()
-// FUNCTION: IMPERIALISM 0x004d7c00
-undefined4 SetNationTransferTargetCodeAndNotifyEligiblePeers(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::RemoveRegionIdFromNationOwnedRegionList
-// ghidra_proto undefined RemoveRegionIdFromNationOwnedRegionList()
-// FUNCTION: IMPERIALISM 0x004d7d70
-undefined4 RemoveRegionIdFromNationOwnedRegionList(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::AddRegionIdToNationOwnedRegionList
-// ghidra_proto undefined AddRegionIdToNationOwnedRegionList()
-// FUNCTION: IMPERIALISM 0x004d7da0
-undefined4 AddRegionIdToNationOwnedRegionList(void)
-{
-  return 0;
-}
-
-// ghidra_name TCountry::SetNationPercentFieldByModeAndDescriptorLinks
-// ghidra_proto undefined SetNationPercentFieldByModeAndDescriptorLinks()
-// FUNCTION: IMPERIALISM 0x004d7dd0
-undefined4 SetNationPercentFieldByModeAndDescriptorLinks(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeSelectedMilitaryPowerScore
 // ghidra_proto undefined ComputeSelectedMilitaryPowerScore()
 // FUNCTION: IMPERIALISM 0x004d8430
@@ -2351,14 +2287,6 @@ undefined4 ComputeSelectedMilitaryPowerScore(void)
 // ghidra_proto undefined ClassifyNationMilitaryPowerBandAgainstGlobalMean()
 // FUNCTION: IMPERIALISM 0x004d84b0
 undefined4 ClassifyNationMilitaryPowerBandAgainstGlobalMean(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins07_004d8920
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins07_004d8920()
-// FUNCTION: IMPERIALISM 0x004d8920
-undefined4 OrphanLeaf_NoCall_Ins07_004d8920(void)
 {
   return 0;
 }

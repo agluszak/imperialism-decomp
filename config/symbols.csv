@@ -2272,7 +2272,7 @@ address|name|size|type|prototype
 4d6790|TGreatPower::NoOpNationSelectedRegionAndMapCellLabelHook|3|function|undefined NoOpNationSelectedRegionAndMapCellLabelHook()
 4d67b0|TCountry::GetTCountryClassNamePointer|6|function|undefined GetTCountryClassNamePointer()
 4d67d0|TCountry::TCountry|88|function|void __thiscall TCountry(void)
-4d6850|TCountry::DestructTCountryAndMaybeFree|30|function|undefined DestructTCountryAndMaybeFree()
+4d6850|TCountry::`scalar deleting destructor'|30|function|undefined ScalarDeletingDestructor()
 4d6880|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880|80|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880()
 4d68f0|InitializeNationStateIdentityAndOwnedRegionList|509|function|undefined InitializeNationStateIdentityAndOwnedRegionList()
 4d6b70|AssignStringSharedRefFromPointer|19|function|undefined AssignStringSharedRefFromPointer()

@@ -378,56 +378,6 @@ void __stdcall DiscardTileTokenArgumentAndReturn(int) {
 }
 //     al-width load; FPO pragma above keeps ret N frameless. ---
 
-// FUNCTION: IMPERIALISM 0x004d7b00
-bool __stdcall ReturnFalseNationStateActionStub(int, int, int, int) {
-  return false;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7e90
-void __stdcall OrphanRetStub_004d7e90(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7ee0
-unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7ee0(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7f00
-unsigned short OrphanLeaf_NoCall_Ins02_004d7f00(void) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7f20
-unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f20(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7f40
-unsigned short __stdcall OrphanLeaf_NoCall_Ins02_004d7f40(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7f80
-void __stdcall OrphanRetStub_004d7f80(int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7fa0
-void __stdcall OrphanRetStub_004d7fa0(int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7fc0
-bool __stdcall OrphanLeaf_NoCall_Ins02_004d7fc0(int) {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004d7fe0
-void __stdcall OrphanRetStub_004d7fe0(int, int) {
-  return;
-}
-
 // Legacy free-function placeholder (address now owned by TGreatPower method).
 void __stdcall OrphanRetStub_004dca80(int) {
   return;
@@ -512,7 +462,6 @@ void __stdcall HandlePostPendingEventActivationNoOp(int) {
 void __stdcall OrphanRetStub_00515de0(int, int, int) {
   return;
 }
-
 
 // FUNCTION: IMPERIALISM 0x0052fd80
 void NoOpForeignMinisterSlot24Handler(void) {

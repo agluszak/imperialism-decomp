@@ -2,6 +2,7 @@
 
 #include "decomp_types.h"
 #include "game/CString.h"
+#include "game/nation_domain_types.h"
 #include "game/TObject.h"
 #include "game/TPtrList.h"
 
@@ -16,10 +17,51 @@ class TStream;
 // VTABLE: IMPERIALISM 0x00653868
 class TCountry : public TObject {
 public:
+  CRuntimeClass* GetRuntimeClass() const override;
+  ~TCountry() override;
+
   // slots 0x05–0x07 — TObject stream lifecycle (Mac: WriteTo / ReadFrom / Free).
   void WriteTo(TStream* stream) override;  // body 0x004d6e60
   void ReadFrom(TStream* stream) override; // body 0x004d6bf0
   void Free() override;                    // body 0x004d6ba0
+
+  // slots 0x0a-0x29 — concrete TCountry prefix. Slots 0x2a-0x33 are NULL in the
+  // original base table and remain undeclared; pure virtuals would emit _purecall.
+  virtual void WriteCoreStateAndTrackedOrdersToStream(void* stream);
+  virtual void ReadCoreStateAndRecreateCivOrdersFromStream(void* stream, int unusedArg);
+  virtual void SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void);
+  virtual void CreateMilitaryRecruitOrderForNode(int nodeContext);
+  virtual void AddToNationMetricAtField10(int amount);
+  virtual void AssignDisplayNamesToUnnamedMilitaryUnits(void);
+  virtual int GetHomeRegionCityRecordIndex(void);
+  virtual void QueueRecruitOrdersForUndergarrisonedRegions(void);
+  virtual void ResetDiplomacyLevelForNationSlot12(NationSlot nationSlot, int resetLevel);
+  virtual void ApplyJoinEmpireAcceptanceSideEffectsForTargetNation(int targetNationSlot, int mode);
+  virtual void ApplyJoinEmpireMode0GlobalDiplomacyReset(int targetNationSlot);
+  virtual void ApplyJoinEmpireMode1TargetTransition(int targetNationSlot);
+  virtual CString* GetIdentitySharedString1Slot58(void);
+  virtual char IsEncodedNationSlotMinus200Equal(int nationCode);
+  virtual void RemoveRegionIdAndRunTrackedObjectCleanup(int regionId);
+  virtual void AddRegionIdToNationOwnedRegionListAndTriggerExpansionActionIfThresholdMet(void);
+  virtual void ApplyDiplomacyTargetTransitionAndClearGrantEntry(int targetNationSlot,
+                                                                int policyCode);
+  virtual void DecrementDiplomacyCounterA2ByValue(int delta);
+  virtual int SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot);
+  virtual short GetDiplomacyCounterA2(void);
+  virtual short GetDiplomacyExternalStateB6ByTarget(short nationSlot);
+  virtual short QueryNationMetricBySlot7C(short metricSlot);
+  virtual void ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
+                                                              int multiplier);
+  virtual bool IsDiplomacyState1C6UnsetAndCounterPositiveForTarget(short targetNationSlot);
+  virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
+                                                             int arg4);
+  virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
+  virtual char ReturnFalseNationStateCapabilityFlag90(int arg);
+  virtual void NotifyActionSlot94(int sourceNation, int actionCode);
+  virtual char ReturnFalseNationStateCapabilityFlag98(void);
+  virtual char ReturnFalseNationStateCapabilityFlag9C(void);
+  virtual char ShouldDispatchImmediatelySlot28(void);
+  virtual void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2);
 
   CString identitySharedString0;
   CString identitySharedString1;

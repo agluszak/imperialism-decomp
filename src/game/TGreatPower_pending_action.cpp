@@ -17,7 +17,7 @@ int AllocateWithFallbackHandler(undefined4 size_bytes);
 
 // FUNCTION: IMPERIALISM 0x004d7770
 #pragma optimize("y", on)
-void TGreatPower::CreateMilitaryRecruitOrderForNode(int nodeContext) {
+void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
     const TCityOrderCapabilityState::MilitaryCapRow& capabilityRow =
@@ -80,8 +80,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
     short zoneCursor = 7;
     do {
       if (g_pDiplomacyTurnStateManager
-              ->relationStandingScoreMatrix79c[zoneCursor + nationSlot * kNationSlotCount] >
-          0xa9) {
+              ->relationStandingScoreMatrix79c[zoneCursor + nationSlot * kNationSlotCount] > 0xa9) {
         TMinor* minor = *minorEntry;
         if (minor != 0) {
           short ownerTag = minor->ownerNationSlot0e;
