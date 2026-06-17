@@ -1,2 +1,2 @@
 address|struct_name|size|fields|rename|note
-0x006960e0|TradeSummarySelectionMap|0x48|0x28:dword[6];0x40:dword|g_kTradeSummarySelectionMap|Industry cluster control-tag registry (manual kAddrTradeSummarySelectionMap @0x6960e0). Ghidra had a string here; callers index +0x28 (tag table) and compare +0x40 (primary tag).
+0x006960e0|TradeSummarySelectionMap|0x48|0x28:dword[6]:summaryTags;0x40:dword:primaryControlTag|g_kTradeSummarySelectionMap|Industry cluster control-tag registry (manual kAddrTradeSummarySelectionMap @0x6960e0). Ghidra had a string here; callers index +0x28 (tag table) and compare +0x40 (primary tag).

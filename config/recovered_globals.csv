@@ -19,3 +19,6 @@ g_pActiveMapOrderContext|0x006a3fbc|TOcean|1|0x18|Evidence: RebuildMapContextAnd
 g_pMapActionContextListHead|0x006a3fc8|TZone|1||Singly-linked list head; TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList pushes/pops this pointer.
 g_pNavyPrimaryOrderListHead|0x006a3edc|TShip|1||Singly-linked list head; TShip::{Construct,Destroy}AndLink/UnlinkNavyPrimaryOrderNode maintain this pointer.
 g_pMapContextActionManager|0x006a3338|TArmyMgr|1|0x3a8|Evidence: RebuildGlobalOrderManagersAndCapabilityState allocates 0x3a8 and assigns TArmyMgr::ConstructMapContextActionManager result. Manual diplomacy_globals.h uses int*.
+g_pUiAnimator|0x006a43e0|TAnimator|1|0x30|Evidence: RebuildGlobalOrderManagersAndCapabilityState allocates 0x30 and assigns TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8. Was DAT_006a43e0 (no symbol in symbols.csv).
+g_pUiViewManager|0x006a2148|TAssetMgr|1|0x58|Evidence: InitializeGlobalRuntimeSystemsFromConfig stores ConstructUiViewManager result in g_pUiViewManager.
+g_pActiveQuickDrawSurfaceContext|0x006a1d60|TQuickDrawSurfaceContext|1|0x30|Evidence: SetActiveQuickDrawSurfaceContext stores param_1. Manual TQuickDrawSurfaceContext.h (0x30 bytes).

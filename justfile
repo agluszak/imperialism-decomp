@@ -86,6 +86,11 @@ ghidra-function-slice *args: _require-ghidra-install
 ghidra-decompile *args: _require-ghidra-install
   uv run python -m tools.ghidra.decompile_one {{args}}
 
+# Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
+# Pass --strict to also fail on missing should-improve patterns.
+ghidra-decomp-check *args: _require-ghidra-install
+  uv run python -m tools.ghidra.decomp_check {{args}}
+
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
 scan-cdecl-thiscall *args: _require-ghidra-install

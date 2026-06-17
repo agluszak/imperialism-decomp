@@ -1183,7 +1183,13 @@ def run(program, args) -> dict:
         # reliably (see RECOVERED_*_PATH docstring). These are authoritative, so
         # they overwrite whatever Ghidra had there.
         # ------------------------------------------------------------------ #
-        from ghidra.program.model.data import ArrayDataType as _ArrayDT
+        from ghidra.program.model.data import (
+            ArrayDataType as _ArrayDT,
+            DWordDataType as _DWordDT,
+            WordDataType as _WordDT,
+            StructureDataType as _DataStructDT,
+        )
+        from ghidra.program.model.symbol import SourceType as _SymSource
 
         def root_class_dt(name: str):
             return dtm.getDataType(CategoryPath.ROOT, name)
@@ -1194,7 +1200,8 @@ def run(program, args) -> dict:
             existing = root_class_dt(cls)
             if existing is not None and existing.getLength() > 1:
                 return existing
-            if st.getNamespace(cls, None) is None:
+            ns = st.getNamespace(cls, None)
+            if ns is None and object_size is None:
                 return existing
             size = object_size or (existing.getLength() if existing is not None else 4)
             if size < 4:
@@ -1236,11 +1243,55 @@ def run(program, args) -> dict:
             try:
                 clear_code_units_covering(A(addr), A(addr + data_dt.getLength() - 1))
                 listing.createData(A(addr), data_dt)
+                rename = (row.get("rename") or "").strip()
+                label = rename or name
+                if label:
+                    sym_addr = A(addr)
+                    syms = list(st.getSymbols(sym_addr))
+                    if syms:
+                        if syms[0].getName() != label:
+                            syms[0].setName(label, _SymSource.USER_DEFINED)
+                    else:
+                        st.createLabel(sym_addr, label, _SymSource.USER_DEFINED)
                 stats["curated_globals_typed"] += 1
                 if args.verbose:
                     changes.append(f"  curated global {name}@0x{addr:08x} = {elem} *[{count}]")
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! curated global {name}@0x{addr:08x} failed: {exc}")
+
+        def curated_field_datatype(ftype: str):
+            """Map recovered_fields field_type to (datatype, byte_length).
+
+            Class names without '*' still denote pointer fields (legacy CSV convention).
+            Explicit '*' or scalar names (int/dword/short) select non-class rules.
+            """
+            raw = ftype.strip()
+            scalar = raw.lower() in ("int", "dword", "uint", "short")
+            if raw.endswith("*"):
+                base = raw[:-1].strip()
+                is_ptr = True
+            elif scalar:
+                base = raw
+                is_ptr = False
+            else:
+                base = raw
+                is_ptr = True
+            if is_ptr:
+                if base.lower() in ("int", "dword", "uint"):
+                    inner = _DWordDT()
+                else:
+                    inner = root_class_dt(base)
+                    if inner is None:
+                        return None
+                return PointerDataType(inner, dtm), 4
+            if base.lower() in ("int", "dword", "uint"):
+                return _DWordDT(), 4
+            if base.lower() == "short":
+                return _WordDT(), 2
+            inner = root_class_dt(base)
+            if inner is None:
+                return None
+            return inner, inner.getLength()
 
         for row in read_pipe_csv(RECOVERED_FIELDS_PATH):
             cls = (row.get("class") or "").strip()
@@ -1259,17 +1310,18 @@ def run(program, args) -> dict:
             if struct is None or not hasattr(struct, "replaceAtOffset"):
                 changes.append(f"  !! curated field {cls}+0x{off:x}: struct not found")
                 continue
-            field_dt = root_class_dt(ftype)
-            if field_dt is None:
+            field_dt_spec = curated_field_datatype(ftype)
+            if field_dt_spec is None:
                 changes.append(f"  !! curated field {cls}+0x{off:x}: type {ftype} not found")
                 continue
-            if off + 4 > struct.getLength():
+            field_dt, field_len = field_dt_spec
+            if off + field_len > struct.getLength():
                 changes.append(
                     f"  !! curated field {cls}+0x{off:x}: beyond object size 0x{struct.getLength():x}"
                 )
                 continue
             try:
-                struct.replaceAtOffset(off, PointerDataType(field_dt, dtm), 4, fname, note)
+                struct.replaceAtOffset(off, field_dt, field_len, fname, note)
                 stats["curated_fields_typed"] += 1
                 if args.verbose:
                     changes.append(f"  curated field {cls}+0x{off:x} = {ftype} * ({fname})")
@@ -1321,20 +1373,29 @@ def run(program, args) -> dict:
         )
 
         def parse_data_field_spec(spec: str):
-            """Parse '0x28:dword[6]' or '0x40:dword' into (offset, datatype, length)."""
+            """Parse '0x28:dword[6]:summaryTags' or '0x40:dword' into (offset, datatype, length, name)."""
             spec = spec.strip()
             if not spec:
                 return None
-            off_s, rest = spec.split(":", 1)
-            off = int(off_s, 16)
+            parts = spec.split(":")
+            if len(parts) < 2:
+                return None
+            off = int(parts[0], 16)
+            if len(parts) == 2:
+                type_part = parts[1]
+                fname = None
+            else:
+                fname = parts[-1].strip() or None
+                type_part = ":".join(parts[1:-1])
+            rest = type_part.strip()
             if "[" in rest:
                 base, count_s = rest.split("[", 1)
                 count = int(count_s.rstrip("]"))
                 elem = _DWordDT()
-                return off, _DataArrayDT(elem, count, elem.getLength()), count * elem.getLength()
+                return off, _DataArrayDT(elem, count, elem.getLength()), count * elem.getLength(), fname
             base = rest.lower()
             if base in ("dword", "uint", "int"):
-                return off, _DWordDT(), 4
+                return off, _DWordDT(), 4, fname
             return None
 
         for row in read_pipe_csv(RECOVERED_DATA_PATH):
@@ -1358,13 +1419,14 @@ def run(program, args) -> dict:
                     if parsed is None:
                         changes.append(f"  !! curated data {struct_name}: bad field {part}")
                         continue
-                    off, fdt, flen = parsed
+                    off, fdt, flen, fname = parsed
                     if off + flen > total_size:
                         changes.append(
                             f"  !! curated data {struct_name}+0x{off:x}: beyond size 0x{total_size:x}"
                         )
                         continue
-                    sdt.replaceAtOffset(off, fdt, flen, part.split(":")[1].split("[")[0], None)
+                    default_name = part.split(":")[1].split("[")[0]
+                    sdt.replaceAtOffset(off, fdt, flen, fname or default_name, None)
                 replace_or_add_datatype(CategoryPath.ROOT, struct_name, sdt)
                 clear_code_units_covering(A(addr), A(addr + total_size - 1))
                 listing.createData(A(addr), sdt)

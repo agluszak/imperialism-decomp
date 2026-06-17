@@ -10,21 +10,53 @@ Mechanisms already in place that several of these items reuse:
 
 - `config/recovered_globals.csv` + `config/recovered_fields.csv` — evidence-curated
   typed globals / interior class fields, applied by `apply_mfc_rtti.py` (step 7).
+  Globals pass supports optional `rename` column (creates/renames the label at the
+  address). `object_size` bootstraps pointer targets with no Ghidra namespace
+  (e.g. `TQuickDrawSurfaceContext`).
 - `config/recovered_data.csv` — misidentified data labels reclassified as structs
-  (e.g. string → indexed table).
+  (e.g. string → indexed table). Field specs accept optional names:
+  `0x28:dword[6]:summaryTags`.
 - `config/dissolve_namespaces.csv` — placeholder pseudo-class namespaces dissolved
   back into Global by `apply_mfc_rtti.py`.
 - `config/calling_convention_overrides.csv` — verified `__cdecl`/`__fastcall`
   mislabels corrected to `__thiscall` (or confirmed `__cdecl`).
+- `just ghidra-decomp-check` — regression gate over nine benchmark decompiles
+  (`tools/ghidra/decomp_check.py`). Run after every `just apply-mfc-rtti --apply`.
 - The decompiler `this`-argument resolver prototype (measured low yield for fully
   automatic inference, so curated tables are preferred for now).
 
+## Decompile benchmark suite
+
+Run `just ghidra-decomp-check` after each apply. `--strict` also fails on missing
+“should-improve” patterns (useful while driving the next tier).
+
+| Address | Function | Must keep | Improved this pass |
+| --- | --- | --- | --- |
+| `0x00588b70` | `TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920` | `g_apNationStates[s]->city`, `TCity::GetCityBuildingProductionValueBySlot`, `TAmtBarCluster::` | `summaryTags` / `primaryControlTag`; `pBuildingSlotProductionTable` |
+| `0x004ca571` | `TBuildingConstructionView::OpenCityViewBuildingOrderDialog` | `this->pCity`, `GetCityBuildingProductionValueBySlot` | `pBuildingSlotProductionTable` via `this->pCity` |
+| `0x0057c578` | `RebuildGlobalOrderManagersAndCapabilityState` | typed manager globals | `g_pUiAnimator` (`TAnimator*`, was `DAT_006a43e0`) |
+| `0x0057c8a0` | `RebuildMapContextAndGlobalMapState` | `TOcean` / `TMapMgr` globals | (unchanged) |
+| `0x0049df00` | `InitializeGlobalRuntimeSystemsFromConfig` | `TSimMgr` / `UiRuntimeContext` | `g_pUiViewManager` (`TAssetMgr*`) |
+| `0x0051794e` | `ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias` | `g_apTerrainTypeDescriptorTable[i]` as `TCountry*` | `ownerNationSlot`, `ownedRegionList` |
+| `0x0050c1bf` | `TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets` | `g_apNationStates`, `g_pLocalizationTable` | (unchanged) |
+| `0x004d83c0` | `SumWeightedNeighborLinkScoreForLinkedNodes` | `__thiscall` | `this` still `void*` — needs class attribution |
+| `0x00496230` | `SetActiveQuickDrawSurfaceContext` | assigns `g_pActiveQuickDrawSurfaceContext` | param/global typed `TQuickDrawSurfaceContext*` |
+
+**Regression guards:** no `TCity::TCity::` double qualification (`decompile_one.py`
+thunk fix); dissolved pseudo-classes stay gone (`dissolve_namespaces.csv`).
+
+**Deferred — vtable call at `[vptr+0x1d4]` in `0x00588b70`:** listing shows
+`CALL dword ptr [EDX+0x1d4]`; `TIndustryCluster` vtable `@0x00662f98` slot `0x75`
+(byte `0x1d4`) resolves to `0x00402716`, which is **not** a function body (MFC
+runtime-class descriptor / data slot). Decompiler still displays
+`vftable[0x3a].slot_0x04`. Do not add a `vtable_slots.csv` row until a real
+override method is identified.
+
 ## Tier 1 — high value, low risk, mechanism exists
 
-### 1a. Type the recovered singleton globals — **done (first pass)**
+### 1a. Type the recovered singleton globals — **done (second pass)**
 Recorded in `config/recovered_globals.csv` and applied by `apply_mfc_rtti.py`
-(optional `object_size` column seeds a minimal struct when the class namespace
-exists but RTTI did not emit one, e.g. `Config` / `UiRuntimeContext`).
+(optional `object_size` column seeds a minimal struct when RTTI did not emit one).
 
 | global | typed as |
 | --- | --- |
@@ -34,6 +66,7 @@ exists but RTTI did not emit one, e.g. `Config` / `UiRuntimeContext`).
 | `g_pGameFlowState` | `Config *` |
 | `g_pLocalizationTable` | `TSimMgr *` (manual: `TLocalizationRuntime`) |
 | `g_pUiRuntimeContext` | `UiRuntimeContext *` |
+| `g_pUiViewManager` | `TAssetMgr *` |
 | `g_pApplicationUiRootController` | `ApplicationUiRootController *` |
 | `g_pGlobalUiRootController` | `TApplication *` |
 | `g_pNationInteractionStateManager` | `TTradeMgr *` |
@@ -41,6 +74,7 @@ exists but RTTI did not emit one, e.g. `Config` / `UiRuntimeContext`).
 | `g_pGlobalMapState` | `TMapMgr *` (manual: `TGlobalMapState`) |
 | `g_pCityOrderCapabilityState` | `TTechMgr *` |
 | `g_pSelectedCivilianOrderState` | `CivilianMapInteractionManager *` |
+| `g_pUiAnimator` | `TAnimator *` (was address-only `DAT_006a43e0`) |
 | `g_pNavyOrderManager` | `TNavyMgr *` |
 | `g_pInterNationEventQueueManager` | `TInterNationEventQueueManager *` |
 | `g_pSfxPlaybackSystem` | `TSoundPlayer *` |
@@ -48,11 +82,13 @@ exists but RTTI did not emit one, e.g. `Config` / `UiRuntimeContext`).
 | `g_pMapActionContextListHead` | `TZone *` |
 | `g_pNavyPrimaryOrderListHead` | `TShip *` |
 | `g_pMapContextActionManager` | `TArmyMgr *` |
+| `g_pActiveQuickDrawSurfaceContext` | `TQuickDrawSurfaceContext *` |
 
 **Next:** `g_apMinorNationCapabilityObjects` / `g_apNationAuxRuntimeStateSlots`
-(overlap `g_apTerrainTypeDescriptorTable` / `g_apSecondaryNationStateSlots` at
-fixed offsets — need overlay labels or accessor typing, not a second array type),
-`g_pActiveQuickDrawSurfaceContext`, `g_pCursorControlPanel`, remaining `g_p*`.
+(overlap parent arrays — use `g_apTerrainTypeDescriptorTable + 7` pointer arithmetic,
+not a second array type), `g_pCursorControlPanel` (`TAnimation*` tentative — verify
+positive writer), `g_pActiveCityDialogLegendSelectionOwner` (deferred until writer
+found), `TOcean` interior fields at `+0x4..+0x14`.
 
 ### 1b. Grow `recovered_fields.csv` — **in progress**
 Rows applied so far:
@@ -63,6 +99,9 @@ Rows applied so far:
 | `TBuildingConstructionView` | `0x90` | `pCity` |
 | `TIndustryView` | `0x94` | `pCity` |
 | `TCityProductionView` | `0x94` | `pCity` |
+| `TCity` | `0xe4` | `pBuildingSlotProductionTable` (`int*`) |
+| `TCountry` | `0x88` | `ownerNationSlot` (`int`) |
+| `TCountry` | `0x90` | `ownedRegionList` (`TPtrList*`) |
 
 Keep adding rows for hot structs using unanimous resolver / decompile-store
 evidence + offset-fits-object-size gating; never overwrite an already-typed field.
@@ -84,22 +123,24 @@ rg '__cdecl' config/symbols.csv | awk -F'|' '{print $1}' | xargs -I{} just scan-
 ```
 
 Skip CRT imports (`strrev`, `strrchr`) and EH-frame false positives already
-listed as confirmed `__cdecl`.
+listed as confirmed `__cdecl`. Remaining scan: `OrphanDeadLeaf_NoRefs_0051da60`
+— verify listing before override.
 
 ## Tier 3 — bigger levers, more effort
 
 - **Interior field recovery at scale.** Most class structs are still `{vftable}` +
   `field_0x...`. Keep curated/gated.
-- **Vtable slots → named virtuals + signatures.** Decompiles still show
-  `(*this->vftable[0x3a].slot_0x04)(...)`.
+- **Vtable slots → named virtuals + signatures.** Hot slot `[vptr+0x1d4]` in
+  `0x00588b70` is an MFC descriptor pointer, not a method — see benchmark defer
+  note above.
 - **Name the 323 `FUN_`/`SUB_` functions.** Extend locality/caller attribution in
   `apply_mfc_rtti.py`.
-- **Reclassify misidentified data.** — **started:** `0x006960e0` string →
-  `TradeSummarySelectionMap` via `config/recovered_data.csv` (renamed
-  `g_kTradeSummarySelectionMap`). More `s_*` / `DAT_*` table labels to triage.
+- **Reclassify misidentified data.** — **in progress:** `0x006960e0` string →
+  `TradeSummarySelectionMap` with named `summaryTags` / `primaryControlTag`.
+  Candidate `0x696108` (indexed xref from `0x00588b70`) still to triage.
 
 ## Validation
 
-Calling-convention and field-type changes directly affect the C++ port, so route
-impactful changes through `just build` + reccmp (`just compare` / `just stats`) to
-confirm they help (or at least don't regress) the match, not just readability.
+Ghidra-only changes: `just ghidra-decomp-check` after `just apply-mfc-rtti --apply`.
+Calling-convention and field-type changes that sync to manual source should also
+route through `just build` + reccmp (`just compare` / `just stats`).

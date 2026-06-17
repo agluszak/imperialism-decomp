@@ -3,3 +3,6 @@ TGreatPower|0x894|TCity|city|Nation's TCity (pointer). Evidence: 26/26 GetCityBu
 TBuildingConstructionView|0x90|TCity|pCity|The city this construction dialog operates on. Evidence: OpenCityViewBuildingOrderDialog writes `*(TCity **)&this->field_0x90 = pCityState` then passes it to TCity::GetCityBuildingProductionValueBySlot; 3/3 resolver callsites agree; offset fits size 0x9c.
 TIndustryView|0x94|TCity|pCity|The city this industry view reflects. Evidence: OrphanRetStub_004c6fd0 calls TCity::GetCityBuildingProductionValueBySlot(*(TCity **)&this->field_0x94, ...); offset fits size 0xa8.
 TCityProductionView|0x94|TCity|pCity|City whose production slots this view edits. Evidence: scalar deleting destructor path calls GetCityBuildingProductionValueBySlot((void *)param_1[0x25], ...) where 0x25*4=0x94; RTTI size 0x18c.
+TCity|0xe4|int*|pBuildingSlotProductionTable|Per-slot production value table (indexed [slot] in OrphanLeaf_NoCall_Ins07_004d8920 @0x00588b70 and OpenCityViewBuildingOrderDialog @0x004ca571).
+TCountry|0x88|int|ownerNationSlot|Owning nation slot index. Manual TCountry.h; evidence ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias @0x0051794e.
+TCountry|0x90|TPtrList|ownedRegionList|Owned region list pointer. Manual TCountry.h; evidence @0x0051794e derefs for virtual call.
