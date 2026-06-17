@@ -2395,30 +2395,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl(void)
   return 0;
 }
 
-// ghidra_name DeserializeCityProductionState
-// ghidra_proto undefined DeserializeCityProductionState()
-// FUNCTION: IMPERIALISM 0x004b30a0
-undefined4 DeserializeCityProductionState(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeCityProductionState
-// ghidra_proto undefined SerializeCityProductionState()
-// FUNCTION: IMPERIALISM 0x004b35d0
-undefined4 SerializeCityProductionState(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C13_I161_004b3b40
-// ghidra_proto undefined OrphanCallChain_C13_I161_004b3b40()
-// FUNCTION: IMPERIALISM 0x004b3b40
-undefined4 OrphanCallChain_C13_I161_004b3b40(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeAverageWeightWord1TimesTenFromResourceCounts
 // ghidra_proto undefined ComputeAverageWeightWord1TimesTenFromResourceCounts()
 // FUNCTION: IMPERIALISM 0x004b4290
@@ -2439,38 +2415,6 @@ undefined4 ComputeAverageWeightWord0TimesTenFromResourceCounts(void)
 // ghidra_proto undefined AllocateRandomResourceCountsWithinWeightBudget()
 // FUNCTION: IMPERIALISM 0x004b4390
 undefined4 AllocateRandomResourceCountsWithinWeightBudget(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAltownCityObject
-// ghidra_proto undefined CreateAltownCityObject()
-// FUNCTION: IMPERIALISM 0x004b4580
-undefined4 CreateAltownCityObject(void)
-{
-  return 0;
-}
-
-// ghidra_name GetCityBuildingDisplayCapacityBySlot
-// ghidra_proto undefined GetCityBuildingDisplayCapacityBySlot()
-// FUNCTION: IMPERIALISM 0x004b46e0
-undefined4 GetCityBuildingDisplayCapacityBySlot(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetActiveNationId_At004b4940
-// ghidra_proto undefined WrapperFor_GetActiveNationId_At004b4940()
-// FUNCTION: IMPERIALISM 0x004b4940
-undefined4 WrapperFor_GetActiveNationId_At004b4940(void)
-{
-  return 0;
-}
-
-// ghidra_name ToggleCityPowerPlantUpgradeOrder
-// ghidra_proto void __thiscall ToggleCityPowerPlantUpgradeOrder(char fEnableUpgrade)
-// FUNCTION: IMPERIALISM 0x004b4d50
-undefined4 ToggleCityPowerPlantUpgradeOrder(void)
 {
   return 0;
 }

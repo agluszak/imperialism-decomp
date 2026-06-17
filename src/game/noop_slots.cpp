@@ -282,11 +282,6 @@ void OrphanRetStub_004b1990(void) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x004b4210
-void OrphanRetStub_004b4210(void) {
-  return;
-}
-
 // FUNCTION: IMPERIALISM 0x004b50e0
 unsigned short OrphanLeaf_NoCall_Ins02_004b50e0(void) {
   return 0;

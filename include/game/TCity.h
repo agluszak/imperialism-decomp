@@ -1,6 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
+#include "game/TObject.h"
 
 struct TPtrList;
 class TStream;
@@ -44,31 +45,20 @@ protected:
 
 // The per-nation city/production model at TGreatPower+0x894 (field `city`).
 // RTTI: g_pClassDescTCity @ 0x0064f338; created by CreateTCityInstance (0x004b2340).
-// Like TGreatPower, the destructor restores the TObject EH sentinel vtable
-// (0x0066fec4) — real base inheritance is still future work.
 // LAYOUT: RECOVERED
 // VTABLE: IMPERIALISM 0x0064f580
-class TCity {
+class TCity : public TObject {
 public:
-  // slot 0x00 — body 0x004b2490: class descriptor pointer.
-  virtual void* GetClassDescPointerSlot00();
-  // slot 0x01 — scalar deleting destructor 0x004b2520 (SYNTHETIC); real dtor body
-  // 0x004b2550 only restores the base vtable.
-  virtual ~TCity();
-  virtual void TurnEventSlot08_Provisional() {}
-  virtual void NoOpSlot0C_Provisional() {}
-  virtual void NoOpSlot10_Provisional() {}
-  // slot 0x05 — body 0x004b35d0 (915B, unported): serialize production state.
-  virtual void SerializeCityProductionState(int stream) {
-    (void)stream;
-  }
-  // slot 0x06 — body 0x004b30a0 (1044B, unported): deserialize production state.
-  virtual void ReadFrom(TStream* stream);
-  virtual void Free();
-  virtual void TurnEventSlot20_Provisional() {}
-  virtual void TurnEventSlot24_Provisional() {}
+  CRuntimeClass* GetRuntimeClass() const override;
+  ~TCity() override;
+
+  // slots 0x05–0x07 — TObject stream lifecycle (bodies 0x004b35d0 / 0x004b30a0 / 0x004b3a60).
+  void WriteTo(TStream* stream) override;
+  void ReadFrom(TStream* stream) override;
+  void Free() override;
+
   // slot 0x0a — body 0x004b3b40 (528B, unported).
-  virtual void Call28() {}
+  virtual void Call28();
   // slot 0x0b — body 0x004b3de0: refresh the low-stock/low-summary flags and push
   // fieldB6 to the owner (TGreatPower slot 0x3f).
   virtual void Call2C();
@@ -84,7 +74,7 @@ public:
   // slot 0x0f — body 0x004b4040: fieldB6[i] += amounts[i]; clears E0/E2.
   virtual void AddNeedVectorSlot3C(short* amounts);
   // slot 0x10 — body 0x004b4580 (247B, unported): create the Altown city object.
-  virtual void CreateAltownCityObjectSlot40() {}
+  virtual void CreateAltownCityObject();
   // slot 0x11 — body 0x004b3b20: adopt the selected order/marker (TGreatPower slots
   // 0x3a/0x3b hand the new Frog City marker through this).
   virtual void AdoptSelectedOrderSlot44(void* order);
@@ -97,18 +87,15 @@ public:
   virtual short AllocateNeedFromOwnerSlot4C(short needIndex, short amount);
   // slot 0x14 — body 0x004b46c0: forward to queue274 slot 0x20.
   virtual void ForwardQueueSlot20Slot50(void* message = 0);
-  // slot 0x15 — thunk 0x00407464: building display capacity by slot.
-  virtual short GetCityBuildingDisplayCapacityBySlot(int buildingSlot) {
-    (void)buildingSlot;
-    return 0;
-  }
+  // slot 0x15 — body 0x004b46e0 (vtable stores direct body, not ILT 0x00407464).
+  virtual short GetCityBuildingDisplayCapacityBySlot(int buildingSlot);
   // slot 0x16 — body 0x004b48a0: capacity tier (1..4) for a building slot, with the
   // tighter thresholds for slots 1/3/5.
   virtual char GetBuildingCapacityTierSlot58(int buildingSlot);
   // slot 0x17 — body 0x004b4940 (577B, unported).
-  virtual void Slot5C_Provisional() {}
-  // slot 0x18 — thunk 0x0040494e: toggle the power-plant upgrade order.
-  virtual void ToggleCityPowerPlantUpgradeOrderSlot60() {}
+  virtual int GetActiveNationBuildingMetricSlot5C(short buildingSlot);
+  // slot 0x18 — body 0x004b4d50 (vtable stores direct body, not ILT 0x0040494e).
+  virtual void ToggleCityPowerPlantUpgradeOrder(char enableUpgrade);
   // slot 0x19 — body 0x004b4c80: write the production flag/current/accum for a slot.
   virtual void SetProductionSlotState(short productionSlot, char flag, short current, short accum);
   // slot 0x1a — body 0x004b4cc0: read the production flag byte (+0x21c) and the two
@@ -124,7 +111,8 @@ public:
   virtual short* GetCitySummaryRecordSlot74();
   // slot 0x1e — body 0x004b4d00: true for the basic resource slots 0..6 and 0xb.
   virtual short IsBasicResourceSlot78(short resourceSlot);
-  virtual void Slot7C_Provisional() {}
+  // slot 0x1f — body 0x004b4210.
+  virtual void NoOpCitySlot7C();
   // slot 0x20 — body 0x004b4180: clamp negative fieldB6 entries to 0 (asserting via
   // UCity.cpp:0x47f unless replaying).
   virtual void Refresh80();

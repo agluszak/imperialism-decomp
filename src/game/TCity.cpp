@@ -5,6 +5,7 @@
 #include "game/TLocalizationRuntime.h"
 #include "game/TQueueObject.h"
 #include "game/diplomacy_globals.h"
+#include "game/mfc.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -20,10 +21,11 @@ char g_Sanitize_City_Counter_Value_006A24D4 = 0;
 }
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
+static const unsigned int kAddrClassDescTCity = 0x0064f338;
 
 // FUNCTION: IMPERIALISM 0x004b2490
-void* TCity::GetClassDescPointerSlot00() {
-  return &g_pClassDescTCity;
+CRuntimeClass* TCity::GetRuntimeClass() const {
+  return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTCity);
 }
 
 // FUNCTION: IMPERIALISM 0x004b24b0
@@ -49,7 +51,13 @@ TCity::TCity() {
 // FUNCTION: IMPERIALISM 0x004b2550
 TCity::~TCity() {}
 
+// FUNCTION: IMPERIALISM 0x004b30a0
 void TCity::ReadFrom(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x004b35d0
+void TCity::WriteTo(TStream* stream) {
   (void)stream;
 }
 
@@ -84,6 +92,9 @@ void TCity::Free() {
 void TCity::AdoptSelectedOrderSlot44(void* order) {
   this->selectedOrderB0 = order;
 }
+
+// FUNCTION: IMPERIALISM 0x004b3b40
+void TCity::Call28() {}
 
 // FUNCTION: IMPERIALISM 0x004b3de0
 void TCity::Call2C() {
@@ -280,6 +291,9 @@ void TCity::Refresh80() {
   } while (count != 0);
 }
 
+// FUNCTION: IMPERIALISM 0x004b4210
+void TCity::NoOpCitySlot7C() {}
+
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif
@@ -327,9 +341,60 @@ void TCity::WriteQueuePairSlot48(short low, short high) {
   this->eventQueue274->WritePackedIntSlot38(reinterpret_cast<int*>(&low));
 }
 
+// FUNCTION: IMPERIALISM 0x004b4580
+void TCity::CreateAltownCityObject() {}
+
 // FUNCTION: IMPERIALISM 0x004b46c0
 void TCity::ForwardQueueSlot20Slot50(void*) {
   this->eventQueue274->slot20();
+}
+
+// FUNCTION: IMPERIALISM 0x004b46e0
+short TCity::GetCityBuildingDisplayCapacityBySlot(int buildingSlot) {
+  if (buildingSlot == 0xf) {
+    TGreatPower* owner = this->ownerNationAc;
+    int regionCount = owner->ownedRegionList->GetCountOrReleaseSlot28();
+    if (static_cast<signed char>(owner->serializedStatusFlags[9]) < 0x33) {
+      if (regionCount / 4 > 1) {
+        return static_cast<short>(regionCount / 4);
+      }
+    } else if (regionCount / 3 > 1) {
+      return static_cast<short>(regionCount / 3);
+    }
+    return 1;
+  }
+  short capacity = this->productionOrderTable1dc[buildingSlot];
+  switch (buildingSlot) {
+  case 0:
+  case 2:
+  case 4:
+  case 6:
+    if (capacity == 0) {
+      return 2;
+    }
+    if (capacity == 2) {
+      return 4;
+    }
+    if (capacity == 4) {
+      return 8;
+    }
+    return static_cast<short>(capacity + 8);
+  case 1:
+  case 3:
+  case 5:
+    if (capacity == 0) {
+      return 1;
+    }
+    if (capacity == 1) {
+      return 2;
+    }
+    if (capacity == 2) {
+      return 4;
+    }
+    return static_cast<short>(capacity + 4);
+  default:
+    return static_cast<short>(capacity + 1);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004b48a0
@@ -354,6 +419,12 @@ char TCity::GetBuildingCapacityTierSlot58(int buildingSlot) {
   return static_cast<char>((0x1f < capacity) + 3);
 }
 
+// FUNCTION: IMPERIALISM 0x004b4940
+int TCity::GetActiveNationBuildingMetricSlot5C(short buildingSlot) {
+  (void)buildingSlot;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004b4c80
 void TCity::SetProductionSlotState(short productionSlot, char flag, short current, short accum) {
   this->productionFlags21c[productionSlot] = flag;
@@ -376,6 +447,12 @@ short TCity::IsBasicResourceSlot78(short resourceSlot) {
   }
   return 1;
 }
+
+// FUNCTION: IMPERIALISM 0x004b4d50
+void TCity::ToggleCityPowerPlantUpgradeOrder(char enableUpgrade) {
+  (void)enableUpgrade;
+}
+
 // FUNCTION: IMPERIALISM 0x004b4dc0
 int TCity::GetBuildingProductionValueBySlot(short buildingSlot) {
   if (buildingSlot != 0xf) {
