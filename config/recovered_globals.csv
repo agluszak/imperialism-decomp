@@ -1,0 +1,2 @@
+name|address|element_type|count|note
+g_apNationStates|0x006a4370|TGreatPower|7|Great-power slot table (g_apNationStates_End @0x006a438c bounds it to 7). Each cell is a TGreatPower* (instances may be the TAutoGreatPower subclass). Evidence: 26/26 GetCityBuildingProductionValueBySlot callsites resolve through these elements, and the writer ReplaceNationStateForSlotAndRefreshStatus allocates 0xb70 (TAutoGreatPower).

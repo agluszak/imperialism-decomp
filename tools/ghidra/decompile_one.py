@@ -83,21 +83,43 @@ def main() -> int:
                     continue
             resolved = resolve_real_function(tfn.getEntryPoint())
             if resolved is not None and resolved.getEntryPoint().getOffset() != tfn.getEntryPoint().getOffset():
-                thunk_name = tfn.getName()
+                thunk_name = tfn.getName()  # bare thunk name
                 real_name = resolved.getName(True)  # qualified with namespace
                 if thunk_name != real_name:
                     _thunk_map[thunk_name] = real_name
-        if _thunk_map:
-            # Build a single regex matching any thunk name as a whole word, longest first
-            escaped = sorted((_re.escape(k) for k in _thunk_map), key=len, reverse=True)
-            _thunk_re = _re.compile(r'\b(' + '|'.join(escaped) + r')\b')
+        # Two name families need different handling to avoid corrupting the output:
+        #  * "thunk_*" names are genuine Ghidra thunk auto-names that only ever appear as
+        #    thunk calls. The decompiler may print them qualified by the target's class
+        #    (e.g. "TCity::thunk_Foo"); we consume any leading namespace qualifier(s) and
+        #    rewrite the whole token to the authoritative real name "TCity::Foo".
+        #  * other names come from jmp-stub aliases whose name equals the target's bare
+        #    name and thus collide with real symbols (headers, already-correct qualified
+        #    calls, and even type names -- a constructor's simple name like "TGreatPower"
+        #    maps to "TGreatPower::TGreatPower"). We only rewrite these when unqualified
+        #    AND in call position (followed by "("), so we never double-qualify nor
+        #    corrupt a type cast / declaration that merely shares the bare name.
+        _thunk_alts = sorted(
+            (_re.escape(k) for k in _thunk_map if k.startswith("thunk_")), key=len, reverse=True
+        )
+        _other_alts = sorted(
+            (_re.escape(k) for k in _thunk_map if not k.startswith("thunk_")), key=len, reverse=True
+        )
+        _branches = []
+        if _thunk_alts:
+            _branches.append(r'(?:[A-Za-z_]\w*::)*(' + '|'.join(_thunk_alts) + r')')
+        if _other_alts:
+            _branches.append(r'(' + '|'.join(_other_alts) + r')(?=\s*\()')
+        if _branches:
+            _thunk_re = _re.compile(r'(?<![:\w])(?:' + '|'.join(_branches) + r')\b')
         else:
             _thunk_re = None
 
         def resolve_thunks_in_source(c_text: str) -> str:
             if _thunk_re is None:
                 return c_text
-            return _thunk_re.sub(lambda m: _thunk_map[m.group(0)], c_text)
+            return _thunk_re.sub(
+                lambda m: _thunk_map[next(g for g in m.groups() if g is not None)], c_text
+            )
 
         for addr_int in addrs:
             addr = af.getAddress(addr_int)

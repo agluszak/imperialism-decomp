@@ -33,6 +33,11 @@ into the Ghidra database so the decompiled code we promote is better:
      signatures from the live target function or matching Mac CodeWarrior method
      evidence, CreateObject factory return types, direct vtable-store methods,
      and class-namespace ECX-this functions.
+  7. attributes non-virtual __thiscall functions to a class by binary locality
+     (a function bracketed by one class's method run, tie-broken by RTTI object
+     size), and applies evidence-curated typing the static passes cannot infer:
+     typed global pointer arrays (config/recovered_globals.csv) and interior
+     class-field pointer types (config/recovered_fields.csv).
 
 Idempotent and re-runnable; it never overwrites a USER_DEFINED name. Dry-run by
 default — pass ``--apply`` to open the project writable and ``program.save()``.
@@ -67,6 +72,13 @@ _PROVISIONAL = re.compile(
 )
 REPO_ROOT = repo_root_from_file(__file__)
 MAC_SYMBOLS_PATH = REPO_ROOT / "vendor" / "macos_codewarrior" / "evidence" / "symbols.csv"
+# Evidence-curated typing the auto-RTTI passes cannot infer statically (interior
+# class-field pointer types and typed global pointer arrays). Static this-argument
+# inference was measured to yield almost nothing (virtual dispatch dominates) and
+# to be noisy for globals, so these high-confidence facts are recorded by hand from
+# concrete evidence and applied deterministically. Both are "|"-delimited.
+RECOVERED_GLOBALS_PATH = REPO_ROOT / "config" / "recovered_globals.csv"
+RECOVERED_FIELDS_PATH = REPO_ROOT / "config" / "recovered_fields.csv"
 MFC_LIBRARY_CLASS_NAMES = frozenset(MFC_MODELS)
 
 
@@ -384,6 +396,9 @@ def run(program, args) -> dict:
         "mac_method_signatures": 0,
         "this_typed": 0,
         "caller_class_assigned": 0,
+        "locality_class_assigned": 0,
+        "curated_globals_typed": 0,
+        "curated_fields_typed": 0,
     }
     changes: list[str] = []
     # collected per class for the struct-building pass
@@ -1029,6 +1044,202 @@ def run(program, args) -> dict:
                 except Exception as exc:  # noqa: BLE001
                     changes.append(f"  !! caller-assign 0x{entry:08x} {fn.getName()} -> {cls} failed: {exc}")
 
+        # ------------------------------------------------------------------ #
+        # Locality-based class assignment: MSVC emits all methods of a class's
+        # translation unit contiguously, so a non-virtual (Global) __thiscall
+        # function bracketed between two recovered-class functions is almost
+        # always a method of one of those classes. When both neighbours are the
+        # same class the assignment is unambiguous; when they differ we break the
+        # tie with the recovered RTTI object size (m_nObjectSize): a function that
+        # dereferences `this + 0xNNN` cannot belong to a class whose object is
+        # smaller than 0xNNN. This relies only on RTTI-recovered facts (object
+        # size + already-owned neighbours), never on Ghidra's provisional naming.
+        # ------------------------------------------------------------------ #
+        recovered_size: dict[str, int] = {
+            cls: int(info.get("size") or 0)
+            for cls, info in class_info.items()
+            if int(info.get("size") or 0) > 0
+        }
+
+        ordered_funcs = [fn for fn in fm.getFunctions(True) if not fn.isThunk()]
+        ordered_funcs.sort(key=lambda f: int(f.getEntryPoint().getOffset()))
+
+        def recovered_class_of(fn) -> str | None:
+            pns = fn.getParentNamespace()
+            if pns is None:
+                return None
+            name = pns.getName()
+            return name if name in recovered_size else None
+
+        # entry -> owning recovered class, updated as we assign so runs propagate.
+        owner_of: dict[int, str | None] = {}
+        for fn in ordered_funcs:
+            owner_of[int(fn.getEntryPoint().getOffset())] = recovered_class_of(fn)
+
+        _decomp_holder: dict[str, object] = {}
+
+        def get_decompiler():
+            if "ifc" not in _decomp_holder:
+                from ghidra.app.decompiler import DecompileOptions, DecompInterface
+
+                ifc = DecompInterface()
+                ifc.setOptions(DecompileOptions())
+                ifc.setSimplificationStyle("decompile")
+                ifc.openProgram(program)
+                _decomp_holder["ifc"] = ifc
+            return _decomp_holder["ifc"]
+
+        from ghidra.util.task import TaskMonitor as _TaskMonitor
+
+        _this_off_re_cache: dict[str, object] = {}
+
+        def max_this_offset(fn) -> int | None:
+            """Largest constant offset added to the `this` pointer in the decompiled
+            body, e.g. 0x1dc for ``*(short *)((int)this + i * 2 + 0x1dc)``."""
+            try:
+                res = get_decompiler().decompileFunction(fn, 45, _TaskMonitor.DUMMY)
+                if not res.decompileCompleted():
+                    return None
+                c_text = res.getDecompiledFunction().getC()
+            except Exception:  # noqa: BLE001
+                return None
+            pname = "this"
+            for param in fn.getParameters():
+                try:
+                    if param.isAutoParameter():
+                        pname = param.getName()
+                        break
+                except Exception:  # noqa: BLE001
+                    pass
+            pat = _this_off_re_cache.get(pname)
+            if pat is None:
+                pat = re.compile(re.escape(pname) + r"[^;\n]*?\+\s*(0x[0-9a-fA-F]+)")
+                _this_off_re_cache[pname] = pat
+            max_off = 0
+            for m in pat.finditer(c_text):
+                val = int(m.group(1), 16)
+                if val < 0x40000:
+                    max_off = max(max_off, val)
+            return max_off
+
+        for idx, fn in enumerate(ordered_funcs):
+            if idx == 0 or idx == len(ordered_funcs) - 1:
+                continue
+            ns = fn.getParentNamespace()
+            if ns is None or ns.getName() != "Global":
+                continue
+            if fn.getCallingConventionName() != "__thiscall":
+                continue
+            entry = int(fn.getEntryPoint().getOffset())
+            prev_cls = owner_of.get(int(ordered_funcs[idx - 1].getEntryPoint().getOffset()))
+            next_cls = owner_of.get(int(ordered_funcs[idx + 1].getEntryPoint().getOffset()))
+            # Require the function to be bracketed by recovered classes: strong
+            # evidence it sits inside a compiled class-method region.
+            if prev_cls is None or next_cls is None:
+                continue
+            if prev_cls == next_cls:
+                cls = prev_cls
+            else:
+                off = max_this_offset(fn)
+                if off is None:
+                    continue
+                fits = [c for c in (prev_cls, next_cls) if recovered_size.get(c, 0) >= off]
+                if len(fits) != 1:
+                    continue
+                cls = fits[0]
+            try:
+                if args.apply:
+                    fn.setParentNamespace(get_or_make_class(cls))
+                    refresh_thiscall_signature(fn)
+                owner_of[entry] = cls
+                stats["locality_class_assigned"] += 1
+                if args.verbose or not args.apply:
+                    changes.append(
+                        f"  locality-assign 0x{entry:08x} {fn.getName()} -> {cls} "
+                        f"(prev={prev_cls} next={next_cls})"
+                    )
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! locality-assign 0x{entry:08x} -> {cls} failed: {exc}")
+
+        # ------------------------------------------------------------------ #
+        # Curated typing: apply evidence-recorded global pointer-array types and
+        # interior class-field pointer types that static inference cannot recover
+        # reliably (see RECOVERED_*_PATH docstring). These are authoritative, so
+        # they overwrite whatever Ghidra had there.
+        # ------------------------------------------------------------------ #
+        from ghidra.program.model.data import ArrayDataType as _ArrayDT
+
+        def root_class_dt(name: str):
+            return dtm.getDataType(CategoryPath.ROOT, name)
+
+        def read_pipe_csv(path):
+            if not path.exists():
+                return []
+            with path.open("r", encoding="utf-8", newline="") as fd:
+                return list(csv.DictReader(fd, delimiter="|"))
+
+        for row in read_pipe_csv(RECOVERED_GLOBALS_PATH):
+            name = (row.get("name") or "").strip()
+            addr_s = (row.get("address") or "").strip()
+            elem = (row.get("element_type") or "").strip()
+            count_s = (row.get("count") or "1").strip()
+            if not addr_s or not elem:
+                continue
+            try:
+                addr = int(addr_s, 16)
+                count = max(1, int(count_s))
+            except ValueError:
+                changes.append(f"  !! curated global {name}: bad address/count")
+                continue
+            elem_dt = root_class_dt(elem)
+            if elem_dt is None:
+                changes.append(f"  !! curated global {name}@{addr_s}: type {elem} not found")
+                continue
+            ptr_dt = PointerDataType(elem_dt, dtm)
+            data_dt = ptr_dt if count == 1 else _ArrayDT(ptr_dt, count, 4)
+            try:
+                clear_code_units_covering(A(addr), A(addr + data_dt.getLength() - 1))
+                listing.createData(A(addr), data_dt)
+                stats["curated_globals_typed"] += 1
+                if args.verbose:
+                    changes.append(f"  curated global {name}@0x{addr:08x} = {elem} *[{count}]")
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! curated global {name}@0x{addr:08x} failed: {exc}")
+
+        for row in read_pipe_csv(RECOVERED_FIELDS_PATH):
+            cls = (row.get("class") or "").strip()
+            off_s = (row.get("offset") or "").strip()
+            ftype = (row.get("field_type") or "").strip()
+            if not cls or not off_s or not ftype:
+                continue
+            try:
+                off = int(off_s, 16)
+            except ValueError:
+                changes.append(f"  !! curated field {cls}: bad offset {off_s}")
+                continue
+            fname = (row.get("field_name") or "").strip() or f"field_0x{off:x}"
+            note = (row.get("note") or "").strip() or None
+            struct = root_class_dt(cls)
+            if struct is None or not hasattr(struct, "replaceAtOffset"):
+                changes.append(f"  !! curated field {cls}+0x{off:x}: struct not found")
+                continue
+            field_dt = root_class_dt(ftype)
+            if field_dt is None:
+                changes.append(f"  !! curated field {cls}+0x{off:x}: type {ftype} not found")
+                continue
+            if off + 4 > struct.getLength():
+                changes.append(
+                    f"  !! curated field {cls}+0x{off:x}: beyond object size 0x{struct.getLength():x}"
+                )
+                continue
+            try:
+                struct.replaceAtOffset(off, PointerDataType(field_dt, dtm), 4, fname, note)
+                stats["curated_fields_typed"] += 1
+                if args.verbose:
+                    changes.append(f"  curated field {cls}+0x{off:x} = {ftype} * ({fname})")
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! curated field {cls}+0x{off:x} failed: {exc}")
+
         remove_stale_class_duplicates()
 
     return {"stats": stats, "changes": changes}
@@ -1078,7 +1289,10 @@ def main() -> int:
             f"vptr_store_methods_typed={s['vptr_store_methods_typed']} "
             f"namespace_ecx_methods_typed={s['namespace_ecx_methods_typed']} "
             f"mac_method_signatures={s['mac_method_signatures']}\n"
-            f"          caller_class_assigned={s['caller_class_assigned']}"
+            f"          caller_class_assigned={s['caller_class_assigned']} "
+            f"locality_class_assigned={s['locality_class_assigned']}\n"
+            f"          curated_globals_typed={s['curated_globals_typed']} "
+            f"curated_fields_typed={s['curated_fields_typed']}"
         )
         if not args.apply:
             print("Re-run with --apply to write these changes to the Ghidra DB.")
