@@ -46,6 +46,7 @@ protected:
 // RTTI: g_pClassDescTCity @ 0x0064f338; created by CreateTCityInstance (0x004b2340).
 // Like TGreatPower, the destructor restores the TObject EH sentinel vtable
 // (0x0066fec4) — real base inheritance is still future work.
+// LAYOUT: RECOVERED
 // VTABLE: IMPERIALISM 0x0064f580
 class TCity {
 public:
@@ -132,7 +133,7 @@ public:
   short field06; // +0x06 — zeroed by the ctor
   short field08; // +0x08 — zeroed by the ctor
   unsigned char pad0a[0x5c - 0x0a];
-  // 0x5c..0x68 — per-zone recruit order counters (pending-action FSM, 0x004dab20).
+  // +0x5c..+0x68 — per-zone recruit order counters (pending-action FSM, 0x004dab20).
   short recruitZoneCount5c[6];
   short navySecondaryCount68; // 0x68 — navy secondary-order counter
   unsigned char pad6a[0x7c - 0x6a];
@@ -142,13 +143,12 @@ public:
   // (entry 0x13 doubles as the +0xa4 labor reserve in 0x004b44d0).
   short reservedByType7e[0x17];
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
-  // 0xB0 — currently selected order; its +0x14 tile id drives the port-zone lookup
-  // (0x005634a0).
-  void* selectedOrderB0;
+  // +0xb0 — currently selected order; its +0x14 tile id drives the port-zone lookup
+  void* selectedOrderB0; // +0xb0
   unsigned char pad_b4[0xB6 - 0xB4];
   // 0xB6..0xE4; fieldB6[0x15]/[0x16] occupy 0xE0/0xE2 (relationNeedSlotE0/E2).
   short fieldB6[0x17];
-  // 0xE4..0x1D8 — owned order objects, released through slot 0x1c on teardown.
+  // +0xe4..+0x1d8 — owned order objects, released through slot 0x1c on teardown.
   void* orderSlotsE4[0x3D];
   TCitySummaryObject* productionSummary1d8; // 0x1D8
   // 0x1DC — 16-entry per-city production order table (0x004b4dc0, ctor-cleared).

@@ -94,6 +94,15 @@ ghidra-decomp-check *args: _require-ghidra-install
 gen-recovered-fields-from-headers *args:
   uv run python -m tools.ghidra.gen_recovered_fields_from_headers {{args}}
 
+field-layout-gate *args:
+  uv run python -m tools.workflow.check_field_layout_annotations {{args}}
+
+gen-vtable-slot-overrides *args: _require-ghidra-install
+  uv run python -m tools.ghidra.gen_vtable_slot_overrides {{args}}
+
+ghidra-vtable-struct-check *args: _require-ghidra-install
+  uv run python -m tools.ghidra.vtable_struct_check {{args}}
+
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
 scan-cdecl-thiscall *args: _require-ghidra-install
@@ -221,6 +230,7 @@ gates:
   just marker-gate
   just vtable-annotation-gate
   just vtable-collision-gate
+  just field-layout-gate
   just synthetic-gate
   just decomplint
 

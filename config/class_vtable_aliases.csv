@@ -1,0 +1,2 @@
+alias_class|canonical_class|vtable_addr|note
+TLocalizationRuntime|TSimMgr|0x00662a58|g_pLocalizationTable manual port name; same vtable as Ghidra TSimMgr

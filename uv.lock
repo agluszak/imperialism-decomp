@@ -69,6 +69,15 @@ wheels = [
 ]
 
 [[package]]
+name = "cxxheaderparser"
+version = "1.8.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/58/d4/8699197560d656684f877d68f005462a78233a5678fd5260635aa710a4b0/cxxheaderparser-1.8.1.tar.gz", hash = "sha256:683a30888731062b1b2d8249568e87c585e3d80e7d62c8c9a1fccfb4c9665d2b", size = 55590, upload-time = "2026-06-13T19:44:21.434Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d7/3b/c20ed70839937311fa5a7cc511be4e369d7143b1e13366ba78e6bff53c45/cxxheaderparser-1.8.1-py3-none-any.whl", hash = "sha256:0f58c74b9a879b49a5df680a6c501f23c0d49c0379d7a89c14f62d0fe0b456ec", size = 62128, upload-time = "2026-06-13T19:44:20.04Z" },
+]
+
+[[package]]
 name = "ghidra-stubs"
 version = "12.1.2"
 source = { registry = "https://pypi.org/simple" }
@@ -82,7 +91,9 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "clang-format" },
+    { name = "cxxheaderparser" },
     { name = "ghidra-stubs" },
+    { name = "pcpp" },
     { name = "pyghidra" },
     { name = "reccmp" },
 ]
@@ -90,7 +101,9 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "clang-format", specifier = "==21.1.8" },
+    { name = "cxxheaderparser", specifier = ">=1.8.1" },
     { name = "ghidra-stubs", specifier = ">=12.1.2" },
+    { name = "pcpp", specifier = ">=1.30" },
     { name = "pyghidra", specifier = "==3.1.0" },
     { name = "reccmp", git = "https://github.com/agluszak/reccmp.git?rev=ae1f9d0f" },
 ]
@@ -131,6 +144,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/65/ee/299d360cdc32edc7d2cf530f3accf79c4fca01e96ffc950d8a52213bd8e4/packaging-26.0.tar.gz", hash = "sha256:00243ae351a257117b6a241061796684b084ed1c516a08c48a3f7e147a9d80b4", size = 143416, upload-time = "2026-01-21T20:50:39.064Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/b9/c538f279a4e237a006a2c98387d081e9eb060d203d8ed34467cc0f0b9b53/packaging-26.0-py3-none-any.whl", hash = "sha256:b36f1fef9334a5588b4166f8bcd26a14e521f2b55e6b9de3aaa80d3ff7a37529", size = 74366, upload-time = "2026-01-21T20:50:37.788Z" },
+]
+
+[[package]]
+name = "pcpp"
+version = "1.30"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/41/07/876153f611f2c610bdb8f706a5ab560d888c938ea9ea65ed18c374a9014a/pcpp-1.30.tar.gz", hash = "sha256:5af9fbce55f136d7931ae915fae03c34030a3b36c496e72d9636cedc8e2543a1", size = 94283, upload-time = "2021-10-29T13:16:54.565Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/01/ca/ada7f39c5a0977893e0ef809b1617b259b2d76f6382a7abad00dd6d77904/pcpp-1.30-py2.py3-none-any.whl", hash = "sha256:05fe08292b6da57f385001c891a87f40d6aa7f46787b03e8ba326d20a3297c6e", size = 91085, upload-time = "2021-10-29T13:16:51.846Z" },
 ]
 
 [[package]]

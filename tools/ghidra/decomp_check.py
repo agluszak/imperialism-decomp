@@ -17,8 +17,16 @@ import sys
 from dataclasses import dataclass
 
 from tools.common.repo import repo_root_from_file
+from tools.ghidra.vtable_struct_check import CHECKS as VTABLE_STRUCT_CHECKS, run_checks as run_vtable_struct_checks
 
 REPO = repo_root_from_file(__file__)
+
+
+def run_struct_checks() -> list[str]:
+    try:
+        return run_vtable_struct_checks(VTABLE_STRUCT_CHECKS)
+    except Exception as exc:  # noqa: BLE001
+        return [f"vtable struct check error: {exc}"]
 
 
 @dataclass(frozen=True)
@@ -106,7 +114,7 @@ CASES: tuple[BenchCase, ...] = (
             r"g_pLocalizationTable",
         ),
         (
-            r"LoadUiStringByCodeGroupAndOffset|g_pLocalizationTable->vftable\[0x10\]\.slot_0x04\)\(0x2735",
+            r"LoadUiStringByCodeGroupAndOffset|vftable\[0x21\]",
             r"needCapA6",
             r"fieldB6",
         ),
@@ -170,6 +178,16 @@ def main() -> int:
     improved_pending = 0
     print("Ghidra decompile benchmark check")
     print("=" * 60)
+
+    struct_failures = run_struct_checks()
+    if struct_failures:
+        print("\nVtable struct checks:")
+        for failure in struct_failures:
+            print(f"  FAIL  {failure}")
+        failed = True
+    else:
+        print("\nVtable struct checks: ok")
+
     for case in CASES:
         print(f"\n0x{case.addr:08x}  {case.label}")
         try:

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Suggest recovered_fields.csv rows from manual include/game/*.h layouts.
 
-Parses explicit offset comments (// +0xNN, // 0xNN) and simple member declarations
-to emit pipe-delimited rows for review/merge into config/recovered_fields.csv.
+Uses pcpp + cxxheaderparser for member extraction; offsets from // +0xNN comments
+and class_layout_bases.csv sequential walk.
 
 Usage:
   uv run python -m tools.ghidra.gen_recovered_fields_from_headers
   uv run python -m tools.ghidra.gen_recovered_fields_from_headers --write
+  uv run python -m tools.ghidra.gen_recovered_fields_from_headers --class TCity
 """
 
 from __future__ import annotations
@@ -16,42 +17,30 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from tools.common.field_layout_annotations import (
+    build_name_offset_hints,
+    field_line_index,
+    is_pad_field,
+    read_header_lines,
+    resolve_field_offset_from_lines,
+)
+from tools.common.pipe_csv import read_pipe_rows
+from tools.common.recovered_field_type import parse_field_type, to_csv_type
 from tools.common.repo import repo_root_from_file
+from tools.ghidra.header_preprocess import (
+    array_size_value,
+    class_name_of,
+    fundamental_name,
+    parse_header_file,
+    type_to_cpp_shape,
+)
 
 REPO = repo_root_from_file(__file__)
 INCLUDE_GAME = REPO / "include" / "game"
 OUT_PATH = REPO / "config" / "recovered_fields.generated.csv"
+LAYOUT_BASES_PATH = REPO / "config" / "class_layout_bases.csv"
 
-# Layout anchors from recovered RTTI / manual headers (bytes).
-CLASS_PREFIX_SIZE: dict[str, int] = {
-    "TGreatPower": 0x94,  # TCountry base through ownedRegionList
-    "TCity": 0x04,  # after vftable
-}
-
-TYPE_SIZES: dict[str, int] = {
-    "unsigned char": 1,
-    "signed char": 1,
-    "char": 1,
-    "bool": 1,
-    "short": 2,
-    "unsigned short": 2,
-    "int": 4,
-    "unsigned int": 4,
-    "long": 4,
-    "unsigned long": 4,
-    "float": 4,
-    "double": 8,
-}
-
-POINTER_TYPES = {"void", "CString", "TPtrList", "TQueueObject", "TCity", "TGreatPower"}
-POINTER_SUFFIX = re.compile(r"^(.+?)\s*\*\s*$")
-ARRAY_SUFFIX = re.compile(r"^(.+?)\s*\[\s*(0x[0-9a-fA-F]+|\d+)\s*\]\s*;?\s*$")
-MEMBER_LINE = re.compile(
-    r"^\s*(?:(?:unsigned|signed)\s+)?(?:char|short|int|long|float|double|bool|void|class\s+)?"
-    r"([\w:]+)\s*(\*?)\s*(?:\[\s*(0x[0-9a-fA-F]+|\d+)\s*\])?\s*;\s*$"
-)
-OFFSET_COMMENT = re.compile(r"//\s*(?:\+)?0x([0-9a-fA-F]+)\b", re.IGNORECASE)
-RANGE_COMMENT = re.compile(r"//\s*0x([0-9a-fA-F]+)\s*\.\.", re.IGNORECASE)
+VTABLE_COMMENT = re.compile(r"//\s*VTABLE:", re.IGNORECASE)
 
 
 @dataclass
@@ -68,121 +57,155 @@ class FieldRow:
         )
 
 
-def sizeof_type(type_name: str, is_ptr: bool, array_count: int | None) -> tuple[str, int]:
-    if array_count is not None:
-        elem = type_name.rstrip("*").strip()
-        if is_ptr or elem in POINTER_TYPES or elem.startswith("T"):
-            csv_type = f"{elem}[0x{array_count:x}]" if array_count > 9 else f"{elem}[{array_count}]"
-            return csv_type.replace("**", "*"), 4 * array_count if is_ptr else _scalar_size(elem) * array_count
-        csv_type = f"{elem}[0x{array_count:x}]" if array_count > 9 else f"{elem}[{array_count}]"
-        return csv_type, _scalar_size(elem) * array_count
-    if is_ptr:
-        base = type_name.rstrip("*").strip()
-        return base if base in POINTER_TYPES or base.startswith("T") else f"{base}*", 4
-    return type_name, _scalar_size(type_name)
+def load_layout_bases() -> dict[str, tuple[int, str | None]]:
+    rows: dict[str, tuple[int, str | None]] = {}
+    if not LAYOUT_BASES_PATH.exists():
+        return rows
+    for row in read_pipe_rows(LAYOUT_BASES_PATH):
+        cls = (row.get("class") or "").strip()
+        off_s = (row.get("base_offset") or "").strip()
+        if not cls or not off_s:
+            continue
+        base_class = (row.get("base_class") or "").strip() or None
+        rows[cls] = (int(off_s, 16), base_class)
+    return rows
 
 
-def _scalar_size(type_name: str) -> int:
-    for key, size in TYPE_SIZES.items():
-        if type_name == key or type_name.endswith(key):
-            return size
+def initial_offset(class_name: str, layout_bases: dict[str, tuple[int, str | None]]) -> int:
+    if class_name in layout_bases:
+        return layout_bases[class_name][0]
     return 4
 
 
-def parse_header(path: Path, class_name: str) -> list[FieldRow]:
+def extract_class_rows(path: Path, class_name: str, layout_bases: dict[str, tuple[int, str | None]]) -> list[FieldRow]:
+    parsed = parse_header_file(path)
+    lines = read_header_lines(path)
+    name_hints = build_name_offset_hints(lines)
     rows: list[FieldRow] = []
-    text = path.read_text(encoding="utf-8")
-    if f"class {class_name}" not in text:
-        return rows
 
-    in_class = False
-    offset = CLASS_PREFIX_SIZE.get(class_name, 4)
-    pending_range: int | None = None
-
-    for line in text.splitlines():
-        if re.search(rf"\bclass\s+{class_name}\b", line):
-            in_class = True
+    for scope in parsed.namespace.classes:
+        if class_name_of(scope) != class_name:
             continue
-        if not in_class:
-            continue
-        if line.strip().startswith("class ") and class_name not in line:
-            break
-        if line.strip() == "};":
-            break
-        if line.strip().startswith("virtual "):
-            continue
+        offset = initial_offset(class_name, layout_bases)
+        for field in scope.fields:
+            if is_pad_field(field.name):
+                from cxxheaderparser.types import Array as CxxArray
 
-        range_m = RANGE_COMMENT.search(line)
-        if range_m:
-            pending_range = int(range_m.group(1), 16)
-            continue
-
-        off_m = OFFSET_COMMENT.search(line)
-        if off_m and ".." not in line:
-            offset = int(off_m.group(1), 16)
-
-        member_m = MEMBER_LINE.match(line.replace("class ", ""))
-        if not member_m:
-            continue
-
-        name = member_m.group(1)
-        is_ptr = member_m.group(2) == "*"
-        arr = member_m.group(3)
-        array_count = int(arr, 16) if arr and arr.lower().startswith("0x") else int(arr) if arr else None
-
-        if pending_range is not None:
-            offset = pending_range
-            pending_range = None
-
-        type_token = "void" if is_ptr else "int"
-        if "short" in line:
-            type_token = "short"
-        elif "unsigned char" in line or "signed char" in line:
-            type_token = "unsigned char"
-        elif "int" in line and "short" not in line:
-            type_token = "int"
-
-        csv_type, size = sizeof_type(type_token if not is_ptr else name, is_ptr, array_count)
-        if is_ptr and not csv_type.endswith("*") and "[" not in csv_type:
-            csv_type = name
-
-        rows.append(
-            FieldRow(
-                class_name,
-                offset,
-                csv_type,
-                name,
-                f"generated from {path.name}",
+                if isinstance(field.type, CxxArray):
+                    count = array_size_value(field.type)
+                    if count is not None:
+                        elem = 1
+                        if fundamental_name(field.type.array_of) is None:
+                            elem = 4
+                        offset += count * elem
+                else:
+                    pad_base, pad_ptr, pad_count, pad_ptr_array = type_to_cpp_shape(field.type)
+                    pad_csv = to_csv_type(
+                        pad_base,
+                        is_ptr=pad_ptr,
+                        array_count=pad_count,
+                        pointer_array=pad_ptr_array,
+                    )
+                    pad_spec = parse_field_type(pad_csv)
+                    if pad_spec is not None:
+                        offset += pad_spec.byte_length
+                continue
+            base, is_ptr, array_count, pointer_array = type_to_cpp_shape(field.type)
+            csv_type = to_csv_type(
+                base,
+                is_ptr=is_ptr,
+                array_count=array_count,
+                pointer_array=pointer_array,
             )
-        )
-        offset += size
+            spec = parse_field_type(csv_type)
+            if spec is None:
+                continue
 
+            line_idx = field_line_index(lines, field.name)
+            resolved, _source = resolve_field_offset_from_lines(
+                lines, field.name, line_idx, name_hints=name_hints
+            )
+            if resolved is not None:
+                offset = resolved
+
+            if not is_pad_field(field.name):
+                rows.append(
+                    FieldRow(
+                        class_name,
+                        offset,
+                        csv_type,
+                        field.name,
+                        f"generated from {path.name}",
+                    )
+                )
+            offset += spec.byte_length
+        break
     return rows
+
+
+def discover_header_paths(
+    *,
+    only_with_vtable: bool,
+    class_filter: str | None,
+) -> list[Path]:
+    paths = sorted(INCLUDE_GAME.glob("*.h"))
+    if only_with_vtable:
+        paths = [p for p in paths if VTABLE_COMMENT.search(p.read_text(encoding="utf-8"))]
+    if class_filter:
+        paths = [p for p in paths if f"class {class_filter}" in p.read_text(encoding="utf-8")]
+    return paths
+
+
+def collect_rows(
+    paths: list[Path],
+    layout_bases: dict[str, tuple[int, str | None]],
+    class_filter: str | None,
+) -> list[FieldRow]:
+    all_rows: list[FieldRow] = []
+    for path in paths:
+        text = path.read_text(encoding="utf-8")
+        class_names: list[str] = []
+        if class_filter:
+            class_names = [class_filter]
+        else:
+            for match in re.finditer(r"\bclass\s+(\w+)", text):
+                name = match.group(1)
+                if name not in class_names:
+                    class_names.append(name)
+        for cls in class_names:
+            if cls.endswith("View") and class_filter is None:
+                continue
+            try:
+                all_rows.extend(extract_class_rows(path, cls, layout_bases))
+            except Exception:
+                continue
+    return all_rows
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate recovered_fields suggestions from headers.")
+    parser.add_argument("--write", action="store_true", help=f"Write to {OUT_PATH.relative_to(REPO)}")
+    parser.add_argument("--class", dest="class_name", metavar="NAME", help="Only emit rows for this class")
     parser.add_argument(
-        "--write",
+        "--only-with-vtable",
         action="store_true",
-        help=f"Write suggestions to {OUT_PATH.relative_to(REPO)}",
+        help="Only scan headers containing // VTABLE:",
     )
     args = parser.parse_args()
 
-    targets = [
-        (INCLUDE_GAME / "TGreatPower.h", "TGreatPower"),
-        (INCLUDE_GAME / "TCity.h", "TCity"),
-        (INCLUDE_GAME / "TCountry.h", "TCountry"),
-    ]
-    all_rows: list[FieldRow] = []
-    for path, cls in targets:
-        if path.exists():
-            all_rows.extend(parse_header(path, cls))
+    layout_bases = load_layout_bases()
+    paths = discover_header_paths(
+        only_with_vtable=args.only_with_vtable or args.class_name is None,
+        class_filter=args.class_name,
+    )
+    if args.class_name and not paths:
+        paths = discover_header_paths(only_with_vtable=False, class_filter=args.class_name)
 
-    # Deduplicate by class+offset keeping first.
+    all_rows = collect_rows(paths, layout_bases, args.class_name)
+
     seen: set[tuple[str, int]] = set()
     unique: list[FieldRow] = []
-    for row in all_rows:
+    for row in sorted(all_rows, key=lambda r: (r.class_name, r.offset)):
         key = (row.class_name, row.offset)
         if key in seen:
             continue

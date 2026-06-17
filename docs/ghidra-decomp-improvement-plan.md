@@ -16,19 +16,32 @@ Mechanisms already in place that several of these items reuse:
 - `config/recovered_data.csv` — misidentified data labels reclassified as structs
   (e.g. string → indexed table). Field specs accept optional names:
   `0x28:dword[6]:summaryTags`.
-- `config/vtable_slot_method_overrides.csv` — batch-rename and signature-type hot
-  vtable slots in `ensure_vtbl_struct` (TSimMgr / `TLocalizationRuntime` slots
-  `0x1d`–`0x21` for localization API).
+- `config/vtable_slot_method_overrides.csv` — evidence-curated exceptions for
+  `ensure_vtbl_struct` slot naming/signatures (primary source is
+  `just gen-vtable-slot-overrides` suggestions merged after review).
+- `config/class_vtable_aliases.csv` — alias class names that share a canonical
+  vtable (`TLocalizationRuntime` → `TSimMgr`); overrides resolve through the alias.
+- `config/class_layout_status.csv` — per-class `recovered` vs `in_progress` layout policy;
+  enforced by `just field-layout-gate` (see `docs/reference/field-layout-annotations.md`).
+- `config/class_layout_bases.csv` — derived-class layout prefix offsets for the
+  header field generator (`TGreatPower` @ `0x94` after `TCountry` prefix).
+- `tools/common/recovered_field_type.py` — shared `field_type` grammar for CSV
+  emission and `apply_mfc_rtti` Ghidra datatype mapping.
+- `just gen-recovered-fields-from-headers` — pcpp + cxxheaderparser scan of
+  `include/game/*.h` → `config/recovered_fields.generated.csv` (review before merge).
+- `just gen-vtable-slot-overrides` — suggest slot override rows from `// VTABLE:`
+  headers + Ghidra slot bodies → `config/vtable_slot_method_overrides.generated.csv`.
+- `just ghidra-vtable-struct-check` — datatype-level regression on vtable struct
+  field names (independent of decompiler composite indexing).
+- `just ghidra-decomp-check` — regression gate: vtable struct checks plus nine
+  benchmark decompiles (`tools/ghidra/decomp_check.py`). Run after every
+  `just apply-mfc-rtti --apply`.
 - `config/dissolve_namespaces.csv` — placeholder pseudo-class namespaces dissolved
   back into Global by `apply_mfc_rtti.py`.
 - `config/calling_convention_overrides.csv` — verified `__cdecl`/`__fastcall`
   mislabels corrected to `__thiscall` (or confirmed `__cdecl`).
 - `config/function_class_overrides.csv` — evidence-curated move of mis-placed
   `__thiscall` methods into the correct class namespace + `this` typing.
-- `just ghidra-decomp-check` — regression gate over nine benchmark decompiles
-  (`tools/ghidra/decomp_check.py`). Run after every `just apply-mfc-rtti --apply`.
-- `just gen-recovered-fields-from-headers` — suggest `recovered_fields.csv` rows
-  from `include/game/*.h` offset comments (`tools/ghidra/gen_recovered_fields_from_headers.py`).
 - The decompiler `this`-argument resolver prototype (measured low yield for fully
   automatic inference, so curated tables are preferred for now).
 
@@ -54,12 +67,14 @@ thunk fix); dissolved pseudo-classes stay gone (`dissolve_namespaces.csv`).
 
 **TSimMgr vtable indexing (`0x0050c1bf`):** listing shows `CALL dword ptr [EAX+0x84]`
 on `g_pLocalizationTable`; `TSimMgrVtbl` slot `0x21` is typed and named
-`LoadUiStringByCodeGroupAndOffset` in the DB. The decompiler still renders
+`LoadUiStringByCodeGroupAndOffset` in the DB (`just ghidra-vtable-struct-check`
+asserts the datatype field name at byte `0x84`). The decompiler may still render
 `g_pLocalizationTable->vftable[0x10].slot_0x04` because it models each vfunc as an
-8-byte `{fn, +4}` composite (`0x10 * 8 + 4 = 0x84`). Benchmark accepts the
-composite form when the `0x2735` string-group literal is visible at the callsite.
-Full method-name propagation needs a decompiler-side fix or 8-byte vtable struct
-emission (deferred — must not break 4-byte PE vtable listing).
+8-byte `{fn, +4}` composite (`0x10 * 8 + 4 = 0x84`). Decompile benchmark accepts
+`LoadUiStringByCodeGroupAndOffset` or `vftable[0x21]` when the decompiler catches up;
+struct check guards the DB naming regardless. Full method-name propagation in decompile
+needs a decompiler-side fix or 8-byte vtable struct emission (deferred — must not
+break 4-byte PE vtable listing).
 
 **Deferred — vtable call at `[vptr+0x1d4]` in `0x00588b70`:** listing shows
 `CALL dword ptr [EDX+0x1d4]`; `TIndustryCluster` vtable `@0x00662f98` slot `0x75`
@@ -135,6 +150,20 @@ lower offsets do not clobber named fields at array boundaries (e.g. `fieldB6` th
 
 Keep adding rows via `just gen-recovered-fields-from-headers` + manual review;
 never overwrite an already-typed USER_DEFINED Ghidra field.
+
+### Closed loop (generate → review → apply → check)
+
+1. `just gen-recovered-fields-from-headers` — pcpp + cxxheaderparser emit
+   `config/recovered_fields.generated.csv` from `include/game/*.h` offset comments
+   and `config/class_layout_bases.csv`.
+2. Merge reviewed rows into `config/recovered_fields.csv`; mark class
+   `recovered` in `config/class_layout_status.csv` when every member is annotated.
+3. `just field-layout-gate` — verify annotations for listed classes.
+4. `just gen-vtable-slot-overrides` — emit slot-name suggestions from `// VTABLE:`
+   headers; merge exceptions into `config/vtable_slot_method_overrides.csv`.
+5. `just apply-mfc-rtti --apply --verbose` — applies fields, globals, vtable aliases,
+   and overlap-clipped struct fields.
+6. `just ghidra-decomp-check` — vtable struct checks + decompile benchmark suite.
 
 ## Tier 2 — bounded cleanup, same family as the dissolve work
 

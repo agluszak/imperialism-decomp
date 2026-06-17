@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""Golden tests for header-driven recovered_fields generation."""
+
+from __future__ import annotations
+
+import unittest
+from pathlib import Path
+
+from tools.common.repo import repo_root_from_file
+from tools.ghidra.gen_recovered_fields_from_headers import extract_class_rows, load_layout_bases
+
+REPO = repo_root_from_file(__file__)
+INCLUDE_GAME = REPO / "include" / "game"
+
+PILOT_ROWS: dict[tuple[str, str], tuple[int, str]] = {
+    ("TCity", "fieldB6"): (0xB6, "short[0x17]"),
+    ("TCity", "orderSlotsE4"): (0xE4, "void*[0x3d]"),
+    ("TCity", "ownerNationAc"): (0xAC, "TGreatPower"),
+    ("TGreatPower", "needCapA6"): (0xA6, "short"),
+    ("TGreatPower", "needCurrentByType"): (0x10E, "short[0x17]"),
+    ("TGreatPower", "needTargetByType"): (0x13C, "short[0x17]"),
+    ("TGreatPower", "city"): (0x894, "TCity"),
+}
+
+
+class GenRecoveredFieldsFromHeadersTests(unittest.TestCase):
+    def test_pilot_offsets_match_curated_csv(self) -> None:
+        layout_bases = load_layout_bases()
+        for (class_name, field_name), (expected_off, expected_type) in PILOT_ROWS.items():
+            path = INCLUDE_GAME / f"{class_name}.h"
+            rows = extract_class_rows(path, class_name, layout_bases)
+            by_name = {row.field_name: row for row in rows}
+            self.assertIn(field_name, by_name, f"{class_name}.{field_name} missing from generator output")
+            row = by_name[field_name]
+            self.assertEqual(row.offset, expected_off, f"{class_name}.{field_name} offset")
+            self.assertEqual(row.field_type, expected_type, f"{class_name}.{field_name} type")
+
+
+if __name__ == "__main__":
+    unittest.main()
