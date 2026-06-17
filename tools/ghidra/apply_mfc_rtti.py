@@ -79,6 +79,11 @@ MAC_SYMBOLS_PATH = REPO_ROOT / "vendor" / "macos_codewarrior" / "evidence" / "sy
 # concrete evidence and applied deterministically. Both are "|"-delimited.
 RECOVERED_GLOBALS_PATH = REPO_ROOT / "config" / "recovered_globals.csv"
 RECOVERED_FIELDS_PATH = REPO_ROOT / "config" / "recovered_fields.csv"
+# Placeholder "class" namespaces invented by early manual decompilation that are not
+# real classes (e.g. functions grouped because their destructor resets the object's
+# vptr to a shared base/interface vtable address). Listed here so they are dissolved
+# back into Global deterministically. "|"-delimited (namespace|reason).
+DISSOLVE_NAMESPACES_PATH = REPO_ROOT / "config" / "dissolve_namespaces.csv"
 MFC_LIBRARY_CLASS_NAMES = frozenset(MFC_MODELS)
 
 
@@ -399,6 +404,8 @@ def run(program, args) -> dict:
         "locality_class_assigned": 0,
         "curated_globals_typed": 0,
         "curated_fields_typed": 0,
+        "pseudo_classes_dissolved": 0,
+        "pseudo_class_members_moved": 0,
     }
     changes: list[str] = []
     # collected per class for the struct-building pass
@@ -1240,6 +1247,43 @@ def run(program, args) -> dict:
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! curated field {cls}+0x{off:x} failed: {exc}")
 
+        # Dissolve placeholder pseudo-class namespaces (not real classes) back into
+        # Global: move every member symbol out, drop any leftover root datatype of
+        # the same name, then delete the now-empty namespace.
+        from ghidra.util.task import TaskMonitor as _TM
+
+        global_ns = program.getGlobalNamespace()
+        for row in read_pipe_csv(DISSOLVE_NAMESPACES_PATH):
+            nsname = (row.get("namespace") or "").strip()
+            if not nsname:
+                continue
+            ns = st.getNamespace(nsname, None)
+            if ns is None:
+                continue
+            moved = 0
+            for sym in list(st.getSymbols(ns)):
+                try:
+                    sym.setNamespace(global_ns)
+                    moved += 1
+                except Exception as exc:  # noqa: BLE001
+                    changes.append(f"  !! dissolve {nsname}: move {sym.getName()} failed: {exc}")
+            leftover = dtm.getDataType(CategoryPath.ROOT, nsname)
+            if leftover is not None:
+                try:
+                    dtm.remove(leftover, _TM.DUMMY)
+                except Exception as exc:  # noqa: BLE001
+                    changes.append(f"  !! dissolve {nsname}: remove datatype failed: {exc}")
+            try:
+                ns_sym = ns.getSymbol()
+                if ns_sym is not None:
+                    ns_sym.delete()
+                stats["pseudo_classes_dissolved"] += 1
+                stats["pseudo_class_members_moved"] += moved
+                if args.verbose:
+                    changes.append(f"  dissolved pseudo-class {nsname} ({moved} members -> Global)")
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! dissolve {nsname}: delete namespace failed: {exc}")
+
         remove_stale_class_duplicates()
 
     return {"stats": stats, "changes": changes}
@@ -1292,7 +1336,9 @@ def main() -> int:
             f"          caller_class_assigned={s['caller_class_assigned']} "
             f"locality_class_assigned={s['locality_class_assigned']}\n"
             f"          curated_globals_typed={s['curated_globals_typed']} "
-            f"curated_fields_typed={s['curated_fields_typed']}"
+            f"curated_fields_typed={s['curated_fields_typed']}\n"
+            f"          pseudo_classes_dissolved={s['pseudo_classes_dissolved']} "
+            f"pseudo_class_members_moved={s['pseudo_class_members_moved']}"
         )
         if not args.apply:
             print("Re-run with --apply to write these changes to the Ghidra DB.")
