@@ -22,6 +22,17 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
   current stats snapshot. Per-function `compare` remains the real gate for touched
   bodies.
 
+## Pre-commit sequence
+
+```sh
+just gates
+just build
+just stats          # review improved/worsened vs baseline
+just stats-commit   # if stats are acceptable; commit baseline with source
+```
+
+See `.cursor/rules/commit-workflow.mdc` for regression thresholds and failure handling.
+
 ## Export-sync sequence (run whenever markers/ownership change)
 
 ```sh
@@ -33,7 +44,9 @@ just build
 ## Gates & formatting
 
 - `just gates` — run all mechanical source-policy gates (the pre-commit check):
-  `vtable-gate` + `antipattern-gate` + `marker-gate`. Run this before committing.
+  `vtable-gate`, `antipattern-gate`, `tgreatpower-gate`, `marker-gate`,
+  `vtable-annotation-gate`, `vtable-collision-gate`, `field-layout-gate`,
+  `synthetic-gate`, and `decomplint`. **All must pass before committing.**
 - `just vtable-gate` — must pass; do not introduce new raw `vftable[...]` patterns in
   files not already baseline-tracked. `just vtable-gate-update` rewrites the baseline
   after an intentional refactor.

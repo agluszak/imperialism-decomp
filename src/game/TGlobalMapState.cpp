@@ -172,6 +172,13 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TGlobalMapState* mapState, shor
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00513290
+void TGlobalMapState::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
+    short regionIndex, int newOwnerNationSlot) {
+  (void)regionIndex;
+  (void)newOwnerNationSlot;
+}
+
 // FUNCTION: IMPERIALISM 0x00514c80
 short TGlobalMapState::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
                                                                      char allowActiveFlag2) {
@@ -215,11 +222,4 @@ char TGlobalMapState::AreNationsBorderLinked(int nationA, int nationB) {
 // FUNCTION: IMPERIALISM 0x00518960
 void TGlobalMapState::SetRegionDevelopmentStageByte(short regionId, unsigned char stage) {
   cityScoreTable[regionId].developmentStage = stage;
-}
-
-// FUNCTION: IMPERIALISM 0x00513290
-void TGlobalMapState::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
-    short regionIndex, int newOwnerNationSlot) {
-  (void)regionIndex;
-  (void)newOwnerNationSlot;
 }

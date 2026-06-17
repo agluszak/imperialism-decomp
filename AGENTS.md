@@ -177,6 +177,16 @@ examples, and rationale: `docs/reference/construction.md`.
 
 ## Commit-message policy
 
+**Pre-commit verification** (required before every commit):
+
+1. `just gates` — all gates pass
+2. `just build` — clean MSVC500 build
+3. `just stats` — review deltas vs `config/reccmp_progress_baseline.json`
+4. `just stats-commit` — refresh the baseline; commit it with the source change
+
+If gates fail or stats regress for reasons unrelated to your edit, stop and report
+rather than committing around the failure. See `.cursor/rules/commit-workflow.mdc`.
+
 - Do not add routine execution entries to `docs/worklog.md`; keep `docs/worklog.md`
   as historical context only.
 - Write clear commit messages that explain what changed, how it was verified, and

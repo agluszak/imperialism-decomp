@@ -580,25 +580,6 @@ CRuntimeClass* TGreatPower::GetRuntimeClass() const {
   return reinterpret_cast<CRuntimeClass*>(kAddrClassDescTGreatPower);
 }
 
-// FUNCTION: IMPERIALISM 0x004d8bc0
-void TGreatPower::NoOpTailStateHookSlot2B4(void) {}
-
-// FUNCTION: IMPERIALISM 0x004d8be0
-void TGreatPower::NoOpTailStateHookSlot2B8(int arg) {
-  (void)arg;
-}
-
-// FUNCTION: IMPERIALISM 0x004da5c0
-void TGreatPower::NoOpNationPendingActionHook(void) {}
-
-// FUNCTION: IMPERIALISM 0x004dab00
-void TGreatPower::NoOpNationQueuedOrderHook(void) {}
-
-// FUNCTION: IMPERIALISM 0x004dcc30
-void TGreatPower::OrphanRetStub_004dcc30(void) {}
-
-void TGreatPower::OrphanRetStub_004dca80(void) {}
-
 // FUNCTION: IMPERIALISM 0x004d89f0
 TGreatPower::TGreatPower()
     : foreignMinister(0), interiorMinister(0), defenseMinister(0), diplomacyEligibilityA0(0),
@@ -664,6 +645,14 @@ TGreatPower::TGreatPower()
 
 TGreatPower::TGreatPower(int arg1, int arg2) {
   InitializeNationStateRuntimeSubsystems(arg1, arg2);
+}
+
+// FUNCTION: IMPERIALISM 0x004d8bc0
+void TGreatPower::NoOpTailStateHookSlot2B4(void) {}
+
+// FUNCTION: IMPERIALISM 0x004d8be0
+void TGreatPower::NoOpTailStateHookSlot2B8(int arg) {
+  (void)arg;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004d8c20
@@ -1176,6 +1165,9 @@ void TGreatPower::WriteCoreStateAndTrackedOrdersToStream(void* streamState) {
 }
 #pragma optimize("", on)
 
+// FUNCTION: IMPERIALISM 0x004da5c0
+void TGreatPower::NoOpNationPendingActionHook(void) {}
+
 // FUNCTION: IMPERIALISM 0x004da5e0
 #pragma optimize("y", on)
 void TGreatPower::DispatchPendingStatusPrompts(void) {
@@ -1322,6 +1314,9 @@ void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
   static_cast<TPtrList*>(this->missionNodeQueue)->Call54();
 }
 #pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dab00
+void TGreatPower::NoOpNationQueuedOrderHook(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dae70
 #pragma optimize("y", on)
@@ -2121,6 +2116,11 @@ unsigned int TGreatPower::GetEffectiveDiplomacyCounterA2ForCode(int proposalCode
   return static_cast<unsigned short>(this->diplomacyCounterA2);
 }
 #pragma optimize("", on)
+
+// FUNCTION: IMPERIALISM 0x004dcc30
+void TGreatPower::OrphanRetStub_004dcc30(void) {}
+
+void TGreatPower::OrphanRetStub_004dca80(void) {}
 
 // FUNCTION: IMPERIALISM 0x004dcc50
 void TGreatPower::ApplyDiplomacyState222ToCityFieldB6AndClear(void) {

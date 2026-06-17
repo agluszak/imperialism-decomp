@@ -72,6 +72,11 @@ void* TMinor::GetTMinorClassNamePointer() {
 TMinor::TMinor() {
   encodedNationSlot = 0;
 }
+#pragma optimize("", on)
+
+// SYNTHETIC: IMPERIALISM 0x004e3790
+// TMinor::`scalar deleting destructor'
+#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004e41c0
 void TMinor::ReadFrom(TStream* stream) {
@@ -150,6 +155,26 @@ short TMinor::QueryNationMetricBySlot7C(short metricSlot) {
   return this->diplomacyPolicyByNation[metricSlot];
 }
 
+// FUNCTION: IMPERIALISM 0x004e46a0
+void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
+  TGreatPower* nation = reinterpret_cast<TGreatPower*>(this);
+  nation->needTargetByType[0x13] = -10;
+  nation->needTargetByType[0x14] = 0;
+  nation->needTargetByType[0x15] = 0;
+  for (int i = 0; i < 0x17; ++i) {
+    nation->needCurrentByType[i] = 0;
+    nation->diplomacyPolicyByNation[i] = 0;
+    nation->diplomacyGrantByNation[i] = 0;
+    nation->relationDeltaCurrent[i] = 0;
+    nation->relationDeltaSnapshot[i] = 0;
+    nation->diplomacyState1c6[i] = 0;
+    nation->diplomacyState1f4[i] = 0;
+    nation->diplomacyState222[i] = 0;
+    nation->diplomacyState250[i] = 0;
+  }
+  nation->diplomacyCounterA2 = 2;
+}
+
 // FUNCTION: IMPERIALISM 0x004e49b0
 void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, int delta,
                                                             int multiplier) {
@@ -226,6 +251,107 @@ void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, i
     int amount = SignedDivideBy100(intFactor * static_cast<int>(standing) * multiplier);
 #endif
     majorNation->AddAmountToAidAllocationMatrixCellAndTotal(amount, resourceSlot, this->nationSlot);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x004e4bd0
+void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
+  short savedPredicate = this->diplomacyPolicyPredicateCode12c;
+  short proposalWeight = 0;
+  if (this == 0 || this->encodedNationSlot <= 99 || this->encodedNationSlot >= 200) {
+    int randomBucket = static_cast<int>(GenerateThreadLocalRandom15()) % 100;
+    int resourceType = 0;
+    if (randomBucket < 0x19) {
+      resourceType = 0;
+    } else if (randomBucket < 0x32) {
+      resourceType = 1;
+    } else {
+      resourceType = ((0x4a < randomBucket) - 1 & 0xfffffffb) + 7;
+    }
+
+    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceType);
+    if (this->diplomacyRandomThreshold124 < proposalWeight) {
+      this->diplomacyPolicyByNation[resourceType] = this->needCurrentByType[resourceType];
+    }
+
+    for (int policySlot = 0; policySlot < 8; ++policySlot) {
+      proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(policySlot);
+      if (this->diplomacyRandomThreshold122 < proposalWeight) {
+        this->diplomacyPolicyByNation[policySlot] = this->needCurrentByType[policySlot];
+      }
+    }
+
+    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(3);
+    if (this->diplomacyRandomThreshold126 < proposalWeight) {
+      this->diplomacyPolicyByNation[3] = this->needCurrentByType[3];
+    } else if (this->recurringGrantByResource[3] != 0) {
+      this->diplomacyPolicyByNation[3] = this->recurringGrantByResource[3];
+    }
+
+    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4);
+    if (this->diplomacyRandomThreshold128 < proposalWeight) {
+      this->diplomacyPolicyByNation[4] = this->needCurrentByType[4];
+    } else if (this->recurringGrantByResource[4] != 0) {
+      this->diplomacyPolicyByNation[4] = this->recurringGrantByResource[4];
+    }
+
+    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(6);
+    if (this->diplomacyRandomThreshold12a < proposalWeight) {
+      this->diplomacyPolicyByNation[6] = this->needCurrentByType[6];
+    } else if (this->recurringGrantByResource[6] != 0) {
+      this->diplomacyPolicyByNation[6] = this->recurringGrantByResource[6];
+    }
+
+    if (this->diplomacyPolicyByNation[0] == 0) {
+      this->diplomacyPolicyByNation[0] = this->recurringGrantByResource[0];
+    }
+    if (this->diplomacyPolicyByNation[1] == 0) {
+      this->diplomacyPolicyByNation[1] = this->recurringGrantByResource[1];
+    }
+    if (this->diplomacyPolicyByNation[2] == 0) {
+      this->diplomacyPolicyByNation[2] = this->recurringGrantByResource[2];
+    }
+  }
+
+  if (savedPredicate == this->diplomacyPolicyPredicateCode12c) {
+    short rolledPredicate = this->diplomacyPolicyPredicateCode12c;
+    do {
+      int roll = static_cast<int>(GenerateThreadLocalRandom15()) % 100;
+      if (roll < 0x1e) {
+        rolledPredicate = 0xd;
+      } else if (roll < 0x3c) {
+        rolledPredicate = 0xe;
+      } else {
+        rolledPredicate = static_cast<short>((0x59 < roll) + 0xf);
+      }
+    } while (rolledPredicate == this->diplomacyPolicyPredicateCode12c);
+    proposalWeight =
+        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(rolledPredicate);
+    if (this->diplomacyRandomThreshold11e < proposalWeight) {
+      this->diplomacyPolicyPredicateCode12c = -10;
+    } else {
+      this->diplomacyPolicyPredicateCode12c = rolledPredicate;
+    }
+  }
+
+  this->diplomacyPolicyPredicateCode12e = -10;
+  int candidatePredicate = 0xd;
+  do {
+    proposalWeight =
+        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(candidatePredicate);
+    if (proposalWeight < this->diplomacyRandomThreshold120 &&
+        candidatePredicate != this->diplomacyPolicyPredicateCode12c) {
+      this->diplomacyPolicyPredicateCode12e = static_cast<short>(candidatePredicate);
+      candidatePredicate = 0x11;
+    }
+    candidatePredicate = candidatePredicate + 1;
+  } while (candidatePredicate < 0x11);
+
+  if (this->diplomacyPolicyPredicateCode12c != -10) {
+    this->diplomacyPolicyByNation[this->diplomacyPolicyPredicateCode12c] = -1;
+  }
+  if (this->diplomacyPolicyPredicateCode12e != -10) {
+    this->diplomacyPolicyByNation[this->diplomacyPolicyPredicateCode12e] = -1;
   }
 }
 
@@ -312,6 +438,39 @@ void TMinor::ClearNationAuxRuntimeGrantSlotC4(int grantValue) {
   if (grantValue >= 0 && grantValue < 0x17) {
     this->recurringGrantByResource[grantValue] = 0;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004e4ff0
+char TMinor::CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode) {
+  if (proposalCode != 0x12d || this->encodedNationSlot != -1) {
+    return 0;
+  }
+
+  const int source = this->nationSlot;
+  short standing =
+      g_pDiplomacyTurnStateManager
+          ->relationStandingScoreMatrix79c[source * kNationSlotCount + targetNationSlot];
+  if (standing <= 0xf9) {
+    return 0;
+  }
+
+  char canPropose = 1;
+  short* peerStandingRow =
+      &g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[source * kNationSlotCount];
+  for (int peerSlot = 0; peerSlot < 7; ++peerSlot) {
+    if (peerSlot == targetNationSlot || g_apTerrainTypeDescriptorTable[peerSlot] == 0) {
+      continue;
+    }
+    int delta = static_cast<int>(peerStandingRow[peerSlot]) - static_cast<int>(standing);
+    if (delta < 0) {
+      delta = -delta;
+    }
+    if (delta < 10) {
+      canPropose = 0;
+      break;
+    }
+  }
+  return canPropose;
 }
 
 // FUNCTION: IMPERIALISM 0x004e50d0
@@ -504,6 +663,11 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004e5730
+void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
+  (void)nationId;
+}
+
 // FUNCTION: IMPERIALISM 0x004e5840
 void TMinor::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
   TCountry::ApplyJoinEmpireMode1TargetTransition(targetNationSlot);
@@ -521,179 +685,6 @@ CString* TMinor::GetIdentitySharedString1Slot58(void) {
     this->SetDiplomacyStandingSlot48(nationSlot, 100);
   }
   return &this->identitySharedString1;
-}
-
-// FUNCTION: IMPERIALISM 0x004e64a0
-void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
-  if (this->ownedRegionList != 0) {
-    this->ownedRegionList->RemoveIntSlot34(regionId);
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004e64f0
-void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
-  if (this->ownedRegionList != 0) {
-    this->ownedRegionList->AddTail30(reinterpret_cast<void*>(regionId));
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004e4bd0
-void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
-  short savedPredicate = this->diplomacyPolicyPredicateCode12c;
-  short proposalWeight = 0;
-  if (this == 0 || this->encodedNationSlot <= 99 || this->encodedNationSlot >= 200) {
-    int randomBucket = static_cast<int>(GenerateThreadLocalRandom15()) % 100;
-    int resourceType = 0;
-    if (randomBucket < 0x19) {
-      resourceType = 0;
-    } else if (randomBucket < 0x32) {
-      resourceType = 1;
-    } else {
-      resourceType = ((0x4a < randomBucket) - 1 & 0xfffffffb) + 7;
-    }
-
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(resourceType);
-    if (this->diplomacyRandomThreshold124 < proposalWeight) {
-      this->diplomacyPolicyByNation[resourceType] = this->needCurrentByType[resourceType];
-    }
-
-    for (int policySlot = 0; policySlot < 8; ++policySlot) {
-      proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(policySlot);
-      if (this->diplomacyRandomThreshold122 < proposalWeight) {
-        this->diplomacyPolicyByNation[policySlot] = this->needCurrentByType[policySlot];
-      }
-    }
-
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(3);
-    if (this->diplomacyRandomThreshold126 < proposalWeight) {
-      this->diplomacyPolicyByNation[3] = this->needCurrentByType[3];
-    } else if (this->recurringGrantByResource[3] != 0) {
-      this->diplomacyPolicyByNation[3] = this->recurringGrantByResource[3];
-    }
-
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(4);
-    if (this->diplomacyRandomThreshold128 < proposalWeight) {
-      this->diplomacyPolicyByNation[4] = this->needCurrentByType[4];
-    } else if (this->recurringGrantByResource[4] != 0) {
-      this->diplomacyPolicyByNation[4] = this->recurringGrantByResource[4];
-    }
-
-    proposalWeight = g_pNationInteractionStateManager->QueryProposalWeightSlot4C(6);
-    if (this->diplomacyRandomThreshold12a < proposalWeight) {
-      this->diplomacyPolicyByNation[6] = this->needCurrentByType[6];
-    } else if (this->recurringGrantByResource[6] != 0) {
-      this->diplomacyPolicyByNation[6] = this->recurringGrantByResource[6];
-    }
-
-    if (this->diplomacyPolicyByNation[0] == 0) {
-      this->diplomacyPolicyByNation[0] = this->recurringGrantByResource[0];
-    }
-    if (this->diplomacyPolicyByNation[1] == 0) {
-      this->diplomacyPolicyByNation[1] = this->recurringGrantByResource[1];
-    }
-    if (this->diplomacyPolicyByNation[2] == 0) {
-      this->diplomacyPolicyByNation[2] = this->recurringGrantByResource[2];
-    }
-  }
-
-  if (savedPredicate == this->diplomacyPolicyPredicateCode12c) {
-    short rolledPredicate = this->diplomacyPolicyPredicateCode12c;
-    do {
-      int roll = static_cast<int>(GenerateThreadLocalRandom15()) % 100;
-      if (roll < 0x1e) {
-        rolledPredicate = 0xd;
-      } else if (roll < 0x3c) {
-        rolledPredicate = 0xe;
-      } else {
-        rolledPredicate = static_cast<short>((0x59 < roll) + 0xf);
-      }
-    } while (rolledPredicate == this->diplomacyPolicyPredicateCode12c);
-    proposalWeight =
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(rolledPredicate);
-    if (this->diplomacyRandomThreshold11e < proposalWeight) {
-      this->diplomacyPolicyPredicateCode12c = -10;
-    } else {
-      this->diplomacyPolicyPredicateCode12c = rolledPredicate;
-    }
-  }
-
-  this->diplomacyPolicyPredicateCode12e = -10;
-  int candidatePredicate = 0xd;
-  do {
-    proposalWeight =
-        g_pNationInteractionStateManager->QueryProposalWeightSlot4C(candidatePredicate);
-    if (proposalWeight < this->diplomacyRandomThreshold120 &&
-        candidatePredicate != this->diplomacyPolicyPredicateCode12c) {
-      this->diplomacyPolicyPredicateCode12e = static_cast<short>(candidatePredicate);
-      candidatePredicate = 0x11;
-    }
-    candidatePredicate = candidatePredicate + 1;
-  } while (candidatePredicate < 0x11);
-
-  if (this->diplomacyPolicyPredicateCode12c != -10) {
-    this->diplomacyPolicyByNation[this->diplomacyPolicyPredicateCode12c] = -1;
-  }
-  if (this->diplomacyPolicyPredicateCode12e != -10) {
-    this->diplomacyPolicyByNation[this->diplomacyPolicyPredicateCode12e] = -1;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x004e46a0
-void TMinor::RebuildDiplomacyEconomicPressureFromMapState(void) {
-  TGreatPower* nation = reinterpret_cast<TGreatPower*>(this);
-  nation->needTargetByType[0x13] = -10;
-  nation->needTargetByType[0x14] = 0;
-  nation->needTargetByType[0x15] = 0;
-  for (int i = 0; i < 0x17; ++i) {
-    nation->needCurrentByType[i] = 0;
-    nation->diplomacyPolicyByNation[i] = 0;
-    nation->diplomacyGrantByNation[i] = 0;
-    nation->relationDeltaCurrent[i] = 0;
-    nation->relationDeltaSnapshot[i] = 0;
-    nation->diplomacyState1c6[i] = 0;
-    nation->diplomacyState1f4[i] = 0;
-    nation->diplomacyState222[i] = 0;
-    nation->diplomacyState250[i] = 0;
-  }
-  nation->diplomacyCounterA2 = 2;
-}
-
-// FUNCTION: IMPERIALISM 0x004e4ff0
-char TMinor::CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode) {
-  if (proposalCode != 0x12d || this->encodedNationSlot != -1) {
-    return 0;
-  }
-
-  const int source = this->nationSlot;
-  short standing =
-      g_pDiplomacyTurnStateManager
-          ->relationStandingScoreMatrix79c[source * kNationSlotCount + targetNationSlot];
-  if (standing <= 0xf9) {
-    return 0;
-  }
-
-  char canPropose = 1;
-  short* peerStandingRow =
-      &g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[source * kNationSlotCount];
-  for (int peerSlot = 0; peerSlot < 7; ++peerSlot) {
-    if (peerSlot == targetNationSlot || g_apTerrainTypeDescriptorTable[peerSlot] == 0) {
-      continue;
-    }
-    int delta = static_cast<int>(peerStandingRow[peerSlot]) - static_cast<int>(standing);
-    if (delta < 0) {
-      delta = -delta;
-    }
-    if (delta < 10) {
-      canPropose = 0;
-      break;
-    }
-  }
-  return canPropose;
-}
-
-// FUNCTION: IMPERIALISM 0x004e5730
-void TMinor::HandleNetworkPortConstructionOrder(int nationId) {
-  (void)nationId;
 }
 
 // FUNCTION: IMPERIALISM 0x004e5a40
@@ -751,6 +742,48 @@ int ResolveDiplomacyMaskOwnerNationSlot(const TMinor* minor, short provinceId) {
 }
 
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x004e5ac0
+void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
+  char* tileArrayBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
+  if (provinceId == -1) {
+    if (this->ownedRegionList == 0) {
+      return;
+    }
+    int ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+    int oneBasedIndex = 1;
+    while (oneBasedIndex <= ownedCount) {
+      int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex);
+      TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
+      if (regionRecord->linkedRegionCount > 0) {
+        int linkedIndex = 0;
+        while (linkedIndex < regionRecord->linkedRegionCount) {
+          short tileId = regionRecord->linkedRegionIds[linkedIndex];
+          tileArrayBase[0x18 + tileId * 0x24] = static_cast<char>(-1);
+          linkedIndex++;
+        }
+      }
+      oneBasedIndex++;
+      ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
+    }
+    return;
+  }
+
+  TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
+  if (regionRecord->linkedRegionCount > 0) {
+    int linkedIndex = 0;
+    while (linkedIndex < regionRecord->linkedRegionCount) {
+      short tileId = regionRecord->linkedRegionIds[linkedIndex];
+      tileArrayBase[0x18 + tileId * 0x24] = static_cast<char>(-1);
+      linkedIndex++;
+    }
+  }
+}
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif
+#pragma optimize("y", on)
 
 // FUNCTION: IMPERIALISM 0x004e5be0
 void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
@@ -846,46 +879,16 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
   }
 }
 
-// FUNCTION: IMPERIALISM 0x004e5ac0
-void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
-  char* tileArrayBase = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
-  if (provinceId == -1) {
-    if (this->ownedRegionList == 0) {
-      return;
-    }
-    int ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
-    int oneBasedIndex = 1;
-    while (oneBasedIndex <= ownedCount) {
-      int regionId = this->ownedRegionList->GetIntByOrdinalSlot24(oneBasedIndex);
-      TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
-      if (regionRecord->linkedRegionCount > 0) {
-        int linkedIndex = 0;
-        while (linkedIndex < regionRecord->linkedRegionCount) {
-          short tileId = regionRecord->linkedRegionIds[linkedIndex];
-          tileArrayBase[0x18 + tileId * 0x24] = static_cast<char>(-1);
-          linkedIndex++;
-        }
-      }
-      oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCountOrReleaseSlot28();
-    }
-    return;
-  }
-
-  TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[provinceId];
-  if (regionRecord->linkedRegionCount > 0) {
-    int linkedIndex = 0;
-    while (linkedIndex < regionRecord->linkedRegionCount) {
-      short tileId = regionRecord->linkedRegionIds[linkedIndex];
-      tileArrayBase[0x18 + tileId * 0x24] = static_cast<char>(-1);
-      linkedIndex++;
-    }
+// FUNCTION: IMPERIALISM 0x004e64a0
+void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
+  if (this->ownedRegionList != 0) {
+    this->ownedRegionList->RemoveIntSlot34(regionId);
   }
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
-
-// SYNTHETIC: IMPERIALISM 0x004e3790
-// TMinor::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x004e64f0
+void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
+  if (this->ownedRegionList != 0) {
+    this->ownedRegionList->AddTail30(reinterpret_cast<void*>(regionId));
+  }
+}

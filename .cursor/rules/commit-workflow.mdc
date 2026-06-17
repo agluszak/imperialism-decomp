@@ -1,0 +1,38 @@
+---
+description: Pre-commit verification — gates, build, stats baseline
+alwaysApply: true
+---
+
+# Commit workflow
+
+Before creating any git commit in this repo:
+
+1. **`just gates`** — all mechanical source-policy gates must pass (including `decomplint`).
+2. **`just build`** — MSVC500 Docker build must succeed.
+3. **`just stats`** — compare aggregate progress against `config/reccmp_progress_baseline.json`.
+4. **`just stats-commit`** — include the updated baseline in the same commit when stats are accepted.
+
+## When verification fails
+
+- **Caused by your changes** — fix before committing.
+- **Unrelated / pre-existing** (e.g. manual commits, marker ordering drift) — do **not** commit
+  around the failure. Report what failed, which step, and whether `just stats` shows a
+  meaningful regression vs the baseline.
+- **`function_out_of_order` (decomplint)** — reorder with
+  `uv run python -m tools.workflow.reorder_marked_functions <file.cpp>`.
+
+## Stats regression thresholds
+
+Treat as a **meaningful regression** (investigate before `stats-commit`):
+
+- `aligned functions (100%)` drops by **≥ 5**
+- `average similarity` drops by **≥ 0.10 pp**
+- `function coverage` or `aligned/original` drops by **≥ 0.05 pp**
+- Any increase in `failed-to-match lines` or `invalid-address lines`
+
+Small noise (±1–2 globals, ±0.01 pp similarity) is normal; note it in the commit message.
+
+## Commit message
+
+State what changed, verification run (`just gates`, `just build`, `just stats`), and any
+accepted residual risks or score deltas.
