@@ -55,7 +55,12 @@ different project, invoke the module directly with the env override, e.g.
 ## Sync with the source tree
 
 - `just sync-ghidra` — forward: export Ghidra names/protos/types/globals into
-  `config/` + `src/ghidra_autogen/` artifacts.
+  `config/` + `src/ghidra_autogen/` artifacts. **Curated `config/symbols.csv`
+  rows are preserved by address** (name + prototype) so provisional Ghidra labels
+  cannot regress reccmp pairing; `config/function_name_overrides.csv` still wins
+  afterward. `just symbols-anchor-gate` checks a few MFC anchor rows. Durable
+  renames belong in overrides, not hand-edited export output. Use
+  `--no-preserve-curated-symbols` only for a deliberate full refresh.
 - `just import-ghidra` — reverse: push our recovered names/signatures/types back
   into Ghidra (via the reccmp fork). Conventions you model in source propagate to
   Ghidra this way; there is deliberately no separate convention-rewriter.

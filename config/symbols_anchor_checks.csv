@@ -1,0 +1,5 @@
+address|name
+412bf0|CObject::AssertValid
+412c10|CObject::Dump
+485e90|TObject::Serialize
+415ce0|TObject::ShallowFree

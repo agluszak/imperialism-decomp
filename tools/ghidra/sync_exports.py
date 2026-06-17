@@ -16,6 +16,13 @@ from tools.common import ghidra_env
 from tools.common.name_overrides import parse_name_overrides
 from tools.common.pipe_csv import read_pipe_table
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.ghidra.merge_curated_symbols import (
+    apply_function_names_to_symbols_txt,
+    function_names_from_symbols_rows,
+    load_curated_symbols,
+    merge_curated_symbols_csv,
+    write_symbols_csv,
+)
 from tools.workflow.function_ownership import (
     DEFAULT_NAME_OVERRIDES_CSV,
     resolve_name_overrides_path,
@@ -73,6 +80,11 @@ def parse_args() -> argparse.Namespace:
         "--name-overrides",
         default=os.getenv("NAME_OVERRIDES", str(repo_root / DEFAULT_NAME_OVERRIDES_CSV)),
         help="Optional pipe-delimited file: address|name|prototype",
+    )
+    parser.add_argument(
+        "--no-preserve-curated-symbols",
+        action="store_true",
+        help="Replace config/symbols.csv wholesale from Ghidra (breaks reccmp pairing).",
     )
     return parser.parse_args()
 
@@ -240,6 +252,7 @@ def main() -> int:
 
         symbols_txt = output_dir / "symbols.ghidra.txt"
         symbols_csv = output_dir / "symbols.csv"
+        curated_fieldnames, curated_by_addr = load_curated_symbols(symbols_csv)
         script_path = Path(__file__).resolve().parent / "SyncExports_Ghidra.py"
         if not script_path.is_file():
             raise FileNotFoundError(f"Missing script: {script_path}")
@@ -288,6 +301,31 @@ def main() -> int:
             if program is not None:
                 program.release(consumer)
             project.close()
+
+        if curated_by_addr and not args.no_preserve_curated_symbols:
+            fieldnames, exported_rows = read_pipe_table(symbols_csv)
+            if not fieldnames:
+                fieldnames = curated_fieldnames
+            merged_rows, merge_stats = merge_curated_symbols_csv(
+                fieldnames, exported_rows, curated_by_addr
+            )
+            write_symbols_csv(symbols_csv, fieldnames, merged_rows)
+            renamed_txt = apply_function_names_to_symbols_txt(
+                symbols_txt, function_names_from_symbols_rows(merged_rows)
+            )
+            print(
+                "Preserved curated symbols.csv rows: "
+                f"names {merge_stats.preserved_names}, "
+                f"prototypes {merge_stats.preserved_prototypes}, "
+                f"new {merge_stats.new_from_export}, "
+                f"retained orphans {merge_stats.retained_orphans}, "
+                f"symbols.txt names {renamed_txt}"
+            )
+        elif curated_by_addr and args.no_preserve_curated_symbols:
+            print(
+                "WARNING: --no-preserve-curated-symbols left Ghidra export in place; "
+                "reccmp pairing may regress until symbols.csv is repaired."
+            )
 
         overrides = parse_name_overrides(name_overrides_path)
         if overrides:

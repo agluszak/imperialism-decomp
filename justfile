@@ -55,6 +55,11 @@ sync-ghidra: _require-ghidra-install
     --ghidra-program-name "{{GHIDRA_PROGRAM_NAME}}" \
     --name-overrides "{{name_overrides}}"
   just prune-ilt-thunks
+  just symbols-anchor-gate
+
+# Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
+symbols-anchor-gate:
+  uv run python -m tools.workflow.check_symbols_anchors
 
 # Drop incremental-link `jmp` thunk rows (linker artifacts) from config/symbols.csv.
 # reccmp auto-detects unannotated jmp thunks and excludes them from the report.
