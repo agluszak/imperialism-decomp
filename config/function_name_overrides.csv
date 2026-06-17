@@ -19,7 +19,7 @@ address|name|prototype
 0x004e0460|SumNavyOrderPriorityForNationAndNodeType|int __cdecl SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj,int nodeType)
 0x00550b60|ComputeOrderNodeCompositeEconomicScore|int __cdecl ComputeOrderNodeCompositeEconomicScore(TShip* node)
 0x004d8390|ComputeWeightedNeighborLinkScoreForNode|int __cdecl ComputeWeightedNeighborLinkScoreForNode(int nodeIndex)
-0x004d83c0|SumWeightedNeighborLinkScoreForLinkedNodes|int __cdecl SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain)
+0x004d83c0|SumWeightedNeighborLinkScoreForLinkedNodes|int __thiscall SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* this)
 0x004ddd20|TGreatPower::ClearDiplomacyState1c6ForTarget|void __thiscall ClearDiplomacyState1c6ForTarget(short targetSlot)
 
 

@@ -1,0 +1,2 @@
+address|class_name|method_name|note
+0x004d83c0|TCountry|SumWeightedNeighborLinkScoreForLinkedNodes|__thiscall body uses ownedRegionList @+0x90; manual TCountry.cpp; wrongly attributed to TGreatPower in Ghidra.

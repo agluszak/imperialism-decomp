@@ -20,6 +20,8 @@ Mechanisms already in place that several of these items reuse:
   back into Global by `apply_mfc_rtti.py`.
 - `config/calling_convention_overrides.csv` — verified `__cdecl`/`__fastcall`
   mislabels corrected to `__thiscall` (or confirmed `__cdecl`).
+- `config/function_class_overrides.csv` — evidence-curated move of mis-placed
+  `__thiscall` methods into the correct class namespace + `this` typing.
 - `just ghidra-decomp-check` — regression gate over nine benchmark decompiles
   (`tools/ghidra/decomp_check.py`). Run after every `just apply-mfc-rtti --apply`.
 - The decompiler `this`-argument resolver prototype (measured low yield for fully
@@ -35,11 +37,11 @@ Run `just ghidra-decomp-check` after each apply. `--strict` also fails on missin
 | `0x00588b70` | `TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920` | `g_apNationStates[s]->city`, `TCity::GetCityBuildingProductionValueBySlot`, `TAmtBarCluster::` | `summaryTags` / `primaryControlTag`; `pBuildingSlotProductionTable` |
 | `0x004ca571` | `TBuildingConstructionView::OpenCityViewBuildingOrderDialog` | `this->pCity`, `GetCityBuildingProductionValueBySlot` | `pBuildingSlotProductionTable` via `this->pCity` |
 | `0x0057c578` | `RebuildGlobalOrderManagersAndCapabilityState` | typed manager globals | `g_pUiAnimator` (`TAnimator*`, was `DAT_006a43e0`) |
-| `0x0057c8a0` | `RebuildMapContextAndGlobalMapState` | `TOcean` / `TMapMgr` globals | (unchanged) |
+| `0x0057c8a0` | `RebuildMapContextAndGlobalMapState` | `TOcean` / `TMapMgr` globals | `nationCount`, `contextArray` on `g_pActiveMapOrderContext` |
 | `0x0049df00` | `InitializeGlobalRuntimeSystemsFromConfig` | `TSimMgr` / `UiRuntimeContext` | `g_pUiViewManager` (`TAssetMgr*`) |
 | `0x0051794e` | `ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias` | `g_apTerrainTypeDescriptorTable[i]` as `TCountry*` | `ownerNationSlot`, `ownedRegionList` |
-| `0x0050c1bf` | `TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets` | `g_apNationStates`, `g_pLocalizationTable` | (unchanged) |
-| `0x004d83c0` | `SumWeightedNeighborLinkScoreForLinkedNodes` | `__thiscall` | `this` still `void*` — needs class attribution |
+| `0x0050c1bf` | `TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets` | `g_apNationStates`, `g_pLocalizationTable` | (unchanged — `TSimMgr` vtable slots still raw) |
+| `0x004d83c0` | `SumWeightedNeighborLinkScoreForLinkedNodes` | `__thiscall`, `TCountry*` | `ownedRegionList` via `this->ownedRegionList` |
 | `0x00496230` | `SetActiveQuickDrawSurfaceContext` | assigns `g_pActiveQuickDrawSurfaceContext` | param/global typed `TQuickDrawSurfaceContext*` |
 
 **Regression guards:** no `TCity::TCity::` double qualification (`decompile_one.py`
@@ -83,12 +85,12 @@ Recorded in `config/recovered_globals.csv` and applied by `apply_mfc_rtti.py`
 | `g_pNavyPrimaryOrderListHead` | `TShip *` |
 | `g_pMapContextActionManager` | `TArmyMgr *` |
 | `g_pActiveQuickDrawSurfaceContext` | `TQuickDrawSurfaceContext *` |
+| `g_pCursorControlPanel` | `TControl *` (manual: `TCursorControlPanel*`) |
 
 **Next:** `g_apMinorNationCapabilityObjects` / `g_apNationAuxRuntimeStateSlots`
 (overlap parent arrays — use `g_apTerrainTypeDescriptorTable + 7` pointer arithmetic,
-not a second array type), `g_pCursorControlPanel` (`TAnimation*` tentative — verify
-positive writer), `g_pActiveCityDialogLegendSelectionOwner` (deferred until writer
-found), `TOcean` interior fields at `+0x4..+0x14`.
+not a second array type), `g_pActiveCityDialogLegendSelectionOwner` (deferred until writer
+found), `TOcean` tail fields past `0x14` when alloc size grows beyond `0x18`.
 
 ### 1b. Grow `recovered_fields.csv` — **in progress**
 Rows applied so far:
@@ -102,6 +104,11 @@ Rows applied so far:
 | `TCity` | `0xe4` | `pBuildingSlotProductionTable` (`int*`) |
 | `TCountry` | `0x88` | `ownerNationSlot` (`int`) |
 | `TCountry` | `0x90` | `ownedRegionList` (`TPtrList*`) |
+| `TOcean` | `0x04` | `nationCount` (`short`) |
+| `TOcean` | `0x08` | `contextArray` (`int*`) |
+| `TOcean` | `0x0c` | `field0c` (`short`) |
+| `TOcean` | `0x10` | `keyMask` (`int`) |
+| `TOcean` | `0x14` | `field14` (`int`) |
 
 Keep adding rows for hot structs using unanimous resolver / decompile-store
 evidence + offset-fits-object-size gating; never overwrite an already-typed field.
@@ -137,7 +144,7 @@ listed as confirmed `__cdecl`. Remaining scan: `OrphanDeadLeaf_NoRefs_0051da60`
   `apply_mfc_rtti.py`.
 - **Reclassify misidentified data.** — **in progress:** `0x006960e0` string →
   `TradeSummarySelectionMap` with named `summaryTags` / `primaryControlTag`.
-  Candidate `0x696108` (indexed xref from `0x00588b70`) still to triage.
+  `0x696108` is `summaryTags[0]` inside that struct (not a separate label).
 
 ## Validation
 

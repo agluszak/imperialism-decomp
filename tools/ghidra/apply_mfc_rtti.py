@@ -88,6 +88,7 @@ DISSOLVE_NAMESPACES_PATH = REPO_ROOT / "config" / "dissolve_namespaces.csv"
 # __cdecl on a regular basis; this table forces a corrected convention per
 # address. "|"-delimited (address|calling_convention|note).
 CALLING_CONVENTION_OVERRIDES_PATH = REPO_ROOT / "config" / "calling_convention_overrides.csv"
+FUNCTION_CLASS_OVERRIDES_PATH = REPO_ROOT / "config" / "function_class_overrides.csv"
 # Evidence-curated reclassification of misidentified data (e.g. Ghidra "string" labels
 # that are indexed as structs/arrays). "|"-delimited; see recovered_data.csv header.
 RECOVERED_DATA_PATH = REPO_ROOT / "config" / "recovered_data.csv"
@@ -414,6 +415,7 @@ def run(program, args) -> dict:
         "pseudo_classes_dissolved": 0,
         "pseudo_class_members_moved": 0,
         "calling_conventions_fixed": 0,
+        "function_class_overridden": 0,
         "curated_data_typed": 0,
     }
     changes: list[str] = []
@@ -1482,6 +1484,57 @@ def run(program, args) -> dict:
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! cc-override 0x{addr:08x} failed: {exc}")
 
+        for row in read_pipe_csv(FUNCTION_CLASS_OVERRIDES_PATH):
+            addr_s = (row.get("address") or "").strip()
+            cls = (row.get("class_name") or "").strip()
+            method = (row.get("method_name") or "").strip() or None
+            if not addr_s or not cls:
+                continue
+            try:
+                addr = int(addr_s, 16)
+            except ValueError:
+                changes.append(f"  !! class-override {addr_s}: bad address")
+                continue
+            fn = fm.getFunctionAt(A(addr))
+            if fn is None:
+                if args.verbose:
+                    changes.append(f"  !! class-override 0x{addr:08x}: no function")
+                continue
+            cls_dt = root_class_dt(cls)
+            if cls_dt is None:
+                cls_dt = ensure_root_class_dt_for_curated(cls, None)
+            if cls_dt is None:
+                changes.append(f"  !! class-override 0x{addr:08x}: type {cls} not found")
+                continue
+            try:
+                this_dt = PointerDataType(cls_dt, dtm)
+                if method and fn.getName() != method:
+                    fn.setName(method, SourceType.USER_DEFINED)
+                fn.setParentNamespace(get_or_make_class(cls))
+                params = ArrayList()
+                for param in fn.getParameters():
+                    try:
+                        if param.isAutoParameter():
+                            params.add(ParameterImpl("this", this_dt, program))
+                            continue
+                    except Exception:  # noqa: BLE001
+                        pass
+                    params.add(ParameterImpl(param.getName(), param.getDataType(), program))
+                fn.updateFunction(
+                    "__thiscall",
+                    ReturnParameterImpl(fn.getReturnType(), program),
+                    params,
+                    FunctionUpdateType.DYNAMIC_STORAGE_ALL_PARAMS,
+                    True,
+                    SourceType.USER_DEFINED,
+                )
+                stats["function_class_overridden"] += 1
+                if args.verbose:
+                    label = f"{cls}::{method}" if method else cls
+                    changes.append(f"  class-override 0x{addr:08x} -> {label}")
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! class-override 0x{addr:08x} failed: {exc}")
+
         remove_stale_class_duplicates()
 
     return {"stats": stats, "changes": changes}
@@ -1538,6 +1591,7 @@ def main() -> int:
             f"          pseudo_classes_dissolved={s['pseudo_classes_dissolved']} "
             f"pseudo_class_members_moved={s['pseudo_class_members_moved']}\n"
             f"          calling_conventions_fixed={s['calling_conventions_fixed']}\n"
+            f"          function_class_overridden={s['function_class_overridden']}\n"
             f"          curated_data_typed={s['curated_data_typed']}"
         )
         if not args.apply:

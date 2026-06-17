@@ -76,6 +76,7 @@ CASES: tuple[BenchCase, ...] = (
             r"g_pGlobalMapState",
             r"TMapMgr",
         ),
+        (r"nationCount", r"contextArray"),
     ),
     BenchCase(
         0x0049DF00,
@@ -108,7 +109,8 @@ CASES: tuple[BenchCase, ...] = (
     BenchCase(
         0x004D83C0,
         "SumWeightedNeighborLinkScoreForLinkedNodes",
-        (r"__thiscall",),
+        (r"__thiscall", r"TCountry"),
+        (r"ownedRegionList",),
     ),
     BenchCase(
         0x00496230,

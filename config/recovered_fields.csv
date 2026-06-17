@@ -6,3 +6,8 @@ TCityProductionView|0x94|TCity|pCity|City whose production slots this view edits
 TCity|0xe4|int*|pBuildingSlotProductionTable|Per-slot production value table (indexed [slot] in OrphanLeaf_NoCall_Ins07_004d8920 @0x00588b70 and OpenCityViewBuildingOrderDialog @0x004ca571).
 TCountry|0x88|int|ownerNationSlot|Owning nation slot index. Manual TCountry.h; evidence ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias @0x0051794e.
 TCountry|0x90|TPtrList|ownedRegionList|Owned region list pointer. Manual TCountry.h; evidence @0x0051794e derefs for virtual call.
+TOcean|0x04|short|nationCount|Active map-order context nation count. RebuildMapContextAndGlobalMapState @0x0057c8a0 zero-inits; manual TMapOrderContext.h.
+TOcean|0x08|int*|contextArray|Per-nation action context array pointer. Same writer; manual TMapOrderContext.h (stride 0x48 entries).
+TOcean|0x0c|short|field0c|Short field cleared at alloc. Evidence @0x0057c8a0.
+TOcean|0x10|int|keyMask|Dword init at +0x10 in RebuildMapContextAndGlobalMapState; manual keyMask at +0x10.
+TOcean|0x14|int|field14|Dword init at +0x14 in RebuildMapContextAndGlobalMapState.

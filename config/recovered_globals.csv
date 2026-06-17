@@ -22,3 +22,4 @@ g_pMapContextActionManager|0x006a3338|TArmyMgr|1|0x3a8|Evidence: RebuildGlobalOr
 g_pUiAnimator|0x006a43e0|TAnimator|1|0x30|Evidence: RebuildGlobalOrderManagersAndCapabilityState allocates 0x30 and assigns TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8. Was DAT_006a43e0 (no symbol in symbols.csv).
 g_pUiViewManager|0x006a2148|TAssetMgr|1|0x58|Evidence: InitializeGlobalRuntimeSystemsFromConfig stores ConstructUiViewManager result in g_pUiViewManager.
 g_pActiveQuickDrawSurfaceContext|0x006a1d60|TQuickDrawSurfaceContext|1|0x30|Evidence: SetActiveQuickDrawSurfaceContext stores param_1. Manual TQuickDrawSurfaceContext.h (0x30 bytes).
+g_pCursorControlPanel|0x006a590c|TControl|1||Manual TCursorControlPanel* (derived from TControl). Writers store runtime CreateObject factory pointer (ConstructTBattleReportViewBaseState @0x004ad177, TLoungeDialog).
