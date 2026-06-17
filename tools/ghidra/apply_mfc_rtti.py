@@ -232,6 +232,28 @@ def run(program, args) -> dict:
             return None
         return fm.getFunctionContaining(A(target))
 
+    _scan_cache = {}
+
+    def scan_memory_for_dword(target: int) -> list[int]:
+        if target in _scan_cache:
+            return _scan_cache[target]
+        results = []
+        block_it = mem.getBlocks()
+        for blk in block_it:
+            if not blk.isInitialized() or blk.isExecute():
+                continue
+            start = int(blk.getStart().getOffset())
+            end = int(blk.getEnd().getOffset())
+            for addr_val in range(start, end - 3, 4):
+                try:
+                    val = mem.getInt(af.getAddress(addr_val)) & 0xFFFFFFFF
+                    if val == target:
+                        results.append(addr_val)
+                except Exception:
+                    pass
+        _scan_cache[target] = results
+        return results
+
     def descriptor_to_vtable(desc: int) -> int | None:
         for r in refmgr.getReferencesTo(A(desc)):
             fn = fm.getFunctionContaining(r.getFromAddress())
@@ -242,13 +264,19 @@ def run(program, args) -> dict:
                 fa = int(r2.getFromAddress().getOffset())
                 ins = listing.getInstructionAt(A(fa))
                 if ins is not None and ins.getMnemonicString().lower() == "jmp":
+                    # Try references first
                     for r3 in refmgr.getReferencesTo(A(fa)):
                         fa3 = int(r3.getFromAddress().getOffset())
+                        if listing.getInstructionAt(A(fa3)) is None:
+                            return fa3
+                    # Fallback to memory scan if no references exist
+                    for fa3 in scan_memory_for_dword(fa):
                         if listing.getInstructionAt(A(fa3)) is None:
                             return fa3
                 elif ins is None:
                     return fa
         return None
+
 
     def vtable_target(vt: int, slot: int) -> int | None:
         try:
@@ -264,12 +292,15 @@ def run(program, args) -> dict:
     # Naming helpers
     # ------------------------------------------------------------------ #
     def is_auto_name(name: str) -> bool:
+        base = name.split("::")[-1]
         return (
-            name.startswith("FUN_")
-            or name.startswith("thunk_FUN_")
-            or name.startswith("LAB_")
-            or name.startswith("SUB_")
+            base.startswith("FUN_")
+            or base.startswith("thunk_FUN_")
+            or base.startswith("LAB_")
+            or base.startswith("SUB_")
+            or bool(_PROVISIONAL.search(base))
         )
+
 
     def is_default_data_name(name: str) -> bool:
         """A Ghidra-generated data label safe to replace with a class-scoped name."""
@@ -352,6 +383,7 @@ def run(program, args) -> dict:
         "namespace_ecx_methods_typed": 0,
         "mac_method_signatures": 0,
         "this_typed": 0,
+        "caller_class_assigned": 0,
     }
     changes: list[str] = []
     # collected per class for the struct-building pass
@@ -448,9 +480,7 @@ def run(program, args) -> dict:
             base_method = base_fn.getName().split("::")[-1]
             if not is_propagatable(base_method):
                 continue  # base slot unnamed or provisional — nothing to propagate
-            if not is_auto_name(der_fn.getName()):
-                stats["skipped_named"] += 1
-                continue
+
             new_name = f"{base_method}"
             if args.apply:
                 try:
@@ -752,12 +782,13 @@ def run(program, args) -> dict:
             if vtbl_dt is None or not slots:
                 return
             try:
-                listing.clearCodeUnits(A(vt), A(vt + len(slots) * 4 - 1), False)
+                clear_code_units_covering(A(vt), A(vt + len(slots) * 4 - 1))
                 listing.createData(A(vt), vtbl_dt)
                 stats["vtable_data_typed"] += 1
             except Exception as exc:  # noqa: BLE001
                 stats["vtable_data_failed"] += 1
                 changes.append(f"  !! vtable data {cls}@0x{vt:08x} failed: {exc}")
+
 
         def remove_stale_class_duplicate(datatype, cls: str) -> None:
             try:
@@ -948,6 +979,56 @@ def run(program, args) -> dict:
                     f"  !! namespace ecx this-type 0x{int(fn.getEntryPoint().getOffset()):08x} {cls} failed: {exc}"
                 )
 
+        # ------------------------------------------------------------------ #
+        # Caller-based class assignment: assign Global __thiscall functions
+        # to a class when ALL callers belong to the same RTTI class.
+        # ------------------------------------------------------------------ #
+        # Build thunk -> real entry mapping for xref aggregation
+        _thunk_to_real: dict[int, int] = {}
+        for tfn in fm.getFunctions(True):
+            if tfn.isThunk():
+                tf = tfn.getThunkedFunction(True)
+                if tf is not None:
+                    _thunk_to_real[int(tfn.getEntryPoint().getOffset())] = int(tf.getEntryPoint().getOffset())
+            else:
+                ins0 = listing.getInstructionAt(tfn.getEntryPoint())
+                if ins0 is not None and ins0.getMnemonicString().lower() == "jmp" and len(ins0.getFlows()) == 1:
+                    _thunk_to_real[int(tfn.getEntryPoint().getOffset())] = int(ins0.getFlows()[0].getOffset())
+        _real_to_thunks: dict[int, list[int]] = {}
+        for tk, rv in _thunk_to_real.items():
+            _real_to_thunks.setdefault(rv, []).append(tk)
+
+        for fn in fm.getFunctions(True):
+            ns = fn.getParentNamespace()
+            if ns is None or ns.getName() != "Global":
+                continue
+            if fn.getCallingConventionName() != "__thiscall" or fn.isThunk():
+                continue
+            entry = int(fn.getEntryPoint().getOffset())
+            call_targets = [entry] + _real_to_thunks.get(entry, [])
+            caller_classes: set[str] = set()
+            for tgt in call_targets:
+                for ref in refmgr.getReferencesTo(A(tgt)):
+                    if not ref.getReferenceType().isCall() and not ref.getReferenceType().isJump():
+                        continue
+                    cfn = fm.getFunctionContaining(ref.getFromAddress())
+                    if cfn is None:
+                        continue
+                    cns = cfn.getParentNamespace()
+                    if cns is not None and cns.getName() != "Global" and cns.getName() in class_names:
+                        caller_classes.add(cns.getName())
+            if len(caller_classes) == 1:
+                cls = next(iter(caller_classes))
+                try:
+                    if args.apply:
+                        fn.setParentNamespace(get_or_make_class(cls))
+                        refresh_thiscall_signature(fn)
+                    stats["caller_class_assigned"] += 1
+                    if args.verbose or not args.apply:
+                        changes.append(f"  caller-assign 0x{entry:08x} {fn.getName()} -> {cls}")
+                except Exception as exc:  # noqa: BLE001
+                    changes.append(f"  !! caller-assign 0x{entry:08x} {fn.getName()} -> {cls} failed: {exc}")
+
         remove_stale_class_duplicates()
 
     return {"stats": stats, "changes": changes}
@@ -996,7 +1077,8 @@ def main() -> int:
             f"          factory_typed={s['factory_typed']} "
             f"vptr_store_methods_typed={s['vptr_store_methods_typed']} "
             f"namespace_ecx_methods_typed={s['namespace_ecx_methods_typed']} "
-            f"mac_method_signatures={s['mac_method_signatures']}"
+            f"mac_method_signatures={s['mac_method_signatures']}\n"
+            f"          caller_class_assigned={s['caller_class_assigned']}"
         )
         if not args.apply:
             print("Re-run with --apply to write these changes to the Ghidra DB.")
