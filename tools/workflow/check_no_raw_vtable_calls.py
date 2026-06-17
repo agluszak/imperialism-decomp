@@ -23,7 +23,6 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
 )
 
 INFRA_ALLOWLIST: set[str] = {
-    "include/game/vcall_runtime.h",
     "include/game/generated/vcall_facades.h",
 }
 

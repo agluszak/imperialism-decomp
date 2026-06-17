@@ -79,3 +79,7 @@ src/game/TToggleButton.cpp|VCall_TToggleButton_Slot1C8|void|0x1C8 / 4|int,int|lo
 src/game/TBoycottButton.cpp|VCall_TBoycottButton_Slot58|void*|0x58 / 4||low|||cdecl|none||provisional|TBoycottButton
 src/game/TBoycottButton.cpp|VCall_TBoycottButton_Slot94|void*|0x94 / 4|int,int|low|||thiscall|none||provisional|TBoycottButton
 src/game/TBoycottButton.cpp|VCall_TBoycottButton_Slot1C8|void|0x1C8 / 4|int,int|low|||thiscall|none||provisional|TBoycottButton
+src/game/TSoundPlayer.cpp|VCall_SoundChannelNode_QueryPendingCountSlot0A|int|0x0A||medium|channel node pending playback count|index|fastcall|zero||provisional|SoundChannelNode
+src/game/TSoundPlayer.cpp|VCall_SoundChannelNode_StopOrResetSlot0C|int|0x0C||medium|channel node stop/reset active playback|index|fastcall|zero||provisional|SoundChannelNode
+src/game/TSoundPlayer.cpp|VCall_SoundChannelNode_ReleaseSlot0E|int|0x0E||medium|channel node release/teardown|index|fastcall|zero||provisional|SoundChannelNode
+src/game/TSoundPlayer.cpp|VCall_UiRootController_NotifySoundSubsystemSlot29|int|0x29||medium|notify global UI root of sound subsystem init|index|fastcall|zero||provisional|UiRootController

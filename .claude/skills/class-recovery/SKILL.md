@@ -81,7 +81,8 @@ Keep vtable-call plumbing centralized while layouts evolve.
   `edx_mode`, `edx_value`, `status`, `class_name`).
 - Generator: `tools/workflow/generate_vcall_facades.py` →
   `include/game/generated/vcall_facades.h`. The only place allowed to resolve/cast
-  vtable slots is `include/game/vcall_runtime.h`.
+  vtable slots is `include/game/generated/vcall_facades.h` (generated from
+  `config/vtable_slots.csv`).
 - After any change: `just gen-vcall-facades` → `just vtable-gate` → `just build`.
 
 ### Facade lifecycle

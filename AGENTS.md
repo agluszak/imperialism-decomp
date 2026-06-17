@@ -100,7 +100,7 @@ target). They need a built binary + reccmp DB.
 11. For vtable calls in manual code, call through generated facades in
     `include/game/generated/vcall_facades.h` (or real virtuals) — no local
     `typedef ...Fn` + `reinterpret_cast` blocks, no raw `vftable[...]` indexing. Keep
-    low-level slot-cast mechanics isolated in `include/game/vcall_runtime.h`.
+    low-level slot-cast mechanics isolated in `include/game/generated/vcall_facades.h`.
 12. `config/vtable_slots.csv` is the single source of truth for generated vcall
     wrappers; after changing it, run `just gen-vcall-facades` before build/compare.
 13. The raw-vtable gate (`just vtable-gate`) must pass; do not add new raw-vtable
@@ -168,11 +168,11 @@ examples, and rationale: `docs/reference/construction.md`.
     to a fake `__fastcall(void*, int /*edx*/, ...)` shape with a dummy `edx`.
   - If a call is a **vtable dispatch**, model the real C++ class with real `virtual`
     methods (in the correct slot order — verify the slot offset in the disassembly) and
-    call `obj->Virtual(args)`. Do NOT route it through the `vcall_runtime` /
-    `VCall_*` facades; those inject a spurious `xor edx,edx` and reload the vtable per
-    call. Owning the real virtual lets MSVC cache the vtable in a register across calls,
-    matching the original. (The `vcall_runtime` facade layer is legacy scaffolding we
-    intend to delete entirely — do not add to it; migrate off it.)
+    call `obj->Virtual(args)`. Do NOT route it through the `VCall_*` facades; those
+    inject a spurious `xor edx,edx` and reload the vtable per call. Owning the real
+    virtual lets MSVC cache the vtable in a register across calls, matching the
+    original. (The `VCall_*` facade layer is legacy scaffolding we intend to delete
+    entirely — do not add to it; migrate off it.)
 - A `reinterpret_cast` that only adjusts a return type or argument types of a genuinely
   same-convention free function (e.g. a real `__cdecl(void)` thunk) is fine. Faking the
   *convention* (esp. thiscall-as-fastcall-with-dummy-edx) is not.

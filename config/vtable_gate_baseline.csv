@@ -2,6 +2,7 @@ file|raw_vtable_index|fn_typedef_cast|vftable_index|vcall_facade|total
 src/game/TCivDescription.cpp|0|2|0|0|2
 src/game/TDealList.cpp|0|3|0|0|3
 src/game/TDiplomacyMapView.cpp|0|0|0|9|9
+src/game/TSoundPlayer.cpp|0|0|0|7|7
 src/game/TFocusAnimation.cpp|0|0|0|1|1
 src/game/TMapDialog.cpp|0|1|0|0|1
 src/game/TMapOrderEntry.cpp|0|1|0|0|1

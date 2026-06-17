@@ -2,7 +2,7 @@
 
 #include "game/mfc.h"
 #include "game/diplomacy_globals.h"
-#include "game/vcall_runtime.h"
+#include "game/generated/vcall_facades.h"
 
 #include <new>
 
@@ -98,10 +98,10 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
   }
 
   if (this->stateByte80 != 0 && this->stateDword7c == 0) {
-    int n = vcall_runtime::fastcall0<int>(this->runtimePeerAt6c, 0x0a);
+    int n = VCall_SoundChannelNode_QueryPendingCountSlot0A(this->runtimePeerAt6c);
     if (n > 0) {
-      vcall_runtime::fastcall0<int>(this->runtimePeerAt6c, 0x0c);
-      vcall_runtime::fastcall0<int>(this->runtimePeerAt70, 0x0c);
+      VCall_SoundChannelNode_StopOrResetSlot0C(this->runtimePeerAt6c);
+      VCall_SoundChannelNode_StopOrResetSlot0C(this->runtimePeerAt70);
     }
     if (this->stateByte78 != 0) {
       ForwardMciCommand808ToDevice();
@@ -118,7 +118,7 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
     return 0;
   }
 
-  int n = vcall_runtime::fastcall0<int>(this->runtimePeerAt6c, 0x0a);
+  int n = VCall_SoundChannelNode_QueryPendingCountSlot0A(this->runtimePeerAt6c);
   if (n > 0) {
     DAT_006a4520 = static_cast<short>(DAT_006a4520 + 1);
     if (DAT_006a4520 > 4) {
@@ -171,7 +171,7 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
   EnsureCdAudioDeviceHandleInitialized();
   this->field10 = param_1;
   // Notify the global UI root controller via its slot 0x29 (peer class unrecovered).
-  vcall_runtime::fastcall0<int>(g_pGlobalUiRootController, 0x29);
+  VCall_UiRootController_NotifySoundSubsystemSlot29(g_pGlobalUiRootController);
 }
 
 // FUNCTION: IMPERIALISM 0x005e4f60
@@ -207,11 +207,11 @@ void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
 void TSoundPlayer::Free() {
   if (this->runtimePeerAt70 != 0) {
     // Peer class (vtable 0x650a08) unrecovered — slot 0x38 release.
-    vcall_runtime::fastcall0<int>(this->runtimePeerAt70, 0x0e);
+    VCall_SoundChannelNode_ReleaseSlot0E(this->runtimePeerAt70);
   }
   this->runtimePeerAt70 = 0;
   if (this->runtimePeerAt6c != 0) {
-    vcall_runtime::fastcall0<int>(this->runtimePeerAt6c, 0x0e);
+    VCall_SoundChannelNode_ReleaseSlot0E(this->runtimePeerAt6c);
   }
   this->runtimePeerAt6c = 0;
   ReleaseRuntimeSelectionPeersAndResetOwner_Impl();

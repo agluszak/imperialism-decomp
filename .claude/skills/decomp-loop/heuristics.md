@@ -68,7 +68,7 @@ member-initializer-lists over body assignments, in **declaration order**.
 
 ## 4. Vtable dispatch as real virtuals, not facades
 
-The `VCall_*`/`vcall_runtime` facade layer is legacy scaffolding to be deleted — it
+The `VCall_*` facade layer is legacy scaffolding to be deleted — it
 injects a spurious `edx=0` and reloads the vtable per call. A real `obj->Virtual()`
 lets MSVC cache the vtable in a register across calls. This is AGENTS guardrail +
 [[model-real-classes-not-callconv-casts]].

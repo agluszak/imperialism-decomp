@@ -41,7 +41,6 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
 # Low-level runtime files that may legitimately contain raw construction mechanics,
 # documented in-place. Keep this list minimal.
 INFRA_ALLOWLIST: set[str] = {
-    "include/game/vcall_runtime.h",
     "include/game/generated/vcall_facades.h",
 }
 
