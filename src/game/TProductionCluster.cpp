@@ -58,17 +58,14 @@ TProductionCluster::TProductionCluster()
 
 // SYNTHETIC: IMPERIALISM 0x00586970
 // TProductionCluster::`scalar deleting destructor'
-TProductionCluster::~TProductionCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005869c0
-void TProductionCluster::HandleValuePanelSplitArrowCommand(int commandId, void* eventArg,
-                                                           int eventExtra) {
+void TProductionCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TAmtBar* valueControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(0x76616c75));
   if (valueControl == 0) {
     GAME_FAIL_NIL_POINTER();
   }
-  this->TCluster::HandleEvent(commandId, reinterpret_cast<TEventHandler*>(eventArg),
-                              reinterpret_cast<TEvent*>(eventExtra));
+  this->TCluster::HandleEvent(commandId, sourceHandler, event);
 }
 
 // FUNCTION: IMPERIALISM 0x00586a60

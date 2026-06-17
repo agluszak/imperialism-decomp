@@ -67,7 +67,7 @@ TIndustryCluster::TIndustryCluster()
 // TIndustryCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00588b70
-void TIndustryCluster::SyncTradeCommoditySelectionWithActiveNationAndInitControls(int styleSeed) {
+void TIndustryCluster::NoOpUiLifecycleHook(int styleSeed) {
   short tagIndex = 0;
   short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
@@ -147,7 +147,7 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  reinterpret_cast<TUberCluster*>(this->ownerContext)->GetControlFlag(0, 0);
+  this->GetControlFlag(0, 0);
   return 0;
 }
 
@@ -155,4 +155,27 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
 int TIndustryCluster::GetControlFlag(int arg1, int arg2) {
   UpdateTradeBarFromSelectedMetricRatio(this, kAssertLineRatioB);
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00588ff0
+void TIndustryCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 100) {
+    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+    if (moveControl == 0) {
+      GAME_FAIL_NIL_POINTER();
+    }
+    int moveValue = moveControl->QueryValue();
+    this->ApplyMoveValue(moveValue + 1);
+    return;
+  }
+  if (commandId != 0x65) {
+    this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
+    return;
+  }
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  if (moveControl == 0) {
+    GAME_FAIL_NIL_POINTER();
+  }
+  int moveValue = moveControl->QueryValue();
+  this->ApplyMoveValue(moveValue - 1);
 }

@@ -71,7 +71,8 @@ TRailCluster::TRailCluster() : TUberCluster() {
 // TRailCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x005897b0
-void TRailCluster::SelectTradeCommodityPresetBySummaryTagAndInitControls(short recordIndex) {
+void TRailCluster::NoOpUiLifecycleHook(int styleSeed) {
+  short recordIndex = static_cast<short>(styleSeed);
   short activeNationId = g_pUiRuntimeContext->GetActiveNationId();
   TGreatPower* activeNationState = GetNationStateBySlot(activeNationId);
   NationCityTradeState* cityState =
@@ -144,8 +145,7 @@ LABEL_12:
 
 // FUNCTION: IMPERIALISM 0x005899c0
 void TRailCluster::ApplyMoveValue(int value) {
-  reinterpret_cast<TUberCluster*>(reinterpret_cast<TRailCluster*>(this))
-      ->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
+  this->NotifyControlSelectionChange(reinterpret_cast<void*>(value), 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005899f0
@@ -203,7 +203,7 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   int scaledMetric = (int)((float)selectedControl->QueryValue() * barScale);
   int scaledRange = (int)((float)ReadControlValueFieldPlus4(selectedControl) * barScale);
   barControl->SetBarMetric(scaledMetric, scaledRange);
-  reinterpret_cast<TUberCluster*>(ctx->ownerContext)->GetControlFlag(0, 0);
+  ctx->GetControlFlag(0, 0);
   return 0;
 }
 
@@ -211,4 +211,27 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
 int TRailCluster::GetControlFlag(int arg1, int arg2) {
   UpdateTradeBarFromSelectedMetricRatio(reinterpret_cast<TRailCluster*>(this), kAssertLineRatioA);
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00589da0
+void TRailCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 100) {
+    TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+    if (moveControl == 0) {
+      FailNilPointerInUSmallViews(0xcf2);
+    }
+    int moveValue = moveControl->QueryValue();
+    this->ApplyMoveValue(moveValue + 1);
+    return;
+  }
+  if (commandId != 0x65) {
+    this->HandleTradeMoveControlAdjustment(commandId, sourceHandler, reinterpret_cast<int>(event));
+    return;
+  }
+  TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
+  if (moveControl == 0) {
+    FailNilPointerInUSmallViews(0xcf2);
+  }
+  int moveValue = moveControl->QueryValue();
+  this->ApplyMoveValue(moveValue - 1);
 }

@@ -299,14 +299,6 @@ undefined4 Helper_Uses_thunk_ConstructTMinister_At004ed400(void)
   return 0;
 }
 
-// ghidra_name TNapoleonMinister::CreateTNapoleonMinisterInstance
-// ghidra_proto undefined CreateTNapoleonMinisterInstance()
-// FUNCTION: IMPERIALISM 0x004ed490
-undefined4 CreateTNapoleonMinisterInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTNapoleonMinisterAndMaybeFree_Impl
 // ghidra_proto undefined DestructTNapoleonMinisterAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004ed540
@@ -323,42 +315,10 @@ undefined4 InitializeMinisterOrderArrayPreset_50_0_10_50(void)
   return 0;
 }
 
-// ghidra_name TNapoleonMinister::InitializeRecruitQueuePatternA_Type2x3_Type4x2
-// ghidra_proto undefined InitializeRecruitQueuePatternA_Type2x3_Type4x2()
-// FUNCTION: IMPERIALISM 0x004ed620
-undefined4 InitializeRecruitQueuePatternA_Type2x3_Type4x2(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_ConstructTMinister_At004ed740
 // ghidra_proto undefined Helper_Uses_thunk_ConstructTMinister_At004ed740()
 // FUNCTION: IMPERIALISM 0x004ed740
 undefined4 Helper_Uses_thunk_ConstructTMinister_At004ed740(void)
-{
-  return 0;
-}
-
-// ghidra_name TBismarckMinister::CreateTBismarckMinisterInstance
-// ghidra_proto undefined CreateTBismarckMinisterInstance()
-// FUNCTION: IMPERIALISM 0x004ed7c0
-undefined4 CreateTBismarckMinisterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TBismarckMinister::GetTBismarckMinisterClassNamePointer
-// ghidra_proto undefined GetTBismarckMinisterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004ed7f0
-undefined4 GetTBismarckMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TBismarckMinister::DestructTBismarckMinisterAndMaybeFree
-// ghidra_proto undefined DestructTBismarckMinisterAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004ed840
-undefined4 DestructTBismarckMinisterAndMaybeFree(void)
 {
   return 0;
 }
@@ -379,42 +339,10 @@ undefined4 InitializeMinisterOrderArrayPreset_10_10_10_50(void)
   return 0;
 }
 
-// ghidra_name TBismarckMinister::InitializeRecruitQueuePatternB_Type2x2_Bonus5
-// ghidra_proto undefined InitializeRecruitQueuePatternB_Type2x2_Bonus5()
-// FUNCTION: IMPERIALISM 0x004ed950
-undefined4 InitializeRecruitQueuePatternB_Type2x2_Bonus5(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_ConstructTMinister_At004eda30
 // ghidra_proto undefined Helper_Uses_thunk_ConstructTMinister_At004eda30()
 // FUNCTION: IMPERIALISM 0x004eda30
 undefined4 Helper_Uses_thunk_ConstructTMinister_At004eda30(void)
-{
-  return 0;
-}
-
-// ghidra_name TPirateMinister::CreateTPirateMinisterInstance
-// ghidra_proto undefined CreateTPirateMinisterInstance()
-// FUNCTION: IMPERIALISM 0x004edab0
-undefined4 CreateTPirateMinisterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TPirateMinister::GetTPirateMinisterClassNamePointer
-// ghidra_proto undefined GetTPirateMinisterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004edae0
-undefined4 GetTPirateMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TPirateMinister::DestructTPirateMinisterAndMaybeFree
-// ghidra_proto undefined DestructTPirateMinisterAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004edb30
-undefined4 DestructTPirateMinisterAndMaybeFree(void)
 {
   return 0;
 }
@@ -435,42 +363,10 @@ undefined4 InitializeMinisterOrderArrayPreset_15_20_50_75(void)
   return 0;
 }
 
-// ghidra_name TPirateMinister::InitializeRecruitQueuePatternC_Mode2_Type2x3
-// ghidra_proto undefined InitializeRecruitQueuePatternC_Mode2_Type2x3()
-// FUNCTION: IMPERIALISM 0x004edc40
-undefined4 InitializeRecruitQueuePatternC_Mode2_Type2x3(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_ConstructTMinister_At004edd20
 // ghidra_proto undefined Helper_Uses_thunk_ConstructTMinister_At004edd20()
 // FUNCTION: IMPERIALISM 0x004edd20
 undefined4 Helper_Uses_thunk_ConstructTMinister_At004edd20(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefenderMinister::CreateTDefenderMinisterInstance
-// ghidra_proto undefined CreateTDefenderMinisterInstance()
-// FUNCTION: IMPERIALISM 0x004edda0
-undefined4 CreateTDefenderMinisterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefenderMinister::GetTDefenderMinisterClassNamePointer
-// ghidra_proto undefined GetTDefenderMinisterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004eddc0
-undefined4 GetTDefenderMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefenderMinister::DestructTDefenderMinisterAndMaybeFree
-// ghidra_proto undefined DestructTDefenderMinisterAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004ede10
-undefined4 DestructTDefenderMinisterAndMaybeFree(void)
 {
   return 0;
 }
@@ -491,42 +387,10 @@ undefined4 InitializeMinisterOrderArrayPreset_20_10_10_50(void)
   return 0;
 }
 
-// ghidra_name TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
-// ghidra_proto undefined InitializeRecruitQueuePatternD_Field64Mode1_Type2x3()
-// FUNCTION: IMPERIALISM 0x004edf20
-undefined4 InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_ConstructTMinister_At004ee000
 // ghidra_proto undefined Helper_Uses_thunk_ConstructTMinister_At004ee000()
 // FUNCTION: IMPERIALISM 0x004ee000
 undefined4 Helper_Uses_thunk_ConstructTMinister_At004ee000(void)
-{
-  return 0;
-}
-
-// ghidra_name TBullyMinister::CreateTBullyMinisterInstance
-// ghidra_proto undefined CreateTBullyMinisterInstance()
-// FUNCTION: IMPERIALISM 0x004ee080
-undefined4 CreateTBullyMinisterInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TBullyMinister::GetTBullyMinisterClassNamePointer
-// ghidra_proto undefined GetTBullyMinisterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004ee0b0
-undefined4 GetTBullyMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TBullyMinister::DestructTBullyMinisterAndMaybeFree
-// ghidra_proto undefined DestructTBullyMinisterAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004ee100
-undefined4 DestructTBullyMinisterAndMaybeFree(void)
 {
   return 0;
 }
@@ -543,14 +407,6 @@ undefined4 DestructTBullyMinisterAndMaybeFree_Impl(void)
 // ghidra_proto undefined InitializeMinisterOrderArrayPreset_25_10_20_50()
 // FUNCTION: IMPERIALISM 0x004ee150
 undefined4 InitializeMinisterOrderArrayPreset_25_10_20_50(void)
-{
-  return 0;
-}
-
-// ghidra_name TBullyMinister::InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3
-// ghidra_proto undefined InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3()
-// FUNCTION: IMPERIALISM 0x004ee210
-undefined4 InitializeRecruitQueuePatternE_Field64Mode2_Type2x2_Type4x3(void)
 {
   return 0;
 }

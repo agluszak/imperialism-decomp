@@ -4,8 +4,8 @@
 #include "game/TTradeCluster.h"
 #include "game/trade_quickdraw.h"
 #include "game/TGreatPower.h"
-#include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
+#include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 
 #include "game/TAmtBar.h"
@@ -15,15 +15,13 @@
 
 #include <new>
 
+#include "game/ApplicationUiRootController.h"
+#include "game/mfc.h"
+
 extern "C" {
 CRuntimeClass g_pClassDescTUnitToolbarCluster = {nullptr, 0, 0, nullptr, nullptr};
 char g_vtblTUnitToolbarCluster = 0;
 }
-
-#include "game/ApplicationUiRootController.h"
-#include "game/mfc.h"
-
-undefined4 thunk_DestructEngineerDialogBaseState(void);
 
 // FUNCTION: IMPERIALISM 0x00585f70
 TUnitToolbarCluster* TUnitToolbarCluster::CreateInstance() {
@@ -38,24 +36,15 @@ CRuntimeClass* TUnitToolbarCluster::GetRuntimeClass() const {
 // FUNCTION: IMPERIALISM 0x00586010
 TUnitToolbarCluster::TUnitToolbarCluster() : TUberCluster() {}
 
-// FUNCTION: IMPERIALISM 0x00586040
-void* TUnitToolbarCluster::DestructAndMaybeFree(int freeSelfFlag) {
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    // We use the fallback allocator behavior which corresponds to operator delete
-    // For now we just let the compiler emit delete this.
-    // Wait, the original code had: FreeHeapBufferIfNotNull((undefined4)cluster);
-  }
-  return this;
-}
+// SYNTHETIC: IMPERIALISM 0x00586040
+// TUnitToolbarCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00586090
-void TUnitToolbarCluster::DispatchEvent(int eventClass, void* eventPayload, int eventFlags) {
-  this->TCluster::HandleEvent(eventClass, reinterpret_cast<TEventHandler*>(eventPayload),
-                              reinterpret_cast<TEvent*>(eventFlags));
+void TUnitToolbarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  this->TCluster::HandleEvent(commandId, sourceHandler, event);
 
-  if (!(((g_pApplicationUiRootController->screenModeAt24 == 1) && (eventClass == 0x68)) ||
-        (eventClass == 0x67) || (eventClass == 10) || (eventClass == 0x0c))) {
+  if (!(((g_pApplicationUiRootController->screenModeAt24 == 1) && (commandId == 0x68)) ||
+        (commandId == 0x67) || (commandId == 10) || (commandId == 0x0c))) {
     return;
   }
 
@@ -70,7 +59,7 @@ void TUnitToolbarCluster::DispatchEvent(int eventClass, void* eventPayload, int 
 }
 
 // FUNCTION: IMPERIALISM 0x00586150
-unsigned char OrphanVtableAssignStub_00586150(void) {
+int TUnitToolbarCluster::IsTradeControlAtMinimum() {
   return 1;
 }
 
@@ -78,16 +67,12 @@ unsigned char OrphanVtableAssignStub_00586150(void) {
 void TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex(int nResourceIndex) {
   *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x84) = nResourceIndex;
 
-  TView* panel = reinterpret_cast<TView*>(this->OwnerPanel());
-  if (panel == 0) {
-    return;
-  }
-
-  TControl* control = panel->ResolveControlByTag(0x444c4f47);
-  if (control == 0) {
+  TControl* resourceControl =
+      reinterpret_cast<TView*>(this)->ResolveControlByTag(0x7265736f + nResourceIndex);
+  if (resourceControl == 0) {
     GAME_FAIL_NIL_POINTER();
     return;
   }
 
-  control->DispatchEvent(0x0c, 0, 0);
+  resourceControl->HandleEvent(0, 0, 0);
 }

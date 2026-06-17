@@ -167,15 +167,7 @@ void __stdcall NoOpLinkedValueListHook20(int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x00488800
-void __stdcall OrphanRetStub_00488800(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00488820
-void __stdcall OrphanRetStub_00488820(int) {
-  return;
-}
+// OrphanRetStub_00488800 and OrphanRetStub_00488820 are owned by TPtrList::ReadFrom/WriteTo.
 
 // FUNCTION: IMPERIALISM 0x00488e30
 void __stdcall OrphanRetStub_00488e30(int) {
@@ -337,15 +329,7 @@ void __stdcall OrphanRetStub_004be430(int) {
   return;
 }
 
-// FUNCTION: IMPERIALISM 0x004be6d0
-void __stdcall OrphanRetStub_004be6d0(int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x004bff60
-void __stdcall OrphanRetStub_004bff60(int, int) {
-  return;
-}
+// NotifySlot44 at 0x004be6d0 is owned by TInteriorMinister::NotifySlot44.
 
 // FUNCTION: IMPERIALISM 0x004c6fb0
 void OrphanRetStub_004c6fb0(void) {
@@ -455,26 +439,6 @@ void __stdcall HandlePostPendingEventActivationNoOp(int) {
 
 // FUNCTION: IMPERIALISM 0x00515de0
 void __stdcall OrphanRetStub_00515de0(int, int, int) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0052fd80
-void NoOpForeignMinisterSlot24Handler(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x0052fda0
-void NoOpForeignMinisterSlot25Handler(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x00531af0
-void NoOpTedForeignMinisterSlot25Handler(void) {
-  return;
-}
-
-// FUNCTION: IMPERIALISM 0x005328d0
-void OrphanRetStub_005328d0(void) {
   return;
 }
 

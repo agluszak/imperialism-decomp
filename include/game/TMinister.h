@@ -30,14 +30,8 @@ public:
   virtual void MinisterSlot0F();             // 15 (0x3c)
   virtual void MinisterSlot10();             // 16 (0x40)
   virtual void NotifySlot44(void* receiver); // 17 (0x44)
-  virtual void MinisterSlot12();             // 18 (0x48)
-  virtual void Call4C();                     // 19 (0x4c)
-  virtual void MinisterSlot14();             // 20 (0x50)
-  virtual void Call54();                     // 21 (0x54)
-  // The orig TMinister vtable (0x659c00) ends at slot 21 (0x54); slots 0x18-0x54 are
-  // NULL/abstract in the base and the next object's vtable begins at 0x659c58. Virtuals
-  // beyond slot 21 are introduced per-derived-class (e.g. TForeignMinister slots 22-39,
-  // TCityInteriorMinister slots 22-53), not on this base. See worklog 2026-06-15.
+  // Orig TMinister vtable (0x659c00) ends at slot 17 (0x44); slots 0x48-0x54 are NULL.
+  // Slots 0x48+ are introduced per derived minister (e.g. TDefenseMinister, TInteriorMinister).
 
   int ownerContextAt04;       // +0x4 — great-power back-pointer from InitializeBaseOrderArray
   TIndexAndRankList* field_8; // +0x8 — minister order array (vtable 0x659c58)

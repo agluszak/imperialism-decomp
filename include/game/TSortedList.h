@@ -20,7 +20,6 @@ struct TSortedList : public TPtrList {
   }
 
   static TSortedList* CreateTSortedListInstance();
-  static void* GetTSortedListClassNamePointer();
 };
 
 ASSERT_SIZE(TSortedList, 0x20);

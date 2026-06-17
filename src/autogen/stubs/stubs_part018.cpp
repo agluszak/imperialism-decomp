@@ -2187,14 +2187,6 @@ undefined4 thunk_DestructTViewBaseState_00589790(void)
   return 0;
 }
 
-// ghidra_name TIndustryAmtBar::HandleTradeMovePageStepCommand
-// ghidra_proto undefined HandleTradeMovePageStepCommand()
-// FUNCTION: IMPERIALISM 0x00589da0
-undefined4 HandleTradeMovePageStepCommand(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructTViewBaseState
 // ghidra_proto void __thiscall thunk_DestructTViewBaseState(void)
 // FUNCTION: IMPERIALISM 0x0058a000

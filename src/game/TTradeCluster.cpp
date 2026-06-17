@@ -234,8 +234,8 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
            ++i) {
         TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
         if (rowControl != 0 &&
-            reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
-          reinterpret_cast<TUberCluster*>(rowControl)->DoControlAction();
+            reinterpret_cast<TTradeCluster*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TTradeCluster*>(rowControl)->DoControlAction();
         }
       }
       return;
@@ -249,8 +249,8 @@ void TTradeCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEv
            ++i) {
         TControl* rowControl = ownerPanel->ResolveControlByTag(kTradeSellPropagationTags[i]);
         if (rowControl != 0 &&
-            reinterpret_cast<TUberCluster*>(rowControl)->GetControlFlag() == '\0') {
-          reinterpret_cast<TUberCluster*>(rowControl)->DoControlAction();
+            reinterpret_cast<TTradeCluster*>(rowControl)->GetControlFlag() == '\0') {
+          reinterpret_cast<TTradeCluster*>(rowControl)->DoControlAction();
         }
       }
       return;

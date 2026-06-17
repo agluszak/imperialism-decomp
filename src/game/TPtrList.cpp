@@ -10,7 +10,6 @@ extern "C" {
 char g_pClassDescTPtrList = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00488510
 void* TPtrList::GetTPtrListClassNamePointer() {
   return &g_pClassDescTPtrList;
 }
@@ -34,6 +33,37 @@ void* TPtrList::GetNodeByOrdinalSlot2C(int mode, int ordinal) {
 // FUNCTION: IMPERIALISM 0x00488610
 void TPtrList::AddTail30(void* item) {
   this->listState.AddTail(item);
+}
+
+// FUNCTION: IMPERIALISM 0x00488630
+void TPtrList::RemoveIntSlot34(int value) {
+  this->AddTail30(reinterpret_cast<void*>(value));
+}
+
+// FUNCTION: IMPERIALISM 0x00488650
+void TPtrList::Call38() {
+  this->AddTail30(0);
+}
+
+// FUNCTION: IMPERIALISM 0x00488670
+void TPtrList::VTableSlot3C_Provisional() {
+  this->AddTail30(0);
+}
+
+// FUNCTION: IMPERIALISM 0x00488690
+void TPtrList::VTableSlot40_Provisional() {
+  this->AddTail30(0);
+}
+
+// FUNCTION: IMPERIALISM 0x004886b0
+void TPtrList::VTableSlot44_Provisional() {
+  this->AddTail30(0);
+}
+
+// FUNCTION: IMPERIALISM TODO
+int TPtrList::GetIntByOrdinalSlot24(int ordinal) {
+  void* entry = GetNodeByOrdinalSlot2C(0, ordinal);
+  return reinterpret_cast<int>(entry);
 }
 
 // FUNCTION: IMPERIALISM 0x004886d0
@@ -73,24 +103,23 @@ void TPtrList::Free() {
   delete this;
 }
 
-void TPtrList::WriteTo(TStream* stream) {
-  (void)stream;
-}
-
-void TPtrList::ReadFrom(TStream* stream) {
-  (void)stream;
-}
-
-// FUNCTION: IMPERIALISM TODO
-int TPtrList::GetIntByOrdinalSlot24(int ordinal) {
-  void* entry = GetNodeByOrdinalSlot2C(0, ordinal);
-  return reinterpret_cast<int>(entry);
-}
-
 // FUNCTION: IMPERIALISM 0x004887b0
 void TPtrList::Call58() {
   this->Call54();
   this->Free();
+}
+
+// FUNCTION: IMPERIALISM 0x004887e0
+void TPtrList::VTableSlot5C_Provisional() {}
+
+// FUNCTION: IMPERIALISM 0x00488800
+void TPtrList::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+}
+
+// FUNCTION: IMPERIALISM 0x00488820
+void TPtrList::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
 }
 
 // FUNCTION: IMPERIALISM 0x00488840

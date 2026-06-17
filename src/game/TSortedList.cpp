@@ -5,7 +5,7 @@
 #endif
 
 extern "C" {
-char g_pClassDescTSortedList = 0;
+CRuntimeClass g_pClassDescTSortedList = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x00487a90
@@ -14,10 +14,14 @@ TSortedList* TSortedList::CreateTSortedListInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00487b10
-void* TSortedList::GetTSortedListClassNamePointer() {
+CRuntimeClass* TSortedList::GetRuntimeClass() const {
   return &g_pClassDescTSortedList;
 }
 
-CRuntimeClass* TSortedList::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(GetTSortedListClassNamePointer());
-}
+// Destructor is compiler-generated (implicit) from real TPtrList inheritance.
+// SYNTHETIC: IMPERIALISM 0x004888f0
+// TSortedList::`scalar deleting destructor'
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

@@ -6,12 +6,18 @@
 #include "game/TSortedByRelationshipList.h"
 #include "game/TDiplomacyTurnStateManager.h"
 #include "game/diplomacy_globals.h"
+#include "game/mfc.h"
+#include "game/TStream.h"
 
 #include "game/nation_slot_eligibility.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
+
+extern "C" {
+CRuntimeClass g_pClassDescTForeignMinister = {nullptr, 0, 0, nullptr, nullptr};
+}
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
@@ -20,6 +26,11 @@ static __inline unsigned int GenerateThreadLocalRandom15Value(void) {
 }
 
 static const short kPrimaryNationUnset = static_cast<short>(0xfff6);
+
+// FUNCTION: IMPERIALISM 0x0052f050
+CRuntimeClass* TForeignMinister::GetRuntimeClass() const {
+  return &g_pClassDescTForeignMinister;
+}
 
 // FUNCTION: IMPERIALISM 0x0052f070
 TForeignMinister::TForeignMinister() : TMinister() {
@@ -38,6 +49,9 @@ TForeignMinister::TForeignMinister() : TMinister() {
   *reinterpret_cast<short*>(raw + 0x1c) = 2;
 }
 
+// SYNTHETIC: IMPERIALISM 0x0052f0e0
+// TForeignMinister::`scalar deleting destructor'
+
 // FUNCTION: IMPERIALISM 0x0052f130
 void TForeignMinister::InitializeStateAndCounters() {
   this->InitializeBaseOrderArray(0);
@@ -53,6 +67,41 @@ void TForeignMinister::InitializeStateAndCounters() {
   *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(block) + 0x20) = 0;
   *reinterpret_cast<unsigned int*>(raw + 0x40) = 0xfff6fff6;
   *reinterpret_cast<unsigned int*>(raw + 0x44) = 0xfff6fff6;
+}
+
+// FUNCTION: IMPERIALISM 0x0052f180
+void TForeignMinister::ReadFrom(TStream* stream) {
+  TMinister::ReadFrom(stream);
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x0052f2b0
+void TForeignMinister::WriteTo(TStream* stream) {
+  TMinister::WriteTo(stream);
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x0052f430
+void TForeignMinister::MinisterSlot0A() {}
+
+// FUNCTION: IMPERIALISM 0x0052f4b0
+void TForeignMinister::MinisterSlot12() {}
+
+// FUNCTION: IMPERIALISM 0x0052f4f0
+void TForeignMinister::Call4C() {}
+
+// FUNCTION: IMPERIALISM 0x0052f520
+void TForeignMinister::MinisterSlot14() {}
+
+// FUNCTION: IMPERIALISM 0x0052f540
+void TForeignMinister::Call54() {}
+
+// FUNCTION: IMPERIALISM 0x0052f570
+void TForeignMinister::MinisterSlot21() {}
+
+// FUNCTION: IMPERIALISM 0x0052f730
+char TForeignMinister::MinisterSlot22() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0052f7b0
@@ -231,29 +280,41 @@ void TForeignMinister::RecomputeOrderStateSlot9C() {
   *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(block) + 0x20) = 0;
 }
 
-#if defined(_MSC_VER)
-#pragma optimize("", on)
-#endif
+// FUNCTION: IMPERIALISM 0x0052fd10
+void TForeignMinister::Call58() {}
+
+// FUNCTION: IMPERIALISM 0x0052fd80
+void TForeignMinister::MinisterSlot18() {}
+
+// FUNCTION: IMPERIALISM 0x0052fda0
+void TForeignMinister::MinisterSlot19() {}
+
+// FUNCTION: IMPERIALISM 0x0052fdc0
+void TForeignMinister::MinisterSlot1A(short arg) {
+  (void)arg;
+}
+
+// FUNCTION: IMPERIALISM 0x0052fe90
+void TForeignMinister::MinisterSlot17() {}
+
+// FUNCTION: IMPERIALISM 0x00530200
+void TForeignMinister::MinisterSlot1E() {}
+
+// FUNCTION: IMPERIALISM 0x005308b0
+void TForeignMinister::MinisterSlot1C() {}
+
+// FUNCTION: IMPERIALISM 0x00530b30
+void TForeignMinister::MinisterSlot1D() {}
+
+// FUNCTION: IMPERIALISM 0x00530bb0
+void TForeignMinister::MinisterSlot1B() {}
+
+// FUNCTION: IMPERIALISM 0x00530fa0
+void TForeignMinister::MinisterSlot1F() {}
 
 // FUNCTION: IMPERIALISM 0x00531110
 void TForeignMinister::Call80() {}
 
-// Placeholder extension-slot virtuals (slots 22-31, 33-34). These occupy real orig
-// vtable slots whose bodies are not yet ported; honest empty stubs keep the vtable the
-// correct size and let the implemented slots (Call80/8C/90/94/98/9C) pair.
-void TForeignMinister::Call58() {}
-void TForeignMinister::MinisterSlot17() {}
-void TForeignMinister::MinisterSlot18() {}
-void TForeignMinister::MinisterSlot19() {}
-void TForeignMinister::MinisterSlot1A(short arg) {
-  (void)arg;
-}
-void TForeignMinister::MinisterSlot1B() {}
-void TForeignMinister::MinisterSlot1C() {}
-void TForeignMinister::MinisterSlot1D() {}
-void TForeignMinister::MinisterSlot1E() {}
-void TForeignMinister::MinisterSlot1F() {}
-void TForeignMinister::MinisterSlot21() {}
-char TForeignMinister::MinisterSlot22() {
-  return 0;
-}
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

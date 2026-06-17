@@ -11,14 +11,9 @@ public:
   TUnitToolbarCluster();
   CRuntimeClass* GetRuntimeClass() const override;
 
-  virtual void DispatchEvent(int eventClass, void* eventPayload, int eventFlags);
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  virtual int IsTradeControlAtMinimum() override;
+  virtual void UpdateTradeResourceSelectionByIndex(int nResourceIndex);
 
-  // We'll declare the static creation methods.
   static TUnitToolbarCluster* CreateInstance();
-  void* DestructAndMaybeFree(int freeSelfFlag);
-
-  // Actually, we don't know UpdateTradeResourceSelectionByIndex's slot yet.
-  // It takes (int nResourceIndex). Let's just declare it as a normal method for now
-  // or a vmethod if we find it in vtable.
-  void UpdateTradeResourceSelectionByIndex(int nResourceIndex);
 };

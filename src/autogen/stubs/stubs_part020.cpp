@@ -1931,22 +1931,6 @@ undefined4 UpdateCursorHelperWindowTextFromUiString(void)
   return 0;
 }
 
-// ghidra_name EnumerateStreamEntriesWithDualCallbacksAndTempBuffer
-// ghidra_proto undefined EnumerateStreamEntriesWithDualCallbacksAndTempBuffer()
-// FUNCTION: IMPERIALISM 0x005e1e50
-undefined4 EnumerateStreamEntriesWithDualCallbacksAndTempBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name EnumerateStateEntriesAndInvokeObjectCallback
-// ghidra_proto undefined EnumerateStateEntriesAndInvokeObjectCallback()
-// FUNCTION: IMPERIALISM 0x005e1f10
-undefined4 EnumerateStateEntriesAndInvokeObjectCallback(void)
-{
-  return 0;
-}
-
 // ghidra_name SetPlaybackState2AndNotifyOwnerCallback
 // ghidra_proto undefined SetPlaybackState2AndNotifyOwnerCallback()
 // FUNCTION: IMPERIALISM 0x005e1fa0

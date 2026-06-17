@@ -1,16 +1,128 @@
 #include "game/TDefenseMinisterPersonalities.h"
 
+#include "game/mfc.h"
+
+#if defined(_MSC_VER)
+#pragma optimize("y", on)
+#endif
+
+extern "C" {
+CRuntimeClass g_pClassDescTNapoleonMinister = {nullptr, 0, 0, nullptr, nullptr};
+CRuntimeClass g_pClassDescTBismarckMinister = {nullptr, 0, 0, nullptr, nullptr};
+CRuntimeClass g_pClassDescTPirateMinister = {nullptr, 0, 0, nullptr, nullptr};
+CRuntimeClass g_pClassDescTDefenderMinister = {nullptr, 0, 0, nullptr, nullptr};
+CRuntimeClass g_pClassDescTBullyMinister = {nullptr, 0, 0, nullptr, nullptr};
+}
+
+// NOTE: NotifySlot44 (slot 0x44, the InitializeRecruitQueuePattern* recruit-queue setup)
+// and DefenseSlot18 (slot 0x60, a per-personality float aggressiveness multiplier whose
+// real signature returns float) are promoted here as real virtual overrides owning their
+// original addresses (previously return-0 autogen stubs). Bodies are honest partial ports.
+
+// Slot 24 (0x60) override — factory hook on this minister variant.
+// FUNCTION: IMPERIALISM 0x004ed490
+void TNapoleonMinister::DefenseSlot18() {}
+
+// FUNCTION: IMPERIALISM 0x004ed4c0
+CRuntimeClass* TNapoleonMinister::GetRuntimeClass() const {
+  return &g_pClassDescTNapoleonMinister;
+}
+
 // FUNCTION: IMPERIALISM 0x004ed4e0
 TNapoleonMinister::TNapoleonMinister() : TDefenseMinister() {}
+
+// SYNTHETIC: IMPERIALISM 0x004ed510
+// TNapoleonMinister::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004ed620
+void TNapoleonMinister::NotifySlot44(void* receiver) {
+  (void)receiver;
+}
+
+// FUNCTION: IMPERIALISM 0x004ed7c0
+void TBismarckMinister::DefenseSlot18() {
+  // Partial port: original returns a float aggressiveness multiplier.
+}
+
+// FUNCTION: IMPERIALISM 0x004ed7f0
+CRuntimeClass* TBismarckMinister::GetRuntimeClass() const {
+  return &g_pClassDescTBismarckMinister;
+}
 
 // FUNCTION: IMPERIALISM 0x004ed810
 TBismarckMinister::TBismarckMinister() : TDefenseMinister() {}
 
+// SYNTHETIC: IMPERIALISM 0x004ed840
+// TBismarckMinister::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004ed950
+void TBismarckMinister::NotifySlot44(void* receiver) {
+  (void)receiver;
+}
+
+// FUNCTION: IMPERIALISM 0x004edab0
+void TPirateMinister::DefenseSlot18() {
+  // Partial port: original returns a float aggressiveness multiplier.
+}
+
+// FUNCTION: IMPERIALISM 0x004edae0
+CRuntimeClass* TPirateMinister::GetRuntimeClass() const {
+  return &g_pClassDescTPirateMinister;
+}
+
 // FUNCTION: IMPERIALISM 0x004edb00
 TPirateMinister::TPirateMinister() : TDefenseMinister() {}
+
+// SYNTHETIC: IMPERIALISM 0x004edb30
+// TPirateMinister::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004edc40
+void TPirateMinister::NotifySlot44(void* receiver) {
+  (void)receiver;
+}
+
+// FUNCTION: IMPERIALISM 0x004edda0
+void TDefenderMinister::DefenseSlot18() {
+  // Partial port: original returns a float aggressiveness multiplier.
+}
+
+// FUNCTION: IMPERIALISM 0x004eddc0
+CRuntimeClass* TDefenderMinister::GetRuntimeClass() const {
+  return &g_pClassDescTDefenderMinister;
+}
 
 // FUNCTION: IMPERIALISM 0x004edde0
 TDefenderMinister::TDefenderMinister() : TDefenseMinister() {}
 
+// SYNTHETIC: IMPERIALISM 0x004ede10
+// TDefenderMinister::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004edf20
+void TDefenderMinister::NotifySlot44(void* receiver) {
+  (void)receiver;
+}
+
+// FUNCTION: IMPERIALISM 0x004ee080
+void TBullyMinister::DefenseSlot18() {
+  // Partial port: original returns a float aggressiveness multiplier.
+}
+
+// FUNCTION: IMPERIALISM 0x004ee0b0
+CRuntimeClass* TBullyMinister::GetRuntimeClass() const {
+  return &g_pClassDescTBullyMinister;
+}
+
 // FUNCTION: IMPERIALISM 0x004ee0d0
 TBullyMinister::TBullyMinister() : TDefenseMinister() {}
+
+// SYNTHETIC: IMPERIALISM 0x004ee100
+// TBullyMinister::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004ee210
+void TBullyMinister::NotifySlot44(void* receiver) {
+  (void)receiver;
+}
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

@@ -10,8 +10,7 @@ public:
   CRuntimeClass* GetRuntimeClass() const override;
 
   static TCityBarCluster* CreateInstance();
-  void* DestructAndMaybeFree(int freeSelfFlag);
+  void ApplyMoveValue(int value) override;
 
-  // Maybe an Update method
   void UpdateTradeSummaryMetricControlsFromRecord(int recordContext);
 };

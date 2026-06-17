@@ -15,13 +15,12 @@ public:
 
   TRailCluster();
   CRuntimeClass* GetRuntimeClass() const override;
-  // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void NoOpUiLifecycleHook(int styleSeed) override;
   virtual void ApplyMoveValue(int value) override;
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0) override;
   virtual int GetControlFlag(int arg1 = 0, int arg2 = 0) override;
-
-  void SelectTradeCommodityPresetBySummaryTagAndInitControls(short recordIndex);
 };
 
 ASSERT_SIZE(TRailCluster, 0x90);

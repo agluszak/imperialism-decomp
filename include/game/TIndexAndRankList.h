@@ -3,7 +3,7 @@
 #include "compat.h"
 #include "game/CPtrArray.h"
 
-// VTABLE: IMPERIALISM 0x00672eac
+// VTABLE: IMPERIALISM 0x00659c58
 class TIndexAndRankList : public CPtrArray {
 public:
   TIndexAndRankList();
@@ -12,7 +12,7 @@ public:
 
   // Slot 0 (GetRuntimeClass) and the implicit virtual dtor (slot 1) are the only
   // CObject slots this class overrides; slots 2-4 (Serialize/AssertValid/
-  // Dump) are inherited from CObject unchanged (verified: vtable 0x672eac
+  // Dump) are inherited from CObject unchanged (verified: vtable 0x659c58
   // and CObject 0x66fec4 share 0x404aa7/0x4010a0/0x408625 at slots 2-4).
   virtual CRuntimeClass* GetRuntimeClass() const override;
 

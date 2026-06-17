@@ -163,14 +163,6 @@ undefined4 thunk_DestroyScopedMapQuickDrawContext(void)
   return 0;
 }
 
-// ghidra_name thunk_InitializeTradeMoveAndBarControls
-// ghidra_proto undefined thunk_InitializeTradeMoveAndBarControls()
-// FUNCTION: IMPERIALISM 0x004080c6
-undefined4 thunk_InitializeTradeMoveAndBarControls(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation
 // ghidra_proto undefined thunk_ComputeNavyOrderDistributionSimilarityScoreForExactSourceNation()
 // FUNCTION: IMPERIALISM 0x0040824c

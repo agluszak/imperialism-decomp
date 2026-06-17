@@ -3531,50 +3531,10 @@ undefined4 CreateTInteriorMinisterInstance(void)
   return 0;
 }
 
-// ghidra_name TInteriorMinister::GetTInteriorMinisterClassNamePointer
-// ghidra_proto undefined GetTInteriorMinisterClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004be1b0
-undefined4 GetTInteriorMinisterClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::DestructTInteriorMinisterAndMaybeFree
-// ghidra_proto undefined DestructTInteriorMinisterAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004be200
-undefined4 DestructTInteriorMinisterAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTInteriorMinisterAndMaybeFree_Impl
 // ghidra_proto undefined DestructTInteriorMinisterAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004be230
 undefined4 DestructTInteriorMinisterAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290
-// ghidra_proto undefined WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290()
-// FUNCTION: IMPERIALISM 0x004be290
-undefined4 WrapperFor_DeserializeTMinisterBaseOrderArrayHeader_At004be290(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinister::WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320
-// ghidra_proto undefined WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320()
-// FUNCTION: IMPERIALISM 0x004be320
-undefined4 WrapperFor_SerializeTMinisterBaseOrderArrayHeader_At004be320(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins08_004be3c0
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins08_004be3c0()
-// FUNCTION: IMPERIALISM 0x004be3c0
-undefined4 OrphanLeaf_NoCall_Ins08_004be3c0(void)
 {
   return 0;
 }

@@ -55,11 +55,6 @@ void TMinister::Free() {
   delete this;
 }
 
-void TMinister::MinisterSlot12() {}
-void TMinister::Call4C() {}
-void TMinister::MinisterSlot14() {}
-void TMinister::Call54() {}
-
 #if defined(_MSC_VER)
 #pragma optimize("", on)
 #endif

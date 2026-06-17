@@ -1,3 +1,4 @@
+#include "game/TIndustryCluster.h"
 #include "game/TShipyardCluster.h"
 
 #include "game/TAmtBar.h"
@@ -51,7 +52,8 @@ TShipyardCluster::TShipyardCluster() : TUberCluster(), field_88(0), field_8c(0),
 // TShipyardCluster::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058a610
-void TShipyardCluster::SelectTradeSpecialCommodityAndInitializeControls() {
+void TShipyardCluster::NoOpUiLifecycleHook(int styleSeed) {
+  (void)styleSeed;
   NationCityTradeState* cityState =
       GetNationCityStateBySlot(g_pUiRuntimeContext->GetActiveNationId());
   field_88 = cityState != 0 ? (int)cityState->specialCommodityRecordAt190 : 0;
@@ -101,12 +103,14 @@ void TShipyardCluster::ApplyMoveValue(int value) {
         (int)&invalidateRect, 1);
   }
 
-  reinterpret_cast<TUberCluster*>(this->ownerContext)->GetControlFlag(0, 0);
+  reinterpret_cast<TIndustryCluster*>(this->ownerContext)->GetControlFlag(0, 0);
+  (void)value;
 }
 
 // FUNCTION: IMPERIALISM 0x0058a940
-void TShipyardCluster::HandleTradeMoveArrowControlEvent(int commandId, TAmtBar* sourceControl,
-                                                        int eventExtra) {
+void TShipyardCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TAmtBar* sourceControl = reinterpret_cast<TAmtBar*>(sourceHandler);
+  int eventExtra = reinterpret_cast<int>(event);
   if (commandId == 10) {
     if (sourceControl->controlTag == (int)kControlTagRght) {
       TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));

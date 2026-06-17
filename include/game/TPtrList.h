@@ -22,19 +22,17 @@ struct TPtrList : public TObject {
   virtual int GetCountOrReleaseSlot28();
   virtual void* GetNodeByOrdinalSlot2C(int mode, int ordinal);
   virtual void AddTail30(void* item);
-  virtual void RemoveIntSlot34(int value) {
-    (void)value;
-  }
-  virtual void Call38() {}
-  virtual void VTableSlot3C_Provisional() {}
-  virtual void VTableSlot40_Provisional() {}
-  virtual void VTableSlot44_Provisional() {}
+  virtual void RemoveIntSlot34(int value);
+  virtual void Call38();
+  virtual void VTableSlot3C_Provisional();
+  virtual void VTableSlot40_Provisional();
+  virtual void VTableSlot44_Provisional();
   virtual int GetCountSlot48();
   virtual void* GetTrackedEntrySlot4C(int ordinal = 0);
   virtual void RemoveEntryAtSlot50(int ordinal);
   virtual void Call54();
   virtual void Call58();
-  virtual void VTableSlot5C_Provisional() {}
+  virtual void VTableSlot5C_Provisional();
   virtual void SetEntryDataAtSlot60(int ordinal, void** entryPtr, int unusedFlag);
 
   CPtrList listState;

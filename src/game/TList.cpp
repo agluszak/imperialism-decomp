@@ -5,7 +5,7 @@
 #endif
 
 extern "C" {
-char g_pClassDescTList = 0;
+CRuntimeClass g_pClassDescTList = {nullptr, 0, 0, nullptr, nullptr};
 }
 
 // FUNCTION: IMPERIALISM 0x00487e50
@@ -14,10 +14,14 @@ TList* TList::CreateTListInstance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00487ed0
-void* TList::GetTListClassNamePointer() {
+CRuntimeClass* TList::GetRuntimeClass() const {
   return &g_pClassDescTList;
 }
 
-CRuntimeClass* TList::GetRuntimeClass() const {
-  return reinterpret_cast<CRuntimeClass*>(GetTListClassNamePointer());
-}
+// Destructor is compiler-generated (implicit) from real TPtrList inheritance.
+// SYNTHETIC: IMPERIALISM 0x00488870
+// TList::`scalar deleting destructor'
+
+#if defined(_MSC_VER)
+#pragma optimize("", on)
+#endif

@@ -19,7 +19,6 @@ struct TList : public TPtrList {
   }
 
   static TList* CreateTListInstance();
-  static void* GetTListClassNamePointer();
 };
 
 ASSERT_SIZE(TList, 0x20);

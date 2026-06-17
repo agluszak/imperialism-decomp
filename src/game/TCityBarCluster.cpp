@@ -41,21 +41,16 @@ CRuntimeClass* TCityBarCluster::GetRuntimeClass() const {
 // FUNCTION: IMPERIALISM 0x00586630
 TCityBarCluster::TCityBarCluster() : TUberCluster() {}
 
-// FUNCTION: IMPERIALISM 0x00586660
-void* TCityBarCluster::DestructAndMaybeFree(int freeSelfFlag) {
-  thunk_DestructEngineerDialogBaseState();
-  if ((freeSelfFlag & 1) != 0) {
-    // Let the compiler emit delete this.
-  }
-  return this;
-}
+// SYNTHETIC: IMPERIALISM 0x00586660
+// TCityBarCluster::`scalar deleting destructor'
 
 const int kAssertLineTradeSummaryRtnu = 0x67d;
 const int kAssertLineTradeSummaryIart = 0x682;
 const int kAssertLineTradeSummaryProf = 0x687;
 
 // FUNCTION: IMPERIALISM 0x005866b0
-void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int recordContext) {
+void TCityBarCluster::ApplyMoveValue(int value) {
+  int recordContext = value;
   int recordNode = *reinterpret_cast<int*>(recordContext + 0xac);
   int metricContext = *reinterpret_cast<int*>(recordContext + 0x1d8);
   int metrics = *reinterpret_cast<int*>(metricContext + 0x10);
@@ -83,4 +78,8 @@ void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int recordConte
     FailNilPointerInUSmallViews(kAssertLineTradeSummaryProf);
   }
   profControl->SetControlValue((int)*reinterpret_cast<short*>(metrics + 8));
+}
+
+void TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int recordContext) {
+  ApplyMoveValue(recordContext);
 }

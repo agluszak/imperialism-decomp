@@ -2155,70 +2155,6 @@ undefined4 Helper_Uses_CPtrArray_ctor_At00488030(void)
   return 0;
 }
 
-// ghidra_name ClearAndFreeAllPtrListRecords
-// ghidra_proto undefined ClearAndFreeAllPtrListRecords()
-// FUNCTION: IMPERIALISM 0x004880a0
-undefined4 ClearAndFreeAllPtrListRecords(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokePtrListResetHook
-// ghidra_proto undefined InvokePtrListResetHook()
-// FUNCTION: IMPERIALISM 0x004880f0
-undefined4 InvokePtrListResetHook(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I06_00488140
-// ghidra_proto undefined OrphanCallChain_C1_I06_00488140()
-// FUNCTION: IMPERIALISM 0x00488140
-undefined4 OrphanCallChain_C1_I06_00488140(void)
-{
-  return 0;
-}
-
-// ghidra_name RemovePtrListEntryByOneBasedIndexAndFree
-// ghidra_proto undefined RemovePtrListEntryByOneBasedIndexAndFree()
-// FUNCTION: IMPERIALISM 0x00488190
-undefined4 RemovePtrListEntryByOneBasedIndexAndFree(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveFirstPtrListEntry
-// ghidra_proto undefined RemoveFirstPtrListEntry()
-// FUNCTION: IMPERIALISM 0x004881d0
-undefined4 RemoveFirstPtrListEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name UpsertPtrListRecordByComparator
-// ghidra_proto undefined UpsertPtrListRecordByComparator()
-// FUNCTION: IMPERIALISM 0x004881f0
-undefined4 UpsertPtrListRecordByComparator(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendCopiedRecordToPtrList
-// ghidra_proto undefined AppendCopiedRecordToPtrList()
-// FUNCTION: IMPERIALISM 0x004882c0
-undefined4 AppendCopiedRecordToPtrList(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertCopiedRecordAtFrontOfPtrList
-// ghidra_proto undefined InsertCopiedRecordAtFrontOfPtrList()
-// FUNCTION: IMPERIALISM 0x00488310
-undefined4 InsertCopiedRecordAtFrontOfPtrList(void)
-{
-  return 0;
-}
-
 // ghidra_name CompareUnsignedIntsAscending
 // ghidra_proto undefined CompareUnsignedIntsAscending()
 // FUNCTION: IMPERIALISM 0x00488360
@@ -2243,14 +2179,6 @@ undefined4 InsertCopiedRecordAtFrontOfPtrListAlt(void)
   return 0;
 }
 
-// ghidra_name DestructTPtrListMaybeFree
-// ghidra_proto undefined DestructTPtrListMaybeFree()
-// FUNCTION: IMPERIALISM 0x004884c0
-undefined4 DestructTPtrListMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_DestructCObArray
 // ghidra_proto undefined thunk_DestructCObArray()
 // FUNCTION: IMPERIALISM 0x004884f0
@@ -2259,74 +2187,10 @@ undefined4 thunk_DestructCObArray_004884F0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_AddTail_At00488630
-// ghidra_proto undefined WrapperFor_AddTail_At00488630()
-// FUNCTION: IMPERIALISM 0x00488630
-undefined4 WrapperFor_AddTail_At00488630(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AddTail_At00488650
-// ghidra_proto undefined WrapperFor_AddTail_At00488650()
-// FUNCTION: IMPERIALISM 0x00488650
-undefined4 WrapperFor_AddTail_At00488650(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_ThisAdjustJump_4_00488670
-// ghidra_proto undefined OrphanTiny_ThisAdjustJump_4_00488670()
-// FUNCTION: IMPERIALISM 0x00488670
-undefined4 OrphanTiny_ThisAdjustJump_4_00488670(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AddTail_At00488690
-// ghidra_proto undefined WrapperFor_AddTail_At00488690()
-// FUNCTION: IMPERIALISM 0x00488690
-undefined4 WrapperFor_AddTail_At00488690(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanTiny_ThisAdjustJump_4_004886b0
-// ghidra_proto undefined OrphanTiny_ThisAdjustJump_4_004886b0()
-// FUNCTION: IMPERIALISM 0x004886b0
-undefined4 OrphanTiny_ThisAdjustJump_4_004886b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl_At004887e0
-// ghidra_proto undefined TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl_At004887e0()
-// FUNCTION: IMPERIALISM 0x004887e0
-undefined4 TrimExcessNavyOrderSupportAndRebuildOrderBuffer_Impl_At004887e0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00488870
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00488870()
-// FUNCTION: IMPERIALISM 0x00488870
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00488870(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_DestructCPtrListBaseState_At004888a0
 // ghidra_proto undefined WrapperFor_DestructCPtrListBaseState_At004888a0()
 // FUNCTION: IMPERIALISM 0x004888a0
 undefined4 WrapperFor_DestructCPtrListBaseState_At004888a0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004888f0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004888f0()
-// FUNCTION: IMPERIALISM 0x004888f0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004888f0(void)
 {
   return 0;
 }

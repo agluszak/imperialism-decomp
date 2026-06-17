@@ -15,12 +15,10 @@ public:
 
   TShipyardCluster();
   CRuntimeClass* GetRuntimeClass() const override;
-  // Destructor is compiler-generated (implicit virtual dtor from TUberCluster).
 
+  void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
+  void NoOpUiLifecycleHook(int styleSeed) override;
   virtual void ApplyMoveValue(int value) override;
-
-  void SelectTradeSpecialCommodityAndInitializeControls();
-  void HandleTradeMoveArrowControlEvent(int commandId, TAmtBar* sourceControl, int eventExtra);
 };
 
 ASSERT_SIZE(TShipyardCluster, 0x90);

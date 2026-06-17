@@ -68,7 +68,8 @@ void TUberCluster::SetTradeBidControlBitmap() {}
 void TUberCluster::SetTradeOfferControlBitmap() {}
 void TUberCluster::SetTradeOfferSecondaryBitmap() {}
 
-// FUNCTION: IMPERIALISM 0x00586d60
+// Helper shared by TAmtBarCluster::NoOpUiLifecycleHook (0x586d60); the original address
+// is owned by that vtable-slot override, so this body is not separately address-marked.
 void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   TAmtBar* moveControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagMove));
   unsigned int styleDescriptor = styleSeed & 0xffff0000U;
@@ -87,7 +88,8 @@ void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(0);
 }
 
-// FUNCTION: IMPERIALISM 0x00586e70
+// Helper shared by TAmtBarCluster::HandleEvent (0x586e70); the original address is owned
+// by that vtable-slot override, so this body is not separately address-marked.
 void TUberCluster::HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra) {
   // ORIG_CALLCONV: __thiscall
   int normalizedCommand = commandId - 100;
