@@ -1,2 +1,4 @@
 class|offset|field_type|field_name|note
 TGreatPower|0x894|TCity|city|Nation's TCity (pointer). Evidence: 26/26 GetCityBuildingProductionValueBySlot callsites resolve to g_apNationStates[i]+0x894 passed as the TCity this; offset fits TGreatPower (0x964) but not TMinor (0x2dc), so it is a great-power-only field.
+TBuildingConstructionView|0x90|TCity|pCity|The city this construction dialog operates on. Evidence: OpenCityViewBuildingOrderDialog writes `*(TCity **)&this->field_0x90 = pCityState` then passes it to TCity::GetCityBuildingProductionValueBySlot; 3/3 resolver callsites agree; offset fits size 0x9c.
+TIndustryView|0x94|TCity|pCity|The city this industry view reflects. Evidence: OrphanRetStub_004c6fd0 calls TCity::GetCityBuildingProductionValueBySlot(*(TCity **)&this->field_0x94, ...); offset fits size 0xa8.

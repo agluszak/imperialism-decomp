@@ -1,3 +1,14 @@
 namespace|reason
 TRuntimeLinkedBlockChainState_0063E880|Not a class. 0x0063e880 is the CObject vtable (CObjectVtbl_0063e880). The members are destructors of several different CObject-derived classes that merely reset this->vptr to CObject during teardown (*(this)=0x63e880); early manual decompilation mistook the shared vtable write for one class.
 TRuntimeLinkedBlockChainState_0066FA50|Not a class. 0x0066fa50 is a shared secondary base/interface vtable (TNetMgr second interface). The ctor/dtor here construct/destruct that base subobject (*(this)=0x66fa50), not a distinct top-level class.
+TLinkedBlockChainState_00650A50|Not a class. Same pattern as TRuntimeLinkedBlockChainState_0063E880: two destructors of different classes grouped by a shared 0x650a50 vtable-write address. Members: DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40, ...At004c6ad0.
+TRuntimeHeapBufferOwnerState_0066FA68|Not a class. 0x0066fa68 is a shared heap-buffer-owner base vtable; members are ctor/dtor of that base subobject for different owners.
+TCViewOwnedBufferChainState_00648578|Not a class. 0x00648578 is a shared CView-owned-buffer base vtable; members are destructors of different owner classes.
+TCViewOwnedBufferRegistryState_00648560|Not a class. The real owner writes vtable 0x00648418 (not 0x648560); members are ctor/dtor + helper methods of a CView buffer-registry owner, mis-attributed to the shared 0x648560 address.
+TModuleLibraryCacheTableStateA_0064BA68|Not a class. 0x0064ba68 is CObjectVtbl_0064ba68; single member is a destructor that resets this->vptr to CObject.
+TModuleLibraryCacheTableStateB_0064BA80|Not a class. 0x0064ba80 is a shared base vtable; members are ctor/dtor/loader of a module-library cache dual-table owner.
+TCommandLineParseContextState_0066FEA4|Not a class. 0x0066fea4 is CObjectVtbl_0066fea4; members (CCommandLineInfo ctor + DestructCommandLineParseContext) are MFC command-line parse context helpers grouped by the shared CObject vtable address.
+TApplicationUiRootControllerState_00648CA8|Not a class. 0x00648ca8 is a shared CWinApp-derived base vtable; members are ctor/dtor/factory of the application UI root controller.
+TCityDialogModalState_00649A50|Not a class. Single member (CopyCityDialogStateFromSourceAndCloneChildLinks) grouped by the shared 0x649a50 address; real owner to be recovered separately.
+TTurnEventDialogFactoryRegistryState_0064B328|Not a class. The real owner writes vtable 0x0064b2e8 (not 0x64b328); members are ctor/dtor of a turn-event dialog factory registry owner mis-attributed to 0x64b328.
+

@@ -18,28 +18,33 @@ Mechanisms already in place that several of these items reuse:
 ## Tier 1 — high value, low risk, mechanism exists
 
 ### 1a. Type the recovered singleton globals
-The `typed-recovered-globals` rule already calls these out and they are still raw:
+The `typed-recovered-globals` rule already calls these out. As of the Tier-1
+pass they are recorded in `config/recovered_globals.csv` and applied by
+`apply_mfc_rtti.py` (optional `object_size` column seeds a minimal struct when
+the class namespace exists but RTTI did not emit one, e.g. `Config`):
 
-| global | current type |
+| global | typed as |
 | --- | --- |
-| `g_pGameFlowState` | `void *` |
-| `g_pNationInteractionStateManager` | `void *` |
-| `g_pCityOrderCapabilityState` | `void *` |
-| `g_pDiplomacyTurnStateManager` | `undefined4` |
-| `g_pGlobalMapState` | `undefined4` |
-| `g_pNavyOrderManager` | `undefined4` |
-| `g_pSelectedCivilianOrderState` | `undefined4` |
+| `g_apNationStates` | `TGreatPower *[7]` |
+| `g_pGameFlowState` | `Config *` |
+| `g_pNationInteractionStateManager` | `TTradeMgr *` |
+| `g_pDiplomacyTurnStateManager` | `TDiplomacyMgr *` |
+| `g_pGlobalMapState` | `TMapMgr *` (manual port: `TGlobalMapState`) |
+| `g_pCityOrderCapabilityState` | `TTechMgr *` |
+| `g_pSelectedCivilianOrderState` | `CivilianMapInteractionManager *` (manual: `TSelectedCivilianOrderState`) |
+| `g_pNavyOrderManager` | `TNavyMgr *` |
 
-For each whose owning class is recovered, add a `recovered_globals.csv` row with
-`count=1` (single typed pointer). Likely dozens more `g_p*` singletons exist
-beyond these seven. Cascades type resolution exactly like `g_apNationStates` did.
+**Next:** scan for more `g_p*` / `g_ap*` singletons and tables (e.g.
+`g_pInterNationEventQueueManager`, `g_pSfxPlaybackSystem`, `g_apTerrainTypeDescriptorTable`)
+using the same writer-evidence recipe.
 
 ### 1b. Grow `recovered_fields.csv`
-It currently has one row (`TGreatPower+0x894 → TCity*`). Every `field_0x...` in a
-hot struct (`TCity`, `TGreatPower`, `TControl`, the view/dialog classes) is a
-candidate. Use the resolver's consistent `(class, offset) → type` evidence; gate
-on unanimity + offset-fits-object-size; never overwrite an already-typed field.
-Each row turns `*(int *)(&this->field_0xe4 + ...)` into a named, typed member.
+Started with `TGreatPower+0x894 → TCity* (city)`; extended with view classes that
+pass a `TCity*` into `GetCityBuildingProductionValueBySlot`
+(`TBuildingConstructionView+0x90`, `TIndustryView+0x94`). Keep adding rows for
+every `field_0x...` in hot structs (`TCity`, `TGreatPower`, `TControl`, view/dialog
+classes) using unanimous resolver evidence + offset-fits-object-size gating; never
+overwrite an already-typed field.
 
 ## Tier 2 — bounded cleanup, same family as the dissolve work
 

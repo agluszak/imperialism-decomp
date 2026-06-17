@@ -84,6 +84,10 @@ RECOVERED_FIELDS_PATH = REPO_ROOT / "config" / "recovered_fields.csv"
 # vptr to a shared base/interface vtable address). Listed here so they are dissolved
 # back into Global deterministically. "|"-delimited (namespace|reason).
 DISSOLVE_NAMESPACES_PATH = REPO_ROOT / "config" / "dissolve_namespaces.csv"
+# Evidence-curated calling-convention overrides. Ghidra mislabels __fastcall/
+# __cdecl on a regular basis; this table forces a corrected convention per
+# address. "|"-delimited (address|calling_convention|note).
+CALLING_CONVENTION_OVERRIDES_PATH = REPO_ROOT / "config" / "calling_convention_overrides.csv"
 MFC_LIBRARY_CLASS_NAMES = frozenset(MFC_MODELS)
 
 
@@ -406,6 +410,7 @@ def run(program, args) -> dict:
         "curated_fields_typed": 0,
         "pseudo_classes_dissolved": 0,
         "pseudo_class_members_moved": 0,
+        "calling_conventions_fixed": 0,
     }
     changes: list[str] = []
     # collected per class for the struct-building pass
@@ -1179,6 +1184,24 @@ def run(program, args) -> dict:
         def root_class_dt(name: str):
             return dtm.getDataType(CategoryPath.ROOT, name)
 
+        def ensure_root_class_dt_for_curated(cls: str, object_size: int | None = None):
+            """Return a root struct for pointer typing. RTTI may not have built one
+            (e.g. Config is not DYNCREATE) even when the class namespace exists."""
+            existing = root_class_dt(cls)
+            if existing is not None and existing.getLength() > 1:
+                return existing
+            if st.getNamespace(cls, None) is None:
+                return existing
+            size = object_size or (existing.getLength() if existing is not None else 4)
+            if size < 4:
+                size = 4
+            vptr = PointerDataType()
+            s = build_class_struct(CategoryPath.ROOT, cls, None, vptr, size)
+            dt, _replaced = replace_or_add_datatype(CategoryPath.ROOT, cls, s)
+            if args.verbose:
+                changes.append(f"  curated ensure struct {cls} (size=0x{size:x}) for pointer typing")
+            return dt
+
         def read_pipe_csv(path):
             if not path.exists():
                 return []
@@ -1190,15 +1213,17 @@ def run(program, args) -> dict:
             addr_s = (row.get("address") or "").strip()
             elem = (row.get("element_type") or "").strip()
             count_s = (row.get("count") or "1").strip()
+            size_s = (row.get("object_size") or "").strip()
             if not addr_s or not elem:
                 continue
             try:
                 addr = int(addr_s, 16)
                 count = max(1, int(count_s))
+                object_size = int(size_s, 16) if size_s else None
             except ValueError:
-                changes.append(f"  !! curated global {name}: bad address/count")
+                changes.append(f"  !! curated global {name}: bad address/count/size")
                 continue
-            elem_dt = root_class_dt(elem)
+            elem_dt = ensure_root_class_dt_for_curated(elem, object_size)
             if elem_dt is None:
                 changes.append(f"  !! curated global {name}@{addr_s}: type {elem} not found")
                 continue
@@ -1284,6 +1309,48 @@ def run(program, args) -> dict:
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! dissolve {nsname}: delete namespace failed: {exc}")
 
+        # Apply evidence-curated calling-convention overrides (Ghidra mislabels
+        # __fastcall/__cdecl regularly; these are verified by `just scan-cdecl-thiscall`).
+        for row in read_pipe_csv(CALLING_CONVENTION_OVERRIDES_PATH):
+            addr_s = (row.get("address") or "").strip()
+            target_cc = (row.get("calling_convention") or "").strip()
+            if not addr_s or not target_cc:
+                continue
+            try:
+                addr = int(addr_s, 16)
+            except ValueError:
+                changes.append(f"  !! cc-override {addr_s}: bad address")
+                continue
+            fn = fm.getFunctionAt(A(addr))
+            if fn is None:
+                if args.verbose:
+                    changes.append(f"  !! cc-override 0x{addr:08x}: no function")
+                continue
+            if fn.getCallingConventionName() == target_cc:
+                continue
+            try:
+                params = ArrayList()
+                for param in fn.getParameters():
+                    try:
+                        if param.isAutoParameter():
+                            continue
+                    except Exception:  # noqa: BLE001
+                        pass
+                    params.add(ParameterImpl(param.getName(), param.getDataType(), program))
+                fn.updateFunction(
+                    target_cc,
+                    ReturnParameterImpl(fn.getReturnType(), program),
+                    params,
+                    FunctionUpdateType.DYNAMIC_STORAGE_ALL_PARAMS,
+                    True,
+                    SourceType.USER_DEFINED,
+                )
+                stats["calling_conventions_fixed"] += 1
+                if args.verbose:
+                    changes.append(f"  cc-override 0x{addr:08x} -> {target_cc}")
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! cc-override 0x{addr:08x} failed: {exc}")
+
         remove_stale_class_duplicates()
 
     return {"stats": stats, "changes": changes}
@@ -1338,7 +1405,8 @@ def main() -> int:
             f"          curated_globals_typed={s['curated_globals_typed']} "
             f"curated_fields_typed={s['curated_fields_typed']}\n"
             f"          pseudo_classes_dissolved={s['pseudo_classes_dissolved']} "
-            f"pseudo_class_members_moved={s['pseudo_class_members_moved']}"
+            f"pseudo_class_members_moved={s['pseudo_class_members_moved']}\n"
+            f"          calling_conventions_fixed={s['calling_conventions_fixed']}"
         )
         if not args.apply:
             print("Re-run with --apply to write these changes to the Ghidra DB.")
