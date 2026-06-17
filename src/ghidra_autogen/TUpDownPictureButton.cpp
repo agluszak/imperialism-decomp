@@ -4,41 +4,107 @@
 // Bucket: TUpDownPictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571580
-// GHIDRA_NAME TUpDownPictureButton::GetTUpDownPictureButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTUpDownPictureButtonClassNamePointer()
+// GHIDRA_NAME TUpDownPictureButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TUpDownPictureButton::GetTUpDownPictureButtonClassNamePointer(void)
+CRuntimeClass * __thiscall
+TUpDownPictureButton::GetTEventHandlerClassNamePointer(TUpDownPictureButton *this)
 
 {
-  return &PTR_s_TUpDownPictureButton_0065e5c8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005715A0
 // GHIDRA_NAME TUpDownPictureButton::ConstructPictureScreenResourceEntry
-// GHIDRA_PROTO undefined ConstructPictureScreenResourceEntry()
+// GHIDRA_PROTO undefined __thiscall ConstructPictureScreenResourceEntry(void)
 
-undefined4 * __fastcall
-TUpDownPictureButton::ConstructPictureScreenResourceEntry(undefined4 *param_1)
+TUpDownPictureButton * __thiscall
+TUpDownPictureButton::ConstructPictureScreenResourceEntry(TUpDownPictureButton *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_0065f440;
-  *(undefined2 *)((int)param_1 + 0x92) = 7000;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TUpDownPictureButtonVtbl_0065f440;
+  *(undefined2 *)&this->field_0x92 = 7000;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005715D0
-// GHIDRA_NAME TUpDownPictureButton::DestructTUpDownPictureButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTUpDownPictureButtonAndMaybeFree()
+// GHIDRA_NAME TUpDownPictureButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TUpDownPictureButton::DestructTUpDownPictureButtonAndMaybeFree(undefined4 param_1,byte param_2)
+TUpDownPictureButton * __thiscall
+TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571620
+// GHIDRA_NAME TUpDownPictureButton::SetPressedStateAdjustPictureBitmapByOne
+// GHIDRA_PROTO undefined __thiscall SetPressedStateAdjustPictureBitmapByOne(void)
+
+void __thiscall
+TUpDownPictureButton::SetPressedStateAdjustPictureBitmapByOne(TUpDownPictureButton *this)
+
+{
+  TUpDownPictureButtonVtbl *pTVar1;
+  undefined4 in_EAX;
+  undefined4 uVar2;
+  char unaff_retaddr;
+  char in_stack_00000004;
+  
+  if (in_stack_00000004 != this->field_0x64) {
+    pTVar1 = this->vftable;
+    this->field_0x64 = in_stack_00000004;
+    if (in_stack_00000004 == '\0') {
+      uVar2 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x84 + -1);
+    }
+    else {
+      uVar2 = CONCAT22((short)((uint)in_EAX >> 0x10),*(short *)&this->field_0x84 + 1);
+    }
+    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(uVar2,1);
+    if (unaff_retaddr != '\0') {
+      (*pTVar1[0x39].slot_0x04)();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571690
+// GHIDRA_NAME TUpDownPictureButton::OrphanCallChain_C1_I05_00571690
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00571690(void)
+
+void __thiscall TUpDownPictureButton::OrphanCallChain_C1_I05_00571690(TUpDownPictureButton *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  
+  uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+                    /* WARNING: Could not recover jumptable at 0x00571699. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x13c))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005716B0
+// GHIDRA_NAME TUpDownPictureButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TUpDownPictureButton::_scalar_deleting_destructor_(TUpDownPictureButton *this)
+
+{
+  undefined4 in_EDX;
+  
+  (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
+            (CONCAT22((short)((uint)in_EDX >> 0x10),*(undefined2 *)&this->field_0x92),0,1);
+  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+  return;
 }
 

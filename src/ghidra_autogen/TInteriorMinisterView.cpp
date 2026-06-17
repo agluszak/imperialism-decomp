@@ -3,118 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TInteriorMinisterView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004F3370
-// GHIDRA_NAME TInteriorMinisterView::DispatchEngineerDialogCommandTagsByEventCode
-// GHIDRA_PROTO undefined DispatchEngineerDialogCommandTagsByEventCode()
-
-void __thiscall
-TInteriorMinisterView::DispatchEngineerDialogCommandTagsByEventCode
-          (int *param_1,int param_2,int param_3,undefined4 param_4)
-
-{
-  int iVar1;
-  char cVar2;
-  short sVar3;
-  int unaff_ESI;
-  int *unaff_FS_OFFSET;
-  undefined1 auStack_30 [4];
-  undefined *puStack_2c;
-  undefined4 uStack_28;
-  undefined4 uStack_24;
-  int iStack_20;
-  int iStack_1c;
-  undefined4 *puStack_18;
-  int local_c;
-  undefined1 *puStack_8;
-  undefined1 *local_4;
-  
-  local_c = *unaff_FS_OFFSET;
-  local_4 = (undefined1 *)0xffffffff;
-  puStack_8 = &LAB_00632a68;
-  *unaff_FS_OFFSET = (int)&local_c;
-  iVar1 = *(int *)(param_3 + 0x1c);
-  if (param_2 == 0x14) {
-    if (iVar1 == 0x63616e6e) {
-      puStack_18 = (undefined4 *)0x4f3488;
-      sVar3 = UiRuntimeContext::GetActiveNationId();
-      puStack_18 = (undefined4 *)(int)sVar3;
-      iStack_1c = 0x4f3497;
-      cVar2 = ScanMapContextActionEntriesForCodeMatch();
-      if (cVar2 == '\0') {
-        puStack_18 = (undefined4 *)0x4f34a4;
-        InitializeSharedStringRefFromEmpty(&param_4);
-        puStack_18 = &param_4;
-        iStack_1c = 0x12;
-        iStack_20 = 0x273d;
-        local_4 = (undefined1 *)0x0;
-        uStack_24 = 0x4f34c6;
-        (**(code **)(*g_pLocalizationTable + 0x84))();
-        uStack_24 = 0;
-        uStack_28 = 1;
-        puStack_2c = &DAT_006a2fc0;
-        local_4 = auStack_30;
-        thunk_AssignStringSharedRefAndReturnThis(&stack0x00000000);
-        thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-        uStack_24 = 0x4f34fc;
-        ReleaseSharedStringRefIfNotEmpty(&stack0x00000000);
-        *unaff_FS_OFFSET = (int)puStack_18;
-        return;
-      }
-      if ((char)g_pLocalizationTable[5] == '\0') {
-        puStack_18 = (undefined4 *)0x4f3522;
-        puStack_18 = (undefined4 *)(**(code **)(*param_1 + 0x58))();
-        iStack_1c = 0x4f3531;
-        (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))();
-        iStack_1c = 0x65;
-        iStack_20 = 0x4f353e;
-        (**(code **)(*g_pLocalizationTable + 0x48))();
-      }
-    }
-    else if (iVar1 == 0x72656363) {
-      puStack_18 = (undefined4 *)0x258a;
-      iStack_1c = 0x4f346a;
-      (**(code **)(*param_1 + 0x1a8))();
-      *unaff_FS_OFFSET = unaff_ESI;
-      return;
-    }
-    *unaff_FS_OFFSET = local_c;
-    return;
-  }
-  if (param_2 != 10) {
-    puStack_18 = (undefined4 *)param_4;
-    iStack_1c = param_3;
-    iStack_20 = param_2;
-    uStack_24 = 0x4f3434;
-    thunk_ForwardEngineerDialogCommandToChildSlot40();
-    *unaff_FS_OFFSET = local_c;
-    return;
-  }
-  if (iVar1 == 0x6261636b) {
-    puStack_18 = (undefined4 *)0x4f3413;
-    (**(code **)(*param_1 + 0x1ac))();
-    *unaff_FS_OFFSET = local_c;
-    return;
-  }
-  if (iVar1 != 0x6f6b6179) {
-    puStack_18 = (undefined4 *)param_4;
-    iStack_1c = param_3;
-    iStack_20 = 10;
-    uStack_24 = 0x4f33c5;
-    thunk_ForwardEngineerDialogCommandToChildSlot40();
-    *unaff_FS_OFFSET = local_c;
-    return;
-  }
-  iVar1 = *param_1;
-  puStack_18 = (undefined4 *)0x4f33e2;
-  (**(code **)(iVar1 + 0x1ac))();
-  puStack_18 = (undefined4 *)0x4f33e7;
-  puStack_18 = (undefined4 *)(**(code **)(iVar1 + 0x58))();
-  iStack_1c = 0x4f33f6;
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))();
-  *unaff_FS_OFFSET = unaff_ESI;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004F35E0
 // GHIDRA_NAME TInteriorMinisterView::CreateTInteriorMinisterViewInstance
 // GHIDRA_PROTO undefined CreateTInteriorMinisterViewInstance()
@@ -136,8 +24,8 @@ TView * TInteriorMinisterView::CreateTInteriorMinisterViewInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this[1].vftable = (void *)0x0;
-    this->vftable = &PTR_LAB_00655720;
+    this[1].vftable = (TViewVtbl *)0x0;
+    this->vftable = (TViewVtbl *)&TInteriorMinisterViewVtbl_00655720;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -146,89 +34,96 @@ TView * TInteriorMinisterView::CreateTInteriorMinisterViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3670
-// GHIDRA_NAME TInteriorMinisterView::GetTInteriorMinisterViewClassNamePointer
-// GHIDRA_PROTO undefined GetTInteriorMinisterViewClassNamePointer()
+// GHIDRA_NAME TInteriorMinisterView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TInteriorMinisterView::GetTInteriorMinisterViewClassNamePointer(void)
+CRuntimeClass * __thiscall
+TInteriorMinisterView::GetTEventHandlerClassNamePointer(TInteriorMinisterView *this)
 
 {
-  return &PTR_s_TInteriorMinisterView_00654f18;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3690
 // GHIDRA_NAME TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState
-// GHIDRA_PROTO undefined ConstructTInteriorMinisterViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTInteriorMinisterViewBaseState(void)
 
-TView * __fastcall TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(TView *param_1)
+TInteriorMinisterView * __thiscall
+TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState(TInteriorMinisterView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1[1].vftable = (void *)0x0;
-  param_1->vftable = &PTR_LAB_00655720;
-  return param_1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  *(undefined4 *)&this->field_0x60 = 0;
+  this->vftable = &TInteriorMinisterViewVtbl_00655720;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F36C0
-// GHIDRA_NAME TInteriorMinisterView::DestructTInteriorMinisterViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTInteriorMinisterViewAndMaybeFree()
+// GHIDRA_NAME TInteriorMinisterView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall
-TInteriorMinisterView::DestructTInteriorMinisterViewAndMaybeFree(TView *param_1,byte param_2)
+TInteriorMinisterView * __thiscall
+TInteriorMinisterView::_scalar_deleting_destructor_(TInteriorMinisterView *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3710
-// GHIDRA_NAME TInteriorMinisterView::HandleDialogEvent14TranTreaAndEvent10BackOkay
-// GHIDRA_PROTO undefined HandleDialogEvent14TranTreaAndEvent10BackOkay()
+// GHIDRA_NAME TInteriorMinisterView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
-void __thiscall
-TInteriorMinisterView::HandleDialogEvent14TranTreaAndEvent10BackOkay
-          (int *param_1,int param_2,int param_3,undefined4 param_4)
+void __thiscall TInteriorMinisterView::OrphanRetStub_0059add0(TInteriorMinisterView *this)
 
 {
   int iVar1;
-  undefined4 uVar2;
+  TInteriorMinisterViewVtbl *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int in_stack_00000004;
+  int in_stack_00000008;
   
-  iVar1 = *(int *)(param_3 + 0x1c);
-  if (param_2 == 0x14) {
+  iVar1 = *(int *)(in_stack_00000008 + 0x1c);
+  if (in_stack_00000004 == 0x14) {
     if (iVar1 == 0x72656363) {
-      (**(code **)(*param_1 + 0x1a8))(0x25ee);
+      (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x25ee);
     }
     else if (iVar1 == 0x7472616e) {
-      if (*(char *)(g_pLocalizationTable + 0x14) == '\0') {
-        uVar2 = (**(code **)(*param_1 + 0x58))();
-        (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar2);
+      if (g_pLocalizationTable->field_0x14 == '\0') {
+        uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        (*g_pGlobalUiRootController->vftable[0x16].slot_0x04)(CONCAT31(extraout_var_00,uVar3));
         return;
       }
     }
     else if (iVar1 == 0x74726561) {
-      (**(code **)(*param_1 + 0x1a8))(0x25f8);
+      (*this->vftable[0x35].GetTEventHandlerClassNamePointer)(0x25f8);
       return;
     }
     return;
   }
-  if (param_2 != 10) {
-    thunk_ForwardEngineerDialogCommandToChildSlot40(param_2,param_3,param_4);
+  if (in_stack_00000004 != 10) {
+    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
     return;
   }
   if (iVar1 == 0x6261636b) {
-    (**(code **)(*param_1 + 0x1ac))();
+    (*this->vftable[0x35].slot_0x04)();
     return;
   }
   if (iVar1 != 0x6f6b6179) {
-    thunk_ForwardEngineerDialogCommandToChildSlot40(10,param_3,param_4);
+    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
     return;
   }
-  iVar1 = *param_1;
-  (**(code **)(iVar1 + 0x1ac))();
-  uVar2 = (**(code **)(iVar1 + 0x58))();
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0xb4))(uVar2);
+  pTVar2 = this->vftable;
+  (*pTVar2[0x35].slot_0x04)();
+  uVar3 = (*pTVar2[0xb].GetTEventHandlerClassNamePointer)();
+  (*g_pGlobalUiRootController->vftable[0x16].slot_0x04)(CONCAT31(extraout_var,uVar3));
   return;
 }
 

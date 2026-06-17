@@ -3,70 +3,88 @@
 // Program: Imperialism.exe
 // Bucket: TCivAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049F4B0
-// GHIDRA_NAME TCivAnimation::CreateTCivAnimationInstance
-// GHIDRA_PROTO undefined CreateTCivAnimationInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F480
+// GHIDRA_NAME TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f480(void)
 
-void __fastcall TCivAnimation::CreateTCivAnimationInstance(undefined4 *param_1)
+TCivAnimation * __thiscall
+TCivAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f480(TCivAnimation *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  byte in_stack_00000004;
+  
+  CreateTCivAnimationInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F4B0
+// GHIDRA_NAME TCivAnimation::CreateTCivAnimationInstance
+// GHIDRA_PROTO undefined __thiscall CreateTCivAnimationInstance(void)
+
+void __thiscall TCivAnimation::CreateTCivAnimationInstance(TCivAnimation *this)
+
+{
+  this->vftable = (TCivAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F4D0
-// GHIDRA_NAME TCivAnimation::GetTCivAnimationClassNamePointer
-// GHIDRA_PROTO undefined GetTCivAnimationClassNamePointer()
+// GHIDRA_NAME TCivAnimation::GetTAnimationClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-undefined ** TCivAnimation::GetTCivAnimationClassNamePointer(void)
+CRuntimeClass * __thiscall TCivAnimation::GetTAnimationClassNamePointer(TCivAnimation *this)
 
 {
-  return &PTR_s_TCivAnimation_0064c208;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F580
 // GHIDRA_NAME TCivAnimation::ConstructTCivAnimationBaseState
-// GHIDRA_PROTO undefined ConstructTCivAnimationBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTCivAnimationBaseState(void)
 
-void __fastcall TCivAnimation::ConstructTCivAnimationBaseState(int param_1)
+void __thiscall TCivAnimation::ConstructTCivAnimationBaseState(TCivAnimation *this)
 
 {
   ushort uVar1;
   int iVar2;
   
-  iVar2 = *(int *)(param_1 + 0x10) + 1;
-  *(int *)(param_1 + 0x10) = iVar2;
-  if (iVar2 != *(int *)(param_1 + 0x14)) {
+  iVar2 = *(int *)&this->field_0x10 + 1;
+  *(int *)&this->field_0x10 = iVar2;
+  if (iVar2 != *(int *)&this->field_0x14) {
     return;
   }
-  thunk_InvalidateCityDialogRectRegion(param_1 + 0x1c,1);
-  *(short *)(param_1 + 8) = *(short *)(param_1 + 8) + 1;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  if (*(short *)(param_1 + 8) != *(short *)(param_1 + 10)) {
-    if (*(short *)(param_1 + 8) != *(short *)(param_1 + 0x2c)) {
+  thunk_InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+  *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
+  *(undefined4 *)&this->field_0x10 = 0;
+  if (*(short *)&this->field_0x8 != *(short *)&this->field_0xa) {
+    if (*(short *)&this->field_0x8 != *(short *)&this->field_0x2c) {
       return;
     }
     uVar1 = GenerateThreadLocalRandom15();
-    if (*(short *)(param_1 + 0x2e) <= (short)(uVar1 & 0xf)) {
+    if (*(short *)&this->field_0x2e <= (short)(uVar1 & 0xf)) {
       return;
     }
   }
-  *(undefined2 *)(param_1 + 8) = 0;
+  *(undefined2 *)&this->field_0x8 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F630
 // GHIDRA_NAME TCivAnimation::DestructTCivAnimationAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCivAnimationAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTCivAnimationAndMaybeFree(void)
 
-undefined4 __thiscall
-TCivAnimation::DestructTCivAnimationAndMaybeFree(undefined4 param_1,byte param_2)
+TCivAnimation * __thiscall TCivAnimation::DestructTCivAnimationAndMaybeFree(TCivAnimation *this)
 
 {
-  TCivAnimation2::CreateTCivAnimation2Instance();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TCivAnimation2::CreateTCivAnimation2Instance((TCivAnimation2 *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 

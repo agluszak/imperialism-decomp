@@ -7,10 +7,10 @@
 // GHIDRA_NAME TUniversityView::CreateTUniversityViewInstance
 // GHIDRA_PROTO undefined CreateTUniversityViewInstance()
 
-undefined4 * TUniversityView::CreateTUniversityViewInstance(void)
+TNoHilitePicture * TUniversityView::CreateTUniversityViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,144 +20,691 @@ undefined4 * TUniversityView::CreateTUniversityViewInstance(void)
   puStack_8 = &LAB_006317ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x25] = 0;
-    *puVar1 = &PTR_LAB_00651fc0;
-    puVar1[0x26] = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this[1].vftable = (TNoHilitePictureVtbl *)0x0;
+    this->vftable = (TNoHilitePictureVtbl *)&TUniversityViewVtbl_00651fc0;
+    this[1].field04 = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TNoHilitePicture *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC40
-// GHIDRA_NAME TUniversityView::GetTUniversityViewClassNamePointer
-// GHIDRA_PROTO undefined GetTUniversityViewClassNamePointer()
+// GHIDRA_NAME TUniversityView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TUniversityView::GetTUniversityViewClassNamePointer(void)
+CRuntimeClass * __thiscall TUniversityView::GetTEventHandlerClassNamePointer(TUniversityView *this)
 
 {
-  return &PTR_s_TUniversityView_006512c0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC60
 // GHIDRA_NAME TUniversityView::ConstructTUniversityViewBaseState
-// GHIDRA_PROTO undefined ConstructTUniversityViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTUniversityViewBaseState(void)
 
-undefined4 * __fastcall TUniversityView::ConstructTUniversityViewBaseState(undefined4 *param_1)
+TUniversityView * __thiscall
+TUniversityView::ConstructTUniversityViewBaseState(TUniversityView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-  *param_1 = &PTR_LAB_00651fc0;
-  param_1[0x25] = 0;
-  param_1[0x26] = 0;
-  return param_1;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  this->vftable = &TUniversityViewVtbl_00651fc0;
+  *(undefined4 *)&this->field_0x94 = 0;
+  *(undefined4 *)&this->field_0x98 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CAC90
-// GHIDRA_NAME TUniversityView::DestructTUniversityViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTUniversityViewAndMaybeFree()
+// GHIDRA_NAME TUniversityView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TUniversityView::DestructTUniversityViewAndMaybeFree(undefined4 param_1,byte param_2)
+TUniversityView * __thiscall TUniversityView::_scalar_deleting_destructor_(TUniversityView *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CACE0
+// GHIDRA_NAME TUniversityView::OrphanRetStub_004c6fd0
+// GHIDRA_PROTO void __thiscall OrphanRetStub_004c6fd0(int * pCityViewDialog)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Refreshes base University recruitment dialog controls and default selection state.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Bind render/context pointer from global UI runtime into dialog state.
+// GHIDRA_COMMENT 2. Iterate recruitment row tags (clu0..clu8), skipping unavailable reserved rows.
+// GHIDRA_COMMENT 3. For each visible row, load current count/cost values from city recruitment entries.
+// GHIDRA_COMMENT 4. Populate title/description text rows and requirement labels (paper/expansion fields).
+// GHIDRA_COMMENT 5. Reset selection to civ0 and clear pending selection pointer.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCityViewDialog: University city-view dialog instance.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - Rows 6 and 7 are skipped in this pass (gated/alternate rows handled elsewhere).
+// GHIDRA_COMMENT_END
+
+/* Refreshes base University recruitment dialog controls and default selection state.
+   Algorithm:
+   1. Bind render/context pointer from global UI runtime into dialog state.
+   2. Iterate recruitment row tags (clu0..clu8), skipping unavailable reserved rows.
+   3. For each visible row, load current count/cost values from city recruitment entries.
+   4. Populate title/description text rows and requirement labels (paper/expansion fields).
+   5. Reset selection to civ0 and clear pending selection pointer.
+   Parameters:
+   - pCityViewDialog: University city-view dialog instance.
+   Returns:
+   - void.
+   Special Cases:
+   - Rows 6 and 7 are skipped in this pass (gated/alternate rows handled elsewhere). */
+
+void __thiscall TUniversityView::OrphanRetStub_004c6fd0(TUniversityView *this,int *pCityViewDialog)
+
+{
+  TUniversityView_slot_0x04_0x04 *pTVar1;
+  undefined uVar2;
+  short nMappedRecruitIndex;
+  short nRecruitRowIndex;
+  undefined3 extraout_var;
+  int *piVar3;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  undefined3 extraout_var_07;
+  undefined3 extraout_var_08;
+  undefined3 extraout_var_09;
+  undefined3 extraout_var_10;
+  undefined3 extraout_var_11;
+  code *unaff_EBP;
+  undefined1 *puVar4;
+  undefined4 uStack_7c;
+  code *pcStack_78;
+  int iStack_74;
+  code *pcStack_70;
+  undefined1 *puStack_6c;
+  int iStack_68;
+  int nRecruitControlTag;
+  char nCapabilityRecruitIndex;
+  int pControlObject;
+  int pControlResource;
+  code *pGetControlByTag;
+  int pRecruitOrderEntry;
+  
+  *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
+  thunk_BuildUiTextStyleDescriptor();
+  nRecruitRowIndex = 0;
+  nRecruitControlTag = 0x636c7530;
+  do {
+                    /* Main recruitment-row pass over control tags clu0..clu8. */
+    if ((nRecruitRowIndex != 7) && (nRecruitRowIndex != 6)) {
+      nMappedRecruitIndex = UiRuntimeContext::GetActiveNationId();
+      nCapabilityRecruitIndex =
+           *(char *)((int)g_pCityOrderCapabilityState +
+                    nRecruitControlTag + -0x636c70c9 + nMappedRecruitIndex * 9);
+      uVar2 = (*this->vftable[0x12].slot_0x04)();
+      if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
+        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      }
+      pControlResource = *(int *)CONCAT31(extraout_var,uVar2);
+      nMappedRecruitIndex = (short)nCapabilityRecruitIndex;
+      (**(code **)(pControlResource + 0xa4))();
+      nCapabilityRecruitIndex = '\0';
+      (**(code **)(pControlResource + 0xa8))();
+      piVar3 = (int *)(*unaff_EBP)();
+      if (piVar3 == (int *)0x0) {
+        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      }
+      pControlResource = *piVar3;
+      (**(code **)(pControlResource + 0xa4))();
+      if (nCapabilityRecruitIndex == '\0') {
+        pGetControlByTag = *(code **)(pControlResource + 0x94);
+        piVar3 = (int *)(*pGetControlByTag)();
+        pControlResource = *piVar3;
+        (**(code **)(pControlResource + 0xc))();
+        (**(code **)(pControlResource + 0xa8))();
+        piVar3 = (int *)(*pGetControlByTag)();
+        pControlResource = *piVar3;
+        (**(code **)(pControlResource + 0xc))();
+        iStack_68 = 0;
+        puStack_6c = (undefined1 *)0x4cae5a;
+        (**(code **)(pControlResource + 0xa8))();
+                    /* Entry missing or unavailable: clear row state and disable count widget. */
+      }
+      else {
+        pRecruitOrderEntry =
+             *(int *)(*(int *)&this->field_0x94 + 0xe4 + (short)(nMappedRecruitIndex + 0x22) * 4);
+        piVar3 = (int *)(**(code **)(pControlResource + 0x94))();
+        if (piVar3 == (int *)0x0) {
+          iStack_68 = 0x4cae99;
+          MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+          thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+        }
+        pControlResource = *piVar3;
+        (**(code **)(pControlResource + 0xa8))();
+        iStack_68 = 0x4caec8;
+        (**(code **)(pControlResource + 0x1b4))();
+        puStack_6c = (undefined1 *)(int)*(short *)(pRecruitOrderEntry + 4);
+        iStack_68 = 1;
+        pcStack_70 = (code *)0x4caed7;
+        (**(code **)(pControlResource + 0x1e4))();
+      }
+    }
+    nRecruitRowIndex = nRecruitRowIndex + 1;
+    nRecruitControlTag = nRecruitControlTag + 1;
+  } while (nRecruitRowIndex < 9);
+  thunk_BuildUiTextStyleDescriptor();
+  pTVar1 = this->vftable[0x12].slot_0x04;
+  uVar2 = (*pTVar1)();
+  pControlResource = *(int *)CONCAT31(extraout_var_00,uVar2);
+  (**(code **)(pControlResource + 0xc))();
+  (**(code **)(pControlResource + 0x1b4))();
+  (**(code **)(pControlResource + 0x1cc))();
+  thunk_BuildUiTextStyleDescriptor();
+  pRecruitOrderEntry = 0x756e6974;
+  uVar2 = (*pTVar1)();
+  pControlResource = *(int *)CONCAT31(extraout_var_01,uVar2);
+  (**(code **)(pControlResource + 0xc))();
+  (**(code **)(pControlResource + 0x1b4))();
+  iStack_68 = 0x4caf91;
+  thunk_BuildUiTextStyleDescriptor();
+  pControlResource = 0;
+  do {
+                    /* Populate two-line title text region for selected category. */
+    uVar2 = (*pTVar1)();
+    pControlObject = *(int *)CONCAT31(extraout_var_02,uVar2);
+    (**(code **)(pControlObject + 0xc))();
+    (**(code **)(pControlObject + 0x1b4))();
+    iStack_68 = pRecruitOrderEntry + 0xb;
+    puStack_6c = (undefined1 *)0x2723;
+    pcStack_70 = (code *)0x4cafdc;
+    (**(code **)(pControlObject + 0x1cc))();
+    pControlResource = pControlResource + 1;
+  } while ((short)pControlResource < 2);
+  iStack_68 = 0x4cb007;
+  thunk_BuildUiTextStyleDescriptor();
+  pRecruitOrderEntry = 0x64657363;
+  uVar2 = (*pTVar1)();
+  pControlResource = *(int *)CONCAT31(extraout_var_03,uVar2);
+  (**(code **)(pControlResource + 0xc))();
+  (**(code **)(pControlResource + 0x1b4))();
+  pControlResource = 0;
+  do {
+                    /* Populate three-line description/help text region. */
+    iStack_68 = 0x4cb044;
+    uVar2 = (*pTVar1)();
+    pControlObject = *(int *)CONCAT31(extraout_var_04,uVar2);
+    iStack_68 = 0x4cb04d;
+    (**(code **)(pControlObject + 0xc))();
+    puStack_6c = &stack0xffffffc0;
+    iStack_68 = 1;
+    pcStack_70 = (code *)0x4cb05c;
+    (**(code **)(pControlObject + 0x1b4))();
+    pcStack_70 = (code *)0x1;
+    iStack_74 = pRecruitOrderEntry + 0xe;
+    pcStack_78 = (code *)0x2723;
+    uStack_7c = 0x4cb073;
+    (**(code **)(pControlObject + 0x1cc))();
+    uStack_7c = 1;
+    (**(code **)(pControlObject + 0xa4))(0);
+    (**(code **)(pControlObject + 0x1c4))(1,0);
+    pControlResource = pControlResource + 1;
+  } while ((short)pControlResource < 3);
+  iStack_68 = 10;
+  pcStack_70 = (code *)&stack0xffffffc4;
+  puStack_6c = (undefined1 *)0x0;
+  iStack_74 = 0x4cb0b6;
+  thunk_BuildUiTextStyleDescriptor();
+  iStack_68 = 0x4cb0c2;
+  uVar2 = (*pTVar1)();
+  pControlResource = *(int *)CONCAT31(extraout_var_05,uVar2);
+  iStack_68 = 0x4cb0cb;
+  (**(code **)(pControlResource + 0xc))();
+  puStack_6c = &stack0xffffffc0;
+  iStack_68 = 1;
+  pcStack_70 = (code *)0x4cb0da;
+  (**(code **)(pControlResource + 0x1b4))();
+  pcStack_70 = (code *)0x74726561;
+  iStack_74 = 0x4cb0e3;
+  uVar2 = (*pTVar1)();
+  pControlResource = *(int *)CONCAT31(extraout_var_06,uVar2);
+  iStack_74 = 0x4cb0ec;
+  (**(code **)(pControlResource + 0xc))();
+  pcStack_78 = (code *)&stack0xffffffb4;
+  iStack_74 = 1;
+  uStack_7c = 0x4cb0fb;
+  (**(code **)(pControlResource + 0x1b4))();
+  uStack_7c = 0x61706170;
+  uVar2 = (*pTVar1)();
+  pControlResource = *(int *)CONCAT31(extraout_var_07,uVar2);
+  (**(code **)(pControlResource + 0xc))();
+  (**(code **)(pControlResource + 0x1b4))(&stack0xffffffa8,1);
+  pGetControlByTag = (code *)0x63706170;
+  uVar2 = (*pTVar1)();
+  (**(code **)(*(int *)CONCAT31(extraout_var_08,uVar2) + 0xc))();
+  puVar4 = &stack0xffffff9c;
+  pcStack_70 = *(code **)(*(int *)CONCAT31(extraout_var_08,uVar2) + 0x1b4);
+  (*pcStack_70)(puVar4,1);
+  uVar2 = (*pTVar1)(0x61657870);
+  (**(code **)(*(int *)CONCAT31(extraout_var_09,uVar2) + 0xc))();
+  (*pcStack_78)(&pcStack_70,1);
+  uVar2 = (*pTVar1)(0x63657870);
+  (**(code **)(*(int *)CONCAT31(extraout_var_10,uVar2) + 0xc))();
+  (*pGetControlByTag)(&uStack_7c,1);
+  *(undefined2 *)&this->field_0xa4 = 0xffff;
+  *(undefined4 *)&this->field_0xa8 = 0;
+  uVar2 = (*pTVar1)(0x73656c65);
+  pControlResource = *(int *)CONCAT31(extraout_var_11,uVar2);
+  (**(code **)(pControlResource + 0xc))();
+  (**(code **)(pControlResource + 0x1c8))(0x63697630);
+  *(undefined2 *)&this->field_0xa4 = 0;
+  (**(code **)(puVar4 + 0x1e4))(0);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CB8A0
-// GHIDRA_NAME TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
-// GHIDRA_PROTO undefined HandleUniversityRecruitmentSelectionAndStepCommand()
+// GHIDRA_NAME TUniversityView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
-void __thiscall
-TUniversityView::HandleUniversityRecruitmentSelectionAndStepCommand
-          (int *param_1,int param_2,int param_3,undefined4 param_4)
+void __thiscall TUniversityView::OrphanRetStub_0059add0(TUniversityView *this)
 
 {
-  int iVar1;
-  code *pcVar2;
-  char cVar3;
-  short sVar4;
-  int *piVar5;
-  int *piVar6;
+  TUniversityViewVtbl *pTVar1;
+  TUniversityView_slot_0x04_0x04 *pTVar2;
+  int iVar3;
+  int *piVar4;
+  undefined uVar5;
+  char cVar6;
+  short sVar7;
+  undefined3 extraout_var;
+  int *piVar8;
+  undefined4 unaff_EDI;
+  int in_stack_00000004;
+  int in_stack_00000008;
   code *pcStack_38;
   RECT RStack_34;
   tagRECT atStack_24 [2];
   int iStack_4;
   
-  if (param_2 == 0xc) {
-    sVar4 = *(short *)(param_3 + 0x1c) + -0x7630;
-    if ((-1 < sVar4) && (sVar4 < 9)) {
-      *(short *)(param_1 + 0x29) = sVar4;
-      (**(code **)(*param_1 + 0x1e4))(sVar4);
+  if (in_stack_00000004 == 0xc) {
+    sVar7 = *(short *)(in_stack_00000008 + 0x1c) + -0x7630;
+    if ((-1 < sVar7) && (sVar7 < 9)) {
+      *(short *)&this->field_0xa4 = sVar7;
+      (*this->vftable[0x3c].slot_0x04)(CONCAT22((short)((uint)in_stack_00000008 >> 0x10),sVar7));
     }
   }
-  else if (param_2 == 10) {
-    sVar4 = *(short *)(*(int *)(param_3 + 0x20) + 0x1c) + -30000;
-    if ((-1 < sVar4) && (sVar4 < 9)) {
-      iVar1 = *param_1;
-      *(short *)(param_1 + 0x29) = sVar4;
-      (**(code **)(iVar1 + 0x1e4))(sVar4);
-      pcVar2 = *(code **)(iVar1 + 0x94);
-      piVar5 = (int *)(*pcVar2)(0x73656c65);
-      iVar1 = *piVar5;
-      (**(code **)(iVar1 + 0xc))();
-      (**(code **)(iVar1 + 0x1c8))(sVar4 + 0x63697630);
-      piVar5 = *(int **)(param_1[0x25] + 0xe4 + (short)((short)param_1[0x29] + 0x22) * 4);
+  else if (in_stack_00000004 == 10) {
+    sVar7 = *(short *)(*(int *)(in_stack_00000008 + 0x20) + 0x1c) + -30000;
+    if ((-1 < sVar7) && (sVar7 < 9)) {
+      pTVar1 = this->vftable;
+      *(short *)&this->field_0xa4 = sVar7;
+      (*pTVar1[0x3c].slot_0x04)(CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar7));
+      pTVar2 = pTVar1[0x12].slot_0x04;
+      uVar5 = (*pTVar2)(0x73656c65);
+      iVar3 = *(int *)CONCAT31(extraout_var,uVar5);
+      (**(code **)(iVar3 + 0xc))();
+      (**(code **)(iVar3 + 0x1c8))(sVar7 + 0x63697630);
+      piVar4 = *(int **)(*(int *)&this->field_0x94 + 0xe4 +
+                        (short)(*(short *)&this->field_0xa4 + 0x22) * 4);
       if (*(int *)(iStack_4 + 0x1c) == 0x706c7573) {
-        sVar4 = (short)piVar5[1] + 1;
+        sVar7 = (short)piVar4[1] + 1;
       }
       else {
-        sVar4 = (short)piVar5[1] + -1;
+        sVar7 = (short)piVar4[1] + -1;
       }
-      cVar3 = (**(code **)(*piVar5 + 0x2c))(sVar4);
-      if (cVar3 != '\0') {
-        piVar6 = (int *)(*pcStack_38)((short)param_1[0x29] + 0x6e756d30);
-        if (piVar6 == (int *)0x0) {
+      cVar6 = (**(code **)(*piVar4 + 0x2c))(sVar7);
+      if (cVar6 != '\0') {
+        piVar8 = (int *)(*pcStack_38)(*(short *)&this->field_0xa4 + 0x6e756d30);
+        if (piVar8 == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
           thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66c);
         }
-        piVar6 = (int *)(**(code **)(*piVar6 + 0x94))(0x6e756d62);
-        if (piVar6 == (int *)0x0) {
+        piVar8 = (int *)(**(code **)(*piVar8 + 0x94))(0x6e756d62);
+        if (piVar8 == (int *)0x0) {
           MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
           thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                     (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66d);
         }
-        iVar1 = *piVar6;
-        (**(code **)(iVar1 + 0x1e4))((int)*(short *)(pcVar2 + 4),0);
-        (**(code **)(iVar1 + 300))(&stack0xffffffc0);
-        RStack_34.top = (LONG)piVar5;
-        RStack_34.right = (LONG)pcVar2;
+        iVar3 = *piVar8;
+        (**(code **)(iVar3 + 0x1e4))((int)*(short *)(pTVar2 + 4),0);
+        (**(code **)(iVar3 + 300))(&stack0xffffffc0);
+        RStack_34.top = (LONG)piVar4;
+        RStack_34.right = (LONG)pTVar2;
         CopyRect(atStack_24,&RStack_34);
         thunk_InvalidateCityDialogRectRegion(atStack_24,1);
-        (**(code **)(*param_1 + 0x1d8))();
+        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
       }
     }
   }
-  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CBB20
+// GHIDRA_NAME TUniversityView::OrphanRetStub_004c6fb0
+// GHIDRA_PROTO void __thiscall OrphanRetStub_004c6fb0(int * pCityViewDialog)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Refreshes requirement/availability widgets for currently selected University recruitment entry.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Exit early when no recruitment entry is selected.
+// GHIDRA_COMMENT 2. Update paper requirement control using city paper stock vs entry requirement.
+// GHIDRA_COMMENT 3. Compute available workforce-derived cap for the selected specialist order.
+// GHIDRA_COMMENT 4. Update area/availability control colors and numeric text based on affordability.
+// GHIDRA_COMMENT 5. Trigger redraw of dependent viewport region.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCityViewDialog: University city-view dialog instance.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Refreshes requirement/availability widgets for currently selected University recruitment entry.
+   Algorithm:
+   1. Exit early when no recruitment entry is selected.
+   2. Update paper requirement control using city paper stock vs entry requirement.
+   3. Compute available workforce-derived cap for the selected specialist order.
+   4. Update area/availability control colors and numeric text based on affordability.
+   5. Trigger redraw of dependent viewport region.
+   Parameters:
+   - pCityViewDialog: University city-view dialog instance.
+   Returns:
+   - void. */
+
+void __thiscall TUniversityView::OrphanRetStub_004c6fb0(TUniversityView *this,int *pCityViewDialog)
+
+{
+  TUniversityView_slot_0x04_0x04 *pTVar1;
+  int iVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int iVar4;
+  int iVar5;
+  undefined3 extraout_var_01;
+  int iVar6;
+  undefined4 *unaff_FS_OFFSET;
+  LONG **ppLVar7;
+  LONG *pLStack_8c;
+  tagRECT *ptStack_88;
+  undefined4 uStack_84;
+  int iStack_80;
+  undefined1 auStack_70 [8];
+  int aiStack_68 [3];
+  undefined1 local_4c [12];
+  CString local_40;
+  LONG LStack_3c;
+  LONG LStack_38;
+  tagRECT atStack_34 [2];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631800;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString((CString *)(local_4c + 8));
+  local_4 = 0;
+  CString::CString(&local_40);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  local_4c._4_4_ = 0;
+  local_4c._0_4_ = 0;
+  thunk_MapUiThemeCodeToStyleFlags();
+  thunk_MapUiThemeCodeToStyleFlags();
+  if (*(int *)&this->field_0xa8 != 0) {
+    pTVar1 = this->vftable[0x12].slot_0x04;
+    aiStack_68[2] = 0x61706170;
+    aiStack_68[1] = 0x4cbbc8;
+    uVar3 = (*pTVar1)();
+                    /* Load city paper stock (papa) and render current amount. */
+    iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
+    aiStack_68[1] = 0x4cbbd1;
+    (**(code **)(iVar2 + 0xc))();
+    aiStack_68[1] = 0;
+    aiStack_68[0] = (int)*(short *)(*(int *)&this->field_0x94 + 0xca);
+    auStack_70._4_4_ = 0x4cbbe9;
+    (**(code **)(iVar2 + 0x1e4))();
+    auStack_70._4_4_ = 1;
+    if (*(short *)(*(int *)&this->field_0x94 + 0xca) < *(short *)(*(int *)&this->field_0xa8 + 0x50))
+    {
+      auStack_70._0_4_ = &stack0xffffffa8;
+    }
+    else {
+      auStack_70._0_4_ = &stack0xffffffac;
+    }
+    (**(code **)(iVar2 + 0x1b8))();
+    (**(code **)(iVar2 + 300))();
+    LStack_3c = local_4c._0_4_;
+    LStack_38 = local_4c._4_4_;
+    iStack_80 = 0x4cbc55;
+    CopyRect(atStack_34,(RECT *)(local_4c + 8));
+    iStack_80 = 0x4cbc63;
+    thunk_InvalidateCityDialogRectRegion();
+    uVar3 = (*pTVar1)();
+    iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
+    (**(code **)(iVar2 + 0xc))();
+    iVar5 = *(int *)(*(int *)&this->field_0x94 + 0x1d8);
+    iVar4 = (int)*(short *)(iVar5 + 0x1c);
+    iVar6 = (int)*(short *)(*(int *)(iVar5 + 0x14) + 8);
+    iVar5 = (int)(iVar4 + (iVar4 >> 0x1f & 3U)) >> 2;
+    if (iVar6 <= iVar5) {
+      iVar5 = iVar6;
+    }
+    iStack_80 = (int)(short)iVar5;
+    uStack_84 = 0x4cbca9;
+    (**(code **)(iVar2 + 0x1e4))();
+                    /* Compute effective availability cap from workforce and building limits. */
+    iVar5 = *(int *)(*(int *)&this->field_0x94 + 0x1d8);
+    iVar4 = (int)*(short *)(iVar5 + 0x1c);
+    iVar6 = (int)*(short *)(*(int *)(iVar5 + 0x14) + 8);
+    iVar5 = (int)(iVar4 + (iVar4 >> 0x1f & 3U)) >> 2;
+    if (iVar6 <= iVar5) {
+      iVar5 = iVar6;
+    }
+    uStack_84 = 1;
+    if ((short)iVar5 < 1) {
+      ptStack_88 = (tagRECT *)auStack_70;
+    }
+    else {
+      ptStack_88 = (tagRECT *)(auStack_70 + 4);
+    }
+    pLStack_8c = (LONG *)0x4cbceb;
+    (**(code **)(iVar2 + 0x1b8))();
+                    /* Colorize requirement indicator when requested amount exceeds available cap.
+                        */
+    pLStack_8c = aiStack_68;
+    (**(code **)(iVar2 + 300))();
+    CopyRect((LPRECT)local_4c,(RECT *)&stack0xffffffa4);
+    thunk_InvalidateCityDialogRectRegion(local_4c);
+    (*g_pLocalizationTable->vftable[0xe].slot_0x04)
+              (*(undefined4 *)(*(int *)(*(int *)&this->field_0x94 + 0xac) + 0x10));
+    uVar3 = (*pTVar1)(0x74726561);
+    if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x6c4);
+    }
+    iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
+    (**(code **)(iVar2 + 0x1c8))(&iStack_80,0);
+    if (*(int *)(*(int *)(*(int *)&this->field_0x94 + 0xac) + 0x10) <
+        (int)*(short *)(*(int *)&this->field_0xa8 + 0x54)) {
+      ppLVar7 = (LONG **)&stack0xffffff70;
+    }
+    else {
+      ppLVar7 = &pLStack_8c;
+    }
+    (**(code **)(iVar2 + 0x1b8))(ppLVar7,1);
+    (**(code **)(iVar2 + 300))(&ptStack_88);
+    auStack_70._0_4_ = iStack_80;
+    CopyRect((LPRECT)(auStack_70 + 4),(RECT *)&stack0xffffff84);
+    thunk_InvalidateCityDialogRectRegion(auStack_70 + 4,1);
+    (**(code **)(**(int **)&this->field_0x98 + 0x1dc))();
+  }
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString(&local_40);
+  local_4 = 0xffffffff;
+  CString::~CString((CString *)(local_4c + 8));
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CBF30
-// GHIDRA_NAME TUniversityView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30
-// GHIDRA_PROTO undefined WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30()
+// GHIDRA_NAME TUniversityView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void TUniversityView::WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004cbf30(void)
+void __thiscall TUniversityView::_scalar_deleting_destructor_(TUniversityView *this)
 
 {
-  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf();
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
   if (DAT_00695278 != 0x4d6f696c) {
-    (**(code **)(*g_pUiViewManager + 0x34))(0x23fa);
+    (*g_pUiViewManager->vftable[6].slot_0x04)(0x23fa);
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CBF70
+// GHIDRA_NAME TUniversityView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO void __thiscall OrphanTiny_ReturnZero_0048a730(RECT * pClipRect)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void RenderUniversityRecruitmentRequirementGrid(RECT *pClipRect)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void RenderUniversityRecruitmentRequirementGrid(RECT *pClipRect) */
+
+void __thiscall
+TUniversityView::OrphanTiny_ReturnZero_0048a730(TUniversityView *this,RECT *pClipRect)
+
+{
+  undefined uVar1;
+  char fClipIntersectsPanel;
+  short sVar2;
+  undefined3 extraout_var;
+  TUniversityView *pUniversityDialogThis;
+  int nRequirementRowBottomY;
+  int nHighestRequirementLevel;
+  int nRequirementId;
+  int iVar3;
+  undefined4 *unaff_FS_OFFSET;
+  RECT RStack_58;
+  RECT RStack_48;
+  undefined1 auStack_38 [12];
+  LONG local_2c;
+  LONG local_28;
+  LONG local_24;
+  LONG local_20;
+  undefined4 uStack_18;
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  int nRequirementLevelColumn;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00631818;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  RStack_58.right = (LONG)this;
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  local_2c = pClipRect->left;
+  local_28 = pClipRect->top;
+  local_24 = pClipRect->right;
+  local_20 = pClipRect->bottom;
+  nHighestRequirementLevel = 0;
+  uVar1 = (*g_pGlobalMapState->vftable[0x22].slot_0x04)
+                    (CONCAT22((short)((uint)local_20 >> 0x10),*(undefined2 *)&this->field_0xa4),0,1)
+  ;
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  RStack_48.left = (LONG)(short)CONCAT31(extraout_var,uVar1);
+  RStack_48.right = RStack_48.left + 0x40;
+  RStack_48.top = 0;
+  RStack_48.bottom = 0x40;
+  RStack_58.left = 0x7c;
+  RStack_58.top = 0x5c;
+  RStack_58.right = 0xbc;
+  RStack_58.bottom = 0x9c;
+  fClipIntersectsPanel = IntersectRectWrapper(auStack_38,&RStack_58,&local_28);
+  if (fClipIntersectsPanel != '\0') {
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_48,&RStack_58,0x24
+               ,(astruct_19 *)0x0);
+  }
+  RStack_58.left = 0;
+  RStack_58.top = 0xff;
+  RStack_58.right = 200;
+  RStack_58.bottom = 0x186;
+  fClipIntersectsPanel = IntersectRectWrapper(auStack_38,&RStack_58,&local_28);
+  if (fClipIntersectsPanel != '\0') {
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6b);
+    puStack_8 = (undefined1 *)0x0;
+    nRequirementRowBottomY = 0x12e;
+    do {
+      CString::CString((CString *)&stack0xffffff9c);
+      uStack_10 = 0;
+      if (*(short *)(&g_anUniversityRequirementIdByRecruitRow +
+                    (int)(puStack_8 + *(short *)&this->field_0xa4 * 4) * 4) != -1) {
+        nRequirementId =
+             (int)*(short *)(&g_anUniversityRequirementIdByRecruitRow +
+                            (int)(puStack_8 + *(short *)&this->field_0xa4 * 4) * 4);
+        RStack_48.left = nRequirementId * 0x14;
+        RStack_48.right = (nRequirementId + 1) * 0x14;
+        RStack_58.left = 0x19;
+        RStack_58.top = nRequirementRowBottomY + -0x1c;
+        RStack_48.top = 0;
+        RStack_58.right = 0x2d;
+        RStack_48.bottom = 0x18;
+        RStack_58.bottom = nRequirementRowBottomY;
+        BlitRectWithOptionalTransparency
+                  ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x678) + 4),
+                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_48,&RStack_58,
+                   0x24,(astruct_19 *)0x0);
+        sVar2 = UiRuntimeContext::GetActiveNationId();
+        if (nHighestRequirementLevel <
+            *(short *)(&g_pCityOrderCapabilityState->field_0x3e +
+                      (sVar2 * 0x17 + nRequirementId) * 2)) {
+          nHighestRequirementLevel =
+               (int)*(short *)(&g_pCityOrderCapabilityState->field_0x3e +
+                              (sVar2 * 0x17 + nRequirementId) * 2);
+        }
+        iVar3 = 1;
+        this = pUniversityDialogThis;
+        if (0 < nHighestRequirementLevel) {
+          nRequirementLevelColumn = (int)puStack_8 * 0x19;
+          do {
+            FormatStringWithVarArgsToSharedRef
+                      (&stack0xffffff9c,&g_szDecimalFormat,
+                       (int)(char)(&g_abUniversityRequirementLevelById)[iVar3 + nRequirementId * 4])
+            ;
+            thunk_SetQuickDrawTextOriginWithContextOffset
+                      (iVar3 * 0x28 + 0x27,nRequirementLevelColumn + 0x121);
+            THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&stack0xffffff9c);
+            iVar3 = iVar3 + 1;
+          } while (iVar3 <= nHighestRequirementLevel);
+        }
+      }
+      uStack_10 = 0xffffffff;
+      CString::~CString((CString *)&stack0xffffff9c);
+      nRequirementRowBottomY = nRequirementRowBottomY + 0x19;
+      puStack_8 = puStack_8 + 1;
+    } while (nRequirementRowBottomY < 0x192);
+  }
+  UpdatePaletteIndexWithDefaultFallback(0x13);
+  *unaff_FS_OFFSET = uStack_18;
   return;
 }
 

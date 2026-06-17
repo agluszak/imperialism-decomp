@@ -5,13 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0040154B
 // GHIDRA_NAME Family_BuildingExpansionViewCore_Root::thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b
-// GHIDRA_PROTO undefined thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b()
+// GHIDRA_PROTO undefined __thiscall thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b(void)
 
-void Family_BuildingExpansionViewCore_Root::
-     thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b(void)
+void __thiscall
+Family_BuildingExpansionViewCore_Root::thunk_DestructBuildingExpansionViewAndMaybeFree_At0040154b
+          (Family_BuildingExpansionViewCore_Root *this)
 
 {
-  DestructBuildingExpansionViewAndMaybeFree();
+  TBuildingExpansionView::_scalar_deleting_destructor_((TBuildingExpansionView *)this);
   return;
 }
 

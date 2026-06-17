@@ -32,9 +32,9 @@ TView * TWindow::CreateTWindowInstance(void)
   }
   TView::thunk_ConstructTViewBaseState(this);
   local_4._0_1_ = 1;
-  TDialogBehavior::ConstructTDialogBehaviorBaseState();
+  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)&this[1].field14);
   this[1].field38 = 0;
-  this->vftable = &PTR_LAB_00649e58;
+  this->vftable = (TViewVtbl *)&TWindowVtbl_00649e58;
   iVar1 = (int)DAT_006a1a44;
   local_4 = CONCAT31(local_4._1_3_,2);
   piVar4 = DAT_006a1a50;
@@ -74,26 +74,781 @@ TView * TWindow::CreateTWindowInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D220
-// GHIDRA_NAME TWindow::GetTWindowClassNamePointer
-// GHIDRA_PROTO undefined GetTWindowClassNamePointer()
+// GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TWindow::GetTWindowClassNamePointer(void)
+CRuntimeClass * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
 
 {
-  return &PTR_s_TWindow_006495e8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048D640
-// GHIDRA_NAME TWindow::DestructTWindowAndMaybeFree
-// GHIDRA_PROTO undefined DestructTWindowAndMaybeFree()
+// GHIDRA_NAME TWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TWindow::DestructTWindowAndMaybeFree(undefined4 param_1,byte param_2)
+TWindow * __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
 
 {
-  DestructTWindowViewAndUnlinkGlobalLists();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D8A0
+// GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins05_0048d8a0(void)
+
+void __thiscall TWindow::OrphanLeaf_NoCall_Ins05_0048d8a0(TWindow *this)
+
+{
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  *(undefined4 *)&this->field_0x88 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x8c = in_stack_00000008;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D8D0
+// GHIDRA_NAME TWindow::AssertMcAppUILine2358
+// GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2358(void)
+
+void __thiscall TWindow::AssertMcAppUILine2358(TWindow *this)
+
+{
+  if (DAT_006a1b04 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x936);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D900
+// GHIDRA_NAME TWindow::OrphanCallChain_C2_I39_0048d900
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I39_0048d900(void)
+
+void __thiscall TWindow::OrphanCallChain_C2_I39_0048d900(TWindow *this)
+
+{
+  int iVar1;
+  int iVar2;
+  char in_stack_00000004;
+  char in_stack_00000008;
+  WPARAM wParam;
+  
+  iVar1 = this->field50;
+  if (iVar1 != 0) {
+    if (iVar1 == 0) {
+      iVar2 = 0;
+    }
+    else {
+      iVar2 = *(int *)(iVar1 + 0x1c);
+    }
+    if (iVar2 != 0) {
+      if (in_stack_00000004 == '\0') {
+        wParam = 3;
+      }
+      else {
+        wParam = 2;
+      }
+      SendMessageA(*(HWND *)(iVar1 + 0x1c),0x468,wParam,this->controlTag);
+    }
+  }
+  if (((int)in_stack_00000004 != this->padding_08_to_0b) &&
+     (this->padding_08_to_0b = (int)in_stack_00000004, in_stack_00000008 != '\0')) {
+    (*this->vftable[0x1c].slot_0x04)();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D980
+// GHIDRA_NAME TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+undefined4 __thiscall TWindow::ReleaseRuntimeSelectionOwnerAndDestroyObject(TWindow *this)
+
+{
+  if ((((*(int *)&this->field_0x98 != 0) && (g_McAppUiActiveFlag_006950AC != 0)) &&
+      (this->field50 != 0)) && (this->padding_08_to_0b != 0)) {
+    return 1;
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D9C0
+// GHIDRA_NAME TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(void)
+
+void __thiscall TWindow::WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0(TWindow *this)
+
+{
+  undefined4 *in_stack_00000004;
+  
+  SetWindowTextOrDelegateToOwner(*in_stack_00000004);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D9F0
+// GHIDRA_NAME TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(void)
+
+void __thiscall TWindow::WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0(TWindow *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  FUN_0060859f(in_stack_00000004);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DA10
+// GHIDRA_NAME TWindow::OrphanCallChain_C1_I08_0048da10
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_0048da10(void)
+
+int __thiscall TWindow::OrphanCallChain_C1_I08_0048da10(TWindow *this)
+
+{
+  undefined uVar1;
+  uint3 extraout_var;
+  
+  uVar1 = (*this->vftable[0x37].GetTEventHandlerClassNamePointer)();
+  if (CONCAT31(extraout_var,uVar1) != 0) {
+    return CONCAT31(extraout_var,*(undefined1 *)(CONCAT31(extraout_var,uVar1) + 0x10));
+  }
+  return (uint)extraout_var << 8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DA40
+// GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins03_0048da40
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins03_0048da40(void)
+
+void __thiscall TWindow::OrphanLeaf_NoCall_Ins03_0048da40(TWindow *this)
+
+{
+  undefined1 in_stack_00000004;
+  
+  this->field_0x84 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DA60
+// GHIDRA_NAME TWindow::ExecuteViewModalStateWithPushPopChain
+// GHIDRA_PROTO undefined __thiscall ExecuteViewModalStateWithPushPopChain(void)
+
+int __thiscall TWindow::ExecuteViewModalStateWithPushPopChain(TWindow *this)
+
+{
+  TWindowVtbl *pTVar1;
+  int *piVar2;
+  int iVar3;
+  int *piVar4;
+  undefined uVar5;
+  undefined3 extraout_var;
+  int iVar6;
+  int *piVar7;
+  int *piVar8;
+  
+  pTVar1 = this->vftable;
+  uVar5 = (*pTVar1[0x37].GetTEventHandlerClassNamePointer)();
+  piVar7 = (int *)CONCAT31(extraout_var,uVar5);
+  iVar3 = piVar7[4];
+  if ((char)iVar3 == '\0') {
+    (*pTVar1[0x34].GetTEventHandlerClassNamePointer)(1);
+  }
+  if ((DAT_006a1ac4 != (int *)0x0) &&
+     (piVar2 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar2 + 0xc))(), piVar2[0x14] != 0)) {
+    FUN_0060753b(0);
+  }
+  piVar2 = DAT_006a1ac4;
+  piVar8 = DAT_006a1ad0;
+  if (DAT_006a1ad0 == (int *)0x0) {
+    iVar6 = AllocateAndLinkBlockHead(&DAT_006a1ad4,DAT_006a1ad8,0xc);
+    piVar4 = (int *)(iVar6 + -8 + DAT_006a1ad8 * 0xc);
+    piVar8 = DAT_006a1ad0;
+    iVar6 = DAT_006a1ad8;
+    if (-1 < DAT_006a1ad8 + -1) {
+      do {
+        piVar8 = piVar4;
+        *piVar8 = (int)DAT_006a1ad0;
+        iVar6 = iVar6 + -1;
+        piVar4 = piVar8 + -3;
+        DAT_006a1ad0 = piVar8;
+      } while (iVar6 != 0);
+    }
+  }
+  DAT_006a1ad0 = (int *)*piVar8;
+  piVar8[1] = 0;
+  *piVar8 = (int)piVar2;
+  DAT_006a1acc = DAT_006a1acc + 1;
+  piVar8[2] = 0;
+  piVar8[2] = (int)this;
+  piVar2 = piVar8;
+  if (DAT_006a1ac4 != (int *)0x0) {
+    DAT_006a1ac4[1] = (int)piVar8;
+    piVar2 = DAT_006a1ac8;
+  }
+  DAT_006a1ac8 = piVar2;
+  DAT_006a1ac4 = piVar8;
+  (**(code **)(*piVar7 + 0x48))();
+  iVar6 = piVar7[7];
+  for (piVar7 = DAT_006a1ac4; piVar7 != (int *)0x0; piVar7 = (int *)*piVar7) {
+    if ((TWindow *)piVar7[2] == this) goto LAB_0048db5a;
+  }
+  piVar7 = (int *)0x0;
+LAB_0048db5a:
+  if (piVar7 != (int *)0x0) {
+    if (piVar7 == DAT_006a1ac4) {
+      DAT_006a1ac4 = (int *)*piVar7;
+    }
+    else {
+      *(int *)piVar7[1] = *piVar7;
+    }
+    if (piVar7 == DAT_006a1ac8) {
+      DAT_006a1ac8 = (int *)piVar7[1];
+    }
+    else {
+      *(int *)(*piVar7 + 4) = piVar7[1];
+    }
+    WrapperFor_FreeLinkedBlockChain_At00492b00(piVar7);
+    if ((DAT_006a1ac4 != (int *)0x0) &&
+       (piVar7 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar7 + 0xc))(), piVar7[0x14] != 0)) {
+      FUN_0060753b(1);
+    }
+  }
+  if ((char)iVar3 == '\0') {
+    (*pTVar1[0x34].GetTEventHandlerClassNamePointer)(0);
+  }
+  WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();
+  return iVar6;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DC60
+// GHIDRA_NAME TWindow::OrphanCallChain_C1_I08_0048dc60
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_0048dc60(void)
+
+undefined4 __thiscall TWindow::OrphanCallChain_C1_I08_0048dc60(TWindow *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  
+  uVar1 = (*this->vftable[0x37].GetTEventHandlerClassNamePointer)();
+  if (CONCAT31(extraout_var,uVar1) != 0) {
+    return CONCAT31(extraout_var,*(undefined1 *)(CONCAT31(extraout_var,uVar1) + 0x20));
+  }
+  return CONCAT31(extraout_var,1);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DC90
+// GHIDRA_NAME TWindow::OrphanCallChain_C2_I12_0048dc90
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I12_0048dc90(void)
+
+void __thiscall TWindow::OrphanCallChain_C2_I12_0048dc90(TWindow *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  uVar1 = (*this->vftable[0x37].GetTEventHandlerClassNamePointer)();
+  if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x38))(in_stack_00000004,in_stack_00000008);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DCC0
+// GHIDRA_NAME TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_0048dcc0(void)
+
+undefined1 * __thiscall TWindow::OrphanLeaf_NoCall_Ins02_0048dcc0(TWindow *this)
+
+{
+  return &this->field_0x74;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DCE0
+// GHIDRA_NAME TWindow::AssertMcAppUILine2554
+// GHIDRA_PROTO undefined __thiscall AssertMcAppUILine2554(void)
+
+void __thiscall TWindow::AssertMcAppUILine2554(TWindow *this)
+
+{
+  if (DAT_006a1b08 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x9fa);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DD10
+// GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
+
+{
+  (**(code **)(*(int *)&this->field_0x74 + 0x3c))();
+  (*this->vftable[7].slot_0x04)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DD50
+// GHIDRA_NAME TWindow::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TWindow::OrphanRetStub_0059add0(TWindow *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  int in_stack_00000004;
+  
+  if (in_stack_00000004 == 0x1a) {
+    if (DAT_006a1b0c == 0) {
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xa1a);
+    }
+  }
+  else {
+    uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))();
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DDC0
+// GHIDRA_NAME TWindow::OrphanCallChain_C2_I19_0048ddc0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I19_0048ddc0(void)
+
+void __thiscall TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow *this)
+
+{
+  TWindowVtbl *pTVar1;
+  TWindow *in_stack_00000004;
+  
+  if (in_stack_00000004 == (TWindow *)0x0) {
+    in_stack_00000004 = this;
+  }
+  if (in_stack_00000004 != *(TWindow **)&this->field_0x64) {
+    (*(*(TWindow **)&this->field_0x64)->vftable[0xe].GetTEventHandlerClassNamePointer)();
+    pTVar1 = in_stack_00000004->vftable;
+    *(TWindow **)&this->field_0x64 = in_stack_00000004;
+    (*pTVar1[0xd].slot_0x04)();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048DE00
+// GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
+
+{
+  TWindowVtbl *pTVar1;
+  char cVar2;
+  int iVar3;
+  undefined4 *puVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 *local_20;
+  TWindow *local_1c;
+  int local_18;
+  undefined4 local_14;
+  int *local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ee4a;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (this->field50 == 0) {
+    iVar3 = AllocateWithFallbackHandler(0x40);
+    local_4 = 0;
+    if (iVar3 == 0) {
+      iVar3 = 0;
+    }
+    else {
+      iVar3 = CreateMcWindowFromDescriptorAndShow(this);
+    }
+    this->field50 = iVar3;
+    local_18 = 1;
+    local_14 = 0x20202020;
+    local_10 = (int *)0x0;
+    local_4 = 0xffffffff;
+    if (this->field44 == 0) {
+      local_20 = (undefined4 *)0x0;
+    }
+    else {
+      local_20 = *(undefined4 **)(this->field44 + 4);
+    }
+    local_1c = this;
+    AdvanceSelectableTextOptionEntryIterator();
+    while (local_10 != (int *)0x0) {
+      thunk_PropagateUiResourceContextRecursive(iVar3);
+      if (local_20 == (undefined4 *)0x0) {
+        local_10 = (int *)0x0;
+      }
+      else {
+        if (local_18 == 0) {
+          local_10 = (int *)EnsureChildResourceWindowAndNotify_Impl(&local_20);
+        }
+        else {
+          local_10 = (int *)PopSinglyLinkedListHeadPointer(&local_20);
+        }
+        local_10 = (int *)*local_10;
+      }
+    }
+  }
+  SendMessageA(*(HWND *)(this->field50 + 0x1c),0x468,0,this->controlTag);
+  pTVar1 = this->vftable;
+  cVar2 = (*pTVar1[0x1d].slot_0x04)();
+  if (cVar2 == '\0') {
+    *(undefined4 *)&this->field_0x98 = 1;
+    if (*(int **)&this->field_0x64 != (int *)0x0) {
+      (**(code **)(**(int **)&this->field_0x64 + 0x84))(0);
+    }
+    (*pTVar1[0x39].slot_0x04)(1,1);
+  }
+  local_18 = 1;
+  local_14 = 0x20202020;
+  local_10 = (int *)0x0;
+  if (this->field44 == 0) {
+    local_20 = (undefined4 *)0x0;
+  }
+  else {
+    local_20 = *(undefined4 **)(this->field44 + 4);
+  }
+  if (local_20 == (undefined4 *)0x0) {
+    local_10 = (int *)0x0;
+    local_1c = this;
+  }
+  else {
+    local_1c = this;
+    puVar4 = (undefined4 *)PopSinglyLinkedListHeadPointer(&local_20);
+    local_10 = (int *)*puVar4;
+  }
+  while (local_10 != (int *)0x0) {
+    (**(code **)(*local_10 + 0x9c))();
+    if (local_20 == (undefined4 *)0x0) {
+      local_10 = (int *)0x0;
+    }
+    else if (local_18 == 0) {
+      puVar4 = (undefined4 *)EnsureChildResourceWindowAndNotify_Impl(&local_20);
+      local_10 = (int *)*puVar4;
+    }
+    else {
+      local_10 = (int *)local_20[2];
+      local_20 = (undefined4 *)*local_20;
+    }
+  }
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E060
+// GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Resets child-selection state, notifies parent/control window with message 0x468, iterates child nodes calling vfunc +0xA0, then triggers vfunc +0x1CC.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Removing unreachable block (ram,0x0048e077) */
+/* Resets child-selection state, notifies parent/control window with message 0x468, iterates child
+   nodes calling vfunc +0xA0, then triggers vfunc +0x1CC. */
+
+void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined4 *puVar3;
+  
+  iVar1 = this->field50;
+  *(undefined4 *)&this->field_0x98 = 0;
+  if ((iVar1 != 0) && (*(int *)(iVar1 + 0x1c) != 0)) {
+    SendMessageA(*(HWND *)(iVar1 + 0x1c),0x468,1,this->controlTag);
+  }
+  if (this->field44 == 0) {
+    puVar3 = (undefined4 *)0x0;
+  }
+  else {
+    puVar3 = *(undefined4 **)(this->field44 + 4);
+  }
+  if (puVar3 == (undefined4 *)0x0) {
+    piVar2 = (int *)0x0;
+    puVar3 = (undefined4 *)0x0;
+  }
+  else {
+    piVar2 = (int *)puVar3[2];
+    puVar3 = (undefined4 *)*puVar3;
+  }
+  while (piVar2 != (int *)0x0) {
+    (**(code **)(*piVar2 + 0xa0))();
+    if (puVar3 == (undefined4 *)0x0) {
+      piVar2 = (int *)0x0;
+      puVar3 = (undefined4 *)0x0;
+    }
+    else {
+      piVar2 = (int *)puVar3[2];
+      puVar3 = (undefined4 *)*puVar3;
+    }
+  }
+  (*this->vftable[0x39].slot_0x04)(0,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E120
+// GHIDRA_NAME TWindow::OrphanCallChain_C2_I10_0048e120
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I10_0048e120(void)
+
+void __thiscall TWindow::OrphanCallChain_C2_I10_0048e120(TWindow *this)
+
+{
+  TWindowVtbl *pTVar1;
+  
+  pTVar1 = this->vftable;
+  (*pTVar1[0x14].GetTEventHandlerClassNamePointer)();
+  (*pTVar1[3].slot_0x04)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E150
+// GHIDRA_NAME TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150
+// GHIDRA_PROTO undefined __thiscall WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(void)
+
+void __thiscall TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(TWindow *this)
+
+{
+  char in_stack_00000004;
+  char in_stack_00000008;
+  
+  if (this->field50 != 0) {
+    CenterWindow(0);
+    return;
+  }
+  if (in_stack_00000004 != '\0') {
+    this->ownerOffsetX = (0x280 - this->field34) / 2;
+  }
+  if (in_stack_00000008 != '\0') {
+    this->ownerOffsetY = (0x1e0 - this->field38) / 2;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E1C0
+// GHIDRA_NAME TWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+undefined2 __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+
+{
+  return 3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E1E0
+// GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+
+{
+  if (DAT_006a1b10 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xac4);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E210
+// GHIDRA_NAME TWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+
+{
+  if (DAT_006a1b14 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xad9);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E240
+// GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+
+{
+  if (DAT_006a1b18 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xaee);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E270
+// GHIDRA_NAME TWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+
+{
+  if (DAT_006a1b1c == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xaff);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048E2A0
+// GHIDRA_NAME TWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+/* WARNING: Removing unreachable block (ram,0x0048e2b1) */
+
+void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+
+{
+  CObject *this_00;
+  int *piVar1;
+  undefined uVar2;
+  int iVar3;
+  TWindow *pTVar4;
+  undefined3 extraout_var;
+  ApplicationUiRootController *pAVar5;
+  
+  this_00 = (CObject *)this->field50;
+  if (this_00 != (CObject *)0x0) {
+    if (this_00[7].vftable == (CObjectVtbl *)0x0) {
+      if (this_00 != (CObject *)0x0) {
+        iVar3 = CObject::IsKindOf(this_00);
+        if (iVar3 == 0) {
+          if ((int *)this->field50 != (int *)0x0) {
+            (**(code **)(*(int *)this->field50 + 4))(1);
+          }
+        }
+        else {
+          piVar1 = (int *)this->field50;
+          iVar3 = *piVar1;
+          (**(code **)(iVar3 + 0xc))();
+          piVar1[0xf] = 0;
+          if (piVar1 != (int *)0x0) {
+            (**(code **)(iVar3 + 4))(1);
+          }
+        }
+        this->field50 = 0;
+      }
+    }
+    else {
+      SendMessageA((HWND)this_00[7].vftable,0x4ef,0,this->controlTag);
+      SendMessageA(*(HWND *)(this->field50 + 0x1c),0x468,4,this->controlTag);
+    }
+  }
+  iVar3 = this->field44;
+  while (iVar3 != 0) {
+    (**(code **)(**(int **)(*(int *)(iVar3 + 4) + 8) + 0x1c))();
+    iVar3 = this->field44;
+  }
+  if (this->ownerContext != (TView *)0x0) {
+    (*this->ownerContext->vftable[0x2e].slot_0x04)(this);
+    this->ownerContext = (TView *)0x0;
+  }
+  if (((g_pApplicationUiRootController != (ApplicationUiRootController *)0x0) &&
+      ((TWindow *)g_pApplicationUiRootController != this)) &&
+     (pTVar4 = (TWindow *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))(),
+     pTVar4 == this)) {
+    uVar2 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    pAVar5 = (ApplicationUiRootController *)CONCAT31(extraout_var,uVar2);
+    if (pAVar5 == (ApplicationUiRootController *)0x0) {
+      pAVar5 = g_pApplicationUiRootController;
+    }
+    (**(code **)(g_pApplicationUiRootController->vftable + 0x98))(pAVar5);
+  }
+  this->field0c = 0;
+  if ((int *)this->field18 != (int *)0x0) {
+    (**(code **)(*(int *)this->field18 + 0x1c))();
+  }
+  this->field18 = 0;
+  if (this != (TWindow *)0x0) {
+    (*this->vftable->slot_0x04)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492CC0
+// GHIDRA_NAME TWindow::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+TWindow * __thiscall TWindow::OrphanTiny_ReturnZero_0048a730(TWindow *this)
+
+{
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492CE0
+// GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+TWindow * __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+
+{
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492D00
+// GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492D20
+// GHIDRA_NAME TWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TWindow::_scalar_deleting_destructor_(TWindow *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492D40
+// GHIDRA_NAME TWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TWindow::GetTEventHandlerClassNamePointer(TWindow *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492D60
+// GHIDRA_NAME TWindow::OrphanRetStub_0059ad90
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
+
+void __thiscall TWindow::OrphanRetStub_0059ad90(TWindow *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492D80
+// GHIDRA_NAME TWindow::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+undefined4 __thiscall TWindow::OrphanCallChain_C11_I88_004874b0(TWindow *this)
+
+{
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x51e);
+  return 0;
 }
 

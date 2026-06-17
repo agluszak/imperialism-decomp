@@ -3,15 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: TTerrainHelpPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D770
+// GHIDRA_NAME TTerrainHelpPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770(void)
+
+TTerrainHelpPicture * __thiscall
+TTerrainHelpPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d770
+          (TTerrainHelpPicture *this)
+
+{
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TTerrainHelpPictureVtbl_00642038;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D7A0
+// GHIDRA_NAME TTerrainHelpPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTerrainHelpPicture * __thiscall
+TTerrainHelpPicture::_scalar_deleting_destructor_(TTerrainHelpPicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00504DF0
 // GHIDRA_NAME TTerrainHelpPicture::CreateTTerrainHelpPictureInstance
 // GHIDRA_PROTO undefined CreateTTerrainHelpPictureInstance()
 
-undefined4 * TTerrainHelpPicture::CreateTTerrainHelpPictureInstance(void)
+thunk_TPictureButton * TTerrainHelpPicture::CreateTTerrainHelpPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,55 +52,447 @@ undefined4 * TTerrainHelpPicture::CreateTTerrainHelpPictureInstance(void)
   puStack_8 = &LAB_006336aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00642038;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TTerrainHelpPictureVtbl **)this = &TTerrainHelpPictureVtbl_00642038;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504E70
-// GHIDRA_NAME TTerrainHelpPicture::GetTTerrainHelpPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTTerrainHelpPictureClassNamePointer()
+// GHIDRA_NAME TTerrainHelpPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTerrainHelpPicture::GetTTerrainHelpPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTerrainHelpPicture::GetTEventHandlerClassNamePointer(TTerrainHelpPicture *this)
 
 {
-  return &PTR_s_TTerrainHelpPicture_00656fc8;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00504E90
+// GHIDRA_NAME TTerrainHelpPicture::BuildMapTileActionContextMenu
+// GHIDRA_PROTO void __thiscall BuildMapTileActionContextMenu(void * pMenuDialogState, short nTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds per-tile map action context menu and enables/disables actions from tile state.
+// GHIDRA_COMMENT Reads tile flags/class from strategic map tile record (+0x1c/+0x13/+0x16/+0x18 etc).
+// GHIDRA_COMMENT This is menu/UI assembly; it does not directly persist map order queue entries.
+// GHIDRA_COMMENT_END
+
+/* Builds per-tile map action context menu and enables/disables actions from tile state.
+   Reads tile flags/class from strategic map tile record (+0x1c/+0x13/+0x16/+0x18 etc).
+   This is menu/UI assembly; it does not directly persist map order queue entries. */
+
+void __thiscall
+TTerrainHelpPicture::BuildMapTileActionContextMenu
+          (TTerrainHelpPicture *this,void *pMenuDialogState,short nTileIndex)
+
+{
+  TTerrainHelpPicture_slot_0x04_0x04 *pTVar1;
+  uint3 uVar2;
+  char cVar3;
+  undefined uVar4;
+  short sVar5;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  int *piVar7;
+  CString *src_ref;
+  int iVar8;
+  short *unaff_EBX;
+  uint uVar9;
+  short sVar10;
+  undefined4 *puVar11;
+  char *pcVar12;
+  undefined4 *unaff_FS_OFFSET;
+  bool bVar13;
+  undefined4 uVar14;
+  CString CStack_98;
+  CString CStack_94;
+  CString CStack_90;
+  char *pcStack_8c;
+  undefined1 *puStack_88;
+  CString CStack_84;
+  CString CStack_80;
+  undefined1 *puStack_7c;
+  undefined4 uStack_78;
+  uint *puStack_74;
+  CString CStack_70;
+  TTerrainHelpPictureVtbl **ppTStack_6c;
+  void *pvStack_68;
+  CString CStack_64;
+  CString CStack_60;
+  CString CStack_5c;
+  CString CStack_40;
+  char *pcStack_3c;
+  undefined1 auStack_38 [4];
+  undefined1 auStack_34 [4];
+  TTerrainHelpPictureVtbl *pTStack_30;
+  uint local_2c [3];
+  uint uStack_20;
+  undefined1 local_1c;
+  undefined1 local_1b;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  short sVar6;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006336f8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  puVar11 = (undefined4 *)&this->field_0x94;
+  for (iVar8 = 6; iVar8 != 0; iVar8 = iVar8 + -1) {
+    *puVar11 = 0;
+    puVar11 = puVar11 + 1;
+  }
+  uStack_20 = (uint)(ushort)uStack_20;
+  local_1c = 0;
+  local_1b = 0;
+  uVar9 = (short)pMenuDialogState * 0x24;
+  bVar13 = (*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + uVar9) & 1) != 0;
+  if (bVar13) {
+    *(undefined2 *)&this->field_0x94 = 0x11;
+  }
+  sVar10 = bVar13 + 1;
+  *(short *)(&this->field_0x94 + (short)(ushort)bVar13 * 2) =
+       *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + uVar9) + 1;
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 2 + uVar9) != '\0') {
+    iVar8 = (int)sVar10;
+    sVar10 = bVar13 + 2;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x16;
+  }
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 7 + uVar9) != '\0') {
+    if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + uVar9) == '\x05') {
+      *(undefined2 *)(&this->field_0x94 + sVar10 * 2) = 0x32;
+    }
+    else {
+      *(undefined2 *)(&this->field_0x94 + sVar10 * 2) = 0x13;
+    }
+    sVar10 = sVar10 + 1;
+  }
+  cVar3 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 8 + uVar9);
+  if ((cVar3 != '\0') && (cVar3 != *(char *)(*(int *)&g_pGlobalMapState->field_0xc + uVar9 + 7))) {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x12;
+  }
+  if ((*(ushort *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + uVar9) & 0x14) != 0) {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x14;
+  }
+  if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + uVar9) & 0x20) != 0) {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x1d;
+  }
+  CStack_5c.m_pchData = (char *)0x0;
+  CStack_60.m_pchData = pMenuDialogState;
+  CStack_64.m_pchData = (char *)0x504fe4;
+  local_2c[0] = uVar9;
+  cVar3 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)();
+  if (cVar3 == '\0') {
+    CStack_64.m_pchData = (char *)0x1;
+    pvStack_68 = pMenuDialogState;
+    ppTStack_6c = (TTerrainHelpPictureVtbl **)0x504ff9;
+    cVar3 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)();
+    if (cVar3 == '\0') goto LAB_00505041;
+  }
+  sVar6 = 0x17;
+  sVar5 = 0x17;
+  switch(*(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x13 + uVar9)) {
+  case 2:
+  case 5:
+  case 6:
+    sVar5 = 0x1a;
+    break;
+  case 3:
+  case 7:
+    sVar6 = 0x19;
+  case 10:
+  case 0xb:
+  case 0xc:
+    sVar5 = sVar6 + 4;
+    break;
+  case 0xd:
+    sVar5 = 0x18;
+  }
+  iVar8 = (int)sVar10;
+  sVar10 = sVar10 + 1;
+  *(short *)(&this->field_0x94 + iVar8 * 2) = sVar5;
+LAB_00505041:
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x18 + uVar9) != -1) {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x1c;
+  }
+  pcVar12 = (char *)0x0;
+  do {
+    pvStack_68 = (void *)uStack_4;
+    ppTStack_6c = (TTerrainHelpPictureVtbl **)0x50507a;
+    CStack_64.m_pchData = pcVar12;
+    cVar3 = (*g_pGlobalMapState->vftable[0xd].slot_0x04)();
+    if (cVar3 != '\0') {
+      iVar8 = (int)sVar10;
+      sVar10 = sVar10 + 1;
+      *(short *)(&this->field_0x94 + iVar8 * 2) = (short)pcVar12 + 0x21;
+    }
+    pcVar12 = pcVar12 + 1;
+  } while ((short)pcVar12 < 9);
+  if ('\0' < *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0xf + uVar9)) {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x2a;
+  }
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + uVar9) == '\x02') {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x2b;
+  }
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + uVar9) == '\x03') {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x2c;
+  }
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + uVar9) == '\x04') {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x2d;
+  }
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + uVar9) == '\x05') {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x2e;
+  }
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + uVar9) == '\x06') {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x2f;
+  }
+  if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + uVar9) == '\x0e') {
+    iVar8 = (int)sVar10;
+    sVar10 = sVar10 + 1;
+    *(undefined2 *)(&this->field_0x94 + iVar8 * 2) = 0x30;
+  }
+  cVar3 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + uVar9);
+  if ((cVar3 == '\x10') || (cVar3 == '\x11')) {
+    *(undefined2 *)(&this->field_0x94 + sVar10 * 2) = 0x31;
+  }
+  CStack_64.m_pchData = (char *)0x3;
+  pvStack_68 = (void *)0x2b6d;
+  ppTStack_6c = (TTerrainHelpPictureVtbl **)0xc;
+  puStack_74 = local_2c;
+  CStack_70.m_pchData = (char *)0x4;
+  uStack_78 = 0x505198;
+  thunk_InitializeUiTextStyleDescriptor();
+  pTStack_30 = this->vftable;
+  sVar10 = 0;
+  pTVar1 = pTStack_30[0x12].slot_0x04;
+  CStack_40.m_pchData = &this->field_0x94;
+  pcStack_3c = (char *)0x69303061;
+  do {
+    CStack_64.m_pchData = pcStack_3c;
+    pvStack_68 = (void *)0x5051cb;
+    uVar4 = (*pTVar1)();
+    ppTStack_6c = &pTStack_30;
+    pvStack_68 = (void *)0x1;
+    iVar8 = *(int *)CONCAT31(extraout_var,uVar4);
+    CStack_70.m_pchData = (char *)0x5051de;
+    (**(code **)(iVar8 + 0x1b4))();
+    CStack_70.m_pchData = (char *)0x1;
+    sVar6 = *unaff_EBX;
+    puStack_74 = (uint *)CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar6);
+    if (sVar6 == 0) {
+      puStack_74 = (uint *)0x0;
+      uStack_78 = 0x505216;
+      (**(code **)(iVar8 + 0xa4))();
+    }
+    else {
+      uStack_78 = 0x2755;
+      puStack_7c = (undefined1 *)0x5051fa;
+      (**(code **)(iVar8 + 0x1cc))();
+      puStack_7c = (undefined1 *)0x0;
+      CStack_80.m_pchData = (char *)0x1;
+      CStack_84.m_pchData = "j";
+      (**(code **)(iVar8 + 0xa4))();
+    }
+    CStack_84.m_pchData = (char *)0x0;
+    puStack_88 = (undefined1 *)(uint)(sVar6 != 0);
+    pcStack_8c = (char *)0x505222;
+    (**(code **)(iVar8 + 0xa8))();
+    pcStack_8c = (char *)0x0;
+    if ((short)ppTStack_6c < 7) {
+      CStack_90.m_pchData = (char *)0xfffffffe;
+    }
+    else {
+      CStack_90.m_pchData = (char *)0xffffffff;
+    }
+    CStack_94.m_pchData = (char *)0x50523a;
+    (**(code **)(iVar8 + 0x1c4))();
+    sVar10 = sVar10 + 1;
+    CStack_40.m_pchData = CStack_40.m_pchData + 2;
+    pcStack_3c = pcStack_3c + 1;
+  } while (sVar10 < 0xc);
+  CStack_64.m_pchData = (char *)0x74696c65;
+  pvStack_68 = (void *)0x50526a;
+  uVar4 = (*pTVar1)();
+  iVar8 = *(int *)CONCAT31(extraout_var_00,uVar4);
+  pvStack_68 = (void *)0x505273;
+  (**(code **)(iVar8 + 0xc))();
+  *(undefined2 *)((int *)CONCAT31(extraout_var_00,uVar4) + 0x18) = puStack_8._0_2_;
+  pvStack_68 = (void *)0x505284;
+  (**(code **)(iVar8 + 0xe4))();
+  pvStack_68 = (void *)0x74696c32;
+  ppTStack_6c = (TTerrainHelpPictureVtbl **)0x50528d;
+  uVar4 = (*pTVar1)();
+  iVar8 = *(int *)CONCAT31(extraout_var_01,uVar4);
+  ppTStack_6c = (TTerrainHelpPictureVtbl **)0x505296;
+  (**(code **)(iVar8 + 0xc))();
+  *(undefined2 *)((int *)CONCAT31(extraout_var_01,uVar4) + 0x18) = (undefined2)uStack_c;
+  ppTStack_6c = (TTerrainHelpPictureVtbl **)0x5052a7;
+  (**(code **)(iVar8 + 0xe4))();
+  ppTStack_6c = (TTerrainHelpPictureVtbl **)0x3;
+  CStack_70.m_pchData = (char *)0x2b67;
+  puStack_74 = (uint *)0xc;
+  puStack_7c = auStack_34;
+  uStack_78 = 0;
+  CStack_80.m_pchData = (char *)0x5052bc;
+  thunk_InitializeUiTextStyleDescriptor();
+  ppTStack_6c = (TTerrainHelpPictureVtbl **)0x696e666f;
+  CStack_70.m_pchData = (char *)0x5052c8;
+  uVar4 = (*pTVar1)();
+  iVar8 = *(int *)CONCAT31(extraout_var_02,uVar4);
+  puStack_74 = (uint *)auStack_38;
+  CStack_70.m_pchData = (char *)0x0;
+  *(int **)&this->field_0x90 = (int *)CONCAT31(extraout_var_02,uVar4);
+  uStack_78 = 0x5052df;
+  (**(code **)(iVar8 + 0x1e4))();
+  uVar2 = (uint3)pTStack_30;
+  pTStack_30 = (TTerrainHelpPictureVtbl *)(uint)(uVar2 & 0xffff);
+  local_2c[0] = local_2c[0] & 0xffff0000;
+  uStack_78 = 0x5052fc;
+  CString::CString((CString *)&stack0xffffffb4);
+  uStack_20 = 0;
+  uStack_78 = 0x50530d;
+  CString::CString(&CStack_64);
+  uStack_20._0_1_ = 1;
+  uStack_78 = 0x50531b;
+  CString::CString(&CStack_5c);
+  uStack_20._0_1_ = 2;
+  uStack_78 = 0x505329;
+  CString::CString(&CStack_60);
+  uStack_78 = 1;
+  puStack_7c = (undefined1 *)0x2b67;
+  CStack_80.m_pchData = (char *)0xc;
+  puStack_88 = auStack_34;
+  CStack_84.m_pchData = (char *)0x0;
+  uStack_20 = CONCAT31(uStack_20._1_3_,3);
+  pcStack_8c = (char *)0x505343;
+  thunk_InitializeUiTextStyleDescriptor();
+  uStack_78 = 0x7469746c;
+  puStack_7c = (undefined1 *)0x50534f;
+  uVar4 = (*pTVar1)();
+  puStack_7c = (undefined1 *)0x1;
+  CStack_80.m_pchData = (char *)0x1;
+  iVar8 = *(int *)CONCAT31(extraout_var_03,uVar4);
+  CStack_84.m_pchData = "j\x01j";
+  (**(code **)(iVar8 + 0xa4))();
+  CStack_84.m_pchData = (char *)0x1;
+  puStack_88 = (undefined1 *)0x0;
+  pcStack_8c = "j";
+  (**(code **)(iVar8 + 0xa8))();
+  pcStack_8c = (char *)0x0;
+  CStack_90.m_pchData = (char *)0x1;
+  CStack_94.m_pchData = (char *)0x505377;
+  (**(code **)(iVar8 + 0x1c4))();
+  CStack_98.m_pchData = &stack0xffffffb0;
+  CStack_94.m_pchData = (char *)0x0;
+  (**(code **)(iVar8 + 0x1b4))();
+  pcVar12 = (char *)((int)ppTStack_6c + *(int *)&g_pGlobalMapState->field_0xc);
+  if (*pcVar12 == '\x05') {
+    piVar7 = thunk_GetMapActionContextByTileIndex((short)pcStack_3c);
+    (**(code **)(*piVar7 + 0x2c))(&CStack_84);
+  }
+  else {
+    sVar10 = *(short *)(pcVar12 + 0x14);
+    thunk_AssignSharedStringFromIndexedA8EntryNameField((int)sVar10,&CStack_70);
+    pcStack_3c = (char *)(int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + sVar10 * 0xa8);
+    FormatOverlayTerrainLabelText(&CStack_80);
+    if ((int)pcStack_3c < 7) {
+      uVar14 = 0x1d;
+    }
+    else {
+      uVar14 = 0x1e;
+    }
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2755,uVar14,&puStack_88);
+    scanBracketExpressions(g_pLocalizationTable,&puStack_88,pcStack_8c);
+    if ((char *)(int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 1 + sVar10 * 0xa8) !=
+        CStack_40.m_pchData) {
+      CString::CString(&CStack_40);
+      src_ref = (CString *)
+                AssignNormalizedCredentialTokenToIndexedSlot
+                          (&CStack_70,
+                           (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 1 + sVar10 * 0xa8
+                                         ));
+      CString::AssignFromPtr(&CStack_84,src_ref);
+      CString::~CString(&CStack_70);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2755,0x1f,&pcStack_8c);
+      scanBracketExpressions(g_pLocalizationTable,&CStack_40,pcStack_8c);
+      uVar14 = AssignSharedStringConcatCStrAndRef(&CStack_70,&DAT_00695880,&CStack_40);
+      AssignStringSharedFromRef(uVar14);
+      CString::~CString(&CStack_70);
+      CString::~CString(&CStack_40);
+    }
+  }
+  (**(code **)(iVar8 + 0x1c8))(&puStack_88,1);
+  (**(code **)((int)puStack_74 + 0x1cc))(0);
+  CString::~CString(&CStack_94);
+  CString::~CString(&CStack_90);
+  CString::~CString(&CStack_98);
+  CString::~CString(&CStack_80);
+  *unaff_FS_OFFSET = CStack_5c.m_pchData;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005057A0
 // GHIDRA_NAME TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTerrainHelpPictureAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTTerrainHelpPictureAndMaybeFree(void)
 
-void __fastcall TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(int *param_1)
+void __thiscall
+TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(TTerrainHelpPicture *this)
 
 {
-  int *piVar1;
-  int iVar2;
-  int iVar3;
+  TTerrainHelpPictureVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  int *piVar3;
+  int iVar4;
+  int iVar5;
   undefined4 *unaff_FS_OFFSET;
   short unaff_retaddr;
-  undefined4 *puStack_84;
+  CString CStack_84;
   undefined4 uStack_80;
-  undefined4 *puStack_7c;
+  CString *pCStack_7c;
   undefined4 *puStack_78;
   undefined4 uStack_74;
   undefined4 uStack_70;
   undefined4 uStack_6c;
-  undefined4 uStack_68;
+  CString CStack_68;
   code *pcStack_64;
   undefined4 uStack_60;
   short *psStack_5c;
   undefined4 uStack_58;
   undefined4 uStack_54;
   undefined4 uStack_50;
-  undefined4 uStack_4c;
+  char acStack_4c [4];
   short asStack_30 [3];
   undefined1 uStack_2a;
   undefined1 uStack_29;
@@ -93,10 +516,16 @@ void __fastcall TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(int
   puStack_8 = &LAB_00633728;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar3 = *param_1;
-  uStack_4c = 0x5057c3;
-  (**(code **)(iVar3 + 0x58))();
-  uStack_4c = 3;
+  pTVar1 = this->vftable;
+  acStack_4c[0] = -0x3d;
+  acStack_4c[1] = 'W';
+  acStack_4c[2] = 'P';
+  acStack_4c[3] = '\0';
+  (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  acStack_4c[0] = '\x03';
+  acStack_4c[1] = '\0';
+  acStack_4c[2] = '\0';
+  acStack_4c[3] = '\0';
   uStack_50 = 0x2b6d;
   uStack_54 = 0xc;
   psStack_5c = (short *)auStack_18;
@@ -116,71 +545,97 @@ void __fastcall TTerrainHelpPicture::DestructTTerrainHelpPictureAndMaybeFree(int
   uStack_60 = 0x50580a;
   thunk_InitializeUiTextStyleDescriptor();
   psStack_5c = (short *)auStack_24;
-  uStack_4c = 3;
+  acStack_4c[0] = '\x03';
+  acStack_4c[1] = '\0';
+  acStack_4c[2] = '\0';
+  acStack_4c[3] = '\0';
   uStack_50 = 0x2b69;
   uStack_54 = 0xc;
   uStack_58 = 4;
   uStack_60 = 0x505822;
   thunk_InitializeUiTextStyleDescriptor();
   psStack_5c = asStack_30;
-  uStack_4c = 1;
+  acStack_4c[0] = '\x01';
+  acStack_4c[1] = '\0';
+  acStack_4c[2] = '\0';
+  acStack_4c[3] = '\0';
   uStack_50 = 0x2b67;
   uStack_54 = 0xc;
   uStack_58 = 0;
   uStack_60 = 0x505839;
   thunk_InitializeUiTextStyleDescriptor();
-  uStack_4c = 0x6974656d;
+  builtin_strncpy(acStack_4c,"meti",4);
   uStack_50 = 0x50584f;
-  piVar1 = (int *)(**(code **)(iVar3 + 0x94))();
+  uVar2 = (*pTVar1[0x12].slot_0x04)();
   uStack_50 = 1;
-  iVar3 = *piVar1;
-  uStack_54 = CONCAT22(unaff_retaddr >> 0xf,*(undefined2 *)((int)param_1 + unaff_retaddr * 2 + 0x94)
-                      );
+  iVar5 = *(int *)CONCAT31(extraout_var,uVar2);
+  uStack_54 = CONCAT22(unaff_retaddr >> 0xf,*(undefined2 *)(&this->field_0x94 + unaff_retaddr * 2));
   uStack_58 = 0x2755;
   psStack_5c = (short *)0x505870;
-  (**(code **)(iVar3 + 0x1cc))();
+  (**(code **)(iVar5 + 0x1cc))();
   psStack_5c = (short *)0x1;
   uStack_60 = 1;
   pcStack_64 = (code *)0x50587c;
-  (**(code **)(iVar3 + 0xa4))();
+  (**(code **)(iVar5 + 0xa4))();
   pcStack_64 = (code *)0x1;
-  uStack_68 = 0;
+  CStack_68.m_pchData = (char *)0x0;
   uStack_6c = 0x505887;
-  (**(code **)(iVar3 + 0xa8))();
+  (**(code **)(iVar5 + 0xa8))();
   uStack_6c = 0;
   uStack_70 = 1;
   uStack_74 = 0x505892;
-  (**(code **)(iVar3 + 0x1c4))();
+  (**(code **)(iVar5 + 0x1c4))();
   puStack_78 = &uStack_58;
   uStack_74 = 0;
-  puStack_7c = (undefined4 *)0x5058a0;
-  (**(code **)(iVar3 + 0x1b4))();
-  iVar3 = 0;
+  pCStack_7c = (CString *)0x5058a0;
+  (**(code **)(iVar5 + 0x1b4))();
+  iVar5 = 0;
   do {
-    puStack_7c = (undefined4 *)(iVar3 + 0x69303061);
+    pCStack_7c = (CString *)(iVar5 + 0x69303061);
     uStack_80 = 0x5058af;
-    piVar1 = (int *)(*pcStack_64)();
-    iVar2 = (int)asStack_30[0];
+    piVar3 = (int *)(*pcStack_64)();
+    iVar4 = (int)asStack_30[0];
     uStack_80 = 1;
-    puStack_84 = &uStack_58;
-    if (iVar2 != iVar3) {
-      puStack_84 = &uStack_4c;
+    CStack_84.m_pchData = (char *)&uStack_58;
+    if (iVar4 != iVar5) {
+      CStack_84.m_pchData = acStack_4c;
     }
-    (**(code **)(*piVar1 + 0x1b4))();
-    iVar3 = iVar3 + 1;
-  } while (iVar3 < 0xc);
-  puStack_7c = (undefined4 *)0x5058dc;
-  InitializeSharedStringRefFromEmpty(&uStack_68);
-  puStack_7c = &uStack_68;
-  uStack_80 = CONCAT22((short)((uint)puStack_7c >> 0x10),
-                       *(short *)((int)param_1 + iVar2 * 2 + 0x94) + -1);
-  puStack_84 = (undefined4 *)0x2756;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
-  (**(code **)(*(int *)param_1[0x24] + 0x1ec))(&uStack_74,1);
-  (**(code **)(*(int *)param_1[0x24] + 0xa4))(1,1);
+    (**(code **)(*piVar3 + 0x1b4))();
+    iVar5 = iVar5 + 1;
+  } while (iVar5 < 0xc);
+  pCStack_7c = (CString *)0x5058dc;
+  CString::CString(&CStack_68);
+  pCStack_7c = &CStack_68;
+  uStack_80 = CONCAT22((short)((uint)pCStack_7c >> 0x10),
+                       *(short *)(&this->field_0x94 + iVar4 * 2) + -1);
+  CStack_84.m_pchData = (char *)0x2756;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (**(code **)(**(int **)&this->field_0x90 + 0x1ec))(&uStack_74,1);
+  (**(code **)(**(int **)&this->field_0x90 + 0xa4))(1,1);
   uStack_50 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&puStack_84);
+  CString::~CString(&CStack_84);
   *unaff_FS_OFFSET = uStack_58;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005059D0
+// GHIDRA_NAME TTerrainHelpPicture::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TTerrainHelpPicture::OrphanRetStub_0059add0(TTerrainHelpPicture *this)
+
+{
+  undefined2 extraout_var;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  if (((in_stack_00000004 == 0xd) && (0x69303060 < *(uint *)(in_stack_00000008 + 0x1c))) &&
+     (*(uint *)(in_stack_00000008 + 0x1c) < 0x6930306d)) {
+    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    (*this->vftable[0x39].slot_0x04)
+              (CONCAT22(extraout_var,*(short *)(in_stack_00000008 + 0x1c) + -0x3061));
+  }
   return;
 }
 

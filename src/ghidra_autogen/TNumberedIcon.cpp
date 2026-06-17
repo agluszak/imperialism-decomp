@@ -7,10 +7,10 @@
 // GHIDRA_NAME TNumberedIcon::CreateTNumberedIconInstance
 // GHIDRA_PROTO undefined CreateTNumberedIconInstance()
 
-undefined4 * TNumberedIcon::CreateTNumberedIconInstance(void)
+TMegaPicture * TNumberedIcon::CreateTNumberedIconInstance(void)
 
 {
-  undefined4 *puVar1;
+  TMegaPicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,54 +20,139 @@ undefined4 * TNumberedIcon::CreateTNumberedIconInstance(void)
   puStack_8 = &LAB_006337ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb0);
+  this = (TMegaPicture *)AllocateWithFallbackHandler(0xb0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMegaPicture::ConstructTMegaPictureBaseState();
-    *puVar1 = &PTR_LAB_006580b0;
-    puVar1[0x2b] = 0;
+  if (this != (TMegaPicture *)0x0) {
+    TMegaPicture::ConstructTMegaPictureBaseState(this);
+    this->vftable = (TMegaPictureVtbl *)&TNumberedIconVtbl_006580b0;
+    this[1].vftable = (TMegaPictureVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TMegaPicture *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00507380
-// GHIDRA_NAME TNumberedIcon::GetTNumberedIconClassNamePointer
-// GHIDRA_PROTO undefined GetTNumberedIconClassNamePointer()
+// GHIDRA_NAME TNumberedIcon::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TNumberedIcon::GetTNumberedIconClassNamePointer(void)
+CRuntimeClass * __thiscall TNumberedIcon::GetTEventHandlerClassNamePointer(TNumberedIcon *this)
 
 {
-  return &PTR_s_TNumberedIcon_006579b8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005073A0
 // GHIDRA_NAME TNumberedIcon::ConstructTNumberedIconBaseState
-// GHIDRA_PROTO undefined ConstructTNumberedIconBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTNumberedIconBaseState(void)
 
-undefined4 * __fastcall TNumberedIcon::ConstructTNumberedIconBaseState(undefined4 *param_1)
+TNumberedIcon * __thiscall TNumberedIcon::ConstructTNumberedIconBaseState(TNumberedIcon *this)
 
 {
-  TMegaPicture::ConstructTMegaPictureBaseState();
-  *param_1 = &PTR_LAB_006580b0;
-  param_1[0x2b] = 0;
-  return param_1;
+  TMegaPicture::ConstructTMegaPictureBaseState((TMegaPicture *)this);
+  this->vftable = &TNumberedIconVtbl_006580b0;
+  *(undefined4 *)&this->field_0xac = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005073D0
-// GHIDRA_NAME TNumberedIcon::DestructTNumberedIconAndMaybeFree
-// GHIDRA_PROTO undefined DestructTNumberedIconAndMaybeFree()
+// GHIDRA_NAME TNumberedIcon::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TNumberedIcon::DestructTNumberedIconAndMaybeFree(undefined4 param_1,byte param_2)
+TNumberedIcon * __thiscall TNumberedIcon::_scalar_deleting_destructor_(TNumberedIcon *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005074E0
+// GHIDRA_NAME TNumberedIcon::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+
+void __thiscall TNumberedIcon::OrphanCallChain_C6_I49_004875d0(TNumberedIcon *this)
+
+{
+  TNumberedIconVtbl *pTVar1;
+  
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  pTVar1 = this->vftable;
+  (*pTVar1[0x3a].slot_0x04)(5,1);
+  (*pTVar1[0x3b].slot_0x04)();
+  if (*(int **)&this->field_0xac != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0xac + 0x168))(&stack0xffffffe8,1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00507570
+// GHIDRA_NAME TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(void)
+
+void __thiscall
+TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(TNumberedIcon *this)
+
+{
+  TNumberTextVtbl *pTVar1;
+  TMyNumberText *this_00;
+  TNumberText *this_01;
+  undefined4 *unaff_FS_OFFSET;
+  undefined2 uStack_18;
+  undefined2 uStack_16;
+  undefined2 uStack_14;
+  undefined4 uStack_12;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006337ea;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (*(int *)&this->field_0xac == 0) {
+    uStack_12 = 0;
+    this_00 = (TMyNumberText *)AllocateWithFallbackHandler(0xac);
+    uStack_4 = 0;
+    if (this_00 == (TMyNumberText *)0x0) {
+      this_01 = (TNumberText *)0x0;
+    }
+    else {
+      this_01 = (TNumberText *)TMyNumberText::ConstructTMyNumberTextBaseState(this_00);
+    }
+    uStack_4 = 0xffffffff;
+    TNumberText::ConstructTNumberTextBaseState(this_01);
+    pTVar1 = this_01->vftable;
+    uStack_18 = 3;
+    uStack_16 = 0;
+    uStack_14 = 9;
+    uStack_12 = 0;
+    (*pTVar1[0x36].slot_0x04)(&uStack_18,0);
+    (*pTVar1[0x36].GetTEventHandlerClassNamePointer)(&stack0xffffffcf);
+    (*pTVar1[0x35].slot_0x04)(0,1);
+    *(TNumberText **)&this->field_0xac = this_01;
+  }
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005076D0
+// GHIDRA_NAME TNumberedIcon::OrphanCallChain_C1_I10_005076d0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_005076d0(void)
+
+void __thiscall TNumberedIcon::OrphanCallChain_C1_I10_005076d0(TNumberedIcon *this)
+
+{
+  short in_stack_00000004;
+  
+  if (*(int **)&this->field_0xac != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0xac + 0x1e4))((int)in_stack_00000004);
+  }
+  return;
 }
 

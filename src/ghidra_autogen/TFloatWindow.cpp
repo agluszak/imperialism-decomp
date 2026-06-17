@@ -32,9 +32,9 @@ TView * TFloatWindow::CreateTFloatWindowInstance(void)
   }
   TView::thunk_ConstructTViewBaseState(this);
   local_4._0_1_ = 1;
-  TDialogBehavior::ConstructTDialogBehaviorBaseState();
+  TDialogBehavior::ConstructTDialogBehaviorBaseState((TDialogBehavior *)&this[1].field14);
   this[1].field38 = 0;
-  this->vftable = &PTR_LAB_00649e58;
+  this->vftable = (TViewVtbl *)&TWindowVtbl_00649e58;
   iVar1 = (int)DAT_006a1a44;
   local_4 = CONCAT31(local_4._1_3_,2);
   piVar4 = DAT_006a1a50;
@@ -69,33 +69,184 @@ TView * TFloatWindow::CreateTFloatWindowInstance(void)
   thunk_SetUiColorDescriptorGoldTriplet(1,0x20202020,0x20202020);
   this[1].controlTag = (int)this;
   this[1].field04 = (int)this;
-  this->vftable = &PTR_LAB_0064b340;
+  this->vftable = (TViewVtbl *)&DAT_0064b340;
   *unaff_FS_OFFSET = local_c;
   return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491F90
-// GHIDRA_NAME TFloatWindow::GetTFloatWindowClassNamePointer
-// GHIDRA_PROTO undefined GetTFloatWindowClassNamePointer()
+// GHIDRA_NAME TFloatWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TFloatWindow::GetTFloatWindowClassNamePointer(void)
+CRuntimeClass * __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloatWindow *this)
 
 {
-  return &PTR_s_TFloatWindow_006496d8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00492110
-// GHIDRA_NAME TFloatWindow::DestructTFloatWindowAndMaybeFree
-// GHIDRA_PROTO undefined DestructTFloatWindowAndMaybeFree()
+// GHIDRA_NAME TFloatWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TFloatWindow::DestructTFloatWindowAndMaybeFree(undefined4 param_1,byte param_2)
+TFloatWindow * __thiscall TFloatWindow::_scalar_deleting_destructor_(TFloatWindow *this)
 
 {
-  DestructTWindowAndUnlinkGlobalWindowNode();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTWindowAndUnlinkGlobalWindowNode((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492310
+// GHIDRA_NAME TFloatWindow::OrphanVtableAssignStub_00492310
+// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_00492310(void)
+
+undefined4 __thiscall TFloatWindow::OrphanVtableAssignStub_00492310(TFloatWindow *this)
+
+{
+  return 0x66776e64;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492330
+// GHIDRA_NAME TFloatWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Alternate implementation of ResetChildSelectionAndNotifyParent468 with same notification/child-iteration flow.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Removing unreachable block (ram,0x00492347) */
+/* Alternate implementation of ResetChildSelectionAndNotifyParent468 with same
+   notification/child-iteration flow. */
+
+void __thiscall TFloatWindow::GetTEventHandlerClassNamePointer(TFloatWindow *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined4 *puVar3;
+  
+  iVar1 = this->field50;
+  *(undefined4 *)&this->field_0x98 = 0;
+  if ((iVar1 != 0) && (*(int *)(iVar1 + 0x1c) != 0)) {
+    SendMessageA(*(HWND *)(iVar1 + 0x1c),0x468,1,this->controlTag);
+  }
+  if (this->field44 == 0) {
+    puVar3 = (undefined4 *)0x0;
+  }
+  else {
+    puVar3 = *(undefined4 **)(this->field44 + 4);
+  }
+  if (puVar3 == (undefined4 *)0x0) {
+    piVar2 = (int *)0x0;
+    puVar3 = (undefined4 *)0x0;
+  }
+  else {
+    piVar2 = (int *)puVar3[2];
+    puVar3 = (undefined4 *)*puVar3;
+  }
+  while (piVar2 != (int *)0x0) {
+    (**(code **)(*piVar2 + 0xa0))();
+    if (puVar3 == (undefined4 *)0x0) {
+      piVar2 = (int *)0x0;
+      puVar3 = (undefined4 *)0x0;
+    }
+    else {
+      piVar2 = (int *)puVar3[2];
+      puVar3 = (undefined4 *)*puVar3;
+    }
+  }
+  (*this->vftable[0x39].slot_0x04)(0,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492670
+// GHIDRA_NAME TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_C(void)
+
+void __thiscall TFloatWindow::SerializeRecordList_0x0C_WithBlockPool_C(TFloatWindow *this)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  int *piVar4;
+  int iVar5;
+  CArchive *in_stack_00000004;
+  
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+      }
+      else {
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+      }
+      iVar1 = this->padding_08_to_0b;
+      if (this->field10 == 0) {
+        iVar3 = AllocateAndLinkBlockHead(&this->field14,this->field18,0xc);
+        iVar5 = this->field18;
+        piVar4 = (int *)(iVar3 + -8 + iVar5 * 0xc);
+        if (-1 < iVar5 + -1) {
+          do {
+            *piVar4 = this->field10;
+            this->field10 = (int)piVar4;
+            piVar4 = piVar4 + -3;
+            iVar5 = iVar5 + -1;
+          } while (iVar5 != 0);
+        }
+      }
+      piVar4 = (int *)this->field10;
+      this->field10 = *piVar4;
+      piVar4[1] = iVar1;
+      *piVar4 = 0;
+      this->field0c = this->field0c + 1;
+      piVar4[2] = 0;
+      piVar4[2] = (int)in_stack_00000004;
+      if ((undefined4 *)this->padding_08_to_0b == (undefined4 *)0x0) {
+        this->field04 = (int)piVar4;
+      }
+      else {
+        *(undefined4 *)this->padding_08_to_0b = piVar4;
+      }
+      this->padding_08_to_0b = piVar4;
+    }
+  }
+  else {
+    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
+    piVar4 = (int *)this->field04;
+    if (piVar4 != (int *)0x0) {
+      do {
+        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        }
+        else {
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        }
+        piVar4 = (int *)*piVar4;
+      } while (piVar4 != (int *)0x0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492950
+// GHIDRA_NAME TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492950(void)
+
+TFloatWindow * __thiscall
+TFloatWindow::WrapperFor_FreeHeapBufferIfNotNull_At00492950(TFloatWindow *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 

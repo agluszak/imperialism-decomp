@@ -3,65 +3,95 @@
 // Program: Imperialism.exe
 // Bucket: CPtrList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00601F40
-// GHIDRA_NAME CPtrList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_FUNCTION IMPERIALISM 0x00412BD0
+// GHIDRA_NAME CPtrList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined4 __thiscall CPtrList::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
 
 {
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00412C10
+// GHIDRA_NAME CPtrList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
+// GHIDRA_COMMENT_END
+
+/* No-op virtual slot stub (returns immediately). */
+
+void __thiscall CPtrList::GetTEventHandlerClassNamePointer(CPtrList *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00601F40
+// GHIDRA_NAME CPtrList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+CPtrList * __thiscall CPtrList::_scalar_deleting_destructor_(CPtrList *this)
+
+{
+  byte in_stack_00000004;
+  
   DestructCPtrListBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601FAF
 // GHIDRA_NAME CPtrList::NewNode
-// GHIDRA_PROTO undefined NewNode()
+// GHIDRA_PROTO undefined __thiscall NewNode(void)
 
-void __thiscall CPtrList::NewNode(int param_1,undefined4 param_2,undefined4 param_3)
+void __thiscall CPtrList::NewNode(CPtrList *this)
 
 {
   int iVar1;
   undefined4 *puVar2;
   int iVar3;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
   
-  if (*(int *)(param_1 + 0x10) == 0) {
-    iVar1 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
-    iVar3 = *(int *)(param_1 + 0x18);
+  if (this->m_pNodeFree == (void *)0x0) {
+    iVar1 = AllocateAndLinkBlockHead(&this->m_pBlocks,this->m_nBlockSize,0xc);
+    iVar3 = this->m_nBlockSize;
     puVar2 = (undefined4 *)(iVar1 + -8 + iVar3 * 0xc);
     if (-1 < iVar3 + -1) {
       do {
-        *puVar2 = *(undefined4 *)(param_1 + 0x10);
-        *(undefined4 **)(param_1 + 0x10) = puVar2;
+        *puVar2 = this->m_pNodeFree;
+        this->m_pNodeFree = puVar2;
         puVar2 = puVar2 + -3;
         iVar3 = iVar3 + -1;
       } while (iVar3 != 0);
     }
   }
-  puVar2 = *(undefined4 **)(param_1 + 0x10);
-  *(undefined4 *)(param_1 + 0x10) = *puVar2;
-  puVar2[1] = param_2;
-  *puVar2 = param_3;
-  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
+  puVar2 = this->m_pNodeFree;
+  this->m_pNodeFree = (void *)*puVar2;
+  puVar2[1] = in_stack_00000004;
+  *puVar2 = in_stack_00000008;
+  this->m_nCount = this->m_nCount + 1;
   puVar2[2] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006021B4
 // GHIDRA_NAME CPtrList::GetNodeAtZeroBasedIndex
-// GHIDRA_PROTO undefined GetNodeAtZeroBasedIndex()
+// GHIDRA_PROTO undefined __thiscall GetNodeAtZeroBasedIndex(void)
 
-undefined4 * __thiscall CPtrList::GetNodeAtZeroBasedIndex(int param_1,int param_2)
+undefined4 * __thiscall CPtrList::GetNodeAtZeroBasedIndex(CPtrList *this)
 
 {
   undefined4 *puVar1;
+  int in_stack_00000004;
   
-  if (param_2 < *(int *)(param_1 + 0xc)) {
-    puVar1 = *(undefined4 **)(param_1 + 4);
-    for (; param_2 != 0; param_2 = param_2 + -1) {
+  if (in_stack_00000004 < this->m_nCount) {
+    puVar1 = this->m_pNodeHead;
+    for (; in_stack_00000004 != 0; in_stack_00000004 = in_stack_00000004 + -1) {
       puVar1 = (undefined4 *)*puVar1;
     }
   }
@@ -69,5 +99,15 @@ undefined4 * __thiscall CPtrList::GetNodeAtZeroBasedIndex(int param_1,int param_
     puVar1 = (undefined4 *)0x0;
   }
   return puVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00623B3A
+// GHIDRA_NAME CPtrList::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+
+CRuntimeClass * __thiscall CPtrList::SetForeignMinisterReadyFlag14(CPtrList *this)
+
+{
+  return &classRuntimeClass;
 }
 

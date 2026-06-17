@@ -28,7 +28,7 @@ TView * TShipAmtBar::CreateTShipAmtBarInstance(void)
     *(undefined2 *)((int)&this[1].vftable + 2) = 0;
     *(undefined2 *)&this[1].field04 = 0;
     *(undefined2 *)((int)&this[1].field04 + 2) = 0;
-    this->vftable = &PTR_LAB_00666998;
+    this->vftable = (TViewVtbl *)&TShipAmtBarVtbl_00666998;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -37,10 +37,10 @@ TView * TShipAmtBar::CreateTShipAmtBarInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AB40
-// GHIDRA_NAME TShipAmtBar::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TShipAmtBar::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TShipAmtBar::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TShipAmtBar::GetTEventHandlerClassNamePointer(TShipAmtBar *this)
 
 {
   return &g_pClassDescTShipAmtBar;
@@ -48,73 +48,76 @@ char * TShipAmtBar::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AB60
 // GHIDRA_NAME TShipAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined ConstructBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
-TView * __fastcall TShipAmtBar::ConstructBaseState(TView *param_1)
+TShipAmtBar * __thiscall TShipAmtBar::ConstructBaseState(TShipAmtBar *this)
 
 {
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1->vftable = &PTR_LAB_00666998;
-  *(undefined2 *)&param_1[1].vftable = 0;
-  *(undefined2 *)((int)&param_1[1].vftable + 2) = 0;
-  *(undefined2 *)&param_1[1].field04 = 0;
-  *(undefined2 *)((int)&param_1[1].field04 + 2) = 0;
-  return param_1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &TShipAmtBarVtbl_00666998;
+  *(undefined2 *)&this->field_0x60 = 0;
+  *(undefined2 *)&this->field_0x62 = 0;
+  *(undefined2 *)&this->field_0x64 = 0;
+  *(undefined2 *)&this->field_0x66 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058ABA0
-// GHIDRA_NAME TShipAmtBar::DestructAndMaybeFree
-// GHIDRA_PROTO undefined DestructAndMaybeFree()
+// GHIDRA_NAME TShipAmtBar::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TShipAmtBar::DestructAndMaybeFree(TView *param_1,byte param_2)
+TShipAmtBar * __thiscall TShipAmtBar::_scalar_deleting_destructor_(TShipAmtBar *this)
 
 {
-  TView::thunk_DestructTViewBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058ABF0
-// GHIDRA_NAME TShipAmtBar::DoPostCreate
-// GHIDRA_PROTO undefined DoPostCreate()
+// GHIDRA_NAME TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TShipAmtBar::DoPostCreate(int param_1,undefined4 param_2)
+void __thiscall TShipAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TShipAmtBar *this)
 
 {
   short sVar1;
-  int iVar2;
+  TCity *pTVar2;
   
   sVar1 = UiRuntimeContext::GetActiveNationId();
-  if ((&g_apNationStates)[sVar1] == 0) {
-    iVar2 = 0;
+  if (g_apNationStates[sVar1] == (TGreatPower *)0x0) {
+    pTVar2 = (TCity *)0x0;
   }
   else {
-    iVar2 = *(int *)((&g_apNationStates)[sVar1] + 0x894);
+    pTVar2 = g_apNationStates[sVar1]->city;
   }
-  *(undefined4 *)(param_1 + 0x68) = *(undefined4 *)(iVar2 + 400);
-  sVar1 = *(short *)(*(int *)(iVar2 + 0x1d8) + 0x1c);
-  *(undefined2 *)(param_1 + 0x62) = *(undefined2 *)(param_1 + 0x34);
-  *(short *)(param_1 + 100) = sVar1;
-  *(undefined2 *)(param_1 + 0x66) = 0x3a;
-  *(short *)(param_1 + 0x60) = (short)(0 / (longlong)(int)sVar1);
-  TView::thunk_NoOpUiLifecycleHook(param_2);
+  *(void **)&this->field_0x68 = pTVar2->orderSlotsE4[0x2b];
+  sVar1 = *(short *)(*(int *)&pTVar2->field_0x1d8 + 0x1c);
+  *(short *)&this->field_0x62 = (short)this->field34;
+  *(short *)&this->field_0x64 = sVar1;
+  *(undefined2 *)&this->field_0x66 = 0x3a;
+  *(short *)&this->field_0x60 = (short)(0 / (longlong)(int)sVar1);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AC80
-// GHIDRA_NAME TShipAmtBar::DrawAmt
-// GHIDRA_PROTO undefined DrawAmt()
+// GHIDRA_NAME TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
+// GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void __fastcall TShipAmtBar::DrawAmt(int *param_1)
+void __thiscall TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TShipAmtBar *this)
 
 {
-  int iVar1;
+  TShipAmtBarVtbl *pTVar1;
   char cVar2;
-  undefined2 extraout_var;
-  int *piVar3;
+  undefined uVar3;
   undefined2 extraout_var_00;
+  undefined3 extraout_var;
+  undefined2 extraout_var_01;
   undefined4 *unaff_FS_OFFSET;
   undefined4 *puVar4;
   undefined4 local_48;
@@ -137,30 +140,31 @@ void __fastcall TShipAmtBar::DrawAmt(int *param_1)
   AcquireReusableQuickDrawSurface();
   local_4 = 0;
   ApplyHitRegionToClipState(local_48);
-  iVar1 = *param_1;
-  cVar2 = (**(code **)(iVar1 + 0xec))();
+  pTVar1 = this->vftable;
+  cVar2 = (*pTVar1[0x1d].slot_0x04)();
   if (cVar2 != '\0') {
-    cVar2 = (**(code **)(iVar1 + 0xf8))();
+    cVar2 = (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
     if (cVar2 != '\0') {
       puVar4 = &uStack_3c;
-      (**(code **)(iVar1 + 0x128))(puVar4);
+      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(puVar4);
       uStack_2c = uStack_3c;
       uStack_28 = uStack_38;
       uStack_24 = uStack_34;
       thunk_ApplyRectClipRegionToGlobalClipState(auStack_30);
-      (**(code **)(iVar1 + 300))(auStack_20);
-      (**(code **)(iVar1 + 0x138))(&stack0xffffffb4);
-      if (0 < (short)param_1[0x18]) {
+      (*pTVar1[0x25].slot_0x04)(auStack_20);
+      (*pTVar1[0x27].GetTEventHandlerClassNamePointer)(&stack0xffffffb4);
+      if (0 < *(short *)&this->field_0x60) {
         thunk_SetQuickDrawTextOriginWithContextOffset(0,1);
-        (**(code **)(*g_pUiRuntimeContext + 0x34))
-                  (CONCAT22(extraout_var,*(undefined2 *)((int)param_1 + 0x66)));
+        (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
+                  (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x66));
         thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1,4);
-        thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_00,(short)param_1[0x18]),1);
+        thunk_DrawCenteredGuideLineOnMapDc
+                  (CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x60),1);
         ResetQuickDrawStrokeState();
       }
       SnapshotHitRegionToClipCache(puVar4);
-      piVar3 = (int *)(**(code **)(iVar1 + 0x58))();
-      (**(code **)(*piVar3 + 0x13c))();
+      uVar3 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x13c))();
     }
   }
   local_4 = 0xffffffff;

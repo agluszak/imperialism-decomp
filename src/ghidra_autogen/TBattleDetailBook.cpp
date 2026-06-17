@@ -3,14 +3,31 @@
 // Program: Imperialism.exe
 // Bucket: TBattleDetailBook.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00430B00
+// GHIDRA_NAME TBattleDetailBook::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TBattleDetailBook * __thiscall
+TBattleDetailBook::_scalar_deleting_destructor_(TBattleDetailBook *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004AE9D0
 // GHIDRA_NAME TBattleDetailBook::CreateTBattleDetailBookInstance
 // GHIDRA_PROTO undefined CreateTBattleDetailBookInstance()
 
-undefined4 * TBattleDetailBook::CreateTBattleDetailBookInstance(void)
+thunk_TPictureButton * TBattleDetailBook::CreateTBattleDetailBookInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,47 +37,50 @@ undefined4 * TBattleDetailBook::CreateTBattleDetailBookInstance(void)
   puStack_8 = &LAB_0063091a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    puVar1[0x24] = 0;
-    puVar1[0x25] = 0;
-    *puVar1 = &PTR_LAB_0063f428;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(undefined4 *)(this + 0x90) = 0;
+    *(undefined4 *)(this + 0x94) = 0;
+    *(TBattleDetailBookVtbl **)this = &TBattleDetailBookVtbl_0063f428;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEA70
-// GHIDRA_NAME TBattleDetailBook::GetTBattleDetailBookClassNamePointer
-// GHIDRA_PROTO undefined GetTBattleDetailBookClassNamePointer()
+// GHIDRA_NAME TBattleDetailBook::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TBattleDetailBook::GetTBattleDetailBookClassNamePointer(void)
+CRuntimeClass * __thiscall
+TBattleDetailBook::GetTEventHandlerClassNamePointer(TBattleDetailBook *this)
 
 {
-  return &PTR_s_TBattleDetailBook_0064dc98;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEA90
-// GHIDRA_NAME TBattleDetailBook::ConstructTBattleDetailBookBaseState
-// GHIDRA_PROTO undefined ConstructTBattleDetailBookBaseState()
+// GHIDRA_NAME TBattleDetailBook::OrphanCallChain_C1_I05_00415050
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00415050(void)
 
-void __thiscall
-TBattleDetailBook::ConstructTBattleDetailBookBaseState
-          (int *param_1,int param_2,int param_3,undefined4 param_4)
+void __thiscall TBattleDetailBook::OrphanCallChain_C1_I05_00415050(TBattleDetailBook *this)
 
 {
-  int *piVar1;
+  undefined uVar1;
+  undefined3 extraout_var;
+  int in_stack_00000004;
+  int in_stack_00000008;
   
-  if ((param_2 == 10) && (*(int *)(param_3 + 0x1c) == 0x6f6b6179)) {
-    piVar1 = (int *)(**(code **)(*param_1 + 0x58))();
-    (**(code **)(*piVar1 + 0x1b4))(*(undefined4 *)(param_3 + 0x1c),1);
+  if ((in_stack_00000004 == 10) && (*(int *)(in_stack_00000008 + 0x1c) == 0x6f6b6179)) {
+    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))
+              (*(undefined4 *)(in_stack_00000008 + 0x1c),1);
     return;
   }
-  TBook::DestructTBookAndMaybeFree(param_2,param_3,param_4);
+  TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject((TBook *)this);
   return;
 }
 
@@ -87,7 +107,7 @@ TView * TBattleDetailBook::DestructTBattleDetailBookAndMaybeFree(void)
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0064dff8;
+    this->vftable = (TViewVtbl *)&TArmyBoyViewVtbl_0064dff8;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

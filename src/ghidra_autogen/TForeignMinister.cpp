@@ -5,93 +5,346 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00404912
 // GHIDRA_NAME TForeignMinister::thunk_ConstructTForeignMinister
-// GHIDRA_PROTO undefined thunk_ConstructTForeignMinister()
+// GHIDRA_PROTO undefined __thiscall thunk_ConstructTForeignMinister(void)
 
-undefined4 * __fastcall TForeignMinister::thunk_ConstructTForeignMinister(undefined4 *param_1)
+TForeignMinister * __thiscall
+TForeignMinister::thunk_ConstructTForeignMinister(TForeignMinister *this)
 
 {
   int iVar1;
   undefined4 *puVar2;
   
-  *(undefined2 *)(param_1 + 3) = 0;
-  *param_1 = &_vftable_;
-  *(undefined4 *)((int)param_1 + 0x49) = 0x1010101;
-  *(undefined2 *)((int)param_1 + 0x4d) = 0x101;
-  *(undefined1 *)((int)param_1 + 0x4f) = 1;
-  puVar2 = param_1 + 0x14;
+  *(undefined2 *)&this->field_0xc = 0;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x49 = 0x1010101;
+  *(undefined2 *)&this->field_0x4d = 0x101;
+  this->field_0x4f = 1;
+  puVar2 = (undefined4 *)&this->field_0x50;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
     *puVar2 = 0;
     puVar2 = puVar2 + 1;
   }
   *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)((int)param_1 + 0x16) = 0;
-  *(undefined1 *)(param_1 + 0x12) = 0;
-  *(undefined2 *)((int)param_1 + 0x1a) = 5;
-  *(undefined2 *)(param_1 + 7) = 2;
-  return param_1;
+  *(undefined2 *)&this->field_0x16 = 0;
+  this->field_0x48 = 0;
+  *(undefined2 *)&this->field_0x1a = 5;
+  *(undefined2 *)&this->field_0x1c = 2;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F050
-// GHIDRA_NAME TForeignMinister::GetTForeignMinisterClassNamePointer
-// GHIDRA_PROTO undefined GetTForeignMinisterClassNamePointer()
+// GHIDRA_NAME TForeignMinister::GetTMinisterClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-undefined ** TForeignMinister::GetTForeignMinisterClassNamePointer(void)
+CRuntimeClass * __thiscall TForeignMinister::GetTMinisterClassNamePointer(TForeignMinister *this)
 
 {
-  return &PTR_s_TForeignMinister_00659a98;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F070
 // GHIDRA_NAME TForeignMinister::ConstructTForeignMinister
-// GHIDRA_PROTO undefined ConstructTForeignMinister()
+// GHIDRA_PROTO undefined __thiscall ConstructTForeignMinister(void)
 
-undefined4 * __fastcall TForeignMinister::ConstructTForeignMinister(undefined4 *param_1)
+TForeignMinister * __thiscall TForeignMinister::ConstructTForeignMinister(TForeignMinister *this)
 
 {
   int iVar1;
   undefined4 *puVar2;
   
-  *(undefined2 *)(param_1 + 3) = 0;
-  *param_1 = &_vftable_;
-  *(undefined4 *)((int)param_1 + 0x49) = 0x1010101;
-  *(undefined2 *)((int)param_1 + 0x4d) = 0x101;
-  *(undefined1 *)((int)param_1 + 0x4f) = 1;
-  puVar2 = param_1 + 0x14;
+  *(undefined2 *)&this->field_0xc = 0;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x49 = 0x1010101;
+  *(undefined2 *)&this->field_0x4d = 0x101;
+  this->field_0x4f = 1;
+  puVar2 = (undefined4 *)&this->field_0x50;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
     *puVar2 = 0;
     puVar2 = puVar2 + 1;
   }
   *(undefined2 *)puVar2 = 0;
-  *(undefined2 *)((int)param_1 + 0x16) = 0;
-  *(undefined1 *)(param_1 + 0x12) = 0;
-  *(undefined2 *)((int)param_1 + 0x1a) = 5;
-  *(undefined2 *)(param_1 + 7) = 2;
-  return param_1;
+  *(undefined2 *)&this->field_0x16 = 0;
+  this->field_0x48 = 0;
+  *(undefined2 *)&this->field_0x1a = 5;
+  *(undefined2 *)&this->field_0x1c = 2;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F0E0
-// GHIDRA_NAME TForeignMinister::DeletingDestructTForeignMinister
-// GHIDRA_PROTO undefined DeletingDestructTForeignMinister()
+// GHIDRA_NAME TForeignMinister::DeletingDestructTMinister
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
 
-undefined4 __thiscall
-TForeignMinister::DeletingDestructTForeignMinister(undefined4 param_1,byte param_2)
+TForeignMinister * __thiscall TForeignMinister::DeletingDestructTMinister(TForeignMinister *this)
 
 {
-  DestructTForeignMinister();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTForeignMinister(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052F110
 // GHIDRA_NAME TForeignMinister::DestructTForeignMinister
-// GHIDRA_PROTO undefined DestructTForeignMinister()
+// GHIDRA_PROTO undefined __thiscall DestructTForeignMinister(void)
 
-void __fastcall TForeignMinister::DestructTForeignMinister(undefined4 *param_1)
+void __thiscall TForeignMinister::DestructTForeignMinister(TForeignMinister *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable =
+       (TForeignMinisterVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052F4B0
+// GHIDRA_NAME TForeignMinister::InitializeForeignMinisterStateFlags
+// GHIDRA_PROTO undefined __thiscall InitializeForeignMinisterStateFlags(void)
+
+void __thiscall TForeignMinister::InitializeForeignMinisterStateFlags(TForeignMinister *this)
+
+{
+  *(undefined4 *)&this->field_0x49 = 0x1010101;
+  *(undefined2 *)&this->field_0x4d = 0x101;
+  this->field_0x4f = 1;
+  *(undefined2 *)&this->field_0x16 = 0;
+  if (*(int *)(*(int *)&this->field_0x4 + 0x10) < 0) {
+    *(undefined2 *)&this->field_0x14 = 1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052F4F0
+// GHIDRA_NAME TForeignMinister::AddToForeignMinisterCounterAtIndex
+// GHIDRA_PROTO undefined __thiscall AddToForeignMinisterCounterAtIndex(void)
+
+void __thiscall TForeignMinister::AddToForeignMinisterCounterAtIndex(TForeignMinister *this)
+
+{
+  short in_stack_00000004;
+  short in_stack_00000008;
+  
+  *(short *)(&this->field_0x1e + in_stack_00000004 * 2) =
+       *(short *)(&this->field_0x1e + in_stack_00000004 * 2) + in_stack_00000008;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052F520
+// GHIDRA_NAME TForeignMinister::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+
+void __thiscall TForeignMinister::SetForeignMinisterReadyFlag14(TForeignMinister *this)
+
+{
+  *(undefined2 *)&this->field_0x14 = 1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052F540
+// GHIDRA_NAME TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterPrimaryAndSecondaryTargets(void)
+
+void __thiscall
+TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets(TForeignMinister *this)
+
+{
+  undefined2 in_stack_00000004;
+  undefined2 in_stack_00000008;
+  
+  *(undefined2 *)&this->field_0x10 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x12 = in_stack_00000008;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052F570
+// GHIDRA_NAME TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TForeignMinister *this)
+
+{
+  TIndexAndRankListVtbl *pTVar1;
+  TIndexAndRankList_slot_0x04_0x04 *pTVar2;
+  bool bVar3;
+  int iVar4;
+  undefined uVar5;
+  TIndexAndRankList *this_00;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  short *psVar6;
+  short sVar7;
+  undefined4 *unaff_FS_OFFSET;
+  int local_20;
+  short local_14;
+  short local_12;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006340da;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  sVar7 = 0;
+  local_4 = 0;
+  if (this_00 == (TIndexAndRankList *)0x0) {
+    this_00 = (TIndexAndRankList *)0x0;
+  }
+  else {
+    TIndexAndRankList::CPtrArray(this_00);
+    this_00->vftable = &TIndexAndRankListVtbl_00659c58;
+  }
+  local_4 = 0xffffffff;
+  *(undefined2 *)&this_00->field_0x14 = 6;
+  psVar6 = (short *)&this->field_0x1e;
+  do {
+    if (*psVar6 != 0) {
+      local_12 = *psVar6 + 1;
+      local_14 = sVar7;
+      (*this_00->vftable[7].GetTEventHandlerClassNamePointer)(&local_14);
+    }
+    sVar7 = sVar7 + 1;
+    psVar6 = psVar6 + 1;
+  } while (sVar7 < 0x11);
+  local_20 = 4;
+  psVar6 = (short *)&this->field_0x40;
+  iVar4 = local_20;
+  do {
+    local_20 = iVar4;
+    sVar7 = 1;
+    bVar3 = false;
+    if (0 < *(int *)&this_00->field_0x8) {
+      do {
+        if (bVar3) goto LAB_0052f659;
+        uVar5 = (*this_00->vftable[5].slot_0x04)((int)sVar7);
+        if (*(short *)CONCAT31(extraout_var,uVar5) == *psVar6) {
+          bVar3 = true;
+        }
+        sVar7 = sVar7 + 1;
+      } while ((int)sVar7 <= *(int *)&this_00->field_0x8);
+    }
+    if (!bVar3) {
+      local_14 = *psVar6;
+      local_12 = 1;
+      (*this_00->vftable[7].GetTEventHandlerClassNamePointer)(&local_14);
+    }
+LAB_0052f659:
+    psVar6 = psVar6 + 1;
+    iVar4 = local_20 + -1;
+    if (local_20 + -1 == 0) {
+      pTVar1 = this_00->vftable;
+      pTVar2 = pTVar1[5].slot_0x04;
+      uVar5 = (*pTVar2)(1);
+      uRam00000000 = *(undefined2 *)CONCAT31(extraout_var_00,uVar5);
+      uVar5 = (*pTVar2)(2);
+      *(undefined2 *)(local_20 + 0x41) = *(undefined2 *)CONCAT31(extraout_var_01,uVar5);
+      uVar5 = (*pTVar2)(3);
+      *(undefined2 *)(local_20 + 0x43) = *(undefined2 *)CONCAT31(extraout_var_02,uVar5);
+      uVar5 = (*pTVar2)(4);
+      *(undefined2 *)(local_20 + 0x45) = *(undefined2 *)CONCAT31(extraout_var_03,uVar5);
+      if (this_00 != (TIndexAndRankList *)0x0) {
+        (*pTVar1[4].slot_0x04)();
+      }
+      *unaff_FS_OFFSET = &this->field_0x40;
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052F940
+// GHIDRA_NAME TForeignMinister::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+
+void __thiscall TForeignMinister::SetForeignMinisterReadyFlag14(TForeignMinister *this)
+
+{
+  TForeignMinisterVtbl *pTVar1;
+  char cVar2;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar3;
+  undefined2 extraout_var_01;
+  
+  pTVar1 = this->vftable;
+  (*pTVar1[9].GetTMinisterClassNamePointer)();
+  uVar3 = extraout_var;
+  if (*(short *)&this->field_0x18 < *(short *)&this->field_0x1a) {
+    cVar2 = (*pTVar1[0x11].GetTMinisterClassNamePointer)();
+    uVar3 = extraout_var_00;
+    if (cVar2 == '\0') goto LAB_0052f978;
+  }
+  (**(code **)(**(int **)(*(int *)&this->field_0x4 + 0x98) + 0x68))
+            (CONCAT22(uVar3,*(undefined2 *)&this->field_0x1c));
+  *(undefined2 *)&this->field_0x18 = 0;
+LAB_0052f978:
+  (*pTVar1[0x10].DeletingDestructTMinister)();
+  if (*(short *)&this->field_0x10 != -10) {
+    (**(code **)(**(int **)&this->field_0x4 + 0x1a4))
+              (CONCAT22(extraout_var_01,*(short *)&this->field_0x10),0xffffffff);
+    *(undefined2 *)(&this->field_0x1e + *(short *)&this->field_0x10 * 2) =
+         *(undefined2 *)&this->field_0x12;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052FBA0
+// GHIDRA_NAME TForeignMinister::UpdateControlCachedIntFromWindowText
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+
+void __thiscall TForeignMinister::UpdateControlCachedIntFromWindowText(TForeignMinister *this)
+
+{
+  TTradeMgrVtbl *pTVar1;
+  int iVar2;
+  short sVar3;
+  undefined4 in_EAX;
+  undefined2 uVar5;
+  undefined4 uVar4;
+  undefined4 unaff_EBX;
+  undefined4 unaff_retaddr;
+  undefined4 in_stack_00000008;
+  short in_stack_00000010;
+  
+  uVar5 = (undefined2)((uint)in_EAX >> 0x10);
+  uVar4 = in_stack_00000008;
+  if (in_stack_00000010 == *(short *)&this->field_0x10) {
+    if (*(short *)&this->field_0x12 < (short)in_stack_00000008) {
+      uVar4 = CONCAT22(uVar5,*(short *)&this->field_0x12);
+    }
+    sVar3 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
+    if (sVar3 < (short)uVar4) {
+      pTVar1 = g_pNationInteractionStateManager->vftable;
+      iVar2 = (*(int **)&this->field_0x4)[3];
+      uVar4 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
+      (*pTVar1[0xc].GetTTradeMgrClassNamePointer)
+                (CONCAT22((short)((uint)this >> 0x10),(short)iVar2),unaff_EBX,uVar4);
+      return;
+    }
+  }
+  else {
+    sVar3 = *(short *)(&this->field_0x1e + in_stack_00000010 * 2);
+    if (sVar3 < 1) {
+      uVar4 = 0;
+    }
+    else if (sVar3 < (short)in_stack_00000008) {
+      uVar4 = CONCAT22(uVar5,sVar3);
+    }
+    sVar3 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
+    if (sVar3 < (short)uVar4) {
+      uVar4 = (**(code **)(**(int **)&this->field_0x4 + 0x100))();
+    }
+    *(short *)(&this->field_0x1e + in_stack_00000010 * 2) =
+         *(short *)(&this->field_0x1e + in_stack_00000010 * 2) - (short)uVar4;
+  }
+  (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
+            (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
+                      *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,uVar4,
+             in_stack_00000008);
   return;
 }
 

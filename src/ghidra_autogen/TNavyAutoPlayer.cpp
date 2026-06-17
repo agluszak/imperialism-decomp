@@ -5,55 +5,57 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F0A0
 // GHIDRA_NAME TNavyAutoPlayer::CreateTNavyAutoPlayerInstance
-// GHIDRA_PROTO undefined CreateTNavyAutoPlayerInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTNavyAutoPlayerInstance(void)
 
-void __fastcall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(undefined4 *param_1)
+void __thiscall TNavyAutoPlayer::CreateTNavyAutoPlayerInstance(TNavyAutoPlayer *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TNavyAutoPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
+  ;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F0C0
-// GHIDRA_NAME TNavyAutoPlayer::GetTNavyAutoPlayerClassNamePointer
-// GHIDRA_PROTO undefined GetTNavyAutoPlayerClassNamePointer()
+// GHIDRA_NAME TNavyAutoPlayer::GetTTacticalPlayerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
 
-undefined ** TNavyAutoPlayer::GetTNavyAutoPlayerClassNamePointer(void)
+CRuntimeClass * __thiscall
+TNavyAutoPlayer::GetTTacticalPlayerClassNamePointer(TNavyAutoPlayer *this)
 
 {
-  return &PTR_s_TNavyAutoPlayer_006694d0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F110
-// GHIDRA_NAME TNavyAutoPlayer::ConstructTNavyAutoPlayerBaseState
-// GHIDRA_PROTO undefined ConstructTNavyAutoPlayerBaseState()
+// GHIDRA_NAME TNavyAutoPlayer::OrphanRetStub_0059ad70
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad70(void)
 
-void __fastcall TNavyAutoPlayer::ConstructTNavyAutoPlayerBaseState(int param_1)
+void __thiscall TNavyAutoPlayer::OrphanRetStub_0059ad70(TNavyAutoPlayer *this)
 
 {
   char cVar1;
   int iVar2;
   
-  if (*(char *)(param_1 + 0xc) == '\0') {
+  if (this->field_0xc == '\0') {
     iVar2 = 0x29;
   }
   else {
-    iVar2 = *(int *)(*(int *)(param_1 + 0x14) + 0x34) * 6 + -0x19;
+    iVar2 = *(int *)(*(int *)&this->field_0x14 + 0x34) * 6 + -0x19;
   }
-  cVar1 = *(char *)(param_1 + 0x10);
+  cVar1 = this->field_0x10;
   while (cVar1 == '\0') {
-    (**(code **)(**(int **)(param_1 + 0x14) + 0x30))((*(int **)(param_1 + 0x14))[7],iVar2);
+    (**(code **)(**(int **)&this->field_0x14 + 0x30))((*(int **)&this->field_0x14)[7],iVar2);
     iVar2 = iVar2 + -1;
-    cVar1 = *(char *)(param_1 + 0x10);
+    cVar1 = this->field_0x10;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059F160
-// GHIDRA_NAME TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange
-// GHIDRA_PROTO undefined DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange()
+// GHIDRA_NAME TNavyAutoPlayer::OrphanRetStub_0059ad90
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
 
-void __fastcall TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfInRange(int param_1)
+void __thiscall TNavyAutoPlayer::OrphanRetStub_0059ad90(TNavyAutoPlayer *this)
 
 {
   code *pcVar1;
@@ -63,23 +65,25 @@ void __fastcall TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfI
   int *piVar5;
   int iVar6;
   int iVar7;
-  int unaff_EBX;
+  TNextMoveCommand_GetTEventClassNamePointer_0x00 *unaff_EBX;
   int *piVar8;
-  int iVar9;
+  TNextMoveCommand_GetTEventClassNamePointer_0x00 *pTVar9;
+  TNextMoveCommandVtbl *pTVar10;
+  TNextMoveCommand_GetTEventClassNamePointer_0x00 *pTVar11;
   int iStack_20;
-  int *piStack_18;
+  TNextMoveCommandVtbl *pTStack_18;
   
-  if (*(char *)(param_1 + 0xc) == '\0') {
-    piVar8 = *(int **)(*(int *)(*(int *)(param_1 + 0x14) + 0x14) + 4);
+  if (this->field_0xc == '\0') {
+    piVar8 = *(int **)(*(int *)(*(int *)&this->field_0x14 + 0x14) + 4);
   }
   else {
-    piVar8 = *(int **)(*(int *)(*(int *)(param_1 + 0x14) + 0x18) + 4);
+    piVar8 = *(int **)(*(int *)(*(int *)&this->field_0x14 + 0x18) + 4);
   }
   iVar7 = *piVar8;
   pcVar1 = *(code **)(iVar7 + 0x48);
   iVar4 = (*pcVar1)();
   piVar5 = (int *)AllocateWithFallbackHandler(iVar4 << 2);
-  uVar2 = *(undefined4 *)(*(int *)(*(int *)(param_1 + 0x14) + 0x1c) + 8);
+  uVar2 = *(undefined4 *)(*(int *)(*(int *)&this->field_0x14 + 0x1c) + 8);
   iVar4 = InitializeLinkedListCursorFromOwnerHead();
   iVar6 = LinkedListCursorHasCurrent();
   piVar8 = piVar5;
@@ -90,54 +94,55 @@ void __fastcall TNavyAutoPlayer::DriveTacticalUnitTowardNearestEnemyAndAttackIfI
     iVar4 = AdvanceLinkedListCursor();
     iVar6 = LinkedListCursorHasCurrent();
   }
-  piStack_18 = (int *)0xffffffff;
+  pTStack_18 = (TNextMoveCommandVtbl *)0xffffffff;
   iStack_20 = 999;
-  piVar8 = (int *)0x0;
+  pTVar10 = (TNextMoveCommandVtbl *)0x0;
   iVar4 = (*pcVar1)();
   if (0 < iVar4) {
     do {
       if (*piVar5 < iStack_20) {
         iStack_20 = *piVar5;
-        piStack_18 = piVar8;
+        pTStack_18 = pTVar10;
       }
-      piVar8 = (int *)((int)piVar8 + 1);
+      pTVar10 = (TNextMoveCommandVtbl *)((int)&pTVar10->GetTEventClassNamePointer + 1);
       piVar5 = piVar5 + 1;
       iVar4 = (*pcVar1)();
-    } while ((int)piVar8 < iVar4);
+    } while ((int)pTVar10 < iVar4);
   }
-  iVar7 = (**(code **)(iVar7 + 0x4c))((int)piStack_18 + 1);
+  iVar7 = (**(code **)(iVar7 + 0x4c))
+                    ((undefined1 *)((int)&pTStack_18->GetTEventClassNamePointer + 1));
   uVar3 = *(undefined4 *)(iVar7 + 8);
-  iVar6 = ComputeHexTileDistanceFromIndices(unaff_EBX,uVar3);
-  iVar7 = *(int *)(param_1 + 0x14);
-  iVar9 = 0;
-  iVar4 = unaff_EBX;
+  iVar4 = ComputeHexTileDistanceFromIndices(unaff_EBX,uVar3);
+  iVar7 = *(int *)&this->field_0x14;
+  pTVar11 = (TNextMoveCommand_GetTEventClassNamePointer_0x00 *)0x0;
+  pTVar9 = unaff_EBX;
   if (0 < *(int *)(iVar7 + 0x3c)) {
     do {
-      if ((*(short *)(*(int *)(iVar7 + 0x24) + iVar9 * 2) != -1) &&
-         (iVar7 = ComputeHexTileDistanceFromIndices(iVar9,uVar3), iVar7 < iVar6)) {
-        iVar4 = iVar9;
-        iVar6 = iVar7;
+      if ((*(short *)(*(int *)(iVar7 + 0x24) + (int)pTVar11 * 2) != -1) &&
+         (iVar7 = ComputeHexTileDistanceFromIndices(pTVar11,uVar3), iVar7 < iVar4)) {
+        pTVar9 = pTVar11;
+        iVar4 = iVar7;
       }
-      iVar7 = *(int *)(param_1 + 0x14);
-      iVar9 = iVar9 + 1;
-    } while (iVar9 < *(int *)(iVar7 + 0x3c));
+      iVar7 = *(int *)&this->field_0x14;
+      pTVar11 = pTVar11 + 1;
+    } while ((int)pTVar11 < *(int *)(iVar7 + 0x3c));
   }
-  if (iVar4 != unaff_EBX) {
-    piVar8 = *(int **)(param_1 + 0x14);
-    piVar5 = (int *)piVar8[7];
-    while ((piVar5 == piStack_18 && (piStack_18[2] != iVar4))) {
-      (**(code **)(*piVar8 + 0x34))(piStack_18,iVar4);
-      piVar8 = *(int **)(param_1 + 0x14);
-      piVar5 = (int *)piVar8[7];
+  if (pTVar9 != unaff_EBX) {
+    piVar8 = *(int **)&this->field_0x14;
+    pTVar10 = (TNextMoveCommandVtbl *)piVar8[7];
+    while ((pTVar10 == pTStack_18 && (pTStack_18[1].GetTEventClassNamePointer != pTVar9))) {
+      (**(code **)(*piVar8 + 0x34))(pTStack_18,pTVar9);
+      piVar8 = *(int **)&this->field_0x14;
+      pTVar10 = (TNextMoveCommandVtbl *)piVar8[7];
     }
   }
-  iVar7 = (**(code **)(*piStack_18 + 0x2c))();
-  if ((iVar6 <= iVar7) && ((int *)(*(int **)(param_1 + 0x14))[7] == piStack_18)) {
-    (**(code **)(**(int **)(param_1 + 0x14) + 0x40))(piStack_18,uVar3);
+  iVar7 = (**(code **)(pTStack_18->GetTEventClassNamePointer + 0x2c))();
+  if ((iVar4 <= iVar7) && ((TNextMoveCommandVtbl *)(*(int **)&this->field_0x14)[7] == pTStack_18)) {
+    (**(code **)(**(int **)&this->field_0x14 + 0x40))(pTStack_18,uVar3);
   }
   FreeHeapBufferIfNotNull(uVar2);
-  if (*(int **)(*(int *)(param_1 + 0x14) + 0x1c) == piStack_18) {
-    thunk_QueueTacticalEventPacket232A();
+  if ((*(TNextMoveCommand **)&this->field_0x14)[1].vftable == pTStack_18) {
+    TNextMoveCommand::thunk_QueueTacticalEventPacket232A(*(TNextMoveCommand **)&this->field_0x14);
   }
   return;
 }

@@ -12,8 +12,7 @@ TCivWorkOrderState::thunk_InitializeCivWorkOrderState
           (TCivWorkOrderState *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
 
 {
-  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager
-            (nOrderType,pOwnerContext,nOrderOwnerNationId,0);
+  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager((TUnitOrderState *)this);
   *(undefined2 *)(this + 0x24) = 0;
   *(undefined2 *)(this + 0x26) = 0xffff;
   return;
@@ -21,17 +20,17 @@ TCivWorkOrderState::thunk_InitializeCivWorkOrderState
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C28C0
 // GHIDRA_NAME TCivWorkOrderState::TCivWorkOrderState
-// GHIDRA_PROTO undefined TCivWorkOrderState()
+// GHIDRA_PROTO undefined __thiscall TCivWorkOrderState(void)
 
-void __fastcall TCivWorkOrderState::TCivWorkOrderState(undefined4 *param_1)
+void __thiscall TCivWorkOrderState::TCivWorkOrderState(TCivWorkOrderState *this)
 
 {
-  *param_1 = &_vftable_;
-  param_1[4] = 0;
-  param_1[5] = 0;
-  *(undefined2 *)((int)param_1 + 6) = 0xffff;
-  param_1[2] = 0;
-  *(undefined1 *)(param_1 + 7) = 0;
+  *(TCivUnitVtbl **)this = &_vftable_;
+  *(undefined4 *)(this + 0x10) = 0;
+  *(undefined4 *)(this + 0x14) = 0;
+  *(undefined2 *)(this + 6) = 0xffff;
+  *(undefined4 *)(this + 8) = 0;
+  this[0x1c] = (TCivWorkOrderState)0x0;
   return;
 }
 

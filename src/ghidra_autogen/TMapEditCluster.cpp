@@ -12,149 +12,101 @@ TMapEditCluster::thunk_DispatchPanelControlEvent
           (TMapEditCluster *this,int nEventClass,void *pEventPayload,int nEventFlags)
 
 {
-  int *piVar1;
-  undefined4 *puVar2;
+  undefined uVar1;
+  undefined3 extraout_var;
+  int *piVar2;
+  undefined4 *puVar3;
   
   if ((nEventClass == 0xc) && (*(TMapEditCluster **)((int)pEventPayload + 0x20) == this)) {
-    if (*(int *)(this + 0x44) == 0) {
-      puVar2 = (undefined4 *)0x0;
+    if (this->field44 == 0) {
+      puVar3 = (undefined4 *)0x0;
     }
     else {
-      puVar2 = *(undefined4 **)(*(int *)(this + 0x44) + 4);
+      puVar3 = *(undefined4 **)(this->field44 + 4);
     }
-    if (puVar2 == (undefined4 *)0x0) {
-      piVar1 = (int *)0x0;
-      puVar2 = (undefined4 *)0x0;
+    if (puVar3 == (undefined4 *)0x0) {
+      piVar2 = (int *)0x0;
+      puVar3 = (undefined4 *)0x0;
     }
     else {
-      piVar1 = (int *)puVar2[2];
-      puVar2 = (undefined4 *)*puVar2;
+      piVar2 = (int *)puVar3[2];
+      puVar3 = (undefined4 *)*puVar3;
     }
-    while (piVar1 != (int *)0x0) {
-      if (piVar1 != pEventPayload) {
-        (**(code **)(*piVar1 + 0x40))(0x20,this,0);
+    while (piVar2 != (int *)0x0) {
+      if (piVar2 != pEventPayload) {
+        (**(code **)(*piVar2 + 0x40))(0x20,this,0);
       }
-      if (puVar2 == (undefined4 *)0x0) {
-        piVar1 = (int *)0x0;
-        puVar2 = (undefined4 *)0x0;
+      if (puVar3 == (undefined4 *)0x0) {
+        piVar2 = (int *)0x0;
+        puVar3 = (undefined4 *)0x0;
       }
       else {
-        piVar1 = (int *)puVar2[2];
-        puVar2 = (undefined4 *)*puVar2;
+        piVar2 = (int *)puVar3[2];
+        puVar3 = (undefined4 *)*puVar3;
       }
     }
-    *(undefined4 *)(this + 0x84) = *(undefined4 *)((int)pEventPayload + 0x1c);
+    *(undefined4 *)&this->field_0x84 = *(undefined4 *)((int)pEventPayload + 0x1c);
   }
   if (nEventClass == 0x1f) {
-    (**(code **)(*(int *)this + 0x1c0))(1,1);
+    (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(1,1);
   }
   else {
     if (nEventClass == 0x20) {
-      (**(code **)(*(int *)this + 0x1c0))(0,1);
+      (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(0,1);
       return;
     }
     if (nEventClass == 0x21) {
-      (**(code **)(*(int *)this + 0x1c0))(this[100] == (TMapEditCluster)0x0,1);
+      (*this->vftable[0x38].GetTEventHandlerClassNamePointer)((uint)(this->field_0x64 == '\0'),1);
       return;
     }
-    piVar1 = (int *)(**(code **)(*(int *)this + 0x30))();
-    if (piVar1 != (int *)0x0) {
-      (**(code **)(*piVar1 + 0x40))(nEventClass,pEventPayload,nEventFlags);
+    uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
+                (nEventClass,pEventPayload,nEventFlags);
       return;
     }
   }
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00491650
-// GHIDRA_NAME TMapEditCluster::DispatchPanelControlEvent
-// GHIDRA_PROTO void __thiscall DispatchPanelControlEvent(int nEventClass, void * pEventPayload, int nEventFlags)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: void DispatchPanelControlEvent(int nEventClass, void* pEventPayload, int nEventFlags)
-// GHIDRA_COMMENT_END
+// GHIDRA_FUNCTION IMPERIALISM 0x005B2900
+// GHIDRA_NAME TMapEditCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-/* Setting prototype: void DispatchPanelControlEvent(int nEventClass, void* pEventPayload, int
-   nEventFlags) */
-
-void __thiscall
-TMapEditCluster::DispatchPanelControlEvent
-          (TMapEditCluster *this,int nEventClass,void *pEventPayload,int nEventFlags)
+TMapEditCluster * __thiscall TMapEditCluster::_scalar_deleting_destructor_(TMapEditCluster *this)
 
 {
-  int *piVar1;
-  undefined4 *puVar2;
+  byte in_stack_00000004;
   
-  if ((nEventClass == 0xc) && (*(TMapEditCluster **)((int)pEventPayload + 0x20) == this)) {
-    if (*(int *)(this + 0x44) == 0) {
-      puVar2 = (undefined4 *)0x0;
-    }
-    else {
-      puVar2 = *(undefined4 **)(*(int *)(this + 0x44) + 4);
-    }
-    if (puVar2 == (undefined4 *)0x0) {
-      piVar1 = (int *)0x0;
-      puVar2 = (undefined4 *)0x0;
-    }
-    else {
-      piVar1 = (int *)puVar2[2];
-      puVar2 = (undefined4 *)*puVar2;
-    }
-    while (piVar1 != (int *)0x0) {
-      if (piVar1 != pEventPayload) {
-        (**(code **)(*piVar1 + 0x40))(0x20,this,0);
-      }
-      if (puVar2 == (undefined4 *)0x0) {
-        piVar1 = (int *)0x0;
-        puVar2 = (undefined4 *)0x0;
-      }
-      else {
-        piVar1 = (int *)puVar2[2];
-        puVar2 = (undefined4 *)*puVar2;
-      }
-    }
-    *(undefined4 *)(this + 0x84) = *(undefined4 *)((int)pEventPayload + 0x1c);
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  if (nEventClass == 0x1f) {
-    (**(code **)(*(int *)this + 0x1c0))(1,1);
-  }
-  else {
-    if (nEventClass == 0x20) {
-      (**(code **)(*(int *)this + 0x1c0))(0,1);
-      return;
-    }
-    if (nEventClass == 0x21) {
-      (**(code **)(*(int *)this + 0x1c0))(this[100] == (TMapEditCluster)0x0,1);
-      return;
-    }
-    piVar1 = (int *)(**(code **)(*(int *)this + 0x30))();
-    if (piVar1 != (int *)0x0) {
-      (**(code **)(*piVar1 + 0x40))(nEventClass,pEventPayload,nEventFlags);
-      return;
-    }
-  }
-  return;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2950
-// GHIDRA_NAME TMapEditCluster::GetTMapEditClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTMapEditClusterClassNamePointer()
+// GHIDRA_NAME TMapEditCluster::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TMapEditCluster::GetTMapEditClusterClassNamePointer(void)
+CRuntimeClass * __thiscall TMapEditCluster::GetTEventHandlerClassNamePointer(TMapEditCluster *this)
 
 {
-  return &PTR_s_TMapEditCluster_0066b238;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2970
-// GHIDRA_NAME TMapEditCluster::ConstructTMapEditClusterBaseState
-// GHIDRA_PROTO undefined ConstructTMapEditClusterBaseState()
+// GHIDRA_NAME TMapEditCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
-void __thiscall
-TMapEditCluster::ConstructTMapEditClusterBaseState
-          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
+void __thiscall TMapEditCluster::OrphanRetStub_0059add0(TMapEditCluster *this)
 
 {
-  thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
+  int in_stack_00000004;
+  void *in_stack_00000008;
+  int in_stack_0000000c;
+  
+  thunk_DispatchPanelControlEvent(this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   return;
 }
 
@@ -182,9 +134,9 @@ TView * TMapEditCluster::DestructTMapEditClusterAndMaybeFree(void)
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = &PTR_LAB_0064be28;
+    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    this->vftable = &PTR_LAB_0066b7a0;
+    this->vftable = (TViewVtbl *)&TMinorTradeBidsDialogVtbl_0066b7a0;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

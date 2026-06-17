@@ -4,37 +4,76 @@
 // Bucket: TPictureLine.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570060
-// GHIDRA_NAME TPictureLine::GetTPictureLineClassNamePointer
-// GHIDRA_PROTO undefined GetTPictureLineClassNamePointer()
+// GHIDRA_NAME TPictureLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TPictureLine::GetTPictureLineClassNamePointer(void)
+CRuntimeClass * __thiscall TPictureLine::GetTLineDataClassNamePointer(TPictureLine *this)
 
 {
-  return &PTR_s_TPictureLine_0065e1b8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700A0
 // GHIDRA_NAME TPictureLine::ConstructTPictureLineBaseState
-// GHIDRA_PROTO undefined ConstructTPictureLineBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTPictureLineBaseState(void)
 
-undefined4 __thiscall TPictureLine::ConstructTPictureLineBaseState(undefined4 param_1,byte param_2)
+TPictureLine * __thiscall TPictureLine::ConstructTPictureLineBaseState(TPictureLine *this)
 
 {
-  DestructTPictureLineAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTPictureLineAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005700D0
 // GHIDRA_NAME TPictureLine::DestructTPictureLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTPictureLineAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTPictureLineAndMaybeFree(void)
 
-void __fastcall TPictureLine::DestructTPictureLineAndMaybeFree(undefined4 *param_1)
+void __thiscall TPictureLine::DestructTPictureLineAndMaybeFree(TPictureLine *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TPictureLineVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570130
+// GHIDRA_NAME TPictureLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+
+void __thiscall TPictureLine::OrphanRetStub_0056f460(TPictureLine *this)
+
+{
+  thunk_TPictureButton *this_00;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063629a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this_00 = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
+  local_4 = 0;
+  uVar1 = extraout_var;
+  if (this_00 != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this_00);
+    uVar1 = extraout_var_00;
+  }
+  local_4 = 0xffffffff;
+  InitializePictureEntryBaseAndRefresh
+            (in_stack_00000004,in_stack_00000008,&this->field_0x8,5,5,
+             CONCAT22(uVar1,*(undefined2 *)&this->field_0x10));
+  *unaff_FS_OFFSET = local_c;
   return;
 }
 

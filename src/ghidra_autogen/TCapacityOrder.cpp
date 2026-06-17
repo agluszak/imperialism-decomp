@@ -3,82 +3,149 @@
 // Program: Imperialism.exe
 // Bucket: TCapacityOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B8B80
-// GHIDRA_NAME TCapacityOrder::CreateTCapacityOrderInstance
-// GHIDRA_PROTO undefined CreateTCapacityOrderInstance()
-
-void __thiscall TCapacityOrder::CreateTCapacityOrderInstance(int *param_1,int param_2)
-
-{
-  short sVar1;
-  
-  (**(code **)(*param_1 + 0x3c))(param_2);
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode09 + (short)param_1[0x12] * 2);
-  *(short *)(param_2 + 0x12) = sVar1 * (short)param_2;
-  if ((short)(sVar1 * (short)param_2) < 0) {
-    *(undefined2 *)(param_2 + 0x12) = 0;
-  }
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode08 + (short)param_1[0x12] * 2);
-  *(short *)(param_2 + 0x10) = sVar1 * (short)param_2;
-  if ((short)(sVar1 * (short)param_2) < 0) {
-    *(undefined2 *)(param_2 + 0x10) = 0;
-  }
-  *(short *)(param_2 + 0x20) =
-       *(short *)(&g_industryActionCostWeightResCode10 + (short)param_1[0x12] * 2) * (short)param_2;
-  if (*(short *)(param_2 + 0x12) < 0) {
-    *(undefined2 *)(param_2 + 0x12) = 0;
-  }
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode0B + (short)param_1[0x12] * 2);
-  *(short *)(param_2 + 0x16) = sVar1 * (short)param_2;
-  if ((short)(sVar1 * (short)param_2) < 0) {
-    *(undefined2 *)(param_2 + 0x16) = 0;
-  }
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode03 + (short)param_1[0x12] * 2);
-  *(short *)(param_2 + 6) = sVar1 * (short)param_2;
-  if ((short)(sVar1 * (short)param_2) < 0) {
-    *(undefined2 *)(param_2 + 6) = 0;
-  }
-  sVar1 = *(short *)(&g_industryActionCostWeightResCode0C + (short)param_1[0x12] * 2);
-  *(short *)(param_2 + 0x18) = sVar1 * (short)param_2;
-  if ((short)(sVar1 * (short)param_2) < 0) {
-    *(undefined2 *)(param_2 + 0x18) = 0;
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8CC0
-// GHIDRA_NAME TCapacityOrder::GetTCapacityOrderClassNamePointer
-// GHIDRA_PROTO undefined GetTCapacityOrderClassNamePointer()
+// GHIDRA_NAME TCapacityOrder::GetTProductionOrderClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
 
-char * TCapacityOrder::GetTCapacityOrderClassNamePointer(void)
+CRuntimeClass * __thiscall TCapacityOrder::GetTProductionOrderClassNamePointer(TCapacityOrder *this)
 
 {
-  return "XZi";
+  return &g_pClassDescTCapacityOrder;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D00
-// GHIDRA_NAME TCapacityOrder::ConstructTCapacityOrderBaseState
-// GHIDRA_PROTO undefined ConstructTCapacityOrderBaseState()
+// GHIDRA_NAME TCapacityOrder::ConstructTItemOrderBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(void)
 
-undefined4 __thiscall
-TCapacityOrder::ConstructTCapacityOrderBaseState(undefined4 param_1,byte param_2)
+TCapacityOrder * __thiscall TCapacityOrder::ConstructTItemOrderBaseState(TCapacityOrder *this)
 
 {
-  DestructTCapacityOrderAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTCapacityOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8D30
 // GHIDRA_NAME TCapacityOrder::DestructTCapacityOrderAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCapacityOrderAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTCapacityOrderAndMaybeFree(void)
 
-void __fastcall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(undefined4 *param_1)
+void __thiscall TCapacityOrder::DestructTCapacityOrderAndMaybeFree(TCapacityOrder *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TCapacityOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8D50
+// GHIDRA_NAME TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b8d50(void)
+
+void __thiscall TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(TCapacityOrder *this)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  int in_stack_00000004;
+  undefined2 in_stack_00000008;
+  undefined2 in_stack_0000000c;
+  undefined2 in_stack_00000010;
+  undefined2 in_stack_00000014;
+  
+  *(int *)&this->field_0x8 = in_stack_00000004;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
+  *(undefined2 *)&this->field_0x48 = in_stack_00000008;
+  *(undefined2 *)&this->field_0x4 = 0;
+  puVar2 = (undefined4 *)&this->field_0x10;
+  for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
+  }
+  *(undefined2 *)puVar2 = 0;
+  *(undefined4 *)&this->field_0x44 = 0;
+  *(undefined2 *)&this->field_0x4e = in_stack_0000000c;
+  *(undefined2 *)&this->field_0x40 = 0;
+  *(undefined2 *)&this->field_0x3e = 0;
+  *(undefined2 *)&this->field_0x4c = 0;
+  *(undefined2 *)&this->field_0x50 = in_stack_00000010;
+  *(undefined2 *)&this->field_0x52 = in_stack_00000014;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8DD0
+// GHIDRA_NAME TCapacityOrder::OrphanRetStub_004b5160
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Applies a pending production delta to a city slot.
+// GHIDRA_COMMENT Updates:
+// GHIDRA_COMMENT - current value table at city +0x1DC + slot*2
+// GHIDRA_COMMENT - delta/mirror table at city +0x1FC + slot*2
+// GHIDRA_COMMENT Handles special-slot behavior (including slot 14 branch and slot 15 derived path).
+// GHIDRA_COMMENT_END
+
+/* Applies a pending production delta to a city slot.
+   Updates:
+   - current value table at city +0x1DC + slot*2
+   - delta/mirror table at city +0x1FC + slot*2
+   Handles special-slot behavior (including slot 14 branch and slot 15 derived path). */
+
+void __thiscall TCapacityOrder::OrphanRetStub_004b5160(TCapacityOrder *this)
+
+{
+  short *psVar1;
+  short sVar2;
+  int iVar3;
+  int iVar4;
+  
+  if (*(short *)&this->field_0x4 == 0) {
+    return;
+  }
+  sVar2 = *(short *)&this->field_0x48;
+  if (sVar2 == 0xe) {
+    iVar4 = **(int **)&this->field_0x8;
+    sVar2 = (**(code **)(iVar4 + 0x6c))();
+    (**(code **)(iVar4 + 0x70))(sVar2 + *(short *)&this->field_0x4);
+    goto LAB_004b8edc;
+  }
+  iVar4 = *(int *)&this->field_0x8;
+  if (sVar2 == 0xf) {
+    iVar3 = *(int *)(iVar4 + 0xac);
+    if (*(char *)(iVar3 + 0x8d1) < '3') {
+      iVar3 = (**(code **)(**(int **)(iVar3 + 0x90) + 0x28))();
+      if ((int)(iVar3 + (iVar3 >> 0x1f & 3U)) >> 2 < 2) goto LAB_004b8e8c;
+      iVar4 = (**(code **)(**(int **)(*(int *)(iVar4 + 0xac) + 0x90) + 0x28))();
+      sVar2 = (short)((int)(iVar4 + (iVar4 >> 0x1f & 3U)) >> 2);
+    }
+    else {
+      iVar3 = (**(code **)(**(int **)(iVar3 + 0x90) + 0x28))();
+      if (iVar3 / 3 < 2) {
+LAB_004b8e8c:
+        sVar2 = 1;
+      }
+      else {
+        iVar4 = (**(code **)(**(int **)(*(int *)(iVar4 + 0xac) + 0x90) + 0x28))();
+        sVar2 = (short)(iVar4 / 3);
+      }
+    }
+  }
+  else {
+    sVar2 = *(short *)(iVar4 + 0x1dc + sVar2 * 2);
+  }
+  sVar2 = sVar2 + *(short *)&this->field_0x4;
+  iVar4 = *(int *)&this->field_0x8;
+  iVar3 = (int)*(short *)&this->field_0x48;
+  psVar1 = (short *)(iVar4 + 0x1fc + iVar3 * 2);
+  *psVar1 = *psVar1 + (sVar2 - *(short *)(iVar4 + 0x1dc + iVar3 * 2));
+  *(short *)(iVar4 + 0x1dc + iVar3 * 2) = sVar2;
+LAB_004b8edc:
+  *(undefined2 *)&this->field_0x4c = 0;
+  *(undefined2 *)&this->field_0x4 = 0;
+  *(undefined2 *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) = 0;
+  *(undefined2 *)(&this->field_0x10 + *(short *)&this->field_0x50 * 2) = 0;
+  *(undefined2 *)&this->field_0x3e = 0;
   return;
 }
 

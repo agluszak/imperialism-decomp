@@ -7,10 +7,10 @@
 // GHIDRA_NAME TBackgroundPicture::CreateTBackgroundPictureInstance
 // GHIDRA_PROTO undefined CreateTBackgroundPictureInstance()
 
-undefined4 * TBackgroundPicture::CreateTBackgroundPictureInstance(void)
+thunk_TPictureButton * TBackgroundPicture::CreateTBackgroundPictureInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,55 +20,69 @@ undefined4 * TBackgroundPicture::CreateTBackgroundPictureInstance(void)
   puStack_8 = &LAB_0063657a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined1 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &PTR_LAB_00660918;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    this[0x90] = (thunk_TPictureButton)0x0;
+    *(TBackgroundPictureVtbl **)this = &TBackgroundPictureVtbl_00660918;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572C60
-// GHIDRA_NAME TBackgroundPicture::GetTBackgroundPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTBackgroundPictureClassNamePointer()
+// GHIDRA_NAME TBackgroundPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TBackgroundPicture::GetTBackgroundPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TBackgroundPicture::GetTEventHandlerClassNamePointer(TBackgroundPicture *this)
 
 {
-  return &PTR_s_TBackgroundPicture_00660628;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572C80
 // GHIDRA_NAME TBackgroundPicture::ConstructTBackgroundPictureBaseState
-// GHIDRA_PROTO undefined ConstructTBackgroundPictureBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTBackgroundPictureBaseState(void)
 
-undefined4 * __fastcall
-TBackgroundPicture::ConstructTBackgroundPictureBaseState(undefined4 *param_1)
+TBackgroundPicture * __thiscall
+TBackgroundPicture::ConstructTBackgroundPictureBaseState(TBackgroundPicture *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *(undefined1 *)(param_1 + 0x24) = 0;
-  *param_1 = &PTR_LAB_00660918;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->field_0x90 = 0;
+  this->vftable = &TBackgroundPictureVtbl_00660918;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572CB0
-// GHIDRA_NAME TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTBackgroundPictureAndMaybeFree()
+// GHIDRA_NAME TBackgroundPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TBackgroundPicture::DestructTBackgroundPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TBackgroundPicture * __thiscall
+TBackgroundPicture::_scalar_deleting_destructor_(TBackgroundPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00572D00
+// GHIDRA_NAME TBackgroundPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TBackgroundPicture::OrphanTiny_ReturnZero_0048a730(TBackgroundPicture *this)
+
+{
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  return;
 }
 

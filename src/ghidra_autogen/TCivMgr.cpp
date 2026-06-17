@@ -5,11 +5,126 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D2030
 // GHIDRA_NAME TCivMgr::GetTCivMgrClassNamePointer
-// GHIDRA_PROTO undefined GetTCivMgrClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTCivMgrClassNamePointer(void)
 
-undefined ** TCivMgr::GetTCivMgrClassNamePointer(void)
+CRuntimeClass * __thiscall TCivMgr::GetTCivMgrClassNamePointer(TCivMgr *this)
 
 {
-  return &PTR_s_TCivMgr_006531f8;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2270
+// GHIDRA_NAME TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler
+// GHIDRA_PROTO void __thiscall DispatchSelectedUnitToGlobalMapStateHandler(int * pUnitOrderEntry)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Dispatch selected unit order entry to class-specific global-map selection handlers.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. If pUnitOrderEntry is null, call fallback map handler (+0x80).
+// GHIDRA_COMMENT 2. Switch on unit class id at pUnitOrderEntry+0x04 (short).
+// GHIDRA_COMMENT 3. Route to g_pGlobalMapState handler callbacks (+0x8C..+0xA4).
+// GHIDRA_COMMENT 4. Unknown classes fall back to handler +0x80.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this: Civilian map interaction manager.
+// GHIDRA_COMMENT - pUnitOrderEntry: Selected unit order entry.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void
+// GHIDRA_COMMENT_END
+
+/* Dispatch selected unit order entry to class-specific global-map selection handlers.
+   Algorithm:
+   1. If pUnitOrderEntry is null, call fallback map handler (+0x80).
+   2. Switch on unit class id at pUnitOrderEntry+0x04 (short).
+   3. Route to g_pGlobalMapState handler callbacks (+0x8C..+0xA4).
+   4. Unknown classes fall back to handler +0x80.
+   Parameters:
+   - this: Civilian map interaction manager.
+   - pUnitOrderEntry: Selected unit order entry.
+   Returns:
+   - void */
+
+void __thiscall
+TCivMgr::DispatchSelectedUnitToGlobalMapStateHandler(TCivMgr *this,int *pUnitOrderEntry)
+
+{
+  if (pUnitOrderEntry != (int *)0x0) {
+    switch((short)pUnitOrderEntry[1]) {
+    case 0:
+    case 8:
+      (*g_pGlobalMapState->vftable[0x12].slot_0x04)(pUnitOrderEntry);
+      return;
+    case 1:
+      (*g_pGlobalMapState->vftable[0x11].slot_0x04)(pUnitOrderEntry);
+      return;
+    case 2:
+    case 3:
+    case 5:
+      (*g_pGlobalMapState->vftable[0x13].slot_0x04)(pUnitOrderEntry);
+      return;
+    case 4:
+      (*g_pGlobalMapState->vftable[0x14].slot_0x04)(pUnitOrderEntry);
+      return;
+    case 6:
+      (*g_pGlobalMapState->vftable[0x13].GetTMapMgrClassNamePointer)(pUnitOrderEntry);
+      return;
+    case 7:
+      (*g_pGlobalMapState->vftable[0x12].GetTMapMgrClassNamePointer)(pUnitOrderEntry);
+      return;
+    default:
+      (*g_pGlobalMapState->vftable[0x10].GetTMapMgrClassNamePointer)();
+      return;
+    }
+  }
+  (*g_pGlobalMapState->vftable[0x10].GetTMapMgrClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4310
+// GHIDRA_NAME TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles
+// GHIDRA_PROTO void __thiscall RelinkCivilianOrderTileAndInvalidateMapTiles(short nNewTileIndex, int * pCivOrderEntry)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Relink civilian order to a new tile and invalidate strategic-map tile visuals.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Capture previous tile index from pCivOrderEntry+0x06.
+// GHIDRA_COMMENT 2. Call order vfunc+0x28 to relink tile ownership to nNewTileIndex.
+// GHIDRA_COMMENT 3. If previous tile valid, notify map interaction controller via callback +0x1DC.
+// GHIDRA_COMMENT 4. If new tile valid, notify callback +0x1DC for redraw/refresh.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this: Civilian map interaction manager.
+// GHIDRA_COMMENT - nNewTileIndex: New tile index or -1.
+// GHIDRA_COMMENT - pCivOrderEntry: Civilian order entry.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void
+// GHIDRA_COMMENT_END
+
+/* Relink civilian order to a new tile and invalidate strategic-map tile visuals.
+   Algorithm:
+   1. Capture previous tile index from pCivOrderEntry+0x06.
+   2. Call order vfunc+0x28 to relink tile ownership to nNewTileIndex.
+   3. If previous tile valid, notify map interaction controller via callback +0x1DC.
+   4. If new tile valid, notify callback +0x1DC for redraw/refresh.
+   Parameters:
+   - this: Civilian map interaction manager.
+   - nNewTileIndex: New tile index or -1.
+   - pCivOrderEntry: Civilian order entry.
+   Returns:
+   - void */
+
+void __thiscall
+TCivMgr::RelinkCivilianOrderTileAndInvalidateMapTiles
+          (TCivMgr *this,short nNewTileIndex,int *pCivOrderEntry)
+
+{
+  short sVar1;
+  undefined2 in_stack_00000006;
+  
+  sVar1 = *(short *)((int)pCivOrderEntry + 6);
+  (**(code **)(*pCivOrderEntry + 0x28))(_nNewTileIndex);
+  if ((sVar1 != -1) && (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0)) {
+    (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1dc))(sVar1);
+  }
+  if ((nNewTileIndex != -1) && (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0)) {
+    (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1dc))(_nNewTileIndex);
+  }
+  return;
 }
 

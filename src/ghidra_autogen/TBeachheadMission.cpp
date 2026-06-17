@@ -7,10 +7,10 @@
 // GHIDRA_NAME TBeachheadMission::CreateTBeachheadMission
 // GHIDRA_PROTO undefined CreateTBeachheadMission()
 
-undefined4 * TBeachheadMission::CreateTBeachheadMission(void)
+TMission * TBeachheadMission::CreateTBeachheadMission(void)
 
 {
-  undefined4 *puVar1;
+  TMission *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,27 +20,27 @@ undefined4 * TBeachheadMission::CreateTBeachheadMission(void)
   puStack_8 = &LAB_0063438a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x40);
+  this = (TMission *)AllocateWithFallbackHandler(0x40);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMission::ConstructTMission();
-    puVar1[5] = 0;
-    puVar1[6] = 0;
-    puVar1[7] = 0;
-    puVar1[8] = 0;
-    puVar1[9] = 0;
-    puVar1[10] = 0;
-    puVar1[0xb] = 0;
-    puVar1[0xc] = 0;
-    puVar1[0xd] = 0;
-    puVar1[0xe] = 0;
-    puVar1[0xf] = 0;
-    *puVar1 = &g_vtblTBeachheadMission;
+  if (this != (TMission *)0x0) {
+    TMission::ConstructTMission(this);
+    *(undefined4 *)(this + 0x14) = 0;
+    *(undefined4 *)(this + 0x18) = 0;
+    *(undefined4 *)(this + 0x1c) = 0;
+    *(undefined4 *)(this + 0x20) = 0;
+    *(undefined4 *)(this + 0x24) = 0;
+    *(undefined4 *)(this + 0x28) = 0;
+    *(undefined4 *)(this + 0x2c) = 0;
+    *(undefined4 *)(this + 0x30) = 0;
+    *(undefined4 *)(this + 0x34) = 0;
+    *(undefined4 *)(this + 0x38) = 0;
+    *(undefined4 *)(this + 0x3c) = 0;
+    *(undefined ***)this = &g_vtblTBeachheadMission;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TMission *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A420
@@ -55,37 +55,39 @@ undefined ** TBeachheadMission::GetTBeachheadMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A490
 // GHIDRA_NAME TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
-// GHIDRA_PROTO undefined ConstructTBeachheadMissionWithNodeAndParent()
+// GHIDRA_PROTO undefined __thiscall ConstructTBeachheadMissionWithNodeAndParent(void)
 
-undefined4 * __thiscall
-TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent
-          (undefined4 *param_1,undefined4 param_2,undefined4 param_3)
+TBeachheadMission * __thiscall
+TBeachheadMission::ConstructTBeachheadMissionWithNodeAndParent(TBeachheadMission *this)
 
 {
-  TMission::ConstructTMission();
-  param_1[5] = param_2;
-  param_1[6] = 0;
-  param_1[7] = 0;
-  param_1[8] = 0;
-  param_1[9] = 0;
-  param_1[10] = 0;
-  param_1[0xb] = 0;
-  param_1[0xc] = 0;
-  param_1[0xd] = 0;
-  param_1[0xe] = 0;
-  param_1[0xf] = param_3;
-  *param_1 = &g_vtblTBeachheadMission;
-  return param_1;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  TMission::ConstructTMission((TMission *)this);
+  *(undefined4 *)(this + 0x14) = in_stack_00000004;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 0x24) = 0;
+  *(undefined4 *)(this + 0x28) = 0;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
+  *(undefined4 *)(this + 0x34) = 0;
+  *(undefined4 *)(this + 0x38) = 0;
+  *(undefined4 *)(this + 0x3c) = in_stack_00000008;
+  *(undefined ***)this = &g_vtblTBeachheadMission;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A500
 // GHIDRA_NAME TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext
-// GHIDRA_PROTO undefined PopulateBeachheadMissionResourceWeightsFromNavyContext()
+// GHIDRA_PROTO undefined __thiscall PopulateBeachheadMissionResourceWeightsFromNavyContext(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __fastcall
-TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(int param_1)
+void __thiscall
+TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(TBeachheadMission *this)
 
 {
   undefined2 uVar1;
@@ -95,56 +97,66 @@ TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(int pa
   char cVar5;
   short sVar6;
   int iVar7;
-  float *pfVar8;
-  short *psVar9;
-  int iVar10;
-  float10 fVar11;
+  undefined3 extraout_var;
+  int iVar8;
+  float *pfVar9;
+  short *psVar10;
+  int iVar11;
+  TBeachheadMission *pTVar12;
+  undefined4 unaff_EDI;
+  float10 fVar13;
   float local_10 [4];
   
   local_10[0] = 0.0;
   local_10[1] = 0.0;
   local_10[2] = 0.0;
-  iVar10 = *(int *)(param_1 + 0x14);
-  uVar1 = *(undefined2 *)(param_1 + 4);
+  iVar11 = *(int *)(this + 0x14);
+  uVar1 = *(undefined2 *)(this + 4);
   local_10[3] = 0.0;
-  for (iVar7 = thunk_GetNavyPrimaryOrderListHead(); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
-    if ((*(int *)(iVar7 + 8) == iVar10) &&
-       (cVar5 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x44))
-                          (uVar1,*(undefined2 *)(iVar7 + 0x14)), cVar5 != '\0')) {
-      sVar6 = GetNavyOrderNormalizationBaseByNationType();
-      fVar2 = (float)((int)*(short *)(iVar7 + 0x1c) / (int)sVar6);
-      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(0);
-      local_10[0] = (float)(int)sVar6 * fVar2 + local_10[0];
-      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(1);
-      local_10[1] = (float)(int)sVar6 * fVar2 + local_10[1];
-      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(2);
-      local_10[2] = (float)(int)sVar6 * fVar2 + local_10[2];
-      sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(3);
-      local_10[3] = (float)(int)sVar6 + local_10[3];
+  iVar7 = thunk_GetNavyPrimaryOrderListHead();
+  iVar8 = iVar7;
+  for (; iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
+    if (*(int *)(iVar7 + 8) == iVar11) {
+      cVar5 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)
+                        (CONCAT22((short)((uint)unaff_EDI >> 0x10),uVar1),
+                         CONCAT22((short)((uint)iVar8 >> 0x10),*(undefined2 *)(iVar7 + 0x14)));
+      iVar8 = CONCAT31(extraout_var,cVar5);
+      if (cVar5 != '\0') {
+        sVar6 = GetNavyOrderNormalizationBaseByNationType();
+        fVar2 = (float)((int)*(short *)(iVar7 + 0x1c) / (int)sVar6);
+        sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(0);
+        local_10[0] = (float)(int)sVar6 * fVar2 + local_10[0];
+        sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(1);
+        local_10[1] = (float)(int)sVar6 * fVar2 + local_10[1];
+        sVar6 = ComputeNavyOrderPriorityContributionPercentByCategory(2);
+        local_10[2] = (float)(int)sVar6 * fVar2 + local_10[2];
+        iVar8 = ComputeNavyOrderPriorityContributionPercentByCategory(3);
+        local_10[3] = (float)(int)(short)iVar8 + local_10[3];
+      }
     }
   }
-  pfVar8 = local_10;
-  iVar10 = 4;
+  pfVar9 = local_10;
+  iVar11 = 4;
   fVar2 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   do {
-    fVar2 = fVar2 + *pfVar8;
-    pfVar8 = pfVar8 + 1;
-    iVar10 = iVar10 + -1;
-  } while (iVar10 != 0);
+    fVar2 = fVar2 + *pfVar9;
+    pfVar9 = pfVar9 + 1;
+    iVar11 = iVar11 + -1;
+  } while (iVar11 != 0);
   fVar3 = g_Recompute_Nation_Order_LookupTable_0065A9E8;
   if (fVar2 != (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
-    psVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-    pfVar8 = local_10;
+    psVar10 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
+    pfVar9 = local_10;
     do {
-      fVar4 = *pfVar8 / fVar2 -
-              (float)(int)*psVar9 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
+      fVar4 = *pfVar9 / fVar2 -
+              (float)(int)*psVar10 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
       if (fVar4 <= (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
         fVar4 = -fVar4;
       }
       fVar3 = fVar3 + fVar4;
-      psVar9 = psVar9 + 1;
-      pfVar8 = pfVar8 + 1;
-    } while ((int)psVar9 < 0x697960);
+      psVar10 = psVar10 + 1;
+      pfVar9 = pfVar9 + 1;
+    } while ((int)psVar10 < 0x697960);
     fVar3 = fVar2 * ((float)g_Recompute_Nation_Order_LookupTable_0065AA08 -
                     fVar3 * (float)g_Recompute_Nation_Order_LookupTable_0065AA00);
   }
@@ -152,19 +164,20 @@ TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(int pa
   if (fVar3 * _DAT_0065a8fc == (float)g_Recompute_Nation_Order_LookupTable_0065A9F0) {
     fVar2 = _DAT_0065aa24;
   }
-  psVar9 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-  pfVar8 = (float *)(param_1 + 0x2c);
+  psVar10 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
+  pTVar12 = this + 0x2c;
   do {
-    sVar6 = *psVar9;
-    psVar9 = psVar9 + 1;
-    *pfVar8 = (float)(int)sVar6 * fVar2 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
-    pfVar8 = pfVar8 + 1;
-  } while ((int)psVar9 < 0x697960);
-  fVar11 = (float10)ComputeInvadeMissionPriorityScore();
-  iVar10 = GetNavyContextPointerFromGlobalTableByIndex(3);
-  fVar2 = ((float)_DAT_0065aa30 / (float)iVar10) * (float)fVar11;
-  if (*(float *)(param_1 + 0x38) < fVar2) {
-    *(float *)(param_1 + 0x38) = fVar2;
+    sVar6 = *psVar10;
+    psVar10 = psVar10 + 1;
+    *(float *)pTVar12 =
+         (float)(int)sVar6 * fVar2 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    pTVar12 = pTVar12 + 4;
+  } while ((int)psVar10 < 0x697960);
+  fVar13 = (float10)ComputeInvadeMissionPriorityScore();
+  iVar11 = GetNavyContextPointerFromGlobalTableByIndex(3);
+  fVar2 = ((float)_DAT_0065aa30 / (float)iVar11) * (float)fVar13;
+  if (*(float *)(this + 0x38) < fVar2) {
+    *(float *)(this + 0x38) = fVar2;
     return;
   }
   return;
@@ -172,16 +185,19 @@ TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext(int pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A7B0
 // GHIDRA_NAME TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget
-// GHIDRA_PROTO undefined HandleBlockadePortMissionActionType2ForBeachheadTarget()
+// GHIDRA_PROTO undefined __thiscall HandleBlockadePortMissionActionType2ForBeachheadTarget(void)
 
 undefined4 __thiscall
-TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget
-          (int param_1,int param_2,int param_3,int param_4)
+TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget(TBeachheadMission *this)
 
 {
-  if ((((param_2 == 2) && (param_3 != -1)) &&
-      (param_3 == *(short *)(*(int *)(param_1 + 0x3c) + 0x30))) &&
-     (param_4 == *(int *)(param_1 + 0x14))) {
+  int in_stack_00000004;
+  int in_stack_00000008;
+  int in_stack_0000000c;
+  
+  if ((((in_stack_00000004 == 2) && (in_stack_00000008 != -1)) &&
+      (in_stack_00000008 == *(short *)(*(int *)(this + 0x3c) + 0x30))) &&
+     (in_stack_0000000c == *(int *)(this + 0x14))) {
     return 1;
   }
   return 0;
@@ -189,21 +205,23 @@ TBeachheadMission::HandleBlockadePortMissionActionType2ForBeachheadTarget
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053A940
 // GHIDRA_NAME TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady
-// GHIDRA_PROTO undefined ClearBlockadePortMissionChildOrderLinksIfReady()
+// GHIDRA_PROTO undefined __thiscall ClearBlockadePortMissionChildOrderLinksIfReady(void)
 
-undefined4 __fastcall TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady(int param_1)
+undefined4 __thiscall
+TBeachheadMission::ClearBlockadePortMissionChildOrderLinksIfReady(TBeachheadMission *this)
 
 {
   int *piVar1;
+  int *unaff_ESI;
   
-  if ((*(char *)(param_1 + 0x10) == '\0') && (*(int *)(param_1 + 0x28) != 0)) {
+  if ((this[0x10] == (TBeachheadMission)0x0) && (*(int *)(this + 0x28) != 0)) {
     return 0;
   }
-  piVar1 = *(int **)(param_1 + 0x24);
+  piVar1 = *(int **)(this + 0x24);
   while (piVar1 != (int *)0x0) {
-    *(undefined4 *)(**(int **)(param_1 + 0x24) + 0x2c) = 0;
-    piVar1 = thunk_DeleteMapOrderChildLinkAndReturnNext(*(int **)(param_1 + 0x24));
-    *(int **)(param_1 + 0x24) = piVar1;
+    *(undefined4 *)(**(int **)(this + 0x24) + 0x2c) = 0;
+    piVar1 = TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(*(TShip **)(this + 0x24),unaff_ESI);
+    *(int **)(this + 0x24) = piVar1;
   }
   return 1;
 }

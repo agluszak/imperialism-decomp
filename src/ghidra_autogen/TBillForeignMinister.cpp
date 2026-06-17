@@ -4,67 +4,579 @@
 // Bucket: TBillForeignMinister.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531BC0
-// GHIDRA_NAME TBillForeignMinister::GetTBillForeignMinisterClassNamePointer
-// GHIDRA_PROTO undefined GetTBillForeignMinisterClassNamePointer()
+// GHIDRA_NAME TBillForeignMinister::GetTMinisterClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-undefined ** TBillForeignMinister::GetTBillForeignMinisterClassNamePointer(void)
+CRuntimeClass * __thiscall
+TBillForeignMinister::GetTMinisterClassNamePointer(TBillForeignMinister *this)
 
 {
-  return &PTR_s_TBillForeignMinister_00659ac8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531BE0
 // GHIDRA_NAME TBillForeignMinister::ConstructTBillForeignMinister
-// GHIDRA_PROTO undefined ConstructTBillForeignMinister()
+// GHIDRA_PROTO undefined __thiscall ConstructTBillForeignMinister(void)
 
-undefined4 * __fastcall TBillForeignMinister::ConstructTBillForeignMinister(undefined4 *param_1)
+TBillForeignMinister * __thiscall
+TBillForeignMinister::ConstructTBillForeignMinister(TBillForeignMinister *this)
 
 {
   int iVar1;
   undefined4 *puVar2;
   
-  *(undefined4 *)((int)param_1 + 0x49) = 0x1010101;
-  *(undefined2 *)((int)param_1 + 0x4d) = 0x101;
-  *(undefined1 *)((int)param_1 + 0x4f) = 1;
-  puVar2 = param_1 + 0x14;
+  *(undefined4 *)&this->field_0x49 = 0x1010101;
+  *(undefined2 *)&this->field_0x4d = 0x101;
+  this->field_0x4f = 1;
+  puVar2 = (undefined4 *)&this->field_0x50;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
     *puVar2 = 0;
     puVar2 = puVar2 + 1;
   }
   *(undefined2 *)puVar2 = 0;
-  *param_1 = &PTR_LAB_00659e30;
-  *(undefined2 *)((int)param_1 + 0x16) = 0;
-  *(undefined1 *)(param_1 + 0x20) = 0;
-  *(undefined1 *)(param_1 + 0x12) = 1;
-  *(undefined2 *)(param_1 + 7) = 1;
-  *(undefined2 *)((int)param_1 + 0x1a) = 4;
-  *(undefined2 *)(param_1 + 3) = 4;
-  return param_1;
+  this->vftable = &TBillForeignMinisterVtbl_00659e30;
+  *(undefined2 *)&this->field_0x16 = 0;
+  this->field_0x80 = 0;
+  this->field_0x48 = 1;
+  *(undefined2 *)&this->field_0x1c = 1;
+  *(undefined2 *)&this->field_0x1a = 4;
+  *(undefined2 *)&this->field_0xc = 4;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531C50
-// GHIDRA_NAME TBillForeignMinister::DeletingDestructTBillForeignMinister
-// GHIDRA_PROTO undefined DeletingDestructTBillForeignMinister()
+// GHIDRA_NAME TBillForeignMinister::DeletingDestructTMinister
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
 
-undefined4 __thiscall
-TBillForeignMinister::DeletingDestructTBillForeignMinister(undefined4 param_1,byte param_2)
+TBillForeignMinister * __thiscall
+TBillForeignMinister::DeletingDestructTMinister(TBillForeignMinister *this)
 
 {
-  DestructTBillForeignMinister();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTBillForeignMinister(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00531C80
 // GHIDRA_NAME TBillForeignMinister::DestructTBillForeignMinister
-// GHIDRA_PROTO undefined DestructTBillForeignMinister()
+// GHIDRA_PROTO undefined __thiscall DestructTBillForeignMinister(void)
 
-void __fastcall TBillForeignMinister::DestructTBillForeignMinister(undefined4 *param_1)
+void __thiscall TBillForeignMinister::DestructTBillForeignMinister(TBillForeignMinister *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable =
+       (TBillForeignMinisterVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00531CA0
+// GHIDRA_NAME TBillForeignMinister::DeserializeTMinisterBaseOrderArrayHeader
+// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(void)
+
+void __thiscall
+TBillForeignMinister::DeserializeTMinisterBaseOrderArrayHeader(TBillForeignMinister *this)
+
+{
+  int *in_stack_00000004;
+  
+  TArmsForeignMinister::DeserializeTMinisterBaseOrderArrayHeader((TArmsForeignMinister *)this);
+  (**(code **)(*in_stack_00000004 + 0x3c))(&this->field_0x80,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00531CE0
+// GHIDRA_NAME TBillForeignMinister::SerializeTMinisterBaseOrderArrayHeader
+// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+
+void __thiscall
+TBillForeignMinister::SerializeTMinisterBaseOrderArrayHeader(TBillForeignMinister *this)
+
+{
+  int *in_stack_00000004;
+  
+  TArmsForeignMinister::SerializeTMinisterBaseOrderArrayHeader((TArmsForeignMinister *)this);
+  (**(code **)(*in_stack_00000004 + 0x78))(&this->field_0x80,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00531D20
+// GHIDRA_NAME TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TBillForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920(TBillForeignMinister *this)
+
+{
+  int *piVar1;
+  short sVar2;
+  undefined4 unaff_EDI;
+  short sVar3;
+  
+  piVar1 = *(int **)&this->field_0x4;
+  sVar3 = (short)((uint)unaff_EDI >> 0x10);
+  if ((&g_pCityOrderCapabilityState->field_0x27b)[*(short *)(*(int *)&this->field_0x4 + 0xc) * 0x1d]
+      == '\x02') {
+    (**(code **)(*piVar1 + 0x78))(4);
+    sVar2 = (**(code **)(*piVar1 + 0x78))(3);
+    if (sVar3 < sVar2) {
+      *(undefined2 *)&this->field_0x40 = 4;
+      *(undefined2 *)&this->field_0x46 = 3;
+    }
+    else {
+      *(undefined2 *)&this->field_0x40 = 3;
+      *(undefined2 *)&this->field_0x46 = 4;
+    }
+    *(undefined2 *)&this->field_0x42 = 2;
+    *(undefined2 *)&this->field_0x44 = 6;
+    TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920((TForeignMinister *)this);
+    return;
+  }
+  (**(code **)(*piVar1 + 0x78))(4);
+  sVar2 = (**(code **)(*piVar1 + 0x78))(3);
+  if (sVar3 < sVar2) {
+    *(undefined2 *)&this->field_0x40 = 4;
+    *(undefined2 *)&this->field_0x44 = 3;
+    *(undefined2 *)&this->field_0x42 = 2;
+    *(undefined2 *)&this->field_0x46 = 0xfff6;
+    TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920((TForeignMinister *)this);
+    return;
+  }
+  *(undefined2 *)&this->field_0x40 = 3;
+  *(undefined2 *)&this->field_0x44 = 4;
+  *(undefined2 *)&this->field_0x42 = 2;
+  *(undefined2 *)&this->field_0x46 = 0xfff6;
+  TForeignMinister::OrphanLeaf_NoCall_Ins07_004d8920((TForeignMinister *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00531E50
+// GHIDRA_NAME TBillForeignMinister::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+
+void __thiscall TBillForeignMinister::SetForeignMinisterReadyFlag14(TBillForeignMinister *this)
+
+{
+  short sVar1;
+  short sVar2;
+  TBillForeignMinisterVtbl *pTVar3;
+  TIndexAndRankList_GetTEventHandlerClassNamePointer_0x00 *pTVar4;
+  int iVar5;
+  char cVar6;
+  undefined uVar7;
+  short sVar8;
+  short sVar9;
+  undefined2 extraout_var_02;
+  undefined2 extraout_var_03;
+  undefined2 uVar10;
+  undefined2 extraout_var_04;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  int iVar11;
+  short sVar12;
+  undefined2 *puVar13;
+  int iVar14;
+  undefined4 *puVar15;
+  undefined4 *unaff_FS_OFFSET;
+  TIndexAndRankList *pTStack_48;
+  undefined4 uStack_40;
+  undefined2 uStack_3c;
+  TIndexAndRankListVtbl *pTStack_38;
+  TIndexAndRankList *pTStack_34;
+  undefined4 auStack_30 [6];
+  short sStack_16;
+  short sStack_14;
+  short sStack_12;
+  undefined2 uStack_10;
+  undefined2 uStack_e;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063418a;
+  *unaff_FS_OFFSET = &uStack_c;
+  pTVar3 = this->vftable;
+  (*pTVar3[9].GetTMinisterClassNamePointer)();
+  uVar10 = extraout_var_02;
+  if ((*(short *)&this->field_0x1a <= *(short *)&this->field_0x18) ||
+     (cVar6 = (*pTVar3[0x11].GetTMinisterClassNamePointer)(), uVar10 = extraout_var_03,
+     cVar6 != '\0')) {
+    (**(code **)(**(int **)(*(int *)&this->field_0x4 + 0x98) + 0x68))
+              (CONCAT22(uVar10,*(undefined2 *)&this->field_0x1c));
+    *(undefined2 *)&this->field_0x18 = 0;
+  }
+  (*pTVar3[0x10].DeletingDestructTMinister)();
+  if (*(short *)&this->field_0x10 != -10) {
+    (**(code **)(**(int **)&this->field_0x4 + 0x1a4))
+              (CONCAT22(extraout_var_04,*(short *)&this->field_0x10),0xffffffff);
+    *(undefined2 *)(&this->field_0x1e + *(short *)&this->field_0x10 * 2) =
+         *(undefined2 *)&this->field_0x12;
+  }
+  puVar13 = (undefined2 *)&this->field_0x40;
+  iVar14 = 4;
+  do {
+    (**(code **)(**(int **)&this->field_0x4 + 0x1a4))(*puVar13,0xffffffff);
+    puVar13 = puVar13 + 1;
+    iVar14 = iVar14 + -1;
+  } while (iVar14 != 0);
+  iVar14 = *(int *)&this->field_0x4;
+  if (*(int *)(iVar14 + 0x10) < 0) {
+    uStack_40 = CONCAT22(uStack_40._2_2_,*(undefined2 *)(iVar14 + 0xa4));
+  }
+  else {
+    uStack_40 = (int)*(short *)(iVar14 + 0xa4) / 2;
+  }
+  pTStack_48 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  uStack_4 = 0;
+  pTStack_34 = pTStack_48;
+  if (pTStack_48 == (TIndexAndRankList *)0x0) {
+    pTStack_48 = (TIndexAndRankList *)0x0;
+  }
+  else {
+    TIndexAndRankList::CPtrArray(pTStack_48);
+    pTStack_48->vftable = (TIndexAndRankListVtbl *)&TSortByPriceList::_vftable_;
+  }
+  pTStack_38 = pTStack_48->vftable;
+  uStack_4 = 0xffffffff;
+  *(undefined2 *)&pTStack_48->field_0x14 = 4;
+  iVar14 = 0xd;
+  pTVar4 = pTStack_38[7].GetTEventHandlerClassNamePointer;
+  do {
+    uStack_3c = (undefined2)iVar14;
+    uVar7 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar14);
+    uStack_40 = CONCAT22((short)CONCAT31(extraout_var,uVar7),(short)uStack_40);
+    (*pTVar4)(&uStack_40);
+    iVar14 = iVar14 + 1;
+  } while ((short)iVar14 < 0x10);
+  sVar9 = 3;
+  puVar15 = auStack_30;
+  for (iVar11 = 8; iVar11 != 0; iVar11 = iVar11 + -1) {
+    *puVar15 = 0;
+    puVar15 = puVar15 + 1;
+  }
+  *(undefined2 *)puVar15 = 0;
+  sVar12 = 0;
+  if (0 < (short)uStack_40) {
+    pTStack_34 = (TIndexAndRankList *)((short)uStack_40 * 3);
+    do {
+      if ((int)pTStack_34 <= (int)sVar12) break;
+      uVar7 = (*pTStack_38[5].slot_0x04)((int)sVar9);
+      sVar1 = *(short *)CONCAT31(extraout_var_00,uVar7);
+      iVar14 = CONCAT22((short)((uint)iVar14 >> 0x10),sVar1);
+      sVar2 = *(short *)((int)auStack_30 + sVar1 * 2 + -4);
+      sVar8 = (**(code **)(**(int **)&this->field_0x4 + 0x78))(iVar14);
+      if (sVar2 < sVar8) {
+        iVar11 = CONCAT22((short)((uint)pTStack_48 >> 0x10),sVar2) + 1;
+        iVar5 = **(int **)&this->field_0x4;
+        *(short *)((int)auStack_30 + sVar1 * 2 + -4) = (short)iVar11;
+        (**(code **)(iVar5 + 0x1a4))(iVar14,iVar11);
+      }
+      sVar9 = sVar9 + -1;
+      if (sVar9 == 0) {
+        sVar9 = 3;
+      }
+      sVar12 = sVar12 + 1;
+    } while ((short)(sStack_16 + sStack_14 + sStack_12) < (short)uStack_40);
+  }
+  if (pTStack_48 != (TIndexAndRankList *)0x0) {
+    (*pTStack_38[4].slot_0x04)();
+  }
+  uVar7 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0x10);
+  if ((0x5dc < (short)CONCAT31(extraout_var_01,uVar7)) &&
+     (cVar6 = (*g_pDiplomacyTurnStateManager->vftable[9].slot_0x04)
+                        (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
+                                  *(undefined2 *)(*(int *)&this->field_0x4 + 0xc))), cVar6 == '\0'))
+  {
+    sVar9 = (**(code **)(**(int **)&this->field_0x4 + 0x78))(0x10);
+    iVar14 = (int)sVar9 / 10;
+    if ((short)iVar14 < 3) {
+      sVar9 = (**(code **)(**(int **)&this->field_0x4 + 0x78))(0x10);
+      if (sVar9 < 7) goto LAB_005320cd;
+      iVar14 = 2;
+      iVar11 = **(int **)&this->field_0x4;
+    }
+    else {
+      iVar11 = **(int **)&this->field_0x4;
+    }
+    (**(code **)(iVar11 + 0x1a4))(0x10,iVar14);
+  }
+LAB_005320cd:
+  *unaff_FS_OFFSET = CONCAT22(uStack_e,uStack_10);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00532190
+// GHIDRA_NAME TBillForeignMinister::UpdateControlCachedIntFromWindowText
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+
+void __thiscall
+TBillForeignMinister::UpdateControlCachedIntFromWindowText(TBillForeignMinister *this)
+
+{
+  undefined uVar1;
+  short sVar2;
+  short sVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  TTradeMgrVtbl *pTVar4;
+  int *piVar5;
+  undefined4 unaff_EDI;
+  undefined2 uVar7;
+  int iVar6;
+  undefined4 unaff_retaddr;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  short in_stack_00000010;
+  undefined4 uVar8;
+  undefined4 uVar9;
+  undefined4 uVar10;
+  
+  if (*(short *)(&this->field_0x1e + in_stack_00000010 * 2) != 0) {
+    TForeignMinister::UpdateControlCachedIntFromWindowText((TForeignMinister *)this);
+    return;
+  }
+  uVar7 = (undefined2)((uint)unaff_EDI >> 0x10);
+  sVar3 = (short)in_stack_00000004;
+  if (in_stack_00000010 == 2) {
+    uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(3);
+    if ((0x68 < (short)CONCAT31(extraout_var,uVar1)) &&
+       (uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(4),
+       0x68 < (short)CONCAT31(extraout_var_00,uVar1))) {
+      if (this->field_0x4b == '\0') {
+        iVar6 = CONCAT22(uVar7,*(undefined2 *)&this->field_0x16);
+      }
+      else {
+        sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
+        this->field_0x4b = 0;
+        sVar2 = (short)((ulonglong)((longlong)(int)sVar2 * 0x55555556) >> 0x20) -
+                (short)((longlong)(int)sVar2 * 0x55555556 >> 0x3f);
+        iVar6 = (int)sVar2;
+        *(short *)&this->field_0x16 = sVar2;
+        if (iVar6 < 3) {
+          iVar6 = 2;
+        }
+      }
+      sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
+      if (sVar2 < (short)iVar6) {
+        iVar6 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
+      }
+      if (sVar3 <= (short)iVar6) {
+        (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
+                  (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
+                            *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,
+                   in_stack_00000004,in_stack_00000008,2,0);
+        *(short *)&this->field_0x16 = *(short *)&this->field_0x16 - sVar3;
+        if (-1 < *(short *)&this->field_0x16) {
+          return;
+        }
+        *(undefined2 *)&this->field_0x16 = 0;
+        return;
+      }
+      (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)
+                (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
+                          *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,iVar6,
+                 in_stack_00000008,2,1,0);
+      *(undefined2 *)&this->field_0x16 = 0;
+      return;
+    }
+    sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
+    if (sVar3 <= sVar2) {
+      uVar8 = 2;
+      pTVar4 = g_pNationInteractionStateManager->vftable;
+LAB_00532403:
+      (*pTVar4[0xc].GetTTradeMgrClassNamePointer)
+                (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
+                          *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,
+                 in_stack_00000004,in_stack_00000008,uVar8,0,0);
+      return;
+    }
+    piVar5 = *(int **)&this->field_0x4;
+    uVar7 = (undefined2)piVar5[3];
+    pTVar4 = g_pNationInteractionStateManager->vftable;
+    uVar8 = 2;
+LAB_00532432:
+    uVar8 = (**(code **)(*piVar5 + 0x74))(in_stack_00000008,uVar8,0,0);
+    (*pTVar4[0xc].GetTTradeMgrClassNamePointer)
+              (CONCAT22((short)((uint)this >> 0x10),uVar7),unaff_retaddr,uVar8);
+    return;
+  }
+  if (in_stack_00000010 == 3) {
+    if (this->field_0x4c != '\0') {
+      sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
+      this->field_0x4c = 0;
+      *(short *)&this->field_0x16 = sVar2 / 2;
+    }
+    uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(4);
+    uVar8 = in_stack_00000004;
+    if (0x68 < (short)CONCAT31(extraout_var_01,uVar1)) {
+      uVar8 = CONCAT22(uVar7,*(undefined2 *)&this->field_0x16);
+    }
+    if (sVar3 < (short)uVar8) {
+      uVar8 = in_stack_00000004;
+    }
+    sVar3 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
+    if (sVar3 < (short)uVar8) {
+      piVar5 = *(int **)&this->field_0x4;
+      uVar10 = 0;
+      uVar8 = CONCAT22((short)((uint)uVar8 >> 0x10),(short)piVar5[3]);
+      pTVar4 = g_pNationInteractionStateManager->vftable;
+      uVar9 = 3;
+LAB_005323bb:
+      uVar9 = (**(code **)(*piVar5 + 0x74))(in_stack_00000008,uVar9,uVar10,0);
+      (*pTVar4[0xc].GetTTradeMgrClassNamePointer)(uVar8,unaff_retaddr,uVar9);
+      *(undefined2 *)&this->field_0x16 = 0;
+      return;
+    }
+    uVar9 = 3;
+    pTVar4 = g_pNationInteractionStateManager->vftable;
+    in_stack_00000004 = uVar8;
+  }
+  else {
+    if (in_stack_00000010 != 4) {
+      if (in_stack_00000010 != 6) {
+        return;
+      }
+      sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
+      if (sVar3 <= sVar2) {
+        uVar8 = 6;
+        pTVar4 = g_pNationInteractionStateManager->vftable;
+        goto LAB_00532403;
+      }
+      piVar5 = *(int **)&this->field_0x4;
+      uVar7 = (undefined2)piVar5[3];
+      pTVar4 = g_pNationInteractionStateManager->vftable;
+      uVar8 = 6;
+      goto LAB_00532432;
+    }
+    sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x74))();
+    if (sVar2 < sVar3) {
+      piVar5 = *(int **)&this->field_0x4;
+      uVar10 = 1;
+      uVar8 = CONCAT22((short)((uint)in_stack_00000004 >> 0x10),(short)piVar5[3]);
+      pTVar4 = g_pNationInteractionStateManager->vftable;
+      uVar9 = 4;
+      goto LAB_005323bb;
+    }
+    uVar9 = 4;
+    pTVar4 = g_pNationInteractionStateManager->vftable;
+  }
+  (*pTVar4[0xc].GetTTradeMgrClassNamePointer)
+            (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
+                      *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),unaff_retaddr,
+             in_stack_00000004,in_stack_00000008,uVar9,0,0);
+  *(short *)&this->field_0x16 = *(short *)&this->field_0x16 - (short)in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00532520
+// GHIDRA_NAME TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
+
+void __thiscall
+TBillForeignMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TBillForeignMinister *this)
+
+{
+  char cVar1;
+  uint uVar2;
+  uint uVar3;
+  short sVar4;
+  short sVar5;
+  int iVar6;
+  short sVar7;
+  short asStack_4 [2];
+  
+  sVar7 = 0;
+  sVar4 = 0;
+  asStack_4[0] = 0;
+  asStack_4[1] = 0;
+  do {
+    if (0xf < sVar4) {
+      return;
+    }
+    sVar4 = sVar4 + 1;
+    uVar2 = GenerateThreadLocalRandom15();
+    uVar3 = (int)uVar2 >> 0x1f;
+    iVar6 = (((uVar2 ^ uVar3) - uVar3 & 0xf ^ uVar3) - uVar3) + 7;
+    sVar5 = (short)iVar6;
+    if ((((sVar5 != asStack_4[0]) && (sVar5 != asStack_4[1])) &&
+        (cVar1 = (*g_pGlobalMapState->vftable[10].slot_0x04)
+                           (CONCAT22((short)((uint)*(int *)&this->field_0x4 >> 0x10),
+                                     *(undefined2 *)(*(int *)&this->field_0x4 + 0xc)),iVar6),
+        cVar1 == '\0')) && (g_apTerrainTypeDescriptorTable[sVar5] != (TCountry *)0x0)) {
+      asStack_4[sVar7] = sVar5;
+      (**(code **)(**(int **)&this->field_0x4 + 0x1d0))(iVar6,0x133);
+      sVar7 = sVar7 + 1;
+    }
+  } while (sVar7 < 2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005325E0
+// GHIDRA_NAME TBillForeignMinister::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TBillForeignMinister::_scalar_deleting_destructor_(TBillForeignMinister *this)
+
+{
+  short sVar1;
+  short sVar2;
+  int iVar3;
+  
+  sVar2 = 0;
+  iVar3 = 7;
+  do {
+    if (1 < sVar2) {
+      return;
+    }
+    sVar1 = TControl::thunk_LookupOrderCompatibilityMatrixValue
+                      ((TControl *)g_pDiplomacyTurnStateManager,
+                       *(short *)(*(int *)&this->field_0x4 + 0xc),(short)iVar3);
+    if (0 < sVar1) {
+      (**(code **)(**(int **)&this->field_0x4 + 0x48))(iVar3,0x5a);
+      sVar2 = sVar2 + 1;
+    }
+    iVar3 = iVar3 + 1;
+  } while ((short)iVar3 < 0x17);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00532650
+// GHIDRA_NAME TBillForeignMinister::UpdateDiplomatProgressFromProductionSlots2And4
+// GHIDRA_PROTO undefined __thiscall UpdateDiplomatProgressFromProductionSlots2And4(void)
+
+void __thiscall
+TBillForeignMinister::UpdateDiplomatProgressFromProductionSlots2And4(TBillForeignMinister *this)
+
+{
+  TCityVtbl *pTVar1;
+  undefined uVar2;
+  short sVar3;
+  int iVar4;
+  undefined3 extraout_var;
+  TCity *in_stack_00000004;
+  
+  *(undefined2 *)&in_stack_00000004->field_0x5e = 3;
+  iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,2);
+  sVar3 = (short)iVar4 + 2;
+  *(short *)&in_stack_00000004->field_0x200 =
+       *(short *)&in_stack_00000004->field_0x200 +
+       (sVar3 - *(short *)&in_stack_00000004->field_0x1e0);
+  *(short *)&in_stack_00000004->field_0x1e0 = sVar3;
+  iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(in_stack_00000004,4);
+  pTVar1 = in_stack_00000004->vftable;
+  sVar3 = (short)iVar4 + 2;
+  *(short *)&in_stack_00000004->field_0x204 =
+       *(short *)&in_stack_00000004->field_0x204 +
+       (sVar3 - *(short *)&in_stack_00000004->field_0x1e4);
+  *(short *)&in_stack_00000004->field_0x1e4 = sVar3;
+  uVar2 = (*pTVar1[0xd].slot_0x04)();
+  (*pTVar1[0xe].GetTCityClassNamePointer)(CONCAT31(extraout_var,uVar2) + 2);
   return;
 }
 

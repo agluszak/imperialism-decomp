@@ -3,6 +3,22 @@
 // Program: Imperialism.exe
 // Bucket: TEvent.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00483AD0
+// GHIDRA_NAME TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(void)
+
+TEvent * __thiscall TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00483ad0(TEvent *this)
+
+{
+  byte in_stack_00000004;
+  
+  WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00489EE0
 // GHIDRA_NAME TEvent::CreateTEventInstance
 // GHIDRA_PROTO undefined CreateTEventInstance()
@@ -15,11 +31,27 @@ undefined ** TEvent::CreateTEventInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489F40
 // GHIDRA_NAME TEvent::GetTEventClassNamePointer
-// GHIDRA_PROTO undefined GetTEventClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-undefined ** TEvent::GetTEventClassNamePointer(void)
+CRuntimeClass * __thiscall TEvent::GetTEventClassNamePointer(TEvent *this)
 
 {
-  return &PTR_s_TEvent_00649570;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492C70
+// GHIDRA_NAME TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492c70(void)
+
+TEvent * __thiscall TEvent::WrapperFor_FreeHeapBufferIfNotNull_At00492c70(TEvent *this)
+
+{
+  byte in_stack_00000004;
+  
+  WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 

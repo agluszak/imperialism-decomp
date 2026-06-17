@@ -7,11 +7,11 @@
 // GHIDRA_NAME TMiniCivLine::CreateTMiniCivLineInstance
 // GHIDRA_PROTO undefined CreateTMiniCivLineInstance()
 
-undefined4 * TMiniCivLine::CreateTMiniCivLineInstance(void)
+TLineData * TMiniCivLine::CreateTMiniCivLineInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TLineData *this;
+  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,38 +21,39 @@ undefined4 * TMiniCivLine::CreateTMiniCivLineInstance(void)
   puStack_8 = &LAB_0063065a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  this = (TLineData *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TLineData::ConstructTLineDataBaseState();
-    *puVar1 = &PTR_LAB_0064d990;
-    puVar2 = puVar1;
+  pTVar1 = (TLineData *)0x0;
+  if (this != (TLineData *)0x0) {
+    TLineData::ConstructTLineDataBaseState(this);
+    this->vftable = (TLineDataVtbl *)&TMiniCivLineVtbl_0064d990;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB6E0
-// GHIDRA_NAME TMiniCivLine::GetTMiniCivLineClassNamePointer
-// GHIDRA_PROTO undefined GetTMiniCivLineClassNamePointer()
+// GHIDRA_NAME TMiniCivLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TMiniCivLine::GetTMiniCivLineClassNamePointer(void)
+CRuntimeClass * __thiscall TMiniCivLine::GetTLineDataClassNamePointer(TMiniCivLine *this)
 
 {
-  return &PTR_s_TMiniCivLine_0064cbe0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AB740
-// GHIDRA_NAME TMiniCivLine::ConstructTMiniCivLineBaseState
-// GHIDRA_PROTO undefined ConstructTMiniCivLineBaseState()
+// GHIDRA_NAME TMiniCivLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
 
-void __thiscall
-TMiniCivLine::ConstructTMiniCivLineBaseState(int param_1,undefined4 param_2,undefined4 param_3)
+void __thiscall TMiniCivLine::OrphanRetStub_0056f460(TMiniCivLine *this)
 
 {
-  undefined4 *puVar1;
+  TControl *this_00;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -61,33 +62,18 @@ TMiniCivLine::ConstructTMiniCivLineBaseState(int param_1,undefined4 param_2,unde
   puStack_8 = &LAB_00630682;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x8c);
+  this_00 = (TControl *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  if (this_00 != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
     local_4 = CONCAT31(local_4._1_3_,1);
-    InitializeSharedStringRefFromEmpty(puVar1 + 0x22);
-    *puVar1 = &PTR_LAB_0064d9d0;
+    CString::CString((CString *)&this_00[1].field_0x4);
+    this_00->vftable = (TControlVtbl *)&TMiniCivViewVtbl_0064d9d0;
   }
   local_4 = 0xffffffff;
   TMiniCivView::ConstructTMiniCivViewBaseState
-            (param_2,param_3,param_1 + 8,*(undefined4 *)(param_1 + 0x10));
+            (in_stack_00000004,in_stack_00000008,&this->field_0x8,*(undefined4 *)&this->field_0x10);
   *unaff_FS_OFFSET = local_c;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AB820
-// GHIDRA_NAME TMiniCivLine::DestructTMiniCivLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMiniCivLineAndMaybeFree()
-
-undefined4 __thiscall
-TMiniCivLine::DestructTMiniCivLineAndMaybeFree(undefined4 param_1,byte param_2)
-
-{
-  DestructTMiniCivLineAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
 }
 

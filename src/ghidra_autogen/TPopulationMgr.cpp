@@ -5,85 +5,742 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5B70
 // GHIDRA_NAME TPopulationMgr::GetTPopulationMgrClassNamePointer
-// GHIDRA_PROTO undefined GetTPopulationMgrClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTPopulationMgrClassNamePointer(void)
 
-undefined ** TPopulationMgr::GetTPopulationMgrClassNamePointer(void)
+CRuntimeClass * __thiscall TPopulationMgr::GetTPopulationMgrClassNamePointer(TPopulationMgr *this)
 
 {
-  return &PTR_s_TPopulationMgr_0064f398;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5BB0
 // GHIDRA_NAME TPopulationMgr::ConstructTPopulationMgrBaseState
-// GHIDRA_PROTO undefined ConstructTPopulationMgrBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTPopulationMgrBaseState(void)
 
-undefined4 __thiscall
-TPopulationMgr::ConstructTPopulationMgrBaseState(undefined4 param_1,byte param_2)
+TPopulationMgr * __thiscall TPopulationMgr::ConstructTPopulationMgrBaseState(TPopulationMgr *this)
 
 {
-  DestructTPopulationMgrAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTPopulationMgrAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5BE0
 // GHIDRA_NAME TPopulationMgr::DestructTPopulationMgrAndMaybeFree
-// GHIDRA_PROTO undefined DestructTPopulationMgrAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTPopulationMgrAndMaybeFree(void)
 
-void __fastcall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(undefined4 *param_1)
+void __thiscall TPopulationMgr::DestructTPopulationMgrAndMaybeFree(TPopulationMgr *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TPopulationMgrVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5D10
+// GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins09_004b5d10(void)
+
+void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins09_004b5d10(TPopulationMgr *this)
+
+{
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  *(undefined2 *)(in_stack_00000008 + 4) = *(undefined2 *)(in_stack_00000004 + 4);
+  *(undefined2 *)(in_stack_00000008 + 6) = *(undefined2 *)(in_stack_00000004 + 6);
+  *(undefined2 *)(in_stack_00000008 + 8) = *(undefined2 *)(in_stack_00000004 + 8);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5D50
+// GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins20_004b5d50(void)
+
+void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins20_004b5d50(TPopulationMgr *this)
+
+{
+  short in_stack_00000004;
+  
+  *(short *)(*(int *)&this->field_0x10 + 4) = in_stack_00000004;
+  *(short *)(*(int *)&this->field_0x14 + 4) = in_stack_00000004;
+  *(short *)&this->field_0x1c = in_stack_00000004;
+  *(short *)&this->field_0x8 = in_stack_00000004;
+  *(float *)&this->field_0xc = (float)(int)in_stack_00000004;
+  *(undefined2 *)(*(int *)&this->field_0x18 + 8) = 0;
+  *(undefined2 *)(*(int *)&this->field_0x18 + 6) = 0;
+  *(undefined2 *)(*(int *)&this->field_0x18 + 4) = 0;
+  *(undefined2 *)&this->field_0x20 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5DC0
+// GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins47_004b5dc0(void)
+
+void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins47_004b5dc0(TPopulationMgr *this)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  int iVar4;
+  short sVar5;
+  short in_stack_00000004;
+  short in_stack_00000008;
+  short in_stack_0000000c;
+  
+  *(short *)(*(int *)&this->field_0x10 + 4) = in_stack_00000004;
+  *(short *)(*(int *)&this->field_0x14 + 4) = in_stack_00000004;
+  *(short *)(*(int *)&this->field_0x10 + 6) = in_stack_00000008;
+  *(short *)(*(int *)&this->field_0x14 + 6) = in_stack_00000008;
+  *(short *)(*(int *)&this->field_0x10 + 8) = in_stack_0000000c;
+  *(short *)(*(int *)&this->field_0x14 + 8) = in_stack_0000000c;
+  iVar4 = *(int *)&this->field_0x14;
+  sVar1 = *(short *)(iVar4 + 8);
+  sVar2 = *(short *)(iVar4 + 6);
+  sVar3 = *(short *)(iVar4 + 4);
+  sVar5 = in_stack_00000008 + in_stack_0000000c + in_stack_00000004;
+  *(short *)&this->field_0x8 = sVar5;
+  *(short *)&this->field_0x1c = (sVar2 + sVar1 * 2) * 2 + sVar3;
+  *(float *)&this->field_0xc = (float)(int)sVar5;
+  *(undefined2 *)(*(int *)&this->field_0x18 + 8) = 0;
+  *(undefined2 *)(*(int *)&this->field_0x18 + 6) = 0;
+  *(undefined2 *)(*(int *)&this->field_0x18 + 4) = 0;
+  *(undefined2 *)&this->field_0x20 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5E80
+// GHIDRA_NAME TPopulationMgr::OrphanCallChain_C2_I24_004b5e80
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_004b5e80(void)
+
+void __thiscall TPopulationMgr::OrphanCallChain_C2_I24_004b5e80(TPopulationMgr *this)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  TPopulationMgrVtbl *pTVar4;
+  int iVar5;
+  
+  pTVar4 = this->vftable;
+  (*pTVar4[5].GetTPopulationMgrClassNamePointer)
+            (*(undefined4 *)&this->field_0x10,*(undefined4 *)&this->field_0x14);
+  (*pTVar4[7].GetTPopulationMgrClassNamePointer)();
+  iVar5 = *(int *)&this->field_0x14;
+  sVar1 = *(short *)(iVar5 + 8);
+  sVar2 = *(short *)(iVar5 + 6);
+  sVar3 = *(short *)(iVar5 + 4);
+  *(undefined2 *)&this->field_0x1e = 0;
+  *(short *)&this->field_0x1c = (sVar2 + sVar1 * 2) * 2 + sVar3;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5ED0
+// GHIDRA_NAME TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(void)
+
+void __thiscall
+TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(TPopulationMgr *this)
+
+{
+  short *psVar1;
+  short sVar2;
+  short sVar3;
+  int iVar4;
+  int *piVar5;
+  ushort uVar6;
+  int iVar7;
+  short sVar8;
+  undefined4 unaff_EBX;
+  uint uVar10;
+  ushort uVar11;
+  int iVar12;
+  int local_14;
+  int local_10;
+  int iVar9;
+  
+  iVar12 = 0;
+  sVar8 = *(short *)&this->field_0x8;
+  psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
+  *psVar1 = *psVar1 + *(short *)(*(int *)&this->field_0x18 + 4);
+  psVar1 = (short *)(*(int *)&this->field_0x14 + 6);
+  *psVar1 = *psVar1 + *(short *)(*(int *)&this->field_0x18 + 6);
+  psVar1 = (short *)(*(int *)&this->field_0x14 + 8);
+  *psVar1 = *psVar1 + *(short *)(*(int *)&this->field_0x18 + 8);
+  iVar7 = (int)sVar8;
+  iVar4 = (int)(iVar7 + 2 + (iVar7 + 2 >> 0x1f & 3U)) >> 2;
+  piVar5 = *(int **)&this->field_0x4;
+  local_14 = CONCAT22(local_14._2_2_,*(short *)((int)piVar5 + 0xda));
+  sVar8 = (short)piVar5[0x37] + *(short *)((int)piVar5 + 0xde);
+  iVar9 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar8);
+  uVar11 = *(ushort *)(piVar5 + 0x36);
+  local_10 = (iVar7 + 1) / 2;
+  iVar7 = (int)(iVar7 + (iVar7 >> 0x1f & 3U)) >> 2;
+  if ((short)uVar11 < (short)local_10) {
+    iVar12 = local_10 - (uint)uVar11;
+    local_10 = 0;
+  }
+  else {
+    local_10 = (uint)uVar11 - local_10;
+  }
+  if (*(short *)((int)piVar5 + 0xda) < (short)iVar4) {
+    iVar12 = iVar12 + (iVar4 - local_14);
+    local_14 = 0;
+  }
+  else {
+    local_14 = local_14 - iVar4;
+  }
+  if (sVar8 < (short)iVar7) {
+    iVar7 = iVar7 - iVar9;
+    iVar12 = iVar12 + iVar7;
+    uVar10 = 0;
+  }
+  else {
+    uVar10 = iVar9 - iVar7;
+  }
+  sVar8 = (short)iVar12;
+  if (sVar8 != 0) {
+    if (sVar8 < (short)piVar5[0x31]) {
+      *(short *)(piVar5 + 0x31) = (short)piVar5[0x31] - sVar8;
+      (**(code **)(*piVar5 + 0x80))();
+      iVar12 = 0;
+    }
+    else {
+      iVar12 = iVar12 - CONCAT22((short)((uint)iVar7 >> 0x10),(short)piVar5[0x31]);
+      *(undefined2 *)(piVar5 + 0x31) = 0;
+      (**(code **)(*piVar5 + 0x80))();
+    }
+    if ((short)iVar12 != 0) {
+      if ((short)local_10 < (short)iVar12) {
+        iVar12 = iVar12 - local_10;
+        local_10 = 0;
+        if ((short)local_14 < (short)iVar12) {
+          iVar12 = iVar12 - local_14;
+          local_14 = 0;
+          if ((short)uVar10 < (short)iVar12) {
+            iVar12 = iVar12 - uVar10;
+            uVar10 = 0;
+          }
+          else {
+            uVar10 = uVar10 - iVar12;
+            iVar12 = 0;
+          }
+        }
+        else {
+          local_14 = local_14 - iVar12;
+          iVar12 = 0;
+        }
+      }
+      else {
+        local_10 = local_10 - iVar12;
+        iVar12 = 0;
+      }
+    }
+  }
+  piVar5 = *(int **)&this->field_0x4;
+  *(short *)(piVar5 + 0x36) = (short)local_10;
+  (**(code **)(*piVar5 + 0x80))();
+  piVar5 = *(int **)&this->field_0x4;
+  *(undefined2 *)((int)piVar5 + 0xda) = (undefined2)local_14;
+  (**(code **)(*piVar5 + 0x80))();
+  piVar5 = *(int **)&this->field_0x4;
+  sVar8 = (short)uVar10;
+  if (sVar8 == 0) {
+    *(undefined2 *)((int)piVar5 + 0xde) = 0;
+    (**(code **)(*piVar5 + 0x80))();
+    piVar5 = *(int **)&this->field_0x4;
+    *(undefined2 *)(piVar5 + 0x37) = 0;
+    (**(code **)(*piVar5 + 0x80))();
+  }
+  else {
+    if ((uVar10 & 1) == 0) {
+      sVar3 = sVar8 / 2;
+    }
+    else {
+      sVar3 = sVar8 / 2 + 1;
+    }
+    sVar8 = sVar8 / 2;
+    if (*(short *)((int)piVar5 + 0xde) < sVar3) {
+      sVar2 = sVar3 - *(short *)((int)piVar5 + 0xde);
+      sVar3 = sVar3 - sVar2;
+      sVar8 = sVar8 + sVar2;
+    }
+    else if ((short)piVar5[0x37] < sVar8) {
+      sVar2 = sVar8 - (short)piVar5[0x37];
+      sVar8 = sVar8 - sVar2;
+      sVar3 = sVar3 + sVar2;
+    }
+    *(short *)((int)piVar5 + 0xde) = sVar3;
+    (**(code **)(*piVar5 + 0x80))();
+    piVar5 = *(int **)&this->field_0x4;
+    *(short *)(piVar5 + 0x37) = sVar8;
+    (**(code **)(*piVar5 + 0x80))();
+  }
+  uVar11 = (ushort)iVar12;
+  if (uVar11 == 0) {
+    uVar6 = 0;
+  }
+  else {
+    piVar5 = (int *)AllocateWithFallbackHandler(0xc);
+    if (piVar5 == (int *)0x0) {
+      piVar5 = (int *)0x0;
+    }
+    else {
+      *piVar5 = (int)&TLaborPoolVtbl_0064f540;
+      *(undefined2 *)(piVar5 + 1) = 0;
+      *(undefined2 *)((int)piVar5 + 6) = 0;
+      *(undefined2 *)(piVar5 + 2) = 0;
+    }
+    *(undefined2 *)((int)piVar5 + 6) = 0;
+    *(undefined2 *)(piVar5 + 1) = 0;
+    *(undefined2 *)(piVar5 + 2) = 0;
+    (**(code **)(**(int **)&this->field_0x10 + 0x28))(piVar5,iVar12);
+    (**(code **)(*piVar5 + 0x1c))();
+    *(ushort *)&this->field_0x8 = *(short *)&this->field_0x8 - uVar11;
+    uVar6 = ((short)uVar11 < 1) - 1 & uVar11;
+    *(float *)&this->field_0xc = *(float *)&this->field_0xc - (float)(int)(short)uVar11;
+  }
+  (*this->vftable[5].GetTPopulationMgrClassNamePointer)
+            (*(undefined4 *)&this->field_0x10,*(undefined4 *)&this->field_0x14);
+  if ((short)local_10 != 0) {
+    (**(code **)(**(int **)&this->field_0x14 + 0x28))(*(undefined4 *)&this->field_0x18,local_10);
+  }
+  *(short *)(*(int *)&this->field_0x4 + 6) = (short)local_10;
+  *(ushort *)(*(int *)&this->field_0x4 + 8) = uVar6;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B6260
+// GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins111_004b6260(void)
+
+void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins111_004b6260(TPopulationMgr *this)
+
+{
+  int iVar1;
+  short sVar2;
+  short sVar3;
+  short sVar4;
+  short sVar5;
+  ushort uVar6;
+  short sVar7;
+  int iVar8;
+  short sVar9;
+  short *in_stack_00000004;
+  ushort *in_stack_00000008;
+  
+  iVar8 = (int)*(short *)&this->field_0x8;
+  sVar9 = 0;
+  iVar1 = *(int *)(*(int *)&this->field_0x4 + 0xac);
+  *in_stack_00000004 = 0;
+  *in_stack_00000008 = 0;
+  sVar7 = *(short *)(iVar1 + 0x15e);
+  sVar2 = *(short *)(iVar1 + 0x160);
+  sVar4 = *(short *)(iVar1 + 0x162) + *(short *)(iVar1 + 0x164);
+  sVar3 = (short)((iVar8 + 1) / 2);
+  if (sVar7 < sVar3) {
+    sVar9 = sVar3 - sVar7;
+    sVar7 = 0;
+  }
+  else {
+    sVar7 = sVar7 - sVar3;
+  }
+  sVar3 = (short)((int)(iVar8 + 2 + (iVar8 + 2 >> 0x1f & 3U)) >> 2);
+  if (sVar2 < sVar3) {
+    sVar5 = 0;
+    sVar9 = sVar9 + (sVar3 - sVar2);
+  }
+  else {
+    sVar5 = sVar2 - sVar3;
+  }
+  sVar2 = (short)((int)(iVar8 + (iVar8 >> 0x1f & 3U)) >> 2);
+  if (sVar4 < sVar2) {
+    sVar9 = sVar9 + (sVar2 - sVar4);
+    sVar4 = 0;
+  }
+  else {
+    sVar4 = sVar4 - sVar2;
+  }
+  if (sVar9 != 0) {
+    sVar2 = *(short *)(*(int *)&this->field_0x4 + 0xc4);
+    if (sVar9 < sVar2) {
+      sVar9 = 0;
+    }
+    else {
+      sVar9 = sVar9 - sVar2;
+    }
+    if (sVar9 != 0) {
+      if (sVar7 < sVar9) {
+        if (sVar5 < (short)(sVar9 - sVar7)) {
+          sVar5 = (sVar9 - sVar7) - sVar5;
+          if (sVar4 < sVar5) {
+            uVar6 = sVar5 - sVar4;
+          }
+          else {
+            uVar6 = 0;
+          }
+        }
+        else {
+          uVar6 = 0;
+        }
+      }
+      else {
+        uVar6 = 0;
+      }
+      *in_stack_00000004 = sVar9 - uVar6;
+      if (uVar6 != 0) {
+        *in_stack_00000008 = uVar6;
+      }
+    }
+  }
+  uVar6 = *in_stack_00000008;
+  if (uVar6 != 0) {
+    *in_stack_00000008 = ((short)uVar6 < 1) - 1 & uVar6;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B63E0
+// GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins50_004b63e0(void)
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+float10 __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins50_004b63e0(TPopulationMgr *this)
+
+{
+  short sVar1;
+  float10 fVar2;
+  
+  sVar1 = *(short *)&this->field_0x8;
+  if (sVar1 < 10) {
+    fVar2 = (float10)_DAT_0064f488;
+  }
+  else if (sVar1 < 0xf) {
+    fVar2 = (float10)_DAT_0064f48c;
+  }
+  else if (sVar1 < 0x14) {
+    fVar2 = (float10)_DAT_0064f490;
+  }
+  else if (sVar1 < 0x1e) {
+    fVar2 = (float10)_DAT_0064f494;
+  }
+  else if (sVar1 < 0x28) {
+    fVar2 = (float10)_DAT_0064f498;
+  }
+  else if (sVar1 < 0x3c) {
+    fVar2 = (float10)_DAT_0064f49c;
+  }
+  else if (sVar1 < 0x50) {
+    fVar2 = (float10)_DAT_0064f4a0;
+  }
+  else {
+    if (399 < sVar1) {
+      return (float10)_DAT_0064f4b8;
+    }
+    fVar2 = (float10)_DAT_0064f4a4;
+  }
+  sVar1 = *(short *)(*(int *)&this->field_0x4 + 0x26c);
+  if (sVar1 < 0x14) {
+    return fVar2 - (float10)(int)sVar1 * (float10)_DAT_0064f4a8;
+  }
+  return fVar2 - (float10)_DAT_0064f4b0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B64C0
+// GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins63_004b64c0(void)
+
+undefined1 * __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins63_004b64c0(TPopulationMgr *this)
+
+{
+  uint uVar1;
+  short *psVar2;
+  short sVar3;
+  int iVar4;
+  short local_8 [4];
+  
+  iVar4 = (int)*(short *)(*(int *)&this->field_0x10 + 8) +
+          (int)*(short *)(*(int *)&this->field_0x10 + 6);
+  local_8[0] = 0;
+  local_8[1] = 0;
+  sVar3 = ((short)(iVar4 / 10) + (short)(iVar4 >> 0x1f)) -
+          (short)((longlong)iVar4 * 0x66666667 >> 0x3f);
+  uVar1 = (uint)*(ushort *)&this->field_0x20;
+  local_8[2] = 0;
+  if (sVar3 != 0) {
+    iVar4 = (int)sVar3;
+    do {
+      sVar3 = (short)uVar1;
+      local_8[sVar3] = local_8[sVar3] + 1;
+      if (sVar3 == 3) {
+        uVar1 = 0;
+      }
+      else {
+        uVar1 = (int)sVar3 + 1;
+      }
+      iVar4 = iVar4 + -1;
+    } while (iVar4 != 0);
+  }
+  psVar2 = &DAT_00695b48;
+  iVar4 = 3;
+  do {
+    sVar3 = *psVar2;
+    psVar2 = psVar2 + 1;
+    iVar4 = iVar4 + -1;
+    *(undefined2 *)(&this->field_0x22 + sVar3 * 2) = 0;
+  } while (iVar4 != 0);
+  iVar4 = (int)(short)(*(short *)&this->field_0x8 +
+                      *(short *)(*(int *)(*(int *)&this->field_0x4 + 0x1d4) + 4));
+  *(short *)&this->field_0x44 = (short)((iVar4 + 1) / 2);
+  *(short *)&this->field_0x46 = (short)((int)(iVar4 + 2 + (iVar4 + 2 >> 0x1f & 3U)) >> 2);
+  *(short *)&this->field_0x4a = (short)((int)(iVar4 + (iVar4 >> 0x1f & 3U)) >> 2);
+  return &this->field_0x22;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B65B0
+// GHIDRA_NAME TPopulationMgr::OrphanCallChain_C2_I61_004b65b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I61_004b65b0(void)
+
+undefined1 __thiscall TPopulationMgr::OrphanCallChain_C2_I61_004b65b0(TPopulationMgr *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  int iVar3;
+  short sVar4;
+  undefined1 uVar5;
+  int iVar6;
+  short local_8 [4];
+  
+  uVar5 = 0;
+  iVar3 = (int)*(short *)(*(int *)&this->field_0x10 + 8) +
+          (int)*(short *)(*(int *)&this->field_0x10 + 6);
+  sVar4 = ((short)(iVar3 / 10) + (short)(iVar3 >> 0x1f)) -
+          (short)((longlong)iVar3 * 0x66666667 >> 0x3f);
+  local_8[0] = 0;
+  local_8[1] = 0;
+  local_8[2] = 0;
+  if (sVar4 != 0) {
+    iVar3 = (int)sVar4;
+    do {
+      sVar4 = *(short *)&this->field_0x20;
+      local_8[sVar4] = local_8[sVar4] + 1;
+      if (sVar4 == 3) {
+        sVar4 = 0;
+      }
+      else {
+        sVar4 = sVar4 + 1;
+      }
+      iVar3 = iVar3 + -1;
+      *(short *)&this->field_0x20 = sVar4;
+    } while (iVar3 != 0);
+  }
+  iVar6 = 0;
+  iVar3 = 3;
+  do {
+    piVar2 = *(int **)&this->field_0x4;
+    iVar1 = *(short *)((int)&DAT_00695b48 + iVar6) * 2 + 0xb6;
+    if (*(short *)((int)piVar2 + iVar1) < *(short *)((int)local_8 + iVar6)) {
+      *(undefined2 *)((int)piVar2 + iVar1) = 0;
+      (**(code **)(*piVar2 + 0x80))();
+      uVar5 = 1;
+    }
+    else {
+      *(short *)((int)piVar2 + iVar1) =
+           *(short *)((int)piVar2 + iVar1) - *(short *)((int)local_8 + iVar6);
+      (**(code **)(*piVar2 + 0x80))();
+    }
+    iVar6 = iVar6 + 2;
+    iVar3 = iVar3 + -1;
+  } while (iVar3 != 0);
+  return uVar5;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B66A0
+// GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins87_004b66a0(void)
+
+void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins87_004b66a0(TPopulationMgr *this)
+
+{
+  short *psVar1;
+  short sVar2;
+  int iVar3;
+  short sVar4;
+  short in_stack_00000004;
+  short in_stack_00000008;
+  
+  sVar4 = in_stack_00000008;
+  if (in_stack_00000004 == 1) {
+    iVar3 = *(int *)&this->field_0x10;
+    sVar4 = *(short *)(iVar3 + 4);
+    if (sVar4 < in_stack_00000008) {
+      sVar4 = in_stack_00000008 - sVar4;
+      *(undefined2 *)(iVar3 + 4) = 0;
+      in_stack_00000004 = 2;
+      *(undefined2 *)(*(int *)&this->field_0x14 + 4) = 0;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c - sVar4;
+    }
+    else {
+      *(short *)(iVar3 + 4) = sVar4 - in_stack_00000008;
+      psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
+      *psVar1 = *psVar1 - in_stack_00000008;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c - in_stack_00000008;
+      sVar4 = 0;
+    }
+  }
+  if (in_stack_00000004 == 2) {
+    iVar3 = *(int *)&this->field_0x10;
+    sVar2 = *(short *)(iVar3 + 6);
+    if (sVar2 < sVar4) {
+      sVar4 = sVar4 - sVar2;
+      *(undefined2 *)(iVar3 + 6) = 0;
+      in_stack_00000004 = 4;
+      *(undefined2 *)(*(int *)&this->field_0x14 + 6) = 0;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + sVar4 * -2;
+    }
+    else {
+      *(short *)(iVar3 + 6) = sVar2 - sVar4;
+      psVar1 = (short *)(*(int *)&this->field_0x14 + 6);
+      *psVar1 = *psVar1 - sVar4;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + sVar4 * -2;
+      sVar4 = 0;
+    }
+  }
+  if (in_stack_00000004 == 4) {
+    iVar3 = *(int *)&this->field_0x10;
+    sVar2 = *(short *)(iVar3 + 8);
+    if (sVar2 < sVar4) {
+      sVar4 = sVar4 - sVar2;
+      *(undefined2 *)(iVar3 + 8) = 0;
+      *(undefined2 *)(*(int *)&this->field_0x14 + 8) = 0;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + sVar4 * -4;
+    }
+    else {
+      *(short *)(iVar3 + 8) = sVar2 - sVar4;
+      psVar1 = (short *)(*(int *)&this->field_0x14 + 8);
+      *psVar1 = *psVar1 - sVar4;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + sVar4 * -4;
+      sVar4 = 0;
+    }
+  }
+  *(short *)&this->field_0x8 = *(short *)&this->field_0x8 - (in_stack_00000008 - sVar4);
+  *(float *)&this->field_0xc =
+       *(float *)&this->field_0xc - (float)(int)(short)(in_stack_00000008 - sVar4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B67E0
+// GHIDRA_NAME TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins26_004b67e0(void)
+
+void __thiscall TPopulationMgr::OrphanLeaf_NoCall_Ins26_004b67e0(TPopulationMgr *this)
+
+{
+  short *psVar1;
+  short in_stack_00000004;
+  short in_stack_00000008;
+  
+  if (in_stack_00000004 == 1) {
+    psVar1 = (short *)(*(int *)&this->field_0x14 + 4);
+    *psVar1 = *psVar1 - in_stack_00000008;
+    *(short *)&this->field_0x1c = *(short *)&this->field_0x1c - in_stack_00000008;
+  }
+  else {
+    if (in_stack_00000004 == 2) {
+      psVar1 = (short *)(*(int *)&this->field_0x14 + 6);
+      *psVar1 = *psVar1 - in_stack_00000008;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + in_stack_00000008 * -2;
+      return;
+    }
+    if (in_stack_00000004 == 4) {
+      psVar1 = (short *)(*(int *)&this->field_0x14 + 8);
+      *psVar1 = *psVar1 - in_stack_00000008;
+      *(short *)&this->field_0x1c = *(short *)&this->field_0x1c + in_stack_00000008 * -4;
+      return;
+    }
+  }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6850
 // GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850
-// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b6850()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(void)
 
 void __thiscall
-TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(int param_1,int *param_2)
+TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot14_At004b6850(TPopulationMgr *this)
 
 {
   code *pcVar1;
+  int *in_stack_00000004;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
-  pcVar1 = *(code **)(*param_2 + 0x78);
-  (*pcVar1)(param_1 + 8,2);
-  (*pcVar1)(param_1 + 0x1c,2);
-  (*pcVar1)(param_1 + 0x1e,2);
-  (*pcVar1)(param_1 + 0x20,2);
-  (*pcVar1)(param_1 + 0x22,0x2e);
-  (*pcVar1)(param_1 + 0xc,4);
-  (**(code **)(**(int **)(param_1 + 0x10) + 0x14))(param_2);
-  (**(code **)(**(int **)(param_1 + 0x14) + 0x14))(param_2);
-  (**(code **)(**(int **)(param_1 + 0x18) + 0x14))(param_2);
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  (*pcVar1)(&this->field_0x8,2);
+  (*pcVar1)(&this->field_0x1c,2);
+  (*pcVar1)(&this->field_0x1e,2);
+  (*pcVar1)(&this->field_0x20,2);
+  (*pcVar1)(&this->field_0x22,0x2e);
+  (*pcVar1)(&this->field_0xc,4);
+  (**(code **)(**(int **)&this->field_0x10 + 0x14))();
+  (**(code **)(**(int **)&this->field_0x14 + 0x14))();
+  (**(code **)(**(int **)&this->field_0x18 + 0x14))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B68F0
 // GHIDRA_NAME TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0
-// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(void)
 
 void __thiscall
-TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(int param_1,int *param_2)
+TPopulationMgr::WrapperFor_HandleCityDialogNoOpSlot18_At004b68f0(TPopulationMgr *this)
 
 {
   code *pcVar1;
+  int *in_stack_00000004;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
-  pcVar1 = *(code **)(*param_2 + 0x3c);
-  (*pcVar1)(param_1 + 8,2);
-  (*pcVar1)(param_1 + 0x1c,2);
-  (*pcVar1)(param_1 + 0x1e,2);
-  (*pcVar1)(param_1 + 0x20,2);
-  (*pcVar1)(param_1 + 0x22,0x2e);
-  (*pcVar1)(param_1 + 0xc,4);
-  (**(code **)(**(int **)(param_1 + 0x10) + 0x18))(param_2);
-  (**(code **)(**(int **)(param_1 + 0x14) + 0x18))(param_2);
-  (**(code **)(**(int **)(param_1 + 0x18) + 0x18))(param_2);
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  (*pcVar1)(&this->field_0x8,2);
+  (*pcVar1)(&this->field_0x1c,2);
+  (*pcVar1)(&this->field_0x1e,2);
+  (*pcVar1)(&this->field_0x20,2);
+  (*pcVar1)(&this->field_0x22,0x2e);
+  (*pcVar1)(&this->field_0xc,4);
+  (**(code **)(**(int **)&this->field_0x10 + 0x18))();
+  (**(code **)(**(int **)&this->field_0x14 + 0x18))();
+  (**(code **)(**(int **)&this->field_0x18 + 0x18))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B6990
+// GHIDRA_NAME TPopulationMgr::OrphanCallChain_C4_I28_004b6990
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I28_004b6990(void)
+
+void __thiscall TPopulationMgr::OrphanCallChain_C4_I28_004b6990(TPopulationMgr *this)
+
+{
+  if (*(int **)&this->field_0x10 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x10 + 0x1c))();
+  }
+  *(undefined4 *)&this->field_0x10 = 0;
+  if (*(int **)&this->field_0x14 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x14 + 0x1c))();
+  }
+  *(undefined4 *)&this->field_0x14 = 0;
+  if (*(int **)&this->field_0x18 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x18 + 0x1c))();
+  }
+  *(undefined4 *)&this->field_0x18 = 0;
+  if (this != (TPopulationMgr *)0x0) {
+    (*this->vftable->ConstructTPopulationMgrBaseState)(1);
+  }
   return;
 }
 

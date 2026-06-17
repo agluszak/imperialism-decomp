@@ -5,35 +5,53 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005527E0
 // GHIDRA_NAME TTaskForce::GetTTaskForceClassNamePointer
-// GHIDRA_PROTO undefined GetTTaskForceClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTTaskForceClassNamePointer(void)
 
-undefined ** TTaskForce::GetTTaskForceClassNamePointer(void)
+CRuntimeClass * __thiscall TTaskForce::GetTTaskForceClassNamePointer(TTaskForce *this)
 
 {
-  return &PTR_s_TTaskForce_0065c348;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552800
 // GHIDRA_NAME TTaskForce::ConstructTTaskForce
-// GHIDRA_PROTO undefined ConstructTTaskForce()
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskForce(void)
 
-void __thiscall
-TTaskForce::ConstructTTaskForce(undefined4 *param_1,undefined4 param_2,undefined2 param_3)
+void __thiscall TTaskForce::ConstructTTaskForce(TTaskForce *this)
 
 {
-  param_1[6] = param_2;
-  *(undefined2 *)(param_1 + 7) = param_3;
-  param_1[1] = 1;
-  param_1[2] = 0;
-  param_1[3] = 0;
-  param_1[4] = 0;
-  param_1[5] = 0;
-  param_1[10] = 0;
-  param_1[0xb] = 0;
-  *(undefined2 *)(param_1 + 0xc) = 0xffff;
-  *param_1 = &PTR_LAB_0065c468;
-  *(undefined4 *)((int)param_1 + 0x1e) = 0;
-  *(undefined4 *)((int)param_1 + 0x22) = 0;
+  undefined4 in_stack_00000004;
+  undefined2 in_stack_00000008;
+  
+  *(undefined4 *)&this->field_0x18 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x1c = in_stack_00000008;
+  *(undefined4 *)&this->field_0x4 = 1;
+  *(undefined4 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0xc = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0x14 = 0;
+  *(undefined4 *)&this->field_0x28 = 0;
+  *(undefined4 *)&this->field_0x2c = 0;
+  *(undefined2 *)&this->field_0x30 = 0xffff;
+  this->vftable = &TTaskForceVtbl_0065c468;
+  *(undefined4 *)&this->field_0x1e = 0;
+  *(undefined4 *)&this->field_0x22 = 0;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00552870
+// GHIDRA_NAME TTaskForce::DestroyTTaskForce
+// GHIDRA_PROTO undefined __thiscall DestroyTTaskForce(void)
+
+TTaskForce * __thiscall TTaskForce::DestroyTTaskForce(TTaskForce *this)
+
+{
+  byte in_stack_00000004;
+  
+  ResetTTaskForceToSentinelVtable();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 

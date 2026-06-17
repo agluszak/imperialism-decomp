@@ -5,9 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00615A34
 // GHIDRA_NAME CScrollView::DoMouseWheel
-// GHIDRA_PROTO undefined DoMouseWheel()
+// GHIDRA_PROTO undefined __thiscall DoMouseWheel(void)
 
-int __thiscall CScrollView::DoMouseWheel(int *param_1,undefined4 param_2,short param_3)
+int __thiscall CScrollView::DoMouseWheel(CScrollView *this)
 
 {
   int iVar1;
@@ -18,9 +18,10 @@ int __thiscall CScrollView::DoMouseWheel(int *param_1,undefined4 param_2,short p
   int iVar6;
   int iVar7;
   int iVar8;
+  short in_stack_00000008;
   
   uVar5 = GetStyle();
-  iVar1 = *param_1;
+  iVar1 = *(int *)this;
   pcVar2 = *(code **)(iVar1 + 0x70);
   iVar6 = (*pcVar2)(1);
   if (((iVar6 == 0) || (iVar6 = IsWindowEnabled(), iVar6 == 0)) && ((uVar5 & 0x200000) == 0)) {
@@ -40,31 +41,31 @@ int __thiscall CScrollView::DoMouseWheel(int *param_1,undefined4 param_2,short p
   }
   iVar6 = AfxGetMouseScrollLines(0);
   if (bVar3) {
-    iVar7 = MulDiv(-(int)param_3,iVar6,0x78);
+    iVar7 = MulDiv(-(int)in_stack_00000008,iVar6,0x78);
     if ((iVar7 == -1) || (iVar6 == -1)) {
-      iVar8 = param_1[0x16];
-      if (0 < param_3) {
+      iVar8 = *(int *)(this + 0x58);
+      if (0 < in_stack_00000008) {
         iVar8 = -iVar8;
       }
     }
     else {
-      iVar8 = param_1[0x18] * iVar7;
-      if (param_1[0x16] <= param_1[0x18] * iVar7) {
-        iVar8 = param_1[0x16];
+      iVar8 = *(int *)(this + 0x60) * iVar7;
+      if (*(int *)(this + 0x58) <= *(int *)(this + 0x60) * iVar7) {
+        iVar8 = *(int *)(this + 0x58);
       }
     }
     iVar6 = 0;
   }
   else {
     if (!bVar4) goto LAB_00615b42;
-    iVar8 = MulDiv(-(int)param_3,iVar6,0x78);
+    iVar8 = MulDiv(-(int)in_stack_00000008,iVar6,0x78);
     if ((iVar8 == -1) || (iVar6 == -1)) {
-      iVar6 = param_1[0x15];
+      iVar6 = *(int *)(this + 0x54);
     }
     else {
-      iVar6 = param_1[0x17] * iVar8;
-      if (param_1[0x15] <= param_1[0x17] * iVar8) {
-        iVar6 = param_1[0x15];
+      iVar6 = *(int *)(this + 0x5c) * iVar8;
+      if (*(int *)(this + 0x54) <= *(int *)(this + 0x5c) * iVar8) {
+        iVar6 = *(int *)(this + 0x54);
       }
     }
     iVar8 = 0;
@@ -72,7 +73,7 @@ int __thiscall CScrollView::DoMouseWheel(int *param_1,undefined4 param_2,short p
   iVar8 = (**(code **)(iVar1 + 200))(iVar6,iVar8,1);
 LAB_00615b42:
   if (iVar8 != 0) {
-    UpdateWindow((HWND)param_1[7]);
+    UpdateWindow(*(HWND *)(this + 0x1c));
   }
   return iVar8;
 }

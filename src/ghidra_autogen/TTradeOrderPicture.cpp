@@ -7,11 +7,11 @@
 // GHIDRA_NAME TTradeOrderPicture::CreateTTradeOrderPictureInstance
 // GHIDRA_PROTO undefined CreateTTradeOrderPictureInstance()
 
-undefined4 * TTradeOrderPicture::CreateTTradeOrderPictureInstance(void)
+thunk_TPictureButton * TTradeOrderPicture::CreateTTradeOrderPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,106 +21,109 @@ undefined4 * TTradeOrderPicture::CreateTTradeOrderPictureInstance(void)
   puStack_8 = &LAB_006375ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00664010;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TTradeOrderPictureVtbl **)this = &TTradeOrderPictureVtbl_00664010;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584460
-// GHIDRA_NAME TTradeOrderPicture::GetTTradeOrderPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTTradeOrderPictureClassNamePointer()
+// GHIDRA_NAME TTradeOrderPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTradeOrderPicture::GetTTradeOrderPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTradeOrderPicture::GetTEventHandlerClassNamePointer(TTradeOrderPicture *this)
 
 {
-  return &PTR_s_TTradeOrderPicture_00662e48;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584480
 // GHIDRA_NAME TTradeOrderPicture::ConstructTTradeOrderPictureBaseState
-// GHIDRA_PROTO undefined ConstructTTradeOrderPictureBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTradeOrderPictureBaseState(void)
 
-undefined4 * __fastcall
-TTradeOrderPicture::ConstructTTradeOrderPictureBaseState(undefined4 *param_1)
+TTradeOrderPicture * __thiscall
+TTradeOrderPicture::ConstructTTradeOrderPictureBaseState(TTradeOrderPicture *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00664010;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TTradeOrderPictureVtbl_00664010;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005844B0
-// GHIDRA_NAME TTradeOrderPicture::DestructTTradeOrderPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTradeOrderPictureAndMaybeFree()
+// GHIDRA_NAME TTradeOrderPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TTradeOrderPicture::DestructTTradeOrderPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TTradeOrderPicture * __thiscall
+TTradeOrderPicture::_scalar_deleting_destructor_(TTradeOrderPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584500
-// GHIDRA_NAME TTradeOrderPicture::InvokeVirtualA8WithOneZero
-// GHIDRA_PROTO undefined InvokeVirtualA8WithOneZero()
+// GHIDRA_NAME TTradeOrderPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __fastcall TTradeOrderPicture::InvokeVirtualA8WithOneZero(int *param_1)
+void __thiscall TTradeOrderPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTradeOrderPicture *this)
 
 {
-  (**(code **)(*param_1 + 0xa8))(1,0);
+  (*this->vftable[0x15].GetTEventHandlerClassNamePointer)(1,0);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584520
-// GHIDRA_NAME TTradeOrderPicture::HandleCardOrOfferTagClickAndDispatchTradeActions
-// GHIDRA_PROTO undefined HandleCardOrOfferTagClickAndDispatchTradeActions()
+// GHIDRA_NAME TTradeOrderPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __fastcall TTradeOrderPicture::HandleCardOrOfferTagClickAndDispatchTradeActions(int *param_1)
+void __thiscall TTradeOrderPicture::_scalar_deleting_destructor_(TTradeOrderPicture *this)
 
 {
   char cVar1;
   
-  cVar1 = (**(code **)(*param_1 + 0xec))();
+  cVar1 = (*this->vftable[0x1d].slot_0x04)();
   if (cVar1 != '\0') {
-    if (param_1[7] == 0x63617264) {
-      if (((short)param_1[0x21] != 0x83f) && ((short)param_1[0x21] != 0x84d)) {
-        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
-        (**(code **)(*(int *)param_1[8] + 0x40))(0x68,param_1,0);
-        (**(code **)(*(int *)param_1[8] + 0x1e4))();
-        (**(code **)(*(int *)param_1[8] + 0x1ec))();
-        (**(code **)(*(int *)param_1[8] + 0x40))(0x6a,param_1,0);
+    if (this->controlTag == 0x63617264) {
+      if ((*(short *)&this->field_0x84 != 0x83f) && (*(short *)&this->field_0x84 != 0x84d)) {
+        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x4269,0,1);
+        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x68,this,0);
+        (*this->ownerContext->vftable[0x3c].slot_0x04)();
+        (*this->ownerContext->vftable[0x3d].slot_0x04)();
+        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x6a,this,0);
         return;
       }
-      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
-      (**(code **)(*(int *)param_1[8] + 0x40))(0x67,param_1,0);
-      (**(code **)(*(int *)param_1[8] + 0x1e0))();
+      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x4269,0,1);
+      (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x67,this,0);
+      (*this->ownerContext->vftable[0x3c].GetTEventHandlerClassNamePointer)();
       return;
     }
-    if (param_1[7] == 0x6f666672) {
-      if (((short)param_1[0x21] == 0x841) || ((short)param_1[0x21] == 0x84f)) {
-        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
-        (**(code **)(*(int *)param_1[8] + 0x40))(0x6a,param_1,0);
-        (**(code **)(*(int *)param_1[8] + 0x1ec))();
+    if (this->controlTag == 0x6f666672) {
+      if ((*(short *)&this->field_0x84 == 0x841) || (*(short *)&this->field_0x84 == 0x84f)) {
+        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x4269,0,1);
+        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x6a,this,0);
+        (*this->ownerContext->vftable[0x3d].slot_0x04)();
       }
       else {
-        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x4269,0,1);
-        (**(code **)(*(int *)param_1[8] + 0x40))(0x69,param_1,0);
-        (**(code **)(*(int *)param_1[8] + 0x1e8))();
-        cVar1 = (**(code **)(*(int *)param_1[8] + 0x1d8))();
+        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x4269,0,1);
+        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x69,this,0);
+        (*this->ownerContext->vftable[0x3d].GetTEventHandlerClassNamePointer)();
+        cVar1 = (*this->ownerContext->vftable[0x3b].GetTEventHandlerClassNamePointer)();
         if (cVar1 != '\0') {
-          (**(code **)(*(int *)param_1[8] + 0x1e0))();
-          (**(code **)(*(int *)param_1[8] + 0x40))(0x67,param_1,0);
+          (*this->ownerContext->vftable[0x3c].GetTEventHandlerClassNamePointer)();
+          (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x67,this,0);
           return;
         }
       }

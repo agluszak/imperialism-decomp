@@ -3,11 +3,50 @@
 // Program: Imperialism.exe
 // Bucket: TClientGreatPower.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005412B0
+// GHIDRA_NAME TClientGreatPower::ReturnFalseNationStateCapabilityFlag98
+// GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlag98(void)
+
+undefined1 __thiscall
+TClientGreatPower::ReturnFalseNationStateCapabilityFlag98(TClientGreatPower *this)
+
+{
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005412D0
+// GHIDRA_NAME TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0
+// GHIDRA_PROTO undefined __thiscall ReturnFalseNationStateCapabilityFlagA0(void)
+
+undefined1 __thiscall
+TClientGreatPower::ReturnFalseNationStateCapabilityFlagA0(TClientGreatPower *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005412F0
+// GHIDRA_NAME TClientGreatPower::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TClientGreatPower * __thiscall
+TClientGreatPower::_scalar_deleting_destructor_(TClientGreatPower *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructTClientGreatPower(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00541320
 // GHIDRA_NAME TClientGreatPower::DestructTClientGreatPower
-// GHIDRA_PROTO undefined DestructTClientGreatPower()
+// GHIDRA_PROTO undefined __thiscall DestructTClientGreatPower(void)
 
-void __fastcall TClientGreatPower::DestructTClientGreatPower(undefined4 *param_1)
+void __thiscall TClientGreatPower::DestructTClientGreatPower(TClientGreatPower *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -19,21 +58,188 @@ void __fastcall TClientGreatPower::DestructTClientGreatPower(undefined4 *param_1
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 2);
+  CString::~CString((CString *)&this->field_0x8);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 1);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString((CString *)&this->field_0x4);
+  this->vftable =
+       (TClientGreatPowerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541390
-// GHIDRA_NAME TClientGreatPower::GetTClientGreatPowerClassNamePointer
-// GHIDRA_PROTO undefined GetTClientGreatPowerClassNamePointer()
+// GHIDRA_NAME TClientGreatPower::GetTCountryClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTCountryClassNamePointer(void)
 
-undefined ** TClientGreatPower::GetTClientGreatPowerClassNamePointer(void)
+CRuntimeClass * __thiscall TClientGreatPower::GetTCountryClassNamePointer(TClientGreatPower *this)
 
 {
-  return &PTR_s_TClientGreatPower_0065aff0;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005413B0
+// GHIDRA_NAME TClientGreatPower::ApplyJoinEmpireModeForTargetNation
+// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(void)
+
+void __thiscall TClientGreatPower::ApplyJoinEmpireModeForTargetNation(TClientGreatPower *this)
+
+{
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined1 local_c;
+  undefined2 local_8;
+  undefined1 local_6;
+  
+  local_10 = 0x74696d65;
+  local_c = UiRuntimeContext::GetActiveNationId();
+  local_8 = *(undefined2 *)&this->field_0xc;
+  local_1c = 0;
+  local_14 = 0x20;
+  local_20 = 0x17;
+  local_6 = 1;
+  local_18 = 0xffffffff;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_20,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00541450
+// GHIDRA_NAME TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
+// GHIDRA_PROTO undefined __thiscall SetNationTransferTargetCodeAndNotifyEligiblePeers(void)
+
+void __thiscall
+TClientGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(TClientGreatPower *this)
+
+{
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined1 local_c;
+  undefined2 local_8;
+  undefined1 local_6;
+  
+  local_10 = 0x74696d65;
+  local_c = UiRuntimeContext::GetActiveNationId();
+  local_8 = *(undefined2 *)&this->field_0xc;
+  local_1c = 0;
+  local_6 = 0;
+  local_14 = 0x20;
+  local_20 = 0x17;
+  local_18 = 0xffffffff;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_20,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005414F0
+// GHIDRA_NAME TClientGreatPower::AddRegionIdToNationOwnedRegionList
+// GHIDRA_PROTO undefined __thiscall AddRegionIdToNationOwnedRegionList(void)
+
+void __thiscall TClientGreatPower::AddRegionIdToNationOwnedRegionList(TClientGreatPower *this)
+
+{
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 local_10;
+  undefined1 local_c;
+  undefined2 local_4;
+  
+  TGreatPower::AddRegionIdToNationOwnedRegionList((TGreatPower *)this);
+  local_10 = 0x74696d65;
+  local_c = UiRuntimeContext::GetActiveNationId();
+  local_1c = 0;
+  local_20 = 0xf;
+  local_18 = 0xffffffff;
+  local_14 = 0x20;
+  thunk_SetTimeEmitPacketGameFlowTurnId();
+  local_4 = UiRuntimeContext::GetActiveNationId();
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_20,0);
+  (**(code **)(g_pUiRuntimeContext->vftable + 0x90))
+            (*(undefined2 *)&this->field_0xc,*(undefined2 *)&this->field_0xc,0x29a);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005415C0
+// GHIDRA_NAME TClientGreatPower::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+int __thiscall TClientGreatPower::GetTEventHandlerClassNamePointer(TClientGreatPower *this)
+
+{
+  int iVar1;
+  undefined4 local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined1 local_10;
+  undefined1 local_8;
+  undefined1 local_5;
+  undefined1 local_3;
+  
+  iVar1 = TGreatPower::GetTEventHandlerClassNamePointer((TGreatPower *)this);
+  local_14 = 0x74696d65;
+  local_10 = UiRuntimeContext::GetActiveNationId();
+  local_20 = 0;
+  local_24 = 0x1e;
+  local_1c = 0;
+  local_18 = 0x24;
+  thunk_SetTimeEmitPacketGameFlowTurnId();
+  local_1c = 0xffffffff;
+  local_8 = UiRuntimeContext::GetActiveNationId();
+  local_3 = iVar1 == 1;
+  local_5 = 0x61;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_24,0);
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005416B0
+// GHIDRA_NAME TClientGreatPower::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+int __thiscall TClientGreatPower::OrphanRetStub_0059add0(TClientGreatPower *this)
+
+{
+  int iVar1;
+  undefined4 local_24;
+  undefined4 local_20;
+  undefined4 local_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined1 local_10;
+  undefined1 local_8;
+  undefined1 local_5;
+  undefined1 local_3;
+  
+  iVar1 = TGreatPower::OrphanRetStub_0059add0((TGreatPower *)this);
+  local_14 = 0x74696d65;
+  local_10 = UiRuntimeContext::GetActiveNationId();
+  local_24 = 0x1e;
+  local_20 = 0;
+  local_1c = 0;
+  local_18 = 0x24;
+  thunk_SetTimeEmitPacketGameFlowTurnId();
+  local_1c = 0xffffffff;
+  local_8 = UiRuntimeContext::GetActiveNationId();
+  local_3 = iVar1 == 1;
+  local_5 = 0x69;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&local_24,0);
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00541790
+// GHIDRA_NAME TClientGreatPower::ApplyJoinEmpireMode1TargetTransition
+// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode1TargetTransition(void)
+
+void __thiscall TClientGreatPower::ApplyJoinEmpireMode1TargetTransition(TClientGreatPower *this)
+
+{
+  thunk_DispatchTaggedGameStateEvent1F20(0x6c6f7365,(int)*(short *)&this->field_0xc,0xffffffff);
+  return;
 }
 

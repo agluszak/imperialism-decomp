@@ -3,28 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TNominationView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FB760
-// GHIDRA_NAME TNominationView::GetTNominationViewClassNamePointer
-// GHIDRA_PROTO undefined GetTNominationViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004305C0
+// GHIDRA_NAME TNominationView::OrphanRetStub_004305c0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004305c0(void)
 
-undefined ** TNominationView::GetTNominationViewClassNamePointer(void)
+void __thiscall TNominationView::OrphanRetStub_004305c0(TNominationView *this)
 
 {
-  return &PTR_s_TNominationView_00655008;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004305E0
+// GHIDRA_NAME TNominationView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TNominationView * __thiscall TNominationView::_scalar_deleting_destructor_(TNominationView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FB760
+// GHIDRA_NAME TNominationView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TNominationView::GetTEventHandlerClassNamePointer(TNominationView *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FB780
-// GHIDRA_NAME TNominationView::ConstructTNominationViewBaseState
-// GHIDRA_PROTO undefined ConstructTNominationViewBaseState()
+// GHIDRA_NAME TNominationView::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __fastcall TNominationView::ConstructTNominationViewBaseState(int *param_1)
+void __thiscall TNominationView::OrphanCallChain_C6_I49_004875d0(TNominationView *this)
 
 {
-  code *pcVar1;
+  TNominationView_slot_0x04_0x04 *pTVar1;
   int iVar2;
-  int *piVar3;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_74;
+  CString CStack_74;
   undefined4 *puStack_70;
   undefined4 uStack_6c;
   undefined4 *puStack_68;
@@ -42,7 +72,7 @@ void __fastcall TNominationView::ConstructTNominationViewBaseState(int *param_1)
   undefined4 uStack_38;
   undefined4 uStack_34;
   undefined4 uStack_30;
-  undefined1 local_1c [10];
+  CString local_1c [2];
   undefined1 local_12;
   undefined1 local_11;
   undefined1 local_10;
@@ -60,13 +90,13 @@ void __fastcall TNominationView::ConstructTNominationViewBaseState(int *param_1)
   local_10 = 0;
   local_f = 0;
   uStack_30 = 0x4fb7bb;
-  InitializeSharedStringRefFromEmpty(local_1c);
+  CString::CString(local_1c);
   uStack_30 = 0x636f756e;
   local_4 = 0;
-  pcVar1 = *(code **)(*param_1 + 0x94);
+  pTVar1 = this->vftable[0x12].slot_0x04;
   uStack_34 = 0x4fb7d4;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
+  uVar3 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   uStack_34 = 0x4fb7de;
   (**(code **)(iVar2 + 0xc))();
   uStack_34 = 1;
@@ -86,8 +116,8 @@ void __fastcall TNominationView::ConstructTNominationViewBaseState(int *param_1)
   (**(code **)(iVar2 + 0x1b4))();
   uStack_48 = 0x7469746c;
   puStack_4c = (undefined1 *)0x4fb81d;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
+  uVar3 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_00,uVar3);
   puStack_4c = (undefined1 *)0x4fb827;
   (**(code **)(iVar2 + 0xc))();
   puStack_4c = (undefined1 *)0x1;
@@ -107,8 +137,8 @@ void __fastcall TNominationView::ConstructTNominationViewBaseState(int *param_1)
   (**(code **)(iVar2 + 0x1b4))();
   uStack_60 = 0x63616e30;
   puStack_64 = (undefined4 *)0x4fb866;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
+  uVar3 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_01,uVar3);
   puStack_64 = (undefined4 *)0x4fb86f;
   (**(code **)(iVar2 + 0xc))();
   puStack_64 = &uStack_50;
@@ -120,18 +150,35 @@ void __fastcall TNominationView::ConstructTNominationViewBaseState(int *param_1)
   (**(code **)(iVar2 + 0x1c8))();
   puStack_70 = &uStack_54;
   uStack_6c = 1;
-  uStack_74 = 0x4fb8aa;
+  CStack_74.m_pchData = (char *)0x4fb8aa;
   (**(code **)(iVar2 + 0x1b4))();
-  uStack_74 = 0x63616e31;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
+  CStack_74.m_pchData = (char *)0x63616e31;
+  uVar3 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
   (**(code **)(iVar2 + 0xc))();
   FormatOverlayTerrainLabelText(&puStack_64);
   (**(code **)(iVar2 + 0x1c8))(&puStack_64,1);
   (**(code **)(iVar2 + 0x1b4))(&puStack_68,1);
   puStack_5c = (undefined4 *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_74);
+  CString::~CString(&CStack_74);
   *unaff_FS_OFFSET = puStack_64;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FB990
+// GHIDRA_NAME TNominationView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TNominationView::OrphanRetStub_0059add0(TNominationView *this)
+
+{
+  int in_stack_00000004;
+  
+  if (in_stack_00000004 == 10) {
+    thunk_PostTurnEventCodeMessage2420(0x7e0);
+    return;
+  }
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
   return;
 }
 

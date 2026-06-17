@@ -7,10 +7,10 @@
 // GHIDRA_NAME TAnimator::CreateTAnimatorInstance
 // GHIDRA_PROTO undefined CreateTAnimatorInstance()
 
-undefined4 * TAnimator::CreateTAnimatorInstance(void)
+TEventHandler * TAnimator::CreateTAnimatorInstance(void)
 
 {
-  undefined4 *puVar1;
+  TEventHandler *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,58 +20,157 @@ undefined4 * TAnimator::CreateTAnimatorInstance(void)
   puStack_8 = &LAB_0062feba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x30);
+  this = (TEventHandler *)AllocateWithFallbackHandler(0x30);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-    *puVar1 = &PTR_LAB_0064c4e8;
-    puVar1[0xb] = 0;
-    puVar1[8] = 0;
-    puVar1[9] = 0;
+  if (this != (TEventHandler *)0x0) {
+    TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults(this);
+    this->vftable = (TEventHandlerVtbl *)&TAnimatorVtbl_0064c4e8;
+    this[2].field0c = 0;
+    this[2].vftable = (TEventHandlerVtbl *)0x0;
+    this[2].field04 = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TEventHandler *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0A80
-// GHIDRA_NAME TAnimator::GetTAnimatorClassNamePointer
-// GHIDRA_PROTO undefined GetTAnimatorClassNamePointer()
+// GHIDRA_NAME TAnimator::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TAnimator::GetTAnimatorClassNamePointer(void)
+CRuntimeClass * __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this)
 
 {
-  return &PTR_s_TAnimator_0064c298;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0AA0
+// GHIDRA_NAME TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8
+// GHIDRA_PROTO undefined __thiscall ConstructUiTransientObjectRegistry_Vtbl0064c4e8(void)
+
+TAnimator * __thiscall TAnimator::ConstructUiTransientObjectRegistry_Vtbl0064c4e8(TAnimator *this)
+
+{
+  TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  this->vftable = &TAnimatorVtbl_0064c4e8;
+  *(undefined4 *)&this->field_0x2c = 0;
+  *(undefined4 *)&this->field_0x20 = 0;
+  *(undefined4 *)&this->field_0x24 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0AD0
 // GHIDRA_NAME TAnimator::DestructTAnimatorAndMaybeFree
-// GHIDRA_PROTO undefined DestructTAnimatorAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTAnimatorAndMaybeFree(void)
 
-undefined4 __thiscall TAnimator::DestructTAnimatorAndMaybeFree(undefined4 param_1,byte param_2)
+TAnimator * __thiscall TAnimator::DestructTAnimatorAndMaybeFree(TAnimator *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTAnimatorAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0C00
+// GHIDRA_NAME TAnimator::OrphanCallChain_C2_I13_004a0c00
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I13_004a0c00(void)
+
+void __thiscall TAnimator::OrphanCallChain_C2_I13_004a0c00(TAnimator *this)
+
+{
+  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,1);
+  (*this->vftable[10].slot_0x04)(2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0C30
+// GHIDRA_NAME TAnimator::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+uint __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this)
+
+{
+  char cVar1;
+  uint in_EAX;
+  int *piVar2;
+  int iVar3;
+  int in_stack_00000004;
+  
+  if (in_stack_00000004 == 1) {
+    if ((*(int **)&this->field_0x2c != (int *)0x0) &&
+       (cVar1 = (**(code **)(**(int **)&this->field_0x2c + 0x1ec))(), cVar1 != '\0')) {
+      iVar3 = *(int *)&this->field_0x28 + 1;
+      *(int *)&this->field_0x28 = iVar3;
+      if (0xe < iVar3) {
+        (**(code **)(**(int **)&this->field_0x2c + 0x1f0))
+                  (CONCAT31((int3)((uint)iVar3 >> 8),DAT_006a224c));
+        DAT_006a224c = DAT_006a224c == '\0';
+        *(undefined4 *)&this->field_0x28 = 0;
+      }
+    }
+    piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
+    iVar3 = LinkedListCursorHasCurrent();
+    while (in_EAX = 0, iVar3 != 0) {
+      (**(code **)(*piVar2 + 0x28))();
+      piVar2 = (int *)AdvanceLinkedListCursor();
+      iVar3 = LinkedListCursorHasCurrent();
+    }
+  }
+  return in_EAX & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0DC0
-// GHIDRA_NAME TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner
-// GHIDRA_PROTO undefined ResetUiViewStateAndReleaseRuntimeSelectionOwner()
+// GHIDRA_NAME TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __fastcall TAnimator::ResetUiViewStateAndReleaseRuntimeSelectionOwner(int param_1)
+void __thiscall TAnimator::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAnimator *this)
 
 {
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0xa4))(param_1,0);
-  if (*(int **)(param_1 + 0x24) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 0x24) + 0x58))();
+  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,0);
+  if (*(int **)&this->field_0x24 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x24 + 0x58))();
   }
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x20);
-  ReleaseRuntimeSelectionOwnerAndDestroyObject();
+  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x20);
+  TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject((TEventHandler *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0E10
+// GHIDRA_NAME TAnimator::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TAnimator::GetTEventHandlerClassNamePointer(TAnimator *this)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  int *in_stack_00000004;
+  
+  iVar1 = *in_stack_00000004;
+  *(undefined4 *)&this->field_0x2c = 0;
+  *(undefined4 *)&this->field_0x10 = 0x7fffffff;
+  uVar2 = (**(code **)(iVar1 + 0x50))();
+  *(undefined4 *)&this->field_0x10 = uVar2;
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0E50
+// GHIDRA_NAME TAnimator::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TAnimator::_scalar_deleting_destructor_(TAnimator *this)
+
+{
+  int *in_stack_00000004;
+  
+  (**(code **)(*in_stack_00000004 + 0x8c))(*(undefined4 *)&this->field_0x10);
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
   return;
 }
 

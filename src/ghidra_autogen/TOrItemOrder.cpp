@@ -4,23 +4,247 @@
 // Bucket: TOrItemOrder.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B57E0
-// GHIDRA_NAME TOrItemOrder::GetTOrItemOrderClassNamePointer
-// GHIDRA_PROTO undefined GetTOrItemOrderClassNamePointer()
+// GHIDRA_NAME TOrItemOrder::GetTProductionOrderClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
 
-undefined ** TOrItemOrder::GetTOrItemOrderClassNamePointer(void)
+CRuntimeClass * __thiscall TOrItemOrder::GetTProductionOrderClassNamePointer(TOrItemOrder *this)
 
 {
-  return &PTR_s_TOrItemOrder_0064f380;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5820
+// GHIDRA_NAME TOrItemOrder::ConstructTItemOrderBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(void)
+
+TOrItemOrder * __thiscall TOrItemOrder::ConstructTItemOrderBaseState(TOrItemOrder *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructTOrItemOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B5850
 // GHIDRA_NAME TOrItemOrder::DestructTOrItemOrderAndMaybeFree
-// GHIDRA_PROTO undefined DestructTOrItemOrderAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTOrItemOrderAndMaybeFree(void)
 
-void __fastcall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(undefined4 *param_1)
+void __thiscall TOrItemOrder::DestructTOrItemOrderAndMaybeFree(TOrItemOrder *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TOrItemOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5870
+// GHIDRA_NAME TOrItemOrder::InitializeCityProductionState_Impl_At004b5870
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b5870(void)
+
+void __thiscall TOrItemOrder::InitializeCityProductionState_Impl_At004b5870(TOrItemOrder *this)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  int in_stack_00000004;
+  undefined2 in_stack_00000008;
+  undefined2 in_stack_0000000c;
+  undefined2 in_stack_00000010;
+  undefined2 in_stack_00000014;
+  
+  *(int *)&this->field_0x8 = in_stack_00000004;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
+  *(undefined2 *)&this->field_0x48 = in_stack_00000008;
+  *(undefined2 *)&this->field_0x4 = 0;
+  puVar2 = (undefined4 *)&this->field_0x10;
+  for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
+  }
+  *(undefined2 *)puVar2 = 0;
+  *(undefined4 *)&this->field_0x44 = 0;
+  *(undefined2 *)&this->field_0x4e = in_stack_0000000c;
+  *(undefined2 *)&this->field_0x40 = 0;
+  *(undefined2 *)&this->field_0x3e = 0;
+  *(undefined2 *)&this->field_0x4c = 0;
+  *(undefined2 *)&this->field_0x50 = in_stack_00000010;
+  *(undefined2 *)&this->field_0x52 = in_stack_00000014;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B58F0
+// GHIDRA_NAME TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0
+// GHIDRA_PROTO int __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Computes current recruitment cap from staged pools for a single order entry.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Inputs:
+// GHIDRA_COMMENT - this+0x04 pending amount
+// GHIDRA_COMMENT - this+0x10 staged resource deltas
+// GHIDRA_COMMENT - city+0xB6 resource stocks
+// GHIDRA_COMMENT - city+0x1FC unit-cap counters
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Computes three cap candidates (workforce, staged+stock resources, unit counter).
+// GHIDRA_COMMENT - Stores limiting factor code in this+0x40 (0=resource,1=workforce,2=unit counter).
+// GHIDRA_COMMENT - Returns the minimum cap.
+// GHIDRA_COMMENT_END
+
+/* Computes current recruitment cap from staged pools for a single order entry.
+   
+   Inputs:
+   - this+0x04 pending amount
+   - this+0x10 staged resource deltas
+   - city+0xB6 resource stocks
+   - city+0x1FC unit-cap counters
+   
+   Behavior:
+   - Computes three cap candidates (workforce, staged+stock resources, unit counter).
+   - Stores limiting factor code in this+0x40 (0=resource,1=workforce,2=unit counter).
+   - Returns the minimum cap. */
+
+int __thiscall TOrItemOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TOrItemOrder *this)
+
+{
+  short sVar1;
+  int iVar2;
+  short nCapByUnitCounter;
+  int nCapByInputPool;
+  int nCapByStagedAndStock;
+  uint dwScratchHigh;
+  int nCapByWorkforce;
+  
+  iVar2 = *(int *)&this->field_0x8;
+  nCapByWorkforce =
+       (int)*(short *)(*(int *)&this->field_0xc + 0x1c) / 2 +
+       CONCAT22((short)(dwScratchHigh >> 0x10),*(short *)&this->field_0x4);
+  nCapByStagedAndStock =
+       (int)(short)(*(short *)(&this->field_0x10 + *(short *)&this->field_0x50 * 2) +
+                    *(short *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) +
+                    *(short *)(iVar2 + 0xb6 + *(short *)&this->field_0x50 * 2) +
+                   *(short *)(iVar2 + 0xb6 + *(short *)&this->field_0x4e * 2)) / 2;
+  sVar1 = *(short *)(iVar2 + 0x1fc + *(short *)&this->field_0x52 * 2);
+  *(undefined2 *)&this->field_0x40 = 2;
+  nCapByUnitCounter = sVar1 + *(short *)&this->field_0x4;
+  nCapByInputPool = CONCAT22(*(short *)&this->field_0x52 >> 0xf,nCapByUnitCounter);
+  if ((short)nCapByWorkforce < nCapByUnitCounter) {
+    *(undefined2 *)&this->field_0x40 = 1;
+    nCapByInputPool = nCapByWorkforce;
+  }
+  if ((short)nCapByStagedAndStock < (short)nCapByInputPool) {
+    *(undefined2 *)&this->field_0x40 = 0;
+    nCapByInputPool = nCapByStagedAndStock;
+  }
+  return nCapByInputPool;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5990
+// GHIDRA_NAME TOrItemOrder::OrphanCallChain_C1_I16_004b5100
+// GHIDRA_PROTO bool __thiscall OrphanCallChain_C1_I16_004b5100(short nNewOrderAmount)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Applies a university/city recruitment slider change to temporary staging pools.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Validate requested value against entry cap (vfunc +0x30).
+// GHIDRA_COMMENT 2. Compute delta from current pending amount (+0x04).
+// GHIDRA_COMMENT 3. Rebalance primary/secondary staged pools (+0x10 table) and live city stock (+0xB6) so constraints stay consistent.
+// GHIDRA_COMMENT 4. Update workforce-derived counters (+0x1C and +0x3E) and slot availability (+0x1FC indexed by +0x52).
+// GHIDRA_COMMENT 5. Invalidate UI via g_pUiRuntimeContext callback.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns: true if delta applied, false if rejected.
+// GHIDRA_COMMENT_END
+
+/* Applies a university/city recruitment slider change to temporary staging pools.
+   
+   Algorithm:
+   1. Validate requested value against entry cap (vfunc +0x30).
+   2. Compute delta from current pending amount (+0x04).
+   3. Rebalance primary/secondary staged pools (+0x10 table) and live city stock (+0xB6) so
+   constraints stay consistent.
+   4. Update workforce-derived counters (+0x1C and +0x3E) and slot availability (+0x1FC indexed by
+   +0x52).
+   5. Invalidate UI via g_pUiRuntimeContext callback.
+   
+   Returns: true if delta applied, false if rejected. */
+
+bool __thiscall
+TOrItemOrder::OrphanCallChain_C1_I16_004b5100(TOrItemOrder *this,short nNewOrderAmount)
+
+{
+  short *psVar1;
+  short sVar2;
+  short sVar3;
+  short sVar4;
+  int iVar5;
+  int *piVar6;
+  bool bVar7;
+  undefined uVar8;
+  undefined3 extraout_var;
+  short sVar9;
+  short sVar10;
+  short sVar11;
+  
+  sVar10 = nNewOrderAmount - *(short *)&this->field_0x4;
+  uVar8 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  if (((short)CONCAT31(extraout_var,uVar8) < nNewOrderAmount) || (nNewOrderAmount < 0)) {
+    bVar7 = false;
+  }
+  else {
+    *(short *)&this->field_0x4 = nNewOrderAmount;
+    bVar7 = true;
+  }
+  if (!bVar7) {
+    return false;
+  }
+  sVar2 = *(short *)&this->field_0x4e;
+  *(undefined2 *)&this->field_0x4c = *(undefined2 *)&this->field_0x4;
+  if (sVar10 < 1) {
+    sVar4 = *(short *)(&this->field_0x10 + *(short *)&this->field_0x50 * 2);
+    sVar3 = *(short *)(&this->field_0x10 + sVar2 * 2);
+    sVar11 = -sVar10;
+  }
+  else {
+    sVar3 = *(short *)(*(int *)&this->field_0x8 + 0xb6 + sVar2 * 2);
+    sVar4 = *(short *)(*(int *)&this->field_0x8 + 0xb6 + *(short *)&this->field_0x50 * 2);
+    sVar11 = sVar10;
+  }
+  if (sVar3 < sVar11) {
+    sVar9 = sVar11 + (sVar11 - sVar3);
+    sVar11 = sVar11 - (sVar11 - sVar3);
+  }
+  else {
+    sVar9 = sVar11;
+    if (sVar4 < sVar11) {
+      sVar9 = sVar11 - (sVar11 - sVar4);
+      sVar11 = sVar11 + (sVar11 - sVar4);
+    }
+  }
+  if (sVar10 < 0) {
+    sVar11 = -sVar11;
+    sVar9 = -sVar9;
+  }
+  iVar5 = **(int **)&this->field_0x8;
+  psVar1 = (short *)((int)*(int **)&this->field_0x8 + sVar2 * 2 + 0xb6);
+  *psVar1 = *psVar1 - sVar11;
+  (**(code **)(iVar5 + 0x80))();
+  *(short *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) =
+       *(short *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) + sVar11;
+  piVar6 = *(int **)&this->field_0x8;
+  psVar1 = (short *)((int)piVar6 + *(short *)&this->field_0x50 * 2 + 0xb6);
+  *psVar1 = *psVar1 - sVar9;
+  (**(code **)(*piVar6 + 0x80))();
+  *(short *)(&this->field_0x10 + *(short *)&this->field_0x50 * 2) =
+       *(short *)(&this->field_0x10 + *(short *)&this->field_0x50 * 2) + sVar9;
+  psVar1 = (short *)(*(int *)&this->field_0xc + 0x1c);
+  *psVar1 = *psVar1 + sVar10 * -2;
+  *(short *)&this->field_0x3e = *(short *)&this->field_0x3e + sVar10 * 2;
+  iVar5 = *(short *)&this->field_0x52 * 2 + 0x1fc;
+  *(short *)(*(int *)&this->field_0x8 + iVar5) =
+       *(short *)(iVar5 + *(int *)&this->field_0x8) - sVar10;
+  (**(code **)(g_pUiRuntimeContext->vftable + 0xac))();
+  return true;
 }
 

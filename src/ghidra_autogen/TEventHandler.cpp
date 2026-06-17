@@ -3,112 +3,109 @@
 // Program: Imperialism.exe
 // Bucket: TEventHandler.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00485E90
-// GHIDRA_NAME TEventHandler::Serialize
-// GHIDRA_PROTO undefined Serialize()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Vtable slot +0x08 handler.
-// GHIDRA_COMMENT Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot +0x14 (clear) or +0x18 (set).
-// GHIDRA_COMMENT_END
-
-/* Vtable slot +0x08 handler.
-   Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
-   +0x14 (clear) or +0x18 (set). */
-
-void __thiscall TEventHandler::Serialize(int *param_1,int param_2)
-
-{
-  int *unaff_FS_OFFSET;
-  undefined1 local_1c [8];
-  undefined **local_14;
-  int local_10;
-  int iStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062ea00;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
-  local_10 = param_2;
-  local_14 = &PTR_LAB_00645f98;
-  local_4 = 0;
-  TFileStream::ConstructTFileStreamBaseState();
-  local_4 = CONCAT31(local_4._1_3_,1);
-  TFileStream::SetBackingArchive(&local_14);
-  if ((~*(uint *)(param_2 + 0x14) & 1) != 0) {
-    (**(code **)(*param_1 + 0x14))();
-    *unaff_FS_OFFSET = local_10;
-    return;
-  }
-  (**(code **)(*param_1 + 0x18))(local_1c);
-  *unaff_FS_OFFSET = local_10;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A070
 // GHIDRA_NAME TEventHandler::CreateTEventHandlerInstance
-// GHIDRA_PROTO undefined CreateTEventHandlerInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTEventHandlerInstance(void)
 
-void __fastcall TEventHandler::CreateTEventHandlerInstance(int param_1)
+void __thiscall TEventHandler::CreateTEventHandlerInstance(TEventHandler *this)
 
 {
   int iVar1;
   
-  iVar1 = *(int *)(param_1 + 0xc);
+  iVar1 = this->field0c;
   while (iVar1 != 0) {
-    (**(code **)(**(int **)(*(int *)(param_1 + 4) + 8) + 0x1c))();
-    iVar1 = *(int *)(param_1 + 0xc);
+    (**(code **)(**(int **)(this->field04 + 8) + 0x1c))();
+    iVar1 = this->field0c;
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A0E0
 // GHIDRA_NAME TEventHandler::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined GetTEventHandlerClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TEventHandler::GetTEventHandlerClassNamePointer(void)
+CRuntimeClass * __thiscall TEventHandler::GetTEventHandlerClassNamePointer(TEventHandler *this)
 
 {
-  return &PTR_s_TEventHandler_00649588;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A100
+// GHIDRA_NAME TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults
+// GHIDRA_PROTO undefined __thiscall InitializeUiResourceEntryBaseHeaderDefaults(void)
+
+void __thiscall TEventHandler::InitializeUiResourceEntryBaseHeaderDefaults(TEventHandler *this)
+
+{
+  this->field0c = 0;
+  this[1].vftable = (TEventHandlerVtbl *)0x7fffffff;
+  this[1].field04 = 0;
+  this[1].padding_08_to_0b = 0;
+  this->vftable = &_vftable_;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A130
 // GHIDRA_NAME TEventHandler::DestructTEventHandlerAndMaybeFree
-// GHIDRA_PROTO undefined DestructTEventHandlerAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTEventHandlerAndMaybeFree(void)
 
-undefined4 __thiscall
-TEventHandler::DestructTEventHandlerAndMaybeFree(undefined4 param_1,byte param_2)
+TEventHandler * __thiscall TEventHandler::DestructTEventHandlerAndMaybeFree(TEventHandler *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTEventHandlerAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A7C0
-// GHIDRA_NAME TEventHandler::CloneEngineerDialogStateToNewInstance
-// GHIDRA_PROTO undefined CloneEngineerDialogStateToNewInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A1B0
+// GHIDRA_NAME TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-undefined4 * __fastcall TEventHandler::CloneEngineerDialogStateToNewInstance(int param_1)
+void __thiscall TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject(TEventHandler *this)
 
 {
-  undefined4 *puVar1;
+  int *piVar1;
+  undefined uVar2;
+  TEventHandler *pTVar3;
+  undefined3 extraout_var;
   
-  if (DAT_006a1ae4 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x2ef);
+  if ((g_pApplicationUiRootController != (ApplicationUiRootController *)0x0) &&
+     (g_pApplicationUiRootController != (ApplicationUiRootController *)this)) {
+    pTVar3 = (TEventHandler *)(**(code **)(g_pApplicationUiRootController->vftable + 0x9c))();
+    if (pTVar3 == this) {
+      uVar2 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+      if (CONCAT31(extraout_var,uVar2) == 0) {
+        (**(code **)(g_pApplicationUiRootController->vftable + 0x98))
+                  (g_pApplicationUiRootController);
+      }
+      else {
+        (**(code **)(g_pApplicationUiRootController->vftable + 0x98))(CONCAT31(extraout_var,uVar2));
+      }
+    }
   }
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
-  if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &RefCountedObjectBase::_vftable_;
-    puVar1[1] = *(undefined4 *)(param_1 + 4);
-    puVar1[2] = *(undefined4 *)(param_1 + 8);
-    puVar1[3] = *(undefined4 *)(param_1 + 0xc);
-    puVar1[7] = *(undefined4 *)(param_1 + 0x1c);
-    *puVar1 = &_vftable_;
-    return puVar1;
+  piVar1 = (int *)this[1].padding_08_to_0b;
+  this->field0c = 0;
+  if (piVar1 != (int *)0x0) {
+    (**(code **)(*piVar1 + 0x1c))();
   }
-  return (undefined4 *)0x0;
+  this[1].padding_08_to_0b = 0;
+  if (this != (TEventHandler *)0x0) {
+    (*this->vftable->slot_0x04)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A730
+// GHIDRA_NAME TEventHandler::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+undefined4 __thiscall TEventHandler::OrphanTiny_ReturnZero_0048a730(TEventHandler *this)
+
+{
+  return 0;
 }
 

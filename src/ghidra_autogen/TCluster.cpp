@@ -25,7 +25,7 @@ TView * TCluster::CreateTClusterInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this[1].vftable = (void *)0x1;
+    this[1].vftable = (TViewVtbl *)0x1;
     *(undefined1 *)&this[1].field04 = 0;
     this[1].padding_08_to_0b = 0;
     this[1].field0c = 0;
@@ -34,10 +34,10 @@ TView * TCluster::CreateTClusterInstance(void)
     this[1].field18 = g_nUiResourceEntryDefaultParam0;
     this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     uVar1 = g_wUiResourceEntryDefaultParam2;
-    this->vftable = &_vftable_;
+    this->vftable = (TViewVtbl *)&_vftable_;
     this[1].ownerOffsetX = 0x20202020;
     *(ushort *)&this[1].ownerContext = uVar1;
-    this[1].vftable = (void *)0x5;
+    this[1].vftable = (TViewVtbl *)0x5;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -46,52 +46,206 @@ TView * TCluster::CreateTClusterInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004913E0
-// GHIDRA_NAME TCluster::GetTClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTClusterClassNamePointer()
+// GHIDRA_NAME TCluster::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TCluster::GetTClusterClassNamePointer(void)
+CRuntimeClass * __thiscall TCluster::GetTEventHandlerClassNamePointer(TCluster *this)
 
 {
-  return &PTR_s_TCluster_006496c0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491400
 // GHIDRA_NAME TCluster::ConstructUiResourceEntryType4B0C0
-// GHIDRA_PROTO undefined ConstructUiResourceEntryType4B0C0()
+// GHIDRA_PROTO undefined __thiscall ConstructUiResourceEntryType4B0C0(void)
 
-TView * __fastcall TCluster::ConstructUiResourceEntryType4B0C0(TView *param_1)
+TCluster * __thiscall TCluster::ConstructUiResourceEntryType4B0C0(TCluster *this)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1[1].vftable = (void *)0x1;
-  *(undefined1 *)&param_1[1].field04 = 0;
-  param_1[1].padding_08_to_0b = 0;
-  param_1[1].field0c = 0;
-  param_1[1].field10 = 0;
-  param_1[1].field14 = 0;
-  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
-  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  *(undefined4 *)&this->field_0x60 = 1;
+  this->field_0x64 = 0;
+  *(undefined4 *)&this->field_0x68 = 0;
+  *(undefined4 *)&this->field_0x6c = 0;
+  *(undefined4 *)&this->field_0x70 = 0;
+  *(undefined4 *)&this->field_0x74 = 0;
+  *(int *)&this->field_0x78 = g_nUiResourceEntryDefaultParam0;
+  *(int *)&this->field_0x7c = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  param_1->vftable = &_vftable_;
-  param_1[1].ownerOffsetX = 0x20202020;
-  *(ushort *)&param_1[1].ownerContext = uVar1;
-  param_1[1].vftable = (void *)0x5;
-  return param_1;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x84 = 0x20202020;
+  *(ushort *)&this->field_0x80 = uVar1;
+  *(undefined4 *)&this->field_0x60 = 5;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00491480
 // GHIDRA_NAME TCluster::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TCluster::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TCluster * __thiscall TCluster::_scalar_deleting_destructor_(TCluster *this)
 
 {
-  DestructTClusterAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTClusterAndMaybeFree_Impl((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00491650
+// GHIDRA_NAME TCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO void __thiscall OrphanRetStub_0059add0(int nEventClass, void * pEventPayload, int nEventFlags)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void DispatchPanelControlEvent(int nEventClass, void* pEventPayload, int nEventFlags)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void DispatchPanelControlEvent(int nEventClass, void* pEventPayload, int
+   nEventFlags) */
+
+void __thiscall
+TCluster::OrphanRetStub_0059add0(TCluster *this,int nEventClass,void *pEventPayload,int nEventFlags)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  int *piVar2;
+  undefined4 *puVar3;
+  
+  if ((nEventClass == 0xc) && (*(TCluster **)((int)pEventPayload + 0x20) == this)) {
+    if (this->field44 == 0) {
+      puVar3 = (undefined4 *)0x0;
+    }
+    else {
+      puVar3 = *(undefined4 **)(this->field44 + 4);
+    }
+    if (puVar3 == (undefined4 *)0x0) {
+      piVar2 = (int *)0x0;
+      puVar3 = (undefined4 *)0x0;
+    }
+    else {
+      piVar2 = (int *)puVar3[2];
+      puVar3 = (undefined4 *)*puVar3;
+    }
+    while (piVar2 != (int *)0x0) {
+      if (piVar2 != pEventPayload) {
+        (**(code **)(*piVar2 + 0x40))(0x20,this,0);
+      }
+      if (puVar3 == (undefined4 *)0x0) {
+        piVar2 = (int *)0x0;
+        puVar3 = (undefined4 *)0x0;
+      }
+      else {
+        piVar2 = (int *)puVar3[2];
+        puVar3 = (undefined4 *)*puVar3;
+      }
+    }
+    *(undefined4 *)&this->field_0x84 = *(undefined4 *)((int)pEventPayload + 0x1c);
+  }
+  if (nEventClass == 0x1f) {
+    (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(1,1);
+  }
+  else {
+    if (nEventClass == 0x20) {
+      (*this->vftable[0x38].GetTEventHandlerClassNamePointer)(0,1);
+      return;
+    }
+    if (nEventClass == 0x21) {
+      (*this->vftable[0x38].GetTEventHandlerClassNamePointer)((uint)(this->field_0x64 == '\0'),1);
+      return;
+    }
+    uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+    if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
+                (nEventClass,pEventPayload,nEventFlags);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00491770
+// GHIDRA_NAME TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_GetDwordEcxOffset_84_00491770(void)
+
+undefined4 __thiscall TCluster::OrphanTiny_GetDwordEcxOffset_84_00491770(TCluster *this)
+
+{
+  return *(undefined4 *)&this->field_0x84;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00491790
+// GHIDRA_NAME TCluster::OrphanCallChain_C2_I51_00491790
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(void)
+
+void __thiscall TCluster::OrphanCallChain_C2_I51_00491790(TCluster *this)
+
+{
+  int *piVar1;
+  undefined4 *puVar2;
+  int in_stack_00000004;
+  
+  if (this->field44 == 0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    puVar2 = *(undefined4 **)(this->field44 + 4);
+  }
+  if (puVar2 == (undefined4 *)0x0) {
+    piVar1 = (int *)0x0;
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    piVar1 = (int *)puVar2[2];
+    puVar2 = (undefined4 *)*puVar2;
+  }
+  while (piVar1 != (int *)0x0) {
+    if (piVar1[7] == in_stack_00000004) {
+      (**(code **)(*piVar1 + 0x3c))(0x1f,this,0);
+    }
+    else {
+      (**(code **)(*piVar1 + 0x3c))(0x20,this,0);
+    }
+    if (puVar2 == (undefined4 *)0x0) {
+      piVar1 = (int *)0x0;
+      puVar2 = (undefined4 *)0x0;
+    }
+    else {
+      piVar1 = (int *)puVar2[2];
+      puVar2 = (undefined4 *)*puVar2;
+    }
+  }
+  *(int *)&this->field_0x84 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004918A0
+// GHIDRA_NAME TCluster::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+TView * __thiscall TCluster::OrphanCallChain_C11_I88_004874b0(TCluster *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  TView *this_00;
+  
+  uVar1 = (*this->vftable[4].slot_0x04)();
+  this_00 = (TView *)CONCAT31(extraout_var,uVar1);
+  TView::thunk_CopyCityDialogStateFromSource(this_00,(TView *)this);
+  this_00[1].vftable = *(TViewVtbl **)&this->field_0x60;
+  *(undefined1 *)&this_00[1].field04 = this->field_0x64;
+  this_00[1].padding_08_to_0b = *(undefined4 *)&this->field_0x68;
+  this_00[1].field0c = *(int *)&this->field_0x6c;
+  this_00[1].field10 = *(int *)&this->field_0x70;
+  this_00[1].field14 = *(int *)&this->field_0x74;
+  this_00[1].field18 = *(int *)&this->field_0x78;
+  this_00[1].controlTag = *(int *)&this->field_0x7c;
+  *(undefined2 *)&this_00[1].ownerContext = *(undefined2 *)&this->field_0x80;
+  return this_00;
 }
 

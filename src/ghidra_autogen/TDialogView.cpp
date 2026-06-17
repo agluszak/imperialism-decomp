@@ -4,20 +4,20 @@
 // Bucket: TDialogView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D790
-// GHIDRA_NAME TDialogView::GetTDialogViewClassNamePointer
-// GHIDRA_PROTO undefined GetTDialogViewClassNamePointer()
+// GHIDRA_NAME TDialogView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TDialogView::GetTDialogViewClassNamePointer(void)
+CRuntimeClass * __thiscall TDialogView::GetTEventHandlerClassNamePointer(TDialogView *this)
 
 {
-  return &PTR_s_TDialogView_0064bda8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D880
-// GHIDRA_NAME TDialogView::ConstructTDialogViewBaseState
-// GHIDRA_PROTO undefined ConstructTDialogViewBaseState()
+// GHIDRA_NAME TDialogView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void TDialogView::ConstructTDialogViewBaseState(void)
+void __thiscall TDialogView::OrphanTiny_ReturnZero_0048a730(TDialogView *this)
 
 {
   undefined4 uVar1;
@@ -28,16 +28,18 @@ void TDialogView::ConstructTDialogViewBaseState(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D8B0
-// GHIDRA_NAME TDialogView::DestructTDialogViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDialogViewAndMaybeFree()
+// GHIDRA_NAME TDialogView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TDialogView::DestructTDialogViewAndMaybeFree(TView *param_1,byte param_2)
+TDialogView * __thiscall TDialogView::_scalar_deleting_destructor_(TDialogView *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 

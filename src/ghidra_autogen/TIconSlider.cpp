@@ -21,10 +21,10 @@ TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
 // GHIDRA_NAME TIconSlider::CreateTIconSliderInstance
 // GHIDRA_PROTO undefined CreateTIconSliderInstance()
 
-undefined4 * TIconSlider::CreateTIconSliderInstance(void)
+TNoHilitePicture * TIconSlider::CreateTIconSliderInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -34,96 +34,291 @@ undefined4 * TIconSlider::CreateTIconSliderInstance(void)
   puStack_8 = &LAB_0063378a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xbc);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xbc);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x29] = 0;
-    *puVar1 = &PTR_LAB_00657c60;
-    *(undefined2 *)(puVar1 + 0x27) = 0;
-    puVar1[0x28] = 0;
-    puVar1[0x2a] = 0;
-    *(undefined2 *)(puVar1 + 0x2d) = 0;
-    *(undefined2 *)((int)puVar1 + 0xb6) = 0;
-    puVar1[0x2b] = 0;
-    puVar1[0x2c] = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this[1].field10 = 0;
+    this->vftable = (TNoHilitePictureVtbl *)&TIconSliderVtbl_00657c60;
+    *(undefined2 *)&this[1].padding_08_to_0b = 0;
+    this[1].field0c = 0;
+    this[1].field14 = 0;
+    *(undefined2 *)&this[1].ownerContext = 0;
+    *(undefined2 *)((int)&this[1].ownerContext + 2) = 0;
+    this[1].field18 = 0;
+    this[1].controlTag = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TNoHilitePicture *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005063A0
-// GHIDRA_NAME TIconSlider::GetTIconSliderClassNamePointer
-// GHIDRA_PROTO undefined GetTIconSliderClassNamePointer()
+// GHIDRA_NAME TIconSlider::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TIconSlider::GetTIconSliderClassNamePointer(void)
+CRuntimeClass * __thiscall TIconSlider::GetTEventHandlerClassNamePointer(TIconSlider *this)
 
 {
-  return &PTR_s_TIconSlider_00657988;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005063C0
 // GHIDRA_NAME TIconSlider::ConstructTIconSliderBaseState
-// GHIDRA_PROTO undefined ConstructTIconSliderBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTIconSliderBaseState(void)
 
-undefined4 * __fastcall TIconSlider::ConstructTIconSliderBaseState(undefined4 *param_1)
+TIconSlider * __thiscall TIconSlider::ConstructTIconSliderBaseState(TIconSlider *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-  param_1[0x29] = 0;
-  *(undefined2 *)(param_1 + 0x27) = 0;
-  param_1[0x28] = 0;
-  param_1[0x2a] = 0;
-  *(undefined2 *)(param_1 + 0x2d) = 0;
-  *(undefined2 *)((int)param_1 + 0xb6) = 0;
-  *param_1 = &PTR_LAB_00657c60;
-  param_1[0x2b] = 0;
-  param_1[0x2c] = 0;
-  return param_1;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  *(undefined4 *)&this->field_0xa4 = 0;
+  *(undefined2 *)&this->field_0x9c = 0;
+  *(undefined4 *)&this->field_0xa0 = 0;
+  *(undefined4 *)&this->field_0xa8 = 0;
+  *(undefined2 *)&this->field_0xb4 = 0;
+  *(undefined2 *)&this->field_0xb6 = 0;
+  this->vftable = &TIconSliderVtbl_00657c60;
+  *(undefined4 *)&this->field_0xac = 0;
+  *(undefined4 *)&this->field_0xb0 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506430
-// GHIDRA_NAME TIconSlider::DestructTIconSliderAndMaybeFree
-// GHIDRA_PROTO undefined DestructTIconSliderAndMaybeFree()
+// GHIDRA_NAME TIconSlider::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TIconSlider::DestructTIconSliderAndMaybeFree(undefined4 param_1,byte param_2)
+TIconSlider * __thiscall TIconSlider::_scalar_deleting_destructor_(TIconSlider *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00506480
+// GHIDRA_NAME TIconSlider::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+
+void __thiscall TIconSlider::OrphanCallChain_C6_I49_004875d0(TIconSlider *this)
+
+{
+  short sVar1;
+  int *piVar2;
+  tagRECT local_10;
+  
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  piVar2 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(0x3eb);
+  *(int **)&this->field_0xa0 = piVar2;
+  CopyRect(&local_10,(RECT *)(*piVar2 + 8));
+  *(undefined2 *)&this->field_0xb4 = 0;
+  *(undefined4 *)&this->field_0xa4 = 0;
+  *(undefined4 *)&this->field_0xa8 = 0;
+  *(short *)&this->field_0xb8 = (short)local_10.bottom - (short)local_10.top;
+  *(LONG *)&this->field_0xac = local_10.right - local_10.left;
+  sVar1 = (short)local_10.right - (short)local_10.left;
+  *(short *)&this->field_0xba = sVar1;
+  *(short *)&this->field_0xb6 = (short)this->field34 - sVar1;
+  *(LONG *)&this->field_0xb0 = local_10.bottom - local_10.top;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00506560
+// GHIDRA_NAME TIconSlider::OrphanLeaf_NoCall_Ins04_00506560
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_00506560(void)
+
+void __thiscall TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(TIconSlider *this)
+
+{
+  short in_stack_00000004;
+  
+  *(short *)&this->field_0xb6 = *(short *)&this->field_0x98 * in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00506590
+// GHIDRA_NAME TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetWordEcxOffset_96_005060f0(void)
+
+void __thiscall TIconSlider::OrphanTiny_SetWordEcxOffset_96_005060f0(TIconSlider *this)
+
+{
+  undefined2 in_stack_00000004;
+  
+  *(undefined2 *)&this->field_0x96 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005065B0
+// GHIDRA_NAME TIconSlider::OrphanCallChain_C2_I15_005065b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_005065b0(void)
+
+void __thiscall TIconSlider::OrphanCallChain_C2_I15_005065b0(TIconSlider *this)
+
+{
+  POINT *unaff_retaddr;
+  RECT RStack_14;
+  
+  RStack_14.left = (LONG)&RStack_14.top;
+  (*this->vftable[0x3c].slot_0x04)();
+  PtInRect(&RStack_14,*unaff_retaddr);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005065F0
-// GHIDRA_NAME TIconSlider::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0
-// GHIDRA_PROTO undefined WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0()
+// GHIDRA_NAME TIconSlider::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
 
-undefined4 __thiscall
-TIconSlider::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At005065f0
-          (int *param_1,int *param_2,undefined4 param_3,undefined4 param_4)
+undefined4 __thiscall TIconSlider::SetForeignMinisterReadyFlag14(TIconSlider *this)
+
+{
+  TIconSliderVtbl *pTVar1;
+  char cVar2;
+  int iVar3;
+  int *in_stack_00000004;
+  
+  pTVar1 = this->vftable;
+  cVar2 = (*pTVar1[0x3b].slot_0x04)();
+  if (cVar2 != '\0') {
+    TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+    return 1;
+  }
+  iVar3 = *in_stack_00000004;
+  if ((int)*(short *)&this->field_0xb6 < *in_stack_00000004) {
+    iVar3 = (int)*(short *)&this->field_0xb6;
+  }
+  *(short *)&this->field_0x9c = (short)iVar3 / *(short *)&this->field_0x98;
+  (*pTVar1[0x1c].slot_0x04)();
+  (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x6c,this,0);
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00506690
+// GHIDRA_NAME TIconSlider::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TIconSlider::OrphanTiny_ReturnZero_0048a730(TIconSlider *this)
+
+{
+  TIconBar::OrphanTiny_ReturnZero_0048a730((TIconBar *)this);
+  (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005066C0
+// GHIDRA_NAME TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0(void)
+
+void __thiscall
+TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0
+          (TIconSlider *this)
+
+{
+  undefined1 local_10 [16];
+  
+  (*this->vftable[0x3c].slot_0x04)(local_10);
+  NoOpRuntimeCallback_00497c00(*(undefined4 *)&this->field_0xa0);
+  WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
+            (*(undefined4 *)&this->field_0xa0,&stack0xffffffec);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00506710
+// GHIDRA_NAME TIconSlider::OrphanCallChain_C1_I36_00506710
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I36_00506710(void)
+
+void __thiscall TIconSlider::OrphanCallChain_C1_I36_00506710(TIconSlider *this)
+
+{
+  LPRECT in_stack_00000004;
+  
+  in_stack_00000004->left = *(LONG *)&this->field_0xa4;
+  in_stack_00000004->top = *(LONG *)&this->field_0xa8;
+  in_stack_00000004->right = *(LONG *)&this->field_0xac;
+  in_stack_00000004->bottom = *(LONG *)&this->field_0xb0;
+  OffsetRect(in_stack_00000004,
+             (int)(short)((*(short *)&this->field_0x9c * *(short *)&this->field_0x98 -
+                          *(short *)&this->field_0xba / 2) + *(short *)&this->field_0x98 / 2),0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005067A0
+// GHIDRA_NAME TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TIconSlider::QueueCityRecruitmentSupportCommandsIfDeficit(TIconSlider *this)
 
 {
   int iVar1;
-  char cVar2;
+  undefined4 uVar2;
   int iVar3;
+  code *unaff_EBX;
+  int unaff_retaddr;
+  int *in_stack_00000004;
+  int *in_stack_00000008;
+  int *in_stack_0000000c;
+  tagRECT local_44;
+  tagRECT tStack_34;
+  int iStack_24;
+  LONG LStack_20;
+  LONG LStack_18;
+  undefined1 auStack_14 [20];
   
-  iVar1 = *param_1;
-  cVar2 = (**(code **)(iVar1 + 0x1dc))(param_2);
-  if (cVar2 != '\0') {
-    TControl::thunk_DispatchUiMouseMoveToChildren(param_2,param_2,param_3,param_4);
-    return 1;
+  local_44.left = (LONG)this->vftable[0x3c].slot_0x04;
+  (*(code *)local_44.left)(&tStack_34.top);
+  local_44.top = tStack_34.top;
+  local_44.right = tStack_34.right;
+  local_44.bottom = tStack_34.bottom;
+  local_44.left = tStack_34.left;
+  iVar3 = *(short *)&this->field_0xb4 - tStack_34.left;
+  iVar1 = *in_stack_00000008 - *in_stack_00000004;
+  if (*in_stack_00000008 - *in_stack_00000004 <= iVar3) {
+    iVar1 = iVar3;
   }
-  iVar3 = *param_2;
-  if ((int)*(short *)((int)param_1 + 0xb6) < *param_2) {
-    iVar3 = (int)*(short *)((int)param_1 + 0xb6);
+  iVar3 = *(short *)&this->field_0xb6 - tStack_34.left;
+  if (iVar1 < iVar3) {
+    iVar3 = iVar1;
   }
-  *(short *)(param_1 + 0x27) = (short)iVar3 / (short)param_1[0x26];
-  (**(code **)(iVar1 + 0xe4))();
-  (**(code **)(*(int *)param_1[8] + 0x40))(0x6c,param_1,0);
-  return 1;
+  OffsetRect(&tStack_34,(int)(short)iVar3,0);
+  iVar3 = *(short *)&this->field_0xb4 - local_44.left;
+  iVar1 = *in_stack_0000000c - *in_stack_00000004;
+  if (*in_stack_0000000c - *in_stack_00000004 <= iVar3) {
+    iVar1 = iVar3;
+  }
+  iVar3 = *(short *)&this->field_0xb6 - local_44.left;
+  if (iVar3 <= iVar1) {
+    iVar1 = iVar3;
+  }
+  OffsetRect(&local_44,(int)(short)iVar1,0);
+  if (unaff_retaddr == 2) {
+    *(short *)&this->field_0x9c =
+         (short)(*(short *)&this->field_0xba / 2 + (short)local_44.left) /
+         *(short *)&this->field_0x98;
+    (*unaff_EBX)(&local_44);
+  }
+  LStack_20 = tStack_34.top;
+  LStack_18 = tStack_34.bottom;
+  iStack_24 = tStack_34.left;
+  if ((tStack_34.right <= local_44.right) && (local_44.left <= tStack_34.left)) {
+    iStack_24 = local_44.left;
+  }
+  uVar2 = CreateClipStateRegionWrapperObject();
+  ApplyHitRegionToClipState(uVar2);
+  thunk_ApplyRectClipRegionToGlobalClipState(&iStack_24);
+  (*this->vftable[0x2a].slot_0x04)(&iStack_24,auStack_14);
+  TIconBar::OrphanTiny_ReturnZero_0048a730((TIconBar *)this);
+  SnapshotHitRegionToClipCache(uVar2);
+  DestroyClipStateRegionWrapperObject(uVar2);
+  NoOpRuntimeCallback_00497c00(*(undefined4 *)&this->field_0xa0);
+  WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
+            (*(undefined4 *)&this->field_0xa0,&stack0xffffffb4);
+  if (unaff_retaddr == 2) {
+    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x6c,this,0);
+  }
+  return;
 }
 

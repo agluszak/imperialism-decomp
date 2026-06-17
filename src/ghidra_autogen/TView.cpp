@@ -5,11 +5,103 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00406BA9
 // GHIDRA_NAME TView::thunk_NoOpUiLifecycleHook
-// GHIDRA_PROTO undefined thunk_NoOpUiLifecycleHook()
+// GHIDRA_PROTO undefined __thiscall thunk_NoOpUiLifecycleHook(void)
 
-void TView::thunk_NoOpUiLifecycleHook(void)
+void __thiscall TView::thunk_NoOpUiLifecycleHook(TView *this)
 
 {
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00479BE0
+// GHIDRA_NAME TView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TView::GetTEventHandlerClassNamePointer(TView *this)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  int *piVar4;
+  int iVar5;
+  CArchive *in_stack_00000004;
+  
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+      }
+      else {
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+      }
+      iVar1 = this->padding_08_to_0b;
+      if (this->field10 == 0) {
+        iVar3 = AllocateAndLinkBlockHead(&this->field14,this->field18,0xc);
+        iVar5 = this->field18;
+        piVar4 = (int *)(iVar3 + -8 + iVar5 * 0xc);
+        if (-1 < iVar5 + -1) {
+          do {
+            *piVar4 = this->field10;
+            this->field10 = (int)piVar4;
+            piVar4 = piVar4 + -3;
+            iVar5 = iVar5 + -1;
+          } while (iVar5 != 0);
+        }
+      }
+      piVar4 = (int *)this->field10;
+      this->field10 = *piVar4;
+      piVar4[1] = iVar1;
+      *piVar4 = 0;
+      this->field0c = this->field0c + 1;
+      piVar4[2] = 0;
+      piVar4[2] = (int)in_stack_00000004;
+      if ((undefined4 *)this->padding_08_to_0b == (undefined4 *)0x0) {
+        this->field04 = (int)piVar4;
+      }
+      else {
+        *(undefined4 *)this->padding_08_to_0b = piVar4;
+      }
+      this->padding_08_to_0b = piVar4;
+    }
+  }
+  else {
+    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
+    piVar4 = (int *)this->field04;
+    if (piVar4 != (int *)0x0) {
+      do {
+        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        }
+        else {
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        }
+        piVar4 = (int *)*piVar4;
+      } while (piVar4 != (int *)0x0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A280
+// GHIDRA_NAME TView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TView::OrphanRetStub_0059add0(TView *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  
+  uVar1 = (*this->vftable[6].GetTEventHandlerClassNamePointer)();
+  if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x40))
+              (in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  }
   return;
 }
 
@@ -43,13 +135,13 @@ undefined4 __fastcall TView::CreateTViewInstance(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A8C0
-// GHIDRA_NAME TView::GetTViewClassNamePointer
-// GHIDRA_PROTO undefined GetTViewClassNamePointer()
+// GHIDRA_NAME TView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TView::GetTViewClassNamePointer(void)
+CRuntimeClass * __thiscall TView::GetTEventHandlerClassNamePointer(TView *this)
 
 {
-  return &PTR_s_TView_006495a0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A8E0
@@ -71,7 +163,7 @@ void __thiscall TView::ConstructTViewBaseState(TView *this)
   this->field10 = 0x7fffffff;
   this->field14 = 0;
   this->field18 = 0;
-  this->vftable = &TEventHandler::_vftable_;
+  this->vftable = (TViewVtbl *)&TEventHandler::_vftable_;
   this->ownerContext = (TView *)0x0;
   this->field2c = 0;
   this->field30 = 0;
@@ -84,7 +176,7 @@ void __thiscall TView::ConstructTViewBaseState(TView *this)
   this->field4e = -1;
   this->field50 = 0;
   this->field54 = 1;
-  InitializeSharedStringRefFromEmpty(&this->sharedStringRef);
+  CString::CString(&this->sharedStringRef);
   this->field5c = 0;
   this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
@@ -93,16 +185,18 @@ void __thiscall TView::ConstructTViewBaseState(TView *this)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A9A0
 // GHIDRA_NAME TView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TView::_scalar_deleting_destructor_(TView *param_1,byte param_2)
+TView * __thiscall TView::_scalar_deleting_destructor_(TView *this)
 
 {
-  thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  thunk_DestructEngineerDialogBaseState(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A9D0
@@ -127,9 +221,57 @@ void __thiscall TView::DestructTViewBaseState(TView *this)
   }
   FreeHeapBufferIfNotNull(this->field48);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(&this->sharedStringRef);
-  this->vftable = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048ADA0
+// GHIDRA_NAME TView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TView * __thiscall TView::_scalar_deleting_destructor_(TView *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048ADD0
+// GHIDRA_NAME TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0
+// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
+
+void __thiscall TView::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(TView *this)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062ec48;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (TViewVtbl *)&CObjectVtbl_0063e880;
+  puVar1 = (undefined4 *)this->field04;
+  local_4 = 0;
+  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  }
+  this->field0c = 0;
+  this->field10 = 0;
+  this->padding_08_to_0b = 0;
+  this->field04 = 0;
+  FreeDataChain();
+  this->field14 = 0;
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
   return;
 }
 
@@ -146,7 +288,7 @@ void __thiscall TView::CopyCityDialogStateFromSource(TView *this,TView *pSource)
 
 {
   int iVar1;
-  code *pcVar2;
+  TView_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
   int *piVar3;
   undefined4 uVar4;
   int *piVar5;
@@ -171,14 +313,427 @@ void __thiscall TView::CopyCityDialogStateFromSource(TView *this,TView *pSource)
   this->flag4c = pSource->flag4c;
   this->flag4d = pSource->flag4d;
   if ((pSource->field44 != 0) && (piVar5 = *(int **)(pSource->field44 + 4), piVar5 != (int *)0x0)) {
-    pcVar2 = *(code **)((int)this->vftable + 0x170);
+    pTVar2 = this->vftable[0x2e].GetTEventHandlerClassNamePointer;
     do {
       piVar3 = (int *)*piVar5;
       uVar4 = (**(code **)(*(int *)piVar5[2] + 0x20))();
-      (*pcVar2)(uVar4,0);
+      (*pTVar2)(uVar4,0);
       piVar5 = piVar3;
     } while (piVar3 != (int *)0x0);
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048BFD0
+// GHIDRA_NAME TView::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+TView * __thiscall TView::OrphanCallChain_C11_I88_004874b0(TView *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  
+  uVar1 = (*this->vftable[4].slot_0x04)();
+  thunk_CopyCityDialogStateFromSource((TView *)CONCAT31(extraout_var,uVar1),this);
+  return (TView *)CONCAT31(extraout_var,uVar1);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048C220
+// GHIDRA_NAME TView::EnableAndProcessFlag
+// GHIDRA_PROTO void __thiscall EnableAndProcessFlag(CString * sharedString)
+
+void __thiscall TView::EnableAndProcessFlag(TView *this,CString *sharedString)
+
+{
+  this->field5c = 1;
+  CString::AssignFromPtr(&this->sharedStringRef,sharedString);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048C450
+// GHIDRA_NAME TView::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Dispatches mouse-move style input to child UI elements first, then to the current widget.
+// GHIDRA_COMMENT Returns 1 when a child/current widget consumes the event, otherwise 0.
+// GHIDRA_COMMENT_END
+
+/* Dispatches mouse-move style input to child UI elements first, then to the current widget.
+   Returns 1 when a child/current widget consumes the event, otherwise 0. */
+
+undefined4 __thiscall TView::SetForeignMinisterReadyFlag14(TView *this)
+
+{
+  int iVar1;
+  TViewVtbl *pTVar2;
+  char cVar3;
+  int iVar4;
+  int *piVar5;
+  undefined4 *in_stack_00000004;
+  undefined4 in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  undefined4 in_stack_00000010;
+  TView *local_c;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  if (this->field44 == 0) {
+    iVar4 = 0;
+  }
+  else {
+    iVar4 = *(int *)(this->field44 + 8);
+  }
+  local_c = this;
+  if (iVar4 == 0) {
+    piVar5 = (int *)0x0;
+    iVar4 = 0;
+  }
+  else {
+    piVar5 = *(int **)(iVar4 + 8);
+    iVar4 = *(int *)(iVar4 + 4);
+  }
+  while (piVar5 != (int *)0x0) {
+    local_4 = in_stack_00000004[1];
+    local_8 = *in_stack_00000004;
+    iVar1 = *piVar5;
+    (**(code **)(iVar1 + 0x144))(&local_8);
+    cVar3 = (**(code **)(iVar1 + 0x16c))(&local_c);
+    if ((cVar3 != '\0') &&
+       (cVar3 = (**(code **)(iVar1 + 0x118))
+                          (&local_8,in_stack_00000008,in_stack_0000000c,in_stack_00000010),
+       cVar3 != '\0')) {
+      return 1;
+    }
+    if (iVar4 == 0) {
+      piVar5 = (int *)0x0;
+      iVar4 = 0;
+    }
+    else {
+      piVar5 = *(int **)(iVar4 + 8);
+      iVar4 = *(int *)(iVar4 + 4);
+    }
+  }
+  pTVar2 = local_c->vftable;
+  cVar3 = (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
+  if ((cVar3 != '\0') && (cVar3 = (*pTVar2[5].GetTEventHandlerClassNamePointer)(), cVar3 != '\0')) {
+    local_8 = *in_stack_00000004;
+    local_4 = in_stack_00000004[1];
+    (*pTVar2[0x23].slot_0x04)(&local_8,in_stack_00000008,in_stack_0000000c,in_stack_00000010);
+    return 1;
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048CE70
+// GHIDRA_NAME TView::DestructTIncludeViewAndMaybeFree_Impl
+// GHIDRA_PROTO undefined __thiscall DestructTIncludeViewAndMaybeFree_Impl(void)
+
+void __thiscall TView::DestructTIncludeViewAndMaybeFree_Impl(TView *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062ed8b;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_4 = 0;
+  CString::~CString((CString *)&this[1].field0c);
+  this->vftable = &_vftable_;
+  local_4 = 2;
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
+  }
+  FreeHeapBufferIfNotNull(this->field48);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D670
+// GHIDRA_NAME TView::DestructTWindowViewAndUnlinkGlobalLists
+// GHIDRA_PROTO undefined __thiscall DestructTWindowViewAndUnlinkGlobalLists(void)
+
+void __thiscall TView::DestructTWindowViewAndUnlinkGlobalLists(TView *this)
+
+{
+  int *piVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062ee26;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->vftable = (TViewVtbl *)&TWindowVtbl_00649e58;
+  local_4 = 1;
+  for (piVar1 = DAT_006a1a44; piVar1 != (int *)0x0; piVar1 = (int *)*piVar1) {
+    if ((TView *)piVar1[2] == this) goto LAB_0048d6b8;
+  }
+  piVar1 = (int *)0x0;
+LAB_0048d6b8:
+  if (piVar1 == DAT_006a1a44) {
+    DAT_006a1a44 = (int *)*piVar1;
+  }
+  else {
+    *(int *)piVar1[1] = *piVar1;
+  }
+  if (piVar1 == DAT_006a1a48) {
+    DAT_006a1a48 = (int *)piVar1[1];
+  }
+  else {
+    *(int *)(*piVar1 + 4) = piVar1[1];
+  }
+  *piVar1 = (int)DAT_006a1a50;
+  DAT_006a1a4c = DAT_006a1a4c + -1;
+  puVar2 = DAT_006a1ac4;
+  DAT_006a1a50 = piVar1;
+  if (DAT_006a1a4c == 0) {
+    for (; DAT_006a1a44 != (int *)0x0; DAT_006a1a44 = (int *)*DAT_006a1a44) {
+    }
+    DAT_006a1a4c = 0;
+    DAT_006a1a50 = (int *)0x0;
+    DAT_006a1a48 = (int *)0x0;
+    DAT_006a1a44 = (int *)0x0;
+    FreeDataChain();
+    DAT_006a1a54 = 0;
+    puVar2 = DAT_006a1ac4;
+  }
+  for (; puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)*puVar2) {
+    if ((TView *)puVar2[2] == this) goto LAB_0048d750;
+  }
+  puVar2 = (undefined4 *)0x0;
+LAB_0048d750:
+  if (((puVar2 != (undefined4 *)0x0) &&
+      (UnlinkNodeFromDoublyLinkedListAndRecycle(puVar2), DAT_006a1ac4 != (undefined4 *)0x0)) &&
+     (piVar1 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar1 + 0xc))(), piVar1[0x14] != 0)) {
+    FUN_0060753b(1);
+  }
+  this[1].field14 = (int)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &_vftable_;
+  local_4 = 3;
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
+  }
+  FreeHeapBufferIfNotNull(this->field48);
+  local_4 = CONCAT31(local_4._1_3_,2);
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F250
+// GHIDRA_NAME TView::DestructCityDialogSharedBaseState
+// GHIDRA_PROTO undefined __thiscall DestructCityDialogSharedBaseState(void)
+
+void __thiscall TView::DestructCityDialogSharedBaseState(TView *this)
+
+{
+  short sVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062efcb;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->vftable = (TViewVtbl *)&TPictureVtbl_0064a930;
+  sVar1 = (short)this[1].ownerOffsetX;
+  local_4 = 0;
+  if (sVar1 != -1) {
+    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup
+              (CONCAT22((short)((uint)uStack_c >> 0x10),sVar1));
+  }
+  *(undefined2 *)&this[1].ownerOffsetX = 0xffff;
+  this[1].ownerOffsetY = 0;
+  this[1].field2c = 0;
+  this->vftable = &_vftable_;
+  local_4 = 2;
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
+  }
+  FreeHeapBufferIfNotNull(this->field48);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004904D0
+// GHIDRA_NAME TView::DestructTEditTextAndMaybeFree
+// GHIDRA_PROTO undefined __thiscall DestructTEditTextAndMaybeFree(void)
+
+void __thiscall TView::DestructTEditTextAndMaybeFree(TView *this)
+
+{
+  CString *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062f1a3;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->vftable = (TViewVtbl *)&TEditTextVtbl_0064ad90;
+  local_4 = 0;
+  if ((int *)this[1].field34 != (int *)0x0) {
+    (**(code **)(*(int *)this[1].field34 + 4))(1);
+  }
+  if ((int *)this[1].field38 != (int *)0x0) {
+    (**(code **)(*(int *)this[1].field38 + 4))(1);
+  }
+  this->vftable = (TViewVtbl *)&TStaticText::_vftable_;
+  this_00 = (CString *)this[1].ownerOffsetX;
+  local_4 = 1;
+  if (this_00 != (CString *)0x0) {
+    CString::~CString(this_00);
+    FreeHeapBufferIfNotNull(this_00);
+  }
+  this->vftable = &_vftable_;
+  local_4 = 3;
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
+  }
+  FreeHeapBufferIfNotNull(this->field48);
+  local_4 = CONCAT31(local_4._1_3_,2);
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004914B0
+// GHIDRA_NAME TView::DestructTClusterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined __thiscall DestructTClusterAndMaybeFree_Impl(void)
+
+void __thiscall TView::DestructTClusterAndMaybeFree_Impl(TView *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  puStack_8 = &LAB_0062f2b3;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->vftable = &_vftable_;
+  local_4 = 1;
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
+  }
+  FreeHeapBufferIfNotNull(this->field48);
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492140
+// GHIDRA_NAME TView::DestructTWindowAndUnlinkGlobalWindowNode
+// GHIDRA_PROTO undefined __thiscall DestructTWindowAndUnlinkGlobalWindowNode(void)
+
+void __thiscall TView::DestructTWindowAndUnlinkGlobalWindowNode(TView *this)
+
+{
+  int *piVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062f376;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->vftable = (TViewVtbl *)&TWindowVtbl_00649e58;
+  local_4 = 1;
+  for (piVar1 = DAT_006a1a44; piVar1 != (int *)0x0; piVar1 = (int *)*piVar1) {
+    if ((TView *)piVar1[2] == this) goto LAB_00492185;
+  }
+  piVar1 = (int *)0x0;
+LAB_00492185:
+  if (piVar1 == DAT_006a1a44) {
+    DAT_006a1a44 = (int *)*piVar1;
+  }
+  else {
+    *(int *)piVar1[1] = *piVar1;
+  }
+  if (piVar1 == DAT_006a1a48) {
+    DAT_006a1a48 = (int *)piVar1[1];
+  }
+  else {
+    *(int *)(*piVar1 + 4) = piVar1[1];
+  }
+  *piVar1 = (int)DAT_006a1a50;
+  DAT_006a1a4c = DAT_006a1a4c + -1;
+  puVar2 = DAT_006a1ac4;
+  DAT_006a1a50 = piVar1;
+  if (DAT_006a1a4c == 0) {
+    WrapperFor_FreeLinkedBlockChain_At00492ac0();
+    puVar2 = DAT_006a1ac4;
+  }
+  for (; puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)*puVar2) {
+    if ((TView *)puVar2[2] == this) goto LAB_004921ef;
+  }
+  puVar2 = (undefined4 *)0x0;
+LAB_004921ef:
+  if (((puVar2 != (undefined4 *)0x0) &&
+      (UnlinkNodeFromDoublyLinkedListAndRecycle(puVar2), DAT_006a1ac4 != (undefined4 *)0x0)) &&
+     (piVar1 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar1 + 0xc))(), piVar1[0x14] != 0)) {
+    FUN_0060753b(1);
+  }
+  this[1].field14 = (int)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = &_vftable_;
+  local_4 = 3;
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
+  }
+  FreeHeapBufferIfNotNull(this->field48);
+  local_4 = CONCAT31(local_4._1_3_,2);
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492EA0
+// GHIDRA_NAME TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(void)
+
+void __thiscall TView::WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(TView *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  puStack_8 = &LAB_0062f413;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this->vftable = &_vftable_;
+  local_4 = 1;
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
+  }
+  FreeHeapBufferIfNotNull(this->field48);
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 

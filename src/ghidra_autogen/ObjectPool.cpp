@@ -148,44 +148,46 @@ void __thiscall ObjectPool::RemoveNode(ObjectPool *this,int self)
 void __thiscall ObjectPool::OrphanRecovered_00552340_OverlappingStub(int param_1)
 
 {
-  int iVar1;
+  TShip *pTVar1;
   int iVar2;
-  undefined4 uVar3;
-  int iVar4;
+  int iVar3;
+  undefined4 uVar4;
+  int iVar5;
   int unaff_EBP;
   int in_stack_00000010;
   
   *(int *)(param_1 + 0x768b1447) = *(int *)(param_1 + 0x768b1447) + -1;
   *(undefined4 *)(unaff_EBP + 8) = 0;
-  iVar4 = 0;
-  for (iVar1 = g_pNavyPrimaryOrderListHead; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x24)) {
-    if ((*(int *)(iVar1 + 8) == in_stack_00000010) &&
-       (*(short *)(iVar1 + 0x14) == *(short *)(unaff_EBP + 4))) {
-      iVar4 = SelectPreferredMapOrderEntryByPriorityRules(iVar4,1);
+  iVar5 = 0;
+  for (pTVar1 = g_pNavyPrimaryOrderListHead; pTVar1 != (TShip *)0x0;
+      pTVar1 = *(TShip **)&pTVar1->field_0x24) {
+    if ((*(int *)&pTVar1->field_0x8 == in_stack_00000010) &&
+       (*(short *)&pTVar1->field_0x14 == *(short *)(unaff_EBP + 4))) {
+      iVar5 = SelectPreferredMapOrderEntryByPriorityRules(iVar5,1);
     }
   }
   if (*(int *)(unaff_EBP + 8) != 0) {
     *(undefined4 *)(*(int *)(unaff_EBP + 8) + 0x20) = 0;
-    iVar1 = *(int *)(*(int *)(unaff_EBP + 8) + 0xc);
-    if (iVar1 != 0) {
-      iVar2 = *(int *)(iVar1 + 0x10);
-      *(undefined4 *)(iVar1 + 0x14) = 0;
-      for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
-        uVar3 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar1 + 0x14),0);
-        *(undefined4 *)(iVar1 + 0x14) = uVar3;
+    iVar2 = *(int *)(*(int *)(unaff_EBP + 8) + 0xc);
+    if (iVar2 != 0) {
+      iVar3 = *(int *)(iVar2 + 0x10);
+      *(undefined4 *)(iVar2 + 0x14) = 0;
+      for (; iVar3 != 0; iVar3 = *(int *)(iVar3 + 4)) {
+        uVar4 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar2 + 0x14),0);
+        *(undefined4 *)(iVar2 + 0x14) = uVar4;
       }
     }
   }
-  *(int *)(unaff_EBP + 8) = iVar4;
-  if (iVar4 != 0) {
-    *(int *)(iVar4 + 0x20) = unaff_EBP;
-    iVar1 = *(int *)(*(int *)(unaff_EBP + 8) + 0xc);
-    if (iVar1 != 0) {
-      iVar4 = *(int *)(iVar1 + 0x10);
-      *(undefined4 *)(iVar1 + 0x14) = 0;
-      for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 4)) {
-        uVar3 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar1 + 0x14),0);
-        *(undefined4 *)(iVar1 + 0x14) = uVar3;
+  *(int *)(unaff_EBP + 8) = iVar5;
+  if (iVar5 != 0) {
+    *(int *)(iVar5 + 0x20) = unaff_EBP;
+    iVar5 = *(int *)(*(int *)(unaff_EBP + 8) + 0xc);
+    if (iVar5 != 0) {
+      iVar2 = *(int *)(iVar5 + 0x10);
+      *(undefined4 *)(iVar5 + 0x14) = 0;
+      for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
+        uVar4 = SelectPreferredMapOrderEntryByPriorityRules(*(undefined4 *)(iVar5 + 0x14),0);
+        *(undefined4 *)(iVar5 + 0x14) = uVar4;
       }
     }
   }

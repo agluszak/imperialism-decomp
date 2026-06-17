@@ -3,14 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: TTechCheater.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B1940
-// GHIDRA_NAME TTechCheater::GetTTechCheaterClassNamePointer
-// GHIDRA_PROTO undefined GetTTechCheaterClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004B18F0
+// GHIDRA_NAME TTechCheater::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TTechCheater::GetTTechCheaterClassNamePointer(void)
+TTechCheater * __thiscall TTechCheater::_scalar_deleting_destructor_(TTechCheater *this)
 
 {
-  return &PTR_s_TTechCheater_0064ebf8;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1940
+// GHIDRA_NAME TTechCheater::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TTechCheater::GetTEventHandlerClassNamePointer(TTechCheater *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1990
+// GHIDRA_NAME TTechCheater::OrphanRetStub_004b1410
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b1410(void)
+
+void __thiscall TTechCheater::OrphanRetStub_004b1410(TTechCheater *this)
+
+{
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B19B0
@@ -36,24 +62,10 @@ TView * TTechCheater::ConstructTTechCheaterBaseState(void)
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0064f050;
+    this->vftable = (TViewVtbl *)&TGPCheaterVtbl_0064f050;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
   return pTVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B1A20
-// GHIDRA_NAME TTechCheater::DestructTTechCheaterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTechCheaterAndMaybeFree()
-
-TView * __thiscall TTechCheater::DestructTTechCheaterAndMaybeFree(TView *param_1,byte param_2)
-
-{
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
 }
 

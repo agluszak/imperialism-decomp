@@ -3,43 +3,155 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalPlayer.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0059AE60
-// GHIDRA_NAME TTacticalPlayer::CreateTTacticalPlayerInstance
-// GHIDRA_PROTO undefined CreateTTacticalPlayerInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AD70
+// GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ad70
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad70(void)
 
-void __fastcall TTacticalPlayer::CreateTTacticalPlayerInstance(undefined4 *param_1)
+void __thiscall TTacticalPlayer::OrphanRetStub_0059ad70(TTacticalPlayer *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AD90
+// GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ad90
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
+
+void __thiscall TTacticalPlayer::OrphanRetStub_0059ad90(TTacticalPlayer *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059ADB0
+// GHIDRA_NAME TTacticalPlayer::TArmyTacUnit_VtblSlot00
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot00(void)
+
+void __thiscall TTacticalPlayer::TArmyTacUnit_VtblSlot00(TTacticalPlayer *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059ADD0
+// GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TTacticalPlayer::OrphanRetStub_0059add0(TTacticalPlayer *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059ADF0
+// GHIDRA_NAME TTacticalPlayer::TArmyTacUnit_VtblSlot04
+// GHIDRA_PROTO undefined __thiscall TArmyTacUnit_VtblSlot04(void)
+
+undefined1 __thiscall TTacticalPlayer::TArmyTacUnit_VtblSlot04(TTacticalPlayer *this)
+
+{
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AE10
+// GHIDRA_NAME TTacticalPlayer::OrphanRetStub_0059ae10
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ae10(void)
+
+void __thiscall TTacticalPlayer::OrphanRetStub_0059ae10(TTacticalPlayer *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AE30
+// GHIDRA_NAME TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(void)
+
+TTacticalPlayer * __thiscall
+TTacticalPlayer::WrapperFor_FreeHeapBufferIfNotNull_At0059ae30(TTacticalPlayer *this)
+
+{
+  byte in_stack_00000004;
+  
+  CreateTTacticalPlayerInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AE60
+// GHIDRA_NAME TTacticalPlayer::CreateTTacticalPlayerInstance
+// GHIDRA_PROTO undefined __thiscall CreateTTacticalPlayerInstance(void)
+
+void __thiscall TTacticalPlayer::CreateTTacticalPlayerInstance(TTacticalPlayer *this)
+
+{
+  this->vftable = (TTacticalPlayerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
+  ;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AE80
 // GHIDRA_NAME TTacticalPlayer::GetTTacticalPlayerClassNamePointer
-// GHIDRA_PROTO undefined GetTTacticalPlayerClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTTacticalPlayerClassNamePointer(void)
 
-undefined ** TTacticalPlayer::GetTTacticalPlayerClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTacticalPlayer::GetTTacticalPlayerClassNamePointer(TTacticalPlayer *this)
 
 {
-  return &PTR_s_TTacticalPlayer_00669470;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059AEE0
 // GHIDRA_NAME TTacticalPlayer::ConstructTTacticalPlayerBaseState
-// GHIDRA_PROTO undefined ConstructTTacticalPlayerBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTacticalPlayerBaseState(void)
 
-void __fastcall TTacticalPlayer::ConstructTTacticalPlayerBaseState(int *param_1)
+void __thiscall TTacticalPlayer::ConstructTTacticalPlayerBaseState(TTacticalPlayer *this)
 
 {
-  if ((int *)param_1[1] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[1] + 0x58))();
+  if (*(int **)&this->field_0x4 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x4 + 0x58))();
   }
-  if ((int *)param_1[2] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[2] + 0x58))();
+  if (*(int **)&this->field_0x8 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x8 + 0x58))();
   }
-  if (param_1 != (int *)0x0) {
-    (**(code **)(*param_1 + 4))(1);
+  if (this != (TTacticalPlayer *)0x0) {
+    (*this->vftable->slot_0x04)(1);
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AFA0
+// GHIDRA_NAME TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)
+
+void __thiscall
+TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(TTacticalPlayer *this)
+
+{
+  TAutoGreatPower *this_00;
+  int iVar1;
+  
+  this_00 = (TAutoGreatPower *)(*(int *)&this->field_0x4 + 4);
+  iVar1 = TAutoGreatPower::Find(this_00);
+  if (iVar1 != 0) {
+    TAutoGreatPower::RemoveAt_60217d(this_00);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059AFE0
+// GHIDRA_NAME TTacticalPlayer::WrapperFor_AddHead_At0059afe0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_AddHead_At0059afe0(void)
+
+void __thiscall TTacticalPlayer::WrapperFor_AddHead_At0059afe0(TTacticalPlayer *this)
+
+{
+  int *in_stack_00000004;
+  
+  CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0x4 + 4));
+  (**(code **)(*in_stack_00000004 + 0x3c))();
   return;
 }
 

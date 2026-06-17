@@ -7,11 +7,11 @@
 // GHIDRA_NAME TTradeTotalsLine::CreateTTradeTotalsLineInstance
 // GHIDRA_PROTO undefined CreateTTradeTotalsLineInstance()
 
-undefined4 * TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
+TLineData * TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TLineData *this;
+  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,63 +21,105 @@ undefined4 * TTradeTotalsLine::CreateTTradeTotalsLineInstance(void)
   puStack_8 = &LAB_0063983a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  this = (TLineData *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TLineData::ConstructTLineDataBaseState();
-    *puVar1 = &PTR_LAB_0066e1f8;
-    puVar2 = puVar1;
+  pTVar1 = (TLineData *)0x0;
+  if (this != (TLineData *)0x0) {
+    TLineData::ConstructTLineDataBaseState(this);
+    this->vftable = (TLineDataVtbl *)&TTradeTotalsLineVtbl_0066e1f8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C18E0
-// GHIDRA_NAME TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer
-// GHIDRA_PROTO undefined GetTTradeTotalsLineClassNamePointer()
+// GHIDRA_NAME TTradeTotalsLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TTradeTotalsLine::GetTTradeTotalsLineClassNamePointer(void)
+CRuntimeClass * __thiscall TTradeTotalsLine::GetTLineDataClassNamePointer(TTradeTotalsLine *this)
 
 {
-  return &PTR_s_TTradeTotalsLine_0066dcd8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1900
 // GHIDRA_NAME TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
-// GHIDRA_PROTO undefined ConstructTTradeTotalsLineBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTradeTotalsLineBaseState(void)
 
-undefined4 * __fastcall TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(undefined4 *param_1)
+TTradeTotalsLine * __thiscall
+TTradeTotalsLine::ConstructTTradeTotalsLineBaseState(TTradeTotalsLine *this)
 
 {
-  TLineData::ConstructTLineDataBaseState();
-  *param_1 = &PTR_LAB_0066e1f8;
-  return param_1;
+  TLineData::ConstructTLineDataBaseState((TLineData *)this);
+  this->vftable = &TTradeTotalsLineVtbl_0066e1f8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1930
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTradeTotalsLineAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree(void)
 
-undefined4 __thiscall
-TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(undefined4 param_1,byte param_2)
+TTradeTotalsLine * __thiscall
+TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree(TTradeTotalsLine *this)
 
 {
-  DestructTTradeTotalsLineAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTTradeTotalsLineAndMaybeFree_Impl(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C1960
 // GHIDRA_NAME TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl
-// GHIDRA_PROTO undefined DestructTTradeTotalsLineAndMaybeFree_Impl()
+// GHIDRA_PROTO undefined __thiscall DestructTTradeTotalsLineAndMaybeFree_Impl(void)
 
-void __fastcall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(undefined4 *param_1)
+void __thiscall TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl(TTradeTotalsLine *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable =
+       (TTradeTotalsLineVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C19C0
+// GHIDRA_NAME TTradeTotalsLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+
+void __thiscall TTradeTotalsLine::OrphanRetStub_0056f460(TTradeTotalsLine *this)
+
+{
+  undefined2 uVar1;
+  TView *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063985a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this_00 = (TView *)AllocateWithFallbackHandler(100);
+  local_4 = 0;
+  if (this_00 == (TView *)0x0) {
+    this_00 = (TView *)0x0;
+  }
+  else {
+    TView::thunk_ConstructTViewBaseState(this_00);
+    this_00->vftable = (TViewVtbl *)&TTradeTotalsViewVtbl_0066e958;
+  }
+  uVar1 = *(undefined2 *)&this->field_0x10;
+  local_4 = 0xffffffff;
+  thunk_InitializeUiResourceEntryFrameAndParent
+            (0,in_stack_00000004,in_stack_00000008,&this->field_0x8,5,5,0);
+  *(undefined2 *)&this_00[1].vftable = uVar1;
+  *unaff_FS_OFFSET = local_c;
   return;
 }
 

@@ -7,11 +7,11 @@
 // GHIDRA_NAME TTechItemLine::CreateTTechItemLineInstance
 // GHIDRA_PROTO undefined CreateTTechItemLineInstance()
 
-undefined4 * TTechItemLine::CreateTTechItemLineInstance(void)
+TLineData * TTechItemLine::CreateTTechItemLineInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TLineData *this;
+  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,37 +21,37 @@ undefined4 * TTechItemLine::CreateTTechItemLineInstance(void)
   puStack_8 = &LAB_006389ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x18);
+  this = (TLineData *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TLineData::ConstructTLineDataBaseState();
-    *puVar1 = &PTR_LAB_0066aec8;
-    puVar2 = puVar1;
+  pTVar1 = (TLineData *)0x0;
+  if (this != (TLineData *)0x0) {
+    TLineData::ConstructTLineDataBaseState(this);
+    this->vftable = (TLineDataVtbl *)&TTechItemLineVtbl_0066aec8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1100
-// GHIDRA_NAME TTechItemLine::GetTTechItemLineClassNamePointer
-// GHIDRA_PROTO undefined GetTTechItemLineClassNamePointer()
+// GHIDRA_NAME TTechItemLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TTechItemLine::GetTTechItemLineClassNamePointer(void)
+CRuntimeClass * __thiscall TTechItemLine::GetTLineDataClassNamePointer(TTechItemLine *this)
 
 {
-  return &PTR_s_TTechItemLine_0066ae28;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B1160
-// GHIDRA_NAME TTechItemLine::ConstructTTechItemLineBaseState
-// GHIDRA_PROTO undefined ConstructTTechItemLineBaseState()
+// GHIDRA_NAME TTechItemLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
 
-void __thiscall
-TTechItemLine::ConstructTTechItemLineBaseState(int param_1,undefined4 param_2,undefined4 param_3)
+void __thiscall TTechItemLine::OrphanRetStub_0056f460(TTechItemLine *this)
 
 {
-  TView *this;
+  TTechItemView *this_00;
+  TTechItemView *this_01;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -61,31 +61,17 @@ TTechItemLine::ConstructTTechItemLineBaseState(int param_1,undefined4 param_2,un
   puStack_8 = &LAB_006389da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (TView *)AllocateWithFallbackHandler(0x68);
+  this_00 = (TTechItemView *)AllocateWithFallbackHandler(0x68);
   local_4 = 0;
-  if (this != (TView *)0x0) {
-    TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0066af08;
+  this_01 = (TTechItemView *)0x0;
+  if (this_00 != (TTechItemView *)0x0) {
+    TView::thunk_ConstructTViewBaseState((TView *)this_00);
+    this_00->vftable = &TTechItemViewVtbl_0066af08;
+    this_01 = this_00;
   }
   local_4 = 0xffffffff;
-  TTechItemView::ConstructTTechItemViewBaseState
-            (param_2,param_3,param_1 + 8,*(undefined4 *)(param_1 + 0x10),
-             *(undefined4 *)(param_1 + 0x14));
+  TTechItemView::ConstructTTechItemViewBaseState(this_01);
   *unaff_FS_OFFSET = local_c;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005B1200
-// GHIDRA_NAME TTechItemLine::DestructTTechItemLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTechItemLineAndMaybeFree()
-
-TView * __thiscall TTechItemLine::DestructTTechItemLineAndMaybeFree(TView *param_1,byte param_2)
-
-{
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
 }
 

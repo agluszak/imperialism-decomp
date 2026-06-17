@@ -3,15 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: TFlagOptionsPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D8C0
+// GHIDRA_NAME TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0(void)
+
+TFlagOptionsPicture * __thiscall
+TFlagOptionsPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0043d8c0
+          (TFlagOptionsPicture *this)
+
+{
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TFlagOptionsPictureVtbl_00642490;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0043DA10
+// GHIDRA_NAME TFlagOptionsPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TFlagOptionsPicture * __thiscall
+TFlagOptionsPicture::_scalar_deleting_destructor_(TFlagOptionsPicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B210
 // GHIDRA_NAME TFlagOptionsPicture::CreateTFlagOptionsPictureInstance
 // GHIDRA_PROTO undefined CreateTFlagOptionsPictureInstance()
 
-undefined4 * TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(void)
+thunk_TPictureButton * TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,43 +52,51 @@ undefined4 * TFlagOptionsPicture::CreateTFlagOptionsPictureInstance(void)
   puStack_8 = &LAB_00635d2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00642490;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TFlagOptionsPictureVtbl **)this = &TFlagOptionsPictureVtbl_00642490;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B290
-// GHIDRA_NAME TFlagOptionsPicture::GetTFlagOptionsPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTFlagOptionsPictureClassNamePointer()
+// GHIDRA_NAME TFlagOptionsPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TFlagOptionsPicture::GetTFlagOptionsPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TFlagOptionsPicture::GetTEventHandlerClassNamePointer(TFlagOptionsPicture *this)
 
 {
-  return &PTR_s_TFlagOptionsPicture_0065de10;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B2B0
-// GHIDRA_NAME TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
-// GHIDRA_PROTO undefined HandleDialogCommandTagSaveLoadPrefQuitCred()
+// GHIDRA_NAME TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall
-TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
-          (int *param_1,int param_2,undefined1 *param_3,undefined4 param_4)
+TFlagOptionsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TFlagOptionsPicture *this)
 
 {
   uint uVar1;
   undefined1 *puVar2;
-  char cVar3;
-  int *piVar4;
-  int iVar5;
+  undefined uVar3;
+  char cVar4;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  TSimMgrVtbl *pTVar5;
   undefined4 *unaff_FS_OFFSET;
+  CString in_stack_00000004;
+  undefined1 *in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
@@ -66,37 +105,37 @@ TFlagOptionsPicture::HandleDialogCommandTagSaveLoadPrefQuitCred
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00635d50;
   *unaff_FS_OFFSET = &local_c;
-  if (param_2 != 10) {
-    thunk_HandleCityDialogToggleCommandOrForward();
+  if (in_stack_00000004.m_pchData != (char *)0xa) {
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
     *unaff_FS_OFFSET = local_c;
     return;
   }
-  InitializeSharedStringRefFromEmpty(&param_2);
-  puVar2 = param_3;
+  CString::CString(&stack0x00000004);
+  puVar2 = in_stack_00000008;
   local_4 = 0;
-  uVar1 = *(uint *)(param_3 + 0x1c);
+  uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
   if (uVar1 < 0x676f777a) {
     if (uVar1 == 0x676f7779) {
-      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar4 + 0x1b4))();
+      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1b4))();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x63726564) {
-      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar4 + 0x1b4))();
-      (**(code **)(*g_pLocalizationTable + 0x48))();
+      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x1b4))();
+      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
       goto LAB_0056b529;
     }
   }
   else if (uVar1 < 0x6e657768) {
     if (uVar1 == 0x6e657767) {
 LAB_0056b474:
-      cVar3 = DispatchGameStateEventIfLocalizedPromptAccepted();
-      if (cVar3 != '\0') {
-        piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-        (**(code **)(*piVar4 + 0x1b4))();
-        if (g_pLocalizationTable[0x11] == 1) {
-          if (*(char *)((int)g_pGameFlowState + 0xf4) != '\0') {
+      cVar4 = DispatchGameStateEventIfLocalizedPromptAccepted();
+      if (cVar4 != '\0') {
+        uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x1b4))();
+        if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+          if (g_pGameFlowState->field_0xf4 != '\0') {
             thunk_TrySaveGameAndMaybeShowFailureDialog();
           }
           thunk_DispatchTaggedGameStateEvent1F20();
@@ -111,58 +150,58 @@ LAB_0056b474:
       goto LAB_0056b529;
     }
     if (uVar1 == 0x6c6f6164) {
-      if (g_pLocalizationTable[0x11] != 0) {
+      if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
         thunk_ShowLocalizedUiPromptByGroupAndIndex(0x2737,0x34,0,0);
         goto LAB_0056b529;
       }
-      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar4 + 0x1b4))();
-      iVar5 = *g_pLocalizationTable;
+      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1b4))();
+      pTVar5 = g_pLocalizationTable->vftable;
       goto LAB_0056b526;
     }
   }
   else {
     if (uVar1 == 0x70726566) {
-      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar4 + 0x1b4))();
-      iVar5 = *g_pLocalizationTable;
+      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar3) + 0x1b4))();
+      pTVar5 = g_pLocalizationTable->vftable;
 LAB_0056b526:
-      (**(code **)(iVar5 + 0x48))();
+      (*pTVar5[9].GetTSimMgrClassNamePointer)();
       goto LAB_0056b529;
     }
     if (uVar1 == 0x71756974) goto LAB_0056b474;
     if (uVar1 == 0x73617665) {
-      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar4 + 0x1b4))();
-      if (g_pLocalizationTable[0x11] == 2) {
-        InitializeSharedStringRefFromEmpty(&param_4);
+      uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar3) + 0x1b4))();
+      if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+        CString::CString((CString *)&stack0x0000000c);
         local_4._0_1_ = 1;
         thunk_LoadUiStringResourceByGroupAndIndex();
-        param_3 = &stack0xffffffdc;
-        thunk_AssignStringSharedRefAndReturnThis(&param_4);
+        in_stack_00000008 = &stack0xffffffdc;
+        thunk_AssignStringSharedRefAndReturnThis(&stack0x0000000c);
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
         local_4 = (uint)local_4._1_3_ << 8;
-        ReleaseSharedStringRefIfNotEmpty(&param_4);
+        CString::~CString((CString *)&stack0x0000000c);
       }
       else {
-        (**(code **)(*g_pLocalizationTable + 0x48))();
+        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
       }
       goto LAB_0056b529;
     }
   }
-  thunk_HandleCityDialogToggleCommandOrForward();
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
 LAB_0056b529:
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&param_2);
+  CString::~CString(&stack0x00000004);
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B640
-// GHIDRA_NAME TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTFlagOptionsPictureAndMaybeFree()
+// GHIDRA_NAME TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree(undefined4 param_1)
+void __thiscall TFlagOptionsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TFlagOptionsPicture *this)
 
 {
   int iVar1;
@@ -181,12 +220,12 @@ void TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree(undefined4 par
   puStack_8 = &LAB_00635d68;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook(param_1);
-  InitializeSharedStringRefFromEmpty(&param_1);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  CString::CString((CString *)&stack0x00000004);
   iVar3 = 0;
   local_4 = 0;
   do {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2743,iVar3,&param_1);
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2743,iVar3,&stack0x00000004);
     piVar2 = (int *)(*unaff_ESI)(iVar3 + 0x74787430);
     iVar1 = *piVar2;
     (**(code **)(iVar1 + 0xc))();
@@ -206,7 +245,7 @@ void TFlagOptionsPicture::DestructTFlagOptionsPictureAndMaybeFree(undefined4 par
     iVar3 = iVar3 + 1;
   } while (iVar3 < 8);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&param_1);
+  CString::~CString((CString *)&stack0x00000004);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

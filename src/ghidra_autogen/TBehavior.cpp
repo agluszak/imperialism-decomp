@@ -5,9 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486F90
 // GHIDRA_NAME TBehavior::CreateTBehaviorInstance
-// GHIDRA_PROTO undefined CreateTBehaviorInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTBehaviorInstance(void)
 
-void __fastcall TBehavior::CreateTBehaviorInstance(undefined4 *param_1)
+void __thiscall TBehavior::CreateTBehaviorInstance(TBehavior *this)
 
 {
   undefined4 *puVar1;
@@ -19,57 +19,92 @@ void __fastcall TBehavior::CreateTBehaviorInstance(undefined4 *param_1)
   puStack_8 = &LAB_0062ead8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &ApplicationUiRootEmbeddedList::_vftable_;
-  puVar1 = (undefined4 *)param_1[1];
+  this->vftable = (TBehaviorVtbl *)&ApplicationUiRootEmbeddedList::_vftable_;
+  puVar1 = *(undefined4 **)&this->field_0x4;
   local_4 = 0;
   for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
   }
-  param_1[3] = 0;
-  param_1[4] = 0;
-  param_1[2] = 0;
-  param_1[1] = 0;
+  *(undefined4 *)&this->field_0xc = 0;
+  this[1].vftable = (TBehaviorVtbl *)0x0;
+  *(undefined4 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0x4 = 0;
   FreeDataChain();
-  param_1[5] = 0;
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(undefined4 *)&this[1].field_0x4 = 0;
+  this->vftable = (TBehaviorVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871C0
 // GHIDRA_NAME TBehavior::GetTBehaviorClassNamePointer
-// GHIDRA_PROTO undefined GetTBehaviorClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-char * TBehavior::GetTBehaviorClassNamePointer(void)
+CRuntimeClass * __thiscall TBehavior::GetTBehaviorClassNamePointer(TBehavior *this)
 
 {
-  return "\x18Oi";
+  return &g_pClassDescTBehavior;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004871E0
 // GHIDRA_NAME TBehavior::ConstructTBehaviorBaseState
-// GHIDRA_PROTO undefined ConstructTBehaviorBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTBehaviorBaseState(void)
 
-void __fastcall TBehavior::ConstructTBehaviorBaseState(undefined4 *param_1)
+void __thiscall TBehavior::ConstructTBehaviorBaseState(TBehavior *this)
 
 {
-  *param_1 = &PTR_LAB_00648d60;
-  param_1[1] = 0x20202020;
-  param_1[2] = 0;
-  *(undefined1 *)(param_1 + 3) = 1;
+  this->vftable = &TBehaviorVtbl_00648d60;
+  *(undefined4 *)&this->field_0x4 = 0x20202020;
+  *(undefined4 *)&this->field_0x8 = 0;
+  this->field_0xc = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487210
 // GHIDRA_NAME TBehavior::DestructTBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined DestructTBehaviorAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTBehaviorAndMaybeFree(void)
 
-undefined4 __thiscall TBehavior::DestructTBehaviorAndMaybeFree(undefined4 param_1,byte param_2)
+TBehavior * __thiscall TBehavior::DestructTBehaviorAndMaybeFree(TBehavior *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTBehaviorAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487280
+// GHIDRA_NAME TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_8_00487280(void)
+
+void __thiscall TBehavior::OrphanTiny_SetDwordEcxOffset_8_00487280(TBehavior *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  *(undefined4 *)&this->field_0x8 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004872A0
+// GHIDRA_NAME TBehavior::OrphanLeaf_NoCall_Ins02_004872a0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004872a0(void)
+
+undefined1 __thiscall TBehavior::OrphanLeaf_NoCall_Ins02_004872a0(TBehavior *this)
+
+{
+  return this->field_0xc;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004872E0
+// GHIDRA_NAME TBehavior::OrphanRetStub_004872e0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004872e0(void)
+
+void __thiscall TBehavior::OrphanRetStub_004872e0(TBehavior *this)
+
+{
+  return;
 }
 

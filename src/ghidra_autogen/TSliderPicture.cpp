@@ -7,10 +7,10 @@
 // GHIDRA_NAME TSliderPicture::CreateTSliderPictureInstance
 // GHIDRA_PROTO undefined CreateTSliderPictureInstance()
 
-undefined4 * TSliderPicture::CreateTSliderPictureInstance(void)
+thunk_TPictureButton * TSliderPicture::CreateTSliderPictureInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,54 +20,66 @@ undefined4 * TSliderPicture::CreateTSliderPictureInstance(void)
   puStack_8 = &LAB_0063661a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined1 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &PTR_LAB_006611e0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    this[0x90] = (thunk_TPictureButton)0x0;
+    *(TSliderPictureVtbl **)this = &TSliderPictureVtbl_006611e0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A00
-// GHIDRA_NAME TSliderPicture::GetTSliderPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTSliderPictureClassNamePointer()
+// GHIDRA_NAME TSliderPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TSliderPicture::GetTSliderPictureClassNamePointer(void)
+CRuntimeClass * __thiscall TSliderPicture::GetTEventHandlerClassNamePointer(TSliderPicture *this)
 
 {
-  return &PTR_s_TSliderPicture_00660688;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A20
 // GHIDRA_NAME TSliderPicture::ConstructTSliderPictureBaseState
-// GHIDRA_PROTO undefined ConstructTSliderPictureBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTSliderPictureBaseState(void)
 
-undefined4 * __fastcall TSliderPicture::ConstructTSliderPictureBaseState(undefined4 *param_1)
+TSliderPicture * __thiscall TSliderPicture::ConstructTSliderPictureBaseState(TSliderPicture *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *(undefined1 *)(param_1 + 0x24) = 0;
-  *param_1 = &PTR_LAB_006611e0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->field_0x90 = 0;
+  this->vftable = &TSliderPictureVtbl_006611e0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A50
-// GHIDRA_NAME TSliderPicture::DestructTSliderPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTSliderPictureAndMaybeFree()
+// GHIDRA_NAME TSliderPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TSliderPicture::DestructTSliderPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TSliderPicture * __thiscall TSliderPicture::_scalar_deleting_destructor_(TSliderPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00573AA0
+// GHIDRA_NAME TSliderPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TSliderPicture::OrphanTiny_ReturnZero_0048a730(TSliderPicture *this)
+
+{
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  return;
 }
 

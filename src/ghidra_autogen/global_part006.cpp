@@ -3,7046 +3,11818 @@
 // Program: Imperialism.exe
 // Bucket: global_part006.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004904D0
-// GHIDRA_NAME DestructTEditTextAndMaybeFree
-// GHIDRA_PROTO undefined DestructTEditTextAndMaybeFree()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049CBF0
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl()
 
-void __fastcall DestructTEditTextAndMaybeFree(undefined4 *param_1)
+void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0049cbc0_Impl(CWnd *param_1)
 
 {
-  void *this;
+  (param_1->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0064bca8;
+  DAT_006a2050 = 0;
+  CWnd::~CWnd(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049CC20
+// GHIDRA_NAME OrphanVtableAssignStub_0049cc20
+// GHIDRA_PROTO undefined OrphanVtableAssignStub_0049cc20()
+
+undefined ** OrphanVtableAssignStub_0049cc20(void)
+
+{
+  return &PTR_PTR_0064bc28;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049CC40
+// GHIDRA_NAME SetGlobalDword6A2018
+// GHIDRA_PROTO undefined SetGlobalDword6A2018()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void SetGlobalDword6A2018(undefined4 param_1)
+
+{
+  _DAT_006a2018 = param_1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049CC60
+// GHIDRA_NAME WrapperFor_AllocateWithFallbackHandler_At0049cc60
+// GHIDRA_PROTO undefined WrapperFor_AllocateWithFallbackHandler_At0049cc60()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_AllocateWithFallbackHandler_At0049cc60(int param_1)
+
+{
+  int *piVar1;
+  int iVar2;
+  HCURSOR pHVar3;
+  undefined4 uVar4;
+  int iVar5;
+  undefined4 uVar6;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar7;
+  undefined4 uVar8;
+  undefined4 uVar9;
+  undefined4 uVar10;
+  undefined4 uVar11;
+  undefined4 uVar12;
+  int *piStack_14;
+  undefined4 uStack_10;
   undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
+  undefined *puStack_8;
+  undefined4 uStack_4;
   
-  puStack_8 = &LAB_0062f1a3;
+  iVar5 = _DAT_006a2018;
   uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &UNK_0062fc3a;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &PTR_LAB_0064ad90;
-  local_4 = 0;
-  if ((int *)param_1[0x25] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x25] + 4))(1);
-  }
-  if ((int *)param_1[0x26] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x26] + 4))(1);
-  }
-  *param_1 = &TStaticText::_vftable_;
-  this = (void *)param_1[0x21];
-  local_4 = 1;
-  if (this != (void *)0x0) {
-    ReleaseSharedStringRefIfNotEmpty(this);
-    FreeHeapBufferIfNotNull(this);
-  }
-  *param_1 = &TView::_vftable_;
-  local_4 = 3;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
-  }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
-  local_4 = CONCAT31(local_4._1_3_,2);
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004905E0
-// GHIDRA_NAME WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
-// GHIDRA_PROTO undefined WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0()
-
-void __thiscall
-WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
-          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined2 param_5)
-
-{
-  InitializeTextEntryBaseAndOptionalStringResource(param_2,param_3,param_4,5,5,0xffffffff,0);
-  *(undefined2 *)(param_1 + 0x27) = param_5;
-  (**(code **)(*param_1 + 0x2c))(1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00490650
-// GHIDRA_NAME OrphanCallChain_C2_I18_00490650
-// GHIDRA_PROTO undefined OrphanCallChain_C2_I18_00490650()
-
-void __fastcall OrphanCallChain_C2_I18_00490650(int param_1)
-
-{
-  if (*(int **)(param_1 + 0x94) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 0x94) + 4))(1);
-    *(undefined4 *)(param_1 + 0x94) = 0;
-    if (*(int **)(param_1 + 0x98) != (int *)0x0) {
-      (**(code **)(**(int **)(param_1 + 0x98) + 4))(1);
-    }
-    *(undefined4 *)(param_1 + 0x98) = 0;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004906A0
-// GHIDRA_NAME InitializeDialogWindowAndRefreshSelectedNationHeaderStatus
-// GHIDRA_PROTO undefined InitializeDialogWindowAndRefreshSelectedNationHeaderStatus()
-
-void __thiscall
-InitializeDialogWindowAndRefreshSelectedNationHeaderStatus(astruct_10 *param_1,undefined4 param_2)
-
-{
-  int iVar1;
-  
-  iVar1 = InitDialogWindow(param_1);
-  if (iVar1 == 0) {
-    RefreshSelectedNationHeaderStatus(param_2);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004906D0
-// GHIDRA_NAME NumericEntryMethod_00402a9a
-// GHIDRA_PROTO undefined NumericEntryMethod_00402a9a()
-
-undefined1 __fastcall NumericEntryMethod_00402a9a(int param_1)
-
-{
-  return *(undefined1 *)(param_1 + 4);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004906F0
-// GHIDRA_NAME SetNumericEntryCheckedState
-// GHIDRA_PROTO undefined SetNumericEntryCheckedState()
-
-void __thiscall SetNumericEntryCheckedState(astruct_10 *param_1,char param_2)
-
-{
-  param_1->field1_0x4 = (int)param_2;
-  if (param_1->field124_0x94 != (undefined4 *)0x0) {
-    FUN_0060753b((int)param_2);
-    return;
-  }
-  InitDialogWindow(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00490730
-// GHIDRA_NAME SetUiControlActiveFlagAndMaybeRefreshWindow
-// GHIDRA_PROTO undefined SetUiControlActiveFlagAndMaybeRefreshWindow()
-
-void __thiscall
-SetUiControlActiveFlagAndMaybeRefreshWindow(astruct_10 *param_1,int param_2,int param_3)
-
-{
-  if (param_2 != param_1->field2_0x8) {
-    param_1->field2_0x8 = param_2;
-    if (param_3 != 0) {
-      (**(code **)(param_1->field0_0x0 + 0xe4))();
-    }
-    if (param_1->field124_0x94 != (undefined4 *)0x0) {
-      CFrameWnd::ShowWindow(-(param_1->field2_0x8 != 0) & 5);
-      return;
-    }
-    InitDialogWindow(param_1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004907A0
-// GHIDRA_NAME InitDialogWindow
-// GHIDRA_PROTO int __fastcall InitDialogWindow(astruct_10 * ui_ctx)
-
-int __fastcall InitDialogWindow(astruct_10 *ui_ctx)
-
-{
-  char flag_ok;
-  undefined4 *dlg_obj;
-  undefined4 dlg_handle;
-  int iface;
-  WPARAM icon_wparam;
-  HWND dlg_hwnd;
-  uint style_base;
-  uint style_flags;
-  void **unaff_FS_OFFSET;
-  undefined1 dlg_template [16];
-  void *seh_prev;
-  undefined1 *seh_handler;
-  undefined4 seh_state;
-  short dialog_mode;
-  int instance;
-  int parent_hwnd;
-  
-  seh_prev = *unaff_FS_OFFSET;
-  seh_state = 0xffffffff;
-  seh_handler = &LAB_0062f1ca;
-  *unaff_FS_OFFSET = &seh_prev;
-  if ((((ui_ctx->field124_0x94 == (undefined4 *)0x0) && (ui_ctx->field2_0x8 != 0)) &&
-      (ui_ctx->field1_0x4 != 0)) && (ui_ctx->field68_0x50 != 0)) {
-    dlg_obj = (undefined4 *)AllocateWithFallbackHandler(0x3c);
-    seh_state = 0;
-    if (dlg_obj == (undefined4 *)0x0) {
-      dlg_obj = (undefined4 *)0x0;
+  if ((iVar5 != 0) && (DAT_006a2050 == (int *)0x0)) {
+    piVar1 = (int *)AllocateWithFallbackHandler(0x40);
+    uStack_4 = 0;
+    piStack_14 = piVar1;
+    if (piVar1 == (int *)0x0) {
+      piVar1 = (int *)0x0;
     }
     else {
       ConstructObjectVtable00670b4cBase();
-      *dlg_obj = &PTR_LAB_0064afd8;
+      *piVar1 = (int)&PTR_LAB_0064bca8;
     }
-    seh_state = 0xffffffff;
-    ui_ctx->field124_0x94 = dlg_obj;
-    if (dlg_obj == (undefined4 *)0x0) {
-      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0xdee);
-    }
-    dialog_mode = (short)ui_ctx->field123_0x90;
-    style_base = 0x44010004;
-    if (dialog_mode != -2) {
-      if (dialog_mode == -1) {
-        style_base = 0x44010006;
+    uStack_4 = 0xffffffff;
+    DAT_006a2050 = piVar1;
+    iVar2 = thunk_LoadBmpResourceByIdCached(0x3b6);
+    piVar1[0xf] = iVar2;
+    iVar5 = 0;
+    if (iVar2 != 0) {
+      CopyOffset10PointPairToOutOrZero(&piStack_14);
+      if (param_1 == 0) {
+        uVar6 = 0;
       }
-      else if (dialog_mode == 1) {
-        style_base = 0x44010005;
+      else {
+        uVar6 = *(undefined4 *)(param_1 + 0x1c);
       }
+      AfxGetModuleState();
+      pHVar3 = LoadCursorA((HINSTANCE)0x0,&DAT_00007f00);
+      uVar12 = 0;
+      uVar11 = 0;
+      uVar10 = 0;
+      uVar9 = 0;
+      uVar8 = 0x90000000;
+      uVar7 = 0;
+      piVar1 = piStack_14;
+      uVar4 = AfxRegisterWndClass(0,pHVar3,0,0);
+      iVar5 = CreateEx_608115(0,uVar4,uVar7,uVar8,uVar9,uVar10,piVar1,uStack_10,uVar6,uVar11,uVar12)
+      ;
     }
-    iface = ui_ctx->field0_0x0;
-    style_flags = style_base | 0x800000;
-    flag_ok = (**(code **)(iface + 0xec))();
-    if (flag_ok != '\0') {
-      style_flags = style_base | 0x10800000;
+    if (iVar5 == 0) {
+      if (DAT_006a2050 != (int *)0x0) {
+        (**(code **)(*DAT_006a2050 + 4))(1);
+      }
+      DAT_006a2050 = (int *)0x0;
+      *unaff_FS_OFFSET = uStack_c;
+      return;
     }
-    flag_ok = (**(code **)(iface + 0x28))();
-    if (flag_ok == '\0') {
-      style_flags = style_flags | 0x8000000;
-    }
-    instance = ui_ctx->field19_0x1c;
-    parent_hwnd = ui_ctx->field68_0x50;
-    dlg_handle = (**(code **)(iface + 0x160))(dlg_template,parent_hwnd,instance);
-    InvokeDialogCreateVslot5CWithTemplate45(style_flags,dlg_handle,parent_hwnd,instance);
-    iface = CreateFontFromPresetAndAttachRegionHandle(&ui_ctx->field105_0x78);
-    ui_ctx->field125_0x98 = iface;
-    icon_wparam = 0;
-    if (iface != 0) {
-      icon_wparam = *(WPARAM *)(iface + 4);
-    }
-    SendMessageA((HWND)ui_ctx->field124_0x94[7],0x30,icon_wparam,0);
-    if ((ui_ctx->field114_0x84 != (int *)0x0) &&
-       (iface = *ui_ctx->field114_0x84, *(int *)(iface + -8) != 0)) {
-      SetWindowTextOrDelegateToOwner(iface);
-    }
-    ModifyStyleEx(0,0x20,0);
-    ModifyStyle(0x2000000,0,0);
-    dlg_hwnd = (HWND)0x0;
-    if (ui_ctx->field124_0x94 != (undefined4 *)0x0) {
-      dlg_hwnd = (HWND)ui_ctx->field124_0x94[7];
-    }
-    SetWindowLongA(dlg_hwnd,-0x15,(LONG)ui_ctx);
-    SendMessageA((HWND)ui_ctx->field124_0x94[7],0xc5,(int)(short)ui_ctx->field126_0x9c,0);
+    UpdateWindow((HWND)DAT_006a2050[7]);
   }
-  dlg_obj = ui_ctx->field124_0x94;
-  *unaff_FS_OFFSET = seh_prev;
-  return (int)dlg_obj;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00490A50
-// GHIDRA_NAME SetEditSelectionAndScrollCaret
-// GHIDRA_PROTO undefined SetEditSelectionAndScrollCaret()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049CCA0
+// GHIDRA_NAME InitializeGlobalBackdropWindowWithDefaultBmp3B6
+// GHIDRA_PROTO undefined InitializeGlobalBackdropWindowWithDefaultBmp3B6()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sets text selection range in edit control (EM_SETSEL) and scrolls caret into view (EM_SCROLLCARET).
+// GHIDRA_COMMENT Builds/initializes global fallback backdrop window object (DAT_006A2050) and loads default bitmap id 0x3B6; tears down object if window creation fails.
 // GHIDRA_COMMENT_END
 
-/* Sets text selection range in edit control (EM_SETSEL) and scrolls caret into view
-   (EM_SCROLLCARET). */
+/* Builds/initializes global fallback backdrop window object (DAT_006A2050) and loads default bitmap
+   id 0x3B6; tears down object if window creation fails. */
 
-void __thiscall SetEditSelectionAndScrollCaret(int param_1,short param_2,short param_3)
+void InitializeGlobalBackdropWindowWithDefaultBmp3B6
+               (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
 
 {
   int iVar1;
+  HCURSOR pHVar2;
+  undefined4 uVar3;
+  int iVar4;
+  int *unaff_ESI;
+  int *piVar5;
+  undefined4 uVar6;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack00000018;
+  int in_stack_00000020;
+  undefined4 uVar7;
+  undefined4 uVar8;
+  undefined4 uVar9;
+  undefined4 uVar10;
+  undefined4 uVar11;
+  undefined4 uVar12;
   
-  iVar1 = *(int *)(param_1 + 0x94);
+  uStack00000018 = 0;
+  if (unaff_ESI == (int *)0x0) {
+    piVar5 = (int *)0x0;
+  }
+  else {
+    ConstructObjectVtable00670b4cBase();
+    *unaff_ESI = (int)&PTR_LAB_0064bca8;
+    piVar5 = unaff_ESI;
+  }
+  uStack00000018 = 0xffffffff;
+  DAT_006a2050 = piVar5;
+  iVar1 = thunk_LoadBmpResourceByIdCached(0x3b6);
+  piVar5[0xf] = iVar1;
+  iVar4 = 0;
   if (iVar1 != 0) {
-    SendMessageA(*(HWND *)(iVar1 + 0x1c),0xb1,(int)param_2,(int)param_3);
-    SendMessageA(*(HWND *)(iVar1 + 0x1c),0xb7,0,0);
+    CopyOffset10PointPairToOutOrZero(&stack0x00000008);
+    if (in_stack_00000020 == 0) {
+      uVar6 = 0;
+    }
+    else {
+      uVar6 = *(undefined4 *)(in_stack_00000020 + 0x1c);
+    }
+    AfxGetModuleState();
+    pHVar2 = LoadCursorA((HINSTANCE)0x0,&DAT_00007f00);
+    uVar12 = 0;
+    uVar11 = 0;
+    uVar10 = 0;
+    uVar9 = 0;
+    uVar8 = 0x90000000;
+    uVar7 = 0;
+    uVar3 = AfxRegisterWndClass(0,pHVar2,0,0);
+    iVar4 = CreateEx_608115(0,uVar3,uVar7,uVar8,uVar9,uVar10,unaff_ESI,param_3,uVar6,uVar11,uVar12);
+  }
+  if (iVar4 == 0) {
+    if (DAT_006a2050 != (int *)0x0) {
+      (**(code **)(*DAT_006a2050 + 4))(1);
+    }
+    DAT_006a2050 = (int *)0x0;
+    *unaff_FS_OFFSET = param_4;
+    return;
+  }
+  UpdateWindow((HWND)DAT_006a2050[7]);
+  *unaff_FS_OFFSET = param_4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049CDF0
+// GHIDRA_NAME RefreshBackdropOnInputMessages
+// GHIDRA_PROTO undefined RefreshBackdropOnInputMessages()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT On selected keyboard/mouse input messages, notifies global backdrop object (DAT_006A2050 +0x60) and forces main thread window UpdateWindow.
+// GHIDRA_COMMENT_END
+
+/* On selected keyboard/mouse input messages, notifies global backdrop object (DAT_006A2050 +0x60)
+   and forces main thread window UpdateWindow. */
+
+void RefreshBackdropOnInputMessages(int param_1)
+
+{
+  CWinThread *pCVar1;
+  int iVar2;
+  
+  if ((DAT_006a2050 != (int *)0x0) &&
+     (((((iVar2 = *(int *)(param_1 + 4), iVar2 == 0x100 || (iVar2 == 0x104)) || (iVar2 == 0x201)) ||
+       ((iVar2 == 0x204 || (iVar2 == 0x207)))) ||
+      ((iVar2 == 0xa1 || ((iVar2 == 0xa4 || (iVar2 == 0xa7)))))))) {
+    (**(code **)(*DAT_006a2050 + 0x60))();
+    pCVar1 = AfxGetThread();
+    if (pCVar1 != (CWinThread *)0x0) {
+      pCVar1 = AfxGetThread();
+      iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+      UpdateWindow(*(HWND *)(iVar2 + 0x1c));
+      return;
+    }
+    UpdateWindow(pHRam0000001c);
   }
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00490AA0
-// GHIDRA_NAME NumericEntryMethod_00401e6f
-// GHIDRA_PROTO undefined NumericEntryMethod_00401e6f()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049CE90
+// GHIDRA_NAME InitializeDefaultBackdropWindowFromBmp3B6
+// GHIDRA_PROTO undefined InitializeDefaultBackdropWindowFromBmp3B6()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes a default backdrop window/control using cached bitmap id 0x3B6 and registers the resulting window class/cursor context.
+// GHIDRA_COMMENT_END
 
-undefined1 __fastcall NumericEntryMethod_00401e6f(int param_1)
+/* Initializes a default backdrop window/control using cached bitmap id 0x3B6 and registers the
+   resulting window class/cursor context. */
 
-{
-  if (*(int *)(param_1 + 0x94) != 0) {
-    SetFocus();
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00490AD0
-// GHIDRA_NAME NumericEntryMethod_00407cca
-// GHIDRA_PROTO undefined NumericEntryMethod_00407cca()
-
-void __fastcall NumericEntryMethod_00407cca(int *param_1)
+void __thiscall InitializeDefaultBackdropWindowFromBmp3B6(int param_1,int param_2)
 
 {
   int iVar1;
-  int *piVar2;
+  HCURSOR pHVar2;
+  undefined4 uVar3;
+  undefined4 uVar4;
+  undefined4 uVar5;
+  undefined4 uVar6;
+  undefined4 uVar7;
+  undefined4 uVar8;
+  undefined4 uVar9;
+  undefined4 uVar10;
+  undefined4 local_8;
+  undefined4 local_4;
   
-  if ((int *)param_1[0x25] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x25] + 4))(1);
-    param_1[0x25] = 0;
-    if ((int *)param_1[0x26] != (int *)0x0) {
-      (**(code **)(*(int *)param_1[0x26] + 4))(1);
-    }
-    param_1[0x26] = 0;
+  iVar1 = thunk_LoadBmpResourceByIdCached(0x3b6);
+  *(int *)(param_1 + 0x3c) = iVar1;
+  if (iVar1 == 0) {
+    return;
   }
-  iVar1 = param_1[0x11];
-  while (iVar1 != 0) {
-    (**(code **)(**(int **)(*(int *)(iVar1 + 4) + 8) + 0x1c))();
-    iVar1 = param_1[0x11];
+  CopyOffset10PointPairToOutOrZero(&local_8);
+  if (param_2 == 0) {
+    uVar4 = 0;
   }
-  if ((int *)param_1[8] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[8] + 0x174))(param_1);
-    param_1[8] = 0;
+  else {
+    uVar4 = *(undefined4 *)(param_2 + 0x1c);
   }
-  if (((g_pApplicationUiRootController != (int *)0x0) && (g_pApplicationUiRootController != param_1)
-      ) && (piVar2 = (int *)(**(code **)(*g_pApplicationUiRootController + 0x9c))(),
-           piVar2 == param_1)) {
-    piVar2 = (int *)(**(code **)(*param_1 + 0x30))();
-    if (piVar2 == (int *)0x0) {
-      piVar2 = g_pApplicationUiRootController;
-    }
-    (**(code **)(*g_pApplicationUiRootController + 0x98))(piVar2);
-  }
-  param_1[3] = 0;
-  if ((int *)param_1[6] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[6] + 0x1c))();
-  }
-  param_1[6] = 0;
+  AfxGetModuleState();
+  pHVar2 = LoadCursorA((HINSTANCE)0x0,&DAT_00007f00);
+  uVar10 = 0;
+  uVar9 = 0;
+  uVar8 = 0;
+  uVar7 = 0;
+  uVar6 = 0x90000000;
+  uVar5 = 0;
+  uVar3 = AfxRegisterWndClass(0,pHVar2,0,0);
+  CreateEx_608115(0,uVar3,uVar5,uVar6,uVar7,uVar8,local_8,local_4,uVar4,uVar9,uVar10);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049CFA0
+// GHIDRA_NAME ResetTopLevelWindowStateAndReleaseTempMapBuffer
+// GHIDRA_PROTO undefined ResetTopLevelWindowStateAndReleaseTempMapBuffer()
+
+void __fastcall ResetTopLevelWindowStateAndReleaseTempMapBuffer(int *param_1)
+
+{
+  int iVar1;
+  CWinThread *pCVar2;
+  
+  thunk_ReleaseHashIndexedRecordByHandle(param_1[0xf]);
+  param_1[0xf] = 0;
   if (param_1 != (int *)0x0) {
     (**(code **)(*param_1 + 4))(1);
   }
+  DAT_006a2050 = 0;
+  pCVar2 = AfxGetThread();
+  if (pCVar2 != (CWinThread *)0x0) {
+    pCVar2 = AfxGetThread();
+    (**(code **)(*(int *)pCVar2 + 0x7c))();
+  }
+  ConfigureTopLevelWindowStyleAndPlacement(0x280,0x1e0);
+  pCVar2 = AfxGetThread();
+  if (pCVar2 != (CWinThread *)0x0) {
+    pCVar2 = AfxGetThread();
+    (**(code **)(*(int *)pCVar2 + 0x7c))();
+  }
+  SetWindowPos(0,0,0,0,0,5);
+  iVar1 = DAT_006a2054;
+  if (DAT_006a2054 != 0) {
+    AfxGetModuleState();
+    EndWaitCursor();
+    FreeHeapBufferIfNotNull(iVar1);
+  }
+  DAT_006a2054 = 0;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00490BC0
-// GHIDRA_NAME WrapperFor_thunk_DispatchUiMouseMoveToChildren_At00490bc0
-// GHIDRA_PROTO undefined WrapperFor_thunk_DispatchUiMouseMoveToChildren_At00490bc0()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D090
+// GHIDRA_NAME InitializeTopLevelWindowTimerAndAcquireTempMapHandle
+// GHIDRA_PROTO undefined InitializeTopLevelWindowTimerAndAcquireTempMapHandle()
 
-undefined4 __thiscall
-WrapperFor_thunk_DispatchUiMouseMoveToChildren_At00490bc0
-          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
-
-{
-  char cVar1;
-  
-  cVar1 = TControl::thunk_DispatchUiMouseMoveToChildren(param_2,param_3,param_4,param_5);
-  if (cVar1 != '\0') {
-    (**(code **)(*param_1 + 0x40))(param_1[0x18],param_1,0);
-    return 1;
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00490C10
-// GHIDRA_NAME NumericEntryMethod_0040465b
-// GHIDRA_PROTO undefined NumericEntryMethod_0040465b()
-
-void __fastcall NumericEntryMethod_0040465b(int param_1)
-
-{
-  if (*(int *)(param_1 + 0x94) != 0) {
-    SetFocus();
-    return;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00490C30
-// GHIDRA_NAME ApplyControlFocusIfEnabledAndNotifySelectionRange
-// GHIDRA_PROTO undefined ApplyControlFocusIfEnabledAndNotifySelectionRange()
-
-void __thiscall ApplyControlFocusIfEnabledAndNotifySelectionRange(int *param_1,undefined4 param_2)
-
-{
-  if (param_1[0x25] != 0) {
-    SetFocus();
-  }
-  (**(code **)(*param_1 + 0x1d8))(0,0x7fff,param_2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00490C70
-// GHIDRA_NAME WrapperFor_StringShared_AssignFromPtr_At00490c70
-// GHIDRA_PROTO undefined WrapperFor_StringShared_AssignFromPtr_At00490c70()
-
-void __thiscall WrapperFor_StringShared_AssignFromPtr_At00490c70(int param_1,void *param_2)
-
-{
-  if (*(int *)(param_1 + 0x94) != 0) {
-    FUN_0060859f(param_2);
-    return;
-  }
-  AssignFromPtr(param_2,*(CString **)(param_1 + 0x84));
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00490CB0
-// GHIDRA_NAME SetWordField90AndMaybeNotify
-// GHIDRA_PROTO undefined SetWordField90AndMaybeNotify()
-
-void __thiscall SetWordField90AndMaybeNotify(int *param_1,undefined2 param_2,char param_3)
-
-{
-  *(undefined2 *)(param_1 + 0x24) = param_2;
-  if (param_3 != '\0') {
-    (**(code **)(*param_1 + 0x114))(0);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00490E50
-// GHIDRA_NAME WrapperFor_SetWindowPosOrForwardToSite_At00490e50
-// GHIDRA_PROTO undefined WrapperFor_SetWindowPosOrForwardToSite_At00490e50()
-
-void __fastcall WrapperFor_SetWindowPosOrForwardToSite_At00490e50(int param_1)
-
-{
-  tagRECT local_10;
-  
-  TControl::WrapperFor_thunk_PopSinglyLinkedListHeadPointer_At0048b2d0();
-  if (*(int *)(param_1 + 0x94) != 0) {
-    GetClientRect(*(HWND *)(*(int *)(param_1 + 0x94) + 0x1c),&local_10);
-    if ((local_10.left != *(int *)(param_1 + 0x2c)) || (local_10.top != *(int *)(param_1 + 0x30))) {
-      SetWindowPos(0,*(undefined4 *)(param_1 + 0x2c),*(undefined4 *)(param_1 + 0x30),0,0,0x215);
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004911C0
-// GHIDRA_NAME UpdateControlCachedIntFromWindowText
-// GHIDRA_PROTO undefined UpdateControlCachedIntFromWindowText()
-
-undefined4 __fastcall UpdateControlCachedIntFromWindowText(int param_1)
-
-{
-  undefined4 uVar1;
-  undefined4 *unaff_FS_OFFSET;
-  int local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f268;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  if (*(int *)(param_1 + 0x94) != 0) {
-    local_10 = param_1;
-    InitializeSharedStringRefFromEmpty(&local_10);
-    local_4 = 0;
-    FUN_0060859f(&local_10);
-    uVar1 = ParseSignedIntAndDiscardResult(local_10);
-    *(undefined4 *)(param_1 + 0xa0) = uVar1;
-    local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty(&local_10);
-  }
-  uVar1 = *(undefined4 *)(param_1 + 0xa0);
-  *unaff_FS_OFFSET = local_c;
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004912B0
-// GHIDRA_NAME NumericEntryMethod_00407a7c
-// GHIDRA_PROTO undefined NumericEntryMethod_00407a7c()
-
-int __fastcall NumericEntryMethod_00407a7c(int *param_1)
+undefined4 __fastcall InitializeTopLevelWindowTimerAndAcquireTempMapHandle(CWnd *param_1)
 
 {
   int iVar1;
-  
-  iVar1 = (**(code **)(*param_1 + 0x24))();
-  CopyExtendedCityDialogControllerState(param_1);
-  *(int *)(iVar1 + 0x94) = param_1[0x25];
-  *(int *)(iVar1 + 0x98) = param_1[0x26];
-  *(short *)(iVar1 + 0x9c) = (short)param_1[0x27];
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004914B0
-// GHIDRA_NAME DestructTClusterAndMaybeFree_Impl
-// GHIDRA_PROTO undefined DestructTClusterAndMaybeFree_Impl()
-
-void __fastcall DestructTClusterAndMaybeFree_Impl(undefined4 *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint local_4;
-  
-  puStack_8 = &LAB_0062f2b3;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &TView::_vftable_;
-  local_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
-  }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
-  local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004915D0
-// GHIDRA_NAME OrphanCallChain_C1_I31_004915d0
-// GHIDRA_PROTO undefined OrphanCallChain_C1_I31_004915d0()
-
-void __thiscall
-OrphanCallChain_C1_I31_004915d0(int param_1,int *param_2,undefined4 *param_3,undefined4 *param_4)
-
-{
-  if (param_2 != (int *)0x0) {
-    *(int *)(param_1 + 0x50) = param_2[0x14];
-  }
-  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
-  *(undefined4 *)(param_1 + 4) = 1;
-  *(undefined4 *)(param_1 + 8) = 1;
-  *(int **)(param_1 + 0xc) = param_2;
-  *(undefined4 *)(param_1 + 0x24) = *param_3;
-  *(undefined4 *)(param_1 + 0x28) = param_3[1];
-  *(undefined4 *)(param_1 + 0x34) = *param_4;
-  *(undefined4 *)(param_1 + 0x38) = param_4[1];
-  if (param_2 != (int *)0x0) {
-    (**(code **)(*param_2 + 0x170))(param_1,0);
-  }
-  *(undefined4 *)(param_1 + 0x40) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491770
-// GHIDRA_NAME OrphanTiny_GetDwordEcxOffset_84_00491770
-// GHIDRA_PROTO undefined OrphanTiny_GetDwordEcxOffset_84_00491770()
-
-undefined4 __fastcall OrphanTiny_GetDwordEcxOffset_84_00491770(int param_1)
-
-{
-  return *(undefined4 *)(param_1 + 0x84);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491790
-// GHIDRA_NAME OrphanCallChain_C2_I51_00491790
-// GHIDRA_PROTO undefined OrphanCallChain_C2_I51_00491790()
-
-void __thiscall OrphanCallChain_C2_I51_00491790(int param_1,int param_2)
-
-{
-  int *piVar1;
-  undefined4 *puVar2;
-  
-  if (*(int *)(param_1 + 0x44) == 0) {
-    puVar2 = (undefined4 *)0x0;
-  }
-  else {
-    puVar2 = *(undefined4 **)(*(int *)(param_1 + 0x44) + 4);
-  }
-  if (puVar2 == (undefined4 *)0x0) {
-    piVar1 = (int *)0x0;
-    puVar2 = (undefined4 *)0x0;
-  }
-  else {
-    piVar1 = (int *)puVar2[2];
-    puVar2 = (undefined4 *)*puVar2;
-  }
-  while (piVar1 != (int *)0x0) {
-    if (piVar1[7] == param_2) {
-      (**(code **)(*piVar1 + 0x3c))(0x1f,param_1,0);
-    }
-    else {
-      (**(code **)(*piVar1 + 0x3c))(0x20,param_1,0);
-    }
-    if (puVar2 == (undefined4 *)0x0) {
-      piVar1 = (int *)0x0;
-      puVar2 = (undefined4 *)0x0;
-    }
-    else {
-      piVar1 = (int *)puVar2[2];
-      puVar2 = (undefined4 *)*puVar2;
-    }
-  }
-  *(int *)(param_1 + 0x84) = param_2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004918A0
-// GHIDRA_NAME WrapperFor_CopyCityDialogStateFromSource_At004918a0
-// GHIDRA_PROTO undefined WrapperFor_CopyCityDialogStateFromSource_At004918a0()
-
-TView * __fastcall WrapperFor_CopyCityDialogStateFromSource_At004918a0(TView *param_1)
-
-{
-  TView *this;
-  
-  this = (TView *)(**(code **)((int)param_1->vftable + 0x24))();
-  TView::thunk_CopyCityDialogStateFromSource(this,param_1);
-  this[1].vftable = param_1[1].vftable;
-  *(char *)&this[1].field04 = (char)param_1[1].field04;
-  this[1].padding_08_to_0b = param_1[1].padding_08_to_0b;
-  this[1].field0c = param_1[1].field0c;
-  this[1].field10 = param_1[1].field10;
-  this[1].field14 = param_1[1].field14;
-  this[1].field18 = param_1[1].field18;
-  this[1].controlTag = param_1[1].controlTag;
-  *(undefined2 *)&this[1].ownerContext = *(undefined2 *)&param_1[1].ownerContext;
-  return this;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004919A0
-// GHIDRA_NAME InitializeSelectableTextOptionEntryIteratorContext
-// GHIDRA_PROTO undefined InitializeSelectableTextOptionEntryIteratorContext()
-
-void __thiscall InitializeSelectableTextOptionEntryIteratorContext(int param_1,undefined4 param_2)
-
-{
-  *(undefined4 *)(param_1 + 4) = param_2;
-  *(undefined4 *)(param_1 + 8) = 1;
-  *(undefined4 *)(param_1 + 0xc) = 0x20202020;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491A00
-// GHIDRA_NAME BeginSelectableTextOptionEntryIterator
-// GHIDRA_PROTO undefined BeginSelectableTextOptionEntryIterator()
-
-void __fastcall BeginSelectableTextOptionEntryIterator(int *param_1)
-
-{
-  int *piVar1;
-  int iVar2;
-  
-  iVar2 = *(int *)(param_1[1] + 0x44);
-  if (iVar2 == 0) {
-    *param_1 = 0;
-  }
-  else {
-    if (param_1[2] == 0) {
-      iVar2 = *(int *)(iVar2 + 8);
-    }
-    else {
-      iVar2 = *(int *)(iVar2 + 4);
-    }
-    *param_1 = iVar2;
-  }
-  piVar1 = (int *)*param_1;
-  if (piVar1 == (int *)0x0) {
-    param_1[4] = 0;
-    return;
-  }
-  if (param_1[2] != 0) {
-    *param_1 = *piVar1;
-    param_1[4] = piVar1[2];
-    return;
-  }
-  *param_1 = piVar1[1];
-  param_1[4] = piVar1[2];
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491A70
-// GHIDRA_NAME AdvanceSelectableTextOptionEntryIterator
-// GHIDRA_PROTO undefined AdvanceSelectableTextOptionEntryIterator()
-
-void __fastcall AdvanceSelectableTextOptionEntryIterator(int *param_1)
-
-{
-  int *piVar1;
-  
-  piVar1 = (int *)*param_1;
-  if (piVar1 == (int *)0x0) {
-    param_1[4] = 0;
-    return;
-  }
-  if (param_1[2] != 0) {
-    *param_1 = *piVar1;
-    param_1[4] = piVar1[2];
-    return;
-  }
-  *param_1 = piVar1[1];
-  param_1[4] = piVar1[2];
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491AB0
-// GHIDRA_NAME IsSelectableTextOptionEntryIteratorValid
-// GHIDRA_PROTO undefined IsSelectableTextOptionEntryIteratorValid()
-
-bool __fastcall IsSelectableTextOptionEntryIteratorValid(int param_1)
-
-{
-  return *(int *)(param_1 + 0x10) != 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491B10
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00491b10
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00491b10()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00491b10(undefined4 param_1,byte param_2)
-
-{
-  TTurnEventDialogFactoryRegistryState_0064B328::
-  DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At00491b40();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491BE0
-// GHIDRA_NAME RegisterDialogFactoryCallback
-// GHIDRA_PROTO void __thiscall RegisterDialogFactoryCallback(int pFactoryFn)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Registers one callback function pointer into factory manager linked list / freelist-backed node pool.
-// GHIDRA_COMMENT_END
-
-/* Registers one callback function pointer into factory manager linked list / freelist-backed node
-   pool. */
-
-void __thiscall RegisterDialogFactoryCallback(void *this,int pFactoryFn)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  undefined4 *puVar3;
-  int iVar4;
-  
-  uVar1 = *(undefined4 *)((int)this + 0xc);
-  if (*(int *)((int)this + 0x14) == 0) {
-    iVar2 = AllocateAndLinkBlockHead((int)this + 0x18,*(undefined4 *)((int)this + 0x1c),0xc);
-    iVar4 = *(int *)((int)this + 0x1c);
-    puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
-    if (-1 < iVar4 + -1) {
-      do {
-        *puVar3 = *(undefined4 *)((int)this + 0x14);
-        *(undefined4 **)((int)this + 0x14) = puVar3;
-        puVar3 = puVar3 + -3;
-        iVar4 = iVar4 + -1;
-      } while (iVar4 != 0);
-    }
-  }
-  puVar3 = *(undefined4 **)((int)this + 0x14);
-  *(undefined4 *)((int)this + 0x14) = *puVar3;
-  puVar3[1] = uVar1;
-  *puVar3 = 0;
-  *(int *)((int)this + 0x10) = *(int *)((int)this + 0x10) + 1;
-  puVar3[2] = 0;
-  puVar3[2] = pFactoryFn;
-  if (*(undefined4 **)((int)this + 0xc) == (undefined4 *)0x0) {
-    *(undefined4 **)((int)this + 8) = puVar3;
-    *(undefined4 **)((int)this + 0xc) = puVar3;
-    return;
-  }
-  **(undefined4 **)((int)this + 0xc) = puVar3;
-  *(undefined4 **)((int)this + 0xc) = puVar3;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00491C80
-// GHIDRA_NAME OrphanCallChain_C1_I17_00491c80
-// GHIDRA_PROTO undefined OrphanCallChain_C1_I17_00491c80()
-
-void __thiscall OrphanCallChain_C1_I17_00491c80(int *param_1,undefined4 param_2,undefined4 param_3)
-
-{
-  undefined4 local_8;
-  undefined4 local_4;
-  
-  local_8 = 0;
-  local_4 = 0;
-  (**(code **)(*param_1 + 0x2c))(param_3,0,param_2,&local_8);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492140
-// GHIDRA_NAME DestructTWindowAndUnlinkGlobalWindowNode
-// GHIDRA_PROTO undefined DestructTWindowAndUnlinkGlobalWindowNode()
-
-void __fastcall DestructTWindowAndUnlinkGlobalWindowNode(undefined4 *param_1)
-
-{
-  int *piVar1;
-  undefined4 *puVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f376;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &PTR_LAB_00649e58;
-  local_4 = 1;
-  for (piVar1 = DAT_006a1a44; piVar1 != (int *)0x0; piVar1 = (int *)*piVar1) {
-    if ((undefined4 *)piVar1[2] == param_1) goto LAB_00492185;
-  }
-  piVar1 = (int *)0x0;
-LAB_00492185:
-  if (piVar1 == DAT_006a1a44) {
-    DAT_006a1a44 = (int *)*piVar1;
-  }
-  else {
-    *(int *)piVar1[1] = *piVar1;
-  }
-  if (piVar1 == DAT_006a1a48) {
-    DAT_006a1a48 = (int *)piVar1[1];
-  }
-  else {
-    *(int *)(*piVar1 + 4) = piVar1[1];
-  }
-  *piVar1 = (int)DAT_006a1a50;
-  DAT_006a1a4c = DAT_006a1a4c + -1;
-  puVar2 = DAT_006a1ac4;
-  DAT_006a1a50 = piVar1;
-  if (DAT_006a1a4c == 0) {
-    WrapperFor_FreeLinkedBlockChain_At00492ac0();
-    puVar2 = DAT_006a1ac4;
-  }
-  for (; puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)*puVar2) {
-    if ((undefined4 *)puVar2[2] == param_1) goto LAB_004921ef;
-  }
-  puVar2 = (undefined4 *)0x0;
-LAB_004921ef:
-  if (((puVar2 != (undefined4 *)0x0) &&
-      (UnlinkNodeFromDoublyLinkedListAndRecycle(puVar2), DAT_006a1ac4 != (undefined4 *)0x0)) &&
-     (piVar1 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar1 + 0xc))(), piVar1[0x14] != 0)) {
-    FUN_0060753b(1);
-  }
-  param_1[0x1d] = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *param_1 = &TView::_vftable_;
-  local_4 = 3;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
-  }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
-  local_4 = CONCAT31(local_4._1_3_,2);
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492310
-// GHIDRA_NAME OrphanVtableAssignStub_00492310
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_00492310()
-
-undefined4 OrphanVtableAssignStub_00492310(void)
-
-{
-  return 0x66776e64;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492330
-// GHIDRA_NAME ResetChildSelectionAndNotifyParent468Alt
-// GHIDRA_PROTO undefined ResetChildSelectionAndNotifyParent468Alt()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Alternate implementation of ResetChildSelectionAndNotifyParent468 with same notification/child-iteration flow.
-// GHIDRA_COMMENT_END
-
-/* WARNING: Removing unreachable block (ram,0x00492347) */
-/* Alternate implementation of ResetChildSelectionAndNotifyParent468 with same
-   notification/child-iteration flow. */
-
-void __fastcall ResetChildSelectionAndNotifyParent468Alt(int *param_1)
-
-{
-  int iVar1;
-  int *piVar2;
-  undefined4 *puVar3;
-  
-  iVar1 = param_1[0x14];
-  param_1[0x26] = 0;
-  if ((iVar1 != 0) && (*(int *)(iVar1 + 0x1c) != 0)) {
-    SendMessageA(*(HWND *)(iVar1 + 0x1c),0x468,1,param_1[7]);
-  }
-  if (param_1[0x11] == 0) {
-    puVar3 = (undefined4 *)0x0;
-  }
-  else {
-    puVar3 = *(undefined4 **)(param_1[0x11] + 4);
-  }
-  if (puVar3 == (undefined4 *)0x0) {
-    piVar2 = (int *)0x0;
-    puVar3 = (undefined4 *)0x0;
-  }
-  else {
-    piVar2 = (int *)puVar3[2];
-    puVar3 = (undefined4 *)*puVar3;
-  }
-  while (piVar2 != (int *)0x0) {
-    (**(code **)(*piVar2 + 0xa0))();
-    if (puVar3 == (undefined4 *)0x0) {
-      piVar2 = (int *)0x0;
-      puVar3 = (undefined4 *)0x0;
-    }
-    else {
-      piVar2 = (int *)puVar3[2];
-      puVar3 = (undefined4 *)*puVar3;
-    }
-  }
-  (**(code **)(*param_1 + 0x1cc))(0,1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004923F0
-// GHIDRA_NAME InitializeUiWindowTraversalState
-// GHIDRA_PROTO undefined InitializeUiWindowTraversalState()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes traversal state structure used for iterating global UI window entries.
-// GHIDRA_COMMENT_END
-
-/* Initializes traversal state structure used for iterating global UI window entries. */
-
-void __thiscall InitializeUiWindowTraversalState(undefined4 *param_1,char param_2)
-
-{
-  *param_1 = 0;
-  param_1[1] = (int)param_2;
-  param_1[2] = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492440
-// GHIDRA_NAME LoadFirstUiWindowTraversalEntry
-// GHIDRA_PROTO undefined LoadFirstUiWindowTraversalEntry()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Loads first entry from global UI window traversal list (head DAT_006A1A44) into traversal state.
-// GHIDRA_COMMENT_END
-
-/* Loads first entry from global UI window traversal list (head DAT_006A1A44) into traversal state.
-    */
-
-undefined4 __fastcall LoadFirstUiWindowTraversalEntry(undefined4 *param_1)
-
-{
-  undefined4 uVar1;
-  undefined4 *puVar2;
-  bool bVar3;
-  
-  puVar2 = DAT_006a1a44;
-  bVar3 = DAT_006a1a44 != (undefined4 *)0x0;
-  *param_1 = DAT_006a1a44;
-  if (bVar3) {
-    *param_1 = *puVar2;
-    uVar1 = puVar2[2];
-    param_1[2] = uVar1;
-    return uVar1;
-  }
-  param_1[2] = 0;
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492470
-// GHIDRA_NAME LoadNextUiWindowTraversalEntry
-// GHIDRA_PROTO undefined LoadNextUiWindowTraversalEntry()
-
-int __fastcall LoadNextUiWindowTraversalEntry(int *param_1)
-
-{
-  int *piVar1;
-  int iVar2;
-  
-  piVar1 = (int *)*param_1;
-  if (piVar1 != (int *)0x0) {
-    *param_1 = *piVar1;
-    iVar2 = piVar1[2];
-    param_1[2] = iVar2;
-    return iVar2;
-  }
-  param_1[2] = 0;
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004924A0
-// GHIDRA_NAME IsUiWindowTraversalEntryValid
-// GHIDRA_PROTO undefined IsUiWindowTraversalEntryValid()
-
-bool __fastcall IsUiWindowTraversalEntryValid(int param_1)
-
-{
-  return *(int *)(param_1 + 8) != 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004924C0
-// GHIDRA_NAME PopSinglyLinkedListHeadPointer
-// GHIDRA_PROTO undefined PopSinglyLinkedListHeadPointer()
-
-int PopSinglyLinkedListHeadPointer(int *param_1)
-
-{
-  int *piVar1;
-  
-  piVar1 = (int *)*param_1;
-  *param_1 = *piVar1;
-  return (int)(piVar1 + 2);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004924E0
-// GHIDRA_NAME EnsureChildResourceWindowAndNotify_Impl
-// GHIDRA_PROTO undefined EnsureChildResourceWindowAndNotify_Impl()
-
-int EnsureChildResourceWindowAndNotify_Impl(int *param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = *param_1;
-  *param_1 = *(int *)(iVar1 + 4);
-  return iVar1 + 8;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492510
-// GHIDRA_NAME InitializeViewModalStateNodeBlockChainRuntimeClassFields
-// GHIDRA_PROTO undefined InitializeViewModalStateNodeBlockChainRuntimeClassFields()
-
-void __thiscall
-InitializeViewModalStateNodeBlockChainRuntimeClassFields(undefined4 *param_1,undefined4 param_2)
-
-{
-  param_1[3] = 0;
-  param_1[4] = 0;
-  param_1[2] = 0;
-  param_1[1] = 0;
-  param_1[5] = 0;
-  *param_1 = &PTR_GetCObjectRuntimeClass_0064b580;
-  param_1[6] = param_2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492550
-// GHIDRA_NAME UnlinkNodeFromDoublyLinkedListAndRecycle
-// GHIDRA_PROTO undefined UnlinkNodeFromDoublyLinkedListAndRecycle()
-
-void __thiscall UnlinkNodeFromDoublyLinkedListAndRecycle(int param_1,int *param_2)
-
-{
-  undefined4 *puVar1;
-  int iVar2;
-  
-  if (param_2 == *(int **)(param_1 + 4)) {
-    *(int *)(param_1 + 4) = *param_2;
-  }
-  else {
-    *(int *)param_2[1] = *param_2;
-  }
-  if (param_2 == *(int **)(param_1 + 8)) {
-    *(int *)(param_1 + 8) = param_2[1];
-  }
-  else {
-    *(int *)(*param_2 + 4) = param_2[1];
-  }
-  *param_2 = *(int *)(param_1 + 0x10);
-  *(int **)(param_1 + 0x10) = param_2;
-  iVar2 = *(int *)(param_1 + 0xc) + -1;
-  *(int *)(param_1 + 0xc) = iVar2;
-  if (iVar2 == 0) {
-    for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
-        puVar1 = (undefined4 *)*puVar1) {
-    }
-    *(undefined4 *)(param_1 + 0xc) = 0;
-    *(undefined4 *)(param_1 + 0x10) = 0;
-    *(undefined4 *)(param_1 + 8) = 0;
-    *(undefined4 *)(param_1 + 4) = 0;
-    FreeDataChain();
-    *(undefined4 *)(param_1 + 0x14) = 0;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004925E0
-// GHIDRA_NAME DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
-// GHIDRA_PROTO undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
-
-void __fastcall DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(undefined4 *param_1)
-
-{
-  undefined4 *puVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f398;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_GetCObjectRuntimeClass_0064b580;
-  puVar1 = (undefined4 *)param_1[1];
-  local_4 = 0;
-  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
-  }
-  param_1[3] = 0;
-  param_1[4] = 0;
-  param_1[2] = 0;
-  param_1[1] = 0;
-  FreeDataChain();
-  param_1[5] = 0;
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492670
-// GHIDRA_NAME SerializeRecordList_0x0C_WithBlockPool_C
-// GHIDRA_PROTO undefined SerializeRecordList_0x0C_WithBlockPool_C()
-
-void __thiscall SerializeRecordList_0x0C_WithBlockPool_C(int param_1,int param_2)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  undefined4 *puVar6;
-  int iVar7;
-  int *piVar8;
-  
-  iVar2 = param_2;
-  if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-    for (iVar4 = FUN_0061202e(); iVar4 != 0; iVar4 = iVar4 + -1) {
-      if ((~*(uint *)(iVar2 + 0x14) & 1) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(&param_2,4);
-      }
-      else {
-        TNetMgr::WriteBytesToSerializedBuffer(&param_2,4);
-      }
-      iVar3 = param_2;
-      uVar1 = *(undefined4 *)(param_1 + 8);
-      if (*(int *)(param_1 + 0x10) == 0) {
-        iVar5 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
-        iVar7 = *(int *)(param_1 + 0x18);
-        puVar6 = (undefined4 *)(iVar5 + -8 + iVar7 * 0xc);
-        if (-1 < iVar7 + -1) {
-          do {
-            *puVar6 = *(undefined4 *)(param_1 + 0x10);
-            *(undefined4 **)(param_1 + 0x10) = puVar6;
-            puVar6 = puVar6 + -3;
-            iVar7 = iVar7 + -1;
-          } while (iVar7 != 0);
-        }
-      }
-      puVar6 = *(undefined4 **)(param_1 + 0x10);
-      *(undefined4 *)(param_1 + 0x10) = *puVar6;
-      puVar6[1] = uVar1;
-      *puVar6 = 0;
-      *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-      puVar6[2] = 0;
-      puVar6[2] = iVar3;
-      if (*(undefined4 **)(param_1 + 8) == (undefined4 *)0x0) {
-        *(undefined4 **)(param_1 + 4) = puVar6;
-      }
-      else {
-        **(undefined4 **)(param_1 + 8) = puVar6;
-      }
-      *(undefined4 **)(param_1 + 8) = puVar6;
-    }
-  }
-  else {
-    TNetMgr::WriteCount(*(undefined4 *)(param_1 + 0xc));
-    piVar8 = *(int **)(param_1 + 4);
-    if (piVar8 != (int *)0x0) {
-      do {
-        if ((~*(uint *)(iVar2 + 0x14) & 1) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(piVar8 + 2,4);
-        }
-        else {
-          TNetMgr::WriteBytesToSerializedBuffer(piVar8 + 2,4);
-        }
-        piVar8 = (int *)*piVar8;
-      } while (piVar8 != (int *)0x0);
-      return;
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004927E0
-// GHIDRA_NAME SerializeRecordList_0x0C_WithBlockPool_D
-// GHIDRA_PROTO undefined SerializeRecordList_0x0C_WithBlockPool_D()
-
-void __thiscall SerializeRecordList_0x0C_WithBlockPool_D(int param_1,int param_2)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  undefined4 *puVar6;
-  int iVar7;
-  int *piVar8;
-  
-  iVar2 = param_2;
-  if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-    for (iVar4 = FUN_0061202e(); iVar4 != 0; iVar4 = iVar4 + -1) {
-      if ((~*(uint *)(iVar2 + 0x14) & 1) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(&param_2,4);
-      }
-      else {
-        TNetMgr::WriteBytesToSerializedBuffer(&param_2,4);
-      }
-      iVar3 = param_2;
-      uVar1 = *(undefined4 *)(param_1 + 8);
-      if (*(int *)(param_1 + 0x10) == 0) {
-        iVar5 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
-        iVar7 = *(int *)(param_1 + 0x18);
-        puVar6 = (undefined4 *)(iVar5 + -8 + iVar7 * 0xc);
-        if (-1 < iVar7 + -1) {
-          do {
-            *puVar6 = *(undefined4 *)(param_1 + 0x10);
-            *(undefined4 **)(param_1 + 0x10) = puVar6;
-            puVar6 = puVar6 + -3;
-            iVar7 = iVar7 + -1;
-          } while (iVar7 != 0);
-        }
-      }
-      puVar6 = *(undefined4 **)(param_1 + 0x10);
-      *(undefined4 *)(param_1 + 0x10) = *puVar6;
-      puVar6[1] = uVar1;
-      *puVar6 = 0;
-      *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-      puVar6[2] = 0;
-      puVar6[2] = iVar3;
-      if (*(undefined4 **)(param_1 + 8) == (undefined4 *)0x0) {
-        *(undefined4 **)(param_1 + 4) = puVar6;
-      }
-      else {
-        **(undefined4 **)(param_1 + 8) = puVar6;
-      }
-      *(undefined4 **)(param_1 + 8) = puVar6;
-    }
-  }
-  else {
-    TNetMgr::WriteCount(*(undefined4 *)(param_1 + 0xc));
-    piVar8 = *(int **)(param_1 + 4);
-    if (piVar8 != (int *)0x0) {
-      do {
-        if ((~*(uint *)(iVar2 + 0x14) & 1) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(piVar8 + 2,4);
-        }
-        else {
-          TNetMgr::WriteBytesToSerializedBuffer(piVar8 + 2,4);
-        }
-        piVar8 = (int *)*piVar8;
-      } while (piVar8 != (int *)0x0);
-      return;
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492950
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00492950
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00492950()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492950(undefined4 param_1,byte param_2)
-
-{
-  DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492980
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00492980
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00492980()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492980(undefined4 param_1,byte param_2)
-
-{
-  TTurnEventDialogFactoryRegistryState_0064B328::
-  DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492A40
-// GHIDRA_NAME WrapperFor_AllocateAndLinkBlockHead_At00492a40
-// GHIDRA_PROTO undefined WrapperFor_AllocateAndLinkBlockHead_At00492a40()
-
-void __thiscall
-WrapperFor_AllocateAndLinkBlockHead_At00492a40(int param_1,undefined4 param_2,undefined4 param_3)
-
-{
-  int iVar1;
-  undefined4 *puVar2;
-  int iVar3;
-  
-  if (*(int *)(param_1 + 0x10) == 0) {
-    iVar1 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
-    iVar3 = *(int *)(param_1 + 0x18);
-    puVar2 = (undefined4 *)(iVar1 + -8 + iVar3 * 0xc);
-    if (-1 < iVar3 + -1) {
-      do {
-        *puVar2 = *(undefined4 *)(param_1 + 0x10);
-        *(undefined4 **)(param_1 + 0x10) = puVar2;
-        puVar2 = puVar2 + -3;
-        iVar3 = iVar3 + -1;
-      } while (iVar3 != 0);
-    }
-  }
-  puVar2 = *(undefined4 **)(param_1 + 0x10);
-  *(undefined4 *)(param_1 + 0x10) = *puVar2;
-  puVar2[1] = param_2;
-  *puVar2 = param_3;
-  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-  puVar2[2] = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492AC0
-// GHIDRA_NAME WrapperFor_FreeLinkedBlockChain_At00492ac0
-// GHIDRA_PROTO undefined WrapperFor_FreeLinkedBlockChain_At00492ac0()
-
-void __fastcall WrapperFor_FreeLinkedBlockChain_At00492ac0(int param_1)
-
-{
-  undefined4 *puVar1;
-  
-  for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
-      puVar1 = (undefined4 *)*puVar1) {
-  }
-  *(undefined4 *)(param_1 + 0xc) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined4 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 4) = 0;
-  FreeDataChain();
-  *(undefined4 *)(param_1 + 0x14) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492B00
-// GHIDRA_NAME WrapperFor_FreeLinkedBlockChain_At00492b00
-// GHIDRA_PROTO undefined WrapperFor_FreeLinkedBlockChain_At00492b00()
-
-void __thiscall WrapperFor_FreeLinkedBlockChain_At00492b00(int param_1,undefined4 *param_2)
-
-{
-  undefined4 *puVar1;
-  int iVar2;
-  
-  *param_2 = *(undefined4 *)(param_1 + 0x10);
-  *(undefined4 **)(param_1 + 0x10) = param_2;
-  iVar2 = *(int *)(param_1 + 0xc) + -1;
-  *(int *)(param_1 + 0xc) = iVar2;
-  if (iVar2 == 0) {
-    for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
-        puVar1 = (undefined4 *)*puVar1) {
-    }
-    *(undefined4 *)(param_1 + 0xc) = 0;
-    *(undefined4 *)(param_1 + 0x10) = 0;
-    *(undefined4 *)(param_1 + 8) = 0;
-    *(undefined4 *)(param_1 + 4) = 0;
-    FreeDataChain();
-    *(undefined4 *)(param_1 + 0x14) = 0;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492B70
-// GHIDRA_NAME WrapperFor_StringSharedRef_AssignFromPtr_At00492b70
-// GHIDRA_PROTO undefined WrapperFor_StringSharedRef_AssignFromPtr_At00492b70()
-
-TToolBarCluster * __thiscall
-WrapperFor_StringSharedRef_AssignFromPtr_At00492b70(TToolBarCluster *param_1,CString *param_2)
-
-{
-  TToolBarCluster::StringSharedRef_AssignFromPtr(param_1,param_2);
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492C70
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00492c70
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00492c70()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492c70(undefined4 param_1,byte param_2)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492CA0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl()
-
-void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl(undefined4 *param_1)
-
-{
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492CC0
-// GHIDRA_NAME OrphanTiny_ReturnThis_00492cc0
-// GHIDRA_PROTO undefined OrphanTiny_ReturnThis_00492cc0()
-
-undefined4 __fastcall OrphanTiny_ReturnThis_00492cc0(undefined4 param_1)
-
-{
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492CE0
-// GHIDRA_NAME OrphanTiny_ReturnThis_00492ce0
-// GHIDRA_PROTO undefined OrphanTiny_ReturnThis_00492ce0()
-
-undefined4 __fastcall OrphanTiny_ReturnThis_00492ce0(undefined4 param_1)
-
-{
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492D00
-// GHIDRA_NAME OrphanRetStub_00492d00
-// GHIDRA_PROTO undefined OrphanRetStub_00492d00()
-
-void OrphanRetStub_00492d00(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492D20
-// GHIDRA_NAME OrphanRetStub_00492d20
-// GHIDRA_PROTO undefined OrphanRetStub_00492d20()
-
-void OrphanRetStub_00492d20(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492D40
-// GHIDRA_NAME OrphanRetStub_00492d40
-// GHIDRA_PROTO undefined OrphanRetStub_00492d40()
-
-void OrphanRetStub_00492d40(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492D60
-// GHIDRA_NAME OrphanRetStub_00492d60
-// GHIDRA_PROTO undefined OrphanRetStub_00492d60()
-
-void OrphanRetStub_00492d60(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492D80
-// GHIDRA_NAME WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80
-// GHIDRA_PROTO undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80()
-
-undefined4 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492d80(void)
-
-{
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x51e);
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492DB0
-// GHIDRA_NAME WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0
-// GHIDRA_PROTO undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0()
-
-void WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
-
-{
-  if (DAT_006a1b5c == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a7);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492DE0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00492de0
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00492de0()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492de0(undefined4 param_1,byte param_2)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492EA0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl()
-
-void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00492de0_Impl(undefined4 *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  uint local_4;
-  
-  puStack_8 = &LAB_0062f413;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &TView::_vftable_;
-  local_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
-  }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
-  local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492F60
-// GHIDRA_NAME InitializeMovieViewOwnedStateBlock_Impl
-// GHIDRA_PROTO undefined InitializeMovieViewOwnedStateBlock_Impl()
-
-undefined4 * __thiscall
-InitializeMovieViewOwnedStateBlock_Impl(undefined4 *param_1,undefined4 param_2)
-
-{
-  int iVar1;
-  undefined4 uVar2;
-  
-  iVar1 = AfxGetModuleState();
-  uVar2 = MCIWndCreateA(param_2,*(undefined4 *)(iVar1 + 8),0x5000410a,0);
-  *param_1 = uVar2;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492FA0
-// GHIDRA_NAME SendWmCloseToWindowHandle
-// GHIDRA_PROTO undefined SendWmCloseToWindowHandle()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sends WM_CLOSE to HWND stored at *param_1.
-// GHIDRA_COMMENT_END
-
-/* Sends WM_CLOSE to HWND stored at *param_1. */
-
-void __fastcall SendWmCloseToWindowHandle(undefined4 *param_1)
-
-{
-  SendMessageA((HWND)*param_1,0x10,0,0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00492FC0
-// GHIDRA_NAME SendMessage499AndDetachOnSuccess
-// GHIDRA_PROTO undefined SendMessage499AndDetachOnSuccess()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sends message 0x499 to target HWND and stores result; on success performs attach/cleanup flow and detaches temporary CWnd wrapper.
-// GHIDRA_COMMENT_END
-
-/* Sends message 0x499 to target HWND and stores result; on success performs attach/cleanup flow and
-   detaches temporary CWnd wrapper. */
-
-bool __thiscall SendMessage499AndDetachOnSuccess(undefined4 *param_1,LPARAM param_2)
-
-{
-  int iVar1;
-  LRESULT LVar2;
-  undefined4 *unaff_FS_OFFSET;
-  CWnd local_48 [60];
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f438;
-  *unaff_FS_OFFSET = &local_c;
-  LVar2 = SendMessageA((HWND)*param_1,0x499,0,param_2);
-  param_1[1] = LVar2;
-  if (LVar2 == 0) {
-    ConstructObjectVtable00670b4cBase();
-    local_4 = 0;
-    AttachWindowHandleToCWndAndSite(*param_1);
-    CenterWindow(0);
-    DetachWindowHandleFromMap();
-    local_4 = 0xffffffff;
-    CWnd::~CWnd(local_48);
-  }
-  iVar1 = param_1[1];
-  *unaff_FS_OFFSET = local_c;
-  return iVar1 == 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493090
-// GHIDRA_NAME SendMessage806AndCacheResult
-// GHIDRA_PROTO undefined SendMessage806AndCacheResult()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sends message 0x806 to HWND (*param_1), stores LRESULT into param_1[1], returns true when result is zero.
-// GHIDRA_COMMENT_END
-
-/* Sends message 0x806 to HWND (*param_1), stores LRESULT into param_1[1], returns true when result
-   is zero. */
-
-bool __fastcall SendMessage806AndCacheResult(undefined4 *param_1)
-
-{
-  LRESULT LVar1;
-  
-  LVar1 = SendMessageA((HWND)*param_1,0x806,0,0);
-  param_1[1] = LVar1;
-  return LVar1 == 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004930D0
-// GHIDRA_NAME SendMessage808AndCacheResult
-// GHIDRA_PROTO undefined SendMessage808AndCacheResult()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Sends message 0x808 to HWND (*param_1), stores LRESULT into param_1[1], returns true when result is zero.
-// GHIDRA_COMMENT_END
-
-/* Sends message 0x808 to HWND (*param_1), stores LRESULT into param_1[1], returns true when result
-   is zero. */
-
-bool __fastcall SendMessage808AndCacheResult(undefined4 *param_1)
-
-{
-  LRESULT LVar1;
-  
-  LVar1 = SendMessageA((HWND)*param_1,0x808,0,0);
-  param_1[1] = LVar1;
-  return LVar1 == 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004931E0
-// GHIDRA_NAME PlayDefaultMessageBeep
-// GHIDRA_PROTO undefined PlayDefaultMessageBeep()
-
-void PlayDefaultMessageBeep(void)
-
-{
-  MessageBeep(0xffffffff);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493200
-// GHIDRA_NAME BusyWaitUntilShiftedTickDeadline
-// GHIDRA_PROTO undefined BusyWaitUntilShiftedTickDeadline()
-
-void BusyWaitUntilShiftedTickDeadline(int param_1,int *param_2)
-
-{
-  DWORD DVar1;
-  
-  DVar1 = timeGetTime();
-  *param_2 = (DVar1 >> 4) + param_1;
-  DVar1 = timeGetTime();
-  if ((int)(DVar1 >> 4) < *param_2) {
-    do {
-      DVar1 = timeGetTime();
-    } while ((int)(DVar1 >> 4) < *param_2);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493250
-// GHIDRA_NAME GetTickCountDiv16
-// GHIDRA_PROTO undefined GetTickCountDiv16()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Returns coarse timing ticks for lightweight UI delay loops.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Read multimedia timer via timeGetTime().
-// GHIDRA_COMMENT 2. Divide by 16 (right shift by 4) to produce coarse tick units.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns:
-// GHIDRA_COMMENT - Current coarse tick counter.
-// GHIDRA_COMMENT_END
-
-/* Returns coarse timing ticks for lightweight UI delay loops.
-   
-   Algorithm:
-   1. Read multimedia timer via timeGetTime().
-   2. Divide by 16 (right shift by 4) to produce coarse tick units.
-   
-   Returns:
-   - Current coarse tick counter. */
-
-uint GetTickCountDiv16(void)
-
-{
-  DWORD DVar1;
-  
-  DVar1 = timeGetTime();
-  return DVar1 >> 4;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004933A0
-// GHIDRA_NAME WrapperFor_ftol_At004933a0
-// GHIDRA_PROTO undefined WrapperFor_ftol_At004933a0()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void WrapperFor_ftol_At004933a0(void)
-
-{
-  _DAT_006a1c38 = ftol();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004933D0
-// GHIDRA_NAME Helper_Uses_thunk_CreateMcWindowFromDescriptorAndShow_At004933d0
-// GHIDRA_PROTO undefined Helper_Uses_thunk_CreateMcWindowFromDescriptorAndShow_At004933d0()
-
-undefined4 __fastcall
-Helper_Uses_thunk_CreateMcWindowFromDescriptorAndShow_At004933d0(undefined4 param_1)
-
-{
-  int iVar1;
-  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f45a;
+  puStack_8 = &LAB_0062fc5b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  iVar1 = AllocateWithFallbackHandler(0x40,param_1);
-  local_4 = 0;
-  if (iVar1 != 0) {
-    uVar2 = CreateMcWindowFromDescriptorAndShow(0);
+  iVar1 = CWnd::Default(param_1);
+  if (iVar1 == -1) {
     *unaff_FS_OFFSET = local_c;
-    return uVar2;
-  }
-  *unaff_FS_OFFSET = local_c;
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493450
-// GHIDRA_NAME OrphanVtableAssignStub_00493450
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_00493450()
-
-undefined ** OrphanVtableAssignStub_00493450(void)
-
-{
-  return &PTR_s_CMcWindow_0064b5d0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493470
-// GHIDRA_NAME CreateMcWindowFromDescriptorAndShow
-// GHIDRA_PROTO undefined CreateMcWindowFromDescriptorAndShow()
-
-undefined4 * __thiscall CreateMcWindowFromDescriptorAndShow(undefined4 *param_1,int param_2)
-
-{
-  short sVar1;
-  uint uVar2;
-  CWinThread *pCVar3;
-  int iVar4;
-  DWORD dwStyle;
-  DWORD dwExStyle;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar5;
-  undefined1 *puVar6;
-  tagRECT local_58;
-  tagRECT tStack_48;
-  undefined1 local_38 [28];
-  RECT RStack_1c;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f478;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  ConstructObjectVtable00670b4cBase();
-  *param_1 = &PTR_LAB_0064b7c8;
-  param_1[0xf] = param_2;
-  dwExStyle = 0;
-  sVar1 = *(short *)(param_2 + 0x60);
-  local_4 = 0;
-  dwStyle = 0x44000000;
-  if (sVar1 != 0) {
-    dwStyle = 0x44020000;
-  }
-  uVar2 = CONCAT31((int3)(char)((ushort)sVar1 >> 8),(char)sVar1) & 0xfffffff7;
-  if ((int)uVar2 < 0x11) {
-    if (uVar2 != 0x10) {
-      switch(uVar2) {
-      case 0:
-        dwStyle = dwStyle | 0xfc0000;
-        dwExStyle = 0x80;
-        break;
-      case 1:
-        dwStyle = dwStyle | 0x400000;
-        break;
-      case 2:
-        break;
-      case 3:
-        dwStyle = dwStyle | 0x800000;
-        break;
-      case 4:
-        dwStyle = dwStyle | 0xc80000;
-        dwExStyle = 0x80;
-        break;
-      case 5:
-        dwStyle = dwStyle | 0xcc0000;
-        break;
-      default:
-        goto switchD_004934ce_default;
-      }
-      goto switchD_004934ce_caseD_2;
-    }
-    if (DAT_006a1c6c != 0) goto switchD_004934ce_caseD_2;
-    uVar5 = 0x37;
-  }
-  else {
-    if ((int)uVar2 < 0x7c4) {
-      if ((uVar2 != 0x7c3) && (uVar2 == 0x30)) {
-LAB_00493651:
-        dwExStyle = 0x80;
-        if (*(char *)(param_2 + 0x6d) == '\0') {
-          dwStyle = dwStyle | 0x80c00000;
-        }
-        else {
-          dwStyle = dwStyle | 0xc80000;
-        }
-        goto switchD_004934ce_caseD_2;
-      }
-    }
-    else if (((0x7cb < (int)uVar2) && (uVar2 != 1999)) && (uVar2 == 8000)) goto LAB_00493651;
-switchD_004934ce_default:
-    if (DAT_006a1c70 != 0) goto switchD_004934ce_caseD_2;
-    uVar5 = 0x4b;
-  }
-  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McWindow_cpp_006950d8,uVar5);
-switchD_004934ce_caseD_2:
-  if (*(char *)(param_2 + 0x70) != '\0') {
-    dwExStyle = dwExStyle | 8;
-  }
-  local_58.left = *(int *)(param_2 + 0x24);
-  local_58.top = *(int *)(param_2 + 0x28);
-  local_58.right = local_58.left + *(int *)(param_2 + 0x34);
-  puVar6 = local_38;
-  local_58.bottom = local_58.top + *(int *)(param_2 + 0x38);
-  InvokeAfxThreadVslot7CAndGetValueAtOffset98(puVar6);
-  GetWindowPlacementFromThisHwnd(puVar6);
-  CopyRect(&tStack_48,&RStack_1c);
-  OffsetRect(&local_58,tStack_48.left,tStack_48.top);
-  AdjustWindowRectEx(&local_58,dwStyle,0,dwExStyle);
-  pCVar3 = AfxGetThread();
-  if (pCVar3 == (CWinThread *)0x0) {
-    iVar4 = 0;
-  }
-  else {
-    pCVar3 = AfxGetThread();
-    iVar4 = (**(code **)(*(int *)pCVar3 + 0x7c))();
-  }
-  uVar5 = 0;
-  if (iVar4 != 0) {
-    uVar5 = *(undefined4 *)(iVar4 + 0x1c);
-  }
-  CreateEx_608115(dwExStyle,0,0,dwStyle,local_58.left,local_58.top,local_58.right - local_58.left,
-                  local_58.bottom - local_58.top,uVar5,0,0);
-  SetWindowPos(&DAT_006a7990,0,0,0,0,3);
-  BringWindowToTop((HWND)param_1[7]);
-  *unaff_FS_OFFSET = uStack_c;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493730
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00493730
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00493730()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00493730(undefined4 param_1,byte param_2)
-
-{
-  WrapperFor_CWnd_At00493760();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493760
-// GHIDRA_NAME WrapperFor_CWnd_At00493760
-// GHIDRA_PROTO undefined WrapperFor_CWnd_At00493760()
-
-void __fastcall WrapperFor_CWnd_At00493760(CWnd *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f498;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  *(undefined ***)param_1 = &PTR_LAB_0064b7c8;
-  local_4 = 0;
-  if (*(int **)(param_1 + 0x3c) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 0x3c) + 0x1d0))();
-  }
-  local_4 = 0xffffffff;
-  CWnd::~CWnd(param_1);
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004937E0
-// GHIDRA_NAME OrphanVtableAssignStub_004937e0
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_004937e0()
-
-undefined ** OrphanVtableAssignStub_004937e0(void)
-
-{
-  return &PTR_PTR_0064b5e8;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493819
-// GHIDRA_NAME WrapperFor_ShowWindowOrForwardToSite_At00493819
-// GHIDRA_PROTO undefined WrapperFor_ShowWindowOrForwardToSite_At00493819()
-
-undefined4 WrapperFor_ShowWindowOrForwardToSite_At00493819(void)
-
-{
-  CFrameWnd::ShowWindow(5);
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493829
-// GHIDRA_NAME WrapperFor_ShowWindowOrForwardToSite_At00493829
-// GHIDRA_PROTO undefined WrapperFor_ShowWindowOrForwardToSite_At00493829()
-
-undefined4 WrapperFor_ShowWindowOrForwardToSite_At00493829(void)
-
-{
-  CFrameWnd::ShowWindow(0);
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493839
-// GHIDRA_NAME DestructObjectAndReleaseWithFlag_Field0F
-// GHIDRA_PROTO undefined DestructObjectAndReleaseWithFlag_Field0F()
-
-undefined4 DestructObjectAndReleaseWithFlag_Field0F(void)
-
-{
-  int iVar1;
-  int *unaff_ESI;
-  
-  iVar1 = *unaff_ESI;
-  (**(code **)(iVar1 + 0x60))();
-  unaff_ESI[0xf] = 0;
-  if (unaff_ESI != (int *)0x0) {
-    (**(code **)(iVar1 + 4))(1);
-    return 0;
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004938C0
-// GHIDRA_NAME QueryClipBoxFromPaintDcHandle
-// GHIDRA_PROTO undefined QueryClipBoxFromPaintDcHandle()
-
-void __fastcall QueryClipBoxFromPaintDcHandle(int param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  RECT local_80;
-  tagRECT local_70;
-  CPaintDC local_60 [84];
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f4b8;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  CPaintDC(param_1);
-  local_4 = 0;
-  GetClipBoxFromThisHdcField(&local_80);
-  if (*(int *)(param_1 + 0x3c) != 0) {
-    CopyRect(&local_70,&local_80);
-    (**(code **)(**(int **)(param_1 + 0x3c) + 0x10c))(&local_70,local_60);
-  }
-  local_4 = 0xffffffff;
-  CPaintDC::~CPaintDC(local_60);
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493990
-// GHIDRA_NAME WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990
-// GHIDRA_PROTO undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990()
-
-void __thiscall
-WrapperFor_InvokeCurrentMessageFallbackHandler_At00493990
-          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  undefined4 local_8;
-  undefined4 local_4;
-  
-  CWnd::Default();
-  BringWindowToTop(*(HWND *)(param_1 + 0x1c));
-  local_4 = param_4;
-  local_8 = param_3;
-  (**(code **)(**(int **)(param_1 + 0x3c) + 0x118))(&local_8,0,0,0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493A00
-// GHIDRA_NAME WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00
-// GHIDRA_PROTO undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00()
-
-void __thiscall
-WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00
-          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  undefined4 unaff_EBX;
-  undefined4 local_8;
-  undefined4 local_4;
-  
-  CWnd::Default();
-  local_8 = param_3;
-  local_4 = param_4;
-  (**(code **)(**(int **)(param_1 + 0x3c) + 0x120))(&local_8,0,0,0);
-  EndMouseCaptureAndStopRepeatTimer(unaff_EBX,param_3,param_4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493A70
-// GHIDRA_NAME DispatchMessageFallbackAndUpdateCaptureState
-// GHIDRA_PROTO undefined DispatchMessageFallbackAndUpdateCaptureState()
-
-void __thiscall
-DispatchMessageFallbackAndUpdateCaptureState
-          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  int iVar1;
-  
-  CWnd::Default();
-  NotifyCaptureOwnerState1AndMaybeUpdateCoords(param_2,param_3,param_4);
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0xac))(param_3,param_4,0);
-  if (*(int *)(param_1 + 0x3c) != 0) {
-    iVar1 = NoOpRuntimeCallback_00489a70();
-    if (iVar1 != 0) {
-      (**(code **)(**(int **)(param_1 + 0x3c) + 0xd4))(&stack0xfffffffc,0);
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493B00
-// GHIDRA_NAME WrapperFor_InvokeCurrentMessageFallbackHandler_At00493b00
-// GHIDRA_PROTO undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493b00()
-
-void __fastcall WrapperFor_InvokeCurrentMessageFallbackHandler_At00493b00(int param_1)
-
-{
-  CWnd::Default();
-  if (*(int **)(param_1 + 0x3c) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 0x3c) + 0x1d0))();
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493C30
-// GHIDRA_NAME WrapperFor_RouteCommandByIdWithUiProbe_At00493c30
-// GHIDRA_PROTO undefined WrapperFor_RouteCommandByIdWithUiProbe_At00493c30()
-
-void __thiscall
-WrapperFor_RouteCommandByIdWithUiProbe_At00493c30(int param_1,uint param_2,HWND param_3)
-
-{
-  int *piVar1;
-  
-  if (param_2 >> 0x10 == 0x400) {
-    piVar1 = (int *)GetWindowLongA(param_3,-0x15);
-    if (piVar1 != (int *)0x0) {
-      (**(code **)(*piVar1 + 0xe4))();
-      (**(code **)(**(int **)(param_1 + 0x3c) + 0x13c))();
-    }
-  }
-  TTooltipRelayWindowState::OnCommand(param_2,param_3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493CE0
-// GHIDRA_NAME AppendStatusPointerAndDispatchMessageFallback
-// GHIDRA_PROTO undefined AppendStatusPointerAndDispatchMessageFallback()
-
-void AppendStatusPointerAndDispatchMessageFallback(void)
-
-{
-  if ((DAT_006a1c3c & 1) == 0) {
-    DAT_006a1c3c = DAT_006a1c3c | 1;
-    InitializeEventThunkFields_00648590();
-    AppendPointerToGlobalVectorAsStatus
-              (thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30);
-  }
-  CWnd::Default();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493D30
-// GHIDRA_NAME thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30
-// GHIDRA_PROTO undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30()
-
-void thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493D80
-// GHIDRA_NAME RegisterAmbitMcWindowClass
-// GHIDRA_PROTO undefined RegisterAmbitMcWindowClass()
-
-void RegisterAmbitMcWindowClass(int param_1)
-
-{
-  int iVar1;
-  code **ppcVar2;
-  code *local_28 [4];
-  undefined4 local_18;
-  char *local_4;
-  
-  ppcVar2 = local_28;
-  for (iVar1 = 10; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *ppcVar2 = (code *)0x0;
-    ppcVar2 = ppcVar2 + 1;
-  }
-  local_28[1] = DefWindowProcA_exref;
-  iVar1 = AfxGetModuleState();
-  local_18 = *(undefined4 *)(iVar1 + 8);
-  local_28[0] = (code *)0x3;
-  local_4 = "AmbitMcWindow";
-  AfxRegisterClass(local_28);
-  *(char **)(param_1 + 0x28) = "AmbitMcWindow";
-  TTooltipRelayWindowState::PreCreateWindow(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493F30
-// GHIDRA_NAME WrapperFor_ftol_At00493f30
-// GHIDRA_PROTO undefined WrapperFor_ftol_At00493f30()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void WrapperFor_ftol_At00493f30(void)
-
-{
-  _DAT_006a1d88 = ftol();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493F90
-// GHIDRA_NAME InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit
-// GHIDRA_PROTO undefined InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit()
-
-void InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit(void)
-
-{
-  InitializeBitmapDescriptorRecordState();
-  AppendPointerToGlobalVectorAsStatus(DestroyDefaultQuickDrawSurfaceContextAtExit);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493FC0
-// GHIDRA_NAME DestroyDefaultQuickDrawSurfaceContextAtExit
-// GHIDRA_PROTO undefined DestroyDefaultQuickDrawSurfaceContextAtExit()
-
-void DestroyDefaultQuickDrawSurfaceContextAtExit(void)
-
-{
-  WrapperFor_FreeHeapBufferIfNotNull_At00495fd0();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493FE0
-// GHIDRA_NAME InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0
-// GHIDRA_PROTO undefined InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0()
-
-void InitStub_thunk_InitializeGlobalClipRegionHandleState_At00493fe0(void)
-
-{
-  CBrush::InitializeGlobalClipRegionHandleState();
-  AppendPointerToGlobalVectorAsStatus(WrapperFor_DeleteRegionHandleFromClipState_At00494010);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494010
-// GHIDRA_NAME WrapperFor_DeleteRegionHandleFromClipState_At00494010
-// GHIDRA_PROTO undefined WrapperFor_DeleteRegionHandleFromClipState_At00494010()
-
-void WrapperFor_DeleteRegionHandleFromClipState_At00494010(void)
-
-{
-  DeleteObject();
-  if (g_pGlobalClipRegionHandleObject != 0) {
-    (**(code **)(*(int *)g_pGlobalClipRegionHandleObject + 4))(1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494130
-// GHIDRA_NAME CreateFontFromPresetAndAttachRegionHandle
-// GHIDRA_PROTO undefined CreateFontFromPresetAndAttachRegionHandle()
-
-undefined4 * CreateFontFromPresetAndAttachRegionHandle(short *param_1)
-
-{
-  short sVar1;
-  undefined4 *puVar2;
-  HFONT pHVar3;
-  int iVar4;
-  int iVar5;
-  undefined4 *puVar6;
-  int iVar7;
-  LOGFONTA *pLVar8;
-  LOGFONTA local_64;
-  undefined4 local_28;
-  undefined4 local_24;
-  undefined4 local_20;
-  undefined4 local_1c;
-  undefined4 local_18;
-  undefined4 local_14;
-  undefined4 local_10;
-  undefined4 local_c;
-  undefined4 local_8;
-  undefined4 local_4;
-  
-  iVar4 = 0xc;
-  sVar1 = param_1[2];
-  if (sVar1 != 0) {
-    iVar4 = (int)sVar1;
-  }
-  iVar7 = (int)*param_1;
-  if ((iVar7 < 1) || (4 < iVar7)) {
-    iVar7 = 0;
-  }
-  local_64.lfFaceName[8] = '\x0e';
-  local_64.lfFaceName[9] = '\0';
-  local_64.lfFaceName[10] = '\0';
-  local_64.lfFaceName[0xb] = '\0';
-  local_64.lfFaceName[0xc] = '\x0e';
-  local_64.lfFaceName[0xd] = '\0';
-  local_64.lfFaceName[0xe] = '\0';
-  local_64.lfFaceName[0xf] = '\0';
-  local_64.lfHeight = 0;
-  local_64.lfFaceName[0x1c] = '\x14';
-  local_64.lfFaceName[0x1d] = '\0';
-  local_64.lfFaceName[0x1e] = '\0';
-  local_64.lfFaceName[0x1f] = '\0';
-  local_28 = 0x14;
-  local_24 = 0x14;
-  local_20 = 0x14;
-  local_1c = 0x14;
-  local_18 = 0x14;
-  local_64.lfWidth = 1;
-  local_64.lfEscapement = 2;
-  local_64.lfOrientation = 3;
-  local_64.lfWeight = 4;
-  local_64.lfItalic = '\x05';
-  local_64.lfUnderline = '\0';
-  local_64.lfStrikeOut = '\0';
-  local_64.lfCharSet = '\0';
-  local_64.lfOutPrecision = '\x06';
-  local_64.lfClipPrecision = '\0';
-  local_64.lfQuality = '\0';
-  local_64.lfPitchAndFamily = '\0';
-  local_64.lfFaceName[0] = '\a';
-  local_64.lfFaceName[1] = '\0';
-  local_64.lfFaceName[2] = '\0';
-  local_64.lfFaceName[3] = '\0';
-  local_64.lfFaceName[4] = '\b';
-  local_64.lfFaceName[5] = '\0';
-  local_64.lfFaceName[6] = '\0';
-  local_64.lfFaceName[7] = '\0';
-  local_64.lfFaceName[0x10] = '\x0f';
-  local_64.lfFaceName[0x11] = '\0';
-  local_64.lfFaceName[0x12] = '\0';
-  local_64.lfFaceName[0x13] = '\0';
-  local_64.lfFaceName[0x14] = '\x10';
-  local_64.lfFaceName[0x15] = '\0';
-  local_64.lfFaceName[0x16] = '\0';
-  local_64.lfFaceName[0x17] = '\0';
-  local_64.lfFaceName[0x18] = '\x11';
-  local_64.lfFaceName[0x19] = '\0';
-  local_64.lfFaceName[0x1a] = '\0';
-  local_64.lfFaceName[0x1b] = '\0';
-  local_14 = 0x19;
-  local_10 = 0x19;
-  local_c = 0x19;
-  local_8 = 0x19;
-  local_4 = 0x1e;
-  if ((((iVar7 == 0) || (iVar7 == 1)) || (iVar7 == 4)) || ((iVar4 < 1 || (0x18 < iVar4)))) {
-    iVar4 = iVar4 * 10 + 3;
-    iVar4 = (int)(iVar4 + (iVar4 >> 0x1f & 7U)) >> 3;
-  }
-  else {
-    iVar4 = *(int *)(local_64.lfFaceName + sVar1 * 4 + -0x1c);
-  }
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(8);
-  puVar6 = (undefined4 *)0x0;
-  if (puVar2 != (undefined4 *)0x0) {
-    puVar2[1] = 0;
-    *puVar2 = &PTR_LAB_0064b930;
-    puVar6 = puVar2;
-  }
-  pLVar8 = &local_64;
-  for (iVar5 = 0xf; iVar5 != 0; iVar5 = iVar5 + -1) {
-    pLVar8->lfHeight = 0;
-    pLVar8 = (LOGFONTA *)&pLVar8->lfWidth;
-  }
-  local_64.lfCharSet = '\x01';
-  local_64.lfHeight = iVar4;
-  lstrcpynA(local_64.lfFaceName,(&PTR_s_System_00695108)[iVar7],0x20);
-  local_64.lfWeight = -(uint)((*(byte *)(param_1 + 1) & 1) != 0) & 700;
-  local_64._20_4_ = CONCAT31(local_64._21_3_,(char)param_1[1]) & 0xffffff02;
-  local_64._20_4_ =
-       CONCAT22(local_64._22_2_,CONCAT11((char)param_1[1],local_64.lfItalic)) & 0xffff04ff;
-  pHVar3 = CreateFontIndirectA(&local_64);
-  CBrush::AttachRegionHandleToClipStateAndRegister(pHVar3);
-  return puVar6;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494370
-// GHIDRA_NAME WrapperFor_DeleteRegionHandleFromClipState_At00494370
-// GHIDRA_PROTO undefined WrapperFor_DeleteRegionHandleFromClipState_At00494370()
-
-void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At00494370(undefined4 *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f4d8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_LAB_00671054;
-  local_4 = 0;
-  DeleteObject();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004943E0
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0()
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0(void)
-
-{
-  DAT_006a1d48 = 0;
-  DAT_006a1d4c = 0xc;
-  DAT_006a1d4e = 0xc;
-  DAT_006a1d50 = 0xc;
-  g_uQuickDrawCurrentColor = 0xc;
-  DAT_006a1d56 = 1;
-  AppendPointerToGlobalVectorAsStatus(ReleaseQuickDrawCachedFontHandleIfPresent_At00494430);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494430
-// GHIDRA_NAME ReleaseQuickDrawCachedFontHandleIfPresent_At00494430
-// GHIDRA_PROTO undefined ReleaseQuickDrawCachedFontHandleIfPresent_At00494430()
-
-void ReleaseQuickDrawCachedFontHandleIfPresent_At00494430(void)
-
-{
-  if (DAT_006a1d48 != (int *)0x0) {
-    (**(code **)(*DAT_006a1d48 + 4))(1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494460
-// GHIDRA_NAME WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460
-// GHIDRA_PROTO undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460(void)
-
-{
-  DAT_006a1ce8 = 0;
-  DAT_006a1cec = 0xc;
-  DAT_006a1cee = 0xc;
-  DAT_006a1cf0 = 0xc;
-  _DAT_006a1cf2 = 0xc;
-  DAT_006a1cf6 = 1;
-  AppendPointerToGlobalVectorAsStatus(ReleaseCachedGlobalFontObjectIfPresent_At004944b0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004944B0
-// GHIDRA_NAME ReleaseCachedGlobalFontObjectIfPresent_At004944b0
-// GHIDRA_PROTO undefined ReleaseCachedGlobalFontObjectIfPresent_At004944b0()
-
-void ReleaseCachedGlobalFontObjectIfPresent_At004944b0(void)
-
-{
-  if (DAT_006a1ce8 != (int *)0x0) {
-    (**(code **)(*DAT_006a1ce8 + 4))(1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004944E0
-// GHIDRA_NAME UpdateGlobalFontPresetAndRebuildCachedFontIfDirty
-// GHIDRA_PROTO undefined UpdateGlobalFontPresetAndRebuildCachedFontIfDirty()
-
-void UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(short *param_1)
-
-{
-  if (DAT_006a1cec != *param_1) {
-    DAT_006a1cf6 = '\x01';
-    DAT_006a1cec = *param_1;
-  }
-  if (DAT_006a1cee != param_1[1]) {
-    DAT_006a1cf6 = '\x01';
-    DAT_006a1cee = param_1[1];
-  }
-  if (DAT_006a1cf0 != param_1[2]) {
-    DAT_006a1cf6 = '\x01';
-    DAT_006a1cf0 = param_1[2];
-  }
-  if ((DAT_006a1cf6 != '\0') || (DAT_006a1ce8 == (int *)0x0)) {
-    if (DAT_006a1ce8 != (int *)0x0) {
-      (**(code **)(*DAT_006a1ce8 + 4))(1);
-    }
-    DAT_006a1ce8 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1cec);
-    DAT_006a1cf6 = '\0';
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004945F0
-// GHIDRA_NAME BindScopedMapQuickDrawDcHandle
-// GHIDRA_PROTO undefined BindScopedMapQuickDrawDcHandle()
-
-bool BindScopedMapQuickDrawDcHandle(void *param_1,void *param_2)
-
-{
-  HDC pHVar1;
-  
-  g_pScopedMapQuickDrawViewContext = param_1;
-  if (param_2 == (void *)0x0) {
-    if (*(int *)((int)param_1 + 0x50) != 0) {
-      pHVar1 = GetDC(*(HWND *)(*(int *)((int)param_1 + 0x50) + 0x1c));
-      g_pScopedMapQuickDrawDcHandleObject = (void *)FromHandle_612736(pHVar1);
-      return g_pScopedMapQuickDrawDcHandleObject != (void *)0x0;
-    }
-    param_2 = (void *)0x0;
-  }
-  g_pScopedMapQuickDrawDcHandleObject = param_2;
-  return param_2 != (void *)0x0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494660
-// GHIDRA_NAME NoOpQuickDrawContextSelectionHook
-// GHIDRA_PROTO undefined NoOpQuickDrawContextSelectionHook()
-
-void * NoOpQuickDrawContextSelectionHook(void)
-
-{
-  void *pvVar1;
-  
-  pvVar1 = DAT_006a1da0;
-  if (DAT_006a1da0 == (void *)0x0) {
-    pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  return pvVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494680
-// GHIDRA_NAME RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680
-// GHIDRA_PROTO undefined RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680()
-
-undefined4 RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680(void)
-
-{
-  if (PTR_DAT_006950f8 == &DAT_006a1ca0) {
-    return 0;
-  }
-  return *(undefined4 *)(**(int **)(PTR_DAT_006950f8 + 0x24) + 0x1c);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004946B0
-// GHIDRA_NAME ReleaseScopedMapQuickDrawDcHandle
-// GHIDRA_PROTO undefined ReleaseScopedMapQuickDrawDcHandle()
-
-void ReleaseScopedMapQuickDrawDcHandle(int param_1,int param_2)
-
-{
-  if (param_2 == 0) {
-    ReleaseDC(*(HWND *)(*(int *)(param_1 + 0x50) + 0x1c),
-              *(HDC *)((int)g_pScopedMapQuickDrawDcHandleObject + 4));
-  }
-  g_pScopedMapQuickDrawDcHandleObject = (void *)0x0;
-  g_pScopedMapQuickDrawViewContext = (void *)0x0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494700
-// GHIDRA_NAME ConstructScopedMapQuickDrawContext
-// GHIDRA_PROTO undefined ConstructScopedMapQuickDrawContext()
-
-void * __thiscall ConstructScopedMapQuickDrawContext(void *param_1,int *param_2)
-
-{
-  int iVar1;
-  undefined4 uVar2;
-  HDC pHVar3;
-  void *pvVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_1c [12];
-  undefined4 uStack_10;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f4f8;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  ConstructCClientDCFromViewHandle(param_2[0x14]);
-  iVar1 = *param_2;
-  local_4 = 0;
-  *(int **)((int)param_1 + 0x14) = param_2;
-  (**(code **)(iVar1 + 0xf8))();
-  uVar2 = (**(code **)(**(int **)((int)param_1 + 0x14) + 0x160))(auStack_1c);
-  IntersectClipRectOnPrimaryAndSecondaryDc(uVar2);
-  g_pScopedMapQuickDrawViewContext = *(void **)((int)param_1 + 0x14);
-  pvVar4 = param_1;
-  if (param_1 == (void *)0x0) {
-    if (*(int *)((int)g_pScopedMapQuickDrawViewContext + 0x50) == 0) {
-      g_pScopedMapQuickDrawDcHandleObject = (void *)0x0;
-      pvVar4 = g_pScopedMapQuickDrawDcHandleObject;
-    }
-    else {
-      pHVar3 = GetDC(*(HWND *)(*(int *)((int)g_pScopedMapQuickDrawViewContext + 0x50) + 0x1c));
-      pvVar4 = (void *)FromHandle_612736(pHVar3);
-    }
-  }
-  g_pScopedMapQuickDrawDcHandleObject = pvVar4;
-  *unaff_FS_OFFSET = uStack_10;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004947E0
-// GHIDRA_NAME ConstructScopedMapQuickDrawContextWithPaletteToken
-// GHIDRA_PROTO undefined ConstructScopedMapQuickDrawContextWithPaletteToken()
-
-void * __thiscall
-ConstructScopedMapQuickDrawContextWithPaletteToken(void *param_1,int *param_2,undefined4 param_3)
-
-{
-  int iVar1;
-  HDC pHVar2;
-  void *pvVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f518;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  ConstructCClientDCFromViewHandle(param_2[0x14]);
-  iVar1 = *param_2;
-  local_4 = 0;
-  *(int **)((int)param_1 + 0x14) = param_2;
-  (**(code **)(iVar1 + 0xf8))();
-  IntersectClipRectOnPrimaryAndSecondaryDc(param_3);
-  g_pScopedMapQuickDrawViewContext = *(void **)((int)param_1 + 0x14);
-  pvVar3 = param_1;
-  if (param_1 == (void *)0x0) {
-    if (*(int *)((int)g_pScopedMapQuickDrawViewContext + 0x50) == 0) {
-      g_pScopedMapQuickDrawDcHandleObject = (void *)0x0;
-      pvVar3 = g_pScopedMapQuickDrawDcHandleObject;
-    }
-    else {
-      pHVar2 = GetDC(*(HWND *)(*(int *)((int)g_pScopedMapQuickDrawViewContext + 0x50) + 0x1c));
-      pvVar3 = (void *)FromHandle_612736(pHVar2);
-    }
-  }
-  g_pScopedMapQuickDrawDcHandleObject = pvVar3;
-  *unaff_FS_OFFSET = uStack_c;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004948B0
-// GHIDRA_NAME DestroyScopedMapQuickDrawContext
-// GHIDRA_PROTO undefined DestroyScopedMapQuickDrawContext()
-
-void __fastcall DestroyScopedMapQuickDrawContext(int param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f538;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_4 = 0;
-  if (param_1 == 0) {
-    ReleaseDC(*(HWND *)(*(int *)(*(int *)(param_1 + 0x14) + 0x50) + 0x1c),
-              *(HDC *)((int)g_pScopedMapQuickDrawDcHandleObject + 4));
-  }
-  g_pScopedMapQuickDrawDcHandleObject = (void *)0x0;
-  g_pScopedMapQuickDrawViewContext = (void *)0x0;
-  local_4 = 0xffffffff;
-  DestroyCClientDCAndReleaseHandle();
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494950
-// GHIDRA_NAME RenderTacticalBattleSelectionAndUnitOverlayPass_Impl
-// GHIDRA_PROTO undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl()
-
-void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(void)
-
-{
-  undefined4 uVar1;
-  undefined4 uVar2;
-  int *piVar3;
-  
-  if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
-    if (DAT_006a1d48 != (int *)0x0) {
-      (**(code **)(*DAT_006a1d48 + 4))(1);
-    }
-    DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
-    DAT_006a1d56 = '\0';
-  }
-  piVar3 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar3 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  uVar1 = (**(code **)(*piVar3 + 0x30))(DAT_006a1d48);
-  piVar3 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar3 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar3 + 0x38))(g_uQuickDrawCurrentColor);
-  SetBkModeOnPrimaryAndSecondaryDc(1);
-  uVar2 = FUN_00613121(0x18);
-  piVar3 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar3 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar3 + 100))(DAT_006a1d00,DAT_006a1d04,&stack0xfffffff7,1);
-  FUN_00613121(uVar2);
-  piVar3 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar3 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar3 + 0x30))(uVar1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494BF0
-// GHIDRA_NAME RenderTradeScreenCommoditySummaryRows_Impl
-// GHIDRA_PROTO undefined RenderTradeScreenCommoditySummaryRows_Impl()
-
-void RenderTradeScreenCommoditySummaryRows_Impl(undefined4 param_1,undefined4 param_2,short param_3)
-
-{
-  undefined4 uVar1;
-  int *piVar2;
-  int *unaff_ESI;
-  undefined4 uVar3;
-  undefined4 unaff_retaddr;
-  
-  uVar3 = 0x920;
-  if (param_3 != -2) {
-    if (param_3 == -1) {
-      uVar3 = 0x922;
-    }
-    else if (param_3 == 1) {
-      uVar3 = 0x921;
-    }
-  }
-  if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
-    if (DAT_006a1d48 != (int *)0x0) {
-      (**(code **)(*DAT_006a1d48 + 4))(1);
-    }
-    DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
-    DAT_006a1d56 = '\0';
-  }
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  uVar1 = (**(code **)(*piVar2 + 0x30))(DAT_006a1d48);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x38))(g_uQuickDrawCurrentColor);
-  SetBkModeOnPrimaryAndSecondaryDc(1);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x70))(*unaff_ESI,*(undefined4 *)(*unaff_ESI + -8),unaff_retaddr,uVar3);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x30))(uVar1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494D20
-// GHIDRA_NAME WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20
-// GHIDRA_PROTO undefined WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20()
-
-uint WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20(short param_1,short param_2)
-
-{
-  undefined4 uVar1;
-  int *piVar2;
-  int unaff_retaddr;
-  int *piVar3;
-  
-  if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
-    if (DAT_006a1d48 != (int *)0x0) {
-      (**(code **)(*DAT_006a1d48 + 4))(1);
-    }
-    DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
-    DAT_006a1d56 = '\0';
-  }
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  piVar3 = DAT_006a1d48;
-  uVar1 = (**(code **)(*piVar2 + 0x30))();
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  GetTextExtentPointA((HDC)piVar2[2],(LPCSTR)(unaff_retaddr + param_1),(int)param_2,
-                      (LPSIZE)&stack0xfffffff4);
-  piVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (int *)0x0) {
-    piVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  (**(code **)(*piVar2 + 0x30))(uVar1);
-  return (uint)piVar3 & 0xffff;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00494E00
-// GHIDRA_NAME MeasureTextExtentWithCachedQuickDrawStyle
-// GHIDRA_PROTO undefined MeasureTextExtentWithCachedQuickDrawStyle()
-
-uint MeasureTextExtentWithCachedQuickDrawStyle(undefined4 *param_1)
-
-{
-  int *piVar1;
-  undefined4 uVar2;
-  HDC pHVar3;
-  int *piVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 *unaff_retaddr;
-  tagSIZE atStack_24 [2];
-  HDC pHStack_14;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  piVar4 = DAT_006a1da0;
-  uStack_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f558;
-  *unaff_FS_OFFSET = &uStack_c;
-  piVar1 = piVar4;
-  if (piVar4 == (int *)0x0) {
-    piVar1 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  if (piVar1 != (int *)0x0) {
-    if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
-      if (DAT_006a1d48 != (int *)0x0) {
-        (**(code **)(*DAT_006a1d48 + 4))(1);
-      }
-      DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
-      DAT_006a1d56 = '\0';
-      piVar4 = DAT_006a1da0;
-    }
-    if (piVar4 == (int *)0x0) {
-      piVar4 = g_pScopedMapQuickDrawDcHandleObject;
-    }
-    piVar1 = DAT_006a1d48;
-    uVar2 = (**(code **)(*piVar4 + 0x30))();
-    piVar4 = DAT_006a1da0;
-    if (DAT_006a1da0 == (int *)0x0) {
-      piVar4 = g_pScopedMapQuickDrawDcHandleObject;
-    }
-    GetTextExtentPointA((HDC)piVar4[2],(LPCSTR)*unaff_retaddr,*(int *)((LPCSTR)*unaff_retaddr + -8),
-                        (LPSIZE)&stack0xffffffd8);
-    piVar4 = DAT_006a1da0;
-    if (DAT_006a1da0 == (int *)0x0) {
-      piVar4 = g_pScopedMapQuickDrawDcHandleObject;
-    }
-    (**(code **)(*piVar4 + 0x30))(uVar2);
-    *unaff_FS_OFFSET = pHStack_14;
-    return (uint)piVar1 & 0xffff;
-  }
-  CDC::CDC();
-  local_4 = 0;
-  pHVar3 = CreateCompatibleDC((HDC)0x0);
-  TCivDescription::AttachHdcToDcWrapper(pHVar3);
-  if ((DAT_006a1d56 != '\0') || (DAT_006a1d48 == (int *)0x0)) {
-    if (DAT_006a1d48 != (int *)0x0) {
-      (**(code **)(*DAT_006a1d48 + 4))(1);
-    }
-    DAT_006a1d48 = (int *)CreateFontFromPresetAndAttachRegionHandle(&DAT_006a1d4c);
-    DAT_006a1d56 = '\0';
-  }
-  uVar2 = TTEView::SelectObject_6129d7(DAT_006a1d48);
-  GetTextExtentPointA(pHStack_14,(LPCSTR)*param_1,*(int *)((LPCSTR)*param_1 + -8),atStack_24);
-  TTEView::SelectObject_6129d7(uVar2);
-  local_4 = 0xffffffff;
-  DestroyCDCAndDeleteOwnedHdc();
-  *unaff_FS_OFFSET = uStack_c;
-  return (uint)(ushort)atStack_24[0].cx;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495000
-// GHIDRA_NAME SetQuickDrawFillColor
-// GHIDRA_PROTO undefined SetQuickDrawFillColor()
-
-void SetQuickDrawFillColor(int param_1)
-
-{
-  g_Quick_Draw_Color_State_006950FC = param_1;
-  *(int *)(g_pActiveQuickDrawSurfaceContext + 0x28) = param_1;
-  g_uQuickDrawCurrentColor = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495030
-// GHIDRA_NAME SetQuickDrawColorAndPropagateIfChanged
-// GHIDRA_PROTO undefined SetQuickDrawColorAndPropagateIfChanged()
-
-void SetQuickDrawColorAndPropagateIfChanged(int param_1)
-
-{
-  if (g_Quick_Draw_Color_State_006950FC != param_1) {
-    g_Quick_Draw_Color_State_006950FC = param_1;
-    *(int *)(g_pActiveQuickDrawSurfaceContext + 0x28) = param_1;
-    g_uQuickDrawCurrentColor = param_1;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495070
-// GHIDRA_NAME SetQuickDrawStrokeColor
-// GHIDRA_PROTO undefined SetQuickDrawStrokeColor()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void SetQuickDrawStrokeColor(undefined4 param_1)
-
-{
-  _DAT_00695100 = param_1;
-  *(undefined4 *)(g_pActiveQuickDrawSurfaceContext + 0x2c) = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004950A0
-// GHIDRA_NAME SetQuickDrawColorAndSyncGlobals
-// GHIDRA_PROTO undefined SetQuickDrawColorAndSyncGlobals()
-
-void SetQuickDrawColorAndSyncGlobals(int param_1)
-
-{
-  g_Quick_Draw_Color_State_006950FC = param_1;
-  *(int *)(g_pActiveQuickDrawSurfaceContext + 0x28) = param_1;
-  g_uQuickDrawCurrentColor = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004950D0
-// GHIDRA_NAME SetGlobalBlitTransparentColorRaw
-// GHIDRA_PROTO undefined SetGlobalBlitTransparentColorRaw()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void SetGlobalBlitTransparentColorRaw(undefined4 param_1)
-
-{
-  _DAT_00695100 = param_1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004950F0
-// GHIDRA_NAME SetQuickDrawFillColorFromPaletteIndex
-// GHIDRA_PROTO undefined SetQuickDrawFillColorFromPaletteIndex()
-
-void SetQuickDrawFillColorFromPaletteIndex(ushort param_1)
-
-{
-  int iVar1;
-  tagPALETTEENTRY local_8 [2];
-  
-  if (DAT_006a1da0 != 0) {
-    iVar1 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
-    GetPaletteEntries(*(HPALETTE *)(iVar1 + 4),(int)(short)param_1,1,local_8);
-    SetQuickDrawFillColor
-              ((((ushort)local_8[0]._2_2_ & 0xff) << 8 |
-               CONCAT21(local_8[0]._2_2_,local_8[0].peGreen) & 0xff) << 8 |
-               CONCAT11(local_8[0].peGreen,local_8[0].peRed) & 0xff);
-    return;
-  }
-  if (param_1 == 0xff) {
-    SetQuickDrawFillColor(0);
-    return;
-  }
-  if ((short)param_1 < 1) {
-    SetQuickDrawFillColor(0xffffff);
-    return;
-  }
-  SetQuickDrawFillColor(param_1 | 0x1000000);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004951E0
-// GHIDRA_NAME UpdatePaletteIndexWithDefaultFallback
-// GHIDRA_PROTO void __stdcall UpdatePaletteIndexWithDefaultFallback(uint palette_index)
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void UpdatePaletteIndexWithDefaultFallback(uint palette_index)
-
-{
-  astruct_14 *iVar1;
-  
-  if ((short)palette_index == -1) {
-    iVar1 = (astruct_14 *)TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6();
-    palette_index = GetNearestPaletteIndex(iVar1->field4_0x4,0xffffff);
-  }
-  _DAT_00695100 = palette_index & 0xffff | 0x1000000;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495230
-// GHIDRA_NAME SetQuickDrawStyleWord_1D4C_AndMarkDirty
-// GHIDRA_PROTO undefined SetQuickDrawStyleWord_1D4C_AndMarkDirty()
-
-void SetQuickDrawStyleWord_1D4C_AndMarkDirty(short param_1)
-
-{
-  if (DAT_006a1d4c != param_1) {
-    DAT_006a1d4c = param_1;
-    DAT_006a1d56 = 1;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495260
-// GHIDRA_NAME SetQuickDrawStyleWord_1D50_AndMarkDirty
-// GHIDRA_PROTO undefined SetQuickDrawStyleWord_1D50_AndMarkDirty()
-
-void SetQuickDrawStyleWord_1D50_AndMarkDirty(short param_1)
-
-{
-  if (DAT_006a1d50 != param_1) {
-    DAT_006a1d50 = param_1;
-    DAT_006a1d56 = 1;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495290
-// GHIDRA_NAME SetQuickDrawStyleWord_1D4E_AndMarkDirty
-// GHIDRA_PROTO undefined SetQuickDrawStyleWord_1D4E_AndMarkDirty()
-
-void SetQuickDrawStyleWord_1D4E_AndMarkDirty(short param_1)
-
-{
-  if (DAT_006a1d4e != param_1) {
-    DAT_006a1d4e = param_1;
-    DAT_006a1d56 = 1;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495310
-// GHIDRA_NAME SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty
-// GHIDRA_PROTO undefined SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty()
-
-void SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(short param_1,short param_2)
-
-{
-  g_nQuickDrawStrokeStylePrimary = (int)param_1;
-  g_nQuickDrawStrokeStyleSecondary = (int)param_2;
-  g_bQuickDrawStrokePairDirty = 1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004953A0
-// GHIDRA_NAME ResetQuickDrawStrokeState
-// GHIDRA_PROTO undefined ResetQuickDrawStrokeState()
-
-void ResetQuickDrawStrokeState(void)
-
-{
-  g_nQuickDrawStrokeStylePrimary = g_Reset_Quick_Draw_Value_0064B8F0;
-  g_nQuickDrawStrokeStyleSecondary = g_Reset_Quick_Draw_Value_0064B8F4;
-  g_Reset_Quick_Draw_State_006A1D10 = g_Reset_Quick_Draw_WordState_0064B8F8;
-  g_bQuickDrawStrokePairDirty = 1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004953E0
-// GHIDRA_NAME RenderUiBitmapOnRuntimeSurfaceContext_Impl
-// GHIDRA_PROTO undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl()
-
-undefined1 RenderUiBitmapOnRuntimeSurfaceContext_Impl(int *param_1)
-
-{
-  return *(undefined1 *)(*param_1 + 4);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495400
-// GHIDRA_NAME RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400
-// GHIDRA_PROTO undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400()
-
-void RenderUiBitmapOnRuntimeSurfaceContext_Impl_At00495400(int *param_1,char param_2)
-
-{
-  int iVar1;
-  
-  param_1 = (int *)*param_1;
-  iVar1 = param_1[1];
-  *(char *)(param_1 + 1) = param_2;
-  if (((char)iVar1 != '\0') && (param_2 == '\0')) {
-    (**(code **)(*param_1 + 4))();
-    *(byte *)(param_1 + 1) = *(byte *)(param_1 + 1) & 0xfe;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495460
-// GHIDRA_NAME OrphanCallChain_C1_I15_00495460
-// GHIDRA_PROTO undefined OrphanCallChain_C1_I15_00495460()
-
-void __thiscall OrphanCallChain_C1_I15_00495460(int *param_1,char param_2)
-
-{
-  int iVar1;
-  
-  iVar1 = param_1[1];
-  *(char *)(param_1 + 1) = param_2;
-  if (((char)iVar1 != '\0') && (param_2 == '\0')) {
-    (**(code **)(*param_1 + 4))();
-    *(byte *)(param_1 + 1) = *(byte *)(param_1 + 1) & 0xfe;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004954A0
-// GHIDRA_NAME WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0
-// GHIDRA_PROTO undefined WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0()
-
-int __fastcall WrapperFor_AttachRegionHandleToClipStateAndRegister_At004954a0(int param_1)
-
-{
-  HRGN pHVar1;
-  undefined4 uVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f57b;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined4 *)(param_1 + 0x18) = 0;
-  *(undefined ***)(param_1 + 0x14) = &CBrush::_vftable_;
-  local_4 = 0;
-  pHVar1 = CreateRectRgn(0,0,0,0);
-  uVar2 = CBrush::AttachRegionHandleToClipStateAndRegister(pHVar1);
-  *(undefined4 *)(param_1 + 0x10) = uVar2;
-  *unaff_FS_OFFSET = local_c;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495520
-// GHIDRA_NAME WrapperFor_DeleteRegionHandleFromClipState_At00495520
-// GHIDRA_PROTO undefined WrapperFor_DeleteRegionHandleFromClipState_At00495520()
-
-void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At00495520(int param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f5a3;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_4 = 0;
-  if (*(int *)(param_1 + 0x10) != 0) {
-    DeleteObject();
-  }
-  *(undefined4 *)(param_1 + 0x14) = &PTR_LAB_00671054;
-  local_4 = 1;
-  DeleteObject();
-  *(undefined4 *)(param_1 + 0x14) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004955F0
-// GHIDRA_NAME BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl
-// GHIDRA_PROTO undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl()
-
-void __fastcall BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl(LPRECT param_1)
-
-{
-  GetRgnBox((HRGN)param_1[1].right,param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495610
-// GHIDRA_NAME DestroyClipStateRegionWrapperObject
-// GHIDRA_PROTO undefined DestroyClipStateRegionWrapperObject()
-
-undefined4 DestroyClipStateRegionWrapperObject(int *param_1)
-
-{
-  int iVar1;
-  
-  if ((param_1 != (int *)0x0) && (iVar1 = *param_1, iVar1 != 0)) {
-    WrapperFor_DeleteRegionHandleFromClipState_At00495520();
+    return 0xffffffff;
+  }
+  CenterWindow(0);
+  SetTimer(param_1->m_hWnd,1,0x2ee,(TIMERPROC)0x0);
+  iVar1 = DAT_006a2054;
+  if (DAT_006a2054 != 0) {
+    AfxGetModuleState();
+    EndWaitCursor();
     FreeHeapBufferIfNotNull(iVar1);
   }
-  FreeHeapBufferIfNotNull(param_1);
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495650
-// GHIDRA_NAME IsPointInsideHitRegion
-// GHIDRA_PROTO undefined IsPointInsideHitRegion()
-
-BOOL IsPointInsideHitRegion(int *param_1,int *param_2)
-
-{
-  LPRECT lprc;
-  char cVar1;
-  LONG LVar3;
-  tagRECT local_10;
-  BOOL BVar2;
-  
-  if (param_2 != (int *)0x0) {
-    lprc = (LPRECT)*param_2;
-    LVar3 = 0;
-    if (lprc != (LPRECT)0xffffffec) {
-      LVar3 = lprc[1].right;
-    }
-    if (LVar3 != 0) {
-      GetRgnBox((HRGN)lprc[1].right,lprc);
-      CopyRect(&local_10,(RECT *)*param_2);
-      BVar2 = IsRectEmpty(&local_10);
-      cVar1 = (char)BVar2;
-      goto LAB_00495694;
-    }
-  }
-  cVar1 = '\x01';
-LAB_00495694:
-  if (cVar1 != '\0') {
-    return 0;
-  }
-  BVar2 = PtInRegion(*(HRGN *)(*param_2 + 0x18),*param_1,param_1[1]);
-  return BVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004956E0
-// GHIDRA_NAME OrphanCallChain_C4_I50_004956e0
-// GHIDRA_PROTO undefined OrphanCallChain_C4_I50_004956e0()
-
-void OrphanCallChain_C4_I50_004956e0(int *param_1,RECT *param_2,RECT *param_3)
-
-{
-  tagRECT local_20;
-  tagRECT local_10;
-  
-  CopyRect(&local_20,param_3);
-  CopyRect(&local_10,param_2);
-  *param_1 = ((local_20.right - local_20.left) * *param_1) / (local_10.right - local_10.left);
-  CopyRect(&local_10,param_3);
-  CopyRect(&local_20,param_2);
-  param_1[1] = ((local_10.bottom - local_10.top) * param_1[1]) / (local_20.bottom - local_20.top);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495780
-// GHIDRA_NAME OrphanCallChain_C4_I50_00495780
-// GHIDRA_PROTO undefined OrphanCallChain_C4_I50_00495780()
-
-void OrphanCallChain_C4_I50_00495780(int *param_1,RECT *param_2,RECT *param_3)
-
-{
-  tagRECT local_20;
-  tagRECT local_10;
-  
-  CopyRect(&local_20,param_3);
-  CopyRect(&local_10,param_2);
-  *param_1 = ((local_20.right - local_20.left) * *param_1) / (local_10.right - local_10.left);
-  CopyRect(&local_10,param_3);
-  CopyRect(&local_20,param_2);
-  param_1[1] = ((local_10.bottom - local_10.top) * param_1[1]) / (local_20.bottom - local_20.top);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495820
-// GHIDRA_NAME CreateClipStateRegionWrapperObject
-// GHIDRA_PROTO undefined CreateClipStateRegionWrapperObject()
-
-int * CreateClipStateRegionWrapperObject(void)
-
-{
-  int *piVar1;
-  int iVar2;
-  HRGN pHVar3;
-  undefined4 uVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f5d6;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  piVar1 = (int *)AllocateWithFallbackHandler(4);
-  iVar2 = AllocateWithFallbackHandler(0x1c);
-  if (iVar2 == 0) {
-    iVar2 = 0;
-  }
-  else {
-    *(undefined4 *)(iVar2 + 0x10) = 0;
-    *(undefined4 *)(iVar2 + 0x18) = 0;
-    *(undefined ***)(iVar2 + 0x14) = &CBrush::_vftable_;
-    local_4 = 1;
-    pHVar3 = CreateRectRgn(0,0,0,0);
-    uVar4 = CBrush::AttachRegionHandleToClipStateAndRegister(pHVar3);
-    *(undefined4 *)(iVar2 + 0x10) = uVar4;
-  }
-  *piVar1 = iVar2;
-  *unaff_FS_OFFSET = local_c;
-  return piVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004958E0
-// GHIDRA_NAME ReplaceClipStateRegionHandleFromRect
-// GHIDRA_PROTO undefined ReplaceClipStateRegionHandleFromRect()
-
-void ReplaceClipStateRegionHandleFromRect(int *param_1,RECT *param_2)
-
-{
-  int iVar1;
-  HRGN pHVar2;
-  undefined4 uVar3;
-  
-  iVar1 = *param_1;
-  if (*(int *)(iVar1 + 0x10) != 0) {
-    DeleteObject();
-  }
-  pHVar2 = CreateRectRgnIndirect(param_2);
-  uVar3 = CBrush::AttachRegionHandleToClipStateAndRegister(pHVar2);
-  *(undefined4 *)(iVar1 + 0x10) = uVar3;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495920
-// GHIDRA_NAME ApplyHitRegionToClipState
-// GHIDRA_PROTO undefined ApplyHitRegionToClipState()
-
-void ApplyHitRegionToClipState(int *param_1)
-
-{
-  HRGN pHVar1;
-  int iVar2;
-  void *pvVar3;
-  HDC hdc;
-  RECT local_10;
-  
-  pHVar1 = (HRGN)0x0;
-  if (g_pGlobalClipRegionHandleObject != 0) {
-    pHVar1 = *(HRGN *)(g_pGlobalClipRegionHandleObject + 4);
-  }
-  CombineRgn(*(HRGN *)(*param_1 + 0x18),pHVar1,(HRGN)0x0,5);
-  if (*param_1 == -0x14) {
-    pHVar1 = (HRGN)0x0;
-  }
-  else {
-    pHVar1 = *(HRGN *)(*param_1 + 0x18);
-  }
-  pvVar3 = DAT_006a1da0;
-  if ((DAT_006a1da0 != (void *)0x0) ||
-     (hdc = (HDC)0x0, pvVar3 = g_pScopedMapQuickDrawDcHandleObject,
-     g_pScopedMapQuickDrawDcHandleObject != (void *)0x0)) {
-    hdc = *(HDC *)((int)pvVar3 + 4);
-  }
-  iVar2 = GetClipRgn(hdc,pHVar1);
-  if (iVar2 == -1) {
-    pvVar3 = DAT_006a1da0;
-    if (DAT_006a1da0 == (void *)0x0) {
-      pvVar3 = g_pScopedMapQuickDrawDcHandleObject;
-    }
-    if (pvVar3 != (void *)0x0) {
-      iVar2 = CObject::IsKindOf(&PTR_s_CPaintDC_006722c8);
-      if (iVar2 != 0) {
-        pvVar3 = DAT_006a1da0;
-        if (DAT_006a1da0 == (void *)0x0) {
-          pvVar3 = g_pScopedMapQuickDrawDcHandleObject;
-        }
-        pHVar1 = CreateRectRgnIndirect((RECT *)((int)pvVar3 + 0x1c));
-        CBrush::AttachRegionHandleToClipStateAndRegister(pHVar1);
-        return;
-      }
-      pHVar1 = CreateRectRgnIndirect(&local_10);
-      CBrush::AttachRegionHandleToClipStateAndRegister(pHVar1);
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495A30
-// GHIDRA_NAME SnapshotHitRegionToClipCache
-// GHIDRA_PROTO undefined SnapshotHitRegionToClipCache()
-
-void SnapshotHitRegionToClipCache(int *param_1)
-
-{
-  if (*param_1 == -0x14) {
-    CombineRgn(*(HRGN *)(g_pGlobalClipRegionHandleObject + 4),(HRGN)0x0,(HRGN)0x0,5);
-    return;
-  }
-  CombineRgn(*(HRGN *)(g_pGlobalClipRegionHandleObject + 4),*(HRGN *)(*param_1 + 0x18),(HRGN)0x0,5);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495A80
-// GHIDRA_NAME ApplyRectClipRegionToGlobalClipState
-// GHIDRA_PROTO undefined ApplyRectClipRegionToGlobalClipState()
-
-void ApplyRectClipRegionToGlobalClipState(int *param_1)
-
-{
-  int iVar1;
-  HRGN pHVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined **ppuVar3;
-  undefined4 uVar4;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f600;
-  *unaff_FS_OFFSET = &local_c;
-  iVar1 = NoOpRuntimeCallback_00489a70();
-  if (iVar1 != 0) {
-    ppuVar3 = &CBrush::_vftable_;
-    uVar4 = 0;
-    local_4 = 0;
-    pHVar2 = CreateRectRgn(*param_1,param_1[1],param_1[2],param_1[3]);
-    CBrush::AttachRegionHandleToClipStateAndRegister(pHVar2);
-    DeleteObject(ppuVar3,uVar4);
-    local_4 = 1;
-    DeleteObject(&PTR_LAB_00671054);
-  }
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495B40
-// GHIDRA_NAME SetGlobalQuickDrawOrigin
-// GHIDRA_PROTO undefined SetGlobalQuickDrawOrigin()
-
-void SetGlobalQuickDrawOrigin(short param_1,short param_2)
-
-{
-  DAT_006a1d80 = (int)param_1;
-  DAT_006a1d84 = (int)param_2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495B70
-// GHIDRA_NAME EnsureBitmapResourceLoadedAndCopyRectSize
-// GHIDRA_PROTO undefined EnsureBitmapResourceLoadedAndCopyRectSize()
-
-void __fastcall EnsureBitmapResourceLoadedAndCopyRectSize(int param_1)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  undefined4 uVar3;
-  undefined4 *puVar4;
-  undefined1 local_8 [8];
-  
-  if (*(int *)(param_1 + 0x18) == 0) {
-    iVar2 = thunk_LoadBmpResourceByIdCached(*(undefined2 *)(param_1 + 0x1c));
-    *(int *)(param_1 + 0x18) = iVar2;
-    if (iVar2 == 0) {
-      uVar3 = BuildIndexedBmpResourceById(*(undefined2 *)(param_1 + 0x1c),0x42,0x42,0);
-      *(undefined4 *)(param_1 + 0x18) = uVar3;
-    }
-  }
-  puVar4 = (undefined4 *)CopyOffset10PointPairToOutOrZero(local_8);
-  uVar3 = *puVar4;
-  uVar1 = puVar4[1];
-  *(undefined4 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 0xc) = 0;
-  *(undefined4 *)(param_1 + 0x10) = uVar3;
-  *(undefined4 *)(param_1 + 0x14) = uVar1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495C00
-// GHIDRA_NAME WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
-// GHIDRA_PROTO undefined WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00()
-
-void __fastcall
-WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(int param_1)
-
-{
-  if (*(int *)(param_1 + 0x18) != 0) {
-    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup
-              (CONCAT22((short)((uint)*(int *)(param_1 + 0x18) >> 0x10),
-                        *(undefined2 *)(param_1 + 0x1c)));
-  }
-  *(undefined4 *)(param_1 + 0x18) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495C40
-// GHIDRA_NAME WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
-// GHIDRA_PROTO undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40()
-
-void WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
-               (undefined4 param_1,undefined4 *param_2)
-
-{
-  void *pvVar1;
-  undefined4 uVar2;
-  undefined4 local_8;
-  undefined4 local_4;
-  
-  pvVar1 = DAT_006a1da0;
-  if (DAT_006a1da0 == (void *)0x0) {
-    pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  uVar2 = 0;
-  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(pvVar1,0);
-  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(pvVar1,uVar2);
-  local_8 = *param_2;
-  local_4 = param_2[1];
-  pvVar1 = DAT_006a1da0;
-  if (DAT_006a1da0 == (void *)0x0) {
-    pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  StretchDibitsFromStoredBitmapToHdc(pvVar1,&local_8);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495D00
-// GHIDRA_NAME InitializeBitmapSurfaceFromResourceDescriptor
-// GHIDRA_PROTO undefined InitializeBitmapSurfaceFromResourceDescriptor()
-
-undefined4 * __thiscall
-InitializeBitmapSurfaceFromResourceDescriptor
-          (undefined4 *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  undefined4 uVar1;
-  undefined4 uVar2;
-  int iVar3;
-  undefined4 uVar4;
-  undefined4 *puVar5;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f61a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  iVar3 = AllocateWithFallbackHandler(0x38);
-  uVar2 = param_4;
-  local_4 = 0;
-  if (iVar3 == 0) {
-    uVar4 = 0;
-  }
-  else {
-    uVar4 = AllocateBitmapSurfaceHeaderAndPixelBuffer(param_2,param_3,param_4);
-  }
-  param_1[7] = uVar4;
-  local_4 = 0xffffffff;
-  uVar4 = TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0();
-  CopyRgbQuadTableToBitmapSurfacePalette(uVar4);
-  BuildPaletteFromRgbQuadBuffer();
-  EnsureBitmapSurfaceDibSectionCreated(0);
-  *param_1 = *(undefined4 *)(param_1[7] + 0xc);
-  *(ushort *)(param_1 + 1) = *(short *)(*(int *)(param_1[7] + 0x10) + 4) + 3U & 0xfffc;
-  puVar5 = (undefined4 *)CopyOffset10PointPairToOutOrZero(&param_2);
-  uVar4 = *puVar5;
-  uVar1 = puVar5[1];
-  param_1[2] = 0;
-  *(short *)(param_1 + 6) = (short)uVar2;
-  param_1[3] = 0;
-  param_1[4] = uVar4;
-  param_1[5] = uVar1;
-  *unaff_FS_OFFSET = local_c;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495E20
-// GHIDRA_NAME InitializeBitmapDescriptorRecordState
-// GHIDRA_PROTO undefined InitializeBitmapDescriptorRecordState()
-
-void __fastcall InitializeBitmapDescriptorRecordState(int param_1)
-
-{
-  *(undefined4 *)(param_1 + 0xc) = 0;
-  *(undefined4 *)(param_1 + 4) = 0;
-  *(undefined2 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined2 *)(param_1 + 0x1c) = 0;
-  *(undefined4 *)(param_1 + 0x20) = 0;
-  *(undefined4 *)(param_1 + 0x14) = 0;
-  *(undefined4 *)(param_1 + 0x18) = 0;
-  *(undefined4 *)(param_1 + 0x24) = 0;
-  *(undefined1 *)(param_1 + 0x28) = 0;
-  *(undefined1 *)(param_1 + 0x29) = 0;
-  *(undefined1 *)(param_1 + 0x2a) = 0;
-  *(undefined1 *)(param_1 + 0x2b) = 0;
-  *(undefined1 *)(param_1 + 0x2c) = 0;
-  *(undefined1 *)(param_1 + 0x2d) = 0;
-  *(undefined1 *)(param_1 + 0x2e) = 0;
-  *(undefined1 *)(param_1 + 0x2f) = 0;
-  *(undefined4 *)(param_1 + 0xc) = 0;
-  *(undefined4 *)(param_1 + 4) = 0;
-  *(undefined2 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined4 *)(param_1 + 0x20) = 0;
-  *(undefined **)(param_1 + 0x30) = &DAT_00695184;
-  *(undefined4 *)(param_1 + 0x14) = 0;
-  *(undefined4 *)(param_1 + 0x18) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495EB0
-// GHIDRA_NAME InitializeBitmapDescriptorNodeFromResourceSurface
-// GHIDRA_PROTO undefined InitializeBitmapDescriptorNodeFromResourceSurface()
-
-bool __thiscall
-InitializeBitmapDescriptorNodeFromResourceSurface
-          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  undefined4 uVar1;
-  undefined4 uVar2;
-  int iVar3;
-  undefined4 *puVar4;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f63b;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  uVar2 = AllocateWithFallbackHandler(4);
-  *(undefined4 *)(param_1 + 0x24) = uVar2;
-  iVar3 = AllocateWithFallbackHandler(0x20);
-  local_4 = 0;
-  if (iVar3 == 0) {
-    uVar2 = 0;
-  }
-  else {
-    uVar2 = InitializeBitmapSurfaceFromResourceDescriptor(param_2,param_3,param_4);
-  }
-  local_4 = 0xffffffff;
-  **(undefined4 **)(param_1 + 0x24) = uVar2;
-  *(undefined4 *)(param_1 + 4) = *(undefined4 *)(*(int *)(**(int **)(param_1 + 0x24) + 0x1c) + 0xc);
-  *(ushort *)(param_1 + 8) =
-       *(short *)(*(int *)(*(int *)(**(int **)(param_1 + 0x24) + 0x1c) + 0x10) + 4) + 3U & 0xfffc;
-  puVar4 = (undefined4 *)CopyOffset10PointPairToOutOrZero(&param_2);
-  uVar2 = *puVar4;
-  uVar1 = puVar4[1];
-  *(undefined4 *)(param_1 + 0xc) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined4 *)(param_1 + 0x14) = uVar2;
-  *(undefined4 *)(param_1 + 0x18) = uVar1;
-  *(undefined4 *)(param_1 + 0x20) = *(undefined4 *)(**(int **)(param_1 + 0x24) + 0x1c);
-  iVar3 = **(int **)(param_1 + 0x24);
-  *unaff_FS_OFFSET = local_c;
-  return iVar3 != 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00495FD0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00495fd0
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00495fd0()
-
-/* WARNING: Removing unreachable block (ram,0x0049603d) */
-
-void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00495fd0(int param_1)
-
-{
-  int iVar1;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f65b;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  local_4 = 0;
-  if ((*(int **)(param_1 + 0x24) != (int *)0x0) && (iVar1 = **(int **)(param_1 + 0x24), iVar1 != 0))
-  {
-    if (*(int **)(iVar1 + 0x1c) != (int *)0x0) {
-      (**(code **)(**(int **)(iVar1 + 0x1c) + 4))(1);
-    }
-    FreeHeapBufferIfNotNull(iVar1);
-  }
-  FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 0x24));
-  *(undefined4 *)(param_1 + 4) = 0;
-  *(undefined2 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 0x20) = 0;
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00496090
-// GHIDRA_NAME SetActiveQuickDrawSurfaceContext_Impl
-// GHIDRA_PROTO undefined SetActiveQuickDrawSurfaceContext_Impl()
-
-void SetActiveQuickDrawSurfaceContext_Impl(int param_1,int param_2)
-
-{
-  int iVar1;
-  HDC pHVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f67a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  iVar1 = AllocateWithFallbackHandler(0x10);
+  iVar1 = AllocateWithFallbackHandler(1);
   local_4 = 0;
   if (iVar1 == 0) {
-    DAT_006a1da0 = 0;
-  }
-  else {
-    DAT_006a1da0 = CDC::CDC();
-  }
-  local_4 = 0xffffffff;
-  pHVar2 = (HDC)0x0;
-  if (param_2 != 0) {
-    pHVar2 = *(HDC *)(param_2 + 4);
-  }
-  pHVar2 = CreateCompatibleDC(pHVar2);
-  TCivDescription::AttachHdcToDcWrapper(pHVar2);
-  if (*(HGDIOBJ *)(param_1 + 8) != (HGDIOBJ)0x0) {
-    SelectObject(*(HDC *)(DAT_006a1da0 + 4),*(HGDIOBJ *)(param_1 + 8));
-  }
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004961B0
-// GHIDRA_NAME SetActiveQuickDrawSurfaceContext
-// GHIDRA_PROTO undefined SetActiveQuickDrawSurfaceContext()
-
-void SetActiveQuickDrawSurfaceContext(undefined *param_1,undefined4 param_2)
-
-{
-  if (PTR_DAT_006950f8 != param_1) {
-    if ((PTR_DAT_006950f8 != (undefined *)0x0) && (PTR_DAT_006950f8 != &DAT_006a1ca0)) {
-      if (DAT_006a1dbc != (HGDIOBJ)0x0) {
-        SelectObject((HDC)DAT_006a1da0[1],DAT_006a1dbc);
-      }
-      DAT_006a1dbc = (HGDIOBJ)0x0;
-      if (DAT_006a1da0 != (int *)0x0) {
-        (**(code **)(*DAT_006a1da0 + 4))(1);
-      }
-      DAT_006a1da0 = (int *)0x0;
-    }
-    if (param_1 != &DAT_006a1ca0) {
-      SetActiveQuickDrawSurfaceContext_Impl(*(undefined4 *)(**(int **)(param_1 + 0x24) + 0x1c),0);
-    }
-    PTR_DAT_006950f8 = param_1;
-    DAT_006a1db0 = param_2;
-    g_pActiveQuickDrawSurfaceContext = param_1;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00496270
-// GHIDRA_NAME GetActiveQuickDrawSurfaceContextAndFlags
-// GHIDRA_PROTO undefined GetActiveQuickDrawSurfaceContextAndFlags()
-
-void GetActiveQuickDrawSurfaceContextAndFlags(undefined4 *param_1,undefined4 *param_2)
-
-{
-  *param_1 = PTR_DAT_006950f8;
-  *param_2 = DAT_006a1db0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004962A0
-// GHIDRA_NAME GetSurfaceObjectAtContextOffset24
-// GHIDRA_PROTO undefined GetSurfaceObjectAtContextOffset24()
-
-undefined4 GetSurfaceObjectAtContextOffset24(int param_1)
-
-{
-  return *(undefined4 *)(param_1 + 0x24);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004962C0
-// GHIDRA_NAME InitializeBitmapDescriptorRecordAndLoadSurfaceNode
-// GHIDRA_PROTO undefined InitializeBitmapDescriptorRecordAndLoadSurfaceNode()
-
-uint InitializeBitmapDescriptorRecordAndLoadSurfaceNode(int *param_1,short param_2,RECT *param_3)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  undefined4 *puVar3;
-  uint uVar4;
-  undefined4 *unaff_FS_OFFSET;
-  tagRECT local_1c;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f69b;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  iVar2 = AllocateWithFallbackHandler(0x34);
-  local_4 = 0;
-  if (iVar2 == 0) {
-    iVar2 = 0;
-  }
-  else {
-    *(undefined4 *)(iVar2 + 4) = 0;
-    *(undefined2 *)(iVar2 + 8) = 0;
-    puVar3 = (undefined4 *)CRect::CRect((CRect *)&local_1c,0,0,0,0);
-    *(undefined4 *)(iVar2 + 0xc) = *puVar3;
-    *(undefined4 *)(iVar2 + 0x10) = puVar3[1];
-    *(undefined4 *)(iVar2 + 0x14) = puVar3[2];
-    uVar1 = puVar3[3];
-    *(undefined2 *)(iVar2 + 0x1c) = 0;
-    *(undefined4 *)(iVar2 + 0x20) = 0;
-    *(undefined4 *)(iVar2 + 0x18) = uVar1;
-    *(undefined4 *)(iVar2 + 0x24) = 0;
-    *(undefined1 *)(iVar2 + 0x28) = 0;
-    *(undefined1 *)(iVar2 + 0x29) = 0;
-    *(undefined1 *)(iVar2 + 0x2a) = 0;
-    *(undefined1 *)(iVar2 + 0x2b) = 0;
-    *(undefined1 *)(iVar2 + 0x2c) = 0;
-    *(undefined1 *)(iVar2 + 0x2d) = 0;
-    *(undefined1 *)(iVar2 + 0x2e) = 0;
-    *(undefined1 *)(iVar2 + 0x2f) = 0;
-    *(undefined4 *)(iVar2 + 0xc) = 0;
-    *(undefined4 *)(iVar2 + 0x10) = 0;
-    *(undefined4 *)(iVar2 + 4) = 0;
-    *(undefined2 *)(iVar2 + 8) = 0;
-    *(undefined4 *)(iVar2 + 0x14) = 0;
-    *(undefined4 *)(iVar2 + 0x20) = 0;
-    *(undefined **)(iVar2 + 0x30) = &DAT_00695184;
-    *(undefined4 *)(iVar2 + 0x18) = 0;
-  }
-  local_4 = 0xffffffff;
-  *param_1 = iVar2;
-  CopyRect(&local_1c,param_3);
-  uVar4 = InitializeBitmapDescriptorNodeFromResourceSurface
-                    (local_1c.right - local_1c.left,local_1c.bottom - local_1c.top,(int)param_2);
-  *unaff_FS_OFFSET = local_c;
-  return uVar4 & 0xffff0000;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00496420
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00496420
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00496420()
-
-void WrapperFor_FreeHeapBufferIfNotNull_At00496420(int param_1)
-
-{
-  if (param_1 != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At00495fd0();
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00496450
-// GHIDRA_NAME OrphanCallChain_C42_I283_00496450
-// GHIDRA_PROTO undefined OrphanCallChain_C42_I283_00496450()
-
-void OrphanCallChain_C42_I283_00496450
-               (HDC param_1,HANDLE param_2,short param_3,short param_4,COLORREF param_5)
-
-{
-  HDC hdc;
-  HDC hdc_00;
-  HDC hdc_01;
-  HDC hdc_02;
-  HDC hdc_03;
-  HBITMAP h;
-  HBITMAP h_00;
-  HBITMAP h_01;
-  HBITMAP h_02;
-  HGDIOBJ pvVar1;
-  HGDIOBJ h_03;
-  HGDIOBJ h_04;
-  HGDIOBJ h_05;
-  int iMode;
-  COLORREF color;
-  tagPOINT local_20;
-  undefined1 local_18 [4];
-  int local_14;
-  int local_10;
-  
-  hdc = CreateCompatibleDC(param_1);
-  SelectObject(hdc,param_2);
-  GetObjectA(param_2,0x18,local_18);
-  local_20.x = local_14;
-  local_20.y = local_10;
-  DPtoLP(hdc,&local_20,1);
-  hdc_00 = CreateCompatibleDC(param_1);
-  hdc_01 = CreateCompatibleDC(param_1);
-  hdc_02 = CreateCompatibleDC(param_1);
-  hdc_03 = CreateCompatibleDC(param_1);
-  h = CreateBitmap(local_20.x,local_20.y,1,1,(void *)0x0);
-  h_00 = CreateBitmap(local_20.x,local_20.y,1,1,(void *)0x0);
-  h_01 = CreateCompatibleBitmap(param_1,local_20.x,local_20.y);
-  h_02 = CreateCompatibleBitmap(param_1,local_20.x,local_20.y);
-  pvVar1 = SelectObject(hdc_00,h);
-  h_03 = SelectObject(hdc_01,h_00);
-  h_04 = SelectObject(hdc_02,h_01);
-  h_05 = SelectObject(hdc_03,h_02);
-  iMode = GetMapMode(param_1);
-  SetMapMode(hdc,iMode);
-  BitBlt(hdc_03,0,0,local_20.x,local_20.y,hdc,0,0,0xcc0020);
-  color = SetBkColor(hdc,param_5);
-  BitBlt(hdc_01,0,0,local_20.x,local_20.y,hdc,0,0,0xcc0020);
-  SetBkColor(hdc,color);
-  BitBlt(hdc_00,0,0,local_20.x,local_20.y,hdc_01,0,0,0x330008);
-  BitBlt(hdc_02,0,0,local_20.x,local_20.y,param_1,(int)param_3,(int)param_4,0xcc0020);
-  BitBlt(hdc_02,0,0,local_20.x,local_20.y,hdc_01,0,0,0x8800c6);
-  BitBlt(hdc,0,0,local_20.x,local_20.y,hdc_00,0,0,0x8800c6);
-  BitBlt(hdc_02,0,0,local_20.x,local_20.y,hdc,0,0,0xee0086);
-  BitBlt(param_1,(int)param_3,(int)param_4,local_20.x,local_20.y,hdc_02,0,0,0xcc0020);
-  BitBlt(hdc,0,0,local_20.x,local_20.y,hdc_03,0,0,0xcc0020);
-  pvVar1 = SelectObject(hdc_00,pvVar1);
-  DeleteObject(pvVar1);
-  pvVar1 = SelectObject(hdc_01,h_03);
-  DeleteObject(pvVar1);
-  pvVar1 = SelectObject(hdc_02,h_04);
-  DeleteObject(pvVar1);
-  pvVar1 = SelectObject(hdc_03,h_05);
-  DeleteObject(pvVar1);
-  DeleteDC(hdc_02);
-  DeleteDC(hdc_00);
-  DeleteDC(hdc_01);
-  DeleteDC(hdc_03);
-  DeleteDC(hdc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004967E0
-// GHIDRA_NAME OrphanCallChain_C42_I285_004967e0
-// GHIDRA_PROTO undefined OrphanCallChain_C42_I285_004967e0()
-
-void OrphanCallChain_C42_I285_004967e0
-               (HDC param_1,HANDLE param_2,short param_3,short param_4,COLORREF param_5,
-               short param_6,short param_7,short param_8,short param_9)
-
-{
-  HDC hdc;
-  HDC hdc_00;
-  HDC hdc_01;
-  HDC hdc_02;
-  HDC hdc_03;
-  HBITMAP h;
-  HBITMAP h_00;
-  HBITMAP h_01;
-  HBITMAP h_02;
-  HGDIOBJ pvVar1;
-  HGDIOBJ h_03;
-  HGDIOBJ h_04;
-  HGDIOBJ h_05;
-  int iMode;
-  COLORREF color;
-  tagPOINT local_20;
-  undefined1 local_18 [4];
-  int local_14;
-  int local_10;
-  
-  hdc = CreateCompatibleDC(param_1);
-  SelectObject(hdc,param_2);
-  GetObjectA(param_2,0x18,local_18);
-  local_20.x = local_14;
-  local_20.y = local_10;
-  DPtoLP(hdc,&local_20,1);
-  hdc_00 = CreateCompatibleDC(param_1);
-  hdc_01 = CreateCompatibleDC(param_1);
-  hdc_02 = CreateCompatibleDC(param_1);
-  hdc_03 = CreateCompatibleDC(param_1);
-  h = CreateBitmap(local_20.x,local_20.y,1,1,(void *)0x0);
-  h_00 = CreateBitmap(local_20.x,local_20.y,1,1,(void *)0x0);
-  h_01 = CreateCompatibleBitmap(param_1,local_20.x,local_20.y);
-  h_02 = CreateCompatibleBitmap(param_1,local_20.x,local_20.y);
-  pvVar1 = SelectObject(hdc_00,h);
-  h_03 = SelectObject(hdc_01,h_00);
-  h_04 = SelectObject(hdc_02,h_01);
-  h_05 = SelectObject(hdc_03,h_02);
-  iMode = GetMapMode(param_1);
-  SetMapMode(hdc,iMode);
-  BitBlt(hdc_03,0,0,local_20.x,local_20.y,hdc,0,0,0xcc0020);
-  color = SetBkColor(hdc,param_5);
-  BitBlt(hdc_01,0,0,local_20.x,local_20.y,hdc,0,0,0xcc0020);
-  SetBkColor(hdc,color);
-  BitBlt(hdc_00,0,0,local_20.x,local_20.y,hdc_01,0,0,0x330008);
-  BitBlt(hdc_02,0,0,local_20.x,local_20.y,param_1,(int)param_3,(int)param_4,0xcc0020);
-  BitBlt(hdc_02,0,0,local_20.x,local_20.y,hdc_01,0,0,0x8800c6);
-  BitBlt(hdc,0,0,local_20.x,local_20.y,hdc_00,0,0,0x8800c6);
-  BitBlt(hdc_02,0,0,local_20.x,local_20.y,hdc,0,0,0xee0086);
-  BitBlt(param_1,(int)param_3,(int)param_4,(int)param_8,(int)param_9,hdc_02,(int)param_6,
-         (int)param_7,0xcc0020);
-  BitBlt(hdc,0,0,local_20.x,local_20.y,hdc_03,0,0,0xcc0020);
-  pvVar1 = SelectObject(hdc_00,pvVar1);
-  DeleteObject(pvVar1);
-  pvVar1 = SelectObject(hdc_01,h_03);
-  DeleteObject(pvVar1);
-  pvVar1 = SelectObject(hdc_02,h_04);
-  DeleteObject(pvVar1);
-  pvVar1 = SelectObject(hdc_03,h_05);
-  DeleteObject(pvVar1);
-  DeleteDC(hdc_02);
-  DeleteDC(hdc_00);
-  DeleteDC(hdc_01);
-  DeleteDC(hdc_03);
-  DeleteDC(hdc);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00496B80
-// GHIDRA_NAME BlitBitmapResourceToTemporaryCompatibleDcAndPresent
-// GHIDRA_PROTO undefined BlitBitmapResourceToTemporaryCompatibleDcAndPresent()
-
-void BlitBitmapResourceToTemporaryCompatibleDcAndPresent
-               (int param_1,int param_2,short param_3,short param_4,undefined4 param_5,short param_6
-               ,short param_7,short param_8,short param_9)
-
-{
-  int iVar1;
-  int *piVar2;
-  undefined4 uVar3;
-  HDC pHVar4;
-  HGDIOBJ h;
-  HDC hdcSrc;
-  undefined4 *unaff_FS_OFFSET;
-  int local_14;
-  int local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f6ba;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  iVar1 = AllocateWithFallbackHandler(0x38);
-  local_4 = 0;
-  if (iVar1 == 0) {
-    piVar2 = (int *)0x0;
-  }
-  else {
-    piVar2 = (int *)AllocateBitmapSurfaceHeaderAndPixelBuffer
-                              ((int)param_8,(int)param_9,
-                               *(undefined2 *)(*(int *)(param_2 + 0x10) + 0xe));
-  }
-  local_4 = 0xffffffff;
-  EnsureBitmapSurfaceDibSectionCreated(param_1);
-  uVar3 = TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0();
-  CopyRgbQuadTableToBitmapSurfacePalette(uVar3);
-  if (param_1 == 0) {
-    pHVar4 = (HDC)0x0;
-  }
-  else {
-    pHVar4 = *(HDC *)(param_1 + 4);
-  }
-  pHVar4 = CreateCompatibleDC(pHVar4);
-  h = SelectObject(pHVar4,(HGDIOBJ)piVar2[2]);
-  if (param_1 == 0) {
-    hdcSrc = (HDC)0x0;
-  }
-  else {
-    hdcSrc = *(HDC *)(param_1 + 4);
-  }
-  BitBlt(pHVar4,0,0,(int)param_8,(int)param_9,hdcSrc,(int)param_3,(int)param_4,0xcc0020);
-  BlitSurfaceRectSkippingTransparentColor
-            (piVar2,(int)param_6,(int)param_7,(int)param_8,(int)param_9,0,0,param_5);
-  local_14 = (int)param_3;
-  local_10 = (int)param_4;
-  StretchDibitsFromStoredBitmapToHdc(param_1,&local_14);
-  SelectObject(pHVar4,h);
-  DeleteDC(pHVar4);
-  if (piVar2 != (int *)0x0) {
-    (**(code **)(*piVar2 + 4))(1);
-  }
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00496D40
-// GHIDRA_NAME BlitRectWithOptionalTransparency
-// GHIDRA_PROTO void __stdcall BlitRectWithOptionalTransparency(astruct_17 * srcSurface, astruct_18 * dstSurface, RECT * srcRect, RECT * dstRect, byte blitFlags, astruct_19 * renderCtx)
-
-void BlitRectWithOptionalTransparency
-               (astruct_17 *srcSurface,astruct_18 *dstSurface,RECT *srcRect,RECT *dstRect,
-               byte blitFlags,astruct_19 *renderCtx)
-
-{
-  HDC dstDC;
-  HGDIOBJ prevBitmap;
-  void *pvVar1;
-  int srcPitch;
-  int dstPitch;
-  uint count;
-  uint rowBytes;
-  char *srcPtr;
-  char *dstPtr;
-  int rowCount;
-  char *rowSrcPtr;
-  LONG dstY;
-  char *rowDstPtr;
-  LONG dstX;
-  undefined4 *unaff_FS_OFFSET;
-  tagRECT srcRectCopyA;
-  tagRECT srcRectCopyB;
-  tagRECT dstRectCopyA;
-  tagRECT dstRectCopyB;
-  undefined4 sehPrev;
-  undefined1 *sehHandler;
-  undefined4 sehState;
-  HDC srcDC;
-  char srcPixel;
-  LONG srcX;
-  LONG srcY;
-  char transparentColor;
-  undefined4 zeroFlags;
-  
-  sehPrev = *unaff_FS_OFFSET;
-  sehState = 0xffffffff;
-  sehHandler = &LAB_0062f6d8;
-  *unaff_FS_OFFSET = &sehPrev;
-  if (renderCtx != (astruct_19 *)0x0) {
-    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(renderCtx->field0_0x0 + 0x14);
-  }
-  if ((dstSurface == (astruct_18 *)&DAT_006a1ca4) || (renderCtx != (astruct_19 *)0x0)) {
-    pvVar1 = DAT_006a1da0;
-    if (DAT_006a1da0 == (void *)0x0) {
-      pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
-    }
-    zeroFlags = 0;
-    TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(pvVar1,0);
-    TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
-              (pvVar1,zeroFlags);
-    if ((blitFlags & 0x24) == 0x24) {
-      CopyRect(&srcRectCopyA,srcRect);
-      CopyRect(&srcRectCopyB,srcRect);
-      CopyRect(&dstRectCopyA,dstRect);
-      CopyRect(&dstRectCopyB,dstRect);
-      pvVar1 = DAT_006a1da0;
-      if (DAT_006a1da0 == (void *)0x0) {
-        pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
-      }
-      StretchDibitsWithCopiedPaletteTable
-                (pvVar1,0x10,dstRect->left + DAT_006a1d80,dstRect->top + DAT_006a1d84,
-                 dstRectCopyB.right - dstRectCopyB.left,dstRectCopyA.bottom - dstRectCopyA.top,
-                 srcRect->left,srcRect->top,srcRectCopyB.right - srcRectCopyB.left,
-                 srcRectCopyA.bottom - srcRectCopyA.top);
-    }
-    else {
-      CDC::CDC();
-      sehState = 0;
-      pvVar1 = DAT_006a1da0;
-      if ((DAT_006a1da0 != (void *)0x0) ||
-         (dstDC = (HDC)0x0, pvVar1 = g_pScopedMapQuickDrawDcHandleObject,
-         g_pScopedMapQuickDrawDcHandleObject != (void *)0x0)) {
-        dstDC = *(HDC *)((int)pvVar1 + 4);
-      }
-      dstDC = CreateCompatibleDC(dstDC);
-      TCivDescription::AttachHdcToDcWrapper(dstDC);
-      prevBitmap = SelectObject((HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x4c) &
-                                     srcRectCopyA.top),*(HGDIOBJ *)(srcSurface->field22_0x1c + 8));
-      if (dstSurface == (astruct_18 *)&DAT_006a1ca4) {
-        CopyRect(&dstRectCopyB,srcRect);
-        CopyRect(&dstRectCopyA,srcRect);
-        if (DAT_006a1da0 == (void *)0x0) {
-          _blitFlags = g_pScopedMapQuickDrawDcHandleObject;
-        }
-        else {
-          _blitFlags = DAT_006a1da0;
-        }
-        srcY = srcRect->top;
-        srcX = srcRect->left;
-        rowCount = dstRectCopyB.bottom - dstRectCopyB.top;
-        srcPitch = dstRectCopyA.right - dstRectCopyA.left;
-        dstY = dstRect->top + DAT_006a1d84;
-        dstX = dstRect->left + DAT_006a1d80;
-        srcDC = (HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x4c) & srcRectCopyA.top);
-        dstDC = *(HDC *)((int)_blitFlags + 4);
-      }
-      else {
-        CopyRect(&dstRectCopyB,srcRect);
-        CopyRect(&dstRectCopyA,srcRect);
-        pvVar1 = DAT_006a1da0;
-        if (DAT_006a1da0 == (void *)0x0) {
-          pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
-        }
-        srcY = srcRect->top;
-        srcX = srcRect->left;
-        rowCount = dstRectCopyB.bottom - dstRectCopyB.top;
-        dstX = dstRect->left;
-        srcPitch = dstRectCopyA.right - dstRectCopyA.left;
-        dstY = dstRect->top;
-        srcDC = (HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x4c) & srcRectCopyA.top);
-        dstDC = *(HDC *)((int)pvVar1 + 4);
-      }
-      BitBlt(dstDC,dstX,dstY,srcPitch,rowCount,srcDC,srcX,srcY,0xcc0020);
-      if (prevBitmap != (HGDIOBJ)0x0) {
-        SelectObject((HDC)srcRectCopyA.top,prevBitmap);
-      }
-      sehState = 0xffffffff;
-      DestroyCDCAndDeleteOwnedHdc();
-    }
-  }
-  else {
-    srcPitch = (int)(short)srcSurface->field1_0x4;
-    dstPitch = (int)(short)dstSurface->field1_0x4;
-    srcPtr = (char *)(srcRect->top * srcPitch + srcSurface->field0_0x0 + srcRect->left);
-    dstPtr = (char *)(dstRect->top * dstPitch + dstRect->left + dstSurface->field0_0x0);
-    CopyRect(&srcRectCopyA,srcRect);
-    rowCount = srcRectCopyA.bottom - srcRectCopyA.top;
-    CopyRect(&srcRectCopyA,srcRect);
-    transparentColor = DAT_00695100;
-    rowBytes = srcRectCopyA.right - srcRectCopyA.left;
-    if (rowCount < 0) {
-      rowCount = -rowCount;
-    }
-    if ((blitFlags & 0x24) == 0x24) {
-      for (; count = rowBytes, rowCount != 0; rowCount = rowCount + -1) {
-        for (; count != 0; count = count - 1) {
-          srcPixel = *srcPtr;
-          srcPtr = srcPtr + 1;
-          if (srcPixel != transparentColor) {
-            *dstPtr = srcPixel;
-          }
-          dstPtr = dstPtr + 1;
-        }
-        srcPtr = srcPtr + (srcPitch - rowBytes);
-        dstPtr = dstPtr + (dstPitch - rowBytes);
-      }
-    }
-    else {
-      for (; rowCount != 0; rowCount = rowCount + -1) {
-        rowSrcPtr = srcPtr;
-        rowDstPtr = dstPtr;
-        for (count = rowBytes >> 2; count != 0; count = count - 1) {
-          *(undefined4 *)rowDstPtr = *(undefined4 *)rowSrcPtr;
-          rowSrcPtr = rowSrcPtr + 4;
-          rowDstPtr = rowDstPtr + 4;
-        }
-        for (count = rowBytes & 3; count != 0; count = count - 1) {
-          *rowDstPtr = *rowSrcPtr;
-          rowSrcPtr = rowSrcPtr + 1;
-          rowDstPtr = rowDstPtr + 1;
-        }
-        srcPtr = srcPtr + srcPitch;
-        dstPtr = dstPtr + dstPitch;
-      }
-    }
-  }
-  if (renderCtx != (astruct_19 *)0x0) {
-    TDropShadowText::SelectClipRegionOnPrimaryAndSecondaryDc(0);
-  }
-  *unaff_FS_OFFSET = sehPrev;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497230
-// GHIDRA_NAME InitializeGlobalRectDefaultsIfUninitialized
-// GHIDRA_PROTO undefined InitializeGlobalRectDefaultsIfUninitialized()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-undefined4 * InitializeGlobalRectDefaultsIfUninitialized(void)
-
-{
-  if (DAT_006a1dc0 == (undefined *)0x0) {
-    _DAT_006a1d28 = 0x1e0;
-    DAT_006a1dc0 = &DAT_006a1d18;
-    _DAT_006a1d18 = 0;
-    _DAT_006a1d1c = 0;
-    _DAT_006a1d20 = 0;
-    _DAT_006a1d24 = 0x280;
-  }
-  return &DAT_006a1dc0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004972A0
-// GHIDRA_NAME InitializeTurnOrderNavigationDialogByViewportSize_Impl
-// GHIDRA_PROTO undefined InitializeTurnOrderNavigationDialogByViewportSize_Impl()
-
-undefined4 InitializeTurnOrderNavigationDialogByViewportSize_Impl(void)
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004972C0
-// GHIDRA_NAME ReturnConstantTrueQuickDrawFlag
-// GHIDRA_PROTO undefined ReturnConstantTrueQuickDrawFlag()
-
-undefined1 ReturnConstantTrueQuickDrawFlag(void)
-
-{
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004972E0
-// GHIDRA_NAME NoOpQuickDrawLifecycleHookB
-// GHIDRA_PROTO undefined NoOpQuickDrawLifecycleHookB()
-
-void NoOpQuickDrawLifecycleHookB(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497300
-// GHIDRA_NAME GetSurfaceHeaderFromSurfaceObject
-// GHIDRA_PROTO undefined GetSurfaceHeaderFromSurfaceObject()
-
-undefined4 GetSurfaceHeaderFromSurfaceObject(undefined4 *param_1)
-
-{
-  return *(undefined4 *)*param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497320
-// GHIDRA_NAME AcquireReusableQuickDrawSurface
-// GHIDRA_PROTO undefined AcquireReusableQuickDrawSurface()
-
-int * __fastcall AcquireReusableQuickDrawSurface(int *param_1)
-
-{
-  int iVar1;
-  
-  if (g_pReusableQuickDrawSurfaceListHead != (void *)0x0) {
-    *param_1 = (int)g_pReusableQuickDrawSurfaceListHead;
-    g_pReusableQuickDrawSurfaceListHead = (void *)0x0;
-    return param_1;
-  }
-  iVar1 = CreateClipStateRegionWrapperObject();
-  *param_1 = iVar1;
-  if (iVar1 == 0) {
-    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x7f6);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497390
-// GHIDRA_NAME ReleaseOrCacheQuickDrawSurface
-// GHIDRA_PROTO undefined ReleaseOrCacheQuickDrawSurface()
-
-void __fastcall ReleaseOrCacheQuickDrawSurface(int *param_1)
-
-{
-  int *piVar1;
-  int iVar2;
-  
-  if (g_pReusableQuickDrawSurfaceListHead != (void *)0x0) {
-    piVar1 = (int *)*param_1;
-    if ((piVar1 != (int *)0x0) && (iVar2 = *piVar1, iVar2 != 0)) {
-      WrapperFor_DeleteRegionHandleFromClipState_At00495520();
-      FreeHeapBufferIfNotNull(iVar2);
-    }
-    FreeHeapBufferIfNotNull(piVar1);
-    *param_1 = 0;
-    return;
-  }
-  g_pReusableQuickDrawSurfaceListHead = (void *)*param_1;
-  *param_1 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004974F0
-// GHIDRA_NAME ReleaseGlobalClipRegionHandleListAndReset_006a1c98
-// GHIDRA_PROTO undefined ReleaseGlobalClipRegionHandleListAndReset_006a1c98()
-
-void ReleaseGlobalClipRegionHandleListAndReset_006a1c98(void)
-
-{
-  int iVar1;
-  void *pvVar2;
-  
-  pvVar2 = g_pReusableQuickDrawSurfaceListHead;
-  if ((g_pReusableQuickDrawSurfaceListHead != (void *)0x0) &&
-     (iVar1 = *(int *)g_pReusableQuickDrawSurfaceListHead, iVar1 != 0)) {
-    WrapperFor_DeleteRegionHandleFromClipState_At00495520();
-    FreeHeapBufferIfNotNull(iVar1);
-  }
-  FreeHeapBufferIfNotNull(pvVar2);
-  g_pReusableQuickDrawSurfaceListHead = (void *)0x0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497540
-// GHIDRA_NAME Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497540
-// GHIDRA_PROTO undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497540()
-
-void Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497540
-               (int *param_1,int *param_2,int *param_3)
-
-{
-  LPRECT ptVar1;
-  char cVar2;
-  BOOL BVar3;
-  HRGN pHVar4;
-  LONG LVar5;
-  HRGN hrgnSrc1;
-  HRGN hrgnDst;
-  int iMode;
-  tagRECT local_10;
-  
-  if (param_1 == (int *)0x0) {
-LAB_00497589:
-    cVar2 = '\x01';
-  }
-  else {
-    ptVar1 = (LPRECT)*param_1;
-    LVar5 = 0;
-    if (ptVar1 != (LPRECT)0xffffffec) {
-      LVar5 = ptVar1[1].right;
-    }
-    if (LVar5 == 0) goto LAB_00497589;
-    GetRgnBox((HRGN)ptVar1[1].right,ptVar1);
-    CopyRect(&local_10,(RECT *)*param_1);
-    BVar3 = IsRectEmpty(&local_10);
-    cVar2 = (char)BVar3;
-  }
-  if (cVar2 != '\0') {
-    if (param_2 == (int *)0x0) {
-LAB_004975c5:
-      cVar2 = '\x01';
-    }
-    else {
-      ptVar1 = (LPRECT)*param_2;
-      LVar5 = 0;
-      if (ptVar1 != (LPRECT)0xffffffec) {
-        LVar5 = ptVar1[1].right;
-      }
-      if (LVar5 == 0) goto LAB_004975c5;
-      GetRgnBox((HRGN)ptVar1[1].right,ptVar1);
-      CopyRect(&local_10,(RECT *)*param_2);
-      BVar3 = IsRectEmpty(&local_10);
-      cVar2 = (char)BVar3;
-    }
-    if (cVar2 != '\0') {
-      DeleteObject();
-      pHVar4 = CreateRectRgn(0,0,0,0);
-      CBrush::AttachRegionHandleToClipStateAndRegister(pHVar4);
-      GetRgnBox((HRGN)((LPRECT)*param_3)[1].right,(LPRECT)*param_3);
-      goto LAB_004976fd;
-    }
-  }
-  if (param_1 == (int *)0x0) {
-LAB_00497638:
-    cVar2 = '\x01';
-  }
-  else {
-    ptVar1 = (LPRECT)*param_1;
-    LVar5 = 0;
-    if (ptVar1 != (LPRECT)0xffffffec) {
-      LVar5 = ptVar1[1].right;
-    }
-    if (LVar5 == 0) goto LAB_00497638;
-    GetRgnBox((HRGN)ptVar1[1].right,ptVar1);
-    CopyRect(&local_10,(RECT *)*param_1);
-    BVar3 = IsRectEmpty(&local_10);
-    cVar2 = (char)BVar3;
-  }
-  if (cVar2 == '\0') {
-    if (param_2 == (int *)0x0) {
-LAB_0049769e:
-      cVar2 = '\x01';
-    }
-    else {
-      ptVar1 = (LPRECT)*param_2;
-      LVar5 = 0;
-      if (ptVar1 != (LPRECT)0xffffffec) {
-        LVar5 = ptVar1[1].right;
-      }
-      if (LVar5 == 0) goto LAB_0049769e;
-      GetRgnBox((HRGN)ptVar1[1].right,ptVar1);
-      CopyRect(&local_10,(RECT *)*param_2);
-      BVar3 = IsRectEmpty(&local_10);
-      cVar2 = (char)BVar3;
-    }
-    if (cVar2 == '\0') {
-      pHVar4 = (HRGN)0x0;
-      if (*param_2 != -0x14) {
-        pHVar4 = *(HRGN *)(*param_2 + 0x18);
-      }
-      hrgnSrc1 = (HRGN)0x0;
-      if (*param_1 != -0x14) {
-        hrgnSrc1 = *(HRGN *)(*param_1 + 0x18);
-      }
-      iMode = 4;
-      hrgnDst = *(HRGN *)(*param_3 + 0x18);
-    }
-    else if (*param_1 == -0x14) {
-      iMode = 5;
-      hrgnDst = *(HRGN *)(*param_3 + 0x18);
-      hrgnSrc1 = (HRGN)0x0;
-      pHVar4 = (HRGN)0x0;
-    }
-    else {
-      hrgnSrc1 = *(HRGN *)(*param_1 + 0x18);
-      iMode = 5;
-      pHVar4 = (HRGN)0x0;
-      hrgnDst = *(HRGN *)(*param_3 + 0x18);
-    }
-  }
-  else if (*param_2 == -0x14) {
-    hrgnDst = *(HRGN *)(*param_3 + 0x18);
-    iMode = 5;
-    hrgnSrc1 = (HRGN)0x0;
-    pHVar4 = (HRGN)0x0;
-  }
-  else {
-    hrgnSrc1 = *(HRGN *)(*param_2 + 0x18);
-    hrgnDst = *(HRGN *)(*param_3 + 0x18);
-    iMode = 5;
-    pHVar4 = (HRGN)0x0;
-  }
-  CombineRgn(hrgnDst,hrgnSrc1,pHVar4,iMode);
-LAB_004976fd:
-  GetRgnBox((HRGN)((LPRECT)*param_3)[1].right,(LPRECT)*param_3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004977A0
-// GHIDRA_NAME CombineTwoRegionsIntoDestinationAndUpdateBox
-// GHIDRA_PROTO undefined CombineTwoRegionsIntoDestinationAndUpdateBox()
-
-void CombineTwoRegionsIntoDestinationAndUpdateBox(int *param_1,int *param_2,int *param_3)
-
-{
-  HRGN hrgnSrc2;
-  HRGN hrgnSrc1;
-  
-  hrgnSrc2 = (HRGN)0x0;
-  if (*param_2 != -0x14) {
-    hrgnSrc2 = *(HRGN *)(*param_2 + 0x18);
-  }
-  hrgnSrc1 = (HRGN)0x0;
-  if (*param_1 != -0x14) {
-    hrgnSrc1 = *(HRGN *)(*param_1 + 0x18);
-  }
-  CombineRgn(*(HRGN *)(*param_3 + 0x18),hrgnSrc1,hrgnSrc2,2);
-  GetRgnBox((HRGN)((LPRECT)*param_3)[1].right,(LPRECT)*param_3);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497810
-// GHIDRA_NAME ResetClipRegionAndReadBoundingRect
-// GHIDRA_PROTO undefined ResetClipRegionAndReadBoundingRect()
-
-void ResetClipRegionAndReadBoundingRect(undefined4 *param_1)
-
-{
-  HRGN pHVar1;
-  
-  DeleteObject();
-  pHVar1 = CreateRectRgn(0,0,0,0);
-  CBrush::AttachRegionHandleToClipStateAndRegister(pHVar1);
-  GetRgnBox((HRGN)((LPRECT)*param_1)[1].right,(LPRECT)*param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497940
-// GHIDRA_NAME Helper_Uses_CBrush_At00497940
-// GHIDRA_PROTO undefined Helper_Uses_CBrush_At00497940()
-
-void Helper_Uses_CBrush_At00497940(int *param_1)
-
-{
-  void *pvVar1;
-  HRGN hrgn;
-  undefined4 *unaff_FS_OFFSET;
-  uint local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f720;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  FUN_00613b5f(g_Quick_Draw_Color_State_006950FC);
-  local_4 = 0;
-  pvVar1 = DAT_006a1da0;
-  if (DAT_006a1da0 == (void *)0x0) {
-    pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  if (pvVar1 != (void *)0x0) {
-    pvVar1 = g_pScopedMapQuickDrawDcHandleObject;
-    if (DAT_006a1da0 != (void *)0x0) {
-      pvVar1 = DAT_006a1da0;
-    }
-    hrgn = (HRGN)0x0;
-    if (*param_1 != -0x14) {
-      hrgn = *(HRGN *)(*param_1 + 0x18);
-    }
-    FillRgn(*(HDC *)((int)pvVar1 + 4),hrgn,
-            (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x14) & local_10));
-  }
-  local_4 = 1;
-  DeleteObject();
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497A10
-// GHIDRA_NAME Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10
-// GHIDRA_PROTO undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10()
-
-void Helper_Uses_AttachRegionHandleToClipStateAndRegister_At00497a10(int *param_1)
-
-{
-  HBRUSH pHVar1;
-  void *pvVar2;
-  HRGN hrgn;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f740;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_4 = 0;
-  pHVar1 = CreateSolidBrush(g_Quick_Draw_Color_State_006950FC);
-  CBrush::AttachRegionHandleToClipStateAndRegister(pHVar1);
-  pvVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (void *)0x0) {
-    pvVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  if (pvVar2 != (void *)0x0) {
-    pvVar2 = g_pScopedMapQuickDrawDcHandleObject;
-    if (DAT_006a1da0 != (void *)0x0) {
-      pvVar2 = DAT_006a1da0;
-    }
-    hrgn = (HRGN)0x0;
-    if (*param_1 != -0x14) {
-      hrgn = *(HRGN *)(*param_1 + 0x18);
-    }
-    FillRgn(*(HDC *)((int)pvVar2 + 4),hrgn,(HBRUSH)0x0);
-  }
-  local_4 = 1;
-  DeleteObject();
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497B30
-// GHIDRA_NAME InitializeCityBuildingControlRegions_Impl
-// GHIDRA_PROTO undefined InitializeCityBuildingControlRegions_Impl()
-
-void InitializeCityBuildingControlRegions_Impl(int *param_1,int param_2,int param_3)
-
-{
-  OffsetRgn(*(HRGN *)(*param_1 + 0x18),param_2,param_3);
-  GetRgnBox((HRGN)((LPRECT)*param_1)[1].right,(LPRECT)*param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497BB0
-// GHIDRA_NAME CombineOptionalSourceRegionIntoDestinationAndUpdateBox
-// GHIDRA_PROTO undefined CombineOptionalSourceRegionIntoDestinationAndUpdateBox()
-
-void CombineOptionalSourceRegionIntoDestinationAndUpdateBox(int *param_1,int *param_2)
-
-{
-  HRGN hrgnSrc1;
-  
-  hrgnSrc1 = (HRGN)0x0;
-  if (*param_1 != -0x14) {
-    hrgnSrc1 = *(HRGN *)(*param_1 + 0x18);
-  }
-  CombineRgn(*(HRGN *)(*param_2 + 0x18),hrgnSrc1,(HRGN)0x0,5);
-  GetRgnBox((HRGN)((LPRECT)*param_2)[1].right,(LPRECT)*param_2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497C00
-// GHIDRA_NAME NoOpRuntimeCallback_00497c00
-// GHIDRA_PROTO undefined NoOpRuntimeCallback_00497c00()
-
-undefined4 NoOpRuntimeCallback_00497c00(void)
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497C80
-// GHIDRA_NAME SetQuickDrawTextOriginWithContextOffset
-// GHIDRA_PROTO undefined SetQuickDrawTextOriginWithContextOffset()
-
-void SetQuickDrawTextOriginWithContextOffset(short param_1,short param_2)
-
-{
-  int iVar1;
-  undefined1 local_8 [8];
-  
-  iVar1 = NoOpRuntimeCallback_00489a70();
-  if (iVar1 != 0) {
-    DAT_006a1d00 = (int)param_1;
-    if (PTR_DAT_006950f8 == &DAT_006a1ca0) {
-      DAT_006a1d00 = DAT_006a1d00 + DAT_006a1d80;
-      DAT_006a1d04 = param_2 + DAT_006a1d84;
-    }
-    else {
-      DAT_006a1d04 = (int)param_2;
-    }
-    FUN_006130a0(local_8,DAT_006a1d00,DAT_006a1d04);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497D10
-// GHIDRA_NAME DrawCenteredGuideLineOnMapDc
-// GHIDRA_PROTO undefined DrawCenteredGuideLineOnMapDc()
-
-void DrawCenteredGuideLineOnMapDc(short param_1,short param_2)
-
-{
-  int iVar1;
-  undefined4 uVar2;
-  void *this;
-  undefined4 *unaff_FS_OFFSET;
-  undefined **local_1c [2];
-  undefined1 local_14 [8];
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f760;
-  *unaff_FS_OFFSET = &local_c;
-  iVar1 = NoOpRuntimeCallback_00489a70();
-  if (iVar1 != 0) {
-    iVar1 = g_nQuickDrawStrokeStylePrimary;
-    if (g_nQuickDrawStrokeStylePrimary <= g_nQuickDrawStrokeStyleSecondary) {
-      iVar1 = g_nQuickDrawStrokeStyleSecondary;
-    }
-    FUN_00613ab9(0,iVar1,g_Quick_Draw_Color_State_006950FC);
-    local_4 = 0;
-    uVar2 = SelectObject(local_1c);
-    FUN_006130a0(local_14,(g_nQuickDrawStrokeStylePrimary >> 1) + DAT_006a1d00,
-                 (g_nQuickDrawStrokeStyleSecondary >> 1) + DAT_006a1d04);
-    DAT_006a1d00 = (int)param_1;
-    if (PTR_DAT_006950f8 == &DAT_006a1ca0) {
-      DAT_006a1d00 = DAT_006a1d00 + DAT_006a1d80;
-      DAT_006a1d04 = param_2 + DAT_006a1d84;
-    }
-    else {
-      DAT_006a1d04 = (int)param_2;
-    }
-    this = DAT_006a1da0;
-    if (DAT_006a1da0 == (void *)0x0) {
-      this = g_pScopedMapQuickDrawDcHandleObject;
-    }
-    LineTo(this,(g_nQuickDrawStrokeStylePrimary >> 1) + DAT_006a1d00,
-           (g_nQuickDrawStrokeStyleSecondary >> 1) + DAT_006a1d04);
-    FUN_006130a0(local_14,DAT_006a1d00,DAT_006a1d04);
-    SelectObject(uVar2);
-    local_1c[0] = &PTR_LAB_00671054;
-    local_4 = 1;
-    DeleteObject();
-  }
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497EF0
-// GHIDRA_NAME RebuildSpriteNonTransparentPolygonRegion
-// GHIDRA_PROTO undefined RebuildSpriteNonTransparentPolygonRegion()
-
-undefined4 RebuildSpriteNonTransparentPolygonRegion(undefined4 param_1,int param_2)
-
-{
-  int *piVar1;
-  HRGN pHVar2;
-  undefined4 uVar3;
-  
-  piVar1 = TTransFocusAnimation::Sprite__CollectNonTransparentPixels
-                     (*(TTransFocusAnimation **)(param_2 + 0x1c),0xffffffff);
-  DeleteObject();
-  pHVar2 = CreatePolygonRgn((POINT *)(piVar1 + 2),*piVar1,2);
-  uVar3 = CBrush::AttachRegionHandleToClipStateAndRegister(pHVar2);
-  FreeHeapBufferIfNotNull(piVar1);
-  return uVar3;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497F60
-// GHIDRA_NAME RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl
-// GHIDRA_PROTO undefined RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl()
-
-void RebuildMapTileNeighborHighlightPolygonsForAllTiles_Impl(void)
-
-{
-  DAT_006a1da4 = CreateRectRgn(0,0,0,0);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00497F90
-// GHIDRA_NAME WrapperFor_LookupHandleMapEntryWithCreate_At00497f90
-// GHIDRA_PROTO undefined WrapperFor_LookupHandleMapEntryWithCreate_At00497f90()
-
-void WrapperFor_LookupHandleMapEntryWithCreate_At00497f90(int *param_1)
-
-{
-  int iVar1;
-  HRGN hrgnSrc1;
-  
-  iVar1 = FromHandle_613a36(DAT_006a1da4);
-  hrgnSrc1 = (HRGN)0x0;
-  if (iVar1 != 0) {
-    hrgnSrc1 = *(HRGN *)(iVar1 + 4);
-  }
-  CombineRgn(*(HRGN *)(*param_1 + 0x18),hrgnSrc1,(HRGN)0x0,5);
-  DeleteObject(DAT_006a1da4);
-  DAT_006a1da4 = (HGDIOBJ)0x0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498070
-// GHIDRA_NAME IntersectClipRegionWithRectAndUpdateBounds
-// GHIDRA_PROTO undefined IntersectClipRegionWithRectAndUpdateBounds()
-
-void IntersectClipRegionWithRectAndUpdateBounds(int *param_1,int *param_2)
-
-{
-  int iVar1;
-  HRGN pHVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f780;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_4 = 0;
-  pHVar2 = CreateRectRgn(*param_2,param_2[1],param_2[2],param_2[3]);
-  CBrush::AttachRegionHandleToClipStateAndRegister(pHVar2);
-  iVar1 = *param_1;
-  if (iVar1 == -0x14) {
-    pHVar2 = (HRGN)0x0;
-  }
-  else {
-    pHVar2 = *(HRGN *)(iVar1 + 0x18);
-  }
-  CombineRgn(*(HRGN *)(iVar1 + 0x18),(HRGN)0x0,pHVar2,1);
-  GetRgnBox((HRGN)((LPRECT)*param_1)[1].right,(LPRECT)*param_1);
-  DeleteObject();
-  local_4 = 1;
-  DeleteObject();
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498180
-// GHIDRA_NAME DrawFrameRectOrUpdateClipRegion
-// GHIDRA_PROTO undefined DrawFrameRectOrUpdateClipRegion()
-
-void DrawFrameRectOrUpdateClipRegion(RECT *param_1)
-
-{
-  HRGN pHVar1;
-  void *pvVar2;
-  undefined4 *unaff_FS_OFFSET;
-  undefined **ppuVar3;
-  uint local_20;
-  tagRECT local_1c;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  pHVar1 = DAT_006a1da4;
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f7b0;
-  *unaff_FS_OFFSET = &local_c;
-  if (pHVar1 != (HRGN)0x0) {
-    ppuVar3 = &CBrush::_vftable_;
-    local_4 = 0;
-    pHVar1 = CreateRectRgnIndirect(param_1);
-    CBrush::AttachRegionHandleToClipStateAndRegister(pHVar1);
-    CombineRgn(DAT_006a1da4,DAT_006a1da4,(HRGN)0x0,3);
-    DeleteObject(ppuVar3);
-    local_4 = 1;
-    DeleteObject(&PTR_LAB_00671054);
-    *unaff_FS_OFFSET = local_c;
-    return;
-  }
-  FUN_00613b5f(g_Quick_Draw_Color_State_006950FC);
-  local_4 = 2;
-  CopyRect(&local_1c,param_1);
-  if (PTR_DAT_006950f8 == &DAT_006a1ca0) {
-    OffsetRect(&local_1c,DAT_006a1d80,DAT_006a1d84);
-  }
-  pvVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (void *)0x0) {
-    pvVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  FrameRect(*(HDC *)((int)pvVar2 + 4),&local_1c,
-            (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x24) & local_20));
-  local_4 = 3;
-  DeleteObject(&PTR_LAB_00671054);
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004985B0
-// GHIDRA_NAME InitializeBrushStateVtableAndClearHandle
-// GHIDRA_PROTO undefined InitializeBrushStateVtableAndClearHandle()
-
-void __fastcall InitializeBrushStateVtableAndClearHandle(undefined4 *param_1)
-
-{
-  *param_1 = &PTR_LAB_00671054;
-  param_1[1] = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498610
-// GHIDRA_NAME WrapperFor_DeleteRegionHandleFromClipState_At00498610
-// GHIDRA_PROTO undefined WrapperFor_DeleteRegionHandleFromClipState_At00498610()
-
-void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At00498610(undefined4 *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f830;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_LAB_0064b948;
-  local_4 = 0;
-  SelectObject(param_1[2]);
-  *param_1 = &PTR_LAB_00671054;
-  local_4 = 1;
-  DeleteObject();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498980
-// GHIDRA_NAME FillRectWithQuickDrawBrushAndContextOffset
-// GHIDRA_PROTO undefined FillRectWithQuickDrawBrushAndContextOffset()
-
-void FillRectWithQuickDrawBrushAndContextOffset(RECT *param_1)
-
-{
-  int iVar1;
-  void *pvVar2;
-  undefined4 *unaff_FS_OFFSET;
-  uint local_30;
-  tagRECT local_2c;
-  tagRECT local_1c;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f8b0;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  FUN_00613b5f(g_Quick_Draw_Color_State_006950FC);
-  local_4 = 0;
-  CopyRect(&local_2c,param_1);
-  CopyRect(&local_1c,param_1);
-  if (PTR_DAT_006950f8 == &DAT_006a1ca0) {
     iVar1 = 0;
   }
   else {
-    iVar1 = *(int *)(**(int **)(PTR_DAT_006950f8 + 0x24) + 0x1c);
+    AfxGetModuleState();
+    BeginWaitCursor();
   }
-  if (iVar1 == 0) {
-    OffsetRect(&local_2c,DAT_006a1d80,DAT_006a1d84);
-  }
-  pvVar2 = DAT_006a1da0;
-  if (DAT_006a1da0 == (void *)0x0) {
-    pvVar2 = g_pScopedMapQuickDrawDcHandleObject;
-  }
-  FillRect(*(HDC *)((int)pvVar2 + 4),&local_2c,
-           (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x34) & local_30));
-  local_4 = 1;
-  DeleteObject();
+  DAT_006a2054 = iVar1;
   *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498AA0
-// GHIDRA_NAME GetRegionBoxToRectIfPresent
-// GHIDRA_PROTO undefined GetRegionBoxToRectIfPresent()
-
-BOOL GetRegionBoxToRectIfPresent(undefined4 *param_1)
-
-{
-  LPRECT lprc;
-  LONG LVar1;
-  BOOL BVar2;
-  tagRECT local_10;
-  
-  if (param_1 != (undefined4 *)0x0) {
-    lprc = (LPRECT)*param_1;
-    LVar1 = 0;
-    if (lprc != (LPRECT)0xffffffec) {
-      LVar1 = lprc[1].right;
-    }
-    if (LVar1 != 0) {
-      GetRgnBox((HRGN)lprc[1].right,lprc);
-      CopyRect(&local_10,(RECT *)*param_1);
-      BVar2 = IsRectEmpty(&local_10);
-      return BVar2;
-    }
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498B10
-// GHIDRA_NAME ProbeRectEmptyAfterCopyToLocal
-// GHIDRA_PROTO undefined ProbeRectEmptyAfterCopyToLocal()
-
-void ProbeRectEmptyAfterCopyToLocal(RECT *param_1)
-
-{
-  tagRECT local_10;
-  
-  CopyRect(&local_10,param_1);
-  IsRectEmpty(&local_10);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498B50
-// GHIDRA_NAME AssertQuickDrawFlag6A1DC8NonZero
-// GHIDRA_PROTO undefined AssertQuickDrawFlag6A1DC8NonZero()
-
-void AssertQuickDrawFlag6A1DC8NonZero(void)
-
-{
-  if (DAT_006a1dc8 == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x984);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498B80
-// GHIDRA_NAME AssertQuickDrawFlag6A1DCCNonZero
-// GHIDRA_PROTO undefined AssertQuickDrawFlag6A1DCCNonZero()
-
-undefined4 AssertQuickDrawFlag6A1DCCNonZero(void)
-
-{
-  if (DAT_006a1dcc == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_cpp_00695168,0x988);
-  }
   return 0;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00498BB0
-// GHIDRA_NAME IntersectRectWrapper
-// GHIDRA_PROTO undefined IntersectRectWrapper()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D180
+// GHIDRA_NAME PaintStoredBitmapToWindowClientDc
+// GHIDRA_PROTO undefined PaintStoredBitmapToWindowClientDc()
 
-void IntersectRectWrapper(RECT *param_1,RECT *param_2,LPRECT param_3)
-
-{
-  IntersectRect(param_3,param_1,param_2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498BE0
-// GHIDRA_NAME WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0
-// GHIDRA_PROTO undefined WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0()
-
-void WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0
-               (undefined4 param_1,short param_2,short param_3,short param_4,short param_5)
+void __fastcall PaintStoredBitmapToWindowClientDc(undefined4 param_1)
 
 {
-  HRGN pHVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_68;
+  undefined4 local_64;
+  CPaintDC local_60 [84];
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
   
-  pHVar1 = CreateRectRgn((int)param_2,(int)param_3,(int)param_4,(int)param_5);
-  CBrush::AttachRegionHandleToClipStateAndRegister(pHVar1);
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062fc78;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  CPaintDC(param_1);
+  local_4 = 0;
+  SelectAndRealizeDibPalette(local_60,0);
+  CopyOffset10PointPairToOutOrZero(&local_68);
+  StretchDibitsFromStoredBitmapToHdcSimple(local_60,0,0,local_68,local_64);
+  local_4 = 0xffffffff;
+  CPaintDC::~CPaintDC(local_60);
+  *unaff_FS_OFFSET = local_c;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00498C60
-// GHIDRA_NAME RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl
-// GHIDRA_PROTO undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D290
+// GHIDRA_NAME ResetGlobalPair6A2020And6A2024
+// GHIDRA_PROTO undefined ResetGlobalPair6A2020And6A2024()
 
-void RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void)
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void ResetGlobalPair6A2020And6A2024(void)
 
 {
+  _DAT_006a2020 = 0;
+  _DAT_006a2024 = 0;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00498C80
-// GHIDRA_NAME RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80
-// GHIDRA_PROTO undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80()
-
-void RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498CA0
-// GHIDRA_NAME NoOpCallback_00498ca0
-// GHIDRA_PROTO undefined NoOpCallback_00498ca0()
-
-void NoOpCallback_00498ca0(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498CC0
-// GHIDRA_NAME ShowDialogTemplateE0ModalAndReleaseCapture
-// GHIDRA_PROTO undefined ShowDialogTemplateE0ModalAndReleaseCapture()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D360
+// GHIDRA_NAME PrepareAndCreateDialogFromTemplateResource
+// GHIDRA_PROTO undefined PrepareAndCreateDialogFromTemplateResource()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Shows template-E0 modal dialog and releases mouse capture after close.
+// GHIDRA_COMMENT Prepares dialog template memory and creates dialog instance.
 // GHIDRA_COMMENT
-// GHIDRA_COMMENT Flow:
-// GHIDRA_COMMENT 1. Construct dialog object (template 0xE0).
-// GHIDRA_COMMENT 2. RunDialogModalFromTemplate.
-// GHIDRA_COMMENT 3. Execute post-close hook and ReleaseCapture().
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Chooses template source from embedded pointer or resource ID.
+// GHIDRA_COMMENT - Locks resource bytes when required.
+// GHIDRA_COMMENT - Resolves owner and installs create hook context.
+// GHIDRA_COMMENT - Calls CreateDialogIndirectWithDefaultModule to instantiate dialog.
+// GHIDRA_COMMENT - Marks dialog as created and tracks owner-disabled state.
 // GHIDRA_COMMENT_END
 
-/* Shows template-E0 modal dialog and releases mouse capture after close.
+/* Prepares dialog template memory and creates dialog instance.
    
-   Flow:
-   1. Construct dialog object (template 0xE0).
-   2. RunDialogModalFromTemplate.
-   3. Execute post-close hook and ReleaseCapture(). */
+   Behavior:
+   - Chooses template source from embedded pointer or resource ID.
+   - Locks resource bytes when required.
+   - Resolves owner and installs create hook context.
+   - Calls CreateDialogIndirectWithDefaultModule to instantiate dialog.
+   - Marks dialog as created and tracks owner-disabled state. */
 
-void ShowDialogTemplateE0ModalAndReleaseCapture(void)
+undefined4 __fastcall PrepareAndCreateDialogFromTemplateResource(int param_1)
 
 {
-  undefined4 *unaff_FS_OFFSET;
-  undefined **local_68 [23];
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
+  HMODULE hModule;
+  int iVar1;
+  HRSRC hResInfo;
+  HGLOBAL pvVar2;
+  LPVOID pvVar3;
+  undefined4 uVar4;
+  BOOL BVar5;
   
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f8d0;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  thunk_InitializeDialogTemplateE0(0);
-  local_4 = 0;
-  DoModal_6051b9();
-  WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0();
-  local_68[0] = &PTR_LAB_0064b960;
-  local_4 = 1;
-  ReleaseCapture();
-  local_4 = 0xffffffff;
-  CDialog::~CDialog((CDialog *)local_68);
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498D60
-// GHIDRA_NAME WrapperFor_CDialog_At00498d60
-// GHIDRA_PROTO undefined WrapperFor_CDialog_At00498d60()
-
-void __fastcall WrapperFor_CDialog_At00498d60(CDialog *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062f8e8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *(undefined ***)param_1 = &PTR_LAB_0064b960;
-  local_4 = 0;
-  ReleaseCapture();
-  local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00498DD0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00498dd0
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00498dd0()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00498dd0(undefined4 param_1,byte param_2)
-
-{
-  WrapperFor_CDialog_At00498d60();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  pvVar3 = *(LPVOID *)(param_1 + 0x48);
+  *(undefined4 *)(param_1 + 0x70) = *(undefined4 *)(param_1 + 0x44);
+  if (*(int *)(param_1 + 0x40) != 0) {
+    iVar1 = AfxGetModuleState();
+    hModule = *(HMODULE *)(iVar1 + 0xc);
+    hResInfo = FindResourceA(hModule,*(LPCSTR *)(param_1 + 0x40),(LPCSTR)0x5);
+    pvVar2 = LoadResource(hModule,hResInfo);
+    *(HGLOBAL *)(param_1 + 0x70) = pvVar2;
   }
-  return param_1;
+  if (*(HGLOBAL *)(param_1 + 0x70) != (HGLOBAL)0x0) {
+    pvVar3 = LockResource(*(HGLOBAL *)(param_1 + 0x70));
+  }
+  if (pvVar3 == (LPVOID)0x0) {
+    return 0;
+  }
+  uVar4 = PreModal();
+  *(undefined4 *)(param_1 + 0x6c) = uVar4;
+  AfxUnhookWindowCreate();
+  FromHandle(*(undefined4 *)(param_1 + 0x6c));
+  *(undefined4 *)(param_1 + 0x68) = 0;
+  if (*(HWND *)(param_1 + 0x6c) != (HWND)0x0) {
+    BVar5 = IsWindowEnabled(*(HWND *)(param_1 + 0x6c));
+    if (BVar5 != 0) {
+      EnableWindow(*(HWND *)(param_1 + 0x6c),0);
+      *(undefined4 *)(param_1 + 0x68) = 1;
+    }
+  }
+  AfxHookWindowCreate(param_1);
+  uVar4 = FromHandle(*(undefined4 *)(param_1 + 0x6c));
+  uVar4 = CreateDlgIndirect(pvVar3,uVar4);
+  *(undefined4 *)(param_1 + 0x60) = uVar4;
+  *(undefined4 *)(param_1 + 0x5c) = 1;
+  return 1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00498E00
-// GHIDRA_NAME WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00
-// GHIDRA_PROTO undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D510
+// GHIDRA_NAME WrapperFor_CleanupDialogModalCreateState_At0049d510
+// GHIDRA_PROTO undefined WrapperFor_CleanupDialogModalCreateState_At0049d510()
 
-int __fastcall WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00(int param_1)
+void __fastcall WrapperFor_CleanupDialogModalCreateState_At0049d510(int *param_1)
+
+{
+  if (param_1[0x17] != 0) {
+    (**(code **)(*param_1 + 0x60))();
+    PostModal();
+    param_1[0x19] = 0;
+    param_1[0x18] = 0;
+    param_1[0x17] = 0;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D620
+// GHIDRA_NAME TemporarilyClearAndRestoreUiInvalidationFlag
+// GHIDRA_PROTO undefined TemporarilyClearAndRestoreUiInvalidationFlag()
+
+void TemporarilyClearAndRestoreUiInvalidationFlag(void)
 
 {
   undefined4 uVar1;
   
-  uVar1 = TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(0);
-  uVar1 = thunk_DispatchHandleMapLookupWithReadPtrProbe(uVar1);
-  *(undefined4 *)(param_1 + 4) = uVar1;
-  return param_1;
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00499380
-// GHIDRA_NAME LoadPrimaryDataLibraryWithErrorDialog
-// GHIDRA_PROTO undefined LoadPrimaryDataLibraryWithErrorDialog()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DAE0
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl()
 
-bool __thiscall LoadPrimaryDataLibraryWithErrorDialog(int param_1,LPCSTR param_2)
+void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl(undefined4 *param_1)
 
 {
-  int iVar1;
-  LPCSTR pCVar2;
-  HMODULE pHVar3;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DB60
+// GHIDRA_NAME WrapperFor_ftol_At0049db60
+// GHIDRA_PROTO undefined WrapperFor_ftol_At0049db60()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At0049db60(void)
+
+{
+  _DAT_006a21ac = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DD40
+// GHIDRA_NAME CreateTurnEventPacket_Vtbl0064c130
+// GHIDRA_PROTO undefined CreateTurnEventPacket_Vtbl0064c130()
+
+TCommand * CreateTurnEventPacket_Vtbl0064c130(void)
+
+{
+  TCommand *this;
+  TCommand *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
-  pCVar2 = param_2;
-  local_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f968;
+  puStack_8 = &LAB_0062fcfa;
+  local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  pHVar3 = LoadLibraryExA(param_2,(HANDLE)0x0,2);
-  *(HMODULE *)(param_1 + 0x4c) = pHVar3;
-  if (pHVar3 == (HMODULE)0x0) {
-    InitializeSharedStringRefFromEmpty(&param_2);
-    local_4 = 0;
-    FormatStringWithVarArgsToSharedRef(&param_2,s_A_file_required_by_the_program____00695188,pCVar2)
-    ;
-    WrapperFor_GetOrCreateMfcModuleThreadState_At006185e4(param_2,0,0);
-    local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty(&param_2);
+  this = (TCommand *)AllocateWithFallbackHandler(0x18);
+  local_4 = 0;
+  pTVar1 = (TCommand *)0x0;
+  if (this != (TCommand *)0x0) {
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    this->vftable = (TCommandVtbl *)&TNewGameCommandVtbl_0064c130;
+    pTVar1 = this;
   }
-  iVar1 = *(int *)(param_1 + 0x4c);
   *unaff_FS_OFFSET = local_c;
-  return iVar1 != 0;
+  return pTVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00499440
-// GHIDRA_NAME InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440
-// GHIDRA_PROTO undefined InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440()
-
-undefined4 __thiscall
-InitializeTechHistoryViewTitleAndMapKeyControls_Impl_At00499440
-          (int param_1,TToolBarCluster *param_2,UINT param_3)
-
-{
-  LPSTR lpBuffer;
-  int iVar1;
-  
-  iVar1 = 0x1000;
-  lpBuffer = (LPSTR)TToolBarCluster::GetBuffer(param_2,0x1000);
-  iVar1 = LoadStringA(*(HINSTANCE *)(param_1 + 0x4c),param_3,lpBuffer,iVar1);
-  if (iVar1 == 0) {
-    ReleaseBuffer(param_2,-1);
-    WrapperFor_CopyMemoryPossiblyOverlapping_At00605a78(param_2,(char *)&g_szEmptyString);
-    return 1;
-  }
-  ReleaseBuffer(param_2,-1);
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004994C0
-// GHIDRA_NAME LoadUiStringResourceByGroupAndIndex
-// GHIDRA_PROTO undefined LoadUiStringResourceByGroupAndIndex()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DED0
+// GHIDRA_NAME InitializeGlobalRuntimeSystemsFromConfig
+// GHIDRA_PROTO undefined InitializeGlobalRuntimeSystemsFromConfig()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Loads a localized UI string by group/index using resource id (group*100 + index).
-// GHIDRA_COMMENT On load failure, falls back to DAT_006A13A0-backed shared string assignment.
+// GHIDRA_COMMENT Constructs core runtime singleton systems from startup config.
+// GHIDRA_COMMENT Allocates/initializes localization table, UI view manager, global turn-event context, map runtime entry, strategic map view system, and game-flow state objects, then commits them to global pointers.
 // GHIDRA_COMMENT_END
 
-/* Loads a localized UI string by group/index using resource id (group*100 + index).
-   On load failure, falls back to DAT_006A13A0-backed shared string assignment. */
+/* Constructs core runtime singleton systems from startup config.
+   Allocates/initializes localization table, UI view manager, global turn-event context, map runtime
+   entry, strategic map view system, and game-flow state objects, then commits them to global
+   pointers. */
 
-undefined4 __thiscall
-LoadUiStringResourceByGroupAndIndex(int param_1,CString param_2,int param_3,int param_4)
-
-{
-  CString this;
-  LPSTR lpBuffer;
-  undefined4 *unaff_FS_OFFSET;
-  int iVar1;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  this.data_ptr = param_2.data_ptr;
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f988;
-  *unaff_FS_OFFSET = &local_c;
-  iVar1 = 0x100;
-  lpBuffer = (LPSTR)TToolBarCluster::GetBuffer((TToolBarCluster *)param_2.data_ptr,0x100);
-  iVar1 = LoadStringA(*(HINSTANCE *)(param_1 + 0x4c),param_4 + param_3 * 100,lpBuffer,iVar1);
-  if (iVar1 == 0) {
-    ReleaseBuffer((void *)this.data_ptr,-1);
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-              ((TToolBarCluster *)&param_2,(char *)&g_szEmptyString);
-    local_4 = 0;
-    AssignFromPtr((void *)this.data_ptr,&param_2);
-    local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty(&param_2);
-  }
-  else {
-    ReleaseBuffer((void *)this.data_ptr,-1);
-  }
-  *unaff_FS_OFFSET = local_c;
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004997E0
-// GHIDRA_NAME LoadBmpResourceByIdCached
-// GHIDRA_PROTO undefined LoadBmpResourceByIdCached()
-
-int * __thiscall LoadBmpResourceByIdCached(int param_1,uint param_2)
+void __fastcall InitializeGlobalRuntimeSystemsFromConfig(int param_1)
 
 {
-  undefined4 *puVar1;
-  int iVar2;
-  short *psVar3;
-  uint uVar4;
-  int *piVar5;
-  int *piVar6;
-  int *piVar7;
-  short sVar8;
-  int iVar9;
-  undefined4 *unaff_FS_OFFSET;
-  bool bVar10;
-  undefined4 local_1c;
-  uint local_18;
-  int local_14;
-  int local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  int local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062f9d2;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  sVar8 = (short)param_2;
-  local_18 = (uint)(int)sVar8 >> 4;
-  piVar5 = (int *)0x0;
-  if (*(int *)(param_1 + 8) != 0) {
-    for (puVar1 = *(undefined4 **)
-                   (*(int *)(param_1 + 8) + (local_18 % *(uint *)(param_1 + 0xc)) * 4);
-        puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
-      if (*(short *)(puVar1 + 2) == sVar8) goto LAB_0049983c;
-    }
-  }
-  puVar1 = (undefined4 *)0x0;
-LAB_0049983c:
-  if (puVar1 == (undefined4 *)0x0) {
-    local_14 = param_1;
-    InitializeSharedStringRefFromEmpty(&local_1c);
-    local_4 = 0;
-    FormatStringWithVarArgsToSharedRef(&local_1c,s__d_BMP_006951c4,(int)sVar8);
-    local_10 = AllocateWithFallbackHandler(0x38);
-    local_4._0_1_ = 1;
-    if (local_10 != 0) {
-      piVar5 = (int *)ConstructBitmapSurfaceStateAndResetResources();
-    }
-    bVar10 = false;
-    iVar9 = 0;
-    piVar6 = (int *)(param_1 + 0x3c);
-    local_4 = (uint)local_4._1_3_ << 8;
-    piVar7 = piVar6;
-    do {
-      if (3 < iVar9) break;
-      if (*piVar7 != 0) {
-        iVar2 = LoadBitmapResourceAndInitializeSurfaceState(local_1c,*piVar7);
-        bVar10 = iVar2 != 0;
-      }
-      iVar9 = iVar9 + 1;
-      piVar7 = piVar7 + 1;
-    } while (!bVar10);
-    iVar9 = 0;
-    if (!bVar10) {
-      bVar10 = false;
-      do {
-        if (3 < iVar9) break;
-        if (*piVar6 != 0) {
-          iVar2 = LoadBitmapResourceAndInitializeSurfaceState(param_2 & 0xffff,*piVar6);
-          bVar10 = iVar2 != 0;
-        }
-        iVar9 = iVar9 + 1;
-        piVar6 = piVar6 + 1;
-      } while (!bVar10);
-      if (!bVar10) {
-        if (piVar5 != (int *)0x0) {
-          (**(code **)(*piVar5 + 4))(1);
-        }
-        local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1c);
-        piVar5 = (int *)0x0;
-        goto LAB_00499a71;
-      }
-    }
-    uVar4 = local_18;
-    if (*(int *)(param_1 + 8) != 0) {
-      for (puVar1 = *(undefined4 **)
-                     (*(int *)(param_1 + 8) + (local_18 % *(uint *)(param_1 + 0xc)) * 4);
-          puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
-        if (*(short *)(puVar1 + 2) == (short)param_2) goto LAB_00499953;
-      }
-    }
-    puVar1 = (undefined4 *)0x0;
-LAB_00499953:
-    if (puVar1 == (undefined4 *)0x0) {
-      psVar3 = (short *)AllocateWithFallbackHandler(0xc);
-      if (psVar3 == (short *)0x0) {
-        psVar3 = (short *)0x0;
-      }
-      else {
-        *(int **)(psVar3 + 2) = piVar5;
-        *psVar3 = (short)param_2;
-        psVar3[4] = 1;
-        psVar3[5] = 0;
-      }
-      uVar4 = uVar4 % *(uint *)(param_1 + 0xc);
-      iVar9 = *(int *)(param_1 + 8);
-      if (iVar9 != 0) {
-        for (puVar1 = *(undefined4 **)(iVar9 + uVar4 * 4); puVar1 != (undefined4 *)0x0;
-            puVar1 = (undefined4 *)*puVar1) {
-          if (*(short *)(puVar1 + 2) == (short)param_2) goto LAB_004999b8;
-        }
-      }
-      puVar1 = (undefined4 *)0x0;
-LAB_004999b8:
-      if (puVar1 == (undefined4 *)0x0) {
-        if (iVar9 == 0) {
-          ResizePointerArrayAndZeroEntries_Simple(*(uint *)(param_1 + 0xc),1);
-        }
-        puVar1 = (undefined4 *)WrapperFor_AllocateAndLinkBlockHead_At0049b720();
-        *(short *)(puVar1 + 2) = (short)param_2;
-        puVar1[1] = uVar4;
-        *puVar1 = *(undefined4 *)(uVar4 * 4 + *(int *)(param_1 + 8));
-        *(undefined4 **)(uVar4 * 4 + *(int *)(param_1 + 8)) = puVar1;
-      }
-      iVar9 = local_14;
-      puVar1[3] = psVar3;
-      puVar1 = (undefined4 *)ComputeBucketIndexAndScanNodeByKey(piVar5,&param_2);
-      if (puVar1 == (undefined4 *)0x0) {
-        if (*(int *)(iVar9 + 0x24) == 0) {
-          ResizePointerArrayAndZeroEntries(*(undefined4 *)(iVar9 + 0x28),1);
-        }
-        puVar1 = (undefined4 *)WrapperFor_AllocateAndLinkBlockHead_At0049b870();
-        puVar1[2] = piVar5;
-        puVar1[1] = param_2;
-        *puVar1 = *(undefined4 *)(*(int *)(iVar9 + 0x24) + param_2 * 4);
-        *(undefined4 **)(*(int *)(iVar9 + 0x24) + param_2 * 4) = puVar1;
-      }
-      puVar1[3] = psVar3;
-    }
-    else {
-      *(int *)(puVar1[3] + 8) = *(int *)(puVar1[3] + 8) + 1;
-    }
-    LoadBmpResourceByIdCached_Impl(0,0);
-    local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty(&local_1c);
-  }
-  else {
-    iVar9 = puVar1[3];
-    *(int *)(iVar9 + 8) = *(int *)(iVar9 + 8) + 1;
-    piVar5 = *(int **)(iVar9 + 4);
-  }
-LAB_00499a71:
-  *unaff_FS_OFFSET = local_c;
-  return piVar5;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00499B40
-// GHIDRA_NAME BuildIndexedBmpResourceById
-// GHIDRA_PROTO undefined BuildIndexedBmpResourceById()
-
-int __thiscall
-BuildIndexedBmpResourceById
-          (int param_1,undefined4 param_2,int param_3,undefined4 param_4,undefined2 *param_5)
-
-{
-  int *piVar1;
-  int iVar2;
-  undefined4 uVar3;
-  int iVar4;
-  uint uVar5;
-  undefined4 *puVar6;
-  short *psVar7;
-  undefined2 extraout_var;
-  char *pcVar8;
-  char cVar9;
-  char cVar10;
-  short sVar11;
-  undefined2 *puVar12;
+  TLanguageMgr *this;
+  TSimMgr *pTVar1;
+  TAssetMgr *pTVar2;
+  TViewMgr *this_00;
+  UiRuntimeContext *pUVar3;
+  TDisplayMgr *this_01;
+  int *piVar4;
+  TMacViewMgr *this_02;
+  undefined4 uVar5;
+  THelpMgr *this_03;
+  Config *this_04;
+  astruct_11 *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062fa04;
+  puStack_8 = &LAB_0062fd80;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar2 = AllocateWithFallbackHandler(0x38);
-  local_4 = 0;
-  if (iVar2 == 0) {
-    iVar2 = 0;
+  *(undefined4 *)(param_1 + 0x48) = 0;
+  *(undefined4 *)(param_1 + 0x50) = *(undefined4 *)(DAT_006a1348 + 0xe4);
+  if (DAT_006a327c == 0) {
+    this = (TLanguageMgr *)AllocateWithFallbackHandler(0x34);
+    local_4 = 0;
+    if (this == (TLanguageMgr *)0x0) {
+      DAT_006a327c = 0;
+    }
+    else {
+      DAT_006a327c = TLanguageMgr::ConstructTLanguageMgrBaseState(this);
+    }
   }
-  else {
-    iVar2 = AllocateBitmapSurfaceHeaderAndPixelBuffer(param_3,param_4,8);
-  }
-  piVar1 = g_pModuleLibraryCacheState;
   local_4 = 0xffffffff;
-  if (*g_pModuleLibraryCacheState == 0) {
-    uVar3 = thunk_LoadBmpResourceByIdCached(0x3b6);
-    param_3 = AllocateWithFallbackHandler(0xc);
-    local_4 = 1;
-    if (param_3 == 0) {
-      iVar4 = 0;
-    }
-    else {
-      iVar4 = InitializePaletteHolderVtableAndReset();
-    }
-    local_4 = 0xffffffff;
-    *piVar1 = iVar4;
-    BuildPaletteFromBitmapColorTable(uVar3);
-    iVar4 = FindShortKeyHashNodeAndOutputBucketIndex(0x3b6,&param_3);
-    puVar12 = param_5;
-    if (iVar4 != 0) {
-      puVar12 = *(undefined2 **)(iVar4 + 0xc);
-    }
-    iVar4 = *(int *)(puVar12 + 4);
-    *(int *)(puVar12 + 4) = iVar4 + -1;
-    if (iVar4 + -1 < 1) {
-      if (*(int **)(puVar12 + 2) != (int *)0x0) {
-        (**(code **)(**(int **)(puVar12 + 2) + 4))(1);
-      }
-      BuildIndexedBmpResourceById_Impl(*(undefined4 *)(puVar12 + 2));
-      RemoveHashIndexedRecordByShortKey(CONCAT22(extraout_var,*puVar12));
-      FreeHeapBufferIfNotNull(puVar12);
-    }
-  }
-  CopyRgbQuadTableToBitmapSurfacePalette(*(undefined4 *)(*piVar1 + 8));
-  EnsureBitmapSurfaceDibSectionCreated(0);
-  uVar5 = *(uint *)(iVar2 + 0x20);
-  pcVar8 = *(char **)(iVar2 + 0xc);
-  cVar10 = '\0';
-  if (param_5 == (undefined2 *)0x0) {
-    for (; uVar5 != 0; uVar5 = uVar5 - 1) {
-      *pcVar8 = cVar10;
-      pcVar8 = pcVar8 + 1;
-      cVar10 = cVar10 + '\x01';
-    }
+  ReloadPreplutNewsTableAndResources(*(undefined4 *)(param_1 + 0x50));
+  pTVar1 = (TSimMgr *)AllocateWithFallbackHandler(0x118);
+  local_4 = 1;
+  if (pTVar1 == (TSimMgr *)0x0) {
+    pTVar1 = (TSimMgr *)0x0;
   }
   else {
-    while (uVar5 != 0) {
-      uVar5 = uVar5 - 1;
-      if (((uVar5 & 4) == 0) || ((uVar5 & 10) == 0)) {
-        cVar9 = '\x10';
-      }
-      else {
-        cVar9 = cVar10;
-        cVar10 = cVar10 + '\x01';
-      }
-      *pcVar8 = cVar9;
-      pcVar8 = pcVar8 + 1;
-    }
+    pTVar1 = (TSimMgr *)TSimMgr::ConstructTurnFlowStateManagerVtable00662a58(pTVar1);
   }
-  sVar11 = (short)param_2;
-  if (*(int *)(param_1 + 8) != 0) {
-    for (puVar6 = *(undefined4 **)
-                   (*(int *)(param_1 + 8) +
-                   (((uint)(int)sVar11 >> 4) % *(uint *)(param_1 + 0xc)) * 4);
-        puVar6 != (undefined4 *)0x0; puVar6 = (undefined4 *)*puVar6) {
-      if (*(short *)(puVar6 + 2) == sVar11) goto LAB_00499cd5;
-    }
-  }
-  puVar6 = (undefined4 *)0x0;
-LAB_00499cd5:
-  if (puVar6 == (undefined4 *)0x0) {
-    psVar7 = (short *)AllocateWithFallbackHandler(0xc);
-    if (psVar7 == (short *)0x0) {
-      psVar7 = (short *)0x0;
-    }
-    else {
-      *psVar7 = sVar11;
-      *(int *)(psVar7 + 2) = iVar2;
-      psVar7[4] = 1;
-      psVar7[5] = 0;
-    }
-    puVar6 = (undefined4 *)FindShortKeyHashNodeAndOutputBucketIndex(param_2,&param_5);
-    if (puVar6 == (undefined4 *)0x0) {
-      if (*(int *)(param_1 + 8) == 0) {
-        ResizePointerArrayAndZeroEntries_Simple(*(undefined4 *)(param_1 + 0xc),1);
-      }
-      puVar6 = (undefined4 *)WrapperFor_AllocateAndLinkBlockHead_At0049b720();
-      *(short *)(puVar6 + 2) = sVar11;
-      puVar6[1] = param_5;
-      *puVar6 = *(undefined4 *)(*(int *)(param_1 + 8) + (int)param_5 * 4);
-      *(undefined4 **)(*(int *)(param_1 + 8) + (int)param_5 * 4) = puVar6;
-    }
-    puVar6[3] = psVar7;
-    puVar6 = (undefined4 *)ComputeBucketIndexAndScanNodeByKey(iVar2,&param_5);
-    if (puVar6 == (undefined4 *)0x0) {
-      if (*(int *)(param_1 + 0x24) == 0) {
-        ResizePointerArrayAndZeroEntries(*(undefined4 *)(param_1 + 0x28),1);
-      }
-      puVar6 = (undefined4 *)WrapperFor_AllocateAndLinkBlockHead_At0049b870();
-      puVar6[2] = iVar2;
-      puVar6[1] = param_5;
-      *puVar6 = *(undefined4 *)(*(int *)(param_1 + 0x24) + (int)param_5 * 4);
-      *(undefined4 **)(*(int *)(param_1 + 0x24) + (int)param_5 * 4) = puVar6;
-    }
-    puVar6[3] = psVar7;
+  local_4 = 0xffffffff;
+  TSimMgr::InitializeTurnFlowStateDefaults(pTVar1);
+  g_pLocalizationTable = pTVar1;
+  pTVar2 = (TAssetMgr *)AllocateWithFallbackHandler(0x58);
+  local_4 = 2;
+  if (pTVar2 == (TAssetMgr *)0x0) {
+    pTVar2 = (TAssetMgr *)0x0;
   }
   else {
-    *(int *)(puVar6[3] + 8) = *(int *)(puVar6[3] + 8) + 1;
+    pTVar2 = TAssetMgr::ConstructUiViewManager(pTVar2,unaff_EDI);
   }
-  *unaff_FS_OFFSET = uStack_c;
-  return iVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00499E80
-// GHIDRA_NAME AllocateAndLinkBlockHeadPair_00499e80
-// GHIDRA_PROTO undefined AllocateAndLinkBlockHeadPair_00499e80()
-
-void __thiscall AllocateAndLinkBlockHeadPair_00499e80(int param_1,short param_2,uint param_3)
-
-{
-  uint uVar1;
-  undefined4 *puVar2;
-  uint uVar3;
-  int iVar4;
-  uint uVar5;
-  short *local_c;
-  
-  if (*(int *)(param_1 + 8) != 0) {
-    for (puVar2 = *(undefined4 **)
-                   (*(int *)(param_1 + 8) +
-                   (((uint)(int)param_2 >> 4) % *(uint *)(param_1 + 0xc)) * 4);
-        puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)*puVar2) {
-      if (*(short *)(puVar2 + 2) == param_2) goto LAB_00499ebc;
-    }
-  }
-  puVar2 = (undefined4 *)0x0;
-LAB_00499ebc:
-  if (puVar2 != (undefined4 *)0x0) {
-    *(int *)(puVar2[3] + 8) = *(int *)(puVar2[3] + 8) + 1;
-    return;
-  }
-  local_c = (short *)AllocateWithFallbackHandler(0xc);
-  if (local_c == (short *)0x0) {
-    local_c = (short *)0x0;
+  local_4 = 0xffffffff;
+  ForwardEnsurePictWvDataGobLoadedBySlot(*(undefined4 *)(param_1 + 0x50));
+  g_pUiViewManager = pTVar2;
+  this_00 = (TViewMgr *)AllocateWithFallbackHandler(0xfc);
+  local_4 = 3;
+  if (this_00 == (TViewMgr *)0x0) {
+    pUVar3 = (UiRuntimeContext *)0x0;
   }
   else {
-    *local_c = param_2;
-    *(uint *)(local_c + 2) = param_3;
-    local_c[4] = 1;
-    local_c[5] = 0;
+    pUVar3 = (UiRuntimeContext *)TViewMgr::ConstructGlobalTurnEventState(this_00);
   }
-  uVar1 = *(uint *)(param_1 + 0xc);
-  iVar4 = *(int *)(param_1 + 8);
-  uVar5 = ((uint)(int)param_2 >> 4) % uVar1;
-  if (iVar4 != 0) {
-    for (puVar2 = *(undefined4 **)(iVar4 + uVar5 * 4); puVar2 != (undefined4 *)0x0;
-        puVar2 = (undefined4 *)*puVar2) {
-      if (*(short *)(puVar2 + 2) == param_2) goto LAB_00499f28;
-    }
+  local_4 = 0xffffffff;
+  (**(code **)(pUVar3->vftable + 0x28))();
+  g_pUiRuntimeContext = pUVar3;
+  this_01 = (TDisplayMgr *)AllocateWithFallbackHandler(0x24);
+  local_4 = 4;
+  if (this_01 == (TDisplayMgr *)0x0) {
+    piVar4 = (int *)0x0;
   }
-  puVar2 = (undefined4 *)0x0;
-LAB_00499f28:
-  if (puVar2 == (undefined4 *)0x0) {
-    if (iVar4 == 0) {
-      puVar2 = (undefined4 *)AllocateWithFallbackHandler(uVar1 * 4);
-      *(undefined4 **)(param_1 + 8) = puVar2;
-      for (uVar3 = uVar1 & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
-        *puVar2 = 0;
-        puVar2 = puVar2 + 1;
-      }
-      for (iVar4 = 0; iVar4 != 0; iVar4 = iVar4 + -1) {
-        *(undefined1 *)puVar2 = 0;
-        puVar2 = (undefined4 *)((int)puVar2 + 1);
-      }
-      *(uint *)(param_1 + 0xc) = uVar1;
-    }
-    puVar2 = (undefined4 *)WrapperFor_AllocateAndLinkBlockHead_At0049b720();
-    puVar2[1] = uVar5;
-    *(short *)(puVar2 + 2) = param_2;
-    *puVar2 = *(undefined4 *)(uVar5 * 4 + *(int *)(param_1 + 8));
-    *(undefined4 **)(uVar5 * 4 + *(int *)(param_1 + 8)) = puVar2;
+  else {
+    piVar4 = (int *)TDisplayMgr::InitializeMapTileRuntimeStateEntry(this_01);
   }
-  puVar2[3] = local_c;
-  uVar1 = *(uint *)(param_1 + 0x28);
-  uVar5 = (param_3 >> 4) % uVar1;
-  iVar4 = *(int *)(param_1 + 0x24);
-  if (iVar4 != 0) {
-    for (puVar2 = *(undefined4 **)(iVar4 + uVar5 * 4); puVar2 != (undefined4 *)0x0;
-        puVar2 = (undefined4 *)*puVar2) {
-      if (puVar2[2] == param_3) goto LAB_00499fc5;
-    }
+  local_4 = 0xffffffff;
+  (**(code **)(*piVar4 + 0x28))();
+  DAT_006a2158 = piVar4;
+  this_02 = (TMacViewMgr *)AllocateWithFallbackHandler(0xd84);
+  local_4 = 5;
+  if (this_02 == (TMacViewMgr *)0x0) {
+    uVar5 = 0;
   }
-  puVar2 = (undefined4 *)0x0;
-LAB_00499fc5:
-  if (puVar2 == (undefined4 *)0x0) {
-    if (iVar4 == 0) {
-      puVar2 = (undefined4 *)AllocateWithFallbackHandler(uVar1 * 4);
-      *(undefined4 **)(param_1 + 0x24) = puVar2;
-      for (uVar3 = uVar1 & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
-        *puVar2 = 0;
-        puVar2 = puVar2 + 1;
-      }
-      for (iVar4 = 0; iVar4 != 0; iVar4 = iVar4 + -1) {
-        *(undefined1 *)puVar2 = 0;
-        puVar2 = (undefined4 *)((int)puVar2 + 1);
-      }
-      *(uint *)(param_1 + 0x28) = uVar1;
-    }
-    puVar2 = (undefined4 *)WrapperFor_AllocateAndLinkBlockHead_At0049b870();
-    puVar2[1] = uVar5;
-    puVar2[2] = param_3;
-    *puVar2 = *(undefined4 *)(uVar5 * 4 + *(int *)(param_1 + 0x24));
-    *(undefined4 **)(uVar5 * 4 + *(int *)(param_1 + 0x24)) = puVar2;
+  else {
+    uVar5 = TMacViewMgr::ConstructStrategicMapViewSystem(this_02);
   }
-  puVar2[3] = local_c;
+  local_4 = 0xffffffff;
+  InitializeStrategicMapViewSystem();
+  g_pStrategicMapViewSystem = uVar5;
+  this_03 = (THelpMgr *)AllocateWithFallbackHandler(0x30);
+  local_4 = 6;
+  if (this_03 == (THelpMgr *)0x0) {
+    DAT_006a21b8 = (int *)0x0;
+  }
+  else {
+    DAT_006a21b8 = (int *)THelpMgr::ConstructTHelpMgrBaseState(this_03);
+  }
+  local_4 = 0xffffffff;
+  (**(code **)(*DAT_006a21b8 + 0x28))();
+  if (g_pGameFlowState != (Config *)0x0) {
+    (**(code **)(g_pGameFlowState->vftable + 0x1c))();
+    g_pGameFlowState = (Config *)0x0;
+  }
+  this_04 = (Config *)AllocateWithFallbackHandler(0xf8);
+  local_4 = 7;
+  if (this_04 == (Config *)0x0) {
+    g_pGameFlowState = (Config *)0x0;
+  }
+  else {
+    g_pGameFlowState = (Config *)Config::InitDefaults(this_04,unaff_EDI);
+  }
+  local_4 = 0xffffffff;
+  (**(code **)(g_pGameFlowState->vftable + 0x94))(0);
+  *unaff_FS_OFFSET = this_04;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049A0B0
-// GHIDRA_NAME IncrementDialogResourceRefCountByShortIdInRegistry
-// GHIDRA_PROTO undefined IncrementDialogResourceRefCountByShortIdInRegistry()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E500
+// GHIDRA_NAME CreateAndQueueTurnEventPacketTagGWEN
+// GHIDRA_PROTO undefined CreateAndQueueTurnEventPacketTagGWEN()
 
-void __thiscall IncrementDialogResourceRefCountByShortIdInRegistry(int param_1,int param_2)
+void CreateAndQueueTurnEventPacketTagGWEN(void)
+
+{
+  TCommand *this;
+  TCommand *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062fdaa;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  this = (TCommand *)AllocateWithFallbackHandler(0x18);
+  local_4 = 0;
+  if (this == (TCommand *)0x0) {
+    pTVar1 = (TCommand *)0x0;
+  }
+  else {
+    TCommand::thunk_ConstructTurnEventPacketBase(this);
+    this->vftable = (TCommandVtbl *)&TNewGameCommandVtbl_0064c130;
+    pTVar1 = this;
+  }
+  local_4 = 0xffffffff;
+  InitializeRangePairAndResetCursor(0x6e657767,g_pGlobalUiRootController,0,0,0);
+  (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)(pTVar1);
+  *unaff_FS_OFFSET = this;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E640
+// GHIDRA_NAME DestructTAmbitFileBasedDocumentAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTAmbitFileBasedDocumentAndMaybeFree_Impl()
+
+void __fastcall DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049EB00
+// GHIDRA_NAME AssignStringSharedRefAndReturnThis
+// GHIDRA_PROTO undefined AssignStringSharedRefAndReturnThis()
+
+CString * __thiscall AssignStringSharedRefAndReturnThis(CString *param_1,CString *param_2)
+
+{
+  CString::StringSharedRef_AssignFromPtr(param_1,param_2);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049EFD0
+// GHIDRA_NAME WrapperFor_ftol_At0049efd0
+// GHIDRA_PROTO undefined WrapperFor_ftol_At0049efd0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At0049efd0(void)
+
+{
+  _DAT_006a2248 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0B00
+// GHIDRA_NAME DestructTAnimatorAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTAnimatorAndMaybeFree_Impl()
+
+void __fastcall DestructTAnimatorAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0E90
+// GHIDRA_NAME TranslateListRectsAndDropNonIntersectingEntries
+// GHIDRA_PROTO undefined TranslateListRectsAndDropNonIntersectingEntries()
+
+void __thiscall TranslateListRectsAndDropNonIntersectingEntries(int param_1,int param_2,int param_3)
+
+{
+  TAutoGreatPower *this;
+  char cVar1;
+  int *piVar2;
+  int iVar3;
+  undefined1 local_10 [16];
+  
+  if (param_1 != 0) {
+    piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
+    iVar3 = LinkedListCursorHasCurrent();
+    while (iVar3 != 0) {
+      piVar2[7] = piVar2[7] + param_2;
+      piVar2[8] = piVar2[8] + param_3;
+      piVar2[9] = piVar2[9] + param_2;
+      piVar2[10] = piVar2[10] + param_3;
+      cVar1 = IntersectRectWrapper(piVar2 + 7,&stack0x0000000c,local_10);
+      if (cVar1 == '\0') {
+        this = (TAutoGreatPower *)(*(int *)(param_1 + 0x24) + 4);
+        iVar3 = TAutoGreatPower::Find(this);
+        if (iVar3 != 0) {
+          TAutoGreatPower::RemoveAt_60217d(this);
+        }
+        (**(code **)(*piVar2 + 0x1c))();
+      }
+      piVar2 = (int *)AdvanceLinkedListCursor();
+      iVar3 = LinkedListCursorHasCurrent();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0F80
+// GHIDRA_NAME CallObjectOffset24Vslot54IfPresent
+// GHIDRA_PROTO undefined CallObjectOffset24Vslot54IfPresent()
+
+void __fastcall CallObjectOffset24Vslot54IfPresent(int param_1)
+
+{
+  if (param_1 != 0) {
+                    /* WARNING: Could not recover jumptable at 0x004a0f89. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (**(code **)(**(int **)(param_1 + 0x24) + 0x54))();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A1130
+// GHIDRA_NAME WrapperFor_AllocateWithFallbackHandler_At004a1130
+// GHIDRA_PROTO undefined WrapperFor_AllocateWithFallbackHandler_At004a1130()
+
+undefined4 * WrapperFor_AllocateWithFallbackHandler_At004a1130(undefined2 param_1)
 
 {
   undefined4 *puVar1;
-  
-  if (*(int *)(param_1 + 8) != 0) {
-    for (puVar1 = *(undefined4 **)
-                   (*(int *)(param_1 + 8) +
-                   (((uint)(int)(short)param_2 >> 4) % *(uint *)(param_1 + 0xc)) * 4);
-        puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
-      if (*(short *)(puVar1 + 2) == (short)param_2) goto LAB_0049a0dd;
-    }
-  }
-  puVar1 = (undefined4 *)0x0;
-LAB_0049a0dd:
-  if (puVar1 == (undefined4 *)0x0) {
-    *(int *)(param_2 + 8) = *(int *)(param_2 + 8) + 1;
-    return;
-  }
-  *(int *)(puVar1[3] + 8) = *(int *)(puVar1[3] + 8) + 1;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049A190
-// GHIDRA_NAME DecrementDialogResourceRefCountByShortIdAndCleanup
-// GHIDRA_PROTO undefined DecrementDialogResourceRefCountByShortIdAndCleanup()
-
-void __thiscall DecrementDialogResourceRefCountByShortIdAndCleanup(int param_1,short *param_2)
-
-{
-  int *piVar1;
-  undefined4 *puVar2;
-  undefined4 *puVar3;
-  int *piVar4;
-  int iVar5;
-  undefined4 *puVar6;
-  int *piVar7;
-  uint uVar8;
-  
-  if (*(int *)(param_1 + 8) != 0) {
-    for (puVar3 = *(undefined4 **)
-                   (*(int *)(param_1 + 8) +
-                   (((uint)(int)(short)param_2 >> 4) % *(uint *)(param_1 + 0xc)) * 4);
-        puVar3 != (undefined4 *)0x0; puVar3 = (undefined4 *)*puVar3) {
-      if (*(short *)(puVar3 + 2) == (short)param_2) goto LAB_0049a1c4;
-    }
-  }
-  puVar3 = (undefined4 *)0x0;
-LAB_0049a1c4:
-  if (puVar3 != (undefined4 *)0x0) {
-    param_2 = (short *)puVar3[3];
-  }
-  iVar5 = *(int *)(param_2 + 4);
-  *(int *)(param_2 + 4) = iVar5 + -1;
-  if (iVar5 + -1 < 1) {
-    if (*(int **)(param_2 + 2) != (int *)0x0) {
-      (**(code **)(**(int **)(param_2 + 2) + 4))(1);
-    }
-    iVar5 = *(int *)(param_1 + 0x24);
-    if (iVar5 != 0) {
-      uVar8 = (*(uint *)(param_2 + 2) >> 4) % *(uint *)(param_1 + 0x28);
-      puVar6 = *(undefined4 **)(iVar5 + uVar8 * 4);
-      puVar3 = (undefined4 *)(iVar5 + uVar8 * 4);
-      while (puVar2 = puVar6, puVar2 != (undefined4 *)0x0) {
-        if (puVar2[2] == *(uint *)(param_2 + 2)) {
-          *puVar3 = *puVar2;
-          *puVar2 = *(undefined4 *)(param_1 + 0x30);
-          *(undefined4 **)(param_1 + 0x30) = puVar2;
-          iVar5 = *(int *)(param_1 + 0x2c) + -1;
-          *(int *)(param_1 + 0x2c) = iVar5;
-          if (iVar5 == 0) {
-            puVar3 = *(undefined4 **)(param_1 + 0x24);
-            if (puVar3 != (undefined4 *)0x0) {
-              puVar6 = puVar3;
-              for (iVar5 = *(int *)(param_1 + 0x28); iVar5 != 0; iVar5 = iVar5 + -1) {
-                for (puVar2 = (undefined4 *)*puVar6; puVar2 != (undefined4 *)0x0;
-                    puVar2 = (undefined4 *)*puVar2) {
-                }
-                puVar6 = puVar6 + 1;
-              }
-            }
-            FreeHeapBufferIfNotNull(puVar3);
-            *(undefined4 *)(param_1 + 0x24) = 0;
-            *(undefined4 *)(param_1 + 0x2c) = 0;
-            *(undefined4 *)(param_1 + 0x30) = 0;
-            FreeDataChain();
-            *(undefined4 *)(param_1 + 0x34) = 0;
-          }
-          break;
-        }
-        puVar3 = puVar2;
-        puVar6 = (undefined4 *)*puVar2;
-      }
-    }
-    iVar5 = *(int *)(param_1 + 8);
-    if (iVar5 != 0) {
-      uVar8 = ((uint)(int)*param_2 >> 4) % *(uint *)(param_1 + 0xc);
-      piVar1 = *(int **)(iVar5 + uVar8 * 4);
-      piVar7 = (int *)(iVar5 + uVar8 * 4);
-      if (piVar1 != (int *)0x0) {
-        while (piVar4 = piVar1, (short)piVar4[2] != *param_2) {
-          piVar1 = (int *)*piVar4;
-          piVar7 = piVar4;
-          if ((int *)*piVar4 == (int *)0x0) {
-            FreeHeapBufferIfNotNull(param_2);
-            return;
-          }
-        }
-        *piVar7 = *piVar4;
-        *piVar4 = *(int *)(param_1 + 0x14);
-        *(int **)(param_1 + 0x14) = piVar4;
-        iVar5 = *(int *)(param_1 + 0x10) + -1;
-        *(int *)(param_1 + 0x10) = iVar5;
-        if (iVar5 == 0) {
-          puVar3 = *(undefined4 **)(param_1 + 8);
-          if (puVar3 != (undefined4 *)0x0) {
-            puVar6 = puVar3;
-            for (iVar5 = *(int *)(param_1 + 0xc); iVar5 != 0; iVar5 = iVar5 + -1) {
-              for (puVar2 = (undefined4 *)*puVar6; puVar2 != (undefined4 *)0x0;
-                  puVar2 = (undefined4 *)*puVar2) {
-              }
-              puVar6 = puVar6 + 1;
-            }
-          }
-          FreeHeapBufferIfNotNull(puVar3);
-          *(undefined4 *)(param_1 + 8) = 0;
-          *(undefined4 *)(param_1 + 0x10) = 0;
-          *(undefined4 *)(param_1 + 0x14) = 0;
-          FreeDataChain();
-          *(undefined4 *)(param_1 + 0x18) = 0;
-        }
-      }
-    }
-    FreeHeapBufferIfNotNull(param_2);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049A390
-// GHIDRA_NAME ReleaseHashIndexedRecordByHandle
-// GHIDRA_PROTO undefined ReleaseHashIndexedRecordByHandle()
-
-void __thiscall ReleaseHashIndexedRecordByHandle(int param_1,short *param_2)
-
-{
-  int *piVar1;
-  undefined4 *puVar2;
-  undefined4 *puVar3;
-  int *piVar4;
-  int iVar5;
-  undefined4 *puVar6;
-  int *piVar7;
-  uint uVar8;
-  
-  if (param_2 != (short *)0x0) {
-    if (*(int *)(param_1 + 0x24) != 0) {
-      for (puVar3 = *(undefined4 **)
-                     (*(int *)(param_1 + 0x24) +
-                     (((uint)param_2 >> 4) % *(uint *)(param_1 + 0x28)) * 4);
-          puVar3 != (undefined4 *)0x0; puVar3 = (undefined4 *)*puVar3) {
-        if ((short *)puVar3[2] == param_2) goto LAB_0049a3c9;
-      }
-    }
-    puVar3 = (undefined4 *)0x0;
-LAB_0049a3c9:
-    if (puVar3 != (undefined4 *)0x0) {
-      param_2 = (short *)puVar3[3];
-    }
-    iVar5 = *(int *)(param_2 + 4);
-    *(int *)(param_2 + 4) = iVar5 + -1;
-    if (iVar5 + -1 < 1) {
-      if (*(int **)(param_2 + 2) != (int *)0x0) {
-        (**(code **)(**(int **)(param_2 + 2) + 4))(1);
-      }
-      iVar5 = *(int *)(param_1 + 0x24);
-      if (iVar5 != 0) {
-        uVar8 = (*(uint *)(param_2 + 2) >> 4) % *(uint *)(param_1 + 0x28);
-        puVar6 = *(undefined4 **)(iVar5 + uVar8 * 4);
-        puVar3 = (undefined4 *)(iVar5 + uVar8 * 4);
-        while (puVar2 = puVar6, puVar2 != (undefined4 *)0x0) {
-          if (puVar2[2] == *(uint *)(param_2 + 2)) {
-            *puVar3 = *puVar2;
-            *puVar2 = *(undefined4 *)(param_1 + 0x30);
-            *(undefined4 **)(param_1 + 0x30) = puVar2;
-            iVar5 = *(int *)(param_1 + 0x2c) + -1;
-            *(int *)(param_1 + 0x2c) = iVar5;
-            if (iVar5 == 0) {
-              puVar3 = *(undefined4 **)(param_1 + 0x24);
-              if (puVar3 != (undefined4 *)0x0) {
-                puVar6 = puVar3;
-                for (iVar5 = *(int *)(param_1 + 0x28); iVar5 != 0; iVar5 = iVar5 + -1) {
-                  for (puVar2 = (undefined4 *)*puVar6; puVar2 != (undefined4 *)0x0;
-                      puVar2 = (undefined4 *)*puVar2) {
-                  }
-                  puVar6 = puVar6 + 1;
-                }
-              }
-              FreeHeapBufferIfNotNull(puVar3);
-              *(undefined4 *)(param_1 + 0x24) = 0;
-              *(undefined4 *)(param_1 + 0x2c) = 0;
-              *(undefined4 *)(param_1 + 0x30) = 0;
-              FreeDataChain();
-              *(undefined4 *)(param_1 + 0x34) = 0;
-            }
-            break;
-          }
-          puVar3 = puVar2;
-          puVar6 = (undefined4 *)*puVar2;
-        }
-      }
-      iVar5 = *(int *)(param_1 + 8);
-      if (iVar5 != 0) {
-        uVar8 = ((uint)(int)*param_2 >> 4) % *(uint *)(param_1 + 0xc);
-        piVar1 = *(int **)(iVar5 + uVar8 * 4);
-        piVar7 = (int *)(iVar5 + uVar8 * 4);
-        if (piVar1 != (int *)0x0) {
-          while (piVar4 = piVar1, (short)piVar4[2] != *param_2) {
-            piVar1 = (int *)*piVar4;
-            piVar7 = piVar4;
-            if ((int *)*piVar4 == (int *)0x0) {
-              FreeHeapBufferIfNotNull(param_2);
-              return;
-            }
-          }
-          *piVar7 = *piVar4;
-          *piVar4 = *(int *)(param_1 + 0x14);
-          *(int **)(param_1 + 0x14) = piVar4;
-          iVar5 = *(int *)(param_1 + 0x10) + -1;
-          *(int *)(param_1 + 0x10) = iVar5;
-          if (iVar5 == 0) {
-            puVar3 = *(undefined4 **)(param_1 + 8);
-            if (puVar3 != (undefined4 *)0x0) {
-              puVar6 = puVar3;
-              for (iVar5 = *(int *)(param_1 + 0xc); iVar5 != 0; iVar5 = iVar5 + -1) {
-                for (puVar2 = (undefined4 *)*puVar6; puVar2 != (undefined4 *)0x0;
-                    puVar2 = (undefined4 *)*puVar2) {
-                }
-                puVar6 = puVar6 + 1;
-              }
-            }
-            FreeHeapBufferIfNotNull(puVar3);
-            *(undefined4 *)(param_1 + 8) = 0;
-            *(undefined4 *)(param_1 + 0x10) = 0;
-            *(undefined4 *)(param_1 + 0x14) = 0;
-            FreeDataChain();
-            *(undefined4 *)(param_1 + 0x18) = 0;
-          }
-        }
-      }
-      FreeHeapBufferIfNotNull(param_2);
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049A590
-// GHIDRA_NAME LoadLocalizedStringByGroupAndIndexToSharedRef
-// GHIDRA_PROTO undefined LoadLocalizedStringByGroupAndIndexToSharedRef()
-
-TToolBarCluster * __thiscall
-LoadLocalizedStringByGroupAndIndexToSharedRef(int param_1,TToolBarCluster *param_2,CString param_3)
-
-{
-  LPSTR lpBuffer;
+  TAnimation *this;
   undefined4 *unaff_FS_OFFSET;
-  int iVar1;
-  CString local_14;
-  undefined4 local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
-  uint local_4;
+  undefined4 local_4;
   
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062fa47;
+  puStack_8 = &LAB_0062ff0b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_10 = 0;
-  InitializeSharedStringRefFromEmpty(&local_14);
-  iVar1 = 0x100;
-  local_4 = 1;
-  lpBuffer = (LPSTR)TToolBarCluster::GetBuffer((TToolBarCluster *)&local_14,0x100);
-  iVar1 = LoadStringA(*(HINSTANCE *)(param_1 + 0x4c),
-                      (param_3.data_ptr & 0xffU) + (param_3.data_ptr >> 8) * 100,lpBuffer,iVar1);
-  if (iVar1 == 0) {
-    ReleaseBuffer(&local_14,-1);
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-              ((TToolBarCluster *)&param_3,(char *)&g_szEmptyString);
-    local_4._0_1_ = 2;
-    AssignFromPtr(&local_14,&param_3);
-    local_4 = CONCAT31(local_4._1_3_,1);
-    ReleaseSharedStringRefIfNotEmpty(&param_3);
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(4);
+  this = (TAnimation *)AllocateWithFallbackHandler(0x20);
+  local_4 = 0;
+  if (this == (TAnimation *)0x0) {
+    this = (TAnimation *)0x0;
   }
   else {
-    ReleaseBuffer(&local_14,-1);
+    this->field_0x4 = 0;
+    *(undefined4 *)&this->field_0x18 = 0;
+    *(undefined2 *)&this->field_0x1c = param_1;
+    this->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(this);
   }
-  TToolBarCluster::StringSharedRef_AssignFromPtr(param_2,&local_14);
-  local_10 = 1;
-  local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(&local_14);
+  *puVar1 = this;
   *unaff_FS_OFFSET = local_c;
-  return param_2;
+  return puVar1;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049A7F0
-// GHIDRA_NAME FilterStringByCharacterTypeFlag4AndAppend
-// GHIDRA_PROTO undefined FilterStringByCharacterTypeFlag4AndAppend()
+// GHIDRA_FUNCTION IMPERIALISM 0x004A1260
+// GHIDRA_NAME WrapperFor_ftol_At004a1260
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004a1260()
 
-TToolBarCluster *
-FilterStringByCharacterTypeFlag4AndAppend(undefined4 param_1,TToolBarCluster *param_2,char *param_3)
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004a1260(void)
+
+{
+  _DAT_006a22d8 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A13C0
+// GHIDRA_NAME ResetMapActionSelectionAndLoadContextByNodeId
+// GHIDRA_PROTO undefined ResetMapActionSelectionAndLoadContextByNodeId()
+
+void __thiscall ResetMapActionSelectionAndLoadContextByNodeId(int param_1,int *param_2)
+
+{
+  int *piVar1;
+  code *pcVar2;
+  code *pcVar3;
+  undefined4 uVar4;
+  int iVar5;
+  undefined1 *puVar6;
+  int unaff_EBP;
+  short *psVar7;
+  int iVar8;
+  int iVar9;
+  undefined4 unaff_EDI;
+  undefined4 uVar10;
+  int *piVar11;
+  int iVar12;
+  short *psVar13;
+  int *piStack_1c;
+  
+  pcVar2 = *(code **)(*param_2 + 0x3c);
+  (*pcVar2)(param_1 + 2,1);
+  (*pcVar2)(param_1 + 3,1);
+  piVar1 = (int *)(param_1 + 4);
+  piVar11 = piVar1;
+  (*pcVar2)(piVar1,4);
+  uVar10 = 2;
+  (*pcVar2)(&stack0xffffffdc,2);
+  iVar12 = *piVar1;
+  if (((iVar12 == 0) || (iVar12 == 3)) || (iVar12 == 4)) {
+    *(int *)(param_1 + 8) = (int)(short)unaff_EDI;
+  }
+  else {
+    uVar4 = FindMapActionContextByNodeId(unaff_EDI);
+    *(undefined4 *)(param_1 + 8) = uVar4;
+  }
+  psVar7 = (short *)(param_1 + 0x24a);
+  piStack_1c = (int *)(param_1 + 0x250);
+  iVar12 = 0;
+  do {
+    psVar13 = psVar7;
+    (*pcVar2)(iVar12 + param_1,1);
+    if (DAT_00695278 < 0x2c) {
+      pcVar3 = *(code **)(*param_2 + 0x6c);
+      (*pcVar3)(piVar11,0x20);
+      (*pcVar3)(uVar10,0xff);
+    }
+    else {
+      (*pcVar2)(piVar11,0x20);
+      (*pcVar2)(uVar10,0xff);
+    }
+    (*pcVar2)(psVar7,2);
+    FreeHeapBufferIfNotNull(*piStack_1c);
+    iVar8 = (int)*psVar7;
+    iVar5 = AllocateWithFallbackHandler(iVar8 * 0x2c);
+    if (iVar5 == 0) {
+      iVar5 = 0;
+    }
+    else if (-1 < iVar8 + -1) {
+      puVar6 = (undefined1 *)(iVar5 + 4);
+      do {
+        *puVar6 = 0;
+        puVar6 = puVar6 + 0x2c;
+        iVar8 = iVar8 + -1;
+      } while (iVar8 != 0);
+    }
+    iVar8 = 0;
+    *piStack_1c = iVar5;
+    if (0 < *psVar7) {
+      iVar5 = 0;
+      psVar7 = psVar13;
+      do {
+        iVar9 = iVar5 + *piStack_1c;
+        (*pcVar2)(iVar9,2);
+        (*pcVar2)(iVar9 + 2,2);
+        if (DAT_00695278 < 0x2c) {
+          (**(code **)(*param_2 + 0x6c))(iVar9 + 4);
+        }
+        else {
+          (*pcVar2)(iVar9 + 4,0x20);
+        }
+        (*pcVar2)(iVar9 + 0x24,2);
+        (*pcVar2)(iVar9 + 0x28,4);
+        iVar8 = iVar8 + 1;
+        iVar5 = iVar5 + 0x2c;
+      } while (iVar8 < *psVar7);
+    }
+    piStack_1c = piStack_1c + 1;
+    iVar12 = iVar12 + 1;
+    psVar7 = psVar7 + 1;
+    param_1 = unaff_EBP;
+  } while (iVar12 < 2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A18D0
+// GHIDRA_NAME DestructTArmyMgrAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTArmyMgrAndMaybeFree_Impl()
+
+void __fastcall DestructTArmyMgrAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A1D90
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At004a1d90
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At004a1d90()
+
+void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At004a1d90(int param_1)
+
+{
+  FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 0x250));
+  FreeHeapBufferIfNotNull(*(undefined4 *)(param_1 + 0x254));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A1EB0
+// GHIDRA_NAME ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags
+// GHIDRA_PROTO undefined ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags()
+
+void __fastcall ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags(int *param_1)
+
+{
+  int iVar1;
+  TCountry **ppTVar2;
+  
+  if ((int *)param_1[0xe7] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0xe7] + 0x1c))();
+  }
+  param_1[0xe7] = 0;
+  if ((int *)param_1[0xe8] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0xe8] + 0x1c))();
+  }
+  param_1[0xe8] = 0;
+  if ((int *)param_1[0xe9] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0xe9] + 0x1c))();
+  }
+  iVar1 = *param_1;
+  param_1[0xe9] = 0;
+  (**(code **)(iVar1 + 0x34))();
+  (**(code **)(iVar1 + 0x48))();
+  if (*(char *)((int)param_1 + 0x39a) != '\0') {
+    (**(code **)(*g_pStrategicMapViewSystem + 0x78))();
+    ppTVar2 = g_apTerrainTypeDescriptorTable;
+    do {
+      if (*ppTVar2 != (TCountry *)0x0) {
+        SetWordField8cFromShort(0xffffffff);
+      }
+      ppTVar2 = ppTVar2 + 1;
+    } while ((int)ppTVar2 < 0x6a436c);
+  }
+  *(undefined1 *)((int)param_1 + 0x39a) = 0;
+  (*g_pLocalizationTable->vftable[8].slot_0x04)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A2610
+// GHIDRA_NAME BuildArmyActionLabelFromLocalizationAndCounts
+// GHIDRA_PROTO undefined BuildArmyActionLabelFromLocalizationAndCounts()
+
+void BuildArmyActionLabelFromLocalizationAndCounts
+               (char *param_1,CString param_2,CString param_3,CString param_4)
 
 {
   char cVar1;
+  CString CVar2;
+  CString CVar3;
+  int *piVar4;
+  int iVar5;
+  int iVar6;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_14;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  CVar2.m_pchData = param_2.m_pchData;
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062ff98;
+  *unaff_FS_OFFSET = &local_c;
+  if (param_2.m_pchData != (char *)0x0) {
+    CString::CString(&local_10);
+    local_4 = 0;
+    CString::CString(&local_14);
+    local_4._0_1_ = 1;
+    CString::CString(&param_2);
+    local_4._0_1_ = 2;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2717,param_4.m_pchData,&local_14);
+    FormatStringWithVarArgsToSharedRef(&param_2,&g_szDecimalFormat,CVar2.m_pchData);
+    CVar3.m_pchData = param_3.m_pchData;
+    if (CVar2.m_pchData == param_3.m_pchData) {
+      scanBracketExpressions(g_pLocalizationTable,&local_10,s__1___2__0069577c);
+    }
+    else {
+      CString::CString(&param_3);
+      local_4._0_1_ = 3;
+      CString::CString(&param_4);
+      local_4._0_1_ = 4;
+      FormatStringWithVarArgsToSharedRef
+                (&param_3,&g_szDecimalFormat,(int)CVar2.m_pchData - (int)CVar3.m_pchData);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273d,0xb,&param_4);
+      scanBracketExpressions(g_pLocalizationTable,&local_10,s__1___2____3___4___00695764);
+      local_4._0_1_ = 3;
+      CString::~CString(&param_4);
+      local_4._0_1_ = 2;
+      CString::~CString(&param_3);
+    }
+    piVar4 = (int *)GetSharedEmptyStringRef();
+    param_4.m_pchData = (char *)*piVar4;
+    CString::CopyFromCStr(&param_4,param_1);
+    iVar5 = CompareAnsiStringsWithMbcsAwareness(param_4.m_pchData,&g_szEmptyString);
+    CString::~CString(&param_4);
+    if (iVar5 != 0) {
+      CString::CString(&param_4,&DAT_00695760);
+      iVar5 = 0;
+      do {
+        if (param_1[iVar5] == '\0') break;
+        iVar5 = iVar5 + 1;
+      } while (iVar5 < 0xff);
+      if (iVar5 < 0xff) {
+        iVar6 = iVar5;
+        do {
+          cVar1 = param_4.m_pchData[iVar6 - iVar5];
+          param_1[iVar6] = cVar1;
+          if (cVar1 == '\0') break;
+          iVar6 = iVar6 + 1;
+        } while (iVar6 < 0xff);
+      }
+      CString::~CString(&param_4);
+    }
+    iVar5 = 0;
+    do {
+      if (param_1[iVar5] == '\0') break;
+      iVar5 = iVar5 + 1;
+    } while (iVar5 < 0xff);
+    if (iVar5 < 0xff) {
+      iVar6 = iVar5;
+      do {
+        cVar1 = local_10.m_pchData[iVar6 - iVar5];
+        param_1[iVar6] = cVar1;
+        if (cVar1 == '\0') break;
+        iVar6 = iVar6 + 1;
+      } while (iVar6 < 0xff);
+    }
+    local_4._0_1_ = 1;
+    CString::~CString(&param_2);
+    local_4 = (uint)local_4._1_3_ << 8;
+    CString::~CString(&local_14);
+    local_4 = 0xffffffff;
+    CString::~CString(&local_10);
+  }
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A2900
+// GHIDRA_NAME BuildArmyContextActionRecordsAndDispatchLabel
+// GHIDRA_PROTO undefined BuildArmyContextActionRecordsAndDispatchLabel()
+
+void BuildArmyContextActionRecordsAndDispatchLabel
+               (int param_1,int param_2,undefined4 param_3,undefined4 param_4)
+
+{
+  short sVar1;
+  short sVar2;
+  TArmyMgr *pTVar3;
+  char cVar4;
+  undefined2 extraout_var;
+  int iVar5;
+  int iVar6;
+  undefined1 *puVar7;
+  undefined2 extraout_var_00;
+  int unaff_EBP;
+  int iVar8;
+  char *unaff_ESI;
+  int iVar9;
+  uint *puVar10;
+  int unaff_EDI;
+  int *piVar11;
+  int *unaff_FS_OFFSET;
+  int unaff_retaddr;
+  CString CStack_484;
+  CString CVar12;
+  CString CStack_47c;
+  undefined1 *puStack_478;
+  CString CStack_464;
+  CString CStack_460;
+  char acStack_45c [16];
+  undefined4 local_44c;
+  char local_448 [32];
+  char acStack_428 [255];
+  char acStack_329 [257];
+  undefined4 uStack_228;
+  undefined4 uStack_224;
+  short sStack_212;
+  short sStack_210;
+  uint uStack_20c;
+  int local_208;
+  ushort uStack_206;
+  undefined4 local_204;
+  undefined4 local_200;
+  int aiStack_1f4 [24];
+  uint auStack_194 [6];
+  int aiStack_17c [24];
+  uint auStack_11c [6];
+  int aiStack_104 [24];
+  uint auStack_a4 [6];
+  int aiStack_8c [23];
+  int iStack_30;
+  int iStack_28;
+  int iStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062fff2;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  puStack_478 = &LAB_0040781f;
+  CStack_47c.m_pchData = (char *)0x2;
+  CStack_484.m_pchData = local_448;
+  InvokeCallbackForRecordRangeWithStride();
+  puStack_478 = &LAB_0040722a;
+  CStack_47c.m_pchData = (char *)0x2;
+  CStack_484.m_pchData = acStack_428 + 0x20;
+  InvokeCallbackForRecordRangeWithStride();
+  local_208 = (uint)uStack_206 << 0x10;
+  uStack_20c = (uint)(ushort)uStack_20c;
+  local_200 = 0;
+  local_204 = 0;
+  local_4 = 0;
+  acStack_45c[9] = *(char *)(param_2 + 8);
+  acStack_45c[8] = *(char *)(param_1 + 8);
+  local_44c = param_4;
+  puStack_478 = (undefined1 *)CONCAT22(extraout_var_00,(short)acStack_45c[9]);
+  CStack_47c.m_pchData = (char *)CONCAT22(extraout_var,(short)acStack_45c[8]);
+  acStack_45c[0xc] = '\0';
+  acStack_45c[0xd] = '\0';
+  acStack_45c[0xe] = '\0';
+  acStack_45c[0xf] = '\0';
+  acStack_45c[0xb] = 0;
+  cVar4 = (*g_pDiplomacyTurnStateManager->vftable[9].GetTDiplomacyMgrClassNamePointer)();
+  if (cVar4 == '\0') {
+    acStack_45c[4] = '\x03';
+    acStack_45c[5] = '\0';
+    acStack_45c[6] = '\0';
+    acStack_45c[7] = '\0';
+  }
+  else {
+    piVar11 = *(int **)(param_2 + 0x14);
+    *(int **)(param_2 + 0x18) = piVar11;
+    if (piVar11 == (int *)0x0) {
+      iVar8 = 0;
+    }
+    else {
+      iVar8 = *piVar11;
+    }
+    if (iVar8 == 0) {
+      acStack_45c[4] = '\x04';
+      acStack_45c[5] = '\0';
+      acStack_45c[6] = '\0';
+      acStack_45c[7] = '\0';
+    }
+  }
+  iVar8 = 0;
+  piVar11 = aiStack_1f4;
+  for (iVar6 = 0x78; iVar6 != 0; iVar6 = iVar6 + -1) {
+    *piVar11 = 0;
+    piVar11 = piVar11 + 1;
+  }
+  piVar11 = *(int **)(param_1 + 0x14);
+  iVar6 = 0;
+  *(int **)(param_1 + 0x18) = piVar11;
+  if (piVar11 == (int *)0x0) {
+    iVar9 = 0;
+  }
+  else {
+    iVar9 = *piVar11;
+  }
+joined_r0x004a2a03:
+  do {
+    if (iVar9 == 0) break;
+    sStack_212 = sStack_212 + 1;
+    aiStack_1f4[*(short *)(iVar9 + 4)] = aiStack_1f4[*(short *)(iVar9 + 4)] + 1;
+    if (0 < *(short *)(iVar9 + 0x34)) {
+      aiStack_17c[*(short *)(iVar9 + 4)] = aiStack_17c[*(short *)(iVar9 + 4)] + 1;
+    }
+    if (*(short *)(iVar9 + 4) == 0x1b) {
+      if (iVar6 != 0) {
+        sVar1 = *(short *)(iVar9 + 0x38);
+        sVar2 = *(short *)(iVar6 + 0x38);
+        if ((short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                   (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) <=
+            (short)((sVar2 / 100 + (sVar2 >> 0xf)) -
+                   (short)((longlong)(int)sVar2 * 0x51eb851f >> 0x3f))) goto LAB_004a2a7f;
+      }
+      iVar6 = iVar9;
+    }
+LAB_004a2a7f:
+    if (*(int *)(local_4 + 0x18) != 0) {
+      piVar11 = *(int **)(*(int *)(local_4 + 0x18) + 4);
+      *(int **)(local_4 + 0x18) = piVar11;
+      if (piVar11 != (int *)0x0) {
+        iVar9 = *piVar11;
+        goto joined_r0x004a2a03;
+      }
+    }
+    iVar9 = 0;
+  } while( true );
+  piVar11 = *(int **)(unaff_retaddr + 0x14);
+  *(int **)(unaff_retaddr + 0x18) = piVar11;
+  if (piVar11 == (int *)0x0) {
+    iVar6 = 0;
+  }
+  else {
+    iVar6 = *piVar11;
+  }
+joined_r0x004a2abe:
+  do {
+    if (iVar6 == 0) break;
+    sStack_210 = sStack_210 + 1;
+    aiStack_104[*(short *)(iVar6 + 4)] = aiStack_104[*(short *)(iVar6 + 4)] + 1;
+    if (0 < *(short *)(iVar6 + 0x34)) {
+      aiStack_8c[*(short *)(iVar6 + 4)] = aiStack_8c[*(short *)(iVar6 + 4)] + 1;
+    }
+    if (0x1a < *(short *)(iVar6 + 4)) {
+      if (iVar8 != 0) {
+        sVar1 = *(short *)(iVar6 + 0x38);
+        sVar2 = *(short *)(iVar8 + 0x38);
+        if ((short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                   (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) <=
+            (short)((sVar2 / 100 + (sVar2 >> 0xf)) -
+                   (short)((longlong)(int)sVar2 * 0x51eb851f >> 0x3f))) goto LAB_004a2b41;
+      }
+      iVar8 = iVar6;
+    }
+LAB_004a2b41:
+    if (*(int *)(unaff_retaddr + 0x18) != 0) {
+      piVar11 = *(int **)(*(int *)(unaff_retaddr + 0x18) + 4);
+      *(int **)(unaff_retaddr + 0x18) = piVar11;
+      if (piVar11 != (int *)0x0) {
+        iVar6 = *piVar11;
+        goto joined_r0x004a2abe;
+      }
+    }
+    iVar6 = 0;
+  } while( true );
+  CStack_484.m_pchData = (char *)0x4a2b6d;
+  FreeHeapBufferIfNotNull();
+  iVar8 = (int)sStack_212;
+  CStack_484.m_pchData = (char *)0x4a2b87;
+  uStack_20c = AllocateWithFallbackHandler();
+  if (uStack_20c == 0) {
+    uStack_20c = 0;
+  }
+  else if (-1 < iVar8 + -1) {
+    puVar7 = (undefined1 *)(uStack_20c + 4);
+    do {
+      *puVar7 = 0;
+      puVar7 = puVar7 + 0x2c;
+      iVar8 = iVar8 + -1;
+    } while (iVar8 != 0);
+  }
+  CStack_484.m_pchData = (char *)0x4a2bb9;
+  FreeHeapBufferIfNotNull();
+  iVar8 = (int)sStack_210;
+  CStack_484.m_pchData = (char *)0x4a2bd3;
+  local_208 = AllocateWithFallbackHandler();
+  if (local_208 == 0) {
+    local_208 = 0;
+  }
+  else if (-1 < iVar8 + -1) {
+    puVar7 = (undefined1 *)(local_208 + 4);
+    do {
+      *puVar7 = 0;
+      puVar7 = puVar7 + 0x2c;
+      iVar8 = iVar8 + -1;
+    } while (iVar8 != 0);
+  }
+  piVar11 = *(int **)(local_4 + 0x14);
+  *(int **)(local_4 + 0x18) = piVar11;
+  if (piVar11 == (int *)0x0) {
+    iVar8 = 0;
+  }
+  else {
+    iVar8 = *piVar11;
+  }
+  if (iVar8 != 0) {
+    iVar6 = 0;
+    do {
+      *(undefined2 *)(uStack_20c + iVar6) = *(undefined2 *)(iVar8 + 4);
+      sVar1 = *(short *)(iVar8 + 0x34);
+      iVar9 = uStack_20c + iVar6;
+      iVar6 = iVar6 + 0x2c;
+      *(short *)(iVar9 + 2) = sVar1;
+      if (sVar1 == -0x56) {
+        *(undefined2 *)(iVar9 + 2) = 0;
+      }
+      CString::CString((CString *)&stack0xfffffb94);
+      iStack_c._0_1_ = 1;
+      CStack_484.m_pchData = (char *)0x4a2c5e;
+      CString::AssignFromPtr((CString *)&stack0xfffffb94,(CString *)(iVar8 + 0x24));
+      iVar5 = 0;
+      do {
+        cVar4 = *(char *)(iVar5 + unaff_EBP);
+        *(char *)(iVar9 + 4 + iVar5) = cVar4;
+        if (cVar4 == '\0') break;
+        iVar5 = iVar5 + 1;
+      } while (iVar5 < 0x20);
+      sVar1 = *(short *)(iVar8 + 0x38);
+      *(undefined4 *)(iVar9 + 0x28) = 0x61726d79;
+      iStack_c = (uint)iStack_c._1_3_ << 8;
+      *(short *)(iVar9 + 0x24) =
+           (sVar1 / 100 + (sVar1 >> 0xf)) - (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f);
+      CString::~CString((CString *)&stack0xfffffb94);
+      if (*(int *)(local_4 + 0x18) == 0) {
+LAB_004a2cc3:
+        iVar8 = 0;
+      }
+      else {
+        piVar11 = *(int **)(*(int *)(local_4 + 0x18) + 4);
+        *(int **)(local_4 + 0x18) = piVar11;
+        if (piVar11 == (int *)0x0) goto LAB_004a2cc3;
+        iVar8 = *piVar11;
+      }
+    } while (iVar8 != 0);
+  }
+  piVar11 = *(int **)(unaff_retaddr + 0x14);
+  *(int **)(unaff_retaddr + 0x18) = piVar11;
+  if (piVar11 == (int *)0x0) {
+    iVar8 = 0;
+  }
+  else {
+    iVar8 = *piVar11;
+  }
+  if (iVar8 != 0) {
+    iVar6 = 0;
+    do {
+      *(undefined2 *)(local_208 + iVar6) = *(undefined2 *)(iVar8 + 4);
+      sVar1 = *(short *)(iVar8 + 0x34);
+      iVar9 = local_208 + iVar6;
+      iVar6 = iVar6 + 0x2c;
+      *(short *)(iVar9 + 2) = sVar1;
+      if (sVar1 == -0x56) {
+        *(undefined2 *)(iVar9 + 2) = 0;
+      }
+      CString::CString((CString *)&stack0xfffffb94);
+      iStack_c._0_1_ = 2;
+      CStack_484.m_pchData = (char *)0x4a2d33;
+      CString::AssignFromPtr((CString *)&stack0xfffffb94,(CString *)(iVar8 + 0x24));
+      iVar5 = 0;
+      do {
+        cVar4 = *(char *)(iVar5 + unaff_EBP);
+        *(char *)(iVar9 + 4 + iVar5) = cVar4;
+        if (cVar4 == '\0') break;
+        iVar5 = iVar5 + 1;
+      } while (iVar5 < 0x20);
+      sVar1 = *(short *)(iVar8 + 0x38);
+      *(undefined4 *)(iVar9 + 0x28) = 0x61726d79;
+      iStack_c = (uint)iStack_c._1_3_ << 8;
+      *(short *)(iVar9 + 0x24) =
+           (sVar1 / 100 + (sVar1 >> 0xf)) - (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f);
+      CString::~CString((CString *)&stack0xfffffb94);
+      if (*(int *)(unaff_retaddr + 0x18) == 0) {
+LAB_004a2d98:
+        iVar8 = 0;
+      }
+      else {
+        piVar11 = *(int **)(*(int *)(unaff_retaddr + 0x18) + 4);
+        *(int **)(unaff_retaddr + 0x18) = piVar11;
+        if (piVar11 == (int *)0x0) goto LAB_004a2d98;
+        iVar8 = *piVar11;
+      }
+    } while (iVar8 != 0);
+  }
+  CString::CString(&CStack_460);
+  iStack_c._0_1_ = 3;
+  CString::CString((CString *)&stack0xfffffb98);
+  iStack_c._0_1_ = 4;
+  CString::CString(&CStack_464);
+  CVar12.m_pchData = (char *)&CStack_464;
+  CStack_484.m_pchData = (char *)0x10;
+  iStack_c = CONCAT31(iStack_c._1_3_,5);
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273d);
+  FormatOverlayTerrainLabelText(&stack0xfffffb8c);
+  scanBracketExpressions(g_pLocalizationTable,&stack0xfffffb94,unaff_ESI);
+  iVar8 = 0;
+  do {
+    cVar4 = (acStack_45c + iVar8)[unaff_EDI - (int)acStack_45c];
+    acStack_45c[iVar8] = cVar4;
+    if (cVar4 == '\0') break;
+    iVar8 = iVar8 + 1;
+  } while (iVar8 < 0x20);
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273d,0x11,&stack0xfffffb90);
+  FormatOverlayTerrainLabelText(&stack0xfffffb80);
+  scanBracketExpressions(g_pLocalizationTable,&puStack_478,CStack_47c.m_pchData);
+  iVar8 = 0;
+  do {
+    cVar4 = (local_448 + iVar8)[(int)CVar12.m_pchData - (int)local_448];
+    local_448[iVar8] = cVar4;
+    if (cVar4 == '\0') break;
+    iVar8 = iVar8 + 1;
+  } while (iVar8 < 0x20);
+  iVar8 = 0;
+  do {
+    cVar4 = *(char *)((int)&g_szEmptyString + iVar8);
+    acStack_329[iVar8] = cVar4;
+    if (cVar4 == '\0') break;
+    iVar8 = iVar8 + 1;
+  } while (iVar8 < 0xff);
+  iVar8 = 0;
+  do {
+    acStack_428[iVar8] = acStack_329[iVar8];
+    if (acStack_329[iVar8] == '\0') break;
+    iVar8 = iVar8 + 1;
+  } while (iVar8 < 0xff);
+  puVar10 = &uStack_20c;
+  iVar8 = 0;
+  do {
+    BuildArmyActionLabelFromLocalizationAndCounts(acStack_428,*puVar10,puVar10[0x1e],iVar8);
+    BuildArmyActionLabelFromLocalizationAndCounts(acStack_329,puVar10[0x3c],puVar10[0x5a],iVar8);
+    pTVar3 = g_pMapContextActionManager;
+    iVar8 = iVar8 + 1;
+    puVar10 = puVar10 + 1;
+  } while (iVar8 < 0x1e);
+  (**(code **)(**(int **)&g_pMapContextActionManager->field_0x4 + 0x3c))(&stack0xfffffb8c);
+  uStack_224 = 0;
+  uStack_228 = 0;
+  acStack_329[0xfd] = '\0';
+  acStack_329[0xfe] = '\0';
+  acStack_329[0xfb] = '\0';
+  acStack_329[0xfc] = '\0';
+  pTVar3->field_0x8 = 1;
+  if ((char)g_apSecondaryNationStateSlots[0x17] != '\0') {
+    pTVar3->field_0x8 = 1;
+  }
+  iStack_28._0_1_ = 4;
+  CString::~CString((CString *)&stack0xfffffb80);
+  iStack_28._0_1_ = 3;
+  CString::~CString(&CStack_484);
+  iStack_28 = (uint)iStack_28._1_3_ << 8;
+  CString::~CString(&CStack_47c);
+  iStack_28 = 0xffffffff;
+  FreeHeapBufferIfNotNull(uStack_228);
+  FreeHeapBufferIfNotNull(uStack_224);
+  *unaff_FS_OFFSET = iStack_30;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A31C0
+// GHIDRA_NAME OrphanVtableAssignStub_004a31c0
+// GHIDRA_PROTO undefined OrphanVtableAssignStub_004a31c0()
+
+void __fastcall OrphanVtableAssignStub_004a31c0(undefined1 *param_1)
+
+{
+  *param_1 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A31E0
+// GHIDRA_NAME OrphanVtableAssignStub_004a31e0
+// GHIDRA_PROTO undefined OrphanVtableAssignStub_004a31e0()
+
+void __fastcall OrphanVtableAssignStub_004a31e0(undefined1 *param_1)
+
+{
+  *param_1 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A3B30
+// GHIDRA_NAME SetOrClearWordMaskBits3a
+// GHIDRA_PROTO undefined SetOrClearWordMaskBits3a()
+
+void __thiscall SetOrClearWordMaskBits3a(int param_1,ushort param_2,char param_3)
+
+{
+  if (param_3 != '\0') {
+    *(ushort *)(param_1 + 0x3a) = *(ushort *)(param_1 + 0x3a) | param_2;
+    return;
+  }
+  *(ushort *)(param_1 + 0x3a) = *(ushort *)(param_1 + 0x3a) & ~param_2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A3B70
+// GHIDRA_NAME MirrorDword14To18
+// GHIDRA_PROTO undefined MirrorDword14To18()
+
+undefined4 __fastcall MirrorDword14To18(int param_1)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = *(undefined4 **)(param_1 + 0x14);
+  *(undefined4 **)(param_1 + 0x18) = puVar1;
+  if (puVar1 != (undefined4 *)0x0) {
+    return *puVar1;
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A3B90
+// GHIDRA_NAME WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90
+// GHIDRA_PROTO undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90()
+
+undefined4 __fastcall
+WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90(int param_1)
+
+{
+  undefined4 *puVar1;
+  
+  if (*(int *)(param_1 + 0x18) != 0) {
+    puVar1 = *(undefined4 **)(*(int *)(param_1 + 0x18) + 4);
+    *(undefined4 **)(param_1 + 0x18) = puVar1;
+    if (puVar1 != (undefined4 *)0x0) {
+      return *puVar1;
+    }
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4190
+// GHIDRA_NAME ValidateGridIndexRange0To17F
+// GHIDRA_PROTO undefined ValidateGridIndexRange0To17F()
+
+undefined4 __thiscall ValidateGridIndexRange0To17F(int param_1,short param_2)
+
+{
+  if ((-1 < param_2) && (param_2 < 0x180)) {
+    return *(undefined4 *)(*(int *)(param_1 + 0x10) + 0x98 + param_2 * 0xa8);
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A41D0
+// GHIDRA_NAME ComputeSelectedTileCityActionGateSum
+// GHIDRA_PROTO undefined ComputeSelectedTileCityActionGateSum()
+
+int __fastcall ComputeSelectedTileCityActionGateSum(int param_1)
+
+{
+  short sVar1;
   int iVar2;
   int iVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 auStackY_b4 [36];
-  undefined4 uStackY_24;
-  CString local_14;
-  undefined4 local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  uint local_4;
   
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062fabf;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_10 = 0;
-  InitializeSharedStringRefFromEmpty(&local_14);
+  sVar1 = *(short *)(param_1 + 0x31c);
   iVar3 = 0;
-  local_4 = 1;
-  cVar1 = *param_3;
-  do {
-    if (cVar1 == '\0') {
-      uStackY_24 = 0x49a8a3;
-      TToolBarCluster::StringSharedRef_AssignFromPtr(param_2,&local_14);
-      local_10 = 1;
-      local_4 = local_4 & 0xffffff00;
-      ReleaseSharedStringRefIfNotEmpty(&local_14);
-      *unaff_FS_OFFSET = local_c;
-      return param_2;
+  if ((sVar1 < 0) || (0x17f < sVar1)) {
+    iVar2 = 0;
+  }
+  else {
+    iVar2 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar1 * 0xa8);
+  }
+  for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x14)) {
+    if ((*(int *)(iVar2 + 8) == 0) && (sVar1 = thunk_GetUnitMovementClassId(), sVar1 != 0)) {
+      sVar1 = GetCityActionGateValueFromOrderTemplate();
+      iVar3 = iVar3 + sVar1;
     }
-    cVar1 = param_3[iVar3];
-    if (cVar1 == '[') {
-      do {
-        if (cVar1 == '\0') break;
-        iVar3 = iVar3 + 1;
-        uStackY_24 = 0x49a845;
-        iVar2 = CheckCharacterTypeFlag4();
-        if (iVar2 != 0) {
-          uStackY_24 = 0x49a86a;
-          AssignStringSharedFromCStr(&local_14,(char *)auStackY_b4[param_3[iVar3]]);
-          break;
-        }
-        cVar1 = param_3[iVar3];
-      } while (cVar1 != ']');
-      cVar1 = param_3[iVar3];
-      while ((cVar1 != ']' && (cVar1 != '\0'))) {
-        iVar2 = iVar3 + 1;
-        iVar3 = iVar3 + 1;
-        cVar1 = param_3[iVar2];
-      }
-    }
-    else {
-      uStackY_24 = 0x49a88a;
-      AppendSingleByteToSharedStringFromArg();
-    }
-    cVar1 = param_3[iVar3 + 1];
-    iVar3 = iVar3 + 1;
-  } while( true );
+  }
+  return iVar3;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049A910
-// GHIDRA_NAME renderTemplateOrExpandTokens
-// GHIDRA_PROTO undefined4 __stdcall renderTemplateOrExpandTokens(undefined4 ctx_or_stream, undefined4 result_or_handle, undefined4 input_str_arg)
+// GHIDRA_FUNCTION IMPERIALISM 0x004A43F0
+// GHIDRA_NAME ActivateFirstIdleTacticalUnitByCategoryAtTile
+// GHIDRA_PROTO undefined ActivateFirstIdleTacticalUnitByCategoryAtTile()
 
-TToolBarCluster *
-renderTemplateOrExpandTokens
-          (undefined4 ctx_or_stream,TToolBarCluster *result_or_handle,undefined4 input_str_arg)
+undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(short param_1,short param_2)
 
 {
-  TToolBarCluster *this;
-  char cur_ch;
-  int match_found;
-  astruct_9 *input_str;
-  int idx;
-  undefined4 *unaff_FS_OFFSET;
-  astruct_9 *input_buf;
-  CString scratch_buf;
-  undefined4 token_accum;
-  undefined4 did_output;
-  undefined4 seh_prev;
-  undefined1 *seh_handler;
-  int seh_state;
-  uint tmp_shifted;
-  
-  seh_state = 0xffffffff;
-  seh_handler = &LAB_0062fb0f;
-  seh_prev = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &seh_prev;
-  idx = 0;
-  did_output = 0;
-  InitializeSharedStringRefFromEmpty(&scratch_buf);
-  seh_state = 1;
-  LoadLocalizedStringByGroupAndIndexToSharedRef();
-  seh_state._0_1_ = 2;
-  cur_ch = input_buf->field0_0x0;
-  this = result_or_handle;
-  input_str = input_buf;
-  do {
-    result_or_handle = this;
-    if (cur_ch == '\0') {
-      TToolBarCluster::StringSharedRef_AssignFromPtr(this,&scratch_buf);
-      did_output = 1;
-      seh_state._0_1_ = 1;
-      ReleaseSharedStringRefIfNotEmpty(&input_buf);
-      seh_state = (uint)seh_state._1_3_ << 8;
-      ReleaseSharedStringRefIfNotEmpty(&scratch_buf);
-      *unaff_FS_OFFSET = seh_prev;
-      return this;
-    }
-    if (input_str[idx].field0_0x0 == '[') {
-      cur_ch = '[';
-      do {
-        if (cur_ch == '\0') break;
-        idx = idx + 1;
-        match_found = CheckCharacterTypeFlag4();
-        if (match_found != 0) {
-          LoadLocalizedStringByGroupAndIndexToSharedRef();
-          seh_state._0_1_ = 3;
-          AssignStringSharedFromRef();
-          seh_state._0_1_ = 2;
-          ReleaseSharedStringRefIfNotEmpty(&ctx_or_stream);
-          input_str = input_buf;
-          break;
-        }
-        cur_ch = input_buf[idx].field0_0x0;
-        input_str = input_buf;
-      } while (cur_ch != ']');
-      cur_ch = input_str[idx].field0_0x0;
-      while ((cur_ch != ']' && (cur_ch != '\0'))) {
-        match_found = idx + 1;
-        idx = idx + 1;
-        cur_ch = input_str[match_found].field0_0x0;
-      }
-    }
-    else {
-      tmp_shifted = (uint)token_accum >> 8;
-      token_accum = CONCAT31((int3)tmp_shifted,input_str[idx].field0_0x0);
-      AppendSingleByteToSharedStringFromArg();
-      input_str = input_buf;
-    }
-    cur_ch = input_str[idx + 1].field0_0x0;
-    idx = idx + 1;
-    this = result_or_handle;
-  } while( true );
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049AD50
-// GHIDRA_NAME RemoveHashIndexedRecordByShortKey
-// GHIDRA_PROTO undefined RemoveHashIndexedRecordByShortKey()
-
-undefined4 __thiscall RemoveHashIndexedRecordByShortKey(int param_1,short param_2)
-
-{
-  int *piVar1;
-  undefined4 *puVar2;
-  undefined4 *puVar3;
-  int *piVar4;
-  int iVar5;
+  bool bVar1;
+  undefined4 in_EAX;
+  uint uVar2;
+  undefined4 uVar3;
+  short sVar5;
   int *piVar6;
-  undefined4 *puVar7;
-  uint uVar8;
+  undefined2 uVar4;
   
-  iVar5 = *(int *)(param_1 + 4);
-  if (iVar5 != 0) {
-    uVar8 = ((uint)(int)param_2 >> 4) % *(uint *)(param_1 + 8);
-    piVar1 = *(int **)(iVar5 + uVar8 * 4);
-    piVar6 = (int *)(iVar5 + uVar8 * 4);
-    if (piVar1 != (int *)0x0) {
+  uVar2 = CONCAT22((short)((uint)in_EAX >> 0x10),param_2);
+  if ((param_2 < 0) || (0x17f < param_2)) {
+    piVar6 = (int *)0x0;
+  }
+  else {
+    uVar2 = param_2 * 0x15;
+    piVar6 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_2 * 0xa8);
+  }
+  uVar2 = uVar2 & 0xffffff00;
+  uVar4 = (undefined2)(uVar2 >> 0x10);
+  bVar1 = false;
+  sVar5 = 0;
+  for (; piVar6 != (int *)0x0; piVar6 = (int *)piVar6[5]) {
+    if ((*(short *)(&DAT_00695528 + (short)piVar6[1] * 2) == param_1) && (piVar6[2] == 0)) {
+      if (bVar1) {
+        sVar5 = sVar5 + 1;
+      }
+      else {
+        uVar3 = (**(code **)(*piVar6 + 0x34))(4,0xffffffff);
+        uVar2 = CONCAT31((int3)((uint)uVar3 >> 8),1);
+        bVar1 = true;
+      }
+    }
+    uVar4 = (undefined2)(uVar2 >> 0x10);
+  }
+  return CONCAT22(uVar4,sVar5);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4490
+// GHIDRA_NAME ActivateFirstActiveTacticalUnitByCategoryAtTile
+// GHIDRA_PROTO undefined ActivateFirstActiveTacticalUnitByCategoryAtTile()
+
+undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(short param_1,short param_2)
+
+{
+  bool bVar1;
+  undefined4 in_EAX;
+  undefined2 uVar3;
+  int iVar2;
+  int *piVar4;
+  short sVar5;
+  
+  uVar3 = (undefined2)((uint)in_EAX >> 0x10);
+  if ((param_2 < 0) || (0x17f < param_2)) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    uVar3 = (undefined2)((uint)(param_2 * 0x15) >> 0x10);
+    piVar4 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_2 * 0xa8);
+  }
+  bVar1 = false;
+  sVar5 = 0;
+  do {
+    if (piVar4 == (int *)0x0) {
+      return CONCAT22(uVar3,sVar5);
+    }
+    iVar2 = (int)(short)piVar4[1];
+    if (*(short *)(&DAT_00695528 + iVar2 * 2) == param_1) {
+      iVar2 = piVar4[2];
+      if (iVar2 != 0) {
+        if ((((iVar2 != 2) && (iVar2 != 4)) && (iVar2 != 3)) || (bVar1)) goto LAB_004a4507;
+        iVar2 = (**(code **)(*piVar4 + 0x34))(0,0xffffffff);
+        bVar1 = true;
+      }
+      sVar5 = sVar5 + 1;
+    }
+LAB_004a4507:
+    uVar3 = (undefined2)((uint)iVar2 >> 0x10);
+    piVar4 = (int *)piVar4[5];
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4550
+// GHIDRA_NAME WrapperFor_thunk_GetUnitMovementClassId_At004a4550
+// GHIDRA_PROTO undefined WrapperFor_thunk_GetUnitMovementClassId_At004a4550()
+
+undefined4 WrapperFor_thunk_GetUnitMovementClassId_At004a4550(short param_1)
+
+{
+  short sVar1;
+  int iVar2;
+  
+  if (param_1 != -1) {
+    if ((param_1 < 0) || (0x17f < param_1)) {
+      iVar2 = 0;
+    }
+    else {
+      iVar2 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8);
+    }
+    if (iVar2 != 0) {
       do {
-        piVar4 = piVar1;
-        if ((short)piVar4[2] == param_2) {
-          *piVar6 = *piVar4;
-          *piVar4 = *(int *)(param_1 + 0x10);
-          *(int **)(param_1 + 0x10) = piVar4;
-          iVar5 = *(int *)(param_1 + 0xc) + -1;
-          *(int *)(param_1 + 0xc) = iVar5;
-          if (iVar5 == 0) {
-            puVar2 = *(undefined4 **)(param_1 + 4);
-            if (puVar2 != (undefined4 *)0x0) {
-              puVar7 = puVar2;
-              for (iVar5 = *(int *)(param_1 + 8); iVar5 != 0; iVar5 = iVar5 + -1) {
-                for (puVar3 = (undefined4 *)*puVar7; puVar3 != (undefined4 *)0x0;
-                    puVar3 = (undefined4 *)*puVar3) {
-                }
-                puVar7 = puVar7 + 1;
-              }
-            }
-            FreeHeapBufferIfNotNull(puVar2);
-            *(undefined4 *)(param_1 + 4) = 0;
-            *(undefined4 *)(param_1 + 0xc) = 0;
-            *(undefined4 *)(param_1 + 0x10) = 0;
-            FreeDataChain();
-            *(undefined4 *)(param_1 + 0x14) = 0;
+        if (*(int *)(iVar2 + 8) == 0) {
+          sVar1 = thunk_GetUnitMovementClassId();
+          if (sVar1 != 0) {
+            return 1;
           }
-          return 1;
         }
-        piVar1 = (int *)*piVar4;
-        piVar6 = piVar4;
-      } while ((int *)*piVar4 != (int *)0x0);
+        iVar2 = *(int *)(iVar2 + 0x14);
+      } while (iVar2 != 0);
       return 0;
     }
   }
   return 0;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B190
-// GHIDRA_NAME BuildIndexedBmpResourceById_Impl
-// GHIDRA_PROTO undefined BuildIndexedBmpResourceById_Impl()
-
-undefined4 __thiscall BuildIndexedBmpResourceById_Impl(int param_1,uint param_2)
-
-{
-  int *piVar1;
-  undefined4 *puVar2;
-  undefined4 *puVar3;
-  int *piVar4;
-  int iVar5;
-  int *piVar6;
-  undefined4 *puVar7;
-  uint uVar8;
-  
-  iVar5 = *(int *)(param_1 + 4);
-  if (iVar5 != 0) {
-    uVar8 = (param_2 >> 4) % *(uint *)(param_1 + 8);
-    piVar1 = *(int **)(iVar5 + uVar8 * 4);
-    piVar6 = (int *)(iVar5 + uVar8 * 4);
-    if (piVar1 != (int *)0x0) {
-      do {
-        piVar4 = piVar1;
-        if (piVar4[2] == param_2) {
-          *piVar6 = *piVar4;
-          *piVar4 = *(int *)(param_1 + 0x10);
-          *(int **)(param_1 + 0x10) = piVar4;
-          iVar5 = *(int *)(param_1 + 0xc) + -1;
-          *(int *)(param_1 + 0xc) = iVar5;
-          if (iVar5 == 0) {
-            puVar2 = *(undefined4 **)(param_1 + 4);
-            if (puVar2 != (undefined4 *)0x0) {
-              puVar7 = puVar2;
-              for (iVar5 = *(int *)(param_1 + 8); iVar5 != 0; iVar5 = iVar5 + -1) {
-                for (puVar3 = (undefined4 *)*puVar7; puVar3 != (undefined4 *)0x0;
-                    puVar3 = (undefined4 *)*puVar3) {
-                }
-                puVar7 = puVar7 + 1;
-              }
-            }
-            FreeHeapBufferIfNotNull(puVar2);
-            *(undefined4 *)(param_1 + 4) = 0;
-            *(undefined4 *)(param_1 + 0xc) = 0;
-            *(undefined4 *)(param_1 + 0x10) = 0;
-            FreeDataChain();
-            *(undefined4 *)(param_1 + 0x14) = 0;
-          }
-          return 1;
-        }
-        piVar1 = (int *)*piVar4;
-        piVar6 = piVar4;
-      } while ((int *)*piVar4 != (int *)0x0);
-      return 0;
-    }
-  }
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B5D0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(undefined4 param_1,byte param_2)
-
-{
-  TModuleLibraryCacheTableStateB_0064BA80::DestructModuleLibraryCacheTableStateBAndFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B600
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0049b600
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0049b600()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049b600(undefined4 param_1,byte param_2)
-
-{
-  TModuleLibraryCacheTableStateA_0064BA68::DestructModuleLibraryCacheTableStateAAndFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B630
-// GHIDRA_NAME ResolveBmpResourceHandleWithDefault3B6_Impl
-// GHIDRA_PROTO undefined ResolveBmpResourceHandleWithDefault3B6_Impl()
-
-void __fastcall ResolveBmpResourceHandleWithDefault3B6_Impl(int param_1)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  undefined4 *puVar3;
-  int iVar4;
-  
-  puVar1 = *(undefined4 **)(param_1 + 4);
-  if (puVar1 != (undefined4 *)0x0) {
-    puVar3 = puVar1;
-    for (iVar4 = *(int *)(param_1 + 8); iVar4 != 0; iVar4 = iVar4 + -1) {
-      for (puVar2 = (undefined4 *)*puVar3; puVar2 != (undefined4 *)0x0;
-          puVar2 = (undefined4 *)*puVar2) {
-      }
-      puVar3 = puVar3 + 1;
-    }
-  }
-  FreeHeapBufferIfNotNull(puVar1);
-  *(undefined4 *)(param_1 + 4) = 0;
-  *(undefined4 *)(param_1 + 0xc) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  FreeDataChain();
-  *(undefined4 *)(param_1 + 0x14) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B6A0
-// GHIDRA_NAME ResizePointerArrayAndZeroEntries_Simple
-// GHIDRA_PROTO undefined ResizePointerArrayAndZeroEntries_Simple()
-
-void __thiscall ResizePointerArrayAndZeroEntries_Simple(int param_1,uint param_2,int param_3)
-
-{
-  undefined4 *puVar1;
-  uint uVar2;
-  int iVar3;
-  
-  if (*(int *)(param_1 + 4) != 0) {
-    FreeHeapBufferIfNotNull(*(int *)(param_1 + 4));
-    *(undefined4 *)(param_1 + 4) = 0;
-  }
-  if (param_3 != 0) {
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(param_2 * 4);
-    uVar2 = param_2 & 0x3fffffff;
-    *(undefined4 **)(param_1 + 4) = puVar1;
-    for (; uVar2 != 0; uVar2 = uVar2 - 1) {
-      *puVar1 = 0;
-      puVar1 = puVar1 + 1;
-    }
-    for (iVar3 = 0; iVar3 != 0; iVar3 = iVar3 + -1) {
-      *(undefined1 *)puVar1 = 0;
-      puVar1 = (undefined4 *)((int)puVar1 + 1);
-    }
-  }
-  *(uint *)(param_1 + 8) = param_2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B720
-// GHIDRA_NAME WrapperFor_AllocateAndLinkBlockHead_At0049b720
-// GHIDRA_PROTO undefined WrapperFor_AllocateAndLinkBlockHead_At0049b720()
-
-void __fastcall WrapperFor_AllocateAndLinkBlockHead_At0049b720(int param_1)
-
-{
-  int iVar1;
-  undefined4 *puVar2;
-  int iVar3;
-  
-  if (*(int *)(param_1 + 0x10) == 0) {
-    iVar1 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0x10);
-    iVar3 = *(int *)(param_1 + 0x18);
-    puVar2 = (undefined4 *)(iVar3 * 0x10 + -0xc + iVar1);
-    if (-1 < iVar3 + -1) {
-      do {
-        *puVar2 = *(undefined4 *)(param_1 + 0x10);
-        *(undefined4 **)(param_1 + 0x10) = puVar2;
-        puVar2 = puVar2 + -4;
-        iVar3 = iVar3 + -1;
-      } while (iVar3 != 0);
-    }
-  }
-  puVar2 = *(undefined4 **)(param_1 + 0x10);
-  *(undefined4 *)(param_1 + 0x10) = *puVar2;
-  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-  *(undefined2 *)(puVar2 + 2) = 0;
-  puVar2[3] = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B7A0
-// GHIDRA_NAME FindShortKeyHashNodeAndOutputBucketIndex
-// GHIDRA_PROTO undefined FindShortKeyHashNodeAndOutputBucketIndex()
-
-undefined4 * __thiscall
-FindShortKeyHashNodeAndOutputBucketIndex(int param_1,short param_2,uint *param_3)
-
-{
-  undefined4 *puVar1;
-  uint uVar2;
-  
-  uVar2 = ((uint)(int)param_2 >> 4) % *(uint *)(param_1 + 8);
-  *param_3 = uVar2;
-  if (*(int *)(param_1 + 4) != 0) {
-    for (puVar1 = *(undefined4 **)(*(int *)(param_1 + 4) + uVar2 * 4); puVar1 != (undefined4 *)0x0;
-        puVar1 = (undefined4 *)*puVar1) {
-      if (*(short *)(puVar1 + 2) == param_2) {
-        return puVar1;
-      }
-    }
-  }
-  return (undefined4 *)0x0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B7F0
-// GHIDRA_NAME ResizePointerArrayAndZeroEntries
-// GHIDRA_PROTO undefined ResizePointerArrayAndZeroEntries()
-
-void __thiscall ResizePointerArrayAndZeroEntries(int param_1,uint param_2,int param_3)
-
-{
-  undefined4 *puVar1;
-  uint uVar2;
-  int iVar3;
-  
-  if (*(int *)(param_1 + 4) != 0) {
-    FreeHeapBufferIfNotNull(*(int *)(param_1 + 4));
-    *(undefined4 *)(param_1 + 4) = 0;
-  }
-  if (param_3 != 0) {
-    puVar1 = (undefined4 *)AllocateWithFallbackHandler(param_2 * 4);
-    uVar2 = param_2 & 0x3fffffff;
-    *(undefined4 **)(param_1 + 4) = puVar1;
-    for (; uVar2 != 0; uVar2 = uVar2 - 1) {
-      *puVar1 = 0;
-      puVar1 = puVar1 + 1;
-    }
-    for (iVar3 = 0; iVar3 != 0; iVar3 = iVar3 + -1) {
-      *(undefined1 *)puVar1 = 0;
-      puVar1 = (undefined4 *)((int)puVar1 + 1);
-    }
-  }
-  *(uint *)(param_1 + 8) = param_2;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B870
-// GHIDRA_NAME WrapperFor_AllocateAndLinkBlockHead_At0049b870
-// GHIDRA_PROTO undefined WrapperFor_AllocateAndLinkBlockHead_At0049b870()
-
-void __fastcall WrapperFor_AllocateAndLinkBlockHead_At0049b870(int param_1)
-
-{
-  int iVar1;
-  undefined4 *puVar2;
-  int iVar3;
-  
-  if (*(int *)(param_1 + 0x10) == 0) {
-    iVar1 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0x10);
-    iVar3 = *(int *)(param_1 + 0x18);
-    puVar2 = (undefined4 *)(iVar3 * 0x10 + -0xc + iVar1);
-    if (-1 < iVar3 + -1) {
-      do {
-        *puVar2 = *(undefined4 *)(param_1 + 0x10);
-        *(undefined4 **)(param_1 + 0x10) = puVar2;
-        puVar2 = puVar2 + -4;
-        iVar3 = iVar3 + -1;
-      } while (iVar3 != 0);
-    }
-  }
-  puVar2 = *(undefined4 **)(param_1 + 0x10);
-  *(undefined4 *)(param_1 + 0x10) = *puVar2;
-  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-  puVar2[2] = 0;
-  puVar2[3] = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B8F0
-// GHIDRA_NAME DestructModuleLibraryCacheAndHashTables_Impl
-// GHIDRA_PROTO undefined DestructModuleLibraryCacheAndHashTables_Impl()
-
-void __thiscall DestructModuleLibraryCacheAndHashTables_Impl(int param_1,undefined4 *param_2)
-
-{
-  undefined4 *puVar1;
-  undefined4 *puVar2;
-  int iVar3;
-  undefined4 *puVar4;
-  
-  *param_2 = *(undefined4 *)(param_1 + 0x10);
-  *(undefined4 **)(param_1 + 0x10) = param_2;
-  iVar3 = *(int *)(param_1 + 0xc) + -1;
-  *(int *)(param_1 + 0xc) = iVar3;
-  if (iVar3 == 0) {
-    puVar1 = *(undefined4 **)(param_1 + 4);
-    if (puVar1 != (undefined4 *)0x0) {
-      puVar4 = puVar1;
-      for (iVar3 = *(int *)(param_1 + 8); iVar3 != 0; iVar3 = iVar3 + -1) {
-        for (puVar2 = (undefined4 *)*puVar4; puVar2 != (undefined4 *)0x0;
-            puVar2 = (undefined4 *)*puVar2) {
-        }
-        puVar4 = puVar4 + 1;
-      }
-    }
-    FreeHeapBufferIfNotNull(puVar1);
-    *(undefined4 *)(param_1 + 4) = 0;
-    *(undefined4 *)(param_1 + 0xc) = 0;
-    *(undefined4 *)(param_1 + 0x10) = 0;
-    FreeDataChain();
-    *(undefined4 *)(param_1 + 0x14) = 0;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B980
-// GHIDRA_NAME ComputeBucketIndexAndScanNodeByKey
-// GHIDRA_PROTO undefined ComputeBucketIndexAndScanNodeByKey()
-
-undefined4 * __thiscall ComputeBucketIndexAndScanNodeByKey(int param_1,uint param_2,uint *param_3)
-
-{
-  undefined4 *puVar1;
-  uint uVar2;
-  
-  uVar2 = (param_2 >> 4) % *(uint *)(param_1 + 8);
-  *param_3 = uVar2;
-  if (*(int *)(param_1 + 4) != 0) {
-    for (puVar1 = *(undefined4 **)(*(int *)(param_1 + 4) + uVar2 * 4); puVar1 != (undefined4 *)0x0;
-        puVar1 = (undefined4 *)*puVar1) {
-      if (puVar1[2] == param_2) {
-        return puVar1;
-      }
-    }
-  }
-  return (undefined4 *)0x0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B9D0
-// GHIDRA_NAME ResetGlobalPair6A1E20And6A1E24
-// GHIDRA_PROTO undefined ResetGlobalPair6A1E20And6A1E24()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalPair6A1E20And6A1E24(void)
-
-{
-  _DAT_006a1e20 = 0;
-  _DAT_006a1e24 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049B9F0
-// GHIDRA_NAME ResetGlobalPair6A1E48And6A1E4C
-// GHIDRA_PROTO undefined ResetGlobalPair6A1E48And6A1E4C()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalPair6A1E48And6A1E4C(void)
-
-{
-  _DAT_006a1e48 = 0;
-  _DAT_006a1e4c = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BA10
-// GHIDRA_NAME ResetGlobalQuad6A1E28To6A1E34
-// GHIDRA_PROTO undefined ResetGlobalQuad6A1E28To6A1E34()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalQuad6A1E28To6A1E34(void)
-
-{
-  _DAT_006a1e28 = 0;
-  _DAT_006a1e2c = 0;
-  _DAT_006a1e30 = 0;
-  _DAT_006a1e34 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BA40
-// GHIDRA_NAME ResetGlobalQuad6A1E38To6A1E44
-// GHIDRA_PROTO undefined ResetGlobalQuad6A1E38To6A1E44()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalQuad6A1E38To6A1E44(void)
-
-{
-  _DAT_006a1e38 = 0;
-  _DAT_006a1e3c = 0;
-  _DAT_006a1e40 = 0;
-  _DAT_006a1e44 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BA70
-// GHIDRA_NAME ResetGlobalDword6A1E18
-// GHIDRA_PROTO undefined ResetGlobalDword6A1E18()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalDword6A1E18(void)
-
-{
-  _DAT_006a1e18 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BAA0
-// GHIDRA_NAME InitializeStaticDialogTemplateD0AndRegisterAtExit
-// GHIDRA_PROTO undefined InitializeStaticDialogTemplateD0AndRegisterAtExit()
+// GHIDRA_FUNCTION IMPERIALISM 0x004A45E0
+// GHIDRA_NAME SetActiveProvinceSelection
+// GHIDRA_PROTO undefined SetActiveProvinceSelection()
 // GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes the static dialog-template D0 object at 0x006A1E78 and registers a cleanup callback.
-// GHIDRA_COMMENT - calls thunk_InitializeDialogTemplateD0WithTextState(0) with ECX=0x006A1E78.
-// GHIDRA_COMMENT - registers CleanupStaticDialogTemplateD0AtExit via FUN_005E7920 (atexit-style callback registration).
+// GHIDRA_COMMENT Sets active province selection index (`this+0x31C`) and refreshes province-selection dependent map overlays.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Also clears highlight bits for eligible province entries and notifies active interaction mode handlers (`vfunc +0x1D0/+0x1D4`).
 // GHIDRA_COMMENT_END
 
-/* Initializes the static dialog-template D0 object at 0x006A1E78 and registers a cleanup callback.
-   - calls thunk_InitializeDialogTemplateD0WithTextState(0) with ECX=0x006A1E78.
-   - registers CleanupStaticDialogTemplateD0AtExit via FUN_005E7920 (atexit-style callback
-   registration). */
+/* Sets active province selection index (`this+0x31C`) and refreshes province-selection dependent
+   map overlays.
+   
+   Also clears highlight bits for eligible province entries and notifies active interaction mode
+   handlers (`vfunc +0x1D0/+0x1D4`). */
 
-void InitializeStaticDialogTemplateD0AndRegisterAtExit(void)
-
-{
-  thunk_InitializeDialogTemplateD0WithTextState(0);
-  AppendPointerToGlobalVectorAsStatus(CleanupStaticDialogTemplateD0AtExit);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BAD0
-// GHIDRA_NAME CleanupStaticDialogTemplateD0AtExit
-// GHIDRA_PROTO undefined CleanupStaticDialogTemplateD0AtExit()
-
-void CleanupStaticDialogTemplateD0AtExit(void)
+void __thiscall SetActiveProvinceSelection(int param_1,undefined4 param_2)
 
 {
-  thunk_DestructStaticDialogTemplateD0Object();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BAF0
-// GHIDRA_NAME DestructStaticDialogTemplateD0Object
-// GHIDRA_PROTO undefined DestructStaticDialogTemplateD0Object()
-
-void __fastcall DestructStaticDialogTemplateD0Object(CDialog *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
+  int *piVar1;
+  short sVar2;
   
-  local_c = *unaff_FS_OFFSET;
-  puStack_8 = &LAB_0062fb98;
-  *unaff_FS_OFFSET = &local_c;
-  local_4 = 0;
-  Dtor_CListBox_FID_61e8cb();
-  local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
-  *unaff_FS_OFFSET = local_c;
+  sVar2 = (short)param_2;
+  *(short *)(param_1 + 0x31c) = sVar2;
+  if (sVar2 != -1) {
+    if ((sVar2 < 0) || (0x17f < sVar2)) {
+      piVar1 = (int *)0x0;
+    }
+    else {
+      piVar1 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar2 * 0xa8);
+    }
+    for (; piVar1 != (int *)0x0; piVar1 = (int *)piVar1[5]) {
+      if ((((short)piVar1[2] == 4) || ((short)piVar1[2] == 3)) &&
+         (*(short *)(&DAT_00695528 + (short)piVar1[1] * 2) != 0)) {
+        (**(code **)(*piVar1 + 0x34))(0,0xffffffff);
+      }
+    }
+    (**(code **)(**(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xb0 +
+                           *(short *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0x96) * 4) + 0x1d0)
+    )(param_2);
+  }
+  (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d4))();
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BC00
-// GHIDRA_NAME ResetGlobalPair6A1E70And6A1E74
-// GHIDRA_PROTO undefined ResetGlobalPair6A1E70And6A1E74()
+// GHIDRA_FUNCTION IMPERIALISM 0x004A46D0
+// GHIDRA_NAME ClearProvinceSelectionHighlightsForNation
+// GHIDRA_PROTO undefined ClearProvinceSelectionHighlightsForNation()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Clears province-selection highlight state for all type-3 entries in nation province container (`nation+0x44`) and resets cached province index (`this+0x31C = -1`).
+// GHIDRA_COMMENT_END
 
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Clears province-selection highlight state for all type-3 entries in nation province container
+   (`nation+0x44`) and resets cached province index (`this+0x31C = -1`). */
 
-void ResetGlobalPair6A1E70And6A1E74(void)
-
-{
-  _DAT_006a1e70 = 0;
-  _DAT_006a1e74 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BC20
-// GHIDRA_NAME ResetGlobalPair6A1F38And6A1F3C
-// GHIDRA_PROTO undefined ResetGlobalPair6A1F38And6A1F3C()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalPair6A1F38And6A1F3C(void)
+void __thiscall ClearProvinceSelectionHighlightsForNation(int param_1,short param_2)
 
 {
-  _DAT_006a1f38 = 0;
-  _DAT_006a1f3c = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BC40
-// GHIDRA_NAME ResetGlobalQuad6A1F18To6A1F24
-// GHIDRA_PROTO undefined ResetGlobalQuad6A1F18To6A1F24()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalQuad6A1F18To6A1F24(void)
-
-{
-  _DAT_006a1f18 = 0;
-  _DAT_006a1f1c = 0;
-  _DAT_006a1f20 = 0;
-  _DAT_006a1f24 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BC70
-// GHIDRA_NAME ResetGlobalQuad6A1F28To6A1F34
-// GHIDRA_PROTO undefined ResetGlobalQuad6A1F28To6A1F34()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalQuad6A1F28To6A1F34(void)
-
-{
-  _DAT_006a1f28 = 0;
-  _DAT_006a1f2c = 0;
-  _DAT_006a1f30 = 0;
-  _DAT_006a1f34 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BCA0
-// GHIDRA_NAME ResetGlobalDword6A1E68
-// GHIDRA_PROTO undefined ResetGlobalDword6A1E68()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalDword6A1E68(void)
-
-{
-  _DAT_006a1e68 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BCD0
-// GHIDRA_NAME InitializeDialogTemplateD0WithTextState
-// GHIDRA_PROTO undefined InitializeDialogTemplateD0WithTextState()
-
-undefined4 * __thiscall
-InitializeDialogTemplateD0WithTextState(undefined4 *param_1,undefined4 param_2)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
+  code *pcVar1;
+  int iVar2;
+  int *piVar3;
+  short sVar4;
+  int iVar5;
+  code *unaff_retaddr;
   
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062fbb8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(0xd0,param_2);
-  local_4 = 0;
-  ConstructObjectVtable00670b4cBase();
-  param_1[0x17] = &PTR_LAB_00671d1c;
-  param_1[0x26] = 0;
-  *param_1 = &PTR_LAB_0064bac0;
-  *unaff_FS_OFFSET = local_c;
-  return param_1;
+  sVar4 = 1;
+  iVar5 = **(int **)&g_apNationStates[param_2]->field_0x44;
+  iVar2 = (**(code **)(iVar5 + 0x48))();
+  if (0 < iVar2) {
+    pcVar1 = *(code **)(iVar5 + 0x4c);
+    iVar5 = 1;
+    do {
+      piVar3 = (int *)(*pcVar1)(iVar5);
+      if (piVar3[2] == 3) {
+        (**(code **)(*piVar3 + 0x34))(0,0xffffffff);
+      }
+      sVar4 = sVar4 + 1;
+      iVar5 = (int)sVar4;
+      iVar2 = (*unaff_retaddr)();
+    } while (iVar5 <= iVar2);
+  }
+  *(undefined2 *)(param_1 + 0x31c) = 0xffff;
+  return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BD90
-// GHIDRA_NAME PopulateListBoxFromDelimitedText
-// GHIDRA_PROTO undefined PopulateListBoxFromDelimitedText()
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4760
+// GHIDRA_NAME FindNextSelectableProvinceForNation
+// GHIDRA_PROTO undefined FindNextSelectableProvinceForNation()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Finds the next selectable province index for a nation.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Starts from last province index (`this+0x31C`, fallback 0).
+// GHIDRA_COMMENT - Scans province table (`DAT_006A43D4 + 0x10`) up to max index 0x17F.
+// GHIDRA_COMMENT - Keeps only provinces owned/linked to target nation (direct or via relation callback).
+// GHIDRA_COMMENT - Requires at least one eligible node in province chain to be selectable.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns province index, or -1 when no selectable province exists.
+// GHIDRA_COMMENT_END
 
-void __thiscall PopulateListBoxFromDelimitedText(int param_1,char *param_2)
+/* Finds the next selectable province index for a nation.
+   
+   Behavior:
+   - Starts from last province index (`this+0x31C`, fallback 0).
+   - Scans province table (`DAT_006A43D4 + 0x10`) up to max index 0x17F.
+   - Keeps only provinces owned/linked to target nation (direct or via relation callback).
+   - Requires at least one eligible node in province chain to be selectable.
+   
+   Returns province index, or -1 when no selectable province exists. */
+
+undefined4 __thiscall FindNextSelectableProvinceForNation(int param_1,short param_2)
 
 {
-  uint uVar1;
-  CString *src_ref;
-  LRESULT LVar2;
+  char cVar1;
+  short sVar2;
+  undefined3 extraout_var;
+  TMapMgr *pTVar3;
+  int iVar4;
+  short sVar5;
+  
+  sVar5 = *(short *)(param_1 + 0x31c);
+  if (sVar5 == -1) {
+    sVar5 = 0;
+  }
+  do {
+    sVar2 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + sVar5 * 0xa8);
+    pTVar3 = (TMapMgr *)CONCAT22((short)((uint)g_pGlobalMapState >> 0x10),sVar2);
+    if (-1 < sVar2) {
+      if (sVar2 != param_2) {
+        cVar1 = (*g_apTerrainTypeDescriptorTable[sVar2]->vftable[0xb].slot_0x04)((int)param_2);
+        pTVar3 = (TMapMgr *)CONCAT31(extraout_var,cVar1);
+        if (cVar1 == '\0') goto LAB_004a47ff;
+      }
+      if (sVar5 != -1) {
+        if ((sVar5 < 0) || (0x17f < sVar5)) {
+          iVar4 = 0;
+        }
+        else {
+          iVar4 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar5 * 0xa8);
+          pTVar3 = g_pGlobalMapState;
+        }
+        for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x14)) {
+          pTVar3 = *(TMapMgr **)(iVar4 + 8);
+          if ((pTVar3 == (TMapMgr *)0x0) &&
+             (pTVar3 = (TMapMgr *)thunk_GetUnitMovementClassId(), (short)pTVar3 != 0)) {
+            pTVar3 = (TMapMgr *)CONCAT31((int3)((uint)pTVar3 >> 8),1);
+            goto LAB_004a47fb;
+          }
+        }
+      }
+      pTVar3 = (TMapMgr *)((uint)pTVar3 & 0xffffff00);
+LAB_004a47fb:
+      if ((char)pTVar3 != '\0') {
+        return CONCAT22((short)((uint)pTVar3 >> 0x10),sVar5);
+      }
+    }
+LAB_004a47ff:
+    sVar5 = sVar5 + 1;
+    if (0x17f < sVar5) {
+      return CONCAT22((short)((uint)pTVar3 >> 0x10),0xffff);
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4930
+// GHIDRA_NAME LookupMapCursorTokenByStateIndex
+// GHIDRA_PROTO undefined LookupMapCursorTokenByStateIndex()
+
+undefined2 LookupMapCursorTokenByStateIndex(undefined4 param_1,undefined4 param_2)
+
+{
+  int iVar1;
+  
+  iVar1 = ComputeMapCursorStateIndex(param_1,param_2);
+  return *(undefined2 *)(&DAT_00695668 + iVar1 * 2);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4960
+// GHIDRA_NAME ComputeMapCursorStateIndex
+// GHIDRA_PROTO undefined ComputeMapCursorStateIndex()
+
+undefined4 ComputeMapCursorStateIndex(short param_1,short param_2)
+
+{
+  TCountryVtbl *pTVar1;
+  char cVar2;
+  short sVar3;
+  undefined4 uVar4;
+  short sVar5;
+  int iVar6;
+  
+  iVar6 = param_1 * 0x24;
+  if ('\0' < *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0xf + iVar6)) {
+    return 6;
+  }
+  if (param_2 != 2) {
+    cVar2 = (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1ec))();
+    if (cVar2 != '\0') {
+      return 0;
+    }
+    if ((param_2 != 2) && (*(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar6) != 0)) {
+      return 0;
+    }
+  }
+  if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar6) >> 5 & 1) == 0) {
+    return 0;
+  }
+  sVar5 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar6 + 4);
+  uVar4 = UiRuntimeContext::GetActiveNationId();
+  cVar2 = thunk_IsNationSlotEligibleForEventProcessing(uVar4);
+  if (cVar2 == '\0') {
+    return 8;
+  }
+  sVar3 = UiRuntimeContext::GetActiveNationId();
+  if (sVar5 != sVar3) {
+    pTVar1 = g_apTerrainTypeDescriptorTable[sVar5]->vftable;
+    sVar5 = UiRuntimeContext::GetActiveNationId();
+    cVar2 = (*pTVar1[0xb].slot_0x04)((int)sVar5);
+    if (cVar2 == '\0') {
+      return 8;
+    }
+  }
+  return 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4AA0
+// GHIDRA_NAME LookupCivilianMapCursorTokenByStateIndex
+// GHIDRA_PROTO undefined LookupCivilianMapCursorTokenByStateIndex()
+
+undefined2 LookupCivilianMapCursorTokenByStateIndex(undefined4 param_1,undefined4 param_2)
+
+{
+  int iVar1;
+  
+  iVar1 = ComputeCivilianMapCursorStateIndex(param_1,param_2);
+  return *(undefined2 *)(&DAT_00695680 + iVar1 * 2);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4C80
+// GHIDRA_NAME ComputeCivilianMapCursorStateIndex
+// GHIDRA_PROTO undefined ComputeCivilianMapCursorStateIndex()
+
+uint __thiscall
+ComputeCivilianMapCursorStateIndex(int param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  short sVar1;
+  bool bVar2;
+  char cVar3;
+  short sVar4;
+  uint uVar5;
+  int iVar6;
+  undefined4 uVar7;
+  undefined4 uVar8;
+  int iVar9;
+  int iVar10;
+  uint local_c;
+  
+  local_c = 1;
+  if (*(short *)(param_1 + 0x31c) == -1) {
+    uVar5 = ComputeMapCursorStateIndex(param_2,param_3);
+    return uVar5;
+  }
+  iVar10 = (short)param_2 * 0x24;
+  iVar6 = *(int *)&g_pGlobalMapState->field_0xc + iVar10;
+  if ('\0' < *(char *)(iVar6 + 0xf)) {
+    return 6;
+  }
+  sVar1 = *(short *)(iVar6 + 0x14);
+  if (sVar1 == -1) {
+    return 1;
+  }
+  uVar7 = thunk_GetTileNormalizedMovementClassId((int)*(short *)(param_1 + 0x31c));
+  iVar6 = (int)sVar1;
+  uVar8 = thunk_GetTileNormalizedMovementClassId(iVar6);
+  sVar4 = *(short *)(param_1 + 0x31c);
+  if (sVar4 == -1) {
+    bVar2 = false;
+  }
+  else {
+    if ((sVar4 < 0) || (0x17f < sVar4)) {
+      iVar9 = 0;
+    }
+    else {
+      iVar9 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar4 * 0xa8);
+    }
+    for (; iVar9 != 0; iVar9 = *(int *)(iVar9 + 0x14)) {
+      if ((*(int *)(iVar9 + 8) == 0) && (sVar4 = thunk_GetUnitMovementClassId(), sVar4 != 0)) {
+        bVar2 = true;
+        goto LAB_004a4d98;
+      }
+    }
+    bVar2 = false;
+  }
+LAB_004a4d98:
+  if (sVar1 == *(short *)(param_1 + 0x31c)) {
+    return -(uint)((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar10) >> 5 & 1) != 0)
+           & 7;
+  }
+  if (((short)uVar7 == (short)uVar8) ||
+     (cVar3 = (*g_apTerrainTypeDescriptorTable[(short)uVar8]->vftable[0xb].slot_0x04)
+                        ((int)(short)uVar7), cVar3 != '\0')) {
+    if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar10) >> 5 & 1) != 0) {
+      return 2;
+    }
+    if (bVar2) {
+      cVar3 = thunk_TileHasMovementClassId((int)*(short *)(param_1 + 0x31c),iVar6);
+      local_c = 4 - (cVar3 != '\0');
+    }
+  }
+  else {
+    if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + iVar10) >> 5 & 1) != 0) {
+      return 8;
+    }
+    if (((bVar2) &&
+        (cVar3 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)(uVar7,uVar8), cVar3 != '\0'))
+       && ((cVar3 = thunk_TileHasMovementClassId((int)*(short *)(param_1 + 0x31c),iVar6),
+           cVar3 != '\0' ||
+           ((*(byte *)(*(int *)&g_pGlobalMapState->field_0x10 + 0xa1 + iVar6 * 0xa8) &
+            '\x01' << ((byte)uVar7 & 0x1f)) != 0)))) {
+      return 5;
+    }
+  }
+  return local_c;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A5080
+// GHIDRA_NAME ValidateOrderPlacementPrerequisitesForSelectedTile
+// GHIDRA_PROTO undefined ValidateOrderPlacementPrerequisitesForSelectedTile()
+
+uint ValidateOrderPlacementPrerequisitesForSelectedTile(short param_1)
+
+{
+  char cVar1;
+  short sVar2;
+  uint uVar3;
+  uint uVar4;
+  undefined4 uVar5;
+  uint extraout_EAX;
+  uint extraout_EAX_00;
+  int iVar6;
+  int iVar7;
+  undefined4 extraout_EAX_01;
+  undefined3 uVar8;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int iVar9;
+  int *piVar10;
+  int iVar11;
   undefined4 *unaff_FS_OFFSET;
-  int local_10;
+  char local_41;
+  CString local_40;
+  CString local_3c;
+  CString local_38;
+  CString local_34;
+  CString local_30;
+  CString local_2c;
+  CString local_28;
+  int local_24;
+  undefined1 *local_20;
+  undefined1 *puStack_1c;
+  undefined4 local_14;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
   
   local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062fbe0;
+  puStack_8 = &LAB_006300b8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_10 = param_1;
-  if ((DAT_006a1fb0 & 1) == 0) {
-    DAT_006a1fb0 = DAT_006a1fb0 | 1;
-    InitializeSharedStringRefFromEmpty(&DAT_006a1f80);
-    AppendPointerToGlobalVectorAsStatus(&LAB_0049bf40);
+  iVar9 = 0;
+  uVar3 = ValidateGridIndexRange0To17F();
+  uVar4 = uVar3;
+  iVar6 = local_24;
+  for (; local_24 = iVar6, uVar3 != 0; uVar3 = *(uint *)(uVar3 + 0x14)) {
+    uVar4 = *(uint *)(uVar3 + 8);
+    if ((uVar4 == 0) && (uVar4 = thunk_GetUnitMovementClassId(), (short)uVar4 != 0)) {
+      uVar4 = GetCityActionGateValueFromOrderTemplate();
+      iVar9 = iVar9 + (short)uVar4;
+    }
+    iVar6 = local_24;
   }
-  if (*(int *)(param_1 + 0x98) == 0) {
-    CreateDialogFromResourceNameAndOwner(0xd0,0);
-    *(undefined4 *)(param_1 + 0x98) = 1;
+  iVar11 = 0;
+  local_41 = '\x01';
+  if (iVar9 == 0) {
+    uVar4 = uVar4 & 0xffffff00;
+    goto LAB_004a55ea;
   }
-  AssignStringSharedFromCStr(&DAT_006a1f80,param_2);
-  uVar1 = FUN_00605e33(&DAT_00695200);
-  if (-1 < (int)uVar1) {
-    do {
-      FUN_005fedad(&param_2,uVar1);
-      local_4 = 0;
-      src_ref = (CString *)FUN_005fec82(&local_10,uVar1 + 1);
+  local_20 = (undefined1 *)(int)param_1;
+  uVar5 = thunk_TileHasMovementClassId();
+  if ((char)uVar5 == '\0') {
+    CString::CString(&local_3c);
+    local_4 = 0;
+    CString::CString(&local_40);
+    local_4._0_1_ = 1;
+    cVar1 = AreAllLinkedEntriesTerrainFlagBit2Clear();
+    if (cVar1 == '\0') {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
+      thunk_AssignStringSharedRefAndReturnThis();
+      local_20 = &stack0xffffff98;
+      local_4._0_1_ = 2;
+      thunk_AssignStringSharedRefAndReturnThis(&local_40);
       local_4._0_1_ = 1;
-      AssignFromPtr(&DAT_006a1f80,src_ref);
+      thunk_DispatchLocalizedUiMessageWithTemplate(5);
       local_4 = (uint)local_4._1_3_ << 8;
-      ReleaseSharedStringRefIfNotEmpty(&local_10);
-      SendMessageA(*(HWND *)(param_1 + 0x78),0x180,0,(LPARAM)param_2);
-      LVar2 = SendMessageA(*(HWND *)(param_1 + 0x78),0x18b,0,0);
-      SendMessageA(*(HWND *)(param_1 + 0x78),0x186,LVar2 - 1,0);
+      CString::~CString(&local_40);
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty(&param_2);
-      uVar1 = FUN_00605e33(&DAT_00695200);
-    } while (uVar1 < 0x80000000);
+      CString::~CString(&local_3c);
+      uVar4 = extraout_EAX & 0xffffff00;
+      goto LAB_004a55ea;
+    }
+    cVar1 = WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0();
+    if (cVar1 == '\0') {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2745);
+      thunk_AssignStringSharedRefAndReturnThis();
+      local_20 = &stack0xffffff98;
+      local_4._0_1_ = 3;
+      thunk_AssignStringSharedRefAndReturnThis(&local_40);
+      local_4._0_1_ = 1;
+      thunk_DispatchLocalizedUiMessageWithTemplate(5);
+      local_4 = (uint)local_4._1_3_ << 8;
+      CString::~CString(&local_40);
+      local_4 = 0xffffffff;
+      CString::~CString(&local_3c);
+      uVar4 = extraout_EAX_00 & 0xffffff00;
+      goto LAB_004a55ea;
+    }
+    sVar2 = UiRuntimeContext::GetActiveNationId();
+    local_14 = *(undefined4 *)&g_apTerrainTypeDescriptorTable[sVar2]->field_0x44;
+    iVar6 = InitializeLinkedListCursorFromOwnerHead();
+    iVar7 = LinkedListCursorHasCurrent();
+    while (iVar7 != 0) {
+      if (((*(int *)(iVar6 + 8) == 1) && (*(short *)(iVar6 + 0xc) == param_1)) &&
+         (cVar1 = thunk_TileHasMovementClassId(), cVar1 == '\0')) {
+        sVar2 = GetCityActionGateValueFromOrderTemplate();
+        iVar11 = iVar11 + sVar2;
+      }
+      iVar6 = AdvanceLinkedListCursor();
+      iVar7 = LinkedListCursorHasCurrent();
+    }
+    UiRuntimeContext::GetActiveNationId();
+    sVar2 = ComputeAggregateWeightedChildCostForMatchingType5NavyOrders();
+    if ((int)sVar2 < iVar9 + iVar11) {
+      CString::CString(&local_2c);
+      local_4._0_1_ = 4;
+      CString::CString(&local_30);
+      local_4._0_1_ = 5;
+      CString::CString(&local_34);
+      local_4._0_1_ = 6;
+      CString::CString(&local_38);
+      local_4._0_1_ = 7;
+      CString::CString(&local_28);
+      local_4 = CONCAT31(local_4._1_3_,8);
+      if (iVar11 == 0) {
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        FormatStringWithVarArgsToSharedRef();
+        FormatStringWithVarArgsToSharedRef();
+        scanBracketExpressions(g_pLocalizationTable,&local_2c,local_30.m_pchData);
+      }
+      else {
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        FormatStringWithVarArgsToSharedRef();
+        FormatStringWithVarArgsToSharedRef();
+        FormatStringWithVarArgsToSharedRef();
+        scanBracketExpressions(g_pLocalizationTable,&local_2c,local_30.m_pchData);
+      }
+      puStack_1c = &stack0xffffff9c;
+      thunk_AssignStringSharedRefAndReturnThis();
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      local_41 = '\0';
+      local_4._0_1_ = 7;
+      CString::~CString(&local_28);
+      local_4._0_1_ = 6;
+      CString::~CString(&local_38);
+      local_4._0_1_ = 5;
+      CString::~CString(&local_34);
+      local_4._0_1_ = 4;
+      CString::~CString(&local_30);
+      local_4._0_1_ = 1;
+      CString::~CString(&local_2c);
+    }
+    local_4 = (uint)local_4._1_3_ << 8;
+    CString::~CString(&local_40);
+    local_4 = 0xffffffff;
+    CString::~CString(&local_3c);
+    uVar5 = extraout_EAX_01;
+    iVar6 = local_24;
+  }
+  uVar8 = (undefined3)((uint)uVar5 >> 8);
+  if (local_41 != '\0') {
+    sVar2 = *(short *)(iVar6 + 0x31c);
+    if ((sVar2 < 0) || (0x17f < sVar2)) {
+      piVar10 = (int *)0x0;
+    }
+    else {
+      piVar10 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar2 * 0xa8);
+    }
+    for (; piVar10 != (int *)0x0; piVar10 = (int *)piVar10[5]) {
+      if ((piVar10[2] == 0) && (sVar2 = thunk_GetUnitMovementClassId(), sVar2 != 0)) {
+        (**(code **)(*piVar10 + 0x34))();
+      }
+    }
+    MarkAdjacentHexOrderDirectionAndSelectTile();
+    piVar10 = *(int **)&g_pUiRuntimeContext->field_0xf0;
+    uVar8 = extraout_var;
+    if (piVar10 != (int *)0x0) {
+      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*piVar10 + 0x1e8))();
+      uVar8 = extraout_var_00;
+    }
+  }
+  uVar4 = CONCAT31(uVar8,local_41);
+LAB_004a55ea:
+  *unaff_FS_OFFSET = local_c;
+  return uVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A5760
+// GHIDRA_NAME SetActiveProvinceAndBuildDirectionalOrderOverlays
+// GHIDRA_PROTO undefined SetActiveProvinceAndBuildDirectionalOrderOverlays()
+
+void __thiscall SetActiveProvinceAndBuildDirectionalOrderOverlays(int param_1,undefined4 param_2)
+
+{
+  short sVar1;
+  code *pcVar2;
+  int iVar3;
+  char cVar4;
+  char cVar5;
+  short nTileIndex;
+  short sVar6;
+  short sVar7;
+  short sVar8;
+  undefined4 uVar9;
+  char *pcVar10;
+  uint uVar11;
+  int iVar12;
+  int *piVar13;
+  undefined2 extraout_var;
+  int iVar14;
+  uint uVar15;
+  short *psVar16;
+  int *piVar17;
+  char *pcVar18;
+  short asStack_34 [6];
+  int local_28 [10];
+  
+  nTileIndex = thunk_GetWrappedHexNeighborTileIndexByDirection
+                         (param_2,(*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0xf +
+                                            (short)param_2 * 0x24) + -1) % 6);
+  sVar1 = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + nTileIndex * 0x24);
+  sVar6 = UiRuntimeContext::GetActiveNationId();
+  piVar13 = *(int **)&g_apNationStates[sVar6]->field_0x44;
+  piVar17 = local_28;
+  for (iVar14 = 10; iVar14 != 0; iVar14 = iVar14 + -1) {
+    *piVar17 = 0;
+    piVar17 = piVar17 + 1;
+  }
+  pcVar2 = *(code **)(*piVar13 + 0x48);
+  uVar9 = (*pcVar2)();
+  pcVar10 = (char *)AllocateWithFallbackHandler(uVar9);
+  uVar11 = (*pcVar2)();
+  pcVar18 = pcVar10;
+  for (uVar15 = uVar11 >> 2; uVar15 != 0; uVar15 = uVar15 - 1) {
+    pcVar18[0] = '\0';
+    pcVar18[1] = '\0';
+    pcVar18[2] = '\0';
+    pcVar18[3] = '\0';
+    pcVar18 = pcVar18 + 4;
+  }
+  for (uVar11 = uVar11 & 3; uVar11 != 0; uVar11 = uVar11 - 1) {
+    *pcVar18 = '\0';
+    pcVar18 = pcVar18 + 1;
+  }
+  iVar14 = InitializeLinkedListCursorFromOwnerHead();
+  iVar12 = LinkedListCursorHasCurrent();
+  pcVar18 = pcVar10;
+  while (iVar12 != 0) {
+    if (*(short *)(iVar14 + 0xc) == sVar1) {
+      local_28[*(short *)(&DAT_00695528 + *(short *)(iVar14 + 4) * 2)] =
+           local_28[*(short *)(&DAT_00695528 + *(short *)(iVar14 + 4) * 2)] + 1;
+      *pcVar18 = '\x01';
+    }
+    pcVar18 = pcVar18 + 1;
+    iVar14 = AdvanceLinkedListCursor();
+    iVar12 = LinkedListCursorHasCurrent();
+  }
+  cVar4 = RefreshCurrentUiViewAndActivePanelState(sVar1,local_28);
+  if (cVar4 == '\0') {
+    sVar6 = UiRuntimeContext::GetActiveNationId();
+    cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + sVar1 * 0xa8);
+    piVar13 = (int *)InitializeLinkedListCursorFromOwnerHead();
+    iVar14 = LinkedListCursorHasCurrent();
+    while (iVar14 != 0) {
+      if (*pcVar10 != '\0') {
+        if ((cVar4 == sVar6) &&
+           (cVar5 = thunk_TileHasMovementClassId((int)*(short *)((int)piVar13 + 6),(int)sVar1),
+           cVar5 == '\0')) {
+          sVar7 = GetCityActionGateValueFromOrderTemplate();
+          sVar8 = UiRuntimeContext::GetActiveNationId();
+          *(int *)&g_apNationStates[sVar8]->field_0x900 =
+               *(int *)&g_apNationStates[sVar8]->field_0x900 + (int)sVar7;
+        }
+        (**(code **)(*piVar13 + 0x34))(0,0xffffffff);
+      }
+      pcVar10 = pcVar10 + 1;
+      piVar13 = (int *)AdvanceLinkedListCursor();
+      iVar14 = LinkedListCursorHasCurrent();
+    }
+    piVar13 = *(int **)&g_pUiRuntimeContext->field_0xf0;
+    ComputeHexNeighborTileIndices(nTileIndex,asStack_34,g_pGlobalMapState->field_0x20);
+    iVar14 = 0;
+    psVar16 = asStack_34;
+    do {
+      if (*psVar16 != -1) {
+        iVar12 = *psVar16 * 0x24;
+        cVar4 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0xf + iVar12);
+        if ((cVar4 != '\0') && ((cVar4 + -1) % 6 == (iVar14 + 3) % 6)) {
+          iVar3 = *(int *)&g_pGlobalMapState->field_0xc;
+          *(undefined1 *)(iVar3 + 0xf + iVar12) = 0;
+          if (piVar13 != (int *)0x0) {
+            (**(code **)(*piVar13 + 0x1d8))(CONCAT22((short)((uint)iVar3 >> 0x10),*psVar16));
+          }
+        }
+      }
+      iVar14 = iVar14 + 1;
+      psVar16 = psVar16 + 1;
+    } while (iVar14 < 6);
+    MarkDirectionalMapOverlayFlagsForNationOrders();
+    if (*(short *)(param_1 + 0x31c) != -1) {
+      SetActiveProvinceSelection(CONCAT22(extraout_var,*(short *)(param_1 + 0x31c)));
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A5AA0
+// GHIDRA_NAME ComputeWeightedNeighborLinkScoreForNodeIndex
+// GHIDRA_PROTO undefined ComputeWeightedNeighborLinkScoreForNodeIndex()
+
+int ComputeWeightedNeighborLinkScoreForNodeIndex(short param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  if ((param_1 < 0) || (0x17f < param_1)) {
+    iVar2 = 0;
+  }
+  else {
+    iVar2 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_1 * 0xa8);
+  }
+  iVar1 = 0;
+  for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x14)) {
+    iVar1 = iVar1 + *(int *)(&DAT_006955f0 + *(short *)(iVar2 + 4) * 4);
+  }
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A5B10
+// GHIDRA_NAME CreateTacticalBattleViewAndInitializeBattleSetup
+// GHIDRA_PROTO undefined CreateTacticalBattleViewAndInitializeBattleSetup()
+
+undefined4 __thiscall
+CreateTacticalBattleViewAndInitializeBattleSetup
+          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+
+{
+  TTacticalBattle *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006300ea;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CreateTacticalBattleViewAndInitializeBattleSetup_Impl(param_4);
+  this = (TTacticalBattle *)AllocateWithFallbackHandler(0x78);
+  local_4 = 0;
+  if (this == (TTacticalBattle *)0x0) {
+    this = (TTacticalBattle *)0x0;
+  }
+  else {
+    TTacticalBattle::ConstructTTacticalBattleBaseState(this);
+    this->vftable = (TTacticalBattleVtbl *)&TArmyBattleVtbl_0064ca68;
+  }
+  local_4 = 0xffffffff;
+  TArmyBattle::ConstructTArmyBattleBaseState((TArmyBattle *)this);
+  TArmyPlayer::InitializeBattleSetupAndMaybeDispatchTurnEventED8((TArmyPlayer *)this);
+  *(undefined4 *)(param_1 + 0x39c) = param_2;
+  *(undefined4 *)(param_1 + 0x3a0) = param_3;
+  *(TTacticalBattle **)(param_1 + 0x3a4) = this;
+  if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    NoOpCallbackRet4(this);
+  }
+  CallObjectOffset18Vslot28();
+  *unaff_FS_OFFSET = uStack_c;
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A5C80
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl()
+
+void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A5CA0
+// GHIDRA_NAME WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl
+// GHIDRA_PROTO undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl()
+
+void __thiscall
+WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl
+          (int *param_1,int param_2,int param_3,undefined4 param_4,int param_5)
+
+{
+  undefined4 *puVar1;
+  int iVar2;
+  int unaff_EBP;
+  int *piVar3;
+  int unaff_retaddr;
+  
+  BuildArmyContextActionRecordsAndDispatchLabel(param_2,param_3,param_4,param_5,1);
+  if ((char)param_4 == '\0') {
+    (**(code **)(*param_1 + 0x40))(param_2);
+    piVar3 = *(int **)(param_2 + 0x14);
+    *(int **)(param_2 + 0x18) = piVar3;
+    if (piVar3 == (int *)0x0) {
+      iVar2 = 0;
+    }
+    else {
+      iVar2 = *piVar3;
+    }
+    while (iVar2 != 0) {
+      if ((0 < *(short *)(iVar2 + 0x34)) &&
+         (*(short *)(iVar2 + 0x38) = *(short *)(iVar2 + 0x38) + 0x14, 400 < *(short *)(iVar2 + 0x38)
+         )) {
+        *(undefined2 *)(iVar2 + 0x38) = 400;
+      }
+      iVar2 = WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a3b90();
+    }
+    WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0(1);
+    (**(code **)(param_3 + 0x30))();
+    return;
+  }
+  (**(code **)(*param_1 + 0x3c))(param_3,param_5);
+  puVar1 = *(undefined4 **)(param_2 + 0x14);
+  *(undefined4 **)(param_2 + 0x18) = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+    piVar3 = (int *)0x0;
+  }
+  else {
+    piVar3 = (int *)*puVar1;
+  }
+joined_r0x004a5cf4:
+  do {
+    if (piVar3 == (int *)0x0) break;
+    iVar2 = *piVar3;
+    (**(code **)(iVar2 + 0x28))((short)piVar3[3]);
+    (**(code **)(iVar2 + 0x34))(0,0xffffffff);
+    param_5 = param_3;
+    if (*(int *)(param_2 + 0x18) != 0) {
+      puVar1 = *(undefined4 **)(*(int *)(param_2 + 0x18) + 4);
+      *(undefined4 **)(param_2 + 0x18) = puVar1;
+      if (puVar1 != (undefined4 *)0x0) {
+        piVar3 = (int *)*puVar1;
+        goto joined_r0x004a5cf4;
+      }
+    }
+    piVar3 = (int *)0x0;
+  } while( true );
+  *(short *)(unaff_EBP + 0x1c + param_5 * 2) = (short)*(char *)(param_2 + 8);
+  piVar3 = *(int **)(param_2 + 0x14);
+  *(int **)(param_2 + 0x18) = piVar3;
+  if (piVar3 == (int *)0x0) {
+    iVar2 = 0;
+  }
+  else {
+    iVar2 = *piVar3;
+  }
+joined_r0x004a5d4f:
+  do {
+    if (iVar2 == 0) break;
+    if ((0 < *(short *)(iVar2 + 0x34)) &&
+       (*(short *)(iVar2 + 0x38) = *(short *)(iVar2 + 0x38) + 0x23, 400 < *(short *)(iVar2 + 0x38)))
+    {
+      *(undefined2 *)(iVar2 + 0x38) = 400;
+    }
+    if (*(int *)(param_2 + 0x18) != 0) {
+      piVar3 = *(int **)(*(int *)(param_2 + 0x18) + 4);
+      *(int **)(param_2 + 0x18) = piVar3;
+      if (piVar3 != (int *)0x0) {
+        iVar2 = *piVar3;
+        goto joined_r0x004a5d4f;
+      }
+    }
+    iVar2 = 0;
+  } while( true );
+  piVar3 = *(int **)(unaff_retaddr + 0x14);
+  *(int **)(unaff_retaddr + 0x18) = piVar3;
+  if (piVar3 == (int *)0x0) {
+    iVar2 = 0;
+  }
+  else {
+    iVar2 = *piVar3;
+  }
+joined_r0x004a5d9c:
+  do {
+    if (iVar2 == 0) {
+      (**(code **)(param_2 + 0x30))();
+      return;
+    }
+    if ((0 < *(short *)(iVar2 + 0x34)) &&
+       (*(short *)(iVar2 + 0x38) = *(short *)(iVar2 + 0x38) + 0x14, 400 < *(short *)(iVar2 + 0x38)))
+    {
+      *(undefined2 *)(iVar2 + 0x38) = 400;
+    }
+    if (*(int *)(unaff_retaddr + 0x18) != 0) {
+      piVar3 = *(int **)(*(int *)(unaff_retaddr + 0x18) + 4);
+      *(int **)(unaff_retaddr + 0x18) = piVar3;
+      if (piVar3 != (int *)0x0) {
+        iVar2 = *piVar3;
+        goto joined_r0x004a5d9c;
+      }
+    }
+    iVar2 = 0;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A5EC0
+// GHIDRA_NAME BuildMapOrderContextSummaryStringForNation
+// GHIDRA_PROTO undefined BuildMapOrderContextSummaryStringForNation()
+
+undefined4
+BuildMapOrderContextSummaryStringForNation(CString param_1,CString param_2,CString param_3)
+
+{
+  char cVar1;
+  undefined uVar2;
+  short sVar3;
+  short sVar4;
+  short sVar5;
+  int iVar6;
+  undefined4 uVar7;
+  CString *pCVar8;
+  int iVar9;
+  undefined3 extraout_var;
+  int iVar10;
+  uint uVar11;
+  CString CVar12;
+  int *piVar13;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_58;
+  CString CStack_54;
+  CString local_50;
+  CString CStack_4c;
+  int local_48;
+  CString CStack_44;
+  CString CStack_40;
+  CString local_3c;
+  int aiStack_38 [11];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630170;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  iVar10 = -1;
+  CString::CString(&local_58);
+  CVar12.m_pchData = param_2.m_pchData;
+  local_4 = 0;
+  local_50.m_pchData = (char *)0x0;
+  local_3c.m_pchData =
+       (char *)(int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 8 +
+                             (int)param_1.m_pchData * 0xa8);
+  if (0 < (int)local_3c.m_pchData) {
+    local_48 = (int)param_1.m_pchData * 0x54;
+    do {
+      sVar5 = *(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 10 +
+                        ((short)local_50.m_pchData + local_48) * 2);
+      sVar3 = thunk_GetTileNormalizedMovementClassId((int)sVar5);
+      sVar4 = UiRuntimeContext::GetActiveNationId();
+      if (sVar3 == sVar4) {
+        if ((sVar5 < 0) || (0x17f < sVar5)) {
+          iVar9 = 0;
+        }
+        else {
+          iVar9 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar5 * 0xa8);
+        }
+        for (; iVar9 != 0; iVar9 = *(int *)(iVar9 + 0x14)) {
+          if (0x1a < *(short *)(iVar9 + 4)) {
+            sVar3 = *(short *)(iVar9 + 0x38);
+            iVar6 = (short)((sVar3 / 100 + (sVar3 >> 0xf)) -
+                           (short)((longlong)(int)sVar3 * 0x51eb851f >> 0x3f)) + 1;
+            if (iVar10 < iVar6) {
+              CString::AssignFromPtr(&local_58,(CString *)(iVar9 + 0x24));
+              CString::AssignFromPtr((CString *)CVar12.m_pchData,&local_58);
+              iVar10 = iVar6;
+            }
+          }
+        }
+        if (iVar10 < 0) {
+          iVar10 = 0;
+          thunk_AssignSharedStringFromIndexedA8EntryNameField((int)sVar5,&local_58);
+          (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2744,1,CVar12.m_pchData);
+          uVar7 = AssignSharedStringConcatRefAndCStr
+                            (&CStack_40,CVar12.m_pchData,g_Build_Map_Order_LookupTable_00695794);
+          local_4._0_1_ = 1;
+          pCVar8 = (CString *)AssignSharedStringConcatRefAndRef(&CStack_44,uVar7,&local_58);
+          local_4._0_1_ = 2;
+          CString::StringSharedRef_AssignFromPtr(&param_2,pCVar8);
+          local_4._0_1_ = 3;
+          CString::AssignFromPtr((CString *)CVar12.m_pchData,&param_2);
+          local_4._0_1_ = 2;
+          CString::~CString(&param_2);
+          local_4._0_1_ = 1;
+          CString::~CString(&CStack_44);
+          local_4 = (uint)local_4._1_3_ << 8;
+          CString::~CString(&CStack_40);
+        }
+      }
+      local_50.m_pchData = local_50.m_pchData + 1;
+    } while ((int)local_50.m_pchData < (int)local_3c.m_pchData);
+  }
+  iVar6 = 0;
+  for (iVar9 = thunk_GetNavyPrimaryOrderListHead(); iVar9 != 0; iVar9 = *(int *)(iVar9 + 0x24)) {
+    param_2.m_pchData._2_2_ = (undefined2)((uint)param_2.m_pchData >> 0x10);
+    param_2.m_pchData._0_2_ = *(undefined2 *)(iVar9 + 0x14);
+    sVar5 = UiRuntimeContext::GetActiveNationId();
+    if (((short)param_2.m_pchData == sVar5) &&
+       (cVar1 = ContainsCityStatePointerInZoneArrayByCityIndex(param_1.m_pchData), cVar1 != '\0')) {
+      iVar6 = ObjectPool::SelectPreferredMapOrderEntryByPriorityRules(iVar6,0);
+    }
+  }
+  if (iVar6 != 0) {
+    CString::CString(&param_2);
+    iVar9 = *(int *)(iVar6 + 0x20);
+    local_4._0_1_ = 4;
+    if (iVar9 == 0) {
+      if (iVar10 == -1) {
+        CString::AssignFromPtr(&param_2,(CString *)(iVar6 + 0x18));
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2744,3,CVar12.m_pchData);
+        uVar7 = AssignSharedStringConcatCStrAndRef
+                          (&local_3c,g_Build_Map_Order_LookupTable_00695794,&param_2);
+        local_4._0_1_ = 8;
+        AssignStringSharedFromRef(uVar7);
+        local_4._0_1_ = 4;
+        CString::~CString(&local_3c);
+        iVar10 = 0;
+      }
+    }
+    else {
+      sVar5 = *(short *)(iVar9 + 0x10);
+      iVar6 = (short)((sVar5 / 100 + (sVar5 >> 0xf)) -
+                     (short)((longlong)(int)sVar5 * 0x51eb851f >> 0x3f)) + 1;
+      if (iVar10 < iVar6) {
+        pCVar8 = (CString *)
+                 AssignSharedStringConcatCStrAndRef(&local_3c,s_Adm__0069578c,iVar9 + 0xc);
+        local_4._0_1_ = 5;
+        CString::StringSharedRef_AssignFromPtr(&local_50,pCVar8);
+        local_4._0_1_ = 6;
+        CString::AssignFromPtr(&param_2,&local_50);
+        local_4._0_1_ = 5;
+        CString::~CString(&local_50);
+        local_4._0_1_ = 4;
+        CString::~CString(&local_3c);
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2744,2,CVar12.m_pchData);
+        uVar7 = AssignSharedStringConcatCStrAndRef
+                          (&local_3c,g_Build_Map_Order_LookupTable_00695794,&param_2);
+        local_4._0_1_ = 7;
+        AssignStringSharedFromRef(uVar7);
+        local_4._0_1_ = 4;
+        CString::~CString(&local_3c);
+        iVar10 = iVar6;
+      }
+    }
+    local_4 = (uint)local_4._1_3_ << 8;
+    CString::~CString(&param_2);
+  }
+  if (iVar10 == -1) {
+    local_4 = iVar10;
+    CString::~CString(&local_58);
+    uVar7 = 0;
+  }
+  else {
+    sVar5 = UiRuntimeContext::GetActiveNationId();
+    uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+    CVar12.m_pchData = param_1.m_pchData + (int)(short)CONCAT31(extraout_var,uVar2) + (int)sVar5;
+    if (param_1.m_pchData + (int)(short)CONCAT31(extraout_var,uVar2) + (int)sVar5 == (char *)0x0) {
+      CVar12.m_pchData = param_1.m_pchData;
+    }
+    iVar9 = 0;
+    sVar5 = (short)param_1.m_pchData;
+    param_1.m_pchData = (char *)0x0;
+    piVar13 = aiStack_38;
+    for (iVar6 = 0xb; iVar6 != 0; iVar6 = iVar6 + -1) {
+      *piVar13 = 0;
+      piVar13 = piVar13 + 1;
+    }
+    if ((-1 < sVar5) && (sVar5 < 0x180)) {
+      iVar9 = *(int *)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar5 * 0xa8);
+    }
+    if (iVar9 != 0) {
+      param_2.m_pchData = &DAT_0064c5de + iVar10 * 0xc;
+      do {
+        uVar11 = (int)CVar12.m_pchData * 0x15a4e35 + 1;
+        iVar6 = FindCumulativeWeightBucketIndex
+                          (&DAT_0064c5d8 + iVar10 * 0xc,(uVar11 >> 0xc & 0x7fff) % 100);
+        CVar12.m_pchData = (char *)(uVar11 * 0x15a4e35 + 1);
+        sVar5 = FindCumulativeWeightBucketIndex
+                          (param_2.m_pchData,((uint)CVar12.m_pchData >> 0xc & 0x7fff) % 100);
+        if (sVar5 == 1) {
+          sVar5 = 10;
+        }
+        else if (sVar5 == 2) {
+          CVar12.m_pchData = (char *)((int)CVar12.m_pchData * 0x15a4e35 + 1);
+          sVar5 = (short)(((uint)CVar12.m_pchData >> 0xc & 0x7fff) % 10);
+        }
+        else {
+          sVar5 = thunk_GetUnitMovementClassId();
+        }
+        iVar9 = *(int *)(iVar9 + 0x14);
+        param_1.m_pchData = param_1.m_pchData + iVar6;
+        aiStack_38[sVar5] = aiStack_38[sVar5] + (int)(short)iVar6;
+      } while (iVar9 != 0);
+    }
+    sVar5 = 0;
+    CString::CString(&param_1,(char *)&g_szEmptyString);
+    CVar12.m_pchData = param_3.m_pchData;
+    local_4._0_1_ = 9;
+    CString::AssignFromPtr((CString *)param_3.m_pchData,&param_1);
+    local_4._0_1_ = 0;
+    CString::~CString(&param_1);
+    CString::CString(&CStack_54);
+    local_4._0_1_ = 10;
+    CString::CString(&CStack_4c);
+    param_1.m_pchData = (char *)aiStack_38;
+    local_4 = CONCAT31(local_4._1_3_,0xb);
+    iVar10 = 0;
+    do {
+      iVar9 = *(int *)param_1.m_pchData;
+      if (iVar9 != 0) {
+        if (sVar5 != 0) {
+          CString::AssignFromCStr((CString *)CVar12.m_pchData,&DAT_00695760);
+        }
+        iVar6 = iVar10;
+        if (iVar9 != 1) {
+          iVar6 = iVar10 + 0xb;
+        }
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2726,iVar6,&CStack_54);
+        FormatStringWithVarArgsToSharedRef(&CStack_4c,&g_szDecimalFormat,iVar9);
+        uVar7 = AssignSharedStringConcatRefAndCStr
+                          (&param_3,&CStack_4c,g_Build_Map_Order_LookupTable_00695794);
+        local_4._0_1_ = 0xc;
+        uVar7 = AssignSharedStringConcatRefAndRef(&param_2,uVar7,&CStack_54);
+        local_4._0_1_ = 0xd;
+        AssignStringSharedFromRef(uVar7);
+        local_4._0_1_ = 0xc;
+        CString::~CString(&param_2);
+        local_4 = CONCAT31(local_4._1_3_,0xb);
+        CString::~CString(&param_3);
+        sVar5 = sVar5 + 1;
+      }
+      iVar10 = iVar10 + 1;
+      param_1.m_pchData = param_1.m_pchData + 4;
+    } while (iVar10 < 0xb);
+    if (sVar5 == 0) {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2744,9,CVar12.m_pchData);
+    }
+    CString::AssignFromCStr((CString *)CVar12.m_pchData,(char *)&DAT_00695788);
+    local_4._0_1_ = 10;
+    CString::~CString(&CStack_4c);
+    local_4 = (uint)local_4._1_3_ << 8;
+    CString::~CString(&CStack_54);
+    local_4 = 0xffffffff;
+    CString::~CString(&local_58);
+    uVar7 = 1;
+  }
+  *unaff_FS_OFFSET = uStack_c;
+  return uVar7;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A6680
+// GHIDRA_NAME BuildMapHintOverlayTextAndDispatchUiMessages
+// GHIDRA_PROTO undefined BuildMapHintOverlayTextAndDispatchUiMessages()
+
+void BuildMapHintOverlayTextAndDispatchUiMessages(int param_1)
+
+{
+  int iVar1;
+  code *pcVar2;
+  char cVar3;
+  undefined uVar4;
+  undefined3 extraout_var;
+  int *piVar5;
+  CString *src_ref;
+  int iVar6;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_120;
+  CString CStack_11c;
+  CString CStack_118;
+  CString CStack_114;
+  undefined4 uStack_110;
+  undefined4 uStack_10c;
+  undefined4 *puStack_108;
+  int iStack_104;
+  undefined4 uStack_100;
+  int iStack_fc;
+  undefined4 uStack_f8;
+  undefined4 uStack_f4;
+  CString **ppCStack_f0;
+  undefined4 uStack_ec;
+  undefined4 uStack_e8;
+  int iStack_e4;
+  undefined4 uStack_e0;
+  char acStack_dc [4];
+  undefined1 *puStack_d8;
+  undefined4 uStack_d4;
+  int iStack_d0;
+  int iStack_cc;
+  undefined4 uStack_c8;
+  undefined4 uStack_c4;
+  undefined1 *puStack_c0;
+  CString *pCStack_bc;
+  CString *pCStack_b8;
+  CString CStack_98;
+  int iStack_94;
+  undefined1 *puStack_90;
+  CString CVar7;
+  CString CStack_88;
+  CString *pCStack_84;
+  undefined1 *puStack_80;
+  CString CStack_58;
+  CString local_54;
+  CString local_50;
+  CString local_4c;
+  CString local_48;
+  CString local_44 [3];
+  undefined1 local_36;
+  undefined1 local_35;
+  undefined1 local_34;
+  undefined1 local_33;
+  undefined1 local_2a;
+  undefined1 local_29;
+  undefined1 local_28;
+  undefined1 local_27;
+  undefined1 local_1e;
+  undefined1 local_1d;
+  uint local_1c;
+  undefined4 local_18;
+  undefined1 local_12;
+  undefined1 local_11;
+  uint local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006301d8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_44[0].m_pchData =
+       (char *)(int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + param_1 * 0xa8);
+  local_1e = 0;
+  local_1d = 0;
+  local_1c = local_1c & 0xffff0000;
+  local_2a = 0;
+  local_29 = 0;
+  local_28 = 0;
+  local_27 = 0;
+  local_36 = 0;
+  local_35 = 0;
+  local_34 = 0;
+  local_33 = 0;
+  local_12 = 0;
+  local_11 = 0;
+  local_10 = local_10 & 0xffff0000;
+  thunk_InitializeUiTextStyleDescriptor();
+  thunk_BuildUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
+  thunk_InitializeUiTextStyleDescriptor();
+  CString::CString(&local_54);
+  local_4 = 0;
+  CString::CString(&local_48);
+  local_4._0_1_ = 1;
+  CString::CString(&local_4c);
+  local_4._0_1_ = 2;
+  CString::CString(&local_50);
+  local_4 = CONCAT31(local_4._1_3_,3);
+  cVar3 = BuildMapOrderContextSummaryStringForNation();
+  if (cVar3 == '\0') {
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    puStack_8 = &stack0xffffff84;
+    puStack_80 = &stack0xffffffa0;
+    pCStack_84 = (CString *)0x4a67f2;
+    thunk_AssignStringSharedRefAndReturnThis();
+    puStack_80 = (undefined1 *)0x4a67fd;
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    local_10._0_1_ = 2;
+    CString::~CString((CString *)&stack0xffffffa4);
+    local_10._0_1_ = 1;
+    CString::~CString(&CStack_58);
+    local_10 = (uint)local_10._1_3_ << 8;
+    CString::~CString(&local_54);
+    local_10 = 0xffffffff;
+    CString::~CString((CString *)&stack0xffffffa0);
+    *unaff_FS_OFFSET = local_18;
+    return;
+  }
+  uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
+    puStack_80 = (undefined1 *)0x4a6876;
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  iVar1 = *(int *)CONCAT31(extraout_var,uVar4);
+  (**(code **)(iVar1 + 0x1a0))();
+  pcVar2 = *(code **)(iVar1 + 0x94);
+  piVar5 = (int *)(*pcVar2)();
+  iVar6 = *piVar5;
+  (**(code **)(iVar6 + 0xc))();
+  FormatOverlayTerrainLabelText();
+  puStack_80 = (undefined1 *)0x4a68d9;
+  (**(code **)(iVar6 + 0x1c8))();
+  pCStack_84 = local_44;
+  puStack_80 = (undefined1 *)0x0;
+  CStack_88.m_pchData = (char *)0x4a68ec;
+  (*pcRam000026b7)();
+  CStack_88.m_pchData = (char *)0x7a6f6e65;
+  piVar5 = (int *)(*pcVar2)();
+  iVar6 = *piVar5;
+  (**(code **)(iVar6 + 0xc))();
+  puStack_90 = (undefined1 *)local_1c;
+  iStack_94 = 0x4a6918;
+  thunk_AssignSharedStringFromIndexedA8EntryNameField();
+  puStack_90 = (undefined1 *)0x4a6926;
+  CString::AssignFromPtr((CString *)&stack0xffffff8c,(CString *)&stack0xffffff98);
+  puStack_90 = &stack0xffffff8c;
+  iStack_94 = 0x4a6939;
+  (**(code **)(iVar6 + 0x1c8))();
+  CStack_98.m_pchData = (char *)&CStack_58;
+  iStack_94 = 0;
+  (**(code **)((int)puStack_80 + 0x1b4))();
+  piVar5 = (int *)(*pcVar2)();
+  CVar7.m_pchData = (char *)*piVar5;
+  (**(code **)(CVar7.m_pchData + 0xc))();
+  (**(code **)(CVar7.m_pchData + 0x1c8))();
+  (**(code **)(iStack_94 + 0x1b4))();
+  piVar5 = (int *)(*pcVar2)();
+  iVar6 = *piVar5;
+  (**(code **)(iVar6 + 0xc))();
+  pCStack_bc = &CStack_88;
+  pCStack_b8 = (CString *)&DAT_00695798;
+  puStack_c0 = (undefined1 *)0x4a69b4;
+  pCStack_b8 = (CString *)AssignSharedStringConcatCStrAndRef();
+  pCStack_bc = (CString *)&stack0xffffff74;
+  local_4c.m_pchData._0_1_ = 4;
+  puStack_c0 = (undefined1 *)0x4a69c9;
+  src_ref = (CString *)AssignSharedStringConcatRefAndCStr();
+  local_4c.m_pchData._0_1_ = 5;
+  pCStack_b8 = (CString *)0x4a69d8;
+  CString::StringSharedRef_AssignFromPtr(local_44,src_ref);
+  local_4c.m_pchData._0_1_ = 6;
+  pCStack_b8 = (CString *)0x4a69eb;
+  CString::AssignFromPtr(&CStack_98,local_44);
+  local_4c.m_pchData._0_1_ = 5;
+  CString::~CString(local_44);
+  local_4c.m_pchData._0_1_ = 4;
+  CString::~CString((CString *)&stack0xffffff74);
+  local_4c.m_pchData._0_1_ = 3;
+  CString::~CString(&CStack_88);
+  pCStack_b8 = &CStack_98;
+  pCStack_bc = (CString *)0x4a6a28;
+  (**(code **)(iVar6 + 0x1c8))();
+  puStack_c0 = &stack0xffffff74;
+  pCStack_bc = (CString *)0x0;
+  uStack_c4 = 0x4a6a3b;
+  (*pcRam000001b4)();
+  uStack_c4 = 0x7469746c;
+  uStack_c8 = 0x4a6a44;
+  piVar5 = (int *)(*pcVar2)();
+  iVar6 = *piVar5;
+  uStack_c8 = 0x4a6a52;
+  (**(code **)(iVar6 + 0xc))();
+  uStack_c8 = 0;
+  iStack_cc = 5;
+  iStack_d0 = 0x2744;
+  uStack_d4 = 0x4a6a67;
+  (**(code **)(iVar6 + 0x1cc))();
+  puStack_d8 = &stack0xffffff74;
+  uStack_d4 = 0;
+  builtin_strncpy(acStack_dc,"zjJ",4);
+  (**(code **)(puStack_c0 + 0x1b4))();
+  builtin_strncpy(acStack_dc,"1bal",4);
+  uStack_e0 = 0x4a6a83;
+  piVar5 = (int *)(*pcVar2)();
+  iStack_cc = *piVar5;
+  uStack_e0 = 0x4a6a91;
+  (**(code **)(iStack_cc + 0xc))();
+  uStack_e0 = 0;
+  iStack_e4 = 6;
+  uStack_e8 = 0x2744;
+  uStack_ec = 0x4a6aa6;
+  (**(code **)(iStack_cc + 0x1cc))();
+  ppCStack_f0 = &pCStack_bc;
+  uStack_ec = 0;
+  uStack_f4 = 0x4a6ab9;
+  (**(code **)(puStack_d8 + 0x1b4))();
+  uStack_f4 = 0x6c616232;
+  uStack_f8 = 0x4a6ac2;
+  piVar5 = (int *)(*pcVar2)();
+  iStack_e4 = *piVar5;
+  uStack_f8 = 0x4a6ad0;
+  (**(code **)(iStack_e4 + 0xc))();
+  uStack_f8 = 0;
+  iStack_fc = 7;
+  uStack_100 = 0x2744;
+  iStack_104 = 0x4a6ae5;
+  (**(code **)(iStack_e4 + 0x1cc))();
+  puStack_108 = &uStack_d4;
+  iStack_104 = 0;
+  uStack_10c = 0x4a6af8;
+  (*(code *)ppCStack_f0[0x6d])();
+  uStack_10c = 0x6c616233;
+  uStack_110 = 0x4a6b01;
+  piVar5 = (int *)(*pcVar2)();
+  iStack_fc = *piVar5;
+  uStack_110 = 0x4a6b0f;
+  (**(code **)(iStack_fc + 0xc))();
+  uStack_110 = 0;
+  CStack_114.m_pchData = (char *)0x0;
+  CStack_118.m_pchData = (char *)0x4a6b1f;
+  (**(code **)(iStack_fc + 0xa4))();
+  CStack_11c.m_pchData = acStack_dc;
+  CStack_118.m_pchData = (char *)0x0;
+  CStack_120.m_pchData = (char *)0x4a6b32;
+  (**(code **)(iStack_104 + 0x1b4))();
+  CStack_120.m_pchData = (char *)0x6c616234;
+  piVar5 = (int *)(*pcVar2)();
+  iVar6 = *piVar5;
+  (**(code **)(iVar6 + 0xc))();
+  (**(code **)(iVar6 + 0x1cc))(0x2744,8,0);
+  (**(code **)(iVar6 + 0x1b4))(acStack_dc,0);
+  iVar6 = (**(code **)(iVar1 + 0x1b8))();
+  if (iVar6 != 0) {
+    *(undefined4 *)(iVar6 + 0x14) = 0x6f6b6179;
+  }
+  (**(code **)(iVar1 + 0x1ac))();
+  (**(code **)(iVar1 + 0xa0))();
+  (**(code **)(iVar1 + 0x1c))();
+  iStack_d0._0_1_ = 2;
+  CString::~CString(&CStack_11c);
+  iStack_d0._0_1_ = 1;
+  CString::~CString(&CStack_118);
+  iStack_d0 = (uint)iStack_d0._1_3_ << 8;
+  CString::~CString(&CStack_114);
+  iStack_d0 = 0xffffffff;
+  CString::~CString(&CStack_120);
+  *unaff_FS_OFFSET = puStack_d8;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A6D40
+// GHIDRA_NAME ScanMapContextActionEntriesForCodeMatch
+// GHIDRA_PROTO undefined ScanMapContextActionEntriesForCodeMatch()
+
+uint ScanMapContextActionEntriesForCodeMatch(int param_1)
+
+{
+  bool bVar1;
+  char *pcVar2;
+  int iVar3;
+  
+  iVar3 = *(int *)(*(int *)&g_pMapContextActionManager->field_0x4 + 8);
+  if (iVar3 < 1) {
+    return (uint)g_pMapContextActionManager & 0xffffff00;
+  }
+  while( true ) {
+    pcVar2 = (char *)(**(code **)(**(int **)&g_pMapContextActionManager->field_0x4 + 0x2c))(iVar3);
+    if ((param_1 == *pcVar2) || (param_1 == pcVar2[1])) {
+      bVar1 = true;
+    }
+    else {
+      bVar1 = false;
+    }
+    if ((bVar1) || ((char)g_apSecondaryNationStateSlots[0x17] != '\0')) break;
+    iVar3 = iVar3 + -1;
+    if (iVar3 < 1) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A6DD0
+// GHIDRA_NAME GetByteFlagAtOffset8
+// GHIDRA_PROTO undefined GetByteFlagAtOffset8()
+
+undefined1 __fastcall GetByteFlagAtOffset8(int param_1)
+
+{
+  return *(undefined1 *)(param_1 + 8);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A6DF0
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At004a6df0
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At004a6df0()
+
+void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At004a6df0(int param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  if (*(int *)(param_1 + 4) != 0) {
+    for (iVar2 = *(int *)(*(int *)&g_pMapContextActionManager->field_0x4 + 8); 0 < iVar2;
+        iVar2 = iVar2 + -1) {
+      iVar1 = (**(code **)(**(int **)&g_pMapContextActionManager->field_0x4 + 0x2c))(iVar2);
+      FreeHeapBufferIfNotNull(*(undefined4 *)(iVar1 + 0x250));
+      FreeHeapBufferIfNotNull(*(undefined4 *)(iVar1 + 0x254));
+      *(undefined4 *)(iVar1 + 0x254) = 0;
+      *(undefined4 *)(iVar1 + 0x250) = 0;
+    }
+    (**(code **)(**(int **)(param_1 + 4) + 0x1c))();
+  }
+  *(undefined1 *)(param_1 + 8) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A6E80
+// GHIDRA_NAME DispatchMapInteractionPayloadAndResetWorkingFields
+// GHIDRA_PROTO undefined DispatchMapInteractionPayloadAndResetWorkingFields()
+
+void __thiscall DispatchMapInteractionPayloadAndResetWorkingFields(int param_1,int param_2)
+
+{
+  (**(code **)(**(int **)(param_1 + 4) + 0x3c))(param_2);
+  *(undefined4 *)(param_2 + 0x254) = 0;
+  *(undefined4 *)(param_2 + 0x250) = 0;
+  *(undefined2 *)(param_2 + 0x24c) = 0;
+  *(undefined2 *)(param_2 + 0x24a) = 0;
+  *(undefined1 *)(param_1 + 8) = 1;
+  if ((char)g_apSecondaryNationStateSlots[0x17] != '\0') {
+    *(undefined1 *)(param_1 + 8) = 1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A6EF0
+// GHIDRA_NAME TrimExcessNavyOrderSupportAndRebuildOrderBuffer
+// GHIDRA_PROTO undefined TrimExcessNavyOrderSupportAndRebuildOrderBuffer()
+
+void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(int param_1,CString param_2,char *param_3)
+
+{
+  char *pcVar1;
+  TSortedList_OnActivateView_0x00 *pTVar2;
+  TSortedListVtbl *pTVar3;
+  CString CVar4;
+  char cVar5;
+  undefined uVar6;
+  short sVar7;
+  int iVar8;
+  int iVar9;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined4 *puVar10;
+  int *piVar11;
+  char *pcVar12;
+  undefined4 *puVar13;
+  uint uVar14;
+  uint uVar15;
+  int iVar16;
+  undefined4 *puVar17;
+  undefined2 *puVar18;
+  undefined4 *unaff_FS_OFFSET;
+  TSortedList *local_34;
+  int local_30;
+  char *local_2c;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630212;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  iVar16 = 0;
+  uVar15 = (uint)(*param_3 != param_1);
+  local_34 = (TSortedList *)AllocateWithFallbackHandler(0x20);
+  local_4 = 0;
+  if (local_34 == (TSortedList *)0x0) {
+    local_34 = (TSortedList *)0x0;
+  }
+  else {
+    TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(local_34);
+    local_34->vftable = (TSortedListVtbl *)&TList::_vftable_;
+  }
+  local_4 = 0xffffffff;
+  iVar8 = InitializeLinkedListCursorFromOwnerHead();
+  iVar9 = LinkedListCursorHasCurrent();
+  CVar4.m_pchData = param_2.m_pchData;
+  while (iVar9 != 0) {
+    if (((char *)(int)*(short *)(iVar8 + 0xc) == CVar4.m_pchData) &&
+       (cVar5 = thunk_TileHasMovementClassId((int)*(short *)(iVar8 + 6),CVar4.m_pchData),
+       cVar5 == '\0')) {
+      (*local_34->vftable[6].OnActivateView)(iVar8);
+      sVar7 = GetCityActionGateValueFromOrderTemplate();
+      iVar16 = iVar16 + sVar7;
+    }
+    iVar8 = AdvanceLinkedListCursor();
+    iVar9 = LinkedListCursorHasCurrent();
+  }
+  sVar7 = ComputeAggregateWeightedChildCostForMatchingType5NavyOrders
+                    (param_1,*(int *)&g_pGlobalMapState->field_0x10 + (int)CVar4.m_pchData * 0xa8,0)
+  ;
+  iVar16 = iVar16 - sVar7;
+  if (0 < iVar16) {
+    param_2.m_pchData = (char *)0x0;
+    pTVar2 = local_34->vftable[9].OnActivateView;
+    do {
+      uVar6 = (*pTVar2)();
+      if (CONCAT31(extraout_var,uVar6) == 0) break;
+      uVar6 = (*pTVar2)();
+      iVar8 = GenerateThreadLocalRandom15();
+      uVar6 = (*local_34->vftable[9].slot_0x04)(iVar8 % CONCAT31(extraout_var_00,uVar6) + 1);
+      iVar8 = TAutoGreatPower::Find((TAutoGreatPower *)&local_34->field_0x4);
+      if (iVar8 != 0) {
+        TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)&local_34->field_0x4);
+      }
+      sVar7 = GetCityActionGateValueFromOrderTemplate();
+      iVar16 = iVar16 - sVar7;
+      param_2.m_pchData = param_2.m_pchData + 1;
+      *(undefined2 *)(CONCAT31(extraout_var_01,uVar6) + 0x34) = 0xffaa;
+    } while (0 < iVar16);
+    puVar17 = *(undefined4 **)(param_3 + uVar15 * 4 + 0x250);
+    iVar8 = (int)*(short *)(param_3 + uVar15 * 2 + 0x24a);
+    sVar7 = *(short *)(param_3 + uVar15 * 2 + 0x24a) + (short)param_2.m_pchData;
+    iVar16 = (int)sVar7;
+    *(short *)(param_3 + uVar15 * 2 + 0x24a) = sVar7;
+    puVar10 = (undefined4 *)AllocateWithFallbackHandler(iVar16 * 0x2c);
+    if (puVar10 == (undefined4 *)0x0) {
+      puVar10 = (undefined4 *)0x0;
+    }
+    else if (-1 < iVar16 + -1) {
+      puVar13 = puVar10 + 1;
+      do {
+        *(undefined1 *)puVar13 = 0;
+        puVar13 = puVar13 + 0xb;
+        iVar16 = iVar16 + -1;
+      } while (iVar16 != 0);
+    }
+    *(undefined4 **)(param_3 + uVar15 * 4 + 0x250) = puVar10;
+    for (uVar14 = iVar8 * 0xb & 0x3fffffff; uVar14 != 0; uVar14 = uVar14 - 1) {
+      *puVar10 = *puVar17;
+      puVar17 = puVar17 + 1;
+      puVar10 = puVar10 + 1;
+    }
+    for (iVar16 = 0; iVar16 != 0; iVar16 = iVar16 + -1) {
+      *(undefined1 *)puVar10 = *(undefined1 *)puVar17;
+      puVar17 = (undefined4 *)((int)puVar17 + 1);
+      puVar10 = (undefined4 *)((int)puVar10 + 1);
+    }
+    if (param_2.m_pchData != (char *)0x0) {
+      local_2c = param_2.m_pchData;
+      do {
+        piVar11 = (int *)InitializeLinkedListCursorFromOwnerHead();
+        iVar16 = LinkedListCursorHasCurrent();
+        if (iVar16 != 0) {
+          local_30 = iVar8 * 0x2c;
+          do {
+            if ((short)piVar11[0xd] == -0x56) {
+              *(undefined2 *)(piVar11 + 0xd) = 0;
+              puVar18 = (undefined2 *)(local_30 + *(int *)(param_3 + uVar15 * 4 + 0x250));
+              local_30 = local_30 + 0x2c;
+              iVar8 = iVar8 + 1;
+              iVar16 = piVar11[1];
+              puVar18[1] = 0xffaa;
+              pcVar1 = (char *)(puVar18 + 2);
+              *puVar18 = (short)iVar16;
+              iVar16 = 0;
+              pcVar12 = pcVar1;
+              do {
+                cVar5 = pcVar12[(int)&g_szEmptyString - (int)pcVar1];
+                *pcVar12 = cVar5;
+                if (cVar5 == '\0') break;
+                iVar16 = iVar16 + 1;
+                pcVar12 = pcVar12 + 1;
+              } while (iVar16 < 0x20);
+              CString::CString(&param_2);
+              local_4 = 1;
+              CString::AssignFromPtr(&param_2,(CString *)(piVar11 + 9));
+              iVar16 = 0;
+              do {
+                cVar5 = param_2.m_pchData[iVar16];
+                pcVar1[iVar16] = cVar5;
+                if (cVar5 == '\0') break;
+                iVar16 = iVar16 + 1;
+              } while (iVar16 < 0x20);
+              sVar7 = (short)piVar11[0xe];
+              *(undefined4 *)(puVar18 + 0x14) = 0x61726d79;
+              puVar18[0x12] =
+                   (sVar7 / 100 + (sVar7 >> 0xf)) -
+                   (short)((longlong)(int)sVar7 * 0x51eb851f >> 0x3f);
+              iVar16 = *piVar11;
+              (**(code **)(iVar16 + 0x30))();
+              (**(code **)(iVar16 + 0x1c))();
+              local_4 = 0xffffffff;
+              CString::~CString(&param_2);
+            }
+            piVar11 = (int *)AdvanceLinkedListCursor();
+            iVar16 = LinkedListCursorHasCurrent();
+          } while (iVar16 != 0);
+        }
+        local_2c = local_2c + -1;
+      } while (local_2c != (char *)0x0);
+    }
+  }
+  pTVar3 = local_34->vftable;
+  (*pTVar3[0xb].slot_0x04)();
+  (*pTVar3[3].slot_0x04)();
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7370
+// GHIDRA_NAME ValidateOrderSupportDeltaAndMarkDirectionalOverlays
+// GHIDRA_PROTO undefined ValidateOrderSupportDeltaAndMarkDirectionalOverlays()
+
+void ValidateOrderSupportDeltaAndMarkDirectionalOverlays(CString param_1,undefined4 *param_2)
+
+{
+  CString CVar1;
+  int iVar2;
+  char cVar3;
+  short sVar4;
+  int iVar5;
+  int iVar6;
+  int *piVar7;
+  int iVar8;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_44;
+  char *pcStack_40;
+  int iStack_3c;
+  undefined4 *puStack_38;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  CVar1.m_pchData = param_1.m_pchData;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630238;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  iVar8 = 0;
+  puStack_38 = (undefined4 *)0x4a73a9;
+  iVar5 = InitializeLinkedListCursorFromOwnerHead();
+  puStack_38 = (undefined4 *)0x4a73b4;
+  iVar6 = LinkedListCursorHasCurrent();
+  iVar2 = (int)param_2;
+  while (iVar6 != 0) {
+    if (*(short *)(iVar5 + 0xc) == iVar2) {
+      iStack_3c = (int)*(short *)(iVar5 + 6);
+      puStack_38 = (undefined4 *)iVar2;
+      pcStack_40 = (char *)0x4a73d5;
+      cVar3 = thunk_TileHasMovementClassId();
+      if (cVar3 == '\0') {
+        puStack_38 = (undefined4 *)0x4a73e0;
+        sVar4 = GetCityActionGateValueFromOrderTemplate();
+        iVar8 = iVar8 + sVar4;
+      }
+    }
+    puStack_38 = (undefined4 *)0x4a73ee;
+    iVar5 = AdvanceLinkedListCursor();
+    puStack_38 = (undefined4 *)0x4a73f9;
+    iVar6 = LinkedListCursorHasCurrent();
+  }
+  puStack_38 = (undefined4 *)0x0;
+  iStack_3c = *(int *)&g_pGlobalMapState->field_0x10 + iVar2 * 0xa8;
+  pcStack_40 = CVar1.m_pchData;
+  uStack_44 = 0x4a7421;
+  sVar4 = ComputeAggregateWeightedChildCostForMatchingType5NavyOrders();
+  if (iVar8 != sVar4 && -1 < iVar8 - sVar4) {
+    puStack_38 = (undefined4 *)0x4a7437;
+    CString::CString(&param_1);
+    puStack_38 = &param_1.m_pchData;
+    iStack_3c = 10;
+    pcStack_40 = (char *)0x2745;
+    local_4 = 0;
+    uStack_44 = 0x4a7459;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    puStack_38 = (undefined4 *)0x0;
+    iStack_3c = 1;
+    pcStack_40 = &DAT_006a2288;
+    param_2 = &uStack_44;
+    thunk_AssignStringSharedRefAndReturnThis(&param_1);
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+    puStack_38 = (undefined4 *)0x4a7495;
+    piVar7 = (int *)InitializeLinkedListCursorFromOwnerHead();
+    puStack_38 = (undefined4 *)0x4a74a0;
+    iVar8 = LinkedListCursorHasCurrent();
+    while (iVar8 != 0) {
+      if ((short)piVar7[3] == iVar2) {
+        iStack_3c = (int)*(short *)((int)piVar7 + 6);
+        puStack_38 = (undefined4 *)iVar2;
+        pcStack_40 = (undefined *)0x4a74bd;
+        cVar3 = thunk_TileHasMovementClassId();
+        if (cVar3 == '\0') {
+          puStack_38 = (undefined4 *)0xffffffff;
+          iStack_3c = 0;
+          pcStack_40 = (undefined *)0x4a74cc;
+          (**(code **)(*piVar7 + 0x34))();
+        }
+      }
+      puStack_38 = (undefined4 *)0x4a74d5;
+      piVar7 = (int *)AdvanceLinkedListCursor();
+      puStack_38 = (undefined4 *)0x4a74e0;
+      iVar8 = LinkedListCursorHasCurrent();
+    }
+    puStack_38 = (undefined4 *)0x4a74ef;
+    MarkDirectionalMapOverlayFlagsForNationOrders();
+    local_4 = 0xffffffff;
+    puStack_38 = (undefined4 *)0x4a7500;
+    CString::~CString(&param_1);
   }
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BF45
-// GHIDRA_NAME thunk_ReleaseSharedStringRefIfNotEmpty
-// GHIDRA_PROTO void __thiscall thunk_ReleaseSharedStringRefIfNotEmpty(void)
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7750
+// GHIDRA_NAME DestructTArmyStackAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTArmyStackAndMaybeFree_Impl()
 
-void __thiscall thunk_ReleaseSharedStringRefIfNotEmpty(void *this)
+void __fastcall DestructTArmyStackAndMaybeFree_Impl(undefined4 *param_1)
 
 {
-  ReleaseSharedStringRefIfNotEmpty(this);
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BF60
-// GHIDRA_NAME WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60
-// GHIDRA_PROTO undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60()
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7A40
+// GHIDRA_NAME InitializeLinkedListCursorContainerAndIterate_004a7a40
+// GHIDRA_PROTO undefined InitializeLinkedListCursorContainerAndIterate_004a7a40()
 
-void __thiscall
-WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60(int param_1,undefined4 param_2)
+void __thiscall InitializeLinkedListCursorContainerAndIterate_004a7a40(int param_1,short param_2)
 
 {
-  DDX_Control(param_2,0x419,param_1 + 0x5c);
+  int iVar1;
+  int iVar2;
+  int *piVar3;
+  
+  iVar1 = InitializeLinkedListCursorFromOwnerHead();
+  iVar2 = LinkedListCursorHasCurrent();
+  if (iVar2 != 0) {
+    while (*(short *)(iVar1 + 0x1a) != param_2) {
+      iVar1 = AdvanceLinkedListCursor();
+      iVar2 = LinkedListCursorHasCurrent();
+      if (iVar2 == 0) {
+        return;
+      }
+    }
+    piVar3 = (int *)AllocateWithFallbackHandler(8);
+    if (piVar3 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0xbeb);
+    }
+    *piVar3 = iVar1;
+    piVar3[1] = *(int *)(param_1 + 0x14);
+    *(short *)(param_1 + 10) = *(short *)(param_1 + 10) + 1;
+    *(int **)(param_1 + 0x14) = piVar3;
+  }
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BF90
-// GHIDRA_NAME OrphanVtableAssignStub_0049bf90
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_0049bf90()
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7B20
+// GHIDRA_NAME WrapperFor_AllocateWithFallbackHandler_At004a7b20
+// GHIDRA_PROTO undefined WrapperFor_AllocateWithFallbackHandler_At004a7b20()
 
-undefined ** OrphanVtableAssignStub_0049bf90(void)
-
-{
-  return &PTR_PTR_0064ba98;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BFB0
-// GHIDRA_NAME OrphanRetStub_0049bfb0
-// GHIDRA_PROTO undefined OrphanRetStub_0049bfb0()
-
-void OrphanRetStub_0049bfb0(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BFD0
-// GHIDRA_NAME WrapperFor_ShowWindowOrForwardToSite_At0049bfd0
-// GHIDRA_PROTO undefined WrapperFor_ShowWindowOrForwardToSite_At0049bfd0()
-
-void WrapperFor_ShowWindowOrForwardToSite_At0049bfd0(void)
-
-{
-  CFrameWnd::ShowWindow(6);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049BFF0
-// GHIDRA_NAME ResetGlobalPair6A1F78And6A1F7C
-// GHIDRA_PROTO undefined ResetGlobalPair6A1F78And6A1F7C()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalPair6A1F78And6A1F7C(void)
-
-{
-  _DAT_006a1f78 = 0;
-  _DAT_006a1f7c = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C010
-// GHIDRA_NAME ResetGlobalPair6A1FA8And6A1FAC
-// GHIDRA_PROTO undefined ResetGlobalPair6A1FA8And6A1FAC()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalPair6A1FA8And6A1FAC(void)
-
-{
-  _DAT_006a1fa8 = 0;
-  _DAT_006a1fac = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C030
-// GHIDRA_NAME ResetGlobalQuad6A1F88To6A1F94
-// GHIDRA_PROTO undefined ResetGlobalQuad6A1F88To6A1F94()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalQuad6A1F88To6A1F94(void)
-
-{
-  _DAT_006a1f88 = 0;
-  _DAT_006a1f8c = 0;
-  _DAT_006a1f90 = 0;
-  _DAT_006a1f94 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C060
-// GHIDRA_NAME ResetGlobalQuad6A1F98To6A1FA4
-// GHIDRA_PROTO undefined ResetGlobalQuad6A1F98To6A1FA4()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalQuad6A1F98To6A1FA4(void)
-
-{
-  _DAT_006a1f98 = 0;
-  _DAT_006a1f9c = 0;
-  _DAT_006a1fa0 = 0;
-  _DAT_006a1fa4 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C090
-// GHIDRA_NAME ResetGlobalDword6A1F70
-// GHIDRA_PROTO undefined ResetGlobalDword6A1F70()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void ResetGlobalDword6A1F70(void)
-
-{
-  _DAT_006a1f70 = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C0C0
-// GHIDRA_NAME InitializeGlobalPair6A1FE8And6A1FECDefault
-// GHIDRA_PROTO undefined InitializeGlobalPair6A1FE8And6A1FECDefault()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void InitializeGlobalPair6A1FE8And6A1FECDefault(void)
-
-{
-  _DAT_006a1fe8 = 0;
-  _DAT_006a1fec = 0x3f900000;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C0F0
-// GHIDRA_NAME InitializeGlobalPair6A1FC0And6A1FC4Default
-// GHIDRA_PROTO undefined InitializeGlobalPair6A1FC0And6A1FC4Default()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void InitializeGlobalPair6A1FC0And6A1FC4Default(void)
-
-{
-  _DAT_006a1fc0 = 0;
-  _DAT_006a1fc4 = 0x3f900000;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C120
-// GHIDRA_NAME UpdateGlobalWord6A2008FromScaled6A1FC0
-// GHIDRA_PROTO undefined UpdateGlobalWord6A2008FromScaled6A1FC0()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void UpdateGlobalWord6A2008FromScaled6A1FC0(void)
-
-{
-  _DAT_006a2008 = ftol();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0049C150
-// GHIDRA_NAME InitializeDirectSoundDeviceAndChannels_Impl
-// GHIDRA_PROTO undefined InitializeDirectSoundDeviceAndChannels_Impl()
-
-undefined4 __thiscall
-InitializeDirectSoundDeviceAndChannels_Impl(undefined4 *param_1,undefined4 *param_2)
+void __thiscall WrapperFor_AllocateWithFallbackHandler_At004a7b20(int param_1,undefined4 param_2)
 
 {
   undefined4 *puVar1;
-  int iVar2;
-  undefined4 local_24;
-  undefined4 local_20;
-  undefined4 local_1c;
-  undefined4 local_18;
   
-  puVar1 = param_1 + 7;
-  local_24 = 0x10001;
-  local_20 = 0x5622;
-  *puVar1 = 0;
-  local_18 = 0x100002;
-  local_1c = 0xac44;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(8);
+  if (puVar1 == (undefined4 *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0xbeb)
+    ;
+  }
+  *puVar1 = param_2;
+  puVar1[1] = *(undefined4 *)(param_1 + 0x14);
+  *(short *)(param_1 + 10) = *(short *)(param_1 + 10) + 1;
+  *(undefined4 **)(param_1 + 0x14) = puVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7BA0
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0()
+
+void __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a7ba0(int param_1,int param_2)
+
+{
+  int *piVar1;
+  int *piVar2;
+  int iVar3;
+  
+  piVar1 = *(int **)(param_1 + 0x14);
+  if (piVar1 != (int *)0x0) {
+    piVar2 = (int *)piVar1[1];
+    if (*piVar1 == param_2) {
+      *(int **)(param_1 + 0x14) = piVar2;
+      FreeHeapBufferIfNotNull(piVar1);
+      *(short *)(param_1 + 10) = *(short *)(param_1 + 10) + -1;
+      return;
+    }
+    for (; (piVar2 != (int *)0x0 && (*piVar2 != param_2)); piVar2 = (int *)piVar2[1]) {
+      piVar1 = piVar2;
+    }
+    iVar3 = piVar1[1];
+    if (iVar3 != 0) {
+      piVar1[1] = *(int *)(iVar3 + 4);
+      FreeHeapBufferIfNotNull(iVar3);
+      *(short *)(param_1 + 10) = *(short *)(param_1 + 10) + -1;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7C60
+// GHIDRA_NAME WrapperFor_GenerateThreadLocalRandom15_At004a7c60
+// GHIDRA_PROTO undefined WrapperFor_GenerateThreadLocalRandom15_At004a7c60()
+
+void __fastcall WrapperFor_GenerateThreadLocalRandom15_At004a7c60(int param_1)
+
+{
+  short sVar1;
+  int *piVar2;
+  ushort uVar3;
+  int iVar4;
+  short sVar5;
+  short sVar6;
+  
+  sVar5 = 3;
+  sVar6 = 1;
+  piVar2 = *(int **)(param_1 + 0x14);
+  *(int **)(param_1 + 0x18) = piVar2;
+  if (piVar2 == (int *)0x0) {
+    iVar4 = 0;
+  }
+  else {
+    iVar4 = *piVar2;
+  }
+joined_r0x004a7c7f:
+  do {
+    if (iVar4 == 0) {
+      *(short *)(param_1 + 4) = (short)*(char *)(sVar5 + 0x6953c0 + sVar6 * 4);
+      uVar3 = GenerateThreadLocalRandom15();
+      *(ushort *)(param_1 + 6) = (uVar3 & 0xff) + *(short *)(param_1 + 4) * 0x100;
+      return;
+    }
+    sVar1 = *(short *)(&DAT_00695380 + *(short *)(iVar4 + 4) * 2);
+    if (sVar1 < sVar5) {
+      sVar5 = sVar1;
+    }
+    if (sVar6 < sVar1) {
+      sVar6 = sVar1;
+    }
+    if (*(int *)(param_1 + 0x18) != 0) {
+      piVar2 = *(int **)(*(int *)(param_1 + 0x18) + 4);
+      *(int **)(param_1 + 0x18) = piVar2;
+      if (piVar2 != (int *)0x0) {
+        iVar4 = *piVar2;
+        goto joined_r0x004a7c7f;
+      }
+    }
+    iVar4 = 0;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7D20
+// GHIDRA_NAME OrphanCallChain_C2_I38_004a7d20
+// GHIDRA_PROTO undefined OrphanCallChain_C2_I38_004a7d20()
+
+void __fastcall OrphanCallChain_C2_I38_004a7d20(int param_1)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  int *piVar3;
+  
+  puVar2 = *(undefined4 **)(param_1 + 0x14);
+  *(undefined4 **)(param_1 + 0x18) = puVar2;
+  if (puVar2 == (undefined4 *)0x0) {
+    piVar3 = (int *)0x0;
+  }
+  else {
+    piVar3 = (int *)*puVar2;
+  }
+joined_r0x004a7d37:
+  do {
+    if (piVar3 == (int *)0x0) {
+      return;
+    }
+    iVar1 = *piVar3;
+    (**(code **)(iVar1 + 0x28))(CONCAT22((short)((uint)puVar2 >> 0x10),(short)piVar3[3]));
+    (**(code **)(iVar1 + 0x34))(0,0xffffffff);
+    puVar2 = (undefined4 *)0x0;
+    if (*(int *)(param_1 + 0x18) != 0) {
+      puVar2 = *(undefined4 **)(*(int *)(param_1 + 0x18) + 4);
+      *(undefined4 **)(param_1 + 0x18) = puVar2;
+      if (puVar2 != (undefined4 *)0x0) {
+        piVar3 = (int *)*puVar2;
+        goto joined_r0x004a7d37;
+      }
+    }
+    piVar3 = (int *)0x0;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7E70
+// GHIDRA_NAME AccumulateWeightedMeterAndCountFromEligibleLinkedEntries
+// GHIDRA_PROTO undefined AccumulateWeightedMeterAndCountFromEligibleLinkedEntries()
+
+void __thiscall
+AccumulateWeightedMeterAndCountFromEligibleLinkedEntries
+          (int param_1,int *param_2,int *param_3,int param_4)
+
+{
+  short sVar1;
+  int *piVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  int iVar7;
+  int local_20 [8];
+  
+  local_20[2] = 0x32;
+  local_20[3] = 0x19;
+  local_20[5] = 0x19;
+  local_20[6] = 0x32;
+  local_20[0] = 100;
+  local_20[1] = 0x4b;
+  local_20[4] = 0;
+  local_20[7] = 0x4b;
+  if (3 < param_4) {
+    param_4 = 3;
+  }
+  *param_2 = 0;
+  *param_3 = 0;
+  piVar2 = *(int **)(param_1 + 0x14);
+  *(int **)(param_1 + 0x18) = piVar2;
+  if (piVar2 == (int *)0x0) {
+    iVar7 = 0;
+  }
+  else {
+    iVar7 = *piVar2;
+  }
+joined_r0x004a7eea:
+  do {
+    if (iVar7 == 0) {
+      return;
+    }
+    if (((int)*(short *)(iVar7 + 0x3c) / 2 < (int)*(short *)(iVar7 + 0x34)) &&
+       ((*(byte *)(iVar7 + 0x3a) >> 1 & 1) == 0)) {
+      iVar3 = local_20[param_4];
+      iVar4 = *(int *)(&DAT_0064c790 + *(short *)(iVar7 + 4) * 4);
+      sVar1 = *(short *)(&DAT_0064c660 + *(short *)(iVar7 + 4) * 2);
+      iVar5 = local_20[param_4 + 4];
+      iVar6 = ftol();
+      *param_2 = *param_2 +
+                 (((sVar1 * iVar5) / 1000 + (iVar3 * iVar4) / 100) * iVar6 *
+                 (int)*(short *)(iVar7 + 0x34)) / 500;
+      *param_3 = *param_3 + *(int *)(&DAT_00695578 + *(short *)(iVar7 + 4) * 4);
+    }
+    if (*(int *)(param_1 + 0x18) != 0) {
+      piVar2 = *(int **)(*(int *)(param_1 + 0x18) + 4);
+      *(int **)(param_1 + 0x18) = piVar2;
+      if (piVar2 != (int *)0x0) {
+        iVar7 = *piVar2;
+        goto joined_r0x004a7eea;
+      }
+    }
+    iVar7 = 0;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A8040
+// GHIDRA_NAME ApplyRandomizedMeterDecayToEligibleLinkedEntries
+// GHIDRA_PROTO undefined ApplyRandomizedMeterDecayToEligibleLinkedEntries()
+
+void __thiscall
+ApplyRandomizedMeterDecayToEligibleLinkedEntries
+          (int param_1,undefined4 param_2,undefined4 param_3,int param_4)
+
+{
+  short sVar1;
+  int *piVar2;
+  int *piVar3;
+  int iVar4;
+  int iVar5;
+  int local_10 [4];
+  
+  if (3 < param_4) {
+    param_4 = 3;
+  }
+  piVar2 = *(int **)(param_1 + 0x14);
+  *(int **)(param_1 + 0x18) = piVar2;
+  if (piVar2 == (int *)0x0) {
+    iVar4 = 0;
+  }
+  else {
+    iVar4 = *piVar2;
+  }
+  iVar5 = 0;
+  while (iVar4 != 0) {
+    if ((0 < *(short *)(iVar4 + 0x34)) && ((*(byte *)(iVar4 + 0x3a) >> 1 & 1) == 0)) {
+      if ((int)*(short *)(iVar4 + 0x3c) / 2 < (int)*(short *)(iVar4 + 0x34)) {
+        iVar5 = iVar5 + 2;
+      }
+      else {
+        iVar5 = iVar5 + 1;
+      }
+    }
+    if (*(int *)(param_1 + 0x18) == 0) {
+LAB_004a80ba:
+      iVar4 = 0;
+    }
+    else {
+      piVar3 = *(int **)(*(int *)(param_1 + 0x18) + 4);
+      *(int **)(param_1 + 0x18) = piVar3;
+      if (piVar3 == (int *)0x0) goto LAB_004a80ba;
+      iVar4 = *piVar3;
+    }
+  }
+  if (iVar5 == 0) {
+    return;
+  }
+  *(int **)(param_1 + 0x18) = piVar2;
+  if (piVar2 == (int *)0x0) {
+    iVar4 = 0;
+  }
+  else {
+    iVar4 = *piVar2;
+  }
+  do {
+    while( true ) {
+      if (iVar4 == 0) {
+        return;
+      }
+      sVar1 = *(short *)(iVar4 + 0x34);
+      if ((0 < sVar1) && ((*(byte *)(iVar4 + 0x3a) >> 1 & 1) == 0)) {
+        GenerateThreadLocalRandom15();
+        iVar5 = ftol();
+        local_10[0] = 0x46;
+        local_10[2] = 0x5a;
+        local_10[3] = 0x5a;
+        local_10[1] = 0x50;
+        if ((*(byte *)(iVar4 + 0x3a) & 1) != 0) {
+          iVar5 = (local_10[param_4] * iVar5) / 100;
+        }
+        if (iVar5 < sVar1) {
+          *(short *)(iVar4 + 0x34) = sVar1 - (short)iVar5;
+        }
+        else {
+          *(undefined2 *)(iVar4 + 0x34) = 0;
+        }
+      }
+      if (*(int *)(param_1 + 0x18) != 0) break;
+LAB_004a820e:
+      iVar4 = 0;
+    }
+    piVar2 = *(int **)(*(int *)(param_1 + 0x18) + 4);
+    *(int **)(param_1 + 0x18) = piVar2;
+    if (piVar2 == (int *)0x0) goto LAB_004a820e;
+    iVar4 = *piVar2;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A82B0
+// GHIDRA_NAME WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0
+// GHIDRA_PROTO undefined WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0()
+
+void __thiscall
+WrapperFor_HandleBlinkStateAndScheduleTimerTick_At005a5320_Impl_At004a82b0(int param_1,char param_2)
+
+{
+  int *piVar1;
+  int iVar2;
+  
+  piVar1 = *(int **)(param_1 + 0x14);
+  *(int **)(param_1 + 0x18) = piVar1;
+  if (piVar1 == (int *)0x0) {
+    iVar2 = 0;
+  }
+  else {
+    iVar2 = *piVar1;
+  }
+joined_r0x004a82d1:
+  do {
+    if (iVar2 == 0) {
+      return;
+    }
+    if ((0 < *(short *)(iVar2 + 0x34)) &&
+       (*(short *)(iVar2 + 0x38) =
+             *(short *)(iVar2 + 0x38) + (-(ushort)(param_2 != '\0') & 0xf) + 0x14,
+       400 < *(short *)(iVar2 + 0x38))) {
+      *(undefined2 *)(iVar2 + 0x38) = 400;
+    }
+    if (*(int *)(param_1 + 0x18) != 0) {
+      piVar1 = *(int **)(*(int *)(param_1 + 0x18) + 4);
+      *(int **)(param_1 + 0x18) = piVar1;
+      if (piVar1 != (int *)0x0) {
+        iVar2 = *piVar1;
+        goto joined_r0x004a82d1;
+      }
+    }
+    iVar2 = 0;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A8740
+// GHIDRA_NAME WrapperFor_ftol_At004a8740
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004a8740()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004a8740(void)
+
+{
+  _DAT_006a2350 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A8D90
+// GHIDRA_NAME DestructTArmyUnitLineAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTArmyUnitLineAndMaybeFree_Impl()
+
+void __fastcall DestructTArmyUnitLineAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A9CA0
+// GHIDRA_NAME HandleCrossUArmyViewsNameCommand
+// GHIDRA_PROTO undefined HandleCrossUArmyViewsNameCommand()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Implements the Cross_UArmyViews 'name' command flow.
+// GHIDRA_COMMENT Builds name-edit dialog state/styles, invokes the naming prompt, commits the resulting string back to the selected record/control, and refreshes the owning UI view.
+// GHIDRA_COMMENT_END
+
+/* Implements the Cross_UArmyViews 'name' command flow.
+   Builds name-edit dialog state/styles, invokes the naming prompt, commits the resulting string
+   back to the selected record/control, and refreshes the owning UI view. */
+
+void HandleCrossUArmyViewsNameCommand(void)
+
+{
+  int iVar1;
+  code *pcVar2;
+  int iVar3;
+  undefined uVar4;
+  undefined3 extraout_var;
+  int *piVar5;
+  int iVar6;
+  int unaff_EBX;
+  undefined2 unaff_BP;
+  int unaff_ESI;
+  int unaff_EDI;
+  int *unaff_FS_OFFSET;
+  CString CStack_50;
+  int *piVar7;
+  int iVar8;
+  int iStack_28;
+  CString local_24 [3];
+  undefined1 uStack_16;
+  undefined1 uStack_15;
+  undefined1 uStack_14;
+  undefined1 uStack_13;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00630470;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  uVar4 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+  if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
+    CStack_50.m_pchData = "h\x04\x02";
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  CString::CString((CString *)&stack0xffffffd4);
+  puStack_8 = (undefined1 *)0x0;
+  CString::CString(local_24);
+  puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
+  uStack_16 = 0;
+  uStack_15 = 0;
+  uStack_14 = 0;
+  uStack_13 = 0;
+  CStack_50.m_pchData = (char *)0x4a9d41;
+  thunk_BuildUiTextStyleDescriptor();
+  iVar1 = *(int *)CONCAT31(extraout_var,uVar4);
+  pcVar2 = *(code **)(iVar1 + 0x94);
+  piVar5 = (int *)(*pcVar2)();
+  (**(code **)(*piVar5 + 0xc))();
+  iVar8 = 1;
+  piVar7 = (int *)0x2746;
+  CStack_50.m_pchData = (char *)0x4a9d71;
+  (**(code **)(*piVar5 + 0x1cc))();
+  CStack_50.m_pchData = (char *)0x6e616d65;
+  piVar5[0x1e] = unaff_EBX;
+  piVar5[0x1f] = iStack_28;
+  *(undefined2 *)(piVar5 + 0x20) = local_24[0].m_pchData._0_2_;
+  piVar5 = (int *)(*pcVar2)();
+  iVar3 = *piVar5;
+  (**(code **)(iVar3 + 0xc))();
+  *(undefined2 *)(piVar5 + 0x27) = 0x18;
+  CString::AssignFromPtr((CString *)&stack0xffffffc0,(CString *)(iRam00000e14 + 0x24));
+  (**(code **)(iVar3 + 0x1e0))(&stack0xffffffc0,1);
+  piVar5[0x1e] = unaff_EDI;
+  piVar5[0x1f] = unaff_ESI;
+  *(undefined2 *)(piVar5 + 0x20) = unaff_BP;
+  (**(code **)(iVar1 + 0x1a0))(1);
+  iVar6 = (**(code **)(iVar1 + 0x1b8))();
+  if (iVar6 != 0) {
+    *(undefined4 *)(iVar6 + 0x14) = 0x6f6b6179;
+  }
+  (**(code **)(iVar1 + 0x1ac))();
+  (**(code **)(iVar3 + 0x1dc))(&stack0xffffffbc);
+  CString::AssignFromPtr(&CStack_50,(CString *)&stack0xffffffb8);
+  (**(code **)(iVar1 + 0xa0))();
+  (**(code **)(iVar1 + 0x1c))();
+  if (iVar8 != 0x636e636c) {
+    CString::AssignFromPtr((CString *)(piVar7[0x18] + 0x24),&CStack_50);
+  }
+  (**(code **)(*piVar7 + 0xe4))();
+  CString::~CString((CString *)&stack0xffffffb8);
+  CString::~CString(&CStack_50);
+  *unaff_FS_OFFSET = unaff_ESI;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AA450
+// GHIDRA_NAME Helper_Uses_ConstructTPageViewBaseState_At004aa450
+// GHIDRA_PROTO undefined Helper_Uses_ConstructTPageViewBaseState_At004aa450()
+
+TPageView * Helper_Uses_ConstructTPageViewBaseState_At004aa450(void)
+
+{
+  TPageView *this;
+  TPageView *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006304aa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TPageView *)AllocateWithFallbackHandler(0x88);
+  local_4 = 0;
+  pTVar1 = (TPageView *)0x0;
+  if (this != (TPageView *)0x0) {
+    TPageView::ConstructTPageViewBaseState(this);
+    this->vftable = (TPageViewVtbl *)&TSuperArmyRosterVtbl_0064d2f8;
+    *(undefined2 *)&this[1].vftable = 0xffff;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AA870
+// GHIDRA_NAME ResetObjectToCObjectSentinelVtable_Impl
+// GHIDRA_PROTO undefined ResetObjectToCObjectSentinelVtable_Impl()
+
+void __fastcall ResetObjectToCObjectSentinelVtable_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AB380
+// GHIDRA_NAME AllocateCivilianLedgerDialog
+// GHIDRA_PROTO void * AllocateCivilianLedgerDialog(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Allocates and initializes the civilian-ledger dialog object (vtable PTR_LAB_0064d778).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - Pointer to dialog object on success.
+// GHIDRA_COMMENT - NULL on allocation failure.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Unknown calling convention -- yet parameter storage is locked */
+/* Allocates and initializes the civilian-ledger dialog object (vtable PTR_LAB_0064d778).
+   
+   Returns:
+   - Pointer to dialog object on success.
+   - NULL on allocation failure. */
+
+void * AllocateCivilianLedgerDialog(void)
+
+{
+  TPageView *this;
+  TPageView *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063061a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TPageView *)AllocateWithFallbackHandler(0x88);
+  local_4 = 0;
+  pTVar1 = (TPageView *)0x0;
+  if (this != (TPageView *)0x0) {
+    TPageView::ConstructTPageViewBaseState(this);
+    this->vftable = (TPageViewVtbl *)&TSuperCivRosterVtbl_0064d778;
+    *(undefined2 *)&this[1].vftable = 0xffff;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AB650
+// GHIDRA_NAME DestructTSuperCivRosterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTSuperCivRosterAndMaybeFree_Impl()
+
+void __fastcall DestructTSuperCivRosterAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AB850
+// GHIDRA_NAME DestructTMiniCivLineAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTMiniCivLineAndMaybeFree_Impl()
+
+void __fastcall DestructTMiniCivLineAndMaybeFree_Impl(TView *param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  puStack_8 = &LAB_006306a8;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 0;
+  CString::~CString((CString *)&param_1[1].ownerOffsetY);
+  local_4 = 0xffffffff;
+  TView::thunk_DestructEngineerDialogBaseState(param_1);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AC3A0
+// GHIDRA_NAME AssignSharedStringFromMidSubstring
+// GHIDRA_PROTO undefined AssignSharedStringFromMidSubstring()
+
+CString * AssignSharedStringFromMidSubstring(CString *param_1,int param_2,CString param_3)
+
+{
+  CString *src_ref;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006307eb;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  src_ref = (CString *)Mid_5feca5(&param_3,param_2 + -1,param_3.m_pchData);
+  local_4 = 1;
+  CString::StringSharedRef_AssignFromPtr(param_1,src_ref);
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString(&param_3);
+  *unaff_FS_OFFSET = local_c;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AC570
+// GHIDRA_NAME WrapperFor_ftol_At004ac570
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004ac570()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004ac570(void)
+
+{
+  _DAT_006a23b0 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AC5C0
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At004ac5c0
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At004ac5c0()
+
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At004ac5c0(void)
+
+{
+  TView *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063080a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TView *)AllocateWithFallbackHandler(100);
+  local_4 = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this[1].vftable = (TViewVtbl *)0x0;
+    this->vftable = (TViewVtbl *)&TSwapperDaddyViewVtbl_0064ddc0;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (TView *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004ADC40
+// GHIDRA_NAME InitializeOutSharedStringWithEmptyRefAndCopyBuffer
+// GHIDRA_PROTO undefined InitializeOutSharedStringWithEmptyRefAndCopyBuffer()
+
+CString * __thiscall
+InitializeOutSharedStringWithEmptyRefAndCopyBuffer(char *param_1,CString *param_2)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)GetSharedEmptyStringRef();
+  param_2->m_pchData = (char *)*puVar1;
+  CString::CopyFromCStr(param_2,param_1);
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AE990
+// GHIDRA_NAME RefreshMapContextSelectionPanelAndInfoLabels_Impl
+// GHIDRA_PROTO undefined RefreshMapContextSelectionPanelAndInfoLabels_Impl()
+
+CString * __thiscall
+RefreshMapContextSelectionPanelAndInfoLabels_Impl(char *param_1,CString *param_2)
+
+{
+  undefined4 *puVar1;
+  
+  puVar1 = (undefined4 *)GetSharedEmptyStringRef();
+  param_2->m_pchData = (char *)*puVar1;
+  CString::CopyFromCStr(param_2,param_1);
+  return param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B0970
+// GHIDRA_NAME WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970
+// GHIDRA_PROTO undefined WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970()
+
+CString * __fastcall WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970(CString *param_1)
+
+{
+  CString::CString(param_1);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B0AC0
+// GHIDRA_NAME WrapperFor_ftol_At004b0ac0
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004b0ac0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004b0ac0(void)
+
+{
+  _DAT_006a2418 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B0BE0
+// GHIDRA_NAME DestructTHotspotBehaviorAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTHotspotBehaviorAndMaybeFree_Impl()
+
+void __fastcall DestructTHotspotBehaviorAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B0DD0
+// GHIDRA_NAME WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0
+// GHIDRA_PROTO undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0()
+
+void __fastcall WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0(undefined4 *param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  puStack_8 = &LAB_00630c88;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 0;
+  CString::~CString((CString *)(param_1 + 4));
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1100
+// GHIDRA_NAME DestructTDropShadowTextBehaviorAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTDropShadowTextBehaviorAndMaybeFree_Impl()
+
+void __fastcall DestructTDropShadowTextBehaviorAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1370
+// GHIDRA_NAME WrapperFor_ftol_At004b1370
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004b1370()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004b1370(void)
+
+{
+  _DAT_006a2470 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B13A0
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At004b13a0
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At004b13a0()
+
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At004b13a0(void)
+
+{
+  TView *this;
+  TView *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630d1a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TView *)AllocateWithFallbackHandler(100);
+  local_4 = 0;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = (TViewVtbl *)&TCheaterVtbl_0064ec60;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1880
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At004b1880
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At004b1880()
+
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At004b1880(void)
+
+{
+  TView *this;
+  TView *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630daa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TView *)AllocateWithFallbackHandler(100);
+  local_4 = 0;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = (TViewVtbl *)&TTechCheaterVtbl_0064ee58;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B20A0
+// GHIDRA_NAME WrapperFor_ftol_At004b20a0
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004b20a0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004b20a0(void)
+
+{
+  _DAT_006a24d0 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B2570
+// GHIDRA_NAME InitializeCityProductionState
+// GHIDRA_PROTO undefined InitializeCityProductionState()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes city production state and building-entry tables.
+// GHIDRA_COMMENT Storage model:
+// GHIDRA_COMMENT - +0x1DC: current per-slot production values
+// GHIDRA_COMMENT - +0x1FC: delta/mirror tracking array
+// GHIDRA_COMMENT - +0xE4: city entry pointer table
+// GHIDRA_COMMENT Initialization clears/rebases production arrays and builds entry objects for city screen and turn logic.
+// GHIDRA_COMMENT_END
+
+/* Initializes city production state and building-entry tables.
+   Storage model:
+   - +0x1DC: current per-slot production values
+   - +0x1FC: delta/mirror tracking array
+   - +0xE4: city entry pointer table
+   Initialization clears/rebases production arrays and builds entry objects for city screen and turn
+   logic. */
+
+void __thiscall InitializeCityProductionState(int param_1,undefined4 param_2)
+
+{
+  short *psVar1;
+  undefined2 uVar2;
+  int iVar3;
+  TLaborPool *this;
+  int *piVar4;
+  TProductionOrder *this_00;
+  undefined2 extraout_var;
+  undefined4 *puVar5;
+  TaskList *this_01;
+  undefined4 uVar6;
+  TIndexAndRankList *this_02;
+  int iVar7;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 uVar8;
+  undefined2 extraout_var_02;
+  undefined4 *puVar9;
+  undefined2 *puVar10;
+  undefined4 *puVar11;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar12;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00630ea2;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  iVar7 = 0x17;
+  *(undefined4 *)(param_1 + 0xac) = param_2;
+  *(undefined1 *)(param_1 + 4) = 0;
+  puVar10 = (undefined2 *)(param_1 + 0x278);
+  do {
+    puVar10[-0xfd] = 0;
+    *puVar10 = 0;
+    puVar10[0x17] = 0;
+    puVar10[-0xe1] = 0;
+    puVar10 = puVar10 + 1;
+    iVar7 = iVar7 + -1;
+  } while (iVar7 != 0);
+  iVar7 = 0;
+  puVar10 = (undefined2 *)(param_1 + 0x24c);
+  do {
+    iVar3 = (int)(short)iVar7;
+    psVar1 = (short *)(param_1 + 0x1fc + iVar3 * 2);
+    *psVar1 = *psVar1 - *(short *)(param_1 + 0x1dc + iVar3 * 2);
+    *(undefined2 *)(param_1 + 0x1dc + iVar3 * 2) = 0;
+    *(undefined1 *)(iVar7 + 0x21c + param_1) = 0;
+    puVar10[-0x10] = 0;
+    *puVar10 = 0;
+    iVar7 = iVar7 + 1;
+    puVar10 = puVar10 + 1;
+  } while (iVar7 < 0x10);
+  iVar7 = *(int *)(param_1 + 0xac);
+  if (*(char *)(iVar7 + 0x8d1) < '3') {
+    iVar7 = (**(code **)(**(int **)(iVar7 + 0x90) + 0x28))();
+    if (1 < (int)(iVar7 + (iVar7 >> 0x1f & 3U)) >> 2) {
+      iVar7 = (**(code **)(**(int **)(*(int *)(param_1 + 0xac) + 0x90) + 0x28))();
+      uVar2 = (undefined2)((int)(iVar7 + (iVar7 >> 0x1f & 3U)) >> 2);
+      goto LAB_004b2693;
+    }
+  }
+  else {
+    iVar7 = (**(code **)(**(int **)(iVar7 + 0x90) + 0x28))();
+    if (1 < iVar7 / 3) {
+      iVar7 = (**(code **)(**(int **)(*(int *)(param_1 + 0xac) + 0x90) + 0x28))();
+      uVar2 = (undefined2)(iVar7 / 3);
+      goto LAB_004b2693;
+    }
+  }
+  uVar2 = 1;
+LAB_004b2693:
+  *(undefined2 *)(param_1 + 0x21a) = uVar2;
+  if ((*(int *)&g_pLocalizationTable->field_0x40 < 2) &&
+     (*(char *)(*(int *)(param_1 + 0xac) + 0xa0) != '\0')) {
+    *(short *)(param_1 + 0x1fc) = *(short *)(param_1 + 0x1fc) + (2 - *(short *)(param_1 + 0x1dc));
+    *(undefined2 *)(param_1 + 0x1dc) = 2;
+    *(short *)(param_1 + 0x200) = *(short *)(param_1 + 0x200) + (2 - *(short *)(param_1 + 0x1e0));
+    *(undefined2 *)(param_1 + 0x1e0) = 2;
+    *(short *)(param_1 + 0x204) = *(short *)(param_1 + 0x204) + (2 - *(short *)(param_1 + 0x1e4));
+    *(undefined2 *)(param_1 + 0x1e4) = 2;
+    *(short *)(param_1 + 0x1fe) = *(short *)(param_1 + 0x1fe) + (1 - *(short *)(param_1 + 0x1de));
+    *(undefined2 *)(param_1 + 0x1de) = 1;
+    *(short *)(param_1 + 0x202) = *(short *)(param_1 + 0x202) + (1 - *(short *)(param_1 + 0x1e2));
+    *(undefined2 *)(param_1 + 0x1e2) = 1;
+    *(short *)(param_1 + 0x206) = *(short *)(param_1 + 0x206) + (1 - *(short *)(param_1 + 0x1e6));
+    *(undefined2 *)(param_1 + 0x1e6) = 1;
+  }
+  *(undefined1 *)(param_1 + 0x7c) = 0;
+  *(undefined1 *)(param_1 + 0x7d) = 0;
+  *(undefined2 *)(param_1 + 10) = 0;
+  *(undefined2 *)(param_1 + 0xb4) = 0;
+  this = (TLaborPool *)AllocateWithFallbackHandler(0x50);
+  if (this == (TLaborPool *)0x0) {
+    this = (TLaborPool *)0x0;
+  }
+  else {
+    this->vftable = (TLaborPoolVtbl *)&TPopulationMgrVtbl_0064f9b0;
+  }
+  TLaborPool::WrapperFor_AllocateWithFallbackHandler_At004b5c00(this);
+  *(TLaborPool **)(param_1 + 0x1d8) = this;
+  puVar9 = (undefined4 *)(param_1 + 0xe4);
+  for (iVar7 = 0x3d; iVar7 != 0; iVar7 = iVar7 + -1) {
+    *puVar9 = 0;
+    puVar9 = puVar9 + 1;
+  }
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  uStack_4 = 0;
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TItemOrderVtbl_0064f958;
+    *(undefined2 *)(piVar4 + 1) = 0;
+  }
+  uStack_4 = 0xffffffff;
+  (**(code **)(*piVar4 + 0x44))(param_1,0xb,4,3,2);
+  *(int **)(param_1 + 0x110) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TItemOrderVtbl_0064f958;
+    *(undefined2 *)(piVar4 + 1) = 0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,0xf,0xb,0xffffffff,3);
+  *(int **)(param_1 + 0x120) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TItemOrderVtbl_0064f958;
+    *(undefined2 *)(piVar4 + 1) = 0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,0x10,0xb,0xffffffff,3);
+  *(int **)(param_1 + 0x124) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TItemOrderVtbl_0064f958;
+    *(undefined2 *)(piVar4 + 1) = 0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,9,2,0xffffffff,4);
+  *(int **)(param_1 + 0x108) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TItemOrderVtbl_0064f958;
+    *(undefined2 *)(piVar4 + 1) = 0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,10,2,0xffffffff,4);
+  *(int **)(param_1 + 0x10c) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TItemOrderVtbl_0064f958;
+    *(undefined2 *)(piVar4 + 1) = 0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,0xc,6,0xffffffff,6);
+  *(int **)(param_1 + 0x114) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TItemOrderVtbl_0064f958;
+    *(undefined2 *)(piVar4 + 1) = 0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,0xd,8,0xffffffff,1);
+  *(int **)(param_1 + 0x118) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TItemOrderVtbl_0064f958;
+    *(undefined2 *)(piVar4 + 1) = 0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,0xe,9,0xffffffff,5);
+  *(int **)(param_1 + 0x11c) = piVar4;
+  this_00 = (TProductionOrder *)AllocateWithFallbackHandler(0x54);
+  if (this_00 == (TProductionOrder *)0x0) {
+    this_00 = (TProductionOrder *)0x0;
+  }
+  else {
+    TProductionOrder::ConstructTProductionOrderBaseState(this_00);
+    *(undefined2 *)&this_00->field_0x4 = 0;
+    this_00->vftable = (TProductionOrderVtbl *)&TOrItemOrderVtbl_0064f8f8;
+  }
+  (*this_00->vftable[9].GetTProductionOrderClassNamePointer)(param_1,8,1,0,0);
+  puVar9 = (undefined4 *)(param_1 + 0x16c);
+  *(TProductionOrder **)(param_1 + 0x104) = this_00;
+  puVar10 = &DAT_00695c5a;
+  do {
+    piVar4 = (int *)AllocateWithFallbackHandler(0x5c);
+    if (piVar4 == (int *)0x0) {
+      piVar4 = (int *)0x0;
+      uVar2 = 0;
+      uVar8 = extraout_var_00;
+    }
+    else {
+      InitializeRefCountedObjectBaseVtable();
+      *piVar4 = (int)&TUnitOrderVtbl_0064f8a0;
+      uVar8 = extraout_var_01;
+      uVar2 = extraout_var;
+    }
+    (**(code **)(*piVar4 + 0x44))
+              (param_1,CONCAT22(uVar2,puVar10[-5]),CONCAT22(uVar8,puVar10[-4]),
+               CONCAT22(uVar2,puVar10[-3]),CONCAT22(uVar8,puVar10[-2]),CONCAT22(uVar2,puVar10[-1]),
+               CONCAT22(uVar8,*puVar10),CONCAT22(uVar2,puVar10[1]),0);
+    puVar10 = puVar10 + 7;
+    *puVar9 = piVar4;
+    puVar9 = puVar9 + 1;
+  } while ((int)puVar10 < 0x695ccb);
+  piVar4 = (int *)AllocateWithFallbackHandler(0x5c);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    *piVar4 = (int)&TUnitOrderVtbl_0064f8a0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,0x18,0x10,2,0xffffffff,0,5000,4,1);
+  puVar9 = (undefined4 *)(param_1 + 0x148);
+  *(int **)(param_1 + 0x164) = piVar4;
+  puVar10 = &DAT_00695ce8;
+  do {
+    piVar4 = (int *)AllocateWithFallbackHandler(0x5c);
+    if (piVar4 == (int *)0x0) {
+      piVar4 = (int *)0x0;
+    }
+    else {
+      *piVar4 = (int)&TUnitOrderVtbl_0064f8a0;
+    }
+    (**(code **)(*piVar4 + 0x44))
+              (param_1,puVar10[-5],CONCAT22(extraout_var_02,puVar10[-4]),puVar10[-3],
+               CONCAT22(extraout_var_02,puVar10[-2]),puVar10[-1],CONCAT22(extraout_var_02,*puVar10),
+               puVar10[1],1);
+    puVar10 = puVar10 + 7;
+    *puVar9 = piVar4;
+    puVar9 = puVar9 + 1;
+  } while ((int)puVar10 < 0x695d3d);
+  piVar4 = (int *)AllocateWithFallbackHandler(0x50);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    *piVar4 = (int)&TPowerPlantOrderVtbl_0064f848;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1);
+  *(int **)(param_1 + 0x1b4) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x4c);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    *piVar4 = (int)&TFoodProcessingOrderVtbl_0064f7f0;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1);
+  *(int **)(param_1 + 0x100) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x4c);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    *piVar4 = (int)&TTrainingOrderVtbl_0064f798;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,1);
+  *(int **)(param_1 + 0x140) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x4c);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    *piVar4 = (int)&TTrainingOrderVtbl_0064f798;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1,2);
+  *(int **)(param_1 + 0x144) = piVar4;
+  puVar9 = (undefined4 *)(param_1 + 400);
+  iVar7 = 8;
+  do {
+    puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x4c);
+    if (puVar5 == (undefined4 *)0x0) {
+      puVar5 = (undefined4 *)0x0;
+    }
+    else {
+      *puVar5 = &TShipOrderVtbl_0064f738;
+    }
+    puVar5[2] = param_1;
+    puVar5[3] = *(undefined4 *)(param_1 + 0x1d8);
+    *(undefined2 *)(puVar5 + 0x12) = 0;
+    *(undefined2 *)(puVar5 + 1) = 0;
+    puVar11 = puVar5 + 4;
+    for (iVar3 = 0xb; iVar3 != 0; iVar3 = iVar3 + -1) {
+      *puVar11 = 0;
+      puVar11 = puVar11 + 1;
+    }
+    *(undefined2 *)puVar11 = 0;
+    puVar5[0x11] = 0;
+    *(undefined2 *)(puVar5 + 0x10) = 0;
+    *(undefined2 *)((int)puVar5 + 0x3e) = 0;
+    *puVar9 = puVar5;
+    puVar9 = puVar9 + 1;
+    iVar7 = iVar7 + -1;
+  } while (iVar7 != 0);
+  iVar7 = 0;
+  *(undefined2 *)(*(int *)(param_1 + 400) + 0x48) = 1;
+  *(undefined2 *)(*(int *)(param_1 + 0x194) + 0x48) = 2;
+  puVar9 = (undefined4 *)(param_1 + 0x1b8);
+  *(undefined2 *)(*(int *)(param_1 + 0x1a0) + 0x48) = 3;
+  *(undefined2 *)(*(int *)(param_1 + 0x1a4) + 0x48) = 4;
+  do {
+    piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+    if (piVar4 == (int *)0x0) {
+      piVar4 = (int *)0x0;
+    }
+    else {
+      *(undefined2 *)(piVar4 + 1) = 0;
+      *piVar4 = (int)&TExpansionOrderVtbl_0064f6d8;
+    }
+    (**(code **)(*piVar4 + 0x48))(param_1,iVar7,9,0xb,0xe);
+    iVar7 = iVar7 + 1;
+    *puVar9 = piVar4;
+    puVar9 = puVar9 + 1;
+  } while (iVar7 < 7);
+  piVar4 = (int *)AllocateWithFallbackHandler(0x54);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    *(undefined2 *)(piVar4 + 1) = 0;
+    *piVar4 = (int)&TCapacityOrderVtbl_0064f678;
+  }
+  uVar12 = 0xe;
+  (**(code **)(*piVar4 + 0x48))(param_1,0xe,9,0xb);
+  *(int **)(param_1 + 0x1b0) = piVar4;
+  piVar4 = (int *)AllocateWithFallbackHandler(0x4c);
+  if (piVar4 == (int *)0x0) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    *piVar4 = (int)&TPopGrowthOrderVtbl_0064f620;
+  }
+  (**(code **)(*piVar4 + 0x44))(param_1);
+  *(int **)(param_1 + 0x1d4) = piVar4;
+  this_01 = (TaskList *)AllocateWithFallbackHandler(0x20);
+  if (this_01 == (TaskList *)0x0) {
+    uVar6 = 0;
+  }
+  else {
+    uVar6 = TaskList::ConstructTaskListBaseState(this_01);
+  }
+  InitializeCityProductionState_Impl_At005aec80();
+  *(undefined4 *)(param_1 + 0x270) = uVar6;
+  this_02 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  if (this_02 == (TIndexAndRankList *)0x0) {
+    this_02 = (TIndexAndRankList *)0x0;
+  }
+  else {
+    TIndexAndRankList::CPtrArray(this_02);
+    this_02->vftable = (TIndexAndRankListVtbl *)&TSortedPtrList::_vftable_;
+  }
+  *(undefined2 *)&this_02->field_0x14 = 4;
+  *(TIndexAndRankList **)(param_1 + 0x274) = this_02;
+  *(undefined2 *)(param_1 + 0xc) = 0;
+  puVar9 = (undefined4 *)(param_1 + 0xe);
+  for (iVar7 = 0xf; iVar7 != 0; iVar7 = iVar7 + -1) {
+    *puVar9 = 0;
+    puVar9 = puVar9 + 1;
+  }
+  *(undefined4 *)(param_1 + 0x4a) = 0;
+  *(undefined4 *)(param_1 + 0x4e) = 0;
+  *(undefined4 *)(param_1 + 0x52) = 0;
+  *(undefined4 *)(param_1 + 0x56) = 0;
+  *(undefined2 *)(param_1 + 0x5a) = 0;
+  puVar9 = (undefined4 *)(param_1 + 0x5c);
+  for (iVar7 = 7; iVar7 != 0; iVar7 = iVar7 + -1) {
+    *puVar9 = 0;
+    puVar9 = puVar9 + 1;
+  }
+  *(undefined4 *)(param_1 + 0x78) = 0;
+  *unaff_FS_OFFSET = uVar12;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B3080
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl()
+
+void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4290
+// GHIDRA_NAME ComputeAverageWeightWord1TimesTenFromResourceCounts
+// GHIDRA_PROTO undefined ComputeAverageWeightWord1TimesTenFromResourceCounts()
+
+int __fastcall ComputeAverageWeightWord1TimesTenFromResourceCounts(int param_1)
+
+{
+  short sVar1;
+  short sVar2;
+  short *psVar3;
+  int iVar4;
+  int iVar5;
+  int local_4;
+  
+  iVar5 = 0;
+  iVar4 = 0;
+  local_4 = 0;
+  psVar3 = (short *)(param_1 + 0x5c);
+  do {
+    sVar1 = *psVar3;
+    sVar2 = GetResourceDescriptorWeightWord1ByType(iVar5);
+    iVar4 = iVar4 + (int)sVar2 * (int)sVar1;
+    local_4 = local_4 + sVar1;
+    iVar5 = iVar5 + 1;
+    psVar3 = psVar3 + 1;
+  } while (iVar5 < 0xe);
+  if (local_4 != 0) {
+    return (iVar4 * 10) / local_4;
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4310
+// GHIDRA_NAME ComputeAverageWeightWord0TimesTenFromResourceCounts
+// GHIDRA_PROTO undefined ComputeAverageWeightWord0TimesTenFromResourceCounts()
+
+int __fastcall ComputeAverageWeightWord0TimesTenFromResourceCounts(int param_1)
+
+{
+  short sVar1;
+  short sVar2;
+  short *psVar3;
+  int iVar4;
+  int iVar5;
+  int local_4;
+  
+  iVar5 = 0;
+  local_4 = 0;
+  iVar4 = 0;
+  psVar3 = (short *)(param_1 + 0x5c);
+  do {
+    sVar1 = *psVar3;
+    sVar2 = thunk_GetResourceDescriptorWeightWord0ByType(iVar5);
+    local_4 = local_4 + (int)sVar2 * (int)sVar1;
+    iVar4 = iVar4 + sVar1;
+    iVar5 = iVar5 + 1;
+    psVar3 = psVar3 + 1;
+  } while (iVar5 < 0xe);
+  if (iVar4 != 0) {
+    return (iVar4 / 2 + local_4 * 10) / iVar4;
+  }
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4390
+// GHIDRA_NAME AllocateRandomResourceCountsWithinWeightBudget
+// GHIDRA_PROTO undefined AllocateRandomResourceCountsWithinWeightBudget()
+
+int __thiscall AllocateRandomResourceCountsWithinWeightBudget(int param_1,int param_2,int param_3)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  int iVar4;
+  int iVar5;
+  short *psVar6;
+  int local_4;
+  
+  iVar4 = 0;
+  sVar3 = 0;
+  local_4 = 0;
+  psVar6 = (short *)(param_1 + 0x5c);
+  do {
+    sVar1 = thunk_GetResourceTypeRandomDrawBlockFlag(iVar4);
+    if (sVar1 == 0) {
+      sVar3 = sVar3 + *psVar6;
+    }
+    iVar4 = iVar4 + 1;
+    psVar6 = psVar6 + 1;
+  } while (iVar4 < 0xe);
+joined_r0x004b43c6:
+  if ((0 < sVar3) && ((short)local_4 < (short)param_2)) {
+    iVar5 = 0;
+    iVar4 = GenerateThreadLocalRandom15();
+    iVar4 = iVar4 % (int)sVar3 + 1;
+    do {
+      sVar1 = thunk_GetResourceTypeRandomDrawBlockFlag(iVar5);
+      if (sVar1 == 0) {
+        sVar1 = (short)iVar5;
+        iVar4 = iVar4 - *(short *)(param_1 + 0x5c + sVar1 * 2);
+        if (iVar4 < 1) goto LAB_004b4410;
+      }
+      iVar5 = iVar5 + 1;
+    } while( true );
+  }
+LAB_004b446b:
+  iVar4 = local_4;
+  if ((short)param_2 <= (short)local_4) {
+    iVar4 = param_2;
+  }
+  return iVar4;
+LAB_004b4410:
+  sVar2 = thunk_GetResourceDescriptorWeightWord0ByType(iVar5);
+  if ((short)param_2 < sVar2) {
+    sVar2 = thunk_GetResourceDescriptorWeightWord0ByType(iVar5);
+    iVar4 = GenerateThreadLocalRandom15();
+    if (sVar2 + -1 < iVar4 % (int)(short)param_2) goto LAB_004b446b;
+  }
+  psVar6 = (short *)(param_3 + sVar1 * 2);
+  *psVar6 = *psVar6 + 1;
+  psVar6 = (short *)(param_1 + 0x5c + sVar1 * 2);
+  *psVar6 = *psVar6 + -1;
+  iVar4 = thunk_GetResourceDescriptorWeightWord0ByType(iVar5);
+  local_4 = local_4 + iVar4;
+  sVar3 = sVar3 + -1;
+  goto joined_r0x004b43c6;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4F50
+// GHIDRA_NAME DestructTProductionOrderAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTProductionOrderAndMaybeFree_Impl()
+
+void __fastcall DestructTProductionOrderAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B77E0
+// GHIDRA_NAME UIState_ActivateSlotAndUpdateUI_Impl
+// GHIDRA_PROTO undefined UIState_ActivateSlotAndUpdateUI_Impl()
+
+void __thiscall
+UIState_ActivateSlotAndUpdateUI_Impl
+          (int param_1,undefined2 param_2,undefined2 param_3,undefined2 param_4,undefined2 param_5,
+          undefined2 param_6,undefined2 param_7,undefined2 param_8)
+
+{
+  *(undefined2 *)(param_1 + 0x48) = param_2;
+  *(undefined2 *)(param_1 + 0x4c) = param_3;
+  *(undefined2 *)(param_1 + 0x50) = param_4;
+  *(undefined2 *)(param_1 + 0x4e) = param_5;
+  *(undefined2 *)(param_1 + 0x52) = param_6;
+  *(undefined2 *)(param_1 + 0x54) = param_7;
+  *(undefined2 *)(param_1 + 0x56) = param_8;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B9340
+// GHIDRA_NAME SwapFirstTwoBytesInBuffer
+// GHIDRA_PROTO undefined SwapFirstTwoBytesInBuffer()
+
+void SwapFirstTwoBytesInBuffer(undefined1 *param_1)
+
+{
+  undefined1 uVar1;
+  
+  uVar1 = *param_1;
+  *param_1 = param_1[1];
+  param_1[1] = uVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B94A0
+// GHIDRA_NAME WriteWordArrayToOutputCallbackLE
+// GHIDRA_PROTO undefined WriteWordArrayToOutputCallbackLE()
+
+void __thiscall
+WriteWordArrayToOutputCallbackLE(undefined4 param_1,int *param_2,undefined2 *param_3,int param_4)
+
+{
+  code *pcVar1;
+  undefined4 extraout_ECX;
+  int iVar2;
+  
+  if (0 < param_4) {
+    pcVar1 = *(code **)(*param_2 + 0x78);
+    iVar2 = param_4;
+    do {
+      param_4._0_1_ = (undefined1)*param_3;
+      param_4._1_1_ = (undefined1)((ushort)*param_3 >> 8);
+      param_4 = CONCAT31(CONCAT21((short)((uint)param_1 >> 0x10),(undefined1)param_4),param_4._1_1_)
+      ;
+      (*pcVar1)(&param_4,2);
+      param_3 = param_3 + 1;
+      iVar2 = iVar2 + -1;
+      param_1 = extraout_ECX;
+    } while (iVar2 != 0);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B9570
+// GHIDRA_NAME WrapperFor_ftol_At004b9570
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004b9570()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004b9570(void)
+
+{
+  _DAT_006a2ab8 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B95C0
+// GHIDRA_NAME InitializeCityBuildingHoverSelectionRects_004b95c0
+// GHIDRA_PROTO undefined InitializeCityBuildingHoverSelectionRects_004b95c0()
+
+void InitializeCityBuildingHoverSelectionRects_004b95c0(void)
+
+{
+  CRect::CRect((CRect *)&DAT_006a2998,(int)g_anCityBuildingSlotCoords,(int)DAT_0069619a,
+               g_anCityBuildingSlotCoords + 10,DAT_0069619a + 10);
+  CRect::CRect((CRect *)&DAT_006a29a8,(int)DAT_0069619c,(int)DAT_0069619e,DAT_0069619c + 10,
+               DAT_0069619e + 10);
+  CRect::CRect((CRect *)&DAT_006a29b8,(int)DAT_006961a0,(int)DAT_006961a2,DAT_006961a0 + 10,
+               DAT_006961a2 + 10);
+  CRect::CRect((CRect *)&DAT_006a29c8,(int)DAT_006961a4,(int)DAT_006961a6,DAT_006961a4 + 10,
+               DAT_006961a6 + 10);
+  CRect::CRect((CRect *)&DAT_006a29d8,(int)DAT_006961a8,(int)DAT_006961aa,DAT_006961a8 + 10,
+               DAT_006961aa + 10);
+  CRect::CRect((CRect *)&DAT_006a29e8,(int)DAT_006961ac,(int)DAT_006961ae,DAT_006961ac + 10,
+               DAT_006961ae + 10);
+  CRect::CRect((CRect *)&DAT_006a29f8,(int)DAT_006961b0,(int)DAT_006961b2,DAT_006961b0 + 10,
+               DAT_006961b2 + 10);
+  CRect::CRect((CRect *)&DAT_006a2a08,(int)DAT_006961b4,(int)DAT_006961b6,DAT_006961b4 + 10,
+               DAT_006961b6 + 10);
+  CRect::CRect((CRect *)&DAT_006a2a18,(int)DAT_006961b8,(int)DAT_006961ba,DAT_006961b8 + 10,
+               DAT_006961ba + 10);
+  CRect::CRect((CRect *)&DAT_006a2a28,(int)DAT_006961bc,(int)DAT_006961be,DAT_006961bc + 10,
+               DAT_006961be + 10);
+  CRect::CRect((CRect *)&DAT_006a2a38,(int)DAT_006961c0,(int)DAT_006961c2,DAT_006961c4 + 10,
+               DAT_006961c6 + 10);
+  CRect::CRect((CRect *)&DAT_006a2a48,(int)DAT_006961c8,(int)DAT_006961ca,DAT_006961cc + 10,
+               DAT_006961ce + 10);
+  CRect::CRect((CRect *)&DAT_006a2a58,(int)DAT_006961cc,(int)DAT_006961ce,DAT_006961cc + 10,
+               DAT_006961ce + 10);
+  CRect::CRect((CRect *)&DAT_006a2a68,(int)DAT_006961d0,(int)DAT_006961d2,DAT_006961d0 + 10,
+               DAT_006961d2 + 10);
+  CRect::CRect((CRect *)&DAT_006a2a78,(int)DAT_006961d4,(int)DAT_006961d6,DAT_006961d4 + 10,
+               DAT_006961d6 + 10);
+  CRect::CRect((CRect *)&DAT_006a2a88,(int)g_nCityBuildingSlotYOffsetIndex,(int)DAT_006961da,
+               g_nCityBuildingSlotYOffsetIndex + 10,DAT_006961da + 10);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B9890
+// GHIDRA_NAME thunk_InitializeCityBuildingLayoutData
+// GHIDRA_PROTO undefined thunk_InitializeCityBuildingLayoutData()
+
+void thunk_InitializeCityBuildingLayoutData(void)
+
+{
+  InitializeCityBuildingLayoutData();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B98B0
+// GHIDRA_NAME InitializeCityBuildingLayoutData
+// GHIDRA_PROTO undefined InitializeCityBuildingLayoutData()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initialize global coordinate/rectangle tables for the city building screen.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Populate DAT_006A24E8..DAT_006A2958 with fixed rectangle coordinates.
+// GHIDRA_COMMENT 2. Initialize CRect objects for building slots, upgrade markers, and panel overlays.
+// GHIDRA_COMMENT 3. Zero-fill unused rectangle slots.
+// GHIDRA_COMMENT 4. Data produced here is consumed by city building render and hover/control setup paths.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - none.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+/* Initialize global coordinate/rectangle tables for the city building screen.
+   Algorithm:
+   1. Populate DAT_006A24E8..DAT_006A2958 with fixed rectangle coordinates.
+   2. Initialize CRect objects for building slots, upgrade markers, and panel overlays.
+   3. Zero-fill unused rectangle slots.
+   4. Data produced here is consumed by city building render and hover/control setup paths.
+   Parameters:
+   - none.
+   Returns:
+   - void. */
+
+void InitializeCityBuildingLayoutData(void)
+
+{
+  _DAT_006a24f4 = 0x10a;
+  _DAT_006a2524 = 0x10a;
+  _g_aCityBuildingActionRects = 0x110;
+  _DAT_006a24ec = 0xfc;
+  _DAT_006a24f0 = 0x11f;
+  _DAT_006a2518 = 0x110;
+  _DAT_006a251c = 0xfc;
+  _DAT_006a2520 = 0x11f;
+  _DAT_006a2528 = 0xd3;
+  _DAT_006a2548 = 0xd3;
+  _DAT_006a24f8 = 0;
+  _DAT_006a24fc = 0;
+  _DAT_006a2500 = 0;
+  _DAT_006a2504 = 0;
+  _DAT_006a2508 = 0;
+  _DAT_006a250c = 0;
+  _DAT_006a2510 = 0;
+  _DAT_006a2514 = 0;
+  _DAT_006a252c = 0xd1;
+  _DAT_006a2530 = 0xe4;
+  _DAT_006a2534 = 0xe0;
+  _DAT_006a2538 = 0;
+  _DAT_006a253c = 0;
+  _DAT_006a2540 = 0;
+  _DAT_006a2544 = 0;
+  _DAT_006a254c = 0xd4;
+  _DAT_006a2550 = 0x111;
+  _DAT_006a2554 = 0x10f;
+  _DAT_006a2558 = 0;
+  _DAT_006a255c = 0;
+  _DAT_006a2560 = 0;
+  _DAT_006a2564 = 0;
+  _DAT_006a2568 = 0;
+  _DAT_006a256c = 0;
+  _DAT_006a2570 = 0;
+  _DAT_006a2574 = 0;
+  _DAT_006a2578 = 0x1b4;
+  _DAT_006a257c = 0x15a;
+  _DAT_006a2580 = 0x1c3;
+  _DAT_006a2584 = 0x169;
+  _DAT_006a2588 = 0;
+  _DAT_006a258c = 0;
+  _DAT_006a2590 = 0;
+  _DAT_006a2594 = 0;
+  _DAT_006a2598 = 0;
+  _DAT_006a259c = 0;
+  _DAT_006a25a0 = 0;
+  _DAT_006a25a4 = 0;
+  _DAT_006a25a8 = 0x1a9;
+  _DAT_006a25ac = 0x14c;
+  _DAT_006a25b0 = 0x1c3;
+  _DAT_006a25b4 = 0x169;
+  _DAT_006a25b8 = 0x16b;
+  _DAT_006a25bc = 0x116;
+  _DAT_006a25c0 = 0x187;
+  _DAT_006a25c4 = 0x131;
+  _DAT_006a25c8 = 0;
+  _DAT_006a25cc = 0;
+  _DAT_006a25d0 = 0;
+  _DAT_006a25d4 = 0;
+  _DAT_006a25d8 = 0x1a9;
+  _DAT_006a25dc = 0x14c;
+  _DAT_006a25e0 = 0x1c3;
+  _DAT_006a25e4 = 0x169;
+  _DAT_006a25e8 = 0x173;
+  _DAT_006a25ec = 0x123;
+  _DAT_006a25f0 = 0x199;
+  _DAT_006a25f4 = 0x14b;
+  _DAT_006a25f8 = 0;
+  _DAT_006a261c = 0xed;
+  _DAT_006a264c = 0xed;
+  _DAT_006a25fc = 0;
+  _DAT_006a2600 = 0;
+  _DAT_006a2604 = 0;
+  _DAT_006a2608 = 0x16c;
+  _DAT_006a260c = 0xb7;
+  _DAT_006a2610 = 0x192;
+  _DAT_006a2614 = 0xeb;
+  _DAT_006a2618 = 0x185;
+  _DAT_006a2620 = 0x1ce;
+  _DAT_006a2624 = 0x10d;
+  _DAT_006a2628 = 0;
+  _DAT_006a262c = 0;
+  _DAT_006a2630 = 0;
+  _DAT_006a2634 = 0;
+  _DAT_006a2638 = 0x155;
+  _DAT_006a263c = 0xb6;
+  _DAT_006a2640 = 0x192;
+  _DAT_006a2644 = 0xf7;
+  _DAT_006a2648 = 0x16f;
+  _DAT_006a2650 = 0x1cd;
+  _DAT_006a2654 = 0x11b;
+  _DAT_006a2658 = 0;
+  _DAT_006a265c = 0;
+  _DAT_006a2660 = 0;
+  _DAT_006a2664 = 0;
+  _DAT_006a2668 = 0x158;
+  _DAT_006a266c = 0xa1;
+  _DAT_006a2670 = 0x166;
+  _DAT_006a2674 = 0xbc;
+  _DAT_006a2678 = 0x171;
+  _DAT_006a267c = 0x107;
+  _DAT_006a2680 = 0x179;
+  _DAT_006a2684 = 0x10f;
+  _DAT_006a2688 = 0x12e;
+  _DAT_006a268c = 0xef;
+  _DAT_006a2690 = 0x13f;
+  _DAT_006a2694 = 0xfa;
+  _DAT_006a2698 = 0x1d8;
+  _DAT_006a269c = 0x11a;
+  _DAT_006a26a0 = 499;
+  _DAT_006a26a4 = 0x14e;
+  _DAT_006a26a8 = 0x1ba;
+  _DAT_006a26ac = 0x13d;
+  _DAT_006a26b0 = 0x1d0;
+  _DAT_006a26b4 = 0x146;
+  _DAT_006a26b8 = 0;
+  _DAT_006a26bc = 0;
+  _DAT_006a26c0 = 0;
+  _DAT_006a26c4 = 0;
+  _DAT_006a26c8 = 0x1df;
+  _DAT_006a26cc = 0x124;
+  _DAT_006a26d0 = 0x1f2;
+  _DAT_006a26d4 = 0x14e;
+  _DAT_006a26d8 = 0x1c6;
+  _DAT_006a26dc = 0xfa;
+  _DAT_006a26e0 = 0x1e3;
+  _DAT_006a26e4 = 0x115;
+  _DAT_006a26e8 = 0;
+  _DAT_006a26ec = 0;
+  _DAT_006a26f0 = 0;
+  _DAT_006a26f4 = 0;
+  _DAT_006a26f8 = 0x1da;
+  _DAT_006a26fc = 0xd5;
+  _DAT_006a2700 = 0x21a;
+  _DAT_006a2704 = 0x113;
+  _DAT_006a2708 = 0x1bb;
+  _DAT_006a270c = 0x121;
+  _DAT_006a2710 = 0x208;
+  _DAT_006a2714 = 0x14c;
+  _DAT_006a2718 = 0;
+  _DAT_006a271c = 0;
+  _DAT_006a2720 = 0;
+  _DAT_006a2724 = 0;
+  _DAT_006a2728 = 0xb3;
+  _DAT_006a272c = 0x144;
+  _DAT_006a2730 = 0xc3;
+  _DAT_006a2734 = 0x156;
+  _DAT_006a2738 = 0xb4;
+  _DAT_006a273c = 0x15e;
+  _DAT_006a2740 = 0xd2;
+  _DAT_006a2744 = 0x173;
+  _DAT_006a2748 = 0;
+  _DAT_006a274c = 0;
+  _DAT_006a2750 = 0;
+  _DAT_006a2754 = 0;
+  _DAT_006a2758 = 0x8d;
+  _DAT_006a275c = 0x124;
+  _DAT_006a2760 = 0xa9;
+  _DAT_006a2764 = 0x141;
+  _DAT_006a2768 = 0xc2;
+  _DAT_006a276c = 0x157;
+  _DAT_006a2770 = 0xda;
+  _DAT_006a2774 = 0x169;
+  CRect::CRect((CRect *)&DAT_006a2778,0x79,0x145,0xa0,0x152);
+  CRect::CRect((CRect *)&DAT_006a2788,0xb9,0x159,0xe0,0x17d);
+  CRect::CRect((CRect *)&DAT_006a2798,0x5e,0x146,0x92,0x170);
+  CRect::CRect((CRect *)&DAT_006a27a8,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a27b8,0x11c,0x176,299,0x184);
+  CRect::CRect((CRect *)&DAT_006a27c8,0x111,0x192,0x142,0x1b7);
+  CRect::CRect((CRect *)&DAT_006a27d8,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a27e8,0x12f,0x148,0x147,0x15f);
+  CRect::CRect((CRect *)&DAT_006a27f8,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2808,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2818,0x111,0x147,0x126,0x15c);
+  CRect::CRect((CRect *)&DAT_006a2828,0x130,0x144,0x148,0x15b);
+  CRect::CRect((CRect *)&DAT_006a2838,0x154,0x16a,0x168,0x17d);
+  CRect::CRect((CRect *)&DAT_006a2848,0x1b9,0x98,0x1cf,0xaa);
+  CRect::CRect((CRect *)&DAT_006a2858,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2868,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2878,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2888,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2898,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a28a8,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a28b8,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a28c8,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a28d8,0x1d0,0x82,0x1e8,0x99);
+  CRect::CRect((CRect *)&DAT_006a28e8,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a28f8,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2908,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2918,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2928,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2938,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2948,0,0,0,0);
+  CRect::CRect((CRect *)&DAT_006a2958,0,0,0,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BA240
+// GHIDRA_NAME CreateCityProductionView
+// GHIDRA_PROTO undefined CreateCityProductionView()
+
+undefined4 __fastcall CreateCityProductionView(undefined4 param_1)
+
+{
+  TCityProductionView *this;
+  undefined4 uVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630f8a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TCityProductionView *)AllocateWithFallbackHandler(0x18c,param_1);
+  local_4 = 0;
+  if (this != (TCityProductionView *)0x0) {
+    uVar1 = TCityProductionView::thunk_InitializeCityProductionView(this);
+    *unaff_FS_OFFSET = local_c;
+    return uVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BCF40
+// GHIDRA_NAME AllocateUiResourceEntryWithInvalidateGuard_004bcf40
+// GHIDRA_PROTO undefined AllocateUiResourceEntryWithInvalidateGuard_004bcf40()
+
+TView * AllocateUiResourceEntryWithInvalidateGuard_004bcf40(void)
+
+{
+  TView *this;
+  TView *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006310d2;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TView *)AllocateWithFallbackHandler(100);
+  local_4 = 0;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    local_4 = CONCAT31(local_4._1_3_,1);
+    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
+    this->vftable = (TViewVtbl *)&TRailheadDialogVtbl_0064fe78;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD300
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At004bd300
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At004bd300()
+
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At004bd300(void)
+
+{
+  TView *this;
+  TView *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006310fa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TView *)AllocateWithFallbackHandler(100);
+  local_4 = 0;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = (TViewVtbl *)&TTransportViewVtbl_00650078;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD7A0
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0()
+
+TView * Helper_Uses_thunk_ConstructTViewBaseState_At004bd7a0(void)
+
+{
+  TView *this;
+  TView *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063113a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TView *)AllocateWithFallbackHandler(100);
+  local_4 = 0;
+  pTVar1 = (TView *)0x0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = (TViewVtbl *)&TNewTownViewVtbl_00650270;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BDE50
+// GHIDRA_NAME WrapperFor_ftol_At004bde50
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004bde50()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004bde50(void)
+
+{
+  _DAT_006a2c60 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BE000
+// GHIDRA_NAME InsertScoredTileCandidateWithRandomTieBreak
+// GHIDRA_PROTO undefined InsertScoredTileCandidateWithRandomTieBreak()
+
+void InsertScoredTileCandidateWithRandomTieBreak
+               (float param_1,undefined2 param_2,float *param_3,int param_4,int param_5)
+
+{
+  uint uVar1;
+  float *pfVar2;
+  undefined2 *puVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  
+  iVar5 = 0;
+  pfVar2 = param_3;
+  iVar4 = -1;
+  do {
+    iVar6 = iVar4;
+    if (param_5 <= iVar5) break;
+    iVar6 = iVar5;
+    if ((param_1 <= *pfVar2) &&
+       ((param_1 != *pfVar2 || (uVar1 = GenerateThreadLocalRandom15(), (uVar1 & 1) == 0)))) {
+      iVar5 = iVar5 + 1;
+      pfVar2 = pfVar2 + 1;
+      iVar6 = iVar4;
+    }
+    iVar4 = iVar6;
+  } while (iVar6 < 0);
+  if (-1 < iVar6) {
+    param_5 = param_5 + -1;
+    if (iVar6 < param_5) {
+      pfVar2 = param_3 + param_5;
+      iVar4 = param_5 - iVar6;
+      puVar3 = (undefined2 *)(param_4 + param_5 * 2);
+      do {
+        *pfVar2 = pfVar2[-1];
+        *puVar3 = puVar3[-1];
+        pfVar2 = pfVar2 + -1;
+        iVar4 = iVar4 + -1;
+        puVar3 = puVar3 + -1;
+      } while (iVar4 != 0);
+    }
+    param_3[iVar6] = param_1;
+    *(undefined2 *)(param_4 + iVar6 * 2) = param_2;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BE0D0
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTMinister_At004be0d0
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTMinister_At004be0d0()
+
+TMinister * Helper_Uses_thunk_ConstructTMinister_At004be0d0(void)
+
+{
+  TMinister *this;
+  TMinister *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006311aa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TMinister *)AllocateWithFallbackHandler(0x28);
+  local_4 = 0;
+  pTVar1 = (TMinister *)0x0;
+  if (this != (TMinister *)0x0) {
+    TMinister::ConstructTMinister(this);
+    this->vftable = (TMinisterVtbl *)&TInteriorMinisterVtbl_00650808;
+    *(undefined2 *)&this[1].field_0x4 = 1;
+    *(undefined2 *)&this[1].field_0x6 = 1;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BE230
+// GHIDRA_NAME DestructTInteriorMinisterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTInteriorMinisterAndMaybeFree_Impl()
+
+void __fastcall DestructTInteriorMinisterAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BE6F0
+// GHIDRA_NAME PlanAiDevelopmentActionsFromResourcePools_Impl_At004be6f0
+// GHIDRA_PROTO undefined PlanAiDevelopmentActionsFromResourcePools_Impl_At004be6f0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+float10 PlanAiDevelopmentActionsFromResourcePools_Impl_At004be6f0(void)
+
+{
+  return (float10)_DAT_00650758;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BE710
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTMinister_At004be710
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTMinister_At004be710()
+
+TMinister * Helper_Uses_thunk_ConstructTMinister_At004be710(void)
+
+{
+  TMinister *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006311ca;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TMinister *)AllocateWithFallbackHandler(0x1c4);
+  local_4 = 0;
+  if (this != (TMinister *)0x0) {
+    TMinister::ConstructTMinister(this);
+    *(undefined4 *)&this[0x18].field_0xc = 0;
+    *(undefined2 *)&this[1].field_0x4 = 1;
+    *(undefined2 *)&this[1].field_0x6 = 1;
+    this->vftable = (TMinisterVtbl *)&TCityInteriorMinisterVtbl_006508a8;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (TMinister *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BE8B0
+// GHIDRA_NAME DestroyTCityInteriorMinister_Impl
+// GHIDRA_PROTO undefined DestroyTCityInteriorMinister_Impl()
+
+void __fastcall DestroyTCityInteriorMinister_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BE8D0
+// GHIDRA_NAME InitializeCityInteriorMinister
+// GHIDRA_PROTO undefined InitializeCityInteriorMinister()
+
+void __fastcall InitializeCityInteriorMinister(TIndexAndRankList *param_1)
+
+{
+  undefined4 *puVar1;
+  undefined2 *puVar2;
+  TFuzzySet *this;
+  undefined4 uVar3;
+  int iVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006311fc;
+  *unaff_FS_OFFSET = &uStack_c;
+  TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray(param_1);
+  *(undefined2 *)&param_1->field_0x10 = 0;
+  *(undefined2 *)&param_1->field_0x12 = 0;
+  param_1[1].vftable = (TIndexAndRankListVtbl *)0x0;
+  *(undefined4 *)&param_1[1].field_0x4 = 0;
+  *(undefined4 *)&param_1[1].field_0x8 = 0;
+  *(undefined2 *)&param_1[1].field_0xc = 0;
+  *(undefined2 *)((int)&param_1[2].vftable + 2) = 0;
+  *(undefined2 *)&param_1[2].field_0x6 = 0xffff;
+  *(undefined2 *)&param_1[2].field_0x8 = 0xffff;
+  *(undefined2 *)&param_1[2].field_0xa = 0x32;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    puVar1[3] = 0;
+    puVar1[4] = 0;
+    puVar1[2] = 0;
+    puVar1[1] = 0;
+    puVar1[5] = 0;
+    puVar1[6] = 10;
+    *puVar1 = &CObjectVtbl_00650a08;
+  }
+  *(undefined4 **)&param_1[1].field_0x10 = puVar1;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    puVar1[3] = 0;
+    puVar1[4] = 0;
+    puVar1[2] = 0;
+    puVar1[1] = 0;
+    puVar1[5] = 0;
+    puVar1[6] = 10;
+    *puVar1 = &CObjectVtbl_00650a08;
+  }
+  *(undefined4 **)&param_1[1].field_0x14 = puVar1;
+  *(undefined2 *)&param_1[2].vftable = 1;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar1 = &RefCountedObjectBase::_vftable_;
+    local_4 = 1;
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &TList::_vftable_;
+  }
+  local_4 = 0xffffffff;
+  *(undefined4 **)&param_1[0x10].field_0xc = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityMinister_cpp_006964b0,0x288);
+  }
+  (*param_1->vftable[0x10].GetTEventHandlerClassNamePointer)();
+  *(undefined2 *)&param_1[2].field_0xc = 0xffff;
+  *(undefined2 *)&param_1[2].field_0xe = 0;
+  puVar2 = (undefined2 *)&param_1[0xc].field_0xa;
+  iVar4 = 0x17;
+  do {
+    puVar2[-0x17] = 0;
+    *puVar2 = 0;
+    puVar2[0x17] = 0;
+    puVar2 = puVar2 + 1;
+    iVar4 = iVar4 + -1;
+  } while (iVar4 != 0);
+  puVar1 = (undefined4 *)&param_1[2].field_0x10;
+  for (iVar4 = 0x1e; iVar4 != 0; iVar4 = iVar4 + -1) {
+    *puVar1 = 0;
+    puVar1 = puVar1 + 1;
+  }
+  *(undefined2 *)puVar1 = 0;
+  puVar2 = (undefined2 *)&param_1[9].field_0x4;
+  iVar4 = 0x10;
+  do {
+    puVar2[-0x11] = 0;
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
+    iVar4 = iVar4 + -1;
+  } while (iVar4 != 0);
+  *(undefined2 *)&param_1[2].field_0x4 = 0;
+  *(undefined2 *)((int)&param_1[9].vftable + 2) = 0;
+  *(undefined2 *)&param_1[0x10].field_0x6 = 0;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    puVar1[3] = 0;
+    puVar1[4] = 0;
+    puVar1[2] = 0;
+    puVar1[1] = 0;
+    puVar1[5] = 0;
+    puVar1[6] = 10;
+    *puVar1 = &CObjectVtbl_00650a08;
+  }
+  *(undefined4 **)&param_1[0x10].field_0x10 = puVar1;
+  this = (TFuzzySet *)AllocateWithFallbackHandler(0x30);
+  local_4 = 2;
+  if (this == (TFuzzySet *)0x0) {
+    uVar3 = 0;
+  }
+  else {
+    uVar3 = TFuzzySet::ConstructTFuzzySetBaseState(this);
+  }
+  local_4 = 0xffffffff;
+  *(undefined4 *)&param_1[0x10].field_0x8 = uVar3;
+  InitializeCityInteriorMinister_Impl();
+  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(*(TFuzzyVar **)&param_1[0x10].field_0x8);
+  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(*(TFuzzyVar **)&param_1[0x10].field_0x8);
+  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(*(TFuzzyVar **)&param_1[0x10].field_0x8);
+  TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(*(TFuzzyVar **)&param_1[0x10].field_0x8);
+  *(undefined2 *)&param_1[0x12].field_0x12 = 0;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C1990
+// GHIDRA_NAME WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990
+// GHIDRA_PROTO undefined WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990()
+
+void __fastcall WrapperFor_ComputeBestNationTileDevelopmentScore_At004c1990(int param_1)
+
+{
+  int *piVar1;
+  short sVar2;
+  int *piVar3;
+  int iVar4;
+  undefined2 extraout_var;
+  int *piVar5;
+  int iVar6;
+  
+  piVar1 = *(int **)(*(int *)(param_1 + 4) + 0x89c);
+  iVar4 = *piVar1;
+  piVar5 = (int *)0x0;
+  sVar2 = (**(code **)(iVar4 + 0x48))();
+  iVar6 = 1;
+  if (0 < sVar2) {
+    do {
+      if (piVar5 != (int *)0x0) goto LAB_004c19e8;
+      piVar3 = (int *)(**(code **)(iVar4 + 0x4c))(iVar6);
+      if (((short)piVar3[1] == 4) && (piVar3[2] == 0)) {
+        piVar5 = piVar3;
+      }
+      iVar6 = iVar6 + 1;
+    } while (iVar6 <= sVar2);
+  }
+  if (piVar5 != (int *)0x0) {
+LAB_004c19e8:
+    iVar4 = ComputeBestNationTileDevelopmentScore((int)*(short *)(*(int *)(param_1 + 4) + 0xc));
+    if (iVar4 != -1) {
+      sVar2 = *(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 + iVar4 * 0xa8);
+      piVar3 = *(int **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + sVar2 * 0x24);
+      if (((piVar3 == (int *)0x0) || (piVar3 == piVar5)) &&
+         ((int)*(short *)(&DAT_0065046a +
+                         *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 3 + (short)iVar4 * 0xa8)
+                         * 2) <= *(int *)(*(int *)(param_1 + 4) + 0x10))) {
+        iVar6 = *piVar5;
+        (**(code **)(iVar6 + 0x28))(CONCAT22((short)((uint)piVar1 >> 0x10),sVar2));
+        (**(code **)(iVar6 + 0x34))
+                  (0xc,CONCAT22(extraout_var,
+                                *(undefined2 *)
+                                 (*(int *)&g_pGlobalMapState->field_0x10 + 4 + iVar4 * 0xa8)));
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C1FC0
+// GHIDRA_NAME WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0
+// GHIDRA_PROTO undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0()
+
+undefined4 * __thiscall
+WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004c1fc0(undefined4 *param_1,int param_2)
+
+{
+  undefined4 uVar1;
+  
+  param_1[1] = 0;
+  param_1[2] = 0;
+  param_1[3] = 0;
+  *param_1 = &DAT_00650a68;
+  if (0 < param_2) {
+    uVar1 = ReallocateHeapBlockWithAllocatorTracking(0,param_2 * 2);
+    param_1[1] = uVar1;
+    param_1[2] = param_2;
+  }
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C30B0
+// GHIDRA_NAME TraceDescendingTileScoreGradientToSource
+// GHIDRA_PROTO undefined TraceDescendingTileScoreGradientToSource()
+
+undefined4
+TraceDescendingTileScoreGradientToSource(undefined4 param_1,int param_2,undefined2 *param_3)
+
+{
+  short sVar1;
+  short sVar2;
+  int iVar3;
+  short sVar4;
+  undefined4 uVar5;
+  int iVar6;
+  
+  sVar4 = (short)param_1;
+  sVar1 = (short)*(char *)(sVar4 + param_2);
+  iVar6 = param_2;
+  uVar5 = param_1;
+  do {
+    if (sVar1 == 1) {
+      *param_3 = (short)uVar5;
+      return CONCAT22(sVar4 >> 0xf,(short)param_1);
+    }
+    if ((short)param_1 != -1) {
+      iVar3 = (int)sVar1;
+      iVar6 = 0;
+      do {
+        if ((int)sVar1 == iVar3 + -1) break;
+        sVar2 = thunk_GetWrappedHexNeighborTileIndexByDirection(param_1,iVar6);
+        if (sVar2 != -1) {
+          sVar1 = (short)*(char *)(sVar2 + param_2);
+        }
+        iVar6 = iVar6 + 1;
+      } while ((short)iVar6 < 6);
+      iVar6 = iVar6 + -1;
+      uVar5 = param_1;
+    }
+    param_1 = thunk_GetWrappedHexNeighborTileIndexByDirection(param_1,iVar6);
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C49F0
+// GHIDRA_NAME UpdateMinisterProductionMetricsForResourceIndex
+// GHIDRA_PROTO undefined UpdateMinisterProductionMetricsForResourceIndex()
+
+void __thiscall UpdateMinisterProductionMetricsForResourceIndex(int *param_1,short param_2)
+
+{
+  short *psVar1;
+  int *piVar2;
+  code *pcVar3;
+  short sVar4;
+  int iVar5;
+  undefined2 extraout_var;
+  int *unaff_EBP;
+  int iVar6;
+  code *unaff_ESI;
+  short sVar7;
+  int iVar8;
+  int *piVar9;
+  TCity *pTStack_98;
+  int iStack_8c;
+  int iStack_88;
+  undefined4 uStack_84;
+  undefined1 auStack_80 [34];
+  short sStack_5e;
+  short sStack_5c;
+  short sStack_14;
+  short sStack_12;
+  undefined4 uStack_e;
+  short sStack_8;
+  
+  if (param_1[1] == 0) {
+    pTStack_98 = (TCity *)0x0;
+  }
+  else {
+    pTStack_98 = *(TCity **)(param_1[1] + 0x894);
+  }
+  uStack_84 = *(undefined4 *)&pTStack_98->field_0x1d8;
+  iVar6 = (int)param_2;
+  piVar2 = pTStack_98->orderSlotsE4[iVar6];
+  iStack_88 = iVar6;
+  if ((param_2 < 0x17) && (param_2 != 7)) {
+    (**(code **)(*piVar2 + 0xc))();
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot
+                      (pTStack_98,*(short *)((int)piVar2 + 0x52));
+    sVar4 = (short)iVar5 * 2 + 2;
+    if (sVar4 < *(short *)((int)param_1 + iVar6 * 2 + 0x40)) {
+      *(short *)((int)param_1 + iVar6 * 2 + 0x40) = sVar4;
+    }
+  }
+  if ((short)param_1[0x2e] < *(short *)((int)param_1 + 0x4e)) {
+    *(short *)((int)param_1 + 0x4e) = (short)param_1[0x2e];
+  }
+  iVar5 = CONCAT22(param_2 >> 0xf,*(undefined2 *)((int)param_1 + iVar6 * 2 + 0x40));
+  iStack_8c = *piVar2;
+  (**(code **)(iStack_8c + 0x40))(auStack_80,iVar5);
+  iVar6 = *param_1;
+  sVar4 = (**(code **)(iVar6 + 0x110))(uStack_e);
+  if (sVar4 < sStack_12) {
+    iVar5 = (int)sVar4 / 2;
+    (*unaff_ESI)(&iStack_8c,iVar5);
+  }
+  if (sStack_8 == 8) {
+    pcVar3 = *(code **)(iVar6 + 0x118);
+    iVar6 = iStack_8c * 2;
+    (*pcVar3)(0,iVar6,7);
+    sVar4 = *(short *)((int)unaff_EBP + 0xb6) + (short)unaff_EBP[0x2e];
+    if (sVar4 < (short)iVar6) {
+      (*pcVar3)(1,iVar6 - CONCAT22(extraout_var,sVar4),7);
+    }
+  }
+  else {
+    piVar9 = &iStack_8c;
+    iVar8 = 0;
+    do {
+      if ((short)*piVar9 != 0) {
+        (**(code **)(iVar6 + 0x118))(iVar8,(short)*piVar9,7);
+      }
+      iVar8 = iVar8 + 1;
+      piVar9 = (int *)((int)piVar9 + 2);
+    } while (iVar8 < 0x17);
+  }
+  if (*(short *)(piVar2[4] + 4) < sStack_14) {
+    *(short *)(param_1 + 0x2e) = sStack_14 - *(short *)(piVar2[4] + 4);
+  }
+  if (*(short *)(piVar2[4] + 6) < sStack_5e) {
+    *(short *)((int)param_1 + 0x6e) = sStack_5e - *(short *)(piVar2[4] + 6);
+  }
+  if (*(short *)(piVar2[4] + 8) < sStack_5c) {
+    *(short *)(param_1 + 0x1c) = sStack_5c - *(short *)(piVar2[4] + 8);
+  }
+  iVar8 = (**(code **)&pTStack_98->field_0x30)();
+  iVar6 = iVar5;
+  if ((short)iVar8 < (short)iVar5) {
+    iVar6 = iVar8;
+    if (((sStack_8 < 7) || (0x10 < sStack_8)) || (sStack_8 == 7)) {
+      if ((0x2a < sStack_8) && (sStack_8 < 0x33)) {
+        sVar4 = *(short *)((int)unaff_EBP + 0xd6);
+        sVar7 = *(short *)(&g_industryActionCostWeightResCode10 + sRam00000048 * 2);
+        if (sVar4 < *(short *)(&g_industryActionCostWeightResCode10 + sRam00000048 * 2)) {
+          sVar7 = sVar4;
+        }
+        *(short *)((int)unaff_EBP + 0xd6) = sVar4 - sVar7;
+        (**(code **)(*unaff_EBP + 0x80))();
+        *(short *)((int)param_1 + 0x186) = *(short *)((int)param_1 + 0x186) + sVar7;
+      }
+    }
+    else {
+      (**(code **)&pTStack_98->field_0xc)();
+      if (sRam00000040 == 2) {
+        psVar1 = (short *)((int)param_1 + sRam00000052 * 2 + 0xdc);
+        *psVar1 = *psVar1 + ((short)iVar5 - (short)iVar8);
+      }
+    }
+  }
+  (**(code **)&pTStack_98->field_0x2c)(iVar6);
+  if (0 < (short)unaff_EBP) {
+    *(short *)((int)param_1 + 0xda) = *(short *)((int)param_1 + 0xda) + (short)unaff_EBP;
+  }
+  psVar1 = (short *)((int)param_1 + (int)pTStack_98 * 2 + 0x40);
+  *psVar1 = *psVar1 - (short)iVar6;
+  if (*(short *)((int)param_1 + (int)pTStack_98 * 2 + 0x40) < 0) {
+    *(undefined2 *)((int)param_1 + (int)pTStack_98 * 2 + 0x40) = 0;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C4C4C
+// GHIDRA_NAME OrphanCallChain_C1_I20_004c4c4c
+// GHIDRA_PROTO undefined OrphanCallChain_C1_I20_004c4c4c()
+
+void OrphanCallChain_C1_I20_004c4c4c(void)
+
+{
+  short *psVar1;
+  int unaff_ESI;
+  short unaff_DI;
+  short in_stack_00000014;
+  int in_stack_00000020;
+  
+  (**(code **)(in_stack_00000020 + 0x2c))();
+  if (0 < in_stack_00000014) {
+    *(short *)(unaff_ESI + 0xda) = *(short *)(unaff_ESI + 0xda) + in_stack_00000014;
+  }
+  psVar1 = (short *)(unaff_ESI + 0x40 + in_stack_00000020 * 2);
+  *psVar1 = *psVar1 - unaff_DI;
+  if (*(short *)(unaff_ESI + 0x40 + in_stack_00000020 * 2) < 0) {
+    *(undefined2 *)(unaff_ESI + 0x40 + in_stack_00000020 * 2) = 0;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C4F90
+// GHIDRA_NAME PlanAiDevelopmentActionsFromResourcePools_Impl
+// GHIDRA_PROTO undefined PlanAiDevelopmentActionsFromResourcePools_Impl()
+
+int __fastcall PlanAiDevelopmentActionsFromResourcePools_Impl(int param_1)
+
+{
+  short sVar1;
+  short *psVar2;
+  int iVar3;
+  short sVar4;
+  
+  psVar2 = (short *)(param_1 + 0xba);
+  sVar4 = 0;
+  iVar3 = 0x10;
+  do {
+    sVar1 = *psVar2;
+    psVar2 = psVar2 + 1;
+    sVar4 = sVar4 + sVar1;
+    iVar3 = iVar3 + -1;
+  } while (iVar3 != 0);
+  return (int)sVar4 / 0x14;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C56E0
+// GHIDRA_NAME TryApplyCityOrderCapabilitySelectionBySlot
+// GHIDRA_PROTO undefined TryApplyCityOrderCapabilitySelectionBySlot()
+
+undefined4 __thiscall TryApplyCityOrderCapabilitySelectionBySlot(int *param_1,undefined4 param_2)
+
+{
+  undefined4 uVar1;
+  code *pcVar2;
+  undefined4 uVar3;
+  char cVar4;
+  short sVar5;
+  int iVar6;
+  int iVar7;
+  undefined4 unaff_EBX;
+  undefined4 unaff_EBP;
+  short sVar8;
+  undefined1 local_22 [2];
+  undefined4 local_20;
+  undefined4 local_1c [2];
+  undefined4 local_14;
+  undefined4 local_8;
+  
+  uVar1 = *(undefined4 *)(param_1[1] + 0x44);
+  local_14 = uVar1;
+  InitializeLinkedListCursorFromOwnerHead();
+  iVar6 = LinkedListCursorHasCurrent();
+  uVar3 = param_2;
+  sVar8 = (short)param_2;
+  while (iVar6 != 0) {
+    sVar5 = ResolveEraCapabilityFallbackSlot();
+    if (sVar5 == sVar8) {
+      cVar4 = ApplyEraCapabilityCostAndSetSelection();
+      if (cVar4 != '\0') {
+        return 1;
+      }
+      WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840(local_22,&local_20,&param_2,local_1c);
+      pcVar2 = *(code **)(*param_1 + 0x118);
+      (*pcVar2)(0x10,local_20,7);
+      (*pcVar2)(0xc,unaff_EBX,7);
+      return 0;
+    }
+    AdvanceLinkedListCursor();
+    iVar6 = LinkedListCursorHasCurrent();
+  }
+  sVar5 = GetCityActionCategoryCodeBySlot(uVar3);
+  if ((sVar5 != 8) && (sVar5 != 9)) {
+    local_8 = uVar1;
+    iVar6 = InitializeLinkedListCursorFromOwnerHead();
+    iVar7 = LinkedListCursorHasCurrent();
+    if (iVar7 != 0) {
+      while (((*(short *)(&DAT_00650670 + *(short *)(iVar6 + 4) * 2) !=
+               *(short *)(&DAT_00650670 + sVar8 * 2) ||
+              (sVar5 = thunk_GetUnitMovementClassId(), sVar5 == 0)) ||
+             (sVar5 = ResolveEraCapabilityFallbackSlot(), sVar5 == -1))) {
+        iVar6 = AdvanceLinkedListCursor();
+        iVar7 = LinkedListCursorHasCurrent();
+        if (iVar7 == 0) {
+          return 0;
+        }
+      }
+      cVar4 = ApplyEraCapabilityCostAndSetSelection();
+      if (cVar4 != '\0') {
+        return 1;
+      }
+      WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840(local_22,local_1c,&param_2,&local_20);
+      pcVar2 = *(code **)(*param_1 + 0x118);
+      (*pcVar2)(0x10,local_1c[0],7);
+      (*pcVar2)(0xc,unaff_EBP,7);
+      return 0;
+    }
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C5A50
+// GHIDRA_NAME DestructTSteelCityMinisterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTSteelCityMinisterAndMaybeFree_Impl()
+
+void __fastcall DestructTSteelCityMinisterAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C5A70
+// GHIDRA_NAME WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70
+// GHIDRA_PROTO undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70()
+
+void WrapperFor_thunk_InitializeCityInteriorMinister_At004c5a70(undefined4 param_1)
+
+{
+  thunk_InitializeCityInteriorMinister(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C5D50
+// GHIDRA_NAME DestructTShipBuilderCityMinisterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTShipBuilderCityMinisterAndMaybeFree_Impl()
+
+void __fastcall DestructTShipBuilderCityMinisterAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C5D70
+// GHIDRA_NAME WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70
+// GHIDRA_PROTO undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70()
+
+void WrapperFor_thunk_InitializeCityInteriorMinister_At004c5d70(undefined4 param_1)
+
+{
+  thunk_InitializeCityInteriorMinister(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C6050
+// GHIDRA_NAME DestructTEvenCityMinisterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTEvenCityMinisterAndMaybeFree_Impl()
+
+void __fastcall DestructTEvenCityMinisterAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C6070
+// GHIDRA_NAME WrapperFor_thunk_InitializeCityInteriorMinister_At004c6070
+// GHIDRA_PROTO undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c6070()
+
+void WrapperFor_thunk_InitializeCityInteriorMinister_At004c6070(undefined4 param_1)
+
+{
+  thunk_InitializeCityInteriorMinister(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C6360
+// GHIDRA_NAME DestructTRailCityMinisterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTRailCityMinisterAndMaybeFree_Impl()
+
+void __fastcall DestructTRailCityMinisterAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C6380
+// GHIDRA_NAME WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380
+// GHIDRA_PROTO undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380()
+
+void WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380(undefined4 param_1)
+
+{
+  thunk_InitializeCityInteriorMinister(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C6CB0
+// GHIDRA_NAME WrapperFor_ftol_At004c6cb0
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004c6cb0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004c6cb0(void)
+
+{
+  _DAT_006a2d00 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C8A20
+// GHIDRA_NAME WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20
+// GHIDRA_PROTO undefined WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20()
+
+void __fastcall
+WrapperFor_thunk_LoadBitmapResourceSurfaceAndRestoreQuickDrawContext_At004c8a20(int param_1)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x264f);
+  *(undefined4 *)(param_1 + 0xb8) = uVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C8C09
+// GHIDRA_NAME UpdateCityViewCountControlAndRefreshSelection
+// GHIDRA_PROTO undefined UpdateCityViewCountControlAndRefreshSelection()
+
+void UpdateCityViewCountControlAndRefreshSelection
+               (code *param_1,undefined4 param_2,code *param_3,undefined4 param_4,int param_5,
+               undefined4 param_6,undefined4 param_7,LONG param_8,undefined4 param_9,
+               undefined4 param_10)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined2 extraout_var;
+  code *unaff_EBP;
+  TMapDialog *unaff_ESI;
+  int *unaff_EDI;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  piVar2 = (int *)(**(code **)(*unaff_EDI + 0x94))();
+  if (piVar2 == (int *)0x0) {
+    (*unaff_EBP)(0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x2ff);
+  }
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_5 + 4),0);
+  (**(code **)(iVar1 + 300))(&param_6);
+  OffsetRect((LPRECT)&param_5,unaff_EDI[9],unaff_EDI[10]);
+  piVar2 = (int *)(*param_1)(param_3);
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0xe4))();
+  (*param_3)(CONCAT22(extraout_var,
+                      *(undefined2 *)(&unaff_ESI->field_0xa4 + *(short *)&unaff_ESI->field_0xa0 * 2)
+                     ));
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C8C3F
+// GHIDRA_NAME UpdateCityViewCountControlAndRefreshSelectionAlt
+// GHIDRA_PROTO undefined UpdateCityViewCountControlAndRefreshSelectionAlt()
+
+void UpdateCityViewCountControlAndRefreshSelectionAlt
+               (undefined4 param_1,code *param_2,undefined4 param_3,code *param_4,undefined4 param_5
+               ,int param_6,undefined4 param_7,undefined4 param_8,LONG param_9,undefined4 param_10,
+               undefined4 param_11)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined2 extraout_var;
+  int *unaff_EBX;
+  TMapDialog *unaff_ESI;
+  int unaff_EDI;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  iVar1 = *unaff_EBX;
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_6 + 4));
+  (**(code **)(iVar1 + 300))(&param_7);
+  OffsetRect((LPRECT)&param_6,*(int *)(unaff_EDI + 0x24),*(int *)(unaff_EDI + 0x28));
+  piVar2 = (int *)(*param_2)(param_4);
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0xe4))();
+  (*param_4)(CONCAT22(extraout_var,
+                      *(undefined2 *)(&unaff_ESI->field_0xa4 + *(short *)&unaff_ESI->field_0xa0 * 2)
+                     ));
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CAA50
+// GHIDRA_NAME AllocateUiClickablePictureResourceEntry_Vtbl643A40
+// GHIDRA_PROTO undefined AllocateUiClickablePictureResourceEntry_Vtbl643A40()
+
+TCivilianButton * AllocateUiClickablePictureResourceEntry_Vtbl643A40(void)
+
+{
+  TCivilianButton *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063179a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TCivilianButton *)AllocateWithFallbackHandler(0xbc);
+  local_4 = 0;
+  if (this != (TCivilianButton *)0x0) {
+    TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(this);
+    this->vftable = (TCivilianButtonVtbl *)&TRadioPictureButton::_vftable_;
+    *(undefined4 *)&this->field_0x98 = 0;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (TCivilianButton *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CB9CD
+// GHIDRA_NAME UpdateUniversityCountControlAndRefreshView
+// GHIDRA_PROTO undefined UpdateUniversityCountControlAndRefreshView()
+
+void UpdateUniversityCountControlAndRefreshView
+               (undefined4 param_1,undefined4 param_2,LONG param_3,LONG param_4,int param_5,
+               LONG param_6,LONG param_7,LONG param_8,LONG param_9,LONG param_10)
+
+{
+  int iVar1;
+  int *piVar2;
+  code *unaff_EBP;
+  TMapDialog *unaff_ESI;
+  int *unaff_EDI;
+  undefined4 in_stack_00000040;
+  undefined4 in_stack_00000044;
+  undefined4 in_stack_00000048;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  piVar2 = (int *)(**(code **)(*unaff_EDI + 0x94))();
+  if (piVar2 == (int *)0x0) {
+    (*unaff_EBP)(0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x66d);
+  }
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_5 + 4),0);
+  (**(code **)(iVar1 + 300))(&param_4);
+  param_8 = param_4;
+  param_9 = param_5;
+  param_7 = param_3;
+  param_10 = param_6;
+  CopyRect((LPRECT)&stack0x0000002c,(RECT *)&param_7);
+  thunk_InvalidateCityDialogRectRegion(&stack0x0000002c,1);
+  (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CBA03
+// GHIDRA_NAME UpdateUniversityCountControlAndRefreshViewAlt
+// GHIDRA_PROTO undefined UpdateUniversityCountControlAndRefreshViewAlt()
+
+void UpdateUniversityCountControlAndRefreshViewAlt(void)
+
+{
+  int iVar1;
+  int *unaff_EBX;
+  TMapDialog *unaff_ESI;
+  LONG in_stack_00000010;
+  LONG in_stack_00000014;
+  int in_stack_00000018;
+  LONG in_stack_0000001c;
+  LONG in_stack_00000020;
+  LONG in_stack_00000024;
+  LONG in_stack_00000028;
+  LONG in_stack_0000002c;
+  undefined4 in_stack_00000044;
+  undefined4 in_stack_00000048;
+  undefined4 in_stack_0000004c;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  iVar1 = *unaff_EBX;
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(in_stack_00000018 + 4));
+  (**(code **)(iVar1 + 300))(&stack0x00000014);
+  in_stack_00000024 = in_stack_00000014;
+  in_stack_00000028 = in_stack_00000018;
+  in_stack_00000020 = in_stack_00000010;
+  in_stack_0000002c = in_stack_0000001c;
+  CopyRect((LPRECT)&stack0x00000030,(RECT *)&stack0x00000020);
+  thunk_InvalidateCityDialogRectRegion(&stack0x00000030,1);
+  (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CC6B0
+// GHIDRA_NAME CreateCityViewProductionDialogController
+// GHIDRA_PROTO int * __cdecl CreateCityViewProductionDialogController(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Allocates and initializes the city-view production dialog controller object.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Allocate 0xA8-byte controller instance.
+// GHIDRA_COMMENT 2. Run base/controller constructor thunk.
+// GHIDRA_COMMENT 3. Assign vtable PTR_LAB_00652448.
+// GHIDRA_COMMENT 4. Initialize key state fields (city pointer null, selected entry null, selected index = -1).
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - Pointer to initialized controller, or NULL on allocation failure.
+// GHIDRA_COMMENT_END
+
+/* Allocates and initializes the city-view production dialog controller object.
+   Algorithm:
+   1. Allocate 0xA8-byte controller instance.
+   2. Run base/controller constructor thunk.
+   3. Assign vtable PTR_LAB_00652448.
+   4. Initialize key state fields (city pointer null, selected entry null, selected index = -1).
+   Returns:
+   - Pointer to initialized controller, or NULL on allocation failure. */
+
+int * __cdecl CreateCityViewProductionDialogController(void)
+
+{
+  TNoHilitePicture *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063185a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa8);
+  local_4 = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this[1].vftable = (TNoHilitePictureVtbl *)0x0;
+    this->vftable = (TNoHilitePictureVtbl *)&TIndustryViewVtbl_00652448;
+    this[1].field0c = 0;
+    *(undefined2 *)&this[1].field10 = 0xffff;
+    *unaff_FS_OFFSET = local_c;
+    return (int *)this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (int *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CCFA2
+// GHIDRA_NAME DispatchCityViewSelectionChangeAndRefresh
+// GHIDRA_PROTO undefined DispatchCityViewSelectionChangeAndRefresh()
+
+void DispatchCityViewSelectionChangeAndRefresh(void)
+
+{
+  code *unaff_EBX;
+  undefined4 unaff_ESI;
+  int unaff_EDI;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  (**(code **)(g_pUiRuntimeContext->vftable + 0xb8))
+            (CONCAT22((short)((uint)*(undefined4 *)(unaff_EDI + 0x94) >> 0x10),
+                      *(undefined2 *)(unaff_EDI + 0x9e)),*(undefined4 *)(unaff_EDI + 0x94));
+  (*unaff_EBX)();
+  FUN_0060753b(unaff_ESI);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE0BE
+// GHIDRA_NAME UpdateUniversityRequirementBadgeStatePap1
+// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStatePap1()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Updates university requirement badge visibility/enable states starting from pap1.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Toggle current pap1 badge based on city paper stock >= 1 (cityState +0xCA).
+// GHIDRA_COMMENT 2. Resolve badge 'pap2' and toggle based on city paper stock >= 2.
+// GHIDRA_COMMENT 3. Resolve badge 'mon1' and toggle based on effective cash >= 100.
+// GHIDRA_COMMENT 4. Resolve badge 'mon2' and toggle based on effective cash >= 1000.
+// GHIDRA_COMMENT 5. Resolve badge 'untV' and toggle based on min(orderCount, availablePoolA) > 0.
+// GHIDRA_COMMENT 6. Resolve badge 'traV' and toggle based on min(orderCount/2, availablePoolB) > 0.
+// GHIDRA_COMMENT 7. Raise Nil Pointer diagnostics on missing controls.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this/context (IMPLICIT): university requirement panel context and tag resolver.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Updates university requirement badge visibility/enable states starting from pap1.
+   Algorithm:
+   1. Toggle current pap1 badge based on city paper stock >= 1 (cityState +0xCA).
+   2. Resolve badge 'pap2' and toggle based on city paper stock >= 2.
+   3. Resolve badge 'mon1' and toggle based on effective cash >= 100.
+   4. Resolve badge 'mon2' and toggle based on effective cash >= 1000.
+   5. Resolve badge 'untV' and toggle based on min(orderCount, availablePoolA) > 0.
+   6. Resolve badge 'traV' and toggle based on min(orderCount/2, availablePoolB) > 0.
+   7. Raise Nil Pointer diagnostics on missing controls.
+   Parameters:
+   - this/context (IMPLICIT): university requirement panel context and tag resolver.
+   Returns:
+   - void. */
+
+void UpdateUniversityRequirementBadgeStatePap1(int param_1)
+
+{
+  uint uVar1;
+  short sVar2;
+  int iVar3;
+  char cVar4;
+  short sVar5;
+  int *piVar6;
+  int iVar7;
+  code *unaff_EBP;
+  int *unaff_ESI;
+  int unaff_EDI;
+  undefined4 uVar8;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  iVar7 = *unaff_ESI;
+  if (*(short *)(*(int *)(unaff_EDI + 0x94) + 0xca) < 1) {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 == '\0') {
+      uVar8 = 1;
+LAB_004ce0fd:
+      (**(code **)(iVar7 + 0xa4))(uVar8);
+    }
+  }
+  else {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce0fd;
+    }
+  }
+  piVar6 = (int *)(*unaff_EBP)();
+  if (piVar6 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0x9ef);
+  }
+  iVar7 = *piVar6;
+  if (*(short *)(*(int *)(unaff_EDI + 0x94) + 0xca) < 2) {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 == '\0') {
+      uVar8 = 1;
+LAB_004ce16b:
+      (**(code **)(iVar7 + 0xa4))(uVar8,1);
+    }
+  }
+  else {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce16b;
+    }
+  }
+  piVar6 = (int *)(*unaff_EBP)(0x6d6f6e31);
+  if (piVar6 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa00);
+  }
+  iVar7 = *piVar6;
+  iVar3 = *(int *)(*(int *)(unaff_EDI + 0x94) + 0xac);
+  uVar1 = *(int *)(iVar3 + 0x8f0) / 100 + *(int *)(iVar3 + 0x10);
+  if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 100) {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 == '\0') {
+      uVar8 = 1;
+LAB_004ce201:
+      (**(code **)(iVar7 + 0xa4))(uVar8,1);
+    }
+  }
+  else {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce201;
+    }
+  }
+  piVar6 = (int *)(*unaff_EBP)(0x6d6f6e32);
+  if (piVar6 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa11);
+  }
+  iVar7 = *piVar6;
+  iVar3 = *(int *)(*(int *)(unaff_EDI + 0x94) + 0xac);
+  uVar1 = *(int *)(iVar3 + 0x8f0) / 100 + *(int *)(iVar3 + 0x10);
+  if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 1000) {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 == '\0') {
+      uVar8 = 1;
+LAB_004ce299:
+      (**(code **)(iVar7 + 0xa4))(uVar8,1);
+    }
+  }
+  else {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce299;
+    }
+  }
+  piVar6 = (int *)(*unaff_EBP)(0x756e7456);
+  if (piVar6 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa23);
+  }
+  sVar2 = *(short *)(*(int *)(param_1 + 0x14) + 4);
+  sVar5 = *(short *)(param_1 + 0x1c);
+  if (sVar2 <= *(short *)(param_1 + 0x1c)) {
+    sVar5 = sVar2;
+  }
+  iVar7 = *piVar6;
+  if (sVar5 == 0) {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 != '\0') goto LAB_004ce31a;
+    uVar8 = 1;
+  }
+  else {
+    cVar4 = (**(code **)(iVar7 + 0xec))();
+    if (cVar4 == '\0') goto LAB_004ce31a;
+    uVar8 = 0;
+  }
+  (**(code **)(iVar7 + 0xa4))(uVar8,1);
+LAB_004ce31a:
+  piVar6 = (int *)(*unaff_EBP)(0x74726156);
+  if (piVar6 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa34);
+  }
+  iVar7 = (int)sRam7061704e / 2;
+  if ((int)*(short *)(iRam70617046 + 6) <= (int)sRam7061704e / 2) {
+    iVar7 = (int)*(short *)(iRam70617046 + 6);
+  }
+  iVar3 = *piVar6;
+  if ((short)iVar7 == 0) {
+    cVar4 = (**(code **)(iVar3 + 0xec))();
+    if (cVar4 == '\0') {
+      (**(code **)(iVar3 + 0xa4))(1,1);
+      return;
+    }
+  }
+  else {
+    cVar4 = (**(code **)(iVar3 + 0xec))();
+    if (cVar4 != '\0') {
+      (**(code **)(iVar3 + 0xa4))(0,1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE12C
+// GHIDRA_NAME UpdateUniversityRequirementBadgeStatePap2
+// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStatePap2()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Updates university requirement badge states for pap2 and downstream requirements.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Toggle pap2 based on city paper stock >= 2.
+// GHIDRA_COMMENT 2. Toggle mon1 based on effective cash >= 100.
+// GHIDRA_COMMENT 3. Toggle mon2 based on effective cash >= 1000.
+// GHIDRA_COMMENT 4. Toggle untV and traV based on workforce/order-capacity checks.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - context parameters carry selected city recruitment state.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Updates university requirement badge states for pap2 and downstream requirements.
+   Algorithm:
+   1. Toggle pap2 based on city paper stock >= 2.
+   2. Toggle mon1 based on effective cash >= 100.
+   3. Toggle mon2 based on effective cash >= 1000.
+   4. Toggle untV and traV based on workforce/order-capacity checks.
+   Parameters:
+   - context parameters carry selected city recruitment state.
+   Returns:
+   - void. */
+
+void UpdateUniversityRequirementBadgeStatePap2(int param_1,int param_2)
+
+{
+  uint uVar1;
+  short sVar2;
+  char cVar3;
+  short sVar4;
+  int *piVar5;
+  int iVar6;
+  int iVar7;
+  code *unaff_EBP;
+  int *unaff_ESI;
+  int unaff_EDI;
+  undefined4 uVar8;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  iVar6 = *unaff_ESI;
+  if (*(short *)(*(int *)(unaff_EDI + 0x94) + 0xca) < 2) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') {
+      uVar8 = 1;
+LAB_004ce16b:
+      (**(code **)(iVar6 + 0xa4))(uVar8);
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce16b;
+    }
+  }
+  piVar5 = (int *)(*unaff_EBP)();
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa00);
+  }
+  iVar6 = *piVar5;
+  iVar7 = *(int *)(*(int *)(unaff_EDI + 0x94) + 0xac);
+  uVar1 = *(int *)(iVar7 + 0x8f0) / 100 + *(int *)(iVar7 + 0x10);
+  if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 100) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') {
+      uVar8 = 1;
+LAB_004ce201:
+      (**(code **)(iVar6 + 0xa4))(uVar8,1);
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce201;
+    }
+  }
+  piVar5 = (int *)(*unaff_EBP)(0x6d6f6e32);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa11);
+  }
+  iVar6 = *piVar5;
+  iVar7 = *(int *)(*(int *)(unaff_EDI + 0x94) + 0xac);
+  uVar1 = *(int *)(iVar7 + 0x8f0) / 100 + *(int *)(iVar7 + 0x10);
+  if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 1000) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') {
+      uVar8 = 1;
+LAB_004ce299:
+      (**(code **)(iVar6 + 0xa4))(uVar8,1);
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce299;
+    }
+  }
+  piVar5 = (int *)(*unaff_EBP)(0x756e7456);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa23);
+  }
+  sVar2 = *(short *)(*(int *)(param_2 + 0x14) + 4);
+  sVar4 = *(short *)(param_2 + 0x1c);
+  if (sVar2 <= *(short *)(param_2 + 0x1c)) {
+    sVar4 = sVar2;
+  }
+  iVar6 = *piVar5;
+  if (sVar4 == 0) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') goto LAB_004ce31a;
+    uVar8 = 1;
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') goto LAB_004ce31a;
+    uVar8 = 0;
+  }
+  (**(code **)(iVar6 + 0xa4))(uVar8,1);
+LAB_004ce31a:
+  piVar5 = (int *)(*unaff_EBP)(0x74726156);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa34);
+  }
+  iVar7 = (int)*(short *)(*(int *)(param_1 + 0x14) + 6);
+  iVar6 = (int)*(short *)(param_1 + 0x1c) / 2;
+  if (iVar7 <= iVar6) {
+    iVar6 = iVar7;
+  }
+  iVar7 = *piVar5;
+  if ((short)iVar6 == 0) {
+    cVar3 = (**(code **)(iVar7 + 0xec))();
+    if (cVar3 == '\0') {
+      (**(code **)(iVar7 + 0xa4))(1,1);
+      return;
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar7 + 0xec))();
+    if (cVar3 != '\0') {
+      (**(code **)(iVar7 + 0xa4))(0,1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE19A
+// GHIDRA_NAME UpdateUniversityRequirementBadgeStateMon1
+// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStateMon1()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Updates university requirement badge states for mon1 and downstream requirements.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Toggle mon1 when effective cash >= 100.
+// GHIDRA_COMMENT 2. Toggle mon2 when effective cash >= 1000.
+// GHIDRA_COMMENT 3. Toggle untV and traV using workforce/order-capacity checks.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - context parameters carry selected city recruitment state.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Updates university requirement badge states for mon1 and downstream requirements.
+   Algorithm:
+   1. Toggle mon1 when effective cash >= 100.
+   2. Toggle mon2 when effective cash >= 1000.
+   3. Toggle untV and traV using workforce/order-capacity checks.
+   Parameters:
+   - context parameters carry selected city recruitment state.
+   Returns:
+   - void. */
+
+void UpdateUniversityRequirementBadgeStateMon1(undefined4 param_1,int param_2,int param_3)
+
+{
+  uint uVar1;
+  short sVar2;
+  char cVar3;
+  short sVar4;
+  int *piVar5;
+  int iVar6;
+  int iVar7;
+  code *unaff_EBP;
+  int *unaff_ESI;
+  int unaff_EDI;
+  undefined4 uVar8;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  iVar6 = *unaff_ESI;
+  iVar7 = *(int *)(*(int *)(unaff_EDI + 0x94) + 0xac);
+  uVar1 = *(int *)(iVar7 + 0x8f0) / 100 + *(int *)(iVar7 + 0x10);
+  if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 100) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') {
+      uVar8 = 1;
+LAB_004ce201:
+      (**(code **)(iVar6 + 0xa4))(uVar8);
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce201;
+    }
+  }
+  piVar5 = (int *)(*unaff_EBP)();
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa11);
+  }
+  iVar6 = *piVar5;
+  iVar7 = *(int *)(*(int *)(unaff_EDI + 0x94) + 0xac);
+  uVar1 = *(int *)(iVar7 + 0x8f0) / 100 + *(int *)(iVar7 + 0x10);
+  if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 1000) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') {
+      uVar8 = 1;
+LAB_004ce299:
+      (**(code **)(iVar6 + 0xa4))(uVar8,1);
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce299;
+    }
+  }
+  piVar5 = (int *)(*unaff_EBP)(0x756e7456);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa23);
+  }
+  sVar2 = *(short *)(*(int *)(param_3 + 0x14) + 4);
+  sVar4 = *(short *)(param_3 + 0x1c);
+  if (sVar2 <= *(short *)(param_3 + 0x1c)) {
+    sVar4 = sVar2;
+  }
+  iVar6 = *piVar5;
+  if (sVar4 == 0) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') goto LAB_004ce31a;
+    uVar8 = 1;
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') goto LAB_004ce31a;
+    uVar8 = 0;
+  }
+  (**(code **)(iVar6 + 0xa4))(uVar8,1);
+LAB_004ce31a:
+  piVar5 = (int *)(*unaff_EBP)(0x74726156);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa34);
+  }
+  iVar7 = (int)*(short *)(*(int *)(param_2 + 0x14) + 6);
+  iVar6 = (int)*(short *)(param_2 + 0x1c) / 2;
+  if (iVar7 <= iVar6) {
+    iVar6 = iVar7;
+  }
+  iVar7 = *piVar5;
+  if ((short)iVar6 == 0) {
+    cVar3 = (**(code **)(iVar7 + 0xec))();
+    if (cVar3 == '\0') {
+      (**(code **)(iVar7 + 0xa4))(1,1);
+      return;
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar7 + 0xec))();
+    if (cVar3 != '\0') {
+      (**(code **)(iVar7 + 0xa4))(0,1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE230
+// GHIDRA_NAME UpdateUniversityRequirementBadgeStateMon2
+// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStateMon2()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Updates university requirement badge states for mon2 and downstream requirements.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Toggle mon2 when effective cash >= 1000.
+// GHIDRA_COMMENT 2. Toggle untV using min(orderCount, availablePoolA) > 0.
+// GHIDRA_COMMENT 3. Toggle traV using min(orderCount/2, availablePoolB) > 0.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - context parameters carry selected city recruitment state.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Updates university requirement badge states for mon2 and downstream requirements.
+   Algorithm:
+   1. Toggle mon2 when effective cash >= 1000.
+   2. Toggle untV using min(orderCount, availablePoolA) > 0.
+   3. Toggle traV using min(orderCount/2, availablePoolB) > 0.
+   Parameters:
+   - context parameters carry selected city recruitment state.
+   Returns:
+   - void. */
+
+void UpdateUniversityRequirementBadgeStateMon2
+               (undefined4 param_1,undefined4 param_2,int param_3,int param_4)
+
+{
+  uint uVar1;
+  short sVar2;
+  char cVar3;
+  short sVar4;
+  int *piVar5;
+  int iVar6;
+  int iVar7;
+  code *unaff_EBP;
+  int *unaff_ESI;
+  int unaff_EDI;
+  undefined4 uVar8;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  iVar6 = *unaff_ESI;
+  iVar7 = *(int *)(*(int *)(unaff_EDI + 0x94) + 0xac);
+  uVar1 = *(int *)(iVar7 + 0x8f0) / 100 + *(int *)(iVar7 + 0x10);
+  if ((int)(uVar1 & ((int)uVar1 < 1) - 1) < 1000) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') {
+      uVar8 = 1;
+LAB_004ce299:
+      (**(code **)(iVar6 + 0xa4))(uVar8);
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') {
+      uVar8 = 0;
+      goto LAB_004ce299;
+    }
+  }
+  piVar5 = (int *)(*unaff_EBP)();
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa23);
+  }
+  sVar2 = *(short *)(*(int *)(param_4 + 0x14) + 4);
+  sVar4 = *(short *)(param_4 + 0x1c);
+  if (sVar2 <= *(short *)(param_4 + 0x1c)) {
+    sVar4 = sVar2;
+  }
+  iVar6 = *piVar5;
+  if (sVar4 == 0) {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 != '\0') goto LAB_004ce31a;
+    uVar8 = 1;
+  }
+  else {
+    cVar3 = (**(code **)(iVar6 + 0xec))();
+    if (cVar3 == '\0') goto LAB_004ce31a;
+    uVar8 = 0;
+  }
+  (**(code **)(iVar6 + 0xa4))(uVar8,1);
+LAB_004ce31a:
+  piVar5 = (int *)(*unaff_EBP)(0x74726156);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa34);
+  }
+  iVar7 = (int)*(short *)(*(int *)(param_3 + 0x14) + 6);
+  iVar6 = (int)*(short *)(param_3 + 0x1c) / 2;
+  if (iVar7 <= iVar6) {
+    iVar6 = iVar7;
+  }
+  iVar7 = *piVar5;
+  if ((short)iVar6 == 0) {
+    cVar3 = (**(code **)(iVar7 + 0xec))();
+    if (cVar3 == '\0') {
+      (**(code **)(iVar7 + 0xa4))(1,1);
+      return;
+    }
+  }
+  else {
+    cVar3 = (**(code **)(iVar7 + 0xec))();
+    if (cVar3 != '\0') {
+      (**(code **)(iVar7 + 0xa4))(0,1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE2C8
+// GHIDRA_NAME UpdateUniversityRequirementBadgeStateUntV
+// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStateUntV()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Updates university requirement badge states for untV and traV.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Toggle untV using min(orderCount, availablePoolA) > 0.
+// GHIDRA_COMMENT 2. Toggle traV using min(orderCount/2, availablePoolB) > 0.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - context parameters carry selected city recruitment state.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Updates university requirement badge states for untV and traV.
+   Algorithm:
+   1. Toggle untV using min(orderCount, availablePoolA) > 0.
+   2. Toggle traV using min(orderCount/2, availablePoolB) > 0.
+   Parameters:
+   - context parameters carry selected city recruitment state.
+   Returns:
+   - void. */
+
+void UpdateUniversityRequirementBadgeStateUntV(void)
+
+{
+  short sVar1;
+  char cVar2;
+  short sVar3;
+  int *piVar4;
+  int iVar5;
+  int iVar6;
+  code *unaff_EBP;
+  int *unaff_ESI;
+  int in_stack_00000010;
+  int in_stack_00000014;
+  undefined4 uVar7;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  sVar1 = *(short *)(*(int *)(in_stack_00000014 + 0x14) + 4);
+  sVar3 = *(short *)(in_stack_00000014 + 0x1c);
+  if (sVar1 <= *(short *)(in_stack_00000014 + 0x1c)) {
+    sVar3 = sVar1;
+  }
+  iVar5 = *unaff_ESI;
+  if (sVar3 == 0) {
+    cVar2 = (**(code **)(iVar5 + 0xec))();
+    if (cVar2 != '\0') goto LAB_004ce31a;
+    uVar7 = 1;
+  }
+  else {
+    cVar2 = (**(code **)(iVar5 + 0xec))();
+    if (cVar2 == '\0') goto LAB_004ce31a;
+    uVar7 = 0;
+  }
+  (**(code **)(iVar5 + 0xa4))(uVar7);
+LAB_004ce31a:
+  piVar4 = (int *)(*unaff_EBP)();
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xa34);
+  }
+  iVar6 = (int)*(short *)(*(int *)(in_stack_00000010 + 0x14) + 6);
+  iVar5 = (int)*(short *)(in_stack_00000010 + 0x1c) / 2;
+  if (iVar6 <= iVar5) {
+    iVar5 = iVar6;
+  }
+  iVar6 = *piVar4;
+  if ((short)iVar5 == 0) {
+    cVar2 = (**(code **)(iVar6 + 0xec))();
+    if (cVar2 == '\0') {
+      (**(code **)(iVar6 + 0xa4))(1,1);
+      return;
+    }
+  }
+  else {
+    cVar2 = (**(code **)(iVar6 + 0xec))();
+    if (cVar2 != '\0') {
+      (**(code **)(iVar6 + 0xa4))(0,1);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE341
+// GHIDRA_NAME UpdateUniversityRequirementBadgeStateTraV
+// GHIDRA_PROTO undefined UpdateUniversityRequirementBadgeStateTraV()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Updates university requirement badge state for traV only.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Compute available training capacity from selected order and workforce pool.
+// GHIDRA_COMMENT 2. Toggle traV based on whether capacity is non-zero.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - context parameters carry selected city recruitment state.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Updates university requirement badge state for traV only.
+   Algorithm:
+   1. Compute available training capacity from selected order and workforce pool.
+   2. Toggle traV based on whether capacity is non-zero.
+   Parameters:
+   - context parameters carry selected city recruitment state.
+   Returns:
+   - void. */
+
+void UpdateUniversityRequirementBadgeStateTraV(void)
+
+{
+  char cVar1;
+  int iVar2;
+  int iVar3;
+  int *unaff_ESI;
+  int in_stack_00000014;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  iVar3 = (int)*(short *)(*(int *)(in_stack_00000014 + 0x14) + 6);
+  iVar2 = (int)*(short *)(in_stack_00000014 + 0x1c) / 2;
+  if (iVar3 <= iVar2) {
+    iVar2 = iVar3;
+  }
+  iVar3 = *unaff_ESI;
+  if ((short)iVar2 == 0) {
+    cVar1 = (**(code **)(iVar3 + 0xec))();
+    if (cVar1 == '\0') {
+      (**(code **)(iVar3 + 0xa4))(1);
+      return;
+    }
+  }
+  else {
+    cVar1 = (**(code **)(iVar3 + 0xec))();
+    if (cVar1 != '\0') {
+      (**(code **)(iVar3 + 0xa4))(0);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE480
+// GHIDRA_NAME CreateBuildingExpansionView
+// GHIDRA_PROTO undefined CreateBuildingExpansionView()
+
+thunk_TPictureButton * CreateBuildingExpansionView(void)
+
+{
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063198a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x9c);
+  local_4 = 0;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TBuildingExpansionViewVtbl **)this = &TBuildingExpansionViewVtbl_006528d8;
+    ptVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return ptVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CECE0
+// GHIDRA_NAME CreateArmoryView
+// GHIDRA_PROTO undefined CreateArmoryView()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Factory allocator for TArmoryView instances.
+// GHIDRA_COMMENT Allocates 0xAC bytes, runs ConstructArmoryView base/derived initialization, and returns null on allocation failure.
+// GHIDRA_COMMENT_END
+
+/* Factory allocator for TArmoryView instances.
+   Allocates 0xAC bytes, runs ConstructArmoryView base/derived initialization, and returns null on
+   allocation failure. */
+
+TNoHilitePicture * CreateArmoryView(void)
+
+{
+  TNoHilitePicture *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006319da;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xac);
+  local_4 = 0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this[1].vftable = (TNoHilitePictureVtbl *)0x0;
+    this->vftable = (TNoHilitePictureVtbl *)&TArmoryViewVtbl_00652b10;
+    this[1].field04 = 0;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (TNoHilitePicture *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CF46F
+// GHIDRA_NAME UpdateUniversitySpecialistCountControlAndRefreshView
+// GHIDRA_PROTO undefined UpdateUniversitySpecialistCountControlAndRefreshView()
+
+void UpdateUniversitySpecialistCountControlAndRefreshView
+               (undefined4 param_1,LONG param_2,LONG param_3,int param_4,LONG param_5,LONG param_6,
+               LONG param_7,LONG param_8,LONG param_9)
+
+{
+  int iVar1;
+  int *piVar2;
+  code *unaff_EBP;
+  TMapDialog *unaff_ESI;
+  int *unaff_EDI;
+  undefined4 in_stack_0000003c;
+  undefined4 in_stack_00000040;
+  undefined4 in_stack_00000044;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  piVar2 = (int *)(**(code **)(*unaff_EDI + 0x94))();
+  if (piVar2 == (int *)0x0) {
+    (*unaff_EBP)(0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xb88);
+  }
+  iVar1 = *piVar2;
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_4 + 4),0);
+  (**(code **)(iVar1 + 300))(&param_3);
+  param_7 = param_3;
+  param_8 = param_4;
+  param_6 = param_2;
+  param_9 = param_5;
+  CopyRect((LPRECT)&stack0x00000028,(RECT *)&param_6);
+  thunk_InvalidateCityDialogRectRegion(&stack0x00000028,1);
+  (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CF4A5
+// GHIDRA_NAME UpdateUniversitySpecialistCountControlAndRefreshViewAlt
+// GHIDRA_PROTO undefined UpdateUniversitySpecialistCountControlAndRefreshViewAlt()
+
+void UpdateUniversitySpecialistCountControlAndRefreshViewAlt
+               (undefined4 param_1,undefined4 param_2,LONG param_3,LONG param_4,int param_5,
+               LONG param_6,LONG param_7,LONG param_8,LONG param_9,LONG param_10)
+
+{
+  int iVar1;
+  int *unaff_EBX;
+  TMapDialog *unaff_ESI;
+  undefined4 in_stack_00000040;
+  undefined4 in_stack_00000044;
+  undefined4 in_stack_00000048;
+  
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityViews_cpp_00696650);
+  iVar1 = *unaff_EBX;
+  (**(code **)(iVar1 + 0x1e4))((int)*(short *)(param_5 + 4));
+  (**(code **)(iVar1 + 300))(&param_4);
+  param_8 = param_4;
+  param_9 = param_5;
+  param_7 = param_3;
+  param_10 = param_6;
+  CopyRect((LPRECT)&stack0x0000002c,(RECT *)&param_7);
+  thunk_InvalidateCityDialogRectRegion(&stack0x0000002c,1);
+  (*unaff_ESI->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward(unaff_ESI);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D04B0
+// GHIDRA_NAME CreateEngineerDialog
+// GHIDRA_PROTO undefined CreateEngineerDialog()
+
+TView * CreateEngineerDialog(void)
+
+{
+  TView *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631a8a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TView *)AllocateWithFallbackHandler(0x6c);
+  local_4 = 0;
+  if (this != (TView *)0x0) {
+    TView::thunk_ConstructTViewBaseState(this);
+    this->vftable = (TViewVtbl *)&TEngineerDialog::_vftable_;
+    this[1].vftable = (TViewVtbl *)0x0;
+    this[1].field04 = 0;
+    this[1].padding_08_to_0b = 0;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (TView *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D1FB0
+// GHIDRA_NAME WrapperFor_ftol_At004d1fb0
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004d1fb0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004d1fb0(void)
+
+{
+  _DAT_006a2d80 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D20A0
+// GHIDRA_NAME InitializeCivilianMapInteractionManagerBaseVtable
+// GHIDRA_PROTO undefined InitializeCivilianMapInteractionManagerBaseVtable()
+
+void __fastcall InitializeCivilianMapInteractionManagerBaseVtable(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D20C0
+// GHIDRA_NAME NoOpCivilianMapInteractionManagerVirtualHook
+// GHIDRA_PROTO undefined NoOpCivilianMapInteractionManagerVirtualHook()
+
+void NoOpCivilianMapInteractionManagerVirtualHook(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D20E0
+// GHIDRA_NAME ClearCivilianSelectionHighlightsForNation
+// GHIDRA_PROTO undefined ClearCivilianSelectionHighlightsForNation()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Clears civilian selection highlight state for all type-3 entries in a nation's civilian container (`nation+0x89C`).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Used when cycling civilian selection modes before applying a new active civilian.
+// GHIDRA_COMMENT_END
+
+/* Clears civilian selection highlight state for all type-3 entries in a nation's civilian container
+   (`nation+0x89C`).
+   
+   Used when cycling civilian selection modes before applying a new active civilian. */
+
+void ClearCivilianSelectionHighlightsForNation(short param_1)
+
+{
+  code *pcVar1;
+  int iVar2;
+  int *piVar3;
+  short sVar4;
+  int iVar5;
+  code *unaff_retaddr;
+  
+  sVar4 = 1;
+  iVar5 = **(int **)&g_apNationStates[param_1]->field_0x89c;
+  iVar2 = (**(code **)(iVar5 + 0x48))();
+  if (0 < iVar2) {
+    pcVar1 = *(code **)(iVar5 + 0x4c);
+    iVar5 = 1;
+    do {
+      piVar3 = (int *)(*pcVar1)(iVar5);
+      if (piVar3[2] == 3) {
+        (**(code **)(*piVar3 + 0x34))(0,0xffffffff);
+      }
+      sVar4 = sVar4 + 1;
+      iVar5 = (int)sVar4;
+      iVar2 = (*unaff_retaddr)();
+    } while (iVar5 <= iVar2);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D2540
+// GHIDRA_NAME ResolveCivilianTileSelectionOrReportActionCode
+// GHIDRA_PROTO ushort __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Classifies a civilian tile click into command-dispatch action codes.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve player-nation civilian entry on nTileIndex.
+// GHIDRA_COMMENT 2. If entry is idle-selectable and gate checks pass, classify as selection action.
+// GHIDRA_COMMENT 3. If entry is not idle-selectable (already working), classify as report action.
+// GHIDRA_COMMENT 4. Convert classification into UI action code constants.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - nTileIndex: strategic-map tile index to evaluate.
+// GHIDRA_COMMENT - nClickMode: interaction mode; value 2 bypasses tile gate bit 0x20.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - 0x3F9 for selectable-idle civilian.
+// GHIDRA_COMMENT - 0x3F3 for working/report civilian.
+// GHIDRA_COMMENT - 0 when no valid civilian action exists.
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Output is consumed by higher-level map click dispatcher.
+// GHIDRA_COMMENT_END
+
+/* Classifies a civilian tile click into command-dispatch action codes.
+   Algorithm:
+   1. Resolve player-nation civilian entry on nTileIndex.
+   2. If entry is idle-selectable and gate checks pass, classify as selection action.
+   3. If entry is not idle-selectable (already working), classify as report action.
+   4. Convert classification into UI action code constants.
+   Parameters:
+   - nTileIndex: strategic-map tile index to evaluate.
+   - nClickMode: interaction mode; value 2 bypasses tile gate bit 0x20.
+   Returns:
+   - 0x3F9 for selectable-idle civilian.
+   - 0x3F3 for working/report civilian.
+   - 0 when no valid civilian action exists.
+   Notes:
+   - Output is consumed by higher-level map click dispatcher. */
+
+ushort ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,short nClickMode)
+
+{
+  bool fCivilianIsIdleSelectable;
+  short nPlayerNationId;
+  int *pTileUnitEntry;
+  int nResolvedActionKind;
+  void *unaff_EDI;
+  
+  nResolvedActionKind = 0;
+  nPlayerNationId = UiRuntimeContext::GetActiveNationId();
+  pTileUnitEntry =
+       TCivToolbar::thunk_GetTileUnitEntryByOwner
+                 ((TCivToolbar *)g_pGlobalMapState,nTileIndex,nPlayerNationId);
+  if (pTileUnitEntry != (int *)0x0) {
+    nPlayerNationId = UiRuntimeContext::GetActiveNationId();
+    pTileUnitEntry =
+         TCivToolbar::thunk_GetTileUnitEntryByOwner
+                   ((TCivToolbar *)g_pGlobalMapState,nTileIndex,nPlayerNationId);
+    fCivilianIsIdleSelectable = thunk_IsCivilianOrderInIdleSelectionState(pTileUnitEntry,unaff_EDI);
+    if (fCivilianIsIdleSelectable) {
+      if ((nClickMode == 2) ||
+         ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + nTileIndex * 0x24) >> 5 & 1) ==
+          0)) {
+        nResolvedActionKind = 2;
+      }
+    }
+    else {
+      nResolvedActionKind = 10;
+    }
+  }
+  if (nResolvedActionKind == 2) {
+                    /* 0x3F9: dispatcher action for selecting an idle civilian. */
+    return 0x3f9;
+  }
+                    /* 0x3F3: dispatcher action for opening report/rescind UI on working civilian.
+                        */
+  return (nResolvedActionKind != 10) - 1 & 0x3f3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D39D0
+// GHIDRA_NAME QueueProspectingOrderAndPlayFeedback
+// GHIDRA_PROTO undefined QueueProspectingOrderAndPlayFeedback()
+
+undefined4 __fastcall QueueProspectingOrderAndPlayFeedback(int *param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  undefined4 unaff_ESI;
+  
+  (**(code **)(*(int *)param_1[1] + 0x34))(8,*(undefined2 *)(param_1[1] + 6));
+  (**(code **)(*param_1 + 0x30))(unaff_ESI,param_1[1]);
+  (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x232e,0,1);
+  iVar1 = thunk_GetTickCountDiv16();
+  do {
+    thunk_PumpUiMessagesAndBackgroundTasks(1);
+    iVar2 = thunk_GetTickCountDiv16();
+    if (iVar2 < iVar1) {
+      return 1;
+    }
+  } while (iVar2 - iVar1 < 0x1e);
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4390
+// GHIDRA_NAME ApplyCompletedCivWorkOrderToMapState
+// GHIDRA_PROTO void __cdecl ApplyCompletedCivWorkOrderToMapState(int * pCivUnitOrderState)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Apply world/map mutations for a completed civilian work order and dispatch redraw invalidation.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Read completed order type from pCivUnitOrderState+0x08 and branch by (orderType - 5).
+// GHIDRA_COMMENT 2. Execute completion effect for the specific civilian order class.
+// GHIDRA_COMMENT 3. Write completion message marker to pCivUnitOrderState+0x26 for report/notification flows when used.
+// GHIDRA_COMMENT 4. If localization/map UI is active, invalidate affected tiles/cities so map visuals update immediately.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCivUnitOrderState: Civilian order object that just reached completion.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Completion Cases:
+// GHIDRA_COMMENT - orderType 5: rail-section completion callback, marker 0x2329.
+// GHIDRA_COMMENT - orderType 6: depot completion callback + nation network refresh, marker 0x232A.
+// GHIDRA_COMMENT - orderType 7: port completion callback + nation network refresh, marker 0x232B.
+// GHIDRA_COMMENT - orderType 8: set tile owner-visibility bit for nation; marker 0x232F on successful discovery condition.
+// GHIDRA_COMMENT - orderType 10: advance resource development level via resource-class callback.
+// GHIDRA_COMMENT - orderType 12: apply city-network/building completion using tile city id.
+// GHIDRA_COMMENT - orderType 13: store tile activity/overlay byte at tile+0x18 from order owner/index field.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT UI/Invalidation:
+// GHIDRA_COMMENT - Uses thunk_FUN_0054ab20 and thunk_FUN_0054abf0 to refresh tile/city visuals after mutations.
+// GHIDRA_COMMENT_END
+
+/* Apply world/map mutations for a completed civilian work order and dispatch redraw invalidation.
+   
+   Algorithm:
+   1. Read completed order type from pCivUnitOrderState+0x08 and branch by (orderType - 5).
+   2. Execute completion effect for the specific civilian order class.
+   3. Write completion message marker to pCivUnitOrderState+0x26 for report/notification flows when
+   used.
+   4. If localization/map UI is active, invalidate affected tiles/cities so map visuals update
+   immediately.
+   
+   Parameters:
+   - pCivUnitOrderState: Civilian order object that just reached completion.
+   
+   Returns:
+   - void.
+   
+   Completion Cases:
+   - orderType 5: rail-section completion callback, marker 0x2329.
+   - orderType 6: depot completion callback + nation network refresh, marker 0x232A.
+   - orderType 7: port completion callback + nation network refresh, marker 0x232B.
+   - orderType 8: set tile owner-visibility bit for nation; marker 0x232F on successful discovery
+   condition.
+   - orderType 10: advance resource development level via resource-class callback.
+   - orderType 12: apply city-network/building completion using tile city id.
+   - orderType 13: store tile activity/overlay byte at tile+0x18 from order owner/index field.
+   
+   UI/Invalidation:
+   - Uses thunk_FUN_0054ab20 and thunk_FUN_0054abf0 to refresh tile/city visuals after mutations. */
+
+void __cdecl ApplyCompletedCivWorkOrderToMapState(int *pCivUnitOrderState)
+
+{
+  short nTileIndex;
+  short nCityId;
+  uint uVar1;
+  char cTileResourceClass;
+  byte fHasDiscoveryCandidate;
+  undefined3 extraout_var;
+  undefined4 in_EDX;
+  undefined2 uVar2;
+  int nNeighborCount;
+  short *pnOrderSubtypeField;
+  undefined4 unaff_EDI;
+  undefined4 uVar3;
+  short anNeighborTileIndices [6];
+  short nCenterTileIndex;
+  int nCenterTileDataOffset;
+  int *pOrderState;
+  byte *pbTileOwnerVisibilityMask;
+  int *pnOrderSubtypeFieldRaw;
+  
+  pOrderState = pCivUnitOrderState;
+  nTileIndex = *(short *)((int)pCivUnitOrderState + 6);
+  uVar3 = CONCAT22((short)((uint)unaff_EDI >> 0x10),nTileIndex);
+  pnOrderSubtypeFieldRaw = pCivUnitOrderState + 1;
+  uVar2 = (undefined2)((uint)in_EDX >> 0x10);
+  switch(pCivUnitOrderState[2] + -5) {
+  case 0:
+                    /* Order type 6 completion: build depot, refresh nation network links, report
+                       0x232A. */
+    (*g_pGlobalMapState->vftable[0xd].GetTMapMgrClassNamePointer)
+              (CONCAT22(uVar2,(short)pCivUnitOrderState[3]),uVar3,
+               CONCAT22(uVar2,(short)pCivUnitOrderState[6]));
+    *(undefined2 *)((int)pCivUnitOrderState + 0x26) = 0x2329;
+    break;
+  case 1:
+    (*g_pGlobalMapState->vftable[0x24].slot_0x04)
+              (uVar3,CONCAT22((short)((uint)(pCivUnitOrderState[2] + -5) >> 0x10),
+                              (short)pCivUnitOrderState[6]));
+                    /* Order type 5 completion: finalize rail section and set completion report
+                       message 0x2329. */
+    (*g_apNationStates[(short)pCivUnitOrderState[6]]->vftable[0x1a].GetTCountryClassNamePointer)(0);
+    *(undefined2 *)((int)pCivUnitOrderState + 0x26) = 0x232a;
+    break;
+  case 2:
+    (*g_pGlobalMapState->vftable[0x25].GetTMapMgrClassNamePointer)
+              (uVar3,CONCAT22(uVar2,(short)pCivUnitOrderState[6]));
+    (*g_apNationStates[(short)pCivUnitOrderState[6]]->vftable[0x1a].GetTCountryClassNamePointer)(0);
+    *(undefined2 *)((int)pCivUnitOrderState + 0x26) = 0x232b;
+    break;
+  case 3:
+    pbTileOwnerVisibilityMask =
+         (byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0xd + nTileIndex * 0x24);
+    *pbTileOwnerVisibilityMask =
+         *pbTileOwnerVisibilityMask | '\x01' << ((byte)(short)pCivUnitOrderState[6] & 0x1f);
+    if ((g_apNationStates[(short)pCivUnitOrderState[6]]->field_0xa0 != '\0') &&
+       (fHasDiscoveryCandidate =
+             CheckTileProspectingDiscoveryCandidate(g_pGlobalMapState,nTileIndex),
+       fHasDiscoveryCandidate != 0)) {
+      *(undefined2 *)((int)pCivUnitOrderState + 0x26) = 0x232f;
+    }
+    break;
+  case 5:
+    uVar1 = (uint)pCivUnitOrderState >> 8;
+    pCivUnitOrderState = (int *)((uint)pCivUnitOrderState & 0xffffff00);
+    if (((short)*pnOrderSubtypeFieldRaw == 0) || ((short)*pnOrderSubtypeFieldRaw == 8)) {
+      pCivUnitOrderState = (int *)CONCAT31((int3)uVar1,1);
+    }
+    cTileResourceClass =
+         (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(uVar3,pCivUnitOrderState);
+    (*g_pGlobalMapState->vftable[0x19].slot_0x04)
+              (uVar3,pCivUnitOrderState,CONCAT31(extraout_var,cTileResourceClass + '\x01'),1);
+    break;
+  case 7:
+    (*g_pGlobalMapState->vftable[0x25].slot_0x04)
+              (CONCAT22((short)((uint)(nTileIndex * 9) >> 0x10),
+                        *(undefined2 *)
+                         (*(int *)&g_pGlobalMapState->field_0xc + 0x14 + nTileIndex * 0x24)));
+    break;
+  case 8:
+    *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x18 + nTileIndex * 0x24) =
+         (char)(short)pCivUnitOrderState[6];
+  }
+  if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+    switch(pOrderState[2]) {
+    case 5:
+      DispatchTileRedrawInvalidateEvent((short)pOrderState[3]);
+    case 8:
+    case 10:
+    case 0xd:
+      DispatchTileRedrawInvalidateEvent(nTileIndex);
+      return;
+    case 6:
+    case 7:
+                    /* Order type 8 completion: update owner visibility/prospecting state; may emit
+                       discovery report 0x232F. */
+      ComputeHexNeighborTileIndices(nTileIndex,anNeighborTileIndices,g_pGlobalMapState->field_0x20);
+      nCenterTileIndex = nTileIndex;
+      pnOrderSubtypeField = anNeighborTileIndices;
+      nNeighborCount = 7;
+      do {
+        if (*pnOrderSubtypeField != -1) {
+          DispatchTileRedrawInvalidateEvent(*pnOrderSubtypeField);
+          nCityId = *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
+                              *pnOrderSubtypeField * 0x24);
+          nCenterTileDataOffset = *(int *)&g_pGlobalMapState->field_0xc + nTileIndex * 0x24;
+          if ((((*(byte *)(nCenterTileDataOffset + 0x1c) & 3) != 0) &&
+              (*(char *)(nCenterTileDataOffset + 0x13) != '\0')) && (nCityId != -1)) {
+            thunk_DispatchCityRedrawInvalidateEvent(nCityId);
+          }
+        }
+        pnOrderSubtypeField = pnOrderSubtypeField + 1;
+        nNeighborCount = nNeighborCount + -1;
+      } while (nNeighborCount != 0);
+      return;
+    case 0xc:
+                    /* Order type 10 completion: advance resource development tier for tile/class
+                       combination. */
+      thunk_DispatchCityRedrawInvalidateEvent
+                (*(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + nTileIndex * 0x24));
+      DispatchTileRedrawInvalidateEvent
+                (*(short *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 +
+                           *(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
+                                     nTileIndex * 0x24) * 0xa8));
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4740
+// GHIDRA_NAME ResolveCompetingDeveloperTilePurchaseOrders
+// GHIDRA_PROTO undefined ResolveCompetingDeveloperTilePurchaseOrders()
+
+void ResolveCompetingDeveloperTilePurchaseOrders(void)
+
+{
+  short sVar1;
+  short nTileIndex;
+  int **ppiVar2;
+  uint uVar3;
+  undefined4 *puVar4;
+  int iVar5;
+  undefined2 extraout_var;
+  int *piVar6;
+  short sVar7;
+  int iVar8;
+  int *local_30;
+  int *local_2c;
+  int local_28;
+  int local_24;
+  int local_20;
+  int *local_1c;
+  int local_18 [6];
+  
+  local_28 = 0;
+  do {
+    nTileIndex = (short)local_28;
+    iVar8 = *(int *)&g_pGlobalMapState->field_0xc;
+    piVar6 = *(int **)(iVar8 + 0x20 + nTileIndex * 0x24);
+    if ((piVar6 != (int *)0x0) && (piVar6[5] != 0)) {
+      local_20 = 0;
+      ppiVar2 = &local_1c;
+      for (iVar5 = 7; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *ppiVar2 = (int *)0x0;
+        ppiVar2 = ppiVar2 + 1;
+      }
+      ppiVar2 = &local_1c;
+      do {
+        if (((short)piVar6[1] == 7) && (piVar6[2] == 0xd)) {
+          *ppiVar2 = piVar6;
+          local_20 = local_20 + 1;
+          ppiVar2 = ppiVar2 + 1;
+        }
+        piVar6 = (int *)piVar6[5];
+      } while (piVar6 != (int *)0x0);
+      if (1 < local_20) {
+        iVar8 = (int)(short)*(char *)(iVar8 + nTileIndex * 0x24 + 4);
+        local_2c = local_1c;
+        sVar7 = *(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
+                          ((short)local_1c[6] * 0x17 + iVar8) * 2);
+        if (1 < local_20) {
+          local_30 = local_18;
+          local_24 = local_20 + -1;
+          do {
+            piVar6 = (int *)*local_30;
+            sVar1 = *(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
+                              ((short)piVar6[6] * 0x17 + iVar8) * 2);
+            if ((sVar7 < sVar1) ||
+               ((sVar1 == sVar7 && (uVar3 = GenerateThreadLocalRandom15(), (uVar3 & 1) != 0)))) {
+              sVar7 = sVar1;
+              local_2c = piVar6;
+            }
+            local_30 = local_30 + 1;
+            local_24 = local_24 + -1;
+          } while (local_24 != 0);
+        }
+        if (0 < local_20) {
+          ppiVar2 = &local_1c;
+          do {
+            piVar6 = *ppiVar2;
+            if (piVar6 != local_2c) {
+              sVar7 = (short)piVar6[6];
+              (**(code **)(*piVar6 + 0x34))(0,0xffffffff);
+              iVar8 = *(int *)&g_apNationStates[sVar7]->field_0x10;
+              iVar5 = TCivToolbar::thunk_CalculateEngineerRailBuildCost
+                                ((TCivToolbar *)g_pGlobalMapState,nTileIndex);
+              *(int *)&g_apNationStates[sVar7]->field_0x10 = iVar5 + iVar8;
+              if (g_apNationStates[sVar7]->field_0xa0 != '\0') {
+                puVar4 = (undefined4 *)AllocateWithFallbackHandler(0xc);
+                if (puVar4 == (undefined4 *)0x0) {
+                  puVar4 = (undefined4 *)0x0;
+                }
+                else {
+                  puVar4[1] = 0x65727261;
+                  *puVar4 = &TLandSaleEventVtbl_00653290;
+                }
+                InitializeLandSaleEventPayloadTileAndNation
+                          (local_28,CONCAT22(extraout_var,(short)local_2c[6]));
+                (*g_apNationStates[sVar7]->vftable[0x17].slot_0x04)(puVar4);
+              }
+            }
+            ppiVar2 = ppiVar2 + 1;
+            local_20 = local_20 + -1;
+          } while (local_20 != 0);
+        }
+      }
+    }
+    local_28 = local_28 + 1;
+  } while (local_28 < 0x1950);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D49D0
+// GHIDRA_NAME DestructLandSaleEventToBase
+// GHIDRA_PROTO undefined DestructLandSaleEventToBase()
+
+void __fastcall DestructLandSaleEventToBase(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D49F0
+// GHIDRA_NAME HandleMapHotkeyW_ResetSelectedActionableObjects
+// GHIDRA_PROTO undefined HandleMapHotkeyW_ResetSelectedActionableObjects()
+
+void HandleMapHotkeyW_ResetSelectedActionableObjects(void)
+
+{
+  TCivToolbar *this;
+  char cVar1;
+  int *piVar2;
+  int iVar3;
+  
+  piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
+  iVar3 = LinkedListCursorHasCurrent();
+  while (iVar3 != 0) {
+    iVar3 = piVar2[2];
+    if (((iVar3 == 2) || (iVar3 == 3)) || (iVar3 == 4)) {
+      (**(code **)(*piVar2 + 0x34))(0,0);
+    }
+    piVar2 = (int *)AdvanceLinkedListCursor();
+    iVar3 = LinkedListCursorHasCurrent();
+  }
+  this = *(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0;
+  if ((this != (TCivToolbar *)0x0) && (cVar1 = (*this->vftable[0x3d].slot_0x04)(), cVar1 == '\0')) {
+    TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4B90
+// GHIDRA_NAME OrphanLeaf_NoCall_Ins15_004d4b90
+// GHIDRA_PROTO undefined OrphanLeaf_NoCall_Ins15_004d4b90()
+
+void __fastcall OrphanLeaf_NoCall_Ins15_004d4b90(undefined4 *param_1)
+
+{
+  param_1[1] = 0;
+  param_1[2] = 0;
+  param_1[3] = 0;
+  *param_1 = &DAT_006404a4;
+  param_1[4] = 0;
+  param_1[5] = 0;
+  param_1[6] = 0;
   param_1[8] = 0;
   param_1[9] = 0;
   param_1[10] = 0;
+  param_1[7] = &DAT_006404a8;
   param_1[0xb] = 0;
-  param_1[8] = 0xe0;
-  param_1[9] = 0x35e1c;
-  param_1[0xb] = &local_24;
-  iVar2 = *(int *)*param_1;
-  *puVar1 = 0x14;
-  iVar2 = (**(code **)(iVar2 + 0xc))((int *)*param_1,puVar1,param_2,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4BD0
+// GHIDRA_NAME DiscardTileTokenArgumentAndReturn
+// GHIDRA_PROTO undefined DiscardTileTokenArgumentAndReturn()
+
+void DiscardTileTokenArgumentAndReturn(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4DD0
+// GHIDRA_NAME WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0
+// GHIDRA_PROTO undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0()
+
+void __thiscall
+WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0(int param_1,int param_2)
+
+{
+  uint uVar1;
+  int iVar2;
+  undefined4 uVar3;
+  uint uVar4;
+  
+  uVar1 = param_2 * 2;
+  uVar4 = uVar1;
+  if (0x7fffffff < uVar1) {
+    uVar4 = 0x7fffffff;
+  }
+  iVar2 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar1);
   if (iVar2 == 0) {
-    local_24 = 0x14;
-    iVar2 = (**(code **)(*(int *)*param_2 + 0xc))((int *)*param_2,&local_24);
-    if (iVar2 == 0) {
-      return 1;
+    uVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),param_2);
+    *(undefined4 *)(param_1 + 4) = uVar3;
+    *(int *)(param_1 + 8) = param_2;
+    return;
+  }
+  *(uint *)(param_1 + 8) = uVar4;
+  *(int *)(param_1 + 4) = iVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4E40
+// GHIDRA_NAME EnsureDynamicPointerArrayCapacityForIndex
+// GHIDRA_PROTO undefined EnsureDynamicPointerArrayCapacityForIndex()
+
+int __thiscall EnsureDynamicPointerArrayCapacityForIndex(int param_1,uint param_2)
+
+{
+  int iVar1;
+  uint uVar2;
+  int iVar3;
+  undefined4 uVar4;
+  uint uVar5;
+  
+  if (*(uint *)(param_1 + 8) <= param_2) {
+    iVar1 = param_2 + 1;
+    uVar2 = iVar1 * 2;
+    uVar5 = uVar2;
+    if (0x7fffffff < uVar2) {
+      uVar5 = 0x7fffffff;
+    }
+    iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar2);
+    if (iVar3 == 0) {
+      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      *(undefined4 *)(param_1 + 4) = uVar4;
+      *(int *)(param_1 + 8) = iVar1;
+    }
+    else {
+      *(int *)(param_1 + 4) = iVar3;
+      *(uint *)(param_1 + 8) = uVar5;
     }
   }
-  *param_2 = 0;
+  if (*(uint *)(param_1 + 0xc) <= param_2) {
+    *(uint *)(param_1 + 0xc) = param_2 + 1;
+  }
+  return *(int *)(param_1 + 4) + param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4ED0
+// GHIDRA_NAME WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0
+// GHIDRA_PROTO undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0()
+
+void __thiscall
+WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0(int param_1,int param_2)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  uint uVar3;
+  
+  uVar3 = param_2 * 2;
+  if (0x7fffffff < uVar3) {
+    uVar3 = 0x7fffffff;
+  }
+  iVar1 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),param_2 * 8);
+  if (iVar1 == 0) {
+    uVar2 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),param_2 * 4);
+    *(undefined4 *)(param_1 + 4) = uVar2;
+    *(int *)(param_1 + 8) = param_2;
+    return;
+  }
+  *(int *)(param_1 + 4) = iVar1;
+  *(uint *)(param_1 + 8) = uVar3;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4F50
+// GHIDRA_NAME WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50
+// GHIDRA_PROTO undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50()
+
+int __thiscall
+WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4f50(int param_1,uint param_2)
+
+{
+  int iVar1;
+  int iVar2;
+  undefined4 uVar3;
+  uint uVar4;
+  
+  if (*(uint *)(param_1 + 8) <= param_2) {
+    iVar1 = param_2 + 1;
+    uVar4 = iVar1 * 2;
+    if (0x7fffffff < uVar4) {
+      uVar4 = 0x7fffffff;
+    }
+    iVar2 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 8);
+    if (iVar2 == 0) {
+      uVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1 * 4);
+      *(undefined4 *)(param_1 + 4) = uVar3;
+      *(int *)(param_1 + 8) = iVar1;
+    }
+    else {
+      *(int *)(param_1 + 4) = iVar2;
+      *(uint *)(param_1 + 8) = uVar4;
+    }
+  }
+  if (*(uint *)(param_1 + 0xc) <= param_2) {
+    *(uint *)(param_1 + 0xc) = param_2 + 1;
+  }
+  return *(int *)(param_1 + 4) + param_2 * 4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D4FF0
+// GHIDRA_NAME AppendCallbackGeneratedByteToGrowableBuffer
+// GHIDRA_PROTO undefined AppendCallbackGeneratedByteToGrowableBuffer()
+
+void __fastcall AppendCallbackGeneratedByteToGrowableBuffer(int param_1)
+
+{
+  int iVar1;
+  uint uVar2;
+  uint uVar3;
+  int iVar4;
+  undefined4 uVar5;
+  undefined4 local_8;
+  
+  uVar2 = *(uint *)(param_1 + 0x14);
+  if (*(uint *)(param_1 + 8) <= uVar2) {
+    iVar1 = uVar2 + 1;
+    uVar3 = iVar1 * 2;
+    local_8 = uVar3;
+    if (0x7fffffff < uVar3) {
+      local_8 = 0x7fffffff;
+    }
+    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar3);
+    if (iVar4 == 0) {
+      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      *(undefined4 *)(param_1 + 4) = uVar5;
+      *(int *)(param_1 + 8) = iVar1;
+    }
+    else {
+      *(int *)(param_1 + 4) = iVar4;
+      *(uint *)(param_1 + 8) = local_8;
+    }
+  }
+  if (*(uint *)(param_1 + 0xc) <= uVar2) {
+    *(uint *)(param_1 + 0xc) = uVar2 + 1;
+  }
+  (*(code *)(*(int *)(param_1 + 4) + uVar2))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D5090
+// GHIDRA_NAME BuildBitmapMaskOpcodeBufferFromResourceRows
+// GHIDRA_PROTO undefined BuildBitmapMaskOpcodeBufferFromResourceRows()
+
+void __thiscall
+BuildBitmapMaskOpcodeBufferFromResourceRows
+          (undefined4 *param_1,undefined4 param_2,short param_3,short param_4,int param_5,
+          char param_6)
+
+{
+  ushort uVar1;
+  code *pcVar2;
+  undefined1 uVar3;
+  int iVar4;
+  undefined1 *puVar5;
+  int iVar6;
+  int iVar7;
+  undefined1 *puVar8;
+  undefined2 uVar9;
+  undefined4 uVar10;
+  int iVar11;
+  uint uVar12;
+  int iVar13;
+  int iVar14;
+  int local_20;
+  int local_1c;
+  int local_18;
+  int local_14;
+  int local_c;
+  
+  param_1[0xb] = param_5;
+  iVar4 = thunk_LoadBmpResourceByIdCached(param_2);
+  iVar13 = *(int *)(iVar4 + 0xc);
+  local_c = (int)param_4;
+  iVar4 = *(int *)(*(int *)(iVar4 + 0x10) + 4);
+  local_18 = 0;
+  if (0 < local_c) {
+    local_14 = 0;
+    do {
+      iVar14 = 0;
+      if (0 < param_3) {
+        local_1c = 3;
+        local_20 = 1;
+        do {
+          if (param_6 != *(char *)(iVar14 + iVar13)) {
+            for (iVar11 = (iVar14 - local_18) + local_14; 0x7f < iVar11; iVar11 = iVar11 - uVar12) {
+              uVar12 = iVar11 + 0x80;
+              iVar7 = param_1[4];
+              local_18 = local_18 + uVar12;
+              param_1[4] = iVar7 + 1;
+              puVar5 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(iVar7);
+              *puVar5 = 5;
+              uVar9 = CONCAT11((char)uVar12,(char)(uVar12 >> 8));
+              uVar3 = (undefined1)(uVar12 >> 0x10);
+              AppendByteToGrowableBuffer(uVar12 & 0xff);
+              AppendByteToGrowableBuffer(uVar9);
+              AppendByteToGrowableBuffer(uVar3);
+              AppendByteToGrowableBuffer(CONCAT22(uVar9,CONCAT11(uVar3,(char)(uVar12 >> 0x18))));
+            }
+            if ((local_20 < param_3) && (param_6 != *(char *)(iVar14 + 1 + iVar13))) {
+              if (((local_1c < param_3) && (*(char *)(iVar14 + 2 + iVar13) != param_6)) &&
+                 (*(char *)(iVar14 + 3 + iVar13) != param_6)) {
+                uVar10 = *(undefined4 *)(iVar14 + iVar13);
+                AppendByteToGrowableBuffer(199);
+                iVar6 = AppendByteToGrowableBuffer(0x40);
+                iVar7 = *(int *)(iVar6 + 0x10);
+                *(int *)(iVar6 + 0x10) = iVar7 + 1;
+                puVar5 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(iVar7);
+                *puVar5 = (char)iVar11;
+                uVar9 = CONCAT11((char)uVar10,(char)((uint)uVar10 >> 8));
+                uVar10 = CONCAT22(uVar9,CONCAT11((char)((uint)uVar10 >> 0x10),
+                                                 (char)((uint)uVar10 >> 0x18)));
+                AppendBytePairToGrowableBuffer(uVar9);
+                AppendBytePairToGrowableBuffer(uVar10);
+                iVar14 = iVar14 + 3;
+                local_20 = local_20 + 3;
+                local_1c = local_1c + 3;
+              }
+              else {
+                uVar1 = *(ushort *)(iVar14 + iVar13);
+                AppendByteToGrowableBuffer(0x66);
+                AppendByteToGrowableBuffer(199);
+                AppendByteToGrowableBuffer(0x40);
+                AppendByteToGrowableBuffer(iVar11);
+                AppendByteToGrowableBuffer(uVar1 & 0xff);
+                AppendByteToGrowableBuffer(CONCAT11((char)uVar1,(char)(uVar1 >> 8)));
+                iVar14 = iVar14 + 1;
+                local_20 = local_20 + 1;
+                local_1c = local_1c + 1;
+              }
+            }
+            else {
+              uVar3 = *(undefined1 *)(iVar14 + iVar13);
+              AppendByteToGrowableBuffer(0xc6);
+              AppendByteToGrowableBuffer(0x40);
+              iVar7 = AppendByteToGrowableBuffer(iVar11);
+              iVar11 = *(int *)(iVar7 + 0x10);
+              *(int *)(iVar7 + 0x10) = iVar11 + 1;
+              puVar5 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(iVar11);
+              *puVar5 = uVar3;
+            }
+          }
+          iVar14 = iVar14 + 1;
+          local_20 = local_20 + 1;
+          local_1c = local_1c + 1;
+        } while (iVar14 < param_3);
+      }
+      local_14 = local_14 + param_5;
+      iVar13 = iVar13 + (iVar4 + 3U & 0xfffffffc);
+      local_c = local_c + -1;
+    } while (local_c != 0);
+  }
+  thunk_DecrementDialogResourceRefCountByShortIdAndCleanup(param_2);
+  iVar13 = param_1[4];
+  param_1[4] = iVar13 + 1;
+  puVar5 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(iVar13);
+  *puVar5 = 0xc3;
+  if ((uint)param_1[3] < (uint)param_1[2]) {
+    WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970(param_1[3]);
+  }
+  FinalizeDiplomacyHitMaskOpcodeBufferAlignment();
+  uVar12 = param_1[5];
+  if ((uint)param_1[2] <= uVar12) {
+    WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0(uVar12 + 1);
+  }
+  if ((uint)param_1[3] <= uVar12) {
+    param_1[3] = uVar12 + 1;
+  }
+  if ((param_1[1] + uVar12 & 3) != 0) {
+    uVar12 = EnsureDynamicPointerArrayCapacityForIndex(param_1[5]);
+    param_1[5] = uVar12 & 3;
+    if ((uVar12 & 3) != 0) {
+      pcVar2 = *(code **)*param_1;
+      (*pcVar2)(0);
+      (*pcVar2)(0);
+      (*pcVar2)(0);
+      if ((uint)param_1[3] < (uint)param_1[2]) {
+        WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970(param_1[3]);
+      }
+      uVar12 = EnsureDynamicPointerArrayCapacityForIndex(param_1[5]);
+      param_1[5] = uVar12 & 3;
+    }
+    if (param_1[5] != 0) {
+      uVar12 = 0;
+      if (param_1[3] != 3) {
+        do {
+          puVar5 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(uVar12);
+          puVar8 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(uVar12 + param_1[5]);
+          uVar12 = uVar12 + 1;
+          *puVar8 = *puVar5;
+        } while (uVar12 < param_1[3] - 3);
+      }
+      if (param_1[5] != 0) {
+        param_1[6] = 1;
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D5580
+// GHIDRA_NAME AppendByteToGrowableBuffer
+// GHIDRA_PROTO undefined AppendByteToGrowableBuffer()
+
+int __thiscall AppendByteToGrowableBuffer(int param_1,undefined1 param_2)
+
+{
+  int iVar1;
+  uint uVar2;
+  uint uVar3;
+  int iVar4;
+  undefined4 uVar5;
+  uint uVar6;
+  
+  uVar2 = *(uint *)(param_1 + 0x10);
+  iVar1 = uVar2 + 1;
+  *(int *)(param_1 + 0x10) = iVar1;
+  if (*(uint *)(param_1 + 8) <= uVar2) {
+    uVar3 = iVar1 * 2;
+    uVar6 = uVar3;
+    if (0x7fffffff < uVar3) {
+      uVar6 = 0x7fffffff;
+    }
+    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar3);
+    if (iVar4 == 0) {
+      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      *(undefined4 *)(param_1 + 4) = uVar5;
+      *(int *)(param_1 + 8) = iVar1;
+    }
+    else {
+      *(int *)(param_1 + 4) = iVar4;
+      *(uint *)(param_1 + 8) = uVar6;
+    }
+  }
+  if (*(uint *)(param_1 + 0xc) <= uVar2) {
+    *(int *)(param_1 + 0xc) = iVar1;
+  }
+  *(undefined1 *)(*(int *)(param_1 + 4) + uVar2) = param_2;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D5610
+// GHIDRA_NAME AppendBytePairToGrowableBuffer
+// GHIDRA_PROTO undefined AppendBytePairToGrowableBuffer()
+
+int __thiscall AppendBytePairToGrowableBuffer(int param_1,undefined4 param_2)
+
+{
+  int iVar1;
+  uint uVar2;
+  uint uVar3;
+  int iVar4;
+  undefined4 uVar5;
+  uint uVar6;
+  
+  uVar2 = *(uint *)(param_1 + 0x10);
+  iVar1 = uVar2 + 1;
+  *(int *)(param_1 + 0x10) = iVar1;
+  if (*(uint *)(param_1 + 8) <= uVar2) {
+    uVar3 = iVar1 * 2;
+    uVar6 = uVar3;
+    if (0x7fffffff < uVar3) {
+      uVar6 = 0x7fffffff;
+    }
+    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar3);
+    if (iVar4 == 0) {
+      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      *(undefined4 *)(param_1 + 4) = uVar5;
+      *(int *)(param_1 + 8) = iVar1;
+    }
+    else {
+      *(int *)(param_1 + 4) = iVar4;
+      *(uint *)(param_1 + 8) = uVar6;
+    }
+  }
+  if (*(uint *)(param_1 + 0xc) <= uVar2) {
+    *(int *)(param_1 + 0xc) = iVar1;
+  }
+  *(undefined1 *)(uVar2 + *(int *)(param_1 + 4)) = param_2._1_1_;
+  uVar2 = *(uint *)(param_1 + 0x10);
+  iVar1 = uVar2 + 1;
+  *(int *)(param_1 + 0x10) = iVar1;
+  if (*(uint *)(param_1 + 8) <= uVar2) {
+    uVar3 = iVar1 * 2;
+    uVar6 = uVar3;
+    if (0x7fffffff < uVar3) {
+      uVar6 = 0x7fffffff;
+    }
+    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar3);
+    if (iVar4 == 0) {
+      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      *(undefined4 *)(param_1 + 4) = uVar5;
+      *(int *)(param_1 + 8) = iVar1;
+    }
+    else {
+      *(int *)(param_1 + 4) = iVar4;
+      *(uint *)(param_1 + 8) = uVar6;
+    }
+  }
+  if (*(uint *)(param_1 + 0xc) <= uVar2) {
+    *(int *)(param_1 + 0xc) = iVar1;
+  }
+  *(undefined1 *)(uVar2 + *(int *)(param_1 + 4)) = (undefined1)param_2;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D5720
+// GHIDRA_NAME FinalizeDiplomacyHitMaskOpcodeBufferAlignment
+// GHIDRA_PROTO undefined FinalizeDiplomacyHitMaskOpcodeBufferAlignment()
+
+void __fastcall FinalizeDiplomacyHitMaskOpcodeBufferAlignment(undefined4 *param_1)
+
+{
+  code *pcVar1;
+  undefined4 uVar2;
+  int iVar3;
+  int iVar4;
+  uint uVar5;
+  uint uVar6;
+  uint uVar7;
+  uint local_8;
+  uint uStack_4;
+  
+  uVar6 = param_1[5];
+  if ((uint)param_1[2] <= uVar6) {
+    WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0(uVar6 + 1);
+  }
+  if ((uint)param_1[3] <= uVar6) {
+    param_1[3] = uVar6 + 1;
+  }
+  uVar6 = uVar6 + param_1[1] & 3;
+  param_1[5] = uVar6;
+  if (uVar6 != 0) {
+    pcVar1 = *(code **)*param_1;
+    (*pcVar1)(0);
+    (*pcVar1)(0);
+    (*pcVar1)(0);
+    uVar6 = param_1[3];
+    if (uVar6 < (uint)param_1[2]) {
+      uVar2 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],uVar6);
+      param_1[1] = uVar2;
+      param_1[2] = uVar6;
+    }
+    uVar6 = param_1[5];
+    if ((uint)param_1[2] <= uVar6) {
+      uVar7 = (uVar6 + 1) * 2;
+      uVar5 = uVar7;
+      if (0x7fffffff < uVar7) {
+        uVar5 = 0x7fffffff;
+      }
+      iVar3 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],uVar7);
+      if (iVar3 == 0) {
+        WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970(uVar6 + 1);
+      }
+      else {
+        param_1[1] = iVar3;
+        param_1[2] = uVar5;
+      }
+    }
+    if ((uint)param_1[3] <= uVar6) {
+      param_1[3] = uVar6 + 1;
+    }
+    param_1[5] = uVar6 + param_1[1] & 3;
+  }
+  if (param_1[5] != 0) {
+    if (param_1[3] != 3) {
+      local_8 = 2;
+      uVar6 = 0;
+      do {
+        if ((uint)param_1[2] <= uVar6) {
+          uVar7 = local_8;
+          if (0x7fffffff < local_8) {
+            uVar7 = 0x7fffffff;
+          }
+          iVar3 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],local_8);
+          if (iVar3 == 0) {
+            uVar7 = uVar6 + 1;
+            iVar3 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],uVar7);
+          }
+          param_1[1] = iVar3;
+          param_1[2] = uVar7;
+        }
+        if ((uint)param_1[3] <= uVar6) {
+          param_1[3] = uVar6 + 1;
+        }
+        uVar7 = uVar6 + param_1[5];
+        if ((uint)param_1[2] <= uVar7) {
+          iVar3 = uVar7 + 1;
+          uVar5 = iVar3 * 2;
+          uStack_4 = uVar5;
+          if (0x7fffffff < uVar5) {
+            uStack_4 = 0x7fffffff;
+          }
+          iVar4 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],uVar5);
+          if (iVar4 == 0) {
+            uVar2 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],iVar3);
+            param_1[1] = uVar2;
+            param_1[2] = iVar3;
+          }
+          else {
+            param_1[1] = iVar4;
+            param_1[2] = uStack_4;
+          }
+        }
+        if ((uint)param_1[3] <= uVar7) {
+          param_1[3] = uVar7 + 1;
+        }
+        uVar5 = uVar6 + 1;
+        local_8 = local_8 + 2;
+        *(undefined1 *)(uVar7 + param_1[1]) = *(undefined1 *)(uVar6 + param_1[1]);
+        uVar6 = uVar5;
+      } while (uVar5 < param_1[3] - 3);
+    }
+    if (param_1[5] != 0) {
+      param_1[6] = 1;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D5970
+// GHIDRA_NAME WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970
+// GHIDRA_PROTO undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970()
+
+void __thiscall
+WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970(int param_1,undefined4 param_2)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),param_2);
+  *(undefined4 *)(param_1 + 8) = param_2;
+  *(undefined4 *)(param_1 + 4) = uVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D59A0
+// GHIDRA_NAME WrapperFor_IsPointInsideHitRegion_At004d59a0
+// GHIDRA_PROTO undefined WrapperFor_IsPointInsideHitRegion_At004d59a0()
+
+uint WrapperFor_IsPointInsideHitRegion_At004d59a0
+               (int param_1,int param_2,undefined4 param_3,char param_4)
+
+{
+  uint uVar1;
+  int iVar2;
+  int local_20;
+  int local_1c;
+  int local_18;
+  int local_14;
+  int local_10;
+  int local_c;
+  int local_8;
+  int local_4;
+  
+  local_20 = param_1;
+  local_1c = param_2;
+  uVar1 = IsPointInsideHitRegion(&local_20,param_3);
+  if (((char)uVar1 != '\0') && (param_4 != '\0')) {
+    local_20 = param_1 + 1;
+    local_1c = param_2;
+    iVar2 = IsPointInsideHitRegion(&local_20,param_3);
+    if (iVar2 != 0) {
+      local_18 = param_1 + -1;
+      local_14 = param_2;
+      iVar2 = IsPointInsideHitRegion(&local_18,param_3);
+      if (iVar2 != 0) {
+        local_c = param_2 + 1;
+        local_10 = param_1;
+        iVar2 = IsPointInsideHitRegion(&local_10,param_3);
+        if (iVar2 != 0) {
+          local_4 = param_2 + -1;
+          local_8 = param_1;
+          uVar1 = IsPointInsideHitRegion(&local_8,param_3);
+          if (uVar1 != 0) {
+            return uVar1 & 0xffffff00;
+          }
+        }
+      }
+    }
+    uVar1 = 1;
+  }
+  return uVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D5CF0
+// GHIDRA_NAME WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0
+// GHIDRA_PROTO undefined WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0()
+
+void WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0
+               (undefined4 param_1,int param_2,undefined4 param_3)
+
+{
+  int iVar1;
+  
+  iVar1 = *(int *)(*(int *)(*(int *)(param_2 + 0x20) + 0x10) + 8);
+  if (iVar1 < 1) {
+    iVar1 = -iVar1;
+  }
+  BuildDiplomacyOverlayHitMaskOpcodeStream
+            (param_1,*(undefined4 *)(*(int *)(*(int *)(param_2 + 0x20) + 0x10) + 4),param_3,iVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D5D30
+// GHIDRA_NAME BuildDiplomacyOverlayHitMaskOpcodeStream
+// GHIDRA_PROTO undefined BuildDiplomacyOverlayHitMaskOpcodeStream()
+
+void __thiscall
+BuildDiplomacyOverlayHitMaskOpcodeStream(int param_1,int param_2,undefined4 param_3,int param_4)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  int iVar3;
+  char cVar4;
+  undefined1 *puVar5;
+  uint uVar6;
+  undefined2 uVar7;
+  undefined4 uVar8;
+  int iVar9;
+  int iVar10;
+  int iVar11;
+  int iStack_34;
+  int iStack_2c;
+  int iStack_28;
+  int iStack_24;
+  int iStack_1c;
+  int iStack_14;
+  
+  iVar1 = *(int *)(param_2 + 4);
+  iVar10 = *(int *)(param_2 + 8);
+  iStack_1c = *(int *)(param_2 + 0x10);
+  WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970(0x400);
+  iStack_1c = iStack_1c - iVar10;
+  *(undefined4 *)(param_1 + 0x2c) = param_3;
+  iVar10 = *(int *)(param_1 + 0x10);
+  *(int *)(param_1 + 0x10) = iVar10 + 1;
+  puVar5 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(iVar10);
+  puVar2 = *(undefined4 **)(param_1 + 0x1c);
+  *puVar5 = 0xb9;
+  (*(code *)*puVar2)(*(undefined4 *)(param_1 + 0x10));
+  iVar10 = 4;
+  do {
+    iVar9 = *(int *)(param_1 + 0x10);
+    *(int *)(param_1 + 0x10) = iVar9 + 1;
+    puVar5 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(iVar9);
+    iVar10 = iVar10 + -1;
+    *puVar5 = 0xcd;
+  } while (iVar10 != 0);
+  iVar10 = iStack_1c + -1;
+  iStack_2c = 0;
+  if (-1 < iVar10) {
+    iStack_28 = param_4 - iVar10;
+    iVar10 = iVar10 + iVar1;
+    do {
+      param_4 = 0;
+      if (0 < iStack_24) {
+        iVar9 = iStack_14;
+        iStack_34 = iStack_14 + 1;
+        do {
+          cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar9,iVar10);
+          if (cVar4 != '\0') {
+            if ((char)param_3 != '\0') {
+              cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iStack_34,iVar10);
+              if ((((cVar4 == '\0') ||
+                   (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar9 + -1,iVar10),
+                   cVar4 == '\0')) ||
+                  (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar9,iVar10 + 1),
+                  cVar4 == '\0')) ||
+                 (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar9,iVar10 + -1),
+                 cVar4 == '\0')) {
+                cVar4 = '\x01';
+              }
+              else {
+                cVar4 = '\0';
+              }
+            }
+            if (cVar4 != '\0') {
+              for (iVar11 = (((iStack_28 - iVar1) + -1) * param_2 + param_4 + iStack_14) - iStack_2c
+                  ; 0x7f < iVar11; iVar11 = iVar11 - uVar6) {
+                uVar6 = iVar11 + 0x80;
+                iStack_2c = iStack_2c + uVar6;
+                iVar3 = *(int *)(param_1 + 0x10);
+                *(int *)(param_1 + 0x10) = iVar3 + 1;
+                puVar5 = (undefined1 *)EnsureDynamicPointerArrayCapacityForIndex(iVar3);
+                *puVar5 = 5;
+                uVar7 = CONCAT11((char)uVar6,(char)(uVar6 >> 8));
+                uVar8 = CONCAT22(uVar7,CONCAT11((char)(uVar6 >> 0x10),(char)(uVar6 >> 0x18)));
+                AppendByteToGrowableBuffer(uVar6 & 0xff);
+                AppendByteToGrowableBuffer(uVar7);
+                AppendBytePairToGrowableBuffer(uVar8);
+              }
+              iVar3 = param_4 + iStack_14 + 1;
+              cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3,iVar10);
+              if (cVar4 != '\0') {
+                if ((char)param_3 != '\0') {
+                  cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3 + 1,iVar10);
+                  if (((cVar4 == '\0') ||
+                      (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3 + -1,iVar10),
+                      cVar4 == '\0')) ||
+                     ((cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3,iVar10 + 1),
+                      cVar4 == '\0' ||
+                      (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3,iVar10 + -1),
+                      cVar4 == '\0')))) {
+                    cVar4 = '\x01';
+                  }
+                  else {
+                    cVar4 = '\0';
+                  }
+                }
+                if (cVar4 != '\0') {
+                  iVar3 = param_4 + 2 + iStack_14;
+                  cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3,iVar10);
+                  if (cVar4 != '\0') {
+                    if ((char)param_3 != '\0') {
+                      cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3 + 1,iVar10);
+                      if (((cVar4 == '\0') ||
+                          (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3 + -1,iVar10),
+                          cVar4 == '\0')) ||
+                         ((cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3,iVar10 + 1),
+                          cVar4 == '\0' ||
+                          (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3,iVar10 + -1),
+                          cVar4 == '\0')))) {
+                        cVar4 = '\x01';
+                      }
+                      else {
+                        cVar4 = '\0';
+                      }
+                    }
+                    if (cVar4 != '\0') {
+                      iVar3 = param_4 + 3 + iStack_14;
+                      cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3,iVar10);
+                      if (cVar4 != '\0') {
+                        if ((char)param_3 != '\0') {
+                          cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(iVar3 + 1,iVar10);
+                          if ((((cVar4 == '\0') ||
+                               (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl
+                                                  (iVar3 + -1,iVar10), cVar4 == '\0')) ||
+                              (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl
+                                                 (iVar3,iVar10 + 1), cVar4 == '\0')) ||
+                             (cVar4 = BuildDiplomacyOverlayHitMaskOpcodeStream_Impl
+                                                (iVar3,iVar10 + -1), cVar4 == '\0')) {
+                            cVar4 = '\x01';
+                          }
+                          else {
+                            cVar4 = '\0';
+                          }
+                        }
+                        if (cVar4 != '\0') {
+                          AppendByteToGrowableBuffer(0x89);
+                          AppendByteToGrowableBuffer(0x48);
+                          AppendByteToGrowableBuffer(iVar11);
+                          param_4 = param_4 + 3;
+                          iVar9 = iVar9 + 3;
+                          iStack_34 = iStack_34 + 3;
+                          goto LAB_004d6133;
+                        }
+                      }
+                    }
+                  }
+                  AppendByteToGrowableBuffer(0x66);
+                  AppendByteToGrowableBuffer(0x89);
+                  AppendByteToGrowableBuffer(0x48);
+                  AppendByteToGrowableBuffer(iVar11);
+                  param_4 = param_4 + 1;
+                  iVar9 = iVar9 + 1;
+                  iStack_34 = iStack_34 + 1;
+                  goto LAB_004d6133;
+                }
+              }
+              AppendByteToGrowableBuffer(0x88);
+              AppendByteToGrowableBuffer(0x48);
+              AppendByteToGrowableBuffer(iVar11);
+            }
+          }
+LAB_004d6133:
+          param_4 = param_4 + 1;
+          iVar9 = iVar9 + 1;
+          iStack_34 = iStack_34 + 1;
+        } while (param_4 < iStack_24);
+      }
+      iStack_28 = iStack_28 + 1;
+      iVar10 = iVar10 + -1;
+      iStack_1c = iStack_1c + -1;
+    } while (iStack_1c != 0);
+  }
+  AppendByteToGrowableBuffer(0xc3);
+  WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0();
+  FinalizeDiplomacyHitMaskOpcodeBufferAlignment();
+  uVar6 = EnsureDynamicPointerArrayCapacityForIndex(*(undefined4 *)(param_1 + 0x14));
+  if ((uVar6 & 3) != 0) {
+    FinalizeDiplomacyHitMaskOpcodeBufferAlignment();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D62D0
+// GHIDRA_NAME WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0
+// GHIDRA_PROTO undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0()
+
+void __fastcall WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0(int param_1)
+
+{
+  uint uVar1;
+  undefined4 uVar2;
+  
+  uVar1 = *(uint *)(param_1 + 0xc);
+  if (uVar1 < *(uint *)(param_1 + 8)) {
+    uVar2 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar1);
+    *(undefined4 *)(param_1 + 4) = uVar2;
+    *(uint *)(param_1 + 8) = uVar1;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6310
+// GHIDRA_NAME BuildDiplomacyOverlayHitMaskOpcodeStream_Impl
+// GHIDRA_PROTO undefined BuildDiplomacyOverlayHitMaskOpcodeStream_Impl()
+
+bool __thiscall BuildDiplomacyOverlayHitMaskOpcodeStream_Impl(int *param_1,int param_2,int param_3)
+
+{
+  int iVar1;
+  POINT pt;
+  BOOL BVar2;
+  
+  pt.y = param_3;
+  pt.x = param_2;
+  BVar2 = PtInRect((RECT *)(param_1 + 1),pt);
+  if (BVar2 == 0) {
+    return false;
+  }
+  iVar1 = ((RECT *)(param_1 + 1))->left;
+  param_2 = param_2 - iVar1;
+  return (*(byte *)((param_3 - param_1[2]) * (param_1[3] - iVar1 >> 3) + (param_2 >> 3) + *param_1)
+         & (byte)(1 << ((byte)param_2 & 7))) != 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D64D0
+// GHIDRA_NAME WrapperFor_ftol_At004d64d0
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004d64d0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004d64d0(void)
+
+{
+  _DAT_006a2e28 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D65F0
+// GHIDRA_NAME thunk_DestructCObArray
+// GHIDRA_PROTO undefined thunk_DestructCObArray()
+
+void CObArray::thunk_DestructCObArray(void)
+
+{
+  undefined4 uVar1;
+  undefined4 *extraout_ECX;
+  int unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  
+  EstablishSehFrameProlog();
+  *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
+  *extraout_ECX = &TIndexAndRankList::_vftable_;
+  uVar1 = extraout_ECX[1];
+  *(undefined4 *)(unaff_EBP + -4) = 0;
+  FreeHeapBufferIfNotNull(uVar1);
+  *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6610
+// GHIDRA_NAME InitializeObArrayVtable653810ModeField
+// GHIDRA_PROTO undefined InitializeObArrayVtable653810ModeField()
+
+void __fastcall InitializeObArrayVtable653810ModeField(int param_1)
+
+{
+  *(undefined2 *)(param_1 + 0x14) = 4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D66A0
+// GHIDRA_NAME Helper_Uses_AllocateWithFallbackHandler_At004d66a0
+// GHIDRA_PROTO undefined Helper_Uses_AllocateWithFallbackHandler_At004d66a0()
+
+undefined4 * Helper_Uses_AllocateWithFallbackHandler_At004d66a0(void)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631d5d;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  puVar2 = (undefined4 *)0x0;
+  if (puVar1 != (undefined4 *)0x0) {
+    *puVar1 = &RefCountedObjectBase::_vftable_;
+    local_4._0_1_ = 1;
+    local_4._1_3_ = 0;
+    CString::CString((CString *)(puVar1 + 1));
+    local_4 = CONCAT31(local_4._1_3_,2);
+    CString::CString((CString *)(puVar1 + 2));
+    *puVar1 = &TCountryVtbl_00653868;
+    puVar2 = puVar1;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return puVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6880
+// GHIDRA_NAME WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880
+// GHIDRA_PROTO undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880()
+
+void __fastcall WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880(undefined4 *param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  puStack_8 = &LAB_00631db3;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 1;
+  CString::~CString((CString *)(param_1 + 2));
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString((CString *)(param_1 + 1));
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D68F0
+// GHIDRA_NAME InitializeNationStateIdentityAndOwnedRegionList
+// GHIDRA_PROTO undefined InitializeNationStateIdentityAndOwnedRegionList()
+
+void __thiscall InitializeNationStateIdentityAndOwnedRegionList(int param_1,undefined2 param_2)
+
+{
+  CString *this;
+  undefined4 *puVar1;
+  int *piVar2;
+  int iVar3;
+  undefined2 extraout_var;
+  int iVar4;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_14;
+  undefined4 *local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631dfa;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  *(undefined2 *)(param_1 + 0xc) = param_2;
+  *(undefined4 *)(param_1 + 0x88) = 0xffffffff;
+  *(undefined4 *)(param_1 + 0x8c) = 0xffffffff;
+  *(undefined2 *)(param_1 + 0xe) = 0xffff;
+  puVar1 = (undefined4 *)(param_1 + 0x14);
+  for (iVar3 = 0xb; iVar3 != 0; iVar3 = iVar3 + -1) {
+    *puVar1 = 0x640064;
+    puVar1 = puVar1 + 1;
+  }
+  *(undefined2 *)puVar1 = 100;
+  CString::CString((CString *)&param_2,PTR_g_szEmptyString_00653300);
+  this = (CString *)(param_1 + 4);
+  iVar4 = 0;
+  local_4 = 0;
+  CString::AssignFromPtr(this,(CString *)&param_2);
+  local_4 = 0xffffffff;
+  CString::~CString((CString *)&param_2);
+  iVar3 = CompareAnsiStringsWithMbcsAwareness(this->m_pchData,PTR_g_szEmptyString_00653300);
+  if (iVar3 == 0) {
+    CString::CString(&local_14);
+    local_4 = 1;
+    SetSharedStringFromMappedFlavorTextWithLengthClamp
+              (&local_14,CONCAT22(extraout_var,*(undefined2 *)(param_1 + 0xc)));
+    CString::StringSharedRef_AssignFromPtr((CString *)&param_2,&local_14);
+    local_4 = CONCAT31(local_4._1_3_,2);
+    CString::AssignFromPtr(this,(CString *)&param_2);
+    if (g_pLocalizationTable != (TSimMgr *)0x0) {
+      AssignStringSharedRefFromPointer(&param_2);
+    }
+    local_4 = CONCAT31(local_4._1_3_,1);
+    CString::~CString((CString *)&param_2);
+    local_4 = 0xffffffff;
+    CString::~CString(&local_14);
+  }
+  CString::AssignFromPtr((CString *)(param_1 + 8),this);
+  *(undefined4 *)(param_1 + 0x10) = 5000;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  local_4 = 3;
+  local_10 = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    local_4 = CONCAT31(local_4._1_3_,4);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &TList::_vftable_;
+  }
+  *(undefined4 **)(param_1 + 0x44) = puVar1;
+  puVar1 = (undefined4 *)(param_1 + 0x48);
+  for (iVar3 = 0xf; iVar3 != 0; iVar3 = iVar3 + -1) {
+    *puVar1 = 0x10001;
+    puVar1 = puVar1 + 1;
+  }
+  local_4 = 0xffffffff;
+  *(undefined2 *)(param_1 + 0x84) = 1;
+  piVar2 = (int *)AllocateWithFallbackHandler(0x1c);
+  if (piVar2 == (int *)0x0) {
+    piVar2 = (int *)0x0;
+  }
+  else {
+    piVar2[3] = 0;
+    piVar2[4] = 0;
+    piVar2[2] = 0;
+    piVar2[1] = 0;
+    piVar2[5] = 0;
+    piVar2[6] = 10;
+    *piVar2 = (int)&CObjectVtbl_00650a08;
+  }
+  iVar3 = 0;
+  local_10 = (undefined4 *)0x180;
+  do {
+    if ((short)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar4) ==
+        *(short *)(param_1 + 0xc)) {
+      (**(code **)(*piVar2 + 0x14))(iVar3);
+    }
+    iVar3 = iVar3 + 1;
+    iVar4 = iVar4 + 0xa8;
+    local_10 = (undefined4 *)((int)local_10 + -1);
+  } while (local_10 != (undefined4 *)0x0);
+  *(int **)(param_1 + 0x90) = piVar2;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6B70
+// GHIDRA_NAME AssignStringSharedRefFromPointer
+// GHIDRA_PROTO undefined AssignStringSharedRefFromPointer()
+
+CString * __thiscall AssignStringSharedRefFromPointer(CString *param_1,CString *param_2)
+
+{
+  CString::AssignFromPtr(param_1,param_2);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7150
+// GHIDRA_NAME SetWordField8cFromShort
+// GHIDRA_PROTO undefined SetWordField8cFromShort()
+
+void __thiscall SetWordField8cFromShort(int param_1,short param_2)
+
+{
+  *(int *)(param_1 + 0x8c) = (int)param_2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7170
+// GHIDRA_NAME GetOrComputeOverlayAnchorTileIndex
+// GHIDRA_PROTO undefined GetOrComputeOverlayAnchorTileIndex()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Returns cached overlay anchor tile index for the current terrain-focused overlay context.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. If cached tile index at +0x8C is unset (-1), computes anchor via terrain-selection helper.
+// GHIDRA_COMMENT 2. Stores result in +0x8C for reuse.
+// GHIDRA_COMMENT 3. Returns cached/computed tile index.
+// GHIDRA_COMMENT_END
+
+/* Returns cached overlay anchor tile index for the current terrain-focused overlay context.
+   
+   Algorithm:
+   1. If cached tile index at +0x8C is unset (-1), computes anchor via terrain-selection helper.
+   2. Stores result in +0x8C for reuse.
+   3. Returns cached/computed tile index. */
+
+undefined2 __fastcall GetOrComputeOverlayAnchorTileIndex(int param_1)
+
+{
+  short sVar1;
+  
+  if (*(int *)(param_1 + 0x8c) == -1) {
+    sVar1 = thunk_ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias
+                      (*(undefined2 *)(param_1 + 0xc),1);
+    *(int *)(param_1 + 0x8c) = (int)sVar1;
+  }
+  return *(undefined2 *)(param_1 + 0x8c);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7860
+// GHIDRA_NAME FormatOverlayTerrainLabelText
+// GHIDRA_PROTO undefined FormatOverlayTerrainLabelText()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Formats overlay label text for map overlay panels.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. If overlay context pointer is null, assigns fallback localized text.
+// GHIDRA_COMMENT 2. Otherwise resolves terrain/overlay label text for current context id.
+// GHIDRA_COMMENT 3. Writes resolved string into destination shared-string output parameter.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Used by strategic-map overlay rendering path for per-overlay text labels.
+// GHIDRA_COMMENT_END
+
+/* Formats overlay label text for map overlay panels.
+   
+   Algorithm:
+   1. If overlay context pointer is null, assigns fallback localized text.
+   2. Otherwise resolves terrain/overlay label text for current context id.
+   3. Writes resolved string into destination shared-string output parameter.
+   
+   Notes:
+   - Used by strategic-map overlay rendering path for per-overlay text labels. */
+
+void __thiscall FormatOverlayTerrainLabelText(char *param_1,CString *param_2)
+
+{
+  CString *src_ref;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631ee0;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_10.m_pchData = param_1;
+  if (param_1 == (char *)0x0) {
+    CString::CString(&local_10,PTR_g_szEmptyString_00653300);
+    local_4 = 0;
+    CString::AssignFromPtr(param_2,&local_10);
+  }
+  else {
+    src_ref = (CString *)
+              AssignNormalizedCredentialTokenToIndexedSlot(&local_10,*(undefined2 *)(param_1 + 0xc))
+    ;
+    local_4 = 1;
+    CString::AssignFromPtr(param_2,src_ref);
+  }
+  local_4 = 0xffffffff;
+  CString::~CString(&local_10);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7930
+// GHIDRA_NAME AssignSharedStringFromDescriptorNameOrDefault
+// GHIDRA_PROTO undefined AssignSharedStringFromDescriptorNameOrDefault()
+
+void __thiscall AssignSharedStringFromDescriptorNameOrDefault(char *param_1,CString *param_2)
+
+{
+  CString *src_ref;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631f00;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_10.m_pchData = param_1;
+  if (param_1 == (char *)0x0) {
+    CString::CString(&local_10,PTR_g_szEmptyString_00653300);
+    local_4 = 0;
+    CString::AssignFromPtr(param_2,&local_10);
+  }
+  else {
+    src_ref = (CString *)
+              AssignSharedStringFromIndexedSlot7C(&local_10,*(undefined2 *)(param_1 + 0xc));
+    local_4 = 1;
+    CString::AssignFromPtr(param_2,src_ref);
+  }
+  local_4 = 0xffffffff;
+  CString::~CString(&local_10);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7A00
+// GHIDRA_NAME SetNationDisplayNameAndLocalizationSlotRef
+// GHIDRA_PROTO undefined SetNationDisplayNameAndLocalizationSlotRef()
+
+void __thiscall SetNationDisplayNameAndLocalizationSlotRef(int param_1,CString *param_2)
+
+{
+  CString::AssignFromPtr((CString *)(param_1 + 4),param_2);
+  if (g_pLocalizationTable != (TSimMgr *)0x0) {
+    CString::AssignFromPtr
+              ((CString *)(&g_pLocalizationTable->field_0x7c + *(short *)(param_1 + 0xc) * 4),
+               param_2);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D7A40
+// GHIDRA_NAME LoadNationDisplayNameSharedRefFromField8
+// GHIDRA_PROTO undefined LoadNationDisplayNameSharedRefFromField8()
+
+void __thiscall LoadNationDisplayNameSharedRefFromField8(char *param_1,CString *param_2)
+
+{
+  CString *src_ref;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631f18;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_10.m_pchData = param_1;
+  src_ref = (CString *)NormalizeRuntimeCredentialNameToken(&local_10,param_1 + 8);
+  local_4 = 0;
+  CString::AssignFromPtr(param_2,src_ref);
+  local_4 = 0xffffffff;
+  CString::~CString(&local_10);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D8390
+// GHIDRA_NAME ComputeWeightedNeighborLinkScoreForNode
+// GHIDRA_PROTO undefined ComputeWeightedNeighborLinkScoreForNode()
+
+void ComputeWeightedNeighborLinkScoreForNode(undefined4 param_1)
+
+{
+  ComputeWeightedNeighborLinkScoreForNodeIndex(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D8430
+// GHIDRA_NAME ComputeSelectedMilitaryPowerScore
+// GHIDRA_PROTO undefined ComputeSelectedMilitaryPowerScore()
+
+int ComputeSelectedMilitaryPowerScore(void)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar3 = 0;
+  iVar1 = InitializeLinkedListCursorFromOwnerHead();
+  iVar2 = LinkedListCursorHasCurrent();
+  while (iVar2 != 0) {
+    iVar3 = iVar3 + *(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 +
+                              *(short *)(iVar1 + 4) * 0xe);
+    iVar1 = AdvanceLinkedListCursor();
+    iVar2 = LinkedListCursorHasCurrent();
+  }
+  return iVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D84B0
+// GHIDRA_NAME ClassifyNationMilitaryPowerBandAgainstGlobalMean
+// GHIDRA_PROTO undefined ClassifyNationMilitaryPowerBandAgainstGlobalMean()
+
+undefined4 __fastcall ClassifyNationMilitaryPowerBandAgainstGlobalMean(int param_1)
+
+{
+  float fVar1;
+  float fVar2;
+  float fVar3;
+  char cVar4;
+  undefined uVar5;
+  int iVar6;
+  int iVar7;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  TGreatPower **ppTVar8;
+  int iVar9;
+  int iVar10;
+  float local_1c;
+  float local_18;
+  float local_14;
+  
+  local_1c = 0.0;
+  local_18 = 0.0;
+  local_14 = 0.0;
+  iVar9 = 0;
+  ppTVar8 = g_apNationStates;
+  do {
+    cVar4 = thunk_IsNationSlotEligibleForEventProcessing(iVar9);
+    if (cVar4 != '\0') {
+      iVar10 = 0;
+      iVar6 = InitializeLinkedListCursorFromOwnerHead();
+      iVar7 = LinkedListCursorHasCurrent();
+      while (iVar7 != 0) {
+        iVar10 = iVar10 + *(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 +
+                                    *(short *)(iVar6 + 4) * 0xe);
+        iVar6 = AdvanceLinkedListCursor();
+        iVar7 = LinkedListCursorHasCurrent();
+      }
+      uVar5 = (*(*ppTVar8)->vftable[0x43].GetTCountryClassNamePointer)();
+      iVar10 = CONCAT31(extraout_var,uVar5) + 4 + iVar10;
+      local_18 = (float)iVar10 + local_18;
+      local_14 = (float)(iVar10 * iVar10) + local_14;
+      local_1c = local_1c - g_Classify_Nation_Military_Value_00653704;
+    }
+    ppTVar8 = ppTVar8 + 1;
+    iVar9 = iVar9 + 1;
+  } while ((int)ppTVar8 < 0x6a438c);
+  if (local_1c < g_Classify_Nation_Military_Value_00653708) {
+    return 2;
+  }
+  fVar2 = local_18 / local_1c;
+  iVar9 = 0;
+  fVar3 = SQRT(((fVar2 * fVar2 * local_1c - (fVar2 * local_18 + fVar2 * local_18)) + local_14) /
+               (local_1c - g_Classify_Nation_Military_Value_0065370C));
+  iVar10 = InitializeLinkedListCursorFromOwnerHead();
+  iVar6 = LinkedListCursorHasCurrent();
+  while (iVar6 != 0) {
+    iVar9 = iVar9 + *(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 +
+                              *(short *)(iVar10 + 4) * 0xe);
+    iVar10 = AdvanceLinkedListCursor();
+    iVar6 = LinkedListCursorHasCurrent();
+  }
+  uVar5 = (*g_apNationStates[*(short *)(param_1 + 0xc)]->vftable[0x43].GetTCountryClassNamePointer)
+                    ();
+  fVar1 = (float)(CONCAT31(extraout_var_00,uVar5) + 4 + iVar9);
+  if (fVar2 - fVar3 * g_Classify_Nation_Military_Value_00653710 < fVar1) {
+    return 4;
+  }
+  if (fVar2 + fVar3 < fVar1) {
+    return 3;
+  }
+  if (fVar1 < fVar2 - fVar3) {
+    if (fVar1 < fVar2 - (fVar3 + fVar3)) {
+      return 0;
+    }
+    return 1;
+  }
+  return 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DD810
+// GHIDRA_NAME GetCityProductionValueTimesTwoCallbackA
+// GHIDRA_PROTO undefined GetCityProductionValueTimesTwoCallbackA()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Helper callback: returns 2x current city production value for the passed slot context.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Read base production via GetCityBuildingProductionValueBySlot.
+// GHIDRA_COMMENT 2. Multiply by 2.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - Scaled production value (int).
+// GHIDRA_COMMENT_END
+
+/* Helper callback: returns 2x current city production value for the passed slot context.
+   Algorithm:
+   1. Read base production via GetCityBuildingProductionValueBySlot.
+   2. Multiply by 2.
+   Returns:
+   - Scaled production value (int). */
+
+int __fastcall GetCityProductionValueTimesTwoCallbackA(TCity *param_1)
+
+{
+  int iVar1;
+  short unaff_retaddr;
+  
+  iVar1 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,unaff_retaddr);
+  return iVar1 * 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DD823
+// GHIDRA_NAME GetCityProductionValueTimesTwoCallbackB
+// GHIDRA_PROTO undefined GetCityProductionValueTimesTwoCallbackB()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Helper callback: returns 2x current city production value for the passed slot context.
+// GHIDRA_COMMENT_END
+
+/* Helper callback: returns 2x current city production value for the passed slot context. */
+
+int __fastcall GetCityProductionValueTimesTwoCallbackB(TCity *param_1)
+
+{
+  int iVar1;
+  short unaff_retaddr;
+  
+  iVar1 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,unaff_retaddr);
+  return iVar1 * 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DD836
+// GHIDRA_NAME GetCityProductionValueCallbackBase
+// GHIDRA_PROTO undefined GetCityProductionValueCallbackBase()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Helper callback: returns base city production value for the passed slot context (no scaling).
+// GHIDRA_COMMENT_END
+
+/* Helper callback: returns base city production value for the passed slot context (no scaling). */
+
+void __fastcall GetCityProductionValueCallbackBase(TCity *param_1)
+
+{
+  short unaff_retaddr;
+  
+  TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,unaff_retaddr);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DD847
+// GHIDRA_NAME GetCityProductionValueTimesTwoCallbackC
+// GHIDRA_PROTO undefined GetCityProductionValueTimesTwoCallbackC()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Helper callback: returns 2x current city production value for the passed slot context.
+// GHIDRA_COMMENT_END
+
+/* Helper callback: returns 2x current city production value for the passed slot context. */
+
+int __fastcall GetCityProductionValueTimesTwoCallbackC(TCity *param_1)
+
+{
+  int iVar1;
+  short unaff_retaddr;
+  
+  iVar1 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,unaff_retaddr);
+  return iVar1 * 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DD85A
+// GHIDRA_NAME GetCityProductionValueTimesTwoCallbackD
+// GHIDRA_PROTO undefined GetCityProductionValueTimesTwoCallbackD()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Helper callback: returns 2x current city production value for the passed slot context.
+// GHIDRA_COMMENT_END
+
+/* Helper callback: returns 2x current city production value for the passed slot context. */
+
+int __fastcall GetCityProductionValueTimesTwoCallbackD(TCity *param_1)
+
+{
+  int iVar1;
+  short unaff_retaddr;
+  
+  iVar1 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,unaff_retaddr);
+  return iVar1 * 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DD86D
+// GHIDRA_NAME GetCityProductionValueTimesTwoCallbackE
+// GHIDRA_PROTO undefined GetCityProductionValueTimesTwoCallbackE()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Helper callback: returns 2x current city production value for the passed slot context.
+// GHIDRA_COMMENT_END
+
+/* Helper callback: returns 2x current city production value for the passed slot context. */
+
+int __fastcall GetCityProductionValueTimesTwoCallbackE(TCity *param_1)
+
+{
+  int iVar1;
+  short unaff_retaddr;
+  
+  iVar1 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,unaff_retaddr);
+  return iVar1 * 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DD880
+// GHIDRA_NAME GetCityProductionValueTimesTwoCallbackF
+// GHIDRA_PROTO undefined GetCityProductionValueTimesTwoCallbackF()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Helper callback: returns 2x current city production value for the passed slot context.
+// GHIDRA_COMMENT_END
+
+/* Helper callback: returns 2x current city production value for the passed slot context. */
+
+int __fastcall GetCityProductionValueTimesTwoCallbackF(TCity *param_1)
+
+{
+  int iVar1;
+  short unaff_retaddr;
+  
+  iVar1 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,unaff_retaddr);
+  return iVar1 * 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DD893
+// GHIDRA_NAME GetCityProductionValueTimesTwoCallbackG
+// GHIDRA_PROTO undefined GetCityProductionValueTimesTwoCallbackG()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Helper callback: returns 2x current city production value for the passed slot context.
+// GHIDRA_COMMENT_END
+
+/* Helper callback: returns 2x current city production value for the passed slot context. */
+
+int __fastcall GetCityProductionValueTimesTwoCallbackG(TCity *param_1)
+
+{
+  int iVar1;
+  short unaff_retaddr;
+  
+  iVar1 = TCity::thunk_GetCityBuildingProductionValueBySlot(param_1,unaff_retaddr);
+  return iVar1 * 2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DDCF0
+// GHIDRA_NAME AddShortDeltaToNationCounterAtOffset198
+// GHIDRA_PROTO undefined AddShortDeltaToNationCounterAtOffset198()
+
+void __thiscall AddShortDeltaToNationCounterAtOffset198(int param_1,short param_2,short param_3)
+
+{
+  short *psVar1;
+  
+  psVar1 = (short *)(param_1 + 0x198 + param_2 * 2);
+  *psVar1 = *psVar1 + param_3;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004DFD30
+// GHIDRA_NAME RefreshNationCivilianWorkOrdersForTurn
+// GHIDRA_PROTO undefined RefreshNationCivilianWorkOrdersForTurn()
+
+void __thiscall RefreshNationCivilianWorkOrdersForTurn(int *param_1,CString param_2,char *param_3)
+
+{
+  int *piVar1;
+  short sVar2;
+  TCivWorkOrderState *pTVar3;
+  int iVar4;
+  int iVar5;
+  undefined2 extraout_var;
+  TSimMgr *pTVar6;
+  int iVar7;
+  TSimMgr *extraout_EAX;
+  undefined4 uVar8;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 uVar9;
+  undefined2 extraout_var_02;
+  undefined2 extraout_var_03;
+  undefined2 extraout_var_04;
+  undefined2 extraout_var_05;
+  undefined2 extraout_var_06;
+  undefined2 extraout_var_07;
+  undefined2 extraout_var_08;
+  undefined2 extraout_var_09;
+  undefined2 uVar10;
+  undefined2 extraout_var_10;
+  undefined2 extraout_var_11;
+  undefined2 extraout_var_12;
+  undefined2 extraout_var_13;
+  undefined4 unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = -1;
+  puStack_8 = &LAB_0063237a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (param_1 == (int *)0x0) {
+    iVar7 = 0;
+  }
+  else {
+    iVar7 = param_1[0x225];
+  }
+  piVar1 = *(int **)(iVar7 + 0xb0);
+  if ((short)param_2.m_pchData != -1) {
+    *(short *)(piVar1 + 5) = (short)param_2.m_pchData;
+  }
+  if (*(int *)(iVar7 + 0xb0) == 0) {
+    sVar2 = 1;
+  }
+  else {
+    sVar2 = *(short *)(*(int *)(iVar7 + 0xb0) + 0x14);
+  }
+  param_1[0x22] = (int)sVar2;
+  if (param_3 != (char *)0x0) {
+    CString::CString(&param_2,param_3);
+    local_4 = 0;
+    SetGlobalMapCellSharedLabel
+              ((int)*(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 +
+                              (short)param_1[0x22] * 0x24),&param_2);
+    (**(code **)(*piVar1 + 0x38))(param_2.m_pchData);
+    local_4 = -1;
+    CString::~CString(&param_2);
+  }
+  param_3 = (char *)*param_1;
+  (**(code **)((int)param_3 + 0x134))();
+  if ((int *)param_1[0x26] != (int *)0x0) {
+    (**(code **)(*(int *)param_1[0x26] + 0x50))();
+  }
+  pTVar6 = g_pLocalizationTable;
+  if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
+    pTVar3 = (TCivWorkOrderState *)AllocateWithFallbackHandler(0x28);
+    local_4 = 1;
+    if (pTVar3 == (TCivWorkOrderState *)0x0) {
+      pTVar3 = (TCivWorkOrderState *)0x0;
+      uVar9 = extraout_var_00;
+      uVar10 = extraout_var_08;
+    }
+    else {
+      pTVar3 = (TCivWorkOrderState *)TCivWorkOrderState::thunk_InitializeCivUnitOrderObject(pTVar3);
+      uVar9 = extraout_var_01;
+      uVar10 = extraout_var_09;
+    }
+    iVar5 = CONCAT22(uVar9,(short)param_1[3]);
+    local_4 = 0xffffffff;
+    iVar4 = thunk_FindReachableRecruitSpawnTileWithVisitedReset
+                      (CONCAT22(uVar10,(short)param_1[0x22]),0);
+    TCivWorkOrderState::thunk_InitializeCivWorkOrderState(pTVar3,1,iVar4,iVar5);
+    pTVar3 = (TCivWorkOrderState *)AllocateWithFallbackHandler(0x28);
+    local_4 = 2;
+    if (pTVar3 == (TCivWorkOrderState *)0x0) {
+      pTVar3 = (TCivWorkOrderState *)0x0;
+      uVar9 = extraout_var_02;
+    }
+    else {
+      pTVar3 = (TCivWorkOrderState *)TCivWorkOrderState::thunk_InitializeCivUnitOrderObject(pTVar3);
+      uVar9 = extraout_var_03;
+    }
+    iVar4 = CONCAT22((short)((uint)pTVar3 >> 0x10),(short)param_1[3]);
+    local_4 = -1;
+    iVar5 = thunk_FindReachableRecruitSpawnTileWithVisitedReset
+                      (CONCAT22(uVar9,(short)param_1[0x22]),1);
+    TCivWorkOrderState::thunk_InitializeCivWorkOrderState(pTVar3,4,iVar5,iVar4);
+    *(short *)(iVar7 + 0x5e) = *(short *)(iVar7 + 0x5e) + 2;
+    pTVar6 = (TSimMgr *)CONCAT22(extraout_var,*(short *)(iVar7 + 0x5e));
+    if ((*(int *)&g_pLocalizationTable->field_0x40 == 0) && ((char)param_1[0x28] != '\0')) {
+      *(short *)(iVar7 + 0x5e) = *(short *)(iVar7 + 0x5e) + 6;
+      pTVar3 = (TCivWorkOrderState *)AllocateWithFallbackHandler(0x28);
+      local_4 = 3;
+      if (pTVar3 == (TCivWorkOrderState *)0x0) {
+        pTVar3 = (TCivWorkOrderState *)0x0;
+        uVar9 = extraout_var_04;
+      }
+      else {
+        pTVar3 = (TCivWorkOrderState *)
+                 TCivWorkOrderState::thunk_InitializeCivUnitOrderObject(pTVar3);
+        uVar9 = extraout_var_05;
+      }
+      iVar7 = CONCAT22((short)((uint)pTVar3 >> 0x10),(short)param_1[3]);
+      local_4 = 0xffffffff;
+      iVar4 = thunk_FindReachableRecruitSpawnTileWithVisitedReset
+                        (CONCAT22(uVar9,(short)param_1[0x22]),0);
+      TCivWorkOrderState::thunk_InitializeCivWorkOrderState(pTVar3,1,iVar4,iVar7);
+      pTVar3 = (TCivWorkOrderState *)AllocateWithFallbackHandler(0x28);
+      local_4 = 4;
+      if (pTVar3 == (TCivWorkOrderState *)0x0) {
+        pTVar3 = (TCivWorkOrderState *)0x0;
+        uVar9 = extraout_var_10;
+      }
+      else {
+        pTVar3 = (TCivWorkOrderState *)
+                 TCivWorkOrderState::thunk_InitializeCivUnitOrderObject(pTVar3);
+        uVar9 = extraout_var_11;
+      }
+      iVar4 = CONCAT22(uVar9,(short)param_1[3]);
+      local_4 = 0xffffffff;
+      iVar7 = thunk_FindReachableRecruitSpawnTileWithVisitedReset((short)param_1[0x22],0);
+      TCivWorkOrderState::thunk_InitializeCivWorkOrderState(pTVar3,0,iVar7,iVar4);
+      pTVar3 = (TCivWorkOrderState *)AllocateWithFallbackHandler(0x28);
+      local_4 = 5;
+      if (pTVar3 == (TCivWorkOrderState *)0x0) {
+        pTVar3 = (TCivWorkOrderState *)0x0;
+        uVar9 = extraout_var_06;
+        uVar10 = extraout_var_12;
+      }
+      else {
+        pTVar3 = (TCivWorkOrderState *)
+                 TCivWorkOrderState::thunk_InitializeCivUnitOrderObject(pTVar3);
+        uVar9 = extraout_var_07;
+        uVar10 = extraout_var_13;
+      }
+      iVar4 = CONCAT22(uVar9,(short)param_1[3]);
+      local_4 = -1;
+      iVar7 = thunk_FindReachableRecruitSpawnTileWithVisitedReset
+                        (CONCAT22(uVar10,(short)param_1[0x22]),0);
+      TCivWorkOrderState::thunk_InitializeCivWorkOrderState(pTVar3,2,iVar7,iVar4);
+      pTVar6 = extraout_EAX;
+    }
+  }
+  uVar8 = CONCAT22((short)((uint)pTVar6 >> 0x10),(short)param_1[3]);
+  (*g_pDiplomacyTurnStateManager->vftable[5].GetTDiplomacyMgrClassNamePointer)(uVar8,uVar8,0x100);
+  (**(code **)(local_4 + 0x30))();
+  *unaff_FS_OFFSET = unaff_EBP;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E0770
+// GHIDRA_NAME ComputeNationRuntimeAdvisoryMetricCase6
+// GHIDRA_PROTO undefined ComputeNationRuntimeAdvisoryMetricCase6()
+
+int __fastcall ComputeNationRuntimeAdvisoryMetricCase6(int param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar1 = *(int *)(param_1 + 0x894);
+  if (iVar1 != 0) {
+    iVar2 = *(int *)(*(int *)(iVar1 + 0x1d8) + 0x14);
+    iVar3 = CONCAT22((short)((uint)iVar1 >> 0x10),*(short *)(iVar2 + 8) * 2 + *(short *)(iVar2 + 6))
+            << 1;
+    return CONCAT22((short)((uint)iVar3 >> 0x10),(short)iVar3 + *(short *)(iVar2 + 4)) +
+           CONCAT22((short)((uint)iVar2 >> 0x10),*(undefined2 *)(*(int *)(iVar1 + 0x1d8) + 0x1e));
+  }
   return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E3060
+// GHIDRA_NAME ComputeNationNavyOrderWeightedMovementScore
+// GHIDRA_PROTO undefined ComputeNationNavyOrderWeightedMovementScore()
+
+int __fastcall ComputeNationNavyOrderWeightedMovementScore(int param_1)
+
+{
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  int local_38 [14];
+  
+  iVar4 = 0;
+  local_38[0] = 0;
+  local_38[1] = 0;
+  local_38[2] = 0;
+  local_38[3] = 0x96;
+  local_38[4] = 300;
+  local_38[5] = 0;
+  local_38[6] = 0;
+  local_38[7] = 200;
+  local_38[8] = 400;
+  local_38[9] = 0x28a;
+  local_38[10] = 0;
+  local_38[0xb] = 0x1c2;
+  local_38[0xc] = 0x5dc;
+  local_38[0xd] = 0x4b0;
+  iVar2 = InitializeLinkedListCursorFromOwnerHead();
+  iVar3 = LinkedListCursorHasCurrent();
+  while (iVar3 != 0) {
+    sVar1 = thunk_GetUnitMovementClassId();
+    if (0 < sVar1) {
+      sVar1 = *(short *)(iVar2 + 0x38);
+      iVar4 = iVar4 + (*(int *)(&DAT_006955f0 + *(short *)(iVar2 + 4) * 4) *
+                      ((short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                              (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) + 10)) / 10;
+    }
+    iVar2 = AdvanceLinkedListCursor();
+    iVar3 = LinkedListCursorHasCurrent();
+  }
+  iVar2 = thunk_GetNavyPrimaryOrderListHead();
+  if (iVar2 != 0) {
+    do {
+      if (*(short *)(iVar2 + 0x14) == *(short *)(param_1 + 0xc)) {
+        sVar1 = *(short *)(iVar2 + 0x30);
+        iVar4 = iVar4 + (local_38[*(short *)(iVar2 + 4)] *
+                        ((short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                                (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) + 10)) / 10;
+      }
+      iVar2 = *(int *)(iVar2 + 0x24);
+    } while (iVar2 != 0);
+  }
+  return iVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E3220
+// GHIDRA_NAME RecomputeNationComparativePowerMetrics_Impl
+// GHIDRA_PROTO undefined RecomputeNationComparativePowerMetrics_Impl()
+
+int __fastcall RecomputeNationComparativePowerMetrics_Impl(int param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  TCountry **ppTVar4;
+  
+  iVar1 = 0;
+  iVar2 = 0;
+  iVar3 = 0;
+  ppTVar4 = g_apTerrainTypeDescriptorTable;
+  do {
+    if ((*ppTVar4 != (TCountry *)0x0) && (iVar3 != *(short *)(param_1 + 0xc))) {
+      iVar1 = iVar1 + *(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
+                                (*(short *)(param_1 + 0xc) * 0x17 + (int)(short)iVar3) * 2);
+      iVar2 = iVar2 + 1;
+    }
+    ppTVar4 = ppTVar4 + 1;
+    iVar3 = iVar3 + 1;
+  } while ((int)ppTVar4 < 0x6a436c);
+  return iVar1 / iVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E32A0
+// GHIDRA_NAME RecomputeNationEconomyAndDiplomacySummaryMetrics
+// GHIDRA_PROTO undefined RecomputeNationEconomyAndDiplomacySummaryMetrics()
+
+void __fastcall RecomputeNationEconomyAndDiplomacySummaryMetrics(int *param_1)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  char cVar4;
+  int iVar5;
+  int iVar6;
+  int *piVar7;
+  int iVar8;
+  TMinor **ppTVar9;
+  TCountry **ppTVar10;
+  int local_14 [5];
+  
+  local_14[0] = 10;
+  local_14[1] = 0xf;
+  local_14[2] = 0x14;
+  local_14[3] = 0x19;
+  local_14[4] = 0x1e;
+  iVar8 = 0;
+  iVar5 = *(int *)(*(int *)(param_1[0x225] + 0x1d8) + 0x10);
+  sVar1 = *(short *)(iVar5 + 6);
+  sVar2 = *(short *)(iVar5 + 8);
+  sVar3 = *(short *)(iVar5 + 4);
+  param_1[0x24e] = 0;
+  param_1[0x24c] = (int)sVar3 + ((int)sVar1 + sVar2 * 2) * 2;
+  param_1[0x24d] = (int)*(short *)((int)param_1 + 0xa6);
+  do {
+    iVar5 = TCity::thunk_GetCityBuildingProductionValueBySlot((TCity *)param_1[0x225],(short)iVar8);
+    iVar8 = iVar8 + 1;
+    param_1[0x24e] = param_1[0x24e] + (int)(short)iVar5;
+  } while (iVar8 < 6);
+  iVar5 = (**(code **)(*(int *)param_1[0x24] + 0x28))();
+  param_1[0x24f] = iVar5;
+  ppTVar9 = g_apSecondaryNationStateSlots + 7;
+  do {
+    cVar4 = (*(*ppTVar9)->vftable[0xb].ApplyJoinEmpireModeForTargetNation)((int)(short)param_1[3]);
+    if (cVar4 != '\0') {
+      iVar5 = (**(code **)(**(int **)&(*ppTVar9)->field_0x90 + 0x28))();
+      param_1[0x24f] = param_1[0x24f] + iVar5;
+    }
+    ppTVar9 = ppTVar9 + 1;
+  } while ((int)ppTVar9 < 0x6a42dc);
+  iVar5 = 0;
+  param_1[0x24f] = param_1[0x24f] * 10;
+  iVar8 = InitializeLinkedListCursorFromOwnerHead();
+  iVar6 = LinkedListCursorHasCurrent();
+  while (iVar6 != 0) {
+    iVar5 = iVar5 + *(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 +
+                              *(short *)(iVar8 + 4) * 0xe);
+    iVar8 = AdvanceLinkedListCursor();
+    iVar6 = LinkedListCursorHasCurrent();
+  }
+  param_1[0x250] = iVar5;
+  iVar5 = (**(code **)(*param_1 + 0x218))();
+  param_1[0x251] = iVar5;
+  iVar5 = 0;
+  iVar6 = 0;
+  iVar8 = 0;
+  ppTVar10 = g_apTerrainTypeDescriptorTable;
+  do {
+    if ((*ppTVar10 != (TCountry *)0x0) && (iVar8 != (short)param_1[3])) {
+      iVar5 = iVar5 + *(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
+                                ((short)param_1[3] * 0x17 + (int)(short)iVar8) * 2);
+      iVar6 = iVar6 + 1;
+    }
+    ppTVar10 = ppTVar10 + 1;
+    iVar8 = iVar8 + 1;
+  } while ((int)ppTVar10 < 0x6a436c);
+  param_1[0x252] = iVar5 / iVar6;
+  sVar1 = *(short *)&g_pLocalizationTable->field_0x2c;
+  param_1[0x255] = 0;
+  iVar5 = 9;
+  param_1[0x253] = (int)(short)param_1[0x29];
+  param_1[0x254] = (100 - (short)((int)((int)sVar1 + ((int)sVar1 >> 0x1f & 3U)) >> 2)) * 10;
+  piVar7 = param_1 + 0x24c;
+  do {
+    iVar8 = *piVar7;
+    iVar6 = param_1[0x255];
+    piVar7 = piVar7 + 1;
+    iVar5 = iVar5 + -1;
+    param_1[0x255] = iVar6 + iVar8;
+  } while (iVar5 != 0);
+  iVar5 = local_14[*(int *)&g_pLocalizationTable->field_0x40];
+  param_1[0x256] = iVar5;
+  param_1[599] = ((iVar6 + iVar8) * iVar5) / 10;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E3560
+// GHIDRA_NAME RefreshMapSystemsAndPrepareOrderExecution_Impl
+// GHIDRA_PROTO undefined RefreshMapSystemsAndPrepareOrderExecution_Impl()
+
+void __fastcall RefreshMapSystemsAndPrepareOrderExecution_Impl(int *param_1)
+
+{
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  
+  iVar3 = *(int *)&g_pCityOrderCapabilityState->field_0x264;
+  iVar4 = 0;
+  iVar1 = InitializeLinkedListCursorFromOwnerHead();
+  iVar2 = LinkedListCursorHasCurrent();
+  while (iVar2 != 0) {
+    iVar4 = iVar4 + *(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 +
+                              *(short *)(iVar1 + 4) * 0xe);
+    iVar1 = AdvanceLinkedListCursor();
+    iVar2 = LinkedListCursorHasCurrent();
+  }
+  iVar1 = (**(code **)(*param_1 + 0x218))();
+  iVar3 = (iVar1 + iVar4) * iVar3;
+  param_1[600] = iVar3;
+  param_1[4] = param_1[4] - iVar3;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E3620
+// GHIDRA_NAME SumDiplomacyGrantEntriesMaskedToValueBits
+// GHIDRA_PROTO undefined SumDiplomacyGrantEntriesMaskedToValueBits()
+
+int __fastcall SumDiplomacyGrantEntriesMaskedToValueBits(int param_1)
+
+{
+  ushort uVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar2 = 0;
+  iVar3 = 0;
+  do {
+    uVar1 = *(ushort *)(param_1 + 0xe0 + (short)iVar3 * 2);
+    if (uVar1 != 0xffff) {
+      iVar2 = iVar2 + (uVar1 & 0x3fff);
+    }
+    iVar3 = iVar3 + 1;
+  } while (iVar3 < 0x17);
+  return iVar2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E37C0
+// GHIDRA_NAME WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0
+// GHIDRA_PROTO undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0()
+
+void __fastcall WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0(undefined4 *param_1)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  puStack_8 = &LAB_00632493;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_4 = 1;
+  CString::~CString((CString *)(param_1 + 2));
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString((CString *)(param_1 + 1));
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E3830
+// GHIDRA_NAME InitializeSecondaryNationStateAndSelectHomeTile
+// GHIDRA_PROTO undefined InitializeSecondaryNationStateAndSelectHomeTile()
+
+void __thiscall InitializeSecondaryNationStateAndSelectHomeTile(int *param_1,undefined4 param_2)
+
+{
+  short *psVar1;
+  char cVar2;
+  int *piVar3;
+  int iVar4;
+  int *piVar5;
+  int iVar6;
+  int iVar7;
+  TMapMgr *pTVar8;
+  int iVar9;
+  undefined4 *unaff_FS_OFFSET;
+  int local_20;
+  int *local_1c;
+  CString CStack_18;
+  CString CStack_14;
+  CString local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006324c8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString(&local_10);
+  iVar7 = 0;
+  local_4 = 0;
+  thunk_InitializeNationStateIdentityAndOwnedRegionList(param_2);
+  *(undefined2 *)(param_1 + 0x4c) = 0;
+  *(undefined2 *)(param_1 + 0x4b) = 0xfff6;
+  *(undefined2 *)((int)param_1 + 0x12e) = 0xfff6;
+  *(undefined2 *)((int)param_1 + 0x132) = 0;
+  piVar3 = param_1 + 0x3c;
+  iVar6 = 0x17;
+  piVar5 = param_1 + 0x66;
+  do {
+    *(undefined2 *)((int)piVar3 + -0x2e) = 0;
+    *(undefined2 *)piVar3 = 0;
+    *(undefined2 *)(piVar3 + -0x17) = 0;
+    *(undefined2 *)(piVar3 + 0x13) = 0;
+    iVar9 = 0;
+    *(undefined2 *)((int)piVar3 + 0x7a) = 0;
+    *piVar5 = 0;
+    piVar3 = (int *)((int)piVar3 + 2);
+    piVar5[1] = 0;
+    iVar6 = iVar6 + -1;
+    piVar5[2] = 0;
+    *(undefined2 *)(piVar5 + 3) = 0;
+    piVar5 = (int *)((int)piVar5 + 0xe);
+  } while (iVar6 != 0);
+  local_20 = 0x1950;
+  pTVar8 = g_pGlobalMapState;
+  do {
+    if ((short)*(char *)(*(int *)&pTVar8->field_0xc + 4 + iVar9) == (short)param_1[3]) {
+      iVar6 = 0;
+      local_1c = (int *)0x2;
+      do {
+        iVar4 = *(int *)&pTVar8->field_0xc + iVar9;
+        cVar2 = *(char *)(iVar6 + 0x11 + iVar4);
+        if ((*(char *)(iVar4 + 0x13) != '\x0f') && (cVar2 != -1)) {
+          psVar1 = (short *)((int)param_1 + cVar2 * 2 + 0x94);
+          *psVar1 = *psVar1 + 1;
+          psVar1 = (short *)((int)param_1 + cVar2 * 2 + 0x13c);
+          *psVar1 = *psVar1 + 1;
+          pTVar8 = g_pGlobalMapState;
+        }
+        iVar6 = iVar6 + 1;
+        local_1c = (int *)((int)local_1c + -1);
+      } while (local_1c != (int *)0x0);
+    }
+    iVar9 = iVar9 + 0x24;
+    local_20 = local_20 + -1;
+  } while (local_20 != 0);
+  if ((DAT_006a43f0 == '\0') &&
+     ((cVar2 = (**(code **)(*param_1 + 0xa0))(), cVar2 == '\0' ||
+      (*(short *)&g_pLocalizationTable->field_0x114 != 0)))) {
+    local_20 = -1;
+    local_1c = (int *)AllocateWithFallbackHandler(0x1c);
+    if (local_1c == (int *)0x0) {
+      local_1c = (int *)0x0;
+    }
+    else {
+      local_1c[3] = 0;
+      local_1c[4] = 0;
+      local_1c[2] = 0;
+      local_1c[1] = 0;
+      local_1c[5] = 0;
+      local_1c[6] = 10;
+      *local_1c = (int)&CObjectVtbl_00650a08;
+    }
+    iVar9 = 0;
+    iVar6 = 0;
+    do {
+      if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6) == (short)param_2) {
+        if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + iVar6 + 0x1c) & 1) != 0) {
+          local_20 = iVar9;
+        }
+        cVar2 = IsValidSecondaryNationHomeTileCandidate(iVar9);
+        if (cVar2 != '\0') {
+          (**(code **)(*local_1c + 0x14))(iVar7);
+        }
+      }
+      iVar9 = iVar9 + 1;
+      iVar7 = iVar7 + 1;
+      iVar6 = iVar6 + 0x24;
+    } while ((short)iVar9 < 0x1950);
+    if ((short)local_20 == -1) {
+      iVar6 = *local_1c;
+      iVar7 = (**(code **)(iVar6 + 0x28))();
+      iVar9 = GenerateThreadLocalRandom15();
+      local_20 = (**(code **)(iVar6 + 0x24))(iVar9 % iVar7 + 1);
+    }
+    CString::CString(&CStack_14);
+    local_4._0_1_ = 1;
+    CString::CString(&CStack_18);
+    local_4 = CONCAT31(local_4._1_3_,2);
+    ResetTileToBaseTransportFlag(local_20);
+    param_1[0x22] = (int)(short)local_20;
+    if (local_1c != (int *)0x0) {
+      (**(code **)(*local_1c + 0x38))();
+    }
+    thunk_EnsurePortZoneForTile((short)param_1[0x22]);
+    local_4._0_1_ = 1;
+    CString::~CString(&CStack_18);
+    local_4 = (uint)local_4._1_3_ << 8;
+    CString::~CString(&CStack_14);
+  }
+  *(undefined2 *)((int)param_1 + 0xa2) = 5;
+  switch((short)param_2) {
+  case 7:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x44c;
+    *(undefined2 *)(param_1 + 0x48) = 0x23a;
+    *(undefined2 *)((int)param_1 + 0x122) = 0xc3;
+    *(undefined2 *)(param_1 + 0x49) = 0x5a;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x69;
+    *(undefined2 *)(param_1 + 0x4a) = 0x8a;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x90;
+    break;
+  case 8:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x47e;
+    *(undefined2 *)(param_1 + 0x48) = 0x249;
+    *(undefined2 *)((int)param_1 + 0x122) = 0xaf;
+    *(undefined2 *)(param_1 + 0x49) = 0x52;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x75;
+    *(undefined2 *)(param_1 + 0x4a) = 0x72;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x84;
+    break;
+  case 9:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x4b0;
+    *(undefined2 *)(param_1 + 0x48) = 600;
+    *(undefined2 *)((int)param_1 + 0x122) = 0x9b;
+    *(undefined2 *)(param_1 + 0x49) = 0x4a;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x81;
+    *(undefined2 *)(param_1 + 0x4a) = 0x7e;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x78;
+    break;
+  case 10:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x4e2;
+    *(undefined2 *)(param_1 + 0x48) = 0x267;
+    *(undefined2 *)((int)param_1 + 0x122) = 0x87;
+    *(undefined2 *)(param_1 + 0x49) = 0x42;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x8d;
+    *(undefined2 *)(param_1 + 0x4a) = 0x90;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x6f;
+    break;
+  case 0xb:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x514;
+    *(undefined2 *)(param_1 + 0x48) = 0x276;
+    *(undefined2 *)((int)param_1 + 0x122) = 0xbe;
+    *(undefined2 *)(param_1 + 0x49) = 0x58;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x6c;
+    *(undefined2 *)(param_1 + 0x4a) = 0x8d;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x93;
+    goto LAB_004e3ce6;
+  case 0xc:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x546;
+    *(undefined2 *)(param_1 + 0x48) = 0x285;
+    *(undefined2 *)((int)param_1 + 0x122) = 0xaa;
+    *(undefined2 *)(param_1 + 0x49) = 0x50;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x78;
+    *(undefined2 *)(param_1 + 0x4a) = 0x69;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x87;
+    goto LAB_004e3ce6;
+  case 0xd:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x578;
+    *(undefined2 *)(param_1 + 0x48) = 0x294;
+    *(undefined2 *)((int)param_1 + 0x122) = 0x96;
+    *(undefined2 *)(param_1 + 0x49) = 0x48;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x84;
+    *(undefined2 *)(param_1 + 0x4a) = 0x7b;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x75;
+    goto LAB_004e3ce6;
+  case 0xe:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x5aa;
+    *(undefined2 *)(param_1 + 0x48) = 0x2a3;
+    *(undefined2 *)((int)param_1 + 0x122) = 0x82;
+    *(undefined2 *)(param_1 + 0x49) = 0x40;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x90;
+    *(undefined2 *)(param_1 + 0x4a) = 0x81;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x72;
+LAB_004e3ce6:
+    *(undefined2 *)(param_1 + 0x4d) = 0xb;
+    *(undefined2 *)((int)param_1 + 0x136) = 0xc;
+    *(undefined2 *)(param_1 + 0x4e) = 0xd;
+    *(undefined2 *)((int)param_1 + 0x13a) = 0xe;
+    goto switchD_004e3aa6_default;
+  case 0xf:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x5dc;
+    *(undefined2 *)(param_1 + 0x48) = 0x2b2;
+    *(undefined2 *)((int)param_1 + 0x122) = 0xb9;
+    *(undefined2 *)(param_1 + 0x49) = 0x56;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x6f;
+    *(undefined2 *)(param_1 + 0x4a) = 0x93;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x96;
+    goto LAB_004e3e17;
+  case 0x10:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x60e;
+    *(undefined2 *)(param_1 + 0x48) = 0x2c1;
+    *(undefined2 *)((int)param_1 + 0x122) = 0xa5;
+    *(undefined2 *)(param_1 + 0x49) = 0x4e;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x7b;
+    *(undefined2 *)(param_1 + 0x4a) = 0x6c;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x8a;
+    goto LAB_004e3e17;
+  case 0x11:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x640;
+    *(undefined2 *)(param_1 + 0x48) = 0x2d0;
+    *(undefined2 *)((int)param_1 + 0x122) = 0x91;
+    *(undefined2 *)(param_1 + 0x49) = 0x46;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x87;
+    *(undefined2 *)(param_1 + 0x4a) = 0x78;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x7e;
+    goto LAB_004e3e17;
+  case 0x12:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x672;
+    *(undefined2 *)(param_1 + 0x48) = 0x2df;
+    *(undefined2 *)((int)param_1 + 0x122) = 0x7d;
+    *(undefined2 *)(param_1 + 0x49) = 0x3e;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x93;
+    *(undefined2 *)(param_1 + 0x4a) = 0x84;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x69;
+LAB_004e3e17:
+    *(undefined2 *)(param_1 + 0x4d) = 0xf;
+    *(undefined2 *)((int)param_1 + 0x136) = 0x10;
+    *(undefined2 *)(param_1 + 0x4e) = 0x11;
+    *(undefined2 *)((int)param_1 + 0x13a) = 0x12;
+    goto switchD_004e3aa6_default;
+  case 0x13:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x6a4;
+    *(undefined2 *)(param_1 + 0x48) = 0x2ee;
+    *(undefined2 *)((int)param_1 + 0x122) = 0xb4;
+    *(undefined2 *)(param_1 + 0x49) = 0x54;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x72;
+    *(undefined2 *)(param_1 + 0x4a) = 0x96;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x8d;
+    goto LAB_004e3f46;
+  case 0x14:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x6d6;
+    *(undefined2 *)(param_1 + 0x48) = 0x2fd;
+    *(undefined2 *)((int)param_1 + 0x122) = 0xa0;
+    *(undefined2 *)(param_1 + 0x49) = 0x4c;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x7e;
+    *(undefined2 *)(param_1 + 0x4a) = 0x6f;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x81;
+    goto LAB_004e3f46;
+  case 0x15:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x708;
+    *(undefined2 *)(param_1 + 0x48) = 0x302;
+    *(undefined2 *)((int)param_1 + 0x122) = 0x8c;
+    *(undefined2 *)(param_1 + 0x49) = 0x44;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x8a;
+    *(undefined2 *)(param_1 + 0x4a) = 0x7b;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x75;
+    goto LAB_004e3f46;
+  case 0x16:
+    *(undefined2 *)((int)param_1 + 0x11e) = 0x73a;
+    *(undefined2 *)(param_1 + 0x48) = 0x311;
+    *(undefined2 *)((int)param_1 + 0x122) = 0x78;
+    *(undefined2 *)(param_1 + 0x49) = 0x3c;
+    *(undefined2 *)((int)param_1 + 0x126) = 0x96;
+    *(undefined2 *)(param_1 + 0x4a) = 0x87;
+    *(undefined2 *)((int)param_1 + 0x12a) = 0x6c;
+LAB_004e3f46:
+    *(undefined2 *)(param_1 + 0x4d) = 0x13;
+    *(undefined2 *)((int)param_1 + 0x136) = 0x14;
+    *(undefined2 *)(param_1 + 0x4e) = 0x15;
+    *(undefined2 *)((int)param_1 + 0x13a) = 0x16;
+  default:
+    goto switchD_004e3aa6_default;
+  }
+  *(undefined2 *)(param_1 + 0x4d) = 7;
+  *(undefined2 *)((int)param_1 + 0x136) = 8;
+  *(undefined2 *)(param_1 + 0x4e) = 9;
+  *(undefined2 *)((int)param_1 + 0x13a) = 10;
+switchD_004e3aa6_default:
+  local_4 = 0xffffffff;
+  CString::~CString(&local_10);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E6710
+// GHIDRA_NAME InitializeLandSaleEventPayloadTileAndNation
+// GHIDRA_PROTO undefined InitializeLandSaleEventPayloadTileAndNation()
+
+void __thiscall
+InitializeLandSaleEventPayloadTileAndNation(int param_1,undefined2 param_2,undefined2 param_3)
+
+{
+  *(undefined2 *)(param_1 + 8) = param_2;
+  *(undefined2 *)(param_1 + 10) = param_3;
+  *(undefined4 *)(param_1 + 4) = 0x6c616e64;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E6A40
+// GHIDRA_NAME WrapperFor_ftol_At004e6a40
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004e6a40()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004e6a40(void)
+
+{
+  _DAT_006a2e80 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E6A70
+// GHIDRA_NAME CreateAutoGreatPowerNationState
+// GHIDRA_PROTO undefined CreateAutoGreatPowerNationState()
+
+TGreatPower * CreateAutoGreatPowerNationState(void)
+
+{
+  TGreatPower *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063258a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TGreatPower *)AllocateWithFallbackHandler(0xb70);
+  local_4 = 0;
+  if (this != (TGreatPower *)0x0) {
+    TGreatPower::TGreatPower(this);
+    *(undefined4 *)&this[1].field_0x1fc = 0;
+    this->vftable = (TGreatPowerVtbl *)&TAutoGreatPower::_vftable_;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (TGreatPower *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E7590
+// GHIDRA_NAME OrphanLeaf_NoCall_Ins07_004e7590
+// GHIDRA_PROTO undefined OrphanLeaf_NoCall_Ins07_004e7590()
+
+void __fastcall OrphanLeaf_NoCall_Ins07_004e7590(int param_1)
+
+{
+  if (*(int *)(param_1 + 0x894) != 0) {
+                    /* WARNING: Could not recover jumptable at 0x004e75a2. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (**(code **)(**(int **)(param_1 + 0x98) + 0x54))();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E75C0
+// GHIDRA_NAME OrphanCallChain_C4_I28_004e75c0
+// GHIDRA_PROTO undefined OrphanCallChain_C4_I28_004e75c0()
+
+void __thiscall OrphanCallChain_C4_I28_004e75c0(int *param_1,undefined4 param_2)
+
+{
+  short *psVar1;
+  int iVar2;
+  int iVar3;
+  
+  iVar2 = *param_1;
+  psVar1 = (short *)((int)param_1 + (short)param_2 * 2 + 0x956);
+  *psVar1 = *psVar1 + 4;
+  iVar3 = (**(code **)(iVar2 + 0x78))(param_2);
+  (**(code **)(iVar2 + 0x18c))(param_2,iVar3 + 4);
+  iVar3 = (**(code **)(iVar2 + 0x7c))(param_2);
+  (**(code **)(iVar2 + 0x1a4))(param_2,iVar3 + 4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E7910
+// GHIDRA_NAME OrphanRetStub_004e7910
+// GHIDRA_PROTO undefined OrphanRetStub_004e7910()
+
+void OrphanRetStub_004e7910(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E7930
+// GHIDRA_NAME OrphanRetStub_004e7930
+// GHIDRA_PROTO undefined OrphanRetStub_004e7930()
+
+void OrphanRetStub_004e7930(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E7950
+// GHIDRA_NAME OrphanRetStub_004e7950
+// GHIDRA_PROTO undefined OrphanRetStub_004e7950()
+
+void OrphanRetStub_004e7950(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E7970
+// GHIDRA_NAME OrphanRetStub_004e7970
+// GHIDRA_PROTO undefined OrphanRetStub_004e7970()
+
+void OrphanRetStub_004e7970(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E79D0
+// GHIDRA_NAME OrphanCallChain_C3_I38_004e79d0
+// GHIDRA_PROTO undefined OrphanCallChain_C3_I38_004e79d0()
+
+uint __thiscall
+OrphanCallChain_C3_I38_004e79d0
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+
+{
+  int iVar1;
+  char cVar2;
+  uint uVar3;
+  undefined4 unaff_retaddr;
+  
+  iVar1 = *param_1;
+  cVar2 = (**(code **)(iVar1 + 0x84))(param_5);
+  if (cVar2 != '\0') {
+    uVar3 = (**(code **)(*(int *)param_1[0x25] + 0x98))(unaff_retaddr,param_2,param_3,param_5);
+    return uVar3 & 0xffffff00;
+  }
+  uVar3 = (**(code **)(iVar1 + 0x1b0))(1,unaff_retaddr,0,param_5,0);
+  return uVar3 & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E7AF0
+// GHIDRA_NAME OrphanLeaf_NoCall_Ins07_004e7af0
+// GHIDRA_PROTO undefined OrphanLeaf_NoCall_Ins07_004e7af0()
+
+void __fastcall OrphanLeaf_NoCall_Ins07_004e7af0(int param_1)
+
+{
+  if (*(int *)(param_1 + 0x894) != 0) {
+                    /* WARNING: Could not recover jumptable at 0x004e7b02. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (**(code **)(**(int **)(param_1 + 0x94) + 0x58))();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E7CA0
+// GHIDRA_NAME OrphanRetStub_004e7ca0
+// GHIDRA_PROTO undefined OrphanRetStub_004e7ca0()
+
+void OrphanRetStub_004e7ca0(void)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E83D0
+// GHIDRA_NAME QueueMapActionMissionsForPortZoneCandidates
+// GHIDRA_PROTO undefined QueueMapActionMissionsForPortZoneCandidates()
+
+void __fastcall QueueMapActionMissionsForPortZoneCandidates(TGreatPower *param_1)
+
+{
+  char cVar1;
+  short sVar2;
+  int iVar3;
+  undefined4 uVar4;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 uVar5;
+  undefined2 extraout_var_01;
+  int iVar6;
+  
+  iVar6 = 1;
+  iVar3 = (**(code **)(**(int **)&param_1->field_0x90 + 0x28))();
+  uVar5 = extraout_var;
+  if (0 < iVar3) {
+    do {
+      iVar3 = (**(code **)(**(int **)&param_1->field_0x90 + 0x24))(iVar6);
+      cVar1 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+                        (iVar3,CONCAT22(extraout_var_01,*(undefined2 *)&param_1->field_0xc));
+      (&param_1[1].field_0xc)[iVar3] = cVar1 == '\0';
+      TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1);
+      iVar6 = iVar6 + 1;
+      iVar3 = (**(code **)(**(int **)&param_1->field_0x90 + 0x28))();
+      uVar5 = extraout_var_00;
+    } while (iVar6 <= iVar3);
+  }
+  iVar3 = thunk_FindFirstPortZoneContextByNation(CONCAT22(uVar5,*(undefined2 *)&param_1->field_0xc))
+  ;
+  if (*(int *)(iVar3 + 0x2c) == 0) {
+    iVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar3 + 0x28),8);
+    if (iVar6 == 0) {
+      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar3 + 0x28),4);
+      *(undefined4 *)(iVar3 + 0x28) = uVar4;
+      *(undefined4 *)(iVar3 + 0x2c) = 1;
+    }
+    else {
+      *(int *)(iVar3 + 0x28) = iVar6;
+      *(undefined4 *)(iVar3 + 0x2c) = 2;
+    }
+  }
+  if (*(int *)(iVar3 + 0x30) == 0) {
+    *(undefined4 *)(iVar3 + 0x30) = 1;
+  }
+  sVar2 = thunk_GetShortAtOffset14OrInvalid();
+  *(undefined1 *)((int)param_1[1].needTargetByType + sVar2 + 0x50) = 1;
+  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1);
+  sVar2 = thunk_GetShortAtOffset14OrInvalid();
+  *(undefined1 *)((int)param_1[1].needTargetByType + sVar2 + 0x50) = 1;
+  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1);
+  TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(param_1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E8BF0
+// GHIDRA_NAME SetByteFlagAtOffsetAF0ByIndex
+// GHIDRA_PROTO undefined SetByteFlagAtOffsetAF0ByIndex()
+
+void __thiscall SetByteFlagAtOffsetAF0ByIndex(int param_1,int param_2,undefined1 param_3)
+
+{
+  *(undefined1 *)(param_1 + 0xaf0 + param_2) = param_3;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E8C50
+// GHIDRA_NAME ComputeAdvisoryMapNodeCompositeScoreByMode
+// GHIDRA_PROTO undefined ComputeAdvisoryMapNodeCompositeScoreByMode()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+float10 ComputeAdvisoryMapNodeCompositeScoreByMode(float param_1,float param_2)
+
+{
+  char cVar1;
+  int iVar2;
+  undefined4 uVar3;
+  int iVar4;
+  int iVar5;
+  float10 fVar6;
+  float10 fVar7;
+  float10 fVar8;
+  float10 fVar9;
+  float10 fVar10;
+  float10 fVar11;
+  float10 fVar12;
+  undefined4 uVar13;
+  
+  iVar5 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + (int)param_1 * 0xa8);
+  cVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(iVar5);
+  if (cVar1 == '\0') {
+    if (param_1 == 0.0) {
+      fVar6 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3,0,0,iVar5);
+      fVar7 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5,0,0,iVar5);
+      fVar8 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6,0,0,iVar5);
+      return fVar8 * (float10)(float)fVar7 * (float10)(float)fVar6;
+    }
+    if (param_1 == 1.4013e-45) {
+      iVar4 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + (int)param_2 * 0xa8);
+      if (iVar4 != iVar5) {
+        return (float10)_DAT_00653fd0;
+      }
+      fVar9 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1,1,0,iVar5);
+      fVar8 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3,1,0,iVar5);
+      fVar7 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5,1,0,iVar5);
+      fVar6 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6,1,0,iVar5);
+      uVar3 = 0;
+      uVar13 = 3;
+      iVar2 = (int)param_2;
+      iVar5 = iVar4;
+    }
+    else {
+      uVar3 = FindMapActionContextContainingNodeByIndex(param_1);
+      fVar9 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1,param_1,0,iVar5)
+      ;
+      fVar8 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3,param_1,0,iVar5)
+      ;
+      fVar7 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5,param_1,0,iVar5)
+      ;
+      fVar6 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6,param_1,0,iVar5)
+      ;
+      uVar13 = 7;
+      iVar2 = (int)param_1;
+    }
+    param_2 = (float)fVar8;
+    param_1 = (float)fVar7;
+    fVar7 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric
+                               (uVar13,iVar2,uVar3,iVar5);
+    return fVar7 * (float10)(float)fVar6 * (float10)param_1 * (float10)param_2 *
+           (float10)(float)fVar9;
+  }
+  if (param_1 == 0.0) {
+    fVar6 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1,0,0,iVar5);
+    fVar7 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3,0,0,iVar5);
+    fVar8 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5,0,0,iVar5);
+    fVar9 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6,0,0,iVar5);
+    fVar6 = fVar9 * (float10)(float)fVar8 * (float10)(float)fVar7 * (float10)(float)fVar6 *
+            (float10)(float)fVar6;
+    return fVar6 * fVar6;
+  }
+  if (param_1 != 1.4013e-45) {
+    uVar3 = FindMapActionContextContainingNodeByIndex(param_1);
+    fVar6 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1,param_1,0,iVar5);
+    fVar7 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(2,param_1,0,iVar5);
+    fVar8 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3,param_1,0,iVar5);
+    fVar9 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric
+                               (4,param_1,uVar3,iVar5);
+    fVar10 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5,param_1,0,iVar5);
+    fVar11 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6,param_1,0,iVar5);
+    fVar12 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric
+                                (7,param_1,uVar3,iVar5);
+    return fVar12 * (float10)(float)fVar11 * (float10)(float)fVar9 * (float10)(float)fVar10 *
+           (float10)(float)fVar7 * (float10)(float)fVar8 * (float10)(float)fVar6;
+  }
+  iVar2 = (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + (int)param_2 * 0xa8);
+  if (iVar2 != iVar5) {
+    return (float10)_DAT_00653fd0;
+  }
+  fVar6 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1,1,0,iVar5);
+  fVar7 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3,1,0,iVar5);
+  fVar8 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5,1,0,iVar5);
+  fVar9 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6,1,0,iVar5);
+  fVar10 = (float10)TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3,param_2,0,iVar2);
+  fVar6 = fVar10 * (float10)(float)fVar9 * (float10)(float)fVar8 * (float10)(float)fVar7 *
+          (float10)(float)fVar6;
+  return fVar6 * fVar6;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E92B0
+// GHIDRA_NAME PopulateCase16AdvisoryMapNodeCandidateState
+// GHIDRA_PROTO undefined PopulateCase16AdvisoryMapNodeCandidateState()
+
+void __fastcall PopulateCase16AdvisoryMapNodeCandidateState(char *param_1)
+
+{
+  TCountry *pTVar1;
+  code *pcVar2;
+  char cVar3;
+  undefined uVar4;
+  short sVar5;
+  short sVar6;
+  char *pcVar7;
+  int iVar8;
+  int iVar9;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined2 uVar11;
+  undefined3 extraout_var_03;
+  short *psVar10;
+  undefined2 uVar12;
+  char *unaff_EBX;
+  char *pcVar13;
+  TGreatPower **ppTVar14;
+  TMinor **ppTVar15;
+  undefined4 *puVar16;
+  int iVar17;
+  TCountry **ppTVar18;
+  TProvinceDesirabilityList *pTVar19;
+  undefined4 *unaff_FS_OFFSET;
+  int *local_74;
+  undefined4 local_70;
+  TProvinceDesirabilityList *pTStack_6c;
+  TGreatPower **local_68;
+  int iStack_64;
+  CString CStack_60;
+  CString CStack_5c;
+  CString aCStack_58 [2];
+  undefined4 auStack_50 [16];
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006326f2;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  pcVar13 = param_1 + 0x970;
+  auStack_50[1] = 2;
+  auStack_50[2] = 3;
+  auStack_50[3] = 4;
+  auStack_50[4] = 6;
+  pcVar7 = pcVar13;
+  do {
+    if (*pcVar7 == '\x01') {
+      *pcVar7 = '\0';
+    }
+    pcVar7 = pcVar7 + 1;
+  } while ((int)(pcVar7 + (-0x970 - (int)param_1)) < 0x180);
+  local_70 = (char *)0x0;
+  local_68 = g_apNationStates;
+  do {
+    ppTVar14 = local_68;
+    iVar9 = (int)local_70;
+    uVar12 = (undefined2)((uint)unaff_EBX >> 0x10);
+    if ((*local_68 != (TGreatPower *)0x0) && (param_1[(int)local_70 + 0x8a0] != '\0')) {
+      iVar17 = 1;
+      iVar8 = (**(code **)(**(int **)&(*local_68)->field_0x90 + 0x28))();
+      if (0 < iVar8) {
+        do {
+          iVar9 = (**(code **)(**(int **)&(*ppTVar14)->field_0x90 + 0x24))(iVar17);
+          if (pcVar13[iVar9] == '\0') {
+            cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+                              (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
+            param_1[iVar9] = cVar3 == '\0';
+            pcVar13 = param_1;
+          }
+          iVar17 = iVar17 + 1;
+          iVar8 = (**(code **)(**(int **)&(*ppTVar14)->field_0x90 + 0x28))();
+          iVar9 = (int)local_70;
+        } while (iVar17 <= iVar8);
+      }
+      cVar3 = thunk_IsNationSlotEligibleForEventProcessing(iVar9);
+      if (cVar3 != '\0') {
+        ppTVar18 = g_apTerrainTypeDescriptorTable + 7;
+        do {
+          cVar3 = (*(*ppTVar18)->vftable[0xb].slot_0x04)(iVar9);
+          if (cVar3 != '\0') {
+            iVar8 = 1;
+            uVar4 = (*(*ppTVar18)->ownedRegionList->vftable[5].GetTEventHandlerClassNamePointer)();
+            ppTVar14 = local_68;
+            iVar9 = (int)local_70;
+            if (0 < CONCAT31(extraout_var,uVar4)) {
+              do {
+                uVar4 = (*(*ppTVar18)->ownedRegionList->vftable[4].slot_0x04)(iVar8);
+                iVar9 = CONCAT31(extraout_var_00,uVar4);
+                if (pcVar13[iVar9] == '\0') {
+                  cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+                                    (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
+                  param_1[iVar9] = cVar3 == '\0';
+                  pcVar13 = param_1;
+                }
+                iVar8 = iVar8 + 1;
+                uVar4 = (*(*ppTVar18)->ownedRegionList->vftable[5].GetTEventHandlerClassNamePointer)
+                                  ();
+                ppTVar14 = local_68;
+                iVar9 = (int)local_70;
+              } while (iVar8 <= CONCAT31(extraout_var_01,uVar4));
+            }
+          }
+          ppTVar18 = ppTVar18 + 1;
+        } while ((int)ppTVar18 < 0x6a4350);
+      }
+    }
+    local_68 = ppTVar14 + 1;
+    local_70 = (char *)(iVar9 + 1);
+  } while ((int)local_68 < 0x6a438c);
+  ppTVar15 = g_apSecondaryNationStateSlots + 7;
+  local_70 = param_1 + 0x8a7;
+  do {
+    if (*local_70 != '\0') {
+      iVar8 = 1;
+      iVar9 = (**(code **)(**(int **)&(*ppTVar15)->field_0x90 + 0x28))();
+      if (0 < iVar9) {
+        do {
+          iVar9 = (**(code **)(**(int **)&(*ppTVar15)->field_0x90 + 0x24))(iVar8);
+          if (pcVar13[iVar9] == '\0') {
+            cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+                              (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
+            param_1[iVar9] = cVar3 == '\0';
+            pcVar13 = param_1;
+          }
+          iVar8 = iVar8 + 1;
+          iVar9 = (**(code **)(**(int **)&(*ppTVar15)->field_0x90 + 0x28))();
+        } while (iVar8 <= iVar9);
+      }
+    }
+    ppTVar15 = ppTVar15 + 1;
+    local_70 = local_70 + 1;
+  } while ((int)ppTVar15 < 0x6a42dc);
+  cVar3 = (*g_pDiplomacyTurnStateManager->vftable[9].slot_0x04)
+                    (CONCAT22((short)((uint)local_70 >> 0x10),*(undefined2 *)(param_1 + 0xc)));
+  if (cVar3 != '\0') {
+    puVar16 = auStack_50;
+    iVar9 = 4;
+    do {
+      (**(code **)(**(int **)(unaff_EBX + 0x98) + 0x7c))(*puVar16);
+      puVar16 = puVar16 + 1;
+      iVar9 = iVar9 + -1;
+    } while (iVar9 != 0);
+    *unaff_FS_OFFSET = uStack_10;
+    return;
+  }
+  CString::CString(aCStack_58);
+  puStack_8 = (undefined1 *)0x0;
+  CString::CString(&CStack_5c);
+  puStack_8._0_1_ = 1;
+  CString::CString(&CStack_60);
+  puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
+  FormatOverlayTerrainLabelText(aCStack_58);
+  FormatStringWithVarArgsToSharedRef
+            (&CStack_5c,&g_szDecimalFormat,
+             (int)(short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
+                               ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2
+                         ));
+  puVar16 = auStack_50;
+  iStack_64 = 4;
+  pcVar13 = param_1;
+  do {
+    local_68 = (TGreatPower **)puVar16;
+    (*g_pLocalizationTable->vftable[0xf].slot_0x04)
+              (CONCAT22((short)((uint)&CStack_60 >> 0x10),*(undefined2 *)puVar16),&CStack_60);
+    CStack_5c.m_pchData = (char *)*puVar16;
+    sVar5 = (**(code **)(**(int **)(pcVar13 + 0x98) + 0x78))(CStack_5c.m_pchData);
+    if (4 < sVar5) {
+      pTStack_6c = (TProvinceDesirabilityList *)AllocateWithFallbackHandler(0x18);
+      iVar9 = 0;
+      puStack_8._0_1_ = 3;
+      if (pTStack_6c == (TProvinceDesirabilityList *)0x0) {
+        local_74 = (int *)0x0;
+      }
+      else {
+        local_74 = (int *)TProvinceDesirabilityList::ConstructObArrayWithVtable653810(pTStack_6c);
+      }
+      puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
+      InitializeObArrayVtable653810ModeField();
+      pTStack_6c = (TProvinceDesirabilityList *)0x0;
+      do {
+        pTVar19 = pTStack_6c;
+        cVar3 = *(char *)(*(int *)&g_pGlobalMapState->field_0x10 + (int)pTStack_6c);
+        iVar8 = (int)cVar3;
+        if ((iVar8 != -1) &&
+           (uVar4 = (*g_pDiplomacyTurnStateManager->vftable[0xe].GetTDiplomacyMgrClassNamePointer)
+                              (CONCAT22((short)((uint)g_pGlobalMapState >> 0x10),
+                                        *(undefined2 *)(unaff_EBX + 0xc)),iVar8),
+           (short)CONCAT31(extraout_var_02,uVar4) != 2)) {
+          pTVar1 = g_apTerrainTypeDescriptorTable[iVar8];
+          if (199 < *(short *)&pTVar1->field_0xe) {
+            sVar5 = *(short *)&pTVar1->field_0xe;
+            uVar11 = (undefined2)((uint3)extraout_var_02 >> 8);
+            iVar17 = CONCAT22(uVar11,sVar5);
+            if (sVar5 < 200) {
+              if (sVar5 < 100) {
+                iVar17 = CONCAT22(uVar11,*(undefined2 *)&pTVar1->field_0xc);
+              }
+              else {
+                iVar17 = iVar17 + -100;
+              }
+            }
+            else {
+              iVar17 = iVar17 + -200;
+            }
+            uVar4 = (*g_pDiplomacyTurnStateManager->vftable[0xe].GetTDiplomacyMgrClassNamePointer)
+                              (CONCAT22((short)((uint)iVar17 >> 0x10),
+                                        *(undefined2 *)(unaff_EBX + 0xc)),iVar17);
+            if ((short)CONCAT31(extraout_var_03,uVar4) == 2) goto LAB_004e97a3;
+          }
+          if ((param_1[iVar9] == '\0') &&
+             ((1 << ((byte)aCStack_58[1].m_pchData & 0x1f) &
+              (int)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + 0xa2 + (int)pTVar19)) != 0)) {
+            sVar5 = *(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
+                              (*(short *)(unaff_EBX + 0xc) * 0x17 + (int)(short)cVar3) * 2);
+            cVar3 = HasDirectOrFallbackLinkedNodeType(iVar9,(int)*(short *)(unaff_EBX + 0xc),1);
+            if (cVar3 == '\0') {
+              iVar17 = CollectSecondDegreeLinksWithMinorNationFallback
+                                 (iVar9,(int)*(short *)(unaff_EBX + 0xc),auStack_50 + 4,1);
+              if (iVar17 == 0) {
+                iVar17 = FindMapActionContextContainingNodeByIndex(iVar9);
+                pTVar19 = pTStack_6c;
+                if (iVar17 == 0) goto LAB_004e97a3;
+                sVar6 = 0x28;
+              }
+              else {
+                sVar6 = 0x14;
+              }
+            }
+            else {
+              sVar6 = 0;
+            }
+            sVar5 = sVar5 + sVar6;
+            local_70._2_2_ = sVar5;
+            if ((iVar8 < 7) &&
+               (cVar3 = thunk_IsNationSlotEligibleForEventProcessing(iVar8), cVar3 != '\0')) {
+              local_70._2_2_ = local_70._2_2_ + 0x14;
+            }
+            local_70 = (char *)CONCAT22(local_70._2_2_,(short)iVar9);
+            (**(code **)(*local_74 + 0x38))(&local_70);
+            pTVar19 = pTStack_6c;
+          }
+        }
+LAB_004e97a3:
+        pTStack_6c = (TProvinceDesirabilityList *)((int)pTVar19 + 0xa8);
+        iVar9 = iVar9 + 1;
+      } while ((int)pTStack_6c < 0xfc00);
+      if (local_74[2] != 0) {
+        pcVar2 = *(code **)(*local_74 + 0x2c);
+        psVar10 = (short *)(*pcVar2)(1);
+        iVar9 = (int)*psVar10;
+        if (param_1[iVar9] == '\0') {
+          cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+                            (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
+          param_1[iVar9] = cVar3 == '\0';
+        }
+        if (1 < local_74[2]) {
+          psVar10 = (short *)(*pcVar2)(2);
+          iVar9 = (int)*psVar10;
+          if (param_1[iVar9] == '\0') {
+            cVar3 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)
+                              (iVar9,CONCAT22(uVar12,*(undefined2 *)(unaff_EBX + 0xc)));
+            param_1[iVar9] = cVar3 == '\0';
+          }
+        }
+      }
+      if (local_74 != (int *)0x0) {
+        (**(code **)(*local_74 + 0x24))();
+      }
+    }
+    puVar16 = local_68 + 1;
+    iStack_64 = iStack_64 + -1;
+    pcVar13 = unaff_EBX;
+    if (iStack_64 == 0) {
+      puStack_8._0_1_ = 1;
+      local_68 = (TGreatPower **)puVar16;
+      CString::~CString(&CStack_60);
+      puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
+      CString::~CString(&CStack_5c);
+      puStack_8 = (undefined1 *)0xffffffff;
+      CString::~CString(aCStack_58);
+      *unaff_FS_OFFSET = uStack_10;
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EA5E0
+// GHIDRA_NAME WrapperFor_ftol_At004ea5e0
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004ea5e0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004ea5e0(void)
+
+{
+  _DAT_006a2ee8 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EA610
+// GHIDRA_NAME ComputeAiIndustryActionCostFromSlot
+// GHIDRA_PROTO undefined ComputeAiIndustryActionCostFromSlot()
+
+float10 ComputeAiIndustryActionCostFromSlot(short param_1)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  short sVar4;
+  short sVar5;
+  undefined uVar6;
+  undefined uVar7;
+  undefined uVar8;
+  undefined uVar9;
+  undefined uVar10;
+  undefined uVar11;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  int iVar12;
+  
+  iVar12 = param_1 * 2;
+  uVar6 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0xb);
+  sVar1 = *(short *)(&g_industryActionCostWeightResCode0B + iVar12);
+  uVar7 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(8);
+  sVar2 = *(short *)(&g_industryActionCostWeightResCode08 + iVar12);
+  uVar8 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(9);
+  sVar3 = *(short *)(&g_industryActionCostWeightResCode09 + iVar12);
+  uVar9 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0xc);
+  sVar4 = *(short *)(&g_industryActionCostWeightResCode0C + iVar12);
+  uVar10 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0x10);
+  sVar5 = *(short *)(&g_industryActionCostWeightResCode10 + iVar12);
+  uVar11 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(3);
+  return (float10)((int)(short)CONCAT31(extraout_var,uVar6) * (int)sVar1 +
+                   (int)(short)CONCAT31(extraout_var_00,uVar7) * (int)sVar2 +
+                   (int)(short)CONCAT31(extraout_var_01,uVar8) * (int)sVar3 +
+                   (int)(short)CONCAT31(extraout_var_02,uVar9) * (int)sVar4 +
+                   (int)(short)CONCAT31(extraout_var_03,uVar10) * (int)sVar5 +
+                  (int)(short)CONCAT31(extraout_var_04,uVar11) *
+                  (int)*(short *)(&g_industryActionCostWeightResCode03 + iVar12));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EA700
+// GHIDRA_NAME ComputeAiCityActionCostFromSlotAndMode
+// GHIDRA_PROTO undefined ComputeAiCityActionCostFromSlotAndMode()
+
+float10 __thiscall ComputeAiCityActionCostFromSlotAndMode(int param_1,short param_2,char param_3)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  undefined uVar4;
+  undefined3 extraout_var;
+  int iVar5;
+  undefined3 extraout_var_00;
+  int iVar6;
+  undefined4 unaff_EDI;
+  float10 fVar7;
+  
+  iVar6 = param_2 * 0xe;
+  sVar1 = *(short *)(param_1 + 0x118);
+  sVar2 = *(short *)(&DAT_00695cd2 + iVar6);
+  iVar5 = CONCAT22(*(short *)(&DAT_00695cda + iVar6) >> 0xf,sVar2);
+  _param_2 = (float)(int)*(short *)(&DAT_00695cda + iVar6);
+  sVar3 = *(short *)(&DAT_00695cd6 + iVar6);
+  if ((sVar2 != -1) &&
+     ((sVar2 != 5 || (sVar1 < *(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 + iVar6)))
+     )) {
+    uVar4 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar5);
+    iVar5 = (int)(short)CONCAT31(extraout_var,uVar4) *
+            (int)*(short *)(&g_Classify_Nation_Military_LookupTable_00695CD4 + iVar6);
+    _param_2 = (float)iVar5 + _param_2;
+  }
+  if ((sVar3 != -1) && ((sVar3 != 5 || (sVar1 < *(short *)(&DAT_00695cd8 + iVar6))))) {
+    uVar4 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)
+                      (CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar3));
+    iVar5 = CONCAT31(extraout_var_00,uVar4);
+    _param_2 = (float)((int)(short)iVar5 * (int)*(short *)(&DAT_00695cd8 + iVar6)) + _param_2;
+  }
+  if (param_3 == '\0') {
+    fVar7 = (float10)GetCachedAiCityActionContextBias
+                               (CONCAT22((short)((uint)iVar5 >> 0x10),
+                                         *(undefined2 *)(&DAT_00695cdc + iVar6)));
+    _param_2 = (float)(fVar7 + (float10)_param_2);
+  }
+  return (float10)_param_2;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EA830
+// GHIDRA_NAME GetCachedAiCityActionContextBias
+// GHIDRA_PROTO undefined GetCachedAiCityActionContextBias()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+float10 __thiscall GetCachedAiCityActionContextBias(int param_1,short param_2)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  short sVar2;
+  float unaff_ESI;
+  
+  if (param_2 == 1) {
+    sVar2 = 0;
+  }
+  else {
+    sVar2 = (param_2 != 2) + 1;
+  }
+  uVar1 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  if (DAT_006967d8 != (short)CONCAT31(extraout_var,uVar1)) {
+    (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0xd);
+    (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
+    (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(7);
+    (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(10);
+    uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(10);
+    _DAT_006a2ea4 = unaff_ESI + 1.96182e-44;
+    _DAT_006a2ea8 =
+         (float)((short)CONCAT31(extraout_var_00,uVar1) * 2 + 1000) + unaff_ESI + 1.96182e-44;
+    _DAT_006967d4 = *(undefined2 *)(param_1 + 0xc);
+    DAT_006a2ea0 = unaff_ESI;
+    uVar1 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+    DAT_006967d8 = (short)CONCAT31(extraout_var_01,uVar1);
+  }
+  return (float10)(&DAT_006a2ea0)[sVar2];
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EA990
+// GHIDRA_NAME IterateLinkedListCursorAndRelinkNodeOwners_004ea990
+// GHIDRA_PROTO undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990()
+
+void __fastcall IterateLinkedListCursorAndRelinkNodeOwners_004ea990(int param_1)
+
+{
+  TAutoGreatPower *this;
+  bool bVar1;
+  int *piVar2;
+  int iVar3;
+  
+  do {
+    bVar1 = false;
+    piVar2 = (int *)InitializeLinkedListCursorFromOwnerHead();
+    iVar3 = LinkedListCursorHasCurrent();
+    if (iVar3 != 0) {
+      this = (TAutoGreatPower *)(*(int *)(param_1 + 0xb60) + 4);
+      iVar3 = TAutoGreatPower::Find(this);
+      if (iVar3 != 0) {
+        TAutoGreatPower::RemoveAt_60217d(this);
+      }
+      (**(code **)(*piVar2 + 0x1c))();
+      bVar1 = true;
+    }
+  } while (bVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EAFA0
+// GHIDRA_NAME SeedTrackedEntryAssignmentsFromEligibleUnits
+// GHIDRA_PROTO undefined SeedTrackedEntryAssignmentsFromEligibleUnits()
+
+void __fastcall SeedTrackedEntryAssignmentsFromEligibleUnits(int param_1)
+
+{
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  int *piVar4;
+  undefined2 extraout_var;
+  
+  iVar2 = InitializeLinkedListCursorFromOwnerHead();
+  iVar3 = LinkedListCursorHasCurrent();
+  while (iVar3 != 0) {
+    if ((*(int *)(iVar2 + 0x40) == 0) && (sVar1 = thunk_GetUnitMovementClassId(), sVar1 == 0)) {
+      piVar4 = (int *)FindFirstTrackedHandlerMatchingModeAndShortKey
+                                (*(undefined4 *)(param_1 + 0xb60),3,
+                                 CONCAT22(extraout_var,*(undefined2 *)(iVar2 + 6)),0);
+      (**(code **)(*piVar4 + 0x80))(iVar2,1);
+    }
+    iVar2 = AdvanceLinkedListCursor();
+    iVar3 = LinkedListCursorHasCurrent();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EB040
+// GHIDRA_NAME IterateLinkedListCursorEntries_004eb040
+// GHIDRA_PROTO undefined IterateLinkedListCursorEntries_004eb040()
+
+void IterateLinkedListCursorEntries_004eb040(void)
+
+{
+  int *piVar1;
+  int iVar2;
+  
+  piVar1 = (int *)InitializeLinkedListCursorFromOwnerHead();
+  iVar2 = LinkedListCursorHasCurrent();
+  while (iVar2 != 0) {
+    (**(code **)(*piVar1 + 0x40))();
+    piVar1 = (int *)AdvanceLinkedListCursor();
+    iVar2 = LinkedListCursorHasCurrent();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EB190
+// GHIDRA_NAME PlanAiDevelopmentActionsFromResourcePools
+// GHIDRA_PROTO undefined PlanAiDevelopmentActionsFromResourcePools()
+
+void __fastcall PlanAiDevelopmentActionsFromResourcePools(int param_1)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  short sVar4;
+  bool bVar5;
+  int iVar6;
+  char cVar7;
+  undefined uVar8;
+  undefined uVar9;
+  undefined uVar10;
+  undefined uVar11;
+  undefined uVar12;
+  undefined uVar13;
+  short sVar14;
+  int iVar15;
+  int *piVar16;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  int iVar17;
+  int iVar18;
+  float10 fVar19;
+  undefined4 uStack_d0;
+  char cStack_c9;
+  float fStack_c8;
+  undefined1 auStack_c1 [5];
+  undefined4 local_bc;
+  int iStack_b4;
+  int iStack_b0;
+  int iStack_ac;
+  int iStack_a8;
+  int iStack_a4;
+  undefined1 auStack_a0 [4];
+  int local_9c [5];
+  int aiStack_88 [4];
+  int local_78 [30];
+  
+  if ((param_1 != 0) && (*(int *)(param_1 + 0x894) != 0)) {
+    piVar16 = local_9c;
+    for (iVar17 = 9; iVar17 != 0; iVar17 = iVar17 + -1) {
+      *piVar16 = 0;
+      piVar16 = piVar16 + 1;
+    }
+    piVar16 = local_78;
+    for (iVar17 = 0x1e; iVar17 != 0; iVar17 = iVar17 + -1) {
+      *piVar16 = 0;
+      piVar16 = piVar16 + 1;
+    }
+    local_bc = *(undefined4 *)(param_1 + 0x44);
+    iVar17 = InitializeLinkedListCursorFromOwnerHead();
+    iVar15 = LinkedListCursorHasCurrent();
+    while (iVar15 != 0) {
+      cVar7 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
+      if (cVar7 != '\0') {
+        sVar14 = *(short *)(iVar17 + 0x38);
+        if ((local_78[*(short *)(iVar17 + 4)] == 0) ||
+           (sVar1 = *(short *)(local_78[*(short *)(iVar17 + 4)] + 0x38),
+           (short)((sVar1 / 100 + (sVar1 >> 0xf)) -
+                  (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f)) <
+           (short)((sVar14 / 100 + (sVar14 >> 0xf)) -
+                  (short)((longlong)(int)sVar14 * 0x51eb851f >> 0x3f)))) {
+          local_78[*(short *)(iVar17 + 4)] = iVar17;
+        }
+      }
+      iVar17 = AdvanceLinkedListCursor();
+      iVar15 = LinkedListCursorHasCurrent();
+    }
+    local_bc = *(undefined4 *)(param_1 + 0xb60);
+    piVar16 = (int *)InitializeLinkedListCursorFromOwnerHead();
+    iVar17 = LinkedListCursorHasCurrent();
+    while (iVar17 != 0) {
+      iVar17 = *piVar16;
+      (**(code **)(iVar17 + 0xc))();
+      if ((char)piVar16[4] == '\0') {
+        (**(code **)(iVar17 + 0x2c))(local_9c,1);
+      }
+      piVar16 = (int *)AdvanceLinkedListCursor();
+      iVar17 = LinkedListCursorHasCurrent();
+    }
+    (**(code **)(**(int **)(param_1 + 0x98) + 0xc))();
+    sVar14 = PlanAiDevelopmentActionsFromResourcePools_Impl();
+    iStack_b4 = sVar14 + 2;
+    iVar17 = (int)sVar14 / 2 + 1;
+    fVar19 = (float10)PlanAiDevelopmentActionsFromResourcePools_Impl_At004be6f0(local_9c);
+    fStack_c8 = (float)fVar19;
+    iStack_a8 = 0;
+    iStack_ac = 0;
+    iStack_b0 = 0;
+    do {
+      iVar6 = iStack_a8;
+      iVar15 = iStack_ac;
+      uStack_d0 = 0xffffffff;
+      cVar7 = SelectBestCityDevelopmentFromResourcePools
+                        ((int)*(short *)(param_1 + 0xc),local_9c,local_78,&cStack_c9,auStack_c1,
+                         &uStack_d0,0,auStack_a0);
+      if (cVar7 == '\0') {
+        return;
+      }
+      if (cStack_c9 == '\0') {
+        iVar18 = iVar6 + 1;
+        iStack_a8 = iVar18;
+        if (iStack_b4 <= iVar6) goto LAB_004eb361;
+        bVar5 = true;
+      }
+      else {
+        iStack_ac = iVar15 + 1;
+        bVar5 = iVar15 < iVar17;
+        iVar15 = iStack_ac;
+        iVar18 = iVar6;
+        if (bVar5) {
+          bVar5 = true;
+        }
+        else {
+LAB_004eb361:
+          bVar5 = false;
+        }
+      }
+      if ((iVar17 < iVar15) && (iStack_b4 < iVar18)) {
+        return;
+      }
+      if (cStack_c9 == '\0') {
+        if (bVar5) {
+          (**(code **)(**(int **)(param_1 + 0x98) + 0x70))(uStack_d0);
+        }
+        fVar19 = (float10)ComputeAiCityActionCostFromSlotAndMode(uStack_d0,0);
+        iVar15 = 0;
+        piVar16 = local_9c;
+        fStack_c8 = (float)((float10)fStack_c8 - fVar19);
+        do {
+          sVar14 = GetNormalizedCityActionResourceCostPercent(uStack_d0,iVar15);
+          iVar15 = iVar15 + 1;
+          *piVar16 = *piVar16 - (int)sVar14;
+          piVar16 = piVar16 + 1;
+        } while (iVar15 < 5);
+      }
+      else {
+        if (bVar5) {
+          (**(code **)(**(int **)(param_1 + 0x98) + 0x6c))(uStack_d0);
+        }
+        iVar15 = (short)uStack_d0 * 2;
+        uVar8 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0xb);
+        sVar14 = *(short *)(&g_industryActionCostWeightResCode0B + iVar15);
+        uVar9 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(8);
+        sVar1 = *(short *)(&g_industryActionCostWeightResCode08 + iVar15);
+        uVar10 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(9);
+        sVar2 = *(short *)(&g_industryActionCostWeightResCode09 + iVar15);
+        uVar11 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0x10);
+        sVar3 = *(short *)(&g_industryActionCostWeightResCode10 + iVar15);
+        uVar12 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0xc);
+        sVar4 = *(short *)(&g_industryActionCostWeightResCode0C + iVar15);
+        uVar13 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(3);
+        iStack_a4 = (int)(short)CONCAT31(extraout_var,uVar8) * (int)sVar14 +
+                    (int)(short)CONCAT31(extraout_var_00,uVar9) * (int)sVar1 +
+                    (int)(short)CONCAT31(extraout_var_01,uVar10) * (int)sVar2 +
+                    (int)(short)CONCAT31(extraout_var_02,uVar11) * (int)sVar3 +
+                    (int)(short)CONCAT31(extraout_var_03,uVar12) * (int)sVar4 +
+                    (int)(short)CONCAT31(extraout_var_04,uVar13) *
+                    (int)*(short *)(&g_industryActionCostWeightResCode03 + iVar15);
+        iVar15 = 0;
+        piVar16 = aiStack_88;
+        fStack_c8 = fStack_c8 - (float)iStack_a4;
+        do {
+          sVar14 = GetNormalizedIndustryActionResourceCostPercent(iVar15,uStack_d0);
+          iVar15 = iVar15 + 1;
+          *piVar16 = *piVar16 - (int)sVar14;
+          piVar16 = piVar16 + 1;
+        } while (iVar15 < 4);
+      }
+      iStack_b0 = iStack_b0 + 1;
+    } while (iStack_b0 < 99);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EB5D0
+// GHIDRA_NAME OrphanCallChain_C4_I75_004eb5d0
+// GHIDRA_PROTO undefined OrphanCallChain_C4_I75_004eb5d0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+undefined2 OrphanCallChain_C4_I75_004eb5d0(int *param_1,int *param_2)
+
+{
+  int iVar1;
+  int iVar2;
+  float10 fVar3;
+  float10 fVar4;
+  
+  iVar1 = *param_1;
+  (**(code **)(iVar1 + 0xc))();
+  iVar2 = *param_2;
+  (**(code **)(iVar2 + 0xc))();
+  if ((char)param_1[2] < (char)param_2[2]) {
+    return 0xffff;
+  }
+  fVar3 = (float10)(**(code **)(iVar1 + 0x68))();
+  fVar3 = (float10)_DAT_006545d8 - fVar3;
+  if ((float10)_DAT_006545d0 <= fVar3) {
+    fVar3 = (float10)(float)param_1[3] * fVar3;
+  }
+  else {
+    fVar3 = fVar3 / (float10)(float)param_1[3];
+  }
+  fVar4 = (float10)(**(code **)(iVar2 + 0x68))();
+  fVar4 = (float10)_DAT_006545d8 - fVar4;
+  if ((float10)_DAT_006545d0 <= fVar4) {
+    fVar4 = fVar4 * (float10)(float)param_2[3];
+  }
+  else {
+    fVar4 = fVar4 / (float10)(float)param_2[3];
+  }
+  if (fVar4 < (float10)(float)fVar3) {
+    return 0xffff;
+  }
+  if ((float10)(float)fVar3 < fVar4) {
+    return 1;
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EB6B0
+// GHIDRA_NAME UpdateTrackedEntryEligibilityByClassMaskAndRatio
+// GHIDRA_PROTO undefined UpdateTrackedEntryEligibilityByClassMaskAndRatio()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void __fastcall UpdateTrackedEntryEligibilityByClassMaskAndRatio(int param_1)
+
+{
+  int *piVar1;
+  float fVar2;
+  float fVar3;
+  bool bVar4;
+  char cVar5;
+  int iVar6;
+  int iVar7;
+  int *piVar8;
+  uint uVar9;
+  uint uVar10;
+  float10 fVar11;
+  float10 fVar12;
+  int aiStack_18 [6];
+  
+  (**(code **)(**(int **)(param_1 + 0xb60) + 0x68))(&LAB_0040448a,param_1);
+  aiStack_18[0] = 0;
+  uVar10 = 3;
+  aiStack_18[1] = 0;
+  aiStack_18[2] = 0;
+  aiStack_18[3] = 0;
+  iVar6 = InitializeLinkedListCursorFromOwnerHead();
+  iVar7 = LinkedListCursorHasCurrent();
+  while (iVar7 != 0) {
+    if ((*(char *)(iVar6 + 0x10) == '\0') && (*(char *)(iVar6 + 0x11) != 0)) {
+      aiStack_18[*(char *)(iVar6 + 0x11)] = iVar6;
+    }
+    iVar6 = AdvanceLinkedListCursor();
+    iVar7 = LinkedListCursorHasCurrent();
+  }
+  piVar8 = (int *)InitializeLinkedListCursorFromOwnerHead();
+  iVar6 = LinkedListCursorHasCurrent();
+  do {
+    if (iVar6 == 0) {
+      return;
+    }
+    uVar9 = (uint)*(char *)((int)piVar8 + 0x11);
+    if ((int *)aiStack_18[uVar9] == piVar8) {
+      aiStack_18[uVar9] = 0;
+    }
+    if (((uVar9 == 0) || ((uVar9 & uVar10) == uVar9)) || (bVar4 = false, (char)piVar8[2] == '\0')) {
+      bVar4 = true;
+    }
+    if (bVar4) {
+      if (((uVar9 & 1) != 0) && (cVar5 = (**(code **)(*piVar8 + 0x50))(), cVar5 == '\0')) {
+        bVar4 = false;
+      }
+      if ((bVar4) && (uVar9 != 0)) {
+        piVar1 = (int *)aiStack_18[uVar9];
+        if (piVar1 != (int *)0x0) {
+          fVar2 = (float)piVar1[3];
+          fVar11 = (float10)(**(code **)(*piVar1 + 0x6c))();
+          fVar3 = (float)piVar8[3];
+          fVar12 = (float10)(**(code **)(*piVar8 + 0x6c))();
+          if ((float10)fVar3 / fVar12 <
+              (float10)(float)((float10)fVar2 / fVar11) * (float10)_DAT_006545f8) {
+            bVar4 = false;
+            goto LAB_004eb7fd;
+          }
+        }
+        uVar10 = uVar10 & ~uVar9;
+      }
+    }
+LAB_004eb7fd:
+    (**(code **)(*piVar8 + 0x94))(!bVar4);
+    piVar8 = (int *)AdvanceLinkedListCursor();
+    iVar6 = LinkedListCursorHasCurrent();
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EB8B0
+// GHIDRA_NAME AssignTrackedEntryActionsByProfileToOrdersOrUnits
+// GHIDRA_PROTO undefined AssignTrackedEntryActionsByProfileToOrdersOrUnits()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void __fastcall AssignTrackedEntryActionsByProfileToOrdersOrUnits(int param_1)
+
+{
+  code *pcVar1;
+  code *pcVar2;
+  float fVar3;
+  int *piVar4;
+  int iVar5;
+  int *piVar6;
+  int iVar7;
+  int iVar8;
+  int *piVar9;
+  int iVar10;
+  int *piVar11;
+  float10 fVar12;
+  float10 fVar13;
+  float fVar14;
+  float fStack_78;
+  int local_70;
+  int aiStack_50 [9];
+  float afStack_2c [11];
+  
+  piVar4 = (int *)InitializeLinkedListCursorFromOwnerHead();
+  iVar5 = LinkedListCursorHasCurrent();
+  while (iVar5 != 0) {
+    (**(code **)(*piVar4 + 0x98))();
+    piVar4 = (int *)AdvanceLinkedListCursor();
+    iVar5 = LinkedListCursorHasCurrent();
+  }
+  do {
+    piVar4 = (int *)0x0;
+    piVar6 = (int *)InitializeLinkedListCursorFromOwnerHead();
+    iVar5 = LinkedListCursorHasCurrent();
+    while (iVar5 != 0) {
+      piVar6 = (int *)(**(code **)(*piVar6 + 0x5c))();
+      if ((piVar6 == (int *)0x0) || ((char)piVar6[4] != '\0')) goto LAB_004eba38;
+      if (piVar4 == (int *)0x0) {
+LAB_004eba36:
+        piVar4 = piVar6;
+      }
+      else {
+        pcVar1 = *(code **)(*piVar6 + 0x68);
+        fVar12 = (float10)(*pcVar1)();
+        fVar12 = (float10)_DAT_006545d8 - fVar12;
+        if ((float10)_DAT_006545d0 <= fVar12) {
+          fVar12 = (float10)(float)piVar6[3] * fVar12;
+        }
+        else {
+          fVar12 = fVar12 / (float10)(float)piVar6[3];
+        }
+        pcVar2 = *(code **)(*piVar4 + 0x68);
+        fVar13 = (float10)(*pcVar2)();
+        fVar13 = (float10)_DAT_006545d8 - fVar13;
+        if ((float10)_DAT_006545d0 <= fVar13) {
+          fVar13 = fVar13 * (float10)(float)piVar4[3];
+        }
+        else {
+          fVar13 = fVar13 / (float10)(float)piVar4[3];
+        }
+        if (((float)_DAT_006545f0 < (float)fVar12) && ((char)piVar6[2] < (char)piVar4[2]))
+        goto LAB_004eba36;
+        if ((fVar13 <= (float10)_DAT_006545f0) || ((char)piVar6[2] <= (char)piVar4[2])) {
+          fVar12 = (float10)(*pcVar2)();
+          fVar12 = (float10)_DAT_006545d8 - fVar12;
+          if ((float10)_DAT_006545d0 <= fVar12) {
+            fVar12 = (float10)(float)piVar4[3] * fVar12;
+          }
+          else {
+            fVar12 = fVar12 / (float10)(float)piVar4[3];
+          }
+          fVar13 = (float10)(*pcVar1)();
+          fVar13 = (float10)_DAT_006545d8 - fVar13;
+          if ((float10)_DAT_006545d0 <= fVar13) {
+            fVar13 = fVar13 * (float10)(float)piVar6[3];
+          }
+          else {
+            fVar13 = fVar13 / (float10)(float)piVar6[3];
+          }
+          if ((float10)(float)fVar12 < fVar13) goto LAB_004eba36;
+        }
+      }
+LAB_004eba38:
+      piVar6 = (int *)AdvanceLinkedListCursor();
+      iVar5 = LinkedListCursorHasCurrent();
+    }
+    if (piVar4 == (int *)0x0) {
+LAB_004ebaff:
+      while( true ) {
+        piVar6 = (int *)0x0;
+        piVar9 = (int *)InitializeLinkedListCursorFromOwnerHead();
+        iVar5 = LinkedListCursorHasCurrent();
+        piVar4 = (int *)0x0;
+        while (iVar5 != 0) {
+          piVar9 = (int *)(**(code **)(*piVar9 + 0x58))();
+          piVar11 = piVar4;
+          if ((piVar9 != (int *)0x0) && ((char)piVar9[4] == '\0')) {
+            fVar12 = (float10)(**(code **)(*piVar9 + 0x68))();
+            fVar12 = (float10)_DAT_006545d8 - fVar12;
+            if ((float10)_DAT_006545d0 <= fVar12) {
+              fVar12 = (float10)(float)piVar9[3] * fVar12;
+            }
+            else {
+              fVar12 = fVar12 / (float10)(float)piVar9[3];
+            }
+            fVar14 = (float)fVar12;
+            if (((piVar6 == (int *)0x0) && ((float)_DAT_006545f0 < fVar14)) &&
+               ((*(byte *)((int)piVar9 + 0x11) & 1) != 0)) {
+              piVar6 = piVar9;
+            }
+            piVar11 = piVar9;
+            if (piVar4 != (int *)0x0) {
+              fVar12 = (float10)(**(code **)(*piVar4 + 0x68))();
+              fVar12 = (float10)_DAT_006545d8 - fVar12;
+              if ((float10)_DAT_006545d0 <= fVar12) {
+                fVar12 = fVar12 * (float10)(float)piVar4[3];
+              }
+              else {
+                fVar12 = fVar12 / (float10)(float)piVar4[3];
+              }
+              if ((((fVar14 <= (float)_DAT_006545f0) || ((char)piVar4[2] <= (char)piVar9[2])) &&
+                  ((fVar12 <= (float10)_DAT_006545f0 ||
+                   (piVar11 = piVar4, (char)piVar9[2] <= (char)piVar4[2])))) &&
+                 (piVar11 = piVar4, fVar12 < (float10)fVar14)) {
+                piVar11 = piVar9;
+              }
+            }
+          }
+          piVar9 = (int *)AdvanceLinkedListCursor();
+          iVar5 = LinkedListCursorHasCurrent();
+          piVar4 = piVar11;
+        }
+        if (piVar4 == (int *)0x0) break;
+        if (((piVar6 != (int *)0x0) && ((char)piVar6[2] <= (char)piVar4[2])) &&
+           ((*(byte *)((int)piVar4 + 0x11) & 1) == 0)) {
+          fVar14 = (float)piVar4[3];
+          fVar12 = (float10)(**(code **)(*piVar4 + 0x6c))();
+          fVar3 = (float)piVar6[3];
+          fVar13 = (float10)(**(code **)(*piVar6 + 0x6c))();
+          if ((float)((float10)fVar14 / fVar12) < (float)((float10)fVar3 / fVar13)) {
+            piVar4 = piVar6;
+          }
+        }
+        iVar5 = *piVar4;
+        piVar4 = aiStack_50 + 2;
+        for (iVar10 = 9; iVar10 != 0; iVar10 = iVar10 + -1) {
+          *piVar4 = 0;
+          piVar4 = piVar4 + 1;
+        }
+        (**(code **)(iVar5 + 0x2c))(aiStack_50 + 2,0);
+        local_70 = 0;
+        piVar4 = aiStack_50;
+        iVar10 = 9;
+        do {
+          if (*piVar4 < 0) {
+            *piVar4 = 0;
+          }
+          iVar7 = *piVar4;
+          piVar4 = piVar4 + 1;
+          local_70 = local_70 + iVar7;
+          iVar10 = iVar10 + -1;
+        } while (iVar10 != 0);
+        if (local_70 == 0) {
+          local_70 = 1;
+        }
+        iVar10 = 0;
+        do {
+          iVar7 = iVar10 + 4;
+          *(float *)((int)afStack_2c + iVar10) =
+               (float)*(int *)((int)aiStack_50 + iVar10) / (float)local_70;
+          iVar10 = iVar7;
+        } while (iVar7 < 0x24);
+        iVar10 = 0;
+        fVar14 = 0.0;
+        iVar7 = InitializeLinkedListCursorFromOwnerHead();
+        iVar8 = LinkedListCursorHasCurrent();
+        while (iVar8 != 0) {
+          if ((*(int *)(iVar7 + 0x40) == 0) &&
+             ((fVar12 = (float10)(**(code **)(iVar5 + 0x78))(iVar7,afStack_2c), iVar10 == 0 ||
+              ((float10)fVar14 < fVar12)))) {
+            fVar14 = (float)fVar12;
+            iVar10 = iVar7;
+          }
+          iVar7 = AdvanceLinkedListCursor();
+          iVar8 = LinkedListCursorHasCurrent();
+        }
+        if (iVar10 == 0) {
+          return;
+        }
+        (**(code **)(iVar5 + 0x80))(iVar10,1);
+      }
+      return;
+    }
+    iVar5 = *piVar4;
+    piVar4 = aiStack_50 + 2;
+    for (iVar10 = 9; iVar10 != 0; iVar10 = iVar10 + -1) {
+      *piVar4 = 0;
+      piVar4 = piVar4 + 1;
+    }
+    iVar7 = (**(code **)(iVar5 + 0x2c))(aiStack_50 + 2,0);
+    iVar10 = 0;
+    do {
+      iVar8 = iVar10 + 4;
+      *(float *)((int)afStack_2c + iVar10 + 8) =
+           (float)*(int *)((int)aiStack_50 + iVar10 + 8) / (float)iVar7;
+      iVar10 = iVar8;
+    } while (iVar8 < 0x24);
+    iVar7 = 0;
+    fStack_78 = 0.0;
+    for (iVar10 = thunk_GetNavyPrimaryOrderListHead(); iVar10 != 0; iVar10 = *(int *)(iVar10 + 0x24)
+        ) {
+      if (((*(short *)(iVar10 + 0x14) == *(short *)(param_1 + 0xc)) &&
+          (*(int *)(iVar10 + 0x2c) == 0)) &&
+         ((fVar12 = (float10)(**(code **)(iVar5 + 0x7c))(iVar10,afStack_2c + 2), iVar7 == 0 ||
+          ((float10)fStack_78 < fVar12)))) {
+        fStack_78 = (float)fVar12;
+        iVar7 = iVar10;
+      }
+    }
+    if (iVar7 == 0) goto LAB_004ebaff;
+    (**(code **)(iVar5 + 0x84))(iVar7,1);
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EBEA0
+// GHIDRA_NAME thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner
+// GHIDRA_PROTO undefined __thiscall thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner(void)
+
+void __thiscall
+TAutoGreatPower::thunk_thunk_PruneInvalidTrackedEntriesAndNotifyOwner(TAutoGreatPower *this)
+
+{
+  PruneInvalidTrackedEntriesAndNotifyOwner(this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EBFF0
+// GHIDRA_NAME WrapperFor_ftol_At004ebff0
+// GHIDRA_PROTO undefined WrapperFor_ftol_At004ebff0()
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void WrapperFor_ftol_At004ebff0(void)
+
+{
+  _DAT_006a2f48 = ftol();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EC020
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTMinister_At004ec020
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTMinister_At004ec020()
+
+TMinister * Helper_Uses_thunk_ConstructTMinister_At004ec020(void)
+
+{
+  TMinister *this;
+  TMinister *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063271a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TMinister *)AllocateWithFallbackHandler(0x94);
+  local_4 = 0;
+  pTVar1 = (TMinister *)0x0;
+  if (this != (TMinister *)0x0) {
+    TMinister::ConstructTMinister(this);
+    this->vftable = (TMinisterVtbl *)&TDefenseMinister::_vftable_;
+    pTVar1 = this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return pTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EC140
+// GHIDRA_NAME DestructTDefenseMinisterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTDefenseMinisterAndMaybeFree_Impl()
+
+void __fastcall DestructTDefenseMinisterAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004EC160
+// GHIDRA_NAME InitializeTMinisterBaseOrderArrayMetrics
+// GHIDRA_PROTO undefined InitializeTMinisterBaseOrderArrayMetrics()
+
+void __fastcall InitializeTMinisterBaseOrderArrayMetrics(TIndexAndRankList *param_1)
+
+{
+  undefined2 *puVar1;
+  int iVar2;
+  
+  TIndexAndRankList::thunk_InitializeTMinisterBaseOrderArray(param_1);
+  puVar1 = (undefined2 *)&param_1->field_0x14;
+  *(undefined2 *)&param_1->field_0x10 = 0;
+  *(undefined2 *)&param_1->field_0x12 = 0;
+  *(undefined2 *)&param_1[5].field_0x14 = 0;
+  *(undefined2 *)&param_1[5].field_0x16 = 0;
+  *(undefined2 *)&param_1[6].vftable = 0;
+  *(undefined2 *)((int)&param_1[6].vftable + 2) = 0;
+  iVar2 = 0x1e;
+  do {
+    puVar1[0x1e] = 0;
+    *puVar1 = 0;
+    puVar1 = puVar1 + 1;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004ED400
+// GHIDRA_NAME Helper_Uses_thunk_ConstructTMinister_At004ed400
+// GHIDRA_PROTO undefined Helper_Uses_thunk_ConstructTMinister_At004ed400()
+
+TMinister * Helper_Uses_thunk_ConstructTMinister_At004ed400(void)
+
+{
+  TMinister *this;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063278a;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this = (TMinister *)AllocateWithFallbackHandler(0x94);
+  local_4 = 0;
+  if (this != (TMinister *)0x0) {
+    TMinister::ConstructTMinister(this);
+    this->vftable = (TMinisterVtbl *)&TNapoleonMinisterVtbl_00654a28;
+    *(undefined2 *)&this->field_0xc = 0;
+    *unaff_FS_OFFSET = local_c;
+    return this;
+  }
+  *unaff_FS_OFFSET = local_c;
+  return (TMinister *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004ED540
+// GHIDRA_NAME DestructTNapoleonMinisterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined DestructTNapoleonMinisterAndMaybeFree_Impl()
+
+void __fastcall DestructTNapoleonMinisterAndMaybeFree_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
 }
 

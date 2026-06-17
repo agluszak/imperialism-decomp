@@ -4,27 +4,65 @@
 // Bucket: TIncludeView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CD50
-// GHIDRA_NAME TIncludeView::GetTIncludeViewClassNamePointer
-// GHIDRA_PROTO undefined GetTIncludeViewClassNamePointer()
+// GHIDRA_NAME TIncludeView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TIncludeView::GetTIncludeViewClassNamePointer(void)
+CRuntimeClass * __thiscall TIncludeView::GetTEventHandlerClassNamePointer(TIncludeView *this)
 
 {
-  return &PTR_s_TIncludeView_006495d0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CE40
-// GHIDRA_NAME TIncludeView::DestructTIncludeViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTIncludeViewAndMaybeFree()
+// GHIDRA_NAME TIncludeView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TIncludeView::DestructTIncludeViewAndMaybeFree(undefined4 param_1,byte param_2)
+TIncludeView * __thiscall TIncludeView::_scalar_deleting_destructor_(TIncludeView *this)
 
 {
-  DestructTIncludeViewAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTIncludeViewAndMaybeFree_Impl((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048CFD0
+// GHIDRA_NAME TIncludeView::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO void __thiscall OrphanCallChain_C6_I49_004875d0(int * pEventPacket)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Dispatches turn-event packet through factory manager using event code from packet field pEventPacket[0x18] (offset 0x60), then signals completion to packet window host.
+// GHIDRA_COMMENT_END
+
+/* Dispatches turn-event packet through factory manager using event code from packet field
+   pEventPacket[0x18] (offset 0x60), then signals completion to packet window host. */
+
+void __thiscall TIncludeView::OrphanCallChain_C6_I49_004875d0(TIncludeView *this,int *pEventPacket)
+
+{
+  TIncludeViewVtbl *pTVar1;
+  undefined2 extraout_var;
+  undefined2 uVar3;
+  int iVar2;
+  
+  if (*(short *)&this->field_0x60 != -1) {
+    uVar3 = 0;
+    if (this->ownerContext != (TView *)0x0) {
+      pTVar1 = this->vftable;
+      (*pTVar1[0x1e].GetTEventHandlerClassNamePointer)(&DAT_006a1ab0,0);
+      (*pTVar1[0x1e].slot_0x04)(&this->ownerContext->field34,0);
+      uVar3 = extraout_var;
+    }
+    iVar2 = (**(code **)(*DAT_006a1b24 + 0x2c))
+                      (0,this,CONCAT22(uVar3,*(undefined2 *)&this->field_0x60),&DAT_006a1ab0);
+    if (iVar2 == 0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0,0x846);
+    }
+  }
+  SendMessageA(*(HWND *)(this->field50 + 0x1c),0x4ef,1,0);
+  return;
 }
 

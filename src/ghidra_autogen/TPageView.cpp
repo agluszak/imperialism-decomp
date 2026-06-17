@@ -5,43 +5,40 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00435590
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590
-// GHIDRA_PROTO undefined WrapperFor_ConstructTPageViewBaseState_At00435590()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At00435590(void)
 
-undefined4 * __fastcall
-TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590(undefined4 *param_1)
+TPageView * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435590(TPageView *this)
 
 {
-  ConstructTPageViewBaseState();
-  *param_1 = &PTR_LAB_00640f58;
-  *(undefined2 *)(param_1 + 0x21) = 0xffff;
-  return param_1;
+  ConstructTPageViewBaseState(this);
+  this->vftable = (TPageViewVtbl *)&TTradePageSellViewVtbl_00640f58;
+  *(undefined2 *)&this[1].vftable = 0xffff;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00435610
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610
-// GHIDRA_PROTO undefined WrapperFor_ConstructTPageViewBaseState_At00435610()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At00435610(void)
 
-undefined4 * __fastcall
-TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610(undefined4 *param_1)
+TPageView * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At00435610(TPageView *this)
 
 {
-  ConstructTPageViewBaseState();
-  *param_1 = &PTR_LAB_00640d48;
-  *(undefined2 *)(param_1 + 0x21) = 0xffff;
-  return param_1;
+  ConstructTPageViewBaseState(this);
+  this->vftable = (TPageViewVtbl *)&TTradePageBuyViewVtbl_00640d48;
+  *(undefined2 *)&this[1].vftable = 0xffff;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004600C0
 // GHIDRA_NAME TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0
-// GHIDRA_PROTO undefined WrapperFor_ConstructTPageViewBaseState_At004600c0()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
 
-undefined4 * __fastcall
-TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0(undefined4 *param_1)
+TPageView * __thiscall TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0(TPageView *this)
 
 {
-  ConstructTPageViewBaseState();
-  *param_1 = &PTR_LAB_00645ca8;
-  return param_1;
+  ConstructTPageViewBaseState(this);
+  this->vftable = (TPageViewVtbl *)&TTechStorePageVtbl_00645ca8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F8E0
@@ -65,7 +62,7 @@ TView * TPageView::CreateTPageViewInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0065e270;
+    this->vftable = (TViewVtbl *)&TPageViewVtbl_0065e270;
     this[1].controlTag = 0;
     this[1].ownerContext = (TView *)0x0;
     *(undefined2 *)((int)&this[1].vftable + 2) = 0xffff;
@@ -78,42 +75,316 @@ TView * TPageView::CreateTPageViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F9A0
-// GHIDRA_NAME TPageView::GetTPageViewClassNamePointer
-// GHIDRA_PROTO undefined GetTPageViewClassNamePointer()
+// GHIDRA_NAME TPageView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TPageView::GetTPageViewClassNamePointer(void)
+CRuntimeClass * __thiscall TPageView::GetTEventHandlerClassNamePointer(TPageView *this)
 
 {
-  return &PTR_s_TPageView_0065e1a0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F9C0
 // GHIDRA_NAME TPageView::ConstructTPageViewBaseState
-// GHIDRA_PROTO undefined ConstructTPageViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTPageViewBaseState(void)
 
-TView * __fastcall TPageView::ConstructTPageViewBaseState(TView *param_1)
+TPageView * __thiscall TPageView::ConstructTPageViewBaseState(TPageView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1->vftable = &PTR_LAB_0065e270;
-  param_1[1].controlTag = 0;
-  param_1[1].ownerContext = (TView *)0x0;
-  *(undefined2 *)((int)&param_1[1].vftable + 2) = 0xffff;
-  *(undefined2 *)&param_1[1].field04 = 1;
-  return param_1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &TPageViewVtbl_0065e270;
+  *(undefined4 *)&this->field_0x7c = 0;
+  *(undefined4 *)&this->field_0x80 = 0;
+  *(undefined2 *)&this->field_0x62 = 0xffff;
+  *(undefined2 *)&this->field_0x64 = 1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056FA00
-// GHIDRA_NAME TPageView::DestructTPageViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTPageViewAndMaybeFree()
+// GHIDRA_NAME TPageView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TPageView::DestructTPageViewAndMaybeFree(TView *param_1,byte param_2)
+TPageView * __thiscall TPageView::_scalar_deleting_destructor_(TPageView *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056FA50
+// GHIDRA_NAME TPageView::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TPageView::OrphanLeaf_NoCall_Ins07_004d8920(TPageView *this)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 *puStack00000004;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00636274;
+  *unaff_FS_OFFSET = &local_c;
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  local_4 = 0;
+  puStack00000004 = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    InitializeRefCountedObjectBaseVtable();
+    local_4 = CONCAT31(local_4._1_3_,1);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &TList::_vftable_;
+  }
+  local_4 = 0xffffffff;
+  *(undefined4 **)&this->field_0x7c = puVar1;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  puStack00000004 = puVar1;
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    *puVar1 = &RefCountedObjectBase::_vftable_;
+    local_4 = 3;
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &TList::_vftable_;
+  }
+  local_4 = 0xffffffff;
+  *(undefined4 **)&this->field_0x78 = puVar1;
+  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar1 = (undefined4 *)0x0;
+  }
+  else {
+    puVar1[3] = 0;
+    puVar1[4] = 0;
+    puVar1[2] = 0;
+    puVar1[1] = 0;
+    puVar1[5] = 0;
+    puVar1[6] = 10;
+    *puVar1 = &CObjectVtbl_00650a08;
+  }
+  *(int *)&this->field_0x74 = this->field38 + -1;
+  *(undefined4 **)&this->field_0x80 = puVar1;
+  *(undefined4 *)&this->field_0x6c = 0;
+  *(undefined4 *)&this->field_0x68 = 0;
+  *(int *)&this->field_0x70 = this->field34 + -1;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056FBB0
+// GHIDRA_NAME TPageView::OrphanCallChain_C1_I06_0056fbb0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_0056fbb0(void)
+
+void __thiscall TPageView::OrphanCallChain_C1_I06_0056fbb0(TPageView *this)
+
+{
+  (**(code **)(**(int **)&this->field_0x7c + 0x30))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056FBD0
+// GHIDRA_NAME TPageView::OrphanCallChain_C1_I06_0056fbd0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_0056fbd0(void)
+
+void __thiscall TPageView::OrphanCallChain_C1_I06_0056fbd0(TPageView *this)
+
+{
+  (**(code **)(**(int **)&this->field_0x78 + 0x30))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056FBF0
+// GHIDRA_NAME TPageView::ResetSelectableOptionEntriesExceptColorAndOkay
+// GHIDRA_PROTO undefined __thiscall ResetSelectableOptionEntriesExceptColorAndOkay(void)
+
+void __thiscall TPageView::ResetSelectableOptionEntriesExceptColorAndOkay(TPageView *this)
+
+{
+  int *piVar1;
+  int iVar2;
+  
+  InitializeSelectableTextOptionEntryIteratorContext(this);
+  piVar1 = (int *)BeginSelectableTextOptionEntryIterator();
+  iVar2 = IsSelectableTextOptionEntryIteratorValid();
+  while (iVar2 != 0) {
+    iVar2 = piVar1[7];
+    if ((((iVar2 != 0x6c636f72) && (iVar2 != 0x72636f72)) && (iVar2 != 0x6f6b6179)) &&
+       (piVar1[0xf] != 0x646f6e74)) {
+      (**(code **)(*piVar1 + 0x1c))();
+    }
+    piVar1 = (int *)AdvanceSelectableTextOptionEntryIterator();
+    iVar2 = IsSelectableTextOptionEntryIteratorValid();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056FC80
+// GHIDRA_NAME TPageView::OrphanCallChain_C8_I82_0056fc80
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C8_I82_0056fc80(void)
+
+void __thiscall TPageView::OrphanCallChain_C8_I82_0056fc80(TPageView *this)
+
+{
+  short sVar1;
+  int iVar2;
+  int iVar3;
+  short unaff_BP;
+  int iVar4;
+  short sVar5;
+  
+  (**(code **)(**(int **)&this->field_0x80 + 0x30))();
+  sVar5 = *(short *)&this->field_0x6c;
+  iVar4 = 1;
+  (**(code **)(**(int **)&this->field_0x80 + 0x14))(1);
+  iVar2 = (**(code **)(**(int **)&this->field_0x7c + 0x48))();
+  if (0 < iVar2) {
+    do {
+      iVar2 = (**(code **)(**(int **)&this->field_0x7c + 0x4c))(iVar4);
+      sVar1 = *(short *)(iVar2 + 6);
+      if ((sVar1 != 0) && (sVar1 != unaff_BP)) {
+        iVar3 = (**(code **)(**(int **)&this->field_0x78 + 0x4c))((int)sVar1);
+        sVar5 = sVar5 + *(short *)(iVar3 + 0xc);
+        unaff_BP = sVar1;
+      }
+      sVar1 = *(short *)(iVar2 + 0xc);
+      if (*(int *)&this->field_0x74 < (int)*(short *)(iVar2 + 4) + (int)sVar5 + (int)sVar1) {
+        sVar5 = *(short *)&this->field_0x6c + sVar1;
+        (**(code **)(**(int **)&this->field_0x80 + 0x14))(iVar4);
+        if (*(short *)(iVar2 + 6) != 0) {
+          iVar2 = (**(code **)(**(int **)&this->field_0x78 + 0x4c))((int)*(short *)(iVar2 + 6));
+          sVar1 = *(short *)(iVar2 + 0xc);
+          goto LAB_0056fd44;
+        }
+      }
+      else {
+LAB_0056fd44:
+        sVar5 = sVar5 + sVar1;
+      }
+      iVar4 = iVar4 + 1;
+      iVar2 = (**(code **)(**(int **)&this->field_0x7c + 0x48))();
+    } while (iVar4 <= iVar2);
+  }
+  *(short *)&this->field_0x60 = unaff_BP;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056FDB0
+// GHIDRA_NAME TPageView::OrphanCallChain_C8_I118_0056fdb0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C8_I118_0056fdb0(void)
+
+void __thiscall TPageView::OrphanCallChain_C8_I118_0056fdb0(TPageView *this)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  TPageViewVtbl *pTVar4;
+  short sVar5;
+  bool bVar6;
+  short sVar7;
+  short sVar8;
+  int iVar9;
+  int iVar10;
+  int *piVar11;
+  int iVar12;
+  short in_stack_00000004;
+  int iStack_8;
+  int iStack_4;
+  
+  sVar5 = 0;
+  if ((0 < in_stack_00000004) && (in_stack_00000004 <= *(short *)&this->field_0x60)) {
+    pTVar4 = this->vftable;
+    (*pTVar4[0x35].GetTEventHandlerClassNamePointer)();
+    iVar12 = (int)in_stack_00000004;
+    if (iVar12 < *(short *)&this->field_0x64 + iVar12) {
+      do {
+        iVar9 = (**(code **)(**(int **)&this->field_0x80 + 0x28))();
+        if (iVar12 <= iVar9) {
+          sVar8 = *(short *)&this->field_0x6c;
+          sVar1 = *(short *)&this->field_0x64;
+          iVar9 = this->field34;
+          sVar2 = *(short *)&this->field_0x68;
+          sVar7 = (**(code **)(**(int **)&this->field_0x80 + 0x24))(iVar12);
+          bVar6 = false;
+          do {
+            iVar10 = (**(code **)(**(int **)&this->field_0x7c + 0x48))();
+            if (iVar10 < sVar7) break;
+            piVar11 = (int *)(**(code **)(**(int **)&this->field_0x7c + 0x4c))((int)sVar7);
+            sVar3 = *(short *)((int)piVar11 + 6);
+            if ((sVar3 != sVar5) && (sVar3 != 0)) {
+              piVar11 = (int *)(**(code **)(**(int **)&this->field_0x78 + 0x4c))((int)sVar3);
+              sVar7 = sVar7 + -1;
+              sVar5 = sVar3;
+            }
+            if (*(int *)&this->field_0x74 <
+                (int)(short)piVar11[3] + (int)sVar8 + (int)(short)piVar11[1]) {
+              bVar6 = true;
+            }
+            else {
+              iStack_8 = (int)(short)((short)(iVar9 / (int)sVar1) *
+                                      ((short)iVar12 - in_stack_00000004) + sVar2);
+              iStack_4 = (int)sVar8;
+              (**(code **)(*piVar11 + 0x28))(this,&iStack_8);
+              sVar8 = sVar8 + (short)piVar11[3];
+            }
+            sVar7 = sVar7 + 1;
+          } while (!bVar6);
+        }
+        iVar12 = iVar12 + 1;
+      } while (iVar12 < (int)*(short *)&this->field_0x64 + (int)in_stack_00000004);
+    }
+    *(short *)&this->field_0x62 = in_stack_00000004;
+    (*pTVar4[0x1c].slot_0x04)();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056FF90
+// GHIDRA_NAME TPageView::OrphanCallChain_C4_I18_0056ff90
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I18_0056ff90(void)
+
+void __thiscall TPageView::OrphanCallChain_C4_I18_0056ff90(TPageView *this)
+
+{
+  (*this->vftable[0x35].GetTEventHandlerClassNamePointer)();
+  (**(code **)(**(int **)&this->field_0x78 + 0x5c))();
+  (**(code **)(**(int **)&this->field_0x7c + 0x5c))();
+  (**(code **)(**(int **)&this->field_0x80 + 0x30))();
+  *(undefined2 *)&this->field_0x62 = 0;
+  *(undefined2 *)&this->field_0x60 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056FFE0
+// GHIDRA_NAME TPageView::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TPageView::OrphanLeaf_NoCall_Ins07_004d8920(TPageView *this)
+
+{
+  if (*(int **)&this->field_0x78 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x78 + 0x58))();
+  }
+  if (*(int **)&this->field_0x7c != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x7c + 0x58))();
+  }
+  if (*(int **)&this->field_0x80 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x80 + 0x38))();
+  }
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  return;
 }
 

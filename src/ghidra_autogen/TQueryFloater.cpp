@@ -3,15 +3,31 @@
 // Program: Imperialism.exe
 // Bucket: TQueryFloater.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D6A0
+// GHIDRA_NAME TQueryFloater::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TQueryFloater * __thiscall TQueryFloater::_scalar_deleting_destructor_(TQueryFloater *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E840
 // GHIDRA_NAME TQueryFloater::CreateTQueryFloaterInstance
 // GHIDRA_PROTO undefined CreateTQueryFloaterInstance()
 
-undefined4 * TQueryFloater::CreateTQueryFloaterInstance(void)
+thunk_TPictureButton * TQueryFloater::CreateTQueryFloaterInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,40 +37,43 @@ undefined4 * TQueryFloater::CreateTQueryFloaterInstance(void)
   puStack_8 = &LAB_0063619a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_006415b8;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TQueryFloaterVtbl **)this = &TQueryFloaterVtbl_006415b8;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E8C0
-// GHIDRA_NAME TQueryFloater::GetTQueryFloaterClassNamePointer
-// GHIDRA_PROTO undefined GetTQueryFloaterClassNamePointer()
+// GHIDRA_NAME TQueryFloater::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TQueryFloater::GetTQueryFloaterClassNamePointer(void)
+CRuntimeClass * __thiscall TQueryFloater::GetTEventHandlerClassNamePointer(TQueryFloater *this)
 
 {
-  return &PTR_s_TQueryFloater_0065de70;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056E8E0
-// GHIDRA_NAME TQueryFloater::ConstructTQueryFloaterBaseState
-// GHIDRA_PROTO undefined ConstructTQueryFloaterBaseState()
+// GHIDRA_NAME TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TQueryFloater::ConstructTQueryFloaterBaseState(int *param_1,undefined4 param_2)
+void __thiscall TQueryFloater::OrphanLeaf_NoCall_Ins07_004d8920(TQueryFloater *this)
 
 {
   int iVar1;
-  int *piVar2;
+  undefined uVar2;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
   int iVar3;
-  code *unaff_EDI;
-  code *pcVar4;
+  TQueryFloater_slot_0x04_0x04 *unaff_EDI;
+  TQueryFloater_slot_0x04_0x04 *pTVar4;
+  TQueryFloater_slot_0x04_0x04 *pTStack00000004;
   undefined1 *puStack_3c;
   undefined4 uStack_38;
   undefined1 *puStack_34;
@@ -64,14 +83,14 @@ void __thiscall TQueryFloater::ConstructTQueryFloaterBaseState(int *param_1,unde
   undefined4 uStack_24;
   undefined4 uStack_20;
   
-  uStack_20 = param_2;
   uStack_24 = 0x56e8f3;
-  TView::thunk_NoOpUiLifecycleHook();
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
   uStack_20 = 0x7469746c;
-  pcVar4 = *(code **)(*param_1 + 0x94);
+  pTVar4 = this->vftable[0x12].slot_0x04;
   uStack_24 = 0x56e91c;
-  piVar2 = (int *)(*pcVar4)();
-  iVar3 = *piVar2;
+  pTStack00000004 = pTVar4;
+  uVar2 = (*pTVar4)();
+  iVar3 = *(int *)CONCAT31(extraout_var,uVar2);
   uStack_24 = 0x56e925;
   (**(code **)(iVar3 + 0xc))();
   uStack_24 = 1;
@@ -94,8 +113,8 @@ void __thiscall TQueryFloater::ConstructTQueryFloaterBaseState(int *param_1,unde
   thunk_BuildUiTextStyleDescriptor(&uStack_2c,0,0xc,0x2b6c);
   iVar3 = 0;
   do {
-    piVar2 = (int *)(*pcVar4)(iVar3 + 0x74657830);
-    iVar1 = *piVar2;
+    uVar2 = (*pTVar4)(iVar3 + 0x74657830);
+    iVar1 = *(int *)CONCAT31(extraout_var_00,uVar2);
     (**(code **)(iVar1 + 0xc))();
     (**(code **)(iVar1 + 0x1cc))(0x2757,iVar3 + 2,1);
     (**(code **)(iVar1 + 0x1b4))(&puStack_3c,0);
@@ -103,26 +122,35 @@ void __thiscall TQueryFloater::ConstructTQueryFloaterBaseState(int *param_1,unde
       (**(code **)(iVar1 + 0x1c4))(1,0);
     }
     iVar3 = iVar3 + 1;
-    pcVar4 = unaff_EDI;
+    pTVar4 = unaff_EDI;
   } while (iVar3 < 7);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056EA20
-// GHIDRA_NAME TQueryFloater::HandleTurnEventInterNationSummaryDialogCommand
-// GHIDRA_PROTO undefined HandleTurnEventInterNationSummaryDialogCommand()
+// GHIDRA_NAME TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall
-TQueryFloater::HandleTurnEventInterNationSummaryDialogCommand(int *param_1,int param_2,int param_3)
+void __thiscall TQueryFloater::ReleaseRuntimeSelectionOwnerAndDestroyObject(TQueryFloater *this)
 
 {
   uint uVar1;
-  char cVar2;
-  short sVar3;
-  int *piVar4;
-  int iVar5;
+  undefined uVar2;
+  char cVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  undefined3 extraout_var_07;
+  TSimMgrVtbl *pTVar4;
   undefined4 *unaff_FS_OFFSET;
-  int *local_10;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  CString local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -131,82 +159,82 @@ TQueryFloater::HandleTurnEventInterNationSummaryDialogCommand(int *param_1,int p
   puStack_8 = &LAB_006361b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_10 = param_1;
-  InitializeSharedStringRefFromEmpty(&local_10);
+  local_10.m_pchData = (char *)this;
+  CString::CString(&local_10);
   local_4 = 0;
-  if (param_2 != 10) goto LAB_0056ecbe;
-  uVar1 = *(uint *)(param_3 + 0x1c);
+  if (in_stack_00000004 != 10) goto LAB_0056ecbe;
+  uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
   if (uVar1 < 0x62617475) {
     if (uVar1 != 0x62617474) {
       if (uVar1 == 0x61647669) {
-        piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-        (**(code **)(*piVar4 + 0x1b4))();
+        uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))();
         SelectAndActivatePendingEventForCurrentView();
       }
       goto LAB_0056ecbe;
     }
     UiRuntimeContext::GetActiveNationId();
-    cVar2 = ScanMapContextActionEntriesForCodeMatch();
-    if (cVar2 == '\0') {
-      sVar3 = (**(code **)(*g_pLocalizationTable + 0x3c))();
-      if (sVar3 == 1) {
-        (**(code **)(*g_pLocalizationTable + 0x84))();
+    cVar3 = ScanMapContextActionEntriesForCodeMatch();
+    if (cVar3 == '\0') {
+      uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+      if ((short)CONCAT31(extraout_var_00,uVar2) == 1) {
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       }
       else {
-        (**(code **)(*g_pLocalizationTable + 0x84))();
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       }
 LAB_0056ec87:
       thunk_AssignStringSharedRefAndReturnThis(&local_10);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       goto LAB_0056ecbe;
     }
-    piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-    (**(code **)(*piVar4 + 0x1b4))();
-    iVar5 = *g_pLocalizationTable;
+    uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0x1b4))();
+    pTVar4 = g_pLocalizationTable->vftable;
   }
   else if (uVar1 < 0x636e636d) {
     if (uVar1 == 0x636e636c) {
-      piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-      (**(code **)(*piVar4 + 0x1b4))();
+      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar2) + 0x1b4))();
       goto LAB_0056ecbe;
     }
     if (uVar1 != 0x63686172) goto LAB_0056ecbe;
-    piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-    (**(code **)(*piVar4 + 0x1b4))();
-    iVar5 = *g_pLocalizationTable;
+    uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar2) + 0x1b4))();
+    pTVar4 = g_pLocalizationTable->vftable;
   }
   else {
     if (uVar1 != 0x6465616c) {
       if (uVar1 == 0x6e657773) {
-        piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-        (**(code **)(*piVar4 + 0x1b4))();
-        if (*(int *)(g_pInterNationEventQueueManager + 0xef4) == 0) {
+        uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar2) + 0x1b4))();
+        if (*(int *)&g_pInterNationEventQueueManager->field_0xef4 == 0) {
           thunk_ShowLocalizedUiPromptByGroupAndIndex(0x275e,6,2,0);
         }
         else {
-          (**(code **)(*g_pLocalizationTable + 0x48))();
+          (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
         }
       }
       else if (uVar1 == 0x6f726566) {
-        piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-        (**(code **)(*piVar4 + 0x1b4))();
+        uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+        (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar2) + 0x1b4))();
         SelectAndActivatePendingEventType1A0A();
       }
       goto LAB_0056ecbe;
     }
-    sVar3 = (**(code **)(*g_pLocalizationTable + 0x3c))();
-    if (sVar3 == 1) {
-      (**(code **)(*g_pLocalizationTable + 0x84))();
+    uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+    if ((short)CONCAT31(extraout_var_06,uVar2) == 1) {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       goto LAB_0056ec87;
     }
-    piVar4 = (int *)(**(code **)(*param_1 + 0x58))();
-    (**(code **)(*piVar4 + 0x1b4))();
-    iVar5 = *g_pLocalizationTable;
+    uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    (**(code **)(*(int *)CONCAT31(extraout_var_07,uVar2) + 0x1b4))();
+    pTVar4 = g_pLocalizationTable->vftable;
   }
-  (**(code **)(iVar5 + 0x48))();
+  (*pTVar4[9].GetTSimMgrClassNamePointer)();
 LAB_0056ecbe:
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&local_10);
+  CString::~CString(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

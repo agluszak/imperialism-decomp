@@ -5,176 +5,184 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D04
 // GHIDRA_NAME CArchive::WriteByteToSerializedBuffer
-// GHIDRA_PROTO undefined WriteByteToSerializedBuffer()
+// GHIDRA_PROTO undefined __thiscall WriteByteToSerializedBuffer(void)
 
-int __thiscall CArchive::WriteByteToSerializedBuffer(int param_1,undefined1 param_2)
+CArchive * __thiscall CArchive::WriteByteToSerializedBuffer(CArchive *this)
 
 {
-  if (*(uint *)(param_1 + 0x28) < *(int *)(param_1 + 0x24) + 1U) {
+  byte in_stack_00000004;
+  
+  if (this->m_lpBufMax < this->m_lpBufCur + 1) {
     Flush();
   }
-  **(undefined1 **)(param_1 + 0x24) = param_2;
-  *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + 1;
-  return param_1;
+  *this->m_lpBufCur = in_stack_00000004;
+  this->m_lpBufCur = this->m_lpBufCur + 1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DA3
 // GHIDRA_NAME CArchive::ReadWordFromSerializedBuffer
-// GHIDRA_PROTO undefined ReadWordFromSerializedBuffer()
+// GHIDRA_PROTO undefined __thiscall ReadWordFromSerializedBuffer(void)
 
-int __thiscall CArchive::ReadWordFromSerializedBuffer(int param_1,undefined2 *param_2)
+CArchive * __thiscall CArchive::ReadWordFromSerializedBuffer(CArchive *this)
 
 {
-  if (*(uint *)(param_1 + 0x28) < *(int *)(param_1 + 0x24) + 2U) {
-    FillBuffer((*(int *)(param_1 + 0x24) - *(uint *)(param_1 + 0x28)) + 2);
+  undefined2 *in_stack_00000004;
+  
+  if (this->m_lpBufMax < this->m_lpBufCur + 2) {
+    FillBuffer(this);
   }
-  *param_2 = **(undefined2 **)(param_1 + 0x24);
-  *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + 2;
-  return param_1;
+  *in_stack_00000004 = *(undefined2 *)this->m_lpBufCur;
+  this->m_lpBufCur = this->m_lpBufCur + 2;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6DD6
 // GHIDRA_NAME CArchive::ReadDwordFromSerializedBuffer
-// GHIDRA_PROTO undefined ReadDwordFromSerializedBuffer()
+// GHIDRA_PROTO undefined __thiscall ReadDwordFromSerializedBuffer(void)
 
-int __thiscall CArchive::ReadDwordFromSerializedBuffer(int param_1,undefined4 *param_2)
+CArchive * __thiscall CArchive::ReadDwordFromSerializedBuffer(CArchive *this)
 
 {
-  if (*(uint *)(param_1 + 0x28) < *(int *)(param_1 + 0x24) + 4U) {
-    FillBuffer((*(int *)(param_1 + 0x24) - *(uint *)(param_1 + 0x28)) + 4);
+  undefined4 *in_stack_00000004;
+  
+  if (this->m_lpBufMax < this->m_lpBufCur + 4) {
+    FillBuffer(this);
   }
-  *param_2 = **(undefined4 **)(param_1 + 0x24);
-  *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + 4;
-  return param_1;
+  *in_stack_00000004 = *(undefined4 *)this->m_lpBufCur;
+  this->m_lpBufCur = this->m_lpBufCur + 4;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611D26
 // GHIDRA_NAME CArchive::ReadBytesFromSerializedBuffer
-// GHIDRA_PROTO undefined ReadBytesFromSerializedBuffer()
+// GHIDRA_PROTO undefined __thiscall ReadBytesFromSerializedBuffer(void)
 
-int __thiscall CArchive::ReadBytesFromSerializedBuffer(int param_1,int param_2,uint param_3)
+int __thiscall CArchive::ReadBytesFromSerializedBuffer(CArchive *this)
 
 {
   int iVar1;
   int iVar2;
-  uint uVar3;
+  byte *pbVar3;
   uint uVar4;
-  undefined4 local_c;
-  undefined4 local_8;
+  uint uVar5;
+  int in_stack_00000004;
+  uint in_stack_00000008;
+  byte *local_c;
+  uint local_8;
   
-  if (param_3 == 0) {
+  if (in_stack_00000008 == 0) {
     iVar1 = 0;
   }
   else {
-    uVar3 = *(int *)(param_1 + 0x28) - *(int *)(param_1 + 0x24);
-    if (param_3 < uVar3) {
-      uVar3 = param_3;
+    uVar4 = (int)this->m_lpBufMax - (int)this->m_lpBufCur;
+    if (in_stack_00000008 < uVar4) {
+      uVar4 = in_stack_00000008;
     }
-    CopyMemoryPossiblyOverlapping(param_2,*(int *)(param_1 + 0x24),uVar3);
-    *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + uVar3;
-    param_2 = param_2 + uVar3;
-    uVar3 = param_3 - uVar3;
-    if (uVar3 != 0) {
-      iVar1 = uVar3 - uVar3 % *(uint *)(param_1 + 0x1c);
-      local_c = 0;
+    CopyMemoryPossiblyOverlapping();
+    this->m_lpBufCur = this->m_lpBufCur + uVar4;
+    in_stack_00000004 = in_stack_00000004 + uVar4;
+    uVar4 = in_stack_00000008 - uVar4;
+    if (uVar4 != 0) {
+      iVar1 = uVar4 - uVar4 % (uint)this->m_nBufSize;
+      local_c = (byte *)0x0;
       local_8 = iVar1;
       do {
-        iVar2 = (**(code **)(**(int **)(param_1 + 0x20) + 0x3c))(param_2,local_8);
-        param_2 = param_2 + iVar2;
-        local_c = local_c + iVar2;
+        iVar2 = (**(code **)(*(int *)this->m_pFile + 0x3c))(in_stack_00000004,local_8);
+        in_stack_00000004 = in_stack_00000004 + iVar2;
+        local_c = (byte *)((int)local_c + iVar2);
         local_8 = local_8 - iVar2;
         if (iVar2 == 0) break;
       } while (local_8 != 0);
-      uVar3 = uVar3 - local_c;
-      if (local_c == iVar1) {
-        uVar4 = 0;
-        if (*(int *)(param_1 + 8) == 0) {
-          local_8 = uVar3;
-          if (uVar3 <= *(uint *)(param_1 + 0x1c)) {
-            local_8 = *(uint *)(param_1 + 0x1c);
+      uVar4 = uVar4 - (int)local_c;
+      if (local_c == (byte *)iVar1) {
+        uVar5 = 0;
+        if (this->m_bDirectBuffer == 0) {
+          local_8 = uVar4;
+          if (uVar4 <= (uint)this->m_nBufSize) {
+            local_8 = this->m_nBufSize;
           }
-          local_c = *(int *)(param_1 + 0x2c);
+          local_c = this->m_lpBufStart;
           do {
-            iVar1 = (**(code **)(**(int **)(param_1 + 0x20) + 0x3c))(local_c,local_8);
+            iVar1 = (**(code **)(*(int *)this->m_pFile + 0x3c))(local_c,local_8);
             local_c = local_c + iVar1;
             local_8 = local_8 - iVar1;
-            uVar4 = uVar4 + iVar1;
+            uVar5 = uVar5 + iVar1;
             if ((iVar1 == 0) || (local_8 == 0)) break;
-          } while (uVar4 < uVar3);
-          iVar1 = *(int *)(param_1 + 0x2c);
-          *(int *)(param_1 + 0x24) = iVar1;
-          *(uint *)(param_1 + 0x28) = uVar4 + iVar1;
+          } while (uVar5 < uVar4);
+          pbVar3 = this->m_lpBufStart;
+          this->m_lpBufCur = pbVar3;
+          this->m_lpBufMax = pbVar3 + uVar5;
         }
         else {
-          (**(code **)(**(int **)(param_1 + 0x20) + 0x58))
-                    (0,*(undefined4 *)(param_1 + 0x1c),(int *)(param_1 + 0x2c),param_1 + 0x28);
-          iVar1 = *(int *)(param_1 + 0x2c);
-          *(int *)(param_1 + 0x24) = iVar1;
+          (**(code **)(*(int *)this->m_pFile + 0x58))
+                    (0,this->m_nBufSize,&this->m_lpBufStart,&this->m_lpBufMax);
+          pbVar3 = this->m_lpBufStart;
+          this->m_lpBufCur = pbVar3;
         }
-        uVar4 = *(int *)(param_1 + 0x28) - iVar1;
-        if (uVar3 < uVar4) {
-          uVar4 = uVar3;
+        uVar5 = (int)this->m_lpBufMax - (int)pbVar3;
+        if (uVar4 < uVar5) {
+          uVar5 = uVar4;
         }
-        CopyMemoryPossiblyOverlapping(param_2,iVar1,uVar4);
-        *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + uVar4;
-        uVar3 = uVar3 - uVar4;
+        CopyMemoryPossiblyOverlapping(in_stack_00000004,pbVar3,uVar5);
+        this->m_lpBufCur = this->m_lpBufCur + uVar5;
+        uVar4 = uVar4 - uVar5;
       }
     }
-    iVar1 = param_3 - uVar3;
+    iVar1 = in_stack_00000008 - uVar4;
   }
   return iVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611F3E
 // GHIDRA_NAME CArchive::FillBuffer
-// GHIDRA_PROTO undefined FillBuffer()
+// GHIDRA_PROTO undefined __thiscall FillBuffer(void)
 
-void __thiscall CArchive::FillBuffer(int param_1,uint param_2)
+void __thiscall CArchive::FillBuffer(CArchive *this)
 
 {
-  uint uVar1;
+  byte *pbVar1;
   uint uVar2;
-  uint uVar3;
+  int iVar3;
   int iVar4;
-  int iVar5;
-  int iVar6;
-  undefined4 local_8;
+  byte *pbVar5;
+  uint in_stack_00000004;
+  uint local_8;
   
-  uVar1 = *(uint *)(param_1 + 0x24);
-  local_8 = *(int *)(param_1 + 0x28) - uVar1;
-  uVar2 = param_2 + local_8;
-  if (*(int *)(param_1 + 8) == 0) {
-    uVar3 = *(uint *)(param_1 + 0x2c);
-    if (uVar3 < uVar1) {
+  pbVar1 = this->m_lpBufCur;
+  local_8 = (int)this->m_lpBufMax - (int)pbVar1;
+  uVar2 = in_stack_00000004 + local_8;
+  if (this->m_bDirectBuffer == 0) {
+    pbVar5 = this->m_lpBufStart;
+    if (pbVar5 < pbVar1) {
       if (0 < (int)local_8) {
-        MoveMemoryOverlapSafe(uVar3,uVar1,local_8);
-        uVar3 = *(uint *)(param_1 + 0x2c);
-        *(uint *)(param_1 + 0x24) = uVar3;
-        *(int *)(param_1 + 0x28) = local_8 + uVar3;
+        MoveMemoryOverlapSafe(pbVar5,pbVar1,local_8);
+        pbVar5 = this->m_lpBufStart;
+        this->m_lpBufCur = pbVar5;
+        this->m_lpBufMax = pbVar5 + local_8;
       }
-      iVar5 = *(int *)(param_1 + 0x1c) - local_8;
-      iVar6 = local_8 + uVar3;
+      iVar4 = this->m_nBufSize - local_8;
+      pbVar5 = pbVar5 + local_8;
       do {
-        iVar4 = (**(code **)(**(int **)(param_1 + 0x20) + 0x3c))(iVar6,iVar5);
-        local_8 = local_8 + iVar4;
-        iVar6 = iVar6 + iVar4;
-        iVar5 = iVar5 - iVar4;
-        if ((iVar4 == 0) || (iVar5 == 0)) break;
-      } while (local_8 < param_2);
-      *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x2c);
-      *(uint *)(param_1 + 0x28) = local_8 + *(int *)(param_1 + 0x2c);
+        iVar3 = (**(code **)(*(int *)this->m_pFile + 0x3c))(pbVar5,iVar4);
+        local_8 = local_8 + iVar3;
+        pbVar5 = pbVar5 + iVar3;
+        iVar4 = iVar4 - iVar3;
+        if ((iVar3 == 0) || (iVar4 == 0)) break;
+      } while (local_8 < in_stack_00000004);
+      this->m_lpBufCur = this->m_lpBufStart;
+      this->m_lpBufMax = this->m_lpBufStart + local_8;
     }
   }
   else {
     if (local_8 != 0) {
-      (**(code **)(**(int **)(param_1 + 0x20) + 0x30))(-local_8,1);
+      (**(code **)(*(int *)this->m_pFile + 0x30))(-local_8,1);
     }
-    (**(code **)(**(int **)(param_1 + 0x20) + 0x58))
-              (0,*(undefined4 *)(param_1 + 0x1c),(undefined4 *)(param_1 + 0x2c),
-               (int *)(param_1 + 0x28));
-    *(undefined4 *)(param_1 + 0x24) = *(undefined4 *)(param_1 + 0x2c);
+    (**(code **)(*(int *)this->m_pFile + 0x58))
+              (0,this->m_nBufSize,&this->m_lpBufStart,&this->m_lpBufMax);
+    this->m_lpBufCur = this->m_lpBufStart;
   }
-  if ((uint)(*(int *)(param_1 + 0x28) - *(int *)(param_1 + 0x24)) < uVar2) {
+  if ((uint)((int)this->m_lpBufMax - (int)this->m_lpBufCur) < uVar2) {
     AfxThrowArchiveException(3,0);
   }
   return;

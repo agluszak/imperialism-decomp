@@ -3,21 +3,57 @@
 // Program: Imperialism.exe
 // Bucket: TMapPreviewView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00578830
-// GHIDRA_NAME TMapPreviewView::GetTMapPreviewViewClassNamePointer
-// GHIDRA_PROTO undefined GetTMapPreviewViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D590
+// GHIDRA_NAME TMapPreviewView::ConstructUiPlanetListResourceEntry
+// GHIDRA_PROTO undefined __thiscall ConstructUiPlanetListResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Derived UI resource constructor for entries consistently tagged with 'plat' at dominant call sites. Initializes index/sentinel slot to -1.
+// GHIDRA_COMMENT_END
 
-undefined ** TMapPreviewView::GetTMapPreviewViewClassNamePointer(void)
+/* Derived UI resource constructor for entries consistently tagged with 'plat' at dominant call
+   sites. Initializes index/sentinel slot to -1. */
+
+TMapPreviewView * __thiscall
+TMapPreviewView::ConstructUiPlanetListResourceEntry(TMapPreviewView *this)
 
 {
-  return &PTR_s_TMapPreviewView_006619f8;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &TMapPreviewViewVtbl_006419d8;
+  *(undefined4 *)&this->field_0x64 = 0xffffffff;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D5C0
+// GHIDRA_NAME TMapPreviewView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TMapPreviewView * __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00578830
+// GHIDRA_NAME TMapPreviewView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TMapPreviewView::GetTEventHandlerClassNamePointer(TMapPreviewView *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00578850
-// GHIDRA_NAME TMapPreviewView::ConstructTMapPreviewViewBaseState
-// GHIDRA_PROTO undefined ConstructTMapPreviewViewBaseState()
+// GHIDRA_NAME TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TMapPreviewView::ConstructTMapPreviewViewBaseState(int *param_1,undefined4 param_2)
+void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewView *this)
 
 {
   undefined4 uVar1;
@@ -26,8 +62,9 @@ void __thiscall TMapPreviewView::ConstructTMapPreviewViewBaseState(int *param_1,
   uint uVar4;
   uint uVar5;
   int unaff_ESI;
+  undefined1 *puVar6;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 *puVar6;
+  undefined4 uStack00000004;
   undefined4 local_2c;
   undefined4 uStack_28;
   undefined4 uStack_24;
@@ -43,22 +80,22 @@ void __thiscall TMapPreviewView::ConstructTMapPreviewViewBaseState(int *param_1,
   puStack_8 = &LAB_00636aa8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook(param_2);
-  param_1[0x1a] = -1;
-  param_1[1] = 1;
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  *(undefined4 *)&this->field_0x68 = 0xffffffff;
+  this->field04 = 1;
   DAT_006a1890 = DAT_006a1890 + 1;
-  puVar6 = &local_2c;
+  uStack00000004 = 1;
   local_4 = 0;
-  (**(code **)(*param_1 + 0x128))();
+  (*this->vftable[0x25].GetTEventHandlerClassNamePointer)();
   uStack_18 = uStack_28;
   uStack_14 = uStack_24;
   uStack_1c = local_2c;
-  param_1 = param_1 + 0x18;
-  (**(code **)(*DAT_006a2158 + 0x2c))(param_1,8,auStack_20);
-  uVar1 = thunk_GetSurfaceObjectAtContextOffset24(*param_1);
+  puVar6 = &this->field_0x60;
+  (**(code **)(*DAT_006a2158 + 0x2c))(puVar6,8,auStack_20);
+  uVar1 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
   puVar2 = (undefined4 *)GetSurfaceHeaderFromSurfaceObject(uVar1);
-  piVar3 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*param_1);
-  uVar4 = (unaff_ESI - (int)puVar6) * (*(ushort *)(*piVar3 + 4) & 0x3fff);
+  piVar3 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
+  uVar4 = (unaff_ESI - (int)&local_2c) * (*(ushort *)(*piVar3 + 4) & 0x3fff);
   if (0 < (int)uVar4) {
     for (uVar5 = uVar4 >> 2; uVar5 != 0; uVar5 = uVar5 - 1) {
       *puVar2 = 0x10101010;
@@ -75,45 +112,96 @@ void __thiscall TMapPreviewView::ConstructTMapPreviewViewBaseState(int *param_1,
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005789B0
-// GHIDRA_NAME TMapPreviewView::DestructTMapPreviewViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMapPreviewViewAndMaybeFree()
+// GHIDRA_NAME TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __fastcall TMapPreviewView::DestructTMapPreviewViewAndMaybeFree(int param_1)
+void __thiscall TMapPreviewView::OrphanLeaf_NoCall_Ins07_004d8920(TMapPreviewView *this)
 
 {
-  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x60);
-  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf();
+  WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x60);
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005789E0
-// GHIDRA_NAME TMapPreviewView::HandleTurnEventPaletteClickSelection
-// GHIDRA_PROTO undefined HandleTurnEventPaletteClickSelection()
+// GHIDRA_NAME TMapPreviewView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TMapPreviewView::HandleTurnEventPaletteClickSelection(int param_1,int *param_2)
+void __thiscall TMapPreviewView::_scalar_deleting_destructor_(TMapPreviewView *this)
 
 {
   byte bVar1;
-  ushort uVar2;
-  undefined4 uVar3;
-  int iVar4;
-  int *piVar5;
-  int iVar6;
+  TViewVtbl *pTVar2;
+  ushort uVar3;
+  undefined4 uVar4;
+  int iVar5;
+  int *piVar6;
+  int iVar7;
+  int *in_stack_00000004;
   
-  uVar3 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x60));
-  iVar4 = GetSurfaceHeaderFromSurfaceObject(uVar3);
-  piVar5 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)(param_1 + 0x60));
-  iVar6 = 0;
-  bVar1 = *(byte *)((*(ushort *)(*piVar5 + 4) & 0x3fff) * param_2[1] + iVar4 + *param_2);
+  uVar4 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
+  iVar5 = GetSurfaceHeaderFromSurfaceObject(uVar4);
+  piVar6 = (int *)thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
+  iVar7 = 0;
+  bVar1 = *(byte *)((*(ushort *)(*piVar6 + 4) & 0x3fff) * in_stack_00000004[1] + iVar5 +
+                   *in_stack_00000004);
   do {
-    uVar2 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(iVar6);
-    if (uVar2 == bVar1) {
-      iVar4 = **(int **)(param_1 + 0x20);
-      *(int *)(param_1 + 0x6c) = iVar6;
-      (**(code **)(iVar4 + 0x3c))(0x7069636b,param_1,0);
+    uVar3 = UiRuntimeContext::MapTurnEventCodeToPaletteIndex(iVar7);
+    if (uVar3 == bVar1) {
+      pTVar2 = this->ownerContext->vftable;
+      *(int *)&this->field_0x6c = iVar7;
+      (*pTVar2[7].slot_0x04)(0x7069636b,this,0);
     }
-    iVar6 = iVar6 + 1;
-  } while (iVar6 < 7);
+    iVar7 = iVar7 + 1;
+  } while (iVar7 < 7);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00578A80
+// GHIDRA_NAME TMapPreviewView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TMapPreviewView::OrphanTiny_ReturnZero_0048a730(TMapPreviewView *this)
+
+{
+  int iVar1;
+  int local_38;
+  int local_34;
+  RECT local_30;
+  RECT local_20;
+  RECT local_10;
+  
+  local_30.left = 0;
+  local_30.right = this->field34;
+  local_30.bottom = this->field38;
+  local_30.top = 0;
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)&this->field_0x60 + 4),
+             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_30,&local_30,0x24,
+             (astruct_19 *)0x0);
+  iVar1 = *(int *)&this->field_0x64;
+  if (iVar1 != -1) {
+    SplitTileIndexToHexRasterColumnX2AndRow
+              (CONCAT22((short)((uint)(iVar1 * 0x15) >> 0x10),
+                        *(undefined2 *)(*(int *)&g_pGlobalMapState->field_0x10 + 4 + iVar1 * 0xa8)),
+               &local_34,&local_38);
+    local_10.left = 0x48;
+    local_10.top = 0;
+    local_10.right = 0x5a;
+    local_38 = (local_38 + -3) * 3;
+    local_10.bottom = 0x12;
+    local_34 = ((short)local_34 * 3) / 2 + -9;
+    local_20.left = (LONG)(short)local_34;
+    local_20.top = (LONG)(short)local_38;
+    local_20.right = local_20.left + 0x12;
+    local_20.bottom = local_20.top + 0x12;
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6a0) + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0x24,
+               (astruct_19 *)0x0);
+  }
+  SetQuickDrawStrokeColor(0xffffff);
   return;
 }
 

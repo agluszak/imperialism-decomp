@@ -4,26 +4,139 @@
 // Bucket: TEngineerDialog.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0540
-// GHIDRA_NAME TEngineerDialog::GetTEngineerDialogClassNamePointer
-// GHIDRA_PROTO undefined GetTEngineerDialogClassNamePointer()
+// GHIDRA_NAME TEngineerDialog::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TEngineerDialog::GetTEngineerDialogClassNamePointer(void)
+CRuntimeClass * __thiscall TEngineerDialog::GetTEventHandlerClassNamePointer(TEngineerDialog *this)
 
 {
-  return &PTR_s_TEngineerDialog_00651350;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D0560
+// GHIDRA_NAME TEngineerDialog::ConstructEngineerDialog
+// GHIDRA_PROTO undefined __thiscall ConstructEngineerDialog(void)
+
+TEngineerDialog * __thiscall TEngineerDialog::ConstructEngineerDialog(TEngineerDialog *this)
+
+{
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x60 = 0;
+  *(undefined4 *)&this->field_0x64 = 0;
+  *(undefined4 *)&this->field_0x68 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D0590
 // GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TEngineerDialog::_scalar_deleting_destructor_(TView *param_1,byte param_2)
+TEngineerDialog * __thiscall TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D05E0
+// GHIDRA_NAME TEngineerDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TEngineerDialog::_scalar_deleting_destructor_(TEngineerDialog *this)
+
+{
+  if (*(int *)&this->field_0x60 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x60);
+  }
+  if (*(int *)&this->field_0x64 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x64);
+  }
+  if (*(int *)&this->field_0x68 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x68);
+  }
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D0650
+// GHIDRA_NAME TEngineerDialog::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Renders Engineer dialog background into DAT_006A1D60 using a header/body/footer tiling scheme.
+// GHIDRA_COMMENT - blits header strip from surface +0x60.
+// GHIDRA_COMMENT - repeats middle strip from surface +0x68 for each full 0x0E-row chunk derived from (height-0x46).
+// GHIDRA_COMMENT - blits footer strip from surface +0x64 for remaining tail.
+// GHIDRA_COMMENT - used when Engineer dialog backing surface is present.
+// GHIDRA_COMMENT_END
+
+/* Renders Engineer dialog background into DAT_006A1D60 using a header/body/footer tiling scheme.
+   - blits header strip from surface +0x60.
+   - repeats middle strip from surface +0x68 for each full 0x0E-row chunk derived from
+   (height-0x46).
+   - blits footer strip from surface +0x64 for remaining tail.
+   - used when Engineer dialog backing surface is present. */
+
+void __thiscall TEngineerDialog::OrphanTiny_ReturnZero_0048a730(TEngineerDialog *this)
+
+{
+  int iVar1;
+  short sVar2;
+  RECT local_20;
+  RECT local_10;
+  
+  if (*(int *)&this->field_0x60 != 0) {
+    ResetQuickDrawStrokeState();
+    SetQuickDrawStrokeColor(0xffffff);
+    SetQuickDrawFillColor(0);
+    local_10.left = 0;
+    local_20.left = 0;
+    local_10.right = 0x148;
+    local_20.right = 0x148;
+    local_10.top = 0;
+    local_20.top = 0;
+    sVar2 = 0x38;
+    local_10.bottom = 0x38;
+    local_20.bottom = 0x38;
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)&this->field_0x60 + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
+               (astruct_19 *)0x0);
+    iVar1 = this->field38 + -0x46;
+    local_10.left = 0;
+    iVar1 = (int)(short)(((short)(iVar1 / 0xe) + (short)(iVar1 >> 0x1f)) -
+                        (short)((longlong)iVar1 * 0x92492493 >> 0x3f));
+    local_10.top = 0;
+    local_10.right = 0x148;
+    local_10.bottom = 0xe;
+    if (0 < iVar1) {
+      do {
+        local_20.top = (LONG)sVar2;
+        local_20.bottom = local_20.top + 0xe;
+        local_20.right = 0x148;
+        local_20.left = 0;
+        BlitRectWithOptionalTransparency
+                  ((astruct_17 *)(*(int *)&this->field_0x68 + 4),
+                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
+                   (astruct_19 *)0x0);
+        sVar2 = sVar2 + 0xe;
+        iVar1 = iVar1 + -1;
+      } while (iVar1 != 0);
+    }
+    local_20.top = (LONG)sVar2;
+    local_20.bottom = local_20.top + 0xe;
+    local_20.right = 0x148;
+    local_20.left = 0;
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)&this->field_0x64 + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
+               (astruct_19 *)0x0);
+  }
+  return;
 }
 

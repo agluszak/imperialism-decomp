@@ -5,50 +5,54 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535470
 // GHIDRA_NAME TNavyMission::ConstructTNavyMission
-// GHIDRA_PROTO undefined ConstructTNavyMission()
+// GHIDRA_PROTO undefined __thiscall ConstructTNavyMission(void)
 
-void __thiscall TNavyMission::ConstructTNavyMission(undefined4 *param_1,undefined4 param_2)
+void __thiscall TNavyMission::ConstructTNavyMission(TNavyMission *this)
 
 {
-  *(undefined1 *)(param_1 + 2) = 2;
-  param_1[3] = 0;
-  *(undefined1 *)((int)param_1 + 0x11) = 0xff;
-  param_1[5] = param_2;
-  param_1[6] = 0;
-  param_1[7] = 0;
-  param_1[8] = 0;
-  param_1[9] = 0;
-  param_1[10] = 0;
-  *param_1 = &g_vtblTNavyMission;
-  param_1[0xb] = 0;
-  param_1[0xc] = 0;
-  param_1[0xd] = 0;
-  param_1[0xe] = 0;
+  undefined4 in_stack_00000004;
+  
+  this[8] = (TNavyMission)0x2;
+  *(undefined4 *)(this + 0xc) = 0;
+  this[0x11] = (TNavyMission)0xff;
+  *(undefined4 *)(this + 0x14) = in_stack_00000004;
+  *(undefined4 *)(this + 0x18) = 0;
+  *(undefined4 *)(this + 0x1c) = 0;
+  *(undefined4 *)(this + 0x20) = 0;
+  *(undefined4 *)(this + 0x24) = 0;
+  *(undefined4 *)(this + 0x28) = 0;
+  *(undefined ***)this = &g_vtblTNavyMission;
+  *(undefined4 *)(this + 0x2c) = 0;
+  *(undefined4 *)(this + 0x30) = 0;
+  *(undefined4 *)(this + 0x34) = 0;
+  *(undefined4 *)(this + 0x38) = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00535560
 // GHIDRA_NAME TNavyMission::DestroyTNavyMission
-// GHIDRA_PROTO undefined DestroyTNavyMission()
+// GHIDRA_PROTO undefined __thiscall DestroyTNavyMission(void)
 
-undefined4 __thiscall TNavyMission::DestroyTNavyMission(undefined4 param_1,byte param_2)
+TNavyMission * __thiscall TNavyMission::DestroyTNavyMission(TNavyMission *this)
 
 {
+  byte in_stack_00000004;
+  
   ResetTNavyMissionToSentinelVtable();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536390
 // GHIDRA_NAME TNavyMission::CreateTNavyMission
 // GHIDRA_PROTO undefined CreateTNavyMission()
 
-undefined4 * TNavyMission::CreateTNavyMission(void)
+TMission * TNavyMission::CreateTNavyMission(void)
 
 {
-  undefined4 *puVar1;
+  TMission *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -58,26 +62,26 @@ undefined4 * TNavyMission::CreateTNavyMission(void)
   puStack_8 = &LAB_0063430a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x3c);
+  this = (TMission *)AllocateWithFallbackHandler(0x3c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMission::ConstructTMission();
-    puVar1[5] = 0;
-    puVar1[6] = 0;
-    puVar1[7] = 0;
-    puVar1[8] = 0;
-    puVar1[9] = 0;
-    puVar1[10] = 0;
-    *puVar1 = &g_vtblTNavyMission;
-    puVar1[0xb] = 0;
-    puVar1[0xc] = 0;
-    puVar1[0xd] = 0;
-    puVar1[0xe] = 0;
+  if (this != (TMission *)0x0) {
+    TMission::ConstructTMission(this);
+    *(undefined4 *)(this + 0x14) = 0;
+    *(undefined4 *)(this + 0x18) = 0;
+    *(undefined4 *)(this + 0x1c) = 0;
+    *(undefined4 *)(this + 0x20) = 0;
+    *(undefined4 *)(this + 0x24) = 0;
+    *(undefined4 *)(this + 0x28) = 0;
+    *(undefined ***)this = &g_vtblTNavyMission;
+    *(undefined4 *)(this + 0x2c) = 0;
+    *(undefined4 *)(this + 0x30) = 0;
+    *(undefined4 *)(this + 0x34) = 0;
+    *(undefined4 *)(this + 0x38) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TMission *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536450
@@ -92,24 +96,24 @@ undefined ** TNavyMission::GetTNavyMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536FC0
 // GHIDRA_NAME TNavyMission::EnsureMissionCurrentTargetContextIsValid
-// GHIDRA_PROTO undefined EnsureMissionCurrentTargetContextIsValid()
+// GHIDRA_PROTO undefined __thiscall EnsureMissionCurrentTargetContextIsValid(void)
 
-uint __fastcall TNavyMission::EnsureMissionCurrentTargetContextIsValid(int *param_1)
+uint __thiscall TNavyMission::EnsureMissionCurrentTargetContextIsValid(TNavyMission *this)
 
 {
   char cVar1;
-  int iVar2;
+  undefined4 uVar2;
   
-  if ((int *)param_1[6] != (int *)0x0) {
-    cVar1 = (**(code **)(*(int *)param_1[6] + 0x38))();
+  if (*(int **)(this + 0x18) != (int *)0x0) {
+    cVar1 = (**(code **)(**(int **)(this + 0x18) + 0x38))();
     if (cVar1 != '\0') {
-      cVar1 = (**(code **)(*(int *)param_1[6] + 0x40))((short)param_1[1]);
+      cVar1 = (**(code **)(**(int **)(this + 0x18) + 0x40))(*(undefined2 *)(this + 4));
       if (cVar1 == '\0') {
-        iVar2 = (**(code **)(*param_1 + 0xa0))();
-        param_1[6] = iVar2;
+        uVar2 = (**(code **)(*(int *)this + 0xa0))();
+        *(undefined4 *)(this + 0x18) = uVar2;
       }
     }
   }
-  return -(uint)(param_1[6] != 0) & (uint)param_1;
+  return -(uint)(*(int *)(this + 0x18) != 0) & (uint)this;
 }
 

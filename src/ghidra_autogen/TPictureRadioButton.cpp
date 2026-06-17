@@ -7,11 +7,11 @@
 // GHIDRA_NAME TPictureRadioButton::CreateTPictureRadioButtonInstance
 // GHIDRA_PROTO undefined CreateTPictureRadioButtonInstance()
 
-undefined4 * TPictureRadioButton::CreateTPictureRadioButtonInstance(void)
+thunk_TPictureButton * TPictureRadioButton::CreateTPictureRadioButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,96 +21,208 @@ undefined4 * TPictureRadioButton::CreateTPictureRadioButtonInstance(void)
   puStack_8 = &LAB_006363aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_0065ed98;
-    puVar1[0x18] = 0xc;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TPictureRadioButtonVtbl **)this = &TPictureRadioButtonVtbl_0065ed98;
+    *(undefined4 *)(this + 0x60) = 0xc;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D40
-// GHIDRA_NAME TPictureRadioButton::GetTPictureRadioButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTPictureRadioButtonClassNamePointer()
+// GHIDRA_NAME TPictureRadioButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TPictureRadioButton::GetTPictureRadioButtonClassNamePointer(void)
+CRuntimeClass * __thiscall
+TPictureRadioButton::GetTEventHandlerClassNamePointer(TPictureRadioButton *this)
 
 {
-  return &PTR_s_TPictureRadioButton_0065e580;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D60
 // GHIDRA_NAME TPictureRadioButton::ConstructTPictureRadioButtonBaseState
-// GHIDRA_PROTO undefined ConstructTPictureRadioButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTPictureRadioButtonBaseState(void)
 
-undefined4 * __fastcall
-TPictureRadioButton::ConstructTPictureRadioButtonBaseState(undefined4 *param_1)
+TPictureRadioButton * __thiscall
+TPictureRadioButton::ConstructTPictureRadioButtonBaseState(TPictureRadioButton *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_0065ed98;
-  param_1[0x18] = 0xc;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TPictureRadioButtonVtbl_0065ed98;
+  *(undefined4 *)&this->field_0x60 = 0xc;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570D90
-// GHIDRA_NAME TPictureRadioButton::DestructTPictureRadioButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTPictureRadioButtonAndMaybeFree()
+// GHIDRA_NAME TPictureRadioButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TPictureRadioButton::DestructTPictureRadioButtonAndMaybeFree(undefined4 param_1,byte param_2)
+TPictureRadioButton * __thiscall
+TPictureRadioButton::_scalar_deleting_destructor_(TPictureRadioButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570DE0
 // GHIDRA_NAME TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-// GHIDRA_PROTO undefined WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(void)
 
 void __thiscall
 TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0
-          (int *param_1,char param_2,char param_3)
+          (TPictureRadioButton *this)
 
 {
-  int iVar1;
-  int iVar2;
-  int iVar3;
+  undefined2 uVar1;
+  short sVar2;
+  TPictureRadioButtonVtbl *pTVar3;
   char cVar4;
-  short unaff_BP;
+  undefined4 unaff_EBP;
+  char in_stack_00000004;
   char local_4;
   
-  iVar2 = param_1[0x21];
-  iVar1 = *param_1;
-  iVar3 = param_1[0xf];
-  cVar4 = (**(code **)(iVar1 + 0x28))();
-  if (param_2 == '\0') {
+  uVar1 = *(undefined2 *)&this->field_0x84;
+  pTVar3 = this->vftable;
+  sVar2 = (short)this->field3c;
+  cVar4 = (*pTVar3[5].GetTEventHandlerClassNamePointer)();
+  if (in_stack_00000004 == '\0') {
 LAB_00570e0c:
     if (cVar4 == '\0') goto LAB_00570e4e;
   }
   else if (cVar4 != '\0') {
-    if (param_2 != '\0') goto LAB_00570e4e;
+    if (in_stack_00000004 != '\0') goto LAB_00570e4e;
     goto LAB_00570e0c;
   }
-  if ((short)iVar3 != 0) {
-    (**(code **)(iVar1 + 0x1c8))((short)iVar3,0);
-    param_1[0xf] = (int)unaff_BP;
-    (**(code **)(iVar1 + 0x1d8))(1);
-    local_4 = (char)(short)iVar2;
-    param_1[2] = (int)param_2;
-    (**(code **)(iVar1 + 0xa4))(param_2 == '\0',(int)local_4);
+  if (sVar2 != 0) {
+    (*pTVar3[0x39].GetTEventHandlerClassNamePointer)
+              (CONCAT22((short)((uint)unaff_EBP >> 0x10),sVar2),0);
+    this->field3c = (int)(short)unaff_EBP;
+    (*pTVar3[0x3b].GetTEventHandlerClassNamePointer)(1);
+    local_4 = (char)uVar1;
+    this->padding_08_to_0b = (int)in_stack_00000004;
+    (*pTVar3[0x14].slot_0x04)((uint)(in_stack_00000004 == '\0'),(int)local_4);
   }
 LAB_00570e4e:
-  TControl::SetUiControlVisibleFlagAndMaybeRefreshWindow((int)param_2,(int)param_3);
+  TSoundPlayer::UpdateControlCachedIntFromWindowText((TSoundPlayer *)this);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570EA0
+// GHIDRA_NAME TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(void)
+
+void __thiscall
+TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0
+          (TPictureRadioButton *this)
+
+{
+  int iVar1;
+  int iVar2;
+  TPictureRadioButtonVtbl *pTVar3;
+  int *piVar4;
+  undefined1 local_20 [4];
+  int iStack_1c;
+  int local_18;
+  int local_14;
+  int local_10;
+  int iStack_c;
+  int iStack_8;
+  
+  iVar1 = this->ownerOffsetX;
+  iVar2 = this->ownerOffsetY;
+  piVar4 = (int *)CopyOffset10PointPairToOutOrZero(local_20);
+  pTVar3 = this->vftable;
+  local_18 = iVar1 + *piVar4;
+  local_14 = iVar2 + piVar4[1];
+  (*pTVar3[0x25].slot_0x04)(&local_10);
+  iStack_c = (local_14 + iStack_1c) - iVar1;
+  iStack_8 = (local_10 + local_18) - iVar2;
+  (*pTVar3[0x2d].GetTEventHandlerClassNamePointer)(&local_14,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570F40
+// GHIDRA_NAME TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh
+// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(void)
+
+void __thiscall
+TPictureRadioButton::HandleToggleButtonStateChangeAndRefresh(TPictureRadioButton *this)
+
+{
+  TPictureRadioButtonVtbl *pTVar1;
+  char cVar2;
+  char in_stack_00000004;
+  char in_stack_00000008;
+  
+  pTVar1 = this->vftable;
+  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  if (cVar2 != '\0') {
+    (*pTVar1[0x14].slot_0x04)((int)in_stack_00000004,(int)in_stack_00000008);
+    if (in_stack_00000004 != '\0') {
+      (*this->ownerContext->vftable[0x39].GetTEventHandlerClassNamePointer)(this->controlTag);
+    }
+    (*pTVar1[0x1f].GetTEventHandlerClassNamePointer)();
+    (*pTVar1[0x22].slot_0x04)(0);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570FB0
+// GHIDRA_NAME TPictureRadioButton::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+
+int __thiscall TPictureRadioButton::SetForeignMinisterReadyFlag14(TPictureRadioButton *this)
+
+{
+  TPictureRadioButtonVtbl *pTVar1;
+  TPictureRadioButton_slot_0x04_0x04 *pTVar2;
+  char cVar3;
+  char cVar4;
+  uint3 extraout_var;
+  uint3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 uVar5;
+  uint3 uVar6;
+  
+  pTVar1 = this->vftable;
+  pTVar2 = pTVar1[0x39].slot_0x04;
+  cVar3 = (*pTVar2)();
+  uVar6 = extraout_var;
+  if (cVar3 != '\0') {
+LAB_00571025:
+    return (uint)uVar6 << 8;
+  }
+  cVar3 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  uVar6 = extraout_var_00;
+  if (cVar3 == '\0') goto LAB_00571025;
+  cVar3 = (*pTVar2)();
+  if (cVar3 == '\0') {
+    cVar4 = (*this->ownerContext->vftable[0x39].slot_0x04)();
+    uVar5 = extraout_var_01;
+    if (cVar4 == '\0') goto LAB_0057101c;
+  }
+  (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)((uint)(cVar3 == '\0'),1);
+  if (cVar3 != '\0') {
+    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x67,this,0);
+    return CONCAT31(extraout_var_02,1);
+  }
+  (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(0x68,this,0);
+  uVar5 = extraout_var_03;
+LAB_0057101c:
+  return CONCAT31(uVar5,1);
 }
 

@@ -7,11 +7,11 @@
 // GHIDRA_NAME TradeScreenPicture::CreateTradeScreenPictureInstance
 // GHIDRA_PROTO undefined CreateTradeScreenPictureInstance()
 
-undefined4 * TradeScreenPicture::CreateTradeScreenPictureInstance(void)
+thunk_TPictureButton * TradeScreenPicture::CreateTradeScreenPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,153 +21,28 @@ undefined4 * TradeScreenPicture::CreateTradeScreenPictureInstance(void)
   puStack_8 = &LAB_006390da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_0066dd98;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TTradeScreenPictureVtbl **)this = &TTradeScreenPictureVtbl_0066dd98;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005BA700
-// GHIDRA_NAME TradeScreenPicture::GetTradeScreenPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTradeScreenPictureClassNamePointer()
-
-undefined ** TradeScreenPicture::GetTradeScreenPictureClassNamePointer(void)
-
-{
-  return &PTR_s_TTradeScreenPicture_0066dba0;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA720
 // GHIDRA_NAME TradeScreenPicture::ConstructTradeScreenPictureBaseState
-// GHIDRA_PROTO undefined ConstructTradeScreenPictureBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTradeScreenPictureBaseState(void)
 
-undefined4 * __fastcall
-TradeScreenPicture::ConstructTradeScreenPictureBaseState(undefined4 *param_1)
-
-{
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_0066dd98;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005BA750
-// GHIDRA_NAME TradeScreenPicture::DestructTradeScreenPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTradeScreenPictureAndMaybeFree()
-
-undefined4 __thiscall
-TradeScreenPicture::DestructTradeScreenPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TradeScreenPicture * __thiscall
+TradeScreenPicture::ConstructTradeScreenPictureBaseState(TradeScreenPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005BA7A0
-// GHIDRA_NAME TradeScreenPicture::RenderTradeScreenCommoditySummaryRows
-// GHIDRA_PROTO undefined RenderTradeScreenCommoditySummaryRows()
-
-void __thiscall
-TradeScreenPicture::RenderTradeScreenCommoditySummaryRows(int *param_1,LONG *param_2)
-
-{
-  int iVar1;
-  short sVar2;
-  int iVar3;
-  char *pcVar4;
-  int iVar5;
-  undefined4 *unaff_FS_OFFSET;
-  code *local_30;
-  int iStack_2c;
-  int iStack_28;
-  int iStack_24;
-  int iStack_20;
-  RECT local_1c;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_00639100;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_1c.left = *param_2;
-  local_1c.top = param_2[1];
-  local_1c.right = param_2[2];
-  local_1c.bottom = param_2[3];
-  if ((*(short *)(DAT_006a2158 + 0x1c) == 0x7d9) || (*(short *)(DAT_006a2158 + 0x1c) == 0x7da)) {
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
-               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_1c,0,
-               (astruct_19 *)0x0);
-  }
-  else {
-    THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
-    InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,0xe,0x2b68,2);
-    iVar5 = 0;
-    pcVar4 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
-    local_30 = *(code **)(*param_1 + 0x94);
-    do {
-      InitializeSharedStringRefFromEmpty(&param_2);
-      local_4 = 0;
-      iVar3 = (*local_30)(*(undefined4 *)pcVar4);
-      if (iVar3 == 0) {
-        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
-        thunk_TemporarilyClearAndRestoreUiInvalidationFlag
-                  (s_D__Ambit_Cross_UTradeViews_cpp_0069aa94,0xbf);
-      }
-      if (((pcVar4 != " 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg") &&
-          (pcVar4 != " 5am 0dg 1dg 2dg 3dg")) ||
-         (*(char *)((int)g_pCityOrderCapabilityState + 0x193) != '\0')) {
-        iStack_28 = *(int *)(iVar3 + 0x28) + 3;
-        iStack_20 = *(int *)(iVar3 + 0x28) + 0x11;
-        iStack_2c = *(int *)(iVar3 + 0x24) + 0x11a;
-        iStack_24 = *(int *)(iVar3 + 0x24) + 300;
-        sVar2 = UiRuntimeContext::GetActiveNationId();
-        sVar2 = (**(code **)(*(int *)(&g_apNationStates)[sVar2] + 0x78))(iVar5);
-        if (sVar2 == 0) {
-          TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-                    ((TToolBarCluster *)&stack0xffffffc4,&DAT_0069aa90);
-          puStack_8._0_1_ = 1;
-          AssignFromPtr(&stack0x00000000,(CString *)&stack0xffffffc4);
-          puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
-          ReleaseSharedStringRefIfNotEmpty(&stack0xffffffc4);
-        }
-        else {
-          sVar2 = UiRuntimeContext::GetActiveNationId();
-          sVar2 = (**(code **)(*(int *)(&g_apNationStates)[sVar2] + 0x78))(iVar5);
-          FormatStringWithVarArgsToSharedRef(&stack0x00000000,&g_szDecimalFormat,(int)sVar2);
-        }
-        iStack_2c = iStack_2c + -5;
-        iStack_24 = iStack_24 + -5;
-        RenderTradeScreenCommoditySummaryRows_Impl(&stack0x00000000,&local_30,0xffffffff,0);
-        iStack_2c = *(int *)(iVar3 + 0x28) + 3;
-        iStack_24 = *(int *)(iVar3 + 0x28) + 0x11;
-        iVar1 = *g_pLocalizationTable;
-        local_30 = (code *)(*(int *)(iVar3 + 0x24) + 200);
-        iStack_28 = *(int *)(iVar3 + 0x24) + 0xee;
-        sVar2 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x4c))
-                          (iVar5,&stack0x00000000);
-        (**(code **)(iVar1 + 0x74))((int)sVar2);
-        iStack_20 = iStack_20 + -5;
-        iStack_28 = iStack_28 + -5;
-        RenderTradeScreenCommoditySummaryRows_Impl(&param_2,&iStack_2c,0xffffffff,0);
-      }
-      local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty(&param_2);
-      pcVar4 = pcVar4 + 4;
-      iVar5 = iVar5 + 1;
-    } while ((int)pcVar4 < 0x66db14);
-  }
-  *unaff_FS_OFFSET = local_c;
-  return;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  *(TTradeScreenPictureVtbl **)this = &TTradeScreenPictureVtbl_0066dd98;
+  return this;
 }
 

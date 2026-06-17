@@ -3,138 +3,228 @@
 // Program: Imperialism.exe
 // Bucket: TShipBuildingTask.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004C05A0
-// GHIDRA_NAME TShipBuildingTask::QueueCityProductionCommand2BIfMissingAndResetValue
-// GHIDRA_PROTO undefined QueueCityProductionCommand2BIfMissingAndResetValue()
-
-void __thiscall
-TShipBuildingTask::QueueCityProductionCommand2BIfMissingAndResetValue
-          (int param_1,undefined4 param_2,int *param_3)
-
-{
-  code *pcVar1;
-  code *pcVar2;
-  int iVar3;
-  void *pCommandQueue;
-  short sVar4;
-  int iVar5;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063132a;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  iVar5 = *param_3;
-  sVar4 = 1;
-  pcVar1 = *(code **)(iVar5 + 0x48);
-  iVar3 = (*pcVar1)();
-  if (0 < iVar3) {
-    pcVar2 = *(code **)(iVar5 + 0x4c);
-    iVar5 = 1;
-    do {
-      iVar5 = (*pcVar2)(iVar5);
-      if (*(short *)(iVar5 + 4) == 0x2b) goto LAB_004c0649;
-      sVar4 = sVar4 + 1;
-      iVar5 = (int)sVar4;
-      iVar3 = (*pcVar1)();
-    } while (iVar5 <= iVar3);
-  }
-  iVar5 = AllocateWithFallbackHandler(0x18);
-  uStack_4 = 0;
-  if (iVar5 == 0) {
-    pCommandQueue = (void *)0x0;
-  }
-  else {
-    pCommandQueue = (void *)ConstructTShipBuildingTaskBaseState();
-  }
-  uStack_4 = 0xffffffff;
-  InitializeOrderRecordFieldsFromArgs(0x2b,param_2,*(undefined2 *)(param_1 + 0x32));
-  DispatchCityProductionQueueCommand(param_3,pCommandQueue);
-  *(undefined2 *)(param_1 + 0x32) = 0;
-LAB_004c0649:
-  *unaff_FS_OFFSET = uStack_c;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE680
-// GHIDRA_NAME TShipBuildingTask::GetTShipBuildingTaskClassNamePointer
-// GHIDRA_PROTO undefined GetTShipBuildingTaskClassNamePointer()
+// GHIDRA_NAME TShipBuildingTask::GetTTaskClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
 
-undefined ** TShipBuildingTask::GetTShipBuildingTaskClassNamePointer(void)
+CRuntimeClass * __thiscall TShipBuildingTask::GetTTaskClassNamePointer(TShipBuildingTask *this)
 
 {
-  return &PTR_s_TShipBuildingTask_0066a8e0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE6A0
 // GHIDRA_NAME TShipBuildingTask::ConstructTShipBuildingTaskBaseState
-// GHIDRA_PROTO undefined ConstructTShipBuildingTaskBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTShipBuildingTaskBaseState(void)
 
-void __fastcall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(undefined4 *param_1)
+void __thiscall TShipBuildingTask::ConstructTShipBuildingTaskBaseState(TShipBuildingTask *this)
 
 {
-  *param_1 = &PTR_GetTShipBuildingTaskClassNamePointer_0066a9f8;
+  this->vftable = &TShipBuildingTaskVtbl_0066a9f8;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE6C0
-// GHIDRA_NAME TShipBuildingTask::DestructTShipBuildingTaskAndMaybeFree
-// GHIDRA_PROTO undefined DestructTShipBuildingTaskAndMaybeFree()
+// GHIDRA_NAME TShipBuildingTask::ConstructTTaskBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
 
-undefined4 __thiscall
-TShipBuildingTask::DestructTShipBuildingTaskAndMaybeFree(undefined4 param_1,byte param_2)
+TShipBuildingTask * __thiscall TShipBuildingTask::ConstructTTaskBaseState(TShipBuildingTask *this)
 
 {
+  byte in_stack_00000004;
+  
   DestroyTShipBuildingTask_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AE780
+// GHIDRA_NAME TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Advances one city order context through per-turn requirement resolution and command generation.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior summary:
+// GHIDRA_COMMENT - Uses city/order requirement tables and current city pools.
+// GHIDRA_COMMENT - Consumes available deltas, then queues remaining deficits as command objects.
+// GHIDRA_COMMENT - Marks order state to avoid duplicate queueing within the same cycle.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Context:
+// GHIDRA_COMMENT - Participates in turn processing / deferred command pipeline for city production orders.
+// GHIDRA_COMMENT_END
+
+/* Advances one city order context through per-turn requirement resolution and command generation.
+   
+   Behavior summary:
+   - Uses city/order requirement tables and current city pools.
+   - Consumes available deltas, then queues remaining deficits as command objects.
+   - Marks order state to avoid duplicate queueing within the same cycle.
+   
+   Context:
+   - Participates in turn processing / deferred command pipeline for city production orders. */
+
+uint __thiscall TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(TShipBuildingTask *this)
+
+{
+  short sVar1;
+  int *piVar2;
+  int *piVar3;
+  undefined4 uVar4;
+  uint uVar5;
+  int iVar6;
+  short sVar7;
+  short sVar8;
+  int iVar9;
+  short *psVar10;
+  int *in_stack_00000004;
+  short asStack_e6 [73];
+  undefined4 uStack_54;
+  undefined4 *puStack_50;
+  int iStack_38;
+  short asStack_30 [24];
+  
+  piVar2 = *(int **)(*(int *)&this->field_0x8 + 400);
+  if (*(short *)&this->field_0x16 == 0) {
+    puStack_50 = (undefined4 *)0x5ae7a9;
+    uVar5 = (**(code **)(*piVar2 + 0x48))();
+    if ((char)uVar5 != '\0') {
+      if (*(short *)&this->field_0x6 < 0) {
+        *(undefined2 *)&this->field_0x6 = 1;
+      }
+      *(short *)&this->field_0x6 = *(short *)&this->field_0x6 + 1;
+      *(undefined2 *)&this->field_0x16 = 1;
+      return uVar5 & 0xffffff00;
+    }
+    iVar9 = 0xb6;
+    psVar10 = asStack_30;
+    for (iVar6 = 0xb; iVar6 != 0; iVar6 = iVar6 + -1) {
+      psVar10[0] = 0;
+      psVar10[1] = 0;
+      psVar10 = psVar10 + 2;
+    }
+    *psVar10 = 0;
+    iVar6 = *(short *)&this->field_0x14 * 2;
+    iStack_38 = 0x17;
+    asStack_30[8] = *(short *)(&g_industryActionCostWeightResCode08 + iVar6) - (short)piVar2[8];
+    asStack_30[9] =
+         *(short *)(&g_industryActionCostWeightResCode09 + iVar6) - *(short *)((int)piVar2 + 0x22);
+    asStack_30[0xb] =
+         *(short *)(&g_industryActionCostWeightResCode0B + iVar6) - *(short *)((int)piVar2 + 0x26);
+    asStack_30[0x10] = *(short *)(&g_industryActionCostWeightResCode10 + iVar6) - (short)piVar2[0xc]
+    ;
+    asStack_30[0xc] = *(short *)(&g_industryActionCostWeightResCode0C + iVar6) - (short)piVar2[10];
+    asStack_30[3] =
+         *(short *)(&g_industryActionCostWeightResCode03 + iVar6) - *(short *)((int)piVar2 + 0x16);
+    do {
+      sVar8 = *(short *)((int)asStack_e6 + iVar9);
+      if (0 < sVar8) {
+        piVar3 = *(int **)&this->field_0x8;
+        sVar1 = *(short *)(iVar9 + (int)piVar3);
+        if (0 < sVar1) {
+          sVar7 = sVar8;
+          if (sVar1 < sVar8) {
+            sVar7 = sVar1;
+          }
+          iVar6 = *piVar3;
+          *(short *)(iVar9 + (int)piVar3) = *(short *)(iVar9 + (int)piVar3) - sVar7;
+          puStack_50 = (undefined4 *)0x5ae886;
+          (**(code **)(iVar6 + 0x80))();
+          psVar10 = (short *)((int)piVar2 + iVar9 + -0xa6);
+          *psVar10 = *psVar10 + sVar7;
+          *(short *)((int)asStack_e6 + iVar9) = sVar8 - sVar7;
+        }
+      }
+      iVar9 = iVar9 + 2;
+      iStack_38 = iStack_38 + -1;
+    } while (iStack_38 != 0);
+    uVar5 = 0;
+    if (*(short *)&this->field_0xe == 0) {
+      sVar8 = 0;
+      uVar5 = 0;
+      do {
+        sVar1 = asStack_30[sVar8];
+        if (0 < sVar1) {
+          puStack_50 = (undefined4 *)0x14;
+          uStack_54 = 0x5ae8d2;
+          puStack_50 = (undefined4 *)AllocateWithFallbackHandler();
+          if (puStack_50 == (undefined4 *)0x0) {
+            puStack_50 = (undefined4 *)0x0;
+          }
+          else {
+            *puStack_50 = &TCityTaskVtbl_0066a9a8;
+          }
+          uVar4 = *(undefined4 *)&this->field_0x8;
+          *(short *)(puStack_50 + 1) = sVar8;
+          *(undefined2 *)((int)puStack_50 + 6) = 4;
+          puStack_50[2] = uVar4;
+          *(short *)(puStack_50 + 3) = sVar1;
+          *(undefined2 *)((int)puStack_50 + 0xe) = 0;
+          if (sVar8 == 5) {
+            *(undefined2 *)((int)puStack_50 + 6) = 3;
+          }
+          *(undefined1 *)(puStack_50 + 4) = 1;
+          uStack_54 = 0x5ae915;
+          uVar5 = (**(code **)(*in_stack_00000004 + 0x30))();
+        }
+        sVar8 = sVar8 + 1;
+      } while (sVar8 < 0x17);
+      *(short *)&this->field_0x6 = *(short *)&this->field_0x6 + 1;
+      *(undefined2 *)&this->field_0xe = 1;
+      return uVar5 & 0xffffff00;
+    }
+  }
+  else {
+    uVar5 = CONCAT22((short)((uint)*(int *)&this->field_0x8 >> 0x10),(short)piVar2[0x12]);
+    if ((short)piVar2[0x12] != *(short *)&this->field_0x14) {
+      return CONCAT31((int3)(uVar5 >> 8),1);
+    }
+  }
+  *(short *)&this->field_0x6 = *(short *)&this->field_0x6 + 1;
+  return uVar5 & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE9E0
-// GHIDRA_NAME TShipBuildingTask::WrapperFor_HandleCityDialogNoOpSlot14_At005ae9e0
-// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At005ae9e0()
+// GHIDRA_NAME TShipBuildingTask::SerializeCityProductionQueueCommand
+// GHIDRA_PROTO undefined __thiscall SerializeCityProductionQueueCommand(void)
 
-void __thiscall
-TShipBuildingTask::WrapperFor_HandleCityDialogNoOpSlot14_At005ae9e0(int param_1,int *param_2)
+void __thiscall TShipBuildingTask::SerializeCityProductionQueueCommand(TShipBuildingTask *this)
 
 {
   code *pcVar1;
+  int *in_stack_00000004;
   
-  pcVar1 = *(code **)(*param_2 + 0x78);
-  (*pcVar1)(param_1 + 0x10,1);
-  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
-  (*pcVar1)(param_1 + 4,2);
-  (*pcVar1)(param_1 + 6,2);
-  (*pcVar1)(param_1 + 0xc,2);
-  (*pcVar1)(param_1 + 0xe,2);
-  (*pcVar1)(param_1 + 0x14,2);
-  (*pcVar1)(param_1 + 0x16,2);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  (*pcVar1)(&this->field_0x10,1);
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  (*pcVar1)(&this->field_0x4,2);
+  (*pcVar1)(&this->field_0x6,2);
+  (*pcVar1)(&this->field_0xc,2);
+  (*pcVar1)(&this->field_0xe,2);
+  (*pcVar1)(&this->field_0x14,2);
+  (*pcVar1)(&this->field_0x16,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEA70
-// GHIDRA_NAME TShipBuildingTask::WrapperFor_HandleCityDialogNoOpSlot18_At005aea70
-// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot18_At005aea70()
+// GHIDRA_NAME TShipBuildingTask::DeserializeCityProductionQueueCommand
+// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(void)
 
-void __thiscall
-TShipBuildingTask::WrapperFor_HandleCityDialogNoOpSlot18_At005aea70(int param_1,int *param_2)
+void __thiscall TShipBuildingTask::DeserializeCityProductionQueueCommand(TShipBuildingTask *this)
 
 {
   code *pcVar1;
+  int *in_stack_00000004;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
-  pcVar1 = *(code **)(*param_2 + 0x3c);
-  (*pcVar1)(param_1 + 4,2);
-  (*pcVar1)(param_1 + 6,2);
-  (*pcVar1)(param_1 + 0xc,2);
-  (*pcVar1)(param_1 + 0xe,2);
-  (*pcVar1)(param_1 + 0x14,2);
-  (*pcVar1)(param_1 + 0x16,2);
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  (*pcVar1)(&this->field_0x4,2);
+  (*pcVar1)(&this->field_0x6,2);
+  (*pcVar1)(&this->field_0xc,2);
+  (*pcVar1)(&this->field_0xe,2);
+  (*pcVar1)(&this->field_0x14,2);
+  (*pcVar1)(&this->field_0x16,2);
   return;
 }
 

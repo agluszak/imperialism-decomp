@@ -4,12 +4,534 @@
 // Bucket: TArmoryView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CED80
-// GHIDRA_NAME TArmoryView::GetTArmoryViewClassNamePointer
-// GHIDRA_PROTO undefined GetTArmoryViewClassNamePointer()
+// GHIDRA_NAME TArmoryView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TArmoryView::GetTArmoryViewClassNamePointer(void)
+CRuntimeClass * __thiscall TArmoryView::GetTEventHandlerClassNamePointer(TArmoryView *this)
 
 {
-  return &PTR_s_TArmoryView_00651338;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CEDA0
+// GHIDRA_NAME TArmoryView::ConstructArmoryView
+// GHIDRA_PROTO undefined __thiscall ConstructArmoryView(void)
+
+TArmoryView * __thiscall TArmoryView::ConstructArmoryView(TArmoryView *this)
+
+{
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  this->vftable = &TArmoryViewVtbl_00652b10;
+  *(undefined4 *)&this->field_0x94 = 0;
+  *(undefined4 *)&this->field_0x98 = 0;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CEDD0
+// GHIDRA_NAME TArmoryView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TArmoryView * __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CEE20
+// GHIDRA_NAME TArmoryView::OrphanRetStub_004c6fd0
+// GHIDRA_PROTO void __thiscall OrphanRetStub_004c6fd0(int * pCityViewDialog)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Refreshes the advanced University recruitment panel (count rows and availability rows).
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Bind dialog render context and iterate num0..num7 controls.
+// GHIDRA_COMMENT 2. Push current queued counts from the selected city recruitment table into numeric widgets.
+// GHIDRA_COMMENT 3. Refresh title/cost/availability header labels for the advanced panel.
+// GHIDRA_COMMENT 4. Iterate availability rows (ava*) and synchronize current/required/resource columns.
+// GHIDRA_COMMENT 5. Reset selection state to civ0 and clear pending entry pointer.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCityViewDialog: University city-view dialog instance.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Refreshes the advanced University recruitment panel (count rows and availability rows).
+   Algorithm:
+   1. Bind dialog render context and iterate num0..num7 controls.
+   2. Push current queued counts from the selected city recruitment table into numeric widgets.
+   3. Refresh title/cost/availability header labels for the advanced panel.
+   4. Iterate availability rows (ava*) and synchronize current/required/resource columns.
+   5. Reset selection state to civ0 and clear pending entry pointer.
+   Parameters:
+   - pCityViewDialog: University city-view dialog instance.
+   Returns:
+   - void. */
+
+void __thiscall TArmoryView::OrphanRetStub_004c6fd0(TArmoryView *this,int *pCityViewDialog)
+
+{
+  TArmoryView_slot_0x04_0x04 *pTVar1;
+  undefined uVar2;
+  short sVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int *piVar4;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  undefined3 extraout_var_07;
+  undefined3 extraout_var_08;
+  undefined3 extraout_var_09;
+  undefined3 extraout_var_10;
+  int iVar5;
+  undefined4 *puVar6;
+  int iVar7;
+  int iStack_88;
+  int iStack_84;
+  undefined4 uStack_80;
+  undefined4 uStack_7c;
+  undefined1 *puStack_78;
+  undefined4 uStack_74;
+  undefined4 uStack_70;
+  int iStack_6c;
+  undefined4 uStack_68;
+  undefined1 *puStack_64;
+  int *piStack_60;
+  int iStack_5c;
+  undefined1 *puStack_58;
+  int iVar8;
+  int iStack_34;
+  int dwCountControlTag;
+  
+  iStack_34 = 0x2b6b;
+  *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
+  thunk_BuildUiTextStyleDescriptor();
+  sVar3 = 0;
+  pTVar1 = this->vftable[0x12].slot_0x04;
+  dwCountControlTag = 0x6e756d30;
+  do {
+                    /* Iterate num0..num7 controls and write queued specialist counts. */
+    iStack_34 = dwCountControlTag + -0xb0bf700;
+    uVar2 = (*pTVar1)();
+    if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    }
+    iVar8 = 1;
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1c8))();
+    uVar2 = (*pTVar1)();
+    if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    }
+    piVar4 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x94))();
+    if (piVar4 == (int *)0x0) {
+      puStack_58 = (undefined1 *)0x4cef7b;
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+    }
+    iVar7 = *piVar4;
+    (**(code **)(iVar7 + 0xa8))();
+    puStack_58 = (undefined1 *)0x4cefaa;
+    (**(code **)(iVar7 + 0x1b4))();
+    puStack_58 = (undefined1 *)0x1;
+    iStack_5c = (int)*(short *)(iVar8 + 4);
+    piStack_60 = (int *)0x4cefbd;
+    (**(code **)(iVar7 + 0x1e4))();
+    sVar3 = sVar3 + 1;
+    dwCountControlTag = dwCountControlTag + 1;
+  } while (sVar3 < 8);
+  iStack_34 = 0x2b6b;
+  thunk_BuildUiTextStyleDescriptor();
+  iStack_34 = 0x7469746c;
+  uVar2 = (*pTVar1)();
+  iVar8 = *(int *)CONCAT31(extraout_var_01,uVar2);
+  (**(code **)(iVar8 + 0xc))();
+  (**(code **)(iVar8 + 0x1b4))();
+  (**(code **)(iVar8 + 0x1cc))();
+  puStack_58 = &stack0xffffffdc;
+  iStack_5c = 0x4cf034;
+  thunk_BuildUiTextStyleDescriptor();
+  uVar2 = (*pTVar1)();
+  iVar8 = *(int *)CONCAT31(extraout_var_02,uVar2);
+  (**(code **)(iVar8 + 0xc))();
+  puStack_58 = (undefined1 *)0x4cf058;
+  (**(code **)(iVar8 + 0x1b4))();
+  puStack_58 = (undefined1 *)0x2b6b;
+  iStack_5c = 10;
+  puStack_64 = &stack0xffffffd0;
+  piStack_60 = (int *)0x0;
+  uStack_68 = 0x4cf06b;
+  thunk_BuildUiTextStyleDescriptor();
+  puStack_58 = (undefined1 *)0x636f7374;
+  iStack_5c = 0x4cf077;
+  uVar2 = (*pTVar1)();
+  iVar8 = *(int *)CONCAT31(extraout_var_03,uVar2);
+  iStack_5c = 0x4cf080;
+  (**(code **)(iVar8 + 0xc))();
+  piStack_60 = &iStack_34;
+  iStack_5c = 1;
+  puStack_64 = (undefined1 *)0x4cf08f;
+  (**(code **)(iVar8 + 0x1b4))();
+  puStack_64 = (undefined1 *)0x1;
+  uStack_68 = 0x1e;
+  iStack_6c = 0x271c;
+  uStack_70 = 0x4cf0a0;
+  (**(code **)(iVar8 + 0x1cc))();
+  uStack_70 = 0x61766169;
+  uStack_74 = 0x4cf0a9;
+  uVar2 = (*pTVar1)();
+  iVar8 = *(int *)CONCAT31(extraout_var_04,uVar2);
+  uStack_74 = 0x4cf0b2;
+  (**(code **)(iVar8 + 0xc))();
+  puStack_78 = &stack0xffffffb4;
+  uStack_74 = 1;
+  uStack_7c = 0x4cf0c1;
+  (**(code **)(iVar8 + 0x1b4))();
+  uStack_7c = 1;
+  uStack_80 = 0x1f;
+  iStack_84 = 0x271c;
+  iStack_88 = 0x4cf0d2;
+  (**(code **)(iVar8 + 0x1cc))();
+  uStack_74 = 0;
+  iVar8 = 0x61766130;
+  do {
+                    /* Iterate availability rows and update current/required/capacity triplets. */
+    iStack_88 = iVar8 + 0x1f91200;
+    uVar2 = (*pTVar1)();
+    iStack_6c = *(int *)CONCAT31(extraout_var_05,uVar2);
+    (**(code **)(iStack_6c + 0xc))();
+    (**(code **)(iStack_6c + 0x1b4))(&puStack_64,1);
+    uVar2 = (*pTVar1)(iVar8);
+    puStack_78 = *(undefined1 **)CONCAT31(extraout_var_06,uVar2);
+    (**(code **)(puStack_78 + 0xc))();
+    puVar6 = &uStack_70;
+    (**(code **)(puStack_78 + 0x1b4))(puVar6,1);
+    uVar2 = (*pTVar1)(iVar8 + 0x11fe0000);
+    iStack_84 = *(int *)CONCAT31(extraout_var_07,uVar2);
+    (**(code **)(iStack_84 + 0xc))();
+    iVar5 = 1;
+    (**(code **)(iStack_84 + 0x1b4))(&uStack_7c,1);
+    uVar2 = (*pTVar1)(iVar8 + 0xaeb0100);
+    iVar7 = *(int *)CONCAT31(extraout_var_08,uVar2);
+    (**(code **)(iVar7 + 0xc))();
+    (**(code **)(iVar7 + 0x1b4))(&iStack_88,1);
+    (*(code *)puVar6[0x73])(0x271c,iVar5 + 1,1);
+    uStack_74 = uStack_68;
+    iVar8 = iVar8 + 1;
+                    /* Loop bound for four advanced availability rows. */
+  } while ((short)uStack_68 < 4);
+  iStack_88 = 0x2b6b;
+  thunk_BuildUiTextStyleDescriptor(&piStack_60,0,10);
+  iStack_88 = 0x64657363;
+  uVar2 = (*pTVar1)();
+  iVar8 = *(int *)CONCAT31(extraout_var_09,uVar2);
+  (**(code **)(iVar8 + 0xc))();
+  (**(code **)(iVar8 + 0x1b4))(&puStack_64,1);
+  *(undefined2 *)&this->field_0xa4 = 0xffff;
+  *(undefined4 *)&this->field_0xa8 = 0;
+  uVar2 = (*pTVar1)(0x73656c65);
+  iVar8 = *(int *)CONCAT31(extraout_var_10,uVar2);
+  (**(code **)(iVar8 + 0xc))();
+  (**(code **)(iVar8 + 0x1c8))(0x63697630);
+  (**(code **)(puStack_78 + 0x1e4))(0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CF350
+// GHIDRA_NAME TArmoryView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Handles Armory view UI command routing for selection and +/- adjustments.
+// GHIDRA_COMMENT - command 0x0C: updates selected row index from control id range 0x7630..0x7638 and notifies slot +0x1E4.
+// GHIDRA_COMMENT - command 0x0A: updates row selection from popup/list ids around 30000, updates 'sele' text tag, and applies +/- step via child entry callback +0x2C.
+// GHIDRA_COMMENT - refreshes numeric controls and invalidates the affected rect after successful step changes.
+// GHIDRA_COMMENT - all other commands are delegated to HandleCityDialogToggleCommandOrForward.
+// GHIDRA_COMMENT_END
+
+/* Handles Armory view UI command routing for selection and +/- adjustments.
+   - command 0x0C: updates selected row index from control id range 0x7630..0x7638 and notifies slot
+   +0x1E4.
+   - command 0x0A: updates row selection from popup/list ids around 30000, updates 'sele' text tag,
+   and applies +/- step via child entry callback +0x2C.
+   - refreshes numeric controls and invalidates the affected rect after successful step changes.
+   - all other commands are delegated to HandleCityDialogToggleCommandOrForward. */
+
+void __thiscall TArmoryView::OrphanRetStub_0059add0(TArmoryView *this)
+
+{
+  TArmoryViewVtbl *pTVar1;
+  int iVar2;
+  undefined uVar3;
+  char cVar4;
+  short sVar5;
+  undefined2 uVar7;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int *piVar6;
+  int unaff_EBP;
+  int *unaff_EDI;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  RECT local_34;
+  tagRECT atStack_24 [2];
+  
+  uVar7 = (undefined2)((uint)in_stack_00000008 >> 0x10);
+  if (in_stack_00000004 == 0xc) {
+    sVar5 = *(short *)(in_stack_00000008 + 0x1c) + -0x7630;
+    if ((-1 < sVar5) && (sVar5 < 9)) {
+      *(short *)&this->field_0xa4 = sVar5;
+      (*this->vftable[0x3c].slot_0x04)(CONCAT22(uVar7,sVar5));
+    }
+  }
+  else if (in_stack_00000004 == 10) {
+    sVar5 = *(short *)(*(int *)(in_stack_00000008 + 0x20) + 0x1c) + -30000;
+    if ((-1 < sVar5) && (sVar5 < 9)) {
+      if (*(short *)&this->field_0xa4 != sVar5) {
+        pTVar1 = this->vftable;
+        *(short *)&this->field_0xa4 = sVar5;
+        (*pTVar1[0x3c].slot_0x04)(CONCAT22((short)((uint)unaff_EDI >> 0x10),sVar5));
+        uVar3 = (*pTVar1[0x12].slot_0x04)(0x73656c65);
+        iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
+        (**(code **)(iVar2 + 0xc))();
+        (**(code **)(iVar2 + 0x1c8))(sVar5 + 0x63697630);
+      }
+      local_34.left = *(LONG *)&this->field_0xa8;
+      if (*(int *)(in_stack_00000008 + 0x1c) == 0x706c7573) {
+        sVar5 = (short)*(int *)(local_34.left + 4) + 1;
+      }
+      else {
+        sVar5 = (short)*(int *)(local_34.left + 4) + -1;
+      }
+      cVar4 = (**(code **)(*(int *)local_34.left + 0x2c))(CONCAT22(uVar7,sVar5));
+      if (cVar4 != '\0') {
+        uVar3 = (*this->vftable[0x12].slot_0x04)(*(short *)&this->field_0xa4 + 0x6e756d30);
+        if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
+          MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                    (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xb87);
+        }
+        piVar6 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x94))(0x6e756d62);
+        if (piVar6 == (int *)0x0) {
+          MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+          thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                    (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xb88);
+        }
+        iVar2 = *piVar6;
+        (**(code **)(iVar2 + 0x1e4))((int)*(short *)(unaff_EBP + 4),0);
+        (**(code **)(iVar2 + 300))(&stack0xffffffc0);
+        local_34.left = (LONG)unaff_EDI;
+        CopyRect(atStack_24,&local_34);
+        thunk_InvalidateCityDialogRectRegion(atStack_24,1);
+        (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+      }
+    }
+  }
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CF5C0
+// GHIDRA_NAME TArmoryView::OrphanRetStub_004c6fb0
+// GHIDRA_PROTO void __thiscall OrphanRetStub_004c6fb0(int * pCityViewDialog)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Refreshes specialist recruit availability values for the selected university entry.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Exit early if no specialist row is selected.
+// GHIDRA_COMMENT 2. Render prerequisite requirement controls for reqA/reqB ids stored in selected entry.
+// GHIDRA_COMMENT 3. Compute max trainable count from city workforce pool and selected-entry mode field (+0x56).
+// GHIDRA_COMMENT 4. Clamp computed value by specialist-specific available pool and update ava0 control.
+// GHIDRA_COMMENT 5. Apply warning color when availability is zero and invalidate panel region.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCityViewDialog: university dialog controller.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - Mode 1 uses full workforce, mode 2 uses workforce/2, default uses workforce/4 before clamp.
+// GHIDRA_COMMENT_END
+
+/* Refreshes specialist recruit availability values for the selected university entry.
+   Algorithm:
+   1. Exit early if no specialist row is selected.
+   2. Render prerequisite requirement controls for reqA/reqB ids stored in selected entry.
+   3. Compute max trainable count from city workforce pool and selected-entry mode field (+0x56).
+   4. Clamp computed value by specialist-specific available pool and update ava0 control.
+   5. Apply warning color when availability is zero and invalidate panel region.
+   Parameters:
+   - pCityViewDialog: university dialog controller.
+   Returns:
+   - void.
+   Special Cases:
+   - Mode 1 uses full workforce, mode 2 uses workforce/2, default uses workforce/4 before clamp. */
+
+void __thiscall TArmoryView::OrphanRetStub_004c6fb0(TArmoryView *this,int *pCityViewDialog)
+
+{
+  TArmoryView_slot_0x04_0x04 *pTVar1;
+  int iVar2;
+  undefined uVar3;
+  short sVar4;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int *piVar5;
+  int iVar6;
+  uint uVar7;
+  code *unaff_EBP;
+  undefined4 *unaff_FS_OFFSET;
+  undefined1 *puVar8;
+  code *pcVar9;
+  tagRECT tStack_50;
+  undefined1 local_40 [12];
+  LONG LStack_34;
+  undefined1 auStack_30 [32];
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631a08;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString((CString *)&tStack_50.right);
+  local_4 = 0;
+  CString::CString((CString *)local_40);
+  local_4._0_1_ = 1;
+  CString::CString((CString *)&tStack_50.bottom);
+  local_4 = CONCAT31(local_4._1_3_,2);
+  pTVar1 = this->vftable[0x12].slot_0x04;
+  tStack_50.top = (LONG)pTVar1;
+  uVar3 = (*pTVar1)();
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0xc))();
+  thunk_MapUiThemeCodeToStyleFlags();
+  thunk_MapUiThemeCodeToStyleFlags();
+                    /* No selected specialist entry: skip refresh and exit. */
+  if (*(int *)&this->field_0xa8 == 0) goto LAB_004cfa43;
+  sVar4 = *(short *)(*(int *)&this->field_0xa8 + 0x4c);
+  uVar3 = (*pTVar1)();
+  piVar5 = (int *)CONCAT31(extraout_var_00,uVar3);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  if (sVar4 != -1) {
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0x1e4))();
+    (**(code **)(iVar2 + 0x1b8))();
+  }
+  (**(code **)(*piVar5 + 300))();
+  LStack_34 = tStack_50.bottom;
+  auStack_30._0_4_ = local_40._0_4_;
+  local_40._8_4_ = tStack_50.right;
+  auStack_30._4_4_ = local_40._4_4_;
+  CopyRect((LPRECT)(auStack_30 + 8),(RECT *)(local_40 + 8));
+  thunk_InvalidateCityDialogRectRegion();
+  sVar4 = *(short *)(*(int *)&this->field_0xa8 + 0x4e);
+  piVar5 = (int *)(*(code *)0x0)();
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  if (sVar4 != -1) {
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0x1e4))();
+    (**(code **)(iVar2 + 0x1b8))();
+  }
+  (**(code **)(*piVar5 + 300))();
+  local_40._4_4_ = tStack_50.top;
+  local_40._8_4_ = tStack_50.right;
+  local_40._0_4_ = tStack_50.left;
+  LStack_34 = tStack_50.bottom;
+  CopyRect((LPRECT)auStack_30,(RECT *)local_40);
+  thunk_InvalidateCityDialogRectRegion();
+  pcVar9 = (code *)&stack0xffffffa4;
+  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  piVar5 = (int *)(*unaff_EBP)();
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  iVar2 = *piVar5;
+  (**(code **)(iVar2 + 0x1c8))();
+  (**(code **)(iVar2 + 0x1b8))();
+  (**(code **)(iVar2 + 300))(&stack0xffffff94);
+  CopyRect(&tStack_50,(RECT *)&stack0xffffffa0);
+  thunk_InvalidateCityDialogRectRegion(&tStack_50,1);
+  sVar4 = *(short *)(*(int *)&this->field_0xa8 + 0x56);
+  iVar2 = *(int *)(*(int *)&this->field_0x94 + 0x1d8);
+                    /* Mode switch chooses workforce scaling rule before clamp. */
+  if (sVar4 == 1) {
+    uVar7 = (uint)*(ushort *)(iVar2 + 0x1c);
+    sVar4 = *(short *)(*(int *)(iVar2 + 0x14) + 4);
+    if ((short)*(ushort *)(iVar2 + 0x1c) < sVar4) goto clamp_to_available_worker_pool;
+  }
+  else {
+    iVar6 = (int)*(short *)(iVar2 + 0x1c);
+    if (sVar4 == 2) {
+      uVar7 = iVar6 / 2;
+      sVar4 = *(short *)(*(int *)(iVar2 + 0x14) + 6);
+      if ((int)uVar7 < (int)sVar4) {
+clamp_to_available_worker_pool:
+                    /* Clamp computed recruitable count to currently available workforce/resource
+                       cap. */
+        sVar4 = (short)uVar7;
+      }
+    }
+    else {
+      sVar4 = *(short *)(*(int *)(iVar2 + 0x14) + 8);
+      uVar7 = (int)(iVar6 + (iVar6 >> 0x1f & 3U)) >> 2;
+      if ((int)uVar7 < (int)sVar4) goto clamp_to_available_worker_pool;
+    }
+  }
+  piVar5 = (int *)(*pcVar9)(0x61766130);
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityViews_cpp_00696650,0xbe4);
+  }
+  iVar2 = *piVar5;
+  (**(code **)(iVar2 + 0x1e4))((int)sVar4,0);
+  if (sVar4 == 0) {
+    puVar8 = &stack0xffffff68;
+  }
+  else {
+    puVar8 = &stack0xffffff6c;
+  }
+  (**(code **)(iVar2 + 0x1b8))(puVar8,0);
+  (**(code **)(iVar2 + 300))(&stack0xffffff7c);
+  CopyRect((LPRECT)&stack0xffffff98,(RECT *)&stack0xffffff88);
+  thunk_InvalidateCityDialogRectRegion(&stack0xffffff98,1);
+  (**(code **)(**(int **)&this->field_0x98 + 0x1dc))();
+LAB_004cfa43:
+  puStack_8._0_1_ = 1;
+  CString::~CString((CString *)&tStack_50.right);
+  puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
+  CString::~CString((CString *)&tStack_50.bottom);
+  puStack_8 = (undefined1 *)0xffffffff;
+  CString::~CString((CString *)&tStack_50.top);
+  *unaff_FS_OFFSET = uStack_10;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D0470
+// GHIDRA_NAME TArmoryView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TArmoryView::_scalar_deleting_destructor_(TArmoryView *this)
+
+{
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  if (DAT_00695278 != 0x4d6f696c) {
+    (*g_pUiViewManager->vftable[6].slot_0x04)(0x23f8);
+  }
+  return;
 }
 

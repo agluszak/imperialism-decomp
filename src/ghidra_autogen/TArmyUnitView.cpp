@@ -26,7 +26,7 @@ TView * TArmyUnitView::CreateTArmyUnitViewInstance(void)
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0064d100;
+    this->vftable = (TViewVtbl *)&TArmyUnitViewVtbl_0064d100;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -34,44 +34,142 @@ TView * TArmyUnitView::CreateTArmyUnitViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A94C0
-// GHIDRA_NAME TArmyUnitView::GetTArmyUnitViewClassNamePointer
-// GHIDRA_PROTO undefined GetTArmyUnitViewClassNamePointer()
+// GHIDRA_NAME TArmyUnitView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TArmyUnitView::GetTArmyUnitViewClassNamePointer(void)
+CRuntimeClass * __thiscall TArmyUnitView::GetTEventHandlerClassNamePointer(TArmyUnitView *this)
 
 {
-  return &PTR_s_TArmyUnitView_0064cb50;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A94E0
 // GHIDRA_NAME TArmyUnitView::ConstructTArmyUnitViewBaseState
-// GHIDRA_PROTO undefined ConstructTArmyUnitViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyUnitViewBaseState(void)
 
-TView * __fastcall TArmyUnitView::ConstructTArmyUnitViewBaseState(TView *param_1)
+TArmyUnitView * __thiscall TArmyUnitView::ConstructTArmyUnitViewBaseState(TArmyUnitView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1->vftable = &PTR_LAB_0064d100;
-  return param_1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &TArmyUnitViewVtbl_0064d100;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9510
-// GHIDRA_NAME TArmyUnitView::DestructTArmyUnitViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTArmyUnitViewAndMaybeFree()
+// GHIDRA_NAME TArmyUnitView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(TView *param_1,byte param_2)
+TArmyUnitView * __thiscall TArmyUnitView::_scalar_deleting_destructor_(TArmyUnitView *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A95B0
+// GHIDRA_NAME TArmyUnitView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TArmyUnitView::OrphanTiny_ReturnZero_0048a730(TArmyUnitView *this)
+
+{
+  short sVar1;
+  short sVar2;
+  undefined4 *unaff_FS_OFFSET;
+  RECT local_38;
+  RECT RStack_28;
+  undefined4 uStack_18;
+  uint uStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630430;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString((CString *)&local_38.right);
+  local_4 = 0;
+  CString::CString((CString *)&local_38.top);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  local_38.left = 0x1c474b;
+  SetQuickDrawColorAndSyncGlobals();
+  CString::AssignFromPtr((CString *)&local_38.right,(CString *)(*(int *)&this->field_0x60 + 0x24));
+  thunk_SetQuickDrawTextOriginWithContextOffset();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
+  local_38.left = 0x1c474b;
+  SetQuickDrawColorAndSyncGlobals();
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x40);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawFillColor();
+  sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x34) / 0x19 + 1;
+  if (0x14 < sVar1) {
+    sVar1 = 0x14;
+  }
+  if (sVar1 < 5) {
+    sVar2 = 0x1a;
+  }
+  else {
+    sVar2 = ((0xe < sVar1) - 1 & 8) + 10;
+  }
+  RStack_28.top = (LONG)sVar2;
+  RStack_28.bottom = RStack_28.top + 7;
+  RStack_28.right = sVar1 * 4 + -1;
+  local_38.right = sVar1 * 4 + 0x42;
+  RStack_28.left = 0;
+  local_38.left = 0x43;
+  local_38.top = 0x26;
+  local_38.bottom = 0x2d;
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
+             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_28,&local_38,0x24,
+             (astruct_19 *)0x0);
+  SetQuickDrawStrokeColor();
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x41);
+  thunk_DrawCenteredGuideLineOnMapDc(0x41);
+  thunk_DrawCenteredGuideLineOnMapDc(0x93);
+  thunk_DrawCenteredGuideLineOnMapDc(0x93);
+  sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x38);
+  sVar2 = (sVar1 / 100) * 0xb;
+  if (0x31 < (int)sVar1 % 100) {
+    sVar2 = sVar2 + 5;
+  }
+  if (sVar2 != 0) {
+    RStack_28.right = (LONG)sVar2;
+    RStack_28.left = 0;
+    RStack_28.top = 0;
+    RStack_28.bottom = 10;
+    local_38.right = RStack_28.right + 0x94;
+    local_38.left = 0x94;
+    local_38.top = 0x18;
+    local_38.bottom = 0x22;
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_28,&local_38,0x24,
+               (astruct_19 *)0x0);
+    SetQuickDrawStrokeColor();
+  }
+  uStack_10 = uStack_10 & 0xffffff00;
+  CString::~CString((CString *)&stack0xffffffc0);
+  uStack_10 = 0xffffffff;
+  CString::~CString((CString *)&stack0xffffffc4);
+  *unaff_FS_OFFSET = uStack_18;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A9990
-// GHIDRA_NAME TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch
-// GHIDRA_PROTO undefined HandleCrossUArmyViewsCommandTagDispatch()
+// GHIDRA_NAME TArmyUnitView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches Cross_UArmyViews command tags.
 // GHIDRA_COMMENT - Handles 'chec' by cycling/checking selected entry and then calling g_pUiRuntimeContext vfunc +0x48 with a computed state code.
@@ -92,82 +190,83 @@ TView * __thiscall TArmyUnitView::DestructTArmyUnitViewAndMaybeFree(TView *param
    Note: this function updates turn-flow state via +0x48; it is not a direct +0x4C event-code
    dispatch producer. */
 
-void __thiscall
-TArmyUnitView::HandleCrossUArmyViewsCommandTagDispatch
-          (int *param_1,undefined4 param_2,int *param_3,undefined4 param_4)
+void __thiscall TArmyUnitView::OrphanRetStub_0059add0(TArmyUnitView *this)
 
 {
   int iVar1;
   char cVar2;
-  ushort uVar3;
-  int *piVar4;
-  undefined4 uVar5;
+  undefined uVar3;
+  ushort uVar4;
+  int *piVar5;
+  undefined3 extraout_var;
+  undefined4 uVar6;
   undefined4 *unaff_FS_OFFSET;
+  CString in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
   
-  piVar4 = param_3;
   uStack_c = *unaff_FS_OFFSET;
   local_4 = 0xffffffff;
   puStack_8 = &LAB_00630448;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar1 = param_3[7];
+  iVar1 = *(int *)(in_stack_00000008.m_pchData + 0x1c);
   if (iVar1 == 0x63686563) {
-    uVar3 = GetAsyncKeyState(0x11);
-    piVar4 = (int *)param_1[0x18];
-    if ((uVar3 & 0x8000) == 0) {
-      if (piVar4[2] == 0) {
-        (**(code **)(*piVar4 + 0x34))();
+    uVar4 = GetAsyncKeyState(0x11);
+    piVar5 = *(int **)&this->field_0x60;
+    if ((uVar4 & 0x8000) == 0) {
+      if (piVar5[2] == 0) {
+        (**(code **)(*piVar5 + 0x34))();
       }
       else {
-        (**(code **)(*piVar4 + 0x34))();
+        (**(code **)(*piVar5 + 0x34))();
       }
     }
-    else if (piVar4[2] != 0xe) {
-      (**(code **)(*piVar4 + 0x34))();
+    else if (piVar5[2] != 0xe) {
+      (**(code **)(*piVar5 + 0x34))();
     }
     thunk_InvalidateCityDialogRectRegion();
-    piVar4 = *(int **)(g_pUiRuntimeContext[0x3c] + 0xb0 +
-                      *(short *)(g_pUiRuntimeContext[0x3c] + 0x96) * 4);
-    if (piVar4 != (int *)0x0) {
-      piVar4 = (int *)(**(code **)(*piVar4 + 0x94))();
-      (**(code **)(*piVar4 + 0x1c4))();
-      (**(code **)(*g_pUiRuntimeContext + 0x48))();
+    piVar5 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xb0 +
+                      *(short *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0x96) * 4);
+    if (piVar5 != (int *)0x0) {
+      piVar5 = (int *)(**(code **)(*piVar5 + 0x94))();
+      (**(code **)(*piVar5 + 0x1c4))();
+      (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
     }
   }
   else if (iVar1 == 0x75706772) {
     cVar2 = ApplyEraCapabilityCostAndSetSelection();
     if (cVar2 == '\0') {
-      InitializeSharedStringRefFromEmpty(&param_3);
+      CString::CString(&stack0x00000008);
       local_4 = 0;
-      (**(code **)(*g_pLocalizationTable + 0x84))();
-      thunk_AssignStringSharedRefAndReturnThis(&param_3);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      thunk_AssignStringSharedRefAndReturnThis(&stack0x00000008);
       thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty(&param_3);
+      CString::~CString(&stack0x00000008);
     }
     else {
-      (**(code **)(*piVar4 + 0xa4))();
-      piVar4 = (int *)(**(code **)(*param_1 + 0x94))();
-      if (piVar4 == (int *)0x0) {
+      (**(code **)(*(int *)in_stack_00000008.m_pchData + 0xa4))();
+      uVar3 = (*this->vftable[0x12].slot_0x04)();
+      piVar5 = (int *)CONCAT31(extraout_var,uVar3);
+      if (piVar5 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UArmyViews_cpp_00695858)
         ;
       }
-      piVar4[0x22] = (piVar4[0x23] + *(short *)(param_1[0x18] + 4) * 2) * 0x40;
-      (**(code **)(*piVar4 + 0xe4))();
-      piVar4 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
-      iVar1 = *piVar4;
+      piVar5[0x22] = (piVar5[0x23] + *(short *)(*(int *)&this->field_0x60 + 4) * 2) * 0x40;
+      (**(code **)(*piVar5 + 0xe4))();
+      piVar5 = (int *)(**(code **)(**(int **)(DAT_006a2158 + 4) + 0x94))();
+      iVar1 = *piVar5;
       (**(code **)(iVar1 + 0xc))();
-      uVar5 = UiRuntimeContext::GetActiveNationId();
-      (**(code **)(iVar1 + 0x1d0))(uVar5);
+      uVar6 = UiRuntimeContext::GetActiveNationId();
+      (**(code **)(iVar1 + 0x1d0))(uVar6);
     }
   }
   else if (iVar1 == 0x6e616d65) {
     thunk_HandleCrossUArmyViewsNameCommand();
   }
-  thunk_ForwardEngineerDialogCommandToChildSlot40();
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

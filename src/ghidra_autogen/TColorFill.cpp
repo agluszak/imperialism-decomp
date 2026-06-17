@@ -3,25 +3,55 @@
 // Program: Imperialism.exe
 // Bucket: TColorFill.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF180
-// GHIDRA_NAME TColorFill::CreateTColorFillInstance
-// GHIDRA_PROTO undefined CreateTColorFillInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF150
+// GHIDRA_NAME TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004ff150(void)
 
-void __fastcall TColorFill::CreateTColorFillInstance(undefined4 *param_1)
+TColorFill * __thiscall TColorFill::WrapperFor_FreeHeapBufferIfNotNull_At004ff150(TColorFill *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  byte in_stack_00000004;
+  
+  CreateTColorFillInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF180
+// GHIDRA_NAME TColorFill::CreateTColorFillInstance
+// GHIDRA_PROTO undefined __thiscall CreateTColorFillInstance(void)
+
+void __thiscall TColorFill::CreateTColorFillInstance(TColorFill *this)
+
+{
+  this->vftable = (TColorFillVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF1A0
-// GHIDRA_NAME TColorFill::GetTColorFillClassNamePointer
-// GHIDRA_PROTO undefined GetTColorFillClassNamePointer()
+// GHIDRA_NAME TColorFill::GetTAdornerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTAdornerClassNamePointer(void)
 
-undefined ** TColorFill::GetTColorFillClassNamePointer(void)
+CRuntimeClass * __thiscall TColorFill::GetTAdornerClassNamePointer(TColorFill *this)
 
 {
-  return &PTR_s_TColorFill_00656618;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF1C0
+// GHIDRA_NAME TColorFill::AssertUDisplayMgrLine730
+// GHIDRA_PROTO undefined __thiscall AssertUDisplayMgrLine730(void)
+
+void __thiscall TColorFill::AssertUDisplayMgrLine730(TColorFill *this)
+
+{
+  if (DAT_006a30b4 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UDisplayMgr_cpp_00696b44,0x2da);
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF1F0
@@ -45,8 +75,8 @@ TView * TColorFill::DestructTColorFillAndMaybeFree(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_00656748;
-    this[1].vftable = (void *)0x0;
+    this->vftable = (TViewVtbl *)&TGWorldPeekerVtbl_00656748;
+    this[1].vftable = (TViewVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }

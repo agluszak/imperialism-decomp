@@ -3,24 +3,123 @@
 // Program: Imperialism.exe
 // Bucket: TRadioText.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00579470
-// GHIDRA_NAME TRadioText::GetTRadioTextClassNamePointer
-// GHIDRA_PROTO undefined GetTRadioTextClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D990
+// GHIDRA_NAME TRadioText::ConstructSelectableTextOptionEntry
+// GHIDRA_PROTO undefined __thiscall ConstructSelectableTextOptionEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Derived constructor for selectable text option entries used in turn-event and dialog option lists.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Calls ConstructSelectableTextOptionEntryBase.
+// GHIDRA_COMMENT 2. Installs derived option-entry vtable PTR_LAB_00642b18.
+// GHIDRA_COMMENT_END
 
-undefined ** TRadioText::GetTRadioTextClassNamePointer(void)
+/* Derived constructor for selectable text option entries used in turn-event and dialog option
+   lists.
+   
+   Algorithm:
+   1. Calls ConstructSelectableTextOptionEntryBase.
+   2. Installs derived option-entry vtable PTR_LAB_00642b18. */
+
+TRadioText * __thiscall TRadioText::ConstructSelectableTextOptionEntry(TRadioText *this)
 
 {
-  return &PTR_s_TRadioText_00661a10;
+  TDropShadowText::thunk_ConstructSelectableTextOptionEntryBase((TDropShadowText *)this);
+  this->vftable = &TRadioTextVtbl_00642b18;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0043DAA0
+// GHIDRA_NAME TRadioText::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TRadioText * __thiscall TRadioText::_scalar_deleting_destructor_(TRadioText *this)
+
+{
+  byte in_stack_00000004;
+  
+  TStaticText::~TStaticText((TStaticText *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00579470
+// GHIDRA_NAME TRadioText::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TRadioText::GetTEventHandlerClassNamePointer(TRadioText *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579490
-// GHIDRA_NAME TRadioText::ConstructTRadioTextBaseState
-// GHIDRA_PROTO undefined ConstructTRadioTextBaseState()
+// GHIDRA_NAME TRadioText::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void TRadioText::ConstructTRadioTextBaseState(undefined4 param_1)
+void __thiscall TRadioText::OrphanLeaf_NoCall_Ins07_004d8920(TRadioText *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook(param_1);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005794B0
+// GHIDRA_NAME TRadioText::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TRadioText::OrphanTiny_ReturnZero_0048a730(TRadioText *this)
+
+{
+  TView *pTVar1;
+  undefined4 uVar2;
+  undefined2 extraout_var;
+  undefined4 uVar3;
+  undefined2 extraout_var_00;
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  int iStack_8;
+  int iStack_4;
+  
+  if ((this->field_0x98 != '\0') || (this->field_0x64 != '\0')) {
+    pTVar1 = this->ownerContext;
+    (*pTVar1->vftable[1].slot_0x04)();
+    uVar2 = *(undefined4 *)&g_pActiveQuickDrawSurfaceContext->field_0x28;
+    if (this->field_0x64 == '\0') {
+      uVar3 = CONCAT22(extraout_var,*(undefined2 *)((int)&pTVar1[1].field2c + 2));
+    }
+    else {
+      uVar3 = CONCAT22(extraout_var_00,(short)pTVar1[1].field2c);
+    }
+    thunk_UpdateTurnEventPaletteByCode(uVar3,1);
+    iStack_4 = this->field38;
+    iStack_8 = this->field34;
+    uStack_10 = DAT_006a4218;
+    uStack_c = DAT_006a421c;
+    thunk_FillRectWithQuickDrawBrushAndContextOffset(&uStack_10);
+    SetQuickDrawColorAndSyncGlobals(uVar2);
+  }
+  TDropShadowText::OrphanTiny_ReturnZero_0048a730((TDropShadowText *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00579580
+// GHIDRA_NAME TRadioText::OrphanCallChain_C3_I13_00579580
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I13_00579580(void)
+
+void __thiscall TRadioText::OrphanCallChain_C3_I13_00579580(TRadioText *this)
+
+{
+  TRadioTextVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  
+  pTVar1 = this->vftable;
+  (*pTVar1[0x1c].slot_0x04)();
+  uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x13c))();
   return;
 }
 

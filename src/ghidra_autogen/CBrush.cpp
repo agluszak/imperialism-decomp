@@ -5,76 +5,81 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00494040
 // GHIDRA_NAME CBrush::InitializeGlobalClipRegionHandleState
-// GHIDRA_PROTO undefined InitializeGlobalClipRegionHandleState()
+// GHIDRA_PROTO undefined __thiscall InitializeGlobalClipRegionHandleState(void)
 
-int __fastcall CBrush::InitializeGlobalClipRegionHandleState(int param_1)
+CBrush * __thiscall CBrush::InitializeGlobalClipRegionHandleState(CBrush *this)
 
 {
-  HRGN pHVar1;
+  CBrush *this_00;
   
-  *(undefined **)(param_1 + 8) = &DAT_006a1ca0;
-  g_pGlobalClipRegionHandleObject = AllocateWithFallbackHandler(8);
-  if ((undefined4 *)g_pGlobalClipRegionHandleObject == (undefined4 *)0x0) {
-    g_pGlobalClipRegionHandleObject = 0;
+  *(undefined **)(this + 8) = &DAT_006a1ca0;
+  this_00 = (CBrush *)AllocateWithFallbackHandler(8);
+  if (this_00 == (CBrush *)0x0) {
+    this_00 = (CBrush *)0x0;
   }
   else {
-    *(undefined4 *)(g_pGlobalClipRegionHandleObject + 4) = 0;
-    *(undefined ***)g_pGlobalClipRegionHandleObject = &_vftable_;
+    *(undefined4 *)(this_00 + 4) = 0;
+    *(undefined ***)this_00 = &_vftable_;
   }
-  pHVar1 = CreateRectRgn(0,0,0,0);
-  AttachRegionHandleToClipStateAndRegister(pHVar1);
-  return param_1;
+  g_pGlobalClipRegionHandleObject = (int)this_00;
+  CreateRectRgn(0,0,0,0);
+  AttachRegionHandleToClipStateAndRegister(this_00);
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004955B0
 // GHIDRA_NAME CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0
-// GHIDRA_PROTO undefined Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0()
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(void)
 
 void __thiscall
-CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(int param_1,RECT *param_2)
+CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(CBrush *this)
 
 {
-  HRGN pHVar1;
-  undefined4 uVar2;
+  undefined4 uVar1;
+  RECT *in_stack_00000004;
   
-  if (*(int *)(param_1 + 0x10) != 0) {
+  if (*(int *)(this + 0x10) != 0) {
     DeleteObject();
   }
-  pHVar1 = CreateRectRgnIndirect(param_2);
-  uVar2 = AttachRegionHandleToClipStateAndRegister(pHVar1);
-  *(undefined4 *)(param_1 + 0x10) = uVar2;
+  CreateRectRgnIndirect(in_stack_00000004);
+  uVar1 = AttachRegionHandleToClipStateAndRegister(this + 0x14);
+  *(undefined4 *)(this + 0x10) = uVar1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6EA2
 // GHIDRA_NAME CBrush::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall CBrush::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+CBrush * __thiscall CBrush::_scalar_deleting_destructor_(CBrush *this)
 
 {
-  CGdiObject::~CGdiObject();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  CGdiObject::~CGdiObject((CGdiObject *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613A4C
 // GHIDRA_NAME CBrush::AttachRegionHandleToClipStateAndRegister
-// GHIDRA_PROTO undefined AttachRegionHandleToClipStateAndRegister()
+// GHIDRA_PROTO undefined __thiscall AttachRegionHandleToClipStateAndRegister(void)
 
-bool __thiscall CBrush::AttachRegionHandleToClipStateAndRegister(int param_1,int param_2)
+bool __thiscall CBrush::AttachRegionHandleToClipStateAndRegister(CBrush *this)
 
 {
-  int *piVar1;
+  TNetMgr *this_00;
+  undefined4 *puVar1;
+  int in_stack_00000004;
   
-  if (param_2 != 0) {
-    afxMapHIMAGELIST_6139c6(1);
-    *(int *)(param_1 + 4) = param_2;
-    piVar1 = (int *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(param_2);
-    *piVar1 = param_1;
+  if (in_stack_00000004 != 0) {
+    this_00 = (TNetMgr *)afxMapHIMAGELIST_6139c6(1);
+    *(int *)(this + 4) = in_stack_00000004;
+    puVar1 = (undefined4 *)TNetMgr::GetOrCreateHandleMapEntryValueByKey(this_00);
+    *puVar1 = this;
   }
-  return param_2 != 0;
+  return in_stack_00000004 != 0;
 }
 

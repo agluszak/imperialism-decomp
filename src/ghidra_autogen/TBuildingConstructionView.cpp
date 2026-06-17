@@ -7,10 +7,10 @@
 // GHIDRA_NAME TBuildingConstructionView::CreateTBuildingConstructionViewInstance
 // GHIDRA_PROTO undefined CreateTBuildingConstructionViewInstance()
 
-undefined4 * TBuildingConstructionView::CreateTBuildingConstructionViewInstance(void)
+thunk_TPictureButton * TBuildingConstructionView::CreateTBuildingConstructionViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,59 +20,62 @@ undefined4 * TBuildingConstructionView::CreateTBuildingConstructionViewInstance(
   puStack_8 = &LAB_0063173a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x9c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00651d88;
-    puVar1[0x24] = 0;
-    puVar1[0x26] = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TBuildingConstructionViewVtbl **)this = &TBuildingConstructionViewVtbl_00651d88;
+    *(undefined4 *)(this + 0x90) = 0;
+    *(undefined4 *)(this + 0x98) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9E10
-// GHIDRA_NAME TBuildingConstructionView::GetTBuildingConstructionViewClassNamePointer
-// GHIDRA_PROTO undefined GetTBuildingConstructionViewClassNamePointer()
+// GHIDRA_NAME TBuildingConstructionView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TBuildingConstructionView::GetTBuildingConstructionViewClassNamePointer(void)
+CRuntimeClass * __thiscall
+TBuildingConstructionView::GetTEventHandlerClassNamePointer(TBuildingConstructionView *this)
 
 {
-  return &PTR_s_TBuildingConstructionView_00651290;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9E30
 // GHIDRA_NAME TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState
-// GHIDRA_PROTO undefined ConstructTBuildingConstructionViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTBuildingConstructionViewBaseState(void)
 
-undefined4 * __fastcall
-TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState(undefined4 *param_1)
+TBuildingConstructionView * __thiscall
+TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState
+          (TBuildingConstructionView *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00651d88;
-  param_1[0x24] = 0;
-  param_1[0x26] = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TBuildingConstructionViewVtbl_00651d88;
+  this->pCity = (TCity *)0x0;
+  *(undefined4 *)&this->field_0x98 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9E60
-// GHIDRA_NAME TBuildingConstructionView::DestructTBuildingConstructionViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTBuildingConstructionViewAndMaybeFree()
+// GHIDRA_NAME TBuildingConstructionView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TBuildingConstructionView::DestructTBuildingConstructionViewAndMaybeFree
-          (undefined4 param_1,byte param_2)
+TBuildingConstructionView * __thiscall
+TBuildingConstructionView::_scalar_deleting_destructor_(TBuildingConstructionView *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C9EB0
@@ -121,21 +124,29 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
 {
   uint uVar1;
   short sVar2;
-  int *this_00;
-  char cVar3;
-  int *piVar4;
-  int iVar5;
-  int *piVar6;
-  short sVar7;
-  code *pcVar8;
+  TCity *this_00;
+  undefined uVar3;
+  char cVar4;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  int *piVar5;
+  int iVar6;
+  int *piVar7;
+  short sVar8;
+  TBuildingConstructionView_slot_0x04_0x04 *pTVar9;
   short unaff_SI;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_184;
-  undefined4 uStack_180;
+  CString CStack_184;
+  CString CStack_180;
   undefined4 *puStack_17c;
-  undefined4 uStack_178;
+  CString CStack_178;
   undefined4 uStack_174;
-  undefined4 uStack_170;
+  CString CStack_170;
   undefined4 *puStack_16c;
   undefined1 *puStack_168;
   undefined4 uStack_164;
@@ -149,19 +160,19 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined1 *puStack_144;
   undefined1 *puStack_140;
   code *pcStack_13c;
-  code *pcVar9;
-  short sVar10;
-  char **ppcStack_f8;
+  code *pcVar10;
+  short sVar11;
+  CString CStack_f8;
   undefined4 uStack_f4;
   undefined1 *puStack_f0;
   undefined4 uStack_ec;
   undefined4 uStack_e8;
   char *pcStack_e4;
-  undefined4 *puStack_e0;
-  undefined1 **ppuVar11;
-  int iVar12;
-  undefined2 uVar13;
-  undefined4 uStack_cc;
+  CString *pCStack_e0;
+  undefined1 **ppuVar12;
+  int iVar13;
+  undefined2 uVar14;
+  CString CStack_cc;
   undefined1 *puStack_c8;
   undefined4 uStack_c4;
   undefined4 uStack_c0;
@@ -171,12 +182,12 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   undefined4 uStack_a0;
   undefined4 uStack_9c;
   undefined4 uStack_98;
-  undefined4 uVar14;
-  undefined1 local_40 [4];
-  undefined1 local_3c [4];
+  undefined4 uVar15;
+  CString local_40;
+  CString local_3c;
   undefined4 uStack_38;
-  undefined1 local_34 [8];
-  undefined1 local_2c [10];
+  CString local_34 [2];
+  CString local_2c [2];
   undefined1 local_22;
   undefined1 local_21;
   uint local_20;
@@ -192,301 +203,303 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   local_22 = 0;
   local_21 = 0;
   local_20 = local_20 & 0xffff0000;
-  InitializeSharedStringRefFromEmpty(local_40);
+  CString::CString(&local_40);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty(local_3c);
+  CString::CString(&local_3c);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty(local_34);
+  CString::CString(local_34);
   local_4._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty(local_2c);
+  CString::CString(local_2c);
                     /* Persist dialog context (city ptr, slot id, caller flags) into object fields.
                         */
-  iVar5 = *pCityState;
+  iVar6 = *pCityState;
   local_4 = CONCAT31(local_4._1_3_,3);
-  *(int **)(this + 0x90) = pCityState;
-  *(short *)(this + 0x94) = nBuildingSlotId;
-  *(int *)(this + 0x98) = nDialogContextFlags;
-  (**(code **)(iVar5 + 0x54))();
-  (**(code **)(*(int *)this + 0x1c8))();
+  this->pCity = (TCity *)pCityState;
+  *(short *)&this->field_0x94 = nBuildingSlotId;
+  *(int *)&this->field_0x98 = nDialogContextFlags;
+  (**(code **)(iVar6 + 0x54))();
+  (*this->vftable[0x39].GetTEventHandlerClassNamePointer)();
   if (nBuildingSlotId == 0xb) {
-    uVar14 = 0;
-    (**(code **)(iVar5 + 0x60))();
+    uVar15 = 0;
+    (**(code **)(iVar6 + 0x60))();
   }
   else {
-    iVar12 = thunk_GetCityBuildingProductionValueBySlot(pCityState,nBuildingSlotId);
-    pcVar8 = *(code **)(iVar5 + 0x80);
-    *(short *)(pCityState + 0x32) = (short)pCityState[0x32] + (short)iVar12;
-    (*pcVar8)();
-    iVar5 = thunk_GetCityBuildingProductionValueBySlot(pCityState,nBuildingSlotId);
-    *(short *)(pCityState + 0x33) = (short)pCityState[0x33] + (short)iVar5;
-    uVar14 = 0x4c9f95;
-    (*pcVar8)();
+    iVar13 = TCity::thunk_GetCityBuildingProductionValueBySlot((TCity *)pCityState,nBuildingSlotId);
+    pcVar10 = *(code **)(iVar6 + 0x80);
+    *(short *)(pCityState + 0x32) = (short)pCityState[0x32] + (short)iVar13;
+    (*pcVar10)();
+    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot((TCity *)pCityState,nBuildingSlotId);
+    *(short *)(pCityState + 0x33) = (short)pCityState[0x33] + (short)iVar6;
+    uVar15 = 0x4c9f95;
+    (*pcVar10)();
   }
-  switch(*(undefined2 *)(this + 0x94)) {
+  switch(*(undefined2 *)&this->field_0x94) {
   case 0:
   case 2:
   case 4:
   case 6:
-    *(undefined2 *)(this + 0x96) = 2;
+    *(undefined2 *)&this->field_0x96 = 2;
     break;
   case 1:
   case 3:
   case 5:
-    *(undefined2 *)(this + 0x96) = 1;
+    *(undefined2 *)&this->field_0x96 = 1;
   }
   thunk_BuildUiTextStyleDescriptor();
-  pcVar8 = *(code **)(*(int *)this + 0x94);
-  piVar4 = (int *)(*pcVar8)();
-  if (piVar4 == (int *)0x0) {
+  pTVar9 = this->vftable[0x12].slot_0x04;
+  uVar3 = (*pTVar9)();
+  if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  iVar5 = *piVar4;
-  (**(code **)(iVar5 + 0x1b4))();
-  (**(code **)(iVar5 + 0x1c4))();
+  iVar6 = *(int *)CONCAT31(extraout_var,uVar3);
+  (**(code **)(iVar6 + 0x1b4))();
+  (**(code **)(iVar6 + 0x1c4))();
   iStack_18 = local_20 + 0x2422;
-  (**(code **)(iVar5 + 0x1cc))();
-  piVar4 = (int *)(*pcVar8)();
-  if (piVar4 == (int *)0x0) {
+  (**(code **)(iVar6 + 0x1cc))();
+  uVar3 = (*pTVar9)();
+  if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     uStack_98 = 0x4ca06c;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  iVar5 = *piVar4;
-  (**(code **)(iVar5 + 0x1b4))();
+  iVar6 = *(int *)CONCAT31(extraout_var_00,uVar3);
+  (**(code **)(iVar6 + 0x1b4))();
   uStack_98 = 0x4ca09b;
-  (**(code **)(iVar5 + 0x1c4))();
+  (**(code **)(iVar6 + 0x1c4))();
   uStack_98 = 1;
   uStack_9c = 2;
   uStack_a0 = uStack_38;
   puStack_a4 = (undefined1 *)0x4ca0ac;
-  (**(code **)(iVar5 + 0x1cc))();
+  (**(code **)(iVar6 + 0x1cc))();
   if (unaff_SI == 0xb) {
     puStack_a4 = &stack0xffffff94;
-    (**(code **)(iVar5 + 300))();
-    (**(code **)(iVar5 + 0x168))();
+    (**(code **)(iVar6 + 300))();
+    (**(code **)(iVar6 + 0x168))();
   }
   puStack_a4 = (undefined1 *)0x2b67;
   thunk_BuildUiTextStyleDescriptor();
   puStack_a4 = (undefined1 *)0x6e616d65;
-  piVar4 = (int *)(*pcVar8)();
-  if (piVar4 == (int *)0x0) {
+  uVar3 = (*pTVar9)();
+  if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
     ppuStack_b8 = (undefined1 **)0x4ca121;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  iVar5 = *piVar4;
-  (**(code **)(iVar5 + 0x1b4))();
+  iVar6 = *(int *)CONCAT31(extraout_var_01,uVar3);
+  (**(code **)(iVar6 + 0x1b4))();
   ppuStack_b8 = (undefined1 **)0x4ca150;
-  uStack_bc = uVar14;
-  (**(code **)(iVar5 + 0x1c4))();
+  uStack_bc = uVar15;
+  (**(code **)(iVar6 + 0x1c4))();
   ppuStack_b8 = &puStack_a4;
   uStack_c0 = 0x2719;
   uStack_c4 = 0x4ca16d;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   puStack_c8 = &stack0xffffff50;
   uStack_c4 = 0;
-  uStack_cc = 0x4ca17c;
-  (**(code **)(iVar5 + 0x1c8))();
-  uStack_cc = 0x636f7374;
-  piVar4 = (int *)(*pcVar8)();
-  if (piVar4 == (int *)0x0) {
-    puStack_e0 = (undefined4 *)0x4ca19e;
+  CStack_cc.m_pchData = (char *)0x4ca17c;
+  (**(code **)(iVar6 + 0x1c8))();
+  CStack_cc.m_pchData = (char *)0x636f7374;
+  uVar3 = (*pTVar9)();
+  if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
+    pCStack_e0 = (CString *)0x4ca19e;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  iVar5 = *piVar4;
-  ppuVar11 = &puStack_a4;
-  iVar12 = 0;
-  (**(code **)(iVar5 + 0x1b4))();
-  puStack_e0 = (undefined4 *)0x4ca1cd;
-  (**(code **)(iVar5 + 0x1c4))();
-  puStack_e0 = &uStack_cc;
+  iVar6 = *(int *)CONCAT31(extraout_var_02,uVar3);
+  ppuVar12 = &puStack_a4;
+  iVar13 = 0;
+  (**(code **)(iVar6 + 0x1b4))();
+  pCStack_e0 = (CString *)0x4ca1cd;
+  (**(code **)(iVar6 + 0x1c4))();
+  pCStack_e0 = &CStack_cc;
   pcStack_e4 = (char *)0x14;
   uStack_e8 = 0x2738;
   uStack_ec = 0x4ca1e7;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   puStack_f0 = &stack0xffffff28;
   uStack_ec = 0;
   uStack_f4 = 0x4ca1f6;
-  (**(code **)(iVar5 + 0x1c8))();
+  (**(code **)(iVar6 + 0x1c8))();
   uStack_f4 = 0x63617054;
-  ppcStack_f8 = (char **)0x4ca1ff;
-  piVar4 = (int *)(*pcVar8)();
-  sVar10 = *(short *)(this + 0x94);
+  CStack_f8.m_pchData = (char *)0x4ca1ff;
+  uVar3 = (*pTVar9)();
+  sVar11 = *(short *)&this->field_0x94;
                     /* Slot-dependent cost/description format mode selection. */
-  if ((((sVar10 == 0) || (sVar10 == 2)) || (sVar10 == 4)) || (sVar10 == 6)) {
-    ppcStack_f8 = (char **)0x2;
+  if ((((sVar11 == 0) || (sVar11 == 2)) || (sVar11 == 4)) || (sVar11 == 6)) {
+    CStack_f8.m_pchData = (char *)0x2;
   }
   else {
-    if (sVar10 == 0xb) {
-      ppcStack_f8 = &pcStack_e4;
-      (**(code **)(*g_pLocalizationTable + 0x84))();
+    if (sVar11 == 0xb) {
+      CStack_f8.m_pchData = (char *)&pcStack_e4;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
       goto LAB_004ca263;
     }
-    ppcStack_f8 = (char **)0x1;
+    CStack_f8.m_pchData = (char *)0x1;
   }
   FormatStringWithVarArgsToSharedRef();
 LAB_004ca263:
-  ppcStack_f8 = (char **)&stack0xffffff28;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  CStack_f8.m_pchData = &stack0xffffff28;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   scanBracketExpressions(g_pLocalizationTable,&puStack_f0,pcStack_e4);
-  iVar5 = *piVar4;
-  (**(code **)(iVar5 + 0x1b4))();
-  sVar10 = 0;
-  pcVar9 = (code *)0x1;
-  (**(code **)(iVar5 + 0x1c4))();
-  (**(code **)(iVar5 + 0x1c8))();
-  piVar4 = (int *)(*pcVar8)();
-  if (piVar4 == (int *)0x0) {
+  iVar6 = *(int *)CONCAT31(extraout_var_03,uVar3);
+  (**(code **)(iVar6 + 0x1b4))();
+  sVar11 = 0;
+  pcVar10 = (code *)0x1;
+  (**(code **)(iVar6 + 0x1c4))();
+  (**(code **)(iVar6 + 0x1c8))();
+  uVar3 = (*pTVar9)();
+  piVar5 = (int *)CONCAT31(extraout_var_04,uVar3);
+  if (piVar5 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  sVar2 = *(short *)(this + 0x94);
+  sVar2 = *(short *)&this->field_0x94;
   if (((sVar2 == 0) || (sVar2 == 4)) || (sVar2 == 3)) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
-    iVar5 = *piVar4;
-    (**(code **)(iVar5 + 0x1b4))();
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    iVar6 = *piVar5;
+    (**(code **)(iVar6 + 0x1b4))();
     pcStack_13c = (code *)0x4ca35c;
-    (**(code **)(iVar5 + 0x1c4))();
+    (**(code **)(iVar6 + 0x1c4))();
     puStack_140 = &stack0xfffffed8;
     pcStack_13c = (code *)0x0;
     puStack_144 = (undefined1 *)0x4ca36b;
-    (**(code **)(iVar5 + 0x1c8))();
+    (**(code **)(iVar6 + 0x1c8))();
     puStack_144 = &stack0xfffffef4;
-    sVar7 = 0;
+    sVar8 = 0;
     puStack_148 = (undefined4 *)0x4ca37a;
-    (**(code **)(iVar5 + 300))();
-    sVar2 = *(short *)(this + 0x94);
+    (**(code **)(iVar6 + 300))();
+    sVar2 = *(short *)&this->field_0x94;
     if (sVar2 == 0) {
-      sVar7 = 0x98;
+      sVar8 = 0x98;
     }
     else if (sVar2 == 3) {
-      sVar7 = 0xcd;
+      sVar8 = 0xcd;
     }
     else if (sVar2 == 4) {
-      sVar7 = 0xd0;
+      sVar8 = 0xd0;
     }
-    pcVar9 = (code *)(int)sVar7;
-    pcVar8 = (code *)(int)sVar10;
+    pcVar10 = (code *)(int)sVar8;
+    pTVar9 = (TBuildingConstructionView_slot_0x04_0x04 *)(int)sVar11;
     puStack_148 = (undefined4 *)0x0;
     puStack_14c = &stack0xfffffef0;
     uStack_150 = 0x4ca3e5;
-    (**(code **)(iVar5 + 0x168))();
+    (**(code **)(iVar6 + 0x168))();
     uStack_150 = 0;
     ppuStack_154 = (undefined1 **)0x1;
     uStack_158 = 0x4ca3f1;
-    (**(code **)(iVar5 + 0xa4))();
+    (**(code **)(iVar6 + 0xa4))();
   }
   else {
-    (**(code **)(*piVar4 + 0xa4))();
+    (**(code **)(*piVar5 + 0xa4))();
   }
-  piVar4 = (int *)(*pcVar8)();
-  if (piVar4 == (int *)0x0) {
+  uVar3 = (*pTVar9)();
+  piVar5 = (int *)CONCAT31(extraout_var_05,uVar3);
+  if (piVar5 == (int *)0x0) {
     pcStack_13c = (code *)0x4ca41b;
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
                     /* Compute OK-button availability for University slot 11. */
-  if ((short)ppuVar11 == 0xb) {
-    InitializeSharedStringRefFromEmpty(&uStack_cc);
-    uVar1 = *(int *)(*(int *)(iVar12 + 0xac) + 0x10) +
-            *(int *)(*(int *)(iVar12 + 0xac) + 0x8f0) / 100;
-    cVar3 = 4999 < (int)(uVar1 & ((int)uVar1 < 1) - 1);
+  if ((short)ppuVar12 == 0xb) {
+    CString::CString(&CStack_cc);
+    uVar1 = *(int *)(*(int *)(iVar13 + 0xac) + 0x10) +
+            *(int *)(*(int *)(iVar13 + 0xac) + 0x8f0) / 100;
+    cVar4 = 4999 < (int)(uVar1 & ((int)uVar1 < 1) - 1);
     pcStack_13c = (code *)0x4ca495;
     thunk_BuildUiTextStyleDescriptor();
-    piVar4 = (int *)(*pcVar9)();
-    iVar5 = *piVar4;
-    (**(code **)(iVar5 + 0xc))();
-    piVar4 = (int *)0x1;
-    (**(code **)(iVar5 + 0xa4))();
+    piVar5 = (int *)(*pcVar10)();
+    iVar6 = *piVar5;
+    (**(code **)(iVar6 + 0xc))();
+    piVar5 = (int *)0x1;
+    (**(code **)(iVar6 + 0xa4))();
     pcStack_13c = (code *)&stack0xfffffef4;
     puStack_140 = (undefined1 *)0x4ca4c7;
-    (**(code **)(iVar5 + 0x1b4))();
+    (**(code **)(iVar6 + 0x1b4))();
     puStack_140 = (undefined1 *)0x0;
     puStack_144 = (undefined1 *)0x1;
     puStack_148 = (undefined4 *)0x4ca4d3;
-    (**(code **)(iVar5 + 0x1c4))();
+    (**(code **)(iVar6 + 0x1c4))();
     puStack_148 = &uStack_e8;
     puStack_14c = (undefined1 *)0x1388;
     uStack_150 = 0x4ca4e8;
-    (**(code **)(*g_pLocalizationTable + 0x74))();
+    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
     ppuStack_154 = &puStack_f0;
     uStack_150 = 1;
     uStack_158 = 0x4ca4f7;
-    (**(code **)(iVar5 + 0x1c8))();
+    (**(code **)(iVar6 + 0x1c8))();
     uStack_158 = 0x4ca505;
-    ReleaseSharedStringRefIfNotEmpty(&ppcStack_f8);
+    CString::~CString(&CStack_f8);
   }
   else {
-    piVar6 = *(int **)(*(int *)(this + 0x90) + 0xe4 + (short)(*(short *)(this + 0x94) + 0x35) * 4);
-    if (piVar6 == (int *)0x0) {
+    piVar7 = this->pCity->orderSlotsE4[(short)(*(short *)&this->field_0x94 + 0x35)];
+    if (piVar7 == (int *)0x0) {
       pcStack_13c = (code *)0x4ca540;
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
     }
-    uVar13 = (undefined2)((uint)iVar12 >> 0x10);
-    this_00 = *(int **)(this + 0x90);
-    uStack_cc = *(undefined4 *)(*piVar6 + 0x2c);
-    iVar5 = thunk_GetCityBuildingProductionValueBySlot(this_00,(short)ppuVar11);
-    pcVar8 = (code *)CONCAT22(uVar13,(short)iVar5);
-    (**(code **)(*this_00 + 0x54))();
-    cVar3 = (*pcVar8)();
-    (*(code *)ppuVar11)();
+    uVar14 = (undefined2)((uint)iVar13 >> 0x10);
+    this_00 = this->pCity;
+    CStack_cc.m_pchData = *(char **)(*piVar7 + 0x2c);
+    iVar6 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,(short)ppuVar12);
+    pcVar10 = (code *)CONCAT22(uVar14,(short)iVar6);
+    (*this_00->vftable[10].slot_0x04)();
+    cVar4 = (*pcVar10)();
+    (*(code *)ppuVar12)();
   }
   uStack_158 = 0x6f6b6179;
   uStack_15c = 0x4ca5b0;
-  piVar6 = (int *)(*pcStack_13c)();
+  piVar7 = (int *)(*pcStack_13c)();
   uStack_15c = 0x4ca5b9;
-  (**(code **)(*piVar6 + 0xc))();
+  (**(code **)(*piVar7 + 0xc))();
                     /* Disable OK when queued action already in progress. */
-  if (cVar3 == '\0') {
+  if (cVar4 == '\0') {
     uStack_15c = 0x2b69;
     puStack_160 = (undefined1 *)0xc;
     puStack_168 = &stack0xfffffed0;
     uStack_164 = 0;
     puStack_16c = (undefined4 *)0x4ca5d4;
     thunk_BuildUiTextStyleDescriptor();
-    iVar5 = *piVar4;
+    iVar6 = *piVar5;
     puStack_160 = &stack0xfffffed0;
     uStack_15c = 0;
     uStack_164 = 0x4ca5e9;
-    (**(code **)(iVar5 + 0x1b4))();
+    (**(code **)(iVar6 + 0x1b4))();
     uStack_164 = 0;
     puStack_168 = (undefined1 *)0x1;
     puStack_16c = (undefined4 *)0x4ca5f5;
-    (**(code **)(iVar5 + 0x1c4))();
+    (**(code **)(iVar6 + 0x1c4))();
     puStack_16c = &uStack_158;
-    uStack_170 = 0x17;
+    CStack_170.m_pchData = (char *)0x17;
     uStack_174 = 0x2738;
-    uStack_178 = 0x4ca61b;
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    CStack_178.m_pchData = (char *)0x4ca61b;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     puStack_17c = &uStack_164;
-    uStack_178 = 0;
-    uStack_180 = 0x4ca62a;
-    (**(code **)(iVar5 + 0x1c8))();
-    uStack_180 = 0;
-    uStack_184 = 1;
-    (**(code **)(iVar5 + 0xa4))();
-    iVar5 = *piVar6;
-    (**(code **)(iVar5 + 0xa4))(0,0);
-    (**(code **)(iVar5 + 0xa8))(0,0);
+    CStack_178.m_pchData = (char *)0x0;
+    CStack_180.m_pchData = "j";
+    (**(code **)(iVar6 + 0x1c8))();
+    CStack_180.m_pchData = (char *)0x0;
+    CStack_184.m_pchData = (char *)0x1;
+    (**(code **)(iVar6 + 0xa4))();
+    iVar6 = *piVar7;
+    (**(code **)(iVar6 + 0xa4))(0,0);
+    (**(code **)(iVar6 + 0xa8))(0,0);
   }
   else {
     uStack_15c = 0;
     puStack_160 = (undefined1 *)0x0;
     uStack_164 = 0x4ca661;
-    (**(code **)(*piVar4 + 0xa4))();
-    *(undefined2 *)((int)piVar6 + 0x92) = 0xbc7;
+    (**(code **)(*piVar5 + 0xa4))();
+    *(undefined2 *)((int)piVar7 + 0x92) = 0xbc7;
   }
   puStack_148._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_170);
+  CString::~CString(&CStack_170);
   puStack_148._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_178);
+  CString::~CString(&CStack_178);
   puStack_148 = (undefined4 *)((uint)puStack_148._1_3_ << 8);
-  ReleaseSharedStringRefIfNotEmpty(&uStack_180);
+  CString::~CString(&CStack_180);
   puStack_148 = (undefined4 *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_184);
+  CString::~CString(&CStack_184);
   *unaff_FS_OFFSET = uStack_150;
   return;
 }
@@ -531,26 +544,27 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
 
 {
   int *piVar1;
-  int *this_00;
-  int iVar2;
+  TCity *this_00;
+  undefined uVar2;
   int iVar3;
+  undefined3 extraout_var;
   int iVar4;
-  undefined2 extraout_var;
+  undefined2 extraout_var_00;
   int unaff_retaddr;
   
                     /* Slot 11 uses the Power Plant special upgrade toggle path (city-model vfunc
                        +0x60). */
-  if (*(short *)(this + 0x94) == 0xb) {
+  if (*(short *)&this->field_0x94 == 0xb) {
                     /* University special case (slot 11): commit via city vfunc +0x60. */
     if (nDialogActionTag == 0x6f6b6179) {
-      (**(code **)(**(int **)(this + 0x90) + 0x60))(1);
+      (*this->pCity->vftable[0xc].GetTCityClassNamePointer)(1);
     }
   }
   else {
                     /* Power Plant special case (slot 11): commit/revert via city-model vfunc +0x60.
                         */
                     /* Resolve selected building entry pointer: city->slotTable[slot + 0x35]. */
-    piVar1 = *(int **)(*(int *)(this + 0x90) + 0xe4 + (short)(*(short *)(this + 0x94) + 0x35) * 4);
+    piVar1 = this->pCity->orderSlotsE4[(short)(*(short *)&this->field_0x94 + 0x35)];
     if (piVar1 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
@@ -560,12 +574,15 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
     if (nDialogActionTag == 0x6f6b6179) {
                     /* Standard building slots: apply queued production delta via entry callback
                        (+0x2C). */
-      this_00 = *(int **)(this + 0x90);
+      this_00 = this->pCity;
       iVar4 = *piVar1;
-      iVar2 = thunk_GetCityBuildingProductionValueBySlot(this_00,*(short *)(this + 0x94));
-      iVar3 = (**(code **)(*this_00 + 0x54))(CONCAT22(extraout_var,*(undefined2 *)(this + 0x94)));
+      iVar3 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,*(short *)&this->field_0x94)
+      ;
+      uVar2 = (*this_00->vftable[10].slot_0x04)
+                        (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x94));
       (**(code **)(unaff_retaddr + 0x2c))
-                (iVar3 - CONCAT22((short)((uint)iVar4 >> 0x10),(short)iVar2));
+                (CONCAT31(extraout_var,uVar2) - CONCAT22((short)((uint)iVar4 >> 0x10),(short)iVar3))
+      ;
     }
     else {
                     /* Cancel path: clear pending order if queued value exists. */
@@ -574,11 +591,11 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
       }
     }
   }
-  iVar4 = thunk_GetCityBuildingProductionValueBySlot
-                    (*(void **)(this + 0x90),*(short *)(this + 0x94));
-  (**(code **)(**(int **)(this + 0x98) + 0x1e8))(*(undefined2 *)(this + 0x94),iVar4);
-  (**(code **)(**(int **)(this + 0x98) + 0x1e0))();
-  (**(code **)(**(int **)(this + 0x98) + 0xe4))();
+  iVar4 = TCity::thunk_GetCityBuildingProductionValueBySlot(this->pCity,*(short *)&this->field_0x94)
+  ;
+  (**(code **)(**(int **)&this->field_0x98 + 0x1e8))(*(undefined2 *)&this->field_0x94,iVar4);
+  (**(code **)(**(int **)&this->field_0x98 + 0x1e0))();
+  (**(code **)(**(int **)&this->field_0x98 + 0xe4))();
   return;
 }
 
@@ -617,46 +634,47 @@ TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor
 
 {
   char cVar1;
-  void *pvVar2;
+  void *pMapOrderEntry;
+  TCivToolbar *this_00;
   
-  if (*(short *)(this + 0x96) == 2) {
-    pvVar2 = *(void **)(this + 0x98);
+  if (*(short *)&this->field_0x96 == 2) {
+    this_00 = *(TCivToolbar **)&this->field_0x98;
     thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
-    if (pvVar2 != (void *)0x0) {
+    if (this_00 != (TCivToolbar *)0x0) {
       if ((char)pMapInteractionState == '\0') {
-        pvVar2 = *(void **)((int)pvVar2 + 0x18);
+        this_00 = (TCivToolbar *)this_00->field18;
       }
-      if (pvVar2 != (void *)0x0) goto LAB_005997b8;
+      if (this_00 != (TCivToolbar *)0x0) goto LAB_005997b8;
     }
-    pvVar2 = g_pMapActionContextListHead;
-    if (g_pMapActionContextListHead != (void *)0x0) {
+    this_00 = (TCivToolbar *)g_pMapActionContextListHead;
+    if (g_pMapActionContextListHead != (TZone *)0x0) {
 LAB_005997b8:
       while( true ) {
-        cVar1 = TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(0xffffffff,0);
+        cVar1 = TCivToolbar::CanDisplayMapOrderEntryInCurrentContext(this_00);
         if (cVar1 != '\0') break;
-        pvVar2 = *(void **)((int)pvVar2 + 0x18);
-        if (pvVar2 == (void *)0x0) {
-          *(undefined4 *)(this + 0x98) = 0;
+        this_00 = (TCivToolbar *)this_00->field18;
+        if (this_00 == (TCivToolbar *)0x0) {
+          *(undefined4 *)&this->field_0x98 = 0;
           return;
         }
       }
       TCivToolbar::thunk_SetMapInteractionMode((TCivToolbar *)this,2);
-      if (this[0x94] == (TBuildingConstructionView)0x0) {
-        thunk_InvalidateMapRegionForOrderEntry(*(undefined4 *)(this + 0x98));
+      if (this->field_0x94 == '\0') {
+        thunk_InvalidateMapRegionForOrderEntry(*(undefined4 *)&this->field_0x98);
       }
-      *(void **)(this + 0x98) = pvVar2;
-      if (this[0x94] == (TBuildingConstructionView)0x0) {
-        thunk_InvalidateMapRegionForOrderEntry(pvVar2);
+      *(TCivToolbar **)&this->field_0x98 = this_00;
+      if (this->field_0x94 == '\0') {
+        thunk_InvalidateMapRegionForOrderEntry(this_00);
       }
-      if (pvVar2 == (void *)0x0) {
+      if (this_00 == (TCivToolbar *)0x0) {
         TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,(void *)0x0);
         return;
       }
-      pvVar2 = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(pvVar2);
-      TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,pvVar2);
+      pMapOrderEntry = (void *)thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(this_00);
+      TToolBarCluster::thunk_RefreshMapOrderEntryPanel((TToolBarCluster *)this,pMapOrderEntry);
       return;
     }
-    *(undefined4 *)(this + 0x98) = 0;
+    *(undefined4 *)&this->field_0x98 = 0;
   }
   return;
 }

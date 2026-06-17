@@ -3,144 +3,59 @@
 // Program: Imperialism.exe
 // Bucket: TPtrList.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00488470
+// GHIDRA_NAME TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt
+// GHIDRA_PROTO undefined __thiscall InsertCopiedRecordAtFrontOfPtrListAlt(void)
+
+void __thiscall TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt(TPtrList *this)
+
+{
+  short sVar1;
+  undefined4 *puVar2;
+  uint uVar3;
+  undefined4 *puVar4;
+  undefined4 *in_stack_00000004;
+  
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+  sVar1 = *(short *)&this->field_0x14;
+  puVar4 = puVar2;
+  for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *puVar4 = *in_stack_00000004;
+    in_stack_00000004 = in_stack_00000004 + 1;
+    puVar4 = puVar4 + 1;
+  }
+  for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *(undefined1 *)puVar4 = *(undefined1 *)in_stack_00000004;
+    in_stack_00000004 = (undefined4 *)((int)in_stack_00000004 + 1);
+    puVar4 = (undefined4 *)((int)puVar4 + 1);
+  }
+  InsertAt(0,puVar2,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004884C0
+// GHIDRA_NAME TPtrList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TPtrList * __thiscall TPtrList::_scalar_deleting_destructor_(TPtrList *this)
+
+{
+  byte in_stack_00000004;
+  
+  CObArray::thunk_DestructCObArray();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00488510
-// GHIDRA_NAME TPtrList::GetTPtrListClassNamePointer
-// GHIDRA_PROTO undefined GetTPtrListClassNamePointer()
+// GHIDRA_NAME TPtrList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TPtrList::GetTPtrListClassNamePointer(void)
-
-{
-  return "0Oi";
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004885D0
-// GHIDRA_NAME TPtrList::GetCountOrReleaseSlot28
-// GHIDRA_PROTO undefined GetCountOrReleaseSlot28()
-
-void TPtrList::GetCountOrReleaseSlot28(undefined4 param_1)
+CRuntimeClass * __thiscall TPtrList::GetTEventHandlerClassNamePointer(TPtrList *this)
 
 {
-  CPtrList::AddHead(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004885F0
-// GHIDRA_NAME TPtrList::GetNodeByOrdinalSlot2C
-// GHIDRA_PROTO undefined GetNodeByOrdinalSlot2C()
-
-void TPtrList::GetNodeByOrdinalSlot2C(undefined4 param_1)
-
-{
-  CPtrList::AddHead(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488610
-// GHIDRA_NAME TPtrList::AddTail30
-// GHIDRA_PROTO undefined AddTail30()
-
-void TPtrList::AddTail30(undefined4 param_1)
-
-{
-  CPtrList::AddTail(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004886D0
-// GHIDRA_NAME TPtrList::GetCountSlot48
-// GHIDRA_PROTO undefined GetCountSlot48()
-
-undefined4 __fastcall TPtrList::GetCountSlot48(int param_1)
-
-{
-  return *(undefined4 *)(param_1 + 0x10);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004886F0
-// GHIDRA_NAME TPtrList::GetTrackedEntrySlot4C
-// GHIDRA_PROTO undefined GetTrackedEntrySlot4C()
-
-undefined4 TPtrList::GetTrackedEntrySlot4C(int param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = CPtrList::GetNodeAtZeroBasedIndex(param_1 + -1);
-  return *(undefined4 *)(iVar1 + 8);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488720
-// GHIDRA_NAME TPtrList::RemoveEntryAtSlot50
-// GHIDRA_PROTO undefined RemoveEntryAtSlot50()
-
-void TPtrList::RemoveEntryAtSlot50(int param_1)
-
-{
-  undefined4 uVar1;
-  
-  uVar1 = CPtrList::GetNodeAtZeroBasedIndex(param_1 + -1);
-  TAutoGreatPower::RemoveAt_60217d(uVar1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488750
-// GHIDRA_NAME TPtrList::Call54
-// GHIDRA_PROTO undefined Call54()
-
-void __fastcall TPtrList::Call54(int param_1)
-
-{
-  int iVar1;
-  int *piVar2;
-  
-  iVar1 = *(int *)(param_1 + 0x10);
-  while (iVar1 != 0) {
-    piVar2 = (int *)RemoveHead();
-    (**(code **)(*piVar2 + 0x1c))();
-    iVar1 = *(int *)(param_1 + 0x10);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488790
-// GHIDRA_NAME TPtrList::Release1C
-// GHIDRA_PROTO undefined Release1C()
-
-void __fastcall TPtrList::Release1C(int *param_1)
-
-{
-  if (param_1 != (int *)0x0) {
-    (**(code **)(*param_1 + 4))(1);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004887B0
-// GHIDRA_NAME TPtrList::Call58
-// GHIDRA_PROTO undefined Call58()
-
-void __fastcall TPtrList::Call58(int *param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = *param_1;
-  (**(code **)(iVar1 + 0x54))();
-  (**(code **)(iVar1 + 0x1c))();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00488840
-// GHIDRA_NAME TPtrList::SetEntryDataAtSlot60
-// GHIDRA_PROTO undefined SetEntryDataAtSlot60()
-
-void TPtrList::SetEntryDataAtSlot60(int param_1,undefined4 *param_2)
-
-{
-  int iVar1;
-  
-  iVar1 = CPtrList::GetNodeAtZeroBasedIndex(param_1 + -1);
-  *(undefined4 *)(iVar1 + 8) = *param_2;
-  return;
+  return &g_pClassDescTPtrList;
 }
 

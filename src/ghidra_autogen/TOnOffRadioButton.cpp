@@ -7,10 +7,10 @@
 // GHIDRA_NAME TOnOffRadioButton::CreateTOnOffRadioButtonInstance
 // GHIDRA_PROTO undefined CreateTOnOffRadioButtonInstance()
 
-undefined4 * TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
+thunk_TPictureButton * TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,86 +20,111 @@ undefined4 * TOnOffRadioButton::CreateTOnOffRadioButtonInstance(void)
   puStack_8 = &LAB_0063644a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    *puVar1 = &PTR_LAB_0065f8a8;
-    puVar1[0x18] = 0xc;
-    *(undefined1 *)(puVar1 + 0x25) = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(undefined2 *)(this + 0x92) = 7000;
+    *(TOnOffRadioButtonVtbl **)this = &TOnOffRadioButtonVtbl_0065f8a8;
+    *(undefined4 *)(this + 0x60) = 0xc;
+    this[0x94] = (thunk_TPictureButton)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005719D0
-// GHIDRA_NAME TOnOffRadioButton::GetTOnOffRadioButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTOnOffRadioButtonClassNamePointer()
+// GHIDRA_NAME TOnOffRadioButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TOnOffRadioButton::GetTOnOffRadioButtonClassNamePointer(void)
+CRuntimeClass * __thiscall
+TOnOffRadioButton::GetTEventHandlerClassNamePointer(TOnOffRadioButton *this)
 
 {
-  return &PTR_s_TOnOffRadioButton_0065e5f8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005719F0
 // GHIDRA_NAME TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
-// GHIDRA_PROTO undefined ConstructTOnOffRadioButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTOnOffRadioButtonBaseState(void)
 
-undefined4 * __fastcall TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState(undefined4 *param_1)
+TOnOffRadioButton * __thiscall
+TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState(TOnOffRadioButton *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *(undefined2 *)((int)param_1 + 0x92) = 7000;
-  *param_1 = &PTR_LAB_0065f8a8;
-  param_1[0x18] = 0xc;
-  *(undefined1 *)(param_1 + 0x25) = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  *(undefined2 *)&this->field_0x92 = 7000;
+  this->vftable = &TOnOffRadioButtonVtbl_0065f8a8;
+  *(undefined4 *)&this->field_0x60 = 0xc;
+  this->field_0x94 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A30
-// GHIDRA_NAME TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTOnOffRadioButtonAndMaybeFree()
+// GHIDRA_NAME TOnOffRadioButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TOnOffRadioButton::DestructTOnOffRadioButtonAndMaybeFree(undefined4 param_1,byte param_2)
+TOnOffRadioButton * __thiscall
+TOnOffRadioButton::_scalar_deleting_destructor_(TOnOffRadioButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571A80
-// GHIDRA_NAME TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
-// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80()
+// GHIDRA_NAME TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall
-TOnOffRadioButton::WrapperFor_HandleCityDialogToggleCommandOrForward_At00571a80
-          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4)
+TOnOffRadioButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TOnOffRadioButton *this)
 
 {
-  if (param_2 == 0xc) {
-    if ((char)param_1[0x19] == '\0') {
-      (**(code **)(*param_1 + 0x1d0))(1,1);
+  int in_stack_00000004;
+  
+  if (in_stack_00000004 == 0xc) {
+    if (this->field_0x64 == '\0') {
+      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,1);
     }
-    thunk_HandleCityDialogToggleCommandOrForward(0xc,param_3,param_4);
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
     return;
   }
-  if (param_2 != 0x1f) {
-    if (param_2 != 0x20) {
-      thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
+  if (in_stack_00000004 != 0x1f) {
+    if (in_stack_00000004 != 0x20) {
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
       return;
     }
-    (**(code **)(*param_1 + 0x1d0))(0,1);
+    (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(0,1);
     return;
   }
-  (**(code **)(*param_1 + 0x1d0))(1,1);
+  (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571B20
+// GHIDRA_NAME TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_00571b20(void)
+
+void __thiscall TOnOffRadioButton::OrphanCallChain_C2_I16_00571b20(TOnOffRadioButton *this)
+
+{
+  TOnOffRadioButtonVtbl *pTVar1;
+  char cVar2;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  pTVar1 = this->vftable;
+  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  if (cVar2 != '\0') {
+    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(in_stack_00000004,in_stack_00000008);
+  }
   return;
 }
 

@@ -7,11 +7,11 @@
 // GHIDRA_NAME TGameSetupPicture::CreateTGameSetupPictureInstance
 // GHIDRA_PROTO undefined CreateTGameSetupPictureInstance()
 
-undefined4 * TGameSetupPicture::CreateTGameSetupPictureInstance(void)
+TNoHilitePicture * TGameSetupPicture::CreateTGameSetupPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,52 +21,230 @@ undefined4 * TGameSetupPicture::CreateTGameSetupPictureInstance(void)
   puStack_8 = &LAB_006367ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &PTR_LAB_00661b50;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this->vftable = (TNoHilitePictureVtbl *)&TGameSetupPictureVtbl_00661b50;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575840
-// GHIDRA_NAME TGameSetupPicture::GetTGameSetupPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTGameSetupPictureClassNamePointer()
+// GHIDRA_NAME TGameSetupPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TGameSetupPicture::GetTGameSetupPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TGameSetupPicture::GetTEventHandlerClassNamePointer(TGameSetupPicture *this)
 
 {
-  return &PTR_s_TGameSetupPicture_00661980;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575860
 // GHIDRA_NAME TGameSetupPicture::ConstructTGameSetupPictureBaseState
-// GHIDRA_PROTO undefined ConstructTGameSetupPictureBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTGameSetupPictureBaseState(void)
 
-undefined4 * __fastcall TGameSetupPicture::ConstructTGameSetupPictureBaseState(undefined4 *param_1)
+TGameSetupPicture * __thiscall
+TGameSetupPicture::ConstructTGameSetupPictureBaseState(TGameSetupPicture *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-  *param_1 = &PTR_LAB_00661b50;
-  return param_1;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  this->vftable = &TGameSetupPictureVtbl_00661b50;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00575890
-// GHIDRA_NAME TGameSetupPicture::DestructTGameSetupPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTGameSetupPictureAndMaybeFree()
+// GHIDRA_NAME TGameSetupPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TGameSetupPicture::DestructTGameSetupPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TGameSetupPicture * __thiscall
+TGameSetupPicture::_scalar_deleting_destructor_(TGameSetupPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005758E0
+// GHIDRA_NAME TGameSetupPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TGameSetupPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameSetupPicture *this)
+
+{
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00575900
+// GHIDRA_NAME TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO void __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void HandleMainMenuCommandAction(int nDialogEventCode, int pMenuCommandEvent, int nDispatchFlags)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void HandleMainMenuCommandAction(int nDialogEventCode, int pMenuCommandEvent,
+   int nDispatchFlags) */
+
+void __thiscall
+TGameSetupPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+          (TGameSetupPicture *this,int nDialogEventCode,int pMenuCommandEvent,int nDispatchFlags)
+
+{
+  char fModalAccepted;
+  ushort wShiftState;
+  int nMapTileIndex;
+  undefined4 *unaff_FS_OFFSET;
+  int *pGlobalMapState;
+  undefined4 local_c;
+  TMapMgr *pTStack_8;
+  undefined4 uStack_4;
+  uint dwCommandTag;
+  
+  uStack_4 = 0xffffffff;
+  pTStack_8 = (TMapMgr *)&LAB_00636802;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  if (((nDialogEventCode == 0x14) || (nDialogEventCode == 10)) || (nDialogEventCode == 0x22)) {
+    dwCommandTag = *(uint *)(pMenuCommandEvent + 0x1c);
+    if (dwCommandTag < 0x68696769) {
+      if (dwCommandTag == 0x68696768) {
+        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+      }
+      else if (dwCommandTag != 0x636e636c) goto LAB_00575d3b;
+      goto LAB_00575d30;
+    }
+    if (dwCommandTag < 0x6d756c75) {
+      if (dwCommandTag == 0x6d756c74) {
+        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        EnsureGameFlowStateAndPostTurnEvent5E5();
+      }
+      else if (dwCommandTag == 0x6c6f6164) {
+        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        fModalAccepted = thunk_ReturnTrueStub();
+        while (fModalAccepted == '\0') {
+          CString::CString((CString *)&nDialogEventCode);
+          uStack_4 = 2;
+          thunk_LoadUiStringResourceByGroupAndIndex();
+          thunk_AssignStringSharedRefAndReturnThis(&nDialogEventCode);
+          fModalAccepted = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+          uStack_4 = 0xffffffff;
+          if (fModalAccepted == '\0') goto LAB_00575d64;
+          CString::~CString((CString *)&nDialogEventCode);
+          fModalAccepted = thunk_ReturnTrueStub();
+        }
+        DAT_00695278 = 0xfffffffe;
+        goto LAB_00575d30;
+      }
+    }
+    else if (dwCommandTag < 0x71756975) {
+      if (dwCommandTag == 0x71756974) {
+        PostWmCloseToMainThreadWindow();
+      }
+      else if (dwCommandTag == 0x70726566) goto LAB_00575d30;
+    }
+    else {
+      if (dwCommandTag == 0x72616e64) {
+        wShiftState = GetAsyncKeyState(0x10);
+        if (((wShiftState & 0x8000) == 0) || ((char)g_apSecondaryNationStateSlots[0x17] == '\0')) {
+          (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+          fModalAccepted = thunk_ReturnTrueStub();
+          while (fModalAccepted == '\0') {
+            CString::CString((CString *)&nDialogEventCode);
+            uStack_4 = 1;
+            thunk_LoadUiStringResourceByGroupAndIndex();
+            thunk_AssignStringSharedRefAndReturnThis(&nDialogEventCode);
+            fModalAccepted = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+            uStack_4 = 0xffffffff;
+            if (fModalAccepted == '\0') goto LAB_00575d64;
+            CString::~CString((CString *)&nDialogEventCode);
+            fModalAccepted = thunk_ReturnTrueStub();
+          }
+          SetSelectedIndex6AAndTriggerRefresh();
+          (*g_pUiViewManager->vftable[6].GetTAssetMgrClassNamePointer)();
+        }
+        else {
+          pGlobalMapState = (int *)0x232c;
+          (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+          if (g_pGlobalMapState == (TMapMgr *)0x0) {
+            if (g_pActiveMapOrderContext != (TOcean *)0x0) {
+              (*g_pActiveMapOrderContext->vftable[3].DestroyTPortZoneManager)();
+              g_pActiveMapOrderContext = (TOcean *)0x0;
+            }
+            g_pActiveMapOrderContext = (TOcean *)AllocateWithFallbackHandler();
+            if (g_pActiveMapOrderContext == (TOcean *)0x0) {
+              g_pActiveMapOrderContext = (TOcean *)0x0;
+            }
+            else {
+              g_pActiveMapOrderContext->nationCount = 0;
+              g_pActiveMapOrderContext->contextArray = (dword *)0x0;
+              g_pActiveMapOrderContext->field0c = 0;
+              g_pActiveMapOrderContext->keyMask = 0;
+              g_pActiveMapOrderContext->field14 = 0;
+              g_pActiveMapOrderContext->vftable = &TOceanVtbl_0065c7c8;
+            }
+            ResetPortZoneGlobalContextCounters();
+            if (g_pGlobalMapState != (TMapMgr *)0x0) {
+              (*g_pGlobalMapState->vftable[3].slot_0x04)();
+              g_pGlobalMapState = (TMapMgr *)0x0;
+            }
+            pTStack_8 = (TMapMgr *)AllocateWithFallbackHandler();
+            if (pTStack_8 == (TMapMgr *)0x0) {
+              g_pGlobalMapState = (TMapMgr *)0x0;
+            }
+            else {
+              g_pGlobalMapState = TMapMgr::ConstructGlobalMapState(pTStack_8,pGlobalMapState);
+            }
+            InitializeGlobalMapState(g_pGlobalMapState,pGlobalMapState);
+          }
+          RebuildGlobalOrderManagersAndCapabilityState();
+          (*g_pGlobalMapState->vftable[5].GetTMapMgrClassNamePointer)();
+          (*g_pGlobalMapState->vftable[6].GetTMapMgrClassNamePointer)();
+          nMapTileIndex = 0;
+          do {
+            (*g_pGlobalMapState->vftable[6].slot_0x04)();
+            (*g_pGlobalMapState->vftable[7].slot_0x04)();
+            nMapTileIndex = nMapTileIndex + 1;
+          } while (nMapTileIndex < 0x1950);
+        }
+      }
+      else {
+        if (dwCommandTag != 0x7363656e) goto LAB_00575d3b;
+        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        fModalAccepted = thunk_ReturnTrueStub();
+        while (fModalAccepted == '\0') {
+          CString::CString((CString *)&nDialogEventCode);
+          uStack_4 = 3;
+          thunk_LoadUiStringResourceByGroupAndIndex();
+          thunk_AssignStringSharedRefAndReturnThis(&nDialogEventCode);
+          fModalAccepted = thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+          uStack_4 = 0xffffffff;
+          if (fModalAccepted == '\0') goto LAB_00575d64;
+          CString::~CString((CString *)&nDialogEventCode);
+          fModalAccepted = thunk_ReturnTrueStub();
+        }
+      }
+LAB_00575d30:
+      thunk_PostTurnEventCodeMessage2420();
+    }
+  }
+LAB_00575d3b:
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+LAB_00575d4f:
+  *unaff_FS_OFFSET = local_c;
+  return;
+LAB_00575d64:
+  uStack_4 = 0xffffffff;
+  CString::~CString((CString *)&nDialogEventCode);
+  goto LAB_00575d4f;
 }
 

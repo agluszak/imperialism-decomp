@@ -5,14 +5,15 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2DF0
 // GHIDRA_NAME TMilitaryUnitOrderState::TMilitaryUnitOrderState
-// GHIDRA_PROTO undefined TMilitaryUnitOrderState()
+// GHIDRA_PROTO undefined __thiscall TMilitaryUnitOrderState(void)
 
-undefined4 * __fastcall TMilitaryUnitOrderState::TMilitaryUnitOrderState(undefined4 *param_1)
+TMilitaryUnitOrderState * __thiscall
+TMilitaryUnitOrderState::TMilitaryUnitOrderState(TMilitaryUnitOrderState *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
   CString local_14;
-  undefined4 *local_10;
+  TMilitaryUnitOrderState *local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -20,36 +21,35 @@ undefined4 * __fastcall TMilitaryUnitOrderState::TMilitaryUnitOrderState(undefin
   puStack_8 = &LAB_0063991b;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &TUnitOrderState::_vftable_;
-  param_1[4] = 0;
-  param_1[5] = 0;
-  *(undefined2 *)((int)param_1 + 6) = 0xffff;
-  *(undefined1 *)(param_1 + 7) = 0;
+  *(TUnitVtbl **)this = &TUnitOrderState::_vftable_;
+  *(undefined4 *)(this + 0x10) = 0;
+  *(undefined4 *)(this + 0x14) = 0;
+  *(undefined2 *)(this + 6) = 0xffff;
+  this[0x1c] = (TMilitaryUnitOrderState)0x0;
   local_4 = 0;
-  local_10 = param_1;
-  InitializeSharedStringRefFromEmpty(param_1 + 9);
+  local_10 = this;
+  CString::CString((CString *)(this + 0x24));
   local_4._0_1_ = 1;
-  *(undefined2 *)(param_1 + 0xe) = 0;
-  *(undefined2 *)((int)param_1 + 0x3a) = 0;
-  *(undefined2 *)(param_1 + 0xf) = 0;
-  param_1[0x10] = 0;
-  *param_1 = &_vftable_;
-  *(undefined1 *)(param_1 + 7) = 1;
-  *(undefined2 *)(param_1 + 0xd) = 500;
-  *(undefined2 *)((int)param_1 + 0x36) = 0;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-            ((TToolBarCluster *)&local_14,(char *)&g_szEmptyString);
+  *(undefined2 *)(this + 0x38) = 0;
+  *(undefined2 *)(this + 0x3a) = 0;
+  *(undefined2 *)(this + 0x3c) = 0;
+  *(undefined4 *)(this + 0x40) = 0;
+  *(TMilitaryUnitVtbl **)this = &_vftable_;
+  this[0x1c] = (TMilitaryUnitOrderState)0x1;
+  *(undefined2 *)(this + 0x34) = 500;
+  *(undefined2 *)(this + 0x36) = 0;
+  CString::CString(&local_14,(char *)&g_szEmptyString);
   local_4._0_1_ = 2;
-  AssignFromPtr(param_1 + 9,&local_14);
+  CString::AssignFromPtr((CString *)(this + 0x24),&local_14);
   local_4 = CONCAT31(local_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty(&local_14);
+  CString::~CString(&local_14);
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2F50
 // GHIDRA_NAME TMilitaryUnitOrderState::InitializeRecruitOrderState
-// GHIDRA_PROTO undefined InitializeRecruitOrderState()
+// GHIDRA_PROTO undefined __thiscall InitializeRecruitOrderState(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes military recruit order object state after allocation.
 // GHIDRA_COMMENT
@@ -70,41 +70,42 @@ undefined4 * __fastcall TMilitaryUnitOrderState::TMilitaryUnitOrderState(undefin
    
    Used by recruitment commit path for non-civilian branch. */
 
-void __thiscall
-TMilitaryUnitOrderState::InitializeRecruitOrderState
-          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+void __thiscall TMilitaryUnitOrderState::InitializeRecruitOrderState(TMilitaryUnitOrderState *this)
 
 {
-  short sVar1;
+  short in_stack_00000004;
+  short in_stack_0000000c;
   
-  *(undefined1 *)(param_1 + 7) = 1;
-  *(undefined2 *)((int)param_1 + 6) = 0xffff;
-  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager(param_2,param_3,param_4,param_5);
-  sVar1 = (short)param_2;
-  *(short *)((int)param_1 + 0x36) = (short)((int)((int)sVar1 + ((int)sVar1 >> 0x1f & 7U)) >> 3);
-  if (0x1a < sVar1) {
-    TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C(param_1 + 9);
+  this[0x1c] = (TMilitaryUnitOrderState)0x1;
+  *(undefined2 *)(this + 6) = 0xffff;
+  TUnitOrderState::thunk_RegisterUnitOrderWithOwnerManager((TUnitOrderState *)this);
+  *(short *)(this + 0x36) =
+       (short)((int)((int)in_stack_00000004 + ((int)in_stack_00000004 >> 0x1f & 7U)) >> 3);
+  if (0x1a < in_stack_00000004) {
+    TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
+              ((TAdmiral *)g_apTerrainTypeDescriptorTable[in_stack_0000000c]);
   }
-  (**(code **)(*param_1 + 0x38))();
+  (**(code **)(*(int *)this + 0x38))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C3190
 // GHIDRA_NAME TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets
-// GHIDRA_PROTO undefined CopyUnitCurrentTileIntoOrderTargets()
+// GHIDRA_PROTO undefined __thiscall CopyUnitCurrentTileIntoOrderTargets(void)
 
-void __fastcall TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets(int param_1)
+void __thiscall
+TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets(TMilitaryUnitOrderState *this)
 
 {
-  undefined2 *puVar1;
+  TMilitaryUnitOrderState *pTVar1;
   int iVar2;
   
-  puVar1 = (undefined2 *)(param_1 + 0x2e);
+  pTVar1 = this + 0x2e;
   iVar2 = 3;
   do {
-    puVar1[-3] = *(undefined2 *)(param_1 + 6);
-    *puVar1 = *(undefined2 *)(param_1 + 6);
-    puVar1 = puVar1 + 1;
+    *(undefined2 *)(pTVar1 + -6) = *(undefined2 *)(this + 6);
+    *(undefined2 *)pTVar1 = *(undefined2 *)(this + 6);
+    pTVar1 = pTVar1 + 2;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   return;

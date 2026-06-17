@@ -3,6 +3,9 @@
 
 #include "DOS.h"
 #include "Demangler.h"
+#include "MFC.h"
+#include "MFC/vfn.h"
+#include "MFC/vtables.h"
 #include "PE.h"
 #include "auto_structs.h"
 #include "root_types.h"

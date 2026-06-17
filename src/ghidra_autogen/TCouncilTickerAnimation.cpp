@@ -3,67 +3,116 @@
 // Program: Imperialism.exe
 // Bucket: TCouncilTickerAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049FF50
-// GHIDRA_NAME TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance
-// GHIDRA_PROTO undefined CreateTCouncilTickerAnimationInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049FF20
+// GHIDRA_NAME TCouncilTickerAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049ff20
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049ff20(void)
 
-void __fastcall TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(undefined4 *param_1)
+TCouncilTickerAnimation * __thiscall
+TCouncilTickerAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049ff20
+          (TCouncilTickerAnimation *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  byte in_stack_00000004;
+  
+  CreateTCouncilTickerAnimationInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049FF50
+// GHIDRA_NAME TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance
+// GHIDRA_PROTO undefined __thiscall CreateTCouncilTickerAnimationInstance(void)
+
+void __thiscall
+TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance(TCouncilTickerAnimation *this)
+
+{
+  this->vftable =
+       (TCouncilTickerAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FF70
-// GHIDRA_NAME TCouncilTickerAnimation::GetTCouncilTickerAnimationClassNamePointer
-// GHIDRA_PROTO undefined GetTCouncilTickerAnimationClassNamePointer()
+// GHIDRA_NAME TCouncilTickerAnimation::GetTAnimationClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-undefined ** TCouncilTickerAnimation::GetTCouncilTickerAnimationClassNamePointer(void)
+CRuntimeClass * __thiscall
+TCouncilTickerAnimation::GetTAnimationClassNamePointer(TCouncilTickerAnimation *this)
 
 {
-  return &PTR_s_TCouncilTickerAnimation_0064c250;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FF90
 // GHIDRA_NAME TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
-// GHIDRA_PROTO undefined ConstructTCouncilTickerAnimationBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTCouncilTickerAnimationBaseState(void)
 
 void __thiscall
-TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState
-          (int param_1,undefined4 param_2,undefined4 param_3)
+TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(TCouncilTickerAnimation *this)
 
 {
-  *(undefined4 *)(param_1 + 4) = param_2;
-  *(undefined4 *)(param_1 + 0x1c) = 0;
-  *(undefined4 *)(param_1 + 0x20) = 0;
-  *(undefined2 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 0x24) = 0;
-  *(undefined2 *)(param_1 + 10) = 0;
-  *(undefined2 *)(param_1 + 0xc) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined4 *)(param_1 + 0x28) = 0;
-  *(undefined4 *)(param_1 + 0x14) = param_3;
-  *(undefined4 *)(param_1 + 0x18) = 0;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x1c = 0;
+  *(undefined4 *)&this->field_0x20 = 0;
+  *(undefined2 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0x24 = 0;
+  *(undefined2 *)&this->field_0xa = 0;
+  *(undefined2 *)&this->field_0xc = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0x28 = 0;
+  *(undefined4 *)&this->field_0x14 = in_stack_00000008;
+  *(undefined4 *)&this->field_0x18 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049FFE0
+// GHIDRA_NAME TCouncilTickerAnimation::TickAndAdvanceCivilianTerrainSelectionStep
+// GHIDRA_PROTO undefined __thiscall TickAndAdvanceCivilianTerrainSelectionStep(void)
+
+void __thiscall
+TCouncilTickerAnimation::TickAndAdvanceCivilianTerrainSelectionStep(TCouncilTickerAnimation *this)
+
+{
+  int iVar1;
+  
+  iVar1 = *(int *)&this->field_0x10 + 1;
+  *(int *)&this->field_0x10 = iVar1;
+  if (iVar1 == *(int *)&this->field_0x14) {
+    AdvanceCivilianTerrainSelectionStep();
+    *(undefined4 *)&this->field_0x10 = 0;
+  }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FC2E0
 // GHIDRA_NAME TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
-// GHIDRA_PROTO undefined InitializeDiplomacyCouncilViewControlsAndTicker()
+// GHIDRA_PROTO undefined __thiscall InitializeDiplomacyCouncilViewControlsAndTicker(void)
 
-void __fastcall
-TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker(int *param_1)
+void __thiscall
+TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
+          (TCouncilTickerAnimation *this)
 
 {
   short sVar1;
-  code *pcVar2;
-  int *piVar3;
-  undefined4 *puVar4;
-  undefined2 extraout_var;
+  TCouncilTickerAnimation_slot_0x04_0x04 *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  TCouncilTickerAnimation *this_00;
+  undefined3 extraout_var_03;
+  int *piVar4;
+  undefined2 extraout_var_05;
   int iVar5;
   int iVar6;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_68;
+  CString CStack_68;
   undefined4 uStack_64;
   undefined4 uStack_60;
   undefined4 uStack_5c;
@@ -78,7 +127,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker(int *pa
   undefined1 *puStack_38;
   undefined1 *puStack_34;
   undefined4 uStack_30;
-  undefined1 local_1c [4];
+  CString local_1c;
   undefined1 local_18 [6];
   undefined1 local_12;
   undefined1 local_11;
@@ -87,13 +136,14 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker(int *pa
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
+  undefined3 extraout_var_04;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006330a8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_30 = 0x4fc307;
-  InitializeSharedStringRefFromEmpty(local_1c);
+  CString::CString(&local_1c);
   uStack_30 = 0x2b6a;
   puStack_34 = (undefined1 *)0xe;
   local_4 = 0;
@@ -101,16 +151,16 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker(int *pa
   local_11 = 0;
   local_10 = 0;
   local_f = 0;
-  *(undefined2 *)(param_1 + 0x932) = 0;
+  *(undefined2 *)&this[0xd6].vftable = 0;
   puStack_38 = (undefined1 *)0x0;
   puStack_3c = local_18;
   puStack_40 = (undefined1 *)0x4fc336;
   thunk_BuildUiTextStyleDescriptor();
-  pcVar2 = *(code **)(*param_1 + 0x94);
+  pTVar2 = this->vftable[0x12].slot_0x04;
   uStack_30 = 0x63616e30;
   puStack_34 = (undefined1 *)0x4fc34a;
-  piVar3 = (int *)(*pcVar2)();
-  iVar5 = *piVar3;
+  uVar3 = (*pTVar2)();
+  iVar5 = *(int *)CONCAT31(extraout_var,uVar3);
   puStack_34 = (undefined1 *)0x4fc353;
   (**(code **)(iVar5 + 0xc))();
   puStack_34 = &stack0xffffffe0;
@@ -126,8 +176,8 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker(int *pa
   (**(code **)(iVar5 + 0x1b4))();
   uStack_44 = 0x63616e31;
   ppuStack_48 = (undefined1 **)0x4fc397;
-  piVar3 = (int *)(*pcVar2)();
-  iVar5 = *piVar3;
+  uVar3 = (*pTVar2)();
+  iVar5 = *(int *)CONCAT31(extraout_var_00,uVar3);
   ppuStack_48 = (undefined1 **)0x4fc3a0;
   (**(code **)(iVar5 + 0xc))();
   ppuStack_48 = &puStack_34;
@@ -143,70 +193,72 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker(int *pa
   (**(code **)(iVar5 + 0x1b4))();
   uStack_58 = 0x636f6130;
   uStack_5c = 0x4fc3e5;
-  piVar3 = (int *)(*pcVar2)();
-  iVar5 = *piVar3;
+  uVar3 = (*pTVar2)();
+  iVar5 = *(int *)CONCAT31(extraout_var_01,uVar3);
   uStack_5c = 0x4fc3ee;
   (**(code **)(iVar5 + 0xc))();
   uStack_5c = 1;
-  uStack_60 = CONCAT22(extraout_var,*(short *)(g_pDiplomacyTurnStateManager + 0x784) + 0x1105);
+  uStack_60 = CONCAT22(extraout_var_05,*(short *)&g_pDiplomacyTurnStateManager->field_0x784 + 0x1105
+                      );
   uStack_64 = 0x4fc40a;
   (**(code **)(iVar5 + 0x1c8))();
   uStack_64 = 0x636f6131;
-  uStack_68 = 0x4fc413;
-  piVar3 = (int *)(*pcVar2)();
-  iVar5 = *piVar3;
-  uStack_68 = 0x4fc41c;
+  CStack_68.m_pchData = (char *)0x4fc413;
+  uVar3 = (*pTVar2)();
+  iVar5 = *(int *)CONCAT31(extraout_var_02,uVar3);
+  CStack_68.m_pchData = (char *)0x4fc41c;
   (**(code **)(iVar5 + 0xc))();
-  uStack_68 = 1;
-  (**(code **)(iVar5 + 0x1c8))(*(short *)(g_pDiplomacyTurnStateManager + 0x786) + 0x1105);
-  if ((*(short *)(g_pLocalizationTable + 8) == 0x17) ||
-     (*(short *)(g_pLocalizationTable + 8) == 0x16)) {
+  CStack_68.m_pchData = (char *)0x1;
+  (**(code **)(iVar5 + 0x1c8))(*(short *)&g_pDiplomacyTurnStateManager->field_0x786 + 0x1105);
+  if ((*(short *)&g_pLocalizationTable->field_0x8 == 0x17) ||
+     (*(short *)&g_pLocalizationTable->field_0x8 == 0x16)) {
     iVar6 = 0;
     iVar5 = 0;
     do {
-      if (*(char *)(*(int *)(g_pGlobalMapState + 0x10) + iVar5) != -1) {
-        *(undefined1 *)(iVar6 + 0x52c + (int)param_1) = 1;
+      if (*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + iVar5) != -1) {
+        (&this[0x1e].field_0x4)[iVar6] = 1;
       }
       iVar5 = iVar5 + 0xa8;
       iVar6 = iVar6 + 1;
     } while (iVar5 < 0xfc00);
-    *(undefined2 *)(param_1 + 0x14a) = 10000;
-    piVar3 = (int *)(*pcVar2)(0x656e6420);
-    (**(code **)(*piVar3 + 0xc))();
-    if (*(short *)(g_pLocalizationTable + 8) == 0x17) {
-      piVar3[7] = 0x52655374;
+    *(undefined2 *)&this[0x1e].vftable = 10000;
+    uVar3 = (*pTVar2)(0x656e6420);
+    piVar4 = (int *)CONCAT31(extraout_var_04,uVar3);
+    (**(code **)(*piVar4 + 0xc))();
+    if (*(short *)&g_pLocalizationTable->field_0x8 == 0x17) {
+      piVar4[7] = 0x52655374;
     }
     else {
-      piVar3[7] = 0x53636f72;
+      piVar4[7] = 0x53636f72;
     }
   }
   else {
     iVar5 = 0x484;
     do {
-      sVar1 = *(short *)(g_pDiplomacyTurnStateManager + iVar5);
-      if ((sVar1 != -1) && ((short)param_1[0x932] < sVar1)) {
-        *(short *)(param_1 + 0x932) = sVar1;
+      sVar1 = *(short *)((int)&g_pDiplomacyTurnStateManager->vftable + iVar5);
+      if ((sVar1 != -1) && (*(short *)&this[0xd6].vftable < sVar1)) {
+        *(short *)&this[0xd6].vftable = sVar1;
       }
       iVar5 = iVar5 + 2;
     } while (iVar5 < 0x784);
-    *(undefined2 *)(param_1 + 0x14a) = 0;
-    puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x2c);
-    if (puVar4 == (undefined4 *)0x0) {
-      puVar4 = (undefined4 *)0x0;
+    *(undefined2 *)&this[0x1e].vftable = 0;
+    this_00 = (TCouncilTickerAnimation *)AllocateWithFallbackHandler(0x2c);
+    if (this_00 == (TCouncilTickerAnimation *)0x0) {
+      this_00 = (TCouncilTickerAnimation *)0x0;
     }
     else {
-      *puVar4 = &PTR_LAB_0064c410;
+      this_00->vftable = &TCouncilTickerAnimationVtbl_0064c410;
     }
-    ConstructTCouncilTickerAnimationBaseState(param_1,2);
-    TCivAnimation2::AddObjectToUiTransientRegistry(puVar4);
-    SetCursor(*(HCURSOR *)(g_pUiRuntimeContext + 0x7c));
-    piVar3 = (int *)(*pcVar2)(0x656e6420);
-    iVar5 = *piVar3;
+    ConstructTCouncilTickerAnimationBaseState(this_00);
+    TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
+    SetCursor(*(HCURSOR *)&g_pUiRuntimeContext->field_0x7c);
+    uVar3 = (*pTVar2)(0x656e6420);
+    iVar5 = *(int *)CONCAT31(extraout_var_03,uVar3);
     (**(code **)(iVar5 + 0xc))();
     (**(code **)(iVar5 + 0xa8))(0,0);
   }
   uStack_50 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_68);
+  CString::~CString(&CStack_68);
   *unaff_FS_OFFSET = uStack_58;
   return;
 }

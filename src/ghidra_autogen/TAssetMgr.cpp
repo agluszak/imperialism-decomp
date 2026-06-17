@@ -37,34 +37,64 @@ undefined4 * TAssetMgr::CreateTAssetMgrInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DF260
 // GHIDRA_NAME TAssetMgr::GetTAssetMgrClassNamePointer
-// GHIDRA_PROTO undefined GetTAssetMgrClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTAssetMgrClassNamePointer(void)
 
-undefined ** TAssetMgr::GetTAssetMgrClassNamePointer(void)
+CRuntimeClass * __thiscall TAssetMgr::GetTAssetMgrClassNamePointer(TAssetMgr *this)
 
 {
-  return &PTR_s_TAssetMgr_0066f4c0;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF280
+// GHIDRA_NAME TAssetMgr::ConstructUiViewManager
+// GHIDRA_PROTO void * __thiscall ConstructUiViewManager(void * pUiViewManager)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void * ConstructUiViewManager(void *pUiViewManager)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void * ConstructUiViewManager(void *pUiViewManager) */
+
+void * __thiscall TAssetMgr::ConstructUiViewManager(TAssetMgr *this,void *pUiViewManager)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0063a608;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (TAssetMgrVtbl *)&RefCountedObjectBase::_vftable_;
+  local_4 = 0;
+  CallCallbackRepeatedly
+            (&this->field_0x20,4,0xd,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
+  this->vftable = &g_vtblUiViewManager;
+  *unaff_FS_OFFSET = local_c;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DF300
 // GHIDRA_NAME TAssetMgr::DestructTAssetMgrAndMaybeFree
-// GHIDRA_PROTO undefined DestructTAssetMgrAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTAssetMgrAndMaybeFree(void)
 
-undefined4 __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(undefined4 param_1,byte param_2)
+TAssetMgr * __thiscall TAssetMgr::DestructTAssetMgrAndMaybeFree(TAssetMgr *this)
 
 {
-  WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DF330
 // GHIDRA_NAME TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
-// GHIDRA_PROTO undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
 
-void __fastcall
-TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(undefined4 *param_1)
+void __thiscall TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(TAssetMgr *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -76,8 +106,103 @@ TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(undefined4 *pa
   puStack_8 = &LAB_0063a628;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(param_1 + 8,4,0xd,&LAB_00405fa1);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(&this->field_0x20,4,0xd,&LAB_00405fa1);
+  this->vftable = (TAssetMgrVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF3C0
+// GHIDRA_NAME TAssetMgr::ResolveTurnEventDialogNodeByMessageContext
+// GHIDRA_PROTO undefined __thiscall ResolveTurnEventDialogNodeByMessageContext(void)
+
+void __thiscall TAssetMgr::ResolveTurnEventDialogNodeByMessageContext(TAssetMgr *this)
+
+{
+  (**(code **)(*DAT_006a1b24 + 0x28))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF3F0
+// GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df3f0
+// GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df3f0(void)
+
+void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df3f0(TAssetMgr *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF410
+// GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df410
+// GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df410(void)
+
+void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df410(TAssetMgr *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DF780
+// GHIDRA_NAME TAssetMgr::NoOpRuntimeUiCallback_005df780
+// GHIDRA_PROTO undefined __thiscall NoOpRuntimeUiCallback_005df780(void)
+
+void __thiscall TAssetMgr::NoOpRuntimeUiCallback_005df780(TAssetMgr *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005DFC10
+// GHIDRA_NAME TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup
+// GHIDRA_PROTO undefined __thiscall PlayMovieClipAndDispatchTurnStateFollowup(void)
+
+void __thiscall TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(TAssetMgr *this)
+
+{
+  char cVar1;
+  undefined4 uVar2;
+  undefined4 *unaff_FS_OFFSET;
+  CString in_stack_00000004;
+  undefined4 in_stack_00000008;
+  undefined4 *puVar3;
+  CString local_14;
+  CString local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063a738;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  uVar2 = AssignSharedStringConcatCStrAndRef
+                    (&local_10,s_Movies__0069b7c8,in_stack_00000004.m_pchData);
+  local_4 = 0;
+  AssignSharedStringConcatRefAndCStr(&stack0x00000004,uVar2,&DAT_0069b7c0);
+  local_4._0_1_ = 2;
+  CString::~CString(&local_10);
+  puVar3 = &stack0x00000004.m_pchData;
+  uVar2 = DetectImperialismInstallDriveAndSetPathPrefix(puVar3);
+  AssignSharedStringConcatCStrAndRef(&local_14,uVar2,puVar3);
+  local_4 = CONCAT31(local_4._1_3_,3);
+  *(undefined4 *)&g_pUiRuntimeContext->field_0xf4 = in_stack_00000008;
+  cVar1 = WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0(in_stack_00000004.m_pchData);
+  if (cVar1 == '\0') {
+    cVar1 = WrapperFor_SendMessage499AndDetachOnSuccess_At005e24b0(local_14.m_pchData);
+    if (cVar1 == '\0') {
+      HandleTurnStateExitAndPostFollowupEventCode(0);
+      goto LAB_005dfce3;
+    }
+  }
+  (*g_pSfxPlaybackSystem->vftable[0x14].slot_0x04)();
+  HandleTurnStateExitAndPostFollowupEventCode(2);
+  SendMessage806IfSelectionStateActive();
+LAB_005dfce3:
+  local_4 = CONCAT31(local_4._1_3_,2);
+  CString::~CString(&local_14);
+  local_4 = 0xffffffff;
+  CString::~CString(&stack0x00000004);
   *unaff_FS_OFFSET = local_c;
   return;
 }

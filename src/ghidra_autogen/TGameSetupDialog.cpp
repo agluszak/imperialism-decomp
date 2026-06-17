@@ -3,25 +3,52 @@
 // Program: Imperialism.exe
 // Bucket: TGameSetupDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B2820
-// GHIDRA_NAME TGameSetupDialog::GetTGameSetupDialogClassNamePointer
-// GHIDRA_PROTO undefined GetTGameSetupDialogClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x005B27D0
+// GHIDRA_NAME TGameSetupDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TGameSetupDialog::GetTGameSetupDialogClassNamePointer(void)
+TGameSetupDialog * __thiscall TGameSetupDialog::_scalar_deleting_destructor_(TGameSetupDialog *this)
 
 {
-  return &PTR_s_TGameSetupDialog_0066b220;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B2820
+// GHIDRA_NAME TGameSetupDialog::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TGameSetupDialog::GetTEventHandlerClassNamePointer(TGameSetupDialog *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B2860
+// GHIDRA_NAME TGameSetupDialog::OrphanRetStub_005b2860
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005b2860(void)
+
+void __thiscall TGameSetupDialog::OrphanRetStub_005b2860(TGameSetupDialog *this)
+
+{
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2880
 // GHIDRA_NAME TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree
 // GHIDRA_PROTO undefined DestructTGameSetupDialogAndMaybeFree()
 
-undefined4 * TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree(void)
+TCluster * TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCluster *this;
+  TCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -31,15 +58,15 @@ undefined4 * TGameSetupDialog::DestructTGameSetupDialogAndMaybeFree(void)
   puStack_8 = &LAB_00638baa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TCluster *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-    *puVar1 = &PTR_LAB_0066b578;
-    puVar2 = puVar1;
+  pTVar1 = (TCluster *)0x0;
+  if (this != (TCluster *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    this->vftable = (TClusterVtbl *)&TMapEditClusterVtbl_0066b578;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 

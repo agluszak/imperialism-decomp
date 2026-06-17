@@ -7,10 +7,10 @@
 // GHIDRA_NAME TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance
 // GHIDRA_PROTO undefined CreateTShipBuilderCityMinisterInstance()
 
-undefined4 * TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(void)
+TMinister * TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(void)
 
 {
-  undefined4 *puVar1;
+  TMinister *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,62 +20,103 @@ undefined4 * TShipBuilderCityMinister::CreateTShipBuilderCityMinisterInstance(vo
   puStack_8 = &LAB_006314ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c4);
+  this = (TMinister *)AllocateWithFallbackHandler(0x1c4);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMinister::ConstructTMinister();
-    puVar1[99] = 0;
-    *(undefined2 *)(puVar1 + 5) = 1;
-    *(undefined2 *)((int)puVar1 + 0x16) = 1;
-    *puVar1 = &PTR_LAB_00650bd0;
-    *(undefined2 *)(puVar1 + 3) = 2;
+  if (this != (TMinister *)0x0) {
+    TMinister::ConstructTMinister(this);
+    *(undefined4 *)&this[0x18].field_0xc = 0;
+    *(undefined2 *)&this[1].field_0x4 = 1;
+    *(undefined2 *)&this[1].field_0x6 = 1;
+    this->vftable = (TMinisterVtbl *)&TShipBuilderCityMinisterVtbl_00650bd0;
+    *(undefined2 *)&this->field_0xc = 2;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TMinister *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5CC0
-// GHIDRA_NAME TShipBuilderCityMinister::GetTShipBuilderCityMinisterClassNamePointer
-// GHIDRA_PROTO undefined GetTShipBuilderCityMinisterClassNamePointer()
+// GHIDRA_NAME TShipBuilderCityMinister::GetTMinisterClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-undefined ** TShipBuilderCityMinister::GetTShipBuilderCityMinisterClassNamePointer(void)
+CRuntimeClass * __thiscall
+TShipBuilderCityMinister::GetTMinisterClassNamePointer(TShipBuilderCityMinister *this)
 
 {
-  return &PTR_s_TShipBuilderCityMinister_006506f8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5CE0
 // GHIDRA_NAME TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState
-// GHIDRA_PROTO undefined ConstructTShipBuilderCityMinisterBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTShipBuilderCityMinisterBaseState(void)
 
-undefined4 * __fastcall
-TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(undefined4 *param_1)
+TShipBuilderCityMinister * __thiscall
+TShipBuilderCityMinister::ConstructTShipBuilderCityMinisterBaseState(TShipBuilderCityMinister *this)
 
 {
-  TMinister::ConstructTMinister();
-  param_1[99] = 0;
-  *(undefined2 *)(param_1 + 5) = 1;
-  *(undefined2 *)((int)param_1 + 0x16) = 1;
-  *param_1 = &PTR_LAB_00650bd0;
-  *(undefined2 *)(param_1 + 3) = 2;
-  return param_1;
+  TMinister::ConstructTMinister((TMinister *)this);
+  *(undefined4 *)&this->field_0x18c = 0;
+  *(undefined2 *)&this->field_0x14 = 1;
+  *(undefined2 *)&this->field_0x16 = 1;
+  this->vftable = &TShipBuilderCityMinisterVtbl_00650bd0;
+  *(undefined2 *)&this->field_0xc = 2;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5D20
-// GHIDRA_NAME TShipBuilderCityMinister::DestructTShipBuilderCityMinisterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTShipBuilderCityMinisterAndMaybeFree()
+// GHIDRA_NAME TShipBuilderCityMinister::DeletingDestructTMinister
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
 
-undefined4 __thiscall
-TShipBuilderCityMinister::DestructTShipBuilderCityMinisterAndMaybeFree
-          (undefined4 param_1,byte param_2)
+TShipBuilderCityMinister * __thiscall
+TShipBuilderCityMinister::DeletingDestructTMinister(TShipBuilderCityMinister *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTShipBuilderCityMinisterAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C5D90
+// GHIDRA_NAME TShipBuilderCityMinister::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall
+TShipBuilderCityMinister::GetTEventHandlerClassNamePointer(TShipBuilderCityMinister *this)
+
+{
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xe);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(9);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xf);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0x10);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xb);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xc);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xd);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(8);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(5);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(3);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(1);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(5);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(3);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(1);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  return;
 }
 

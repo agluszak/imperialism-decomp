@@ -3,13 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TGWorldPeeker.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF2D0
-// GHIDRA_NAME TGWorldPeeker::GetTGWorldPeekerClassNamePointer
-// GHIDRA_PROTO undefined GetTGWorldPeekerClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF280
+// GHIDRA_NAME TGWorldPeeker::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TGWorldPeeker::GetTGWorldPeekerClassNamePointer(void)
+TGWorldPeeker * __thiscall TGWorldPeeker::_scalar_deleting_destructor_(TGWorldPeeker *this)
 
 {
-  return &PTR_s_TGWorldPeeker_00656630;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF2D0
+// GHIDRA_NAME TGWorldPeeker::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TGWorldPeeker::GetTEventHandlerClassNamePointer(TGWorldPeeker *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF2F0
+// GHIDRA_NAME TGWorldPeeker::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TGWorldPeeker::OrphanTiny_ReturnZero_0048a730(TGWorldPeeker *this)
+
+{
+  LONG *in_stack_00000004;
+  RECT local_20;
+  RECT local_10;
+  
+  if (*(int *)&this->field_0x60 != 0) {
+    local_10.left = *in_stack_00000004;
+    local_10.top = in_stack_00000004[1];
+    local_10.right = in_stack_00000004[2];
+    local_20.left = *in_stack_00000004;
+    local_10.bottom = in_stack_00000004[3];
+    local_20.right = in_stack_00000004[2];
+    local_20.top = in_stack_00000004[1];
+    local_20.bottom = in_stack_00000004[3];
+    ResetQuickDrawStrokeState();
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)&this->field_0x60 + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0,
+               (astruct_19 *)0x0);
+  }
+  return;
 }
 

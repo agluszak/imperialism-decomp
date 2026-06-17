@@ -3,15 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TGameScorePicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045AFB0
+// GHIDRA_NAME TGameScorePicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TGameScorePicture * __thiscall
+TGameScorePicture::_scalar_deleting_destructor_(TGameScorePicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B000
 // GHIDRA_NAME TGameScorePicture::CreateTGameScorePictureInstance
 // GHIDRA_PROTO undefined CreateTGameScorePictureInstance()
 
-undefined4 * TGameScorePicture::CreateTGameScorePictureInstance(void)
+TNoHilitePicture * TGameScorePicture::CreateTGameScorePictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,25 +38,231 @@ undefined4 * TGameScorePicture::CreateTGameScorePictureInstance(void)
   puStack_8 = &LAB_00636c1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &PTR_LAB_00644970;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this->vftable = (TNoHilitePictureVtbl *)&TGameScorePictureVtbl_00644970;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057B080
-// GHIDRA_NAME TGameScorePicture::GetTGameScorePictureClassNamePointer
-// GHIDRA_PROTO undefined GetTGameScorePictureClassNamePointer()
+// GHIDRA_NAME TGameScorePicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TGameScorePicture::GetTGameScorePictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TGameScorePicture::GetTEventHandlerClassNamePointer(TGameScorePicture *this)
 
 {
-  return &PTR_s_TGameScorePicture_00661a70;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0057B0A0
+// GHIDRA_NAME TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void __thiscall TGameScorePicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameScorePicture *this)
+
+{
+  TGameScorePicture_slot_0x04_0x04 *pTVar1;
+  undefined uVar2;
+  short sVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  CString *src_ref;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  char *unaff_EBP;
+  int unaff_ESI;
+  int iVar5;
+  char *unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  int iVar6;
+  CString CStack_74;
+  int iVar7;
+  CString CStack_54;
+  CString *pCStack_50;
+  CString CStack_4c;
+  char local_38 [4];
+  CString local_34;
+  CString local_30;
+  TGameScorePicture_slot_0x04_0x04 *local_2c;
+  CString aCStack_28 [3];
+  TGameScorePicture *local_1c [2];
+  CString CStack_14;
+  undefined1 local_10;
+  undefined1 local_f;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00636c58;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  pCStack_50 = (CString *)0x57b0cc;
+  local_1c[0] = this;
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  CStack_4c.m_pchData = (char *)0x57b0d5;
+  CString::CString(&local_30);
+  iVar5 = 0;
+  local_4 = 0;
+  CStack_4c.m_pchData = (char *)0x57b0e4;
+  CString::CString(&local_34);
+  local_4._0_1_ = 1;
+  CStack_4c.m_pchData = (char *)0x57b0f2;
+  CString::CString((CString *)&stack0x00000004);
+  local_4 = CONCAT31(local_4._1_3_,2);
+  CStack_14.m_pchData._2_1_ = 0;
+  CStack_14.m_pchData._3_1_ = 0;
+  local_10 = 0;
+  local_f = 0;
+  local_38[0] = '\0';
+  local_38[1] = 0;
+  local_38[2] = 0;
+  local_38[3] = 0;
+  CStack_4c.m_pchData = (char *)0x57b12a;
+  thunk_ResetDualAudioCuePools();
+  CStack_4c.m_pchData = (char *)0xb;
+  pCStack_50 = (CString *)0x57b137;
+  thunk_PushCueToDualAudioCuePools();
+  CStack_4c.m_pchData = "hh+";
+  thunk_SelectAndScheduleRandomAudioCue();
+  CStack_4c.m_pchData = (char *)0x2b68;
+  pCStack_50 = (CString *)0xe;
+  CStack_54.m_pchData = (char *)0x0;
+  thunk_BuildUiTextStyleDescriptor();
+  CStack_4c.m_pchData = local_38;
+  pCStack_50 = (CString *)0x2b6a;
+  CStack_54.m_pchData = (char *)0x57b166;
+  thunk_MapUiThemeCodeToStyleFlags();
+  CStack_4c.m_pchData = (char *)0x57b174;
+  UiRuntimeContext::GetActiveNationId();
+  CStack_4c.m_pchData = (char *)0x57b183;
+  RecomputeNationEconomyAndDiplomacySummaryMetrics();
+  local_2c = this->vftable[0x12].slot_0x04;
+  do {
+    CStack_4c.m_pchData = (char *)(iVar5 + 0x73637261);
+    pCStack_50 = (CString *)0x57b19c;
+    uVar2 = (*local_2c)();
+    iVar6 = *(int *)CONCAT31(extraout_var,uVar2);
+    pCStack_50 = (CString *)0x57b1a5;
+    (**(code **)(iVar6 + 0xc))();
+    if (iVar5 == 0xb) {
+      pCStack_50 = (CString *)0x2b68;
+      CStack_54.m_pchData = (char *)0x12;
+      thunk_BuildUiTextStyleDescriptor();
+    }
+    CStack_54.m_pchData = (char *)local_1c;
+    pCStack_50 = (CString *)0x1;
+    (**(code **)(iVar6 + 0x1b4))();
+    ((int *)CONCAT31(extraout_var,uVar2))[0x25] = unaff_ESI;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    if (iVar5 == 10) {
+      CString::AssignFromPtr((CString *)&stack0xffffffb8,&CStack_14);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      CStack_74.m_pchData = (char *)0x57b242;
+      scanBracketExpressions(g_pLocalizationTable,&CStack_14,unaff_EDI);
+    }
+    iVar7 = 1;
+    (**(code **)(iVar6 + 0x1c8))();
+    piVar4 = (int *)(*(code *)CStack_4c.m_pchData)();
+    iVar6 = *piVar4;
+    (**(code **)(iVar6 + 0xc))();
+    CStack_74.m_pchData = &stack0xffffffc4;
+    (**(code **)(iVar6 + 0x1b4))();
+    piVar4[0x25] = iVar7;
+    if (iVar5 == 10) {
+      sVar3 = UiRuntimeContext::GetActiveNationId();
+      pCStack_50 = *(CString **)&g_apNationStates[sVar3]->field_0x958;
+      if ((int)pCStack_50 % 10 < 1) {
+        FormatStringWithVarArgsToSharedRef(aCStack_28,&g_szDecimalFormat,(int)pCStack_50 / 10);
+      }
+      else {
+        pCStack_50 = (CString *)((float)(int)pCStack_50 * _DAT_00661ab8);
+        FormatFloatToLocalizedSharedString(pCStack_50,aCStack_28);
+      }
+      src_ref = (CString *)AssignSharedStringConcatCStrAndRef(&CStack_4c,&DAT_00698b0c,aCStack_28);
+      local_30.m_pchData._0_1_ = 3;
+      CString::StringSharedRef_AssignFromPtr(&CStack_54,src_ref);
+      local_30.m_pchData._0_1_ = 4;
+      CString::AssignFromPtr(aCStack_28,&CStack_54);
+      local_30.m_pchData._0_1_ = 3;
+      CString::~CString(&CStack_54);
+      local_30.m_pchData._0_1_ = 2;
+      CString::~CString(&CStack_4c);
+    }
+    else {
+      sVar3 = UiRuntimeContext::GetActiveNationId();
+      FormatStringWithVarArgsToSharedRef
+                (aCStack_28,&g_szDecimalFormat,
+                 *(undefined4 *)(&g_apNationStates[sVar3]->field_0x930 + iVar5 * 4));
+    }
+    (**(code **)(iVar6 + 0x1c8))(aCStack_28,1);
+    pTVar1 = local_2c;
+    iVar5 = iVar5 + 1;
+  } while (iVar5 < 0xc);
+  CStack_4c.m_pchData = (char *)0x76696374;
+  pCStack_50 = (CString *)0x57b3a9;
+  uVar2 = (*local_2c)();
+  iVar5 = *(int *)CONCAT31(extraout_var_00,uVar2);
+  pCStack_50 = (CString *)0x57b3b2;
+  (**(code **)(iVar5 + 0xc))();
+  pCStack_50 = &local_34;
+  CStack_54.m_pchData = (char *)0x0;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  UiRuntimeContext::GetActiveNationId();
+  FormatOverlayTerrainLabelText();
+  scanBracketExpressions(g_pLocalizationTable,&uStack_c,unaff_EBP);
+  (**(code **)(iVar5 + 0x1c8))();
+  CStack_74.m_pchData = (char *)&local_30;
+  thunk_InitializeUiTextStyleDescriptor();
+  (**(code **)(iVar5 + 0x1b4))();
+  ((int *)CONCAT31(extraout_var_00,uVar2))[0x25] = 0x2761;
+  uVar2 = (*pTVar1)();
+  iVar5 = *(int *)CONCAT31(extraout_var_01,uVar2);
+  (**(code **)(iVar5 + 0xc))();
+  CStack_74.m_pchData = (char *)0x1;
+  iVar6 = 0x2761;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (**(code **)(iVar5 + 0x1c8))(&local_2c,1);
+  thunk_BuildUiTextStyleDescriptor(&pCStack_50,0,0xe,0x2b68);
+  (**(code **)(iVar5 + 0x1b4))(&pCStack_50,1);
+  ((int *)CONCAT31(extraout_var_01,uVar2))[0x25] = iVar6;
+  CString::~CString((CString *)&stack0xffffffc4);
+  CString::~CString(&CStack_74);
+  CString::~CString((CString *)&stack0xffffff90);
+  *unaff_FS_OFFSET = CStack_4c.m_pchData;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0057B620
+// GHIDRA_NAME TGameScorePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Command callback helper: runs completion handler and, for command-id 10 with tag 'done', reinitializes game flow and posts turn-event code 0x5E0.
+// GHIDRA_COMMENT_END
+
+/* Command callback helper: runs completion handler and, for command-id 10 with tag 'done',
+   reinitializes game flow and posts turn-event code 0x5E0. */
+
+void __thiscall
+TGameScorePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGameScorePicture *this)
+
+{
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  if ((in_stack_00000004 == 10) && (*(int *)(in_stack_00000008 + 0x1c) == 0x646f6e65)) {
+    thunk_ReinitializeGameFlowAndPostTurnEventCode(0x5e0);
+  }
+  return;
 }
 

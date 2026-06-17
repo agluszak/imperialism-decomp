@@ -5,56 +5,236 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004872C0
 // GHIDRA_NAME TDialogBehavior::CreateTDialogBehaviorInstance
-// GHIDRA_PROTO undefined CreateTDialogBehaviorInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTDialogBehaviorInstance(void)
 
-void __thiscall TDialogBehavior::CreateTDialogBehaviorInstance(int param_1,undefined1 param_2)
+void __thiscall TDialogBehavior::CreateTDialogBehaviorInstance(TDialogBehavior *this)
 
 {
-  *(undefined1 *)(param_1 + 0xc) = param_2;
+  undefined1 in_stack_00000004;
+  
+  this->field_0xc = in_stack_00000004;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487350
-// GHIDRA_NAME TDialogBehavior::GetTDialogBehaviorClassNamePointer
-// GHIDRA_PROTO undefined GetTDialogBehaviorClassNamePointer()
+// GHIDRA_NAME TDialogBehavior::GetTBehaviorClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-undefined ** TDialogBehavior::GetTDialogBehaviorClassNamePointer(void)
+CRuntimeClass * __thiscall TDialogBehavior::GetTBehaviorClassNamePointer(TDialogBehavior *this)
 
 {
-  return &PTR_s_TDialogBehavior_00648d10;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487370
 // GHIDRA_NAME TDialogBehavior::ConstructTDialogBehaviorBaseState
-// GHIDRA_PROTO undefined ConstructTDialogBehaviorBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDialogBehaviorBaseState(void)
 
-void __fastcall TDialogBehavior::ConstructTDialogBehaviorBaseState(undefined4 *param_1)
+void __thiscall TDialogBehavior::ConstructTDialogBehaviorBaseState(TDialogBehavior *this)
 
 {
-  param_1[1] = 0x20202020;
-  param_1[2] = 0;
-  *(undefined1 *)(param_1 + 3) = 1;
-  *param_1 = &PTR_LAB_00648da8;
-  *(undefined1 *)(param_1 + 4) = 0;
-  param_1[5] = 0x20202020;
-  param_1[6] = 0x20202020;
-  param_1[7] = 0x20202020;
-  *(undefined1 *)(param_1 + 8) = 1;
+  *(undefined4 *)&this->field_0x4 = 0x20202020;
+  *(undefined4 *)&this->field_0x8 = 0;
+  this->field_0xc = 1;
+  this->vftable = &TDialogBehaviorVtbl_00648da8;
+  this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0x14 = 0x20202020;
+  *(undefined4 *)&this->field_0x18 = 0x20202020;
+  *(undefined4 *)&this->field_0x1c = 0x20202020;
+  this->field_0x20 = 1;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004873B0
 // GHIDRA_NAME TDialogBehavior::DestructTDialogBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDialogBehaviorAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTDialogBehaviorAndMaybeFree(void)
 
-undefined4 __thiscall
-TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(undefined4 param_1,byte param_2)
+TDialogBehavior * __thiscall
+TDialogBehavior::DestructTDialogBehaviorAndMaybeFree(TDialogBehavior *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTDialogBehaviorAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487430
+// GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I13_00487430
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I13_00487430(void)
+
+void __thiscall TDialogBehavior::OrphanCallChain_C1_I13_00487430(TDialogBehavior *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  if (*(int *)&this->field_0x8 != 0) {
+    this->field_0x20 = 1;
+    *(undefined4 *)&this->field_0x1c = in_stack_00000004;
+    (**(code **)(**(int **)(*(int *)&this->field_0x8 + 0x50) + 0x7c))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487470
+// GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I17_00487470
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+
+void __thiscall TDialogBehavior::OrphanCallChain_C1_I17_00487470(TDialogBehavior *this)
+
+{
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if (in_stack_00000004 == 0x22) {
+    (*this->vftable[7].GetTBehaviorClassNamePointer)
+              (*(int *)(in_stack_00000008 + 0x1c),
+               (uint)(*(int *)(in_stack_00000008 + 0x1c) != *(int *)&this->field_0x18));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004874B0
+// GHIDRA_NAME TDialogBehavior::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TDialogBehavior::OrphanCallChain_C11_I88_004874b0(TDialogBehavior *this)
+
+{
+  short sVar1;
+  int *piVar2;
+  int iVar3;
+  char cVar4;
+  int *piVar5;
+  undefined4 uVar6;
+  int in_stack_00000004;
+  
+  piVar2 = *(int **)&this->field_0x8;
+  if (piVar2 != (int *)0x0) {
+    iVar3 = *piVar2;
+    cVar4 = (**(code **)(iVar3 + 0x28))();
+    if (cVar4 != '\0') {
+      sVar1 = *(short *)(in_stack_00000004 + 0x1c);
+      if ((sVar1 == 3) || (sVar1 == 0xd)) {
+        if (*(int *)&this->field_0x14 != 0x20202020) {
+          piVar5 = (int *)(**(code **)(iVar3 + 0x94))(*(int *)&this->field_0x14);
+          if (piVar5 == (int *)0x0) {
+            (**(code **)(iVar3 + 0x40))(0x16,piVar2,0);
+          }
+          else {
+            iVar3 = *piVar5;
+            cVar4 = (**(code **)(iVar3 + 0x28))();
+            if (cVar4 != '\0') {
+              uVar6 = (**(code **)(iVar3 + 0xbc))(piVar2,0);
+              (**(code **)(iVar3 + 0x40))(uVar6);
+              return;
+            }
+          }
+        }
+      }
+      else if ((sVar1 == 0x1b) && (*(int *)&this->field_0x18 != 0x20202020)) {
+        piVar5 = (int *)(**(code **)(iVar3 + 0x94))(*(int *)&this->field_0x18);
+        if (piVar5 == (int *)0x0) {
+          (**(code **)(iVar3 + 0x40))(0x15,piVar2,0);
+          return;
+        }
+        iVar3 = *piVar5;
+        cVar4 = (**(code **)(iVar3 + 0x28))();
+        if (cVar4 != '\0') {
+          uVar6 = (**(code **)(iVar3 + 0xbc))(piVar2,0);
+          (**(code **)(iVar3 + 0x40))(uVar6);
+          return;
+        }
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004875D0
+// GHIDRA_NAME TDialogBehavior::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+
+void __thiscall TDialogBehavior::OrphanCallChain_C6_I49_004875d0(TDialogBehavior *this)
+
+{
+  int *piVar1;
+  int iVar2;
+  char cVar3;
+  int *piVar4;
+  undefined4 uVar5;
+  int in_stack_00000004;
+  
+  piVar1 = *(int **)&this->field_0x8;
+  if (piVar1 != (int *)0x0) {
+    iVar2 = *piVar1;
+    cVar3 = (**(code **)(iVar2 + 0x28))();
+    if (((cVar3 != '\0') && (*(short *)(in_stack_00000004 + 0x1c) == 0x2e)) &&
+       (*(int *)&this->field_0x18 != 0x20202020)) {
+      piVar4 = (int *)(**(code **)(iVar2 + 0x94))(*(int *)&this->field_0x18);
+      if (piVar4 == (int *)0x0) {
+        (**(code **)(iVar2 + 0x40))(0x15,piVar1,0);
+      }
+      else {
+        iVar2 = *piVar4;
+        cVar3 = (**(code **)(iVar2 + 0x28))();
+        if (cVar3 != '\0') {
+          uVar5 = (**(code **)(iVar2 + 0xbc))(piVar1,0);
+          (**(code **)(iVar2 + 0x40))(uVar5);
+          return;
+        }
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487660
+// GHIDRA_NAME TDialogBehavior::GetTBehaviorClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
+
+void __thiscall TDialogBehavior::GetTBehaviorClassNamePointer(TDialogBehavior *this)
+
+{
+  TMovieView *this_00;
+  TCommand *pTVar1;
+  int iVar2;
+  int *piVar3;
+  int iVar4;
+  
+  pTVar1 = (TCommand *)InvokeAfxThreadVslot7CAndGetValueAtOffset98(0);
+  iVar2 = TCommand::RunCommandModalLoopAndFinalizeState_Impl(pTVar1);
+  piVar3 = (int *)(**(code **)(**(int **)&this->field_0x8 + 0x58))();
+  (**(code **)(*piVar3 + 0x9c))();
+  iVar4 = (**(code **)(**(int **)&this->field_0x8 + 0x58))();
+  this_00 = *(TMovieView **)(iVar4 + 0x50);
+  this->field_0x20 = 0;
+  *(undefined4 *)&this->field_0x1c = 0x20202020;
+  FUN_0060753b(1);
+  TMovieView::RunModalLoop(this_00);
+  if (iVar2 != 0) {
+    pTVar1 = (TCommand *)InvokeAfxThreadVslot7CAndGetValueAtOffset98(1);
+    TCommand::RunCommandModalLoopAndFinalizeState_Impl(pTVar1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487850
+// GHIDRA_NAME TDialogBehavior::OrphanCallChain_C1_I17_00487470
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+
+TDialogBehavior * __thiscall TDialogBehavior::OrphanCallChain_C1_I17_00487470(TDialogBehavior *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructTCommandAndMaybeFree_Impl();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 

@@ -3,400 +3,14 @@
 // Program: Imperialism.exe
 // Bucket: TRadioTextCluster.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00577030
-// GHIDRA_NAME TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext
-// GHIDRA_PROTO undefined InitializeSetupRandomMapPictureDialogFromGameContext()
-
-/* WARNING: Type propagation algorithm not settling */
-
-void __fastcall
-TRadioTextCluster::InitializeSetupRandomMapPictureDialogFromGameContext(int *param_1)
-
-{
-  short sVar1;
-  int iVar2;
-  int *piVar3;
-  undefined4 *puVar4;
-  CString *pCVar5;
-  int *piVar6;
-  int iVar7;
-  undefined4 *unaff_FS_OFFSET;
-  bool bVar8;
-  code *pcVar9;
-  code *pcVar10;
-  undefined4 uVar11;
-  undefined4 uStack_98;
-  undefined4 **ppuStack_94;
-  undefined4 **ppuStack_90;
-  undefined4 uStack_8c;
-  undefined4 **ppuStack_88;
-  undefined4 **ppuStack_84;
-  int *piStack_80;
-  code *pcStack_7c;
-  int aiStack_70 [2];
-  int *piStack_68;
-  int aiStack_64 [3];
-  undefined4 *puStack_58;
-  undefined4 uStack_54;
-  undefined4 uStack_50;
-  undefined4 *puStack_4c;
-  undefined4 uStack_48;
-  undefined4 uStack_44;
-  undefined4 uStack_40;
-  undefined4 uStack_3c;
-  undefined4 uStack_38;
-  undefined4 uStack_34;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063697a;
-  *unaff_FS_OFFSET = &uStack_c;
-  uStack_34 = 0x577058;
-  TView::thunk_NoOpUiLifecycleHook();
-  uStack_34 = 0x577065;
-  EnsurePictWvDataGobLoadedBySlot();
-  *(undefined2 *)(g_pLocalizationTable + 0x114) = 0;
-  if (g_pGlobalMapState == 0) {
-    iVar2 = GenerateThreadLocalRandom15();
-    *(short *)((int)param_1 + 0x9a) = (short)(iVar2 % 7);
-    uStack_34 = 0x57709d;
-    GenerateMappedFlavorTextByCurrentContextNation();
-    *(undefined1 *)(param_1 + 0x26) = 0;
-  }
-  else {
-    uStack_34 = 0x5770b8;
-    AssignFromPtr(param_1 + 0x25,(CString *)(g_pGlobalMapState + 0x1c));
-    *(undefined1 *)(param_1 + 0x26) = *(undefined1 *)(g_pGlobalMapState + 0x20);
-    bVar8 = DAT_00698ab0 == -1;
-    *(short *)((int)param_1 + 0x9a) = DAT_00698ab0;
-    if (bVar8) {
-      iVar2 = GenerateThreadLocalRandom15();
-      *(short *)((int)param_1 + 0x9a) = (short)(iVar2 % 7);
-    }
-    uStack_34 = 0x5770fd;
-    piVar3 = (int *)(**(code **)(*param_1 + 0x94))();
-    uStack_34 = 0x577106;
-    (**(code **)(*piVar3 + 0xc))();
-    piVar3[0x1b] = (int)*(short *)((int)param_1 + 0x9a);
-  }
-  uStack_34 = 1;
-  uStack_38 = 0x2b6b;
-  uStack_3c = 0xc;
-  uStack_40 = 0;
-  uStack_44 = 0x636f756e;
-  uStack_48 = 0x57712a;
-  RefreshActiveControlThenApplyThemeStyleAndCaption();
-  pcVar9 = *(code **)(*param_1 + 0x94);
-  uStack_34 = 0x577142;
-  piVar3 = (int *)(*pcVar9)();
-  uStack_34 = 0x57714b;
-  (**(code **)(*piVar3 + 0xc))();
-  *(undefined2 *)(piVar3 + 0x27) = 0xc;
-  uStack_34 = 1;
-  DAT_006a43f0 = 0;
-  uStack_38 = 0x577168;
-  RebuildGlobalOrderManagersAndCapabilityState();
-  uStack_34 = 0x686f7421;
-  uStack_38 = 0x577171;
-  g_pCursorControlPanel = (int *)(*pcVar9)();
-  uStack_38 = 0x57717d;
-  (**(code **)(*g_pCursorControlPanel + 0xc))();
-  uStack_38 = 0x2b6b;
-  uStack_3c = 0xe;
-  uStack_40 = 0;
-  uStack_44 = 0x577194;
-  (**(code **)(*g_pCursorControlPanel + 0x1e0))();
-  uStack_44 = 0x2b6c;
-  uStack_48 = 0x2b6b;
-  puStack_4c = (undefined4 *)0x5771ac;
-  (**(code **)(*g_pCursorControlPanel + 0x204))();
-  puStack_4c = (undefined4 *)0x0;
-  uStack_50 = 1;
-  uStack_54 = 0x5771be;
-  (**(code **)(*g_pCursorControlPanel + 0x1c4))();
-  uStack_54 = 0x6d61696e;
-  puStack_58 = &g_szEmptyString;
-  aiStack_64[2] = 0x5771cd;
-  InitializeMainRoutineContextAndRun();
-  uStack_54 = 0x6b657920;
-  puStack_58 = &g_szEmptyString;
-  aiStack_64[2] = 0x5771df;
-  InitializeMainRoutineContextAndRun();
-  uStack_54 = 0x73747566;
-  puStack_58 = &g_szEmptyString;
-  aiStack_64[2] = 0x5771f1;
-  InitializeMainRoutineContextAndRun();
-  uStack_54 = 0x6e616d65;
-  puStack_58 = (undefined4 *)0x1e;
-  aiStack_64[2] = 0x2758;
-  aiStack_64[1] = 0x577205;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x676c6f62;
-  puStack_58 = (undefined4 *)0x13;
-  aiStack_64[2] = 0x2737;
-  aiStack_64[1] = 0x577219;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x63616e63;
-  if (*(int *)(g_pLocalizationTable + 0x44) == 0) {
-    puStack_58 = (undefined4 *)0x14;
-    aiStack_64[2] = 0x2737;
-    aiStack_64[1] = 0x577259;
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-    puStack_58 = (undefined4 *)0x14;
-  }
-  else {
-    puStack_58 = (undefined4 *)0x2e;
-    aiStack_64[2] = 0x2737;
-    aiStack_64[1] = 0x577241;
-    LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-    puStack_58 = (undefined4 *)0x2e;
-  }
-  uStack_54 = 0x636e636c;
-  aiStack_64[2] = 0x2737;
-  aiStack_64[1] = 0x57726d;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x6f6b6179;
-  puStack_58 = (undefined4 *)0x15;
-  aiStack_64[2] = 0x2737;
-  aiStack_64[1] = 0x577281;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x6d617020;
-  puStack_58 = (undefined4 *)0x13;
-  aiStack_64[2] = 0x2758;
-  aiStack_64[1] = 0x577295;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x64696666;
-  puStack_58 = (undefined4 *)0x17;
-  aiStack_64[2] = 0x2737;
-  aiStack_64[1] = 0x5772a9;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x636f756e;
-  puStack_58 = (undefined4 *)0x1a;
-  aiStack_64[2] = 0x2737;
-  aiStack_64[1] = 0x5772bd;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x666c6167;
-  puStack_58 = (undefined4 *)0x1b;
-  aiStack_64[2] = 0x2737;
-  aiStack_64[1] = 0x5772d1;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x636f6174;
-  puStack_58 = (undefined4 *)0x1c;
-  aiStack_64[2] = 0x2737;
-  aiStack_64[1] = 0x5772e5;
-  LoadUiStringByGroupAndIndexToGlobalControlTagAndApply();
-  uStack_54 = 0x74636f75;
-  puStack_58 = (undefined4 *)0x5772f1;
-  piVar3 = (int *)(*pcVar9)();
-  iVar2 = *piVar3;
-  puStack_58 = (undefined4 *)0x5772fa;
-  (**(code **)(iVar2 + 0xc))();
-  puStack_58 = (undefined4 *)0x2b6c;
-  aiStack_64[2] = 0x2b6a;
-  aiStack_64[1] = 0xe;
-  aiStack_64[0] = 0;
-  aiStack_70[1] = 0x57730e;
-  piStack_68 = piVar3;
-  ApplyUiTextStyleAndThemeFlags();
-  puStack_58 = (undefined4 *)0x0;
-  aiStack_64[2] = 0x1e;
-  aiStack_64[1] = 0x2737;
-  aiStack_64[0] = 0x577322;
-  (**(code **)(iVar2 + 0x1cc))();
-  aiStack_64[0] = 0x6d617020;
-  piStack_68 = (int *)0x57732b;
-  piVar3 = (int *)(*pcVar9)();
-  piStack_68 = (int *)0x577334;
-  (**(code **)(*piVar3 + 0xc))();
-  piStack_68 = (int *)0x20;
-  piVar3[0x1a] = (int)*(short *)((int)param_1 + 0x9a);
-  aiStack_70[1] = 0x577345;
-  puVar4 = (undefined4 *)AllocateWithFallbackHandler();
-  uStack_3c = 0;
-  puStack_4c = puVar4;
-  if (puVar4 == (undefined4 *)0x0) {
-    puVar4 = (undefined4 *)0x0;
-  }
-  else {
-    piStack_68 = (int *)0x577361;
-    TCommand::thunk_ConstructTurnEventPacketBase();
-    *puVar4 = &PTR_LAB_00661b10;
-  }
-  piStack_68 = (int *)0x0;
-  aiStack_70[1] = 0;
-  aiStack_70[0] = 0;
-  uStack_3c = 0xffffffff;
-  pcStack_7c = (code *)0x57738c;
-  InitializeRangePairAndResetCursor();
-  puVar4[6] = param_1;
-  *(undefined1 *)(puVar4 + 7) = 1;
-  aiStack_70[1] = 0x57739f;
-  piStack_68 = puVar4;
-  (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
-  aiStack_70[1] = 0;
-  aiStack_70[0] = 1;
-  (**(code **)(*g_pCursorControlPanel + 0x1c4))();
-  piVar3 = (int *)(*pcVar9)();
-  (**(code **)(*piVar3 + 0xc))();
-  piVar3[0x18] = *(int *)(g_pStrategicMapViewSystem + 0x680);
-  sVar1 = *(short *)((int)param_1 + 0x9a);
-  piVar3[0x19] = (int)sVar1 * piVar3[0xd];
-  piVar3[0x1a] = 0;
-  piVar3[0x1b] = (sVar1 + 1) * piVar3[0xd];
-  piVar3[0x1c] = piVar3[0xe];
-  if (*(int *)(g_pLocalizationTable + 0x44) == 0) {
-    *(char *)(g_pLocalizationTable + 0x68) = (char)*(undefined2 *)(g_pLocalizationTable + 0x62);
-    InitializeSharedStringRefFromEmpty(aiStack_64);
-    puStack_4c = (undefined4 *)0x2;
-    pcStack_7c = (code *)0x57746e;
-    GenerateMappedFlavorTextByCurrentContextNation();
-    piStack_80 = aiStack_64;
-    pcStack_7c = (code *)s_CountryName_00698ae0;
-    ppuStack_84 = (undefined4 **)0x57748d;
-    LoadProfileStringAndAssignSharedRef();
-    pcStack_7c = (code *)(aiStack_64 + 1);
-    piStack_80 = (int *)0x5774a2;
-    pCVar5 = (CString *)NormalizeRuntimeCredentialNameToken();
-    puStack_4c._0_1_ = 3;
-    pcStack_7c = (code *)0x5774b2;
-    AssignFromPtr(&DAT_006a4220,pCVar5);
-    puStack_4c = (undefined4 *)CONCAT31(puStack_4c._1_3_,2);
-    ReleaseSharedStringRefIfNotEmpty(aiStack_64 + 1);
-  }
-  else {
-    pcStack_7c = (code *)aiStack_64;
-    piStack_80 = (int *)0x577428;
-    pCVar5 = (CString *)NormalizeRuntimeCredentialNameToken();
-    puStack_4c = (undefined4 *)0x1;
-    pcStack_7c = (code *)0x57743b;
-    AssignFromPtr(&DAT_006a4220,pCVar5);
-  }
-  puStack_4c = (undefined4 *)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(aiStack_64);
-  pcStack_7c = (code *)0x1;
-  piStack_80 = (int *)0x2b6b;
-  ppuStack_84 = (undefined4 **)0xc;
-  ppuStack_88 = (undefined4 **)0x0;
-  uStack_8c = 0x636f756e;
-  ppuStack_90 = (undefined4 **)0x5774ed;
-  RefreshActiveControlThenApplyThemeStyleAndCaption();
-  pcStack_7c = (code *)0x5774f9;
-  piVar3 = (int *)(*pcVar9)();
-  pcStack_7c = (code *)0x577502;
-  (**(code **)(*piVar3 + 0xc))();
-  pcStack_7c = (code *)0x0;
-  piStack_80 = (int *)(*(short *)(g_pLocalizationTable + 0x5e) + 0x64696630);
-  ppuStack_84 = (undefined4 **)0x57751b;
-  thunk_SetSelectedTextOptionByTag();
-  pcStack_7c = (code *)0x64696674;
-  *(undefined2 *)(piVar3 + 0x24) = 0x2b6b;
-  piStack_80 = (int *)0x57752d;
-  piVar6 = (int *)(*pcVar9)();
-  aiStack_64[0] = *piVar6;
-  piStack_80 = (int *)0x57753b;
-  (**(code **)(aiStack_64[0] + 0xc))();
-  piStack_80 = (int *)0x2b6c;
-  ppuStack_84 = (undefined4 **)0x2b6a;
-  ppuStack_88 = (undefined4 **)0xe;
-  uStack_8c = 0;
-  ppuStack_94 = (undefined4 **)0x57754f;
-  ppuStack_90 = (undefined4 **)piVar6;
-  ApplyUiTextStyleAndThemeFlags();
-  piStack_80 = (int *)0x57755b;
-  InitializeSharedStringRefFromEmpty(&puStack_4c);
-  piStack_80 = (int *)0x2;
-  ppuStack_88 = &puStack_4c;
-  ppuStack_84 = (undefined4 **)0x2758;
-  uStack_54 = 4;
-  uStack_8c = 0x57757a;
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  ppuStack_84 = &puStack_4c;
-  piStack_80 = (int *)0x0;
-  ppuStack_88 = (undefined4 **)0x57758d;
-  (**(code **)(aiStack_64[0] + 0x1c8))();
-  ppuStack_88 = (undefined4 **)0x746e616d;
-  uStack_8c = 0x577596;
-  piVar6 = (int *)(*pcVar9)();
-  aiStack_70[0] = *piVar6;
-  uStack_8c = 0x5775a4;
-  (**(code **)(aiStack_70[0] + 0xc))();
-  uStack_8c = 0x2b6c;
-  ppuStack_90 = (undefined4 **)0x2b6a;
-  ppuStack_94 = (undefined4 **)0xe;
-  uStack_98 = 0;
-  ApplyUiTextStyleAndThemeFlags(piVar6);
-  ppuStack_94 = &puStack_58;
-  uStack_8c = 3;
-  ppuStack_90 = (undefined4 **)0x2758;
-  uStack_98 = 0x5775d2;
-  thunk_LoadUiStringResourceByGroupAndIndex();
-  ppuStack_90 = &puStack_58;
-  uStack_8c = 0;
-  ppuStack_94 = (undefined4 **)0x5775e5;
-  (**(code **)(aiStack_70[0] + 0x1c8))();
-  ppuStack_94 = (undefined4 **)0x6e616d65;
-  uStack_98 = 0x5775ee;
-  piVar6 = (int *)(*pcVar9)();
-  iVar2 = *piVar6;
-  uStack_98 = 0x5775f7;
-  (**(code **)(iVar2 + 0xc))();
-  uStack_98 = 0;
-  thunk_SetSelectedTextOptionByTag
-            ((-(uint)(*(short *)(g_pLocalizationTable + 0x62) != 0) & 0xf6080510) + 0x72616e64);
-  pcStack_7c = *(code **)(iVar2 + 0x94);
-  uStack_98 = 0x68697374;
-  *(undefined2 *)(piVar6 + 0x24) = 0x2b6b;
-  piVar6 = (int *)(*pcStack_7c)();
-  (**(code **)(*piVar6 + 0xc))();
-  ApplyUiTextStyleAndThemeFlags(piVar6,0,0xc,0x2b6b,0x2b6c);
-  uVar11 = 0;
-  pcVar10 = (code *)0x1;
-  (**(code **)(*piVar6 + 0x1c4))();
-  thunk_LoadUiStringResourceByGroupAndIndex(aiStack_70,0x2758,4);
-  (**(code **)(*piVar6 + 0x1c8))(aiStack_70,0);
-  piVar6[0xf] = 0x68697374;
-  piVar6 = (int *)(*(code *)ppuStack_90)(0x72616e64);
-  iVar2 = *piVar6;
-  (**(code **)(iVar2 + 0xc))();
-  ApplyUiTextStyleAndThemeFlags(piVar6,0,0xc,0x2b6b,0x2b6c);
-  (**(code **)(iVar2 + 0x1c4))(1,0);
-  thunk_LoadUiStringResourceByGroupAndIndex(&ppuStack_84,0x2758,5);
-  (**(code **)(iVar2 + 0x1c8))(&ppuStack_84,0);
-  iVar2 = *piVar3;
-  piVar6[0xf] = 0x72616e64;
-  iVar7 = 0;
-  pcVar9 = *(code **)(iVar2 + 0x94);
-  do {
-    piVar3 = (int *)(*pcVar9)(iVar7 + 0x64696630);
-    (**(code **)(*piVar3 + 0xc))();
-    ApplyUiTextStyleAndThemeFlags(piVar3,0,0xc,0x2b6b,0x2b6c);
-    (**(code **)(*piVar3 + 0x1c4))(1,0);
-    thunk_LoadUiStringResourceByGroupAndIndex(&uStack_98,0x2737,iVar7 + 0xe);
-    (**(code **)(*piVar3 + 0x1c8))(&uStack_98,0);
-    piVar3[0xf] = iVar7;
-    iVar7 = iVar7 + 1;
-  } while (iVar7 < 5);
-  if (((char)param_1[0x29] == '\0') && (*(int *)(g_pLocalizationTable + 0x44) == 0)) {
-    piVar3 = (int *)(*pcVar10)(0x636f756e);
-    (**(code **)(*piVar3 + 0xc))();
-  }
-  ppuStack_94 = (undefined4 **)0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_8c);
-  *unaff_FS_OFFSET = uVar11;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005795B0
 // GHIDRA_NAME TRadioTextCluster::CreateTRadioTextClusterInstance
 // GHIDRA_PROTO undefined CreateTRadioTextClusterInstance()
 
-undefined4 * TRadioTextCluster::CreateTRadioTextClusterInstance(void)
+TCluster * TRadioTextCluster::CreateTRadioTextClusterInstance(void)
 
 {
-  undefined4 *puVar1;
+  TCluster *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -406,51 +20,66 @@ undefined4 * TRadioTextCluster::CreateTRadioTextClusterInstance(void)
   puStack_8 = &LAB_00636aea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (TCluster *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TCluster::thunk_ConstructUiResourceEntryType4B0C0();
-    *puVar1 = &PTR_LAB_00662418;
-    *(undefined2 *)(puVar1 + 0x23) = 0x4b;
-    *(undefined2 *)((int)puVar1 + 0x8e) = 0x49;
-    *(undefined2 *)(puVar1 + 0x24) = 0xffff;
-    *(undefined2 *)((int)puVar1 + 0x92) = 0;
-    *(undefined2 *)(puVar1 + 0x25) = 2;
+  if (this != (TCluster *)0x0) {
+    TCluster::thunk_ConstructUiResourceEntryType4B0C0(this);
+    this->vftable = (TClusterVtbl *)&TRadioTextClusterVtbl_00662418;
+    *(undefined2 *)&this[1].field04 = 0x4b;
+    *(undefined2 *)((int)&this[1].field04 + 2) = 0x49;
+    *(undefined2 *)&this[1].padding_08_to_0b = 0xffff;
+    *(undefined2 *)((int)&this[1].padding_08_to_0b + 2) = 0;
+    *(undefined2 *)&this[1].field0c = 2;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TCluster *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579680
-// GHIDRA_NAME TRadioTextCluster::GetTRadioTextClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTRadioTextClusterClassNamePointer()
+// GHIDRA_NAME TRadioTextCluster::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TRadioTextCluster::GetTRadioTextClusterClassNamePointer(void)
+CRuntimeClass * __thiscall
+TRadioTextCluster::GetTEventHandlerClassNamePointer(TRadioTextCluster *this)
 
 {
-  return &PTR_s_TRadioTextCluster_00661a28;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005796F0
-// GHIDRA_NAME TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTRadioTextClusterAndMaybeFree()
+// GHIDRA_NAME TRadioTextCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall
-TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree(TView *param_1,byte param_2)
+TRadioTextCluster * __thiscall
+TRadioTextCluster::_scalar_deleting_destructor_(TRadioTextCluster *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00579740
+// GHIDRA_NAME TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TRadioTextCluster::OrphanLeaf_NoCall_Ins07_004d8920(TRadioTextCluster *this)
+
+{
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  *(undefined4 *)&this->field_0x88 = 0x6e616461;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00579770
-// GHIDRA_NAME TRadioTextCluster::HandleSelectableTextOptionEventDispatch
-// GHIDRA_PROTO undefined HandleSelectableTextOptionEventDispatch()
+// GHIDRA_NAME TRadioTextCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Event-dispatch helper for selectable option controls.
 // GHIDRA_COMMENT
@@ -462,15 +91,45 @@ TRadioTextCluster::DestructTRadioTextClusterAndMaybeFree(TView *param_1,byte par
    On event code 0x0D, synchronizes selected tag via SetSelectedTextOptionByTag, then forwards to
    shared panel control dispatcher. */
 
-void __thiscall
-TRadioTextCluster::HandleSelectableTextOptionEventDispatch
-          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
+void __thiscall TRadioTextCluster::OrphanRetStub_0059add0(TRadioTextCluster *this)
 
 {
-  if (param_2 == 0xd) {
-    thunk_SetSelectedTextOptionByTag(*(undefined4 *)((int)param_3 + 0x1c),1);
+  int in_stack_00000004;
+  void *in_stack_00000008;
+  int in_stack_0000000c;
+  
+  if (in_stack_00000004 == 0xd) {
+    thunk_SetSelectedTextOptionByTag(*(undefined4 *)((int)in_stack_00000008 + 0x1c),1);
   }
-  TMapEditCluster::thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00579A60
+// GHIDRA_NAME TRadioTextCluster::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TRadioTextCluster::OrphanTiny_ReturnZero_0048a730(TRadioTextCluster *this)
+
+{
+  undefined4 in_EDX;
+  undefined4 uStack_14;
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  int iStack_8;
+  int iStack_4;
+  
+  uStack_14 = CONCAT22((short)((uint)in_EDX >> 0x10),*(short *)&this->field_0x90);
+  if (-1 < *(short *)&this->field_0x90) {
+    iStack_8 = this->field34;
+    iStack_4 = this->field38;
+    uStack_10 = 0;
+    uStack_c = 0;
+    (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
+    DrawFrameRectOrUpdateClipRegion(&uStack_14);
+    SetQuickDrawFillColor(0);
+  }
   return;
 }
 

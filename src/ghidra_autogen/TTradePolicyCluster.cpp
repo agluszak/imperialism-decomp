@@ -7,11 +7,11 @@
 // GHIDRA_NAME TTradePolicyCluster::CreateTTradePolicyClusterInstance
 // GHIDRA_PROTO undefined CreateTTradePolicyClusterInstance()
 
-undefined4 * TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
+TUberCluster * TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TUberCluster *this;
+  TUberCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,82 +21,89 @@ undefined4 * TTradePolicyCluster::CreateTTradePolicyClusterInstance(void)
   puStack_8 = &LAB_006375ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState();
-    *puVar1 = &PTR_LAB_00663de0;
-    puVar2 = puVar1;
+  pTVar1 = (TUberCluster *)0x0;
+  if (this != (TUberCluster *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState(this);
+    this->vftable = (TUberClusterVtbl *)&TTradePolicyClusterVtbl_00663de0;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584280
-// GHIDRA_NAME TTradePolicyCluster::GetTTradePolicyClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTTradePolicyClusterClassNamePointer()
+// GHIDRA_NAME TTradePolicyCluster::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTradePolicyCluster::GetTTradePolicyClusterClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTradePolicyCluster::GetTEventHandlerClassNamePointer(TTradePolicyCluster *this)
 
 {
-  return &PTR_s_TTradePolicyCluster_00662e30;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005842A0
 // GHIDRA_NAME TTradePolicyCluster::ConstructTTradePolicyClusterBaseState
-// GHIDRA_PROTO undefined ConstructTTradePolicyClusterBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTradePolicyClusterBaseState(void)
 
-undefined4 * __fastcall
-TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(undefined4 *param_1)
+TTradePolicyCluster * __thiscall
+TTradePolicyCluster::ConstructTTradePolicyClusterBaseState(TTradePolicyCluster *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState();
-  *param_1 = &PTR_LAB_00663de0;
-  return param_1;
+  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  this->vftable = &TTradePolicyClusterVtbl_00663de0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005842D0
-// GHIDRA_NAME TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTradePolicyClusterAndMaybeFree()
+// GHIDRA_NAME TTradePolicyCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall
-TTradePolicyCluster::DestructTTradePolicyClusterAndMaybeFree(TView *param_1,byte param_2)
+TTradePolicyCluster * __thiscall
+TTradePolicyCluster::_scalar_deleting_destructor_(TTradePolicyCluster *this)
 
 {
-  TView::thunk_DestructTViewBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584320
-// GHIDRA_NAME TTradePolicyCluster::HandlePanelEvent67AndClearControlTag636c7573
-// GHIDRA_PROTO undefined HandlePanelEvent67AndClearControlTag636c7573()
+// GHIDRA_NAME TTradePolicyCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
-void __thiscall
-TTradePolicyCluster::HandlePanelEvent67AndClearControlTag636c7573
-          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
+void __thiscall TTradePolicyCluster::OrphanRetStub_0059add0(TTradePolicyCluster *this)
 
 {
-  int iVar1;
-  int *piVar2;
+  TTradePolicyClusterVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  int *piVar3;
+  int in_stack_00000004;
+  void *in_stack_00000008;
+  int in_stack_0000000c;
   
-  if (param_2 != 0x67) {
-    TMapEditCluster::thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
+  if (in_stack_00000004 != 0x67) {
+    TMapEditCluster::thunk_DispatchPanelControlEvent
+              ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
     return;
   }
-  iVar1 = *(int *)param_1;
-  piVar2 = (int *)(**(code **)(iVar1 + 0x58))();
-  (**(code **)(iVar1 + 0x1c8))(0x20202020);
-  piVar2 = (int *)(**(code **)(*piVar2 + 0x94))(0x636c7573);
-  if (piVar2 == (int *)0x0) {
+  pTVar1 = this->vftable;
+  uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(0x20202020);
+  piVar3 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x636c7573);
+  if (piVar3 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x203);
   }
-  (**(code **)(*piVar2 + 0x1c8))(0x20202020);
+  (**(code **)(*piVar3 + 0x1c8))(0x20202020);
   return;
 }
 

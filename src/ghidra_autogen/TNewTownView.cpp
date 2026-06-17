@@ -3,13 +3,198 @@
 // Program: Imperialism.exe
 // Bucket: TNewTownView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004BD860
-// GHIDRA_NAME TNewTownView::GetTNewTownViewClassNamePointer
-// GHIDRA_PROTO undefined GetTNewTownViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD810
+// GHIDRA_NAME TNewTownView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TNewTownView::GetTNewTownViewClassNamePointer(void)
+TNewTownView * __thiscall TNewTownView::_scalar_deleting_destructor_(TNewTownView *this)
 
 {
-  return &PTR_s_TNewTownView_0064fba8;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD860
+// GHIDRA_NAME TNewTownView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TNewTownView::GetTEventHandlerClassNamePointer(TNewTownView *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD880
+// GHIDRA_NAME TNewTownView::BuildCityDialogMinisterControls
+// GHIDRA_PROTO undefined __thiscall BuildCityDialogMinisterControls(void)
+
+void __thiscall TNewTownView::BuildCityDialogMinisterControls(TNewTownView *this)
+
+{
+  TNewTownViewVtbl *pTVar1;
+  undefined uVar2;
+  int iVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int *piVar4;
+  TIconBar *pTVar5;
+  int iVar6;
+  int *unaff_FS_OFFSET;
+  int *in_stack_00000004;
+  undefined1 *puVar7;
+  code *pcVar8;
+  short *psVar9;
+  undefined1 *puStack_64;
+  code *pcStack_60;
+  int *piVar10;
+  tagRECT local_3c;
+  undefined1 auStack_2c [12];
+  int aiStack_20 [3];
+  int iStack_14;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631162;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  iVar6 = 0;
+  CString::CString((CString *)&local_3c);
+  local_4 = 0;
+  *(int **)&this->field_0x60 = in_stack_00000004;
+  (**(code **)(*in_stack_00000004 + 0x28))();
+  iVar3 = 0;
+  do {
+    if (*(short *)((int)in_stack_00000004 + (short)iVar3 * 2 + 0x1e) != 0) {
+      iVar6 = iVar6 + 1;
+    }
+    iVar3 = iVar3 + 1;
+  } while (iVar3 < 0x17);
+  pTVar1 = this->vftable;
+  iVar6 = iVar6 * 0x20;
+  uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+  if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
+    pcStack_60 = (code *)0x4bd8f2;
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  local_3c.top = *(int *)CONCAT31(extraout_var,uVar2);
+  (**(code **)(local_3c.top + 300))();
+  iStack_14 = iStack_14 + iVar6;
+  piVar10 = aiStack_20;
+  (**(code **)(local_3c.left + 0x168))();
+  pcStack_60 = (code *)0x4bd942;
+  (*pTVar1[0x25].slot_0x04)();
+  puStack_64 = auStack_2c;
+  pcStack_60 = (code *)0x1;
+  aiStack_20[0] = aiStack_20[0] + iVar6;
+  (*pTVar1[0x2d].GetTEventHandlerClassNamePointer)();
+  uVar2 = (*pTVar1[0x12].slot_0x04)();
+  if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  iVar3 = *(int *)CONCAT31(extraout_var_00,uVar2);
+  (**(code **)(iVar3 + 300))();
+  OffsetRect(&local_3c,0,iVar6);
+  pcVar8 = (code *)0x1;
+  (**(code **)(iVar3 + 0x168))();
+  piVar4 = (int *)(*pcStack_60)();
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  iVar3 = *piVar4;
+  puVar7 = &stack0xffffffb8;
+  (**(code **)(iVar3 + 300))();
+  OffsetRect((LPRECT)&stack0xffffffb4,0,iVar6);
+  (**(code **)(iVar3 + 0x168))();
+  piVar4 = (int *)0x40;
+  iVar3 = 0;
+  do {
+    psVar9 = (short *)(local_3c.right + 0x1e + (short)iVar3 * 2);
+    if (*(short *)(local_3c.right + 0x1e + (short)iVar3 * 2) != 0) {
+      pTVar5 = (TIconBar *)AllocateWithFallbackHandler();
+      local_3c.left._0_1_ = 1;
+      if (pTVar5 == (TIconBar *)0x0) {
+        pTVar5 = (TIconBar *)0x0;
+      }
+      else {
+        pTVar5 = (TIconBar *)TIconBar::ConstructTIconBarBaseState(pTVar5);
+      }
+      puStack_64 = (undefined1 *)(this->field34 + -0x20);
+      local_3c.left = (uint)local_3c.left._1_3_ << 8;
+                    /* Commodity icon id = 700 + commodity index (same mapping as production
+                       screen). */
+      pcStack_60 = (code *)0x18;
+      piVar10 = piVar4;
+      TIconBar::AddCityCommodityIconControl
+                (pTVar5,(int *)this,(int *)&stack0xffffffa4,(int *)&puStack_64,5,5,iVar3 + 700,
+                 (int)*psVar9);
+      (*pTVar5->vftable[0x1c].slot_0x04)();
+      piVar4 = piVar4 + 8;
+    }
+    iVar3 = iVar3 + 1;
+  } while (iVar3 < 0x17);
+  piVar4 = (int *)(*pcVar8)();
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x821);
+  }
+  iVar3 = *piVar4;
+  (**(code **)(iVar3 + 0x7c))();
+  (**(code **)(iVar3 + 0x1dc))(&stack0xffffff88);
+  (**(code **)(iVar3 + 0x1d8))(0,*(undefined4 *)(puVar7 + -8),1);
+  CString::~CString((CString *)&stack0xffffff78);
+  *unaff_FS_OFFSET = (int)piVar10;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BDC10
+// GHIDRA_NAME TNewTownView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TNewTownView::GetTEventHandlerClassNamePointer(TNewTownView *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  undefined4 unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_1c;
+  CString local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631188;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CStack_1c.m_pchData = (char *)0x4bdc33;
+  local_10.m_pchData = (char *)this;
+  CString::CString(&local_10);
+  CStack_1c.m_pchData = (char *)0x6e616d65;
+  local_4 = 0;
+  uVar1 = (*this->vftable[0x12].slot_0x04)();
+  if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x82e);
+  }
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1dc))(&stack0xffffffec);
+  (**(code **)(**(int **)&this->field_0x60 + 0x38))(unaff_EDI);
+  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
+  local_10.m_pchData = (char *)0xffffffff;
+  CString::~CString(&CStack_1c);
+  *unaff_FS_OFFSET = unaff_EDI;
+  return;
 }
 

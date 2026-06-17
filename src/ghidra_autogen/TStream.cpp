@@ -5,9 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488920
 // GHIDRA_NAME TStream::CreateTStreamInstance
-// GHIDRA_PROTO undefined CreateTStreamInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTStreamInstance(void)
 
-void __fastcall TStream::CreateTStreamInstance(undefined4 *param_1)
+void __thiscall TStream::CreateTStreamInstance(TStream *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -20,43 +20,560 @@ void __fastcall TStream::CreateTStreamInstance(undefined4 *param_1)
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
   DestructCPtrListBaseState();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TStreamVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004889D0
 // GHIDRA_NAME TStream::GetTStreamClassNamePointer
-// GHIDRA_PROTO undefined GetTStreamClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTStreamClassNamePointer(void)
 
-undefined ** TStream::GetTStreamClassNamePointer(void)
+CRuntimeClass * __thiscall TStream::GetTStreamClassNamePointer(TStream *this)
 
 {
-  return &PTR_s_TStream_006490c8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488A10
 // GHIDRA_NAME TStream::ConstructTStreamBaseState
-// GHIDRA_PROTO undefined ConstructTStreamBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(void)
 
-undefined4 __thiscall TStream::ConstructTStreamBaseState(undefined4 param_1,byte param_2)
+TStream * __thiscall TStream::ConstructTStreamBaseState(TStream *this)
 
 {
-  DestructTStreamAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTStreamAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00488A40
 // GHIDRA_NAME TStream::DestructTStreamAndMaybeFree
-// GHIDRA_PROTO undefined DestructTStreamAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTStreamAndMaybeFree(void)
 
-void __fastcall TStream::DestructTStreamAndMaybeFree(undefined4 *param_1)
+void __thiscall TStream::DestructTStreamAndMaybeFree(TStream *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TStreamVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488A80
+// GHIDRA_NAME TStream::OrphanCallChain_C2_I15_00488a80
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I15_00488a80(void)
+
+undefined4 __thiscall TStream::OrphanCallChain_C2_I15_00488a80(TStream *this)
+
+{
+  TStreamVtbl *pTVar1;
+  undefined uVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  
+  pTVar1 = this->vftable;
+  uVar2 = (*pTVar1[5].GetTStreamClassNamePointer)();
+  uVar3 = (*pTVar1[6].GetTStreamClassNamePointer)();
+  return CONCAT31(extraout_var_00,CONCAT31(extraout_var_00,uVar3) <= CONCAT31(extraout_var,uVar2));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488AB0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488ab0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488ab0(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488ab0(TStream *this)
+
+{
+  if (this != (TStream *)0x0) {
+    (*this->vftable->ConstructTStreamBaseState)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488AD0
+// GHIDRA_NAME TStream::OrphanTiny_ReturnZero_00488ad0
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488ad0(void)
+
+undefined4 __thiscall TStream::OrphanTiny_ReturnZero_00488ad0(TStream *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488AF0
+// GHIDRA_NAME TStream::OrphanTiny_ReturnZero_00488af0
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488af0(void)
+
+undefined4 __thiscall TStream::OrphanTiny_ReturnZero_00488af0(TStream *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488B10
+// GHIDRA_NAME TStream::AssertMcAppStreamLine304
+// GHIDRA_PROTO undefined __thiscall AssertMcAppStreamLine304(void)
+
+undefined4 __thiscall TStream::AssertMcAppStreamLine304(TStream *this)
+
+{
+  if (DAT_006a1a10 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x130);
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488B40
+// GHIDRA_NAME TStream::OrphanRetStub_00488b40
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488b40(void)
+
+void __thiscall TStream::OrphanRetStub_00488b40(TStream *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488B60
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I09_00488b60
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_00488b60(void)
+
+undefined4 __thiscall TStream::OrphanCallChain_C1_I09_00488b60(TStream *this)
+
+{
+  undefined3 extraout_var;
+  undefined1 *puVar1;
+  
+  puVar1 = &stack0xffffffff;
+  (*this->vftable[7].ConstructTStreamBaseState)(puVar1,1,this);
+  return CONCAT31(extraout_var,(char)((uint)puVar1 >> 0x18));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488B90
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I09_00488b90
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_00488b90(void)
+
+undefined4 __thiscall TStream::OrphanCallChain_C1_I09_00488b90(TStream *this)
+
+{
+  undefined3 extraout_var;
+  undefined1 *puVar1;
+  
+  puVar1 = &stack0xffffffff;
+  (*this->vftable[7].ConstructTStreamBaseState)(puVar1,1,this);
+  return CONCAT31(extraout_var,(char)((uint)puVar1 >> 0x18));
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488BC0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I08_00488bc0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I08_00488bc0(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I08_00488bc0(TStream *this)
+
+{
+  TStreamVtbl *pTVar1;
+  undefined2 *in_stack_00000004;
+  
+  pTVar1 = this->vftable;
+  *in_stack_00000004 = 0;
+  (*pTVar1[7].ConstructTStreamBaseState)((int)in_stack_00000004 + 1,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488BF0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I09_00488bf0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_00488bf0(void)
+
+undefined2 __thiscall TStream::OrphanCallChain_C1_I09_00488bf0(TStream *this)
+
+{
+  undefined1 *puVar1;
+  
+  puVar1 = &stack0xfffffffe;
+  (*this->vftable[7].ConstructTStreamBaseState)(puVar1,2,this);
+  return (short)((uint)puVar1 >> 0x10);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488C20
+// GHIDRA_NAME TStream::ReadDwordFromStreamViaVtableSlot3C
+// GHIDRA_PROTO undefined __thiscall ReadDwordFromStreamViaVtableSlot3C(void)
+
+undefined1 * __thiscall TStream::ReadDwordFromStreamViaVtableSlot3C(TStream *this)
+
+{
+  TStream **ppTVar1;
+  TStream *local_4;
+  
+  ppTVar1 = &local_4;
+  local_4 = this;
+  (*this->vftable[7].ConstructTStreamBaseState)(&local_4,4);
+  return (undefined1 *)ppTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488C50
+// GHIDRA_NAME TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(void)
+
+void __thiscall
+TStream::Helper_Uses_EnsureSharedStringCapacityPreserveLength_At00488c50(TStream *this)
+
+{
+  TStreamVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  int iVar3;
+  CString *unaff_EBX;
+  int iVar4;
+  CString *in_stack_00000004;
+  
+  pTVar1 = this->vftable;
+  uVar2 = (*pTVar1[9].ConstructTStreamBaseState)();
+  iVar4 = (int)(short)CONCAT31(extraout_var,uVar2);
+  iVar3 = CString::EnsureCapacityPreserveLength(in_stack_00000004,iVar4 + 1);
+  (*pTVar1[7].ConstructTStreamBaseState)(iVar3,iVar4);
+  *(undefined1 *)(iVar3 + iVar4) = 0;
+  CString::SetLengthAndTerminator(unaff_EBX,-1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488CA0
+// GHIDRA_NAME TStream::OrphanCallChain_C2_I19_00488ca0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I19_00488ca0(void)
+
+void __thiscall TStream::OrphanCallChain_C2_I19_00488ca0(TStream *this)
+
+{
+  TStreamVtbl *pTVar1;
+  undefined uVar2;
+  undefined1 extraout_AH;
+  int in_stack_00000004;
+  
+  pTVar1 = this->vftable;
+  uVar2 = (*pTVar1[9].ConstructTStreamBaseState)();
+  (*pTVar1[7].ConstructTStreamBaseState)(in_stack_00000004,(int)CONCAT11(extraout_AH,uVar2));
+  *(undefined1 *)(CONCAT11(extraout_AH,uVar2) + in_stack_00000004) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488CE0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I13_00488ce0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I13_00488ce0(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I13_00488ce0(TStream *this)
+
+{
+  undefined1 local_8 [4];
+  int iStack_4;
+  
+  (*this->vftable[7].ConstructTStreamBaseState)();
+  *(undefined1 **)iStack_4 = local_8;
+  *(undefined4 *)(iStack_4 + 4) = 8;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488D20
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488d20
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488d20(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488d20(TStream *this)
+
+{
+  (*this->vftable[7].ConstructTStreamBaseState)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488D40
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488d40
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488d40(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488d40(TStream *this)
+
+{
+  (*this->vftable[7].ConstructTStreamBaseState)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488D60
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488d60
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488d60(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488d60(TStream *this)
+
+{
+  (*this->vftable[7].ConstructTStreamBaseState)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488D80
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488d80
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488d80(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488d80(TStream *this)
+
+{
+  (*this->vftable[7].ConstructTStreamBaseState)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488DA0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I09_00488da0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_00488da0(void)
+
+undefined1 * __thiscall TStream::OrphanCallChain_C1_I09_00488da0(TStream *this)
+
+{
+  TStream **ppTVar1;
+  TStream *local_4;
+  
+  ppTVar1 = &local_4;
+  local_4 = this;
+  (*this->vftable[7].ConstructTStreamBaseState)(&local_4,4);
+  return (undefined1 *)ppTVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488DD0
+// GHIDRA_NAME TStream::OrphanCallChain_C2_I17_00488dd0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I17_00488dd0(void)
+
+void __thiscall TStream::OrphanCallChain_C2_I17_00488dd0(TStream *this)
+
+{
+  TStreamVtbl *pTVar1;
+  byte bVar2;
+  undefined4 uStack_4;
+  
+  pTVar1 = this->vftable;
+  uStack_4 = this;
+  bVar2 = (*pTVar1[5].GetTStreamClassNamePointer)();
+  if ((bVar2 & 1) != 0) {
+    (*pTVar1[7].ConstructTStreamBaseState)((int)&uStack_4 + 3,1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488E00
+// GHIDRA_NAME TStream::AssertMcAppStreamLine596
+// GHIDRA_PROTO undefined __thiscall AssertMcAppStreamLine596(void)
+
+void __thiscall TStream::AssertMcAppStreamLine596(TStream *this)
+
+{
+  if (DAT_006a1a14 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x254);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488E30
+// GHIDRA_NAME TStream::OrphanRetStub_00488e30
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(void)
+
+void __thiscall TStream::OrphanRetStub_00488e30(TStream *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488E50
+// GHIDRA_NAME TStream::OrphanRetStub_00488e50
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(void)
+
+void __thiscall TStream::OrphanRetStub_00488e50(TStream *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488E70
+// GHIDRA_NAME TStream::OrphanRetStub_00488e70
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(void)
+
+void __thiscall TStream::OrphanRetStub_00488e70(TStream *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488E90
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488e90
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488e90(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488e90(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488EB0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488eb0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488eb0(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488eb0(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488ED0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488ed0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488ed0(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488ed0(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000005,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488EF0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488ef0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488ef0(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488ef0(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488F10
+// GHIDRA_NAME TStream::WriteDwordToStreamViaVtableSlot78
+// GHIDRA_PROTO undefined __thiscall WriteDwordToStreamViaVtableSlot78(void)
+
+void __thiscall TStream::WriteDwordToStreamViaVtableSlot78(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488F30
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488f30
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488f30(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488f30(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,8);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488F50
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488f50
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488f50(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488f50(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488F70
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488f70
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488f70(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488f70(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488F90
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488f90
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488f90(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488f90(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488FB0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488fb0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488fb0(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488fb0(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488FD0
+// GHIDRA_NAME TStream::OrphanCallChain_C1_I06_00488fd0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488fd0(void)
+
+void __thiscall TStream::OrphanCallChain_C1_I06_00488fd0(TStream *this)
+
+{
+  (*this->vftable[0xf].GetTStreamClassNamePointer)(&stack0x00000004,4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488FF0
+// GHIDRA_NAME TStream::OrphanCallChain_C2_I18_00488ff0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_00488ff0(void)
+
+void __thiscall TStream::OrphanCallChain_C2_I18_00488ff0(TStream *this)
+
+{
+  TStreamVtbl *pTVar1;
+  byte bVar2;
+  undefined4 uStack_4;
+  
+  pTVar1 = this->vftable;
+  uStack_4 = this;
+  bVar2 = (*pTVar1[5].GetTStreamClassNamePointer)();
+  if ((bVar2 & 1) != 0) {
+    uStack_4 = (TStream *)((uint)uStack_4 & 0xffffff);
+    (*pTVar1[0xf].GetTStreamClassNamePointer)((int)&uStack_4 + 3,1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489030
+// GHIDRA_NAME TStream::OrphanCallChain_C2_I21_00489030
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I21_00489030(void)
+
+void __thiscall TStream::OrphanCallChain_C2_I21_00489030(TStream *this)
+
+{
+  TStreamVtbl *pTVar1;
+  undefined4 uVar2;
+  int *in_stack_00000004;
+  
+  pTVar1 = this->vftable;
+  uVar2 = *(undefined4 *)(*in_stack_00000004 + -8);
+  (*pTVar1[0x11].GetTStreamClassNamePointer)(uVar2);
+  (*pTVar1[0xf].GetTStreamClassNamePointer)(*in_stack_00000004,uVar2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489980
+// GHIDRA_NAME TStream::OrphanLeaf_NoCall_Ins02_00489980
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00489980(void)
+
+undefined1 __thiscall TStream::OrphanLeaf_NoCall_Ins02_00489980(TStream *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004899A0
+// GHIDRA_NAME TStream::OrphanRetStub_004899a0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004899a0(void)
+
+void __thiscall TStream::OrphanRetStub_004899a0(TStream *this)
+
+{
   return;
 }
 

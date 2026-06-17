@@ -5,35 +5,34 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489070
 // GHIDRA_NAME TFileStream::CreateTFileStreamInstance
-// GHIDRA_PROTO undefined CreateTFileStreamInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTFileStreamInstance(void)
 
-void __thiscall TFileStream::CreateTFileStreamInstance(int *param_1,char *param_2)
+void __thiscall TFileStream::CreateTFileStreamInstance(TFileStream *this)
 
 {
   char cVar1;
-  int iVar2;
+  TFileStreamVtbl *pTVar2;
   uint uVar3;
-  char *pcVar4;
+  char *in_stack_00000004;
   
   uVar3 = 0xffffffff;
-  iVar2 = *param_1;
-  pcVar4 = param_2;
+  pTVar2 = this->vftable;
   do {
     if (uVar3 == 0) break;
     uVar3 = uVar3 - 1;
-    cVar1 = *pcVar4;
-    pcVar4 = pcVar4 + 1;
+    cVar1 = *in_stack_00000004;
+    in_stack_00000004 = in_stack_00000004 + 1;
   } while (cVar1 != '\0');
-  (**(code **)(iVar2 + 0x88))(~uVar3 - 1);
-  (**(code **)(iVar2 + 0x78))(param_2,~uVar3 - 1);
+  (*pTVar2[0x11].GetTStreamClassNamePointer)(~uVar3 - 1);
+  (*pTVar2[0xf].GetTStreamClassNamePointer)();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004890F0
-// GHIDRA_NAME TFileStream::GetTFileStreamClassNamePointer
-// GHIDRA_PROTO undefined GetTFileStreamClassNamePointer()
+// GHIDRA_NAME TFileStream::GetTStreamClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTStreamClassNamePointer(void)
 
-char * TFileStream::GetTFileStreamClassNamePointer(void)
+CRuntimeClass * __thiscall TFileStream::GetTStreamClassNamePointer(TFileStream *this)
 
 {
   return &g_pClassDescTFileStream;
@@ -41,100 +40,173 @@ char * TFileStream::GetTFileStreamClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489110
 // GHIDRA_NAME TFileStream::ConstructTFileStreamBaseState
-// GHIDRA_PROTO undefined ConstructTFileStreamBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTFileStreamBaseState(void)
 
-void __fastcall TFileStream::ConstructTFileStreamBaseState(undefined4 *param_1)
+void __thiscall TFileStream::ConstructTFileStreamBaseState(TFileStream *this)
 
 {
-  *param_1 = &_vftable_;
-  param_1[1] = 0;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x4 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489130
-// GHIDRA_NAME TFileStream::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_NAME TFileStream::ConstructTStreamBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(void)
 
-undefined4 __thiscall TFileStream::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TFileStream * __thiscall TFileStream::ConstructTStreamBaseState(TFileStream *this)
 
 {
-  TObject::DestructTObjectAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TObject::DestructTObjectAndMaybeFree((TObject *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489160
 // GHIDRA_NAME TFileStream::SetBackingArchive
-// GHIDRA_PROTO undefined SetBackingArchive()
+// GHIDRA_PROTO undefined __thiscall SetBackingArchive(void)
 
-void __thiscall TFileStream::SetBackingArchive(int param_1,undefined4 param_2)
+void __thiscall TFileStream::SetBackingArchive(TFileStream *this)
 
 {
-  *(undefined4 *)(param_1 + 4) = param_2;
+  undefined4 in_stack_00000004;
+  
+  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489180
+// GHIDRA_NAME TFileStream::OrphanTiny_ReturnZero_00488ad0
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488ad0(void)
+
+void __thiscall TFileStream::OrphanTiny_ReturnZero_00488ad0(TFileStream *this)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x0048918b. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(**(int **)(*(int *)(*(int *)&this->field_0x4 + 4) + 0x20) + 0x14))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004891A0
+// GHIDRA_NAME TFileStream::OrphanTiny_ReturnZero_00488af0
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488af0(void)
+
+void __thiscall TFileStream::OrphanTiny_ReturnZero_00488af0(TFileStream *this)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x004891ab. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(**(int **)(*(int *)(*(int *)&this->field_0x4 + 4) + 0x20) + 0x38))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004891C0
+// GHIDRA_NAME TFileStream::OrphanRetStub_00488e30
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(void)
+
+void __thiscall TFileStream::OrphanRetStub_00488e30(TFileStream *this)
+
+{
+  (**(code **)(**(int **)(*(int *)(*(int *)&this->field_0x4 + 4) + 0x20) + 0x30))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004891F0
+// GHIDRA_NAME TFileStream::OrphanRetStub_00488e50
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(void)
+
+void __thiscall TFileStream::OrphanRetStub_00488e50(TFileStream *this)
+
+{
+  (**(code **)(**(int **)(*(int *)(*(int *)&this->field_0x4 + 4) + 0x20) + 0x34))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489220
-// GHIDRA_NAME TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
-// GHIDRA_PROTO undefined WrapperFor_ReadBytesFromSerializedBuffer_At00489220()
+// GHIDRA_NAME TFileStream::OrphanRetStub_00488b40
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488b40(void)
 
-void __thiscall
-TFileStream::WrapperFor_ReadBytesFromSerializedBuffer_At00489220
-          (int param_1,undefined4 param_2,undefined4 param_3)
+void __thiscall TFileStream::OrphanRetStub_00488b40(TFileStream *this)
 
 {
-  if (*(int *)(param_1 + 4) == 0) {
+  if (*(int *)&this->field_0x4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x3cc);
   }
-  CArchive::ReadBytesFromSerializedBuffer(param_2,param_3);
+  CArchive::ReadBytesFromSerializedBuffer(*(CArchive **)(*(int *)&this->field_0x4 + 4));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489290
-// GHIDRA_NAME TFileStream::WrapperFor_WriteBytesToSerializedBuffer_At00489290
-// GHIDRA_PROTO undefined WrapperFor_WriteBytesToSerializedBuffer_At00489290()
+// GHIDRA_NAME TFileStream::OrphanRetStub_00488e70
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(void)
 
-void __thiscall
-TFileStream::WrapperFor_WriteBytesToSerializedBuffer_At00489290
-          (int param_1,undefined4 param_2,undefined4 param_3)
+void __thiscall TFileStream::OrphanRetStub_00488e70(TFileStream *this)
 
 {
-  if (*(int *)(param_1 + 4) == 0) {
+  if (*(int *)&this->field_0x4 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_McAppStream_cpp_00694fa8,0x410);
   }
-  TNetMgr::WriteBytesToSerializedBuffer(param_2,param_3);
+  TNetMgr::WriteBytesToSerializedBuffer(*(TNetMgr **)(*(int *)&this->field_0x4 + 4));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489300
-// GHIDRA_NAME TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
-// GHIDRA_PROTO undefined WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300()
+// GHIDRA_NAME TFileStream::OrphanLeaf_NoCall_Ins02_00489980
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00489980(void)
 
-undefined4
-TFileStream::WrapperFor_ResolveOrInstantiateSerializedObjectReference_At00489300
-          (undefined4 *param_1)
+undefined4 __thiscall TFileStream::OrphanLeaf_NoCall_Ins02_00489980(TFileStream *this)
 
 {
   undefined4 uVar1;
+  undefined4 *in_stack_00000004;
   
   uVar1 = ReadObject(0);
-  *param_1 = uVar1;
+  *in_stack_00000004 = uVar1;
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489330
-// GHIDRA_NAME TFileStream::WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330
-// GHIDRA_PROTO undefined WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330()
+// GHIDRA_NAME TFileStream::OrphanRetStub_004899a0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004899a0(void)
 
-void TFileStream::WrapperFor_SerializePolymorphicObjectReferenceAndPayload_At00489330
-               (undefined4 param_1)
+void __thiscall TFileStream::OrphanRetStub_004899a0(TFileStream *this)
 
 {
-  TNetMgr::WriteObject(param_1);
+  TNetMgr::WriteObject(*(TNetMgr **)(*(int *)&this->field_0x4 + 4));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489360
+// GHIDRA_NAME TFileStream::WrapperFor_operator_At00489360
+// GHIDRA_PROTO undefined __thiscall WrapperFor_operator_At00489360(void)
+
+void __thiscall TFileStream::WrapperFor_operator_At00489360(TFileStream *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  FUN_006119aa(*(undefined4 *)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489390
+// GHIDRA_NAME TFileStream::OrphanCallChain_C2_I21_00489030
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I21_00489030(void)
+
+void __thiscall TFileStream::OrphanCallChain_C2_I21_00489030(TFileStream *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  WriteVariableLengthPrefixedByteBuffer
+            (*(undefined4 *)(*(int *)&this->field_0x4 + 4),in_stack_00000004);
   return;
 }
 

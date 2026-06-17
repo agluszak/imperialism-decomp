@@ -7,11 +7,11 @@
 // GHIDRA_NAME THotspotBehavior::CreateTHotspotBehaviorInstance
 // GHIDRA_PROTO undefined CreateTHotspotBehaviorInstance()
 
-undefined4 * THotspotBehavior::CreateTHotspotBehaviorInstance(void)
+TBehavior * THotspotBehavior::CreateTHotspotBehaviorInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TBehavior *this;
+  TBehavior *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,60 +21,64 @@ undefined4 * THotspotBehavior::CreateTHotspotBehaviorInstance(void)
   puStack_8 = &LAB_00630c1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x10);
+  this = (TBehavior *)AllocateWithFallbackHandler(0x10);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TBehavior::ConstructTBehaviorBaseState();
-    *puVar1 = &PTR_LAB_0064eac8;
-    puVar2 = puVar1;
+  pTVar1 = (TBehavior *)0x0;
+  if (this != (TBehavior *)0x0) {
+    TBehavior::ConstructTBehaviorBaseState(this);
+    this->vftable = (TBehaviorVtbl *)&THotspotBehaviorVtbl_0064eac8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0B60
-// GHIDRA_NAME THotspotBehavior::GetTHotspotBehaviorClassNamePointer
-// GHIDRA_PROTO undefined GetTHotspotBehaviorClassNamePointer()
+// GHIDRA_NAME THotspotBehavior::GetTBehaviorClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-undefined ** THotspotBehavior::GetTHotspotBehaviorClassNamePointer(void)
+CRuntimeClass * __thiscall THotspotBehavior::GetTBehaviorClassNamePointer(THotspotBehavior *this)
 
 {
-  return &PTR_s_THotspotBehavior_0064ea48;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0B80
 // GHIDRA_NAME THotspotBehavior::ConstructTHotspotBehaviorBaseState
-// GHIDRA_PROTO undefined ConstructTHotspotBehaviorBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTHotspotBehaviorBaseState(void)
 
-undefined4 * __fastcall THotspotBehavior::ConstructTHotspotBehaviorBaseState(undefined4 *param_1)
+THotspotBehavior * __thiscall
+THotspotBehavior::ConstructTHotspotBehaviorBaseState(THotspotBehavior *this)
 
 {
-  TBehavior::ConstructTBehaviorBaseState();
-  *param_1 = &PTR_LAB_0064eac8;
-  return param_1;
+  TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
+  this->vftable = &THotspotBehaviorVtbl_0064eac8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0BB0
 // GHIDRA_NAME THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined DestructTHotspotBehaviorAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTHotspotBehaviorAndMaybeFree(void)
 
-undefined4 __thiscall
-THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(undefined4 param_1,byte param_2)
+THotspotBehavior * __thiscall
+THotspotBehavior::DestructTHotspotBehaviorAndMaybeFree(THotspotBehavior *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTHotspotBehaviorAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0C00
 // GHIDRA_NAME THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00
-// GHIDRA_PROTO undefined WrapperFor_AllocateWithFallbackHandler_At004b0c00()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_AllocateWithFallbackHandler_At004b0c00(void)
 
-uint __fastcall THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00(int param_1)
+uint __thiscall
+THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00(THotspotBehavior *this)
 
 {
   undefined4 uVar1;
@@ -83,7 +87,7 @@ uint __fastcall THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0
   uint uVar4;
   int *piVar5;
   
-  piVar5 = *(int **)(param_1 + 8);
+  piVar5 = *(int **)&this->field_0x8;
   if ((piVar5[7] != 0x444c4f47) && (piVar5[7] != 0x6d61696e)) {
     piVar5 = (int *)piVar5[8];
   }
@@ -96,9 +100,9 @@ uint __fastcall THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0
     puVar3[2] = 0;
     puVar3[3] = 0;
     puVar3[4] = 0;
-    *puVar3 = &PTR_LAB_00649770;
+    *puVar3 = &TEventVtbl_00649770;
   }
-  uVar1 = *(undefined4 *)(param_1 + 8);
+  uVar1 = *(undefined4 *)&this->field_0x8;
   puVar3[2] = 0x6b;
   puVar3[1] = 0x6b;
   iVar2 = *piVar5;

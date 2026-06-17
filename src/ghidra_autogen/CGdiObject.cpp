@@ -5,9 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0047D960
 // GHIDRA_NAME CGdiObject::~CGdiObject
-// GHIDRA_PROTO undefined ~CGdiObject()
+// GHIDRA_PROTO undefined __thiscall ~CGdiObject(void)
 
-void __fastcall CGdiObject::~CGdiObject(undefined4 *param_1)
+void __thiscall CGdiObject::~CGdiObject(CGdiObject *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -18,10 +18,10 @@ void __fastcall CGdiObject::~CGdiObject(undefined4 *param_1)
   puStack_8 = &LAB_0062e278;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_LAB_00671054;
+  *(undefined ***)this = &PTR_LAB_00671054;
   local_4 = 0;
   DeleteObject();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

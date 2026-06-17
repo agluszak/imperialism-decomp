@@ -3,14 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TTacMapUberPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045D3B0
+// GHIDRA_NAME TTacMapUberPicture::OrphanRetStub_0045d2a0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045d2a0(void)
+
+void __thiscall TTacMapUberPicture::OrphanRetStub_0045d2a0(TTacMapUberPicture *this)
+
+{
+  if (*(int **)&this->field_0x94 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x94 + 0x1ac))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0045D3E0
+// GHIDRA_NAME TTacMapUberPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTacMapUberPicture * __thiscall
+TTacMapUberPicture::_scalar_deleting_destructor_(TTacMapUberPicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD2E0
 // GHIDRA_NAME TTacMapUberPicture::CreateTTacMapUberPictureInstance
 // GHIDRA_PROTO undefined CreateTTacMapUberPictureInstance()
 
-undefined4 * TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
+TOffLimitsPicture * TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
 
 {
-  undefined4 *puVar1;
+  TOffLimitsPicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,59 +50,61 @@ undefined4 * TTacMapUberPicture::CreateTTacMapUberPictureInstance(void)
   puStack_8 = &LAB_0063883a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (TOffLimitsPicture *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState();
-    *puVar1 = &PTR_LAB_006451f0;
-    puVar1[0x25] = 0;
+  if (this != (TOffLimitsPicture *)0x0) {
+    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
+    this->vftable = (TOffLimitsPictureVtbl *)&TTacMapUberPictureVtbl_006451f0;
+    this[1].vftable = (TOffLimitsPictureVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TOffLimitsPicture *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD380
-// GHIDRA_NAME TTacMapUberPicture::GetTTacMapUberPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTTacMapUberPictureClassNamePointer()
+// GHIDRA_NAME TTacMapUberPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTacMapUberPicture::GetTTacMapUberPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTacMapUberPicture::GetTEventHandlerClassNamePointer(TTacMapUberPicture *this)
 
 {
-  return &PTR_s_TTacMapUberPicture_0066a2e0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD3A0
-// GHIDRA_NAME TTacMapUberPicture::ConstructTTacMapUberPictureBaseState
-// GHIDRA_PROTO undefined ConstructTTacMapUberPictureBaseState()
+// GHIDRA_NAME TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TTacMapUberPicture::ConstructTTacMapUberPictureBaseState(int *param_1,undefined4 param_2)
+void __thiscall TTacMapUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTacMapUberPicture *this)
 
 {
-  int *piVar1;
+  undefined uVar1;
+  undefined3 extraout_var;
   
-  TMapUberUberPicture::ConstructTMapUberUberPictureBaseState(param_2);
-  piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x444c4f47);
-  (**(code **)(*piVar1 + 0xc))();
-  param_1[0x25] = (int)piVar1;
+  TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920((TMapUberUberPicture *)this);
+  uVar1 = (*this->vftable[0x12].slot_0x04)(0x444c4f47);
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xc))();
+  *(int **)&this->field_0x94 = (int *)CONCAT31(extraout_var,uVar1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD3F0
-// GHIDRA_NAME TTacMapUberPicture::DestructTTacMapUberPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTacMapUberPictureAndMaybeFree()
+// GHIDRA_NAME TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TTacMapUberPicture::DestructTTacMapUberPictureAndMaybeFree(int *param_1)
+void __thiscall TTacMapUberPicture::OrphanTiny_ReturnZero_0048a730(TTacMapUberPicture *this)
 
 {
   int iVar1;
-  int *piVar2;
+  undefined uVar2;
+  undefined3 extraout_var;
   undefined4 unaff_retaddr;
   
-  piVar2 = (int *)(**(code **)(*param_1 + 0x94))(0x444c4f47);
-  iVar1 = *piVar2;
+  uVar2 = (*this->vftable[0x12].slot_0x04)(0x444c4f47);
+  iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 0xc))();
   (**(code **)(iVar1 + 0x48))(unaff_retaddr);
   return;

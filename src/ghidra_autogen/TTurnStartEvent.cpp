@@ -5,22 +5,13 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E6660
 // GHIDRA_NAME TTurnStartEvent::CreateTTurnStartEventInstance
-// GHIDRA_PROTO undefined CreateTTurnStartEventInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTTurnStartEventInstance(void)
 
-void __fastcall TTurnStartEvent::CreateTTurnStartEventInstance(undefined4 *param_1)
+void __thiscall TTurnStartEvent::CreateTTurnStartEventInstance(TTurnStartEvent *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TTurnStartEventVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
+  ;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004E6680
-// GHIDRA_NAME TTurnStartEvent::GetTTurnStartEventClassNamePointer
-// GHIDRA_PROTO undefined GetTTurnStartEventClassNamePointer()
-
-undefined ** TTurnStartEvent::GetTTurnStartEventClassNamePointer(void)
-
-{
-  return &PTR_s_TTurnStartEvent_006536b8;
 }
 

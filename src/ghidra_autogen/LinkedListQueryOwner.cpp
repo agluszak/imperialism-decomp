@@ -5,16 +5,16 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00562340
 // GHIDRA_NAME LinkedListQueryOwner::DeserializeMapActionContextRuntimeState
-// GHIDRA_PROTO undefined DeserializeMapActionContextRuntimeState()
+// GHIDRA_PROTO undefined __thiscall DeserializeMapActionContextRuntimeState(void)
 
 void __thiscall
-LinkedListQueryOwner::DeserializeMapActionContextRuntimeState(int param_1,int *param_2)
+LinkedListQueryOwner::DeserializeMapActionContextRuntimeState(LinkedListQueryOwner *this)
 
 {
-  short *psVar1;
+  LinkedListQueryOwner *pLVar1;
   code *pcVar2;
   short sVar3;
-  void *pvVar4;
+  TZone *pTVar4;
   int *piVar5;
   int *piVar6;
   int iVar7;
@@ -23,69 +23,71 @@ LinkedListQueryOwner::DeserializeMapActionContextRuntimeState(int param_1,int *p
   int iVar8;
   int unaff_EDI;
   int *unaff_FS_OFFSET;
+  int *in_stack_00000004;
   int iVar9;
-  undefined1 *puVar10;
-  short *psVar11;
+  TZone *pTVar10;
+  undefined1 *puVar11;
+  LinkedListQueryOwner *pLVar12;
   short *psStack_14;
-  int *piStack_c;
+  TZone *pTStack_c;
   undefined1 *puStack_8;
   short *psStack_4;
   
   psStack_4 = (short *)0xffffffff;
   puStack_8 = &LAB_00635855;
-  piStack_c = (int *)*unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&piStack_c;
+  pTStack_c = (TZone *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&pTStack_c;
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
     FreeHeapBufferIfNotNull(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
     g_nMapActionContextCount = -1;
   }
-  TradeControl::thunk_HandleCityDialogNoOpSlot18(param_2);
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
   thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
-  psVar1 = (short *)(param_1 + 4);
+  pLVar1 = this + 4;
   iVar7 = 0;
-  if (0 < *psVar1) {
+  if (0 < *(short *)pLVar1) {
     iVar8 = 0;
     do {
-      pvVar4 = (void *)(iVar8 + *(int *)(param_1 + 8));
-      if (g_pMapActionContextListHead == pvVar4) {
-        g_pMapActionContextListHead = *(void **)((int)pvVar4 + 0x18);
+      pTVar4 = (TZone *)(iVar8 + *(int *)(this + 8));
+      if (g_pMapActionContextListHead == pTVar4) {
+        g_pMapActionContextListHead = *(TZone **)&pTVar4->field_0x18;
       }
-      if (*(int *)((int)pvVar4 + 0x18) != 0) {
-        *(undefined4 *)(*(int *)((int)pvVar4 + 0x18) + 0x1c) = *(undefined4 *)((int)pvVar4 + 0x1c);
+      if (*(int *)&pTVar4->field_0x18 != 0) {
+        *(undefined4 *)(*(int *)&pTVar4->field_0x18 + 0x1c) = *(undefined4 *)&pTVar4->field_0x1c;
       }
-      if (*(int *)((int)pvVar4 + 0x1c) != 0) {
-        *(undefined4 *)(*(int *)((int)pvVar4 + 0x1c) + 0x18) = *(undefined4 *)((int)pvVar4 + 0x18);
+      if (*(int *)&pTVar4->field_0x1c != 0) {
+        *(undefined4 *)(*(int *)&pTVar4->field_0x1c + 0x18) = *(undefined4 *)&pTVar4->field_0x18;
       }
-      *(undefined4 *)((int)pvVar4 + 0x1c) = 0;
-      *(undefined4 *)((int)pvVar4 + 0x18) = 0;
+      *(undefined4 *)&pTVar4->field_0x1c = 0;
+      *(undefined4 *)&pTVar4->field_0x18 = 0;
       iVar7 = iVar7 + 1;
       iVar8 = iVar8 + 0x48;
-    } while (iVar7 < *psVar1);
+    } while (iVar7 < *(short *)pLVar1);
   }
-  if (*(int **)(param_1 + 8) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 8) + 4))(3);
+  if (*(int **)(this + 8) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 8) + 4))(3);
   }
-  while (pvVar4 = g_pMapActionContextListHead, g_pMapActionContextListHead != (void *)0x0) {
+  while (pTVar4 = g_pMapActionContextListHead, g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      iVar7 = CObject::IsKindOf(&g_pClassDescTPortZone);
+      iVar7 = CObject::IsKindOf((CObject *)pTVar4);
       if (iVar7 != 0) break;
-      pvVar4 = *(void **)((int)pvVar4 + 0x18);
-    } while (pvVar4 != (void *)0x0);
-    piVar5 = g_pMapActionContextListHead;
-    if (pvVar4 == (void *)0x0) break;
-    while ((piVar5 != (int *)0x0 && (iVar7 = CObject::IsKindOf(&g_pClassDescTPortZone), iVar7 == 0))
-          ) {
-      piVar5 = (int *)piVar5[6];
+      pTVar4 = *(TZone **)&pTVar4->field_0x18;
+    } while (pTVar4 != (TZone *)0x0);
+    pTVar10 = g_pMapActionContextListHead;
+    if (pTVar4 == (TZone *)0x0) break;
+    while ((pTVar10 != (TZone *)0x0 && (iVar7 = CObject::IsKindOf((CObject *)pTVar10), iVar7 == 0)))
+    {
+      pTVar10 = *(TZone **)&pTVar10->field_0x18;
     }
-    (**(code **)(*piVar5 + 0x1c))();
+    (*pTVar10->vftable[3].SetNationPendingActionStateAndPayload)();
   }
-  pcVar2 = *(code **)(*param_2 + 0x3c);
-  psVar11 = psVar1;
-  (*pcVar2)(psVar1,2);
-  iVar7 = (int)*psVar1;
+  pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
+  pLVar12 = pLVar1;
+  (*pcVar2)(pLVar1,2);
+  iVar7 = (int)*(short *)pLVar1;
   piVar5 = (int *)AllocateWithFallbackHandler(iVar7 * 0x48 + 4);
-  piStack_c = (int *)0x0;
+  pTStack_c = (TZone *)0x0;
   if (piVar5 == (int *)0x0) {
     piVar6 = (int *)0x0;
   }
@@ -96,7 +98,7 @@ LinkedListQueryOwner::DeserializeMapActionContextRuntimeState(int param_1,int *p
               (piVar6,0x48,iVar7,TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList);
   }
   iVar7 = 0;
-  piStack_c = (int *)0xffffffff;
+  pTStack_c = (TZone *)0xffffffff;
   *(int **)(unaff_EBP + 8) = piVar6;
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
@@ -105,71 +107,71 @@ LinkedListQueryOwner::DeserializeMapActionContextRuntimeState(int param_1,int *p
   iVar8 = 0;
   if (0 < *psStack_4) {
     do {
-      (**(code **)(*(int *)(*(int *)(unaff_EBP + 8) + iVar7) + 0x18))(param_2);
+      (**(code **)(*(int *)(*(int *)(unaff_EBP + 8) + iVar7) + 0x18))(in_stack_00000004);
       iVar8 = iVar8 + 1;
       iVar7 = iVar7 + 0x48;
     } while (iVar8 < *psStack_4);
   }
-  puVar10 = &stack0xffffffe4;
-  (*pcVar2)(puVar10,2);
+  puVar11 = &stack0xffffffe4;
+  (*pcVar2)(puVar11,2);
   sVar3 = (short)unaff_ESI;
   while (unaff_ESI = unaff_ESI + -1, sVar3 != 0) {
-    piVar5 = (int *)AllocateWithFallbackHandler(0x4c);
-    piStack_c = piVar5;
-    if (piVar5 == (int *)0x0) {
-      piVar5 = (int *)0x0;
+    pTVar4 = (TZone *)AllocateWithFallbackHandler(0x4c);
+    pTStack_c = pTVar4;
+    if (pTVar4 == (TZone *)0x0) {
+      pTVar4 = (TZone *)0x0;
     }
     else {
-      TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList();
-      *(undefined2 *)(piVar5 + 0x12) = 0xffff;
-      *piVar5 = (int)&TPortZone::_vftable_;
+      TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList(pTVar4);
+      *(undefined2 *)&pTVar4[1].vftable = 0xffff;
+      pTVar4->vftable = (TZoneVtbl *)&TPortZone::_vftable_;
     }
     psStack_14 = (short *)0xffffffff;
-    (**(code **)(*piVar5 + 0x18))(param_2);
+    (*pTVar4->vftable[3].DispatchNationPendingActionEventCodes)(in_stack_00000004);
     sVar3 = (short)unaff_ESI;
   }
-  piVar5 = (int *)(unaff_EDI + 0xc);
-  piVar6 = piVar5;
-  piStack_c = piVar5;
-  (*pcVar2)(piVar5,2);
+  pTVar4 = (TZone *)(unaff_EDI + 0xc);
+  pTVar10 = pTVar4;
+  pTStack_c = pTVar4;
+  (*pcVar2)(pTVar4,2);
   FreeHeapBufferIfNotNull(*(undefined4 *)(unaff_EDI + 0x10));
-  iVar7 = AllocateWithFallbackHandler((int)*(short *)piVar5 << 4);
+  iVar7 = AllocateWithFallbackHandler((int)*(short *)&pTVar4->vftable << 4);
   if (iVar7 == 0) {
     iVar7 = 0;
   }
-  *(int *)(psVar11 + 8) = iVar7;
+  *(int *)(pLVar12 + 0x10) = iVar7;
   if (iVar7 == 0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7c3);
   }
   iVar7 = 0;
-  if (0 < *(short *)piVar5) {
+  if (0 < *(short *)&pTVar4->vftable) {
     iVar8 = 0;
     do {
-      iVar9 = iVar8 + 4 + *(int *)(psVar11 + 8);
+      iVar9 = iVar8 + 4 + *(int *)(pLVar12 + 0x10);
       (*pcVar2)(iVar9,4);
-      (*pcVar2)(iVar8 + *(int *)(puVar10 + 0x10),4);
-      (*pcVar2)(iVar8 + 0xc + piVar6[4],4);
+      (*pcVar2)(iVar8 + *(int *)(puVar11 + 0x10),4);
+      (*pcVar2)(iVar8 + 0xc + *(int *)&pTVar10->field_0x10,4);
       (*pcVar2)(iVar8 + 8 + *(int *)(iVar9 + 0x10),4);
       iVar7 = iVar7 + 1;
       iVar8 = iVar8 + 0x10;
     } while (iVar7 < *psStack_14);
   }
-  pvVar4 = g_pMapActionContextListHead;
+  pTVar4 = g_pMapActionContextListHead;
   if (DAT_00695278 < 0xd) {
-    for (; pvVar4 != (void *)0x0; pvVar4 = *(void **)((int)pvVar4 + 0x18)) {
-      iVar7 = *(int *)((int)pvVar4 + 0x28);
+    for (; pTVar4 != (TZone *)0x0; pTVar4 = *(TZone **)&pTVar4->field_0x18) {
+      iVar7 = *(int *)&pTVar4->field_0x28;
       if (iVar7 != 0) {
-        *(undefined4 *)((int)pvVar4 + 0x28) = 0;
-        *(undefined4 *)((int)pvVar4 + 0x2c) = 0;
-        *(undefined4 *)((int)pvVar4 + 0x30) = 0;
+        *(undefined4 *)&pTVar4->field_0x28 = 0;
+        *(undefined4 *)&pTVar4->field_0x2c = 0;
+        *(undefined4 *)&pTVar4->field_0x30 = 0;
         FreeHeapBlockWithAllocatorTracking(iVar7);
       }
-      iVar7 = *(int *)((int)pvVar4 + 0x38);
+      iVar7 = *(int *)&pTVar4->field_0x38;
       if (iVar7 != 0) {
-        *(undefined4 *)((int)pvVar4 + 0x38) = 0;
-        *(undefined4 *)((int)pvVar4 + 0x3c) = 0;
-        *(undefined4 *)((int)pvVar4 + 0x40) = 0;
+        *(undefined4 *)&pTVar4->field_0x38 = 0;
+        *(undefined4 *)&pTVar4->field_0x3c = 0;
+        *(undefined4 *)&pTVar4->field_0x40 = 0;
         FreeHeapBlockWithAllocatorTracking(iVar7);
       }
     }
@@ -181,486 +183,158 @@ LinkedListQueryOwner::DeserializeMapActionContextRuntimeState(int param_1,int *p
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005628F0
 // GHIDRA_NAME LinkedListQueryOwner::SerializeMapActionContextRuntimeState
-// GHIDRA_PROTO undefined SerializeMapActionContextRuntimeState()
+// GHIDRA_PROTO undefined __thiscall SerializeMapActionContextRuntimeState(void)
 
 void __thiscall
-LinkedListQueryOwner::SerializeMapActionContextRuntimeState(code *param_1,int *param_2)
+LinkedListQueryOwner::SerializeMapActionContextRuntimeState(LinkedListQueryOwner *this)
 
 {
-  code *pcVar1;
-  int *piVar2;
+  LinkedListQueryOwner *pLVar1;
+  TZone *pTVar2;
   int iVar3;
   int iVar4;
-  void *pvVar5;
-  int *piVar6;
-  int *piVar7;
+  TZone *this_00;
+  TZone *pTVar5;
   code *unaff_EDI;
-  code *pcVar8;
+  int *in_stack_00000004;
+  LinkedListQueryOwner *pLVar6;
+  code *pcVar7;
+  LinkedListQueryOwner *pLVar8;
   code *pcVar9;
-  code *pcVar10;
-  code *pcVar11;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
-  pcVar11 = param_1 + 4;
-  pcVar10 = pcVar11;
-  (**(code **)(*param_2 + 0x78))(pcVar11,2);
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  pLVar1 = this + 4;
+  pLVar8 = pLVar1;
+  (**(code **)(*in_stack_00000004 + 0x78))(pLVar1,2);
   iVar4 = 0;
-  if (0 < *(short *)pcVar11) {
+  if (0 < *(short *)pLVar1) {
     iVar3 = 0;
     do {
-      (**(code **)(*(int *)(*(int *)(param_1 + 8) + iVar3) + 0x14))(param_2);
+      (**(code **)(*(int *)(*(int *)(this + 8) + iVar3) + 0x14))();
       iVar4 = iVar4 + 1;
       iVar3 = iVar3 + 0x48;
-    } while (iVar4 < *(short *)(param_1 + 4));
+    } while (iVar4 < *(short *)(this + 4));
   }
-  pcVar11 = (code *)0x0;
-  pvVar5 = g_pMapActionContextListHead;
-  if (g_pMapActionContextListHead != (void *)0x0) {
+  pcVar9 = (code *)0x0;
+  pTVar5 = g_pMapActionContextListHead;
+  if (g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      iVar4 = CObject::IsKindOf(&g_pClassDescTPortZone);
+      iVar4 = CObject::IsKindOf((CObject *)pTVar5);
       if (iVar4 != 0) break;
-      pvVar5 = *(void **)((int)pvVar5 + 0x18);
-    } while (pvVar5 != (void *)0x0);
+      pTVar5 = *(TZone **)&pTVar5->field_0x18;
+    } while (pTVar5 != (TZone *)0x0);
 joined_r0x0056295f:
-    if (pvVar5 != (void *)0x0) {
-      pcVar11 = pcVar11 + 1;
-      pvVar5 = *(void **)((int)pvVar5 + 0x18);
-      if (pvVar5 == (void *)0x0) goto LAB_0056298c;
+    if (pTVar5 != (TZone *)0x0) {
+      pcVar9 = pcVar9 + 1;
+      pTVar5 = *(TZone **)&pTVar5->field_0x18;
+      if (pTVar5 == (TZone *)0x0) goto LAB_0056298c;
       do {
-        iVar4 = CObject::IsKindOf(&g_pClassDescTPortZone);
+        iVar4 = CObject::IsKindOf((CObject *)pTVar5);
         if (iVar4 != 0) break;
-        pvVar5 = *(void **)((int)pvVar5 + 0x18);
-      } while (pvVar5 != (void *)0x0);
+        pTVar5 = *(TZone **)&pTVar5->field_0x18;
+      } while (pTVar5 != (TZone *)0x0);
       goto joined_r0x0056295f;
     }
   }
 LAB_0056298c:
-  pcVar9 = (code *)&stack0xfffffff4;
-  (*param_1)(pcVar9,2);
-  piVar7 = g_pMapActionContextListHead;
-  while ((piVar6 = piVar7, piVar7 != (int *)0x0 &&
-         (iVar4 = CObject::IsKindOf(&g_pClassDescTPortZone), iVar4 == 0))) {
-    piVar7 = (int *)piVar7[6];
+  pcVar7 = (code *)&stack0xfffffff4;
+  (*(code *)this)(pcVar7,2);
+  pTVar5 = g_pMapActionContextListHead;
+  while ((this_00 = pTVar5, pTVar5 != (TZone *)0x0 &&
+         (iVar4 = CObject::IsKindOf((CObject *)pTVar5), iVar4 == 0))) {
+    pTVar5 = *(TZone **)&pTVar5->field_0x18;
   }
   do {
-    piVar2 = piVar6;
-    if ((piVar2 == (int *)0x0) || (piVar6 = (int *)piVar2[6], piVar7 = piVar2, piVar6 == (int *)0x0)
-       ) break;
+    pTVar2 = this_00;
+    if ((pTVar2 == (TZone *)0x0) ||
+       (this_00 = *(TZone **)&pTVar2->field_0x18, pTVar5 = pTVar2, this_00 == (TZone *)0x0)) break;
     do {
-      iVar4 = CObject::IsKindOf(&g_pClassDescTPortZone);
+      iVar4 = CObject::IsKindOf((CObject *)this_00);
       if (iVar4 != 0) break;
-      piVar6 = (int *)piVar6[6];
-    } while (piVar6 != (int *)0x0);
+      this_00 = *(TZone **)&this_00->field_0x18;
+    } while (this_00 != (TZone *)0x0);
   } while( true );
 joined_r0x005629ea:
-  if (piVar7 == (int *)0x0) {
+  if (pTVar5 == (TZone *)0x0) {
 LAB_00562a16:
-    pcVar1 = param_1 + 0xc;
-    pcVar8 = pcVar1;
-    (*pcVar11)(pcVar1,2);
+    pLVar1 = this + 0xc;
+    pLVar6 = pLVar1;
+    (*pcVar9)(pLVar1,2);
     iVar4 = 0;
-    if (0 < *(short *)pcVar1) {
+    if (0 < *(short *)pLVar1) {
       iVar3 = 0;
       do {
-        (*unaff_EDI)(iVar3 + 4 + *(int *)(param_1 + 0x10),4);
-        (*pcVar10)(iVar3 + *(int *)(param_1 + 0x10),4);
-        (*pcVar9)(iVar3 + 0xc + *(int *)(param_1 + 0x10),4);
-        (*pcVar8)(iVar3 + 8 + *(int *)(param_1 + 0x10),4);
+        (*unaff_EDI)(iVar3 + 4 + *(int *)(this + 0x10),4);
+        (*(code *)pLVar8)(iVar3 + *(int *)(this + 0x10),4);
+        (*pcVar7)(iVar3 + 0xc + *(int *)(this + 0x10),4);
+        (*(code *)pLVar6)(iVar3 + 8 + *(int *)(this + 0x10),4);
         iVar4 = iVar4 + 1;
         iVar3 = iVar3 + 0x10;
-      } while (iVar4 < *(short *)(param_1 + 0xc));
+      } while (iVar4 < *(short *)(this + 0xc));
     }
     return;
   }
-  (**(code **)(*piVar7 + 0x14))(param_2);
-  piVar7 = (int *)piVar7[7];
-  if (piVar7 == (int *)0x0) goto LAB_00562a16;
+  (*pTVar5->vftable[2].SetNationPendingActionStateAndPayload)();
+  pTVar5 = *(TZone **)&pTVar5->field_0x1c;
+  if (pTVar5 == (TZone *)0x0) goto LAB_00562a16;
   do {
-    iVar4 = CObject::IsKindOf(&g_pClassDescTPortZone);
+    iVar4 = CObject::IsKindOf((CObject *)pTVar5);
     if (iVar4 != 0) break;
-    piVar7 = (int *)piVar7[7];
-  } while (piVar7 != (int *)0x0);
+    pTVar5 = *(TZone **)&pTVar5->field_0x1c;
+  } while (pTVar5 != (TZone *)0x0);
   goto joined_r0x005629ea;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005D7240
-// GHIDRA_NAME LinkedListQueryOwner::DispatchGlobalTurnEventCode
-// GHIDRA_PROTO undefined DispatchGlobalTurnEventCode()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Central turn-event dispatcher. Explicit switch handles common codes; default branch creates packet/callback dispatch that reaches registered UI builders (e.g., BuildTurnEventDialogUiByCode for 0x1036/0x104F/0x10CC).
-// GHIDRA_COMMENT_END
-
-/* Central turn-event dispatcher. Explicit switch handles common codes; default branch creates
-   packet/callback dispatch that reaches registered UI builders (e.g., BuildTurnEventDialogUiByCode
-   for 0x1036/0x104F/0x10CC). */
-
-void __thiscall
-LinkedListQueryOwner::DispatchGlobalTurnEventCode(int *param_1,undefined4 param_2,short param_3)
-
-{
-  code *pcVar1;
-  char cVar2;
-  int iVar3;
-  int *piVar4;
-  int *piVar5;
-  short sVar6;
-  undefined4 *unaff_FS_OFFSET;
-  undefined2 unaff_retaddr;
-  undefined4 uVar7;
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_0063a0c2;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  piVar4 = (int *)DAT_006a2158[1];
-  SetQuickDrawFillColor();
-  SetQuickDrawStrokeColor();
-  sVar6 = (short)param_2;
-  if (sVar6 == (short)param_1[1]) goto switchD_005d72b4_default;
-  switch(*(undefined2 *)(g_pLocalizationTable + 8)) {
-  case 0x67:
-    uVar7 = 0x1b5b;
-    iVar3 = *g_pSfxPlaybackSystem;
-    goto LAB_005d730d;
-  case 0x68:
-    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x1b5c,0);
-    break;
-  case 0x69:
-    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x1b5e,0);
-    break;
-  case 0x6a:
-    uVar7 = 0x1b5d;
-    iVar3 = *g_pSfxPlaybackSystem;
-LAB_005d730d:
-    (**(code **)(iVar3 + 0xb8))(uVar7,0);
-  }
-switchD_005d72b4_default:
-  iVar3 = (int)(short)param_1[1];
-  if (iVar3 < 0x2135) {
-    if (iVar3 == 0x2134) {
-      ModifyStyle(0,0x2000000);
-    }
-    else {
-      switch(iVar3) {
-      case 0x7d9:
-      case 0x7da:
-        (**(code **)(*param_1 + 0x58))();
-        break;
-      case 0x7db:
-        (**(code **)(*g_pStrategicMapViewSystem + 100))();
-        break;
-      case 0x7dd:
-        param_1[0x3c] = 0;
-      }
-    }
-  }
-  if (sVar6 == 0) {
-    iVar3 = *piVar4;
-    *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 0;
-    *(undefined2 *)(param_1 + 1) = 0;
-    *(undefined2 *)(DAT_006a2158 + 7) = 0;
-    (**(code **)(iVar3 + 0xa0))();
-    thunk_InitializeUiWindowTraversalState();
-    piVar4 = (int *)thunk_LoadFirstUiWindowTraversalEntry();
-    iVar3 = thunk_IsUiWindowTraversalEntryValid();
-    while (iVar3 != 0) {
-      if ((piVar4[7] == 0x6d617057) || (piVar4[7] == 0x74726e57)) {
-        (**(code **)(*piVar4 + 0x1d0))();
-      }
-      piVar4 = (int *)thunk_LoadNextUiWindowTraversalEntry();
-      iVar3 = thunk_IsUiWindowTraversalEntryValid();
-    }
-    goto LAB_005d79b8;
-  }
-  if (sVar6 == (short)param_1[1]) {
-    if (param_3 != -1) {
-      *(short *)((int)param_1 + 6) = param_3;
-    }
-    iVar3 = (int)sVar6;
-    if (iVar3 < 0x5e5) {
-      if (iVar3 == 0x5e4) {
-        thunk_QueueDeferredUiEventPacket(piVar4,0x29a);
-      }
-      else if (iVar3 == 0x547) {
-        (**(code **)(*piVar4 + 0xe4))();
-        pcVar1 = *(code **)(*(int *)DAT_006a2158[1] + 0x94);
-        g_pCursorControlPanel = (int *)(*pcVar1)();
-        (**(code **)(*g_pCursorControlPanel + 0xc))();
-        (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6c,0x2b67);
-        piVar4 = (int *)(*pcVar1)(0x6d61696e);
-        (**(code **)(*piVar4 + 0xc))();
-        if ((piVar4 != (int *)0x0) && (iVar3 = CObject::IsKindOf(), iVar3 != 0)) {
-          *(short *)(piVar4 + 0x24) = param_3;
-        }
-      }
-    }
-    else if (iVar3 < 0x8fd) {
-      if (iVar3 == 0x8fc) {
-        (**(code **)(*piVar4 + 0xe4))();
-        thunk_HandleTurnEvent8FC_RebuildPageTabsAndTitles();
-      }
-      else {
-        switch(iVar3) {
-        case 0x7d8:
-          if (*(short *)(g_pLocalizationTable + 8) == 0x68) {
-            (**(code **)(*piVar4 + 0xe4))();
-            (**(code **)(*param_1 + 0x6c))();
-          }
-          break;
-        case 0x7d9:
-        case 0x7da:
-          (**(code **)(*piVar4 + 0xe4))();
-          (**(code **)(*param_1 + 0x5c))();
-          break;
-        case 0x7db:
-          (**(code **)(*piVar4 + 0xe4))();
-          (**(code **)(*param_1 + 0xa8))();
-          break;
-        case 0x7dd:
-          (**(code **)(*piVar4 + 0xe4))();
-          (**(code **)(*param_1 + 0xbc))();
-          break;
-        case 0x7de:
-          (**(code **)(*piVar4 + 0xe4))();
-          (**(code **)(*param_1 + 0x84))();
-        }
-      }
-    }
-    else if (iVar3 == 0x2103) {
-      (**(code **)(*param_1 + 0x9c))();
-    }
-    else if (iVar3 == 0x2260) {
-      (**(code **)(*piVar4 + 0xe4))();
-      (**(code **)(*param_1 + 100))();
-    }
-    goto switchD_005d7452_caseD_7dc;
-  }
-  (**(code **)(*g_pUiViewManager + 0x2c))();
-  iVar3 = *piVar4;
-  (**(code **)(iVar3 + 0x9c))();
-  if ((char)param_1[4] != '\0') {
-    thunk_ShowDialogTemplateE0ModalAndReleaseCapture();
-    *(undefined1 *)(param_1 + 4) = 0;
-  }
-  piVar5 = (int *)(**(code **)(iVar3 + 0x94))(0x496e636c);
-  if (piVar5 != (int *)0x0) {
-    iVar3 = *piVar5;
-    (**(code **)(iVar3 + 0xc))();
-    (**(code **)(iVar3 + 0xe4))();
-    (**(code **)(iVar3 + 0x1c))();
-    param_2 = uStack_4;
-  }
-  if ((short)param_2 != 0x898) {
-    *(undefined2 *)((int)param_1 + 6) = unaff_retaddr;
-  }
-  iVar3 = AllocateWithFallbackHandler(0x74);
-  uStack_c = 0;
-  if (iVar3 == 0) {
-    piVar5 = (int *)0x0;
-  }
-  else {
-    piVar5 = (int *)TControl::thunk_ConstructTurnEventUiEntryBase();
-  }
-  uStack_c = 0xffffffff;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-            ((TToolBarCluster *)&stack0x00000000,(char *)&g_szEmptyString);
-  uStack_c = 1;
-  TCViewOwnedBufferRegistryState_00648560::thunk_BuildTurnEventFactoryPacket
-            (0,piVar4,uStack_4,&stack0xffffffd8,&stack0x00000000,1);
-  uStack_c = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&stack0x00000000);
-  iVar3 = *piVar5;
-  (**(code **)(iVar3 + 0xdc))(0);
-  piVar5[7] = 0x496e636c;
-  (**(code **)(iVar3 + 0xe4))();
-  (**(code **)(*DAT_006a2158 + 0x50))(puStack_8);
-  if ((char)param_1[4] != '\0') {
-    thunk_ShowDialogTemplateE0ModalAndReleaseCapture();
-    *(undefined1 *)(param_1 + 4) = 0;
-  }
-  *(short *)(param_1 + 1) = sVar6;
-  iVar3 = (int)sVar6;
-  if (0x3c0 < iVar3) {
-    if (iVar3 < 0x5dd) {
-      if (iVar3 == 0x5dc) {
-        (**(code **)(*param_1 + 0xf8))();
-      }
-      else if (iVar3 == 0x547) {
-        pcVar1 = *(code **)(*(int *)DAT_006a2158[1] + 0x94);
-        g_pCursorControlPanel = (int *)(*pcVar1)();
-        (**(code **)(*g_pCursorControlPanel + 0xc))();
-        (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6c,0x2b67);
-        piVar4 = (int *)(*pcVar1)(0x6d61696e);
-        (**(code **)(*piVar4 + 0xc))();
-        if ((piVar4 == (int *)0x0) || (iVar3 = CObject::IsKindOf(), iVar3 == 0)) {
-LAB_005d785e:
-          *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 1;
-        }
-        else {
-          *(undefined2 *)(piVar4 + 0x24) = unaff_retaddr;
-          *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 1;
-        }
-        goto switchD_005d7452_caseD_7dc;
-      }
-      goto switchD_005d7745_default;
-    }
-    if (iVar3 < 0x7d9) {
-      if (iVar3 == 0x7d8) {
-        (**(code **)(*param_1 + 0x6c))();
-        *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 1;
-        goto switchD_005d7452_caseD_7dc;
-      }
-      switch(iVar3) {
-      case 0x5dd:
-        (**(code **)(*param_1 + 0xfc))();
-        break;
-      case 0x5de:
-        (**(code **)(*param_1 + 0x100))();
-        break;
-      case 0x5df:
-        (**(code **)(*param_1 + 0x104))();
-        break;
-      case 0x5e0:
-        (**(code **)(*param_1 + 0x108))();
-      }
-      goto switchD_005d7745_default;
-    }
-    if (0x898 < iVar3) {
-      if (iVar3 < 0xed9) {
-        if (iVar3 == 0xed8) {
-LAB_005d7889:
-          (**(code **)(*param_1 + 0xa0))();
-        }
-        else if (iVar3 == 0x8fc) {
-          thunk_HandleTurnEvent8FC_RebuildPageTabsAndTitles();
-          goto LAB_005d785e;
-        }
-      }
-      else if (iVar3 < 0x11f9) {
-        if (iVar3 == 0x11f8) {
-          (**(code **)(*param_1 + 0xf4))();
-        }
-        else {
-          if (iVar3 == 0xf3c) goto LAB_005d7889;
-          if (iVar3 == 0xf3d) {
-            (**(code **)(*param_1 + 0x110))();
-            goto switchD_005d7452_caseD_7dc;
-          }
-        }
-      }
-      else if (iVar3 == 0x2103) {
-        (**(code **)(*param_1 + 0x9c))();
-      }
-      else if (iVar3 == 0x2134) {
-        (**(code **)(*param_1 + 0x60))();
-      }
-      else if (iVar3 == 0x2260) {
-        (**(code **)(*param_1 + 100))();
-      }
-      goto switchD_005d7745_default;
-    }
-    if (iVar3 == 0x898) {
-      (**(code **)(*param_1 + 0x88))();
-      goto switchD_005d7745_default;
-    }
-    switch(iVar3) {
-    case 0x7d9:
-    case 0x7da:
-      (**(code **)(*param_1 + 0x5c))();
-      *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 1;
-      break;
-    case 0x7db:
-      (**(code **)(*param_1 + 0xa8))();
-      *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 1;
-      break;
-    case 0x7dd:
-      (**(code **)(*param_1 + 0xbc))();
-      *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 1;
-      break;
-    case 0x7de:
-      (**(code **)(*param_1 + 0x84))();
-      *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 1;
-      break;
-    case 0x7e0:
-      (**(code **)(*param_1 + 0x50))();
-    default:
-switchD_005d7745_default:
-      *(undefined1 *)((int)g_pGlobalUiRootController + 0x4c) = 0;
-    }
-switchD_005d7452_caseD_7dc:
-    if ((DAT_006a21b8 != 0) &&
-       (cVar2 = thunk_IsTurnCooldownCounterActiveOrResetFlag(), cVar2 == '\0')) {
-      UiRuntimeContext::GetActiveNationId();
-      cVar2 = thunk_IsNationSlotEligibleForEventProcessing();
-      if (cVar2 != '\0') {
-        thunk_HandlePostDispatchTurnStateEventUpdates();
-        thunk_HandlePendingEventActivationByCode();
-        thunk_HandlePostPendingEventActivationNoOp();
-      }
-    }
-LAB_005d79b8:
-    *unaff_FS_OFFSET = uStack_c;
-    return;
-  }
-  if (iVar3 == 0x3c0) {
-    (**(code **)(*param_1 + 0x10c))();
-  }
-  else if (iVar3 == 0x3b8) {
-    (**(code **)(*param_1 + 0xd0))();
-  }
-  goto switchD_005d7745_default;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005FFEB1
 // GHIDRA_NAME LinkedListQueryOwner::AfxCommDlgProc
 // GHIDRA_PROTO undefined AfxCommDlgProc()
 
-undefined4
-LinkedListQueryOwner::AfxCommDlgProc(HWND param_1,uint param_2,undefined4 param_3,uint param_4)
+undefined1
+LinkedListQueryOwner::AfxCommDlgProc
+          (HWND param_1,uint param_2,undefined4 param_3,CObjectVtbl *param_4)
 
 {
-  int iVar1;
-  undefined4 uVar2;
-  int *piVar3;
+  undefined1 uVar1;
+  undefined uVar2;
+  int iVar3;
+  CObject *this;
   
   if (param_1 != (HWND)0x0) {
-    iVar1 = TMacViewMgr::GetData(CreateObject_5e540c);
-    if (*(int *)(iVar1 + 0x18) != 0) {
+    iVar3 = TMacViewMgr::GetData((TMacViewMgr *)&DAT_006a7a50);
+    if (*(int *)(iVar3 + 0x18) != 0) {
       SubclassWindow(param_1);
-      *(undefined4 *)(iVar1 + 0x18) = 0;
+      *(undefined4 *)(iVar3 + 0x18) = 0;
     }
     if (param_2 == 0x110) {
-      uVar2 = AfxDlgProc(param_1,0x110,param_3,param_4);
-      return uVar2;
+      uVar1 = AfxDlgProc(param_1,0x110,param_3,param_4);
+      return uVar1;
     }
     if ((param_2 == DAT_006a7f9c) || ((param_2 == 0x111 && ((short)param_3 == 0x40e)))) {
       SendMessageA(param_1,0x111,0xe146,0);
       return 1;
     }
     if (0xbfff < param_2) {
-      piVar3 = (int *)FromHandlePermanent_607b57(param_1);
-      iVar1 = CObject::IsKindOf(&PTR_s_CFileDialog_006728a0);
-      if ((iVar1 == 0) || ((*(byte *)((int)piVar3 + 0x92) & 8) == 0)) {
+      this = (CObject *)FromHandlePermanent_607b57(param_1);
+      iVar3 = CObject::IsKindOf(this);
+      if ((iVar3 == 0) || (((uint)this[0x24].vftable & 0x80000) == 0)) {
         if (param_2 == DAT_006a7f8c) {
-          uVar2 = (**(code **)(*piVar3 + 0xd8))(param_4);
+          uVar2 = (*this->vftable[0x1b].SetForeignMinisterReadyFlag14)(param_4);
           return uVar2;
         }
         if (param_2 == DAT_006a7f98) {
           if (DAT_006a7d5c != 0) {
-            piVar3[0x7d] = param_4;
+            this[0x7d].vftable = param_4;
           }
-          uVar2 = (**(code **)(*piVar3 + 0xdc))();
-          piVar3[0x7d] = 0;
+          uVar2 = (*this->vftable[0x1b].slot_0x04)();
+          this[0x7d].vftable = (CObjectVtbl *)0x0;
           return uVar2;
         }
         if (param_2 == DAT_006a7f94) {
-          (**(code **)(*piVar3 + 0xe0))(param_3,param_4 & 0xffff,param_4 >> 0x10);
+          (*this->vftable[0x1c].SetForeignMinisterReadyFlag14)
+                    (param_3,(uint)param_4 & 0xffff,(uint)param_4 >> 0x10);
         }
         else if (param_2 == DAT_006a7f90) {
-          uVar2 = (**(code **)(*piVar3 + 0xd8))();
+          uVar2 = (*this->vftable[0x1b].SetForeignMinisterReadyFlag14)();
           return uVar2;
         }
       }

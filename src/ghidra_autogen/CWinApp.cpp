@@ -14,142 +14,16 @@ void CWinApp::WrapperFor_WriteProfileInt_At00415510(undefined4 param_1,undefined
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x006067A2
-// GHIDRA_NAME CWinApp::ProcessMessageFilter
-// GHIDRA_PROTO undefined ProcessMessageFilter()
-
-undefined4 CWinApp::ProcessMessageFilter(int param_1,undefined4 *param_2)
-
-{
-  int iVar1;
-  int iVar2;
-  undefined4 *puVar3;
-  HWND hWnd;
-  undefined4 local_24 [7];
-  int *local_8;
-  
-  if (param_2 == (undefined4 *)0x0) {
-    return 0;
-  }
-  if (param_1 != 0) {
-    if (param_1 != 2) {
-      return 0;
-    }
-    iVar1 = FromHandle(*param_2);
-    if (((((iVar1 != 0) && (iVar1 = GetTopLevelFrame(), iVar1 != 0)) &&
-         (iVar2 = IsTracking(), iVar2 != 0)) &&
-        ((*(int *)(iVar1 + 0x50) != 0 &&
-         (iVar1 = AfxGetMainWnd(), *(int *)((int)local_8 + 0x1c) != 0)))) &&
-       (((param_2[1] == 0x100 && (param_2[2] == 0xd)) || (param_2[1] == 0x202)))) {
-      hWnd = *(HWND *)(iVar1 + 0x1c);
-      goto LAB_0060685d;
-    }
-  }
-  iVar1 = AfxGetMainWnd();
-  if (((0x332 < DAT_006a7d54) || (iVar1 == 0)) || (iVar2 = FUN_006068e9(param_2), iVar2 == 0)) {
-    if ((((param_1 != 0) || (local_8[8] == 0)) || ((uint)param_2[1] < 0x100)) ||
-       ((0x108 < (uint)param_2[1] ||
-        (iVar1 = TMacViewMgr::GetData(CreateObject_5e540c), *(int *)(iVar1 + 0xbc) != 0)))) {
-      return 0;
-    }
-    *(undefined4 *)(iVar1 + 0xbc) = 1;
-    puVar3 = local_24;
-    for (iVar2 = 7; iVar2 != 0; iVar2 = iVar2 + -1) {
-      *puVar3 = *param_2;
-      param_2 = param_2 + 1;
-      puVar3 = puVar3 + 1;
-    }
-    iVar2 = IsWindowEnabled();
-    if ((iVar2 != 0) && (iVar2 = (**(code **)(*local_8 + 0x60))(local_24), iVar2 != 0)) {
-      *(undefined4 *)(iVar1 + 0xbc) = 0;
-      return 1;
-    }
-    *(undefined4 *)(iVar1 + 0xbc) = 0;
-    return 0;
-  }
-  hWnd = *(HWND *)(iVar1 + 0x1c);
-LAB_0060685d:
-  SendMessageA(hWnd,0x111,0xe146,0);
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061852A
-// GHIDRA_NAME CWinApp::DoMessageBox
-// GHIDRA_PROTO undefined DoMessageBox()
-
-int __thiscall CWinApp::DoMessageBox(HWND param_1,LPCSTR param_2,uint param_3,int param_4)
-
-{
-  int iVar1;
-  int *piVar2;
-  int iVar3;
-  uint uVar4;
-  HWND hWnd;
-  HWND pHVar5;
-  HWND local_8;
-  
-  local_8 = param_1;
-  FUN_006184fc(0);
-  iVar1 = FUN_00609437(0,&local_8);
-  pHVar5 = param_1 + 0x27;
-  if (iVar1 != 0) {
-    piVar2 = (int *)GetTopLevelParent();
-    iVar3 = (**(code **)(*piVar2 + 0xb8))();
-    if (iVar3 != 0) {
-      pHVar5 = (HWND)(piVar2 + 0x13);
-    }
-  }
-  iVar3 = pHVar5->unused;
-  if (param_4 != 0) {
-    pHVar5->unused = param_4 + 0x30000;
-  }
-  if (((param_3 & 0xf0) == 0) &&
-     ((uVar4 = param_3 & 0xf, uVar4 < 2 || ((2 < uVar4 && (uVar4 < 5)))))) {
-    param_3 = param_3 | 0x30;
-  }
-  AfxGetThreadState();
-  hWnd = (HWND)0x0;
-  if (iVar1 != 0) {
-    hWnd = *(HWND *)(iVar1 + 0x1c);
-  }
-  iVar1 = MessageBoxA(hWnd,param_2,(LPCSTR)param_1[0x1e].unused,param_3);
-  pHVar5->unused = iVar3;
-  if (local_8 != (HWND)0x0) {
-    EnableWindow(local_8,1);
-  }
-  FUN_006184fc(1);
-  return iVar1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00618704
 // GHIDRA_NAME CWinApp::CloseAllDocuments_618704
-// GHIDRA_PROTO undefined CloseAllDocuments_618704()
+// GHIDRA_PROTO undefined __thiscall CloseAllDocuments_618704(void)
 
-void __thiscall CWinApp::CloseAllDocuments_618704(int param_1,undefined4 param_2)
+void __thiscall CWinApp::CloseAllDocuments_618704(CWinApp *this)
 
 {
-  if (*(int **)(param_1 + 0x80) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 0x80) + 0x2c))(param_2);
+  if (*(int **)(this + 0x80) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0x80) + 0x2c))();
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0061873C
-// GHIDRA_NAME CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
-// GHIDRA_PROTO undefined CallField80VirtualSlot38OrReturnFalse_0061873c()
-
-undefined4 __thiscall
-CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c(int param_1,undefined4 param_2)
-
-{
-  undefined4 uVar1;
-  
-  if (*(int **)(param_1 + 0x80) == (int *)0x0) {
-    uVar1 = 0;
-  }
-  else {
-    uVar1 = (**(code **)(**(int **)(param_1 + 0x80) + 0x38))(param_2);
-  }
-  return uVar1;
 }
 

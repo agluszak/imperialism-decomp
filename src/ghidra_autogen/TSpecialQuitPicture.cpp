@@ -3,14 +3,41 @@
 // Program: Imperialism.exe
 // Bucket: TSpecialQuitPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045ACB0
+// GHIDRA_NAME TSpecialQuitPicture::OrphanRetStub_0045acb0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045acb0(void)
+
+void __thiscall TSpecialQuitPicture::OrphanRetStub_0045acb0(TSpecialQuitPicture *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0045ACD0
+// GHIDRA_NAME TSpecialQuitPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TSpecialQuitPicture * __thiscall
+TSpecialQuitPicture::_scalar_deleting_destructor_(TSpecialQuitPicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4760
 // GHIDRA_NAME TSpecialQuitPicture::CreateTSpecialQuitPictureInstance
 // GHIDRA_PROTO undefined CreateTSpecialQuitPictureInstance()
 
-undefined4 * TSpecialQuitPicture::CreateTSpecialQuitPictureInstance(void)
+thunk_TPictureButton * TSpecialQuitPicture::CreateTSpecialQuitPictureInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,42 +47,46 @@ undefined4 * TSpecialQuitPicture::CreateTSpecialQuitPictureInstance(void)
   puStack_8 = &LAB_00638d6a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00643c78;
-    *(undefined2 *)(puVar1 + 0x24) = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TSpecialQuitPictureVtbl **)this = &TSpecialQuitPictureVtbl_00643c78;
+    *(undefined2 *)(this + 0x90) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B47F0
-// GHIDRA_NAME TSpecialQuitPicture::GetTSpecialQuitPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTSpecialQuitPictureClassNamePointer()
+// GHIDRA_NAME TSpecialQuitPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TSpecialQuitPicture::GetTSpecialQuitPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TSpecialQuitPicture::GetTEventHandlerClassNamePointer(TSpecialQuitPicture *this)
 
 {
-  return &PTR_s_TSpecialQuitPicture_0066b2e0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4810
-// GHIDRA_NAME TSpecialQuitPicture::ConstructTSpecialQuitPictureBaseState
-// GHIDRA_PROTO undefined ConstructTSpecialQuitPictureBaseState()
+// GHIDRA_NAME TSpecialQuitPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TSpecialQuitPicture::ConstructTSpecialQuitPictureBaseState(int *param_1,undefined4 param_2)
+void __thiscall TSpecialQuitPicture::OrphanLeaf_NoCall_Ins07_004d8920(TSpecialQuitPicture *this)
 
 {
-  code *pcVar1;
+  TSpecialQuitPicture_slot_0x04_0x04 *pTVar1;
   int iVar2;
-  int *piVar3;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
   undefined4 *unaff_FS_OFFSET;
-  int *piStack_78;
+  CString CStack_78;
   undefined4 uStack_74;
   undefined4 uStack_70;
   undefined4 uStack_6c;
@@ -73,7 +104,7 @@ TSpecialQuitPicture::ConstructTSpecialQuitPictureBaseState(int *param_1,undefine
   undefined4 uStack_3c;
   undefined4 uStack_38;
   undefined4 uStack_34;
-  undefined1 local_20 [20];
+  CString local_20 [5];
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -83,16 +114,15 @@ TSpecialQuitPicture::ConstructTSpecialQuitPictureBaseState(int *param_1,undefine
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_34 = 0x5b4837;
-  InitializeSharedStringRefFromEmpty(local_20);
-  uStack_34 = param_2;
+  CString::CString(local_20);
   local_4 = 0;
   uStack_38 = 0x5b484b;
-  TView::thunk_NoOpUiLifecycleHook();
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
   uStack_34 = 0x73616c65;
-  pcVar1 = *(code **)(*param_1 + 0x94);
+  pTVar1 = this->vftable[0x12].slot_0x04;
   uStack_38 = 0x5b485c;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
+  uVar3 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
   uStack_38 = 0x5b4865;
   (**(code **)(iVar2 + 0xc))();
   uStack_38 = 20000;
@@ -113,52 +143,52 @@ TSpecialQuitPicture::ConstructTSpecialQuitPictureBaseState(int *param_1,undefine
   (**(code **)(iVar2 + 0x168))();
   uStack_54 = 0x7473686f;
   puStack_58 = (undefined4 *)0x5b48c0;
-  piVar3 = (int *)(*pcVar1)();
+  uVar3 = (*pTVar1)();
   puStack_58 = (undefined4 *)0x5b48c9;
-  (**(code **)(*piVar3 + 0xc))();
+  (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xc))();
   puStack_58 = &uStack_44;
   uStack_5c = 0x18;
   uStack_60 = 0x274c;
   puStack_64 = (undefined4 *)0x5b48e3;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   puStack_64 = puStack_50;
   puStack_68 = (undefined4 *)0x1;
   uStack_6c = 0x2b6c;
   uStack_70 = 0xc;
   uStack_74 = 0;
-  piStack_78 = piVar3;
+  CStack_78.m_pchData = (char *)CONCAT31(extraout_var_00,uVar3);
   ApplyControlThemeStyleAndOptionalCaption();
   puStack_64 = (undefined4 *)0x74717569;
   puStack_68 = (undefined4 *)0x5b4905;
-  piVar3 = (int *)(*pcVar1)();
+  uVar3 = (*pTVar1)();
   puStack_68 = (undefined4 *)0x5b490e;
-  (**(code **)(*piVar3 + 0xc))();
+  (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0xc))();
   puStack_68 = &uStack_54;
   uStack_6c = 9;
   uStack_70 = 0x2737;
   uStack_74 = 0x5b4928;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   uStack_74 = uStack_60;
-  piStack_78 = (int *)0x1;
-  ApplyControlThemeStyleAndOptionalCaption(piVar3,0,0xc,0x2b6c);
+  CStack_78.m_pchData = (char *)0x1;
+  ApplyControlThemeStyleAndOptionalCaption((int *)CONCAT31(extraout_var_01,uVar3),0,0xc,0x2b6c);
   uStack_74 = 0x7469746c;
-  piStack_78 = (int *)0x5b494a;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
-  piStack_78 = (int *)0x5b4953;
+  CStack_78.m_pchData = (char *)0x5b494a;
+  uVar3 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_02,uVar3);
+  CStack_78.m_pchData = "hl+";
   (**(code **)(iVar2 + 0xc))();
-  piStack_78 = (int *)0x2b6c;
+  CStack_78.m_pchData = (char *)0x2b6c;
   (**(code **)(iVar2 + 0x1e0))(0,0xe);
   (**(code **)(iVar2 + 0x1c4))(1,1);
   uStack_5c = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&piStack_78);
+  CString::~CString(&CStack_78);
   *unaff_FS_OFFSET = puStack_64;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4A10
-// GHIDRA_NAME TSpecialQuitPicture::HandleCitySiteShowAnimation
-// GHIDRA_PROTO void __thiscall HandleCitySiteShowAnimation(int nMessage, int pUiEvent)
+// GHIDRA_NAME TSpecialQuitPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO void __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(int nMessage, int pUiEvent)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Handle CitySiteView show-state animation and related button visibility.
 // GHIDRA_COMMENT Algorithm:
@@ -195,22 +225,37 @@ TSpecialQuitPicture::ConstructTSpecialQuitPictureBaseState(int *param_1,undefine
    - void. */
 
 void __thiscall
-TSpecialQuitPicture::HandleCitySiteShowAnimation
+TSpecialQuitPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
           (TSpecialQuitPicture *this,int nMessage,int pUiEvent)
 
 {
   short sVar1;
-  int iVar2;
-  code *pcVar3;
+  TSpecialQuitPictureVtbl *pTVar2;
+  TSpecialQuitPicture_slot_0x04_0x04 *pTVar3;
   int iVar4;
-  undefined2 extraout_var;
+  undefined uVar5;
+  undefined2 extraout_var_14;
   undefined2 uVar6;
-  int *piVar5;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  undefined3 extraout_var_07;
+  undefined3 extraout_var_08;
+  undefined3 extraout_var_09;
+  undefined3 extraout_var_10;
+  undefined3 extraout_var_11;
+  undefined3 extraout_var_12;
+  undefined3 extraout_var_13;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_64;
   undefined4 uStack_60;
   undefined4 uStack_5c;
-  undefined4 uStack_58;
+  CString CStack_58;
   undefined4 uStack_54;
   undefined4 uStack_50;
   undefined4 uStack_4c;
@@ -227,11 +272,11 @@ TSpecialQuitPicture::HandleCitySiteShowAnimation
   undefined4 uStack_20;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 uStack_4;
+  CString CStack_4;
   
-  iVar2 = pUiEvent;
+  iVar4 = pUiEvent;
   uStack_c = *unaff_FS_OFFSET;
-  uStack_4 = 0xffffffff;
+  CStack_4.m_pchData = (char *)0xffffffff;
   puStack_8 = &LAB_00638db0;
   *unaff_FS_OFFSET = &uStack_c;
   if (nMessage == 10) {
@@ -239,145 +284,145 @@ TSpecialQuitPicture::HandleCitySiteShowAnimation
     if (*(int *)(pUiEvent + 0x1c) == 0x71756974) {
       uStack_20 = 0x5b4a50;
       PostWmCloseToMainThreadWindow();
-      uVar6 = extraout_var;
+      uVar6 = extraout_var_14;
     }
-    if (*(int *)(iVar2 + 0x1c) == 0x73686f77) {
-      iVar2 = *(int *)this;
+    if (*(int *)(iVar4 + 0x1c) == 0x73686f77) {
+      pTVar2 = this->vftable;
       uStack_20 = 0x71756974;
-      pcVar3 = *(code **)(iVar2 + 0x94);
+      pTVar3 = pTVar2[0x12].slot_0x04;
       iStack_24 = 0x5b4a6e;
-      piVar5 = (int *)(*pcVar3)();
+      uVar5 = (*pTVar3)();
       iStack_24 = 1;
       uStack_28 = 0;
       ppuStack_2c = (undefined1 **)0x5b4a7c;
-      (**(code **)(*piVar5 + 0xa8))();
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar5) + 0xa8))();
       ppuStack_2c = (undefined1 **)0x73686f77;
       uStack_30 = 0x5b4a85;
-      piVar5 = (int *)(*pcVar3)();
+      uVar5 = (*pTVar3)();
       uStack_30 = 1;
       uStack_34 = 0;
       puStack_38 = (undefined1 *)0x5b4a93;
-      (**(code **)(*piVar5 + 0xa8))();
+      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar5) + 0xa8))();
       puStack_38 = (undefined1 *)0x73616c65;
       uStack_3c = 0x5b4a9c;
-      piVar5 = (int *)(*pcVar3)();
+      uVar5 = (*pTVar3)();
       uStack_3c = 1;
       uStack_40 = 0;
       uStack_44 = 0x5b4aaa;
-      (**(code **)(*piVar5 + 0xa4))();
+      (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar5) + 0xa4))();
       uStack_44 = 0x72657175;
       uStack_48 = 0x5b4ab3;
-      piVar5 = (int *)(*pcVar3)();
+      uVar5 = (*pTVar3)();
       uStack_48 = 1;
       uStack_4c = 0;
       uStack_50 = 0x5b4ac1;
-      (**(code **)(*piVar5 + 0xa4))();
+      (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar5) + 0xa4))();
       uStack_50 = 0x7473686f;
       uStack_54 = 0x5b4aca;
-      piVar5 = (int *)(*pcVar3)();
+      uVar5 = (*pTVar3)();
       uStack_54 = 1;
-      uStack_58 = 0;
+      CStack_58.m_pchData = (char *)0x0;
       uStack_5c = 0x5b4ad8;
-      (**(code **)(*piVar5 + 0xa4))();
+      (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar5) + 0xa4))();
       uStack_5c = 0x74717569;
       uStack_60 = 0x5b4ae1;
-      piVar5 = (int *)(*pcVar3)();
+      uVar5 = (*pTVar3)();
       uStack_60 = 1;
       uStack_64 = 0;
-      (**(code **)(*piVar5 + 0xa4))();
-      piVar5 = (int *)(*pcVar3)(0x7469746c);
-      iVar4 = *piVar5;
+      (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar5) + 0xa4))();
+      uVar5 = (*pTVar3)(0x7469746c);
+      iVar4 = *(int *)CONCAT31(extraout_var_05,uVar5);
       (**(code **)(iVar4 + 0xc))();
       (**(code **)(iVar4 + 0xa4))(1,1);
-      *(undefined2 *)(this + 0x90) = 1;
-      (**(code **)(iVar2 + 0x1c8))(0x3e9,1);
-      InitializeSharedStringRefFromEmpty(&uStack_58);
+      *(undefined2 *)&this->field_0x90 = 1;
+      (*pTVar2[0x39].GetTEventHandlerClassNamePointer)(0x3e9,1);
+      CString::CString(&CStack_58);
       uStack_60 = 0;
-      (**(code **)(*g_pLocalizationTable + 0x84))(6000,0,&uStack_58);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(6000,0,&CStack_58);
       (**(code **)(iVar4 + 0x1f0))(&uStack_64);
-      uStack_4 = 0xffffffff;
+      CStack_4.m_pchData = (char *)0xffffffff;
       uStack_20 = 0x5b4b6e;
-      ReleaseSharedStringRefIfNotEmpty(&nMessage);
+      CString::~CString((CString *)&nMessage);
     }
     else {
-      sVar1 = *(short *)(this + 0x90);
+      sVar1 = *(short *)&this->field_0x90;
       if (0 < sVar1) {
-        *(short *)(this + 0x90) = sVar1 + 1;
+        *(short *)&this->field_0x90 = sVar1 + 1;
         if ((short)(sVar1 + 1) < 10) {
-          iVar2 = *(int *)this;
+          pTVar2 = this->vftable;
           iStack_24 = CONCAT22(uVar6,sVar1) + 0x3e9;
           uStack_20 = 1;
           uStack_28 = 0x5b4ba3;
-          (**(code **)(iVar2 + 0x1c8))();
+          (*pTVar2[0x39].GetTEventHandlerClassNamePointer)();
           uStack_28 = 0x5b4bac;
-          InitializeSharedStringRefFromEmpty(&uStack_4);
+          CString::CString(&CStack_4);
           uStack_28 = 0x7469746c;
           uStack_c = 1;
           ppuStack_2c = (undefined1 **)0x5b4bc1;
-          piVar5 = (int *)(**(code **)(iVar2 + 0x94))();
-          iVar2 = *piVar5;
+          uVar5 = (*pTVar2[0x12].slot_0x04)();
+          iVar4 = *(int *)CONCAT31(extraout_var_06,uVar5);
           ppuStack_2c = (undefined1 **)0x5b4bca;
-          (**(code **)(iVar2 + 0xc))();
+          (**(code **)(iVar4 + 0xc))();
           ppuStack_2c = &puStack_8;
-          uStack_30 = CONCAT22((short)((uint)ppuStack_2c >> 0x10),*(short *)(this + 0x90) + -1);
+          uStack_30 = CONCAT22((short)((uint)ppuStack_2c >> 0x10),*(short *)&this->field_0x90 + -1);
           uStack_34 = 6000;
           puStack_38 = (undefined1 *)0x5b4bec;
-          (**(code **)(*g_pLocalizationTable + 0x84))();
+          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
           puStack_38 = &stack0xffffffec;
           uStack_3c = 0x5b4bf9;
-          (**(code **)(iVar2 + 0x1f0))();
-          uStack_4 = 0xffffffff;
+          (**(code **)(iVar4 + 0x1f0))();
+          CStack_4.m_pchData = (char *)0xffffffff;
           uStack_20 = 0x5b4c0a;
-          ReleaseSharedStringRefIfNotEmpty(&nMessage);
+          CString::~CString((CString *)&nMessage);
         }
         else {
-          iVar2 = *(int *)this;
+          pTVar2 = this->vftable;
           uStack_20 = 1;
           iStack_24 = 20000;
-          *(undefined2 *)(this + 0x90) = 0;
+          *(undefined2 *)&this->field_0x90 = 0;
           uStack_28 = 0x5b4c29;
-          (**(code **)(iVar2 + 0x1c8))();
-          pcVar3 = *(code **)(iVar2 + 0x94);
+          (*pTVar2[0x39].GetTEventHandlerClassNamePointer)();
+          pTVar3 = pTVar2[0x12].slot_0x04;
           uStack_28 = 0x71756974;
           ppuStack_2c = (undefined1 **)0x5b4c38;
-          piVar5 = (int *)(*pcVar3)();
+          uVar5 = (*pTVar3)();
           ppuStack_2c = (undefined1 **)0x1;
           uStack_30 = 1;
           uStack_34 = 0x5b4c46;
-          (**(code **)(*piVar5 + 0xa8))();
+          (**(code **)(*(int *)CONCAT31(extraout_var_07,uVar5) + 0xa8))();
           uStack_34 = 0x73686f77;
           puStack_38 = (undefined1 *)0x5b4c4f;
-          piVar5 = (int *)(*pcVar3)();
+          uVar5 = (*pTVar3)();
           puStack_38 = (undefined1 *)0x1;
           uStack_3c = 1;
           uStack_40 = 0x5b4c5d;
-          (**(code **)(*piVar5 + 0xa8))();
+          (**(code **)(*(int *)CONCAT31(extraout_var_08,uVar5) + 0xa8))();
           uStack_40 = 0x73616c65;
           uStack_44 = 0x5b4c66;
-          piVar5 = (int *)(*pcVar3)();
+          uVar5 = (*pTVar3)();
           uStack_44 = 1;
           uStack_48 = 1;
           uStack_4c = 0x5b4c74;
-          (**(code **)(*piVar5 + 0xa4))();
+          (**(code **)(*(int *)CONCAT31(extraout_var_09,uVar5) + 0xa4))();
           uStack_4c = 0x72657175;
           uStack_50 = 0x5b4c7d;
-          piVar5 = (int *)(*pcVar3)();
+          uVar5 = (*pTVar3)();
           uStack_50 = 1;
           uStack_54 = 1;
-          uStack_58 = 0x5b4c8b;
-          (**(code **)(*piVar5 + 0xa4))();
-          uStack_58 = 0x7473686f;
+          CStack_58.m_pchData = (char *)0x5b4c8b;
+          (**(code **)(*(int *)CONCAT31(extraout_var_10,uVar5) + 0xa4))();
+          CStack_58.m_pchData = (char *)0x7473686f;
           uStack_5c = 0x5b4c94;
-          piVar5 = (int *)(*pcVar3)();
+          uVar5 = (*pTVar3)();
           uStack_5c = 1;
           uStack_60 = 1;
           uStack_64 = 0x5b4ca2;
-          (**(code **)(*piVar5 + 0xa4))();
+          (**(code **)(*(int *)CONCAT31(extraout_var_11,uVar5) + 0xa4))();
           uStack_64 = 0x74717569;
-          piVar5 = (int *)(*pcVar3)();
-          (**(code **)(*piVar5 + 0xa4))(1,1);
-          piVar5 = (int *)(*pcVar3)(0x7469746c);
-          (**(code **)(*piVar5 + 0xa4))(0,1);
+          uVar5 = (*pTVar3)();
+          (**(code **)(*(int *)CONCAT31(extraout_var_12,uVar5) + 0xa4))(1,1);
+          uVar5 = (*pTVar3)(0x7469746c);
+          (**(code **)(*(int *)CONCAT31(extraout_var_13,uVar5) + 0xa4))(0,1);
         }
       }
     }

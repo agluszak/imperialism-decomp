@@ -26,7 +26,7 @@ undefined4 * TAdorner::CreateTAdornerInstance(void)
   puVar3 = (undefined4 *)0x0;
   if (puVar1 != (undefined4 *)0x0) {
     local_4 = 1;
-    *puVar1 = &PTR_LAB_0064bdd0;
+    *puVar1 = &TAdornerVtbl_0064bdd0;
     uVar2 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
     thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar2);
     puVar3 = puVar1;
@@ -37,12 +37,12 @@ undefined4 * TAdorner::CreateTAdornerInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D6D0
 // GHIDRA_NAME TAdorner::GetTAdornerClassNamePointer
-// GHIDRA_PROTO undefined GetTAdornerClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTAdornerClassNamePointer(void)
 
-undefined ** TAdorner::GetTAdornerClassNamePointer(void)
+CRuntimeClass * __thiscall TAdorner::GetTAdornerClassNamePointer(TAdorner *this)
 
 {
-  return &PTR_s_TAdorner_0064bd90;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049D6F0
@@ -68,7 +68,7 @@ TView * TAdorner::ConstructTAdornerBaseState(void)
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = &PTR_LAB_0064be28;
+    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
     uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
     thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
     *unaff_FS_OFFSET = local_c;
@@ -76,5 +76,157 @@ TView * TAdorner::ConstructTAdornerBaseState(void)
   }
   *unaff_FS_OFFSET = local_c;
   return (TView *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D900
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(void)
+
+void __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D930
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(void)
+
+void __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D960
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(void)
+
+void __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d960(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D990
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(void)
+
+void __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d990(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D9C0
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(void)
+
+void __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049D9F0
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(void)
+
+void __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DA20
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(void)
+
+void __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DA50
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(void)
+
+void __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DA80
+// GHIDRA_NAME TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(void)
+
+uint __thiscall
+TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(TAdorner *this)
+
+{
+  undefined4 uVar1;
+  uint uVar2;
+  
+  uVar1 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(0);
+  uVar2 = thunk_SetGlobalUiInvalidationFlagAndReturnPrevious(uVar1);
+  return uVar2 & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DAB0
+// GHIDRA_NAME TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(void)
+
+TAdorner * __thiscall TAdorner::WrapperFor_FreeHeapBufferIfNotNull_At0049dab0(TAdorner *this)
+
+{
+  byte in_stack_00000004;
+  
+  WrapperFor_FreeHeapBufferIfNotNull_At0049dab0_Impl();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 

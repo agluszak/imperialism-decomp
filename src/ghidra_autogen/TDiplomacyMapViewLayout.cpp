@@ -5,28 +5,30 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F6440
 // GHIDRA_NAME TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch
-// GHIDRA_PROTO undefined BuildCombinedTerrainTypeRegionMaskAndDispatch()
+// GHIDRA_PROTO undefined __thiscall BuildCombinedTerrainTypeRegionMaskAndDispatch(void)
 
-void __fastcall TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch(int *param_1)
+void __thiscall
+TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch
+          (TDiplomacyMapViewLayout *this)
 
 {
   undefined4 uVar1;
   undefined4 uVar2;
   int iVar3;
-  int *piVar4;
+  TCountry **ppTVar4;
   
   uVar1 = CreateClipStateRegionWrapperObject();
   iVar3 = 0;
-  piVar4 = &g_apTerrainTypeDescriptorTable;
+  ppTVar4 = g_apTerrainTypeDescriptorTable;
   do {
-    if (*piVar4 != 0) {
+    if (*ppTVar4 != (TCountry *)0x0) {
       uVar2 = (**(code **)(*g_pStrategicMapViewSystem + 0x98))(iVar3,uVar1);
       CombineTwoRegionsIntoDestinationAndUpdateBox(uVar1,uVar2);
     }
     iVar3 = iVar3 + 1;
-    piVar4 = piVar4 + 1;
+    ppTVar4 = ppTVar4 + 1;
   } while ((short)iVar3 < 0x17);
-  (**(code **)(*param_1 + 0xc4))(uVar1);
+  (**(code **)(*(int *)this + 0xc4))(uVar1);
   DestroyClipStateRegionWrapperObject(uVar1);
   return;
 }

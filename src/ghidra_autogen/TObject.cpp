@@ -15,21 +15,22 @@ undefined ** TObject::OrphanVtableAssignStub_00479ed0(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485C90
 // GHIDRA_NAME TObject::CreateTObjectInstance
-// GHIDRA_PROTO undefined CreateTObjectInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTObjectInstance(void)
 
-void TObject::CreateTObjectInstance(int param_1)
+void __thiscall TObject::CreateTObjectInstance(TObject *this)
 
 {
+  int in_stack_00000004;
   undefined4 local_2c;
   undefined4 local_28;
   int local_24;
   undefined4 local_20;
   undefined4 local_1c;
   
-  CWnd::Default();
+  CWnd::Default((CWnd *)this);
   local_2c = 0x2c;
   GetWindowPlacementFromThisHwnd(&local_2c);
-  if ((param_1 == 0) && (local_24 != 2)) {
+  if ((in_stack_00000004 == 0) && (local_24 != 2)) {
     local_24 = 2;
     local_1c = 0xfffffc18;
     local_20 = 0xfffffc18;
@@ -51,12 +52,12 @@ undefined ** TObject::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00485F50
 // GHIDRA_NAME TObject::DestructTObjectAndMaybeFree
-// GHIDRA_PROTO undefined DestructTObjectAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTObjectAndMaybeFree(void)
 
-void __fastcall TObject::DestructTObjectAndMaybeFree(undefined4 *param_1)
+void __thiscall TObject::DestructTObjectAndMaybeFree(TObject *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

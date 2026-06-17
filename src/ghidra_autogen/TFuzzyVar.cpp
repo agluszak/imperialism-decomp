@@ -3,82 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TFuzzyVar.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FF2F0
-// GHIDRA_NAME TFuzzyVar::CreateTFuzzyVarInstance
-// GHIDRA_PROTO undefined CreateTFuzzyVarInstance()
-
-void __thiscall TFuzzyVar::CreateTFuzzyVarInstance(int param_1,LONG *param_2)
-
-{
-  RECT local_20;
-  RECT local_10;
-  
-  if (*(int *)(param_1 + 0x60) != 0) {
-    local_10.left = *param_2;
-    local_10.top = param_2[1];
-    local_10.right = param_2[2];
-    local_20.left = *param_2;
-    local_10.bottom = param_2[3];
-    local_20.right = param_2[2];
-    local_20.top = param_2[1];
-    local_20.bottom = param_2[3];
-    ResetQuickDrawStrokeState();
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(*(int *)(param_1 + 0x60) + 4),
-               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0,
-               (astruct_19 *)0x0);
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF490
 // GHIDRA_NAME TFuzzyVar::GetTFuzzyVarClassNamePointer
-// GHIDRA_PROTO undefined GetTFuzzyVarClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTFuzzyVarClassNamePointer(void)
 
-undefined ** TFuzzyVar::GetTFuzzyVarClassNamePointer(void)
+CRuntimeClass * __thiscall TFuzzyVar::GetTFuzzyVarClassNamePointer(TFuzzyVar *this)
 
 {
-  return &PTR_s_TFuzzyVar_00656940;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF4D0
 // GHIDRA_NAME TFuzzyVar::ConstructTFuzzyVarBaseState
-// GHIDRA_PROTO undefined ConstructTFuzzyVarBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTFuzzyVarBaseState(void)
 
-undefined4 __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(undefined4 param_1,byte param_2)
+TFuzzyVar * __thiscall TFuzzyVar::ConstructTFuzzyVarBaseState(TFuzzyVar *this)
 
 {
-  TFuzzySet::CreateTFuzzySetInstance();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TFuzzySet::CreateTFuzzySetInstance((TFuzzySet *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF7D0
 // GHIDRA_NAME TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
-// GHIDRA_PROTO undefined AllocateAndAppendTFuzzyVarRecord_004ff7d0()
+// GHIDRA_PROTO undefined __thiscall AllocateAndAppendTFuzzyVarRecord_004ff7d0(void)
 
-void __thiscall
-TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
-          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+void __thiscall TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0(TFuzzyVar *this)
 
 {
   undefined4 *puVar1;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  undefined4 in_stack_00000010;
   
   puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
   if (puVar1 == (undefined4 *)0x0) {
     puVar1 = (undefined4 *)0x0;
   }
   else {
-    *puVar1 = &PTR_LAB_00656998;
+    *puVar1 = &TFuzzyVarVtbl_00656998;
   }
-  puVar1[1] = param_2;
-  puVar1[2] = param_3;
-  puVar1[3] = param_4;
-  puVar1[4] = param_5;
-  *(undefined4 **)(param_1 + 8 + *(int *)(param_1 + 4) * 4) = puVar1;
-  *(int *)(param_1 + 4) = *(int *)(param_1 + 4) + 1;
+  puVar1[1] = in_stack_00000004;
+  puVar1[2] = in_stack_00000008;
+  puVar1[3] = in_stack_0000000c;
+  puVar1[4] = in_stack_00000010;
+  *(undefined4 **)(&this->field_0x8 + *(int *)&this->field_0x4 * 4) = puVar1;
+  *(int *)&this->field_0x4 = *(int *)&this->field_0x4 + 1;
   return;
 }
 

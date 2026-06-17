@@ -5,19 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054F4E0
 // GHIDRA_NAME TShip::GetTShipClassNamePointer
-// GHIDRA_PROTO undefined GetTShipClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTShipClassNamePointer(void)
 
-undefined ** TShip::GetTShipClassNamePointer(void)
+CRuntimeClass * __thiscall TShip::GetTShipClassNamePointer(TShip *this)
 
 {
-  return &PTR_s_TShip_0065c318;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054F500
 // GHIDRA_NAME TShip::ConstructAndLinkNavyPrimaryOrderNode
-// GHIDRA_PROTO undefined ConstructAndLinkNavyPrimaryOrderNode()
+// GHIDRA_PROTO undefined __thiscall ConstructAndLinkNavyPrimaryOrderNode(void)
 
-undefined4 * __fastcall TShip::ConstructAndLinkNavyPrimaryOrderNode(undefined4 *param_1)
+TShip * __thiscall TShip::ConstructAndLinkNavyPrimaryOrderNode(TShip *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -28,49 +28,51 @@ undefined4 * __fastcall TShip::ConstructAndLinkNavyPrimaryOrderNode(undefined4 *
   puStack_8 = &LAB_00635028;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &RefCountedObjectBase::_vftable_;
+  this->vftable = (TShipVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  *(undefined2 *)(param_1 + 1) = 0;
-  param_1[2] = 0;
-  param_1[3] = 0;
-  param_1[4] = 1;
-  *(undefined2 *)(param_1 + 5) = 0xffff;
-  InitializeSharedStringRefFromEmpty(param_1 + 6);
-  *(undefined2 *)(param_1 + 7) = 0;
-  param_1[8] = 0;
-  param_1[10] = 0;
-  param_1[9] = g_pNavyPrimaryOrderListHead;
-  param_1[0xb] = 0;
-  *(undefined2 *)(param_1 + 0xc) = 0;
-  param_1[0xd] = 0;
-  *param_1 = &PTR_LAB_0065c438;
-  g_pNavyPrimaryOrderListHead = param_1;
-  if (param_1[9] != 0) {
-    *(undefined4 **)(param_1[9] + 0x28) = param_1;
+  *(undefined2 *)&this->field_0x4 = 0;
+  *(undefined4 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0xc = 0;
+  *(undefined4 *)&this->field_0x10 = 1;
+  *(undefined2 *)&this->field_0x14 = 0xffff;
+  CString::CString((CString *)&this->field_0x18);
+  *(undefined2 *)&this->field_0x1c = 0;
+  *(undefined4 *)&this->field_0x20 = 0;
+  *(undefined4 *)&this->field_0x28 = 0;
+  *(TShip **)&this->field_0x24 = g_pNavyPrimaryOrderListHead;
+  *(undefined4 *)&this->field_0x2c = 0;
+  *(undefined2 *)&this->field_0x30 = 0;
+  *(undefined4 *)&this->field_0x34 = 0;
+  this->vftable = &TShipVtbl_0065c438;
+  g_pNavyPrimaryOrderListHead = this;
+  if (*(int *)&this->field_0x24 != 0) {
+    *(TShip **)(*(int *)&this->field_0x24 + 0x28) = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054F5C0
 // GHIDRA_NAME TShip::DestructTShipAndFreeIfOwned
-// GHIDRA_PROTO undefined DestructTShipAndFreeIfOwned()
+// GHIDRA_PROTO undefined __thiscall DestructTShipAndFreeIfOwned(void)
 
-undefined4 __thiscall TShip::DestructTShipAndFreeIfOwned(undefined4 param_1,byte param_2)
+TShip * __thiscall TShip::DestructTShipAndFreeIfOwned(TShip *this)
 
 {
-  DestructTShip();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTShip(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054F5F0
 // GHIDRA_NAME TShip::DestructTShip
-// GHIDRA_PROTO undefined DestructTShip()
+// GHIDRA_PROTO undefined __thiscall DestructTShip(void)
 
-void __fastcall TShip::DestructTShip(undefined4 *param_1)
+void __thiscall TShip::DestructTShip(TShip *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -82,59 +84,62 @@ void __fastcall TShip::DestructTShip(undefined4 *param_1)
   puStack_8 = &LAB_00635048;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 6);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString((CString *)&this->field_0x18);
+  this->vftable = (TShipVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054F640
 // GHIDRA_NAME TShip::DestroyAndUnlinkNavyPrimaryOrderNode
-// GHIDRA_PROTO undefined DestroyAndUnlinkNavyPrimaryOrderNode()
+// GHIDRA_PROTO undefined __thiscall DestroyAndUnlinkNavyPrimaryOrderNode(void)
 
-void __fastcall TShip::DestroyAndUnlinkNavyPrimaryOrderNode(int *param_1)
+void __thiscall TShip::DestroyAndUnlinkNavyPrimaryOrderNode(TShip *this)
 
 {
   short *psVar1;
   int iVar2;
   int iVar3;
   int *piVar4;
+  TShip *this_00;
   undefined4 uVar5;
+  int *unaff_EDI;
   
-  if (g_pNavyPrimaryOrderListHead == param_1) {
-    g_pNavyPrimaryOrderListHead = (int *)param_1[9];
+  if (g_pNavyPrimaryOrderListHead == this) {
+    g_pNavyPrimaryOrderListHead = *(TShip **)&this->field_0x24;
   }
-  if (param_1[9] != 0) {
-    *(int *)(param_1[9] + 0x28) = param_1[10];
+  if (*(int *)&this->field_0x24 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x24 + 0x28) = *(undefined4 *)&this->field_0x28;
   }
-  if (param_1[10] != 0) {
-    *(int *)(param_1[10] + 0x24) = param_1[9];
+  if (*(int *)&this->field_0x28 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x28 + 0x24) = *(undefined4 *)&this->field_0x24;
   }
-  if ((int *)param_1[0xb] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0xb] + 0x8c))(param_1,1);
+  if (*(int **)&this->field_0x2c != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x2c + 0x8c))(this,1);
   }
-  iVar2 = param_1[3];
+  iVar2 = *(int *)&this->field_0xc;
   if (iVar2 != 0) {
     piVar4 = *(int **)(iVar2 + 0x10);
-    if ((piVar4 != (int *)0x0) && ((int *)*piVar4 != param_1)) {
-      piVar4 = ObjectPool::FindMissionOrderNodeById((ObjectPool *)piVar4[1],(int)param_1);
+    if ((piVar4 != (int *)0x0) && ((TShip *)*piVar4 != this)) {
+      piVar4 = ObjectPool::FindMissionOrderNodeById((ObjectPool *)piVar4[1],(int)this);
     }
     if (piVar4 != (int *)0x0) {
-      piVar4 = *(int **)(iVar2 + 0x10);
-      if (piVar4 == (int *)0x0) {
-        piVar4 = (int *)0x0;
+      this_00 = *(TShip **)(iVar2 + 0x10);
+      if (this_00 == (TShip *)0x0) {
+        this_00 = (TShip *)0x0;
       }
-      else if (param_1 == (int *)*piVar4) {
-        piVar4 = thunk_DeleteMapOrderChildLinkAndReturnNext(piVar4);
+      else if (this == (TShip *)this_00->vftable) {
+        this_00 = (TShip *)thunk_DeleteMapOrderChildLinkAndReturnNext(this_00,unaff_EDI);
       }
       else {
-        RemoveLinkedOrderNodeByValueRecursive(param_1);
+        RemoveLinkedOrderNodeByValueRecursive(this);
       }
-      *(int **)(iVar2 + 0x10) = piVar4;
-      psVar1 = (short *)(iVar2 + 0x1e + *(short *)(&DAT_00698120 + (short)param_1[1] * 0x24) * 2);
+      *(TShip **)(iVar2 + 0x10) = this_00;
+      psVar1 = (short *)(iVar2 + 0x1e +
+                        *(short *)(&DAT_00698120 + *(short *)&this->field_0x4 * 0x24) * 2);
       *psVar1 = *psVar1 + -1;
     }
-    if (param_1 == *(int **)(iVar2 + 0x14)) {
+    if (this == *(TShip **)(iVar2 + 0x14)) {
       iVar3 = *(int *)(iVar2 + 0x10);
       *(undefined4 *)(iVar2 + 0x14) = 0;
       for (; iVar3 != 0; iVar3 = *(int *)(iVar3 + 4)) {
@@ -143,59 +148,59 @@ void __fastcall TShip::DestroyAndUnlinkNavyPrimaryOrderNode(int *param_1)
         *(undefined4 *)(iVar2 + 0x14) = uVar5;
       }
     }
-    param_1[3] = 0;
+    *(undefined4 *)&this->field_0xc = 0;
   }
-  if ((int *)param_1[8] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[8] + 0x1c))();
+  if (*(int **)&this->field_0x20 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x20 + 0x1c))();
   }
-  if (param_1 != (int *)0x0) {
-    (**(code **)(*param_1 + 4))(1);
+  if (this != (TShip *)0x0) {
+    (*this->vftable->DestructTShipAndFreeIfOwned)(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054FAB0
 // GHIDRA_NAME TShip::SerializeNavyPrimaryOrderNodeToStream
-// GHIDRA_PROTO undefined SerializeNavyPrimaryOrderNodeToStream()
+// GHIDRA_PROTO undefined __thiscall SerializeNavyPrimaryOrderNodeToStream(void)
 
-void __thiscall TShip::SerializeNavyPrimaryOrderNodeToStream(int param_1,int *param_2)
+void __thiscall TShip::SerializeNavyPrimaryOrderNodeToStream(TShip *this)
 
 {
   int iVar1;
   code *pcVar2;
+  int *in_stack_00000004;
   undefined4 uStack_30;
-  int iStack_2c;
-  int iStack_28;
+  undefined1 *puStack_2c;
+  undefined1 *puStack_28;
   undefined4 uStack_24;
-  int iStack_20;
+  undefined1 *puStack_20;
   undefined4 uStack_1c;
-  int iStack_18;
-  int *piStack_14;
+  undefined1 *puStack_18;
+  undefined4 uStack_14;
   
-  piStack_14 = param_2;
-  iStack_18 = 0x54fac0;
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  iVar1 = *param_2;
-  iStack_18 = param_1 + 4;
-  piStack_14 = (int *)0x2;
+  puStack_18 = (undefined1 *)0x54fac0;
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  iVar1 = *in_stack_00000004;
+  puStack_18 = &this->field_0x4;
+  uStack_14 = 2;
   pcVar2 = *(code **)(iVar1 + 0x78);
   uStack_1c = 0x54facf;
   (*pcVar2)();
-  iStack_20 = param_1 + 0x10;
+  puStack_20 = &this->field_0x10;
   uStack_1c = 4;
   uStack_24 = 0x54fad9;
   (*pcVar2)();
-  iStack_28 = param_1 + 0x14;
+  puStack_28 = &this->field_0x14;
   uStack_24 = 2;
-  iStack_2c = 0x54fae3;
+  puStack_2c = (undefined1 *)0x54fae3;
   (*pcVar2)();
-  iStack_2c = param_1 + 0x18;
+  puStack_2c = &this->field_0x18;
   uStack_30 = 0x54faef;
   (**(code **)(iVar1 + 0xac))();
   uStack_30 = 2;
-  (*pcVar2)(param_1 + 0x1c);
-  (*pcVar2)(param_1 + 0x34,4);
-  (*pcVar2)(param_1 + 0x30,2);
+  (*pcVar2)(&this->field_0x1c);
+  (*pcVar2)(&this->field_0x34,4);
+  (*pcVar2)(&this->field_0x30,2);
   uStack_30 = thunk_GetShortAtOffset14OrInvalid();
   (*pcVar2)(&uStack_30,2);
   return;
@@ -203,99 +208,125 @@ void __thiscall TShip::SerializeNavyPrimaryOrderNodeToStream(int param_1,int *pa
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054FB50
 // GHIDRA_NAME TShip::DeserializeNavyPrimaryOrderNodeFromStream
-// GHIDRA_PROTO undefined DeserializeNavyPrimaryOrderNodeFromStream()
+// GHIDRA_PROTO undefined __thiscall DeserializeNavyPrimaryOrderNodeFromStream(void)
 
-void __thiscall TShip::DeserializeNavyPrimaryOrderNodeFromStream(int param_1,int *param_2)
+void __thiscall TShip::DeserializeNavyPrimaryOrderNodeFromStream(TShip *this)
 
 {
   int iVar1;
   code *pcVar2;
+  int *in_stack_00000004;
   undefined4 uVar3;
   undefined4 uStack_34;
-  int iStack_30;
+  undefined1 *puStack_30;
   undefined4 uStack_2c;
-  int iStack_28;
+  undefined1 *puStack_28;
   undefined4 uStack_24;
-  int iStack_20;
+  undefined1 *puStack_20;
   undefined4 uStack_1c;
-  int iStack_18;
-  int *piStack_14;
+  undefined1 *puStack_18;
+  undefined4 uStack_14;
   
-  piStack_14 = param_2;
-  iStack_18 = 0x54fb60;
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  iVar1 = *param_2;
-  iStack_18 = param_1 + 4;
-  piStack_14 = (int *)0x2;
+  puStack_18 = (undefined1 *)0x54fb60;
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  iVar1 = *in_stack_00000004;
+  puStack_18 = &this->field_0x4;
+  uStack_14 = 2;
   pcVar2 = *(code **)(iVar1 + 0x3c);
   uStack_1c = 0x54fb6f;
   (*pcVar2)();
-  iStack_20 = param_1 + 0x10;
+  puStack_20 = &this->field_0x10;
   uStack_1c = 4;
   uStack_24 = 0x54fb79;
   (*pcVar2)();
-  iStack_28 = param_1 + 0x14;
+  puStack_28 = &this->field_0x14;
   uStack_24 = 2;
   uStack_2c = 0x54fb83;
   (*pcVar2)();
-  iStack_30 = param_1 + 0x18;
+  puStack_30 = &this->field_0x18;
   uStack_2c = 0x20;
   uStack_34 = 0x54fb8e;
   (**(code **)(iVar1 + 0x70))();
   uStack_34 = 2;
-  (*pcVar2)(param_1 + 0x1c);
+  (*pcVar2)(&this->field_0x1c);
   uVar3 = 4;
-  (*pcVar2)(param_1 + 0x34,4);
-  (*pcVar2)(param_1 + 0x30,2);
+  (*pcVar2)(&this->field_0x34,4);
+  (*pcVar2)(&this->field_0x30,2);
   (*pcVar2)(&uStack_34,2);
   uVar3 = FindMapActionContextByNodeId(uVar3);
-  *(undefined4 *)(param_1 + 8) = uVar3;
+  *(undefined4 *)&this->field_0x8 = uVar3;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00552590
+// GHIDRA_NAME TShip::DeleteMapOrderChildLinkAndReturnNext
+// GHIDRA_PROTO int * __thiscall DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: int * DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: int * DeleteMapOrderChildLinkAndReturnNext(int * pChildLinkNode) */
+
+int * __thiscall TShip::DeleteMapOrderChildLinkAndReturnNext(TShip *this,int *pChildLinkNode)
+
+{
+  int *piVar1;
+  
+  piVar1 = *(int **)&this->field_0x4;
+  if (piVar1 != (int *)0x0) {
+    piVar1[2] = *(int *)&this->field_0x8;
+  }
+  if (*(int *)&this->field_0x8 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x8 + 4) = *(undefined4 *)&this->field_0x4;
+  }
+  FreeHeapBufferIfNotNull(this);
+  return piVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552B90
 // GHIDRA_NAME TShip::SerializeTaskForceToBinaryStream
-// GHIDRA_PROTO undefined SerializeTaskForceToBinaryStream()
+// GHIDRA_PROTO undefined __thiscall SerializeTaskForceToBinaryStream(void)
 
-void __thiscall TShip::SerializeTaskForceToBinaryStream(int param_1,int *param_2)
+void __thiscall TShip::SerializeTaskForceToBinaryStream(TShip *this)
 
 {
   code *pcVar1;
-  int *piVar2;
-  int iVar3;
-  short sVar4;
+  int iVar2;
+  int *piVar3;
+  TShip *pTVar4;
+  short sVar5;
   undefined2 extraout_var;
-  int iStack_44;
+  int *in_stack_00000004;
+  undefined1 *puStack_44;
   undefined4 uStack_40;
-  int iStack_3c;
+  undefined1 *puStack_3c;
   undefined4 uStack_38;
   undefined1 *puStack_34;
   undefined4 uStack_30;
   undefined1 *puStack_2c;
   undefined4 uStack_28;
-  int *piStack_24;
+  undefined1 *puStack_24;
   undefined4 uStack_20;
-  int iStack_1c;
-  int *piStack_18;
+  undefined1 *puStack_1c;
+  undefined4 uStack_18;
   
-  piStack_18 = param_2;
-  iStack_1c = 0x552ba1;
-  TradeControl::thunk_HandleCityDialogNoOpSlot14();
-  iStack_1c = param_1 + 4;
-  piStack_18 = (int *)0x4;
-  pcVar1 = *(code **)(*param_2 + 0x78);
+  puStack_1c = (undefined1 *)0x552ba1;
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  puStack_1c = &this->field_0x4;
+  uStack_18 = 4;
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
   uStack_20 = 0x552bb0;
   (*pcVar1)();
   uStack_20 = 4;
   uStack_28 = 0x552bba;
-  piStack_24 = (int *)(param_1 + 8);
+  puStack_24 = &this->field_0x8;
   (*pcVar1)();
-  if (*(int *)(param_1 + 8) == 5) {
-    sVar4 = 0;
+  if (*(int *)&this->field_0x8 == 5) {
+    sVar5 = 0;
     do {
-      if (*(int *)(g_pGlobalMapState + 0x10) + sVar4 * 0xa8 == *(int *)(param_1 + 0xc)) break;
-      sVar4 = sVar4 + 1;
-    } while (sVar4 < 0x180);
+      if (*(int *)&g_pGlobalMapState->field_0x10 + sVar5 * 0xa8 == *(int *)&this->field_0xc) break;
+      sVar5 = sVar5 + 1;
+    } while (sVar5 < 0x180);
   }
   else {
     uStack_28 = 0x552bfc;
@@ -311,144 +342,147 @@ void __thiscall TShip::SerializeTaskForceToBinaryStream(int param_1,int *param_2
   uStack_30 = 2;
   uStack_38 = 0x552c22;
   (*pcVar1)();
-  iStack_3c = param_1 + 0x1c;
+  puStack_3c = &this->field_0x1c;
   uStack_38 = 2;
   uStack_40 = 0x552c2c;
   (*pcVar1)();
-  iStack_44 = param_1 + 0x26;
+  puStack_44 = &this->field_0x26;
   uStack_40 = 1;
   (*pcVar1)();
-  (*pcVar1)(param_1 + 0x30,2);
-  if (param_1 == 0) {
-    iStack_3c = 0;
+  (*pcVar1)(&this->field_0x30,2);
+  if (this == (TShip *)0x0) {
+    puStack_3c = (undefined1 *)0x0;
   }
   else {
-    iStack_3c = 0;
-    for (iVar3 = *(int *)(param_1 + 0x10); iVar3 != 0; iVar3 = *(int *)(iVar3 + 4)) {
-      iStack_3c = iStack_3c + 1;
+    puStack_3c = (undefined1 *)0x0;
+    for (iVar2 = *(int *)&this->field_0x10; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
+      puStack_3c = puStack_3c + 1;
     }
   }
-  (*pcVar1)(&iStack_3c,2);
-  for (piVar2 = *(int **)(param_1 + 0x10); piVar2 != (int *)0x0; piVar2 = (int *)piVar2[1]) {
-    iStack_3c = 0;
-    for (iVar3 = g_pNavyPrimaryOrderListHead; (iVar3 != 0 && (iVar3 != *piVar2));
-        iVar3 = *(int *)(iVar3 + 0x24)) {
-      iStack_3c = iStack_3c + 1;
+  (*pcVar1)(&puStack_3c,2);
+  for (piVar3 = *(int **)&this->field_0x10; piVar3 != (int *)0x0; piVar3 = (int *)piVar3[1]) {
+    puStack_3c = (undefined1 *)0x0;
+    for (pTVar4 = g_pNavyPrimaryOrderListHead;
+        (pTVar4 != (TShip *)0x0 && (pTVar4 != (TShip *)*piVar3));
+        pTVar4 = *(TShip **)&pTVar4->field_0x24) {
+      puStack_3c = puStack_3c + 1;
     }
-    (*pcVar1)(&iStack_3c,2);
-    iStack_44 = CONCAT22(extraout_var,(short)(char)piVar2[3]);
-    (*pcVar1)(&iStack_44,2);
+    (*pcVar1)(&puStack_3c,2);
+    puStack_44 = (undefined1 *)CONCAT22(extraout_var,(short)(char)piVar3[3]);
+    (*pcVar1)(&puStack_44,2);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00552D10
 // GHIDRA_NAME TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers
-// GHIDRA_PROTO undefined DeserializeTaskForceFromBinaryStreamAndRefreshMarkers()
+// GHIDRA_PROTO undefined __thiscall DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(void)
 
-void __thiscall
-TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(int param_1,int *param_2)
+void __thiscall TShip::DeserializeTaskForceFromBinaryStreamAndRefreshMarkers(TShip *this)
 
 {
   code *pcVar1;
+  TShip *nChildNodeId;
   char cVar2;
   short sVar3;
   int iVar4;
   undefined4 uVar5;
   short *psVar6;
   int *piVar7;
-  int iStack_54;
+  int *in_stack_00000004;
+  undefined1 *puStack_54;
   short *psStack_4c;
-  int *piStack_48;
-  int *piStack_44;
-  int iStack_40;
+  short *psStack_48;
+  undefined1 **ppuStack_44;
+  undefined1 *puStack_40;
   undefined1 *puStack_3c;
   undefined4 uStack_38;
-  int *piStack_34;
+  undefined1 *puStack_34;
   undefined4 uStack_30;
-  int iStack_2c;
-  int *piStack_28;
+  undefined1 *puStack_2c;
+  undefined1 *puStack_28;
   
-  piStack_28 = param_2;
-  iStack_2c = 0x552d27;
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  iStack_2c = param_1 + 4;
-  piStack_28 = (int *)0x4;
-  pcVar1 = *(code **)(*param_2 + 0x3c);
+  puStack_2c = (undefined1 *)0x552d27;
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  puStack_2c = &this->field_0x4;
+  puStack_28 = (undefined1 *)0x4;
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
   uStack_30 = 0x552d36;
   (*pcVar1)();
   uStack_30 = 4;
   uStack_38 = 0x552d40;
-  piStack_34 = (int *)(param_1 + 8);
+  puStack_34 = &this->field_0x8;
   (*pcVar1)();
   puStack_3c = &stack0xffffffdc;
   uStack_38 = 2;
-  iStack_40 = 0x552d4b;
+  puStack_40 = (undefined1 *)0x552d4b;
   (*pcVar1)();
-  if (*(int *)(param_1 + 8) == 5) {
-    iVar4 = *(int *)(g_pGlobalMapState + 0x10) + (short)iStack_2c * 0xa8;
+  if (*(int *)&this->field_0x8 == 5) {
+    iVar4 = *(int *)&g_pGlobalMapState->field_0x10 + (short)puStack_2c * 0xa8;
   }
   else {
-    iStack_40 = iStack_2c;
-    piStack_44 = (int *)0x552d77;
+    puStack_40 = puStack_2c;
+    ppuStack_44 = (undefined1 **)0x552d77;
     iVar4 = FindMapActionContextByNodeId();
   }
-  piStack_44 = &iStack_2c;
-  iStack_40 = 2;
-  *(int *)(param_1 + 0xc) = iVar4;
-  piStack_48 = (int *)0x552d88;
+  ppuStack_44 = &puStack_2c;
+  puStack_40 = (undefined1 *)0x2;
+  *(int *)&this->field_0xc = iVar4;
+  psStack_48 = (short *)0x552d88;
   (*pcVar1)();
-  piStack_48 = piStack_34;
+  psStack_48 = (short *)puStack_34;
   psStack_4c = (short *)0x552d92;
   uVar5 = FindMapActionContextByNodeId();
-  piVar7 = (int *)(param_1 + 0x1c);
-  *(undefined4 *)(param_1 + 0x18) = uVar5;
-  piStack_48 = (int *)0x2;
-  psStack_4c = (short *)piVar7;
-  piStack_28 = piVar7;
+  psVar6 = (short *)&this->field_0x1c;
+  *(undefined4 *)&this->field_0x18 = uVar5;
+  psStack_48 = (short *)0x2;
+  psStack_4c = psVar6;
+  puStack_28 = (undefined1 *)psVar6;
   (*pcVar1)();
   (*pcVar1)();
-  piStack_34 = (int *)(param_1 + 0x30);
-  (*pcVar1)(piStack_34,2);
+  puStack_34 = &this->field_0x30;
+  (*pcVar1)(puStack_34,2);
   (*pcVar1)(&psStack_4c,2);
-  iStack_54 = param_1 + 0x25;
-  if ((short)param_1 != -0x26) {
+  puStack_54 = &this->field_0x25;
+  if ((short)this != -0x26) {
     do {
       (*pcVar1)(&psStack_4c,2);
-      (*pcVar1)(&piStack_44,2);
-      iVar4 = g_pNavyPrimaryOrderListHead;
-      for (psVar6 = psStack_4c; (iVar4 != 0 && ((short)psVar6 != 0));
+      (*pcVar1)(&ppuStack_44,2);
+      nChildNodeId = g_pNavyPrimaryOrderListHead;
+      for (psVar6 = psStack_4c; (nChildNodeId != (TShip *)0x0 && ((short)psVar6 != 0));
           psVar6 = (short *)((int)psVar6 + -1)) {
-        iVar4 = *(int *)(iVar4 + 0x24);
+        nChildNodeId = *(TShip **)&nChildNodeId->field_0x24;
       }
-      if ((0x10 < DAT_00695278) || (*(int *)(iVar4 + 0xc) == 0)) {
-        GetOrCreateTaskForceOrderNodeByTemplate(iVar4);
+      if ((0x10 < DAT_00695278) || (*(int *)&nChildNodeId->field_0xc == 0)) {
+        GetOrCreateTaskForceOrderNodeByTemplate(nChildNodeId);
         cVar2 = (char)puStack_3c;
         piVar7 = piRam00000011;
-        if ((piRam00000011 != (int *)0x0) && (*piRam00000011 != iVar4)) {
-          piVar7 = ObjectPool::FindMissionOrderNodeById((ObjectPool *)piRam00000011[1],iVar4);
+        if ((piRam00000011 != (int *)0x0) && ((TShip *)*piRam00000011 != nChildNodeId)) {
+          piVar7 = ObjectPool::FindMissionOrderNodeById
+                             ((ObjectPool *)piRam00000011[1],(int)nChildNodeId);
         }
         if ((piVar7 != (int *)0x0) && (*(char *)(piVar7 + 3) = cVar2, cVar2 != '\0')) {
-          *(undefined4 *)(iVar4 + 0x34) = 0;
+          *(undefined4 *)&nChildNodeId->field_0x34 = 0;
         }
       }
-      sVar3 = (short)iStack_54;
-      iStack_54 = iStack_54 + -1;
-      piVar7 = piStack_48;
+      sVar3 = (short)puStack_54;
+      puStack_54 = puStack_54 + -1;
+      psVar6 = psStack_48;
     } while (sVar3 != 0);
   }
   sVar3 = UiRuntimeContext::GetActiveNationId();
-  if ((short)*piStack_44 == -1) {
-    if (*(short *)piVar7 != sVar3) {
+  if (*(short *)ppuStack_44 == -1) {
+    if (*psVar6 != sVar3) {
       return;
     }
   }
   else {
-    if (*(short *)piVar7 != sVar3) {
-      *(short *)piStack_44 = -1;
+    if (*psVar6 != sVar3) {
+      *(short *)ppuStack_44 = -1;
       return;
     }
-    if (-1 < *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0x16 + (short)*piStack_44 * 0x24)) {
+    if (-1 < *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 0x16 + *(short *)ppuStack_44 * 0x24))
+    {
       return;
     }
   }

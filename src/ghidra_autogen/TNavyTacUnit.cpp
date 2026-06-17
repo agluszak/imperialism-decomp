@@ -3,45 +3,56 @@
 // Program: Imperialism.exe
 // Bucket: TNavyTacUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A61C0
-// GHIDRA_NAME TNavyTacUnit::CreateTNavyTacUnitInstance
-// GHIDRA_PROTO undefined CreateTNavyTacUnitInstance()
-
-void __thiscall TNavyTacUnit::CreateTNavyTacUnitInstance(int param_1,int param_2,int param_3)
-
-{
-  param_3 = *(int *)(param_1 + 0x34) - param_3;
-  *(int *)(param_1 + 0x34) = param_3;
-  if (param_3 < 1) {
-    *(undefined4 *)(param_1 + 0x34) = 0;
-    *(undefined4 *)(param_1 + 0x1c) = 1;
-  }
-  param_2 = *(int *)(param_1 + 4) - param_2;
-  *(int *)(param_1 + 4) = param_2;
-  if (param_2 < 1) {
-    *(undefined4 *)(param_1 + 4) = 0;
-    *(undefined4 *)(param_1 + 0x1c) = 3;
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6270
-// GHIDRA_NAME TNavyTacUnit::GetTNavyTacUnitClassNamePointer
-// GHIDRA_PROTO undefined GetTNavyTacUnitClassNamePointer()
+// GHIDRA_NAME TNavyTacUnit::GetTTacticalUnitClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTTacticalUnitClassNamePointer(void)
 
-undefined ** TNavyTacUnit::GetTNavyTacUnitClassNamePointer(void)
+CRuntimeClass * __thiscall TNavyTacUnit::GetTTacticalUnitClassNamePointer(TNavyTacUnit *this)
 
 {
-  return &PTR_s_TNavyTacUnit_00669e78;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6310
-// GHIDRA_NAME TNavyTacUnit::DestructTNavyTacUnitAndMaybeFree
-// GHIDRA_PROTO undefined DestructTNavyTacUnitAndMaybeFree()
+// GHIDRA_NAME TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
 
-undefined4 __fastcall TNavyTacUnit::DestructTNavyTacUnitAndMaybeFree(int param_1)
+undefined4 __thiscall TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40(TNavyTacUnit *this)
 
 {
-  return *(undefined4 *)(param_1 + 0x3c);
+  return *(undefined4 *)&this->field_0x3c;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A6330
+// GHIDRA_NAME TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d60(void)
+
+int __thiscall TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60(TNavyTacUnit *this)
+
+{
+  short sVar1;
+  
+  sVar1 = GetOrderNodeDescriptorWord0CByResourceType();
+  return (int)sVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A6350
+// GHIDRA_NAME TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5d80(void)
+
+float10 __thiscall TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TNavyTacUnit *this)
+
+{
+  return (float10)*(float *)(&DAT_00669d48 + *(int *)&this->field_0xc * 4);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A6370
+// GHIDRA_NAME TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5da0(void)
+
+float10 __thiscall TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TNavyTacUnit *this)
+
+{
+  return (float10)*(float *)(&DAT_00669d28 + *(int *)&this->field_0xc * 4);
 }
 

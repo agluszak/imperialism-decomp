@@ -3,38 +3,93 @@
 // Program: Imperialism.exe
 // Bucket: TDocument.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00486380
-// GHIDRA_NAME TDocument::CreateTDocumentInstance
-// GHIDRA_PROTO undefined CreateTDocumentInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x00486320
+// GHIDRA_NAME TDocument::CreateObject
+// GHIDRA_PROTO TDocument * __cdecl CreateObject(void)
 
-void __fastcall TDocument::CreateTDocumentInstance(undefined4 *param_1)
+TDocument * __cdecl TDocument::CreateObject(void)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  TDocument *pTVar1;
+  
+  pTVar1 = (TDocument *)AllocateWithFallbackHandler(4);
+  if (pTVar1 != (TDocument *)0x0) {
+    pTVar1->vftable = &TDocumentVtbl_00648a60;
+    return pTVar1;
+  }
+  return (TDocument *)0x0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486350
+// GHIDRA_NAME TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486350(void)
+
+TDocument * __thiscall TDocument::WrapperFor_FreeHeapBufferIfNotNull_At00486350(TDocument *this)
+
+{
+  byte in_stack_00000004;
+  
+  CreateTDocumentInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486380
+// GHIDRA_NAME TDocument::CreateTDocumentInstance
+// GHIDRA_PROTO undefined __thiscall CreateTDocumentInstance(void)
+
+void __thiscall TDocument::CreateTDocumentInstance(TDocument *this)
+
+{
+  this->vftable = (TDocumentVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004863A0
 // GHIDRA_NAME TDocument::GetTDocumentClassNamePointer
-// GHIDRA_PROTO undefined GetTDocumentClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
 
-undefined ** TDocument::GetTDocumentClassNamePointer(void)
+CRuntimeClass * __thiscall TDocument::GetTDocumentClassNamePointer(TDocument *this)
 
 {
-  return &PTR_s_TDocument_00648a20;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004863F0
 // GHIDRA_NAME TDocument::ConstructTDocumentBaseState
-// GHIDRA_PROTO undefined ConstructTDocumentBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(void)
 
-undefined4 __thiscall TDocument::ConstructTDocumentBaseState(undefined4 param_1,byte param_2)
+TDocument * __thiscall TDocument::ConstructTDocumentBaseState(TDocument *this)
 
 {
-  TFileBasedDocument::CreateTFileBasedDocumentInstance();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TFileBasedDocument::CreateTFileBasedDocumentInstance((TFileBasedDocument *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486530
+// GHIDRA_NAME TDocument::OrphanRetStub_00486530
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00486530(void)
+
+void __thiscall TDocument::OrphanRetStub_00486530(TDocument *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486550
+// GHIDRA_NAME TDocument::OrphanRetStub_00486550
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00486550(void)
+
+void __thiscall TDocument::OrphanRetStub_00486550(TDocument *this)
+
+{
+  return;
 }
 

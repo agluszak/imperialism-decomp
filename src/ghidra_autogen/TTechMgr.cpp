@@ -3,61 +3,358 @@
 // Program: Imperialism.exe
 // Bucket: TTechMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005AED50
-// GHIDRA_NAME TTechMgr::CreateTTechMgrInstance
-// GHIDRA_PROTO undefined CreateTTechMgrInstance()
-
-undefined4 __fastcall TTechMgr::CreateTTechMgrInstance(int *param_1)
-
-{
-  code *pcVar1;
-  int iVar2;
-  short sVar3;
-  code *unaff_EBX;
-  int iVar4;
-  short unaff_retaddr;
-  
-  sVar3 = 1;
-  iVar4 = *param_1;
-  iVar2 = (**(code **)(iVar4 + 0x48))();
-  if (iVar2 < 1) {
-    return 0;
-  }
-  pcVar1 = *(code **)(iVar4 + 0x4c);
-  iVar4 = 1;
-  do {
-    iVar4 = (*pcVar1)(iVar4);
-    if (*(short *)(iVar4 + 4) == unaff_retaddr) {
-      return 1;
-    }
-    sVar3 = sVar3 + 1;
-    iVar4 = (int)sVar3;
-    iVar2 = (*unaff_EBX)();
-  } while (iVar4 <= iVar2);
-  return 0;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEF60
 // GHIDRA_NAME TTechMgr::GetTTechMgrClassNamePointer
-// GHIDRA_PROTO undefined GetTTechMgrClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTTechMgrClassNamePointer(void)
 
-undefined ** TTechMgr::GetTTechMgrClassNamePointer(void)
+CRuntimeClass * __thiscall TTechMgr::GetTTechMgrClassNamePointer(TTechMgr *this)
 
 {
-  return &PTR_s_TTechMgr_0066ac98;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AEF80
+// GHIDRA_NAME TTechMgr::ConstructCityOrderCapabilityStateVtable
+// GHIDRA_PROTO undefined __thiscall ConstructCityOrderCapabilityStateVtable(void)
+
+void __thiscall TTechMgr::ConstructCityOrderCapabilityStateVtable(TTechMgr *this)
+
+{
+  this->vftable = &TTechMgrVtbl_0066ad28;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEFA0
 // GHIDRA_NAME TTechMgr::DestructTTechMgrAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTechMgrAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTTechMgrAndMaybeFree(void)
 
-undefined4 __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(undefined4 param_1,byte param_2)
+TTechMgr * __thiscall TTechMgr::DestructTTechMgrAndMaybeFree(TTechMgr *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTTechMgrAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AF460
+// GHIDRA_NAME TTechMgr::DeserializeCityOrderCapabilityState
+// GHIDRA_PROTO undefined __thiscall DeserializeCityOrderCapabilityState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Deserializes CityOrderCapabilityState from persistence/archive stream with version handling.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Read base capability blocks into this+0x004 and this+0x03E.
+// GHIDRA_COMMENT 2. Read scalar capability metadata blocks (+0x1D2, +0x1D4, +0x180, +0x19D, +0x1AB, +0x1C9).
+// GHIDRA_COMMENT 3. For newer save versions, read extended blocks including:
+// GHIDRA_COMMENT    - +0x333 (selection/priority flags)
+// GHIDRA_COMMENT    - +0x395 (era capability availability table)
+// GHIDRA_COMMENT    - +0x467 (recruitment/city-order availability table)
+// GHIDRA_COMMENT 4. Apply byte-swap compatibility paths for older build versions.
+// GHIDRA_COMMENT 5. Recompute derived averages via RecomputeGlobalCapabilityAverages().
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT This function is a key source for persisted city/university capability state.
+// GHIDRA_COMMENT_END
+
+/* Deserializes CityOrderCapabilityState from persistence/archive stream with version handling.
+   
+   Algorithm:
+   1. Read base capability blocks into this+0x004 and this+0x03E.
+   2. Read scalar capability metadata blocks (+0x1D2, +0x1D4, +0x180, +0x19D, +0x1AB, +0x1C9).
+   3. For newer save versions, read extended blocks including:
+      - +0x333 (selection/priority flags)
+      - +0x395 (era capability availability table)
+      - +0x467 (recruitment/city-order availability table)
+   4. Apply byte-swap compatibility paths for older build versions.
+   5. Recompute derived averages via RecomputeGlobalCapabilityAverages().
+   
+   This function is a key source for persisted city/university capability state. */
+
+void __thiscall TTechMgr::DeserializeCityOrderCapabilityState(TTechMgr *this)
+
+{
+  undefined1 uVar1;
+  undefined1 *puVar2;
+  int iVar3;
+  code *pcVar4;
+  int *in_stack_00000004;
+  undefined4 uVar5;
+  
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  if (DAT_00695278 < 0x27) {
+    pcVar4 = *(code **)(*in_stack_00000004 + 0x3c);
+    (*pcVar4)(&this->field_0x4,0x3a);
+    (*pcVar4)(&this->field_0x3e,0x2e);
+    (*pcVar4)(&this->field_0x1d2,2);
+    (*pcVar4)(&this->field_0x1d4,2);
+    (*pcVar4)(&this->field_0x180,0x1d);
+    (*pcVar4)(&this->field_0x19d,0xe);
+    (*pcVar4)(&this->field_0x1ab,0x1e);
+    puVar2 = &this->field_0x1c9;
+    uVar5 = 9;
+  }
+  else {
+    puVar2 = &this->field_0x4;
+    pcVar4 = *(code **)(*in_stack_00000004 + 0x3c);
+    (*pcVar4)(puVar2,0x3a);
+    iVar3 = 0x1d;
+    do {
+      uVar1 = *puVar2;
+      *puVar2 = puVar2[1];
+      puVar2[1] = uVar1;
+      puVar2 = puVar2 + 2;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+    puVar2 = &this->field_0x3e;
+    (*pcVar4)(puVar2,0x142);
+    iVar3 = 0xa1;
+    do {
+      uVar1 = *puVar2;
+      *puVar2 = puVar2[1];
+      puVar2[1] = uVar1;
+      puVar2 = puVar2 + 2;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+    (*pcVar4)(&this->field_0x1d2,2);
+    (*pcVar4)(&this->field_0x1d4,2);
+    (*pcVar4)(&this->field_0x180,0x1d);
+    (*pcVar4)(&this->field_0x19d,0xe);
+    (*pcVar4)(&this->field_0x1ab,0x1e);
+    (*pcVar4)(&this->field_0x1c9,9);
+    if (DAT_00695278 < 0x35) goto LAB_005af590;
+    puVar2 = &this->field_0x264;
+    uVar5 = 4;
+  }
+  (*pcVar4)(puVar2,uVar5);
+LAB_005af590:
+  if (0xf < DAT_00695278) {
+    puVar2 = &this->field_0x1d6;
+    (*pcVar4)(puVar2,0x8c);
+    iVar3 = 0x46;
+    do {
+      uVar1 = *puVar2;
+      *puVar2 = puVar2[1];
+      puVar2[1] = uVar1;
+      puVar2 = puVar2 + 2;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+  }
+  if (0x17 < DAT_00695278) {
+    (*pcVar4)(&this->field_0x268,0xcb);
+    (*pcVar4)(&this->field_0x333,0x62);
+    (*pcVar4)(&this->field_0x395,0xd2);
+    (*pcVar4)(&this->field_0x467,0x3f);
+    puVar2 = &this->field_0x4a6;
+    (*pcVar4)(puVar2,0x196);
+    iVar3 = 0xcb;
+    do {
+      uVar1 = *puVar2;
+      *puVar2 = puVar2[1];
+      puVar2[1] = uVar1;
+      puVar2 = puVar2 + 2;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+  }
+  if (0x18 < DAT_00695278) {
+    puVar2 = &this->field_0x3e;
+    (*pcVar4)(puVar2,0x142);
+    iVar3 = 0xa1;
+    do {
+      uVar1 = *puVar2;
+      *puVar2 = puVar2[1];
+      puVar2[1] = uVar1;
+      puVar2 = puVar2 + 2;
+      iVar3 = iVar3 + -1;
+    } while (iVar3 != 0);
+  }
+  if (0x1e < DAT_00695278) {
+    (*pcVar4)(&this->field_0x262,2);
+  }
+  RecomputeGlobalCapabilityAverages();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AF710
+// GHIDRA_NAME TTechMgr::SerializeCityOrderCapabilityState
+// GHIDRA_PROTO undefined __thiscall SerializeCityOrderCapabilityState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Serializes CityOrderCapabilityState to persistence/archive stream.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Write core capability blocks (+0x004, +0x03E).
+// GHIDRA_COMMENT 2. Write scalar and small metadata blocks (+0x1D2, +0x1D4, +0x180, +0x19D, +0x1AB, +0x1C9, +0x264).
+// GHIDRA_COMMENT 3. Write extended capability tables:
+// GHIDRA_COMMENT    - +0x333 (selection/priority flags)
+// GHIDRA_COMMENT    - +0x395 (era capability availability)
+// GHIDRA_COMMENT    - +0x467 (recruitment/city-order availability)
+// GHIDRA_COMMENT 4. Write remaining extended arrays (+0x4A6 etc.) and terminal fields.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT This function is the persistence writeback counterpart of DeserializeCityOrderCapabilityState.
+// GHIDRA_COMMENT_END
+
+/* Serializes CityOrderCapabilityState to persistence/archive stream.
+   
+   Algorithm:
+   1. Write core capability blocks (+0x004, +0x03E).
+   2. Write scalar and small metadata blocks (+0x1D2, +0x1D4, +0x180, +0x19D, +0x1AB, +0x1C9,
+   +0x264).
+   3. Write extended capability tables:
+      - +0x333 (selection/priority flags)
+      - +0x395 (era capability availability)
+      - +0x467 (recruitment/city-order availability)
+   4. Write remaining extended arrays (+0x4A6 etc.) and terminal fields.
+   
+   This function is the persistence writeback counterpart of DeserializeCityOrderCapabilityState. */
+
+void __thiscall TTechMgr::SerializeCityOrderCapabilityState(TTechMgr *this)
+
+{
+  code *pcVar1;
+  undefined4 extraout_ECX;
+  undefined4 extraout_ECX_00;
+  undefined4 extraout_ECX_01;
+  undefined4 extraout_ECX_02;
+  undefined4 extraout_ECX_03;
+  undefined4 uVar2;
+  undefined4 extraout_ECX_04;
+  undefined4 extraout_EDX;
+  undefined4 extraout_EDX_00;
+  undefined2 *puVar3;
+  undefined1 uStack00000004;
+  undefined1 uStack00000005;
+  int iVar4;
+  undefined4 uStack_54;
+  undefined4 uStack_50;
+  undefined1 *puStack_4c;
+  undefined4 uStack_48;
+  undefined1 *puStack_44;
+  undefined4 uStack_40;
+  undefined1 *puStack_3c;
+  undefined4 uStack_38;
+  undefined4 uStack_34;
+  undefined4 uStack_30;
+  undefined1 *puStack_2c;
+  undefined4 uStack_28;
+  undefined1 *puStack_24;
+  undefined4 uStack_20;
+  undefined4 *puStack_1c;
+  undefined4 uStack_18;
+  int local_4;
+  
+  puStack_1c = (undefined4 *)0x5af721;
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  puVar3 = (undefined2 *)&this->field_0x4;
+  local_4 = 0x1d;
+  pcVar1 = *(code **)(*_uStack00000004 + 0x78);
+  uVar2 = extraout_ECX;
+  do {
+    uStack_18 = 2;
+    uStack00000004 = (undefined1)*puVar3;
+    uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
+    puStack_1c = (undefined4 *)&stack0x00000004;
+    _uStack00000004 =
+         (int *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
+    uStack_20 = 0x5af753;
+    (*pcVar1)();
+    puVar3 = puVar3 + 1;
+    local_4 = local_4 + -1;
+    uVar2 = extraout_ECX_00;
+  } while (local_4 != 0);
+  puVar3 = (undefined2 *)&this->field_0x3e;
+  local_4 = 0xa1;
+  do {
+    uStack_18 = 2;
+    uStack00000004 = (undefined1)*puVar3;
+    uStack00000005 = (undefined1)((ushort)*puVar3 >> 8);
+    puStack_1c = (undefined4 *)&stack0x00000004;
+    _uStack00000004 =
+         (int *)CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),uStack00000004),uStack00000005);
+    uStack_20 = 0x5af78e;
+    (*pcVar1)();
+    puVar3 = puVar3 + 1;
+    local_4 = local_4 + -1;
+    uVar2 = extraout_ECX_01;
+  } while (local_4 != 0);
+  puStack_1c = (undefined4 *)&this->field_0x1d2;
+  uStack_18 = 2;
+  uStack_20 = 0x5af7a9;
+  (*pcVar1)();
+  puStack_24 = &this->field_0x1d4;
+  uStack_20 = 2;
+  uStack_28 = 0x5af7b6;
+  (*pcVar1)();
+  puStack_2c = &this->field_0x180;
+  uStack_28 = 0x1d;
+  uStack_30 = 0x5af7c3;
+  (*pcVar1)();
+  uStack_34 = &this->field_0x19d;
+  uStack_30 = 0xe;
+  uStack_38 = 0x5af7d0;
+  (*pcVar1)();
+  puStack_3c = &this->field_0x1ab;
+  uStack_38 = 0x1e;
+  uStack_40 = 0x5af7dd;
+  (*pcVar1)();
+  puStack_44 = &this->field_0x1c9;
+  uStack_40 = 9;
+  uStack_48 = 0x5af7ea;
+  (*pcVar1)();
+  puStack_4c = &this->field_0x264;
+  uStack_48 = 4;
+  uStack_50 = 0x5af7f7;
+  (*pcVar1)();
+  puVar3 = (undefined2 *)&this->field_0x1d6;
+  puStack_3c = (undefined1 *)0x46;
+  uVar2 = extraout_EDX;
+  do {
+    uStack_50 = 2;
+    uStack_34._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    uStack_34._0_1_ = (undefined1)*puVar3;
+    uStack_54 = &uStack_34;
+    uStack_34._0_2_ = CONCAT11((undefined1)uStack_34,uStack_34._1_1_);
+    uStack_34 = (undefined1 *)CONCAT22((short)((uint)uVar2 >> 0x10),(undefined2)uStack_34);
+    (*pcVar1)();
+    puVar3 = puVar3 + 1;
+    puStack_3c = (undefined1 *)((int)puStack_3c + -1);
+    uVar2 = extraout_EDX_00;
+  } while (puStack_3c != (undefined1 *)0x0);
+  uStack_54 = (undefined4 *)&this->field_0x268;
+  uStack_50 = 0xcb;
+  (*pcVar1)();
+  (*pcVar1)(&this->field_0x333,0x62);
+  (*pcVar1)(&this->field_0x395,0xd2);
+  (*pcVar1)(&this->field_0x467,0x3f);
+  puVar3 = (undefined2 *)&this->field_0x4a6;
+  iVar4 = 0xcb;
+  uVar2 = extraout_ECX_02;
+  do {
+    uStack_54._0_1_ = (undefined1)*puVar3;
+    uStack_54._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    uStack_54 = (undefined4 *)
+                CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_54),
+                         uStack_54._1_1_);
+    (*pcVar1)(&uStack_54,2);
+    puVar3 = puVar3 + 1;
+    iVar4 = iVar4 + -1;
+    uVar2 = extraout_ECX_03;
+  } while (iVar4 != 0);
+  puVar3 = (undefined2 *)&this->field_0x3e;
+  iVar4 = 0xa1;
+  do {
+    uStack_54._0_1_ = (undefined1)*puVar3;
+    uStack_54._1_1_ = (undefined1)((ushort)*puVar3 >> 8);
+    uStack_54 = (undefined4 *)
+                CONCAT31(CONCAT21((short)((uint)uVar2 >> 0x10),(undefined1)uStack_54),
+                         uStack_54._1_1_);
+    (*pcVar1)(&uStack_54,2);
+    puVar3 = puVar3 + 1;
+    iVar4 = iVar4 + -1;
+    uVar2 = extraout_ECX_04;
+  } while (iVar4 != 0);
+  (*pcVar1)(&this->field_0x262,2);
+  return;
 }
 

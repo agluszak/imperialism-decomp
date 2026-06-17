@@ -3,66 +3,66 @@
 // Program: Imperialism.exe
 // Bucket: TPopGrowthOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B80C0
-// GHIDRA_NAME TPopGrowthOrder::CreateTPopGrowthOrderInstance
-// GHIDRA_PROTO undefined CreateTPopGrowthOrderInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x004B3050
+// GHIDRA_NAME TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004b3050(void)
 
-void __thiscall
-TPopGrowthOrder::CreateTPopGrowthOrderInstance(int *param_1,int param_2,ushort param_3)
+TPopGrowthOrder * __thiscall
+TPopGrowthOrder::WrapperFor_FreeHeapBufferIfNotNull_At004b3050(TPopGrowthOrder *this)
 
 {
-  if ((param_3 & 1) != 0) {
-    param_3 = param_3 + 1;
+  byte in_stack_00000004;
+  
+  WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  (**(code **)(*param_1 + 0x3c))(param_2);
-  *(ushort *)(param_2 + 0x22) = param_3;
-  *(short *)(param_2 + 0x24) = (short)param_3 / 2;
-  *(short *)(param_2 + 0x28) = (short)param_3 / 2;
-  *(ushort *)(param_2 + 0x7a) = param_3;
-  return;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8140
-// GHIDRA_NAME TPopGrowthOrder::GetTPopGrowthOrderClassNamePointer
-// GHIDRA_PROTO undefined GetTPopGrowthOrderClassNamePointer()
+// GHIDRA_NAME TPopGrowthOrder::GetTProductionOrderClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
 
-undefined ** TPopGrowthOrder::GetTPopGrowthOrderClassNamePointer(void)
+CRuntimeClass * __thiscall
+TPopGrowthOrder::GetTProductionOrderClassNamePointer(TPopGrowthOrder *this)
 
 {
-  return &PTR_s_TPopGrowthOrder_0064f410;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8160
 // GHIDRA_NAME TPopGrowthOrder::ConstructTPopGrowthOrderBaseState
-// GHIDRA_PROTO undefined ConstructTPopGrowthOrderBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTPopGrowthOrderBaseState(void)
 
-void __thiscall TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(int param_1,int param_2)
+void __thiscall TPopGrowthOrder::ConstructTPopGrowthOrderBaseState(TPopGrowthOrder *this)
 
 {
   int iVar1;
   undefined4 *puVar2;
+  int in_stack_00000004;
   
-  *(int *)(param_1 + 8) = param_2;
-  *(undefined4 *)(param_1 + 0xc) = *(undefined4 *)(param_2 + 0x1d8);
-  *(undefined2 *)(param_1 + 0x48) = 1;
-  *(undefined2 *)(param_1 + 4) = 0;
-  puVar2 = (undefined4 *)(param_1 + 0x10);
+  *(int *)&this->field_0x8 = in_stack_00000004;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
+  *(undefined2 *)&this->field_0x48 = 1;
+  *(undefined2 *)&this->field_0x4 = 0;
+  puVar2 = (undefined4 *)&this->field_0x10;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
     *puVar2 = 0;
     puVar2 = puVar2 + 1;
   }
   *(undefined2 *)puVar2 = 0;
-  *(undefined4 *)(param_1 + 0x44) = 0;
-  *(undefined2 *)(param_1 + 0x40) = 0;
-  *(undefined2 *)(param_1 + 0x3e) = 0;
+  *(undefined4 *)&this->field_0x44 = 0;
+  *(undefined2 *)&this->field_0x40 = 0;
+  *(undefined2 *)&this->field_0x3e = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B81B0
-// GHIDRA_NAME TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree
-// GHIDRA_PROTO undefined DestructTPopGrowthOrderAndMaybeFree()
+// GHIDRA_NAME TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 
-short __fastcall TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree(int param_1)
+short __thiscall TPopGrowthOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TPopGrowthOrder *this)
 
 {
   int iVar1;
@@ -71,13 +71,13 @@ short __fastcall TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree(int param_
   short sVar4;
   short sVar5;
   
-  iVar1 = *(int *)(param_1 + 8);
-  sVar2 = *(short *)(param_1 + 4);
+  iVar1 = *(int *)&this->field_0x8;
+  sVar2 = *(short *)&this->field_0x4;
   sVar4 = *(short *)(iVar1 + 0xd2) + sVar2;
   sVar5 = *(short *)(iVar1 + 0xd0) + sVar2;
   sVar3 = *(short *)(iVar1 + 0x21a) + sVar2;
   sVar2 = *(short *)(iVar1 + 0xc4) + sVar2;
-  *(undefined2 *)(param_1 + 0x40) = 0;
+  *(undefined2 *)&this->field_0x40 = 0;
   if (sVar5 < sVar4) {
     sVar4 = sVar5;
   }
@@ -85,9 +85,128 @@ short __fastcall TPopGrowthOrder::DestructTPopGrowthOrderAndMaybeFree(int param_
     sVar4 = sVar2;
   }
   if (sVar3 < sVar4) {
-    *(undefined2 *)(param_1 + 0x40) = 2;
+    *(undefined2 *)&this->field_0x40 = 2;
     sVar4 = sVar3;
   }
   return sVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8230
+// GHIDRA_NAME TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(void)
+
+undefined4 __thiscall TPopGrowthOrder::OrphanCallChain_C1_I16_004b5100(TPopGrowthOrder *this)
+
+{
+  short *psVar1;
+  int *piVar2;
+  int *piVar3;
+  undefined uVar4;
+  char cVar5;
+  undefined3 extraout_var;
+  short sVar6;
+  short in_stack_00000004;
+  
+  sVar6 = in_stack_00000004 - *(short *)&this->field_0x4;
+  uVar4 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  if (((short)CONCAT31(extraout_var,uVar4) < in_stack_00000004) || (in_stack_00000004 < 0)) {
+    cVar5 = '\0';
+  }
+  else {
+    *(short *)&this->field_0x4 = in_stack_00000004;
+    cVar5 = '\x01';
+  }
+  if (cVar5 == '\0') {
+    return CONCAT31(extraout_var,cVar5);
+  }
+  piVar2 = *(int **)&this->field_0x8;
+  psVar1 = (short *)((int)piVar2 + 0xd2);
+  *psVar1 = *psVar1 - sVar6;
+  (**(code **)(*piVar2 + 0x80))();
+  piVar3 = *(int **)&this->field_0x8;
+  piVar2 = piVar3 + 0x34;
+  *(short *)piVar2 = (short)*piVar2 - sVar6;
+  (**(code **)(*piVar3 + 0x80))();
+  piVar3 = *(int **)&this->field_0x8;
+  piVar2 = piVar3 + 0x31;
+  *(short *)piVar2 = (short)*piVar2 - sVar6;
+  (**(code **)(*piVar3 + 0x80))();
+  psVar1 = (short *)(*(int *)&this->field_0x8 + 0x21a);
+  *psVar1 = *psVar1 - sVar6;
+  (**(code **)(g_pUiRuntimeContext->vftable + 0xac))();
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B82F0
+// GHIDRA_NAME TPopGrowthOrder::OrphanRetStub_004b5160
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+
+void __thiscall TPopGrowthOrder::OrphanRetStub_004b5160(TPopGrowthOrder *this)
+
+{
+  short *psVar1;
+  short sVar2;
+  int iVar3;
+  int iVar4;
+  
+  sVar2 = *(short *)&this->field_0x4;
+  iVar4 = *(int *)(*(int *)&this->field_0x8 + 0x1d8);
+  psVar1 = (short *)(*(int *)(iVar4 + 0x10) + 4);
+  *psVar1 = *psVar1 + sVar2;
+  psVar1 = (short *)(*(int *)(iVar4 + 0x14) + 4);
+  *psVar1 = *psVar1 + sVar2;
+  *(short *)(iVar4 + 8) = *(short *)(iVar4 + 8) + sVar2;
+  iVar4 = *(int *)&this->field_0x8;
+  iVar3 = **(int **)(*(int *)(iVar4 + 0xac) + 0x90);
+  if (*(char *)(*(int *)(iVar4 + 0xac) + 0x8d1) < '3') {
+    iVar3 = (**(code **)(iVar3 + 0x28))();
+    if (1 < (int)(iVar3 + (iVar3 >> 0x1f & 3U)) >> 2) {
+      iVar4 = (**(code **)(**(int **)(*(int *)(iVar4 + 0xac) + 0x90) + 0x28))();
+      *(short *)(*(int *)&this->field_0x8 + 0x21a) =
+           (short)((int)(iVar4 + (iVar4 >> 0x1f & 3U)) >> 2);
+      *(undefined2 *)&this->field_0x4 = 0;
+      return;
+    }
+  }
+  else {
+    iVar3 = (**(code **)(iVar3 + 0x28))();
+    if (1 < iVar3 / 3) {
+      iVar4 = (**(code **)(**(int **)(*(int *)(iVar4 + 0xac) + 0x90) + 0x28))();
+      *(short *)(*(int *)&this->field_0x8 + 0x21a) =
+           (short)((ulonglong)((longlong)iVar4 * 0x55555556) >> 0x20) -
+           (short)((longlong)iVar4 * 0x55555556 >> 0x3f);
+      *(undefined2 *)&this->field_0x4 = 0;
+      return;
+    }
+  }
+  *(undefined2 *)(*(int *)&this->field_0x8 + 0x21a) = 1;
+  *(undefined2 *)&this->field_0x4 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8420
+// GHIDRA_NAME TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop
+// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
+
+void __thiscall TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(TPopGrowthOrder *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B8440
+// GHIDRA_NAME TPopGrowthOrder::CreateTItemOrderInstance
+// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+
+void __thiscall TPopGrowthOrder::CreateTItemOrderInstance(TPopGrowthOrder *this)
+
+{
+  undefined2 uStack00000004;
+  
+  (*this->vftable[7].slot_0x04)();
+  *(undefined2 *)(_uStack00000004 + 0x1a) = uStack00000004;
+  *(undefined2 *)(_uStack00000004 + 0x1c) = uStack00000004;
+  *(undefined2 *)(_uStack00000004 + 0xe) = uStack00000004;
+  return;
 }
 

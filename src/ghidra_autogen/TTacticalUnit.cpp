@@ -3,58 +3,123 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005A5DF0
-// GHIDRA_NAME TTacticalUnit::CreateTTacticalUnitInstance
-// GHIDRA_PROTO undefined CreateTTacticalUnitInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5D40
+// GHIDRA_NAME TTacticalUnit::OrphanTiny_ReturnZero_005a5d40
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d40(void)
 
-void __fastcall TTacticalUnit::CreateTTacticalUnitInstance(undefined4 *param_1)
+undefined4 __thiscall TTacticalUnit::OrphanTiny_ReturnZero_005a5d40(TTacticalUnit *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5D60
+// GHIDRA_NAME TTacticalUnit::OrphanTiny_ReturnZero_005a5d60
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_005a5d60(void)
+
+undefined4 __thiscall TTacticalUnit::OrphanTiny_ReturnZero_005a5d60(TTacticalUnit *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5D80
+// GHIDRA_NAME TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5d80(void)
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80(TTacticalUnit *this)
+
+{
+  return (float10)_DAT_00669ec0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5DA0
+// GHIDRA_NAME TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_005a5da0(void)
+
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+float10 __thiscall TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0(TTacticalUnit *this)
+
+{
+  return (float10)_DAT_00669ec0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5DC0
+// GHIDRA_NAME TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(void)
+
+TTacticalUnit * __thiscall
+TTacticalUnit::WrapperFor_FreeHeapBufferIfNotNull_At005a5dc0(TTacticalUnit *this)
+
+{
+  byte in_stack_00000004;
+  
+  CreateTTacticalUnitInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A5DF0
+// GHIDRA_NAME TTacticalUnit::CreateTTacticalUnitInstance
+// GHIDRA_PROTO undefined __thiscall CreateTTacticalUnitInstance(void)
+
+void __thiscall TTacticalUnit::CreateTTacticalUnitInstance(TTacticalUnit *this)
+
+{
+  this->vftable = (TTacticalUnitVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E10
 // GHIDRA_NAME TTacticalUnit::GetTTacticalUnitClassNamePointer
-// GHIDRA_PROTO undefined GetTTacticalUnitClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTTacticalUnitClassNamePointer(void)
 
-undefined ** TTacticalUnit::GetTTacticalUnitClassNamePointer(void)
+CRuntimeClass * __thiscall TTacticalUnit::GetTTacticalUnitClassNamePointer(TTacticalUnit *this)
 
 {
-  return &PTR_s_TTacticalUnit_00669e48;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E30
 // GHIDRA_NAME TTacticalUnit::ConstructTTacticalUnitBaseState
-// GHIDRA_PROTO undefined ConstructTTacticalUnitBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTacticalUnitBaseState(void)
 
-void __fastcall TTacticalUnit::ConstructTTacticalUnitBaseState(int *param_1)
+void __thiscall TTacticalUnit::ConstructTTacticalUnitBaseState(TTacticalUnit *this)
 
 {
-  int iVar1;
+  undefined uVar1;
+  undefined3 extraout_var;
   
-  param_1[2] = -2;
-  *(undefined1 *)(param_1 + 6) = 0;
-  param_1[7] = 0;
-  iVar1 = (**(code **)(*param_1 + 0x28))();
-  param_1[10] = iVar1;
-  param_1[0xb] = 0;
-  param_1[0xc] = 0;
+  *(undefined4 *)&this->field_0x8 = 0xfffffffe;
+  this->field_0x18 = 0;
+  *(undefined4 *)&this->field_0x1c = 0;
+  uVar1 = (*this->vftable[5].GetTTacticalUnitClassNamePointer)();
+  *(uint *)&this->field_0x28 = CONCAT31(extraout_var,uVar1);
+  *(undefined4 *)&this->field_0x2c = 0;
+  *(undefined4 *)&this->field_0x30 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A5E70
 // GHIDRA_NAME TTacticalUnit::DestructTTacticalUnitAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTacticalUnitAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTTacticalUnitAndMaybeFree(void)
 
-void __thiscall TTacticalUnit::DestructTTacticalUnitAndMaybeFree(int param_1,int param_2)
+void __thiscall TTacticalUnit::DestructTTacticalUnitAndMaybeFree(TTacticalUnit *this)
 
 {
-  param_2 = *(int *)(param_1 + 4) - param_2;
-  *(int *)(param_1 + 4) = param_2;
-  if (param_2 < 1) {
-    *(undefined4 *)(param_1 + 4) = 0;
-    *(undefined4 *)(param_1 + 0x1c) = 3;
+  int iVar1;
+  int in_stack_00000004;
+  
+  iVar1 = *(int *)&this->field_0x4 - in_stack_00000004;
+  *(int *)&this->field_0x4 = iVar1;
+  if (iVar1 < 1) {
+    *(undefined4 *)&this->field_0x4 = 0;
+    *(undefined4 *)&this->field_0x1c = 3;
   }
   return;
 }

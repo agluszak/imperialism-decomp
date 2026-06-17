@@ -7,13 +7,13 @@
 // GHIDRA_NAME TTransportPicture::?CreateTTransportPictureInstance@@YAPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@XZ
 // GHIDRA_PROTO undefined ?CreateTTransportPictureInstance@@YAPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@XZ()
 
-undefined4 *
+thunk_TPictureButton *
 TTransportPicture::
 _CreateTTransportPictureInstance__YAPAUTransportPictureState___Z_imperialismsrcgameTTransportPicture_cpp234212302__XZ
           (void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -23,27 +23,28 @@ _CreateTTransportPictureInstance__YAPAUTransportPictureState___Z_imperialismsrcg
   puStack_8 = &LAB_0063807a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x9c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00668588;
-    *(undefined2 *)(puVar1 + 0x24) = 0x3a;
-    *(undefined2 *)(puVar1 + 0x25) = 0;
-    *(undefined2 *)((int)puVar1 + 0x96) = 0;
-    *(undefined2 *)(puVar1 + 0x26) = 0xffff;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TTransportPictureVtbl **)this = &TTransportPictureVtbl_00668588;
+    *(undefined2 *)(this + 0x90) = 0x3a;
+    *(undefined2 *)(this + 0x94) = 0;
+    *(undefined2 *)(this + 0x96) = 0;
+    *(undefined2 *)(this + 0x98) = 0xffff;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591E50
-// GHIDRA_NAME TTransportPicture::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TTransportPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTransportPicture::GetRuntimeClass(void)
+CRuntimeClass * __thiscall
+TTransportPicture::GetTEventHandlerClassNamePointer(TTransportPicture *this)
 
 {
   return &g_pClassDescTTransportPicture;
@@ -51,160 +52,181 @@ undefined ** TTransportPicture::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591E70
 // GHIDRA_NAME TTransportPicture::?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z
-// GHIDRA_PROTO undefined ?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z()
+// GHIDRA_PROTO undefined __thiscall ?ConstructTTransportPictureBaseState@@YIPAUTransportPictureState@?%Z:imperialismsrcgameTTransportPicture.cpp234212302@@PAU12@@Z(void)
 
-undefined4 * __fastcall
+TTransportPicture * __thiscall
 TTransportPicture::
 _ConstructTTransportPictureBaseState__YIPAUTransportPictureState___Z_imperialismsrcgameTTransportPicture_cpp234212302__PAU12__Z
-          (undefined4 *param_1)
+          (TTransportPicture *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00668588;
-  *(undefined2 *)(param_1 + 0x25) = 0;
-  *(undefined2 *)((int)param_1 + 0x96) = 0;
-  *(undefined2 *)(param_1 + 0x24) = 0x3a;
-  *(undefined2 *)(param_1 + 0x26) = 0xffff;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TTransportPictureVtbl_00668588;
+  *(undefined2 *)&this->field_0x94 = 0;
+  *(undefined2 *)&this->field_0x96 = 0;
+  *(undefined2 *)&this->field_0x90 = 0x3a;
+  *(undefined2 *)&this->field_0x98 = 0xffff;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591EC0
 // GHIDRA_NAME TTransportPicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TTransportPicture::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TTransportPicture * __thiscall
+TTransportPicture::_scalar_deleting_destructor_(TTransportPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00591F10
-// GHIDRA_NAME TTransportPicture::HandleTransportPictureSplitArrowCommand64or65
-// GHIDRA_PROTO undefined HandleTransportPictureSplitArrowCommand64or65()
+// GHIDRA_NAME TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall
-TTransportPicture::HandleTransportPictureSplitArrowCommand64or65
-          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4)
+TTransportPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TTransportPicture *this)
 
 {
-  int *piVar1;
-  code *pcVar2;
+  TGreatPower *pTVar1;
+  TGreatPower_slot_0x04_0x04 *pTVar2;
   bool bVar3;
-  short sVar4;
-  short sVar5;
-  undefined2 extraout_var;
-  int iVar6;
-  undefined2 extraout_var_00;
+  undefined2 uVar4;
+  undefined uVar5;
+  undefined uVar6;
+  short sVar7;
+  word wVar8;
+  undefined2 extraout_var_01;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  uint uVar9;
+  undefined2 extraout_var_02;
+  word wVar10;
+  int iVar11;
+  undefined2 extraout_var_03;
+  undefined2 extraout_var_04;
+  undefined4 unaff_EBX;
+  int in_stack_00000004;
+  undefined4 uVar12;
   
+  uVar4 = (undefined2)((uint)unaff_EBX >> 0x10);
   bVar3 = false;
-  if ((param_2 < 100) || (0x65 < param_2)) goto LAB_00592108;
-  sVar4 = UiRuntimeContext::GetActiveNationId();
-  iVar6 = (int)*(short *)((int)param_1 + 0x92);
-  piVar1 = (int *)(&g_apNationStates)[sVar4];
-  if (iVar6 == 0) {
-    sVar4 = *(short *)((int)piVar1 + 0x13e) + (short)piVar1[0x4f];
-    sVar5 = (short)piVar1[0x44] + *(short *)((int)piVar1 + 0x10e);
+  if ((in_stack_00000004 < 100) || (0x65 < in_stack_00000004)) goto LAB_00592108;
+  sVar7 = UiRuntimeContext::GetActiveNationId();
+  iVar11 = (int)*(short *)&this->field_0x92;
+  pTVar1 = g_apNationStates[sVar7];
+  if (iVar11 == 0) {
+    wVar8 = pTVar1->needTargetByType[1] + pTVar1->needTargetByType[0];
+    wVar10 = pTVar1->needCurrentByType[1] + pTVar1->needCurrentByType[0];
   }
-  else if (iVar6 == 0x13) {
-    sVar4 = (short)piVar1[0x59] + *(short *)((int)piVar1 + 0x162);
-    sVar5 = *(short *)((int)piVar1 + 0x136) + (short)piVar1[0x4d];
+  else if (iVar11 == 0x13) {
+    wVar8 = pTVar1->needTargetByType[0x14] + pTVar1->needTargetByType[0x13];
+    wVar10 = pTVar1->needCurrentByType[0x14] + pTVar1->needCurrentByType[0x13];
   }
   else {
-    sVar4 = *(short *)((int)piVar1 + iVar6 * 2 + 0x13c);
-    sVar5 = *(short *)((int)piVar1 + iVar6 * 2 + 0x10e);
+    wVar8 = pTVar1->needTargetByType[iVar11];
+    wVar10 = pTVar1->needCurrentByType[iVar11];
   }
-  if (param_2 == 100) {
-    if ((sVar4 < sVar5) && (*(short *)((int)piVar1 + 0xa6) != (short)piVar1[0x2a])) {
-      sVar5 = 1;
+  if (in_stack_00000004 == 100) {
+    if (((short)wVar8 < (short)wVar10) && (pTVar1->needCapA6 != pTVar1->needsOverCapFlag)) {
+      sVar7 = 1;
 LAB_00591fc3:
-      *(short *)(param_1 + 0x25) = sVar4 + sVar5;
+      *(word *)&this->field_0x94 = wVar8 + sVar7;
       bVar3 = true;
     }
   }
-  else if (0 < sVar4) {
-    sVar5 = -1;
+  else if (0 < (short)wVar8) {
+    sVar7 = -1;
     goto LAB_00591fc3;
   }
   if (bVar3) {
-    iVar6 = 7000;
-    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(7000,0,1);
-    sVar4 = *(short *)((int)param_1 + 0x92);
-    if (sVar4 == 0) {
-      sVar4 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x4c))(0);
-      sVar5 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x4c))(1);
-      bVar3 = sVar4 <= sVar5;
-      sVar4 = *(short *)((int)piVar1 + (short)(ushort)bVar3 * 2 + 0x10e);
-      if (sVar4 < (short)param_1[0x25]) {
-        pcVar2 = *(code **)(*piVar1 + 0x114);
-        (*pcVar2)(bVar3,sVar4);
-        param_2 = iVar6;
-        (*pcVar2)(iVar6,(short)param_1[0x25] - sVar4);
+    uVar12 = 7000;
+    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    sVar7 = *(short *)&this->field_0x92;
+    if (sVar7 == 0) {
+      uVar5 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(0);
+      uVar6 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(1);
+      bVar3 = (short)CONCAT31(extraout_var,uVar5) <= (short)CONCAT31(extraout_var_00,uVar6);
+      uVar9 = (uint)bVar3;
+      wVar8 = pTVar1->needCurrentByType[(short)(ushort)bVar3];
+      if ((short)wVar8 < (short)*(ushort *)&this->field_0x94) {
+        pTVar2 = pTVar1->vftable[0x22].slot_0x04;
+        (*pTVar2)(uVar9,CONCAT22(uVar4,wVar8));
+        (*pTVar2)(uVar12,CONCAT22(extraout_var_04,*(short *)&this->field_0x94 - wVar8));
       }
       else {
-        pcVar2 = *(code **)(*piVar1 + 0x114);
-        (*pcVar2)(bVar3,(short)param_1[0x25]);
-        (*pcVar2)(iVar6,0);
+        pTVar2 = pTVar1->vftable[0x22].slot_0x04;
+        (*pTVar2)(uVar9,(uint)*(ushort *)&this->field_0x94);
+        (*pTVar2)(uVar12,0);
       }
     }
-    else if (sVar4 == 0x13) {
-      sVar4 = (short)piVar1[0x4d];
-      if (sVar4 < (short)param_1[0x25]) {
-        pcVar2 = *(code **)(*piVar1 + 0x114);
-        (*pcVar2)(0x13,sVar4);
-        param_2 = iVar6;
-        (*pcVar2)(0x14,(short)param_1[0x25] - sVar4);
+    else if (sVar7 == 0x13) {
+      wVar8 = pTVar1->needCurrentByType[0x13];
+      if ((short)wVar8 < *(short *)&this->field_0x94) {
+        pTVar2 = pTVar1->vftable[0x22].slot_0x04;
+        (*pTVar2)(0x13,CONCAT22(uVar4,wVar8));
+        (*pTVar2)(0x14,CONCAT22(extraout_var_02,*(short *)&this->field_0x94 - wVar8));
       }
       else {
-        pcVar2 = *(code **)(*piVar1 + 0x114);
-        (*pcVar2)(0x13,CONCAT22(extraout_var,(short)param_1[0x25]));
-        (*pcVar2)(0x14,0);
+        pTVar2 = pTVar1->vftable[0x22].slot_0x04;
+        (*pTVar2)(0x13,CONCAT22(extraout_var_01,*(short *)&this->field_0x94));
+        (*pTVar2)(0x14,0);
       }
     }
     else {
-      (**(code **)(*piVar1 + 0x114))
-                (CONCAT22(extraout_var,sVar4),CONCAT22(extraout_var_00,(short)param_1[0x25]));
+      (*pTVar1->vftable[0x22].slot_0x04)
+                (CONCAT22(extraout_var_01,sVar7),
+                 CONCAT22(extraout_var_03,*(undefined2 *)&this->field_0x94));
     }
-    (**(code **)(*param_1 + 0xe4))();
+    (*this->vftable[0x1c].slot_0x04)();
   }
 LAB_00592108:
-  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005921C0
 // GHIDRA_NAME TTransportPicture::RenderTransportPictureGaugeAndLabels
-// GHIDRA_PROTO undefined RenderTransportPictureGaugeAndLabels()
+// GHIDRA_PROTO undefined __thiscall RenderTransportPictureGaugeAndLabels(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __fastcall TTransportPicture::RenderTransportPictureGaugeAndLabels(int *param_1)
+void __thiscall TTransportPicture::RenderTransportPictureGaugeAndLabels(TTransportPicture *this)
 
 {
-  code *pcVar1;
-  float fVar2;
+  TTransportPicture_slot_0x04_0x04 *pTVar1;
+  TGreatPower *pTVar2;
   float fVar3;
   float fVar4;
-  short sVar5;
-  undefined4 uVar6;
-  int *piVar7;
+  float fVar5;
+  undefined uVar6;
+  short sVar7;
+  word wVar8;
+  undefined4 uVar9;
+  undefined3 extraout_var;
   CString *src_ref;
-  int iVar8;
-  int iVar9;
+  int *piVar10;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined *puVar11;
+  TSimMgrVtbl *pTVar12;
+  int iVar13;
   undefined4 *unaff_FS_OFFSET;
   int *piStack_64;
-  undefined4 *puStack_60;
-  undefined4 *puStack_5c;
-  undefined1 local_4c [4];
-  int local_48;
+  CString CStack_60;
+  char *pcStack_5c;
+  CString local_4c;
+  CString local_48;
   CString local_44;
-  undefined1 local_40 [4];
+  CString local_40;
   float local_3c;
-  undefined1 *local_38;
+  TTransportPictureVtbl *local_38;
   int iStack_34;
   int iStack_30;
   int iStack_2c;
@@ -218,77 +240,81 @@ void __fastcall TTransportPicture::RenderTransportPictureGaugeAndLabels(int *par
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
+  undefined3 extraout_var_00;
   
   local_4 = 0xffffffff;
   puStack_8 = &LAB_006380c8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puStack_5c = (undefined4 *)0x5921e6;
+  pcStack_5c = (char *)0x5921e6;
   AcquireReusableQuickDrawSurface();
   local_4 = 0;
-  puStack_5c = (undefined4 *)0x5921f7;
-  InitializeSharedStringRefFromEmpty(local_40);
+  pcStack_5c = (char *)0x5921f7;
+  CString::CString(&local_40);
   local_4._0_1_ = 1;
-  puStack_5c = (undefined4 *)0x592205;
-  InitializeSharedStringRefFromEmpty(&local_44);
+  pcStack_5c = (char *)0x592205;
+  CString::CString(&local_44);
   local_4._0_1_ = 2;
-  puStack_5c = (undefined4 *)0x592213;
-  InitializeSharedStringRefFromEmpty(local_4c);
+  pcStack_5c = (char *)0x592213;
+  CString::CString(&local_4c);
   local_4 = CONCAT31(local_4._1_3_,3);
-  sVar5 = 0x61;
-  if (200 < param_1[9]) {
-    sVar5 = 0x5d;
+  sVar7 = 0x61;
+  if (200 < this->ownerOffsetX) {
+    sVar7 = 0x5d;
   }
-  local_3c = (float)(int)*(short *)((int)param_1 + 0x96);
-  fVar4 = (float)(int)(short)param_1[0x25];
-  fVar2 = _DAT_006631b8 / local_3c;
-  fVar3 = _DAT_006631b8 - fVar2 * local_3c;
-  if (fVar3 < fVar4) {
-    local_38 = (undefined1 *)(fVar3 * (fVar2 - (float)_DAT_006631a0) + (fVar4 - fVar3) * fVar2);
+  local_3c = (float)(int)*(short *)&this->field_0x96;
+  fVar5 = (float)(int)*(short *)&this->field_0x94;
+  fVar3 = _DAT_006631b8 / local_3c;
+  fVar4 = _DAT_006631b8 - fVar3 * local_3c;
+  if (fVar4 < fVar5) {
+    local_38 = (TTransportPictureVtbl *)
+               (fVar4 * (fVar3 - (float)_DAT_006631a0) + (fVar5 - fVar4) * fVar3);
   }
   else {
-    local_38 = (undefined1 *)((float)(int)(short)param_1[0x25] * (fVar2 - (float)_DAT_006631a0));
+    local_38 = (TTransportPictureVtbl *)
+               ((float)(int)*(short *)&this->field_0x94 * (fVar3 - (float)_DAT_006631a0));
   }
-  puStack_5c = (undefined4 *)local_48;
-  puStack_60 = (undefined4 *)0x5922bd;
+  pcStack_5c = local_48.m_pchData;
+  CStack_60.m_pchData = (char *)0x5922bd;
   ApplyHitRegionToClipState();
-  iVar9 = (int)sVar5;
-  puStack_5c = (undefined4 *)0x5922d4;
-  local_3c = (float)iVar9;
-  uVar6 = ftol();
+  iVar13 = (int)sVar7;
+  pcStack_5c = (char *)0x5922d4;
+  local_3c = (float)iVar13;
+  uVar9 = ftol();
   local_18 = 0xd;
-  puStack_5c = &local_1c;
-  local_14 = iVar9 + 0x71;
+  pcStack_5c = (char *)&local_1c;
+  local_14 = iVar13 + 0x71;
   local_10 = 0x11;
-  puStack_60 = (undefined4 *)0x5922fd;
-  local_1c = uVar6;
+  CStack_60.m_pchData = (char *)0x5922fd;
+  local_1c = uVar9;
   thunk_ApplyRectClipRegionToGlobalClipState();
-  puStack_5c = (undefined4 *)0x3b;
-  puStack_60 = (undefined4 *)0x59230d;
-  (**(code **)(*g_pUiRuntimeContext + 0x34))();
-  puStack_60 = &uStack_20;
+  pcStack_5c = (char *)0x3b;
+  CStack_60.m_pchData = (char *)0x59230d;
+  (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
+  CStack_60.m_pchData = (char *)&uStack_20;
   piStack_64 = (int *)0x592317;
   thunk_FillRectWithQuickDrawBrushAndContextOffset();
   iStack_2c = 0xd;
   uStack_24 = 0x11;
-  iStack_30 = iVar9;
-  uStack_28 = uVar6;
-  if (param_1[7] == 0x746f7461) {
-    if (*(short *)((int)param_1 + 0x96) == (short)param_1[0x25]) {
-      iVar8 = *g_pUiRuntimeContext;
-      puStack_60 = (undefined4 *)0x34;
+  iStack_30 = iVar13;
+  uStack_28 = uVar9;
+  if (this->controlTag == 0x746f7461) {
+    if (*(short *)&this->field_0x96 == *(short *)&this->field_0x94) {
+      puVar11 = g_pUiRuntimeContext->vftable;
+      CStack_60.m_pchData = (char *)0x34;
       goto LAB_00592373;
     }
-    puStack_60 = (undefined4 *)0x33;
+    CStack_60.m_pchData = (char *)0x33;
     piStack_64 = (int *)0x592361;
-    (**(code **)(*g_pUiRuntimeContext + 0x34))();
+    (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
   }
   else {
-    puStack_60 = (undefined4 *)CONCAT22((short)((uint)param_1[7] >> 0x10),(short)param_1[0x24]);
-    iVar8 = *g_pUiRuntimeContext;
+    CStack_60.m_pchData =
+         (char *)CONCAT22((short)((uint)this->controlTag >> 0x10),*(undefined2 *)&this->field_0x90);
+    puVar11 = g_pUiRuntimeContext->vftable;
 LAB_00592373:
     piStack_64 = (int *)0x592376;
-    (**(code **)(iVar8 + 0x34))();
+    (**(code **)(puVar11 + 0x34))();
   }
   piStack_64 = &iStack_34;
   thunk_ApplyRectClipRegionToGlobalClipState();
@@ -296,20 +322,20 @@ LAB_00592373:
   thunk_FillRectWithQuickDrawBrushAndContextOffset();
   SnapshotHitRegionToClipCache();
   piStack_64 = (int *)0x0;
-  local_38 = (undefined1 *)&piStack_64;
+  local_38 = (TTransportPictureVtbl *)&piStack_64;
   SetQuickDrawFillColor();
-  if (-1 < (short)param_1[0x26]) {
-    iStack_34 = iVar9 + -1;
-    iStack_2c = iVar9 + 0x72;
+  if (-1 < *(short *)&this->field_0x98) {
+    iStack_34 = iVar13 + -1;
+    iStack_2c = iVar13 + 0x72;
     iStack_30 = 0x12;
     uStack_28 = 0x14;
-    if ((short)param_1[0x25] < (short)param_1[0x26]) {
+    if (*(short *)&this->field_0x94 < *(short *)&this->field_0x98) {
       piStack_64 = (int *)0x33;
-      (**(code **)(*g_pUiRuntimeContext + 0x34))();
+      (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
     else {
       piStack_64 = (int *)0x34;
-      (**(code **)(*g_pUiRuntimeContext + 0x34))();
+      (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
     piStack_64 = &iStack_34;
     thunk_ApplyRectClipRegionToGlobalClipState();
@@ -317,85 +343,100 @@ LAB_00592373:
     thunk_FillRectWithQuickDrawBrushAndContextOffset();
     SnapshotHitRegionToClipCache();
     piStack_64 = (int *)0x0;
-    local_38 = (undefined1 *)&piStack_64;
+    local_38 = (TTransportPictureVtbl *)&piStack_64;
     SetQuickDrawFillColor();
   }
-  local_38 = (undefined1 *)*param_1;
+  local_38 = this->vftable;
   piStack_64 = (int *)0x74657874;
-  pcVar1 = *(code **)((int)local_38 + 0x94);
-  piVar7 = (int *)(*pcVar1)();
-  if (piVar7 == (int *)0x0) {
+  pTVar1 = local_38[0x12].slot_0x04;
+  uVar6 = (*pTVar1)();
+  if ((int *)CONCAT31(extraout_var,uVar6) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
   }
-  FormatStringWithVarArgsToSharedRef(local_4c);
+  FormatStringWithVarArgsToSharedRef(&local_4c);
   FormatStringWithVarArgsToSharedRef(&stack0xffffffb0);
-  AssignSharedStringConcatRefAndCStr(local_40);
+  AssignSharedStringConcatRefAndCStr(&local_40);
   local_10._0_1_ = 4;
   src_ref = (CString *)AssignSharedStringConcatRefAndRef(&local_48);
   local_10._0_1_ = 5;
-  TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&local_44,src_ref);
+  CString::StringSharedRef_AssignFromPtr(&local_44,src_ref);
   local_10._0_1_ = 6;
-  AssignFromPtr(&stack0xffffffa8,&local_44);
+  CString::AssignFromPtr((CString *)&stack0xffffffa8,&local_44);
   local_10._0_1_ = 5;
-  ReleaseSharedStringRefIfNotEmpty(&local_44);
+  CString::~CString(&local_44);
   local_10._0_1_ = 4;
-  ReleaseSharedStringRefIfNotEmpty(&local_48);
+  CString::~CString(&local_48);
   local_10 = CONCAT31(local_10._1_3_,3);
-  ReleaseSharedStringRefIfNotEmpty(local_40);
-  (**(code **)(*piVar7 + 0x1c8))();
-  if (*(short *)((int)param_1 + 0x92) == 0x16) {
-    piVar7 = (int *)(*pcVar1)(0x76616c75);
-    if (piVar7 == (int *)0x0) {
+  CString::~CString(&local_40);
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar6) + 0x1c8))();
+  if (*(short *)&this->field_0x92 == 0x16) {
+    uVar6 = (*pTVar1)(0x76616c75);
+    piVar10 = (int *)CONCAT31(extraout_var_00,uVar6);
+    if (piVar10 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a63);
     }
-    iVar9 = *g_pLocalizationTable;
-    iVar8 = (short)param_1[0x25] * 200;
+    pTVar12 = g_pLocalizationTable->vftable;
+    iVar13 = *(short *)&this->field_0x94 * 200;
   }
   else {
-    if (*(short *)((int)param_1 + 0x92) != 0x15) goto LAB_005925fa;
-    piVar7 = (int *)(*pcVar1)(0x76616c75);
-    if (piVar7 == (int *)0x0) {
+    if (*(short *)&this->field_0x92 != 0x15) goto LAB_005925fa;
+    uVar6 = (*pTVar1)(0x76616c75);
+    piVar10 = (int *)CONCAT31(extraout_var_01,uVar6);
+    if (piVar10 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a6a);
     }
-    iVar9 = *g_pLocalizationTable;
-    iVar8 = (short)param_1[0x25] * 500;
+    pTVar12 = g_pLocalizationTable->vftable;
+    iVar13 = *(short *)&this->field_0x94 * 500;
   }
-  (**(code **)(iVar9 + 0x74))(iVar8,&piStack_64);
-  (**(code **)(*piVar7 + 0x1c8))(&stack0xffffff94,1);
+  (*pTVar12[0xe].slot_0x04)(iVar13,&piStack_64);
+  (**(code **)(*piVar10 + 0x1c8))(&stack0xffffff94,1);
 LAB_005925fa:
-  if (param_1[7] != 0x746f7461) {
-    sVar5 = UiRuntimeContext::GetActiveNationId();
-    iVar9 = (&g_apNationStates)[sVar5];
-    piVar7 = (int *)(**(code **)(*(int *)param_1[8] + 0x94))(0x746f7461);
-    if (piVar7 == (int *)0x0) {
+  if (this->controlTag != 0x746f7461) {
+    sVar7 = UiRuntimeContext::GetActiveNationId();
+    pTVar2 = g_apNationStates[sVar7];
+    uVar6 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x746f7461);
+    piVar10 = (int *)CONCAT31(extraout_var_02,uVar6);
+    if (piVar10 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a77);
     }
-    if (iVar9 == 0) {
-      sVar5 = 0;
+    if (pTVar2 == (TGreatPower *)0x0) {
+      wVar8 = 0;
     }
     else {
-      sVar5 = *(short *)(iVar9 + 0xa6);
+      wVar8 = pTVar2->needCapA6;
     }
-    *(short *)(piVar7 + 0x25) = (*(short *)(iVar9 + 0xa8) - *(short *)(iVar9 + 0xa6)) + sVar5;
-    (**(code **)(*piVar7 + 0xe4))();
-    (**(code **)(local_48 + 0xf8))();
+    *(word *)(piVar10 + 0x25) = (pTVar2->needsOverCapFlag - pTVar2->needCapA6) + wVar8;
+    (**(code **)(*piVar10 + 0xe4))();
+    (**(code **)(local_48.m_pchData + 0xf8))();
   }
   local_18._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty(&puStack_60);
+  CString::~CString(&CStack_60);
   local_18._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffa8);
+  CString::~CString((CString *)&stack0xffffffa8);
   local_18 = (uint)local_18._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffac);
+  CString::~CString((CString *)&stack0xffffffac);
   local_18 = 0xffffffff;
   ReleaseOrCacheQuickDrawSurface();
   *unaff_FS_OFFSET = uStack_20;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00592830
+// GHIDRA_NAME TTransportPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TTransportPicture::OrphanTiny_ReturnZero_0048a730(TTransportPicture *this)
+
+{
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  (*this->vftable[0x39].slot_0x04)();
   return;
 }
 

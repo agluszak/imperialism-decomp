@@ -3,13 +3,119 @@
 // Program: Imperialism.exe
 // Bucket: TMultiMessagePicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0054ECA0
-// GHIDRA_NAME TMultiMessagePicture::GetTMultiMessagePictureClassNamePointer
-// GHIDRA_PROTO undefined GetTMultiMessagePictureClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0044FA80
+// GHIDRA_NAME TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80(void)
 
-undefined ** TMultiMessagePicture::GetTMultiMessagePictureClassNamePointer(void)
+TMultiMessagePicture * __thiscall
+TMultiMessagePicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80
+          (TMultiMessagePicture *this)
 
 {
-  return &PTR_s_TMultiMessagePicture_0065c1c8;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TMultiMessagePictureVtbl_00643818;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0044FB10
+// GHIDRA_NAME TMultiMessagePicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TMultiMessagePicture * __thiscall
+TMultiMessagePicture::_scalar_deleting_destructor_(TMultiMessagePicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054ECA0
+// GHIDRA_NAME TMultiMessagePicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TMultiMessagePicture::GetTEventHandlerClassNamePointer(TMultiMessagePicture *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054ECC0
+// GHIDRA_NAME TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall
+TMultiMessagePicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TMultiMessagePicture *this)
+
+{
+  int iVar1;
+  TApplicationVtbl *pTVar2;
+  undefined uVar3;
+  char cVar4;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined4 uVar5;
+  undefined3 extraout_var_01;
+  int iVar6;
+  TMultiMessagePicture_slot_0x04_0x04 *pTVar7;
+  undefined4 *unaff_FS_OFFSET;
+  CString in_stack_00000004;
+  CString in_stack_00000008;
+  TMultiMessagePicture_slot_0x04_0x04 *in_stack_0000000c;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634fc8;
+  *unaff_FS_OFFSET = &local_c;
+  if (((in_stack_00000004.m_pchData == (char *)0x14) || (in_stack_00000004.m_pchData == (char *)0xa)
+      ) || (in_stack_00000004.m_pchData == (char *)0x22)) {
+    iVar6 = *(int *)(in_stack_00000008.m_pchData + 0x1c);
+    if ((iVar6 != 0x63616e63) && (iVar6 != 0x636e636c)) {
+      if (iVar6 != 0x6f6b6179) {
+        TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+        goto LAB_0054edfd;
+      }
+      pTVar7 = this->vftable[0x12].slot_0x04;
+      in_stack_0000000c = pTVar7;
+      uVar3 = (*pTVar7)(0x6d657367);
+      iVar6 = *(int *)CONCAT31(extraout_var,uVar3);
+      (**(code **)(iVar6 + 0xc))();
+      CString::CString(&stack0x00000004);
+      puStack_8 = (undefined1 *)0x0;
+      (**(code **)(iVar6 + 0x1dc))(&stack0x00000004);
+      iVar6 = 0;
+      in_stack_00000004.m_pchData = (char *)0x0;
+      do {
+        uVar3 = (*pTVar7)(iVar6 + 0x626f7830);
+        iVar1 = *(int *)CONCAT31(extraout_var_00,uVar3);
+        (**(code **)(iVar1 + 0xc))();
+        cVar4 = (**(code **)(iVar1 + 0x28))();
+        if ((cVar4 != '\0') && (cVar4 = (**(code **)(iVar1 + 0x1d0))(), cVar4 != '\0')) {
+          in_stack_00000004.m_pchData = in_stack_00000004.m_pchData | 1 << ((byte)iVar6 & 0x1f);
+        }
+        iVar6 = iVar6 + 1;
+        pTVar7 = in_stack_0000000c;
+      } while (iVar6 < 7);
+      uVar5 = FindActiveNationSlotIndexInGameFlowList();
+      CreateAndSendTurnEvent0C_Text256AndTwoFlags
+                (&stack0x00000008,in_stack_00000004.m_pchData,uVar5);
+      uStack_4 = 0xffffffff;
+      CString::~CString(&stack0x00000008);
+    }
+    pTVar2 = g_pGlobalUiRootController->vftable;
+    uVar3 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    (*pTVar2[0x16].slot_0x04)(CONCAT31(extraout_var_01,uVar3));
+  }
+LAB_0054edfd:
+  *unaff_FS_OFFSET = local_c;
+  return;
 }
 

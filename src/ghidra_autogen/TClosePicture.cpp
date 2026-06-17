@@ -7,11 +7,11 @@
 // GHIDRA_NAME TClosePicture::CreateTClosePictureInstance
 // GHIDRA_PROTO undefined CreateTClosePictureInstance()
 
-undefined4 * TClosePicture::CreateTClosePictureInstance(void)
+TPictureButton * TClosePicture::CreateTClosePictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TPictureButton *this;
+  TPictureButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,23 +21,23 @@ undefined4 * TClosePicture::CreateTClosePictureInstance(void)
   puStack_8 = &LAB_0063789a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-    *puVar1 = &_vftable_;
-    puVar2 = puVar1;
+  pTVar1 = (TPictureButton *)0x0;
+  if (this != (TPictureButton *)0x0) {
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
+    this->vftable = (TPictureButtonVtbl *)&_vftable_;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586B50
-// GHIDRA_NAME TClosePicture::GetTClosePictureClassNamePointer
-// GHIDRA_PROTO undefined GetTClosePictureClassNamePointer()
+// GHIDRA_NAME TClosePicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TClosePicture::GetTClosePictureClassNamePointer(void)
+CRuntimeClass * __thiscall TClosePicture::GetTEventHandlerClassNamePointer(TClosePicture *this)
 
 {
   return &g_pClassDescTClosePicture;
@@ -45,45 +45,46 @@ char * TClosePicture::GetTClosePictureClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586B70
 // GHIDRA_NAME TClosePicture::ConstructTClosePictureBaseState
-// GHIDRA_PROTO undefined ConstructTClosePictureBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTClosePictureBaseState(void)
 
-undefined4 * __fastcall TClosePicture::ConstructTClosePictureBaseState(undefined4 *param_1)
+TClosePicture * __thiscall TClosePicture::ConstructTClosePictureBaseState(TClosePicture *this)
 
 {
-  TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-  *param_1 = &_vftable_;
-  return param_1;
+  TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
+  this->vftable = &_vftable_;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586BA0
 // GHIDRA_NAME TClosePicture::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TClosePicture::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TClosePicture * __thiscall TClosePicture::_scalar_deleting_destructor_(TClosePicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586BF0
-// GHIDRA_NAME TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
-// GHIDRA_PROTO undefined WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0()
+// GHIDRA_NAME TClosePicture::InvalidateWindowRectFromHandleField1C
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
 
-undefined1 __thiscall
-TClosePicture::WrapperFor_DispatchUiMouseEventToChildrenOrSelf_At00586bf0
-          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+undefined1 __thiscall TClosePicture::InvalidateWindowRectFromHandleField1C(TClosePicture *this)
 
 {
   undefined1 uVar1;
-  int *piVar2;
+  undefined uVar2;
+  undefined3 extraout_var;
   
-  uVar1 = TControl::DispatchUiMouseEventToChildrenOrSelf(param_2,param_3,param_4,param_5);
-  piVar2 = (int *)(**(code **)(*param_1 + 0x58))();
-  (**(code **)(*piVar2 + 0x1b4))(param_1[7],1);
+  uVar1 = TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this);
+  uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))(this->controlTag,1);
   return uVar1;
 }
 

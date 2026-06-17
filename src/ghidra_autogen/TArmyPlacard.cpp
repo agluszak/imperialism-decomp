@@ -7,11 +7,11 @@
 // GHIDRA_NAME TArmyPlacard::CreateTArmyPlacardInstance
 // GHIDRA_PROTO undefined CreateTArmyPlacardInstance()
 
-undefined4 * TArmyPlacard::CreateTArmyPlacardInstance(void)
+thunk_TPictureButton * TArmyPlacard::CreateTArmyPlacardInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,24 +21,24 @@ undefined4 * TArmyPlacard::CreateTArmyPlacardInstance(void)
   puStack_8 = &LAB_00637b7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00667448;
-    *(undefined2 *)(puVar1 + 0x24) = 0xffff;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TArmyPlacardVtbl **)this = &TArmyPlacardVtbl_00667448;
+    *(undefined2 *)(this + 0x90) = 0xffff;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BEB0
-// GHIDRA_NAME TArmyPlacard::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TArmyPlacard::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-int * TArmyPlacard::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TArmyPlacard::GetTEventHandlerClassNamePointer(TArmyPlacard *this)
 
 {
   return &g_pClassDescTArmyPlacard;
@@ -46,72 +46,75 @@ int * TArmyPlacard::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BED0
 // GHIDRA_NAME TArmyPlacard::TArmyPlacard
-// GHIDRA_PROTO undefined TArmyPlacard()
+// GHIDRA_PROTO undefined __thiscall TArmyPlacard(void)
 
-undefined4 * __fastcall TArmyPlacard::TArmyPlacard(undefined4 *param_1)
+TArmyPlacard * __thiscall TArmyPlacard::TArmyPlacard(TArmyPlacard *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00667448;
-  *(undefined2 *)(param_1 + 0x24) = 0xffff;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TArmyPlacardVtbl_00667448;
+  *(undefined2 *)&this->field_0x90 = 0xffff;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BF00
 // GHIDRA_NAME TArmyPlacard::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TArmyPlacard::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TArmyPlacard * __thiscall TArmyPlacard::_scalar_deleting_destructor_(TArmyPlacard *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BF50
 // GHIDRA_NAME TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50
-// GHIDRA_PROTO undefined WrapperFor_GetActiveNationId_At0058bf50()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At0058bf50(void)
 
-void __thiscall TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(int *param_1,short param_2)
+void __thiscall TArmyPlacard::WrapperFor_GetActiveNationId_At0058bf50(TArmyPlacard *this)
 
 {
-  int iVar1;
+  TArmyPlacardVtbl *pTVar1;
   short sVar2;
-  short sVar3;
+  int iVar3;
   char unaff_retaddr;
+  short in_stack_00000004;
   
   sVar2 = UiRuntimeContext::GetActiveNationId();
-  sVar2 = *(short *)((int)g_pCityOrderCapabilityState + (param_1[7] + sVar2 * 10) * 2 + 0x1f2d3b76);
-  sVar3 = sVar2 + 0x4c4;
-  if (param_2 != (short)param_1[0x24]) {
-    iVar1 = *param_1;
-    if (param_2 < 1) {
-      sVar3 = sVar2 + 0x4e2;
+  iVar3 = CONCAT22((short)((uint)g_pCityOrderCapabilityState >> 0x10),
+                   *(short *)(&g_pCityOrderCapabilityState[0x50032].field_0x3be +
+                             (this->controlTag + sVar2 * 10) * 2) + 0x4c4);
+  if (in_stack_00000004 != *(short *)&this->field_0x90) {
+    pTVar1 = this->vftable;
+    if (in_stack_00000004 < 1) {
+      iVar3 = iVar3 + 0x1e;
     }
-    (**(code **)(iVar1 + 0x1c8))(sVar3,1);
+    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(iVar3,1);
     if (unaff_retaddr != '\0') {
-      (**(code **)(iVar1 + 0xe4))();
+      (*pTVar1[0x1c].slot_0x04)();
     }
   }
-  *(short *)(param_1 + 0x24) = param_2;
+  *(short *)&this->field_0x90 = in_stack_00000004;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BFE0
-// GHIDRA_NAME TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow
-// GHIDRA_PROTO undefined RenderRightAlignedNumericOverlayWithShadow()
+// GHIDRA_NAME TArmyPlacard::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall
-TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow(int param_1,undefined4 param_2)
+void __thiscall TArmyPlacard::OrphanTiny_ReturnZero_0048a730(TArmyPlacard *this)
 
 {
   short sVar1;
   undefined2 extraout_var;
   undefined4 *unaff_FS_OFFSET;
-  int local_10;
+  CString local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -120,52 +123,51 @@ TArmyPlacard::RenderRightAlignedNumericOverlayWithShadow(int param_1,undefined4 
   puStack_8 = &LAB_00637b98;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_10 = param_1;
-  InitializeSharedStringRefFromEmpty(&local_10);
+  local_10.m_pchData = (char *)this;
+  CString::CString(&local_10);
   local_4 = 0;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay(param_2);
-  if (*(short *)(param_1 + 0x90) != 0) {
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  if (*(short *)&this->field_0x90 != 0) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b67);
-    FormatStringWithVarArgsToSharedRef(&local_10,&g_szDecimalFormat,(int)*(short *)(param_1 + 0x90))
-    ;
+    FormatStringWithVarArgsToSharedRef
+              (&local_10,&g_szDecimalFormat,(int)*(short *)&this->field_0x90);
     sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&local_10);
     thunk_SetQuickDrawTextOriginWithContextOffset
-              (*(short *)(param_1 + 0x34) - sVar1,*(short *)(param_1 + 0x38) + -2);
+              ((short)this->field34 - sVar1,(short)this->field38 + -2);
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_10);
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6c);
     thunk_SetQuickDrawTextOriginWithContextOffset
-              (CONCAT22(extraout_var,*(short *)(param_1 + 0x34) - sVar1) + -1,
-               *(short *)(param_1 + 0x38) + -3);
+              (CONCAT22(extraout_var,(short)this->field34 - sVar1) + -1,(short)this->field38 + -3);
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_10);
   }
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&local_10);
+  CString::~CString(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C140
-// GHIDRA_NAME TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC
-// GHIDRA_PROTO undefined HandlePlusMinusCommandAndInvokeVslot1CC()
+// GHIDRA_NAME TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall
-TArmyPlacard::HandlePlusMinusCommandAndInvokeVslot1CC(int *param_1,undefined4 param_2,int param_3)
+void __thiscall TArmyPlacard::ReleaseRuntimeSelectionOwnerAndDestroyObject(TArmyPlacard *this)
 
 {
   undefined4 uVar1;
+  int in_stack_00000008;
   
-  if (*(int *)(param_3 + 0x1c) == 0x706c7573) {
+  if (*(int *)(in_stack_00000008 + 0x1c) == 0x706c7573) {
     uVar1 = ActivateFirstActiveTacticalUnitByCategoryAtTile
-                      (CONCAT22(0x706c,(short)param_1[7] + -0x6330),
-                       *(undefined2 *)(g_pMapContextActionManager + 0x31c));
-    (**(code **)(*param_1 + 0x1cc))(uVar1,1);
+                      (CONCAT22(0x706c,(short)this->controlTag + -0x6330),
+                       *(undefined2 *)&g_pMapContextActionManager->field_0x31c);
+    (*this->vftable[0x39].slot_0x04)(uVar1,1);
     return;
   }
-  if (*(int *)(param_3 + 0x1c) == 0x6d696e75) {
+  if (*(int *)(in_stack_00000008 + 0x1c) == 0x6d696e75) {
     uVar1 = ActivateFirstIdleTacticalUnitByCategoryAtTile
-                      ((short)param_1[7] + -0x6330,
-                       CONCAT22(0x6d69,*(undefined2 *)(g_pMapContextActionManager + 0x31c)));
-    (**(code **)(*param_1 + 0x1cc))(uVar1,1);
+                      ((short)this->controlTag + -0x6330,
+                       CONCAT22(0x6d69,*(undefined2 *)&g_pMapContextActionManager->field_0x31c));
+    (*this->vftable[0x39].slot_0x04)(uVar1,1);
   }
   return;
 }

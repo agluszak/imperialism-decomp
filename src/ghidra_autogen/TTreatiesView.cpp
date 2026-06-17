@@ -3,6 +3,35 @@
 // Program: Imperialism.exe
 // Bucket: TTreatiesView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00430320
+// GHIDRA_NAME TTreatiesView::ConstructUiResourceEntry_Vtbl0063f878
+// GHIDRA_PROTO undefined __thiscall ConstructUiResourceEntry_Vtbl0063f878(void)
+
+TTreatiesView * __thiscall TTreatiesView::ConstructUiResourceEntry_Vtbl0063f878(TTreatiesView *this)
+
+{
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  *(undefined4 *)&this->field_0x60 = 0;
+  this->vftable = &TTreatiesViewVtbl_0063f878;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00430350
+// GHIDRA_NAME TTreatiesView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTreatiesView * __thiscall TTreatiesView::_scalar_deleting_destructor_(TTreatiesView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004F7A10
 // GHIDRA_NAME TTreatiesView::CreateTTreatiesViewInstance
 // GHIDRA_PROTO undefined CreateTTreatiesViewInstance()
@@ -24,8 +53,8 @@ TView * TTreatiesView::CreateTTreatiesViewInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this[1].vftable = (void *)0x0;
-    this->vftable = &PTR_LAB_0063f878;
+    this[1].vftable = (TViewVtbl *)0x0;
+    this->vftable = (TViewVtbl *)&TTreatiesViewVtbl_0063f878;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -34,20 +63,75 @@ TView * TTreatiesView::CreateTTreatiesViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F7AA0
-// GHIDRA_NAME TTreatiesView::GetTTreatiesViewClassNamePointer
-// GHIDRA_PROTO undefined GetTTreatiesViewClassNamePointer()
+// GHIDRA_NAME TTreatiesView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTreatiesView::GetTTreatiesViewClassNamePointer(void)
+CRuntimeClass * __thiscall TTreatiesView::GetTEventHandlerClassNamePointer(TTreatiesView *this)
 
 {
-  return &PTR_s_TTreatiesView_00654f78;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F7AC0
+// GHIDRA_NAME TTreatiesView::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
+
+void __thiscall TTreatiesView::OrphanCallChain_C6_I49_004875d0(TTreatiesView *this)
+
+{
+  TTreatiesView_slot_0x04_0x04 *pTVar1;
+  int iVar2;
+  undefined4 *unaff_FS_OFFSET;
+  CString in_stack_00000004;
+  undefined1 *puStack_2c;
+  CString local_14;
+  undefined1 *puStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00632d60;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString(&local_14);
+  iVar2 = 0;
+  local_4 = 0;
+  puStack_2c = (undefined1 *)0x4f7af9;
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  *(TView **)&this->field_0x60 = this->ownerContext;
+  pTVar1 = this->vftable[0x12].slot_0x04;
+  do {
+    puStack_2c = (undefined1 *)0x4f7b13;
+    (*pTVar1)();
+    puStack_2c = &stack0xffffffe8;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,iVar2 + 0x37);
+    in_stack_00000004.m_pchData = (char *)&puStack_2c;
+    thunk_AssignStringSharedRefAndReturnThis(&local_14);
+    InitializeAndRunMainRoutine();
+    iVar2 = iVar2 + 1;
+  } while (iVar2 < 7);
+  puStack_2c = (undefined1 *)0x4f7b5f;
+  CString::CString(&stack0x00000004,(char *)&g_szEmptyString);
+  local_4._0_1_ = 1;
+  puStack_2c = (undefined1 *)0x4f7b72;
+  CString::AssignFromPtr(&local_14,&stack0x00000004);
+  local_4 = (uint)local_4._1_3_ << 8;
+  CString::~CString(&stack0x00000004);
+  puStack_10 = (undefined1 *)&puStack_2c;
+  thunk_AssignStringSharedRefAndReturnThis(&local_14);
+  InitializeAndRunMainRoutine();
+  local_4 = 0xffffffff;
+  CString::~CString(&local_14);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F7C00
-// GHIDRA_NAME TTreatiesView::DestructTTreatiesViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTreatiesViewAndMaybeFree()
+// GHIDRA_NAME TTreatiesView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
+void __thiscall TTreatiesView::OrphanTiny_ReturnZero_0048a730(TTreatiesView *this)
 
 {
   short sVar1;
@@ -60,13 +144,13 @@ void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
   undefined1 *puStack_60;
   undefined4 uStack_5c;
   undefined4 uStack_58;
-  undefined1 **ppuStack_54;
-  undefined1 local_40 [4];
+  CString *pCStack_54;
+  CString local_40;
   undefined1 *local_3c;
   undefined2 local_38;
   undefined1 local_36;
   undefined1 local_35;
-  undefined1 local_34 [8];
+  CString local_34 [2];
   undefined2 local_2c;
   undefined2 local_2a;
   short local_28 [8];
@@ -82,13 +166,13 @@ void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
   puStack_8 = &LAB_00632d80;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  ppuStack_54 = (undefined1 **)0x4f7c27;
-  InitializeSharedStringRefFromEmpty(local_40);
+  pCStack_54 = (CString *)0x4f7c27;
+  CString::CString(&local_40);
   iVar2 = 0;
   local_4 = 0;
-  ppuStack_54 = (undefined1 **)0x4f7c36;
-  InitializeSharedStringRefFromEmpty(local_34);
-  ppuStack_54 = (undefined1 **)0x1;
+  pCStack_54 = (CString *)0x4f7c36;
+  CString::CString(local_34);
+  pCStack_54 = (CString *)0x1;
   local_28[6] = 0x83;
   local_28[7] = 0x83;
   uStack_58 = 0x2b68;
@@ -112,23 +196,23 @@ void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
   local_28[3] = 0x1d4;
   local_28[4] = 0x1a1;
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
-  ppuStack_54 = (undefined1 **)&local_38;
+  pCStack_54 = (CString *)&local_38;
   uStack_58 = 0x2b6b;
   uStack_5c = 0x4f7ce3;
   thunk_MapUiThemeCodeToStyleFlags();
-  ppuStack_54 = &local_3c;
+  pCStack_54 = (CString *)&local_3c;
   uStack_58 = 0x2b68;
   uStack_5c = 0x4f7cf5;
   thunk_MapUiThemeCodeToStyleFlags();
-  ppuStack_54 = (undefined1 **)local_40;
+  pCStack_54 = &local_40;
   uStack_58 = 0x20;
   uStack_5c = 0x2733;
   puStack_60 = (undefined1 *)0x4f7d12;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   puVar3 = (undefined1 *)
-           CONCAT22((short)((uint)unaff_ESI >> 0x10),0x16f - *(short *)(param_1 + 0x28));
-  puVar4 = (undefined1 *)
-           CONCAT22((short)((uint)unaff_EDI >> 0x10),0x48 - *(short *)(param_1 + 0x24));
+           CONCAT22((short)((uint)unaff_ESI >> 0x10),0x16f - (short)this->ownerOffsetY);
+  puVar4 = (undefined1 *)CONCAT22((short)((uint)unaff_EDI >> 0x10),0x48 - (short)this->ownerOffsetX)
+  ;
   SetQuickDrawColorAndSyncGlobals();
   puStack_60 = puVar3 + 1;
   thunk_SetQuickDrawTextOriginWithContextOffset(puVar4 + 1);
@@ -143,15 +227,14 @@ void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0,10,0x2b68);
   do {
     puStack_60 = &stack0xffffffb4;
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2733,iVar2 + 6);
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,iVar2 + 6);
     puStack_60 = &stack0xffffffb4;
     puVar4 = (undefined1 *)
-             CONCAT22((short)((uint)puVar4 >> 0x10),(&local_38)[iVar2] - *(short *)(param_1 + 0x28))
-    ;
+             CONCAT22((short)((uint)puVar4 >> 0x10),(&local_38)[iVar2] - (short)this->ownerOffsetY);
     sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     puVar3 = (undefined1 *)
              CONCAT22((short)((uint)puVar3 >> 0x10),
-                      (local_28[iVar2] - sVar1 / 2) - *(short *)(param_1 + 0x24));
+                      (local_28[iVar2] - sVar1 / 2) - (short)this->ownerOffsetX);
     SetQuickDrawColorAndSyncGlobals();
     puStack_60 = puVar4 + 1;
     thunk_SetQuickDrawTextOriginWithContextOffset(puVar3 + 1);
@@ -169,37 +252,64 @@ void __fastcall TTreatiesView::DestructTTreatiesViewAndMaybeFree(int param_1)
   SetQuickDrawFillColor();
   local_10 = local_10 & 0xffffff00;
   puStack_60 = (undefined1 *)0x4f7e43;
-  ReleaseSharedStringRefIfNotEmpty(local_40);
+  CString::~CString(&local_40);
   local_10 = 0xffffffff;
   puStack_60 = (undefined1 *)0x4f7e54;
-  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb4);
+  CString::~CString((CString *)&stack0xffffffb4);
   *unaff_FS_OFFSET = local_18;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004F7F80
-// GHIDRA_NAME TTreatiesView::HandleDiplomacyTreatyActionTagSelection
-// GHIDRA_PROTO undefined HandleDiplomacyTreatyActionTagSelection()
+// GHIDRA_FUNCTION IMPERIALISM 0x004F7F10
+// GHIDRA_NAME TTreatiesView::OrphanRetStub_00430550
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-void __thiscall
-TTreatiesView::HandleDiplomacyTreatyActionTagSelection
-          (int param_1,int param_2,int param_3,undefined4 param_4)
+void __thiscall TTreatiesView::OrphanRetStub_00430550(TTreatiesView *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  TToolBarClusterVtbl *pTStack_18;
+  int *piStack_14;
+  undefined4 uStack_10;
+  
+  uStack_10 = 0x7363726f;
+  piStack_14 = (int *)0x4f7f22;
+  uVar1 = (*this->vftable[0x12].slot_0x04)();
+  piStack_14 = (int *)CONCAT31(extraout_var,uVar1);
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+            ((TToolBarCluster *)&pTStack_18);
+  InitializeAndRunMainRoutine();
+  piStack_14 = (int *)0x73637235;
+  pTStack_18 = (TToolBarClusterVtbl *)0x4f7f4f;
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1c8))();
+  *(undefined4 *)(*(int *)&this->field_0x60 + 0xbc) = 0xe;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F7F80
+// GHIDRA_NAME TTreatiesView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TTreatiesView::OrphanRetStub_0059add0(TTreatiesView *this)
 
 {
   uint uVar1;
   int iVar2;
+  int in_stack_00000004;
+  int in_stack_00000008;
   
-  if (param_2 == 0xc) {
-    uVar1 = *(uint *)(param_3 + 0x1c);
+  if (in_stack_00000004 == 0xc) {
+    uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
     if (uVar1 < 0x73637235) {
       iVar2 = uVar1 + 0x8c9c8dd2;
     }
     else {
       iVar2 = uVar1 + 0x8c9c8dd9;
     }
-    *(int *)(*(int *)(param_1 + 0x60) + 0xbc) = iVar2;
+    *(int *)(*(int *)&this->field_0x60 + 0xbc) = iVar2;
   }
-  thunk_ForwardEngineerDialogCommandToChildSlot40(param_2,param_3,param_4);
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
   return;
 }
 

@@ -3,28 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: TGameInfoPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0056B850
-// GHIDRA_NAME TGameInfoPicture::GetTGameInfoPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTGameInfoPictureClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0056B800
+// GHIDRA_NAME TGameInfoPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TGameInfoPicture::GetTGameInfoPictureClassNamePointer(void)
+TGameInfoPicture * __thiscall TGameInfoPicture::_scalar_deleting_destructor_(TGameInfoPicture *this)
 
 {
-  return &PTR_s_TGameInfoPicture_0065de28;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056B850
+// GHIDRA_NAME TGameInfoPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TGameInfoPicture::GetTEventHandlerClassNamePointer(TGameInfoPicture *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056B870
-// GHIDRA_NAME TGameInfoPicture::ConstructTGameInfoPictureBaseState
-// GHIDRA_PROTO undefined ConstructTGameInfoPictureBaseState()
+// GHIDRA_NAME TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TGameInfoPicture::ConstructTGameInfoPictureBaseState(int *param_1,undefined4 param_2)
+void __thiscall TGameInfoPicture::OrphanLeaf_NoCall_Ins07_004d8920(TGameInfoPicture *this)
 
 {
-  code *pcVar1;
-  int *piVar2;
+  TGameInfoPicture_slot_0x04_0x04 *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
+  CString in_stack_00000004;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -33,26 +51,105 @@ TGameInfoPicture::ConstructTGameInfoPictureBaseState(int *param_1,undefined4 par
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00635da8;
   *unaff_FS_OFFSET = &uStack_c;
-  TView::thunk_NoOpUiLifecycleHook(param_2);
-  InitializeSharedStringRefFromEmpty(&param_2);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  CString::CString(&stack0x00000004);
   uStack_4 = 0;
   iVar3 = 0;
   do {
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2757,iVar3 + 0xf,&param_2);
-    RefreshActiveControlThenApplyThemeStyleAndCaption(iVar3 + 0x68647230,0,0xc,0x2b67,1,param_2);
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3 + 0xf,&stack0x00000004);
+    RefreshActiveControlThenApplyThemeStyleAndCaption
+              (iVar3 + 0x68647230,0,0xc,0x2b67,1,in_stack_00000004.m_pchData);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 5);
   iVar3 = 0;
-  pcVar1 = *(code **)(*param_1 + 0x94);
+  pTVar1 = this->vftable[0x12].slot_0x04;
   do {
-    piVar2 = (int *)(*pcVar1)(iVar3 + 0x74787461);
-    (**(code **)(*piVar2 + 0xc))();
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x2757,iVar3,&stack0x00000000);
-    RefreshActiveControlThenApplyThemeStyleAndCaption(iVar3 + 0x74787461,0,10,0x2b67,1,param_2);
+    uVar2 = (*pTVar1)(iVar3 + 0x74787461);
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3,&stack0x00000000);
+    RefreshActiveControlThenApplyThemeStyleAndCaption
+              (iVar3 + 0x74787461,0,10,0x2b67,1,in_stack_00000004.m_pchData);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0xe);
   uStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&param_2);
+  CString::~CString(&stack0x00000004);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056B9B0
+// GHIDRA_NAME TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall
+TGameInfoPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TGameInfoPicture *this)
+
+{
+  uint uVar1;
+  char cVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  CString local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00635dc8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_10.m_pchData = (char *)this;
+  CString::CString(&local_10);
+  local_4 = 0;
+  if (in_stack_00000004 == 10) {
+    uVar1 = *(uint *)(in_stack_00000008 + 0x1c);
+    if (uVar1 < 0x6f6b617a) {
+      if (uVar1 == 0x6f6b6179) {
+        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        goto LAB_0056bb37;
+      }
+      if (uVar1 == 0x6275746c) {
+        uVar3 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+        if ((short)CONCAT31(extraout_var,uVar3) != 1) {
+          (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+          goto LAB_0056bb37;
+        }
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      }
+      else {
+        if (uVar1 != 0x6275746d) {
+          if (uVar1 == 0x6275746e) {
+            if (*(int *)&g_pInterNationEventQueueManager->field_0xef4 == 0) {
+              thunk_ShowLocalizedUiPromptByGroupAndIndex(0x275e,6,2,0);
+            }
+            else {
+              (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+            }
+            goto LAB_0056bb37;
+          }
+          goto LAB_0056bb30;
+        }
+        UiRuntimeContext::GetActiveNationId();
+        cVar2 = ScanMapContextActionEntriesForCodeMatch();
+        if (cVar2 != '\0') {
+          (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+          goto LAB_0056bb37;
+        }
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      }
+      thunk_AssignStringSharedRefAndReturnThis(&local_10);
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      goto LAB_0056bb37;
+    }
+  }
+LAB_0056bb30:
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+LAB_0056bb37:
+  local_4 = 0xffffffff;
+  CString::~CString(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

@@ -4,12 +4,358 @@
 // Bucket: TCivUnit.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C28A0
-// GHIDRA_NAME TCivUnit::GetTCivUnitClassNamePointer
-// GHIDRA_PROTO undefined GetTCivUnitClassNamePointer()
+// GHIDRA_NAME TCivUnit::GetTUnitClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTUnitClassNamePointer(void)
 
-undefined ** TCivUnit::GetTCivUnitClassNamePointer(void)
+CRuntimeClass * __thiscall TCivUnit::GetTUnitClassNamePointer(TCivUnit *this)
 
 {
-  return &PTR_s_TCivUnit_0066ed58;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C28F0
+// GHIDRA_NAME TCivUnit::ConstructTUnitBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTUnitBaseState(void)
+
+TCivUnit * __thiscall TCivUnit::ConstructTUnitBaseState(TCivUnit *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestroyCivUnitOrderObject_Impl();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C29F0
+// GHIDRA_NAME TCivUnit::SetUnitOrderTypeAndOwnerIndex
+// GHIDRA_PROTO void __thiscall SetUnitOrderTypeAndOwnerIndex(int nOrderType, short nTargetTileIndex)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Set civilian work-order type, queued target tile, and duration countdown.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Initialize local duration lookup table by order type.
+// GHIDRA_COMMENT 2. Store nOrderType at +0x08.
+// GHIDRA_COMMENT 3. Store nTargetTileIndex at +0x0C (short).
+// GHIDRA_COMMENT 4. Store remaining turns at +0x24.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this: CivUnitOrderState object.
+// GHIDRA_COMMENT - nOrderType: Internal order code (2=sleep, 3=next unit marker, 4=no orders marker, 5/6/7/8/10/11/12/13 productive types).
+// GHIDRA_COMMENT - nTargetTileIndex: Tile index reserved for this order; 0 or -1 for immediate/non-targeted orders.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void
+// GHIDRA_COMMENT_END
+
+/* Set civilian work-order type, queued target tile, and duration countdown.
+   Algorithm:
+   1. Initialize local duration lookup table by order type.
+   2. Store nOrderType at +0x08.
+   3. Store nTargetTileIndex at +0x0C (short).
+   4. Store remaining turns at +0x24.
+   Parameters:
+   - this: CivUnitOrderState object.
+   - nOrderType: Internal order code (2=sleep, 3=next unit marker, 4=no orders marker,
+   5/6/7/8/10/11/12/13 productive types).
+   - nTargetTileIndex: Tile index reserved for this order; 0 or -1 for immediate/non-targeted
+   orders.
+   Returns:
+   - void */
+
+void __thiscall
+TCivUnit::SetUnitOrderTypeAndOwnerIndex(TCivUnit *this,int nOrderType,short nTargetTileIndex)
+
+{
+  short anOrderDurationByType [14];
+  short nOrderDurationTurns;
+  
+  anOrderDurationByType[0] = 0;
+  anOrderDurationByType[1] = 0;
+  anOrderDurationByType[2] = 0;
+  anOrderDurationByType[3] = 0;
+  anOrderDurationByType[4] = 0;
+  anOrderDurationByType[9] = 0;
+  anOrderDurationByType[5] = 1;
+  anOrderDurationByType[6] = 3;
+  anOrderDurationByType[7] = 3;
+  anOrderDurationByType[8] = 1;
+  anOrderDurationByType[10] = 3;
+  anOrderDurationByType[0xb] = 3;
+  anOrderDurationByType[0xc] = 4;
+  anOrderDurationByType[0xd] = 1;
+  *(int *)&this->field_0x8 = nOrderType;
+  nOrderDurationTurns = anOrderDurationByType[nOrderType];
+  *(short *)&this->field_0xc = nTargetTileIndex;
+  *(short *)&this->field_0x24 = nOrderDurationTurns;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2A90
+// GHIDRA_NAME TCivUnit::NormalizeUnitOrderStateAfterLoad
+// GHIDRA_PROTO void __thiscall NormalizeUnitOrderStateAfterLoad(int * pCivUnitOrderState)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Advances civilian work orders at turn rollover and applies completion effects.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Read current order type from order state field +0x08.
+// GHIDRA_COMMENT 2. If type is Sleep (2), keep it active and return unchanged.
+// GHIDRA_COMMENT 3. If type is productive (5/6/7/8/10/11/12/13), decrement remaining turns field +0x24.
+// GHIDRA_COMMENT 4. If remaining turns reaches zero, invoke completion application handler.
+// GHIDRA_COMMENT 5. For non-sleep immediate markers (including Next Unit and No Orders), clear order type to idle (0).
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCivUnitOrderState: Civilian order state object advanced during turn transition.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - None.
+// GHIDRA_COMMENT Special Cases:
+// GHIDRA_COMMENT - Productive orders persist multi-turn until countdown completion.
+// GHIDRA_COMMENT - Sleep persists across turns by explicit bypass path.
+// GHIDRA_COMMENT_END
+
+/* Advances civilian work orders at turn rollover and applies completion effects.
+   Algorithm:
+   1. Read current order type from order state field +0x08.
+   2. If type is Sleep (2), keep it active and return unchanged.
+   3. If type is productive (5/6/7/8/10/11/12/13), decrement remaining turns field +0x24.
+   4. If remaining turns reaches zero, invoke completion application handler.
+   5. For non-sleep immediate markers (including Next Unit and No Orders), clear order type to idle
+   (0).
+   Parameters:
+   - pCivUnitOrderState: Civilian order state object advanced during turn transition.
+   Returns:
+   - None.
+   Special Cases:
+   - Productive orders persist multi-turn until countdown completion.
+   - Sleep persists across turns by explicit bypass path. */
+
+void __thiscall TCivUnit::NormalizeUnitOrderStateAfterLoad(TCivUnit *this,int *pCivUnitOrderState)
+
+{
+                    /* Order type 2 (Sleep) bypasses rollover clear and remains active. */
+  switch(*(undefined4 *)&this->field_0x8) {
+  case 2:
+    return;
+  case 5:
+  case 6:
+  case 7:
+  case 8:
+  case 10:
+  case 0xb:
+  case 0xc:
+  case 0xd:
+    *(short *)&this->field_0x24 = *(short *)&this->field_0x24 + -1;
+    if (0 < *(short *)&this->field_0x24) {
+      return;
+    }
+    thunk_ApplyCompletedCivWorkOrderToMapState((int *)this);
+  }
+                    /* Non-sleep immediate orders (e.g. Next Unit/No Orders) fall through and are
+                       cleared to type 0 at turn rollover. */
+  *(undefined4 *)&this->field_0x8 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2B10
+// GHIDRA_NAME TCivUnit::DeserializeUnitOrderCoreState
+// GHIDRA_PROTO void __thiscall DeserializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Deserialize civilian-order state.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Deserialize shared unit-order core fields via DeserializeUnitOrderCoreState.
+// GHIDRA_COMMENT 2. Read civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this (IMPLICIT): Civilian unit-order state object.
+// GHIDRA_COMMENT - pArchiveStream: Load/archive stream interface.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Deserialize civilian-order state.
+   
+   Algorithm:
+   1. Deserialize shared unit-order core fields via DeserializeUnitOrderCoreState.
+   2. Read civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
+   
+   Parameters:
+   - this (IMPLICIT): Civilian unit-order state object.
+   - pArchiveStream: Load/archive stream interface.
+   
+   Returns:
+   - void. */
+
+void __thiscall TCivUnit::DeserializeUnitOrderCoreState(TCivUnit *this,int *pArchiveStream)
+
+{
+  TUnit::DeserializeUnitOrderCoreState((TUnit *)this,pArchiveStream);
+  (**(code **)(*pArchiveStream + 0x3c))(&this->field_0x24,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2B40
+// GHIDRA_NAME TCivUnit::SerializeUnitOrderCoreState
+// GHIDRA_PROTO void __thiscall SerializeUnitOrderCoreState(int * pArchiveStream)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Serialize civilian-order state.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Serialize shared unit-order core fields via SerializeUnitOrderCoreState.
+// GHIDRA_COMMENT 2. Write civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this (IMPLICIT): Civilian unit-order state object.
+// GHIDRA_COMMENT - pArchiveStream: Save/archive stream interface.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Serialize civilian-order state.
+   
+   Algorithm:
+   1. Serialize shared unit-order core fields via SerializeUnitOrderCoreState.
+   2. Write civilian-specific remaining-turn counter at offset +0x24 (2 bytes).
+   
+   Parameters:
+   - this (IMPLICIT): Civilian unit-order state object.
+   - pArchiveStream: Save/archive stream interface.
+   
+   Returns:
+   - void. */
+
+void __thiscall TCivUnit::SerializeUnitOrderCoreState(TCivUnit *this,int *pArchiveStream)
+
+{
+  TUnit::SerializeUnitOrderCoreState((TUnit *)this,pArchiveStream);
+  (**(code **)(*pArchiveStream + 0x78))(&this->field_0x24,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2B70
+// GHIDRA_NAME TCivUnit::OrphanRetStub_005c2610
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2610(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Relinks a civilian unit object into per-tile occupant chain (tile record +0x20 linked list).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Unlinks from previous tile chain.
+// GHIDRA_COMMENT - Inserts into target tile head list when target tile index is valid.
+// GHIDRA_COMMENT - Updates unit prev/next pointers and stored tile index field.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Persistence significance:
+// GHIDRA_COMMENT - This controls when/where a unit becomes attached to a concrete map tile.
+// GHIDRA_COMMENT_END
+
+/* Relinks a civilian unit object into per-tile occupant chain (tile record +0x20 linked list).
+   
+   Behavior:
+   - Unlinks from previous tile chain.
+   - Inserts into target tile head list when target tile index is valid.
+   - Updates unit prev/next pointers and stored tile index field.
+   
+   Persistence significance:
+   - This controls when/where a unit becomes attached to a concrete map tile. */
+
+void __thiscall TCivUnit::OrphanRetStub_005c2610(TCivUnit *this)
+
+{
+  undefined4 uVar1;
+  short in_stack_00000004;
+  
+  if (*(short *)&this->field_0x6 != -1) {
+    if (*(int *)&this->field_0x10 == 0) {
+      *(undefined4 *)
+       (*(int *)&g_pGlobalMapState->field_0xc + 0x20 + *(short *)&this->field_0x6 * 0x24) =
+           *(undefined4 *)&this->field_0x14;
+    }
+    else {
+      *(undefined4 *)(*(int *)&this->field_0x10 + 0x14) = *(undefined4 *)&this->field_0x14;
+    }
+    if (*(int *)&this->field_0x14 != 0) {
+      *(undefined4 *)(*(int *)&this->field_0x14 + 0x10) = *(undefined4 *)&this->field_0x10;
+    }
+  }
+  if (in_stack_00000004 == -1) {
+    *(undefined4 *)&this->field_0x10 = 0;
+    *(undefined4 *)&this->field_0x14 = 0;
+  }
+  else {
+    uVar1 = *(undefined4 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + in_stack_00000004 * 0x24)
+    ;
+    *(undefined4 *)&this->field_0x10 = 0;
+    *(undefined4 *)&this->field_0x14 = uVar1;
+    *(TCivUnit **)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + in_stack_00000004 * 0x24) = this;
+    if (*(int *)&this->field_0x14 != 0) {
+      *(TCivUnit **)(*(int *)&this->field_0x14 + 0x10) = this;
+      *(short *)&this->field_0x6 = in_stack_00000004;
+      return;
+    }
+  }
+  *(short *)&this->field_0x6 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2C40
+// GHIDRA_NAME TCivUnit::OrphanRetStub_005c2470
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005c2470(void)
+
+void __thiscall TCivUnit::OrphanRetStub_005c2470(TCivUnit *this)
+
+{
+  (*this->vftable[5].GetTUnitClassNamePointer)(0xffffffff);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2C60
+// GHIDRA_NAME TCivUnit::ResetCivWorkOrderAndRefreshCounters
+// GHIDRA_PROTO void __thiscall ResetCivWorkOrderAndRefreshCounters(int * pCivUnitOrderState)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Reset civilian work-order runtime state and refresh dependent counters/owner links.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Call order vfunc +0x30 to reset/detach active runtime assignment state.
+// GHIDRA_COMMENT 2. For non-type-7 state, call thunk_FUN_004b6a30(1) to refresh dependent counters.
+// GHIDRA_COMMENT 3. Call order vfunc +0x1C to finalize/reset base object state.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCivUnitOrderState: Civilian order object.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Reset civilian work-order runtime state and refresh dependent counters/owner links.
+   
+   Algorithm:
+   1. Call order vfunc +0x30 to reset/detach active runtime assignment state.
+   2. For non-type-7 state, call thunk_FUN_004b6a30(1) to refresh dependent counters.
+   3. Call order vfunc +0x1C to finalize/reset base object state.
+   
+   Parameters:
+   - pCivUnitOrderState: Civilian order object.
+   
+   Returns:
+   - void. */
+
+void __thiscall
+TCivUnit::ResetCivWorkOrderAndRefreshCounters(TCivUnit *this,int *pCivUnitOrderState)
+
+{
+  TCivUnitVtbl *pTVar1;
+  TCity *pTVar2;
+  
+  pTVar1 = this->vftable;
+  (*pTVar1[6].GetTUnitClassNamePointer)();
+  if (*(short *)&this->field_0x4 != 7) {
+    if (g_apNationStates[*(short *)&this->field_0x18] == (TGreatPower *)0x0) {
+      pTVar2 = (TCity *)0x0;
+    }
+    else {
+      pTVar2 = g_apNationStates[*(short *)&this->field_0x18]->city;
+    }
+    TTrainingOrder::CreateTTrainingOrderInstance(*(TTrainingOrder **)&pTVar2->field_0x1d8);
+  }
+  (*pTVar1[3].ConstructTUnitBaseState)();
+  return;
 }
 

@@ -3,6 +3,22 @@
 // Program: Imperialism.exe
 // Bucket: TTextList.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045AF30
+// GHIDRA_NAME TTextList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTextList * __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AB70
 // GHIDRA_NAME TTextList::CreateTTextListInstance
 // GHIDRA_PROTO undefined CreateTTextListInstance()
@@ -24,7 +40,7 @@ TView * TTextList::CreateTTextListInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &g_vtblTTextList;
+    this->vftable = (TViewVtbl *)&g_vtblTTextList;
     this[0x2b].flag4c = 0x10;
     this[0x2b].flag4d = 0;
     this[0x2b].padding_40_to_43 = 0;
@@ -38,20 +54,20 @@ TView * TTextList::CreateTTextListInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AC30
-// GHIDRA_NAME TTextList::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TTextList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TTextList::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TTextList::GetTEventHandlerClassNamePointer(TTextList *this)
 
 {
   return &g_pClassDescTTextList;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057ACC0
-// GHIDRA_NAME TTextList::ConstructTTextListBaseState
-// GHIDRA_PROTO undefined ConstructTTextListBaseState()
+// GHIDRA_NAME TTextList::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TTextList::ConstructTTextListBaseState(int param_1)
+void __thiscall TTextList::OrphanTiny_ReturnZero_0048a730(TTextList *this)
 
 {
   short sVar1;
@@ -61,12 +77,12 @@ void __fastcall TTextList::ConstructTTextListBaseState(int param_1)
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_30;
   undefined4 local_2c;
-  TToolBarCluster local_28 [4];
+  CString local_28;
   int local_24;
   char *local_20;
   undefined4 uStack_1c;
   int iStack_18;
-  undefined4 uStack_14;
+  int iStack_14;
   int iStack_10;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -76,7 +92,7 @@ void __fastcall TTextList::ConstructTTextListBaseState(int param_1)
   puStack_8 = &LAB_00636bf8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  iVar3 = *(int *)(param_1 + 0x1064);
+  iVar3 = *(int *)&this->field_0x1064;
   iVar2 = 0;
   local_2c = 0;
   local_30 = 0;
@@ -84,68 +100,70 @@ void __fastcall TTextList::ConstructTTextListBaseState(int param_1)
   thunk_MapUiThemeCodeToStyleFlags(0x2b6c,&local_2c);
   thunk_MapUiThemeCodeToStyleFlags(0x2b6a,&local_30);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xe,0x2b6c);
-  if ((int)*(short *)(param_1 + 0x106c) < *(int *)(param_1 + 0x38)) {
-    local_20 = (char *)(iVar3 * 0x40 + 0x60 + param_1);
+  if ((int)*(short *)&this->field_0x106c < this->field38) {
+    local_20 = &this->field_0x60 + iVar3 * 0x40;
     do {
-      if (*(int *)(param_1 + 0x1060) <= iVar3) break;
-      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(local_28,local_20);
+      if (*(int *)&this->field_0x1060 <= iVar3) break;
+      CString::CString(&local_28,local_20);
       local_4 = 0;
-      if (iVar3 == *(int *)(param_1 + 0x1068)) {
-        (**(code **)(*g_pUiRuntimeContext + 0x34))(5);
+      if (iVar3 == *(int *)&this->field_0x1068) {
+        (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(5);
         iStack_18 = (int)(short)iVar2;
-        iStack_10 = *(short *)(param_1 + 0x106c) + iStack_18;
-        uStack_14 = *(undefined4 *)(param_1 + 0x34);
+        iStack_10 = *(short *)&this->field_0x106c + iStack_18;
+        iStack_14 = this->field34;
         uStack_1c = 0;
         thunk_FillRectWithQuickDrawBrushAndContextOffset(&uStack_1c);
       }
-      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(local_28);
-      iVar3 = *(int *)(param_1 + 0x34) / 2 - (int)sVar1 / 2;
+      sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(&local_28);
+      iVar3 = this->field34 / 2 - (int)sVar1 / 2;
       SetQuickDrawColorAndSyncGlobals(local_30);
       thunk_SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,iVar2 + 0xc);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_28);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_28);
       SetQuickDrawColorAndSyncGlobals(local_2c);
       thunk_SetQuickDrawTextOriginWithContextOffset(iVar3,iVar2 + 0xb);
-      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(local_28);
-      iVar2 = iVar2 + CONCAT22(extraout_var,*(undefined2 *)(param_1 + 0x106c));
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(&local_28);
+      iVar2 = iVar2 + CONCAT22(extraout_var,*(undefined2 *)&this->field_0x106c);
       local_24 = local_24 + 1;
       local_20 = local_20 + 0x40;
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty(local_28);
+      CString::~CString(&local_28);
       iVar3 = local_24;
-    } while ((int)(short)iVar2 + (int)*(short *)(param_1 + 0x106c) < *(int *)(param_1 + 0x38));
+    } while ((int)(short)iVar2 + (int)*(short *)&this->field_0x106c < this->field38);
   }
   *unaff_FS_OFFSET = local_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0057AF20
-// GHIDRA_NAME TTextList::DestructTTextListAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTextListAndMaybeFree()
+// GHIDRA_NAME TTextList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TTextList::DestructTTextListAndMaybeFree(int *param_1,int param_2)
+void __thiscall TTextList::_scalar_deleting_destructor_(TTextList *this)
 
 {
-  int iVar1;
+  TTextListVtbl *pTVar1;
   int iVar2;
+  int in_stack_00000004;
   LONG LStack_30;
   LONG LStack_2c;
   LONG LStack_28;
   RECT RStack_24;
   tagRECT tStack_14;
   
-  iVar2 = (int)(short)(*(int *)(param_2 + 4) / (int)(short)param_1[0x41b]) + param_1[0x419];
-  if (iVar2 < param_1[0x418]) {
-    iVar1 = *param_1;
-    param_1[0x41a] = iVar2;
-    (**(code **)(iVar1 + 0xe4))();
-    (**(code **)(iVar1 + 300))(&LStack_30);
+  iVar2 = (int)(short)(*(int *)(in_stack_00000004 + 4) / (int)*(short *)&this->field_0x106c) +
+          *(int *)&this->field_0x1064;
+  if (iVar2 < *(int *)&this->field_0x1060) {
+    pTVar1 = this->vftable;
+    *(int *)&this->field_0x1068 = iVar2;
+    (*pTVar1[0x1c].slot_0x04)();
+    (*pTVar1[0x25].slot_0x04)(&LStack_30);
     RStack_24.top = LStack_30;
     RStack_24.right = LStack_2c;
     RStack_24.bottom = LStack_28;
     CopyRect(&tStack_14,&RStack_24);
     thunk_InvalidateCityDialogRectRegion(&tStack_14,1);
-    (**(code **)(iVar1 + 0x13c))();
-    (**(code **)(*(int *)param_1[8] + 0x40))(4,param_1,0);
+    (*pTVar1[0x27].slot_0x04)();
+    (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)(4,this,0);
   }
   return;
 }

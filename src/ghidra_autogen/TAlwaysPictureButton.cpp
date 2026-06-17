@@ -7,11 +7,11 @@
 // GHIDRA_NAME TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance
 // GHIDRA_PROTO undefined CreateTAlwaysPictureButtonInstance()
 
-undefined4 * TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(void)
+thunk_TPictureButton * TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,24 +21,25 @@ undefined4 * TAlwaysPictureButton::CreateTAlwaysPictureButtonInstance(void)
   puStack_8 = &LAB_0063636a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    *puVar1 = &PTR_LAB_0065e928;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(undefined2 *)(this + 0x92) = 7000;
+    *(TAlwaysPictureButtonVtbl **)this = &TAlwaysPictureButtonVtbl_0065e928;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005709D0
-// GHIDRA_NAME TAlwaysPictureButton::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TAlwaysPictureButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TAlwaysPictureButton::GetRuntimeClass(void)
+CRuntimeClass * __thiscall
+TAlwaysPictureButton::GetTEventHandlerClassNamePointer(TAlwaysPictureButton *this)
 
 {
   return &g_pClassDescTAlwaysPictureButton;
@@ -46,42 +47,75 @@ undefined ** TAlwaysPictureButton::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005709F0
 // GHIDRA_NAME TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState
-// GHIDRA_PROTO undefined ConstructTAlwaysPictureButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTAlwaysPictureButtonBaseState(void)
 
-undefined4 * __fastcall
-TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState(undefined4 *param_1)
+TAlwaysPictureButton * __thiscall
+TAlwaysPictureButton::ConstructTAlwaysPictureButtonBaseState(TAlwaysPictureButton *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *(undefined2 *)((int)param_1 + 0x92) = 7000;
-  *param_1 = &PTR_LAB_0065e928;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  *(undefined2 *)&this->field_0x92 = 7000;
+  this->vftable = &TAlwaysPictureButtonVtbl_0065e928;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570A20
 // GHIDRA_NAME TAlwaysPictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TAlwaysPictureButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TAlwaysPictureButton * __thiscall
+TAlwaysPictureButton::_scalar_deleting_destructor_(TAlwaysPictureButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570A70
+// GHIDRA_NAME TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00570870(void)
+
+void __thiscall TAlwaysPictureButton::OrphanCallChain_C2_I24_00570870(TAlwaysPictureButton *this)
+
+{
+  TAlwaysPictureButtonVtbl *pTVar1;
+  undefined4 in_EAX;
+  undefined4 uVar2;
+  char unaff_retaddr;
+  char in_stack_00000004;
+  
+  if (in_stack_00000004 != this->field_0x64) {
+    pTVar1 = this->vftable;
+    this->field_0x64 = in_stack_00000004;
+    if (in_stack_00000004 == '\0') {
+      uVar2 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x84 + 100);
+    }
+    else {
+      uVar2 = CONCAT22((short)((uint)in_EAX >> 0x10),*(short *)&this->field_0x84 + -100);
+    }
+    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(uVar2,1);
+    if (unaff_retaddr != '\0') {
+      (*pTVar1[0x39].slot_0x04)();
+    }
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570AE0
 // GHIDRA_NAME TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
-// GHIDRA_PROTO undefined WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0(void)
 
-void TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
-               (char param_1,char param_2)
+void __thiscall
+TAlwaysPictureButton::WrapperFor_thunk_SetControlActiveFlagAndRefreshIfChanged_At00570ae0
+          (TAlwaysPictureButton *this)
 
 {
-  TControl::SetControlActiveFlagAndRefreshIfChanged((int)param_1,(int)param_2);
+  TSoundPlayer::ReleaseRuntimeSelectionOwnerAndDestroyObject((TSoundPlayer *)this);
   return;
 }
 

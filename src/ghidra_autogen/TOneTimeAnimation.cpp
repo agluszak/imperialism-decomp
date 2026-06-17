@@ -3,57 +3,79 @@
 // Program: Imperialism.exe
 // Bucket: TOneTimeAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049FD20
-// GHIDRA_NAME TOneTimeAnimation::CreateTOneTimeAnimationInstance
-// GHIDRA_PROTO undefined CreateTOneTimeAnimationInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049FCF0
+// GHIDRA_NAME TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0(void)
 
-void __fastcall TOneTimeAnimation::CreateTOneTimeAnimationInstance(undefined4 *param_1)
+TOneTimeAnimation * __thiscall
+TOneTimeAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0(TOneTimeAnimation *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  byte in_stack_00000004;
+  
+  CreateTOneTimeAnimationInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049FD20
+// GHIDRA_NAME TOneTimeAnimation::CreateTOneTimeAnimationInstance
+// GHIDRA_PROTO undefined __thiscall CreateTOneTimeAnimationInstance(void)
+
+void __thiscall TOneTimeAnimation::CreateTOneTimeAnimationInstance(TOneTimeAnimation *this)
+
+{
+  this->vftable =
+       (TOneTimeAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD40
-// GHIDRA_NAME TOneTimeAnimation::GetTOneTimeAnimationClassNamePointer
-// GHIDRA_PROTO undefined GetTOneTimeAnimationClassNamePointer()
+// GHIDRA_NAME TOneTimeAnimation::GetTAnimationClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-undefined ** TOneTimeAnimation::GetTOneTimeAnimationClassNamePointer(void)
+CRuntimeClass * __thiscall TOneTimeAnimation::GetTAnimationClassNamePointer(TOneTimeAnimation *this)
 
 {
-  return &PTR_s_TOneTimeAnimation_0064c238;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FD60
 // GHIDRA_NAME TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-// GHIDRA_PROTO undefined ConstructTOneTimeAnimationBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTOneTimeAnimationBaseState(void)
 
-void __thiscall
-TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-          (int param_1,undefined4 param_2,undefined4 *param_3,undefined2 param_4,undefined2 param_5,
-          undefined4 param_6,undefined4 param_7)
+void __thiscall TOneTimeAnimation::ConstructTOneTimeAnimationBaseState(TOneTimeAnimation *this)
 
 {
-  *(undefined4 *)(param_1 + 4) = param_2;
-  *(undefined4 *)(param_1 + 0x1c) = *param_3;
-  *(undefined4 *)(param_1 + 0x20) = param_3[1];
-  *(undefined4 *)(param_1 + 0x24) = param_3[2];
-  *(undefined4 *)(param_1 + 0x28) = param_3[3];
-  *(undefined2 *)(param_1 + 10) = param_4;
-  *(undefined2 *)(param_1 + 0xc) = param_5;
-  *(undefined4 *)(param_1 + 0x14) = param_6;
-  *(undefined4 *)(param_1 + 0x18) = param_7;
-  *(undefined2 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined1 *)(param_1 + 0x2c) = 0;
+  undefined4 in_stack_00000004;
+  undefined4 *in_stack_00000008;
+  undefined2 in_stack_0000000c;
+  undefined2 in_stack_00000010;
+  undefined4 in_stack_00000014;
+  undefined4 in_stack_00000018;
+  
+  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x1c = *in_stack_00000008;
+  *(undefined4 *)&this->field_0x20 = in_stack_00000008[1];
+  *(undefined4 *)&this->field_0x24 = in_stack_00000008[2];
+  *(undefined4 *)&this->field_0x28 = in_stack_00000008[3];
+  *(undefined2 *)&this->field_0xa = in_stack_0000000c;
+  *(undefined2 *)&this->field_0xc = in_stack_00000010;
+  *(undefined4 *)&this->field_0x14 = in_stack_00000014;
+  *(undefined4 *)&this->field_0x18 = in_stack_00000018;
+  *(undefined2 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  this->field_0x2c = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049FDE0
 // GHIDRA_NAME TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree
-// GHIDRA_PROTO undefined DestructTOneTimeAnimationAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTOneTimeAnimationAndMaybeFree(void)
 
-void __fastcall TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree(int param_1)
+void __thiscall TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree(TOneTimeAnimation *this)
 
 {
   int iVar1;
@@ -67,21 +89,21 @@ void __fastcall TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree(int par
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_0062fe38;
   *unaff_FS_OFFSET = &uStack_c;
-  if ((*(char *)(param_1 + 0x2c) == '\0') &&
-     (iVar1 = *(int *)(param_1 + 0x10) + 1, *(int *)(param_1 + 0x10) = iVar1,
-     iVar1 == *(int *)(param_1 + 0x14))) {
-    thunk_InvalidateCityDialogRectRegion((RECT *)(param_1 + 0x1c),1);
-    ConstructScopedMapQuickDrawContext(*(undefined4 *)(param_1 + 4));
+  if ((this->field_0x2c == '\0') &&
+     (iVar1 = *(int *)&this->field_0x10 + 1, *(int *)&this->field_0x10 = iVar1,
+     iVar1 == *(int *)&this->field_0x14)) {
+    thunk_InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+    ConstructScopedMapQuickDrawContext(*(undefined4 *)&this->field_0x4);
     uStack_4 = 0;
-    (**(code **)(**(int **)(param_1 + 4) + 0xf8))();
-    CopyRect(atStack_34,(RECT *)(param_1 + 0x1c));
-    (**(code **)(**(int **)(param_1 + 4) + 0x110))(atStack_34);
-    *(undefined4 *)(param_1 + 0x10) = 0;
-    if ((int)*(short *)(param_1 + 8) < *(short *)(param_1 + 10) + -1) {
-      *(short *)(param_1 + 8) = *(short *)(param_1 + 8) + 1;
+    (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
+    CopyRect(atStack_34,(RECT *)&this->field_0x1c);
+    (**(code **)(**(int **)&this->field_0x4 + 0x110))(atStack_34);
+    *(undefined4 *)&this->field_0x10 = 0;
+    if ((int)*(short *)&this->field_0x8 < *(short *)&this->field_0xa + -1) {
+      *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
     }
     else {
-      *(undefined1 *)(param_1 + 0x2c) = 1;
+      this->field_0x2c = 1;
     }
     uStack_4 = 0xffffffff;
     thunk_DestroyScopedMapQuickDrawContext();

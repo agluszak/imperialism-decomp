@@ -3,246 +3,40 @@
 // Program: Imperialism.exe
 // Bucket: TUnitOrder.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B58F0
-// GHIDRA_NAME TUnitOrder::ComputeRecruitmentCapFromPools
-// GHIDRA_PROTO int __thiscall ComputeRecruitmentCapFromPools(void)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Computes current recruitment cap from staged pools for a single order entry.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Inputs:
-// GHIDRA_COMMENT - this+0x04 pending amount
-// GHIDRA_COMMENT - this+0x10 staged resource deltas
-// GHIDRA_COMMENT - city+0xB6 resource stocks
-// GHIDRA_COMMENT - city+0x1FC unit-cap counters
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Behavior:
-// GHIDRA_COMMENT - Computes three cap candidates (workforce, staged+stock resources, unit counter).
-// GHIDRA_COMMENT - Stores limiting factor code in this+0x40 (0=resource,1=workforce,2=unit counter).
-// GHIDRA_COMMENT - Returns the minimum cap.
-// GHIDRA_COMMENT_END
-
-/* Computes current recruitment cap from staged pools for a single order entry.
-   
-   Inputs:
-   - this+0x04 pending amount
-   - this+0x10 staged resource deltas
-   - city+0xB6 resource stocks
-   - city+0x1FC unit-cap counters
-   
-   Behavior:
-   - Computes three cap candidates (workforce, staged+stock resources, unit counter).
-   - Stores limiting factor code in this+0x40 (0=resource,1=workforce,2=unit counter).
-   - Returns the minimum cap. */
-
-int __thiscall TUnitOrder::ComputeRecruitmentCapFromPools(TUnitOrder *this)
-
-{
-  short sVar1;
-  int iVar2;
-  short nCapByUnitCounter;
-  int nCapByInputPool;
-  int nCapByStagedAndStock;
-  uint dwScratchHigh;
-  int nCapByWorkforce;
-  
-  iVar2 = *(int *)(this + 8);
-  nCapByWorkforce =
-       (int)*(short *)(*(int *)(this + 0xc) + 0x1c) / 2 +
-       CONCAT22((short)(dwScratchHigh >> 0x10),*(short *)(this + 4));
-  nCapByStagedAndStock =
-       (int)(short)(*(short *)(this + *(short *)(this + 0x50) * 2 + 0x10) +
-                    *(short *)(this + *(short *)(this + 0x4e) * 2 + 0x10) +
-                    *(short *)(iVar2 + 0xb6 + *(short *)(this + 0x50) * 2) +
-                   *(short *)(iVar2 + 0xb6 + *(short *)(this + 0x4e) * 2)) / 2;
-  sVar1 = *(short *)(iVar2 + 0x1fc + *(short *)(this + 0x52) * 2);
-  *(undefined2 *)(this + 0x40) = 2;
-  nCapByUnitCounter = sVar1 + *(short *)(this + 4);
-  nCapByInputPool = CONCAT22(*(short *)(this + 0x52) >> 0xf,nCapByUnitCounter);
-  if ((short)nCapByWorkforce < nCapByUnitCounter) {
-    *(undefined2 *)(this + 0x40) = 1;
-    nCapByInputPool = nCapByWorkforce;
-  }
-  if ((short)nCapByStagedAndStock < (short)nCapByInputPool) {
-    *(undefined2 *)(this + 0x40) = 0;
-    nCapByInputPool = nCapByStagedAndStock;
-  }
-  return nCapByInputPool;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B5990
-// GHIDRA_NAME TUnitOrder::ApplyRecruitmentSliderDeltaAndRebalancePools
-// GHIDRA_PROTO bool __thiscall ApplyRecruitmentSliderDeltaAndRebalancePools(short nNewOrderAmount)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Applies a university/city recruitment slider change to temporary staging pools.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Algorithm:
-// GHIDRA_COMMENT 1. Validate requested value against entry cap (vfunc +0x30).
-// GHIDRA_COMMENT 2. Compute delta from current pending amount (+0x04).
-// GHIDRA_COMMENT 3. Rebalance primary/secondary staged pools (+0x10 table) and live city stock (+0xB6) so constraints stay consistent.
-// GHIDRA_COMMENT 4. Update workforce-derived counters (+0x1C and +0x3E) and slot availability (+0x1FC indexed by +0x52).
-// GHIDRA_COMMENT 5. Invalidate UI via g_pUiRuntimeContext callback.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Returns: true if delta applied, false if rejected.
-// GHIDRA_COMMENT_END
-
-/* Applies a university/city recruitment slider change to temporary staging pools.
-   
-   Algorithm:
-   1. Validate requested value against entry cap (vfunc +0x30).
-   2. Compute delta from current pending amount (+0x04).
-   3. Rebalance primary/secondary staged pools (+0x10 table) and live city stock (+0xB6) so
-   constraints stay consistent.
-   4. Update workforce-derived counters (+0x1C and +0x3E) and slot availability (+0x1FC indexed by
-   +0x52).
-   5. Invalidate UI via g_pUiRuntimeContext callback.
-   
-   Returns: true if delta applied, false if rejected. */
-
-bool __thiscall
-TUnitOrder::ApplyRecruitmentSliderDeltaAndRebalancePools(TUnitOrder *this,short nNewOrderAmount)
-
-{
-  short *psVar1;
-  short sVar2;
-  short sVar3;
-  int iVar4;
-  int *piVar5;
-  bool bVar6;
-  short sVar7;
-  short sVar8;
-  short sVar9;
-  short sVar10;
-  
-  sVar9 = nNewOrderAmount - *(short *)(this + 4);
-  sVar7 = (**(code **)(*(int *)this + 0x30))();
-  if ((sVar7 < nNewOrderAmount) || (nNewOrderAmount < 0)) {
-    bVar6 = false;
-  }
-  else {
-    *(short *)(this + 4) = nNewOrderAmount;
-    bVar6 = true;
-  }
-  if (!bVar6) {
-    return false;
-  }
-  sVar7 = *(short *)(this + 0x4e);
-  *(undefined2 *)(this + 0x4c) = *(undefined2 *)(this + 4);
-  if (sVar9 < 1) {
-    sVar3 = *(short *)(this + *(short *)(this + 0x50) * 2 + 0x10);
-    sVar2 = *(short *)(this + sVar7 * 2 + 0x10);
-    sVar10 = -sVar9;
-  }
-  else {
-    sVar2 = *(short *)(*(int *)(this + 8) + 0xb6 + sVar7 * 2);
-    sVar3 = *(short *)(*(int *)(this + 8) + 0xb6 + *(short *)(this + 0x50) * 2);
-    sVar10 = sVar9;
-  }
-  if (sVar2 < sVar10) {
-    sVar8 = sVar10 + (sVar10 - sVar2);
-    sVar10 = sVar10 - (sVar10 - sVar2);
-  }
-  else {
-    sVar8 = sVar10;
-    if (sVar3 < sVar10) {
-      sVar8 = sVar10 - (sVar10 - sVar3);
-      sVar10 = sVar10 + (sVar10 - sVar3);
-    }
-  }
-  if (sVar9 < 0) {
-    sVar10 = -sVar10;
-    sVar8 = -sVar8;
-  }
-  iVar4 = **(int **)(this + 8);
-  psVar1 = (short *)((int)*(int **)(this + 8) + sVar7 * 2 + 0xb6);
-  *psVar1 = *psVar1 - sVar10;
-  (**(code **)(iVar4 + 0x80))();
-  *(short *)(this + *(short *)(this + 0x4e) * 2 + 0x10) =
-       *(short *)(this + *(short *)(this + 0x4e) * 2 + 0x10) + sVar10;
-  piVar5 = *(int **)(this + 8);
-  psVar1 = (short *)((int)piVar5 + *(short *)(this + 0x50) * 2 + 0xb6);
-  *psVar1 = *psVar1 - sVar8;
-  (**(code **)(*piVar5 + 0x80))();
-  *(short *)(this + *(short *)(this + 0x50) * 2 + 0x10) =
-       *(short *)(this + *(short *)(this + 0x50) * 2 + 0x10) + sVar8;
-  *(short *)(*(int *)(this + 0xc) + 0x1c) = *(short *)(*(int *)(this + 0xc) + 0x1c) + sVar9 * -2;
-  *(short *)(this + 0x3e) = *(short *)(this + 0x3e) + sVar9 * 2;
-  iVar4 = *(short *)(this + 0x52) * 2 + 0x1fc;
-  *(short *)(*(int *)(this + 8) + iVar4) = *(short *)(iVar4 + *(int *)(this + 8)) - sVar9;
-  (**(code **)(*g_pUiRuntimeContext + 0xac))();
-  return true;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004B6E30
-// GHIDRA_NAME TUnitOrder::CreateTUnitOrderInstance
-// GHIDRA_PROTO undefined CreateTUnitOrderInstance()
-
-void __fastcall TUnitOrder::CreateTUnitOrderInstance(int param_1)
-
-{
-  short sVar1;
-  int iVar2;
-  int *piVar3;
-  int iVar4;
-  
-  sVar1 = *(short *)(param_1 + 4);
-  if (sVar1 != 0) {
-    iVar2 = *(int *)(*(int *)(param_1 + 0xc) + 0x10);
-    if (*(short *)(param_1 + 0x48) == 1) {
-      *(short *)(iVar2 + 4) = *(short *)(iVar2 + 4) - sVar1;
-      *(short *)(iVar2 + 6) = *(short *)(iVar2 + 6) + *(short *)(param_1 + 4);
-      *(undefined2 *)(param_1 + 4) = 0;
-      return;
-    }
-    iVar4 = (int)sVar1 + (int)*(short *)(iVar2 + 8);
-    if ((iVar4 < 10) ||
-       (piVar3 = *(int **)(*(int *)(param_1 + 8) + 0xac), '1' < *(char *)((int)piVar3 + 0x8cf))) {
-      if ((0x1d < iVar4) &&
-         (piVar3 = *(int **)(*(int *)(param_1 + 8) + 0xac), *(char *)((int)piVar3 + 0x8cf) < '4')) {
-        (**(code **)(*piVar3 + 0xb8))(7,3);
-      }
-    }
-    else {
-      (**(code **)(*piVar3 + 0xb8))(7,2);
-    }
-    *(short *)(iVar2 + 6) = *(short *)(iVar2 + 6) - *(short *)(param_1 + 4);
-    *(short *)(iVar2 + 8) = *(short *)(iVar2 + 8) + *(short *)(param_1 + 4);
-    *(undefined2 *)(param_1 + 4) = 0;
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F50
-// GHIDRA_NAME TUnitOrder::GetTUnitOrderClassNamePointer
-// GHIDRA_PROTO undefined GetTUnitOrderClassNamePointer()
+// GHIDRA_NAME TUnitOrder::GetTProductionOrderClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
 
-undefined ** TUnitOrder::GetTUnitOrderClassNamePointer(void)
+CRuntimeClass * __thiscall TUnitOrder::GetTProductionOrderClassNamePointer(TUnitOrder *this)
 
 {
-  return &PTR_s_TUnitOrder_0064f3c8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6F90
 // GHIDRA_NAME TUnitOrder::ConstructTUnitOrderBaseState
-// GHIDRA_PROTO undefined ConstructTUnitOrderBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTUnitOrderBaseState(void)
 
-undefined4 __thiscall TUnitOrder::ConstructTUnitOrderBaseState(undefined4 param_1,byte param_2)
+TUnitOrder * __thiscall TUnitOrder::ConstructTUnitOrderBaseState(TUnitOrder *this)
 
 {
-  DestructTUnitOrderAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTUnitOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B6FC0
 // GHIDRA_NAME TUnitOrder::DestructTUnitOrderAndMaybeFree
-// GHIDRA_PROTO undefined DestructTUnitOrderAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTUnitOrderAndMaybeFree(void)
 
-void __fastcall TUnitOrder::DestructTUnitOrderAndMaybeFree(undefined4 *param_1)
+void __thiscall TUnitOrder::DestructTUnitOrderAndMaybeFree(TUnitOrder *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TUnitOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
@@ -265,34 +59,34 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
 
 {
   int iVar1;
-  TUnitOrder *pTVar2;
+  undefined4 *puVar2;
   
-  *(void **)(this + 8) = pCityState;
-  *(undefined4 *)(this + 0xc) = *(undefined4 *)((int)pCityState + 0x1d8);
-  *(short *)(this + 0x48) = nEntryId;
-  *(undefined2 *)(this + 4) = 0;
-  pTVar2 = this + 0x10;
+  *(void **)&this->field_0x8 = pCityState;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)((int)pCityState + 0x1d8);
+  *(short *)&this->field_0x48 = nEntryId;
+  *(undefined2 *)&this->field_0x4 = 0;
+  puVar2 = (undefined4 *)&this->field_0x10;
   for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *(undefined4 *)pTVar2 = 0;
-    pTVar2 = pTVar2 + 4;
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
   }
-  *(undefined2 *)pTVar2 = 0;
-  *(short *)(this + 0x50) = nPrimaryInputPerUnit;
-  *(short *)(this + 0x4c) = nPrimaryInputResourceId;
-  *(short *)(this + 0x52) = nSecondaryInputPerUnit;
-  *(short *)(this + 0x4e) = nSecondaryInputResourceId;
-  *(undefined4 *)(this + 0x44) = 0;
-  *(short *)(this + 0x54) = nCashCostPerUnit;
-  *(undefined2 *)(this + 0x40) = 0;
-  *(undefined2 *)(this + 0x3e) = 0;
-  *(short *)(this + 0x56) = nWorkforceMode;
-  this[0x58] = (TUnitOrder)bSpecialistMode;
+  *(undefined2 *)puVar2 = 0;
+  *(short *)&this->field_0x50 = nPrimaryInputPerUnit;
+  *(short *)&this->field_0x4c = nPrimaryInputResourceId;
+  *(short *)&this->field_0x52 = nSecondaryInputPerUnit;
+  *(short *)&this->field_0x4e = nSecondaryInputResourceId;
+  *(undefined4 *)&this->field_0x44 = 0;
+  *(short *)&this->field_0x54 = nCashCostPerUnit;
+  *(undefined2 *)&this->field_0x40 = 0;
+  *(undefined2 *)&this->field_0x3e = 0;
+  *(short *)&this->field_0x56 = nWorkforceMode;
+  this->field_0x58 = bSpecialistMode;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7080
-// GHIDRA_NAME TUnitOrder::ComputeMaxRecruitableDeltaForCityEntry
-// GHIDRA_PROTO int __thiscall ComputeMaxRecruitableDeltaForCityEntry(void)
+// GHIDRA_NAME TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0
+// GHIDRA_PROTO int __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Computes max additional recruitable delta for this entry using live city/nation constraints.
 // GHIDRA_COMMENT
@@ -317,7 +111,7 @@ TUnitOrder::InitializeCityRecruitmentOrderContext
    - this+0x40 limiting factor (0=resource,1=workforce,3=treasury)
    - return value = current pending amount (+0x04) + max allowed additional delta. */
 
-int __thiscall TUnitOrder::ComputeMaxRecruitableDeltaForCityEntry(TUnitOrder *this)
+int __thiscall TUnitOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TUnitOrder *this)
 
 {
   short sVar1;
@@ -332,18 +126,18 @@ int __thiscall TUnitOrder::ComputeMaxRecruitableDeltaForCityEntry(TUnitOrder *th
   short nRecruitmentMode;
   short nWorkerCapMode1;
   
-  nRecruitmentMode = *(short *)(this + 0x56);
+  nRecruitmentMode = *(short *)&this->field_0x56;
   if (nRecruitmentMode == 1) {
-    sVar1 = *(short *)(*(int *)(this + 0xc) + 0x1c);
+    sVar1 = *(short *)(*(int *)&this->field_0xc + 0x1c);
     nFinalCap = CONCAT22((short)((uint)in_EDX >> 0x10),sVar1);
-    iVar2 = *(int *)(*(int *)(this + 0xc) + 0x14);
+    iVar2 = *(int *)(*(int *)&this->field_0xc + 0x14);
     nWorkerCapMode1 = *(short *)(iVar2 + 4);
     iVar2 = CONCAT22((short)((uint)iVar2 >> 0x10),nWorkerCapMode1);
     if (sVar1 < nWorkerCapMode1) goto LAB_004b70ec;
   }
   else if (nRecruitmentMode == 2) {
-    iVar2 = (int)*(short *)(*(int *)(this + 0xc) + 0x1c) / 2;
-    nFinalCap = (int)*(short *)(*(int *)(*(int *)(this + 0xc) + 0x14) + 6);
+    iVar2 = (int)*(short *)(*(int *)&this->field_0xc + 0x1c) / 2;
+    nFinalCap = (int)*(short *)(*(int *)(*(int *)&this->field_0xc + 0x14) + 6);
     if (nFinalCap <= iVar2) goto LAB_004b70ec;
   }
   else {
@@ -351,48 +145,50 @@ int __thiscall TUnitOrder::ComputeMaxRecruitableDeltaForCityEntry(TUnitOrder *th
       nFinalCap = 9999;
       goto LAB_004b70ec;
     }
-    nCapCandidateA = (int)*(short *)(*(int *)(this + 0xc) + 0x1c);
+    nCapCandidateA = (int)*(short *)(*(int *)&this->field_0xc + 0x1c);
     iVar2 = (int)(nCapCandidateA + (nCapCandidateA >> 0x1f & 3U)) >> 2;
-    nFinalCap = (int)*(short *)(*(int *)(*(int *)(this + 0xc) + 0x14) + 8);
+    nFinalCap = (int)*(short *)(*(int *)(*(int *)&this->field_0xc + 0x14) + 8);
     if (nFinalCap <= iVar2) goto LAB_004b70ec;
   }
   nFinalCap = iVar2;
 LAB_004b70ec:
-  iVar2 = *(int *)(this + 8);
+  iVar2 = *(int *)&this->field_0x8;
   nPrimaryResourceCap =
-       (int)*(short *)(iVar2 + 0xb6 + *(short *)(this + 0x4c) * 2) / (int)*(short *)(this + 0x50);
+       (int)*(short *)(iVar2 + 0xb6 + *(short *)&this->field_0x4c * 2) /
+       (int)*(short *)&this->field_0x50;
   nSecondaryResourceCap = nPrimaryResourceCap;
-  if (-1 < *(short *)(this + 0x4e)) {
+  if (-1 < *(short *)&this->field_0x4e) {
     nSecondaryResourceCap =
-         (int)*(short *)(iVar2 + 0xb6 + *(short *)(this + 0x4e) * 2) / (int)*(short *)(this + 0x52);
+         (int)*(short *)(iVar2 + 0xb6 + *(short *)&this->field_0x4e * 2) /
+         (int)*(short *)&this->field_0x52;
   }
   iVar2 = *(int *)(iVar2 + 0xac);
   nTreasuryCap = nPrimaryResourceCap;
-  if (((*(short *)(this + 0x54) != 0) && (*(char *)(iVar2 + 0xa0) != '\0')) &&
+  if (((*(short *)&this->field_0x54 != 0) && (*(char *)(iVar2 + 0xa0) != '\0')) &&
      (dwTreasuryPlusIncome = *(int *)(iVar2 + 0x10) + *(int *)(iVar2 + 0x8f0) / 100,
      nTreasuryCap = (int)(dwTreasuryPlusIncome & ((int)dwTreasuryPlusIncome < 1) - 1) /
-                    (int)*(short *)(this + 0x54), (short)nTreasuryCap < 0)) {
+                    (int)*(short *)&this->field_0x54, (short)nTreasuryCap < 0)) {
     nTreasuryCap = 0;
   }
-  *(undefined2 *)(this + 0x40) = 1;
+  *(undefined2 *)&this->field_0x40 = 1;
   if ((short)nPrimaryResourceCap < (short)nFinalCap) {
-    *(undefined2 *)(this + 0x40) = 0;
+    *(undefined2 *)&this->field_0x40 = 0;
     nFinalCap = nPrimaryResourceCap;
   }
   if ((short)nSecondaryResourceCap < (short)nFinalCap) {
-    *(undefined2 *)(this + 0x40) = 0;
+    *(undefined2 *)&this->field_0x40 = 0;
     nFinalCap = nSecondaryResourceCap;
   }
   if ((short)nTreasuryCap < (short)nFinalCap) {
-    *(undefined2 *)(this + 0x40) = 3;
+    *(undefined2 *)&this->field_0x40 = 3;
     nFinalCap = nTreasuryCap;
   }
-  return CONCAT22((short)((uint)nTreasuryCap >> 0x10),*(undefined2 *)(this + 4)) + nFinalCap;
+  return CONCAT22((short)((uint)nTreasuryCap >> 0x10),*(undefined2 *)&this->field_0x4) + nFinalCap;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7210
-// GHIDRA_NAME TUnitOrder::ApplyCityEntryOrderDeltaAndCosts
-// GHIDRA_PROTO bool __thiscall ApplyCityEntryOrderDeltaAndCosts(short nTargetOrderAmount)
+// GHIDRA_NAME TUnitOrder::OrphanCallChain_C1_I16_004b5100
+// GHIDRA_PROTO bool __thiscall OrphanCallChain_C1_I16_004b5100(short nTargetOrderAmount)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Applies a new target recruitment amount for a city order entry and charges/refunds deltas immediately.
 // GHIDRA_COMMENT Algorithm:
@@ -428,12 +224,12 @@ LAB_004b70ec:
    - true when applied; false on invalid target. */
 
 bool __thiscall
-TUnitOrder::ApplyCityEntryOrderDeltaAndCosts(TUnitOrder *this,short nTargetOrderAmount)
+TUnitOrder::OrphanCallChain_C1_I16_004b5100(TUnitOrder *this,short nTargetOrderAmount)
 
 {
   short nMaxOrderAmount;
-  ushort extraout_var;
   ushort extraout_var_00;
+  ushort extraout_var_01;
   ushort wLaborContext;
   short nOrderDelta;
   bool fIsValidOrder;
@@ -442,16 +238,18 @@ TUnitOrder::ApplyCityEntryOrderDeltaAndCosts(TUnitOrder *this,short nTargetOrder
   short *pnResourceStock;
   int *pCityStateSecondary;
   short *pnCityResourceStock;
+  undefined3 extraout_var;
   
-  nOrderDelta = nTargetOrderAmount - *(short *)(this + 4);
+  nOrderDelta = nTargetOrderAmount - *(short *)&this->field_0x4;
                     /* Pending order amount is stored at entry field +0x04; changes are applied as
                        deltas. */
-  nMaxOrderAmount = (**(code **)(*(int *)this + 0x30))();
-  if ((nMaxOrderAmount < nTargetOrderAmount) || (nTargetOrderAmount < 0)) {
+  nMaxOrderAmount._0_1_ = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  if (((short)CONCAT31(extraout_var,(undefined)nMaxOrderAmount) < nTargetOrderAmount) ||
+     (nTargetOrderAmount < 0)) {
     fIsValidOrder = false;
   }
   else {
-    *(short *)(this + 4) = nTargetOrderAmount;
+    *(short *)&this->field_0x4 = nTargetOrderAmount;
     fIsValidOrder = true;
   }
                     /* Rejects requests above entry cap or below zero; no resource/cash mutation on
@@ -461,59 +259,341 @@ TUnitOrder::ApplyCityEntryOrderDeltaAndCosts(TUnitOrder *this,short nTargetOrder
   }
                     /* Consumes primary input resource at city stock offset 0xB6 + resourceIndex*2.
                         */
-  pCityState = *(int **)(this + 8);
-  pnResourceStock = (short *)((int)pCityState + *(short *)(this + 0x4c) * 2 + 0xb6);
-  *pnResourceStock = *pnResourceStock - *(short *)(this + 0x50) * nOrderDelta;
+  pCityState = *(int **)&this->field_0x8;
+  pnResourceStock = (short *)((int)pCityState + *(short *)&this->field_0x4c * 2 + 0xb6);
+  *pnResourceStock = *pnResourceStock - *(short *)&this->field_0x50 * nOrderDelta;
                     /* Primary and optional secondary resource stocks are decremented immediately at
                        city stock array +0xB6. */
   (**(code **)(*pCityState + 0x80))();
-  wLaborContext = extraout_var;
-  if (-1 < *(short *)(this + 0x4e)) {
-    pCityStateSecondary = *(int **)(this + 8);
-    pnCityResourceStock = (short *)((int)pCityStateSecondary + *(short *)(this + 0x4e) * 2 + 0xb6);
-    *pnCityResourceStock = *pnCityResourceStock - *(short *)(this + 0x52) * nOrderDelta;
+  wLaborContext = extraout_var_00;
+  if (-1 < *(short *)&this->field_0x4e) {
+    pCityStateSecondary = *(int **)&this->field_0x8;
+    pnCityResourceStock =
+         (short *)((int)pCityStateSecondary + *(short *)&this->field_0x4e * 2 + 0xb6);
+    *pnCityResourceStock = *pnCityResourceStock - *(short *)&this->field_0x52 * nOrderDelta;
     (**(code **)(*pCityStateSecondary + 0x80))();
-    wLaborContext = extraout_var_00;
+    wLaborContext = extraout_var_01;
   }
                     /* Optional worker-group field (0x56) routes to manager callback for labor
                        allocation updates. */
-  if (*(short *)(this + 0x56) != 0) {
-    (**(code **)(**(int **)(this + 0xc) + 0x34))
-              (CONCAT22(wLaborContext,*(short *)(this + 0x56)),nOrderDelta);
+  if (*(short *)&this->field_0x56 != 0) {
+    (**(code **)(**(int **)&this->field_0xc + 0x34))
+              (CONCAT22(wLaborContext,*(short *)&this->field_0x56),nOrderDelta);
   }
-  pOwnerNationState = *(int **)(*(int *)(this + 8) + 0xac);
+  pOwnerNationState = *(int **)(*(int *)&this->field_0x8 + 0xac);
                     /* Cash is charged immediately from owner nation treasury (+0x10) using per-unit
                        cash cost field +0x54. */
-  pOwnerNationState[4] = pOwnerNationState[4] - (int)*(short *)(this + 0x54) * (int)nOrderDelta;
-  (**(code **)(*g_pUiRuntimeContext + 0xac))();
+  pOwnerNationState[4] = pOwnerNationState[4] - (int)*(short *)&this->field_0x54 * (int)nOrderDelta;
+  (**(code **)(g_pUiRuntimeContext->vftable + 0xac))();
   return true;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B7320
+// GHIDRA_NAME TUnitOrder::CreateTItemOrderInstance
+// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Builds projected resource/labor cost vector for a given city-entry amount.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Delegate to base calculator (vfunc +0x3C).
+// GHIDRA_COMMENT 2. Write primary/secondary resource requirements into output array.
+// GHIDRA_COMMENT 3. Route labor requirement into specific output slot based on entry labor group field (+0x56).
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Used for preview/requirement displays and availability checks.
+// GHIDRA_COMMENT_END
+
+/* Builds projected resource/labor cost vector for a given city-entry amount.
+   
+   Algorithm:
+   1. Delegate to base calculator (vfunc +0x3C).
+   2. Write primary/secondary resource requirements into output array.
+   3. Route labor requirement into specific output slot based on entry labor group field (+0x56).
+   
+   Notes:
+   - Used for preview/requirement displays and availability checks. */
+
+void __thiscall TUnitOrder::CreateTItemOrderInstance(TUnitOrder *this)
+
+{
+  short sStack00000004;
+  
+  (*this->vftable[7].ConstructTUnitOrderBaseState)();
+  *(short *)(_sStack00000004 + *(short *)&this->field_0x4c * 2) =
+       *(short *)&this->field_0x50 * sStack00000004;
+  if (-1 < *(short *)&this->field_0x4e) {
+    *(short *)(_sStack00000004 + *(short *)&this->field_0x4e * 2) =
+         *(short *)&this->field_0x52 * sStack00000004;
+  }
+  if (*(short *)&this->field_0x56 == 2) {
+    *(short *)(_sStack00000004 + 0x2e) = sStack00000004;
+    return;
+  }
+  if (*(short *)&this->field_0x56 == 4) {
+    *(short *)(_sStack00000004 + 0x30) = sStack00000004;
+    return;
+  }
+  *(short *)(_sStack00000004 + 0x78) = sStack00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B73B0
+// GHIDRA_NAME TUnitOrder::OrphanRetStub_004b5160
+// GHIDRA_PROTO void __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Commits pending university/city recruitment delta into persistent city/nation state.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Read pending delta count from context field +0x04; return if zero.
+// GHIDRA_COMMENT 2. Branch on specialist mode flag (+0x58): civilian branch vs specialist branch.
+// GHIDRA_COMMENT 3. Civilian branch: add pending count into city recruitment queue slot (city +0x4A[entryId]) and spawn per-unit civilian order objects.
+// GHIDRA_COMMENT 4. Specialist branch: spawn military recruit order objects and apply nation progression gate updates for unlock tiers.
+// GHIDRA_COMMENT 5. Emit nation notification callback (+0x2C0) with mode 2 (civilian) or 3 (specialist).
+// GHIDRA_COMMENT 6. Clear pending delta (+0x04) after commit.
+// GHIDRA_COMMENT 7. For entryId==0, increment city counter at city+0x0A.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this (IMPLICIT): City recruitment order context.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - None.
+// GHIDRA_COMMENT Persistence:
+// GHIDRA_COMMENT - Pending delta: context +0x04.
+// GHIDRA_COMMENT - Committed queue count: city +0x4A[entryId].
+// GHIDRA_COMMENT_END
+
+/* Commits pending university/city recruitment delta into persistent city/nation state.
+   Algorithm:
+   1. Read pending delta count from context field +0x04; return if zero.
+   2. Branch on specialist mode flag (+0x58): civilian branch vs specialist branch.
+   3. Civilian branch: add pending count into city recruitment queue slot (city +0x4A[entryId]) and
+   spawn per-unit civilian order objects.
+   4. Specialist branch: spawn military recruit order objects and apply nation progression gate
+   updates for unlock tiers.
+   5. Emit nation notification callback (+0x2C0) with mode 2 (civilian) or 3 (specialist).
+   6. Clear pending delta (+0x04) after commit.
+   7. For entryId==0, increment city counter at city+0x0A.
+   Parameters:
+   - this (IMPLICIT): City recruitment order context.
+   Returns:
+   - None.
+   Persistence:
+   - Pending delta: context +0x04.
+   - Committed queue count: city +0x4A[entryId]. */
+
+void __thiscall TUnitOrder::OrphanRetStub_004b5160(TUnitOrder *this)
+
+{
+  short nProgressValue;
+  int nSpawnTileOrOrderObj;
+  TCivWorkOrderState *pNewCivOrderState;
+  TMilitaryUnitOrderState *this_00;
+  short sVar1;
+  undefined2 uVar2;
+  int iVar3;
+  int *unaff_FS_OFFSET;
+  undefined4 uVar4;
+  int adwTempAlloc [3];
+  int pPrevSehFrame;
+  undefined1 *pbSehCookie;
+  uint dwSehState;
+  int *pNationState;
+  int pOwnerNationState;
+  short *pnCityRecruitQueueCount;
+  
+  pPrevSehFrame = *unaff_FS_OFFSET;
+  dwSehState = 0xffffffff;
+  pbSehCookie = &LAB_00630f64;
+  *unaff_FS_OFFSET = (int)&pPrevSehFrame;
+  iVar3 = 0;
+  if (*(short *)&this->field_0x4 != 0) {
+    CString::CString((CString *)(adwTempAlloc + 2));
+    dwSehState = 0;
+    CString::CString((CString *)adwTempAlloc);
+    dwSehState = CONCAT31(dwSehState._1_3_,1);
+    if (this->field_0x58 == '\0') {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2718);
+                    /* Civilian mode: commit pending count into city queue slot and instantiate
+                       per-unit civilian order objects. */
+      pnCityRecruitQueueCount =
+           (short *)(*(int *)&this->field_0x8 + 0x4a + *(short *)&this->field_0x48 * 2);
+      *pnCityRecruitQueueCount = *pnCityRecruitQueueCount + *(short *)&this->field_0x4;
+      if (0 < *(short *)&this->field_0x4) {
+        do {
+          nSpawnTileOrOrderObj = *(int *)(*(int *)&this->field_0x8 + 0xb0);
+          if (nSpawnTileOrOrderObj == 0) {
+            uVar4 = 1;
+          }
+          else {
+            uVar4 = CONCAT22((short)((uint)nSpawnTileOrOrderObj >> 0x10),
+                             *(undefined2 *)(nSpawnTileOrOrderObj + 0x14));
+          }
+          nSpawnTileOrOrderObj =
+               thunk_FindReachableRecruitSpawnTileWithVisitedReset
+                         (uVar4,*(short *)&this->field_0x48 == 4);
+          if ((short)nSpawnTileOrOrderObj != -1) {
+            adwTempAlloc[0] = AllocateWithFallbackHandler(0x28);
+            if ((TCivWorkOrderState *)adwTempAlloc[0] == (TCivWorkOrderState *)0x0) {
+              pNewCivOrderState = (TCivWorkOrderState *)0x0;
+            }
+            else {
+              pNewCivOrderState =
+                   (TCivWorkOrderState *)
+                   TCivWorkOrderState::thunk_InitializeCivUnitOrderObject
+                             ((TCivWorkOrderState *)adwTempAlloc[0]);
+            }
+            pOwnerNationState = *(int *)(*(int *)&this->field_0x8 + 0xac);
+            TCivWorkOrderState::thunk_InitializeCivWorkOrderState
+                      (pNewCivOrderState,
+                       CONCAT22((short)((uint)pOwnerNationState >> 0x10),
+                                *(undefined2 *)&this->field_0x48),nSpawnTileOrOrderObj,
+                       CONCAT22((short)((uint)*(int *)&this->field_0x8 >> 0x10),
+                                *(undefined2 *)(pOwnerNationState + 0xc)));
+          }
+          iVar3 = iVar3 + 1;
+        } while (iVar3 < *(short *)&this->field_0x4);
+      }
+    }
+    else {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+                (0x2717,CONCAT22((short)((uint)adwTempAlloc >> 0x10),
+                                 *(undefined2 *)&this->field_0x48),adwTempAlloc);
+      iVar3 = 0;
+      if (0 < *(short *)&this->field_0x4) {
+        do {
+                    /* Specialist mode: instantiate military recruit-order objects and update nation
+                       unlock progression tiers. */
+          adwTempAlloc[0] = AllocateWithFallbackHandler(0x44);
+          if ((TMilitaryUnitOrderState *)adwTempAlloc[0] == (TMilitaryUnitOrderState *)0x0) {
+            this_00 = (TMilitaryUnitOrderState *)0x0;
+          }
+          else {
+            this_00 = (TMilitaryUnitOrderState *)
+                      TMilitaryUnitOrderState::TMilitaryUnitOrderState
+                                ((TMilitaryUnitOrderState *)adwTempAlloc[0]);
+          }
+          TMilitaryUnitOrderState::InitializeRecruitOrderState(this_00);
+          if ('2' < *(char *)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0x8ce)) {
+            *(undefined2 *)(this_00 + 0x38) = 100;
+          }
+          ComputeSelectedMilitaryPowerScore();
+          if (*(char *)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0x8c9) != '2') {
+            nProgressValue = ComputeSelectedMilitaryPowerScore();
+            pNationState = *(int **)(*(int *)&this->field_0x8 + 0xac);
+            if (*(char *)((int)pNationState + 0x8c9) == '\0') {
+              sVar1 = 0;
+            }
+            else {
+              sVar1 = *(char *)((int)pNationState + 0x8c9) + -0x33;
+            }
+            if (nProgressValue < 0xf) {
+              if (0x27 < nProgressValue) goto LAB_004b75ec;
+              if (0x45 < nProgressValue) goto LAB_004b7604;
+              if (0x77 < nProgressValue) goto LAB_004b7624;
+LAB_004b7636:
+              if (nProgressValue < 0xdc) {
+                if (0x10d < nProgressValue) goto LAB_004b765c;
+              }
+              else if (nProgressValue < 0x10e) {
+                if (sVar1 < 5) {
+                  (**(code **)(*pNationState + 0xb8))(1,5);
+                }
+              }
+              else {
+LAB_004b765c:
+                if ((nProgressValue < 0x140) && (sVar1 < 6)) {
+                  nSpawnTileOrOrderObj = *pNationState;
+                  uVar4 = 6;
+                  goto LAB_004b766c;
+                }
+              }
+            }
+            else if (nProgressValue < 0x28) {
+              if (sVar1 == 0) {
+                (**(code **)(*pNationState + 0xb8))(1,1);
+              }
+            }
+            else {
+LAB_004b75ec:
+              if (nProgressValue < 0x46) {
+                if (sVar1 < 2) {
+                  nSpawnTileOrOrderObj = *pNationState;
+                  uVar4 = 2;
+LAB_004b766c:
+                  (**(code **)(nSpawnTileOrOrderObj + 0xb8))(1,uVar4);
+                }
+              }
+              else {
+LAB_004b7604:
+                if (nProgressValue < 0x78) {
+                  if (sVar1 < 3) {
+                    (**(code **)(*pNationState + 0xb8))(1,3);
+                  }
+                }
+                else {
+LAB_004b7624:
+                  if (0xa9 < nProgressValue) goto LAB_004b7636;
+                  if (sVar1 < 4) {
+                    nSpawnTileOrOrderObj = *pNationState;
+                    uVar4 = 4;
+                    goto LAB_004b766c;
+                  }
+                }
+              }
+            }
+          }
+          iVar3 = iVar3 + 1;
+        } while (iVar3 < *(short *)&this->field_0x4);
+      }
+    }
+    uVar2 = (undefined2)((uint)*(int *)&this->field_0x8 >> 0x10);
+                    /* Notify owner nation of committed recruitment delta (mode 2 civilian / mode 3
+                       specialist), then clear pending +0x04. */
+    if (this->field_0x58 == '\0') {
+      uVar4 = 2;
+    }
+    else {
+      uVar4 = 3;
+    }
+    (**(code **)(**(int **)(*(int *)&this->field_0x8 + 0xac) + 0x2c0))
+              (uVar4,CONCAT22(uVar2,*(undefined2 *)&this->field_0x48),
+               CONCAT22(uVar2,*(undefined2 *)&this->field_0x4));
+    *(undefined2 *)&this->field_0x4 = 0;
+    if (*(short *)&this->field_0x48 == 0) {
+      pnCityRecruitQueueCount = (short *)(*(int *)&this->field_0x8 + 10);
+      *pnCityRecruitQueueCount = *pnCityRecruitQueueCount + 1;
+    }
+    dwSehState = dwSehState & 0xffffff00;
+    CString::~CString((CString *)adwTempAlloc);
+    dwSehState = 0xffffffff;
+    CString::~CString((CString *)(adwTempAlloc + 2));
+  }
+  *unaff_FS_OFFSET = pPrevSehFrame;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B7850
 // GHIDRA_NAME TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850
-// GHIDRA_PROTO undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b7850()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(void)
 
-void __thiscall
-TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int param_1,int *param_2)
+void __thiscall TUnitOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(TUnitOrder *this)
 
 {
   code *pcVar1;
+  int *in_stack_00000004;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
-  pcVar1 = *(code **)(*param_2 + 0x78);
-  (*pcVar1)(param_1 + 0x48,2);
-  (*pcVar1)(param_1 + 4,2);
-  (*pcVar1)(param_1 + 0x40,2);
-  (*pcVar1)(param_1 + 0x48,2);
-  (*pcVar1)(param_1 + 0x10,0x2e);
-  (*pcVar1)(param_1 + 0x44,4);
-  (*pcVar1)(param_1 + 0x4c,2);
-  (*pcVar1)(param_1 + 0x4e,2);
-  (*pcVar1)(param_1 + 0x50,2);
-  (*pcVar1)(param_1 + 0x52,2);
-  (*pcVar1)(param_1 + 0x54,2);
-  (*pcVar1)(param_1 + 0x56,2);
-  (*pcVar1)(param_1 + 0x58,1);
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  (*pcVar1)(&this->field_0x48,2);
+  (*pcVar1)(&this->field_0x4,2);
+  (*pcVar1)(&this->field_0x40,2);
+  (*pcVar1)(&this->field_0x48,2);
+  (*pcVar1)(&this->field_0x10,0x2e);
+  (*pcVar1)(&this->field_0x44,4);
+  (*pcVar1)(&this->field_0x4c,2);
+  (*pcVar1)(&this->field_0x4e,2);
+  (*pcVar1)(&this->field_0x50,2);
+  (*pcVar1)(&this->field_0x52,2);
+  (*pcVar1)(&this->field_0x54,2);
+  (*pcVar1)(&this->field_0x56,2);
+  (*pcVar1)(&this->field_0x58,1);
   return;
 }
 
@@ -549,21 +629,21 @@ void __thiscall TUnitOrder::SyncCityEntryOrderStateWithArchive(TUnitOrder *this,
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18(pArchive);
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
   pcVar1 = *(code **)(*pArchive + 0x3c);
-  (*pcVar1)(this + 0x48,2);
-  (*pcVar1)(this + 4,2);
-  (*pcVar1)(this + 0x40,2);
-  (*pcVar1)(this + 0x48,2);
-  (*pcVar1)(this + 0x10,0x2e);
-  (*pcVar1)(this + 0x44,4);
-  (*pcVar1)(this + 0x4c,2);
-  (*pcVar1)(this + 0x4e,2);
-  (*pcVar1)(this + 0x50,2);
-  (*pcVar1)(this + 0x52,2);
-  (*pcVar1)(this + 0x54,2);
-  (*pcVar1)(this + 0x56,2);
-  (*pcVar1)(this + 0x58,1);
+  (*pcVar1)(&this->field_0x48,2);
+  (*pcVar1)(&this->field_0x4,2);
+  (*pcVar1)(&this->field_0x40,2);
+  (*pcVar1)(&this->field_0x48,2);
+  (*pcVar1)(&this->field_0x10,0x2e);
+  (*pcVar1)(&this->field_0x44,4);
+  (*pcVar1)(&this->field_0x4c,2);
+  (*pcVar1)(&this->field_0x4e,2);
+  (*pcVar1)(&this->field_0x50,2);
+  (*pcVar1)(&this->field_0x52,2);
+  (*pcVar1)(&this->field_0x54,2);
+  (*pcVar1)(&this->field_0x56,2);
+  (*pcVar1)(&this->field_0x58,1);
   return;
 }
 

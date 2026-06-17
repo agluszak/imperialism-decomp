@@ -5,16 +5,17 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F9D0
 // GHIDRA_NAME TMyNumberText::CloneCityDialogStateWithSharedStringInit
-// GHIDRA_PROTO undefined CloneCityDialogStateWithSharedStringInit()
+// GHIDRA_PROTO undefined __thiscall CloneCityDialogStateWithSharedStringInit(void)
 
-undefined4 * __thiscall
-TMyNumberText::CloneCityDialogStateWithSharedStringInit(undefined4 *param_1,int param_2)
+TMyNumberText * __thiscall
+TMyNumberText::CloneCityDialogStateWithSharedStringInit(TMyNumberText *this)
 
 {
   undefined2 uVar1;
-  void *pvVar2;
-  void *extraout_EAX;
+  CString *pCVar2;
+  CString *extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   int local_4;
@@ -23,48 +24,48 @@ TMyNumberText::CloneCityDialogStateWithSharedStringInit(undefined4 *param_1,int 
   puStack_8 = &LAB_0062f053;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TCityDialogModalState_00649A50::CopyCityDialogStateFromSourceAndCloneChildLinks(param_2);
-  param_1[0x18] = *(undefined4 *)(param_2 + 0x60);
-  *(undefined1 *)(param_1 + 0x19) = *(undefined1 *)(param_2 + 100);
-  param_1[0x1a] = *(undefined4 *)(param_2 + 0x68);
-  param_1[0x1b] = *(undefined4 *)(param_2 + 0x6c);
-  param_1[0x1c] = *(undefined4 *)(param_2 + 0x70);
-  param_1[0x1d] = *(undefined4 *)(param_2 + 0x74);
-  param_1[0x1e] = *(undefined4 *)(param_2 + 0x78);
-  param_1[0x1f] = *(undefined4 *)(param_2 + 0x7c);
-  uVar1 = *(undefined2 *)(param_2 + 0x80);
-  *param_1 = &TControl::_vftable_;
-  *(undefined2 *)(param_1 + 0x20) = uVar1;
-  param_1[0x21] = 0;
-  param_1[0x22] = *(undefined4 *)(param_2 + 0x88);
-  param_1[0x23] = *(undefined4 *)(param_2 + 0x8c);
+  CopyCityDialogStateFromSourceAndCloneChildLinks(in_stack_00000004);
+  *(undefined4 *)&this->field_0x60 = *(undefined4 *)(in_stack_00000004 + 0x60);
+  this->field_0x64 = *(undefined1 *)(in_stack_00000004 + 100);
+  *(undefined4 *)&this->field_0x68 = *(undefined4 *)(in_stack_00000004 + 0x68);
+  *(undefined4 *)&this->field_0x6c = *(undefined4 *)(in_stack_00000004 + 0x6c);
+  *(undefined4 *)&this->field_0x70 = *(undefined4 *)(in_stack_00000004 + 0x70);
+  *(undefined4 *)&this->field_0x74 = *(undefined4 *)(in_stack_00000004 + 0x74);
+  *(undefined4 *)&this->field_0x78 = *(undefined4 *)(in_stack_00000004 + 0x78);
+  *(undefined4 *)&this->field_0x7c = *(undefined4 *)(in_stack_00000004 + 0x7c);
+  uVar1 = *(undefined2 *)(in_stack_00000004 + 0x80);
+  this->vftable = (TMyNumberTextVtbl *)&TControl::_vftable_;
+  *(undefined2 *)&this->field_0x80 = uVar1;
+  *(undefined4 *)&this->field_0x84 = 0;
+  *(undefined4 *)&this->field_0x88 = *(undefined4 *)(in_stack_00000004 + 0x88);
+  *(undefined4 *)&this->field_0x8c = *(undefined4 *)(in_stack_00000004 + 0x8c);
   local_4 = 0;
-  *(undefined2 *)(param_1 + 0x24) = *(undefined2 *)(param_2 + 0x90);
-  *param_1 = &TStaticText::_vftable_;
-  pvVar2 = (void *)AllocateWithFallbackHandler(4);
+  *(undefined2 *)&this->field_0x90 = *(undefined2 *)(in_stack_00000004 + 0x90);
+  this->vftable = (TMyNumberTextVtbl *)&TStaticText::_vftable_;
+  pCVar2 = (CString *)AllocateWithFallbackHandler(4);
   local_4._0_1_ = 1;
-  if (pvVar2 == (void *)0x0) {
-    pvVar2 = (void *)0x0;
+  if (pCVar2 == (CString *)0x0) {
+    pCVar2 = (CString *)0x0;
   }
   else {
-    InitializeSharedStringRefFromEmpty(pvVar2);
-    pvVar2 = extraout_EAX;
+    CString::CString(pCVar2);
+    pCVar2 = extraout_EAX;
   }
-  param_1[0x21] = pvVar2;
+  *(CString **)&this->field_0x84 = pCVar2;
   local_4 = (uint)local_4._1_3_ << 8;
-  AssignFromPtr(pvVar2,*(CString **)(param_2 + 0x84));
+  CString::AssignFromPtr(pCVar2,*(CString **)(in_stack_00000004 + 0x84));
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4F10
 // GHIDRA_NAME TMyNumberText::CreateTMyNumberTextInstance
 // GHIDRA_PROTO undefined CreateTMyNumberTextInstance()
 
-undefined4 * TMyNumberText::CreateTMyNumberTextInstance(void)
+TEditText * TMyNumberText::CreateTMyNumberTextInstance(void)
 
 {
-  undefined4 *puVar1;
+  TEditText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -74,70 +75,71 @@ undefined4 * TMyNumberText::CreateTMyNumberTextInstance(void)
   puStack_8 = &LAB_00638dca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (TEditText *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TEditText::thunk_ConstructUiNumericTextEntryBase();
-    puVar1[0x28] = 0;
-    *puVar1 = &PTR_LAB_0066c4f0;
+  if (this != (TEditText *)0x0) {
+    TEditText::thunk_ConstructUiNumericTextEntryBase(this);
+    this[1].vftable = (TEditTextVtbl *)0x0;
+    this->vftable = (TEditTextVtbl *)&TMyNumberTextVtbl_0066c4f0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TEditText *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4FB0
-// GHIDRA_NAME TMyNumberText::GetTMyNumberTextClassNamePointer
-// GHIDRA_PROTO undefined GetTMyNumberTextClassNamePointer()
+// GHIDRA_NAME TMyNumberText::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TMyNumberText::GetTMyNumberTextClassNamePointer(void)
+CRuntimeClass * __thiscall TMyNumberText::GetTEventHandlerClassNamePointer(TMyNumberText *this)
 
 {
-  return &PTR_s_TMyNumberText_0066c3a8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B4FD0
 // GHIDRA_NAME TMyNumberText::ConstructTMyNumberTextBaseState
-// GHIDRA_PROTO undefined ConstructTMyNumberTextBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTMyNumberTextBaseState(void)
 
-undefined4 * __fastcall TMyNumberText::ConstructTMyNumberTextBaseState(undefined4 *param_1)
+TMyNumberText * __thiscall TMyNumberText::ConstructTMyNumberTextBaseState(TMyNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase();
-  param_1[0x28] = 0;
-  *param_1 = &PTR_LAB_0066c4f0;
-  return param_1;
+  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
+  *(undefined4 *)&this->field_0xa0 = 0;
+  this->vftable = &TMyNumberTextVtbl_0066c4f0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5000
-// GHIDRA_NAME TMyNumberText::DestructTMyNumberTextAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMyNumberTextAndMaybeFree()
+// GHIDRA_NAME TMyNumberText::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TMyNumberText::DestructTMyNumberTextAndMaybeFree(undefined4 param_1,byte param_2)
+TMyNumberText * __thiscall TMyNumberText::_scalar_deleting_destructor_(TMyNumberText *this)
 
 {
-  DestructTEditTextAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTEditTextAndMaybeFree((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5050
-// GHIDRA_NAME TMyNumberText::UpdateMyNumberTextFromTownValueString
-// GHIDRA_PROTO undefined UpdateMyNumberTextFromTownValueString()
+// GHIDRA_NAME TMyNumberText::UpdateControlCachedIntFromWindowText
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
 
-undefined4 __fastcall TMyNumberText::UpdateMyNumberTextFromTownValueString(int *param_1)
+char * __thiscall TMyNumberText::UpdateControlCachedIntFromWindowText(TMyNumberText *this)
 
 {
   int unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
   undefined1 auStack_28 [4];
-  undefined4 *puStack_24;
-  undefined4 *puStack_20;
-  undefined4 local_18;
+  CString *pCStack_24;
+  CString *pCStack_20;
+  CString local_18;
   undefined1 *local_14;
   undefined4 uStack_10;
   undefined4 uStack_c;
@@ -149,22 +151,22 @@ undefined4 __fastcall TMyNumberText::UpdateMyNumberTextFromTownValueString(int *
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   local_14 = (undefined1 *)0x0;
-  puStack_20 = (undefined4 *)0x5b507c;
-  InitializeSharedStringRefFromEmpty(&local_18);
-  puStack_20 = &local_18;
+  pCStack_20 = (CString *)0x5b507c;
+  CString::CString(&local_18);
+  pCStack_20 = &local_18;
   local_4 = 0;
-  puStack_24 = (undefined4 *)0x5b5093;
-  (**(code **)(*param_1 + 0x1dc))();
+  pCStack_24 = (CString *)0x5b5093;
+  (*this->vftable[0x3b].slot_0x04)();
   if (*(int *)(unaff_ESI + -8) != 0) {
-    puStack_24 = &local_18;
+    pCStack_24 = &local_18;
     local_14 = auStack_28;
     thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffe4);
     TTown::CreateTTownInstance();
   }
   puStack_8 = (undefined1 *)0xffffffff;
-  puStack_24 = (undefined4 *)0x5b50d1;
-  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffe4);
+  pCStack_24 = (CString *)0x5b50d1;
+  CString::~CString((CString *)&stack0xffffffe4);
   *unaff_FS_OFFSET = uStack_10;
-  return local_18;
+  return local_18.m_pchData;
 }
 

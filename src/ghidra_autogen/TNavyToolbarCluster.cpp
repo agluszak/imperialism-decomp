@@ -7,11 +7,11 @@
 // GHIDRA_NAME TNavyToolbarCluster::CreateTNavyToolbarClusterInstance
 // GHIDRA_PROTO undefined CreateTNavyToolbarClusterInstance()
 
-undefined4 * TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
+TUberCluster * TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TUberCluster *this;
+  TUberCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,128 +21,177 @@ undefined4 * TNavyToolbarCluster::CreateTNavyToolbarClusterInstance(void)
   puStack_8 = &LAB_00635b9a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState();
-    *puVar1 = &PTR_LAB_0065d6e0;
-    puVar2 = puVar1;
+  pTVar1 = (TUberCluster *)0x0;
+  if (this != (TUberCluster *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState(this);
+    this->vftable = (TUberClusterVtbl *)&TNavyToolbarClusterVtbl_0065d6e0;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005694B0
-// GHIDRA_NAME TNavyToolbarCluster::GetTNavyToolbarClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTNavyToolbarClusterClassNamePointer()
+// GHIDRA_NAME TNavyToolbarCluster::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TNavyToolbarCluster::GetTNavyToolbarClusterClassNamePointer(void)
+CRuntimeClass * __thiscall
+TNavyToolbarCluster::GetTEventHandlerClassNamePointer(TNavyToolbarCluster *this)
 
 {
-  return &PTR_s_TNavyToolbarCluster_0065c8f8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005694D0
 // GHIDRA_NAME TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState
-// GHIDRA_PROTO undefined ConstructTNavyToolbarClusterBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTNavyToolbarClusterBaseState(void)
 
-undefined4 * __fastcall
-TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(undefined4 *param_1)
+TNavyToolbarCluster * __thiscall
+TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState(TNavyToolbarCluster *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState();
-  *param_1 = &PTR_LAB_0065d6e0;
-  return param_1;
+  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  this->vftable = &TNavyToolbarClusterVtbl_0065d6e0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569500
-// GHIDRA_NAME TNavyToolbarCluster::DestructTNavyToolbarClusterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTNavyToolbarClusterAndMaybeFree()
+// GHIDRA_NAME TNavyToolbarCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall
-TNavyToolbarCluster::DestructTNavyToolbarClusterAndMaybeFree(TView *param_1,byte param_2)
+TNavyToolbarCluster * __thiscall
+TNavyToolbarCluster::_scalar_deleting_destructor_(TNavyToolbarCluster *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569550
-// GHIDRA_NAME TNavyToolbarCluster::HandleMapOrderPanelCommandTagsAndSelectionCycling
-// GHIDRA_PROTO undefined HandleMapOrderPanelCommandTagsAndSelectionCycling()
+// GHIDRA_NAME TNavyToolbarCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
-void __thiscall
-TNavyToolbarCluster::HandleMapOrderPanelCommandTagsAndSelectionCycling
-          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
+void __thiscall TNavyToolbarCluster::OrphanRetStub_0059add0(TNavyToolbarCluster *this)
 
 {
-  int iVar1;
-  ushort uVar2;
-  int *piVar3;
+  undefined *puVar1;
+  undefined uVar2;
+  ushort uVar3;
+  undefined3 extraout_var;
+  int *this_00;
   void *pvVar4;
-  TCivToolbar *this;
+  TCivToolbar *this_01;
   uint uVar5;
+  int in_stack_00000004;
+  void *in_stack_00000008;
+  int in_stack_0000000c;
   
-  if (param_2 == 0xc) {
-    uVar5 = *(int *)((int)param_3 + 0x1c) + 0x9e988dd0;
+  if (in_stack_00000004 == 0xc) {
+    uVar5 = *(int *)((int)in_stack_00000008 + 0x1c) + 0x9e988dd0;
     if (uVar5 < 3) {
-      piVar3 = (int *)(**(code **)(*(int *)param_1 + 0x58))();
-      piVar3 = (int *)(**(code **)(*piVar3 + 0x94))(0x6d61696e);
-      (**(code **)(*piVar3 + 0xc))();
-      pvVar4 = thunk_GetActiveMapOrderEntry(piVar3);
+      uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+      this_00 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x6d61696e);
+      (**(code **)(*this_00 + 0xc))();
+      pvVar4 = thunk_GetActiveMapOrderEntry(this_00);
       if (pvVar4 != (void *)0x0) {
         SetTaskForceOwnerPointer(uVar5);
       }
     }
     goto LAB_00569662;
   }
-  if (param_2 != 10) goto LAB_00569662;
-  uVar5 = *(uint *)((int)param_3 + 0x1c);
+  if (in_stack_00000004 != 10) goto LAB_00569662;
+  uVar5 = *(uint *)((int)in_stack_00000008 + 0x1c);
   if (uVar5 < 0x64666e65) {
     if (uVar5 != 0x64666e64) {
       if (uVar5 == 0x626f6d62) {
-        uVar2 = GetAsyncKeyState(0x11);
-        if ((uVar2 & 0x8000) == 0) {
-          iVar1 = *g_pUiRuntimeContext;
-          pvVar4 = thunk_GetActiveMapOrderEntry((void *)g_pUiRuntimeContext[0x3c]);
-          (**(code **)(iVar1 + 0xf0))(pvVar4);
+        uVar3 = GetAsyncKeyState(0x11);
+        if ((uVar3 & 0x8000) == 0) {
+          puVar1 = g_pUiRuntimeContext->vftable;
+          pvVar4 = thunk_GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
+          (**(code **)(puVar1 + 0xf0))(pvVar4);
         }
         else {
-          RunMapOrderPageSelectionDialogAndApplyResult();
+          TSuperNavyRoster::RunMapOrderPageSelectionDialogAndApplyResult
+                    ((TSuperNavyRoster *)g_pUiRuntimeContext);
         }
       }
       goto LAB_00569662;
     }
 LAB_00569626:
-    pvVar4 = thunk_GetActiveMapOrderEntry((void *)g_pUiRuntimeContext[0x3c]);
+    pvVar4 = thunk_GetActiveMapOrderEntry(*(void **)&g_pUiRuntimeContext->field_0xf0);
     if (pvVar4 != (void *)0x0) {
-      ApplyTaskForceSelectionModeForCurrentNationOrders(*(int *)((int)param_3 + 0x1c) == 0x646f6e65)
-      ;
+      ApplyTaskForceSelectionModeForCurrentNationOrders
+                (*(int *)((int)in_stack_00000008 + 0x1c) == 0x646f6e65);
     }
-    this = (TCivToolbar *)g_pUiRuntimeContext[0x3c];
+    this_01 = *(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0;
   }
   else {
     if (uVar5 == 0x646f6e65) goto LAB_00569626;
     if (uVar5 != 0x6e657874) goto LAB_00569662;
-    this = (TCivToolbar *)g_pUiRuntimeContext[0x3c];
+    this_01 = *(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0;
   }
-  TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this);
+  TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this_01);
 LAB_00569662:
-  TMapEditCluster::thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005696D0
-// GHIDRA_NAME TNavyToolbarCluster::OrphanVtableAssignStub_005696d0
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_005696d0()
+// GHIDRA_NAME TNavyToolbarCluster::OrphanVtableAssignStub_005714e0
+// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
 
-undefined1 TNavyToolbarCluster::OrphanVtableAssignStub_005696d0(void)
+undefined1 __thiscall
+TNavyToolbarCluster::OrphanVtableAssignStub_005714e0(TNavyToolbarCluster *this)
 
 {
   return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005696F0
+// GHIDRA_NAME TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(void)
+
+void __thiscall TNavyToolbarCluster::OrphanCallChain_C2_I51_00491790(TNavyToolbarCluster *this)
+
+{
+  undefined uVar1;
+  int *piVar2;
+  int iVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  int in_stack_00000004;
+  
+  InitializeSelectableTextOptionEntryIteratorContext(this);
+  piVar4 = (int *)0x0;
+  piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
+  iVar3 = IsSelectableTextOptionEntryIteratorValid();
+  while (iVar3 != 0) {
+    if (piVar2[7] == in_stack_00000004) {
+      (**(code **)(*piVar2 + 0x3c))(0x1f,this,0);
+      piVar4 = piVar2;
+    }
+    else {
+      (**(code **)(*piVar2 + 0x3c))(0x20,this,0);
+    }
+    piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
+    iVar3 = IsSelectableTextOptionEntryIteratorValid();
+  }
+  *(int *)&this->field_0x84 = in_stack_00000004;
+  if (piVar4 != (int *)0x0) {
+    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x444f4f47);
+    iVar3 = *piVar2;
+    (**(code **)(iVar3 + 0xc))();
+    (**(code **)(iVar3 + 0x3c))(0xc,piVar4,0);
+  }
+  return;
 }
 

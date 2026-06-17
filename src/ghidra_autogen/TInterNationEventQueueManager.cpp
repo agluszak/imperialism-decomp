@@ -12,8 +12,8 @@ TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
           (int param_1,int param_2,undefined4 param_3,char param_4)
 
 {
-  if (*(char *)(g_pLocalizationTable + 0x7a) == '\0') {
-    if ((param_4 == '\0') && (*(int *)(g_pLocalizationTable + 0x44) != 0)) {
+  if (g_pLocalizationTable->field_0x7a == '\0') {
+    if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
       thunk_CreateAndSendTurnEvent13_NationAndNineDwords(param_2,param_3);
       return;
     }
@@ -24,63 +24,66 @@ TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055C9F0
 // GHIDRA_NAME TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-// GHIDRA_PROTO undefined QueueInterNationEventRecordDeduped()
+// GHIDRA_PROTO undefined __thiscall QueueInterNationEventRecordDeduped(void)
 
 void __thiscall
 TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-          (int param_1,int param_2,int param_3,int param_4,char param_5)
+          (TInterNationEventQueueManager *this)
 
 {
   bool bVar1;
   int *piVar2;
   int iVar3;
-  int local_10;
-  int local_c;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  int in_stack_0000000c;
+  char in_stack_00000010;
+  undefined1 local_10 [8];
   int local_8;
   
-  if (*(char *)(g_pLocalizationTable + 0x7a) == '\0') {
-    if ((param_5 == '\0') && (*(int *)(g_pLocalizationTable + 0x44) != 0)) {
-      if (*(int *)(g_pLocalizationTable + 0x44) == 1) {
-        CreateAndSendTurnEvent20_ShortAndTwoBytes(param_2,param_3,param_4);
+  if (g_pLocalizationTable->field_0x7a == '\0') {
+    if ((in_stack_00000010 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+      if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+        CreateAndSendTurnEvent20_ShortAndTwoBytes
+                  (in_stack_00000004,in_stack_00000008,in_stack_0000000c);
         return;
       }
     }
     else {
-      if ((param_2 < 5) || (0x15 < param_2)) {
+      if ((in_stack_00000004 < 5) || (0x15 < in_stack_00000004)) {
         bVar1 = false;
       }
       else {
         bVar1 = true;
       }
       if (bVar1) {
-        AddOrUpdateBilateralActionRelationEntry(param_2,param_3,param_4);
+        AddOrUpdateBilateralActionRelationEntry
+                  (in_stack_00000004,in_stack_00000008,in_stack_0000000c);
         return;
       }
       piVar2 = (int *)SetPlaybackState2AndNotifyOwnerCallback();
       iVar3 = NoOpPlaybackCallback_005e1fd0();
       while (iVar3 != 0) {
-        if (*piVar2 == param_2) {
-          if ((piVar2[1] == param_3) && ((piVar2[2] & 1 << ((byte)param_4 & 0x1f)) != 0)) {
+        if (*piVar2 == in_stack_00000004) {
+          if ((piVar2[1] == in_stack_00000008) &&
+             ((piVar2[2] & 1 << ((byte)in_stack_0000000c & 0x1f)) != 0)) {
             return;
           }
-          if ((piVar2[1] == param_4) && ((piVar2[2] & 1 << ((byte)param_3 & 0x1f)) != 0)) {
+          if ((piVar2[1] == in_stack_0000000c) &&
+             ((piVar2[2] & 1 << ((byte)in_stack_00000008 & 0x1f)) != 0)) {
             return;
           }
         }
         piVar2 = (int *)IncrementPlaybackCounterAndNotifyOwnerCallback();
         iVar3 = NoOpPlaybackCallback_005e1fd0();
       }
-      if (param_3 < 7) {
-        local_10 = param_2;
-        local_8 = 1 << ((byte)param_4 & 0x1f);
-        local_c = param_3;
-        (**(code **)(**(int **)(param_1 + 0xef0) + 0x38))(&local_10);
+      if (in_stack_00000008 < 7) {
+        local_8 = 1 << ((byte)in_stack_0000000c & 0x1f);
+        (**(code **)(**(int **)&this->field_0xef0 + 0x38))(local_10);
       }
-      if (((param_4 < 7) && (1 < param_2)) && (param_2 < 0x19)) {
-        local_10 = param_2;
-        local_8 = 1 << ((byte)param_3 & 0x1f);
-        local_c = param_4;
-        (**(code **)(**(int **)(param_1 + 0xef0) + 0x38))(&local_10);
+      if (((in_stack_0000000c < 7) && (1 < in_stack_00000004)) && (in_stack_00000004 < 0x19)) {
+        local_8 = 1 << ((byte)in_stack_00000008 & 0x1f);
+        (**(code **)(**(int **)&this->field_0xef0 + 0x38))(local_10);
       }
     }
   }
@@ -89,43 +92,45 @@ TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055CBD0
 // GHIDRA_NAME TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge
-// GHIDRA_PROTO undefined QueueInterNationEventType0FWithBitmaskMerge()
+// GHIDRA_PROTO undefined __thiscall QueueInterNationEventType0FWithBitmaskMerge(void)
 
 void __thiscall
 TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge
-          (int param_1,int param_2,undefined4 param_3,int param_4,char param_5)
+          (TInterNationEventQueueManager *this)
 
 {
   int *piVar1;
   int iVar2;
-  undefined4 local_10;
-  int local_c;
+  int in_stack_00000004;
+  undefined4 in_stack_00000008;
+  int in_stack_0000000c;
+  char in_stack_00000010;
+  undefined4 local_10 [2];
   int local_8;
-  int local_4;
   
-  if (*(char *)(g_pLocalizationTable + 0x7a) == '\0') {
-    if ((param_5 == '\0') && (*(int *)(g_pLocalizationTable + 0x44) != 0)) {
-      thunk_CreateAndSendTurnEvent21_ThreeBytes(param_2,param_3,param_4);
+  if (g_pLocalizationTable->field_0x7a == '\0') {
+    if ((in_stack_00000010 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+      thunk_CreateAndSendTurnEvent21_ThreeBytes
+                (in_stack_00000004,in_stack_00000008,in_stack_0000000c);
       return;
     }
-    piVar1 = *(int **)(param_1 + 0xef0);
+    piVar1 = *(int **)&this->field_0xef0;
     iVar2 = 1;
     if (0 < piVar1[2]) {
       do {
         piVar1 = (int *)(**(code **)(*piVar1 + 0x2c))(iVar2);
-        if (((*piVar1 == 0xf) && (piVar1[3] == param_4)) && (piVar1[1] == param_2)) {
-          piVar1[2] = piVar1[2] | 1 << ((byte)param_3 & 0x1f);
+        if (((*piVar1 == 0xf) && (piVar1[3] == in_stack_0000000c)) &&
+           (piVar1[1] == in_stack_00000004)) {
+          piVar1[2] = piVar1[2] | 1 << ((byte)in_stack_00000008 & 0x1f);
           return;
         }
-        piVar1 = *(int **)(param_1 + 0xef0);
+        piVar1 = *(int **)&this->field_0xef0;
         iVar2 = iVar2 + 1;
       } while (iVar2 <= piVar1[2]);
     }
-    local_8 = 1 << ((byte)param_3 & 0x1f);
-    local_10 = 0xf;
-    local_c = param_2;
-    local_4 = param_4;
-    (**(code **)(**(int **)(param_1 + 0xef0) + 0x38))(&local_10);
+    local_8 = 1 << ((byte)in_stack_00000008 & 0x1f);
+    local_10[0] = 0xf;
+    (**(code **)(**(int **)&this->field_0xef0 + 0x38))(local_10);
   }
   return;
 }

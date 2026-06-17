@@ -3,55 +3,75 @@
 // Program: Imperialism.exe
 // Bucket: TSwapperDaddyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004AC6A0
-// GHIDRA_NAME TSwapperDaddyView::GetTSwapperDaddyViewClassNamePointer
-// GHIDRA_PROTO undefined GetTSwapperDaddyViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004AC650
+// GHIDRA_NAME TSwapperDaddyView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TSwapperDaddyView::GetTSwapperDaddyViewClassNamePointer(void)
+TSwapperDaddyView * __thiscall
+TSwapperDaddyView::_scalar_deleting_destructor_(TSwapperDaddyView *this)
 
 {
-  return &PTR_s_TSwapperDaddyView_0064dc38;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AC6A0
+// GHIDRA_NAME TSwapperDaddyView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TSwapperDaddyView::GetTEventHandlerClassNamePointer(TSwapperDaddyView *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC6C0
 // GHIDRA_NAME TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState
-// GHIDRA_PROTO undefined ConstructTSwapperDaddyViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTSwapperDaddyViewBaseState(void)
 
-int * __thiscall TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(int *param_1,int param_2)
+int * __thiscall TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState(TSwapperDaddyView *this)
 
 {
-  int *piVar1;
-  int iVar2;
-  int *piVar3;
+  byte bVar1;
+  int *piVar2;
+  int iVar3;
+  int *piVar4;
+  int in_stack_00000004;
   undefined4 local_24;
   undefined4 local_20;
   undefined4 uStack_1c;
   undefined4 uStack_18;
   
-  if (param_2 != param_1[0x18]) {
-    piVar3 = (int *)0x0;
-    InitializeSelectableTextOptionEntryIteratorContext(param_1);
-    piVar1 = (int *)BeginSelectableTextOptionEntryIterator();
-    iVar2 = IsSelectableTextOptionEntryIteratorValid();
-    while (iVar2 != 0) {
-      if (piVar1[7] == param_2) {
+  if (in_stack_00000004 != *(int *)&this->field_0x60) {
+    piVar4 = (int *)0x0;
+    InitializeSelectableTextOptionEntryIteratorContext(this);
+    piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
+    iVar3 = IsSelectableTextOptionEntryIteratorValid();
+    while (iVar3 != 0) {
+      if (piVar2[7] == in_stack_00000004) {
         local_24 = 0;
         local_20 = 0;
-        (**(code **)(*piVar1 + 0xf0))(&local_24,1);
-        piVar3 = piVar1;
+        (**(code **)(*piVar2 + 0xf0))(&local_24,1);
+        piVar4 = piVar2;
       }
       else {
         uStack_1c = 1000;
         uStack_18 = 1000;
-        (**(code **)(*piVar1 + 0xf0))(&uStack_1c,0);
+        (**(code **)(*piVar2 + 0xf0))(&uStack_1c,0);
       }
-      piVar1 = (int *)AdvanceSelectableTextOptionEntryIterator();
-      iVar2 = IsSelectableTextOptionEntryIteratorValid();
+      piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
+      iVar3 = IsSelectableTextOptionEntryIteratorValid();
     }
-    param_1[0x18] = param_2;
-    return piVar3;
+    *(int *)&this->field_0x60 = in_stack_00000004;
+    return piVar4;
   }
-  piVar3 = (int *)(**(code **)(*param_1 + 0x94))(param_2);
-  return piVar3;
+  bVar1 = (*this->vftable[0x12].slot_0x04)();
+  return (int *)(uint)bVar1;
 }
 

@@ -3,13 +3,113 @@
 // Program: Imperialism.exe
 // Bucket: TJoinSelectorDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0054E710
-// GHIDRA_NAME TJoinSelectorDialog::GetTJoinSelectorDialogClassNamePointer
-// GHIDRA_PROTO undefined GetTJoinSelectorDialogClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0044FAB0
+// GHIDRA_NAME TJoinSelectorDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TJoinSelectorDialog::GetTJoinSelectorDialogClassNamePointer(void)
+TJoinSelectorDialog * __thiscall
+TJoinSelectorDialog::_scalar_deleting_destructor_(TJoinSelectorDialog *this)
 
 {
-  return &PTR_s_TJoinSelectorDialog_0065c198;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054E710
+// GHIDRA_NAME TJoinSelectorDialog::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TJoinSelectorDialog::GetTEventHandlerClassNamePointer(TJoinSelectorDialog *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054E730
+// GHIDRA_NAME TJoinSelectorDialog::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TJoinSelectorDialog::OrphanLeaf_NoCall_Ins07_004d8920(TJoinSelectorDialog *this)
+
+{
+  TJoinSelectorDialog_slot_0x04_0x04 *pTVar1;
+  undefined uVar2;
+  undefined uVar3;
+  undefined uVar4;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined4 unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  int *piVar5;
+  int *piVar6;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634f48;
+  CStack_c.m_pchData = (char *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &CStack_c;
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  pTVar1 = this->vftable[0x12].slot_0x04;
+  uVar2 = (*pTVar1)(0x746e616d);
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
+  uVar3 = (*pTVar1)(0x6e616d65);
+  piVar5 = (int *)CONCAT31(extraout_var_00,uVar3);
+  (**(code **)(*piVar5 + 0xc))();
+  uVar3 = (*pTVar1)(0x7467616d);
+  (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0xc))();
+  uVar4 = (*pTVar1)(0x67616d65);
+  piVar6 = (int *)CONCAT31(extraout_var_02,uVar4);
+  (**(code **)(*piVar6 + 0xc))();
+  ConfigureUiControlStyleValueAndCaptionFromStringResource
+            ((int *)CONCAT31(extraout_var,uVar2),0,0xc,0x2b6b,0xfffffffe,0x2742,4);
+  ConfigureUiControlStyleValueAndCaptionFromStringResource
+            (unaff_EDI,0,0xc,0x2b6b,0xfffffffe,0x2742,5);
+  NormalizeRuntimeCredentialNameToken(&CStack_c,&g_pGameFlowState->field_0xb0);
+  ApplyControlThemeStyleAndOptionalCaption(piVar5,0,0xc,0x2b6b,1,CStack_c.m_pchData);
+  *(undefined2 *)(piVar5 + 0x27) = 0xc;
+  if (piVar5[0x25] != 0) {
+    SendMessageA(*(HWND *)(piVar5[0x25] + 0x1c),0xc5,0xc,0);
+  }
+  *(undefined2 *)(piVar6 + 0x24) = 0x2b6b;
+  *(undefined2 *)((int)piVar6 + 0x92) = 2;
+  CString::~CString(&CStack_c);
+  *unaff_FS_OFFSET = (int *)CONCAT31(extraout_var_01,uVar3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054E9A0
+// GHIDRA_NAME TJoinSelectorDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall
+TJoinSelectorDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(TJoinSelectorDialog *this)
+
+{
+  int iVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if (((((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22))
+      || (in_stack_00000004 == 0xd)) &&
+     (((iVar1 = *(int *)(in_stack_00000008 + 0x1c), iVar1 == 0x63616e63 || (iVar1 == 0x636e636c)) ||
+      (iVar1 == 0x6f6b6179)))) {
+    uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1b4))
+              (*(undefined4 *)(in_stack_00000008 + 0x1c),1);
+  }
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  return;
 }
 

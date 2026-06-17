@@ -5,179 +5,28 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E2E
 // GHIDRA_NAME TradeControl::thunk_AssertCityProductionGlobalStateInitialized
-// GHIDRA_PROTO undefined thunk_AssertCityProductionGlobalStateInitialized()
+// GHIDRA_PROTO undefined __thiscall thunk_AssertCityProductionGlobalStateInitialized(void)
 
-void TradeControl::thunk_AssertCityProductionGlobalStateInitialized(void)
-
-{
-  AssertCityProductionGlobalStateInitialized();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00415D50
-// GHIDRA_NAME TradeControl::GetCityDialogValueDword10
-// GHIDRA_PROTO int __fastcall GetCityDialogValueDword10(CityDialogController * pDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: int GetCityDialogValueDword10(CityDialogController *pDialog)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: int GetCityDialogValueDword10(CityDialogController *pDialog) */
-
-int __fastcall TradeControl::GetCityDialogValueDword10(CityDialogController *pDialog)
+void __thiscall TradeControl::thunk_AssertCityProductionGlobalStateInitialized(TradeControl *this)
 
 {
-  return pDialog->valueDword10;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00427240
-// GHIDRA_NAME TradeControl::NoOpControlCallback_Impl
-// GHIDRA_PROTO undefined NoOpControlCallback_Impl()
-
-void TradeControl::NoOpControlCallback_Impl(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00429450
-// GHIDRA_NAME TradeControl::GetCityProductionControllerField60
-// GHIDRA_PROTO undefined GetCityProductionControllerField60()
-
-undefined4 __fastcall TradeControl::GetCityProductionControllerField60(int param_1)
-
-{
-  return *(undefined4 *)(param_1 + 0x60);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00429470
-// GHIDRA_NAME TradeControl::AssertCityProductionGlobalStateInitialized
-// GHIDRA_PROTO undefined AssertCityProductionGlobalStateInitialized()
-
-void TradeControl::AssertCityProductionGlobalStateInitialized(void)
-
-{
-  if (g_McAppUiFlag_006A143C == 0) {
-    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x56f);
-  }
+  TCouncilView::OrphanRetStub_0059add0((TCouncilView *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004294A0
 // GHIDRA_NAME TradeControl::LogUnhandledDialogMethodAndReturnFalse
-// GHIDRA_PROTO bool __cdecl LogUnhandledDialogMethodAndReturnFalse(void)
+// GHIDRA_PROTO bool __thiscall LogUnhandledDialogMethodAndReturnFalse(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: bool LogUnhandledDialogMethodAndReturnFalse(void)
 // GHIDRA_COMMENT_END
 
 /* Setting prototype: bool LogUnhandledDialogMethodAndReturnFalse(void) */
 
-bool __cdecl TradeControl::LogUnhandledDialogMethodAndReturnFalse(void)
+bool __thiscall TradeControl::LogUnhandledDialogMethodAndReturnFalse(TradeControl *this)
 
 {
   thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x58f);
   return false;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00485F70
-// GHIDRA_NAME TradeControl::HandleCityDialogNoOpSlot14
-// GHIDRA_PROTO undefined HandleCityDialogNoOpSlot14()
-
-void TradeControl::HandleCityDialogNoOpSlot14(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00485F90
-// GHIDRA_NAME TradeControl::HandleCityDialogNoOpSlot18
-// GHIDRA_PROTO undefined HandleCityDialogNoOpSlot18()
-
-void TradeControl::HandleCityDialogNoOpSlot18(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A240
-// GHIDRA_NAME TradeControl::GetCityDialogFlagByte4
-// GHIDRA_PROTO byte __fastcall GetCityDialogFlagByte4(CityDialogController * pDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: byte GetCityDialogFlagByte4(CityDialogController *pDialog)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: byte GetCityDialogFlagByte4(CityDialogController *pDialog) */
-
-byte __fastcall TradeControl::GetCityDialogFlagByte4(CityDialogController *pDialog)
-
-{
-  return pDialog->flagByte4;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A2C0
-// GHIDRA_NAME TradeControl::GetCityDialogValueDwordC
-// GHIDRA_PROTO int __fastcall GetCityDialogValueDwordC(CityDialogController * pDialog)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Setting prototype: int GetCityDialogValueDwordC(CityDialogController *pDialog)
-// GHIDRA_COMMENT_END
-
-/* Setting prototype: int GetCityDialogValueDwordC(CityDialogController *pDialog) */
-
-int __fastcall TradeControl::GetCityDialogValueDwordC(CityDialogController *pDialog)
-
-{
-  return pDialog->valueDwordC;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A480
-// GHIDRA_NAME TradeControl::CanHandleCityDialogActionFalse
-// GHIDRA_PROTO undefined CanHandleCityDialogActionFalse()
-
-undefined1 TradeControl::CanHandleCityDialogActionFalse(void)
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A500
-// GHIDRA_NAME TradeControl::IsCurrentActiveCityProductionView
-// GHIDRA_PROTO undefined IsCurrentActiveCityProductionView()
-
-bool __fastcall TradeControl::IsCurrentActiveCityProductionView(int param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = (**(code **)(*g_pApplicationUiRootController + 0x9c))();
-  return param_1 == iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A530
-// GHIDRA_NAME TradeControl::CanStartCityProductionActionFalse
-// GHIDRA_PROTO undefined CanStartCityProductionActionFalse()
-
-undefined1 TradeControl::CanStartCityProductionActionFalse(void)
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048A550
-// GHIDRA_NAME TradeControl::GetCityDialogZeroValue
-// GHIDRA_PROTO undefined GetCityDialogZeroValue()
-
-undefined4 TradeControl::GetCityDialogZeroValue(void)
-
-{
-  return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048E9E0
-// GHIDRA_NAME TradeControl::NoOpCityProductionDialogPictureHook
-// GHIDRA_PROTO undefined NoOpCityProductionDialogPictureHook()
-
-void TradeControl::NoOpCityProductionDialogPictureHook(void)
-
-{
-  return;
 }
 

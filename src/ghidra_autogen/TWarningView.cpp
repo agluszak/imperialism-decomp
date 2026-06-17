@@ -7,14 +7,14 @@
 // GHIDRA_NAME TWarningView::?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@XZ
 // GHIDRA_PROTO undefined ?CreateTWarningViewInstance@@YAPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@XZ()
 
-undefined4 *
+thunk_TPictureButton *
 TWarningView::
 _CreateTWarningViewInstance__YAPAUWarningViewState___Z_imperialismsrcgameTWarningView_cpp14012305__XZ
           (void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -24,23 +24,23 @@ _CreateTWarningViewInstance__YAPAUWarningViewState___Z_imperialismsrcgameTWarnin
   puStack_8 = &LAB_006380fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_006687b8;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TWarningViewVtbl **)this = &TWarningViewVtbl_006687b8;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005928E0
-// GHIDRA_NAME TWarningView::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TWarningView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TWarningView::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TWarningView::GetTEventHandlerClassNamePointer(TWarningView *this)
 
 {
   return &g_pClassDescTWarningView;
@@ -48,30 +48,273 @@ undefined ** TWarningView::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592900
 // GHIDRA_NAME TWarningView::?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@PAU12@@Z
-// GHIDRA_PROTO undefined ?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@PAU12@@Z()
+// GHIDRA_PROTO undefined __thiscall ?ConstructTWarningViewBaseState@@YIPAUWarningViewState@?%Z:imperialismsrcgameTWarningView.cpp14012305@@PAU12@@Z(void)
 
-undefined4 * __fastcall
+TWarningView * __thiscall
 TWarningView::
 _ConstructTWarningViewBaseState__YIPAUWarningViewState___Z_imperialismsrcgameTWarningView_cpp14012305__PAU12__Z
-          (undefined4 *param_1)
+          (TWarningView *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_006687b8;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TWarningViewVtbl_006687b8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00592930
 // GHIDRA_NAME TWarningView::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TWarningView::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TWarningView * __thiscall TWarningView::_scalar_deleting_destructor_(TWarningView *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00592980
+// GHIDRA_NAME TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall TWarningView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TWarningView *this)
+
+{
+  TSimMgrVtbl *pTVar1;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  undefined4 uVar2;
+  
+  if (in_stack_00000004 == 0x22) {
+    switch(*(undefined4 *)(in_stack_00000008 + 0x1c)) {
+    case 0x70696331:
+      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+      return;
+    case 0x70696332:
+      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+      return;
+    case 0x70696333:
+      uVar2 = 0x6a;
+      pTVar1 = g_pLocalizationTable->vftable;
+      break;
+    case 0x70696334:
+      uVar2 = 0x69;
+      pTVar1 = g_pLocalizationTable->vftable;
+      break;
+    case 0x70696335:
+      uVar2 = 5;
+      pTVar1 = g_pLocalizationTable->vftable;
+      break;
+    default:
+      goto switchD_0059299f_default;
+    }
+    (*pTVar1[9].GetTSimMgrClassNamePointer)(uVar2);
+  }
+switchD_0059299f_default:
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00592A70
+// GHIDRA_NAME TWarningView::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TWarningView::OrphanLeaf_NoCall_Ins07_004d8920(TWarningView *this)
+
+{
+  code *pcVar1;
+  int iVar2;
+  uint uVar3;
+  undefined uVar4;
+  undefined3 extraout_var;
+  int *piVar5;
+  int *unaff_FS_OFFSET;
+  undefined4 uStack_70;
+  undefined4 uStack_6c;
+  undefined1 *puVar6;
+  CString CStack_58;
+  undefined4 uStack_54;
+  CString CStack_50;
+  undefined4 uStack_4c;
+  undefined4 uStack_48;
+  CString CStack_34;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00638140;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  CStack_34.m_pchData = "hg+";
+  uVar4 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  CStack_34.m_pchData = (char *)0x2b67;
+  thunk_BuildUiTextStyleDescriptor();
+  pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x94);
+  CStack_34.m_pchData = (char *)0x7469746c;
+  piVar5 = (int *)(*pcVar1)();
+  iVar2 = *piVar5;
+  (**(code **)(iVar2 + 0xc))();
+  if (piVar5 == (int *)0x0) {
+    uStack_48 = 0x592aee;
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  (**(code **)(iVar2 + 0x1b4))();
+  CString::CString((CString *)&stack0xffffffd4,s_Ministers_request_orders__006993a4);
+  uStack_48 = 0x592b34;
+  (**(code **)(iVar2 + 0x1c8))();
+  uStack_48 = 0x592b45;
+  CString::~CString(&CStack_34);
+  uStack_48 = 0;
+  uStack_4c = 1;
+  CStack_50.m_pchData = "j";
+  (**(code **)(iVar2 + 0x1c4))();
+  CStack_50.m_pchData = (char *)0x0;
+  uStack_54 = 1;
+  CStack_58.m_pchData = (char *)0x592b5d;
+  (**(code **)(iVar2 + 0xa4))();
+  CStack_58.m_pchData = (char *)0x6d736735;
+  piVar5 = (int *)(*pcVar1)();
+  iVar2 = *piVar5;
+  (**(code **)(iVar2 + 0xc))();
+  if (piVar5 == (int *)0x0) {
+    uStack_6c = 0x592b86;
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  puVar6 = &stack0xffffffc0;
+  (**(code **)(iVar2 + 0x1b4))();
+  CString::CString(&CStack_50,s_End_Turn_Now_00699394);
+  CStack_34.m_pchData = (char *)0x1;
+  uStack_6c = 0x592bcc;
+  (**(code **)(iVar2 + 0x1c8))();
+  uStack_6c = 0x592bdd;
+  CString::~CString(&CStack_58);
+  uStack_6c = 0;
+  uStack_70 = 1;
+  (**(code **)(iVar2 + 0xa4))();
+  piVar5 = (int *)(*pcVar1)();
+  iVar2 = *piVar5;
+  (**(code **)(iVar2 + 0xc))();
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  (**(code **)(iVar2 + 0xa8))();
+  (**(code **)(iVar2 + 0xa4))();
+  uVar3 = *(uint *)&g_pLocalizationTable->field_0x38;
+  if ((uVar3 & 1) != 0) {
+    piVar5 = (int *)(*pcVar1)(0x6d736731);
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0xc))();
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1aee);
+    }
+    (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
+    CString::CString((CString *)&stack0xffffff84,s_Diplomacy_00699388);
+    (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
+    uStack_6c = 0xffffffff;
+    CString::~CString((CString *)&stack0xffffff7c);
+    (**(code **)(iVar2 + 0xa4))(1,0);
+    piVar5 = (int *)(*pcVar1)(0x70696331);
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0xc))();
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1af4);
+    }
+    (**(code **)(iVar2 + 0xa8))(1,0);
+    (**(code **)(iVar2 + 0xa4))(1,0);
+  }
+  if ((uVar3 & 0x1000) != 0) {
+    piVar5 = (int *)(*pcVar1)(0x6d736734);
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0xc))();
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1afc);
+    }
+    (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
+    CString::CString((CString *)&stack0xffffff84,s_Transport_00694b14);
+    (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
+    uStack_6c = 0xffffffff;
+    CString::~CString((CString *)&stack0xffffff7c);
+    (**(code **)(iVar2 + 0xa4))(1,0);
+    piVar5 = (int *)(*pcVar1)(0x70696334);
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0xc))();
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b02);
+    }
+    (**(code **)(iVar2 + 0xa8))(1,0);
+    (**(code **)(iVar2 + 0xa4))(1,0);
+  }
+  if ((uVar3 & 0x100) != 0) {
+    piVar5 = (int *)(*pcVar1)(0x6d736732);
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0xc))();
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b0a);
+    }
+    (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
+    CString::CString((CString *)&stack0xffffff84,s_Trade_00699380);
+    (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
+    uStack_6c = 0xffffffff;
+    CString::~CString((CString *)&stack0xffffff7c);
+    (**(code **)(iVar2 + 0xa4))(1,0);
+    piVar5 = (int *)(*pcVar1)(0x70696332);
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0xc))();
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b10);
+    }
+    (**(code **)(iVar2 + 0xa8))(1,0);
+    (**(code **)(iVar2 + 0xa4))(1,0);
+  }
+  if ((uVar3 & 0x10) != 0) {
+    piVar5 = (int *)(*pcVar1)(0x6d736733);
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0xc))();
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b18);
+    }
+    (**(code **)(iVar2 + 0x1b4))(&uStack_70,0);
+    CString::CString((CString *)&stack0xffffff84,s_Industry_00699374);
+    (**(code **)(iVar2 + 0x1c8))(&stack0xffffff84,0);
+    uStack_6c = 0xffffffff;
+    CString::~CString((CString *)&stack0xffffff7c);
+    (**(code **)(iVar2 + 0xa4))(1,0);
+    piVar5 = (int *)(*pcVar1)(0x70696333);
+    iVar2 = *piVar5;
+    (**(code **)(iVar2 + 0xc))();
+    if (piVar5 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1b1e);
+    }
+    (**(code **)(iVar2 + 0xa8))(1,0);
+    (**(code **)(iVar2 + 0xa4))(1,0);
+  }
+  *unaff_FS_OFFSET = (int)puVar6;
+  return;
 }
 

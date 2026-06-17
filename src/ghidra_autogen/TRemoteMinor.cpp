@@ -5,9 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00541D00
 // GHIDRA_NAME TRemoteMinor::DestructTRemoteMinor
-// GHIDRA_PROTO undefined DestructTRemoteMinor()
+// GHIDRA_PROTO undefined __thiscall DestructTRemoteMinor(void)
 
-void __fastcall TRemoteMinor::DestructTRemoteMinor(undefined4 *param_1)
+void __thiscall TRemoteMinor::DestructTRemoteMinor(TRemoteMinor *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -19,10 +19,10 @@ void __fastcall TRemoteMinor::DestructTRemoteMinor(undefined4 *param_1)
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_4 = 1;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 2);
+  CString::~CString((CString *)&this->field_0x8);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 1);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString((CString *)&this->field_0x4);
+  this->vftable = (TRemoteMinorVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -31,9 +31,9 @@ void __fastcall TRemoteMinor::DestructTRemoteMinor(undefined4 *param_1)
 // GHIDRA_NAME TRemoteMinor::GetTRemoteMinorClassNamePointer
 // GHIDRA_PROTO undefined GetTRemoteMinorClassNamePointer()
 
-undefined ** TRemoteMinor::GetTRemoteMinorClassNamePointer(void)
+CRuntimeClass * TRemoteMinor::GetTRemoteMinorClassNamePointer(void)
 
 {
-  return &PTR_s_TRemoteMinor_0065b020;
+  return &classRuntimeClass;
 }
 

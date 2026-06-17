@@ -7,11 +7,11 @@
 // GHIDRA_NAME TScrollerButton::CreateTScrollerButtonInstance
 // GHIDRA_PROTO undefined CreateTScrollerButtonInstance()
 
-undefined4 * TScrollerButton::CreateTScrollerButtonInstance(void)
+TPictureButton * TScrollerButton::CreateTScrollerButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TPictureButton *this;
+  TPictureButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,52 +21,64 @@ undefined4 * TScrollerButton::CreateTScrollerButtonInstance(void)
   puStack_8 = &LAB_0063671a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-    *puVar1 = &PTR_LAB_006616e8;
-    puVar2 = puVar1;
+  pTVar1 = (TPictureButton *)0x0;
+  if (this != (TPictureButton *)0x0) {
+    TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
+    this->vftable = (TPictureButtonVtbl *)&TScrollerButtonVtbl_006616e8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574F20
-// GHIDRA_NAME TScrollerButton::GetTScrollerButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTScrollerButtonClassNamePointer()
+// GHIDRA_NAME TScrollerButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TScrollerButton::GetTScrollerButtonClassNamePointer(void)
+CRuntimeClass * __thiscall TScrollerButton::GetTEventHandlerClassNamePointer(TScrollerButton *this)
 
 {
-  return &PTR_s_TScrollerButton_00661478;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574F40
 // GHIDRA_NAME TScrollerButton::ConstructTScrollerButtonBaseState
-// GHIDRA_PROTO undefined ConstructTScrollerButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTScrollerButtonBaseState(void)
 
-undefined4 * __fastcall TScrollerButton::ConstructTScrollerButtonBaseState(undefined4 *param_1)
+TScrollerButton * __thiscall
+TScrollerButton::ConstructTScrollerButtonBaseState(TScrollerButton *this)
 
 {
-  TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
-  *param_1 = &PTR_LAB_006616e8;
-  return param_1;
+  TPictureButton::thunk_ConstructUiTabCursorPictureEntry((TPictureButton *)this);
+  this->vftable = &TScrollerButtonVtbl_006616e8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574F70
-// GHIDRA_NAME TScrollerButton::DestructTScrollerButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTScrollerButtonAndMaybeFree()
+// GHIDRA_NAME TScrollerButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TScrollerButton::DestructTScrollerButtonAndMaybeFree(undefined4 param_1,byte param_2)
+TScrollerButton * __thiscall TScrollerButton::_scalar_deleting_destructor_(TScrollerButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00574FC0
+// GHIDRA_NAME TScrollerButton::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TScrollerButton::QueueCityRecruitmentSupportCommandsIfDeficit(TScrollerButton *this)
+
+{
+  return;
 }
 

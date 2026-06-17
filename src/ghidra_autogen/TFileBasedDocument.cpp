@@ -5,34 +5,36 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486420
 // GHIDRA_NAME TFileBasedDocument::CreateTFileBasedDocumentInstance
-// GHIDRA_PROTO undefined CreateTFileBasedDocumentInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTFileBasedDocumentInstance(void)
 
-void __fastcall TFileBasedDocument::CreateTFileBasedDocumentInstance(undefined4 *param_1)
+void __thiscall TFileBasedDocument::CreateTFileBasedDocumentInstance(TFileBasedDocument *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable =
+       (TFileBasedDocumentVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486440
-// GHIDRA_NAME TFileBasedDocument::GetTFileBasedDocumentClassNamePointer
-// GHIDRA_PROTO undefined GetTFileBasedDocumentClassNamePointer()
+// GHIDRA_NAME TFileBasedDocument::GetTDocumentClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
 
-undefined ** TFileBasedDocument::GetTFileBasedDocumentClassNamePointer(void)
+CRuntimeClass * __thiscall
+TFileBasedDocument::GetTDocumentClassNamePointer(TFileBasedDocument *this)
 
 {
-  return &PTR_s_TFileBasedDocument_00648a38;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486570
 // GHIDRA_NAME TFileBasedDocument::ConstructTFileBasedDocumentBaseState
 // GHIDRA_PROTO undefined ConstructTFileBasedDocumentBaseState()
 
-undefined4 * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
+TEventHandler * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TEventHandler *this;
+  TEventHandler *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -42,30 +44,32 @@ undefined4 * TFileBasedDocument::ConstructTFileBasedDocumentBaseState(void)
   puStack_8 = &LAB_0062ea7a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
+  this = (TEventHandler *)AllocateWithFallbackHandler(0x20);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_InitializeUiResourceEntryBaseHeaderDefaults();
-    *puVar1 = &PTR_LAB_00648b20;
-    puVar2 = puVar1;
+  pTVar1 = (TEventHandler *)0x0;
+  if (this != (TEventHandler *)0x0) {
+    TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults(this);
+    this->vftable = (TEventHandlerVtbl *)&TCommandHandlerVtbl_00648b20;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004865E0
 // GHIDRA_NAME TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree
-// GHIDRA_PROTO undefined DestructTFileBasedDocumentAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTFileBasedDocumentAndMaybeFree(void)
 
-undefined4 __thiscall
-TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(undefined4 param_1,byte param_2)
+TFileBasedDocument * __thiscall
+TFileBasedDocument::DestructTFileBasedDocumentAndMaybeFree(TFileBasedDocument *this)
 
 {
-  TCommandHandler::CreateTCommandHandlerInstance();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TCommandHandler::CreateTCommandHandlerInstance((TCommandHandler *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 

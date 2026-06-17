@@ -5,17 +5,19 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607077
 // GHIDRA_NAME CRuntimeClass::IsDerivedFrom
-// GHIDRA_PROTO undefined IsDerivedFrom()
+// GHIDRA_PROTO undefined __thiscall IsDerivedFrom(void)
 
-undefined4 __thiscall CRuntimeClass::IsDerivedFrom(int param_1,int param_2)
+undefined4 __thiscall CRuntimeClass::IsDerivedFrom(CRuntimeClass *this)
 
 {
+  CRuntimeClass *in_stack_00000004;
+  
   while( true ) {
-    if (param_1 == 0) {
+    if (this == (CRuntimeClass *)0x0) {
       return 0;
     }
-    if (param_1 == param_2) break;
-    param_1 = *(int *)(param_1 + 0x10);
+    if (this == in_stack_00000004) break;
+    this = this->m_pBaseClass;
   }
   return 1;
 }

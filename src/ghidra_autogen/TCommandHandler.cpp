@@ -5,35 +5,37 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486610
 // GHIDRA_NAME TCommandHandler::CreateTCommandHandlerInstance
-// GHIDRA_PROTO undefined CreateTCommandHandlerInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTCommandHandlerInstance(void)
 
-void __fastcall TCommandHandler::CreateTCommandHandlerInstance(undefined4 *param_1)
+void __thiscall TCommandHandler::CreateTCommandHandlerInstance(TCommandHandler *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TCommandHandlerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
+  ;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486630
-// GHIDRA_NAME TCommandHandler::GetTCommandHandlerClassNamePointer
-// GHIDRA_PROTO undefined GetTCommandHandlerClassNamePointer()
+// GHIDRA_NAME TCommandHandler::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TCommandHandler::GetTCommandHandlerClassNamePointer(void)
+CRuntimeClass * __thiscall TCommandHandler::GetTEventHandlerClassNamePointer(TCommandHandler *this)
 
 {
-  return &PTR_s_TCommandHandler_00648ae0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486650
 // GHIDRA_NAME TCommandHandler::ConstructTCommandHandlerBaseState
-// GHIDRA_PROTO undefined ConstructTCommandHandlerBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTCommandHandlerBaseState(void)
 
-void TCommandHandler::ConstructTCommandHandlerBaseState(int *param_1)
+void __thiscall TCommandHandler::ConstructTCommandHandlerBaseState(TCommandHandler *this)
 
 {
   int iVar1;
+  int *in_stack_00000004;
   
-  iVar1 = *param_1;
+  iVar1 = *in_stack_00000004;
   (**(code **)(iVar1 + 0x2c))();
   (**(code **)(iVar1 + 0x1c))();
   return;

@@ -3,14 +3,30 @@
 // Program: Imperialism.exe
 // Bucket: TDealTabControl.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00435540
+// GHIDRA_NAME TDealTabControl::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TDealTabControl * __thiscall TDealTabControl::_scalar_deleting_destructor_(TDealTabControl *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC690
 // GHIDRA_NAME TDealTabControl::CreateTDealTabControlInstance
 // GHIDRA_PROTO undefined CreateTDealTabControlInstance()
 
-undefined4 * TDealTabControl::CreateTDealTabControlInstance(void)
+TControl * TDealTabControl::CreateTDealTabControlInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,116 +36,187 @@ undefined4 * TDealTabControl::CreateTDealTabControlInstance(void)
   puStack_8 = &LAB_006392ba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TControl *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_LAB_00641168;
-    *(undefined2 *)(puVar1 + 0x21) = 0xffff;
-    puVar1[0x23] = 0;
-    puVar1[0x24] = 0;
-    *(undefined2 *)((int)puVar1 + 0x86) = 0x10;
-    *(undefined2 *)(puVar1 + 0x22) = 0x11;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    this->vftable = (TControlVtbl *)&TDealTabControlVtbl_00641168;
+    *(undefined2 *)&this[1].vftable = 0xffff;
+    *(undefined4 *)&this[1].field_0x8 = 0;
+    *(undefined4 *)&this[1].field_0xc = 0;
+    *(undefined2 *)((int)&this[1].vftable + 2) = 0x10;
+    *(undefined2 *)&this[1].field_0x4 = 0x11;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TControl *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC760
-// GHIDRA_NAME TDealTabControl::GetTDealTabControlClassNamePointer
-// GHIDRA_PROTO undefined GetTDealTabControlClassNamePointer()
+// GHIDRA_NAME TDealTabControl::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TDealTabControl::GetTDealTabControlClassNamePointer(void)
+CRuntimeClass * __thiscall TDealTabControl::GetTEventHandlerClassNamePointer(TDealTabControl *this)
 
 {
-  return &PTR_s_TDealTabControl_0066dbd0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC780
 // GHIDRA_NAME TDealTabControl::ConstructTDealTabControlBaseState
-// GHIDRA_PROTO undefined ConstructTDealTabControlBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDealTabControlBaseState(void)
 
-void __thiscall
-TDealTabControl::ConstructTDealTabControlBaseState(int param_1,int param_2,char param_3)
+void __thiscall TDealTabControl::ConstructTDealTabControlBaseState(TDealTabControl *this)
 
 {
   undefined4 uVar1;
+  int in_stack_00000004;
+  char in_stack_00000008;
   
-  if (param_3 == '\0') {
-    *(undefined2 *)(param_1 + 0x88) = 0xf;
+  if (in_stack_00000008 == '\0') {
+    *(undefined2 *)&this->field_0x88 = 0xf;
   }
   else {
-    param_2 = param_2 + 1;
+    in_stack_00000004 = in_stack_00000004 + 1;
   }
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_2);
-  *(undefined4 *)(param_1 + 0x8c) = uVar1;
-  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(param_2 + 4);
-  *(undefined4 *)(param_1 + 0x90) = uVar1;
-  *(undefined2 *)(param_1 + 0x86) = 0x19;
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004);
+  *(undefined4 *)&this->field_0x8c = uVar1;
+  uVar1 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(in_stack_00000004 + 4);
+  *(undefined4 *)&this->field_0x90 = uVar1;
+  *(undefined2 *)&this->field_0x86 = 0x19;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BC7F0
-// GHIDRA_NAME TDealTabControl::DestructTDealTabControlAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDealTabControlAndMaybeFree()
+// GHIDRA_NAME TDealTabControl::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
 
-void __fastcall TDealTabControl::DestructTDealTabControlAndMaybeFree(int param_1)
+void __thiscall TDealTabControl::OrphanCallChain_C11_I88_004874b0(TDealTabControl *this)
 
 {
   short sVar1;
   int iVar2;
   RECT local_10;
   
-  if (*(int *)(param_1 + 0x8c) != 0) {
+  if (*(int *)&this->field_0x8c != 0) {
     ResetQuickDrawStrokeState();
     SetQuickDrawStrokeColor(0xffffff);
     SetQuickDrawFillColor(0);
-    if (*(short *)(param_1 + 0x84) < 0) {
-      local_10.right = *(LONG *)(param_1 + 0x34);
-      local_10.bottom = *(LONG *)(param_1 + 0x38);
+    if (*(short *)&this->field_0x84 < 0) {
+      local_10.right = this->field34;
+      local_10.bottom = this->field38;
       local_10.top = 0;
       local_10.left = 0;
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(param_1 + 0x90) + 4),
-                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
+                ((astruct_17 *)(*(int *)&this->field_0x90 + 4),
+                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
                  (astruct_19 *)0x0);
     }
     else {
-      sVar1 = *(short *)(param_1 + 0x84) * *(short *)(param_1 + 0x86);
+      sVar1 = *(short *)&this->field_0x84 * *(short *)&this->field_0x86;
       if (sVar1 != 0) {
-        local_10.right = *(LONG *)(param_1 + 0x34);
+        local_10.right = this->field34;
         local_10.left = 0;
         local_10.top = 0;
         local_10.bottom = (LONG)sVar1;
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)(param_1 + 0x90) + 4),
-                   (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
+                  ((astruct_17 *)(*(int *)&this->field_0x90 + 4),
+                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
                    (astruct_19 *)0x0);
       }
-      local_10.right = *(LONG *)(param_1 + 0x34);
+      local_10.right = this->field34;
       iVar2 = (int)sVar1;
-      local_10.bottom = *(short *)(param_1 + 0x86) + iVar2;
+      local_10.bottom = *(short *)&this->field_0x86 + iVar2;
       local_10.left = 0;
       local_10.top = iVar2;
       BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(param_1 + 0x8c) + 4),
-                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
+                ((astruct_17 *)(*(int *)&this->field_0x8c + 4),
+                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
                  (astruct_19 *)0x0);
-      local_10.bottom = *(int *)(param_1 + 0x38);
-      local_10.top = *(short *)(param_1 + 0x86) + iVar2;
+      local_10.bottom = this->field38;
+      local_10.top = *(short *)&this->field_0x86 + iVar2;
       if (local_10.top < local_10.bottom) {
-        local_10.right = *(LONG *)(param_1 + 0x34);
+        local_10.right = this->field34;
         local_10.left = 0;
         BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)(param_1 + 0x90) + 4),
-                   (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_10,0,
+                  ((astruct_17 *)(*(int *)&this->field_0x90 + 4),
+                   (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
                    (astruct_19 *)0x0);
         return;
       }
     }
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BC9F0
+// GHIDRA_NAME TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TDealTabControl::QueueCityRecruitmentSupportCommandsIfDeficit(TDealTabControl *this)
+
+{
+  TDealTabControlVtbl *pTVar1;
+  TDealTabControl_slot_0x04_0x04 *pTVar2;
+  char cVar3;
+  short sVar4;
+  int unaff_retaddr;
+  int in_stack_0000000c;
+  short sStack_10;
+  
+  pTVar1 = this->vftable;
+  sVar4 = -1;
+  pTVar2 = pTVar1[0x2d].slot_0x04;
+  cVar3 = (*pTVar2)();
+  if (cVar3 != '\0') {
+    (*pTVar1[0x34].slot_0x04)(&stack0xffffffec);
+    sVar4 = (short)(*(short *)(in_stack_0000000c + 4) - sStack_10) / *(short *)&this->field_0x86;
+    if (sVar4 < *(short *)&this->field_0x88) {
+      if (sVar4 != *(short *)&this->field_0x84) {
+        *(short *)&this->field_0x84 = sVar4;
+      }
+    }
+    else {
+      sVar4 = *(short *)&this->field_0x84;
+    }
+  }
+  if (-1 < unaff_retaddr) {
+    if (unaff_retaddr < 2) {
+      if (sVar4 != -1) {
+        (*pTVar1[0x22].slot_0x04)(0);
+      }
+    }
+    else if (unaff_retaddr == 2) {
+      cVar3 = (*pTVar2)(in_stack_0000000c);
+      if (cVar3 != '\0') {
+        (*this->ownerContext->vftable[8].GetTEventHandlerClassNamePointer)
+                  (*(short *)&this->field_0x84 + 11000,this,0);
+        (*pTVar1[0x22].slot_0x04)(0);
+        return;
+      }
+      *(undefined2 *)&this->field_0x84 = 0xffff;
+      (*pTVar1[0x22].slot_0x04)(0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BCB20
+// GHIDRA_NAME TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TDealTabControl::OrphanLeaf_NoCall_Ins07_004d8920(TDealTabControl *this)
+
+{
+  if (*(int *)&this->field_0x8c != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x8c);
+  }
+  if (*(int *)&this->field_0x90 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x90);
+  }
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
   return;
 }
 

@@ -5,12 +5,14 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586E50
 // GHIDRA_NAME TAmtBar::ApplyMoveClamp
-// GHIDRA_PROTO undefined ApplyMoveClamp()
+// GHIDRA_PROTO undefined __thiscall ApplyMoveClamp(void)
 
-undefined2 TAmtBar::ApplyMoveClamp(undefined2 param_1)
+undefined2 __thiscall TAmtBar::ApplyMoveClamp(TAmtBar *this)
 
 {
-  return param_1;
+  undefined2 in_stack_00000004;
+  
+  return in_stack_00000004;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005884C0
@@ -34,7 +36,7 @@ TView * TAmtBar::CreateTAmtBarInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_00665cc8;
+    this->vftable = (TViewVtbl *)&TAmtBarVtbl_00665cc8;
     *(undefined2 *)&this[1].vftable = 0;
     *(undefined2 *)((int)&this[1].vftable + 2) = 0;
     *(undefined2 *)&this[1].field04 = 0;
@@ -47,10 +49,10 @@ TView * TAmtBar::CreateTAmtBarInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588560
-// GHIDRA_NAME TAmtBar::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TAmtBar::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TAmtBar::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TAmtBar::GetTEventHandlerClassNamePointer(TAmtBar *this)
 
 {
   return &g_pClassDescTAmtBar;
@@ -58,88 +60,92 @@ char * TAmtBar::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588580
 // GHIDRA_NAME TAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined ConstructBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
 
-TView * __fastcall TAmtBar::ConstructBaseState(TView *param_1)
+TAmtBar * __thiscall TAmtBar::ConstructBaseState(TAmtBar *this)
 
 {
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1->vftable = &PTR_LAB_00665cc8;
-  *(undefined2 *)&param_1[1].vftable = 0;
-  *(undefined2 *)((int)&param_1[1].vftable + 2) = 0;
-  *(undefined2 *)&param_1[1].field04 = 0;
-  *(undefined2 *)((int)&param_1[1].field04 + 2) = 0;
-  return param_1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &TAmtBarVtbl_00665cc8;
+  this->rangeOrMaxValue = 0;
+  this->stepOrCurrentValue = 0;
+  this->auxValueA = 0;
+  this->auxValueB = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005885C0
 // GHIDRA_NAME TAmtBar::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TAmtBar::_scalar_deleting_destructor_(TView *param_1,byte param_2)
+TAmtBar * __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this)
 
 {
-  TView::thunk_DestructTViewBaseState_005885F0(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructTViewBaseState_005885F0((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588610
-// GHIDRA_NAME TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610
-// GHIDRA_PROTO undefined WrapperFor_thunk_NoOpUiLifecycleHook_At00588610()
+// GHIDRA_NAME TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void TAmtBar::WrapperFor_thunk_NoOpUiLifecycleHook_At00588610(undefined4 param_1)
+void __thiscall TAmtBar::OrphanLeaf_NoCall_Ins07_004d8920(TAmtBar *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook(param_1);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588630
 // GHIDRA_NAME TAmtBar::UpdateBarValuesAndRefresh
-// GHIDRA_PROTO undefined UpdateBarValuesAndRefresh()
+// GHIDRA_PROTO undefined __thiscall UpdateBarValuesAndRefresh(void)
 
-void __thiscall
-TAmtBar::UpdateBarValuesAndRefresh(int *param_1,undefined2 param_2,undefined2 param_3)
+void __thiscall TAmtBar::UpdateBarValuesAndRefresh(TAmtBar *this)
 
 {
-  int iVar1;
+  TAmtBarVtbl *pTVar1;
+  short in_stack_00000004;
+  short in_stack_00000008;
   
-  iVar1 = *param_1;
-  *(undefined2 *)((int)param_1 + 0x62) = param_3;
-  *(undefined2 *)(param_1 + 0x18) = param_2;
-  (**(code **)(iVar1 + 0xe4))();
-  (**(code **)(iVar1 + 0x13c))();
+  pTVar1 = this->vftable;
+  this->stepOrCurrentValue = in_stack_00000008;
+  this->rangeOrMaxValue = in_stack_00000004;
+  (*pTVar1[0x1c].slot_0x04)();
+  (*pTVar1[0x27].slot_0x04)();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588670
-// GHIDRA_NAME TAmtBar::InvokeSlot1A8NoArg
-// GHIDRA_PROTO undefined InvokeSlot1A8NoArg()
+// GHIDRA_NAME TAmtBar::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TAmtBar::InvokeSlot1A8NoArg(int *param_1)
+void __thiscall TAmtBar::OrphanTiny_ReturnZero_0048a730(TAmtBar *this)
 
 {
-  (**(code **)(*param_1 + 0x1a8))();
+  (*this->vftable[0x35].GetTEventHandlerClassNamePointer)();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588690
 // GHIDRA_NAME TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache
-// GHIDRA_PROTO undefined RenderPrimarySurfaceOverlayPanelWithClipCache()
+// GHIDRA_PROTO undefined __thiscall RenderPrimarySurfaceOverlayPanelWithClipCache(void)
 
-void __fastcall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(int *param_1)
+void __thiscall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(TAmtBar *this)
 
 {
   short sVar1;
-  char cVar2;
+  TAmtBarVtbl *pTVar2;
+  char cVar3;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
   undefined2 extraout_var_01;
   undefined4 unaff_EBX;
-  int iVar3;
+  int iVar4;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_5c;
   undefined1 *puStack_58;
@@ -162,65 +168,66 @@ void __fastcall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(int *para
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   AcquireReusableQuickDrawSurface();
-  sVar1 = (short)param_1[0x18];
+  sVar1 = this->rangeOrMaxValue;
   local_4 = 0;
   ApplyHitRegionToClipState();
-  iVar3 = *param_1;
-  cVar2 = (**(code **)(iVar3 + 0xec))();
-  if (cVar2 != '\0') {
-    cVar2 = (**(code **)(iVar3 + 0xf8))();
-    if (cVar2 != '\0') {
-      (**(code **)(iVar3 + 0x128))();
+  pTVar2 = this->vftable;
+  cVar3 = (*pTVar2[0x1d].slot_0x04)();
+  if (cVar3 != '\0') {
+    cVar3 = (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
+    if (cVar3 != '\0') {
+      (*pTVar2[0x25].GetTEventHandlerClassNamePointer)();
       RStack_3c.left = LStack_2c;
       RStack_4c.bottom = RStack_3c.bottom;
       RStack_3c.top = LStack_28;
       RStack_3c.right = iStack_24;
       thunk_ApplyRectClipRegionToGlobalClipState(&RStack_4c.bottom);
-      (**(code **)(iVar3 + 300))(&iStack_20);
+      (*pTVar2[0x25].slot_0x04)(&iStack_20);
       iStack_54 = iStack_24;
       RStack_4c.left = LStack_1c;
       RStack_4c.top = LStack_18;
       iStack_50 = iStack_20;
       puStack_58 = (undefined1 *)DAT_006a4454;
       local_5c = DAT_006a4450;
-      (**(code **)(iVar3 + 0x138))(&local_5c);
-      RStack_4c.right = iStack_54 + param_1[0xd];
-      RStack_4c.bottom = iStack_50 + param_1[0xe];
+      (*pTVar2[0x27].GetTEventHandlerClassNamePointer)(&local_5c);
+      RStack_4c.right = iStack_54 + *(int *)&this->field_0x34;
+      RStack_4c.bottom = iStack_50 + *(int *)&this->field_0x38;
       RStack_4c.left = iStack_54;
       RStack_4c.top = iStack_50;
       BlitRectWithOptionalTransparency
                 ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
-                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&RStack_4c,&RStack_3c,0,
+                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_4c,&RStack_3c,0,
                  (astruct_19 *)0x0);
       if (sVar1 < 1) {
-        iVar3 = 0;
+        iVar4 = 0;
       }
       else {
         thunk_SetQuickDrawTextOriginWithContextOffset(0);
-        (**(code **)(*g_pUiRuntimeContext + 0x34))();
+        (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
         thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
-        iVar3 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
-        if (*(short *)((int)param_1 + 0x62) < sVar1) {
-          iVar3 = CONCAT22(extraout_var,*(short *)((int)param_1 + 0x62));
+        iVar4 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
+        if (this->stepOrCurrentValue < sVar1) {
+          iVar4 = CONCAT22(extraout_var,this->stepOrCurrentValue);
         }
-        thunk_DrawCenteredGuideLineOnMapDc(iVar3 + -1);
+        thunk_DrawCenteredGuideLineOnMapDc(iVar4 + -1);
         ResetQuickDrawStrokeState();
       }
-      if ((short)iVar3 < 1) {
-        iVar3 = 0;
+      if ((short)iVar4 < 1) {
+        iVar4 = 0;
       }
       else {
-        iVar3 = iVar3 + 1;
+        iVar4 = iVar4 + 1;
       }
-      thunk_SetQuickDrawTextOriginWithContextOffset(iVar3);
+      thunk_SetQuickDrawTextOriginWithContextOffset(iVar4);
       puStack_58 = &stack0xffffff90;
       SetQuickDrawFillColor();
       thunk_SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(1);
-      thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_01,(short)param_1[0xd]));
+      thunk_DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x34))
+      ;
       thunk_SetQuickDrawTextOriginWithContextOffset
-                (CONCAT22(extraout_var_00,*(undefined2 *)((int)param_1 + 0x62)));
+                (CONCAT22(extraout_var_00,this->stepOrCurrentValue));
       ResetQuickDrawStrokeState();
-      thunk_DrawCenteredGuideLineOnMapDc(*(short *)((int)param_1 + 0x62) + -1);
+      thunk_DrawCenteredGuideLineOnMapDc(this->stepOrCurrentValue + -1);
       SnapshotHitRegionToClipCache();
     }
   }
@@ -231,106 +238,67 @@ void __fastcall TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache(int *para
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588950
-// GHIDRA_NAME TAmtBar::ClampAndApplyTradeMoveValue
-// GHIDRA_PROTO undefined ClampAndApplyTradeMoveValue()
+// GHIDRA_NAME TAmtBar::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall TAmtBar::ClampAndApplyTradeMoveValue(int *param_1,int *param_2)
+void __thiscall TAmtBar::_scalar_deleting_destructor_(TAmtBar *this)
 
 {
-  short sVar1;
-  undefined4 uVar2;
-  int *piVar3;
-  undefined2 uVar4;
-  undefined2 extraout_var;
+  undefined uVar1;
+  short sVar2;
+  undefined4 uVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  undefined2 uVar5;
+  undefined2 extraout_var_00;
+  int *in_stack_00000004;
   
-  uVar4 = (undefined2)((uint)param_1 >> 0x10);
-  if (((short)param_1[0x19] < 1) || (param_1[0xd] / ((int)(short)param_1[0x19] << 1) <= *param_2)) {
-    uVar2 = ftol();
-    uVar4 = extraout_var;
+  uVar5 = (undefined2)((uint)this >> 0x10);
+  if ((this->auxValueA < 1) ||
+     (*(int *)&this->field_0x34 / ((int)this->auxValueA << 1) <= *in_stack_00000004)) {
+    uVar3 = ftol();
+    uVar5 = extraout_var_00;
   }
   else {
-    uVar2 = 0;
+    uVar3 = 0;
   }
-  uVar2 = (**(code **)(*param_1 + 0x1a0))(uVar2,CONCAT22(uVar4,(short)*param_2));
-  if (((short)uVar2 == 0) && (*param_2 != 0)) {
-    piVar3 = (int *)(**(code **)(*(int *)param_1[8] + 0x94))(0x6d6f7665);
-    if (piVar3 == (int *)0x0) {
-      piVar3 = (int *)(**(code **)(*(int *)param_1[8] + 0x94))(0x53656c6c);
-      if (piVar3 == (int *)0x0) goto LAB_005889eb;
+  uVar1 = (*this->vftable[0x34].GetTEventHandlerClassNamePointer)
+                    (uVar3,CONCAT22(uVar5,(short)*in_stack_00000004));
+  uVar3 = CONCAT31(extraout_var,uVar1);
+  if (((short)uVar3 == 0) && (*in_stack_00000004 != 0)) {
+    piVar4 = (int *)(**(code **)(**(int **)&this->field_0x20 + 0x94))(0x6d6f7665);
+    if (piVar4 == (int *)0x0) {
+      piVar4 = (int *)(**(code **)(**(int **)&this->field_0x20 + 0x94))(0x53656c6c);
+      if (piVar4 == (int *)0x0) goto LAB_005889eb;
     }
-    sVar1 = (**(code **)(*piVar3 + 0x1e8))();
-    if (sVar1 == 0) {
-      uVar2 = 1;
+    sVar2 = (**(code **)(*piVar4 + 0x1e8))();
+    if (sVar2 == 0) {
+      uVar3 = 1;
     }
   }
 LAB_005889eb:
-  (**(code **)(*(int *)param_1[8] + 0x1d0))(uVar2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00588B70
-// GHIDRA_NAME TAmtBar::SyncTradeCommoditySelectionWithActiveNationAndInitControls
-// GHIDRA_PROTO undefined SyncTradeCommoditySelectionWithActiveNationAndInitControls()
-
-void __thiscall
-TAmtBar::SyncTradeCommoditySelectionWithActiveNationAndInitControls(int *param_1,undefined4 param_2)
-
-{
-  short sVar1;
-  int iVar2;
-  undefined2 extraout_var;
-  void *this;
-  short sVar3;
-  
-  sVar3 = 0;
-  sVar1 = UiRuntimeContext::GetActiveNationId();
-  if ((&g_apNationStates)[sVar1] == 0) {
-    this = (void *)0x0;
-  }
-  else {
-    this = *(void **)((&g_apNationStates)[sVar1] + 0x894);
-  }
-  iVar2 = s_doofrbafbmulepapeetsleuftolcnruf_006960e0._40_4_;
-  while (iVar2 != param_1[7]) {
-    sVar3 = sVar3 + 1;
-    iVar2 = *(int *)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0 + sVar3 * 4 + 0x28);
-  }
-  iVar2 = *(int *)((int)this + sVar3 * 4 + 0xe4);
-  param_1[0x22] = iVar2;
-  iVar2 = thunk_GetCityBuildingProductionValueBySlot(this,*(short *)(iVar2 + 0x52));
-  *(short *)(param_1 + 0x23) = (short)iVar2;
-  TAmtBarCluster::thunk_InitializeTradeMoveAndBarControls(param_2);
-  (**(code **)(*param_1 + 0x1d4))(CONCAT22(extraout_var,*(undefined2 *)(param_1[0x22] + 4)),1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00588C30
-// GHIDRA_NAME TAmtBar::ApplyMoveValueSlot1D4NoCommit
-// GHIDRA_PROTO undefined ApplyMoveValueSlot1D4NoCommit()
-
-void __thiscall TAmtBar::ApplyMoveValueSlot1D4NoCommit(int *param_1,undefined4 param_2)
-
-{
-  (**(code **)(*param_1 + 0x1d4))(param_2,0);
+  (**(code **)(**(int **)&this->field_0x20 + 0x1d0))(uVar3);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588C60
 // GHIDRA_NAME TAmtBar::UpdateTradeMoveControlsFromDrag
-// GHIDRA_PROTO undefined UpdateTradeMoveControlsFromDrag()
+// GHIDRA_PROTO undefined __thiscall UpdateTradeMoveControlsFromDrag(void)
 
-void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(int *param_1,LONG param_2,char param_3)
+void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(TAmtBar *this)
 
 {
-  code *pcVar1;
+  TAmtBar_slot_0x04_0x04 *pTVar1;
   int *piVar2;
   int iVar3;
   int iVar4;
-  short sVar5;
-  int *piVar6;
-  code *pcVar7;
-  int *piVar8;
-  undefined4 uVar9;
+  undefined uVar5;
+  short sVar6;
+  undefined3 extraout_var;
+  code *pcVar8;
+  int *piVar9;
+  undefined4 uVar10;
+  char in_stack_00000008;
   LONG LStack_58;
   undefined1 auStack_40 [12];
   LONG LStack_34;
@@ -338,93 +306,100 @@ void __thiscall TAmtBar::UpdateTradeMoveControlsFromDrag(int *param_1,LONG param
   tagRECT tStack_20;
   int iStack_10;
   float fStack_c;
+  int *piVar7;
+  undefined3 extraout_var_00;
   
-  piVar6 = (int *)param_1[0x22];
-  iVar4 = piVar6[1];
-  if (piVar6 != (int *)0x0) {
-    LStack_58 = param_2;
-    (**(code **)(*piVar6 + 0x2c))();
+  piVar7 = *(int **)&this[1].field_0x20;
+  iVar4 = piVar7[1];
+  if (piVar7 != (int *)0x0) {
+    (**(code **)(*piVar7 + 0x2c))();
   }
-  if ((param_3 != '\0') || (*(short *)(param_1[0x22] + 4) != (short)iVar4)) {
+  if ((in_stack_00000008 != '\0') || (*(short *)(*(int *)&this[1].field_0x20 + 4) != (short)iVar4))
+  {
     LStack_58 = 0x6d6f7665;
-    pcVar1 = *(code **)(*param_1 + 0x94);
-    piVar6 = (int *)(*pcVar1)();
-    if (piVar6 == (int *)0x0) {
+    pTVar1 = this->vftable[0x12].slot_0x04;
+    uVar5 = (*pTVar1)();
+    piVar7 = (int *)CONCAT31(extraout_var,uVar5);
+    if (piVar7 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xb42);
     }
-    iVar4 = *piVar6;
-    pcVar7 = (code *)(int)*(short *)(param_1[0x22] + 4);
-    (**(code **)(iVar4 + 0x1e4))(pcVar7,0);
+    iVar4 = *piVar7;
+    pcVar8 = (code *)(int)*(short *)(*(int *)&this[1].field_0x20 + 4);
+    (**(code **)(iVar4 + 0x1e4))(pcVar8,0);
     (**(code **)(iVar4 + 300))(auStack_40 + 4);
-    OffsetRect((LPRECT)auStack_40,param_1[9],param_1[10]);
+    OffsetRect((LPRECT)auStack_40,*(int *)&this->field_0x24,*(int *)&this->field_0x28);
     RStack_30.top = auStack_40._4_4_;
     RStack_30.right = auStack_40._8_4_;
     RStack_30.left = auStack_40._0_4_;
     RStack_30.bottom = LStack_34;
     CopyRect(&tStack_20,&RStack_30);
     thunk_InvalidateCityDialogRectRegion(&tStack_20,1);
-    piVar8 = (int *)(*pcVar1)(0x62617220);
-    if (piVar8 == (int *)0x0) {
+    uVar5 = (*pTVar1)(0x62617220);
+    piVar9 = (int *)CONCAT31(extraout_var_00,uVar5);
+    if (piVar9 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xb49);
     }
-    if ((short)piVar8[0x19] == 0) {
+    if ((short)piVar9[0x19] == 0) {
       fStack_c = 9999.0;
     }
     else {
-      fStack_c = (float)piVar8[0xd] / (float)(int)(short)piVar8[0x19];
+      fStack_c = (float)piVar9[0xd] / (float)(int)(short)piVar9[0x19];
     }
-    if (*(short *)(param_1[0x22] + 4) == (short)param_1[0x23]) {
-      *(undefined2 *)((int)piVar8 + 0x66) = 0x34;
+    if (*(short *)(*(int *)&this[1].field_0x20 + 4) == *(short *)&this[1].field_0x24) {
+      *(undefined2 *)((int)piVar9 + 0x66) = 0x34;
     }
     else {
-      *(undefined2 *)((int)piVar8 + 0x66) = 0x3a;
+      *(undefined2 *)((int)piVar9 + 0x66) = 0x3a;
     }
-    piVar2 = (int *)param_1[0x22];
+    piVar2 = *(int **)&this[1].field_0x20;
     iStack_10 = (int)(short)piVar2[1];
     LStack_58 = ftol();
-    iVar4 = *piVar8;
-    sVar5 = (**(code **)(*piVar2 + 0x30))();
-    iStack_10 = (int)sVar5;
-    uVar9 = ftol();
-    (**(code **)(iVar4 + 0x1a4))(LStack_58,uVar9);
-    iVar4 = piVar8[0xe];
-    iVar3 = piVar8[10];
-    (**(code **)(*piVar6 + 0xf0))(&stack0xffffffac,1);
-    (*pcVar7)(&stack0xffffffac);
-    OffsetRect((LPRECT)&LStack_58,param_1[9],param_1[10]);
+    iVar4 = *piVar9;
+    sVar6 = (**(code **)(*piVar2 + 0x30))();
+    iStack_10 = (int)sVar6;
+    uVar10 = ftol();
+    (**(code **)(iVar4 + 0x1a4))(LStack_58,uVar10);
+    iVar4 = piVar9[0xe];
+    iVar3 = piVar9[10];
+    (**(code **)(*piVar7 + 0xf0))(&stack0xffffffac,1);
+    (*pcVar8)(&stack0xffffffac);
+    OffsetRect((LPRECT)&LStack_58,*(int *)&this->field_0x24,*(int *)&this->field_0x28);
     auStack_40._0_4_ = iVar3 + iVar4;
     CopyRect((LPRECT)(auStack_40 + 8),(RECT *)&stack0xffffffb8);
     thunk_InvalidateCityDialogRectRegion(auStack_40 + 8,1);
-    (**(code **)(*(int *)param_1[8] + 0x1d8))();
+    (**(code **)(**(int **)&this->field_0x20 + 0x1d8))();
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00588F60
 // GHIDRA_NAME TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B
-// GHIDRA_PROTO undefined UpdateTradeBarFromSelectedMetricRatio_B()
+// GHIDRA_PROTO undefined __thiscall UpdateTradeBarFromSelectedMetricRatio_B(void)
 
-void __fastcall TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B(int *param_1)
+void __thiscall TAmtBar::UpdateTradeBarFromSelectedMetricRatio_B(TAmtBar *this)
 
 {
   int iVar1;
-  short sVar2;
-  int *piVar3;
+  undefined uVar2;
+  short sVar3;
+  undefined3 extraout_var;
+  int *piVar4;
   
-  piVar3 = (int *)(**(code **)(*param_1 + 0x94))(0x62617220);
-  if (piVar3 == (int *)0x0) {
+  uVar2 = (*this->vftable[0x12].slot_0x04)(0x62617220);
+  piVar4 = (int *)CONCAT31(extraout_var,uVar2);
+  if (piVar4 == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0xb73);
   }
-  if ((short)piVar3[0x19] != 0) {
-    iVar1 = *piVar3;
-    sVar2 = (**(code **)(*(int *)param_1[0x22] + 0x30))();
-    (**(code **)(iVar1 + 0x1ac))(((int)sVar2 * piVar3[0xd]) / (int)(short)piVar3[0x19]);
+  if ((short)piVar4[0x19] != 0) {
+    iVar1 = *piVar4;
+    sVar3 = (**(code **)(**(int **)&this[1].field_0x20 + 0x30))();
+    (**(code **)(iVar1 + 0x1ac))(((int)sVar3 * piVar4[0xd]) / (int)(short)piVar4[0x19]);
   }
   return;
 }

@@ -5,113 +5,115 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049AEF0
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive
-// GHIDRA_PROTO undefined SerializeNodeMapEntries_Key16Value32_WithArchive()
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key16Value32_WithArchive(void)
 
-void __thiscall TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(int param_1,int param_2)
+void __thiscall TNetMgr::SerializeNodeMapEntries_Key16Value32_WithArchive(TNetMgr *this)
 
 {
-  undefined4 *puVar1;
+  TNetMgr_GetTNetMgrClassNamePointer_0x00 *pTVar1;
   int iVar2;
-  uint uVar3;
-  int iVar4;
+  TNetMgrVtbl *pTVar3;
+  TNetMgrVtbl *pTVar4;
   uint uVar5;
-  uint uVar6;
-  undefined4 local_18;
-  undefined4 local_14;
-  int local_10;
-  undefined4 local_c;
-  undefined4 local_8;
-  uint local_4;
+  int iVar6;
+  TNetMgr_slot_0x04_0x04 *pTVar7;
+  TNetMgrVtbl *pTVar8;
+  CArchive *in_stack_00000004;
+  TNetMgr_slot_0x04_0x04 *local_18;
+  short local_14;
   
-  if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-    for (local_10 = FUN_0061202e(); local_10 != 0; local_10 = local_10 + -1) {
-      if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(&local_14,2);
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
       }
       else {
-        WriteBytesToSerializedBuffer(&local_14,2);
+        WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
       }
-      if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(&local_18,4);
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
       }
       else {
-        WriteBytesToSerializedBuffer(&local_18,4);
+        WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
       }
-      uVar6 = *(uint *)(param_1 + 8);
-      local_8 = local_18;
-      local_c = local_14;
-      uVar5 = ((uint)(int)(short)local_14 >> 4) % uVar6;
-      iVar4 = *(int *)(param_1 + 4);
-      if (iVar4 != 0) {
-        for (puVar1 = *(undefined4 **)(iVar4 + uVar5 * 4); puVar1 != (undefined4 *)0x0;
-            puVar1 = (undefined4 *)*puVar1) {
-          if (*(short *)(puVar1 + 2) == (short)local_14) goto LAB_0049b033;
+      pTVar8 = this[2].vftable;
+      pTVar7 = (TNetMgr_slot_0x04_0x04 *)(((uint)(int)local_14 >> 4) % (uint)pTVar8);
+      pTVar4 = this[1].vftable;
+      if (pTVar4 != (TNetMgrVtbl *)0x0) {
+        for (pTVar3 = (TNetMgrVtbl *)(&pTVar4->GetTNetMgrClassNamePointer)[(int)pTVar7];
+            pTVar3 != (TNetMgrVtbl *)0x0; pTVar3 = (TNetMgrVtbl *)pTVar3->GetTNetMgrClassNamePointer
+            ) {
+          if (*(short *)&pTVar3[1].GetTNetMgrClassNamePointer == local_14) goto LAB_0049b033;
         }
       }
-      puVar1 = (undefined4 *)0x0;
+      pTVar3 = (TNetMgrVtbl *)0x0;
 LAB_0049b033:
-      local_4 = uVar5;
-      if (puVar1 == (undefined4 *)0x0) {
-        if (iVar4 == 0) {
-          puVar1 = (undefined4 *)AllocateWithFallbackHandler(uVar6 * 4);
-          *(undefined4 **)(param_1 + 4) = puVar1;
-          for (uVar3 = uVar6 & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
-            *puVar1 = 0;
-            puVar1 = puVar1 + 1;
+      if (pTVar3 == (TNetMgrVtbl *)0x0) {
+        if (pTVar4 == (TNetMgrVtbl *)0x0) {
+          pTVar4 = (TNetMgrVtbl *)AllocateWithFallbackHandler((int)pTVar8 * 4);
+          this[1].vftable = pTVar4;
+          for (uVar5 = (uint)pTVar8 & 0x3fffffff; uVar5 != 0; uVar5 = uVar5 - 1) {
+            pTVar4->GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+            pTVar4 = (TNetMgrVtbl *)&pTVar4->slot_0x04;
           }
-          for (iVar4 = 0; iVar4 != 0; iVar4 = iVar4 + -1) {
-            *(undefined1 *)puVar1 = 0;
-            puVar1 = (undefined4 *)((int)puVar1 + 1);
+          for (iVar6 = 0; iVar6 != 0; iVar6 = iVar6 + -1) {
+            *(undefined1 *)&pTVar4->GetTNetMgrClassNamePointer = 0;
+            pTVar4 = (TNetMgrVtbl *)((int)&pTVar4->GetTNetMgrClassNamePointer + 1);
           }
-          *(uint *)(param_1 + 8) = uVar6;
+          this[2].vftable = pTVar8;
         }
-        if (*(int *)(param_1 + 0x10) == 0) {
-          iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0x10);
-          iVar4 = *(int *)(param_1 + 0x18);
-          puVar1 = (undefined4 *)(iVar4 * 0x10 + -0xc + iVar2);
-          if (-1 < iVar4 + -1) {
+        if (this[4].vftable == (TNetMgrVtbl *)0x0) {
+          iVar6 = AllocateAndLinkBlockHead(this + 5,this[6].vftable,0x10);
+          pTVar4 = this[6].vftable;
+          pTVar8 = (TNetMgrVtbl *)((int)pTVar4 * 0x10 + -0xc + iVar6);
+          if (-1 < (int)((int)&pTVar4[-1].slot_0x04 + 3)) {
             do {
-              *puVar1 = *(undefined4 *)(param_1 + 0x10);
-              *(undefined4 **)(param_1 + 0x10) = puVar1;
-              puVar1 = puVar1 + -4;
-              iVar4 = iVar4 + -1;
-            } while (iVar4 != 0);
+              pTVar8->GetTNetMgrClassNamePointer =
+                   (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
+              this[4].vftable = pTVar8;
+              pTVar8 = pTVar8 + -2;
+              pTVar4 = (TNetMgrVtbl *)((int)&pTVar4[-1].slot_0x04 + 3);
+            } while (pTVar4 != (TNetMgrVtbl *)0x0);
           }
         }
-        puVar1 = *(undefined4 **)(param_1 + 0x10);
-        *(undefined4 *)(param_1 + 0x10) = *puVar1;
-        *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-        *(undefined2 *)(puVar1 + 2) = 0;
-        puVar1[3] = 0;
-        puVar1[1] = uVar5;
-        *(undefined2 *)(puVar1 + 2) = (undefined2)local_c;
-        *puVar1 = *(undefined4 *)(uVar5 * 4 + *(int *)(param_1 + 4));
-        *(undefined4 **)(uVar5 * 4 + *(int *)(param_1 + 4)) = puVar1;
+        pTVar3 = this[4].vftable;
+        this[4].vftable = (TNetMgrVtbl *)pTVar3->GetTNetMgrClassNamePointer;
+        this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetTNetMgrClassNamePointer + 1);
+        *(undefined2 *)&pTVar3[1].GetTNetMgrClassNamePointer = 0;
+        pTVar3[1].slot_0x04 = (TNetMgr_slot_0x04_0x04 *)0x0;
+        pTVar3->slot_0x04 = pTVar7;
+        *(short *)&pTVar3[1].GetTNetMgrClassNamePointer = local_14;
+        pTVar3->GetTNetMgrClassNamePointer =
+             (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar7];
+        (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar7] =
+             (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)pTVar3;
       }
-      puVar1[3] = local_8;
+      pTVar3[1].slot_0x04 = local_18;
     }
   }
   else {
-    WriteCount(*(undefined4 *)(param_1 + 0xc));
-    if ((*(int *)(param_1 + 0xc) != 0) && (uVar6 = 0, *(int *)(param_1 + 8) != 0)) {
+    WriteCount((TNetMgr *)in_stack_00000004);
+    if ((this[3].vftable != (TNetMgrVtbl *)0x0) &&
+       (pTVar8 = (TNetMgrVtbl *)0x0, this[2].vftable != (TNetMgrVtbl *)0x0)) {
       do {
-        for (puVar1 = *(undefined4 **)(*(int *)(param_1 + 4) + uVar6 * 4);
-            puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
-          if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-            CArchive::ReadBytesFromSerializedBuffer(puVar1 + 2,2);
+        for (pTVar1 = (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar8];
+            pTVar1 != (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+            pTVar1 = *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)pTVar1) {
+          if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+            CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
           }
           else {
-            WriteBytesToSerializedBuffer(puVar1 + 2,2);
+            WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
           }
-          if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-            CArchive::ReadBytesFromSerializedBuffer(puVar1 + 3,4);
+          if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+            CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
           }
           else {
-            WriteBytesToSerializedBuffer(puVar1 + 3,4);
+            WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
           }
         }
-        uVar6 = uVar6 + 1;
-      } while (uVar6 < *(uint *)(param_1 + 8));
+        pTVar8 = (TNetMgrVtbl *)((int)&pTVar8->GetTNetMgrClassNamePointer + 1);
+      } while (pTVar8 < this[2].vftable);
       return;
     }
   }
@@ -120,475 +122,126 @@ LAB_0049b033:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049B330
 // GHIDRA_NAME TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive
-// GHIDRA_PROTO undefined SerializeNodeMapEntries_Key32Value32_WithArchive()
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
-void __thiscall TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(int param_1,int param_2)
+void __thiscall TNetMgr::SerializeNodeMapEntries_Key32Value32_WithArchive(TNetMgr *this)
 
 {
-  undefined4 *puVar1;
+  TNetMgr_GetTNetMgrClassNamePointer_0x00 *pTVar1;
   int iVar2;
-  uint uVar3;
-  int iVar4;
+  TNetMgrVtbl *pTVar3;
+  TNetMgrVtbl *pTVar4;
   uint uVar5;
-  uint uVar6;
-  undefined4 local_18;
-  uint local_14;
-  int local_10;
-  uint local_c;
-  undefined4 local_8;
-  uint local_4;
+  int iVar6;
+  TNetMgr_slot_0x04_0x04 *pTVar7;
+  TNetMgrVtbl *pTVar8;
+  CArchive *in_stack_00000004;
+  TNetMgr_slot_0x04_0x04 *local_18;
+  TNetMgr_GetTNetMgrClassNamePointer_0x00 *local_14;
   
-  if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-    for (local_10 = FUN_0061202e(); local_10 != 0; local_10 = local_10 + -1) {
-      if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(&local_14,4);
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
       }
       else {
-        WriteBytesToSerializedBuffer(&local_14,4);
+        WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
       }
-      if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(&local_18,4);
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
       }
       else {
-        WriteBytesToSerializedBuffer(&local_18,4);
+        WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
       }
-      uVar6 = *(uint *)(param_1 + 8);
-      local_8 = local_18;
-      uVar5 = (local_14 >> 4) % uVar6;
-      local_c = local_14;
-      iVar4 = *(int *)(param_1 + 4);
-      if (iVar4 != 0) {
-        for (puVar1 = *(undefined4 **)(iVar4 + uVar5 * 4); puVar1 != (undefined4 *)0x0;
-            puVar1 = (undefined4 *)*puVar1) {
-          if (puVar1[2] == local_14) goto LAB_0049b471;
+      pTVar8 = this[2].vftable;
+      pTVar7 = (TNetMgr_slot_0x04_0x04 *)(((uint)local_14 >> 4) % (uint)pTVar8);
+      pTVar4 = this[1].vftable;
+      if (pTVar4 != (TNetMgrVtbl *)0x0) {
+        for (pTVar3 = (TNetMgrVtbl *)(&pTVar4->GetTNetMgrClassNamePointer)[(int)pTVar7];
+            pTVar3 != (TNetMgrVtbl *)0x0; pTVar3 = (TNetMgrVtbl *)pTVar3->GetTNetMgrClassNamePointer
+            ) {
+          if (pTVar3[1].GetTNetMgrClassNamePointer == local_14) goto LAB_0049b471;
         }
       }
-      puVar1 = (undefined4 *)0x0;
+      pTVar3 = (TNetMgrVtbl *)0x0;
 LAB_0049b471:
-      local_4 = uVar5;
-      if (puVar1 == (undefined4 *)0x0) {
-        if (iVar4 == 0) {
-          puVar1 = (undefined4 *)AllocateWithFallbackHandler(uVar6 * 4);
-          *(undefined4 **)(param_1 + 4) = puVar1;
-          for (uVar3 = uVar6 & 0x3fffffff; uVar3 != 0; uVar3 = uVar3 - 1) {
-            *puVar1 = 0;
-            puVar1 = puVar1 + 1;
+      if (pTVar3 == (TNetMgrVtbl *)0x0) {
+        if (pTVar4 == (TNetMgrVtbl *)0x0) {
+          pTVar4 = (TNetMgrVtbl *)AllocateWithFallbackHandler((int)pTVar8 * 4);
+          this[1].vftable = pTVar4;
+          for (uVar5 = (uint)pTVar8 & 0x3fffffff; uVar5 != 0; uVar5 = uVar5 - 1) {
+            pTVar4->GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+            pTVar4 = (TNetMgrVtbl *)&pTVar4->slot_0x04;
           }
-          for (iVar4 = 0; iVar4 != 0; iVar4 = iVar4 + -1) {
-            *(undefined1 *)puVar1 = 0;
-            puVar1 = (undefined4 *)((int)puVar1 + 1);
+          for (iVar6 = 0; iVar6 != 0; iVar6 = iVar6 + -1) {
+            *(undefined1 *)&pTVar4->GetTNetMgrClassNamePointer = 0;
+            pTVar4 = (TNetMgrVtbl *)((int)&pTVar4->GetTNetMgrClassNamePointer + 1);
           }
-          *(uint *)(param_1 + 8) = uVar6;
+          this[2].vftable = pTVar8;
         }
-        if (*(int *)(param_1 + 0x10) == 0) {
-          iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0x10);
-          iVar4 = *(int *)(param_1 + 0x18);
-          puVar1 = (undefined4 *)(iVar4 * 0x10 + -0xc + iVar2);
-          if (-1 < iVar4 + -1) {
+        if (this[4].vftable == (TNetMgrVtbl *)0x0) {
+          iVar6 = AllocateAndLinkBlockHead(this + 5,this[6].vftable,0x10);
+          pTVar4 = this[6].vftable;
+          pTVar8 = (TNetMgrVtbl *)((int)pTVar4 * 0x10 + -0xc + iVar6);
+          if (-1 < (int)((int)&pTVar4[-1].slot_0x04 + 3)) {
             do {
-              *puVar1 = *(undefined4 *)(param_1 + 0x10);
-              *(undefined4 **)(param_1 + 0x10) = puVar1;
-              puVar1 = puVar1 + -4;
-              iVar4 = iVar4 + -1;
-            } while (iVar4 != 0);
+              pTVar8->GetTNetMgrClassNamePointer =
+                   (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
+              this[4].vftable = pTVar8;
+              pTVar8 = pTVar8 + -2;
+              pTVar4 = (TNetMgrVtbl *)((int)&pTVar4[-1].slot_0x04 + 3);
+            } while (pTVar4 != (TNetMgrVtbl *)0x0);
           }
         }
-        puVar1 = *(undefined4 **)(param_1 + 0x10);
-        *(undefined4 *)(param_1 + 0x10) = *puVar1;
-        *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-        puVar1[2] = 0;
-        puVar1[3] = 0;
-        puVar1[1] = uVar5;
-        puVar1[2] = local_c;
-        *puVar1 = *(undefined4 *)(uVar5 * 4 + *(int *)(param_1 + 4));
-        *(undefined4 **)(uVar5 * 4 + *(int *)(param_1 + 4)) = puVar1;
+        pTVar3 = this[4].vftable;
+        this[4].vftable = (TNetMgrVtbl *)pTVar3->GetTNetMgrClassNamePointer;
+        this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetTNetMgrClassNamePointer + 1);
+        pTVar3[1].GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+        pTVar3[1].slot_0x04 = (TNetMgr_slot_0x04_0x04 *)0x0;
+        pTVar3->slot_0x04 = pTVar7;
+        pTVar3[1].GetTNetMgrClassNamePointer = local_14;
+        pTVar3->GetTNetMgrClassNamePointer =
+             (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar7];
+        (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar7] =
+             (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)pTVar3;
       }
-      puVar1[3] = local_8;
+      pTVar3[1].slot_0x04 = local_18;
     }
   }
   else {
-    WriteCount(*(undefined4 *)(param_1 + 0xc));
-    if ((*(int *)(param_1 + 0xc) != 0) && (uVar6 = 0, *(int *)(param_1 + 8) != 0)) {
+    WriteCount((TNetMgr *)in_stack_00000004);
+    if ((this[3].vftable != (TNetMgrVtbl *)0x0) &&
+       (pTVar8 = (TNetMgrVtbl *)0x0, this[2].vftable != (TNetMgrVtbl *)0x0)) {
       do {
-        for (puVar1 = *(undefined4 **)(*(int *)(param_1 + 4) + uVar6 * 4);
-            puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
-          if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-            CArchive::ReadBytesFromSerializedBuffer(puVar1 + 2,4);
+        for (pTVar1 = (&(this[1].vftable)->GetTNetMgrClassNamePointer)[(int)pTVar8];
+            pTVar1 != (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+            pTVar1 = *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)pTVar1) {
+          if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+            CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
           }
           else {
-            WriteBytesToSerializedBuffer(puVar1 + 2,4);
+            WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
           }
-          if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-            CArchive::ReadBytesFromSerializedBuffer(puVar1 + 3,4);
+          if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+            CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
           }
           else {
-            WriteBytesToSerializedBuffer(puVar1 + 3,4);
+            WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
           }
         }
-        uVar6 = uVar6 + 1;
-      } while (uVar6 < *(uint *)(param_1 + 8));
+        pTVar8 = (TNetMgrVtbl *)((int)&pTVar8->GetTNetMgrClassNamePointer + 1);
+      } while (pTVar8 < this[2].vftable);
       return;
     }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C65D0
-// GHIDRA_NAME TNetMgr::SerializeLinkedValueListWithArchiveFlags
-// GHIDRA_PROTO undefined SerializeLinkedValueListWithArchiveFlags()
-
-void __thiscall TNetMgr::SerializeLinkedValueListWithArchiveFlags(int param_1,int param_2)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  undefined4 *puVar6;
-  int iVar7;
-  int *piVar8;
-  
-  iVar2 = param_2;
-  if ((~*(uint *)(param_2 + 0x14) & 1) == 0) {
-    for (iVar4 = FUN_0061202e(); iVar4 != 0; iVar4 = iVar4 + -1) {
-      if ((~*(uint *)(iVar2 + 0x14) & 1) == 0) {
-        CArchive::ReadBytesFromSerializedBuffer(&param_2,4);
-      }
-      else {
-        WriteBytesToSerializedBuffer(&param_2,4);
-      }
-      iVar3 = param_2;
-      uVar1 = *(undefined4 *)(param_1 + 8);
-      if (*(int *)(param_1 + 0x10) == 0) {
-        iVar5 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
-        iVar7 = *(int *)(param_1 + 0x18);
-        puVar6 = (undefined4 *)(iVar5 + -8 + iVar7 * 0xc);
-        if (-1 < iVar7 + -1) {
-          do {
-            *puVar6 = *(undefined4 *)(param_1 + 0x10);
-            *(undefined4 **)(param_1 + 0x10) = puVar6;
-            puVar6 = puVar6 + -3;
-            iVar7 = iVar7 + -1;
-          } while (iVar7 != 0);
-        }
-      }
-      puVar6 = *(undefined4 **)(param_1 + 0x10);
-      *(undefined4 *)(param_1 + 0x10) = *puVar6;
-      puVar6[1] = uVar1;
-      *puVar6 = 0;
-      *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-      puVar6[2] = 0;
-      puVar6[2] = iVar3;
-      if (*(undefined4 **)(param_1 + 8) == (undefined4 *)0x0) {
-        *(undefined4 **)(param_1 + 4) = puVar6;
-      }
-      else {
-        **(undefined4 **)(param_1 + 8) = puVar6;
-      }
-      *(undefined4 **)(param_1 + 8) = puVar6;
-    }
-  }
-  else {
-    WriteCount(*(undefined4 *)(param_1 + 0xc));
-    piVar8 = *(int **)(param_1 + 4);
-    if (piVar8 != (int *)0x0) {
-      do {
-        if ((~*(uint *)(iVar2 + 0x14) & 1) == 0) {
-          CArchive::ReadBytesFromSerializedBuffer(piVar8 + 2,4);
-        }
-        else {
-          WriteBytesToSerializedBuffer(piVar8 + 2,4);
-        }
-        piVar8 = (int *)*piVar8;
-      } while (piVar8 != (int *)0x0);
-      return;
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C6740
-// GHIDRA_NAME TNetMgr::AddIntToLinkedValueList
-// GHIDRA_PROTO undefined AddIntToLinkedValueList()
-
-void __thiscall TNetMgr::AddIntToLinkedValueList(int param_1,undefined4 param_2)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  undefined4 *puVar3;
-  int iVar4;
-  
-  uVar1 = *(undefined4 *)(param_1 + 8);
-  if (*(int *)(param_1 + 0x10) == 0) {
-    iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
-    iVar4 = *(int *)(param_1 + 0x18);
-    puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
-    if (-1 < iVar4 + -1) {
-      do {
-        *puVar3 = *(undefined4 *)(param_1 + 0x10);
-        *(undefined4 **)(param_1 + 0x10) = puVar3;
-        puVar3 = puVar3 + -3;
-        iVar4 = iVar4 + -1;
-      } while (iVar4 != 0);
-    }
-  }
-  puVar3 = *(undefined4 **)(param_1 + 0x10);
-  *(undefined4 *)(param_1 + 0x10) = *puVar3;
-  puVar3[1] = uVar1;
-  *puVar3 = 0;
-  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-  puVar3[2] = 0;
-  puVar3[2] = param_2;
-  if (*(undefined4 **)(param_1 + 8) == (undefined4 *)0x0) {
-    *(undefined4 **)(param_1 + 4) = puVar3;
-    *(undefined4 **)(param_1 + 8) = puVar3;
-    return;
-  }
-  **(undefined4 **)(param_1 + 8) = puVar3;
-  *(undefined4 **)(param_1 + 8) = puVar3;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C67E0
-// GHIDRA_NAME TNetMgr::AddIntToLinkedValueListAlt
-// GHIDRA_PROTO undefined AddIntToLinkedValueListAlt()
-
-void __thiscall TNetMgr::AddIntToLinkedValueListAlt(int param_1,undefined4 param_2)
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  undefined4 *puVar3;
-  int iVar4;
-  
-  uVar1 = *(undefined4 *)(param_1 + 8);
-  if (*(int *)(param_1 + 0x10) == 0) {
-    iVar2 = AllocateAndLinkBlockHead(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
-    iVar4 = *(int *)(param_1 + 0x18);
-    puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
-    if (-1 < iVar4 + -1) {
-      do {
-        *puVar3 = *(undefined4 *)(param_1 + 0x10);
-        *(undefined4 **)(param_1 + 0x10) = puVar3;
-        puVar3 = puVar3 + -3;
-        iVar4 = iVar4 + -1;
-      } while (iVar4 != 0);
-    }
-  }
-  puVar3 = *(undefined4 **)(param_1 + 0x10);
-  *(undefined4 *)(param_1 + 0x10) = *puVar3;
-  puVar3[1] = uVar1;
-  *puVar3 = 0;
-  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
-  puVar3[2] = 0;
-  puVar3[2] = param_2;
-  if (*(undefined4 **)(param_1 + 8) == (undefined4 *)0x0) {
-    *(undefined4 **)(param_1 + 4) = puVar3;
-    *(undefined4 **)(param_1 + 8) = puVar3;
-    return;
-  }
-  **(undefined4 **)(param_1 + 8) = puVar3;
-  *(undefined4 **)(param_1 + 8) = puVar3;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C6880
-// GHIDRA_NAME TNetMgr::GetNthIntFromLinkedValueList
-// GHIDRA_PROTO undefined GetNthIntFromLinkedValueList()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-undefined4 __thiscall TNetMgr::GetNthIntFromLinkedValueList(int param_1,int param_2)
-
-{
-  undefined4 *puVar1;
-  
-  param_2 = param_2 + -1;
-  if (*(int *)(param_1 + 0xc) <= param_2) {
-    return _DAT_00000008;
-  }
-  puVar1 = *(undefined4 **)(param_1 + 4);
-  for (; param_2 != 0; param_2 = param_2 + -1) {
-    puVar1 = (undefined4 *)*puVar1;
-  }
-  return puVar1[2];
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C68E0
-// GHIDRA_NAME TNetMgr::RemoveNthIntFromLinkedValueList
-// GHIDRA_PROTO undefined RemoveNthIntFromLinkedValueList()
-
-void __thiscall TNetMgr::RemoveNthIntFromLinkedValueList(int param_1,int param_2)
-
-{
-  undefined4 *puVar1;
-  int *piVar2;
-  int iVar3;
-  
-  param_2 = param_2 + -1;
-  if (param_2 < *(int *)(param_1 + 0xc)) {
-    piVar2 = *(int **)(param_1 + 4);
-    for (; param_2 != 0; param_2 = param_2 + -1) {
-      piVar2 = (int *)*piVar2;
-    }
-  }
-  else {
-    piVar2 = (int *)0x0;
-  }
-  if (piVar2 == *(int **)(param_1 + 4)) {
-    *(int *)(param_1 + 4) = *piVar2;
-  }
-  else {
-    *(int *)piVar2[1] = *piVar2;
-  }
-  if (piVar2 == *(int **)(param_1 + 8)) {
-    *(int *)(param_1 + 8) = piVar2[1];
-  }
-  else {
-    *(int *)(*piVar2 + 4) = piVar2[1];
-  }
-  *piVar2 = *(int *)(param_1 + 0x10);
-  *(int **)(param_1 + 0x10) = piVar2;
-  iVar3 = *(int *)(param_1 + 0xc) + -1;
-  *(int *)(param_1 + 0xc) = iVar3;
-  if (iVar3 == 0) {
-    for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
-        puVar1 = (undefined4 *)*puVar1) {
-    }
-    *(undefined4 *)(param_1 + 0xc) = 0;
-    *(undefined4 *)(param_1 + 0x10) = 0;
-    *(undefined4 *)(param_1 + 8) = 0;
-    *(undefined4 *)(param_1 + 4) = 0;
-    FreeDataChain();
-    *(undefined4 *)(param_1 + 0x14) = 0;
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C69A0
-// GHIDRA_NAME TNetMgr::ClearLinkedValueList
-// GHIDRA_PROTO undefined ClearLinkedValueList()
-
-void __fastcall TNetMgr::ClearLinkedValueList(int param_1)
-
-{
-  undefined4 *puVar1;
-  
-  for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
-      puVar1 = (undefined4 *)*puVar1) {
-  }
-  *(undefined4 *)(param_1 + 0xc) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined4 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 4) = 0;
-  FreeDataChain();
-  *(undefined4 *)(param_1 + 0x14) = 0;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C69E0
-// GHIDRA_NAME TNetMgr::RemoveIntFromLinkedValueListByValue
-// GHIDRA_PROTO undefined RemoveIntFromLinkedValueListByValue()
-
-void __thiscall TNetMgr::RemoveIntFromLinkedValueListByValue(int param_1,int param_2)
-
-{
-  undefined4 *puVar1;
-  int *piVar2;
-  int iVar3;
-  
-  for (piVar2 = *(int **)(param_1 + 4); piVar2 != (int *)0x0; piVar2 = (int *)*piVar2) {
-    if (piVar2[2] == param_2) goto LAB_004c6a00;
-  }
-  piVar2 = (int *)0x0;
-LAB_004c6a00:
-  if (piVar2 != (int *)0x0) {
-    if (piVar2 == *(int **)(param_1 + 4)) {
-      *(int *)(param_1 + 4) = *piVar2;
-    }
-    else {
-      *(int *)piVar2[1] = *piVar2;
-    }
-    if (piVar2 == *(int **)(param_1 + 8)) {
-      *(int *)(param_1 + 8) = piVar2[1];
-    }
-    else {
-      *(int *)(*piVar2 + 4) = piVar2[1];
-    }
-    *piVar2 = *(int *)(param_1 + 0x10);
-    *(int **)(param_1 + 0x10) = piVar2;
-    iVar3 = *(int *)(param_1 + 0xc) + -1;
-    *(int *)(param_1 + 0xc) = iVar3;
-    if (iVar3 == 0) {
-      for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
-          puVar1 = (undefined4 *)*puVar1) {
-      }
-      *(undefined4 *)(param_1 + 0xc) = 0;
-      *(undefined4 *)(param_1 + 0x10) = 0;
-      *(undefined4 *)(param_1 + 8) = 0;
-      *(undefined4 *)(param_1 + 4) = 0;
-      FreeDataChain();
-      *(undefined4 *)(param_1 + 0x14) = 0;
-    }
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C6B60
-// GHIDRA_NAME TNetMgr::DebugDumpLinkedValueList
-// GHIDRA_PROTO undefined DebugDumpLinkedValueList()
-
-void __fastcall TNetMgr::DebugDumpLinkedValueList(int *param_1)
-
-{
-  code *pcVar1;
-  undefined4 uVar2;
-  int iVar3;
-  code *pcVar4;
-  undefined *puVar5;
-  
-  FUN_00621089(&DAT_00695880);
-  iVar3 = 1;
-  if (0 < param_1[3]) {
-    pcVar1 = *(code **)(*param_1 + 0x24);
-    do {
-      puVar5 = &DAT_00695880;
-      uVar2 = (*pcVar1)(iVar3,&DAT_00695880);
-      pcVar4 = g_Build_Map_Order_LookupTable_00695794;
-      FUN_00621206(iVar3);
-      FUN_00621089(pcVar4);
-      FUN_006211a6(uVar2);
-      FUN_00621089(puVar5);
-      iVar3 = iVar3 + 1;
-    } while (iVar3 <= param_1[3]);
-  }
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004C6BF0
-// GHIDRA_NAME TNetMgr::DestroyLinkedValueListAndFreeSelf
-// GHIDRA_PROTO undefined DestroyLinkedValueListAndFreeSelf()
-
-void __fastcall TNetMgr::DestroyLinkedValueListAndFreeSelf(int *param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = *param_1;
-  (**(code **)(iVar1 + 0x30))();
-  if (param_1 != (int *)0x0) {
-    (**(code **)(iVar1 + 4))(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E3310
 // GHIDRA_NAME TNetMgr::CreateTNetMgrInstance
-// GHIDRA_PROTO undefined CreateTNetMgrInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTNetMgrInstance(void)
 
-undefined4 * __fastcall TNetMgr::CreateTNetMgrInstance(undefined4 *param_1)
+TNetMgr * __thiscall TNetMgr::CreateTNetMgrInstance(TNetMgr *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -599,21 +252,21 @@ undefined4 * __fastcall TNetMgr::CreateTNetMgrInstance(undefined4 *param_1)
   puStack_8 = &LAB_0063a9d8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  param_1[1] = 0;
-  param_1[2] = 0;
-  *param_1 = &PTR_LAB_0066f9c0;
+  this[1].vftable = (TNetMgrVtbl *)0x0;
+  this[2].vftable = (TNetMgrVtbl *)0x0;
+  this->vftable = (TNetMgrVtbl *)&PTR_LAB_0066f9c0;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty(param_1 + 0x2a);
-  *param_1 = &PTR_LAB_0066f9f0;
+  CString::CString((CString *)(this + 0x2a));
+  this->vftable = (TNetMgrVtbl *)&PTR_LAB_0066f9f0;
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E33C0
 // GHIDRA_NAME TNetMgr::GetTNetMgrClassNamePointer
-// GHIDRA_PROTO undefined GetTNetMgrClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTNetMgrClassNamePointer(void)
 
-char * TNetMgr::GetTNetMgrClassNamePointer(void)
+CRuntimeClass * __thiscall TNetMgr::GetTNetMgrClassNamePointer(TNetMgr *this)
 
 {
   return &g_pClassDescTNetMgr;
@@ -621,62 +274,369 @@ char * TNetMgr::GetTNetMgrClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E33E0
 // GHIDRA_NAME TNetMgr::ConstructGlobalTurnEventQueueManager
-// GHIDRA_PROTO undefined ConstructGlobalTurnEventQueueManager()
+// GHIDRA_PROTO undefined __thiscall ConstructGlobalTurnEventQueueManager(void)
 
-void __fastcall TNetMgr::ConstructGlobalTurnEventQueueManager(undefined4 *param_1)
+void __thiscall TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr *this)
 
 {
-  *param_1 = &PTR_LAB_0066fa20;
+  this->vftable = &TNetMgrVtbl_0066fa20;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E3400
 // GHIDRA_NAME TNetMgr::DestructTNetMgrAndMaybeFree
-// GHIDRA_PROTO undefined DestructTNetMgrAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTNetMgrAndMaybeFree(void)
 
-undefined4 __thiscall TNetMgr::DestructTNetMgrAndMaybeFree(undefined4 param_1,byte param_2)
+TNetMgr * __thiscall TNetMgr::DestructTNetMgrAndMaybeFree(TNetMgr *this)
 
 {
+  byte in_stack_00000004;
+  
   InitializeRuntimeClassVtablePointer_0066FEC4_Secondary();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E3470
+// GHIDRA_NAME TNetMgr::ReleaseObjectIfNonNullViaVslot04
+// GHIDRA_PROTO undefined __thiscall ReleaseObjectIfNonNullViaVslot04(void)
+
+void __thiscall TNetMgr::ReleaseObjectIfNonNullViaVslot04(TNetMgr *this)
+
+{
+  if (this != (TNetMgr *)0x0) {
+    (*this->vftable->slot_0x04)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E4580
+// GHIDRA_NAME TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580
+// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(void)
+
+void __thiscall
+TNetMgr::DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(TNetMgr *this)
+
+{
+  TNetMgrVtbl *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0063aa58;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (TNetMgrVtbl *)&CObjectVtbl_0066fa50;
+  pTVar1 = this[1].vftable;
+  local_4 = 0;
+  for (; pTVar1 != (TNetMgrVtbl *)0x0; pTVar1 = (TNetMgrVtbl *)pTVar1->GetTNetMgrClassNamePointer) {
+  }
+  this[3].vftable = (TNetMgrVtbl *)0x0;
+  this[4].vftable = (TNetMgrVtbl *)0x0;
+  this[2].vftable = (TNetMgrVtbl *)0x0;
+  this[1].vftable = (TNetMgrVtbl *)0x0;
+  FreeDataChain();
+  this[5].vftable = (TNetMgrVtbl *)0x0;
+  this->vftable = (TNetMgrVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E4610
+// GHIDRA_NAME TNetMgr::SerializeLinkedRecordListWithFreeNodePool
+// GHIDRA_PROTO undefined __thiscall SerializeLinkedRecordListWithFreeNodePool(void)
+
+void __thiscall TNetMgr::SerializeLinkedRecordListWithFreeNodePool(TNetMgr *this)
+
+{
+  int iVar1;
+  int iVar2;
+  TNetMgrVtbl *pTVar3;
+  TNetMgrVtbl *pTVar4;
+  TNetMgrVtbl *pTVar5;
+  CArchive *in_stack_00000004;
+  
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    for (iVar1 = FUN_0061202e(); iVar1 != 0; iVar1 = iVar1 + -1) {
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+      }
+      else {
+        WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+      }
+      pTVar5 = this[2].vftable;
+      if (this[4].vftable == (TNetMgrVtbl *)0x0) {
+        iVar2 = AllocateAndLinkBlockHead(this + 5,this[6].vftable,0xc);
+        pTVar4 = this[6].vftable;
+        pTVar3 = (TNetMgrVtbl *)(iVar2 + -8 + (int)pTVar4 * 0xc);
+        if (-1 < (int)((int)&pTVar4[-1].slot_0x04 + 3)) {
+          do {
+            pTVar3->GetTNetMgrClassNamePointer =
+                 (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)this[4].vftable;
+            this[4].vftable = pTVar3;
+            pTVar3 = (TNetMgrVtbl *)&pTVar3[-2].slot_0x04;
+            pTVar4 = (TNetMgrVtbl *)((int)&pTVar4[-1].slot_0x04 + 3);
+          } while (pTVar4 != (TNetMgrVtbl *)0x0);
+        }
+      }
+      pTVar3 = this[4].vftable;
+      this[4].vftable = (TNetMgrVtbl *)pTVar3->GetTNetMgrClassNamePointer;
+      pTVar3->slot_0x04 = (TNetMgr_slot_0x04_0x04 *)pTVar5;
+      pTVar3->GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+      this[3].vftable = (TNetMgrVtbl *)((int)&(this[3].vftable)->GetTNetMgrClassNamePointer + 1);
+      pTVar3[1].GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+      pTVar3[1].GetTNetMgrClassNamePointer =
+           (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)in_stack_00000004;
+      if (this[2].vftable == (TNetMgrVtbl *)0x0) {
+        this[1].vftable = pTVar3;
+      }
+      else {
+        (this[2].vftable)->GetTNetMgrClassNamePointer =
+             (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)pTVar3;
+      }
+      this[2].vftable = pTVar3;
+    }
+  }
+  else {
+    WriteCount((TNetMgr *)in_stack_00000004);
+    pTVar5 = this[1].vftable;
+    if (pTVar5 != (TNetMgrVtbl *)0x0) {
+      do {
+        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        }
+        else {
+          WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        }
+        pTVar5 = (TNetMgrVtbl *)pTVar5->GetTNetMgrClassNamePointer;
+      } while (pTVar5 != (TNetMgrVtbl *)0x0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E4780
+// GHIDRA_NAME TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State
+// GHIDRA_PROTO undefined __thiscall InitializeRuntimeClassVtablePointer_0066FA68_State(void)
+
+void __thiscall TNetMgr::InitializeRuntimeClassVtablePointer_0066FA68_State(TNetMgr *this)
+
+{
+  this->vftable = (TNetMgrVtbl *)&DAT_0066fa68;
+  this[1].vftable = (TNetMgrVtbl *)0x0;
+  this[4].vftable = (TNetMgrVtbl *)0x0;
+  this[3].vftable = (TNetMgrVtbl *)0x0;
+  this[2].vftable = (TNetMgrVtbl *)0x0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E47B0
+// GHIDRA_NAME TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0
+// GHIDRA_PROTO undefined __thiscall DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(void)
+
+void __thiscall
+TNetMgr::DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(TNetMgr *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0063aa78;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (TNetMgrVtbl *)&DAT_0066fa68;
+  local_4 = 0;
+  if (this[1].vftable != (TNetMgrVtbl *)0x0) {
+    FreeHeapBufferIfNotNull(this[1].vftable);
+  }
+  this->vftable = (TNetMgrVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E4830
+// GHIDRA_NAME TNetMgr::SerializeDynamicDwordPointerArrayState
+// GHIDRA_PROTO undefined __thiscall SerializeDynamicDwordPointerArrayState(void)
+
+void __thiscall TNetMgr::SerializeDynamicDwordPointerArrayState(TNetMgr *this)
+
+{
+  TNetMgrVtbl *pTVar1;
+  TNetMgrVtbl *pTVar2;
+  TNetMgrVtbl *pTVar3;
+  uint uVar4;
+  int iVar5;
+  TNetMgrVtbl *pTVar6;
+  TNetMgr_GetTNetMgrClassNamePointer_0x00 **ppTVar7;
+  CArchive *in_stack_00000004;
+  TNetMgrVtbl *local_8;
+  
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    pTVar1 = (TNetMgrVtbl *)FUN_0061202e();
+    if (pTVar1 == (TNetMgrVtbl *)0x0) {
+      if (this[1].vftable != (TNetMgrVtbl *)0x0) {
+        FreeHeapBufferIfNotNull(this[1].vftable);
+        this[1].vftable = (TNetMgrVtbl *)0x0;
+      }
+      this[3].vftable = (TNetMgrVtbl *)0x0;
+      this[2].vftable = (TNetMgrVtbl *)0x0;
+    }
+    else if (this[1].vftable == (TNetMgrVtbl *)0x0) {
+      pTVar2 = (TNetMgrVtbl *)AllocateWithFallbackHandler((int)pTVar1 * 4);
+      this[1].vftable = pTVar2;
+      for (uVar4 = (uint)pTVar1 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
+        pTVar2->GetTNetMgrClassNamePointer = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+        pTVar2 = (TNetMgrVtbl *)&pTVar2->slot_0x04;
+      }
+      for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *(undefined1 *)&pTVar2->GetTNetMgrClassNamePointer = 0;
+        pTVar2 = (TNetMgrVtbl *)((int)&pTVar2->GetTNetMgrClassNamePointer + 1);
+      }
+      this[3].vftable = pTVar1;
+      this[2].vftable = pTVar1;
+    }
+    else if ((int)this[3].vftable < (int)pTVar1) {
+      pTVar2 = this[4].vftable;
+      if (pTVar2 == (TNetMgrVtbl *)0x0) {
+        pTVar2 = (TNetMgrVtbl *)
+                 ((int)((int)&(this[2].vftable)->GetTNetMgrClassNamePointer +
+                       ((int)this[2].vftable >> 0x1f & 7U)) >> 3);
+        if ((int)pTVar2 < 4) {
+          pTVar2 = (TNetMgrVtbl *)0x4;
+        }
+        else if (0x400 < (int)pTVar2) {
+          pTVar2 = (TNetMgrVtbl *)0x400;
+        }
+      }
+      local_8 = (TNetMgrVtbl *)
+                ((int)&(this[3].vftable)->GetTNetMgrClassNamePointer +
+                (int)&pTVar2->GetTNetMgrClassNamePointer);
+      if ((int)local_8 <= (int)pTVar1) {
+        local_8 = pTVar1;
+      }
+      pTVar3 = (TNetMgrVtbl *)AllocateWithFallbackHandler((int)local_8 * 4);
+      pTVar2 = this[1].vftable;
+      pTVar6 = pTVar3;
+      for (uVar4 = (uint)this[2].vftable & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
+        pTVar6->GetTNetMgrClassNamePointer = pTVar2->GetTNetMgrClassNamePointer;
+        pTVar2 = (TNetMgrVtbl *)&pTVar2->slot_0x04;
+        pTVar6 = (TNetMgrVtbl *)&pTVar6->slot_0x04;
+      }
+      for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *(undefined1 *)&pTVar6->GetTNetMgrClassNamePointer =
+             *(undefined1 *)&pTVar2->GetTNetMgrClassNamePointer;
+        pTVar2 = (TNetMgrVtbl *)((int)&pTVar2->GetTNetMgrClassNamePointer + 1);
+        pTVar6 = (TNetMgrVtbl *)((int)&pTVar6->GetTNetMgrClassNamePointer + 1);
+      }
+      ppTVar7 = &pTVar3->GetTNetMgrClassNamePointer + (int)this[2].vftable;
+      for (iVar5 = (int)pTVar1 - (int)this[2].vftable; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *ppTVar7 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+        ppTVar7 = ppTVar7 + 1;
+      }
+      FreeHeapBufferIfNotNull(this[1].vftable);
+      this[1].vftable = pTVar3;
+      this[2].vftable = pTVar1;
+      this[3].vftable = local_8;
+    }
+    else {
+      pTVar2 = this[2].vftable;
+      if ((int)pTVar2 < (int)pTVar1) {
+        ppTVar7 = &(this[1].vftable)->GetTNetMgrClassNamePointer + (int)pTVar2;
+        for (iVar5 = (int)pTVar1 - (int)pTVar2; iVar5 != 0; iVar5 = iVar5 + -1) {
+          *ppTVar7 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0;
+          ppTVar7 = ppTVar7 + 1;
+        }
+      }
+      this[2].vftable = pTVar1;
+    }
+  }
+  else {
+    WriteCount((TNetMgr *)in_stack_00000004);
+  }
+  if ((~in_stack_00000004->m_nMode & 1U) != 0) {
+    WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+    return;
+  }
+  CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E4A30
+// GHIDRA_NAME TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(void)
+
+TNetMgr * __thiscall TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(TNetMgr *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructLinkedBlockChainState_0066FA50_AndFreeChain_At005e4580(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E4A60
+// GHIDRA_NAME TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(void)
+
+TNetMgr * __thiscall TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(TNetMgr *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructHeapBufferOwnerState_0066FA68_AndFreeBuffer_At005e47b0(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D27
 // GHIDRA_NAME TNetMgr::WriteWordToSerializedBuffer
-// GHIDRA_PROTO undefined WriteWordToSerializedBuffer()
+// GHIDRA_PROTO undefined __thiscall WriteWordToSerializedBuffer(void)
 
-int __thiscall TNetMgr::WriteWordToSerializedBuffer(int param_1,undefined2 param_2)
+TNetMgr * __thiscall TNetMgr::WriteWordToSerializedBuffer(TNetMgr *this)
 
 {
-  if (*(uint *)(param_1 + 0x28) < *(int *)(param_1 + 0x24) + 2U) {
+  undefined2 in_stack_00000004;
+  
+  if (this[10].vftable < (TNetMgrVtbl *)((int)&(this[9].vftable)->GetTNetMgrClassNamePointer + 2U))
+  {
     Flush();
   }
-  **(undefined2 **)(param_1 + 0x24) = param_2;
-  *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + 2;
-  return param_1;
+  *(undefined2 *)&(this[9].vftable)->GetTNetMgrClassNamePointer = in_stack_00000004;
+  this[9].vftable = (TNetMgrVtbl *)((int)&(this[9].vftable)->GetTNetMgrClassNamePointer + 2);
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E6D4E
 // GHIDRA_NAME TNetMgr::WriteDwordToSerializedBuffer
-// GHIDRA_PROTO undefined WriteDwordToSerializedBuffer()
+// GHIDRA_PROTO undefined __thiscall WriteDwordToSerializedBuffer(void)
 
-int __thiscall TNetMgr::WriteDwordToSerializedBuffer(int param_1,undefined4 param_2)
+TNetMgr * __thiscall TNetMgr::WriteDwordToSerializedBuffer(TNetMgr *this)
 
 {
-  if (*(uint *)(param_1 + 0x28) < *(int *)(param_1 + 0x24) + 4U) {
+  TNetMgr_GetTNetMgrClassNamePointer_0x00 *in_stack_00000004;
+  
+  if (this[10].vftable < &(this[9].vftable)->slot_0x04) {
     Flush();
   }
-  **(undefined4 **)(param_1 + 0x24) = param_2;
-  *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + 4;
-  return param_1;
+  (this[9].vftable)->GetTNetMgrClassNamePointer = in_stack_00000004;
+  this[9].vftable = (TNetMgrVtbl *)&(this[9].vftable)->slot_0x04;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060339A
 // GHIDRA_NAME TNetMgr::CMapPtrToPtr_ctor
-// GHIDRA_PROTO undefined CMapPtrToPtr_ctor()
+// GHIDRA_PROTO undefined __thiscall CMapPtrToPtr_ctor(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Library Function - Multiple Matches With Same Base Name
 // GHIDRA_COMMENT  public: __thiscall CMap<void *,void *,void *,void *>::CMap<void *,void *,void *,void *>(int)
@@ -694,117 +654,118 @@ int __thiscall TNetMgr::WriteDwordToSerializedBuffer(int param_1,undefined4 para
    
    Libraries: Visual Studio 2005 Release, Visual Studio 2008 Release */
 
-void __thiscall TNetMgr::CMapPtrToPtr_ctor(undefined4 *param_1,undefined4 param_2)
+void __thiscall TNetMgr::CMapPtrToPtr_ctor(TNetMgr *this)
 
 {
-  param_1[1] = 0;
-  param_1[3] = 0;
-  param_1[4] = 0;
-  param_1[5] = 0;
-  *param_1 = &PTR_LAB_006730ec;
-  param_1[2] = 0x11;
-  param_1[6] = param_2;
+  TNetMgrVtbl *in_stack_00000004;
+  
+  this[1].vftable = (TNetMgrVtbl *)0x0;
+  this[3].vftable = (TNetMgrVtbl *)0x0;
+  this[4].vftable = (TNetMgrVtbl *)0x0;
+  this[5].vftable = (TNetMgrVtbl *)0x0;
+  this->vftable = (TNetMgrVtbl *)&PTR_LAB_006730ec;
+  this[2].vftable = (TNetMgrVtbl *)0x11;
+  this[6].vftable = in_stack_00000004;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006033DD
 // GHIDRA_NAME TNetMgr::InitHashTable
-// GHIDRA_PROTO undefined InitHashTable()
+// GHIDRA_PROTO undefined __thiscall InitHashTable(void)
 
-void __thiscall TNetMgr::InitHashTable(int param_1,int param_2,int param_3)
+void __thiscall TNetMgr::InitHashTable(TNetMgr *this)
 
 {
-  void *_Dst;
+  TNetMgrVtbl *_Dst;
+  TNetMgrVtbl *in_stack_00000004;
+  int in_stack_00000008;
   
-  if (*(int *)(param_1 + 4) != 0) {
-    FreeHeapBufferIfNotNull(*(int *)(param_1 + 4));
-    *(undefined4 *)(param_1 + 4) = 0;
+  if (this[1].vftable != (TNetMgrVtbl *)0x0) {
+    FreeHeapBufferIfNotNull(this[1].vftable);
+    this[1].vftable = (TNetMgrVtbl *)0x0;
   }
-  if (param_3 != 0) {
-    _Dst = (void *)AllocateWithFallbackHandler(param_2 << 2);
-    *(void **)(param_1 + 4) = _Dst;
-    CDocTemplate::memset(_Dst,0,param_2 << 2);
+  if (in_stack_00000008 != 0) {
+    _Dst = (TNetMgrVtbl *)AllocateWithFallbackHandler((int)in_stack_00000004 << 2);
+    this[1].vftable = _Dst;
+    CDocTemplate::memset(_Dst,0,(int)in_stack_00000004 << 2);
   }
-  *(int *)(param_1 + 8) = param_2;
+  this[2].vftable = in_stack_00000004;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060356B
 // GHIDRA_NAME TNetMgr::GetOrCreateHandleMapEntryValueByKey
-// GHIDRA_PROTO undefined GetOrCreateHandleMapEntryValueByKey()
+// GHIDRA_PROTO undefined __thiscall GetOrCreateHandleMapEntryValueByKey(void)
 
-undefined4 * __thiscall TNetMgr::GetOrCreateHandleMapEntryValueByKey(int param_1,int param_2)
+code * __thiscall TNetMgr::GetOrCreateHandleMapEntryValueByKey(TNetMgr *this)
 
 {
   int iVar1;
-  undefined4 *puVar2;
+  TNetMgr_GetTNetMgrClassNamePointer_0x00 *pTVar2;
+  int in_stack_00000004;
   
-  iVar1 = param_2;
-  puVar2 = (undefined4 *)GetAssocAt(param_2,&param_2);
-  if (puVar2 == (undefined4 *)0x0) {
-    if (*(int *)(param_1 + 4) == 0) {
-      InitHashTable(*(undefined4 *)(param_1 + 8),1);
+  iVar1 = in_stack_00000004;
+  pTVar2 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)GetAssocAt(in_stack_00000004,&stack0x00000004)
+  ;
+  if (pTVar2 == (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)0x0) {
+    if (this[1].vftable == (TNetMgrVtbl *)0x0) {
+      InitHashTable(this);
     }
-    puVar2 = (undefined4 *)NewAssoc();
-    puVar2[1] = iVar1;
-    *puVar2 = *(undefined4 *)(*(int *)(param_1 + 4) + param_2 * 4);
-    *(undefined4 **)(*(int *)(param_1 + 4) + param_2 * 4) = puVar2;
+    pTVar2 = (TNetMgr_GetTNetMgrClassNamePointer_0x00 *)NewAssoc();
+    *(int *)(pTVar2 + 4) = iVar1;
+    *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)pTVar2 =
+         (&(this[1].vftable)->GetTNetMgrClassNamePointer)[in_stack_00000004];
+    (&(this[1].vftable)->GetTNetMgrClassNamePointer)[in_stack_00000004] = pTVar2;
   }
-  return puVar2 + 2;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00606FBA
-// GHIDRA_NAME TNetMgr::GetCObjectRuntimeClass
-// GHIDRA_PROTO undefined GetCObjectRuntimeClass()
-
-undefined ** TNetMgr::GetCObjectRuntimeClass(void)
-
-{
-  return &classCObject;
+  return pTVar2 + 8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611D18
 // GHIDRA_NAME TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount
-// GHIDRA_PROTO undefined FlushSerializedArchiveBufferAndResetStreamCount()
+// GHIDRA_PROTO undefined __thiscall FlushSerializedArchiveBufferAndResetStreamCount(void)
 
-void __fastcall TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount(int param_1)
+void __thiscall TNetMgr::FlushSerializedArchiveBufferAndResetStreamCount(TNetMgr *this)
 
 {
   Flush();
-  *(undefined4 *)(param_1 + 0x20) = 0;
+  this[8].vftable = (TNetMgrVtbl *)0x0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00611E34
 // GHIDRA_NAME TNetMgr::WriteBytesToSerializedBuffer
-// GHIDRA_PROTO undefined WriteBytesToSerializedBuffer()
+// GHIDRA_PROTO undefined __thiscall WriteBytesToSerializedBuffer(void)
 
-void __thiscall TNetMgr::WriteBytesToSerializedBuffer(int param_1,int param_2,uint param_3)
+void __thiscall TNetMgr::WriteBytesToSerializedBuffer(TNetMgr *this)
 
 {
   uint uVar1;
-  int iVar2;
+  uint uVar2;
+  int iVar3;
+  int in_stack_00000004;
+  uint in_stack_00000008;
   
-  if (param_3 != 0) {
-    uVar1 = *(int *)(param_1 + 0x28) - *(int *)(param_1 + 0x24);
-    if (param_3 < uVar1) {
-      uVar1 = param_3;
+  if (in_stack_00000008 != 0) {
+    uVar2 = (int)this[10].vftable - (int)this[9].vftable;
+    if (in_stack_00000008 < uVar2) {
+      uVar2 = in_stack_00000008;
     }
-    CopyMemoryPossiblyOverlapping(*(int *)(param_1 + 0x24),param_2,uVar1);
-    *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + uVar1;
-    param_3 = param_3 - uVar1;
-    if (param_3 != 0) {
+    CopyMemoryPossiblyOverlapping(this[9].vftable);
+    this[9].vftable = (TNetMgrVtbl *)((int)&(this[9].vftable)->GetTNetMgrClassNamePointer + uVar2);
+    uVar1 = in_stack_00000008 - uVar2;
+    if (uVar1 != 0) {
       Flush();
-      iVar2 = param_3 - param_3 % *(uint *)(param_1 + 0x1c);
-      (**(code **)(**(int **)(param_1 + 0x20) + 0x40))(param_2 + uVar1,iVar2);
-      if (*(int *)(param_1 + 8) != 0) {
-        (**(code **)(**(int **)(param_1 + 0x20) + 0x58))
-                  (1,*(undefined4 *)(param_1 + 0x1c),(undefined4 *)(param_1 + 0x2c),param_1 + 0x28);
-        *(undefined4 *)(param_1 + 0x24) = *(undefined4 *)(param_1 + 0x2c);
+      iVar3 = uVar1 - uVar1 % (uint)this[7].vftable;
+      (**(code **)((this[8].vftable)->GetTNetMgrClassNamePointer + 0x40))
+                (in_stack_00000004 + uVar2,iVar3);
+      if (this[2].vftable != (TNetMgrVtbl *)0x0) {
+        (**(code **)((this[8].vftable)->GetTNetMgrClassNamePointer + 0x58))
+                  (1,this[7].vftable,this + 0xb,this + 10);
+        this[9].vftable = this[0xb].vftable;
       }
-      CopyMemoryPossiblyOverlapping
-                (*(undefined4 *)(param_1 + 0x24),param_2 + uVar1 + iVar2,param_3 - iVar2);
-      *(int *)(param_1 + 0x24) = *(int *)(param_1 + 0x24) + (param_3 - iVar2);
+      CopyMemoryPossiblyOverlapping(this[9].vftable,in_stack_00000004 + uVar2 + iVar3,uVar1 - iVar3)
+      ;
+      this[9].vftable = (TNetMgrVtbl *)((int)this[9].vftable + (uVar1 - iVar3));
     }
   }
   return;
@@ -812,59 +773,57 @@ void __thiscall TNetMgr::WriteBytesToSerializedBuffer(int param_1,int param_2,ui
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612000
 // GHIDRA_NAME TNetMgr::WriteCount
-// GHIDRA_PROTO undefined WriteCount()
+// GHIDRA_PROTO undefined __thiscall WriteCount(void)
 
-void TNetMgr::WriteCount(uint param_1)
+void __thiscall TNetMgr::WriteCount(TNetMgr *this)
 
 {
-  if (param_1 < 0xffff) {
-    WriteWordToSerializedBuffer(param_1);
+  uint in_stack_00000004;
+  
+  if (in_stack_00000004 < 0xffff) {
+    WriteWordToSerializedBuffer(this);
   }
   else {
-    WriteWordToSerializedBuffer(0xffff);
-    WriteDwordToSerializedBuffer(param_1);
+    WriteWordToSerializedBuffer(this);
+    WriteDwordToSerializedBuffer(this);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006121E1
 // GHIDRA_NAME TNetMgr::WriteObject
-// GHIDRA_PROTO undefined WriteObject()
+// GHIDRA_PROTO undefined __thiscall WriteObject(void)
 
-void __thiscall TNetMgr::WriteObject(int param_1,int *param_2)
+void __thiscall TNetMgr::WriteObject(TNetMgr *this)
 
 {
   undefined4 *puVar1;
   uint *puVar2;
-  undefined4 uVar3;
-  undefined4 *puVar4;
-  uint uVar5;
+  undefined4 *puVar3;
+  int *in_stack_00000004;
   
   MapObject(0);
-  if (param_2 == (int *)0x0) {
-    uVar5 = 0;
-  }
-  else {
-    puVar2 = (uint *)GetOrCreateHandleMapEntryValueByKey(param_2);
-    uVar5 = *puVar2;
-    if (uVar5 == 0) {
-      puVar1 = (undefined4 *)*param_2;
-      uVar3 = (*(code *)*puVar1)();
-      WriteClass(uVar3);
+  if (in_stack_00000004 != (int *)0x0) {
+    puVar2 = (uint *)GetOrCreateHandleMapEntryValueByKey((TNetMgr *)this[0xd].vftable);
+    if (*puVar2 == 0) {
+      puVar1 = (undefined4 *)*in_stack_00000004;
+      (*(code *)*puVar1)();
+      WriteClass(this);
       CheckCount();
-      puVar4 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(param_2);
-      *puVar4 = *(undefined4 *)(param_1 + 0x30);
-      *(int *)(param_1 + 0x30) = *(int *)(param_1 + 0x30) + 1;
-      (*(code *)puVar1[2])(param_1);
+      puVar3 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey((TNetMgr *)this[0xd].vftable);
+      *puVar3 = this[0xc].vftable;
+      this[0xc].vftable = (TNetMgrVtbl *)((int)&(this[0xc].vftable)->GetTNetMgrClassNamePointer + 1)
+      ;
+      (*(code *)puVar1[2])(this);
       return;
     }
-    if (0x7ffe < uVar5) {
-      WriteWordToSerializedBuffer(0x7fff);
-      WriteDwordToSerializedBuffer(uVar5);
+    if (0x7ffe < *puVar2) {
+      WriteWordToSerializedBuffer(this);
+      WriteDwordToSerializedBuffer(this);
       return;
     }
   }
-  WriteWordToSerializedBuffer(uVar5);
+  WriteWordToSerializedBuffer(this);
   return;
 }
 
@@ -877,9 +836,10 @@ void TNetMgr::MapObject(void)
 {
   undefined4 uVar1;
   int iVar2;
-  undefined4 uVar3;
+  TNetMgr *pTVar3;
   undefined4 *puVar4;
   TIndexAndRankList *this;
+  undefined4 uVar5;
   int extraout_ECX;
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
@@ -891,14 +851,14 @@ void TNetMgr::MapObject(void)
       *(TIndexAndRankList **)(unaff_EBP + -0x10) = this;
       *(undefined4 *)(unaff_EBP + -4) = 1;
       if (this == (TIndexAndRankList *)0x0) {
-        uVar3 = 0;
+        uVar5 = 0;
       }
       else {
-        uVar3 = TIndexAndRankList::CPtrArray(this);
+        uVar5 = TIndexAndRankList::CPtrArray(this);
       }
       uVar1 = *(undefined4 *)(extraout_ECX + 0x3c);
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      *(undefined4 *)(extraout_ECX + 0x34) = uVar3;
+      *(undefined4 *)(extraout_ECX + 0x34) = uVar5;
       SetSize(1,uVar1);
       **(undefined4 **)(*(int *)(extraout_ECX + 0x34) + 4) = 0;
       *(undefined4 *)(extraout_ECX + 0x30) = 1;
@@ -906,32 +866,34 @@ void TNetMgr::MapObject(void)
     if (*(int *)(unaff_EBP + 8) != 0) {
       CheckCount();
       iVar2 = *(int *)(extraout_ECX + 0x30);
-      uVar3 = *(undefined4 *)(unaff_EBP + 8);
+      uVar5 = *(undefined4 *)(unaff_EBP + 8);
       *(int *)(extraout_ECX + 0x30) = iVar2 + 1;
-      InsertAt(iVar2,uVar3,1);
+      InsertAt(iVar2,uVar5,1);
     }
   }
   else {
     if (*(int *)(extraout_ECX + 0x34) == 0) {
-      iVar2 = AllocateWithFallbackHandler(0x1c);
-      *(int *)(unaff_EBP + -0x10) = iVar2;
+      pTVar3 = (TNetMgr *)AllocateWithFallbackHandler(0x1c);
+      *(TNetMgr **)(unaff_EBP + -0x10) = pTVar3;
       *(undefined4 *)(unaff_EBP + -4) = 0;
-      if (iVar2 == 0) {
-        uVar3 = 0;
+      if (pTVar3 == (TNetMgr *)0x0) {
+        pTVar3 = (TNetMgr *)0x0;
       }
       else {
-        uVar3 = CMapPtrToPtr_ctor(*(undefined4 *)(extraout_ECX + 0x3c));
+        pTVar3 = (TNetMgr *)CMapPtrToPtr_ctor(pTVar3);
       }
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
-      *(undefined4 *)(extraout_ECX + 0x34) = uVar3;
-      InitHashTable(*(undefined4 *)(extraout_ECX + 0x40),1);
-      puVar4 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(0);
+      *(TNetMgr **)(extraout_ECX + 0x34) = pTVar3;
+      InitHashTable(pTVar3);
+      puVar4 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(*(TNetMgr **)(extraout_ECX + 0x34))
+      ;
       *puVar4 = 0;
       *(undefined4 *)(extraout_ECX + 0x30) = 1;
     }
     if (*(int *)(unaff_EBP + 8) != 0) {
       CheckCount();
-      puVar4 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(*(undefined4 *)(unaff_EBP + 8));
+      puVar4 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(*(TNetMgr **)(extraout_ECX + 0x34))
+      ;
       *puVar4 = *(undefined4 *)(extraout_ECX + 0x30);
       *(int *)(extraout_ECX + 0x30) = *(int *)(extraout_ECX + 0x30) + 1;
     }
@@ -942,35 +904,34 @@ void TNetMgr::MapObject(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061240D
 // GHIDRA_NAME TNetMgr::WriteClass
-// GHIDRA_PROTO undefined WriteClass()
+// GHIDRA_PROTO undefined __thiscall WriteClass(void)
 
-void __thiscall TNetMgr::WriteClass(int param_1,int param_2)
+void __thiscall TNetMgr::WriteClass(TNetMgr *this)
 
 {
-  uint uVar1;
-  uint *puVar2;
-  undefined4 *puVar3;
+  uint *puVar1;
+  undefined4 *puVar2;
+  int in_stack_00000004;
   
-  if (*(int *)(param_2 + 8) == 0xffff) {
+  if (*(int *)(in_stack_00000004 + 8) == 0xffff) {
     AfxThrowNotSupportedException();
   }
   MapObject(0);
-  puVar2 = (uint *)GetOrCreateHandleMapEntryValueByKey(param_2);
-  uVar1 = *puVar2;
-  if (uVar1 == 0) {
-    WriteWordToSerializedBuffer(0xffff);
-    Store(param_1);
+  puVar1 = (uint *)GetOrCreateHandleMapEntryValueByKey((TNetMgr *)this[0xd].vftable);
+  if (*puVar1 == 0) {
+    WriteWordToSerializedBuffer(this);
+    Store(this);
     CheckCount();
-    puVar3 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey(param_2);
-    *puVar3 = *(undefined4 *)(param_1 + 0x30);
-    *(int *)(param_1 + 0x30) = *(int *)(param_1 + 0x30) + 1;
+    puVar2 = (undefined4 *)GetOrCreateHandleMapEntryValueByKey((TNetMgr *)this[0xd].vftable);
+    *puVar2 = this[0xc].vftable;
+    this[0xc].vftable = (TNetMgrVtbl *)((int)&(this[0xc].vftable)->GetTNetMgrClassNamePointer + 1);
   }
-  else if (uVar1 < 0x7fff) {
-    WriteWordToSerializedBuffer(uVar1 | 0x8000);
+  else if (*puVar1 < 0x7fff) {
+    WriteWordToSerializedBuffer(this);
   }
   else {
-    WriteWordToSerializedBuffer(0x7fff);
-    WriteDwordToSerializedBuffer(uVar1 | 0x80000000);
+    WriteWordToSerializedBuffer(this);
+    WriteDwordToSerializedBuffer(this);
   }
   return;
 }

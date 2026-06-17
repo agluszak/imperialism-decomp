@@ -5,84 +5,465 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00484080
 // GHIDRA_NAME TCommand::RunCommandModalLoopAndFinalizeState_Impl
-// GHIDRA_PROTO undefined RunCommandModalLoopAndFinalizeState_Impl()
+// GHIDRA_PROTO undefined __thiscall RunCommandModalLoopAndFinalizeState_Impl(void)
 
-undefined4 __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(int param_1,uint param_2)
-
-{
-  undefined4 uVar1;
-  
-  uVar1 = *(undefined4 *)(param_1 + 0x90);
-  *(uint *)(param_1 + 0x90) = param_2 & 0xff;
-  return uVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00487660
-// GHIDRA_NAME TCommand::CreateTCommandInstance
-// GHIDRA_PROTO undefined CreateTCommandInstance()
-
-void __fastcall TCommand::CreateTCommandInstance(int param_1)
+TCommandVtbl * __thiscall TCommand::RunCommandModalLoopAndFinalizeState_Impl(TCommand *this)
 
 {
-  int iVar1;
-  int *piVar2;
-  undefined4 uVar3;
+  TCommandVtbl *pTVar1;
+  uint in_stack_00000004;
   
-  uVar3 = 0;
-  InvokeAfxThreadVslot7CAndGetValueAtOffset98(0);
-  iVar1 = RunCommandModalLoopAndFinalizeState_Impl(uVar3);
-  piVar2 = (int *)(**(code **)(**(int **)(param_1 + 8) + 0x58))();
-  (**(code **)(*piVar2 + 0x9c))();
-  (**(code **)(**(int **)(param_1 + 8) + 0x58))();
-  *(undefined1 *)(param_1 + 0x20) = 0;
-  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
-  FUN_0060753b(1);
-  TMovieView::RunModalLoop(0);
-  if (iVar1 != 0) {
-    uVar3 = 1;
-    InvokeAfxThreadVslot7CAndGetValueAtOffset98(1);
-    RunCommandModalLoopAndFinalizeState_Impl(uVar3);
-  }
-  return;
+  pTVar1 = this[6].vftable;
+  this[6].vftable = (TCommandVtbl *)(in_stack_00000004 & 0xff);
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487800
-// GHIDRA_NAME TCommand::GetTCommandClassNamePointer
-// GHIDRA_PROTO undefined GetTCommandClassNamePointer()
+// GHIDRA_NAME TCommand::GetTEventClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-undefined ** TCommand::GetTCommandClassNamePointer(void)
+CRuntimeClass * __thiscall TCommand::GetTEventClassNamePointer(TCommand *this)
 
 {
-  return &PTR_s_TCommand_00648e08;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487820
 // GHIDRA_NAME TCommand::ConstructTurnEventPacketBase
-// GHIDRA_PROTO undefined ConstructTurnEventPacketBase()
+// GHIDRA_PROTO undefined __thiscall ConstructTurnEventPacketBase(void)
 
-void __fastcall TCommand::ConstructTurnEventPacketBase(undefined4 *param_1)
+void __thiscall TCommand::ConstructTurnEventPacketBase(TCommand *this)
 
 {
-  param_1[1] = 0;
-  param_1[2] = 0;
-  param_1[3] = 0;
-  param_1[4] = 0;
-  *param_1 = &_vftable_;
-  param_1[5] = 0;
+  *(undefined4 *)&this->field_0x4 = 0;
+  *(undefined4 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0xc = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x14 = 0;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00487850
-// GHIDRA_NAME TCommand::DestructTCommandAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCommandAndMaybeFree()
+// GHIDRA_FUNCTION IMPERIALISM 0x00487900
+// GHIDRA_NAME TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94
+// GHIDRA_PROTO undefined __thiscall NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(void)
 
-undefined4 __thiscall TCommand::DestructTCommandAndMaybeFree(undefined4 param_1,byte param_2)
+void __thiscall TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94(TCommand *this)
 
 {
-  DestructTCommandAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if (*(int **)&this->field_0x14 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x14 + 0x94))(this);
   }
-  return param_1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487A00
+// GHIDRA_NAME TCommand::OrphanRetStub_00487a00
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+
+void __thiscall TCommand::OrphanRetStub_00487a00(TCommand *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487B10
+// GHIDRA_NAME TCommand::OnActivateView
+// GHIDRA_PROTO undefined __thiscall OnActivateView(void)
+
+CRuntimeClass * __thiscall TCommand::OnActivateView(TCommand *this)
+
+{
+  return &g_pClassDescTSortedList;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004880A0
+// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
+
+{
+  TCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int iVar4;
+  int iVar3;
+  
+  iVar4 = 1;
+  pTVar1 = this->vftable[5].OrphanCallChain_C1_I17_00487470;
+  uVar2 = (*pTVar1)(1);
+  iVar3 = CONCAT31(extraout_var,uVar2);
+  while (iVar3 != 0) {
+    FreeHeapBufferIfNotNull(iVar3);
+    iVar4 = iVar4 + 1;
+    uVar2 = (*pTVar1)(iVar4);
+    iVar3 = CONCAT31(extraout_var_00,uVar2);
+  }
+  SetSize(0,0xffffffff);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004880F0
+// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x004880f2. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (*this->vftable[3].OrphanCallChain_C1_I17_00487470)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488110
+// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
+
+{
+  TCommandVtbl *pTVar1;
+  
+  pTVar1 = this->vftable;
+  (*pTVar1[3].OrphanCallChain_C1_I17_00487470)();
+  (*pTVar1[5].GetTEventClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488140
+// GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
+
+{
+  if (this != (TCommand *)0x0) {
+    (*this->vftable->OrphanCallChain_C1_I17_00487470)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488160
+// GHIDRA_NAME TCommand::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+undefined4 __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this)
+
+{
+  int in_stack_00000004;
+  
+  if (in_stack_00000004 <= *(int *)&this->field_0x8) {
+    return *(undefined4 *)(*(int *)&this->field_0x4 + -4 + in_stack_00000004 * 4);
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488190
+// GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
+
+{
+  undefined uVar1;
+  
+  uVar1 = (*this->vftable[5].OrphanCallChain_C1_I17_00487470)();
+  CPtrArray::RemoveAt((CPtrArray *)this);
+  FreeHeapBufferIfNotNull(uVar1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004881D0
+// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
+
+{
+  (*this->vftable[5].OrphanCallChain_C1_I17_00487470)(1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004881F0
+// GHIDRA_NAME TCommand::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+
+void __thiscall TCommand::SetForeignMinisterReadyFlag14(TCommand *this)
+
+{
+  TCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
+  code *pcVar2;
+  undefined uVar3;
+  short sVar4;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined4 *puVar6;
+  uint uVar7;
+  int unaff_EBX;
+  int iVar8;
+  undefined4 *puVar9;
+  undefined4 *unaff_retaddr;
+  int iVar5;
+  
+  iVar8 = 1;
+  pTVar1 = this->vftable[5].OrphanCallChain_C1_I17_00487470;
+  uVar3 = (*pTVar1)(1);
+  iVar5 = CONCAT31(extraout_var,uVar3);
+  if (iVar5 == 0) {
+    (**(code **)(unaff_EBX + 0x3c))(unaff_retaddr);
+    return;
+  }
+  pcVar2 = *(code **)(unaff_EBX + 0x44);
+  do {
+    sVar4 = (*pcVar2)(unaff_retaddr,iVar5);
+    if (sVar4 != 1) {
+      puVar6 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+      sVar4 = *(short *)&this->field_0x14;
+      puVar9 = puVar6;
+      for (uVar7 = (uint)(int)sVar4 >> 2; uVar7 != 0; uVar7 = uVar7 - 1) {
+        *puVar9 = *unaff_retaddr;
+        unaff_retaddr = unaff_retaddr + 1;
+        puVar9 = puVar9 + 1;
+      }
+      for (uVar7 = (int)sVar4 & 3; uVar7 != 0; uVar7 = uVar7 - 1) {
+        *(undefined1 *)puVar9 = *(undefined1 *)unaff_retaddr;
+        unaff_retaddr = (undefined4 *)((int)unaff_retaddr + 1);
+        puVar9 = (undefined4 *)((int)puVar9 + 1);
+      }
+      InsertAt(iVar8 + -1,puVar6,1);
+      return;
+    }
+    iVar8 = iVar8 + 1;
+    uVar3 = (*pTVar1)(iVar8);
+    iVar5 = CONCAT31(extraout_var_00,uVar3);
+  } while (iVar5 != 0);
+  (**(code **)(unaff_EBX + 0x3c))(unaff_retaddr);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004882C0
+// GHIDRA_NAME TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall TCommand::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCommand *this)
+
+{
+  short sVar1;
+  undefined4 *puVar2;
+  uint uVar3;
+  undefined4 *in_stack_00000004;
+  
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+  sVar1 = *(short *)&this->field_0x14;
+  for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *puVar2 = *in_stack_00000004;
+    in_stack_00000004 = in_stack_00000004 + 1;
+    puVar2 = puVar2 + 1;
+  }
+  for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *(undefined1 *)puVar2 = *(undefined1 *)in_stack_00000004;
+    in_stack_00000004 = (undefined4 *)((int)in_stack_00000004 + 1);
+    puVar2 = (undefined4 *)((int)puVar2 + 1);
+  }
+  CPtrArray::SetAtGrow((CPtrArray *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488310
+// GHIDRA_NAME TCommand::UpdateControlCachedIntFromWindowText
+// GHIDRA_PROTO undefined __thiscall UpdateControlCachedIntFromWindowText(void)
+
+void __thiscall TCommand::UpdateControlCachedIntFromWindowText(TCommand *this)
+
+{
+  short sVar1;
+  undefined4 *puVar2;
+  uint uVar3;
+  undefined4 *puVar4;
+  undefined4 *in_stack_00000004;
+  
+  puVar2 = (undefined4 *)AllocateWithFallbackHandler((int)*(short *)&this->field_0x14);
+  sVar1 = *(short *)&this->field_0x14;
+  puVar4 = puVar2;
+  for (uVar3 = (uint)(int)sVar1 >> 2; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *puVar4 = *in_stack_00000004;
+    in_stack_00000004 = in_stack_00000004 + 1;
+    puVar4 = puVar4 + 1;
+  }
+  for (uVar3 = (int)sVar1 & 3; uVar3 != 0; uVar3 = uVar3 - 1) {
+    *(undefined1 *)puVar4 = *(undefined1 *)in_stack_00000004;
+    in_stack_00000004 = (undefined4 *)((int)in_stack_00000004 + 1);
+    puVar4 = (undefined4 *)((int)puVar4 + 1);
+  }
+  InsertAt(0,puVar2,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488360
+// GHIDRA_NAME TCommand::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+int __thiscall TCommand::OrphanRetStub_0059add0(TCommand *this)
+
+{
+  uint in_stack_00000004;
+  uint in_stack_00000008;
+  
+  if (in_stack_00000008 < in_stack_00000004) {
+    return 1;
+  }
+  return -(uint)(in_stack_00000004 < in_stack_00000008);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488390
+// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
+
+{
+  byte in_stack_00000004;
+  
+  CObArray::thunk_DestructCObArray();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004883E0
+// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
+
+{
+  return &g_pClassDescTSortedPtrList;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004885D0
+// GHIDRA_NAME TCommand::InvalidateWindowRectFromHandleField1C
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+
+void __thiscall TCommand::InvalidateWindowRectFromHandleField1C(TCommand *this)
+
+{
+  CPtrList::AddHead((CPtrList *)&this->field_0x4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004885F0
+// GHIDRA_NAME TCommand::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TCommand::OrphanLeaf_NoCall_Ins07_004d8920(TCommand *this)
+
+{
+  CPtrList::AddHead((CPtrList *)&this->field_0x4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488610
+// GHIDRA_NAME TCommand::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TCommand::OrphanCallChain_C11_I88_004874b0(TCommand *this)
+
+{
+  CPtrList::AddTail((CPtrList *)&this->field_0x4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488630
+// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
+
+{
+  CPtrList::AddTail((CPtrList *)&this->field_0x4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004888F0
+// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TCommand * __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
+
+{
+  byte in_stack_00000004;
+  
+  TStream::CreateTStreamInstance((TStream *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E1E50
+// GHIDRA_NAME TCommand::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TCommand::GetTEventHandlerClassNamePointer(TCommand *this)
+
+{
+  undefined1 *puVar1;
+  int iVar2;
+  undefined4 uVar3;
+  code *unaff_EBX;
+  code *unaff_EBP;
+  short sVar4;
+  int *in_stack_00000004;
+  
+  iVar2 = *in_stack_00000004;
+  puVar1 = &this->field_0x14;
+  (**(code **)(iVar2 + 0x3c))(puVar1,2);
+  iVar2 = (**(code **)(iVar2 + 0x50))();
+  uVar3 = AllocateWithFallbackHandler((int)*(short *)puVar1);
+  sVar4 = 1;
+  if (0 < iVar2) {
+    do {
+      (*unaff_EBX)(uVar3,(int)*(short *)puVar1);
+      (*unaff_EBP)(uVar3);
+      sVar4 = sVar4 + 1;
+    } while (sVar4 <= iVar2);
+  }
+  FreeHeapBufferIfNotNull(uVar3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E1F10
+// GHIDRA_NAME TCommand::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TCommand::_scalar_deleting_destructor_(TCommand *this)
+
+{
+  TCommand_OrphanCallChain_C1_I17_00487470_0x04 *pTVar1;
+  undefined uVar2;
+  int iVar3;
+  short sVar4;
+  code *unaff_EDI;
+  int *in_stack_00000004;
+  
+  iVar3 = *in_stack_00000004;
+  (**(code **)(iVar3 + 0x78))(&this->field_0x14,2);
+  (**(code **)(iVar3 + 0x8c))(*(undefined4 *)&this->field_0x8);
+  sVar4 = 1;
+  if (0 < *(int *)&this->field_0x8) {
+    iVar3 = 1;
+    pTVar1 = this->vftable[5].OrphanCallChain_C1_I17_00487470;
+    do {
+      uVar2 = (*pTVar1)(iVar3,(int)*(short *)&this->field_0x14);
+      (*unaff_EDI)(uVar2);
+      sVar4 = sVar4 + 1;
+      iVar3 = (int)sVar4;
+    } while (iVar3 <= *(int *)&this->field_0x8);
+  }
+  return;
 }
 

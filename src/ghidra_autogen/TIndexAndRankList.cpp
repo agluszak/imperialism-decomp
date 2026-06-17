@@ -3,27 +3,79 @@
 // Program: Imperialism.exe
 // Bucket: TIndexAndRankList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00534850
-// GHIDRA_NAME TIndexAndRankList::GetTIndexAndRankListClassNamePointer
-// GHIDRA_PROTO undefined GetTIndexAndRankListClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EBF0
+// GHIDRA_NAME TIndexAndRankList::InitializeTMinisterBaseOrderArray
+// GHIDRA_PROTO undefined __thiscall InitializeTMinisterBaseOrderArray(void)
 
-undefined ** TIndexAndRankList::GetTIndexAndRankListClassNamePointer(void)
+void __thiscall TIndexAndRankList::InitializeTMinisterBaseOrderArray(TIndexAndRankList *this)
 
 {
-  return &PTR_s_TIndexAndRankList_00659b58;
+  TIndexAndRankList *this_00;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006340ba;
+  *unaff_FS_OFFSET = &local_c;
+  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
+  local_4 = 0;
+  if (this_00 == (TIndexAndRankList *)0x0) {
+    this_00 = (TIndexAndRankList *)0x0;
+  }
+  else {
+    CPtrArray(this_00);
+    this_00->vftable = &TIndexAndRankListVtbl_00659c58;
+  }
+  *(undefined2 *)&this_00->field_0x14 = 6;
+  *(TIndexAndRankList **)&this->field_0x8 = this_00;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00534850
+// GHIDRA_NAME TIndexAndRankList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TIndexAndRankList::GetTEventHandlerClassNamePointer(TIndexAndRankList *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534870
 // GHIDRA_NAME TIndexAndRankList::ConstructTIndexAndRankList
-// GHIDRA_PROTO undefined ConstructTIndexAndRankList()
+// GHIDRA_PROTO undefined __thiscall ConstructTIndexAndRankList(void)
 
-TIndexAndRankList * __fastcall
-TIndexAndRankList::ConstructTIndexAndRankList(TIndexAndRankList *param_1)
+TIndexAndRankList * __thiscall
+TIndexAndRankList::ConstructTIndexAndRankList(TIndexAndRankList *this)
 
 {
-  CPtrArray(param_1);
-  *(undefined ***)param_1 = &PTR_LAB_00659c58;
-  return param_1;
+  CPtrArray(this);
+  this->vftable = &TIndexAndRankListVtbl_00659c58;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005348A0
+// GHIDRA_NAME TIndexAndRankList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TIndexAndRankList * __thiscall
+TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructTIndexAndRankList();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005348D0
@@ -47,6 +99,23 @@ void TIndexAndRankList::DestructTIndexAndRankList(void)
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00534910
+// GHIDRA_NAME TIndexAndRankList::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+int __thiscall TIndexAndRankList::OrphanRetStub_0059add0(TIndexAndRankList *this)
+
+{
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if (*(short *)(in_stack_00000004 + 2) < *(short *)(in_stack_00000008 + 2)) {
+    return 1;
+  }
+  return ((*(short *)(in_stack_00000004 + 2) <= *(short *)(in_stack_00000008 + 2)) - 1 & 0xfffffffe)
+         + 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0055B710
@@ -78,10 +147,10 @@ void __fastcall TIndexAndRankList::InitializeInterNationEventQueueManager(int pa
     }
     else {
       CPtrArray(pTVar1);
-      *(undefined ***)pTVar1 = &TSortedPtrList::_vftable_;
+      pTVar1->vftable = (TIndexAndRankListVtbl *)&TSortedPtrList::_vftable_;
     }
     puVar3[-8] = pTVar1;
-    *(undefined2 *)(pTVar1 + 0x14) = 0x24;
+    *(undefined2 *)&pTVar1->field_0x14 = 0x24;
     *puVar3 = 0;
     puVar3 = puVar3 + 1;
     iVar2 = iVar2 + -1;
@@ -95,10 +164,10 @@ void __fastcall TIndexAndRankList::InitializeInterNationEventQueueManager(int pa
   }
   else {
     CPtrArray(pTVar1);
-    *(undefined ***)pTVar1 = &TSortedPtrList::_vftable_;
+    pTVar1->vftable = (TIndexAndRankListVtbl *)&TSortedPtrList::_vftable_;
   }
   *(TIndexAndRankList **)(param_1 + 0xef0) = pTVar1;
-  *(undefined2 *)(pTVar1 + 0x14) = 0x10;
+  *(undefined2 *)&pTVar1->field_0x14 = 0x10;
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -121,26 +190,28 @@ void __fastcall TIndexAndRankList::InitializeInterNationEventQueueManager(int pa
 void __thiscall TIndexAndRankList::CPtrArray(TIndexAndRankList *this)
 
 {
-  *(undefined ***)this = &_vftable_;
-  *(undefined4 *)(this + 4) = 0;
-  *(undefined4 *)(this + 0x10) = 0;
-  *(undefined4 *)(this + 0xc) = 0;
-  *(undefined4 *)(this + 8) = 0;
+  this->vftable = (TIndexAndRankListVtbl *)&_vftable_;
+  *(undefined4 *)&this->field_0x4 = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0xc = 0;
+  *(undefined4 *)&this->field_0x8 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601BC1
 // GHIDRA_NAME TIndexAndRankList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TIndexAndRankList::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TIndexAndRankList * __thiscall
+TIndexAndRankList::_scalar_deleting_destructor_(TIndexAndRankList *this)
 
 {
+  byte in_stack_00000004;
+  
   CObArray::DestructCObArray();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 

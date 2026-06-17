@@ -7,11 +7,11 @@
 // GHIDRA_NAME TTerrainInfoDialog::CreateTTerrainInfoDialogInstance
 // GHIDRA_PROTO undefined CreateTTerrainInfoDialogInstance()
 
-undefined4 * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
+TNoHilitePicture * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TNoHilitePicture *this;
+  TNoHilitePicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,53 +21,56 @@ undefined4 * TTerrainInfoDialog::CreateTTerrainInfoDialogInstance(void)
   puStack_8 = &LAB_00633dda;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    *puVar1 = &PTR_LAB_00658d70;
-    puVar2 = puVar1;
+  pTVar1 = (TNoHilitePicture *)0x0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this->vftable = (TNoHilitePictureVtbl *)&TTerrainInfoDialogVtbl_00658d70;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B120
-// GHIDRA_NAME TTerrainInfoDialog::GetTTerrainInfoDialogClassNamePointer
-// GHIDRA_PROTO undefined GetTTerrainInfoDialogClassNamePointer()
+// GHIDRA_NAME TTerrainInfoDialog::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTerrainInfoDialog::GetTTerrainInfoDialogClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTerrainInfoDialog::GetTEventHandlerClassNamePointer(TTerrainInfoDialog *this)
 
 {
-  return &PTR_s_TTerrainInfoDialog_006589b0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B140
 // GHIDRA_NAME TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState
-// GHIDRA_PROTO undefined ConstructTTerrainInfoDialogBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTerrainInfoDialogBaseState(void)
 
-undefined4 * __fastcall
-TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(undefined4 *param_1)
+TTerrainInfoDialog * __thiscall
+TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState(TTerrainInfoDialog *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-  *param_1 = &PTR_LAB_00658d70;
-  return param_1;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  this->vftable = &TTerrainInfoDialogVtbl_00658d70;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0051B170
-// GHIDRA_NAME TTerrainInfoDialog::DestructTTerrainInfoDialogAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTerrainInfoDialogAndMaybeFree()
+// GHIDRA_NAME TTerrainInfoDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TTerrainInfoDialog::DestructTTerrainInfoDialogAndMaybeFree(undefined4 param_1,byte param_2)
+TTerrainInfoDialog * __thiscall
+TTerrainInfoDialog::_scalar_deleting_destructor_(TTerrainInfoDialog *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 

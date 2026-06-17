@@ -7,10 +7,10 @@
 // GHIDRA_NAME TInfoBarPictureText::CreateTInfoBarPictureTextInstance
 // GHIDRA_PROTO undefined CreateTInfoBarPictureTextInstance()
 
-undefined4 * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
+TStaticText * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
 
 {
-  undefined4 *puVar1;
+  TStaticText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,61 +20,65 @@ undefined4 * TInfoBarPictureText::CreateTInfoBarPictureTextInstance(void)
   puStack_8 = &LAB_00638efa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb4);
+  this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
-    *(undefined1 *)(puVar1 + 0x26) = 0;
-    *(undefined1 *)((int)puVar1 + 0x99) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
-    *(undefined1 *)(puVar1 + 0x27) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
-    puVar1[0x26] = 0;
-    *(undefined1 *)(puVar1 + 0x28) = 0;
-    *puVar1 = &PTR_LAB_0066d288;
+  if (this != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    *(undefined1 *)&this[1].field04 = 0;
+    *(undefined1 *)((int)&this[1].field04 + 1) = 0;
+    *(undefined1 *)((int)&this[1].field04 + 2) = 0;
+    *(undefined1 *)((int)&this[1].field04 + 3) = 0;
+    *(undefined1 *)&this[1].padding_08_to_0b = 0;
+    *(undefined1 *)((int)&this[1].padding_08_to_0b + 1) = 0;
+    *(undefined1 *)((int)&this[1].padding_08_to_0b + 2) = 0;
+    *(undefined1 *)((int)&this[1].padding_08_to_0b + 3) = 0;
+    this[1].field04 = 0;
+    *(undefined1 *)&this[1].field0c = 0;
+    this->vftable = (TStaticTextVtbl *)&TInfoBarPictureTextVtbl_0066d288;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TStaticText *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5BB0
-// GHIDRA_NAME TInfoBarPictureText::GetTInfoBarPictureTextClassNamePointer
-// GHIDRA_PROTO undefined GetTInfoBarPictureTextClassNamePointer()
+// GHIDRA_NAME TInfoBarPictureText::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TInfoBarPictureText::GetTInfoBarPictureTextClassNamePointer(void)
+CRuntimeClass * __thiscall
+TInfoBarPictureText::GetTEventHandlerClassNamePointer(TInfoBarPictureText *this)
 
 {
-  return &PTR_s_TInfoBarPictureText_0066c438;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C60
-// GHIDRA_NAME TInfoBarPictureText::ConstructTInfoBarPictureTextBaseState
-// GHIDRA_PROTO undefined ConstructTInfoBarPictureTextBaseState()
+// GHIDRA_NAME TInfoBarPictureText::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TInfoBarPictureText::ConstructTInfoBarPictureTextBaseState(undefined4 param_1,byte param_2)
+TInfoBarPictureText * __thiscall
+TInfoBarPictureText::_scalar_deleting_destructor_(TInfoBarPictureText *this)
 
 {
-  DestructTInfoBarPictureTextAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTInfoBarPictureTextAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5C90
 // GHIDRA_NAME TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree
-// GHIDRA_PROTO undefined DestructTInfoBarPictureTextAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTInfoBarPictureTextAndMaybeFree(void)
 
-void __fastcall TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(undefined4 *param_1)
+void __thiscall
+TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(TInfoBarPictureText *this)
 
 {
-  void *this;
+  CString *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -83,23 +87,114 @@ void __fastcall TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree(und
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &TStaticText::_vftable_;
-  this = (void *)param_1[0x21];
+  this->vftable = (TInfoBarPictureTextVtbl *)&TStaticText::_vftable_;
+  this_00 = *(CString **)&this->field_0x84;
   uStack_4 = 0;
-  if (this != (void *)0x0) {
-    ReleaseSharedStringRefIfNotEmpty(this);
-    FreeHeapBufferIfNotNull(this);
+  if (this_00 != (CString *)0x0) {
+    CString::~CString(this_00);
+    FreeHeapBufferIfNotNull(this_00);
   }
-  *param_1 = &TView::_vftable_;
+  this->vftable = (TInfoBarPictureTextVtbl *)&TView::_vftable_;
   uStack_4 = 2;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString(&this->sharedStringRef);
+  this->vftable =
+       (TInfoBarPictureTextVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B5CB0
+// GHIDRA_NAME TInfoBarPictureText::ConstructTInfoBarTextBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(void)
+
+void __thiscall TInfoBarPictureText::ConstructTInfoBarTextBaseState(TInfoBarPictureText *this)
+
+{
+  TInfoBarPictureTextVtbl *pTVar1;
+  BOOL BVar2;
+  undefined4 *unaff_FS_OFFSET;
+  RECT *in_stack_00000008;
+  LONG local_3c;
+  LONG LStack_38;
+  LONG LStack_34;
+  RECT RStack_30;
+  tagRECT tStack_20;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_00638f18;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_4 = 0;
+  BVar2 = EqualRect(in_stack_00000008,(RECT *)&this->field_0xa4);
+  if (BVar2 == 0) {
+    *(LONG *)&this->field_0xa4 = in_stack_00000008->left;
+    *(LONG *)&this->field_0xa8 = in_stack_00000008->top;
+    *(LONG *)&this->field_0xac = in_stack_00000008->right;
+    *(LONG *)&this->field_0xb0 = in_stack_00000008->bottom;
+    pTVar1 = this->vftable;
+    (*pTVar1[0x25].slot_0x04)(&local_3c);
+    RStack_30.top = local_3c;
+    RStack_30.right = LStack_38;
+    RStack_30.bottom = LStack_34;
+    CopyRect(&tStack_20,&RStack_30);
+    thunk_InvalidateCityDialogRectRegion(&tStack_20,1);
+    UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
+    (*pTVar1[0x1c].slot_0x04)();
+  }
+  local_4 = 0xffffffff;
+  CString::~CString((CString *)&stack0x00000004);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B5DD0
+// GHIDRA_NAME TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0(void)
+
+void __thiscall
+TInfoBarPictureText::Helper_Uses_thunk_InvalidateCityDialogRectRegion_At005b5dd0
+          (TInfoBarPictureText *this)
+
+{
+  TInfoBarPictureTextVtbl *pTVar1;
+  undefined4 *unaff_FS_OFFSET;
+  LONG local_3c;
+  LONG LStack_38;
+  LONG LStack_34;
+  RECT RStack_30;
+  tagRECT tStack_20;
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_00638f38;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  *(undefined4 *)&this->field_0xa4 = 0;
+  local_4 = 0;
+  *(undefined4 *)&this->field_0xa8 = 0;
+  *(undefined4 *)&this->field_0xac = 0;
+  *(undefined4 *)&this->field_0xb0 = 0;
+  pTVar1 = this->vftable;
+  (*pTVar1[0x25].slot_0x04)(&local_3c);
+  RStack_30.top = local_3c;
+  RStack_30.right = LStack_38;
+  RStack_30.bottom = LStack_34;
+  CopyRect(&tStack_20,&RStack_30);
+  thunk_InvalidateCityDialogRectRegion(&tStack_20,1);
+  UpdateTextEntrySharedStringIfChanged(&stack0x00000000);
+  (*pTVar1[0x1c].slot_0x04)();
+  puStack_8 = (undefined1 *)0xffffffff;
+  CString::~CString((CString *)&stack0x00000000);
+  *unaff_FS_OFFSET = uStack_10;
   return;
 }
 

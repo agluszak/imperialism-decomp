@@ -3,26 +3,51 @@
 // Program: Imperialism.exe
 // Bucket: TCheater.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004B1480
-// GHIDRA_NAME TCheater::GetTCheaterClassNamePointer
-// GHIDRA_PROTO undefined GetTCheaterClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1410
+// GHIDRA_NAME TCheater::OrphanRetStub_004b1410
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b1410(void)
 
-undefined ** TCheater::GetTCheaterClassNamePointer(void)
+void __thiscall TCheater::OrphanRetStub_004b1410(TCheater *this)
 
 {
-  return &PTR_s_TCheater_0064ebe0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1430
+// GHIDRA_NAME TCheater::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TCheater * __thiscall TCheater::_scalar_deleting_destructor_(TCheater *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B1480
+// GHIDRA_NAME TCheater::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TCheater::GetTEventHandlerClassNamePointer(TCheater *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B14A0
 // GHIDRA_NAME TCheater::ConstructTCheaterBaseState
 // GHIDRA_PROTO undefined ConstructTCheaterBaseState()
 
-void __thiscall
-TCheater::ConstructTCheaterBaseState(int param_1,undefined4 *param_2,undefined4 param_3)
+void __thiscall TCheater::ConstructTCheaterBaseState(int param_1,CString param_2,undefined4 param_3)
 
 {
   undefined4 uVar1;
-  undefined4 *puVar2;
+  TControl *pTVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_24;
   undefined4 local_20;
@@ -44,38 +69,37 @@ TCheater::ConstructTCheaterBaseState(int param_1,undefined4 *param_2,undefined4 
   local_18 = 0x1e0;
   local_14 = 0x80;
   local_10 = 0x20;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,&local_24,&local_1c,5,5,0);
-  param_2 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2.m_pchData,&local_24,&local_1c,5,5,0);
+  param_2.m_pchData = (char *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (param_2 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
+  if ((TStaticText *)param_2.m_pchData != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)param_2.m_pchData);
   }
   uVar1 = param_3;
   local_4 = 0xffffffff;
   InitializeTextEntryBaseAndOptionalStringResource(param_1,&local_24,&local_14,5,5,param_3,1);
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  pTVar2 = (TControl *)AllocateWithFallbackHandler(0x84);
   local_4 = 1;
-  param_2 = puVar2;
-  if (puVar2 == (undefined4 *)0x0) {
-    puVar2 = (undefined4 *)0x0;
+  param_2.m_pchData = (char *)pTVar2;
+  if (pTVar2 == (TControl *)0x0) {
+    pTVar2 = (TControl *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(pTVar2);
     local_4 = CONCAT31(local_4._1_3_,2);
-    *puVar2 = &TButton::_vftable_;
+    pTVar2->vftable = (TControlVtbl *)&TButton::_vftable_;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-    *puVar2 = &PTR_LAB_0064a4e0;
+    pTVar2->vftable = (TControlVtbl *)&TButtonVtbl_0064a4e0;
   }
   local_4 = 0xffffffff;
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-            ((TToolBarCluster *)&param_2,&DAT_00695a18);
+  CString::CString(&param_2,&DAT_00695a18);
   local_4 = 3;
   if (DAT_006a2480 == 0) {
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5b7);
   }
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&param_2);
-  puVar2[0x18] = 0x22;
+  CString::~CString(&param_2);
+  pTVar2->hasCommandTagResource = 0x22;
   *(short *)(param_1 + 0x60) = (short)uVar1;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -83,20 +107,21 @@ TCheater::ConstructTCheaterBaseState(int param_1,undefined4 *param_2,undefined4 
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B1670
 // GHIDRA_NAME TCheater::DestructTCheaterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCheaterAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTCheaterAndMaybeFree(void)
 
-void __fastcall TCheater::DestructTCheaterAndMaybeFree(int *param_1)
+void __thiscall TCheater::DestructTCheaterAndMaybeFree(TCheater *this)
 
 {
   int iVar1;
-  int *piVar2;
+  undefined uVar2;
+  undefined3 extraout_var;
   int *unaff_retaddr;
   int iStack_10;
   int iStack_c;
   int iStack_8;
   
-  piVar2 = (int *)(**(code **)(*param_1 + 0x58))();
-  iVar1 = *piVar2;
+  uVar2 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   (**(code **)(iVar1 + 300))(&iStack_10);
   iStack_10 = 0xf0 - unaff_retaddr[1] / 2;
   iStack_8 = iStack_10 + unaff_retaddr[1];

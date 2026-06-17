@@ -5,47 +5,74 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF500
 // GHIDRA_NAME TFuzzySet::CreateTFuzzySetInstance
-// GHIDRA_PROTO undefined CreateTFuzzySetInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTFuzzySetInstance(void)
 
-void __fastcall TFuzzySet::CreateTFuzzySetInstance(undefined4 *param_1)
+void __thiscall TFuzzySet::CreateTFuzzySetInstance(TFuzzySet *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TFuzzySetVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF6C0
 // GHIDRA_NAME TFuzzySet::GetTFuzzySetClassNamePointer
-// GHIDRA_PROTO undefined GetTFuzzySetClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTFuzzySetClassNamePointer(void)
 
-undefined ** TFuzzySet::GetTFuzzySetClassNamePointer(void)
+CRuntimeClass * __thiscall TFuzzySet::GetTFuzzySetClassNamePointer(TFuzzySet *this)
 
 {
-  return &PTR_s_TFuzzySet_00656958;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF6E0
 // GHIDRA_NAME TFuzzySet::ConstructTFuzzySetBaseState
-// GHIDRA_PROTO undefined ConstructTFuzzySetBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTFuzzySetBaseState(void)
 
-void __fastcall TFuzzySet::ConstructTFuzzySetBaseState(undefined4 *param_1)
+void __thiscall TFuzzySet::ConstructTFuzzySetBaseState(TFuzzySet *this)
 
 {
-  *param_1 = &PTR_LAB_006569c8;
+  this->vftable = &TFuzzySetVtbl_006569c8;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FF700
 // GHIDRA_NAME TFuzzySet::DestructTFuzzySetAndMaybeFree
-// GHIDRA_PROTO undefined DestructTFuzzySetAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTFuzzySetAndMaybeFree(void)
 
-undefined4 __thiscall TFuzzySet::DestructTFuzzySetAndMaybeFree(undefined4 param_1,byte param_2)
+TFuzzySet * __thiscall TFuzzySet::DestructTFuzzySetAndMaybeFree(TFuzzySet *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTFuzzySetAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FF780
+// GHIDRA_NAME TFuzzySet::OrphanCallChain_C2_I27_004ff780
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I27_004ff780(void)
+
+void __thiscall TFuzzySet::OrphanCallChain_C2_I27_004ff780(TFuzzySet *this)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  
+  iVar1 = 0;
+  if (0 < *(int *)&this->field_0x4) {
+    puVar2 = (undefined4 *)&this->field_0x8;
+    do {
+      (**(code **)(*(int *)*puVar2 + 0x1c))();
+      iVar1 = iVar1 + 1;
+      puVar2 = puVar2 + 1;
+    } while (iVar1 < *(int *)&this->field_0x4);
+  }
+  if (this != (TFuzzySet *)0x0) {
+    (*this->vftable->slot_0x04)(1);
+  }
+  return;
 }
 

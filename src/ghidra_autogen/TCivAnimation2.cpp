@@ -5,42 +5,44 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F660
 // GHIDRA_NAME TCivAnimation2::CreateTCivAnimation2Instance
-// GHIDRA_PROTO undefined CreateTCivAnimation2Instance()
+// GHIDRA_PROTO undefined __thiscall CreateTCivAnimation2Instance(void)
 
-void __fastcall TCivAnimation2::CreateTCivAnimation2Instance(undefined4 *param_1)
+void __thiscall TCivAnimation2::CreateTCivAnimation2Instance(TCivAnimation2 *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TCivAnimation2Vtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F680
-// GHIDRA_NAME TCivAnimation2::GetTCivAnimation2ClassNamePointer
-// GHIDRA_PROTO undefined GetTCivAnimation2ClassNamePointer()
+// GHIDRA_NAME TCivAnimation2::GetTAnimationClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-undefined ** TCivAnimation2::GetTCivAnimation2ClassNamePointer(void)
+CRuntimeClass * __thiscall TCivAnimation2::GetTAnimationClassNamePointer(TCivAnimation2 *this)
 
 {
-  return &PTR_s_TCivAnimation2_0064c220;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F6A0
 // GHIDRA_NAME TCivAnimation2::ConstructTCivAnimation2BaseState
-// GHIDRA_PROTO undefined ConstructTCivAnimation2BaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTCivAnimation2BaseState(void)
 
-void __thiscall
-TCivAnimation2::ConstructTCivAnimation2BaseState
-          (int param_1,undefined4 param_2,undefined4 *param_3,int param_4,undefined4 param_5)
+void __thiscall TCivAnimation2::ConstructTCivAnimation2BaseState(TCivAnimation2 *this)
 
 {
   undefined2 uVar1;
   undefined4 uVar2;
+  undefined4 in_stack_00000004;
+  undefined4 *in_stack_00000008;
+  int in_stack_0000000c;
+  undefined4 in_stack_00000010;
   undefined4 local_48 [18];
   
   local_48[0xb] = 10;
   local_48[0x10] = 10;
   local_48[0x11] = 10;
-  *(undefined4 *)(param_1 + 4) = param_2;
+  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
   local_48[10] = 0xf;
   local_48[0xd] = 0xf;
   local_48[0xe] = 0xf;
@@ -49,80 +51,80 @@ TCivAnimation2::ConstructTCivAnimation2BaseState
   local_48[9] = 5;
   local_48[0] = 14000;
   local_48[1] = 0x36b5;
-  *(undefined4 *)(param_1 + 0x1c) = *param_3;
+  *(undefined4 *)&this->field_0x1c = *in_stack_00000008;
   local_48[2] = 0x36bb;
   local_48[3] = 0x36bf;
-  *(undefined4 *)(param_1 + 0x20) = param_3[1];
+  *(undefined4 *)&this->field_0x20 = in_stack_00000008[1];
   local_48[4] = 0x36c5;
   local_48[5] = 0x36ca;
-  *(undefined4 *)(param_1 + 0x24) = param_3[2];
+  *(undefined4 *)&this->field_0x24 = in_stack_00000008[2];
   local_48[6] = 0x36ce;
   local_48[7] = 0x36d3;
-  *(undefined4 *)(param_1 + 0x28) = param_3[3];
+  *(undefined4 *)&this->field_0x28 = in_stack_00000008[3];
   local_48[8] = 0x36d8;
-  uVar1 = *(undefined2 *)(local_48 + param_4);
-  *(undefined2 *)(param_1 + 8) = 0;
-  *(undefined2 *)(param_1 + 10) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  uVar2 = local_48[param_4 + 9];
-  *(undefined2 *)(param_1 + 0xc) = uVar1;
-  *(undefined4 *)(param_1 + 0x14) = uVar2;
-  *(undefined4 *)(param_1 + 0x18) = param_5;
-  *(short *)(param_1 + 0x2c) = (short)param_4;
+  uVar1 = *(undefined2 *)(local_48 + in_stack_0000000c);
+  *(undefined2 *)&this->field_0x8 = 0;
+  *(undefined2 *)&this->field_0xa = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  uVar2 = local_48[in_stack_0000000c + 9];
+  *(undefined2 *)&this->field_0xc = uVar1;
+  *(undefined4 *)&this->field_0x14 = uVar2;
+  *(undefined4 *)&this->field_0x18 = in_stack_00000010;
+  *(short *)&this->field_0x2c = (short)in_stack_0000000c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F7C0
 // GHIDRA_NAME TCivAnimation2::DestructTCivAnimation2AndMaybeFree
-// GHIDRA_PROTO undefined DestructTCivAnimation2AndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTCivAnimation2AndMaybeFree(void)
 
-uint __fastcall TCivAnimation2::DestructTCivAnimation2AndMaybeFree(int param_1)
+uint __thiscall TCivAnimation2::DestructTCivAnimation2AndMaybeFree(TCivAnimation2 *this)
 
 {
   ushort uVar1;
   int iVar2;
   uint uVar3;
   
-  uVar3 = *(int *)(param_1 + 0x10) + 1;
-  *(uint *)(param_1 + 0x10) = uVar3;
-  if (uVar3 != *(uint *)(param_1 + 0x14)) {
+  uVar3 = *(int *)&this->field_0x10 + 1;
+  *(uint *)&this->field_0x10 = uVar3;
+  if (uVar3 != *(uint *)&this->field_0x14) {
     return uVar3;
   }
-  thunk_InvalidateCityDialogRectRegion(param_1 + 0x1c,1);
-  *(short *)(param_1 + 8) = *(short *)(param_1 + 8) + 1;
-  uVar1 = *(ushort *)(param_1 + 8);
+  thunk_InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+  *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
+  uVar1 = *(ushort *)&this->field_0x8;
   uVar3 = (uint)uVar1;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  switch(*(undefined2 *)(param_1 + 0x2c)) {
+  *(undefined4 *)&this->field_0x10 = 0;
+  switch(*(undefined2 *)&this->field_0x2c) {
   case 0:
   case 7:
     if (uVar1 == 9) {
-      *(undefined2 *)(param_1 + 8) = 0;
+      *(undefined2 *)&this->field_0x8 = 0;
       return 9;
     }
     break;
   case 1:
     if (uVar1 == 7) {
-      *(undefined2 *)(param_1 + 8) = 0;
+      *(undefined2 *)&this->field_0x8 = 0;
       return 7;
     }
     break;
   case 2:
     if (uVar1 == 2) {
-      *(undefined2 *)(param_1 + 8) = 0;
+      *(undefined2 *)&this->field_0x8 = 0;
       return 2;
     }
     break;
   case 3:
   case 6:
     if (uVar1 == 5) {
-      *(undefined2 *)(param_1 + 8) = 0;
+      *(undefined2 *)&this->field_0x8 = 0;
       return 5;
     }
     break;
   case 4:
     if (uVar1 == 6) {
-      *(undefined2 *)(param_1 + 8) = 0;
+      *(undefined2 *)&this->field_0x8 = 0;
       return 6;
     }
     break;
@@ -135,7 +137,7 @@ uint __fastcall TCivAnimation2::DestructTCivAnimation2AndMaybeFree(int param_1)
       if (0x31 < iVar2 % 100) {
         return iVar2 / 100;
       }
-      *(undefined2 *)(param_1 + 8) = 0;
+      *(undefined2 *)&this->field_0x8 = 0;
       return iVar2 / 100;
     }
     goto LAB_0049f86f;
@@ -144,461 +146,170 @@ uint __fastcall TCivAnimation2::DestructTCivAnimation2AndMaybeFree(int param_1)
       return uVar3;
     }
 LAB_0049f86f:
-    *(undefined2 *)(param_1 + 8) = 0;
+    *(undefined2 *)&this->field_0x8 = 0;
   }
   return uVar3;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004A0D10
-// GHIDRA_NAME TCivAnimation2::AddObjectToUiTransientRegistry
-// GHIDRA_PROTO undefined AddObjectToUiTransientRegistry()
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F8E0
+// GHIDRA_NAME TCivAnimation2::RenderBattleReportInsetWithPaletteShift
+// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
 
-void __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(int param_1,undefined4 param_2)
+void __thiscall TCivAnimation2::RenderBattleReportInsetWithPaletteShift(TCivAnimation2 *this)
 
 {
-  (**(code **)(**(int **)(param_1 + 0x24) + 0x30))(param_2);
+  short sVar1;
+  undefined2 auStack_d00d8 [425980];
+  undefined2 local_d8 [108];
+  
+  local_d8[0] = 0;
+  local_d8[1] = 1;
+  local_d8[2] = 2;
+  local_d8[3] = 3;
+  local_d8[4] = 4;
+  local_d8[5] = 0;
+  local_d8[6] = 0;
+  local_d8[7] = 0;
+  local_d8[8] = 0;
+  local_d8[9] = 0;
+  local_d8[10] = 0;
+  local_d8[0xb] = 0;
+  local_d8[0xc] = 0;
+  local_d8[0xd] = 1;
+  local_d8[0xe] = 2;
+  local_d8[0xf] = 3;
+  local_d8[0x10] = 1;
+  local_d8[0x11] = 1;
+  local_d8[0x12] = 1;
+  local_d8[0x13] = 1;
+  local_d8[0x14] = 0;
+  local_d8[0x15] = 0;
+  local_d8[0x16] = 0;
+  local_d8[0x17] = 0;
+  local_d8[0x18] = 0;
+  local_d8[0x19] = 1;
+  local_d8[0x1a] = 0;
+  local_d8[0x1b] = 0;
+  local_d8[0x1c] = 0;
+  local_d8[0x1d] = 0;
+  local_d8[0x1e] = 0;
+  local_d8[0x1f] = 0;
+  local_d8[0x20] = 0;
+  local_d8[0x21] = 0;
+  local_d8[0x22] = 0;
+  local_d8[0x23] = 0;
+  local_d8[0x24] = 0;
+  local_d8[0x25] = 1;
+  local_d8[0x26] = 2;
+  local_d8[0x27] = 3;
+  local_d8[0x28] = 0;
+  local_d8[0x29] = 0;
+  local_d8[0x2a] = 0;
+  local_d8[0x2b] = 0;
+  local_d8[0x2c] = 0;
+  local_d8[0x2d] = 0;
+  local_d8[0x2e] = 0;
+  local_d8[0x2f] = 0;
+  local_d8[0x30] = 0;
+  local_d8[0x31] = 1;
+  local_d8[0x32] = 2;
+  local_d8[0x33] = 1;
+  local_d8[0x34] = 1;
+  local_d8[0x35] = 1;
+  local_d8[0x36] = 1;
+  local_d8[0x37] = 0;
+  local_d8[0x38] = 0;
+  local_d8[0x39] = 0;
+  local_d8[0x3a] = 0;
+  local_d8[0x3b] = 0;
+  local_d8[0x3c] = 0;
+  local_d8[0x3d] = 1;
+  local_d8[0x3e] = 0;
+  local_d8[0x3f] = 0;
+  local_d8[0x40] = 0;
+  local_d8[0x41] = 0;
+  local_d8[0x42] = 0;
+  local_d8[0x43] = 0;
+  local_d8[0x44] = 0;
+  local_d8[0x45] = 0;
+  local_d8[0x46] = 0;
+  local_d8[0x47] = 0;
+  local_d8[0x48] = 0;
+  local_d8[0x49] = 1;
+  sVar1 = *(short *)&this->field_0x8;
+  local_d8[0x4c] = 0;
+  local_d8[0x4d] = 0;
+  local_d8[0x4e] = 0;
+  local_d8[0x4f] = 0;
+  local_d8[0x50] = 0;
+  local_d8[0x51] = 0;
+  local_d8[0x52] = 0;
+  local_d8[0x53] = 0;
+  local_d8[0x54] = 0;
+  local_d8[0x55] = 0;
+  local_d8[0x56] = 0;
+  local_d8[0x58] = 0;
+  local_d8[0x59] = 0;
+  local_d8[0x5c] = 0;
+  local_d8[0x5d] = 0;
+  local_d8[0x5e] = 0;
+  local_d8[0x5f] = 0;
+  local_d8[0x60] = 0;
+  local_d8[0x62] = 0;
+  local_d8[100] = 0;
+  local_d8[0x65] = 0;
+  local_d8[0x66] = 0;
+  local_d8[0x67] = 0;
+  local_d8[0x68] = 0;
+  local_d8[0x69] = 0;
+  local_d8[0x6a] = 0;
+  local_d8[0x6b] = 0;
+  local_d8[0x4b] = 1;
+  local_d8[0x57] = 1;
+  local_d8[0x5a] = 1;
+  local_d8[0x61] = 1;
+  local_d8[99] = 1;
+  local_d8[0x4a] = 2;
+  local_d8[0x5b] = 2;
+  *(undefined2 *)&this->field_0x8 = local_d8[(int)sVar1 + *(short *)&this->field_0x2c * 0xc];
+  TAnimation::RenderBattleReportInsetWithPaletteShift((TAnimation *)this);
+  *(short *)&this->field_0x8 = sVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A0D10
+// GHIDRA_NAME TCivAnimation2::AddObjectToUiTransientRegistry
+// GHIDRA_PROTO undefined __thiscall AddObjectToUiTransientRegistry(void)
+
+void __thiscall TCivAnimation2::AddObjectToUiTransientRegistry(TCivAnimation2 *this)
+
+{
+  (**(code **)(**(int **)&this->field_0x24 + 0x30))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A0D30
 // GHIDRA_NAME TCivAnimation2::FindLinkedListNodeByIdFieldAt18
-// GHIDRA_PROTO undefined FindLinkedListNodeByIdFieldAt18()
+// GHIDRA_PROTO undefined __thiscall FindLinkedListNodeByIdFieldAt18(void)
 
-int __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(int param_1,int param_2)
+int __thiscall TCivAnimation2::FindLinkedListNodeByIdFieldAt18(TCivAnimation2 *this)
 
 {
   int iVar1;
   int iVar2;
+  int in_stack_00000004;
   
-  if (param_1 != 0) {
+  if (this != (TCivAnimation2 *)0x0) {
     iVar1 = InitializeLinkedListCursorFromOwnerHead();
     iVar2 = LinkedListCursorHasCurrent();
-    while ((iVar2 != 0 && (*(int *)(iVar1 + 0x18) != param_2))) {
+    while ((iVar2 != 0 && (*(int *)(iVar1 + 0x18) != in_stack_00000004))) {
       iVar1 = AdvanceLinkedListCursor();
       iVar2 = LinkedListCursorHasCurrent();
     }
-    if ((iVar1 != 0) && (*(int *)(iVar1 + 0x18) == param_2)) {
+    if ((iVar1 != 0) && (*(int *)(iVar1 + 0x18) == in_stack_00000004)) {
       return iVar1;
     }
   }
   return 0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0051E260
-// GHIDRA_NAME TCivAnimation2::RenderMapInteractionPreviewSlotsAndTransientSprites
-// GHIDRA_PROTO undefined RenderMapInteractionPreviewSlotsAndTransientSprites()
-
-/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
-
-void __thiscall
-TCivAnimation2::RenderMapInteractionPreviewSlotsAndTransientSprites(int *param_1,int *param_2)
-
-{
-  TCivToolbar *pTVar1;
-  short sVar2;
-  short sVar3;
-  undefined4 uVar4;
-  int iVar5;
-  int iVar6;
-  undefined4 *puVar7;
-  int *piVar8;
-  int iVar9;
-  int iVar10;
-  undefined4 *unaff_FS_OFFSET;
-  bool bVar11;
-  int local_a0;
-  undefined4 local_9c;
-  int local_98;
-  short local_92;
-  int local_90;
-  undefined4 *local_8c;
-  int local_88;
-  short local_82;
-  short local_80;
-  short local_7e;
-  int local_7c;
-  tagRECT local_78;
-  int local_68;
-  RECT local_64;
-  undefined4 local_54;
-  short local_50;
-  tagRECT local_4c;
-  tagRECT tStack_3c;
-  int local_2c;
-  int local_28;
-  int local_24;
-  int local_20;
-  int iStack_1c;
-  int iStack_18;
-  int iStack_14;
-  int iStack_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  pTVar1 = g_pGlobalMapState;
-  local_c = *unaff_FS_OFFSET;
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063400b;
-  *unaff_FS_OFFSET = &local_c;
-  if (pTVar1 != (TCivToolbar *)0x0) {
-    AcquireReusableQuickDrawSurface();
-    local_4 = 0;
-    local_9c = 0;
-    local_64.left = *param_2;
-    local_64.top = param_2[1];
-    local_64.right = param_2[2];
-    local_64.bottom = param_2[3];
-    if ((DAT_006a344c & 1) == 0) {
-      DAT_006a344c = DAT_006a344c | 1;
-      DAT_006a3418 = 0x40;
-      DAT_006a341c = 0x40;
-      AppendPointerToGlobalVectorAsStatus(&DAT_0051eb20);
-    }
-    local_78.left = local_64.left;
-    local_78.top = local_64.top;
-    local_78.right = local_64.right;
-    local_78.bottom = local_64.bottom;
-    OffsetRect(&local_78,DAT_006a3418,DAT_006a341c);
-    local_4c.right = local_78.right;
-    local_4c.left = local_78.left;
-    local_4c.top = local_78.top;
-    local_4c.bottom = local_78.bottom;
-    if ((char)param_1[0xd3] == '\0') {
-      ApplyHitRegionToClipState(local_8c);
-      thunk_GetActiveQuickDrawSurfaceContextAndFlags(&local_54,&local_9c);
-      ResetQuickDrawStrokeState();
-      thunk_SetActiveQuickDrawSurfaceContext(param_1[0xd4],local_9c);
-      uVar4 = thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-      thunk_ReturnConstantTrueQuickDrawFlag(uVar4);
-      uVar4 = thunk_GetSurfaceObjectAtContextOffset24(param_1[0xd4]);
-      thunk_ReturnConstantTrueQuickDrawFlag(uVar4);
-      sVar2 = ftol();
-      sVar3 = ftol();
-      local_a0 = 0x5a;
-      local_88._0_2_ = (short)DAT_006a3448 + sVar3;
-      piVar8 = param_1 + 0x20;
-      do {
-        if ((((*(short *)((int)piVar8 + -2) < sVar2) ||
-             ((short)(sVar2 + 8) < *(short *)((int)piVar8 + -2))) || ((short)*piVar8 < sVar3)) ||
-           ((short)local_88 < (short)*piVar8)) {
-          *(undefined1 *)(piVar8 + -1) = 0;
-        }
-        else {
-          *(undefined1 *)(piVar8 + -1) = 1;
-        }
-        piVar8 = piVar8 + 2;
-        local_a0 = local_a0 + -1;
-      } while (local_a0 != 0);
-      iVar5 = param_1[0x19] + param_2[1];
-      local_90 = 0;
-      iVar9 = param_1[0x18] + 0x20 + *param_2;
-      iVar10 = (int)(iVar5 + (iVar5 >> 0x1f & 0x3fU)) >> 6;
-      iVar5 = param_2[3] - param_2[1];
-      local_68 = ((int)(iVar5 + (iVar5 >> 0x1f & 0x3fU)) >> 6) + 1 + iVar10;
-      iVar6 = param_2[2] - *param_2;
-      iVar5 = ((int)(iVar9 + (iVar9 >> 0x1f & 0x3fU)) >> 6) + -1;
-      iVar9 = ((int)(iVar6 + (iVar6 >> 0x1f & 0x3fU)) >> 6) + 1 + iVar5;
-      local_88 = iVar9;
-      local_7c = iVar5;
-      uVar4 = thunk_GetSurfaceObjectAtContextOffset24(param_1[0xd4]);
-      GetSurfaceHeaderFromSurfaceObject(uVar4);
-      uVar4 = thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-      GetSurfaceHeaderFromSurfaceObject(uVar4);
-      uVar4 = thunk_GetSurfaceObjectAtContextOffset24
-                        (*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
-      GetSurfaceHeaderFromSurfaceObject(uVar4);
-      if ((short)iVar10 < (short)local_68) {
-        do {
-          if (0x3b < (short)iVar10) break;
-          local_98 = iVar5;
-          if ((short)local_7c <= (short)iVar9) {
-            do {
-              if ((short)iVar5 < 0x6c) {
-                iVar9 = iVar5;
-                if ((short)iVar5 < 0) {
-                  iVar9 = iVar5 + 0x6c;
-                }
-              }
-              else {
-                iVar9 = iVar5 + -0x6c;
-              }
-              local_98 = iVar5;
-              uVar4 = ComputeStridedRecordAddress6C(iVar9,iVar10);
-              TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
-                        (uVar4,param_1 + 0x18,&local_7e,&local_92,1);
-              if ((int)local_92 < param_2[2]) {
-                sVar2 = (short)uVar4;
-                iVar9 = sVar2 * 0x24;
-                if (*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0x10 + iVar9) == -1) {
-                  _DAT_006a3454 = _DAT_006a3454 + 1;
-                  bVar11 = false;
-                  sVar3 = (short)local_90;
-                  while ((sVar3 < 0x5a && (!bVar11))) {
-                    bVar11 = (char)param_1[(short)local_90 * 2 + 0x1f] == '\0';
-                    if (!bVar11) {
-                      local_90 = local_90 + 1;
-                    }
-                    sVar3 = (short)local_90;
-                  }
-                  iVar6 = (int)(short)local_90;
-                  sVar3 = *(short *)((int)param_1 + iVar6 * 8 + 0x82);
-                  if (-1 < sVar3) {
-                    *(undefined1 *)(*(int *)(g_pGlobalMapState + 0xc) + 0x10 + sVar3 * 0x24) = 0xff;
-                    iVar5 = local_98;
-                  }
-                  *(undefined1 *)(param_1 + iVar6 * 2 + 0x1f) = 1;
-                  *(short *)((int)param_1 + iVar6 * 8 + 0x7e) = (short)iVar10;
-                  *(short *)(param_1 + iVar6 * 2 + 0x20) = (short)iVar5;
-                  *(short *)((int)param_1 + iVar6 * 8 + 0x82) = sVar2;
-                  iVar6 = *param_1;
-                  *(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0x10 + iVar9) = (char)local_90;
-                  (**(code **)(iVar6 + 0x204))(uVar4,0,local_90 << 6);
-                }
-                else {
-                  sVar3 = UiRuntimeContext::GetActiveNationId();
-                  piVar8 = TCivToolbar::thunk_GetTileUnitEntryByOwner(g_pGlobalMapState,sVar2,sVar3)
-                  ;
-                  iVar5 = local_98;
-                  if (((piVar8 != (int *)0x0) && (4 < piVar8[2])) &&
-                     (iVar6 = FindLinkedListNodeByIdFieldAt18(piVar8), iVar5 = local_98, iVar6 == 0)
-                     ) {
-                    TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
-                              (uVar4,param_1 + 0x18,&local_82,&local_80,1);
-                    local_50 = (short)piVar8[1];
-                    puVar7 = (undefined4 *)AllocateWithFallbackHandler(0x30);
-                    if (puVar7 == (undefined4 *)0x0) {
-                      puVar7 = (undefined4 *)0x0;
-                    }
-                    else {
-                      *puVar7 = &PTR_LAB_0064c390;
-                    }
-                    local_2c = (int)local_80;
-                    local_28 = (int)local_82;
-                    local_24 = local_2c + 0x40;
-                    local_20 = local_28 + 0x40;
-                    ConstructTCivAnimation2BaseState(param_1,&local_2c,(int)local_50,piVar8);
-                    AddObjectToUiTransientRegistry(puVar7);
-                    iVar5 = local_98;
-                  }
-                }
-                BlitSurfaceRectSkippingTransparentColor
-                          (*(undefined4 *)(**(int **)(DAT_006a3450 + 0x24) + 0x1c),
-                           (int)*(char *)(*(int *)(g_pGlobalMapState + 0xc) + 0x10 + iVar9) << 6,0,
-                           0x40,0x40,local_92 + 0x40,local_7e + 0x40,0xffffffff);
-                iVar9 = *(int *)(*(int *)(g_pGlobalMapState + 0xc) + 0x20 + iVar9);
-                if ((iVar9 != 0) &&
-                   (piVar8 = (int *)FindLinkedListNodeByIdFieldAt18(iVar9), piVar8 != (int *)0x0)) {
-                  thunk_SetActiveQuickDrawSurfaceContext(DAT_006a3450,local_9c);
-                  iStack_18 = piVar8[8] + 0x40;
-                  iStack_10 = piVar8[10] + 0x40;
-                  iStack_1c = piVar8[7] + 0x40;
-                  iStack_14 = piVar8[9] + 0x40;
-                  thunk_ApplyRectClipRegionToGlobalClipState(&iStack_1c);
-                  local_78.left = 0x40;
-                  local_78.top = 0x40;
-                  (**(code **)(*piVar8 + 0x2c))(&local_78);
-                  thunk_SetActiveQuickDrawSurfaceContext(param_1[0xd4],local_9c);
-                  iVar5 = local_98;
-                }
-              }
-              iVar5 = iVar5 + 1;
-              iVar9 = local_88;
-              local_98 = iVar5;
-            } while ((short)iVar5 <= (short)local_88);
-          }
-          iVar10 = iVar10 + 1;
-          iVar5 = local_7c;
-        } while ((short)iVar10 < (short)local_68);
-      }
-      thunk_SetActiveQuickDrawSurfaceContext(DAT_006a3450,local_9c);
-      CopyRect(&tStack_3c,(RECT *)*local_8c);
-      tStack_3c.bottom = tStack_3c.bottom + 0x80;
-      tStack_3c.right = tStack_3c.right + 0x80;
-      thunk_ApplyRectClipRegionToGlobalClipState(&tStack_3c);
-      (**(code **)(*param_1 + 0x24c))();
-      ResetQuickDrawStrokeState();
-      thunk_SetActiveQuickDrawSurfaceContext(local_54,local_9c);
-      SnapshotHitRegionToClipCache(local_8c);
-    }
-    OffsetRect(&local_4c,DAT_006a33b8 << 5,DAT_006a33b4 << 5);
-    BlitRectWithOptionalTransparency
-              ((astruct_17 *)(DAT_006a3450 + 4),(astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4)
-               ,&local_4c,&local_64,0,(astruct_19 *)0x0);
-    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-    thunk_NoOpQuickDrawLifecycleHookB(uVar4);
-    uVar4 = thunk_GetSurfaceObjectAtContextOffset24(param_1[0xd4]);
-    thunk_NoOpQuickDrawLifecycleHookB(uVar4);
-    local_4 = 0xffffffff;
-    ReleaseOrCacheQuickDrawSurface();
-  }
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00523640
-// GHIDRA_NAME TCivAnimation2::RenderMapOrderEntryTilePreview
-// GHIDRA_PROTO undefined RenderMapOrderEntryTilePreview()
-
-void __thiscall
-TCivAnimation2::RenderMapOrderEntryTilePreview
-          (int param_1,int param_2,short param_3,short param_4,short param_5,undefined4 param_6)
-
-{
-  astruct_18 *dstSurface;
-  POINT pt;
-  int iVar1;
-  short sVar2;
-  short sVar3;
-  int iVar4;
-  undefined4 *puVar5;
-  undefined2 extraout_var;
-  BOOL BVar6;
-  undefined4 *unaff_FS_OFFSET;
-  bool bVar7;
-  int local_4c;
-  int local_48;
-  int iStack_44;
-  int iStack_40;
-  RECT local_3c;
-  RECT local_2c;
-  tagRECT local_1c;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063409a;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  iVar4 = *(int *)(param_2 + 8);
-  sVar3 = *(short *)(param_2 + 0x18);
-  sVar2 = UiRuntimeContext::GetActiveNationId();
-  iVar1 = g_pActiveQuickDrawSurfaceContext;
-  bVar7 = sVar3 != sVar2;
-  if ((iVar4 < 5) || (bVar7)) {
-    if ((char)param_5 == '\0') {
-      iVar4 = *(int *)(param_1 + 0x350);
-      sVar3 = (**(code **)(*g_pGlobalMapState + 0x118))(param_2);
-      local_2c.top = (LONG)param_3;
-      local_2c.left = (LONG)param_4;
-      local_3c.left = (LONG)sVar3;
-      local_2c.bottom = local_2c.top + 0x40;
-      local_2c.right = local_2c.left + 0x40;
-      local_3c.right = local_3c.left + 0x40;
-      local_3c.top = 0;
-      local_3c.bottom = 0x40;
-      UpdatePaletteIndexWithDefaultFallback(0x10);
-      dstSurface = (astruct_18 *)(iVar4 + 4);
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),dstSurface,
-                 &local_3c,&local_2c,0x24,(astruct_19 *)0x0);
-      if (bVar7) {
-        sVar3 = (**(code **)(*g_pGlobalMapState + 0x110))
-                          (CONCAT22(extraout_var,*(undefined2 *)(param_2 + 0x18)));
-        local_3c.left = (LONG)sVar3;
-        local_3c.right = local_3c.left + 9;
-        local_3c.top = 0;
-        local_4c = local_2c.left + 0x1c;
-        local_3c.bottom = 6;
-        iVar4 = *(int *)(iVar4 + 0x20);
-        local_48 = local_2c.bottom + -8;
-        iStack_44 = local_2c.left + 0x25;
-        iStack_40 = local_2c.bottom + -2;
-        local_1c.left = local_4c;
-        local_1c.top = local_48;
-        local_1c.right = iStack_44;
-        local_1c.bottom = iStack_40;
-        if (iVar4 != 0) {
-          iVar4 = *(int *)(*(int *)(iVar4 + 0x10) + 8);
-          if (iVar4 < 1) {
-            iVar4 = -iVar4;
-          }
-          OffsetRect(&local_1c,0,(iVar4 - local_48) - iStack_40);
-        }
-        BlitRectWithOptionalTransparency
-                  ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6b8) + 4),dstSurface,
-                   &local_3c,&local_1c,0x24,(astruct_19 *)0x0);
-        local_48 = local_48 + -1;
-        local_4c = local_4c + -1;
-        iStack_44 = iStack_44 + 1;
-        iStack_40 = iStack_40 + 1;
-        SetQuickDrawFillColorFromPaletteIndex(0x13);
-        DrawFrameRectOrUpdateClipRegion(&local_4c);
-        UpdatePaletteIndexWithDefaultFallback(0x13);
-        goto LAB_00523a3f;
-      }
-    }
-    else {
-      if (*(char *)(param_1 + 0x74) == '\0') {
-        sVar3 = (short)*(char *)(g_pGlobalMapState[3] + 0x10 + *(short *)(param_2 + 6) * 0x24);
-        if (sVar3 != -1) {
-          local_2c.top = (LONG)param_3;
-          local_2c.left = (LONG)param_4;
-          local_2c.bottom = local_2c.top + 0x40;
-          local_2c.right = local_2c.left + 0x40;
-          local_3c.left = (int)sVar3 << 6;
-          local_3c.right = (sVar3 + 1) * 0x40;
-          local_3c.top = 0;
-          local_3c.bottom = 0x40;
-          BlitRectWithOptionalTransparency
-                    ((astruct_17 *)(*(int *)(param_1 + 0x350) + 4),
-                     (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_3c,&local_2c,0,
-                     (astruct_19 *)0x0);
-        }
-        if ((*(short *)(param_1 + 0x4e) != -1) && (*(short *)(param_1 + 0x4e) != 0x3f0)) {
-          RenderMapOrderEntryTilePreview_Impl(&local_4c);
-          pt.y = local_48;
-          pt.x = local_4c;
-          BVar6 = PtInRect(&local_2c,pt);
-          if (BVar6 != 0) {
-            DrawFrameRectOrUpdateClipRegion(&local_2c);
-          }
-        }
-        goto LAB_00523a3f;
-      }
-      sVar3 = (**(code **)(*g_pGlobalMapState + 0x118))(param_2);
-      local_2c.left = (LONG)param_4;
-      local_2c.top = (LONG)param_3;
-      local_2c.right = local_2c.left + 0x40;
-      local_3c.left = (LONG)(short)(sVar3 + 0x240);
-      local_2c.bottom = local_2c.top + 0x40;
-      local_3c.right = local_3c.left + 0x40;
-      local_3c.top = 0;
-      local_3c.bottom = 0x40;
-      UpdatePaletteIndexWithDefaultFallback(0x10);
-      BlitRectWithOptionalTransparency
-                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),
-                 (astruct_18 *)(iVar1 + 4),&local_3c,&local_2c,0x24,(astruct_19 *)0x0);
-    }
-    UpdatePaletteIndexWithDefaultFallback(0x13);
-  }
-  else {
-    iVar4 = FindLinkedListNodeByIdFieldAt18(param_2);
-    if (iVar4 == 0) {
-      TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
-                (param_6,param_1 + 0x60,&param_4,&param_5,1);
-      sVar3 = *(short *)(param_2 + 4);
-      puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x30);
-      local_4 = 0;
-      if (puVar5 == (undefined4 *)0x0) {
-        puVar5 = (undefined4 *)0x0;
-      }
-      else {
-        InitializeRefCountedObjectBaseVtable();
-        *puVar5 = &PTR_LAB_0064c390;
-      }
-      local_1c.top = (LONG)param_4;
-      local_1c.left = (LONG)param_5;
-      local_1c.bottom = local_1c.top + 0x40;
-      local_1c.right = local_1c.left + 0x40;
-      local_4 = 0xffffffff;
-      ConstructTCivAnimation2BaseState(param_1,&local_1c,(int)sVar3,param_2);
-      AddObjectToUiTransientRegistry(puVar5);
-    }
-  }
-LAB_00523a3f:
-  *unaff_FS_OFFSET = local_c;
-  return;
 }
 

@@ -24,8 +24,8 @@ TView * TMinisterView::CreateTMinisterViewInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_00655100;
-    this[1].vftable = (void *)0x0;
+    this->vftable = (TViewVtbl *)&TMinisterViewVtbl_00655100;
+    this[1].vftable = (TViewVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -34,39 +34,167 @@ TView * TMinisterView::CreateTMinisterViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C40
-// GHIDRA_NAME TMinisterView::GetTMinisterViewClassNamePointer
-// GHIDRA_PROTO undefined GetTMinisterViewClassNamePointer()
+// GHIDRA_NAME TMinisterView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TMinisterView::GetTMinisterViewClassNamePointer(void)
+CRuntimeClass * __thiscall TMinisterView::GetTEventHandlerClassNamePointer(TMinisterView *this)
 
 {
-  return &PTR_s_TMinisterView_00654ed0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C60
 // GHIDRA_NAME TMinisterView::ConstructTMinisterViewBaseState
-// GHIDRA_PROTO undefined ConstructTMinisterViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTMinisterViewBaseState(void)
 
-TView * __fastcall TMinisterView::ConstructTMinisterViewBaseState(TView *param_1)
+TMinisterView * __thiscall TMinisterView::ConstructTMinisterViewBaseState(TMinisterView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1->vftable = &PTR_LAB_00655100;
-  param_1[1].vftable = (void *)0x0;
-  return param_1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &TMinisterViewVtbl_00655100;
+  *(undefined4 *)&this->field_0x60 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F2C90
-// GHIDRA_NAME TMinisterView::DestructTMinisterViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMinisterViewAndMaybeFree()
+// GHIDRA_NAME TMinisterView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TMinisterView::DestructTMinisterViewAndMaybeFree(TView *param_1,byte param_2)
+TMinisterView * __thiscall TMinisterView::_scalar_deleting_destructor_(TMinisterView *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F2CE0
+// GHIDRA_NAME TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004f2ce0(void)
+
+void __thiscall TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0(TMinisterView *this)
+
+{
+  short in_stack_00000004;
+  
+  *(TCountry **)&this->field_0x64 = g_apTerrainTypeDescriptorTable[in_stack_00000004];
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F2D10
+// GHIDRA_NAME TMinisterView::InvalidateWindowRectFromHandleField1C
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+
+void __thiscall TMinisterView::InvalidateWindowRectFromHandleField1C(TMinisterView *this)
+
+{
+  int iVar1;
+  undefined uVar2;
+  char cVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  
+  uVar2 = (*this->vftable[0x12].slot_0x04)(0x6261636b);
+  if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UDiplomacyViews_c_00696ae0,0xb7);
+  }
+  piVar4 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x94))(0x6f6b6179);
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UDiplomacyViews_c_00696ae0,0xb9);
+  }
+  iVar1 = *piVar4;
+  cVar3 = (**(code **)(iVar1 + 0xec))();
+  if (cVar3 != '\0') {
+    (**(code **)(iVar1 + 0xa4))(0,1);
+  }
+  TControl::DispatchUiMouseEventToChildrenOrSelf((TControl *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F2E00
+// GHIDRA_NAME TMinisterView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TMinisterView::OrphanRetStub_0059add0(TMinisterView *this)
+
+{
+  TMinisterViewVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if (in_stack_00000004 != 10) {
+    TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+    return;
+  }
+  if (*(int *)(in_stack_00000008 + 0x1c) != 0x6261636b) {
+    if (*(int *)(in_stack_00000008 + 0x1c) != 0x6f6b6179) {
+      TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+      return;
+    }
+    pTVar1 = this->vftable;
+    (*pTVar1[0x35].slot_0x04)();
+    uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+    (*g_pGlobalUiRootController->vftable[0x16].slot_0x04)(CONCAT31(extraout_var,uVar2));
+    return;
+  }
+  (*this->vftable[0x35].slot_0x04)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F2EA0
+// GHIDRA_NAME TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins03_004f2ea0(void)
+
+void __thiscall TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0(TMinisterView *this)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x004f2ea8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(*DAT_006a2158 + 0x58))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F2EC0
+// GHIDRA_NAME TMinisterView::OrphanCallChain_C2_I08_004f2ec0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I08_004f2ec0(void)
+
+void __thiscall TMinisterView::OrphanCallChain_C2_I08_004f2ec0(TMinisterView *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  (*this->vftable[0x35].slot_0x04)();
+  (**(code **)(*g_pStrategicMapViewSystem + 0x48))(in_stack_00000004);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F2EF0
+// GHIDRA_NAME TMinisterView::OrphanCallChain_C1_I09_004f2ef0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_004f2ef0(void)
+
+void __thiscall TMinisterView::OrphanCallChain_C1_I09_004f2ef0(TMinisterView *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  
+  uVar1 = (*this->vftable[0x12].slot_0x04)(0x64697370);
+  if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
+                    /* WARNING: Could not recover jumptable at 0x004f2f05. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1c))();
+    return;
+  }
+  return;
 }
 

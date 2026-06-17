@@ -4,38 +4,233 @@
 // Bucket: TExpansionOrder.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8F80
-// GHIDRA_NAME TExpansionOrder::GetTExpansionOrderClassNamePointer
-// GHIDRA_PROTO undefined GetTExpansionOrderClassNamePointer()
+// GHIDRA_NAME TExpansionOrder::GetTProductionOrderClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
 
-undefined ** TExpansionOrder::GetTExpansionOrderClassNamePointer(void)
+CRuntimeClass * __thiscall
+TExpansionOrder::GetTProductionOrderClassNamePointer(TExpansionOrder *this)
 
 {
-  return &PTR_s_TExpansionOrder_0064f458;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FC0
-// GHIDRA_NAME TExpansionOrder::ConstructTExpansionOrderBaseState
-// GHIDRA_PROTO undefined ConstructTExpansionOrderBaseState()
+// GHIDRA_NAME TExpansionOrder::ConstructTItemOrderBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTItemOrderBaseState(void)
 
-undefined4 __thiscall
-TExpansionOrder::ConstructTExpansionOrderBaseState(undefined4 param_1,byte param_2)
+TExpansionOrder * __thiscall TExpansionOrder::ConstructTItemOrderBaseState(TExpansionOrder *this)
 
 {
-  DestructTExpansionOrderAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTExpansionOrderAndMaybeFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B8FF0
 // GHIDRA_NAME TExpansionOrder::DestructTExpansionOrderAndMaybeFree
-// GHIDRA_PROTO undefined DestructTExpansionOrderAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTExpansionOrderAndMaybeFree(void)
 
-void __fastcall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(undefined4 *param_1)
+void __thiscall TExpansionOrder::DestructTExpansionOrderAndMaybeFree(TExpansionOrder *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TExpansionOrderVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4
+  ;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B9010
+// GHIDRA_NAME TExpansionOrder::InitializeCityProductionState_Impl_At004b9010
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionState_Impl_At004b9010(void)
+
+void __thiscall
+TExpansionOrder::InitializeCityProductionState_Impl_At004b9010(TExpansionOrder *this)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  int in_stack_00000004;
+  undefined2 in_stack_00000008;
+  undefined2 in_stack_0000000c;
+  undefined2 in_stack_00000010;
+  undefined2 in_stack_00000014;
+  
+  *(int *)&this->field_0x8 = in_stack_00000004;
+  *(undefined4 *)&this->field_0xc = *(undefined4 *)(in_stack_00000004 + 0x1d8);
+  *(undefined2 *)&this->field_0x48 = in_stack_00000008;
+  *(undefined2 *)&this->field_0x4 = 0;
+  puVar2 = (undefined4 *)&this->field_0x10;
+  for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
+  }
+  *(undefined2 *)puVar2 = 0;
+  *(undefined4 *)&this->field_0x44 = 0;
+  *(undefined2 *)&this->field_0x4e = in_stack_0000000c;
+  *(undefined2 *)&this->field_0x40 = 0;
+  *(undefined2 *)&this->field_0x3e = 0;
+  *(undefined2 *)&this->field_0x4c = 0;
+  *(undefined2 *)&this->field_0x50 = in_stack_00000010;
+  *(undefined2 *)&this->field_0x52 = in_stack_00000014;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B9090
+// GHIDRA_NAME TExpansionOrder::OrphanRetStub_004b5160
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Simplified variant of production-delta application.
+// GHIDRA_COMMENT Writes final slot value into city +0x1DC and updates mirror/delta table at +0x1FC.
+// GHIDRA_COMMENT Used in command paths that do not require the slot 14 special branch.
+// GHIDRA_COMMENT_END
+
+/* Simplified variant of production-delta application.
+   Writes final slot value into city +0x1DC and updates mirror/delta table at +0x1FC.
+   Used in command paths that do not require the slot 14 special branch. */
+
+void __thiscall TExpansionOrder::OrphanRetStub_004b5160(TExpansionOrder *this)
+
+{
+  short *psVar1;
+  short sVar2;
+  int iVar3;
+  int iVar4;
+  
+  if (*(short *)&this->field_0x4 == 0) {
+    return;
+  }
+  iVar4 = *(int *)&this->field_0x8;
+  if (*(short *)&this->field_0x48 == 0xf) {
+    iVar3 = *(int *)(iVar4 + 0xac);
+    if (*(char *)(iVar3 + 0x8d1) < '3') {
+      iVar3 = (**(code **)(**(int **)(iVar3 + 0x90) + 0x28))();
+      if (1 < (int)(iVar3 + (iVar3 >> 0x1f & 3U)) >> 2) {
+        iVar4 = (**(code **)(**(int **)(*(int *)(iVar4 + 0xac) + 0x90) + 0x28))();
+        sVar2 = (short)((int)(iVar4 + (iVar4 >> 0x1f & 3U)) >> 2);
+        goto LAB_004b9154;
+      }
+    }
+    else {
+      iVar3 = (**(code **)(**(int **)(iVar3 + 0x90) + 0x28))();
+      if (1 < iVar3 / 3) {
+        iVar4 = (**(code **)(**(int **)(*(int *)(iVar4 + 0xac) + 0x90) + 0x28))();
+        sVar2 = (short)(iVar4 / 3);
+        goto LAB_004b9154;
+      }
+    }
+    sVar2 = 1;
+  }
+  else {
+    sVar2 = *(short *)(iVar4 + 0x1dc + *(short *)&this->field_0x48 * 2);
+  }
+LAB_004b9154:
+  sVar2 = sVar2 + *(short *)&this->field_0x4;
+  iVar4 = *(int *)&this->field_0x8;
+  iVar3 = (int)*(short *)&this->field_0x48;
+  psVar1 = (short *)(iVar4 + 0x1fc + iVar3 * 2);
+  *psVar1 = *psVar1 + (sVar2 - *(short *)(iVar4 + 0x1dc + iVar3 * 2));
+  *(short *)(iVar4 + 0x1dc + iVar3 * 2) = sVar2;
+  *(undefined2 *)&this->field_0x4c = 0;
+  *(undefined2 *)&this->field_0x4 = 0;
+  *(undefined2 *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) = 0;
+  *(undefined2 *)(&this->field_0x10 + *(short *)&this->field_0x50 * 2) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B91F0
+// GHIDRA_NAME TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+
+uint __thiscall TExpansionOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TExpansionOrder *this)
+
+{
+  short sVar1;
+  ushort uVar2;
+  uint uVar3;
+  ushort uVar4;
+  
+  uVar2 = *(short *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) +
+          *(short *)(*(int *)&this->field_0x8 + 0xb6 + *(short *)&this->field_0x4e * 2);
+  uVar3 = (uint)uVar2;
+  sVar1 = *(short *)&this->field_0x50;
+  if (sVar1 < 0) {
+    uVar3 = (int)(short)uVar2 / 2;
+  }
+  else {
+    uVar4 = *(short *)(&this->field_0x10 + sVar1 * 2) +
+            *(short *)(*(int *)&this->field_0x8 + 0xb6 + sVar1 * 2);
+    if ((short)uVar4 < (short)uVar2) {
+      return (uint)uVar4;
+    }
+  }
+  return uVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B9260
+// GHIDRA_NAME TExpansionOrder::OrphanCallChain_C1_I16_004b5100
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(void)
+
+undefined4 __thiscall TExpansionOrder::OrphanCallChain_C1_I16_004b5100(TExpansionOrder *this)
+
+{
+  short *psVar1;
+  int *piVar2;
+  undefined uVar3;
+  char cVar4;
+  undefined3 extraout_var;
+  short sVar5;
+  short in_stack_00000004;
+  
+  sVar5 = in_stack_00000004 - *(short *)&this->field_0x4;
+  uVar3 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  if (((short)CONCAT31(extraout_var,uVar3) < in_stack_00000004) || (in_stack_00000004 < 0)) {
+    cVar4 = '\0';
+  }
+  else {
+    *(short *)&this->field_0x4 = in_stack_00000004;
+    cVar4 = '\x01';
+  }
+  if (cVar4 == '\0') {
+    return CONCAT31(extraout_var,cVar4);
+  }
+  *(undefined2 *)&this->field_0x4c = *(undefined2 *)&this->field_0x4;
+  piVar2 = *(int **)&this->field_0x8;
+  psVar1 = (short *)((int)piVar2 + *(short *)&this->field_0x4e * 2 + 0xb6);
+  *psVar1 = *psVar1 - sVar5;
+  (**(code **)(*piVar2 + 0x80))();
+  *(short *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) =
+       *(short *)(&this->field_0x10 + *(short *)&this->field_0x4e * 2) + sVar5;
+  piVar2 = *(int **)&this->field_0x8;
+  psVar1 = (short *)((int)piVar2 + *(short *)&this->field_0x50 * 2 + 0xb6);
+  *psVar1 = *psVar1 - sVar5;
+  (**(code **)(*piVar2 + 0x80))();
+  *(short *)(&this->field_0x10 + *(short *)&this->field_0x50 * 2) =
+       *(short *)(&this->field_0x10 + *(short *)&this->field_0x50 * 2) + sVar5;
+  (**(code **)(g_pUiRuntimeContext->vftable + 0xac))();
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B9360
+// GHIDRA_NAME TExpansionOrder::CreateTItemOrderInstance
+// GHIDRA_PROTO undefined __thiscall CreateTItemOrderInstance(void)
+
+void __thiscall TExpansionOrder::CreateTItemOrderInstance(TExpansionOrder *this)
+
+{
+  undefined2 uStack00000004;
+  
+  (*this->vftable[7].ConstructTItemOrderBaseState)();
+  *(undefined2 *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) = uStack00000004;
+  if (*(short *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) < 0) {
+    *(undefined2 *)(_uStack00000004 + *(short *)&this->field_0x4e * 2) = 0;
+  }
+  *(undefined2 *)(_uStack00000004 + *(short *)&this->field_0x50 * 2) = uStack00000004;
+  if (*(short *)(_uStack00000004 + *(short *)&this->field_0x50 * 2) < 0) {
+    *(undefined2 *)(_uStack00000004 + *(short *)&this->field_0x50 * 2) = 0;
+  }
   return;
 }
 

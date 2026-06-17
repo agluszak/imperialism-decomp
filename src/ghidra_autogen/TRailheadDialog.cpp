@@ -3,72 +3,93 @@
 // Program: Imperialism.exe
 // Bucket: TRailheadDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004BD020
-// GHIDRA_NAME TRailheadDialog::GetTRailheadDialogClassNamePointer
-// GHIDRA_PROTO undefined GetTRailheadDialogClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004BCFD0
+// GHIDRA_NAME TRailheadDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TRailheadDialog::GetTRailheadDialogClassNamePointer(void)
+TRailheadDialog * __thiscall TRailheadDialog::_scalar_deleting_destructor_(TRailheadDialog *this)
 
 {
-  return &PTR_s_TRailheadDialog_0064fb78;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD020
+// GHIDRA_NAME TRailheadDialog::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TRailheadDialog::GetTEventHandlerClassNamePointer(TRailheadDialog *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD040
 // GHIDRA_NAME TRailheadDialog::ConstructTRailheadDialogBaseState
-// GHIDRA_PROTO undefined ConstructTRailheadDialogBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTRailheadDialogBaseState(void)
 
-void __thiscall TRailheadDialog::ConstructTRailheadDialogBaseState(int *param_1,int param_2)
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+void __thiscall TRailheadDialog::ConstructTRailheadDialogBaseState(TRailheadDialog *this)
 
 {
   int iVar1;
   code *pcVar2;
-  int *piVar3;
+  undefined uVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  int in_stack_00000004;
   
-  param_1[0x18] = param_2;
-  piVar3 = (int *)(**(code **)(*param_1 + 0x94))(0x63686f69);
-  if (piVar3 == (int *)0x0) {
+  *(int *)&this->field_0x60 = in_stack_00000004;
+  uVar3 = (*this->vftable[0x12].slot_0x04)(0x63686f69);
+  if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x732);
   }
-  iVar1 = *piVar3;
-  (**(code **)(iVar1 + 0x1c8))(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._40_4_);
-  if (*(short *)(param_2 + 10) == 0) {
+  iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
+  (**(code **)(iVar1 + 0x1c8))(TradeSummarySelectionMap_006960e0.summaryTags[0]);
+  if (*(short *)(in_stack_00000004 + 10) == 0) {
     pcVar2 = *(code **)(iVar1 + 0x94);
-    piVar3 = (int *)(*pcVar2)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._52_4_);
-    if (piVar3 == (int *)0x0) {
+    piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.summaryTags[3]);
+    if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73a);
     }
-    iVar1 = *piVar3;
+    iVar1 = *piVar4;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
-    piVar3 = (int *)(*pcVar2)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._56_4_);
-    if (piVar3 == (int *)0x0) {
+    piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.summaryTags[4]);
+    if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x73f);
     }
-    iVar1 = *piVar3;
+    iVar1 = *piVar4;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
-    piVar3 = (int *)(*pcVar2)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._128_4_);
-    if (piVar3 == (int *)0x0) {
+    piVar4 = (int *)(*pcVar2)(_DAT_00696160);
+    if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x744);
     }
-    iVar1 = *piVar3;
+    iVar1 = *piVar4;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
-    piVar3 = (int *)(*pcVar2)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0._64_4_);
-    if (piVar3 == (int *)0x0) {
+    piVar4 = (int *)(*pcVar2)(TradeSummarySelectionMap_006960e0.primaryControlTag);
+    if (piVar4 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x749);
     }
-    iVar1 = *piVar3;
+    iVar1 = *piVar4;
     (**(code **)(iVar1 + 0xa8))(0,1);
     (**(code **)(iVar1 + 0x1a8))(1,1);
   }
@@ -77,30 +98,31 @@ void __thiscall TRailheadDialog::ConstructTRailheadDialogBaseState(int *param_1,
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BD260
 // GHIDRA_NAME TRailheadDialog::DestructTRailheadDialogAndMaybeFree
-// GHIDRA_PROTO undefined DestructTRailheadDialogAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTRailheadDialogAndMaybeFree(void)
 
-void __thiscall TRailheadDialog::DestructTRailheadDialogAndMaybeFree(int *param_1,int param_2)
+void __thiscall TRailheadDialog::DestructTRailheadDialogAndMaybeFree(TRailheadDialog *this)
 
 {
-  int *piVar1;
-  int iVar2;
+  undefined uVar1;
+  undefined3 extraout_var;
+  dword dVar2;
   int iVar3;
+  int in_stack_00000004;
   
-  if (param_2 == 0x6f6b6179) {
-    piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x63686f69);
-    if (piVar1 == (int *)0x0) {
+  if (in_stack_00000004 == 0x6f6b6179) {
+    uVar1 = (*this->vftable[0x12].slot_0x04)(0x63686f69);
+    if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x75e);
     }
-    iVar2 = (**(code **)(*piVar1 + 0x1c4))();
+    dVar2 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1c4))();
     iVar3 = 0;
     do {
-      if (*(int *)(s_doofrbafbmulepapeetsleuftolcnruf_006960e0 + (short)iVar3 * 4 + 0x28) == iVar2)
-      break;
+      if (TradeSummarySelectionMap_006960e0.summaryTags[(short)iVar3] == dVar2) break;
       iVar3 = iVar3 + 1;
     } while ((short)iVar3 < 0x17);
-    (**(code **)(*(int *)param_1[0x18] + 0x40))(iVar3);
+    (**(code **)(**(int **)&this->field_0x60 + 0x40))(iVar3);
   }
   return;
 }

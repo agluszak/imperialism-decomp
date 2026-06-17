@@ -7,10 +7,10 @@
 // GHIDRA_NAME TMiniMapView::CreateTMiniMapViewInstance
 // GHIDRA_PROTO undefined CreateTMiniMapViewInstance()
 
-undefined4 * TMiniMapView::CreateTMiniMapViewInstance(void)
+TControl * TMiniMapView::CreateTMiniMapViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,63 +20,251 @@ undefined4 * TMiniMapView::CreateTMiniMapViewInstance(void)
   puStack_8 = &LAB_0063850a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TControl *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_LAB_00669170;
-    puVar1[0x24] = 0;
-    puVar1[0x25] = 0;
-    puVar1[0x22] = 0;
-    puVar1[0x23] = 0;
-    puVar1[0x26] = (int)DAT_006a460c;
-    puVar1[0x27] = 8;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    this->vftable = (TControlVtbl *)&TMiniMapViewVtbl_00669170;
+    *(undefined4 *)&this[1].field_0xc = 0;
+    *(undefined4 *)&this[1].field_0x10 = 0;
+    *(undefined4 *)&this[1].field_0x4 = 0;
+    *(undefined4 *)&this[1].field_0x8 = 0;
+    *(int *)&this[1].field_0x14 = (int)DAT_006a460c;
+    *(undefined4 *)&this[1].field_0x18 = 8;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TControl *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A360
-// GHIDRA_NAME TMiniMapView::GetTMiniMapViewClassNamePointer
-// GHIDRA_PROTO undefined GetTMiniMapViewClassNamePointer()
+// GHIDRA_NAME TMiniMapView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TMiniMapView::GetTMiniMapViewClassNamePointer(void)
+CRuntimeClass * __thiscall TMiniMapView::GetTEventHandlerClassNamePointer(TMiniMapView *this)
 
 {
-  return &PTR_s_TMiniMapView_00668c58;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A380
 // GHIDRA_NAME TMiniMapView::ConstructTMiniMapViewBaseState
-// GHIDRA_PROTO undefined ConstructTMiniMapViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTMiniMapViewBaseState(void)
 
-undefined4 * __fastcall TMiniMapView::ConstructTMiniMapViewBaseState(undefined4 *param_1)
+TMiniMapView * __thiscall TMiniMapView::ConstructTMiniMapViewBaseState(TMiniMapView *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-  *param_1 = &PTR_LAB_00669170;
-  param_1[0x24] = 0;
-  param_1[0x25] = 0;
-  param_1[0x22] = 0;
-  param_1[0x23] = 0;
-  param_1[0x26] = (int)DAT_006a460c;
-  param_1[0x27] = 8;
-  return param_1;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  this->vftable = &TMiniMapViewVtbl_00669170;
+  *(undefined4 *)&this->field_0x90 = 0;
+  *(undefined4 *)&this->field_0x94 = 0;
+  *(undefined4 *)&this->field_0x88 = 0;
+  *(undefined4 *)&this->field_0x8c = 0;
+  *(int *)&this->field_0x98 = (int)DAT_006a460c;
+  *(undefined4 *)&this->field_0x9c = 8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059A3F0
-// GHIDRA_NAME TMiniMapView::DestructTMiniMapViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMiniMapViewAndMaybeFree()
+// GHIDRA_NAME TMiniMapView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TMiniMapView::DestructTMiniMapViewAndMaybeFree(TView *param_1,byte param_2)
+TMiniMapView * __thiscall TMiniMapView::_scalar_deleting_destructor_(TMiniMapView *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059A540
+// GHIDRA_NAME TMiniMapView::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TMiniMapView::OrphanCallChain_C11_I88_004874b0(TMiniMapView *this)
+
+{
+  uint uVar1;
+  LONG LVar2;
+  short sVar3;
+  undefined2 extraout_var;
+  short sVar4;
+  RECT *dstRect;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 extraout_var_02;
+  int iVar5;
+  undefined2 uVar7;
+  int iVar6;
+  short sVar8;
+  LONG LVar9;
+  int iVar10;
+  short local_34;
+  RECT local_30;
+  RECT local_20;
+  RECT local_10;
+  
+  iVar6 = *(int *)(g_pStrategicMapViewSystem + 0x670);
+  if (iVar6 == 0) {
+    return;
+  }
+  local_20.bottom = this->field38;
+  local_34 = 0;
+  sVar3 = *(short *)&g_pGlobalMapState->field_0x6 % 0x6c -
+          (short)((this->field34 / 2 - *(int *)&this->field_0x98) / 2);
+  sVar8 = sVar3 + -1;
+  sVar4 = (*(short *)&g_pGlobalMapState->field_0x6 / 0x6c -
+          (short)((local_20.bottom / 2 - *(int *)&this->field_0x9c) / 2)) + -1;
+  if (sVar8 < 0) {
+    sVar8 = sVar3 + 0x6b;
+  }
+  if (sVar4 < 0) {
+    local_34 = sVar4 * 2;
+    sVar4 = 0;
+  }
+  else {
+    sVar3 = (short)((local_20.bottom + 1) / 2);
+    if (0x3c < (int)sVar3 + (int)sVar4) {
+      local_34 = (sVar4 + sVar3) * 2 + -0x78;
+      sVar4 = 0x3c - sVar3;
+    }
+  }
+  *(int *)&this->field_0x8c = (int)sVar4;
+  local_20.left = 0;
+  local_20.top = 0;
+  local_20.right = this->field34;
+  *(int *)&this->field_0x88 = (int)sVar8;
+  ResetQuickDrawStrokeState();
+  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor(0xffffff);
+  LVar2 = local_20.bottom;
+  LVar9 = local_20.left;
+  local_10.left = (LONG)(short)(sVar8 * 2);
+  iVar5 = (int)(short)(sVar4 * 2);
+  local_10.right = local_10.left + this->field34;
+  local_10.bottom = iVar5 + this->field38;
+  iVar10 = local_10.right + -0xd7;
+  local_10.top = iVar5;
+  if (iVar10 < 1) {
+    dstRect = &local_20;
+    LVar9 = local_10.right;
+  }
+  else {
+    local_30.top = local_20.top;
+    local_30.right = (local_20.left - local_10.left) + 0xd7;
+    local_10.right = 0xd7;
+    local_30.left = local_20.left;
+    local_30.bottom = local_20.bottom;
+    uVar1 = (uint)local_20.bottom >> 8;
+    if ((g_pGlobalMapState->field_0x20 == '\0') ||
+       (this->field34 / 2 < local_30.right - local_20.left)) {
+      BlitRectWithOptionalTransparency
+                ((astruct_17 *)(iVar6 + 4),
+                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_30,0,
+                 (astruct_19 *)0x0);
+    }
+    else {
+      thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_30);
+    }
+    local_30.top = local_20.top;
+    local_30.bottom = local_20.bottom;
+    local_30.left = local_20.right - iVar10;
+    local_10.left = 0;
+    local_30.right = local_20.right;
+    iVar5 = CONCAT31((int3)uVar1,g_pGlobalMapState->field_0x20);
+    uVar7 = (undefined2)((uint)LVar2 >> 0x10);
+    local_10.right = iVar10;
+    if ((g_pGlobalMapState->field_0x20 != '\0') &&
+       (local_20.right - local_30.left <= this->field34 / 2)) {
+      thunk_FillRectWithQuickDrawBrushAndContextOffset(&local_30);
+      goto LAB_0059a792;
+    }
+    dstRect = &local_30;
+  }
+  uVar7 = (undefined2)((uint)iVar5 >> 0x10);
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(iVar6 + 4),(astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,
+             &local_10,dstRect,0,(astruct_19 *)0x0);
+LAB_0059a792:
+  iVar6 = CONCAT22(uVar7,*(undefined2 *)&this->field_0x90);
+  if (DAT_006993e8 == '\0') {
+    local_34 = 0;
+  }
+  iVar10 = CONCAT22((short)((uint)LVar9 >> 0x10),*(short *)&this->field_0x94 + local_34);
+  SetQuickDrawFillColor(0xffffff);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar6,iVar10);
+  thunk_DrawCenteredGuideLineOnMapDc
+            (CONCAT22(extraout_var_01,*(short *)&this->field_0x98 << 1) + iVar6,iVar10);
+  thunk_DrawCenteredGuideLineOnMapDc
+            (CONCAT22(extraout_var_00,*(short *)&this->field_0x98 << 1) + iVar6,
+             CONCAT22(extraout_var,*(short *)&this->field_0x9c << 1) + iVar10);
+  thunk_DrawCenteredGuideLineOnMapDc
+            (iVar6,CONCAT22(extraout_var_02,*(short *)&this->field_0x9c << 1) + iVar10);
+  thunk_DrawCenteredGuideLineOnMapDc(iVar6,iVar10);
+  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor(0xffffff);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0059A920
+// GHIDRA_NAME TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TMiniMapView::QueueCityRecruitmentSupportCommandsIfDeficit(TMiniMapView *this)
+
+{
+  TMiniMapViewVtbl *pTVar1;
+  char cVar2;
+  int iVar3;
+  int iVar4;
+  int in_stack_00000004;
+  int *in_stack_00000010;
+  
+  if (-1 < in_stack_00000004) {
+    if (in_stack_00000004 < 2) {
+      pTVar1 = this->vftable;
+      cVar2 = (*pTVar1[0x2d].slot_0x04)();
+      if (cVar2 != '\0') {
+        *(int *)&this->field_0x90 = *in_stack_00000010 - *(int *)&this->field_0x98;
+        *(int *)&this->field_0x94 = in_stack_00000010[1] - *(int *)&this->field_0x9c;
+        DAT_006993e8 = 0;
+        (*pTVar1[0x1c].slot_0x04)();
+        (*pTVar1[0x27].slot_0x04)();
+        DAT_006993e8 = 1;
+      }
+    }
+    else if (in_stack_00000004 == 2) {
+      DAT_006993e8 = 1;
+      iVar4 = CONCAT22((short)((uint)(*in_stack_00000010 / 2) >> 0x10),
+                       (short)(*in_stack_00000010 / 2) + *(short *)&this->field_0x88) -
+              *(int *)&this->field_0x98 / 2;
+      iVar3 = CONCAT22((short)((uint)(in_stack_00000010[1] / 2) >> 0x10),
+                       (short)(in_stack_00000010[1] / 2) + *(short *)&this->field_0x8c) -
+              *(int *)&this->field_0x9c / 2;
+      if ((short)iVar4 < 0) {
+        iVar4 = iVar4 + 0x6c;
+      }
+      else if (0x6b < (short)iVar4) {
+        iVar4 = iVar4 + -0x6c;
+      }
+      if ((short)iVar3 < 0) {
+        iVar3 = 0;
+      }
+      else if (0x3c < (short)iVar3) {
+        iVar3 = 0x3c;
+      }
+      (**(code **)(**(int **)&this->field_0x84 + 0x1e4))(iVar4,iVar3);
+      *(int *)&this->field_0x90 = this->field34 / 2 - *(int *)&this->field_0x98;
+      *(int *)&this->field_0x94 = this->field38 / 2 - *(int *)&this->field_0x9c;
+      (*this->vftable[0x1c].slot_0x04)();
+      return;
+    }
+  }
+  return;
 }
 

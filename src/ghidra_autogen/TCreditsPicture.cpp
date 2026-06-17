@@ -3,15 +3,60 @@
 // Program: Imperialism.exe
 // Bucket: TCreditsPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D9C0
+// GHIDRA_NAME TCreditsPicture::ConstructTurnEventMainPictureEntry_104F
+// GHIDRA_PROTO int * __thiscall ConstructTurnEventMainPictureEntry_104F(int * pEntry)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Specialized main-picture entry constructor used in BuildTurnEventDialogUiByCode branch for event code 0x104F.
+// GHIDRA_COMMENT_END
+
+/* Specialized main-picture entry constructor used in BuildTurnEventDialogUiByCode branch for event
+   code 0x104F. */
+
+int * __thiscall
+TCreditsPicture::ConstructTurnEventMainPictureEntry_104F(TCreditsPicture *this,int *pEntry)
+
+{
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TCreditsPictureVtbl_00642d58;
+  return (int *)this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D9F0
+// GHIDRA_NAME TCreditsPicture::OrphanRetStub_0043d9f0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0043d9f0(void)
+
+void __thiscall TCreditsPicture::OrphanRetStub_0043d9f0(TCreditsPicture *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0043DAD0
+// GHIDRA_NAME TCreditsPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TCreditsPicture * __thiscall TCreditsPicture::_scalar_deleting_destructor_(TCreditsPicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0056EDB0
 // GHIDRA_NAME TCreditsPicture::CreateTCreditsPictureInstance
 // GHIDRA_PROTO undefined CreateTCreditsPictureInstance()
 
-undefined4 * TCreditsPicture::CreateTCreditsPictureInstance(void)
+thunk_TPictureButton * TCreditsPicture::CreateTCreditsPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,25 +66,165 @@ undefined4 * TCreditsPicture::CreateTCreditsPictureInstance(void)
   puStack_8 = &LAB_006361da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00642d58;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TCreditsPictureVtbl **)this = &TCreditsPictureVtbl_00642d58;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056EE30
-// GHIDRA_NAME TCreditsPicture::GetTCreditsPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTCreditsPictureClassNamePointer()
+// GHIDRA_NAME TCreditsPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TCreditsPicture::GetTCreditsPictureClassNamePointer(void)
+CRuntimeClass * __thiscall TCreditsPicture::GetTEventHandlerClassNamePointer(TCreditsPicture *this)
 
 {
-  return &PTR_s_TCreditsPicture_0065de88;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056EE50
+// GHIDRA_NAME TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TCreditsPicture::OrphanLeaf_NoCall_Ins07_004d8920(TCreditsPicture *this)
+
+{
+  int iVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  int *piVar3;
+  int unaff_ESI;
+  code *unaff_EDI;
+  undefined4 uStack00000004;
+  undefined4 uStack_24;
+  TCreditsPicture_slot_0x04_0x04 *local_10;
+  int iStack_c;
+  undefined1 local_6;
+  undefined1 local_5;
+  undefined1 local_4;
+  undefined1 local_3;
+  
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  uStack00000004 = 0;
+  local_6 = 0;
+  local_5 = 0;
+  local_4 = 0;
+  local_3 = 0;
+  uStack_24 = 0x56ee90;
+  thunk_ResetDualAudioCuePools();
+  uStack_24 = 0xc;
+  thunk_PushCueToDualAudioCuePools();
+  uStack_24 = 0x56eea8;
+  thunk_SelectAndScheduleRandomAudioCue();
+  uStack_24 = 0x63726564;
+  local_10 = this->vftable[0x12].slot_0x04;
+  uVar2 = (*local_10)();
+  piVar3 = (int *)CONCAT31(extraout_var,uVar2);
+  iVar1 = *piVar3;
+  (**(code **)(iVar1 + 0xc))();
+  thunk_InitializeUiTextStyleDescriptor(&local_10,0,0xc,0x2b68,3);
+  thunk_MapUiThemeCodeToStyleFlags(0x2b6b,&stack0x00000000);
+  (**(code **)(iVar1 + 0x1dc))(0xfb0);
+  (**(code **)(iVar1 + 0x1e4))(&stack0xffffffec,1);
+  piVar3[0x27] = iStack_c;
+  *(undefined1 *)(piVar3 + 0x28) = 1;
+  piVar3 = (int *)(*unaff_EDI)(0x63726532);
+  iVar1 = *piVar3;
+  (**(code **)(iVar1 + 0xc))();
+  (**(code **)(iVar1 + 0x1dc))(0xfb1);
+  (**(code **)(iVar1 + 0x1e4))(&uStack_24,1);
+  *(undefined1 *)(piVar3 + 0x28) = 1;
+  piVar3[0x27] = unaff_ESI;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056EFC0
+// GHIDRA_NAME TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall TCreditsPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCreditsPicture *this)
+
+{
+  TCreditsPicture_slot_0x04_0x04 *pTVar1;
+  int iVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int unaff_EDI;
+  int in_stack_00000004;
+  TCreditsPicture *in_stack_00000008;
+  int *piStack_24;
+  int iStack_10;
+  undefined1 auStack_c [6];
+  undefined1 uStack_6;
+  undefined1 uStack_5;
+  undefined1 uStack_4;
+  undefined1 uStack_3;
+  int *piVar4;
+  
+  if ((in_stack_00000004 == 10) && (in_stack_00000008 == this)) {
+    if (DAT_006a4084 == 0) {
+      piStack_24 = &iStack_10;
+      DAT_006a4084 = 1;
+      iStack_10 = 0;
+      uStack_6 = 0;
+      uStack_5 = 0;
+      uStack_4 = 0;
+      uStack_3 = 0;
+      thunk_MapUiThemeCodeToStyleFlags(0x2b6b);
+      piStack_24 = (int *)0x3;
+      thunk_InitializeUiTextStyleDescriptor(auStack_c,0,0xc,0x2b68);
+      pTVar1 = this->vftable[0x12].slot_0x04;
+      piStack_24 = (int *)0x63726564;
+      uVar3 = (*pTVar1)();
+      piVar4 = (int *)CONCAT31(extraout_var,uVar3);
+      iVar2 = *piVar4;
+      (**(code **)(iVar2 + 0xc))();
+      (**(code **)(iVar2 + 0x1dc))(0xfb2);
+      (**(code **)(iVar2 + 0x1e4))(&stack0xffffffec,1);
+      piVar4[0x27] = unaff_EDI;
+      *(undefined1 *)(piVar4 + 0x28) = 1;
+      uVar3 = (*pTVar1)(0x63726532);
+      piVar4 = (int *)CONCAT31(extraout_var_00,uVar3);
+      iVar2 = *piVar4;
+      (**(code **)(iVar2 + 0xc))();
+      (**(code **)(iVar2 + 0x1dc))(0xfb3);
+      (**(code **)(iVar2 + 0x1e4))(&piStack_24,1);
+      *(undefined1 *)(piVar4 + 0x28) = 1;
+      piVar4[0x27] = iStack_10;
+    }
+    else {
+      piStack_24 = (int *)0x56eff6;
+      (*g_pLocalizationTable->vftable[8].slot_0x04)();
+      DAT_006a4084 = 0;
+      piStack_24 = (int *)0x56f008;
+      thunk_ResetDualAudioCuePools();
+      piStack_24 = (int *)0x2;
+      thunk_PushCueToDualAudioCuePools();
+      piStack_24 = (int *)0x3;
+      thunk_PushCueToDualAudioCuePools();
+      piStack_24 = (int *)0x56f02d;
+      thunk_SelectAndScheduleRandomAudioCue();
+    }
+  }
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0056F190
+// GHIDRA_NAME TCreditsPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TCreditsPicture::OrphanTiny_ReturnZero_0048a730(TCreditsPicture *this)
+
+{
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  return;
 }
 

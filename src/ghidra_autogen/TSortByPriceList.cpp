@@ -4,41 +4,42 @@
 // Bucket: TSortByPriceList.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005346F0
-// GHIDRA_NAME TSortByPriceList::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TSortByPriceList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TSortByPriceList::GetRuntimeClass(void)
+CRuntimeClass * __thiscall
+TSortByPriceList::GetTEventHandlerClassNamePointer(TSortByPriceList *this)
 
 {
-  return "Xwi";
+  return &g_pClassDescTSortByPriceList;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534710
 // GHIDRA_NAME TSortByPriceList::ConstructTSortByPriceList
-// GHIDRA_PROTO undefined ConstructTSortByPriceList()
+// GHIDRA_PROTO undefined __thiscall ConstructTSortByPriceList(void)
 
-TIndexAndRankList * __fastcall
-TSortByPriceList::ConstructTSortByPriceList(TIndexAndRankList *param_1)
+TSortByPriceList * __thiscall TSortByPriceList::ConstructTSortByPriceList(TSortByPriceList *this)
 
 {
-  TIndexAndRankList::CPtrArray(param_1);
-  *(undefined ***)param_1 = &_vftable_;
-  return param_1;
+  TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
+  this->vftable = &_vftable_;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534740
 // GHIDRA_NAME TSortByPriceList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TSortByPriceList::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TSortByPriceList * __thiscall TSortByPriceList::_scalar_deleting_destructor_(TSortByPriceList *this)
 
 {
+  byte in_stack_00000004;
+  
   ~TSortByPriceList();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00534770
@@ -62,5 +63,18 @@ void TSortByPriceList::~TSortByPriceList(void)
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005347B0
+// GHIDRA_NAME TSortByPriceList::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+int __thiscall TSortByPriceList::OrphanRetStub_0059add0(TSortByPriceList *this)
+
+{
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  return ((*(short *)(in_stack_00000004 + 2) <= *(short *)(in_stack_00000008 + 2)) - 1 & 2) - 1;
 }
 

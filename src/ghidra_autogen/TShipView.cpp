@@ -3,6 +3,22 @@
 // Program: Imperialism.exe
 // Bucket: TShipView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005653B0
+// GHIDRA_NAME TShipView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TShipView * __thiscall TShipView::_scalar_deleting_destructor_(TShipView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00565400
 // GHIDRA_NAME TShipView::CreateTShipViewInstance
 // GHIDRA_PROTO undefined CreateTShipViewInstance()
@@ -26,7 +42,7 @@ TView * TShipView::CreateTShipViewInstance(void)
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0065ce28;
+    this->vftable = (TViewVtbl *)&TShipViewVtbl_0065ce28;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -34,12 +50,178 @@ TView * TShipView::CreateTShipViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565470
-// GHIDRA_NAME TShipView::GetTShipViewClassNamePointer
-// GHIDRA_PROTO undefined GetTShipViewClassNamePointer()
+// GHIDRA_NAME TShipView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TShipView::GetTShipViewClassNamePointer(void)
+CRuntimeClass * __thiscall TShipView::GetTEventHandlerClassNamePointer(TShipView *this)
 
 {
-  return &PTR_s_TShipView_0065c880;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005654E0
+// GHIDRA_NAME TShipView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TShipView::OrphanTiny_ReturnZero_0048a730(TShipView *this)
+
+{
+  short sVar1;
+  short sVar2;
+  CString *src_ref;
+  int iVar3;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_60;
+  CString local_5c;
+  CString CStack_58;
+  CString CStack_54;
+  undefined1 *puStack_50;
+  RECT RStack_4c;
+  RECT RStack_3c;
+  CString local_2c [8];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006359eb;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  iVar3 = 0;
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
+  CString::CString(&local_5c);
+  local_4 = 0;
+  CString::CString(&local_60);
+  local_4._0_1_ = 1;
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw(2,0xc,0x2b6a);
+  CString::AssignFromPtr(&local_60,(CString *)(*(int *)&this->field_0x60 + 0x18));
+  CallCallbackRepeatedly(local_2c,4,8,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
+  local_4._0_1_ = 2;
+  do {
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2760,iVar3);
+    iVar3 = iVar3 + 1;
+  } while (iVar3 < 8);
+  CString::AssignFromPtr
+            (&local_5c,
+             local_2c + *(int *)(&DAT_0065c7f8 + *(short *)(*(int *)&this->field_0x60 + 4) * 4));
+  AssignSharedStringConcatCStrAndRef(&CStack_58,g_Build_Map_Order_LookupTable_00695794);
+  local_4._0_1_ = 3;
+  AssignStringSharedFromRef();
+  local_4._0_1_ = 2;
+  CString::~CString(&CStack_58);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
+  CStack_54.m_pchData = &stack0xffffff90;
+  SetQuickDrawFillColor();
+  CStack_54.m_pchData = &stack0xffffff90;
+  SetQuickDrawStrokeColor();
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  if (*(int *)(*(int *)&this->field_0x60 + 0x20) != 0) {
+    ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,9);
+    src_ref = (CString *)AssignSharedStringConcatCStrAndRef(&CStack_54,s_Adm__0069578c);
+    local_4._0_1_ = 4;
+    CString::StringSharedRef_AssignFromPtr(&CStack_58,src_ref);
+    local_4._0_1_ = 5;
+    CString::AssignFromPtr(&local_60,&CStack_58);
+    local_4._0_1_ = 4;
+    CString::~CString(&CStack_58);
+    local_4._0_1_ = 2;
+    CString::~CString(&CStack_54);
+    thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
+    THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  }
+  sVar2 = *(short *)(*(int *)&this->field_0x60 + 0x1c);
+  sVar1 = GetNavyOrderNormalizationBaseByNationType();
+  sVar2 = (short)((sVar2 * 0x14) / (int)sVar1) + 1;
+  if (0x14 < sVar2) {
+    sVar2 = 0x14;
+  }
+  if (sVar2 < 5) {
+    sVar1 = 0x1a;
+  }
+  else {
+    sVar1 = ((0xe < sVar2) - 1 & 8) + 10;
+  }
+  RStack_3c.top = (LONG)sVar1;
+  RStack_3c.bottom = RStack_3c.top + 7;
+  RStack_3c.right = sVar2 * 4 + -1;
+  RStack_4c.right = sVar2 * 4 + 0x51;
+  RStack_3c.left = 0;
+  RStack_4c.left = 0x52;
+  RStack_4c.top = 0x1e;
+  RStack_4c.bottom = 0x25;
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
+             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_3c,&RStack_4c,0x24,
+             (astruct_19 *)0x0);
+  puStack_50 = &stack0xffffff90;
+  SetQuickDrawStrokeColor();
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x50);
+  thunk_DrawCenteredGuideLineOnMapDc(0x50);
+  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
+  thunk_DrawCenteredGuideLineOnMapDc(0xa2);
+  local_4._0_1_ = 1;
+  TDiplomacyMapView::InvokeCallbackNTimesWithSehGuard(local_2c,4,8);
+  local_4 = (uint)local_4._1_3_ << 8;
+  CString::~CString(&local_60);
+  local_4 = 0xffffffff;
+  CString::~CString(&local_5c);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005658D0
+// GHIDRA_NAME TShipView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TShipView::OrphanRetStub_0059add0(TShipView *this)
+
+{
+  int *piVar1;
+  short sVar2;
+  void *pvVar3;
+  int iVar4;
+  undefined2 extraout_var;
+  int iVar5;
+  short sVar6;
+  int in_stack_00000008;
+  
+  if (*(int *)(in_stack_00000008 + 0x1c) == 0x63686563) {
+    pvVar3 = ObjectPool::FindMissionOrderNodeById
+                       (*(ObjectPool **)(*(int *)&this->field_0x64 + 0x10),*(int *)&this->field_0x60
+                       );
+    if (*(char *)((int)pvVar3 + 0xc) == '\0') {
+      SetTaskForceOrderSelectionByNodeId(*(undefined4 *)&this->field_0x60,1);
+      sVar6 = 1;
+    }
+    else {
+      SetTaskForceOrderSelectionByNodeId(*(undefined4 *)&this->field_0x60,0);
+      sVar6 = -1;
+    }
+    piVar1 = *(int **)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0xb0 +
+                      *(short *)(*(int *)&g_pUiRuntimeContext->field_0xf0 + 0x96) * 4);
+    if (piVar1 != (int *)0x0) {
+      iVar4 = *piVar1;
+      sVar2 = GetOrderNodeDescriptorWord20ByResourceType();
+      iVar4 = (**(code **)(iVar4 + 0x94))(sVar2 + 0x636c7330);
+      if (sVar6 < 1) {
+        if ((sVar6 < 0) && (0 < *(short *)(iVar4 + 0x94))) {
+          iVar5 = CONCAT22(extraout_var,*(short *)(iVar4 + 0x94)) + -1;
+          *(short *)(iVar4 + 0x94) = (short)iVar5;
+          (**(code **)(**(int **)(iVar4 + 0x90) + 0x1c4))(iVar5,1);
+        }
+      }
+      else if (*(short *)(iVar4 + 0x94) < *(short *)(iVar4 + 0x88)) {
+        iVar5 = CONCAT22(extraout_var,*(short *)(iVar4 + 0x94)) + 1;
+        *(short *)(iVar4 + 0x94) = (short)iVar5;
+        (**(code **)(**(int **)(iVar4 + 0x90) + 0x1c4))(iVar5,1);
+      }
+    }
+  }
+  else if (*(int *)(in_stack_00000008 + 0x1c) == 0x6e616d65) {
+    RunEngineerOrderNameEditDialogAndApply();
+  }
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  return;
 }
 

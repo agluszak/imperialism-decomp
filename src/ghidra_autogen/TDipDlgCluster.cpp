@@ -7,11 +7,11 @@
 // GHIDRA_NAME TDipDlgCluster::CreateTDipDlgClusterInstance
 // GHIDRA_PROTO undefined CreateTDipDlgClusterInstance()
 
-undefined4 * TDipDlgCluster::CreateTDipDlgClusterInstance(void)
+TUberCluster * TDipDlgCluster::CreateTDipDlgClusterInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TUberCluster *this;
+  TUberCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,79 +21,83 @@ undefined4 * TDipDlgCluster::CreateTDipDlgClusterInstance(void)
   puStack_8 = &LAB_006375aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState();
-    *puVar1 = &PTR_LAB_00663bb0;
-    puVar2 = puVar1;
+  pTVar1 = (TUberCluster *)0x0;
+  if (this != (TUberCluster *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState(this);
+    this->vftable = (TUberClusterVtbl *)&TDipDlgClusterVtbl_00663bb0;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005840C0
-// GHIDRA_NAME TDipDlgCluster::GetTDipDlgClusterClassNamePointer
-// GHIDRA_PROTO undefined GetTDipDlgClusterClassNamePointer()
+// GHIDRA_NAME TDipDlgCluster::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TDipDlgCluster::GetTDipDlgClusterClassNamePointer(void)
+CRuntimeClass * __thiscall TDipDlgCluster::GetTEventHandlerClassNamePointer(TDipDlgCluster *this)
 
 {
-  return &PTR_s_TDipDlgCluster_00662e18;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005840E0
 // GHIDRA_NAME TDipDlgCluster::ConstructTDipDlgClusterBaseState
-// GHIDRA_PROTO undefined ConstructTDipDlgClusterBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDipDlgClusterBaseState(void)
 
-undefined4 * __fastcall TDipDlgCluster::ConstructTDipDlgClusterBaseState(undefined4 *param_1)
+TDipDlgCluster * __thiscall TDipDlgCluster::ConstructTDipDlgClusterBaseState(TDipDlgCluster *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState();
-  *param_1 = &PTR_LAB_00663bb0;
-  return param_1;
+  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  this->vftable = &TDipDlgClusterVtbl_00663bb0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584110
-// GHIDRA_NAME TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDipDlgClusterAndMaybeFree()
+// GHIDRA_NAME TDipDlgCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TDipDlgCluster::DestructTDipDlgClusterAndMaybeFree(TView *param_1,byte param_2)
+TDipDlgCluster * __thiscall TDipDlgCluster::_scalar_deleting_destructor_(TDipDlgCluster *this)
 
 {
-  TView::thunk_DestructTViewBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584160
-// GHIDRA_NAME TDipDlgCluster::EvaluateSubsAndSancControlActiveState
-// GHIDRA_PROTO undefined EvaluateSubsAndSancControlActiveState()
+// GHIDRA_NAME TDipDlgCluster::OrphanVtableAssignStub_005714e0
+// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
 
-bool __fastcall TDipDlgCluster::EvaluateSubsAndSancControlActiveState(int param_1)
+bool __thiscall TDipDlgCluster::OrphanVtableAssignStub_005714e0(TDipDlgCluster *this)
 
 {
-  char cVar1;
-  int *piVar2;
-  int *piVar3;
+  undefined uVar1;
+  undefined uVar2;
+  char cVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
   
-  piVar2 = (int *)(**(code **)(**(int **)(param_1 + 0x20) + 0x94))(0x73756273);
-  if (piVar2 == (int *)0x0) {
+  uVar1 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x73756273);
+  if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1cd);
   }
-  piVar3 = (int *)(**(code **)(**(int **)(param_1 + 0x20) + 0x94))(0x73616e63);
-  cVar1 = (**(code **)(*piVar2 + 0x1cc))();
-  if (cVar1 != '\0') {
+  uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x73616e63);
+  cVar3 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1cc))();
+  if (cVar3 != '\0') {
     return true;
   }
-  if (piVar3 != (int *)0x0) {
-    cVar1 = (**(code **)(*piVar3 + 0x1cc))();
-    return cVar1 != '\0';
+  if ((int *)CONCAT31(extraout_var_00,uVar2) != (int *)0x0) {
+    cVar3 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1cc))();
+    return cVar3 != '\0';
   }
   return false;
 }

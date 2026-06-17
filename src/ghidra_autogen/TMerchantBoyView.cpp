@@ -3,29 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: TMerchantBoyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004AF760
-// GHIDRA_NAME TMerchantBoyView::GetTMerchantBoyViewClassNamePointer
-// GHIDRA_PROTO undefined GetTMerchantBoyViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004AF710
+// GHIDRA_NAME TMerchantBoyView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TMerchantBoyView::GetTMerchantBoyViewClassNamePointer(void)
+TMerchantBoyView * __thiscall TMerchantBoyView::_scalar_deleting_destructor_(TMerchantBoyView *this)
 
 {
-  return &PTR_s_TMerchantBoyView_0064dce0;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AF760
+// GHIDRA_NAME TMerchantBoyView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TMerchantBoyView::GetTEventHandlerClassNamePointer(TMerchantBoyView *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF780
-// GHIDRA_NAME TMerchantBoyView::ConstructTMerchantBoyViewBaseState
-// GHIDRA_PROTO undefined ConstructTMerchantBoyViewBaseState()
+// GHIDRA_NAME TMerchantBoyView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(int param_1)
+void __thiscall TMerchantBoyView::OrphanTiny_ReturnZero_0048a730(TMerchantBoyView *this)
 
 {
   undefined2 extraout_var;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_24;
-  undefined4 *puStack_20;
-  undefined4 local_18;
-  undefined1 local_14 [4];
+  CString CStack_24;
+  CString CStack_20;
+  CString local_18;
+  CString local_14;
   uint uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -35,35 +52,35 @@ void __fastcall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(int param_1
   puStack_8 = &LAB_00630a60;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puStack_20 = (undefined4 *)0x2b6a;
-  uStack_24 = 10;
+  CStack_20.m_pchData = (char *)0x2b6a;
+  CStack_24.m_pchData = (char *)0xa;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
-  puStack_20 = (undefined4 *)0x4af7b5;
-  InitializeSharedStringRefFromEmpty(&local_18);
+  CStack_20.m_pchData = (char *)0x4af7b5;
+  CString::CString(&local_18);
   local_4 = 0;
-  puStack_20 = (undefined4 *)0x4af7c6;
-  InitializeSharedStringRefFromEmpty(local_14);
-  puStack_20 = (undefined4 *)0x3;
-  uStack_24 = 0x2b6a;
+  CStack_20.m_pchData = "j\x03hj+";
+  CString::CString(&local_14);
+  CStack_20.m_pchData = (char *)0x3;
+  CStack_24.m_pchData = (char *)0x2b6a;
   local_4 = CONCAT31(local_4._1_3_,1);
   InitializeUiTextStyleDescriptorAndApplyQuickDraw();
-  uStack_24 = CONCAT22(extraout_var,**(undefined2 **)(param_1 + 0x60));
-  puStack_20 = (undefined4 *)0xffffffff;
+  CStack_24.m_pchData = (char *)CONCAT22(extraout_var,**(undefined2 **)&this->field_0x60);
+  CStack_20.m_pchData = (char *)0xffffffff;
   FormatLocalizedCommodityCountLabelByIndex();
-  puStack_20 = (undefined4 *)0x18;
-  uStack_24 = 0x50;
+  CStack_20.m_pchData = (char *)0x18;
+  CStack_24.m_pchData = (char *)0x50;
   thunk_SetQuickDrawTextOriginWithContextOffset();
-  puStack_20 = &local_18;
-  uStack_24 = 0x4af80a;
+  CStack_20.m_pchData = (char *)&local_18;
+  CStack_24.m_pchData = (char *)0x4af80a;
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
-  puStack_20 = &local_18;
-  if (*(short *)(*(int *)(param_1 + 0x60) + 2) == 0) {
-    uStack_24 = 0x1b;
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+  CStack_20.m_pchData = (char *)&local_18;
+  if (*(short *)(*(int *)&this->field_0x60 + 2) == 0) {
+    CStack_24.m_pchData = (char *)0x1b;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   }
   else {
-    uStack_24 = 0x1c;
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    CStack_24.m_pchData = (char *)0x1c;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   }
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
   thunk_MeasureTextExtentWithCachedQuickDrawStyle();
@@ -71,10 +88,10 @@ void __fastcall TMerchantBoyView::ConstructTMerchantBoyViewBaseState(int param_1
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawStrokeColor();
   uStack_10 = uStack_10 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(&puStack_20);
+  CString::~CString(&CStack_20);
   uStack_10 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_24);
-  *unaff_FS_OFFSET = local_18;
+  CString::~CString(&CStack_24);
+  *unaff_FS_OFFSET = local_18.m_pchData;
   return;
 }
 
@@ -101,7 +118,7 @@ TView * TMerchantBoyView::DestructTMerchantBoyViewAndMaybeFree(void)
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0064e5e0;
+    this->vftable = (TViewVtbl *)&TItemBoyViewVtbl_0064e5e0;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

@@ -7,10 +7,10 @@
 // GHIDRA_NAME TGWorldButton::CreateTGWorldButtonInstance
 // GHIDRA_PROTO undefined CreateTGWorldButtonInstance()
 
-undefined4 * TGWorldButton::CreateTGWorldButtonInstance(void)
+TControl * TGWorldButton::CreateTGWorldButtonInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,53 +20,116 @@ undefined4 * TGWorldButton::CreateTGWorldButtonInstance(void)
   puStack_8 = &LAB_006364aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x8c);
+  this = (TControl *)AllocateWithFallbackHandler(0x8c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_LAB_0065ff60;
-    *(undefined2 *)(puVar1 + 0x21) = 0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    this->vftable = (TControlVtbl *)&TGWorldButtonVtbl_0065ff60;
+    *(undefined2 *)&this[1].vftable = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TControl *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572110
-// GHIDRA_NAME TGWorldButton::GetTGWorldButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTGWorldButtonClassNamePointer()
+// GHIDRA_NAME TGWorldButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TGWorldButton::GetTGWorldButtonClassNamePointer(void)
+CRuntimeClass * __thiscall TGWorldButton::GetTEventHandlerClassNamePointer(TGWorldButton *this)
 
 {
-  return &PTR_s_TGWorldButton_0065e640;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572130
 // GHIDRA_NAME TGWorldButton::ConstructTGWorldButtonBaseState
-// GHIDRA_PROTO undefined ConstructTGWorldButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTGWorldButtonBaseState(void)
 
-undefined4 * __fastcall TGWorldButton::ConstructTGWorldButtonBaseState(undefined4 *param_1)
+TGWorldButton * __thiscall TGWorldButton::ConstructTGWorldButtonBaseState(TGWorldButton *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-  *param_1 = &PTR_LAB_0065ff60;
-  *(undefined2 *)(param_1 + 0x21) = 0;
-  return param_1;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  this->vftable = &TGWorldButtonVtbl_0065ff60;
+  *(undefined2 *)&this->field_0x84 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572160
-// GHIDRA_NAME TGWorldButton::DestructTGWorldButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTGWorldButtonAndMaybeFree()
+// GHIDRA_NAME TGWorldButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TGWorldButton::DestructTGWorldButtonAndMaybeFree(TView *param_1,byte param_2)
+TGWorldButton * __thiscall TGWorldButton::_scalar_deleting_destructor_(TGWorldButton *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00572200
+// GHIDRA_NAME TGWorldButton::OrphanCallChain_C2_I25_00572200
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I25_00572200(void)
+
+void __thiscall TGWorldButton::OrphanCallChain_C2_I25_00572200(TGWorldButton *this)
+
+{
+  TGWorldButtonVtbl *pTVar1;
+  char in_stack_00000004;
+  char in_stack_00000008;
+  
+  if (in_stack_00000004 != this->field_0x64) {
+    this->field_0x64 = in_stack_00000004;
+    if (in_stack_00000004 == '\0') {
+      *(short *)&this->field_0x84 = *(short *)&this->field_0x84 - (short)this->field34;
+    }
+    else {
+      *(short *)&this->field_0x84 = *(short *)&this->field_0x84 + (short)this->field34;
+    }
+    pTVar1 = this->vftable;
+    (*pTVar1[0x1c].slot_0x04)();
+    if (in_stack_00000008 != '\0') {
+      (*pTVar1[0x27].slot_0x04)();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00572270
+// GHIDRA_NAME TGWorldButton::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TGWorldButton::OrphanTiny_ReturnZero_0048a730(TGWorldButton *this)
+
+{
+  LONG local_30;
+  LONG LStack_2c;
+  LONG LStack_28;
+  RECT RStack_24;
+  RECT RStack_14;
+  int local_4;
+  
+  if (*(int *)&this->field_0x88 != 0) {
+    RStack_14.top = (LONG)*(short *)&this->field_0x84;
+    local_4 = this->field38;
+    RStack_14.bottom = this->field34 + RStack_14.top;
+    RStack_14.right = 0;
+    (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(&local_30);
+    RStack_24.top = local_30;
+    RStack_24.right = LStack_2c;
+    RStack_24.bottom = LStack_28;
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)&this->field_0x88 + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_14,&RStack_24,0x24
+               ,(astruct_19 *)0x0);
+    UpdatePaletteIndexWithDefaultFallback(0x13);
+  }
+  return;
 }
 

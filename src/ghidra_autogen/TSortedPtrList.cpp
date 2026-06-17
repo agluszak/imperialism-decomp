@@ -3,31 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TSortedPtrList.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00488110
-// GHIDRA_NAME TSortedPtrList::ResetPtrListAndShrinkCapacity
-// GHIDRA_PROTO undefined ResetPtrListAndShrinkCapacity()
-
-void __fastcall TSortedPtrList::ResetPtrListAndShrinkCapacity(int *param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = *param_1;
-  (**(code **)(iVar1 + 0x1c))();
-  (**(code **)(iVar1 + 0x28))();
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004883E0
-// GHIDRA_NAME TSortedPtrList::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
-
-char * TSortedPtrList::GetRuntimeClass(void)
-
-{
-  return "<Oi";
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x00488400
 // GHIDRA_NAME TSortedPtrList::ConstructTSortedPtrListBaseState
 // GHIDRA_PROTO undefined ConstructTSortedPtrListBaseState()
@@ -51,7 +26,7 @@ TIndexAndRankList * TSortedPtrList::ConstructTSortedPtrListBaseState(void)
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
     TIndexAndRankList::CPtrArray(this);
-    *(undefined ***)this = &_vftable_;
+    this->vftable = (TIndexAndRankListVtbl *)&_vftable_;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

@@ -7,10 +7,10 @@
 // GHIDRA_NAME TRightLeftView::CreateTRightLeftViewInstance
 // GHIDRA_PROTO undefined CreateTRightLeftViewInstance()
 
-undefined4 * TRightLeftView::CreateTRightLeftViewInstance(void)
+TControl * TRightLeftView::CreateTRightLeftViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,85 +20,88 @@ undefined4 * TRightLeftView::CreateTRightLeftViewInstance(void)
   puStack_8 = &LAB_0063758a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_LAB_00663990;
-    puVar1[0x21] = 0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    this->vftable = (TControlVtbl *)&TRightLeftViewVtbl_00663990;
+    this[1].vftable = (TControlVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TControl *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F10
-// GHIDRA_NAME TRightLeftView::GetTRightLeftViewClassNamePointer
-// GHIDRA_PROTO undefined GetTRightLeftViewClassNamePointer()
+// GHIDRA_NAME TRightLeftView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TRightLeftView::GetTRightLeftViewClassNamePointer(void)
+CRuntimeClass * __thiscall TRightLeftView::GetTEventHandlerClassNamePointer(TRightLeftView *this)
 
 {
-  return &PTR_s_TRightLeftView_00662e00;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F30
 // GHIDRA_NAME TRightLeftView::ConstructTRightLeftViewBaseState
-// GHIDRA_PROTO undefined ConstructTRightLeftViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTRightLeftViewBaseState(void)
 
-undefined4 * __fastcall TRightLeftView::ConstructTRightLeftViewBaseState(undefined4 *param_1)
+TRightLeftView * __thiscall TRightLeftView::ConstructTRightLeftViewBaseState(TRightLeftView *this)
 
 {
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-  *param_1 = &PTR_LAB_00663990;
-  param_1[0x21] = 0;
-  return param_1;
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
+  this->vftable = &TRightLeftViewVtbl_00663990;
+  *(undefined4 *)&this->field_0x84 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583F60
-// GHIDRA_NAME TRightLeftView::DestructTRightLeftViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTRightLeftViewAndMaybeFree()
+// GHIDRA_NAME TRightLeftView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TRightLeftView::DestructTRightLeftViewAndMaybeFree(TView *param_1,byte param_2)
+TRightLeftView * __thiscall TRightLeftView::_scalar_deleting_destructor_(TRightLeftView *this)
 
 {
-  TView::thunk_DestructTViewBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583FB0
-// GHIDRA_NAME TRightLeftView::HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
-// GHIDRA_PROTO undefined HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84()
+// GHIDRA_NAME TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall
-TRightLeftView::HandleTaggedArrowAutoRepeatTickAndDispatch_Offset84
-          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+void __thiscall TRightLeftView::QueueCityRecruitmentSupportCommandsIfDeficit(TRightLeftView *this)
 
 {
-  char cVar1;
-  uint uVar2;
-  int iVar3;
+  TRightLeftViewVtbl *pTVar1;
+  char cVar2;
+  uint uVar3;
+  int iVar4;
+  int in_stack_00000004;
+  undefined4 in_stack_00000010;
   
-  if (param_2 != 2) {
-    uVar2 = thunk_GetTickCountDiv16();
-    if (param_1[0x21] + 5U <= uVar2) {
-      iVar3 = thunk_GetTickCountDiv16();
-      param_1[0x21] = iVar3;
-      if (param_2 == 0) {
-        param_1[0x21] = iVar3 + 10;
+  if (in_stack_00000004 != 2) {
+    uVar3 = thunk_GetTickCountDiv16();
+    if (*(int *)&this->field_0x84 + 5U <= uVar3) {
+      iVar4 = thunk_GetTickCountDiv16();
+      *(int *)&this->field_0x84 = iVar4;
+      if (in_stack_00000004 == 0) {
+        *(int *)&this->field_0x84 = iVar4 + 10;
       }
-      iVar3 = *param_1;
-      cVar1 = (**(code **)(iVar3 + 0x16c))(param_5);
-      if (cVar1 != '\0') {
-        if (param_1[7] == 0x72676874) {
-          (**(code **)(iVar3 + 0x40))(100);
+      pTVar1 = this->vftable;
+      cVar2 = (*pTVar1[0x2d].slot_0x04)(in_stack_00000010);
+      if (cVar2 != '\0') {
+        if (this->controlTag == 0x72676874) {
+          (*pTVar1[8].GetTEventHandlerClassNamePointer)(100);
           return;
         }
-        (**(code **)(iVar3 + 0x40))(0x65,param_1,0);
+        (*pTVar1[8].GetTEventHandlerClassNamePointer)(0x65,this,0);
       }
     }
   }

@@ -1,13 +1,16 @@
 {
-  "category_count": 5,
+  "category_count": 8,
   "generated_header_files": [
     "DOS.h",
     "Demangler.h",
+    "MFC.h",
+    "MFC/vfn.h",
+    "MFC/vtables.h",
     "PE.h",
     "all_types.h",
     "auto_structs.h",
     "root_types.h"
   ],
   "program": "Imperialism.exe",
-  "type_count": 123
+  "type_count": 33577
 }

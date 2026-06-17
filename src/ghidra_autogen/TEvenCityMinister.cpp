@@ -7,10 +7,10 @@
 // GHIDRA_NAME TEvenCityMinister::CreateTEvenCityMinisterInstance
 // GHIDRA_PROTO undefined CreateTEvenCityMinisterInstance()
 
-undefined4 * TEvenCityMinister::CreateTEvenCityMinisterInstance(void)
+TMinister * TEvenCityMinister::CreateTEvenCityMinisterInstance(void)
 
 {
-  undefined4 *puVar1;
+  TMinister *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,60 +20,101 @@ undefined4 * TEvenCityMinister::CreateTEvenCityMinisterInstance(void)
   puStack_8 = &LAB_006314ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c4);
+  this = (TMinister *)AllocateWithFallbackHandler(0x1c4);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMinister::ConstructTMinister();
-    puVar1[99] = 0;
-    *(undefined2 *)(puVar1 + 5) = 1;
-    *(undefined2 *)((int)puVar1 + 0x16) = 1;
-    *puVar1 = &PTR_LAB_00650d30;
-    *(undefined2 *)(puVar1 + 3) = 3;
+  if (this != (TMinister *)0x0) {
+    TMinister::ConstructTMinister(this);
+    *(undefined4 *)&this[0x18].field_0xc = 0;
+    *(undefined2 *)&this[1].field_0x4 = 1;
+    *(undefined2 *)&this[1].field_0x6 = 1;
+    this->vftable = (TMinisterVtbl *)&TEvenCityMinisterVtbl_00650d30;
+    *(undefined2 *)&this->field_0xc = 3;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TMinister *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5FC0
-// GHIDRA_NAME TEvenCityMinister::GetTEvenCityMinisterClassNamePointer
-// GHIDRA_PROTO undefined GetTEvenCityMinisterClassNamePointer()
+// GHIDRA_NAME TEvenCityMinister::GetTMinisterClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-undefined ** TEvenCityMinister::GetTEvenCityMinisterClassNamePointer(void)
+CRuntimeClass * __thiscall TEvenCityMinister::GetTMinisterClassNamePointer(TEvenCityMinister *this)
 
 {
-  return &PTR_s_TEvenCityMinister_00650710;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C5FE0
 // GHIDRA_NAME TEvenCityMinister::ConstructTEvenCityMinisterBaseState
-// GHIDRA_PROTO undefined ConstructTEvenCityMinisterBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTEvenCityMinisterBaseState(void)
 
-undefined4 * __fastcall TEvenCityMinister::ConstructTEvenCityMinisterBaseState(undefined4 *param_1)
+TEvenCityMinister * __thiscall
+TEvenCityMinister::ConstructTEvenCityMinisterBaseState(TEvenCityMinister *this)
 
 {
-  TMinister::ConstructTMinister();
-  param_1[99] = 0;
-  *(undefined2 *)(param_1 + 5) = 1;
-  *(undefined2 *)((int)param_1 + 0x16) = 1;
-  *param_1 = &PTR_LAB_00650d30;
-  *(undefined2 *)(param_1 + 3) = 3;
-  return param_1;
+  TMinister::ConstructTMinister((TMinister *)this);
+  *(undefined4 *)&this->field_0x18c = 0;
+  *(undefined2 *)&this->field_0x14 = 1;
+  *(undefined2 *)&this->field_0x16 = 1;
+  this->vftable = &TEvenCityMinisterVtbl_00650d30;
+  *(undefined2 *)&this->field_0xc = 3;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C6020
-// GHIDRA_NAME TEvenCityMinister::DestructTEvenCityMinisterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTEvenCityMinisterAndMaybeFree()
+// GHIDRA_NAME TEvenCityMinister::DeletingDestructTMinister
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
 
-undefined4 __thiscall
-TEvenCityMinister::DestructTEvenCityMinisterAndMaybeFree(undefined4 param_1,byte param_2)
+TEvenCityMinister * __thiscall TEvenCityMinister::DeletingDestructTMinister(TEvenCityMinister *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTEvenCityMinisterAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C6090
+// GHIDRA_NAME TEvenCityMinister::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TEvenCityMinister::GetTEventHandlerClassNamePointer(TEvenCityMinister *this)
+
+{
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xf);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0x10);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xd);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xe);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(9);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xb);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(8);
+  (**(code **)(**(int **)&this->field_0x28 + 0x14))(0xc);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(3);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(1);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(5);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(3);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(1);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(5);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(4);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(2);
+  (**(code **)(**(int **)&this->field_0x2c + 0x14))(0);
+  return;
 }
 

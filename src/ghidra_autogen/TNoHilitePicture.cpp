@@ -7,10 +7,10 @@
 // GHIDRA_NAME TNoHilitePicture::CreateTNoHilitePictureInstance
 // GHIDRA_PROTO undefined CreateTNoHilitePictureInstance()
 
-undefined4 * TNoHilitePicture::CreateTNoHilitePictureInstance(void)
+thunk_TPictureButton * TNoHilitePicture::CreateTNoHilitePictureInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,32 +20,33 @@ undefined4 * TNoHilitePicture::CreateTNoHilitePictureInstance(void)
   puStack_8 = &LAB_0063655a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_006606e8;
-    *(undefined1 *)(puVar1 + 0x24) = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TNoHilitePictureVtbl **)this = &TNoHilitePictureVtbl_006606e8;
+    this[0x90] = (thunk_TPictureButton)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572B10
-// GHIDRA_NAME TNoHilitePicture::GetTNoHilitePictureClassNamePointer
-// GHIDRA_PROTO undefined GetTNoHilitePictureClassNamePointer()
+// GHIDRA_NAME TNoHilitePicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TNoHilitePicture::GetTNoHilitePictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TNoHilitePicture::GetTEventHandlerClassNamePointer(TNoHilitePicture *this)
 
 {
-  return &PTR_s_TNoHilitePicture_00660610;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572B30
 // GHIDRA_NAME TNoHilitePicture::ConstructPictureResourceEntryType606E8
-// GHIDRA_PROTO undefined ConstructPictureResourceEntryType606E8()
+// GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntryType606E8(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived picture-entry constructor (vtable PTR_LAB_006606e8) over ConstructPictureResourceEntryBase.
 // GHIDRA_COMMENT Clears extended state byte +0x90.
@@ -55,28 +56,29 @@ undefined ** TNoHilitePicture::GetTNoHilitePictureClassNamePointer(void)
    ConstructPictureResourceEntryBase.
    Clears extended state byte +0x90. */
 
-undefined4 * __fastcall
-TNoHilitePicture::ConstructPictureResourceEntryType606E8(undefined4 *param_1)
+TNoHilitePicture * __thiscall
+TNoHilitePicture::ConstructPictureResourceEntryType606E8(TNoHilitePicture *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_006606e8;
-  *(undefined1 *)(param_1 + 0x24) = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TNoHilitePictureVtbl_006606e8;
+  this->field_0x90 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572B60
-// GHIDRA_NAME TNoHilitePicture::DestructTNoHilitePictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTNoHilitePictureAndMaybeFree()
+// GHIDRA_NAME TNoHilitePicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TNoHilitePicture::DestructTNoHilitePictureAndMaybeFree(undefined4 param_1,byte param_2)
+TNoHilitePicture * __thiscall TNoHilitePicture::_scalar_deleting_destructor_(TNoHilitePicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 

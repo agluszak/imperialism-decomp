@@ -5,37 +5,155 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4EE0
 // GHIDRA_NAME TProductionOrder::GetTProductionOrderClassNamePointer
-// GHIDRA_PROTO undefined GetTProductionOrderClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTProductionOrderClassNamePointer(void)
 
-undefined ** TProductionOrder::GetTProductionOrderClassNamePointer(void)
+CRuntimeClass * __thiscall
+TProductionOrder::GetTProductionOrderClassNamePointer(TProductionOrder *this)
 
 {
-  return &PTR_s_TProductionOrder_0064f350;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F00
 // GHIDRA_NAME TProductionOrder::ConstructTProductionOrderBaseState
-// GHIDRA_PROTO undefined ConstructTProductionOrderBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTProductionOrderBaseState(void)
 
-void __fastcall TProductionOrder::ConstructTProductionOrderBaseState(undefined4 *param_1)
+void __thiscall TProductionOrder::ConstructTProductionOrderBaseState(TProductionOrder *this)
 
 {
-  *param_1 = &PTR_LAB_0064fa18;
+  this->vftable = &TProductionOrderVtbl_0064fa18;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4F20
 // GHIDRA_NAME TProductionOrder::DestructTProductionOrderAndMaybeFree
-// GHIDRA_PROTO undefined DestructTProductionOrderAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTProductionOrderAndMaybeFree(void)
 
-undefined4 __thiscall
-TProductionOrder::DestructTProductionOrderAndMaybeFree(undefined4 param_1,byte param_2)
+TProductionOrder * __thiscall
+TProductionOrder::DestructTProductionOrderAndMaybeFree(TProductionOrder *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTProductionOrderAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4FE0
+// GHIDRA_NAME TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(void)
+
+void __thiscall
+TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot14_At004b4fe0(TProductionOrder *this)
+
+{
+  code *pcVar1;
+  int *in_stack_00000004;
+  
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  (*pcVar1)(&this->field_0x48,2);
+  (*pcVar1)(&this->field_0x4,2);
+  (*pcVar1)(&this->field_0x40,2);
+  (*pcVar1)(&this->field_0x48,2);
+  (*pcVar1)(&this->field_0x10,0x2e);
+  (*pcVar1)(&this->field_0x44,4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5060
+// GHIDRA_NAME TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060
+// GHIDRA_PROTO undefined __thiscall WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(void)
+
+void __thiscall
+TProductionOrder::WrapperFor_HandleCityDialogNoOpSlot18_At004b5060(TProductionOrder *this)
+
+{
+  code *pcVar1;
+  int *in_stack_00000004;
+  
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  (*pcVar1)(&this->field_0x48,2);
+  (*pcVar1)(&this->field_0x4,2);
+  (*pcVar1)(&this->field_0x40,2);
+  (*pcVar1)(&this->field_0x48,2);
+  (*pcVar1)(&this->field_0x10,0x2e);
+  (*pcVar1)(&this->field_0x44,4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B50E0
+// GHIDRA_NAME TProductionOrder::OrphanLeaf_NoCall_Ins02_004b50e0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_004b50e0(void)
+
+undefined2 __thiscall TProductionOrder::OrphanLeaf_NoCall_Ins02_004b50e0(TProductionOrder *this)
+
+{
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5100
+// GHIDRA_NAME TProductionOrder::OrphanCallChain_C1_I16_004b5100
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I16_004b5100(void)
+
+undefined4 __thiscall TProductionOrder::OrphanCallChain_C1_I16_004b5100(TProductionOrder *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  short in_stack_00000004;
+  
+  uVar1 = (*this->vftable[6].GetTProductionOrderClassNamePointer)();
+  if ((in_stack_00000004 <= (short)CONCAT31(extraout_var,uVar1)) && (-1 < in_stack_00000004)) {
+    *(short *)&this->field_0x4 = in_stack_00000004;
+    return CONCAT31(extraout_var,1);
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5140
+// GHIDRA_NAME TProductionOrder::ResetCityOrderItemDerivedStateNoop
+// GHIDRA_PROTO undefined __thiscall ResetCityOrderItemDerivedStateNoop(void)
+
+void __thiscall TProductionOrder::ResetCityOrderItemDerivedStateNoop(TProductionOrder *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5160
+// GHIDRA_NAME TProductionOrder::OrphanRetStub_004b5160
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b5160(void)
+
+void __thiscall TProductionOrder::OrphanRetStub_004b5160(TProductionOrder *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B5180
+// GHIDRA_NAME TProductionOrder::InitializeCityOrderItemWorkingBuffers
+// GHIDRA_PROTO undefined __thiscall InitializeCityOrderItemWorkingBuffers(void)
+
+void __thiscall TProductionOrder::InitializeCityOrderItemWorkingBuffers(TProductionOrder *this)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  undefined4 *in_stack_00000004;
+  
+  puVar2 = in_stack_00000004;
+  for (iVar1 = 0x1e; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
+  }
+  *(undefined2 *)puVar2 = 0;
+  *(undefined2 *)((int)in_stack_00000004 + 0x7a) = 0;
+  *(undefined2 *)(in_stack_00000004 + 0x1f) = 0;
+  return;
 }
 

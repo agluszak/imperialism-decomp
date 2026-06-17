@@ -7,10 +7,10 @@
 // GHIDRA_NAME TMegaPicture::CreateTMegaPictureInstance
 // GHIDRA_PROTO undefined CreateTMegaPictureInstance()
 
-undefined4 * TMegaPicture::CreateTMegaPictureInstance(void)
+thunk_TPictureButton * TMegaPicture::CreateTMegaPictureInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,58 +20,217 @@ undefined4 * TMegaPicture::CreateTMegaPictureInstance(void)
   puStack_8 = &LAB_006365da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xac);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0xac);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined1 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &PTR_LAB_00660d78;
-    puVar1[0x25] = 0;
-    *(undefined2 *)(puVar1 + 0x26) = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    this[0x90] = (thunk_TPictureButton)0x0;
+    *(TMegaPictureVtbl **)this = &TMegaPictureVtbl_00660d78;
+    *(undefined4 *)(this + 0x94) = 0;
+    *(undefined2 *)(this + 0x98) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573170
-// GHIDRA_NAME TMegaPicture::GetTMegaPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTMegaPictureClassNamePointer()
+// GHIDRA_NAME TMegaPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TMegaPicture::GetTMegaPictureClassNamePointer(void)
+CRuntimeClass * __thiscall TMegaPicture::GetTEventHandlerClassNamePointer(TMegaPicture *this)
 
 {
-  return &PTR_s_TMegaPicture_00660658;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573190
 // GHIDRA_NAME TMegaPicture::ConstructTMegaPictureBaseState
-// GHIDRA_PROTO undefined ConstructTMegaPictureBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTMegaPictureBaseState(void)
 
-undefined4 * __fastcall TMegaPicture::ConstructTMegaPictureBaseState(undefined4 *param_1)
+TMegaPicture * __thiscall TMegaPicture::ConstructTMegaPictureBaseState(TMegaPicture *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00660d78;
-  *(undefined1 *)(param_1 + 0x24) = 0;
-  param_1[0x25] = 0;
-  *(undefined2 *)(param_1 + 0x26) = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TMegaPictureVtbl_00660d78;
+  this->field_0x90 = 0;
+  *(undefined4 *)&this->field_0x94 = 0;
+  *(undefined2 *)&this->field_0x98 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005731D0
-// GHIDRA_NAME TMegaPicture::DestructTMegaPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMegaPictureAndMaybeFree()
+// GHIDRA_NAME TMegaPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TMegaPicture::DestructTMegaPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TMegaPicture * __thiscall TMegaPicture::_scalar_deleting_destructor_(TMegaPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00573270
+// GHIDRA_NAME TMegaPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TMegaPicture::OrphanTiny_ReturnZero_0048a730(TMegaPicture *this)
+
+{
+  TMegaPicture_slot_0x04_0x04 *pTVar1;
+  LONG unaff_ESI;
+  byte blitFlags;
+  LONG unaff_EDI;
+  LONG *in_stack_00000004;
+  uint palette_index;
+  LONG local_30;
+  LONG local_2c;
+  RECT local_28;
+  RECT RStack_18;
+  
+  local_30 = *in_stack_00000004;
+  local_2c = in_stack_00000004[1];
+  local_28.left = in_stack_00000004[2];
+  local_28.top = in_stack_00000004[3];
+  pTVar1 = this->vftable[0x29].slot_0x04;
+  (*pTVar1)(&local_30,&RStack_18.right);
+  if (*(int *)&this->field_0x94 != 0) {
+    ResetQuickDrawStrokeState();
+    if ((*(ushort *)&this->field_0x98 & 4) == 0) {
+      local_28.right = local_30;
+      local_28.bottom = local_2c;
+      local_28.left = unaff_EDI;
+      local_28.top = unaff_ESI;
+    }
+    else {
+      if ((*(ushort *)&this->field_0x98 & 1) == 0) {
+        SetQuickDrawFillColor(0xffffff);
+        thunk_FillRectWithQuickDrawBrushAndContextOffset(&RStack_18);
+      }
+      local_28.left = *(LONG *)&this->field_0x9c;
+      local_28.top = *(LONG *)&this->field_0xa0;
+      local_28.right = *(LONG *)&this->field_0xa4;
+      local_28.bottom = *(LONG *)&this->field_0xa8;
+      local_30 = *(LONG *)&this->field_0xa4;
+      local_2c = *(LONG *)&this->field_0xa8;
+      (*pTVar1)(&stack0xffffffc8,&RStack_18);
+    }
+    blitFlags = 0;
+    if ((this->field_0x98 & 1) == 0) {
+      palette_index = 0x13;
+    }
+    else {
+      blitFlags = 0x24;
+      palette_index = 0x10;
+    }
+    UpdatePaletteIndexWithDefaultFallback(palette_index);
+    SetQuickDrawFillColor(0);
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)&this->field_0x94 + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_28,&RStack_18,
+               blitFlags,(astruct_19 *)0x0);
+    UpdatePaletteIndexWithDefaultFallback(0x13);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00573430
+// GHIDRA_NAME TMegaPicture::SetPictureResourceIdAndRefresh
+// GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(void)
+
+void __thiscall TMegaPicture::SetPictureResourceIdAndRefresh(TMegaPicture *this)
+
+{
+  undefined1 *puVar1;
+  undefined4 *puVar2;
+  int *piVar3;
+  int *piVar4;
+  TAnimation *this_00;
+  undefined4 uVar5;
+  undefined4 unaff_EBP;
+  undefined4 unaff_ESI;
+  undefined4 in_stack_00000004;
+  undefined1 auStack_28 [4];
+  undefined1 auStack_24 [4];
+  LONG LStack_20;
+  LONG LStack_1c;
+  LONG LStack_18;
+  LONG LStack_14;
+  undefined1 auStack_10 [12];
+  LONG LStack_4;
+  
+  puVar1 = &this->field_0x94;
+  if (*(int *)&this->field_0x94 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(puVar1);
+  }
+  *(undefined4 *)puVar1 = 0;
+  (*this->vftable[0x38].slot_0x04)();
+  uVar5 = WrapperFor_AllocateWithFallbackHandler_At004a1130(in_stack_00000004);
+  *(undefined4 *)&this->field_0x88 = uVar5;
+  NoOpRuntimeCallback_00497c00(uVar5);
+  if (**(int **)&this->field_0x88 != 0) {
+    CopyRect((LPRECT)auStack_10,(RECT *)(**(int **)&this->field_0x88 + 8));
+    LStack_20 = auStack_10._0_4_;
+    *(undefined4 *)&this->field_0x9c = auStack_10._0_4_;
+    LStack_1c = auStack_10._4_4_;
+    LStack_18 = auStack_10._8_4_;
+    *(undefined4 *)&this->field_0xa0 = auStack_10._4_4_;
+    *(undefined4 *)&this->field_0xa4 = auStack_10._8_4_;
+    LStack_14 = LStack_4;
+    *(LONG *)&this->field_0xa8 = LStack_4;
+    thunk_GetActiveQuickDrawSurfaceContextAndFlags(auStack_24,auStack_28);
+    (**(code **)(*DAT_006a2158 + 0x2c))(puVar1,8,&LStack_20);
+    thunk_SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_ESI);
+    uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+    thunk_ReturnConstantTrueQuickDrawFlag(uVar5);
+    NoOpRuntimeCallback_00497c00(*(undefined4 *)&this->field_0x88);
+    puVar2 = (undefined4 *)**(int **)&this->field_0x88;
+    if (puVar2 != (undefined4 *)0x0) {
+      (**(code **)*puVar2)();
+      *(byte *)(puVar2 + 1) = *(byte *)(puVar2 + 1) | 1;
+      ResetQuickDrawStrokeState();
+      WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40
+                (*(undefined4 *)&this->field_0x88,&stack0xffffffd4);
+      piVar3 = *(int **)&this->field_0x88;
+      piVar4 = (int *)*piVar3;
+      (**(code **)(*piVar4 + 4))();
+      *(byte *)(piVar4 + 1) = *(byte *)(piVar4 + 1) & 0xfe;
+      this_00 = (TAnimation *)*piVar3;
+      if (this_00 != (TAnimation *)0x0) {
+        this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+        TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
+                  (this_00);
+        FreeHeapBufferIfNotNull(this_00);
+      }
+      FreeHeapBufferIfNotNull(piVar3);
+      uVar5 = thunk_GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+      thunk_NoOpQuickDrawLifecycleHookB(uVar5);
+      thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
+      TPicture::thunk_SetPictureResourceIdAndRefresh
+                ((TPicture *)this,auStack_10._8_2_,(bool)(undefined1)LStack_4);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00573650
+// GHIDRA_NAME TMegaPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TMegaPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMegaPicture *this)
+
+{
+  if (*(int *)&this->field_0x94 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
+  }
+  *(undefined4 *)&this->field_0x94 = 0;
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  return;
 }
 

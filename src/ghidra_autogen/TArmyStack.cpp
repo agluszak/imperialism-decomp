@@ -5,9 +5,9 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A1F80
 // GHIDRA_NAME TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates
-// GHIDRA_PROTO undefined ProcessTileUnitListsAndApplyRandomStatusUpdates()
+// GHIDRA_PROTO undefined __thiscall ProcessTileUnitListsAndApplyRandomStatusUpdates(void)
 
-void __fastcall TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates(int param_1)
+void __thiscall TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates(TArmyStack *this)
 
 {
   short sVar1;
@@ -23,7 +23,7 @@ void __fastcall TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates(int 
   short sVar11;
   short sVar12;
   int unaff_EBX;
-  undefined2 *puVar13;
+  TArmyStack *pTVar13;
   int *local_24;
   undefined1 local_20;
   int local_18;
@@ -36,7 +36,7 @@ void __fastcall TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates(int 
       local_24 = (int *)0x0;
     }
     else {
-      local_24 = *(int **)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + local_18);
+      local_24 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + local_18);
     }
     sVar11 = -1;
     sVar3 = -1;
@@ -50,21 +50,21 @@ void __fastcall TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates(int 
         else {
           *(undefined2 *)(local_24 + 0xd) = 500;
         }
-        if ((sVar2 < 7) && (*(char *)((&g_apNationStates)[sVar2] + 0xa0) == '\0')) {
+        if ((sVar2 < 7) && (g_apNationStates[sVar2]->field_0xa0 == '\0')) {
           (**(code **)(*local_24 + 0x34))(2,0xffffffff);
         }
       }
       else {
         if (((sVar1 != sVar11) || (sVar2 != sVar3)) || (local_10 == (int *)0x0)) {
           bVar5 = false;
-          iVar8 = (**(code **)(**(int **)(param_1 + 0xc) + 0x48))();
+          iVar8 = (**(code **)(**(int **)&this->field_0xc + 0x48))();
           if (iVar8 != 0) {
             sVar11 = 1;
-            iVar8 = (**(code **)(**(int **)(param_1 + 0xc) + 0x48))();
+            iVar8 = (**(code **)(**(int **)&this->field_0xc + 0x48))();
             if (0 < iVar8) {
               do {
                 if (bVar5) goto LAB_004a20db;
-                local_10 = (int *)(**(code **)(**(int **)(param_1 + 0xc) + 0x4c))((int)sVar11);
+                local_10 = (int *)(**(code **)(**(int **)&this->field_0xc + 0x4c))((int)sVar11);
                 (**(code **)(*local_10 + 0xc))();
                 if ((*(short *)((int)local_10 + 0xe) == sVar1) &&
                    ((char)local_10[2] == (short)local_24)) {
@@ -83,7 +83,7 @@ void __fastcall TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates(int 
               local_10 = (int *)0x0;
             }
             else {
-              *local_10 = (int)&PTR_LAB_0064ca38;
+              *local_10 = (int)&TArmyStackVtbl_0064ca38;
               local_10[5] = 0;
               local_10[6] = 0;
             }
@@ -95,7 +95,7 @@ void __fastcall TArmyStack::ProcessTileUnitListsAndApplyRandomStatusUpdates(int 
             *(undefined1 *)(local_10 + 3) = 0;
             *(short *)((int)local_10 + 0xe) = sVar1;
             *(short *)(local_10 + 4) = sVar12;
-            CPtrList::AddHead(local_10);
+            CPtrList::AddHead((CPtrList *)(*(int *)&this->field_0xc + 4));
           }
 LAB_004a20db:
           sVar11 = sVar1;
@@ -125,14 +125,14 @@ LAB_004a20db:
   iVar10 = LinkedListCursorHasCurrent();
   do {
     if (iVar10 == 0) {
-      (**(code **)(**(int **)(param_1 + 0xc) + 100))();
+      (**(code **)(**(int **)&this->field_0xc + 100))();
       iVar8 = 0;
-      puVar13 = (undefined2 *)(param_1 + 0x1c);
+      pTVar13 = this + 1;
       do {
         uVar7 = thunk_GetTileNormalizedMovementClassId(iVar8);
-        *puVar13 = uVar7;
+        *(undefined2 *)&pTVar13->vftable = uVar7;
         iVar8 = iVar8 + 1;
-        puVar13 = puVar13 + 1;
+        pTVar13 = (TArmyStack *)((int)&pTVar13->vftable + 2);
       } while (iVar8 < 0x180);
       return;
     }
@@ -193,7 +193,7 @@ void TArmyStack::CreateTArmyStackInstance(void)
       piVar4 = (int *)0x0;
     }
     else {
-      piVar4 = *(int **)(*(int *)(g_pGlobalMapState + 0x10) + 0x98 + sVar2 * 0xa8);
+      piVar4 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + sVar2 * 0xa8);
     }
     for (; piVar4 != (int *)0x0; piVar4 = (int *)piVar4[5]) {
       sVar2 = thunk_GetUnitMovementClassId();
@@ -204,9 +204,8 @@ void TArmyStack::CreateTArmyStackInstance(void)
     sVar2 = ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl();
     iVar3 = ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0();
   }
-  this = *(TCivToolbar **)(g_pUiRuntimeContext + 0xf0);
-  if ((this != (TCivToolbar *)0x0) && (cVar1 = (**(code **)(*(int *)this + 0x1ec))(), cVar1 == '\0')
-     ) {
+  this = *(TCivToolbar **)&g_pUiRuntimeContext->field_0xf0;
+  if ((this != (TCivToolbar *)0x0) && (cVar1 = (*this->vftable[0x3d].slot_0x04)(), cVar1 == '\0')) {
     TCivToolbar::thunk_CycleMapInteractionSelectionAfterHandledClick(this);
   }
   return;
@@ -214,66 +213,254 @@ void TArmyStack::CreateTArmyStackInstance(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A76D0
 // GHIDRA_NAME TArmyStack::GetTArmyStackClassNamePointer
-// GHIDRA_PROTO undefined GetTArmyStackClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTArmyStackClassNamePointer(void)
 
-undefined ** TArmyStack::GetTArmyStackClassNamePointer(void)
+CRuntimeClass * __thiscall TArmyStack::GetTArmyStackClassNamePointer(TArmyStack *this)
 
 {
-  return &PTR_s_TArmyStack_0064c840;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A76F0
 // GHIDRA_NAME TArmyStack::ConstructTArmyStackBaseState
-// GHIDRA_PROTO undefined ConstructTArmyStackBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyStackBaseState(void)
 
-void __fastcall TArmyStack::ConstructTArmyStackBaseState(undefined4 *param_1)
+void __thiscall TArmyStack::ConstructTArmyStackBaseState(TArmyStack *this)
 
 {
-  *param_1 = &PTR_LAB_0064ca38;
-  param_1[5] = 0;
-  param_1[6] = 0;
+  this->vftable = &TArmyStackVtbl_0064ca38;
+  *(undefined4 *)&this->field_0x14 = 0;
+  *(undefined4 *)&this->field_0x18 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A7720
 // GHIDRA_NAME TArmyStack::DestructTArmyStackAndMaybeFree
-// GHIDRA_PROTO undefined DestructTArmyStackAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTArmyStackAndMaybeFree(void)
 
-undefined4 __thiscall TArmyStack::DestructTArmyStackAndMaybeFree(undefined4 param_1,byte param_2)
+TArmyStack * __thiscall TArmyStack::DestructTArmyStackAndMaybeFree(TArmyStack *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTArmyStackAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A7770
 // GHIDRA_NAME TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
-// GHIDRA_PROTO undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770()
+// GHIDRA_PROTO undefined __thiscall InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(void)
 
 void __thiscall
 TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
-          (int param_1,undefined1 param_2,undefined2 param_3,undefined2 param_4)
+          (TArmyStack *this)
 
 {
-  *(undefined2 *)(param_1 + 10) = 0;
-  *(undefined2 *)(param_1 + 6) = 0;
-  *(undefined2 *)(param_1 + 4) = 0;
-  *(undefined1 *)(param_1 + 0xc) = 0;
-  *(undefined2 *)(param_1 + 0xe) = param_3;
-  *(undefined1 *)(param_1 + 8) = param_2;
-  *(undefined2 *)(param_1 + 0x10) = param_4;
+  undefined1 in_stack_00000004;
+  undefined2 in_stack_00000008;
+  undefined2 in_stack_0000000c;
+  
+  *(undefined2 *)&this->field_0xa = 0;
+  *(undefined2 *)&this->field_0x6 = 0;
+  *(undefined2 *)&this->field_0x4 = 0;
+  this->field_0xc = 0;
+  *(undefined2 *)&this->field_0xe = in_stack_00000008;
+  this->field_0x8 = in_stack_00000004;
+  *(undefined2 *)&this->field_0x10 = in_stack_0000000c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A77B0
+// GHIDRA_NAME TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts
+// GHIDRA_PROTO undefined __thiscall BuildTerrainLinkedSelectionListFromSerializedCounts(void)
+
+void __thiscall TArmyStack::BuildTerrainLinkedSelectionListFromSerializedCounts(TArmyStack *this)
+
+{
+  code *pcVar1;
+  undefined4 uVar2;
+  int iVar3;
+  int iVar4;
+  int *piVar5;
+  int *in_stack_00000004;
+  int iVar6;
+  undefined4 uStack_50;
+  undefined1 *puStack_4c;
+  undefined4 uStack_48;
+  undefined1 *puStack_44;
+  undefined4 uStack_40;
+  undefined1 *puStack_3c;
+  undefined4 uStack_38;
+  undefined1 *puStack_34;
+  undefined4 uStack_30;
+  undefined1 *puStack_2c;
+  undefined4 uStack_28;
+  
+  uStack_28 = 2;
+  puStack_2c = &this->field_0x4;
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  uStack_30 = 0x4a77cb;
+  (*pcVar1)();
+  puStack_34 = &this->field_0x6;
+  uStack_30 = 2;
+  uStack_38 = 0x4a77d5;
+  (*pcVar1)();
+  puStack_3c = &this->field_0x8;
+  uStack_38 = 1;
+  uStack_40 = 0x4a77df;
+  (*pcVar1)();
+  puStack_44 = &this->field_0x9;
+  uStack_40 = 1;
+  uStack_48 = 0x4a77e9;
+  (*pcVar1)();
+  puStack_4c = &stack0xffffffe4;
+  uStack_48 = 2;
+  uStack_50 = 0x4a77f4;
+  (*pcVar1)();
+  uStack_50 = 1;
+  (*pcVar1)(&this->field_0xc);
+  (*pcVar1)(&this->field_0xe,2);
+  (*pcVar1)(&this->field_0x10,2);
+  iVar6 = 0;
+  if (0 < (short)puStack_3c) {
+    do {
+      (*pcVar1)(&uStack_50,2);
+      uVar2 = uStack_50;
+      uStack_48 = *(undefined4 *)&g_apTerrainTypeDescriptorTable[(char)this->field_0x8]->field_0x44;
+      iVar3 = InitializeLinkedListCursorFromOwnerHead();
+      iVar4 = LinkedListCursorHasCurrent();
+      while (iVar4 != 0) {
+        if (*(short *)(iVar3 + 0x1a) == (short)uVar2) {
+          piVar5 = (int *)AllocateWithFallbackHandler(8);
+          if (piVar5 == (int *)0x0) {
+            MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+            thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                      (s_D__Ambit_Cross_UArmyMgr_cpp_0069573c,0xbeb);
+          }
+          *piVar5 = iVar3;
+          piVar5[1] = *(int *)&this->field_0x14;
+          *(short *)&this->field_0xa = *(short *)&this->field_0xa + 1;
+          *(int **)&this->field_0x14 = piVar5;
+          break;
+        }
+        iVar3 = AdvanceLinkedListCursor();
+        iVar4 = LinkedListCursorHasCurrent();
+      }
+      iVar6 = iVar6 + 1;
+    } while (iVar6 < (short)puStack_3c);
+  }
+  *(undefined4 *)&this->field_0x18 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7960
+// GHIDRA_NAME TArmyStack::OrphanCallChain_C9_I80_004a7960
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C9_I80_004a7960(void)
+
+void __thiscall TArmyStack::OrphanCallChain_C9_I80_004a7960(TArmyStack *this)
+
+{
+  code *pcVar1;
+  int *piVar2;
+  int iVar3;
+  int *in_stack_00000004;
+  undefined1 *puStack_3c;
+  undefined4 uStack_38;
+  undefined1 *puStack_34;
+  undefined4 uStack_30;
+  undefined1 *puStack_2c;
+  undefined4 uStack_28;
+  undefined1 *puStack_24;
+  undefined4 uStack_20;
+  undefined1 *puStack_1c;
+  undefined4 uStack_18;
+  undefined1 *puStack_14;
+  undefined4 uStack_10;
+  
+  uStack_10 = 2;
+  puStack_14 = &this->field_0x4;
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  uStack_18 = 0x4a7978;
+  (*pcVar1)();
+  puStack_1c = &this->field_0x6;
+  uStack_18 = 2;
+  uStack_20 = 0x4a7982;
+  (*pcVar1)();
+  puStack_24 = &this->field_0x8;
+  uStack_20 = 1;
+  uStack_28 = 0x4a798c;
+  (*pcVar1)();
+  puStack_2c = &this->field_0x9;
+  uStack_28 = 1;
+  uStack_30 = 0x4a7996;
+  (*pcVar1)();
+  puStack_34 = &this->field_0xa;
+  uStack_30 = 2;
+  uStack_38 = 0x4a79a0;
+  (*pcVar1)();
+  puStack_3c = &this->field_0xc;
+  uStack_38 = 1;
+  (*pcVar1)();
+  (*pcVar1)(&this->field_0xe,2);
+  (*pcVar1)(&this->field_0x10,2);
+  piVar2 = *(int **)&this->field_0x14;
+  *(int **)&this->field_0x18 = piVar2;
+  if (piVar2 == (int *)0x0) {
+    iVar3 = 0;
+  }
+  else {
+    iVar3 = *piVar2;
+  }
+joined_r0x004a79d0:
+  do {
+    if (iVar3 == 0) {
+      *(undefined4 *)&this->field_0x18 = 0;
+      return;
+    }
+    puStack_3c = (undefined1 *)CONCAT22((short)((uint)iVar3 >> 0x10),*(undefined2 *)(iVar3 + 0x1a));
+    (*pcVar1)(&puStack_3c,2);
+    if (*(int *)&this->field_0x18 != 0) {
+      piVar2 = *(int **)(*(int *)&this->field_0x18 + 4);
+      *(int **)&this->field_0x18 = piVar2;
+      if (piVar2 != (int *)0x0) {
+        iVar3 = *piVar2;
+        goto joined_r0x004a79d0;
+      }
+    }
+    iVar3 = 0;
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A7C20
+// GHIDRA_NAME TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(void)
+
+void __thiscall TArmyStack::WrapperFor_FreeHeapBufferIfNotNull_At004a7c20(TArmyStack *this)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  iVar2 = *(int *)&this->field_0x14;
+  while (iVar2 != 0) {
+    iVar1 = *(int *)(iVar2 + 4);
+    FreeHeapBufferIfNotNull(iVar2);
+    iVar2 = iVar1;
+  }
+  if (this != (TArmyStack *)0x0) {
+    (*this->vftable->slot_0x04)(1);
+  }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0059FF20
 // GHIDRA_NAME TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory
-// GHIDRA_PROTO undefined ComputeTacticalReachableTileCostsByUnitCategory()
+// GHIDRA_PROTO undefined __thiscall ComputeTacticalReachableTileCostsByUnitCategory(void)
 
-void __thiscall
-TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(int *param_1,int param_2)
+void __thiscall TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(TArmyStack *this)
 
 {
   short sVar1;
@@ -287,6 +474,7 @@ TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(int *param_1,int par
   undefined2 *puVar9;
   int iVar10;
   short sVar11;
+  int in_stack_00000004;
   int local_44;
   short *local_40;
   int local_3c;
@@ -295,22 +483,22 @@ TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(int *param_1,int par
   int local_20;
   int local_18 [6];
   
-  puVar2 = (undefined2 *)param_1[9];
-  sVar1 = *(short *)(&DAT_00695528 + *(int *)(param_2 + 0xc) * 2);
-  iVar3 = *(int *)(param_2 + 0x28);
+  puVar2 = *(undefined2 **)&this[1].field_0x8;
+  sVar1 = *(short *)(&DAT_00695528 + *(int *)(in_stack_00000004 + 0xc) * 2);
+  iVar3 = *(int *)(in_stack_00000004 + 0x28);
   iVar8 = 0;
   puVar9 = puVar2;
-  if (0 < param_1[0xf]) {
+  if (0 < *(int *)&this[2].field_0x4) {
     do {
       *puVar9 = 0xffff;
       iVar8 = iVar8 + 1;
       puVar9 = puVar9 + 1;
-    } while (iVar8 < param_1[0xf]);
+    } while (iVar8 < *(int *)&this[2].field_0x4);
   }
-  iVar8 = *(int *)(param_2 + 8);
-  if ((-1 < iVar8) && (iVar8 < param_1[0xf])) {
-    if (*(int *)(param_2 + 0x20) == 0) {
-      local_3c = param_1[0xd] + -1;
+  iVar8 = *(int *)(in_stack_00000004 + 8);
+  if ((-1 < iVar8) && (iVar8 < *(int *)&this[2].field_0x4)) {
+    if (*(int *)(in_stack_00000004 + 0x20) == 0) {
+      local_3c = *(int *)&this[1].field_0x18 + -1;
     }
     else {
       local_3c = 0;
@@ -319,26 +507,29 @@ TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(int *param_1,int par
     local_20 = 0;
     if (-1 < iVar3) {
       do {
-        iVar8 = param_1[0x10];
+        iVar8 = *(int *)&this[2].field_0x8;
         local_44 = 0;
-        if (iVar8 < param_1[0xf]) {
+        if (iVar8 < *(int *)&this[2].field_0x4) {
           local_40 = puVar2 + iVar8;
           do {
-            if (((local_44 < param_1[0xd]) && (local_44 != local_3c)) && (local_20 <= *local_40)) {
+            if (((local_44 < *(int *)&this[1].field_0x18) && (local_44 != local_3c)) &&
+               (local_20 <= *local_40)) {
               thunk_ComputeHexNeighborTileIndices(iVar8,local_18);
               local_34 = local_18;
               local_38 = 0;
               do {
                 if ((short)*local_34 != -1) {
                   iVar10 = (int)(short)*local_34;
-                  iVar4 = param_1[1];
-                  if ((*(int *)(iVar4 + 4 + iVar10 * 0x14) == 0) && (param_1[0x10] <= iVar10)) {
+                  iVar4 = *(int *)&this->field_0x4;
+                  if ((*(int *)(iVar4 + 4 + iVar10 * 0x14) == 0) &&
+                     (*(int *)&this[2].field_0x8 <= iVar10)) {
                     if ((1 < *(int *)(iVar4 + 8 + iVar10 * 0x14)) &&
-                       (0 < param_1[iVar10 / 0x3a + 0x15])) {
+                       (0 < (int)(&this[3].vftable)[iVar10 / 0x3a])) {
                       uVar5 = iVar10 / 0x1d;
                       if ((((uVar5 != 5) && (uVar5 != 7)) && (uVar5 != 9)) ||
-                         (((int)((uVar5 & 1) + (iVar10 % 0x1d) * 2) / 2 != param_1[0xd] + -6 ||
-                          (*(int *)(param_2 + 0x20) != 1)))) goto LAB_005a0199;
+                         (((int)((uVar5 & 1) + (iVar10 % 0x1d) * 2) / 2 !=
+                           *(int *)&this[1].field_0x18 + -6 ||
+                          (*(int *)(in_stack_00000004 + 0x20) != 1)))) goto LAB_005a0199;
                     }
                     sVar11 = *(short *)(&DAT_00669a60 +
                                        (sVar1 * 5 + *(int *)(iVar4 + iVar10 * 0x14)) * 2) +
@@ -351,14 +542,16 @@ TArmyStack::ComputeTacticalReachableTileCostsByUnitCategory(int *param_1,int par
                         sVar7 = 5;
                       }
                       if (((local_18[sVar7] != -1) &&
-                          (iVar4 = *(int *)(param_1[1] + 4 + local_18[sVar7] * 0x14), iVar4 != 0))
-                         && (*(int *)(iVar4 + 0x20) != *(int *)(param_2 + 0x20))) {
+                          (iVar4 = *(int *)(*(int *)&this->field_0x4 + 4 + local_18[sVar7] * 0x14),
+                          iVar4 != 0)) &&
+                         (*(int *)(iVar4 + 0x20) != *(int *)(in_stack_00000004 + 0x20))) {
                         bVar6 = true;
                       }
                       if (((local_18[(short)((4 < local_38) - 1 & 1)] != -1) &&
-                          (iVar4 = *(int *)(param_1[1] + 4 +
+                          (iVar4 = *(int *)(*(int *)&this->field_0x4 + 4 +
                                            local_18[(short)((4 < local_38) - 1 & 1)] * 0x14),
-                          iVar4 != 0)) && (*(int *)(iVar4 + 0x20) != *(int *)(param_2 + 0x20))) {
+                          iVar4 != 0)) &&
+                         (*(int *)(iVar4 + 0x20) != *(int *)(in_stack_00000004 + 0x20))) {
                         bVar6 = true;
                       }
                       if ((!bVar6) && (iVar10 % 0x1d != local_3c)) {
@@ -378,21 +571,21 @@ LAB_005a0199:
             }
             iVar8 = iVar8 + 1;
             local_40 = local_40 + 1;
-          } while (iVar8 < param_1[0xf]);
+          } while (iVar8 < *(int *)&this[2].field_0x4);
         }
         local_20 = local_20 + 10;
       } while (local_20 <= iVar3);
     }
-    (**(code **)(*param_1 + 0x2c))(param_2);
+    (*this->vftable[5].slot_0x04)(in_stack_00000004);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A02E0
 // GHIDRA_NAME TArmyStack::PropagateTileAccessibilityStrengthLevels
-// GHIDRA_PROTO undefined PropagateTileAccessibilityStrengthLevels()
+// GHIDRA_PROTO undefined __thiscall PropagateTileAccessibilityStrengthLevels(void)
 
-void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(int param_1,char *param_2)
+void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(TArmyStack *this)
 
 {
   char cVar1;
@@ -401,17 +594,18 @@ void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(int param_1
   int iVar4;
   char *pcVar5;
   int iVar6;
+  char *in_stack_00000004;
   int local_20;
   int local_1c;
   int local_18 [6];
   
-  cVar1 = *(char *)((int)param_2 + 0x20);
-  pcVar5 = *(char **)(param_1 + 0x28);
+  cVar1 = *(char *)((int)in_stack_00000004 + 0x20);
+  pcVar5 = *(char **)&this[1].field_0xc;
   local_1c = 0;
-  if (0 < *(int *)(param_1 + 0x3c)) {
+  if (0 < *(int *)&this[2].field_0x4) {
     local_20 = 0;
     do {
-      piVar3 = *(int **)(*(int *)(param_1 + 4) + 4 + local_20);
+      piVar3 = *(int **)(*(int *)&this->field_0x4 + 4 + local_20);
       if (((piVar3 == (int *)0x0) || (piVar3[8] == (int)cVar1)) || (piVar3[7] != 0)) {
         *pcVar5 = '\0';
       }
@@ -424,21 +618,21 @@ void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(int param_1
       pcVar5 = pcVar5 + 1;
       local_1c = local_1c + 1;
       local_20 = local_20 + 0x14;
-    } while (local_1c < *(int *)(param_1 + 0x3c));
+    } while (local_1c < *(int *)&this[2].field_0x4);
   }
   local_1c = 0x13;
   do {
-    param_2 = *(char **)(param_1 + 0x28);
+    in_stack_00000004 = *(char **)&this[1].field_0xc;
     iVar6 = 0;
-    if (0 < *(int *)(param_1 + 0x3c)) {
+    if (0 < *(int *)&this[2].field_0x4) {
       do {
-        if (*param_2 == local_1c) {
+        if (*in_stack_00000004 == local_1c) {
           thunk_ComputeHexNeighborTileIndices(iVar6,local_18);
           piVar3 = local_18;
           iVar4 = 6;
           do {
             if ((*piVar3 != -1) &&
-               (pcVar5 = (char *)(*piVar3 + *(int *)(param_1 + 0x28)),
+               (pcVar5 = (char *)(*piVar3 + *(int *)&this[1].field_0xc),
                (short)*pcVar5 < (short)(local_1c + -1))) {
               *pcVar5 = (char)(local_1c + -1);
             }
@@ -446,9 +640,9 @@ void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(int param_1
             iVar4 = iVar4 + -1;
           } while (iVar4 != 0);
         }
-        param_2 = param_2 + 1;
+        in_stack_00000004 = in_stack_00000004 + 1;
         iVar6 = iVar6 + 1;
-      } while (iVar6 < *(int *)(param_1 + 0x3c));
+      } while (iVar6 < *(int *)&this[2].field_0x4);
     }
     local_1c = local_1c + -1;
   } while (0 < local_1c);
@@ -457,293 +651,49 @@ void __thiscall TArmyStack::PropagateTileAccessibilityStrengthLevels(int param_1
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A3810
 // GHIDRA_NAME TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand
-// GHIDRA_PROTO undefined ComputeRallyStrengthAndQueueTacticalRallyCommand()
+// GHIDRA_PROTO undefined __thiscall ComputeRallyStrengthAndQueueTacticalRallyCommand(void)
 
-void TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1,int param_2)
+void __thiscall TArmyStack::ComputeRallyStrengthAndQueueTacticalRallyCommand(TArmyStack *this)
 
 {
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
+  int in_stack_00000008;
   
-  iVar3 = *(int *)(param_2 + 0x1c);
-  iVar4 = *(int *)(param_2 + 0x34);
-  if (iVar3 == 0) {
-    iVar4 = iVar4 + (*(int *)(param_2 + 4) / 10) * (*(int *)(param_1 + 0x10) + 3);
+  if ((*(int *)(in_stack_00000008 + 0x1c) != 0) && (*(int *)(in_stack_00000008 + 0x1c) == 1)) {
+    GenerateThreadLocalRandom15();
   }
-  else if (iVar3 == 1) {
-    iVar1 = *(int *)(param_1 + 0x10);
-    iVar2 = GenerateThreadLocalRandom15();
-    if (iVar2 % 100 < (iVar1 + 5) * 10) {
-      iVar3 = 0;
-      iVar4 = *(int *)(param_2 + 4) / 10 + 0x14;
-    }
-  }
-  thunk_HandleTacticalCommandTag_raly(param_2,iVar4,iVar3,0);
-  thunk_QueueTacticalEventPacket232A();
+  thunk_HandleTacticalCommandTag_raly(this);
+  TNextMoveCommand::thunk_QueueTacticalEventPacket232A((TNextMoveCommand *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A38E0
 // GHIDRA_NAME TArmyStack::HandleTacticalCommandTag_raly
-// GHIDRA_PROTO undefined HandleTacticalCommandTag_raly()
+// GHIDRA_PROTO undefined __thiscall HandleTacticalCommandTag_raly(void)
 
-void __thiscall
-TArmyStack::HandleTacticalCommandTag_raly
-          (int param_1,int param_2,int param_3,undefined4 param_4,char param_5)
+void __thiscall TArmyStack::HandleTacticalCommandTag_raly(TArmyStack *this)
 
 {
-  if ((param_5 == '\0') && (*(int *)(g_pLocalizationTable + 0x44) != 0)) {
-    NoOpCallbackRet10(0x72616c79,param_2,param_3,param_4);
+  int in_stack_00000004;
+  int in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  char in_stack_00000010;
+  
+  if ((in_stack_00000010 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+    NoOpCallbackRet10(0x72616c79,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
   }
-  *(undefined4 *)(param_2 + 0x1c) = param_4;
-  if (*(int *)(param_2 + 4) < param_3) {
-    *(int *)(param_2 + 0x34) = *(int *)(param_2 + 4);
+  *(undefined4 *)(in_stack_00000004 + 0x1c) = in_stack_0000000c;
+  if (*(int *)(in_stack_00000004 + 4) < in_stack_00000008) {
+    *(int *)(in_stack_00000004 + 0x34) = *(int *)(in_stack_00000004 + 4);
   }
   else {
-    *(int *)(param_2 + 0x34) = param_3;
+    *(int *)(in_stack_00000004 + 0x34) = in_stack_00000008;
   }
-  if (*(int **)(param_1 + 8) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 8) + 0x1a4))(param_2);
+  if (*(int **)&this->field_0x8 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x8 + 0x1a4))();
   }
-  if (*(int *)(param_1 + 8) != 0) {
-    (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0x3aae,0,1);
+  if (*(int *)&this->field_0x8 != 0) {
+    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0x3aae,0,1);
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A4990
-// GHIDRA_NAME TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState
-// GHIDRA_PROTO undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState()
-
-void __thiscall
-TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState
-          (undefined4 *param_1,int *param_2)
-
-{
-  short sVar1;
-  code *pcVar2;
-  undefined1 uVar3;
-  int iVar4;
-  int *piVar5;
-  int iVar6;
-  short unaff_BP;
-  undefined4 uVar7;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar8;
-  undefined4 *puVar9;
-  undefined4 uVar10;
-  undefined1 **ppuVar11;
-  undefined4 *puVar12;
-  undefined4 uVar13;
-  undefined4 **ppuVar14;
-  undefined1 *puStack_7c;
-  undefined4 uStack_78;
-  undefined1 *puStack_74;
-  undefined4 uStack_70;
-  undefined1 *puStack_6c;
-  undefined4 uStack_68;
-  undefined1 *puStack_64;
-  undefined4 uStack_60;
-  undefined4 *puStack_5c;
-  undefined4 uStack_58;
-  undefined4 *puStack_54;
-  undefined4 uStack_50;
-  undefined4 *local_3c [12];
-  undefined4 uStack_c;
-  undefined1 *puStack_8;
-  undefined4 uStack_4;
-  
-  uStack_4 = 0xffffffff;
-  puStack_8 = &LAB_006386f4;
-  uStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &uStack_c;
-  uStack_50 = 4;
-  puStack_54 = param_1 + 3;
-  pcVar2 = *(code **)(*param_2 + 0x3c);
-  uStack_58 = 0x5a49c6;
-  local_3c[0] = param_1;
-  (*pcVar2)();
-  puStack_5c = param_1 + 4;
-  uStack_58 = 4;
-  uStack_60 = 0x5a49d0;
-  (*pcVar2)();
-  puStack_64 = &stack0xffffffb8;
-  uStack_60 = 4;
-  uStack_68 = 0x5a49db;
-  (*pcVar2)();
-  puStack_6c = &stack0xffffffc0;
-  uStack_68 = 4;
-  uStack_70 = 0x5a49e6;
-  (*pcVar2)();
-  puStack_74 = &stack0xffffffb4;
-  uStack_70 = 4;
-  uStack_78 = 0x5a49f1;
-  (*pcVar2)();
-  puStack_7c = &stack0xffffffbc;
-  uStack_78 = 4;
-  (*pcVar2)();
-  (*pcVar2)();
-  (*pcVar2)(&puStack_5c,4);
-  ppuVar14 = local_3c;
-  (*pcVar2)(ppuVar14,2);
-  while (unaff_BP != 0) {
-    unaff_BP = unaff_BP + -1;
-    ppuVar11 = &puStack_7c;
-    (*pcVar2)(ppuVar11,4);
-    iVar4 = InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl(&uStack_50);
-    piVar5 = (int *)AllocateWithFallbackHandler(0x58);
-    if (piVar5 == (int *)0x0) {
-      piVar5 = (int *)0x0;
-    }
-    else {
-      *piVar5 = (int)&PTR_LAB_00669660;
-    }
-    piVar5[3] = (int)*(short *)(iVar4 + 4);
-    piVar5[2] = -2;
-    *(undefined1 *)(piVar5 + 6) = 0;
-    piVar5[7] = 0;
-    iVar6 = (**(code **)(*piVar5 + 0x28))();
-    piVar5[10] = iVar6;
-    piVar5[0xb] = 0;
-    piVar5[0xc] = 0;
-    sVar1 = *(short *)(iVar4 + 0x34);
-    piVar5[1] = (int)sVar1;
-    piVar5[0xd] = (int)sVar1;
-    sVar1 = *(short *)(iVar4 + 0x38);
-    piVar5[4] = (int)(short)((sVar1 / 100 + (sVar1 >> 0xf)) -
-                            (short)((longlong)(int)sVar1 * 0x51eb851f >> 0x3f));
-    piVar5[5] = (int)*(short *)(iVar4 + 0x18);
-    piVar5[0x10] = -1;
-    piVar5[0xe] = iVar4;
-    if ((*(int *)(iVar4 + 8) == 2) && (*(short *)(&DAT_00669858 + piVar5[3] * 2) == 0)) {
-      uVar3 = 1;
-    }
-    else {
-      uVar3 = 0;
-    }
-    *(undefined1 *)(piVar5 + 0xf) = uVar3;
-    (*pcVar2)(piVar5 + 8,4);
-    (*pcVar2)(piVar5 + 9,2);
-    (**(code **)(*(int *)ppuVar11[8] + 0x30))(piVar5);
-    param_1 = &uStack_50;
-  }
-  puVar12 = &uStack_78;
-  uVar13 = 4;
-  (*pcVar2)(puVar12,4);
-  puStack_64 = (undefined1 *)param_1[8];
-  iVar4 = InitializeLinkedListCursorFromOwnerHead();
-  iVar6 = LinkedListCursorHasCurrent();
-  while (iVar6 != 0) {
-    if ((iVar4 == 0) || (*(int *)(iVar4 + 0x38) == 0)) {
-      iVar6 = 0;
-    }
-    else {
-      iVar6 = *(int *)(*(int *)(iVar4 + 0x38) + 0x20);
-    }
-    if (iVar6 == 4) goto LAB_005a4b8e;
-    iVar4 = AdvanceLinkedListCursor();
-    iVar6 = LinkedListCursorHasCurrent();
-  }
-  iVar4 = 0;
-LAB_005a4b8e:
-  param_1[7] = iVar4;
-  puVar9 = param_1 + 0xe;
-  uVar10 = 4;
-  (*pcVar2)(puVar9,4);
-  (*pcVar2)(param_1 + 0x11,4);
-  uVar8 = 1;
-  (*pcVar2)((int)param_1 + 0x49);
-  (*pcVar2)(param_1 + 0x13,4);
-  (*pcVar2)(param_1 + 0x14,4);
-  iVar4 = AllocateWithFallbackHandler(0x1c);
-  uVar7 = 0;
-  puStack_7c = (undefined1 *)0x0;
-  if (iVar4 != 0) {
-    uVar7 = ConstructTArmyStackBaseState();
-  }
-  puStack_7c = (undefined1 *)0xffffffff;
-  InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(uVar8,uVar10,puVar9);
-  iVar4 = AllocateWithFallbackHandler(0x1c);
-  puStack_7c = (undefined1 *)0x1;
-  if (iVar4 == 0) {
-    uVar8 = 0;
-  }
-  else {
-    uVar8 = ConstructTArmyStackBaseState();
-  }
-  puStack_7c = (undefined1 *)0xffffffff;
-  InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(ppuVar14,uVar13,puVar12);
-  iVar4 = InitializeLinkedListCursorFromOwnerHead();
-  iVar6 = LinkedListCursorHasCurrent();
-  while (iVar6 != 0) {
-    WrapperFor_AllocateWithFallbackHandler_At004a7b20(*(undefined4 *)(iVar4 + 0x38));
-    iVar4 = AdvanceLinkedListCursor();
-    iVar6 = LinkedListCursorHasCurrent();
-  }
-  InitializeBattleSetupAndMaybeDispatchTurnEventED8
-            (uVar7,uVar8,param_1[0x14],(int)*(char *)((int)param_1 + 0x49),param_1[0xe]);
-  *unaff_FS_OFFSET = 4;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005A51E0
-// GHIDRA_NAME TArmyStack::HandleTacticalDeployClickAndAdvanceSelection
-// GHIDRA_PROTO undefined HandleTacticalDeployClickAndAdvanceSelection()
-
-int * __thiscall
-TArmyStack::HandleTacticalDeployClickAndAdvanceSelection(int param_1,int *param_2,int param_3)
-
-{
-  int *piVar1;
-  undefined4 uVar2;
-  int iVar3;
-  
-  (**(code **)(*param_2 + 0xc))();
-  piVar1 = (int *)(param_3 / 0x1d);
-  iVar3 = param_3 % 0x1d;
-  if (((0x1c < param_3) && (piVar1 = (int *)(*(int *)(param_1 + 4) + param_3 * 0x14), *piVar1 != 4))
-     && (piVar1[1] == 0)) {
-    if (*(int *)(param_1 + 0xc) == 0) {
-      if (iVar3 < 3) {
-        return (int *)0x0;
-      }
-      if (5 < iVar3) {
-        return (int *)0x0;
-      }
-    }
-    else {
-      piVar1 = *(int **)(param_1 + 0x34);
-      if ((int)piVar1 + -3 < iVar3) {
-        return piVar1;
-      }
-      if (iVar3 < (int)piVar1 + -5) {
-        return (int *)((int)piVar1 + -5);
-      }
-    }
-    thunk_HandleTacticalCommandTag_depl(param_2,param_3,0);
-    uVar2 = thunk_SelectNextTacticalUnitForDoneCommand();
-    thunk_ApplyTacticalDoneSelectionAndRefreshUi(uVar2);
-    iVar3 = 0;
-    if (0 < *(int *)(param_1 + 0x3c)) {
-      do {
-        iVar3 = iVar3 + 1;
-        *(undefined2 *)(*(int *)(param_1 + 0x24) + -2 + iVar3 * 2) = 0xffff;
-      } while (iVar3 < *(int *)(param_1 + 0x3c));
-    }
-    if (*(char *)(*(int *)(param_1 + 0x14 + *(int *)(param_1 + 0xc) * 4) + 0x10) != '\0') {
-      piVar1 = (int *)thunk_HandleTacticalCommandTag_retr();
-      return piVar1;
-    }
-    piVar1 = (int *)0x0;
-    if (*(int *)(param_1 + 8) != 0) {
-      piVar1 = (int *)(**(code **)(**(int **)(*(int *)(param_1 + 8) + 0x20) + 0x94))(0x746f6f6c);
-      iVar3 = *piVar1;
-      (**(code **)(iVar3 + 0xc))();
-      piVar1 = (int *)(**(code **)(iVar3 + 0x1cc))(*(undefined4 *)(param_1 + 0x1c));
-    }
-  }
-  return piVar1;
 }
 

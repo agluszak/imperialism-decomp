@@ -7,10 +7,10 @@
 // GHIDRA_NAME TWarehouseView::CreateTWarehouseViewInstance
 // GHIDRA_PROTO undefined CreateTWarehouseViewInstance()
 
-undefined4 * TWarehouseView::CreateTWarehouseViewInstance(void)
+TNoHilitePicture * TWarehouseView::CreateTWarehouseViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,54 +20,568 @@ undefined4 * TWarehouseView::CreateTWarehouseViewInstance(void)
   puStack_8 = &LAB_0063158a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x104);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0x104);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x25] = 0;
-    *puVar1 = &PTR_LAB_006516a0;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this[1].vftable = (TNoHilitePictureVtbl *)0x0;
+    this->vftable = (TNoHilitePictureVtbl *)&TWarehouseViewVtbl_006516a0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TNoHilitePicture *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7290
-// GHIDRA_NAME TWarehouseView::GetTWarehouseViewClassNamePointer
-// GHIDRA_PROTO undefined GetTWarehouseViewClassNamePointer()
+// GHIDRA_NAME TWarehouseView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TWarehouseView::GetTWarehouseViewClassNamePointer(void)
+CRuntimeClass * __thiscall TWarehouseView::GetTEventHandlerClassNamePointer(TWarehouseView *this)
 
 {
-  return &PTR_s_TWarehouseView_00651248;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C72B0
 // GHIDRA_NAME TWarehouseView::ConstructTWarehouseViewBaseState
-// GHIDRA_PROTO undefined ConstructTWarehouseViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTWarehouseViewBaseState(void)
 
-undefined4 * __fastcall TWarehouseView::ConstructTWarehouseViewBaseState(undefined4 *param_1)
+TWarehouseView * __thiscall TWarehouseView::ConstructTWarehouseViewBaseState(TWarehouseView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-  param_1[0x25] = 0;
-  *param_1 = &PTR_LAB_006516a0;
-  return param_1;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  *(undefined4 *)&this->field_0x94 = 0;
+  this->vftable = &TWarehouseViewVtbl_006516a0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C72E0
-// GHIDRA_NAME TWarehouseView::DestructTWarehouseViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTWarehouseViewAndMaybeFree()
+// GHIDRA_NAME TWarehouseView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TWarehouseView::DestructTWarehouseViewAndMaybeFree(undefined4 param_1,byte param_2)
+TWarehouseView * __thiscall TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C7330
+// GHIDRA_NAME TWarehouseView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TWarehouseView::_scalar_deleting_destructor_(TWarehouseView *this)
+
+{
+  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C7360
+// GHIDRA_NAME TWarehouseView::OrphanRetStub_004c6fd0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
+
+/* WARNING: Type propagation algorithm not settling */
+
+void __thiscall TWarehouseView::OrphanRetStub_004c6fd0(TWarehouseView *this)
+
+{
+  TWarehouseView_slot_0x04_0x04 *pTVar1;
+  int iVar2;
+  TWarehouseViewVtbl *pTVar3;
+  TGreatPower *pTVar4;
+  TGreatPower_slot_0x04_0x04 *pTVar5;
+  TView_GetTEventHandlerClassNamePointer_0x00 *pTVar6;
+  undefined uVar7;
+  short sVar8;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  int *piVar9;
+  undefined3 extraout_var_04;
+  TViewVtbl *extraout_EAX;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  undefined3 extraout_var_07;
+  undefined3 extraout_var_08;
+  TViewVtbl *extraout_EAX_00;
+  TViewVtbl *extraout_EAX_01;
+  char *extraout_ECX;
+  char *extraout_ECX_00;
+  char *extraout_ECX_01;
+  char *extraout_ECX_02;
+  char *extraout_ECX_03;
+  dword *pdVar10;
+  char **ppcVar11;
+  int unaff_EDI;
+  undefined4 *puVar12;
+  TViewVtbl *pTVar13;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_f8;
+  TViewVtbl *pTStack_f4;
+  undefined *puStack_f0;
+  TViewVtbl TStack_ec;
+  undefined1 *puStack_e4;
+  TViewVtbl TStack_e0;
+  int iStack_d8;
+  TViewVtbl TStack_d4;
+  TView *pTStack_cc;
+  CString CStack_c8;
+  CString CStack_c4;
+  code *pcStack_c0;
+  CString CStack_bc;
+  int iStack_b8;
+  TViewVtbl *pTVar14;
+  CString local_a4;
+  TToolBarClusterVtbl local_a0;
+  int iStack_98;
+  TViewVtbl TStack_94;
+  TToolBarCluster_slot_0x04_0x04 *pTStack_8c;
+  char *pcStack_88;
+  undefined1 auStack_84 [4];
+  int local_80;
+  char *pcStack_7c;
+  uint local_78;
+  char *pcStack_74;
+  int aiStack_70 [10];
+  undefined4 uStack_48;
+  int iStack_40;
+  undefined1 uStack_34;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006315f3;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  pcStack_7c = (char *)(uint)(ushort)pcStack_7c;
+  local_78 = local_78 & 0xffff0000;
+  iStack_b8 = 0x4c739e;
+  CString::CString(&local_a4);
+  iStack_b8 = 0x2b67;
+  CStack_bc.m_pchData = (char *)0xc;
+  CStack_c4.m_pchData = (char *)&local_80;
+  pcStack_c0 = (code *)0x0;
+  local_4 = 0;
+  CStack_c8.m_pchData = (char *)0x4c73bc;
+  thunk_BuildUiTextStyleDescriptor();
+  pTVar1 = this->vftable[0x12].slot_0x04;
+  iStack_b8 = 0x6e616d65;
+  CStack_bc.m_pchData = (char *)0x4c73d4;
+  local_a0.GetTEventHandlerClassNamePointer =
+       (TToolBarCluster_GetTEventHandlerClassNamePointer_0x00 *)pTVar1;
+  uVar7 = (*pTVar1)();
+  pcStack_c0 = (code *)auStack_84;
+  CStack_bc.m_pchData = (char *)0x0;
+  iVar2 = *(int *)CONCAT31(extraout_var,uVar7);
+  CStack_c4.m_pchData = "j";
+  (**(code **)(iVar2 + 0x1b4))();
+  CStack_c4.m_pchData = (char *)0x0;
+  CStack_c8.m_pchData = (char *)0x1;
+  pTStack_cc = (TView *)0x4c73f3;
+  (**(code **)(iVar2 + 0x1c4))();
+  pTStack_cc = (TView *)&iStack_b8;
+  TStack_d4.slot_0x04 = (TView_slot_0x04_0x04 *)0xd;
+  TStack_d4.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x2719
+  ;
+  iStack_d8 = 0x4c740d;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_c4;
+  iStack_d8 = 0;
+  TStack_e0.GetTEventHandlerClassNamePointer =
+       (TView_GetTEventHandlerClassNamePointer_0x00 *)0x4c741c;
+  (**(code **)(iVar2 + 0x1c8))();
+  TStack_e0.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x2b67
+  ;
+  puStack_e4 = (undefined1 *)0xa;
+  TStack_ec.GetTEventHandlerClassNamePointer =
+       (TView_GetTEventHandlerClassNamePointer_0x00 *)&stack0xffffff58;
+  TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x0;
+  puStack_f0 = (undefined *)0x4c742f;
+  thunk_BuildUiTextStyleDescriptor();
+  pdVar10 = TradeSummarySelectionMap_006960e0.summaryTags;
+  puVar12 = (undefined4 *)&this->field_0xa0;
+  CStack_c4.m_pchData = (char *)0x17;
+  do {
+    TStack_e0.GetTEventHandlerClassNamePointer =
+         (TView_GetTEventHandlerClassNamePointer_0x00 *)*pdVar10;
+    puStack_e4 = (undefined1 *)0x4c744c;
+    uVar7 = (*pTVar1)();
+    piVar9 = (int *)CONCAT31(extraout_var_00,uVar7);
+    *puVar12 = piVar9;
+    if (piVar9 != (int *)0x0) {
+      puStack_e4 = &stack0xffffff58;
+      TStack_e0.GetTEventHandlerClassNamePointer =
+           (TView_GetTEventHandlerClassNamePointer_0x00 *)0x0;
+      TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x4c7463;
+      (**(code **)(*piVar9 + 0x1b4))();
+      TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x0;
+      TStack_ec.GetTEventHandlerClassNamePointer =
+           (TView_GetTEventHandlerClassNamePointer_0x00 *)0x1;
+      puStack_f0 = (undefined *)0x4c7471;
+      (**(code **)(*(int *)*puVar12 + 0x1c4))();
+    }
+    pdVar10 = pdVar10 + 1;
+    puVar12 = puVar12 + 1;
+    CStack_c4.m_pchData = CStack_c4.m_pchData + -1;
+  } while (CStack_c4.m_pchData != (char *)0x0);
+  TStack_e0.GetTEventHandlerClassNamePointer =
+       (TView_GetTEventHandlerClassNamePointer_0x00 *)0x6c61626f;
+  puStack_e4 = (undefined1 *)0x4c748b;
+  uVar7 = (*pTVar1)();
+  piVar9 = (int *)CONCAT31(extraout_var_01,uVar7);
+  *(int **)&this->field_0xfc = piVar9;
+  if (piVar9 != (int *)0x0) {
+    TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)&stack0xffffff54;
+    puStack_e4 = (undefined1 *)0x0;
+    TStack_ec.GetTEventHandlerClassNamePointer =
+         (TView_GetTEventHandlerClassNamePointer_0x00 *)0x4c74a6;
+    (**(code **)(*piVar9 + 0x1b4))();
+    TStack_ec.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x0;
+    puStack_f0 = (undefined *)0x1;
+    pTStack_f4 = (TViewVtbl *)0x4c74b8;
+    (**(code **)(**(int **)&this->field_0xfc + 0x1c4))();
+  }
+  puStack_e4 = (undefined1 *)0x706f7765;
+  TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x4c74c1;
+  uVar7 = (*pTVar1)();
+  piVar9 = (int *)CONCAT31(extraout_var_02,uVar7);
+  *(int **)&this->field_0x100 = piVar9;
+  if (piVar9 != (int *)0x0) {
+    TStack_ec.GetTEventHandlerClassNamePointer =
+         (TView_GetTEventHandlerClassNamePointer_0x00 *)&stack0xffffff50;
+    TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x0;
+    puStack_f0 = (undefined *)0x4c74dc;
+    (**(code **)(*piVar9 + 0x1b4))();
+    puStack_f0 = (undefined *)0x0;
+    pTStack_f4 = (TViewVtbl *)0x1;
+    CStack_f8.m_pchData = (char *)0x4c74ee;
+    (**(code **)(**(int **)&this->field_0x100 + 0x1c4))();
+  }
+  if (g_pCityOrderCapabilityState->field_0x193 != '\0') {
+    pTVar3 = this->vftable;
+    TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x4c7508;
+    uVar7 = (*pTVar3[0xb].GetTEventHandlerClassNamePointer)();
+    TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)&local_a0.slot_0x04;
+    pcStack_c0 = *(code **)CONCAT31(extraout_var_03,uVar7);
+    TStack_ec.GetTEventHandlerClassNamePointer =
+         (TView_GetTEventHandlerClassNamePointer_0x00 *)0x4c751d;
+    (**(code **)((int)pcStack_c0 + 300))();
+    TStack_ec.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x1;
+    puStack_f0 = (undefined *)0x1;
+    pTStack_f4 = (TViewVtbl *)0x4c752f;
+    (**(code **)(**(int **)&this->field_0xb8 + 0xa4))();
+    pTStack_f4 = (TViewVtbl *)0x1;
+    CStack_f8.m_pchData = (char *)0x1;
+    (**(code **)(**(int **)&this->field_0xd0 + 0xa4))();
+    (**(code **)(**(int **)&this->field_0x100 + 0xa4))(1,1);
+    (*pTVar3[0x39].GetTEventHandlerClassNamePointer)(0x23ff,1);
+    piVar9 = (int *)CopyOffset10PointPairToOutOrZero(&CStack_c8);
+    TStack_94.GetTEventHandlerClassNamePointer = DAT_006a2cbc;
+    iStack_98 = DAT_006a2cb8;
+    local_78 = *piVar9 + (int)pcStack_c0;
+    pcStack_74 = CStack_bc.m_pchData + piVar9[1];
+    local_80 = (int)pcStack_c0;
+    CStack_c8.m_pchData = pcStack_74 + -unaff_EDI;
+    pcStack_7c = CStack_bc.m_pchData;
+    (**(code **)((int)puStack_e4 + 0x168))(&local_80,1);
+    iStack_b8 = 0;
+    (*this->vftable[0x2d].GetTEventHandlerClassNamePointer)(&iStack_b8,0);
+    pcStack_74 = (char *)0x686f7273;
+    aiStack_70[0] = 0x666f6f64;
+    pcStack_c0 = (code *)(int)(short)local_a4.m_pchData;
+    aiStack_70[1] = 0x6c61626f;
+    aiStack_70[2] = 0x67726169;
+    aiStack_70[3] = 0x70726f64;
+    aiStack_70[4] = 0x6c697665;
+    ppcVar11 = &pcStack_74;
+    pTStack_cc = (TView *)0x6;
+    do {
+      TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)*ppcVar11;
+      TStack_ec.GetTEventHandlerClassNamePointer =
+           (TView_GetTEventHandlerClassNamePointer_0x00 *)0x4c7669;
+      uVar7 = (*TStack_d4.slot_0x04)();
+      TStack_ec.GetTEventHandlerClassNamePointer =
+           (TView_GetTEventHandlerClassNamePointer_0x00 *)&local_a0;
+      iVar2 = *(int *)CONCAT31(extraout_var_04,uVar7);
+      puStack_f0 = (undefined *)0x4c767a;
+      (**(code **)(iVar2 + 300))();
+      TStack_94.slot_0x04 =
+           (TView_slot_0x04_0x04 *)
+           (local_a0.GetTEventHandlerClassNamePointer + (int)CStack_c8.m_pchData);
+      TStack_94.GetTEventHandlerClassNamePointer =
+           (TView_GetTEventHandlerClassNamePointer_0x00 *)local_a4.m_pchData;
+      pcStack_88 = CStack_c8.m_pchData + iStack_98;
+      pTStack_f4 = &TStack_94;
+      pTStack_8c = local_a0.slot_0x04;
+      puStack_f0 = (undefined *)0x0;
+      CStack_f8.m_pchData = (char *)0x4c76b1;
+      (**(code **)(iVar2 + 0x168))();
+      ppcVar11 = ppcVar11 + 1;
+      pTStack_cc = (TView *)((int)&pTStack_cc[-1].field5c + 3);
+    } while (pTStack_cc != (TView *)0x0);
+  }
+  pcStack_7c = (char *)0x20;
+  local_78 = 0x18;
+  TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x4c76da;
+  sVar8 = UiRuntimeContext::GetActiveNationId();
+  pTVar4 = g_apNationStates[sVar8];
+  TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x4c76ed;
+  CString::CString(&CStack_bc);
+  uStack_34 = 1;
+  TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x4c76fe;
+  CString::CString(&CStack_c8);
+  uStack_34 = 2;
+  TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)0x4c770f;
+  CString::CString(&CStack_c4);
+  TStack_d4.slot_0x04 = (TView_slot_0x04_0x04 *)&TStack_ec;
+  uStack_34 = 3;
+  puStack_f0 = PTR_g_szEmptyString_00651028;
+  pTStack_f4 = (TViewVtbl *)0x4c772b;
+  TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)this;
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+            ((TToolBarCluster *)&TStack_ec);
+  puStack_f0 = (undefined *)0x4c7730;
+  InitializeAndRunMainRoutine();
+  TStack_ec.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_bc;
+  TStack_ec.GetTEventHandlerClassNamePointer = (TView_GetTEventHandlerClassNamePointer_0x00 *)0x20;
+  puStack_f0 = (undefined *)0x2734;
+  pTStack_f4 = (TViewVtbl *)0x4c774d;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  pTStack_cc = (TView *)&this->field_0xa0;
+  pTVar14 = (TViewVtbl *)0x0;
+  iStack_d8 = 0;
+  do {
+    pTVar13 = pTStack_cc->vftable;
+    if ((pTVar13 != (TViewVtbl *)0x0) &&
+       (pTVar13[1].GetTEventHandlerClassNamePointer !=
+        (TView_GetTEventHandlerClassNamePointer_0x00 *)0x0)) {
+      pcStack_c0 = pTVar13[5].GetTEventHandlerClassNamePointer + -0x14;
+      CStack_c4.m_pchData = (char *)(pTVar13[4].slot_0x04 + -0xf);
+      pTStack_f4 = (TViewVtbl *)0x60;
+      CStack_f8.m_pchData = (char *)0x4c7791;
+      TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)AllocateWithFallbackHandler();
+      iStack_40._0_1_ = 4;
+      if ((TView *)TStack_e0.slot_0x04 == (TView *)0x0) {
+        pTVar13 = (TViewVtbl *)0x0;
+      }
+      else {
+        pTStack_f4 = (TViewVtbl *)0x4c77ab;
+        TView::thunk_ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
+        pTVar13 = extraout_EAX;
+      }
+      pTStack_f4 = (TViewVtbl *)0x0;
+      CStack_f8.m_pchData = (char *)0x5;
+      iStack_40 = CONCAT31(iStack_40._1_3_,3);
+      thunk_InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
+      if (iStack_d8 - 7U < 0x10) {
+        CStack_f8.m_pchData = (char *)(uint)*(byte *)((int)&PTR_caseD_13_004c7b5c + iStack_d8 + 1);
+        switch(iStack_d8) {
+        case 7:
+        case 0x10:
+          pTStack_f4 = &TStack_e0;
+          CStack_f8.m_pchData = (char *)pTVar14;
+          (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+          CStack_f8.m_pchData = extraout_ECX;
+          break;
+        default:
+          goto switchD_004c77eb_caseD_8;
+        case 0x11:
+        case 0x12:
+          CStack_f8.m_pchData = (char *)0x4c7814;
+          pTStack_f4 = pTVar14;
+          uVar7 = (*pTVar4->vftable[0x23].slot_0x04)();
+          CStack_f8.m_pchData = (char *)(int)(short)CONCAT31(extraout_var_05,uVar7);
+          FormatStringWithVarArgsToSharedRef(&TStack_d4,&g_szDecimalFormat);
+          CStack_f8.m_pchData = (char *)&iStack_d8;
+          (*g_pLocalizationTable->vftable[0xf].slot_0x04)(pTVar14);
+          goto LAB_004c7958;
+        case 0x13:
+        case 0x15:
+        case 0x16:
+          break;
+        case 0x14:
+          pTStack_f4 = (TViewVtbl *)0x14;
+          pTVar5 = pTVar4->vftable[0x23].slot_0x04;
+          CStack_f8.m_pchData = (char *)0x4c786a;
+          uVar7 = (*pTVar5)();
+          TStack_e0.GetTEventHandlerClassNamePointer =
+               (TView_GetTEventHandlerClassNamePointer_0x00 *)
+               (int)(short)CONCAT31(extraout_var_06,uVar7);
+          CStack_f8.m_pchData = (char *)0x13;
+          uVar7 = (*pTVar5)();
+          FormatStringWithVarArgsToSharedRef
+                    (&iStack_d8,&g_szDecimalFormat,
+                     (int)puStack_e4 + (int)(short)CONCAT31(extraout_var_07,uVar7));
+          (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,0x1f,&TStack_e0.slot_0x04);
+          scanBracketExpressions(g_pLocalizationTable,&pTStack_f4,(char *)TStack_e0.slot_0x04);
+          pTVar6 = pTVar13->GetTEventHandlerClassNamePointer;
+          (**(code **)(pTVar6 + 300))(aiStack_70 + 1);
+          aiStack_70[0] = aiStack_70[0] + -0x28;
+          (**(code **)(pTVar6 + 0x168))(aiStack_70,1);
+          CStack_f8.m_pchData = extraout_ECX_00;
+        }
+      }
+      else {
+switchD_004c77eb_caseD_8:
+        pTStack_f4 = &TStack_d4;
+        CStack_f8.m_pchData = (char *)pTVar14;
+        (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+        uVar7 = (*pTVar4->vftable[0x23].slot_0x04)(pTVar14);
+        pTStack_f4 = (TViewVtbl *)(int)(short)CONCAT31(extraout_var_08,uVar7);
+        CStack_f8.m_pchData = &g_szDecimalFormat;
+        FormatStringWithVarArgsToSharedRef(&TStack_d4.slot_0x04);
+LAB_004c7958:
+        CStack_f8.m_pchData = (char *)TStack_d4.GetTEventHandlerClassNamePointer;
+        pTStack_f4 = (TViewVtbl *)TStack_d4.slot_0x04;
+        scanBracketExpressions(g_pLocalizationTable,&TStack_e0,CStack_c8.m_pchData);
+        CStack_f8.m_pchData = extraout_ECX_01;
+      }
+      TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_f8;
+      pTStack_f4 = pTVar13;
+      thunk_AssignStringSharedRefAndReturnThis(&TStack_e0);
+      InitializeAndRunMainRoutine();
+    }
+    pTVar14 = (TViewVtbl *)((int)&pTVar14->GetTEventHandlerClassNamePointer + 1);
+    iStack_d8 = iStack_d8 + 1;
+    pTStack_cc = (TView *)&pTStack_cc->field04;
+    if (0x16 < (short)pTVar14) {
+      iVar2 = *(int *)&this->field_0xfc;
+      if (iVar2 != 0) {
+        pcStack_c0 = (code *)(*(int *)(iVar2 + 0x28) + -0x14);
+        CStack_c4.m_pchData = (char *)(*(int *)(iVar2 + 0x24) + -0xf);
+        pTStack_f4 = (TViewVtbl *)0x60;
+        CStack_f8.m_pchData = (char *)0x4c79c6;
+        TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)AllocateWithFallbackHandler();
+        iStack_40._0_1_ = 5;
+        if ((TView *)TStack_e0.slot_0x04 == (TView *)0x0) {
+          pTVar14 = (TViewVtbl *)0x0;
+        }
+        else {
+          pTStack_f4 = (TViewVtbl *)0x4c79e0;
+          TView::thunk_ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
+          pTVar14 = extraout_EAX_00;
+        }
+        pTStack_f4 = (TViewVtbl *)0x0;
+        CStack_f8.m_pchData = (char *)0x5;
+        iStack_40 = CONCAT31(iStack_40._1_3_,3);
+        thunk_InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
+        pTStack_f4 = &TStack_e0;
+        CStack_f8.m_pchData = (char *)0x22;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+        TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_f8;
+        CStack_f8.m_pchData = extraout_ECX_02;
+        pTStack_f4 = pTVar14;
+        thunk_AssignStringSharedRefAndReturnThis(&TStack_e0);
+        InitializeAndRunMainRoutine();
+      }
+      iVar2 = *(int *)&this->field_0x100;
+      if ((iVar2 != 0) && (*(int *)(iVar2 + 8) != 0)) {
+        pcStack_c0 = (code *)(*(int *)(iVar2 + 0x28) + -0x14);
+        CStack_c4.m_pchData = (char *)(*(int *)(iVar2 + 0x24) + -0xf);
+        pTStack_f4 = (TViewVtbl *)0x60;
+        CStack_f8.m_pchData = (char *)0x4c7a70;
+        TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)AllocateWithFallbackHandler();
+        iStack_40._0_1_ = 6;
+        if ((TView *)TStack_e0.slot_0x04 == (TView *)0x0) {
+          pTVar14 = (TViewVtbl *)0x0;
+        }
+        else {
+          pTStack_f4 = (TViewVtbl *)0x4c7a8a;
+          TView::thunk_ConstructTViewBaseState((TView *)TStack_e0.slot_0x04);
+          pTVar14 = extraout_EAX_01;
+        }
+        pTStack_f4 = (TViewVtbl *)0x0;
+        CStack_f8.m_pchData = (char *)0x5;
+        iStack_40 = CONCAT31(iStack_40._1_3_,3);
+        thunk_InitializeUiResourceEntryFrameAndParent(0,this,&CStack_c4,&pcStack_88,5);
+        pTStack_f4 = &TStack_e0;
+        CStack_f8.m_pchData = (char *)0x21;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+        TStack_e0.slot_0x04 = (TView_slot_0x04_0x04 *)&CStack_f8;
+        CStack_f8.m_pchData = extraout_ECX_03;
+        pTStack_f4 = pTVar14;
+        thunk_AssignStringSharedRefAndReturnThis(&TStack_e0);
+        InitializeAndRunMainRoutine();
+      }
+      iStack_40._0_1_ = 2;
+      pTStack_f4 = (TViewVtbl *)0x4c7af7;
+      CString::~CString((CString *)&TStack_d4.slot_0x04);
+      iStack_40._0_1_ = 1;
+      pTStack_f4 = (TViewVtbl *)0x4c7b08;
+      CString::~CString((CString *)&TStack_d4);
+      iStack_40 = (uint)iStack_40._1_3_ << 8;
+      pTStack_f4 = (TViewVtbl *)0x4c7b19;
+      CString::~CString(&CStack_c8);
+      iStack_40 = 0xffffffff;
+      pTStack_f4 = (TViewVtbl *)0x4c7b2d;
+      CString::~CString((CString *)&TStack_e0);
+      *unaff_FS_OFFSET = uStack_48;
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C7D90
+// GHIDRA_NAME TWarehouseView::OrphanRetStub_004c6fb0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fb0(void)
+
+void __thiscall TWarehouseView::OrphanRetStub_004c6fb0(TWarehouseView *this)
+
+{
+  short sVar1;
+  short sVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  
+  sVar2 = 0;
+  do {
+    iVar5 = (int)sVar2;
+    if (*(int **)(&this->field_0xa0 + iVar5 * 4) != (int *)0x0) {
+      iVar4 = iVar5 * 2 + 0xb6;
+      sVar1 = *(short *)(iVar4 + *(int *)&this->field_0x94);
+      iVar3 = (**(code **)(**(int **)(&this->field_0xa0 + iVar5 * 4) + 0x1e8))();
+      if (iVar3 != sVar1) {
+        if (sVar2 == 0x14) {
+          iVar5 = **(int **)&this->field_0xf0;
+          iVar4 = (int)*(short *)(*(int *)&this->field_0x94 + 0xde) +
+                  (int)*(short *)(*(int *)&this->field_0x94 + 0xdc);
+        }
+        else {
+          iVar4 = (int)*(short *)(iVar4 + *(int *)&this->field_0x94);
+          iVar5 = **(int **)(&this->field_0xa0 + iVar5 * 4);
+        }
+        (**(code **)(iVar5 + 0x1e4))(iVar4,1);
+      }
+    }
+    sVar2 = sVar2 + 1;
+  } while (sVar2 < 0x17);
+  if (*(int **)&this->field_0xfc != (int *)0x0) {
+    sVar2 = *(short *)(*(int *)(*(int *)&this->field_0x94 + 0x1d8) + 0x1c);
+    iVar5 = (**(code **)(**(int **)&this->field_0xfc + 0x1e8))();
+    if (iVar5 != sVar2) {
+      (**(code **)(**(int **)&this->field_0xfc + 0x1e4))
+                ((int)*(short *)(*(int *)(*(int *)&this->field_0x94 + 0x1d8) + 0x1c),1);
+    }
+  }
+  if (*(int **)&this->field_0x100 != (int *)0x0) {
+    sVar2 = *(short *)(*(int *)&this->field_0x94 + 0xb4);
+    iVar5 = (**(code **)(**(int **)&this->field_0x100 + 0x1e8))();
+    if (iVar5 != sVar2) {
+      (**(code **)(**(int **)&this->field_0x100 + 0x1e4))
+                ((int)*(short *)(*(int *)&this->field_0x94 + 0xb4),1);
+    }
+  }
+  return;
 }
 

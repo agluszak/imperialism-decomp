@@ -7,11 +7,11 @@
 // GHIDRA_NAME TTerrainHelpWindow::CreateTTerrainHelpWindowInstance
 // GHIDRA_PROTO undefined CreateTTerrainHelpWindowInstance()
 
-undefined4 * TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
+TControl * TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,53 +21,68 @@ undefined4 * TTerrainHelpWindow::CreateTTerrainHelpWindowInstance(void)
   puStack_8 = &LAB_0063368a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TControl *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryType4B340();
-    *puVar1 = &PTR_LAB_00657500;
-    puVar2 = puVar1;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    this->vftable = (TControlVtbl *)&TTerrainHelpWindowVtbl_00657500;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D20
-// GHIDRA_NAME TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer
-// GHIDRA_PROTO undefined GetTTerrainHelpWindowClassNamePointer()
+// GHIDRA_NAME TTerrainHelpWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTerrainHelpWindow::GetTTerrainHelpWindowClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTerrainHelpWindow::GetTEventHandlerClassNamePointer(TTerrainHelpWindow *this)
 
 {
-  return &PTR_s_TTerrainHelpWindow_00656fb0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D40
 // GHIDRA_NAME TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState
-// GHIDRA_PROTO undefined ConstructTTerrainHelpWindowBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTerrainHelpWindowBaseState(void)
 
-undefined4 * __fastcall
-TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(undefined4 *param_1)
+TTerrainHelpWindow * __thiscall
+TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState(TTerrainHelpWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340();
-  *param_1 = &PTR_LAB_00657500;
-  return param_1;
+  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  this->vftable = &TTerrainHelpWindowVtbl_00657500;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504D70
-// GHIDRA_NAME TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTerrainHelpWindowAndMaybeFree()
+// GHIDRA_NAME TTerrainHelpWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree(undefined4 param_1,byte param_2)
+TTerrainHelpWindow * __thiscall
+TTerrainHelpWindow::_scalar_deleting_destructor_(TTerrainHelpWindow *this)
 
 {
-  DestructTWindowViewAndUnlinkGlobalLists();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00504DC0
+// GHIDRA_NAME TTerrainHelpWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TTerrainHelpWindow::GetTEventHandlerClassNamePointer(TTerrainHelpWindow *this)
+
+{
+  TFloatWindow::GetTEventHandlerClassNamePointer((TFloatWindow *)this);
+  *(undefined4 *)(DAT_006a21b8 + 0xc) = 0;
+  return;
 }
 

@@ -7,10 +7,10 @@
 // GHIDRA_NAME TColorKeyPicture::CreateTColorKeyPictureInstance
 // GHIDRA_PROTO undefined CreateTColorKeyPictureInstance()
 
-undefined4 * TColorKeyPicture::CreateTColorKeyPictureInstance(void)
+thunk_TPictureButton * TColorKeyPicture::CreateTColorKeyPictureInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,57 +20,170 @@ undefined4 * TColorKeyPicture::CreateTColorKeyPictureInstance(void)
   puStack_8 = &LAB_0063659a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined1 *)(puVar1 + 0x24) = 0;
-    *puVar1 = &PTR_LAB_00660b48;
-    puVar1[0x25] = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    this[0x90] = (thunk_TPictureButton)0x0;
+    *(TColorKeyPictureVtbl **)this = &TColorKeyPictureVtbl_00660b48;
+    *(undefined4 *)(this + 0x94) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DC0
-// GHIDRA_NAME TColorKeyPicture::GetTColorKeyPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTColorKeyPictureClassNamePointer()
+// GHIDRA_NAME TColorKeyPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TColorKeyPicture::GetTColorKeyPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TColorKeyPicture::GetTEventHandlerClassNamePointer(TColorKeyPicture *this)
 
 {
-  return &PTR_s_TColorKeyPicture_00660640;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572DE0
 // GHIDRA_NAME TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
-// GHIDRA_PROTO undefined ConstructPictureResourceEntry_Vtbl00660b48()
+// GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntry_Vtbl00660b48(void)
 
-undefined4 * __fastcall
-TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(undefined4 *param_1)
+TColorKeyPicture * __thiscall
+TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(TColorKeyPicture *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00660b48;
-  *(undefined1 *)(param_1 + 0x24) = 0;
-  param_1[0x25] = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TColorKeyPictureVtbl_00660b48;
+  this->field_0x90 = 0;
+  *(undefined4 *)&this->field_0x94 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572E10
-// GHIDRA_NAME TColorKeyPicture::DestructTColorKeyPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTColorKeyPictureAndMaybeFree()
+// GHIDRA_NAME TColorKeyPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TColorKeyPicture::DestructTColorKeyPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TColorKeyPicture * __thiscall TColorKeyPicture::_scalar_deleting_destructor_(TColorKeyPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00572E60
+// GHIDRA_NAME TColorKeyPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TColorKeyPicture::OrphanTiny_ReturnZero_0048a730(TColorKeyPicture *this)
+
+{
+  TColorKeyPictureVtbl *pTVar1;
+  TColorKeyPicture_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  int iVar4;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined4 uVar5;
+  undefined4 unaff_EBX;
+  undefined4 *unaff_FS_OFFSET;
+  int iVar6;
+  undefined4 uVar7;
+  int iVar8;
+  int iStack_18;
+  undefined4 uStack_14;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_006365ba;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (DAT_006a4194 != (int *)0x0) {
+    (**(code **)(*DAT_006a4194 + 4))(1);
+  }
+  iStack_18 = AllocateWithFallbackHandler(0x38);
+  uStack_4 = 0;
+  if (iStack_18 == 0) {
+    DAT_006a4194 = (int *)0x0;
+  }
+  else {
+    DAT_006a4194 = (int *)ConstructBitmapBlitBufferFromSourceDescriptor
+                                    (*(undefined4 *)&this->field_0x8c);
+  }
+  pTVar1 = this->vftable;
+  uStack_4 = 0xffffffff;
+  pTVar2 = pTVar1[0xb].GetTEventHandlerClassNamePointer;
+  uVar3 = (*pTVar2)();
+  iVar4 = (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))(0x6d61696e);
+  if (iVar4 == 0) {
+    uVar3 = (*pTVar2)();
+    iVar4 = (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x94))(0x6261636b);
+    if (iVar4 == 0) {
+      uVar3 = (*pTVar2)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x94))(0x444c4f47);
+    }
+  }
+  (*pTVar1[0x2b].GetTEventHandlerClassNamePointer)(&iStack_18);
+  BlitSurfaceRectSkippingTransparentColor
+            (DAT_006a4194,unaff_EBX,iStack_18,this->field34,this->field38,0,0,0xffffffff);
+  BlitSurfaceRectSkippingTransparentColor
+            (DAT_006a4194,0,0,this->field34,this->field38,0,0,0x1000010);
+  uVar7 = 0;
+  uVar5 = NoOpQuickDrawContextSelectionHook(0);
+  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(uVar5);
+  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(uVar5,uVar7);
+  iVar4 = this->field34;
+  iVar8 = this->field38;
+  iVar6 = iStack_18;
+  uVar5 = NoOpQuickDrawContextSelectionHook(unaff_EBX,iStack_18,iVar4,iVar8);
+  StretchDibitsFromStoredBitmapToHdcSimple(uVar5,unaff_EBX,iVar6,iVar4,iVar8);
+  if (DAT_006a4194 != (int *)0x0) {
+    (**(code **)(*DAT_006a4194 + 4))(1);
+  }
+  DAT_006a4194 = (int *)0x0;
+  *unaff_FS_OFFSET = uStack_14;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00573040
+// GHIDRA_NAME TColorKeyPicture::SetPictureResourceIdAndRefresh
+// GHIDRA_PROTO undefined __thiscall SetPictureResourceIdAndRefresh(void)
+
+void __thiscall TColorKeyPicture::SetPictureResourceIdAndRefresh(TColorKeyPicture *this)
+
+{
+  short in_stack_00000004;
+  bool in_stack_00000008;
+  
+  if (*(int *)&this->field_0x94 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
+  }
+  *(undefined4 *)&this->field_0x94 = 0;
+  TPicture::thunk_SetPictureResourceIdAndRefresh
+            ((TPicture *)this,in_stack_00000004,in_stack_00000008);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00573090
+// GHIDRA_NAME TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TColorKeyPicture::OrphanLeaf_NoCall_Ins07_004d8920(TColorKeyPicture *this)
+
+{
+  if (*(int *)&this->field_0x94 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x94);
+  }
+  *(undefined4 *)&this->field_0x94 = 0;
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  return;
 }
 

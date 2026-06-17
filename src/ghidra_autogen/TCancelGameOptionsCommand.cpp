@@ -3,13 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: TCancelGameOptionsCommand.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005425B0
-// GHIDRA_NAME TCancelGameOptionsCommand::GetTCancelGameOptionsCommandClassNamePointer
-// GHIDRA_PROTO undefined GetTCancelGameOptionsCommandClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x00542520
+// GHIDRA_NAME TCancelGameOptionsCommand::OrphanRetStub_00487a00
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
 
-undefined ** TCancelGameOptionsCommand::GetTCancelGameOptionsCommandClassNamePointer(void)
+void __thiscall TCancelGameOptionsCommand::OrphanRetStub_00487a00(TCancelGameOptionsCommand *this)
 
 {
-  return &PTR_s_TCancelGameOptionsCommand_0065bf60;
+  Config *pCVar1;
+  
+  pCVar1 = g_pGameFlowState;
+  *(undefined4 *)&g_pGameFlowState->field_0x40 = 0;
+  ResetNationStatusArraysAndTurnEventContext();
+  thunk_PostTurnEventCodeMessage2420(0x5e5);
+  *(undefined4 *)&pCVar1->field_0x64 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00542560
+// GHIDRA_NAME TCancelGameOptionsCommand::OrphanCallChain_C1_I17_00487470
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+
+TCancelGameOptionsCommand * __thiscall
+TCancelGameOptionsCommand::OrphanCallChain_C1_I17_00487470(TCancelGameOptionsCommand *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructCancelGameOptionsCommand();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005425B0
+// GHIDRA_NAME TCancelGameOptionsCommand::GetTEventClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TCancelGameOptionsCommand::GetTEventClassNamePointer(TCancelGameOptionsCommand *this)
+
+{
+  return &classRuntimeClass;
 }
 

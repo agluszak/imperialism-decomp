@@ -3,9 +3,192 @@
 // Program: Imperialism.exe
 // Bucket: CFrameWnd.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004829F0
+// GHIDRA_NAME CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004829f0(void)
+
+CFrameWnd * __thiscall CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004829f0(CFrameWnd *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00482A20
+// GHIDRA_NAME CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20
+// GHIDRA_PROTO undefined __thiscall DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(void)
+
+void __thiscall
+CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(CFrameWnd *this)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062e7c8;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (CFrameWndVtbl *)&DAT_00648578;
+  puVar1 = *(undefined4 **)&this->field_0x4;
+  local_4 = 0;
+  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  }
+  *(undefined4 *)&this->field_0xc = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0x4 = 0;
+  FreeDataChain();
+  *(undefined4 *)&this->field_0x14 = 0;
+  this->vftable = (CFrameWndVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00484610
+// GHIDRA_NAME CFrameWnd::SerializeRecordList_0x18_WithBlockPool
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x18_WithBlockPool(void)
+
+void __thiscall CFrameWnd::SerializeRecordList_0x18_WithBlockPool(CFrameWnd *this)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  int iVar3;
+  undefined4 *puVar4;
+  int iVar5;
+  int *piVar6;
+  undefined4 *puVar7;
+  undefined4 *puVar8;
+  CArchive *in_stack_00000004;
+  undefined4 local_18 [6];
+  
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+      }
+      else {
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+      }
+      uVar1 = *(undefined4 *)&this->field_0x8;
+      if (*(int *)&this->field_0x10 == 0) {
+        iVar3 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0x20);
+        iVar5 = *(int *)&this->field_0x18;
+        puVar4 = (undefined4 *)(iVar5 * 0x20 + -0x1c + iVar3);
+        if (-1 < iVar5 + -1) {
+          do {
+            *puVar4 = *(undefined4 *)&this->field_0x10;
+            *(undefined4 **)&this->field_0x10 = puVar4;
+            puVar4 = puVar4 + -8;
+            iVar5 = iVar5 + -1;
+          } while (iVar5 != 0);
+        }
+      }
+      puVar4 = *(undefined4 **)&this->field_0x10;
+      *(undefined4 *)&this->field_0x10 = *puVar4;
+      puVar4[1] = uVar1;
+      *puVar4 = 0;
+      *(int *)&this->field_0xc = *(int *)&this->field_0xc + 1;
+      puVar7 = puVar4 + 2;
+      for (iVar5 = 6; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *puVar7 = 0;
+        puVar7 = puVar7 + 1;
+      }
+      puVar7 = local_18;
+      puVar8 = puVar4 + 2;
+      for (iVar5 = 6; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *puVar8 = *puVar7;
+        puVar7 = puVar7 + 1;
+        puVar8 = puVar8 + 1;
+      }
+      if (*(undefined4 **)&this->field_0x8 == (undefined4 *)0x0) {
+        *(undefined4 **)&this->field_0x4 = puVar4;
+      }
+      else {
+        **(undefined4 **)&this->field_0x8 = puVar4;
+      }
+      *(undefined4 **)&this->field_0x8 = puVar4;
+    }
+  }
+  else {
+    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
+    piVar6 = *(int **)&this->field_0x4;
+    if (piVar6 != (int *)0x0) {
+      do {
+        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        }
+        else {
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        }
+        piVar6 = (int *)*piVar6;
+      } while (piVar6 != (int *)0x0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004847A0
+// GHIDRA_NAME CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At004847a0(void)
+
+CFrameWnd * __thiscall CFrameWnd::WrapperFor_FreeHeapBufferIfNotNull_At004847a0(CFrameWnd *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004847D0
+// GHIDRA_NAME CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0
+// GHIDRA_PROTO undefined __thiscall DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(void)
+
+void __thiscall
+CFrameWnd::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(CFrameWnd *this)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062e878;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (CFrameWndVtbl *)&DAT_00648578;
+  puVar1 = *(undefined4 **)&this->field_0x4;
+  local_4 = 0;
+  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  }
+  *(undefined4 *)&this->field_0xc = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0x4 = 0;
+  FreeDataChain();
+  *(undefined4 *)&this->field_0x14 = 0;
+  this->vftable = (CFrameWndVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x006074F9
 // GHIDRA_NAME CFrameWnd::ShowWindow
-// GHIDRA_PROTO undefined ShowWindow()
+// GHIDRA_PROTO undefined __thiscall ShowWindow(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards to site virtual Show handler (+0xA8).
 // GHIDRA_COMMENT_END
@@ -13,28 +196,80 @@
 /* Shows window directly via ShowWindow when no site/object wrapper is present; otherwise forwards
    to site virtual Show handler (+0xA8). */
 
-void __thiscall CFrameWnd::ShowWindow(int param_1,int param_2)
+void __thiscall CFrameWnd::ShowWindow(CFrameWnd *this)
 
 {
-  if (*(int **)(param_1 + 0x38) == (int *)0x0) {
-    ::ShowWindow(*(HWND *)(param_1 + 0x1c),param_2);
+  int in_stack_00000004;
+  
+  if (this->m_pCtrlSite == (int *)0x0) {
+    ::ShowWindow(this->m_hWnd,in_stack_00000004);
   }
   else {
-    (**(code **)(**(int **)(param_1 + 0x38) + 0xa8))(param_2);
+    (**(code **)(*(int *)this->m_pCtrlSite + 0xa8))();
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0061419F
+// GHIDRA_NAME CFrameWnd::OnEndPrintPreview
+// GHIDRA_PROTO undefined __thiscall OnEndPrintPreview(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Activates target view in frame context, updates active view focus/state, sends WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update.
+// GHIDRA_COMMENT_END
+
+/* Activates target view in frame context, updates active view focus/state, sends
+   WM_SETMESSAGESTRING (0x362) with default status id, and forces frame update. */
+
+void __thiscall CFrameWnd::OnEndPrintPreview(CFrameWnd *this)
+
+{
+  CFrameWndVtbl *pCVar1;
+  undefined4 uVar2;
+  CFrameWnd *this_00;
+  BOOL BVar3;
+  CWinThread *pCVar4;
+  CFrameWnd *pCVar5;
+  int *in_stack_00000014;
+  
+  if ((int *)in_stack_00000014[0x1c] != (int *)0x0) {
+    (**(code **)(*(int *)in_stack_00000014[0x1c] + 0x108))();
+  }
+  uVar2 = GetParentFrame();
+  this_00 = (CFrameWnd *)AfxDynamicDownCast(&classRuntimeClass,uVar2);
+  if (this_00 != (CFrameWnd *)0x0) {
+    BVar3 = IsIconic(this_00->m_hWnd);
+    if (BVar3 == 0) goto LAB_006141f0;
+  }
+  pCVar4 = AfxGetThread();
+  this_00 = *(CFrameWnd **)(pCVar4 + 0x1c);
+LAB_006141f0:
+  pCVar1 = this_00->vftable;
+  (*pCVar1[0x36].OnEndPrintPreview)(0,in_stack_00000014[0x22]);
+  SetActiveView(this_00,*(CView **)(in_stack_00000014[0x22] + 0xc),1);
+  pCVar5 = (CFrameWnd *)GetParentFrame();
+  if (this_00 != pCVar5) {
+    (*this->vftable[0x3b].OnEndPrintPreview)(1,this,this);
+  }
+  (**(code **)(*in_stack_00000014 + 0x60))();
+  (*pCVar1[0x34].OnEndPrintPreview)(1);
+  SendMessageA(this_00->m_hWnd,0x362,0xe001,0);
+  UpdateWindow(this_00->m_hWnd);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061DDC2
 // GHIDRA_NAME CFrameWnd::OnEnterIdle_61ddc2
-// GHIDRA_PROTO undefined OnEnterIdle_61ddc2()
+// GHIDRA_PROTO undefined __thiscall OnEnterIdle_61ddc2(void)
 
-void __thiscall CFrameWnd::OnEnterIdle_61ddc2(int param_1,int param_2,undefined4 param_3)
+void __thiscall CFrameWnd::OnEnterIdle_61ddc2(CFrameWnd *this)
 
 {
-  OnEnterIdle(param_2,param_3);
-  if ((param_2 == 2) && (*(int *)(param_1 + 0x90) != *(int *)(param_1 + 0x94))) {
-    SetMessageText(*(int *)(param_1 + 0x90));
+  int in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  OnEnterIdle(in_stack_00000004,in_stack_00000008);
+  if ((in_stack_00000004 == 2) && (*(int *)&this->field_0x90 != *(int *)&this->field_0x94)) {
+    SetMessageText(*(int *)&this->field_0x90);
   }
   return;
 }

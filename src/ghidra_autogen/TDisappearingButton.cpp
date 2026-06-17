@@ -7,11 +7,11 @@
 // GHIDRA_NAME TDisappearingButton::CreateTDisappearingButtonInstance
 // GHIDRA_PROTO undefined CreateTDisappearingButtonInstance()
 
-undefined4 * TDisappearingButton::CreateTDisappearingButtonInstance(void)
+thunk_TPictureButton * TDisappearingButton::CreateTDisappearingButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,53 +21,95 @@ undefined4 * TDisappearingButton::CreateTDisappearingButtonInstance(void)
   puStack_8 = &LAB_00635b1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_0065d280;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TDisappearingButtonVtbl **)this = &TDisappearingButtonVtbl_0065d280;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BA0
-// GHIDRA_NAME TDisappearingButton::GetTDisappearingButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTDisappearingButtonClassNamePointer()
+// GHIDRA_NAME TDisappearingButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TDisappearingButton::GetTDisappearingButtonClassNamePointer(void)
+CRuntimeClass * __thiscall
+TDisappearingButton::GetTEventHandlerClassNamePointer(TDisappearingButton *this)
 
 {
-  return &PTR_s_TDisappearingButton_0065c8b0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BC0
 // GHIDRA_NAME TDisappearingButton::ConstructTDisappearingButtonBaseState
-// GHIDRA_PROTO undefined ConstructTDisappearingButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDisappearingButtonBaseState(void)
 
-undefined4 * __fastcall
-TDisappearingButton::ConstructTDisappearingButtonBaseState(undefined4 *param_1)
+TDisappearingButton * __thiscall
+TDisappearingButton::ConstructTDisappearingButtonBaseState(TDisappearingButton *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_0065d280;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TDisappearingButtonVtbl_0065d280;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568BF0
-// GHIDRA_NAME TDisappearingButton::DestructTDisappearingButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDisappearingButtonAndMaybeFree()
+// GHIDRA_NAME TDisappearingButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TDisappearingButton::DestructTDisappearingButtonAndMaybeFree(undefined4 param_1,byte param_2)
+TDisappearingButton * __thiscall
+TDisappearingButton::_scalar_deleting_destructor_(TDisappearingButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00568C40
+// GHIDRA_NAME TDisappearingButton::OrphanCallChain_C2_I24_00568c40
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I24_00568c40(void)
+
+void __thiscall TDisappearingButton::OrphanCallChain_C2_I24_00568c40(TDisappearingButton *this)
+
+{
+  TDisappearingButtonVtbl *pTVar1;
+  char unaff_retaddr;
+  char in_stack_00000004;
+  
+  if (in_stack_00000004 != this->field_0x64) {
+    pTVar1 = this->vftable;
+    this->field_0x64 = in_stack_00000004;
+    (*pTVar1[0x14].slot_0x04)((uint)(in_stack_00000004 == '\0'),1);
+    if (unaff_retaddr != '\0') {
+      (*pTVar1[0x39].slot_0x04)();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00568C90
+// GHIDRA_NAME TDisappearingButton::OrphanCallChain_C2_I18_00568c90
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I18_00568c90(void)
+
+void __thiscall TDisappearingButton::OrphanCallChain_C2_I18_00568c90(TDisappearingButton *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  undefined1 local_10 [16];
+  
+  uVar1 = (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(local_10);
+  RedrawWindow(*(HWND *)(this->field50 + 0x1c),(RECT *)CONCAT31(extraout_var,uVar1),(HRGN)0x0,0x101)
+  ;
+  return;
 }
 

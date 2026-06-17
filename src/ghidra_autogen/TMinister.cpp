@@ -5,80 +5,132 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004089F4
 // GHIDRA_NAME TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840
-// GHIDRA_PROTO undefined thunk_WrapperFor_thunk_ConstructTMinister_At004be840()
+// GHIDRA_PROTO undefined __thiscall thunk_WrapperFor_thunk_ConstructTMinister_At004be840(void)
 
-undefined4 * __fastcall
-TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840(undefined4 *param_1)
+TMinister * __thiscall
+TMinister::thunk_WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
 
 {
-  ConstructTMinister();
-  param_1[99] = 0;
-  *(undefined2 *)(param_1 + 5) = 1;
-  *(undefined2 *)((int)param_1 + 0x16) = 1;
-  *param_1 = &PTR_thunk_GetCityInteriorMinisterTypeName_006508a8;
-  return param_1;
+  ConstructTMinister(this);
+  *(undefined4 *)&this[0x18].field_0xc = 0;
+  *(undefined2 *)&this[1].field_0x4 = 1;
+  *(undefined2 *)&this[1].field_0x6 = 1;
+  this->vftable = (TMinisterVtbl *)&TCityInteriorMinisterVtbl_006508a8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BE840
 // GHIDRA_NAME TMinister::WrapperFor_thunk_ConstructTMinister_At004be840
-// GHIDRA_PROTO undefined WrapperFor_thunk_ConstructTMinister_At004be840()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructTMinister_At004be840(void)
 
-undefined4 * __fastcall
-TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(undefined4 *param_1)
+TMinister * __thiscall TMinister::WrapperFor_thunk_ConstructTMinister_At004be840(TMinister *this)
 
 {
-  ConstructTMinister();
-  param_1[99] = 0;
-  *(undefined2 *)(param_1 + 5) = 1;
-  *(undefined2 *)((int)param_1 + 0x16) = 1;
-  *param_1 = &PTR_thunk_GetCityInteriorMinisterTypeName_006508a8;
-  return param_1;
+  ConstructTMinister(this);
+  *(undefined4 *)&this[0x18].field_0xc = 0;
+  *(undefined2 *)&this[1].field_0x4 = 1;
+  *(undefined2 *)&this[1].field_0x6 = 1;
+  this->vftable = (TMinisterVtbl *)&TCityInteriorMinisterVtbl_006508a8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB60
 // GHIDRA_NAME TMinister::GetTMinisterClassNamePointer
-// GHIDRA_PROTO undefined GetTMinisterClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-undefined ** TMinister::GetTMinisterClassNamePointer(void)
+CRuntimeClass * __thiscall TMinister::GetTMinisterClassNamePointer(TMinister *this)
 
 {
-  return &PTR_s_TMinister_00659a80;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EB80
 // GHIDRA_NAME TMinister::ConstructTMinister
-// GHIDRA_PROTO undefined ConstructTMinister()
+// GHIDRA_PROTO undefined __thiscall ConstructTMinister(void)
 
-void __fastcall TMinister::ConstructTMinister(undefined4 *param_1)
+void __thiscall TMinister::ConstructTMinister(TMinister *this)
 
 {
-  *(undefined2 *)(param_1 + 3) = 0;
-  *param_1 = &PTR_LAB_00659c00;
+  *(undefined2 *)&this->field_0xc = 0;
+  this->vftable = &TMinisterVtbl_00659c00;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBA0
 // GHIDRA_NAME TMinister::DeletingDestructTMinister
-// GHIDRA_PROTO undefined DeletingDestructTMinister()
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
 
-undefined4 __thiscall TMinister::DeletingDestructTMinister(undefined4 param_1,byte param_2)
+TMinister * __thiscall TMinister::DeletingDestructTMinister(TMinister *this)
 
 {
-  DestructTMinister();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTMinister(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0052EBD0
 // GHIDRA_NAME TMinister::DestructTMinister
-// GHIDRA_PROTO undefined DestructTMinister()
+// GHIDRA_PROTO undefined __thiscall DestructTMinister(void)
 
-void __fastcall TMinister::DestructTMinister(undefined4 *param_1)
+void __thiscall TMinister::DestructTMinister(TMinister *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TMinisterVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052ECC0
+// GHIDRA_NAME TMinister::DeserializeTMinisterBaseOrderArrayHeader
+// GHIDRA_PROTO undefined __thiscall DeserializeTMinisterBaseOrderArrayHeader(void)
+
+void __thiscall TMinister::DeserializeTMinisterBaseOrderArrayHeader(TMinister *this)
+
+{
+  int *in_stack_00000004;
+  
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  (**(code **)(*in_stack_00000004 + 0x3c))(&this->field_0xc,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052ECF0
+// GHIDRA_NAME TMinister::SerializeTMinisterBaseOrderArrayHeader
+// GHIDRA_PROTO undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
+
+void __thiscall TMinister::SerializeTMinisterBaseOrderArrayHeader(TMinister *this)
+
+{
+  int *in_stack_00000004;
+  
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  (**(code **)(*in_stack_00000004 + 0x78))(&this->field_0xc,2);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052ED20
+// GHIDRA_NAME TMinister::DispatchNationStateEventCode10
+// GHIDRA_PROTO undefined __thiscall DispatchNationStateEventCode10(void)
+
+void __thiscall TMinister::DispatchNationStateEventCode10(TMinister *this)
+
+{
+  short in_stack_00000004;
+  
+  (*g_apNationStates[in_stack_00000004]->vftable[0xf].GetTCountryClassNamePointer)(0x10);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0052EFB0
+// GHIDRA_NAME TMinister::NoOpForeignMinisterUtilityStub
+// GHIDRA_PROTO undefined __thiscall NoOpForeignMinisterUtilityStub(void)
+
+void __thiscall TMinister::NoOpForeignMinisterUtilityStub(TMinister *this)
+
+{
   return;
 }
 

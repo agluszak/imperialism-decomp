@@ -3,49 +3,476 @@
 // Program: Imperialism.exe
 // Bucket: CObject.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00412BD0
-// GHIDRA_NAME CObject::Serialize
-// GHIDRA_PROTO undefined Serialize()
+// GHIDRA_FUNCTION IMPERIALISM 0x00415E70
+// GHIDRA_NAME CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70
+// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)
 
-void CObject::Serialize(void)
+void __thiscall
+CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(CObject *this)
 
 {
+  CObjectVtbl *pCVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_00628488;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = &CObjectVtbl_0063e880;
+  pCVar1 = this[1].vftable;
+  local_4 = 0;
+  for (; pCVar1 != (CObjectVtbl *)0x0; pCVar1 = (CObjectVtbl *)pCVar1->SetForeignMinisterReadyFlag14
+      ) {
+  }
+  this[3].vftable = (CObjectVtbl *)0x0;
+  this[4].vftable = (CObjectVtbl *)0x0;
+  this[2].vftable = (CObjectVtbl *)0x0;
+  this[1].vftable = (CObjectVtbl *)0x0;
+  FreeDataChain();
+  this[5].vftable = (CObjectVtbl *)0x0;
+  this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00412BF0
-// GHIDRA_NAME CObject::AssertValidOrSlot0c
-// GHIDRA_PROTO undefined AssertValidOrSlot0c()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
-// GHIDRA_COMMENT_END
+// GHIDRA_FUNCTION IMPERIALISM 0x00415F90
+// GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00415f90(void)
 
-/* No-op virtual slot stub (returns immediately). */
-
-void CObject::AssertValidOrSlot0c(void)
+CObject * __thiscall CObject::WrapperFor_FreeHeapBufferIfNotNull_At00415f90(CObject *this)
 
 {
+  byte in_stack_00000004;
+  
+  DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00479D50
+// GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00479d50(void)
+
+CObject * __thiscall CObject::WrapperFor_FreeHeapBufferIfNotNull_At00479d50(CObject *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00479D80
+// GHIDRA_NAME CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80
+// GHIDRA_PROTO undefined __thiscall DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(void)
+
+void __thiscall
+CObject::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(CObject *this)
+
+{
+  CObjectVtbl *pCVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062e008;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = &CObjectVtbl_0063e880;
+  pCVar1 = this[1].vftable;
+  local_4 = 0;
+  for (; pCVar1 != (CObjectVtbl *)0x0; pCVar1 = (CObjectVtbl *)pCVar1->SetForeignMinisterReadyFlag14
+      ) {
+  }
+  this[3].vftable = (CObjectVtbl *)0x0;
+  this[4].vftable = (CObjectVtbl *)0x0;
+  this[2].vftable = (CObjectVtbl *)0x0;
+  this[1].vftable = (CObjectVtbl *)0x0;
+  FreeDataChain();
+  this[5].vftable = (CObjectVtbl *)0x0;
+  this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00412C10
-// GHIDRA_NAME CObject::DumpOrSlot10
-// GHIDRA_PROTO undefined DumpOrSlot10()
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT No-op virtual slot stub (returns immediately).
-// GHIDRA_COMMENT_END
+// GHIDRA_FUNCTION IMPERIALISM 0x00480BD0
+// GHIDRA_NAME CObject::SerializeDwordArrayWithAutoReallocFromArchive
+// GHIDRA_PROTO undefined __thiscall SerializeDwordArrayWithAutoReallocFromArchive(void)
 
-/* No-op virtual slot stub (returns immediately). */
-
-void CObject::DumpOrSlot10(void)
+void __thiscall CObject::SerializeDwordArrayWithAutoReallocFromArchive(CObject *this)
 
 {
+  CObjectVtbl *pCVar1;
+  CObjectVtbl *pCVar2;
+  CObjectVtbl *pCVar3;
+  uint uVar4;
+  int iVar5;
+  CObjectVtbl *pCVar6;
+  CObject_SetForeignMinisterReadyFlag14_0x00 **ppCVar7;
+  CArchive *in_stack_00000004;
+  CObjectVtbl *local_8;
+  
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    pCVar1 = (CObjectVtbl *)FUN_0061202e();
+    if (pCVar1 == (CObjectVtbl *)0x0) {
+      if (this[1].vftable != (CObjectVtbl *)0x0) {
+        FreeHeapBufferIfNotNull(this[1].vftable);
+        this[1].vftable = (CObjectVtbl *)0x0;
+      }
+      this[3].vftable = (CObjectVtbl *)0x0;
+      this[2].vftable = (CObjectVtbl *)0x0;
+    }
+    else if (this[1].vftable == (CObjectVtbl *)0x0) {
+      pCVar2 = (CObjectVtbl *)AllocateWithFallbackHandler((int)pCVar1 * 4);
+      this[1].vftable = pCVar2;
+      for (uVar4 = (uint)pCVar1 & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
+        pCVar2->SetForeignMinisterReadyFlag14 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
+        pCVar2 = (CObjectVtbl *)&pCVar2->slot_0x04;
+      }
+      for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *(undefined1 *)&pCVar2->SetForeignMinisterReadyFlag14 = 0;
+        pCVar2 = (CObjectVtbl *)((int)&pCVar2->SetForeignMinisterReadyFlag14 + 1);
+      }
+      this[3].vftable = pCVar1;
+      this[2].vftable = pCVar1;
+    }
+    else if ((int)this[3].vftable < (int)pCVar1) {
+      pCVar2 = this[4].vftable;
+      if (pCVar2 == (CObjectVtbl *)0x0) {
+        pCVar2 = (CObjectVtbl *)
+                 ((int)((int)&(this[2].vftable)->SetForeignMinisterReadyFlag14 +
+                       ((int)this[2].vftable >> 0x1f & 7U)) >> 3);
+        if ((int)pCVar2 < 4) {
+          pCVar2 = (CObjectVtbl *)0x4;
+        }
+        else if (0x400 < (int)pCVar2) {
+          pCVar2 = (CObjectVtbl *)0x400;
+        }
+      }
+      local_8 = (CObjectVtbl *)
+                ((int)&(this[3].vftable)->SetForeignMinisterReadyFlag14 +
+                (int)&pCVar2->SetForeignMinisterReadyFlag14);
+      if ((int)local_8 <= (int)pCVar1) {
+        local_8 = pCVar1;
+      }
+      pCVar3 = (CObjectVtbl *)AllocateWithFallbackHandler((int)local_8 * 4);
+      pCVar2 = this[1].vftable;
+      pCVar6 = pCVar3;
+      for (uVar4 = (uint)this[2].vftable & 0x3fffffff; uVar4 != 0; uVar4 = uVar4 - 1) {
+        pCVar6->SetForeignMinisterReadyFlag14 = pCVar2->SetForeignMinisterReadyFlag14;
+        pCVar2 = (CObjectVtbl *)&pCVar2->slot_0x04;
+        pCVar6 = (CObjectVtbl *)&pCVar6->slot_0x04;
+      }
+      for (iVar5 = 0; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *(undefined1 *)&pCVar6->SetForeignMinisterReadyFlag14 =
+             *(undefined1 *)&pCVar2->SetForeignMinisterReadyFlag14;
+        pCVar2 = (CObjectVtbl *)((int)&pCVar2->SetForeignMinisterReadyFlag14 + 1);
+        pCVar6 = (CObjectVtbl *)((int)&pCVar6->SetForeignMinisterReadyFlag14 + 1);
+      }
+      ppCVar7 = &pCVar3->SetForeignMinisterReadyFlag14 + (int)this[2].vftable;
+      for (iVar5 = (int)pCVar1 - (int)this[2].vftable; iVar5 != 0; iVar5 = iVar5 + -1) {
+        *ppCVar7 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
+        ppCVar7 = ppCVar7 + 1;
+      }
+      FreeHeapBufferIfNotNull(this[1].vftable);
+      this[1].vftable = pCVar3;
+      this[2].vftable = pCVar1;
+      this[3].vftable = local_8;
+    }
+    else {
+      pCVar2 = this[2].vftable;
+      if ((int)pCVar2 < (int)pCVar1) {
+        ppCVar7 = &(this[1].vftable)->SetForeignMinisterReadyFlag14 + (int)pCVar2;
+        for (iVar5 = (int)pCVar1 - (int)pCVar2; iVar5 != 0; iVar5 = iVar5 + -1) {
+          *ppCVar7 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
+          ppCVar7 = ppCVar7 + 1;
+        }
+      }
+      this[2].vftable = pCVar1;
+    }
+  }
+  else {
+    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
+  }
+  if ((~in_stack_00000004->m_nMode & 1U) != 0) {
+    TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+    return;
+  }
+  CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00480DD0
+// GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00480dd0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(void)
+
+CObject * __thiscall CObject::WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(CObject *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004927E0
+// GHIDRA_NAME CObject::SerializeRecordList_0x0C_WithBlockPool_D
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_D(void)
+
+void __thiscall CObject::SerializeRecordList_0x0C_WithBlockPool_D(CObject *this)
+
+{
+  int iVar1;
+  int iVar2;
+  CObjectVtbl *pCVar3;
+  CObjectVtbl *pCVar4;
+  CObjectVtbl *pCVar5;
+  CArchive *in_stack_00000004;
+  
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    for (iVar1 = FUN_0061202e(); iVar1 != 0; iVar1 = iVar1 + -1) {
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+      }
+      else {
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+      }
+      pCVar5 = this[2].vftable;
+      if (this[4].vftable == (CObjectVtbl *)0x0) {
+        iVar2 = AllocateAndLinkBlockHead(this + 5,this[6].vftable,0xc);
+        pCVar4 = this[6].vftable;
+        pCVar3 = (CObjectVtbl *)(iVar2 + -8 + (int)pCVar4 * 0xc);
+        if (-1 < (int)((int)&pCVar4[-1].slot_0x04 + 3)) {
+          do {
+            pCVar3->SetForeignMinisterReadyFlag14 =
+                 (CObject_SetForeignMinisterReadyFlag14_0x00 *)this[4].vftable;
+            this[4].vftable = pCVar3;
+            pCVar3 = (CObjectVtbl *)&pCVar3[-2].slot_0x04;
+            pCVar4 = (CObjectVtbl *)((int)&pCVar4[-1].slot_0x04 + 3);
+          } while (pCVar4 != (CObjectVtbl *)0x0);
+        }
+      }
+      pCVar3 = this[4].vftable;
+      this[4].vftable = (CObjectVtbl *)pCVar3->SetForeignMinisterReadyFlag14;
+      pCVar3->slot_0x04 = (CObject_slot_0x04_0x04 *)pCVar5;
+      pCVar3->SetForeignMinisterReadyFlag14 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
+      this[3].vftable = (CObjectVtbl *)((int)&(this[3].vftable)->SetForeignMinisterReadyFlag14 + 1);
+      pCVar3[1].SetForeignMinisterReadyFlag14 = (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
+      pCVar3[1].SetForeignMinisterReadyFlag14 =
+           (CObject_SetForeignMinisterReadyFlag14_0x00 *)in_stack_00000004;
+      if (this[2].vftable == (CObjectVtbl *)0x0) {
+        this[1].vftable = pCVar3;
+      }
+      else {
+        (this[2].vftable)->SetForeignMinisterReadyFlag14 =
+             (CObject_SetForeignMinisterReadyFlag14_0x00 *)pCVar3;
+      }
+      this[2].vftable = pCVar3;
+    }
+  }
+  else {
+    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
+    pCVar5 = this[1].vftable;
+    if (pCVar5 != (CObjectVtbl *)0x0) {
+      do {
+        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        }
+        else {
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        }
+        pCVar5 = (CObjectVtbl *)pCVar5->SetForeignMinisterReadyFlag14;
+      } while (pCVar5 != (CObjectVtbl *)0x0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492980
+// GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00492980(void)
+
+CObject * __thiscall CObject::WrapperFor_FreeHeapBufferIfNotNull_At00492980(CObject *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004929B0
+// GHIDRA_NAME CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0
+// GHIDRA_PROTO undefined __thiscall DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(void)
+
+void __thiscall
+CObject::DestructTurnEventDialogFactoryRegistryState_0064B328_AndFreeChain_At004929b0(CObject *this)
+
+{
+  CObjectVtbl *pCVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062f3b8;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = &CObjectVtbl_0064b328;
+  pCVar1 = this[1].vftable;
+  local_4 = 0;
+  for (; pCVar1 != (CObjectVtbl *)0x0; pCVar1 = (CObjectVtbl *)pCVar1->SetForeignMinisterReadyFlag14
+      ) {
+  }
+  this[3].vftable = (CObjectVtbl *)0x0;
+  this[4].vftable = (CObjectVtbl *)0x0;
+  this[2].vftable = (CObjectVtbl *)0x0;
+  this[1].vftable = (CObjectVtbl *)0x0;
+  FreeDataChain();
+  this[5].vftable = (CObjectVtbl *)0x0;
+  this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049AE30
+// GHIDRA_NAME CObject::DestructModuleLibraryCacheTableStateBAndFree
+// GHIDRA_PROTO undefined __thiscall DestructModuleLibraryCacheTableStateBAndFree(void)
+
+void __thiscall CObject::DestructModuleLibraryCacheTableStateBAndFree(CObject *this)
+
+{
+  CObjectVtbl *pCVar1;
+  CObject_SetForeignMinisterReadyFlag14_0x00 *pCVar2;
+  CObjectVtbl *pCVar3;
+  CObjectVtbl *pCVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062fb58;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (CObjectVtbl *)&DAT_0064ba80;
+  pCVar1 = this[1].vftable;
+  local_4 = 0;
+  if (pCVar1 != (CObjectVtbl *)0x0) {
+    pCVar3 = pCVar1;
+    for (pCVar4 = this[2].vftable; pCVar4 != (CObjectVtbl *)0x0;
+        pCVar4 = (CObjectVtbl *)((int)&pCVar4[-1].slot_0x04 + 3)) {
+      for (pCVar2 = pCVar3->SetForeignMinisterReadyFlag14;
+          pCVar2 != (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
+          pCVar2 = *(CObject_SetForeignMinisterReadyFlag14_0x00 **)pCVar2) {
+      }
+      pCVar3 = (CObjectVtbl *)&pCVar3->slot_0x04;
+    }
+  }
+  FreeHeapBufferIfNotNull(pCVar1);
+  this[1].vftable = (CObjectVtbl *)0x0;
+  this[3].vftable = (CObjectVtbl *)0x0;
+  this[4].vftable = (CObjectVtbl *)0x0;
+  FreeDataChain();
+  this[5].vftable = (CObjectVtbl *)0x0;
+  this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049B270
+// GHIDRA_NAME CObject::DestructModuleLibraryCacheTableStateAAndFree
+// GHIDRA_PROTO undefined __thiscall DestructModuleLibraryCacheTableStateAAndFree(void)
+
+void __thiscall CObject::DestructModuleLibraryCacheTableStateAAndFree(CObject *this)
+
+{
+  CObjectVtbl *pCVar1;
+  CObject_SetForeignMinisterReadyFlag14_0x00 *pCVar2;
+  CObjectVtbl *pCVar3;
+  CObjectVtbl *pCVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062fb78;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = &CObjectVtbl_0064ba68;
+  pCVar1 = this[1].vftable;
+  local_4 = 0;
+  if (pCVar1 != (CObjectVtbl *)0x0) {
+    pCVar3 = pCVar1;
+    for (pCVar4 = this[2].vftable; pCVar4 != (CObjectVtbl *)0x0;
+        pCVar4 = (CObjectVtbl *)((int)&pCVar4[-1].slot_0x04 + 3)) {
+      for (pCVar2 = pCVar3->SetForeignMinisterReadyFlag14;
+          pCVar2 != (CObject_SetForeignMinisterReadyFlag14_0x00 *)0x0;
+          pCVar2 = *(CObject_SetForeignMinisterReadyFlag14_0x00 **)pCVar2) {
+      }
+      pCVar3 = (CObjectVtbl *)&pCVar3->slot_0x04;
+    }
+  }
+  FreeHeapBufferIfNotNull(pCVar1);
+  this[1].vftable = (CObjectVtbl *)0x0;
+  this[3].vftable = (CObjectVtbl *)0x0;
+  this[4].vftable = (CObjectVtbl *)0x0;
+  FreeDataChain();
+  this[5].vftable = (CObjectVtbl *)0x0;
+  this->vftable = (CObjectVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049B5D0
+// GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(void)
+
+CObject * __thiscall CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b5d0(CObject *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructModuleLibraryCacheTableStateBAndFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049B600
+// GHIDRA_NAME CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049b600(void)
+
+CObject * __thiscall CObject::WrapperFor_FreeHeapBufferIfNotNull_At0049b600(CObject *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructModuleLibraryCacheTableStateAAndFree(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606FC0
 // GHIDRA_NAME CObject::IsKindOf
-// GHIDRA_PROTO undefined IsKindOf()
+// GHIDRA_PROTO undefined __thiscall IsKindOf(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Traverses a forward-linked chain using next pointer at +0x10 and returns true if the target node pointer is present.
 // GHIDRA_COMMENT_END
@@ -53,11 +480,35 @@ void CObject::DumpOrSlot10(void)
 /* Traverses a forward-linked chain using next pointer at +0x10 and returns true if the target node
    pointer is present. */
 
-void __thiscall CObject::IsKindOf(undefined4 *param_1,undefined4 param_2)
+void __thiscall CObject::IsKindOf(CObject *this)
 
 {
-  (**(code **)*param_1)();
-  CRuntimeClass::IsDerivedFrom(param_2);
+  undefined uVar1;
+  undefined3 extraout_var;
+  
+  uVar1 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+  CRuntimeClass::IsDerivedFrom((CRuntimeClass *)CONCAT31(extraout_var,uVar1));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00622778
+// GHIDRA_NAME CObject::ParseParam
+// GHIDRA_PROTO undefined __thiscall ParseParam(void)
+
+void __thiscall CObject::ParseParam(CObject *this)
+
+{
+  undefined4 in_stack_00000004;
+  int in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  
+  if (in_stack_00000008 == 0) {
+    ParseParamNotFlag(in_stack_00000004);
+  }
+  else {
+    FUN_006227a1(in_stack_00000004);
+  }
+  FUN_006228af(in_stack_0000000c);
   return;
 }
 

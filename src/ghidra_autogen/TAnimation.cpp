@@ -3,48 +3,224 @@
 // Program: Imperialism.exe
 // Bucket: TAnimation.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049F080
-// GHIDRA_NAME TAnimation::CreateTAnimationInstance
-// GHIDRA_PROTO undefined CreateTAnimationInstance()
+// GHIDRA_FUNCTION IMPERIALISM 0x00495B70
+// GHIDRA_NAME TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize
+// GHIDRA_PROTO undefined __thiscall EnsureBitmapResourceLoadedAndCopyRectSize(void)
 
-void __fastcall TAnimation::CreateTAnimationInstance(undefined4 *param_1)
+void __thiscall TAnimation::EnsureBitmapResourceLoadedAndCopyRectSize(TAnimation *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  undefined4 uVar1;
+  int iVar2;
+  undefined4 uVar3;
+  undefined4 *puVar4;
+  undefined1 local_8 [8];
+  
+  if (*(int *)&this->field_0x18 == 0) {
+    iVar2 = thunk_LoadBmpResourceByIdCached(*(undefined2 *)&this->field_0x1c);
+    *(int *)&this->field_0x18 = iVar2;
+    if (iVar2 == 0) {
+      uVar3 = BuildIndexedBmpResourceById(*(undefined2 *)&this->field_0x1c,0x42,0x42,0);
+      *(undefined4 *)&this->field_0x18 = uVar3;
+    }
+  }
+  puVar4 = (undefined4 *)CopyOffset10PointPairToOutOrZero(local_8);
+  uVar3 = *puVar4;
+  uVar1 = puVar4[1];
+  *(undefined4 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0xc = 0;
+  *(undefined4 *)&this->field_0x10 = uVar3;
+  *(undefined4 *)&this->field_0x14 = uVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00495C00
+// GHIDRA_NAME TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00(void)
+
+void __thiscall
+TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
+          (TAnimation *this)
+
+{
+  if (*(int *)&this->field_0x18 != 0) {
+    thunk_DecrementDialogResourceRefCountByShortIdAndCleanup
+              (CONCAT22((short)((uint)*(int *)&this->field_0x18 >> 0x10),
+                        *(undefined2 *)&this->field_0x1c));
+  }
+  *(undefined4 *)&this->field_0x18 = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F050
+// GHIDRA_NAME TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0049f050(void)
+
+TAnimation * __thiscall TAnimation::WrapperFor_FreeHeapBufferIfNotNull_At0049f050(TAnimation *this)
+
+{
+  byte in_stack_00000004;
+  
+  CreateTAnimationInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F080
+// GHIDRA_NAME TAnimation::CreateTAnimationInstance
+// GHIDRA_PROTO undefined __thiscall CreateTAnimationInstance(void)
+
+void __thiscall TAnimation::CreateTAnimationInstance(TAnimation *this)
+
+{
+  this->vftable = (TAnimationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0A0
 // GHIDRA_NAME TAnimation::GetTAnimationClassNamePointer
-// GHIDRA_PROTO undefined GetTAnimationClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTAnimationClassNamePointer(void)
 
-undefined ** TAnimation::GetTAnimationClassNamePointer(void)
+CRuntimeClass * __thiscall TAnimation::GetTAnimationClassNamePointer(TAnimation *this)
 
 {
-  return &PTR_s_TAnimation_0064c1f0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049F0C0
 // GHIDRA_NAME TAnimation::ConstructTAnimationBaseState
-// GHIDRA_PROTO undefined ConstructTAnimationBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTAnimationBaseState(void)
 
-void __thiscall
-TAnimation::ConstructTAnimationBaseState
-          (int param_1,undefined4 param_2,undefined4 *param_3,undefined2 param_4,undefined2 param_5,
-          undefined4 param_6,undefined4 param_7)
+void __thiscall TAnimation::ConstructTAnimationBaseState(TAnimation *this)
 
 {
-  *(undefined4 *)(param_1 + 4) = param_2;
-  *(undefined4 *)(param_1 + 0x1c) = *param_3;
-  *(undefined4 *)(param_1 + 0x20) = param_3[1];
-  *(undefined4 *)(param_1 + 0x24) = param_3[2];
-  *(undefined4 *)(param_1 + 0x28) = param_3[3];
-  *(undefined2 *)(param_1 + 10) = param_4;
-  *(undefined2 *)(param_1 + 0xc) = param_5;
-  *(undefined2 *)(param_1 + 8) = 0;
-  *(undefined4 *)(param_1 + 0x10) = 0;
-  *(undefined4 *)(param_1 + 0x14) = param_6;
-  *(undefined4 *)(param_1 + 0x18) = param_7;
+  undefined4 in_stack_00000004;
+  undefined4 *in_stack_00000008;
+  undefined2 in_stack_0000000c;
+  undefined2 in_stack_00000010;
+  undefined4 in_stack_00000014;
+  undefined4 in_stack_00000018;
+  
+  *(undefined4 *)&this->field_0x4 = in_stack_00000004;
+  *(undefined4 *)&this->field_0x1c = *in_stack_00000008;
+  *(undefined4 *)&this->field_0x20 = in_stack_00000008[1];
+  *(undefined4 *)&this->field_0x24 = in_stack_00000008[2];
+  *(undefined4 *)&this->field_0x28 = in_stack_00000008[3];
+  *(undefined2 *)&this->field_0xa = in_stack_0000000c;
+  *(undefined2 *)&this->field_0xc = in_stack_00000010;
+  *(undefined2 *)&this->field_0x8 = 0;
+  *(undefined4 *)&this->field_0x10 = 0;
+  *(undefined4 *)&this->field_0x14 = in_stack_00000014;
+  *(undefined4 *)&this->field_0x18 = in_stack_00000018;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F140
+// GHIDRA_NAME TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)
+
+void __thiscall TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(TAnimation *this)
+
+{
+  int iVar1;
+  
+  iVar1 = *(int *)&this->field_0x10 + 1;
+  *(int *)&this->field_0x10 = iVar1;
+  if (iVar1 == *(int *)&this->field_0x14) {
+    thunk_InvalidateCityDialogRectRegion(&this->field_0x1c,1);
+    *(short *)&this->field_0x8 = *(short *)&this->field_0x8 + 1;
+    *(undefined4 *)&this->field_0x10 = 0;
+    if (*(short *)&this->field_0x8 == *(short *)&this->field_0xa) {
+      *(undefined2 *)&this->field_0x8 = 0;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049F190
+// GHIDRA_NAME TAnimation::RenderBattleReportInsetWithPaletteShift
+// GHIDRA_PROTO undefined __thiscall RenderBattleReportInsetWithPaletteShift(void)
+
+void __thiscall TAnimation::RenderBattleReportInsetWithPaletteShift(TAnimation *this)
+
+{
+  int iVar1;
+  int iVar2;
+  int *in_stack_00000004;
+  tagRECT tStack_20;
+  tagRECT tStack_10;
+  
+  iVar1 = *(int *)&g_pUiAnimator->field_0x20;
+  (*this->vftable[6].GetTAnimationClassNamePointer)();
+  tStack_20.top = *(int *)&this->field_0x20 + in_stack_00000004[1];
+  tStack_20.bottom = *(int *)&this->field_0x28 + in_stack_00000004[1];
+  tStack_20.right = *(int *)&this->field_0x24 + *in_stack_00000004;
+  tStack_20.left = *(int *)&this->field_0x1c + *in_stack_00000004;
+  tStack_10.right = tStack_20.right - tStack_20.left;
+  tStack_10.bottom = tStack_20.bottom - tStack_20.top;
+  tStack_10.left = 0;
+  tStack_10.top = 0;
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  iVar2 = *(int *)(iVar1 + 0x20);
+  if (iVar2 != 0) {
+    iVar2 = *(int *)(*(int *)(iVar2 + 0x10) + 8);
+    if (iVar2 < 1) {
+      iVar2 = -iVar2;
+    }
+    OffsetRect(&tStack_10,0,(iVar2 - tStack_10.top) - tStack_10.bottom);
+  }
+  if (*(int *)&g_pActiveQuickDrawSurfaceContext->field_0x20 != 0) {
+    iVar2 = *(int *)(*(int *)(*(int *)&g_pActiveQuickDrawSurfaceContext->field_0x20 + 0x10) + 8);
+    if (iVar2 < 1) {
+      iVar2 = -iVar2;
+    }
+    OffsetRect(&tStack_20,0,(iVar2 - tStack_20.top) - tStack_20.bottom);
+  }
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(iVar1 + 4),(astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,
+             &tStack_10,&tStack_20,0x24,(astruct_19 *)0x0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A1100
+// GHIDRA_NAME TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100(void)
+
+undefined4 __thiscall
+TAnimation::WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
+          (TAnimation *this)
+
+{
+  thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_QuickDraw_h_00695340,0x1a1);
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005A9BB0
+// GHIDRA_NAME TAnimation::SpawnTacticalUiMarkerAtUnitTile
+// GHIDRA_PROTO undefined __thiscall SpawnTacticalUiMarkerAtUnitTile(void)
+
+void __thiscall TAnimation::SpawnTacticalUiMarkerAtUnitTile(TAnimation *this)
+
+{
+  int iVar1;
+  TAnimation *this_00;
+  
+  TBattleReportView::RemoveUiTransientRegistryObjectByTag((TBattleReportView *)g_pUiAnimator);
+  iVar1 = *(int *)(*(int *)&this[2].field_0x8 + 0x1c);
+  if ((iVar1 != 0) && (-1 < *(int *)(iVar1 + 8))) {
+    this_00 = (TAnimation *)AllocateWithFallbackHandler(0x2c);
+    if (this_00 == (TAnimation *)0x0) {
+      this_00 = (TAnimation *)0x0;
+    }
+    else {
+      this_00->vftable = &TAnimationVtbl_0064c300;
+    }
+    ConstructTAnimationBaseState(this_00);
+    TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
+  }
   return;
 }
 

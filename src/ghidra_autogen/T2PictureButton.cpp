@@ -7,11 +7,11 @@
 // GHIDRA_NAME T2PictureButton::CreateT2PictureButtonInstance
 // GHIDRA_PROTO undefined CreateT2PictureButtonInstance()
 
-undefined4 * T2PictureButton::CreateT2PictureButtonInstance(void)
+thunk_TPictureButton * T2PictureButton::CreateT2PictureButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,24 +21,24 @@ undefined4 * T2PictureButton::CreateT2PictureButtonInstance(void)
   puStack_8 = &LAB_0063638a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    *puVar1 = &PTR_LAB_0065eb60;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(undefined2 *)(this + 0x92) = 7000;
+    *(T2PictureButtonVtbl **)this = &T2PictureButtonVtbl_0065eb60;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570B90
-// GHIDRA_NAME T2PictureButton::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME T2PictureButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** T2PictureButton::GetRuntimeClass(void)
+CRuntimeClass * __thiscall T2PictureButton::GetTEventHandlerClassNamePointer(T2PictureButton *this)
 
 {
   return &g_pClassDescT2PictureButton;
@@ -46,7 +46,7 @@ undefined ** T2PictureButton::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570BB0
 // GHIDRA_NAME T2PictureButton::ConstructUiBattleTabPictureEntry
-// GHIDRA_PROTO undefined ConstructUiBattleTabPictureEntry()
+// GHIDRA_PROTO undefined __thiscall ConstructUiBattleTabPictureEntry(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Derived picture entry used by BuildTurnEventDialogUiByCode battle-tab sequence (tag evidence includes batt/ttab path with event-id sequence 0x101B..0x101F).
 // GHIDRA_COMMENT_END
@@ -54,26 +54,54 @@ undefined ** T2PictureButton::GetRuntimeClass(void)
 /* Derived picture entry used by BuildTurnEventDialogUiByCode battle-tab sequence (tag evidence
    includes batt/ttab path with event-id sequence 0x101B..0x101F). */
 
-undefined4 * __fastcall T2PictureButton::ConstructUiBattleTabPictureEntry(undefined4 *param_1)
+T2PictureButton * __thiscall
+T2PictureButton::ConstructUiBattleTabPictureEntry(T2PictureButton *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *(undefined2 *)((int)param_1 + 0x92) = 7000;
-  *param_1 = &PTR_LAB_0065eb60;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  *(undefined2 *)&this->field_0x92 = 7000;
+  this->vftable = &T2PictureButtonVtbl_0065eb60;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570BE0
 // GHIDRA_NAME T2PictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall T2PictureButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+T2PictureButton * __thiscall T2PictureButton::_scalar_deleting_destructor_(T2PictureButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570C30
+// GHIDRA_NAME T2PictureButton::OrphanCallChain_C3_I43_00570c30
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I43_00570c30(void)
+
+void __thiscall T2PictureButton::OrphanCallChain_C3_I43_00570c30(T2PictureButton *this)
+
+{
+  short sVar1;
+  T2PictureButtonVtbl *pTVar2;
+  char unaff_BP;
+  char in_stack_00000004;
+  
+  sVar1 = *(short *)&this->field_0x84;
+  if (((in_stack_00000004 == '\x01') && (this->field3c < (int)sVar1)) ||
+     ((in_stack_00000004 == '\0' && ((int)sVar1 < this->field3c)))) {
+    pTVar2 = this->vftable;
+    (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
+              (CONCAT22((short)((uint)this >> 0x10),(short)this->field3c),0);
+    this->field3c = (int)sVar1;
+    (*pTVar2[0x15].GetTEventHandlerClassNamePointer)((int)in_stack_00000004,0);
+    (*pTVar2[0x14].slot_0x04)((uint)(in_stack_00000004 == '\0'),(int)unaff_BP);
+  }
+  return;
 }
 

@@ -5,29 +5,29 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401122
 // GHIDRA_NAME thunk_TPictureButton::TPictureButton
-// GHIDRA_PROTO undefined TPictureButton()
+// GHIDRA_PROTO undefined __thiscall TPictureButton(void)
 
-TView * __fastcall thunk_TPictureButton::TPictureButton(TView *param_1)
+thunk_TPictureButton * __thiscall thunk_TPictureButton::TPictureButton(thunk_TPictureButton *this)
 
 {
   ushort uVar1;
   
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1[1].vftable = (void *)0x1;
-  *(undefined1 *)&param_1[1].field04 = 0;
-  param_1[1].padding_08_to_0b = 0;
-  param_1[1].field0c = 0;
-  param_1[1].field10 = 0;
-  param_1[1].field14 = 0;
-  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
-  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  *(undefined4 *)(this + 0x60) = 1;
+  this[100] = (thunk_TPictureButton)0x0;
+  *(undefined4 *)(this + 0x68) = 0;
+  *(undefined4 *)(this + 0x6c) = 0;
+  *(undefined4 *)(this + 0x70) = 0;
+  *(undefined4 *)(this + 0x74) = 0;
+  *(int *)(this + 0x78) = g_nUiResourceEntryDefaultParam0;
+  *(int *)(this + 0x7c) = g_nUiResourceEntryDefaultParam1;
   uVar1 = g_wUiResourceEntryDefaultParam2;
-  param_1[1].ownerOffsetY = 0;
-  param_1[1].field2c = 0;
-  *(undefined2 *)&param_1[1].ownerOffsetX = 0xffff;
-  param_1->vftable = &PTR_LAB_0064a930;
-  param_1[1].vftable = (void *)0xa;
-  *(ushort *)&param_1[1].ownerContext = uVar1;
-  return param_1;
+  *(undefined4 *)(this + 0x88) = 0;
+  *(undefined4 *)(this + 0x8c) = 0;
+  *(undefined2 *)(this + 0x84) = 0xffff;
+  *(TPictureVtbl **)this = &TPictureVtbl_0064a930;
+  *(undefined4 *)(this + 0x60) = 10;
+  *(ushort *)(this + 0x80) = uVar1;
+  return this;
 }
 

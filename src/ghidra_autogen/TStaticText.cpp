@@ -3,6 +3,19 @@
 // Program: Imperialism.exe
 // Bucket: TStaticText.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004294D0
+// GHIDRA_NAME TStaticText::AssignSharedStringFromField84
+// GHIDRA_PROTO undefined __thiscall AssignSharedStringFromField84(void)
+
+void __thiscall TStaticText::AssignSharedStringFromField84(TStaticText *this)
+
+{
+  CString *in_stack_00000004;
+  
+  CString::AssignFromPtr(in_stack_00000004,*(CString **)&this->field_0x84);
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F710
 // GHIDRA_NAME TStaticText::CreateTStaticTextInstance
 // GHIDRA_PROTO undefined CreateTStaticTextInstance()
@@ -11,7 +24,7 @@ TView * TStaticText::CreateTStaticTextInstance(void)
 
 {
   TView *this;
-  void *this_00;
+  CString *this_00;
   int extraout_EAX;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
@@ -30,7 +43,7 @@ TView * TStaticText::CreateTStaticTextInstance(void)
   }
   TView::thunk_ConstructTViewBaseState(this);
   *(undefined1 *)&this[1].field04 = 0;
-  this[1].vftable = (void *)0x1;
+  this[1].vftable = (TViewVtbl *)0x1;
   this[1].padding_08_to_0b = 0;
   this[1].field0c = 0;
   this[1].field10 = 0;
@@ -43,12 +56,12 @@ TView * TStaticText::CreateTStaticTextInstance(void)
   this[1].ownerOffsetY = -1;
   this[1].field2c = 0;
   *(undefined2 *)&this[1].field30 = 0;
-  this->vftable = &_vftable_;
-  this[1].vftable = (void *)0xd;
-  this_00 = (void *)AllocateWithFallbackHandler(4);
+  this->vftable = (TViewVtbl *)&_vftable_;
+  this[1].vftable = (TViewVtbl *)0xd;
+  this_00 = (CString *)AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,2);
-  if (this_00 != (void *)0x0) {
-    InitializeSharedStringRefFromEmpty(this_00);
+  if (this_00 != (CString *)0x0) {
+    CString::CString(this_00);
     this[1].ownerOffsetX = extraout_EAX;
     *unaff_FS_OFFSET = local_c;
     return this;
@@ -59,10 +72,10 @@ TView * TStaticText::CreateTStaticTextInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F870
-// GHIDRA_NAME TStaticText::GetTStaticTextClassNamePointer
-// GHIDRA_PROTO undefined GetTStaticTextClassNamePointer()
+// GHIDRA_NAME TStaticText::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-int * TStaticText::GetTStaticTextClassNamePointer(void)
+CRuntimeClass * __thiscall TStaticText::GetTEventHandlerClassNamePointer(TStaticText *this)
 
 {
   return &g_pClassDescTStaticText;
@@ -70,7 +83,7 @@ int * TStaticText::GetTStaticTextClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F890
 // GHIDRA_NAME TStaticText::TStaticText
-// GHIDRA_PROTO undefined TStaticText()
+// GHIDRA_PROTO undefined __thiscall TStaticText(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for styled text UI resource entries.
 // GHIDRA_COMMENT
@@ -95,12 +108,12 @@ int * TStaticText::GetTStaticTextClassNamePointer(void)
    Returns:
    - this pointer. */
 
-TView * __fastcall TStaticText::TStaticText(TView *param_1)
+TStaticText * __thiscall TStaticText::TStaticText(TStaticText *this)
 
 {
-  void *this;
-  int extraout_EAX;
-  int iVar1;
+  CString *this_00;
+  undefined4 extraout_EAX;
+  undefined4 uVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -110,59 +123,75 @@ TView * __fastcall TStaticText::TStaticText(TView *param_1)
   puStack_8 = &LAB_0062f023;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1[1].vftable = (void *)0x1;
-  *(undefined1 *)&param_1[1].field04 = 0;
-  param_1[1].padding_08_to_0b = 0;
-  param_1[1].field0c = 0;
-  param_1[1].field10 = 0;
-  param_1[1].field14 = 0;
-  param_1[1].field18 = g_nUiResourceEntryDefaultParam0;
-  param_1[1].controlTag = g_nUiResourceEntryDefaultParam1;
-  *(ushort *)&param_1[1].ownerContext = g_wUiResourceEntryDefaultParam2;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  *(undefined4 *)&this->field_0x60 = 1;
+  this->field_0x64 = 0;
+  *(undefined4 *)&this->field_0x68 = 0;
+  *(undefined4 *)&this->field_0x6c = 0;
+  *(undefined4 *)&this->field_0x70 = 0;
+  *(undefined4 *)&this->field_0x74 = 0;
+  *(int *)&this->field_0x78 = g_nUiResourceEntryDefaultParam0;
+  *(int *)&this->field_0x7c = g_nUiResourceEntryDefaultParam1;
+  *(ushort *)&this->field_0x80 = g_wUiResourceEntryDefaultParam2;
   local_4 = 0;
-  param_1[1].ownerOffsetX = 0;
-  param_1[1].ownerOffsetY = -1;
-  param_1[1].field2c = 0;
-  *(undefined2 *)&param_1[1].field30 = 0;
-  param_1->vftable = &_vftable_;
-  param_1[1].vftable = (void *)0xd;
-  this = (void *)AllocateWithFallbackHandler(4);
+  *(undefined4 *)&this->field_0x84 = 0;
+  *(undefined4 *)&this->field_0x88 = 0xffffffff;
+  *(undefined4 *)&this->field_0x8c = 0;
+  *(undefined2 *)&this->field_0x90 = 0;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x60 = 0xd;
+  this_00 = (CString *)AllocateWithFallbackHandler(4);
   local_4 = CONCAT31(local_4._1_3_,1);
-  if (this == (void *)0x0) {
-    iVar1 = 0;
+  if (this_00 == (CString *)0x0) {
+    uVar1 = 0;
   }
   else {
-    InitializeSharedStringRefFromEmpty(this);
-    iVar1 = extraout_EAX;
+    CString::CString(this_00);
+    uVar1 = extraout_EAX;
   }
-  param_1[1].ownerOffsetX = iVar1;
+  *(undefined4 *)&this->field_0x84 = uVar1;
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F9A0
 // GHIDRA_NAME TStaticText::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TStaticText::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TStaticText * __thiscall TStaticText::_scalar_deleting_destructor_(TStaticText *this)
 
 {
-  ~TStaticText();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  ~TStaticText(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048FC00
+// GHIDRA_NAME TStaticText::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+undefined1 __thiscall TStaticText::OrphanCallChain_C11_I88_004874b0(TStaticText *this)
+
+{
+  undefined uVar1;
+  
+  uVar1 = (*this->vftable[4].slot_0x04)();
+  CopyExtendedCityDialogControllerState(this);
+  return uVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048FC30
 // GHIDRA_NAME TStaticText::~TStaticText
-// GHIDRA_PROTO undefined ~TStaticText()
+// GHIDRA_PROTO undefined __thiscall ~TStaticText(void)
 
-void __fastcall TStaticText::~TStaticText(undefined4 *param_1)
+void __thiscall TStaticText::~TStaticText(TStaticText *this)
 
 {
-  void *this;
+  CString *this_00;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -171,23 +200,145 @@ void __fastcall TStaticText::~TStaticText(undefined4 *param_1)
   puStack_8 = &LAB_0062f0ab;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &_vftable_;
-  this = (void *)param_1[0x21];
+  this->vftable = &_vftable_;
+  this_00 = *(CString **)&this->field_0x84;
   local_4 = 0;
-  if (this != (void *)0x0) {
-    ReleaseSharedStringRefIfNotEmpty(this);
-    FreeHeapBufferIfNotNull(this);
+  if (this_00 != (CString *)0x0) {
+    CString::~CString(this_00);
+    FreeHeapBufferIfNotNull(this_00);
   }
-  *param_1 = &TView::_vftable_;
+  this->vftable = (TStaticTextVtbl *)&TView::_vftable_;
   local_4 = 2;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   local_4 = CONCAT31(local_4._1_3_,1);
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TStaticTextVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048FE60
+// GHIDRA_NAME TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
+// GHIDRA_PROTO undefined __thiscall AssignTextSharedRefIfChangedAndMaybeInvalidate(void)
+
+void __thiscall TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(TStaticText *this)
+
+{
+  int iVar1;
+  CString *in_stack_00000004;
+  char in_stack_00000008;
+  
+  iVar1 = CompareAnsiStringsWithMbcsAwareness
+                    (in_stack_00000004->m_pchData,**(undefined4 **)&this->field_0x84);
+  if (iVar1 != 0) {
+    CString::AssignFromPtr(*(CString **)&this->field_0x84,in_stack_00000004);
+    if (in_stack_00000008 != '\0') {
+      (*this->vftable[0x1c].slot_0x04)();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048FED0
+// GHIDRA_NAME TStaticText::LoadUiStringAndDispatchViaVslot1C8
+// GHIDRA_PROTO undefined __thiscall LoadUiStringAndDispatchViaVslot1C8(void)
+
+void __thiscall TStaticText::LoadUiStringAndDispatchViaVslot1C8(TStaticText *this)
+
+{
+  undefined4 unaff_ESI;
+  undefined4 *unaff_FS_OFFSET;
+  short in_stack_00000004;
+  short in_stack_00000008;
+  CString CStack_18;
+  CString local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f0e8;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CStack_18.m_pchData = (char *)0x48fef2;
+  local_10.m_pchData = (char *)this;
+  CString::CString(&local_10);
+  CStack_18.m_pchData = (char *)(int)in_stack_00000008;
+  local_4 = 0;
+  thunk_LoadUiStringResourceByGroupAndIndex(&local_10,(int)in_stack_00000004);
+  (*this->vftable[0x39].GetTEventHandlerClassNamePointer)(&local_10);
+  uStack_c = 0xffffffff;
+  CString::~CString(&CStack_18);
+  *unaff_FS_OFFSET = unaff_ESI;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048FF70
+// GHIDRA_NAME TStaticText::OrphanCallChain_C1_I09_0048ff70
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I09_0048ff70(void)
+
+void __thiscall TStaticText::OrphanCallChain_C1_I09_0048ff70(TStaticText *this)
+
+{
+  undefined2 in_stack_00000004;
+  char in_stack_00000008;
+  
+  *(undefined2 *)&this->field_0x90 = in_stack_00000004;
+  if (in_stack_00000008 != '\0') {
+    (*this->vftable[0x22].slot_0x04)(0);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048FFB0
+// GHIDRA_NAME TStaticText::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TStaticText::OrphanTiny_ReturnZero_0048a730(TStaticText *this)
+
+{
+  short sVar1;
+  int iVar2;
+  code *pcVar3;
+  int *piVar4;
+  undefined4 uVar5;
+  undefined4 *puVar6;
+  undefined4 uVar7;
+  undefined1 local_10 [16];
+  
+  piVar4 = (int *)NoOpQuickDrawContextSelectionHook();
+  SetBkModeOnPrimaryAndSecondaryDc(1);
+  (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(local_10);
+  TTEView::DeflateRect((TTEView *)&stack0xffffffec);
+  uVar5 = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&this->field_0x78);
+  iVar2 = *piVar4;
+  pcVar3 = *(code **)(iVar2 + 0x30);
+  (*pcVar3)(uVar5);
+  if (this->field48 == 0) {
+    puVar6 = (undefined4 *)&this->field_0x7e;
+  }
+  else {
+    puVar6 = (undefined4 *)(this->field48 + 4);
+  }
+  uVar5 = *puVar6;
+  (**(code **)(iVar2 + 0x38))(uVar5);
+  sVar1 = *(short *)&this->field_0x90;
+  uVar7 = 0x910;
+  if (sVar1 != -2) {
+    if (sVar1 == -1) {
+      uVar7 = 0x912;
+    }
+    else if (sVar1 == 1) {
+      uVar7 = 0x911;
+    }
+  }
+  (**(code **)(iVar2 + 0x70))
+            (**(int **)&this->field_0x84,*(undefined4 *)(**(int **)&this->field_0x84 + -8),
+             &stack0xffffffe4,uVar7);
+  (*pcVar3)(uVar5);
   return;
 }
 

@@ -3,6 +3,36 @@
 // Program: Imperialism.exe
 // Bucket: TGWorldPartView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045B000
+// GHIDRA_NAME TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(void)
+
+TGWorldPartView * __thiscall
+TGWorldPartView::WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(TGWorldPartView *this)
+
+{
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  *(undefined4 *)&this->field_0x60 = 0;
+  this->vftable = &TGWorldPartViewVtbl_00644ba0;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0045B030
+// GHIDRA_NAME TGWorldPartView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TGWorldPartView * __thiscall TGWorldPartView::_scalar_deleting_destructor_(TGWorldPartView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC7D0
 // GHIDRA_NAME TGWorldPartView::CreateTGWorldPartViewInstance
 // GHIDRA_PROTO undefined CreateTGWorldPartViewInstance()
@@ -24,8 +54,8 @@ TView * TGWorldPartView::CreateTGWorldPartViewInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this[1].vftable = (void *)0x0;
-    this->vftable = &PTR_LAB_00644ba0;
+    this[1].vftable = (TViewVtbl *)0x0;
+    this->vftable = (TViewVtbl *)&TGWorldPartViewVtbl_00644ba0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -34,20 +64,20 @@ TView * TGWorldPartView::CreateTGWorldPartViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC860
-// GHIDRA_NAME TGWorldPartView::GetTGWorldPartViewClassNamePointer
-// GHIDRA_PROTO undefined GetTGWorldPartViewClassNamePointer()
+// GHIDRA_NAME TGWorldPartView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TGWorldPartView::GetTGWorldPartViewClassNamePointer(void)
+CRuntimeClass * __thiscall TGWorldPartView::GetTEventHandlerClassNamePointer(TGWorldPartView *this)
 
 {
-  return &PTR_s_TGWorldPartView_0064dc50;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AC880
-// GHIDRA_NAME TGWorldPartView::ConstructTGWorldPartViewBaseState
-// GHIDRA_PROTO undefined ConstructTGWorldPartViewBaseState()
+// GHIDRA_NAME TGWorldPartView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TGWorldPartView::ConstructTGWorldPartViewBaseState(int *param_1)
+void __thiscall TGWorldPartView::OrphanTiny_ReturnZero_0048a730(TGWorldPartView *this)
 
 {
   LONG local_20;
@@ -55,35 +85,18 @@ void __fastcall TGWorldPartView::ConstructTGWorldPartViewBaseState(int *param_1)
   LONG LStack_18;
   RECT RStack_14;
   
-  if (param_1[0x18] != 0) {
-    (**(code **)(*param_1 + 0x128))(&local_20);
+  if (*(int *)&this->field_0x60 != 0) {
+    (*this->vftable[0x25].GetTEventHandlerClassNamePointer)(&local_20);
     RStack_14.top = local_20;
     RStack_14.right = LStack_1c;
     RStack_14.bottom = LStack_18;
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
-              ((astruct_17 *)(param_1[0x18] + 4),
-               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),(RECT *)(param_1 + 0x19),
+              ((astruct_17 *)(*(int *)&this->field_0x60 + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,(RECT *)&this->field_0x64,
                &RStack_14,0x24,(astruct_19 *)0x0);
     UpdatePaletteIndexWithDefaultFallback(0x13);
   }
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x004AC920
-// GHIDRA_NAME TGWorldPartView::DestructTGWorldPartViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTGWorldPartViewAndMaybeFree()
-
-undefined4 * TGWorldPartView::DestructTGWorldPartViewAndMaybeFree(void)
-
-{
-  undefined4 *puVar1;
-  
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x2c);
-  if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &PTR_LAB_0064dfb8;
-    return puVar1;
-  }
-  return (undefined4 *)0x0;
 }
 

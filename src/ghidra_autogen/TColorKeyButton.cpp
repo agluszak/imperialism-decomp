@@ -7,11 +7,11 @@
 // GHIDRA_NAME TColorKeyButton::CreateTColorKeyButtonInstance
 // GHIDRA_PROTO undefined CreateTColorKeyButtonInstance()
 
-undefined4 * TColorKeyButton::CreateTColorKeyButtonInstance(void)
+TColorKeyPicture * TColorKeyButton::CreateTColorKeyButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TColorKeyPicture *this;
+  TColorKeyPicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,52 +21,101 @@ undefined4 * TColorKeyButton::CreateTColorKeyButtonInstance(void)
   puStack_8 = &LAB_0063648a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x9c);
+  this = (TColorKeyPicture *)AllocateWithFallbackHandler(0x9c);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48();
-    *puVar1 = &PTR_LAB_0065fd28;
-    puVar2 = puVar1;
+  pTVar1 = (TColorKeyPicture *)0x0;
+  if (this != (TColorKeyPicture *)0x0) {
+    TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(this);
+    this->vftable = (TColorKeyPictureVtbl *)&TColorKeyButtonVtbl_0065fd28;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F50
-// GHIDRA_NAME TColorKeyButton::GetTColorKeyButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTColorKeyButtonClassNamePointer()
+// GHIDRA_NAME TColorKeyButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TColorKeyButton::GetTColorKeyButtonClassNamePointer(void)
+CRuntimeClass * __thiscall TColorKeyButton::GetTEventHandlerClassNamePointer(TColorKeyButton *this)
 
 {
-  return &PTR_s_TColorKeyButton_0065e628;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571F70
 // GHIDRA_NAME TColorKeyButton::ConstructTColorKeyButtonBaseState
-// GHIDRA_PROTO undefined ConstructTColorKeyButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTColorKeyButtonBaseState(void)
 
-undefined4 * __fastcall TColorKeyButton::ConstructTColorKeyButtonBaseState(undefined4 *param_1)
+TColorKeyButton * __thiscall
+TColorKeyButton::ConstructTColorKeyButtonBaseState(TColorKeyButton *this)
 
 {
-  TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48();
-  *param_1 = &PTR_LAB_0065fd28;
-  return param_1;
+  TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48((TColorKeyPicture *)this);
+  this->vftable = &TColorKeyButtonVtbl_0065fd28;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571FA0
-// GHIDRA_NAME TColorKeyButton::DestructTColorKeyButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTColorKeyButtonAndMaybeFree()
+// GHIDRA_NAME TColorKeyButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TColorKeyButton::DestructTColorKeyButtonAndMaybeFree(undefined4 param_1,byte param_2)
+TColorKeyButton * __thiscall TColorKeyButton::_scalar_deleting_destructor_(TColorKeyButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571FF0
+// GHIDRA_NAME TColorKeyButton::OrphanCallChain_C2_I28_00571ff0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I28_00571ff0(void)
+
+void __thiscall TColorKeyButton::OrphanCallChain_C2_I28_00571ff0(TColorKeyButton *this)
+
+{
+  TColorKeyButtonVtbl *pTVar1;
+  undefined4 in_EAX;
+  undefined4 uVar2;
+  char unaff_retaddr;
+  char in_stack_00000004;
+  
+  if (in_stack_00000004 != this->field_0x64) {
+    pTVar1 = this->vftable;
+    this->field_0x64 = in_stack_00000004;
+    if (in_stack_00000004 == '\0') {
+      uVar2 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x84 + -1);
+    }
+    else {
+      uVar2 = CONCAT22((short)((uint)in_EAX >> 0x10),*(short *)&this->field_0x84 + 1);
+    }
+    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(uVar2,1);
+    if (unaff_retaddr != '\0') {
+      (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)();
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00572060
+// GHIDRA_NAME TColorKeyButton::OrphanCallChain_C1_I05_00572060
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_00572060(void)
+
+void __thiscall TColorKeyButton::OrphanCallChain_C1_I05_00572060(TColorKeyButton *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  
+  uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+                    /* WARNING: Could not recover jumptable at 0x00572069. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x13c))();
+  return;
 }
 

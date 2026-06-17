@@ -7,10 +7,10 @@
 // GHIDRA_NAME TUnitsView::CreateTUnitsViewInstance
 // GHIDRA_PROTO undefined CreateTUnitsViewInstance()
 
-undefined4 * TUnitsView::CreateTUnitsViewInstance(void)
+TNoHilitePicture * TUnitsView::CreateTUnitsViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TNoHilitePicture *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,53 +20,124 @@ undefined4 * TUnitsView::CreateTUnitsViewInstance(void)
   puStack_8 = &LAB_0063162a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TNoHilitePicture *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-    puVar1[0x25] = 0;
-    *puVar1 = &PTR_LAB_006518e8;
+  if (this != (TNoHilitePicture *)0x0) {
+    TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8(this);
+    this[1].vftable = (TNoHilitePictureVtbl *)0x0;
+    this->vftable = (TNoHilitePictureVtbl *)&TUnitsViewVtbl_006518e8;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TNoHilitePicture *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7FB0
-// GHIDRA_NAME TUnitsView::GetTUnitsViewClassNamePointer
-// GHIDRA_PROTO undefined GetTUnitsViewClassNamePointer()
+// GHIDRA_NAME TUnitsView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TUnitsView::GetTUnitsViewClassNamePointer(void)
+CRuntimeClass * __thiscall TUnitsView::GetTEventHandlerClassNamePointer(TUnitsView *this)
 
 {
-  return &PTR_s_TUnitsView_00651260;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C7FD0
 // GHIDRA_NAME TUnitsView::ConstructTUnitsViewBaseState
-// GHIDRA_PROTO undefined ConstructTUnitsViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTUnitsViewBaseState(void)
 
-undefined4 * __fastcall TUnitsView::ConstructTUnitsViewBaseState(undefined4 *param_1)
+TUnitsView * __thiscall TUnitsView::ConstructTUnitsViewBaseState(TUnitsView *this)
 
 {
-  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8();
-  param_1[0x25] = 0;
-  *param_1 = &PTR_LAB_006518e8;
-  return param_1;
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  *(undefined4 *)&this->field_0x94 = 0;
+  this->vftable = &TUnitsViewVtbl_006518e8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004C8000
-// GHIDRA_NAME TUnitsView::DestructTUnitsViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTUnitsViewAndMaybeFree()
+// GHIDRA_NAME TUnitsView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TUnitsView::DestructTUnitsViewAndMaybeFree(undefined4 param_1,byte param_2)
+TUnitsView * __thiscall TUnitsView::_scalar_deleting_destructor_(TUnitsView *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004C8050
+// GHIDRA_NAME TUnitsView::OrphanRetStub_004c6fd0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004c6fd0(void)
+
+void __thiscall TUnitsView::OrphanRetStub_004c6fd0(TUnitsView *this)
+
+{
+  short sVar1;
+  int *piVar2;
+  int iVar3;
+  TColorKeyPicture *this_00;
+  short sVar4;
+  short sVar5;
+  undefined4 *unaff_FS_OFFSET;
+  int local_3c;
+  int local_38;
+  undefined4 uStack_30;
+  undefined4 uStack_2c;
+  undefined4 uStack_28;
+  int iStack_24;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0063164a;
+  *unaff_FS_OFFSET = &uStack_c;
+  sVar4 = 0;
+  InitializeSelectableTextOptionEntryIteratorContext(this);
+  piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
+  iVar3 = IsSelectableTextOptionEntryIteratorValid();
+  while (iVar3 != 0) {
+    if (piVar2[7] == 0x69636f6e) {
+      (**(code **)(*piVar2 + 0x1c))();
+    }
+    piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
+    iVar3 = IsSelectableTextOptionEntryIteratorValid();
+  }
+  local_3c = 0x5c;
+  local_38 = 0xe;
+  do {
+    sVar1 = *(short *)(*(int *)&this->field_0x94 + local_3c);
+    if ((sVar1 != 0) && (sVar5 = 0, 0 < sVar1)) {
+      do {
+        this_00 = (TColorKeyPicture *)AllocateWithFallbackHandler(0x98);
+        iVar3 = 0;
+        uStack_4 = 0;
+        if (this_00 != (TColorKeyPicture *)0x0) {
+          iVar3 = TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(this_00);
+        }
+        uStack_30 = 0x20;
+        uStack_28 = 0x20;
+        iStack_24 = (int)sVar4;
+        uStack_4 = 0xffffffff;
+        uStack_2c = 0x18;
+        InitializePictureEntryBaseAndRefresh(this,&uStack_28,&uStack_30,5,5,0x222e);
+        *(undefined4 *)(iVar3 + 0x1c) = 0x69636f6e;
+        sVar4 = sVar4 + 0x18;
+        sVar5 = sVar5 + 1;
+      } while (sVar5 < *(short *)(*(int *)&this->field_0x94 + local_3c));
+    }
+    local_3c = local_3c + 2;
+    local_38 = local_38 + -1;
+  } while (local_38 != 0);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
 }
 

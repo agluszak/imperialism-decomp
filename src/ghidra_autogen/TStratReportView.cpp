@@ -28,7 +28,7 @@ TView * TStratReportView::
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_00667d08;
+    this->vftable = (TViewVtbl *)&TStratReportViewVtbl_00667d08;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -36,27 +36,202 @@ TView * TStratReportView::
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E3A0
-// GHIDRA_NAME TStratReportView::GetTStratReportViewClassNamePointer
-// GHIDRA_PROTO undefined GetTStratReportViewClassNamePointer()
+// GHIDRA_NAME TStratReportView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TStratReportView::GetTStratReportViewClassNamePointer(void)
+CRuntimeClass * __thiscall
+TStratReportView::GetTEventHandlerClassNamePointer(TStratReportView *this)
 
 {
-  return &PTR_s_TStratReportView_006630e8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058E3C0
 // GHIDRA_NAME TStratReportView::?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z
-// GHIDRA_PROTO undefined ?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z()
+// GHIDRA_PROTO undefined __thiscall ?ConstructTStratReportViewBaseState@@YIPAUStratReportViewState@?%Z:imperialismsrcgameTStratReportView.cpp126722299@@PAU12@@Z(void)
 
-TView * __fastcall
+TStratReportView * __thiscall
 TStratReportView::
 _ConstructTStratReportViewBaseState__YIPAUStratReportViewState___Z_imperialismsrcgameTStratReportView_cpp126722299__PAU12__Z
-          (TView *param_1)
+          (TStratReportView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1->vftable = &PTR_LAB_00667d08;
-  return param_1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &TStratReportViewVtbl_00667d08;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058E3F0
+// GHIDRA_NAME TStratReportView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TStratReportView * __thiscall TStratReportView::_scalar_deleting_destructor_(TStratReportView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058E440
+// GHIDRA_NAME TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_60_0058e440(void)
+
+void __thiscall TStratReportView::OrphanTiny_SetDwordEcxOffset_60_0058e440(TStratReportView *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  *(undefined4 *)&this->field_0x60 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058E460
+// GHIDRA_NAME TStratReportView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TStratReportView::OrphanTiny_ReturnZero_0048a730(TStratReportView *this)
+
+{
+  CString *pCVar1;
+  undefined4 uVar2;
+  int iVar3;
+  int iVar4;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack00000004;
+  CString local_24;
+  CString local_20;
+  CString local_1c;
+  CString local_18;
+  CString local_14;
+  CString local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00637e20;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_10.m_pchData = &stack0xffffffc8;
+  SetQuickDrawFillColor();
+  thunk_FillRectWithQuickDrawBrushAndContextOffset();
+  CString::CString(&local_24);
+  local_4 = 0;
+  CString::CString(&local_1c);
+  local_4._0_1_ = 1;
+  CString::CString(&local_20);
+  local_4._0_1_ = 2;
+  CString::CString(&local_18);
+  CStack00000004.m_pchData = &stack0xffffffc8;
+  local_4._0_1_ = 3;
+  SetQuickDrawFillColor();
+  SetQuickDrawStyleWord_1D4C_AndMarkDirty();
+  SetQuickDrawStyleWord_1D4E_AndMarkDirty();
+  SetQuickDrawStyleWord_1D50_AndMarkDirty();
+  thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
+  thunk_AssignSharedStringFromIndexedA8EntryNameField
+            ((int)*(short *)(*(int *)&this->field_0x60 + 2));
+  pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_14,s_Battle_of_0069935c);
+  local_4._0_1_ = 4;
+  CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+  local_4._0_1_ = 5;
+  CString::AssignFromPtr(&local_24,&stack0x00000004);
+  local_4._0_1_ = 4;
+  CString::~CString(&stack0x00000004);
+  local_4._0_1_ = 3;
+  CString::~CString(&local_14);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  FormatOverlayTerrainLabelText();
+  pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_14,s_Winner__00699350);
+  local_4._0_1_ = 6;
+  CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+  local_4._0_1_ = 7;
+  CString::AssignFromPtr(&local_24,&stack0x00000004);
+  local_4._0_1_ = 6;
+  CString::~CString(&stack0x00000004);
+  local_4 = CONCAT31(local_4._1_3_,3);
+  CString::~CString(&local_14);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawStyleWord_1D4E_AndMarkDirty();
+  iVar3 = 0;
+  iVar4 = 4;
+  do {
+    if (*(short *)(iVar4 + *(int *)&this->field_0x60) != 0) {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2717,iVar3);
+      FormatStringWithVarArgsToSharedRef(&local_1c,&g_szDecimalFormat);
+      uVar2 = AssignSharedStringConcatRefAndCStr(&local_10,&local_1c);
+      local_4._0_1_ = 8;
+      pCVar1 = (CString *)AssignSharedStringConcatRefAndRef(&local_14,uVar2);
+      local_4._0_1_ = 9;
+      CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+      local_4._0_1_ = 10;
+      CString::AssignFromPtr(&local_24,&stack0x00000004);
+      local_4._0_1_ = 9;
+      CString::~CString(&stack0x00000004);
+      local_4._0_1_ = 8;
+      CString::~CString(&local_14);
+      local_4 = CONCAT31(local_4._1_3_,3);
+      CString::~CString(&local_10);
+      thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    }
+    iVar4 = iVar4 + 2;
+    iVar3 = iVar3 + 1;
+  } while (iVar4 < 0x40);
+  SetQuickDrawStyleWord_1D4E_AndMarkDirty();
+  FormatOverlayTerrainLabelText();
+  pCVar1 = (CString *)AssignSharedStringConcatCStrAndRef(&local_10,s_Loser__00699344);
+  local_4._0_1_ = 0xb;
+  CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+  local_4._0_1_ = 0xc;
+  CString::AssignFromPtr(&local_24,&stack0x00000004);
+  local_4._0_1_ = 0xb;
+  CString::~CString(&stack0x00000004);
+  local_4 = CONCAT31(local_4._1_3_,3);
+  CString::~CString(&local_10);
+  thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  SetQuickDrawStyleWord_1D4E_AndMarkDirty();
+  iVar3 = 0;
+  iVar4 = 0x40;
+  do {
+    if (*(short *)(iVar4 + *(int *)&this->field_0x60) != 0) {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2717,iVar3);
+      FormatStringWithVarArgsToSharedRef(&local_1c,&g_szDecimalFormat);
+      uVar2 = AssignSharedStringConcatRefAndCStr(&local_14,&local_1c);
+      local_4._0_1_ = 0xd;
+      pCVar1 = (CString *)AssignSharedStringConcatRefAndRef(&local_10,uVar2);
+      local_4._0_1_ = 0xe;
+      CString::StringSharedRef_AssignFromPtr(&stack0x00000004,pCVar1);
+      local_4._0_1_ = 0xf;
+      CString::AssignFromPtr(&local_24,&stack0x00000004);
+      local_4._0_1_ = 0xe;
+      CString::~CString(&stack0x00000004);
+      local_4._0_1_ = 0xd;
+      CString::~CString(&local_10);
+      local_4 = CONCAT31(local_4._1_3_,3);
+      CString::~CString(&local_14);
+      thunk_SetQuickDrawTextOriginWithContextOffset(0xc);
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+    }
+    iVar4 = iVar4 + 2;
+    iVar3 = iVar3 + 1;
+  } while (iVar4 < 0x7c);
+  local_4._0_1_ = 2;
+  CString::~CString(&local_18);
+  local_4._0_1_ = 1;
+  CString::~CString(&local_20);
+  local_4 = (uint)local_4._1_3_ << 8;
+  CString::~CString(&local_1c);
+  local_4 = 0xffffffff;
+  CString::~CString(&local_24);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
 }
 

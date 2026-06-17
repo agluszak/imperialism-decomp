@@ -3,27 +3,57 @@
 // Program: Imperialism.exe
 // Bucket: TMadnessButton.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0054EAD0
-// GHIDRA_NAME TMadnessButton::GetTMadnessButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTMadnessButtonClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0043D720
+// GHIDRA_NAME TMadnessButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TMadnessButton::GetTMadnessButtonClassNamePointer(void)
+TMadnessButton * __thiscall TMadnessButton::_scalar_deleting_destructor_(TMadnessButton *this)
 
 {
-  return &PTR_s_TMadnessButton_0065c1b0;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054EAD0
+// GHIDRA_NAME TMadnessButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TMadnessButton::GetTEventHandlerClassNamePointer(TMadnessButton *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054EAF0
+// GHIDRA_NAME TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TMadnessButton::OrphanLeaf_NoCall_Ins07_004d8920(TMadnessButton *this)
+
+{
+  TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920((TCzechBox *)this);
+  *(int *)&this->field_0x98 = (int)*(short *)&this->field_0x84;
+  (*this->vftable[0x3a].slot_0x04)(1,0);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054EB30
-// GHIDRA_NAME TMadnessButton::DestructTMadnessButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMadnessButtonAndMaybeFree()
+// GHIDRA_NAME TMadnessButton::OrphanCallChain_C4_I45_00571d40
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I45_00571d40(void)
 
-void __thiscall TMadnessButton::DestructTMadnessButtonAndMaybeFree(int *param_1,char param_2)
+void __thiscall TMadnessButton::OrphanCallChain_C4_I45_00571d40(TMadnessButton *this)
 
 {
-  int iVar1;
+  TMadnessButtonVtbl *pTVar1;
   char cVar2;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
+  char in_stack_00000004;
   undefined1 auStack_34 [40];
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -33,28 +63,28 @@ void __thiscall TMadnessButton::DestructTMadnessButtonAndMaybeFree(int *param_1,
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00634f88;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar1 = *param_1;
-  iVar3 = param_1[0x26];
-  cVar2 = (**(code **)(iVar1 + 0x28))();
+  pTVar1 = this->vftable;
+  iVar3 = *(int *)&this->field_0x98;
+  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
   if (cVar2 == '\0') {
     iVar3 = iVar3 + 4;
   }
   else {
-    cVar2 = (**(code **)(iVar1 + 0x1d0))();
+    cVar2 = (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)();
     if (cVar2 == '\0') {
       iVar3 = iVar3 + 2;
     }
-    if ((char)param_1[0x19] != '\0') {
+    if (this->field_0x64 != '\0') {
       iVar3 = iVar3 + 1;
     }
   }
-  if ((short)param_1[0x21] != iVar3) {
-    (**(code **)(iVar1 + 0x1c8))(iVar3,0);
-    if (param_2 != '\0') {
-      (**(code **)(iVar1 + 0x128))(auStack_34);
-      ConstructScopedMapQuickDrawContext(param_1);
+  if (*(short *)&this->field_0x84 != iVar3) {
+    (*pTVar1[0x39].GetTEventHandlerClassNamePointer)(iVar3,0);
+    if (in_stack_00000004 != '\0') {
+      (*pTVar1[0x25].GetTEventHandlerClassNamePointer)(auStack_34);
+      ConstructScopedMapQuickDrawContext(this);
       puStack_8 = (undefined1 *)0x0;
-      (**(code **)(iVar1 + 0x110))(&stack0xffffffc8);
+      (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&stack0xffffffc8);
       uStack_4 = 0xffffffff;
       thunk_DestroyScopedMapQuickDrawContext();
     }

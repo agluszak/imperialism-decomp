@@ -26,7 +26,7 @@ TIndexAndRankList * TProvinceDesirabilityList::CreateTProvinceDesirabilityListIn
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
     TIndexAndRankList::CPtrArray(this);
-    *(undefined ***)this = &_vftable_;
+    this->vftable = (TIndexAndRankListVtbl *)&_vftable_;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -34,27 +34,66 @@ TIndexAndRankList * TProvinceDesirabilityList::CreateTProvinceDesirabilityListIn
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D6570
-// GHIDRA_NAME TProvinceDesirabilityList::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TProvinceDesirabilityList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TProvinceDesirabilityList::GetRuntimeClass(void)
+CRuntimeClass * __thiscall
+TProvinceDesirabilityList::GetTEventHandlerClassNamePointer(TProvinceDesirabilityList *this)
 
 {
-  return "\x04gi";
+  return &g_pClassDescTProvinceDesirabilityList;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6590
+// GHIDRA_NAME TProvinceDesirabilityList::ConstructObArrayWithVtable653810
+// GHIDRA_PROTO undefined __thiscall ConstructObArrayWithVtable653810(void)
+
+TProvinceDesirabilityList * __thiscall
+TProvinceDesirabilityList::ConstructObArrayWithVtable653810(TProvinceDesirabilityList *this)
+
+{
+  TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
+  this->vftable = &_vftable_;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D65C0
 // GHIDRA_NAME TProvinceDesirabilityList::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TProvinceDesirabilityList::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TProvinceDesirabilityList * __thiscall
+TProvinceDesirabilityList::_scalar_deleting_destructor_(TProvinceDesirabilityList *this)
 
 {
+  byte in_stack_00000004;
+  
   CObArray::thunk_DestructCObArray();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004D6630
+// GHIDRA_NAME TProvinceDesirabilityList::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+int __thiscall TProvinceDesirabilityList::OrphanRetStub_0059add0(TProvinceDesirabilityList *this)
+
+{
+  uint uVar1;
+  uint uVar2;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if (*(short *)(in_stack_00000008 + 2) < *(short *)(in_stack_00000004 + 2)) {
+    return 1;
+  }
+  if (*(short *)(in_stack_00000004 + 2) < *(short *)(in_stack_00000008 + 2)) {
+    return 0xffff;
+  }
+  uVar1 = GenerateThreadLocalRandom15();
+  uVar2 = (int)uVar1 >> 0x1f;
+  return (-(uint)(((uVar1 ^ uVar2) - uVar2 & 1 ^ uVar2) != uVar2) & 2) - 1;
 }
 

@@ -8,61 +8,80 @@
 // GHIDRA_PROTO undefined ProcessDiplomacyTurnStateEventStateMachine()
 
 undefined4 __thiscall
-TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(CString *param_1,undefined4 *param_2)
+TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(TSimMgr *param_1,undefined4 *param_2)
 
 {
+  CString *this;
   char cVar1;
   code cVar2;
-  undefined2 uVar3;
-  byte bVar4;
-  bool bVar5;
-  char cVar6;
-  undefined1 uVar7;
-  short sVar8;
-  short sVar9;
-  undefined4 uVar10;
-  int *piVar11;
-  undefined2 *puVar12;
-  undefined4 *puVar13;
+  word wVar3;
+  undefined2 uVar4;
+  CObject *this_00;
+  CObjectVtbl *pCVar5;
+  TMinor *pTVar6;
+  TGreatPower *pTVar7;
+  TGreatPowerVtbl *pTVar8;
+  byte bVar9;
+  bool bVar10;
+  TSimMgrVtbl **ppTVar11;
+  TArmyStack *this_01;
+  undefined uVar12;
+  char cVar13;
+  undefined1 uVar14;
+  short sVar15;
+  short sVar16;
+  undefined4 uVar17;
+  char *pcVar18;
+  undefined3 extraout_var;
+  int *piVar19;
+  TGreatPower **ppTVar20;
+  word *pwVar21;
+  undefined2 *puVar22;
+  undefined4 *puVar23;
+  word *pwVar24;
   HGLOBAL hMem;
-  int *piVar14;
-  code *pcVar15;
-  undefined2 *puVar16;
-  undefined2 *puVar17;
-  uint uVar18;
-  uint uVar19;
-  CString *pCVar20;
-  undefined4 *puVar21;
-  int iVar22;
-  int iVar23;
-  char *pcVar24;
-  uint uVar25;
+  int *piVar25;
+  TCommand *pTVar26;
+  word *pwVar27;
+  undefined2 *puVar28;
+  void **ppvVar29;
+  undefined2 *puVar30;
+  uint uVar31;
+  uint uVar32;
+  undefined4 *puVar33;
+  int iVar34;
+  int iVar35;
+  TCommandVtbl *pTVar36;
+  uint uVar37;
   code *unaff_EBP;
-  char *pcVar26;
-  undefined4 *puVar27;
-  undefined4 *puVar28;
+  char *pcVar38;
+  TCountry **ppTVar39;
+  code *pcVar40;
+  undefined4 *puVar41;
+  undefined4 *puVar42;
   code *unaff_EDI;
-  char *pcVar29;
-  CString *pCVar30;
-  int iVar31;
-  code *pcVar32;
+  TSimMgr *pTVar43;
+  char *pcVar44;
+  TCity *pTVar45;
+  CString CVar46;
+  TDiplomacyMgr *pTVar47;
   undefined4 *unaff_FS_OFFSET;
-  char *local_1d4;
-  CString *local_1d0;
+  CString local_1d4;
+  CString local_1d0;
   char local_1c9;
-  char *local_1c8;
-  code *local_1c4;
+  CString local_1c8;
+  CString local_1c4;
   CString local_1c0;
-  char *local_1bc;
+  CString local_1bc;
   undefined4 local_1b8 [5];
   undefined1 local_1a4;
   undefined4 local_1a0;
   int local_19c;
   char local_198 [33];
-  undefined1 local_177 [3];
-  undefined1 auStack_174 [32];
+  char local_177 [3];
+  char acStack_174 [32];
   CString local_154;
-  TToolBarCluster aTStack_150 [4];
+  CString CStack_150;
   CString local_14c;
   CString CStack_148;
   CString local_144 [2];
@@ -87,137 +106,138 @@ TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(CString *param_1,
   puStack_8 = &LAB_00634baf;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  local_1d0 = param_1;
+  this_01 = DAT_006a475c;
+  local_1d0.m_pchData = (char *)param_1;
   switch(*param_2) {
   case 1:
-    uVar10 = 1;
-    param_1[0x3a].data_ptr = param_2[6];
+    uVar17 = 1;
+    *(undefined4 *)&param_1->field_0xe8 = param_2[6];
     break;
   case 2:
     if (*(char *)(param_2 + 8) == '\0') {
       WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0();
-      uVar10 = 1;
+      uVar17 = 1;
       break;
     }
     goto LAB_005485d8;
   case 3:
-    param_1[0x36].data_ptr = 0x676f696e;
-    param_1[0x3b].data_ptr = -1;
-    param_1[0x3c].data_ptr = -1;
-    iVar23 = FUN_00405a3d();
-    iVar31 = 0;
-    piVar14 = (int *)((int)g_pGameFlowState + 0x48);
+    *(undefined4 *)&param_1->field_0xd8 = 0x676f696e;
+    *(undefined4 *)&param_1->field_0xec = 0xffffffff;
+    *(undefined4 *)&param_1->field_0xf0 = 0xffffffff;
+    iVar35 = FUN_00405a3d();
+    iVar34 = 0;
+    piVar25 = (int *)&g_pGameFlowState->field_0x48;
     do {
-      if (*piVar14 == iVar23) goto LAB_00546c48;
-      iVar31 = iVar31 + 1;
-      piVar14 = piVar14 + 1;
-    } while (iVar31 < 7);
-    iVar31 = -1;
+      if (*piVar25 == iVar35) goto LAB_00546c48;
+      iVar34 = iVar34 + 1;
+      piVar25 = piVar25 + 1;
+    } while (iVar34 < 7);
+    iVar34 = -1;
 LAB_00546c48:
-    if (iVar31 == -1) {
-      pcVar15 = (code *)AllocateWithFallbackHandler();
+    if (iVar34 == -1) {
+      pTVar26 = (TCommand *)AllocateWithFallbackHandler();
       local_4 = 0x12;
-      local_1c4 = pcVar15;
-      if (pcVar15 != (code *)0x0) {
-        TCommand::thunk_ConstructTurnEventPacketBase();
-        *(undefined ***)pcVar15 = &PTR_LAB_0065bff0;
+      local_1c4.m_pchData = (char *)pTVar26;
+      if (pTVar26 != (TCommand *)0x0) {
+        TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+        pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
       }
       local_4 = 0xffffffff;
       InitializeRangePairAndResetCursor();
-      (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
-      uVar10 = 1;
+      (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+      uVar17 = 1;
     }
     else {
-      sVar9 = UiRuntimeContext::GetActiveNationId();
-      iVar23 = (int)sVar9;
-      if (iVar23 == -1) {
-        iVar23 = (int)(char)*(code *)&param_1[0x37].data_ptr;
+      sVar16 = UiRuntimeContext::GetActiveNationId();
+      iVar35 = (int)sVar16;
+      if (iVar35 == -1) {
+        iVar35 = (int)(char)param_1->field_0xdc;
       }
-      param_1[iVar23 + 0x2f].data_ptr = 0x62757379;
+      *(undefined4 *)(&param_1->field_0xbc + iVar35 * 4) = 0x62757379;
       local_1b8[4] = 0x74696d65;
       local_1a4 = UiRuntimeContext::GetActiveNationId();
       local_1b8[1] = 0;
       local_1b8[0] = 0x25;
       local_1b8[3] = 0x34;
-      puVar13 = &local_1a0;
-      for (iVar31 = 7; iVar31 != 0; iVar31 = iVar31 + -1) {
-        *puVar13 = 0x756e6b6e;
-        puVar13 = puVar13 + 1;
+      puVar23 = &local_1a0;
+      for (iVar34 = 7; iVar34 != 0; iVar34 = iVar34 + -1) {
+        *puVar23 = 0x756e6b6e;
+        puVar23 = puVar23 + 1;
       }
       local_1b8[2] = 0;
-      (&local_1a0)[iVar23] = 0x62757379;
+      (&local_1a0)[iVar35] = 0x62757379;
       thunk_EnqueueOrSendTurnEventPacketToNation();
-      (**(code **)(*g_pLocalizationTable + 0x44))();
-      uVar10 = 1;
+      (*g_pLocalizationTable->vftable[8].slot_0x04)();
+      uVar17 = 1;
     }
     break;
   default:
-    uVar10 = 0;
+    uVar17 = 0;
     break;
   case 8:
-    cVar6 = *(char *)(param_2 + 6);
-    local_1d4 = (char *)(int)cVar6;
-    if (local_1d4 == (char *)0xffffffff) {
+    cVar13 = *(char *)(param_2 + 6);
+    local_1d4.m_pchData = (char *)(int)cVar13;
+    if (local_1d4.m_pchData == (char *)0xffffffff) {
       NotifyIfNationMatchesSessionActiveNation();
     }
-    else if (param_1[(int)(local_1d4 + 0x12)].data_ptr != 0) {
-      iVar23 = param_2[1];
-      if (param_1[(int)(local_1d4 + 0x12)].data_ptr == iVar23) {
+    else if (*(int *)(&param_1->field_0x48 + (int)local_1d4.m_pchData * 4) != 0) {
+      iVar35 = param_2[1];
+      if (*(int *)(&param_1->field_0x48 + (int)local_1d4.m_pchData * 4) == iVar35) {
         InitializeEmitEventHeaderWithActiveNation();
         local_1b8[1] = 0;
-        uVar25 = 0xffffffff;
-        pcVar26 = (char *)((int)param_2 + 0x19);
+        uVar37 = 0xffffffff;
+        pcVar38 = (char *)((int)param_2 + 0x19);
         do {
-          pcVar24 = pcVar26;
-          if (uVar25 == 0) break;
-          uVar25 = uVar25 - 1;
-          pcVar24 = pcVar26 + 1;
-          cVar1 = *pcVar26;
-          pcVar26 = pcVar24;
+          pcVar18 = pcVar38;
+          if (uVar37 == 0) break;
+          uVar37 = uVar37 - 1;
+          pcVar18 = pcVar38 + 1;
+          cVar1 = *pcVar38;
+          pcVar38 = pcVar18;
         } while (cVar1 != '\0');
-        uVar25 = ~uVar25;
+        uVar37 = ~uVar37;
         local_1b8[2] = 0;
         local_1b8[3] = 100;
         local_1b8[0] = 9;
-        local_1a0 = CONCAT31(local_1a0._1_3_,cVar6);
-        pcVar26 = pcVar24 + -uVar25;
-        pcVar24 = local_198;
-        for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-          *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-          pcVar26 = pcVar26 + 4;
-          pcVar24 = pcVar24 + 4;
+        local_1a0 = CONCAT31(local_1a0._1_3_,cVar13);
+        pcVar38 = pcVar18 + -uVar37;
+        pcVar18 = local_198;
+        for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+          *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+          pcVar38 = pcVar38 + 4;
+          pcVar18 = pcVar18 + 4;
         }
-        for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-          *pcVar24 = *pcVar26;
-          pcVar26 = pcVar26 + 1;
-          pcVar24 = pcVar24 + 1;
+        for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+          *pcVar18 = *pcVar38;
+          pcVar38 = pcVar38 + 1;
+          pcVar18 = pcVar18 + 1;
         }
-        uVar25 = 0xffffffff;
-        pcVar26 = (char *)((int)param_2 + 0x3a);
+        uVar37 = 0xffffffff;
+        pcVar38 = (char *)((int)param_2 + 0x3a);
         do {
-          pcVar24 = pcVar26;
-          if (uVar25 == 0) break;
-          uVar25 = uVar25 - 1;
-          pcVar24 = pcVar26 + 1;
-          cVar6 = *pcVar26;
-          pcVar26 = pcVar24;
-        } while (cVar6 != '\0');
-        uVar25 = ~uVar25;
-        pcVar26 = pcVar24 + -uVar25;
-        pcVar24 = local_177;
-        for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-          *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-          pcVar26 = pcVar26 + 4;
-          pcVar24 = pcVar24 + 4;
+          pcVar18 = pcVar38;
+          if (uVar37 == 0) break;
+          uVar37 = uVar37 - 1;
+          pcVar18 = pcVar38 + 1;
+          cVar13 = *pcVar38;
+          pcVar38 = pcVar18;
+        } while (cVar13 != '\0');
+        uVar37 = ~uVar37;
+        pcVar38 = pcVar18 + -uVar37;
+        pcVar18 = local_177;
+        for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+          *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+          pcVar38 = pcVar38 + 4;
+          pcVar18 = pcVar18 + 4;
         }
-        for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-          *pcVar24 = *pcVar26;
-          pcVar26 = pcVar26 + 1;
-          pcVar24 = pcVar24 + 1;
+        for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+          *pcVar18 = *pcVar38;
+          pcVar38 = pcVar38 + 1;
+          pcVar18 = pcVar18 + 1;
         }
-        local_19c = iVar23;
+        local_19c = iVar35;
         thunk_EnqueueOrSendTurnEventPacketToNation();
-        uVar10 = 1;
+        uVar17 = 1;
       }
       else {
         local_118 = 0x74696d65;
@@ -230,1186 +250,1198 @@ LAB_00546c48:
         UiRuntimeContext::GetActiveNationId();
         local_120 = param_2[1];
         local_f = 0xff;
-        InitializeSharedStringRefFromEmpty(&local_1d0);
+        CString::CString(&local_1d0);
         local_4 = 2;
         thunk_LoadUiStringResourceByGroupAndIndex();
-        uVar25 = 0xffffffff;
-        pCVar20 = local_1d0;
+        uVar37 = 0xffffffff;
+        CVar46.m_pchData = local_1d0.m_pchData;
         do {
-          pCVar30 = pCVar20;
-          if (uVar25 == 0) break;
-          uVar25 = uVar25 - 1;
-          pCVar30 = (CString *)((int)&pCVar20->data_ptr + 1);
-          piVar14 = &pCVar20->data_ptr;
-          pCVar20 = pCVar30;
-        } while (*(code *)piVar14 != (code)0x0);
-        uVar25 = ~uVar25;
-        pcVar26 = (char *)((int)pCVar30 - uVar25);
-        pcVar24 = local_110;
-        for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-          *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-          pcVar26 = pcVar26 + 4;
-          pcVar24 = pcVar24 + 4;
+          pTVar43 = (TSimMgr *)CVar46.m_pchData;
+          if (uVar37 == 0) break;
+          uVar37 = uVar37 - 1;
+          pTVar43 = (TSimMgr *)((int)&((TSimMgr *)CVar46.m_pchData)->vftable + 1);
+          ppTVar11 = &((TSimMgr *)CVar46.m_pchData)->vftable;
+          CVar46.m_pchData = (char *)pTVar43;
+        } while (*(char *)ppTVar11 != '\0');
+        uVar37 = ~uVar37;
+        pcVar38 = (char *)((int)pTVar43 - uVar37);
+        pcVar18 = local_110;
+        for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+          *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+          pcVar38 = pcVar38 + 4;
+          pcVar18 = pcVar18 + 4;
         }
-        for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-          *pcVar24 = *pcVar26;
-          pcVar26 = pcVar26 + 1;
-          pcVar24 = pcVar24 + 1;
+        for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+          *pcVar18 = *pcVar38;
+          pcVar38 = pcVar38 + 1;
+          pcVar18 = pcVar18 + 1;
         }
         thunk_EnqueueOrSendTurnEventPacketToNation();
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d0);
-        uVar10 = 1;
+        CString::~CString(&local_1d0);
+        uVar17 = 1;
       }
       break;
     }
-    local_1c0.data_ptr = 0;
-    pCVar20 = local_1d0 + 0x12;
+    local_1c0.m_pchData = (char *)0x0;
+    piVar25 = (int *)(local_1d0.m_pchData + 0x48);
     do {
-      if (pCVar20->data_ptr == param_2[1]) {
-        pCVar20->data_ptr = 0;
-        pCVar20[0x1d].data_ptr = 0x756e6173;
-        pcVar26 = PTR_g_szEmptyString_0065bf18;
-        local_1bc = PTR_g_szEmptyString_0065bf18;
+      if (*piVar25 == param_2[1]) {
+        *piVar25 = 0;
+        piVar25[0x1d] = 0x756e6173;
+        pcVar38 = PTR_g_szEmptyString_0065bf18;
+        local_1bc.m_pchData = PTR_g_szEmptyString_0065bf18;
         InitializeEmitEventHeaderWithActiveNation();
         local_1b8[1] = 0;
-        local_1a0 = CONCAT31(local_1a0._1_3_,(undefined1)local_1c0.data_ptr);
+        local_1a0 = CONCAT31(local_1a0._1_3_,local_1c0.m_pchData._0_1_);
         local_1b8[2] = 0;
-        uVar25 = 0xffffffff;
+        uVar37 = 0xffffffff;
         do {
-          pcVar24 = pcVar26;
-          if (uVar25 == 0) break;
-          uVar25 = uVar25 - 1;
-          pcVar24 = pcVar26 + 1;
-          cVar6 = *pcVar26;
-          pcVar26 = pcVar24;
-        } while (cVar6 != '\0');
-        uVar25 = ~uVar25;
+          pcVar18 = pcVar38;
+          if (uVar37 == 0) break;
+          uVar37 = uVar37 - 1;
+          pcVar18 = pcVar38 + 1;
+          cVar13 = *pcVar38;
+          pcVar38 = pcVar18;
+        } while (cVar13 != '\0');
+        uVar37 = ~uVar37;
         local_19c = 0;
         local_1b8[3] = 100;
         local_1b8[0] = 9;
-        pcVar26 = pcVar24 + -uVar25;
-        pcVar24 = local_198;
-        for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-          *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-          pcVar26 = pcVar26 + 4;
-          pcVar24 = pcVar24 + 4;
+        pcVar38 = pcVar18 + -uVar37;
+        pcVar18 = local_198;
+        for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+          *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+          pcVar38 = pcVar38 + 4;
+          pcVar18 = pcVar18 + 4;
         }
-        for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-          *pcVar24 = *pcVar26;
-          pcVar26 = pcVar26 + 1;
-          pcVar24 = pcVar24 + 1;
+        for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+          *pcVar18 = *pcVar38;
+          pcVar38 = pcVar38 + 1;
+          pcVar18 = pcVar18 + 1;
         }
-        uVar25 = 0xffffffff;
-        pcVar26 = local_1bc;
+        uVar37 = 0xffffffff;
+        CVar46.m_pchData = local_1bc.m_pchData;
         do {
-          pcVar24 = pcVar26;
-          if (uVar25 == 0) break;
-          uVar25 = uVar25 - 1;
-          pcVar24 = pcVar26 + 1;
-          cVar6 = *pcVar26;
-          pcVar26 = pcVar24;
-        } while (cVar6 != '\0');
-        uVar25 = ~uVar25;
-        pcVar26 = pcVar24 + -uVar25;
-        pcVar24 = local_177;
-        for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-          *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-          pcVar26 = pcVar26 + 4;
-          pcVar24 = pcVar24 + 4;
+          pcVar38 = CVar46.m_pchData;
+          if (uVar37 == 0) break;
+          uVar37 = uVar37 - 1;
+          pcVar38 = CVar46.m_pchData + 1;
+          cVar13 = *CVar46.m_pchData;
+          CVar46.m_pchData = pcVar38;
+        } while (cVar13 != '\0');
+        uVar37 = ~uVar37;
+        pcVar38 = pcVar38 + -uVar37;
+        pcVar18 = local_177;
+        for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+          *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+          pcVar38 = pcVar38 + 4;
+          pcVar18 = pcVar18 + 4;
         }
-        for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-          *pcVar24 = *pcVar26;
-          pcVar26 = pcVar26 + 1;
-          pcVar24 = pcVar24 + 1;
+        for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+          *pcVar18 = *pcVar38;
+          pcVar38 = pcVar38 + 1;
+          pcVar18 = pcVar18 + 1;
         }
         thunk_EnqueueOrSendTurnEventPacketToNation();
       }
-      pcVar26 = local_1d4;
-      pCVar20 = pCVar20 + 1;
-      local_1c0.data_ptr = local_1c0.data_ptr + 1;
-    } while (local_1c0.data_ptr < 7);
-    if (local_1d4 != (char *)0xffffffff) {
-      uVar10 = param_2[1];
+      CVar46.m_pchData = local_1d4.m_pchData;
+      piVar25 = piVar25 + 1;
+      local_1c0.m_pchData = local_1c0.m_pchData + 1;
+    } while ((int)local_1c0.m_pchData < 7);
+    if (local_1d4.m_pchData != (char *)0xffffffff) {
+      uVar17 = param_2[1];
       InitializeEmitEventHeaderWithActiveNation();
-      uVar25 = 0xffffffff;
-      pcVar24 = (char *)((int)param_2 + 0x19);
+      uVar37 = 0xffffffff;
+      pcVar38 = (char *)((int)param_2 + 0x19);
       do {
-        pcVar29 = pcVar24;
-        if (uVar25 == 0) break;
-        uVar25 = uVar25 - 1;
-        pcVar29 = pcVar24 + 1;
-        cVar6 = *pcVar24;
-        pcVar24 = pcVar29;
-      } while (cVar6 != '\0');
+        pcVar18 = pcVar38;
+        if (uVar37 == 0) break;
+        uVar37 = uVar37 - 1;
+        pcVar18 = pcVar38 + 1;
+        cVar13 = *pcVar38;
+        pcVar38 = pcVar18;
+      } while (cVar13 != '\0');
       local_1b8[1] = 0;
       local_1b8[0] = 9;
-      uVar25 = ~uVar25;
+      uVar37 = ~uVar37;
       local_1b8[2] = 0;
       local_1b8[3] = 100;
-      local_1a0 = CONCAT31(local_1a0._1_3_,(char)pcVar26);
-      pcVar26 = pcVar29 + -uVar25;
-      pcVar24 = local_198;
-      for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-        *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-        pcVar26 = pcVar26 + 4;
-        pcVar24 = pcVar24 + 4;
+      local_1a0 = CONCAT31(local_1a0._1_3_,(char)CVar46.m_pchData);
+      pcVar38 = pcVar18 + -uVar37;
+      pcVar18 = local_198;
+      for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+        *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+        pcVar38 = pcVar38 + 4;
+        pcVar18 = pcVar18 + 4;
       }
-      for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-        *pcVar24 = *pcVar26;
-        pcVar26 = pcVar26 + 1;
-        pcVar24 = pcVar24 + 1;
+      for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+        *pcVar18 = *pcVar38;
+        pcVar38 = pcVar38 + 1;
+        pcVar18 = pcVar18 + 1;
       }
-      uVar25 = 0xffffffff;
-      pcVar26 = (char *)((int)param_2 + 0x3a);
+      uVar37 = 0xffffffff;
+      pcVar38 = (char *)((int)param_2 + 0x3a);
       do {
-        pcVar24 = pcVar26;
-        if (uVar25 == 0) break;
-        uVar25 = uVar25 - 1;
-        pcVar24 = pcVar26 + 1;
-        cVar6 = *pcVar26;
-        pcVar26 = pcVar24;
-      } while (cVar6 != '\0');
-      uVar25 = ~uVar25;
-      pcVar26 = pcVar24 + -uVar25;
-      pcVar24 = local_177;
-      for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-        *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-        pcVar26 = pcVar26 + 4;
-        pcVar24 = pcVar24 + 4;
+        pcVar18 = pcVar38;
+        if (uVar37 == 0) break;
+        uVar37 = uVar37 - 1;
+        pcVar18 = pcVar38 + 1;
+        cVar13 = *pcVar38;
+        pcVar38 = pcVar18;
+      } while (cVar13 != '\0');
+      uVar37 = ~uVar37;
+      pcVar38 = pcVar18 + -uVar37;
+      pcVar18 = local_177;
+      for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+        *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+        pcVar38 = pcVar38 + 4;
+        pcVar18 = pcVar18 + 4;
       }
-      for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-        *pcVar24 = *pcVar26;
-        pcVar26 = pcVar26 + 1;
-        pcVar24 = pcVar24 + 1;
+      for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+        *pcVar18 = *pcVar38;
+        pcVar38 = pcVar38 + 1;
+        pcVar18 = pcVar18 + 1;
       }
-      local_19c = uVar10;
+      local_19c = uVar17;
       thunk_EnqueueOrSendTurnEventPacketToNation();
-      uVar10 = 1;
+      uVar17 = 1;
       break;
     }
     goto LAB_005485d8;
   case 9:
     cVar2 = *(code *)(param_2 + 6);
     if (cVar2 != (code)0xf3) {
-      pcVar26 = (char *)param_2[7];
-      local_1d4 = pcVar26;
-      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-                ((TToolBarCluster *)&local_154,(char *)(param_2 + 8));
-      pCVar30 = local_1d0;
+      pcVar38 = (char *)param_2[7];
+      iVar35 = (int)(char)cVar2;
+      local_1d4.m_pchData = pcVar38;
+      CString::CString(&local_154,(char *)(param_2 + 8));
+      CVar46.m_pchData = local_1d0.m_pchData;
       local_4 = 3;
-      AssignFromPtr(local_1d0 + (char)cVar2 + 0x1e,&local_154);
+      CString::AssignFromPtr((CString *)(local_1d0.m_pchData + iVar35 * 4 + 0x78),&local_154);
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty(&local_154);
-      TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-                ((TToolBarCluster *)&local_14c,(char *)((int)param_2 + 0x41));
-      pCVar20 = pCVar30 + (char)cVar2 + 0x25;
+      CString::~CString(&local_154);
+      CString::CString(&local_14c,(char *)((int)param_2 + 0x41));
+      this = (CString *)(CVar46.m_pchData + iVar35 * 4 + 0x94);
       local_4 = 4;
-      AssignFromPtr(pCVar20,&local_14c);
+      CString::AssignFromPtr(this,&local_14c);
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty(&local_14c);
-      local_1bc = (char *)pCVar30[(char)cVar2 + 0x12].data_ptr;
-      pCVar30[(char)cVar2 + 0x12].data_ptr = (int)pcVar26;
-      pcVar24 = (char *)FUN_00405a3d();
-      if ((pcVar26 == pcVar24) && (pcVar26 != (char *)0x0)) {
+      CString::~CString(&local_14c);
+                    /* WARNING: Load size is inaccurate */
+      local_1bc.m_pchData = CVar46.m_pchData[iVar35 * 4 + 0x48];
+      *(char **)(CVar46.m_pchData + iVar35 * 4 + 0x48) = pcVar38;
+      pcVar18 = (char *)FUN_00405a3d();
+      if ((pcVar38 == pcVar18) && (pcVar38 != (char *)0x0)) {
         local_1c9 = 1;
-        *(code *)&pCVar30[0x37].data_ptr = cVar2;
+        CVar46.m_pchData[0xdc] = (char)cVar2;
       }
       else {
         local_1c9 = 0;
       }
-      InitializeSharedStringRefFromEmpty(&local_1c0);
+      CString::CString(&local_1c0);
       local_4 = 5;
-      if (pcVar26 == (char *)0x0) {
+      if (pcVar38 == (char *)0x0) {
         thunk_LoadUiStringResourceByGroupAndIndex();
-        pCVar30[(char)cVar2 + 0x2f].data_ptr = 0x756e6173;
+        *(undefined4 *)(CVar46.m_pchData + iVar35 * 4 + 0xbc) = 0x756e6173;
       }
       else {
-        AssignFromPtr(&local_1c0,pCVar20);
-        if ((pCVar30[0x36].data_ptr == 0x676f696e) &&
-           (sVar9 = UiRuntimeContext::GetActiveNationId(), sVar9 != -1)) {
-          bVar4 = 1;
+        CString::AssignFromPtr(&local_1c0,this);
+        if ((*(int *)(CVar46.m_pchData + 0xd8) == 0x676f696e) &&
+           (sVar16 = UiRuntimeContext::GetActiveNationId(), sVar16 != -1)) {
+          bVar9 = 1;
         }
         else {
-          bVar4 = 0;
+          bVar9 = 0;
         }
-        pCVar30[(char)cVar2 + 0x2f].data_ptr = (-(uint)bVar4 & 0xf0100f00) + 0x72656479;
+        *(uint *)(CVar46.m_pchData + iVar35 * 4 + 0xbc) = (-(uint)bVar9 & 0xf0100f00) + 0x72656479;
       }
-      AssignFromPtr(pCVar20,&local_1c0);
-      AssignFromPtr(pCVar30 + (char)cVar2 + 0x1e,pCVar20);
-      piVar14 = (int *)pCVar30[0x10].data_ptr;
-      if ((piVar14 == (int *)0x0) || (iVar23 = CObject::IsKindOf(), iVar23 == 0)) {
-        iVar23 = 0;
+      CString::AssignFromPtr(this,&local_1c0);
+      CString::AssignFromPtr((CString *)(CVar46.m_pchData + iVar35 * 4 + 0x78),this);
+      this_00 = *(CObject **)(CVar46.m_pchData + 0x40);
+      if ((this_00 == (CObject *)0x0) || (iVar35 = CObject::IsKindOf(this_00), iVar35 == 0)) {
+        iVar35 = 0;
       }
       else {
-        iVar23 = pCVar30[0x10].data_ptr;
+        iVar35 = *(int *)(CVar46.m_pchData + 0x40);
       }
-      if (iVar23 != 0) {
-        local_1d0 = *(CString **)(*piVar14 + 0x94);
-        piVar11 = (int *)(*(code *)local_1d0)();
-        iVar23 = *piVar11;
-        (**(code **)(iVar23 + 0xc))();
+      if (iVar35 != 0) {
+        local_1d0.m_pchData = (char *)this_00->vftable[0x12].slot_0x04;
+        piVar25 = (int *)(*(code *)local_1d0.m_pchData)();
+        iVar35 = *piVar25;
+        (**(code **)(iVar35 + 0xc))();
         NormalizeRuntimeCredentialNameToken();
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
-        (**(code **)(iVar23 + 0x1c8))();
+        (**(code **)(iVar35 + 0x1c8))();
         ApplyUiTextStyleAndThemeFlags();
-        pcVar26 = (char *)FUN_00405a3d();
-        if ((local_1bc == pcVar26) || (pcVar26 = (char *)FUN_00405a3d(), local_1d4 == pcVar26)) {
-          iVar23 = 6;
-          pCVar20 = pCVar30 + 0x18;
+        pcVar38 = (char *)FUN_00405a3d();
+        if ((local_1bc.m_pchData == pcVar38) ||
+           (pcVar38 = (char *)FUN_00405a3d(), local_1d4.m_pchData == pcVar38)) {
+          iVar35 = 6;
+          pcVar40 = (code *)(CVar46.m_pchData + 0x60);
           do {
-            iVar31 = FUN_00405a3d();
-            if (pCVar20->data_ptr == iVar31) break;
-            iVar23 = iVar23 + -1;
-            pCVar20 = pCVar20 + -1;
-          } while (-1 < iVar23);
-          piVar11 = (int *)(*(code *)local_1d0)();
-          iVar31 = *piVar11;
-          (**(code **)(iVar31 + 0xc))();
-          piVar11[0x1a] = iVar23;
+            iVar34 = FUN_00405a3d();
+            if (*(int *)pcVar40 == iVar34) break;
+            iVar35 = iVar35 + -1;
+            pcVar40 = pcVar40 + -4;
+          } while (-1 < iVar35);
+          piVar25 = (int *)(*(code *)local_1d0.m_pchData)();
+          iVar34 = *piVar25;
+          (**(code **)(iVar34 + 0xc))();
+          piVar25[0x1a] = iVar35;
           ApplyPaletteMaskToTileBufferByEventCode();
-          (**(code **)(iVar31 + 0x128))();
+          (**(code **)(iVar34 + 0x128))();
           ConstructScopedMapQuickDrawContext();
           local_c = CONCAT31(local_c._1_3_,7);
           (**(code **)(unaff_EBP + 0x110))();
-          piVar11 = (int *)(*unaff_EBP)();
-          unaff_EDI = (code *)*piVar11;
+          piVar25 = (int *)(*unaff_EBP)();
+          unaff_EDI = (code *)*piVar25;
           (**(code **)(unaff_EDI + 0xc))();
-          if (-1 < iVar23) {
+          if (-1 < iVar35) {
             (**(code **)(unaff_EDI + 0x1c8))();
           }
           (**(code **)(unaff_EDI + 0xa4))();
           local_4 = CONCAT31(local_4._1_3_,6);
           thunk_DestroyScopedMapQuickDrawContext();
         }
-        if (g_pLocalizationTable[0x11] == 1) {
-          bVar5 = false;
-          local_1c8 = (char *)0x0;
-          pCVar30 = pCVar30 + 0x12;
-          iVar23 = 7;
+        if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+          bVar10 = false;
+          local_1c8.m_pchData = (char *)0x0;
+          pcVar40 = (code *)(CVar46.m_pchData + 0x48);
+          iVar35 = 7;
           do {
-            if (pCVar30->data_ptr != 0) {
-              local_1c8 = local_1c8 + 1;
-              iVar31 = FUN_00405a3d();
-              if (pCVar30->data_ptr == iVar31) {
-                bVar5 = true;
+            if (*(int *)pcVar40 != 0) {
+              local_1c8.m_pchData = local_1c8.m_pchData + 1;
+              iVar34 = FUN_00405a3d();
+              if (*(int *)pcVar40 == iVar34) {
+                bVar10 = true;
               }
             }
-            pCVar30 = pCVar30 + 1;
-            iVar23 = iVar23 + -1;
-          } while (iVar23 != 0);
-          if (((int)local_1c8 < 2) || (!bVar5)) {
-            bVar5 = false;
+            pcVar40 = pcVar40 + 4;
+            iVar35 = iVar35 + -1;
+          } while (iVar35 != 0);
+          if (((int)local_1c8.m_pchData < 2) || (!bVar10)) {
+            bVar10 = false;
           }
           else {
-            bVar5 = true;
+            bVar10 = true;
           }
-          piVar11 = (int *)(*(code *)local_1d0)();
-          iVar23 = *piVar11;
-          (**(code **)(iVar23 + 0xc))();
-          InitializeSharedStringRefFromEmpty(&stack0xfffffe28);
+          piVar25 = (int *)(*(code *)local_1d0.m_pchData)();
+          iVar35 = *piVar25;
+          (**(code **)(iVar35 + 0xc))();
+          CString::CString((CString *)&stack0xfffffe28);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,8);
           thunk_LoadUiStringResourceByGroupAndIndex();
-          if (bVar5) {
-            AssignFromPtr(piVar11 + 0x25,(CString *)&stack0xfffffe28);
-            (**(code **)(iVar23 + 0xe4))();
+          if (bVar10) {
+            CString::AssignFromPtr((CString *)(piVar25 + 0x25),(CString *)&stack0xfffffe28);
+            (**(code **)(iVar35 + 0xe4))();
           }
-          (**(code **)(iVar23 + 0xa8))();
-          (**(code **)(iVar23 + 0xa4))();
-          *(undefined2 *)((int)piVar11 + 0x9a) = 0x2b6c;
-          *(undefined2 *)(piVar11 + 0x27) = 0x2b6b;
-          *(undefined2 *)(piVar11 + 0x26) = 0xc;
-          piVar11 = (int *)(*unaff_EDI)();
-          iVar23 = *piVar11;
-          (**(code **)(iVar23 + 0xc))();
-          (**(code **)(iVar23 + 0xa4))();
+          (**(code **)(iVar35 + 0xa8))();
+          (**(code **)(iVar35 + 0xa4))();
+          *(undefined2 *)((int)piVar25 + 0x9a) = 0x2b6c;
+          *(undefined2 *)(piVar25 + 0x27) = 0x2b6b;
+          *(undefined2 *)(piVar25 + 0x26) = 0xc;
+          piVar25 = (int *)(*unaff_EDI)();
+          iVar35 = *piVar25;
+          (**(code **)(iVar35 + 0xc))();
+          (**(code **)(iVar35 + 0xa4))();
           LoadUiStringAndDispatchSharedMessageCommand();
-          iVar23 = *piVar14;
-          (**(code **)(iVar23 + 0xc))();
-          (**(code **)(iVar23 + 0x1c8))();
+          pCVar5 = this_00->vftable;
+          (*pCVar5[1].slot_0x04)();
+          (*pCVar5[0x39].SetForeignMinisterReadyFlag14)();
           local_4 = CONCAT31(local_4._1_3_,6);
-          ReleaseSharedStringRefIfNotEmpty(&local_1d4);
+          CString::~CString(&local_1d4);
         }
         local_4 = CONCAT31(local_4._1_3_,5);
-        ReleaseSharedStringRefIfNotEmpty(&local_1c4);
+        CString::~CString(&local_1c4);
       }
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty(&local_1c0);
-      uVar10 = 1;
+      CString::~CString(&local_1c0);
+      uVar17 = 1;
       break;
     }
-    if (g_pLocalizationTable[0x11] == 1) {
-      pcVar26 = (char *)param_1[0x2d].data_ptr;
-      pcVar24 = (char *)param_1[0x2c].data_ptr;
-      uVar10 = FUN_00405a3d();
-      local_1bc = (char *)CONCAT22(local_1bc._2_2_,(short)(char)*(code *)&param_1[0x37].data_ptr);
+    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+      pcVar38 = *(char **)&param_1->field_0xb4;
+      pcVar18 = *(char **)&param_1->field_0xb0;
+      uVar17 = FUN_00405a3d();
+      local_1bc.m_pchData._0_2_ = (short)(char)param_1->field_0xdc;
       InitializeEmitEventHeaderWithActiveNation();
-      uVar25 = 0xffffffff;
-      local_1a0 = CONCAT31(local_1a0._1_3_,local_1bc._0_1_);
+      uVar37 = 0xffffffff;
+      local_1a0 = CONCAT31(local_1a0._1_3_,local_1bc.m_pchData._0_1_);
       do {
-        pcVar29 = pcVar24;
-        if (uVar25 == 0) break;
-        uVar25 = uVar25 - 1;
-        pcVar29 = pcVar24 + 1;
-        cVar6 = *pcVar24;
-        pcVar24 = pcVar29;
-      } while (cVar6 != '\0');
+        pcVar44 = pcVar18;
+        if (uVar37 == 0) break;
+        uVar37 = uVar37 - 1;
+        pcVar44 = pcVar18 + 1;
+        cVar13 = *pcVar18;
+        pcVar18 = pcVar44;
+      } while (cVar13 != '\0');
       local_1b8[0] = 9;
       local_1b8[1] = 0;
-      uVar25 = ~uVar25;
+      uVar37 = ~uVar37;
       local_1b8[2] = 0;
       local_1b8[3] = 100;
-      pcVar24 = pcVar29 + -uVar25;
-      pcVar29 = local_198;
-      for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-        *(undefined4 *)pcVar29 = *(undefined4 *)pcVar24;
-        pcVar24 = pcVar24 + 4;
-        pcVar29 = pcVar29 + 4;
+      pcVar18 = pcVar44 + -uVar37;
+      pcVar44 = local_198;
+      for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+        *(undefined4 *)pcVar44 = *(undefined4 *)pcVar18;
+        pcVar18 = pcVar18 + 4;
+        pcVar44 = pcVar44 + 4;
       }
-      for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-        *pcVar29 = *pcVar24;
-        pcVar24 = pcVar24 + 1;
-        pcVar29 = pcVar29 + 1;
+      for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+        *pcVar44 = *pcVar18;
+        pcVar18 = pcVar18 + 1;
+        pcVar44 = pcVar44 + 1;
       }
-      uVar25 = 0xffffffff;
+      uVar37 = 0xffffffff;
       do {
-        pcVar24 = pcVar26;
-        if (uVar25 == 0) break;
-        uVar25 = uVar25 - 1;
-        pcVar24 = pcVar26 + 1;
-        cVar6 = *pcVar26;
-        pcVar26 = pcVar24;
-      } while (cVar6 != '\0');
-      uVar25 = ~uVar25;
-      pcVar26 = pcVar24 + -uVar25;
-      pcVar24 = local_177;
-      for (uVar18 = uVar25 >> 2; uVar18 != 0; uVar18 = uVar18 - 1) {
-        *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-        pcVar26 = pcVar26 + 4;
-        pcVar24 = pcVar24 + 4;
+        pcVar18 = pcVar38;
+        if (uVar37 == 0) break;
+        uVar37 = uVar37 - 1;
+        pcVar18 = pcVar38 + 1;
+        cVar13 = *pcVar38;
+        pcVar38 = pcVar18;
+      } while (cVar13 != '\0');
+      uVar37 = ~uVar37;
+      pcVar38 = pcVar18 + -uVar37;
+      pcVar18 = local_177;
+      for (uVar31 = uVar37 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
+        *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+        pcVar38 = pcVar38 + 4;
+        pcVar18 = pcVar18 + 4;
       }
-      for (uVar25 = uVar25 & 3; uVar25 != 0; uVar25 = uVar25 - 1) {
-        *pcVar24 = *pcVar26;
-        pcVar26 = pcVar26 + 1;
-        pcVar24 = pcVar24 + 1;
+      for (uVar37 = uVar37 & 3; uVar37 != 0; uVar37 = uVar37 - 1) {
+        *pcVar18 = *pcVar38;
+        pcVar38 = pcVar38 + 1;
+        pcVar18 = pcVar18 + 1;
       }
-      local_19c = uVar10;
+      local_19c = uVar17;
       thunk_EnqueueOrSendTurnEventPacketToNation();
-      uVar10 = 1;
+      uVar17 = 1;
       break;
     }
     goto LAB_005485d8;
   case 10:
-    if ((short)g_pLocalizationTable[0x45] == 0) {
-      (**(code **)(*g_pGlobalMapState + 0x134))();
+    if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
+      (*g_pGlobalMapState->vftable[0x26].slot_0x04)();
       thunk_RefreshNationCivilianWorkOrdersForTurn();
     }
-    param_1[0x3a].data_ptr = param_1[0x3a].data_ptr & ~(1 << (*(byte *)(param_2 + 7) & 0x1f));
-    if (g_pLocalizationTable[0x11] == 1) {
+    *(uint *)&param_1->field_0xe8 =
+         *(uint *)&param_1->field_0xe8 & ~(1 << (*(byte *)(param_2 + 7) & 0x1f));
+    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
       InitializeEmitEventHeaderWithActiveNation();
-      local_1a0 = param_1[0x3a].data_ptr;
+      local_1a0 = *(uint *)&param_1->field_0xe8;
 LAB_00545aa0:
       local_1b8[3] = 0x1c;
       local_1b8[2] = 0;
       local_1b8[1] = 0;
       local_1b8[0] = 1;
       thunk_EnqueueOrSendTurnEventPacketToNation();
-      if ((param_1[0x3a].data_ptr == 0) && (param_1[0x3c].data_ptr != -1)) {
-        HandleDiplomacyTurnEventPacketByCode();
-        uVar10 = 1;
+      if ((*(int *)&param_1->field_0xe8 == 0) && (*(int *)&param_1->field_0xf0 != -1)) {
+        TNextDiplomationCommand::HandleDiplomacyTurnEventPacketByCode
+                  ((TNextDiplomationCommand *)param_1);
+        uVar17 = 1;
         break;
       }
     }
     goto LAB_005485d8;
   case 0xb:
-    iVar23 = 0;
-    puVar13 = param_2 + 7;
-    piVar14 = &g_apTerrainTypeDescriptorTable;
-    pcVar26 = (char *)((int)param_2 + 0x341);
+    iVar35 = 0;
+    puVar23 = param_2 + 7;
+    ppTVar39 = g_apTerrainTypeDescriptorTable;
+    pcVar38 = (char *)((int)param_2 + 0x341);
     do {
-      sVar9 = UiRuntimeContext::GetActiveNationId();
-      if ((iVar23 != sVar9) && (cVar6 = (**(code **)(*(int *)*piVar14 + 0xa0))(), cVar6 != '\0')) {
-        (**(code **)(*(int *)*piVar14 + 0xa4))();
-        TToolBarCluster::ConstructSharedStringFromCStrOrResourceId(aTStack_150,pcVar26);
+      sVar16 = UiRuntimeContext::GetActiveNationId();
+      if ((iVar35 != sVar16) &&
+         (cVar13 = (*(*ppTVar39)->vftable[0x14].GetTCountryClassNamePointer)(), cVar13 != '\0')) {
+        (*(*ppTVar39)->vftable[0x14].slot_0x04)();
+        CString::CString(&CStack_150,pcVar38);
         local_4 = 0;
         SetNationDisplayNameAndLocalizationSlotRef();
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(aTStack_150);
-        TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-                  ((TToolBarCluster *)&CStack_148,pcVar26);
+        CString::~CString(&CStack_150);
+        CString::CString(&CStack_148,pcVar38);
         local_4 = 1;
-        AssignFromPtr((void *)(*piVar14 + 8),&CStack_148);
+        CString::AssignFromPtr((CString *)&(*ppTVar39)->field_0x8,&CStack_148);
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&CStack_148);
-        if ((short)g_pLocalizationTable[0x45] == 0) {
-          (**(code **)(*g_pGlobalMapState + 0x134))();
+        CString::~CString(&CStack_148);
+        if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
+          (*g_pGlobalMapState->vftable[0x26].slot_0x04)();
         }
       }
-      iVar31 = thunk_FindFirstPortZoneContextByNation();
-      puVar27 = puVar13 + 0x187;
-      piVar14 = piVar14 + 1;
-      iVar23 = iVar23 + 1;
-      puVar13 = (undefined4 *)((int)puVar13 + 2);
-      pcVar26 = pcVar26 + 0x17;
-      *(undefined2 *)(iVar31 + 0x14) = *(undefined2 *)puVar27;
-    } while ((int)piVar14 < 0x6a436c);
+      iVar34 = thunk_FindFirstPortZoneContextByNation();
+      puVar41 = puVar23 + 0x187;
+      ppTVar39 = ppTVar39 + 1;
+      iVar35 = iVar35 + 1;
+      puVar23 = (undefined4 *)((int)puVar23 + 2);
+      pcVar38 = pcVar38 + 0x17;
+      *(undefined2 *)(iVar34 + 0x14) = *(undefined2 *)puVar41;
+    } while ((int)ppTVar39 < 0x6a436c);
     TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll();
-    uVar10 = 1;
+    uVar17 = 1;
     break;
   case 0xc:
-    sVar9 = UiRuntimeContext::GetActiveNationId();
-    local_1d4 = (char *)(int)sVar9;
-    if (local_1d4 == (char *)0xffffffff) {
-      iVar23 = FUN_00405a3d();
-      local_1d4 = (char *)0x0;
-      piVar14 = (int *)((int)g_pGameFlowState + 0x48);
+    sVar16 = UiRuntimeContext::GetActiveNationId();
+    local_1d4.m_pchData = (char *)(int)sVar16;
+    if ((TCommandVtbl *)local_1d4.m_pchData == (TCommandVtbl *)0xffffffff) {
+      iVar35 = FUN_00405a3d();
+      local_1d4.m_pchData = (char *)0x0;
+      piVar25 = (int *)&g_pGameFlowState->field_0x48;
       do {
-        if (*piVar14 == iVar23) goto LAB_005464f4;
-        local_1d4 = local_1d4 + 1;
-        piVar14 = piVar14 + 1;
-      } while ((int)local_1d4 < 7);
-      local_1d4 = (char *)0xffffffff;
+        if (*piVar25 == iVar35) goto LAB_005464f4;
+        local_1d4.m_pchData =
+             (char *)((int)&((TCommandVtbl *)local_1d4.m_pchData)->GetTEventClassNamePointer + 1);
+        piVar25 = piVar25 + 1;
+      } while ((int)local_1d4.m_pchData < 7);
+      local_1d4.m_pchData = (char *)0xffffffff;
 LAB_005464f4:
-      if (local_1d4 != (char *)0xffffffff) goto LAB_005464fd;
+      if ((TCommandVtbl *)local_1d4.m_pchData != (TCommandVtbl *)0xffffffff) goto LAB_005464fd;
     }
     else {
 LAB_005464fd:
-      if ((*(byte *)(param_2 + 0x46) & (byte)(1 << ((byte)local_1d4 & 0x1f))) == 0)
+      if ((*(byte *)(param_2 + 0x46) & (byte)(1 << ((byte)local_1d4.m_pchData & 0x1f))) == 0)
       goto LAB_005485d8;
     }
-    pcVar26 = local_1d4;
-    pcVar24 = (char *)(int)*(char *)((int)param_2 + 0x119);
-    local_1c8 = pcVar24;
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-              ((TToolBarCluster *)&local_1bc,(char *)(param_2 + 6));
+    CVar46.m_pchData = local_1d4.m_pchData;
+    pTVar36 = (TCommandVtbl *)(int)*(char *)((int)param_2 + 0x119);
+    local_1c8.m_pchData = (char *)pTVar36;
+    CString::CString(&local_1bc,(char *)(param_2 + 6));
     local_4 = 9;
-    InitializeSharedStringRefFromEmpty(&local_1c0);
+    CString::CString(&local_1c0);
     local_4._0_1_ = 10;
-    InitializeSharedStringRefFromEmpty(&local_1d0);
+    CString::CString(&local_1d0);
     local_4 = CONCAT31(local_4._1_3_,0xb);
-    if ((pcVar24 == (char *)0xffffffff) || (pcVar24 == pcVar26)) {
+    if ((pTVar36 == (TCommandVtbl *)0xffffffff) || (pTVar36 == (TCommandVtbl *)CVar46.m_pchData)) {
       thunk_BuildUiMessageTextFromBracketTemplate();
     }
     else {
-      (**(code **)(*g_pLocalizationTable + 0x84))();
-      scanBracketExpressions(g_pLocalizationTable,&local_1d0,(char *)local_1c0.data_ptr);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      scanBracketExpressions(g_pLocalizationTable,&local_1d0,local_1c0.m_pchData);
     }
     uStack_13a = 0;
     uStack_139 = 0;
     uStack_138 = 0;
     uStack_137 = 0;
     thunk_BuildUiTextStyleDescriptor();
-    piVar14 = (int *)(**(code **)(*g_pUiViewManager + 0x28))();
-    if (piVar14 == (int *)0x0) {
+    uVar12 = (*g_pUiViewManager->vftable[5].GetTAssetMgrClassNamePointer)();
+    piVar25 = (int *)CONCAT31(extraout_var,uVar12);
+    if (piVar25 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
     }
-    iVar23 = *piVar14;
-    (**(code **)(iVar23 + 0x1a0))();
-    iVar31 = (**(code **)(iVar23 + 0x1b8))();
-    if (iVar31 != 0) {
-      *(undefined4 *)(iVar31 + 0x14) = 0x6f6b6179;
+    iVar35 = *piVar25;
+    (**(code **)(iVar35 + 0x1a0))();
+    iVar34 = (**(code **)(iVar35 + 0x1b8))();
+    if (iVar34 != 0) {
+      *(undefined4 *)(iVar34 + 0x14) = 0x6f6b6179;
     }
-    (**(code **)(*g_pUiRuntimeContext + 0x44))();
-    (**(code **)(iVar23 + 0xf0))();
-    pcVar15 = *(code **)(iVar23 + 0x94);
-    piVar11 = (int *)(*pcVar15)();
-    iVar23 = *piVar11;
-    (**(code **)(iVar23 + 0xc))();
-    if (piVar11 == (int *)0x0) {
+    (**(code **)(g_pUiRuntimeContext->vftable + 0x44))();
+    (**(code **)(iVar35 + 0xf0))();
+    pcVar40 = *(code **)(iVar35 + 0x94);
+    piVar19 = (int *)(*pcVar40)();
+    iVar35 = *piVar19;
+    (**(code **)(iVar35 + 0xc))();
+    if (piVar19 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
     }
-    (**(code **)(iVar23 + 0x1c8))();
-    iVar31 = 0x636f6174;
-    piVar11 = (int *)(*pcVar15)();
-    iVar23 = *piVar11;
-    (**(code **)(iVar23 + 0xc))();
-    if (piVar11 == (int *)0x0) {
+    (**(code **)(iVar35 + 0x1c8))();
+    iVar34 = 0x636f6174;
+    piVar19 = (int *)(*pcVar40)();
+    iVar35 = *piVar19;
+    (**(code **)(iVar35 + 0xc))();
+    if (piVar19 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
     }
-    (**(code **)(iVar23 + 0x1c8))();
-    piVar11 = (int *)(*pcVar15)(0x7469746c);
-    iVar23 = *piVar11;
-    (**(code **)(iVar23 + 0xc))();
-    if (piVar11 == (int *)0x0) {
+    (**(code **)(iVar35 + 0x1c8))();
+    piVar19 = (int *)(*pcVar40)(0x7469746c);
+    iVar35 = *piVar19;
+    (**(code **)(iVar35 + 0xc))();
+    if (piVar19 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_UMultiplayerMgr_c_00698040,0x807);
     }
-    (**(code **)(iVar23 + 0x1b4))(local_177 + 3,0);
-    (**(code **)(iVar23 + 0x1c4))(1,0);
-    (**(code **)(iVar23 + 0x1c8))(&stack0xfffffdec,0);
-    piVar11 = (int *)(*pcVar15)();
-    iVar23 = *piVar11;
-    (**(code **)(iVar23 + 0xc))();
-    (**(code **)(iVar23 + 500))(iVar31,*(undefined4 *)(iVar31 + -8));
-    (**(code **)(iVar23 + 0x1e4))(local_198,0);
-    *(undefined1 *)((int)g_pGameFlowState + 0x68) = 0;
-    piVar11 = (int *)(*pcVar15)(0x636e636c);
-    iVar23 = *piVar11;
-    (**(code **)(iVar23 + 0xc))();
-    piVar11[7] = 0x72737670;
-    (**(code **)(iVar23 + 0xa4))(1,0);
-    (**(code **)(iVar23 + 0xa8))(1,0);
-    (**(code **)(iVar23 + 0x1c8))(0x53a,0);
-    iVar23 = *piVar14;
-    iVar31 = (**(code **)(iVar23 + 0x1ac))();
-    (**(code **)(iVar23 + 0xa0))();
-    (**(code **)(iVar23 + 0x1c))();
-    if (iVar31 == 0x72737670) {
-      pcVar15 = (code *)AllocateWithFallbackHandler();
+    (**(code **)(iVar35 + 0x1b4))(local_177 + 3,0);
+    (**(code **)(iVar35 + 0x1c4))(1,0);
+    (**(code **)(iVar35 + 0x1c8))(&stack0xfffffdec,0);
+    piVar19 = (int *)(*pcVar40)();
+    iVar35 = *piVar19;
+    (**(code **)(iVar35 + 0xc))();
+    (**(code **)(iVar35 + 500))(iVar34,*(undefined4 *)(iVar34 + -8));
+    (**(code **)(iVar35 + 0x1e4))(local_198,0);
+    g_pGameFlowState->field_0x68 = 0;
+    piVar19 = (int *)(*pcVar40)(0x636e636c);
+    iVar35 = *piVar19;
+    (**(code **)(iVar35 + 0xc))();
+    piVar19[7] = 0x72737670;
+    (**(code **)(iVar35 + 0xa4))(1,0);
+    (**(code **)(iVar35 + 0xa8))(1,0);
+    (**(code **)(iVar35 + 0x1c8))(0x53a,0);
+    iVar35 = *piVar25;
+    iVar34 = (**(code **)(iVar35 + 0x1ac))();
+    (**(code **)(iVar35 + 0xa0))();
+    (**(code **)(iVar35 + 0x1c))();
+    if (iVar34 == 0x72737670) {
+      pTVar26 = (TCommand *)AllocateWithFallbackHandler();
       local_4._0_1_ = 0xc;
-      local_1c4 = pcVar15;
-      if (pcVar15 == (code *)0x0) {
-        pcVar15 = (code *)0x0;
+      local_1c4.m_pchData = (char *)pTVar26;
+      if (pTVar26 == (TCommand *)0x0) {
+        pTVar26 = (TCommand *)0x0;
       }
       else {
-        TCommand::thunk_ConstructTurnEventPacketBase();
-        *(undefined ***)pcVar15 = &PTR_LAB_0065c0e8;
+        TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+        pTVar26->vftable = (TCommandVtbl *)&TPoseMessageDialogVtbl_0065c0e8;
       }
-      *(char **)(pcVar15 + 0x18) = local_1c8;
+      pTVar26[1].vftable = (TCommandVtbl *)local_1c8.m_pchData;
       local_4 = CONCAT31(local_4._1_3_,0xb);
       InitializeRangePairAndResetCursor();
-      (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
+      (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
     }
     local_4._0_1_ = 10;
-    *(char *)((int)g_pGameFlowState + 0x68) = local_1c9;
-    ReleaseSharedStringRefIfNotEmpty(&local_1d0);
+    g_pGameFlowState->field_0x68 = local_1c9;
+    CString::~CString(&local_1d0);
     local_4 = CONCAT31(local_4._1_3_,9);
-    ReleaseSharedStringRefIfNotEmpty(&local_1c0);
+    CString::~CString(&local_1c0);
     local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty(&local_1bc);
-    uVar10 = 1;
+    CString::~CString(&local_1bc);
+    uVar17 = 1;
     break;
   case 0xd:
-    TSimMgr::EmitTurnEventEAnd9SessionContextPackets();
-    uVar10 = 1;
+    TSimMgr::EmitTurnEventEAnd9SessionContextPackets(param_1);
+    uVar17 = 1;
     break;
   case 0xe:
     SetStateCodeAndUpdateZeroOrOutOfRangeFlag();
-    *(undefined1 *)(g_pLocalizationTable + 0x1a) = *(undefined1 *)((int)param_2 + 0x65);
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-              ((TToolBarCluster *)local_144,(char *)((int)param_2 + 0x3a));
+    g_pLocalizationTable->field_0x68 = *(undefined1 *)((int)param_2 + 0x65);
+    CString::CString(local_144,(char *)((int)param_2 + 0x3a));
     local_4 = 0xd;
-    AssignFromPtr(param_1 + 0x1d,local_144);
+    CString::AssignFromPtr((CString *)&param_1->field_0x74,local_144);
     local_4 = 0xffffffff;
-    ReleaseSharedStringRefIfNotEmpty(local_144);
-    uVar25 = param_2[0x18];
-    param_1[0x38].data_ptr = uVar25;
-    param_1[0x19].data_ptr = param_2[0x17];
-    param_1[0x36].data_ptr = 0x696e6974;
-    if (uVar25 == 0x6c6f6164) {
-      cVar6 = BuildSaveSlotPathAndProbeMetadata();
-      if (cVar6 == '\0') {
-        InitializeSharedStringRefFromEmpty(&local_1d4);
+    CString::~CString(local_144);
+    uVar37 = param_2[0x18];
+    *(uint *)&param_1->field_0xe0 = uVar37;
+    *(undefined4 *)&param_1->field_0x64 = param_2[0x17];
+    *(undefined4 *)&param_1->field_0xd8 = 0x696e6974;
+    if (uVar37 == 0x6c6f6164) {
+      cVar13 = BuildSaveSlotPathAndProbeMetadata();
+      if (cVar13 == '\0') {
+        CString::CString(&local_1d4);
         local_4 = 0xe;
         thunk_LoadUiStringResourceByGroupAndIndex();
-        local_1c4 = (code *)&stack0xfffffe0c;
+        local_1c4.m_pchData = &stack0xfffffe0c;
         thunk_AssignStringSharedRefAndReturnThis();
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-        pcVar15 = (code *)AllocateWithFallbackHandler();
+        pTVar26 = (TCommand *)AllocateWithFallbackHandler();
         local_4._0_1_ = 0xf;
-        local_1c4 = pcVar15;
-        if (pcVar15 != (code *)0x0) {
-          TCommand::thunk_ConstructTurnEventPacketBase();
-          *(undefined ***)pcVar15 = &PTR_LAB_0065bff0;
+        local_1c4.m_pchData = (char *)pTVar26;
+        if (pTVar26 != (TCommand *)0x0) {
+          TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+          pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
         }
         local_4 = CONCAT31(local_4._1_3_,0xe);
         InitializeRangePairAndResetCursor();
-        (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
+        (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d4);
-        uVar10 = 1;
+        CString::~CString(&local_1d4);
+        uVar17 = 1;
       }
       else {
-        *(undefined4 *)((int)g_pGameFlowState + 0x40) = 0;
-        *(undefined4 *)((int)g_pGameFlowState + 0xd8) = 0x676f696e;
+        *(undefined4 *)&g_pGameFlowState->field_0x40 = 0;
+        *(undefined4 *)&g_pGameFlowState->field_0xd8 = 0x676f696e;
         TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll();
-        uVar10 = 1;
+        uVar17 = 1;
       }
       break;
     }
-    if (uVar25 == 0x72616e64) {
+    if (uVar37 == 0x72616e64) {
       RebuildGlobalOrderManagersAndCapabilityState();
       thunk_RebuildMapContextAndGlobalMapState();
     }
     else {
-      if ((uVar25 < 0x73636e30) || (0x73637a39 < uVar25)) goto LAB_005485d8;
+      if ((uVar37 < 0x73636e30) || (0x73637a39 < uVar37)) goto LAB_005485d8;
       RebuildGlobalOrderManagersAndCapabilityState();
-      cVar6 = RecreateActiveMapContextAndInitializeGlobalMapState();
-      if (cVar6 == '\0') {
-        InitializeSharedStringRefFromEmpty(&local_1d4);
+      cVar13 = TOcean::RecreateActiveMapContextAndInitializeGlobalMapState
+                         ((TOcean *)g_pLocalizationTable);
+      if (cVar13 == '\0') {
+        CString::CString(&local_1d4);
         local_4 = 0x10;
         thunk_LoadUiStringResourceByGroupAndIndex();
-        local_1c4 = (code *)&stack0xfffffe0c;
+        local_1c4.m_pchData = &stack0xfffffe0c;
         thunk_AssignStringSharedRefAndReturnThis();
         thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
-        pcVar15 = (code *)AllocateWithFallbackHandler();
+        pTVar26 = (TCommand *)AllocateWithFallbackHandler();
         local_4._0_1_ = 0x11;
-        local_1c4 = pcVar15;
-        if (pcVar15 != (code *)0x0) {
-          TCommand::thunk_ConstructTurnEventPacketBase();
-          *(undefined ***)pcVar15 = &PTR_LAB_0065bff0;
+        local_1c4.m_pchData = (char *)pTVar26;
+        if (pTVar26 != (TCommand *)0x0) {
+          TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+          pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
         }
         local_4 = CONCAT31(local_4._1_3_,0x10);
         InitializeRangePairAndResetCursor();
-        (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
+        (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d4);
-        uVar10 = 1;
+        CString::~CString(&local_1d4);
+        uVar17 = 1;
         break;
       }
     }
-    if ((param_1[0x10].data_ptr == 0) || (iVar23 = CObject::IsKindOf(), iVar23 == 0)) {
+    if ((*(CObject **)&param_1->field_0x40 == (CObject *)0x0) ||
+       (iVar35 = CObject::IsKindOf(*(CObject **)&param_1->field_0x40), iVar35 == 0)) {
       RefreshMapAndMessageControlsForCurrentContext();
-      uVar10 = 1;
+      uVar17 = 1;
     }
     else {
       RefreshMapAndMessageControlsForCurrentContext();
-      uVar10 = 1;
+      uVar17 = 1;
     }
     break;
   case 0xf:
-    param_1[0x3a].data_ptr = param_1[0x3a].data_ptr & ~(1 << (*(byte *)(param_2 + 7) & 0x1f));
-    if (g_pLocalizationTable[0x11] == 1) {
+    *(uint *)&param_1->field_0xe8 =
+         *(uint *)&param_1->field_0xe8 & ~(1 << (*(byte *)(param_2 + 7) & 0x1f));
+    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
       InitializeEmitEventHeaderWithActiveNation();
-      local_1a0 = param_1[0x3a].data_ptr;
+      local_1a0 = *(uint *)&param_1->field_0xe8;
       goto LAB_00545aa0;
     }
     goto LAB_005485d8;
   case 0x10:
-    (**(code **)(*g_pLocalizationTable + 0x44))();
-    uVar10 = 1;
+    (*g_pLocalizationTable->vftable[8].slot_0x04)();
+    uVar17 = 1;
     break;
   case 0x11:
-    cVar6 = *(char *)(param_2 + 6);
-    if (cVar6 == '\x01') {
-      iVar23 = 0;
+    cVar13 = *(char *)(param_2 + 6);
+    if (cVar13 == '\x01') {
+      iVar35 = 0;
       if (param_2[7] == 0) {
-        iVar23 = g_pGlobalMapState[3];
+        iVar35 = *(int *)&g_pGlobalMapState->field_0xc;
       }
       else if (param_2[7] == 1) {
-        iVar23 = g_pGlobalMapState[4];
+        iVar35 = *(int *)&g_pGlobalMapState->field_0x10;
       }
-      *(byte *)(param_2[8] + iVar23) =
-           *(byte *)(param_2[8] + iVar23) & ~*(byte *)((int)param_2 + 0x26) |
+      *(byte *)(param_2[8] + iVar35) =
+           *(byte *)(param_2[8] + iVar35) & ~*(byte *)((int)param_2 + 0x26) |
            *(byte *)(param_2 + 9) & *(byte *)((int)param_2 + 0x26);
     }
-    else if (cVar6 == '\x02') {
-      iVar23 = 0;
+    else if (cVar13 == '\x02') {
+      iVar35 = 0;
       if (param_2[7] == 0) {
-        iVar23 = g_pGlobalMapState[3];
+        iVar35 = *(int *)&g_pGlobalMapState->field_0xc;
       }
       else if (param_2[7] == 1) {
-        iVar23 = g_pGlobalMapState[4];
+        iVar35 = *(int *)&g_pGlobalMapState->field_0x10;
       }
-      *(ushort *)(param_2[8] + iVar23) =
-           *(ushort *)(param_2[8] + iVar23) & ~*(ushort *)((int)param_2 + 0x26) |
+      *(ushort *)(param_2[8] + iVar35) =
+           *(ushort *)(param_2[8] + iVar35) & ~*(ushort *)((int)param_2 + 0x26) |
            *(ushort *)(param_2 + 9) & *(ushort *)((int)param_2 + 0x26);
     }
-    else if (cVar6 == '\x04') {
-      iVar23 = 0;
+    else if (cVar13 == '\x04') {
+      iVar35 = 0;
       if (param_2[7] == 0) {
-        iVar23 = g_pGlobalMapState[3];
+        iVar35 = *(int *)&g_pGlobalMapState->field_0xc;
       }
       else if (param_2[7] == 1) {
-        iVar23 = g_pGlobalMapState[4];
+        iVar35 = *(int *)&g_pGlobalMapState->field_0x10;
       }
-      *(uint *)(param_2[8] + iVar23) =
+      *(uint *)(param_2[8] + iVar35) =
            (int)(short)(*(ushort *)(param_2 + 9) & *(ushort *)((int)param_2 + 0x26)) |
-           *(uint *)(param_2[8] + iVar23) & ~(int)(short)*(ushort *)((int)param_2 + 0x26);
+           *(uint *)(param_2[8] + iVar35) & ~(int)(short)*(ushort *)((int)param_2 + 0x26);
     }
-    if (g_pLocalizationTable[0x11] == 1) {
-      puVar13 = local_1b8;
-      for (iVar23 = 10; iVar23 != 0; iVar23 = iVar23 + -1) {
-        *puVar13 = *param_2;
+    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+      puVar23 = local_1b8;
+      for (iVar35 = 10; iVar35 != 0; iVar35 = iVar35 + -1) {
+        *puVar23 = *param_2;
         param_2 = param_2 + 1;
-        puVar13 = puVar13 + 1;
+        puVar23 = puVar23 + 1;
       }
       local_1b8[1] = 0;
       local_1b8[0] = 0x11;
       local_1b8[3] = 0x28;
       local_1b8[2] = 0;
       thunk_EnqueueOrSendTurnEventPacketToNation();
-      uVar10 = 1;
+      uVar17 = 1;
       break;
     }
     goto LAB_005485d8;
   case 0x12:
-    (**(code **)(*g_pGlobalMapState + 0xb8))();
-    uVar10 = 1;
+    (*g_pGlobalMapState->vftable[0x17].GetTMapMgrClassNamePointer)();
+    uVar17 = 1;
     break;
   case 0x13:
     TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket();
-    uVar10 = 1;
+    uVar17 = 1;
     break;
   case 0x14:
-    (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[*(short *)(param_2 + 6)] + 0x38))();
-    uVar10 = 1;
+    (*g_apTerrainTypeDescriptorTable[*(short *)(param_2 + 6)]->vftable[7].
+      GetTCountryClassNamePointer)();
+    uVar17 = 1;
     break;
   case 0x15:
-    local_1c8 = (char *)0x17;
-    iVar23 = (&g_apNationStates)[*(short *)(param_2 + 6)];
-    *(undefined4 *)(iVar23 + 0x10) = param_2[7];
-    puVar13 = param_2 + 0x43;
-    puVar27 = (undefined4 *)(iVar23 + 0x280);
-    *(undefined4 *)(iVar23 + 0xac) = param_2[8];
-    puVar16 = (undefined2 *)(iVar23 + 0x13c);
-    puVar12 = (undefined2 *)((int)param_2 + 0x52);
+    local_1c8.m_pchData = (char *)0x17;
+    pTVar7 = g_apNationStates[*(short *)(param_2 + 6)];
+    *(undefined4 *)&pTVar7->field_0x10 = param_2[7];
+    puVar23 = param_2 + 0x43;
+    puVar41 = (undefined4 *)&pTVar7->field_0x280;
+    *(undefined4 *)&pTVar7->field_0xac = param_2[8];
+    pwVar24 = pTVar7->needTargetByType;
+    pwVar21 = (word *)((int)param_2 + 0x52);
     do {
-      puVar16[-0x17] = puVar12[-0x17];
-      *puVar16 = *puVar12;
-      puVar16[0x17] = puVar12[0x17];
-      puVar16[0x2e] = puVar12[0x2e];
-      puVar16[0x45] = puVar12[0x45];
-      iVar31 = 0x10;
-      puVar21 = puVar13;
-      puVar28 = puVar27;
+      pwVar24[-0x17] = pwVar21[-0x17];
+      *pwVar24 = *pwVar21;
+      pwVar24[0x17] = pwVar21[0x17];
+      pwVar24[0x2e] = pwVar21[0x2e];
+      pwVar24[0x45] = pwVar21[0x45];
+      iVar35 = 0x10;
+      puVar33 = puVar23;
+      puVar42 = puVar41;
       do {
-        uVar10 = *puVar21;
-        puVar21 = puVar21 + 0x17;
-        *puVar28 = uVar10;
-        puVar28 = puVar28 + 0x17;
-        iVar31 = iVar31 + -1;
-      } while (iVar31 != 0);
-      puVar12 = puVar12 + 1;
-      puVar16 = puVar16 + 1;
-      puVar27 = puVar27 + 1;
-      puVar13 = puVar13 + 1;
-      local_1c8 = local_1c8 + -1;
-    } while (local_1c8 != (char *)0x0);
-    *(undefined4 *)(iVar23 + 0x840) = param_2[0x1b3];
-    *(undefined4 *)(iVar23 + 0x844) = param_2[0x1b4];
-    *(undefined4 *)(iVar23 + 0x8f0) = param_2[0x1b5];
-    *(undefined1 *)(iVar23 + 0x8f4) = *(undefined1 *)(param_2 + 0x1b6);
-    *(undefined4 *)(iVar23 + 0x8f8) = param_2[0x1b7];
-    *(undefined1 *)(iVar23 + 0x8fc) = *(undefined1 *)(param_2 + 0x1b8);
-    uVar10 = 1;
+        uVar17 = *puVar33;
+        puVar33 = puVar33 + 0x17;
+        *puVar42 = uVar17;
+        puVar42 = puVar42 + 0x17;
+        iVar35 = iVar35 + -1;
+      } while (iVar35 != 0);
+      pwVar21 = pwVar21 + 1;
+      pwVar24 = pwVar24 + 1;
+      puVar41 = puVar41 + 1;
+      puVar23 = puVar23 + 1;
+      local_1c8.m_pchData = local_1c8.m_pchData + -1;
+    } while (local_1c8.m_pchData != (char *)0x0);
+    *(undefined4 *)&pTVar7->field_0x840 = param_2[0x1b3];
+    *(undefined4 *)&pTVar7->field_0x844 = param_2[0x1b4];
+    *(undefined4 *)&pTVar7->field_0x8f0 = param_2[0x1b5];
+    pTVar7->field_0x8f4 = *(undefined1 *)(param_2 + 0x1b6);
+    *(undefined4 *)&pTVar7->field_0x8f8 = param_2[0x1b7];
+    pTVar7->field_0x8fc = *(undefined1 *)(param_2 + 0x1b8);
+    uVar17 = 1;
     break;
   case 0x16:
-    (**(code **)(*(int *)(&g_apNationStates)[*(short *)(param_2 + 6)] + 0x8c))();
-    uVar10 = 1;
+    (*g_apNationStates[*(short *)(param_2 + 6)]->vftable[0x11].slot_0x04)();
+    uVar17 = 1;
     break;
   case 0x17:
     if (*(char *)((int)param_2 + 0x1a) == '\0') {
-      (**(code **)(*(int *)(&g_apNationStates)[*(short *)(param_2 + 6)] + 0x1f0))();
-      uVar10 = 1;
+      (*g_apNationStates[*(short *)(param_2 + 6)]->vftable[0x3e].GetTCountryClassNamePointer)();
+      uVar17 = 1;
     }
     else {
-      (**(code **)(*(int *)(&g_apNationStates)[*(short *)(param_2 + 6)] + 0x1ec))();
-      uVar10 = 1;
+      (*g_apNationStates[*(short *)(param_2 + 6)]->vftable[0x3d].slot_0x04)();
+      uVar17 = 1;
     }
     break;
   case 0x18:
-    piVar14 = &g_apNationStates;
-    puVar12 = (undefined2 *)((int)param_2 + 0x15e);
+    ppTVar20 = g_apNationStates;
+    puVar28 = (undefined2 *)((int)param_2 + 0x15e);
     do {
-      if (*piVar14 != 0) {
-        puVar17 = (undefined2 *)(*piVar14 + 0xe0);
-        iVar23 = 0x17;
-        puVar16 = puVar12;
+      if (*ppTVar20 != (TGreatPower *)0x0) {
+        puVar30 = (undefined2 *)&(*ppTVar20)->field_0xe0;
+        iVar35 = 0x17;
+        puVar22 = puVar28;
         do {
-          puVar17[-0x17] = puVar16[-0xa1];
-          *puVar17 = *puVar16;
-          puVar17[-0x66] = puVar16[0xa1];
-          puVar17 = puVar17 + 1;
-          iVar23 = iVar23 + -1;
-          puVar16 = puVar16 + 1;
-        } while (iVar23 != 0);
+          puVar30[-0x17] = puVar22[-0xa1];
+          *puVar30 = *puVar22;
+          puVar30[-0x66] = puVar22[0xa1];
+          puVar30 = puVar30 + 1;
+          iVar35 = iVar35 + -1;
+          puVar22 = puVar22 + 1;
+        } while (iVar35 != 0);
       }
-      piVar14 = piVar14 + 1;
-      puVar12 = puVar12 + 0x17;
-    } while ((int)piVar14 < 0x6a438c);
-    uVar10 = 1;
+      ppTVar20 = ppTVar20 + 1;
+      puVar28 = puVar28 + 0x17;
+    } while ((int)ppTVar20 < 0x6a438c);
+    uVar17 = 1;
     break;
   case 0x19:
-    sVar9 = *(short *)(param_2 + 7);
-    sVar8 = UiRuntimeContext::GetActiveNationId();
-    if (sVar9 != sVar8) {
-      piVar14 = (int *)(&g_apNationStates)[sVar9];
-      iVar23 = 0x5c;
-      *(undefined2 *)((int)piVar14 + 0xa6) = *(undefined2 *)((int)param_2 + 0x1e);
+    sVar16 = *(short *)(param_2 + 7);
+    sVar15 = UiRuntimeContext::GetActiveNationId();
+    if (sVar16 != sVar15) {
+      pTVar7 = g_apNationStates[sVar16];
+      iVar35 = 0x5c;
+      pTVar7->needCapA6 = *(word *)((int)param_2 + 0x1e);
       do {
-        *(undefined2 *)(iVar23 + piVar14[0x225]) = *(undefined2 *)((int)param_2 + iVar23 + -0x3c);
-        iVar23 = iVar23 + 2;
-      } while (iVar23 < 0x78);
-      iVar23 = *piVar14;
-      (**(code **)(iVar23 + 0x164))();
-      local_1c4 = *(code **)(iVar23 + 0x18c);
-      iVar23 = 0;
+        *(undefined2 *)((int)&pTVar7->city->vftable + iVar35) =
+             *(undefined2 *)((int)param_2 + iVar35 + -0x3c);
+        iVar35 = iVar35 + 2;
+      } while (iVar35 < 0x78);
+      pTVar8 = pTVar7->vftable;
+      (*pTVar8[0x2c].slot_0x04)();
+      local_1c4.m_pchData = (char *)pTVar8[0x31].slot_0x04;
+      iVar35 = 0;
       do {
-        (*local_1c4)();
-        iVar23 = iVar23 + 1;
-      } while (iVar23 < 0x17);
-      iVar23 = *piVar14;
-      (**(code **)(iVar23 + 0x168))();
-      local_1c4 = *(code **)(iVar23 + 0x1a4);
-      iVar23 = 0;
+        (*(code *)local_1c4.m_pchData)();
+        iVar35 = iVar35 + 1;
+      } while (iVar35 < 0x17);
+      pTVar8 = pTVar7->vftable;
+      (*pTVar8[0x2d].GetTCountryClassNamePointer)();
+      local_1c4.m_pchData = (char *)pTVar8[0x34].slot_0x04;
+      iVar35 = 0;
       do {
-        (*local_1c4)();
-        iVar23 = iVar23 + 1;
-      } while (iVar23 < 0x11);
-      (**(code **)(*piVar14 + 0x1a8))();
-      piVar14 = piVar14 + 0x38;
-      iVar23 = 0x17;
-      puVar12 = (undefined2 *)((int)param_2 + 0xba);
+        (*(code *)local_1c4.m_pchData)();
+        iVar35 = iVar35 + 1;
+      } while (iVar35 < 0x11);
+      (*pTVar7->vftable[0x35].GetTCountryClassNamePointer)();
+      puVar22 = (undefined2 *)&pTVar7->field_0xe0;
+      iVar35 = 0x17;
+      puVar28 = (undefined2 *)((int)param_2 + 0xba);
       do {
-        *(undefined2 *)((int)piVar14 + -0x2e) = puVar12[-0x17];
-        *(undefined2 *)piVar14 = *puVar12;
-        *(undefined2 *)(piVar14 + -0x33) = puVar12[0x17];
-        piVar14 = (int *)((int)piVar14 + 2);
-        iVar23 = iVar23 + -1;
-        puVar12 = puVar12 + 1;
-      } while (iVar23 != 0);
-      uVar10 = 1;
+        puVar22[-0x17] = puVar28[-0x17];
+        *puVar22 = *puVar28;
+        puVar22[-0x66] = puVar28[0x17];
+        puVar22 = puVar22 + 1;
+        iVar35 = iVar35 + -1;
+        puVar28 = puVar28 + 1;
+      } while (iVar35 != 0);
+      uVar17 = 1;
       break;
     }
     goto LAB_005485d8;
   case 0x1a:
-    if (g_pLocalizationTable[0x11] == 2) {
-      piVar14 = &g_apNationStates;
-      puVar12 = (undefined2 *)((int)param_2 + 0x26);
+    if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+      ppTVar20 = g_apNationStates;
+      puVar28 = (undefined2 *)((int)param_2 + 0x26);
       do {
-        if (*piVar14 != 0) {
-          *(undefined2 *)(*piVar14 + 0xa2) = *puVar12;
+        if (*ppTVar20 != (TGreatPower *)0x0) {
+          *(undefined2 *)&(*ppTVar20)->field_0xa2 = *puVar28;
         }
-        piVar14 = piVar14 + 1;
-        puVar12 = puVar12 + 1;
-      } while ((int)piVar14 < 0x6a438c);
+        ppTVar20 = ppTVar20 + 1;
+        puVar28 = puVar28 + 1;
+      } while ((int)ppTVar20 < 0x6a438c);
     }
-    sVar9 = *(short *)(param_2 + 7);
-    sVar8 = UiRuntimeContext::GetActiveNationId();
-    if (sVar9 != sVar8) {
-      (**(code **)(*g_pUiRuntimeContext + 0x98))();
-      uVar10 = 1;
+    sVar16 = *(short *)(param_2 + 7);
+    sVar15 = UiRuntimeContext::GetActiveNationId();
+    if (sVar16 != sVar15) {
+      (**(code **)(g_pUiRuntimeContext->vftable + 0x98))();
+      uVar17 = 1;
       break;
     }
-    if (g_pLocalizationTable[0x11] == 2) {
-      (**(code **)(*g_pUiRuntimeContext + 0x98))();
-      uVar10 = 1;
+    if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+      (**(code **)(g_pUiRuntimeContext->vftable + 0x98))();
+      uVar17 = 1;
       break;
     }
     goto LAB_005485d8;
   case 0x1b:
-    (**(code **)(*(int *)(&g_apNationStates)[*(short *)(param_2 + 7)] + 0x1b0))();
-    uVar10 = 1;
+    (*g_apNationStates[*(short *)(param_2 + 7)]->vftable[0x36].GetTCountryClassNamePointer)();
+    uVar17 = 1;
     break;
   case 0x1c:
-    (**(code **)(*(int *)g_pNationInteractionStateManager + 0x60))();
-    if (g_pLocalizationTable[0x11] == 1) {
-      local_1c4 = (code *)AllocateWithFallbackHandler();
+    (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)();
+    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+      local_1c4.m_pchData = (char *)AllocateWithFallbackHandler();
       local_4 = 0x14;
-      if (local_1c4 != (code *)0x0) {
-        TNextTradeCommand::ConstructTNextTradeCommandBaseState();
+      if ((TNextTradeCommand *)local_1c4.m_pchData != (TNextTradeCommand *)0x0) {
+        TNextTradeCommand::ConstructTNextTradeCommandBaseState
+                  ((TNextTradeCommand *)local_1c4.m_pchData);
       }
       local_4 = 0xffffffff;
       InitializeRangePairFromDiplomacyConstants();
-      (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
-      uVar10 = 1;
+      (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+      uVar17 = 1;
       break;
     }
     goto LAB_005485d8;
   case 0x1d:
-    sVar9 = UiRuntimeContext::GetActiveNationId();
+    sVar16 = UiRuntimeContext::GetActiveNationId();
     if (*(char *)(param_2 + 7) == 'i') {
-      (**(code **)(*(int *)(&g_apNationStates)[sVar9] + 0x27c))();
-      uVar10 = 1;
+      (*g_apNationStates[sVar16]->vftable[0x4f].slot_0x04)();
+      uVar17 = 1;
     }
     else {
-      (**(code **)(*(int *)(&g_apNationStates)[sVar9] + 0x280))();
-      uVar10 = 1;
+      (*g_apNationStates[sVar16]->vftable[0x50].GetTCountryClassNamePointer)();
+      uVar17 = 1;
     }
     break;
   case 0x1e:
     if (*(char *)((int)param_2 + 0x1f) == 'a') {
       if (*(char *)((int)param_2 + 0x21) == '\0') {
-        (**(code **)(*g_pDiplomacyTurnStateManager + 0x7c))();
+        (*g_pDiplomacyTurnStateManager->vftable[0xf].slot_0x04)();
       }
       else if (*(char *)(param_2 + 8) == '\0') {
-        (**(code **)(*(int *)(&g_apNationStates)[*(char *)(param_2 + 7)] + 0x284))();
+        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable[0x50].slot_0x04)();
       }
       else {
-        (**(code **)(*(int *)(&g_apNationStates)[*(char *)(param_2 + 7)] + 0x284))();
+        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable[0x50].slot_0x04)();
       }
     }
     else if ((*(char *)((int)param_2 + 0x1f) == 'i') && (*(char *)((int)param_2 + 0x21) != '\0')) {
-      cVar6 = (**(code **)(*g_pDiplomacyTurnStateManager + 0x44))();
-      if (cVar6 == '\0') {
-        (**(code **)(*(int *)(&g_apNationStates)[*(char *)(param_2 + 7)] + 0x284))();
+      cVar13 = (*g_pDiplomacyTurnStateManager->vftable[8].slot_0x04)();
+      if (cVar13 == '\0') {
+        (*g_apNationStates[*(char *)(param_2 + 7)]->vftable[0x50].slot_0x04)();
       }
       else {
-        piVar14 = (int *)(&g_apSecondaryNationStateSlots)[*(char *)((int)param_2 + 0x1d)];
-        sVar9 = *(short *)((int)piVar14 + 0xe);
-        if (sVar9 < 200) {
-          if (sVar9 < 100) {
-            sVar9 = (short)piVar14[3];
+        pTVar6 = g_apSecondaryNationStateSlots[*(char *)((int)param_2 + 0x1d)];
+        sVar16 = *(short *)&pTVar6->field_0xe;
+        if (sVar16 < 200) {
+          if (sVar16 < 100) {
+            sVar16 = *(short *)&pTVar6->field_0xc;
           }
           else {
-            sVar9 = sVar9 + -100;
+            sVar16 = sVar16 + -100;
           }
         }
         else {
-          sVar9 = sVar9 + -200;
+          sVar16 = sVar16 + -200;
         }
-        if (sVar9 != *(char *)(param_2 + 7)) {
-          (**(code **)(*piVar14 + 0x4c))();
+        if (sVar16 != *(char *)(param_2 + 7)) {
+          (*pTVar6->vftable[9].ApplyJoinEmpireModeForTargetNation)();
         }
       }
     }
-    pcVar15 = (code *)AllocateWithFallbackHandler();
+    pTVar26 = (TCommand *)AllocateWithFallbackHandler();
     local_4 = 0x13;
-    local_1c4 = pcVar15;
-    if (pcVar15 != (code *)0x0) {
-      TCommand::thunk_ConstructTurnEventPacketBase();
-      *(undefined ***)pcVar15 = &TNextTradeCommand::_vftable_;
+    local_1c4.m_pchData = (char *)pTVar26;
+    if (pTVar26 != (TCommand *)0x0) {
+      TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+      pTVar26->vftable = (TCommandVtbl *)&TNextTradeCommand::_vftable_;
     }
     local_4 = 0xffffffff;
     thunk_DispatchUiPacketWithTagNEXT();
-    uVar10 = 1;
+    uVar17 = 1;
     break;
   case 0x1f:
-    uVar25 = param_2[6];
-    if (uVar25 < 0x61636565) {
-      if (uVar25 == 0x61636564) {
-        sVar9 = UiRuntimeContext::GetActiveNationId();
-        iVar23 = param_2[7];
-        InitializeSharedStringRefFromEmpty(&local_1d0);
+    uVar37 = param_2[6];
+    if (uVar37 < 0x61636565) {
+      if (uVar37 == 0x61636564) {
+        sVar16 = UiRuntimeContext::GetActiveNationId();
+        iVar35 = param_2[7];
+        CString::CString(&local_1d0);
         local_4 = 0x1f;
-        InitializeSharedStringRefFromEmpty(&local_1c8);
+        CString::CString(&local_1c8);
         local_4._0_1_ = 0x20;
-        InitializeSharedStringRefFromEmpty(&local_1d4);
+        CString::CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x21);
         thunk_LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
-        scanBracketExpressions(g_pLocalizationTable,&local_1c8,(char *)local_1d0);
+        scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d0.m_pchData);
         CreateModalMessageCommandAndQueue();
-        if (sVar9 == iVar23) {
+        if (sVar16 == iVar35) {
           CreateAndQueueTurnEventPacketTagGWEN();
         }
         local_4._0_1_ = 0x20;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d4);
+        CString::~CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x1f);
-        ReleaseSharedStringRefIfNotEmpty(&local_1c8);
+        CString::~CString(&local_1c8);
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d0);
-        uVar10 = 1;
+        CString::~CString(&local_1d0);
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x61626469) {
-        InitializeSharedStringRefFromEmpty(&local_1d0);
+      if (uVar37 == 0x61626469) {
+        CString::CString(&local_1d0);
         local_4 = 0x1c;
-        InitializeSharedStringRefFromEmpty(&local_1c8);
+        CString::CString(&local_1c8);
         local_4._0_1_ = 0x1d;
-        InitializeSharedStringRefFromEmpty(&local_1d4);
+        CString::CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x1e);
         thunk_LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
-        scanBracketExpressions(g_pLocalizationTable,&local_1c8,(char *)local_1d0);
+        scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d0.m_pchData);
         CreateModalMessageCommandAndQueue();
-        if (g_pLocalizationTable[0x11] == 1) {
+        if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
           ReplaceNationStateForSlotAndRefreshStatus();
         }
         local_4._0_1_ = 0x1d;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d4);
+        CString::~CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x1c);
-        ReleaseSharedStringRefIfNotEmpty(&local_1c8);
+        CString::~CString(&local_1c8);
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d0);
-        uVar10 = 1;
+        CString::~CString(&local_1d0);
+        uVar17 = 1;
         break;
       }
     }
-    else if (uVar25 < 0x64656876) {
-      if (uVar25 == 0x64656875) {
+    else if (uVar37 < 0x64656876) {
+      if (uVar37 == 0x64656875) {
         ReplaceNationStateForSlotAndRefreshStatus();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x6367616d) {
-        pcVar15 = (code *)AllocateWithFallbackHandler();
+      if (uVar37 == 0x6367616d) {
+        pTVar26 = (TCommand *)AllocateWithFallbackHandler();
         local_4 = 0x25;
-        local_1c4 = pcVar15;
-        if (pcVar15 != (code *)0x0) {
-          TCommand::thunk_ConstructTurnEventPacketBase();
-          *(undefined ***)pcVar15 = &PTR_LAB_0065bff0;
+        local_1c4.m_pchData = (char *)pTVar26;
+        if (pTVar26 != (TCommand *)0x0) {
+          TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+          pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
         }
         local_4 = 0xffffffff;
         InitializeRangePairAndResetCursor();
-        (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
-        InitializeSharedStringRefFromEmpty(&local_1d4);
+        (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
+        CString::CString(&local_1d4);
         local_4 = 0x26;
         thunk_LoadUiStringResourceByGroupAndIndex();
         CreateModalMessageCommandAndQueue();
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d4);
-        uVar10 = 1;
+        CString::~CString(&local_1d4);
+        uVar17 = 1;
         break;
       }
     }
-    else if (uVar25 < 0x6c6f7366) {
-      if (uVar25 == 0x6c6f7365) {
-        (**(code **)(*(int *)(&g_apNationStates)[param_2[7]] + 0x2ac))();
-        uVar10 = 1;
+    else if (uVar37 < 0x6c6f7366) {
+      if (uVar37 == 0x6c6f7365) {
+        (*g_apNationStates[param_2[7]]->vftable[0x55].slot_0x04)();
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x666f6666) {
-        InitializeSharedStringRefFromEmpty(&local_1d4);
+      if (uVar37 == 0x666f6666) {
+        CString::CString(&local_1d4);
         local_4 = 0x1a;
         thunk_LoadUiStringResourceByGroupAndIndex();
         CreateModalMessageCommandAndQueue();
-        pcVar15 = (code *)AllocateWithFallbackHandler();
+        pTVar26 = (TCommand *)AllocateWithFallbackHandler();
         local_4._0_1_ = 0x1b;
-        local_1c4 = pcVar15;
-        if (pcVar15 != (code *)0x0) {
-          TCommand::thunk_ConstructTurnEventPacketBase();
-          *(undefined ***)pcVar15 = &PTR_LAB_0065bff0;
+        local_1c4.m_pchData = (char *)pTVar26;
+        if (pTVar26 != (TCommand *)0x0) {
+          TCommand::thunk_ConstructTurnEventPacketBase(pTVar26);
+          pTVar26->vftable = (TCommandVtbl *)&TCancelGameOptionsCommandVtbl_0065bff0;
         }
         local_4 = CONCAT31(local_4._1_3_,0x1a);
         InitializeRangePairAndResetCursor();
-        (**(code **)(*(int *)g_pGlobalUiRootController + 0x38))();
+        (*g_pGlobalUiRootController->vftable[7].GetTEventHandlerClassNamePointer)();
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d4);
-        uVar10 = 1;
+        CString::~CString(&local_1d4);
+        uVar17 = 1;
         break;
       }
     }
-    else if (uVar25 < 0x6e616d66) {
-      if (uVar25 == 0x6e616d65) {
+    else if (uVar37 < 0x6e616d66) {
+      if (uVar37 == 0x6e616d65) {
         TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x6c6f7374) {
-        uVar25 = param_2[7];
-        sVar9 = UiRuntimeContext::GetActiveNationId();
-        local_1c9 = (uVar25 & 0xff) == (int)sVar9;
-        InitializeSharedStringRefFromEmpty(&local_1d0);
+      if (uVar37 == 0x6c6f7374) {
+        uVar37 = param_2[7];
+        sVar16 = UiRuntimeContext::GetActiveNationId();
+        local_1c9 = (uVar37 & 0xff) == (int)sVar16;
+        CString::CString(&local_1d0);
         local_4 = 0x22;
-        InitializeSharedStringRefFromEmpty(&local_1c8);
+        CString::CString(&local_1c8);
         local_4._0_1_ = 0x23;
-        InitializeSharedStringRefFromEmpty(&local_1d4);
+        CString::CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x24);
         thunk_LoadUiStringResourceByGroupAndIndex();
         FormatOverlayTerrainLabelText();
-        scanBracketExpressions(g_pLocalizationTable,&local_1c8,(char *)local_1d0);
+        scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d0.m_pchData);
         CreateModalMessageCommandAndQueue();
-        if ((local_1c9 != '\0') && (g_pLocalizationTable[0x11] == 2)) {
+        if ((local_1c9 != '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 2)) {
           CreateAndQueueTurnEventPacketTagGWEN();
         }
         local_4._0_1_ = 0x23;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d4);
+        CString::~CString(&local_1d4);
         local_4 = CONCAT31(local_4._1_3_,0x22);
-        ReleaseSharedStringRefIfNotEmpty(&local_1c8);
+        CString::~CString(&local_1c8);
         local_4 = 0xffffffff;
-        ReleaseSharedStringRefIfNotEmpty(&local_1d0);
-        uVar10 = 1;
+        CString::~CString(&local_1d0);
+        uVar17 = 1;
         break;
       }
     }
-    else if (uVar25 < 0x71756975) {
-      if ((uVar25 == 0x71756974) || (uVar25 == 0x6e657767)) {
-        if (g_pLocalizationTable[0x11] == 2) {
-          InitializeSharedStringRefFromEmpty(&local_1d0);
+    else if (uVar37 < 0x71756975) {
+      if ((uVar37 == 0x71756974) || (uVar37 == 0x6e657767)) {
+        if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+          CString::CString(&local_1d0);
           local_4 = 0x16;
           thunk_LoadUiStringResourceByGroupAndIndex();
           CreateModalMessageCommandAndQueue();
           local_4 = 0xffffffff;
-          ReleaseSharedStringRefIfNotEmpty(&local_1d0);
+          CString::~CString(&local_1d0);
         }
-        if ((g_pLocalizationTable[0x11] == 2) || (param_2[6] == 0x6e657767)) {
+        if ((*(int *)&g_pLocalizationTable->field_0x44 == 2) || (param_2[6] == 0x6e657767)) {
           CreateAndQueueTurnEventPacketTagGWEN();
-          uVar10 = 1;
+          uVar17 = 1;
         }
         else {
           PostWmCloseToMainThreadWindow();
-          uVar10 = 1;
+          uVar17 = 1;
         }
         break;
       }
     }
-    else if (uVar25 < 0x72657070) {
-      if (uVar25 == 0x7265706f) {
-        uVar25 = param_2[7] & 7;
-        if ((((&g_apNationStates)[uVar25] == 0) && (iVar23 = FUN_00405a3d(), param_2[1] == iVar23))
-           && (g_pLocalizationTable[0x11] == 1)) {
-          bVar5 = true;
+    else if (uVar37 < 0x72657070) {
+      if (uVar37 == 0x7265706f) {
+        uVar37 = param_2[7] & 7;
+        if (((g_apNationStates[uVar37] == (TGreatPower *)0x0) &&
+            (iVar35 = FUN_00405a3d(), param_2[1] == iVar35)) &&
+           (*(int *)&g_pLocalizationTable->field_0x44 == 1)) {
+          bVar10 = true;
         }
         else {
-          bVar5 = false;
+          bVar10 = false;
         }
-        if ((uVar25 < 7) &&
-           ((bVar5 || (((&g_apNationStates)[uVar25] != 0 &&
-                       ((iVar23 = FUN_00405a3d(), param_2[1] == iVar23 ||
-                        (cVar6 = (**(code **)(*(int *)(&g_apNationStates)[uVar25] + 0xa0))(),
-                        cVar6 != '\0')))))))) {
-          uVar10 = param_2[1];
-          local_1c4 = (code *)local_1d0[uVar25 + 0x25].data_ptr;
-          pcVar26 = (char *)local_1d0[uVar25 + 0x1e].data_ptr;
-          local_1d0 = local_1d0 + uVar25 + 0x1e;
+        if ((uVar37 < 7) &&
+           ((bVar10 ||
+            ((g_apNationStates[uVar37] != (TGreatPower *)0x0 &&
+             ((iVar35 = FUN_00405a3d(), param_2[1] == iVar35 ||
+              (cVar13 = (*g_apNationStates[uVar37]->vftable[0x14].GetTCountryClassNamePointer)(),
+              cVar13 != '\0')))))))) {
+          uVar17 = param_2[1];
+                    /* WARNING: Load size is inaccurate */
+          local_1c4.m_pchData = local_1d0.m_pchData[uVar37 * 4 + 0x94];
+          pcVar38 = *(char **)(local_1d0.m_pchData + uVar37 * 4 + 0x78);
+          local_1d0.m_pchData = local_1d0.m_pchData + uVar37 * 4 + 0x78;
           local_1b8[4] = 0x74696d65;
           local_1a4 = UiRuntimeContext::GetActiveNationId();
-          uVar18 = 0xffffffff;
+          uVar31 = 0xffffffff;
           do {
-            pcVar24 = pcVar26;
-            if (uVar18 == 0) break;
-            uVar18 = uVar18 - 1;
-            pcVar24 = pcVar26 + 1;
-            cVar6 = *pcVar26;
-            pcVar26 = pcVar24;
-          } while (cVar6 != '\0');
+            pcVar18 = pcVar38;
+            if (uVar31 == 0) break;
+            uVar31 = uVar31 - 1;
+            pcVar18 = pcVar38 + 1;
+            cVar13 = *pcVar38;
+            pcVar38 = pcVar18;
+          } while (cVar13 != '\0');
           local_1b8[1] = 0;
           local_1b8[0] = 9;
-          uVar18 = ~uVar18;
+          uVar31 = ~uVar31;
           local_1b8[2] = 0;
           local_1b8[3] = 100;
-          local_1a0 = CONCAT31(local_1a0._1_3_,(sbyte)uVar25);
-          pcVar26 = pcVar24 + -uVar18;
-          pcVar24 = local_198;
-          for (uVar19 = uVar18 >> 2; uVar19 != 0; uVar19 = uVar19 - 1) {
-            *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-            pcVar26 = pcVar26 + 4;
-            pcVar24 = pcVar24 + 4;
+          local_1a0 = CONCAT31(local_1a0._1_3_,(sbyte)uVar37);
+          pcVar38 = pcVar18 + -uVar31;
+          pcVar18 = local_198;
+          for (uVar32 = uVar31 >> 2; uVar32 != 0; uVar32 = uVar32 - 1) {
+            *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+            pcVar38 = pcVar38 + 4;
+            pcVar18 = pcVar18 + 4;
           }
-          for (uVar18 = uVar18 & 3; uVar18 != 0; uVar18 = uVar18 - 1) {
-            *pcVar24 = *pcVar26;
-            pcVar26 = pcVar26 + 1;
-            pcVar24 = pcVar24 + 1;
+          for (uVar31 = uVar31 & 3; uVar31 != 0; uVar31 = uVar31 - 1) {
+            *pcVar18 = *pcVar38;
+            pcVar38 = pcVar38 + 1;
+            pcVar18 = pcVar18 + 1;
           }
-          uVar18 = 0xffffffff;
-          pcVar15 = local_1c4;
+          uVar31 = 0xffffffff;
+          CVar46.m_pchData = local_1c4.m_pchData;
           do {
-            pcVar32 = pcVar15;
-            if (uVar18 == 0) break;
-            uVar18 = uVar18 - 1;
-            pcVar32 = pcVar15 + 1;
-            cVar2 = *pcVar15;
-            pcVar15 = pcVar32;
-          } while (cVar2 != (code)0x0);
-          uVar18 = ~uVar18;
-          pcVar15 = pcVar32 + -uVar18;
-          pcVar32 = (code *)local_177;
-          for (uVar19 = uVar18 >> 2; uVar19 != 0; uVar19 = uVar19 - 1) {
-            *(undefined4 *)pcVar32 = *(undefined4 *)pcVar15;
-            pcVar15 = pcVar15 + 4;
-            pcVar32 = pcVar32 + 4;
+            pcVar38 = CVar46.m_pchData;
+            if (uVar31 == 0) break;
+            uVar31 = uVar31 - 1;
+            pcVar38 = CVar46.m_pchData + 1;
+            cVar13 = *CVar46.m_pchData;
+            CVar46.m_pchData = pcVar38;
+          } while (cVar13 != '\0');
+          uVar31 = ~uVar31;
+          pcVar38 = pcVar38 + -uVar31;
+          pcVar18 = local_177;
+          for (uVar32 = uVar31 >> 2; uVar32 != 0; uVar32 = uVar32 - 1) {
+            *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+            pcVar38 = pcVar38 + 4;
+            pcVar18 = pcVar18 + 4;
           }
-          for (uVar18 = uVar18 & 3; uVar18 != 0; uVar18 = uVar18 - 1) {
-            *pcVar32 = *pcVar15;
-            pcVar15 = pcVar15 + 1;
-            pcVar32 = pcVar32 + 1;
+          for (uVar31 = uVar31 & 3; uVar31 != 0; uVar31 = uVar31 - 1) {
+            *pcVar18 = *pcVar38;
+            pcVar38 = pcVar38 + 1;
+            pcVar18 = pcVar18 + 1;
           }
-          local_19c = uVar10;
+          local_19c = uVar17;
           thunk_EnqueueOrSendTurnEventPacketToNation();
-          InitializeSharedStringRefFromEmpty(&local_1c8);
+          CString::CString(&local_1c8);
           local_4 = 0x17;
-          InitializeSharedStringRefFromEmpty(&local_1d4);
+          CString::CString(&local_1d4);
           local_4._0_1_ = 0x18;
           thunk_LoadUiStringResourceByGroupAndIndex();
-          TToolBarCluster::StringSharedRef_AssignFromPtr((TToolBarCluster *)&local_1bc,local_1d0);
+          CString::StringSharedRef_AssignFromPtr(&local_1bc,(CString *)local_1d0.m_pchData);
           local_4 = CONCAT31(local_4._1_3_,0x19);
-          scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d4);
+          scanBracketExpressions(g_pLocalizationTable,&local_1c8,local_1d4.m_pchData);
           local_118 = 0x74696d65;
           local_114 = UiRuntimeContext::GetActiveNationId();
           local_124 = 0;
@@ -1418,40 +1450,40 @@ LAB_005464fd:
           local_11c = 0x11c;
           local_10 = 0xff;
           UiRuntimeContext::GetActiveNationId();
-          uVar18 = 0xffffffff;
+          uVar31 = 0xffffffff;
           do {
-            pcVar26 = local_1c8;
-            if (uVar18 == 0) break;
-            uVar18 = uVar18 - 1;
-            pcVar26 = local_1c8 + 1;
-            cVar6 = *local_1c8;
-            local_1c8 = pcVar26;
-          } while (cVar6 != '\0');
-          uVar18 = ~uVar18;
-          pcVar26 = pcVar26 + -uVar18;
-          pcVar24 = local_110;
-          for (uVar19 = uVar18 >> 2; uVar19 != 0; uVar19 = uVar19 - 1) {
-            *(undefined4 *)pcVar24 = *(undefined4 *)pcVar26;
-            pcVar26 = pcVar26 + 4;
-            pcVar24 = pcVar24 + 4;
+            pcVar38 = local_1c8.m_pchData;
+            if (uVar31 == 0) break;
+            uVar31 = uVar31 - 1;
+            pcVar38 = local_1c8.m_pchData + 1;
+            cVar13 = *local_1c8.m_pchData;
+            local_1c8.m_pchData = pcVar38;
+          } while (cVar13 != '\0');
+          uVar31 = ~uVar31;
+          pcVar38 = pcVar38 + -uVar31;
+          pcVar18 = local_110;
+          for (uVar32 = uVar31 >> 2; uVar32 != 0; uVar32 = uVar32 - 1) {
+            *(undefined4 *)pcVar18 = *(undefined4 *)pcVar38;
+            pcVar38 = pcVar38 + 4;
+            pcVar18 = pcVar18 + 4;
           }
-          for (uVar18 = uVar18 & 3; uVar18 != 0; uVar18 = uVar18 - 1) {
-            *pcVar24 = *pcVar26;
-            pcVar26 = pcVar26 + 1;
-            pcVar24 = pcVar24 + 1;
+          for (uVar31 = uVar31 & 3; uVar31 != 0; uVar31 = uVar31 - 1) {
+            *pcVar18 = *pcVar38;
+            pcVar38 = pcVar38 + 1;
+            pcVar18 = pcVar18 + 1;
           }
           local_128 = 0xc;
           local_f = 0xff;
           local_120 = 0;
-          local_10 = -1 - ('\x01' << (sbyte)uVar25);
+          local_10 = -1 - ('\x01' << (sbyte)uVar37);
           thunk_EnqueueOrSendTurnEventPacketToNation();
           local_4._0_1_ = 0x18;
-          ReleaseSharedStringRefIfNotEmpty(&local_1bc);
+          CString::~CString(&local_1bc);
           local_4 = CONCAT31(local_4._1_3_,0x17);
-          ReleaseSharedStringRefIfNotEmpty(&local_1d4);
+          CString::~CString(&local_1d4);
           local_4 = 0xffffffff;
-          ReleaseSharedStringRefIfNotEmpty(&local_1c8);
-          uVar10 = 1;
+          CString::~CString(&local_1c8);
+          uVar17 = 1;
         }
         else {
           local_1b8[4] = 0x74696d65;
@@ -1463,164 +1495,166 @@ LAB_005464fd:
           local_1a0 = 0x666f6666;
           local_19c = 0x29;
           thunk_EnqueueOrSendTurnEventPacketToNation();
-          uVar10 = 1;
+          uVar17 = 1;
         }
         break;
       }
-      if ((uVar25 == 0x72656765) && (g_pLocalizationTable[0x11] == 2)) {
+      if ((uVar37 == 0x72656765) && (*(int *)&g_pLocalizationTable->field_0x44 == 2)) {
         (**(code **)(*g_pStrategicMapViewSystem + 0x78))();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
     }
     else {
-      if (uVar25 == 0x73617665) {
-        *(code *)&param_1[0x3d].data_ptr = *(code *)(param_2 + 7);
+      if (uVar37 == 0x73617665) {
+        param_1->field_0xf4 = *(undefined1 *)(param_2 + 7);
         thunk_SaveGameWithModeAndOptionalLabel();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x74726164) {
-        sVar9 = UiRuntimeContext::GetActiveNationId();
-        (**(code **)(*(int *)(&g_apNationStates)[sVar9] + 0x48))();
-        uVar10 = 1;
+      if (uVar37 == 0x74726164) {
+        sVar16 = UiRuntimeContext::GetActiveNationId();
+        (*g_apNationStates[sVar16]->vftable[9].GetTCountryClassNamePointer)();
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x74726173) {
-        sVar9 = UiRuntimeContext::GetActiveNationId();
-        (**(code **)(*(int *)(&g_apNationStates)[sVar9] + 0xd0))();
-        uVar10 = 1;
+      if (uVar37 == 0x74726173) {
+        sVar16 = UiRuntimeContext::GetActiveNationId();
+        (*g_apNationStates[sVar16]->vftable[0x1a].GetTCountryClassNamePointer)();
+        uVar17 = 1;
         break;
       }
     }
     goto LAB_005485d8;
   case 0x20:
-    TCountry::thunk_QueueInterNationEventRecordDeduped();
-    uVar10 = 1;
+    TCountry::thunk_QueueInterNationEventRecordDeduped((TCountry *)g_pInterNationEventQueueManager);
+    uVar17 = 1;
     break;
   case 0x21:
-    TInterNationEventQueueManager::thunk_QueueInterNationEventType0FWithBitmaskMerge();
-    uVar10 = 1;
+    TInterNationEventQueueManager::thunk_QueueInterNationEventType0FWithBitmaskMerge
+              (g_pInterNationEventQueueManager);
+    uVar17 = 1;
     break;
   case 0x22:
     TSimMgr::QueueInterNationEventType11();
-    uVar10 = 1;
+    uVar17 = 1;
     break;
   case 0x23:
-    sVar9 = *(short *)(param_2 + 7);
-    iVar23 = g_pGlobalMapState[3];
-    *(undefined1 *)(iVar23 + 4 + sVar9 * 0x24) = *(undefined1 *)(param_2 + 9);
-    iVar23 = iVar23 + sVar9 * 0x24;
-    *(undefined1 *)(iVar23 + 5) = *(undefined1 *)((int)param_2 + 0x25);
-    *(undefined1 *)(iVar23 + 6) = *(undefined1 *)((int)param_2 + 0x26);
-    *(undefined1 *)(iVar23 + 0xc) = *(undefined1 *)(param_2 + 0xb);
-    *(byte *)(iVar23 + 0xd) = *(byte *)(iVar23 + 0xd) | *(byte *)((int)param_2 + 0x2d);
-    *(undefined1 *)(iVar23 + 0x18) = *(undefined1 *)(param_2 + 0xe);
-    *(undefined2 *)(iVar23 + 0x1c) = *(undefined2 *)(param_2 + 0xf);
-    uVar10 = 1;
+    sVar16 = *(short *)(param_2 + 7);
+    iVar35 = *(int *)&g_pGlobalMapState->field_0xc;
+    *(undefined1 *)(iVar35 + 4 + sVar16 * 0x24) = *(undefined1 *)(param_2 + 9);
+    iVar35 = iVar35 + sVar16 * 0x24;
+    *(undefined1 *)(iVar35 + 5) = *(undefined1 *)((int)param_2 + 0x25);
+    *(undefined1 *)(iVar35 + 6) = *(undefined1 *)((int)param_2 + 0x26);
+    *(undefined1 *)(iVar35 + 0xc) = *(undefined1 *)(param_2 + 0xb);
+    *(byte *)(iVar35 + 0xd) = *(byte *)(iVar35 + 0xd) | *(byte *)((int)param_2 + 0x2d);
+    *(undefined1 *)(iVar35 + 0x18) = *(undefined1 *)(param_2 + 0xe);
+    *(undefined2 *)(iVar35 + 0x1c) = *(undefined2 *)(param_2 + 0xf);
+    uVar17 = 1;
     break;
   case 0x24:
-    sVar9 = *(short *)(param_2 + 7);
-    iVar31 = 10;
-    iVar23 = g_pGlobalMapState[4];
-    *(undefined1 *)(iVar23 + sVar9 * 0xa8) = *(undefined1 *)(param_2 + 8);
-    iVar23 = iVar23 + sVar9 * 0xa8;
-    *(undefined1 *)(iVar23 + 2) = *(undefined1 *)((int)param_2 + 0x22);
-    *(undefined1 *)(iVar23 + 3) = *(undefined1 *)((int)param_2 + 0x23);
-    *(undefined2 *)(iVar23 + 6) = *(undefined2 *)((int)param_2 + 0x26);
-    puVar12 = (undefined2 *)(iVar23 + 0x82);
-    puVar16 = (undefined2 *)((int)param_2 + 0xa2);
+    sVar16 = *(short *)(param_2 + 7);
+    iVar34 = 10;
+    iVar35 = *(int *)&g_pGlobalMapState->field_0x10;
+    *(undefined1 *)(iVar35 + sVar16 * 0xa8) = *(undefined1 *)(param_2 + 8);
+    iVar35 = iVar35 + sVar16 * 0xa8;
+    *(undefined1 *)(iVar35 + 2) = *(undefined1 *)((int)param_2 + 0x22);
+    *(undefined1 *)(iVar35 + 3) = *(undefined1 *)((int)param_2 + 0x23);
+    *(undefined2 *)(iVar35 + 6) = *(undefined2 *)((int)param_2 + 0x26);
+    puVar28 = (undefined2 *)(iVar35 + 0x82);
+    puVar22 = (undefined2 *)((int)param_2 + 0xa2);
     do {
-      uVar3 = *puVar16;
-      puVar16 = puVar16 + 1;
-      *puVar12 = uVar3;
-      puVar12 = puVar12 + 1;
-      iVar31 = iVar31 + -1;
-    } while (iVar31 != 0);
-    *(undefined1 *)(iVar23 + 0xa1) = *(undefined1 *)((int)param_2 + 0xc1);
-    *(undefined1 *)(iVar23 + 0xa2) = *(undefined1 *)((int)param_2 + 0xc2);
-    uVar10 = 1;
+      uVar4 = *puVar22;
+      puVar22 = puVar22 + 1;
+      *puVar28 = uVar4;
+      puVar28 = puVar28 + 1;
+      iVar34 = iVar34 + -1;
+    } while (iVar34 != 0);
+    *(undefined1 *)(iVar35 + 0xa1) = *(undefined1 *)((int)param_2 + 0xc1);
+    *(undefined1 *)(iVar35 + 0xa2) = *(undefined1 *)((int)param_2 + 0xc2);
+    uVar17 = 1;
     break;
   case 0x25:
-    iVar23 = 0;
-    piVar14 = param_2 + 6;
-    local_1d4 = (char *)0x0;
-    pCVar20 = param_1 + 0x2f;
-    iVar31 = 7;
+    iVar35 = 0;
+    piVar25 = param_2 + 6;
+    local_1d4.m_pchData = (char *)0x0;
+    piVar19 = (int *)&param_1->field_0xbc;
+    iVar34 = 7;
     do {
-      if (*piVar14 != 0x756e6b6e) {
-        pCVar20->data_ptr = *piVar14;
+      if (*piVar25 != 0x756e6b6e) {
+        *piVar19 = *piVar25;
       }
-      if (pCVar20->data_ptr == 0x72656479) {
-        iVar23 = iVar23 + 1;
+      if (*piVar19 == 0x72656479) {
+        iVar35 = iVar35 + 1;
       }
-      else if (pCVar20->data_ptr == 0x62757379) {
-        local_1d4 = local_1d4 + 1;
+      else if (*piVar19 == 0x62757379) {
+        local_1d4.m_pchData = local_1d4.m_pchData + 1;
       }
-      piVar14 = piVar14 + 1;
-      pCVar20 = pCVar20 + 1;
-      iVar31 = iVar31 + -1;
-    } while (iVar31 != 0);
-    if ((0 < iVar23) && (local_1d4 == (char *)0x1)) {
-      sVar9 = UiRuntimeContext::GetActiveNationId();
-      iVar23 = (int)sVar9;
-      if (iVar23 == -1) {
-        iVar31 = FUN_00405a3d();
-        iVar23 = 0;
-        piVar14 = (int *)((int)g_pGameFlowState + 0x48);
+      piVar25 = piVar25 + 1;
+      piVar19 = piVar19 + 1;
+      iVar34 = iVar34 + -1;
+    } while (iVar34 != 0);
+    if ((0 < iVar35) && (local_1d4.m_pchData == (char *)0x1)) {
+      sVar16 = UiRuntimeContext::GetActiveNationId();
+      iVar35 = (int)sVar16;
+      if (iVar35 == -1) {
+        iVar34 = FUN_00405a3d();
+        iVar35 = 0;
+        piVar25 = (int *)&g_pGameFlowState->field_0x48;
         do {
-          if (*piVar14 == iVar31) goto LAB_0054833b;
-          iVar23 = iVar23 + 1;
-          piVar14 = piVar14 + 1;
-        } while (iVar23 < 7);
-        iVar23 = -1;
+          if (*piVar25 == iVar34) goto LAB_0054833b;
+          iVar35 = iVar35 + 1;
+          piVar25 = piVar25 + 1;
+        } while (iVar35 < 7);
+        iVar35 = -1;
       }
 LAB_0054833b:
-      if ((param_1[iVar23 + 0x2f].data_ptr == 0x62757379) &&
-         (*(code *)&param_1[0x3d].data_ptr != (code)0x0)) {
-        (**(code **)(*g_pSfxPlaybackSystem + 0xb8))();
-        uVar10 = 1;
+      if ((*(int *)(&param_1->field_0xbc + iVar35 * 4) == 0x62757379) &&
+         (param_1->field_0xf4 != '\0')) {
+        (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)();
+        uVar17 = 1;
         break;
       }
     }
     goto LAB_005485d8;
   case 0x26:
-    piVar11 = param_2 + 6;
-    piVar14 = g_pDiplomacyTurnStateManager;
-    for (iVar23 = 0xc0; piVar14 = piVar14 + 1, iVar23 != 0; iVar23 = iVar23 + -1) {
-      *piVar14 = *piVar11;
-      piVar11 = piVar11 + 1;
+    puVar23 = param_2 + 6;
+    pTVar47 = g_pDiplomacyTurnStateManager;
+    for (iVar35 = 0xc0; pTVar47 = (TDiplomacyMgr *)&pTVar47->field_0x4, iVar35 != 0;
+        iVar35 = iVar35 + -1) {
+      *(undefined4 *)pTVar47 = *puVar23;
+      puVar23 = puVar23 + 1;
     }
-    piVar14 = param_2 + 0xc6;
-    piVar11 = g_pDiplomacyTurnStateManager + 0xc1;
-    for (iVar23 = 0x60; iVar23 != 0; iVar23 = iVar23 + -1) {
-      *piVar11 = *piVar14;
-      piVar14 = piVar14 + 1;
-      piVar11 = piVar11 + 1;
+    puVar23 = param_2 + 0xc6;
+    puVar41 = (undefined4 *)&g_pDiplomacyTurnStateManager->field_0x304;
+    for (iVar35 = 0x60; iVar35 != 0; iVar35 = iVar35 + -1) {
+      *puVar41 = *puVar23;
+      puVar23 = puVar23 + 1;
+      puVar41 = puVar41 + 1;
     }
-    piVar14 = param_2 + 0x126;
-    piVar11 = g_pDiplomacyTurnStateManager + 0x121;
-    for (iVar23 = 0xc0; iVar23 != 0; iVar23 = iVar23 + -1) {
-      *piVar11 = *piVar14;
-      piVar14 = piVar14 + 1;
-      piVar11 = piVar11 + 1;
+    puVar23 = param_2 + 0x126;
+    puVar41 = (undefined4 *)&g_pDiplomacyTurnStateManager->field_0x484;
+    for (iVar35 = 0xc0; iVar35 != 0; iVar35 = iVar35 + -1) {
+      *puVar41 = *puVar23;
+      puVar23 = puVar23 + 1;
+      puVar41 = puVar41 + 1;
     }
-    g_pDiplomacyTurnStateManager[0x1e1] = param_2[0x1e6];
-    piVar14 = g_pDiplomacyTurnStateManager;
-    g_pDiplomacyTurnStateManager[0x1e2] = param_2[0x1e7];
-    *(undefined2 *)(piVar14 + 0x1e3) = *(undefined2 *)(param_2 + 0x1e8);
-    uVar10 = 1;
-    piVar14 = param_2 + 0x1e9;
-    piVar11 = g_pDiplomacyTurnStateManager + 0x609;
-    for (iVar23 = 0x1c; iVar23 != 0; iVar23 = iVar23 + -1) {
-      *piVar11 = *piVar14;
-      piVar14 = piVar14 + 1;
-      piVar11 = piVar11 + 1;
+    *(undefined4 *)&g_pDiplomacyTurnStateManager->field_0x784 = param_2[0x1e6];
+    pTVar47 = g_pDiplomacyTurnStateManager;
+    *(undefined4 *)&g_pDiplomacyTurnStateManager->field_0x788 = param_2[0x1e7];
+    *(undefined2 *)&pTVar47->field_0x78c = *(undefined2 *)(param_2 + 0x1e8);
+    uVar17 = 1;
+    puVar23 = param_2 + 0x1e9;
+    puVar41 = (undefined4 *)&g_pDiplomacyTurnStateManager->field_0x1824;
+    for (iVar35 = 0x1c; iVar35 != 0; iVar35 = iVar35 + -1) {
+      *puVar41 = *puVar23;
+      puVar23 = puVar23 + 1;
+      puVar41 = puVar41 + 1;
     }
     break;
   case 0x27:
-    (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[param_2[6]] + 0x4c))();
-    uVar10 = 1;
+    (*g_apTerrainTypeDescriptorTable[param_2[6]]->vftable[9].slot_0x04)();
+    uVar17 = 1;
     break;
   case 0x28:
   case 0x2e:
@@ -1633,69 +1667,70 @@ LAB_0054833b:
     GlobalLock(hMem);
     MoveMemoryOverlapSafe();
     GlobalUnlock(hMem);
-    local_1c4 = (code *)AllocateWithFallbackHandler();
+    local_1c4.m_pchData = (char *)AllocateWithFallbackHandler();
     local_4 = 0x15;
-    if (local_1c4 == (code *)0x0) {
-      piVar14 = (int *)0x0;
+    if ((THandleStream *)local_1c4.m_pchData == (THandleStream *)0x0) {
+      piVar25 = (int *)0x0;
     }
     else {
-      piVar14 = (int *)THandleStream::ConstructTHandleStreamBaseState();
+      piVar25 = (int *)THandleStream::ConstructTHandleStreamBaseState
+                                 ((THandleStream *)local_1c4.m_pchData);
     }
     local_4 = 0xffffffff;
     AttachGlobalMemoryHandleAndResetPosition();
-    HandleTurnEventCodes28_2E_2F_30_31_32();
-    (**(code **)(*piVar14 + 0x1c))();
+    TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32((TLandSaleEvent *)param_1);
+    (**(code **)(*piVar25 + 0x1c))();
     DAT_00695278 = 0xffffffff;
-    uVar10 = 1;
+    uVar17 = 1;
     break;
   case 0x29:
-    (**(code **)(*DAT_006a475c + 0xc))();
+    (*DAT_006a475c->vftable[1].slot_0x04)();
     SeekLinkedListCursorByNestedId();
-    uVar25 = param_2[6];
-    if (uVar25 < 0x64696768) {
-      if (uVar25 == 0x64696767) {
+    uVar37 = param_2[6];
+    if (uVar37 < 0x64696768) {
+      if (uVar37 == 0x64696767) {
         thunk_HandleTacticalCommandTag_digg();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x6465706c) {
+      if (uVar37 == 0x6465706c) {
         thunk_HandleTacticalCommandTag_depl();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
     }
-    else if (uVar25 < 0x6d6f7666) {
-      if (uVar25 == 0x6d6f7665) {
+    else if (uVar37 < 0x6d6f7666) {
+      if (uVar37 == 0x6d6f7665) {
         thunk_MoveTacticalUnitBetweenTiles();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x6d696e65) {
+      if (uVar37 == 0x6d696e65) {
         thunk_HandleTacticalCommandTag_mine();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
     }
     else {
-      if (uVar25 == 0x72616c79) {
-        TArmyStack::thunk_HandleTacticalCommandTag_raly();
-        uVar10 = 1;
+      if (uVar37 == 0x72616c79) {
+        TArmyStack::thunk_HandleTacticalCommandTag_raly(this_01);
+        uVar17 = 1;
         break;
       }
-      if (uVar25 == 0x73656c65) {
+      if (uVar37 == 0x73656c65) {
         thunk_SetCurrentTacticalUnitSelection();
-        uVar10 = 1;
+        uVar17 = 1;
         break;
       }
     }
     goto LAB_005485d8;
   case 0x2a:
-    (**(code **)(*DAT_006a475c + 0xc))();
+    (*DAT_006a475c->vftable[1].slot_0x04)();
     SeekLinkedListCursorByNestedId();
     SeekLinkedListCursorByNestedId();
     if (param_2[6] == 0x66697265) {
       ApplyTacticalActionEffectsAndMaybeRemoveUnit();
-      uVar10 = 1;
+      uVar17 = 1;
       break;
     }
     goto LAB_005485d8;
@@ -1709,154 +1744,182 @@ LAB_0054833b:
       local_1b8[2] = 0;
       local_1a0 = local_1a0 & 0xffffff00;
       local_1b8[3] = 0x1c;
-      uVar7 = UiRuntimeContext::GetActiveNationId();
+      uVar14 = UiRuntimeContext::GetActiveNationId();
       local_1b8[2] = param_2[1];
-      local_1a0._0_2_ = CONCAT11(uVar7,(undefined1)local_1a0);
+      local_1a0._0_2_ = CONCAT11(uVar14,(undefined1)local_1a0);
       thunk_EnqueueOrSendTurnEventPacketToNation();
     }
     goto LAB_005485d8;
   case 0x2c:
-    iVar23 = (int)*(short *)(param_2 + 7);
-    sVar9 = UiRuntimeContext::GetActiveNationId();
-    if (iVar23 != sVar9) {
-      *(undefined4 *)((&g_apNationStates)[iVar23] + 0x910) = param_2[8];
-      *(undefined4 *)((&g_apNationStates)[iVar23] + 0x914) = param_2[9];
-      if ((&g_apNationStates)[iVar23] == 0) {
-        iVar31 = 0;
+    iVar35 = (int)*(short *)(param_2 + 7);
+    sVar16 = UiRuntimeContext::GetActiveNationId();
+    if (iVar35 != sVar16) {
+      *(undefined4 *)&g_apNationStates[iVar35]->field_0x910 = param_2[8];
+      *(undefined4 *)&g_apNationStates[iVar35]->field_0x914 = param_2[9];
+      if (g_apNationStates[iVar35] == (TGreatPower *)0x0) {
+        pTVar45 = (TCity *)0x0;
       }
       else {
-        iVar31 = *(int *)((&g_apNationStates)[iVar23] + 0x894);
+        pTVar45 = g_apNationStates[iVar35]->city;
       }
-      puVar12 = (undefined2 *)(iVar31 + 0xe);
-      puVar16 = (undefined2 *)((int)param_2 + 0x2e);
-      iVar22 = 0x1e;
+      puVar28 = (undefined2 *)&pTVar45->field_0xe;
+      puVar22 = (undefined2 *)((int)param_2 + 0x2e);
+      iVar34 = 0x1e;
       do {
-        uVar3 = *puVar16;
-        puVar16 = puVar16 + 1;
-        *puVar12 = uVar3;
-        puVar12 = puVar12 + 1;
-        iVar22 = iVar22 + -1;
-      } while (iVar22 != 0);
-      puVar12 = (undefined2 *)(iVar31 + 0x4a);
-      puVar16 = (undefined2 *)((int)param_2 + 0x6a);
-      iVar22 = 9;
+        uVar4 = *puVar22;
+        puVar22 = puVar22 + 1;
+        *puVar28 = uVar4;
+        puVar28 = puVar28 + 1;
+        iVar34 = iVar34 + -1;
+      } while (iVar34 != 0);
+      puVar28 = (undefined2 *)&pTVar45->field_0x4a;
+      puVar22 = (undefined2 *)((int)param_2 + 0x6a);
+      iVar34 = 9;
       do {
-        uVar3 = *puVar16;
-        puVar16 = puVar16 + 1;
-        *puVar12 = uVar3;
-        puVar12 = puVar12 + 1;
-        iVar22 = iVar22 + -1;
-      } while (iVar22 != 0);
-      puVar12 = (undefined2 *)(iVar31 + 0x5c);
-      puVar13 = param_2 + 0x1f;
-      iVar22 = 0xe;
+        uVar4 = *puVar22;
+        puVar22 = puVar22 + 1;
+        *puVar28 = uVar4;
+        puVar28 = puVar28 + 1;
+        iVar34 = iVar34 + -1;
+      } while (iVar34 != 0);
+      puVar28 = (undefined2 *)&pTVar45->field_0x5c;
+      puVar23 = param_2 + 0x1f;
+      iVar34 = 0xe;
       do {
-        uVar3 = *(undefined2 *)puVar13;
-        puVar13 = (undefined4 *)((int)puVar13 + 2);
-        *puVar12 = uVar3;
-        puVar12 = puVar12 + 1;
-        iVar22 = iVar22 + -1;
-      } while (iVar22 != 0);
-      (**(code **)(*(int *)(&g_apNationStates)[iVar23] + 0x164))();
-      puVar12 = (undefined2 *)(iVar31 + 0xb6);
-      *(undefined4 *)(iVar31 + 0x78) = param_2[0x26];
-      *(undefined2 *)(iVar31 + 0xb4) = *(undefined2 *)(param_2 + 0x27);
-      puVar16 = (undefined2 *)((int)param_2 + 0x9e);
-      iVar23 = 0x17;
-      puVar17 = puVar12;
+        uVar4 = *(undefined2 *)puVar23;
+        puVar23 = (undefined4 *)((int)puVar23 + 2);
+        *puVar28 = uVar4;
+        puVar28 = puVar28 + 1;
+        iVar34 = iVar34 + -1;
+      } while (iVar34 != 0);
+      (*g_apNationStates[iVar35]->vftable[0x2c].slot_0x04)();
+      pwVar21 = pTVar45->fieldB6;
+      *(undefined4 *)&pTVar45->field_0x78 = param_2[0x26];
+      *(undefined2 *)&pTVar45->field_0xb4 = *(undefined2 *)(param_2 + 0x27);
+      pwVar24 = (word *)((int)param_2 + 0x9e);
+      iVar35 = 0x17;
+      pwVar27 = pwVar21;
       do {
-        uVar3 = *puVar16;
-        puVar16 = puVar16 + 1;
-        *puVar17 = uVar3;
-        puVar17 = puVar17 + 1;
-        iVar23 = iVar23 + -1;
-      } while (iVar23 != 0);
-      puVar16 = (undefined2 *)(iVar31 + 0x1dc);
-      puVar13 = param_2 + 0x33;
-      iVar23 = 0x10;
+        wVar3 = *pwVar24;
+        pwVar24 = pwVar24 + 1;
+        *pwVar27 = wVar3;
+        pwVar27 = pwVar27 + 1;
+        iVar35 = iVar35 + -1;
+      } while (iVar35 != 0);
+      puVar28 = (undefined2 *)&pTVar45->field_0x1dc;
+      puVar23 = param_2 + 0x33;
+      iVar35 = 0x10;
       do {
-        uVar3 = *(undefined2 *)puVar13;
-        puVar13 = (undefined4 *)((int)puVar13 + 2);
-        *puVar16 = uVar3;
-        puVar16 = puVar16 + 1;
-        iVar23 = iVar23 + -1;
-      } while (iVar23 != 0);
-      puVar16 = (undefined2 *)(iVar31 + 0x1fc);
-      puVar13 = param_2 + 0x3b;
-      iVar23 = 0x10;
+        uVar4 = *(undefined2 *)puVar23;
+        puVar23 = (undefined4 *)((int)puVar23 + 2);
+        *puVar28 = uVar4;
+        puVar28 = puVar28 + 1;
+        iVar35 = iVar35 + -1;
+      } while (iVar35 != 0);
+      puVar28 = (undefined2 *)&pTVar45->field_0x1fc;
+      puVar23 = param_2 + 0x3b;
+      iVar35 = 0x10;
       do {
-        uVar3 = *(undefined2 *)puVar13;
-        puVar13 = (undefined4 *)((int)puVar13 + 2);
-        *puVar16 = uVar3;
-        puVar16 = puVar16 + 1;
-        iVar23 = iVar23 + -1;
-      } while (iVar23 != 0);
-      *(undefined2 *)(iVar31 + 0x26c) = *(undefined2 *)(param_2 + 0x43);
-      puVar16 = (undefined2 *)((int)param_2 + 0x9e);
-      iVar23 = 0x17;
+        uVar4 = *(undefined2 *)puVar23;
+        puVar23 = (undefined4 *)((int)puVar23 + 2);
+        *puVar28 = uVar4;
+        puVar28 = puVar28 + 1;
+        iVar35 = iVar35 + -1;
+      } while (iVar35 != 0);
+      *(undefined2 *)&pTVar45->field_0x26c = *(undefined2 *)(param_2 + 0x43);
+      pwVar24 = (word *)((int)param_2 + 0x9e);
+      iVar35 = 0x17;
       do {
-        uVar3 = *puVar16;
-        puVar16 = puVar16 + 1;
-        *puVar12 = uVar3;
-        puVar12 = puVar12 + 1;
-        iVar23 = iVar23 + -1;
-      } while (iVar23 != 0);
-      piVar14 = (int *)(iVar31 + 0xe4);
-      puVar13 = param_2 + 0x44;
-      iVar23 = 0x17;
+        wVar3 = *pwVar24;
+        pwVar24 = pwVar24 + 1;
+        *pwVar21 = wVar3;
+        pwVar21 = pwVar21 + 1;
+        iVar35 = iVar35 + -1;
+      } while (iVar35 != 0);
+      ppvVar29 = pTVar45->orderSlotsE4;
+      puVar23 = param_2 + 0x44;
+      iVar35 = 0x17;
       do {
-        if (*piVar14 != 0) {
-          *(undefined4 *)(*piVar14 + 0x44) = *puVar13;
+        if (*ppvVar29 != (void *)0x0) {
+          *(undefined4 *)((int)*ppvVar29 + 0x44) = *puVar23;
         }
-        puVar13 = puVar13 + 1;
-        piVar14 = piVar14 + 1;
-        iVar23 = iVar23 + -1;
-      } while (iVar23 != 0);
-      iVar23 = *(int *)(iVar31 + 0x1d8);
-      *(undefined2 *)(iVar23 + 8) = *(undefined2 *)(param_2 + 0x5b);
-      *(undefined4 *)(iVar23 + 0xc) = param_2[0x5c];
-      *(undefined2 *)(iVar23 + 0x1c) = *(undefined2 *)(param_2 + 0x5d);
-      *(undefined2 *)(iVar23 + 0x1e) = *(undefined2 *)((int)param_2 + 0x176);
-      *(undefined2 *)(iVar23 + 0x20) = *(undefined2 *)(param_2 + 0x5e);
-      *(undefined2 *)(*(int *)(iVar23 + 0x10) + 4) = *(undefined2 *)((int)param_2 + 0x17a);
-      *(undefined2 *)(*(int *)(iVar23 + 0x10) + 6) = *(undefined2 *)(param_2 + 0x5f);
-      *(undefined2 *)(*(int *)(iVar23 + 0x10) + 8) = *(undefined2 *)((int)param_2 + 0x17e);
-      *(undefined2 *)(*(int *)(iVar23 + 0x14) + 4) = *(undefined2 *)(param_2 + 0x60);
-      *(undefined2 *)(*(int *)(iVar23 + 0x14) + 6) = *(undefined2 *)((int)param_2 + 0x182);
-      *(undefined2 *)(*(int *)(iVar23 + 0x14) + 8) = *(undefined2 *)(param_2 + 0x61);
-      *(undefined2 *)(*(int *)(iVar23 + 0x18) + 4) = *(undefined2 *)((int)param_2 + 0x186);
-      *(undefined2 *)(*(int *)(iVar23 + 0x18) + 6) = *(undefined2 *)(param_2 + 0x62);
-      *(undefined2 *)(*(int *)(iVar23 + 0x18) + 8) = *(undefined2 *)((int)param_2 + 0x18a);
-      uVar10 = 1;
+        puVar23 = puVar23 + 1;
+        ppvVar29 = ppvVar29 + 1;
+        iVar35 = iVar35 + -1;
+      } while (iVar35 != 0);
+      iVar35 = *(int *)&pTVar45->field_0x1d8;
+      *(undefined2 *)(iVar35 + 8) = *(undefined2 *)(param_2 + 0x5b);
+      *(undefined4 *)(iVar35 + 0xc) = param_2[0x5c];
+      *(undefined2 *)(iVar35 + 0x1c) = *(undefined2 *)(param_2 + 0x5d);
+      *(undefined2 *)(iVar35 + 0x1e) = *(undefined2 *)((int)param_2 + 0x176);
+      *(undefined2 *)(iVar35 + 0x20) = *(undefined2 *)(param_2 + 0x5e);
+      *(undefined2 *)(*(int *)(iVar35 + 0x10) + 4) = *(undefined2 *)((int)param_2 + 0x17a);
+      *(undefined2 *)(*(int *)(iVar35 + 0x10) + 6) = *(undefined2 *)(param_2 + 0x5f);
+      *(undefined2 *)(*(int *)(iVar35 + 0x10) + 8) = *(undefined2 *)((int)param_2 + 0x17e);
+      *(undefined2 *)(*(int *)(iVar35 + 0x14) + 4) = *(undefined2 *)(param_2 + 0x60);
+      *(undefined2 *)(*(int *)(iVar35 + 0x14) + 6) = *(undefined2 *)((int)param_2 + 0x182);
+      *(undefined2 *)(*(int *)(iVar35 + 0x14) + 8) = *(undefined2 *)(param_2 + 0x61);
+      *(undefined2 *)(*(int *)(iVar35 + 0x18) + 4) = *(undefined2 *)((int)param_2 + 0x186);
+      *(undefined2 *)(*(int *)(iVar35 + 0x18) + 6) = *(undefined2 *)(param_2 + 0x62);
+      *(undefined2 *)(*(int *)(iVar35 + 0x18) + 8) = *(undefined2 *)((int)param_2 + 0x18a);
+      uVar17 = 1;
       break;
     }
 LAB_005485d8:
-    uVar10 = 1;
+    uVar17 = 1;
     break;
   case 0x2d:
-    iVar23 = 0x17;
-    puVar12 = (undefined2 *)((&g_apSecondaryNationStateSlots)[*(short *)(param_2 + 7)] + 0x14);
-    puVar16 = (undefined2 *)((int)param_2 + 0x1e);
+    iVar35 = 0x17;
+    puVar28 = (undefined2 *)&g_apSecondaryNationStateSlots[*(short *)(param_2 + 7)]->field_0x14;
+    puVar22 = (undefined2 *)((int)param_2 + 0x1e);
     do {
-      uVar3 = *puVar16;
-      puVar16 = puVar16 + 1;
-      *puVar12 = uVar3;
-      puVar12 = puVar12 + 1;
-      iVar23 = iVar23 + -1;
-    } while (iVar23 != 0);
-    uVar10 = 1;
+      uVar4 = *puVar22;
+      puVar22 = puVar22 + 1;
+      *puVar28 = uVar4;
+      puVar28 = puVar28 + 1;
+      iVar35 = iVar35 + -1;
+    } while (iVar35 != 0);
+    uVar17 = 1;
   }
   *unaff_FS_OFFSET = local_c;
-  return uVar10;
+  return uVar17;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054AFF0
+// GHIDRA_NAME TPoseMessageDialog::OrphanRetStub_00487a00
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+
+void __thiscall TPoseMessageDialog::OrphanRetStub_00487a00(TPoseMessageDialog *this)
+
+{
+  RefreshPoseMessageDialogNationSelectionControls(*(undefined4 *)&this->field_0x18);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0054B010
+// GHIDRA_NAME TPoseMessageDialog::OrphanCallChain_C1_I17_00487470
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I17_00487470(void)
+
+TPoseMessageDialog * __thiscall
+TPoseMessageDialog::OrphanCallChain_C1_I17_00487470(TPoseMessageDialog *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructPoseMessageDialogTurnEventPacket();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054B0D0
-// GHIDRA_NAME TPoseMessageDialog::GetTPoseMessageDialogClassNamePointer
-// GHIDRA_PROTO undefined GetTPoseMessageDialogClassNamePointer()
+// GHIDRA_NAME TPoseMessageDialog::GetTEventClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventClassNamePointer(void)
 
-undefined ** TPoseMessageDialog::GetTPoseMessageDialogClassNamePointer(void)
+CRuntimeClass * __thiscall TPoseMessageDialog::GetTEventClassNamePointer(TPoseMessageDialog *this)
 
 {
-  return &PTR_s_TPoseMessageDialog_0065bf90;
+  return &classRuntimeClass;
 }
 

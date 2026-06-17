@@ -7,10 +7,10 @@
 // GHIDRA_NAME TRadioPictureButton::CreateTRadioPictureButtonInstance
 // GHIDRA_PROTO undefined CreateTRadioPictureButtonInstance()
 
-undefined4 * TRadioPictureButton::CreateTRadioPictureButtonInstance(void)
+thunk_TPictureButton * TRadioPictureButton::CreateTRadioPictureButtonInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,34 +20,35 @@ undefined4 * TRadioPictureButton::CreateTRadioPictureButtonInstance(void)
   puStack_8 = &LAB_0063642a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    *puVar1 = &PTR_LAB_0065f670;
-    puVar1[0x18] = 0xc;
-    *(undefined1 *)(puVar1 + 0x25) = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(undefined2 *)(this + 0x92) = 7000;
+    *(TRadioPictureButtonVtbl **)this = &TRadioPictureButtonVtbl_0065f670;
+    *(undefined4 *)(this + 0x60) = 0xc;
+    this[0x94] = (thunk_TPictureButton)0x0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005717A0
-// GHIDRA_NAME TRadioPictureButton::GetTRadioPictureButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTRadioPictureButtonClassNamePointer()
+// GHIDRA_NAME TRadioPictureButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TRadioPictureButton::GetTRadioPictureButtonClassNamePointer(void)
+CRuntimeClass * __thiscall
+TRadioPictureButton::GetTEventHandlerClassNamePointer(TRadioPictureButton *this)
 
 {
-  return &PTR_s_TRadioPictureButton_0065e5e0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005717C0
 // GHIDRA_NAME TRadioPictureButton::TRadioPictureButton
-// GHIDRA_PROTO undefined TRadioPictureButton()
+// GHIDRA_PROTO undefined __thiscall TRadioPictureButton(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command icon slots in multiple UI builders.
 // GHIDRA_COMMENT_END
@@ -55,29 +56,80 @@ undefined ** TRadioPictureButton::GetTRadioPictureButtonClassNamePointer(void)
 /* Clickable picture/icon entry constructor. Derived picture resource class used for civ/agr/command
    icon slots in multiple UI builders. */
 
-undefined4 * __fastcall TRadioPictureButton::TRadioPictureButton(undefined4 *param_1)
+TRadioPictureButton * __thiscall TRadioPictureButton::TRadioPictureButton(TRadioPictureButton *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *(undefined2 *)((int)param_1 + 0x92) = 7000;
-  *param_1 = &PTR_LAB_0065f670;
-  param_1[0x18] = 0xc;
-  *(undefined1 *)(param_1 + 0x25) = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  *(undefined2 *)&this->field_0x92 = 7000;
+  this->vftable = &TRadioPictureButtonVtbl_0065f670;
+  *(undefined4 *)&this->field_0x60 = 0xc;
+  this->field_0x94 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571800
 // GHIDRA_NAME TRadioPictureButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TRadioPictureButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TRadioPictureButton * __thiscall
+TRadioPictureButton::_scalar_deleting_destructor_(TRadioPictureButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571850
+// GHIDRA_NAME TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall
+TRadioPictureButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TRadioPictureButton *this)
+
+{
+  int in_stack_00000004;
+  
+  if (in_stack_00000004 == 0xc) {
+    if (this->field_0x64 == '\0') {
+      (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,0);
+    }
+    TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+    return;
+  }
+  if (in_stack_00000004 != 0x1f) {
+    if (in_stack_00000004 != 0x20) {
+      TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+      return;
+    }
+    (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(0,0);
+    return;
+  }
+  (*this->vftable[0x3a].GetTEventHandlerClassNamePointer)(1,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005718F0
+// GHIDRA_NAME TRadioPictureButton::OrphanCallChain_C2_I16_005718f0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_005718f0(void)
+
+void __thiscall TRadioPictureButton::OrphanCallChain_C2_I16_005718f0(TRadioPictureButton *this)
+
+{
+  TRadioPictureButtonVtbl *pTVar1;
+  char cVar2;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  pTVar1 = this->vftable;
+  cVar2 = (*pTVar1[5].GetTEventHandlerClassNamePointer)();
+  if (cVar2 != '\0') {
+    (*pTVar1[0x38].GetTEventHandlerClassNamePointer)(in_stack_00000004,in_stack_00000008);
+  }
+  return;
 }
 

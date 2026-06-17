@@ -4,70 +4,71 @@
 // Bucket: TDefenderMinister.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDDA0
-// GHIDRA_NAME TDefenderMinister::CreateTDefenderMinisterInstance
-// GHIDRA_PROTO undefined CreateTDefenderMinisterInstance()
+// GHIDRA_NAME TDefenderMinister::SerializeNodeMapEntries_Key32Value32_WithArchive
+// GHIDRA_PROTO undefined __thiscall SerializeNodeMapEntries_Key32Value32_WithArchive(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-float10 TDefenderMinister::CreateTDefenderMinisterInstance(void)
+float10 __thiscall
+TDefenderMinister::SerializeNodeMapEntries_Key32Value32_WithArchive(TDefenderMinister *this)
 
 {
   return (float10)_DAT_00654908;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDDC0
-// GHIDRA_NAME TDefenderMinister::GetTDefenderMinisterClassNamePointer
-// GHIDRA_PROTO undefined GetTDefenderMinisterClassNamePointer()
+// GHIDRA_NAME TDefenderMinister::GetTMinisterClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTMinisterClassNamePointer(void)
 
-undefined ** TDefenderMinister::GetTDefenderMinisterClassNamePointer(void)
+CRuntimeClass * __thiscall TDefenderMinister::GetTMinisterClassNamePointer(TDefenderMinister *this)
 
 {
-  return &PTR_s_TDefenderMinister_00654898;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDDE0
 // GHIDRA_NAME TDefenderMinister::ConstructTDefenderMinisterBaseState
-// GHIDRA_PROTO undefined ConstructTDefenderMinisterBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDefenderMinisterBaseState(void)
 
-undefined4 * __fastcall TDefenderMinister::ConstructTDefenderMinisterBaseState(undefined4 *param_1)
+TDefenderMinister * __thiscall
+TDefenderMinister::ConstructTDefenderMinisterBaseState(TDefenderMinister *this)
 
 {
-  TMinister::ConstructTMinister();
-  *param_1 = &PTR_LAB_00654b90;
-  *(undefined2 *)(param_1 + 3) = 3;
-  return param_1;
+  TMinister::ConstructTMinister((TMinister *)this);
+  this->vftable = &TDefenderMinisterVtbl_00654b90;
+  *(undefined2 *)&this->field_0xc = 3;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDE10
-// GHIDRA_NAME TDefenderMinister::DestructTDefenderMinisterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDefenderMinisterAndMaybeFree()
+// GHIDRA_NAME TDefenderMinister::DeletingDestructTMinister
+// GHIDRA_PROTO undefined __thiscall DeletingDestructTMinister(void)
 
-undefined4 __thiscall
-TDefenderMinister::DestructTDefenderMinisterAndMaybeFree(undefined4 param_1,byte param_2)
+TDefenderMinister * __thiscall TDefenderMinister::DeletingDestructTMinister(TDefenderMinister *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTDefenderMinisterAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004EDF20
 // GHIDRA_NAME TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3
-// GHIDRA_PROTO undefined InitializeRecruitQueuePatternD_Field64Mode1_Type2x3()
+// GHIDRA_PROTO undefined __thiscall InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(void)
 
 void __thiscall
-TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(int param_1,int param_2)
+TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(TDefenderMinister *this)
 
 {
-  int iVar1;
-  undefined2 extraout_var;
-  undefined2 extraout_var_00;
-  undefined2 uVar2;
+  TMilitaryUnitOrderState *pTVar1;
   undefined4 unaff_EBP;
-  int iVar3;
+  int iVar2;
   undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
   undefined4 uStack_c;
   int *piStack_8;
   undefined4 uStack_4;
@@ -76,21 +77,21 @@ TDefenderMinister::InitializeRecruitQueuePatternD_Field64Mode1_Type2x3(int param
   piStack_8 = (int *)&LAB_0063287a;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  (**(code **)(**(int **)(param_2 + 0x1d8) + 0x2c))(8,4,1);
-  *(undefined2 *)(param_2 + 100) = 1;
-  iVar3 = 3;
+  (**(code **)(**(int **)(in_stack_00000004 + 0x1d8) + 0x2c))(8,4,1);
+  *(undefined2 *)(in_stack_00000004 + 100) = 1;
+  iVar2 = 3;
   do {
-    iVar1 = AllocateWithFallbackHandler(0x44);
-    uVar2 = extraout_var;
-    if (iVar1 != 0) {
-      TMilitaryUnitOrderState::TMilitaryUnitOrderState();
-      uVar2 = extraout_var_00;
+    pTVar1 = (TMilitaryUnitOrderState *)AllocateWithFallbackHandler(0x44);
+    if (pTVar1 == (TMilitaryUnitOrderState *)0x0) {
+      pTVar1 = (TMilitaryUnitOrderState *)0x0;
     }
-    TMilitaryUnitOrderState::InitializeRecruitOrderState
-              (2,0,CONCAT22(uVar2,*(undefined2 *)(*(int *)(param_1 + 4) + 0xc)),0);
-    *(short *)(param_1 + 0x18) = *(short *)(param_1 + 0x18) + 1;
-    iVar3 = iVar3 + -1;
-  } while (iVar3 != 0);
+    else {
+      pTVar1 = (TMilitaryUnitOrderState *)TMilitaryUnitOrderState::TMilitaryUnitOrderState(pTVar1);
+    }
+    TMilitaryUnitOrderState::InitializeRecruitOrderState(pTVar1);
+    *(short *)&this->field_0x18 = *(short *)&this->field_0x18 + 1;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
   *(short *)((int)piStack_8 + 0xd6) = *(short *)((int)piStack_8 + 0xd6) + 2;
   (**(code **)(*piStack_8 + 0x80))();
   *unaff_FS_OFFSET = unaff_EBP;

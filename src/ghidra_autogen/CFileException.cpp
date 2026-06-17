@@ -19,7 +19,7 @@ undefined4 * CFileException::ConstructCFileException(void)
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  InitializeSharedStringRefFromEmpty(extraout_ECX + 3);
+  CString::CString((CString *)(extraout_ECX + 3));
   extraout_ECX[1] = 0xffffffff;
   uVar1 = *(undefined4 *)(unaff_EBP + -0xc);
   extraout_ECX[2] = 0;
@@ -30,17 +30,19 @@ undefined4 * CFileException::ConstructCFileException(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ABEC
 // GHIDRA_NAME CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0060abec()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0060abec(void)
 
-undefined4 __thiscall
-CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(undefined4 param_1,byte param_2)
+CFileException * __thiscall
+CFileException::WrapperFor_FreeHeapBufferIfNotNull_At0060abec(CFileException *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructCFileException();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060ACF6
@@ -65,7 +67,7 @@ void CFileException::DestructCFileException(void)
     CloseFileHandleAndThrowMfcExceptionOnError();
   }
   *(undefined1 *)(unaff_EBP + -4) = 0;
-  ReleaseSharedStringRefIfNotEmpty(extraout_ECX + 3);
+  CString::~CString((CString *)(extraout_ECX + 3));
   uVar2 = *(undefined4 *)(unaff_EBP + -0xc);
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uVar2;
@@ -85,7 +87,7 @@ void CFileException::DestructFileExceptionAndReleaseMessageString(void)
   
   EstablishSehFrameProlog();
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  ReleaseSharedStringRefIfNotEmpty((void *)(extraout_ECX + 0x10));
+  CString::~CString((CString *)(extraout_ECX + 0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   DestructCFileException();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -94,38 +96,43 @@ void CFileException::DestructFileExceptionAndReleaseMessageString(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AAC
 // GHIDRA_NAME CFileException::CMemFile
-// GHIDRA_PROTO undefined CMemFile()
+// GHIDRA_PROTO undefined __thiscall CMemFile(void)
 
-undefined4 * __thiscall CFileException::CMemFile(undefined4 *param_1,undefined4 param_2)
+CFileException * __thiscall CFileException::CMemFile(CFileException *this)
 
 {
+  undefined4 in_stack_00000004;
+  
   ConstructCFileException();
-  *param_1 = &PTR_GetCMemFileRuntimeClass_00672f7c;
-  param_1[4] = param_2;
-  param_1[5] = 0;
-  param_1[6] = 0;
-  param_1[7] = 0;
-  param_1[8] = 0;
-  param_1[9] = 1;
-  return param_1;
+  this->vftable = (CFileExceptionVtbl *)&CMemFileVtbl_00672f7c;
+  *(undefined4 *)&this->field_0x10 = in_stack_00000004;
+  this[1].vftable = (CFileExceptionVtbl *)0x0;
+  *(undefined4 *)&this[1].field_0x4 = 0;
+  *(undefined4 *)&this[1].field_0x8 = 0;
+  *(undefined4 *)&this[1].field_0xc = 0;
+  *(undefined4 *)&this[1].field_0x10 = 1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00619AF8
 // GHIDRA_NAME CFileException::CMemFile_619af8
-// GHIDRA_PROTO undefined CMemFile_619af8()
+// GHIDRA_PROTO undefined __thiscall CMemFile_619af8(void)
 
-undefined4 * __thiscall
-CFileException::CMemFile_619af8(undefined4 *param_1,undefined4 param_2,uint param_3,int param_4)
+CFileException * __thiscall CFileException::CMemFile_619af8(CFileException *this)
 
 {
+  undefined4 in_stack_00000004;
+  uint in_stack_00000008;
+  int in_stack_0000000c;
+  
   ConstructCFileException();
-  param_1[5] = 0;
-  param_1[4] = param_4;
-  param_1[9] = 0;
-  *param_1 = &PTR_GetCMemFileRuntimeClass_00672f7c;
-  param_1[7] = ~-(uint)(param_4 != 0) & param_3;
-  param_1[8] = param_2;
-  param_1[6] = param_3;
-  return param_1;
+  this[1].vftable = (CFileExceptionVtbl *)0x0;
+  *(int *)&this->field_0x10 = in_stack_0000000c;
+  *(undefined4 *)&this[1].field_0x10 = 0;
+  this->vftable = (CFileExceptionVtbl *)&CMemFileVtbl_00672f7c;
+  *(uint *)&this[1].field_0x8 = ~-(uint)(in_stack_0000000c != 0) & in_stack_00000008;
+  *(undefined4 *)&this[1].field_0xc = in_stack_00000004;
+  *(uint *)&this[1].field_0x4 = in_stack_00000008;
+  return this;
 }
 

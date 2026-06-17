@@ -3,15 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalAdiosPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045D430
+// GHIDRA_NAME TTacticalAdiosPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTacticalAdiosPicture * __thiscall
+TTacticalAdiosPicture::_scalar_deleting_destructor_(TTacticalAdiosPicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD430
 // GHIDRA_NAME TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance
 // GHIDRA_PROTO undefined CreateTTacticalAdiosPictureInstance()
 
-undefined4 * TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance(void)
+thunk_TPictureButton * TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,40 +38,45 @@ undefined4 * TTacticalAdiosPicture::CreateTTacticalAdiosPictureInstance(void)
   puStack_8 = &LAB_0063885a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00645428;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TTacticalAdiosPictureVtbl **)this = &TTacticalAdiosPictureVtbl_00645428;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD4B0
-// GHIDRA_NAME TTacticalAdiosPicture::GetTTacticalAdiosPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTTacticalAdiosPictureClassNamePointer()
+// GHIDRA_NAME TTacticalAdiosPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTacticalAdiosPicture::GetTTacticalAdiosPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTacticalAdiosPicture::GetTEventHandlerClassNamePointer(TTacticalAdiosPicture *this)
 
 {
-  return &PTR_s_TTacticalAdiosPicture_0066a2f8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD4D0
-// GHIDRA_NAME TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState
-// GHIDRA_PROTO undefined ConstructTTacticalAdiosPictureBaseState()
+// GHIDRA_NAME TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState(int *param_1,undefined4 param_2)
+void __thiscall TTacticalAdiosPicture::OrphanLeaf_NoCall_Ins07_004d8920(TTacticalAdiosPicture *this)
 
 {
-  code *pcVar1;
+  TTacticalAdiosPicture_slot_0x04_0x04 *pTVar1;
   int iVar2;
-  int *piVar3;
-  undefined4 uVar4;
+  TTacticalAdiosPicture_GetTEventHandlerClassNamePointer_0x00 *pTVar3;
+  undefined *puVar4;
+  undefined uVar5;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
   undefined4 uStack_5c;
   undefined4 uStack_58;
   undefined4 uStack_54;
@@ -75,18 +97,17 @@ TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState(int *param_1,unde
   undefined1 local_4;
   undefined1 local_3;
   
-  uStack_28 = param_2;
   uStack_2c = 0x5ad4e3;
-  TView::thunk_NoOpUiLifecycleHook();
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
   uStack_28 = 0x7469746c;
   local_6 = 0;
-  pcVar1 = *(code **)(*param_1 + 0x94);
+  pTVar1 = this->vftable[0x12].slot_0x04;
   local_5 = 0;
   local_4 = 0;
   local_3 = 0;
   uStack_2c = 0x5ad508;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
+  uVar5 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var,uVar5);
   uStack_2c = 0x5ad511;
   (**(code **)(iVar2 + 0xc))();
   uStack_2c = 1;
@@ -106,8 +127,8 @@ TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState(int *param_1,unde
   (**(code **)(iVar2 + 0x1c4))();
   puStack_3c = (undefined1 *)0x6c6f6361;
   uStack_40 = 0x5ad54d;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
+  uVar5 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_00,uVar5);
   uStack_40 = 0x5ad556;
   (**(code **)(iVar2 + 0xc))();
   uStack_40 = 1;
@@ -127,8 +148,8 @@ TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState(int *param_1,unde
   (**(code **)(iVar2 + 0x1c4))();
   puStack_50 = (undefined1 *)0x696e666f;
   uStack_54 = 0x5ad592;
-  piVar3 = (int *)(*pcVar1)();
-  iVar2 = *piVar3;
+  uVar5 = (*pTVar1)();
+  iVar2 = *(int *)CONCAT31(extraout_var_01,uVar5);
   uStack_54 = 0x5ad59b;
   (**(code **)(iVar2 + 0xc))();
   uStack_54 = 0x2b6b;
@@ -136,12 +157,34 @@ TTacticalAdiosPicture::ConstructTTacticalAdiosPictureBaseState(int *param_1,unde
   uStack_5c = 0;
   (**(code **)(iVar2 + 0x1e0))();
   (**(code **)(iVar2 + 0x1c4))(1,0);
-  pcVar1 = *(code **)(*param_1 + 0x58);
-  iVar2 = *g_pUiRuntimeContext;
-  uVar4 = (*pcVar1)(&uStack_54);
-  (**(code **)(iVar2 + 0x44))(uVar4);
-  piVar3 = (int *)(*pcVar1)();
-  (**(code **)(*piVar3 + 0xf0))(&uStack_5c,0);
+  pTVar3 = this->vftable[0xb].GetTEventHandlerClassNamePointer;
+  puVar4 = g_pUiRuntimeContext->vftable;
+  uVar5 = (*pTVar3)(&uStack_54);
+  (**(code **)(puVar4 + 0x44))(uVar5);
+  uVar5 = (*pTVar3)();
+  (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar5) + 0xf0))(&uStack_5c,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AD650
+// GHIDRA_NAME TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall
+TTacticalAdiosPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TTacticalAdiosPicture *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if ((in_stack_00000004 == 10) && (*(int *)(in_stack_00000008 + 0x1c) == 0x6f6b6179)) {
+    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))
+              (*(undefined4 *)(in_stack_00000008 + 0x1c),1);
+  }
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
   return;
 }
 

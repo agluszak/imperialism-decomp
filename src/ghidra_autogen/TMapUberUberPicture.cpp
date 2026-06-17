@@ -3,32 +3,42 @@
 // Program: Imperialism.exe
 // Bucket: TMapUberUberPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00573850
-// GHIDRA_NAME TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources
-// GHIDRA_PROTO undefined InitializeOffLimitsPictureCachedBrushResources()
+// GHIDRA_FUNCTION IMPERIALISM 0x0045D2A0
+// GHIDRA_NAME TMapUberUberPicture::OrphanRetStub_0045d2a0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0045d2a0(void)
 
-void __thiscall
-TMapUberUberPicture::InitializeOffLimitsPictureCachedBrushResources(int param_1,undefined4 param_2)
+void __thiscall TMapUberUberPicture::OrphanRetStub_0045d2a0(TMapUberUberPicture *this)
 
 {
-  undefined4 uVar1;
-  
-  TView::thunk_NoOpUiLifecycleHook(param_2);
-  uVar1 = CreateClipStateRegionWrapperObject();
-  *(undefined4 *)(param_1 + 0x90) = uVar1;
-  ResetClipRegionAndReadBoundingRect(uVar1);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0045D2C0
+// GHIDRA_NAME TMapUberUberPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TMapUberUberPicture * __thiscall
+TMapUberUberPicture::_scalar_deleting_destructor_(TMapUberUberPicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596770
 // GHIDRA_NAME TMapUberUberPicture::CreateTMapUberUberPictureInstance
 // GHIDRA_PROTO undefined CreateTMapUberUberPictureInstance()
 
-undefined4 * TMapUberUberPicture::CreateTMapUberUberPictureInstance(void)
+TOffLimitsPicture * TMapUberUberPicture::CreateTMapUberUberPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TOffLimitsPicture *this;
+  TOffLimitsPicture *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -38,51 +48,51 @@ undefined4 * TMapUberUberPicture::CreateTMapUberUberPictureInstance(void)
   puStack_8 = &LAB_006382fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TOffLimitsPicture *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState();
-    *puVar1 = &PTR_LAB_00645650;
-    puVar2 = puVar1;
+  pTVar1 = (TOffLimitsPicture *)0x0;
+  if (this != (TOffLimitsPicture *)0x0) {
+    TOffLimitsPicture::ConstructTOffLimitsPictureBaseState(this);
+    this->vftable = (TOffLimitsPictureVtbl *)&TMapUberUberPictureVtbl_00645650;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005967F0
-// GHIDRA_NAME TMapUberUberPicture::GetTMapUberUberPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTMapUberUberPictureClassNamePointer()
+// GHIDRA_NAME TMapUberUberPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TMapUberUberPicture::GetTMapUberUberPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TMapUberUberPicture::GetTEventHandlerClassNamePointer(TMapUberUberPicture *this)
 
 {
-  return &PTR_s_TMapUberUberPicture_00668c28;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596810
-// GHIDRA_NAME TMapUberUberPicture::ConstructTMapUberUberPictureBaseState
-// GHIDRA_PROTO undefined ConstructTMapUberUberPictureBaseState()
+// GHIDRA_NAME TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TMapUberUberPicture::ConstructTMapUberUberPictureBaseState(undefined4 param_1,undefined4 param_2)
+void __thiscall TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberUberPicture *this)
 
 {
-  InitializeOffLimitsPictureCachedBrushResources(param_2);
-  *(undefined4 *)((int)g_pGlobalUiRootController + 0x48) = param_1;
+  TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920((TOffLimitsPicture *)this);
+  g_pGlobalUiRootController[1].vftable = (TApplicationVtbl *)this;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00596840
-// GHIDRA_NAME TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMapUberUberPictureAndMaybeFree()
+// GHIDRA_NAME TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void TMapUberUberPicture::DestructTMapUberUberPictureAndMaybeFree(void)
+void __thiscall TMapUberUberPicture::OrphanLeaf_NoCall_Ins07_004d8920(TMapUberUberPicture *this)
 
 {
-  *(undefined4 *)((int)g_pGlobalUiRootController + 0x48) = 0;
-  *(undefined4 *)((int)g_pGlobalUiRootController + 0x28) = 0;
-  WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At00573900();
+  g_pGlobalUiRootController[1].vftable = (TApplicationVtbl *)0x0;
+  *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 0;
+  TOffLimitsPicture::OrphanLeaf_NoCall_Ins07_004d8920((TOffLimitsPicture *)this);
   return;
 }
 

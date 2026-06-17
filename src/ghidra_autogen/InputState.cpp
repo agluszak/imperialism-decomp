@@ -12,8 +12,8 @@ InputState::SetMapTileStateByteAndNotifyObserver(int param_1,undefined4 param_2,
 
 {
   *(undefined1 *)(*(int *)(param_1 + 0xc) + 0x16 + (short)param_2 * 0x24) = param_3;
-  if (*(int **)(g_pUiRuntimeContext + 0xf0) != (int *)0x0) {
-    (**(code **)(**(int **)(g_pUiRuntimeContext + 0xf0) + 0x1d8))(param_2);
+  if (*(int **)&g_pUiRuntimeContext->field_0xf0 != (int *)0x0) {
+    (**(code **)(**(int **)&g_pUiRuntimeContext->field_0xf0 + 0x1d8))(param_2);
   }
   return;
 }
@@ -70,7 +70,7 @@ LAB_0055fcae:
           if (((byte)this[0x10] & '\x01' << ((byte)(key_id % 7) & 0x1f)) != 0) {
             slot_id = (**(code **)(iVar1 + 0x50))();
             SetMapTileStateByteAndNotifyObserver((int)slot_id,key_id % 7 + 7);
-            *(undefined2 *)(*(int *)(g_pGlobalMapState + 0xc) + 0x1a + slot_id * 0x24) = 0xffff;
+            *(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1a + slot_id * 0x24) = 0xffff;
           }
           key_id = key_id + 1;
           slots_remaining = slots_remaining + -1;
@@ -79,7 +79,7 @@ LAB_0055fcae:
       else {
         slot_handle = (**(code **)(*(int *)this + 0x50))();
         SetMapTileStateByteAndNotifyObserver(slot_handle,&controller_id->field_0x7);
-        *(undefined2 *)(*(int *)(g_pGlobalMapState + 0xc) + 0x1a + (short)slot_handle * 0x24) =
+        *(undefined2 *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1a + (short)slot_handle * 0x24) =
              0xffff;
       }
     }
@@ -113,7 +113,7 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
 {
   int *piVar1;
   undefined4 *puVar2;
-  undefined4 uVar3;
+  int iVar3;
   int iVar4;
   int iteration_count;
   int *piVar5;
@@ -152,21 +152,24 @@ InputState::InitializeMapActionContextsForNationCountUsingCostField(int param_1,
   }
   puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x32a0);
   puVar6 = puVar2;
-  for (iVar4 = 0xca8; iVar4 != 0; iVar4 = iVar4 + -1) {
+  for (iVar3 = 0xca8; iVar3 != 0; iVar3 = iVar3 + -1) {
     *puVar6 = 0;
     puVar6 = puVar6 + 1;
   }
-  iVar4 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar2);
-  while (iVar4 != 0) {
-    iVar4 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar2);
+  iVar3 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar2);
+  while (iVar3 != 0) {
+    iVar3 = thunk_RelaxMapTileCostFieldByNeighborTerrain(puVar2);
   }
-  iVar4 = 0;
+  iVar3 = 0;
   if (0 < iteration_count) {
+    iVar4 = 0;
     do {
-      uVar3 = thunk_SelectBestSeedTileForNationFromCostField(puVar2,iVar4 + 0x17);
-      TZone::SetMapActionContextTargetTileAndRefreshMarkers(iVar4 + 0x17,uVar3);
-      iVar4 = iVar4 + 1;
-    } while (iVar4 < iteration_count);
+      thunk_SelectBestSeedTileForNationFromCostField(puVar2,iVar3 + 0x17);
+      TZone::SetMapActionContextTargetTileAndRefreshMarkers
+                ((TZone *)(*(int *)(param_1 + 8) + iVar4));
+      iVar3 = iVar3 + 1;
+      iVar4 = iVar4 + 0x48;
+    } while (iVar3 < iteration_count);
   }
   FreeHeapBufferIfNotNull(puVar2);
   *unaff_FS_OFFSET = uStack_c;

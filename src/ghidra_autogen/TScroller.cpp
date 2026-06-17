@@ -3,11 +3,27 @@
 // Program: Imperialism.exe
 // Bucket: TScroller.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0048CAD0
+// GHIDRA_NAME TScroller::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TScroller * __thiscall TScroller::_scalar_deleting_destructor_(TScroller *this)
+
+{
+  byte in_stack_00000004;
+  
+  CreateTScrollerInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CB00
 // GHIDRA_NAME TScroller::CreateTScrollerInstance
-// GHIDRA_PROTO undefined CreateTScrollerInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTScrollerInstance(void)
 
-void __fastcall TScroller::CreateTScrollerInstance(undefined4 *param_1)
+void __thiscall TScroller::CreateTScrollerInstance(TScroller *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -18,56 +34,58 @@ void __fastcall TScroller::CreateTScrollerInstance(undefined4 *param_1)
   puStack_8 = &LAB_0062ece3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &TView::_vftable_;
+  this->vftable = (TScrollerVtbl *)&TView::_vftable_;
   local_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TScrollerVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CB90
-// GHIDRA_NAME TScroller::GetTScrollerClassNamePointer
-// GHIDRA_PROTO undefined GetTScrollerClassNamePointer()
+// GHIDRA_NAME TScroller::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TScroller::GetTScrollerClassNamePointer(void)
+CRuntimeClass * __thiscall TScroller::GetTEventHandlerClassNamePointer(TScroller *this)
 
 {
-  return &PTR_s_TScroller_006495b8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048CBB0
 // GHIDRA_NAME TScroller::ConstructTScrollerBaseState
-// GHIDRA_PROTO undefined ConstructTScrollerBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTScrollerBaseState(void)
 
-void __thiscall
-TScroller::ConstructTScrollerBaseState
-          (int param_1,int *param_2,undefined4 *param_3,undefined4 *param_4)
+void __thiscall TScroller::ConstructTScrollerBaseState(TScroller *this)
 
 {
   int iVar1;
+  int *in_stack_00000004;
+  int *in_stack_00000008;
+  int *in_stack_0000000c;
   
   iVar1 = 0;
-  if ((param_2 != (int *)0x0) && (iVar1 = param_2[0x10], param_2 != (int *)0x0)) {
-    *(int *)(param_1 + 0x50) = param_2[0x14];
+  if ((in_stack_00000004 != (int *)0x0) &&
+     (iVar1 = in_stack_00000004[0x10], in_stack_00000004 != (int *)0x0)) {
+    this->field50 = in_stack_00000004[0x14];
   }
-  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
-  *(undefined4 *)(param_1 + 4) = 1;
-  *(undefined4 *)(param_1 + 8) = 1;
-  *(int **)(param_1 + 0xc) = param_2;
-  *(undefined4 *)(param_1 + 0x24) = *param_3;
-  *(undefined4 *)(param_1 + 0x28) = param_3[1];
-  *(undefined4 *)(param_1 + 0x34) = *param_4;
-  *(undefined4 *)(param_1 + 0x38) = param_4[1];
-  if (param_2 != (int *)0x0) {
-    (**(code **)(*param_2 + 0x170))(param_1,0);
+  this->controlTag = 0x20202020;
+  this->field04 = 1;
+  this->padding_08_to_0b = 1;
+  this->field0c = (int)in_stack_00000004;
+  this->ownerOffsetX = *in_stack_00000008;
+  this->ownerOffsetY = in_stack_00000008[1];
+  this->field34 = *in_stack_0000000c;
+  this->field38 = in_stack_0000000c[1];
+  if (in_stack_00000004 != (int *)0x0) {
+    (**(code **)(*in_stack_00000004 + 0x170))(this,0);
   }
-  *(int *)(param_1 + 0x40) = iVar1;
+  this->padding_40_to_43 = iVar1;
   return;
 }
 
@@ -96,18 +114,17 @@ TView * TScroller::DestructTScrollerAndMaybeFree(void)
     local_10 = this;
     TView::thunk_ConstructTViewBaseState(this);
     local_4._0_1_ = 1;
-    InitializeSharedStringRefFromEmpty(&this[1].field0c);
+    CString::CString((CString *)&this[1].field0c);
     this[1].field04 = 0;
     this[1].padding_08_to_0b = 0;
     local_4._0_1_ = 2;
-    this->vftable = &PTR_LAB_00649c60;
+    this->vftable = (TViewVtbl *)&TIncludeViewVtbl_00649c60;
     *(undefined2 *)&this[1].vftable = 0xffff;
-    TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-              ((TToolBarCluster *)&local_14,(char *)&g_szEmptyString);
+    CString::CString(&local_14,(char *)&g_szEmptyString);
     local_4._0_1_ = 3;
-    AssignFromPtr(&this[1].field0c,&local_14);
+    CString::AssignFromPtr((CString *)&this[1].field0c,&local_14);
     local_4 = CONCAT31(local_4._1_3_,2);
-    ReleaseSharedStringRefIfNotEmpty(&local_14);
+    CString::~CString(&local_14);
     *(undefined2 *)&this[1].field10 = 1;
     this->field04 = 0;
     *unaff_FS_OFFSET = local_c;

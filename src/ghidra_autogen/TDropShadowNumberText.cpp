@@ -7,10 +7,10 @@
 // GHIDRA_NAME TDropShadowNumberText::CreateTDropShadowNumberTextInstance
 // GHIDRA_PROTO undefined CreateTDropShadowNumberTextInstance()
 
-undefined4 * TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
+TEditText * TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
 
 {
-  undefined4 *puVar1;
+  TEditText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,80 +20,82 @@ undefined4 * TDropShadowNumberText::CreateTDropShadowNumberTextInstance(void)
   puStack_8 = &LAB_00638eba;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb0);
+  this = (TEditText *)AllocateWithFallbackHandler(0xb0);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TEditText::thunk_ConstructUiNumericTextEntryBase();
-    puVar1[0x28] = 0;
-    *(undefined1 *)(puVar1 + 0x2b) = 0;
-    *(undefined1 *)((int)puVar1 + 0xad) = 0;
-    *(undefined1 *)((int)puVar1 + 0xae) = 0;
-    *(undefined1 *)((int)puVar1 + 0xaf) = 0;
-    *puVar1 = &PTR_LAB_0066d038;
-    puVar1[0x2b] = DAT_006a58c8;
+  if (this != (TEditText *)0x0) {
+    TEditText::thunk_ConstructUiNumericTextEntryBase(this);
+    this[1].vftable = (TEditTextVtbl *)0x0;
+    *(undefined1 *)&this[1].field0c = 0;
+    *(undefined1 *)((int)&this[1].field0c + 1) = 0;
+    *(undefined1 *)((int)&this[1].field0c + 2) = 0;
+    *(undefined1 *)((int)&this[1].field0c + 3) = 0;
+    this->vftable = (TEditTextVtbl *)&TDropShadowNumberTextVtbl_0066d038;
+    this[1].field0c = DAT_006a58c8;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TEditText *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B58F0
-// GHIDRA_NAME TDropShadowNumberText::GetTDropShadowNumberTextClassNamePointer
-// GHIDRA_PROTO undefined GetTDropShadowNumberTextClassNamePointer()
+// GHIDRA_NAME TDropShadowNumberText::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TDropShadowNumberText::GetTDropShadowNumberTextClassNamePointer(void)
+CRuntimeClass * __thiscall
+TDropShadowNumberText::GetTEventHandlerClassNamePointer(TDropShadowNumberText *this)
 
 {
-  return &PTR_s_TDropShadowNumberText_0066c420;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5910
 // GHIDRA_NAME TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState
-// GHIDRA_PROTO undefined ConstructTDropShadowNumberTextBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDropShadowNumberTextBaseState(void)
 
-undefined4 * __fastcall
-TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(undefined4 *param_1)
+TDropShadowNumberText * __thiscall
+TDropShadowNumberText::ConstructTDropShadowNumberTextBaseState(TDropShadowNumberText *this)
 
 {
-  TEditText::thunk_ConstructUiNumericTextEntryBase();
-  param_1[0x28] = 0;
-  *(undefined1 *)(param_1 + 0x2b) = 0;
-  *(undefined1 *)((int)param_1 + 0xad) = 0;
-  *(undefined1 *)((int)param_1 + 0xae) = 0;
-  *(undefined1 *)((int)param_1 + 0xaf) = 0;
-  *param_1 = &PTR_LAB_0066d038;
-  param_1[0x2b] = DAT_006a58c8;
-  return param_1;
+  TEditText::thunk_ConstructUiNumericTextEntryBase((TEditText *)this);
+  *(undefined4 *)&this->field_0xa0 = 0;
+  this->field_0xac = 0;
+  this->field_0xad = 0;
+  this->field_0xae = 0;
+  this->field_0xaf = 0;
+  this->vftable = &TDropShadowNumberTextVtbl_0066d038;
+  *(undefined4 *)&this->field_0xac = DAT_006a58c8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5960
-// GHIDRA_NAME TDropShadowNumberText::DestructTDropShadowNumberTextAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDropShadowNumberTextAndMaybeFree()
+// GHIDRA_NAME TDropShadowNumberText::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TDropShadowNumberText::DestructTDropShadowNumberTextAndMaybeFree(undefined4 param_1,byte param_2)
+TDropShadowNumberText * __thiscall
+TDropShadowNumberText::_scalar_deleting_destructor_(TDropShadowNumberText *this)
 
 {
-  DestructTEditTextAndMaybeFree();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTEditTextAndMaybeFree((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B59B0
-// GHIDRA_NAME TDropShadowNumberText::RenderDropShadowNumberTextValue
-// GHIDRA_PROTO undefined RenderDropShadowNumberTextValue()
+// GHIDRA_NAME TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __thiscall
-TDropShadowNumberText::RenderDropShadowNumberTextValue(int *param_1,undefined4 param_2)
+void __thiscall TDropShadowNumberText::OrphanTiny_ReturnZero_0048a730(TDropShadowNumberText *this)
 
 {
-  int iVar1;
+  TDropShadowNumberTextVtbl *pTVar1;
   int unaff_EDI;
   int *unaff_FS_OFFSET;
-  undefined1 auStack_14 [8];
+  CString aCStack_14 [2];
   int iStack_c;
   undefined1 *puStack_8;
   int local_4;
@@ -102,17 +104,17 @@ TDropShadowNumberText::RenderDropShadowNumberTextValue(int *param_1,undefined4 p
   puStack_8 = &LAB_00638ed8;
   iStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = (int)&iStack_c;
-  InitializeDialogWindowAndRefreshSelectedNationHeaderStatus(param_2);
-  SetQuickDrawColorAndPropagateIfChanged(param_1[0x2b]);
-  InitializeSharedStringRefFromEmpty(&param_2);
-  iVar1 = *param_1;
+  TEditText::OrphanTiny_ReturnZero_0048a730((TEditText *)this);
+  SetQuickDrawColorAndPropagateIfChanged(*(undefined4 *)&this->field_0xac);
+  CString::CString((CString *)&stack0x00000004);
+  pTVar1 = this->vftable;
   local_4 = 0;
-  (**(code **)(iVar1 + 0x1dc))(&param_2);
-  (**(code **)(iVar1 + 0x1a4))(&stack0xffffffe0);
-  (**(code **)(iVar1 + 0x1d4))
+  (*pTVar1[0x3b].slot_0x04)(&stack0x00000004);
+  (*pTVar1[0x34].slot_0x04)(&stack0xffffffe0);
+  (*pTVar1[0x3a].slot_0x04)
             (local_4,*(undefined4 *)(local_4 + -8),&stack0xffffffdc,
-             CONCAT22((short)((uint)(unaff_EDI + -1) >> 0x10),(short)param_1[0x24]));
-  ReleaseSharedStringRefIfNotEmpty(auStack_14);
+             CONCAT22((short)((uint)(unaff_EDI + -1) >> 0x10),*(undefined2 *)&this->field_0x90));
+  CString::~CString(aCStack_14);
   *unaff_FS_OFFSET = unaff_EDI + -1;
   return;
 }

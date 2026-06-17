@@ -4,27 +4,76 @@
 // Bucket: TTextPictureButton.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005725B0
-// GHIDRA_NAME TTextPictureButton::GetTTextPictureButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTTextPictureButtonClassNamePointer()
+// GHIDRA_NAME TTextPictureButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTextPictureButton::GetTTextPictureButtonClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTextPictureButton::GetTEventHandlerClassNamePointer(TTextPictureButton *this)
 
 {
-  return &PTR_s_TTextPictureButton_0065e670;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00572670
-// GHIDRA_NAME TTextPictureButton::DestructTTextPictureButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTextPictureButtonAndMaybeFree()
+// GHIDRA_NAME TTextPictureButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TTextPictureButton::DestructTTextPictureButtonAndMaybeFree(undefined4 param_1,byte param_2)
+TTextPictureButton * __thiscall
+TTextPictureButton::_scalar_deleting_destructor_(TTextPictureButton *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTTextPictureButtonAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00572790
+// GHIDRA_NAME TTextPictureButton::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TTextPictureButton::OrphanTiny_ReturnZero_0048a730(TTextPictureButton *this)
+
+{
+  undefined1 *puVar1;
+  short sVar2;
+  undefined2 extraout_var;
+  int iVar3;
+  uint uVar4;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined4 uStack00000004;
+  tagSIZE local_8;
+  
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  uVar4 = (uint)(this->field_0x64 != '\0');
+  uStack00000004 = 0;
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor
+            (0,*(undefined2 *)&this->field_0x98,
+             CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x9c));
+  thunk_MapUiThemeCodeToStyleFlags
+            (CONCAT22(extraout_var,*(undefined2 *)&this->field_0x9c),&stack0x00000004);
+  SetQuickDrawColorAndSyncGlobals(uStack00000004);
+  puVar1 = &this->field_0x94;
+  sVar2 = thunk_MeasureTextExtentWithCachedQuickDrawStyle(puVar1);
+  iVar3 = NoOpQuickDrawContextSelectionHook();
+  GetTextExtentPointA(*(HDC *)(iVar3 + 8),*(LPCSTR *)puVar1,*(int *)(*(LPCSTR *)puVar1 + -8),
+                      &local_8);
+  iVar3 = (int)(local_8.cy + (local_8.cy >> 0x1f & 3U)) >> 2;
+  local_8.cx = -iVar3;
+  thunk_SetQuickDrawTextOriginWithContextOffset
+            ((this->field34 / 2 - (int)sVar2 / 2) + 1 + uVar4,this->field38 / 2 + iVar3 + 1 + uVar4)
+  ;
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(puVar1);
+  thunk_MapUiThemeCodeToStyleFlags
+            (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x9a),&stack0x00000004);
+  SetQuickDrawColorAndSyncGlobals(uStack00000004);
+  thunk_SetQuickDrawTextOriginWithContextOffset
+            ((this->field34 / 2 - (int)sVar2 / 2) + uVar4,(this->field38 / 2 - local_8.cx) + uVar4);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(puVar1);
+  return;
 }
 

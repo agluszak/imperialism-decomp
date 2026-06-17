@@ -5,34 +5,39 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601DE3
 // GHIDRA_NAME CPtrArray::SetAtGrow
-// GHIDRA_PROTO undefined SetAtGrow()
+// GHIDRA_PROTO undefined __thiscall SetAtGrow(void)
 
-void __thiscall CPtrArray::SetAtGrow(int param_1,int param_2,undefined4 param_3)
+void __thiscall CPtrArray::SetAtGrow(CPtrArray *this)
 
 {
-  if (*(int *)(param_1 + 8) <= param_2) {
-    SetSize(param_2 + 1,0xffffffff);
+  int in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  if (*(int *)(this + 8) <= in_stack_00000004) {
+    SetSize(in_stack_00000004 + 1,0xffffffff);
   }
-  *(undefined4 *)(*(int *)(param_1 + 4) + param_2 * 4) = param_3;
+  *(undefined4 *)(*(int *)(this + 4) + in_stack_00000004 * 4) = in_stack_00000008;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00601E9F
 // GHIDRA_NAME CPtrArray::RemoveAt
-// GHIDRA_PROTO undefined RemoveAt()
+// GHIDRA_PROTO undefined __thiscall RemoveAt(void)
 
-void __thiscall CPtrArray::RemoveAt(int param_1,int param_2,int param_3)
+void __thiscall CPtrArray::RemoveAt(CPtrArray *this)
 
 {
   int iVar1;
+  int in_stack_00000004;
+  int in_stack_00000008;
   
-  iVar1 = (*(int *)(param_1 + 8) - param_2) - param_3;
+  iVar1 = (*(int *)(this + 8) - in_stack_00000004) - in_stack_00000008;
   if (iVar1 != 0) {
     CopyMemoryPossiblyOverlapping
-              (*(int *)(param_1 + 4) + param_2 * 4,*(int *)(param_1 + 4) + (param_3 + param_2) * 4,
-               iVar1 * 4);
+              (*(int *)(this + 4) + in_stack_00000004 * 4,
+               *(int *)(this + 4) + (in_stack_00000008 + in_stack_00000004) * 4,iVar1 * 4);
   }
-  *(int *)(param_1 + 8) = *(int *)(param_1 + 8) - param_3;
+  *(int *)(this + 8) = *(int *)(this + 8) - in_stack_00000008;
   return;
 }
 

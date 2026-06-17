@@ -5,195 +5,892 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2340
 // GHIDRA_NAME TCity::CreateTCityInstance
-// GHIDRA_PROTO undefined CreateTCityInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTCityInstance(void)
 
-undefined2 __thiscall TCity::CreateTCityInstance(int param_1,int param_2,short param_3)
+undefined2 __thiscall TCity::CreateTCityInstance(TCity *this)
 
 {
   short sVar1;
+  short sVar2;
+  int in_stack_00000004;
+  short in_stack_00000008;
   
-  sVar1 = *(short *)(param_1 + 8);
-  if (param_3 <= sVar1) {
-    *(short *)(param_1 + 8) = sVar1 - param_3;
-    *(short *)(param_2 + 8) = *(short *)(param_2 + 8) + param_3;
+  sVar1 = *(short *)&this->field_0x8;
+  if (in_stack_00000008 <= sVar1) {
+    *(short *)&this->field_0x8 = sVar1 - in_stack_00000008;
+    *(short *)(in_stack_00000004 + 8) = *(short *)(in_stack_00000004 + 8) + in_stack_00000008;
     return 1;
   }
-  *(short *)(param_2 + 8) = *(short *)(param_2 + 8) + sVar1;
-  param_3 = param_3 - *(short *)(param_1 + 8);
-  sVar1 = *(short *)(param_1 + 6);
-  *(undefined2 *)(param_1 + 8) = 0;
-  if (param_3 <= sVar1) {
-    *(short *)(param_1 + 6) = sVar1 - param_3;
-    *(short *)(param_2 + 6) = *(short *)(param_2 + 6) + param_3;
+  *(short *)(in_stack_00000004 + 8) = *(short *)(in_stack_00000004 + 8) + sVar1;
+  sVar2 = in_stack_00000008 - *(short *)&this->field_0x8;
+  sVar1 = *(short *)&this->field_0x6;
+  *(undefined2 *)&this->field_0x8 = 0;
+  if (sVar2 <= sVar1) {
+    *(short *)&this->field_0x6 = sVar1 - sVar2;
+    *(short *)(in_stack_00000004 + 6) = *(short *)(in_stack_00000004 + 6) + sVar2;
     return 1;
   }
-  *(short *)(param_2 + 6) = *(short *)(param_2 + 6) + sVar1;
-  param_3 = param_3 - *(short *)(param_1 + 6);
-  sVar1 = *(short *)(param_1 + 4);
-  *(undefined2 *)(param_1 + 6) = 0;
-  if (param_3 <= sVar1) {
-    *(short *)(param_1 + 4) = sVar1 - param_3;
-    *(short *)(param_2 + 4) = *(short *)(param_2 + 4) + param_3;
+  *(short *)(in_stack_00000004 + 6) = *(short *)(in_stack_00000004 + 6) + sVar1;
+  sVar2 = sVar2 - *(short *)&this->field_0x6;
+  sVar1 = *(short *)&this->field_0x4;
+  *(undefined2 *)&this->field_0x6 = 0;
+  if (sVar2 <= sVar1) {
+    *(short *)&this->field_0x4 = sVar1 - sVar2;
+    *(short *)(in_stack_00000004 + 4) = *(short *)(in_stack_00000004 + 4) + sVar2;
     return 1;
   }
-  *(short *)(param_2 + 4) = sVar1;
-  *(undefined2 *)(param_1 + 4) = 0;
+  *(short *)(in_stack_00000004 + 4) = sVar1;
+  *(undefined2 *)&this->field_0x4 = 0;
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2490
 // GHIDRA_NAME TCity::GetTCityClassNamePointer
-// GHIDRA_PROTO undefined GetTCityClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTCityClassNamePointer(void)
 
-char * TCity::GetTCityClassNamePointer(void)
+CRuntimeClass * __thiscall TCity::GetTCityClassNamePointer(TCity *this)
 
 {
-  return ",[i";
+  return &g_pClassDescTCity;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B24B0
 // GHIDRA_NAME TCity::TCity
-// GHIDRA_PROTO undefined TCity()
+// GHIDRA_PROTO undefined __thiscall TCity(void)
 
-void __fastcall TCity::TCity(undefined4 *param_1)
+void __thiscall TCity::TCity(TCity *this)
 
 {
   int iVar1;
-  undefined4 *puVar2;
+  undefined2 *puVar2;
   
   iVar1 = 0;
-  *param_1 = &_vftable_;
-  param_1[0x2c] = 0;
-  param_1[0x9c] = 0;
-  param_1[0x9d] = 0;
-  puVar2 = param_1 + 0x7f;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0xb0 = 0;
+  *(undefined4 *)&this->field_0x270 = 0;
+  *(undefined4 *)&this->field_0x274 = 0;
+  puVar2 = (undefined2 *)&this->field_0x1fc;
   do {
-    *(undefined2 *)(puVar2 + -8) = 0;
-    *(undefined2 *)puVar2 = 0;
-    *(undefined1 *)(iVar1 + 0x21c + (int)param_1) = 0;
+    puVar2[-0x10] = 0;
+    *puVar2 = 0;
+    *(undefined1 *)((int)this->orderSlotsE4 + iVar1 + 0x138) = 0;
     iVar1 = iVar1 + 1;
-    puVar2 = (undefined4 *)((int)puVar2 + 2);
+    puVar2 = puVar2 + 1;
   } while (iVar1 < 0x10);
-  *(undefined2 *)(param_1 + 0x9b) = 0;
-  *(undefined2 *)((int)param_1 + 6) = 0;
-  *(undefined2 *)(param_1 + 2) = 0;
+  *(undefined2 *)&this->field_0x26c = 0;
+  *(undefined2 *)&this->field_0x6 = 0;
+  *(undefined2 *)&this->field_0x8 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2520
 // GHIDRA_NAME TCity::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TCity::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TCity * __thiscall TCity::_scalar_deleting_destructor_(TCity *this)
 
 {
-  ~TCity();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  ~TCity(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B2550
 // GHIDRA_NAME TCity::~TCity
-// GHIDRA_PROTO undefined ~TCity()
+// GHIDRA_PROTO undefined __thiscall ~TCity(void)
 
-void __fastcall TCity::~TCity(undefined4 *param_1)
+void __thiscall TCity::~TCity(TCity *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TCityVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B30A0
+// GHIDRA_NAME TCity::DeserializeCityProductionState
+// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Deserializes city production state from save/archive stream.
+// GHIDRA_COMMENT Includes load of slot production arrays at +0x1DC and +0x1FC, then restores entry objects/queue state.
+// GHIDRA_COMMENT This is a core persistence load path for remembered production orders.
+// GHIDRA_COMMENT_END
+
+/* Deserializes city production state from save/archive stream.
+   Includes load of slot production arrays at +0x1DC and +0x1FC, then restores entry objects/queue
+   state.
+   This is a core persistence load path for remembered production orders. */
+
+void __thiscall TCity::DeserializeCityProductionState(TCity *this)
+
+{
+  undefined1 uVar1;
+  code *pcVar2;
+  word wVar3;
+  undefined1 *puVar4;
+  int *piVar5;
+  TShipBuildingTask *this_00;
+  int iVar6;
+  undefined1 *puVar7;
+  word *pwVar8;
+  void **ppvVar9;
+  int *unaff_FS_OFFSET;
+  int *in_stack_00000004;
+  int iStack_bc;
+  undefined1 *puStack_b8;
+  undefined1 *puStack_b4;
+  undefined1 *puStack_b0;
+  undefined4 uStack_ac;
+  undefined1 *puStack_a8;
+  undefined4 uStack_a4;
+  undefined1 *puStack_a0;
+  undefined4 uStack_9c;
+  undefined1 *puStack_98;
+  int iStack_94;
+  word *pwStack_90;
+  int iStack_8c;
+  undefined1 *puStack_88;
+  undefined1 *puStack_84;
+  undefined1 *puStack_80;
+  undefined4 uStack_7c;
+  undefined1 *puStack_78;
+  undefined4 uStack_74;
+  undefined1 *puStack_70;
+  undefined4 uStack_6c;
+  undefined1 *puStack_68;
+  int iStack_64;
+  undefined1 *puStack_60;
+  undefined4 uStack_5c;
+  undefined1 *puStack_58;
+  undefined4 uStack_54;
+  undefined1 *puStack_50;
+  undefined4 uStack_4c;
+  undefined1 *puStack_48;
+  undefined1 *puStack_44;
+  undefined1 *puStack_40;
+  undefined4 uStack_3c;
+  undefined1 *puStack_38;
+  undefined4 uStack_34;
+  undefined1 *puStack_30;
+  undefined4 uStack_2c;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00630ee4;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  puStack_30 = (undefined1 *)0x4b30f4;
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  puStack_30 = &this->field_0x4;
+  uStack_2c = 1;
+  pcVar2 = *(code **)(*in_stack_00000004 + 0x3c);
+  uStack_34 = 0x4b3103;
+  (*pcVar2)();
+  puStack_38 = &this->field_0x7c;
+  uStack_34 = 1;
+  uStack_3c = 0x4b310d;
+  (*pcVar2)();
+  puStack_40 = &this->field_0x7d;
+  uStack_3c = 1;
+  puStack_44 = (undefined1 *)0x4b3117;
+  (*pcVar2)();
+  puStack_48 = &this->field_0x21c;
+  puStack_44 = puStack_30;
+  uStack_4c = 0x4b3127;
+  (*pcVar2)();
+  puStack_50 = &this->field_0x6;
+  uStack_4c = 2;
+  uStack_54 = 0x4b3131;
+  (*pcVar2)();
+  puStack_58 = &this->field_0x8;
+  uStack_54 = 2;
+  uStack_5c = 0x4b313b;
+  (*pcVar2)();
+  puStack_60 = &this->field_0xa;
+  uStack_5c = 2;
+  iStack_64 = 0x4b3145;
+  (*pcVar2)();
+  puStack_68 = &this->field_0xc;
+  iStack_64 = 2;
+  uStack_6c = 0x4b314f;
+  (*pcVar2)();
+  puStack_70 = &this->field_0xb4;
+  uStack_6c = 2;
+  uStack_74 = 0x4b315c;
+  (*pcVar2)();
+  puVar4 = &this->field_0xe;
+  uStack_74 = 0x3c;
+  uStack_7c = 0x4b3166;
+  puStack_78 = puVar4;
+  (*pcVar2)();
+  iVar6 = 0x1e;
+  do {
+    uVar1 = *puVar4;
+    *puVar4 = puVar4[1];
+    puVar4[1] = uVar1;
+    puVar4 = puVar4 + 2;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  puVar4 = &this->field_0x4a;
+  uStack_7c = 0x12;
+  puStack_84 = (undefined1 *)0x4b3187;
+  puStack_80 = puVar4;
+  (*pcVar2)();
+  iVar6 = 9;
+  do {
+    uVar1 = *puVar4;
+    *puVar4 = puVar4[1];
+    puVar4[1] = uVar1;
+    puVar4 = puVar4 + 2;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  puVar4 = &this->field_0x5c;
+  puStack_84 = (undefined1 *)0x1c;
+  iStack_8c = 0x4b31a8;
+  puStack_88 = puVar4;
+  (*pcVar2)();
+  iVar6 = 0xe;
+  do {
+    uVar1 = *puVar4;
+    *puVar4 = puVar4[1];
+    puVar4[1] = uVar1;
+    puVar4 = puVar4 + 2;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  pwVar8 = this->fieldB6;
+  iStack_8c = 0x2e;
+  iStack_94 = 0x4b31cc;
+  pwStack_90 = pwVar8;
+  (*pcVar2)();
+  iVar6 = 0x17;
+  do {
+    wVar3 = *pwVar8;
+    *(undefined1 *)pwVar8 = *(undefined1 *)((int)pwVar8 + 1);
+    *(char *)((int)pwVar8 + 1) = (char)wVar3;
+    pwVar8 = pwVar8 + 1;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  puVar4 = &this->field_0x1dc;
+  iStack_94 = (int)puStack_80 * 2;
+  uStack_9c = 0x4b31f9;
+  puStack_98 = puVar4;
+  iStack_64 = iStack_94;
+  (*pcVar2)();
+  puVar7 = puStack_88;
+  if (0 < (int)puStack_88) {
+    do {
+      uVar1 = *puVar4;
+      *puVar4 = puVar4[1];
+      puVar4[1] = uVar1;
+      puVar4 = puVar4 + 2;
+      puVar7 = puVar7 + -1;
+    } while (puVar7 != (undefined1 *)0x0);
+  }
+  puVar4 = &this->field_0x1fc;
+  uStack_9c = uStack_6c;
+  uStack_a4 = 0x4b3225;
+  puStack_a0 = puVar4;
+  (*pcVar2)();
+  pwVar8 = pwStack_90;
+  if (0 < (int)pwStack_90) {
+    do {
+      uVar1 = *puVar4;
+      *puVar4 = puVar4[1];
+      puVar4[1] = uVar1;
+      puVar4 = puVar4 + 2;
+      pwVar8 = (word *)((int)pwVar8 + -1);
+    } while (pwVar8 != (word *)0x0);
+  }
+  puVar4 = &this->field_0x278;
+  uStack_a4 = 0x2e;
+  uStack_ac = 0x4b324e;
+  puStack_a8 = puVar4;
+  (*pcVar2)();
+  iVar6 = 0x17;
+  do {
+    uVar1 = *puVar4;
+    *puVar4 = puVar4[1];
+    puVar4[1] = uVar1;
+    puVar4 = puVar4 + 2;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  puVar4 = &this->field_0x7e;
+  uStack_ac = 0x2e;
+  puStack_b4 = (undefined1 *)0x4b326f;
+  puStack_b0 = puVar4;
+  (*pcVar2)();
+  iVar6 = 0x17;
+  do {
+    uVar1 = *puVar4;
+    *puVar4 = puVar4[1];
+    puVar4[1] = uVar1;
+    puVar4 = puVar4 + 2;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  puVar4 = &this->field_0x22c;
+  puStack_b4 = puStack_84;
+  iStack_bc = 0x4b3296;
+  puStack_b8 = puVar4;
+  (*pcVar2)();
+  puVar7 = puStack_a8;
+  if (0 < (int)puStack_a8) {
+    do {
+      uVar1 = *puVar4;
+      *puVar4 = puVar4[1];
+      puVar4[1] = uVar1;
+      puVar4 = puVar4 + 2;
+      puVar7 = puVar7 + -1;
+    } while (puVar7 != (undefined1 *)0x0);
+  }
+  iStack_bc = iStack_8c;
+  (*pcVar2)();
+  puVar4 = &this->field_0x24c;
+  puVar7 = puStack_b0;
+  if (0 < (int)puStack_b0) {
+    do {
+      uVar1 = *puVar4;
+      *puVar4 = puVar4[1];
+      puVar4[1] = uVar1;
+      puVar7 = puVar7 + -1;
+      puVar4 = puVar4 + 2;
+    } while (puVar7 != (undefined1 *)0x0);
+  }
+  puVar4 = &this->field_0x2a6;
+  (*pcVar2)(puVar4);
+  iVar6 = 0x17;
+  do {
+    uVar1 = *puVar4;
+    *puVar4 = puVar4[1];
+    puVar4[1] = uVar1;
+    puVar4 = puVar4 + 2;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  if (DAT_00695278 < 0x28) {
+    *(undefined4 *)&this->field_0x78 = 0;
+  }
+  else {
+    (*pcVar2)(&this->field_0x78,4);
+  }
+  (**(code **)(**(int **)&this->field_0x1d8 + 0x18))();
+  if (0 < (int)puStack_b4) {
+    ppvVar9 = this->orderSlotsE4;
+    puStack_a0 = puStack_b4;
+    do {
+      if (*ppvVar9 != (int *)0x0) {
+        (**(code **)(*(int *)*ppvVar9 + 0x18))();
+      }
+      ppvVar9 = ppvVar9 + 1;
+      puStack_a0 = puStack_a0 + -1;
+    } while (puStack_a0 != (undefined1 *)0x0);
+  }
+  puStack_b8 = (undefined1 *)(**(code **)(**(int **)&this->field_0x270 + 0x48))();
+  if ((0 < (int)puStack_b8) && (iStack_bc = 1, 0 < (int)puStack_b8)) {
+    do {
+      piVar5 = (int *)(**(code **)(**(int **)&this->field_0x270 + 0x4c))(1);
+      (**(code **)(**(int **)&this->field_0x270 + 0x50))(1);
+      if (piVar5 != (int *)0x0) {
+        (**(code **)(*piVar5 + 0x1c))();
+      }
+      iStack_bc = iStack_bc + 1;
+    } while (iStack_bc <= (int)puStack_b8);
+  }
+  (**(code **)(**(int **)&this->field_0x270 + 0x18))();
+  (*pcVar2)(&iStack_bc,4);
+  do {
+    (*pcVar2)(&uStack_ac,1);
+    if ((char)puStack_b4 == '\x01') {
+      this_00 = (TShipBuildingTask *)AllocateWithFallbackHandler(0x14);
+      piVar5 = (int *)0x0;
+      iStack_bc = 0;
+      if (this_00 != (TShipBuildingTask *)0x0) {
+        piVar5 = (int *)TCityTask::InitializeCityOrderCommandVtable((TCityTask *)this_00);
+      }
+      iStack_bc = -1;
+      InitializeCityProductionQueueCommand(piVar5,0,this,0);
+      (**(code **)(*piVar5 + 0x18))();
+    }
+    else {
+      this_00 = (TShipBuildingTask *)AllocateWithFallbackHandler(0x18);
+      iStack_bc = 1;
+      if (this_00 == (TShipBuildingTask *)0x0) {
+        piVar5 = (int *)0x0;
+      }
+      else {
+        piVar5 = (int *)TShipBuildingTask::ConstructTShipBuildingTaskBaseState(this_00);
+      }
+      iStack_bc = -1;
+      InitializeOrderRecordFieldsFromArgs(0,this,0);
+      (**(code **)(*piVar5 + 0x18))();
+    }
+    DispatchCityProductionQueueCommand(*(void **)&this->field_0x270,piVar5);
+  } while ((int)((int)&this_00->vftable + 1) < 0x2f);
+  (**(code **)(**(int **)&this->field_0x274 + 0x18))();
+  *unaff_FS_OFFSET = (int)&this->field_0x24c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B35D0
+// GHIDRA_NAME TCity::SerializeCityProductionState
+// GHIDRA_PROTO undefined __thiscall SerializeCityProductionState(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Serializes city production state to save/archive stream.
+// GHIDRA_COMMENT Writes slot production arrays (+0x1DC current values, +0x1FC delta/mirror values) and related entry/queue objects.
+// GHIDRA_COMMENT This is a core persistence save path for remembered production orders.
+// GHIDRA_COMMENT_END
+
+/* Serializes city production state to save/archive stream.
+   Writes slot production arrays (+0x1DC current values, +0x1FC delta/mirror values) and related
+   entry/queue objects.
+   This is a core persistence save path for remembered production orders. */
+
+void __thiscall TCity::SerializeCityProductionState(TCity *this)
+
+{
+  code *pcVar1;
+  int *piVar2;
+  undefined4 extraout_ECX;
+  undefined4 extraout_ECX_00;
+  undefined4 extraout_ECX_01;
+  undefined4 extraout_ECX_02;
+  undefined4 extraout_ECX_03;
+  undefined4 extraout_ECX_04;
+  undefined4 extraout_ECX_05;
+  undefined4 extraout_ECX_06;
+  undefined4 extraout_ECX_07;
+  undefined4 extraout_ECX_08;
+  undefined4 uVar3;
+  undefined4 extraout_ECX_09;
+  word *pwVar4;
+  undefined2 *puVar5;
+  void **ppvVar6;
+  int iVar7;
+  int *in_stack_00000004;
+  undefined1 *puVar8;
+  undefined1 *puStack_60;
+  undefined4 uStack_5c;
+  undefined1 *puStack_58;
+  undefined4 uStack_54;
+  undefined1 *puStack_50;
+  int iStack_4c;
+  undefined1 *puStack_48;
+  undefined4 uStack_44;
+  undefined1 *puStack_40;
+  undefined4 uStack_3c;
+  undefined1 *puStack_38;
+  undefined4 uStack_34;
+  undefined1 *puStack_30;
+  undefined4 uStack_2c;
+  undefined1 *puStack_28;
+  undefined4 uStack_24;
+  undefined1 *puStack_20;
+  undefined4 uStack_1c;
+  
+  puStack_20 = (undefined1 *)0x4b35e3;
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  puStack_20 = &this->field_0x4;
+  uStack_1c = 1;
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  uStack_24 = 0x4b35f2;
+  (*pcVar1)();
+  puStack_28 = &this->field_0x7c;
+  uStack_24 = 1;
+  uStack_2c = 0x4b35fc;
+  (*pcVar1)();
+  puStack_30 = &this->field_0x7d;
+  uStack_2c = 1;
+  uStack_34 = 0x4b3606;
+  (*pcVar1)();
+  puStack_38 = &this->field_0x21c;
+  uStack_34 = 0x10;
+  uStack_3c = 0x4b3613;
+  (*pcVar1)();
+  puStack_40 = &this->field_0x6;
+  uStack_3c = 2;
+  uStack_44 = 0x4b361d;
+  (*pcVar1)();
+  puStack_48 = &this->field_0x8;
+  uStack_44 = 2;
+  iStack_4c = 0x4b3627;
+  (*pcVar1)();
+  puStack_50 = &this->field_0xa;
+  iStack_4c = 2;
+  uStack_54 = 0x4b3631;
+  (*pcVar1)();
+  puStack_58 = &this->field_0xc;
+  uStack_54 = 2;
+  uStack_5c = 0x4b363b;
+  (*pcVar1)();
+  puStack_60 = &this->field_0xb4;
+  uStack_5c = 2;
+  (*pcVar1)();
+  puVar5 = (undefined2 *)&this->field_0xe;
+  iStack_4c = 0x1e;
+  uVar3 = extraout_ECX;
+  do {
+    uStack_44._0_1_ = (undefined1)*puVar5;
+    uStack_44._1_1_ = (undefined1)((ushort)*puVar5 >> 8);
+    uStack_44 = CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),(undefined1)uStack_44),
+                         uStack_44._1_1_);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_00;
+  } while (iStack_4c != 0);
+  puVar5 = (undefined2 *)&this->field_0x4a;
+  iStack_4c = 9;
+  do {
+    uStack_44._0_1_ = (undefined1)*puVar5;
+    uStack_44._1_1_ = (undefined1)((ushort)*puVar5 >> 8);
+    uStack_44 = CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),(undefined1)uStack_44),
+                         uStack_44._1_1_);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_01;
+  } while (iStack_4c != 0);
+  puVar5 = (undefined2 *)&this->field_0x5c;
+  iStack_4c = 0xe;
+  do {
+    uStack_44._0_1_ = (undefined1)*puVar5;
+    uStack_44._1_1_ = (undefined1)((ushort)*puVar5 >> 8);
+    uStack_44 = CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),(undefined1)uStack_44),
+                         uStack_44._1_1_);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_02;
+  } while (iStack_4c != 0);
+  pwVar4 = this->fieldB6;
+  iStack_4c = 0x17;
+  do {
+    uStack_44._0_1_ = (undefined1)*pwVar4;
+    uStack_44._1_1_ = (undefined1)(*pwVar4 >> 8);
+    uStack_44 = CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),(undefined1)uStack_44),
+                         uStack_44._1_1_);
+    (*pcVar1)(&uStack_44,2);
+    pwVar4 = pwVar4 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_03;
+  } while (iStack_4c != 0);
+  puVar5 = (undefined2 *)&this->field_0x1dc;
+  iStack_4c = 0x10;
+  do {
+    uStack_44._0_1_ = (undefined1)*puVar5;
+    uStack_44._1_1_ = (undefined1)((ushort)*puVar5 >> 8);
+    uStack_44 = CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),(undefined1)uStack_44),
+                         uStack_44._1_1_);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_04;
+  } while (iStack_4c != 0);
+  puVar5 = (undefined2 *)&this->field_0x1fc;
+  iStack_4c = 0x10;
+  do {
+    uStack_44._0_1_ = (undefined1)*puVar5;
+    uStack_44._1_1_ = (undefined1)((ushort)*puVar5 >> 8);
+    uStack_44 = CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),(undefined1)uStack_44),
+                         uStack_44._1_1_);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_05;
+  } while (iStack_4c != 0);
+  puVar5 = (undefined2 *)&this->field_0x278;
+  iStack_4c = 0x17;
+  do {
+    uStack_44._0_1_ = (undefined1)*puVar5;
+    uStack_44._1_1_ = (undefined1)((ushort)*puVar5 >> 8);
+    uStack_44 = CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),(undefined1)uStack_44),
+                         uStack_44._1_1_);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_06;
+  } while (iStack_4c != 0);
+  puVar5 = (undefined2 *)&this->field_0x7e;
+  iStack_4c = 0x17;
+  do {
+    uStack_44._0_1_ = (undefined1)*puVar5;
+    uStack_44._1_1_ = (undefined1)((ushort)*puVar5 >> 8);
+    uStack_44 = CONCAT31(CONCAT21((short)((uint)uVar3 >> 0x10),(undefined1)uStack_44),
+                         uStack_44._1_1_);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_07;
+  } while (iStack_4c != 0);
+  puVar5 = (undefined2 *)&this->field_0x22c;
+  iStack_4c = 0x10;
+  do {
+    uStack_44 = CONCAT22((short)((uint)uVar3 >> 0x10),*puVar5);
+    SwapFirstTwoBytesInBuffer(&uStack_44);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_08;
+  } while (iStack_4c != 0);
+  puVar5 = (undefined2 *)&this->field_0x24c;
+  iStack_4c = 0x10;
+  do {
+    uStack_44 = CONCAT22((short)((uint)uVar3 >> 0x10),*puVar5);
+    SwapFirstTwoBytesInBuffer(&uStack_44);
+    (*pcVar1)(&uStack_44,2);
+    puVar5 = puVar5 + 1;
+    iStack_4c = iStack_4c + -1;
+    uVar3 = extraout_ECX_09;
+  } while (iStack_4c != 0);
+  WriteWordArrayToOutputCallbackLE();
+  puVar8 = &this->field_0x78;
+  (*pcVar1)(puVar8,4);
+  (**(code **)(**(int **)&this->field_0x1d8 + 0x14))();
+  ppvVar6 = this->orderSlotsE4;
+  puStack_50 = (undefined1 *)0x3d;
+  do {
+    if (*ppvVar6 != (int *)0x0) {
+      (**(code **)(*(int *)*ppvVar6 + 0x14))();
+    }
+    ppvVar6 = ppvVar6 + 1;
+    puStack_50 = (undefined1 *)((int)puStack_50 + -1);
+  } while (puStack_50 != (undefined1 *)0x0);
+  (**(code **)(**(int **)&this->field_0x270 + 0x14))();
+  puStack_60 = (undefined1 *)(**(code **)(**(int **)&this->field_0x270 + 0x48))();
+  (*pcVar1)(&puStack_60,4);
+  iVar7 = 1;
+  if (0 < (int)puVar8) {
+    do {
+      piVar2 = (int *)(**(code **)(**(int **)&this->field_0x270 + 0x4c))(iVar7);
+      (**(code **)(*piVar2 + 0x14))();
+      iVar7 = iVar7 + 1;
+    } while (iVar7 <= (int)puVar8);
+  }
+  (**(code **)(**(int **)&this->field_0x274 + 0x14))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3A60
 // GHIDRA_NAME TCity::Call1C
-// GHIDRA_PROTO undefined Call1C()
+// GHIDRA_PROTO undefined __thiscall Call1C(void)
 
-void __fastcall TCity::Call1C(int *param_1)
+void __thiscall TCity::Call1C(TCity *this)
 
 {
-  int *piVar1;
+  void **ppvVar1;
   int iVar2;
   
-  if ((int *)param_1[0x76] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x76] + 0x1c))();
+  if (*(int **)&this->field_0x1d8 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x1d8 + 0x1c))();
   }
-  param_1[0x76] = 0;
-  piVar1 = param_1 + 0x39;
+  *(undefined4 *)&this->field_0x1d8 = 0;
+  ppvVar1 = this->orderSlotsE4;
   iVar2 = 0x3d;
   do {
-    if ((int *)*piVar1 != (int *)0x0) {
-      (**(code **)(*(int *)*piVar1 + 0x1c))();
+    if (*ppvVar1 != (int *)0x0) {
+      (**(code **)(*(int *)*ppvVar1 + 0x1c))();
     }
-    *piVar1 = 0;
-    piVar1 = piVar1 + 1;
+    *ppvVar1 = (void *)0x0;
+    ppvVar1 = ppvVar1 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
-  if ((int *)param_1[0x9c] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x9c] + 0x58))();
+  if (*(int **)&this->field_0x270 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x270 + 0x58))();
   }
-  param_1[0x9c] = 0;
-  if ((int *)param_1[0x9d] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x9d] + 0x24))();
+  *(undefined4 *)&this->field_0x270 = 0;
+  if (*(int **)&this->field_0x274 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x274 + 0x24))();
   }
-  param_1[0x9d] = 0;
-  if (param_1 != (int *)0x0) {
-    (**(code **)(*param_1 + 4))(1);
+  *(undefined4 *)&this->field_0x274 = 0;
+  if (this != (TCity *)0x0) {
+    (*this->vftable->slot_0x04)(1);
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B3B20
+// GHIDRA_NAME TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_b0_004b3b20(void)
+
+void __thiscall TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(TCity *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  *(undefined4 *)&this->field_0xb0 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B3B40
+// GHIDRA_NAME TCity::OrphanCallChain_C13_I161_004b3b40
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C13_I161_004b3b40(void)
+
+void __thiscall TCity::OrphanCallChain_C13_I161_004b3b40(TCity *this)
+
+{
+  TCity_GetTCityClassNamePointer_0x00 *pTVar1;
+  undefined2 uVar2;
+  short *psVar3;
+  word *pwVar4;
+  int iVar5;
+  int iVar6;
+  void **ppvVar7;
+  
+  *(short *)&this->field_0xc = *(short *)&this->field_0xc + 1;
+  pTVar1 = this->vftable[0x10].GetTCityClassNamePointer;
+  (*pTVar1)();
+  if (*(char *)(*(int *)&this->field_0xac + 0xa0) == '\0') {
+    pwVar4 = this->fieldB6;
+    iVar5 = 0x17;
+    do {
+      *pwVar4 = *pwVar4 + pwVar4[-0x1c];
+      pwVar4 = pwVar4 + 1;
+      iVar5 = iVar5 + -1;
+    } while (iVar5 != 0);
+  }
+  (*pTVar1)();
+  psVar3 = (short *)&this->field_0x2a6;
+  iVar5 = 0x17;
+  do {
+    psVar3[-0xf8] = psVar3[-0xf8] + *psVar3;
+    *psVar3 = 0;
+    psVar3 = psVar3 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  iVar5 = *(int *)&this->field_0x78;
+  *(undefined4 *)&this->field_0x78 = 0;
+  ppvVar7 = this->orderSlotsE4;
+  iVar6 = 0x19;
+  do {
+    if (*ppvVar7 != (int *)0x0) {
+      (**(code **)(*(int *)*ppvVar7 + 0x34))();
+    }
+    ppvVar7 = ppvVar7 + 1;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  ppvVar7 = this->orderSlotsE4 + 0x22;
+  iVar6 = 9;
+  *(int *)&this->field_0x78 = (iVar5 * 9) / 10 + *(int *)&this->field_0x78 * 10;
+  do {
+    if (*ppvVar7 != (int *)0x0) {
+      (**(code **)(*(int *)*ppvVar7 + 0x34))();
+    }
+    ppvVar7 = ppvVar7 + 1;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  ppvVar7 = this->orderSlotsE4 + 0x33;
+  iVar5 = 10;
+  do {
+    if (*ppvVar7 != (int *)0x0) {
+      (**(code **)(*(int *)*ppvVar7 + 0x34))();
+    }
+    ppvVar7 = ppvVar7 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  if (this->field_0x4 != '\0') {
+    this->field_0x4 = 0;
+    *(short *)&this->field_0x212 =
+         *(short *)&this->field_0x212 + (999 - *(short *)&this->field_0x1f2);
+    *(undefined2 *)&this->field_0x1f2 = 999;
+  }
+  pwVar4 = this->fieldB6;
+  iVar5 = 0x17;
+  do {
+    if (9999 < (short)*pwVar4) {
+      *pwVar4 = 9999;
+    }
+    pwVar4 = pwVar4 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  *(undefined2 *)&this->field_0xb4 = 0;
+  (**(code **)(**(int **)&this->field_0x1d8 + 0x44))();
+  (**(code **)(*(int *)this->orderSlotsE4[0x34] + 0x38))();
+  ppvVar7 = this->orderSlotsE4 + 8;
+  iVar5 = 9;
+  do {
+    (**(code **)(*(int *)*ppvVar7 + 0x38))();
+    ppvVar7 = ppvVar7 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  iVar5 = *(int *)&this->field_0xac;
+  if (*(char *)(iVar5 + 0x8d1) < '3') {
+    iVar5 = (**(code **)(**(int **)(iVar5 + 0x90) + 0x28))();
+    if (1 < (int)(iVar5 + (iVar5 >> 0x1f & 3U)) >> 2) {
+      iVar5 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+      uVar2 = (undefined2)((int)(iVar5 + (iVar5 >> 0x1f & 3U)) >> 2);
+      goto LAB_004b3d28;
+    }
+  }
+  else {
+    iVar5 = (**(code **)(**(int **)(iVar5 + 0x90) + 0x28))();
+    if (1 < iVar5 / 3) {
+      iVar5 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+      uVar2 = (undefined2)(iVar5 / 3);
+      goto LAB_004b3d28;
+    }
+  }
+  uVar2 = 1;
+LAB_004b3d28:
+  *(undefined2 *)&this->field_0x21a = uVar2;
+  *(undefined2 *)&this->field_0x218 = *(undefined2 *)&this->field_0x1f8;
+  (**(code **)(g_pUiRuntimeContext->vftable + 0xac))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3DE0
 // GHIDRA_NAME TCity::Call2C
-// GHIDRA_PROTO undefined Call2C()
+// GHIDRA_PROTO undefined __thiscall Call2C(void)
 
-void __fastcall TCity::Call2C(int param_1)
+void __thiscall TCity::Call2C(TCity *this)
 
 {
   short sVar1;
   
-  if (*(short *)(*(int *)(param_1 + 0x1d8) + 0x1c) < 2) {
-    *(undefined1 *)(param_1 + 0x7d) = 0;
+  if (*(short *)(*(int *)&this->field_0x1d8 + 0x1c) < 2) {
+    this->field_0x7d = 0;
   }
   else {
-    *(undefined1 *)(param_1 + 0x7d) = 1;
+    this->field_0x7d = 1;
   }
   sVar1 = 3;
-  if (0 < *(short *)(param_1 + 0x204)) {
+  if (0 < *(short *)&this->field_0x204) {
     sVar1 = 2;
   }
-  if (0 < *(short *)(param_1 + 0x200)) {
+  if (0 < *(short *)&this->field_0x200) {
     sVar1 = sVar1 + -1;
   }
-  if (0 < *(short *)(param_1 + 0x1fc)) {
+  if (0 < *(short *)&this->field_0x1fc) {
     sVar1 = sVar1 + -1;
   }
   if (sVar1 < 2) {
-    *(undefined1 *)(param_1 + 0x7c) = 1;
+    this->field_0x7c = 1;
   }
   else {
-    *(undefined1 *)(param_1 + 0x7c) = 0;
+    this->field_0x7c = 0;
   }
-  (**(code **)(**(int **)(param_1 + 0xac) + 0xfc))(param_1 + 0xb6);
+  (**(code **)(**(int **)&this->field_0xac + 0xfc))(this->fieldB6);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3E70
 // GHIDRA_NAME TCity::RefreshOrderStateSlot0C
-// GHIDRA_PROTO undefined RefreshOrderStateSlot0C()
+// GHIDRA_PROTO undefined __thiscall RefreshOrderStateSlot0C(void)
 
-void __fastcall TCity::RefreshOrderStateSlot0C(int param_1)
+void __thiscall TCity::RefreshOrderStateSlot0C(TCity *this)
 
 {
   short sVar1;
   undefined2 uVar2;
   short sVar3;
-  int *piVar4;
+  void **ppvVar4;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
   int local_18;
-  undefined1 local_14 [4];
-  int *local_10;
+  CString local_14;
+  void **local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -202,46 +899,46 @@ void __fastcall TCity::RefreshOrderStateSlot0C(int param_1)
   puStack_8 = &LAB_00630f08;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  piVar4 = (int *)(param_1 + 400);
+  ppvVar4 = this->orderSlotsE4 + 0x2b;
   local_18 = 8;
-  local_10 = piVar4;
+  local_10 = ppvVar4;
   do {
-    if (*piVar4 != 0) {
-      InitializeSharedStringRefFromEmpty(local_14);
+    if (*ppvVar4 != (void *)0x0) {
+      CString::CString(&local_14);
       local_4 = 0;
-      sVar1 = *(short *)(*piVar4 + 4);
-      uVar2 = *(undefined2 *)(*piVar4 + 0x48);
+      sVar1 = *(short *)((int)*ppvVar4 + 4);
+      uVar2 = *(undefined2 *)((int)*ppvVar4 + 0x48);
       if (sVar1 != 0) {
         sVar3 = thunk_GetResourceTypeRandomDrawBlockFlag(uVar2);
         if (sVar3 == 0) {
-          (**(code **)(**(int **)(param_1 + 0xac) + 0x2c0))(1,uVar2,sVar1);
+          (**(code **)(**(int **)&this->field_0xac + 0x2c0))(1,uVar2,sVar1);
         }
         else {
-          (**(code **)(**(int **)(param_1 + 0xac) + 0x2c0))(0,uVar2,sVar1);
+          (**(code **)(**(int **)&this->field_0xac + 0x2c0))(0,uVar2,sVar1);
         }
       }
       local_4 = 0xffffffff;
-      ReleaseSharedStringRefIfNotEmpty(local_14);
+      CString::~CString(&local_14);
     }
-    piVar4 = piVar4 + 1;
+    ppvVar4 = ppvVar4 + 1;
     local_18 = local_18 + -1;
   } while (local_18 != 0);
-  piVar4 = (int *)(param_1 + 0x148);
+  ppvVar4 = this->orderSlotsE4 + 0x19;
   iVar5 = 0x12;
   do {
-    if ((int *)*piVar4 != (int *)0x0) {
-      (**(code **)(*(int *)*piVar4 + 0x34))();
+    if (*ppvVar4 != (int *)0x0) {
+      (**(code **)(*(int *)*ppvVar4 + 0x34))();
     }
-    piVar4 = piVar4 + 1;
+    ppvVar4 = ppvVar4 + 1;
     iVar5 = iVar5 + -1;
   } while (iVar5 != 0);
   iVar5 = 8;
-  piVar4 = local_10;
+  ppvVar4 = local_10;
   do {
-    if ((int *)*piVar4 != (int *)0x0) {
-      (**(code **)(*(int *)*piVar4 + 0x34))();
+    if (*ppvVar4 != (int *)0x0) {
+      (**(code **)(*(int *)*ppvVar4 + 0x34))();
     }
-    piVar4 = piVar4 + 1;
+    ppvVar4 = ppvVar4 + 1;
     iVar5 = iVar5 + -1;
   } while (iVar5 != 0);
   *unaff_FS_OFFSET = uStack_c;
@@ -250,44 +947,45 @@ void __fastcall TCity::RefreshOrderStateSlot0C(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3FB0
 // GHIDRA_NAME TCity::AddNeedVectorSplitSlot34
-// GHIDRA_PROTO undefined AddNeedVectorSplitSlot34()
+// GHIDRA_PROTO undefined __thiscall AddNeedVectorSplitSlot34(void)
 
-void __thiscall TCity::AddNeedVectorSplitSlot34(int param_1,short *param_2)
+void __thiscall TCity::AddNeedVectorSplitSlot34(TCity *this)
 
 {
   short sVar1;
-  short *psVar2;
+  word *pwVar2;
   short *psVar3;
   int iVar4;
+  short *in_stack_00000004;
   
-  psVar3 = (short *)(param_1 + 0xb6);
+  pwVar2 = this->fieldB6;
   iVar4 = 7;
-  psVar2 = param_2;
+  psVar3 = in_stack_00000004;
   do {
-    sVar1 = *psVar2;
-    psVar2 = psVar2 + 1;
-    *psVar3 = *psVar3 + sVar1;
+    sVar1 = *psVar3;
     psVar3 = psVar3 + 1;
+    *pwVar2 = *pwVar2 + sVar1;
+    pwVar2 = pwVar2 + 1;
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
-  psVar3 = param_2 + 7;
-  psVar2 = (short *)(param_1 + 0xc4);
+  psVar3 = in_stack_00000004 + 7;
+  pwVar2 = this->fieldB6 + 7;
   iVar4 = 6;
   do {
     sVar1 = *psVar3;
     psVar3 = psVar3 + 1;
-    *psVar2 = *psVar2 + sVar1;
-    psVar2 = psVar2 + 1;
+    *pwVar2 = *pwVar2 + sVar1;
+    pwVar2 = pwVar2 + 1;
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
-  psVar3 = (short *)(param_1 + 0xd0);
-  param_2 = param_2 + 0xd;
+  pwVar2 = this->fieldB6 + 0xd;
+  psVar3 = in_stack_00000004 + 0xd;
   iVar4 = 4;
   do {
-    sVar1 = *param_2;
-    param_2 = param_2 + 1;
-    *psVar3 = *psVar3 + sVar1;
+    sVar1 = *psVar3;
     psVar3 = psVar3 + 1;
+    *pwVar2 = *pwVar2 + sVar1;
+    pwVar2 = pwVar2 + 1;
     iVar4 = iVar4 + -1;
   } while (iVar4 != 0);
   return;
@@ -295,117 +993,152 @@ void __thiscall TCity::AddNeedVectorSplitSlot34(int param_1,short *param_2)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4040
 // GHIDRA_NAME TCity::AddNeedVectorSlot3C
-// GHIDRA_PROTO undefined AddNeedVectorSlot3C()
+// GHIDRA_PROTO undefined __thiscall AddNeedVectorSlot3C(void)
 
-void __thiscall TCity::AddNeedVectorSlot3C(int param_1,short *param_2)
+void __thiscall TCity::AddNeedVectorSlot3C(TCity *this)
 
 {
   short sVar1;
-  short *psVar2;
+  word *pwVar2;
   int iVar3;
+  short *in_stack_00000004;
   
-  psVar2 = (short *)(param_1 + 0xb6);
+  pwVar2 = this->fieldB6;
   iVar3 = 0x17;
   do {
-    sVar1 = *param_2;
-    param_2 = param_2 + 1;
-    *psVar2 = *psVar2 + sVar1;
-    psVar2 = psVar2 + 1;
+    sVar1 = *in_stack_00000004;
+    in_stack_00000004 = in_stack_00000004 + 1;
+    *pwVar2 = *pwVar2 + sVar1;
+    pwVar2 = pwVar2 + 1;
     iVar3 = iVar3 + -1;
   } while (iVar3 != 0);
-  *(undefined2 *)(param_1 + 0xe2) = 0;
-  *(undefined2 *)(param_1 + 0xe0) = 0;
+  this->fieldB6[0x16] = 0;
+  this->fieldB6[0x15] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4090
 // GHIDRA_NAME TCity::AddOwnerNeedTargetsSlot38
-// GHIDRA_PROTO undefined AddOwnerNeedTargetsSlot38()
+// GHIDRA_PROTO undefined __thiscall AddOwnerNeedTargetsSlot38(void)
 
-void __fastcall TCity::AddOwnerNeedTargetsSlot38(int param_1)
+void __thiscall TCity::AddOwnerNeedTargetsSlot38(TCity *this)
 
 {
-  short *psVar1;
+  word *pwVar1;
   int iVar2;
   
   iVar2 = 0x17;
-  psVar1 = (short *)(param_1 + 0xb6);
+  pwVar1 = this->fieldB6;
   do {
-    *psVar1 = *psVar1 + *(short *)((*(int *)(param_1 + 0xac) - param_1) + 0x84 + (int)(psVar1 + 1));
+    *pwVar1 = *pwVar1 + *(short *)((*(int *)&this->field_0xac - (int)this) + 0x84 +
+                                  (int)(pwVar1 + 1));
     iVar2 = iVar2 + -1;
-    psVar1 = psVar1 + 1;
+    pwVar1 = pwVar1 + 1;
   } while (iVar2 != 0);
-  *(undefined2 *)(param_1 + 0xe2) = 0;
-  *(undefined2 *)(param_1 + 0xe0) = 0;
+  this->fieldB6[0x16] = 0;
+  this->fieldB6[0x15] = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B40E0
 // GHIDRA_NAME TCity::AllocateNeedFromOwnerSlot4C
-// GHIDRA_PROTO undefined AllocateNeedFromOwnerSlot4C()
+// GHIDRA_PROTO undefined __thiscall AllocateNeedFromOwnerSlot4C(void)
 
-short __thiscall TCity::AllocateNeedFromOwnerSlot4C(int param_1,undefined4 param_2,short param_3)
+short __thiscall TCity::AllocateNeedFromOwnerSlot4C(TCity *this)
 
 {
   int iVar1;
-  short *psVar2;
+  short sVar2;
   int iVar3;
-  short sVar4;
-  int iVar5;
+  short in_stack_00000004;
+  short in_stack_00000008;
   
-  iVar5 = (int)(short)param_2;
-  iVar3 = *(int *)(param_1 + 0xac);
-  iVar1 = iVar5 * 2 + 0x13c;
-  sVar4 = *(short *)(iVar3 + 0x10e + iVar5 * 2) - *(short *)(iVar1 + iVar3);
-  if (sVar4 < param_3) {
-    param_3 = sVar4;
+  iVar3 = (int)in_stack_00000004;
+  iVar1 = *(int *)&this->field_0xac;
+  sVar2 = *(short *)(iVar1 + 0x10e + iVar3 * 2) - *(short *)(iVar3 * 2 + 0x13c + iVar1);
+  if (sVar2 < in_stack_00000008) {
+    in_stack_00000008 = sVar2;
   }
-  if ((short)(*(short *)(iVar3 + 0xa6) - *(short *)(iVar3 + 0xa8)) < param_3) {
-    param_3 = *(short *)(iVar3 + 0xa6) - *(short *)(iVar3 + 0xa8);
+  if ((short)(*(short *)(iVar1 + 0xa6) - *(short *)(iVar1 + 0xa8)) < in_stack_00000008) {
+    in_stack_00000008 = *(short *)(iVar1 + 0xa6) - *(short *)(iVar1 + 0xa8);
   }
-  psVar2 = (short *)(param_1 + 0xb6 + iVar5 * 2);
-  *psVar2 = *psVar2 + param_3;
-  (**(code **)(**(int **)(param_1 + 0xac) + 0x114))
-            (param_2,*(short *)(iVar1 + (int)*(int **)(param_1 + 0xac)) + param_3);
-  return param_3;
+  this->fieldB6[iVar3] = this->fieldB6[iVar3] + in_stack_00000008;
+  (**(code **)(**(int **)&this->field_0xac + 0x114))();
+  return in_stack_00000008;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4180
 // GHIDRA_NAME TCity::Refresh80
-// GHIDRA_PROTO undefined Refresh80()
+// GHIDRA_PROTO undefined __thiscall Refresh80(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __fastcall TCity::Refresh80(int param_1)
+void __thiscall TCity::Refresh80(TCity *this)
 
 {
   char cVar1;
   int iVar2;
-  short *psVar3;
+  word *pwVar3;
   
   iVar2 = 0x17;
-  psVar3 = (short *)(param_1 + 0xb6);
+  pwVar3 = this->fieldB6;
   do {
-    if (*psVar3 < 0) {
-      cVar1 = (**(code **)(**(int **)(param_1 + 0xac) + 0xa0))();
-      if (((cVar1 == '\0') || (*(int *)(g_pLocalizationTable + 0x44) != 2)) &&
+    if ((short)*pwVar3 < 0) {
+      cVar1 = (**(code **)(**(int **)&this->field_0xac + 0xa0))();
+      if (((cVar1 == '\0') || (*(int *)&g_pLocalizationTable->field_0x44 != 2)) &&
          (_g_Sanitize_City_Counter_Value_006A24D4 == 0)) {
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UCity_cpp_00695f18,0x47f);
       }
-      *psVar3 = 0;
+      *pwVar3 = 0;
     }
-    psVar3 = psVar3 + 1;
+    pwVar3 = pwVar3 + 1;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4210
+// GHIDRA_NAME TCity::OrphanRetStub_004b4210
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b4210(void)
+
+void __thiscall TCity::OrphanRetStub_004b4210(TCity *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4230
+// GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins07_004b4230
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004b4230(void)
+
+int __thiscall TCity::OrphanLeaf_NoCall_Ins07_004b4230(TCity *this)
+
+{
+  if (*(int *)&this->field_0xac != 0) {
+    return (int)*(short *)(*(int *)&this->field_0xac + 0xa6);
+  }
+  return 0;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4260
+// GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins04_004b4260
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_004b4260(void)
+
+void __thiscall TCity::OrphanLeaf_NoCall_Ins04_004b4260(TCity *this)
+
+{
+  undefined2 in_stack_00000004;
+  
+  *(undefined2 *)(*(int *)&this->field_0xac + 0xa6) = in_stack_00000004;
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x004B44D0
 // GHIDRA_NAME TCity::GetCitySummaryRecordSlot74
-// GHIDRA_PROTO undefined GetCitySummaryRecordSlot74()
+// GHIDRA_PROTO undefined __thiscall GetCitySummaryRecordSlot74(void)
 
-void __fastcall TCity::GetCitySummaryRecordSlot74(int param_1)
+void __thiscall TCity::GetCitySummaryRecordSlot74(TCity *this)
 
 {
   int iVar1;
@@ -413,16 +1146,16 @@ void __fastcall TCity::GetCitySummaryRecordSlot74(int param_1)
   int iVar3;
   short sVar4;
   
-  iVar1 = (**(code **)(**(int **)(param_1 + 0x1d8) + 0x50))();
+  iVar1 = (**(code **)(**(int **)&this->field_0x1d8 + 0x50))();
   sVar4 = 0;
   do {
     iVar3 = (int)sVar4;
     sVar2 = *(short *)(iVar1 + iVar3 * 2);
     if (sVar2 != 0) {
-      sVar2 = sVar2 - *(short *)(param_1 + 0x7e + iVar3 * 2);
+      sVar2 = sVar2 - this->fieldB6[iVar3 + -0x1c];
       *(short *)(iVar1 + iVar3 * 2) = sVar2;
       if (sVar4 == 0x14) {
-        *(short *)(iVar1 + 0x28) = sVar2 - *(short *)(param_1 + 0xa4);
+        *(short *)(iVar1 + 0x28) = sVar2 - *(short *)&this->field_0xa4;
       }
       if (*(short *)(iVar1 + iVar3 * 2) < 0) {
         *(undefined2 *)(iVar1 + iVar3 * 2) = 0;
@@ -435,58 +1168,425 @@ void __fastcall TCity::GetCitySummaryRecordSlot74(int param_1)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4540
 // GHIDRA_NAME TCity::WriteQueuePairSlot48
-// GHIDRA_PROTO undefined WriteQueuePairSlot48()
+// GHIDRA_PROTO undefined __thiscall WriteQueuePairSlot48(void)
 
-void __thiscall TCity::WriteQueuePairSlot48(int param_1,undefined2 param_2,undefined2 param_3)
+void __thiscall TCity::WriteQueuePairSlot48(TCity *this)
 
 {
-  undefined2 uStack00000006;
-  
-  uStack00000006 = param_3;
-  (**(code **)(**(int **)(param_1 + 0x274) + 0x38))(&param_2);
+  (**(code **)(**(int **)&this->field_0x274 + 0x38))(&stack0x00000004);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4580
+// GHIDRA_NAME TCity::CreateAltownCityObject
+// GHIDRA_PROTO undefined __thiscall CreateAltownCityObject(void)
+
+void __thiscall TCity::CreateAltownCityObject(TCity *this)
+
+{
+  TTown *this_00;
+  int *piVar1;
+  undefined2 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 uVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00630f2a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (*(int *)(*(int *)&this->field_0xac + 0x898) == 0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCity_cpp_00695f18,0x53a);
+  }
+  this_00 = (TTown *)AllocateWithFallbackHandler(0x50);
+  local_4 = 0;
+  if (this_00 == (TTown *)0x0) {
+    piVar1 = (int *)0x0;
+    uVar2 = extraout_var;
+  }
+  else {
+    piVar1 = (int *)TTown::thunk_ConstructFrogCityMarker(this_00);
+    uVar2 = extraout_var_00;
+  }
+  local_4 = 0xffffffff;
+  if (piVar1 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCity_cpp_00695f18,0x53c);
+    uVar2 = extraout_var_01;
+  }
+  InitializeFrogCityMarkerFields
+            (s_Altown_00695f38,0,0,CONCAT22(uVar2,*(undefined2 *)(*(int *)&this->field_0xac + 0xc)))
+  ;
+  (**(code **)(*piVar1 + 0x1c))();
+  (**(code **)(**(int **)&this->field_0xac + 0x134))();
+  *(undefined4 *)(*(int *)&this->field_0xac + 0x10) =
+       *(undefined4 *)(*(int *)&this->field_0xac + 0x10);
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B46C0
+// GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins03_004b46c0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins03_004b46c0(void)
+
+void __thiscall TCity::OrphanLeaf_NoCall_Ins03_004b46c0(TCity *this)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x004b46c8. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (**(code **)(**(int **)&this->field_0x274 + 0x20))();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B46E0
+// GHIDRA_NAME TCity::GetCityBuildingDisplayCapacityBySlot
+// GHIDRA_PROTO undefined __thiscall GetCityBuildingDisplayCapacityBySlot(void)
+
+int __thiscall TCity::GetCityBuildingDisplayCapacityBySlot(TCity *this)
+
+{
+  short sVar1;
+  int iVar2;
+  short in_stack_00000004;
+  
+  if (in_stack_00000004 == 0xf) {
+    iVar2 = *(int *)&this->field_0xac;
+    if (*(char *)(iVar2 + 0x8d1) < '3') {
+      iVar2 = (**(code **)(**(int **)(iVar2 + 0x90) + 0x28))();
+      if (1 < (int)(iVar2 + (iVar2 >> 0x1f & 3U)) >> 2) {
+        iVar2 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+        iVar2 = (int)(iVar2 + (iVar2 >> 0x1f & 3U)) >> 2;
+        goto LAB_004b4795;
+      }
+    }
+    else {
+      iVar2 = (**(code **)(**(int **)(iVar2 + 0x90) + 0x28))();
+      if (1 < iVar2 / 3) {
+        iVar2 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+        iVar2 = iVar2 / 3;
+        goto LAB_004b4795;
+      }
+    }
+    iVar2 = 1;
+  }
+  else {
+    iVar2 = CONCAT22(in_stack_00000004 >> 0xf,
+                     *(undefined2 *)((int)this->orderSlotsE4 + in_stack_00000004 * 2 + 0xf8));
+  }
+LAB_004b4795:
+  sVar1 = (short)iVar2;
+  switch(in_stack_00000004) {
+  case 0:
+  case 2:
+  case 4:
+  case 6:
+    break;
+  case 1:
+  case 3:
+  case 5:
+    if (sVar1 == 0) {
+      return 1;
+    }
+    if (sVar1 != 1) {
+      if (sVar1 != 2) {
+        return iVar2 + 4;
+      }
+      return 4;
+    }
+    return 2;
+  default:
+    return iVar2 + 1;
+  }
+  if (sVar1 == 0) {
+    return 2;
+  }
+  if (sVar1 != 2) {
+    if (sVar1 != 4) {
+      return iVar2 + 8;
+    }
+    return 8;
+  }
+  return 4;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B48A0
 // GHIDRA_NAME TCity::GetBuildingCapacityTierSlot58
-// GHIDRA_PROTO undefined GetBuildingCapacityTierSlot58()
+// GHIDRA_PROTO undefined __thiscall GetBuildingCapacityTierSlot58(void)
 
-char __thiscall TCity::GetBuildingCapacityTierSlot58(int *param_1,undefined4 param_2)
+char __thiscall TCity::GetBuildingCapacityTierSlot58(TCity *this)
 
 {
-  short sVar1;
+  undefined uVar1;
   short sVar2;
+  undefined3 extraout_var;
+  short in_stack_00000004;
   
-  sVar1 = (**(code **)(*param_1 + 0x54))(param_2);
-  sVar2 = (short)param_2;
-  if (((sVar2 == 1) || (sVar2 == 3)) || (sVar2 == 5)) {
-    if (sVar1 < 4) {
+  uVar1 = (*this->vftable[10].slot_0x04)();
+  sVar2 = (short)CONCAT31(extraout_var,uVar1);
+  if (((in_stack_00000004 == 1) || (in_stack_00000004 == 3)) || (in_stack_00000004 == 5)) {
+    if (sVar2 < 4) {
       return '\x01';
     }
-    if (sVar1 < 8) {
+    if (sVar2 < 8) {
       return '\x02';
     }
-    return (0xf < sVar1) + '\x03';
+    return (0xf < sVar2) + '\x03';
   }
-  if (sVar1 < 8) {
+  if (sVar2 < 8) {
     return '\x01';
   }
-  if (sVar1 < 0x10) {
+  if (sVar2 < 0x10) {
     return '\x02';
   }
-  return (0x1f < sVar1) + '\x03';
+  return (0x1f < sVar2) + '\x03';
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4940
+// GHIDRA_NAME TCity::WrapperFor_GetActiveNationId_At004b4940
+// GHIDRA_PROTO undefined __thiscall WrapperFor_GetActiveNationId_At004b4940(void)
+
+int __thiscall TCity::WrapperFor_GetActiveNationId_At004b4940(TCity *this)
+
+{
+  char cVar1;
+  short sVar2;
+  int iVar3;
+  ushort uVar4;
+  short in_stack_00000004;
+  
+  if (in_stack_00000004 == 0xf) {
+    iVar3 = **(int **)(*(int *)&this->field_0xac + 0x90);
+    if (*(char *)(*(int *)&this->field_0xac + 0x8d1) < '3') {
+      iVar3 = (**(code **)(iVar3 + 0x28))();
+      if ((int)(iVar3 + (iVar3 >> 0x1f & 3U)) >> 2 < 2) goto LAB_004b49e2;
+      iVar3 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+      iVar3 = (int)(iVar3 + (iVar3 >> 0x1f & 3U)) >> 2;
+    }
+    else {
+      iVar3 = (**(code **)(iVar3 + 0x28))();
+      if (iVar3 / 3 < 2) {
+LAB_004b49e2:
+        iVar3 = 1;
+      }
+      else {
+        iVar3 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+        iVar3 = iVar3 / 3;
+      }
+    }
+  }
+  else {
+    iVar3 = CONCAT22(in_stack_00000004 >> 0xf,
+                     *(undefined2 *)((int)this->orderSlotsE4 + in_stack_00000004 * 2 + 0xf8));
+  }
+  uVar4 = (ushort)((uint)iVar3 >> 0x10);
+  sVar2 = (short)iVar3;
+  switch(in_stack_00000004) {
+  case 0:
+  case 2:
+  case 4:
+    if (sVar2 != 0) {
+      if (0xf < sVar2) {
+        return CONCAT22(uVar4,(0x1f < sVar2) + 2);
+      }
+      return CONCAT22(uVar4,1);
+    }
+    break;
+  case 1:
+  case 3:
+  case 5:
+    if (sVar2 != 0) {
+      if (7 < sVar2) {
+        return CONCAT22(uVar4,(0xf < sVar2) + 2);
+      }
+      return CONCAT22(uVar4,1);
+    }
+    break;
+  case 6:
+  case 0xb:
+    return CONCAT22(uVar4,(ushort)(sVar2 != 0));
+  case 7:
+    sVar2 = UiRuntimeContext::GetActiveNationId();
+    return ((&g_pCityOrderCapabilityState->field_0x277)[sVar2 * 0x1d] == '\x02') + 1;
+  case 8:
+    if (*(char *)(*(int *)&this->field_0xac + 0x8d4) != '3') {
+      return CONCAT22(uVar4,(*(char *)(*(int *)&this->field_0xac + 0x8ce) == '3') + 1);
+    }
+    return CONCAT22(uVar4,3);
+  case 9:
+  case 0xc:
+  case 0xd:
+    break;
+  case 10:
+    cVar1 = *(char *)(*(int *)&this->field_0xac + 0x8cf);
+    if ('2' < cVar1) {
+      return CONCAT22(uVar4,(cVar1 != '3') + 2);
+    }
+    return CONCAT22(uVar4,1);
+  case 0xe:
+    return CONCAT22(uVar4,('2' < *(char *)(*(int *)&this->field_0xac + 0x8d0)) + 1);
+  case 0xf:
+    return CONCAT22(uVar4,('2' < *(char *)(*(int *)&this->field_0xac + 0x8d1)) + 1);
+  default:
+    goto switchD_004b4a00_default;
+  }
+switchD_004b4a00_default:
+  return (uint)uVar4 << 0x10;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4C80
+// GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins08_004b4c80
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins08_004b4c80(void)
+
+void __thiscall TCity::OrphanLeaf_NoCall_Ins08_004b4c80(TCity *this)
+
+{
+  int iVar1;
+  short in_stack_00000004;
+  undefined1 in_stack_00000008;
+  undefined2 in_stack_0000000c;
+  undefined2 in_stack_00000010;
+  
+  iVar1 = (int)in_stack_00000004;
+  *(undefined1 *)((int)this->orderSlotsE4 + iVar1 + 0x138) = in_stack_00000008;
+  *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x148) = in_stack_0000000c;
+  *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x168) = in_stack_00000010;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4CC0
+// GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins11_004b4cc0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins11_004b4cc0(void)
+
+undefined4 __thiscall TCity::OrphanLeaf_NoCall_Ins11_004b4cc0(TCity *this)
+
+{
+  int iVar1;
+  short in_stack_00000004;
+  undefined2 *in_stack_00000008;
+  undefined2 *in_stack_0000000c;
+  
+  iVar1 = (int)in_stack_00000004;
+  *in_stack_00000008 = *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x148);
+  *in_stack_0000000c = *(undefined2 *)((int)this->orderSlotsE4 + iVar1 * 2 + 0x168);
+  return CONCAT31((int3)(char)((ushort)in_stack_00000004 >> 8),
+                  *(undefined1 *)((int)this->orderSlotsE4 + iVar1 + 0x138));
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4D00
 // GHIDRA_NAME TCity::IsBasicResourceSlot78
-// GHIDRA_PROTO undefined IsBasicResourceSlot78()
+// GHIDRA_PROTO undefined __thiscall IsBasicResourceSlot78(void)
 
-undefined2 TCity::IsBasicResourceSlot78(short param_1)
+undefined2 __thiscall TCity::IsBasicResourceSlot78(TCity *this)
 
 {
-  if (((((param_1 != 0) && (param_1 != 1)) && (param_1 != 2)) && ((param_1 != 3 && (param_1 != 4))))
-     && ((param_1 != 5 && ((param_1 != 6 && (param_1 != 0xb)))))) {
+  short in_stack_00000004;
+  
+  if (((((in_stack_00000004 != 0) && (in_stack_00000004 != 1)) && (in_stack_00000004 != 2)) &&
+      ((in_stack_00000004 != 3 && (in_stack_00000004 != 4)))) &&
+     ((in_stack_00000004 != 5 && ((in_stack_00000004 != 6 && (in_stack_00000004 != 0xb)))))) {
     return 0;
+  }
+  return 1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4D50
+// GHIDRA_NAME TCity::ToggleCityPowerPlantUpgradeOrder
+// GHIDRA_PROTO void __thiscall ToggleCityPowerPlantUpgradeOrder(char fEnableUpgrade)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Toggles the city power-plant upgrade order state.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. If enabling and not already active, charge 5000 from city treasury and set active flag.
+// GHIDRA_COMMENT 2. If disabling and currently active, refund 5000 and clear active flag.
+// GHIDRA_COMMENT 3. No-op when requested state matches current flag.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - this (IMPLICIT): City production/state model.
+// GHIDRA_COMMENT - fEnableUpgrade: Non-zero to enable/queue, zero to disable/cancel.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT_END
+
+/* Toggles the city power-plant upgrade order state.
+   Algorithm:
+   1. If enabling and not already active, charge 5000 from city treasury and set active flag.
+   2. If disabling and currently active, refund 5000 and clear active flag.
+   3. No-op when requested state matches current flag.
+   Parameters:
+   - this (IMPLICIT): City production/state model.
+   - fEnableUpgrade: Non-zero to enable/queue, zero to disable/cancel.
+   Returns:
+   - void. */
+
+void __thiscall TCity::ToggleCityPowerPlantUpgradeOrder(TCity *this,char fEnableUpgrade)
+
+{
+  if (fEnableUpgrade == '\0') {
+    if (this->field_0x4 == '\0') {
+      return;
+    }
+  }
+  else if (this->field_0x4 == '\0') {
+                    /* Enable path: if not already queued, deduct 5000 via city treasury callback
+                       and set flag. */
+    (**(code **)(**(int **)&this->field_0xac + 0x38))(0xffffec78);
+    this->field_0x4 = 1;
+    return;
+  }
+  if (fEnableUpgrade == '\0') {
+                    /* Disable path: refund 5000 and clear queued flag. */
+    (**(code **)(**(int **)&this->field_0xac + 0x38))(5000);
+    this->field_0x4 = 0;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4DC0
+// GHIDRA_NAME TCity::GetCityBuildingProductionValueBySlot
+// GHIDRA_PROTO int __thiscall GetCityBuildingProductionValueBySlot(short nBuildingSlotId)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Reads the city production order for a building slot.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. For slots != 15, return persisted short at cityState + 0x1DC + slot*2.
+// GHIDRA_COMMENT 2. For slot 15, compute a derived value from city workforce/population context.
+// GHIDRA_COMMENT Storage Note:
+// GHIDRA_COMMENT - Offset +0x1DC is a 23-entry per-city production table used by city UI and turn-processing logic.
+// GHIDRA_COMMENT_END
+
+/* Reads the city production order for a building slot.
+   Algorithm:
+   1. For slots != 15, return persisted short at cityState + 0x1DC + slot*2.
+   2. For slot 15, compute a derived value from city workforce/population context.
+   Storage Note:
+   - Offset +0x1DC is a 23-entry per-city production table used by city UI and turn-processing
+   logic. */
+
+int __thiscall TCity::GetCityBuildingProductionValueBySlot(TCity *this,short nBuildingSlotId)
+
+{
+  int iVar1;
+  
+  if (nBuildingSlotId != 0xf) {
+    return CONCAT22(nBuildingSlotId >> 0xf,
+                    *(undefined2 *)((int)this->orderSlotsE4 + nBuildingSlotId * 2 + 0xf8));
+  }
+  iVar1 = *(int *)&this->field_0xac;
+  if (*(char *)(iVar1 + 0x8d1) < '3') {
+    iVar1 = (**(code **)(**(int **)(iVar1 + 0x90) + 0x28))();
+    if (1 < (int)(iVar1 + (iVar1 >> 0x1f & 3U)) >> 2) {
+      iVar1 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+      return (int)(iVar1 + (iVar1 >> 0x1f & 3U)) >> 2;
+    }
+  }
+  else {
+    iVar1 = (**(code **)(**(int **)(iVar1 + 0x90) + 0x28))();
+    if (1 < iVar1 / 3) {
+      iVar1 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+      return iVar1 / 3;
+    }
   }
   return 1;
 }

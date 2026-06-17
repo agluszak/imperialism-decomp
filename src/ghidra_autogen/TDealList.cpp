@@ -48,9 +48,9 @@ void __fastcall TDealList::InitializeNationInteractionStateManagerDefaults(int p
     }
     else {
       TIndexAndRankList::CPtrArray(this);
-      *(undefined ***)this = &PTR_LAB_0066da38;
+      this->vftable = (TIndexAndRankListVtbl *)&TDealListVtbl_0066da38;
     }
-    *(undefined2 *)(this + 0x14) = 0x10;
+    *(undefined2 *)&this->field_0x14 = 0x10;
     *puVar4 = this;
     puVar2 = puVar5 + 0x35;
     iVar3 = 0x17;
@@ -93,7 +93,7 @@ TIndexAndRankList * TDealList::CreateTDealListInstance(void)
   pTVar1 = (TIndexAndRankList *)0x0;
   if (this != (TIndexAndRankList *)0x0) {
     TIndexAndRankList::CPtrArray(this);
-    *(undefined ***)this = &PTR_LAB_0066da38;
+    this->vftable = (TIndexAndRankListVtbl *)&TDealListVtbl_0066da38;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -101,38 +101,83 @@ TIndexAndRankList * TDealList::CreateTDealListInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1A0
-// GHIDRA_NAME TDealList::GetTDealListClassNamePointer
-// GHIDRA_PROTO undefined GetTDealListClassNamePointer()
+// GHIDRA_NAME TDealList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TDealList::GetTDealListClassNamePointer(void)
+CRuntimeClass * __thiscall TDealList::GetTEventHandlerClassNamePointer(TDealList *this)
 
 {
-  return &PTR_s_TDealList_0066d888;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1C0
 // GHIDRA_NAME TDealList::ConstructTDealListBaseState
-// GHIDRA_PROTO undefined ConstructTDealListBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDealListBaseState(void)
 
-TIndexAndRankList * __fastcall TDealList::ConstructTDealListBaseState(TIndexAndRankList *param_1)
+TDealList * __thiscall TDealList::ConstructTDealListBaseState(TDealList *this)
 
 {
-  TIndexAndRankList::CPtrArray(param_1);
-  *(undefined ***)param_1 = &PTR_LAB_0066da38;
-  return param_1;
+  TIndexAndRankList::CPtrArray((TIndexAndRankList *)this);
+  this->vftable = &TDealListVtbl_0066da38;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA1F0
-// GHIDRA_NAME TDealList::DestructTDealListAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDealListAndMaybeFree()
+// GHIDRA_NAME TDealList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TDealList::DestructTDealListAndMaybeFree(undefined4 param_1,byte param_2)
+TDealList * __thiscall TDealList::_scalar_deleting_destructor_(TDealList *this)
 
 {
+  byte in_stack_00000004;
+  
   CObArray::thunk_DestructCObArray();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005BA260
+// GHIDRA_NAME TDealList::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+int __thiscall TDealList::OrphanRetStub_0059add0(TDealList *this)
+
+{
+  short sVar1;
+  int iVar2;
+  bool bVar3;
+  int iVar4;
+  int iVar5;
+  int iVar6;
+  short *in_stack_00000004;
+  short *in_stack_00000008;
+  
+  sVar1 = in_stack_00000004[6];
+  if ((sVar1 < 0xd) || (0x10 < sVar1)) {
+    bVar3 = false;
+  }
+  else {
+    bVar3 = true;
+  }
+  iVar2 = *(int *)(in_stack_00000004 + 4);
+  iVar4 = (int)in_stack_00000004[3];
+  if (bVar3) {
+    iVar5 = (0xff - iVar4) * iVar2;
+    iVar6 = (0xff - in_stack_00000008[3]) * *(int *)(in_stack_00000008 + 4);
+  }
+  else {
+    iVar5 = -(iVar2 * iVar4);
+    iVar6 = -(*(int *)(in_stack_00000008 + 4) * (int)in_stack_00000008[3]);
+  }
+  if (iVar5 == iVar6) {
+    iVar5 = ((int)in_stack_00000004[2] * (int)*in_stack_00000004 +
+             iVar2 + in_stack_00000004[1] * iVar4 + (int)sVar1) % 7;
+    iVar6 = ((int)in_stack_00000008[6] +
+            (int)in_stack_00000008[2] * (int)*in_stack_00000008 + *(int *)(in_stack_00000008 + 4) +
+            (int)in_stack_00000008[1] * (int)in_stack_00000008[3]) % 7;
+  }
+  return ((iVar5 <= iVar6) - 1 & 2) - 1;
 }
 

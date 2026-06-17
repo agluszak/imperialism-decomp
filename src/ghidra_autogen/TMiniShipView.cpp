@@ -3,15 +3,41 @@
 // Program: Imperialism.exe
 // Bucket: TMiniShipView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00569D50
+// GHIDRA_NAME TMiniShipView::OrphanRetStub_00569d50
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00569d50(void)
+
+void __thiscall TMiniShipView::OrphanRetStub_00569d50(TMiniShipView *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00569D70
+// GHIDRA_NAME TMiniShipView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TMiniShipView * __thiscall TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00569DC0
 // GHIDRA_NAME TMiniShipView::CreateTMiniShipViewInstance
 // GHIDRA_PROTO undefined CreateTMiniShipViewInstance()
 
-undefined4 * TMiniShipView::CreateTMiniShipViewInstance(void)
+TControl * TMiniShipView::CreateTMiniShipViewInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,52 +47,173 @@ undefined4 * TMiniShipView::CreateTMiniShipViewInstance(void)
   puStack_8 = &LAB_00635c4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_LAB_0065db68;
-    puVar2 = puVar1;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    this->vftable = (TControlVtbl *)&TMiniShipViewVtbl_0065db68;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569E40
-// GHIDRA_NAME TMiniShipView::GetTMiniShipViewClassNamePointer
-// GHIDRA_PROTO undefined GetTMiniShipViewClassNamePointer()
+// GHIDRA_NAME TMiniShipView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TMiniShipView::GetTMiniShipViewClassNamePointer(void)
+CRuntimeClass * __thiscall TMiniShipView::GetTEventHandlerClassNamePointer(TMiniShipView *this)
 
 {
-  return &PTR_s_TMiniShipView_0065c940;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00569EB0
+// GHIDRA_NAME TMiniShipView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TMiniShipView::OrphanTiny_ReturnZero_0048a730(TMiniShipView *this)
+
+{
+  int iVar1;
+  short sVar2;
+  short sVar3;
+  undefined4 *unaff_FS_OFFSET;
+  RECT local_5c;
+  RECT RStack_4c;
+  RECT RStack_3c;
+  RECT RStack_2c;
+  undefined2 uStack_1c;
+  undefined2 uStack_1a;
+  undefined4 uStack_18;
+  uint uStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00635c78;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw();
+  CString::CString((CString *)&local_5c);
+  local_4 = 0;
+  CString::CString((CString *)&local_5c.top);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  CString::AssignFromPtr((CString *)&local_5c.top,(CString *)(*(int *)&this->field_0x84 + 0x18));
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  AssignSharedStringConcatCStrAndRef(&stack0xffffffa0,g_Build_Map_Order_LookupTable_00695794);
+  uStack_10._0_1_ = 2;
+  AssignStringSharedFromRef();
+  uStack_10 = CONCAT31(uStack_10._1_3_,1);
+  CString::~CString((CString *)&stack0xffffffa0);
+  TViewMgr::CreateTViewMgrInstance(&stack0xffffff98);
+  thunk_SetQuickDrawTextOriginWithContextOffset(10);
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+  sVar3 = *(short *)(*(int *)&this->field_0x84 + 0x1c);
+  sVar2 = GetNavyOrderNormalizationBaseByNationType();
+  sVar3 = (short)((sVar3 * 0x14) / (int)sVar2) + 1;
+  if (0x14 < sVar3) {
+    sVar3 = 0x14;
+  }
+  if (sVar3 < 5) {
+    sVar2 = 0x1a;
+  }
+  else {
+    sVar2 = ((0xe < sVar3) - 1 & 8) + 10;
+  }
+  RStack_4c.top = (LONG)sVar2;
+  RStack_4c.right = sVar3 * 4 + -1;
+  RStack_4c.bottom = RStack_4c.top + 7;
+  local_5c.right = sVar3 * 4 + 0x8b;
+  RStack_4c.left = 0;
+  local_5c.left = 0x8c;
+  local_5c.top = 4;
+  local_5c.bottom = 0xb;
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
+             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_4c,&local_5c,0x24,
+             (astruct_19 *)0x0);
+  SetQuickDrawStrokeColor();
+  thunk_SetQuickDrawTextOriginWithContextOffset(0x8b);
+  thunk_DrawCenteredGuideLineOnMapDc(0x8b);
+  thunk_DrawCenteredGuideLineOnMapDc(0xdd);
+  thunk_DrawCenteredGuideLineOnMapDc(0xdd);
+  if (*(int *)(*(int *)&this->field_0x84 + 0x20) != 0) {
+    sVar3 = UiRuntimeContext::GetActiveNationId();
+    RStack_2c.left = (LONG)(short)((sVar3 + 7) * 0x10);
+    RStack_2c.right = RStack_2c.left + 0x10;
+    RStack_2c.top = 0;
+    RStack_2c.bottom = 0x10;
+    RStack_3c.left = 100;
+    RStack_3c.top = 0;
+    RStack_3c.right = 0x74;
+    RStack_3c.bottom = 0x10;
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x68c) + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_2c,&RStack_3c,0x24
+               ,(astruct_19 *)0x0);
+    UpdatePaletteIndexWithDefaultFallback(0x13);
+  }
+  iVar1 = *(int *)(*(int *)&this->field_0x84 + 0xc);
+  if (iVar1 != 0) {
+    RStack_2c.left = 0x40000;
+    RStack_2c.top = 0x50003;
+    RStack_2c.right = 0x60005;
+    RStack_2c.bottom = 0x30002;
+    uStack_1c = 0;
+    uStack_1a = 0;
+    sVar3 = *(short *)((int)&RStack_2c.left + *(short *)(iVar1 + 8) * 2);
+    if (sVar3 != 0) {
+      RStack_3c.left = (LONG)(short)(sVar3 << 4);
+      RStack_3c.right = RStack_3c.left + 0x10;
+      RStack_3c.top = 0;
+      RStack_3c.bottom = 0x10;
+      RStack_2c.left = 0x78;
+      RStack_2c.top = 0;
+      RStack_2c.right = 0x88;
+      RStack_2c.bottom = 0x10;
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      BlitRectWithOptionalTransparency
+                ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x68c) + 4),
+                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&RStack_3c,&RStack_2c,
+                 0x24,(astruct_19 *)0x0);
+      UpdatePaletteIndexWithDefaultFallback(0x13);
+    }
+  }
+  uStack_10 = uStack_10 & 0xffffff00;
+  CString::~CString((CString *)&stack0xffffff9c);
+  uStack_10 = 0xffffffff;
+  CString::~CString((CString *)&stack0xffffff98);
+  *unaff_FS_OFFSET = uStack_18;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056A330
-// GHIDRA_NAME TMiniShipView::DestructTMiniShipViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMiniShipViewAndMaybeFree()
+// GHIDRA_NAME TMiniShipView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall
-TMiniShipView::DestructTMiniShipViewAndMaybeFree
-          (int param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4,undefined4 param_5)
+void __thiscall TMiniShipView::_scalar_deleting_destructor_(TMiniShipView *this)
 
 {
-  int *piVar1;
+  TView *pTVar1;
   int iVar2;
   
-  piVar1 = *(int **)(param_1 + 0x20);
-  (**(code **)(*piVar1 + 0xc))();
-  iVar2 = *(int *)(*(int *)(param_1 + 0x84) + 0xc);
+  pTVar1 = this->ownerContext;
+  (*pTVar1->vftable[1].slot_0x04)();
+  iVar2 = *(int *)(*(int *)&this->field_0x84 + 0xc);
   if (iVar2 == 0) {
-    piVar1[0x22] = 0;
-    piVar1[0x21] = *(int *)(*(int *)(param_1 + 0x84) + 8);
+    pTVar1[1].ownerOffsetY = 0;
+    pTVar1[1].ownerOffsetX = *(int *)(*(int *)&this->field_0x84 + 8);
   }
   else {
-    piVar1[0x22] = iVar2;
-    piVar1[0x21] = 0;
+    pTVar1[1].ownerOffsetY = iVar2;
+    pTVar1[1].ownerOffsetX = 0;
   }
-  TControl::BeginMouseCaptureAndStartRepeatTimer(param_2,param_3,param_4,param_5);
+  TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
   return;
 }
 

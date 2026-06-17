@@ -4,28 +4,424 @@
 // Bucket: TApplication.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00486740
-// GHIDRA_NAME TApplication::GetTApplicationClassNamePointer
-// GHIDRA_PROTO undefined GetTApplicationClassNamePointer()
+// GHIDRA_NAME TApplication::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TApplication::GetTApplicationClassNamePointer(void)
+CRuntimeClass * __thiscall TApplication::GetTEventHandlerClassNamePointer(TApplication *this)
 
 {
-  return &PTR_s_TApplication_00648af8;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486760
+// GHIDRA_NAME TApplication::ConstructGlobalUiRootControllerState
+// GHIDRA_PROTO undefined __thiscall ConstructGlobalUiRootControllerState(void)
+
+TApplication * __thiscall TApplication::ConstructGlobalUiRootControllerState(TApplication *this)
+
+{
+  TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  *(undefined4 *)&this->field_0x20 = 0;
+  *(undefined4 *)&this->field_0x24 = 0;
+  *(CObjectVtbl **)&this->field_0x2c = &ApplicationUiRootEmbeddedList::_vftable_;
+  *(undefined4 *)&this->field_0x38 = 0;
+  *(undefined4 *)&this->field_0x3c = 0;
+  *(undefined4 *)&this->field_0x34 = 0;
+  *(undefined4 *)&this->field_0x30 = 0;
+  *(undefined4 *)&this->field_0x40 = 0;
+  *(undefined4 *)&this->field_0x44 = 10;
+  this->vftable = &ApplicationUiRootController::_vftable_;
+  g_pApplicationUiRootController = (ApplicationUiRootController *)this;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004867B0
 // GHIDRA_NAME TApplication::DestructTApplicationAndMaybeFree
-// GHIDRA_PROTO undefined DestructTApplicationAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTApplicationAndMaybeFree(void)
 
-undefined4 __thiscall
-TApplication::DestructTApplicationAndMaybeFree(undefined4 param_1,byte param_2)
+TApplication * __thiscall TApplication::DestructTApplicationAndMaybeFree(TApplication *this)
 
 {
-  TApplicationUiRootControllerState_00648CA8::
-  DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004867E0
+// GHIDRA_NAME TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
+// GHIDRA_PROTO undefined __thiscall DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0(void)
+
+void __thiscall
+TApplication::DestructApplicationUiRootControllerState_00648CA8_AndFreeChain_At004867e0
+          (TApplication *this)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062eac0;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = &ApplicationUiRootController::_vftable_;
+  g_pApplicationUiRootController = (ApplicationUiRootController *)0x0;
+  *(CObjectVtbl **)&this->field_0x2c = &ApplicationUiRootEmbeddedList::_vftable_;
+  puVar1 = *(undefined4 **)&this->field_0x30;
+  local_4 = 1;
+  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  }
+  *(undefined4 *)&this->field_0x38 = 0;
+  *(undefined4 *)&this->field_0x3c = 0;
+  *(undefined4 *)&this->field_0x34 = 0;
+  *(undefined4 *)&this->field_0x30 = 0;
+  FreeDataChain();
+  *(undefined4 *)&this->field_0x40 = 0;
+  *(char **)&this->field_0x2c = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TApplicationVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486880
+// GHIDRA_NAME TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_20_00486880(void)
+
+void __thiscall TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880(TApplication *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  *(undefined4 *)&this->field_0x20 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004868A0
+// GHIDRA_NAME TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_GetDwordEcxOffset_20_004868a0(void)
+
+undefined4 __thiscall TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0(TApplication *this)
+
+{
+  return *(undefined4 *)&this->field_0x20;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004869B0
+// GHIDRA_NAME TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0
+// GHIDRA_PROTO undefined __thiscall Helper_Uses_AllocateAndLinkBlockHead_At004869b0(void)
+
+void __thiscall TApplication::Helper_Uses_AllocateAndLinkBlockHead_At004869b0(TApplication *this)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  undefined4 *puVar3;
+  int *piVar4;
+  int iVar5;
+  int in_stack_00000004;
+  char in_stack_00000008;
+  
+  if (in_stack_00000008 != '\0') {
+    uVar1 = *(undefined4 *)&this->field_0x30;
+    if (*(int *)&this->field_0x3c == 0) {
+      iVar2 = AllocateAndLinkBlockHead(&this->field_0x40,*(undefined4 *)&this->field_0x44,0xc);
+      iVar5 = *(int *)&this->field_0x44;
+      puVar3 = (undefined4 *)(iVar2 + -8 + iVar5 * 0xc);
+      if (-1 < iVar5 + -1) {
+        do {
+          *puVar3 = *(undefined4 *)&this->field_0x3c;
+          *(undefined4 **)&this->field_0x3c = puVar3;
+          puVar3 = puVar3 + -3;
+          iVar5 = iVar5 + -1;
+        } while (iVar5 != 0);
+      }
+    }
+    puVar3 = *(undefined4 **)&this->field_0x3c;
+    *(undefined4 *)&this->field_0x3c = *puVar3;
+    puVar3[1] = 0;
+    *puVar3 = uVar1;
+    *(int *)&this->field_0x38 = *(int *)&this->field_0x38 + 1;
+    puVar3[2] = 0;
+    puVar3[2] = in_stack_00000004;
+    if (*(int *)&this->field_0x30 == 0) {
+      *(undefined4 **)&this->field_0x34 = puVar3;
+      *(undefined4 **)&this->field_0x30 = puVar3;
+      return;
+    }
+    *(undefined4 **)(*(int *)&this->field_0x30 + 4) = puVar3;
+    *(undefined4 **)&this->field_0x30 = puVar3;
+    return;
+  }
+  for (piVar4 = *(int **)&this->field_0x30; piVar4 != (int *)0x0; piVar4 = (int *)*piVar4) {
+    if (piVar4[2] == in_stack_00000004) goto LAB_00486a4b;
+  }
+  piVar4 = (int *)0x0;
+LAB_00486a4b:
+  if (piVar4 != (int *)0x0) {
+    if (piVar4 == *(int **)&this->field_0x30) {
+      *(int *)&this->field_0x30 = *piVar4;
+    }
+    else {
+      *(int *)piVar4[1] = *piVar4;
+    }
+    if (piVar4 == *(int **)&this->field_0x34) {
+      *(int *)&this->field_0x34 = piVar4[1];
+    }
+    else {
+      *(int *)(*piVar4 + 4) = piVar4[1];
+    }
+    *piVar4 = *(int *)&this->field_0x3c;
+    *(int **)&this->field_0x3c = piVar4;
+    iVar5 = *(int *)&this->field_0x38 + -1;
+    *(int *)&this->field_0x38 = iVar5;
+    if (iVar5 == 0) {
+      for (puVar3 = *(undefined4 **)&this->field_0x30; puVar3 != (undefined4 *)0x0;
+          puVar3 = (undefined4 *)*puVar3) {
+      }
+      *(undefined4 *)&this->field_0x38 = 0;
+      *(undefined4 *)&this->field_0x3c = 0;
+      *(undefined4 *)&this->field_0x34 = 0;
+      *(undefined4 *)&this->field_0x30 = 0;
+      FreeDataChain();
+      *(undefined4 *)&this->field_0x40 = 0;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486B50
+// GHIDRA_NAME TApplication::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Posts custom message 0xBC0 with caller-supplied lParam to main thread window.
+// GHIDRA_COMMENT_END
+
+/* Posts custom message 0xBC0 with caller-supplied lParam to main thread window. */
+
+void __thiscall TApplication::_scalar_deleting_destructor_(TApplication *this)
+
+{
+  CWinThread *pCVar1;
+  int iVar2;
+  LPARAM in_stack_00000004;
+  
+  pCVar1 = AfxGetThread();
+  if (pCVar1 == (CWinThread *)0x0) {
+    iVar2 = 0;
+  }
+  else {
+    pCVar1 = AfxGetThread();
+    iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+  }
+  PostMessageA(*(HWND *)(iVar2 + 0x1c),0xbc0,0,in_stack_00000004);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486BA0
+// GHIDRA_NAME TApplication::DispatchReflectedControlMessageOrFallback
+// GHIDRA_PROTO undefined __thiscall DispatchReflectedControlMessageOrFallback(void)
+
+void __thiscall TApplication::DispatchReflectedControlMessageOrFallback(TApplication *this)
+
+{
+  CWinThread *pCVar1;
+  int iVar2;
+  undefined4 in_stack_00000004;
+  
+  switch(in_stack_00000004) {
+  case 1:
+    pCVar1 = AfxGetThread();
+    if (pCVar1 == (CWinThread *)0x0) {
+      iVar2 = 0;
+    }
+    else {
+      pCVar1 = AfxGetThread();
+      iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+    }
+    PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe140,0);
+    return;
+  default:
+    TMapDialog::thunk_ForwardCityDialogParamToChildSlot44((TMapDialog *)this);
+    return;
+  case 10:
+  case 0xb:
+  case 0xc:
+  case 0xd:
+  case 0xe:
+  case 0xf:
+  case 0x10:
+  case 0x11:
+  case 0x12:
+  case 0x13:
+    pCVar1 = AfxGetThread();
+    if (pCVar1 == (CWinThread *)0x0) {
+      iVar2 = 0;
+    }
+    else {
+      pCVar1 = AfxGetThread();
+      iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+    }
+    PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe100,0);
+    return;
+  case 0x14:
+  case 0x15:
+  case 0x16:
+  case 0x17:
+  case 0x18:
+  case 0x19:
+  case 0x1a:
+  case 0x1b:
+  case 0x1c:
+  case 0x1d:
+    pCVar1 = AfxGetThread();
+    if (pCVar1 == (CWinThread *)0x0) {
+      iVar2 = 0;
+    }
+    else {
+      pCVar1 = AfxGetThread();
+      iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+    }
+    break;
+  case 0x1e:
+    pCVar1 = AfxGetThread();
+    if (pCVar1 == (CWinThread *)0x0) {
+      iVar2 = 0;
+    }
+    else {
+      pCVar1 = AfxGetThread();
+      iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+    }
+    PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe103,0);
+    return;
+  case 0x1f:
+    pCVar1 = AfxGetThread();
+    if (pCVar1 == (CWinThread *)0x0) {
+      iVar2 = 0;
+    }
+    else {
+      pCVar1 = AfxGetThread();
+      iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+    }
+    PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe102,0);
+    return;
+  case 0x20:
+    pCVar1 = AfxGetThread();
+    if (pCVar1 == (CWinThread *)0x0) {
+      iVar2 = 0;
+    }
+    else {
+      pCVar1 = AfxGetThread();
+      iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+    }
+    PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe104,0);
+    return;
+  case 0x24:
+    pCVar1 = AfxGetThread();
+    if (pCVar1 == (CWinThread *)0x0) {
+      iVar2 = 0;
+    }
+    else {
+      pCVar1 = AfxGetThread();
+      iVar2 = (**(code **)(*(int *)pCVar1 + 0x7c))();
+    }
+    PostMessageA(*(HWND *)(iVar2 + 0x1c),0x10,0,0);
+    return;
+  }
+  PostMessageA(*(HWND *)(iVar2 + 0x1c),0x111,0xe101,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486DF0
+// GHIDRA_NAME TApplication::SerializeRecordList_0x0C_WithBlockPool_B
+// GHIDRA_PROTO undefined __thiscall SerializeRecordList_0x0C_WithBlockPool_B(void)
+
+void __thiscall TApplication::SerializeRecordList_0x0C_WithBlockPool_B(TApplication *this)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  int iVar3;
+  undefined4 *puVar4;
+  int iVar5;
+  int *piVar6;
+  CArchive *in_stack_00000004;
+  
+  if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+    for (iVar2 = FUN_0061202e(); iVar2 != 0; iVar2 = iVar2 + -1) {
+      if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+        CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+      }
+      else {
+        TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+      }
+      uVar1 = this->padding_08_to_0b;
+      if (*(int *)&this->field_0x10 == 0) {
+        iVar3 = AllocateAndLinkBlockHead(&this->field_0x14,*(undefined4 *)&this->field_0x18,0xc);
+        iVar5 = *(int *)&this->field_0x18;
+        puVar4 = (undefined4 *)(iVar3 + -8 + iVar5 * 0xc);
+        if (-1 < iVar5 + -1) {
+          do {
+            *puVar4 = *(undefined4 *)&this->field_0x10;
+            *(undefined4 **)&this->field_0x10 = puVar4;
+            puVar4 = puVar4 + -3;
+            iVar5 = iVar5 + -1;
+          } while (iVar5 != 0);
+        }
+      }
+      puVar4 = *(undefined4 **)&this->field_0x10;
+      *(undefined4 *)&this->field_0x10 = *puVar4;
+      puVar4[1] = uVar1;
+      *puVar4 = 0;
+      this->field0c = this->field0c + 1;
+      puVar4[2] = 0;
+      puVar4[2] = in_stack_00000004;
+      if ((undefined4 *)this->padding_08_to_0b == (undefined4 *)0x0) {
+        this->field04 = (int)puVar4;
+      }
+      else {
+        *(undefined4 *)this->padding_08_to_0b = puVar4;
+      }
+      this->padding_08_to_0b = puVar4;
+    }
+  }
+  else {
+    TNetMgr::WriteCount((TNetMgr *)in_stack_00000004);
+    piVar6 = (int *)this->field04;
+    if (piVar6 != (int *)0x0) {
+      do {
+        if ((~in_stack_00000004->m_nMode & 1U) == 0) {
+          CArchive::ReadBytesFromSerializedBuffer(in_stack_00000004);
+        }
+        else {
+          TNetMgr::WriteBytesToSerializedBuffer((TNetMgr *)in_stack_00000004);
+        }
+        piVar6 = (int *)*piVar6;
+      } while (piVar6 != (int *)0x0);
+      return;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00486F60
+// GHIDRA_NAME TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00486f60(void)
+
+TApplication * __thiscall
+TApplication::WrapperFor_FreeHeapBufferIfNotNull_At00486f60(TApplication *this)
+
+{
+  byte in_stack_00000004;
+  
+  TBehavior::CreateTBehaviorInstance((TBehavior *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 

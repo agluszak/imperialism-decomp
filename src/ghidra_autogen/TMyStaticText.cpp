@@ -7,11 +7,11 @@
 // GHIDRA_NAME TMyStaticText::CreateTMyStaticTextInstance
 // GHIDRA_PROTO undefined CreateTMyStaticTextInstance()
 
-undefined4 * TMyStaticText::CreateTMyStaticTextInstance(void)
+TStaticText * TMyStaticText::CreateTMyStaticTextInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TStaticText *this;
+  TStaticText *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,53 +21,54 @@ undefined4 * TMyStaticText::CreateTMyStaticTextInstance(void)
   puStack_8 = &LAB_00638e4a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TStaticText *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
-    *puVar1 = &PTR_LAB_0066cbc8;
-    puVar2 = puVar1;
+  pTVar1 = (TStaticText *)0x0;
+  if (this != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    this->vftable = (TStaticTextVtbl *)&TMyStaticTextVtbl_0066cbc8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5400
-// GHIDRA_NAME TMyStaticText::GetTMyStaticTextClassNamePointer
-// GHIDRA_PROTO undefined GetTMyStaticTextClassNamePointer()
+// GHIDRA_NAME TMyStaticText::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TMyStaticText::GetTMyStaticTextClassNamePointer(void)
+CRuntimeClass * __thiscall TMyStaticText::GetTEventHandlerClassNamePointer(TMyStaticText *this)
 
 {
-  return &PTR_s_TMyStaticText_0066c3f0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5420
 // GHIDRA_NAME TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
-// GHIDRA_PROTO undefined ConstructUiTextResourceEntry_Vtbl0066cbc8()
+// GHIDRA_PROTO undefined __thiscall ConstructUiTextResourceEntry_Vtbl0066cbc8(void)
 
-undefined4 * __fastcall
-TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(undefined4 *param_1)
+TMyStaticText * __thiscall
+TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(TMyStaticText *this)
 
 {
-  TStaticText::thunk_ConstructUiTextResourceEntryBase();
-  *param_1 = &PTR_LAB_0066cbc8;
-  return param_1;
+  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  this->vftable = &TMyStaticTextVtbl_0066cbc8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5450
-// GHIDRA_NAME TMyStaticText::DestructTMyStaticTextAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMyStaticTextAndMaybeFree()
+// GHIDRA_NAME TMyStaticText::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TMyStaticText::DestructTMyStaticTextAndMaybeFree(undefined4 param_1,byte param_2)
+TMyStaticText * __thiscall TMyStaticText::_scalar_deleting_destructor_(TMyStaticText *this)
 
 {
-  TStaticText::~TStaticText();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TStaticText::~TStaticText((TStaticText *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 

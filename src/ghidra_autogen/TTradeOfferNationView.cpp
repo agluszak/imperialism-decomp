@@ -3,6 +3,23 @@
 // Program: Imperialism.exe
 // Bucket: TTradeOfferNationView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005BD1A0
+// GHIDRA_NAME TTradeOfferNationView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTradeOfferNationView * __thiscall
+TTradeOfferNationView::_scalar_deleting_destructor_(TTradeOfferNationView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD1F0
 // GHIDRA_NAME TTradeOfferNationView::CreateTTradeOfferNationViewInstance
 // GHIDRA_PROTO undefined CreateTTradeOfferNationViewInstance()
@@ -26,7 +43,7 @@ TView * TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0066e2f8;
+    this->vftable = (TViewVtbl *)&TTradeOfferNationViewVtbl_0066e2f8;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
@@ -34,26 +51,28 @@ TView * TTradeOfferNationView::CreateTTradeOfferNationViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD260
-// GHIDRA_NAME TTradeOfferNationView::GetTTradeOfferNationViewClassNamePointer
-// GHIDRA_PROTO undefined GetTTradeOfferNationViewClassNamePointer()
+// GHIDRA_NAME TTradeOfferNationView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTradeOfferNationView::GetTTradeOfferNationViewClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTradeOfferNationView::GetTEventHandlerClassNamePointer(TTradeOfferNationView *this)
 
 {
-  return &PTR_s_TTradeOfferNationView_0066dc18;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD2D0
-// GHIDRA_NAME TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState
-// GHIDRA_PROTO undefined ConstructTTradeOfferNationViewBaseState()
+// GHIDRA_NAME TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
 
-void __fastcall TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(int param_1)
+void __thiscall TTradeOfferNationView::OrphanCallChain_C11_I88_004874b0(TTradeOfferNationView *this)
 
 {
   int iVar1;
-  short sVar2;
+  undefined uVar2;
+  short sVar3;
   CString *src_ref;
-  int *piVar3;
+  undefined3 extraout_var;
   int iVar4;
   char *unaff_ESI;
   int iVar5;
@@ -70,43 +89,42 @@ void __fastcall TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(i
   puStack_8 = &LAB_006393b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty(&local_40);
+  CString::CString((CString *)&local_40);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty(&local_40.right);
+  CString::CString((CString *)&local_40.right);
   local_4._0_1_ = 1;
-  InitializeSharedStringRefFromEmpty(&local_40.top);
+  CString::CString((CString *)&local_40.top);
   local_4._0_1_ = 2;
-  InitializeSharedStringRefFromEmpty(&local_40.bottom);
+  CString::CString((CString *)&local_40.bottom);
   local_4._0_1_ = 3;
-  sVar2 = *(short *)((int)g_pNationInteractionStateManager +
-                    (*(short *)(param_1 + 0x60) * 0x50 + (int)*(short *)(param_1 + 0x62)) * 2 + 0x1c
-                    );
+  sVar3 = *(short *)(&g_pNationInteractionStateManager->field_0x1c +
+                    (*(short *)&this->field_0x60 * 0x50 + (int)*(short *)&this->field_0x62) * 2);
   src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot();
   local_4._0_1_ = 4;
-  AssignFromPtr(&local_40.top,src_ref);
+  CString::AssignFromPtr((CString *)&local_40.top,src_ref);
   local_4 = CONCAT31(local_4._1_3_,3);
-  ReleaseSharedStringRefIfNotEmpty(&local_30);
-  if (sVar2 == 1) {
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+  CString::~CString((CString *)&local_30);
+  if (sVar3 == 1) {
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
   else {
     FormatStringWithVarArgsToSharedRef();
-    (**(code **)(*g_pLocalizationTable + 0x84))();
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
     scanBracketExpressions(g_pLocalizationTable,&stack0xffffffbc,unaff_ESI);
   }
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor();
   thunk_SetQuickDrawTextOriginWithContextOffset();
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
-  piVar3 = (int *)(**(code **)(*(int *)g_pNationInteractionStateManager + 0x80))();
+  uVar2 = (*g_pNationInteractionStateManager->vftable[0x10].GetTTradeMgrClassNamePointer)();
   UpdatePaletteIndexWithDefaultFallback(0x10);
-  iVar1 = *piVar3;
+  iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
   iVar5 = 1;
   do {
     iVar4 = (**(code **)(iVar1 + 0x28))();
     if (iVar4 < iVar5) break;
-    sVar2 = (**(code **)(iVar1 + 0x24))();
-    local_30.left = (LONG)(short)(sVar2 << 5);
+    sVar3 = (**(code **)(iVar1 + 0x24))();
+    local_30.left = (LONG)(short)(sVar3 << 5);
     local_30.right = local_30.left + 0x20;
     local_40.left = (LONG)(short)((short)(iVar5 << 5) + -0x20);
     local_40.right = local_40.left + 0x20;
@@ -116,20 +134,20 @@ void __fastcall TTradeOfferNationView::ConstructTTradeOfferNationViewBaseState(i
     local_40.bottom = 0x24;
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x680) + 4),
-               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_30,&local_40,0x24,
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_30,&local_40,0x24,
                (astruct_19 *)0x0);
     iVar5 = iVar5 + 1;
   } while (iVar5 < 8);
   SetQuickDrawStrokeColor();
   (**(code **)(iVar1 + 0x38))();
   iStack_18._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb8);
+  CString::~CString((CString *)&stack0xffffffb8);
   iStack_18._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb0);
+  CString::~CString((CString *)&stack0xffffffb0);
   iStack_18 = (uint)iStack_18._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffb4);
+  CString::~CString((CString *)&stack0xffffffb4);
   iStack_18 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&stack0xffffffac);
+  CString::~CString((CString *)&stack0xffffffac);
   *unaff_FS_OFFSET = uStack_20;
   return;
 }

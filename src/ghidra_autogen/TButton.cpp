@@ -3,11 +3,27 @@
 // Program: Imperialism.exe
 // Bucket: TButton.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0048EC00
+// GHIDRA_NAME TButton::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TButton * __thiscall TButton::_scalar_deleting_destructor_(TButton *this)
+
+{
+  byte in_stack_00000004;
+  
+  CreateTButtonInstance(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EC30
 // GHIDRA_NAME TButton::CreateTButtonInstance
-// GHIDRA_PROTO undefined CreateTButtonInstance()
+// GHIDRA_PROTO undefined __thiscall CreateTButtonInstance(void)
 
-void __fastcall TButton::CreateTButtonInstance(undefined4 *param_1)
+void __thiscall TButton::CreateTButtonInstance(TButton *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -18,27 +34,27 @@ void __fastcall TButton::CreateTButtonInstance(undefined4 *param_1)
   puStack_8 = &LAB_0062eef3;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  *param_1 = &TView::_vftable_;
+  this->vftable = (TButtonVtbl *)&TView::_vftable_;
   local_4 = 1;
-  if ((int *)param_1[0x11] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[0x11] + 4))(1);
+  if ((int *)this->field44 != (int *)0x0) {
+    (**(code **)(*(int *)this->field44 + 4))(1);
   }
-  FreeHeapBufferIfNotNull(param_1[0x12]);
+  FreeHeapBufferIfNotNull(this->field48);
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(param_1 + 0x16);
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  CString::~CString(&this->sharedStringRef);
+  this->vftable = (TButtonVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ECC0
-// GHIDRA_NAME TButton::GetTButtonClassNamePointer
-// GHIDRA_PROTO undefined GetTButtonClassNamePointer()
+// GHIDRA_NAME TButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TButton::GetTButtonClassNamePointer(void)
+CRuntimeClass * __thiscall TButton::GetTEventHandlerClassNamePointer(TButton *this)
 
 {
-  return &PTR_s_TButton_00649630;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048ECE0
@@ -63,7 +79,7 @@ TView * TButton::ConstructTButtonBaseState(void)
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
     *(undefined1 *)&this[1].field04 = 0;
-    this[1].vftable = (void *)0x1;
+    this[1].vftable = (TViewVtbl *)0x1;
     this[1].padding_08_to_0b = 0;
     this[1].field0c = 0;
     this[1].field10 = 0;
@@ -72,27 +88,13 @@ TView * TButton::ConstructTButtonBaseState(void)
     this[1].controlTag = g_nUiResourceEntryDefaultParam1;
     *(ushort *)&this[1].ownerContext = g_wUiResourceEntryDefaultParam2;
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = &_vftable_;
+    this->vftable = (TViewVtbl *)&_vftable_;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-    this->vftable = &PTR_LAB_0064a708;
+    this->vftable = (TViewVtbl *)&TRadioVtbl_0064a708;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
   *unaff_FS_OFFSET = local_c;
   return (TView *)0x0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0048EDD0
-// GHIDRA_NAME TButton::DestructTButtonAndMaybeFree
-// GHIDRA_PROTO undefined DestructTButtonAndMaybeFree()
-
-undefined4 __thiscall TButton::DestructTButtonAndMaybeFree(undefined4 param_1,byte param_2)
-
-{
-  TRadio::CreateTRadioInstance();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
 }
 

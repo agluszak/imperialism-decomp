@@ -7,11 +7,11 @@
 // GHIDRA_NAME TCityBarCluster::CreateTCityBarClusterInstance
 // GHIDRA_PROTO undefined CreateTCityBarClusterInstance()
 
-undefined4 * TCityBarCluster::CreateTCityBarClusterInstance(void)
+TUberCluster * TCityBarCluster::CreateTCityBarClusterInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TUberCluster *this;
+  TUberCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,23 +21,23 @@ undefined4 * TCityBarCluster::CreateTCityBarClusterInstance(void)
   puStack_8 = &LAB_0063785a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState();
-    *puVar1 = &g_vtblTCityBarCluster;
-    puVar2 = puVar1;
+  pTVar1 = (TUberCluster *)0x0;
+  if (this != (TUberCluster *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState(this);
+    this->vftable = (TUberClusterVtbl *)&g_vtblTCityBarCluster;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586610
-// GHIDRA_NAME TCityBarCluster::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TCityBarCluster::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TCityBarCluster::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TCityBarCluster::GetTEventHandlerClassNamePointer(TCityBarCluster *this)
 
 {
   return &g_pClassDescTCityBarCluster;
@@ -45,75 +45,85 @@ char * TCityBarCluster::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586630
 // GHIDRA_NAME TCityBarCluster::ConstructTCityBarClusterBaseState
-// GHIDRA_PROTO undefined ConstructTCityBarClusterBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTCityBarClusterBaseState(void)
 
-undefined4 * __fastcall TCityBarCluster::ConstructTCityBarClusterBaseState(undefined4 *param_1)
+TCityBarCluster * __thiscall
+TCityBarCluster::ConstructTCityBarClusterBaseState(TCityBarCluster *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState();
-  *param_1 = &g_vtblTCityBarCluster;
-  return param_1;
+  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  this->vftable = &g_vtblTCityBarCluster;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586660
-// GHIDRA_NAME TCityBarCluster::DestructTCityBarClusterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCityBarClusterAndMaybeFree()
+// GHIDRA_NAME TCityBarCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TCityBarCluster::DestructTCityBarClusterAndMaybeFree(TView *param_1,byte param_2)
+TCityBarCluster * __thiscall TCityBarCluster::_scalar_deleting_destructor_(TCityBarCluster *this)
 
 {
-  TView::thunk_DestructTViewBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005866B0
 // GHIDRA_NAME TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord
-// GHIDRA_PROTO undefined UpdateTradeSummaryMetricControlsFromRecord()
+// GHIDRA_PROTO undefined __thiscall UpdateTradeSummaryMetricControlsFromRecord(void)
 
-void __thiscall
-TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(int *param_1,int param_2)
+void __thiscall TCityBarCluster::UpdateTradeSummaryMetricControlsFromRecord(TCityBarCluster *this)
 
 {
   int iVar1;
-  code *pcVar2;
-  int *piVar3;
+  TCityBarCluster_slot_0x04_0x04 *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
   int unaff_EBX;
   int unaff_ESI;
+  int in_stack_00000004;
   int iVar4;
   
-  iVar1 = *(int *)(param_2 + 0xac);
-  pcVar2 = *(code **)(*param_1 + 0x94);
-  piVar3 = (int *)(*pcVar2)(0x74726561);
-  if (piVar3 != (int *)0x0) {
-    iVar4 = *piVar3;
+  iVar1 = *(int *)(in_stack_00000004 + 0xac);
+  pTVar2 = this->vftable[0x12].slot_0x04;
+  uVar3 = (*pTVar2)(0x74726561);
+  if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
+    iVar4 = *(int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(iVar4 + 0x1e4))(*(undefined4 *)(unaff_EBX + 0x10),1);
     (**(code **)(iVar4 + 0xa4))(0,1);
   }
   iVar4 = 0x756e7472;
-  piVar3 = (int *)(*pcVar2)();
-  if (piVar3 == (int *)0x0) {
+  uVar3 = (*pTVar2)();
+  if ((int *)CONCAT31(extraout_var_00,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x67d);
   }
-  (**(code **)(*piVar3 + 0x1e4))((int)*(short *)(*(int *)(iVar1 + 0x10) + 4),1);
-  piVar3 = (int *)(*pcVar2)(0x74726169);
-  if (piVar3 == (int *)0x0) {
+  (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0x1e4))
+            ((int)*(short *)(*(int *)(iVar1 + 0x10) + 4),1);
+  uVar3 = (*pTVar2)(0x74726169);
+  if ((int *)CONCAT31(extraout_var_01,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x682);
   }
-  (**(code **)(*piVar3 + 0x1e4))((int)*(short *)(*(int *)(unaff_ESI + 0x10) + 6),1);
-  piVar3 = (int *)(*pcVar2)(0x70726f66);
-  if (piVar3 == (int *)0x0) {
+  (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar3) + 0x1e4))
+            ((int)*(short *)(*(int *)(unaff_ESI + 0x10) + 6),1);
+  uVar3 = (*pTVar2)(0x70726f66);
+  if ((int *)CONCAT31(extraout_var_02,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x687);
   }
-  (**(code **)(*piVar3 + 0x1e4))((int)*(short *)(*(int *)(iVar4 + 0x10) + 8),1);
+  (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar3) + 0x1e4))
+            ((int)*(short *)(*(int *)(iVar4 + 0x10) + 8),1);
   return;
 }
 

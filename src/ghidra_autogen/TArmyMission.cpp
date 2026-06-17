@@ -15,23 +15,25 @@ undefined ** TArmyMission::GetTArmyMissionClassNamePointer(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C1D0
 // GHIDRA_NAME TArmyMission::DestroyTArmyMission
-// GHIDRA_PROTO undefined DestroyTArmyMission()
+// GHIDRA_PROTO undefined __thiscall DestroyTArmyMission(void)
 
-undefined4 __thiscall TArmyMission::DestroyTArmyMission(undefined4 param_1,byte param_2)
+TArmyMission * __thiscall TArmyMission::DestroyTArmyMission(TArmyMission *this)
 
 {
+  byte in_stack_00000004;
+  
   ResetTArmyMissionToSentinelVtable();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053C220
 // GHIDRA_NAME TArmyMission::CleanupTArmyMissionAndReleaseChildContext
-// GHIDRA_PROTO undefined CleanupTArmyMissionAndReleaseChildContext()
+// GHIDRA_PROTO undefined __thiscall CleanupTArmyMissionAndReleaseChildContext(void)
 
-void __fastcall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(int *param_1)
+void __thiscall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(TArmyMission *this)
 
 {
   int iVar1;
@@ -44,13 +46,13 @@ void __fastcall TArmyMission::CleanupTArmyMissionAndReleaseChildContext(int *par
     iVar1 = AdvanceLinkedListCursor();
     iVar2 = LinkedListCursorHasCurrent();
   }
-  (**(code **)(*(int *)param_1[6] + 0x5c))();
-  if ((int *)param_1[6] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[6] + 0x58))();
+  (**(code **)(**(int **)(this + 0x18) + 0x5c))();
+  if (*(int **)(this + 0x18) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0x18) + 0x58))();
   }
-  param_1[6] = 0;
-  if (param_1 != (int *)0x0) {
-    (**(code **)(*param_1 + 4))(1);
+  *(undefined4 *)(this + 0x18) = 0;
+  if (this != (TArmyMission *)0x0) {
+    (**(code **)(*(int *)this + 4))(1);
   }
   return;
 }

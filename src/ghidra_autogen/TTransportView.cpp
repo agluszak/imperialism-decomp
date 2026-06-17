@@ -3,13 +3,156 @@
 // Program: Imperialism.exe
 // Bucket: TTransportView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004BD3C0
-// GHIDRA_NAME TTransportView::GetTTransportViewClassNamePointer
-// GHIDRA_PROTO undefined GetTTransportViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD370
+// GHIDRA_NAME TTransportView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TTransportView::GetTTransportViewClassNamePointer(void)
+TTransportView * __thiscall TTransportView::_scalar_deleting_destructor_(TTransportView *this)
 
 {
-  return &PTR_s_TTransportView_0064fb90;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD3C0
+// GHIDRA_NAME TTransportView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD3E0
+// GHIDRA_NAME TTransportView::ApplyCityDialogMinisterValues
+// GHIDRA_PROTO undefined __thiscall ApplyCityDialogMinisterValues(void)
+
+void __thiscall TTransportView::ApplyCityDialogMinisterValues(TTransportView *this)
+
+{
+  code *pcVar1;
+  code *pcVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  short sVar5;
+  dword *pdVar6;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
+  code *pcStack_1c;
+  CString local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  int local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00631118;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString(&local_10);
+  *(undefined4 *)&this->field_0x60 = in_stack_00000004;
+  sVar5 = 0;
+  local_4 = 0;
+  uVar3 = (*this->vftable[0x12].slot_0x04)(0x73757070);
+  if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x783);
+  }
+  pdVar6 = TradeSummarySelectionMap_006960e0.summaryTags;
+  pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94);
+  do {
+    piVar4 = (int *)(*pcVar1)(*pdVar6);
+    if (piVar4 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x787);
+    }
+    (**(code **)(*piVar4 + 0x1e4))((int)*(short *)(local_4 + 0x10e + sVar5 * 2),1);
+    pdVar6 = pdVar6 + 1;
+    sVar5 = sVar5 + 1;
+  } while ((int)pdVar6 < 0x696164);
+  piVar4 = (int *)(*(code *)this)(0x7472616e);
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x78d);
+  }
+  sVar5 = 0;
+  pdVar6 = TradeSummarySelectionMap_006960e0.summaryTags;
+  pcVar2 = *(code **)(*piVar4 + 0x94);
+  do {
+    piVar4 = (int *)(*pcVar2)(*pdVar6);
+    if (piVar4 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x791);
+    }
+    (**(code **)(*piVar4 + 0x1e4))((int)*(short *)(puStack_8 + sVar5 * 2 + 0x13c),1);
+    pdVar6 = pdVar6 + 1;
+    sVar5 = sVar5 + 1;
+  } while ((int)pdVar6 < 0x696164);
+  piVar4 = (int *)(*pcStack_1c)(0x746f7461);
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x797);
+  }
+  if (puStack_8 == (undefined1 *)0x0) {
+    sVar5 = 0;
+  }
+  else {
+    sVar5 = *(short *)(puStack_8 + 0xa6);
+  }
+  (**(code **)(*piVar4 + 0x1e4))((int)sVar5,1);
+  CString::~CString((CString *)&stack0xffffffdc);
+  *unaff_FS_OFFSET = pcVar1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BD690
+// GHIDRA_NAME TTransportView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TTransportView::GetTEventHandlerClassNamePointer(TTransportView *this)
+
+{
+  undefined uVar1;
+  undefined3 extraout_var;
+  int *piVar2;
+  undefined4 uVar3;
+  int iVar4;
+  dword *pdVar5;
+  code *pcStack_c;
+  
+  uVar1 = (*this->vftable[0x12].slot_0x04)(0x7472616e);
+  if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x7a7);
+  }
+  iVar4 = 0;
+  pdVar5 = TradeSummarySelectionMap_006960e0.summaryTags;
+  pcStack_c = *(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94);
+  do {
+    piVar2 = (int *)(*pcStack_c)(*pdVar5);
+    if (piVar2 == (int *)0x0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x7ab);
+    }
+    pcStack_c = (code *)**(int **)&this->field_0x60;
+    uVar3 = (**(code **)(*piVar2 + 0x1e8))();
+    (**(code **)(pcStack_c + 0x114))(iVar4,uVar3);
+    pdVar5 = pdVar5 + 1;
+    iVar4 = iVar4 + 1;
+  } while ((int)pdVar5 < 0x696164);
+  return;
 }
 

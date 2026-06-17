@@ -5,24 +5,27 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401816
 // GHIDRA_NAME CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816
-// GHIDRA_PROTO undefined thunk_GetTCivMgrClassNamePointer_At00401816()
+// GHIDRA_PROTO undefined __thiscall thunk_GetTCivMgrClassNamePointer_At00401816(void)
 
-void CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816(void)
+void __thiscall
+CivilianMapInteractionManager::thunk_GetTCivMgrClassNamePointer_At00401816
+          (CivilianMapInteractionManager *this)
 
 {
-  TCivMgr::GetTCivMgrClassNamePointer();
+  TCivMgr::GetTCivMgrClassNamePointer((TCivMgr *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004D2050
 // GHIDRA_NAME CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable
-// GHIDRA_PROTO undefined InitializeCivilianMapInteractionManagerVtable()
+// GHIDRA_PROTO undefined __thiscall InitializeCivilianMapInteractionManagerVtable(void)
 
-void __fastcall
-CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable(undefined4 *param_1)
+void __thiscall
+CivilianMapInteractionManager::InitializeCivilianMapInteractionManagerVtable
+          (CivilianMapInteractionManager *this)
 
 {
-  *param_1 = &g_vtblCivilianMapInteractionManager;
+  this->vftable = (undefined *)&g_vtblCivilianMapInteractionManager;
   return;
 }
 

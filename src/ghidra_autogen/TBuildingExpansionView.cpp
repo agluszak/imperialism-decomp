@@ -4,12 +4,43 @@
 // Bucket: TBuildingExpansionView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004CE500
-// GHIDRA_NAME TBuildingExpansionView::GetTBuildingExpansionViewClassNamePointer
-// GHIDRA_PROTO undefined GetTBuildingExpansionViewClassNamePointer()
+// GHIDRA_NAME TBuildingExpansionView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TBuildingExpansionView::GetTBuildingExpansionViewClassNamePointer(void)
+CRuntimeClass * __thiscall
+TBuildingExpansionView::GetTEventHandlerClassNamePointer(TBuildingExpansionView *this)
 
 {
-  return &PTR_s_TBuildingExpansionView_00651320;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE520
+// GHIDRA_NAME TBuildingExpansionView::ConstructBuildingExpansionView
+// GHIDRA_PROTO undefined __thiscall ConstructBuildingExpansionView(void)
+
+TBuildingExpansionView * __thiscall
+TBuildingExpansionView::ConstructBuildingExpansionView(TBuildingExpansionView *this)
+
+{
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TBuildingExpansionViewVtbl_006528d8;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004CE550
+// GHIDRA_NAME TBuildingExpansionView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TBuildingExpansionView * __thiscall
+TBuildingExpansionView::_scalar_deleting_destructor_(TBuildingExpansionView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 

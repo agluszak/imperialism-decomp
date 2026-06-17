@@ -3,70 +3,203 @@
 // Program: Imperialism.exe
 // Bucket: THandleStream.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00489550
-// GHIDRA_NAME THandleStream::CreateTHandleStreamInstance
-// GHIDRA_PROTO undefined CreateTHandleStreamInstance()
-
-void __thiscall
-THandleStream::CreateTHandleStreamInstance(int param_1,undefined4 param_2,int param_3)
-
-{
-  param_3 = *(int *)(param_1 + 4) + param_3;
-  *(int *)(param_1 + 4) = param_3;
-  if (*(int *)(param_1 + 8) < param_3) {
-    *(int *)(param_1 + 8) = param_3;
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004895C0
-// GHIDRA_NAME THandleStream::GetTHandleStreamClassNamePointer
-// GHIDRA_PROTO undefined GetTHandleStreamClassNamePointer()
+// GHIDRA_NAME THandleStream::GetTStreamClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTStreamClassNamePointer(void)
 
-char * THandleStream::GetTHandleStreamClassNamePointer(void)
+CRuntimeClass * __thiscall THandleStream::GetTStreamClassNamePointer(THandleStream *this)
 
 {
-  return "hOi";
+  return &g_pClassDescTHandleStream;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004895E0
 // GHIDRA_NAME THandleStream::ConstructTHandleStreamBaseState
-// GHIDRA_PROTO undefined ConstructTHandleStreamBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTHandleStreamBaseState(void)
 
-void __fastcall THandleStream::ConstructTHandleStreamBaseState(undefined4 *param_1)
+void __thiscall THandleStream::ConstructTHandleStreamBaseState(THandleStream *this)
 
 {
-  *param_1 = &_vftable_;
-  param_1[4] = 1;
-  param_1[1] = 0;
-  param_1[2] = 0;
-  *(undefined1 *)(param_1 + 5) = 0;
-  param_1[3] = 0;
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x10 = 1;
+  *(undefined4 *)&this->field_0x4 = 0;
+  *(undefined4 *)&this->field_0x8 = 0;
+  this->field_0x14 = 0;
+  *(undefined4 *)&this->field_0xc = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489610
-// GHIDRA_NAME THandleStream::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_NAME THandleStream::ConstructTStreamBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTStreamBaseState(void)
 
-undefined4 __thiscall THandleStream::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+THandleStream * __thiscall THandleStream::ConstructTStreamBaseState(THandleStream *this)
 
 {
-  ~THandleStream();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  ~THandleStream(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00489640
 // GHIDRA_NAME THandleStream::~THandleStream
-// GHIDRA_PROTO undefined ~THandleStream()
+// GHIDRA_PROTO undefined __thiscall ~THandleStream(void)
 
-void __fastcall THandleStream::~THandleStream(undefined4 *param_1)
+void __thiscall THandleStream::~THandleStream(THandleStream *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (THandleStreamVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004896A0
+// GHIDRA_NAME THandleStream::OrphanCallChain_C1_I06_00488ab0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I06_00488ab0(void)
+
+void __thiscall THandleStream::OrphanCallChain_C1_I06_00488ab0(THandleStream *this)
+
+{
+  THandleStreamVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  
+  if (*(int *)&this->field_0x4 != 0) {
+    pTVar1 = this->vftable;
+    uVar2 = (*pTVar1[5].GetTStreamClassNamePointer)();
+    (*pTVar1[6].ConstructTStreamBaseState)(CONCAT31(extraout_var,uVar2));
+  }
+  if (this != (THandleStream *)0x0) {
+    (*this->vftable->ConstructTStreamBaseState)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004896E0
+// GHIDRA_NAME THandleStream::OrphanTiny_ReturnZero_00488ad0
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488ad0(void)
+
+undefined4 __thiscall THandleStream::OrphanTiny_ReturnZero_00488ad0(THandleStream *this)
+
+{
+  return *(undefined4 *)&this->field_0x8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489700
+// GHIDRA_NAME THandleStream::OrphanTiny_ReturnZero_00488af0
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_00488af0(void)
+
+undefined4 __thiscall THandleStream::OrphanTiny_ReturnZero_00488af0(THandleStream *this)
+
+{
+  return *(undefined4 *)&this->field_0xc;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489720
+// GHIDRA_NAME THandleStream::OrphanLeaf_NoCall_Ins06_00489720
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins06_00489720(void)
+
+int __thiscall THandleStream::OrphanLeaf_NoCall_Ins06_00489720(THandleStream *this)
+
+{
+  int iVar1;
+  int in_stack_00000004;
+  
+  iVar1 = *(int *)&this->field_0x10;
+  if (*(int *)&this->field_0x10 <= in_stack_00000004) {
+    iVar1 = in_stack_00000004;
+  }
+  return iVar1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489740
+// GHIDRA_NAME THandleStream::OrphanRetStub_00488e30
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e30(void)
+
+void __thiscall THandleStream::OrphanRetStub_00488e30(THandleStream *this)
+
+{
+  undefined4 in_stack_00000004;
+  
+  *(undefined4 *)&this->field_0x8 = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489760
+// GHIDRA_NAME THandleStream::OrphanRetStub_00488e50
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e50(void)
+
+void __thiscall THandleStream::OrphanRetStub_00488e50(THandleStream *this)
+
+{
+  SIZE_T in_stack_00000004;
+  
+  GlobalReAlloc(*(HGLOBAL *)&this->field_0x4,in_stack_00000004,0);
+  if ((int)in_stack_00000004 < *(int *)&this->field_0x8) {
+    *(SIZE_T *)&this->field_0x8 = in_stack_00000004;
+  }
+  *(SIZE_T *)&this->field_0xc = in_stack_00000004;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004897A0
+// GHIDRA_NAME THandleStream::OrphanRetStub_00488b40
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488b40(void)
+
+void __thiscall THandleStream::OrphanRetStub_00488b40(THandleStream *this)
+
+{
+  int iVar1;
+  LPVOID pvVar2;
+  undefined4 in_stack_00000004;
+  int in_stack_00000008;
+  
+  iVar1 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
+  if (iVar1 < in_stack_00000008) {
+    in_stack_00000008 = iVar1;
+  }
+  if (0 < in_stack_00000008) {
+    pvVar2 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
+    MoveMemoryOverlapSafe
+              (in_stack_00000004,(int)pvVar2 + *(int *)&this->field_0x8,in_stack_00000008);
+    GlobalUnlock(*(HGLOBAL *)&this->field_0x4);
+    *(int *)&this->field_0x8 = *(int *)&this->field_0x8 + in_stack_00000008;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00489810
+// GHIDRA_NAME THandleStream::OrphanRetStub_00488e70
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00488e70(void)
+
+void __thiscall THandleStream::OrphanRetStub_00488e70(THandleStream *this)
+
+{
+  THandleStreamVtbl *pTVar1;
+  undefined uVar2;
+  int iVar3;
+  undefined3 extraout_var;
+  LPVOID pvVar4;
+  undefined4 in_stack_00000004;
+  int in_stack_00000008;
+  
+  iVar3 = *(int *)&this->field_0xc - *(int *)&this->field_0x8;
+  if (iVar3 < in_stack_00000008) {
+    pTVar1 = this->vftable;
+    uVar2 = (*pTVar1[0x18].ConstructTStreamBaseState)(in_stack_00000008 - iVar3);
+    (*pTVar1[6].ConstructTStreamBaseState)(CONCAT31(extraout_var,uVar2) + *(int *)&this->field_0xc);
+  }
+  pvVar4 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
+  MoveMemoryOverlapSafe((int)pvVar4 + *(int *)&this->field_0x8,in_stack_00000004);
+  GlobalUnlock(*(HGLOBAL *)&this->field_0x4);
+  iVar3 = *(int *)&this->field_0x8 + in_stack_00000008;
+  *(int *)&this->field_0x8 = iVar3;
+  if (*(int *)&this->field_0xc < iVar3) {
+    *(int *)&this->field_0xc = iVar3;
+  }
   return;
 }
 

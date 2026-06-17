@@ -3,25 +3,51 @@
 // Program: Imperialism.exe
 // Bucket: TPanelView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004F79C0
-// GHIDRA_NAME TPanelView::GetTPanelViewClassNamePointer
-// GHIDRA_PROTO undefined GetTPanelViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x00430550
+// GHIDRA_NAME TPanelView::OrphanRetStub_00430550
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00430550(void)
 
-undefined ** TPanelView::GetTPanelViewClassNamePointer(void)
+void __thiscall TPanelView::OrphanRetStub_00430550(TPanelView *this)
 
 {
-  return &PTR_s_TPanelView_00654f60;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F7970
+// GHIDRA_NAME TPanelView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TPanelView * __thiscall TPanelView::_scalar_deleting_destructor_(TPanelView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004F79C0
+// GHIDRA_NAME TPanelView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TPanelView::GetTEventHandlerClassNamePointer(TPanelView *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F79E0
-// GHIDRA_NAME TPanelView::ConstructTPanelViewBaseState
-// GHIDRA_PROTO undefined ConstructTPanelViewBaseState()
+// GHIDRA_NAME TPanelView::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __thiscall TPanelView::ConstructTPanelViewBaseState(int param_1,undefined4 param_2)
+void __thiscall TPanelView::OrphanCallChain_C6_I49_004875d0(TPanelView *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook(param_2);
-  *(undefined4 *)(param_1 + 0x60) = *(undefined4 *)(param_1 + 0x20);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  *(TView **)&this->field_0x60 = this->ownerContext;
   return;
 }
 

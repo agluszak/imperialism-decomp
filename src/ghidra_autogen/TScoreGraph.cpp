@@ -3,42 +3,179 @@
 // Program: Imperialism.exe
 // Bucket: TScoreGraph.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004FE290
-// GHIDRA_NAME TScoreGraph::GetTScoreGraphClassNamePointer
-// GHIDRA_PROTO undefined GetTScoreGraphClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004FE240
+// GHIDRA_NAME TScoreGraph::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TScoreGraph::GetTScoreGraphClassNamePointer(void)
+TScoreGraph * __thiscall TScoreGraph::_scalar_deleting_destructor_(TScoreGraph *this)
 
 {
-  return &PTR_s_TScoreGraph_00655068;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FE290
+// GHIDRA_NAME TScoreGraph::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TScoreGraph::GetTEventHandlerClassNamePointer(TScoreGraph *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004FE2B0
-// GHIDRA_NAME TScoreGraph::ConstructTScoreGraphBaseState
-// GHIDRA_PROTO undefined ConstructTScoreGraphBaseState()
+// GHIDRA_NAME TScoreGraph::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C6_I49_004875d0(void)
 
-void __fastcall TScoreGraph::ConstructTScoreGraphBaseState(int *param_1)
+void __thiscall TScoreGraph::OrphanCallChain_C6_I49_004875d0(TScoreGraph *this)
 
 {
-  int *piVar1;
+  undefined uVar1;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
   int iVar2;
+  TView **ppTStack00000004;
+  TView *pTStack_14;
+  TView *pTStack_10;
   
-  TView::thunk_NoOpUiLifecycleHook();
+  pTStack_14 = (TView *)0x4fe2bf;
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  pTStack_10 = (TView *)0x4fe2ca;
   RecomputeNationComparativePowerMetrics();
   iVar2 = 0;
   do {
-    piVar1 = (int *)(**(code **)(*(int *)param_1[8] + 0x94))();
-    (**(code **)(*piVar1 + 0xc))();
+    pTStack_10 = (TView *)(iVar2 + 0x74616230);
+    pTStack_14 = (TView *)0x4fe2de;
+    uVar1 = (*this->ownerContext->vftable[0x12].slot_0x04)();
+    pTStack_14 = (TView *)0x4fe2e7;
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0xc))();
+    pTStack_14 = (TView *)(iVar2 + 9);
+    pTStack_10 = (TView *)CONCAT31(extraout_var,uVar1);
     LoadUiStringByGroupAndIndexToControlObject(0x2757);
     iVar2 = iVar2 + 1;
   } while (iVar2 < 7);
-  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(&g_szEmptyString)
-  ;
+  pTStack_14 = this->ownerContext;
+  ppTStack00000004 = &pTStack_14;
+  pTStack_10 = pTStack_14;
+  TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+            ((TToolBarCluster *)&pTStack_14);
   InitializeAndRunMainRoutine();
-  piVar1 = (int *)(**(code **)(*param_1 + 0x58))();
-  g_pCursorControlPanel = (int *)(**(code **)(*piVar1 + 0x94))();
-  (**(code **)(*g_pCursorControlPanel + 0xc))();
-  (**(code **)(*g_pCursorControlPanel + 0x204))(0x2b6c);
+  pTStack_10 = (TView *)0x4fe323;
+  uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  pTStack_10 = (TView *)0x63757273;
+  pTStack_14 = (TView *)0x4fe332;
+  g_pCursorControlPanel =
+       (TControl *)(**(code **)(*(int *)CONCAT31(extraout_var_00,uVar1) + 0x94))();
+  pTStack_14 = (TView *)0x4fe33e;
+  (*g_pCursorControlPanel->vftable[1].slot_0x04)();
+  pTStack_14 = (TView *)0x2b67;
+  (*g_pCursorControlPanel->vftable[0x40].slot_0x04)(0x2b6c);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004FE390
+// GHIDRA_NAME TScoreGraph::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TScoreGraph::OrphanTiny_ReturnZero_0048a730(TScoreGraph *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  int iVar3;
+  int iVar4;
+  int iVar5;
+  undefined4 *unaff_FS_OFFSET;
+  CString *local_48;
+  int local_34;
+  int local_30;
+  int local_2c;
+  CString CStack_28;
+  int local_24;
+  undefined1 *local_20;
+  CString local_1c;
+  int local_18;
+  char *local_14;
+  int local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00633228;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_48 = (CString *)0x2b67;
+  local_2c = 0;
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
+  local_24 = 0;
+  local_34 = 0;
+  do {
+    iVar4 = local_24;
+    if (*(int *)((int)g_apTerrainTypeDescriptorTable + local_34) != 0) {
+      local_30 = 0;
+      iVar5 = 0;
+      piVar2 = (int *)(&g_pDiplomacyTurnStateManager->field_0x1824 + local_24);
+      iVar3 = 4;
+      do {
+        iVar1 = *piVar2;
+        piVar2 = piVar2 + 1;
+        iVar5 = iVar5 + iVar1;
+        iVar3 = iVar3 + -1;
+      } while (iVar3 != 0);
+      local_20 = (undefined1 *)&local_48;
+      local_48 = (CString *)0x0;
+      SetQuickDrawFillColor();
+      iVar3 = (int)(short)local_2c;
+      local_18 = iVar3 + 2;
+      local_48 = &local_1c;
+      local_14 = (char *)((short)iVar5 + 2);
+      local_10 = iVar3 + 0x26;
+      local_1c.m_pchData = (char *)0x2;
+      thunk_FillRectWithQuickDrawBrushAndContextOffset();
+      iVar5 = 0;
+      iVar4 = iVar4 + 0x1824;
+      do {
+        local_1c.m_pchData = (char *)(int)(short)local_30;
+        iVar1 = *(int *)((int)&g_pDiplomacyTurnStateManager->vftable + iVar4);
+        local_14 = local_1c.m_pchData + (short)iVar1;
+        local_10 = iVar3 + 0x24;
+        local_48 = (CString *)(iVar5 + 3);
+        local_18 = iVar3;
+        (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
+        local_48 = &local_1c;
+        thunk_FillRectWithQuickDrawBrushAndContextOffset();
+        local_30 = local_30 + iVar1;
+        iVar5 = iVar5 + 1;
+        iVar4 = iVar4 + 4;
+      } while (iVar5 < 4);
+      local_48 = (CString *)0x4fe4a6;
+      CString::CString(&CStack_28);
+      local_48 = &CStack_28;
+      uStack_4 = 0;
+      FormatOverlayTerrainLabelText();
+      local_20 = (undefined1 *)&local_48;
+      local_48 = (CString *)0x0;
+      SetQuickDrawFillColor();
+      local_48 = (CString *)(local_2c + 0x30);
+      thunk_SetQuickDrawTextOriginWithContextOffset(0);
+      local_48 = &CStack_28;
+      THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
+      local_2c = local_2c + 0x34;
+      uStack_4 = 0xffffffff;
+      local_48 = (CString *)0x4fe50e;
+      CString::~CString(&CStack_28);
+    }
+    local_24 = local_24 + 0x10;
+    local_34 = local_34 + 4;
+  } while (local_24 < 0x70);
+  *unaff_FS_OFFSET = uStack_c;
   return;
 }
 

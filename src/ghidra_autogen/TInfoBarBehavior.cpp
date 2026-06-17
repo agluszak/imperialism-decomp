@@ -7,11 +7,11 @@
 // GHIDRA_NAME TInfoBarBehavior::CreateTInfoBarBehaviorInstance
 // GHIDRA_PROTO undefined CreateTInfoBarBehaviorInstance()
 
-undefined4 * TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
+TBehavior * TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TBehavior *this;
+  TBehavior *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,35 +21,36 @@ undefined4 * TInfoBarBehavior::CreateTInfoBarBehaviorInstance(void)
   puStack_8 = &LAB_00630c42;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x24);
+  this = (TBehavior *)AllocateWithFallbackHandler(0x24);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TBehavior::ConstructTBehaviorBaseState();
+  pTVar1 = (TBehavior *)0x0;
+  if (this != (TBehavior *)0x0) {
+    TBehavior::ConstructTBehaviorBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    InitializeSharedStringRefFromEmpty(puVar1 + 4);
-    *puVar1 = &PTR_LAB_0064eb10;
-    puVar2 = puVar1;
+    CString::CString((CString *)(this + 1));
+    this->vftable = (TBehaviorVtbl *)&TInfoBarBehaviorVtbl_0064eb10;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0D10
-// GHIDRA_NAME TInfoBarBehavior::GetTInfoBarBehaviorClassNamePointer
-// GHIDRA_PROTO undefined GetTInfoBarBehaviorClassNamePointer()
+// GHIDRA_NAME TInfoBarBehavior::GetTBehaviorClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTBehaviorClassNamePointer(void)
 
-undefined ** TInfoBarBehavior::GetTInfoBarBehaviorClassNamePointer(void)
+CRuntimeClass * __thiscall TInfoBarBehavior::GetTBehaviorClassNamePointer(TInfoBarBehavior *this)
 
 {
-  return &PTR_s_TInfoBarBehavior_0064ea60;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0D30
 // GHIDRA_NAME TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState
-// GHIDRA_PROTO undefined ConstructTInfoBarBehaviorBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarBehaviorBaseState(void)
 
-undefined4 * __fastcall TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(undefined4 *param_1)
+TInfoBarBehavior * __thiscall
+TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(TInfoBarBehavior *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -61,44 +62,101 @@ undefined4 * __fastcall TInfoBarBehavior::ConstructTInfoBarBehaviorBaseState(und
   puStack_8 = &LAB_00630c68;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TBehavior::ConstructTBehaviorBaseState();
+  TBehavior::ConstructTBehaviorBaseState((TBehavior *)this);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty(param_1 + 4);
-  *param_1 = &PTR_LAB_0064eb10;
+  CString::CString((CString *)&this->field_0x10);
+  this->vftable = &TInfoBarBehaviorVtbl_0064eb10;
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0DA0
 // GHIDRA_NAME TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree
-// GHIDRA_PROTO undefined DestructTInfoBarBehaviorAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTInfoBarBehaviorAndMaybeFree(void)
 
-undefined4 __thiscall
-TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(undefined4 param_1,byte param_2)
+TInfoBarBehavior * __thiscall
+TInfoBarBehavior::DestructTInfoBarBehaviorAndMaybeFree(TInfoBarBehavior *this)
 
 {
+  byte in_stack_00000004;
+  
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004b0dd0();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B0E20
+// GHIDRA_NAME TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild
+// GHIDRA_PROTO undefined __thiscall InitializeInfoBarTagEntryWithOptionalDummyChild(void)
+
+void __thiscall
+TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(TInfoBarBehavior *this)
+
+{
+  char cVar1;
+  int *extraout_EAX;
+  TView *unaff_EBX;
+  int *piVar2;
+  int iVar3;
+  undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  int *in_stack_00000008;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  CString local_4;
+  
+  puStack_8 = &LAB_00630cb2;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  iVar3 = *in_stack_00000008;
+  local_4.m_pchData = (char *)0x0;
+  *(undefined4 *)&this->field_0x4 = 0x696e6642;
+  (**(code **)(iVar3 + 300))(&this->field_0x14);
+  CString::AssignFromPtr((CString *)&this->field_0x10,(CString *)&stack0x00000000);
+  cVar1 = (**(code **)(iVar3 + 0xcc))();
+  if (cVar1 == '\0') {
+    unaff_EBX = (TView *)AllocateWithFallbackHandler(0x60);
+    puStack_8._0_1_ = 1;
+    if (unaff_EBX == (TView *)0x0) {
+      piVar2 = (int *)0x0;
+    }
+    else {
+      TView::thunk_ConstructTViewBaseState(unaff_EBX);
+      piVar2 = extraout_EAX;
+    }
+    puStack_8 = (undefined1 *)((uint)puStack_8._1_3_ << 8);
+    thunk_InitializeUiResourceEntryFrameAndParent
+              (0,in_stack_00000008,&DAT_006a2410,in_stack_00000008 + 0xd,0,0,0);
+    iVar3 = *piVar2;
+    piVar2[7] = 0x64756d79;
+    (**(code **)(iVar3 + 0xa8))(1,0);
+    (**(code **)(iVar3 + 0xa4))(0,0);
+    iVar3 = in_stack_00000004;
+  }
+  (**(code **)(iVar3 + 0x90))(this);
+  uStack_c = 0xffffffff;
+  CString::~CString(&local_4);
+  *unaff_FS_OFFSET = unaff_EBX;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B0F50
 // GHIDRA_NAME TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip
-// GHIDRA_PROTO undefined RefreshInfoBarCursorPanelRegionClip()
+// GHIDRA_PROTO undefined __thiscall RefreshInfoBarCursorPanelRegionClip(void)
 
-uint __fastcall TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip(int param_1)
+uint __thiscall TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip(TInfoBarBehavior *this)
 
 {
   uint uVar1;
   undefined4 unaff_retaddr;
   
   uVar1 = 0;
-  if (g_pCursorControlPanel != (int *)0x0) {
-    thunk_AssignStringSharedRefAndReturnThis(param_1 + 0x10);
-    (**(code **)(*g_pCursorControlPanel + 0x200))();
-    (**(code **)(**(int **)(param_1 + 8) + 0xf8))();
+  if (g_pCursorControlPanel != (TControl *)0x0) {
+    thunk_AssignStringSharedRefAndReturnThis(&this->field_0x10);
+    (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+    (**(code **)(**(int **)&this->field_0x8 + 0xf8))();
     uVar1 = GetRegionBoxToRectIfPresent(unaff_retaddr);
     if ((char)uVar1 != '\0') {
       uVar1 = WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0

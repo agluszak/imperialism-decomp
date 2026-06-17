@@ -26,7 +26,7 @@ undefined4 * TSortedList::CreateTSortedListInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList(10);
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
     *puVar1 = &_vftable_;
     puVar2 = puVar1;
   }
@@ -34,53 +34,28 @@ undefined4 * TSortedList::CreateTSortedListInstance(void)
   return puVar2;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00487B10
-// GHIDRA_NAME TSortedList::GetTSortedListClassNamePointer
-// GHIDRA_PROTO undefined GetTSortedListClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004A8640
+// GHIDRA_NAME TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640
+// GHIDRA_PROTO undefined __thiscall WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640(void)
 
-char * TSortedList::GetTSortedListClassNamePointer(void)
-
-{
-  return "XOi";
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00487B30
-// GHIDRA_NAME TSortedList::ConstructTSortedListBaseState
-// GHIDRA_PROTO undefined ConstructTSortedListBaseState()
-
-int TSortedList::ConstructTSortedListBaseState(uint param_1,uint param_2)
+TSortedList * __thiscall
+TSortedList::WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640
+          (TSortedList *this)
 
 {
-  if (param_2 < param_1) {
-    return 1;
-  }
-  return -(uint)(param_1 < param_2);
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00487B60
-// GHIDRA_NAME TSortedList::DestructTSortedListAndMaybeFree
-// GHIDRA_PROTO undefined DestructTSortedListAndMaybeFree()
-
-void __thiscall
-TSortedList::DestructTSortedListAndMaybeFree
-          (int *param_1,int param_2,int param_3,undefined4 param_4,undefined4 param_5)
-
-{
-  int iVar1;
-  code *pcVar2;
-  undefined4 uVar3;
-  int unaff_EBX;
-  undefined4 unaff_EBP;
-  undefined4 uVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
   
-  if (param_2 < param_3) {
-    iVar1 = *param_1;
-    uVar4 = param_4;
-    uVar3 = (**(code **)(iVar1 + 0x78))(param_2,param_3,param_4,param_5);
-    pcVar2 = *(code **)(iVar1 + 0x70);
-    (*pcVar2)(unaff_EBP,uVar3,param_4,param_5);
-    (*pcVar2)(unaff_EBX + 1,uVar4,param_4,param_5);
-  }
-  return;
+  puStack_8 = &LAB_006302c8;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  this->vftable = (TSortedListVtbl *)&RefCountedObjectBase::_vftable_;
+  local_4 = 0;
+  TGreatPower::CPtrList((TGreatPower *)&this->field_0x4);
+  this->vftable = &_vftable_;
+  *unaff_FS_OFFSET = local_c;
+  return this;
 }
 

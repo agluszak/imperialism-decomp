@@ -3,15 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: TTacticalHolaPicture.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0045D480
+// GHIDRA_NAME TTacticalHolaPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
+
+TTacticalHolaPicture * __thiscall
+TTacticalHolaPicture::WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480
+          (TTacticalHolaPicture *this)
+
+{
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TTacticalHolaPictureVtbl_00645888;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0045D4B0
+// GHIDRA_NAME TTacticalHolaPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTacticalHolaPicture * __thiscall
+TTacticalHolaPicture::_scalar_deleting_destructor_(TTacticalHolaPicture *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD6C0
 // GHIDRA_NAME TTacticalHolaPicture::CreateTTacticalHolaPictureInstance
 // GHIDRA_PROTO undefined CreateTTacticalHolaPictureInstance()
 
-undefined4 * TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(void)
+thunk_TPictureButton * TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,25 +52,26 @@ undefined4 * TTacticalHolaPicture::CreateTTacticalHolaPictureInstance(void)
   puStack_8 = &LAB_0063887a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00645888;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TTacticalHolaPictureVtbl **)this = &TTacticalHolaPictureVtbl_00645888;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD740
-// GHIDRA_NAME TTacticalHolaPicture::GetTTacticalHolaPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTTacticalHolaPictureClassNamePointer()
+// GHIDRA_NAME TTacticalHolaPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTacticalHolaPicture::GetTTacticalHolaPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTacticalHolaPicture::GetTEventHandlerClassNamePointer(TTacticalHolaPicture *this)
 
 {
-  return &PTR_s_TTacticalHolaPicture_0066a310;
+  return &classRuntimeClass;
 }
 

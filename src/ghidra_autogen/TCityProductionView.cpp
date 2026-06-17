@@ -4,205 +4,1331 @@
 // Bucket: TCityProductionView.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BA2C0
-// GHIDRA_NAME TCityProductionView::GetTCityProductionViewClassNamePointer
-// GHIDRA_PROTO undefined GetTCityProductionViewClassNamePointer()
+// GHIDRA_NAME TCityProductionView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TCityProductionView::GetTCityProductionViewClassNamePointer(void)
+CRuntimeClass * __thiscall
+TCityProductionView::GetTEventHandlerClassNamePointer(TCityProductionView *this)
 
 {
-  return &PTR_s_TCityProductionView_0064fb60;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BA2E0
+// GHIDRA_NAME TCityProductionView::InitializeCityProductionView
+// GHIDRA_PROTO undefined __thiscall InitializeCityProductionView(void)
+
+TCityProductionView * __thiscall
+TCityProductionView::InitializeCityProductionView(TCityProductionView *this)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  
+  TNoHilitePicture::thunk_ConstructPictureResourceEntryType606E8((TNoHilitePicture *)this);
+  this->vftable = &TCityProductionViewVtbl_0064fc20;
+  *(undefined2 *)&this->field_0xa4 = 0xffff;
+  this->field_0xa6 = 0;
+  puVar2 = (undefined4 *)&this->field_0xec;
+  for (iVar1 = 0x10; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
+  }
+  puVar2 = (undefined4 *)&this->field_0xac;
+  for (iVar1 = 0x10; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
+  }
+  *(undefined2 *)&this->field_0xa8 = 0xffff;
+  puVar2 = (undefined4 *)&this->field_0x12c;
+  for (iVar1 = 0x18; iVar1 != 0; iVar1 = iVar1 + -1) {
+    *puVar2 = 0;
+    puVar2 = puVar2 + 1;
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BA360
-// GHIDRA_NAME TCityProductionView::DestructTCityProductionViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCityProductionViewAndMaybeFree()
+// GHIDRA_NAME TCityProductionView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TCityProductionView::DestructTCityProductionViewAndMaybeFree(undefined4 param_1,byte param_2)
+TCityProductionView * __thiscall
+TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BA3B0
+// GHIDRA_NAME TCityProductionView::OrphanCallChain_C6_I49_004875d0
+// GHIDRA_PROTO void __thiscall OrphanCallChain_C6_I49_004875d0(void * pInitContext)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initialize city-screen clickable building controls.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1) For slotId 0..15, query building level and create hit region control.
+// GHIDRA_COMMENT 2) Control/icon resource formula: 7100 + (level * 16) + slotId.
+// GHIDRA_COMMENT 3) Position controls with g_anCityBuildingSlotCoords + slot offset indices.
+// GHIDRA_COMMENT 4) Build action controls from g_aCityBuildingActionRects and g_awCityBuildingActionResourceIds.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT SlotId to building type:
+// GHIDRA_COMMENT 0 Textile Mill
+// GHIDRA_COMMENT 1 Clothing Factory
+// GHIDRA_COMMENT 2 Steel Mill
+// GHIDRA_COMMENT 3 Metalworks
+// GHIDRA_COMMENT 4 Lumber Mill
+// GHIDRA_COMMENT 5 Furniture Factory
+// GHIDRA_COMMENT 6 Oil Refinery
+// GHIDRA_COMMENT 7 Shipyard
+// GHIDRA_COMMENT 8 Armory
+// GHIDRA_COMMENT 9 Trade School
+// GHIDRA_COMMENT 10 University
+// GHIDRA_COMMENT 11 Power Plant
+// GHIDRA_COMMENT 12 Food Processing
+// GHIDRA_COMMENT 13 Warehouse
+// GHIDRA_COMMENT 14 Railyard
+// GHIDRA_COMMENT 15 Capitol.
+// GHIDRA_COMMENT_END
+
+/* Initialize city-screen clickable building controls.
+   Algorithm:
+   1) For slotId 0..15, query building level and create hit region control.
+   2) Control/icon resource formula: 7100 + (level * 16) + slotId.
+   3) Position controls with g_anCityBuildingSlotCoords + slot offset indices.
+   4) Build action controls from g_aCityBuildingActionRects and g_awCityBuildingActionResourceIds.
+   
+   SlotId to building type:
+   0 Textile Mill
+   1 Clothing Factory
+   2 Steel Mill
+   3 Metalworks
+   4 Lumber Mill
+   5 Furniture Factory
+   6 Oil Refinery
+   7 Shipyard
+   8 Armory
+   9 Trade School
+   10 University
+   11 Power Plant
+   12 Food Processing
+   13 Warehouse
+   14 Railyard
+   15 Capitol. */
+
+void __thiscall
+TCityProductionView::OrphanCallChain_C6_I49_004875d0(TCityProductionView *this,void *pInitContext)
+
+{
+  int iVar1;
+  undefined uVar2;
+  short sVar3;
+  undefined4 uVar4;
+  undefined3 extraout_var;
+  TTransFocusAnimation *pTVar5;
+  int *piVar6;
+  LONG *pLVar7;
+  TTransFocusAnimation *pTVar8;
+  TCity *pTVar9;
+  int iVar10;
+  undefined4 *puVar11;
+  int iStack_24;
+  int iStack_1c;
+  tagRECT tStack_10;
+  
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 1;
+  sVar3 = UiRuntimeContext::GetActiveNationId();
+  iVar10 = 0;
+  if (g_apNationStates[sVar3] == (TGreatPower *)0x0) {
+    pInitContext = (void *)0x0;
+  }
+  else {
+    pInitContext = g_apNationStates[sVar3]->city;
+  }
+  puVar11 = (undefined4 *)&this->field_0xec;
+  do {
+    uVar4 = CreateClipStateRegionWrapperObject();
+    *puVar11 = uVar4;
+    sVar3 = UiRuntimeContext::GetActiveNationId();
+    if (g_apNationStates[sVar3] == (TGreatPower *)0x0) {
+      pTVar9 = (TCity *)0x0;
+    }
+    else {
+      pTVar9 = g_apNationStates[sVar3]->city;
+    }
+    uVar2 = (*pTVar9->vftable[0xb].slot_0x04)(iVar10);
+    pTVar5 = (TTransFocusAnimation *)
+             thunk_LoadBmpResourceByIdCached(CONCAT31(extraout_var,uVar2) * 0x10 + 0x1bbc + iVar10);
+    piVar6 = TTransFocusAnimation::Sprite__CollectNonTransparentPixels(pTVar5,0xffffffff);
+    DeleteObject();
+    iVar1 = *(int *)*puVar11;
+    CreatePolygonRgn((POINT *)(piVar6 + 2),*piVar6,2);
+    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar1 + 0x14));
+    FreeHeapBufferIfNotNull(piVar6);
+    thunk_ReleaseHashIndexedRecordByHandle(pTVar5);
+    InitializeCityBuildingControlRegions_Impl
+              (*puVar11,(int)(short)(&g_anCityBuildingSlotCoords)
+                                    [(int)g_nCityBuildingSlotXOffsetIndex + iVar10 * 2],
+               (int)(short)(&g_anCityBuildingSlotCoords)
+                           [(int)g_nCityBuildingSlotYOffsetIndex + iVar10 * 2]);
+    iVar10 = iVar10 + 1;
+    puVar11 = puVar11 + 1;
+  } while (iVar10 < 0x10);
+  (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+  ModifyStyle(0,0x2000000,0);
+  iStack_1c = 0;
+  iStack_24 = 0;
+  do {
+    if (iStack_24 < 0x15) {
+      sVar3 = (**(code **)(*(int *)pInitContext + 0x5c))(iStack_1c);
+    }
+    else {
+      sVar3 = (**(code **)(*(int *)pInitContext + 0x5c))(0xb);
+    }
+    if (0 < sVar3) {
+      iVar10 = 0;
+      pLVar7 = (LONG *)(&g_aCityBuildingActionRects + ((short)(sVar3 + -1) + iStack_24) * 0x30);
+      do {
+        tStack_10.left = *pLVar7;
+        tStack_10.top = pLVar7[1];
+        tStack_10.right = pLVar7[2];
+        tStack_10.bottom = pLVar7[3];
+        if (tStack_10.right < 1) {
+          *(undefined4 *)(&this->field_0x12c + (iVar10 + iStack_24) * 4) = 0;
+        }
+        else {
+          OffsetRect(&tStack_10,0x32,0x23);
+          pTVar8 = (TTransFocusAnimation *)AllocateWithFallbackHandler(0x38);
+          pTVar5 = (TTransFocusAnimation *)0x0;
+          if (pTVar8 != (TTransFocusAnimation *)0x0) {
+            *(undefined4 *)&pTVar8->field_0x30 = 0;
+            *(undefined4 *)&pTVar8->field_0x34 = 0;
+            pTVar8->field_0x2c = 1;
+            pTVar8->vftable = &TTransFocusAnimationVtbl_0064c498;
+            pTVar5 = pTVar8;
+          }
+          TTransFocusAnimation::ConstructTTransFocusAnimationBaseState(pTVar5);
+          TCivAnimation2::AddObjectToUiTransientRegistry((TCivAnimation2 *)g_pUiAnimator);
+          *(TTransFocusAnimation **)(&this->field_0x12c + (iVar10 + iStack_24) * 4) = pTVar5;
+          thunk_InvalidateCityDialogRectRegion(&tStack_10,1);
+          this->field_0xa6 = 1;
+        }
+        iVar10 = iVar10 + 1;
+        pLVar7 = pLVar7 + 4;
+      } while (iVar10 < 3);
+    }
+    iStack_24 = iStack_24 + 3;
+    iStack_1c = iStack_1c + 1;
+  } while (iStack_24 < 0x18);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BA740
-// GHIDRA_NAME TCityProductionView::ReleaseCityBuildingControls
-// GHIDRA_PROTO void __thiscall ReleaseCityBuildingControls(void)
+// GHIDRA_NAME TCityProductionView::'scalar_deleting_destructor'
+// GHIDRA_PROTO void __thiscall 'scalar_deleting_destructor'(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Setting prototype: void ReleaseCityBuildingControls(void)
 // GHIDRA_COMMENT_END
 
 /* Setting prototype: void ReleaseCityBuildingControls(void) */
 
-void __thiscall TCityProductionView::ReleaseCityBuildingControls(TCityProductionView *this)
+void __thiscall TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this)
 
 {
   undefined4 uVar1;
-  TCityProductionView *pTVar2;
+  undefined4 *puVar2;
   int iVar3;
   
   CallObjectOffset24Vslot54IfPresent();
-  pTVar2 = this + 0xec;
+  puVar2 = (undefined4 *)&this->field_0xec;
   iVar3 = 0x10;
   do {
-    uVar1 = DestroyClipStateRegionWrapperObject(*(undefined4 *)pTVar2);
-    *(undefined4 *)pTVar2 = uVar1;
-    pTVar2 = pTVar2 + 4;
+    uVar1 = DestroyClipStateRegionWrapperObject(*puVar2);
+    *puVar2 = uVar1;
+    puVar2 = puVar2 + 1;
     iVar3 = iVar3 + -1;
   } while (iVar3 != 0);
-  *(undefined4 *)((int)g_pGlobalUiRootController + 0x28) = 0;
-  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf();
+  *(undefined4 *)&g_pGlobalUiRootController->field_0x28 = 0;
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BA7B0
+// GHIDRA_NAME TCityProductionView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO void __thiscall OrphanTiny_ReturnZero_0048a730(tagRECT * pTargetRect)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Render city-screen building icons and special overlays.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1) Iterate slotIds from g_anCityBuildingSlotOrder.
+// GHIDRA_COMMENT 2) Resolve per-city building level/state for each slot.
+// GHIDRA_COMMENT 3) Choose icon ID:
+// GHIDRA_COMMENT    - normal: 7000 + (level * 16) + slotId
+// GHIDRA_COMMENT    - upgrading: 7300 + (level * 16) + slotId (used in upgrade path)
+// GHIDRA_COMMENT    - slot 11 (Power Plant): 7011/7027 special toggle
+// GHIDRA_COMMENT 4) Draw at g_anCityBuildingSlotCoords using draw offsets.
+// GHIDRA_COMMENT 5) Draw extra overlays 7070/7071 for late Railyard/Capitol states.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT SlotId to building type:
+// GHIDRA_COMMENT 0 Textile Mill
+// GHIDRA_COMMENT 1 Clothing Factory
+// GHIDRA_COMMENT 2 Steel Mill
+// GHIDRA_COMMENT 3 Metalworks
+// GHIDRA_COMMENT 4 Lumber Mill
+// GHIDRA_COMMENT 5 Furniture Factory
+// GHIDRA_COMMENT 6 Oil Refinery
+// GHIDRA_COMMENT 7 Shipyard
+// GHIDRA_COMMENT 8 Armory
+// GHIDRA_COMMENT 9 Trade School
+// GHIDRA_COMMENT 10 University
+// GHIDRA_COMMENT 11 Power Plant
+// GHIDRA_COMMENT 12 Food Processing
+// GHIDRA_COMMENT 13 Warehouse
+// GHIDRA_COMMENT 14 Railyard
+// GHIDRA_COMMENT 15 Capitol
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT City entry index mapping used by logic: buildingEnum = slotId + 0x35.
+// GHIDRA_COMMENT_END
+
+/* Render city-screen building icons and special overlays.
+   Algorithm:
+   1) Iterate slotIds from g_anCityBuildingSlotOrder.
+   2) Resolve per-city building level/state for each slot.
+   3) Choose icon ID:
+      - normal: 7000 + (level * 16) + slotId
+      - upgrading: 7300 + (level * 16) + slotId (used in upgrade path)
+      - slot 11 (Power Plant): 7011/7027 special toggle
+   4) Draw at g_anCityBuildingSlotCoords using draw offsets.
+   5) Draw extra overlays 7070/7071 for late Railyard/Capitol states.
+   
+   SlotId to building type:
+   0 Textile Mill
+   1 Clothing Factory
+   2 Steel Mill
+   3 Metalworks
+   4 Lumber Mill
+   5 Furniture Factory
+   6 Oil Refinery
+   7 Shipyard
+   8 Armory
+   9 Trade School
+   10 University
+   11 Power Plant
+   12 Food Processing
+   13 Warehouse
+   14 Railyard
+   15 Capitol
+   
+   City entry index mapping used by logic: buildingEnum = slotId + 0x35. */
+
+void __thiscall
+TCityProductionView::OrphanTiny_ReturnZero_0048a730(TCityProductionView *this,tagRECT *pTargetRect)
+
+{
+  TCityVtbl *pTVar1;
+  code *pcVar2;
+  bool bVar3;
+  undefined uVar4;
+  char cVar5;
+  short sVar6;
+  int *piVar7;
+  undefined4 uVar8;
+  undefined3 extraout_var;
+  undefined1 *puVar9;
+  int iVar10;
+  undefined4 unaff_EBP;
+  undefined4 unaff_ESI;
+  TAnimation *this_00;
+  int *piVar11;
+  TCity *pTVar12;
+  int iVar13;
+  undefined4 uVar14;
+  undefined4 uVar15;
+  short *psVar16;
+  int *local_20;
+  undefined1 local_1c [8];
+  TCityProductionView *local_14;
+  RECT local_10;
+  
+  local_14 = this;
+  if (((short)DAT_006a2158[7] == 0x7db) && (this->field_0xa6 == '\0')) {
+    local_10.left = pTargetRect->left;
+    local_10.top = pTargetRect->top;
+    local_10.right = pTargetRect->right;
+    local_10.bottom = pTargetRect->bottom;
+    BlitRectWithOptionalTransparency
+              ((astruct_17 *)(g_pPrimaryRenderSurfaceContext + 4),
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_10,0,
+               (astruct_19 *)0x0);
+    (*this->vftable[0x3a].slot_0x04)();
+    return;
+  }
+  this->field_0xa6 = 0;
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  local_20 = (int *)0x0;
+  thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_1c,&local_20);
+  piVar7 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130(7000);
+  CopyRect(&local_10,(RECT *)(*piVar7 + 8));
+  (**(code **)(*DAT_006a2158 + 0x2c))(&pTargetRect,8,&local_10);
+  piVar11 = (int *)*piVar7;
+  (**(code **)(*piVar11 + 4))();
+  *(byte *)(piVar11 + 1) = *(byte *)(piVar11 + 1) & 0xfe;
+  this_00 = (TAnimation *)*piVar7;
+  if (this_00 != (TAnimation *)0x0) {
+    this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
+              (this_00);
+    FreeHeapBufferIfNotNull(this_00);
+  }
+  FreeHeapBufferIfNotNull(piVar7);
+  thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+  uVar8 = thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
+  thunk_ReturnConstantTrueQuickDrawFlag(uVar8);
+  psVar16 = &g_anCityBuildingSlotOrder;
+  do {
+    thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+    sVar6 = UiRuntimeContext::GetActiveNationId();
+    if (g_apNationStates[sVar6] == (TGreatPower *)0x0) {
+      pTVar12 = (TCity *)0x0;
+    }
+    else {
+      pTVar12 = g_apNationStates[sVar6]->city;
+    }
+    pTVar1 = pTVar12->vftable;
+    sVar6 = *psVar16;
+    this_00 = (TAnimation *)CONCAT22((short)((uint)this_00 >> 0x10),sVar6);
+    uVar4 = (*pTVar1[0xb].slot_0x04)(this_00);
+    iVar10 = CONCAT31(extraout_var,uVar4);
+    if ((short)iVar10 < 1) {
+      bVar3 = false;
+      if ((sVar6 < 0) || (6 < sVar6)) {
+        if ((sVar6 == 0xb) && (pTVar12->field_0x4 != '\0')) goto LAB_004ba97b;
+      }
+      else if (0 < *(short *)((int)pTVar12->orderSlotsE4[(short)(sVar6 + 0x35)] + 4)) {
+LAB_004ba97b:
+        bVar3 = true;
+      }
+      if (bVar3) goto LAB_004ba985;
+    }
+    else {
+LAB_004ba985:
+      if (sVar6 == 0xb) {
+        puVar9 = (undefined1 *)((-(uint)(pTVar12->field_0x4 != '\0') & 0xfffffff0) + 0x1b73);
+      }
+      else if (((((short)iVar10 == 0) || (sVar6 < 0)) || (5 < sVar6)) ||
+              ((*(short *)((int)pTVar12->orderSlotsE4[(short)(sVar6 + 0x35)] + 4) < 1 ||
+               (cVar5 = (*pTVar1[0xf].GetTCityClassNamePointer)(this_00), cVar5 == '\0')))) {
+        puVar9 = &this_00[0x9f].field_0x4 + iVar10 * 0x10;
+      }
+      else {
+        puVar9 = &this_00[0xa5].field_0x28 + iVar10 * 0x10;
+      }
+      pcVar2 = *(code **)(*local_20 + 0x1d0);
+      (*pcVar2)(local_1c,local_10.right,
+                (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawXOffsetIndex + sVar6 * 2],
+                (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawYOffsetIndex + sVar6 * 2],
+                puVar9,unaff_EBP,unaff_ESI);
+      if ((sVar6 == 0xf) && ('2' < *(char *)(*(int *)&pTVar12->field_0xac + 0x8d2))) {
+        thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+        uVar15 = 0x1b9e;
+        uVar14 = 0x3c;
+        uVar8 = 0xa6;
+      }
+      else {
+        if ((sVar6 != 0xe) || (*(char *)(*(int *)&pTVar12->field_0xac + 0x8d3) < '3'))
+        goto LAB_004baac3;
+        thunk_SetActiveQuickDrawSurfaceContext(local_10.right,unaff_ESI);
+        uVar15 = 0x1b9f;
+        uVar14 = 0x143;
+        uVar8 = 0x6d;
+      }
+      (*pcVar2)(local_1c,local_10.right,uVar8,uVar14,uVar15,unaff_EBP,unaff_ESI);
+    }
+LAB_004baac3:
+    psVar16 = psVar16 + 1;
+    if (0x696197 < (int)psVar16) {
+      iVar10 = 8;
+      piVar11 = local_20 + 0x4b;
+      do {
+        iVar13 = 3;
+        do {
+          if ((int *)*piVar11 != (int *)0x0) {
+            (**(code **)(*(int *)*piVar11 + 0x3c))();
+          }
+          piVar11 = piVar11 + 1;
+          iVar13 = iVar13 + -1;
+        } while (iVar13 != 0);
+        iVar10 = iVar10 + -1;
+      } while (iVar10 != 0);
+      thunk_SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
+      uVar8 = thunk_GetSurfaceObjectAtContextOffset24(local_10.right);
+      thunk_NoOpQuickDrawLifecycleHookB(uVar8);
+      WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&local_10.right);
+      (**(code **)(*local_20 + 0x1d4))();
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BAC50
+// GHIDRA_NAME TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette
+// GHIDRA_PROTO undefined __thiscall BlitBitmapResourceRectWithScreenOffsetAndPalette(void)
+
+void __thiscall
+TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(TCityProductionView *this)
+
+{
+  undefined4 *puVar1;
+  int *piVar2;
+  TAnimation *this_00;
+  int *piVar3;
+  int iVar4;
+  RECT *in_stack_00000004;
+  int in_stack_00000008;
+  short in_stack_0000000c;
+  short in_stack_00000010;
+  undefined4 in_stack_00000018;
+  undefined4 in_stack_0000001c;
+  tagRECT tStack_10;
+  
+  piVar3 = (int *)WrapperFor_AllocateWithFallbackHandler_At004a1130();
+  puVar1 = (undefined4 *)*piVar3;
+  if (puVar1 != (undefined4 *)0x0) {
+    (**(code **)*puVar1)();
+    *(byte *)(puVar1 + 1) = *(byte *)(puVar1 + 1) | 1;
+    ResetQuickDrawStrokeState();
+    WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c40(piVar3,in_stack_00000004);
+  }
+  piVar2 = (int *)*piVar3;
+  (**(code **)(*piVar2 + 4))();
+  *(byte *)(piVar2 + 1) = *(byte *)(piVar2 + 1) & 0xfe;
+  this_00 = (TAnimation *)*piVar3;
+  if (this_00 != (TAnimation *)0x0) {
+    this_00->vftable = (TAnimationVtbl *)&DAT_0064c340;
+    TAnimation::WrapperFor_thunk_DecrementDialogResourceRefCountByShortIdAndCleanup_At00495c00
+              (this_00);
+    FreeHeapBufferIfNotNull(this_00);
+  }
+  FreeHeapBufferIfNotNull(piVar3);
+  tStack_10.left = in_stack_00000004->left;
+  tStack_10.top = in_stack_00000004->top;
+  tStack_10.right = in_stack_00000004->right;
+  tStack_10.bottom = in_stack_00000004->bottom;
+  OffsetRect(&tStack_10,(int)in_stack_00000010,(int)in_stack_0000000c);
+  thunk_SetActiveQuickDrawSurfaceContext(in_stack_00000018,in_stack_0000001c);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  if (*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) != 0) {
+    iVar4 = *(int *)(*(int *)(*(int *)(g_pPrimaryRenderSurfaceContext + 0x20) + 0x10) + 8);
+    if (iVar4 < 1) {
+      iVar4 = -iVar4;
+    }
+    OffsetRect(&tStack_10,0,(iVar4 - tStack_10.top) - tStack_10.bottom);
+  }
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(in_stack_00000008 + 4),
+             (astruct_18 *)(g_pPrimaryRenderSurfaceContext + 4),in_stack_00000004,&tStack_10,0x24,
+             (astruct_19 *)0x0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BADD0
 // GHIDRA_NAME TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh
-// GHIDRA_PROTO undefined RenderNationHeaderDateLabelWithPeriodicRefresh()
+// GHIDRA_PROTO undefined __thiscall RenderNationHeaderDateLabelWithPeriodicRefresh(void)
 
-void __fastcall TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh(int param_1)
+void __thiscall
+TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh(TCityProductionView *this)
 
 {
   short sVar1;
-  short sVar2;
-  int iVar3;
+  undefined uVar2;
+  short sVar3;
+  undefined3 extraout_var;
   int iVar4;
   int iVar5;
-  int *piVar6;
-  short sVar7;
+  int iVar6;
+  TCity *pTVar7;
+  short sVar8;
+  bool bVar9;
   
-  sVar2 = UiRuntimeContext::GetActiveNationId();
-  if ((&g_apNationStates)[sVar2] == 0) {
-    piVar6 = (int *)0x0;
+  sVar3 = UiRuntimeContext::GetActiveNationId();
+  if (g_apNationStates[sVar3] == (TGreatPower *)0x0) {
+    pTVar7 = (TCity *)0x0;
   }
   else {
-    piVar6 = *(int **)((&g_apNationStates)[sVar2] + 0x894);
+    pTVar7 = g_apNationStates[sVar3]->city;
   }
-  sVar2 = (**(code **)(*piVar6 + 0x5c))(0xe);
-  iVar3 = (-(uint)(sVar2 == 2) & 0xffffffe9) + 0x213;
-  sVar2 = (-(ushort)(sVar2 == 2) & 0x14) + 0x6b;
-  if (*(short *)(param_1 + 0xa8) < 0) {
+  uVar2 = (*pTVar7->vftable[0xb].slot_0x04)(0xe);
+  bVar9 = (short)CONCAT31(extraout_var,uVar2) == 2;
+  iVar4 = (-(uint)bVar9 & 0xffffffe9) + 0x213;
+  sVar3 = (-(ushort)bVar9 & 0x14) + 0x6b;
+  if (*(short *)&this->field_0xa8 < 0) {
     GetCurrentLocalEpochSecondsWithTimezoneCache(&stack0xfffffff8);
-    iVar4 = ConvertEpochSecondsToLocalTmWithDstAdjust(&stack0xfffffff8);
-    iVar5 = *(int *)(iVar4 + 4);
-    sVar7 = ((short)(iVar5 / 5) + (short)(iVar5 >> 0x1f)) -
-            (short)((longlong)iVar5 * 0x66666667 >> 0x3f);
-    *(short *)(param_1 + 0xaa) = sVar7;
-    sVar1 = *(short *)(iVar4 + 8);
-    *(short *)(param_1 + 0xa8) = sVar1;
-    if (6 < sVar7) {
-      *(short *)(param_1 + 0xa8) = sVar1 + 1;
+    iVar5 = ConvertEpochSecondsToLocalTmWithDstAdjust(&stack0xfffffff8);
+    iVar6 = *(int *)(iVar5 + 4);
+    sVar8 = ((short)(iVar6 / 5) + (short)(iVar6 >> 0x1f)) -
+            (short)((longlong)iVar6 * 0x66666667 >> 0x3f);
+    *(short *)&this->field_0xaa = sVar8;
+    sVar1 = *(short *)(iVar5 + 8);
+    *(short *)&this->field_0xa8 = sVar1;
+    if (6 < sVar8) {
+      *(short *)&this->field_0xa8 = sVar1 + 1;
     }
-    if (0xb < *(short *)(param_1 + 0xa8)) {
-      *(short *)(param_1 + 0xa8) = *(short *)(param_1 + 0xa8) + -0xc;
+    if (0xb < *(short *)&this->field_0xa8) {
+      *(short *)&this->field_0xa8 = *(short *)&this->field_0xa8 + -0xc;
     }
-    if (0xb < *(short *)(param_1 + 0xa8)) {
-      *(short *)(param_1 + 0xa8) = *(short *)(param_1 + 0xa8) + -0xc;
+    if (0xb < *(short *)&this->field_0xa8) {
+      *(short *)&this->field_0xa8 = *(short *)&this->field_0xa8 + -0xc;
     }
   }
   ResetQuickDrawStrokeState();
-  (**(code **)(*g_pUiRuntimeContext + 0x34))(1);
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3,sVar2);
-  iVar5 = *(short *)(param_1 + 0xa8) * 2;
+  (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(1);
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
+  iVar6 = *(short *)&this->field_0xa8 * 2;
   thunk_DrawCenteredGuideLineOnMapDc
-            (*(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar5) + (short)iVar3,
-             *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar5) + sVar2);
+            (*(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar6) + (short)iVar4,
+             *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar6) + sVar3);
   SetQuickDrawFillColor(0);
-  thunk_SetQuickDrawTextOriginWithContextOffset(iVar3,sVar2);
-  iVar5 = *(short *)(param_1 + 0xaa) * 2;
+  thunk_SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
+  iVar6 = *(short *)&this->field_0xaa * 2;
   thunk_DrawCenteredGuideLineOnMapDc
-            (*(short *)(&g_Render_Nation_Header_Value_00696210 + iVar5) + (short)iVar3,
-             *(short *)(&g_Render_Nation_Header_Value_00696228 + iVar5) + sVar2);
+            (*(short *)(&g_Render_Nation_Header_Value_00696210 + iVar6) + (short)iVar4,
+             *(short *)(&g_Render_Nation_Header_Value_00696228 + iVar6) + sVar3);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BAFA0
+// GHIDRA_NAME TCityProductionView::'scalar_deleting_destructor'
+// GHIDRA_PROTO void __thiscall 'scalar_deleting_destructor'(int * pCursorPoint, int nEventFlags)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Handle city-screen hover/selection over building slots.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1) Reject cursor outside city panel bounds.
+// GHIDRA_COMMENT 2) Iterate slotIds in g_anCityBuildingSlotOrder and hit-test each slot control.
+// GHIDRA_COMMENT 3) On hit, resolve city building entry via (slotId + 0x35) index.
+// GHIDRA_COMMENT 4) Build tooltip/detail text and update selection highlight.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT SlotId to building type:
+// GHIDRA_COMMENT 0 Textile Mill
+// GHIDRA_COMMENT 1 Clothing Factory
+// GHIDRA_COMMENT 2 Steel Mill
+// GHIDRA_COMMENT 3 Metalworks
+// GHIDRA_COMMENT 4 Lumber Mill
+// GHIDRA_COMMENT 5 Furniture Factory
+// GHIDRA_COMMENT 6 Oil Refinery
+// GHIDRA_COMMENT 7 Shipyard
+// GHIDRA_COMMENT 8 Armory
+// GHIDRA_COMMENT 9 Trade School
+// GHIDRA_COMMENT 10 University
+// GHIDRA_COMMENT 11 Power Plant
+// GHIDRA_COMMENT 12 Food Processing
+// GHIDRA_COMMENT 13 Warehouse
+// GHIDRA_COMMENT 14 Railyard
+// GHIDRA_COMMENT 15 Capitol.
+// GHIDRA_COMMENT_END
+
+/* Handle city-screen hover/selection over building slots.
+   Algorithm:
+   1) Reject cursor outside city panel bounds.
+   2) Iterate slotIds in g_anCityBuildingSlotOrder and hit-test each slot control.
+   3) On hit, resolve city building entry via (slotId + 0x35) index.
+   4) Build tooltip/detail text and update selection highlight.
+   
+   SlotId to building type:
+   0 Textile Mill
+   1 Clothing Factory
+   2 Steel Mill
+   3 Metalworks
+   4 Lumber Mill
+   5 Furniture Factory
+   6 Oil Refinery
+   7 Shipyard
+   8 Armory
+   9 Trade School
+   10 University
+   11 Power Plant
+   12 Food Processing
+   13 Warehouse
+   14 Railyard
+   15 Capitol. */
+
+void __thiscall
+TCityProductionView::_scalar_deleting_destructor_
+          (TCityProductionView *this,int *pCursorPoint,int nEventFlags)
+
+{
+  short nBuildingSlotId;
+  TCityVtbl *pTVar1;
+  void *pvVar2;
+  bool bVar3;
+  undefined1 uVar4;
+  undefined uVar5;
+  short sVar6;
+  int iVar7;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined2 extraout_var_01;
+  TToolBarClusterVtbl *extraout_ECX;
+  TToolBarClusterVtbl *extraout_ECX_00;
+  TToolBarClusterVtbl *pTVar8;
+  undefined2 extraout_var_02;
+  TCity *this_00;
+  int iVar9;
+  TToolBarClusterVtbl *unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar10;
+  TToolBarClusterVtbl *pTStack_6c;
+  TCityProductionView *pTStack_68;
+  CString local_54;
+  CString local_50;
+  CString local_4c;
+  CString local_48;
+  CString local_44;
+  TCityProductionView *local_40;
+  undefined1 *puStack_3c;
+  int local_38;
+  TCityProductionView *local_34;
+  TCity_slot_0x04_0x04 *local_30;
+  TToolBarClusterVtbl local_2c [3];
+  undefined1 auStack_10 [4];
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  char *local_4;
+  
+  local_4 = (char *)0xffffffff;
+  puStack_8 = &LAB_00630fe0;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  bVar3 = false;
+  pTStack_68 = (TCityProductionView *)0x4bafcd;
+  local_34 = this;
+  AcquireReusableQuickDrawSurface();
+  local_4 = (char *)0x0;
+  local_2c[0].slot_0x04 = (TToolBarCluster_slot_0x04_0x04 *)pCursorPoint[1];
+  local_2c[0].GetTEventHandlerClassNamePointer =
+       (TToolBarCluster_GetTEventHandlerClassNamePointer_0x00 *)*pCursorPoint;
+  pTStack_68 = (TCityProductionView *)0x4bafef;
+  CString::CString(&local_4c);
+  local_4._0_1_ = 1;
+  pTStack_68 = (TCityProductionView *)0x4baffd;
+  CString::CString(&local_44);
+  local_4._0_1_ = 2;
+  uVar4 = local_4._0_1_;
+  local_4._0_1_ = 2;
+  if ((((pCursorPoint[1] < 0x24) || (0x1e2 < pCursorPoint[1])) || (*pCursorPoint < 0x33)) ||
+     (0x24d < *pCursorPoint)) {
+    pTStack_68 = (TCityProductionView *)nEventFlags;
+    pTStack_6c = (TToolBarClusterVtbl *)pCursorPoint;
+    local_4._0_1_ = uVar4;
+    TControl::thunk_HandleCursorHoverSelectionByChildHitTestAndFallback((TControl *)this);
+  }
+  else {
+    local_38 = 0;
+    do {
+      iVar9 = local_38;
+      if (bVar3) goto LAB_004bb5bb;
+      nBuildingSlotId = *(short *)((int)&g_nCityBuildingSlotOrderLast + local_38);
+      unaff_EDI = (TToolBarClusterVtbl *)CONCAT22((short)((uint)unaff_EDI >> 0x10),nBuildingSlotId);
+      pTStack_68 = *(TCityProductionView **)(&this->field_0xec + nBuildingSlotId * 4);
+      pTStack_6c = local_2c;
+      iVar7 = IsPointInsideHitRegion();
+      pTVar8 = extraout_ECX;
+      if (iVar7 != 0) {
+        pTStack_68 = (TCityProductionView *)0x4bb06d;
+        CString::CString(&local_54);
+        local_4._0_1_ = 3;
+        pTStack_68 = (TCityProductionView *)0x4bb07b;
+        CString::CString(&local_48);
+        local_4._0_1_ = 4;
+        pTStack_68 = (TCityProductionView *)0x4bb089;
+        CString::CString(&local_50);
+        local_4._0_1_ = 5;
+        pTStack_68 = (TCityProductionView *)0x4bb097;
+        CString::CString((CString *)&nEventFlags);
+        local_4 = (char *)CONCAT31(local_4._1_3_,6);
+        pTStack_68 = (TCityProductionView *)0x4bb0a7;
+        sVar6 = UiRuntimeContext::GetActiveNationId();
+        if (g_apNationStates[sVar6] == (TGreatPower *)0x0) {
+          this_00 = (TCity *)0x0;
+        }
+        else {
+          this_00 = g_apNationStates[sVar6]->city;
+        }
+        pTVar1 = this_00->vftable;
+        local_30 = pTVar1[0xb].slot_0x04;
+        pTStack_6c = (TToolBarClusterVtbl *)0x4bb0cd;
+        pTStack_68 = (TCityProductionView *)unaff_EDI;
+        uVar5 = (*local_30)();
+        local_40 = (TCityProductionView *)CONCAT31(extraout_var,uVar5);
+        pTStack_6c = unaff_EDI;
+        pCursorPoint._0_1_ = (*pTVar1[0xf].GetTCityClassNamePointer)();
+        if ((nBuildingSlotId == 6) || (nBuildingSlotId == 0xb)) {
+          pTStack_68 = (TCityProductionView *)0x4bb0f4;
+          sVar6 = UiRuntimeContext::GetActiveNationId();
+          if ((&g_pCityOrderCapabilityState->field_0x27b)[sVar6 * 0x1d] == '\x02')
+          goto LAB_004bb114;
+        }
+        else {
+LAB_004bb114:
+          pTStack_68 = (TCityProductionView *)&local_54;
+          pTStack_6c = unaff_EDI;
+          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          if ((char)pCursorPoint != '\0') {
+            if (nBuildingSlotId == 0xb) {
+              if ((short)local_48.m_pchData == 0) {
+                if (this_00->field_0x4 == '\0') {
+                  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+                  scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
+                }
+                else {
+                  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+                  scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
+                }
+              }
+              else {
+                FormatStringWithVarArgsToSharedRef(&stack0xffffffa8);
+                (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+                (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,0x1d,auStack_10);
+                scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
+              }
+              CString::AssignFromPtr((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
+            }
+            else if ((short)local_48.m_pchData == 0) {
+              if (*(short *)((int)this_00->orderSlotsE4[(short)(nBuildingSlotId + 0x35)] + 4) < 1) {
+                (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+                scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
+                CString::AssignFromPtr((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
+              }
+              else {
+                (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+                scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
+                CString::AssignFromPtr((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
+              }
+            }
+            else {
+              pvVar2 = this_00->orderSlotsE4[(short)(nBuildingSlotId + 0x35)];
+              TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,nBuildingSlotId);
+              FormatStringWithVarArgsToSharedRef(&stack0xffffffa8);
+              FormatStringWithVarArgsToSharedRef(&local_50);
+              (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+              if (*(short *)((int)pvVar2 + 4) < 1) {
+                uVar10 = 0x1b;
+              }
+              else {
+                uVar10 = 0x1c;
+              }
+              (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,uVar10,auStack_10);
+              scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa4,local_4);
+              CString::AssignFromPtr((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
+              this = local_40;
+            }
+          }
+          local_48.m_pchData = &stack0xffffff88;
+          thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffa0);
+          (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+        }
+        if ((nBuildingSlotId == 6) || (nBuildingSlotId == 0xb)) {
+          pTStack_68 = (TCityProductionView *)0x4bb3f5;
+          sVar6 = UiRuntimeContext::GetActiveNationId();
+          if ((&g_pCityOrderCapabilityState->field_0x27b)[sVar6 * 0x1d] == '\x02') {
+            pTStack_68 = (TCityProductionView *)(&DAT_006a2998 + nBuildingSlotId * 0x10);
+            puStack_3c = (undefined1 *)&pTStack_6c;
+            pTStack_6c = (TToolBarClusterVtbl *)(sVar6 * 7);
+            TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+                      ((TToolBarCluster *)&pTStack_6c);
+            (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+          }
+          else {
+            pCursorPoint._0_1_ = '\0';
+          }
+        }
+        if ((char)pCursorPoint != '\0') {
+          sVar6 = *(short *)&this->field_0xa4;
+          if ((nBuildingSlotId != sVar6) && (sVar6 != -1)) {
+            pTStack_68 = *(TCityProductionView **)(&this->field_0xec + sVar6 * 4);
+            pTStack_6c = (TToolBarClusterVtbl *)0x4bb478;
+            (*this->vftable[0x18].GetTEventHandlerClassNamePointer)();
+          }
+          pTStack_6c = (TToolBarClusterVtbl *)0x4bb47f;
+          pTStack_68 = (TCityProductionView *)unaff_EDI;
+          uVar5 = (*local_30)();
+          if ((short)CONCAT31(extraout_var_00,uVar5) == 0) {
+            pTStack_6c = (TToolBarClusterVtbl *)0x4bb48e;
+            pTStack_68 = this;
+            ConstructScopedMapQuickDrawContext();
+            pTStack_68 = (TCityProductionView *)CONCAT22(extraout_var_02,(short)this->field30);
+            pTStack_6c = (TToolBarClusterVtbl *)CONCAT22(extraout_var_01,(short)this->field2c);
+            local_4._0_1_ = 7;
+            thunk_SetGlobalQuickDrawOrigin();
+            pTStack_68 = local_40;
+            pTStack_6c = (TToolBarClusterVtbl *)0x4bb4af;
+            ApplyHitRegionToClipState();
+            pTStack_68 = *(TCityProductionView **)(&this->field_0xec + nBuildingSlotId * 4);
+            pTStack_6c = (TToolBarClusterVtbl *)0x4bb4c2;
+            SnapshotHitRegionToClipCache();
+            pTStack_68 = (TCityProductionView *)0x0;
+            pTStack_6c = (TToolBarClusterVtbl *)0x4bb4d3;
+            SetQuickDrawFillColor();
+            pTStack_68 = *(TCityProductionView **)(&this->field_0xec + nBuildingSlotId * 4);
+            pTStack_6c = (TToolBarClusterVtbl *)0x4bb4e3;
+            TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState();
+            pTStack_68 = local_40;
+            pTStack_6c = (TToolBarClusterVtbl *)0x4bb4f0;
+            SnapshotHitRegionToClipCache();
+            local_4 = (char *)CONCAT31(local_4._1_3_,6);
+            pTStack_68 = (TCityProductionView *)0x4bb501;
+            thunk_DestroyScopedMapQuickDrawContext();
+          }
+          *(short *)&this->field_0xa4 = nBuildingSlotId;
+        }
+        bVar3 = true;
+        local_4._0_1_ = 5;
+        pTStack_68 = (TCityProductionView *)0x4bb518;
+        CString::~CString((CString *)&nEventFlags);
+        local_4._0_1_ = 4;
+        pTStack_68 = (TCityProductionView *)0x4bb526;
+        CString::~CString(&local_50);
+        local_4._0_1_ = 3;
+        pTStack_68 = (TCityProductionView *)0x4bb534;
+        CString::~CString(&local_48);
+        local_4._0_1_ = 2;
+        pTStack_68 = (TCityProductionView *)0x4bb542;
+        CString::~CString(&local_54);
+        pTVar8 = extraout_ECX_00;
+        iVar9 = local_38;
+      }
+      local_38 = iVar9 + -2;
+    } while (-0x20 < local_38);
+    if (!bVar3) {
+      pTStack_68 = (TCityProductionView *)&DAT_006a2980;
+      pTStack_6c = pTVar8;
+      TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
+                ((TToolBarCluster *)&pTStack_6c);
+      (*g_pCursorControlPanel->vftable[0x40].GetTEventHandlerClassNamePointer)();
+      if (*(short *)&this->field_0xa4 != -1) {
+        pTStack_68 = *(TCityProductionView **)(&this->field_0xec + *(short *)&this->field_0xa4 * 4);
+        pTStack_6c = (TToolBarClusterVtbl *)0x4bb5a3;
+        (*this->vftable[0x18].GetTEventHandlerClassNamePointer)();
+        *(undefined2 *)&this->field_0xa4 = 0xffff;
+      }
+    }
+  }
+LAB_004bb5bb:
+  local_4._0_1_ = 1;
+  pTStack_68 = (TCityProductionView *)0x4bb5c9;
+  CString::~CString(&local_44);
+  local_4 = (char *)((uint)local_4._1_3_ << 8);
+  pTStack_68 = (TCityProductionView *)0x4bb5d7;
+  CString::~CString(&local_4c);
+  local_4 = (char *)0xffffffff;
+  pTStack_68 = (TCityProductionView *)0x4bb5e8;
+  ReleaseOrCacheQuickDrawSurface();
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BC0B0
+// GHIDRA_NAME TCityProductionView::UpdateCityProductionDialogCommodityValueControls
+// GHIDRA_PROTO undefined __thiscall UpdateCityProductionDialogCommodityValueControls(void)
+
+void __thiscall
+TCityProductionView::UpdateCityProductionDialogCommodityValueControls(TCityProductionView *this)
+
+{
+  TCityProductionView_slot_0x04_0x04 *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int *piVar3;
+  undefined3 extraout_var_02;
+  int iVar4;
+  int *piVar5;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined3 extraout_var_06;
+  undefined3 extraout_var_07;
+  undefined3 extraout_var_08;
+  undefined3 extraout_var_09;
+  undefined2 extraout_var_10;
+  undefined2 extraout_var_11;
+  undefined2 extraout_var_12;
+  undefined2 extraout_var_13;
+  undefined2 extraout_var_14;
+  undefined2 extraout_var_15;
+  undefined2 extraout_var_16;
+  undefined2 extraout_var_17;
+  undefined2 extraout_var_18;
+  undefined2 extraout_var_19;
+  undefined2 extraout_var_20;
+  undefined2 extraout_var_21;
+  undefined2 extraout_var_22;
+  undefined2 extraout_var_23;
+  undefined2 uVar6;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_03;
+  
+  (**(code **)(g_pUiRuntimeContext->vftable + 0x48))();
+  piVar5 = *(int **)&this->pCity->field_0x1d8;
+  pTVar1 = this->vftable[0x12].slot_0x04;
+  uVar2 = (*pTVar1)(0x756e7472);
+  uVar6 = extraout_var_22;
+  if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4b9);
+    uVar6 = extraout_var_23;
+  }
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1cc))
+            (CONCAT22(uVar6,*(undefined2 *)(piVar5[4] + 4)),1);
+  uVar2 = (*pTVar1)(0x74726169);
+  if ((int *)CONCAT31(extraout_var_00,uVar2) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4bc);
+  }
+  (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1cc))
+            (CONCAT22((short)((uint)piVar5[4] >> 0x10),*(undefined2 *)(piVar5[4] + 6)),1);
+  uVar2 = (*pTVar1)(0x70726f66);
+  piVar3 = (int *)CONCAT31(extraout_var_01,uVar2);
+  if (piVar3 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4bf);
+  }
+  (**(code **)(*piVar3 + 0x1cc))
+            (CONCAT22((short)((uint)piVar5[4] >> 0x10),*(undefined2 *)(piVar5[4] + 8)),1);
+  uVar2 = (*pTVar1)(0x706f7765);
+  piVar3 = (int *)CONCAT31(extraout_var_02,uVar2);
+  if (piVar3 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4c2);
+  }
+  (**(code **)(*piVar3 + 0x1cc))
+            (CONCAT22((short)((uint)this->pCity >> 0x10),*(undefined2 *)&this->pCity->field_0xb4),1)
+  ;
+  iVar4 = (**(code **)(*piVar5 + 0x50))();
+  uVar2 = (*pTVar1)(0x67726169);
+  piVar5 = (int *)CONCAT31(extraout_var_03,uVar2);
+  uVar6 = extraout_var_10;
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4c8);
+    uVar6 = extraout_var_11;
+  }
+  (**(code **)(*piVar5 + 0x1cc))(CONCAT22(uVar6,*(undefined2 *)(iVar4 + 0x22)),1);
+  uVar2 = (*pTVar1)(0x70726f64);
+  piVar5 = (int *)CONCAT31(extraout_var_04,uVar2);
+  uVar6 = extraout_var_12;
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4cc);
+    uVar6 = extraout_var_13;
+  }
+  (**(code **)(*piVar5 + 0x1cc))(CONCAT22(uVar6,*(undefined2 *)(iVar4 + 0x24)),1);
+  uVar2 = (*pTVar1)(0x6d656174);
+  piVar5 = (int *)CONCAT31(extraout_var_05,uVar2);
+  uVar6 = extraout_var_14;
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4d0);
+    uVar6 = extraout_var_15;
+  }
+  (**(code **)(*piVar5 + 0x1cc))(CONCAT22(uVar6,*(undefined2 *)(iVar4 + 0x28)),1);
+  uVar2 = (*pTVar1)(0x68617264);
+  piVar5 = (int *)CONCAT31(extraout_var_06,uVar2);
+  uVar6 = extraout_var_16;
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4d5);
+    uVar6 = extraout_var_17;
+  }
+  (**(code **)(*piVar5 + 0x1cc))(CONCAT22(uVar6,*(undefined2 *)(iVar4 + 0x1e)),1);
+  uVar2 = (*pTVar1)(0x636c6f74);
+  piVar5 = (int *)CONCAT31(extraout_var_07,uVar2);
+  uVar6 = extraout_var_18;
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4d8);
+    uVar6 = extraout_var_19;
+  }
+  (**(code **)(*piVar5 + 0x1cc))(CONCAT22(uVar6,*(undefined2 *)(iVar4 + 0x1a)),1);
+  uVar2 = (*pTVar1)(0x6675726e);
+  piVar5 = (int *)CONCAT31(extraout_var_08,uVar2);
+  uVar6 = extraout_var_20;
+  if (piVar5 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4db);
+    uVar6 = extraout_var_21;
+  }
+  (**(code **)(*piVar5 + 0x1cc))(CONCAT22(uVar6,*(undefined2 *)(iVar4 + 0x1c)),1);
+  uVar2 = (*pTVar1)(0x6c616250);
+  if ((int *)CONCAT31(extraout_var_09,uVar2) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x4e0);
+  }
+  (**(code **)(*(int *)CONCAT31(extraout_var_09,uVar2) + 0x1cc))
+            (CONCAT22((short)((uint)this->pCity >> 0x10),
+                      *(undefined2 *)(*(int *)&this->pCity->field_0x1d8 + 0x1c)),1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BC500
+// GHIDRA_NAME TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators
+// GHIDRA_PROTO undefined __thiscall RefreshCityBuildingActionAvailabilityIndicators(void)
+
+void __thiscall
+TCityProductionView::RefreshCityBuildingActionAvailabilityIndicators(TCityProductionView *this)
+
+{
+  short sVar1;
+  TCity *this_00;
+  short nBuildingSlotId;
+  int iVar2;
+  int *piVar3;
+  bool bVar4;
+  int iVar5;
+  
+  (*this->vftable[0x3b].slot_0x04)();
+  piVar3 = (int *)&this->field_0xac;
+  iVar5 = 0x10;
+  do {
+    if ((int *)*piVar3 != (int *)0x0) {
+      (**(code **)(*(int *)*piVar3 + 0x1d8))();
+    }
+    piVar3 = piVar3 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  iVar5 = 0;
+  piVar3 = (int *)&this->field_0x12c;
+  do {
+    iVar2 = iVar5;
+    if (6 < iVar5) {
+      iVar2 = 0xb;
+    }
+    if (iVar2 == 0xb) {
+      if (this->pCity->field_0x4 == '\0') {
+        bVar4 = 0 < *(short *)((int)this->pCity->orderSlotsE4[0x34] + 4);
+      }
+      else {
+        bVar4 = false;
+      }
+    }
+    else {
+      this_00 = this->pCity;
+      nBuildingSlotId = (short)iVar2;
+      if (*(short *)((int)this_00->orderSlotsE4[(short)(nBuildingSlotId + 0x35)] + 4) < 1) {
+        sVar1 = *(short *)((int)this_00->orderSlotsE4 + nBuildingSlotId * 2 + 0x118);
+        iVar2 = TCity::thunk_GetCityBuildingProductionValueBySlot(this_00,nBuildingSlotId);
+        bVar4 = sVar1 < (short)iVar2;
+      }
+      else {
+        bVar4 = false;
+      }
+    }
+    iVar2 = 3;
+    do {
+      if (*piVar3 != 0) {
+        *(bool *)(*piVar3 + 0x2c) = bVar4;
+      }
+      piVar3 = piVar3 + 1;
+      iVar2 = iVar2 + -1;
+    } while (iVar2 != 0);
+    iVar5 = iVar5 + 1;
+  } while (iVar5 < 8);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BC610
+// GHIDRA_NAME TCityProductionView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TCityProductionView::OrphanRetStub_0059add0(TCityProductionView *this)
+
+{
+  int in_stack_00000004;
+  
+  if (9999 < in_stack_00000004) {
+    (**(code **)(*g_pStrategicMapViewSystem + 0x58))(in_stack_00000004 + -10000,this->pCity,this);
+    return;
+  }
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BC660
-// GHIDRA_NAME TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction
-// GHIDRA_PROTO undefined HandleCityBuildingSlotClickAndDispatchAction()
+// GHIDRA_NAME TCityProductionView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-void __thiscall
-TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction(int *param_1,undefined4 *param_2)
+void __thiscall TCityProductionView::_scalar_deleting_destructor_(TCityProductionView *this)
 
 {
   bool bVar1;
   char cVar2;
   short sVar3;
   int iVar4;
+  undefined4 uVar5;
   undefined2 extraout_var;
   undefined2 extraout_var_00;
-  undefined2 uVar5;
-  int iVar6;
-  undefined4 *puVar7;
+  undefined2 uVar6;
+  int iVar7;
+  undefined4 *puVar8;
+  undefined4 *in_stack_00000004;
   undefined4 local_8;
   undefined4 local_4;
   
-  local_4 = param_2[1];
-  local_8 = *param_2;
+  local_4 = in_stack_00000004[1];
+  local_8 = *in_stack_00000004;
   bVar1 = false;
-  iVar6 = 0;
-  puVar7 = param_2;
+  iVar7 = 0;
+  puVar8 = in_stack_00000004;
   do {
     if (bVar1) goto LAB_004bc6b8;
-    puVar7 = (undefined4 *)(int)*(short *)((int)&g_nCityBuildingSlotOrderLast + iVar6);
-    iVar4 = IsPointInsideHitRegion(&local_8,param_1[(int)puVar7 + 0x3b]);
+    puVar8 = (undefined4 *)(int)*(short *)((int)&g_nCityBuildingSlotOrderLast + iVar7);
+    iVar4 = IsPointInsideHitRegion(&local_8,*(undefined4 *)(&this->field_0xec + (int)puVar8 * 4));
     if (iVar4 != 0) {
       bVar1 = true;
     }
-    iVar6 = iVar6 + -2;
-  } while (-0x20 < iVar6);
+    iVar7 = iVar7 + -2;
+  } while (-0x20 < iVar7);
   if (!bVar1) {
     return;
   }
 LAB_004bc6b8:
-  if (puVar7 == (undefined4 *)0xf) {
-    if (param_1[0x3a] == 0) {
-      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))(0xbdb,0,1);
-      iVar6 = (**(code **)(*g_pStrategicMapViewSystem + 0x54))(0xf,param_1[0x25],0,0,0);
-      param_1[0x3a] = iVar6;
-      (**(code **)(*param_1 + 0x1e0))();
+  if (puVar8 == (undefined4 *)0xf) {
+    if (*(int *)&this->field_0xe8 == 0) {
+      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(0xbdb,0,1);
+      uVar5 = (**(code **)(*g_pStrategicMapViewSystem + 0x54))(0xf,this->pCity,0,0,0);
+      *(undefined4 *)&this->field_0xe8 = uVar5;
+      (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)();
       return;
     }
   }
-  else if (param_1[(int)puVar7 + 0x2b] == 0) {
-    iVar6 = thunk_GetCityBuildingProductionValueBySlot((void *)param_1[0x25],(short)puVar7);
-    uVar5 = extraout_var;
-    if (((short)iVar6 == 0) &&
-       (cVar2 = (**(code **)(*(int *)param_1[0x25] + 0x78))(puVar7), uVar5 = extraout_var_00,
-       cVar2 != '\0')) {
+  else if (*(int *)(&this->field_0xac + (int)puVar8 * 4) == 0) {
+    iVar7 = TCity::thunk_GetCityBuildingProductionValueBySlot(this->pCity,(short)puVar8);
+    uVar6 = extraout_var;
+    if (((short)iVar7 == 0) &&
+       (cVar2 = (*this->pCity->vftable[0xf].GetTCityClassNamePointer)(puVar8),
+       uVar6 = extraout_var_00, cVar2 != '\0')) {
       bVar1 = true;
-      if (((puVar7 == (undefined4 *)0x6) || (puVar7 == (undefined4 *)0xb)) &&
+      if (((puVar8 == (undefined4 *)0x6) || (puVar8 == (undefined4 *)0xb)) &&
          (sVar3 = UiRuntimeContext::GetActiveNationId(),
-         *(char *)((int)g_pCityOrderCapabilityState + sVar3 * 0x1d + 0x27b) != '\x02')) {
+         (&g_pCityOrderCapabilityState->field_0x27b)[sVar3 * 0x1d] != '\x02')) {
         bVar1 = false;
       }
       if (bVar1) {
-        (**(code **)(*param_1 + 0x1a0))(2,param_2,param_2,param_2,0);
-        (**(code **)(*param_1 + 0x1e0))();
+        (*this->vftable[0x34].GetTEventHandlerClassNamePointer)
+                  (2,in_stack_00000004,in_stack_00000004,in_stack_00000004,0);
+        (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)();
         return;
       }
     }
     else {
-      (**(code **)(*g_pSfxPlaybackSystem + 0xb8))
-                (CONCAT22(uVar5,*(short *)(&UNK_0064fab0 + (int)puVar7 * 2) + 3000),0,1);
-      iVar6 = (**(code **)(*g_pStrategicMapViewSystem + 0x54))(puVar7,param_1[0x25],0,0,0);
-      param_1[(int)puVar7 + 0x2b] = iVar6;
+      (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)
+                (CONCAT22(uVar6,*(short *)(&UNK_0064fab0 + (int)puVar8 * 2) + 3000),0,1);
+      uVar5 = (**(code **)(*g_pStrategicMapViewSystem + 0x54))(puVar8,this->pCity,0,0,0);
+      *(undefined4 *)(&this->field_0xac + (int)puVar8 * 4) = uVar5;
     }
   }
-  (**(code **)(*param_1 + 0x1e0))();
+  (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BC870
+// GHIDRA_NAME TCityProductionView::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall
+TCityProductionView::QueueCityRecruitmentSupportCommandsIfDeficit(TCityProductionView *this)
+
+{
+  bool bVar1;
+  int iVar2;
+  int iVar3;
+  int iVar4;
+  int in_stack_00000004;
+  undefined4 *in_stack_00000010;
+  undefined4 local_8;
+  undefined4 local_4;
+  
+  if (in_stack_00000004 == 2) {
+    bVar1 = false;
+    iVar3 = 0;
+    local_8 = *in_stack_00000010;
+    local_4 = in_stack_00000010[1];
+    iVar4 = 2;
+    do {
+      if (bVar1) goto LAB_004bc8cd;
+      iVar4 = (int)*(short *)((int)&g_nCityBuildingSlotOrderLast + iVar3);
+      iVar2 = IsPointInsideHitRegion(&local_8,*(undefined4 *)(&this->field_0xec + iVar4 * 4));
+      if (iVar2 != 0) {
+        bVar1 = true;
+      }
+      iVar3 = iVar3 + -2;
+    } while (-0x20 < iVar3);
+    if (bVar1) {
+LAB_004bc8cd:
+      (*this->vftable[8].GetTEventHandlerClassNamePointer)(iVar4 + 10000,this,0);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BC910
+// GHIDRA_NAME TCityProductionView::OrphanCallChain_C5_I49_004bc910
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C5_I49_004bc910(void)
+
+void __thiscall TCityProductionView::OrphanCallChain_C5_I49_004bc910(TCityProductionView *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  undefined2 uVar3;
+  int iVar4;
+  int *piVar5;
+  
+  iVar4 = 0;
+  piVar5 = (int *)&this->field_0xac;
+  do {
+    if ((int *)*piVar5 == (int *)0x0) {
+      (*this->pCity->vftable[0xc].slot_0x04)(iVar4,0,0,0);
+    }
+    else {
+      piVar2 = (int *)(**(code **)(*(int *)*piVar5 + 0x58))();
+      uVar3 = (undefined2)((uint)piVar2 >> 0x10);
+      (*this->pCity->vftable[0xc].slot_0x04)
+                (iVar4,1,CONCAT22(uVar3,(short)piVar2[9]),CONCAT22(uVar3,(short)piVar2[10]));
+      iVar1 = *piVar2;
+      (**(code **)(iVar1 + 0xa0))();
+      (**(code **)(iVar1 + 0x1c))();
+      *piVar5 = 0;
+    }
+    iVar4 = iVar4 + 1;
+    piVar5 = piVar5 + 1;
+  } while ((short)iVar4 < 0x10);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004BC9B0
 // GHIDRA_NAME TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip
-// GHIDRA_PROTO undefined RenderViewIntoPrimaryRenderContextWithTemporaryClip()
+// GHIDRA_PROTO undefined __thiscall RenderViewIntoPrimaryRenderContextWithTemporaryClip(void)
 
-void __fastcall
-TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int *param_1)
+void __thiscall
+TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(TCityProductionView *this)
 
 {
-  int iVar1;
+  TCityProductionViewVtbl *pTVar1;
   undefined4 unaff_ESI;
   undefined4 unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
@@ -224,9 +1350,9 @@ TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int *pa
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   AcquireReusableQuickDrawSurface();
-  iVar1 = *param_1;
+  pTVar1 = this->vftable;
   local_4 = 0;
-  (**(code **)(iVar1 + 300))(&local_2c);
+  (*pTVar1[0x25].slot_0x04)(&local_2c);
   uStack_1c = local_2c;
   uStack_20 = uStack_30;
   uStack_18 = uStack_28;
@@ -235,13 +1361,139 @@ TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int *pa
   thunk_GetActiveQuickDrawSurfaceContextAndFlags(local_34,&stack0xffffffc4);
   thunk_SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,unaff_ESI);
   thunk_ApplyRectClipRegionToGlobalClipState(&uStack_20);
-  *(undefined1 *)((int)param_1 + 0xa6) = 1;
-  (**(code **)(iVar1 + 0x110))(&uStack_30);
+  this->field_0xa6 = 1;
+  (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&uStack_30);
   thunk_SetActiveQuickDrawSurfaceContext(0,unaff_EDI);
   SnapshotHitRegionToClipCache(unaff_ESI);
   uStack_c = 0xffffffff;
   ReleaseOrCacheQuickDrawSurface();
   *unaff_FS_OFFSET = uStack_14;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004BCAF0
+// GHIDRA_NAME TCityProductionView::RefreshCityDialogSummaryValues
+// GHIDRA_PROTO undefined __thiscall RefreshCityDialogSummaryValues(void)
+
+void __thiscall TCityProductionView::RefreshCityDialogSummaryValues(TCityProductionView *this)
+
+{
+  int iVar1;
+  undefined uVar2;
+  CString *pCVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  int iVar5;
+  code *unaff_EBP;
+  int unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  CString CVar6;
+  CString CVar7;
+  CString local_24;
+  CString local_20;
+  CString local_1c [2];
+  CString local_14;
+  TCityProductionViewVtbl *local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006310a0;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString(local_1c);
+  local_4 = 0;
+  CString::CString(&local_20);
+  local_4._0_1_ = 1;
+  iVar5 = 0xe;
+  do {
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  FormatStringWithVarArgsToSharedRef();
+  pCVar3 = (CString *)AssignSharedStringConcatCStrAndRef();
+  local_4._0_1_ = 2;
+  CString::StringSharedRef_AssignFromPtr(&local_24,pCVar3);
+  local_4._0_1_ = 3;
+  CString::AssignFromPtr(&local_20,&local_24);
+  local_4._0_1_ = 2;
+  CString::~CString(&local_24);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  CString::~CString(&local_14);
+  local_10 = this->vftable;
+  local_14.m_pchData = (char *)local_10[0x12].slot_0x04;
+  uVar2 = (*(code *)local_14.m_pchData)();
+  if ((int *)CONCAT31(extraout_var,uVar2) == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1c8))();
+  iVar5 = 0x148;
+  local_24.m_pchData = (char *)0x4;
+  do {
+    if (*(int *)((int)&this->pCity->vftable + iVar5) == 0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UCityDialogs_cpp_006962e8)
+      ;
+    }
+    iVar5 = iVar5 + 4;
+    local_24.m_pchData = local_24.m_pchData + -1;
+  } while (local_24.m_pchData != (char *)0x0);
+  FormatStringWithVarArgsToSharedRef(&stack0xffffffd8,&g_szDecimalFormat);
+  pCVar3 = (CString *)AssignSharedStringConcatCStrAndRef(&stack0xffffffd0,s_Armory__00696320);
+  local_10._0_1_ = 4;
+  CString::StringSharedRef_AssignFromPtr(&local_24,pCVar3);
+  local_10._0_1_ = 5;
+  CString::AssignFromPtr((CString *)&stack0xffffffd4,&local_24);
+  local_10._0_1_ = 4;
+  CString::~CString(&local_24);
+  local_10 = (TCityProductionViewVtbl *)CONCAT31(local_10._1_3_,1);
+  CString::~CString((CString *)&stack0xffffffd0);
+  piVar4 = (int *)(*(code *)local_20.m_pchData)();
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x5f8);
+  }
+  (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffd0,1);
+  CVar6.m_pchData = (char *)0x0;
+  iVar5 = 0x16c;
+  CVar7.m_pchData = (char *)0x5;
+  do {
+    iVar1 = *(int *)((int)&this->pCity->vftable + iVar5);
+    if (iVar1 == 0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+                (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x600);
+    }
+    CVar6.m_pchData = CVar6.m_pchData + *(ushort *)(iVar1 + 4);
+    iVar5 = iVar5 + 4;
+    CVar7.m_pchData = CVar7.m_pchData + -1;
+  } while (CVar7.m_pchData != (char *)0x0);
+  FormatStringWithVarArgsToSharedRef
+            (&stack0xffffffcc,&g_szDecimalFormat,(int)(short)CVar6.m_pchData);
+  pCVar3 = (CString *)
+           AssignSharedStringConcatCStrAndRef
+                     (&stack0xffffffc4,s_University__00696310,&stack0xffffffcc);
+  local_1c[0].m_pchData._0_1_ = 6;
+  CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffd0,pCVar3);
+  local_1c[0].m_pchData._0_1_ = 7;
+  CString::AssignFromPtr((CString *)&stack0xffffffc8,(CString *)&stack0xffffffd0);
+  local_1c[0].m_pchData._0_1_ = 6;
+  CString::~CString((CString *)&stack0xffffffd0);
+  local_1c[0].m_pchData._0_1_ = 1;
+  CString::~CString((CString *)&stack0xffffffc4);
+  piVar4 = (int *)(*unaff_EBP)(0x75756e69);
+  if (piVar4 == (int *)0x0) {
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag
+              (s_D__Ambit_Cross_UCityDialogs_cpp_006962e8,0x606);
+  }
+  (**(code **)(*piVar4 + 0x1c8))(&stack0xffffffc4,1);
+  (**(code **)(unaff_EDI + 0x1e0))();
+  CString::~CString((CString *)&stack0xffffffbc);
+  CString::~CString((CString *)&stack0xffffffc0);
+  *unaff_FS_OFFSET = 0;
   return;
 }
 

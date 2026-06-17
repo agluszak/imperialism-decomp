@@ -3,30 +3,46 @@
 // Program: Imperialism.exe
 // Bucket: TArmyBoyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004AEBA0
-// GHIDRA_NAME TArmyBoyView::GetTArmyBoyViewClassNamePointer
-// GHIDRA_PROTO undefined GetTArmyBoyViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004AEB50
+// GHIDRA_NAME TArmyBoyView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TArmyBoyView::GetTArmyBoyViewClassNamePointer(void)
+TArmyBoyView * __thiscall TArmyBoyView::_scalar_deleting_destructor_(TArmyBoyView *this)
 
 {
-  return &PTR_s_TArmyBoyView_0064dcb0;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AEBA0
+// GHIDRA_NAME TArmyBoyView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TArmyBoyView::GetTEventHandlerClassNamePointer(TArmyBoyView *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AEBC0
-// GHIDRA_NAME TArmyBoyView::ConstructTArmyBoyViewBaseState
-// GHIDRA_PROTO undefined ConstructTArmyBoyViewBaseState()
+// GHIDRA_NAME TArmyBoyView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
+void __thiscall TArmyBoyView::OrphanTiny_ReturnZero_0048a730(TArmyBoyView *this)
 
 {
   short sVar1;
   short sVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar3;
-  undefined1 *local_38;
-  undefined1 local_34 [4];
-  undefined1 local_30 [4];
+  CString local_38;
+  CString local_34;
+  CString local_30;
   RECT local_2c;
   RECT local_1c;
   undefined4 local_c;
@@ -37,23 +53,22 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
   puStack_8 = &LAB_00630970;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeSharedStringRefFromEmpty(local_30);
+  CString::CString(&local_30);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty(local_34);
+  CString::CString(&local_34);
   local_4._0_1_ = 1;
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,0xc);
-  local_38 = (undefined1 *)0x1c474b;
+  local_38.m_pchData = (char *)0x1c474b;
   SetQuickDrawColorAndSyncGlobals();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x40);
-  TToolBarCluster::ConstructSharedStringFromCStrOrResourceId
-            ((TToolBarCluster *)&local_38,(char *)(*(int *)(param_1 + 0x60) + 4));
+  CString::CString(&local_38,(char *)(*(int *)&this->field_0x60 + 4));
   local_4._0_1_ = 2;
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   local_4._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty(&local_38);
-  local_38 = &stack0xffffffb8;
+  CString::~CString(&local_38);
+  local_38.m_pchData = &stack0xffffffb8;
   SetQuickDrawFillColor();
-  sVar1 = *(short *)(*(int *)(param_1 + 0x60) + 2) / 0x19 + 1;
+  sVar1 = *(short *)(*(int *)&this->field_0x60 + 2) / 0x19 + 1;
   if (0x14 < sVar1) {
     sVar1 = 0x14;
   }
@@ -71,39 +86,39 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
   local_2c.left = 0x43;
   local_2c.top = 0x1f;
   local_2c.bottom = 0x26;
-  if (*(short *)(*(int *)(param_1 + 0x60) + 2) < 1) {
+  if (*(short *)(*(int *)&this->field_0x60 + 2) < 1) {
     ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(1,0xc);
-    InitializeSharedStringRefFromEmpty(&local_38);
+    CString::CString(&local_38);
     local_4._0_1_ = 3;
-    if (*(short *)(*(int *)(param_1 + 0x60) + 2) == -0x56) {
+    if (*(short *)(*(int *)&this->field_0x60 + 2) == -0x56) {
       uVar3 = 0x20;
     }
     else {
       uVar3 = 0x1f;
     }
-    (**(code **)(*g_pLocalizationTable + 0x84))(0x273c,uVar3);
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c,uVar3);
     sVar1 = thunk_MeasureTextExtentWithCachedQuickDrawStyle();
     thunk_SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2);
     THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
     local_4._0_1_ = 1;
-    ReleaseSharedStringRefIfNotEmpty(&local_38);
+    CString::~CString(&local_38);
   }
   else {
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
-               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_2c,0x24,
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24,
                (astruct_19 *)0x0);
   }
-  local_38 = &stack0xffffffb8;
+  local_38.m_pchData = &stack0xffffffb8;
   SetQuickDrawFillColor();
-  local_38 = &stack0xffffffb8;
+  local_38.m_pchData = &stack0xffffffb8;
   SetQuickDrawStrokeColor();
   thunk_SetQuickDrawTextOriginWithContextOffset(0x41);
   thunk_DrawCenteredGuideLineOnMapDc(0x41);
   thunk_DrawCenteredGuideLineOnMapDc(0x93);
   thunk_DrawCenteredGuideLineOnMapDc(0x93);
-  sVar1 = *(short *)(*(int *)(param_1 + 0x60) + 0x24);
+  sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x24);
   sVar2 = sVar1 * 0xb;
   if (0x31 < (int)sVar1 % 100) {
     sVar2 = sVar2 + 5;
@@ -120,15 +135,15 @@ void __fastcall TArmyBoyView::ConstructTArmyBoyViewBaseState(int param_1)
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency
               ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4),
-               (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_1c,&local_2c,0x24,
+               (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24,
                (astruct_19 *)0x0);
-    local_38 = &stack0xffffffb8;
+    local_38.m_pchData = &stack0xffffffb8;
     SetQuickDrawStrokeColor();
   }
   local_4 = (uint)local_4._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty(local_34);
+  CString::~CString(&local_34);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(local_30);
+  CString::~CString(&local_30);
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -156,7 +171,7 @@ TView * TArmyBoyView::DestructTArmyBoyViewAndMaybeFree(void)
   pTVar1 = (TView *)0x0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0064e1f0;
+    this->vftable = (TViewVtbl *)&TNavyBoyViewVtbl_0064e1f0;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

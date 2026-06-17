@@ -3,13 +3,248 @@
 // Program: Imperialism.exe
 // Bucket: TLandSaleEvent.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004E66F0
-// GHIDRA_NAME TLandSaleEvent::GetTLandSaleEventClassNamePointer
-// GHIDRA_PROTO undefined GetTLandSaleEventClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004D49A0
+// GHIDRA_NAME TLandSaleEvent::ApplyJoinEmpireModeForTargetNation
+// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireModeForTargetNation(void)
 
-undefined ** TLandSaleEvent::GetTLandSaleEventClassNamePointer(void)
+TLandSaleEvent * __thiscall TLandSaleEvent::ApplyJoinEmpireModeForTargetNation(TLandSaleEvent *this)
 
 {
-  return &PTR_s_TLandSaleEvent_006536d0;
+  byte in_stack_00000004;
+  
+  DestructLandSaleEventToBase();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E66F0
+// GHIDRA_NAME TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+CRuntimeClass * __thiscall TLandSaleEvent::OrphanLeaf_NoCall_Ins07_004d8920(TLandSaleEvent *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004E6740
+// GHIDRA_NAME TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState
+// GHIDRA_PROTO undefined __thiscall ApplyJoinEmpireMode2FinalizeNationNameState(void)
+
+void __thiscall TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState(TLandSaleEvent *this)
+
+{
+  char cVar1;
+  undefined1 uVar2;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_24;
+  CString local_20;
+  CString local_1c;
+  CString local_18;
+  CString local_14;
+  int iStack_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00632560;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CString::CString(&local_20);
+  local_4 = 0;
+  CString::CString(&local_24);
+  local_4._0_1_ = 1;
+  CString::CString(&local_18);
+  local_4._0_1_ = 2;
+  CString::CString(&local_1c);
+  local_4._0_1_ = 3;
+  uVar2 = (undefined1)local_4;
+  local_4._0_1_ = 3;
+  cVar1 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + *(short *)&this->field_0x8 * 0x24);
+  if (g_apTerrainTypeDescriptorTable[*(short *)&this->field_0xa] == (TCountry *)0x0) {
+    CString::CString(&local_14,PTR_g_szEmptyString_00653300);
+    local_4._0_1_ = 4;
+    AssignStringSharedRefFromPointer();
+  }
+  else {
+    local_4._0_1_ = uVar2;
+    AssignNormalizedCredentialTokenToIndexedSlot();
+    local_4._0_1_ = 5;
+    AssignStringSharedRefFromPointer();
+  }
+  local_4._0_1_ = 3;
+  CString::~CString(&local_14);
+  if (g_apTerrainTypeDescriptorTable[(short)cVar1] == (TCountry *)0x0) {
+    CString::CString(&local_14,PTR_g_szEmptyString_00653300);
+    local_4._0_1_ = 6;
+    AssignStringSharedRefFromPointer();
+  }
+  else {
+    AssignNormalizedCredentialTokenToIndexedSlot();
+    local_4._0_1_ = 7;
+    AssignStringSharedRefFromPointer();
+  }
+  local_4 = CONCAT31(local_4._1_3_,3);
+  CString::~CString(&local_14);
+  if (g_pGlobalUiRootController[1].vftable != (TApplicationVtbl *)0x0) {
+    (**(code **)((g_pGlobalUiRootController[1].vftable)->GetTEventHandlerClassNamePointer + 0x1e0))
+              ();
+  }
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  scanBracketExpressions(g_pLocalizationTable,&stack0xffffffd8,local_24.m_pchData);
+  local_1c.m_pchData = &stack0xffffffb4;
+  thunk_AssignStringSharedRefAndReturnThis(&stack0xffffffd8);
+  thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  iStack_10._0_1_ = 2;
+  CString::~CString((CString *)&stack0xffffffd8);
+  iStack_10._0_1_ = 1;
+  CString::~CString(&local_24);
+  iStack_10 = (uint)iStack_10._1_3_ << 8;
+  CString::~CString((CString *)&stack0xffffffd0);
+  iStack_10 = 0xffffffff;
+  CString::~CString((CString *)&stack0xffffffd4);
+  *unaff_FS_OFFSET = local_18.m_pchData;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00549FF0
+// GHIDRA_NAME TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32
+// GHIDRA_PROTO undefined __thiscall HandleTurnEventCodes28_2E_2F_30_31_32(void)
+
+void __thiscall TLandSaleEvent::HandleTurnEventCodes28_2E_2F_30_31_32(TLandSaleEvent *this)
+
+{
+  int iVar1;
+  code *pcVar2;
+  undefined1 uVar3;
+  undefined uVar4;
+  short sVar5;
+  int iVar6;
+  int *piVar7;
+  undefined4 uVar8;
+  undefined2 extraout_var_00;
+  undefined3 extraout_var;
+  undefined4 uVar9;
+  undefined4 *puVar10;
+  TTacticalBattle *pTVar11;
+  undefined4 unaff_EBP;
+  int *piVar12;
+  undefined4 *unaff_FS_OFFSET;
+  int *in_stack_00000004;
+  undefined1 local_28 [12];
+  char cStack_1c;
+  undefined4 local_18;
+  undefined4 local_14;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  TTacticalBattle *pTStack_4;
+  
+  pTStack_4 = (TTacticalBattle *)0xffffffff;
+  puStack_8 = &LAB_00634c94;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_18 = 0x74696d65;
+  uVar3 = UiRuntimeContext::GetActiveNationId();
+  local_14 = CONCAT31(local_14._1_3_,uVar3);
+  iVar1 = *in_stack_00000004;
+  (**(code **)(iVar1 + 0x3c))(local_28,0x1c);
+  if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+    sVar5 = -1;
+  }
+  else {
+    sVar5 = (short)cStack_1c;
+  }
+  iVar6 = (int)sVar5;
+  switch(unaff_EBP) {
+  case 0x28:
+    pTVar11 = (TTacticalBattle *)AllocateWithFallbackHandler(0x78);
+    uStack_c = 1;
+    pTStack_4 = pTVar11;
+    if (pTVar11 == (TTacticalBattle *)0x0) {
+      pTVar11 = (TTacticalBattle *)0x0;
+    }
+    else {
+      TTacticalBattle::ConstructTTacticalBattleBaseState(pTVar11);
+      pTVar11->vftable = (TTacticalBattleVtbl *)&TArmyBattleVtbl_0064ca68;
+    }
+    uStack_c = 0xffffffff;
+    (*pTVar11->vftable[3].GetTTacticalBattleClassNamePointer)(in_stack_00000004);
+    CallObjectOffset18Vslot28();
+    break;
+  case 0x2e:
+    DeserializeNavyOrderListsByNation(in_stack_00000004,iVar6);
+    RefreshMapActionContextNationOverlaysAndOrderRanks();
+    break;
+  case 0x2f:
+    CreateMilitaryRecruitOrdersForSelectedTerrain(in_stack_00000004,iVar6);
+    break;
+  case 0x30:
+    CreateCivilianWorkOrdersForSelectedNations(in_stack_00000004,iVar6);
+    break;
+  case 0x31:
+    pcVar2 = *(code **)(iVar1 + 0x50);
+    iVar6 = (*pcVar2)();
+    if (iVar6 == 0x61726d79) {
+      (*g_pMapContextActionManager->vftable[3].GetTArmyMgrClassNamePointer)(in_stack_00000004);
+    }
+    else if (iVar6 == 0x73746172) {
+      iVar6 = (*pcVar2)();
+      if (iVar6 == 0x6c616e64) {
+        pcVar2 = *(code **)(iVar1 + 0x4c);
+        uVar8 = (*pcVar2)();
+        uVar9 = (*pcVar2)();
+        puVar10 = (undefined4 *)AllocateWithFallbackHandler(0xc);
+        if (puVar10 == (undefined4 *)0x0) {
+          puVar10 = (undefined4 *)0x0;
+        }
+        else {
+          puVar10[1] = 0x65727261;
+          *puVar10 = &TLandSaleEventVtbl_00653290;
+        }
+        InitializeLandSaleEventPayloadTileAndNation(uVar8,uVar9);
+        sVar5 = UiRuntimeContext::GetActiveNationId();
+        (*g_apNationStates[sVar5]->vftable[0x17].slot_0x04)(puVar10);
+      }
+    }
+    else if (iVar6 == 0x746f776e) {
+      pTStack_4 = (TTacticalBattle *)AllocateWithFallbackHandler(0x50);
+      uStack_c = 0;
+      if (pTStack_4 == (TTacticalBattle *)0x0) {
+        piVar7 = (int *)0x0;
+      }
+      else {
+        piVar7 = (int *)TTown::thunk_ConstructFrogCityMarker((TTown *)pTStack_4);
+      }
+      uStack_c = 0xffffffff;
+      uVar8 = UiRuntimeContext::GetActiveNationId();
+      InitializeFrogCityMarkerFields(&g_szEmptyString,0,0,uVar8);
+      iVar1 = *piVar7;
+      (**(code **)(iVar1 + 0x18))(in_stack_00000004);
+      uVar4 = (*g_pGlobalMapState->vftable[0x1b].GetTMapMgrClassNamePointer)
+                        (CONCAT22(extraout_var_00,(short)piVar7[5]));
+      if ((int *)CONCAT31(extraout_var,uVar4) == (int *)0x0) {
+        (**(code **)(**(int **)&g_apNationStates[(short)piVar7[7]]->field_0x898 + 0x30))(piVar7);
+      }
+      else {
+        piVar12 = (int *)CONCAT31(extraout_var,uVar4);
+        for (iVar6 = 0x14; iVar6 != 0; iVar6 = iVar6 + -1) {
+          *piVar12 = *piVar7;
+          piVar7 = piVar7 + 1;
+          piVar12 = piVar12 + 1;
+        }
+        (**(code **)(iVar1 + 0x1c))();
+      }
+    }
+    break;
+  case 0x32:
+    (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(in_stack_00000004);
+    sVar5 = UiRuntimeContext::GetActiveNationId();
+    (*g_apNationStates[sVar5]->vftable[0x2e].GetTCountryClassNamePointer)();
+  }
+  *unaff_FS_OFFSET = local_14;
+  return;
 }
 

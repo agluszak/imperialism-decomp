@@ -3,32 +3,48 @@
 // Program: Imperialism.exe
 // Bucket: TItemBoyView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004AF9D0
-// GHIDRA_NAME TItemBoyView::GetTItemBoyViewClassNamePointer
-// GHIDRA_PROTO undefined GetTItemBoyViewClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004AF980
+// GHIDRA_NAME TItemBoyView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TItemBoyView::GetTItemBoyViewClassNamePointer(void)
+TItemBoyView * __thiscall TItemBoyView::_scalar_deleting_destructor_(TItemBoyView *this)
 
 {
-  return &PTR_s_TItemBoyView_0064dcf8;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004AF9D0
+// GHIDRA_NAME TItemBoyView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TItemBoyView::GetTEventHandlerClassNamePointer(TItemBoyView *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AF9F0
-// GHIDRA_NAME TItemBoyView::ConstructTItemBoyViewBaseState
-// GHIDRA_PROTO undefined ConstructTItemBoyViewBaseState()
+// GHIDRA_NAME TItemBoyView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TItemBoyView::ConstructTItemBoyViewBaseState(int param_1)
+void __thiscall TItemBoyView::OrphanTiny_ReturnZero_0048a730(TItemBoyView *this)
 
 {
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  char *pcStack_30;
-  undefined1 **ppuStack_2c;
-  undefined4 uStack_28;
-  undefined1 *puStack_24;
-  int local_18;
-  undefined1 local_14 [4];
-  undefined1 local_10 [4];
+  CString CStack_30;
+  CString CStack_2c;
+  CString CStack_28;
+  CString CStack_24;
+  CString local_18;
+  CString local_14;
+  CString local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -37,62 +53,64 @@ void __fastcall TItemBoyView::ConstructTItemBoyViewBaseState(int param_1)
   puStack_8 = &LAB_00630ab0;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  puStack_24 = (undefined1 *)0x4afa14;
-  InitializeSharedStringRefFromEmpty(local_10);
+  CStack_24.m_pchData = (char *)0x4afa14;
+  CString::CString(&local_10);
   local_4 = 0;
-  puStack_24 = (undefined1 *)0x4afa25;
-  InitializeSharedStringRefFromEmpty(local_14);
+  CStack_24.m_pchData = (char *)0x4afa25;
+  CString::CString(&local_14);
   local_4._0_1_ = 1;
-  puStack_24 = (undefined1 *)0x4afa33;
-  InitializeSharedStringRefFromEmpty(&local_18);
-  puStack_24 = local_14;
+  CStack_24.m_pchData = (char *)0x4afa33;
+  CString::CString(&local_18);
+  CStack_24.m_pchData = (char *)&local_14;
   local_4 = CONCAT31(local_4._1_3_,2);
-  uStack_28 = CONCAT22((short)((uint)*(undefined2 **)(param_1 + 0x60) >> 0x10),
-                       **(undefined2 **)(param_1 + 0x60));
-  ppuStack_2c = (undefined1 **)0x4afa4f;
-  (**(code **)(*g_pLocalizationTable + 0x7c))();
-  ppuStack_2c = (undefined1 **)(int)*(short *)(*(int *)(param_1 + 0x60) + 2);
-  pcStack_30 = &g_szDecimalFormat;
+  CStack_28.m_pchData =
+       (char *)CONCAT22((short)((uint)*(undefined2 **)&this->field_0x60 >> 0x10),
+                        **(undefined2 **)&this->field_0x60);
+  CStack_2c.m_pchData = (char *)0x4afa4f;
+  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  CStack_2c.m_pchData = (char *)(int)*(short *)(*(int *)&this->field_0x60 + 2);
+  CStack_30.m_pchData = &g_szDecimalFormat;
   FormatStringWithVarArgsToSharedRef(&stack0xffffffe0);
-  ppuStack_2c = (undefined1 **)0x4afa72;
-  InitializeSharedStringRefFromEmpty(&puStack_24);
-  ppuStack_2c = &puStack_24;
-  pcStack_30 = (char *)0x1d;
+  CStack_2c.m_pchData = (char *)0x4afa72;
+  CString::CString(&CStack_24);
+  CStack_2c.m_pchData = (char *)&CStack_24;
+  CStack_30.m_pchData = (char *)0x1d;
   uStack_c = CONCAT31(uStack_c._1_3_,3);
-  (**(code **)(*g_pLocalizationTable + 0x84))(0x273c);
-  scanBracketExpressions(g_pLocalizationTable,&puStack_24,pcStack_30);
-  DestructTItemBoyViewAndMaybeFree(&puStack_24);
-  local_18._0_1_ = 2;
-  ReleaseSharedStringRefIfNotEmpty(&pcStack_30);
-  local_18._0_1_ = 1;
-  ReleaseSharedStringRefIfNotEmpty(&ppuStack_2c);
-  local_18 = (uint)local_18._1_3_ << 8;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_28);
-  local_18 = -1;
-  ReleaseSharedStringRefIfNotEmpty(&puStack_24);
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c);
+  scanBracketExpressions(g_pLocalizationTable,&CStack_24,CStack_30.m_pchData);
+  DestructTItemBoyViewAndMaybeFree(this);
+  local_18.m_pchData._0_1_ = 2;
+  CString::~CString(&CStack_30);
+  local_18.m_pchData._0_1_ = 1;
+  CString::~CString(&CStack_2c);
+  local_18.m_pchData = (char *)((uint)local_18.m_pchData._1_3_ << 8);
+  CString::~CString(&CStack_28);
+  local_18.m_pchData = (char *)0xffffffff;
+  CString::~CString(&CStack_24);
   *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AFB60
 // GHIDRA_NAME TItemBoyView::DestructTItemBoyViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTItemBoyViewAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTItemBoyViewAndMaybeFree(void)
 
-void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(int param_1,undefined4 param_2)
+void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(TItemBoyView *this)
 
 {
   int iVar1;
   short *psVar2;
   int iVar3;
   int iVar4;
+  undefined4 in_stack_00000004;
   RECT local_20;
   RECT local_10;
   
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10,0x2b6a);
   thunk_SetQuickDrawTextOriginWithContextOffset(0x1a,0x14);
-  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(param_2);
-  psVar2 = *(short **)(param_1 + 0x60);
-  iVar1 = (*(int *)(param_1 + 0x34) + -0x3a) / (int)psVar2[1];
+  THQButton::thunk_DrawTextWithCachedQuickDrawStyleState(in_stack_00000004);
+  psVar2 = *(short **)&this->field_0x60;
+  iVar1 = (this->field34 + -0x3a) / (int)psVar2[1];
   if (0x20 < iVar1) {
     iVar1 = 0x20;
   }
@@ -111,9 +129,9 @@ void __thiscall TItemBoyView::DestructTItemBoyViewAndMaybeFree(int param_1,undef
       UpdatePaletteIndexWithDefaultFallback(0x10);
       BlitRectWithOptionalTransparency
                 ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4),
-                 (astruct_18 *)(g_pActiveQuickDrawSurfaceContext + 4),&local_10,&local_20,0x24,
-                 (astruct_19 *)0x0);
-      psVar2 = *(short **)(param_1 + 0x60);
+                 (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0x24
+                 ,(astruct_19 *)0x0);
+      psVar2 = *(short **)&this->field_0x60;
       iVar4 = iVar4 + 1;
       iVar3 = iVar3 + iVar1;
     } while (iVar4 < psVar2[1]);

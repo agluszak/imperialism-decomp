@@ -5,29 +5,29 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00409980
 // GHIDRA_NAME TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry
-// GHIDRA_PROTO undefined thunk_ConstructUiClickablePictureResourceEntry()
+// GHIDRA_PROTO undefined __thiscall thunk_ConstructUiClickablePictureResourceEntry(void)
 
-undefined4 * __fastcall
-TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(undefined4 *param_1)
+TCivilianButton * __thiscall
+TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry(TCivilianButton *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *(undefined2 *)((int)param_1 + 0x92) = 7000;
-  *param_1 = &PTR_LAB_0065f670;
-  param_1[0x18] = 0xc;
-  *(undefined1 *)(param_1 + 0x25) = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  *(undefined2 *)&this->field_0x92 = 7000;
+  this->vftable = (TCivilianButtonVtbl *)&TRadioPictureButtonVtbl_0065f670;
+  *(undefined4 *)&this->field_0x60 = 0xc;
+  this->field_0x94 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B340
 // GHIDRA_NAME TCivilianButton::CreateTCivilianButtonInstance
-// GHIDRA_PROTO undefined CreateTCivilianButtonInstance()
+// GHIDRA_PROTO TCivilianButton * __cdecl CreateTCivilianButtonInstance(void)
 
-undefined4 * TCivilianButton::CreateTCivilianButtonInstance(void)
+TCivilianButton * __cdecl TCivilianButton::CreateTCivilianButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TCivilianButton *this;
+  TCivilianButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -37,24 +37,24 @@ undefined4 * TCivilianButton::CreateTCivilianButtonInstance(void)
   puStack_8 = &LAB_00637afa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TCivilianButton *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_ConstructUiClickablePictureResourceEntry();
-    *puVar1 = &_vftable_;
-    puVar1[0x18] = 0xc;
-    puVar2 = puVar1;
+  pTVar1 = (TCivilianButton *)0x0;
+  if (this != (TCivilianButton *)0x0) {
+    thunk_ConstructUiClickablePictureResourceEntry(this);
+    this->vftable = &_vftable_;
+    *(undefined4 *)&this->field_0x60 = 0xc;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B3C0
-// GHIDRA_NAME TCivilianButton::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TCivilianButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-int * TCivilianButton::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TCivilianButton::GetTEventHandlerClassNamePointer(TCivilianButton *this)
 
 {
   return &g_pClassDescTCivilianButton;
@@ -62,52 +62,86 @@ int * TCivilianButton::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B3E0
 // GHIDRA_NAME TCivilianButton::TCivilianButton
-// GHIDRA_PROTO undefined TCivilianButton()
+// GHIDRA_PROTO undefined __thiscall TCivilianButton(void)
 
-undefined4 * __fastcall TCivilianButton::TCivilianButton(undefined4 *param_1)
+TCivilianButton * __thiscall TCivilianButton::TCivilianButton(TCivilianButton *this)
 
 {
-  thunk_ConstructUiClickablePictureResourceEntry();
-  *param_1 = &_vftable_;
-  param_1[0x18] = 0xc;
-  return param_1;
+  thunk_ConstructUiClickablePictureResourceEntry(this);
+  this->vftable = &_vftable_;
+  *(undefined4 *)&this->field_0x60 = 0xc;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B410
 // GHIDRA_NAME TCivilianButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TCivilianButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TCivilianButton * __thiscall TCivilianButton::_scalar_deleting_destructor_(TCivilianButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B460
 // GHIDRA_NAME TCivilianButton::SetSelectionAndEnableByMappedValue
-// GHIDRA_PROTO undefined SetSelectionAndEnableByMappedValue()
+// GHIDRA_PROTO undefined __thiscall SetSelectionAndEnableByMappedValue(void)
 
-void __thiscall TCivilianButton::SetSelectionAndEnableByMappedValue(int *param_1,int param_2)
+void __thiscall TCivilianButton::SetSelectionAndEnableByMappedValue(TCivilianButton *this)
 
 {
-  int iVar1;
-  undefined2 uVar2;
+  TCivilianButtonVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  int in_stack_00000004;
   
-  param_1[0x18] = 0xc;
-  param_1[0x27] = param_2;
-  if (param_2 != 0) {
-    iVar1 = *param_1;
-    (**(code **)(iVar1 + 0xa4))(1,0);
-    (**(code **)(iVar1 + 0xa8))(1,0);
-    uVar2 = (**(code **)(*g_pGlobalMapState + 0x118))(param_2);
-    *(undefined2 *)(param_1 + 0x26) = uVar2;
+  *(undefined4 *)&this->field_0x60 = 0xc;
+  *(int *)&this->field_0x9c = in_stack_00000004;
+  if (in_stack_00000004 != 0) {
+    pTVar1 = this->vftable;
+    (*pTVar1[0x14].slot_0x04)(1,0);
+    (*pTVar1[0x15].GetTEventHandlerClassNamePointer)(1,0);
+    uVar2 = (*g_pGlobalMapState->vftable[0x23].GetTMapMgrClassNamePointer)();
+    *(short *)&this->field_0x98 = (short)CONCAT31(extraout_var,uVar2);
     return;
   }
-  (**(code **)(*param_1 + 0xa4))(0,1);
+  (*this->vftable[0x14].slot_0x04)(0,1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058B4F0
+// GHIDRA_NAME TCivilianButton::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TCivilianButton::OrphanTiny_ReturnZero_0048a730(TCivilianButton *this)
+
+{
+  RECT local_20;
+  RECT local_10;
+  
+  if (this->field04 != 0) {
+    THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
+  }
+  UpdatePaletteIndexWithDefaultFallback(0x10);
+  local_10.left = (LONG)*(short *)&this->field_0x98;
+  local_10.top = 0;
+  local_10.right = local_10.left + 0x40;
+  local_20.top = 2;
+  local_10.bottom = 0x40;
+  local_20.right = 0x40;
+  local_20.left = 0;
+  local_20.bottom = 0x42;
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x66c) + 4),
+             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_10,&local_20,0x24,
+             (astruct_19 *)0x0);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
   return;
 }
 

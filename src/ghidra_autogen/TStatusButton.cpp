@@ -7,11 +7,11 @@
 // GHIDRA_NAME TStatusButton::CreateTStatusButtonInstance
 // GHIDRA_PROTO undefined CreateTStatusButtonInstance()
 
-undefined4 * TStatusButton::CreateTStatusButtonInstance(void)
+TControl * TStatusButton::CreateTStatusButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,26 +21,26 @@ undefined4 * TStatusButton::CreateTStatusButtonInstance(void)
   puStack_8 = &LAB_006377f2;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x84);
+  this = (TControl *)AllocateWithFallbackHandler(0x84);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    *puVar1 = &TButton::_vftable_;
+    this->vftable = (TControlVtbl *)&TButton::_vftable_;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-    *puVar1 = &_vftable_;
-    puVar2 = puVar1;
+    this->vftable = (TControlVtbl *)&_vftable_;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586310
-// GHIDRA_NAME TStatusButton::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TStatusButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-int * TStatusButton::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TStatusButton::GetTEventHandlerClassNamePointer(TStatusButton *this)
 
 {
   return &g_pClassDescTStatusButton;
@@ -48,9 +48,9 @@ int * TStatusButton::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586330
 // GHIDRA_NAME TStatusButton::ConstructTStatusButtonBaseState
-// GHIDRA_PROTO undefined ConstructTStatusButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTStatusButtonBaseState(void)
 
-undefined4 * __fastcall TStatusButton::ConstructTStatusButtonBaseState(undefined4 *param_1)
+TStatusButton * __thiscall TStatusButton::ConstructTStatusButtonBaseState(TStatusButton *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -62,47 +62,50 @@ undefined4 * __fastcall TStatusButton::ConstructTStatusButtonBaseState(undefined
   puStack_8 = &LAB_00637818;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::thunk_ConstructUiCommandTagResourceEntryBase();
+  TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this);
   local_4 = 0;
-  *param_1 = &TButton::_vftable_;
+  this->vftable = (TStatusButtonVtbl *)&TButton::_vftable_;
   thunk_TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC,0x5a6);
-  *param_1 = &_vftable_;
+  this->vftable = &_vftable_;
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005863B0
 // GHIDRA_NAME TStatusButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TStatusButton::_scalar_deleting_destructor_(TView *param_1,byte param_2)
+TStatusButton * __thiscall TStatusButton::_scalar_deleting_destructor_(TStatusButton *this)
 
 {
-  TView::thunk_DestructTViewBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586400
-// GHIDRA_NAME TStatusButton::HandleCityDialogSelectionAndBackControlReset
-// GHIDRA_PROTO undefined HandleCityDialogSelectionAndBackControlReset()
+// GHIDRA_NAME TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void __thiscall
-TStatusButton::HandleCityDialogSelectionAndBackControlReset
-          (int *param_1,int param_2,int *param_3,undefined4 param_4)
+void __thiscall TStatusButton::ReleaseRuntimeSelectionOwnerAndDestroyObject(TStatusButton *this)
 
 {
-  int iVar1;
-  char cVar2;
-  int iVar3;
-  int *piVar4;
+  TStatusButtonVtbl *pTVar1;
+  undefined uVar2;
+  char cVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 local_14 [4];
-  undefined1 local_10 [4];
+  int in_stack_00000004;
+  CString local_14;
+  CString local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   uint local_4;
@@ -111,42 +114,42 @@ TStatusButton::HandleCityDialogSelectionAndBackControlReset
   puStack_8 = &LAB_00637840;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  InitializeSharedStringRefFromEmpty(local_10);
+  CString::CString(&local_10);
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty(local_14);
-  iVar1 = *param_1;
+  CString::CString(&local_14);
+  pTVar1 = this->vftable;
   local_4 = CONCAT31(local_4._1_3_,1);
-  iVar3 = (**(code **)(iVar1 + 0xbc))();
-  if ((param_2 == iVar3) && (cVar2 = (**(code **)(iVar1 + 0x28))(), cVar2 != '\0')) {
-    cVar2 = (**(code **)(iVar1 + 0x1bc))();
-    if (cVar2 != '\0') goto LAB_0058650a;
+  uVar2 = (*pTVar1[0x17].slot_0x04)();
+  if ((in_stack_00000004 == CONCAT31(extraout_var,uVar2)) &&
+     (cVar3 = (*pTVar1[5].GetTEventHandlerClassNamePointer)(), cVar3 != '\0')) {
+    cVar3 = (*pTVar1[0x37].slot_0x04)();
+    if (cVar3 != '\0') goto LAB_0058650a;
     if (g_pActiveCityDialogLegendSelectionOwner != (void *)0x0) {
       (**(code **)(*(int *)g_pActiveCityDialogLegendSelectionOwner + 0xa0))();
       g_pActiveCityDialogLegendSelectionOwner = (void *)0x0;
       _g_bCityDialogLegendSelectionInitialized = 0;
     }
-    piVar4 = (int *)(**(code **)(*(int *)param_1[8] + 0x94))(0x6261636b);
-    if (piVar4 != (int *)0x0) {
-      (**(code **)(*piVar4 + 0x1c))();
-      (**(code **)(*(int *)param_1[8] + 0xe4))();
+    uVar2 = (*this->ownerContext->vftable[0x12].slot_0x04)(0x6261636b);
+    if ((int *)CONCAT31(extraout_var_00,uVar2) != (int *)0x0) {
+      (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar2) + 0x1c))();
+      (*this->ownerContext->vftable[0x1c].slot_0x04)();
     }
-    param_3 = param_1;
-    if ((param_1[7] != 0x41726d73) && (param_1[7] == 0x436c6f73)) {
+    if ((this->controlTag != 0x41726d73) && (this->controlTag == 0x436c6f73)) {
       if (g_pActiveCityDialogLegendSelectionOwner != (void *)0x0) {
         (**(code **)(*(int *)g_pActiveCityDialogLegendSelectionOwner + 0xa0))();
         g_pActiveCityDialogLegendSelectionOwner = (void *)0x0;
       }
       _g_bCityDialogLegendSelectionInitialized = 0;
-      piVar4 = (int *)(**(code **)(iVar1 + 0x58))();
-      (**(code **)(*piVar4 + 0xa0))();
+      uVar2 = (*pTVar1[0xb].GetTEventHandlerClassNamePointer)();
+      (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0xa0))();
     }
   }
-  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
 LAB_0058650a:
   local_4 = local_4 & 0xffffff00;
-  ReleaseSharedStringRefIfNotEmpty(local_14);
+  CString::~CString(&local_14);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(local_10);
+  CString::~CString(&local_10);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }

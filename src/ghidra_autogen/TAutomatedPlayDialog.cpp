@@ -3,37 +3,57 @@
 // Program: Imperialism.exe
 // Bucket: TAutomatedPlayDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B46A0
-// GHIDRA_NAME TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer
-// GHIDRA_PROTO undefined GetTAutomatedPlayDialogClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x005B4650
+// GHIDRA_NAME TAutomatedPlayDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TAutomatedPlayDialog::GetTAutomatedPlayDialogClassNamePointer(void)
+TAutomatedPlayDialog * __thiscall
+TAutomatedPlayDialog::_scalar_deleting_destructor_(TAutomatedPlayDialog *this)
 
 {
-  return &PTR_s_TAutomatedPlayDialog_0066b2c8;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B46A0
+// GHIDRA_NAME TAutomatedPlayDialog::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomatedPlayDialog *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B46C0
-// GHIDRA_NAME TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState
-// GHIDRA_PROTO undefined ConstructTAutomatedPlayDialogBaseState()
+// GHIDRA_NAME TAutomatedPlayDialog::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-void __fastcall TAutomatedPlayDialog::ConstructTAutomatedPlayDialogBaseState(int *param_1)
+void __thiscall TAutomatedPlayDialog::GetTEventHandlerClassNamePointer(TAutomatedPlayDialog *this)
 
 {
-  int *piVar1;
+  undefined uVar1;
+  undefined3 extraout_var;
   
-  piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x6e756d20);
-  if (piVar1 == (int *)0x0) {
+  uVar1 = (*this->vftable[0x12].slot_0x04)(0x6e756d20);
+  if ((int *)CONCAT31(extraout_var,uVar1) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x34e);
   }
-  g_nTurnCooldownDeferCounter006A43C4 = (**(code **)(*piVar1 + 0x1e8))();
-  g_nTurnCooldownSideFlag00698B10 = (short)g_pLocalizationTable[2];
+  g_nTurnCooldownDeferCounter006A43C4 =
+       (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1e8))();
+  g_nTurnCooldownSideFlag00698B10 = *(short *)&g_pLocalizationTable->field_0x8;
   if (0 < g_nTurnCooldownDeferCounter006A43C4) {
-    (**(code **)(*g_pLocalizationTable + 0x44))();
+    (*g_pLocalizationTable->vftable[8].slot_0x04)();
   }
-  TControl::thunk_DispatchVfuncA0ToLinkedChildListSlot44();
+  TSoundPlayer::thunk_DispatchVfuncA0ToLinkedChildListSlot44((TSoundPlayer *)this);
   return;
 }
 

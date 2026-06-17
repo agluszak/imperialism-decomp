@@ -4,40 +4,345 @@
 // Bucket: TAmbitFileBasedDocument.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E5D0
-// GHIDRA_NAME TAmbitFileBasedDocument::GetTAmbitFileBasedDocumentClassNamePointer
-// GHIDRA_PROTO undefined GetTAmbitFileBasedDocumentClassNamePointer()
+// GHIDRA_NAME TAmbitFileBasedDocument::GetTDocumentClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTDocumentClassNamePointer(void)
 
-undefined ** TAmbitFileBasedDocument::GetTAmbitFileBasedDocumentClassNamePointer(void)
+CRuntimeClass * __thiscall
+TAmbitFileBasedDocument::GetTDocumentClassNamePointer(TAmbitFileBasedDocument *this)
 
 {
-  return &PTR_s_TAmbitFileBasedDocument_0064c0d0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E5F0
 // GHIDRA_NAME TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState
-// GHIDRA_PROTO undefined ConstructTAmbitFileBasedDocumentBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTAmbitFileBasedDocumentBaseState(void)
 
-void __fastcall
-TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(undefined4 *param_1)
+void __thiscall
+TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState(TAmbitFileBasedDocument *this)
 
 {
-  *param_1 = &PTR_LAB_0064c170;
+  this->vftable = &TAmbitFileBasedDocumentVtbl_0064c170;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049E610
-// GHIDRA_NAME TAmbitFileBasedDocument::DestructTAmbitFileBasedDocumentAndMaybeFree
-// GHIDRA_PROTO undefined DestructTAmbitFileBasedDocumentAndMaybeFree()
+// GHIDRA_NAME TAmbitFileBasedDocument::ConstructTDocumentBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTDocumentBaseState(void)
 
-undefined4 __thiscall
-TAmbitFileBasedDocument::DestructTAmbitFileBasedDocumentAndMaybeFree
-          (undefined4 param_1,byte param_2)
+TAmbitFileBasedDocument * __thiscall
+TAmbitFileBasedDocument::ConstructTDocumentBaseState(TAmbitFileBasedDocument *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTAmbitFileBasedDocumentAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E660
+// GHIDRA_NAME TAmbitFileBasedDocument::OrphanRetStub_0049e660
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0049e660(void)
+
+void __thiscall TAmbitFileBasedDocument::OrphanRetStub_0049e660(TAmbitFileBasedDocument *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E680
+// GHIDRA_NAME TAmbitFileBasedDocument::OrphanRetStub_0049e680
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0049e680(void)
+
+void __thiscall TAmbitFileBasedDocument::OrphanRetStub_0049e680(TAmbitFileBasedDocument *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E6A0
+// GHIDRA_NAME TAmbitFileBasedDocument::OrphanRetStub_00486530
+// GHIDRA_PROTO void __thiscall OrphanRetStub_00486530(void * pLoadContext)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Loads global game state from a save stream.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Validate save header/version metadata.
+// GHIDRA_COMMENT 2. Invoke manager deserialize handlers (vfunc +0x18) for core globals.
+// GHIDRA_COMMENT 3. Restores DAT_006A3FBC (active map context object) and DAT_006A43E4 (navy/order manager) as part of the pass.
+// GHIDRA_COMMENT 4. Finalize post-load visual/status state.
+// GHIDRA_COMMENT_END
+
+/* Loads global game state from a save stream.
+   Algorithm:
+   1. Validate save header/version metadata.
+   2. Invoke manager deserialize handlers (vfunc +0x18) for core globals.
+   3. Restores DAT_006A3FBC (active map context object) and DAT_006A43E4 (navy/order manager) as
+   part of the pass.
+   4. Finalize post-load visual/status state. */
+
+void __thiscall
+TAmbitFileBasedDocument::OrphanRetStub_00486530(TAmbitFileBasedDocument *this,void *pLoadContext)
+
+{
+  TFileStream_ConstructTStreamBaseState_0x04 *pTVar1;
+  bool bVar2;
+  char cVar3;
+  TFileStream *this_00;
+  int iVar4;
+  TFileStream *this_01;
+  short sVar5;
+  undefined4 *unaff_FS_OFFSET;
+  int local_1c;
+  int local_18;
+  undefined4 local_10;
+  undefined1 *puStack_c;
+  undefined4 local_8;
+  
+  puStack_c = &LAB_0062fde2;
+  local_10 = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_10;
+  this_01 = (TFileStream *)0x0;
+  local_8 = 0;
+  this_00 = (TFileStream *)AllocateWithFallbackHandler();
+  local_8._0_1_ = 1;
+  if (this_00 != (TFileStream *)0x0) {
+    this_01 = (TFileStream *)TFileStream::ConstructTFileStreamBaseState(this_00);
+  }
+  local_8._0_1_ = 0;
+  TFileStream::SetBackingArchive(this_01);
+  pTVar1 = this_01->vftable[7].ConstructTStreamBaseState;
+  (*pTVar1)();
+  (*pTVar1)();
+  (*pTVar1)();
+  (*pTVar1)();
+  bVar2 = false;
+  if (local_18 == 0x414d4249) {
+    if (0x22 < DAT_00695278) goto LAB_0049e7e4;
+    CString::CString((CString *)&pLoadContext);
+    local_8._0_1_ = 3;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    thunk_AssignStringSharedRefAndReturnThis(&pLoadContext);
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  }
+  else {
+    CString::CString((CString *)&pLoadContext);
+    local_8._0_1_ = 2;
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    thunk_AssignStringSharedRefAndReturnThis(&pLoadContext);
+    thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+  }
+  local_8._0_1_ = 0;
+  bVar2 = true;
+  CString::~CString((CString *)&pLoadContext);
+LAB_0049e7e4:
+  if (!bVar2) {
+    if ((*(int *)&g_pLocalizationTable->field_0x44 == 2) &&
+       (local_1c != *(int *)&g_pGameFlowState->field_0x64)) {
+      CString::CString((CString *)&pLoadContext);
+      local_8._0_1_ = 4;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      thunk_AssignStringSharedRefAndReturnThis(&pLoadContext);
+      thunk_DispatchLocalizedUiMessageWithTemplateA13A0();
+      bVar2 = true;
+      local_8._0_1_ = 0;
+      CString::~CString((CString *)&pLoadContext);
+    }
+    if (!bVar2) {
+      iVar4 = AllocateWithFallbackHandler();
+      if (iVar4 == 0) {
+        MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+        thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+      }
+      (*pTVar1)();
+      (*pTVar1)();
+      FreeHeapBufferIfNotNull(iVar4);
+      (*g_pGlobalUiRootController->vftable[3].GetTEventHandlerClassNamePointer)(this_01);
+      (*g_pLocalizationTable->vftable[3].GetTSimMgrClassNamePointer)(this_01);
+      (*g_pUiAnimator->vftable[3].GetTEventHandlerClassNamePointer)(this_01);
+      (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(this_01);
+      (*g_pDiplomacyTurnStateManager->vftable[3].GetTDiplomacyMgrClassNamePointer)(this_01);
+      (*g_pCityOrderCapabilityState->vftable[3].GetTTechMgrClassNamePointer)(this_01);
+      (*g_pGlobalMapState->vftable[3].GetTMapMgrClassNamePointer)(this_01);
+      (*g_pActiveMapOrderContext->vftable[3].GetTOceanClassNamePointer)(this_01);
+      (*g_pNavyOrderManager->vftable[3].SelectCandidateTilesWithLowGroundUnitCount)(this_01);
+      (*g_pMapContextActionManager->vftable[3].GetTArmyMgrClassNamePointer)(this_01);
+      for (sVar5 = 0; sVar5 < 0x17; sVar5 = sVar5 + 1) {
+        if (g_apTerrainTypeDescriptorTable[sVar5] != (TCountry *)0x0) {
+          (*g_apTerrainTypeDescriptorTable[sVar5]->vftable[3].GetTCountryClassNamePointer)(this_01);
+        }
+      }
+      (**(code **)(g_pUiRuntimeContext->vftable + 0x18))(this_01);
+      (**(code **)(*g_pStrategicMapViewSystem + 0x18))(this_01);
+      (**(code **)(g_pInterNationEventQueueManager->vftable + 0x18))(this_01);
+      (**(code **)(*DAT_006a21b8 + 0x18))(this_01);
+    }
+  }
+  (*this_01->vftable[3].ConstructTStreamBaseState)();
+  for (iVar4 = 0; iVar4 < 7; iVar4 = iVar4 + 1) {
+    cVar3 = thunk_IsNationSlotEligibleForEventProcessing();
+    if (cVar3 != '\0') {
+      cVar3 = (*g_apNationStates[iVar4]->vftable[0x14].GetTCountryClassNamePointer)();
+      if (cVar3 == '\0') {
+        (*g_apNationStates[iVar4]->vftable[0x1a].GetTCountryClassNamePointer)();
+      }
+    }
+  }
+  DAT_00695278 = -1;
+  *unaff_FS_OFFSET = local_10;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049EB30
+// GHIDRA_NAME TAmbitFileBasedDocument::OrphanRetStub_00486550
+// GHIDRA_PROTO void __thiscall OrphanRetStub_00486550(void * pSaveContext)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Saves global game state into an output stream.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Write save header/version fields.
+// GHIDRA_COMMENT 2. Invoke manager serialize handlers (vfunc +0x14) for core globals.
+// GHIDRA_COMMENT 3. Persists DAT_006A3FBC and DAT_006A43E4 alongside other subsystems.
+// GHIDRA_COMMENT 4. Flush/finalize stream output.
+// GHIDRA_COMMENT_END
+
+/* Saves global game state into an output stream.
+   Algorithm:
+   1. Write save header/version fields.
+   2. Invoke manager serialize handlers (vfunc +0x14) for core globals.
+   3. Persists DAT_006A3FBC and DAT_006A43E4 alongside other subsystems.
+   4. Flush/finalize stream output. */
+
+void __thiscall
+TAmbitFileBasedDocument::OrphanRetStub_00486550(TAmbitFileBasedDocument *this,void *pSaveContext)
+
+{
+  TFileStream_GetTStreamClassNamePointer_0x00 *pTVar1;
+  TFileStream *pTVar2;
+  undefined1 *puVar3;
+  int iVar4;
+  int iVar5;
+  TCountry **ppTVar6;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_9c;
+  TFileStream *pTStack_98;
+  TFileStream *pTStack_94;
+  TFileStream *pTStack_90;
+  TFileStream *pTStack_8c;
+  TFileStream *pTStack_88;
+  TFileStream *pTStack_84;
+  TFileStream *pTStack_80;
+  TFileStream *pTVar7;
+  CString CStack_64;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0062fe12;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  pTVar2 = (TFileStream *)AllocateWithFallbackHandler();
+  iVar5 = 0;
+  local_4 = 0;
+  if (pTVar2 == (TFileStream *)0x0) {
+    pTVar2 = (TFileStream *)0x0;
+  }
+  else {
+    pTVar2 = (TFileStream *)TFileStream::ConstructTFileStreamBaseState(pTVar2);
+  }
+  local_4 = 0xffffffff;
+  TFileStream::SetBackingArchive(pTVar2);
+  pTVar1 = pTVar2->vftable[0xf].GetTStreamClassNamePointer;
+  (*pTVar1)();
+  (*pTVar1)();
+  (*pTVar1)();
+  (*pTVar1)();
+  puVar3 = (undefined1 *)AllocateWithFallbackHandler();
+  if (puVar3 == (undefined1 *)0x0) {
+    CStack_64.m_pchData = (char *)0x49ebed;
+    MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag();
+  }
+  iVar4 = 0x1950;
+  do {
+    iVar5 = iVar5 + 0x24;
+    iVar4 = iVar4 + -1;
+    *puVar3 = *(undefined1 *)(*(int *)&g_pGlobalMapState->field_0xc + -0x20 + iVar5);
+    puVar3 = puVar3 + 1;
+  } while (iVar4 != 0);
+  (*pTVar1)();
+  FreeHeapBufferIfNotNull();
+  CStack_64.m_pchData = (char *)0x49ec51;
+  (*pTVar1)();
+  CStack_64.m_pchData = (char *)0x1;
+  (*pTVar1)();
+  UiRuntimeContext::GetActiveNationId();
+  (*pTVar1)();
+  CString::CString((CString *)&stack0xffffffa4);
+  FormatOverlayTerrainLabelText();
+  CString::EnsureCapacityPreserveLength((CString *)&stack0xffffffa4,0x21);
+  (*pTVar1)();
+  pTStack_80 = (TFileStream *)0x49ecc7;
+  CString::SetLengthAndTerminator(&CStack_64,-1);
+  pTStack_80 = (TFileStream *)0x49ecd3;
+  pTVar7 = pTVar2;
+  (*g_pGlobalUiRootController->vftable[2].slot_0x04)();
+  pTStack_84 = (TFileStream *)0x49ecdf;
+  pTStack_80 = pTVar2;
+  (*g_pLocalizationTable->vftable[2].slot_0x04)();
+  pTStack_88 = (TFileStream *)0x49eceb;
+  pTStack_84 = pTVar2;
+  (*g_pUiAnimator->vftable[2].slot_0x04)();
+  pTStack_8c = (TFileStream *)0x49ecf7;
+  pTStack_88 = pTVar2;
+  (*g_pNationInteractionStateManager->vftable[2].slot_0x04)();
+  pTStack_90 = (TFileStream *)0x49ed03;
+  pTStack_8c = pTVar2;
+  (*g_pDiplomacyTurnStateManager->vftable[2].slot_0x04)();
+  pTStack_94 = (TFileStream *)0x49ed0f;
+  pTStack_90 = pTVar2;
+  (*g_pCityOrderCapabilityState->vftable[2].slot_0x04)();
+  pTStack_98 = (TFileStream *)0x49ed1b;
+  pTStack_94 = pTVar2;
+  (*g_pGlobalMapState->vftable[2].slot_0x04)();
+  CStack_9c.m_pchData = (char *)0x49ed27;
+  pTStack_98 = pTVar2;
+  (*g_pActiveMapOrderContext->vftable[2].DestroyTPortZoneManager)();
+  CStack_9c.m_pchData = (char *)pTVar2;
+  (*g_pNavyOrderManager->vftable[2].OrphanLeaf_NoCall_Ins07_004d8920)();
+  (*g_pMapContextActionManager->vftable[2].slot_0x04)(pTVar2);
+  ppTVar6 = g_apTerrainTypeDescriptorTable;
+  iVar5 = 0x17;
+  do {
+    if (*ppTVar6 != (TCountry *)0x0) {
+      (*(*ppTVar6)->vftable[2].slot_0x04)(pTVar2);
+    }
+    ppTVar6 = ppTVar6 + 1;
+    iVar5 = iVar5 + -1;
+  } while (iVar5 != 0);
+  (**(code **)(g_pUiRuntimeContext->vftable + 0x14))(pTVar2);
+  (**(code **)(*g_pStrategicMapViewSystem + 0x14))(pTVar2);
+  (**(code **)(g_pInterNationEventQueueManager->vftable + 0x14))(pTVar2);
+  (**(code **)(*DAT_006a21b8 + 0x14))(pTVar2);
+  (**(code **)&pTVar7[3].field_0x4)();
+  pTStack_84 = (TFileStream *)0xffffffff;
+  CString::~CString(&CStack_9c);
+  *unaff_FS_OFFSET = pTStack_8c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049EE70
+// GHIDRA_NAME TAmbitFileBasedDocument::AssertUAmbitLine1335
+// GHIDRA_PROTO undefined __thiscall AssertUAmbitLine1335(void)
+
+void __thiscall TAmbitFileBasedDocument::AssertUAmbitLine1335(TAmbitFileBasedDocument *this)
+
+{
+  if (DAT_006a21c4 == 0) {
+    thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UAmbit_cpp_0069527c,0x537);
+  }
+  return;
 }
 

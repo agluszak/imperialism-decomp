@@ -3,14 +3,30 @@
 // Program: Imperialism.exe
 // Bucket: TScrollBarView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00573DF0
+// GHIDRA_NAME TScrollBarView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TScrollBarView * __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005743F0
 // GHIDRA_NAME TScrollBarView::CreateTScrollBarViewInstance
 // GHIDRA_PROTO undefined CreateTScrollBarViewInstance()
 
-undefined4 * TScrollBarView::CreateTScrollBarViewInstance(void)
+TControl * TScrollBarView::CreateTScrollBarViewInstance(void)
 
 {
-  undefined4 *puVar1;
+  TControl *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,27 +36,27 @@ undefined4 * TScrollBarView::CreateTScrollBarViewInstance(void)
   puStack_8 = &LAB_006366ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (TControl *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar1 = &PTR_LAB_006614c8;
-    puVar1[0x24] = 0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this);
+    this->vftable = (TControlVtbl *)&TScrollBarViewVtbl_006614c8;
+    *(undefined4 *)&this[1].field_0xc = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TControl *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00574490
-// GHIDRA_NAME TScrollBarView::GetTScrollBarViewClassNamePointer
-// GHIDRA_PROTO undefined GetTScrollBarViewClassNamePointer()
+// GHIDRA_NAME TScrollBarView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TScrollBarView::GetTScrollBarViewClassNamePointer(void)
+CRuntimeClass * __thiscall TScrollBarView::GetTEventHandlerClassNamePointer(TScrollBarView *this)
 
 {
-  return &PTR_s_TScrollBarView_00661460;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005744B0
@@ -53,6 +69,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
 
 {
   int iVar1;
+  TPictureButton *this;
   int *piVar2;
   undefined4 *unaff_FS_OFFSET;
   int iStack_40;
@@ -61,7 +78,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
   undefined4 uStack_1c;
   undefined4 uStack_18;
   undefined4 uStack_14;
-  int iStack_10;
+  TPictureButton *pTStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -77,7 +94,7 @@ TScrollBarView::ConstructTScrollBarViewBaseState
   *(int **)(param_1 + 0x84) = *(int **)(param_1 + 0x20);
   puStack_38 = (undefined4 *)0x5744fa;
   (**(code **)(**(int **)(param_1 + 0x20) + 0xc))();
-  iStack_10 = *(undefined4 *)(param_1 + 0x38);
+  pTStack_10 = *(TPictureButton **)(param_1 + 0x38);
   uStack_14 = *(undefined4 *)(param_1 + 0x34);
   *(undefined2 *)(param_1 + 0x88) = 0x12;
   *(short *)(param_1 + 0x8a) = *(short *)(param_1 + 0x38) + -0x24;
@@ -88,26 +105,26 @@ TScrollBarView::ConstructTScrollBarViewBaseState
   uStack_1c = 0;
   uStack_18 = 0;
   (**(code **)(*DAT_006a2158 + 0x2c))();
-  iVar1 = AllocateWithFallbackHandler(0x94);
-  iStack_10 = 0;
-  if (iVar1 == 0) {
+  this = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  pTStack_10 = (TPictureButton *)0x0;
+  if (this == (TPictureButton *)0x0) {
     piVar2 = (int *)0x0;
   }
   else {
-    piVar2 = (int *)TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
+    piVar2 = (int *)TPictureButton::thunk_ConstructUiTabCursorPictureEntry(this);
   }
-  iStack_10 = 0xffffffff;
+  pTStack_10 = (TPictureButton *)0xffffffff;
   InitializePictureEntryBaseAndRefresh(param_1,&stack0xffffffd8,&stack0xffffffd0,5,5,0xbbb);
   iVar1 = *piVar2;
   piVar2[7] = 0x73637570;
   (**(code **)(iVar1 + 0xa4))(0,1);
   (**(code **)(iVar1 + 0xa8))(1,0);
-  iStack_10 = AllocateWithFallbackHandler(0x94);
-  if (iStack_10 == 0) {
+  pTStack_10 = (TPictureButton *)AllocateWithFallbackHandler(0x94);
+  if (pTStack_10 == (TPictureButton *)0x0) {
     piVar2 = (int *)0x0;
   }
   else {
-    piVar2 = (int *)TPictureButton::thunk_ConstructUiTabCursorPictureEntry();
+    piVar2 = (int *)TPictureButton::thunk_ConstructUiTabCursorPictureEntry(pTStack_10);
   }
   iStack_3c = *(int *)(param_1 + 0x38) + -0x12;
   puStack_38 = (undefined4 *)0x12;
@@ -122,16 +139,242 @@ TScrollBarView::ConstructTScrollBarViewBaseState
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005746E0
-// GHIDRA_NAME TScrollBarView::DestructTScrollBarViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTScrollBarViewAndMaybeFree()
+// GHIDRA_NAME TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __fastcall TScrollBarView::DestructTScrollBarViewAndMaybeFree(int param_1)
+void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView *this)
 
 {
-  if (*(int *)(param_1 + 0x90) != 0) {
-    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(param_1 + 0x90);
+  if (*(int *)&this->field_0x90 != 0) {
+    WrapperFor_FreeHeapBufferIfNotNull_At004feb50(&this->field_0x90);
   }
-  TControl::thunk_CloseCityDialogChildrenAndReleaseSelf();
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00574720
+// GHIDRA_NAME TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TScrollBarView::OrphanLeaf_NoCall_Ins07_004d8920(TScrollBarView *this)
+
+{
+  undefined4 uStack_10;
+  undefined4 uStack_c;
+  int iStack_8;
+  int iStack_4;
+  
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  *(TView **)&this->field_0x84 = this->ownerContext;
+  (*this->ownerContext->vftable[1].slot_0x04)();
+  iStack_8 = this->field34;
+  *(undefined2 *)&this->field_0x88 = 0x12;
+  *(undefined2 *)&this->field_0x8c = 0x12;
+  uStack_10 = 0;
+  uStack_c = 0;
+  iStack_4 = this->field38;
+  *(short *)&this->field_0x8a = (short)this->field38 + -0x24;
+  (**(code **)(*DAT_006a2158 + 0x2c))(&this->field_0x90,8,&uStack_10);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005747C0
+// GHIDRA_NAME TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall TScrollBarView::ReleaseRuntimeSelectionOwnerAndDestroyObject(TScrollBarView *this)
+
+{
+  int in_stack_00000004;
+  int in_stack_00000008;
+  undefined4 uVar1;
+  
+  if (in_stack_00000004 == 10) {
+    if (*(int *)(in_stack_00000008 + 0x1c) == 0x73637570) {
+      uVar1 = 0xc;
+    }
+    else {
+      if (*(int *)(in_stack_00000008 + 0x1c) != 0x7363646e) goto LAB_005747fc;
+      uVar1 = 0xfffffff4;
+    }
+    AdjustCityDialogScrollRangeByDeltaAndClamp(0,uVar1);
+  }
+LAB_005747fc:
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00574830
+// GHIDRA_NAME TScrollBarView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TScrollBarView::_scalar_deleting_destructor_(TScrollBarView *this)
+
+{
+  int iVar1;
+  BOOL BVar2;
+  undefined2 extraout_var;
+  POINT *in_stack_00000004;
+  RECT local_10;
+  
+  local_10.top = (LONG)*(short *)&this->field_0x8c;
+  local_10.right = this->field34;
+  local_10.bottom = local_10.top + 0x12;
+  local_10.left = 0;
+  BVar2 = PtInRect(&local_10,*in_stack_00000004);
+  if (BVar2 != 0) {
+    TNumberedItem::_scalar_deleting_destructor_((TNumberedItem *)this);
+    return;
+  }
+  iVar1 = in_stack_00000004->y;
+  if ((*(short *)&this->field_0x88 <= iVar1) && (iVar1 < *(short *)&this->field_0x8c)) {
+    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    AdjustCityDialogScrollRangeByDeltaAndClamp
+              (0,CONCAT22(extraout_var,*(undefined2 *)(*(int *)&this->field_0x84 + 0x38)));
+    return;
+  }
+  if ((iVar1 <= *(short *)&this->field_0x8a + 0x12) && (*(short *)&this->field_0x8c + 0x12 < iVar1))
+  {
+    (*g_pSfxPlaybackSystem->vftable[0x17].GetTEventHandlerClassNamePointer)(7000,0,1);
+    AdjustCityDialogScrollRangeByDeltaAndClamp(0,-*(short *)(*(int *)&this->field_0x84 + 0x38));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00574970
+// GHIDRA_NAME TScrollBarView::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TScrollBarView::OrphanTiny_ReturnZero_0048a730(TScrollBarView *this)
+
+{
+  int iVar1;
+  LONG *in_stack_00000004;
+  tagRECT local_20;
+  tagRECT local_10;
+  
+  ResetQuickDrawStrokeState();
+  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor(0xffffff);
+  local_20.bottom = (LONG)*(short *)&this->field_0x8c;
+  local_20.right = this->field34;
+  local_20.left = 0;
+  local_10.left = 0;
+  local_20.top = 0;
+  local_10.top = 0;
+  local_10.right = local_20.right;
+  local_10.bottom = local_20.bottom;
+  if (*(int *)(*(int *)(g_pStrategicMapViewSystem + 0x6a8) + 0x20) != 0) {
+    iVar1 = RenderStrategicMapViewportBandsAndBlit_Impl();
+    OffsetRect(&local_20,0,(iVar1 - local_20.top) - local_20.bottom);
+  }
+  if (*(int *)(*(int *)&this->field_0x90 + 0x20) != 0) {
+    iVar1 = RenderStrategicMapViewportBandsAndBlit_Impl();
+    OffsetRect(&local_10,0,(iVar1 - local_10.top) - local_10.bottom);
+  }
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6a8) + 4),
+             (astruct_18 *)(*(int *)&this->field_0x90 + 4),&local_20,&local_10,0,(astruct_19 *)0x0);
+  local_20.right = this->field34;
+  local_20.left = 0;
+  local_10.top = (LONG)*(short *)&this->field_0x8c;
+  local_20.top = 300;
+  local_20.bottom = 0x13e;
+  local_10.left = 0;
+  local_10.bottom = local_10.top + 0x12;
+  iVar1 = *(int *)(*(int *)(g_pStrategicMapViewSystem + 0x6a8) + 0x20);
+  local_10.right = local_20.right;
+  if (iVar1 != 0) {
+    iVar1 = *(int *)(*(int *)(iVar1 + 0x10) + 8);
+    if (iVar1 < 1) {
+      iVar1 = -iVar1;
+    }
+    OffsetRect(&local_20,0,iVar1 + -0x26a);
+  }
+  if (*(int *)(*(int *)&this->field_0x90 + 0x20) != 0) {
+    iVar1 = RenderStrategicMapViewportBandsAndBlit_Impl();
+    OffsetRect(&local_10,0,(iVar1 - local_10.top) - local_10.bottom);
+  }
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6a8) + 4),
+             (astruct_18 *)(*(int *)&this->field_0x90 + 4),&local_20,&local_10,0,(astruct_19 *)0x0);
+  local_10.top = *(short *)&this->field_0x8c + 0x12;
+  local_20.top = 299 - (short)(((short)this->field38 - *(short *)&this->field_0x8c) + -0x12);
+  local_20.right = this->field34;
+  local_20.bottom = 300;
+  local_10.bottom = this->field38;
+  local_20.left = 0;
+  local_10.left = 0;
+  iVar1 = *(int *)(*(int *)(g_pStrategicMapViewSystem + 0x6a8) + 0x20);
+  local_10.right = local_20.right;
+  if (iVar1 != 0) {
+    iVar1 = *(int *)(*(int *)(iVar1 + 0x10) + 8);
+    if (iVar1 < 1) {
+      iVar1 = -iVar1;
+    }
+    OffsetRect(&local_20,0,(iVar1 - local_20.top) + -300);
+  }
+  iVar1 = *(int *)(*(int *)&this->field_0x90 + 0x20);
+  if (iVar1 != 0) {
+    iVar1 = *(int *)(*(int *)(iVar1 + 0x10) + 8);
+    if (iVar1 < 1) {
+      iVar1 = -iVar1;
+    }
+    OffsetRect(&local_10,0,(iVar1 - local_10.top) - local_10.bottom);
+  }
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)(g_pStrategicMapViewSystem + 0x6a8) + 4),
+             (astruct_18 *)(*(int *)&this->field_0x90 + 4),&local_20,&local_10,0,(astruct_19 *)0x0);
+  local_20.left = *in_stack_00000004;
+  local_20.top = in_stack_00000004[1];
+  local_20.right = in_stack_00000004[2];
+  local_20.bottom = in_stack_00000004[3];
+  BlitRectWithOptionalTransparency
+            ((astruct_17 *)(*(int *)&this->field_0x90 + 4),
+             (astruct_18 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_20,&local_20,0,
+             (astruct_19 *)0x0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00574D10
+// GHIDRA_NAME TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TScrollBarView::QueueCityRecruitmentSupportCommandsIfDeficit(TScrollBarView *this)
+
+{
+  int *piVar1;
+  short sVar2;
+  short sVar3;
+  int iVar4;
+  int in_stack_00000004;
+  int in_stack_00000010;
+  int iStack_8;
+  int iStack_4;
+  
+  sVar3 = *(short *)(in_stack_00000010 + 4) + -9;
+  if ((0 < in_stack_00000004) && (in_stack_00000004 < 3)) {
+    sVar2 = *(short *)&this->field_0x8a;
+    if ((*(short *)&this->field_0x8a < sVar3) ||
+       (sVar2 = *(short *)&this->field_0x88, sVar3 < *(short *)&this->field_0x88)) {
+      sVar3 = sVar2;
+    }
+    if (sVar3 != *(short *)&this->field_0x8c) {
+      *(short *)&this->field_0x8c = sVar3;
+      RefreshCityDialogScrollableViewportWithQuickDrawContext();
+    }
+    if (in_stack_00000004 == 2) {
+      piVar1 = *(int **)(*(int *)&this->field_0x84 + 0x60);
+      if ((piVar1 != (int *)0x0) &&
+         (sVar3 = (short)piVar1[0xe] - *(short *)(*(int *)&this->field_0x84 + 0x38), 0 < sVar3)) {
+        iVar4 = ((((int)*(short *)&this->field_0x8c - (int)*(short *)&this->field_0x88) * 0x400) /
+                ((int)*(short *)&this->field_0x8a - (int)*(short *)&this->field_0x88)) * (int)sVar3;
+        iStack_8 = piVar1[9];
+        iStack_4 = (int)(short)-(short)((int)(iVar4 + (iVar4 >> 0x1f & 0x3ffU)) >> 10);
+        (**(code **)(*piVar1 + 0xf0))(&iStack_8,1);
+      }
+    }
+  }
   return;
 }
 

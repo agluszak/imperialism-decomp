@@ -7,11 +7,11 @@
 // GHIDRA_NAME TMiniShipLine::CreateTMiniShipLineInstance
 // GHIDRA_PROTO undefined CreateTMiniShipLineInstance()
 
-undefined4 * TMiniShipLine::CreateTMiniShipLineInstance(void)
+TLineData * TMiniShipLine::CreateTMiniShipLineInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TLineData *this;
+  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,39 +21,40 @@ undefined4 * TMiniShipLine::CreateTMiniShipLineInstance(void)
   puStack_8 = &LAB_00635c0a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  this = (TLineData *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TLineData::ConstructTLineDataBaseState();
-    *puVar1 = &PTR_LAB_0065db28;
-    puVar2 = puVar1;
+  pTVar1 = (TLineData *)0x0;
+  if (this != (TLineData *)0x0) {
+    TLineData::ConstructTLineDataBaseState(this);
+    this->vftable = (TLineDataVtbl *)&TMiniShipLineVtbl_0065db28;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569C20
-// GHIDRA_NAME TMiniShipLine::GetTMiniShipLineClassNamePointer
-// GHIDRA_PROTO undefined GetTMiniShipLineClassNamePointer()
+// GHIDRA_NAME TMiniShipLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TMiniShipLine::GetTMiniShipLineClassNamePointer(void)
+CRuntimeClass * __thiscall TMiniShipLine::GetTLineDataClassNamePointer(TMiniShipLine *this)
 
 {
-  return &PTR_s_TMiniShipLine_0065c928;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00569C80
-// GHIDRA_NAME TMiniShipLine::ConstructTMiniShipLineBaseState
-// GHIDRA_PROTO undefined ConstructTMiniShipLineBaseState()
+// GHIDRA_NAME TMiniShipLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
 
-void __thiscall
-TMiniShipLine::ConstructTMiniShipLineBaseState(int param_1,undefined4 param_2,undefined4 param_3)
+void __thiscall TMiniShipLine::OrphanRetStub_0056f460(TMiniShipLine *this)
 
 {
-  undefined4 uVar1;
-  undefined4 *puVar2;
+  TControlVtbl *pTVar1;
+  TControl *this_00;
   undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -62,35 +63,22 @@ TMiniShipLine::ConstructTMiniShipLineBaseState(int param_1,undefined4 param_2,un
   puStack_8 = &LAB_00635c2a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar2 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this_00 = (TControl *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  if (puVar2 == (undefined4 *)0x0) {
-    puVar2 = (undefined4 *)0x0;
+  if (this_00 == (TControl *)0x0) {
+    this_00 = (TControl *)0x0;
   }
   else {
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *puVar2 = &PTR_LAB_0065db68;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
+    this_00->vftable = (TControlVtbl *)&TMiniShipViewVtbl_0065db68;
   }
-  uVar1 = *(undefined4 *)(param_1 + 0x10);
+  pTVar1 = *(TControlVtbl **)&this->field_0x10;
   local_4 = 0xffffffff;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,param_2,param_3,param_1 + 8,5,5,0);
-  puVar2[0x21] = uVar1;
-  puVar2[0x18] = 0x22;
+  thunk_InitializeUiResourceEntryFrameAndParent
+            (0,in_stack_00000004,in_stack_00000008,&this->field_0x8,5,5,0);
+  this_00[1].vftable = pTVar1;
+  this_00->hasCommandTagResource = 0x22;
   *unaff_FS_OFFSET = local_c;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00569D70
-// GHIDRA_NAME TMiniShipLine::DestructTMiniShipLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTMiniShipLineAndMaybeFree()
-
-TView * __thiscall TMiniShipLine::DestructTMiniShipLineAndMaybeFree(TView *param_1,byte param_2)
-
-{
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
 }
 

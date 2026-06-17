@@ -4,63 +4,82 @@
 // Bucket: TNetGameSelectPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576B20
-// GHIDRA_NAME TNetGameSelectPicture::DestructTNetGameSelectPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTNetGameSelectPictureAndMaybeFree()
+// GHIDRA_NAME TNetGameSelectPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TNetGameSelectPicture::DestructTNetGameSelectPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TNetGameSelectPicture * __thiscall
+TNetGameSelectPicture::_scalar_deleting_destructor_(TNetGameSelectPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576B70
-// GHIDRA_NAME TNetGameSelectPicture::GetTNetGameSelectPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTNetGameSelectPictureClassNamePointer()
+// GHIDRA_NAME TNetGameSelectPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TNetGameSelectPicture::GetTNetGameSelectPictureClassNamePointer(void)
+CRuntimeClass * __thiscall
+TNetGameSelectPicture::GetTEventHandlerClassNamePointer(TNetGameSelectPicture *this)
 
 {
-  return &PTR_s_TNetGameSelectPicture_006619c8;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00576B90
+// GHIDRA_NAME TNetGameSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TNetGameSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920(TNetGameSelectPicture *this)
+
+{
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  InitializeRuntimeSelectionCredentialsFromProviderAndConnect(this);
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00576BC0
-// GHIDRA_NAME TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-// GHIDRA_PROTO undefined HandleTNetGameSelectPictureCommandHostJoinCancelAndForward()
+// GHIDRA_NAME TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall
-TNetGameSelectPicture::HandleTNetGameSelectPictureCommandHostJoinCancelAndForward
-          (int *param_1,int param_2,int param_3,undefined4 param_4)
+TNetGameSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TNetGameSelectPicture *this)
 
 {
-  code *pcVar1;
-  int *piVar2;
-  undefined4 uVar3;
-  int iVar4;
+  int iVar1;
+  TNetGameSelectPicture_slot_0x04_0x04 *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined4 uVar4;
+  undefined3 extraout_var_00;
+  int in_stack_00000004;
+  int in_stack_00000008;
   
-  if (((param_2 == 0x14) || (param_2 == 10)) || (param_2 == 0x22)) {
-    iVar4 = *(int *)(param_3 + 0x1c);
-    if (iVar4 == 0x636e636c) {
+  if (((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22)) {
+    iVar1 = *(int *)(in_stack_00000008 + 0x1c);
+    if (iVar1 == 0x636e636c) {
       ResetGameFlowStateAndPostTurnEvent5DCAlt();
     }
-    else if (iVar4 == 0x686f7374) {
+    else if (iVar1 == 0x686f7374) {
       AssignStringAtB4FromB0AndResetState40();
     }
-    else if (iVar4 == 0x6a6f696e) {
-      pcVar1 = *(code **)(*param_1 + 0x94);
-      piVar2 = (int *)(*pcVar1)(0x67616d65);
-      iVar4 = *piVar2;
-      (**(code **)(iVar4 + 0xc))();
-      uVar3 = (**(code **)(iVar4 + 0x1c4))();
-      iVar4 = (*pcVar1)(uVar3);
-      ApplyJoinGameSelectionAndPostTurnEvent5E4(*(undefined4 *)(iVar4 + 0x3c));
+    else if (iVar1 == 0x6a6f696e) {
+      pTVar2 = this->vftable[0x12].slot_0x04;
+      uVar3 = (*pTVar2)(0x67616d65);
+      iVar1 = *(int *)CONCAT31(extraout_var,uVar3);
+      (**(code **)(iVar1 + 0xc))();
+      uVar4 = (**(code **)(iVar1 + 0x1c4))();
+      uVar3 = (*pTVar2)(uVar4);
+      ApplyJoinGameSelectionAndPostTurnEvent5E4
+                (*(undefined4 *)(CONCAT31(extraout_var_00,uVar3) + 0x3c));
     }
   }
-  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
   return;
 }
 

@@ -5,28 +5,45 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004AA360
 // GHIDRA_NAME TShipLine::SetArmyUnitLineActiveFlagAndNotify
-// GHIDRA_PROTO undefined SetArmyUnitLineActiveFlagAndNotify()
+// GHIDRA_PROTO undefined __thiscall SetArmyUnitLineActiveFlagAndNotify(void)
 
-void __thiscall
-TShipLine::SetArmyUnitLineActiveFlagAndNotify(int *param_1,char param_2,undefined4 param_3)
+void __thiscall TShipLine::SetArmyUnitLineActiveFlagAndNotify(TShipLine *this)
 
 {
-  if ((char)param_1[0x21] != param_2) {
-    *(char *)(param_1 + 0x21) = param_2;
-    (**(code **)(*param_1 + 0x1cc))(param_3);
+  char in_stack_00000004;
+  
+  if (this[4].field_0x14 != in_stack_00000004) {
+    this[4].field_0x14 = in_stack_00000004;
+    (*this->vftable[0x39].slot_0x04)();
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00564F90
+// GHIDRA_NAME TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00564f90(void)
+
+TShipLine * __thiscall TShipLine::WrapperFor_FreeHeapBufferIfNotNull_At00564f90(TShipLine *this)
+
+{
+  byte in_stack_00000004;
+  
+  WrapperFor_FreeHeapBufferIfNotNull_At00564f90_Impl();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565030
 // GHIDRA_NAME TShipLine::CreateTShipLineInstance
 // GHIDRA_PROTO undefined CreateTShipLineInstance()
 
-undefined4 * TShipLine::CreateTShipLineInstance(void)
+TLineData * TShipLine::CreateTShipLineInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TLineData *this;
+  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -36,47 +53,48 @@ undefined4 * TShipLine::CreateTShipLineInstance(void)
   puStack_8 = &LAB_0063593a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x1c);
+  this = (TLineData *)AllocateWithFallbackHandler(0x1c);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TLineData::ConstructTLineDataBaseState();
-    *puVar1 = &PTR_LAB_0065cde8;
-    puVar2 = puVar1;
+  pTVar1 = (TLineData *)0x0;
+  if (this != (TLineData *)0x0) {
+    TLineData::ConstructTLineDataBaseState(this);
+    this->vftable = (TLineDataVtbl *)&TShipLineVtbl_0065cde8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005650A0
-// GHIDRA_NAME TShipLine::GetTShipLineClassNamePointer
-// GHIDRA_PROTO undefined GetTShipLineClassNamePointer()
+// GHIDRA_NAME TShipLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TShipLine::GetTShipLineClassNamePointer(void)
+CRuntimeClass * __thiscall TShipLine::GetTLineDataClassNamePointer(TShipLine *this)
 
 {
-  return &PTR_s_TShipLine_0065c868;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00565100
-// GHIDRA_NAME TShipLine::ConstructTShipLineBaseState
-// GHIDRA_PROTO undefined ConstructTShipLineBaseState()
+// GHIDRA_NAME TShipLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
 
-void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,undefined4 param_3)
+void __thiscall TShipLine::OrphanRetStub_0056f460(TShipLine *this)
 
 {
-  TView *this;
-  int *piVar1;
-  int iVar2;
+  TView *this_00;
+  TArmyCheckBox *this_01;
+  int iVar1;
   undefined4 extraout_ECX;
   undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
   TView *pTStack_54;
   undefined4 *puStack_50;
   TView **ppTStack_4c;
-  int iStack_48;
+  undefined1 *puStack_48;
   undefined1 *puStack_44;
   undefined4 uStack_40;
-  int iStack_3c;
+  CString CStack_3c;
   TView *local_24;
   undefined4 local_20;
   undefined4 local_1c;
@@ -85,91 +103,90 @@ void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,u
   undefined1 *local_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  int local_4;
+  TClickZone *local_4;
   
-  local_4 = 0xffffffff;
+  local_4 = (TClickZone *)0xffffffff;
   puStack_8 = &LAB_00635976;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  local_1c = *(undefined4 *)(param_2 + 0x84);
-  iStack_3c = 0x68;
+  local_1c = *(undefined4 *)(in_stack_00000004 + 0x84);
+  CStack_3c.m_pchData = (char *)0x68;
   uStack_40 = 0x565133;
-  this = (TView *)AllocateWithFallbackHandler();
-  local_4 = 0;
-  if (this == (TView *)0x0) {
-    this = (TView *)0x0;
+  this_00 = (TView *)AllocateWithFallbackHandler();
+  local_4 = (TClickZone *)0x0;
+  if (this_00 == (TView *)0x0) {
+    this_00 = (TView *)0x0;
   }
   else {
-    iStack_3c = 0x56514d;
-    local_24 = this;
-    TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_0065ce28;
+    CStack_3c.m_pchData = (char *)0x56514d;
+    local_24 = this_00;
+    TView::thunk_ConstructTViewBaseState(this_00);
+    this_00->vftable = (TViewVtbl *)&TShipViewVtbl_0065ce28;
   }
-  local_24 = *(TView **)(param_1 + 0x10);
-  iVar2 = *(int *)(param_1 + 0x18);
-  iStack_3c = 0;
+  local_24 = *(TView **)&this->field_0x10;
+  iVar1 = *(int *)&this->field_0x18;
+  CStack_3c.m_pchData = (char *)0x0;
   uStack_40 = 5;
-  iStack_48 = param_1 + 8;
+  puStack_48 = &this->field_0x8;
   puStack_44 = (undefined1 *)0x5;
-  ppTStack_4c = (TView **)param_3;
-  puStack_50 = (undefined4 *)param_2;
   pTStack_54 = (TView *)0x0;
-  local_4 = 0xffffffff;
+  local_4 = (TClickZone *)0xffffffff;
   thunk_InitializeUiResourceEntryFrameAndParent();
-  iStack_3c = 0x94;
-  this[1].vftable = local_24;
-  this[1].field04 = iVar2;
+  CStack_3c.m_pchData = (char *)0x94;
+  this_00[1].vftable = (TViewVtbl *)local_24;
+  this_00[1].field04 = iVar1;
   uStack_40 = 0x565199;
-  piVar1 = (int *)AllocateWithFallbackHandler();
-  local_4 = 1;
-  if (piVar1 == (int *)0x0) {
-    piVar1 = (int *)0x0;
+  this_01 = (TArmyCheckBox *)AllocateWithFallbackHandler();
+  local_4 = (TClickZone *)0x1;
+  if (this_01 == (TArmyCheckBox *)0x0) {
+    this_01 = (TArmyCheckBox *)0x0;
   }
   else {
-    iStack_3c = 0x5651b5;
-    TControl::thunk_ConstructUiCommandTagResourceEntryBase();
-    *piVar1 = (int)&PTR_LAB_0064cec0;
-    piVar1[0x22] = 0;
-    piVar1[0x24] = 0;
-    piVar1[0x23] = 0;
-    *(undefined1 *)(piVar1 + 0x21) = 0;
+    CStack_3c.m_pchData = (char *)0x5651b5;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase((TControl *)this_01);
+    this_01->vftable = &TArmyCheckBoxVtbl_0064cec0;
+    *(undefined4 *)&this_01->field_0x88 = 0;
+    *(undefined4 *)&this_01->field_0x90 = 0;
+    *(undefined4 *)&this_01->field_0x8c = 0;
+    this_01->field_0x84 = 0;
   }
-  local_4 = 0xffffffff;
+  local_4 = (TClickZone *)0xffffffff;
   local_24 = (TView *)0x50;
   local_20 = 0x2d;
-  iStack_3c = (int)*(short *)(&DAT_006985e8 + *(short *)(*(int *)(param_1 + 0x10) + 4) * 2);
+  CStack_3c.m_pchData =
+       (char *)(int)*(short *)(&DAT_006985e8 + *(short *)(*(int *)&this->field_0x10 + 4) * 2);
   uStack_40 = local_1c;
   puStack_44 = (undefined1 *)0x5;
   ppTStack_4c = &local_24;
-  iStack_48 = 5;
+  puStack_48 = (undefined1 *)0x5;
   puStack_50 = &local_14;
   local_14 = 0;
   local_10 = (undefined1 *)0x0;
-  pTStack_54 = this;
-  TArmyCheckBox::ConstructTArmyCheckBoxBaseState();
-  piVar1[7] = 0x63686563;
-  piVar1[0x18] = 4;
-  iStack_3c = 0;
+  pTStack_54 = this_00;
+  TArmyCheckBox::ConstructTArmyCheckBoxBaseState(this_01);
+  this_01->controlTag = 0x63686563;
+  *(undefined4 *)&this_01->field_0x60 = 4;
+  CStack_3c.m_pchData = (char *)0x0;
   uStack_40 = CONCAT31((int3)((uint)extraout_ECX >> 8),
-                       *(undefined1 *)(*(int *)(param_1 + 0x14) + 0xc));
+                       *(undefined1 *)(*(int *)&this->field_0x14 + 0xc));
   puStack_44 = (undefined1 *)0x565245;
-  (**(code **)(*piVar1 + 0x1c8))();
+  (*this_01->vftable[0x39].GetTEventHandlerClassNamePointer)();
   puStack_44 = (undefined1 *)0x56524e;
-  InitializeSharedStringRefFromEmpty(&stack0xffffffd0);
+  CString::CString((CString *)&stack0xffffffd0);
   puStack_44 = (undefined1 *)0x88;
   uStack_c = 2;
-  iStack_48 = 0x565260;
-  local_4 = AllocateWithFallbackHandler();
+  puStack_48 = (undefined1 *)0x565260;
+  local_4 = (TClickZone *)AllocateWithFallbackHandler();
   uStack_c._0_1_ = 3;
-  if (local_4 == 0) {
-    iVar2 = 0;
+  if (local_4 == (TClickZone *)0x0) {
+    iVar1 = 0;
   }
   else {
     puStack_44 = (undefined1 *)0x565277;
-    iVar2 = TClickZone::thunk_ConstructUiCommandTagResourceEntry();
+    iVar1 = TClickZone::thunk_ConstructUiCommandTagResourceEntry(local_4);
   }
   puStack_44 = (undefined1 *)0x0;
-  iStack_48 = 4;
+  puStack_48 = (undefined1 *)0x4;
   puStack_50 = &local_1c;
   ppTStack_4c = (TView **)0x4;
   pTStack_54 = (TView *)&local_24;
@@ -178,90 +195,21 @@ void __thiscall TShipLine::ConstructTShipLineBaseState(int param_1,int param_2,u
   local_18 = 0x18;
   local_24 = (TView *)0x40;
   local_20 = 0;
-  thunk_InitializeUiResourceEntryFrameAndParent(0,this);
-  *(undefined4 *)(iVar2 + 0x1c) = 0x6e616d65;
+  thunk_InitializeUiResourceEntryFrameAndParent(0,this_00);
+  *(undefined4 *)(iVar1 + 0x1c) = 0x6e616d65;
   puStack_44 = &stack0xffffffd0;
-  iStack_48 = 4;
+  puStack_48 = (undefined1 *)0x4;
   ppTStack_4c = (TView **)0x2746;
   puStack_50 = (undefined4 *)0x5652d7;
-  (**(code **)(*g_pLocalizationTable + 0x84))();
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
   local_10 = (undefined1 *)&pTStack_54;
-  puStack_50 = (undefined4 *)iVar2;
-  thunk_AssignStringSharedRefAndReturnThis(&iStack_3c);
+  puStack_50 = (undefined4 *)iVar1;
+  thunk_AssignStringSharedRefAndReturnThis(&CStack_3c);
   InitializeAndRunMainRoutine();
   local_18 = 0xffffffff;
   puStack_50 = (undefined4 *)0x565302;
-  ReleaseSharedStringRefIfNotEmpty(&iStack_3c);
+  CString::~CString(&CStack_3c);
   *unaff_FS_OFFSET = local_20;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005653B0
-// GHIDRA_NAME TShipLine::DestructTShipLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTShipLineAndMaybeFree()
-
-TView * __thiscall TShipLine::DestructTShipLineAndMaybeFree(TView *param_1,byte param_2)
-
-{
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005658D0
-// GHIDRA_NAME TShipLine::HandleEngineerOrderDialogCheckOrNameCommandAndForward
-// GHIDRA_PROTO undefined HandleEngineerOrderDialogCheckOrNameCommandAndForward()
-
-void __thiscall
-TShipLine::HandleEngineerOrderDialogCheckOrNameCommandAndForward
-          (int param_1,undefined4 param_2,int param_3,undefined4 param_4)
-
-{
-  int *piVar1;
-  short sVar2;
-  void *pvVar3;
-  int iVar4;
-  undefined2 extraout_var;
-  int iVar5;
-  short sVar6;
-  
-  if (*(int *)(param_3 + 0x1c) == 0x63686563) {
-    pvVar3 = ObjectPool::FindMissionOrderNodeById
-                       (*(ObjectPool **)(*(int *)(param_1 + 100) + 0x10),*(int *)(param_1 + 0x60));
-    if (*(char *)((int)pvVar3 + 0xc) == '\0') {
-      SetTaskForceOrderSelectionByNodeId(*(undefined4 *)(param_1 + 0x60),1);
-      sVar6 = 1;
-    }
-    else {
-      SetTaskForceOrderSelectionByNodeId(*(undefined4 *)(param_1 + 0x60),0);
-      sVar6 = -1;
-    }
-    piVar1 = *(int **)(*(int *)(g_pUiRuntimeContext + 0xf0) + 0xb0 +
-                      *(short *)(*(int *)(g_pUiRuntimeContext + 0xf0) + 0x96) * 4);
-    if (piVar1 != (int *)0x0) {
-      iVar4 = *piVar1;
-      sVar2 = GetOrderNodeDescriptorWord20ByResourceType();
-      iVar4 = (**(code **)(iVar4 + 0x94))(sVar2 + 0x636c7330);
-      if (sVar6 < 1) {
-        if ((sVar6 < 0) && (0 < *(short *)(iVar4 + 0x94))) {
-          iVar5 = CONCAT22(extraout_var,*(short *)(iVar4 + 0x94)) + -1;
-          *(short *)(iVar4 + 0x94) = (short)iVar5;
-          (**(code **)(**(int **)(iVar4 + 0x90) + 0x1c4))(iVar5,1);
-        }
-      }
-      else if (*(short *)(iVar4 + 0x94) < *(short *)(iVar4 + 0x88)) {
-        iVar5 = CONCAT22(extraout_var,*(short *)(iVar4 + 0x94)) + 1;
-        *(short *)(iVar4 + 0x94) = (short)iVar5;
-        (**(code **)(**(int **)(iVar4 + 0x90) + 0x1c4))(iVar5,1);
-      }
-    }
-  }
-  else if (*(int *)(param_3 + 0x1c) == 0x6e616d65) {
-    RunEngineerOrderNameEditDialogAndApply();
-  }
-  thunk_ForwardEngineerDialogCommandToChildSlot40(param_2,param_3,param_4);
   return;
 }
 

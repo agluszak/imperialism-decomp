@@ -7,10 +7,10 @@
 // GHIDRA_NAME TPlacard::CreateTPlacardInstance
 // GHIDRA_PROTO undefined CreateTPlacardInstance()
 
-undefined4 * TPlacard::CreateTPlacardInstance(void)
+thunk_TPictureButton * TPlacard::CreateTPlacardInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,24 +20,24 @@ undefined4 * TPlacard::CreateTPlacardInstance(void)
   puStack_8 = &LAB_00637b3a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00667218;
-    *(undefined2 *)(puVar1 + 0x24) = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TPlacardVtbl **)this = &TPlacardVtbl_00667218;
+    *(undefined2 *)(this + 0x90) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058B9F0
-// GHIDRA_NAME TPlacard::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TPlacard::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-int * TPlacard::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TPlacard::GetTEventHandlerClassNamePointer(TPlacard *this)
 
 {
   return &g_pClassDescTPlacard;
@@ -45,73 +45,74 @@ int * TPlacard::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BA10
 // GHIDRA_NAME TPlacard::TPlacard
-// GHIDRA_PROTO undefined TPlacard()
+// GHIDRA_PROTO undefined __thiscall TPlacard(void)
 
-undefined4 * __fastcall TPlacard::TPlacard(undefined4 *param_1)
+TPlacard * __thiscall TPlacard::TPlacard(TPlacard *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00667218;
-  *(undefined2 *)(param_1 + 0x24) = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TPlacardVtbl_00667218;
+  *(undefined2 *)&this->field_0x90 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BA40
 // GHIDRA_NAME TPlacard::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TPlacard::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TPlacard * __thiscall TPlacard::_scalar_deleting_destructor_(TPlacard *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BAB0
-// GHIDRA_NAME TPlacard::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0
-// GHIDRA_PROTO undefined WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0()
+// GHIDRA_NAME TPlacard::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall
-TPlacard::WrapperFor_thunk_NoOpUiLifecycleHook_At0058bab0(int *param_1,undefined4 param_2)
+void __thiscall TPlacard::OrphanLeaf_NoCall_Ins07_004d8920(TPlacard *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook(param_2);
-  if ((short)param_1[0x24] == 0) {
-    (**(code **)(*param_1 + 0xa4))(0,1);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  if (*(short *)&this->field_0x90 == 0) {
+    (*this->vftable[0x14].slot_0x04)(0,1);
     return;
   }
-  (**(code **)(*param_1 + 0xa4))(1,1);
+  (*this->vftable[0x14].slot_0x04)(1,1);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BB50
 // GHIDRA_NAME TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
-// GHIDRA_PROTO undefined WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(void)
 
-void __thiscall
-TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
-          (int *param_1,short param_2,char param_3)
+void __thiscall TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50(TPlacard *this)
 
 {
+  short in_stack_00000004;
+  char in_stack_00000008;
   RECT local_20;
   tagRECT tStack_10;
   
-  if (param_2 != (short)param_1[0x24]) {
-    if (param_2 == 0) {
-      (**(code **)(*param_1 + 0xa4))(0,(int)param_3);
+  if (in_stack_00000004 != *(short *)&this->field_0x90) {
+    if (in_stack_00000004 == 0) {
+      (*this->vftable[0x14].slot_0x04)(0,(int)in_stack_00000008);
     }
-    else if ((short)param_1[0x24] == 0) {
-      (**(code **)(*param_1 + 0xa4))(1,(int)param_3);
+    else if (*(short *)&this->field_0x90 == 0) {
+      (*this->vftable[0x14].slot_0x04)(1,(int)in_stack_00000008);
     }
-    *(short *)(param_1 + 0x24) = param_2;
-    if (param_3 != '\0') {
-      local_20.top = param_1[0xe] + -0xc;
-      local_20.left = (LONG)(short)((short)(param_1[0xd] / 2) + -10);
+    *(short *)&this->field_0x90 = in_stack_00000004;
+    if (in_stack_00000008 != '\0') {
+      local_20.top = this->field38 + -0xc;
+      local_20.left = (LONG)(short)((short)(this->field34 / 2) + -10);
       local_20.right = local_20.left + 0x14;
-      local_20.bottom = param_1[0xe] + -1;
+      local_20.bottom = this->field38 + -1;
       CopyRect(&tStack_10,&local_20);
       thunk_InvalidateCityDialogRectRegion(&tStack_10,1);
     }
@@ -120,15 +121,15 @@ TPlacard::WrapperFor_thunk_InvalidateCityDialogRectRegion_At0058bb50
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BC60
-// GHIDRA_NAME TPlacard::RenderPlacardValueTextWithShadow
-// GHIDRA_PROTO undefined RenderPlacardValueTextWithShadow()
+// GHIDRA_NAME TPlacard::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
 
-void __fastcall TPlacard::RenderPlacardValueTextWithShadow(int param_1)
+void __thiscall TPlacard::OrphanTiny_ReturnZero_0048a730(TPlacard *this)
 
 {
   int iVar1;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 local_10 [4];
+  CString local_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -137,19 +138,19 @@ void __fastcall TPlacard::RenderPlacardValueTextWithShadow(int param_1)
   puStack_8 = &LAB_00637b58;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeSharedStringRefFromEmpty(local_10);
+  CString::CString(&local_10);
   local_4 = 0;
-  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay();
+  THQButton::thunk_RenderHintHelperWithCtrlModifierOverlay((THQButton *)this);
   ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0,10);
-  FormatStringWithVarArgsToSharedRef(local_10,&g_szDecimalFormat);
-  if (*(short *)(param_1 + 0x90) < 10) {
-    iVar1 = *(int *)(param_1 + 0x34) / 2 + -2;
+  FormatStringWithVarArgsToSharedRef(&local_10,&g_szDecimalFormat);
+  if (*(short *)&this->field_0x90 < 10) {
+    iVar1 = this->field34 / 2 + -2;
   }
-  else if (*(short *)(param_1 + 0x90) < 100) {
-    iVar1 = *(int *)(param_1 + 0x34) / 2 + -6;
+  else if (*(short *)&this->field_0x90 < 100) {
+    iVar1 = this->field34 / 2 + -6;
   }
   else {
-    iVar1 = *(int *)(param_1 + 0x34) / 2 + -10;
+    iVar1 = this->field34 / 2 + -10;
   }
   thunk_MapUiThemeCodeToStyleFlags(0x2b6c);
   thunk_MapUiThemeCodeToStyleFlags(0x2b67);
@@ -161,7 +162,7 @@ void __fastcall TPlacard::RenderPlacardValueTextWithShadow(int param_1)
   THQButton::thunk_DrawTextWithCachedQuickDrawStyleState();
   SetQuickDrawFillColor();
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(local_10);
+  CString::~CString(&local_10);
   *unaff_FS_OFFSET = local_c;
   return;
 }

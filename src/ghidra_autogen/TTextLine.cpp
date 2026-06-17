@@ -22,14 +22,14 @@ undefined4 * TTextLine::CreateTTextLineInstance(void)
   *unaff_FS_OFFSET = &local_c;
   puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x20);
   if (puVar1 != (undefined4 *)0x0) {
-    *puVar1 = &PTR_LAB_0065e230;
+    *puVar1 = &TLineDataVtbl_0065e230;
     local_4 = 1;
-    InitializeSharedStringRefFromEmpty(puVar1 + 4);
+    CString::CString((CString *)(puVar1 + 4));
     *(undefined1 *)((int)puVar1 + 0x1a) = 0;
     *(undefined1 *)((int)puVar1 + 0x1b) = 0;
     *(undefined1 *)(puVar1 + 7) = 0;
     *(undefined1 *)((int)puVar1 + 0x1d) = 0;
-    *puVar1 = &PTR_LAB_0065e4c0;
+    *puVar1 = &TTextLineVtbl_0065e4c0;
     *unaff_FS_OFFSET = local_c;
     return puVar1;
   }
@@ -38,20 +38,20 @@ undefined4 * TTextLine::CreateTTextLineInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570270
-// GHIDRA_NAME TTextLine::GetTTextLineClassNamePointer
-// GHIDRA_PROTO undefined GetTTextLineClassNamePointer()
+// GHIDRA_NAME TTextLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TTextLine::GetTTextLineClassNamePointer(void)
+CRuntimeClass * __thiscall TTextLine::GetTLineDataClassNamePointer(TTextLine *this)
 
 {
-  return &PTR_s_TTextLine_0065e1d0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570290
 // GHIDRA_NAME TTextLine::ConstructTTextLineBaseState
-// GHIDRA_PROTO undefined ConstructTTextLineBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTextLineBaseState(void)
 
-undefined4 * __fastcall TTextLine::ConstructTTextLineBaseState(undefined4 *param_1)
+TTextLine * __thiscall TTextLine::ConstructTTextLineBaseState(TTextLine *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -62,29 +62,75 @@ undefined4 * __fastcall TTextLine::ConstructTTextLineBaseState(undefined4 *param
   puStack_8 = &LAB_006362e8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_LAB_0065e230;
+  this->vftable = (TTextLineVtbl *)&TLineDataVtbl_0065e230;
   local_4 = 0;
-  InitializeSharedStringRefFromEmpty(param_1 + 4);
-  *(undefined1 *)((int)param_1 + 0x1a) = 0;
-  *(undefined1 *)((int)param_1 + 0x1b) = 0;
-  *(undefined1 *)(param_1 + 7) = 0;
-  *(undefined1 *)((int)param_1 + 0x1d) = 0;
-  *param_1 = &PTR_LAB_0065e4c0;
+  CString::CString((CString *)&this->field_0x10);
+  this->field_0x1a = 0;
+  this->field_0x1b = 0;
+  this->field_0x1c = 0;
+  this->field_0x1d = 0;
+  this->vftable = &TTextLineVtbl_0065e4c0;
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00570310
 // GHIDRA_NAME TTextLine::DestructTTextLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTextLineAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTTextLineAndMaybeFree(void)
 
-undefined4 __thiscall TTextLine::DestructTTextLineAndMaybeFree(undefined4 param_1,byte param_2)
+TTextLine * __thiscall TTextLine::DestructTTextLineAndMaybeFree(TTextLine *this)
 
 {
+  byte in_stack_00000004;
+  
   WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00570500
+// GHIDRA_NAME TTextLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+
+void __thiscall TTextLine::OrphanRetStub_0056f460(TTextLine *this)
+
+{
+  int iVar1;
+  TStaticText *this_00;
+  int *piVar2;
+  undefined2 extraout_var;
+  int *unaff_FS_OFFSET;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  undefined1 *puVar3;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063632a;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  this_00 = (TStaticText *)AllocateWithFallbackHandler(0x94);
+  local_4 = 0;
+  if (this_00 == (TStaticText *)0x0) {
+    piVar2 = (int *)0x0;
+  }
+  else {
+    piVar2 = (int *)TStaticText::thunk_ConstructUiTextResourceEntryBase(this_00);
+  }
+  local_4 = 0xffffffff;
+  InitializeTextEntryBaseAndOptionalStringResource
+            (in_stack_00000004,in_stack_00000008,&this->field_0x8,5,5,0xffffffff,0);
+  iVar1 = *piVar2;
+  puVar3 = &this->field_0x10;
+  (**(code **)(iVar1 + 0x1c8))(puVar3,0);
+  (**(code **)(iVar1 + 0x1b4))(&this->field_0x14,0);
+  (**(code **)(iVar1 + 0x1c4))(CONCAT22(extraout_var,*(undefined2 *)&this->field_0x1e),0);
+  (**(code **)(iVar1 + 0xe4))();
+  *unaff_FS_OFFSET = (int)puVar3;
+  return;
 }
 

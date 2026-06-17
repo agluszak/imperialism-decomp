@@ -26,29 +26,19 @@ undefined4 * TaskList::CreateTaskListInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList(10);
-    *puVar1 = &PTR_LAB_0066aa48;
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &TTaskListVtbl_0066aa48;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
   return puVar2;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005AEB70
-// GHIDRA_NAME TaskList::GetTaskListClassNamePointer
-// GHIDRA_PROTO undefined GetTaskListClassNamePointer()
-
-undefined ** TaskList::GetTaskListClassNamePointer(void)
-
-{
-  return &PTR_s_TTaskList_0066a8f8;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEB90
 // GHIDRA_NAME TaskList::ConstructTaskListBaseState
-// GHIDRA_PROTO undefined ConstructTaskListBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTaskListBaseState(void)
 
-undefined4 * __fastcall TaskList::ConstructTaskListBaseState(undefined4 *param_1)
+TaskList * __thiscall TaskList::ConstructTaskListBaseState(TaskList *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -59,33 +49,19 @@ undefined4 * __fastcall TaskList::ConstructTaskListBaseState(undefined4 *param_1
   puStack_8 = &LAB_00638908;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &RefCountedObjectBase::_vftable_;
+  *(undefined ***)this = &RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  TGreatPower::CPtrList(10);
-  *param_1 = &PTR_LAB_0066aa48;
+  TGreatPower::CPtrList((TGreatPower *)(this + 4));
+  *(TTaskListVtbl **)this = &TTaskListVtbl_0066aa48;
   *unaff_FS_OFFSET = local_c;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005AEC00
-// GHIDRA_NAME TaskList::DestructTaskListAndMaybeFree
-// GHIDRA_PROTO undefined DestructTaskListAndMaybeFree()
-
-undefined4 __thiscall TaskList::DestructTaskListAndMaybeFree(undefined4 param_1,byte param_2)
-
-{
-  WrapperFor_DestructCPtrListBaseState_At005aec30();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
-  }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AEC30
 // GHIDRA_NAME TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30
-// GHIDRA_PROTO undefined WrapperFor_DestructCPtrListBaseState_At005aec30()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_DestructCPtrListBaseState_At005aec30(void)
 
-void __fastcall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(undefined4 *param_1)
+void __thiscall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(TaskList *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -98,7 +74,7 @@ void __fastcall TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30(undefi
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
   DestructCPtrListBaseState();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
 }

@@ -5,38 +5,100 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00401E1F
 // GHIDRA_NAME TMultiplayerMgr::thunk_ActivateCityProductionViewIfAllowed
-// GHIDRA_PROTO undefined thunk_ActivateCityProductionViewIfAllowed()
+// GHIDRA_PROTO undefined __thiscall thunk_ActivateCityProductionViewIfAllowed(void)
 
-void TMultiplayerMgr::thunk_ActivateCityProductionViewIfAllowed(void)
+void __thiscall TMultiplayerMgr::thunk_ActivateCityProductionViewIfAllowed(TMultiplayerMgr *this)
 
 {
-  ActivateCityProductionViewIfAllowed();
+  TSoundPlayer::_scalar_deleting_destructor_((TSoundPlayer *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542650
 // GHIDRA_NAME TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer
-// GHIDRA_PROTO undefined GetTMultiplayerMgrClassNamePointer()
+// GHIDRA_PROTO undefined __thiscall GetTMultiplayerMgrClassNamePointer(void)
 
-undefined ** TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer(void)
+CRuntimeClass * __thiscall
+TMultiplayerMgr::GetTMultiplayerMgrClassNamePointer(TMultiplayerMgr *this)
 
 {
-  return &PTR_s_TMultiplayerMgr_0065bf78;
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00542670
+// GHIDRA_NAME TMultiplayerMgr::ConstructMultiplayerManager
+// GHIDRA_PROTO undefined4 * __thiscall ConstructMultiplayerManager(astruct_11 * this_obj)
+
+undefined4 * __thiscall
+TMultiplayerMgr::ConstructMultiplayerManager(TMultiplayerMgr *this,astruct_11 *this_obj)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00634793;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  TEventHandler::thunk_InitializeUiResourceEntryBaseHeaderDefaults((TEventHandler *)this);
+  uStack_4 = 0;
+  CallCallbackRepeatedly(&this->field_0x20,8,4,&LAB_00405209);
+  uStack_4._0_1_ = 1;
+  CString::CString((CString *)&this->field_0x74);
+  uStack_4._0_1_ = 2;
+  CallCallbackRepeatedly
+            (&this->field_0x78,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
+  uStack_4._0_1_ = 3;
+  CallCallbackRepeatedly
+            (&this->field_0x94,4,7,WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970);
+  uStack_4._0_1_ = 4;
+  CString::CString((CString *)&this->field_0xb0);
+  uStack_4._0_1_ = 5;
+  CString::CString((CString *)&this->field_0xb4);
+  uStack_4 = CONCAT31(uStack_4._1_3_,6);
+  CString::CString((CString *)&this->field_0xb8);
+  this->vftable = &TMultiplayerMgrVtbl_0065c030;
+  *(undefined4 *)&this->field_0x40 = 0;
+  *(undefined4 *)&this->field_0x6c = 0;
+  *(undefined4 *)&this->field_0x70 = 0;
+  *(undefined4 *)&this->field_0xd8 = 0x6e616461;
+  this->field_0xf4 = 0;
+  *unaff_FS_OFFSET = uStack_c;
+  return &this->vftable;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005427E0
+// GHIDRA_NAME TMultiplayerMgr::DeletingDestructMultiplayerManager
+// GHIDRA_PROTO undefined __thiscall DeletingDestructMultiplayerManager(void)
+
+TMultiplayerMgr * __thiscall
+TMultiplayerMgr::DeletingDestructMultiplayerManager(TMultiplayerMgr *this)
+
+{
+  byte in_stack_00000004;
+  
+  DestructMultiplayerManager();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542900
 // GHIDRA_NAME TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext
-// GHIDRA_PROTO undefined InitializeMultiplayerManagerForSessionContext()
+// GHIDRA_PROTO undefined __thiscall InitializeMultiplayerManagerForSessionContext(void)
 
 void __thiscall
-TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int param_1,CString param_2)
+TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(TMultiplayerMgr *this)
 
 {
-  undefined4 *this;
-  CString *src_ref;
-  int iVar1;
-  void *this_00;
+  undefined1 *puVar1;
+  int iVar2;
+  CString *this_00;
   undefined4 *unaff_FS_OFFSET;
+  CString in_stack_00000004;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -46,74 +108,110 @@ TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int param_1,CStri
   puStack_8 = &LAB_0063487a;
   *unaff_FS_OFFSET = &local_c;
   InitializePacketHeaderFields_Tag20202020(0);
-  *(int *)(param_1 + 0x10) = param_2.data_ptr;
-  *(undefined4 *)(param_1 + 0x44) = 0;
-  *(undefined1 *)(param_1 + 0xe4) = 0;
-  *(undefined1 *)(param_1 + 0x68) = 1;
-  *(undefined1 *)(param_1 + 0x69) = 1;
-  param_2.data_ptr = AllocateWithFallbackHandler(4);
+  *(char **)&this->field_0x10 = in_stack_00000004.m_pchData;
+  *(undefined4 *)&this->field_0x44 = 0;
+  this->field_0xe4 = 0;
+  this->field_0x68 = 1;
+  this->field_0x69 = 1;
+  in_stack_00000004.m_pchData = (char *)AllocateWithFallbackHandler(4);
   local_4 = 0;
-  if (param_2.data_ptr == 0) {
+  if ((TNetMgr *)in_stack_00000004.m_pchData == (TNetMgr *)0x0) {
     DAT_006a6014 = 0;
   }
   else {
-    DAT_006a6014 = TNetMgr::ConstructGlobalTurnEventQueueManager();
+    DAT_006a6014 = TNetMgr::ConstructGlobalTurnEventQueueManager
+                             ((TNetMgr *)in_stack_00000004.m_pchData);
   }
   local_4 = 0xffffffff;
   NoOpInitializeGlobalTurnEventQueueManager();
-  InitializeSharedStringRefFromEmpty(&param_2);
+  CString::CString(&stack0x00000004);
   local_4 = 1;
-  thunk_LoadUiStringResourceByGroupAndIndex(&param_2,0x2759,1);
-  this_00 = (void *)(param_1 + 0x94);
-  iVar1 = 7;
+  thunk_LoadUiStringResourceByGroupAndIndex(&stack0x00000004,0x2759,1);
+  this_00 = (CString *)&this->field_0x94;
+  iVar2 = 7;
   do {
-    *(undefined4 *)((int)this_00 + -0x4c) = 0;
-    *(undefined4 *)((int)this_00 + 0x28) = 0x756e6173;
-    AssignFromPtr(this_00,&param_2);
+    this_00[-0x13].m_pchData = (char *)0x0;
+    this_00[10].m_pchData = (char *)0x756e6173;
+    CString::AssignFromPtr(this_00,&stack0x00000004);
     AssignStringSharedRefFromPointer(this_00);
-    this_00 = (void *)((int)this_00 + 4);
-    iVar1 = iVar1 + -1;
-  } while (iVar1 != 0);
-  *(undefined4 *)(param_1 + 100) = 0;
-  *(undefined4 *)(param_1 + 0xec) = 0xffffffff;
-  *(undefined4 *)(param_1 + 0xf0) = 0xffffffff;
+    this_00 = this_00 + 1;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
+  *(undefined4 *)&this->field_0x64 = 0;
+  *(undefined4 *)&this->field_0xec = 0xffffffff;
+  *(undefined4 *)&this->field_0xf0 = 0xffffffff;
   ResetTurnEventQueueRuntimeRecordBuffer();
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&param_2);
-  InitializeSharedStringRefFromEmpty(&param_2);
-  src_ref = (CString *)(param_1 + 0xb0);
+  CString::~CString(&stack0x00000004);
+  CString::CString(&stack0x00000004);
+  puVar1 = &this->field_0xb0;
   local_4 = 2;
-  GenerateMappedFlavorTextByCurrentContextNation(src_ref);
-  LoadProfileStringAndAssignSharedRef(&param_2,s_PlayerName_0069801c,src_ref->data_ptr);
-  AssignFromPtr(src_ref,&param_2);
-  AssignFromPtr((void *)(param_1 + 0xb4),src_ref);
-  this = (undefined4 *)(param_1 + 0x74);
-  GenerateMappedFlavorTextByCurrentContextNation(this);
-  LoadProfileStringAndAssignSharedRef(&param_2,s_GameName_00698010,*this);
-  AssignFromPtr(this,&param_2);
+  GenerateMappedFlavorTextByCurrentContextNation(puVar1);
+  LoadProfileStringAndAssignSharedRef(&stack0x00000004,s_PlayerName_0069801c,*(undefined4 *)puVar1);
+  CString::AssignFromPtr((CString *)puVar1,&stack0x00000004);
+  CString::AssignFromPtr((CString *)&this->field_0xb4,(CString *)puVar1);
+  puVar1 = &this->field_0x74;
+  GenerateMappedFlavorTextByCurrentContextNation(puVar1);
+  LoadProfileStringAndAssignSharedRef(&stack0x00000004,s_GameName_00698010,*(undefined4 *)puVar1);
+  CString::AssignFromPtr((CString *)puVar1,&stack0x00000004);
   local_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&param_2);
+  CString::~CString(&stack0x00000004);
   *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00542B10
+// GHIDRA_NAME TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName
+// GHIDRA_PROTO undefined __thiscall ShutdownRuntimeSelectionAndPersistPlayerName(void)
+
+void __thiscall TMultiplayerMgr::ShutdownRuntimeSelectionAndPersistPlayerName(TMultiplayerMgr *this)
+
+{
+  undefined4 unaff_ESI;
+  undefined4 *unaff_FS_OFFSET;
+  CString local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00634898;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_10.m_pchData = (char *)this;
+  CString::StringSharedRef_AssignFromPtr(&local_10,(CString *)&this->field_0xb0);
+  local_4 = 0;
+  SaveSettingValueFromPointerByKey(&local_10,s_PlayerName_0069801c);
+  local_4 = 0xffffffff;
+  CString::~CString(&local_10);
+  (*g_pGlobalUiRootController->vftable[0x14].slot_0x04)(this,0);
+  g_pGameFlowState = (Config *)0x0;
+  (**(code **)(*DAT_006a6014 + 0x1c))();
+  DAT_006a6014 = (int *)0x0;
+  *(undefined4 *)&this->field_0x44 = 0;
+  TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject((TEventHandler *)this);
+  *unaff_FS_OFFSET = unaff_ESI;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542BE0
 // GHIDRA_NAME TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
-// GHIDRA_PROTO undefined InitializeNationStatusSlotsFromNationListAndEmitStartupEvents()
+// GHIDRA_PROTO undefined __thiscall InitializeNationStatusSlotsFromNationListAndEmitStartupEvents(void)
 
 void __thiscall
 TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
-          (int param_1,int *param_2)
+          (TMultiplayerMgr *this)
 
 {
   int *piVar1;
   code *pcVar2;
-  int iVar3;
+  TMultiplayerMgr *pTVar3;
   char cVar4;
-  undefined1 uVar5;
-  short sVar6;
+  undefined uVar5;
+  undefined1 uVar6;
   short sVar7;
   undefined4 uVar8;
+  undefined3 extraout_var;
   int iVar9;
   int *unaff_EBP;
   int iVar10;
@@ -121,35 +219,35 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
   undefined4 *puVar11;
   code **ppcVar12;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 uStack_6c;
+  int *in_stack_00000004;
+  CString CStack_6c;
   int *piStack_68;
-  int *piStack_64;
-  int *local_50;
+  undefined4 uStack_64;
+  CString local_50;
   code *local_4c;
   int iStack_48;
-  int local_44;
+  TMultiplayerMgr *local_44;
   undefined4 uStack_30;
   undefined4 uStack_28;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 uStack_4;
+  char *pcStack_4;
   
-  uStack_4 = 0xffffffff;
+  pcStack_4 = (char *)0xffffffff;
   puStack_8 = &LAB_006348b8;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  piStack_64 = param_2;
   piStack_68 = (int *)0x542c0c;
-  local_44 = param_1;
-  TradeControl::thunk_HandleCityDialogNoOpSlot18();
-  local_50 = &g_apNationStates;
-  puVar11 = (undefined4 *)(param_1 + 0xbc);
-  local_4c = *(code **)(*param_2 + 0x3c);
-  pcVar2 = *(code **)(*param_2 + 0x70);
+  local_44 = this;
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  local_50.m_pchData = (char *)g_apNationStates;
+  puVar11 = (undefined4 *)&this->field_0xbc;
+  local_4c = *(code **)(*in_stack_00000004 + 0x3c);
+  pcVar2 = *(code **)(*in_stack_00000004 + 0x70);
   do {
     piVar1 = puVar11 + -0x1d;
-    piStack_64 = (int *)0x4;
-    uStack_6c = 0x542c3a;
+    uStack_64 = 4;
+    CStack_6c.m_pchData = (char *)0x542c3a;
     piStack_68 = piVar1;
     (*local_4c)();
     if (*piVar1 == 0) {
@@ -163,189 +261,187 @@ TMultiplayerMgr::InitializeNationStatusSlotsFromNationListAndEmitStartupEvents
       *puVar11 = 0x64656164;
     }
     else {
-      uStack_6c = uStack_4;
+      CStack_6c.m_pchData = pcStack_4;
       cVar4 = thunk_IsNationSlotEligibleForEventProcessing();
       if (cVar4 == '\0') {
         *puVar11 = 0x64656361;
       }
     }
-    uStack_6c = 0x20;
+    CStack_6c.m_pchData = (char *)0x20;
     (*pcVar2)(puVar11 + -0x11);
     (*pcVar2)(puVar11 + -10,0x20);
-    iVar3 = local_44;
-    local_50 = unaff_EBP + 1;
+    pTVar3 = local_44;
+    local_50.m_pchData = (char *)(unaff_EBP + 1);
     puVar11 = puVar11 + 1;
-  } while ((int)local_50 < 0x6a438c);
-  piStack_64 = (int *)0x20;
-  piStack_68 = (int *)(local_44 + 0xb0);
-  uStack_6c = 0x542cbe;
+  } while ((int)local_50.m_pchData < 0x6a438c);
+  uStack_64 = 0x20;
+  piStack_68 = (int *)&local_44->field_0xb0;
+  CStack_6c.m_pchData = (char *)0x542cbe;
   (*pcVar2)();
-  uStack_6c = 0x542cc7;
-  InitializeSharedStringRefFromEmpty(&local_50);
-  uStack_6c = 0x20;
+  CStack_6c.m_pchData = (char *)0x542cc7;
+  CString::CString(&local_50);
+  CStack_6c.m_pchData = (char *)0x20;
   uStack_c = 0;
   (*pcVar2)(&local_50);
-  (*unaff_ESI)(iVar3 + 100,4);
-  (*unaff_ESI)(iVar3 + 0xe4,1);
-  (**(code **)(*DAT_006a6014 + 0x18))(param_2);
+  (*unaff_ESI)(&pTVar3->field_0x64,4);
+  (*unaff_ESI)(&pTVar3->field_0xe4,1);
+  (**(code **)(*DAT_006a6014 + 0x18))();
   uVar8 = FUN_00405a3d();
-  sVar6 = UiRuntimeContext::GetActiveNationId();
-  *(undefined4 *)(iVar3 + 0x48 + sVar6 * 4) = uVar8;
-  sVar6 = UiRuntimeContext::GetActiveNationId();
-  sVar7 = (**(code **)(*g_pLocalizationTable + 0x3c))();
-  uVar5 = UiRuntimeContext::GetActiveNationId();
-  local_50 = (int *)CONCAT31(local_50._1_3_,uVar5);
-  piStack_64 = (int *)0x1f;
+  sVar7 = UiRuntimeContext::GetActiveNationId();
+  *(undefined4 *)(&pTVar3->field_0x48 + sVar7 * 4) = uVar8;
+  sVar7 = UiRuntimeContext::GetActiveNationId();
+  uVar5 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar6 = UiRuntimeContext::GetActiveNationId();
+  local_50.m_pchData._0_1_ = uVar6;
+  uStack_64 = 0x1f;
   SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(0xffffffff);
   local_4c = (code *)0x7265706f;
-  iStack_48 = (int)sVar6 + sVar7 * 8;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
-  if (g_pLocalizationTable[0x11] == 1) {
-    *(undefined4 *)(iVar3 + 0xd8) = 0x696e6974;
+  iStack_48 = (int)sVar7 + (short)CONCAT31(extraout_var,uVar5) * 8;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_64,0);
+  if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    *(undefined4 *)&pTVar3->field_0xd8 = 0x696e6974;
     NoOpDialogModeTagChangedHook(1);
   }
-  sVar6 = UiRuntimeContext::GetActiveNationId();
-  iVar10 = (int)sVar6;
+  sVar7 = UiRuntimeContext::GetActiveNationId();
+  iVar10 = (int)sVar7;
   if (iVar10 == -1) {
-    iVar10 = (int)*(char *)(iVar3 + 0xdc);
+    iVar10 = (int)(char)pTVar3->field_0xdc;
   }
-  *(undefined4 *)(iVar3 + 0xbc + iVar10 * 4) = 0x62757379;
-  uVar5 = UiRuntimeContext::GetActiveNationId();
-  piStack_64 = (int *)0x25;
+  *(undefined4 *)(&pTVar3->field_0xbc + iVar10 * 4) = 0x62757379;
+  uVar6 = UiRuntimeContext::GetActiveNationId();
+  uStack_64 = 0x25;
   ppcVar12 = &local_4c;
   for (iVar9 = 7; iVar9 != 0; iVar9 = iVar9 + -1) {
     *ppcVar12 = (code *)0x756e6b6e;
     ppcVar12 = ppcVar12 + 1;
   }
   (&local_4c)[iVar10] = (code *)0x62757379;
-  local_50._0_1_ = uVar5;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,0);
-  *(undefined4 *)(iVar3 + 0xd8) = 0x676f696e;
-  sVar6 = UiRuntimeContext::GetActiveNationId();
-  uVar5 = UiRuntimeContext::GetActiveNationId();
-  local_50 = (int *)CONCAT31(local_50._1_3_,uVar5);
-  piStack_64 = (int *)0x1f;
+  local_50.m_pchData._0_1_ = uVar6;
+  thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_64,0);
+  *(undefined4 *)&pTVar3->field_0xd8 = 0x676f696e;
+  sVar7 = UiRuntimeContext::GetActiveNationId();
+  local_50.m_pchData._0_1_ = UiRuntimeContext::GetActiveNationId();
+  uStack_64 = 0x1f;
   local_4c = (code *)0x6e616d65;
   iStack_48 = 0xffffffff;
-  thunk_EnqueueOrSendTurnEventPacketToNation(&piStack_64,sVar6 == -3);
+  thunk_EnqueueOrSendTurnEventPacketToNation(&uStack_64,sVar7 == -3);
   uStack_28 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_6c);
+  CString::~CString(&CStack_6c);
   *unaff_FS_OFFSET = uStack_30;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542FF0
 // GHIDRA_NAME TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider
-// GHIDRA_PROTO undefined InitializeNationStatusControlArraysFromProvider()
+// GHIDRA_PROTO undefined __thiscall InitializeNationStatusControlArraysFromProvider(void)
 
 void __thiscall
-TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(int param_1,int *param_2)
+TMultiplayerMgr::InitializeNationStatusControlArraysFromProvider(TMultiplayerMgr *this)
 
 {
   int iVar1;
   code *pcVar2;
   code *pcVar3;
-  int *piVar4;
-  int iVar5;
+  undefined1 *puVar4;
+  int *in_stack_00000004;
   
-  piVar4 = param_2;
-  TradeControl::thunk_HandleCityDialogNoOpSlot14(param_2);
-  iVar1 = *param_2;
-  iVar5 = param_1 + 0x78;
-  param_2 = (int *)0x7;
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  iVar1 = *in_stack_00000004;
+  puVar4 = &this->field_0x78;
+  in_stack_00000004 = (int *)0x7;
   pcVar2 = *(code **)(iVar1 + 0x78);
   pcVar3 = *(code **)(iVar1 + 0xac);
   do {
-    (*pcVar2)(iVar5 + -0x30,4);
-    (*pcVar3)(iVar5);
-    (*pcVar3)(iVar5 + 0x1c);
-    iVar5 = iVar5 + 4;
-    param_2 = (int *)((int)param_2 + -1);
-  } while (param_2 != (int *)0x0);
-  (*pcVar3)(param_1 + 0xb0);
-  (*pcVar3)(param_1 + 0x74);
-  (*pcVar2)(param_1 + 100,4);
-  (*pcVar2)(param_1 + 0xe4,1);
-  (**(code **)(*DAT_006a6014 + 0x14))(piVar4);
+    (*pcVar2)(puVar4 + -0x30,4);
+    (*pcVar3)(puVar4);
+    (*pcVar3)(puVar4 + 0x1c);
+    puVar4 = puVar4 + 4;
+    in_stack_00000004 = (int *)((int)in_stack_00000004 + -1);
+  } while (in_stack_00000004 != (int *)0x0);
+  (*pcVar3)(&this->field_0xb0);
+  (*pcVar3)(&this->field_0x74);
+  (*pcVar2)(&this->field_0x64,4);
+  (*pcVar2)(&this->field_0xe4,1);
+  (**(code **)(*DAT_006a6014 + 0x14))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005430C0
 // GHIDRA_NAME TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-// GHIDRA_PROTO undefined EnableDiplomacyQueueRoutingAndSetContextField44()
+// GHIDRA_PROTO undefined __thiscall EnableDiplomacyQueueRoutingAndSetContextField44(void)
 
 void __thiscall
-TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-          (int param_1,undefined4 param_2,char param_3)
+TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(TMultiplayerMgr *this)
 
 {
-  *(undefined1 *)(param_1 + 0x68) = 1;
-  *(undefined1 *)(param_1 + 0x69) = 1;
-  if (param_3 != '\0') {
-    *(undefined4 *)(param_1 + 0x44) = param_2;
+  undefined4 in_stack_00000004;
+  char in_stack_00000008;
+  
+  this->field_0x68 = 1;
+  this->field_0x69 = 1;
+  if (in_stack_00000008 != '\0') {
+    *(undefined4 *)&this->field_0x44 = in_stack_00000004;
     return;
   }
-  *(undefined4 *)(param_1 + 0x44) = 0;
+  *(undefined4 *)&this->field_0x44 = 0;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00544E30
 // GHIDRA_NAME TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue
-// GHIDRA_PROTO undefined DispatchOptionalChildEventAndProcessDiplomacyTurnQueue()
+// GHIDRA_PROTO undefined __thiscall DispatchOptionalChildEventAndProcessDiplomacyTurnQueue(void)
 
 uint __thiscall
-TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue
-          (int param_1,undefined4 param_2)
+TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue(TMultiplayerMgr *this)
 
 {
   uint uVar1;
   
-  if (*(int **)(param_1 + 0x44) != (int *)0x0) {
-    (**(code **)(**(int **)(param_1 + 0x44) + 0x4c))(param_2);
+  if (*(int **)&this->field_0x44 != (int *)0x0) {
+    (**(code **)(**(int **)&this->field_0x44 + 0x4c))();
   }
-  uVar1 = RouteAndProcessDiplomacyTurnStateEventQueue();
+  uVar1 = RouteAndProcessDiplomacyTurnStateEventQueue(this);
   return uVar1 & 0xffffff00;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00545730
 // GHIDRA_NAME TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue
-// GHIDRA_PROTO undefined RouteAndProcessDiplomacyTurnStateEventQueue()
+// GHIDRA_PROTO undefined __thiscall RouteAndProcessDiplomacyTurnStateEventQueue(void)
 
-void __fastcall TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue(int param_1)
+void __thiscall TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue(TMultiplayerMgr *this)
 
 {
-  undefined4 *puVar1;
-  bool bVar2;
-  char cVar3;
-  int *piVar4;
-  int iVar5;
-  int *piVar6;
+  bool bVar1;
+  char cVar2;
+  int *piVar3;
+  int iVar4;
+  undefined4 *puVar5;
   
-  if (*(char *)(param_1 + 0x68) != '\0') {
-    if (*(int *)(param_1 + 0xf0) != -1) {
-      while ((iVar5 = *(int *)(param_1 + 0x6c), iVar5 != 0 &&
-             (*(undefined4 *)(param_1 + 0x6c) = *(undefined4 *)(iVar5 + 0x10), iVar5 != 0))) {
-        cVar3 = TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(iVar5);
-        if (cVar3 == '\0') {
-          DefaultUnhandledTurnEventHookReturnsFalse(iVar5);
+  if (this->field_0x68 != '\0') {
+    if (*(int *)&this->field_0xf0 != -1) {
+      while ((iVar4 = *(int *)&this->field_0x6c, iVar4 != 0 &&
+             (*(undefined4 *)&this->field_0x6c = *(undefined4 *)(iVar4 + 0x10), iVar4 != 0))) {
+        cVar2 = TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(iVar4);
+        if (cVar2 == '\0') {
+          DefaultUnhandledTurnEventHookReturnsFalse(iVar4);
         }
-        FreeTurnEventPacketBuffer(iVar5);
+        FreeTurnEventPacketBuffer(iVar4);
       }
     }
-    if (*(char *)(param_1 + 0x69) != '\0') {
-      while ((iVar5 = *(int *)(param_1 + 0x70), iVar5 != 0 &&
-             (*(undefined4 *)(param_1 + 0x70) = *(undefined4 *)(iVar5 + 0x10), iVar5 != 0))) {
-        cVar3 = TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(iVar5);
-        if (cVar3 == '\0') {
-          DefaultUnhandledTurnEventHookReturnsFalse(iVar5);
+    if (this->field_0x69 != '\0') {
+      while ((iVar4 = *(int *)&this->field_0x70, iVar4 != 0 &&
+             (*(undefined4 *)&this->field_0x70 = *(undefined4 *)(iVar4 + 0x10), iVar4 != 0))) {
+        cVar2 = TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(iVar4);
+        if (cVar2 == '\0') {
+          DefaultUnhandledTurnEventHookReturnsFalse(iVar4);
         }
-        FreeTurnEventPacketBuffer(iVar5);
+        FreeTurnEventPacketBuffer(iVar4);
       }
     }
-    piVar4 = (int *)PopNextTurnEventPacketOrProcessSpecialQueueRecords();
-    while (piVar4 != (int *)0x0) {
-      if (*(int *)(param_1 + 0xf0) == -1) {
-        switch(*piVar4) {
+    piVar3 = (int *)PopNextTurnEventPacketOrProcessSpecialQueueRecords();
+    while (piVar3 != (int *)0x0) {
+      if (*(int *)&this->field_0xf0 == -1) {
+        switch(*piVar3) {
         case 1:
         case 2:
         case 6:
@@ -358,42 +454,42 @@ void __fastcall TMultiplayerMgr::RouteAndProcessDiplomacyTurnStateEventQueue(int
         case 0x2e:
         case 0x2f:
         case 0x30:
-          bVar2 = true;
+          bVar1 = true;
           break;
         default:
-          bVar2 = false;
+          bVar1 = false;
         }
-        if (!bVar2) goto LAB_00545819;
-        piVar6 = (int *)(param_1 + 0x6c);
-        piVar4[4] = 0;
-        iVar5 = *piVar6;
-        if (iVar5 == 0) goto LAB_00545839;
+        if (!bVar1) goto LAB_00545819;
+        puVar5 = (undefined4 *)&this->field_0x6c;
+        piVar3[4] = 0;
+        iVar4 = *puVar5;
+        if (iVar4 == 0) goto LAB_00545839;
         do {
-          puVar1 = (undefined4 *)(iVar5 + 0x10);
-          iVar5 = *(int *)(iVar5 + 0x10);
-        } while (iVar5 != 0);
-        *puVar1 = piVar4;
+          puVar5 = (undefined4 *)(iVar4 + 0x10);
+          iVar4 = *(int *)(iVar4 + 0x10);
+        } while (iVar4 != 0);
+        *puVar5 = piVar3;
       }
       else {
 LAB_00545819:
-        if ((*(char *)(param_1 + 0x69) == '\0') && (*piVar4 == 0xc)) {
-          piVar6 = (int *)(param_1 + 0x70);
-          piVar4[4] = 0;
-          for (iVar5 = *piVar6; iVar5 != 0; iVar5 = *(int *)(iVar5 + 0x10)) {
-            piVar6 = (int *)(iVar5 + 0x10);
+        if ((this->field_0x69 == '\0') && (*piVar3 == 0xc)) {
+          puVar5 = (undefined4 *)&this->field_0x70;
+          piVar3[4] = 0;
+          for (iVar4 = *puVar5; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x10)) {
+            puVar5 = (undefined4 *)(iVar4 + 0x10);
           }
 LAB_00545839:
-          *piVar6 = (int)piVar4;
+          *puVar5 = piVar3;
         }
         else {
-          cVar3 = TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(piVar4);
-          if (cVar3 == '\0') {
-            DefaultUnhandledTurnEventHookReturnsFalse(piVar4);
+          cVar2 = TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine(piVar3);
+          if (cVar2 == '\0') {
+            DefaultUnhandledTurnEventHookReturnsFalse(piVar3);
           }
-          FreeTurnEventPacketBuffer(piVar4);
+          FreeTurnEventPacketBuffer(piVar3);
         }
       }
-      piVar4 = (int *)PopNextTurnEventPacketOrProcessSpecialQueueRecords();
+      piVar3 = (int *)PopNextTurnEventPacketOrProcessSpecialQueueRecords();
     }
   }
   return;

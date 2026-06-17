@@ -7,11 +7,11 @@
 // GHIDRA_NAME TUnitToolbarCluster::CreateTUnitToolbarClusterInstance
 // GHIDRA_PROTO undefined CreateTUnitToolbarClusterInstance()
 
-undefined4 * TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
+TUberCluster * TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TUberCluster *this;
+  TUberCluster *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,23 +21,24 @@ undefined4 * TUnitToolbarCluster::CreateTUnitToolbarClusterInstance(void)
   puStack_8 = &LAB_006377ca;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TUberCluster *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TUberCluster::ConstructTUberClusterBaseState();
-    *puVar1 = &PTR_LAB_00664d38;
-    puVar2 = puVar1;
+  pTVar1 = (TUberCluster *)0x0;
+  if (this != (TUberCluster *)0x0) {
+    TUberCluster::ConstructTUberClusterBaseState(this);
+    this->vftable = (TUberClusterVtbl *)&TUnitToolbarClusterVtbl_00664d38;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00585FF0
-// GHIDRA_NAME TUnitToolbarCluster::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TUnitToolbarCluster::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-char * TUnitToolbarCluster::GetRuntimeClass(void)
+CRuntimeClass * __thiscall
+TUnitToolbarCluster::GetTEventHandlerClassNamePointer(TUnitToolbarCluster *this)
 
 {
   return &g_pClassDescTUnitToolbarCluster;
@@ -45,104 +46,115 @@ char * TUnitToolbarCluster::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586010
 // GHIDRA_NAME TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState
-// GHIDRA_PROTO undefined ConstructTUnitToolbarClusterBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTUnitToolbarClusterBaseState(void)
 
-undefined4 * __fastcall
-TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState(undefined4 *param_1)
+TUnitToolbarCluster * __thiscall
+TUnitToolbarCluster::ConstructTUnitToolbarClusterBaseState(TUnitToolbarCluster *this)
 
 {
-  TUberCluster::ConstructTUberClusterBaseState();
-  *param_1 = &PTR_LAB_00664d38;
-  return param_1;
+  TUberCluster::ConstructTUberClusterBaseState((TUberCluster *)this);
+  this->vftable = &TUnitToolbarClusterVtbl_00664d38;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586040
-// GHIDRA_NAME TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree
-// GHIDRA_PROTO undefined DestructTUnitToolbarClusterAndMaybeFree()
+// GHIDRA_NAME TUnitToolbarCluster::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall
-TUnitToolbarCluster::DestructTUnitToolbarClusterAndMaybeFree(TView *param_1,byte param_2)
+TUnitToolbarCluster * __thiscall
+TUnitToolbarCluster::_scalar_deleting_destructor_(TUnitToolbarCluster *this)
 
 {
-  TView::thunk_DestructTViewBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructTViewBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586090
-// GHIDRA_NAME TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090
-// GHIDRA_PROTO undefined WrapperFor_thunk_DispatchPanelControlEvent_At00586090()
+// GHIDRA_NAME TUnitToolbarCluster::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
 
-void __thiscall
-TUnitToolbarCluster::WrapperFor_thunk_DispatchPanelControlEvent_At00586090
-          (TMapEditCluster *param_1,int param_2,void *param_3,int param_4)
+void __thiscall TUnitToolbarCluster::OrphanRetStub_0059add0(TUnitToolbarCluster *this)
 
 {
-  int *piVar1;
+  undefined uVar1;
+  undefined3 extraout_var;
+  int *piVar2;
+  int in_stack_00000004;
+  void *in_stack_00000008;
+  int in_stack_0000000c;
   
-  TMapEditCluster::thunk_DispatchPanelControlEvent(param_1,param_2,param_3,param_4);
-  if ((((*(int *)(g_pApplicationUiRootController + 0x24) == 1) && (param_2 == 0x68)) ||
-      (param_2 == 0x67)) || ((param_2 == 10 || (param_2 == 0xc)))) {
-    piVar1 = (int *)(**(code **)(*(int *)param_1 + 0x58))();
-    piVar1 = (int *)(**(code **)(*piVar1 + 0x94))(0x6d61696e);
-    if (piVar1 == (int *)0x0) {
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  if ((((*(int *)&g_pApplicationUiRootController->field_0x24 == 1) && (in_stack_00000004 == 0x68))
+      || (in_stack_00000004 == 0x67)) || ((in_stack_00000004 == 10 || (in_stack_00000004 == 0xc))))
+  {
+    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x6d61696e);
+    if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x57b);
     }
-    (**(code **)(*piVar1 + 0x3c))(param_2,param_3,param_4);
+    (**(code **)(*piVar2 + 0x3c))();
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586150
-// GHIDRA_NAME TUnitToolbarCluster::OrphanVtableAssignStub_00586150
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_00586150()
+// GHIDRA_NAME TUnitToolbarCluster::OrphanVtableAssignStub_005714e0
+// GHIDRA_PROTO undefined __thiscall OrphanVtableAssignStub_005714e0(void)
 
-undefined1 TUnitToolbarCluster::OrphanVtableAssignStub_00586150(void)
+undefined1 __thiscall
+TUnitToolbarCluster::OrphanVtableAssignStub_005714e0(TUnitToolbarCluster *this)
 
 {
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00586170
-// GHIDRA_NAME TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex
-// GHIDRA_PROTO undefined UpdateTradeResourceSelectionByIndex()
+// GHIDRA_NAME TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I51_00491790(void)
 
-void __thiscall TUnitToolbarCluster::UpdateTradeResourceSelectionByIndex(int *param_1,int param_2)
+void __thiscall TUnitToolbarCluster::OrphanCallChain_C2_I51_00491790(TUnitToolbarCluster *this)
 
 {
-  int *piVar1;
-  int iVar2;
-  int *piVar3;
+  undefined uVar1;
+  int *piVar2;
+  int iVar3;
+  undefined3 extraout_var;
+  int *piVar4;
+  int in_stack_00000004;
   
-  InitializeSelectableTextOptionEntryIteratorContext(param_1);
-  piVar3 = (int *)0x0;
-  piVar1 = (int *)BeginSelectableTextOptionEntryIterator();
-  iVar2 = IsSelectableTextOptionEntryIteratorValid();
-  while (iVar2 != 0) {
-    if (piVar1[7] == param_2) {
-      (**(code **)(*piVar1 + 0x3c))(0x1f,param_1,0);
-      piVar3 = piVar1;
+  InitializeSelectableTextOptionEntryIteratorContext(this);
+  piVar4 = (int *)0x0;
+  piVar2 = (int *)BeginSelectableTextOptionEntryIterator();
+  iVar3 = IsSelectableTextOptionEntryIteratorValid();
+  while (iVar3 != 0) {
+    if (piVar2[7] == in_stack_00000004) {
+      (**(code **)(*piVar2 + 0x3c))(0x1f,this,0);
+      piVar4 = piVar2;
     }
     else {
-      (**(code **)(*piVar1 + 0x3c))(0x20,param_1,0);
+      (**(code **)(*piVar2 + 0x3c))(0x20,this,0);
     }
-    piVar1 = (int *)AdvanceSelectableTextOptionEntryIterator();
-    iVar2 = IsSelectableTextOptionEntryIteratorValid();
+    piVar2 = (int *)AdvanceSelectableTextOptionEntryIterator();
+    iVar3 = IsSelectableTextOptionEntryIteratorValid();
   }
-  param_1[0x21] = param_2;
-  if (piVar3 != (int *)0x0) {
-    piVar1 = (int *)(**(code **)(*param_1 + 0x58))();
-    piVar1 = (int *)(**(code **)(*piVar1 + 0x94))(0x444c4f47);
-    if (piVar1 == (int *)0x0) {
+  *(int *)&this->field_0x84 = in_stack_00000004;
+  if (piVar4 != (int *)0x0) {
+    uVar1 = (*this->vftable[0xb].GetTEventHandlerClassNamePointer)();
+    piVar2 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x94))(0x444c4f47);
+    if (piVar2 == (int *)0x0) {
       MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
       thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                 (s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x5a7);
     }
-    (**(code **)(*piVar1 + 0x3c))(0xc,piVar3,0);
+    (**(code **)(*piVar2 + 0x3c))(0xc,piVar4,0);
   }
   return;
 }

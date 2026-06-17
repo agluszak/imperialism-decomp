@@ -5,23 +5,25 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004E8B50
 // GHIDRA_NAME TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-// GHIDRA_PROTO undefined SetMapStateByteFlag970WithRuntimeGate()
+// GHIDRA_PROTO undefined __thiscall SetMapStateByteFlag970WithRuntimeGate(void)
 
 void __thiscall
-TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate(int param_1,int param_2,int param_3)
+TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate(TAttackProvinceMission *this)
 
 {
   char cVar1;
-  undefined1 uVar2;
+  TAttackProvinceMission TVar2;
+  int in_stack_00000004;
+  int in_stack_00000008;
   
-  uVar2 = (undefined1)param_3;
-  if (param_3 == 1) {
-    cVar1 = (**(code **)(*g_pGlobalMapState + 0x58))(param_2,*(undefined2 *)(param_1 + 0xc));
+  TVar2 = SUB41(in_stack_00000008,0);
+  if (in_stack_00000008 == 1) {
+    cVar1 = (*g_pGlobalMapState->vftable[0xb].GetTMapMgrClassNamePointer)();
     if (cVar1 != '\0') {
-      uVar2 = 0;
+      TVar2 = (TAttackProvinceMission)0x0;
     }
   }
-  *(undefined1 *)(param_1 + 0x970 + param_2) = uVar2;
+  this[in_stack_00000004 + 0x970] = TVar2;
   return;
 }
 
@@ -29,11 +31,11 @@ TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate(int param_1,int pa
 // GHIDRA_NAME TAttackProvinceMission::CreateTAttackProvinceMission
 // GHIDRA_PROTO undefined CreateTAttackProvinceMission()
 
-undefined4 * TAttackProvinceMission::CreateTAttackProvinceMission(void)
+TMission * TAttackProvinceMission::CreateTAttackProvinceMission(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TMission *this;
+  TMission *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -43,18 +45,18 @@ undefined4 * TAttackProvinceMission::CreateTAttackProvinceMission(void)
   puStack_8 = &LAB_0063445a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x34);
+  this = (TMission *)AllocateWithFallbackHandler(0x34);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMission::ConstructTArmyMissionWithNodeKey(0xffffffff);
-    *(undefined2 *)(puVar1 + 0xc) = 0xffff;
-    *(undefined2 *)((int)puVar1 + 0x32) = 0xffff;
-    *puVar1 = &PTR_LAB_0065adf8;
-    puVar2 = puVar1;
+  pTVar1 = (TMission *)0x0;
+  if (this != (TMission *)0x0) {
+    TMission::ConstructTArmyMissionWithNodeKey(this);
+    *(undefined2 *)(this + 0x30) = 0xffff;
+    *(undefined2 *)(this + 0x32) = 0xffff;
+    *(undefined ***)this = &PTR_LAB_0065adf8;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D710
@@ -69,80 +71,91 @@ undefined ** TAttackProvinceMission::GetTAttackProvinceMissionClassNamePointer(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D780
 // GHIDRA_NAME TAttackProvinceMission::ConstructTAttackProvinceMission
-// GHIDRA_PROTO undefined ConstructTAttackProvinceMission()
+// GHIDRA_PROTO undefined __thiscall ConstructTAttackProvinceMission(void)
 
-undefined4 * __thiscall
-TAttackProvinceMission::ConstructTAttackProvinceMission
-          (undefined4 *param_1,undefined2 param_2,undefined2 param_3)
+TAttackProvinceMission * __thiscall
+TAttackProvinceMission::ConstructTAttackProvinceMission(TAttackProvinceMission *this)
 
 {
-  TMission::ConstructTArmyMissionWithNodeKey(0xffffffff);
-  *(undefined2 *)(param_1 + 0xc) = param_2;
-  *(undefined2 *)((int)param_1 + 0x32) = param_3;
-  *param_1 = &PTR_LAB_0065adf8;
-  return param_1;
+  undefined2 in_stack_00000004;
+  undefined2 in_stack_00000008;
+  
+  TMission::ConstructTArmyMissionWithNodeKey((TMission *)this);
+  *(undefined2 *)(this + 0x30) = in_stack_00000004;
+  *(undefined2 *)(this + 0x32) = in_stack_00000008;
+  *(undefined ***)this = &PTR_LAB_0065adf8;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D7C0
 // GHIDRA_NAME TAttackProvinceMission::DestroyTAttackProvinceMission
-// GHIDRA_PROTO undefined DestroyTAttackProvinceMission()
+// GHIDRA_PROTO undefined __thiscall DestroyTAttackProvinceMission(void)
 
-undefined4 __thiscall
-TAttackProvinceMission::DestroyTAttackProvinceMission(undefined4 param_1,byte param_2)
+TAttackProvinceMission * __thiscall
+TAttackProvinceMission::DestroyTAttackProvinceMission(TAttackProvinceMission *this)
 
 {
+  byte in_stack_00000004;
+  
   ResetTAttackProvinceMissionToSentinelVtable();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D810
 // GHIDRA_NAME TAttackProvinceMission::SerializeTAttackProvinceMission
-// GHIDRA_PROTO undefined SerializeTAttackProvinceMission()
+// GHIDRA_PROTO undefined __thiscall SerializeTAttackProvinceMission(void)
 
-void __thiscall TAttackProvinceMission::SerializeTAttackProvinceMission(int param_1,int *param_2)
+void __thiscall
+TAttackProvinceMission::SerializeTAttackProvinceMission(TAttackProvinceMission *this)
 
 {
   code *pcVar1;
+  int *in_stack_00000004;
   
-  SerializeTArmyMission(param_2);
-  pcVar1 = *(code **)(*param_2 + 0x78);
-  (*pcVar1)(param_1 + 0x30,2);
-  (*pcVar1)(param_1 + 0x32,2);
+  SerializeTArmyMission(in_stack_00000004);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x78);
+  (*pcVar1)(this + 0x30,2);
+  (*pcVar1)(this + 0x32,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D850
 // GHIDRA_NAME TAttackProvinceMission::DeserializeTAttackProvinceMission
-// GHIDRA_PROTO undefined DeserializeTAttackProvinceMission()
+// GHIDRA_PROTO undefined __thiscall DeserializeTAttackProvinceMission(void)
 
-void __thiscall TAttackProvinceMission::DeserializeTAttackProvinceMission(int param_1,int *param_2)
+void __thiscall
+TAttackProvinceMission::DeserializeTAttackProvinceMission(TAttackProvinceMission *this)
 
 {
   code *pcVar1;
+  int *in_stack_00000004;
   
-  DeserializeTArmyMission(param_2);
-  pcVar1 = *(code **)(*param_2 + 0x3c);
-  (*pcVar1)(param_1 + 0x30,2);
-  (*pcVar1)(param_1 + 0x32,2);
+  DeserializeTArmyMission(in_stack_00000004);
+  pcVar1 = *(code **)(*in_stack_00000004 + 0x3c);
+  (*pcVar1)(this + 0x30,2);
+  (*pcVar1)(this + 0x32,2);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D890
 // GHIDRA_NAME TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
-// GHIDRA_PROTO undefined CleanupTAttackProvinceMissionAndReleaseChildContext()
+// GHIDRA_PROTO undefined __thiscall CleanupTAttackProvinceMissionAndReleaseChildContext(void)
 
-void __fastcall
-TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext(int *param_1)
+void __thiscall
+TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext
+          (TAttackProvinceMission *this)
 
 {
+  TGreatPower *this_00;
   int iVar1;
   int iVar2;
   
-  (**(code **)(*(int *)(&g_apNationStates)[(short)param_1[1]] + 0xc))();
-  SetMapStateByteFlag970WithRuntimeGate((int)(short)param_1[0xc],0);
+  this_00 = g_apNationStates[*(short *)(this + 4)];
+  (*this_00->vftable[1].slot_0x04)();
+  SetMapStateByteFlag970WithRuntimeGate((TAttackProvinceMission *)this_00);
   iVar1 = InitializeLinkedListCursorFromOwnerHead();
   iVar2 = LinkedListCursorHasCurrent();
   while (iVar2 != 0) {
@@ -150,25 +163,26 @@ TAttackProvinceMission::CleanupTAttackProvinceMissionAndReleaseChildContext(int 
     iVar1 = AdvanceLinkedListCursor();
     iVar2 = LinkedListCursorHasCurrent();
   }
-  (**(code **)(*(int *)param_1[6] + 0x5c))();
-  if ((int *)param_1[6] != (int *)0x0) {
-    (**(code **)(*(int *)param_1[6] + 0x58))();
+  (**(code **)(**(int **)(this + 0x18) + 0x5c))();
+  if (*(int **)(this + 0x18) != (int *)0x0) {
+    (**(code **)(**(int **)(this + 0x18) + 0x58))();
   }
-  param_1[6] = 0;
-  if (param_1 != (int *)0x0) {
-    (**(code **)(*param_1 + 4))(1);
+  *(undefined4 *)(this + 0x18) = 0;
+  if (this != (TAttackProvinceMission *)0x0) {
+    (**(code **)(*(int *)this + 4))(1);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053D950
 // GHIDRA_NAME TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
-// GHIDRA_PROTO undefined EvaluateAttackProvinceMissionAndQueueEligibleUnits()
+// GHIDRA_PROTO undefined __thiscall EvaluateAttackProvinceMissionAndQueueEligibleUnits(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-undefined4 __fastcall
-TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits(int *param_1)
+undefined4 __thiscall
+TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits
+          (TAttackProvinceMission *this)
 
 {
   float fVar1;
@@ -176,32 +190,31 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits(int *
   float fVar3;
   short sVar4;
   undefined4 uVar5;
-  float *pfVar6;
+  TAttackProvinceMission *pTVar6;
   int iVar7;
   int iVar8;
   float *pfVar9;
   int iVar10;
   undefined4 uVar11;
-  float local_14;
-  int local_10;
+  float local_14 [5];
   
-  if ((char)param_1[4] == '\0') {
-    iVar8 = *param_1;
+  if (this[0x10] == (TAttackProvinceMission)0x0) {
+    iVar8 = *(int *)this;
     uVar11 = 0;
     uVar5 = (**(code **)(iVar8 + 0x9c))(0);
-    AccumulateMissionUnitPriorityVectorWithOptionalFilter(&local_14,uVar5,uVar11);
+    AccumulateMissionUnitPriorityVectorWithOptionalFilter(local_14,uVar5,uVar11);
     fVar2 = 0.0;
     fVar3 = 0.0;
-    pfVar9 = &local_14;
+    pfVar9 = local_14;
     iVar10 = 5;
-    pfVar6 = (float *)(param_1 + 7);
+    pTVar6 = this + 0x1c;
     do {
       fVar1 = *pfVar9;
       pfVar9 = pfVar9 + 1;
       iVar10 = iVar10 + -1;
-      fVar3 = fVar3 + *pfVar6;
-      fVar2 = fVar2 + SQRT(*pfVar6 * fVar1);
-      pfVar6 = pfVar6 + 1;
+      fVar3 = fVar3 + *(float *)pTVar6;
+      fVar2 = fVar2 + SQRT(*(float *)pTVar6 * fVar1);
+      pTVar6 = pTVar6 + 4;
     } while (iVar10 != 0);
     if (_DAT_0065a8f0 < fVar2 / fVar3) {
       iVar10 = InitializeLinkedListCursorFromOwnerHead();
@@ -214,7 +227,7 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits(int *
         iVar10 = AdvanceLinkedListCursor();
         iVar7 = LinkedListCursorHasCurrent();
       }
-      local_10 = param_1[6];
+      local_14[1] = *(float *)(this + 0x18);
       uVar5 = InitializeLinkedListCursorFromOwnerHead();
       iVar10 = LinkedListCursorHasCurrent();
       if (iVar10 == 0) {
@@ -231,13 +244,13 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits(int *
       return 1;
     }
   }
-  local_10 = param_1[6];
+  local_14[1] = *(float *)(this + 0x18);
   uVar5 = InitializeLinkedListCursorFromOwnerHead();
   iVar8 = LinkedListCursorHasCurrent();
   while (iVar8 != 0) {
     sVar4 = thunk_GetUnitMovementClassId();
     if (sVar4 != 0) {
-      (**(code **)(*param_1 + 0x88))(uVar5,1);
+      (**(code **)(*(int *)this + 0x88))(uVar5,1);
     }
     uVar5 = AdvanceLinkedListCursor();
     iVar8 = LinkedListCursorHasCurrent();
@@ -247,41 +260,47 @@ TAttackProvinceMission::EvaluateAttackProvinceMissionAndQueueEligibleUnits(int *
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E180
 // GHIDRA_NAME TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending
-// GHIDRA_PROTO undefined SetDefendProvinceMissionStateFlag8ToPending()
+// GHIDRA_PROTO undefined __thiscall SetDefendProvinceMissionStateFlag8ToPending(void)
 
-void __fastcall TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending(int param_1)
+void __thiscall
+TAttackProvinceMission::SetDefendProvinceMissionStateFlag8ToPending(TAttackProvinceMission *this)
 
 {
-  *(undefined1 *)(param_1 + 8) = 2;
+  this[8] = (TAttackProvinceMission)0x2;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E570
 // GHIDRA_NAME TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince
-// GHIDRA_PROTO undefined InitializeDefendProvinceMissionMovementClassFromTargetProvince()
+// GHIDRA_PROTO undefined __thiscall InitializeDefendProvinceMissionMovementClassFromTargetProvince(void)
 
-void __fastcall
-TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince(int param_1)
+void __thiscall
+TAttackProvinceMission::InitializeDefendProvinceMissionMovementClassFromTargetProvince
+          (TAttackProvinceMission *this)
 
 {
-  *(undefined1 *)(param_1 + 0x11) = 1;
-  if (*(short *)(param_1 + 0x30) != -1) {
-    *(short *)(param_1 + 6) =
-         (short)*(char *)(*(int *)(g_pGlobalMapState + 0x10) + *(short *)(param_1 + 0x30) * 0xa8);
+  this[0x11] = (TAttackProvinceMission)0x1;
+  if (*(short *)(this + 0x30) != -1) {
+    *(short *)(this + 6) =
+         (short)*(char *)(*(int *)&g_pGlobalMapState->field_0x10 + *(short *)(this + 0x30) * 0xa8);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053E5B0
 // GHIDRA_NAME TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
-// GHIDRA_PROTO undefined HandleDefendProvinceMissionActionType01ForTargetTile()
+// GHIDRA_PROTO undefined __thiscall HandleDefendProvinceMissionActionType01ForTargetTile(void)
 
 undefined4 __thiscall
 TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
-          (int param_1,int param_2,int param_3)
+          (TAttackProvinceMission *this)
 
 {
-  if (((param_2 == 0) || (param_2 == 1)) && (param_3 == *(short *)(param_1 + 0x30))) {
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if (((in_stack_00000004 == 0) || (in_stack_00000004 == 1)) &&
+     (in_stack_00000008 == *(short *)(this + 0x30))) {
     return 1;
   }
   return 0;
@@ -289,26 +308,29 @@ TAttackProvinceMission::HandleDefendProvinceMissionActionType01ForTargetTile
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F610
 // GHIDRA_NAME TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState
-// GHIDRA_PROTO undefined UpdateInvadeMissionAndBeachheadChildState()
+// GHIDRA_PROTO undefined __thiscall UpdateInvadeMissionAndBeachheadChildState(void)
 
-void __fastcall TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState(int param_1)
+void __thiscall
+TAttackProvinceMission::UpdateInvadeMissionAndBeachheadChildState(TAttackProvinceMission *this)
 
 {
   PopulateDefendProvinceMissionResourceWeightsFromTargetProvince();
-  (**(code **)(**(int **)(param_1 + 0x34) + 0x3c))();
+  (**(code **)(**(int **)(this + 0x34) + 0x3c))();
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053F780
 // GHIDRA_NAME TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath
-// GHIDRA_PROTO undefined RefreshInvadeMissionBeachheadNodeAndMaybeRepath()
+// GHIDRA_PROTO undefined __thiscall RefreshInvadeMissionBeachheadNodeAndMaybeRepath(void)
 
-void __fastcall TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath(int param_1)
+void __thiscall
+TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMaybeRepath
+          (TAttackProvinceMission *this)
 
 {
-  (**(code **)(**(int **)(param_1 + 0x34) + 0x44))();
-  if ((*(byte *)(*(int *)(g_pGlobalMapState + 0x10) + 0xa1 + *(short *)(param_1 + 0x30) * 0xa8) &
-      '\x01' << ((byte)*(undefined2 *)(param_1 + 4) & 0x1f)) != 0) {
+  (**(code **)(**(int **)(this + 0x34) + 0x44))();
+  if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0x10 + 0xa1 + *(short *)(this + 0x30) * 0xa8) &
+      '\x01' << ((byte)*(undefined2 *)(this + 4) & 0x1f)) != 0) {
     RefreshAttackProvinceMissionTargetAndMaybeQueueUnits();
   }
   return;
@@ -316,34 +338,37 @@ void __fastcall TAttackProvinceMission::RefreshInvadeMissionBeachheadNodeAndMayb
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FDC0
 // GHIDRA_NAME TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass
-// GHIDRA_PROTO undefined TryResolveInvadeMissionTargetTerrainClass()
+// GHIDRA_PROTO undefined __thiscall TryResolveInvadeMissionTargetTerrainClass(void)
 
-undefined4 __fastcall TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass(int param_1)
+undefined4 __thiscall
+TAttackProvinceMission::TryResolveInvadeMissionTargetTerrainClass(TAttackProvinceMission *this)
 
 {
   char cVar1;
-  undefined2 uVar2;
+  undefined uVar2;
+  undefined3 extraout_var;
   
-  *(undefined2 *)(param_1 + 0x14) = 0xffff;
+  *(undefined2 *)(this + 0x14) = 0xffff;
   cVar1 = TryResolveAttackProvinceMissionTargetTerrainClass();
   if (cVar1 != '\0') {
-    *(undefined2 *)(param_1 + 0x14) = 0xffff;
+    *(undefined2 *)(this + 0x14) = 0xffff;
     return 0;
   }
-  uVar2 = (**(code **)(*(int *)(&g_apTerrainTypeDescriptorTable)[*(short *)(param_1 + 4)] + 0x40))()
-  ;
-  *(undefined2 *)(param_1 + 0x14) = uVar2;
-  return 1;
+  uVar2 = (*g_apTerrainTypeDescriptorTable[*(short *)(this + 4)]->vftable[8].
+            GetTCountryClassNamePointer)();
+  *(short *)(this + 0x14) = (short)CONCAT31(extraout_var,uVar2);
+  return CONCAT31(extraout_var,1);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053FE10
 // GHIDRA_NAME TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh
-// GHIDRA_PROTO undefined ResetInvadeMissionTargetTerrainClassAndRefresh()
+// GHIDRA_PROTO undefined __thiscall ResetInvadeMissionTargetTerrainClassAndRefresh(void)
 
-void __fastcall TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh(int param_1)
+void __thiscall
+TAttackProvinceMission::ResetInvadeMissionTargetTerrainClassAndRefresh(TAttackProvinceMission *this)
 
 {
-  *(undefined2 *)(param_1 + 0x14) = 0xffff;
+  *(undefined2 *)(this + 0x14) = 0xffff;
   TryValidateOrRetargetDefendProvinceMissionTarget();
   return;
 }

@@ -3,14 +3,58 @@
 // Program: Imperialism.exe
 // Bucket: TInfoBarText.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00429330
+// GHIDRA_NAME TInfoBarText::ConstructUiCursorTextResourceEntry
+// GHIDRA_PROTO undefined __thiscall ConstructUiCursorTextResourceEntry(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Cursor/status text entry constructor. Derived from ConstructUiTextResourceEntryBase and repeatedly registered under tag 'curs' in command/control and turn-event UIs.
+// GHIDRA_COMMENT_END
+
+/* Cursor/status text entry constructor. Derived from ConstructUiTextResourceEntryBase and
+   repeatedly registered under tag 'curs' in command/control and turn-event UIs. */
+
+TInfoBarText * __thiscall TInfoBarText::ConstructUiCursorTextResourceEntry(TInfoBarText *this)
+
+{
+  TStaticText::thunk_ConstructUiTextResourceEntryBase((TStaticText *)this);
+  this->field_0x98 = 0;
+  this->field_0x99 = 0;
+  this->field_0x9a = 0;
+  this->field_0x9b = 0;
+  this->field_0x9c = 0;
+  this->field_0x9d = 0;
+  this->field_0x9e = 0;
+  this->field_0x9f = 0;
+  this->field_0xa0 = 0;
+  *(undefined4 *)&this->field_0x98 = 0;
+  this->vftable = &TInfoBarTextVtbl_0063eb00;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004293C0
+// GHIDRA_NAME TInfoBarText::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TInfoBarText * __thiscall TInfoBarText::_scalar_deleting_destructor_(TInfoBarText *this)
+
+{
+  byte in_stack_00000004;
+  
+  TStaticText::~TStaticText((TStaticText *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005B65A0
 // GHIDRA_NAME TInfoBarText::CreateTInfoBarTextInstance
 // GHIDRA_PROTO undefined CreateTInfoBarTextInstance()
 
-undefined4 * TInfoBarText::CreateTInfoBarTextInstance(void)
+TStaticText * TInfoBarText::CreateTInfoBarTextInstance(void)
 
 {
-  undefined4 *puVar1;
+  TStaticText *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,103 +64,126 @@ undefined4 * TInfoBarText::CreateTInfoBarTextInstance(void)
   puStack_8 = &LAB_00638ffa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xb4);
+  this = (TStaticText *)AllocateWithFallbackHandler(0xb4);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TStaticText::thunk_ConstructUiTextResourceEntryBase();
-    *(undefined1 *)(puVar1 + 0x26) = 0;
-    *(undefined1 *)((int)puVar1 + 0x99) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9a) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9b) = 0;
-    *(undefined1 *)(puVar1 + 0x27) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9d) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9e) = 0;
-    *(undefined1 *)((int)puVar1 + 0x9f) = 0;
-    puVar1[0x26] = 0;
-    *(undefined1 *)(puVar1 + 0x28) = 0;
-    *puVar1 = &PTR_LAB_0063eb00;
+  if (this != (TStaticText *)0x0) {
+    TStaticText::thunk_ConstructUiTextResourceEntryBase(this);
+    *(undefined1 *)&this[1].field04 = 0;
+    *(undefined1 *)((int)&this[1].field04 + 1) = 0;
+    *(undefined1 *)((int)&this[1].field04 + 2) = 0;
+    *(undefined1 *)((int)&this[1].field04 + 3) = 0;
+    *(undefined1 *)&this[1].padding_08_to_0b = 0;
+    *(undefined1 *)((int)&this[1].padding_08_to_0b + 1) = 0;
+    *(undefined1 *)((int)&this[1].padding_08_to_0b + 2) = 0;
+    *(undefined1 *)((int)&this[1].padding_08_to_0b + 3) = 0;
+    this[1].field04 = 0;
+    *(undefined1 *)&this[1].field0c = 0;
+    this->vftable = (TStaticTextVtbl *)&TInfoBarTextVtbl_0063eb00;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TStaticText *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6690
-// GHIDRA_NAME TInfoBarText::GetTInfoBarTextClassNamePointer
-// GHIDRA_PROTO undefined GetTInfoBarTextClassNamePointer()
+// GHIDRA_NAME TInfoBarText::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TInfoBarText::GetTInfoBarTextClassNamePointer(void)
+CRuntimeClass * __thiscall TInfoBarText::GetTEventHandlerClassNamePointer(TInfoBarText *this)
 
 {
-  return &PTR_s_TInfoBarText_0066c468;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B66B0
 // GHIDRA_NAME TInfoBarText::ConstructTInfoBarTextBaseState
-// GHIDRA_PROTO undefined ConstructTInfoBarTextBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTInfoBarTextBaseState(void)
 
-void __thiscall
-TInfoBarText::ConstructTInfoBarTextBaseState(int *param_1,undefined4 param_2,RECT *param_3)
+void __thiscall TInfoBarText::ConstructTInfoBarTextBaseState(TInfoBarText *this)
 
 {
-  int iVar1;
-  RECT *pRVar2;
-  BOOL BVar3;
+  TInfoBarTextVtbl *pTVar1;
+  BOOL BVar2;
   undefined4 *unaff_FS_OFFSET;
+  RECT *in_stack_00000008;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
   
-  pRVar2 = param_3;
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639018;
   *unaff_FS_OFFSET = &uStack_c;
   uStack_4 = 0;
-  BVar3 = EqualRect(param_3,(RECT *)(param_1 + 0x29));
-  if (BVar3 == 0) {
-    ((RECT *)(param_1 + 0x29))->left = pRVar2->left;
-    param_1[0x2a] = pRVar2->top;
-    param_1[0x2b] = pRVar2->right;
-    param_1[0x2c] = pRVar2->bottom;
-    iVar1 = *param_1;
-    (**(code **)(iVar1 + 0x1f0))(&param_2);
-    (**(code **)(iVar1 + 0x1f8))(1);
+  BVar2 = EqualRect(in_stack_00000008,(RECT *)&this->field_0xa4);
+  if (BVar2 == 0) {
+    *(LONG *)&this->field_0xa4 = in_stack_00000008->left;
+    *(LONG *)&this->field_0xa8 = in_stack_00000008->top;
+    *(LONG *)&this->field_0xac = in_stack_00000008->right;
+    *(LONG *)&this->field_0xb0 = in_stack_00000008->bottom;
+    pTVar1 = this->vftable;
+    (*pTVar1[0x3e].GetTEventHandlerClassNamePointer)(&stack0x00000004);
+    (*pTVar1[0x3f].GetTEventHandlerClassNamePointer)(1);
   }
   uStack_4 = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&param_2);
+  CString::~CString((CString *)&stack0x00000004);
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B6770
 // GHIDRA_NAME TInfoBarText::DestructTInfoBarTextAndMaybeFree
-// GHIDRA_PROTO undefined DestructTInfoBarTextAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTInfoBarTextAndMaybeFree(void)
 
-void __fastcall TInfoBarText::DestructTInfoBarTextAndMaybeFree(int *param_1)
+void __thiscall TInfoBarText::DestructTInfoBarTextAndMaybeFree(TInfoBarText *this)
 
 {
-  int iVar1;
+  TInfoBarTextVtbl *pTVar1;
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  undefined4 uStack_4;
+  CString CStack_4;
   
   uStack_c = *unaff_FS_OFFSET;
   puStack_8 = &LAB_00639038;
   *unaff_FS_OFFSET = &uStack_c;
-  param_1[0x29] = 0;
-  uStack_4 = 0;
-  param_1[0x2a] = 0;
-  param_1[0x2b] = 0;
-  param_1[0x2c] = 0;
-  iVar1 = *param_1;
-  (**(code **)(iVar1 + 0x1f0))(&stack0x00000004);
-  (**(code **)(iVar1 + 0x1f8))(1);
+  *(undefined4 *)&this->field_0xa4 = 0;
+  CStack_4.m_pchData = (char *)0x0;
+  *(undefined4 *)&this->field_0xa8 = 0;
+  *(undefined4 *)&this->field_0xac = 0;
+  *(undefined4 *)&this->field_0xb0 = 0;
+  pTVar1 = this->vftable;
+  (*pTVar1[0x3e].GetTEventHandlerClassNamePointer)(&stack0x00000004);
+  (*pTVar1[0x3f].GetTEventHandlerClassNamePointer)(1);
   uStack_c = 0xffffffff;
-  ReleaseSharedStringRefIfNotEmpty(&uStack_4);
+  CString::~CString(&CStack_4);
   *unaff_FS_OFFSET = unaff_ESI;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B6810
+// GHIDRA_NAME TInfoBarText::OrphanCallChain_C1_I05_005b6810
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I05_005b6810(void)
+
+void __thiscall TInfoBarText::OrphanCallChain_C1_I05_005b6810(TInfoBarText *this)
+
+{
+  (*this->vftable[0x40].slot_0x04)(0x2b6c,0x2b67);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B6930
+// GHIDRA_NAME TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TInfoBarText::OrphanLeaf_NoCall_Ins07_004d8920(TInfoBarText *this)
+
+{
+  if ((TInfoBarText *)g_pCursorControlPanel == this) {
+    g_pCursorControlPanel = (TControl *)0x0;
+  }
+  TMapDialog::thunk_CloseCityDialogChildrenAndReleaseSelf((TMapDialog *)this);
   return;
 }
 

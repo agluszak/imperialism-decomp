@@ -7,11 +7,11 @@
 // GHIDRA_NAME TArmyUnitLine::CreateTArmyUnitLineInstance
 // GHIDRA_PROTO undefined CreateTArmyUnitLineInstance()
 
-undefined4 * TArmyUnitLine::CreateTArmyUnitLineInstance(void)
+TLineData * TArmyUnitLine::CreateTArmyUnitLineInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TLineData *this;
+  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,63 +21,296 @@ undefined4 * TArmyUnitLine::CreateTArmyUnitLineInstance(void)
   puStack_8 = &LAB_0063035a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  this = (TLineData *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TLineData::ConstructTLineDataBaseState();
-    *puVar1 = &PTR_LAB_0064ce80;
-    puVar2 = puVar1;
+  pTVar1 = (TLineData *)0x0;
+  if (this != (TLineData *)0x0) {
+    TLineData::ConstructTLineDataBaseState(this);
+    this->vftable = (TLineDataVtbl *)&TArmyUnitLineVtbl_0064ce80;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8D10
-// GHIDRA_NAME TArmyUnitLine::GetTArmyUnitLineClassNamePointer
-// GHIDRA_PROTO undefined GetTArmyUnitLineClassNamePointer()
+// GHIDRA_NAME TArmyUnitLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TArmyUnitLine::GetTArmyUnitLineClassNamePointer(void)
+CRuntimeClass * __thiscall TArmyUnitLine::GetTLineDataClassNamePointer(TArmyUnitLine *this)
 
 {
-  return &PTR_s_TArmyUnitLine_0064cb38;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8D30
 // GHIDRA_NAME TArmyUnitLine::ConstructTArmyUnitLineBaseState
-// GHIDRA_PROTO undefined ConstructTArmyUnitLineBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyUnitLineBaseState(void)
 
-undefined4 * __fastcall TArmyUnitLine::ConstructTArmyUnitLineBaseState(undefined4 *param_1)
+TArmyUnitLine * __thiscall TArmyUnitLine::ConstructTArmyUnitLineBaseState(TArmyUnitLine *this)
 
 {
-  TLineData::ConstructTLineDataBaseState();
-  *param_1 = &PTR_LAB_0064ce80;
-  return param_1;
+  TLineData::ConstructTLineDataBaseState((TLineData *)this);
+  this->vftable = &TArmyUnitLineVtbl_0064ce80;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8D60
 // GHIDRA_NAME TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTArmyUnitLineAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTArmyUnitLineAndMaybeFree(void)
 
-undefined4 __thiscall
-TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(undefined4 param_1,byte param_2)
+TArmyUnitLine * __thiscall TArmyUnitLine::DestructTArmyUnitLineAndMaybeFree(TArmyUnitLine *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTArmyUnitLineAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x004AA2F0
-// GHIDRA_NAME TArmyUnitLine::OrphanVtableAssignStub_004aa2f0
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_004aa2f0()
+// GHIDRA_FUNCTION IMPERIALISM 0x004A8DF0
+// GHIDRA_NAME TArmyUnitLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
 
-void __fastcall TArmyUnitLine::OrphanVtableAssignStub_004aa2f0(int param_1)
+void __thiscall TArmyUnitLine::OrphanRetStub_0056f460(TArmyUnitLine *this)
 
 {
-  *(undefined4 *)(param_1 + 0x60) = 4;
+  short sVar1;
+  undefined4 uVar2;
+  TViewVtbl *pTVar3;
+  TControlVtbl *pTVar4;
+  TSimMgrVtbl *pTVar5;
+  char cVar6;
+  TView *pTVar7;
+  TControl *this_00;
+  int *piVar8;
+  int iVar9;
+  char *unaff_EDI;
+  int *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  CString *pCStack_68;
+  TControl *pTStack_64;
+  int *piStack_60;
+  CString *pCStack_5c;
+  undefined4 uStack_58;
+  CString CStack_54;
+  undefined4 uStack_50;
+  CString CStack_3c;
+  CString CStack_38;
+  undefined4 local_34;
+  CString CStack_30;
+  int iStack_2c;
+  int iStack_28;
+  int local_24;
+  undefined4 local_20;
+  CString local_1c;
+  undefined4 local_18;
+  TClickZone *pTStack_10;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006303d0;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  uVar2 = *(undefined4 *)(in_stack_00000004 + 0x84);
+  uStack_50 = 100;
+  CStack_54.m_pchData = (char *)0x4a8e23;
+  pTVar7 = (TView *)AllocateWithFallbackHandler();
+  local_4 = 0;
+  local_1c.m_pchData = (char *)pTVar7;
+  if (pTVar7 == (TView *)0x0) {
+    pTVar7 = (TView *)0x0;
+  }
+  else {
+    uStack_50 = 0x4a8e3f;
+    TView::thunk_ConstructTViewBaseState(pTVar7);
+    pTVar7->vftable = (TViewVtbl *)&TArmyUnitViewVtbl_0064d100;
+  }
+  pTVar3 = *(TViewVtbl **)&this->field_0x10;
+  uStack_50 = 0;
+  CStack_54.m_pchData = (char *)0x5;
+  pCStack_5c = (CString *)&this->field_0x8;
+  uStack_58 = (CString *)0x5;
+  pCStack_68 = (CString *)0x0;
+  local_4 = 0xffffffff;
+  thunk_InitializeUiResourceEntryFrameAndParent();
+  uStack_50 = 0x94;
+  pTVar7[1].vftable = pTVar3;
+  CStack_54.m_pchData = (char *)0x4a8e7b;
+  this_00 = (TControl *)AllocateWithFallbackHandler();
+  local_4 = 1;
+  if (this_00 == (TControl *)0x0) {
+    this_00 = (TControl *)0x0;
+  }
+  else {
+    uStack_50 = 0x4a8e99;
+    TControl::thunk_ConstructUiCommandTagResourceEntryBase(this_00);
+    this_00->vftable = (TControlVtbl *)&TArmyCheckBoxVtbl_0064cec0;
+    *(undefined4 *)&this_00[1].field_0x4 = 0;
+    *(undefined4 *)&this_00[1].field_0xc = 0;
+    *(undefined4 *)&this_00[1].field_0x8 = 0;
+    *(undefined1 *)&this_00[1].vftable = 0;
+  }
+  pCStack_5c = &local_1c;
+  piStack_60 = &local_24;
+  local_4 = 0xffffffff;
+  sVar1 = *(short *)(*(int *)&this->field_0x10 + 4);
+  uStack_50 = 0;
+  CStack_54.m_pchData = (char *)0x4;
+  uStack_58 = (CString *)0x4;
+  pCStack_68 = (CString *)0x0;
+  local_1c.m_pchData = (char *)0x3f;
+  local_18 = 0x31;
+  local_24 = 0;
+  local_20 = 0;
+  pTStack_64 = (TControl *)pTVar7;
+  thunk_InitializeUiResourceEntryFrameAndParent();
+  *(undefined4 *)&this_00->field_0x1c = 0x63686563;
+  *(undefined4 *)&this_00[1].field_0xc = uVar2;
+  *(int *)&this_00[1].field_0x4 = (int)sVar1 << 7;
+  pTVar4 = this_00->vftable;
+  uStack_50 = 0;
+  if (*(short *)(&DAT_00695528 + *(short *)(*(int *)&this->field_0x10 + 4) * 2) == 0) {
+    CStack_54.m_pchData = (char *)0x0;
+    uStack_58 = (CString *)0x4a8f5a;
+    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    pCStack_5c = (CString *)0x0;
+  }
+  else {
+    CStack_54.m_pchData = (char *)0x1;
+    uStack_58 = (CString *)0x4a8f39;
+    (*pTVar4[0x15].GetTEventHandlerClassNamePointer)();
+    this_00->hasCommandTagResource = 4;
+    if (*(int *)(*(int *)&this->field_0x10 + 8) != 0) goto LAB_004a8f66;
+    pCStack_5c = (CString *)0x1;
+  }
+  uStack_58 = (CString *)0x0;
+  piStack_60 = (int *)0x4a8f66;
+  (*pTVar4[0x39].GetTEventHandlerClassNamePointer)();
+LAB_004a8f66:
+  uStack_58 = (CString *)0x4a8f6f;
+  CString::CString(&CStack_3c);
+  uStack_58 = &CStack_3c;
+  iStack_c = 2;
+  pTVar5 = g_pLocalizationTable->vftable;
+  pCStack_5c = (CString *)0x4a8f8c;
+  pCStack_5c = (CString *)thunk_GetUnitMovementClassId();
+  piStack_60 = (int *)0x2726;
+  pTStack_64 = (TControl *)0x4a8f9e;
+  (*pTVar5[0x10].slot_0x04)();
+  pTStack_10 = (TClickZone *)&pCStack_68;
+  pTStack_64 = this_00;
+  thunk_AssignStringSharedRefAndReturnThis();
+  InitializeAndRunMainRoutine();
+  pTStack_64 = (TControl *)0x4a8fc0;
+  cVar6 = WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650();
+  if (cVar6 != '\0') {
+    pTStack_64 = (TControl *)0x8c;
+    pCStack_68 = (CString *)0x4a8fd2;
+    CStack_38.m_pchData = (char *)AllocateWithFallbackHandler();
+    local_18._0_1_ = 3;
+    if ((TGWorldButton *)CStack_38.m_pchData == (TGWorldButton *)0x0) {
+      piVar8 = (int *)0x0;
+    }
+    else {
+      pTStack_64 = (TControl *)0x4a8fe9;
+      piVar8 = (int *)TGWorldButton::ConstructTGWorldButtonBaseState
+                                ((TGWorldButton *)CStack_38.m_pchData);
+    }
+    pCStack_68 = &CStack_38;
+    pTStack_64 = (TControl *)0xdae;
+    iStack_28 = pTVar7->field34 + -0x28;
+    local_18._0_1_ = 2;
+    CStack_38.m_pchData = (char *)0x13;
+    local_34 = 0x12;
+    local_24 = 0;
+    WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0();
+    pTStack_64 = (TControl *)0x0;
+    pCStack_68 = (CString *)0x1;
+    (**(code **)(*piVar8 + 0xa8))();
+    piVar8[7] = 0x75706772;
+    CString::CString((CString *)&stack0xffffffbc);
+    local_20._0_1_ = 4;
+    CString::CString(&CStack_54);
+    local_20._0_1_ = 5;
+    CString::CString((CString *)&stack0xffffffb8);
+    local_20._0_1_ = 6;
+    CString::CString((CString *)&stack0xffffffb4);
+    local_20._0_1_ = 7;
+    CString::CString(&CStack_38);
+    local_20 = CONCAT31(local_20._1_3_,8);
+    WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840((int)&uStack_58 + 2);
+    FormatStringWithVarArgsToSharedRef();
+    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    if ((short)local_20 == 0) {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2746,2);
+      scanBracketExpressions(g_pLocalizationTable,&CStack_3c,unaff_EDI);
+    }
+    else {
+      CString::CString((CString *)&stack0xffffffb8);
+      iStack_28 = CONCAT31(iStack_28._1_3_,9);
+      FormatStringWithVarArgsToSharedRef(&stack0xffffffb8,&g_szDecimalFormat);
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2746,6);
+      pCStack_68 = (CString *)CStack_38.m_pchData;
+      scanBracketExpressions(g_pLocalizationTable,&CStack_3c,unaff_EDI);
+      local_18._0_1_ = 8;
+      pTStack_64 = (TControl *)0x4a918e;
+      CString::~CString(&CStack_38);
+    }
+    CStack_38.m_pchData = (char *)&pCStack_68;
+    pTStack_64 = (TControl *)piVar8;
+    thunk_AssignStringSharedRefAndReturnThis();
+    InitializeAndRunMainRoutine();
+    local_18._0_1_ = 7;
+    pTStack_64 = (TControl *)0x4a91b6;
+    CString::~CString(&CStack_30);
+    local_18._0_1_ = 6;
+    pTStack_64 = (TControl *)0x4a91c4;
+    CString::~CString((CString *)&stack0xffffffbc);
+    local_18._0_1_ = 5;
+    pTStack_64 = (TControl *)0x4a91d2;
+    CString::~CString((CString *)&stack0xffffffc0);
+    local_18._0_1_ = 4;
+    pTStack_64 = (TControl *)0x4a91e0;
+    CString::~CString((CString *)&stack0xffffffb4);
+    local_18 = CONCAT31(local_18._1_3_,2);
+    pTStack_64 = (TControl *)0x4a91ee;
+    CString::~CString(&CStack_3c);
+  }
+  pTStack_64 = (TControl *)0x88;
+  pCStack_68 = (CString *)0x4a91f8;
+  pTStack_10 = (TClickZone *)AllocateWithFallbackHandler();
+  local_18._0_1_ = 10;
+  if (pTStack_10 == (TClickZone *)0x0) {
+    iVar9 = 0;
+  }
+  else {
+    pTStack_64 = (TControl *)0x4a920f;
+    iVar9 = TClickZone::thunk_ConstructUiCommandTagResourceEntry(pTStack_10);
+  }
+  pTStack_64 = (TControl *)0x0;
+  pCStack_68 = (CString *)0x4;
+  local_18 = CONCAT31(local_18._1_3_,2);
+  iStack_28 = 0x80;
+  local_24 = 0x18;
+  CStack_30.m_pchData = (char *)0x40;
+  iStack_2c = 0;
+  thunk_InitializeUiResourceEntryFrameAndParent(0,pTVar7);
+  *(undefined4 *)(iVar9 + 0x1c) = 0x6e616d65;
+  pTStack_64 = (TControl *)&stack0xffffffb8;
+  pCStack_68 = (CString *)0x1;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  local_1c.m_pchData = &stack0xffffff8c;
+  thunk_AssignStringSharedRefAndReturnThis(&CStack_54);
+  InitializeAndRunMainRoutine();
+  local_24 = -1;
+  CString::~CString(&CStack_54);
+  *unaff_FS_OFFSET = iStack_2c;
   return;
 }
 

@@ -3,14 +3,44 @@
 // Program: Imperialism.exe
 // Bucket: TBook.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00430250
+// GHIDRA_NAME TBook::ConstructPictureResourceEntry_Vtbl0063f650
+// GHIDRA_PROTO undefined __thiscall ConstructPictureResourceEntry_Vtbl0063f650(void)
+
+TBook * __thiscall TBook::ConstructPictureResourceEntry_Vtbl0063f650(TBook *this)
+
+{
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TBookVtbl_0063f650;
+  *(undefined4 *)&this->field_0x90 = 0;
+  *(undefined4 *)&this->field_0x94 = 0;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00430280
+// GHIDRA_NAME TBook::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TBook * __thiscall TBook::_scalar_deleting_destructor_(TBook *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F4A0
 // GHIDRA_NAME TBook::CreateTBookInstance
 // GHIDRA_PROTO undefined CreateTBookInstance()
 
-undefined4 * TBook::CreateTBookInstance(void)
+thunk_TPictureButton * TBook::CreateTBookInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,90 +50,96 @@ undefined4 * TBook::CreateTBookInstance(void)
   puStack_8 = &LAB_006361fa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_0063f650;
-    puVar1[0x24] = 0;
-    puVar1[0x25] = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TBookVtbl **)this = &TBookVtbl_0063f650;
+    *(undefined4 *)(this + 0x90) = 0;
+    *(undefined4 *)(this + 0x94) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F540
-// GHIDRA_NAME TBook::GetTBookClassNamePointer
-// GHIDRA_PROTO undefined GetTBookClassNamePointer()
+// GHIDRA_NAME TBook::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TBook::GetTBookClassNamePointer(void)
+CRuntimeClass * __thiscall TBook::GetTEventHandlerClassNamePointer(TBook *this)
 
 {
-  return &PTR_s_TBook_0065e170;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F560
-// GHIDRA_NAME TBook::ConstructTBookBaseState
-// GHIDRA_PROTO undefined ConstructTBookBaseState()
+// GHIDRA_NAME TBook::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TBook::ConstructTBookBaseState(int *param_1,undefined4 param_2)
+void __thiscall TBook::OrphanLeaf_NoCall_Ins07_004d8920(TBook *this)
 
 {
-  code *pcVar1;
-  int iVar2;
+  TBook_slot_0x04_0x04 *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
   
-  TView::thunk_NoOpUiLifecycleHook(param_2);
-  pcVar1 = *(code **)(*param_1 + 0x94);
-  iVar2 = (*pcVar1)(0x6c636f72);
-  param_1[0x24] = iVar2;
-  LoadUiStringByGroupAndIndexToControlObject(0x2730,0xc,iVar2);
-  iVar2 = (*pcVar1)(0x72636f72);
-  param_1[0x25] = iVar2;
-  LoadUiStringByGroupAndIndexToControlObject(0x2730,0xb,iVar2);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
+  pTVar1 = this->vftable[0x12].slot_0x04;
+  uVar2 = (*pTVar1)(0x6c636f72);
+  *(uint *)&this->field_0x90 = CONCAT31(extraout_var,uVar2);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730,0xc,CONCAT31(extraout_var,uVar2));
+  uVar2 = (*pTVar1)(0x72636f72);
+  *(uint *)&this->field_0x94 = CONCAT31(extraout_var_00,uVar2);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730,0xb,CONCAT31(extraout_var_00,uVar2));
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0056F5E0
-// GHIDRA_NAME TBook::DestructTBookAndMaybeFree
-// GHIDRA_PROTO undefined DestructTBookAndMaybeFree()
+// GHIDRA_NAME TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
-void __thiscall
-TBook::DestructTBookAndMaybeFree(int *param_1,int param_2,int param_3,undefined4 param_4)
+void __thiscall TBook::ReleaseRuntimeSelectionOwnerAndDestroyObject(TBook *this)
 
 {
   short sVar1;
-  code *pcVar2;
+  TBook_slot_0x04_0x04 *pTVar2;
   int iVar3;
-  int *piVar4;
-  uint uVar5;
+  undefined uVar4;
+  undefined3 extraout_var;
+  uint uVar6;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  int *piVar5;
   
-  if (param_2 == 10) {
-    pcVar2 = *(code **)(*param_1 + 0x94);
-    uVar5 = 0x70616765;
+  if (in_stack_00000004 == 10) {
+    pTVar2 = this->vftable[0x12].slot_0x04;
+    uVar6 = 0x70616765;
     do {
-      piVar4 = (int *)(*pcVar2)(uVar5);
-      if (piVar4 != (int *)0x0) {
-        iVar3 = *piVar4;
+      uVar4 = (*pTVar2)(uVar6);
+      piVar5 = (int *)CONCAT31(extraout_var,uVar4);
+      if (piVar5 != (int *)0x0) {
+        iVar3 = *piVar5;
         (**(code **)(iVar3 + 0xc))();
-        if (*(int *)(param_3 + 0x1c) == 0x72636f72) {
+        if (*(int *)(in_stack_00000008 + 0x1c) == 0x72636f72) {
           (**(code **)(iVar3 + 0x1b0))
-                    (CONCAT22(0x7263,(short)piVar4[0x19] + *(short *)((int)piVar4 + 0x62)));
-          sVar1 = *(short *)((int)piVar4 + 0x62);
+                    (CONCAT22(0x7263,(short)piVar5[0x19] + *(short *)((int)piVar5 + 0x62)));
+          sVar1 = *(short *)((int)piVar5 + 0x62);
         }
         else {
-          if (*(int *)(param_3 + 0x1c) != 0x6c636f72) goto LAB_0056f65f;
-          (**(code **)(iVar3 + 0x1b0))(*(short *)((int)piVar4 + 0x62) - (short)piVar4[0x19]);
-          sVar1 = *(short *)((int)piVar4 + 0x62);
+          if (*(int *)(in_stack_00000008 + 0x1c) != 0x6c636f72) goto LAB_0056f65f;
+          (**(code **)(iVar3 + 0x1b0))(*(short *)((int)piVar5 + 0x62) - (short)piVar5[0x19]);
+          sVar1 = *(short *)((int)piVar5 + 0x62);
         }
         UpdatePagedListNavigationButtonState((int)sVar1);
       }
 LAB_0056f65f:
-      uVar5 = uVar5 + 1;
-    } while (uVar5 < 0x70616767);
+      uVar6 = uVar6 + 1;
+    } while (uVar6 < 0x70616767);
   }
-  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
   return;
 }
 

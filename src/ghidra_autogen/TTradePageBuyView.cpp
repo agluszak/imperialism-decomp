@@ -3,15 +3,32 @@
 // Program: Imperialism.exe
 // Bucket: TTradePageBuyView.cpp
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00435640
+// GHIDRA_NAME TTradePageBuyView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTradePageBuyView * __thiscall
+TTradePageBuyView::_scalar_deleting_destructor_(TTradePageBuyView *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD5F0
 // GHIDRA_NAME TTradePageBuyView::CreateTTradePageBuyViewInstance
 // GHIDRA_PROTO undefined CreateTTradePageBuyViewInstance()
 
-undefined4 * TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
+TPageView * TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TPageView *this;
+  TPageView *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,120 +38,124 @@ undefined4 * TTradePageBuyView::CreateTTradePageBuyViewInstance(void)
   puStack_8 = &LAB_006393da;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x88);
+  this = (TPageView *)AllocateWithFallbackHandler(0x88);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TPageView::ConstructTPageViewBaseState();
-    *puVar1 = &PTR_LAB_00640d48;
-    *(undefined2 *)(puVar1 + 0x21) = 0xffff;
-    puVar2 = puVar1;
+  pTVar1 = (TPageView *)0x0;
+  if (this != (TPageView *)0x0) {
+    TPageView::ConstructTPageViewBaseState(this);
+    this->vftable = (TPageViewVtbl *)&TTradePageBuyViewVtbl_00640d48;
+    *(undefined2 *)&this[1].vftable = 0xffff;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD670
-// GHIDRA_NAME TTradePageBuyView::GetTTradePageBuyViewClassNamePointer
-// GHIDRA_PROTO undefined GetTTradePageBuyViewClassNamePointer()
+// GHIDRA_NAME TTradePageBuyView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TTradePageBuyView::GetTTradePageBuyViewClassNamePointer(void)
+CRuntimeClass * __thiscall
+TTradePageBuyView::GetTEventHandlerClassNamePointer(TTradePageBuyView *this)
 
 {
-  return &PTR_s_TTradePageBuyView_0066dc30;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD690
 // GHIDRA_NAME TTradePageBuyView::ConstructTTradePageBuyViewBaseState
-// GHIDRA_PROTO undefined ConstructTTradePageBuyViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTTradePageBuyViewBaseState(void)
 
-void __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(int *param_1,short param_2)
+void __thiscall TTradePageBuyView::ConstructTTradePageBuyViewBaseState(TTradePageBuyView *this)
 
 {
-  uint3 uVar1;
-  char cVar2;
-  short sVar3;
-  undefined4 uVar4;
-  undefined4 *puVar5;
-  int iVar6;
+  TTradeMgrVtbl *pTVar1;
+  uint3 uVar2;
+  char cVar3;
+  short sVar4;
+  undefined4 uVar5;
+  TTextLine *pTVar6;
+  TTradePageBuyViewVtbl *pTVar7;
+  int iVar8;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_28 [8];
+  short in_stack_00000004;
   undefined4 local_20;
   uint local_1c;
   undefined1 uStack_18;
   undefined1 uStack_17;
   undefined4 local_c;
   undefined1 *puStack_8;
-  undefined4 *puStack_4;
+  TTextLine *pTStack_4;
   
-  puStack_4 = (undefined4 *)0xffffffff;
+  pTStack_4 = (TTextLine *)0xffffffff;
   puStack_8 = &LAB_00639404;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_20 = 0xe0;
   local_1c = 0x24;
-  if (param_2 == (short)param_1[0x21]) goto LAB_005bd863;
-  iVar6 = *param_1;
-  *(short *)(param_1 + 0x21) = param_2;
-  (**(code **)(iVar6 + 0x1b4))();
-  if (param_2 != -1) {
-    iVar6 = *(int *)g_pNationInteractionStateManager;
-    sVar3 = UiRuntimeContext::GetActiveNationId();
-    cVar2 = (**(code **)(iVar6 + 0x78))((int)param_2,(int)sVar3);
-    if (cVar2 == '\0') {
-      iVar6 = *(int *)g_pNationInteractionStateManager;
-      sVar3 = UiRuntimeContext::GetActiveNationId();
-      cVar2 = (**(code **)(iVar6 + 0x7c))((int)param_2,(int)sVar3);
-      if (cVar2 != '\0') goto LAB_005bd73a;
+  if (in_stack_00000004 == *(short *)&this->field_0x84) goto LAB_005bd863;
+  pTVar7 = this->vftable;
+  *(short *)&this->field_0x84 = in_stack_00000004;
+  (*pTVar7[0x36].slot_0x04)();
+  if (in_stack_00000004 != -1) {
+    pTVar1 = g_pNationInteractionStateManager->vftable;
+    sVar4 = UiRuntimeContext::GetActiveNationId();
+    cVar3 = (*pTVar1[0xf].GetTTradeMgrClassNamePointer)((int)in_stack_00000004,(int)sVar4);
+    if (cVar3 == '\0') {
+      pTVar1 = g_pNationInteractionStateManager->vftable;
+      sVar4 = UiRuntimeContext::GetActiveNationId();
+      cVar3 = (*pTVar1[0xf].slot_0x04)((int)in_stack_00000004,(int)sVar4);
+      if (cVar3 != '\0') goto LAB_005bd73a;
     }
     else {
 LAB_005bd73a:
-      puStack_4 = (undefined4 *)AllocateWithFallbackHandler(0x20);
-      iVar6 = 0;
+      pTStack_4 = (TTextLine *)AllocateWithFallbackHandler(0x20);
+      iVar8 = 0;
       local_c = 0;
-      if (puStack_4 == (undefined4 *)0x0) {
-        uVar4 = 0;
+      if (pTStack_4 == (TTextLine *)0x0) {
+        uVar5 = 0;
       }
       else {
-        uVar4 = TTextLine::ConstructTTextLineBaseState();
+        uVar5 = TTextLine::ConstructTTextLineBaseState(pTStack_4);
       }
       local_c = 0xffffffff;
       WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(0,0,&stack0xffffffd0,0x2741,3);
       SetObjectField1EWord(1);
-      uVar1 = (uint3)local_1c;
-      local_1c = (uint)(uVar1 & 0xffff);
+      uVar2 = (uint3)local_1c;
+      local_1c = (uint)(uVar2 & 0xffff);
       uStack_18 = 0;
       uStack_17 = 0;
       thunk_BuildUiTextStyleDescriptor(&local_20,4,0xc,0x2b6a);
       CopyTwoDwordsAndWordToObjectOffset14(&local_20);
-      (**(code **)(*(int *)param_1[0x1f] + 0x30))(uVar4);
+      (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar5);
       do {
-        cVar2 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x78))((int)param_2,iVar6);
-        if (cVar2 != '\0') {
-          puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+        cVar3 = (*g_pNationInteractionStateManager->vftable[0xf].GetTTradeMgrClassNamePointer)
+                          ((int)in_stack_00000004,iVar8);
+        if (cVar3 != '\0') {
+          pTVar6 = (TTextLine *)AllocateWithFallbackHandler(0x14);
           local_c = 1;
-          puStack_4 = puVar5;
-          if (puVar5 == (undefined4 *)0x0) {
-            puVar5 = (undefined4 *)0x0;
+          pTStack_4 = pTVar6;
+          if (pTVar6 == (TTextLine *)0x0) {
+            pTVar6 = (TTextLine *)0x0;
           }
           else {
-            TLineData::ConstructTLineDataBaseState();
-            *puVar5 = &PTR_LAB_0066e4f0;
+            TLineData::ConstructTLineDataBaseState((TLineData *)pTVar6);
+            pTVar6->vftable = (TTextLineVtbl *)&TTradeBidNationLineVtbl_0066e4f0;
           }
           local_c = 0xffffffff;
-          TLineData::SetLineDataRowAndBounds(0,0,auStack_28);
-          *(short *)((int)puVar5 + 0x12) = (short)iVar6;
-          *(short *)(puVar5 + 4) = param_2;
-          (**(code **)(*(int *)param_1[0x1f] + 0x30))(puVar5);
+          TLineData::SetLineDataRowAndBounds((TLineData *)pTVar6);
+          *(short *)&pTVar6->field_0x12 = (short)iVar8;
+          *(short *)&pTVar6->field_0x10 = in_stack_00000004;
+          (**(code **)(**(int **)&this->field_0x7c + 0x30))(pTVar6);
         }
-        iVar6 = iVar6 + 1;
-      } while (iVar6 < 0x17);
+        iVar8 = iVar8 + 1;
+      } while (iVar8 < 0x17);
     }
-    iVar6 = *param_1;
-    (**(code **)(iVar6 + 0x1ac))();
-    (**(code **)(iVar6 + 0x1b0))(1);
+    pTVar7 = this->vftable;
+    (*pTVar7[0x35].slot_0x04)();
+    (*pTVar7[0x36].GetTEventHandlerClassNamePointer)(1);
   }
-  (**(code **)(iVar6 + 0xe4))();
+  (*pTVar7[0x1c].slot_0x04)();
 LAB_005bd863:
   *unaff_FS_OFFSET = local_c;
   return;
@@ -142,27 +163,31 @@ LAB_005bd863:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD900
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTTradePageBuyViewAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTTradePageBuyViewAndMaybeFree(void)
 
-undefined4 __thiscall
-TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(undefined4 param_1,byte param_2)
+TTradePageBuyView * __thiscall
+TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree(TTradePageBuyView *this)
 
 {
-  DestructTTradePageBuyViewAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  DestructTTradePageBuyViewAndMaybeFree_Impl(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BD930
 // GHIDRA_NAME TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
-// GHIDRA_PROTO undefined DestructTTradePageBuyViewAndMaybeFree_Impl()
+// GHIDRA_PROTO undefined __thiscall DestructTTradePageBuyViewAndMaybeFree_Impl(void)
 
-void __fastcall TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(undefined4 *param_1)
+void __thiscall
+TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl(TTradePageBuyView *this)
 
 {
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable =
+       (TTradePageBuyViewVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

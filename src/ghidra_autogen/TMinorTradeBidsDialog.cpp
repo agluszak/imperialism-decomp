@@ -3,77 +3,99 @@
 // Program: Imperialism.exe
 // Bucket: TMinorTradeBidsDialog.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005B2A80
-// GHIDRA_NAME TMinorTradeBidsDialog::GetTMinorTradeBidsDialogClassNamePointer
-// GHIDRA_PROTO undefined GetTMinorTradeBidsDialogClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x005B2A30
+// GHIDRA_NAME TMinorTradeBidsDialog::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TMinorTradeBidsDialog::GetTMinorTradeBidsDialogClassNamePointer(void)
+TMinorTradeBidsDialog * __thiscall
+TMinorTradeBidsDialog::_scalar_deleting_destructor_(TMinorTradeBidsDialog *this)
 
 {
-  return &PTR_s_TMinorTradeBidsDialog_0066b250;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005B2A80
+// GHIDRA_NAME TMinorTradeBidsDialog::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TMinorTradeBidsDialog::GetTEventHandlerClassNamePointer(TMinorTradeBidsDialog *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B2AA0
 // GHIDRA_NAME TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState
-// GHIDRA_PROTO undefined ConstructTMinorTradeBidsDialogBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTMinorTradeBidsDialogBaseState(void)
 
-void __fastcall TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(code *param_1)
+void __thiscall
+TMinorTradeBidsDialog::ConstructTMinorTradeBidsDialogBaseState(TMinorTradeBidsDialog *this)
 
 {
   code *pcVar1;
   int iVar2;
-  short sVar3;
-  int *piVar4;
-  char *pcVar5;
+  undefined uVar3;
+  short sVar4;
+  undefined3 extraout_var;
+  int *piVar5;
+  undefined3 extraout_var_00;
+  char *pcVar6;
   undefined4 *unaff_EBP;
-  int iVar6;
+  int iVar7;
   int iStack_1c;
   int iStack_18;
   
-  piVar4 = (int *)(**(code **)(*(int *)param_1 + 0x94))(0x436f7374);
-  if (piVar4 == (int *)0x0) {
+  uVar3 = (*this->vftable[0x12].slot_0x04)(0x436f7374);
+  if ((int *)CONCAT31(extraout_var,uVar3) == (int *)0x0) {
     MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x179);
   }
-  iVar6 = 0;
-  pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
-  pcVar1 = *(code **)(*piVar4 + 0x94);
+  iVar7 = 0;
+  pcVar6 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
+  pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94);
   do {
-    piVar4 = (int *)(*pcVar1)(*(undefined4 *)pcVar5);
-    if (piVar4 != (int *)0x0) {
-      iVar2 = *piVar4;
-      sVar3 = (**(code **)(*(int *)g_pNationInteractionStateManager + 0x4c))(iVar6,0);
-      (**(code **)(iVar2 + 0x1e4))((int)sVar3);
+    piVar5 = (int *)(*pcVar1)(*(undefined4 *)pcVar6);
+    if (piVar5 != (int *)0x0) {
+      iVar2 = *piVar5;
+      uVar3 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar7,0);
+      (**(code **)(iVar2 + 0x1e4))((int)(short)CONCAT31(extraout_var_00,uVar3));
     }
-    iVar6 = iVar6 + 1;
-    pcVar5 = pcVar5 + 4;
-  } while ((short)iVar6 < 0x17);
+    iVar7 = iVar7 + 1;
+    pcVar6 = pcVar6 + 4;
+  } while ((short)iVar7 < 0x17);
   iStack_1c = 0;
   iStack_18 = 0x10;
   do {
-    if (*(int *)((int)&g_apMinorNationCapabilityObjects + iStack_1c) != 0) {
-      piVar4 = (int *)(*param_1)(*(undefined4 *)((int)&DAT_0066b13c + iStack_1c));
-      if (piVar4 == (int *)0x0) {
+    if (*(int *)((int)g_apTerrainTypeDescriptorTable + iStack_1c + 0x1c) != 0) {
+      piVar5 = (int *)(*(code *)this)(*(undefined4 *)((int)&DAT_0066b13c + iStack_1c));
+      if (piVar5 == (int *)0x0) {
         MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
         thunk_TemporarilyClearAndRestoreUiInvalidationFlag
                   (s_D__Ambit_Cross_UTestDialogs_cpp_0069a7f8,0x189);
       }
-      iVar6 = 0;
-      pcVar5 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
-      pcVar1 = *(code **)(*piVar4 + 0x94);
+      iVar7 = 0;
+      pcVar6 = " 0sr 1sr 2sr 3sr 4sr 5sr 6sr 0am 1am 2am 3am 4am 5am 0dg 1dg 2dg 3dg";
+      pcVar1 = *(code **)(*piVar5 + 0x94);
       do {
-        piVar4 = (int *)(*pcVar1)(*(undefined4 *)pcVar5);
-        if (piVar4 != (int *)0x0) {
-          iVar2 = *piVar4;
+        piVar5 = (int *)(*pcVar1)(*(undefined4 *)pcVar6);
+        if (piVar5 != (int *)0x0) {
+          iVar2 = *piVar5;
           (**(code **)(iVar2 + 0x2c))(0);
-          piVar4[0x29] = -1;
-          sVar3 = (**(code **)(*(int *)*unaff_EBP + 0x7c))(iVar6,0);
-          (**(code **)(iVar2 + 0x1e4))((int)sVar3);
+          piVar5[0x29] = -1;
+          sVar4 = (**(code **)(*(int *)*unaff_EBP + 0x7c))(iVar7,0);
+          (**(code **)(iVar2 + 0x1e4))((int)sVar4);
         }
-        iVar6 = iVar6 + 1;
-        pcVar5 = pcVar5 + 4;
-      } while ((short)iVar6 < 0x17);
+        iVar7 = iVar7 + 1;
+        pcVar6 = pcVar6 + 4;
+      } while ((short)iVar7 < 0x17);
     }
     iStack_1c = iStack_1c + 4;
     iStack_18 = iStack_18 + -1;
@@ -105,9 +127,9 @@ TView * TMinorTradeBidsDialog::DestructTMinorTradeBidsDialogAndMaybeFree(void)
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
     local_4 = CONCAT31(local_4._1_3_,1);
-    this->vftable = &PTR_LAB_0064be28;
+    this->vftable = (TViewVtbl *)&TDialogViewVtbl_0064be28;
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Toy_h_0069633c,0x23);
-    this->vftable = &PTR_LAB_0066b998;
+    this->vftable = (TViewVtbl *)&TRelationshipDialogVtbl_0066b998;
     pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;

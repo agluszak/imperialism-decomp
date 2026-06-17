@@ -7,11 +7,11 @@
 // GHIDRA_NAME TRearFloatWindow::CreateTRearFloatWindowInstance
 // GHIDRA_PROTO undefined CreateTRearFloatWindowInstance()
 
-undefined4 * TRearFloatWindow::CreateTRearFloatWindowInstance(void)
+TControl * TRearFloatWindow::CreateTRearFloatWindowInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,86 +21,96 @@ undefined4 * TRearFloatWindow::CreateTRearFloatWindowInstance(void)
   puStack_8 = &LAB_00632aaa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TControl *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryType4B340();
-    *puVar1 = &PTR_LAB_00655928;
-    puVar2 = puVar1;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    this->vftable = (TControlVtbl *)&TRearFloatWindowVtbl_00655928;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F38C0
-// GHIDRA_NAME TRearFloatWindow::GetTRearFloatWindowClassNamePointer
-// GHIDRA_PROTO undefined GetTRearFloatWindowClassNamePointer()
+// GHIDRA_NAME TRearFloatWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TRearFloatWindow::GetTRearFloatWindowClassNamePointer(void)
+CRuntimeClass * __thiscall
+TRearFloatWindow::GetTEventHandlerClassNamePointer(TRearFloatWindow *this)
 
 {
-  return &PTR_s_TRearFloatWindow_00654f30;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F38E0
 // GHIDRA_NAME TRearFloatWindow::ConstructTRearFloatWindowBaseState
-// GHIDRA_PROTO undefined ConstructTRearFloatWindowBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTRearFloatWindowBaseState(void)
 
-undefined4 * __fastcall TRearFloatWindow::ConstructTRearFloatWindowBaseState(undefined4 *param_1)
+TRearFloatWindow * __thiscall
+TRearFloatWindow::ConstructTRearFloatWindowBaseState(TRearFloatWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340();
-  *param_1 = &PTR_LAB_00655928;
-  return param_1;
+  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  this->vftable = &TRearFloatWindowVtbl_00655928;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3910
-// GHIDRA_NAME TRearFloatWindow::DestructTRearFloatWindowAndMaybeFree
-// GHIDRA_PROTO undefined DestructTRearFloatWindowAndMaybeFree()
+// GHIDRA_NAME TRearFloatWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TRearFloatWindow::DestructTRearFloatWindowAndMaybeFree(undefined4 param_1,byte param_2)
+TRearFloatWindow * __thiscall TRearFloatWindow::_scalar_deleting_destructor_(TRearFloatWindow *this)
 
 {
-  DestructTWindowViewAndUnlinkGlobalLists();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004F3960
-// GHIDRA_NAME TRearFloatWindow::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960
-// GHIDRA_PROTO undefined WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960()
+// GHIDRA_NAME TRearFloatWindow::SetForeignMinisterReadyFlag14
+// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
 
-undefined4 __thiscall
-TRearFloatWindow::WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960
-          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+undefined4 __thiscall TRearFloatWindow::SetForeignMinisterReadyFlag14(TRearFloatWindow *this)
 
 {
-  int iVar1;
-  undefined4 uVar2;
+  TRearFloatWindowVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  undefined4 uVar4;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  uint3 extraout_var_03;
+  int iVar3;
   
-  iVar1 = *param_1;
-  uVar2 = (**(code **)(iVar1 + 0x17c))(param_2);
-  switch((short)uVar2) {
+  pTVar1 = this->vftable;
+  uVar2 = (*pTVar1[0x2f].slot_0x04)();
+  iVar3 = CONCAT31(extraout_var,uVar2);
+  switch((short)iVar3) {
   case 3:
-    uVar2 = TControl::thunk_DispatchUiMouseMoveToChildren(param_2,param_2,param_3,param_4);
-    return uVar2;
+    uVar4 = TView::thunk_DispatchUiMouseMoveToChildren((TView *)this);
+    return uVar4;
   case 4:
-    (**(code **)(iVar1 + 0x184))(param_2);
-    return 1;
+    (*pTVar1[0x30].slot_0x04)();
+    return CONCAT31(extraout_var_00,1);
   case 5:
-    (**(code **)(iVar1 + 0x188))(param_2);
-    return 1;
+    (*pTVar1[0x31].GetTEventHandlerClassNamePointer)();
+    return CONCAT31(extraout_var_01,1);
   case 6:
-    (**(code **)(iVar1 + 0x180))(param_2);
-    return 1;
+    (*pTVar1[0x30].GetTEventHandlerClassNamePointer)();
+    return CONCAT31(extraout_var_02,1);
   case 7:
   case 8:
-    (**(code **)(iVar1 + 0x18c))(param_2,uVar2);
+    (*pTVar1[0x31].slot_0x04)();
+    iVar3 = (uint)extraout_var_03 << 8;
   }
-  return 1;
+  return CONCAT31((int3)((uint)iVar3 >> 8),1);
 }
 

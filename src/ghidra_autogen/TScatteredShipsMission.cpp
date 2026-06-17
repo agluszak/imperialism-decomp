@@ -5,28 +5,32 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005356A0
 // GHIDRA_NAME TScatteredShipsMission::DestroyTScatteredShipsMission
-// GHIDRA_PROTO undefined DestroyTScatteredShipsMission()
+// GHIDRA_PROTO undefined __thiscall DestroyTScatteredShipsMission(void)
 
-undefined4 __thiscall
-TScatteredShipsMission::DestroyTScatteredShipsMission(undefined4 param_1,byte param_2)
+TScatteredShipsMission * __thiscall
+TScatteredShipsMission::DestroyTScatteredShipsMission(TScatteredShipsMission *this)
 
 {
+  byte in_stack_00000004;
+  
   ResetTScatteredShipsMissionToSentinelVtable();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00536F70
 // GHIDRA_NAME TScatteredShipsMission::SetMapOrderEntryChildFlags
-// GHIDRA_PROTO undefined SetMapOrderEntryChildFlags()
+// GHIDRA_PROTO undefined __thiscall SetMapOrderEntryChildFlags(void)
 
-void __thiscall TScatteredShipsMission::SetMapOrderEntryChildFlags(int param_1,undefined1 param_2)
+void __thiscall TScatteredShipsMission::SetMapOrderEntryChildFlags(TScatteredShipsMission *this)
 
 {
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 4)) {
-    *(undefined1 *)(param_1 + 0xc) = param_2;
+  TScatteredShipsMission in_stack_00000004;
+  
+  for (; this != (TScatteredShipsMission *)0x0; this = *(TScatteredShipsMission **)(this + 4)) {
+    this[0xc] = in_stack_00000004;
   }
   return;
 }
@@ -48,29 +52,30 @@ TScatteredShipsMission::QueueMissionOrdersByPriorityForContext
           (TScatteredShipsMission *this,int pContextAnchor,int *ppSelectedChildNode)
 
 {
-  short sVar1;
+  int *piVar1;
   short sVar2;
-  void *pvVar3;
-  int iVar4;
-  int *piVar5;
+  short sVar3;
+  void *pvVar4;
+  int iVar5;
   TScatteredShipsMission *pTVar6;
   TScatteredShipsMission *this_00;
+  int *unaff_EDI;
   int iVar7;
   TScatteredShipsMission *pTVar8;
   
   if ((*ppSelectedChildNode != 0) &&
-     (pvVar3 = ObjectPool::FindMissionOrderNodeById
-                         (*(ObjectPool **)(this + 0x24),*ppSelectedChildNode), pvVar3 == (void *)0x0
+     (pvVar4 = ObjectPool::FindMissionOrderNodeById
+                         (*(ObjectPool **)(this + 0x24),*ppSelectedChildNode), pvVar4 == (void *)0x0
      )) {
     *ppSelectedChildNode = 0;
   }
   pTVar6 = (TScatteredShipsMission *)0x0;
   iVar7 = -1;
-  for (piVar5 = *(int **)(this + 0x24); piVar5 != (int *)0x0; piVar5 = (int *)piVar5[1]) {
-    iVar4 = CalculateMissionOrderPriorityScore((void *)*piVar5,3);
-    if (iVar7 < iVar4) {
-      pTVar6 = (TScatteredShipsMission *)*piVar5;
-      iVar7 = iVar4;
+  for (piVar1 = *(int **)(this + 0x24); piVar1 != (int *)0x0; piVar1 = (int *)piVar1[1]) {
+    iVar5 = CalculateMissionOrderPriorityScore((void *)*piVar1,3);
+    if (iVar7 < iVar5) {
+      pTVar6 = (TScatteredShipsMission *)*piVar1;
+      iVar7 = iVar5;
     }
   }
   if (pTVar6 != (TScatteredShipsMission *)0x0) {
@@ -79,9 +84,9 @@ TScatteredShipsMission::QueueMissionOrdersByPriorityForContext
     }
     else {
       if ((TScatteredShipsMission *)*ppSelectedChildNode != (TScatteredShipsMission *)0x0) {
-        sVar1 = ComputeOrderNodeDistanceQuotientByDescriptorWord24(*(undefined4 *)(this + 0x14));
         sVar2 = ComputeOrderNodeDistanceQuotientByDescriptorWord24(*(undefined4 *)(this + 0x14));
-        if (sVar1 < sVar2) goto LAB_0053711a;
+        sVar3 = ComputeOrderNodeDistanceQuotientByDescriptorWord24(*(undefined4 *)(this + 0x14));
+        if (sVar2 < sVar3) goto LAB_0053711a;
       }
       *ppSelectedChildNode = (int)pTVar6;
       pTVar6 = (TScatteredShipsMission *)0x0;
@@ -92,14 +97,14 @@ LAB_0053711a:
   pTVar8 = this_00;
   for (; ((this_00 == pTVar8 || (this_00 == pTVar6)) && (this_00 != (TScatteredShipsMission *)0x0));
       this_00 = this_00 + (((int)pTVar6 - (int)pTVar8) / 0x38) * 0x38) {
-    pvVar3 = ObjectPool::FindMissionOrderNodeById(*(ObjectPool **)(this + 0x24),(int)this_00);
-    *(undefined1 *)((int)pvVar3 + 0xc) = 1;
-    piVar5 = GetOrCreateMissionOrderEntryForNode(this_00);
+    pvVar4 = ObjectPool::FindMissionOrderNodeById(*(ObjectPool **)(this + 0x24),(int)this_00);
+    *(undefined1 *)((int)pvVar4 + 0xc) = 1;
+    pvVar4 = GetOrCreateMissionOrderEntryForNode(this_00);
     if (*(int *)(this_00 + 8) == pContextAnchor) {
-      thunk_SetMapOrderType9AndQueue(piVar5);
+      thunk_SetMapOrderType9AndQueue(pvVar4,unaff_EDI);
     }
     else {
-      PromoteMapOrderChainAndQueue(piVar5);
+      PromoteMapOrderChainAndQueue(pvVar4,(int *)pContextAnchor);
     }
     pTVar8 = (TScatteredShipsMission *)*ppSelectedChildNode;
   }
@@ -110,10 +115,10 @@ LAB_0053711a:
 // GHIDRA_NAME TScatteredShipsMission::CreateTScatteredShipsMission
 // GHIDRA_PROTO undefined CreateTScatteredShipsMission()
 
-undefined4 * TScatteredShipsMission::CreateTScatteredShipsMission(void)
+TMission * TScatteredShipsMission::CreateTScatteredShipsMission(void)
 
 {
-  undefined4 *puVar1;
+  TMission *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -123,26 +128,26 @@ undefined4 * TScatteredShipsMission::CreateTScatteredShipsMission(void)
   puStack_8 = &LAB_006343ea;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x3c);
+  this = (TMission *)AllocateWithFallbackHandler(0x3c);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TMission::ConstructTMission();
-    puVar1[5] = 0;
-    puVar1[6] = 0;
-    puVar1[7] = 0;
-    puVar1[8] = 0;
-    puVar1[9] = 0;
-    puVar1[10] = 0;
-    puVar1[0xb] = 0;
-    puVar1[0xc] = 0;
-    puVar1[0xd] = 0;
-    puVar1[0xe] = 0;
-    *puVar1 = &PTR_LAB_0065a5a8;
+  if (this != (TMission *)0x0) {
+    TMission::ConstructTMission(this);
+    *(undefined4 *)(this + 0x14) = 0;
+    *(undefined4 *)(this + 0x18) = 0;
+    *(undefined4 *)(this + 0x1c) = 0;
+    *(undefined4 *)(this + 0x20) = 0;
+    *(undefined4 *)(this + 0x24) = 0;
+    *(undefined4 *)(this + 0x28) = 0;
+    *(undefined4 *)(this + 0x2c) = 0;
+    *(undefined4 *)(this + 0x30) = 0;
+    *(undefined4 *)(this + 0x34) = 0;
+    *(undefined4 *)(this + 0x38) = 0;
+    *(undefined ***)this = &PTR_LAB_0065a5a8;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (TMission *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053BB20
@@ -157,14 +162,15 @@ undefined ** TScatteredShipsMission::GetTScatteredShipsMissionClassNamePointer(v
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053BBB0
 // GHIDRA_NAME TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline
-// GHIDRA_PROTO undefined RunScatteredShipsMissionStateUpdatePipeline()
+// GHIDRA_PROTO undefined __thiscall RunScatteredShipsMissionStateUpdatePipeline(void)
 
-void __fastcall TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline(int *param_1)
+void __thiscall
+TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipeline(TScatteredShipsMission *this)
 
 {
   int iVar1;
   
-  iVar1 = *param_1;
+  iVar1 = *(int *)this;
   (**(code **)(iVar1 + 0x34))();
   (**(code **)(iVar1 + 0x38))();
   (**(code **)(iVar1 + 0x3c))();
@@ -173,138 +179,152 @@ void __fastcall TScatteredShipsMission::RunScatteredShipsMissionStateUpdatePipel
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053BC00
 // GHIDRA_NAME TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3
-// GHIDRA_PROTO undefined SetScatteredShipsMissionStateByte8To3()
+// GHIDRA_PROTO undefined __thiscall SetScatteredShipsMissionStateByte8To3(void)
 
-void __fastcall TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3(int param_1)
+void __thiscall
+TScatteredShipsMission::SetScatteredShipsMissionStateByte8To3(TScatteredShipsMission *this)
 
 {
-  *(undefined1 *)(param_1 + 8) = 3;
+  this[8] = (TScatteredShipsMission)0x3;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053BC20
 // GHIDRA_NAME TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C
-// GHIDRA_PROTO undefined ResetScatteredShipsMissionScoreField0C()
+// GHIDRA_PROTO undefined __thiscall ResetScatteredShipsMissionScoreField0C(void)
 
-void __fastcall TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C(int param_1)
+void __thiscall
+TScatteredShipsMission::ResetScatteredShipsMissionScoreField0C(TScatteredShipsMission *this)
 
 {
-  *(undefined4 *)(param_1 + 0xc) = DAT_0065a9c8;
+  *(undefined4 *)(this + 0xc) = DAT_0065a9c8;
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053BC40
 // GHIDRA_NAME TScatteredShipsMission::PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure
-// GHIDRA_PROTO undefined PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure()
+// GHIDRA_PROTO undefined __thiscall PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure(void)
 
-void __fastcall
+void __thiscall
 TScatteredShipsMission::PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure
-          (int param_1)
+          (TScatteredShipsMission *this)
 
 {
   short sVar1;
-  int *piVar2;
+  TGreatPower *pTVar2;
   float fVar3;
   short *psVar4;
-  float *pfVar5;
+  TScatteredShipsMission *pTVar5;
   
-  piVar2 = (int *)(&g_apNationStates)[*(short *)(param_1 + 4)];
-  (**(code **)(*piVar2 + 0xc))();
-  fVar3 = (float)piVar2[0x2db] + DAT_0065a9b8;
+  pTVar2 = g_apNationStates[*(short *)(this + 4)];
+  (*pTVar2->vftable[1].slot_0x04)();
+  fVar3 = *(float *)&pTVar2[1].field_0x208 + DAT_0065a9b8;
   psVar4 = &g_Populate_Beachhead_Mission_LookupTable_00697958;
-  pfVar5 = (float *)(param_1 + 0x2c);
+  pTVar5 = this + 0x2c;
   do {
     sVar1 = *psVar4;
     psVar4 = psVar4 + 1;
-    *pfVar5 = (float)(int)sVar1 * fVar3 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
-    pfVar5 = pfVar5 + 1;
+    *(float *)pTVar5 =
+         (float)(int)sVar1 * fVar3 * (float)g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    pTVar5 = pTVar5 + 4;
   } while ((int)psVar4 < 0x697960);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0053BDD0
 // GHIDRA_NAME TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain
-// GHIDRA_PROTO undefined SelectMapActionContextAndPromoteMissionOrderChain()
+// GHIDRA_PROTO undefined __thiscall SelectMapActionContextAndPromoteMissionOrderChain(void)
 
-void __fastcall
-TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain(int param_1)
+void __thiscall
+TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain
+          (TScatteredShipsMission *this)
 
 {
-  undefined4 *puVar1;
-  char cVar2;
-  short sVar3;
-  short sVar4;
-  undefined4 *puVar5;
-  int *piVar6;
-  int iVar7;
-  TScatteredShipsMission *this;
-  int *piVar8;
+  undefined1 *puVar1;
+  int *piVar2;
+  undefined uVar3;
+  char cVar4;
+  short sVar5;
+  short sVar6;
+  undefined3 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  int *piVar7;
+  void *this_00;
+  int iVar8;
+  TScatteredShipsMission *pTVar9;
+  TZone *pTVar10;
+  TZone *pMapOrderEntry;
   
-  if (*(int *)(param_1 + 0x24) != 0) {
-    *(undefined1 *)(*(int *)(param_1 + 0x24) + 0xc) = 0;
-    SetMapOrderEntryChildFlags(0);
+  iVar8 = *(int *)(this + 0x24);
+  if (iVar8 != 0) {
+    *(undefined1 *)(iVar8 + 0xc) = 0;
+    SetMapOrderEntryChildFlags(*(TScatteredShipsMission **)(iVar8 + 4));
   }
-  sVar3 = (**(code **)(*g_pLocalizationTable + 0x3c))();
-  iVar7 = (int)sVar3 % 0x32;
-  piVar6 = g_pMapActionContextListHead;
-  if (g_pMapActionContextListHead != (void *)0x0) {
+  uVar3 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  iVar8 = (int)(short)CONCAT31(extraout_var,uVar3) % 0x32;
+  pTVar10 = g_pMapActionContextListHead;
+  if (g_pMapActionContextListHead != (TZone *)0x0) {
     do {
-      cVar2 = (**(code **)(*piVar6 + 0x38))();
-      if ((cVar2 == '\0') &&
-         (cVar2 = thunk_ContainsPointerArrayEntryMatchingByteKey(*(undefined2 *)(param_1 + 4)),
-         cVar2 != '\0')) break;
-      piVar6 = (int *)piVar6[6];
-    } while (piVar6 != (int *)0x0);
-    piVar8 = g_pMapActionContextListHead;
-    if (piVar6 != (int *)0x0) {
-      for (; iVar7 != 0; iVar7 = iVar7 + -1) {
-        piVar6 = (int *)piVar8[6];
-        if ((int *)piVar8[6] == (int *)0x0) {
-          piVar6 = g_pMapActionContextListHead;
+      cVar4 = (*pTVar10->vftable[7].DispatchNationPendingActionEventCodes)();
+      if ((cVar4 == '\0') &&
+         (cVar4 = thunk_ContainsPointerArrayEntryMatchingByteKey
+                            (CONCAT22(extraout_var_00,*(undefined2 *)(this + 4))), cVar4 != '\0'))
+      break;
+      pTVar10 = *(TZone **)&pTVar10->field_0x18;
+    } while (pTVar10 != (TZone *)0x0);
+    pMapOrderEntry = g_pMapActionContextListHead;
+    if (pTVar10 != (TZone *)0x0) {
+      for (; iVar8 != 0; iVar8 = iVar8 + -1) {
+        pTVar10 = *(TZone **)&pMapOrderEntry->field_0x18;
+        if (*(TZone **)&pMapOrderEntry->field_0x18 == (TZone *)0x0) {
+          pTVar10 = g_pMapActionContextListHead;
         }
-        piVar8 = piVar6;
+        pMapOrderEntry = pTVar10;
       }
       do {
-        cVar2 = (**(code **)(*piVar8 + 0x38))();
-        if ((cVar2 == '\0') &&
-           (cVar2 = thunk_ContainsPointerArrayEntryMatchingByteKey(*(undefined2 *)(param_1 + 4)),
-           cVar2 != '\0')) {
-          puVar5 = *(undefined4 **)(param_1 + 0x24);
-          if (puVar5 == (undefined4 *)0x0) {
+        cVar4 = (*pMapOrderEntry->vftable[7].DispatchNationPendingActionEventCodes)();
+        if ((cVar4 == '\0') &&
+           (cVar4 = thunk_ContainsPointerArrayEntryMatchingByteKey
+                              (CONCAT22(extraout_var_01,*(undefined2 *)(this + 4))), cVar4 != '\0'))
+        {
+          piVar7 = *(int **)(this + 0x24);
+          if (piVar7 == (int *)0x0) {
 LAB_0053be9a:
-            this = (TScatteredShipsMission *)0x0;
+            pTVar9 = (TScatteredShipsMission *)0x0;
           }
           else {
             do {
-              if (*(char *)(puVar5 + 3) == '\0') break;
-              puVar5 = (undefined4 *)puVar5[1];
-            } while (puVar5 != (undefined4 *)0x0);
-            if (puVar5 == (undefined4 *)0x0) goto LAB_0053be9a;
-            for (puVar1 = (undefined4 *)puVar5[1]; puVar1 != (undefined4 *)0x0;
-                puVar1 = (undefined4 *)puVar1[1]) {
-              if (*(char *)(puVar1 + 3) == '\0') {
-                sVar3 = GetCachedMapActionContextDistanceOrRecompute(piVar8);
-                sVar4 = GetCachedMapActionContextDistanceOrRecompute(piVar8);
-                if (sVar3 < sVar4) {
-                  puVar5 = puVar1;
+              if ((char)piVar7[3] == '\0') break;
+              piVar7 = (int *)piVar7[1];
+            } while (piVar7 != (int *)0x0);
+            if (piVar7 == (int *)0x0) goto LAB_0053be9a;
+            for (piVar2 = (int *)piVar7[1]; piVar2 != (int *)0x0; piVar2 = (int *)piVar2[1]) {
+              if ((char)piVar2[3] == '\0') {
+                pTVar9 = *(TScatteredShipsMission **)(*piVar7 + 8);
+                sVar5 = GetCachedMapActionContextDistanceOrRecompute
+                                  (*(TScatteredShipsMission **)(*piVar2 + 8));
+                sVar6 = GetCachedMapActionContextDistanceOrRecompute(pTVar9);
+                if (sVar5 < sVar6) {
+                  piVar7 = piVar2;
                 }
               }
             }
-            *(undefined1 *)(puVar5 + 3) = 1;
-            this = (TScatteredShipsMission *)*puVar5;
+            *(undefined1 *)(piVar7 + 3) = 1;
+            pTVar9 = (TScatteredShipsMission *)*piVar7;
           }
-          if (this == (TScatteredShipsMission *)0x0) {
+          if (pTVar9 == (TScatteredShipsMission *)0x0) {
             return;
           }
-          if (*(int **)(this + 8) != piVar8) {
-            piVar6 = GetOrCreateMissionOrderEntryForNode(this);
-            PromoteMapOrderChainAndQueue(piVar6);
+          if (*(TZone **)(pTVar9 + 8) != pMapOrderEntry) {
+            this_00 = GetOrCreateMissionOrderEntryForNode(pTVar9);
+            PromoteMapOrderChainAndQueue(this_00,(int *)pMapOrderEntry);
           }
         }
-        piVar6 = piVar8 + 6;
-        piVar8 = (int *)*piVar6;
-        if ((int *)*piVar6 == (int *)0x0) {
-          piVar8 = g_pMapActionContextListHead;
+        puVar1 = &pMapOrderEntry->field_0x18;
+        pMapOrderEntry = *(TZone **)puVar1;
+        if (*(TZone **)puVar1 == (TZone *)0x0) {
+          pMapOrderEntry = g_pMapActionContextListHead;
         }
       } while( true );
     }
@@ -332,13 +352,13 @@ TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode(TScatteredShipsMissi
   int iVar5;
   undefined4 *puVar6;
   short sVar7;
-  int *pMapOrderEntry;
+  int *this_00;
+  int *unaff_EDI;
   
-  pMapOrderEntry = *(int **)(this + 0xc);
-  if ((pMapOrderEntry != (int *)0x0) &&
-     ((**(code **)(*pMapOrderEntry + 0xc))(), pMapOrderEntry != (int *)0x0)) {
+  this_00 = *(int **)(this + 0xc);
+  if ((this_00 != (int *)0x0) && ((**(code **)(*this_00 + 0xc))(), this_00 != (int *)0x0)) {
     sVar7 = 0;
-    piVar4 = (int *)pMapOrderEntry[4];
+    piVar4 = (int *)this_00[4];
     for (piVar3 = piVar4; piVar3 != (int *)0x0; piVar3 = (int *)piVar3[1]) {
       sVar7 = sVar7 + 1;
     }
@@ -351,19 +371,19 @@ TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode(TScatteredShipsMissi
       }
       if (piVar4 != (int *)0x0) {
         iVar5 = RemoveLinkedOrderNodeByValueRecursive(this);
-        pMapOrderEntry[4] = iVar5;
-        psVar1 = (short *)((int)pMapOrderEntry +
+        this_00[4] = iVar5;
+        psVar1 = (short *)((int)this_00 +
                           *(short *)(&DAT_00698120 + *(short *)(this + 4) * 0x24) * 2 + 0x1e);
         *psVar1 = *psVar1 + -1;
       }
-      if (this == (TScatteredShipsMission *)pMapOrderEntry[5]) {
-        thunk_RecomputeMapOrderChildAggregateMetric(pMapOrderEntry);
+      if (this == (TScatteredShipsMission *)this_00[5]) {
+        thunk_RecomputeMapOrderChildAggregateMetric(this_00,unaff_EDI);
       }
       thunk_SetMapOrderActiveChildEntry(this,(int *)0x0);
-      pMapOrderEntry = (int *)0x0;
+      this_00 = (int *)0x0;
     }
-    if (pMapOrderEntry != (int *)0x0) {
-      return pMapOrderEntry;
+    if (this_00 != (int *)0x0) {
+      return this_00;
     }
   }
   puVar6 = (undefined4 *)AllocateWithFallbackHandler(0x34);
@@ -382,7 +402,7 @@ TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode(TScatteredShipsMissi
     puVar6[10] = 0;
     puVar6[0xb] = 0;
     *(undefined2 *)(puVar6 + 0xc) = 0xffff;
-    *puVar6 = &PTR_LAB_0065c468;
+    *puVar6 = &TTaskForceVtbl_0065c468;
     *(undefined4 *)((int)puVar6 + 0x1e) = 0;
     *(undefined4 *)((int)puVar6 + 0x22) = 0;
   }
@@ -449,10 +469,11 @@ TScatteredShipsMission::ApplyMapOrderTypeAndQueue
   int iVar1;
   TScatteredShipsMission *pTVar2;
   bool bVar3;
-  int iVar4;
+  TNavyMgr *pTVar4;
   char cVar5;
   short sVar6;
-  int *pChildLinkNode;
+  TShip *this_00;
+  int *unaff_EDI;
   
   switch(nOrderType) {
   case 1:
@@ -467,8 +488,8 @@ TScatteredShipsMission::ApplyMapOrderTypeAndQueue
     thunk_RebuildMapOrderEntryChildren();
     iVar1 = *(int *)this;
     (**(code **)(iVar1 + 0xc))();
-    iVar4 = g_pNavyOrderManager;
-    for (pTVar2 = *(TScatteredShipsMission **)(g_pNavyOrderManager + 4);
+    pTVar4 = g_pNavyOrderManager;
+    for (pTVar2 = *(TScatteredShipsMission **)&g_pNavyOrderManager->field_0x4;
         pTVar2 != (TScatteredShipsMission *)0x0;
         pTVar2 = *(TScatteredShipsMission **)(pTVar2 + 0x2c)) {
       if (pTVar2 == this) goto LAB_005541b4;
@@ -479,8 +500,9 @@ TScatteredShipsMission::ApplyMapOrderTypeAndQueue
       bVar3 = false;
     }
     else {
-      thunk_RelinkMapOrderQueueNodeBetween(this,0,*(int *)(iVar4 + 4));
-      *(TScatteredShipsMission **)(iVar4 + 4) = this;
+      TCivToolbar::thunk_RelinkMapOrderQueueNodeBetween
+                ((TCivToolbar *)this,0,*(int *)&pTVar4->field_0x4);
+      *(TScatteredShipsMission **)&pTVar4->field_0x4 = this;
 LAB_005541b4:
       bVar3 = true;
     }
@@ -504,26 +526,28 @@ LAB_00554127:
     break;
   case 7:
   case 8:
-    pChildLinkNode = *(int **)(this + 0x10);
+    this_00 = *(TShip **)(this + 0x10);
     *(int *)(this + 8) = nOrderType;
     *(undefined4 *)(this + 0x14) = 0;
-    while (pChildLinkNode != (int *)0x0) {
-      if ((char)pChildLinkNode[3] == '\0') {
-        thunk_SetMapOrderActiveChildEntry((TScatteredShipsMission *)*pChildLinkNode,(int *)0x0);
-        *(short *)(this + *(short *)(&DAT_00698120 + *(short *)(*pChildLinkNode + 4) * 0x24) * 2 +
-                          0x1e) =
-             *(short *)(this + *(short *)(&DAT_00698120 + *(short *)(*pChildLinkNode + 4) * 0x24) *
-                               2 + 0x1e) + -1;
-        if (pChildLinkNode == *(int **)(this + 0x10)) {
-          *(int *)(this + 0x10) = pChildLinkNode[1];
+    while (this_00 != (TShip *)0x0) {
+      if (this_00->field_0xc == '\0') {
+        thunk_SetMapOrderActiveChildEntry((TScatteredShipsMission *)this_00->vftable,(int *)0x0);
+        *(short *)(this + *(short *)(&DAT_00698120 +
+                                    *(short *)&this_00->vftable->DestructTShipAndFreeIfOwned * 0x24)
+                          * 2 + 0x1e) =
+             *(short *)(this + *(short *)(&DAT_00698120 +
+                                         *(short *)&this_00->vftable->DestructTShipAndFreeIfOwned *
+                                         0x24) * 2 + 0x1e) + -1;
+        if (this_00 == *(TShip **)(this + 0x10)) {
+          *(undefined4 *)(this + 0x10) = *(undefined4 *)&this_00->field_0x4;
         }
-        pChildLinkNode = thunk_DeleteMapOrderChildLinkAndReturnNext(pChildLinkNode);
+        this_00 = (TShip *)TShip::thunk_DeleteMapOrderChildLinkAndReturnNext(this_00,unaff_EDI);
       }
       else {
-        pChildLinkNode = (int *)pChildLinkNode[1];
+        this_00 = *(TShip **)&this_00->field_0x4;
       }
     }
-    thunk_RecomputeMapOrderChildAggregateMetric((int *)this);
+    thunk_RecomputeMapOrderChildAggregateMetric(this,unaff_EDI);
     (**(code **)(*(int *)this + 0xc))();
     cVar5 = thunk_MoveMapOrderEntryToQueueHeadIfValid(this);
     if (cVar5 != '\0') {
@@ -545,63 +569,65 @@ LAB_00554127:
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00560F80
 // GHIDRA_NAME TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive
-// GHIDRA_PROTO undefined PropagateMapActionContextDistanceLevelsRecursive()
+// GHIDRA_PROTO undefined __thiscall PropagateMapActionContextDistanceLevelsRecursive(void)
 
 void __thiscall
-TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive(int param_1,int param_2)
+TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive
+          (TScatteredShipsMission *this)
 
 {
-  void *pvVar1;
+  TZone *pTVar1;
   int iVar2;
-  int iVar3;
-  undefined4 uVar4;
-  int iVar5;
+  undefined4 uVar3;
+  int iVar4;
+  uint uVar5;
   uint uVar6;
-  uint uVar7;
+  short in_stack_00000004;
   uint local_8;
   
-  pvVar1 = g_pMapActionContextListHead;
-  if ((short)param_2 == -1) {
-    for (; pvVar1 != (void *)0x0; pvVar1 = *(void **)((int)pvVar1 + 0x18)) {
-      *(undefined2 *)((int)pvVar1 + 0x44) = 0x29a;
+  pTVar1 = g_pMapActionContextListHead;
+  if (in_stack_00000004 == -1) {
+    for (; pTVar1 != (TZone *)0x0; pTVar1 = *(TZone **)&pTVar1->field_0x18) {
+      *(undefined2 *)&pTVar1->field_0x44 = 0x29a;
     }
-    param_2 = 0;
+    in_stack_00000004 = 0;
   }
-  if ((short)param_2 < *(short *)(param_1 + 0x44)) {
-    *(short *)(param_1 + 0x44) = (short)param_2;
-    iVar5 = *(int *)(param_1 + 0x30);
-    uVar7 = iVar5 - 1;
-    if (-1 < (int)uVar7) {
-      iVar2 = param_2 + 1;
-      param_2 = iVar5 * 8;
-      uVar6 = iVar5 * 2;
+  if (in_stack_00000004 < *(short *)(this + 0x44)) {
+    *(short *)(this + 0x44) = in_stack_00000004;
+    iVar4 = *(int *)(this + 0x30);
+    uVar6 = iVar4 - 1;
+    if (-1 < (int)uVar6) {
+      _in_stack_00000004 = iVar4 * 8;
+      uVar5 = iVar4 * 2;
       do {
-        if (*(uint *)(param_1 + 0x2c) <= uVar7) {
-          local_8 = uVar6;
-          if (0x7fffffff < uVar6) {
+        if (*(uint *)(this + 0x2c) <= uVar6) {
+          local_8 = uVar5;
+          if (0x7fffffff < uVar5) {
             local_8 = 0x7fffffff;
           }
-          iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 0x28),param_2);
-          if (iVar3 == 0) {
-            uVar4 = ReallocateHeapBlockWithAllocatorTracking
-                              (*(undefined4 *)(param_1 + 0x28),uVar7 * 4 + 4);
-            *(undefined4 *)(param_1 + 0x28) = uVar4;
-            *(int *)(param_1 + 0x2c) = iVar5;
+          iVar2 = ReallocateHeapBlockWithAllocatorTracking
+                            (*(undefined4 *)(this + 0x28),_in_stack_00000004);
+          if (iVar2 == 0) {
+            uVar3 = ReallocateHeapBlockWithAllocatorTracking
+                              (*(undefined4 *)(this + 0x28),uVar6 * 4 + 4);
+            *(undefined4 *)(this + 0x28) = uVar3;
+            *(int *)(this + 0x2c) = iVar4;
           }
           else {
-            *(int *)(param_1 + 0x28) = iVar3;
-            *(uint *)(param_1 + 0x2c) = local_8;
+            *(int *)(this + 0x28) = iVar2;
+            *(uint *)(this + 0x2c) = local_8;
           }
         }
-        if (*(uint *)(param_1 + 0x30) <= uVar7) {
-          *(int *)(param_1 + 0x30) = iVar5;
+        if (*(uint *)(this + 0x30) <= uVar6) {
+          *(int *)(this + 0x30) = iVar4;
         }
-        PropagateMapActionContextDistanceLevelsRecursive(iVar2);
-        uVar7 = uVar7 - 1;
-        uVar6 = uVar6 - 2;
-        param_2 = param_2 + -8;
-        iVar5 = iVar5 + -1;
-      } while (-1 < (int)uVar7);
+        PropagateMapActionContextDistanceLevelsRecursive
+                  (*(TScatteredShipsMission **)(*(int *)(this + 0x28) + uVar6 * 4));
+        uVar6 = uVar6 - 1;
+        uVar5 = uVar5 - 2;
+        _in_stack_00000004 = _in_stack_00000004 + -8;
+        iVar4 = iVar4 + -1;
+      } while (-1 < (int)uVar6);
     }
   }
   return;
@@ -609,20 +635,21 @@ TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive(int par
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005610B0
 // GHIDRA_NAME TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute
-// GHIDRA_PROTO undefined GetCachedMapActionContextDistanceOrRecompute()
+// GHIDRA_PROTO undefined __thiscall GetCachedMapActionContextDistanceOrRecompute(void)
 
 uint __thiscall
-TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute(int param_1,int param_2)
+TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute(TScatteredShipsMission *this)
 
 {
-  void *pvVar1;
+  TZone *pTVar1;
   uint uVar2;
   short sVar3;
   int iVar4;
   uint uVar5;
   short sVar6;
+  TScatteredShipsMission *in_stack_00000004;
   
-  if (param_2 == param_1) {
+  if (in_stack_00000004 == this) {
     return 0;
   }
   if ((g_pMapActionContextDistanceCache == (void *)0x0) ||
@@ -638,84 +665,85 @@ TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute(int param_1
       } while (iVar4 < g_nMapActionContextCount * g_nMapActionContextCount);
     }
   }
-  if (param_1 == 0) {
+  if (this == (TScatteredShipsMission *)0x0) {
     sVar6 = -1;
   }
   else {
-    sVar6 = *(short *)(param_1 + 0x14);
+    sVar6 = *(short *)(this + 0x14);
   }
-  if (param_2 == 0) {
+  if (in_stack_00000004 == (TScatteredShipsMission *)0x0) {
     sVar3 = -1;
   }
   else {
-    sVar3 = *(short *)(param_2 + 0x14);
+    sVar3 = *(short *)(in_stack_00000004 + 0x14);
   }
   uVar5 = (uint)*(char *)((int)g_pMapActionContextDistanceCache +
                          (int)sVar3 + sVar6 * g_nMapActionContextCount);
-  pvVar1 = g_pMapActionContextListHead;
+  pTVar1 = g_pMapActionContextListHead;
   if ((int)uVar5 < 0) {
-    for (; pvVar1 != (void *)0x0; pvVar1 = *(void **)((int)pvVar1 + 0x18)) {
-      *(undefined2 *)((int)pvVar1 + 0x44) = 0x29a;
+    for (; pTVar1 != (TZone *)0x0; pTVar1 = *(TZone **)&pTVar1->field_0x18) {
+      *(undefined2 *)&pTVar1->field_0x44 = 0x29a;
     }
-    pvVar1 = g_pMapActionContextListHead;
-    if (0 < *(short *)(param_1 + 0x44)) {
-      *(undefined2 *)(param_1 + 0x44) = 0;
-      uVar5 = *(uint *)(param_1 + 0x30);
+    pTVar1 = g_pMapActionContextListHead;
+    if (0 < *(short *)(this + 0x44)) {
+      *(undefined2 *)(this + 0x44) = 0;
+      uVar5 = *(uint *)(this + 0x30);
       uVar2 = uVar5;
-      while (uVar2 = uVar2 - 1, pvVar1 = g_pMapActionContextListHead, -1 < (int)uVar2) {
-        if (*(uint *)(param_1 + 0x2c) <= uVar2) {
+      while (uVar2 = uVar2 - 1, pTVar1 = g_pMapActionContextListHead, -1 < (int)uVar2) {
+        if (*(uint *)(this + 0x2c) <= uVar2) {
           ResizePointerArrayCapacityByRequestedCountAlt(uVar5);
         }
-        if (*(uint *)(param_1 + 0x30) <= uVar2) {
-          *(uint *)(param_1 + 0x30) = uVar5;
+        if (*(uint *)(this + 0x30) <= uVar2) {
+          *(uint *)(this + 0x30) = uVar5;
         }
-        PropagateMapActionContextDistanceLevelsRecursive(1);
+        PropagateMapActionContextDistanceLevelsRecursive
+                  (*(TScatteredShipsMission **)(*(int *)(this + 0x28) + uVar2 * 4));
         uVar5 = uVar5 - 1;
       }
     }
-    for (; pvVar1 != (void *)0x0; pvVar1 = *(void **)((int)pvVar1 + 0x18)) {
-      if (param_1 == 0) {
+    for (; pTVar1 != (TZone *)0x0; pTVar1 = *(TZone **)&pTVar1->field_0x18) {
+      if (this == (TScatteredShipsMission *)0x0) {
         sVar6 = -1;
       }
       else {
-        sVar6 = *(short *)(param_1 + 0x14);
+        sVar6 = *(short *)(this + 0x14);
       }
-      if (pvVar1 == (void *)0x0) {
+      if (pTVar1 == (TZone *)0x0) {
         sVar3 = -1;
       }
       else {
-        sVar3 = *(short *)((int)pvVar1 + 0x14);
+        sVar3 = *(short *)&pTVar1->field_0x14;
       }
       *(undefined1 *)
        ((int)g_pMapActionContextDistanceCache + (int)sVar3 + sVar6 * g_nMapActionContextCount) =
-           *(undefined1 *)((int)pvVar1 + 0x44);
-      if (pvVar1 == (void *)0x0) {
+           pTVar1->field_0x44;
+      if (pTVar1 == (TZone *)0x0) {
         sVar6 = -1;
       }
       else {
-        sVar6 = *(short *)((int)pvVar1 + 0x14);
+        sVar6 = *(short *)&pTVar1->field_0x14;
       }
-      if (param_1 == 0) {
+      if (this == (TScatteredShipsMission *)0x0) {
         sVar3 = -1;
       }
       else {
-        sVar3 = *(short *)(param_1 + 0x14);
+        sVar3 = *(short *)(this + 0x14);
       }
       *(undefined1 *)
        ((int)g_pMapActionContextDistanceCache + (int)sVar3 + sVar6 * g_nMapActionContextCount) =
-           *(undefined1 *)((int)pvVar1 + 0x44);
+           pTVar1->field_0x44;
     }
-    if (param_1 == 0) {
+    if (this == (TScatteredShipsMission *)0x0) {
       sVar6 = -1;
     }
     else {
-      sVar6 = *(short *)(param_1 + 0x14);
+      sVar6 = *(short *)(this + 0x14);
     }
-    if (param_2 == 0) {
+    if (in_stack_00000004 == (TScatteredShipsMission *)0x0) {
       sVar3 = -1;
     }
     else {
-      sVar3 = *(short *)(param_2 + 0x14);
+      sVar3 = *(short *)(in_stack_00000004 + 0x14);
     }
     uVar5 = (uint)*(char *)((int)g_pMapActionContextDistanceCache +
                            (int)sVar3 + sVar6 * g_nMapActionContextCount);

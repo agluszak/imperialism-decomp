@@ -7,11 +7,11 @@
 // GHIDRA_NAME THelpWindow::CreateTHelpWindowInstance
 // GHIDRA_PROTO undefined CreateTHelpWindowInstance()
 
-undefined4 * THelpWindow::CreateTHelpWindowInstance(void)
+TControl * THelpWindow::CreateTHelpWindowInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TControl *this;
+  TControl *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,31 +21,31 @@ undefined4 * THelpWindow::CreateTHelpWindowInstance(void)
   puStack_8 = &LAB_0063366a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0xa0);
+  this = (TControl *)AllocateWithFallbackHandler(0xa0);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TControl::thunk_ConstructUiWindowResourceEntryType4B340();
-    *puVar1 = &PTR_LAB_006572c0;
-    puVar2 = puVar1;
+  pTVar1 = (TControl *)0x0;
+  if (this != (TControl *)0x0) {
+    TControl::thunk_ConstructUiWindowResourceEntryType4B340(this);
+    this->vftable = (TControlVtbl *)&THelpWindowVtbl_006572c0;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BD0
-// GHIDRA_NAME THelpWindow::GetTHelpWindowClassNamePointer
-// GHIDRA_PROTO undefined GetTHelpWindowClassNamePointer()
+// GHIDRA_NAME THelpWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** THelpWindow::GetTHelpWindowClassNamePointer(void)
+CRuntimeClass * __thiscall THelpWindow::GetTEventHandlerClassNamePointer(THelpWindow *this)
 
 {
-  return &PTR_s_THelpWindow_00656f98;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504BF0
 // GHIDRA_NAME THelpWindow::ConstructUiWindowResourceEntryType572C0
-// GHIDRA_PROTO undefined ConstructUiWindowResourceEntryType572C0()
+// GHIDRA_PROTO undefined __thiscall ConstructUiWindowResourceEntryType572C0(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing vtable PTR_LAB_006572c0.
 // GHIDRA_COMMENT_END
@@ -53,25 +53,39 @@ undefined ** THelpWindow::GetTHelpWindowClassNamePointer(void)
 /* Thin derived window-entry constructor over ConstructUiWindowResourceEntryType4B340, installing
    vtable PTR_LAB_006572c0. */
 
-undefined4 * __fastcall THelpWindow::ConstructUiWindowResourceEntryType572C0(undefined4 *param_1)
+THelpWindow * __thiscall THelpWindow::ConstructUiWindowResourceEntryType572C0(THelpWindow *this)
 
 {
-  TControl::thunk_ConstructUiWindowResourceEntryType4B340();
-  *param_1 = &PTR_LAB_006572c0;
-  return param_1;
+  TControl::thunk_ConstructUiWindowResourceEntryType4B340((TControl *)this);
+  this->vftable = &THelpWindowVtbl_006572c0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00504C20
-// GHIDRA_NAME THelpWindow::DestructTHelpWindowAndMaybeFree
-// GHIDRA_PROTO undefined DestructTHelpWindowAndMaybeFree()
+// GHIDRA_NAME THelpWindow::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall THelpWindow::DestructTHelpWindowAndMaybeFree(undefined4 param_1,byte param_2)
+THelpWindow * __thiscall THelpWindow::_scalar_deleting_destructor_(THelpWindow *this)
 
 {
-  DestructTWindowViewAndUnlinkGlobalLists();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::DestructTWindowViewAndUnlinkGlobalLists((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00504C70
+// GHIDRA_NAME THelpWindow::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall THelpWindow::GetTEventHandlerClassNamePointer(THelpWindow *this)
+
+{
+  TFloatWindow::GetTEventHandlerClassNamePointer((TFloatWindow *)this);
+  *(undefined4 *)(DAT_006a21b8 + 8) = 0;
+  return;
 }
 

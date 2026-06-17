@@ -3,13 +3,17 @@
 // Program: Imperialism.exe
 // Bucket: TNavyMgr.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00556570
-// GHIDRA_NAME TNavyMgr::GetTNavyMgrClassNamePointer
-// GHIDRA_PROTO undefined GetTNavyMgrClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x00556590
+// GHIDRA_NAME TNavyMgr::ConstructNavyManager
+// GHIDRA_PROTO undefined __thiscall ConstructNavyManager(void)
 
-undefined ** TNavyMgr::GetTNavyMgrClassNamePointer(void)
+void __thiscall TNavyMgr::ConstructNavyManager(TNavyMgr *this)
 
 {
-  return &PTR_s_TNavyMgr_0065c360;
+  this->vftable = &TNavyMgrVtbl_0065c4c8;
+  *(undefined4 *)&this->field_0x4 = 0;
+  *(undefined2 *)&this->field_0x8 = 0xffff;
+  *(undefined4 *)&this->field_0xc = 0;
+  return;
 }
 

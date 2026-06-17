@@ -7,11 +7,11 @@
 // GHIDRA_NAME TCommodityLine::CreateTCommodityLineInstance
 // GHIDRA_PROTO undefined CreateTCommodityLineInstance()
 
-undefined4 * TCommodityLine::CreateTCommodityLineInstance(void)
+TLineData * TCommodityLine::CreateTCommodityLineInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TLineData *this;
+  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,52 +21,181 @@ undefined4 * TCommodityLine::CreateTCommodityLineInstance(void)
   puStack_8 = &LAB_006397aa;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+  this = (TLineData *)AllocateWithFallbackHandler(0x14);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TLineData::ConstructTLineDataBaseState();
-    *puVar1 = &PTR_LAB_0066e278;
-    puVar2 = puVar1;
+  pTVar1 = (TLineData *)0x0;
+  if (this != (TLineData *)0x0) {
+    TLineData::ConstructTLineDataBaseState(this);
+    this->vftable = (TLineDataVtbl *)&TCommodityLineVtbl_0066e278;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C14A0
-// GHIDRA_NAME TCommodityLine::GetTCommodityLineClassNamePointer
-// GHIDRA_PROTO undefined GetTCommodityLineClassNamePointer()
+// GHIDRA_NAME TCommodityLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TCommodityLine::GetTCommodityLineClassNamePointer(void)
+CRuntimeClass * __thiscall TCommodityLine::GetTLineDataClassNamePointer(TCommodityLine *this)
 
 {
-  return &PTR_s_TCommodityLine_0066dcc0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C14C0
 // GHIDRA_NAME TCommodityLine::ConstructTCommodityLineBaseState
-// GHIDRA_PROTO undefined ConstructTCommodityLineBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTCommodityLineBaseState(void)
 
-undefined4 * __fastcall TCommodityLine::ConstructTCommodityLineBaseState(undefined4 *param_1)
+TCommodityLine * __thiscall TCommodityLine::ConstructTCommodityLineBaseState(TCommodityLine *this)
 
 {
-  TLineData::ConstructTLineDataBaseState();
-  *param_1 = &PTR_LAB_0066e278;
-  return param_1;
+  TLineData::ConstructTLineDataBaseState((TLineData *)this);
+  this->vftable = &TCommodityLineVtbl_0066e278;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C14F0
 // GHIDRA_NAME TCommodityLine::DestructTCommodityLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCommodityLineAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTCommodityLineAndMaybeFree(void)
 
-undefined4 __thiscall
-TCommodityLine::DestructTCommodityLineAndMaybeFree(undefined4 param_1,byte param_2)
+TCommodityLine * __thiscall TCommodityLine::DestructTCommodityLineAndMaybeFree(TCommodityLine *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTCommodityLineAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C1580
+// GHIDRA_NAME TCommodityLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+
+void __thiscall TCommodityLine::OrphanRetStub_0056f460(TCommodityLine *this)
+
+{
+  TSimMgrVtbl *pTVar1;
+  int iVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined4 uVar4;
+  CString *src_ref;
+  int *piVar5;
+  TColorKeyPicture *this_00;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 uVar6;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_64;
+  CString CStack_60;
+  CString CStack_5c;
+  undefined4 uStack_58;
+  CString CStack_54;
+  CString local_40;
+  CString local_3c;
+  CString local_38 [2];
+  undefined4 uStack_30;
+  undefined1 auStack_2c [4];
+  int iStack_28;
+  undefined4 uStack_20;
+  undefined4 uStack_1c;
+  char local_18 [6];
+  undefined1 local_12;
+  undefined1 local_11;
+  undefined4 local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00639804;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CStack_54.m_pchData = (char *)0x5c15a7;
+  CString::CString(local_38);
+  local_4 = 0;
+  CStack_54.m_pchData = (char *)0x5c15b6;
+  CString::CString(&local_3c);
+  local_4._0_1_ = 1;
+  CStack_54.m_pchData = "hg+";
+  CString::CString(&local_40);
+  CStack_54.m_pchData = (char *)0x2b67;
+  uStack_58 = 0xe;
+  CStack_60.m_pchData = local_18;
+  CStack_5c.m_pchData = (char *)0x0;
+  local_4 = CONCAT31(local_4._1_3_,2);
+  local_12 = 0;
+  local_11 = 0;
+  local_10 = (uint)local_10._2_2_ << 0x10;
+  CStack_64.m_pchData = (char *)0x5c15eb;
+  thunk_BuildUiTextStyleDescriptor();
+  CStack_54.m_pchData = (char *)local_38;
+  uStack_58 = CONCAT22((short)((uint)CStack_54.m_pchData >> 0x10),*(undefined2 *)&this->field_0x10);
+  CStack_5c.m_pchData = (char *)0x5c1603;
+  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  CStack_5c.m_pchData = &stack0xffffffbc;
+  CStack_60.m_pchData =
+       (char *)CONCAT22((short)((uint)CStack_5c.m_pchData >> 0x10),*(undefined2 *)&this->field_0x10)
+  ;
+  pTVar1 = g_pLocalizationTable->vftable;
+  CStack_64.m_pchData = (char *)0x5c1620;
+  uVar3 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
+  CStack_64.m_pchData = (char *)(int)(short)CONCAT31(extraout_var,uVar3);
+  (*pTVar1[0xe].slot_0x04)();
+  uVar4 = AssignSharedStringConcatRefAndCStr
+                    (local_38,&stack0xffffffb4,g_Build_Map_Order_LookupTable_00695794);
+  local_18[0] = '\x03';
+  src_ref = (CString *)AssignSharedStringConcatRefAndRef(&local_40,uVar4,&stack0xffffffb0);
+  local_18[0] = '\x04';
+  CString::StringSharedRef_AssignFromPtr((CString *)&stack0xffffffb8,src_ref);
+  local_18[0] = '\x05';
+  CString::AssignFromPtr(&CStack_54,(CString *)&stack0xffffffb8);
+  local_18[0] = '\x04';
+  CString::~CString((CString *)&stack0xffffffb8);
+  local_18[0] = '\x03';
+  CString::~CString(&local_40);
+  local_18[0] = '\x02';
+  CString::~CString(local_38);
+  local_38[0].m_pchData = (char *)AllocateWithFallbackHandler(0x94);
+  local_18[0] = '\x06';
+  if ((TMyStaticText *)local_38[0].m_pchData == (TMyStaticText *)0x0) {
+    piVar5 = (int *)0x0;
+  }
+  else {
+    piVar5 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8
+                              ((TMyStaticText *)local_38[0].m_pchData);
+  }
+  local_3c.m_pchData = *(char **)&this->field_0xc;
+  local_40.m_pchData = (char *)(*(int *)&this->field_0x8 + -0x28);
+  local_18[0] = '\x02';
+  InitializeTextEntryBaseAndOptionalStringResource
+            (local_10,&stack0xffffffb8,&local_40,5,5,0xffffffff,1);
+  iVar2 = *piVar5;
+  (**(code **)(iVar2 + 0x1b4))(auStack_2c,0);
+  (**(code **)(iVar2 + 0x1c8))(&CStack_5c,1);
+  local_40.m_pchData = (char *)0x18;
+  this_00 = (TColorKeyPicture *)AllocateWithFallbackHandler(0x98);
+  iStack_28._0_1_ = 7;
+  uVar6 = extraout_var_00;
+  if (this_00 != (TColorKeyPicture *)0x0) {
+    TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48(this_00);
+    uVar6 = extraout_var_01;
+  }
+  iStack_28._0_1_ = 2;
+  InitializePictureEntryBaseAndRefresh
+            (uStack_20,uStack_1c,&stack0xffffffbc,5,5,
+             CONCAT22(uVar6,*(short *)&this->field_0x10 + 700));
+  iStack_28._0_1_ = 1;
+  CString::~CString(&CStack_64);
+  iStack_28 = (uint)iStack_28._1_3_ << 8;
+  CString::~CString(&CStack_60);
+  iStack_28 = 0xffffffff;
+  CString::~CString(&CStack_5c);
+  *unaff_FS_OFFSET = uStack_30;
+  return;
 }
 

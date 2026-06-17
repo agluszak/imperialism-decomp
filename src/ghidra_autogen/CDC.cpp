@@ -5,15 +5,15 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00612682
 // GHIDRA_NAME CDC::CDC
-// GHIDRA_PROTO undefined CDC()
+// GHIDRA_PROTO undefined __thiscall CDC(void)
 
-void __fastcall CDC::CDC(undefined4 *param_1)
+void __thiscall CDC::CDC(CDC *this)
 
 {
-  *param_1 = &_vftable_;
-  param_1[1] = 0;
-  param_1[2] = 0;
-  param_1[3] = 0;
+  (this->cobject).vftable = (CObjectVtbl *)&_vftable_;
+  this->m_hDC = (void *)0x0;
+  this->m_hAttribDC = (void *)0x0;
+  this->m_bPrinting = 0;
   return;
 }
 

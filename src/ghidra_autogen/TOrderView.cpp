@@ -24,8 +24,8 @@ TView * TOrderView::CreateTOrderViewInstance(void)
   local_4 = 0;
   if (this != (TView *)0x0) {
     TView::thunk_ConstructTViewBaseState(this);
-    this->vftable = &PTR_LAB_00657eb0;
-    this[1].vftable = (void *)0x0;
+    this->vftable = (TViewVtbl *)&TOrderViewVtbl_00657eb0;
+    this[1].vftable = (TViewVtbl *)0x0;
     *unaff_FS_OFFSET = local_c;
     return this;
   }
@@ -34,39 +34,74 @@ TView * TOrderView::CreateTOrderViewInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506A60
-// GHIDRA_NAME TOrderView::GetTOrderViewClassNamePointer
-// GHIDRA_PROTO undefined GetTOrderViewClassNamePointer()
+// GHIDRA_NAME TOrderView::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TOrderView::GetTOrderViewClassNamePointer(void)
+CRuntimeClass * __thiscall TOrderView::GetTEventHandlerClassNamePointer(TOrderView *this)
 
 {
-  return &PTR_s_TOrderView_006579a0;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506A80
 // GHIDRA_NAME TOrderView::ConstructTOrderViewBaseState
-// GHIDRA_PROTO undefined ConstructTOrderViewBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTOrderViewBaseState(void)
 
-TView * __fastcall TOrderView::ConstructTOrderViewBaseState(TView *param_1)
+TOrderView * __thiscall TOrderView::ConstructTOrderViewBaseState(TOrderView *this)
 
 {
-  TView::thunk_ConstructTViewBaseState(param_1);
-  param_1->vftable = &PTR_LAB_00657eb0;
-  param_1[1].vftable = (void *)0x0;
-  return param_1;
+  TView::thunk_ConstructTViewBaseState((TView *)this);
+  this->vftable = &TOrderViewVtbl_00657eb0;
+  *(undefined4 *)&this->field_0x60 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00506AB0
-// GHIDRA_NAME TOrderView::DestructTOrderViewAndMaybeFree
-// GHIDRA_PROTO undefined DestructTOrderViewAndMaybeFree()
+// GHIDRA_NAME TOrderView::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-TView * __thiscall TOrderView::DestructTOrderViewAndMaybeFree(TView *param_1,byte param_2)
+TOrderView * __thiscall TOrderView::_scalar_deleting_destructor_(TOrderView *this)
 
 {
-  TView::thunk_DestructEngineerDialogBaseState(param_1);
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00507240
+// GHIDRA_NAME TOrderView::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TOrderView::OrphanRetStub_0059add0(TOrderView *this)
+
+{
+  TOrderViewVtbl *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined2 uVar3;
+  int in_stack_00000004;
+  
+  if (in_stack_00000004 == 0x6c) {
+    pTVar1 = this->vftable;
+    uVar2 = (*pTVar1[0x12].slot_0x04)(0x736c6964);
+    uVar3 = extraout_var_00;
+    if (CONCAT31(extraout_var,uVar2) == 0) {
+      MessageBoxA((HWND)0x0,s_Nil_Pointer_00694fc8,s_Failure_00694fd8,0x30);
+      thunk_TemporarilyClearAndRestoreUiInvalidationFlag(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x285);
+      uVar3 = extraout_var_01;
+    }
+    (**(code **)(**(int **)&this->field_0x64 + 0x2c))
+              (CONCAT22(uVar3,*(undefined2 *)(CONCAT31(extraout_var,uVar2) + 0x9c)));
+    (*pTVar1[0x34].slot_0x04)();
+    return;
+  }
+  TView::thunk_ForwardEngineerDialogCommandToChildSlot40((TView *)this);
+  return;
 }
 

@@ -3,28 +3,1028 @@
 // Program: Imperialism.exe
 // Bucket: TCityTask.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005ADD00
-// GHIDRA_NAME TCityTask::GetTCityTaskClassNamePointer
-// GHIDRA_PROTO undefined GetTCityTaskClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x00415CE0
+// GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Vtable slot +0x24 handler.
+// GHIDRA_COMMENT Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the source object.
+// GHIDRA_COMMENT_END
 
-undefined ** TCityTask::GetTCityTaskClassNamePointer(void)
+/* Vtable slot +0x24 handler.
+   Allocates a destination buffer via FUN_00606ff2 and copies a variable-sized payload from the
+   source object. */
+
+void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this)
 
 {
-  return &PTR_s_TCityTask_0066a8c8;
+  TCityTask_GetTTaskClassNamePointer_0x00 *pTVar1;
+  undefined uVar2;
+  undefined3 extraout_var;
+  undefined4 *puVar3;
+  uint uVar4;
+  uint uVar5;
+  
+  pTVar1 = this->vftable->GetTTaskClassNamePointer;
+  uVar2 = (*pTVar1)();
+  uVar5 = *(uint *)(CONCAT31(extraout_var,uVar2) + 4);
+  (*pTVar1)();
+  puVar3 = (undefined4 *)CreateObject_606ff2();
+  for (uVar4 = uVar5 >> 2; uVar4 != 0; uVar4 = uVar4 - 1) {
+    *puVar3 = this->vftable;
+    this = (TCityTask *)&this->field_0x4;
+    puVar3 = puVar3 + 1;
+  }
+  for (uVar5 = uVar5 & 3; uVar5 != 0; uVar5 = uVar5 - 1) {
+    *(undefined1 *)puVar3 = *(undefined1 *)&this->vftable;
+    this = (TCityTask *)((int)&this->vftable + 1);
+    puVar3 = (undefined4 *)((int)puVar3 + 1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004798B0
+// GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+
+{
+  if (this != (TCityTask *)0x0) {
+    (*this->vftable->ConstructTTaskBaseState)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004798D0
+// GHIDRA_NAME TCityTask::DeserializeCityProductionQueueCommand
+// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Generic forwarder: invokes virtual method +0x24 on object passed in ECX/param_1.
+// GHIDRA_COMMENT_END
+
+/* Generic forwarder: invokes virtual method +0x24 on object passed in ECX/param_1. */
+
+void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this)
+
+{
+                    /* WARNING: Could not recover jumptable at 0x004798d2. Too many branches */
+                    /* WARNING: Treating indirect jump as call */
+  (*this->vftable[4].ConstructTTaskBaseState)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485E90
+// GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Vtable slot +0x08 handler.
+// GHIDRA_COMMENT Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot +0x14 (clear) or +0x18 (set).
+// GHIDRA_COMMENT_END
+
+/* Vtable slot +0x08 handler.
+   Builds a temporary dispatch context, then checks bit 0 of state+0x14 and calls callback slot
+   +0x14 (clear) or +0x18 (set). */
+
+void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
+
+{
+  int *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  TFileStream local_1c;
+  undefined **local_14;
+  int local_10;
+  int iStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062ea00;
+  iStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&iStack_c;
+  local_10 = in_stack_00000004;
+  local_14 = &PTR_LAB_00645f98;
+  local_4 = 0;
+  TFileStream::ConstructTFileStreamBaseState(&local_1c);
+  local_4 = CONCAT31(local_4._1_3_,1);
+  TFileStream::SetBackingArchive(&local_1c);
+  if ((~*(uint *)(in_stack_00000004 + 0x14) & 1) != 0) {
+    (*this->vftable[2].ConstructTTaskBaseState)();
+    *unaff_FS_OFFSET = local_10;
+    return;
+  }
+  (*this->vftable[3].GetTTaskClassNamePointer)(&local_1c);
+  *unaff_FS_OFFSET = local_10;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487B30
+// GHIDRA_NAME TCityTask::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+int __thiscall TCityTask::GetTEventHandlerClassNamePointer(TCityTask *this)
+
+{
+  uint in_stack_00000004;
+  uint in_stack_00000008;
+  
+  if (in_stack_00000008 < in_stack_00000004) {
+    return 1;
+  }
+  return -(uint)(in_stack_00000004 < in_stack_00000008);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487B60
+// GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
+// GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(void)
+
+void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+
+{
+  TCityTaskVtbl *pTVar1;
+  TCityTask_GetTTaskClassNamePointer_0x00 *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  int unaff_EBX;
+  undefined4 unaff_EBP;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  undefined4 in_stack_0000000c;
+  
+  if (in_stack_00000004 < in_stack_00000008) {
+    pTVar1 = this->vftable;
+    uVar3 = (*pTVar1[0xf].GetTTaskClassNamePointer)();
+    pTVar2 = pTVar1[0xe].GetTTaskClassNamePointer;
+    (*pTVar2)(unaff_EBP,CONCAT31(extraout_var,uVar3));
+    (*pTVar2)(unaff_EBX + 1,in_stack_0000000c);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487BD0
+// GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+int __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+
+{
+  TCityTask_ConstructTTaskBaseState_0x04 *pTVar1;
+  undefined uVar2;
+  short sVar3;
+  undefined3 extraout_var;
+  code *pcVar4;
+  code *pcVar5;
+  code *in_stack_00000004;
+  int in_stack_00000008;
+  code *pcStack_20;
+  code *pcStack_1c;
+  undefined4 uStack_4;
+  
+  if (in_stack_00000008 <= (int)in_stack_00000004) {
+    return in_stack_00000008;
+  }
+  pcStack_1c = in_stack_00000004;
+  pTVar1 = this->vftable[9].ConstructTTaskBaseState;
+  pcStack_20 = (code *)0x487bfa;
+  (*pTVar1)();
+  pcVar5 = in_stack_00000004 + -1;
+  pcVar4 = (code *)(in_stack_00000008 + 1);
+  while( true ) {
+    do {
+      pcVar4 = pcVar4 + -1;
+      pcStack_20 = pcVar4;
+      uVar2 = (*pTVar1)();
+      sVar3 = (*in_stack_00000004)(uStack_4,uVar2,in_stack_00000008);
+    } while (sVar3 < 0);
+    do {
+      pcVar5 = pcVar5 + 1;
+      pcStack_20 = pcVar5;
+      uVar2 = (*pTVar1)();
+      sVar3 = (*in_stack_00000004)(uStack_4,uVar2,in_stack_00000008);
+    } while (0 < sVar3);
+    if ((int)pcVar4 <= (int)pcVar5) break;
+    pcStack_20 = pcVar5;
+    (*pTVar1)();
+    uVar2 = (*pTVar1)(pcVar4);
+    uStack_4 = CONCAT31(extraout_var,uVar2);
+    (*this->vftable[0xc].GetTTaskClassNamePointer)(pcVar5,&uStack_4,1);
+    (*pcStack_1c)(pcVar4,&pcStack_20,1);
+  }
+  return (int)pcVar4;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487CC0
+// GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+
+void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
+
+{
+  TCityTaskVtbl *pTVar1;
+  TCityTask_ConstructTTaskBaseState_0x04 *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  int iVar4;
+  undefined4 unaff_EBX;
+  undefined4 unaff_retaddr;
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if (in_stack_00000004 != in_stack_00000008) {
+    GenerateThreadLocalRandom15();
+  }
+  pTVar1 = this->vftable;
+  pTVar2 = pTVar1[9].ConstructTTaskBaseState;
+  (*pTVar2)();
+  uVar3 = (*pTVar2)(unaff_retaddr);
+  iVar4 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
+  *(uint *)(iVar4 + 8) = CONCAT31(extraout_var,uVar3);
+  iVar4 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
+  *(undefined4 *)(iVar4 + 8) = unaff_EBX;
+  (*pTVar1[0xe].ConstructTTaskBaseState)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487D90
+// GHIDRA_NAME TCityTask::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TCityTask::OrphanLeaf_NoCall_Ins07_004d8920(TCityTask *this)
+
+{
+  TCityTaskVtbl *pTVar1;
+  TCityTask_GetTTaskClassNamePointer_0x00 *pTVar2;
+  undefined uVar3;
+  int3 extraout_var;
+  undefined3 extraout_var_00;
+  
+  pTVar1 = this->vftable;
+  pTVar2 = pTVar1[9].GetTTaskClassNamePointer;
+  uVar3 = (*pTVar2)();
+  if (CONCAT31(extraout_var,uVar3) != 0 && -1 < extraout_var) {
+    uVar3 = (*pTVar2)(&LAB_00402ed2,this);
+    (*pTVar1[0xe].GetTTaskClassNamePointer)(1,CONCAT31(extraout_var_00,uVar3));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00487DD0
+// GHIDRA_NAME TCityTask::OrphanCallChain_C11_I88_004874b0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+
+void __thiscall TCityTask::OrphanCallChain_C11_I88_004874b0(TCityTask *this)
+
+{
+  TCityTaskVtbl *pTVar1;
+  TCityTask_GetTTaskClassNamePointer_0x00 *pTVar2;
+  undefined uVar3;
+  int3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined4 in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  pTVar1 = this->vftable;
+  pTVar2 = pTVar1[9].GetTTaskClassNamePointer;
+  uVar3 = (*pTVar2)();
+  if (CONCAT31(extraout_var,uVar3) != 0 && -1 < extraout_var) {
+    uVar3 = (*pTVar2)(in_stack_00000004,in_stack_00000008);
+    (*pTVar1[0xe].GetTTaskClassNamePointer)(1,CONCAT31(extraout_var_00,uVar3));
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488650
+// GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
+// GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(void)
+
+void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+
+{
+  CPtrList::AddTail((CPtrList *)&this->field_0x4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488670
+// GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+
+{
+  RemoveTailNodeAndReturnPayload();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488690
+// GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+
+void __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
+
+{
+  CPtrList::AddTail((CPtrList *)&this->field_0x4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004886B0
+// GHIDRA_NAME TCityTask::ConstructTTaskBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+
+void __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
+
+{
+  RemoveHead();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004886D0
+// GHIDRA_NAME TCityTask::OrphanLeaf_NoCall_Ins04_005adc30
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+
+undefined4 __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
+
+{
+  return *(undefined4 *)&this->field_0x10;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004886F0
+// GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
+// GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(void)
+
+undefined4 __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
+
+{
+  int iVar1;
+  
+  iVar1 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
+  return *(undefined4 *)(iVar1 + 8);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488720
+// GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
+// GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(void)
+
+void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+
+{
+  CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
+  TAutoGreatPower::RemoveAt_60217d((TAutoGreatPower *)&this->field_0x4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488750
+// GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+
+{
+  int iVar1;
+  int *piVar2;
+  
+  iVar1 = *(int *)&this->field_0x10;
+  while (iVar1 != 0) {
+    piVar2 = (int *)RemoveHead();
+    (**(code **)(*piVar2 + 0x1c))();
+    iVar1 = *(int *)&this->field_0x10;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488790
+// GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
+
+void __thiscall TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this)
+
+{
+  if (this != (TCityTask *)0x0) {
+    (*this->vftable->ConstructTTaskBaseState)(1);
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004887B0
+// GHIDRA_NAME TCityTask::DeserializeCityProductionQueueCommand
+// GHIDRA_PROTO undefined __thiscall DeserializeCityProductionQueueCommand(void)
+
+void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this)
+
+{
+  TCityTaskVtbl *pTVar1;
+  
+  pTVar1 = this->vftable;
+  (*pTVar1[10].ConstructTTaskBaseState)();
+  (*pTVar1[3].ConstructTTaskBaseState)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004887E0
+// GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this)
+
+{
+  CPtrList::RemoveAll((CPtrList *)&this->field_0x4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488800
+// GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
+// GHIDRA_PROTO undefined __thiscall ApplyProductionDistributionToCitySlots(void)
+
+void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488820
+// GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
+// GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(void)
+
+void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00488840
+// GHIDRA_NAME TCityTask::InvalidateWindowRectFromHandleField1C
+// GHIDRA_PROTO undefined __thiscall InvalidateWindowRectFromHandleField1C(void)
+
+void __thiscall TCityTask::InvalidateWindowRectFromHandleField1C(TCityTask *this)
+
+{
+  int iVar1;
+  undefined4 *in_stack_00000008;
+  
+  iVar1 = CPtrList::GetNodeAtZeroBasedIndex((CPtrList *)&this->field_0x4);
+  *(undefined4 *)(iVar1 + 8) = *in_stack_00000008;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005ADD00
+// GHIDRA_NAME TCityTask::GetTTaskClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTTaskClassNamePointer(void)
+
+CRuntimeClass * __thiscall TCityTask::GetTTaskClassNamePointer(TCityTask *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005ADD20
+// GHIDRA_NAME TCityTask::InitializeCityOrderCommandVtable
+// GHIDRA_PROTO undefined __thiscall InitializeCityOrderCommandVtable(void)
+
+void __thiscall TCityTask::InitializeCityOrderCommandVtable(TCityTask *this)
+
+{
+  this->vftable = &TCityTaskVtbl_0066a9a8;
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005ADD40
-// GHIDRA_NAME TCityTask::DestructTCityTaskAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCityTaskAndMaybeFree()
+// GHIDRA_NAME TCityTask::ConstructTTaskBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
 
-undefined4 __thiscall TCityTask::DestructTCityTaskAndMaybeFree(undefined4 param_1,byte param_2)
+TCityTask * __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
 
 {
+  byte in_stack_00000004;
+  
   DestroyTCityTask_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005ADDE0
+// GHIDRA_NAME TCityTask::OrphanLeaf_NoCall_Ins04_005adc30
+// GHIDRA_PROTO bool __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Executes one deferred city-order command and schedules follow-up support commands when needed.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Attempt direct apply against target slot via city vfunc +0x4C (for low slot ids).
+// GHIDRA_COMMENT 2. Resolve city entry by slot id and refresh state (+0x30).
+// GHIDRA_COMMENT 3. Compute available delta and compare with requested amount.
+// GHIDRA_COMMENT 4. If insufficient and entry can generate supplemental deltas, build/apply slot map (+0x40).
+// GHIDRA_COMMENT 5. If still insufficient, dispatch class-specific support queue paths:
+// GHIDRA_COMMENT - +0x30 for slot class 0x08..0x0C
+// GHIDRA_COMMENT - +0x3C for 0x0D..0x10
+// GHIDRA_COMMENT - +0x34 for recruitment-related classes (0x33, 0x35..0x3B)
+// GHIDRA_COMMENT - +0x38 for 0x19..0x1C and 0x22..0x26
+// GHIDRA_COMMENT - +0x2C for 0x17..0x18
+// GHIDRA_COMMENT 6. Decrement retry counter (+0x06); return true on completion or exhaustion.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - none (uses command object state fields).
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - true when command is completed this pass.
+// GHIDRA_COMMENT - false when additional passes/queued support work remain.
+// GHIDRA_COMMENT_END
+
+/* Executes one deferred city-order command and schedules follow-up support commands when needed.
+   Algorithm:
+   1. Attempt direct apply against target slot via city vfunc +0x4C (for low slot ids).
+   2. Resolve city entry by slot id and refresh state (+0x30).
+   3. Compute available delta and compare with requested amount.
+   4. If insufficient and entry can generate supplemental deltas, build/apply slot map (+0x40).
+   5. If still insufficient, dispatch class-specific support queue paths:
+   - +0x30 for slot class 0x08..0x0C
+   - +0x3C for 0x0D..0x10
+   - +0x34 for recruitment-related classes (0x33, 0x35..0x3B)
+   - +0x38 for 0x19..0x1C and 0x22..0x26
+   - +0x2C for 0x17..0x18
+   6. Decrement retry counter (+0x06); return true on completion or exhaustion.
+   Parameters:
+   - none (uses command object state fields).
+   Returns:
+   - true when command is completed this pass.
+   - false when additional passes/queued support work remain. */
+
+bool __thiscall TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(TCityTask *this)
+
+{
+  short sVar1;
+  int *piVar2;
+  bool bVar3;
+  short sVar4;
+  undefined4 uVar5;
+  undefined2 extraout_var;
+  int iVar6;
+  undefined2 extraout_var_00;
+  undefined2 extraout_var_01;
+  undefined4 uVar7;
+  code *unaff_EBX;
+  int *piVar8;
+  int iVar9;
+  undefined8 uVar10;
+  undefined4 unaff_retaddr;
+  int local_88;
+  code *local_84;
+  undefined1 auStack_80 [128];
+  
+  bVar3 = true;
+  sVar4 = *(short *)&this->field_0x4;
+  if ((-1 < sVar4) && (sVar4 < 7)) {
+    sVar4 = (**(code **)(**(int **)&this->field_0x8 + 0x4c))(sVar4,*(undefined2 *)&this->field_0xc);
+    *(short *)&this->field_0xc = *(short *)&this->field_0xc - sVar4;
+    bVar3 = *(short *)&this->field_0xc < 1;
+    *(short *)&this->field_0x6 = *(short *)&this->field_0x6 + -1;
+    if (*(short *)&this->field_0x6 == 0) {
+      bVar3 = true;
+    }
+  }
+  piVar2 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
+  if (piVar2 != (int *)0x0) {
+    iVar9 = *piVar2;
+    local_84 = *(code **)(iVar9 + 0x30);
+    local_88 = iVar9;
+    uVar5 = (*local_84)();
+    iVar6 = CONCAT22(extraout_var,(short)piVar2[1]);
+    uVar7 = CONCAT22(extraout_var_01,*(short *)&this->field_0xc);
+    sVar4 = (short)uVar5 - (short)piVar2[1];
+    uVar10 = CONCAT44(uVar7,uVar5);
+    if ((sVar4 < *(short *)&this->field_0xc) &&
+       (uVar10 = CONCAT44(uVar7,uVar5), (short)piVar2[0x10] == 0)) {
+      (**(code **)(iVar9 + 0x40))(auStack_80,uVar7);
+      iVar9 = 0;
+      piVar8 = &local_88;
+      do {
+        if ((short)*piVar8 != 0) {
+          (**(code **)(**(int **)&this->field_0x8 + 0x4c))(iVar9,(short)*piVar8);
+        }
+        iVar9 = iVar9 + 1;
+        piVar8 = (int *)((int)piVar8 + 2);
+      } while ((short)iVar9 < 0x17);
+      uVar10 = (*unaff_EBX)();
+      iVar6 = CONCAT22(extraout_var_00,(short)piVar2[1]);
+      sVar4 = (short)uVar10 - (short)piVar2[1];
+      iVar9 = local_88;
+    }
+    if (sVar4 < *(short *)&this->field_0xc) {
+      (**(code **)(iVar9 + 0x2c))((int)uVar10);
+      sVar1 = *(short *)&this->field_0x4;
+      *(short *)&this->field_0xc = *(short *)&this->field_0xc - sVar4;
+      bVar3 = false;
+      if ((sVar1 < 8) || (0xc < sVar1)) {
+        if ((sVar1 < 0xd) || (0x10 < sVar1)) {
+          if (((sVar1 < 0x35) || (0x3b < sVar1)) && (sVar1 != 0x33)) {
+            if (((sVar1 < 0x19) || (0x1c < sVar1)) && ((sVar1 < 0x22 || (0x26 < sVar1)))) {
+              if ((0x16 < sVar1) && (sVar1 < 0x19)) {
+                (*this->vftable[5].ConstructTTaskBaseState)(unaff_retaddr);
+              }
+            }
+            else {
+              (*this->vftable[7].GetTTaskClassNamePointer)(unaff_retaddr);
+            }
+          }
+          else {
+            (*this->vftable[6].ConstructTTaskBaseState)(unaff_retaddr);
+          }
+        }
+        else {
+          (*this->vftable[7].ConstructTTaskBaseState)(unaff_retaddr);
+        }
+      }
+      else {
+        (*this->vftable[6].GetTTaskClassNamePointer)();
+      }
+    }
+    else {
+      (**(code **)(iVar9 + 0x2c))
+                (iVar6 + CONCAT22((short)((ulonglong)uVar10 >> 0x30),*(short *)&this->field_0xc));
+      bVar3 = true;
+    }
+    if ((!bVar3) &&
+       (*(short *)&this->field_0x6 = *(short *)&this->field_0x6 + -1,
+       *(short *)&this->field_0x6 == 0)) {
+      bVar3 = true;
+    }
+  }
+  return bVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AE010
+// GHIDRA_NAME TCityTask::QueueCityOrderType10CommandIfReady
+// GHIDRA_PROTO undefined __thiscall QueueCityOrderType10CommandIfReady(void)
+
+void __thiscall TCityTask::QueueCityOrderType10CommandIfReady(TCityTask *this)
+
+{
+  short sVar1;
+  int *piVar2;
+  undefined4 uVar3;
+  int iVar4;
+  undefined4 *puVar5;
+  short sVar6;
+  int *in_stack_00000004;
+  
+  piVar2 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
+  (**(code **)(*piVar2 + 0x30))();
+  sVar1 = (short)piVar2[0x10];
+  if (sVar1 == 0) {
+    sVar6 = *(short *)&this->field_0xc;
+    if (*(short *)&this->field_0x4 != 0x17) {
+      sVar6 = sVar6 << 1;
+    }
+    puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+    if (puVar5 == (undefined4 *)0x0) {
+      puVar5 = (undefined4 *)0x0;
+    }
+    else {
+      *puVar5 = &TCityTaskVtbl_0066a9a8;
+    }
+    uVar3 = *(undefined4 *)&this->field_0x8;
+    *(short *)(puVar5 + 3) = sVar6;
+    puVar5[2] = uVar3;
+    iVar4 = *in_stack_00000004;
+    *(undefined2 *)(puVar5 + 1) = 10;
+    *(undefined2 *)((int)puVar5 + 0xe) = 0;
+    *(undefined1 *)(puVar5 + 4) = 1;
+    *(undefined2 *)((int)puVar5 + 6) = 1;
+    (**(code **)(iVar4 + 0x30))(puVar5);
+    *(undefined2 *)&this->field_0xe = 1;
+  }
+  if (sVar1 == 3) {
+    (**(code **)(**(int **)(*(int *)(*(int *)&this->field_0x8 + 0xac) + 0x94) + 0x50))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AE0E0
+// GHIDRA_NAME TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO void __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void * pCommandQueue)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Queues support resource commands for recruitment deficits.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - For active entry, compares requested recruitment amount (+0x0C) against two city pools (city+0xC8 and city+0xCC).
+// GHIDRA_COMMENT - When deficit is detected, enqueues deferred command objects with slot ids 9 and/or 0x0B.
+// GHIDRA_COMMENT - Sets queued flag (+0x0E) to avoid duplicate enqueue in same cycle.
+// GHIDRA_COMMENT - Increments cycle counter (+0x06).
+// GHIDRA_COMMENT_END
+
+/* Queues support resource commands for recruitment deficits.
+   
+   Behavior:
+   - For active entry, compares requested recruitment amount (+0x0C) against two city pools
+   (city+0xC8 and city+0xCC).
+   - When deficit is detected, enqueues deferred command objects with slot ids 9 and/or 0x0B.
+   - Sets queued flag (+0x0E) to avoid duplicate enqueue in same cycle.
+   - Increments cycle counter (+0x06). */
+
+void __thiscall
+TCityTask::QueueCityRecruitmentSupportCommandsIfDeficit(TCityTask *this,void *pCommandQueue)
+
+{
+  int *piVar1;
+  int iVar2;
+  bool bVar3;
+  undefined4 *puVar4;
+  short sVar5;
+  short sVar6;
+  
+  piVar1 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
+  (**(code **)(*piVar1 + 0x30))();
+  bVar3 = false;
+  if (((short)piVar1[0x10] == 0) && (*(short *)&this->field_0xe == 0)) {
+    sVar6 = *(short *)(*(int *)&this->field_0x8 + 200) - *(short *)&this->field_0xc;
+    sVar5 = *(short *)(*(int *)&this->field_0x8 + 0xcc) - *(short *)&this->field_0xc;
+    if (sVar6 < 0) {
+      puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      if (puVar4 == (undefined4 *)0x0) {
+        puVar4 = (undefined4 *)0x0;
+      }
+      else {
+        *puVar4 = &TCityTaskVtbl_0066a9a8;
+      }
+      iVar2 = *(int *)pCommandQueue;
+      puVar4[2] = *(undefined4 *)&this->field_0x8;
+      *(undefined2 *)(puVar4 + 1) = 9;
+      *(undefined2 *)((int)puVar4 + 6) = 4;
+      *(short *)(puVar4 + 3) = -sVar6;
+      *(undefined2 *)((int)puVar4 + 0xe) = 0;
+      *(undefined1 *)(puVar4 + 4) = 1;
+      (**(code **)(iVar2 + 0x30))(puVar4);
+      bVar3 = true;
+    }
+    if ((sVar5 < 0) && (*(short *)&this->field_0xe == 0)) {
+      puVar4 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      if (puVar4 == (undefined4 *)0x0) {
+        puVar4 = (undefined4 *)0x0;
+      }
+      else {
+        *puVar4 = &TCityTaskVtbl_0066a9a8;
+      }
+      iVar2 = *(int *)pCommandQueue;
+      puVar4[2] = *(undefined4 *)&this->field_0x8;
+      *(undefined2 *)(puVar4 + 1) = 0xb;
+      *(undefined2 *)((int)puVar4 + 6) = 4;
+      *(short *)(puVar4 + 3) = -sVar5;
+      *(undefined2 *)((int)puVar4 + 0xe) = 0;
+      *(undefined1 *)(puVar4 + 4) = 1;
+      (**(code **)(iVar2 + 0x30))(puVar4);
+      bVar3 = true;
+    }
+    if (bVar3) {
+      *(undefined2 *)&this->field_0xe = 1;
+    }
+  }
+  *(short *)&this->field_0x6 = *(short *)&this->field_0x6 + 1;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AE240
+// GHIDRA_NAME TCityTask::DeserializeCityProductionQueueCommand
+// GHIDRA_PROTO void __thiscall DeserializeCityProductionQueueCommand(void * pCommandQueue)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Queues additional input-resource delta commands required by a requested city output change.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve active city entry and refresh it via vfunc +0x30.
+// GHIDRA_COMMENT 2. If entry is not blocked and command not already queued (+0x0E == 0), compute deficits for primary and optional secondary inputs.
+// GHIDRA_COMMENT 3. For each positive deficit:
+// GHIDRA_COMMENT - Allocate 0x14 command object.
+// GHIDRA_COMMENT - Fill slot id, city pointer, amount, task class, and queue flags.
+// GHIDRA_COMMENT - Enqueue through pCommandQueue vfunc +0x30.
+// GHIDRA_COMMENT 4. Mark command queued flag (+0x0E) when at least one deficit command was emitted.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - pCommandQueue: deferred city command queue.
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - Slot id 5 uses task class 3 instead of 4 (special handling).
+// GHIDRA_COMMENT_END
+
+/* Queues additional input-resource delta commands required by a requested city output change.
+   Algorithm:
+   1. Resolve active city entry and refresh it via vfunc +0x30.
+   2. If entry is not blocked and command not already queued (+0x0E == 0), compute deficits for
+   primary and optional secondary inputs.
+   3. For each positive deficit:
+   - Allocate 0x14 command object.
+   - Fill slot id, city pointer, amount, task class, and queue flags.
+   - Enqueue through pCommandQueue vfunc +0x30.
+   4. Mark command queued flag (+0x0E) when at least one deficit command was emitted.
+   Parameters:
+   - pCommandQueue: deferred city command queue.
+   Returns:
+   - void.
+   Notes:
+   - Slot id 5 uses task class 3 instead of 4 (special handling). */
+
+void __thiscall
+TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this,void *pCommandQueue)
+
+{
+  short sVar1;
+  short sVar2;
+  short sVar3;
+  int *piVar4;
+  undefined4 uVar5;
+  int iVar6;
+  bool bVar7;
+  undefined4 *puVar8;
+  short sVar9;
+  short sVar10;
+  short sVar11;
+  
+  piVar4 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
+  (**(code **)(*piVar4 + 0x30))();
+  sVar1 = (short)piVar4[0x13];
+  sVar2 = *(short *)((int)piVar4 + 0x4e);
+  bVar7 = false;
+  if (((short)piVar4[0x10] == 0) && (*(short *)&this->field_0xe == 0)) {
+    sVar3 = 0;
+    sVar9 = 1;
+    if (sVar2 != -1) {
+      sVar3 = *(short *)(*(int *)&this->field_0x8 + 0xb6 + sVar2 * 2);
+      sVar9 = *(short *)((int)piVar4 + 0x52);
+    }
+    sVar11 = (short)piVar4[0x14] * *(short *)&this->field_0xc -
+             *(short *)(*(int *)&this->field_0x8 + 0xb6 + sVar1 * 2);
+    sVar10 = 0;
+    if (sVar2 != -1) {
+      sVar10 = sVar9 * *(short *)&this->field_0xc - sVar3;
+    }
+    if (0 < sVar11) {
+      puVar8 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      if (puVar8 == (undefined4 *)0x0) {
+        puVar8 = (undefined4 *)0x0;
+      }
+      else {
+        *puVar8 = &TCityTaskVtbl_0066a9a8;
+      }
+      uVar5 = *(undefined4 *)&this->field_0x8;
+      *(short *)(puVar8 + 1) = sVar1;
+      *(undefined2 *)((int)puVar8 + 6) = 4;
+      puVar8[2] = uVar5;
+      *(short *)(puVar8 + 3) = sVar11;
+      *(undefined2 *)((int)puVar8 + 0xe) = 0;
+      if (sVar1 == 5) {
+        *(undefined2 *)((int)puVar8 + 6) = 3;
+      }
+      *(undefined1 *)(puVar8 + 4) = 1;
+      (**(code **)(*(int *)pCommandQueue + 0x30))(puVar8);
+      bVar7 = true;
+    }
+    if ((0 < sVar10) && (*(short *)&this->field_0xe == 0)) {
+      puVar8 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+      if (puVar8 == (undefined4 *)0x0) {
+        puVar8 = (undefined4 *)0x0;
+      }
+      else {
+        *puVar8 = &TCityTaskVtbl_0066a9a8;
+      }
+      uVar5 = *(undefined4 *)&this->field_0x8;
+      *(short *)(puVar8 + 1) = sVar2;
+      *(undefined2 *)((int)puVar8 + 6) = 4;
+      puVar8[2] = uVar5;
+      *(short *)(puVar8 + 3) = sVar10;
+      *(undefined2 *)((int)puVar8 + 0xe) = 0;
+      if (sVar2 == 5) {
+        *(undefined2 *)((int)puVar8 + 6) = 3;
+      }
+      iVar6 = *(int *)pCommandQueue;
+      *(undefined1 *)(puVar8 + 4) = 1;
+      (**(code **)(iVar6 + 0x30))(puVar8);
+      bVar7 = true;
+    }
+    if (bVar7) {
+      *(undefined2 *)&this->field_0xe = 1;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AE420
+// GHIDRA_NAME TCityTask::ApplyProductionDistributionToCitySlots
+// GHIDRA_PROTO void __thiscall ApplyProductionDistributionToCitySlots(void)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Applies distribution deltas generated for the active city order entry across 23 city slots.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve active city order entry by slot index (this+0x04 -> city+0xE4 table).
+// GHIDRA_COMMENT 2. Ask entry helper (+0x40) to build a 0x17-slot delta map for requested amount (+0x0C).
+// GHIDRA_COMMENT 3. For each non-zero slot delta:
+// GHIDRA_COMMENT - Apply to city manager/state aggregate via vfunc +0x4C.
+// GHIDRA_COMMENT - Apply to city production storage via city vfunc +0x48.
+// GHIDRA_COMMENT 4. Finish without queueing additional commands.
+// GHIDRA_COMMENT Parameters:
+// GHIDRA_COMMENT - none (uses context fields on this object).
+// GHIDRA_COMMENT Returns:
+// GHIDRA_COMMENT - void.
+// GHIDRA_COMMENT Notes:
+// GHIDRA_COMMENT - 0x17 slot width matches city production/recruitment slot tables.
+// GHIDRA_COMMENT_END
+
+/* Applies distribution deltas generated for the active city order entry across 23 city slots.
+   Algorithm:
+   1. Resolve active city order entry by slot index (this+0x04 -> city+0xE4 table).
+   2. Ask entry helper (+0x40) to build a 0x17-slot delta map for requested amount (+0x0C).
+   3. For each non-zero slot delta:
+   - Apply to city manager/state aggregate via vfunc +0x4C.
+   - Apply to city production storage via city vfunc +0x48.
+   4. Finish without queueing additional commands.
+   Parameters:
+   - none (uses context fields on this object).
+   Returns:
+   - void.
+   Notes:
+   - 0x17 slot width matches city production/recruitment slot tables. */
+
+void __thiscall TCityTask::ApplyProductionDistributionToCitySlots(TCityTask *this)
+
+{
+  int *piVar1;
+  undefined2 extraout_var;
+  int iVar2;
+  short *psVar3;
+  undefined1 local_80 [128];
+  
+  iVar2 = *(int *)(*(int *)&this->field_0x8 + 0xac);
+  piVar1 = *(int **)(iVar2 + 0x94);
+  (**(code **)(**(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4) + 0x40))
+            (local_80,CONCAT22((short)((uint)iVar2 >> 0x10),*(undefined2 *)&this->field_0xc));
+  iVar2 = 0;
+  psVar3 = (short *)&stack0xffffff78;
+  do {
+    if (*psVar3 != 0) {
+      (**(code **)(*piVar1 + 0x4c))(iVar2,*psVar3);
+      (**(code **)(**(int **)&this->field_0x8 + 0x48))(iVar2,CONCAT22(extraout_var,*psVar3));
+    }
+    iVar2 = iVar2 + 1;
+    psVar3 = psVar3 + 1;
+  } while (iVar2 < 0x17);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AE4B0
+// GHIDRA_NAME TCityTask::OrphanRetStub_0059add0
+// GHIDRA_PROTO void __thiscall OrphanRetStub_0059add0(void * pCommandQueue)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Queues a city production/recruitment command object for later execution.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Resolve selected city entry by slot index.
+// GHIDRA_COMMENT 2. Refresh entry state and ensure not blocked/already queued.
+// GHIDRA_COMMENT 3. Allocate 0x14-byte command object and assign command vtable.
+// GHIDRA_COMMENT 4. Store slot id, quantity delta, city pointer, and mode selector.
+// GHIDRA_COMMENT 5. Enqueue command to command queue (+0x30) and mark this UI/order context as queued.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Rollover behavior:
+// GHIDRA_COMMENT - Actual city state mutation is deferred to command execution, which calls ApplyProductionDistributionToCitySlots.
+// GHIDRA_COMMENT_END
+
+/* Queues a city production/recruitment command object for later execution.
+   
+   Algorithm:
+   1. Resolve selected city entry by slot index.
+   2. Refresh entry state and ensure not blocked/already queued.
+   3. Allocate 0x14-byte command object and assign command vtable.
+   4. Store slot id, quantity delta, city pointer, and mode selector.
+   5. Enqueue command to command queue (+0x30) and mark this UI/order context as queued.
+   
+   Rollover behavior:
+   - Actual city state mutation is deferred to command execution, which calls
+   ApplyProductionDistributionToCitySlots. */
+
+void __thiscall TCityTask::OrphanRetStub_0059add0(TCityTask *this,void *pCommandQueue)
+
+{
+  short sVar1;
+  short sVar2;
+  int *piVar3;
+  undefined4 uVar4;
+  undefined4 *puVar5;
+  
+  piVar3 = *(int **)(*(int *)&this->field_0x8 + 0xe4 + *(short *)&this->field_0x4 * 4);
+  (**(code **)(*piVar3 + 0x30))();
+  if (((short)piVar3[0x10] == 0) && (*(short *)&this->field_0xe == 0)) {
+    puVar5 = (undefined4 *)AllocateWithFallbackHandler(0x14);
+    if (puVar5 == (undefined4 *)0x0) {
+      puVar5 = (undefined4 *)0x0;
+    }
+    else {
+      *puVar5 = &TCityTaskVtbl_0066a9a8;
+    }
+    sVar1 = *(short *)&this->field_0xc;
+    sVar2 = *(short *)((int)piVar3 + 0x4e);
+    uVar4 = *(undefined4 *)&this->field_0x8;
+    *(short *)(puVar5 + 1) = sVar2;
+    *(undefined2 *)((int)puVar5 + 6) = 4;
+    puVar5[2] = uVar4;
+    *(short *)(puVar5 + 3) = sVar1 << 1;
+    *(undefined2 *)((int)puVar5 + 0xe) = 0;
+    if (sVar2 == 5) {
+      *(undefined2 *)((int)puVar5 + 6) = 3;
+    }
+    *(undefined1 *)(puVar5 + 4) = 1;
+    (**(code **)(*(int *)pCommandQueue + 0x30))(puVar5);
+    *(undefined2 *)&this->field_0xe = 1;
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AE570
@@ -42,12 +1042,12 @@ void __thiscall TCityTask::SerializeCityProductionQueueCommand(TCityTask *this,v
   code *pcVar1;
   
   pcVar1 = *(code **)(*(int *)pArchive + 0x78);
-  (*pcVar1)(this + 0x10,1);
-  TradeControl::thunk_HandleCityDialogNoOpSlot14(pArchive);
-  (*pcVar1)(this + 4,2);
-  (*pcVar1)(this + 6,2);
-  (*pcVar1)(this + 0xc,2);
-  (*pcVar1)(this + 0xe,2);
+  (*pcVar1)(&this->field_0x10,1);
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  (*pcVar1)(&this->field_0x4,2);
+  (*pcVar1)(&this->field_0x6,2);
+  (*pcVar1)(&this->field_0xc,2);
+  (*pcVar1)(&this->field_0xe,2);
   return;
 }
 
@@ -65,12 +1065,50 @@ void __thiscall TCityTask::DeserializeCityProductionQueueCommand(TCityTask *this
 {
   code *pcVar1;
   
-  TradeControl::thunk_HandleCityDialogNoOpSlot18(pArchive);
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
   pcVar1 = *(code **)(*(int *)pArchive + 0x3c);
-  (*pcVar1)(this + 4,2);
-  (*pcVar1)(this + 6,2);
-  (*pcVar1)(this + 0xc,2);
-  (*pcVar1)(this + 0xe,2);
+  (*pcVar1)(&this->field_0x4,2);
+  (*pcVar1)(&this->field_0x6,2);
+  (*pcVar1)(&this->field_0xc,2);
+  (*pcVar1)(&this->field_0xe,2);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AED50
+// GHIDRA_NAME TCityTask::ConstructTTaskBaseState
+// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+
+undefined4 __thiscall TCityTask::ConstructTTaskBaseState(TCityTask *this)
+
+{
+  TCityTaskVtbl *pTVar1;
+  TCityTask_ConstructTTaskBaseState_0x04 *pTVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  int iVar4;
+  short sVar5;
+  code *unaff_EBX;
+  int iVar6;
+  short unaff_retaddr;
+  
+  sVar5 = 1;
+  pTVar1 = this->vftable;
+  uVar3 = (*pTVar1[9].GetTTaskClassNamePointer)();
+  if (CONCAT31(extraout_var,uVar3) < 1) {
+    return 0;
+  }
+  pTVar2 = pTVar1[9].ConstructTTaskBaseState;
+  iVar6 = 1;
+  do {
+    uVar3 = (*pTVar2)(iVar6);
+    if (*(short *)(CONCAT31(extraout_var_00,uVar3) + 4) == unaff_retaddr) {
+      return CONCAT31(extraout_var_00,1);
+    }
+    sVar5 = sVar5 + 1;
+    iVar6 = (int)sVar5;
+    iVar4 = (*unaff_EBX)();
+  } while (iVar6 <= iVar4);
+  return 0;
 }
 

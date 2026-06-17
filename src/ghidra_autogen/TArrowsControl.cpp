@@ -7,10 +7,10 @@
 // GHIDRA_NAME TArrowsControl::CreateTArrowsControlInstance
 // GHIDRA_PROTO undefined CreateTArrowsControlInstance()
 
-undefined4 * TArrowsControl::CreateTArrowsControlInstance(void)
+thunk_TPictureButton * TArrowsControl::CreateTArrowsControlInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -20,86 +20,88 @@ undefined4 * TArrowsControl::CreateTArrowsControlInstance(void)
   puStack_8 = &LAB_0063752a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x94);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x94);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00663318;
-    puVar1[0x24] = 0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TArrowsControlVtbl **)this = &TArrowsControlVtbl_00663318;
+    *(undefined4 *)(this + 0x90) = 0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583950
-// GHIDRA_NAME TArrowsControl::GetTArrowsControlClassNamePointer
-// GHIDRA_PROTO undefined GetTArrowsControlClassNamePointer()
+// GHIDRA_NAME TArrowsControl::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TArrowsControl::GetTArrowsControlClassNamePointer(void)
+CRuntimeClass * __thiscall TArrowsControl::GetTEventHandlerClassNamePointer(TArrowsControl *this)
 
 {
-  return &PTR_s_TArrowsControl_00662db8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583970
 // GHIDRA_NAME TArrowsControl::ConstructTArrowsControlBaseState
-// GHIDRA_PROTO undefined ConstructTArrowsControlBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTArrowsControlBaseState(void)
 
-undefined4 * __fastcall TArrowsControl::ConstructTArrowsControlBaseState(undefined4 *param_1)
+TArrowsControl * __thiscall TArrowsControl::ConstructTArrowsControlBaseState(TArrowsControl *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00663318;
-  param_1[0x24] = 0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TArrowsControlVtbl_00663318;
+  *(undefined4 *)&this->field_0x90 = 0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005839A0
-// GHIDRA_NAME TArrowsControl::DestructTArrowsControlAndMaybeFree
-// GHIDRA_PROTO undefined DestructTArrowsControlAndMaybeFree()
+// GHIDRA_NAME TArrowsControl::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TArrowsControl::DestructTArrowsControlAndMaybeFree(undefined4 param_1,byte param_2)
+TArrowsControl * __thiscall TArrowsControl::_scalar_deleting_destructor_(TArrowsControl *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005839F0
-// GHIDRA_NAME TArrowsControl::HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
-// GHIDRA_PROTO undefined HandleSplitArrowAutoRepeatTickAndDispatch_Offset90()
+// GHIDRA_NAME TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit
+// GHIDRA_PROTO undefined __thiscall QueueCityRecruitmentSupportCommandsIfDeficit(void)
 
-void __thiscall
-TArrowsControl::HandleSplitArrowAutoRepeatTickAndDispatch_Offset90
-          (int *param_1,int param_2,undefined4 param_3,undefined4 param_4,int param_5)
+void __thiscall TArrowsControl::QueueCityRecruitmentSupportCommandsIfDeficit(TArrowsControl *this)
 
 {
-  char cVar1;
-  uint uVar2;
-  int iVar3;
+  TArrowsControlVtbl *pTVar1;
+  char cVar2;
+  uint uVar3;
+  int iVar4;
+  int in_stack_00000004;
+  int in_stack_00000010;
   
-  if (param_2 != 2) {
-    uVar2 = thunk_GetTickCountDiv16();
-    if (param_1[0x24] + 5U <= uVar2) {
-      iVar3 = thunk_GetTickCountDiv16();
-      param_1[0x24] = iVar3;
-      if (param_2 == 0) {
-        param_1[0x24] = iVar3 + 10;
+  if (in_stack_00000004 != 2) {
+    uVar3 = thunk_GetTickCountDiv16();
+    if (*(int *)&this->field_0x90 + 5U <= uVar3) {
+      iVar4 = thunk_GetTickCountDiv16();
+      *(int *)&this->field_0x90 = iVar4;
+      if (in_stack_00000004 == 0) {
+        *(int *)&this->field_0x90 = iVar4 + 10;
       }
-      iVar3 = *param_1;
-      cVar1 = (**(code **)(iVar3 + 0x16c))(param_5);
-      if (cVar1 != '\0') {
-        if (*(int *)(param_5 + 4) <= param_1[0xe] / 2) {
-          (**(code **)(iVar3 + 0x40))(100);
+      pTVar1 = this->vftable;
+      cVar2 = (*pTVar1[0x2d].slot_0x04)(in_stack_00000010);
+      if (cVar2 != '\0') {
+        if (*(int *)(in_stack_00000010 + 4) <= this->field38 / 2) {
+          (*pTVar1[8].GetTEventHandlerClassNamePointer)(100);
           return;
         }
-        (**(code **)(iVar3 + 0x40))(0x65,param_1,0);
+        (*pTVar1[8].GetTEventHandlerClassNamePointer)(0x65,this,0);
       }
     }
   }

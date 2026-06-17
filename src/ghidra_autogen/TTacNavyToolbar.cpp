@@ -3,25 +3,102 @@
 // Program: Imperialism.exe
 // Bucket: TTacNavyToolbar.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005AD160
-// GHIDRA_NAME TTacNavyToolbar::GetTTacNavyToolbarClassNamePointer
-// GHIDRA_PROTO undefined GetTTacNavyToolbarClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x005AD0D0
+// GHIDRA_NAME TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel
+// GHIDRA_PROTO undefined __thiscall UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void)
 
-undefined ** TTacNavyToolbar::GetTTacNavyToolbarClassNamePointer(void)
+void __thiscall
+TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(TTacNavyToolbar *this)
 
 {
-  return &PTR_s_TTacNavyToolbar_0066a2c8;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AD0F0
+// GHIDRA_NAME TTacNavyToolbar::OrphanRetStub_005ad0f0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_005ad0f0(void)
+
+void __thiscall TTacNavyToolbar::OrphanRetStub_005ad0f0(TTacNavyToolbar *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AD110
+// GHIDRA_NAME TTacNavyToolbar::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+TTacNavyToolbar * __thiscall TTacNavyToolbar::_scalar_deleting_destructor_(TTacNavyToolbar *this)
+
+{
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructEngineerDialogBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AD160
+// GHIDRA_NAME TTacNavyToolbar::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall TTacNavyToolbar::GetTEventHandlerClassNamePointer(TTacNavyToolbar *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005AD180
-// GHIDRA_NAME TTacNavyToolbar::ConstructTTacNavyToolbarBaseState
-// GHIDRA_PROTO undefined ConstructTTacNavyToolbarBaseState()
+// GHIDRA_NAME TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void __thiscall TTacNavyToolbar::ConstructTTacNavyToolbarBaseState(int *param_1,undefined4 param_2)
+void __thiscall TTacNavyToolbar::OrphanLeaf_NoCall_Ins07_004d8920(TTacNavyToolbar *this)
 
 {
-  TTacticalToolbar::ConstructTTacticalToolbarBaseState(param_2);
-  (**(code **)(*param_1 + 0x1c8))(0x68756c6c);
+  TTacticalToolbar::OrphanLeaf_NoCall_Ins07_004d8920((TTacticalToolbar *)this);
+  (*this->vftable[0x39].GetTEventHandlerClassNamePointer)(0x68756c6c);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005AD1B0
+// GHIDRA_NAME TTacNavyToolbar::OrphanRetStub_0059add0
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+
+void __thiscall TTacNavyToolbar::OrphanRetStub_0059add0(TTacNavyToolbar *this)
+
+{
+  int iVar1;
+  uint commandTag;
+  int in_stack_00000004;
+  void *in_stack_00000008;
+  int in_stack_0000000c;
+  
+  if ((in_stack_00000004 == 0xc) &&
+     (((iVar1 = *(int *)((int)in_stack_00000008 + 0x1c), iVar1 == 0x63726577 ||
+       (iVar1 == 0x68756c6c)) || (iVar1 == 0x7361696c)))) {
+    TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl
+              (*(TacticalBattleView **)&this->field_0x88);
+  }
+  if (in_stack_00000004 != 10) goto LAB_005ad237;
+  commandTag = *(uint *)((int)in_stack_00000008 + 0x1c);
+  if (commandTag < 0x646f6e66) {
+    if ((commandTag != 0x646f6e65) && (commandTag != 0x6175746f)) goto LAB_005ad237;
+  }
+  else {
+    if (commandTag == 0x68656c70) {
+      SelectAndActivatePendingEventForCurrentView();
+      goto LAB_005ad237;
+    }
+    if ((commandTag != 0x72657472) && (commandTag != 0x74617267)) goto LAB_005ad237;
+  }
+  TacticalBattleView::thunk_HandleTacticalBattleCommandTag
+            (*(TacticalBattleView **)&this->field_0x88,commandTag);
+LAB_005ad237:
+  TMapEditCluster::thunk_DispatchPanelControlEvent
+            ((TMapEditCluster *)this,in_stack_00000004,in_stack_00000008,in_stack_0000000c);
+  (*g_pGlobalUiRootController->vftable[0x13].GetTEventHandlerClassNamePointer)(this->ownerContext);
   return;
 }
 

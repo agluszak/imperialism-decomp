@@ -3,13 +3,88 @@
 // Program: Imperialism.exe
 // Bucket: TOcean.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00562190
-// GHIDRA_NAME TOcean::GetTOceanClassNamePointer
-// GHIDRA_PROTO undefined GetTOceanClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x00562140
+// GHIDRA_NAME TOcean::DestroyTPortZoneManager
+// GHIDRA_PROTO undefined __thiscall DestroyTPortZoneManager(void)
 
-undefined * TOcean::GetTOceanClassNamePointer(void)
+TOcean * __thiscall TOcean::DestroyTPortZoneManager(TOcean *this)
 
 {
-  return &DAT_0065c630;
+  byte in_stack_00000004;
+  
+  ResetTPortZoneManagerToSentinelVtable();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00562190
+// GHIDRA_NAME TOcean::GetTOceanClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTOceanClassNamePointer(void)
+
+CRuntimeClass * __thiscall TOcean::GetTOceanClassNamePointer(TOcean *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0057C9A0
+// GHIDRA_NAME TOcean::RecreateActiveMapContextAndInitializeGlobalMapState
+// GHIDRA_PROTO undefined __thiscall RecreateActiveMapContextAndInitializeGlobalMapState(void)
+
+void __thiscall TOcean::RecreateActiveMapContextAndInitializeGlobalMapState(TOcean *this)
+
+{
+  TMapMgr *this_00;
+  int *unaff_ESI;
+  undefined4 *unaff_FS_OFFSET;
+  short in_stack_00000004;
+  undefined *puVar1;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00636dda;
+  *unaff_FS_OFFSET = &uStack_c;
+  this[0xb].field0c = in_stack_00000004 + 1;
+  if (g_pActiveMapOrderContext != (TOcean *)0x0) {
+    (*g_pActiveMapOrderContext->vftable[3].DestroyTPortZoneManager)();
+    g_pActiveMapOrderContext = (TOcean *)0x0;
+  }
+  g_pActiveMapOrderContext = (TOcean *)AllocateWithFallbackHandler(0x18);
+  if (g_pActiveMapOrderContext == (TOcean *)0x0) {
+    g_pActiveMapOrderContext = (TOcean *)0x0;
+  }
+  else {
+    g_pActiveMapOrderContext->nationCount = 0;
+    g_pActiveMapOrderContext->contextArray = (dword *)0x0;
+    g_pActiveMapOrderContext->field0c = 0;
+    g_pActiveMapOrderContext->keyMask = 0;
+    g_pActiveMapOrderContext->field14 = 0;
+    g_pActiveMapOrderContext->vftable = &TOceanVtbl_0065c7c8;
+  }
+  ResetPortZoneGlobalContextCounters();
+  if (g_pGlobalMapState != (TMapMgr *)0x0) {
+    (*g_pGlobalMapState->vftable[3].slot_0x04)();
+    g_pGlobalMapState = (TMapMgr *)0x0;
+  }
+  this_00 = (TMapMgr *)AllocateWithFallbackHandler(0x28);
+  uStack_4 = 0;
+  if (this_00 == (TMapMgr *)0x0) {
+    g_pGlobalMapState = (TMapMgr *)0x0;
+  }
+  else {
+    g_pGlobalMapState = TMapMgr::ConstructGlobalMapState(this_00,unaff_ESI);
+  }
+  uStack_4 = 0xffffffff;
+  InitializeGlobalMapState(g_pGlobalMapState,unaff_ESI);
+  g_pGlobalMapState->field_0x20 = 1;
+  puVar1 = PTR_g_szEmptyString_006628b8;
+  (*g_pGlobalMapState->vftable[5].slot_0x04)(PTR_g_szEmptyString_006628b8);
+  *unaff_FS_OFFSET = puVar1;
+  return;
 }
 

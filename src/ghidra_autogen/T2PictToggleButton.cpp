@@ -7,11 +7,11 @@
 // GHIDRA_NAME T2PictToggleButton::CreateT2PictToggleButtonInstance
 // GHIDRA_PROTO undefined CreateT2PictToggleButtonInstance()
 
-undefined4 * T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
+TToggleButton * T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TToggleButton *this;
+  TToggleButton *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,23 +21,24 @@ undefined4 * T2PictToggleButton::CreateT2PictToggleButtonInstance(void)
   puStack_8 = &LAB_0063762a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (TToggleButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TToggleButton::ConstructTToggleButtonBaseState();
-    *puVar1 = &PTR_LAB_00664470;
-    puVar2 = puVar1;
+  pTVar1 = (TToggleButton *)0x0;
+  if (this != (TToggleButton *)0x0) {
+    TToggleButton::ConstructTToggleButtonBaseState(this);
+    this->vftable = (TToggleButtonVtbl *)&T2PictToggleButtonVtbl_00664470;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584910
-// GHIDRA_NAME T2PictToggleButton::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME T2PictToggleButton::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** T2PictToggleButton::GetRuntimeClass(void)
+CRuntimeClass * __thiscall
+T2PictToggleButton::GetTEventHandlerClassNamePointer(T2PictToggleButton *this)
 
 {
   return &g_pClassDescT2PictToggleButton;
@@ -45,77 +46,68 @@ undefined ** T2PictToggleButton::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584930
 // GHIDRA_NAME T2PictToggleButton::ConstructT2PictToggleButtonBaseState
-// GHIDRA_PROTO undefined ConstructT2PictToggleButtonBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructT2PictToggleButtonBaseState(void)
 
-undefined4 * __fastcall
-T2PictToggleButton::ConstructT2PictToggleButtonBaseState(undefined4 *param_1)
+T2PictToggleButton * __thiscall
+T2PictToggleButton::ConstructT2PictToggleButtonBaseState(T2PictToggleButton *this)
 
 {
-  TToggleButton::ConstructTToggleButtonBaseState();
-  *param_1 = &PTR_LAB_00664470;
-  return param_1;
+  TToggleButton::ConstructTToggleButtonBaseState((TToggleButton *)this);
+  this->vftable = &T2PictToggleButtonVtbl_00664470;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584960
 // GHIDRA_NAME T2PictToggleButton::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-T2PictToggleButton::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+T2PictToggleButton * __thiscall
+T2PictToggleButton::_scalar_deleting_destructor_(T2PictToggleButton *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005849B0
-// GHIDRA_NAME T2PictToggleButton::IsField3cWithinShortLimit84
-// GHIDRA_PROTO undefined IsField3cWithinShortLimit84()
+// GHIDRA_NAME T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_VcallForward_Slot_ec_00571330(void)
 
-undefined4 __fastcall T2PictToggleButton::IsField3cWithinShortLimit84(int param_1)
+undefined4 __thiscall
+T2PictToggleButton::OrphanTiny_VcallForward_Slot_ec_00571330(T2PictToggleButton *this)
 
 {
-  return CONCAT31((int3)(char)((ushort)*(short *)(param_1 + 0x84) >> 8),
-                  *(int *)(param_1 + 0x3c) <= (int)*(short *)(param_1 + 0x84));
+  return CONCAT31((int3)(char)((ushort)*(short *)&this->field_0x84 >> 8),
+                  this->field3c <= (int)*(short *)&this->field_0x84);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005849D0
-// GHIDRA_NAME T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh
-// GHIDRA_PROTO undefined SyncField0fTowardsField21ByDirectionAndRefresh()
+// GHIDRA_NAME T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh
+// GHIDRA_PROTO undefined __thiscall HandleToggleButtonStateChangeAndRefresh(void)
 
 void __thiscall
-T2PictToggleButton::SyncField0fTowardsField21ByDirectionAndRefresh(int *param_1,char param_2)
+T2PictToggleButton::HandleToggleButtonStateChangeAndRefresh(T2PictToggleButton *this)
 
 {
   short sVar1;
-  int iVar2;
+  T2PictToggleButtonVtbl *pTVar2;
+  char in_stack_00000004;
   
-  sVar1 = (short)param_1[0x21];
-  if (((param_2 == '\0') && (param_1[0xf] < (int)sVar1)) ||
-     ((param_2 == '\x01' && ((int)sVar1 < param_1[0xf])))) {
-    (**(code **)(*param_1 + 0x1c8))((short)param_1[0xf],0);
-    param_1[0xf] = (int)sVar1;
+  sVar1 = *(short *)&this->field_0x84;
+  if (((in_stack_00000004 == '\0') && (this->field3c < (int)sVar1)) ||
+     ((in_stack_00000004 == '\x01' && ((int)sVar1 < this->field3c)))) {
+    (*this->vftable[0x39].GetTEventHandlerClassNamePointer)
+              (CONCAT22((short)((uint)this >> 0x10),(short)this->field3c),0);
+    this->field3c = (int)sVar1;
   }
-  iVar2 = *param_1;
-  (**(code **)(iVar2 + 0xf8))();
-  (**(code **)(iVar2 + 0x114))(0);
+  pTVar2 = this->vftable;
+  (*pTVar2[0x1f].GetTEventHandlerClassNamePointer)();
+  (*pTVar2[0x22].slot_0x04)(0);
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00584B70
-// GHIDRA_NAME T2PictToggleButton::DispatchUiMouseMoveThenClearTurnEvent
-// GHIDRA_PROTO undefined DispatchUiMouseMoveThenClearTurnEvent()
-
-undefined4
-T2PictToggleButton::DispatchUiMouseMoveThenClearTurnEvent
-          (undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
-
-{
-  TControl::thunk_DispatchUiMouseMoveToChildren(param_1,param_2,param_3,param_4);
-  (**(code **)(*g_pUiRuntimeContext + 0x4c))(0,0);
-  return 1;
 }
 

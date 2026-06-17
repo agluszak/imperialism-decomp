@@ -7,11 +7,11 @@
 // GHIDRA_NAME TDealLine::CreateTDealLineInstance
 // GHIDRA_PROTO undefined CreateTDealLineInstance()
 
-undefined4 * TDealLine::CreateTDealLineInstance(void)
+TLineData * TDealLine::CreateTDealLineInstance(void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  TLineData *this;
+  TLineData *pTVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,51 +21,274 @@ undefined4 * TDealLine::CreateTDealLineInstance(void)
   puStack_8 = &LAB_0063971a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x18);
+  this = (TLineData *)AllocateWithFallbackHandler(0x18);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    TLineData::ConstructTLineDataBaseState();
-    *puVar1 = &PTR_LAB_0066e238;
-    puVar2 = puVar1;
+  pTVar1 = (TLineData *)0x0;
+  if (this != (TLineData *)0x0) {
+    TLineData::ConstructTLineDataBaseState(this);
+    this->vftable = (TLineDataVtbl *)&TDealLineVtbl_0066e238;
+    pTVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return pTVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0D60
-// GHIDRA_NAME TDealLine::GetTDealLineClassNamePointer
-// GHIDRA_PROTO undefined GetTDealLineClassNamePointer()
+// GHIDRA_NAME TDealLine::GetTLineDataClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTLineDataClassNamePointer(void)
 
-undefined ** TDealLine::GetTDealLineClassNamePointer(void)
+CRuntimeClass * __thiscall TDealLine::GetTLineDataClassNamePointer(TDealLine *this)
 
 {
-  return &PTR_s_TDealLine_0066dca8;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0D80
 // GHIDRA_NAME TDealLine::ConstructTDealLineBaseState
-// GHIDRA_PROTO undefined ConstructTDealLineBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTDealLineBaseState(void)
 
-undefined4 * __fastcall TDealLine::ConstructTDealLineBaseState(undefined4 *param_1)
+TDealLine * __thiscall TDealLine::ConstructTDealLineBaseState(TDealLine *this)
 
 {
-  TLineData::ConstructTLineDataBaseState();
-  *param_1 = &PTR_LAB_0066e238;
-  return param_1;
+  TLineData::ConstructTLineDataBaseState((TLineData *)this);
+  this->vftable = &TDealLineVtbl_0066e238;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005C0DB0
 // GHIDRA_NAME TDealLine::DestructTDealLineAndMaybeFree
-// GHIDRA_PROTO undefined DestructTDealLineAndMaybeFree()
+// GHIDRA_PROTO undefined __thiscall DestructTDealLineAndMaybeFree(void)
 
-undefined4 __thiscall TDealLine::DestructTDealLineAndMaybeFree(undefined4 param_1,byte param_2)
+TDealLine * __thiscall TDealLine::DestructTDealLineAndMaybeFree(TDealLine *this)
 
 {
+  byte in_stack_00000004;
+  
   DestructTDealLineAndMaybeFree_Impl();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C0E50
+// GHIDRA_NAME TDealLine::OrphanRetStub_0056f460
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0056f460(void)
+
+void __thiscall TDealLine::OrphanRetStub_0056f460(TDealLine *this)
+
+{
+  int iVar1;
+  undefined uVar2;
+  int *piVar3;
+  undefined2 uVar6;
+  CString *src_ref;
+  undefined2 extraout_var_00;
+  undefined3 extraout_var;
+  int iVar4;
+  undefined4 uVar5;
+  undefined4 unaff_EBP;
+  int unaff_ESI;
+  char *unaff_EDI;
+  undefined4 *unaff_FS_OFFSET;
+  int *in_stack_00000008;
+  CString CStack_90;
+  CString CStack_8c;
+  CString CStack_88;
+  CString CStack_84;
+  short sVar7;
+  CString CVar8;
+  CString CStack_7c;
+  undefined4 uStack_78;
+  CString CStack_74;
+  TMyStaticText **ppTStack_70;
+  CString *pCStack_6c;
+  CString *pCStack_68;
+  CString *pCStack_64;
+  CString CStack_60;
+  CString local_48;
+  CString local_44;
+  CString local_40;
+  CString local_3c;
+  CString local_38;
+  CString local_34 [3];
+  TMyStaticText *local_28;
+  undefined4 local_24;
+  int local_20;
+  int local_1c;
+  CString local_18;
+  undefined1 local_12;
+  undefined1 local_11;
+  undefined1 local_10;
+  undefined1 local_f;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063977a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  CStack_60.m_pchData = (char *)0x5c0e77;
+  CString::CString(&local_3c);
+  local_4 = 0;
+  CStack_60.m_pchData = (char *)0x5c0e86;
+  CString::CString(&local_44);
+  local_4._0_1_ = 1;
+  CStack_60.m_pchData = (char *)0x5c0e94;
+  CString::CString(&local_48);
+  local_4._0_1_ = 2;
+  local_12 = 0;
+  local_11 = 0;
+  local_10 = 0;
+  local_f = 0;
+  CStack_60.m_pchData = (char *)0x5c0eb2;
+  CString::CString(&local_38);
+  local_4._0_1_ = 3;
+  CStack_60.m_pchData = (char *)0x5c0ec0;
+  CString::CString(&local_40);
+  local_4._0_1_ = 4;
+  CStack_60.m_pchData = (char *)0x5c0ece;
+  CString::CString(local_34);
+  CStack_60.m_pchData = (char *)0x94;
+  local_4._0_1_ = 5;
+  pCStack_64 = (CString *)0x5c0edd;
+  local_28 = (TMyStaticText *)AllocateWithFallbackHandler();
+  local_4._0_1_ = 6;
+  if (local_28 == (TMyStaticText *)0x0) {
+    piVar3 = (int *)0x0;
+  }
+  else {
+    CStack_60.m_pchData = (char *)0x5c0ef4;
+    piVar3 = (int *)TMyStaticText::ConstructUiTextResourceEntry_Vtbl0066cbc8(local_28);
+  }
+  local_24 = *(undefined4 *)&this->field_0xc;
+  local_28 = (TMyStaticText *)(*(int *)&this->field_0x8 + -0x28);
+  CStack_60.m_pchData = (char *)0x0;
+  pCStack_64 = (CString *)0xffffffff;
+  local_1c = in_stack_00000008[1];
+  local_20 = *in_stack_00000008 + 0x28;
+  pCStack_68 = (CString *)0x5;
+  ppTStack_70 = &local_28;
+  pCStack_6c = (CString *)0x5;
+  CStack_74.m_pchData = (char *)&local_20;
+  local_4 = CONCAT31(local_4._1_3_,5);
+  CStack_7c.m_pchData = "hj+";
+  InitializeTextEntryBaseAndOptionalStringResource();
+  CStack_60.m_pchData = (char *)0x2b6a;
+  pCStack_64 = (CString *)0xa;
+  pCStack_6c = &local_18;
+  pCStack_68 = (CString *)0x0;
+  ppTStack_70 = (TMyStaticText **)0x5c0f53;
+  thunk_BuildUiTextStyleDescriptor();
+  iVar1 = *piVar3;
+  pCStack_64 = &local_18;
+  CStack_60.m_pchData = (char *)0x0;
+  pCStack_68 = (CString *)0x5c0f66;
+  (**(code **)(iVar1 + 0x1b4))();
+  pCStack_68 = &local_38;
+  pCStack_6c = local_34;
+  ppTStack_70 = (TMyStaticText **)&stack0xffffffae;
+  CStack_74.m_pchData = &stack0xffffffac;
+  uVar6 = (undefined2)((uint)CStack_74.m_pchData >> 0x10);
+  uStack_78 = CONCAT22(uVar6,*(undefined2 *)&this->field_0x14);
+  CStack_7c.m_pchData = (char *)CONCAT22(uVar6,*(undefined2 *)&this->field_0x10);
+  (*g_apNationStates[*(short *)&this->field_0x12]->vftable[0x37].slot_0x04)();
+  CStack_84.m_pchData = (char *)&local_18;
+  CStack_88.m_pchData = (char *)0x5c0fac;
+  src_ref = (CString *)AssignNormalizedCredentialTokenToIndexedSlot();
+  local_24._0_1_ = 7;
+  CStack_84.m_pchData = (char *)0x5c0fbb;
+  CString::AssignFromPtr(&CStack_60,src_ref);
+  local_24 = CONCAT31(local_24._1_3_,5);
+  CString::~CString(&local_18);
+  CVar8.m_pchData = &stack0xffffffa4;
+  CStack_84.m_pchData =
+       (char *)CONCAT22((short)((uint)CVar8.m_pchData >> 0x10),*(undefined2 *)&this->field_0x10);
+  CStack_88.m_pchData = (char *)0x5c0fde;
+  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  sVar7 = (short)CVar8.m_pchData;
+  if (CStack_74.m_pchData._2_2_ == 0) {
+    if ((((unaff_ESI == -0x1e240) || (unaff_ESI == -0x1e241)) || (unaff_ESI == -0x1e242)) ||
+       (unaff_ESI == -0x1e243)) {
+      CStack_88.m_pchData = (char *)&ppTStack_70;
+      CStack_8c.m_pchData = (char *)0x1f;
+      CStack_90.m_pchData = (char *)0x2740;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      scanBracketExpressions(g_pLocalizationTable,&CStack_84,CStack_88.m_pchData);
+      iVar4 = 0;
+      if (ppTStack_70 == (TMyStaticText **)0xfffe1dc0) {
+        iVar4 = 0x22;
+      }
+      else if (ppTStack_70 == (TMyStaticText **)0xfffe1dbf) {
+        iVar4 = 0x21;
+      }
+      else if ((ppTStack_70 == (TMyStaticText **)0xfffe1dbe) ||
+              (ppTStack_70 == (TMyStaticText **)0xfffe1dbd)) {
+        iVar4 = 0x24;
+      }
+      if (iVar4 != 0) {
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740,iVar4 + -1,&CStack_88);
+        uVar5 = AssignSharedStringConcatCStrAndRef
+                          (&local_38,g_Build_Map_Order_LookupTable_00695794,&CStack_88);
+        local_44.m_pchData._0_1_ = 8;
+        AssignStringSharedFromRef(uVar5);
+        local_44.m_pchData._0_1_ = 5;
+        CString::~CString(&local_38);
+      }
+    }
+    else {
+      CStack_88.m_pchData = (char *)&ppTStack_70;
+      CStack_8c.m_pchData = (char *)0x16;
+      CStack_90.m_pchData = (char *)0x2740;
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      scanBracketExpressions(g_pLocalizationTable,&CStack_84,CStack_88.m_pchData);
+    }
+  }
+  else {
+    CStack_88.m_pchData = (char *)(int)CStack_74.m_pchData._2_2_;
+    CStack_90.m_pchData = (char *)&CStack_60;
+    CStack_8c.m_pchData = &g_szDecimalFormat;
+    FormatStringWithVarArgsToSharedRef();
+    CStack_88.m_pchData = (char *)CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x10);
+    CStack_8c.m_pchData = (char *)0x5c1012;
+    uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
+    if (unaff_EDI == (char *)(int)(short)CONCAT31(extraout_var,uVar2)) {
+      CStack_8c.m_pchData = (char *)&CStack_74;
+      if ((short)uStack_78 == 1) {
+        CStack_90.m_pchData = (char *)0x14;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740);
+        scanBracketExpressions(g_pLocalizationTable,&CStack_84,CStack_88.m_pchData);
+      }
+      else {
+        CStack_90.m_pchData = (char *)0x15;
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740);
+        scanBracketExpressions(g_pLocalizationTable,&CStack_84,CStack_88.m_pchData);
+      }
+    }
+    else {
+      CStack_8c.m_pchData = (char *)&CStack_60;
+      CStack_90.m_pchData = unaff_EDI;
+      (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+      if (sVar7 == 1) {
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740,0x12,&CStack_7c);
+        scanBracketExpressions(g_pLocalizationTable,&CStack_84,CStack_88.m_pchData);
+      }
+      else {
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740,0x13,&CStack_7c);
+        scanBracketExpressions(g_pLocalizationTable,&CStack_84,CStack_88.m_pchData);
+      }
+    }
+  }
+  (**(code **)(iVar1 + 0x1c8))(&CStack_84,1);
+  SetQuickDrawFillColorFromPaletteIndex(0);
+  CString::~CString(&CStack_7c);
+  CString::~CString(&CStack_88);
+  CString::~CString((CString *)&stack0xffffff80);
+  CString::~CString(&CStack_90);
+  CString::~CString(&CStack_8c);
+  CString::~CString(&CStack_84);
+  *unaff_FS_OFFSET = unaff_EBP;
+  return;
 }
 

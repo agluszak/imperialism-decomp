@@ -4,26 +4,132 @@
 // Bucket: TPicture.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048EFA0
-// GHIDRA_NAME TPicture::GetTPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTPictureClassNamePointer()
+// GHIDRA_NAME TPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TPicture::GetTPictureClassNamePointer(void)
+CRuntimeClass * __thiscall TPicture::GetTEventHandlerClassNamePointer(TPicture *this)
 
 {
-  return &PTR_s_TPicture_00649660;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048F050
-// GHIDRA_NAME TPicture::DestructTPictureAndMaybeFree
-// GHIDRA_PROTO undefined DestructTPictureAndMaybeFree()
+// GHIDRA_NAME TPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TPicture::DestructTPictureAndMaybeFree(undefined4 param_1,byte param_2)
+TPicture * __thiscall TPicture::_scalar_deleting_destructor_(TPicture *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F3C0
+// GHIDRA_NAME TPicture::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TPicture::OrphanTiny_ReturnZero_0048a730(TPicture *this)
+
+{
+  TPicture_GetTEventHandlerClassNamePointer_0x00 *pTVar1;
+  undefined uVar2;
+  ushort uVar3;
+  int iVar4;
+  undefined4 uVar5;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined4 uVar6;
+  int iVar7;
+  int *piVar8;
+  undefined1 *puVar9;
+  int iVar10;
+  undefined4 uVar11;
+  undefined4 uVar12;
+  undefined4 uVar13;
+  undefined1 auStack_18 [4];
+  int iStack_14;
+  int local_10;
+  int iStack_c;
+  int iStack_8;
+  
+  uVar3 = GetAsyncKeyState(0x11);
+  if ((uVar3 & 0x8000) != 0) {
+    (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(&local_10);
+  }
+  iVar4 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
+  if (((iVar4 != 0) &&
+      (iVar4 = *(int *)(*(int *)&this->field_0x8c + 0x10), *(short *)(iVar4 + 0xe) == 8)) &&
+     (*(int *)(iVar4 + 0x10) == 0)) {
+    (*this->vftable[0x2c].GetTEventHandlerClassNamePointer)(&local_10);
+    iVar7 = iStack_c - iStack_14;
+    iVar4 = iStack_8 - local_10;
+    uVar5 = RenderHintHelperWithCtrlModifierOverlay_Impl_At00494680();
+    BlitSurfaceRectSkippingTransparentColor(uVar5,0,0,iVar7,iVar4,iStack_14,local_10,0xffffffff);
+    return;
+  }
+  uVar13 = 0;
+  uVar5 = NoOpQuickDrawContextSelectionHook(0);
+  TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6(uVar5);
+  TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930(uVar5,uVar13);
+  iVar4 = *(int *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 8);
+  if (iVar4 < 1) {
+    iVar4 = -iVar4;
+  }
+  pTVar1 = this->vftable[0x2b].GetTEventHandlerClassNamePointer;
+  iVar7 = this->field38;
+  iVar10 = this->field34;
+  uVar12 = 0;
+  uVar11 = 0;
+  puVar9 = auStack_18;
+  uVar2 = (*pTVar1)(puVar9,iVar10,iVar7,0,0,
+                    *(undefined4 *)(*(int *)(*(int *)&this->field_0x8c + 0x10) + 4),iVar4);
+  uVar5 = *(undefined4 *)(CONCAT31(extraout_var,uVar2) + 4);
+  piVar8 = &iStack_14;
+  uVar2 = (*pTVar1)(piVar8,uVar5);
+  uVar13 = *(undefined4 *)CONCAT31(extraout_var_00,uVar2);
+  uVar6 = NoOpQuickDrawContextSelectionHook(uVar13);
+  RenderHintHelperWithCtrlModifierOverlay_Impl
+            (uVar6,uVar13,piVar8,uVar5,puVar9,iVar10,iVar7,uVar11,uVar12);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F570
+// GHIDRA_NAME TPicture::SetPictureResourceIdAndRefresh
+// GHIDRA_PROTO void __thiscall SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) */
+
+void __thiscall
+TPicture::SetPictureResourceIdAndRefresh(TPicture *this,short nPictureId,bool fRefreshNow)
+
+{
+  TPictureVtbl *pTVar1;
+  undefined4 uVar2;
+  undefined2 in_stack_00000006;
+  
+  pTVar1 = this->vftable;
+  (*pTVar1[0x38].slot_0x04)();
+  *(short *)&this->field_0x84 = nPictureId;
+  if (nPictureId != -1) {
+    uVar2 = thunk_LoadBmpResourceByIdCached(_nPictureId);
+    *(undefined4 *)&this->field_0x8c = uVar2;
+  }
+  if (*(int *)&this->field_0x8c == 0) {
+    SetPictureResourceIdAndRefresh_Impl(this->field34,this->field38);
+    uVar2 = BuildIndexedBmpResourceById(_nPictureId);
+    *(undefined4 *)&this->field_0x8c = uVar2;
+  }
+  if (fRefreshNow) {
+    (*pTVar1[0x1c].slot_0x04)();
+  }
+  return;
 }
 

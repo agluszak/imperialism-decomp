@@ -5,26 +5,25 @@
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0043D6F0
 // GHIDRA_NAME TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0
-// GHIDRA_PROTO undefined WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(void)
 
-undefined4 * __fastcall
-TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(undefined4 *param_1)
+TCzechBox * __thiscall TCzechBox::WrapperFor_ConstructTCzechBoxBaseState_At0043d6f0(TCzechBox *this)
 
 {
-  ConstructTCzechBoxBaseState();
-  param_1[0x26] = 0;
-  *param_1 = &PTR_LAB_00641df0;
-  return param_1;
+  ConstructTCzechBoxBaseState(this);
+  this[1].vftable = (TCzechBoxVtbl *)0x0;
+  this->vftable = (TCzechBoxVtbl *)&TMadnessButtonVtbl_00641df0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571B60
 // GHIDRA_NAME TCzechBox::CreateTCzechBoxInstance
 // GHIDRA_PROTO undefined CreateTCzechBoxInstance()
 
-undefined4 * TCzechBox::CreateTCzechBoxInstance(void)
+thunk_TPictureButton * TCzechBox::CreateTCzechBoxInstance(void)
 
 {
-  undefined4 *puVar1;
+  thunk_TPictureButton *this;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -34,55 +33,205 @@ undefined4 * TCzechBox::CreateTCzechBoxInstance(void)
   puStack_8 = &LAB_0063646a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x98);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x98);
   local_4 = 0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *(undefined2 *)((int)puVar1 + 0x92) = 7000;
-    *(undefined1 *)(puVar1 + 0x25) = 0;
-    *puVar1 = &PTR_LAB_0065fae0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(undefined2 *)(this + 0x92) = 7000;
+    this[0x94] = (thunk_TPictureButton)0x0;
+    *(TCzechBoxVtbl **)this = &TCzechBoxVtbl_0065fae0;
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return this;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return (thunk_TPictureButton *)0x0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C00
-// GHIDRA_NAME TCzechBox::GetTCzechBoxClassNamePointer
-// GHIDRA_PROTO undefined GetTCzechBoxClassNamePointer()
+// GHIDRA_NAME TCzechBox::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TCzechBox::GetTCzechBoxClassNamePointer(void)
+CRuntimeClass * __thiscall TCzechBox::GetTEventHandlerClassNamePointer(TCzechBox *this)
 
 {
-  return &PTR_s_TCzechBox_0065e610;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C20
 // GHIDRA_NAME TCzechBox::ConstructTCzechBoxBaseState
-// GHIDRA_PROTO undefined ConstructTCzechBoxBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTCzechBoxBaseState(void)
 
-undefined4 * __fastcall TCzechBox::ConstructTCzechBoxBaseState(undefined4 *param_1)
+TCzechBox * __thiscall TCzechBox::ConstructTCzechBoxBaseState(TCzechBox *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *(undefined2 *)((int)param_1 + 0x92) = 7000;
-  *(undefined1 *)(param_1 + 0x25) = 0;
-  *param_1 = &PTR_LAB_0065fae0;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  *(undefined2 *)&this->field_0x92 = 7000;
+  this->field_0x94 = 0;
+  this->vftable = &TCzechBoxVtbl_0065fae0;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00571C60
-// GHIDRA_NAME TCzechBox::DestructTCzechBoxAndMaybeFree
-// GHIDRA_PROTO undefined DestructTCzechBoxAndMaybeFree()
+// GHIDRA_NAME TCzechBox::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TCzechBox::DestructTCzechBoxAndMaybeFree(undefined4 param_1,byte param_2)
+TCzechBox * __thiscall TCzechBox::_scalar_deleting_destructor_(TCzechBox *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571CB0
+// GHIDRA_NAME TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall TCzechBox::ReleaseRuntimeSelectionOwnerAndDestroyObject(TCzechBox *this)
+
+{
+  int in_stack_00000004;
+  
+  if (in_stack_00000004 == 0x21) {
+    (*this->vftable[0x3b].slot_0x04)(1);
+  }
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571CF0
+// GHIDRA_NAME TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+
+void __thiscall TCzechBox::OrphanLeaf_NoCall_Ins07_004d8920(TCzechBox *this)
+
+{
+  *(undefined4 *)&this->field_0x60 = 4;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571D10
+// GHIDRA_NAME TCzechBox::SetPressedStateAdjustPictureBitmapByOne
+// GHIDRA_PROTO undefined __thiscall SetPressedStateAdjustPictureBitmapByOne(void)
+
+void __thiscall TCzechBox::SetPressedStateAdjustPictureBitmapByOne(TCzechBox *this)
+
+{
+  char in_stack_00000004;
+  
+  if (in_stack_00000004 != this->field_0x64) {
+    this->field_0x64 = in_stack_00000004;
+    (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571D40
+// GHIDRA_NAME TCzechBox::OrphanCallChain_C4_I45_00571d40
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C4_I45_00571d40(void)
+
+void __thiscall TCzechBox::OrphanCallChain_C4_I45_00571d40(TCzechBox *this)
+
+{
+  ushort uVar1;
+  TCzechBoxVtbl *pTVar2;
+  undefined4 in_EAX;
+  undefined2 uVar3;
+  char in_stack_00000004;
+  
+  uVar3 = (undefined2)((uint)in_EAX >> 0x10);
+  if ((this->field_0x94 == '\0') && (this->field_0x64 == '\0')) {
+    uVar1 = *(ushort *)&this->field_0x84;
+    if ((uVar1 & 1) != 0) {
+      pTVar2 = this->vftable;
+      (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
+                (CONCAT31((int3)(CONCAT22(uVar3,uVar1) >> 8),(char)uVar1) & 0xfffffffe);
+      if (in_stack_00000004 != '\0') {
+        (*pTVar2[0x39].slot_0x04)();
+        return;
+      }
+    }
+  }
+  else {
+    uVar1 = *(ushort *)&this->field_0x84;
+    if ((uVar1 & 1) == 0) {
+      pTVar2 = this->vftable;
+      (*pTVar2[0x39].GetTEventHandlerClassNamePointer)
+                (CONCAT31((int3)(CONCAT22(uVar3,uVar1) >> 8),(char)uVar1) | 1);
+      if (in_stack_00000004 != '\0') {
+        (*pTVar2[0x39].slot_0x04)();
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571DE0
+// GHIDRA_NAME TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins02_00571de0(void)
+
+undefined1 __thiscall TCzechBox::OrphanLeaf_NoCall_Ins02_00571de0(TCzechBox *this)
+
+{
+  return this->field_0x94;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571E00
+// GHIDRA_NAME TCzechBox::OrphanCallChain_C1_I10_00571e00
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I10_00571e00(void)
+
+void __thiscall TCzechBox::OrphanCallChain_C1_I10_00571e00(TCzechBox *this)
+
+{
+  char in_stack_00000004;
+  
+  if (this->field_0x94 != in_stack_00000004) {
+    this->field_0x94 = in_stack_00000004;
+    (*this->vftable[0x3b].GetTEventHandlerClassNamePointer)();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571E40
+// GHIDRA_NAME TCzechBox::OrphanCallChain_C2_I16_00571e40
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I16_00571e40(void)
+
+void __thiscall TCzechBox::OrphanCallChain_C2_I16_00571e40(TCzechBox *this)
+
+{
+  TCzechBoxVtbl *pTVar1;
+  char cVar2;
+  
+  pTVar1 = this->vftable;
+  cVar2 = (*pTVar1[0x3a].GetTEventHandlerClassNamePointer)();
+  (*pTVar1[0x3a].slot_0x04)((uint)(cVar2 == '\0'));
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00571E80
+// GHIDRA_NAME TCzechBox::OrphanCallChain_C3_I23_00571e80
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C3_I23_00571e80(void)
+
+void __thiscall TCzechBox::OrphanCallChain_C3_I23_00571e80(TCzechBox *this)
+
+{
+  TCzechBoxVtbl *pTVar1;
+  TCzechBox_GetTEventHandlerClassNamePointer_0x00 *pTVar2;
+  char cVar3;
+  char in_stack_00000004;
+  undefined4 in_stack_00000008;
+  
+  pTVar1 = this->vftable;
+  pTVar2 = pTVar1[0x3a].GetTEventHandlerClassNamePointer;
+  cVar3 = (*pTVar2)();
+  if (cVar3 == in_stack_00000004) {
+    cVar3 = (*pTVar2)(in_stack_00000008);
+    (*pTVar1[0x3a].slot_0x04)((uint)(cVar3 == '\0'));
+  }
+  return;
 }
 

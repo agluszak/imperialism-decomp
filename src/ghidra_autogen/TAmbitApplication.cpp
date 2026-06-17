@@ -3,13 +3,210 @@
 // Program: Imperialism.exe
 // Bucket: TAmbitApplication.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0049DEB0
-// GHIDRA_NAME TAmbitApplication::GetTAmbitApplicationClassNamePointer
-// GHIDRA_PROTO undefined GetTAmbitApplicationClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x004133D0
+// GHIDRA_NAME TAmbitApplication::ParseDirectionTokenAndSetMovementFlags
+// GHIDRA_PROTO undefined __thiscall ParseDirectionTokenAndSetMovementFlags(void)
 
-undefined ** TAmbitApplication::GetTAmbitApplicationClassNamePointer(void)
+void __thiscall TAmbitApplication::ParseDirectionTokenAndSetMovementFlags(TAmbitApplication *this)
 
 {
-  return &PTR_s_TAmbitApplication_0064c0b8;
+  CString CVar1;
+  int iVar2;
+  undefined4 *unaff_FS_OFFSET;
+  CString in_stack_00000004;
+  int in_stack_00000008;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  CVar1.m_pchData = in_stack_00000004.m_pchData;
+  local_c = *unaff_FS_OFFSET;
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00627fc8;
+  *unaff_FS_OFFSET = &local_c;
+  CString::CString(&stack0x00000004,in_stack_00000004.m_pchData);
+  local_4 = 0;
+  WrapperFor_EnsureUniqueSharedStringBuffer_At00605e52();
+  if (in_stack_00000008 != 0) {
+    iVar2 = CompareAnsiStringsWithMbcsAwareness(in_stack_00000004.m_pchData,&DAT_00694254);
+    if (iVar2 == 0) {
+      *(undefined4 *)&this->field_0x2c = 1;
+      *(undefined4 *)&this->field_0x30 = 1;
+      goto LAB_004134c8;
+    }
+    if ((in_stack_00000008 != 0) &&
+       (iVar2 = CompareAnsiStringsWithMbcsAwareness(in_stack_00000004.m_pchData,&DAT_00694250),
+       iVar2 == 0)) {
+      *(undefined4 *)&this->field_0x30 = 1;
+      goto LAB_004134c8;
+    }
+  }
+  if ((in_stack_00000008 == 0) || (*in_stack_00000004.m_pchData != 'L')) {
+    if (in_stack_00000008 != 0) {
+      if (*in_stack_00000004.m_pchData == 'R') {
+        *(undefined4 *)&this->field_0x3c = 1;
+      }
+      else if (in_stack_00000008 != 0) {
+        if (*in_stack_00000004.m_pchData == 'S') {
+          *(undefined4 *)&this->field_0x40 = 1;
+        }
+        else if (in_stack_00000008 != 0) {
+          if (*in_stack_00000004.m_pchData == 'T') {
+            CString::CopyFromCStr((CString *)&this->field_0x38,in_stack_00000004.m_pchData + 1);
+          }
+          else if ((in_stack_00000008 != 0) && (*in_stack_00000004.m_pchData == 'C')) {
+            *(undefined4 *)&this->field_0x34 = 1;
+          }
+        }
+      }
+    }
+  }
+  else {
+    CString::CopyFromCStr(*(CString **)&this->field_0x24,CVar1.m_pchData + 1);
+  }
+LAB_004134c8:
+  CObject::ParseParam((CObject *)this);
+  local_4 = 0xffffffff;
+  CString::~CString(&stack0x00000004);
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00413550
+// GHIDRA_NAME TAmbitApplication::WrapperFor_FreeHeapBufferIfNotNull_At00413550
+// GHIDRA_PROTO undefined __thiscall WrapperFor_FreeHeapBufferIfNotNull_At00413550(void)
+
+TAmbitApplication * __thiscall
+TAmbitApplication::WrapperFor_FreeHeapBufferIfNotNull_At00413550(TAmbitApplication *this)
+
+{
+  byte in_stack_00000004;
+  
+  WrapperFor_FreeHeapBufferIfNotNull_At00413550_Impl();
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00414770
+// GHIDRA_NAME TAmbitApplication::OrphanRetStub_00414770
+// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00414770(void)
+
+void __thiscall TAmbitApplication::OrphanRetStub_00414770(TAmbitApplication *this)
+
+{
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049DEB0
+// GHIDRA_NAME TAmbitApplication::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this)
+
+{
+  return &classRuntimeClass;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E1A0
+// GHIDRA_NAME TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+
+void __thiscall
+TAmbitApplication::ReleaseRuntimeSelectionOwnerAndDestroyObject(TAmbitApplication *this)
+
+{
+  if (DAT_006a327c != (int *)0x0) {
+    (**(code **)(*DAT_006a327c + 0x1c))();
+    DAT_006a327c = (int *)0x0;
+  }
+  if (g_pStrategicMapViewSystem != (int *)0x0) {
+    (**(code **)(*g_pStrategicMapViewSystem + 0x1c))();
+    g_pStrategicMapViewSystem = (int *)0x0;
+  }
+  if (DAT_006a21b8 != (int *)0x0) {
+    (**(code **)(*DAT_006a21b8 + 0x1c))();
+    DAT_006a21b8 = (int *)0x0;
+  }
+  (*g_pLocalizationTable->vftable[3].slot_0x04)();
+  if (g_pUiViewManager != (TAssetMgr *)0x0) {
+    (*g_pUiViewManager->vftable[3].slot_0x04)();
+    g_pUiViewManager = (TAssetMgr *)0x0;
+  }
+  if (g_pUiRuntimeContext != (UiRuntimeContext *)0x0) {
+    (**(code **)(g_pUiRuntimeContext->vftable + 0x1c))();
+    g_pUiRuntimeContext = (UiRuntimeContext *)0x0;
+  }
+  if (DAT_006a2158 != (int *)0x0) {
+    (**(code **)(*DAT_006a2158 + 0x1c))();
+    DAT_006a2158 = (int *)0x0;
+  }
+  if (g_pGameFlowState != (Config *)0x0) {
+    (**(code **)(g_pGameFlowState->vftable + 0x1c))();
+    g_pGameFlowState = (Config *)0x0;
+  }
+  TEventHandler::ReleaseRuntimeSelectionOwnerAndDestroyObject((TEventHandler *)this);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E280
+// GHIDRA_NAME TAmbitApplication::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+void __thiscall TAmbitApplication::GetTEventHandlerClassNamePointer(TAmbitApplication *this)
+
+{
+  int *in_stack_00000004;
+  
+  TMapDialog::thunk_HandleCityDialogNoOpSlot18((TMapDialog *)this);
+  if (DAT_00695278 < 0x2a) {
+    (**(code **)(*in_stack_00000004 + 0x3c))(&this->field_0x50,2);
+    *(undefined **)&this->field_0x50 = &DAT_00657573;
+    return;
+  }
+  (**(code **)(*in_stack_00000004 + 0x3c))(&this->field_0x50,4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E2F0
+// GHIDRA_NAME TAmbitApplication::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+
+void __thiscall TAmbitApplication::_scalar_deleting_destructor_(TAmbitApplication *this)
+
+{
+  int *in_stack_00000004;
+  
+  TArmyPlayer::thunk_HandleCityDialogNoOpSlot14((TArmyPlayer *)this);
+  (**(code **)(*in_stack_00000004 + 0x78))(&this->field_0x50,4);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E4B0
+// GHIDRA_NAME TAmbitApplication::OrphanTiny_ReturnZero_0048a730
+// GHIDRA_PROTO undefined __thiscall OrphanTiny_ReturnZero_0048a730(void)
+
+void __thiscall TAmbitApplication::OrphanTiny_ReturnZero_0048a730(TAmbitApplication *this)
+
+{
+  if ((DAT_006a2158 != 0) && (*(int **)(DAT_006a2158 + 4) != (int *)0x0)) {
+    (**(code **)(**(int **)(DAT_006a2158 + 4) + 0x48))();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0049E4E0
+// GHIDRA_NAME TAmbitApplication::OrphanCallChain_C1_I04_0049e4e0
+// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C1_I04_0049e4e0(void)
+
+void __thiscall TAmbitApplication::OrphanCallChain_C1_I04_0049e4e0(TAmbitApplication *this)
+
+{
+  int *in_stack_00000004;
+  
+  (**(code **)(*in_stack_00000004 + 0x1d0))();
+  return;
 }
 

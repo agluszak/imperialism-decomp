@@ -3,60 +3,82 @@
 // Program: Imperialism.exe
 // Bucket: TNetSelectPicture.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00576980
-// GHIDRA_NAME TNetSelectPicture::GetTNetSelectPictureClassNamePointer
-// GHIDRA_PROTO undefined GetTNetSelectPictureClassNamePointer()
+// GHIDRA_FUNCTION IMPERIALISM 0x0045AE10
+// GHIDRA_NAME TNetSelectPicture::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined ** TNetSelectPicture::GetTNetSelectPictureClassNamePointer(void)
+TNetSelectPicture * __thiscall
+TNetSelectPicture::_scalar_deleting_destructor_(TNetSelectPicture *this)
 
 {
-  return &PTR_s_TNetSelectPicture_006619b0;
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
+  }
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00576980
+// GHIDRA_NAME TNetSelectPicture::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+CRuntimeClass * __thiscall
+TNetSelectPicture::GetTEventHandlerClassNamePointer(TNetSelectPicture *this)
+
+{
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005769A0
-// GHIDRA_NAME TNetSelectPicture::DestructTNetSelectPictureBaseState
-// GHIDRA_PROTO undefined DestructTNetSelectPictureBaseState()
+// GHIDRA_NAME TNetSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920
+// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
 
-void TNetSelectPicture::DestructTNetSelectPictureBaseState(undefined4 param_1)
+void __thiscall TNetSelectPicture::OrphanLeaf_NoCall_Ins07_004d8920(TNetSelectPicture *this)
 
 {
-  TView::thunk_NoOpUiLifecycleHook(param_1);
+  TView::thunk_NoOpUiLifecycleHook((TView *)this);
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005769C0
-// GHIDRA_NAME TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward
-// GHIDRA_PROTO undefined HandleTNetSelectPictureCommandOkayCancelAndForward()
+// GHIDRA_NAME TNetSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject
+// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
 
 void __thiscall
-TNetSelectPicture::HandleTNetSelectPictureCommandOkayCancelAndForward
-          (int *param_1,int param_2,int param_3,undefined4 param_4)
+TNetSelectPicture::ReleaseRuntimeSelectionOwnerAndDestroyObject(TNetSelectPicture *this)
 
 {
-  code *pcVar1;
-  int *piVar2;
-  undefined4 uVar3;
-  int iVar4;
+  TNetSelectPicture_slot_0x04_0x04 *pTVar1;
+  int iVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined4 uVar4;
+  undefined3 extraout_var_00;
+  int in_stack_00000004;
+  int in_stack_00000008;
   
   if (DAT_006a4264 == 0) {
     thunk_TemporarilyClearAndRestoreUiInvalidationFlag
               (s_D__Ambit_Cross_USetupScreens_cpp_00698ab8,0x2e6);
   }
-  if (((param_2 == 0x14) || (param_2 == 10)) || (param_2 == 0x22)) {
-    if (*(int *)(param_3 + 0x1c) == 0x636e636c) {
+  if (((in_stack_00000004 == 0x14) || (in_stack_00000004 == 10)) || (in_stack_00000004 == 0x22)) {
+    if (*(int *)(in_stack_00000008 + 0x1c) == 0x636e636c) {
       ResetGameFlowStateAndPostTurnEvent5DC();
     }
-    else if (*(int *)(param_3 + 0x1c) == 0x6f6b6179) {
-      pcVar1 = *(code **)(*param_1 + 0x94);
-      piVar2 = (int *)(*pcVar1)(0x70726f74);
-      iVar4 = *piVar2;
-      (**(code **)(iVar4 + 0xc))();
-      uVar3 = (**(code **)(iVar4 + 0x1c4))();
-      iVar4 = (*pcVar1)(uVar3);
-      ValidateGameFlowNameAndSelectionContext(*(undefined4 *)(iVar4 + 0x3c),1);
+    else if (*(int *)(in_stack_00000008 + 0x1c) == 0x6f6b6179) {
+      pTVar1 = this->vftable[0x12].slot_0x04;
+      uVar3 = (*pTVar1)(0x70726f74);
+      iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
+      (**(code **)(iVar2 + 0xc))();
+      uVar4 = (**(code **)(iVar2 + 0x1c4))();
+      uVar3 = (*pTVar1)(uVar4);
+      ValidateGameFlowNameAndSelectionContext
+                (*(undefined4 *)(CONCAT31(extraout_var_00,uVar3) + 0x3c),1);
     }
   }
-  thunk_HandleCityDialogToggleCommandOrForward(param_2,param_3,param_4);
+  TMapDialog::thunk_HandleCityDialogToggleCommandOrForward((TMapDialog *)this);
   return;
 }
 

@@ -7,14 +7,14 @@
 // GHIDRA_NAME TCivReport::?CreateTCivReportInstance@@YAPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@XZ
 // GHIDRA_PROTO undefined ?CreateTCivReportInstance@@YAPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@XZ()
 
-undefined4 *
+thunk_TPictureButton *
 TCivReport::
 _CreateTCivReportInstance__YAPAUCivReportState___Z_imperialismsrcgameTCivReport_cpp234212302__XZ
           (void)
 
 {
-  undefined4 *puVar1;
-  undefined4 *puVar2;
+  thunk_TPictureButton *this;
+  thunk_TPictureButton *ptVar1;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -24,23 +24,23 @@ _CreateTCivReportInstance__YAPAUCivReportState___Z_imperialismsrcgameTCivReport_
   puStack_8 = &LAB_00637f1a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  puVar1 = (undefined4 *)AllocateWithFallbackHandler(0x90);
+  this = (thunk_TPictureButton *)AllocateWithFallbackHandler(0x90);
   local_4 = 0;
-  puVar2 = (undefined4 *)0x0;
-  if (puVar1 != (undefined4 *)0x0) {
-    thunk_TPictureButton::TPictureButton();
-    *puVar1 = &PTR_LAB_00668128;
-    puVar2 = puVar1;
+  ptVar1 = (thunk_TPictureButton *)0x0;
+  if (this != (thunk_TPictureButton *)0x0) {
+    thunk_TPictureButton::TPictureButton(this);
+    *(TCivReportVtbl **)this = &TCivReportVtbl_00668128;
+    ptVar1 = this;
   }
   *unaff_FS_OFFSET = local_c;
-  return puVar2;
+  return ptVar1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C10
-// GHIDRA_NAME TCivReport::GetRuntimeClass
-// GHIDRA_PROTO undefined GetRuntimeClass()
+// GHIDRA_NAME TCivReport::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
 
-undefined ** TCivReport::GetRuntimeClass(void)
+CRuntimeClass * __thiscall TCivReport::GetTEventHandlerClassNamePointer(TCivReport *this)
 
 {
   return &g_pClassDescTCivReport;
@@ -48,30 +48,253 @@ undefined ** TCivReport::GetRuntimeClass(void)
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C30
 // GHIDRA_NAME TCivReport::?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z
-// GHIDRA_PROTO undefined ?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z()
+// GHIDRA_PROTO undefined __thiscall ?ConstructTCivReportBaseState@@YIPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@PAU12@@Z(void)
 
-undefined4 * __fastcall
+TCivReport * __thiscall
 TCivReport::
 _ConstructTCivReportBaseState__YIPAUCivReportState___Z_imperialismsrcgameTCivReport_cpp234212302__PAU12__Z
-          (undefined4 *param_1)
+          (TCivReport *this)
 
 {
-  thunk_TPictureButton::TPictureButton();
-  *param_1 = &PTR_LAB_00668128;
-  return param_1;
+  thunk_TPictureButton::TPictureButton((thunk_TPictureButton *)this);
+  this->vftable = &TCivReportVtbl_00668128;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00590C60
 // GHIDRA_NAME TCivReport::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined 'scalar_deleting_destructor'()
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall TCivReport::_scalar_deleting_destructor_(undefined4 param_1,byte param_2)
+TCivReport * __thiscall TCivReport::_scalar_deleting_destructor_(TCivReport *this)
 
 {
-  thunk_DestructCityDialogSharedBaseState();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  TView::thunk_DestructCityDialogSharedBaseState((TView *)this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00590CB0
+// GHIDRA_NAME TCivReport::?BuildCivReportNationEntryDetailTextBlock@@YIXPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@HPAX@Z
+// GHIDRA_PROTO undefined __thiscall ?BuildCivReportNationEntryDetailTextBlock@@YIXPAUCivReportState@?%Z:imperialismsrcgameTCivReport.cpp234212302@@HPAX@Z(void)
+
+void __thiscall
+TCivReport::
+_BuildCivReportNationEntryDetailTextBlock__YIXPAUCivReportState___Z_imperialismsrcgameTCivReport_cpp234212302__HPAX_Z
+          (TCivReport *this)
+
+{
+  short sVar1;
+  code *pcVar2;
+  int iVar3;
+  char cVar4;
+  short sVar5;
+  int *piVar6;
+  char cVar7;
+  int *unaff_EBX;
+  int iVar8;
+  short sVar9;
+  undefined4 *unaff_FS_OFFSET;
+  int in_stack_00000004;
+  undefined4 uVar10;
+  CString CStack_78;
+  CString CStack_74;
+  undefined4 uStack_70;
+  undefined4 uStack_6c;
+  CString *pCStack_68;
+  short sVar11;
+  CString local_54;
+  CString local_50;
+  CString local_4c;
+  CString local_48;
+  CString CStack_44;
+  CString local_40;
+  CString local_3c;
+  CString local_38;
+  CString aCStack_34 [6];
+  undefined1 uStack_1c;
+  char cStack_14;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00637f98;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  pCStack_68 = (CString *)0x590cd9;
+  local_40.m_pchData = (char *)this;
+  CString::CString(&local_4c);
+  local_4 = 0;
+  pCStack_68 = (CString *)0x590cea;
+  CString::CString(&local_50);
+  local_4._0_1_ = 1;
+  pCStack_68 = (CString *)0x590cf8;
+  CString::CString(&local_48);
+  local_4._0_1_ = 2;
+  pCStack_68 = (CString *)0x590d06;
+  CString::CString(&local_54);
+  local_4._0_1_ = 3;
+  pCStack_68 = (CString *)0x590d14;
+  CString::CString(&local_38);
+  local_4._0_1_ = 4;
+  pCStack_68 = (CString *)0x590d22;
+  CString::CString(&local_3c);
+  pCStack_68 = &local_50;
+  cVar7 = '\x01';
+  sVar1 = *(short *)(in_stack_00000004 + 6);
+  uStack_6c = 0;
+  uStack_70 = 0x2724;
+  local_4 = CONCAT31(local_4._1_3_,5);
+  CStack_74.m_pchData = (char *)0x590d4f;
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  CStack_74.m_pchData = &stack0xffffffa0;
+  CStack_78.m_pchData =
+       (char *)CONCAT22((short)((uint)CStack_74.m_pchData >> 0x10),
+                        *(undefined2 *)(in_stack_00000004 + 4));
+  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  thunk_AssignSharedStringFromIndexedA8EntryNameField();
+  scanBracketExpressions(g_pLocalizationTable,&stack0xffffff9c,(char *)pCStack_68);
+  AppendSingleByteToSharedStringFromArg();
+  switch(*(undefined4 *)(in_stack_00000004 + 8)) {
+  case 1:
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    AssignStringSharedFromRef();
+    cVar7 = '\0';
+    break;
+  case 5:
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    AssignSharedStringConcatRefAndCStr();
+    uStack_1c = 6;
+    AssignStringSharedFromRef();
+    uStack_1c = 5;
+    CString::~CString(&local_4c);
+    break;
+  case 6:
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    AssignSharedStringConcatRefAndCStr();
+    uStack_1c = 7;
+    AssignStringSharedFromRef();
+    uStack_1c = 5;
+    CString::~CString(&local_48);
+    break;
+  case 7:
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    AssignSharedStringConcatRefAndCStr();
+    uStack_1c = 8;
+    AssignStringSharedFromRef();
+    uStack_1c = 5;
+    CString::~CString(&CStack_44);
+    break;
+  case 8:
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    AssignSharedStringConcatRefAndCStr();
+    uStack_1c = 9;
+    AssignStringSharedFromRef();
+    uStack_1c = 5;
+    CString::~CString(&local_40);
+    break;
+  case 10:
+    if ((*(short *)(in_stack_00000004 + 4) == 0) &&
+       (cVar4 = (*g_pGlobalMapState->vftable[0x19].GetTMapMgrClassNamePointer)(), cVar4 == '\0')) {
+      sVar9 = 0;
+      sVar11 = 0;
+      do {
+        sVar5 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + (int)sVar9 + 0x11 +
+                                sVar1 * 0x24);
+        if ((sVar5 != -1) && ((&DAT_006963e8)[sVar5] != '\0')) {
+          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          sVar11 = sVar11 + 1;
+        }
+        sVar9 = sVar9 + 1;
+      } while (sVar9 < 2);
+      if (sVar11 < 2) {
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
+      }
+      else {
+        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
+      }
+      AssignSharedStringConcatRefAndCStr();
+      uStack_1c = 10;
+      AssignStringSharedFromRef();
+      uStack_1c = 5;
+      CString::~CString(&local_3c);
+      cVar7 = cStack_14;
+    }
+    else if (*(short *)(in_stack_00000004 + 4) == 7) {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2725);
+      scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
+      AssignSharedStringConcatRefAndCStr();
+      uStack_1c = 0xb;
+      AssignStringSharedFromRef();
+      uStack_1c = 5;
+      CString::~CString(&local_38);
+    }
+    else {
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2725);
+      scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
+      AssignSharedStringConcatRefAndCStr();
+      uStack_1c = 0xc;
+      AssignStringSharedFromRef();
+      uStack_1c = 5;
+      CString::~CString(aCStack_34);
+    }
+  }
+  if (cVar7 != '\0') {
+    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    FormatStringWithVarArgsToSharedRef();
+    scanBracketExpressions(g_pLocalizationTable,&stack0xffffffa0,(char *)pCStack_68);
+    AssignStringSharedFromRef();
+  }
+  pcVar2 = *(code **)(*unaff_EBX + 0x94);
+  piVar6 = (int *)(*pcVar2)();
+  iVar8 = *piVar6;
+  (**(code **)(iVar8 + 0xc))();
+  (**(code **)(iVar8 + 0x1ec))();
+  (**(code **)(iVar8 + 0x1e0))(0);
+  (**(code **)(iVar8 + 0x1c4))(1,0);
+  (**(code **)(iVar8 + 0x1f8))(1);
+  iVar8 = 0;
+  do {
+    local_50.m_pchData._0_3_ = (uint3)local_50.m_pchData & 0xffff;
+    local_50.m_pchData._3_1_ = 0;
+    local_4c.m_pchData._0_1_ = 0;
+    local_4c.m_pchData._1_1_ = 0;
+    if (iVar8 < 1) {
+      uVar10 = 0xe;
+    }
+    else {
+      uVar10 = 0xc;
+    }
+    thunk_BuildUiTextStyleDescriptor(&local_54,0,uVar10,0x2b6a);
+    piVar6 = (int *)(*pcVar2)(iVar8 + 0x74746c30);
+    iVar3 = *piVar6;
+    (**(code **)(iVar3 + 0xc))();
+    (**(code **)(iVar3 + 0x1cc))(0x2724,iVar8 + 0xc,1);
+    (**(code **)(iVar3 + 0x1b4))(&stack0xffffff9c,0);
+    (**(code **)(iVar3 + 0x1c4))(1,0);
+    iVar8 = iVar8 + 1;
+  } while (iVar8 < 3);
+  local_40.m_pchData._0_1_ = 4;
+  CString::~CString(&CStack_78);
+  local_40.m_pchData._0_1_ = 3;
+  CString::~CString(&CStack_74);
+  local_40.m_pchData._0_1_ = 2;
+  CString::~CString((CString *)&stack0xffffff70);
+  local_40.m_pchData._0_1_ = 1;
+  CString::~CString((CString *)&stack0xffffff7c);
+  local_40.m_pchData = (char *)((uint)local_40.m_pchData._1_3_ << 8);
+  CString::~CString((CString *)&stack0xffffff74);
+  local_40.m_pchData = (char *)0xffffffff;
+  CString::~CString((CString *)&stack0xffffff78);
+  *unaff_FS_OFFSET = local_48.m_pchData;
+  return;
 }
 

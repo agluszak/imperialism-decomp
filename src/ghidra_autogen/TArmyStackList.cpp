@@ -33,17 +33,17 @@ void __thiscall TArmyStackList::InitializeMapContextActionManager(TArmyStackList
   else {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList(10);
-    *puVar1 = &PTR_LAB_0064c9a0;
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &TArmyStackListVtbl_0064c9a0;
   }
   local_4 = 0xffffffff;
-  *(undefined4 **)(this + 0xc) = puVar1;
-  *(undefined **)(this + 0x14) = &DAT_00695448;
-  *(undefined **)(this + 0x18) = &DAT_00695428;
-  this[0x39a] = (TArmyStackList)0x0;
-  *(undefined4 *)(this + 0x39c) = 0;
-  *(undefined4 *)(this + 0x3a0) = 0;
-  *(undefined4 *)(this + 0x3a4) = 0;
+  *(undefined4 **)&this->field_0xc = puVar1;
+  *(undefined **)&this->field_0x14 = &DAT_00695448;
+  *(undefined **)&this->field_0x18 = &DAT_00695428;
+  this[0x1c].field_0x1a = 0;
+  *(undefined4 *)&this[0x1c].field_0x1c = 0;
+  this[0x1d].vftable = (TArmyStackListVtbl *)0x0;
+  *(undefined4 *)&this[0x1d].field_0x4 = 0;
   this_00 = (TIndexAndRankList *)AllocateWithFallbackHandler(0x18);
   local_4 = 2;
   if (this_00 == (TIndexAndRankList *)0x0) {
@@ -51,11 +51,11 @@ void __thiscall TArmyStackList::InitializeMapContextActionManager(TArmyStackList
   }
   else {
     TIndexAndRankList::CPtrArray(this_00);
-    *(undefined ***)this_00 = &PTR_LAB_00649010;
+    this_00->vftable = (TIndexAndRankListVtbl *)&TSortedPtrListVtbl_00649010;
   }
-  *(TIndexAndRankList **)(this + 4) = this_00;
-  *(undefined2 *)(this_00 + 0x14) = 0x268;
-  this[8] = (TArmyStackList)0x0;
+  *(TIndexAndRankList **)&this->field_0x4 = this_00;
+  *(undefined2 *)&this_00->field_0x14 = 0x268;
+  this->field_0x8 = 0;
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -83,8 +83,8 @@ undefined4 * TArmyStackList::CreateTArmyStackListInstance(void)
   if (puVar1 != (undefined4 *)0x0) {
     *puVar1 = &RefCountedObjectBase::_vftable_;
     local_4 = 1;
-    TGreatPower::CPtrList(10);
-    *puVar1 = &PTR_LAB_0064c9a0;
+    TGreatPower::CPtrList((TGreatPower *)(puVar1 + 1));
+    *puVar1 = &TArmyStackListVtbl_0064c9a0;
     puVar2 = puVar1;
   }
   *unaff_FS_OFFSET = local_c;
@@ -92,20 +92,20 @@ undefined4 * TArmyStackList::CreateTArmyStackListInstance(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8430
-// GHIDRA_NAME TArmyStackList::GetTArmyStackListClassNamePointer
-// GHIDRA_PROTO undefined GetTArmyStackListClassNamePointer()
+// GHIDRA_NAME TArmyStackList::OnActivateView
+// GHIDRA_PROTO undefined __thiscall OnActivateView(void)
 
-undefined ** TArmyStackList::GetTArmyStackListClassNamePointer(void)
+CRuntimeClass * __thiscall TArmyStackList::OnActivateView(TArmyStackList *this)
 
 {
-  return &PTR_s_TArmyStackList_0064c858;
+  return &classRuntimeClass;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A8450
 // GHIDRA_NAME TArmyStackList::ConstructTArmyStackListBaseState
-// GHIDRA_PROTO undefined ConstructTArmyStackListBaseState()
+// GHIDRA_PROTO undefined __thiscall ConstructTArmyStackListBaseState(void)
 
-undefined4 * __fastcall TArmyStackList::ConstructTArmyStackListBaseState(undefined4 *param_1)
+TArmyStackList * __thiscall TArmyStackList::ConstructTArmyStackListBaseState(TArmyStackList *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -116,34 +116,36 @@ undefined4 * __fastcall TArmyStackList::ConstructTArmyStackListBaseState(undefin
   puStack_8 = &LAB_00630288;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  *param_1 = &RefCountedObjectBase::_vftable_;
+  this->vftable = (TArmyStackListVtbl *)&RefCountedObjectBase::_vftable_;
   local_4 = 0;
-  TGreatPower::CPtrList(10);
-  *param_1 = &PTR_LAB_0064c9a0;
+  TGreatPower::CPtrList((TGreatPower *)&this->field_0x4);
+  this->vftable = &TArmyStackListVtbl_0064c9a0;
   *unaff_FS_OFFSET = local_c;
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A84C0
-// GHIDRA_NAME TArmyStackList::DestructTArmyStackListAndMaybeFree
-// GHIDRA_PROTO undefined DestructTArmyStackListAndMaybeFree()
+// GHIDRA_NAME TArmyStackList::'scalar_deleting_destructor'
+// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
 
-undefined4 __thiscall
-TArmyStackList::DestructTArmyStackListAndMaybeFree(undefined4 param_1,byte param_2)
+TArmyStackList * __thiscall TArmyStackList::_scalar_deleting_destructor_(TArmyStackList *this)
 
 {
-  WrapperFor_DestructCPtrListBaseState_At004a84f0();
-  if ((param_2 & 1) != 0) {
-    FreeHeapBufferIfNotNull(param_1);
+  byte in_stack_00000004;
+  
+  WrapperFor_DestructCPtrListBaseState_At004a84f0(this);
+  if ((in_stack_00000004 & 1) != 0) {
+    FreeHeapBufferIfNotNull(this);
   }
-  return param_1;
+  return this;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A84F0
 // GHIDRA_NAME TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0
-// GHIDRA_PROTO undefined WrapperFor_DestructCPtrListBaseState_At004a84f0()
+// GHIDRA_PROTO undefined __thiscall WrapperFor_DestructCPtrListBaseState_At004a84f0(void)
 
-void __fastcall TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(undefined4 *param_1)
+void __thiscall
+TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(TArmyStackList *this)
 
 {
   undefined4 *unaff_FS_OFFSET;
@@ -156,8 +158,24 @@ void __fastcall TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0(
   *unaff_FS_OFFSET = &local_c;
   local_4 = 0;
   DestructCPtrListBaseState();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  this->vftable = (TArmyStackListVtbl *)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A8560
+// GHIDRA_NAME TArmyStackList::GetTEventHandlerClassNamePointer
+// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+
+short __thiscall TArmyStackList::GetTEventHandlerClassNamePointer(TArmyStackList *this)
+
+{
+  int in_stack_00000004;
+  int in_stack_00000008;
+  
+  if (*(short *)(in_stack_00000004 + 6) < *(short *)(in_stack_00000008 + 6)) {
+    return 1;
+  }
+  return (*(short *)(in_stack_00000004 + 6) <= *(short *)(in_stack_00000008 + 6)) - 1;
 }
 
