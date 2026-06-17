@@ -1,0 +1,7 @@
+class|slot_index|method_name|mac_method|note
+TSimMgr|0x1d|FormatSignedIntWithSingleThousandsSeparator|FormatNum|Localization formatting; byte offset 0x74. Evidence: 0x0050C1BF CALL [vptr+0x74].
+TSimMgr|0x1f|GetStringPrelude|GetString|Thin wrapper calling slot 0x40; byte offset 0x7c. Evidence: 0x0050C1BF.
+TSimMgr|0x21|LoadUiStringByCodeGroupAndOffset|GetString|Primary UI string loader; byte offset 0x84. Evidence: 0x0050C1BF CALL [vptr+0x84]; body 0x00580760.
+TLocalizationRuntime|0x1d|FormatSignedIntWithSingleThousandsSeparator|FormatNum|Alias of TSimMgr vtable @0x00662a58.
+TLocalizationRuntime|0x1f|GetStringPrelude|GetString|Alias of TSimMgr vtable @0x00662a58.
+TLocalizationRuntime|0x21|LoadUiStringByCodeGroupAndOffset|GetString|Alias of TSimMgr vtable @0x00662a58; Mac oracle GetString.

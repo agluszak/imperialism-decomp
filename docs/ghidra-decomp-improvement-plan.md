@@ -16,6 +16,9 @@ Mechanisms already in place that several of these items reuse:
 - `config/recovered_data.csv` — misidentified data labels reclassified as structs
   (e.g. string → indexed table). Field specs accept optional names:
   `0x28:dword[6]:summaryTags`.
+- `config/vtable_slot_method_overrides.csv` — batch-rename and signature-type hot
+  vtable slots in `ensure_vtbl_struct` (TSimMgr / `TLocalizationRuntime` slots
+  `0x1d`–`0x21` for localization API).
 - `config/dissolve_namespaces.csv` — placeholder pseudo-class namespaces dissolved
   back into Global by `apply_mfc_rtti.py`.
 - `config/calling_convention_overrides.csv` — verified `__cdecl`/`__fastcall`
@@ -24,6 +27,8 @@ Mechanisms already in place that several of these items reuse:
   `__thiscall` methods into the correct class namespace + `this` typing.
 - `just ghidra-decomp-check` — regression gate over nine benchmark decompiles
   (`tools/ghidra/decomp_check.py`). Run after every `just apply-mfc-rtti --apply`.
+- `just gen-recovered-fields-from-headers` — suggest `recovered_fields.csv` rows
+  from `include/game/*.h` offset comments (`tools/ghidra/gen_recovered_fields_from_headers.py`).
 - The decompiler `this`-argument resolver prototype (measured low yield for fully
   automatic inference, so curated tables are preferred for now).
 
@@ -34,18 +39,27 @@ Run `just ghidra-decomp-check` after each apply. `--strict` also fails on missin
 
 | Address | Function | Must keep | Improved this pass |
 | --- | --- | --- | --- |
-| `0x00588b70` | `TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920` | `g_apNationStates[s]->city`, `TCity::GetCityBuildingProductionValueBySlot`, `TAmtBarCluster::` | `summaryTags` / `primaryControlTag`; `pBuildingSlotProductionTable` |
-| `0x004ca571` | `TBuildingConstructionView::OpenCityViewBuildingOrderDialog` | `this->pCity`, `GetCityBuildingProductionValueBySlot` | `pBuildingSlotProductionTable` via `this->pCity` |
+| `0x00588b70` | `TIndustryCluster::OrphanLeaf_NoCall_Ins07_004d8920` | `g_apNationStates[s]->city`, `TCity::GetCityBuildingProductionValueBySlot`, `TAmtBarCluster::` | `summaryTags`; `orderSlotsE4` on `TCity` |
+| `0x004ca571` | `TBuildingConstructionView::OpenCityViewBuildingOrderDialog` | `this->pCity`, `GetCityBuildingProductionValueBySlot` | `orderSlotsE4` via `this->pCity` |
 | `0x0057c578` | `RebuildGlobalOrderManagersAndCapabilityState` | typed manager globals | `g_pUiAnimator` (`TAnimator*`, was `DAT_006a43e0`) |
 | `0x0057c8a0` | `RebuildMapContextAndGlobalMapState` | `TOcean` / `TMapMgr` globals | `nationCount`, `contextArray` on `g_pActiveMapOrderContext` |
 | `0x0049df00` | `InitializeGlobalRuntimeSystemsFromConfig` | `TSimMgr` / `UiRuntimeContext` | `g_pUiViewManager` (`TAssetMgr*`) |
 | `0x0051794e` | `ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias` | `g_apTerrainTypeDescriptorTable[i]` as `TCountry*` | `ownerNationSlot`, `ownedRegionList` |
-| `0x0050c1bf` | `TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets` | `g_apNationStates`, `g_pLocalizationTable` | (unchanged — `TSimMgr` vtable slots still raw) |
+| `0x0050c1bf` | `TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets` | `g_apNationStates`, `g_pLocalizationTable` | `needCapA6`, `fieldB6[]`; localization slot `0x84` still decompiles as `vftable[0x10].slot_0x04` (see note below) |
 | `0x004d83c0` | `SumWeightedNeighborLinkScoreForLinkedNodes` | `__thiscall`, `TCountry*` | `ownedRegionList` via `this->ownedRegionList` |
 | `0x00496230` | `SetActiveQuickDrawSurfaceContext` | assigns `g_pActiveQuickDrawSurfaceContext` | param/global typed `TQuickDrawSurfaceContext*` |
 
 **Regression guards:** no `TCity::TCity::` double qualification (`decompile_one.py`
 thunk fix); dissolved pseudo-classes stay gone (`dissolve_namespaces.csv`).
+
+**TSimMgr vtable indexing (`0x0050c1bf`):** listing shows `CALL dword ptr [EAX+0x84]`
+on `g_pLocalizationTable`; `TSimMgrVtbl` slot `0x21` is typed and named
+`LoadUiStringByCodeGroupAndOffset` in the DB. The decompiler still renders
+`g_pLocalizationTable->vftable[0x10].slot_0x04` because it models each vfunc as an
+8-byte `{fn, +4}` composite (`0x10 * 8 + 4 = 0x84`). Benchmark accepts the
+composite form when the `0x2735` string-group literal is visible at the callsite.
+Full method-name propagation needs a decompiler-side fix or 8-byte vtable struct
+emission (deferred — must not break 4-byte PE vtable listing).
 
 **Deferred — vtable call at `[vptr+0x1d4]` in `0x00588b70`:** listing shows
 `CALL dword ptr [EDX+0x1d4]`; `TIndustryCluster` vtable `@0x00662f98` slot `0x75`
@@ -101,7 +115,8 @@ Rows applied so far:
 | `TBuildingConstructionView` | `0x90` | `pCity` |
 | `TIndustryView` | `0x94` | `pCity` |
 | `TCityProductionView` | `0x94` | `pCity` |
-| `TCity` | `0xe4` | `pBuildingSlotProductionTable` (`int*`) |
+| `TCity` | `0xb6` | `fieldB6` (`short[0x17]`) |
+| `TCity` | `0xe4` | `orderSlotsE4` (`void*[0x3d]`) |
 | `TCountry` | `0x88` | `ownerNationSlot` (`int`) |
 | `TCountry` | `0x90` | `ownedRegionList` (`TPtrList*`) |
 | `TOcean` | `0x04` | `nationCount` (`short`) |
@@ -109,9 +124,17 @@ Rows applied so far:
 | `TOcean` | `0x0c` | `field0c` (`short`) |
 | `TOcean` | `0x10` | `keyMask` (`int`) |
 | `TOcean` | `0x14` | `field14` (`int`) |
+| `TGreatPower` | `0xa6` | `needCapA6` (`short`) |
+| `TGreatPower` | `0xa8` | `needsOverCapFlag` (`short`) |
+| `TGreatPower` | `0x10e` | `needCurrentByType` (`short[0x17]`) |
+| `TGreatPower` | `0x13c` | `needTargetByType` (`short[0x17]`) |
 
-Keep adding rows for hot structs using unanimous resolver / decompile-store
-evidence + offset-fits-object-size gating; never overwrite an already-typed field.
+Curated fields are applied in ascending offset order per class so array rows at
+lower offsets do not clobber named fields at array boundaries (e.g. `fieldB6` then
+`orderSlotsE4` at `0xe4`). Array specs: `short[0x17]`, `void*[0x3d]`.
+
+Keep adding rows via `just gen-recovered-fields-from-headers` + manual review;
+never overwrite an already-typed USER_DEFINED Ghidra field.
 
 ## Tier 2 — bounded cleanup, same family as the dissolve work
 
@@ -136,10 +159,10 @@ listed as confirmed `__cdecl`. Remaining scan: `OrphanDeadLeaf_NoRefs_0051da60`
 ## Tier 3 — bigger levers, more effort
 
 - **Interior field recovery at scale.** Most class structs are still `{vftable}` +
-  `field_0x...`. Keep curated/gated.
-- **Vtable slots → named virtuals + signatures.** Hot slot `[vptr+0x1d4]` in
-  `0x00588b70` is an MFC descriptor pointer, not a method — see benchmark defer
-  note above.
+  `field_0x...`. Use `gen_recovered_fields_from_headers` + gated CSV merge.
+- **Vtable slots → named virtuals + signatures.** Hot `TSimMgr` slots `0x1d`–`0x21`
+  named via `vtable_slot_method_overrides.csv`; decompiler composite indexing
+  remains a ceiling until struct emission matches the 8-byte model.
 - **Name the 323 `FUN_`/`SUB_` functions.** Extend locality/caller attribution in
   `apply_mfc_rtti.py`.
 - **Reclassify misidentified data.** — **in progress:** `0x006960e0` string →

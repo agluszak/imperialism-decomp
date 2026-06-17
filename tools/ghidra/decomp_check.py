@@ -42,7 +42,7 @@ CASES: tuple[BenchCase, ...] = (
         ),
         (
             r"summaryTags|primaryControlTag",
-            r"pBuildingSlotProductionTable",
+            r"orderSlotsE4",
         ),
         (r"TCity::TCity::", r"TApplication::TApplication::"),
     ),
@@ -53,7 +53,7 @@ CASES: tuple[BenchCase, ...] = (
             r"this->pCity",
             r"TCity::GetCityBuildingProductionValueBySlot",
         ),
-        (r"pBuildingSlotProductionTable",),
+        (r"orderSlotsE4",),
     ),
     BenchCase(
         0x0057C578,
@@ -104,6 +104,11 @@ CASES: tuple[BenchCase, ...] = (
         (
             r"g_apNationStates\[",
             r"g_pLocalizationTable",
+        ),
+        (
+            r"LoadUiStringByCodeGroupAndOffset|g_pLocalizationTable->vftable\[0x10\]\.slot_0x04\)\(0x2735",
+            r"needCapA6",
+            r"fieldB6",
         ),
     ),
     BenchCase(

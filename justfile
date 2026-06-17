@@ -91,6 +91,9 @@ ghidra-decompile *args: _require-ghidra-install
 ghidra-decomp-check *args: _require-ghidra-install
   uv run python -m tools.ghidra.decomp_check {{args}}
 
+gen-recovered-fields-from-headers *args:
+  uv run python -m tools.ghidra.gen_recovered_fields_from_headers {{args}}
+
 # Classify functions as ecx_this (likely __thiscall) / no_ecx (likely cdecl) / empty (thunk).
 # Pass addresses, or pipe addresses to --stdin (e.g. from config/symbols.csv __cdecl rows).
 scan-cdecl-thiscall *args: _require-ghidra-install

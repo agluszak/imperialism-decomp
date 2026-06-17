@@ -89,6 +89,7 @@ DISSOLVE_NAMESPACES_PATH = REPO_ROOT / "config" / "dissolve_namespaces.csv"
 # address. "|"-delimited (address|calling_convention|note).
 CALLING_CONVENTION_OVERRIDES_PATH = REPO_ROOT / "config" / "calling_convention_overrides.csv"
 FUNCTION_CLASS_OVERRIDES_PATH = REPO_ROOT / "config" / "function_class_overrides.csv"
+VTABLE_SLOT_METHOD_OVERRIDES_PATH = REPO_ROOT / "config" / "vtable_slot_method_overrides.csv"
 # Evidence-curated reclassification of misidentified data (e.g. Ghidra "string" labels
 # that are indexed as structs/arrays). "|"-delimited; see recovered_data.csv header.
 RECOVERED_DATA_PATH = REPO_ROOT / "config" / "recovered_data.csv"
@@ -564,7 +565,29 @@ def run(program, args) -> dict:
         )
         vfn_ptr_dt = PointerDataType(vfn)
         vfn_sig_cat = CategoryPath("/MFC/vfn")
+
+        def read_pipe_csv(path):
+            if not path.exists():
+                return []
+            with path.open("r", encoding="utf-8", newline="") as fd:
+                return list(csv.DictReader(fd, delimiter="|"))
+
         mac_methods: dict[tuple[str, str], list[dict[str, str]]] = {}
+        slot_method_overrides: dict[tuple[str, int], dict[str, str]] = {}
+        for row in read_pipe_csv(VTABLE_SLOT_METHOD_OVERRIDES_PATH):
+            cls = (row.get("class") or "").strip()
+            slot_s = (row.get("slot_index") or "").strip()
+            method = (row.get("method_name") or "").strip()
+            if not cls or not slot_s or not method:
+                continue
+            try:
+                slot = int(slot_s, 16) if slot_s.lower().startswith("0x") else int(slot_s)
+            except ValueError:
+                continue
+            slot_method_overrides[(cls, slot)] = {
+                "method_name": method,
+                "mac_method": (row.get("mac_method") or "").strip() or method,
+            }
         if MAC_SYMBOLS_PATH.exists():
             with MAC_SYMBOLS_PATH.open("r", encoding="utf-8", newline="") as fd:
                 for row in csv.DictReader(fd):
@@ -795,10 +818,23 @@ def run(program, args) -> dict:
             for i, tgt in enumerate(slots):
                 fld = f"slot_0x{i*4:02x}"
                 field_dt = vfn_ptr_dt
+                override = slot_method_overrides.get((cls, i))
                 if tgt is not None:
                     fn = real_function(tgt)
                     if fn is not None:
-                        fld = sanitize_field(fn.getName(), i)
+                        if override is not None:
+                            fld = override["method_name"]
+                            if args.apply and is_auto_name(fn.getName()):
+                                try:
+                                    fn.setParentNamespace(get_or_make_class(cls))
+                                    fn.setName(fld, SourceType.USER_DEFINED)
+                                except Exception as exc:  # noqa: BLE001
+                                    changes.append(
+                                        f"  !! slot override rename {cls}#{i} 0x{tgt:08x} failed: {exc}"
+                                    )
+                            apply_mac_signature_if_safe(fn, cls, override["mac_method"])
+                        else:
+                            fld = sanitize_field(fn.getName(), i)
                         try:
                             sig_dt, used_mac = make_function_definition(cls, fld, i, fn)
                             field_dt = PointerDataType(sig_dt, dtm)
@@ -866,6 +902,14 @@ def run(program, args) -> dict:
                 remove_stale_class_duplicate(duplicate, cls)
 
             vptr_text = component0_type_name(class_dt)
+            if preserved and vtbl_dt is not None and hasattr(class_dt, "replaceAtOffset"):
+                try:
+                    class_dt.replaceAtOffset(
+                        0, PointerDataType(vtbl_dt, dtm), 4, "vftable", None
+                    )
+                    vptr_text = component0_type_name(class_dt)
+                except Exception as exc:  # noqa: BLE001
+                    changes.append(f"  !! class struct {cls} refresh vftable type failed: {exc}")
             if preserved:
                 return class_dt, replaced, preserved, vptr_text, "preserved canonical root type", True
             expected = f"{cls}Vtbl *" if vtbl_dt is not None else "pointer"
@@ -1215,12 +1259,6 @@ def run(program, args) -> dict:
                 changes.append(f"  curated ensure struct {cls} (size=0x{size:x}) for pointer typing")
             return dt
 
-        def read_pipe_csv(path):
-            if not path.exists():
-                return []
-            with path.open("r", encoding="utf-8", newline="") as fd:
-                return list(csv.DictReader(fd, delimiter="|"))
-
         for row in read_pipe_csv(RECOVERED_GLOBALS_PATH):
             name = (row.get("name") or "").strip()
             addr_s = (row.get("address") or "").strip()
@@ -1266,8 +1304,41 @@ def run(program, args) -> dict:
 
             Class names without '*' still denote pointer fields (legacy CSV convention).
             Explicit '*' or scalar names (int/dword/short) select non-class rules.
+            Array forms: short[0x17], dword[6].
             """
             raw = ftype.strip()
+            ptr_array_match = re.match(r"^(\w+)\*\[([0-9a-fA-Fx]+)\]$", raw)
+            if ptr_array_match:
+                base = ptr_array_match.group(1).strip()
+                count_s = ptr_array_match.group(2)
+                count = int(count_s, 16) if count_s.lower().startswith("0x") else int(count_s)
+                if base.lower() in ("int", "dword", "uint"):
+                    elem = PointerDataType(_DWordDT(), dtm)
+                elif base.lower() == "void":
+                    elem = PointerDataType(VoidDataType.dataType, dtm)
+                else:
+                    inner = root_class_dt(base)
+                    if inner is None:
+                        return None
+                    elem = PointerDataType(inner, dtm)
+                arr = _ArrayDT(elem, count, 4)
+                return arr, arr.getLength()
+            array_match = re.match(r"^(\w+)\[([0-9a-fA-Fx]+)\]$", raw)
+            if array_match:
+                base = array_match.group(1).lower()
+                count_s = array_match.group(2)
+                count = int(count_s, 16) if count_s.lower().startswith("0x") else int(count_s)
+                if base == "short":
+                    elem = _WordDT()
+                elif base in ("int", "dword", "uint"):
+                    elem = _DWordDT()
+                else:
+                    inner = root_class_dt(array_match.group(1))
+                    if inner is None:
+                        return None
+                    elem = inner
+                arr = _ArrayDT(elem, count, elem.getLength())
+                return arr, arr.getLength()
             scalar = raw.lower() in ("int", "dword", "uint", "short")
             if raw.endswith("*"):
                 base = raw[:-1].strip()
@@ -1295,7 +1366,17 @@ def run(program, args) -> dict:
                 return None
             return inner, inner.getLength()
 
-        for row in read_pipe_csv(RECOVERED_FIELDS_PATH):
+        curated_field_rows = read_pipe_csv(RECOVERED_FIELDS_PATH)
+        curated_field_rows.sort(
+            key=lambda row: (
+                (row.get("class") or "").strip(),
+                int((row.get("offset") or "0").strip(), 16)
+                if (row.get("offset") or "").strip()
+                else 0,
+            )
+        )
+
+        for row in curated_field_rows:
             cls = (row.get("class") or "").strip()
             off_s = (row.get("offset") or "").strip()
             ftype = (row.get("field_type") or "").strip()
@@ -1326,7 +1407,7 @@ def run(program, args) -> dict:
                 struct.replaceAtOffset(off, field_dt, field_len, fname, note)
                 stats["curated_fields_typed"] += 1
                 if args.verbose:
-                    changes.append(f"  curated field {cls}+0x{off:x} = {ftype} * ({fname})")
+                    changes.append(f"  curated field {cls}+0x{off:x} = {ftype} ({fname})")
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! curated field {cls}+0x{off:x} failed: {exc}")
 
