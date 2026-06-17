@@ -2,7 +2,6 @@
 
 #include "decomp_types.h"
 #include "game/TTwoPicSlider.h"
-#include "game/generated/vcall_facades.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
 #include "game/quickdraw_globals.h"

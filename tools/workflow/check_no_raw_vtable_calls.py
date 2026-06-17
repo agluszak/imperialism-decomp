@@ -22,9 +22,7 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("vcall_facade", re.compile(r"\bVCall_[A-Za-z0-9_]+\s*\(")),
 )
 
-INFRA_ALLOWLIST: set[str] = {
-    "include/game/generated/vcall_facades.h",
-}
+INFRA_ALLOWLIST: set[str] = set()
 
 DEFAULT_EXTENSIONS = {".h", ".hpp", ".c", ".cc", ".cpp"}
 

@@ -40,9 +40,7 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
 
 # Low-level runtime files that may legitimately contain raw construction mechanics,
 # documented in-place. Keep this list minimal.
-INFRA_ALLOWLIST: set[str] = {
-    "include/game/generated/vcall_facades.h",
-}
+INFRA_ALLOWLIST: set[str] = set()
 
 DEFAULT_EXTENSIONS = {".h", ".hpp", ".c", ".cc", ".cpp"}
 GENERATED_MARKERS = ("/ghidra_autogen/", "/autogen/stubs/")

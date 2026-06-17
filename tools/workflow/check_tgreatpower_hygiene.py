@@ -15,8 +15,6 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("thunk_cast", re.compile(r"reinterpret_cast<[^>]+>\(\s*thunk_[A-Za-z0-9_]+\s*\)")),
     ("kaddr_literal", re.compile(r"\bkAddr[A-Za-z0-9_]+\b")),
     ("provisional_name", re.compile(r"\b[A-Za-z0-9_]*_Provisional\b")),
-    ("vcall_usage", re.compile(r"\bVCall_[A-Za-z0-9_]+\s*\(")),
-    ("vcall_include", re.compile(r'#include\s+"game/generated/vcall_facades\.h"')),
 )
 
 

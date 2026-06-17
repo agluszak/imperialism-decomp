@@ -14,7 +14,6 @@
 #include "game/TView.h"
 #include "game/TCursorControlPanel.h"
 #include "game/mcappui_globals.h"
-#include "game/generated/vcall_facades.h"
 
 // Generic thunk/hook decls kept in repo form (rule 9): typed function-pointer casts at
 // the callsite rather than changing the thunk declaration signature.

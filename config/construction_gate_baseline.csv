@@ -6,6 +6,7 @@ include/game/TCityBarCluster.h|0|0|0|0|1|0|1
 include/game/TCityInteriorMinister.h|0|0|0|0|0|2|2
 include/game/TCivWorkOrderState.h|0|0|0|0|0|2|2
 include/game/TDefenseMinister.h|0|0|0|0|0|2|2
+include/game/TFocusAnimation.h|0|0|0|0|1|0|1
 include/game/TForeignMinister.h|0|0|0|0|0|2|2
 include/game/TList.h|0|0|0|0|0|2|2
 include/game/TMilitaryUnitOrderState.h|0|0|0|0|0|3|3

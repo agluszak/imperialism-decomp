@@ -178,9 +178,6 @@ annotate-vtables:
 annotate-strings:
   uv run python -m tools.workflow.annotate_strings_from_symbols --paths src/game include/game --write
 
-gen-vcall-facades:
-  uv run python -m tools.workflow.generate_vcall_facades
-
 vtable-gate:
   uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}"
 
@@ -263,7 +260,6 @@ lint flags="":
     "{{lint_docker_image}}"
 
 build:
-  just gen-vcall-facades
   just vtable-gate
   mkdir -p "{{build_dir}}"
   docker run --rm --network none \

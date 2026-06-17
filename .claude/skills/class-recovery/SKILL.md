@@ -1,6 +1,6 @@
 ---
 name: class-recovery
-description: Reconstruct C++ classes and vtables for the Imperialism decomp — run slice/class discovery, use Mac CodeWarrior evidence as a name oracle, record ClassCandidate evidence, manage the vcall facade registry (config/vtable_slots.csv), and migrate vtable calls toward real virtuals. Use when recovering a class layout, assigning a vtable, deciding facade-vs-virtual dispatch, or attributing functions/fields to a class.
+description: Reconstruct C++ classes and vtables for the Imperialism decomp — run slice/class discovery, use Mac CodeWarrior evidence as a name oracle, record ClassCandidate evidence, and migrate vtable calls toward real virtuals on recovered class headers. Use when recovering a class layout, assigning a vtable, or attributing functions/fields to a class.
 ---
 
 # Class & vtable recovery
@@ -17,7 +17,7 @@ tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36
    `vfptr[-1]`.
 2. Vftable slots are **byte offsets** in disassembly and **pointer indices** in the
    wrapper config: a call through `[vftable + 0x40]` is slot index `0x40/4 == 16`.
-   Record BOTH index and byte offset (some generated facades use a raw index).
+   Record BOTH index and byte offset when documenting slot evidence.
 3. Do not apply Itanium ABI rules to this binary.
 
 ## Evidence order (most → least trusted)
@@ -39,10 +39,10 @@ tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36
    in-repo evidence before any attach/rename (excludes already-owned addresses).
 3. `just slice-discovery <Class> 0xADDR` — emits
    `tmp_decomp/slice_discovery/<class>_<addr>/class_candidate.json`.
-4. Separate the slice into: real `this` field accesses, actual vcall wrappers,
+4. Separate the slice into: real `this` field accesses, virtual callsites,
    global/helper boundaries, and ctor/dtor/lifetime evidence. A helper *called from*
    a class method is not membership evidence.
-5. Only then edit source or vcall metadata. Verify with `just compare 0xADDR` and
+5. Only then edit source (class headers + manual TUs). Verify with `just compare 0xADDR` and
    `just stats`.
 
 For a suspect class name, use a synthetic label with explicit anchors:
@@ -72,33 +72,16 @@ names, and likely signatures — but is NOT ABI-compatible with the Windows targ
 must **never** directly assign Windows addresses, vtable slots, calling conventions,
 or inheritance edges.
 
-## Vcall facade registry
+## Vtable dispatch on recovered classes
 
-Keep vtable-call plumbing centralized while layouts evolve.
+Declare provisional or confirmed `virtual` methods on the owning class header at the
+verified slot offset, then call through normal C++ dispatch (`obj->Method(args)`).
 
-- **Source of truth**: `config/vtable_slots.csv` (`owner_file`, `wrapper_name`,
-  `return_type`, `slot_expr`, `arg_types`; optional `slot_unit`, `callconv`,
-  `edx_mode`, `edx_value`, `status`, `class_name`).
-- Generator: `tools/workflow/generate_vcall_facades.py` →
-  `include/game/generated/vcall_facades.h`. The only place allowed to resolve/cast
-  vtable slots is `include/game/generated/vcall_facades.h` (generated from
-  `config/vtable_slots.csv`).
-- After any change: `just gen-vcall-facades` → `just vtable-gate` → `just build`.
+After header changes: `just vtable-gate` → `just build` → `just compare` on touched
+functions.
 
-### Facade lifecycle
-
-1. `provisional` — slot/signature inferred from decomp shape; gameplay calls go
-   through generated `VCall_*` wrappers.
-2. `verified` — slot, signature, and owner class confirmed; wrapper safe to reuse.
-3. `native_migrated` — callsites moved to real `virtual` methods; wrapper kept as a
-   compatibility shim until cleanup.
-
-**Facade vs real virtual**: for *unknown/unstable* receivers, use generated facades.
-For *grounded* receivers (slot byte-offset, signature, return usage, and owning class
-all confirmed), prefer real `__thiscall` virtual dispatch via a typed view class — it
-drops the spurious `edx=0` the facades emit (heuristics.md "Vtable dispatch as real
-virtuals"). Keep address ownership/annotations unchanged across the migration and
-`just compare` before/after.
+**Unknown receivers**: recover a minimal view/base class with the needed slot(s) first;
+do not add local `typedef ...Fn` + `reinterpret_cast` vtable casts in gameplay code.
 
 ## Guardrails
 
@@ -106,7 +89,8 @@ virtuals"). Keep address ownership/annotations unchanged across the migration an
 2. Do not infer inheritance from names alone; defer base edges until structural
    (vptr/offset) evidence exists.
 3. Do not mix MSVC and Itanium table layouts.
-4. No raw vtable indexing in gameplay code — add facade metadata instead.
+4. No raw vtable indexing in gameplay code — declare real `virtual` methods on the
+   owning class instead.
 5. Treat both Ghidra recovered-class output and Mac symbols as oracles to compare
    against, not source of truth.
 6. The real-C++-construction Hard Rules (no manual vptr writes, no `new (this)` base

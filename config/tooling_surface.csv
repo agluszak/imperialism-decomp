@@ -5,7 +5,6 @@ module|tools.workflow.sync_function_ownership|just:sync-ownership|Marker to owne
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
 module|tools.workflow.annotate_vtables_from_symbols|just:annotate-vtables|Vtable annotation pass
 module|tools.workflow.annotate_strings_from_symbols|just:annotate-strings|String annotation pass
-module|tools.workflow.generate_vcall_facades|just:gen-vcall-facades|Generate typed vcall wrappers
 module|tools.workflow.check_no_raw_vtable_calls|just:vtable-gate|Raw-vtable policy gate
 module|tools.workflow.check_vtable_annotations|just:vtable-annotation-gate|Vtable annotation adjacency gate
 module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate|Vtable/data address collision gate

@@ -11,7 +11,7 @@ Build, measurement, gates, and regression diagnosis. Obey the Command Policy in
 ## Build & measure
 
 - `just tooling-check` — verify the toolchain surface is present.
-- `just build` — full pipeline: `gen-vcall-facades` → `vtable-gate` → Docker MSVC500
+- `just build` — full pipeline: `vtable-gate` → Docker MSVC500
   build.
 - `just detect` — re-run reccmp recompiled detection (do this after every rebuild).
 - `just compare 0xADDR` — targeted verbose compare of one function (the acceptance

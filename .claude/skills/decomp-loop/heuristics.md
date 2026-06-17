@@ -68,10 +68,10 @@ member-initializer-lists over body assignments, in **declaration order**.
 
 ## 4. Vtable dispatch as real virtuals, not facades
 
-The `VCall_*` facade layer is legacy scaffolding to be deleted — it
-injects a spurious `edx=0` and reloads the vtable per call. A real `obj->Virtual()`
-lets MSVC cache the vtable in a register across calls. This is AGENTS guardrail +
-[[model-real-classes-not-callconv-casts]].
+The legacy `VCall_*` facade layer has been removed — always add real `virtual`
+methods on the owning class and call `obj->Virtual()` directly. Real virtual dispatch
+lets MSVC cache the vtable in a register across calls, matching the original. This is
+AGENTS guardrail + [[model-real-classes-not-callconv-casts]].
 
 - Verify slot **byte offset vs index** before converting: `index = byte/4` for most
   objects, but some generated GreatPower facades use a raw index (`SlotA1` = 0xA1).

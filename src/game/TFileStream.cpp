@@ -4,8 +4,6 @@
 #include "game/mfc.h"
 #include "game/CString.h"
 
-#include "game/generated/vcall_facades.h"
-
 extern "C" unsigned int __cdecl strlen(const char* s);
 #if defined(_MSC_VER)
 #pragma intrinsic(strlen)

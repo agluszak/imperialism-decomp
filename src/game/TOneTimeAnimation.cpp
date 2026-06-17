@@ -9,7 +9,6 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 #include "game/quickdraw_guards.h"
-#include "game/generated/vcall_facades.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)

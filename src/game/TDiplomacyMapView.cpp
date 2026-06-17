@@ -10,9 +10,9 @@
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
-#include "game/generated/vcall_facades.h"
-#include "game/TControl.h"
 #include "game/TDiplomacyTurnStateManager.h"
+#include "game/TStrategicMapViewSystem.h"
+#include "game/TControl.h"
 
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
@@ -37,6 +37,10 @@ struct TDiplomacyMapViewLayout {
                                       DUMMY_VIRTUAL(45) DUMMY_VIRTUAL(46) DUMMY_VIRTUAL(47)
                                           DUMMY_VIRTUAL(48) virtual void ApplyClipRegionSlotC4(
                                               int region) = 0; // slot 49 (0xC4)
+  DUMMY_VIRTUAL(50) DUMMY_VIRTUAL(51) DUMMY_VIRTUAL(52) DUMMY_VIRTUAL(53) DUMMY_VIRTUAL(54) DUMMY_VIRTUAL(55) DUMMY_VIRTUAL(56) DUMMY_VIRTUAL(57) DUMMY_VIRTUAL(58) DUMMY_VIRTUAL(59) DUMMY_VIRTUAL(60) DUMMY_VIRTUAL(61) DUMMY_VIRTUAL(62) DUMMY_VIRTUAL(63) DUMMY_VIRTUAL(64) DUMMY_VIRTUAL(65) DUMMY_VIRTUAL(66) DUMMY_VIRTUAL(67) DUMMY_VIRTUAL(68) DUMMY_VIRTUAL(69) DUMMY_VIRTUAL(70) DUMMY_VIRTUAL(71) DUMMY_VIRTUAL(72) DUMMY_VIRTUAL(73) DUMMY_VIRTUAL(74) DUMMY_VIRTUAL(75) DUMMY_VIRTUAL(76) DUMMY_VIRTUAL(77) DUMMY_VIRTUAL(78) DUMMY_VIRTUAL(79) DUMMY_VIRTUAL(80) DUMMY_VIRTUAL(81)
+  virtual void TransformScreenPointToLocalSlot148(CPoint* outLocal, CPoint* screenPoint) = 0; // 0x148
+  DUMMY_VIRTUAL(82) DUMMY_VIRTUAL(83) DUMMY_VIRTUAL(84) DUMMY_VIRTUAL(85) DUMMY_VIRTUAL(86) DUMMY_VIRTUAL(87) DUMMY_VIRTUAL(88) DUMMY_VIRTUAL(89) DUMMY_VIRTUAL(90) DUMMY_VIRTUAL(91) DUMMY_VIRTUAL(92) DUMMY_VIRTUAL(93) DUMMY_VIRTUAL(94) DUMMY_VIRTUAL(95) DUMMY_VIRTUAL(96) DUMMY_VIRTUAL(97) DUMMY_VIRTUAL(98) DUMMY_VIRTUAL(99) DUMMY_VIRTUAL(100) DUMMY_VIRTUAL(101) DUMMY_VIRTUAL(102) DUMMY_VIRTUAL(103) DUMMY_VIRTUAL(104) DUMMY_VIRTUAL(105) DUMMY_VIRTUAL(106) DUMMY_VIRTUAL(107) DUMMY_VIRTUAL(108) DUMMY_VIRTUAL(109) DUMMY_VIRTUAL(110) DUMMY_VIRTUAL(111) DUMMY_VIRTUAL(112) DUMMY_VIRTUAL(113) DUMMY_VIRTUAL(114) DUMMY_VIRTUAL(115) DUMMY_VIRTUAL(116) DUMMY_VIRTUAL(117) DUMMY_VIRTUAL(118) DUMMY_VIRTUAL(119)
+  virtual void DrawTerrainLegendSlot1E0(int terrainIndex, int labelSelector) = 0; // 0x1e0
 
   char pad_04[0x94];
   short frameRegionSelectorAt98;
@@ -93,10 +97,9 @@ undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
 
 namespace {
 const unsigned int kAddrTerrainTypeDescriptorTable = 0x006A4310;
-const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
 const unsigned int kAddrDiplomacyTurnStateManager = 0x006A43D0;
 const unsigned int kAddrDiplomacyRelationPaletteMap = 0x00696990;
-const unsigned int kAddrGlobalMapState = 0x006A43D4;
+#include "game/TGlobalMapState.h"
 const unsigned int kAddrDiplomacyHitRectInitialized = 0x006A2FBC;
 const unsigned int kAddrDiplomacyHitBounds = 0x006A3008;
 const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
@@ -172,16 +175,13 @@ int TDiplomacyMapViewLayout::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoi
   }
 
   CPoint localPoint;
-  VCall_DiplomacyMapView_TransformPointToLocalSlot148(this, reinterpret_cast<int>(&localPoint),
-                                                      reinterpret_cast<int>(clickPoint));
+  this->TransformScreenPointToLocalSlot148(&localPoint, clickPoint);
 
   int terrainIndex = 0;
   int* terrainDescriptors = reinterpret_cast<int*>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      char hit = VCall_StrategicMap_HitTestPointSlot90(
-          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem),
-          reinterpret_cast<int>(&localPoint), terrainIndex);
+      char hit = g_pStrategicMapViewSystem->HitTestPointSlot90(&localPoint, terrainIndex);
       if (hit != 0) {
         break;
       }
@@ -234,9 +234,7 @@ void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(C
   bool hit = false;
   do {
     if (terrainDescriptors[static_cast<short>(hitIndex)] != 0) {
-      char regionHit = VCall_StrategicMap_HitTestPointSlot90(
-          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem),
-          reinterpret_cast<int>(&localPoint), hitIndex);
+      char regionHit = g_pStrategicMapViewSystem->HitTestPointSlot90(&localPoint, hitIndex);
       if (regionHit != 0) {
         hit = true;
         break;
@@ -249,9 +247,8 @@ void TDiplomacyMapViewLayout::UpdateDiplomacyMapHoverCursorFromActionSelection(C
   bool applyCursor = false;
   if (hit) {
     int actionCode = ResolveDiplomacyActionFromClickAndUpdateTarget(clickPoint);
-    char valid = VCall_DiplomacyTurnState_ValidateActionSlot5C(
-        g_pDiplomacyTurnStateManager, *reinterpret_cast<short*>(self + 0x90),
-        *reinterpret_cast<short*>(self + 0xc2), actionCode);
+    char valid = g_pDiplomacyTurnStateManager->ValidateDiplomacyActionSlot5c(
+        *reinterpret_cast<short*>(self + 0x90), *reinterpret_cast<short*>(self + 0xc2), actionCode);
 
     short cursorId;
     if (valid == 0) {
@@ -308,7 +305,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
     short terrainIndex = 0;
     do {
       if (*terrainDescriptors != 0) {
-        VCall_DiplomacyLegend_DrawTerrainSlot1E0(this, terrainIndex, terrainIndex + 0x258);
+        this->DrawTerrainLegendSlot1E0(terrainIndex, terrainIndex + 0x258);
       }
       terrainIndex = static_cast<short>(terrainIndex + 1);
       terrainDescriptors = terrainDescriptors + 1;
@@ -320,7 +317,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
     terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable) + 7;
     do {
       if (*terrainDescriptors != 0) {
-        VCall_DiplomacyLegend_DrawTerrainSlot1E0(this, terrainIndex, 0x2bb);
+        this->DrawTerrainLegendSlot1E0(terrainIndex, 0x2bb);
       }
       terrainIndex = static_cast<short>(terrainIndex + 1);
       terrainDescriptors = terrainDescriptors + 1;
@@ -354,8 +351,8 @@ void TDiplomacyMapViewLayout::RenderDiplomacyLegendSurfaceAndPresent(const RECT*
   }
 
   SetQuickDrawFillColor(0xffffff);
-  void* frameRegion = VCall_StrategicMap_GetFrameRegionSlot98(
-      *reinterpret_cast<void**>(kAddrStrategicMapViewSystem), frameRegionSelectorAt98);
+  void* frameRegion =
+      g_pStrategicMapViewSystem->GetFrameRegionSlot98(frameRegionSelectorAt98);
   reinterpret_cast<void(__fastcall*)(void*, int, void*)>(FrameRegionOnHdcAndReleaseBrushState)(
       this, 0, frameRegion);
   SetQuickDrawFillColor(0);
@@ -369,8 +366,7 @@ void TDiplomacyMapViewLayout::BuildCombinedTerrainTypeRegionMaskAndDispatch() {
   void** terrainDescriptors = reinterpret_cast<void**>(kAddrTerrainTypeDescriptorTable);
   do {
     if (*terrainDescriptors != 0) {
-      void* frameRegion = VCall_StrategicMap_GetFrameRegionSlot98(
-          *reinterpret_cast<void**>(kAddrStrategicMapViewSystem), terrainIndex);
+      void* frameRegion = g_pStrategicMapViewSystem->GetFrameRegionSlot98(terrainIndex);
       reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
           CombineTwoRegionsIntoDestinationAndUpdateBox)(region, frameRegion, region);
     }
@@ -760,8 +756,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
     if (*reinterpret_cast<char*>(self + 0x52c + policyIndex) != 0 && iconCode != -1 &&
         tierValue <= selectedTier) {
       RECT* iconRect = reinterpret_cast<RECT*>(self + 0x6ac + policyIndex * 0x10);
-      short iconX = VCall_GlobalMapState_QueryIconStripXSlot110(
-          *reinterpret_cast<void**>(kAddrGlobalMapState), iconCode);
+      short iconX = g_pGlobalMapState->QueryIconStripXSlot110(iconCode);
 
       RECT srcRect;
       srcRect.left = iconX;
@@ -786,7 +781,7 @@ void TDiplomacyMapViewLayout::RenderDiplomacyPendingPolicyIconsAndFrames() {
       }
 
       int strategicMapSurface =
-          *reinterpret_cast<int*>(*reinterpret_cast<int*>(kAddrStrategicMapViewSystem) + 0x6b8);
+          *reinterpret_cast<int*>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x6b8);
       BlitQuickDrawSurfaces(
           reinterpret_cast<TQuickDrawSurfaceContext*>(strategicMapSurface)->GetBlitSurface(),
           g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &destRect, 0x24);

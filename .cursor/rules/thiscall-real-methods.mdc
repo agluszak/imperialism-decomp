@@ -11,7 +11,7 @@ When disassembly shows `mov ecx, this` before a call:
 
 1. Declare the callee as a **real method** on the owning class (or a grounded view/base).
 2. Call `obj->Method(args)` — not a typed pointer cast.
-3. For vtable dispatch, use a **real `virtual` method** (or migrate to one), not `VCall_*` facades long-term.
+3. For vtable dispatch, use a **real `virtual` method** on the owning class.
 
 **Forbidden:**
 ```cpp

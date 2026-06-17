@@ -1,7 +1,6 @@
 #include "game/TTextList.h"
 #include "game/CString.h"
 #include "game/TControl.h"
-#include "game/generated/vcall_facades.h"
 #include "game/TTextList_Virtuals.h"
 #include "game/UiRuntimeContext.h"
 #include "game/trade_quickdraw.h"

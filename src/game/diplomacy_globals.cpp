@@ -4,10 +4,11 @@
 #include "game/TGreatPower.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TLocalizationRuntime.h"
-#include "game/TMinor.h"
+#include "game/TStrategicMapViewSystem.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
+TStrategicMapViewSystem* g_pStrategicMapViewSystem = 0;
 
 extern "C" {
 TMinor* g_apSecondaryNationStateSlots[36] = {0};

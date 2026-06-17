@@ -1,49 +1,18 @@
 // TTransFocusAnimation vertical-slice implementations.
 
-#include "decomp_types.h"
+#include "game/TTransFocusAnimation.h"
+
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/TView.h"
 #include "game/mfc.h"
-#include "game/UiRuntimeContext.h"
+#include "game/quickdraw_globals.h"
 #include "game/quickdraw_guards.h"
-#include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
-#include <new>
-#include "game/quickdraw_guards.h"
-#include "game/generated/vcall_facades.h"
 
 // This QuickDraw body keeps the EH-RAII frame but omits the frame pointer.
 #if defined(_MSC_VER)
 #pragma optimize("y", on)
 #endif
-
-// TTransFocusAnimation derives from the MFC CObject root: the factory at
-// 0x004a0460 installs the shared CObject runtime vtable (0x0066fec4) and the
-// class adds no virtuals of its own. CObject supplies the vptr at offset 0; the
-// animation fields begin at offset 0x4.
-// Duplicate VTABLE annotation removed
-class TTransFocusAnimation : public CObject {
-public:
-  void* scopedRenderTarget; // 0x04
-  short field08;            // 0x08
-  short field0a;            // 0x0a
-  short field0c;            // 0x0c
-  char pad_0e[2];
-  int field10;      // 0x10
-  int field14;      // 0x14
-  int field18;      // 0x18
-  int sourceLeft;   // 0x1c
-  int sourceTop;    // 0x20
-  int sourceRight;  // 0x24
-  int sourceBottom; // 0x28
-  char pad_2c[4];
-  int transientSurfaceContext; // 0x30
-
-  void BlitTransientSurfaceToPrimaryRenderContextWithClip();
-  void RenderFocusAnimationFrameWithScopedQuickDraw();
-};
-
-#include "game/TQuickDrawSurfaceContext.h"
-#include "game/quickdraw_globals.h"
 
 undefined4 ApplyHitRegionToClipState(void);
 undefined4 thunk_ApplyRectClipRegionToGlobalClipState(void);
@@ -110,5 +79,5 @@ void TTransFocusAnimation::RenderFocusAnimationFrameWithScopedQuickDraw() {
   int completionRecord[2];
   completionRecord[0] = 0;
   completionRecord[1] = 0;
-  VCall_TransFocusAnimation_CallSlot2C(this, completionRecord);
+  this->DispatchCompletionRecordSlot14(completionRecord);
 }

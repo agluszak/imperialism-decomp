@@ -2,7 +2,8 @@
 
 #include "game/mfc.h"
 #include "game/diplomacy_globals.h"
-#include "game/generated/vcall_facades.h"
+#include "game/ApplicationUiRootController.h"
+#include "game/TSoundChannelNode.h"
 
 #include <new>
 
@@ -98,10 +99,10 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
   }
 
   if (this->stateByte80 != 0 && this->stateDword7c == 0) {
-    int n = VCall_SoundChannelNode_QueryPendingCountSlot0A(this->runtimePeerAt6c);
+    int n = static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->QueryPendingPlaybackCountSlot28();
     if (n > 0) {
-      VCall_SoundChannelNode_StopOrResetSlot0C(this->runtimePeerAt6c);
-      VCall_SoundChannelNode_StopOrResetSlot0C(this->runtimePeerAt70);
+      static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->StopOrResetActivePlaybackSlot30();
+      static_cast<TSoundChannelNode*>(this->runtimePeerAt70)->StopOrResetActivePlaybackSlot30();
     }
     if (this->stateByte78 != 0) {
       ForwardMciCommand808ToDevice();
@@ -118,7 +119,7 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
     return 0;
   }
 
-  int n = VCall_SoundChannelNode_QueryPendingCountSlot0A(this->runtimePeerAt6c);
+  int n = static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->QueryPendingPlaybackCountSlot28();
   if (n > 0) {
     DAT_006a4520 = static_cast<short>(DAT_006a4520 + 1);
     if (DAT_006a4520 > 4) {
@@ -171,7 +172,8 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
   EnsureCdAudioDeviceHandleInitialized();
   this->field10 = param_1;
   // Notify the global UI root controller via its slot 0x29 (peer class unrecovered).
-  VCall_UiRootController_NotifySoundSubsystemSlot29(g_pGlobalUiRootController);
+  reinterpret_cast<ApplicationUiRootController*>(g_pGlobalUiRootController)
+      ->InsertOrRemoveTrackedEntry(reinterpret_cast<int>(this), 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005e4f60
@@ -207,11 +209,11 @@ void TSoundPlayer::ClearDirectSoundInitPendingAndResetState() {
 void TSoundPlayer::Free() {
   if (this->runtimePeerAt70 != 0) {
     // Peer class (vtable 0x650a08) unrecovered — slot 0x38 release.
-    VCall_SoundChannelNode_ReleaseSlot0E(this->runtimePeerAt70);
+    static_cast<TSoundChannelNode*>(this->runtimePeerAt70)->ReleaseChannelNodeSlot38();
   }
   this->runtimePeerAt70 = 0;
   if (this->runtimePeerAt6c != 0) {
-    VCall_SoundChannelNode_ReleaseSlot0E(this->runtimePeerAt6c);
+    static_cast<TSoundChannelNode*>(this->runtimePeerAt6c)->ReleaseChannelNodeSlot38();
   }
   this->runtimePeerAt6c = 0;
   ReleaseRuntimeSelectionPeersAndResetOwner_Impl();

@@ -97,12 +97,11 @@ target). They need a built binary + reccmp DB.
    declaration signatures directly causes MSVC name-mangling linker breaks.
 10. MSVC500 keeps `for` loop variables in function scope; do not redeclare the same
     loop variable name later in the same function.
-11. For vtable calls in manual code, call through generated facades in
-    `include/game/generated/vcall_facades.h` (or real virtuals) — no local
-    `typedef ...Fn` + `reinterpret_cast` blocks, no raw `vftable[...]` indexing. Keep
-    low-level slot-cast mechanics isolated in `include/game/generated/vcall_facades.h`.
-12. `config/vtable_slots.csv` is the single source of truth for generated vcall
-    wrappers; after changing it, run `just gen-vcall-facades` before build/compare.
+11. For vtable calls in manual code, use real `virtual` methods on recovered classes — no
+    local `typedef ...Fn` + `reinterpret_cast` blocks, no raw `vftable[...]` indexing,
+    and no generated `VCall_*` facade wrappers.
+12. When adding a dispatch to an unrecovered receiver, declare the method on the owning
+    class header at the verified slot and call `obj->Method(args)` directly.
 13. The raw-vtable gate (`just vtable-gate`) must pass; do not add new raw-vtable
     patterns in files not already baseline-tracked.
 14. `just session-loop` mutates `reccmp-project.yml` ignore lists; run it only when you
@@ -168,11 +167,7 @@ examples, and rationale: `docs/reference/construction.md`.
     to a fake `__fastcall(void*, int /*edx*/, ...)` shape with a dummy `edx`.
   - If a call is a **vtable dispatch**, model the real C++ class with real `virtual`
     methods (in the correct slot order — verify the slot offset in the disassembly) and
-    call `obj->Virtual(args)`. Do NOT route it through the `VCall_*` facades; those
-    inject a spurious `xor edx,edx` and reload the vtable per call. Owning the real
-    virtual lets MSVC cache the vtable in a register across calls, matching the
-    original. (The `VCall_*` facade layer is legacy scaffolding we intend to delete
-    entirely — do not add to it; migrate off it.)
+    call `obj->Virtual(args)` directly on the owning recovered class.
 - A `reinterpret_cast` that only adjusts a return type or argument types of a genuinely
   same-convention free function (e.g. a real `__cdecl(void)` thunk) is fine. Faking the
   *convention* (esp. thiscall-as-fastcall-with-dummy-edx) is not.
