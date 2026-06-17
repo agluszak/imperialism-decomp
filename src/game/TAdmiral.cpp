@@ -43,7 +43,7 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
               reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
               reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(this->displayName))) ==
           0) {
-        this->DestroyAndUnlinkNavySecondaryOrderNode();
+        this->Free();
       }
     }
   }
@@ -81,7 +81,7 @@ static void ClearPrimaryOrderBacklink(void* primaryOrderNode) {
 TAdmiral::~TAdmiral() {}
 
 // FUNCTION: IMPERIALISM 0x005515d0
-void TAdmiral::DestroyAndUnlinkNavySecondaryOrderNode() {
+void TAdmiral::Free() {
   if (this->prev != 0) {
     this->prev->next = this->next;
   } else {
@@ -91,6 +91,16 @@ void TAdmiral::DestroyAndUnlinkNavySecondaryOrderNode() {
     this->next->prev = this->prev;
   }
   delete this;
+}
+
+// FUNCTION: IMPERIALISM 0x00551670
+void TAdmiral::WriteTo(TStream* stream) {
+  (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x00551700
+void TAdmiral::ReadFrom(TStream* stream) {
+  (void)stream;
 }
 
 // FUNCTION: IMPERIALISM 0x00552250

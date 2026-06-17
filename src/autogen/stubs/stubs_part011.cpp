@@ -539,14 +539,6 @@ undefined4 CopyExtendedCityDialogControllerState(void)
   return 0;
 }
 
-// ghidra_name DispatchVslot24ThenCopyExtendedCityDialogControllerState
-// ghidra_proto undefined DispatchVslot24ThenCopyExtendedCityDialogControllerState()
-// FUNCTION: IMPERIALISM 0x0048fc00
-undefined4 DispatchVslot24ThenCopyExtendedCityDialogControllerState(void)
-{
-  return 0;
-}
-
 // ghidra_name TStaticText::~TStaticText
 // ghidra_proto undefined ~TStaticText()
 // FUNCTION: IMPERIALISM 0x0048fc30
@@ -583,14 +575,6 @@ undefined4 LoadUiStringAndDispatchViaVslot1C8(void)
 // ghidra_proto undefined OrphanCallChain_C1_I09_0048ff70()
 // FUNCTION: IMPERIALISM 0x0048ff70
 undefined4 OrphanCallChain_C1_I09_0048ff70(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshSelectedNationHeaderStatus
-// ghidra_proto undefined RefreshSelectedNationHeaderStatus()
-// FUNCTION: IMPERIALISM 0x0048ffb0
-undefined4 RefreshSelectedNationHeaderStatus(void)
 {
   return 0;
 }

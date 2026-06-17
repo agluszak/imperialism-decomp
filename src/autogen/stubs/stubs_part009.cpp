@@ -1579,14 +1579,6 @@ undefined4 InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004798f0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0()
-// FUNCTION: IMPERIALISM 0x004798f0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004798f0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl()
 // FUNCTION: IMPERIALISM 0x00479920

@@ -4,23 +4,18 @@
 #include "game/mfc.h"
 #include "game/CString.h"
 #include "game/TMinor.h"
+#include "game/TObject.h"
 
 int AllocateWithFallbackHandler(undefined4 size_bytes);
 
-// Navy task-force secondary order node (the slot-0x32 "navy" branch). new(0x1c) + the
-// EH ctor 0x00551430 links the node at the head of the global g_pNavySecondaryOrderListHead
-// doubly-linked list, then (for a real terrain-type index) generates a display name from
-// g_apTerrainTypeDescriptorTable[type] and removes earlier list entries with the same name.
-// EH-framed because the CString member at +0xc has a non-trivial dtor. Standalone polymorphic
-// class — does NOT derive from TObject (the transient 0x6485c0 write in the
-// original ctor is MSVC EH sentinel glue, not list-wrapper inheritance).
+// Navy task-force secondary order node (vtable 0x0065c498, eight slots).
 // VTABLE: IMPERIALISM 0x0065c498
-class TAdmiral : public CObject {
+class TAdmiral : public TObject {
 public:
-  virtual CRuntimeClass* GetRuntimeClass() const override;
-  virtual void VMethod05() {}
-  virtual void DeserializeNavyOrderSelectionStateFromStream() {}
-  virtual void DestroyAndUnlinkNavySecondaryOrderNode();
+  virtual CRuntimeClass* GetRuntimeClass() const override; // 0x00 0x551410
+  virtual void WriteTo(TStream* stream) override;          // 0x14 0x551670
+  virtual void ReadFrom(TStream* stream) override;         // 0x18 0x551700
+  virtual void Free() override;                            // 0x1c 0x5515d0
 
   short terrainType;      // 0x04 (index into g_apTerrainTypeDescriptorTable; 0xffff = none)
   unsigned char pad06[2]; // 0x06

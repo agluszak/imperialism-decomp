@@ -78,6 +78,7 @@ address|target_cpp|ownership|note
 45d2a0|src/game/noop_slots.cpp|manual|marker_sync
 4798b0|src/game/TObject.cpp|manual|marker_sync
 4798d0|src/game/TObject.cpp|manual|marker_sync
+4798f0|src/game/ArchiveStreamAdapter.cpp|manual|marker_sync
 47c3d0|src/game/sprite.cpp|manual|marker_sync
 47d5b0|src/game/noop_slots.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|manual|marker_sync
@@ -337,6 +338,8 @@ address|target_cpp|ownership|note
 48f870|src/game/TStaticText.cpp|manual|marker_sync
 48f890|src/game/TStaticText.cpp|manual|marker_sync
 48f9a0|src/game/TStaticText.cpp|manual|marker_sync
+48fc00|src/game/TStaticText.cpp|manual|marker_sync
+48ffb0|src/game/TStaticText.cpp|manual|marker_sync
 4913e0|src/game/TCluster.cpp|manual|marker_sync
 491400|src/game/TCluster.cpp|manual|marker_sync
 491480|src/game/TCluster.cpp|manual|marker_sync
@@ -445,8 +448,11 @@ address|target_cpp|ownership|note
 4c6fb0|src/game/noop_slots.cpp|manual|marker_sync
 4c6fd0|src/game/noop_slots.cpp|manual|marker_sync
 4cc470|src/game/noop_slots.cpp|manual|marker_sync
+4d0540|src/game/TEngineerDialog.cpp|manual|marker_sync
 4d0560|src/game/TEngineerDialog.cpp|manual|marker_sync
 4d0590|src/game/TEngineerDialog.cpp|manual|marker_sync
+4d05e0|src/game/TEngineerDialog.cpp|manual|marker_sync
+4d0650|src/game/TEngineerDialog.cpp|manual|marker_sync
 4d20c0|src/game/noop_slots.cpp|manual|marker_sync
 4d4bd0|src/game/noop_slots.cpp|manual|marker_sync
 4d6500|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
@@ -986,6 +992,8 @@ address|target_cpp|ownership|note
 551550|src/game/TAdmiral.cpp|manual|marker_sync
 551580|src/game/TAdmiral.cpp|manual|marker_sync
 5515d0|src/game/TAdmiral.cpp|manual|marker_sync
+551670|src/game/TAdmiral.cpp|manual|marker_sync
+551700|src/game/TAdmiral.cpp|manual|marker_sync
 552250|src/game/TAdmiral.cpp|manual|marker_sync
 552450|src/game/TAdmiral.cpp|manual|marker_sync
 552510|src/game/TMapOrderEntry.cpp|manual|marker_sync

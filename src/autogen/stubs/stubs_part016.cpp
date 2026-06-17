@@ -3123,22 +3123,6 @@ undefined4 CreateNavySecondaryOrderNodeWithSentinelNation(void)
   return 0;
 }
 
-// ghidra_name SerializeNavyOrderSelectionStateToStream
-// ghidra_proto undefined SerializeNavyOrderSelectionStateToStream()
-// FUNCTION: IMPERIALISM 0x00551670
-undefined4 SerializeNavyOrderSelectionStateToStream(void)
-{
-  return 0;
-}
-
-// ghidra_name DeserializeNavyOrderSelectionStateFromStream
-// ghidra_proto undefined DeserializeNavyOrderSelectionStateFromStream()
-// FUNCTION: IMPERIALISM 0x00551700
-undefined4 DeserializeNavyOrderSelectionStateFromStream(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
 // ghidra_proto undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()
 // FUNCTION: IMPERIALISM 0x00551850

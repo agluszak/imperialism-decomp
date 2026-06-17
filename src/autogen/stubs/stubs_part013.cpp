@@ -1707,30 +1707,6 @@ undefined4 CreateEngineerDialog(void)
   return 0;
 }
 
-// ghidra_name TEngineerDialog::GetTEngineerDialogClassNamePointer
-// ghidra_proto undefined GetTEngineerDialogClassNamePointer()
-// FUNCTION: IMPERIALISM 0x004d0540
-undefined4 GetTEngineerDialogClassNamePointer(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshUniversityAdvancedStatus
-// ghidra_proto undefined RefreshUniversityAdvancedStatus()
-// FUNCTION: IMPERIALISM 0x004d05e0
-undefined4 RefreshUniversityAdvancedStatus(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderEngineerDialogBackground
-// ghidra_proto undefined RenderEngineerDialogBackground()
-// FUNCTION: IMPERIALISM 0x004d0650
-undefined4 RenderEngineerDialogBackground(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::BuildCityViewProductionControls
 // ghidra_proto void __thiscall BuildCityViewProductionControls(short nBuildingSlotId)
 // FUNCTION: IMPERIALISM 0x004d0810

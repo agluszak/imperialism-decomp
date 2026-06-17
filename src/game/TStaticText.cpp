@@ -31,3 +31,17 @@ TStaticText::TStaticText()
 // TStaticText::`scalar deleting destructor'
 
 TStaticText::~TStaticText() {}
+
+// FUNCTION: IMPERIALISM 0x0048fc00
+TObject* TStaticText::ShallowClone() {
+  TObject* cloned = TView::ShallowClone();
+  if (cloned != 0) {
+    reinterpret_cast<TView*>(cloned)->CopyCityDialogStateFromSource(this);
+  }
+  return cloned;
+}
+
+// FUNCTION: IMPERIALISM 0x0048ffb0
+void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+}
