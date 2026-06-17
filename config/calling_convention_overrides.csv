@@ -24,3 +24,7 @@ address|calling_convention|note
 0x004357b0|__cdecl|no_ecx: EH-frame prologue (MOV EAX,FS:[0]), args via [ESP+..] (BuildTurnEventDialogUiByCode)
 0x004749a0|__cdecl|no_ecx: EH-frame prologue (MOV EAX,FS:[0]), args via [ESP+..] (BuildUniversityDialogShell)
 0x00519140|__cdecl|no_ecx: EH-frame prologue (MOV EAX,FS:[0]), args via [ESP+..] (DumpAndResetMapScriptState)
+0x004d83c0|__thiscall|ecx_this: MOV ESI,ECX (SumWeightedNeighborLinkScoreForLinkedNodes)
+0x004e0460|__thiscall|ecx_this: MOV EDI,ECX (SumNavyOrderPriorityForNationAndNodeType)
+0x004e04b0|__thiscall|ecx_this: MOV EDI,ECX (SumNavyOrderPriorityForNation)
+0x00550b60|__thiscall|ecx_this: MOV ESI,ECX (ComputeOrderNodeCompositeEconomicScore)

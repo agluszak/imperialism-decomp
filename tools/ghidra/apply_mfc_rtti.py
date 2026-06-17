@@ -88,6 +88,9 @@ DISSOLVE_NAMESPACES_PATH = REPO_ROOT / "config" / "dissolve_namespaces.csv"
 # __cdecl on a regular basis; this table forces a corrected convention per
 # address. "|"-delimited (address|calling_convention|note).
 CALLING_CONVENTION_OVERRIDES_PATH = REPO_ROOT / "config" / "calling_convention_overrides.csv"
+# Evidence-curated reclassification of misidentified data (e.g. Ghidra "string" labels
+# that are indexed as structs/arrays). "|"-delimited; see recovered_data.csv header.
+RECOVERED_DATA_PATH = REPO_ROOT / "config" / "recovered_data.csv"
 MFC_LIBRARY_CLASS_NAMES = frozenset(MFC_MODELS)
 
 
@@ -411,6 +414,7 @@ def run(program, args) -> dict:
         "pseudo_classes_dissolved": 0,
         "pseudo_class_members_moved": 0,
         "calling_conventions_fixed": 0,
+        "curated_data_typed": 0,
     }
     changes: list[str] = []
     # collected per class for the struct-building pass
@@ -1309,6 +1313,71 @@ def run(program, args) -> dict:
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! dissolve {nsname}: delete namespace failed: {exc}")
 
+        # Reclassify misidentified data labels (strings/DAT_ mistaken for tables).
+        from ghidra.program.model.data import (
+            ArrayDataType as _DataArrayDT,
+            DWordDataType as _DWordDT,
+            StructureDataType as _DataStructDT,
+        )
+
+        def parse_data_field_spec(spec: str):
+            """Parse '0x28:dword[6]' or '0x40:dword' into (offset, datatype, length)."""
+            spec = spec.strip()
+            if not spec:
+                return None
+            off_s, rest = spec.split(":", 1)
+            off = int(off_s, 16)
+            if "[" in rest:
+                base, count_s = rest.split("[", 1)
+                count = int(count_s.rstrip("]"))
+                elem = _DWordDT()
+                return off, _DataArrayDT(elem, count, elem.getLength()), count * elem.getLength()
+            base = rest.lower()
+            if base in ("dword", "uint", "int"):
+                return off, _DWordDT(), 4
+            return None
+
+        for row in read_pipe_csv(RECOVERED_DATA_PATH):
+            addr_s = (row.get("address") or "").strip()
+            struct_name = (row.get("struct_name") or "").strip()
+            size_s = (row.get("size") or "").strip()
+            fields_s = (row.get("fields") or "").strip()
+            rename = (row.get("rename") or "").strip()
+            if not addr_s or not struct_name or not size_s:
+                continue
+            try:
+                addr = int(addr_s, 16)
+                total_size = int(size_s, 16)
+            except ValueError:
+                changes.append(f"  !! curated data {struct_name}: bad address/size")
+                continue
+            try:
+                sdt = _DataStructDT(CategoryPath.ROOT, struct_name, total_size, dtm)
+                for part in (p for p in fields_s.split(";") if p.strip()):
+                    parsed = parse_data_field_spec(part)
+                    if parsed is None:
+                        changes.append(f"  !! curated data {struct_name}: bad field {part}")
+                        continue
+                    off, fdt, flen = parsed
+                    if off + flen > total_size:
+                        changes.append(
+                            f"  !! curated data {struct_name}+0x{off:x}: beyond size 0x{total_size:x}"
+                        )
+                        continue
+                    sdt.replaceAtOffset(off, fdt, flen, part.split(":")[1].split("[")[0], None)
+                replace_or_add_datatype(CategoryPath.ROOT, struct_name, sdt)
+                clear_code_units_covering(A(addr), A(addr + total_size - 1))
+                listing.createData(A(addr), sdt)
+                if rename:
+                    syms = list(st.getSymbols(A(addr)))
+                    if syms:
+                        syms[0].setName(rename, SourceType.USER_DEFINED)
+                stats["curated_data_typed"] += 1
+                if args.verbose:
+                    changes.append(f"  curated data 0x{addr:08x} = {struct_name}")
+            except Exception as exc:  # noqa: BLE001
+                changes.append(f"  !! curated data {struct_name}@0x{addr:08x} failed: {exc}")
+
         # Apply evidence-curated calling-convention overrides (Ghidra mislabels
         # __fastcall/__cdecl regularly; these are verified by `just scan-cdecl-thiscall`).
         for row in read_pipe_csv(CALLING_CONVENTION_OVERRIDES_PATH):
@@ -1406,7 +1475,8 @@ def main() -> int:
             f"curated_fields_typed={s['curated_fields_typed']}\n"
             f"          pseudo_classes_dissolved={s['pseudo_classes_dissolved']} "
             f"pseudo_class_members_moved={s['pseudo_class_members_moved']}\n"
-            f"          calling_conventions_fixed={s['calling_conventions_fixed']}"
+            f"          calling_conventions_fixed={s['calling_conventions_fixed']}\n"
+            f"          curated_data_typed={s['curated_data_typed']}"
         )
         if not args.apply:
             print("Re-run with --apply to write these changes to the Ghidra DB.")
