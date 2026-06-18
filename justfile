@@ -123,31 +123,6 @@ scan-cdecl-thiscall *args: _require-ghidra-install
 ghidra-vtable-dump class vtable *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
 
-# LEGACY scaffolder. Prefer `just recover-class <Class>` (manifest-driven, idempotent,
-# also drives an existing class to 100%). Keep this only for its unique extra: it
-# emits the Ghidra *decompile seed* into the .cpp stubs, which the manifest does not
-# carry. Resolves slots via Ghidra, then emits a reviewable header/.cpp/CSV scaffold
-# (dry-run by default; pass --write to apply).
-#   just bootstrap-class TUnitOrderState 0x0066ee18
-#   just bootstrap-class TUnitOrderState 0x0066ee18 TObject 0x00653868  # override
-# The base is auto-detected from the MFC CRuntimeClass chain (immediate base +
-# CObject-vs-TObject root + its vtable for the inherited-vs-override diff); pass
-# base name+vtable explicitly only to override the RTTI-recovered edge.
-bootstrap-class class vtable base='' base_vtable='' *args: _require-ghidra-install
-  #!/usr/bin/env bash
-  set -euo pipefail
-  slots_json="$(mktemp)"
-  trap 'rm -f "$slots_json"' EXIT
-  specs=("{{class}}={{vtable}}")
-  base_arg=()
-  if [[ -n "{{base}}" && -n "{{base_vtable}}" ]]; then
-    specs+=("{{base}}={{base_vtable}}")
-    base_arg=(--base "{{base}}")
-  fi
-  uv run python -m tools.ghidra.vtable_slots --decompile "${specs[@]}" > "$slots_json"
-  uv run python -m tools.workflow.bootstrap_class \
-    --class "{{class}}" "${base_arg[@]}" --slots-json "$slots_json" {{args}}
-
 # Stage 0: batch-dump per-class manifests (config/classes/<Class>.yml) from the
 # Ghidra DB. Read-only and idempotent; the generated: region is refreshed while
 # any curated: region is preserved. Pass --only Name / --limit N to scope.

@@ -17,8 +17,8 @@ Two modes (mirroring the established generate-then-gate pattern):
     doc comments and member annotations outside the block are never touched, and
     bodies in the ``.cpp`` are left byte-for-byte intact. Re-running on an
     unchanged class is a no-op diff.
-  * **New class** (no header yet): emit the full ``bootstrap_class`` skeleton
-    (header + ``// FUNCTION:`` stubs) *and* the marked block.
+  * **New class** (no header yet): emit a first-pass ``class_codegen`` skeleton
+    from the manifest (header + ``// FUNCTION:`` stubs) *and* the marked block.
 
 The block deliberately carries **no** ``// VTABLE:`` marker (that lives, exactly
 once, immediately above the hand-owned class, as the VTABLE-annotation gate
@@ -40,7 +40,7 @@ from typing import Any
 from tools.common import class_manifest as cm
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.workflow.bootstrap_class import (
+from tools.workflow.class_codegen import (
     ClassifiedSlot,
     Signature,
     looks_like_deleting_dtor,
@@ -174,11 +174,11 @@ def upsert_block(text: str, cls: str, block: str) -> tuple[str, bool]:
 
 
 def _classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
-    """Rebuild bootstrap_class.ClassifiedSlot records from the manifest.
+    """Rebuild class_codegen.ClassifiedSlot records from the manifest.
 
     Reuses the manifest's already-computed ``kind`` and the curated method name
-    (curated wins over the Ghidra name) so the header/cpp scaffolding renders in
-    the same shape ``bootstrap_class`` produced from a slots JSON.
+    (curated wins over the Ghidra name) so the header/cpp scaffolding renders
+    from the same slot model as the manifest dump.
     """
     curated = cm.curated_slot_methods(manifest)
     out: list[ClassifiedSlot] = []
@@ -278,7 +278,7 @@ def print_todo(repo_root: Path, cls: str, manifest: dict[str, Any]) -> None:
 
 
 def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], write: bool) -> int:
-    from tools.workflow import bootstrap_class as bc
+    from tools.workflow import class_codegen as bc
 
     gen = manifest.get("generated") or {}
     base = gen.get("base") or "TObject"
@@ -304,9 +304,17 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
         print(f"=== {hpath} ===\n{header_text}")
         print(f"=== {cpp_path} ===\n{cpp_text}")
         print(f"\n+ {len(sym_plan.new_rows)} symbols.csv rows, {len(own_plan.new_rows)} ownership rows.")
-        print("Pass --write to scaffold. (No Ghidra decompile seeds — use `just bootstrap-class`"
-              " for a decompile-seeded scaffold.)")
+        for collision in own_plan.collisions:
+            print(f"!! ownership collision: {collision}")
+        print("Pass --write to scaffold.")
         return 0
+
+    if own_plan.collisions:
+        print(f"gen-class {cls}: refusing to scaffold because slot bodies are already owned:")
+        for collision in own_plan.collisions:
+            print(f"  {collision}")
+        print("Fix the manifest slot classification/curation before writing the new class.")
+        return 1
 
     hpath.write_text(header_text, encoding="utf-8")
     cpp_path.write_text(cpp_text, encoding="utf-8")

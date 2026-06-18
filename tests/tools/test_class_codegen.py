@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained checks for tools.workflow.bootstrap_class (no pytest, no Ghidra).
-
-Run: uv run python -m tools.workflow.bootstrap_class_test
+"""Self-contained checks for tools.workflow.class_codegen (no Ghidra).
 Exercises the pure codegen/classification/CSV-merge half with a synthetic
 TUnitOrderState-shaped fixture (base = TObject).
 """
@@ -12,7 +10,7 @@ import tempfile
 from pathlib import Path
 
 from tools.ghidra.vtable_slots import is_rtti_getter
-from tools.workflow import bootstrap_class as bc
+from tools.workflow import class_codegen as bc
 
 
 def slot(index, target, *, null=False, name=None, proto=None, size=0, decomp=None, thunk=False):
@@ -140,12 +138,14 @@ def main() -> int:
         own_path.write_text(
             "address|target_cpp|ownership|note\n"
             "5c2490|src/game/Other.cpp|manual|marker_sync\n"
+            "5c27d0|src/game/TUnitOrderState.cpp|manual|marker_sync\n"
         )
+        owned[0].target_addr = "005c2490"
         own_plan = bc.plan_ownership(own_path, owned, "src/game/TUnitOrderState.cpp")
         check("ownership flags collision", any("5c2490" in c for c in own_plan.collisions))
         own_addrs = {r["address"] for r in own_plan.new_rows}
         check("ownership skips collided addr", "5c2490" not in own_addrs)
-        check("ownership adds 5c27d0", "5c27d0" in own_addrs)
+        check("ownership does not duplicate same-owner addr", "5c27d0" not in own_addrs)
 
     # ILT-thunk slots are never owned (no body / symbol / ownership row)
     thunk_cls = [
@@ -183,7 +183,7 @@ def main() -> int:
     check("dtor suspect rejects none", not bc.looks_like_deleting_dtor(None))
     suspect_slots = [s for s in slots if s.dtor_suspect]
     check("scalar_dtor slot not double-flagged", all(s.kind != "scalar_dtor" for s in suspect_slots))
-    cpp_warns = "WARNING(bootstrap): this slot's name looks like a deleting-destructor" in cpp
+    cpp_warns = "WARNING(manifest): this slot's name looks like a deleting-destructor" in cpp
     dtor_slot = next((s for s in slots if bc.looks_like_deleting_dtor(s.qualified_name)
                       and s.kind in ("override", "new")), None)
     check("dtor suspect warning emitted iff suspect present",

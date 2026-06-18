@@ -5,7 +5,7 @@ For every MFC ``CRuntimeClass`` descriptor in the binary this recovers — using
 same intact runtime-class data ``apply_mfc_rtti`` mines — the class's vtable,
 object size (``m_nObjectSize``), inheritance chain (``m_pBaseClass``), and the
 resolved per-slot bodies, classifies each slot with the shared
-``bootstrap_class.classify_slots``, and writes ``config/classes/<Class>.yml``.
+``class_codegen.classify_slots``, and writes ``config/classes/<Class>.yml``.
 
 The ``generated:`` region is refreshed wholesale; any existing ``curated:`` region
 is preserved verbatim (curated always wins, keyed by slot index). Nothing
@@ -25,7 +25,7 @@ from pathlib import Path
 from tools.common import class_manifest as cm
 from tools.common import ghidra_env
 from tools.common.repo import repo_root_from_file
-from tools.workflow.bootstrap_class import ClassifiedSlot, classify_slots
+from tools.workflow.class_codegen import ClassifiedSlot, classify_slots
 
 SCHEMA_MAGIC = 0xFFFF
 DESC_SIZE = 0x18

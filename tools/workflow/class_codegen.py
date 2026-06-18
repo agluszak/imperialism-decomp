@@ -1,36 +1,18 @@
 #!/usr/bin/env python3
-"""Scaffold a class + vtable port from a resolved slot table.
+"""Shared class/vtable code generation primitives for manifest recovery.
 
-The pure-python codegen half of `just bootstrap-class`. It consumes the JSON
-emitted by ``tools.ghidra.vtable_slots`` (class vtable + optional base vtable),
-classifies each slot (null / inherited-unchanged / override / new-virtual /
-scalar-deleting-destructor), and emits a reviewable scaffold:
-
-  * ``include/game/<Class>.h``  — `// VTABLE:` + virtual decls in slot order
-  * ``src/game/<Class>.cpp``    — `// FUNCTION:` markers (ascending address) plus
-                                  the standalone `// SYNTHETIC:` dtor block
-  * new rows for ``config/symbols.csv`` and ``config/function_ownership.csv``
-
-By default it prints a dry-run preview; ``--write`` creates the source files and
-merges the CSV rows (in numeric-address position, never duplicating an address
-already owned elsewhere). It deliberately does NOT build/compare/commit and never
-claims a match — bodies are left as TODO seeds for the normal decomp loop.
-
-Usage:
-  uv run python -m tools.workflow.bootstrap_class \
-      --class TUnitOrderState --base TObject --slots-json /tmp/slots.json [--write]
+This module classifies vtable slots and renders the first-pass C++ scaffold used
+by ``tools.workflow.gen_class`` when a manifest describes a class without a
+hand-written header yet.
 """
 
 from __future__ import annotations
 
-import argparse
-import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from tools.common.pipe_csv import normalize_hex, read_pipe_table
-from tools.common.repo import repo_root_from_file, resolve_repo_path
 
 SCALAR_DTOR_MARK = "scalar deleting destructor"
 
@@ -250,13 +232,13 @@ def render_header(
     if rtti.get("immediate_base"):
         # Inheritance recovered from the MFC CRuntimeClass chain — cite it.
         edge_comment = (
-            f"// TODO(bootstrap): describe {class_name} and its role. Base edge "
+            f"// TODO(manifest): describe {class_name} and its role. Base edge "
             f"({base_name}) recovered from RTTI CRuntimeClass chain: "
             f"{' -> '.join(rtti.get('ancestry', [class_name, base_name]))}."
         )
     else:
         edge_comment = (
-            f"// TODO(bootstrap): describe {class_name} and its role; confirm the base"
+            f"// TODO(manifest): describe {class_name} and its role; confirm the base"
             f" edge ({base_name}) from ctor/dtor sequencing + vtable layout evidence."
         )
     lines = [
@@ -302,7 +284,7 @@ def render_header(
 
     lines += [
         "",
-        "  // TODO(bootstrap): add data members from the object slice"
+        "  // TODO(manifest): add data members from the object slice"
         " (`just slice-discovery " + class_name + " 0xCTOR`).",
         "",
         f"  {class_name}();",
@@ -315,23 +297,23 @@ def render_header(
 def _body_seed(s: ClassifiedSlot) -> list[str]:
     out: list[str] = []
     if s.dtor_suspect:
-        out.append("  // WARNING(bootstrap): this slot's name looks like a deleting-destructor")
+        out.append("  // WARNING(manifest): this slot's name looks like a deleting-destructor")
         out.append("  // bridge. If it is the compiler scalar-deleting destructor (??_G/??_E),")
         out.append("  // do NOT hand-write this body: delete it and claim the address with a")
         out.append("  // standalone `// SYNTHETIC:` block + a symbols.csv backtick name (Hard")
         out.append("  // Rule 9). Only keep a real method here if it is a genuine virtual.")
     if s.decompiled_c:
-        out.append("  // TODO(bootstrap): port/clean the Ghidra decompile below, then")
+        out.append("  // TODO(manifest): port/clean the Ghidra decompile below, then")
         out.append("  // run the decomp loop (compare/vtable) before committing.")
         out.append("  /* --- Ghidra decompile seed ---")
         for line in s.decompiled_c.rstrip().splitlines():
             out.append("  " + line)
         out.append("  --- end seed --- */")
     else:
-        out.append("  // TODO(bootstrap): port the body from Ghidra, then run the decomp loop.")
+        out.append("  // TODO(manifest): port the body from Ghidra, then run the decomp loop.")
     # Keep the scaffold compilable: non-void slots need a placeholder return.
     if s.sig is not None and s.sig.ret.strip() not in ("void", ""):
-        out.append("  return 0; // TODO(bootstrap): real return value")
+        out.append("  return 0; // TODO(manifest): real return value")
     return out
 
 
@@ -356,7 +338,7 @@ def render_cpp(class_name: str, slots: list[ClassifiedSlot]) -> str:
             lines.append(f"// {class_name}::`scalar deleting destructor'")
             lines.append("")
             lines.append(
-                "// TODO(bootstrap): emit the real ~" + class_name + "() with its own"
+                "// TODO(manifest): emit the real ~" + class_name + "() with its own"
             )
             lines.append(
                 "// FUNCTION: IMPERIALISM 0x<dtor-addr> marker (find the destructor body in"
@@ -409,7 +391,8 @@ def plan_symbols(path: Path, owned: list[ClassifiedSlot], class_name: str) -> Cs
     plan = CsvPlan(path=path, fieldnames=fieldnames, rows=rows)
     existing = {norm_addr(r.get("address", "")) for r in rows}
     for s in owned:
-        if not s.target_addr or s.target_addr in existing:
+        target_addr = norm_addr(s.target_addr)
+        if not target_addr or target_addr in existing:
             continue
         if s.kind == "scalar_dtor":
             name = f"{class_name}::`scalar deleting destructor'"
@@ -420,14 +403,14 @@ def plan_symbols(path: Path, owned: list[ClassifiedSlot], class_name: str) -> Cs
             proto = s.prototype or f"{s.sig.ret} {s.sig.name}({s.sig.args})"
         plan.new_rows.append(
             {
-                "address": s.target_addr,
+                "address": target_addr,
                 "name": name,
                 "size": str(s.size or 1),
                 "type": "function",
                 "prototype": proto,
             }
         )
-        existing.add(s.target_addr)
+        existing.add(target_addr)
     return plan
 
 
@@ -436,136 +419,22 @@ def plan_ownership(path: Path, owned: list[ClassifiedSlot], target_cpp: str) -> 
     plan = CsvPlan(path=path, fieldnames=fieldnames, rows=rows)
     by_addr = {norm_addr(r.get("address", "")): r for r in rows}
     for s in owned:
-        if not s.target_addr:
+        target_addr = norm_addr(s.target_addr)
+        if not target_addr:
             continue
-        existing = by_addr.get(s.target_addr)
+        existing = by_addr.get(target_addr)
         if existing is not None:
             owner = (existing.get("target_cpp") or "").strip()
             if owner and owner != target_cpp:
-                plan.collisions.append(f"0x{s.target_addr} already owned by {owner}")
+                plan.collisions.append(f"0x{target_addr} already owned by {owner}")
             continue
         plan.new_rows.append(
             {
-                "address": s.target_addr,
+                "address": target_addr,
                 "target_cpp": target_cpp,
                 "ownership": "manual",
                 "note": "marker_sync",
             }
         )
-        by_addr[s.target_addr] = plan.new_rows[-1]
+        by_addr[target_addr] = plan.new_rows[-1]
     return plan
-
-
-# --------------------------------------------------------------------------- #
-# Orchestration
-# --------------------------------------------------------------------------- #
-
-
-def build_scaffold(args, repo_root: Path) -> int:
-    data = json.loads(Path(args.slots_json).read_text())
-    if args.cls not in data:
-        raise SystemExit(f"slots JSON has no entry for class '{args.cls}' (keys: {list(data)})")
-    class_entry = data[args.cls]
-    vtable_addr = class_entry["vtable_addr"]
-    class_slots = class_entry["slots"]
-    rtti = class_entry.get("rtti") or {}
-
-    # Base resolution: an explicit --base wins; otherwise fall back to the
-    # immediate base recovered from the MFC CRuntimeClass chain (which also names
-    # the CObject-vs-TObject root branch). Only when neither is available do we
-    # emit the unverified ': public TObject' placeholder.
-    base_name = args.base or rtti.get("immediate_base")
-    base_via_rtti = not args.base and bool(rtti.get("immediate_base"))
-    base_slots = data.get(base_name, {}).get("slots", []) if base_name else []
-
-    symbols_path = resolve_repo_path(repo_root, "config/symbols.csv")
-    ownership_path = resolve_repo_path(repo_root, "config/function_ownership.csv")
-    _, symbol_rows = read_pipe_table(symbols_path)
-    symbols = index_symbols(symbol_rows)
-
-    slots = classify_slots(class_slots, base_slots, symbols)
-    owned = [s for s in slots if s.kind in ("override", "new", "scalar_dtor")]
-
-    header_path = resolve_repo_path(repo_root, f"include/game/{args.cls}.h")
-    cpp_path = resolve_repo_path(repo_root, f"src/game/{args.cls}.cpp")
-    target_cpp = f"src/game/{args.cls}.cpp"
-
-    effective_base = base_name or "TObject"
-    header_text = render_header(args.cls, effective_base, vtable_addr, slots, rtti=rtti)
-    cpp_text = render_cpp(args.cls, slots)
-    sym_plan = plan_symbols(symbols_path, owned, args.cls)
-    own_plan = plan_ownership(ownership_path, owned, target_cpp)
-
-    # Summary
-    counts: dict[str, int] = {}
-    for s in slots:
-        counts[s.kind] = counts.get(s.kind, 0) + 1
-    print(f"== bootstrap-class {args.cls} : public {effective_base} ({vtable_addr}) ==")
-    if rtti.get("ancestry"):
-        print(f"   RTTI {rtti.get('root', '?')}-branch: {' -> '.join(rtti['ancestry'])}")
-    print(f"   slots: {len(slots)}  " + "  ".join(f"{k}={v}" for k, v in sorted(counts.items())))
-    print(f"   new symbols.csv rows: {len(sym_plan.new_rows)}")
-    print(f"   new function_ownership.csv rows: {len(own_plan.new_rows)}")
-    for c in own_plan.collisions:
-        print(f"   !! ownership collision (skipped): {c}")
-    for s in slots:
-        if s.dtor_suspect:
-            print(
-                f"   !! slot {s.slot_label} '{s.qualified_name}' looks like a deleting-destructor "
-                "bridge — verify it isn't ??_G; if so, claim it SYNTHETIC (Hard Rule 9), "
-                "don't hand-write it."
-            )
-    if base_via_rtti:
-        print(f"   base '{base_name}' recovered from RTTI CRuntimeClass chain.")
-        if not base_slots:
-            print(f"   !! base '{base_name}' vtable not extracted; inherited/override diff "
-                  "is degraded — pass the base vtable explicitly.")
-    elif not args.base:
-        print("   !! no --base and no RTTI base; emitted ': public TObject' as a TODO. "
-              "Verify inheritance.")
-
-    if not args.write:
-        print("\n--- DRY RUN (pass --write to apply) ---")
-        print(f"\n=== {header_path} ===\n{header_text}")
-        print(f"\n=== {cpp_path} ===\n{cpp_text}")
-        if sym_plan.new_rows:
-            print(f"\n=== + config/symbols.csv ===\n{sym_plan.render_new()}")
-        if own_plan.new_rows:
-            print(f"\n=== + config/function_ownership.csv ===\n{own_plan.render_new()}")
-        return 0
-
-    for path in (header_path, cpp_path):
-        if path.exists():
-            print(f"   refusing to overwrite existing {path}")
-            return 1
-    header_path.write_text(header_text)
-    cpp_path.write_text(cpp_text)
-    if sym_plan.new_rows:
-        symbols_path.write_text(sym_plan.merged_text())
-    if own_plan.new_rows:
-        ownership_path.write_text(own_plan.merged_text())
-    print("\n   wrote:")
-    print(f"     {header_path}")
-    print(f"     {cpp_path}")
-    print("   merged CSV rows. Next: just sync-ownership -> regen-stubs -> build -> vtable "
-          f"{args.cls} -> gates.")
-    return 0
-
-
-def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(description="Scaffold a class+vtable port from a resolved slot table.")
-    p.add_argument("--class", dest="cls", required=True, help="Class name (e.g. TUnitOrderState)")
-    p.add_argument("--base", default=None, help="Base class name (must also be a key in the slots JSON)")
-    p.add_argument("--slots-json", required=True, help="JSON from tools.ghidra.vtable_slots")
-    p.add_argument("--write", action="store_true", help="Apply changes (default: dry-run preview)")
-    return p.parse_args()
-
-
-def main() -> int:
-    args = parse_args()
-    repo_root = repo_root_from_file(__file__)
-    return build_scaffold(args, repo_root)
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

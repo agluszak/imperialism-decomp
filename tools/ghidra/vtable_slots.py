@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Read-only pyghidra extractor: resolve vtable slots to real bodies as JSON.
 
-The data half of the `just bootstrap-class` workflow. For one or more vtables it
+The data half of the `just recover-class` workflow. For one or more vtables it
 reads each slot pointer, follows a single ILT `jmp` thunk to the real body, and
 records the resolved target address, Ghidra name, size, listing signature and
 (optionally) the decompiled C. Output is a JSON document the pure-python
-`tools.workflow.bootstrap_class` codegen consumes, so the heavy Ghidra startup
+`tools.workflow.class_codegen` codegen consumes, so the heavy Ghidra startup
 runs once and the scaffolding logic stays Ghidra-free and unit-testable.
 
 Usage:
