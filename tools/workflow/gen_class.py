@@ -34,16 +34,19 @@ from __future__ import annotations
 
 import argparse
 import re
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
 from tools.common import class_manifest as cm
+from tools.common.file_scan import iter_files
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 from tools.workflow.class_codegen import (
     ClassifiedSlot,
     Signature,
     looks_like_deleting_dtor,
+    norm_addr,
     parse_prototype,
     unqualified,
 )
@@ -54,9 +57,37 @@ from tools.workflow.class_codegen import (
 _JUNK_NAME = re.compile(
     r"(FUN_|SUB_|LAB_|Orphan|WrapperFor_|NoOp|_At[0-9A-Fa-f]{6}|VTableSlot|Unknown|Dummy)"
 )
+_VTABLE_MARKER = re.compile(r"//\s*VTABLE:\s*IMPERIALISM\s+(0x[0-9a-fA-F]+|[0-9a-fA-F]+)")
+_CLASS_DECL = re.compile(r"\b(?:class|struct)\s+([A-Za-z_][A-Za-z0-9_]*)\b")
 
 BLOCK_BEGIN = "// === BEGIN GENERATED ({cls}) — refreshed by `just gen-class {cls}`; do not hand-edit ==="
 BLOCK_END = "// === END GENERATED ({cls}) ==="
+
+
+_SOURCE_BASE_SLOTS: dict[str, list[tuple[int, str, str, str | None, str]]] = {
+    # Source-owned TObject has no manifest of its own, but many dumped class
+    # manifests use it as an RTTI base. Keep this small table synced with
+    # include/game/TObject.h and the corresponding FUNCTION/SYNTHETIC markers.
+    "TObject": [
+        (0, "0x00485e20", "TObject::GetRuntimeClass", "CRuntimeClass* GetRuntimeClass() const", "override"),
+        (1, "0x00484990", "TObject::`scalar deleting destructor'", None, "scalar_dtor"),
+        (2, "0x00485e90", "TObject::Serialize", "void Serialize(CArchive& archive)", "override"),
+        (3, "0x00412bf0", "CObject::AssertValid", "void AssertValid() const", "override"),
+        (4, "0x00412c10", "CObject::Dump", "void Dump(CDumpContext& dc) const", "override"),
+        (5, "0x00485f70", "TObject::WriteTo", "void WriteTo(TStream* stream)", "new"),
+        (6, "0x00485f90", "TObject::ReadFrom", "void ReadFrom(TStream* stream)", "new"),
+        (7, "0x004798b0", "TObject::Free", "void Free()", "new"),
+        (8, "0x004798d0", "TObject::ShallowClone", "TObject* ShallowClone()", "new"),
+        (9, "0x00415ce0", "TObject::ShallowFree", "TObject* ShallowFree()", "new"),
+    ],
+    "CObject": [
+        (0, "0x00606fba", "CObject::GetRuntimeClass", "CRuntimeClass* GetRuntimeClass() const", "override"),
+        (1, "0x00415f00", "CObject::`scalar deleting destructor'", None, "scalar_dtor"),
+        (2, "0x00412bd0", "CObject::Serialize", "void Serialize(CArchive& archive)", "override"),
+        (3, "0x00412bf0", "CObject::AssertValid", "void AssertValid() const", "override"),
+        (4, "0x00412c10", "CObject::Dump", "void Dump(CDumpContext& dc) const", "override"),
+    ],
+}
 
 
 def manifest_path(repo_root: Path, cls: str) -> Path:
@@ -173,6 +204,82 @@ def upsert_block(text: str, cls: str, block: str) -> tuple[str, bool]:
 # --------------------------------------------------------------------------- #
 
 
+def _source_base_slots(base: str) -> list[ClassifiedSlot]:
+    out: list[ClassifiedSlot] = []
+    for idx, target, qualified, proto, kind in _SOURCE_BASE_SLOTS.get(base, []):
+        fallback = unqualified(qualified)
+        sig = parse_prototype(proto, fallback) if proto else None
+        out.append(
+            ClassifiedSlot(
+                index=idx,
+                byte_offset=idx * 4,
+                slot_label=f"0x{idx * 4:02x}",
+                target_addr=norm_addr(target),
+                kind=kind,
+                sig=sig,
+                qualified_name=qualified,
+                size=0,
+                prototype=proto,
+                decompiled_c=None,
+                base_target=None,
+            )
+        )
+    return out
+
+
+def _apply_source_base_slots(slots: list[ClassifiedSlot], base: str) -> list[ClassifiedSlot]:
+    """Correct manifest slot kinds/signatures when the base is source-owned only."""
+    base_slots = {s.index: s for s in _source_base_slots(base)}
+    if not base_slots:
+        return slots
+
+    out: list[ClassifiedSlot] = []
+    for slot in slots:
+        base_slot = base_slots.get(slot.index)
+        if base_slot is None or slot.kind in ("null", "ilt_thunk"):
+            out.append(slot)
+            continue
+
+        if norm_addr(slot.target_addr) == base_slot.target_addr:
+            out.append(
+                replace(
+                    slot,
+                    kind="inherited",
+                    sig=None,
+                    qualified_name=base_slot.qualified_name,
+                    base_target=base_slot.target_addr,
+                    dtor_suspect=False,
+                )
+            )
+            continue
+
+        if base_slot.kind == "scalar_dtor":
+            out.append(
+                replace(
+                    slot,
+                    kind="scalar_dtor",
+                    sig=None,
+                    qualified_name=f"{slot.qualified_name or ''} (verify scalar deleting destructor)",
+                    base_target=base_slot.target_addr,
+                    dtor_suspect=False,
+                )
+            )
+            continue
+
+        assert base_slot.sig is not None
+        out.append(
+            replace(
+                slot,
+                kind="override",
+                sig=base_slot.sig,
+                qualified_name=base_slot.qualified_name,
+                base_target=base_slot.target_addr,
+                dtor_suspect=False,
+            )
+        )
+    return out
+
+
 def _classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
     """Rebuild class_codegen.ClassifiedSlot records from the manifest.
 
@@ -184,7 +291,7 @@ def _classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
     out: list[ClassifiedSlot] = []
     for s in (manifest.get("generated") or {}).get("slots") or []:
         idx = cm._as_int(s["index"])
-        target = str(s.get("target") or "0x0").removeprefix("0x")
+        target = norm_addr(str(s.get("target") or "0x0"))
         kind = s.get("kind") or "new"
         cur = curated.get(idx)
         qualified = (cur or {}).get("method") or s.get("ghidra_name")
@@ -212,7 +319,53 @@ def _classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
                 dtor_suspect=kind in ("override", "new") and looks_like_deleting_dtor(qualified),
             )
         )
-    return out
+    base = (manifest.get("generated") or {}).get("base") or ""
+    return _apply_source_base_slots(out, str(base))
+
+
+def source_base_scaffold_issues(cls: str, manifest: dict[str, Any]) -> list[str]:
+    gen = manifest.get("generated") or {}
+    base = str(gen.get("base") or "")
+    base_slots = _source_base_slots(base)
+    slots = (gen.get("slots") or [])
+    if not base_slots or not slots:
+        return []
+    max_index = max(cm._as_int(s.get("index") or 0) for s in slots)
+    max_base_index = max(s.index for s in base_slots)
+    if max_index >= max_base_index:
+        return []
+    return [
+        f"{cls} manifest has slots through 0x{max_index:02x}, but source-modeled "
+        f"{base} reaches slot 0x{max_base_index:02x}; likely an alias/nonstandard table"
+    ]
+
+
+def existing_vtable_annotation(repo_root: Path, cls: str, vtable_addr: str) -> str | None:
+    target = norm_addr(vtable_addr)
+    if not target:
+        return None
+    include_root = resolve_repo_path(repo_root, "include/game")
+    if not include_root.exists():
+        return None
+    expected = header_path(repo_root, cls)
+    for path in iter_files([str(include_root)], patterns=("*.h", "*.hpp")):
+        text = path.read_text(encoding="utf-8")
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            m = _VTABLE_MARKER.search(line)
+            if not m or norm_addr(m.group(1)) != target:
+                continue
+            if path == expected:
+                continue
+            owner = path.stem
+            for lookahead in lines[i + 1 : i + 8]:
+                cmatch = _CLASS_DECL.search(lookahead)
+                if cmatch:
+                    owner = cmatch.group(1)
+                    break
+            rel = path.relative_to(repo_root)
+            return f"0x{target} already annotated by {owner} at {rel}:{i + 1}"
+    return None
 
 
 def _owned_addresses(repo_root: Path) -> set[int]:
@@ -285,6 +438,10 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
     vtable_addr = gen.get("vtable_addr") or "0x00000000"
     ancestry = [str(a) for a in (gen.get("ancestry") or [cls, base])]
     rtti = {"immediate_base": base, "ancestry": ancestry, "root": gen.get("root") or "TObject"}
+    scaffold_issues = source_base_scaffold_issues(cls, manifest)
+    vtable_collision = existing_vtable_annotation(repo_root, cls, vtable_addr)
+    if vtable_collision:
+        scaffold_issues.append(vtable_collision)
 
     slots = _classified_from_manifest(manifest)
     owned = [s for s in slots if s.kind in ("override", "new", "scalar_dtor")]
@@ -304,10 +461,19 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
         print(f"=== {hpath} ===\n{header_text}")
         print(f"=== {cpp_path} ===\n{cpp_text}")
         print(f"\n+ {len(sym_plan.new_rows)} symbols.csv rows, {len(own_plan.new_rows)} ownership rows.")
+        for issue in scaffold_issues:
+            print(f"!! scaffold issue: {issue}")
         for collision in own_plan.collisions:
             print(f"!! ownership collision: {collision}")
         print("Pass --write to scaffold.")
         return 0
+
+    if scaffold_issues:
+        print(f"gen-class {cls}: refusing to scaffold because the manifest is not a safe new class:")
+        for issue in scaffold_issues:
+            print(f"  {issue}")
+        print("Fix the manifest/class identity before writing the new class.")
+        return 1
 
     if own_plan.collisions:
         print(f"gen-class {cls}: refusing to scaffold because slot bodies are already owned:")

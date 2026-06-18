@@ -4,11 +4,15 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from tools.workflow.gen_class import (
     _classified_from_manifest,
+    existing_vtable_annotation,
     find_block,
     render_generated_block,
+    source_base_scaffold_issues,
     upsert_block,
 )
 
@@ -107,13 +111,80 @@ class ClassifiedFromManifestTests(unittest.TestCase):
         slots = _classified_from_manifest(manifest)
         self.assertEqual(len(slots), 3)
         s0 = slots[0]
-        self.assertEqual(s0.kind, "new")
-        self.assertEqual(s0.target_addr, "004b0000")  # bare hex
+        self.assertEqual(s0.kind, "override")
+        self.assertEqual(s0.target_addr, "4b0000")  # bare hex, no leading zeroes
         self.assertIsNotNone(s0.sig)
-        self.assertEqual(s0.sig.name, "ComputeThing")  # curated wins over Ghidra FUN_
-        self.assertEqual(s0.sig.ret, "int")
+        # TObject's source-owned slot 0 supplies the real override signature.
+        self.assertEqual(s0.sig.name, "GetRuntimeClass")
+        self.assertEqual(s0.sig.ret, "CRuntimeClass*")
         # null slot carries no signature
         self.assertIsNone(slots[2].sig)
+
+    def test_source_owned_tobject_slots_correct_manifest_kinds(self) -> None:
+        manifest = {
+            "class": "TFoo",
+            "generated": {
+                "base": "TObject",
+                "slots": [
+                    {"index": "0x00", "byte": "0x00", "target": "0x00500000", "kind": "new", "ghidra_name": "TFoo::GetTFooClassNamePointer"},
+                    {"index": "0x01", "byte": "0x04", "target": "0x00500020", "kind": "new", "ghidra_name": "TFoo::DestroyTFoo"},
+                    {"index": "0x02", "byte": "0x08", "target": "0x00485e90", "kind": "new", "ghidra_name": "Wrong::Name"},
+                    {"index": "0x03", "byte": "0x0c", "target": "0x00412bf0", "kind": "new", "ghidra_name": "Wrong::Name"},
+                    {"index": "0x04", "byte": "0x10", "target": "0x00412c10", "kind": "new", "ghidra_name": "Wrong::Name"},
+                    {"index": "0x05", "byte": "0x14", "target": "0x00500100", "kind": "new", "ghidra_name": "TFoo::WriteState"},
+                ],
+            },
+            "curated": {},
+        }
+        slots = {s.index: s for s in _classified_from_manifest(manifest)}
+        self.assertEqual(slots[0].kind, "override")
+        self.assertEqual(slots[0].sig.name, "GetRuntimeClass")
+        self.assertEqual(slots[1].kind, "scalar_dtor")
+        self.assertEqual(slots[2].kind, "inherited")
+        self.assertEqual(slots[2].qualified_name, "TObject::Serialize")
+        self.assertEqual(slots[3].kind, "inherited")
+        self.assertEqual(slots[3].qualified_name, "CObject::AssertValid")
+        self.assertEqual(slots[4].kind, "inherited")
+        self.assertEqual(slots[4].qualified_name, "CObject::Dump")
+        self.assertEqual(slots[5].kind, "override")
+        self.assertEqual(slots[5].sig.name, "WriteTo")
+
+    def test_source_base_scaffold_issue_for_shorter_than_tobject_table(self) -> None:
+        manifest = _manifest()
+        manifest["class"] = "TShort"
+        manifest["generated"]["slots"] = manifest["generated"]["slots"][:2]
+        issues = source_base_scaffold_issues("TShort", manifest)
+        self.assertEqual(len(issues), 1)
+        self.assertIn("source-modeled TObject reaches slot 0x09", issues[0])
+
+
+class ExistingVtableAnnotationTests(unittest.TestCase):
+    def test_finds_existing_owner_header(self) -> None:
+        with TemporaryDirectory() as td:
+            root = Path(td)
+            include_game = root / "include" / "game"
+            include_game.mkdir(parents=True)
+            (include_game / "TMapOrderContext.h").write_text(
+                "#pragma once\n"
+                "// VTABLE: IMPERIALISM 0x0065c7c8\n"
+                "class TMapOrderContext {};\n",
+                encoding="utf-8",
+            )
+            owner = existing_vtable_annotation(root, "TOcean", "0x0065c7c8")
+            self.assertIsNotNone(owner)
+            self.assertIn("TMapOrderContext", owner)
+            self.assertIn("include/game/TMapOrderContext.h:2", owner)
+
+    def test_ignores_target_class_header(self) -> None:
+        with TemporaryDirectory() as td:
+            root = Path(td)
+            include_game = root / "include" / "game"
+            include_game.mkdir(parents=True)
+            (include_game / "TFoo.h").write_text(
+                "#pragma once\n// VTABLE: IMPERIALISM 0x1\nclass TFoo {};\n",
+                encoding="utf-8",
+            )
+            self.assertIsNone(existing_vtable_annotation(root, "TFoo", "0x00000001"))
 
 
 if __name__ == "__main__":
