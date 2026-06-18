@@ -740,7 +740,7 @@ address|name|size|type|prototype
 487150|WrapperFor_ftol_At00487150|30|function|undefined WrapperFor_ftol_At00487150()
 4871c0|TBehavior::GetTBehaviorClassNamePointer|6|function|undefined GetTBehaviorClassNamePointer()
 4871e0|TBehavior::ConstructTBehaviorBaseState|27|function|undefined ConstructTBehaviorBaseState()
-487210|TBehavior::DestructTBehaviorAndMaybeFree|30|function|undefined DestructTBehaviorAndMaybeFree()
+487210|TBehavior::`scalar deleting destructor'|30|function|void* __thiscall `scalar deleting destructor'(unsigned int)
 487240|DestructTBehaviorAndMaybeFree_Impl|7|function|undefined DestructTBehaviorAndMaybeFree_Impl()
 487280|OrphanTiny_SetDwordEcxOffset_8_00487280|10|function|undefined OrphanTiny_SetDwordEcxOffset_8_00487280()
 4872a0|OrphanLeaf_NoCall_Ins02_004872a0|4|function|undefined OrphanLeaf_NoCall_Ins02_004872a0()

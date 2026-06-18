@@ -113,6 +113,9 @@ field-layout-gate *args:
 gen-vtable-slot-overrides *args: _require-ghidra-install
   uv run python -m tools.ghidra.gen_vtable_slot_overrides {{args}}
 
+propagate-virtual-method-names *args: _require-ghidra-install
+  uv run python -m tools.ghidra.propagate_virtual_method_names {{args}}
+
 ghidra-vtable-struct-check *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_struct_check {{args}}
 
