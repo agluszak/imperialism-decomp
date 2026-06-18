@@ -130,6 +130,12 @@ ghidra-vtable-dump class vtable *args: _require-ghidra-install
 dump-manifests *args: _require-ghidra-install
   uv run python -m tools.ghidra.dump_class_manifests {{args}}
 
+# One-time Ghidra cleanup: commit Ghidra's `in_stack_*` stack args as real function
+# parameters in the DB, so after `just sync-ghidra` + autogen regen no `in_stack_*`
+# reads remain anywhere. Read-only by default; pass --apply to write (then sync-ghidra).
+fix-in-stack-params *args: _require-ghidra-install
+  uv run python -m tools.ghidra.fix_in_stack_params {{args}}
+
 # Dump the Ghidra thunk-name -> real-name map to config/thunk_map.csv so offline
 # body promotion (gen-class) can resolve jmp-thunk/alias call names without
 # a live Ghidra connection. Read-only and idempotent.
