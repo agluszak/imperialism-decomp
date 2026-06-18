@@ -16,11 +16,13 @@ Mechanisms already in place that several of these items reuse:
 - `config/recovered_data.csv` — misidentified data labels reclassified as structs
   (e.g. string → indexed table). Field specs accept optional names:
   `0x28:dword[6]:summaryTags`.
-- `config/vtable_slot_method_overrides.csv` — evidence-curated exceptions for
-  `ensure_vtbl_struct` slot naming/signatures (primary source is
-  `just gen-vtable-slot-overrides` suggestions merged after review).
-- `config/class_vtable_aliases.csv` — alias class names that share a canonical
-  vtable (`TLocalizationRuntime` → `TSimMgr`); overrides resolve through the alias.
+- `config/classes/<Class>.yml` `curated.slots` — evidence-curated exceptions for
+  `ensure_vtbl_struct` slot naming/signatures (a slot's `method`/`mac_method`;
+  `just gen-vtable-slot-overrides` emits suggestions reviewed into the manifest).
+  *(Replaced the former `vtable_slot_method_overrides.csv`.)*
+- `config/classes/<Class>.yml` `curated.aliases` — alias class names that share a
+  canonical vtable (`TLocalizationRuntime` → `TSimMgr`); overrides resolve through
+  the alias. *(Replaced the former `class_vtable_aliases.csv`.)*
 - `config/classes/<Class>.yml` `curated.layout` — per-class `recovered` vs
   `in_progress` layout policy (`status`/`header`) and the derived-class prefix
   `base_offset`/`base_class` (`TGreatPower` @ `0x94` after `TCountry`). Enforced by
@@ -161,7 +163,7 @@ never overwrite an already-typed USER_DEFINED Ghidra field.
    `curated.layout.status: recovered` in the manifest when every member is annotated.
 3. `just field-layout-gate` — verify annotations for listed classes.
 4. `just gen-vtable-slot-overrides` — emit slot-name suggestions from `// VTABLE:`
-   headers; merge exceptions into `config/vtable_slot_method_overrides.csv`.
+   headers; merge exceptions into the manifest `curated.slots`.
 5. `just apply-mfc-rtti --apply --verbose` — applies fields, globals, vtable aliases,
    and overlap-clipped struct fields.
 6. `just ghidra-decomp-check` — vtable struct checks + decompile benchmark suite.
@@ -191,7 +193,7 @@ listed as confirmed `__cdecl`. Remaining scan: `OrphanDeadLeaf_NoRefs_0051da60`
 - **Interior field recovery at scale.** Most class structs are still `{vftable}` +
   `field_0x...`. Use `gen_recovered_fields_from_headers` + gated CSV merge.
 - **Vtable slots → named virtuals + signatures.** Hot `TSimMgr` slots `0x1d`–`0x21`
-  named via `vtable_slot_method_overrides.csv`; decompiler composite indexing
+  named via the manifest `curated.slots`; decompiler composite indexing
   remains a ceiling until struct emission matches the 8-byte model.
 - **Name the 323 `FUN_`/`SUB_` functions.** Extend locality/caller attribution in
   `apply_mfc_rtti.py`.

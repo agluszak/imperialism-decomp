@@ -124,6 +124,36 @@ def curated_layout(manifest: dict[str, Any]) -> dict[str, Any]:
     return (manifest.get("curated") or {}).get("layout") or {}
 
 
+def slot_method_overrides(manifests: dict[str, dict[str, Any]]) -> dict[tuple[str, int], dict[str, str]]:
+    """``(class, slot_index) -> {method_name, mac_method}`` from curated slot names.
+
+    Only curated slots that carry a ``method`` are exposed (the override surface
+    that formerly lived in ``vtable_slot_method_overrides.csv``).
+    """
+    out: dict[tuple[str, int], dict[str, str]] = {}
+    for cls, manifest in manifests.items():
+        for rec in (manifest.get("curated") or {}).get("slots") or []:
+            method = (rec.get("method") or "").strip()
+            if not method or "index" not in rec:
+                continue
+            out[(cls, _as_int(rec["index"]))] = {
+                "method_name": method,
+                "mac_method": (rec.get("mac_method") or "").strip() or method,
+            }
+    return out
+
+
+def vtable_aliases(manifests: dict[str, dict[str, Any]]) -> dict[str, str]:
+    """``alias_class -> canonical_class`` from curated ``aliases`` blocks."""
+    out: dict[str, str] = {}
+    for canonical, manifest in manifests.items():
+        for rec in (manifest.get("curated") or {}).get("aliases") or []:
+            alias = (rec.get("alias_class") or "").strip()
+            if alias:
+                out[alias] = canonical
+    return out
+
+
 # --------------------------------------------------------------------------- #
 # Deterministic emitter
 # --------------------------------------------------------------------------- #
@@ -146,6 +176,7 @@ _SLOT_KEY_ORDER = [
 ]
 _CURATED_SLOT_KEY_ORDER = ["index", "method", "mac_method", "confidence", "evidence"]
 _FIELD_KEY_ORDER = ["offset", "type", "name", "source", "evidence"]
+_ALIAS_KEY_ORDER = ["alias_class", "vtable_addr", "note"]
 _LAYOUT_KEY_ORDER = [
     "base_offset",
     "base_class",
@@ -238,6 +269,9 @@ def dump_manifest(manifest: dict[str, Any]) -> str:
     if cur.get("fields"):
         out.append("  fields:")
         _emit_list(out, "    ", cur["fields"], _FIELD_KEY_ORDER)
+    if cur.get("aliases"):
+        out.append("  aliases:")
+        _emit_list(out, "    ", cur["aliases"], _ALIAS_KEY_ORDER)
 
     return "\n".join(out) + "\n"
 

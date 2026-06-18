@@ -56,7 +56,7 @@ from pathlib import Path
 import jpype
 import pyghidra
 
-from tools.common import ghidra_env
+from tools.common import class_manifest, ghidra_env
 from tools.common.recovered_field_type import FieldKind, parse_data_field_type, parse_field_type
 from tools.common.repo import repo_root_from_file
 from tools.ghidra.apply_mfc_datatypes import MFC_MODELS
@@ -90,8 +90,8 @@ DISSOLVE_NAMESPACES_PATH = REPO_ROOT / "config" / "dissolve_namespaces.csv"
 # address. "|"-delimited (address|calling_convention|note).
 CALLING_CONVENTION_OVERRIDES_PATH = REPO_ROOT / "config" / "calling_convention_overrides.csv"
 FUNCTION_CLASS_OVERRIDES_PATH = REPO_ROOT / "config" / "function_class_overrides.csv"
-VTABLE_SLOT_METHOD_OVERRIDES_PATH = REPO_ROOT / "config" / "vtable_slot_method_overrides.csv"
-CLASS_VTABLE_ALIASES_PATH = REPO_ROOT / "config" / "class_vtable_aliases.csv"
+# Per-slot vtable method-name overrides and vtable aliases now live in the per-class
+# manifests (config/classes/<Class>.yml: curated.slots / curated.aliases).
 # Evidence-curated reclassification of misidentified data (e.g. Ghidra "string" labels
 # that are indexed as structs/arrays). "|"-delimited; see recovered_data.csv header.
 RECOVERED_DATA_PATH = REPO_ROOT / "config" / "recovered_data.csv"
@@ -575,27 +575,13 @@ def run(program, args) -> dict:
                 return list(csv.DictReader(fd, delimiter="|"))
 
         mac_methods: dict[tuple[str, str], list[dict[str, str]]] = {}
-        slot_method_overrides: dict[tuple[str, int], dict[str, str]] = {}
-        vtable_aliases: dict[str, str] = {}
-        for row in read_pipe_csv(CLASS_VTABLE_ALIASES_PATH):
-            alias = (row.get("alias_class") or "").strip()
-            canonical = (row.get("canonical_class") or "").strip()
-            if alias and canonical:
-                vtable_aliases[alias] = canonical
-        for row in read_pipe_csv(VTABLE_SLOT_METHOD_OVERRIDES_PATH):
-            cls = (row.get("class") or "").strip()
-            slot_s = (row.get("slot_index") or "").strip()
-            method = (row.get("method_name") or "").strip()
-            if not cls or not slot_s or not method:
-                continue
-            try:
-                slot = int(slot_s, 16) if slot_s.lower().startswith("0x") else int(slot_s)
-            except ValueError:
-                continue
-            slot_method_overrides[(cls, slot)] = {
-                "method_name": method,
-                "mac_method": (row.get("mac_method") or "").strip() or method,
-            }
+        # Per-slot method-name overrides and vtable aliases now live in the per-class
+        # manifests (config/classes/<Class>.yml: curated.slots / curated.aliases),
+        # the single source that replaced vtable_slot_method_overrides.csv and
+        # class_vtable_aliases.csv.
+        manifests = class_manifest.load_all_manifests(REPO_ROOT)
+        slot_method_overrides = class_manifest.slot_method_overrides(manifests)
+        vtable_aliases = class_manifest.vtable_aliases(manifests)
         if MAC_SYMBOLS_PATH.exists():
             with MAC_SYMBOLS_PATH.open("r", encoding="utf-8", newline="") as fd:
                 for row in csv.DictReader(fd):

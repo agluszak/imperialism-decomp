@@ -50,3 +50,9 @@ generated:
     - {index: 0x29, byte: 0xa4, target: 0x00000000, kind: "null", is_thunk: false, is_null: true}
     - {index: 0x2a, byte: 0xa8, target: 0x00580460, kind: new, is_thunk: false, is_null: false, ghidra_name: TSimMgr::AppendByteToResizableBuffer, size: 109, prototype: "undefined AppendByteToResizableBuffer(void)"}
 curated:
+  slots:
+    - {index: 0x1d, method: FormatSignedIntWithSingleThousandsSeparator, mac_method: FormatNum, evidence: "Localization formatting; byte offset 0x74. Evidence: 0x0050C1BF CALL [vptr+0x74]."}
+    - {index: 0x1f, method: GetStringPrelude, mac_method: GetString, evidence: "Thin wrapper calling slot 0x40; byte offset 0x7c. Evidence: 0x0050C1BF."}
+    - {index: 0x21, method: LoadUiStringByCodeGroupAndOffset, mac_method: GetString, evidence: "Primary UI string loader; byte offset 0x84. Evidence: 0x0050C1BF CALL [vptr+0x84]; body 0x00580760."}
+  aliases:
+    - {alias_class: TLocalizationRuntime, vtable_addr: 0x00662a58, note: "g_pLocalizationTable manual port name; same vtable as Ghidra TSimMgr"}

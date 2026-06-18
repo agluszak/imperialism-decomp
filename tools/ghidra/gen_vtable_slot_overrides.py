@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""Suggest vtable_slot_method_overrides.csv rows from header VTABLE addresses.
+"""Suggest curated vtable-slot method names from header VTABLE addresses.
 
 Resolves each slot through Ghidra (ILT thunk chain), maps body addresses to
-owned symbol names, and emits reviewable CSV suggestions.
+owned symbol names, and emits reviewable suggestions (to a .generated.csv) for
+slots not already curated in the manifests' curated.slots. Reviewed names are
+merged into config/classes/<Class>.yml (which replaced
+vtable_slot_method_overrides.csv); aliases resolve via curated.aliases.
 
 Usage:
   uv run python -m tools.ghidra.gen_vtable_slot_overrides
@@ -18,8 +21,8 @@ import io
 import re
 import sys
 from dataclasses import dataclass
-from pathlib import Path
 
+from tools.common import class_manifest
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 
@@ -28,8 +31,6 @@ INCLUDE_GAME = REPO / "include" / "game"
 OUT_PATH = REPO / "config" / "vtable_slot_method_overrides.generated.csv"
 SYMBOLS_PATH = REPO / "config" / "symbols.csv"
 MAC_SYMBOLS_PATH = REPO / "vendor" / "macos_codewarrior" / "evidence" / "symbols.csv"
-ALIASES_PATH = REPO / "config" / "class_vtable_aliases.csv"
-CURATED_PATH = REPO / "config" / "vtable_slot_method_overrides.csv"
 
 VTABLE_HEADER = re.compile(
     r"^\s*//\s*VTABLE:\s*IMPERIALISM\s+(0x[0-9a-fA-F]+)",
@@ -119,25 +120,14 @@ def load_mac_methods() -> dict[tuple[str, str], str]:
 
 
 def load_curated_keys() -> set[tuple[str, int]]:
-    keys: set[tuple[str, int]] = set()
-    for row in read_pipe_rows(CURATED_PATH):
-        cls = (row.get("class") or "").strip()
-        slot_s = (row.get("slot_index") or "").strip()
-        if not cls or not slot_s:
-            continue
-        slot = int(slot_s, 16) if slot_s.lower().startswith("0x") else int(slot_s)
-        keys.add((cls, slot))
-    return keys
+    """Already-curated (class, slot) pairs, from the manifests' curated.slots."""
+    manifests = class_manifest.load_all_manifests(REPO)
+    return set(class_manifest.slot_method_overrides(manifests).keys())
 
 
 def load_alias_map() -> dict[str, str]:
-    aliases: dict[str, str] = {}
-    for row in read_pipe_rows(ALIASES_PATH):
-        alias = (row.get("alias_class") or "").strip()
-        canonical = (row.get("canonical_class") or "").strip()
-        if alias and canonical:
-            aliases[alias] = canonical
-    return aliases
+    """alias_class -> canonical_class, from the manifests' curated.aliases."""
+    return class_manifest.vtable_aliases(class_manifest.load_all_manifests(REPO))
 
 
 def ghidra_read_slots(vtable_addr: int, max_slots: int = 200) -> list[tuple[int, int | None, str | None]]:
