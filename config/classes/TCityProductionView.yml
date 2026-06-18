@@ -131,3 +131,5 @@ generated:
     - {index: 0x7a, byte: 0x1e8, target: 0x004bc9b0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip, size: 244, prototype: "undefined RenderViewIntoPrimaryRenderContextWithTemporaryClip(void)"}
     - {index: 0x7b, byte: 0x1ec, target: 0x004bcaf0, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityProductionView::RefreshCityDialogSummaryValues, size: 874, prototype: "undefined RefreshCityDialogSummaryValues(void)"}
 curated:
+  fields:
+    - {offset: 0x94, type: TCity, name: pCity, source: manual, evidence: "City whose production slots this view edits. Evidence: scalar deleting destructor path calls GetCityBuildingProductionValueBySlot((void *)param_1[0x25], ...) where 0x25*4=0x94; RTTI size 0x18c."}

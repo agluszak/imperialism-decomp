@@ -37,7 +37,7 @@ into the Ghidra database so the decompiled code we promote is better:
      (a function bracketed by one class's method run, tie-broken by RTTI object
      size), and applies evidence-curated typing the static passes cannot infer:
      typed global pointer arrays (config/recovered_globals.csv) and interior
-     class-field pointer types (config/recovered_fields.csv).
+     class-field pointer types (per-class manifest curated.fields).
 
 Idempotent and re-runnable; it never overwrites a USER_DEFINED name. Dry-run by
 default — pass ``--apply`` to open the project writable and ``program.save()``.
@@ -77,9 +77,10 @@ MAC_SYMBOLS_PATH = REPO_ROOT / "vendor" / "macos_codewarrior" / "evidence" / "sy
 # class-field pointer types and typed global pointer arrays). Static this-argument
 # inference was measured to yield almost nothing (virtual dispatch dominates) and
 # to be noisy for globals, so these high-confidence facts are recorded by hand from
-# concrete evidence and applied deterministically. Both are "|"-delimited.
+# concrete evidence and applied deterministically. Globals are "|"-delimited;
+# interior class fields now live in the per-class manifests' curated.fields
+# (config/classes/<Class>.yml), which replaced recovered_fields.csv.
 RECOVERED_GLOBALS_PATH = REPO_ROOT / "config" / "recovered_globals.csv"
-RECOVERED_FIELDS_PATH = REPO_ROOT / "config" / "recovered_fields.csv"
 # Placeholder "class" namespaces invented by early manual decompilation that are not
 # real classes (e.g. functions grouped because their destructor resets the object's
 # vptr to a shared base/interface vtable address). Listed here so they are dissolved
@@ -1349,7 +1350,10 @@ def run(program, args) -> dict:
                 return None
             return inner, inner.getLength()
 
-        curated_field_rows = read_pipe_csv(RECOVERED_FIELDS_PATH)
+        # Interior class-field types now come from the per-class manifests'
+        # curated.fields (config/classes/<Class>.yml), which replaced
+        # recovered_fields.csv. `manifests` was loaded above in this apply pass.
+        curated_field_rows = class_manifest.recovered_field_rows(manifests)
         curated_field_rows.sort(
             key=lambda row: (
                 (row.get("class") or "").strip(),

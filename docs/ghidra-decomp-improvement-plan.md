@@ -8,11 +8,12 @@ unnamed `FUN_`/`SUB_` functions.
 
 Mechanisms already in place that several of these items reuse:
 
-- `config/recovered_globals.csv` + `config/recovered_fields.csv` — evidence-curated
-  typed globals / interior class fields, applied by `apply_mfc_rtti.py` (step 7).
-  Globals pass supports optional `rename` column (creates/renames the label at the
-  address). `object_size` bootstraps pointer targets with no Ghidra namespace
-  (e.g. `TQuickDrawSurfaceContext`).
+- `config/recovered_globals.csv` — evidence-curated typed globals, applied by
+  `apply_mfc_rtti.py` (step 7). Supports an optional `rename` column (creates/renames
+  the label at the address). `object_size` bootstraps pointer targets with no Ghidra
+  namespace (e.g. `TQuickDrawSurfaceContext`). Interior class fields now live in the
+  per-class manifest `curated.fields` (config/classes/<Class>.yml), also applied in
+  step 7. *(Replaced the former `recovered_fields.csv`.)*
 - `config/recovered_data.csv` — misidentified data labels reclassified as structs
   (e.g. string → indexed table). Field specs accept optional names:
   `0x28:dword[6]:summaryTags`.
@@ -124,7 +125,7 @@ Recorded in `config/recovered_globals.csv` and applied by `apply_mfc_rtti.py`
 not a second array type), `g_pActiveCityDialogLegendSelectionOwner` (deferred until writer
 found), `TOcean` tail fields past `0x14` when alloc size grows beyond `0x18`.
 
-### 1b. Grow `recovered_fields.csv` — **in progress**
+### 1b. Grow the manifest `curated.fields` — **in progress**
 Rows applied so far:
 
 | class | offset | field |
@@ -159,7 +160,7 @@ never overwrite an already-typed USER_DEFINED Ghidra field.
 1. `just gen-recovered-fields-from-headers` — pcpp + cxxheaderparser emit
    `config/recovered_fields.generated.csv` from `include/game/*.h` offset comments
    and the manifest `curated.layout.base_offset`.
-2. Merge reviewed rows into `config/recovered_fields.csv`; set
+2. Merge reviewed rows into the manifest `curated.fields`; set
    `curated.layout.status: recovered` in the manifest when every member is annotated.
 3. `just field-layout-gate` — verify annotations for listed classes.
 4. `just gen-vtable-slot-overrides` — emit slot-name suggestions from `// VTABLE:`

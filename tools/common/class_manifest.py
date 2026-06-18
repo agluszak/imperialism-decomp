@@ -143,6 +143,30 @@ def slot_method_overrides(manifests: dict[str, dict[str, Any]]) -> dict[tuple[st
     return out
 
 
+def recovered_field_rows(manifests: dict[str, dict[str, Any]]) -> list[dict[str, str]]:
+    """Curated interior fields as ``{class, offset, field_type, field_name, note}`` rows.
+
+    Mirrors the row shape ``apply_mfc_rtti`` consumed from the former
+    ``recovered_fields.csv`` (offset as a hex string), sourced from each manifest's
+    ``curated.fields`` (type->field_type, name->field_name, evidence->note).
+    """
+    rows: list[dict[str, str]] = []
+    for cls, manifest in manifests.items():
+        for rec in (manifest.get("curated") or {}).get("fields") or []:
+            if "offset" not in rec:
+                continue
+            rows.append(
+                {
+                    "class": cls,
+                    "offset": hex2(rec["offset"]),
+                    "field_type": str(rec.get("type") or "").strip(),
+                    "field_name": str(rec.get("name") or "").strip(),
+                    "note": str(rec.get("evidence") or "").strip(),
+                }
+            )
+    return rows
+
+
 def vtable_aliases(manifests: dict[str, dict[str, Any]]) -> dict[str, str]:
     """``alias_class -> canonical_class`` from curated ``aliases`` blocks."""
     out: dict[str, str] = {}

@@ -124,3 +124,5 @@ generated:
     - {index: 0x73, byte: 0x1cc, target: 0x004c9eb0, kind: new, is_thunk: false, is_null: false, ghidra_name: TBuildingConstructionView::OpenCityViewBuildingOrderDialog, size: 2058, prototype: "void OpenCityViewBuildingOrderDialog(short nBuildingSlotId, int * pCityState, int nDialogContextFlags)"}
     - {index: 0x74, byte: 0x1d0, target: 0x004ca8f0, kind: new, is_thunk: false, is_null: false, ghidra_name: TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult, size: 270, prototype: "void ApplyCityViewBuildingOrderDialogResult(int nDialogActionTag)"}
 curated:
+  fields:
+    - {offset: 0x90, type: TCity, name: pCity, source: manual, evidence: "The city this construction dialog operates on. Evidence: OpenCityViewBuildingOrderDialog writes `*(TCity **)&this->field_0x90 = pCityState` then passes it to TCity::GetCityBuildingProductionValueBySlot; 3/3 resolver callsites agree; offset fits size 0x9c."}

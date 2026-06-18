@@ -50,3 +50,6 @@ generated:
     - {index: 0x29, byte: 0xa4, target: 0x004d6790, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::NoOpNationSelectedRegionAndMapCellLabelHook, size: 3, prototype: "undefined NoOpNationSelectedRegionAndMapCellLabelHook(void)"}
 curated:
   layout: {base_offset: 0x04, base_class: TObject, status: in_progress, header: "TCountry.h", note: "Prefix layout on base; selective curated fields only.", base_note: "after vftable"}
+  fields:
+    - {offset: 0x88, type: int, name: ownerNationSlot, source: manual, evidence: "Owning nation slot index. Manual TCountry.h; evidence ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias @0x0051794e."}
+    - {offset: 0x90, type: TPtrList, name: ownedRegionList, source: manual, evidence: "Owned region list pointer. Manual TCountry.h; evidence @0x0051794e derefs for virtual call."}

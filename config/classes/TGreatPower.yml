@@ -186,3 +186,9 @@ generated:
     - {index: 0xb1, byte: 0x2c4, target: 0x004e2b70, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::ApplyJoinEmpireMode1TargetTransition, size: 984, prototype: "undefined ApplyJoinEmpireMode1TargetTransition(void)"}
 curated:
   layout: {base_offset: 0x94, base_class: TCountry, status: in_progress, header: "TGreatPower.h", note: "Hot fields in recovered_fields.csv; full member annotation in progress.", base_note: "TCountry prefix through ownedRegionList"}
+  fields:
+    - {offset: 0xa6, type: short, name: needCapA6, source: manual, evidence: "Manual TGreatPower.h; evidence 0x0050C1BF field_0xa6."}
+    - {offset: 0xa8, type: short, name: needsOverCapFlag, source: manual, evidence: "Manual TGreatPower.h; evidence 0x0050C1BF field_0xa8."}
+    - {offset: 0x10e, type: "short[0x17]", name: needCurrentByType, source: manual, evidence: "Manual TGreatPower.h; indexed shorts in 0x0050C1BF (e.g. field_0x110)."}
+    - {offset: 0x13c, type: "short[0x17]", name: needTargetByType, source: manual, evidence: "Manual TGreatPower.h; indexed shorts in 0x0050C1BF (e.g. field_0x13c)."}
+    - {offset: 0x894, type: TCity, name: city, source: manual, evidence: "Nation's TCity (pointer). Evidence: 26/26 GetCityBuildingProductionValueBySlot callsites resolve to g_apNationStates[i]+0x894 passed as the TCity this; offset fits TGreatPower (0x964) but not TMinor (0x2dc), so it is a great-power-only field."}

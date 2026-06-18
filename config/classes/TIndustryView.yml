@@ -128,3 +128,5 @@ generated:
     - {index: 0x77, byte: 0x1dc, target: 0x004c70e0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TBuildingView::SetUniversityDialogLocalizedTextAndRefresh, size: 118, prototype: "undefined SetUniversityDialogLocalizedTextAndRefresh(void)"}
     - {index: 0x78, byte: 0x1e0, target: 0x004c6ff0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TToolBarCluster::SetUniversityDialogTextAndRefresh, size: 184, prototype: "undefined SetUniversityDialogTextAndRefresh(void)"}
 curated:
+  fields:
+    - {offset: 0x94, type: TCity, name: pCity, source: manual, evidence: "The city this industry view reflects. Evidence: OrphanRetStub_004c6fd0 calls TCity::GetCityBuildingProductionValueBySlot(*(TCity **)&this->field_0x94, ...); offset fits size 0xa8."}

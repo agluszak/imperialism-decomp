@@ -85,7 +85,7 @@ short fieldB6[0x17];
 ## Pad fields
 
 Members named `pad*` or `padding_*` are layout spacers. They advance the
-sequential cursor but are not emitted to `recovered_fields.csv` and do not need
+sequential cursor but are not emitted as recovered fields and do not need
 offset comments.
 
 ## Derived-class prefix
