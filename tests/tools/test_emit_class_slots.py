@@ -80,6 +80,58 @@ class EmitClassSlotsTests(unittest.TestCase):
         self.assertIn("SYNTHETIC", scalar_dtor_block("TOcean", 0x562140))
         self.assertIn("scalar deleting destructor", scalar_dtor_block("TOcean", 0x562140))
 
+    def test_merge_cpp_replaces_scaffold_stub_with_shaped_body(self) -> None:
+        # gen-class scaffolds a stub body; emit-class-slots must replace it with the
+        # shaped autogen body (otherwise shaping never runs on a fresh class).
+        cpp = (
+            '#include "game/TOcean.h"\n\n'
+            "// FUNCTION: IMPERIALISM 0x00562190\n"
+            "CRuntimeClass* TOcean::GetRuntimeClass() const {\n"
+            "  // TODO(manifest): port the body from Ghidra, then run the decomp loop.\n"
+            "  return 0; // TODO(manifest): real return value\n"
+            "}\n\n"
+        )
+        from tools.workflow.class_codegen import Signature
+
+        slot = ClassifiedSlot(
+            index=0, byte_offset=0, slot_label="0x00", target_addr="562190",
+            kind="override",
+            sig=Signature(ret="CRuntimeClass*", name="GetRuntimeClass", args="", const=" const"),
+            qualified_name="GetRuntimeClass", size=6, prototype=None,
+            decompiled_c=None, base_target=None,
+        )
+        autogen = {
+            0x562190: (
+                "// GHIDRA_FUNCTION IMPERIALISM 0x00562190\n"
+                "CRuntimeClass * __thiscall TOcean::GetTOceanClassNamePointer(TOcean *this)\n"
+                "{\n  return &classRuntimeClass;\n}\n"
+            ),
+        }
+        out, promoted, missing = merge_cpp_bodies(cpp, "TOcean", [slot], autogen)
+        self.assertEqual(promoted, [0x562190])
+        self.assertIn("return &classRuntimeClass;", out)  # shaped body landed
+        self.assertNotIn("TODO(manifest): port the body", out)  # stub gone
+
+    def test_merge_cpp_never_clobbers_human_body(self) -> None:
+        cpp = (
+            '#include "game/TOcean.h"\n\n'
+            "// FUNCTION: IMPERIALISM 0x00562190\n"
+            "CRuntimeClass* TOcean::GetRuntimeClass() const { return &kReal; }\n\n"
+        )
+        from tools.workflow.class_codegen import Signature
+
+        slot = ClassifiedSlot(
+            index=0, byte_offset=0, slot_label="0x00", target_addr="562190",
+            kind="override",
+            sig=Signature(ret="CRuntimeClass*", name="GetRuntimeClass", args="", const=" const"),
+            qualified_name="GetRuntimeClass", size=6, prototype=None,
+            decompiled_c=None, base_target=None,
+        )
+        autogen = {0x562190: "// GHIDRA_FUNCTION IMPERIALISM 0x00562190\nint x(){return 1;}\n"}
+        out, promoted, missing = merge_cpp_bodies(cpp, "TOcean", [slot], autogen)
+        self.assertEqual(promoted, [])
+        self.assertIn("return &kReal;", out)  # human body untouched
+
     def test_merge_cpp_preserves_existing_and_orders(self) -> None:
         cpp = (
             "#include \"game/TOcean.h\"\n\n"

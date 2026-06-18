@@ -100,6 +100,16 @@ def autogen_to_manual_block(block: str, addr: int) -> str:
     return "\n".join(out).rstrip() + "\n"
 
 
+def _is_scaffold_stub(block: str) -> bool:
+    """True if a block is a gen-class scaffold stub safe to replace with a real body.
+
+    gen-class scaffolds every new/override slot with a ``// FUNCTION:`` placeholder
+    carrying this marker. emit-class-slots replaces those with the shaped autogen
+    body; any other existing block (a human-edited body, a real port) is left alone.
+    """
+    return "TODO(manifest): port the body from Ghidra" in block
+
+
 def scalar_dtor_block(cls: str, addr: int) -> str:
     return (
         f"// SYNTHETIC: IMPERIALISM 0x{addr:08x}\n"
@@ -136,15 +146,19 @@ def merge_cpp_bodies(
     missing: list[int] = []
     for s in sorted(body_slots, key=lambda x: int(x.target_addr or "0", 16)):
         addr = int(s.target_addr or "0", 16)
-        if addr in existing:
-            continue
+        is_stub = addr in existing and _is_scaffold_stub(existing[addr])
+        if addr in existing and not is_stub:
+            continue  # human-owned or already a real body — never clobber
         if s.kind == "scalar_dtor":
-            existing[addr] = scalar_dtor_block(cls, addr)
-            promoted.append(addr)
+            # scalar dtors stay SYNTHETIC (Hard Rule 9); only seed when absent.
+            if addr not in existing:
+                existing[addr] = scalar_dtor_block(cls, addr)
+                promoted.append(addr)
             continue
         if addr not in autogen:
-            missing.append(addr)
-            continue
+            if not is_stub:
+                missing.append(addr)
+            continue  # keep the scaffold stub when there is no autogen to shape
         existing[addr] = shape_body(autogen[addr], s, cls, resolver) + "\n"
         promoted.append(addr)
 
