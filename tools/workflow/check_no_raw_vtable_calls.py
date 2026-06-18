@@ -13,6 +13,7 @@ import csv
 import re
 from pathlib import Path
 
+from tools.common.file_scan import strip_generated_blocks
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
 
 PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -66,7 +67,7 @@ def collect_files(repo_root: Path, roots: list[str]) -> list[Path]:
 
 
 def count_patterns(file_path: Path) -> dict[str, int]:
-    text = file_path.read_text(encoding="utf-8", errors="ignore")
+    text = strip_generated_blocks(file_path.read_text(encoding="utf-8", errors="ignore"))
     counts: dict[str, int] = {}
     for key, pattern in PATTERNS:
         counts[key] = len(pattern.findall(text))

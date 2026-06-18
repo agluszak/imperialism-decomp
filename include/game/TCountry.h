@@ -69,8 +69,7 @@ public:
   void SerializeDiplomacyNationStateToStream(TStream* stream);
   char IsDiplomacyPolicyAllowedForTargetClassState(short policyCode, short targetNationSlot);
   void SetNationTradePolicyValueForTargetAndNotify(short targetNationSlot, short policyValue);
-  void ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, short policyCode,
-                                                int mode);
+  void ResolveAndApplyDiplomacyPolicyTransition(short targetNationSlot, short policyCode, int mode);
   void ProcessTurnEventNationStateTransitionAndDiplomacy(int eventCode, int targetNationSlot,
                                                          int payload);
   void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
@@ -115,3 +114,53 @@ int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
 int SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* terrain);
 
 ASSERT_SIZE(TCountry, 0x94);
+
+// === BEGIN GENERATED (TCountry) — refreshed by `just gen-class TCountry`; do not hand-edit ===
+// clang-format off
+// vtable @ 0x00653868 (42 slots), object size 0x94, base TObject
+//   slot 0x00  byte 0x00  0x004d67b0  new       GetTCountryClassNamePointer
+//   slot 0x01  byte 0x04  0x004d6850  new       DestructTCountryAndMaybeFree
+//   slot 0x02  byte 0x08  0x00485e90  new       GetTTaskClassNamePointer
+//   slot 0x03  byte 0x0c  0x00412bf0  new       ConstructTTaskBaseState
+//   slot 0x04  byte 0x10  0x00412c10  new       GetTEventHandlerClassNamePointer
+//   slot 0x05  byte 0x14  0x004d6e60  new       WrapperFor_HandleCityDialogNoOpSlot14_At004d6e60
+//   slot 0x06  byte 0x18  0x004d6bf0  new       DeserializeRecruitScenarioAndInstantiateOrders
+//   slot 0x07  byte 0x1c  0x004d6ba0  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x08  byte 0x20  0x004798d0  new       DeserializeCityProductionQueueCommand
+//   slot 0x09  byte 0x24  0x00415ce0  new       OrphanRetStub_0059add0
+//   slot 0x0a  byte 0x28  0x004d70e0  new       OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x0b  byte 0x2c  0x004d7070  new       SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0x0c  byte 0x30  0x004d71b0  new       OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x0d  byte 0x34  0x004d7770  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x0e  byte 0x38  0x004d7ae0  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x0f  byte 0x3c  0x004d8000  new       ApplyJoinEmpireMode1TargetTransition
+//   slot 0x10  byte 0x40  0x004d87b0  new       OrphanLeaf_NoCall_Ins06_004d87b0
+//   slot 0x11  byte 0x44  0x004d87e0  new       SelectCandidateTilesWithLowGroundUnitCount
+//   slot 0x12  byte 0x48  0x004d8920  new       OrphanLeaf_NoCall_Ins07_004d8920
+//   slot 0x13  byte 0x4c  0x004d7b20  new       ApplyJoinEmpireModeForTargetNation
+//   slot 0x14  byte 0x50  0x004d7c00  new       SetNationTransferTargetCodeAndNotifyEligiblePeers
+//   slot 0x15  byte 0x54  0x004d7c90  new       ApplyJoinEmpireMode1TargetTransition
+//   slot 0x16  byte 0x58  0x004d7d50  new       ApplyJoinEmpireMode2FinalizeNationNameState
+//   slot 0x17  byte 0x5c  0x004d7d20  new       IsDiplomacyTargetClassCode200Match
+//   slot 0x18  byte 0x60  0x004d7d70  new       RemoveRegionIdFromNationOwnedRegionList
+//   slot 0x19  byte 0x64  0x004d7da0  new       AddRegionIdToNationOwnedRegionList
+//   slot 0x1a  byte 0x68  0x004d7dd0  new       SetNationPercentFieldByModeAndDescriptorLinks
+//   slot 0x1b  byte 0x6c  0x004d7e90  new       OrphanRetStub_004d7e90
+//   slot 0x1c  byte 0x70  0x004d7ee0  new       OrphanLeaf_NoCall_Ins02_004d7ee0
+//   slot 0x1d  byte 0x74  0x004d7f00  new       OrphanLeaf_NoCall_Ins02_004d7f00
+//   slot 0x1e  byte 0x78  0x004d7f20  new       OrphanLeaf_NoCall_Ins02_004d7f20
+//   slot 0x1f  byte 0x7c  0x004d7f40  new       OrphanLeaf_NoCall_Ins02_004d7f40
+//   slot 0x20  byte 0x80  0x004d7fa0  new       OrphanRetStub_004d7fa0
+//   slot 0x21  byte 0x84  0x004d7fc0  new       OrphanLeaf_NoCall_Ins02_004d7fc0
+//   slot 0x22  byte 0x88  0x004d7b00  new       ReturnFalseNationStateActionStub
+//   slot 0x23  byte 0x8c  0x004d7fe0  new       OrphanRetStub_004d7fe0
+//   slot 0x24  byte 0x90  0x004d7f60  new       ReturnFalseNationStateCapabilityFlag90
+//   slot 0x25  byte 0x94  0x004d7f80  new       OrphanRetStub_004d7f80
+//   slot 0x26  byte 0x98  0x004d6730  new       ReturnFalseNationStateCapabilityFlag98
+//   slot 0x27  byte 0x9c  0x004d6750  new       ReturnFalseNationStateCapabilityFlag9C
+//   slot 0x28  byte 0xa0  0x004d6770  new       ReturnFalseNationStateCapabilityFlagA0
+//   slot 0x29  byte 0xa4  0x004d6790  new       NoOpNationSelectedRegionAndMapCellLabelHook
+// object size 0x94 (RTTI) unverified against the header layout;
+// set curated.layout.size_verified to emit a sizeof static_assert.
+// clang-format on
+// === END GENERATED (TCountry) ===
