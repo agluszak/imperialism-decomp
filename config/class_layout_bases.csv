@@ -1,4 +1,0 @@
-class|base_offset|base_class|note
-TCity|0x04||after vftable
-TCountry|0x04|TObject|after vftable
-TGreatPower|0x94|TCountry|TCountry prefix through ownedRegionList

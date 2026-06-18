@@ -185,3 +185,4 @@ generated:
     - {index: 0xb0, byte: 0x2c0, target: 0x004e2b00, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers, size: 75, prototype: "undefined SetNationTransferTargetCodeAndNotifyEligiblePeers(void)"}
     - {index: 0xb1, byte: 0x2c4, target: 0x004e2b70, kind: new, is_thunk: false, is_null: false, ghidra_name: TGreatPower::ApplyJoinEmpireMode1TargetTransition, size: 984, prototype: "undefined ApplyJoinEmpireMode1TargetTransition(void)"}
 curated:
+  layout: {base_offset: 0x94, base_class: TCountry, status: in_progress, header: "TGreatPower.h", note: "Hot fields in recovered_fields.csv; full member annotation in progress.", base_note: "TCountry prefix through ownedRegionList"}

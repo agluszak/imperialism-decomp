@@ -21,10 +21,11 @@ Mechanisms already in place that several of these items reuse:
   `just gen-vtable-slot-overrides` suggestions merged after review).
 - `config/class_vtable_aliases.csv` — alias class names that share a canonical
   vtable (`TLocalizationRuntime` → `TSimMgr`); overrides resolve through the alias.
-- `config/class_layout_status.csv` — per-class `recovered` vs `in_progress` layout policy;
-  enforced by `just field-layout-gate` (see `docs/reference/field-layout-annotations.md`).
-- `config/class_layout_bases.csv` — derived-class layout prefix offsets for the
-  header field generator (`TGreatPower` @ `0x94` after `TCountry` prefix).
+- `config/classes/<Class>.yml` `curated.layout` — per-class `recovered` vs
+  `in_progress` layout policy (`status`/`header`) and the derived-class prefix
+  `base_offset`/`base_class` (`TGreatPower` @ `0x94` after `TCountry`). Enforced by
+  `just field-layout-gate` (see `docs/reference/field-layout-annotations.md`).
+  *(Replaced the former `class_layout_status.csv` / `class_layout_bases.csv`.)*
 - `tools/common/recovered_field_type.py` — shared `field_type` grammar for CSV
   emission and `apply_mfc_rtti` Ghidra datatype mapping.
 - `just gen-recovered-fields-from-headers` — pcpp + cxxheaderparser scan of
@@ -155,9 +156,9 @@ never overwrite an already-typed USER_DEFINED Ghidra field.
 
 1. `just gen-recovered-fields-from-headers` — pcpp + cxxheaderparser emit
    `config/recovered_fields.generated.csv` from `include/game/*.h` offset comments
-   and `config/class_layout_bases.csv`.
-2. Merge reviewed rows into `config/recovered_fields.csv`; mark class
-   `recovered` in `config/class_layout_status.csv` when every member is annotated.
+   and the manifest `curated.layout.base_offset`.
+2. Merge reviewed rows into `config/recovered_fields.csv`; set
+   `curated.layout.status: recovered` in the manifest when every member is annotated.
 3. `just field-layout-gate` — verify annotations for listed classes.
 4. `just gen-vtable-slot-overrides` — emit slot-name suggestions from `// VTABLE:`
    headers; merge exceptions into `config/vtable_slot_method_overrides.csv`.

@@ -2,7 +2,7 @@
 """Suggest recovered_fields.csv rows from manual include/game/*.h layouts.
 
 Uses pcpp + cxxheaderparser for member extraction; offsets from // +0xNN comments
-and class_layout_bases.csv sequential walk.
+and the per-class manifest curated.layout base offset (config/classes/<Class>.yml).
 
 Usage:
   uv run python -m tools.ghidra.gen_recovered_fields_from_headers
@@ -17,6 +17,7 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
+from tools.common import class_manifest as cm
 from tools.common.field_layout_annotations import (
     build_name_offset_hints,
     field_line_index,
@@ -24,7 +25,6 @@ from tools.common.field_layout_annotations import (
     read_header_lines,
     resolve_field_offset_from_lines,
 )
-from tools.common.pipe_csv import read_pipe_rows
 from tools.common.recovered_field_type import parse_field_type, to_csv_type
 from tools.common.repo import repo_root_from_file
 from tools.ghidra.header_preprocess import (
@@ -38,7 +38,6 @@ from tools.ghidra.header_preprocess import (
 REPO = repo_root_from_file(__file__)
 INCLUDE_GAME = REPO / "include" / "game"
 OUT_PATH = REPO / "config" / "recovered_fields.generated.csv"
-LAYOUT_BASES_PATH = REPO / "config" / "class_layout_bases.csv"
 
 VTABLE_COMMENT = re.compile(r"//\s*VTABLE:", re.IGNORECASE)
 
@@ -58,15 +57,14 @@ class FieldRow:
 
 
 def load_layout_bases() -> dict[str, tuple[int, str | None]]:
+    """Per-class field-walk base offset, sourced from the manifests' curated.layout."""
     rows: dict[str, tuple[int, str | None]] = {}
-    if not LAYOUT_BASES_PATH.exists():
-        return rows
-    for row in read_pipe_rows(LAYOUT_BASES_PATH):
-        cls = (row.get("class") or "").strip()
-        off_s = (row.get("base_offset") or "").strip()
-        if not cls or not off_s:
+    for cls, manifest in cm.load_all_manifests(REPO).items():
+        layout = cm.curated_layout(manifest)
+        off_s = str(layout.get("base_offset") or "").strip()
+        if not off_s:
             continue
-        base_class = (row.get("base_class") or "").strip() or None
+        base_class = (layout.get("base_class") or "").strip() or None
         rows[cls] = (int(off_s, 16), base_class)
     return rows
 

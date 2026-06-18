@@ -103,6 +103,27 @@ def loads_manifest(text: str) -> dict[str, Any]:
     return _normalize_mapping(data)
 
 
+def classes_dir(repo_root: Path) -> Path:
+    return repo_root / "config" / "classes"
+
+
+def load_all_manifests(repo_root: Path) -> dict[str, dict[str, Any]]:
+    """Load every ``config/classes/<Class>.yml`` keyed by class name."""
+    out: dict[str, dict[str, Any]] = {}
+    cdir = classes_dir(repo_root)
+    if not cdir.is_dir():
+        return out
+    for path in sorted(cdir.glob("*.yml")):
+        manifest = load_manifest(path)
+        name = manifest.get("class") or path.stem
+        out[name] = manifest
+    return out
+
+
+def curated_layout(manifest: dict[str, Any]) -> dict[str, Any]:
+    return (manifest.get("curated") or {}).get("layout") or {}
+
+
 # --------------------------------------------------------------------------- #
 # Deterministic emitter
 # --------------------------------------------------------------------------- #
@@ -123,9 +144,17 @@ _SLOT_KEY_ORDER = [
     "size",
     "prototype",
 ]
-_CURATED_SLOT_KEY_ORDER = ["index", "method", "confidence", "evidence"]
+_CURATED_SLOT_KEY_ORDER = ["index", "method", "mac_method", "confidence", "evidence"]
 _FIELD_KEY_ORDER = ["offset", "type", "name", "source", "evidence"]
-_LAYOUT_KEY_ORDER = ["base_offset", "status", "note"]
+_LAYOUT_KEY_ORDER = [
+    "base_offset",
+    "base_class",
+    "status",
+    "header",
+    "size_verified",
+    "note",
+    "base_note",
+]
 
 _BAREWORD_HEX = _ADDR_FIELDS | _SMALL_FIELDS
 

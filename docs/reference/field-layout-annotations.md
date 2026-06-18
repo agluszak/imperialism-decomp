@@ -6,18 +6,18 @@ share the grammar implemented in `tools/common/field_layout_annotations.py`.
 
 ## Recovery status
 
-Record per-class status in `config/class_layout_status.csv`:
+Record per-class status in the manifest's `curated.layout` block
+(`config/classes/<Class>.yml`):
 
-```csv
-class|status|header|note
-TCity|recovered|TCity.h|Every data member offset-annotated.
-TGreatPower|in_progress|TGreatPower.h|Hot fields only.
+```yaml
+curated:
+  layout: {base_offset: 0x04, status: recovered, header: "TCity.h", note: "Every data member offset-annotated."}
 ```
 
 `status` is `recovered` or `in_progress`.
 
-Optionally mirror the CSV row in the header (must agree with the CSV when both
-are present):
+Optionally mirror the status in the header (must agree with the manifest when
+both are present):
 
 ```cpp
 // LAYOUT: RECOVERED
@@ -27,12 +27,13 @@ class TCity {
 
 **`recovered`** — `just field-layout-gate` requires every non-pad data member to
 carry a resolvable offset annotation, and the annotation must match the
-sequential layout walk (pcpp + cxxheaderparser + `class_layout_bases.csv`).
+sequential layout walk (pcpp + cxxheaderparser + the manifest's
+`curated.layout.base_offset`).
 
 **`in_progress`** — missing annotations are allowed; any present annotation that
 conflicts with the layout walk is still a gate failure.
 
-Classes omitted from the CSV are not checked.
+Classes without a `curated.layout.status` are not checked.
 
 ## Offset comment forms
 
@@ -64,7 +65,7 @@ by a base class — those lines must not use a trailing dash:
 
 ```cpp
 // 0x04..0x90 (identity strings...) now live on the TCountry base.
-TForeignMinister* foreignMinister;  // starts at TGreatPower+0x94 via class_layout_bases.csv
+TForeignMinister* foreignMinister;  // starts at TGreatPower+0x94 via curated.layout.base_offset
 ```
 
 ### 3. Previous-line block start
@@ -90,7 +91,7 @@ offset comments.
 ## Derived-class prefix
 
 When a class inherits a documented prefix (e.g. `TGreatPower` after `TCountry`),
-record the first owned offset in `config/class_layout_bases.csv`; do not
+record the first owned offset in the manifest's `curated.layout.base_offset`; do not
 re-annotate base-owned bytes in the derived header.
 
 ## Closed loop

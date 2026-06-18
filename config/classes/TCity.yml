@@ -40,3 +40,4 @@ generated:
     - {index: 0x1f, byte: 0x7c, target: 0x004b4210, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::OrphanRetStub_004b4210, size: 1, prototype: "undefined OrphanRetStub_004b4210(void)"}
     - {index: 0x20, byte: 0x80, target: 0x004b4180, kind: new, is_thunk: false, is_null: false, ghidra_name: TCity::Refresh80, size: 111, prototype: "undefined Refresh80(void)"}
 curated:
+  layout: {base_offset: 0x04, status: recovered, header: "TCity.h", note: "Every data member offset-annotated; generator + field-layout-gate enforced.", base_note: "after vftable"}

@@ -49,3 +49,4 @@ generated:
     - {index: 0x28, byte: 0xa0, target: 0x004d6770, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::ReturnFalseNationStateCapabilityFlagA0, size: 3, prototype: "undefined ReturnFalseNationStateCapabilityFlagA0(void)"}
     - {index: 0x29, byte: 0xa4, target: 0x004d6790, kind: new, is_thunk: false, is_null: false, ghidra_name: TCountry::NoOpNationSelectedRegionAndMapCellLabelHook, size: 3, prototype: "undefined NoOpNationSelectedRegionAndMapCellLabelHook(void)"}
 curated:
+  layout: {base_offset: 0x04, base_class: TObject, status: in_progress, header: "TCountry.h", note: "Prefix layout on base; selective curated fields only.", base_note: "after vftable"}

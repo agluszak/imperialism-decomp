@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Gate field offset annotations on recovered class layouts.
 
-For classes listed as ``recovered`` in config/class_layout_status.csv, every
-non-pad data member must carry a resolvable offset comment and that comment must
-match the sequential layout walk used by gen_recovered_fields_from_headers.
+For classes whose manifest ``curated.layout.status`` is ``recovered``
+(config/classes/<Class>.yml), every non-pad data member must carry a resolvable
+offset comment and that comment must match the sequential layout walk used by
+gen_recovered_fields_from_headers.
 
 ``in_progress`` classes only fail when an explicit annotation disagrees with the
 walk. Missing annotations are allowed.
@@ -20,6 +21,7 @@ import argparse
 from dataclasses import dataclass
 from pathlib import Path
 
+from tools.common import class_manifest as cm
 from tools.common.field_layout_annotations import (
     LayoutRecoveryStatus,
     build_name_offset_hints,
@@ -29,7 +31,6 @@ from tools.common.field_layout_annotations import (
     read_header_lines,
     resolve_field_offset_from_lines,
 )
-from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file
 from tools.ghidra.gen_recovered_fields_from_headers import (
     extract_class_rows,
@@ -38,7 +39,7 @@ from tools.ghidra.gen_recovered_fields_from_headers import (
 from tools.ghidra.header_preprocess import class_name_of, parse_header_file
 
 REPO = repo_root_from_file(__file__)
-STATUS_PATH = REPO / "config" / "class_layout_status.csv"
+MANIFEST_SOURCE = "config/classes/<Class>.yml (curated.layout)"
 INCLUDE_GAME = REPO / "include" / "game"
 
 
@@ -51,14 +52,13 @@ class ClassLayoutStatus:
 
 
 def load_layout_status() -> dict[str, ClassLayoutStatus]:
+    """Layout recovery status per class, sourced from the manifests' curated.layout."""
     rows: dict[str, ClassLayoutStatus] = {}
-    if not STATUS_PATH.exists():
-        return rows
-    for row in read_pipe_rows(STATUS_PATH):
-        cls = (row.get("class") or "").strip()
-        status_s = (row.get("status") or "").strip().lower()
-        header = (row.get("header") or "").strip()
-        if not cls or not status_s or not header:
+    for cls, manifest in cm.load_all_manifests(REPO).items():
+        layout = cm.curated_layout(manifest)
+        status_s = (layout.get("status") or "").strip().lower()
+        header = (layout.get("header") or "").strip()
+        if not status_s or not header:
             continue
         if status_s == "recovered":
             status = LayoutRecoveryStatus.RECOVERED
@@ -66,12 +66,7 @@ def load_layout_status() -> dict[str, ClassLayoutStatus]:
             status = LayoutRecoveryStatus.IN_PROGRESS
         else:
             continue
-        rows[cls] = ClassLayoutStatus(
-            cls,
-            status,
-            header,
-            (row.get("note") or "").strip(),
-        )
+        rows[cls] = ClassLayoutStatus(cls, status, header, (layout.get("note") or "").strip())
     return rows
 
 
@@ -89,7 +84,7 @@ def check_class(entry: ClassLayoutStatus, layout_bases) -> list[str]:
     if header_status is not None and header_status != entry.status:
         return [
             f"{entry.header}: // LAYOUT: {header_status.value.upper()} disagrees with "
-            f"class_layout_status.csv ({entry.status.value})"
+            f"manifest curated.layout.status ({entry.status.value})"
         ]
 
     try:
@@ -145,7 +140,7 @@ def parse_args() -> argparse.Namespace:
         "--class",
         dest="class_name",
         metavar="NAME",
-        help="Only check this class (must appear in class_layout_status.csv).",
+        help="Only check this class (must have curated.layout.status in its manifest).",
     )
     return parser.parse_args()
 
@@ -154,13 +149,13 @@ def main() -> int:
     args = parse_args()
     statuses = load_layout_status()
     if not statuses:
-        print("No rows in config/class_layout_status.csv; field layout gate passed (nothing to check).")
+        print("No curated.layout.status in any manifest; field layout gate passed (nothing to check).")
         return 0
 
     if args.class_name:
         entry = statuses.get(args.class_name)
         if entry is None:
-            print(f"Class {args.class_name!r} not listed in class_layout_status.csv")
+            print(f"Class {args.class_name!r} has no curated.layout.status in its manifest")
             return 1
         statuses = {args.class_name: entry}
 
@@ -171,7 +166,7 @@ def main() -> int:
         checked += 1
         violations.extend(check_class(entry, layout_bases))
 
-    print(f"Checked layout status for {checked} class(es) in {STATUS_PATH.name}")
+    print(f"Checked layout status for {checked} class(es) from {MANIFEST_SOURCE}")
 
     if not violations:
         print("Field layout annotation gate passed.")

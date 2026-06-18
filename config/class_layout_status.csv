@@ -1,4 +1,0 @@
-class|status|header|note
-TCity|recovered|TCity.h|Every data member offset-annotated; generator + field-layout-gate enforced.
-TGreatPower|in_progress|TGreatPower.h|Hot fields in recovered_fields.csv; full member annotation in progress.
-TCountry|in_progress|TCountry.h|Prefix layout on base; selective curated fields only.
