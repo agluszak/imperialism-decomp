@@ -70,7 +70,7 @@ src/ghidra_autogen/TControlSeaZoneMission.cpp|0|0|1|0|1
 src/ghidra_autogen/TCouncilPanelView.cpp|0|0|3|0|3
 src/ghidra_autogen/TCouncilTickerAnimation.cpp|0|0|1|0|1
 src/ghidra_autogen/TCouncilView.cpp|0|0|7|0|7
-src/ghidra_autogen/TCountry.cpp|0|0|33|0|33
+src/ghidra_autogen/TCountry.cpp|0|0|38|0|38
 src/ghidra_autogen/TCreditsPicture.cpp|0|0|3|0|3
 src/ghidra_autogen/TCzechBox.cpp|0|0|3|0|3
 src/ghidra_autogen/TDealBookPicture.cpp|0|0|7|0|7
@@ -176,7 +176,7 @@ src/ghidra_autogen/TNominationView.cpp|0|0|1|0|1
 src/ghidra_autogen/TNumberText.cpp|0|0|2|0|2
 src/ghidra_autogen/TNumberedArrowButton.cpp|0|0|4|0|4
 src/ghidra_autogen/TNumberedItem.cpp|0|0|6|0|6
-src/ghidra_autogen/TOcean.cpp|0|0|3|0|3
+src/ghidra_autogen/TOcean.cpp|0|0|6|0|6
 src/ghidra_autogen/TOceanDialog.cpp|0|0|5|0|5
 src/ghidra_autogen/TOfferDeskPicture.cpp|0|0|7|0|7
 src/ghidra_autogen/TOffersPanelView.cpp|0|0|19|0|19
