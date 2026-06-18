@@ -36,6 +36,13 @@ deterministically from the class+base vtables; the *semantic name* and the
 new-vs-reused-base-slot judgment (the TAmtBar trap) remain human work, recorded
 in the manifest's `curated:` slots.
 
+**Name convergence (source → Ghidra).** `just push-names` writes the *explicitly
+curated* source names (manifest `curated.slots` + `function_name_overrides.csv`)
+into the Ghidra DB, for source-owned addresses only (dry-run by default; `--apply`
+writes + saves). It is wired into `just sync-ghidra` before the export so names
+converge instead of churning. It deliberately does **not** push the bulk of
+`symbols.csv` (mostly the previous export), so it can never revert a newer DB name.
+
 ## ABI model (Imperialism.exe = MSVC x86)
 
 1. Objects carry one or more `vfptr` fields; a `vfptr` points to a vftable

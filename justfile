@@ -47,7 +47,14 @@ restore-project *args: _require-ghidra-install
 export-project *args: _require-ghidra-install
   uv run python -m tools.ghidra.export_project {{args}}
 
+# Push source-owned names into the Ghidra DB so the export below already carries
+# them (names converge instead of churning). Source-owned addresses only; dry-run
+# by default — pass --apply to write + save the DB.
+push-names *args: _require-ghidra-install
+  uv run python -m tools.ghidra.push_names_to_ghidra {{args}}
+
 sync-ghidra: _require-ghidra-install
+  just push-names --apply
   uv run python -m tools.ghidra.sync_exports \
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
     --ghidra-project-dir "{{GHIDRA_PROJECT_DIR}}" \
