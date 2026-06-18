@@ -42,6 +42,8 @@ from tools.common import class_manifest as cm
 from tools.common.file_scan import iter_files
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.common.thunk_names import ThunkResolver, load_thunk_map
+from tools.workflow.shape_body import shape_body
 from tools.common.source_base_slots import (
     SOURCE_BASE_SLOTS,
     apply_source_base_slots,
@@ -404,6 +406,195 @@ def upsert_decls_block(text: str, cls: str, block: str) -> tuple[str, bool]:
     return "\n".join(new_lines) + "\n", True
 
 
+# --------------------------------------------------------------------------- #
+# Slot application: virtual decls + body promotion/shaping (was emit-class-slots)
+# --------------------------------------------------------------------------- #
+
+
+def _owned_cpp_by_addr(repo_root: Path) -> dict[int, str]:
+    """``address -> owning .cpp`` for manual-owned functions (ownership CSV)."""
+    path = resolve_repo_path(repo_root, "config/function_ownership.csv")
+    if not path.exists():
+        return {}
+    out: dict[int, str] = {}
+    for row in read_pipe_rows(path):
+        if (row.get("ownership") or "").strip() != "manual":
+            continue
+        addr = normalize_hex((row.get("address") or "").strip())
+        if addr:
+            out[int(addr, 16)] = (row.get("target_cpp") or "").strip()
+    return out
+
+
+def _decl_slots(slots: list[ClassifiedSlot]) -> list[ClassifiedSlot]:
+    """Slots that need header declarations (exclude null/ilt_thunk only)."""
+    return [s for s in slots if s.kind not in ("null", "ilt_thunk")]
+
+
+def _body_slots(
+    slots: list[ClassifiedSlot], owned: dict[int, str], target_cpp_rel: str
+) -> list[ClassifiedSlot]:
+    """Slots needing a body claim in this class's .cpp (not owned elsewhere)."""
+    out: list[ClassifiedSlot] = []
+    for s in slots:
+        if s.kind not in ("override", "new", "scalar_dtor"):
+            continue
+        addr = int(s.target_addr or "0", 16)
+        existing = owned.get(addr)
+        if existing and existing != target_cpp_rel:
+            continue
+        out.append(s)
+    return out
+
+
+def _is_scaffold_stub(block: str) -> bool:
+    """True if a block is a gen-class scaffold stub safe to replace with a real body.
+
+    The new-class scaffold seeds every owned slot with a ``// FUNCTION:`` placeholder
+    carrying this marker; we replace those with the shaped autogen body. Any other
+    existing block (a human-edited body, a real port) is left untouched.
+    """
+    return "TODO(manifest): port the body from Ghidra" in block
+
+
+def scalar_dtor_block(cls: str, addr: int) -> str:
+    return (
+        f"// SYNTHETIC: IMPERIALISM 0x{addr:08x}\n"
+        f"// {cls}::`scalar deleting destructor'\n"
+    )
+
+
+def merge_cpp_bodies(
+    cpp_text: str,
+    cls: str,
+    body_slots: list[ClassifiedSlot],
+    autogen: dict[int, str],
+    resolver: ThunkResolver | None = None,
+) -> tuple[str, list[int], list[int]]:
+    """Insert/refresh promoted+shaped bodies at ascending address order.
+
+    Returns (text, promoted, missing). Scaffold-stub blocks are replaced with the
+    shaped autogen body; human-edited bodies are never clobbered; scalar dtors stay
+    SYNTHETIC.
+    """
+    addr_marker = re.compile(
+        r"^\s*//\s*(?:"
+        r"(?:FUNCTION|STUB)\s*:\s*IMPERIALISM\s+"
+        r"|SYNTHETIC:\s*IMPERIALISM\s+"
+        r"|GHIDRA_FUNCTION\s+IMPERIALISM\s+"
+        r")(?:0x)?([0-9a-fA-F]+)\s*$",
+        re.MULTILINE,
+    )
+    matches = list(addr_marker.finditer(cpp_text))
+    preamble = cpp_text[: matches[0].start()] if matches else cpp_text
+    existing: dict[int, str] = {}
+    for i, match in enumerate(matches):
+        start = match.start()
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(cpp_text)
+        addr = int(match.group(1), 16)
+        existing[addr] = cpp_text[start:end].rstrip() + "\n\n"
+
+    promoted: list[int] = []
+    missing: list[int] = []
+    for s in sorted(body_slots, key=lambda x: int(x.target_addr or "0", 16)):
+        addr = int(s.target_addr or "0", 16)
+        is_stub = addr in existing and _is_scaffold_stub(existing[addr])
+        if addr in existing and not is_stub:
+            continue  # human-owned or already a real body — never clobber
+        if s.kind == "scalar_dtor":
+            # scalar dtors stay SYNTHETIC (Hard Rule 9); only seed when absent.
+            if addr not in existing:
+                existing[addr] = scalar_dtor_block(cls, addr)
+                promoted.append(addr)
+            continue
+        if addr not in autogen:
+            if not is_stub:
+                missing.append(addr)
+            continue  # keep the scaffold stub when there is no autogen to shape
+        existing[addr] = shape_body(autogen[addr], s, cls, resolver) + "\n"
+        promoted.append(addr)
+
+    if not existing:
+        body = ""
+    else:
+        body = "".join(existing[a] for a in sorted(existing))
+    if preamble and not preamble.endswith("\n"):
+        preamble += "\n"
+    return preamble.rstrip() + "\n\n" + body, promoted, missing
+
+
+def apply_slots(
+    repo_root: Path, cls: str, manifest: dict[str, Any], slots: list[ClassifiedSlot], write: bool
+) -> int:
+    """Insert/refresh the GENERATED DECLS block and promote+shape slot bodies.
+
+    Assumes the header already exists (scaffolded or hand-written). Plans and merges
+    the symbols + ownership CSV rows for the bodies. Returns a process exit code.
+    """
+    from tools.workflow.promote_from_autogen import collect_autogen_blocks
+    from tools.workflow import class_codegen as bc
+
+    hpath = header_path(repo_root, cls)
+    cpp_path = resolve_repo_path(repo_root, f"src/game/{cls}.cpp")
+    target_cpp_rel = f"src/game/{cls}.cpp"
+
+    decl_slots = _decl_slots(slots)
+    owned = _owned_cpp_by_addr(repo_root)
+    body_slots = _body_slots(slots, owned, target_cpp_rel)
+
+    decls_block = render_generated_decls(manifest, decl_slots)
+    header_text = hpath.read_text(encoding="utf-8")
+    new_header, header_changed = upsert_decls_block(header_text, cls, decls_block)
+
+    autogen_dir = resolve_repo_path(repo_root, "src/ghidra_autogen")
+    autogen = collect_autogen_blocks(autogen_dir, "IMPERIALISM") if autogen_dir.is_dir() else {}
+    resolver = ThunkResolver(load_thunk_map(resolve_repo_path(repo_root, "config/thunk_map.csv")))
+
+    cpp_text = cpp_path.read_text(encoding="utf-8") if cpp_path.exists() else ""
+    new_cpp, promoted, missing = merge_cpp_bodies(cpp_text, cls, body_slots, autogen, resolver)
+    cpp_changed = new_cpp != cpp_text
+
+    sym_plan = bc.plan_symbols(
+        resolve_repo_path(repo_root, "config/symbols.csv"), body_slots, cls
+    )
+    own_plan = bc.plan_ownership(
+        resolve_repo_path(repo_root, "config/function_ownership.csv"),
+        [s for s in body_slots if s.kind != "scalar_dtor"],
+        target_cpp_rel,
+    )
+
+    print(f"gen-class {cls}: slots — decl {len(decl_slots)}, body {len(body_slots)}")
+    print(f"  header DECLS {'changed' if header_changed else 'up to date'}")
+    print(f"  cpp bodies {'changed' if cpp_changed else 'up to date'}  promoted {len(promoted)}")
+    if promoted:
+        print("  promoted: " + ", ".join(f"0x{a:08x}" for a in promoted))
+    if missing:
+        print("  missing autogen (no body to shape): " + ", ".join(f"0x{a:08x}" for a in missing))
+    if own_plan.collisions:
+        print("  ownership collisions:")
+        for c in own_plan.collisions:
+            print(f"    {c}")
+
+    if not write:
+        print("  (dry-run) pass --write to apply slot decls + bodies.")
+        return 1 if own_plan.collisions else 0
+
+    if own_plan.collisions:
+        print("gen-class: refusing --write due to ownership collisions.")
+        return 1
+
+    if header_changed:
+        hpath.write_text(new_header, encoding="utf-8")
+    if cpp_changed:
+        cpp_path.parent.mkdir(parents=True, exist_ok=True)
+        cpp_path.write_text(new_cpp, encoding="utf-8")
+    if sym_plan.new_rows or sym_plan.updated_rows:
+        sym_plan.path.write_text(sym_plan.merged_text())
+    if own_plan.new_rows:
+        own_plan.path.write_text(own_plan.merged_text())
+    return 0
+
+
 def existing_vtable_annotation(repo_root: Path, cls: str, vtable_addr: str) -> str | None:
     target = norm_addr(vtable_addr)
     if not target:
@@ -495,6 +686,10 @@ def print_todo(repo_root: Path, cls: str, manifest: dict[str, Any]) -> None:
 
 
 def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], write: bool) -> int:
+    """Write the structural skeleton (header + GENERATED block + cpp stubs) for a
+    brand-new class. Virtual decls + shaped bodies + CSV rows are applied afterward
+    by ``apply_slots`` (the single decl/body source). Returns a process exit code;
+    1 means "refused / dry-run, do not proceed to apply_slots"."""
     from tools.workflow import class_codegen as bc
 
     gen = manifest.get("generated") or {}
@@ -508,33 +703,21 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
         scaffold_issues.append(vtable_collision)
 
     slots = classified_from_manifest(manifest, repo_root)
-    owned = [s for s in slots if s.kind in ("override", "new", "scalar_dtor")]
     header_text = bc.render_header(cls, base, vtable_addr, slots, rtti=rtti)
     header_text = header_text.rstrip("\n") + "\n\n" + render_generated_block(manifest) + "\n"
     cpp_text = bc.render_cpp(cls, slots)
 
     hpath = header_path(repo_root, cls)
     cpp_path = resolve_repo_path(repo_root, f"src/game/{cls}.cpp")
-    sym_plan = bc.plan_symbols(resolve_repo_path(repo_root, "config/symbols.csv"), owned, cls)
-    own_plan = bc.plan_ownership(
-        resolve_repo_path(repo_root, "config/function_ownership.csv"), owned, f"src/game/{cls}.cpp"
-    )
 
     if not write:
         print(f"gen-class {cls}: NEW class (no header). Dry-run preview:\n")
         print(f"=== {hpath} ===\n{header_text}")
         print(f"=== {cpp_path} ===\n{cpp_text}")
-        print(
-            f"\n+ {len(sym_plan.new_rows)} symbols.csv rows, "
-            f"~ {len(sym_plan.updated_rows)} symbols.csv updates, "
-            f"+ {len(own_plan.new_rows)} ownership rows."
-        )
         for issue in scaffold_issues:
             print(f"!! scaffold issue: {issue}")
-        for collision in own_plan.collisions:
-            print(f"!! ownership collision: {collision}")
-        print("Pass --write to scaffold.")
-        return 0
+        print("Pass --write to scaffold (then slot decls + bodies are applied).")
+        return 1
 
     if scaffold_issues:
         print(f"gen-class {cls}: refusing to scaffold because the manifest is not a safe new class:")
@@ -543,21 +726,9 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
         print("Fix the manifest/class identity before writing the new class.")
         return 1
 
-    if own_plan.collisions:
-        print(f"gen-class {cls}: refusing to scaffold because slot bodies are already owned:")
-        for collision in own_plan.collisions:
-            print(f"  {collision}")
-        print("Fix the manifest slot classification/curation before writing the new class.")
-        return 1
-
     hpath.write_text(header_text, encoding="utf-8")
     cpp_path.write_text(cpp_text, encoding="utf-8")
-    if sym_plan.new_rows or sym_plan.updated_rows:
-        sym_plan.path.write_text(sym_plan.merged_text())
-    if own_plan.new_rows:
-        own_plan.path.write_text(own_plan.merged_text())
-    print(f"gen-class {cls}: scaffolded {hpath} + {cpp_path} and merged CSV rows.")
-    print(f"Next: just sync-ownership -> regen-stubs -> build -> vtable {cls} -> gates.")
+    print(f"gen-class {cls}: scaffolded {hpath} + {cpp_path}.")
     return 0
 
 
@@ -577,24 +748,29 @@ def gen_class(repo_root: Path, cls: str, write: bool, todo: bool = False) -> int
         print_todo(repo_root, cls, manifest)
         return 0
 
+    slots = classified_from_manifest(manifest, repo_root)
     block = render_generated_block(manifest)
     hpath = header_path(repo_root, cls)
-    if not hpath.exists():
-        return scaffold_new_class(repo_root, cls, manifest, write)
 
-    text = hpath.read_text(encoding="utf-8")
-    new_text, changed = upsert_block(text, cls, block)
-    if not changed:
-        print(f"gen-class {cls}: generated block already up to date (no-op).")
-        return 0
-    if not write:
-        print(f"gen-class {cls}: block out of date (pass --write to refresh).")
-        print("\n--- new generated block ---")
-        print(block)
-        return 0
-    hpath.write_text(new_text, encoding="utf-8")
-    print(f"gen-class {cls}: refreshed generated block in {hpath}.")
-    return 0
+    # Stage 1: ensure the header structure exists (scaffold new / refresh block).
+    if not hpath.exists():
+        rc = scaffold_new_class(repo_root, cls, manifest, write)
+        if rc != 0:
+            return rc  # dry-run preview or refusal — nothing on disk to apply to
+    else:
+        text = hpath.read_text(encoding="utf-8")
+        new_text, changed = upsert_block(text, cls, block)
+        if changed:
+            if not write:
+                print(f"gen-class {cls}: block out of date (pass --write to refresh).")
+                print("\n--- new generated block ---")
+                print(block)
+            else:
+                hpath.write_text(new_text, encoding="utf-8")
+                print(f"gen-class {cls}: refreshed generated block in {hpath}.")
+
+    # Stage 2: apply virtual decls + promote/shape slot bodies + merge CSV rows.
+    return apply_slots(repo_root, cls, manifest, slots, write)
 
 
 def parse_args() -> argparse.Namespace:

@@ -96,14 +96,16 @@ def main() -> int:
     check("parse args", sig2.args == "int mode, int payload")
     check("parse void args empty", bc.parse_prototype("void __thiscall F(void)", "x").args == "")
 
+    # render_header is now a skeleton: the per-slot virtual decls live in the single
+    # GENERATED DECLS block that gen_class inserts (see render_generated_decls), so the
+    # skeleton carries no decls — only the class shell, fields TODO, and ctor.
     header = bc.render_header("TUnitOrderState", "TObject", "0x0066ee18", slots)
     check("header has VTABLE marker", "// VTABLE: IMPERIALISM 0x0066ee18" in header)
     check("header has base", "class TUnitOrderState : public TObject {" in header)
-    check("header GetRuntimeClass override", "CRuntimeClass* GetRuntimeClass() const override; // slot 0x00" in header)
-    check("header dtor", "~TUnitOrderState() override; // slot 0x04" in header)
-    check("header inherited comment", "inherited from TObject unchanged (0x485e90)" in header)
-    check("header null comment", "slot 0x10 (null in original table)" in header)
-    check("header new virtual", "virtual void SetOrderModeSlot34(int mode, int payload); // slot 0x18" in header)
+    check("header has fields TODO", "add data members from the object slice" in header)
+    check("header has ctor", "TUnitOrderState();" in header)
+    check("header omits per-slot decls", "// slot 0x00" not in header)
+    check("header omits new virtual decl", "SetOrderModeSlot34" not in header)
 
     cpp = bc.render_cpp("TUnitOrderState", slots)
     check("cpp synthetic marker", "// SYNTHETIC: IMPERIALISM 0x5c24e0" in cpp)
@@ -173,7 +175,8 @@ def main() -> int:
     t_cpp = bc.render_cpp("TFoo", tslots)
     check("thunk slot no FUNCTION marker", "0x401234" not in t_cpp)
     t_hdr = bc.render_header("TFoo", "TObject", "0x1", tslots)
-    check("thunk slot header comment", "ILT/linker thunk (0x401234)" in t_hdr)
+    # Skeleton emits no per-slot lines (incl. ILT thunks); only the class shell.
+    check("thunk slot not in skeleton header", "0x401234" not in t_hdr)
 
     # RTTI-recovered base edge is cited in the header (vs. unverified TODO)
     rtti = {

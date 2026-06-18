@@ -131,21 +131,18 @@ dump-manifests *args: _require-ghidra-install
   uv run python -m tools.ghidra.dump_class_manifests {{args}}
 
 # Dump the Ghidra thunk-name -> real-name map to config/thunk_map.csv so offline
-# body promotion (emit-class-slots) can resolve jmp-thunk/alias call names without
+# body promotion (gen-class) can resolve jmp-thunk/alias call names without
 # a live Ghidra connection. Read-only and idempotent.
 dump-thunk-map *args: _require-ghidra-install
   uv run python -m tools.ghidra.dump_thunk_map {{args}}
 
-# Idempotent, manifest-driven class generator. Maintains the marked GENERATED
-# block in include/game/<Class>.h from config/classes/<Class>.yml without touching
-# hand-owned decls/docs/bodies. Dry-run by default; pass --write to apply.
+# Idempotent, manifest-driven class generator. From config/classes/<Class>.yml it
+# scaffolds a new header/cpp (or refreshes the marked GENERATED block of an existing
+# one), inserts the GENERATED DECLS virtual declarations, promotes + shapes slot
+# bodies from ghidra_autogen, and merges the symbols/ownership CSV rows — without
+# touching hand-owned decls/docs/bodies. Dry-run by default; pass --write to apply.
 gen-class class *args:
   uv run python -m tools.workflow.gen_class "{{class}}" {{args}}
-
-# Emit virtual declarations + promote slot bodies from ghidra_autogen into the
-# manual header/cpp. recover-class only; dry-run by default; pass --write to apply.
-emit-class-slots class *args:
-  uv run python -m tools.workflow.emit_class_slots "{{class}}" {{args}}
 
 # Gate: every header with a GENERATED block must match a fresh render of its
 # manifest (no drift), and the class's // VTABLE: address must match the manifest.
@@ -162,7 +159,6 @@ recover-class class: _require-ghidra-install
   just dump-manifests --only "{{class}}"
   just dump-thunk-map
   just gen-class "{{class}}" --write
-  just emit-class-slots "{{class}}" --write
   just sync-ownership
   just regen-stubs
   just build

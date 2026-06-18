@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Shape a raw Ghidra autogen block into a promote-ready ``// FUNCTION:`` block.
 
-Body promotion (``emit_class_slots``) used to copy the Ghidra decompile verbatim,
+Body promotion (``gen_class``) used to copy the Ghidra decompile verbatim,
 keeping the wrong signature (explicit ``this``, ``__thiscall``, the Ghidra name) and
 unresolved thunk-call names. This module applies the *safe* slice of the manual
 decomp-loop shape pass — the rewrites that are provably correct without judgement:
@@ -40,6 +40,34 @@ _HAZARDS: list[tuple[re.Pattern[str], str]] = [
 ]
 
 _IN_STACK = re.compile(r"\bin_stack_([0-9a-fA-F]{8})\b")
+
+_GHIDRA_FUNC = re.compile(
+    r"^\s*//\s*GHIDRA_FUNCTION\s+IMPERIALISM\s+(?:0x)?([0-9a-fA-F]+)\s*$",
+    re.MULTILINE,
+)
+
+
+def autogen_to_manual_block(block: str, addr: int) -> str:
+    """Convert a ghidra_autogen block into a manual ``// FUNCTION:`` seed.
+
+    Replaces the ``// GHIDRA_FUNCTION``/``// GHIDRA_*`` comment header with a single
+    ``// FUNCTION:`` marker and keeps the raw body verbatim. Used as the fallback
+    when a slot has no recovered signature to shape against.
+    """
+    lines = block.splitlines()
+    out: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        if _GHIDRA_FUNC.match(line) or line.startswith("// GHIDRA_FUNCTION"):
+            out.append(f"// FUNCTION: IMPERIALISM 0x{addr:08x}")
+            i += 1
+            while i < len(lines) and lines[i].startswith("// GHIDRA_"):
+                i += 1
+            continue
+        out.append(line)
+        i += 1
+    return "\n".join(out).rstrip() + "\n"
 
 
 def _split_preamble(block: str) -> str:
@@ -114,8 +142,6 @@ def shape_body(
 
     if slot.sig is None:
         # No recovered signature — keep the raw body under a corrected marker.
-        from tools.workflow.emit_class_slots import autogen_to_manual_block
-
         return autogen_to_manual_block(block, addr)
 
     code = _split_preamble(block)

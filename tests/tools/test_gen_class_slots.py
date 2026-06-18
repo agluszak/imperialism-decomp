@@ -1,21 +1,17 @@
 #!/usr/bin/env python3
-"""Tests for tools.workflow.emit_class_slots."""
+"""Tests for gen_class slot application (virtual decls + body promotion/shaping)."""
 
 from __future__ import annotations
 
 import unittest
-from pathlib import Path
-from tempfile import TemporaryDirectory
 
-from tools.workflow.emit_class_slots import (
-    autogen_to_manual_block,
-    merge_cpp_bodies,
-    scalar_dtor_block,
-)
+from tools.workflow.shape_body import autogen_to_manual_block
 from tools.workflow.class_codegen import ClassifiedSlot
 from tools.workflow.gen_class import (
     classified_from_manifest,
+    merge_cpp_bodies,
     render_generated_decls,
+    scalar_dtor_block,
     upsert_decls_block,
 )
 
@@ -81,7 +77,7 @@ class EmitClassSlotsTests(unittest.TestCase):
         self.assertIn("scalar deleting destructor", scalar_dtor_block("TOcean", 0x562140))
 
     def test_merge_cpp_replaces_scaffold_stub_with_shaped_body(self) -> None:
-        # gen-class scaffolds a stub body; emit-class-slots must replace it with the
+        # gen-class scaffolds a stub body; the slot-apply step must replace it with the
         # shaped autogen body (otherwise shaping never runs on a fresh class).
         cpp = (
             '#include "game/TOcean.h"\n\n'

@@ -241,6 +241,11 @@ def render_header(
             f"// TODO(manifest): describe {class_name} and its role; confirm the base"
             f" edge ({base_name}) from ctor/dtor sequencing + vtable layout evidence."
         )
+    # Skeleton only. The per-slot virtual declarations live in the single
+    # `GENERATED DECLS` block that gen_class inserts after `public:` (so the
+    # declarations have exactly one source and never duplicate). `slots` is no
+    # longer consumed here; it is kept in the signature for call-site stability.
+    _ = slots
     lines = [
         "#pragma once",
         "",
@@ -250,40 +255,6 @@ def render_header(
         f"// VTABLE: IMPERIALISM {vtable_addr}",
         f"class {class_name} : public {base_name} {{",
         "public:",
-    ]
-
-    new_virtuals = [s for s in slots if s.kind == "new"]
-
-    lines.append(f"  // --- {base_name} overrides ---")
-    for s in slots:
-        if s.kind == "inherited":
-            nm = unqualified(s.qualified_name) if s.qualified_name else "?"
-            lines.append(
-                f"  // slot {s.slot_label} {nm} inherited from {base_name} unchanged (0x{s.target_addr})"
-            )
-        elif s.kind == "null":
-            lines.append(f"  // slot {s.slot_label} (null in original table)")
-        elif s.kind == "ilt_thunk":
-            nm = unqualified(s.qualified_name) if s.qualified_name else "?"
-            lines.append(
-                f"  // slot {s.slot_label} {nm} -> ILT/linker thunk (0x{s.target_addr}); "
-                "reccmp auto-resolves, not owned here"
-            )
-        elif s.kind == "scalar_dtor":
-            lines.append(f"  ~{class_name}() override; // slot {s.slot_label} (scalar deleting destructor)")
-        elif s.kind == "override":
-            assert s.sig is not None
-            lines.append(f"  {s.sig.decl(virtual=False, override=True)} // slot {s.slot_label}")
-
-    if new_virtuals:
-        lines.append("")
-        lines.append(f"  // --- {class_name} virtual functions ---")
-        for s in new_virtuals:
-            assert s.sig is not None
-            lines.append(f"  {s.sig.decl(virtual=True, override=False)} // slot {s.slot_label}")
-
-    lines += [
-        "",
         "  // TODO(manifest): add data members from the object slice"
         " (`just slice-discovery " + class_name + " 0xCTOR`).",
         "",

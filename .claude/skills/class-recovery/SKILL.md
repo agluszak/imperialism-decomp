@@ -27,24 +27,23 @@ per-slot `method`, `confidence`/`evidence`, `fields`, `layout`). Workflow:
 - `just dump-manifests [--only <Class>]` — refresh the `generated:` region from
   Ghidra (read-only; the `curated:` region is preserved, curated always wins).
   Re-running on an unchanged class is a no-op.
-- `just gen-class <Class> [--write]` — maintain the marked
-  `// === BEGIN GENERATED (<Class>) … === / … END ===` block in
-  `include/game/<Class>.h`. It only touches that block; hand-owned decls, doc
-  comments, member annotations and `.cpp` bodies are never rewritten. The block
-  carries the slot→address→method skeleton and an (informational) object-size
-  `static_assert` — wrapped in `// clang-format off/on` so it stays byte-stable.
-- `just emit-class-slots <Class> [--write]` — **recover-class only** (not
-  standalone `gen-class`). Gap-fills a second marked region
-  `// === BEGIN GENERATED DECLS (<Class>) … ===` with virtual declarations for
-  owned slots (`override` / `new` / `scalar_dtor`), promotes Ghidra autogen
-  bodies into `src/game/<Class>.cpp` at ascending address order, and merges
-  `symbols.csv` + `function_ownership.csv` plans. Skips inherited slot addresses
-  already owned elsewhere; scalar deleting destructors get a `// SYNTHETIC:` claim
-  only (no hand bridge). Dry-run by default; `--write` applies.
+- `just gen-class <Class> [--write]` — the single manifest-driven generator. It
+  (1) scaffolds a new `include/game/<Class>.h` + `src/game/<Class>.cpp` (or refreshes
+  the marked `// === BEGIN GENERATED (<Class>) … === / … END ===` vtable-snapshot
+  block of an existing header), (2) inserts/refreshes the `// === BEGIN GENERATED
+  DECLS (<Class>) … ===` region — the **single source** of the owned virtual
+  declarations (`override` / `new` / `scalar_dtor`), (3) promotes Ghidra autogen
+  bodies into the `.cpp` at ascending address order, shaping each (canonical
+  signature, thunk-name resolution, `in_stack_*` lift, `// TODO(shape):` hazard
+  flags via `shape_body`), replacing scaffold stubs but never clobbering a
+  hand-edited body, and (4) merges the `symbols.csv` + `function_ownership.csv`
+  plans. Inherited slots already owned elsewhere are skipped; scalar deleting
+  destructors get a `// SYNTHETIC:` claim only (no hand bridge). Dry-run by default;
+  `--write` applies. (This subsumed the former separate `emit-class-slots` step.)
 - `just manifest-gate` (part of `just gates`) — fails if a header's generated
   block or GENERATED DECLS region has drifted from a fresh render, or its
   `// VTABLE:` address disagrees with the manifest. Fix with
-  `just gen-class <Class> --write` and/or `just emit-class-slots <Class> --write`.
+  `just gen-class <Class> --write`.
 
 The slot `kind` (null/inherited/override/new/scalar_dtor/ilt_thunk) is computed
 deterministically from the class+base vtables; the *semantic name* and the
