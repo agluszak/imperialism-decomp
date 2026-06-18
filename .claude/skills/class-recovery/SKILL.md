@@ -14,9 +14,9 @@ tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36
 
 **Entry point: `just recover-class <Class>`** drives the whole loop — refresh the
 manifest from Ghidra, regenerate the header block (or scaffold a brand-new class),
-wire ownership, rebuild, detect, print the vtable score + a human-TODO list
-(unnamed slots, low-confidence base edge, unported bodies), and run the gates. The
-individual steps below are what it chains.
+emit virtual decls + promote slot bodies, wire ownership, rebuild, detect, print
+the vtable score + a human-TODO list (unnamed slots, low-confidence base edge,
+unported bodies), and run the gates. The individual steps below are what it chains.
 
 Each class has an inspectable manifest at `config/classes/<Class>.yml` instead of
 scattering its facts across the Ghidra DB and CSVs. A manifest has two regions:
@@ -33,9 +33,18 @@ per-slot `method`, `confidence`/`evidence`, `fields`, `layout`). Workflow:
   comments, member annotations and `.cpp` bodies are never rewritten. The block
   carries the slot→address→method skeleton and an (informational) object-size
   `static_assert` — wrapped in `// clang-format off/on` so it stays byte-stable.
+- `just emit-class-slots <Class> [--write]` — **recover-class only** (not
+  standalone `gen-class`). Gap-fills a second marked region
+  `// === BEGIN GENERATED DECLS (<Class>) … ===` with virtual declarations for
+  owned slots (`override` / `new` / `scalar_dtor`), promotes Ghidra autogen
+  bodies into `src/game/<Class>.cpp` at ascending address order, and merges
+  `symbols.csv` + `function_ownership.csv` plans. Skips inherited slot addresses
+  already owned elsewhere; scalar deleting destructors get a `// SYNTHETIC:` claim
+  only (no hand bridge). Dry-run by default; `--write` applies.
 - `just manifest-gate` (part of `just gates`) — fails if a header's generated
-  block has drifted from a fresh render, or its `// VTABLE:` address disagrees
-  with the manifest. Fix with `just gen-class <Class> --write`.
+  block or GENERATED DECLS region has drifted from a fresh render, or its
+  `// VTABLE:` address disagrees with the manifest. Fix with
+  `just gen-class <Class> --write` and/or `just emit-class-slots <Class> --write`.
 
 The slot `kind` (null/inherited/override/new/scalar_dtor/ilt_thunk) is computed
 deterministically from the class+base vtables; the *semantic name* and the

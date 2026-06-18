@@ -34,14 +34,16 @@ from __future__ import annotations
 
 import argparse
 import re
-from dataclasses import replace
-from pathlib import Path
 from typing import Any
 
 from tools.common import class_manifest as cm
 from tools.common.file_scan import iter_files
 from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
+from tools.common.source_base_slots import (
+    apply_source_base_slots,
+    source_base_scaffold_issues as _source_base_scaffold_issues,
+)
 from tools.workflow.class_codegen import (
     ClassifiedSlot,
     Signature,
@@ -63,31 +65,8 @@ _CLASS_DECL = re.compile(r"\b(?:class|struct)\s+([A-Za-z_][A-Za-z0-9_]*)\b")
 BLOCK_BEGIN = "// === BEGIN GENERATED ({cls}) — refreshed by `just gen-class {cls}`; do not hand-edit ==="
 BLOCK_END = "// === END GENERATED ({cls}) ==="
 
-
-_SOURCE_BASE_SLOTS: dict[str, list[tuple[int, str, str, str | None, str]]] = {
-    # Source-owned TObject has no manifest of its own, but many dumped class
-    # manifests use it as an RTTI base. Keep this small table synced with
-    # include/game/TObject.h and the corresponding FUNCTION/SYNTHETIC markers.
-    "TObject": [
-        (0, "0x00485e20", "TObject::GetRuntimeClass", "CRuntimeClass* GetRuntimeClass() const", "override"),
-        (1, "0x00484990", "TObject::`scalar deleting destructor'", None, "scalar_dtor"),
-        (2, "0x00485e90", "TObject::Serialize", "void Serialize(CArchive& archive)", "override"),
-        (3, "0x00412bf0", "CObject::AssertValid", "void AssertValid() const", "override"),
-        (4, "0x00412c10", "CObject::Dump", "void Dump(CDumpContext& dc) const", "override"),
-        (5, "0x00485f70", "TObject::WriteTo", "void WriteTo(TStream* stream)", "new"),
-        (6, "0x00485f90", "TObject::ReadFrom", "void ReadFrom(TStream* stream)", "new"),
-        (7, "0x004798b0", "TObject::Free", "void Free()", "new"),
-        (8, "0x004798d0", "TObject::ShallowClone", "TObject* ShallowClone()", "new"),
-        (9, "0x00415ce0", "TObject::ShallowFree", "TObject* ShallowFree()", "new"),
-    ],
-    "CObject": [
-        (0, "0x00606fba", "CObject::GetRuntimeClass", "CRuntimeClass* GetRuntimeClass() const", "override"),
-        (1, "0x00415f00", "CObject::`scalar deleting destructor'", None, "scalar_dtor"),
-        (2, "0x00412bd0", "CObject::Serialize", "void Serialize(CArchive& archive)", "override"),
-        (3, "0x00412bf0", "CObject::AssertValid", "void AssertValid() const", "override"),
-        (4, "0x00412c10", "CObject::Dump", "void Dump(CDumpContext& dc) const", "override"),
-    ],
-}
+DECLS_BEGIN = "// === BEGIN GENERATED DECLS ({cls}) — refreshed by recover-class; do not hand-edit ==="
+DECLS_END = "// === END GENERATED DECLS ({cls}) ==="
 
 
 def manifest_path(repo_root: Path, cls: str) -> Path:
@@ -204,83 +183,7 @@ def upsert_block(text: str, cls: str, block: str) -> tuple[str, bool]:
 # --------------------------------------------------------------------------- #
 
 
-def _source_base_slots(base: str) -> list[ClassifiedSlot]:
-    out: list[ClassifiedSlot] = []
-    for idx, target, qualified, proto, kind in _SOURCE_BASE_SLOTS.get(base, []):
-        fallback = unqualified(qualified)
-        sig = parse_prototype(proto, fallback) if proto else None
-        out.append(
-            ClassifiedSlot(
-                index=idx,
-                byte_offset=idx * 4,
-                slot_label=f"0x{idx * 4:02x}",
-                target_addr=norm_addr(target),
-                kind=kind,
-                sig=sig,
-                qualified_name=qualified,
-                size=0,
-                prototype=proto,
-                decompiled_c=None,
-                base_target=None,
-            )
-        )
-    return out
-
-
-def _apply_source_base_slots(slots: list[ClassifiedSlot], base: str) -> list[ClassifiedSlot]:
-    """Correct manifest slot kinds/signatures when the base is source-owned only."""
-    base_slots = {s.index: s for s in _source_base_slots(base)}
-    if not base_slots:
-        return slots
-
-    out: list[ClassifiedSlot] = []
-    for slot in slots:
-        base_slot = base_slots.get(slot.index)
-        if base_slot is None or slot.kind in ("null", "ilt_thunk"):
-            out.append(slot)
-            continue
-
-        if norm_addr(slot.target_addr) == base_slot.target_addr:
-            out.append(
-                replace(
-                    slot,
-                    kind="inherited",
-                    sig=None,
-                    qualified_name=base_slot.qualified_name,
-                    base_target=base_slot.target_addr,
-                    dtor_suspect=False,
-                )
-            )
-            continue
-
-        if base_slot.kind == "scalar_dtor":
-            out.append(
-                replace(
-                    slot,
-                    kind="scalar_dtor",
-                    sig=None,
-                    qualified_name=f"{slot.qualified_name or ''} (verify scalar deleting destructor)",
-                    base_target=base_slot.target_addr,
-                    dtor_suspect=False,
-                )
-            )
-            continue
-
-        assert base_slot.sig is not None
-        out.append(
-            replace(
-                slot,
-                kind="override",
-                sig=base_slot.sig,
-                qualified_name=base_slot.qualified_name,
-                base_target=base_slot.target_addr,
-                dtor_suspect=False,
-            )
-        )
-    return out
-
-
-def _classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
+def classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
     """Rebuild class_codegen.ClassifiedSlot records from the manifest.
 
     Reuses the manifest's already-computed ``kind`` and the curated method name
@@ -307,7 +210,7 @@ def _classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
             ClassifiedSlot(
                 index=idx,
                 byte_offset=cm._as_int(s.get("byte") or 0),
-                slot_label=f"0x{cm._as_int(s.get('byte') or 0):02x}",
+                slot_label=f"0x{idx:02x}",
                 target_addr=target,
                 kind=kind,
                 sig=sig,
@@ -320,24 +223,96 @@ def _classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
             )
         )
     base = (manifest.get("generated") or {}).get("base") or ""
-    return _apply_source_base_slots(out, str(base))
+    return apply_source_base_slots(out, str(base))
 
 
 def source_base_scaffold_issues(cls: str, manifest: dict[str, Any]) -> list[str]:
     gen = manifest.get("generated") or {}
     base = str(gen.get("base") or "")
-    base_slots = _source_base_slots(base)
-    slots = (gen.get("slots") or [])
-    if not base_slots or not slots:
+    slots = gen.get("slots") or []
+    if not base or not slots:
         return []
-    max_index = max(cm._as_int(s.get("index") or 0) for s in slots)
-    max_base_index = max(s.index for s in base_slots)
-    if max_index >= max_base_index:
-        return []
-    return [
-        f"{cls} manifest has slots through 0x{max_index:02x}, but source-modeled "
-        f"{base} reaches slot 0x{max_base_index:02x}; likely an alias/nonstandard table"
-    ]
+    indices = [cm._as_int(s.get("index") or 0) for s in slots]
+    return _source_base_scaffold_issues(cls, base, indices)
+
+
+def render_generated_decls(manifest: dict[str, Any], slots: list[ClassifiedSlot]) -> str:
+    """Render the marked GENERATED DECLS block for virtual declarations."""
+    cls = manifest["class"]
+    lines = [DECLS_BEGIN.format(cls=cls)]
+    for s in slots:
+        if s.kind == "inherited":
+            nm = unqualified(s.qualified_name) if s.qualified_name else "?"
+            lines.append(
+                f"  // slot {s.slot_label} {nm} inherited unchanged (0x{s.target_addr})"
+            )
+        elif s.kind == "null":
+            lines.append(f"  // slot {s.slot_label} (null in original table)")
+        elif s.kind == "ilt_thunk":
+            nm = unqualified(s.qualified_name) if s.qualified_name else "?"
+            lines.append(
+                f"  // slot {s.slot_label} {nm} -> ILT/linker thunk (0x{s.target_addr}); "
+                "reccmp auto-resolves, not owned here"
+            )
+        elif s.kind == "scalar_dtor":
+            lines.append(
+                f"  virtual ~{cls}(); // slot 0x{s.index:02x} (scalar deleting destructor)"
+            )
+        elif s.kind in ("override", "new"):
+            assert s.sig is not None
+            virtual = True
+            lines.append(
+                f"  {s.sig.decl(virtual=virtual, override=True)} // slot 0x{s.index:02x} 0x{s.target_addr}"
+            )
+    lines.append(DECLS_END.format(cls=cls))
+    return "\n".join(lines)
+
+
+def find_decls_block(text: str, cls: str) -> tuple[int, int] | None:
+    begin = DECLS_BEGIN.format(cls=cls)
+    end = DECLS_END.format(cls=cls)
+    lines = text.splitlines()
+    start = end_idx = None
+    for i, line in enumerate(lines):
+        if line.rstrip() == begin:
+            start = i
+        elif line.rstrip() == end:
+            end_idx = i
+            break
+    if start is None or end_idx is None or end_idx < start:
+        return None
+    return start, end_idx
+
+
+def upsert_decls_block(text: str, cls: str, block: str) -> tuple[str, bool]:
+    """Insert/replace GENERATED DECLS inside the class body (after ``public:``)."""
+    lines = text.splitlines()
+    block_lines = block.split("\n")
+    found = find_decls_block(text, cls)
+    if found is not None:
+        start, end_idx = found
+        if lines[start : end_idx + 1] == block_lines:
+            return text, False
+        new_lines = lines[:start] + block_lines + lines[end_idx + 1 :]
+        return "\n".join(new_lines) + "\n", True
+
+    # Insert after the first ``public:`` following the class declaration.
+    class_pat = re.compile(rf"\bclass\s+{re.escape(cls)}\b")
+    insert_at = None
+    for i, line in enumerate(lines):
+        if class_pat.search(line) is None:
+            continue
+        for j in range(i, min(i + 40, len(lines))):
+            if lines[j].strip() == "public:":
+                insert_at = j + 1
+                break
+        if insert_at is not None:
+            break
+    if insert_at is None:
+        raise ValueError(f"{cls}: could not locate class public: section for GENERATED DECLS")
+
+    new_lines = lines[:insert_at] + block_lines + lines[insert_at:]
+    return "\n".join(new_lines) + "\n", True
 
 
 def existing_vtable_annotation(repo_root: Path, cls: str, vtable_addr: str) -> str | None:
@@ -443,7 +418,7 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
     if vtable_collision:
         scaffold_issues.append(vtable_collision)
 
-    slots = _classified_from_manifest(manifest)
+    slots = classified_from_manifest(manifest)
     owned = [s for s in slots if s.kind in ("override", "new", "scalar_dtor")]
     header_text = bc.render_header(cls, base, vtable_addr, slots, rtti=rtti)
     header_text = header_text.rstrip("\n") + "\n\n" + render_generated_block(manifest) + "\n"

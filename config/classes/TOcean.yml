@@ -6,14 +6,20 @@ generated:
   ancestry: [TOcean, TObject, CObject]
   root: TObject
   slots:
-    - {index: 0x00, byte: 0x00, target: 0x00562190, kind: new, is_thunk: false, is_null: false, ghidra_name: TOcean::GetTOceanClassNamePointer, size: 6, prototype: "undefined GetTOceanClassNamePointer(void)"}
-    - {index: 0x01, byte: 0x04, target: 0x00562140, kind: new, is_thunk: false, is_null: false, ghidra_name: TOcean::DestroyTPortZoneManager, size: 30, prototype: "undefined DestroyTPortZoneManager(void)"}
-    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: new, is_thunk: false, is_null: false, ghidra_name: TCityTask::GetTTaskClassNamePointer, size: 143, prototype: "undefined GetTTaskClassNamePointer(void)"}
-    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: new, is_thunk: false, is_null: false, ghidra_name: CDocument::ConstructTTaskBaseState, size: 1, prototype: "undefined ConstructTTaskBaseState(void)"}
-    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: new, is_thunk: false, is_null: false, ghidra_name: CPtrList::GetTEventHandlerClassNamePointer, size: 3, prototype: "undefined GetTEventHandlerClassNamePointer(void)"}
-    - {index: 0x05, byte: 0x14, target: 0x005628f0, kind: new, is_thunk: false, is_null: false, ghidra_name: LinkedListQueryOwner::SerializeMapActionContextRuntimeState, size: 399, prototype: "undefined SerializeMapActionContextRuntimeState(void)"}
-    - {index: 0x06, byte: 0x18, target: 0x00562340, kind: new, is_thunk: false, is_null: false, ghidra_name: LinkedListQueryOwner::DeserializeMapActionContextRuntimeState, size: 887, prototype: "undefined DeserializeMapActionContextRuntimeState(void)"}
+    - {index: 0x00, byte: 0x00, target: 0x00562190, kind: override, is_thunk: false, is_null: false, ghidra_name: TOcean::GetTOceanClassNamePointer, size: 6, prototype: "undefined GetTOceanClassNamePointer(void)"}
+    - {index: 0x01, byte: 0x04, target: 0x00562140, kind: scalar_dtor, is_thunk: false, is_null: false, ghidra_name: TOcean::DestroyTPortZoneManager, size: 30, prototype: "undefined DestroyTPortZoneManager(void)"}
+    - {index: 0x02, byte: 0x08, target: 0x00485e90, kind: inherited, is_thunk: false, is_null: false, ghidra_name: TObject::Serialize, size: 143, prototype: "void Serialize(CArchive& archive)"}
+    - {index: 0x03, byte: 0x0c, target: 0x00412bf0, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CObject::AssertValid, size: 1, prototype: "void AssertValid() const"}
+    - {index: 0x04, byte: 0x10, target: 0x00412c10, kind: inherited, is_thunk: false, is_null: false, ghidra_name: CObject::Dump, size: 3, prototype: "void Dump(CDumpContext& dc) const"}
+    - {index: 0x05, byte: 0x14, target: 0x005628f0, kind: override, is_thunk: false, is_null: false, ghidra_name: LinkedListQueryOwner::SerializeMapActionContextRuntimeState, size: 399, prototype: "undefined SerializeMapActionContextRuntimeState(void)"}
+    - {index: 0x06, byte: 0x18, target: 0x00562340, kind: override, is_thunk: false, is_null: false, ghidra_name: LinkedListQueryOwner::DeserializeMapActionContextRuntimeState, size: 887, prototype: "undefined DeserializeMapActionContextRuntimeState(void)"}
 curated:
+  slots:
+    - {index: 0x00, method: GetRuntimeClass, evidence: "slot-0 RTTI getter; body 0x562190"}
+    - {index: 0x05, method: WriteTo, mac_method: WriteTo, evidence: "Mac TOcean::WriteTo(TStream*); body 0x5628f0; TObject slot-5 override"}
+    - {index: 0x06, method: ReadFrom, mac_method: ReadFrom, evidence: "Mac TOcean::ReadFrom(TStream*); body 0x562340; TObject slot-6 override"}
+  layout:
+    status: in_progress
   fields:
     - {offset: 0x04, type: short, name: nationCount, source: manual, evidence: "Active TOcean context nation count. RebuildMapContextAndGlobalMapState @0x0057c8a0 zero-inits; manual TOcean.h."}
     - {offset: 0x08, type: "int*", name: contextArray, source: manual, evidence: "Per-nation action context array pointer. Same writer; manual TOcean.h (stride 0x48 entries)."}

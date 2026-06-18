@@ -8,7 +8,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from tools.workflow.gen_class import (
-    _classified_from_manifest,
+    classified_from_manifest,
     existing_vtable_annotation,
     find_block,
     render_generated_block,
@@ -108,7 +108,7 @@ class ClassifiedFromManifestTests(unittest.TestCase):
             },
             "curated": {"slots": [{"index": "0x00", "method": "ComputeThing"}]},
         }
-        slots = _classified_from_manifest(manifest)
+        slots = classified_from_manifest(manifest)
         self.assertEqual(len(slots), 3)
         s0 = slots[0]
         self.assertEqual(s0.kind, "override")
@@ -136,7 +136,7 @@ class ClassifiedFromManifestTests(unittest.TestCase):
             },
             "curated": {},
         }
-        slots = {s.index: s for s in _classified_from_manifest(manifest)}
+        slots = {s.index: s for s in classified_from_manifest(manifest)}
         self.assertEqual(slots[0].kind, "override")
         self.assertEqual(slots[0].sig.name, "GetRuntimeClass")
         self.assertEqual(slots[1].kind, "scalar_dtor")

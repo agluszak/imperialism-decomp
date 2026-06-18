@@ -135,6 +135,11 @@ dump-manifests *args: _require-ghidra-install
 gen-class class *args:
   uv run python -m tools.workflow.gen_class "{{class}}" {{args}}
 
+# Emit virtual declarations + promote slot bodies from ghidra_autogen into the
+# manual header/cpp. recover-class only; dry-run by default; pass --write to apply.
+emit-class-slots class *args:
+  uv run python -m tools.workflow.emit_class_slots "{{class}}" {{args}}
+
 # Gate: every header with a GENERATED block must match a fresh render of its
 # manifest (no drift), and the class's // VTABLE: address must match the manifest.
 manifest-gate *args:
@@ -149,6 +154,7 @@ recover-class class: _require-ghidra-install
   set -euo pipefail
   just dump-manifests --only "{{class}}"
   just gen-class "{{class}}" --write
+  just emit-class-slots "{{class}}" --write
   just sync-ownership
   just regen-stubs
   just build

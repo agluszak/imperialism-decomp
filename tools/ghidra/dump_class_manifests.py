@@ -25,6 +25,7 @@ from pathlib import Path
 from tools.common import class_manifest as cm
 from tools.common import ghidra_env
 from tools.common.repo import repo_root_from_file
+from tools.common.source_base_slots import apply_source_base_slots
 from tools.workflow.class_codegen import ClassifiedSlot, classify_slots
 
 SCHEMA_MAGIC = 0xFFFF
@@ -280,6 +281,8 @@ def main() -> int:
                 base_slots = extract_slots(vtable_of[base], all_vtables)
 
             classified: list[ClassifiedSlot] = classify_slots(class_slots, base_slots, {})
+            if base:
+                classified = apply_source_base_slots(classified, base)
 
             slot_dicts = []
             for s in classified:

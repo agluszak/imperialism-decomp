@@ -47,4 +47,5 @@ module|tools.ghidra.dump_class_manifests|just:dump-manifests|Stage 0: batch-dump
 module|tools.common.class_manifest|dependency:tools.ghidra.dump_class_manifests|Per-class manifest schema, deterministic YAML emitter/loader, curated-wins merge
 module|tools.ghidra.push_names_to_ghidra|just:push-names|Stage 3: push source-owned curated names into the Ghidra DB so sync-ghidra converges names
 module|tools.workflow.gen_class|just:gen-class|Stage 1/4: idempotent manifest-driven class generator (marked block, new-class scaffold, --todo)
+module|tools.workflow.emit_class_slots|just:emit-class-slots|recover-class step: GENERATED DECLS + autogen body promote into manual TU
 module|tools.workflow.check_manifest_consistency|just:manifest-gate|Stage 1 gate: header generated blocks must match a fresh manifest render

@@ -48,6 +48,8 @@ CRuntimeClass PTR_s_TCluster_006496c0 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TPictureButton_0065e538 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00697848
 CRuntimeClass PTR_s_TMission_00697848 = {nullptr, 0, 0, nullptr, nullptr};
+// GLOBAL: IMPERIALISM 0x0065c630
+CRuntimeClass PTR_s_TOcean_0065c630 = {nullptr, 0, 0, nullptr, nullptr};
 CRuntimeClass PTR_s_TTownMarker_0066d780 = {nullptr, 0, 0, nullptr, nullptr};
 char LAB_00409a9d = 0;
 

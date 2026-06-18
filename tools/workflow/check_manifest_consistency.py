@@ -24,9 +24,12 @@ from tools.common.file_scan import iter_files
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file
 from tools.workflow.gen_class import (
     find_block,
+    find_decls_block,
     manifest_path,
     render_generated_block,
+    render_generated_decls,
 )
+from tools.workflow.gen_class import classified_from_manifest
 
 BEGIN_RE = re.compile(r"^//\s*===\s*BEGIN GENERATED \((?P<cls>\w+)\)")
 VTABLE_RE = re.compile(r"^\s*//\s*VTABLE\s*:\s*[A-Za-z0-9_]+\s+(?P<addr>(?:0x)?[0-9a-fA-F]+)")
@@ -73,6 +76,20 @@ def main() -> int:
                 violations.append(
                     f"{rel}: generated block for {cls} is out of date — run `just gen-class {cls} --write`"
                 )
+
+            # (2) GENERATED DECLS region (when present)
+            if find_decls_block(text, cls) is not None:
+                slots = classified_from_manifest(manifest)
+                emit_slots = [s for s in slots if s.kind not in ("null", "ilt_thunk")]
+                expected_decls = render_generated_decls(manifest, emit_slots).split("\n")
+                dfound = find_decls_block(text, cls)
+                assert dfound is not None
+                dstart, dend = dfound
+                actual_decls = text.splitlines()[dstart : dend + 1]
+                if actual_decls != expected_decls:
+                    violations.append(
+                        f"{rel}: GENERATED DECLS for {cls} is out of date — run `just recover-class {cls}`"
+                    )
 
             # (3) hand-owned // VTABLE: address agrees with the manifest
             manifest_vt = manifest.get("generated", {}).get("vtable_addr")

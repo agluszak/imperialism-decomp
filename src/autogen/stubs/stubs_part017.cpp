@@ -1059,26 +1059,10 @@ undefined4 ReallocatePortZoneContextArrayBuffer(void)
   return 0;
 }
 
-// ghidra_name DestroyTPortZoneManager
-// ghidra_proto undefined DestroyTPortZoneManager()
-// FUNCTION: IMPERIALISM 0x00562140
-undefined4 DestroyTPortZoneManager(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTPortZoneManagerToSentinelVtable
 // ghidra_proto undefined ResetTPortZoneManagerToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x00562170
 undefined4 ResetTPortZoneManagerToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name TOcean::GetTOceanClassNamePointer
-// ghidra_proto undefined GetTOceanClassNamePointer()
-// FUNCTION: IMPERIALISM 0x00562190
-undefined4 GetTOceanClassNamePointer(void)
 {
   return 0;
 }
@@ -1099,26 +1083,10 @@ undefined4 DestroyTPortZoneManagerAndPurgePortZones(void)
   return 0;
 }
 
-// ghidra_name LinkedListQueryOwner::DeserializeMapActionContextRuntimeState
-// ghidra_proto undefined DeserializeMapActionContextRuntimeState()
-// FUNCTION: IMPERIALISM 0x00562340
-undefined4 DeserializeMapActionContextRuntimeState(void)
-{
-  return 0;
-}
-
 // ghidra_name ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList
 // ghidra_proto undefined ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()
 // FUNCTION: IMPERIALISM 0x005627a0
 undefined4 ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList(void)
-{
-  return 0;
-}
-
-// ghidra_name LinkedListQueryOwner::SerializeMapActionContextRuntimeState
-// ghidra_proto undefined SerializeMapActionContextRuntimeState()
-// FUNCTION: IMPERIALISM 0x005628f0
-undefined4 SerializeMapActionContextRuntimeState(void)
 {
   return 0;
 }
