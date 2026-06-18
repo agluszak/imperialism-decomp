@@ -460,7 +460,11 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
         print(f"gen-class {cls}: NEW class (no header). Dry-run preview:\n")
         print(f"=== {hpath} ===\n{header_text}")
         print(f"=== {cpp_path} ===\n{cpp_text}")
-        print(f"\n+ {len(sym_plan.new_rows)} symbols.csv rows, {len(own_plan.new_rows)} ownership rows.")
+        print(
+            f"\n+ {len(sym_plan.new_rows)} symbols.csv rows, "
+            f"~ {len(sym_plan.updated_rows)} symbols.csv updates, "
+            f"+ {len(own_plan.new_rows)} ownership rows."
+        )
         for issue in scaffold_issues:
             print(f"!! scaffold issue: {issue}")
         for collision in own_plan.collisions:
@@ -484,7 +488,7 @@ def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], writ
 
     hpath.write_text(header_text, encoding="utf-8")
     cpp_path.write_text(cpp_text, encoding="utf-8")
-    if sym_plan.new_rows:
+    if sym_plan.new_rows or sym_plan.updated_rows:
         sym_plan.path.write_text(sym_plan.merged_text())
     if own_plan.new_rows:
         own_plan.path.write_text(own_plan.merged_text())

@@ -341,7 +341,7 @@ def render_cpp(class_name: str, slots: list[ClassifiedSlot]) -> str:
                 "// TODO(manifest): emit the real ~" + class_name + "() with its own"
             )
             lines.append(
-                "// FUNCTION: IMPERIALISM 0x<dtor-addr> marker (find the destructor body in"
+                "// function marker at the real destructor address (find the destructor body in"
             )
             lines.append("// Ghidra; it is usually adjacent to the scalar deleting destructor).")
             lines.append("")
@@ -366,6 +366,7 @@ class CsvPlan:
     fieldnames: list[str]
     rows: list[dict[str, str]]
     new_rows: list[dict[str, str]] = field(default_factory=list)
+    updated_rows: list[str] = field(default_factory=list)
     collisions: list[str] = field(default_factory=list)
 
     def render_new(self) -> str:
@@ -389,15 +390,32 @@ class CsvPlan:
 def plan_symbols(path: Path, owned: list[ClassifiedSlot], class_name: str) -> CsvPlan:
     fieldnames, rows = read_pipe_table(path)
     plan = CsvPlan(path=path, fieldnames=fieldnames, rows=rows)
-    existing = {norm_addr(r.get("address", "")) for r in rows}
+    by_addr = {norm_addr(r.get("address", "")): r for r in rows}
     for s in owned:
         target_addr = norm_addr(s.target_addr)
-        if not target_addr or target_addr in existing:
+        if not target_addr:
             continue
         if s.kind == "scalar_dtor":
             name = f"{class_name}::`scalar deleting destructor'"
             proto = "void* __thiscall `scalar deleting destructor'(unsigned int)"
+            existing = by_addr.get(target_addr)
+            if existing is not None:
+                changed = False
+                if (existing.get("name") or "") != name:
+                    existing["name"] = name
+                    changed = True
+                if (existing.get("type") or "") != "function":
+                    existing["type"] = "function"
+                    changed = True
+                if (existing.get("prototype") or "") != proto:
+                    existing["prototype"] = proto
+                    changed = True
+                if changed:
+                    plan.updated_rows.append(target_addr)
+                continue
         else:
+            if target_addr in by_addr:
+                continue
             assert s.sig is not None
             name = f"{class_name}::{s.sig.name}"
             proto = s.prototype or f"{s.sig.ret} {s.sig.name}({s.sig.args})"
@@ -410,7 +428,7 @@ def plan_symbols(path: Path, owned: list[ClassifiedSlot], class_name: str) -> Cs
                 "prototype": proto,
             }
         )
-        existing.add(target_addr)
+        by_addr[target_addr] = plan.new_rows[-1]
     return plan
 
 

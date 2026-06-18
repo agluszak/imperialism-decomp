@@ -108,6 +108,7 @@ def main() -> int:
     cpp = bc.render_cpp("TUnitOrderState", slots)
     check("cpp synthetic marker", "// SYNTHETIC: IMPERIALISM 0x5c24e0" in cpp)
     check("cpp synthetic name", "// TUnitOrderState::`scalar deleting destructor'" in cpp)
+    check("cpp scalar TODO avoids fake FUNCTION marker", "0x<dtor-addr>" not in cpp)
     check("cpp FUNCTION markers ascending",
           cpp.index("0x5c2490") < cpp.index("0x5c24e0") < cpp.index("0x5c27d0"))
     check("cpp decompile seed inlined", "Ghidra decompile seed" in cpp)
@@ -133,6 +134,18 @@ def main() -> int:
         check("merged keeps header", merged.startswith("address|name|size|type|prototype"))
         check("merged inserts 5c24e0 before 5c27d0",
               merged.index("5c24e0|") < merged.index("5c27d0|"))
+
+        sym_path.write_text(
+            "address|name|size|type|prototype\n"
+            "5c24e0|DestroyTUnitOrderState|30|function|undefined DestroyTUnitOrderState(void)\n"
+        )
+        sym_plan = bc.plan_symbols(sym_path, owned, "TUnitOrderState")
+        check("symbols updates existing scalar dtor row", sym_plan.updated_rows == ["5c24e0"])
+        scalar_text = sym_plan.merged_text()
+        check("symbols scalar dtor update name",
+              "5c24e0|TUnitOrderState::`scalar deleting destructor'|30|function|" in scalar_text)
+        check("symbols scalar dtor update prototype",
+              "void* __thiscall `scalar deleting destructor'(unsigned int)" in scalar_text)
 
         own_path = Path(td) / "ownership.csv"
         own_path.write_text(
