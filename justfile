@@ -123,8 +123,11 @@ scan-cdecl-thiscall *args: _require-ghidra-install
 ghidra-vtable-dump class vtable *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_dump "{{class}}" "{{vtable}}" {{args}}
 
-# Scaffold a class+vtable port: resolve slots via Ghidra, then emit a reviewable
-# header/.cpp/CSV scaffold (dry-run by default; pass --write to apply).
+# LEGACY scaffolder. Prefer `just recover-class <Class>` (manifest-driven, idempotent,
+# also drives an existing class to 100%). Keep this only for its unique extra: it
+# emits the Ghidra *decompile seed* into the .cpp stubs, which the manifest does not
+# carry. Resolves slots via Ghidra, then emits a reviewable header/.cpp/CSV scaffold
+# (dry-run by default; pass --write to apply).
 #   just bootstrap-class TUnitOrderState 0x0066ee18
 #   just bootstrap-class TUnitOrderState 0x0066ee18 TObject 0x00653868  # override
 # The base is auto-detected from the MFC CRuntimeClass chain (immediate base +
@@ -161,6 +164,24 @@ gen-class class *args:
 # manifest (no drift), and the class's // VTABLE: address must match the manifest.
 manifest-gate *args:
   uv run python -m tools.workflow.check_manifest_consistency {{args}}
+
+# Orchestrator: drive one class through the full manifest-based recovery loop —
+# refresh its manifest from Ghidra, regenerate its header block (or scaffold a new
+# class), wire ownership, rebuild, detect, report the vtable score + the human-TODO
+# list, and run the gates. The vtable score is informational (won't abort the loop).
+recover-class class: _require-ghidra-install
+  #!/usr/bin/env bash
+  set -euo pipefail
+  just dump-manifests --only "{{class}}"
+  just gen-class "{{class}}" --write
+  just sync-ownership
+  just regen-stubs
+  just build
+  just detect
+  echo "=== vtable {{class}} (informational) ==="
+  just vtable "{{class}}" || true
+  uv run python -m tools.workflow.gen_class "{{class}}" --todo
+  just gates
 
 apply-source-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_datatypes {{args}}

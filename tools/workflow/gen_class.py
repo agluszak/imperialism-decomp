@@ -33,12 +33,27 @@ the block and fails on any drift, so the header and manifest cannot diverge.
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 from typing import Any
 
 from tools.common import class_manifest as cm
+from tools.common.pipe_csv import normalize_hex, read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.workflow.bootstrap_class import unqualified
+from tools.workflow.bootstrap_class import (
+    ClassifiedSlot,
+    Signature,
+    looks_like_deleting_dtor,
+    parse_prototype,
+    unqualified,
+)
+
+# Ghidra names that signal a slot still needs a human semantic name. RTTI getters
+# (ClassNamePointer) and scalar deleting destructors are structural machinery, not
+# semantic-naming targets, so they are deliberately excluded.
+_JUNK_NAME = re.compile(
+    r"(FUN_|SUB_|LAB_|Orphan|WrapperFor_|NoOp|_At[0-9A-Fa-f]{6}|VTableSlot|Unknown|Dummy)"
+)
 
 BLOCK_BEGIN = "// === BEGIN GENERATED ({cls}) — refreshed by `just gen-class {cls}`; do not hand-edit ==="
 BLOCK_END = "// === END GENERATED ({cls}) ==="
@@ -154,25 +169,176 @@ def upsert_block(text: str, cls: str, block: str) -> tuple[str, bool]:
 
 
 # --------------------------------------------------------------------------- #
+# Manifest -> ClassifiedSlot (for new-class scaffolding + TODO)
+# --------------------------------------------------------------------------- #
+
+
+def _classified_from_manifest(manifest: dict[str, Any]) -> list[ClassifiedSlot]:
+    """Rebuild bootstrap_class.ClassifiedSlot records from the manifest.
+
+    Reuses the manifest's already-computed ``kind`` and the curated method name
+    (curated wins over the Ghidra name) so the header/cpp scaffolding renders in
+    the same shape ``bootstrap_class`` produced from a slots JSON.
+    """
+    curated = cm.curated_slot_methods(manifest)
+    out: list[ClassifiedSlot] = []
+    for s in (manifest.get("generated") or {}).get("slots") or []:
+        idx = cm._as_int(s["index"])
+        target = str(s.get("target") or "0x0").removeprefix("0x")
+        kind = s.get("kind") or "new"
+        cur = curated.get(idx)
+        qualified = (cur or {}).get("method") or s.get("ghidra_name")
+        proto = s.get("prototype")
+        preferred = unqualified(qualified) if qualified else f"VTableSlot{idx:02X}"
+        sig: Signature | None = None
+        if kind in ("override", "new"):
+            parsed = parse_prototype(proto, preferred)
+            # The curated/preferred name wins over the prototype's name (which is a
+            # provisional Ghidra name); the prototype still supplies ret/args/const.
+            sig = Signature(ret=parsed.ret, name=preferred, args=parsed.args, const=parsed.const)
+        out.append(
+            ClassifiedSlot(
+                index=idx,
+                byte_offset=cm._as_int(s.get("byte") or 0),
+                slot_label=f"0x{cm._as_int(s.get('byte') or 0):02x}",
+                target_addr=target,
+                kind=kind,
+                sig=sig,
+                qualified_name=qualified,
+                size=int(s.get("size") or 0),
+                prototype=proto,
+                decompiled_c=None,
+                base_target=None,
+                dtor_suspect=kind in ("override", "new") and looks_like_deleting_dtor(qualified),
+            )
+        )
+    return out
+
+
+def _owned_addresses(repo_root: Path) -> set[int]:
+    path = resolve_repo_path(repo_root, "config/function_ownership.csv")
+    if not path.exists():
+        return set()
+    out: set[int] = set()
+    for row in read_pipe_rows(path):
+        if (row.get("ownership") or "").strip() != "manual":
+            continue
+        addr = normalize_hex((row.get("address") or "").strip())
+        if addr:
+            out.add(int(addr, 16))
+    return out
+
+
+def print_todo(repo_root: Path, cls: str, manifest: dict[str, Any]) -> None:
+    """Print the human-judgment TODO list the orchestrator cannot resolve."""
+    gen = manifest.get("generated") or {}
+    curated = cm.curated_slot_methods(manifest)
+    owned = _owned_addresses(repo_root)
+    layout = cm.curated_layout(manifest)
+
+    unnamed: list[str] = []
+    unported: list[str] = []
+    for s in gen.get("slots") or []:
+        kind = s.get("kind")
+        if kind in ("null", "ilt_thunk"):
+            continue
+        idx = cm._as_int(s["index"])
+        name = s.get("ghidra_name") or ""
+        has_curated = idx in curated and curated[idx].get("method")
+        if kind in ("new", "override") and not has_curated and _JUNK_NAME.search(name):
+            unnamed.append(f"    slot {s['index']} @ {s.get('target')}: name it (Ghidra: {unqualified(name) or '?'})")
+        target = normalize_hex(str(s.get("target") or ""))
+        if kind in ("new", "override", "scalar_dtor") and target and int(target, 16) not in owned:
+            unported.append(f"    slot {s['index']} @ {s.get('target')}: body not owned (port + // FUNCTION marker)")
+
+    base = gen.get("base") or ""
+    ancestry = gen.get("ancestry") or []
+    base_uncertain = bool(base) and (len(ancestry) < 2 or not any(s.get("kind") == "inherited" for s in gen.get("slots") or []))
+
+    print(f"\n=== recover-class TODO: {cls} ===")
+    print(f"  base: {base or '<root>'}  (ancestry: {' -> '.join(str(a) for a in ancestry) or '?'})")
+    if base_uncertain:
+        print("  !! base edge LOW-CONFIDENCE: no inherited slots resolved against the base "
+              "vtable — confirm the base from ctor/dtor sequencing + Mac evidence.")
+    if not layout.get("status"):
+        print("  !! no curated.layout.status — set recovered/in_progress once the layout is modeled.")
+    print(f"  unnamed slots ({len(unnamed)}):")
+    for line in unnamed[:60]:
+        print(line)
+    print(f"  unported bodies ({len(unported)}):")
+    for line in unported[:60]:
+        print(line)
+    if not unnamed and not unported and not base_uncertain:
+        print("  (nothing outstanding — slots named + owned, base edge resolved)")
+
+
+# --------------------------------------------------------------------------- #
+# New-class scaffolding (header + cpp from the manifest)
+# --------------------------------------------------------------------------- #
+
+
+def scaffold_new_class(repo_root: Path, cls: str, manifest: dict[str, Any], write: bool) -> int:
+    from tools.workflow import bootstrap_class as bc
+
+    gen = manifest.get("generated") or {}
+    base = gen.get("base") or "TObject"
+    vtable_addr = gen.get("vtable_addr") or "0x00000000"
+    ancestry = [str(a) for a in (gen.get("ancestry") or [cls, base])]
+    rtti = {"immediate_base": base, "ancestry": ancestry, "root": gen.get("root") or "TObject"}
+
+    slots = _classified_from_manifest(manifest)
+    owned = [s for s in slots if s.kind in ("override", "new", "scalar_dtor")]
+    header_text = bc.render_header(cls, base, vtable_addr, slots, rtti=rtti)
+    header_text = header_text.rstrip("\n") + "\n\n" + render_generated_block(manifest) + "\n"
+    cpp_text = bc.render_cpp(cls, slots)
+
+    hpath = header_path(repo_root, cls)
+    cpp_path = resolve_repo_path(repo_root, f"src/game/{cls}.cpp")
+    sym_plan = bc.plan_symbols(resolve_repo_path(repo_root, "config/symbols.csv"), owned, cls)
+    own_plan = bc.plan_ownership(
+        resolve_repo_path(repo_root, "config/function_ownership.csv"), owned, f"src/game/{cls}.cpp"
+    )
+
+    if not write:
+        print(f"gen-class {cls}: NEW class (no header). Dry-run preview:\n")
+        print(f"=== {hpath} ===\n{header_text}")
+        print(f"=== {cpp_path} ===\n{cpp_text}")
+        print(f"\n+ {len(sym_plan.new_rows)} symbols.csv rows, {len(own_plan.new_rows)} ownership rows.")
+        print("Pass --write to scaffold. (No Ghidra decompile seeds — use `just bootstrap-class`"
+              " for a decompile-seeded scaffold.)")
+        return 0
+
+    hpath.write_text(header_text, encoding="utf-8")
+    cpp_path.write_text(cpp_text, encoding="utf-8")
+    if sym_plan.new_rows:
+        sym_plan.path.write_text(sym_plan.merged_text())
+    if own_plan.new_rows:
+        own_plan.path.write_text(own_plan.merged_text())
+    print(f"gen-class {cls}: scaffolded {hpath} + {cpp_path} and merged CSV rows.")
+    print(f"Next: just sync-ownership -> regen-stubs -> build -> vtable {cls} -> gates.")
+    return 0
+
+
+# --------------------------------------------------------------------------- #
 # CLI
 # --------------------------------------------------------------------------- #
 
 
-def gen_class(repo_root: Path, cls: str, write: bool) -> int:
+def gen_class(repo_root: Path, cls: str, write: bool, todo: bool = False) -> int:
     mpath = manifest_path(repo_root, cls)
     if not mpath.exists():
         print(f"gen-class: no manifest {mpath}; run `just dump-manifests --only {cls}` first.")
         return 1
     manifest = cm.load_manifest(mpath)
-    block = render_generated_block(manifest)
 
+    if todo:
+        print_todo(repo_root, cls, manifest)
+        return 0
+
+    block = render_generated_block(manifest)
     hpath = header_path(repo_root, cls)
     if not hpath.exists():
-        print(f"gen-class: header {hpath} does not exist yet (new-class flow not wired here);")
-        print("           use `just bootstrap-class` to scaffold a brand-new header, then re-run.")
-        print("\n--- would insert generated block ---")
-        print(block)
-        return 1
+        return scaffold_new_class(repo_root, cls, manifest, write)
 
     text = hpath.read_text(encoding="utf-8")
     new_text, changed = upsert_block(text, cls, block)
@@ -193,12 +359,13 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Idempotent manifest-driven class generator.")
     p.add_argument("cls", help="Class name (must have config/classes/<Class>.yml).")
     p.add_argument("--write", action="store_true", help="Apply changes (default: dry-run preview).")
+    p.add_argument("--todo", action="store_true", help="Print the human-judgment TODO list and exit.")
     return p.parse_args()
 
 
 def main() -> int:
     args = parse_args()
-    return gen_class(repo_root_from_file(__file__), args.cls, args.write)
+    return gen_class(repo_root_from_file(__file__), args.cls, args.write, todo=args.todo)
 
 
 if __name__ == "__main__":

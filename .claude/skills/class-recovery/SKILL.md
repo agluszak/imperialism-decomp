@@ -12,6 +12,12 @@ tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36
 
 ## Per-class manifests (single source of truth)
 
+**Entry point: `just recover-class <Class>`** drives the whole loop — refresh the
+manifest from Ghidra, regenerate the header block (or scaffold a brand-new class),
+wire ownership, rebuild, detect, print the vtable score + a human-TODO list
+(unnamed slots, low-confidence base edge, unported bodies), and run the gates. The
+individual steps below are what it chains.
+
 Each class has an inspectable manifest at `config/classes/<Class>.yml` instead of
 scattering its facts across the Ghidra DB and CSVs. A manifest has two regions:
 `generated:` (Ghidra-derived: `vtable_addr`, `object_size`, `base`/`ancestry`/
